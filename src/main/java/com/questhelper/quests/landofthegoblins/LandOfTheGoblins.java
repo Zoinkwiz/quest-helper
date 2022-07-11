@@ -565,11 +565,11 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		passOrangeGuard = new NpcStep(this, NpcID.GUARD_11317, new WorldPoint(3753, 4311, 0), "Pass by the guard to enter the south-eastern area.", orangeGoblinMail.equipped().highlighted());
 		passPurpleGuard = new NpcStep(this, NpcID.GUARD_11320, new WorldPoint(3735, 4311, 0), "Pass by the guard to enter the south-western area.", purpleGoblinMail.equipped().highlighted());
 
-		pickpocketWhitePriest = new NpcStep(this, NpcID.PRIEST_11309, new WorldPoint(3727, 4316, 0), "Pickpocket the priest for the Saragorak key.");
-		pickpocketYellowPriest = new NpcStep(this, NpcID.PRIEST_11313, new WorldPoint(3727, 4330, 0), "Pickpocket the priest for the Yurkolgokh key.");
-		pickpocketBluePriest = new NpcStep(this, NpcID.PRIEST_11303, new WorldPoint(3760, 4320, 0), "Pickpocket the priest for the Ekeleshuun key.");
-		pickpocketOrangePriest = new NpcStep(this, NpcID.PRIEST_11305, new WorldPoint(3762, 4318, 0), "Pickpocket the priest for the Narogoshuun key.");
-		pickpocketPurplePriest = new NpcStep(this, NpcID.PRIEST_11311, new WorldPoint(3730, 4302, 0), "Pickpocket the priest for the Horogothgar key.");
+		pickpocketWhitePriest = new NpcStep(this, NpcID.PRIEST_11309, new WorldPoint(3727, 4316, 0), "Pickpocket the priest in the western room for the Saragorak key.");
+		pickpocketYellowPriest = new NpcStep(this, NpcID.PRIEST_11313, new WorldPoint(3727, 4330, 0), "Pickpocket the priest in the north-western room for the Yurkolgokh key.");
+		pickpocketBluePriest = new NpcStep(this, NpcID.PRIEST_11303, new WorldPoint(3760, 4320, 0), "Pickpocket the priest in the eastern room for the Ekeleshuun key.");
+		pickpocketOrangePriest = new NpcStep(this, NpcID.PRIEST_11305, new WorldPoint(3762, 4318, 0), "Pickpocket the priest in the south-eastern room for the Narogoshuun key.");
+		pickpocketPurplePriest = new NpcStep(this, NpcID.PRIEST_11311, new WorldPoint(3730, 4302, 0), "Pickpocket the priest in the south-western room for the Horogothgar key.");
 
 		unlockCrypt = new ObjectStep(this, ObjectID.DOOR_43088, new WorldPoint(3744, 4332, 0), "Unlock the door using the 6 keys. You may leave to gear up after unlocking it.", huzamogaarbKey, saragorgakKey, yurkolgokhKey, ekeleshuunKey, nargoshuunKey, horogothgarKey);
 		enterCrypt = new ObjectStep(this, ObjectID.DOOR_43088, new WorldPoint(3744, 4332, 0), "Enter the crypt.", combatGear);
@@ -605,7 +605,8 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		climbDorgeshKaanStairsF0 = new ObjectStep(this, ObjectID.STAIRS_22937, new WorldPoint(2714, 5283, 0), "If you have access to fairy rings, travel to AJQ. Otherwise, climb the stairs in south Dorgesh-Kaan.");
 		climbDorgeshKaanStairsF1 = new ObjectStep(this, ObjectID.STAIRS_22941, new WorldPoint(2723, 5253, 1), "Climb up the stairs to the south to enter the Dorgesh-Kaan cave.");
 		climbLadderTop = new ObjectStep(this, ObjectID.LADDER_TOP, new WorldPoint(2719, 5241, 3), "Climb down the ladder to the west.");
-		talkToOldakAtMachine = new NpcStep(this, NpcID.OLDAK_11385, new WorldPoint(2741, 5220, 0), "Talk to Oldak near the machine.");
+		talkToOldakAtMachine = new NpcStep(this, NpcID.OLDAK_11385, new WorldPoint(2741, 5220, 0), "Talk to Oldak near the machine at the fairy ring " +
+			"in the the caves south of Dorgesh-Kaan.");
 		inspectMachine = new ObjectStep(this, ObjectID.MACHINE_43101, new WorldPoint(2740, 5219, 0), "Fix the machine.");
 
 		increaseFirst = new WidgetStep(this, "Set the first value to 9.", 738, 21);

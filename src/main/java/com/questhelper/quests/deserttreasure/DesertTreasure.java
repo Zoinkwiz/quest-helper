@@ -264,8 +264,9 @@ public class DesertTreasure extends BasicQuestHelper
 		bloodDiamondHighlighted = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
 		bloodDiamondHighlighted.setTooltip("You can get another from Malak in Canifis");
 
-		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true);
-		iceGloves.setTooltip("You can kill the Ice Queen under White Wolf Mountain for these");
+		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES, 1, true);
+		iceGloves.setTooltip("You can kill the Ice Queen under White Wolf Mountain for ice gloves");
+		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
 
 		waterSpellOrMelee = new ItemRequirement("Water spells or melee gear", -1, -1);
 		waterSpellOrMelee.setDisplayItemId(ItemID.WATER_RUNE);

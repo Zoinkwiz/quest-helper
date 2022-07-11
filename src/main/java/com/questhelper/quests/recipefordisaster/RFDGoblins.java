@@ -142,7 +142,7 @@ public class RFDGoblins extends BasicQuestHelper
 		orangeSliceHighlighted.setHighlightInInventory(true);
 
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
-		charcoal.setTooltip("You can buy one from the general store north of Shilo Village");
+		charcoal.setTooltip("Can be bought from the general store in Shilo Village or the one northwest of Tai Bwo Wannai");
 		charcoal.addAlternates(ItemID.GROUND_CHARCOAL);
 
 		dyedOrange = new ItemRequirement("Dyed orange", ItemID.DYED_ORANGE);

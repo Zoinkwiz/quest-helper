@@ -294,7 +294,7 @@ public class DesertHard extends ComplexStateQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-			new UnlockReward("Pharaoh's sceptre can hold up to 6 charges"),
+			new UnlockReward("Pharaoh's sceptre can hold up to 50 charges"),
 			new UnlockReward("Access to the big window shortcut in Al Kharid Palace that takes you to the south of the palace, " +
 				"just north of the Shantay Pass, requiring 70 Agility"),
 			new UnlockReward("Unlocked the ability to toggle the Camulet teleport location between the inside and outside of Enakhra's Temple"),

@@ -261,4 +261,10 @@ public class SeaSlug extends BasicQuestHelper
 
 		return allSteps;
 	}
+
+	@Override
+	public List<String> getNotes()
+	{
+		return Collections.singletonList("You can complete an Ardougne Medium Diary task by fishing from the fishing platform using a fishing rod or small fishing net (these can be bought from the fishing shop near quest start in Witchaven).");
+	}
 }

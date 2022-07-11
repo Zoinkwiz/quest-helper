@@ -191,17 +191,17 @@ public class DreamMentor extends BasicQuestHelper
 
 		dreamPotion = new ItemRequirement("Dream potion", ItemID.DREAM_POTION);
 
-		foodAll1 = new ItemRequirement("7 of one type of food", -1, 7);
+		foodAll1 = new ItemRequirement("some type of food", -1, 7);
 		foodAll1.setDisplayItemId(BankSlotIcons.getFood());
-		foodAll2 = new ItemRequirement("7 of another type of food", -1, 7);
+		foodAll2 = new ItemRequirement("some other type of food", -1, 7);
 		foodAll2.setDisplayItemId(BankSlotIcons.getFood());
-		foodAll3 = new ItemRequirement("6 of a third type of food", -1, 6);
+		foodAll3 = new ItemRequirement("a third type of food", -1, 6);
 		foodAll3.setDisplayItemId(BankSlotIcons.getFood());
-		food14 = new ItemRequirement("food, 5x of 2 different types of food, and 4x of another", -1, 14);
+		food14 = new ItemRequirement("food: 5x some type food, 5x some other type of food, 4x a third type of food", -1, 14);
 		food14.setDisplayItemId(BankSlotIcons.getFood());
-		food4 = new ItemRequirement("food, 1x of 2 different types of food, and 2x of another", -1, 4);
+		food4 = new ItemRequirement("food: 1x some type of food, 1x some other type of food, 2x a third type of food", -1, 4);
 		food4.setDisplayItemId(BankSlotIcons.getFood());
-		food6 = new ItemRequirement("food, 2x of 3 different types of food", -1, 6);
+		food6 = new ItemRequirement("food: 2x some type of food, 2x some other type of food, 2x a third type of food", -1, 6);
 		food6.setDisplayItemId(BankSlotIcons.getFood());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 
@@ -378,7 +378,7 @@ public class DreamMentor extends BasicQuestHelper
 	@Override
 	public List<String> getNotes()
 	{
-		return Collections.singletonList("You will need to fight all 4 bosses in a row without prayers. It's recommended that you use magic as they all have very low magic defence.");
+		return Collections.singletonList("To handle the food you could use Sack of Potatoes(10), Sack of Cabbages(10) and Sack of Onions(10). This would allow you to carry all the food in just three inventory spaces. You will need to fight all 4 bosses in a row without prayers. It's recommended that you use magic as they all have very low magic defence.");
 	}
 
 	@Override

@@ -69,7 +69,7 @@ public class RovingElves extends BasicQuestHelper
 
 	//Items Recommended
 	//I don't know amounts of teleports, hopefully someone can fix that later
-	ItemRequirement prayerPotions, food, ardougneTeleports, camelotTeleports, iorwerthCampTeleports, skillsNecklace;
+	ItemRequirement prayerPotions, food, ardougneTeleports, camelotTeleports, iorwerthCampTeleports, skillsNecklace, gamesNecklace;
 
 	Requirement inGlarialsTomb, onDeadTreeIsland, onLedge, onHudonIsland, inFalls, seedNearby, inThroneRoom;
 
@@ -140,6 +140,7 @@ public class RovingElves extends BasicQuestHelper
 		highlightRope.setHighlightInInventory(true);
 		prayerPotions = new ItemRequirement("A few prayer potions", ItemID.PRAYER_POTION4);
 		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces(), 1);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces(), 1);
 		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT, -1);
 		camelotTeleports = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, -1);
 		iorwerthCampTeleports = new ItemRequirement("Iorwerth camp teleports", ItemID.IORWERTH_CAMP_TELEPORT, -1);
@@ -209,7 +210,7 @@ public class RovingElves extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(prayerPotions, food, skillsNecklace, ardougneTeleports, camelotTeleports, iorwerthCampTeleports);
+		return Arrays.asList(prayerPotions, food, skillsNecklace, gamesNecklace, ardougneTeleports, camelotTeleports, iorwerthCampTeleports);
 	}
 
 	@Override

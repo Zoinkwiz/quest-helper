@@ -129,8 +129,8 @@ public class RFDDwarf extends BasicQuestHelper
 		bowlOfWater.setTooltip("You can find a bowl in Lumbridge Castle's Basement and fill it in the nearby sink");
 		asgarniaAle4 = new ItemRequirement("Asgarnian ale", ItemID.ASGARNIAN_ALE, 4);
 		asgarniaAle4.setTooltip("You can buy them for 3 coins each from Kaylee during the quest");
-		iceGloves = new ItemRequirement("Ice gloves/normal gloves/telekinetic grab", ItemID.ICE_GLOVES);
-		iceGloves.addAlternates(ItemID.LEATHER_GLOVES);
+		iceGloves = new ItemRequirement("Ice gloves/smiths gloves(i)/normal gloves/telekinetic grab", ItemID.ICE_GLOVES);
+		iceGloves.addAlternates(ItemID.LEATHER_GLOVES, ItemID.SMITHS_GLOVES_I);
 		iceGloves.setTooltip("You can use normal gloves/telekenetic grab instead, but you'll then need to kill an Ice " +
 			"Fiend");
 		rockCake = new ItemRequirement("Dwarven rock cake", ItemID.DWARVEN_ROCK_CAKE_7510);

@@ -269,7 +269,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-			new UnlockReward("Pharaoh's sceptre can hold up to 4 charges"),
+			new UnlockReward("Pharaoh's sceptre can hold up to 10 charges"),
 			new UnlockReward("Goats will always drop noted desert goat horn"),
 			new UnlockReward("Simon Templeton will now buy your noted artefacts too")
 		);

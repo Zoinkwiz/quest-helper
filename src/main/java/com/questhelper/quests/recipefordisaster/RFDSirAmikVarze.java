@@ -172,7 +172,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted.setHighlightInInventory(true);
 
-		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true);
+		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES, 1, true);
+		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
 		iceGloves.setTooltip("Although optional, you'll take a lot of damage if you're not wearing them");
 		rawChicken = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN);
 		rawChicken.setHighlightInInventory(true);

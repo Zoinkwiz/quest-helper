@@ -69,9 +69,9 @@ import net.runelite.api.widgets.WidgetInfo;
 public class TheTouristTrap extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement desertTop, desertBottom, desertBoot, desertTopWorn, desertBottomWorn, desertBootWorn, bronzeBar3, hammer, feather50,
+	ItemRequirement desertTop, desertBottom, desertBoot, desertTopWorn, desertBottomWorn, desertBootWorn, bronzeBar3, hammer, feather10,
 		metalKey, slaveTop, slaveRobe, slaveBoot, slaveTopWorn, slaveRobeWorn, slaveBootWorn, bedabinKey, technicalPlans, prototypeDart, prototypeDartTip,
-		feather10, bronzeBar, tentiPineapple, bronzeBarHighlighted, barrel, anaInABarrel, anaInABarrelHighlighted, barrelHighlighted;
+		bronzeBar, tentiPineapple, bronzeBarHighlighted, barrel, anaInABarrel, anaInABarrelHighlighted, barrelHighlighted;
 
 	//Items Required
 	ItemRequirement waterskins, knife, pickaxe, coins100, combatGear;
@@ -205,7 +205,6 @@ public class TheTouristTrap extends BasicQuestHelper
 		desertBootWorn = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS, 1, true);
 		bronzeBar3 = new ItemRequirement("Bronze bars", ItemID.BRONZE_BAR, 3);
 		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		feather50 = new ItemRequirement("Feather", ItemID.FEATHER, 50);
 
 		metalKey = new ItemRequirement("Metal key", ItemID.METAL_KEY);
 		metalKey.setTooltip("You can get another by killing the Mercenary Guard outside the Desert Mining Camp");
@@ -385,7 +384,7 @@ public class TheTouristTrap extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(desertTop, desertBottom, desertBoot, bronzeBar3, hammer, feather50);
+		return Arrays.asList(desertTop, desertBottom, desertBoot, bronzeBar3, hammer, feather10);
 	}
 
 
@@ -432,11 +431,11 @@ public class TheTouristTrap extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Investigating the trap",
 			Arrays.asList(talkToIrena, talkToCaptain, enterCamp, talkToSlave, enterMine, talkToGuard),
-			desertTop, desertBottom, desertBoot, bronzeBar3, hammer, feather50));
+			desertTop, desertBottom, desertBoot, bronzeBar3, hammer, feather10));
 		allSteps.add(new PanelDetails("Helping out",
 			Arrays.asList(talkToShabim, enterCampForTask, goUpToSiad, searchBookcase, talkToSiad, searchChest, returnToShabim,
 				useAnvil, useFeatherOnTip, bringPrototypeToShabim),
-			bronzeBar3, hammer, feather50));
+			bronzeBar3, hammer, feather10));
 		allSteps.add(new PanelDetails("Freeing Ana",
 			Arrays.asList(enterCampWithPineapple, enterMineWithPineapple, talkToGuardWithPineapple, enterDeepMine, getBarrel, enterMineCart, useBarrelOnAna, useBarrelOnMineCart,
 				returnInMineCart, searchBarrelsForAna, sendAnaUp, leaveDeepMine, operateWinch, searchWinchBarrel, useBarrelOnCart, talkToDriver, returnToIrena, talkToAna, talkToIrenaToFinish),

@@ -230,7 +230,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		threeBosses.addAlternateNpcs(NpcID.SCORPIA, NpcID.CHAOS_FANATIC);
 
 		trollWildy = new ObjectStep(this, ObjectID.ROCKS_16545, new WorldPoint(2916, 3672, 0),
-			"Take the agility shortcut from Trollhiem to the Wilderness.");
+			"Take the agility shortcut from Trollheim to the Wilderness.");
 
 		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC, new WorldPoint(3121, 3518, 0),
 			"Talk to Lesser Fanatic in Edgeville to claim your reward!");

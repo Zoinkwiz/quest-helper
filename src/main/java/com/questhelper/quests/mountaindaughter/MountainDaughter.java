@@ -184,7 +184,11 @@ public class MountainDaughter extends BasicQuestHelper
 		plank = new ItemRequirement("Any plank", ItemID.PLANK);
 		plank.addAlternates(ItemID.OAK_PLANK, ItemID.TEAK_PLANK, ItemID.MAHOGANY_PLANK);
 		pole = new ItemRequirement("A staff or a pole", ItemID.POLE);
-		pole.addAlternates(ItemID.LUNAR_STAFF, ItemID.STAFF, ItemID.STAFF_OF_AIR, ItemID.STAFF_OF_EARTH, ItemID.STAFF_OF_FIRE, ItemID.STAFF_OF_WATER);
+		pole.addAlternates(ItemID.LUNAR_STAFF, ItemID.STAFF, ItemID.BATTLESTAFF);
+		pole.addAlternates(ItemCollections.getAirStaff());
+		pole.addAlternates(ItemCollections.getWaterStaff());
+		pole.addAlternates(ItemCollections.getEarthStaff());
+		pole.addAlternates(ItemCollections.getFireStaff());
 		pole.setTooltip("A Dramen Staff will NOT work. A pole can be obtained from the goat pen north of Hamal's house.");
 		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES);
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,

@@ -187,7 +187,7 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 			protectFromMagic);
 
 		searchBookcasesForSun = new ObjectStep(this, ObjectID.MUSTY_BOOKSHELF, new WorldPoint(1805, 9935, 0),
-			"Search  the musty bookshelves to the west of Aimeri for the tomes of moon, sun, and temple.",
+			"Search the musty bookshelves to the west of Aimeri for the tomes of moon, sun, and temple.",
 			protectFromMagic);
 
 		searchBookcasesForMoon = new ObjectStep(this, ObjectID.MUSTY_BOOKSHELF_34848, new WorldPoint(1804, 9943, 0),

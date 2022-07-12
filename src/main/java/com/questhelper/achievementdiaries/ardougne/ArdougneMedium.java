@@ -99,7 +99,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	ZoneRequirement inSkavidCaves, inPlatform, inBasement, inEntrana, inWall;
 
 	ConditionalStep uniPenTask, grapYanTask, ardyStrawTask, tpArdyTask, balloonCWTask, claimSandTask, fishOnPlatformTask,
-	pickMasterFarmerTask, caveNightshadeTask, killSwordchickTask, ibanUpgradeTask, necroTowerTask;
+		pickMasterFarmerTask, caveNightshadeTask, killSwordchickTask, ibanUpgradeTask, necroTowerTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -289,7 +289,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		caveNightshade = new ItemStep(this, "Pickup the Cave nightshade.", nightshade);
 
 		moveToPlatform = new NpcStep(this, NpcID.JEB, new WorldPoint(2719, 3305, 0),
-				"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
+			"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
 		((NpcStep) (moveToPlatform)).addAlternateNpcs(NpcID.HOLGART_7789);
 		fishOnPlatform = new NpcStep(this, FishingSpot.SHRIMP.getIds(), new WorldPoint(2790, 3276, 0),
 			"Catch any fish on the Fishing Platform.", smallFishingNet);

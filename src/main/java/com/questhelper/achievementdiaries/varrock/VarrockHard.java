@@ -399,19 +399,19 @@ public class VarrockHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Varrock Armor (3)", ItemID.VARROCK_ARMOUR_3, 1),
-				new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Varrock Armor (3)", ItemID.VARROCK_ARMOUR_3, 1),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("10% Chance to mine 2 ores at once up to adamantite ore"),
-				new UnlockReward("10% Chance of smelting 2 bars at once up to adamantite when using the Edgeville furnace"),
-				new UnlockReward("Zaff will sell 60 Battlestaves per day for 7,000 Coins each"),
-				new UnlockReward("The Skull sceptre will now hold 22 charges"),
-				new UnlockReward("Access to the Cooks' Guild bank"));
+			new UnlockReward("10% Chance to mine 2 ores at once up to adamantite ore"),
+			new UnlockReward("10% Chance of smelting 2 bars at once up to adamantite when using the Edgeville furnace"),
+			new UnlockReward("Zaff will sell 60 Battlestaves per day for 7,000 Coins each"),
+			new UnlockReward("The Skull sceptre will now hold 22 charges"),
+			new UnlockReward("Access to the Cooks' Guild bank"));
 	}
 
 	@Override

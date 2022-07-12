@@ -192,9 +192,12 @@ public class DesertElite extends ComplexStateQuestHelper
 			"Go through each of the pyramid rooms until the final room.", true);
 		((ObjectStep) traversePyramid).setMaxObjectDistance(40);
 		((ObjectStep) traversePyramid).setMaxRenderDistance(10);
-		for (int i=26619; i<26651; i++)
+		for (int i = 26619; i < 26651; i++)
 		{
-			if (i == 26626) continue;
+			if (i == 26626)
+			{
+				continue;
+			}
 			((ObjectStep) traversePyramid).addAlternateObjects(i);
 		}
 

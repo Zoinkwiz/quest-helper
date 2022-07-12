@@ -52,7 +52,7 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.KANDARIN_HARD
+	quest = QuestHelperQuest.KANDARIN_HARD
 )
 
 public class KandarinHard extends ComplexStateQuestHelper
@@ -338,22 +338,22 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Kandarin headgear (3)", ItemID.KANDARIN_HEADGEAR_3, 1),
-				new ItemReward("15,500 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Kandarin headgear (3)", ItemID.KANDARIN_HEADGEAR_3, 1),
+			new ItemReward("15,500 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Coal trucks can hold up to 308 coal."),
-				new UnlockReward("Thormac will enchant battlestaves for 30,000 coins each"),
-				new UnlockReward("The Flax keeper will exchange 120 noted flax for 120 noted bow strings daily"),
-				new UnlockReward("15% more marks of grace on Seers' Village Rooftop Course"),
-				new UnlockReward("10% increased chance to save a harvest life from the Catherby herb patch"),
-				new UnlockReward("10% increased reward points from Barbarian Assault"),
-				new UnlockReward("10% increased activation chance (multiplicative) for the special effect from enchanted bolts (Inlcluding PvP)"),
-				new UnlockReward("Ability to toggle Camelot Teleport to outside Seers' Village bank"));
+			new UnlockReward("Coal trucks can hold up to 308 coal."),
+			new UnlockReward("Thormac will enchant battlestaves for 30,000 coins each"),
+			new UnlockReward("The Flax keeper will exchange 120 noted flax for 120 noted bow strings daily"),
+			new UnlockReward("15% more marks of grace on Seers' Village Rooftop Course"),
+			new UnlockReward("10% increased chance to save a harvest life from the Catherby herb patch"),
+			new UnlockReward("10% increased reward points from Barbarian Assault"),
+			new UnlockReward("10% increased activation chance (multiplicative) for the special effect from enchanted bolts (Inlcluding PvP)"),
+			new UnlockReward("Ability to toggle Camelot Teleport to outside Seers' Village bank"));
 	}
 
 	@Override

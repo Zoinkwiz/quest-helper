@@ -52,59 +52,59 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.KANDARIN_EASY
+	quest = QuestHelperQuest.KANDARIN_EASY
 )
 
 public class KandarinEasy extends ComplexStateQuestHelper
 {
-    // Items required
-    ItemRequirement combatGear, bigFishingNet, coins, juteSeed, seedDibber, rake, batteredKey,
+	// Items required
+	ItemRequirement combatGear, bigFishingNet, coins, juteSeed, seedDibber, rake, batteredKey,
 		emptyFishbowl, fishBowl, seaweed, fishBowlSeaweed, tinyNet, genericFishbowl;
 
-    // Items recommended
-    ItemRequirement food;
+	// Items recommended
+	ItemRequirement food;
 
-    Requirement notCatchMackerel, notBuyCandle, notCollectFlax, notPlayOrgan, notPlantJute, notCupTea,
+	Requirement notCatchMackerel, notBuyCandle, notCollectFlax, notPlayOrgan, notPlantJute, notCupTea,
 		notKillEle, notPetFish, notBuyStew, notTalkSherlock, notLogShortcut;
 
-    Requirement eleWorkI;
+	Requirement eleWorkI;
 
-    // quest steps
-    QuestStep buyCandle, collectFlax, playOrgan, plantJute, cupTea, petFish, fillFishbowl,
+	// quest steps
+	QuestStep buyCandle, collectFlax, playOrgan, plantJute, cupTea, petFish, fillFishbowl,
 		buyStew, talkSherlock, logShortcut, claimReward, moveToWorkshop, petFishMix, petFishFish;
 
-    NpcStep catchMackerel, killEle;
+	NpcStep catchMackerel, killEle;
 
-    Zone workshop;
+	Zone workshop;
 
-    ZoneRequirement inWorkshop;
+	ZoneRequirement inWorkshop;
 
-    ConditionalStep catchMackerelTask, buyCandleTask, collectFlaxTask, playOrganTask, plantJuteTask, cupTeaTask,
+	ConditionalStep catchMackerelTask, buyCandleTask, collectFlaxTask, playOrganTask, plantJuteTask, cupTeaTask,
 		killEleTask, petFishTask, buyStewTask, talkSherlockTask, logShortcutTask;
 
-    @Override
-    public QuestStep loadStep()
-    {
-        loadZones();
-        setupRequirements();
-        setupSteps();
+	@Override
+	public QuestStep loadStep()
+	{
+		loadZones();
+		setupRequirements();
+		setupSteps();
 
-        ConditionalStep doEasy = new ConditionalStep(this, claimReward);
+		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
 
 		plantJuteTask = new ConditionalStep(this, plantJute);
 		doEasy.addStep(notPlantJute, plantJuteTask);
 
 		catchMackerelTask = new ConditionalStep(this, catchMackerel);
-        doEasy.addStep(notCatchMackerel, catchMackerelTask);
+		doEasy.addStep(notCatchMackerel, catchMackerelTask);
 
 		petFishTask = new ConditionalStep(this, fillFishbowl);
 		petFishTask.addStep(fishBowl, petFishMix);
-        petFishTask.addStep(fishBowlSeaweed, petFish);
-        petFishTask.addStep(new Conditions(fishBowlSeaweed, tinyNet), petFishFish);
+		petFishTask.addStep(fishBowlSeaweed, petFish);
+		petFishTask.addStep(new Conditions(fishBowlSeaweed, tinyNet), petFishFish);
 		doEasy.addStep(new Conditions(notPetFish), petFishTask);
 
 		buyCandleTask = new ConditionalStep(this, buyCandle);
-        doEasy.addStep(notBuyCandle, buyCandleTask);
+		doEasy.addStep(notBuyCandle, buyCandleTask);
 
 		collectFlaxTask = new ConditionalStep(this, collectFlax);
 		doEasy.addStep(notCollectFlax, collectFlaxTask);
@@ -114,65 +114,65 @@ public class KandarinEasy extends ComplexStateQuestHelper
 
 		killEleTask = new ConditionalStep(this, moveToWorkshop);
 		killEleTask.addStep(inWorkshop, killEle);
-        doEasy.addStep(notKillEle, killEleTask);
+		doEasy.addStep(notKillEle, killEleTask);
 
 		playOrganTask = new ConditionalStep(this, playOrgan);
-        doEasy.addStep(notPlayOrgan, playOrganTask);
+		doEasy.addStep(notPlayOrgan, playOrganTask);
 
 		buyStewTask = new ConditionalStep(this, buyStew);
-        doEasy.addStep(notBuyStew, buyStewTask);
+		doEasy.addStep(notBuyStew, buyStewTask);
 
 		cupTeaTask = new ConditionalStep(this, cupTea);
-        doEasy.addStep(notCupTea, cupTeaTask);
+		doEasy.addStep(notCupTea, cupTeaTask);
 
 		logShortcutTask = new ConditionalStep(this, logShortcut);
-        doEasy.addStep(notLogShortcut, logShortcutTask);
+		doEasy.addStep(notLogShortcut, logShortcutTask);
 
-        return doEasy;
-    }
+		return doEasy;
+	}
 
-    public void setupRequirements()
-    {
-        notCatchMackerel = new VarplayerRequirement(1178, false, 1);
-        notBuyCandle = new VarplayerRequirement(1178, false, 2);
-        notCollectFlax = new VarplayerRequirement(1178, false, 3);
-        notPlayOrgan = new VarplayerRequirement(1178, false, 4);
-        notPlantJute = new VarplayerRequirement(1178, false, 5);
-        notCupTea = new VarplayerRequirement(1178, false, 6);
-        notKillEle = new VarplayerRequirement(1178, false, 7);
-        notPetFish = new VarplayerRequirement(1178, false, 8);
-        notBuyStew = new VarplayerRequirement(1178, false, 9);
-        notTalkSherlock = new VarplayerRequirement(1178, false, 10);
-        notLogShortcut = new VarplayerRequirement(1178, false, 11);
+	public void setupRequirements()
+	{
+		notCatchMackerel = new VarplayerRequirement(1178, false, 1);
+		notBuyCandle = new VarplayerRequirement(1178, false, 2);
+		notCollectFlax = new VarplayerRequirement(1178, false, 3);
+		notPlayOrgan = new VarplayerRequirement(1178, false, 4);
+		notPlantJute = new VarplayerRequirement(1178, false, 5);
+		notCupTea = new VarplayerRequirement(1178, false, 6);
+		notKillEle = new VarplayerRequirement(1178, false, 7);
+		notPetFish = new VarplayerRequirement(1178, false, 8);
+		notBuyStew = new VarplayerRequirement(1178, false, 9);
+		notTalkSherlock = new VarplayerRequirement(1178, false, 10);
+		notLogShortcut = new VarplayerRequirement(1178, false, 11);
 
-        coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR, notPetFish, notBuyCandle, notBuyStew));
-        bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchMackerel);
+		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR, notPetFish, notBuyCandle, notBuyStew));
+		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchMackerel);
 
-        emptyFishbowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL).showConditioned(notPetFish);
-        fishBowl = new ItemRequirement("Filled fishbowl", ItemID.FISHBOWL).showConditioned(notPetFish);
+		emptyFishbowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL).showConditioned(notPetFish);
+		fishBowl = new ItemRequirement("Filled fishbowl", ItemID.FISHBOWL).showConditioned(notPetFish);
 		fishBowlSeaweed = new ItemRequirement("Fishbowl with seaweed", ItemID.FISHBOWL_6669).showConditioned(notPetFish);
 		tinyNet = new ItemRequirement("Tiny fish net", ItemID.TINY_NET).showConditioned(notPetFish);
 		genericFishbowl = new ItemRequirements(LogicType.OR, "Fishbowl", emptyFishbowl, fishBowl, fishBowlSeaweed).showConditioned(notPetFish);
 
-        seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED).showConditioned(notPetFish);
-        juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
-        rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlantJute);
-        seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantJute);
-        batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY).showConditioned(notKillEle);
-        batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
+		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED).showConditioned(notPetFish);
+		juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlantJute);
+		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantJute);
+		batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY).showConditioned(notKillEle);
+		batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
 			"Workshop, then reading the book you get from it");
 
-        combatGear = new ItemRequirement("Combat gear to defeat all types of elementals (level 35)", -1, -1).showConditioned(notKillEle);
-        combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		combatGear = new ItemRequirement("Combat gear to defeat all types of elementals (level 35)", -1, -1).showConditioned(notKillEle);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-        food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 
-        inWorkshop = new ZoneRequirement(workshop);
+		inWorkshop = new ZoneRequirement(workshop);
 
-        setupGenericRequirements();
-    }
+		setupGenericRequirements();
+	}
 
-    public void setupGenericRequirements()
+	public void setupGenericRequirements()
 	{
 		eleWorkI = new Conditions(LogicType.OR,
 			new VarplayerRequirement(299, true, 15),
@@ -181,109 +181,109 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		((Conditions) eleWorkI).setText("Partial completion of Elemental Workshop I");
 	}
 
-    public void loadZones()
-    {
-        workshop = new Zone(new WorldPoint(2682, 9862, 0), new WorldPoint(2747, 9927, 0));
-    }
+	public void loadZones()
+	{
+		workshop = new Zone(new WorldPoint(2682, 9862, 0), new WorldPoint(2747, 9927, 0));
+	}
 
-    public void setupSteps()
-    {
-        catchMackerel = new NpcStep(this, NpcID.FISHING_SPOT_1518, new WorldPoint(2841, 3432, 0),
-                "Fish on Catherby beach at the Big Net fishing spots for a mackerel.", true, bigFishingNet);
-        catchMackerel.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
-        buyCandle = new NpcStep(this, NpcID.CANDLE_MAKER, new WorldPoint(2799, 3439, 0),
-                "Buy a candle from the candle maker in Catherby.", coins.quantity(3));
+	public void setupSteps()
+	{
+		catchMackerel = new NpcStep(this, NpcID.FISHING_SPOT_1518, new WorldPoint(2841, 3432, 0),
+			"Fish on Catherby beach at the Big Net fishing spots for a mackerel.", true, bigFishingNet);
+		catchMackerel.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
+		buyCandle = new NpcStep(this, NpcID.CANDLE_MAKER, new WorldPoint(2799, 3439, 0),
+			"Buy a candle from the candle maker in Catherby.", coins.quantity(3));
 
 		fillFishbowl = new ObjectStep(this, ObjectID.SINK_874, new WorldPoint(2830, 3441, 0),
 			"Fill an empty fish bowl at a sink.", emptyFishbowl.highlighted(), seaweed, coins.quantity(10));
 		fillFishbowl.addIcon(ItemID.EMPTY_FISHBOWL);
-        petFish = new NpcStep(this, NpcID.HARRY, new WorldPoint(2833, 3443, 0),
-                "Speak with Harry in the Catherby Fishing Shop to get a tiny net.", fishBowlSeaweed, coins.quantity(10));
-        petFish.addDialogSteps("Can I get a fish for this bowl?", "I'll take it!");
-        petFishMix = new ItemStep(this, "Put seaweed into the fishbowl.", fishBowl.highlighted(), seaweed.highlighted());
-        petFishFish = new ObjectStep(this, ObjectID.AQUARIUM, new WorldPoint(2831, 3445, 0),
-                "Fish in the aquarium near Harry.", tinyNet);
-        collectFlax = new ObjectStep(this, ObjectID.FLAX, new WorldPoint(2742, 3446, 0),
-                "Pick 5 flax at the flax field west of Catherby.");
-        talkSherlock = new NpcStep(this, NpcID.SHERLOCK, new WorldPoint(2735, 3413, 0),
-                "Speak with Sherlock west of Catherby.");
-        moveToWorkshop = new ObjectStep(this, ObjectID.STAIRCASE_3415, new WorldPoint(2711, 3498, 0),
-                "Enter the Elemental Workshop in Seers' Village.", batteredKey, combatGear, food);
-        killEle = new NpcStep(this, NpcID.FIRE_ELEMENTAL, new WorldPoint(2719, 9889, 0),
-                "Kill one of each of the 4 elementals.", combatGear, food);
-        killEle.addAlternateNpcs(NpcID.WATER_ELEMENTAL, NpcID.AIR_ELEMENTAL, NpcID.EARTH_ELEMENTAL);
-        buyStew = new NpcStep(this, NpcID.BARTENDER_1318, new WorldPoint(2691, 3494, 0),
-                "Talk with the bartender in Seers' Village and buy a stew.", coins.quantity(20));
-        buyStew.addDialogSteps("What do you have?", "Could I have some stew please?");
-        playOrgan = new ObjectStep(this, ObjectID.CHURCH_ORGAN_25818, new WorldPoint(2692, 3463, 0),
-                "Play the organ in Seers' Village Church.");
-        plantJute = new ObjectStep(this, NullObjectID.NULL_8176, new WorldPoint(2669, 3523, 0),
-                "Plant 3 jute seeds in the hops patch north west of Seers' Village.", juteSeed.quantity(3),
+		petFish = new NpcStep(this, NpcID.HARRY, new WorldPoint(2833, 3443, 0),
+			"Speak with Harry in the Catherby Fishing Shop to get a tiny net.", fishBowlSeaweed, coins.quantity(10));
+		petFish.addDialogSteps("Can I get a fish for this bowl?", "I'll take it!");
+		petFishMix = new ItemStep(this, "Put seaweed into the fishbowl.", fishBowl.highlighted(), seaweed.highlighted());
+		petFishFish = new ObjectStep(this, ObjectID.AQUARIUM, new WorldPoint(2831, 3445, 0),
+			"Fish in the aquarium near Harry.", tinyNet);
+		collectFlax = new ObjectStep(this, ObjectID.FLAX, new WorldPoint(2742, 3446, 0),
+			"Pick 5 flax at the flax field west of Catherby.");
+		talkSherlock = new NpcStep(this, NpcID.SHERLOCK, new WorldPoint(2735, 3413, 0),
+			"Speak with Sherlock west of Catherby.");
+		moveToWorkshop = new ObjectStep(this, ObjectID.STAIRCASE_3415, new WorldPoint(2711, 3498, 0),
+			"Enter the Elemental Workshop in Seers' Village.", batteredKey, combatGear, food);
+		killEle = new NpcStep(this, NpcID.FIRE_ELEMENTAL, new WorldPoint(2719, 9889, 0),
+			"Kill one of each of the 4 elementals.", combatGear, food);
+		killEle.addAlternateNpcs(NpcID.WATER_ELEMENTAL, NpcID.AIR_ELEMENTAL, NpcID.EARTH_ELEMENTAL);
+		buyStew = new NpcStep(this, NpcID.BARTENDER_1318, new WorldPoint(2691, 3494, 0),
+			"Talk with the bartender in Seers' Village and buy a stew.", coins.quantity(20));
+		buyStew.addDialogSteps("What do you have?", "Could I have some stew please?");
+		playOrgan = new ObjectStep(this, ObjectID.CHURCH_ORGAN_25818, new WorldPoint(2692, 3463, 0),
+			"Play the organ in Seers' Village Church.");
+		plantJute = new ObjectStep(this, NullObjectID.NULL_8176, new WorldPoint(2669, 3523, 0),
+			"Plant 3 jute seeds in the hops patch north west of Seers' Village.", juteSeed.quantity(3),
 			seedDibber, rake);
-        plantJute.addIcon(ItemID.JUTE_SEED);
-        cupTea = new NpcStep(this, NpcID.GALAHAD, new WorldPoint(2612, 3474, 0),
-                "Talk with Galahad west of McGrubor's Wood until he gives you some tea.");
-        cupTea.addDialogStep("Do you get lonely here on your own?");
-        logShortcut = new ObjectStep(this, ObjectID.LOG_BALANCE_23274, new WorldPoint(2602, 3477, 0),
-                "Cross the log shortcut near to Galahad.");
+		plantJute.addIcon(ItemID.JUTE_SEED);
+		cupTea = new NpcStep(this, NpcID.GALAHAD, new WorldPoint(2612, 3474, 0),
+			"Talk with Galahad west of McGrubor's Wood until he gives you some tea.");
+		cupTea.addDialogStep("Do you get lonely here on your own?");
+		logShortcut = new ObjectStep(this, ObjectID.LOG_BALANCE_23274, new WorldPoint(2602, 3477, 0),
+			"Cross the log shortcut near to Galahad.");
 
-        claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
-                "Talk to the 'Wedge' in front of Camelot Castle to claim your reward!");
-        claimReward.addDialogStep("I have a question about my Achievement Diary.");
-    }
+		claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
+			"Talk to the 'Wedge' in front of Camelot Castle to claim your reward!");
+		claimReward.addDialogStep("I have a question about my Achievement Diary.");
+	}
 
-    @Override
-    public List<ItemRequirement> getItemRequirements()
-    {
-        return Arrays.asList(coins.quantity(33), bigFishingNet, juteSeed.quantity(3),
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return Arrays.asList(coins.quantity(33), bigFishingNet, juteSeed.quantity(3),
 			seedDibber, rake, batteredKey, genericFishbowl, seaweed, combatGear);
-    }
+	}
 
-    @Override
-    public List<ItemRequirement> getItemRecommended()
-    {
-        return Collections.singletonList(food);
-    }
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Collections.singletonList(food);
+	}
 
-    @Override
-    public List<String> getCombatRequirements()
-    {
-        return Collections.singletonList("4 level 35 elementals");
-    }
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Collections.singletonList("4 level 35 elementals");
+	}
 
-    @Override
-    public List<Requirement> getGeneralRequirements()
-    {
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
 		setupGenericRequirements();
-        ArrayList<Requirement> req = new ArrayList<>();
-        req.add(new SkillRequirement(Skill.AGILITY, 20, true));
-        req.add(new SkillRequirement(Skill.FARMING, 13, true));
-        req.add(new SkillRequirement(Skill.FISHING, 16, true));
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(new SkillRequirement(Skill.AGILITY, 20, true));
+		req.add(new SkillRequirement(Skill.FARMING, 13, true));
+		req.add(new SkillRequirement(Skill.FISHING, 16, true));
 
 		req.add(eleWorkI);
 
-        return req;
-    }
+		return req;
+	}
 
-    @Override
-    public List<ItemReward> getItemRewards()
-    {
-        return Arrays.asList(
-                new ItemReward("Kandarin headgear (1)", ItemID.KANDARIN_HEADGEAR_1, 1),
-                new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
-    }
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Kandarin headgear (1)", ItemID.KANDARIN_HEADGEAR_1, 1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+	}
 
-    @Override
-    public List<UnlockReward> getUnlockRewards()
-    {
-        return Arrays.asList(
-                new UnlockReward("Coal trucks can hold up to 140 coal."),
-                new UnlockReward("The Flax keeper will exchange 30 noted flax for 30 noted bow strings daily"),
-                new UnlockReward("5% more marks of grace on Seers' Village Rooftop Course"));
-    }
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Coal trucks can hold up to 140 coal."),
+			new UnlockReward("The Flax keeper will exchange 30 noted flax for 30 noted bow strings daily"),
+			new UnlockReward("5% more marks of grace on Seers' Village Rooftop Course"));
+	}
 
-    @Override
-    public List<PanelDetails> getPanels()
+	@Override
+	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

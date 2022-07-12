@@ -211,7 +211,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		shayzienFavour = new FavourRequirement(Favour.SHAYZIEN, 100);
 		hosidiusFavour75 = new FavourRequirement(Favour.HOSIDIUS, 100);
 		hosidiusFavour100 = new FavourRequirement(Favour.HOSIDIUS, 100);
-		lovakengjFavour = new FavourRequirement(Favour.LOVAKENGJ,30);
+		lovakengjFavour = new FavourRequirement(Favour.LOVAKENGJ, 30);
 		piscariliusFavour = new FavourRequirement(Favour.PISCARILIUS, 75);
 
 		// Zone requirements

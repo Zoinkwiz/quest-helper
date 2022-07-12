@@ -302,19 +302,19 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Fremennik Sea Boots (3)", ItemID.FREMENNIK_SEA_BOOTS_3, 1),
-				new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Fremennik Sea Boots (3)", ItemID.FREMENNIK_SEA_BOOTS_3, 1),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Ability to change enchanted lyre teleport desination to Waterbirth Island."),
-				new UnlockReward("Aviansies in the God Wars Dungeon will drop noted adamantite bars."),
-				new UnlockReward("Shortcut to roof on the Troll Stronghold"),
-				new UnlockReward("Stony Basalt teleport destination can be changed to the roof of Troll Stronghold"),
-				new UnlockReward("Access to 2 new Lunar Spells, Charge Dragonstone and Tan Leather"));
+			new UnlockReward("Ability to change enchanted lyre teleport desination to Waterbirth Island."),
+			new UnlockReward("Aviansies in the God Wars Dungeon will drop noted adamantite bars."),
+			new UnlockReward("Shortcut to roof on the Troll Stronghold"),
+			new UnlockReward("Stony Basalt teleport destination can be changed to the roof of Troll Stronghold"),
+			new UnlockReward("Access to 2 new Lunar Spells, Charge Dragonstone and Tan Leather"));
 	}
 
 	@Override

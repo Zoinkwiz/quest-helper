@@ -72,7 +72,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		bucketOfSlime, wolfbane, bones, pot, bucket, haySack, emptySack, bronzeSpear, watermelon, sack, scarecrowStep2;
 
 	// Items recommended
-	ItemRequirement food, earProtection, ectoToken, ghostSpeak;
+	ItemRequirement food, earProtection, ectoToken, ghostSpeak, rake;
 
 	ItemRequirements scarecrowItems;
 
@@ -172,6 +172,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
 		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR);
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlaceScarecrow);
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK);
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
 		scarecrowItems = new ItemRequirements(LogicType.OR, "1 x Scarecrow", scarecrow, new ItemRequirements(sack,
@@ -270,7 +271,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(combatGear, chisel, snailShell, thinSnail, tannableHide, coins.quantity(45), scarecrowItems,
-			bonemeal, bucketOfSlime, wolfbane, bones, pot, bucket, earProtection);
+			rake, bonemeal, bucketOfSlime, wolfbane, bones, pot, bucket, earProtection);
 	}
 
 	@Override
@@ -373,7 +374,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		allSteps.add(mazchnaSteps);
 
 		PanelDetails placeScarecrowSteps = new PanelDetails("Place Scarecrow", Arrays.asList(fillSack, useSackOnSpear,
-			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23), scarecrowItems);
+			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23), scarecrowItems, rake);
 		placeScarecrowSteps.setDisplayCondition(notPlaceScarecrow);
 		placeScarecrowSteps.setLockingStep(placeScarecrowTask);
 		allSteps.add(placeScarecrowSteps);

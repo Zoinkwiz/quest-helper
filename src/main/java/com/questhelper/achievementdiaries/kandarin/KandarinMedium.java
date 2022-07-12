@@ -55,7 +55,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.KANDARIN_MEDIUM
+	quest = QuestHelperQuest.KANDARIN_MEDIUM
 )
 
 public class KandarinMedium extends ComplexStateQuestHelper
@@ -356,18 +356,18 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Kandarin headgear (2)", ItemID.KANDARIN_HEADGEAR_2, 1),
-				new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Kandarin headgear (2)", ItemID.KANDARIN_HEADGEAR_2, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Coal trucks can hold up to 280 coal."),
-				new UnlockReward("The Flax keeper will exchange 60 noted flax for 60 noted bow strings daily"),
-				new UnlockReward("10% more marks of grace on Seers' Village Rooftop Course"),
-				new UnlockReward("5% increased chance to save a harvest life from the Catherby herb patch"));
+			new UnlockReward("Coal trucks can hold up to 280 coal."),
+			new UnlockReward("The Flax keeper will exchange 60 noted flax for 60 noted bow strings daily"),
+			new UnlockReward("10% more marks of grace on Seers' Village Rooftop Course"),
+			new UnlockReward("5% increased chance to save a harvest life from the Catherby herb patch"));
 	}
 
 	@Override

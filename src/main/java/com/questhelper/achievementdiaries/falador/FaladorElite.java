@@ -264,17 +264,17 @@ public class FaladorElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Falador Shield (4)", ItemID.FALADOR_SHIELD_4, 1),
-				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Falador Shield (4)", ItemID.FALADOR_SHIELD_4, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Tree patch in Falador is now disease free."),
-				new UnlockReward("Increased chance at higher level ores when clearing pay-dirt in the Motherlode Mine."),
-				new UnlockReward("Access to the alternative Amethyst mining spot."));
+			new UnlockReward("Tree patch in Falador is now disease free."),
+			new UnlockReward("Increased chance at higher level ores when clearing pay-dirt in the Motherlode Mine."),
+			new UnlockReward("Access to the alternative Amethyst mining spot."));
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 		allSteps.add(magicRootsSteps);
 
 		PanelDetails airRunesSteps = new PanelDetails("One with the wind..", Arrays.asList(enterAirAltar,
-			craftAirRunes),	new SkillRequirement(Skill.RUNECRAFT, 88, true), airTiara, pureEss28);
+			craftAirRunes), new SkillRequirement(Skill.RUNECRAFT, 88, true), airTiara, pureEss28);
 		airRunesSteps.setDisplayCondition(notCraftedAirRunes);
 		airRunesSteps.setLockingStep(craftedAirRunesTask);
 		allSteps.add(airRunesSteps);
@@ -314,7 +314,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 		allSteps.add(saraBrewSteps);
 
 		PanelDetails swordSteps = new PanelDetails("*Tips Fedora*", Arrays.asList(goUpFaladorCastle1,
-			goUpFaladorCastle2,	purchaseWhite2hSword), wanted, coins1920);
+			goUpFaladorCastle2, purchaseWhite2hSword), wanted, coins1920);
 		swordSteps.setDisplayCondition(notPurchasedWhite2hSword);
 		swordSteps.setLockingStep(purchasedWhite2hSwordTask);
 		allSteps.add(swordSteps);

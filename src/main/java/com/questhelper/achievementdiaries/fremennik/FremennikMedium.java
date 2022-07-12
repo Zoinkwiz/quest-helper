@@ -433,16 +433,16 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Fremennik Sea Boots (2)", ItemID.FREMENNIK_SEA_BOOTS_2, 1),
-				new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Fremennik Sea Boots (2)", ItemID.FREMENNIK_SEA_BOOTS_2, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Shortcut jump between Miscellania dock and Etceteria."),
-				new UnlockReward("Improved rate of gaining approval on Miscellania."));
+			new UnlockReward("Shortcut jump between Miscellania dock and Etceteria."),
+			new UnlockReward("Improved rate of gaining approval on Miscellania."));
 	}
 
 	@Override

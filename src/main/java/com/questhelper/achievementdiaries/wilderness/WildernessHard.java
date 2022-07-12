@@ -181,8 +181,8 @@ public class WildernessHard extends ComplexStateQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
 
-		enterGodwars = new ComplexRequirement(LogicType.OR,"60 Agility or Strength",
-			new SkillRequirement(Skill.AGILITY,	60), new SkillRequirement(Skill.STRENGTH, 60));
+		enterGodwars = new ComplexRequirement(LogicType.OR, "60 Agility or Strength",
+			new SkillRequirement(Skill.AGILITY, 60), new SkillRequirement(Skill.STRENGTH, 60));
 
 		inEdge = new ZoneRequirement(edge);
 		inAir = new ZoneRequirement(air);

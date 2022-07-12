@@ -114,7 +114,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		doElite.addStep(notRuneDart, runeDartTask);
 
 		plankMakeTask = new ConditionalStep(this, moveToLumb);
-		plankMakeTask.addStep(inLumb,plankMake);
+		plankMakeTask.addStep(inLumb, plankMake);
 		doElite.addStep(notPlankMake, plankMakeTask);
 
 		earthRuneTask = new ConditionalStep(this, moveToEarthRune);
@@ -246,19 +246,19 @@ public class VarrockElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Varrock Armor (4)", ItemID.VARROCK_ARMOUR_4, 1),
-				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Varrock Armor (4)", ItemID.VARROCK_ARMOUR_4, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("10% Chance to mine 2 ores at once, up to and including Amethyst"),
-				new UnlockReward("10% Chance of smelting 2 bars at once when using the Edgeville furnace"),
-				new UnlockReward("Zaff will sell 120 Battlestaves per day for 7,000 Coins each"),
-				new UnlockReward("The Skull sceptre will now hold 26 charges"),
-				new UnlockReward("Acts as a prospector jacket for experience bonus and clues"));
+			new UnlockReward("10% Chance to mine 2 ores at once, up to and including Amethyst"),
+			new UnlockReward("10% Chance of smelting 2 bars at once when using the Edgeville furnace"),
+			new UnlockReward("Zaff will sell 120 Battlestaves per day for 7,000 Coins each"),
+			new UnlockReward("The Skull sceptre will now hold 26 charges"),
+			new UnlockReward("Acts as a prospector jacket for experience bonus and clues"));
 	}
 
 	@Override

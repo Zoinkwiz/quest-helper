@@ -267,7 +267,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Arrays.asList("Terror bird (lvl 28)",  "Complete a Novice Pest Control game");
+		return Arrays.asList("Terror bird (lvl 28)", "Complete a Novice Pest Control game");
 	}
 
 	@Override

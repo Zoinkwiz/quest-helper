@@ -348,17 +348,17 @@ public class FaladorHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Falador Shield (3)", ItemID.FALADOR_SHIELD_3, 1),
-				new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Falador Shield (3)", ItemID.FALADOR_SHIELD_3, 1),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Access to the bank in the Crafting Guild"),
-				new UnlockReward("Giant Moles primary drops are now noted"),
-				new UnlockReward("Access to shortcut to Fountain of Heroes"));
+			new UnlockReward("Access to the bank in the Crafting Guild"),
+			new UnlockReward("Giant Moles primary drops are now noted"),
+			new UnlockReward("Access to shortcut to Fountain of Heroes"));
 	}
 
 	@Override

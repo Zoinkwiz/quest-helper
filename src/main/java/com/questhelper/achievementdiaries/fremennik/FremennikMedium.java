@@ -99,6 +99,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 
 	Requirement protectMelee, protectMissiles, protectMagic, specialAttackEnabled;
 
+	ConditionalStep slayBrineRatTask, snowyHunterTask, mineCoalTask, stealFishTask, travelMiscTask, snowyKnightTask,
+		petRockPOHTask, lighthouseTask, mineGoldTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -108,46 +110,63 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
-		doMedium.addStep(new Conditions(notSlayBrineRat, inBrineRatCave), slayBrineRat);
+		slayBrineRatTask = new ConditionalStep(this, moveToCave);
+		slayBrineRatTask.addStep(inBrineRatCave, slayBrineRat);
+		doMedium.addStep(notSlayBrineRat, slayBrineRatTask);
 		doMedium.addStep(inBrineRatCave, rollBoulderExit);
-		doMedium.addStep(notSlayBrineRat, enterBrineCave);
-		doMedium.addStep(notTravelMisc, travelMisc);
+
+		travelMiscTask = new ConditionalStep(this, travelMisc);
+		doMedium.addStep(notTravelMisc, travelMiscTask);
+
+
 		doMedium.addStep(inIceCave, exitIceCave);
 		doMedium.addStep(new Conditions(notSnowyHunter, inEagleArea), snowyHunter);
 		doMedium.addStep(notSnowyHunter, enterEaglesPeak);
-		doMedium.addStep(new Conditions(notSnowyKnight, inHunterArea0), snowyKnight0);
-		doMedium.addStep(new Conditions(notSnowyKnight, inHunterArea1), snowyKnight1);
-		doMedium.addStep(notSnowyKnight, snowyKnight0);
-		doMedium.addStep(notStealFish, stealFish);
-		doMedium.addStep(notMineCoal, mineCoal);
-		doMedium.addStep(new Conditions(notMineGold, inArzinianMine), mineGold);
-		doMedium.addStep(new Conditions(notMineGold, inCannonArea), moveToArzinian);
-		doMedium.addStep(new Conditions(notMineGold, inRiverArea), moveToCannon);
-		doMedium.addStep(new Conditions(notMineGold, inCaveArea), moveToRiver);
-		doMedium.addStep(notMineGold, moveToCave);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave15), lighthouse);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave14), moveToDagCave15);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave13), moveToDagCave14);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave12), moveToDagCave13);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave11), moveToDagCave12);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave10), moveToDagCave11);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave9), moveToDagCave10);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave8), moveToDagCave9);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave7), moveToDagCave8);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave6), moveToDagCave7);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave5), moveToDagCave6);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave4), moveToDagCave5);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave3), moveToDagCave4);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave2), moveToDagCave3);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave1), moveToDagCave2);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave_4), moveToDagCave1);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3, specialAttackEnabled), throwAxe);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave_3), activateSpecial);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave_2), moveToAxeSpot);
-		doMedium.addStep(new Conditions(notLighthouse, inDagCave), dropPetRock);
-		doMedium.addStep(new Conditions(notLighthouse, inWaterbirthIsland), moveToDagCave);
-		doMedium.addStep(notLighthouse, moveToWaterbirth);
-		doMedium.addStep(notPetRockPOH, petRockPOH);
+
+		snowyHunterTask = new ConditionalStep(this, snowyKnight0);
+		snowyHunterTask.addStep(inHunterArea1, snowyKnight1);
+		snowyHunterTask.addStep(inHunterArea0, snowyKnight0);
+		doMedium.addStep(notSnowyKnight, snowyHunterTask);
+
+		stealFishTask = new ConditionalStep(this, stealFish);
+		doMedium.addStep(notStealFish, stealFishTask);
+
+		mineCoalTask = new ConditionalStep(this, mineCoal);
+		doMedium.addStep(notMineCoal, mineCoalTask);
+
+		mineCoalTask = new ConditionalStep(this, moveToCave);
+		mineCoalTask.addStep(inCaveArea, moveToRiver);
+		mineCoalTask.addStep(inRiverArea, moveToCannon);
+		mineCoalTask.addStep(inCannonArea, moveToArzinian);
+		mineCoalTask.addStep(inArzinianMine, mineGold);
+		doMedium.addStep(notMineGold, mineCoalTask);
+
+		lighthouseTask = new ConditionalStep(this, moveToWaterbirth);
+		lighthouseTask.addStep(inWaterbirthIsland, moveToDagCave);
+		lighthouseTask.addStep(inDagCave, dropPetRock);
+		lighthouseTask.addStep(inDagCave_2, moveToAxeSpot);
+		lighthouseTask.addStep(inDagCave_3, activateSpecial);
+		lighthouseTask.addStep(new Conditions(inDagCave_3, specialAttackEnabled), throwAxe);
+		lighthouseTask.addStep(inDagCave_4, moveToDagCave1);
+		lighthouseTask.addStep(inDagCave1, moveToDagCave2);
+		lighthouseTask.addStep(inDagCave2, moveToDagCave3);
+		lighthouseTask.addStep(inDagCave3, moveToDagCave4);
+		lighthouseTask.addStep(inDagCave4, moveToDagCave5);
+		lighthouseTask.addStep(inDagCave5, moveToDagCave6);
+		lighthouseTask.addStep(inDagCave6, moveToDagCave7);
+		lighthouseTask.addStep(inDagCave7, moveToDagCave8);
+		lighthouseTask.addStep(inDagCave8, moveToDagCave9);
+		lighthouseTask.addStep(inDagCave9, moveToDagCave10);
+		lighthouseTask.addStep(inDagCave10, moveToDagCave11);
+		lighthouseTask.addStep(inDagCave11, moveToDagCave12);
+		lighthouseTask.addStep(inDagCave12, moveToDagCave13);
+		lighthouseTask.addStep(inDagCave13, moveToDagCave14);
+		lighthouseTask.addStep(inDagCave14, moveToDagCave15);
+		lighthouseTask.addStep(inDagCave15, lighthouse);
+		doMedium.addStep(notLighthouse, lighthouseTask);
+
+		petRockPOHTask = new ConditionalStep(this, petRockPOH);
+		doMedium.addStep(notPetRockPOH, petRockPOHTask);
 
 
 		return doMedium;
@@ -171,11 +190,13 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		coinsForFerry = new ItemRequirement("Coins", ItemCollections.getCoins());
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSnowyHunter);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notSlayBrineRat);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR, notMineGold, notMineCoal));
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(
+			new Conditions(LogicType.OR, notMineGold, notMineCoal));
 		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff()).showConditioned(notTravelMisc);
 		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight);
 		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight);
-		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).showConditioned(notPetRockPOH);
+		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).showConditioned(new Conditions(LogicType.OR,
+			notPetRockPOH, notLighthouse));
 		petRock.setTooltip("Obtained from Askeladden in Rellekka");
 		goldHelm = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET).showConditioned(notMineGold);
 		oakPlanks = new ItemRequirement("Oak planks", ItemID.OAK_PLANK).showConditioned(notPetRockPOH);
@@ -183,7 +204,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notPetRockPOH);
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE).showConditioned(notLighthouse);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notSlayBrineRat);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(new Conditions(LogicType.OR,
+			notSlayBrineRat, notLighthouse));
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
@@ -431,37 +453,44 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		PanelDetails brineRatSteps = new PanelDetails("Brine Rat Slayer", Arrays.asList(enterBrineCave, slayBrineRat,
 			rollBoulderExit), olafsQuest, new SkillRequirement(Skill.SLAYER, 47, true), spade, combatGear);
 		brineRatSteps.setDisplayCondition(notSlayBrineRat);
+		brineRatSteps.setLockingStep(slayBrineRatTask);
 		allSteps.add(brineRatSteps);
 
 		PanelDetails miscellaniaSteps = new PanelDetails("Travel to Miscellania", Collections.singletonList(travelMisc),
 			fairyTaleII, fremennikTrials, staff);
 		miscellaniaSteps.setDisplayCondition(notTravelMisc);
+		miscellaniaSteps.setLockingStep(travelMiscTask);
 		allSteps.add(miscellaniaSteps);
 
 		PanelDetails snowyHunterSteps = new PanelDetails("Travel by Eagle", Arrays.asList(enterEaglesPeak, snowyHunter),
 			eaglesPeak, rope);
 		snowyHunterSteps.setDisplayCondition(notSnowyHunter);
+		snowyHunterSteps.setLockingStep(snowyHunterTask);
 		allSteps.add(snowyHunterSteps);
 
 		PanelDetails snowyKnightSteps = new PanelDetails("Catch Snowy Knight", Collections.singletonList(snowyKnight0),
 			new SkillRequirement(Skill.HUNTER, 35, true), butterFlyNet, butterFlyJar);
 		snowyKnightSteps.setDisplayCondition(notSnowyKnight);
+		snowyKnightSteps.setLockingStep(snowyKnightTask);
 		allSteps.add(snowyKnightSteps);
 
 		PanelDetails mineGoldSteps = new PanelDetails("Mine Gold", Arrays.asList(moveToCave, moveToRiver, moveToCannon,
 			moveToArzinian, mineGold), betweenARock, new SkillRequirement(Skill.MINING, 40), pickaxe, goldHelm,
 			coins.quantity(2));
 		mineGoldSteps.setDisplayCondition(notMineGold);
+		mineGoldSteps.setLockingStep(mineGoldTask);
 		allSteps.add(mineGoldSteps);
 
 		PanelDetails mineCoalSteps = new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
 			fremennikTrials, new SkillRequirement(Skill.MINING, 30), pickaxe);
 		mineCoalSteps.setDisplayCondition(notMineCoal);
+		mineCoalSteps.setLockingStep(mineCoalTask);
 		allSteps.add(mineCoalSteps);
 
 		PanelDetails stealFishSteps = new PanelDetails("Steal Fish", Collections.singletonList(stealFish),
 			fremennikTrials, new SkillRequirement(Skill.THIEVING, 42, true));
 		stealFishSteps.setDisplayCondition(notStealFish);
+		stealFishSteps.setLockingStep(stealFishTask);
 		allSteps.add(stealFishSteps);
 
 		PanelDetails lighthouseSteps = new PanelDetails("Waterbirth to Lighthouse", Arrays.asList(moveToWaterbirth,
@@ -470,12 +499,14 @@ public class FremennikMedium extends ComplexStateQuestHelper
 			moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagCave13, moveToDagCave14, moveToDagCave15,
 			lighthouse), horrorFromTheDeep, fremennikTrials, petRock, combatGear, thrownaxe, food, stamPot, prayerPot);
 		lighthouseSteps.setDisplayCondition(notLighthouse);
+		lighthouseSteps.setLockingStep(lighthouseTask);
 		allSteps.add(lighthouseSteps);
 
 		PanelDetails petRockSteps = new PanelDetails("Pet Rock", Collections.singletonList(petRockPOH),
 			fremennikTrials, new SkillRequirement(Skill.CONSTRUCTION, 37, true), coins.quantity(30000),
 			petRock, saw, hammer, oakPlanks.quantity(4));
 		petRockSteps.setDisplayCondition(notPetRockPOH);
+		petRockSteps.setLockingStep(petRockPOHTask);
 		allSteps.add(petRockSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

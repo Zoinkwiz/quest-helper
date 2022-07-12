@@ -73,13 +73,16 @@ public class FremennikEasy extends ComplexStateQuestHelper
 
 	ObjectStep fillBucket, chopOak, mineSilver, smeltSilver, craftTiara;
 
-	QuestStep catchCerulean, changeBoots, browseStonemason,
-		collectSnapeGrass, stealStall, enterTrollStronghold, goneToWaterbirth, goneToKeldagrim, goneToCave,
-		goneToRiver, goneToVarrock, claimReward, burnOak;
+	QuestStep catchCerulean, changeBoots, browseStonemason, collectSnapeGrass, stealStall, enterTrollStronghold,
+		goneToWaterbirth, claimReward, burnOak, goneToKeldagrimStone, goneToCaveStone, goneToRiverStone,
+		goneToVarrockStone, goneToKeldagrimStall, goneToCaveStall, goneToRiverStall, goneToVarrockStall;
 
 	Zone waterbirth, keldagrim, hunterArea, caveArea, riverArea, varrockArea, mine;
 
 	ZoneRequirement inWaterbirth, inKeldagrim, inHunterArea, inCaveArea, inRiverArea, inVarrockArea, inMine;
+
+	ConditionalStep catchCeruleanTask, changeBootsTask, killedCrabsTask, craftTiaraTask, browseStonemasonTask,
+		collectSnapeGrassTask, stealStallTask, fillBucketTask, enterTrollStrongholdTask, chopAndBurnOakTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -89,29 +92,49 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		doEasy.addStep(new Conditions(notCatchCerulean, inHunterArea), catchCerulean);
-		doEasy.addStep(notCatchCerulean, catchCerulean);
-		doEasy.addStep(notKilledCrabs, killedCrabs);
-		doEasy.addStep(new Conditions(notChopAndBurnOak, oakLogs, choppedLogs), burnOak);
-		doEasy.addStep(notChopAndBurnOak, chopOak);
-		doEasy.addStep(notFillBucket, fillBucket);
-		doEasy.addStep(notChangeBoots, changeBoots);
-		doEasy.addStep(new Conditions(notCraftTiara, silverBar), craftTiara);
-		doEasy.addStep(new Conditions(notCraftTiara, silverOre, minedSilver), smeltSilver);
-		doEasy.addStep(new Conditions(notCraftTiara, pickaxe), mineSilver);
-		doEasy.addStep(new Conditions(notCollectSnapeGrass, inWaterbirth), collectSnapeGrass);
-		doEasy.addStep(notCollectSnapeGrass, goneToWaterbirth);
-		doEasy.addStep(notEnterTrollStronghold, enterTrollStronghold);
-		doEasy.addStep(new Conditions(notStealStall, inKeldagrim), stealStall);
-		doEasy.addStep(new Conditions(notStealStall, inRiverArea), goneToRiver);
-		doEasy.addStep(new Conditions(notStealStall, inCaveArea), goneToCave);
-		doEasy.addStep(new Conditions(notStealStall, inVarrockArea), goneToVarrock);
-		doEasy.addStep(notStealStall, goneToKeldagrim);
-		doEasy.addStep(new Conditions(notBrowseStonemason, inKeldagrim), browseStonemason);
-		doEasy.addStep(new Conditions(notBrowseStonemason, inCaveArea), goneToCave);
-		doEasy.addStep(new Conditions(notBrowseStonemason, inRiverArea), goneToRiver);
-		doEasy.addStep(new Conditions(notBrowseStonemason, inVarrockArea), goneToVarrock);
-		doEasy.addStep(notBrowseStonemason, goneToKeldagrim);
+
+		catchCeruleanTask = new ConditionalStep(this, catchCerulean);
+		catchCeruleanTask.addStep(inHunterArea, catchCerulean);
+		doEasy.addStep(notCatchCerulean, catchCeruleanTask);
+
+		killedCrabsTask = new ConditionalStep(this, killedCrabs);
+		doEasy.addStep(notKilledCrabs, killedCrabsTask);
+
+		chopAndBurnOakTask = new ConditionalStep(this, chopOak);
+		chopAndBurnOakTask.addStep(new Conditions(oakLogs, choppedLogs), burnOak);
+		doEasy.addStep(notChopAndBurnOak, chopAndBurnOakTask);
+
+		fillBucketTask = new ConditionalStep(this, fillBucket);
+		doEasy.addStep(notFillBucket, fillBucketTask);
+
+		changeBootsTask = new ConditionalStep(this, changeBoots);
+		doEasy.addStep(notChangeBoots, changeBootsTask);
+
+		craftTiaraTask = new ConditionalStep(this, mineSilver);
+		craftTiaraTask.addStep(new Conditions(silverOre, minedSilver), smeltSilver);
+		craftTiaraTask.addStep(silverBar, craftTiara);
+		doEasy.addStep(notCraftTiara, craftTiaraTask);
+
+		collectSnapeGrassTask = new ConditionalStep(this, goneToWaterbirth);
+		collectSnapeGrassTask.addStep(inWaterbirth, collectSnapeGrass);
+		doEasy.addStep(notCollectSnapeGrass, collectSnapeGrassTask);
+
+		enterTrollStrongholdTask = new ConditionalStep(this, enterTrollStronghold);
+		doEasy.addStep(notEnterTrollStronghold, enterTrollStrongholdTask);
+
+		browseStonemasonTask = new ConditionalStep(this, goneToKeldagrimStone);
+		browseStonemasonTask.addStep(inVarrockArea, goneToVarrockStone);
+		browseStonemasonTask.addStep(inRiverArea, goneToRiverStone);
+		browseStonemasonTask.addStep(inCaveArea, goneToCaveStone);
+		browseStonemasonTask.addStep(inKeldagrim, browseStonemason);
+		doEasy.addStep(notBrowseStonemason, browseStonemasonTask);
+
+		stealStallTask = new ConditionalStep(this, goneToKeldagrimStall);
+		stealStallTask.addStep(inVarrockArea, goneToVarrockStall);
+		stealStallTask.addStep(inCaveArea, goneToCaveStall);
+		stealStallTask.addStep(inRiverArea, goneToRiverStall);
+		stealStallTask.addStep(inKeldagrim, stealStall);
+		doEasy.addStep(notStealStall, stealStallTask);
 
 		return doEasy;
 	}
@@ -223,19 +246,28 @@ public class FremennikEasy extends ComplexStateQuestHelper
 			"Collect 5 snape grass on Waterbirth Island. Speak with Jarvald to return to Rellekka when complete.", snapeGrass.highlighted().quantity(5));
 		enterTrollStronghold = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0),
 			"Enter the Troll Stronghold.");
-		goneToKeldagrim = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+		goneToKeldagrimStone = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
 			"Enter the tunnel that leads to Keldagrim. Alternatively Teleport to Varrock and take a minecart near the Grand Exchange.");
-		goneToCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+		goneToCaveStone = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
 			"Go through the cave entrance.");
-		goneToRiver = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+		goneToRiverStone = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
 			"Speak with the Dwarven Boatman to go to Keldagrim.");
-		goneToRiver.addDialogStep("Yes, please take me.");
+		goneToRiverStone.addDialogStep("Yes, please take me.");
+		goneToVarrockStone = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+			"Enter the trapdoor near the Grand Exchange.");
+		goneToKeldagrimStall = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+			"Enter the tunnel that leads to Keldagrim. Alternatively Teleport to Varrock and take a minecart near the Grand Exchange.");
+		goneToCaveStall = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+			"Go through the cave entrance.");
+		goneToRiverStall = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+			"Speak with the Dwarven Boatman to go to Keldagrim.");
+		goneToRiverStall.addDialogStep("Yes, please take me.");
+		goneToVarrockStall = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+			"Enter the trapdoor near the Grand Exchange.");
 		stealStall = new ObjectStep(this, ObjectID.BAKERY_STALL_6163, new WorldPoint(2892, 10211, 0),
 			"Steal from the bakery stall.");
 		browseStonemason = new NpcStep(this, NpcID.STONEMASON, new WorldPoint(2848, 10185, 0),
 			"Browse the Stonemason's Shop.");
-		goneToVarrock = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
-			"Enter the trapdoor near the Grand Exchange.");
 
 		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
 			"Talk to Thorodin south of Rellekka to claim your reward!");
@@ -304,52 +336,62 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		PanelDetails ceruleanTwitchSteps = new PanelDetails("Catch a Cerulean Twitch", Collections.singletonList(catchCerulean),
 			birdSnare);
 		ceruleanTwitchSteps.setDisplayCondition(notCatchCerulean);
+		ceruleanTwitchSteps.setLockingStep(catchCeruleanTask);
 		allSteps.add(ceruleanTwitchSteps);
 
 		PanelDetails rockCrabSteps = new PanelDetails("Kill 5 Rock Crabs", Collections.singletonList(killedCrabs),
 			combatGear, food);
 		rockCrabSteps.setDisplayCondition(notKilledCrabs);
+		rockCrabSteps.setLockingStep(killedCrabsTask);
 		allSteps.add(rockCrabSteps);
 
 		PanelDetails oakSteps = new PanelDetails("Chop and burn", Arrays.asList(chopOak, burnOak),
 			new SkillRequirement(Skill.FIREMAKING, 15), new SkillRequirement(Skill.WOODCUTTING, 15),
 			axe, tinderbox);
 		oakSteps.setDisplayCondition(notChopAndBurnOak);
+		oakSteps.setLockingStep(chopAndBurnOakTask);
 		allSteps.add(oakSteps);
 
 		PanelDetails bucketSteps = new PanelDetails("Fill bucket", Collections.singletonList(fillBucket), bucket);
 		bucketSteps.setDisplayCondition(notFillBucket);
+		bucketSteps.setLockingStep(fillBucketTask);
 		allSteps.add(bucketSteps);
 
 		PanelDetails changeBootsSteps = new PanelDetails("Change boots", Collections.singletonList(changeBoots),
 			fremennikTrials, coins.quantity(500));
 		changeBootsSteps.setDisplayCondition(notChangeBoots);
+		changeBootsSteps.setLockingStep(changeBootsTask);
 		allSteps.add(changeBootsSteps);
 
 		PanelDetails tiaraSteps = new PanelDetails("Craft Tiara", Arrays.asList(mineSilver, smeltSilver, craftTiara),
 			new SkillRequirement(Skill.CRAFTING, 23), new SkillRequirement(Skill.MINING, 20),
 			new SkillRequirement(Skill.SMITHING, 20), fremennikTrials, pickaxe, tiaraMould);
 		tiaraSteps.setDisplayCondition(notCraftTiara);
+		tiaraSteps.setLockingStep(craftTiaraTask);
 		allSteps.add(tiaraSteps);
 
 		PanelDetails snapeGrassSteps = new PanelDetails("Collect snape grass", Arrays.asList(goneToWaterbirth,
 			collectSnapeGrass), fremennikTrials);
 		snapeGrassSteps.setDisplayCondition(notCollectSnapeGrass);
+		snapeGrassSteps.setLockingStep(collectSnapeGrassTask);
 		allSteps.add(snapeGrassSteps);
 
 		PanelDetails trollStrongholdSteps = new PanelDetails("Enter troll stronghold",
 			Collections.singletonList(enterTrollStronghold), trollStronghold, deathPlateau, climbingBoots);
 		trollStrongholdSteps.setDisplayCondition(notEnterTrollStronghold);
+		trollStrongholdSteps.setLockingStep(enterTrollStrongholdTask);
 		allSteps.add(trollStrongholdSteps);
 
 		PanelDetails browseStonemasonSteps = new PanelDetails("Browse Stonemason's store",
-			Arrays.asList(goneToKeldagrim, goneToCave, goneToRiver, browseStonemason), giantDwarf);
+			Arrays.asList(goneToKeldagrimStone, goneToCaveStone, goneToRiverStone, browseStonemason), giantDwarf);
 		browseStonemasonSteps.setDisplayCondition(notBrowseStonemason);
+		browseStonemasonSteps.setLockingStep(browseStonemasonTask);
 		allSteps.add(browseStonemasonSteps);
 
-		PanelDetails bakersStallSteps = new PanelDetails("Steal from baker's stall", Arrays.asList(goneToKeldagrim,
-			goneToCave, goneToRiver, stealStall), giantDwarf);
+		PanelDetails bakersStallSteps = new PanelDetails("Steal from baker's stall", Arrays.asList(goneToKeldagrimStall,
+			goneToCaveStall, goneToRiverStall, stealStall), giantDwarf);
 		bakersStallSteps.setDisplayCondition(notStealStall);
+		bakersStallSteps.setLockingStep(stealStallTask);
 		allSteps.add(bakersStallSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

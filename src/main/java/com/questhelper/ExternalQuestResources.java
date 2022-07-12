@@ -270,6 +270,7 @@ public enum ExternalQuestResources {
 
     // Generic helpers
 	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
+	DAG_ROUTE("https://oldschool.runescape.wiki/w/Waterbirth_Island"),
 
 	WOODCUTTING("https://oldschool.runescape.wiki/w/Pay-to-play_Woodcutting_training");
 

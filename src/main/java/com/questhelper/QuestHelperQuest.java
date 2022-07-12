@@ -351,6 +351,8 @@ public enum QuestHelperQuest
 	// Generic
 	MA2_LOCATOR("Mage Arena II Locator", QuestVarbits.QUEST_THE_MAGE_ARENA_II, -1, QuestDetails.Type.GENERIC,
 		QuestDetails.Difficulty.GENERIC),
+	DAG_ROUTE("Daganoth Kings Route", QuestVarbits.QUEST_THE_FREMENNIK_ISLES, -1, QuestDetails.Type.GENERIC,
+		QuestDetails.Difficulty.GENERIC),
 
 	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL, QuestDetails.Difficulty.SKILL);
 

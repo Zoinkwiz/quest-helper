@@ -87,6 +87,8 @@ public class DesertElite extends ComplexStateQuestHelper
 
 	ZoneRequirement inBed, inPyramidPlunderLobby, inPyramidRooms, inLastRoom;
 
+	ConditionalStep wildPieTask, iceBarrageTask, dragonDartsTask, talkKQHeadTask, grandGoldChestTask, restorePrayerTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -95,16 +97,28 @@ public class DesertElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(notWildPie, wildPie);
-		doElite.addStep(notIceBarrage, iceBarrage);
-		doElite.addStep(new Conditions(notGrandGoldChest, inLastRoom), grandGoldChest);
-		doElite.addStep(new Conditions(notGrandGoldChest, inPyramidRooms), traversePyramid);
-		doElite.addStep(new Conditions(notGrandGoldChest, inPyramidPlunderLobby), startPyramidPlunder);
-		doElite.addStep(notGrandGoldChest, moveToPyramidPlunder);
-		doElite.addStep(notRestorePrayer, restorePrayer);
-		doElite.addStep(new Conditions(notDragonDarts, inBed), dragonDarts);
-		doElite.addStep(notDragonDarts, moveToBed);
-		doElite.addStep(notTalkKQHead, talkKQHead);
+
+		wildPieTask = new ConditionalStep(this, wildPie);
+		doElite.addStep(notWildPie, wildPieTask);
+
+		iceBarrageTask = new ConditionalStep(this, iceBarrage);
+		doElite.addStep(notIceBarrage, iceBarrageTask);
+
+		grandGoldChestTask = new ConditionalStep(this, moveToPyramidPlunder);
+		grandGoldChestTask.addStep(inPyramidPlunderLobby, startPyramidPlunder);
+		grandGoldChestTask.addStep(inPyramidRooms, traversePyramid);
+		grandGoldChestTask.addStep(inLastRoom, grandGoldChest);
+		doElite.addStep(notGrandGoldChest, grandGoldChestTask);
+
+		restorePrayerTask = new ConditionalStep(this, restorePrayer);
+		doElite.addStep(notRestorePrayer, restorePrayerTask);
+
+		dragonDartsTask = new ConditionalStep(this, moveToBed);
+		dragonDartsTask.addStep(inBed, dragonDarts);
+		doElite.addStep(notDragonDarts, dragonDartsTask);
+
+		talkKQHeadTask = new ConditionalStep(this, talkKQHead);
+		doElite.addStep(notTalkKQHead, talkKQHeadTask);
 
 		return doElite;
 	}
@@ -280,33 +294,39 @@ public class DesertElite extends ComplexStateQuestHelper
 		PanelDetails wildPieSteps = new PanelDetails("Bake Wild Pie", Collections.singletonList(wildPie),
 			new SkillRequirement(Skill.COOKING, 85), rawPie);
 		wildPieSteps.setDisplayCondition(notWildPie);
+		wildPieSteps.setLockingStep(wildPieTask);
 		allSteps.add(wildPieSteps);
 
 		PanelDetails iceBarrageSteps = new PanelDetails("Ice Barrage", Collections.singletonList(iceBarrage),
 			new SkillRequirement(Skill.MAGIC, 94), desertTreasure, ancientBook, waterRune.quantity(6),
 			bloodRune.quantity(2), deathRune.quantity(4));
 		iceBarrageSteps.setDisplayCondition(notIceBarrage);
+		iceBarrageSteps.setLockingStep(iceBarrageTask);
 		allSteps.add(iceBarrageSteps);
 
 		PanelDetails grandGoldChestSteps = new PanelDetails("Grand Gold Chest", Arrays.asList(moveToPyramidPlunder,
 			startPyramidPlunder, grandGoldChest), new SkillRequirement(Skill.THIEVING, 91), icthlarinsLittleHelper);
 		grandGoldChestSteps.setDisplayCondition(notGrandGoldChest);
+		grandGoldChestSteps.setLockingStep(grandGoldChestTask);
 		allSteps.add(grandGoldChestSteps);
 
 		PanelDetails restorePrayerSteps = new PanelDetails("Restore 85 Prayer",
 			Collections.singletonList(restorePrayer), new SkillRequirement(Skill.PRAYER, 85), icthlarinsLittleHelper);
 		restorePrayerSteps.setDisplayCondition(notRestorePrayer);
+		restorePrayerSteps.setLockingStep(restorePrayerTask);
 		allSteps.add(restorePrayerSteps);
 
 		PanelDetails dragonDartsSteps = new PanelDetails("Dragon Darts", Arrays.asList(moveToBed, dragonDarts),
 			new SkillRequirement(Skill.FLETCHING, 95), touristTrap, dragonDartTip, feather);
 		dragonDartsSteps.setDisplayCondition(notDragonDarts);
+		dragonDartsSteps.setLockingStep(dragonDartsTask);
 		allSteps.add(dragonDartsSteps);
 
 		PanelDetails kqHeadSteps = new PanelDetails("Kalphite Queen Head", Collections.singletonList(talkKQHead),
 			new SkillRequirement(Skill.CONSTRUCTION, 78), priestInPeril, kqHead, coins.quantity(50000),
 			mahoganyPlank.quantity(2), goldLeaves.quantity(2), saw, hammer);
 		kqHeadSteps.setDisplayCondition(notTalkKQHead);
+		kqHeadSteps.setLockingStep(talkKQHeadTask);
 		allSteps.add(kqHeadSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

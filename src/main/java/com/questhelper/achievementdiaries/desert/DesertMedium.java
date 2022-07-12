@@ -89,6 +89,10 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 	ZoneRequirement inDesert, inEagleArea, inGenie, inPyramid;
 
+	ConditionalStep agiPyramidTask, desertLizardTask, orangeSallyTask, phoenixFeatherTask, magicCarpetTask,
+		eagleTravelTask, prayElidinisTask, combatPotTask, tpEnakhraTask, visitGenieTask, tpPollnivneachTask,
+		chopTeakTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -98,23 +102,46 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
 
-		doMedium.addStep(new Conditions(notCombatPot, inDesert), combatPot);
-		doMedium.addStep(notCombatPot, moveToDesert);
-		doMedium.addStep(notPhoenixFeather, phoenixFeather);
-		doMedium.addStep(notOrangeSally, orangeSally);
-		doMedium.addStep(notMagicCarpet, magicCarpet);
-		doMedium.addStep(notChopTeak, chopTeak);
-		doMedium.addStep(notDesertLizard, desertLizard);
-		doMedium.addStep(notPrayElidinis, prayElidinis);
-		doMedium.addStep(new Conditions(notVisitGenie, inGenie), visitGenie);
-		doMedium.addStep(notVisitGenie, moveToGenie);
-		doMedium.addStep(new Conditions(notAgiPyramid, inPyramid, talkedToSimon), agiPyramid);
-		doMedium.addStep(new Conditions(notAgiPyramid, inPyramid), talkToSimon);
-		doMedium.addStep(notAgiPyramid, moveToPyramid);
-		doMedium.addStep(notTPEnakhra, tpEnakhra);
-		doMedium.addStep(new Conditions(notEagleTravel, inEagleArea), eagleTravel);
-		doMedium.addStep(notEagleTravel, moveToEagle);
-		doMedium.addStep(notTPPollnivneach, tpPollnivneach);
+		combatPotTask = new ConditionalStep(this, moveToDesert);
+		combatPotTask.addStep(inDesert, combatPot);
+		doMedium.addStep(notCombatPot, combatPotTask);
+
+		phoenixFeatherTask = new ConditionalStep(this, phoenixFeather);
+		doMedium.addStep(notPhoenixFeather, phoenixFeatherTask);
+
+		orangeSallyTask = new ConditionalStep(this, orangeSally);
+		doMedium.addStep(notOrangeSally, orangeSallyTask);
+
+		magicCarpetTask = new ConditionalStep(this, magicCarpet);
+		doMedium.addStep(notMagicCarpet, magicCarpetTask);
+
+		chopTeakTask = new ConditionalStep(this, chopTeak);
+		doMedium.addStep(notChopTeak, chopTeakTask);
+
+		desertLizardTask = new ConditionalStep(this, desertLizard);
+		doMedium.addStep(notDesertLizard, desertLizardTask);
+
+		prayElidinisTask = new ConditionalStep(this, prayElidinis);
+		doMedium.addStep(notPrayElidinis, prayElidinisTask);
+
+		visitGenieTask = new ConditionalStep(this, moveToGenie);
+		visitGenieTask.addStep(inGenie, visitGenie);
+		doMedium.addStep(notVisitGenie, visitGenieTask);
+
+		agiPyramidTask = new ConditionalStep(this, moveToPyramid);
+		agiPyramidTask.addStep(inPyramid, talkToSimon);
+		agiPyramidTask.addStep(new Conditions(inPyramid, talkedToSimon), agiPyramid);
+		doMedium.addStep(notAgiPyramid, agiPyramidTask);
+
+		tpEnakhraTask = new ConditionalStep(this, tpEnakhra);
+		doMedium.addStep(notTPEnakhra, tpEnakhraTask);
+
+		eagleTravelTask = new ConditionalStep(this, moveToEagle);
+		eagleTravelTask.addStep(inEagleArea, eagleTravel);
+		doMedium.addStep(notEagleTravel, eagleTravelTask);
+
+		tpPollnivneachTask = new ConditionalStep(this, tpPollnivneach);
+		doMedium.addStep(notTPPollnivneach, tpPollnivneachTask);
 
 		return doMedium;
 	}
@@ -310,62 +337,74 @@ public class DesertMedium extends ComplexStateQuestHelper
 		PanelDetails combatPotionSteps = new PanelDetails("Combat Potion", Arrays.asList(moveToDesert, combatPot),
 			new SkillRequirement(Skill.HERBLORE, 36), harraPot, goatHornDust);
 		combatPotionSteps.setDisplayCondition(notCombatPot);
+		combatPotionSteps.setLockingStep(combatPotTask);
 		allSteps.add(combatPotionSteps);
 
 		PanelDetails phoenixFeatherSteps = new PanelDetails("Phoenix Feather",
 			Collections.singletonList(phoenixFeather), new SkillRequirement(Skill.THIEVING, 25));
 		phoenixFeatherSteps.setDisplayCondition(notPhoenixFeather);
+		phoenixFeatherSteps.setLockingStep(phoenixFeatherTask);
 		allSteps.add(phoenixFeatherSteps);
 
 		PanelDetails orangeSalamanderSteps = new PanelDetails("Orange Salamander",
 			Collections.singletonList(orangeSally), new SkillRequirement(Skill.HUNTER, 47), rope, smallFishingNet);
 		orangeSalamanderSteps.setDisplayCondition(notOrangeSally);
+		orangeSalamanderSteps.setLockingStep(orangeSallyTask);
 		allSteps.add(orangeSalamanderSteps);
 
 		PanelDetails magicCarpetSteps = new PanelDetails("Magic Carpet to Uzer",
 			Collections.singletonList(magicCarpet), theGolem, coins.quantity(200));
 		magicCarpetSteps.setDisplayCondition(notMagicCarpet);
+		magicCarpetSteps.setLockingStep(magicCarpetTask);
 		allSteps.add(magicCarpetSteps);
 
 		PanelDetails chopTeakAtUzerSteps = new PanelDetails("Chop Teak at Uzer", Collections.singletonList(chopTeak),
 			new SkillRequirement(Skill.WOODCUTTING, 35), axe);
 		chopTeakAtUzerSteps.setDisplayCondition(notChopTeak);
+		chopTeakAtUzerSteps.setLockingStep(chopTeakTask);
 		allSteps.add(chopTeakAtUzerSteps);
 
 		PanelDetails desertLizardSteps = new PanelDetails("Desert Lizard", Collections.singletonList(desertLizard),
 			combatGear, iceCooler);
 		desertLizardSteps.setDisplayCondition(notDesertLizard);
+		desertLizardSteps.setLockingStep(desertLizardTask);
 		allSteps.add(desertLizardSteps);
 
 		PanelDetails elidinisStatuetteSteps = new PanelDetails("Pray at Elidinis Statuette",
 			Collections.singletonList(prayElidinis), spiritsOfTheElid);
 		elidinisStatuetteSteps.setDisplayCondition(notPrayElidinis);
+		elidinisStatuetteSteps.setLockingStep(prayElidinisTask);
 		allSteps.add(elidinisStatuetteSteps);
 
 		PanelDetails visitTheGenieSteps = new PanelDetails("Visit the Genie", Arrays.asList(moveToGenie, visitGenie),
 			spiritsOfTheElid, rope, lightSource);
 		visitTheGenieSteps.setDisplayCondition(notVisitGenie);
+		visitTheGenieSteps.setLockingStep(visitGenieTask);
 		allSteps.add(visitTheGenieSteps);
 
 		PanelDetails agilityPyramidSteps = new PanelDetails("Agility Pyramid", Arrays.asList(moveToPyramid,
 			talkToSimon, agiPyramid), new SkillRequirement(Skill.AGILITY, 30));
 		agilityPyramidSteps.setDisplayCondition(notAgiPyramid);
+		agilityPyramidSteps.setLockingStep(agiPyramidTask);
 		allSteps.add(agilityPyramidSteps);
 
 		PanelDetails tpEnakhraSteps = new PanelDetails("Camulet to Enakhra's Temple",
 			Collections.singletonList(tpEnakhra), enakhrasLament, camulet);
 		tpEnakhraSteps.setDisplayCondition(notTPEnakhra);
+		tpEnakhraSteps.setLockingStep(tpEnakhraTask);
 		allSteps.add(tpEnakhraSteps);
 
 		PanelDetails eagleSteps = new PanelDetails("Eagle Travel to Desert", Arrays.asList(moveToEagle, eagleTravel),
 			rope);
 		eagleSteps.setDisplayCondition(notEagleTravel);
+		eagleSteps.setLockingStep(eagleTravelTask);
 		allSteps.add(eagleSteps);
 
 		PanelDetails teleportToPollnivneachSteps = new PanelDetails("Teleport to Pollnivneach",
 			Collections.singletonList(tpPollnivneach), new SkillRequirement(Skill.CONSTRUCTION, 20), teleToHouse,
 			scrollOfRedir);
 		teleportToPollnivneachSteps.setDisplayCondition(notTPPollnivneach);
+		teleportToPollnivneachSteps.setLockingStep(tpPollnivneachTask);
 		allSteps.add(teleportToPollnivneachSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

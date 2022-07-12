@@ -71,12 +71,13 @@ public class DagRoute extends ConditionalStep
 	{
 		super(questHelper, new NpcStep(questHelper, NpcID.JARVALD, new WorldPoint(2620, 3686, 0),
 			"Speak with Jarvald to travel to Waterbirth Island."));
-		//super.addDialogSteps("What Jarvald is doing.", "Can I come?", "YES");
+		super.addDialogSteps("What Jarvald is doing.", "Can I come?", "YES");
 		setupItemRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
 
+		addStep(inDagCave12, moveToDagKings);
 		addStep(inDagCave11, moveToDagCave12);
 		addStep(inDagCave10, moveToDagCave11);
 		addStep(inDagCave9, moveToDagCave10);
@@ -207,6 +208,6 @@ public class DagRoute extends ConditionalStep
 		return QuestUtil.toArrayList(
 			moveToWaterbirth, moveToDagCave, dropPetRock, moveToAxeSpot, throwAxe, moveToDagCave1, moveToDagCave2,
 			moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9,
-			moveToDagCave10, moveToDagCave11, moveToDagCave12);
+			moveToDagCave10, moveToDagCave11, moveToDagCave12, moveToDagKings);
 	}
 }

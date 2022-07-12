@@ -61,8 +61,6 @@ public class DagRouteHelper extends ComplexStateQuestHelper
 		setupRequirements();
 		setupSteps();
 
-		//ConditionalStep steps = new ConditionalStep(this, dagRoute);
-
 		return new ConditionalStep(this, dagRoute);
 	}
 

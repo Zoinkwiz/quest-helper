@@ -211,13 +211,6 @@ public class ObjectStep extends DetailedQuestStep
 	}
 
 	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
-	{
-		handleRemoveObjects(event.getPrevious());
-		handleObjects(event.getGameObject());
-	}
-
-	@Subscribe
 	public void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		handleObjects(event.getGroundObject());
@@ -227,13 +220,6 @@ public class ObjectStep extends DetailedQuestStep
 	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		handleRemoveObjects(event.getGroundObject());
-	}
-
-	@Subscribe
-	public void onGroundObjectChanged(GroundObjectChanged event)
-	{
-		handleRemoveObjects(event.getPrevious());
-		handleObjects(event.getGroundObject());
 	}
 
 	@Subscribe
@@ -249,13 +235,6 @@ public class ObjectStep extends DetailedQuestStep
 	}
 
 	@Subscribe
-	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
-	{
-		handleRemoveObjects(event.getPrevious());
-		handleObjects(event.getDecorativeObject());
-	}
-
-	@Subscribe
 	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		handleObjects(event.getWallObject());
@@ -265,13 +244,6 @@ public class ObjectStep extends DetailedQuestStep
 	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		handleRemoveObjects(event.getWallObject());
-	}
-
-	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		handleRemoveObjects(event.getPrevious());
-		handleObjects(event.getWallObject());
 	}
 
 	@Override

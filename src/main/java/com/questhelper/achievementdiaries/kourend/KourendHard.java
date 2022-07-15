@@ -349,7 +349,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("Slayer helmet will work as a shayzien helm (5) after talking to Captain Cleive."),
-			new UnlockReward("5% increased chance ot save a harvest life at the Hosidius and Farming Guild herb patches."),
+			new UnlockReward("5% increased chance to save a harvest life at the Hosidius and Farming Guild herb patches."),
 			new UnlockReward("40 free Dynamite per day from Thirus"),
 			new UnlockReward("Reduced tanning prices at Eodan in Forthos Dungeon to 40%."));
 	}

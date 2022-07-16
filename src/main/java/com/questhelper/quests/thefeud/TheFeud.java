@@ -437,7 +437,7 @@ public class TheFeud extends BasicQuestHelper
 		getDung = new ObjectStep(this, ObjectID.TROUGH_6256, new WorldPoint(3343, 2960, 0), "Use the Red Hot Sauce on the Trough and wait for a Camel to poop out the dung.\n Only pickup brown/Ugthanki dung, if you plan to do \"My Arm's Big Adventure\" or \"Forgettable Tale of a Drunken Dwarf\" then you may want to grab four more Ugthanki dung.", redHotSauce);
 		getDung.addIcon(ItemID.RED_HOT_SAUCE);
 
-		givenDungToHag = new NpcStep(this, NpcID.ALI_THE_HAG, new WorldPoint(3345, 2986, 0), "Talk to Ali the Hag and give her your dung.", dung);
+		givenDungToHag = new NpcStep(this, NpcID.ALI_THE_HAG, new WorldPoint(3345, 2986, 0), "Talk to Ali the Hag and give her the dung.", dung);
 
 		//Step 22
 		//Poison The Drink

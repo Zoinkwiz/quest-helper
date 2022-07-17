@@ -184,8 +184,12 @@ public class MountainDaughter extends BasicQuestHelper
 		plank = new ItemRequirement("Any plank", ItemID.PLANK);
 		plank.addAlternates(ItemID.OAK_PLANK, ItemID.TEAK_PLANK, ItemID.MAHOGANY_PLANK);
 		pole = new ItemRequirement("A staff or a pole", ItemID.POLE);
-		pole.addAlternates(ItemID.LUNAR_STAFF);
-		pole.setTooltip("You can find one in the north part of the Mountain Camp.");
+		pole.addAlternates(ItemID.LUNAR_STAFF, ItemID.STAFF, ItemID.BATTLESTAFF);
+		pole.addAlternates(ItemCollections.getAirStaff());
+		pole.addAlternates(ItemCollections.getWaterStaff());
+		pole.addAlternates(ItemCollections.getEarthStaff());
+		pole.addAlternates(ItemCollections.getFireStaff());
+		pole.setTooltip("A Dramen Staff will NOT work. A pole can be obtained from the goat pen north of Hamal's house.");
 		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES);
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
 			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
@@ -256,7 +260,7 @@ public class MountainDaughter extends BasicQuestHelper
 		talkToHamal.addDialogStep("I will search for her!");
 
 		digUpMud = new ObjectStep(this, ObjectID.ROOTS_5885, new WorldPoint(2805, 3661, 0),
-			"Dig some mud from the mud pond south of Hamal's house.");
+			"If you did not bring a staff grab a pole from the goat pen north of Hamal's house. Head south of Hamal's house and dig some mud from the mud pond.");
 
 		rubMudIntoTree = new ObjectStep(this, ObjectID.TALL_TREE, new WorldPoint(2772, 3681, 0),
 			"Use mud on the Tall Tree on the lake north of the camp, and then climb it.",
@@ -394,6 +398,7 @@ public class MountainDaughter extends BasicQuestHelper
 		reqs.add(axe);
 		reqs.add(plank);
 		reqs.add(gloves);
+		reqs.add(pole);
 		return reqs;
 	}
 

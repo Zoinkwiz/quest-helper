@@ -30,6 +30,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.RuneliteRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -70,6 +71,8 @@ public class PrinceAliRescue extends BasicQuestHelper
 
 	Requirement hasOrGivenKeyMould, inCell, givenKeyMould, hasWigPasteAndKey;
 
+	RuneliteRequirement madeMould;
+
 	QuestStep talkToHassan, talkToOsman, talkToNed, talkToAggie, dyeWig, talkToKeli, bringImprintToOsman, talkToLeela, talkToJoe, useRopeOnKeli, useKeyOnDoor, talkToAli, returnToHassan;
 
 	ConditionalStep makeDyedWig, makePaste, makeKeyMould, getKey;
@@ -103,7 +106,8 @@ public class PrinceAliRescue extends BasicQuestHelper
 		getKey.setLockingCondition(givenKeyMould);
 
 		ConditionalStep prepareToSaveAli = new ConditionalStep(this, makeDyedWig);
-		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), givenKeyMould), talkToLeela);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank),
+			new Conditions(LogicType.OR, madeMould, givenKeyMould)), talkToLeela);
 		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), hasOrGivenKeyMould), getKey);
 		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank)), makeKeyMould);
 		prepareToSaveAli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
@@ -169,11 +173,16 @@ public class PrinceAliRescue extends BasicQuestHelper
 	{
 		inCell = new ZoneRequirement(cell);
 		hasWigPasteAndKey = new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), key.alsoCheckBank(questBank));
-		givenKeyMould = new Conditions(true, LogicType.OR,
+		givenKeyMould = new Conditions(true, LogicType.OR,	// TODO quest journal widget text outdated
 			new WidgetTextRequirement(119, 3, true, "I have duplicated a key, I need to get it from"),
 			new WidgetTextRequirement(119, 3, true, "I got a duplicated cell door key"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Pick the key up from Leela."),
+			new WidgetTextRequirement(11, 2, true, "You give Osman the imprint along with a bronze bar."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I'll use this to have a copy of the key made. I'll send it<br>to Leela once it's ready."),
+			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "I think I have everything needed."),
 			key.alsoCheckBank(questBank));
+		madeMould = new RuneliteRequirement(getConfigManager(), "princealikeymouldhandedin", "true", givenKeyMould);
+		madeMould.initWithValue("false");
+
 		hasOrGivenKeyMould = new Conditions(LogicType.OR, keyMould, givenKeyMould, key.alsoCheckBank(questBank));
 	}
 
@@ -185,28 +194,27 @@ public class PrinceAliRescue extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToHassan = new NpcStep(this, NpcID.HASSAN, new WorldPoint(3298, 3163, 0), "Talk to Hassan in the Al Kharid Palace.");
-		talkToHassan.addDialogStep("Can I help you? You must need some help here in the desert.");
+		talkToHassan.addDialogSteps("Is there anything I can help you with?", "Yes.");
 		talkToOsman = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3286, 3180, 0), "Talk to Osman north of the Al Kharid Palace.");
-		talkToOsman.addDialogStep("What is the first thing I must do?");
 
 		talkToNed = new NpcStep(this, NpcID.NED, new WorldPoint(3097, 3257, 0), "Have Ned in Draynor Village make you a wig from 3 balls of wool. He can also sell you a rope for 15 coins or 4 balls of wool.", ballsOfWool3);
-		talkToNed.addDialogStep("Ned, could you make other things from wool?");
-		talkToNed.addDialogStep("How about some sort of a wig?");
-		talkToNed.addDialogStep("I have that now. Please, make me a wig.");
+		talkToNed.addDialogStep("Could you make other things apart from rope?");
+		talkToNed.addDialogStep("How about some sort of wig?");
+		talkToNed.addDialogStep("I have them here. Please make me a wig.");
 		dyeWig = new DetailedQuestStep(this, "Dye the wig with yellow dye. Buy a yellow dye with two onions and 5 coins if you still need it from Aggie in Draynor Village.", yellowDye, wig);
 		talkToAggie = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3257, 0), "Talk to Aggie in Draynor Village to get some paste.", redberries, ashes, potOfFlour, bucketOfWater);
-		talkToAggie.addDialogStep("Could you think of a way to make skin paste?");
+		talkToAggie.addDialogStep("Can you make skin paste?");
 		talkToAggie.addDialogStep("Yes please. Mix me some skin paste.");
 		talkToKeli = new NpcStep(this, NpcID.LADY_KELI, new WorldPoint(3127, 3244, 0), "Talk to Keli in the jail east of Draynor Village. If you've already made the key mould, open the quest journal to re-sync.", softClay);
-		talkToKeli.addDialogStep("Heard of you? You are famous in Gielinor!");
-		talkToKeli.addDialogStep("What is your latest plan then?");
-		talkToKeli.addDialogStep("Can you be sure they will not try to get him out?");
+		talkToKeli.addDialogStep("Heard of you? You're famous in Gielinor!");
+		talkToKeli.addDialogStep("What's your latest plan then?");
+		talkToKeli.addDialogStep("How do you know someone won't try to free him?");
 		talkToKeli.addDialogStep("Could I see the key please?");
 		talkToKeli.addDialogStep("Could I touch the key for a moment please?");
 		bringImprintToOsman = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3285, 3179, 0), "Bring the key print to Osman north of the Al Kharid Palace. If you already have, open the quest journal to re-sync.", keyMould, bronzeBar);
 		talkToLeela = new NpcStep(this, NpcID.LEELA, new WorldPoint(3113, 3262, 0), "Talk to Leela east of Draynor Village.", beers3, dyedWig, paste, rope, pinkSkirt);
 		talkToJoe = new NpcStep(this, NpcID.JOE_11577, new WorldPoint(3124, 3245, 0), "Bring everything to the jail and give Joe there three beers.", beers3, key, dyedWig, paste, rope, pinkSkirt);
-		talkToJoe.addDialogStep("I have some beer here, fancy one?");
+		talkToJoe.addDialogStep("I have some beer here. Fancy one?");
 		useRopeOnKeli = new NpcStep(this, NpcID.LADY_KELI, new WorldPoint(3127, 3244, 0), "Use rope on Keli.", ropeHighlighted);
 		useRopeOnKeli.addIcon(ItemID.ROPE);
 		useKeyOnDoor = new ObjectStep(this, ObjectID.PRISON_GATE, new WorldPoint(3123, 3243, 0), "Use the key on the prison door. If Lady Keli respawned you'll need to tie her up again.", key, dyedWig, paste, pinkSkirt);

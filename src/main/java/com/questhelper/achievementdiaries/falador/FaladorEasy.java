@@ -79,6 +79,9 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	ZoneRequirement inMindAltar, inBluriteDungeon, inFaladorCastle1, inPortSarimJail1,
 		inMotherlodeMine, inDwarvenMine;
 
+	ConditionalStep filledWaterTask, killedDuckTask, climbedWallTask, gotHaircutTask, motherloadMineTask, entranaTask,
+		mindTiaraTask, bluriteLimbsTask, gotSecurityBookTask, sarahFarmingShopTask, familyCrestTask;
+
 
 	@Override
 	public QuestStep loadStep()
@@ -88,26 +91,48 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		doEasy.addStep(notFilledWater, fillWater);
-		doEasy.addStep(notGotHaircut, getHaircut);
-		doEasy.addStep(notClimbedWall, climbWall);
-		doEasy.addStep(notKilledDuck, killDuck);
-		doEasy.addStep(new Conditions(notMotherloadMine, inMotherlodeMine), fixMotherloadMine);
-		doEasy.addStep(new Conditions(notMotherloadMine, inDwarvenMine), enterCaveToMotherlodeMine);
-		doEasy.addStep(notMotherloadMine, enterDwarvenMines);
-		doEasy.addStep(notSarahFarmingShop, browseSarahFarmingShop);
-		doEasy.addStep(notEntrana, goEntrana);
-		doEasy.addStep(new Conditions(notGotSecurityBook, inPortSarimJail1), getSecurityBook);
-		doEasy.addStep(notGotSecurityBook, climbLadderPortSarimJail);
-		doEasy.addStep(new Conditions(notBluriteLimbs, hasBluriteBar), smithBluriteLimbs);
-		doEasy.addStep(new Conditions(notBluriteLimbs, hasBluriteOre), smeltBlurite);
-		doEasy.addStep(new Conditions(notBluriteLimbs, pickaxe, inBluriteDungeon), mineBlurite);
-		doEasy.addStep(new Conditions(notBluriteLimbs, pickaxe), enterDungeon);
-		doEasy.addStep(notBluriteLimbs, getPickaxe);
-		doEasy.addStep(new Conditions(notMindTiara, inMindAltar), getMindTiara);
-		doEasy.addStep(notMindTiara, enterMindAltar);
-		doEasy.addStep(new Conditions(notFamilyCrest, inFaladorCastle1), discoverFamilyCrest);
-		doEasy.addStep(notFamilyCrest, climbLadderWhiteKnightCastle);
+
+		filledWaterTask = new ConditionalStep(this, fillWater);
+		doEasy.addStep(notFilledWater, filledWaterTask);
+
+		gotHaircutTask = new ConditionalStep(this, getHaircut);
+		doEasy.addStep(notGotHaircut, gotHaircutTask);
+
+		climbedWallTask = new ConditionalStep(this, climbWall);
+		doEasy.addStep(notClimbedWall, climbedWallTask);
+
+		killedDuckTask = new ConditionalStep(this, killDuck);
+		doEasy.addStep(notKilledDuck, killedDuckTask);
+
+		motherloadMineTask = new ConditionalStep(this, enterDwarvenMines);
+		motherloadMineTask.addStep(inDwarvenMine, enterCaveToMotherlodeMine);
+		motherloadMineTask.addStep(inMotherlodeMine, fixMotherloadMine);
+		doEasy.addStep(notMotherloadMine, motherloadMineTask);
+
+		sarahFarmingShopTask = new ConditionalStep(this, browseSarahFarmingShop);
+		doEasy.addStep(notSarahFarmingShop, sarahFarmingShopTask);
+
+		entranaTask = new ConditionalStep(this, goEntrana);
+		doEasy.addStep(notEntrana, entranaTask);
+
+		gotSecurityBookTask = new ConditionalStep(this, climbLadderPortSarimJail);
+		gotSecurityBookTask.addStep(inPortSarimJail1, getSecurityBook);
+		doEasy.addStep(notGotSecurityBook, gotSecurityBookTask);
+
+		bluriteLimbsTask = new ConditionalStep(this, getPickaxe);
+		bluriteLimbsTask.addStep(pickaxe, enterDungeon);
+		bluriteLimbsTask.addStep(new Conditions(pickaxe, inBluriteDungeon), mineBlurite);
+		bluriteLimbsTask.addStep(hasBluriteOre, smeltBlurite);
+		bluriteLimbsTask.addStep(hasBluriteBar, smithBluriteLimbs);
+		doEasy.addStep(notBluriteLimbs, bluriteLimbsTask);
+
+		mindTiaraTask = new ConditionalStep(this, enterMindAltar);
+		mindTiaraTask.addStep(inMindAltar, getMindTiara);
+		doEasy.addStep(notMindTiara, mindTiaraTask);
+
+		familyCrestTask = new ConditionalStep(this, climbLadderWhiteKnightCastle);
+		familyCrestTask.addStep(inFaladorCastle1, discoverFamilyCrest);
+		doEasy.addStep(notFamilyCrest, familyCrestTask);
 
 		return doEasy;
 	}
@@ -301,39 +326,47 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		PanelDetails fillBucketSteps = new PanelDetails("Fill Water Bucket", Collections.singletonList(fillWater),
 			bucket);
 		fillBucketSteps.setDisplayCondition(notFilledWater);
+		fillBucketSteps.setLockingStep(filledWaterTask);
 		allSteps.add(fillBucketSteps);
 
 		PanelDetails haircutSteps = new PanelDetails("Get A Haircut", Collections.singletonList(getHaircut),
 			coins2000);
 		haircutSteps.setDisplayCondition(notGotHaircut);
+		haircutSteps.setLockingStep(gotHaircutTask);
 		allSteps.add(haircutSteps);
 
 		PanelDetails westWallSteps = new PanelDetails("Climb West Wall", Collections.singletonList(climbWall),
 			new SkillRequirement(Skill.AGILITY, 5, true));
 		westWallSteps.setDisplayCondition(notClimbedWall);
+		westWallSteps.setLockingStep(climbedWallTask);
 		allSteps.add(westWallSteps);
 
 		PanelDetails duckSteps = new PanelDetails("Kill The Duck", Collections.singletonList(killDuck), combatGear);
 		duckSteps.setDisplayCondition(notKilledDuck);
+		duckSteps.setLockingStep(killedDuckTask);
 		allSteps.add(duckSteps);
 
 		PanelDetails motherlodeRepairsSteps = new PanelDetails("Motherlode Repairs", Arrays.asList(enterDwarvenMines,
 			enterCaveToMotherlodeMine, fixMotherloadMine), pickaxe, hammer);
 		motherlodeRepairsSteps.setDisplayCondition(notMotherloadMine);
+		motherlodeRepairsSteps.setLockingStep(motherloadMineTask);
 		allSteps.add(motherlodeRepairsSteps);
 
 		PanelDetails sarahsFarmingSteps = new PanelDetails("Sarah's Farming Shop",
 			Collections.singletonList(browseSarahFarmingShop));
 		sarahsFarmingSteps.setDisplayCondition(notSarahFarmingShop);
+		sarahsFarmingSteps.setLockingStep(sarahFarmingShopTask);
 		allSteps.add(sarahsFarmingSteps);
 
 		PanelDetails holyLandSteps = new PanelDetails("To the Holy Land!", Collections.singletonList(goEntrana));
 		holyLandSteps.setDisplayCondition(notEntrana);
+		holyLandSteps.setLockingStep(entranaTask);
 		allSteps.add(holyLandSteps);
 
 		PanelDetails securityBookSteps = new PanelDetails("Get A Security Book",
 			Arrays.asList(climbLadderPortSarimJail, getSecurityBook));
 		securityBookSteps.setDisplayCondition(notGotSecurityBook);
+		securityBookSteps.setLockingStep(gotSecurityBookTask);
 		allSteps.add(securityBookSteps);
 
 		PanelDetails bluriteLimbsSteps = new PanelDetails("Blurite Limbs", Arrays.asList(getPickaxe, enterDungeon,
@@ -341,16 +374,19 @@ public class FaladorEasy extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.MINING, 10, true),
 			new SkillRequirement(Skill.SMITHING, 13, true), hammer, pickaxe);
 		bluriteLimbsSteps.setDisplayCondition(notBluriteLimbs);
+		bluriteLimbsSteps.setLockingStep(bluriteLimbsTask);
 		allSteps.add(bluriteLimbsSteps);
 
 		PanelDetails mindTiaraSteps = new PanelDetails("Mind Tiara", Arrays.asList(enterMindAltar, getMindTiara),
 			new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED), tiara, mindTalisman);
 		mindTiaraSteps.setDisplayCondition(notMindTiara);
+		mindTiaraSteps.setLockingStep(mindTiaraTask);
 		allSteps.add(mindTiaraSteps);
 
 		PanelDetails familyCrestSteps = new PanelDetails("Family Crest", Arrays.asList(climbLadderWhiteKnightCastle,
 			discoverFamilyCrest), new SkillRequirement(Skill.CONSTRUCTION, 16));
 		familyCrestSteps.setDisplayCondition(notFamilyCrest);
+		familyCrestSteps.setLockingStep(familyCrestTask);
 		allSteps.add(familyCrestSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

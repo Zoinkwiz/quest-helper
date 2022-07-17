@@ -68,6 +68,9 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	QuestStep claimReward, essMine, stealCake, sellSilk, eastArdyAltar, fishingTrawler, enterCombatCamp,
 		identifySword, wildyLever, alecksEmporium, probitaPet;
 
+	ConditionalStep essMineTask, stealCakeTask, sellSilkTask, eastArdyAltarTask, fishingTrawlerTask, enterCombatCampTask,
+		identifySwordTask, wildyLeverTask, alecksEmporiumTask, probitaPetTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -76,16 +79,35 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
 
-		doEasy.addStep(notAlecksEmporium, alecksEmporium);
-		doEasy.addStep(notFishingTrawler, fishingTrawler);
-		doEasy.addStep(notIdentifySword, identifySword);
-		doEasy.addStep(notEssMine, essMine);
-		doEasy.addStep(notStealCake, stealCake);
-		doEasy.addStep(notSellSilk, sellSilk);
-		doEasy.addStep(notProbitaPet, probitaPet);
-		doEasy.addStep(notEastArdyAltar, eastArdyAltar);
-		doEasy.addStep(notWildyLever, wildyLever);
-		doEasy.addStep(notEnterCombatCamp, enterCombatCamp);
+		alecksEmporiumTask = new ConditionalStep(this, alecksEmporium);
+		doEasy.addStep(notAlecksEmporium, alecksEmporiumTask);
+
+		fishingTrawlerTask = new ConditionalStep(this, fishingTrawler);
+		doEasy.addStep(notFishingTrawler, fishingTrawlerTask);
+
+		identifySwordTask = new ConditionalStep(this, identifySword);
+		doEasy.addStep(notIdentifySword, identifySwordTask);
+
+		essMineTask = new ConditionalStep(this, essMine);
+		doEasy.addStep(notEssMine, essMineTask);
+
+		stealCakeTask = new ConditionalStep(this, stealCake);
+		doEasy.addStep(notStealCake, stealCakeTask);
+
+		sellSilkTask = new ConditionalStep(this, sellSilk);
+		doEasy.addStep(notSellSilk, sellSilkTask);
+
+		probitaPetTask = new ConditionalStep(this, probitaPet);
+		doEasy.addStep(notProbitaPet, probitaPetTask);
+
+		eastArdyAltarTask = new ConditionalStep(this, eastArdyAltar);
+		doEasy.addStep(notEastArdyAltar, eastArdyAltarTask);
+
+		wildyLeverTask = new ConditionalStep(this, wildyLever);
+		doEasy.addStep(notWildyLever, wildyLeverTask);
+
+		enterCombatCampTask = new ConditionalStep(this, enterCombatCamp);
+		doEasy.addStep(notEnterCombatCamp, enterCombatCampTask);
 
 		return doEasy;
 	}
@@ -199,45 +221,55 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		PanelDetails aleckSteps = new PanelDetails("Aleck's Hunter Emporium",
 			Collections.singletonList(alecksEmporium));
 		aleckSteps.setDisplayCondition(notAlecksEmporium);
+		aleckSteps.setLockingStep(alecksEmporiumTask);
 		allSteps.add(aleckSteps);
 
 		PanelDetails trawlerSteps = new PanelDetails("Fishing Trawler", Collections.singletonList(fishingTrawler));
 		trawlerSteps.setDisplayCondition(notFishingTrawler);
+		trawlerSteps.setLockingStep(fishingTrawlerTask);
 		allSteps.add(trawlerSteps);
 
 		PanelDetails swordSteps = new PanelDetails("Identify Sword", Collections.singletonList(identifySword),
 			rustySword, coins.quantity(100));
 		swordSteps.setDisplayCondition(notIdentifySword);
+		swordSteps.setLockingStep(identifySwordTask);
 		allSteps.add(swordSteps);
 
 		PanelDetails essSteps = new PanelDetails("Essence Mine", Collections.singletonList(essMine), runeMysteries);
 		essSteps.setDisplayCondition(notEssMine);
+		essSteps.setLockingStep(essMineTask);
 		allSteps.add(essSteps);
 
 		PanelDetails cakeSteps = new PanelDetails("Steal Cake", Collections.singletonList(stealCake),
 			new SkillRequirement(Skill.THIEVING, 5));
 		cakeSteps.setDisplayCondition(notStealCake);
+		cakeSteps.setLockingStep(stealCakeTask);
 		allSteps.add(cakeSteps);
 
 		PanelDetails silkSteps = new PanelDetails("Sell Silk", Collections.singletonList(sellSilk), silk);
 		silkSteps.setDisplayCondition(notSellSilk);
+		silkSteps.setLockingStep(sellSilkTask);
 		allSteps.add(silkSteps);
 
 		PanelDetails petSteps = new PanelDetails("Pet Insurance", Collections.singletonList(probitaPet));
 		petSteps.setDisplayCondition(notProbitaPet);
+		petSteps.setLockingStep(probitaPetTask);
 		allSteps.add(petSteps);
 
 		PanelDetails altarSteps = new PanelDetails("Restore Prayer", Collections.singletonList(eastArdyAltar));
 		altarSteps.setDisplayCondition(notEastArdyAltar);
+		altarSteps.setLockingStep(eastArdyAltarTask);
 		allSteps.add(altarSteps);
 
 		PanelDetails leverSteps = new PanelDetails("Wilderness Lever", Collections.singletonList(wildyLever));
 		leverSteps.setDisplayCondition(notWildyLever);
+		leverSteps.setLockingStep(wildyLeverTask);
 		allSteps.add(leverSteps);
 
 		PanelDetails campSteps = new PanelDetails("Combat Camp", Collections.singletonList(enterCombatCamp),
 			biohazard);
 		campSteps.setDisplayCondition(notEnterCombatCamp);
+		campSteps.setLockingStep(enterCombatCampTask);
 		allSteps.add(campSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

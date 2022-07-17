@@ -70,10 +70,9 @@ public class FremennikElite extends ComplexStateQuestHelper
 	// Quest requirements
 	Requirement fremIsles, trollStronghold, lunarDiplomacy;
 
-
 	// Steps
-	QuestStep dragonAmulet, astralRunes, rellRooftop, claimReward, moveToNeit, moveToDagKings, moveToGodWars,
-		moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6,
+	QuestStep dragonAmulet, astralRunes, rellRooftop, claimReward, moveToNeit, moveToDagKings, moveToGodWarsSM,
+		moveToGodWarsGWD, moveToDagCave1, moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6,
 		moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10, moveToDagCave11, moveToDagCave12,
 		moveToDagCave13, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToLunarIsle, moveToPirates,
 		moveToCaptain, moveToCaptain2, moveToAltar1, moveToAltar2;
@@ -93,6 +92,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 
 	Requirement protectMelee, protectMissiles, protectMagic, specialAttackEnabled;
 
+	ConditionalStep godwarsGeneralsTask, dragonAmuletTask, dagKingsTask, astralRunesTask, rellRooftopTask, spiritualMageTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -102,39 +102,51 @@ public class FremennikElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(new Conditions(notDagKings, inDagCaveKings), dagKings);
-		doElite.addStep(new Conditions(notDagKings, inDagCave12), moveToDagKings);
-		doElite.addStep(new Conditions(notDagKings, inDagCave11), moveToDagCave12);
-		doElite.addStep(new Conditions(notDagKings, inDagCave10), moveToDagCave11);
-		doElite.addStep(new Conditions(notDagKings, inDagCave9), moveToDagCave10);
-		doElite.addStep(new Conditions(notDagKings, inDagCave8), moveToDagCave9);
-		doElite.addStep(new Conditions(notDagKings, inDagCave7), moveToDagCave8);
-		doElite.addStep(new Conditions(notDagKings, inDagCave6), moveToDagCave7);
-		doElite.addStep(new Conditions(notDagKings, inDagCave5), moveToDagCave6);
-		doElite.addStep(new Conditions(notDagKings, inDagCave4), moveToDagCave5);
-		doElite.addStep(new Conditions(notDagKings, inDagCave3), moveToDagCave4);
-		doElite.addStep(new Conditions(notDagKings, inDagCave2), moveToDagCave3);
-		doElite.addStep(new Conditions(notDagKings, inDagCave1), moveToDagCave2);
-		doElite.addStep(new Conditions(notDagKings, inDagCave_4), moveToDagCave1);
-		doElite.addStep(new Conditions(notDagKings, inDagCave_3), throwAxe);
-		doElite.addStep(new Conditions(notDagKings, inDagCave_2), moveToAxeSpot);
-		doElite.addStep(new Conditions(notDagKings, inDagCave), dropPetRock);
-		doElite.addStep(new Conditions(notDagKings, inWaterbirthIsland), moveToDagCave);
-		doElite.addStep(notDagKings, moveToWaterbirth);
-		doElite.addStep(new Conditions(notDragonAmulet, inNeitiznot), dragonAmulet);
-		doElite.addStep(notDragonAmulet, moveToNeit);
-		doElite.addStep(new Conditions(notAstralRunes, inLunarIsle), astralRunes);
-		doElite.addStep(new Conditions(notAstralRunes, inLunarIsle2), moveToAltar2);
-		doElite.addStep(new Conditions(notAstralRunes, inLunarIsle3), moveToAltar1);
-		doElite.addStep(new Conditions(notAstralRunes, inPirates3), moveToLunarIsle);
-		doElite.addStep(new Conditions(notAstralRunes, inPirates2), moveToCaptain2);
-		doElite.addStep(new Conditions(notAstralRunes, inPirates), moveToCaptain);
-		doElite.addStep(notAstralRunes, moveToPirates);
-		doElite.addStep(notRellRooftop, rellRooftop);
-		doElite.addStep(new Conditions(notSpiritualMage, inGodwars), spiritualMage);
-		doElite.addStep(notSpiritualMage, moveToGodWars);
-		doElite.addStep(new Conditions(notGodwarsGenerals, inGodwars), godwarsGenerals);
-		doElite.addStep(notGodwarsGenerals, moveToGodWars);
+
+		dagKingsTask = new ConditionalStep(this, moveToWaterbirth);
+		dagKingsTask.addStep(inWaterbirthIsland, moveToDagCave);
+		dagKingsTask.addStep(inDagCave, dropPetRock);
+		dagKingsTask.addStep(inDagCave_2, moveToAxeSpot);
+		dagKingsTask.addStep(inDagCave_3, throwAxe);
+		dagKingsTask.addStep(inDagCave_4, moveToDagCave1);
+		dagKingsTask.addStep(inDagCave1, moveToDagCave2);
+		dagKingsTask.addStep(inDagCave2, moveToDagCave3);
+		dagKingsTask.addStep(inDagCave3, moveToDagCave4);
+		dagKingsTask.addStep(inDagCave4, moveToDagCave5);
+		dagKingsTask.addStep(inDagCave5, moveToDagCave6);
+		dagKingsTask.addStep(inDagCave6, moveToDagCave7);
+		dagKingsTask.addStep(inDagCave7, moveToDagCave8);
+		dagKingsTask.addStep(inDagCave8, moveToDagCave9);
+		dagKingsTask.addStep(inDagCave9, moveToDagCave10);
+		dagKingsTask.addStep(inDagCave10, moveToDagCave11);
+		dagKingsTask.addStep(inDagCave11, moveToDagCave12);
+		dagKingsTask.addStep(inDagCave12, moveToDagKings);
+		dagKingsTask.addStep(inDagCaveKings, dagKings);
+		doElite.addStep(notDagKings, dagKingsTask);
+
+		dragonAmuletTask = new ConditionalStep(this, moveToNeit);
+		dragonAmuletTask.addStep(inNeitiznot, dragonAmulet);
+		doElite.addStep(notDragonAmulet, dragonAmuletTask);
+
+		astralRunesTask = new ConditionalStep(this, moveToPirates);
+		astralRunesTask.addStep(inPirates, moveToCaptain);
+		astralRunesTask.addStep(inPirates2, moveToCaptain2);
+		astralRunesTask.addStep(inPirates3, moveToLunarIsle);
+		astralRunesTask.addStep(inLunarIsle3, moveToAltar1);
+		astralRunesTask.addStep(inLunarIsle2, moveToAltar2);
+		astralRunesTask.addStep(inLunarIsle, astralRunes);
+		doElite.addStep(notAstralRunes, astralRunesTask);
+
+		rellRooftopTask = new ConditionalStep(this, rellRooftop);
+		doElite.addStep(notRellRooftop, rellRooftopTask);
+
+		spiritualMageTask = new ConditionalStep(this, moveToGodWarsSM);
+		spiritualMageTask.addStep(inGodwars, spiritualMage);
+		doElite.addStep(notSpiritualMage, spiritualMageTask);
+
+		godwarsGeneralsTask = new ConditionalStep(this, moveToGodWarsGWD);
+		godwarsGeneralsTask.addStep(inGodwars, godwarsGenerals);
+		doElite.addStep(notGodwarsGenerals, godwarsGeneralsTask);
 
 		return doElite;
 	}
@@ -263,8 +275,10 @@ public class FremennikElite extends ComplexStateQuestHelper
 			"Speak with Maria Gunnars to travel to Neitiznot.");
 
 
-		moveToGodWars = new ObjectStep(this, 26419, new WorldPoint(2919, 3747, 0),
-			"Go down the hole. Bring a rope if this is your first time entering.");
+		moveToGodWarsSM = new ObjectStep(this, 26419, new WorldPoint(2919, 3747, 0),
+			"Go down the hole. Bring a rope if this is your first time entering.", combatGear, food);
+		moveToGodWarsGWD = new ObjectStep(this, 26419, new WorldPoint(2919, 3747, 0),
+			"Go down the hole. Bring a rope if this is your first time entering.", combatGear, food);
 		godwarsGenerals = new NpcStep(this, NpcID.KREEARRA, new WorldPoint(2832, 5301, 2),
 			"Get kills for a faction then kill its respective general.", true);
 		godwarsGenerals.addAlternateNpcs(NpcID.KRIL_TSUTSAROTH);
@@ -322,7 +336,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		moveToDagKings = new ObjectStep(this, 3831, new WorldPoint(1911, 4367, 0),
 			"Enter the Kings' lair.", protectMelee);
 		dagKings = new NpcStep(this, NpcID.DAGANNOTH_REX, new WorldPoint(2913, 4449, 0),
-			"Kill each of the Dagannoth Kings.", true, combatGear);// check slayer and non slayer versions of area and npc ids
+			"Kill each of the Dagannoth Kings.", true, combatGear);
 		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_PRIME);
 		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_SUPREME);
 		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_SUPREME_6496);
@@ -372,19 +386,19 @@ public class FremennikElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Fremennik Sea Boots (4)", ItemID.FREMENNIK_SEA_BOOTS_4, 1),
-				new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Fremennik Sea Boots (4)", ItemID.FREMENNIK_SEA_BOOTS_4, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Dagganoth bones will be dropped in noted form"),
-				new UnlockReward("Enchanted lyre can now teleport to Jatizso and Neitiznot"),
-				new UnlockReward("Even faster approval gain in Miscellania"),
-				new UnlockReward("Seal of passage is no longer needed to interact with anyone on Lunar Isle"),
-				new UnlockReward("Access to the Return Orb inside the bank on Lunar Isle"));
+			new UnlockReward("Dagganoth bones will be dropped in noted form"),
+			new UnlockReward("Enchanted lyre can now teleport to Jatizso and Neitiznot"),
+			new UnlockReward("Even faster approval gain in Miscellania"),
+			new UnlockReward("Seal of passage is no longer needed to interact with anyone on Lunar Isle"),
+			new UnlockReward("Access to the Return Orb inside the bank on Lunar Isle"));
 	}
 
 	@Override
@@ -397,36 +411,42 @@ public class FremennikElite extends ComplexStateQuestHelper
 			moveToDagCave5, moveToDagCave6, moveToDagCave7, moveToDagCave8, moveToDagCave9, moveToDagCave10,
 			moveToDagCave12, moveToDagCave13, moveToDagKings, dagKings), combatGear, thrownaxe, petRock);
 		dagannothKingsSteps.setDisplayCondition(notDagKings);
+		dagannothKingsSteps.setLockingStep(dagKingsTask);
 		allSteps.add(dagannothKingsSteps);
 
 		PanelDetails dragonstoneAmuletSteps = new PanelDetails("Dragonstone Amulet", Arrays.asList(moveToNeit, dragonAmulet),
 			fremIsles, new SkillRequirement(Skill.CRAFTING, 80), dragonstone, goldBar, amuletMould);
 		dragonstoneAmuletSteps.setDisplayCondition(notDragonAmulet);
+		dragonstoneAmuletSteps.setLockingStep(dragonAmuletTask);
 		allSteps.add(dragonstoneAmuletSteps);
 
 		PanelDetails astralRunesSteps = new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain,
 			moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy,
 			new SkillRequirement(Skill.RUNECRAFT, 82), pureEssence.quantity(28));
 		astralRunesSteps.setDisplayCondition(notAstralRunes);
+		astralRunesSteps.setLockingStep(astralRunesTask);
 		allSteps.add(astralRunesSteps);
 
 		PanelDetails rellekkaRooftopsSteps = new PanelDetails("Rellekka Rooftops", Collections.singletonList(rellRooftop),
 			new SkillRequirement(Skill.AGILITY, 80));
 		rellekkaRooftopsSteps.setDisplayCondition(notRellRooftop);
+		rellekkaRooftopsSteps.setLockingStep(rellRooftopTask);
 		allSteps.add(rellekkaRooftopsSteps);
 
-		PanelDetails spiritualMageSteps = new PanelDetails("Slay Spiritual Mage", Arrays.asList(moveToGodWars,
+		PanelDetails spiritualMageSteps = new PanelDetails("Slay Spiritual Mage", Arrays.asList(moveToGodWarsSM,
 			spiritualMage), trollStronghold, new SkillRequirement(Skill.SLAYER, 83, true), combatGear,
 			rope.quantity(1), climbingBoots);
 		spiritualMageSteps.setDisplayCondition(notSpiritualMage);
+		spiritualMageSteps.setLockingStep(spiritualMageTask);
 		allSteps.add(spiritualMageSteps);
 
-		PanelDetails godWarsSteps = new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWars,
+		PanelDetails godWarsSteps = new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWarsGWD,
 			godwarsGenerals), trollStronghold, new SkillRequirement(Skill.AGILITY, 70),
 			new SkillRequirement(Skill.STRENGTH, 70, false), new SkillRequirement(Skill.HITPOINTS, 70, false),
 			new SkillRequirement(Skill.RANGED, 70, false), combatGear, rope.quantity(2), climbingBoots, hammer,
 			mithGrap, crossbow);
 		godWarsSteps.setDisplayCondition(notGodwarsGenerals);
+		godWarsSteps.setLockingStep(godwarsGeneralsTask);
 		allSteps.add(godWarsSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

@@ -90,6 +90,9 @@ public class ArdougneHard extends ComplexStateQuestHelper
 
 	ZoneRequirement inCastle, inDeath0, inDeath1, inDeath2, inDeath12, inDeath02, inDeath, inMournerHQ;
 
+	ConditionalStep rechargeTask, magicGuildTask, stealChestTask, monkeyCageTask, tpWatchtowerTask, redSallyTask,
+		palmTreeTask, poisonIvyTask, mithPlateTask, yanPOHTask, dragSquareTask, deathRuneTask, yanHouseTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -98,27 +101,51 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
-		doHard.addStep(notTPWatchtower, tPWatchtower);
-		doHard.addStep(new Conditions(notYanPOH, notYanHouse2), yanPOH);
-		doHard.addStep(notYanPOH, moveHouse);
-		doHard.addStep(notMagicGuild, magicGuild);
-		doHard.addStep(notMithPlate, mithPlate);
-		doHard.addStep(notRedSally, redSally);
-		doHard.addStep(notRecharge, recharge);
-		doHard.addStep(notMonkeyCage, monkeyCage);
-		doHard.addStep(new Conditions(notStealChest, inCastle), stealChest);
-		doHard.addStep(notStealChest, moveToCastle);
-		doHard.addStep(notDragSquare, dragSquare);
-		doHard.addStep(new Conditions(notDeathRune, redAtAltar, inDeath02), deathRune);
-		doHard.addStep(new Conditions(notDeathRune, redAtDoor, inDeath02), turnKeyMirror);
-		doHard.addStep(new Conditions(notDeathRune, inDeath12), deathMoveDown0);
-		doHard.addStep(new Conditions(notDeathRune, inDeath2), deathMoveDown1);
-		doHard.addStep(new Conditions(notDeathRune, inDeath1), deathMoveUp2);
-		doHard.addStep(new Conditions(notDeathRune, inDeath0), deathMoveUp1);
-		doHard.addStep(new Conditions(notDeathRune, inMournerHQ), enterMournerBasement);
-		doHard.addStep(notDeathRune, enterMournerHQ);
-		doHard.addStep(notPalmTree, palmTree);
-		doHard.addStep(notPoisonIvy, poisonIvy);
+
+		palmTreeTask = new ConditionalStep(this, palmTree);
+		doHard.addStep(notPalmTree, palmTreeTask);
+
+		poisonIvyTask = new ConditionalStep(this, poisonIvy);
+		doHard.addStep(notPoisonIvy, poisonIvyTask);
+
+		tpWatchtowerTask = new ConditionalStep(this, tPWatchtower);
+		doHard.addStep(notTPWatchtower, tpWatchtowerTask);
+
+		yanHouseTask = new ConditionalStep(this, moveHouse);
+		yanHouseTask.addStep(notYanHouse2, yanPOH);
+		doHard.addStep(notYanPOH, yanHouseTask);
+
+		magicGuildTask = new ConditionalStep(this, magicGuild);
+		doHard.addStep(notMagicGuild, magicGuildTask);
+
+		mithPlateTask = new ConditionalStep(this, mithPlate);
+		doHard.addStep(notMithPlate, mithPlateTask);
+
+		redSallyTask = new ConditionalStep(this, redSally);
+		doHard.addStep(notRedSally, redSallyTask);
+
+		rechargeTask = new ConditionalStep(this, recharge);
+		doHard.addStep(notRecharge, rechargeTask);
+
+		monkeyCageTask = new ConditionalStep(this, monkeyCage);
+		doHard.addStep(notMonkeyCage, monkeyCageTask);
+
+		stealChestTask = new ConditionalStep(this, moveToCastle);
+		stealChestTask.addStep(inCastle, stealChest);
+		doHard.addStep(notStealChest, stealChestTask);
+
+		dragSquareTask = new ConditionalStep(this, dragSquare);
+		doHard.addStep(notDragSquare, dragSquareTask);
+
+		deathRuneTask = new ConditionalStep(this, enterMournerHQ);
+		deathRuneTask.addStep(inMournerHQ, enterMournerBasement);
+		deathRuneTask.addStep(inDeath0, deathMoveUp1);
+		deathRuneTask.addStep(inDeath1, deathMoveUp2);
+		deathRuneTask.addStep(inDeath2, deathMoveDown1);
+		deathRuneTask.addStep(inDeath12, deathMoveDown0);
+		deathRuneTask.addStep(new Conditions(redAtDoor, inDeath02), turnKeyMirror);
+		deathRuneTask.addStep(new Conditions(redAtAltar, inDeath02), deathRune);
+		doHard.addStep(notDeathRune, deathRuneTask);
 
 		return doHard;
 	}
@@ -252,7 +279,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 
 		enterMournerHQ = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
 			"Enter the Mourner HQ, or enter the Death Altar via the Abyss.", deathAccess, highEss, crystalTrink, newKey,
-			gasMask.equipped(),	mournerTop.equipped(), mournerTrousers.equipped(),
+			gasMask.equipped(), mournerTop.equipped(), mournerTrousers.equipped(),
 			mournerCloak.equipped(), mournerGloves.equipped(), mournerBoots.equipped());
 		enterMournerBasement = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0),
 			"Enter the Mourner HQ basement.", deathAccess, highEss, crystalTrink, newKey);
@@ -344,55 +371,77 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
+		PanelDetails palmSteps = new PanelDetails("Tree Gnome Village Palm Tree", Collections.singletonList(palmTree),
+			new SkillRequirement(Skill.FARMING, 68, true), spade, rake, palmSap);
+		palmSteps.setDisplayCondition(notPalmTree);
+		palmSteps.setLockingStep(palmTreeTask);
+		allSteps.add(palmSteps);
+
+		PanelDetails ivySteps = new PanelDetails("Monastery Poison Ivy", Collections.singletonList(poisonIvy),
+			new SkillRequirement(Skill.FARMING, 70, true), seedDib, rake, poisonIvySeed);
+		ivySteps.setDisplayCondition(notPoisonIvy);
+		ivySteps.setLockingStep(poisonIvyTask);
+		allSteps.add(ivySteps);
+
 		PanelDetails watchtowerSteps = new PanelDetails("Teleport to Watchtower",
 			Collections.singletonList(tPWatchtower), new SkillRequirement(Skill.MAGIC, 58), watchtower,
 			earthRune.quantity(2), lawRune.quantity(2));
 		watchtowerSteps.setDisplayCondition(notTPWatchtower);
+		watchtowerSteps.setLockingStep(tpWatchtowerTask);
 		allSteps.add(watchtowerSteps);
 
 		PanelDetails yan2Steps = new PanelDetails("Yanille POH", Arrays.asList(moveHouse, yanPOH),
 			new SkillRequirement(Skill.CONSTRUCTION, 50, false), coins.quantity(25000));
 		yan2Steps.setDisplayCondition(new Conditions(notYanHouse, notYanPOH));
+		yan2Steps.setLockingStep(yanHouseTask);
 		allSteps.add(yan2Steps);
 
 		PanelDetails yanSteps = new PanelDetails("Yanille POH", Collections.singletonList(yanPOH));
 		yanSteps.setDisplayCondition(new Conditions(notYanHouse2, notYanPOH));
+		yan2Steps.setLockingStep(yanHouseTask);
 		allSteps.add(yanSteps);
 
 		PanelDetails mgSteps = new PanelDetails("Magic Guild", Collections.singletonList(magicGuild),
 			new SkillRequirement(Skill.MAGIC, 66));
 		mgSteps.setDisplayCondition(notMagicGuild);
+		mgSteps.setLockingStep(magicGuildTask);
 		allSteps.add(mgSteps);
 
 		PanelDetails plateSteps = new PanelDetails("Mithril Platebody", Collections.singletonList(mithPlate),
 			new SkillRequirement(Skill.SMITHING, 68), mithBar.quantity(5), hammer);
 		plateSteps.setDisplayCondition(notMithPlate);
+		plateSteps.setLockingStep(mithPlateTask);
 		allSteps.add(plateSteps);
 
 		PanelDetails sallySteps = new PanelDetails("Red Salamander", Collections.singletonList(redSally),
 			new SkillRequirement(Skill.HUNTER, 59), rope, smallFishingNet);
 		sallySteps.setDisplayCondition(notRedSally);
+		sallySteps.setLockingStep(redSallyTask);
 		allSteps.add(sallySteps);
 
 		PanelDetails rechargeSteps = new PanelDetails("Recharge Jewelry", Collections.singletonList(recharge),
 			legendsQuest, rechargableJewelry);
 		rechargeSteps.setDisplayCondition(notRecharge);
+		rechargeSteps.setLockingStep(rechargeTask);
 		allSteps.add(rechargeSteps);
 
 		PanelDetails monkeySteps = new PanelDetails("Monkey in a Cage", Collections.singletonList(monkeyCage),
 			monkeyMadness, greeGree);
 		monkeySteps.setDisplayCondition(notMonkeyCage);
+		monkeySteps.setLockingStep(monkeyCageTask);
 		allSteps.add(monkeySteps);
 
 		PanelDetails chestSteps = new PanelDetails("Stealing from Ardougne Royalty", Arrays.asList(moveToCastle,
 			stealChest), new SkillRequirement(Skill.THIEVING, 72), lockpick);
 		chestSteps.setDisplayCondition(notStealChest);
+		chestSteps.setLockingStep(stealChestTask);
 		allSteps.add(chestSteps);
 
 		PanelDetails dragSteps = new PanelDetails("Smith Dragon Square in West Ardougne",
 			Collections.singletonList(dragSquare), new SkillRequirement(Skill.SMITHING, 60), shieldLeft, shieldRight,
 			hammer);
 		dragSteps.setDisplayCondition(notDragSquare);
+		dragSteps.setLockingStep(dragSquareTask);
 		allSteps.add(dragSteps);
 
 		PanelDetails deathSteps = new PanelDetails("Craft Death Runes", Arrays.asList(enterMournerHQ,
@@ -400,17 +449,8 @@ public class ArdougneHard extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.RUNECRAFT, 65, true), mourningsEndII, newKey, crystalTrink,
 			mournersOutfit, highEss, deathAccess);
 		deathSteps.setDisplayCondition(notDeathRune);
+		deathSteps.setLockingStep(deathRuneTask);
 		allSteps.add(deathSteps);
-
-		PanelDetails palmSteps = new PanelDetails("Tree Gnome Village Palm Tree", Collections.singletonList(palmTree),
-			new SkillRequirement(Skill.FARMING, 68, true), spade, rake, palmSap);
-		palmSteps.setDisplayCondition(notPalmTree);
-		allSteps.add(palmSteps);
-
-		PanelDetails ivySteps = new PanelDetails("Monastery Poison Ivy", Collections.singletonList(poisonIvy),
-			new SkillRequirement(Skill.FARMING, 70, true), seedDib, rake, poisonIvySeed);
-		ivySteps.setDisplayCondition(notPoisonIvy);
-		allSteps.add(ivySteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

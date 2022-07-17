@@ -83,6 +83,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 
 	Zone deeperLodePub, warrens, castleF1, castleF2;
 
+	ConditionalStep mineIronTask, sandCrabTask, arceuusBookTask, stealFruitTask, warrensStoreTask, boatLandsEndTask,
+		prayCastleTask, digSaltpetreTask, enterPohTask, healSoldierTask, strengthPotionTask, fishTroutTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -91,24 +94,48 @@ public class KourendEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		doEasy.addStep(notMineIron, mineIron);
-		doEasy.addStep(notFishTrout, fishTrout);
-		doEasy.addStep(new Conditions(notStrengthPotion, inPub), strengthPotion);
-		doEasy.addStep(notStrengthPotion, enterPub);
-		doEasy.addStep(notArceuusBook, arceuusBook);
-		doEasy.addStep(new Conditions(notWarrensStore, inWarrens), warrensStore);
-		doEasy.addStep(notWarrensStore, enterWarrens);
-		doEasy.addStep(notBoatLandsEnd, boatLandsEnd);
-		doEasy.addStep(notStealFruit, stealFruit);
-		doEasy.addStep(notDigSaltpetre, digSaltpetre);
-		doEasy.addStep(notSandCrab, sandCrab);
-		doEasy.addStep(new Conditions(notEnterPoh, houseInKourend), enterPoh);
-		doEasy.addStep(notEnterPoh, relocateHouse);
-		doEasy.addStep(new Conditions(notPrayCastle, inCastleF2), prayCastle);
-		doEasy.addStep(new Conditions(notPrayCastle, inCastleF1), enterCastleF2);
-		doEasy.addStep(notPrayCastle, enterCastleF1);
-		doEasy.addStep(new Conditions(notHealSoldier, hasMedpack), healSoldier);
-		doEasy.addStep(notHealSoldier, collectMedpack);
+
+		mineIronTask = new ConditionalStep(this, mineIron);
+		doEasy.addStep(notMineIron, mineIronTask);
+
+		fishTroutTask = new ConditionalStep(this, fishTrout);
+		doEasy.addStep(notFishTrout, fishTroutTask);
+
+		strengthPotionTask = new ConditionalStep(this, enterPub);
+		strengthPotionTask.addStep(inPub, strengthPotion);
+		doEasy.addStep(notStrengthPotion, strengthPotionTask);
+
+		arceuusBookTask = new ConditionalStep(this, arceuusBook);
+		doEasy.addStep(notArceuusBook, arceuusBookTask);
+
+		warrensStoreTask = new ConditionalStep(this, enterWarrens);
+		warrensStoreTask.addStep(inWarrens, warrensStore);
+		doEasy.addStep(notWarrensStore, warrensStoreTask);
+
+		boatLandsEndTask = new ConditionalStep(this, boatLandsEnd);
+		doEasy.addStep(notBoatLandsEnd, boatLandsEndTask);
+
+		stealFruitTask = new ConditionalStep(this, stealFruit);
+		doEasy.addStep(notStealFruit, stealFruitTask);
+
+		digSaltpetreTask = new ConditionalStep(this, digSaltpetre);
+		doEasy.addStep(notDigSaltpetre, digSaltpetreTask);
+
+		sandCrabTask = new ConditionalStep(this, sandCrab);
+		doEasy.addStep(notSandCrab, sandCrabTask);
+
+		enterPohTask = new ConditionalStep(this, relocateHouse);
+		enterPohTask.addStep(houseInKourend, enterPoh);
+		doEasy.addStep(notEnterPoh, enterPohTask);
+
+		prayCastleTask = new ConditionalStep(this, enterCastleF1);
+		prayCastleTask.addStep(inCastleF1, enterCastleF2);
+		prayCastleTask.addStep(inCastleF2, prayCastle);
+		doEasy.addStep(notPrayCastle, prayCastleTask);
+
+		healSoldierTask = new ConditionalStep(this, collectMedpack);
+		healSoldierTask.addStep(hasMedpack, healSoldier);
+		doEasy.addStep(notHealSoldier, healSoldierTask);
 
 
 		return doEasy;
@@ -313,60 +340,72 @@ public class KourendEasy extends ComplexStateQuestHelper
 		PanelDetails mineIronStep = new PanelDetails("Mine Iron Ore", Collections.singletonList(mineIron),
 			pickaxe, new SkillRequirement(Skill.MINING, 15, true));
 		mineIronStep.setDisplayCondition(notMineIron);
+		mineIronStep.setLockingStep(mineIronTask);
 		allSteps.add(mineIronStep);
 
 		PanelDetails fishTroutStep = new PanelDetails("Fish A Trout", Collections.singletonList(fishTrout),
 			new SkillRequirement(Skill.FISHING, 20), flyFishingRod, feathers);
 		fishTroutStep.setDisplayCondition(notFishTrout);
+		fishTroutStep.setLockingStep(fishTroutTask);
 		allSteps.add(fishTroutStep);
 
 		PanelDetails makePotionStep = new PanelDetails("Make A Strength Potion", Arrays.asList(enterPub,
 			strengthPotion), new SkillRequirement(Skill.HERBLORE, 12), druidicRitual, tarrominPotU, limpwurtRoot);
 		makePotionStep.setDisplayCondition(notStrengthPotion);
+		makePotionStep.setLockingStep(strengthPotionTask);
 		allSteps.add(makePotionStep);
 
 		PanelDetails bookStep = new PanelDetails("Hand In A Book", Collections.singletonList(arceuusBook),
 			libraryBook);
 		bookStep.setDisplayCondition(notArceuusBook);
+		bookStep.setLockingStep(arceuusBookTask);
 		allSteps.add(bookStep);
 
 		PanelDetails warrensStep = new PanelDetails("Browse The Warrens Store", Arrays.asList(enterWarrens,
 			warrensStore));
 		warrensStep.setDisplayCondition(notWarrensStore);
+		warrensStep.setLockingStep(warrensStoreTask);
 		allSteps.add(warrensStep);
 
 		PanelDetails takeBoatStep = new PanelDetails("Boat To Land's End", Collections.singletonList(boatLandsEnd));
 		takeBoatStep.setDisplayCondition(notBoatLandsEnd);
+		takeBoatStep.setLockingStep(boatLandsEndTask);
 		allSteps.add(takeBoatStep);
 
 		PanelDetails stealStallStep = new PanelDetails("Steal Some Fruit", Collections.singletonList(stealFruit),
 			new SkillRequirement(Skill.THIEVING, 25, true), hosidiusFavour);
 		stealStallStep.setDisplayCondition(notStealFruit);
+		stealStallStep.setLockingStep(stealFruitTask);
 		allSteps.add(stealStallStep);
 
 		PanelDetails digSaltpetreStep = new PanelDetails("Dig Up Some Saltpetre",
 			Collections.singletonList(digSaltpetre), spade);
 		digSaltpetreStep.setDisplayCondition(notDigSaltpetre);
+		digSaltpetreStep.setLockingStep(digSaltpetreTask);
 		allSteps.add(digSaltpetreStep);
 
 		PanelDetails killCrabStep = new PanelDetails("Kill Sand Crab", Collections.singletonList(sandCrab),
 			combatGear);
 		killCrabStep.setDisplayCondition(notSandCrab);
+		killCrabStep.setLockingStep(sandCrabTask);
 		allSteps.add(killCrabStep);
 
 		PanelDetails enterPohStep = new PanelDetails("Hosidius House", Arrays.asList(relocateHouse,
 			enterPoh), new SkillRequirement(Skill.CONSTRUCTION, 25), coins.quantity(8750));
 		enterPohStep.setDisplayCondition(notEnterPoh);
+		enterPohStep.setLockingStep(enterPohTask);
 		allSteps.add(enterPohStep);
 
 		PanelDetails prayStep = new PanelDetails("Pray At Kourend Castle", Arrays.asList(enterCastleF1, enterCastleF2,
 			prayCastle));
 		prayStep.setDisplayCondition(notPrayCastle);
+		prayStep.setLockingStep(prayCastleTask);
 		allSteps.add(prayStep);
 
 		PanelDetails healSoldierStep = new PanelDetails("Heal A Soldier", Arrays.asList(collectMedpack, healSoldier),
 			medpack);
 		healSoldierStep.setDisplayCondition(notHealSoldier);
+		healSoldierStep.setLockingStep(healSoldierTask);
 		allSteps.add(healSoldierStep);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

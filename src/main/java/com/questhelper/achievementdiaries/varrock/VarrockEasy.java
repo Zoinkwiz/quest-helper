@@ -85,6 +85,9 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 	ZoneRequirement inStronghold1, inEarth, inPotteryRoom;
 
+	ConditionalStep thessaliaTask, auburyTask, ironTask, plankTask, strongholdSecondTask, fenceTask, newsTask,
+		dyingTreeTask, dogBoneTask, bowlTask, kudosTask, troutTask, teaStallTask, earthRuneTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -93,24 +96,52 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
-		doEasy.addStep(notThessalia, thessalia);
-		doEasy.addStep(notNews, news);
-		doEasy.addStep(notDogBone, dogBone);
-		doEasy.addStep(new Conditions(notKudos, notMoreKudos), kudos);
-		doEasy.addStep(notKudos, moreKudos);
-		doEasy.addStep(notAubury, aubury);
-		doEasy.addStep(notTeaStall, teaStall);
-		doEasy.addStep(notPlank, plank);
-		doEasy.addStep(notDyingTree, dyingTree);
-		doEasy.addStep(new Conditions(notEarthRune, inEarth), earthRune);
-		doEasy.addStep(notEarthRune, moveToEarthRune);
-		doEasy.addStep(notIron, iron);
-		doEasy.addStep(notFence, fence);
-		doEasy.addStep(notTrout, trout);
-		doEasy.addStep(new Conditions(notBowl, madeBowl), bowl);
-		doEasy.addStep(notBowl, potteryWheel);
-		doEasy.addStep(new Conditions(LogicType.OR, notStrongholdSecond, inStronghold1), moveToStronghold2);
-		doEasy.addStep(notStrongholdSecond, moveToStronghold1);
+
+		thessaliaTask = new ConditionalStep(this, thessalia);
+		doEasy.addStep(notThessalia, thessaliaTask);
+
+		newsTask = new ConditionalStep(this, news);
+		doEasy.addStep(notNews, newsTask);
+
+		dogBoneTask = new ConditionalStep(this, dogBone);
+		doEasy.addStep(notDogBone, dogBoneTask);
+
+		kudosTask = new ConditionalStep(this, moreKudos);
+		kudosTask.addStep(new Conditions(notKudos, notMoreKudos), kudos);
+		doEasy.addStep(notKudos, kudosTask);
+
+		auburyTask = new ConditionalStep(this, aubury);
+		doEasy.addStep(notAubury, auburyTask);
+
+		teaStallTask = new ConditionalStep(this, teaStall);
+		doEasy.addStep(notTeaStall, teaStallTask);
+
+		plankTask = new ConditionalStep(this, plank);
+		doEasy.addStep(notPlank, plankTask);
+
+		dyingTreeTask = new ConditionalStep(this, dyingTree);
+		doEasy.addStep(notDyingTree, dyingTreeTask);
+
+		earthRuneTask = new ConditionalStep(this, moveToEarthRune);
+		earthRuneTask.addStep(new Conditions(notEarthRune, inEarth), earthRune);
+		doEasy.addStep(notEarthRune, earthRuneTask);
+
+		ironTask = new ConditionalStep(this, iron);
+		doEasy.addStep(notIron, ironTask);
+
+		fenceTask = new ConditionalStep(this, fence);
+		doEasy.addStep(notFence, fenceTask);
+
+		troutTask = new ConditionalStep(this, trout);
+		doEasy.addStep(notTrout, troutTask);
+
+		bowlTask = new ConditionalStep(this, potteryWheel);
+		bowlTask.addStep(new Conditions(notBowl, madeBowl), bowl);
+		doEasy.addStep(notBowl, bowlTask);
+
+		strongholdSecondTask = new ConditionalStep(this, moveToStronghold1);
+		strongholdSecondTask.addStep(new Conditions(LogicType.OR, notStrongholdSecond, inStronghold1), moveToStronghold2);
+		doEasy.addStep(notStrongholdSecond, strongholdSecondTask);
 
 		return doEasy;
 	}
@@ -276,64 +307,79 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		PanelDetails thessaliaSteps = new PanelDetails("Browse Thessalia's Store",
 			Collections.singletonList(thessalia));
 		thessaliaSteps.setDisplayCondition(notThessalia);
+		thessaliaSteps.setLockingStep(thessaliaTask);
 		allSteps.add(thessaliaSteps);
 
 		PanelDetails newsSteps = new PanelDetails("Buy Newspaper", Collections.singletonList(news), coins.quantity(50));
 		newsSteps.setDisplayCondition(notNews);
+		newsSteps.setLockingStep(newsTask);
 		allSteps.add(newsSteps);
 
 		PanelDetails dogBoneSteps = new PanelDetails("Give a Dog a Bone", Collections.singletonList(dogBone), bone);
 		dogBoneSteps.setDisplayCondition(notDogBone);
+		dogBoneSteps.setLockingStep(dogBoneTask);
 		allSteps.add(dogBoneSteps);
 
-		PanelDetails kudosSteps = new PanelDetails("Speak to Haig Halen", Collections.singletonList(kudos), notMoreKudos);
+		PanelDetails kudosSteps = new PanelDetails("Speak to Haig Halen", Arrays.asList(moreKudos, kudos),
+			notMoreKudos);
 		kudosSteps.setDisplayCondition(notKudos);
+		kudosSteps.setLockingStep(kudosTask);
 		allSteps.add(kudosSteps);
 
 		PanelDetails auburySteps = new PanelDetails("Teleport to Essence Mine", Collections.singletonList(aubury), runeMysteries);
 		auburySteps.setDisplayCondition(notAubury);
+		auburySteps.setLockingStep(auburyTask);
 		allSteps.add(auburySteps);
 
 		PanelDetails teaStallSteps = new PanelDetails("Steal from the Tea Stall", Collections.singletonList(teaStall),
 			new SkillRequirement(Skill.THIEVING, 5));
 		teaStallSteps.setDisplayCondition(notTeaStall);
+		teaStallSteps.setLockingStep(teaStallTask);
 		allSteps.add(teaStallSteps);
 
 		PanelDetails plankSteps = new PanelDetails("Make Plank", Collections.singletonList(plank), coins.quantity(100), log);
 		plankSteps.setDisplayCondition(notPlank);
+		plankSteps.setLockingStep(plankTask);
 		allSteps.add(plankSteps);
 
 		PanelDetails dyingTreeSteps = new PanelDetails("Chop Down Dying Tree", Collections.singletonList(dyingTree), axe);
 		dyingTreeSteps.setDisplayCondition(notDyingTree);
+		dyingTreeSteps.setLockingStep(dyingTreeTask);
 		allSteps.add(dyingTreeSteps);
 
 		PanelDetails earthRuneSteps = new PanelDetails("Craft an Earth Rune", Arrays.asList(moveToEarthRune,
 			earthRune), new SkillRequirement(Skill.RUNECRAFT, 9), essence, earthTali);
 		earthRuneSteps.setDisplayCondition(notEarthRune);
+		earthRuneSteps.setLockingStep(earthRuneTask);
 		allSteps.add(earthRuneSteps);
 
 		PanelDetails ironSteps = new PanelDetails("Mine Iron South East", Collections.singletonList(iron),
 			new SkillRequirement(Skill.MINING, 15), pickaxe);
 		ironSteps.setDisplayCondition(notIron);
+		ironSteps.setLockingStep(ironTask);
 		allSteps.add(ironSteps);
 
 		PanelDetails fenceSteps = new PanelDetails("Jump the Fence", Collections.singletonList(fence), new SkillRequirement(Skill.AGILITY, 13));
 		fenceSteps.setDisplayCondition(notFence);
+		fenceSteps.setLockingStep(fenceTask);
 		allSteps.add(fenceSteps);
 
 		PanelDetails troutSteps = new PanelDetails("Fish a Trout", Collections.singletonList(trout),
 			new SkillRequirement(Skill.FISHING, 20), flyRod, feathers);
 		troutSteps.setDisplayCondition(notTrout);
+		troutSteps.setLockingStep(troutTask);
 		allSteps.add(troutSteps);
 
 		PanelDetails bowlSteps = new PanelDetails("Spin a Bowl in Barbarian Village", Arrays.asList(potteryWheel, bowl),
 			new SkillRequirement(Skill.CRAFTING, 8), softClay);
 		bowlSteps.setDisplayCondition(notBowl);
+		bowlSteps.setLockingStep(bowlTask);
 		allSteps.add(bowlSteps);
 
 		PanelDetails strongholdSecondFloorSteps = new PanelDetails("Stronghold Second Floor", Arrays.asList(moveToStronghold1,
 			moveToStronghold2), food);
 		strongholdSecondFloorSteps.setDisplayCondition(notStrongholdSecond);
+		strongholdSecondFloorSteps.setLockingStep(strongholdSecondTask);
 		allSteps.add(strongholdSecondFloorSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

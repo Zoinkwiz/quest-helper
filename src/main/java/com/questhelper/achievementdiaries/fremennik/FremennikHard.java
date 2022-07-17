@@ -70,15 +70,20 @@ public class FremennikHard extends ComplexStateQuestHelper
 
 	// Steps
 	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, tpWaterbirth, freeBlast,
-		moveToRiver, moveToCave, moveToKeldagrim, moveToKeldagrimVarrock, moveToNeitiznot, moveToJatizso, moveToMisc,
-		moveToMine, moveToBlast, claimReward, moveToRellekka;
+		moveToRiverGem, moveToCaveGem, moveToKeldagrimGem, moveToKeldagrimVarrockGem, moveToRiverBlast, moveToCaveBlast,
+		moveToKeldagrimBlast, moveToKeldagrimVarrockBlast, moveToNeitiznot, moveToJatizso, moveToMisc, moveToMine,
+		moveToBlast, claimReward, moveToRellekka;
 
 	ObjectStep miscSupport;
 
 	Zone misc, neitiznot, keldagrim, jatizso, caveArea, riverArea, varrockArea, hunterArea, rellekkaArea, mineArea,
 		blastArea;
 
-	ZoneRequirement inMisc, inNeitiznot, inKeldagrim, inJatizso, inCaveArea, inRiverArea, inVarrockArea, inHunterArea, inRellekka, inMineArea, inBlastArea;
+	ZoneRequirement inMisc, inNeitiznot, inKeldagrim, inJatizso, inCaveArea, inRiverArea, inVarrockArea, inHunterArea,
+		inRellekka, inMineArea, inBlastArea;
+
+	ConditionalStep tpTrollTask, catchKyattTask, mixSuperDefTask, stealGemTask, craftShieldTask, mineAddyTask,
+		miscSupportTask, tpWaterbirthTask, freeBlastTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -88,29 +93,47 @@ public class FremennikHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
-		doHard.addStep(new Conditions(notMiscSupport, inMisc), miscSupport);
-		doHard.addStep(notMiscSupport, moveToMisc);
-		doHard.addStep(new Conditions(notMineAddy, inMineArea), mineAddy);
-		doHard.addStep(new Conditions(notMineAddy, inJatizso), moveToMine);
-		doHard.addStep(notMineAddy, moveToJatizso);
-		doHard.addStep(new Conditions(notCraftShield, inNeitiznot), craftShield);
-		doHard.addStep(notCraftShield, moveToNeitiznot);
-		doHard.addStep(new Conditions(notMixSuperDef, inRellekka), mixSuperDef);
-		doHard.addStep(notMixSuperDef, moveToRellekka);
-		doHard.addStep(notCatchKyatt, catchKyatt);
-		doHard.addStep(new Conditions(notStealGem, inKeldagrim), stealGem);
-		doHard.addStep(new Conditions(notStealGem, inRiverArea), moveToKeldagrim);
-		doHard.addStep(new Conditions(notStealGem, inCaveArea), moveToRiver);
-		doHard.addStep(new Conditions(notStealGem, inVarrockArea), moveToKeldagrimVarrock);
-		doHard.addStep(notStealGem, moveToCave);
-		doHard.addStep(new Conditions(notFreeBlast, inBlastArea), freeBlast);
-		doHard.addStep(new Conditions(notFreeBlast, inKeldagrim), moveToBlast);
-		doHard.addStep(new Conditions(notFreeBlast, inRiverArea), moveToKeldagrim);
-		doHard.addStep(new Conditions(notFreeBlast, inCaveArea), moveToRiver);
-		doHard.addStep(new Conditions(notFreeBlast, inVarrockArea), moveToKeldagrimVarrock);
-		doHard.addStep(notFreeBlast, moveToCave);
-		doHard.addStep(notTPTroll, tpTroll);
-		doHard.addStep(notTPWaterbirth, tpWaterbirth);
+
+		miscSupportTask = new ConditionalStep(this, moveToMisc);
+		miscSupportTask.addStep(inMisc, miscSupport);
+		doHard.addStep(notMiscSupport, miscSupportTask);
+
+		mineAddyTask = new ConditionalStep(this, moveToJatizso);
+		mineAddyTask.addStep(inJatizso, moveToMine);
+		mineAddyTask.addStep(inMineArea, mineAddy);
+		doHard.addStep(notMineAddy, mineAddyTask);
+
+		craftShieldTask = new ConditionalStep(this, moveToNeitiznot);
+		craftShieldTask.addStep(inNeitiznot, craftShield);
+		doHard.addStep(notCraftShield, craftShieldTask);
+
+		mixSuperDefTask = new ConditionalStep(this, moveToRellekka);
+		mixSuperDefTask.addStep(inRellekka, mixSuperDef);
+		doHard.addStep(notMixSuperDef, mixSuperDefTask);
+
+		catchKyattTask = new ConditionalStep(this, catchKyatt);
+		doHard.addStep(notCatchKyatt, catchKyattTask);
+
+		stealGemTask = new ConditionalStep(this, moveToCaveGem);
+		stealGemTask.addStep(inVarrockArea, moveToKeldagrimVarrockGem);
+		stealGemTask.addStep(inCaveArea, moveToRiverGem);
+		stealGemTask.addStep(inRiverArea, moveToKeldagrimGem);
+		stealGemTask.addStep(inKeldagrim, stealGem);
+		doHard.addStep(notStealGem, stealGemTask);
+
+		freeBlastTask = new ConditionalStep(this, moveToCaveBlast);
+		freeBlastTask.addStep(inVarrockArea, moveToKeldagrimVarrockBlast);
+		freeBlastTask.addStep(inCaveArea, moveToRiverBlast);
+		freeBlastTask.addStep(inRiverArea, moveToKeldagrimBlast);
+		freeBlastTask.addStep(inKeldagrim, moveToBlast);
+		freeBlastTask.addStep(inBlastArea, freeBlast);
+		doHard.addStep(notFreeBlast, freeBlastTask);
+
+		tpTrollTask = new ConditionalStep(this, tpTroll);
+		doHard.addStep(notTPTroll, tpTrollTask);
+
+		tpWaterbirthTask = new ConditionalStep(this, tpWaterbirth);
+		doHard.addStep(notTPWaterbirth, tpWaterbirthTask);
 
 		return doHard;
 	}
@@ -193,17 +216,26 @@ public class FremennikHard extends ComplexStateQuestHelper
 			"Enter the Relleka province.");
 		mixSuperDef = new ItemStep(this, new WorldPoint(2662, 3657, 0),
 			"Mix a Super defence potion within the Fremennik Province (only near Rellekka).", cadantineUnfPot.highlighted(), whiteBerries.highlighted());
-		moveToCave = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+		moveToCaveGem = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
 			"Enter the tunnel that leads to Keldagrim. Alternatively teleport to Varrock and take a minecart near the Grand Exchange.");
-		moveToRiver = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+		moveToRiverGem = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
 			"Go through the cave entrance.");
-		moveToKeldagrim = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+		moveToKeldagrimGem = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
 			"Speak with the Dwarven Boatman to go to Keldagrim.");
-		moveToKeldagrim.addDialogStep("Yes, please take me.");
+		moveToKeldagrimGem.addDialogStep("Yes, please take me.");
+		moveToKeldagrimVarrockGem = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+			"Enter the trapdoor near the Grand Exchange.");
+		moveToCaveBlast = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+			"Enter the tunnel that leads to Keldagrim. Alternatively teleport to Varrock and take a minecart near the Grand Exchange.");
+		moveToRiverBlast = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+			"Go through the cave entrance.");
+		moveToKeldagrimBlast = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+			"Speak with the Dwarven Boatman to go to Keldagrim.");
+		moveToKeldagrimBlast.addDialogStep("Yes, please take me.");
+		moveToKeldagrimVarrockBlast = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+			"Enter the trapdoor near the Grand Exchange.");
 		stealGem = new ObjectStep(this, ObjectID.GEM_STALL_6162, new WorldPoint(2888, 10211, 0),
 			"Steal from the gem stall.");
-		moveToKeldagrimVarrock = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
-			"Enter the trapdoor near the Grand Exchange.");
 		moveToNeitiznot = new NpcStep(this, NpcID.MARIA_GUNNARS_1883, new WorldPoint(2644, 3710, 0),
 			"Speak with Maria Gunnars to travel to Neitiznot.");
 		craftShield = new ObjectStep(this, ObjectID.WOODCUTTING_STUMP, new WorldPoint(2342, 3807, 0),
@@ -270,19 +302,19 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Fremennik Sea Boots (3)", ItemID.FREMENNIK_SEA_BOOTS_3, 1),
-				new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Fremennik Sea Boots (3)", ItemID.FREMENNIK_SEA_BOOTS_3, 1),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Ability to change enchanted lyre teleport desination to Waterbirth Island."),
-				new UnlockReward("Aviansies in the God Wars Dungeon will drop noted adamantite bars."),
-				new UnlockReward("Shortcut to roof on the Troll Stronghold"),
-				new UnlockReward("Stony Basalt teleport destination can be changed to the roof of Troll Stronghold"),
-				new UnlockReward("Access to 2 new Lunar Spells, Charge Dragonstone and Tan Leather"));
+			new UnlockReward("Ability to change enchanted lyre teleport desination to Waterbirth Island."),
+			new UnlockReward("Aviansies in the God Wars Dungeon will drop noted adamantite bars."),
+			new UnlockReward("Shortcut to roof on the Troll Stronghold"),
+			new UnlockReward("Stony Basalt teleport destination can be changed to the roof of Troll Stronghold"),
+			new UnlockReward("Access to 2 new Lunar Spells, Charge Dragonstone and Tan Leather"));
 	}
 
 	@Override
@@ -293,48 +325,58 @@ public class FremennikHard extends ComplexStateQuestHelper
 		PanelDetails miscSupportSteps = new PanelDetails("Miscellania 100% Support", Arrays.asList(moveToMisc,
 			miscSupport), throneOfMisc, rake);
 		miscSupportSteps.setDisplayCondition(notMiscSupport);
+		miscSupportSteps.setLockingStep(miscSupportTask);
 		allSteps.add(miscSupportSteps);
 
 		PanelDetails mineAdamantiteOnJatizsoSteps = new PanelDetails("Mine Adamantite on Jatizso", Arrays.asList(moveToJatizso, moveToMine,
 			mineAddy), fremIsles, new SkillRequirement(Skill.MINING, 70, true), pickaxe);
 		mineAdamantiteOnJatizsoSteps.setDisplayCondition(notMineAddy);
+		mineAdamantiteOnJatizsoSteps.setLockingStep(mineAddyTask);
 		allSteps.add(mineAdamantiteOnJatizsoSteps);
 
 		PanelDetails shieldOnNeitiznotSteps = new PanelDetails("Craft Shield on Neitiznot", Arrays.asList(moveToNeitiznot,
 			craftShield), fremIsles, new SkillRequirement(Skill.WOODCUTTING, 56, true), axe, arcticLog.quantity(2),
 			hammer, rope, bronzeNail);
 		shieldOnNeitiznotSteps.setDisplayCondition(notCraftShield);
+		shieldOnNeitiznotSteps.setLockingStep(craftShieldTask);
 		allSteps.add(shieldOnNeitiznotSteps);
 
-		PanelDetails superDefenseSteps = new PanelDetails("Mix a Super Defense", Collections.singletonList(mixSuperDef),
+		PanelDetails superDefenseSteps = new PanelDetails("Mix a Super Defense", Arrays.asList(moveToRellekka,
+			mixSuperDef),
 			new SkillRequirement(Skill.HERBLORE, 66, true), cadantineUnfPot, whiteBerries);
 		superDefenseSteps.setDisplayCondition(notMixSuperDef);
+		superDefenseSteps.setLockingStep(mixSuperDefTask);
 		allSteps.add(superDefenseSteps);
 
 		PanelDetails kyattSteps = new PanelDetails("Catch a saber-toothed kyatt", Collections.singletonList(catchKyatt),
 			new SkillRequirement(Skill.HUNTER, 55, true), teasingStick, log, knife);
 		kyattSteps.setDisplayCondition(notCatchKyatt);
+		kyattSteps.setLockingStep(catchKyattTask);
 		allSteps.add(kyattSteps);
 
-		PanelDetails gemStallSteps = new PanelDetails("Steal from Gem Stall", Arrays.asList(moveToCave, moveToRiver,
-			moveToKeldagrim, moveToKeldagrimVarrock, stealGem), giantDwarf, new SkillRequirement(Skill.THIEVING, 75, true));
+		PanelDetails gemStallSteps = new PanelDetails("Steal from Gem Stall", Arrays.asList(moveToCaveGem, moveToRiverGem,
+			moveToKeldagrimGem, moveToKeldagrimVarrockGem, stealGem), giantDwarf, new SkillRequirement(Skill.THIEVING, 75, true));
 		gemStallSteps.setDisplayCondition(notStealGem);
+		gemStallSteps.setLockingStep(stealGemTask);
 		allSteps.add(gemStallSteps);
 
-		PanelDetails freeBlastFurnaceSteps = new PanelDetails("Free Blast Furnace", Arrays.asList(moveToCave, moveToRiver,
-			moveToKeldagrim, moveToKeldagrimVarrock, moveToBlast, freeBlast), giantDwarf,
+		PanelDetails freeBlastFurnaceSteps = new PanelDetails("Free Blast Furnace", Arrays.asList(moveToCaveBlast,
+			moveToRiverBlast, moveToKeldagrimBlast, moveToKeldagrimVarrockBlast, moveToBlast, freeBlast), giantDwarf,
 			new SkillRequirement(Skill.SMITHING, 60, false));
 		freeBlastFurnaceSteps.setDisplayCondition(notFreeBlast);
+		freeBlastFurnaceSteps.setLockingStep(freeBlastTask);
 		allSteps.add(freeBlastFurnaceSteps);
 
 		PanelDetails teleportToTrollheimSteps = new PanelDetails("Teleport to Trollheim", Collections.singletonList(tpTroll),
 			eadgarsRuse, new SkillRequirement(Skill.MAGIC, 61), normalBook, fireRune.quantity(2), lawRune.quantity(2));
 		teleportToTrollheimSteps.setDisplayCondition(notTPTroll);
+		teleportToTrollheimSteps.setLockingStep(tpTrollTask);
 		allSteps.add(teleportToTrollheimSteps);
 
 		PanelDetails teleportToWaterbirthSteps = new PanelDetails("Teleport to Waterbirth", Collections.singletonList(tpWaterbirth),
 			lunarDiplomacy, new SkillRequirement(Skill.MAGIC, 72), lunarBook, waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1));
 		teleportToWaterbirthSteps.setDisplayCondition(notTPWaterbirth);
+		teleportToWaterbirthSteps.setLockingStep(tpWaterbirthTask);
 		allSteps.add(teleportToWaterbirthSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

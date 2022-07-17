@@ -87,6 +87,8 @@ public class KandarinElite extends ComplexStateQuestHelper
 
 	Requirement lunarBook;
 
+	ConditionalStep barb5Task, pickDwarfTask, sharkTask, stamMixTask, runeHastaTask, pyreTask, tpCathTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -95,20 +97,34 @@ public class KandarinElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(notTPCath, tpCath);
-		doElite.addStep(new Conditions(not5Shark,fishedSharks, rawShark.quantity(5)), cook5Sharks);
-		doElite.addStep(not5Shark, catch5Sharks);
-		doElite.addStep(new Conditions(notStamMix, inBankRoof), stamMix);
-		doElite.addStep(notStamMix, moveToSeersRooftop);
-		doElite.addStep(notRuneHasta, runeHasta);
-		doElite.addStep(notPyre, pyre);
-		doElite.addStep(new Conditions(notbarb5, notHeal), barb5Heal);
-		doElite.addStep(new Conditions(notbarb5, notAtk), barb5Atk);
-		doElite.addStep(new Conditions(notbarb5, notDef), barb5Def);
-		doElite.addStep(new Conditions(notbarb5, notCol), barb5Col);
-		doElite.addStep(new Conditions(notbarb5, inBarbUnder), barb52);
-		doElite.addStep(notbarb5, barb5);
-		doElite.addStep(notPickDwarf, plantAndPickDwarf);
+
+		pickDwarfTask = new ConditionalStep(this, plantAndPickDwarf);
+		doElite.addStep(notPickDwarf, pickDwarfTask);
+
+		tpCathTask = new ConditionalStep(this, tpCath);
+		doElite.addStep(notTPCath, tpCathTask);
+
+		sharkTask = new ConditionalStep(this, catch5Sharks);
+		sharkTask.addStep(new Conditions(fishedSharks, rawShark.quantity(5)), cook5Sharks);
+		doElite.addStep(not5Shark, sharkTask);
+
+		stamMixTask = new ConditionalStep(this, moveToSeersRooftop);
+		stamMixTask.addStep(inBankRoof, stamMix);
+		doElite.addStep(notStamMix, stamMixTask);
+
+		runeHastaTask = new ConditionalStep(this, runeHasta);
+		doElite.addStep(notRuneHasta, runeHastaTask);
+
+		pyreTask = new ConditionalStep(this, pyre);
+		doElite.addStep(notPyre, pyreTask);
+
+		barb5Task = new ConditionalStep(this, barb5);
+		barb5Task.addStep(inBarbUnder, barb52);
+		barb5Task.addStep(notCol, barb5Col);
+		barb5Task.addStep(notDef, barb5Def);
+		barb5Task.addStep(notAtk, barb5Atk);
+		barb5Task.addStep(notHeal, barb5Heal);
+		doElite.addStep(notbarb5, barb5Task);
 
 		return doElite;
 	}
@@ -201,7 +217,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 			lunarBook, waterRune.quantity(10), astralRune.quantity(3), lawRune.quantity(3));
 		plantAndPickDwarf = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2814, 3464, 0),
 			"Plant and harvest the dwarf weed from the Catherby patch.", rake, dwarfSeed, seedDib);
-		catch5Sharks = new NpcStep(this, FishingSpot.SHARK.getIds(), new WorldPoint(2837, 3431, 0),
+		catch5Sharks = new NpcStep(this, NpcID.FISHING_SPOT_1520, new WorldPoint(2837, 3431, 0),
 			"Catch 5 sharks in Catherby.", harpoon, cookingGaunt.equipped());
 		cook5Sharks = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2817, 3444, 0),
 			"Successfully cook 5 on the range in Catherby.", cookingGaunt.equipped());
@@ -291,31 +307,37 @@ public class KandarinElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
+		PanelDetails dwarfWeedSteps = new PanelDetails("Dwarf Weed in Catherby", Collections.singletonList(plantAndPickDwarf),
+			new SkillRequirement(Skill.FARMING, 79, true), dwarfSeed, seedDib, rake, spade, compost);
+		dwarfWeedSteps.setDisplayCondition(notPickDwarf);
+		dwarfWeedSteps.setLockingStep(pickDwarfTask);
+		allSteps.add(dwarfWeedSteps);
+
 		PanelDetails teleCathSteps = new PanelDetails("Teleport to Catherby", Collections.singletonList(tpCath),
-			new SkillRequirement(Skill.MAGIC, 87, true),
-			lunarDip, waterRune.quantity(10), lawRune.quantity(3), astralRune.quantity(3));
+			new SkillRequirement(Skill.MAGIC, 87, true), lunarDip, waterRune.quantity(10),
+			lawRune.quantity(3), astralRune.quantity(3));
 		teleCathSteps.setDisplayCondition(notTPCath);
+		teleCathSteps.setLockingStep(tpCathTask);
 		allSteps.add(teleCathSteps);
 
 		PanelDetails catchSharkSteps = new PanelDetails("5 Sharks Caught and Cooked in Catherby",
-			Arrays.asList(catch5Sharks, cook5Sharks),
-			new SkillRequirement(Skill.FISHING, 76, true),
-			new SkillRequirement(Skill.COOKING, 80, true),
-			familyCrest, harpoon, cookingGaunt);
+			Arrays.asList(catch5Sharks, cook5Sharks), new SkillRequirement(Skill.FISHING, 76, true),
+			new SkillRequirement(Skill.COOKING, 80, true), familyCrest, harpoon, cookingGaunt);
 		catchSharkSteps.setDisplayCondition(not5Shark);
+		catchSharkSteps.setLockingStep(sharkTask);
 		allSteps.add(catchSharkSteps);
 
 		PanelDetails staminaSteps = new PanelDetails("Stamina Mix on the Bank", Arrays.asList(moveToSeersRooftop, stamMix),
 			new SkillRequirement(Skill.HERBLORE, 86, true),
-			new SkillRequirement(Skill.AGILITY, 60, true),
-			barbHerb, stamPot, caviar);
+			new SkillRequirement(Skill.AGILITY, 60, true), barbHerb, stamPot, caviar);
 		staminaSteps.setDisplayCondition(notStamMix);
+		staminaSteps.setLockingStep(stamMixTask);
 		allSteps.add(staminaSteps);
 
 		PanelDetails smithRuneHastaSteps = new PanelDetails("Smith Rune Hasta", Collections.singletonList(runeHasta),
-			new SkillRequirement(Skill.SMITHING, 90, true),
-			barbSmith, magicLogs, runiteBar, hammer);
+			new SkillRequirement(Skill.SMITHING, 90, true), barbSmith, magicLogs, runiteBar, hammer);
 		smithRuneHastaSteps.setDisplayCondition(notRuneHasta);
+		smithRuneHastaSteps.setLockingStep(runeHastaTask);
 		allSteps.add(smithRuneHastaSteps);
 
 		PanelDetails magicPyreSteps = new PanelDetails("Magic Pyre Ship", Collections.singletonList(pyre),
@@ -323,17 +345,13 @@ public class KandarinElite extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.CRAFTING, 85, true),
 			barbFire, axe, tinderbox, magicLogs, chewedBone);
 		magicPyreSteps.setDisplayCondition(notPyre);
+		magicPyreSteps.setLockingStep(pyreTask);
 		allSteps.add(magicPyreSteps);
 
 		PanelDetails level5RolesSteps = new PanelDetails("Level 5 each Role", Arrays.asList(barb5Heal, barb5Atk, barb5Def, barb5Col, barb5));
 		level5RolesSteps.setDisplayCondition(notbarb5);
+		level5RolesSteps.setLockingStep(barb5Task);
 		allSteps.add(level5RolesSteps);
-
-		PanelDetails dwarfWeedSteps = new PanelDetails("Dwarf Weed in Catherby", Collections.singletonList(plantAndPickDwarf),
-			new SkillRequirement(Skill.FARMING, 79, true),
-			dwarfSeed, seedDib, rake, spade, compost);
-		dwarfWeedSteps.setDisplayCondition(notPickDwarf);
-		allSteps.add(dwarfWeedSteps);
 
 		PanelDetails finishingOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
 		allSteps.add(finishingOffSteps);

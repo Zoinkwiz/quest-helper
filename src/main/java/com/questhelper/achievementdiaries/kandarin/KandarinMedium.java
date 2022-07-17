@@ -55,7 +55,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.KANDARIN_MEDIUM
+	quest = QuestHelperQuest.KANDARIN_MEDIUM
 )
 
 public class KandarinMedium extends ComplexStateQuestHelper
@@ -81,7 +81,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	Requirement alfredBar, eleWorkII, waterfallQuest, fairyTaleII;
 
 	QuestStep barbAgi, superAnti, enterRange, grapOb, cookBass, tpCAM, stringMaple, plantAndPickLimp,
-		mindHelm, barbAss, stealHemen, travelMcGrubor, mineCoal, claimReward, moveToTavDungeon,
+		makeMindHelmet, barbAss, stealHemen, travelMcGrubor, mineCoal, claimReward, moveToTavDungeon,
 		moveToBank, moveToSeersCath, moveToOb, moveToWorkshop, moveToWaterfall, mixUnf, crushHorn;
 
 	NpcStep catchBass, fireGiant;
@@ -89,6 +89,10 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	Zone bank, seersCath, tavDungeon, workshop, obIsland, waterfall;
 
 	ZoneRequirement inBank, inSeersCath, inTavDungeon, inWorkshop, inObIsland, inWaterfall;
+
+	ConditionalStep barbAgiTask, superAntiTask, enterRangeTask, grapObTask, catchCookBassTask, tpCamTask,
+		stringMapleTask, pickLimpTask, mindHelmTask, fireGiantTask, barbAssTask, stealHemenTask, travelMcGruborTask,
+		mineCoalTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -99,27 +103,56 @@ public class KandarinMedium extends ComplexStateQuestHelper
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
 
-		doMedium.addStep(new Conditions(notGrapOb, inObIsland), grapOb);
-		doMedium.addStep(new Conditions(notGrapOb, inTavDungeon), moveToOb);
-		doMedium.addStep(notGrapOb, moveToTavDungeon);
-		doMedium.addStep(new Conditions(notSuperAnti, inSeersCath, unfIrit, hornDust), superAnti);
-		doMedium.addStep(new Conditions(notSuperAnti, inSeersCath, unfIrit), crushHorn);
-		doMedium.addStep(new Conditions(notSuperAnti, inSeersCath), mixUnf);
-		doMedium.addStep(notSuperAnti, moveToSeersCath);
-		doMedium.addStep(new Conditions(notCatchCookBass, rawBass), cookBass);
-		doMedium.addStep(notCatchCookBass, catchBass);
-		doMedium.addStep(new Conditions(notStringMaple, inBank), stringMaple);
-		doMedium.addStep(notStringMaple, moveToBank);
-		doMedium.addStep(notEnterRange, enterRange);
-		doMedium.addStep(notStealHemen, stealHemen);
-		doMedium.addStep(notMineCoal, mineCoal);
-		doMedium.addStep(new Conditions(notFireGiant, inWaterfall), fireGiant);
-		doMedium.addStep(notFireGiant, moveToWaterfall);
-		doMedium.addStep(notBarbAgi, barbAgi);
-		doMedium.addStep(notBarbAss, barbAss);
-		doMedium.addStep(notTravelMcGrubor, travelMcGrubor);
-		doMedium.addStep(notTPCam, tpCAM);
-		doMedium.addStep(notPickLimp, plantAndPickLimp);
+		pickLimpTask = new ConditionalStep(this, plantAndPickLimp);
+		doMedium.addStep(notPickLimp, pickLimpTask);
+
+		grapObTask = new ConditionalStep(this, moveToTavDungeon);
+		grapObTask.addStep(inTavDungeon, moveToOb);
+		grapObTask.addStep(inObIsland, grapOb);
+		doMedium.addStep(notGrapOb, grapObTask);
+
+		catchCookBassTask = new ConditionalStep(this, catchBass);
+		catchCookBassTask.addStep(rawBass, cookBass);
+		doMedium.addStep(notCatchCookBass, catchCookBassTask);
+
+		stringMapleTask = new ConditionalStep(this, moveToBank);
+		stringMapleTask.addStep(inBank, stringMaple);
+		doMedium.addStep(notStringMaple, stringMapleTask);
+
+		superAntiTask = new ConditionalStep(this, moveToSeersCath);
+		superAntiTask.addStep(inSeersCath, mixUnf);
+		superAntiTask.addStep(new Conditions(inSeersCath, unfIrit), crushHorn);
+		superAntiTask.addStep(new Conditions(inSeersCath, unfIrit, hornDust), superAnti);
+		doMedium.addStep(notSuperAnti, superAntiTask);
+
+		mindHelmTask = new ConditionalStep(this, makeMindHelmet);
+		mindHelmTask.addStep(inWorkshop, makeMindHelmet);
+		doMedium.addStep(notMindHelm, mindHelmTask);
+
+		enterRangeTask = new ConditionalStep(this, enterRange);
+		doMedium.addStep(notEnterRange, enterRangeTask);
+
+		stealHemenTask = new ConditionalStep(this, stealHemen);
+		doMedium.addStep(notStealHemen, stealHemenTask);
+
+		mineCoalTask = new ConditionalStep(this, mineCoal);
+		doMedium.addStep(notMineCoal, mineCoalTask);
+
+		fireGiantTask = new ConditionalStep(this, moveToWaterfall);
+		fireGiantTask.addStep(inWaterfall, fireGiant);
+		doMedium.addStep(notFireGiant, fireGiantTask);
+
+		barbAgiTask = new ConditionalStep(this, barbAgi);
+		doMedium.addStep(notBarbAgi, barbAgiTask);
+
+		barbAssTask = new ConditionalStep(this, barbAss);
+		doMedium.addStep(notBarbAss, barbAssTask);
+
+		travelMcGruborTask = new ConditionalStep(this, travelMcGrubor);
+		doMedium.addStep(notTravelMcGrubor, travelMcGruborTask);
+
+		tpCamTask = new ConditionalStep(this, tpCAM);
+		doMedium.addStep(notTPCam, tpCamTask);
 
 		return doMedium;
 	}
@@ -201,6 +234,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		tavDungeon = new Zone(new WorldPoint(2813, 9857, 0), new WorldPoint(2972, 9669, 0));
 		obIsland = new Zone(new WorldPoint(2833, 3427, 0), new WorldPoint(2849, 3415, 0));
 		waterfall = new Zone(new WorldPoint(2534, 9918, 0), new WorldPoint(2613, 9860, 0));
+		workshop = new Zone(new WorldPoint(2682, 9862, 0), new WorldPoint(2747, 9927, 0));
 	}
 
 	public void setupSteps()
@@ -224,8 +258,8 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		fireGiant.addAlternateNpcs(NpcID.FIRE_GIANT_2079, NpcID.FIRE_GIANT_2078);
 		moveToWorkshop = new ObjectStep(this, ObjectID.STAIRCASE_3415, new WorldPoint(2711, 3498, 0),
 			"Enter the Elemental Workshop.", batteredKey, primedMind);
-		mindHelm = new ObjectStep(this, 123, new WorldPoint(2719, 9889, 0),
-			"Make a mind helm.", primedMind);
+		makeMindHelmet = new ObjectStep(this, ObjectID.WORKBENCH_3402, new WorldPoint(2717, 9888, 0),
+			"Make a mind helm.", beatenBook, primedMind);
 		moveToBank = new DetailedQuestStep(this, new WorldPoint(2725, 3492, 0),
 			"Go to Seers' Village bank to string a maple shortbow.");
 		stringMaple = new DetailedQuestStep(this, "String a maple shortbow.", mapleUnstrung.highlighted(),
@@ -322,18 +356,18 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Kandarin headgear (2)", ItemID.KANDARIN_HEADGEAR_2, 1),
-				new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Kandarin headgear (2)", ItemID.KANDARIN_HEADGEAR_2, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Coal trucks can hold up to 280 coal."),
-				new UnlockReward("The Flax keeper will exchange 60 noted flax for 60 noted bow strings daily"),
-				new UnlockReward("10% more marks of grace on Seers' Village Rooftop Course"),
-				new UnlockReward("5% increased chance to save a harvest life from the Catherby herb patch"));
+			new UnlockReward("Coal trucks can hold up to 280 coal."),
+			new UnlockReward("The Flax keeper will exchange 60 noted flax for 60 noted bow strings daily"),
+			new UnlockReward("10% more marks of grace on Seers' Village Rooftop Course"),
+			new UnlockReward("5% increased chance to save a harvest life from the Catherby herb patch"));
 	}
 
 	@Override
@@ -341,42 +375,49 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
+		PanelDetails pickLimpSteps = new PanelDetails("Pick Limpwurt in Catherby", Collections.singletonList(plantAndPickLimp),
+			new SkillRequirement(Skill.FARMING, 26, true), limpSeed, seedDib, compost, rake);
+		pickLimpSteps.setDisplayCondition(notPickLimp);
+		pickLimpSteps.setLockingStep(pickLimpTask);
+		allSteps.add(pickLimpSteps);
+
 		PanelDetails grappleStep = new PanelDetails("Grapple from Water Obelisk", Arrays.asList(moveToTavDungeon, moveToOb, grapOb),
-			new SkillRequirement(Skill.AGILITY, 36),
-			new SkillRequirement(Skill.STRENGTH, 22),
-			new SkillRequirement(Skill.RANGED, 39),
-			mithGrap, crossbow, dustyKey);
+			new SkillRequirement(Skill.AGILITY, 36), new SkillRequirement(Skill.STRENGTH, 22),
+			new SkillRequirement(Skill.RANGED, 39), mithGrap, crossbow, dustyKey);
 		grappleStep.setDisplayCondition(notGrapOb);
+		grappleStep.setLockingStep(grapObTask);
 		allSteps.add(grappleStep);
 
-		PanelDetails stringMapleShortbow = new PanelDetails("String Maple Shortbow in Seers' Bank",
-			Arrays.asList(moveToBank, stringMaple),
-			new SkillRequirement(Skill.FLETCHING, 50, true),
-			mapleUnstrung, bowString);
-		stringMapleShortbow.setDisplayCondition(notStringMaple);
-		allSteps.add(stringMapleShortbow);
-
 		PanelDetails catchCookBassSteps = new PanelDetails("Catch and Cook Bass", Arrays.asList(catchBass, cookBass),
-			new SkillRequirement(Skill.FISHING, 46, true),
-			new SkillRequirement(Skill.COOKING, 43, true),
+			new SkillRequirement(Skill.FISHING, 46, true), new SkillRequirement(Skill.COOKING, 43, true),
 			bigFishingNet);
 		catchCookBassSteps.setDisplayCondition(notCatchCookBass);
+		catchCookBassSteps.setLockingStep(catchCookBassTask);
 		allSteps.add(catchCookBassSteps);
 
+		PanelDetails stringMapleShortbow = new PanelDetails("String Maple Shortbow in Seers' Bank",
+			Arrays.asList(moveToBank, stringMaple), new SkillRequirement(Skill.FLETCHING, 50, true),
+			mapleUnstrung, bowString);
+		stringMapleShortbow.setDisplayCondition(notStringMaple);
+		stringMapleShortbow.setLockingStep(stringMapleTask);
+		allSteps.add(stringMapleShortbow);
+
 		PanelDetails mixSuperantiSteps = new PanelDetails("Mix Superantipoison", Arrays.asList(moveToSeersCath, mixUnf, crushHorn, superAnti),
-			new SkillRequirement(Skill.HERBLORE, 48, true),
-			unicornHorn, mortarPest, vialOfWater, iritLeaf);
+			new SkillRequirement(Skill.HERBLORE, 48, true), unicornHorn, mortarPest, vialOfWater, iritLeaf);
 		mixSuperantiSteps.setDisplayCondition(notSuperAnti);
+		mixSuperantiSteps.setLockingStep(superAntiTask);
 		allSteps.add(mixSuperantiSteps);
 
-		PanelDetails makeMindHelmStep = new PanelDetails("Make a Mind Helm", Collections.singletonList(mindHelm), eleWorkII,
-			primedMind, batteredKey, beatenBook, hammer);
+		PanelDetails makeMindHelmStep = new PanelDetails("Make a Mind Helm", Arrays.asList(moveToWorkshop,
+			makeMindHelmet), eleWorkII, primedMind, batteredKey, beatenBook, hammer);
 		makeMindHelmStep.setDisplayCondition(notMindHelm);
+		makeMindHelmStep.setLockingStep(mindHelmTask);
 		allSteps.add(makeMindHelmStep);
 
 		PanelDetails enterRangeSteps = new PanelDetails("Enter the Ranging Guild", Collections.singletonList(enterRange),
 			new SkillRequirement(Skill.RANGED, 40));
 		enterRangeSteps.setDisplayCondition(notEnterRange);
+		enterRangeSteps.setLockingStep(enterRangeTask);
 		allSteps.add(enterRangeSteps);
 
 		PanelDetails stealHemSteps = new PanelDetails("Steal from Hemenster Chest",
@@ -384,45 +425,44 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.THIEVING, 47),
 			lockpick);
 		stealHemSteps.setDisplayCondition(notStealHemen);
+		stealHemSteps.setLockingStep(stealHemenTask);
 		allSteps.add(stealHemSteps);
 
 		PanelDetails mineCoalSteps = new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
 			new SkillRequirement(Skill.MINING, 30, true), pickaxe);
 		mineCoalSteps.setDisplayCondition(notMineCoal);
+		mineCoalSteps.setLockingStep(mineCoalTask);
 		allSteps.add(mineCoalSteps);
 
 		PanelDetails killFireGiantSteps = new PanelDetails("Kill a Fire Giant", Arrays.asList(moveToWaterfall, fireGiant), waterfallQuest,
 			combatGear, food, rope);
 		killFireGiantSteps.setDisplayCondition(notFireGiant);
+		killFireGiantSteps.setLockingStep(fireGiantTask);
 		allSteps.add(killFireGiantSteps);
 
 		PanelDetails barbAgiSteps = new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi),
 			alfredBar,
 			new SkillRequirement(Skill.AGILITY, 35));
 		barbAgiSteps.setDisplayCondition(notBarbAgi);
+		barbAgiSteps.setLockingStep(barbAgiTask);
 		allSteps.add(barbAgiSteps);
 
 		PanelDetails barbAssSteps = new PanelDetails("Barbarian Assault Wave", Collections.singletonList(barbAss));
 		barbAssSteps.setDisplayCondition(notBarbAss);
+		barbAssSteps.setLockingStep(barbAssTask);
 		allSteps.add(barbAssSteps);
 
 		PanelDetails travelGrubSteps = new PanelDetails("Fairy Ring to McGrubor's Woods",
 			Collections.singletonList(travelMcGrubor), fairyTaleII, staff);
 		travelGrubSteps.setDisplayCondition(notTravelMcGrubor);
+		travelGrubSteps.setLockingStep(travelMcGruborTask);
 		allSteps.add(travelGrubSteps);
 
 		PanelDetails teleCamSteps = new PanelDetails("Teleport to Camelot", Collections.singletonList(tpCAM),
-			new SkillRequirement(Skill.MAGIC, 45, true),
-			lawRune.quantity(1), airRune.quantity(5), normalBook);
+			new SkillRequirement(Skill.MAGIC, 45, true), lawRune.quantity(1), airRune.quantity(5), normalBook);
 		teleCamSteps.setDisplayCondition(notTPCam);
+		teleCamSteps.setLockingStep(tpCamTask);
 		allSteps.add(teleCamSteps);
-
-		PanelDetails pickLimpSteps = new PanelDetails("Pick Limpwurt in Catherby",
-			Collections.singletonList(plantAndPickLimp),
-			new SkillRequirement(Skill.FARMING, 26, true),
-			limpSeed, seedDib, compost, rake);
-		pickLimpSteps.setDisplayCondition(notPickLimp);
-		allSteps.add(pickLimpSteps);
 
 		PanelDetails finishingOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));
 		allSteps.add(finishingOffSteps);

@@ -52,7 +52,7 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.KANDARIN_HARD
+	quest = QuestHelperQuest.KANDARIN_HARD
 )
 
 public class KandarinHard extends ComplexStateQuestHelper
@@ -82,6 +82,9 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 	ZoneRequirement inTavDungeon, inObIsland, inSeers, inShadow, inAncient1, inAncient2, inAncient3;
 
+	ConditionalStep catchSturTask, seersRooftopTask, yewLongTask, pietyCourtTask, waterOrbTask, burnMapleTask, shadowHoundTask,
+		mithrilDragTask, buyGraniteTask, fancyStoneTask, addySpearTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -90,25 +93,48 @@ public class KandarinHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
-		doHard.addStep(new Conditions(notWaterOrb, inObIsland), waterOrb);
-		doHard.addStep(new Conditions(notWaterOrb, inTavDungeon), moveToOb);
-		doHard.addStep(notWaterOrb, moveToTavDungeon);
-		doHard.addStep(notSeersRooftop, seersRooftop);
-		doHard.addStep(new Conditions(notYewLong, unstrungYewLong), stringBow);
-		doHard.addStep(new Conditions(notYewLong, yewLogs, choppedLogs), cutLongbow);
-		doHard.addStep(notYewLong, yewLong);
-		doHard.addStep(notPietyCourt, pietyCourt);
-		doHard.addStep(new Conditions(notBurnMaple, inSeers), burnMaple);
-		doHard.addStep(notBurnMaple, moveToSeers);
-		doHard.addStep(notFancyStone, fancyStone);
-		doHard.addStep(new Conditions(notShadowHound, inShadow), shadowHound);
-		doHard.addStep(notShadowHound, moveToShadow);
-		doHard.addStep(notCatchStur, catchStur);
-		doHard.addStep(notAddySpear, addySpear);
-		doHard.addStep(new Conditions(notMithrilDrag, inAncient3), mithrilDrag);
-		doHard.addStep(new Conditions(notMithrilDrag, inAncient2), moveToAncient3);
-		doHard.addStep(new Conditions(notMithrilDrag, inAncient1), moveToAncient2);
-		doHard.addStep(notMithrilDrag, moveToWhirl);
+
+		waterOrbTask = new ConditionalStep(this, moveToTavDungeon);
+		waterOrbTask.addStep(inTavDungeon, moveToOb);
+		waterOrbTask.addStep(inObIsland, waterOrb);
+		doHard.addStep(notWaterOrb, waterOrbTask);
+
+		seersRooftopTask = new ConditionalStep(this, seersRooftop);
+		doHard.addStep(notSeersRooftop, seersRooftopTask);
+
+		yewLongTask = new ConditionalStep(this, yewLong);
+		yewLongTask.addStep(unstrungYewLong, cutLongbow);
+		yewLongTask.addStep(new Conditions(yewLogs, choppedLogs), stringBow);
+		doHard.addStep(notYewLong, yewLongTask);
+
+		pietyCourtTask = new ConditionalStep(this, pietyCourt);
+		doHard.addStep(notPietyCourt, pietyCourtTask);
+
+		burnMapleTask = new ConditionalStep(this, moveToSeers);
+		burnMapleTask.addStep(inSeers, burnMaple);
+		doHard.addStep(notBurnMaple, burnMapleTask);
+
+		fancyStoneTask = new ConditionalStep(this, fancyStone);
+		doHard.addStep(notFancyStone, fancyStoneTask);
+
+		shadowHoundTask = new ConditionalStep(this, moveToShadow);
+		shadowHoundTask.addStep(inShadow, shadowHound);
+		doHard.addStep(notShadowHound, shadowHoundTask);
+
+		catchSturTask = new ConditionalStep(this, catchStur);
+		doHard.addStep(notCatchStur, catchSturTask);
+
+		addySpearTask = new ConditionalStep(this, addySpear);
+		doHard.addStep(notAddySpear, addySpearTask);
+
+		mithrilDragTask = new ConditionalStep(this, moveToWhirl);
+		mithrilDragTask.addStep(inAncient1, moveToAncient2);
+		mithrilDragTask.addStep(inAncient2, moveToAncient3);
+		mithrilDragTask.addStep(inAncient3, mithrilDrag);
+		doHard.addStep(notMithrilDrag, mithrilDragTask);
+
+		buyGraniteTask = new ConditionalStep(this, buyGranite);
+		doHard.addStep(notBuyGranite, buyGraniteTask);
 
 		return doHard;
 	}
@@ -240,7 +266,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		mithrilDrag = new NpcStep(this, NpcID.MITHRIL_DRAGON, new WorldPoint(1779, 5344, 1),
 			"Kill a mithril dragon.", true, combatGear, antidragonfire.equipped(), food);
 		buyGranite = new NpcStep(this, NpcID.COMMANDER_CONNAD, new WorldPoint(2535, 3576, 0),
-			"Buy a granite body from Commander Connad. (Requires at least 1 Penance Queen kill)",
+			"Buy and equip a granite body from Commander Connad. (Requires at least 1 Penance Queen kill)",
 			coins.quantity(95000));
 
 		claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
@@ -312,93 +338,96 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Kandarin headgear (3)", ItemID.KANDARIN_HEADGEAR_3, 1),
-				new ItemReward("15,500 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Kandarin headgear (3)", ItemID.KANDARIN_HEADGEAR_3, 1),
+			new ItemReward("15,500 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Coal trucks can hold up to 308 coal."),
-				new UnlockReward("Thormac will enchant battlestaves for 30,000 coins each"),
-				new UnlockReward("The Flax keeper will exchange 120 noted flax for 120 noted bow strings daily"),
-				new UnlockReward("15% more marks of grace on Seers' Village Rooftop Course"),
-				new UnlockReward("10% increased chance to save a harvest life from the Catherby herb patch"),
-				new UnlockReward("10% increased reward points from Barbarian Assault"),
-				new UnlockReward("10% increased activation chance (multiplicative) for the special effect from enchanted bolts (Inlcluding PvP)"),
-				new UnlockReward("Ability to toggle Camelot Teleport to outside Seers' Village bank"));
+			new UnlockReward("Coal trucks can hold up to 308 coal."),
+			new UnlockReward("Thormac will enchant battlestaves for 30,000 coins each"),
+			new UnlockReward("The Flax keeper will exchange 120 noted flax for 120 noted bow strings daily"),
+			new UnlockReward("15% more marks of grace on Seers' Village Rooftop Course"),
+			new UnlockReward("10% increased chance to save a harvest life from the Catherby herb patch"),
+			new UnlockReward("10% increased reward points from Barbarian Assault"),
+			new UnlockReward("10% increased activation chance (multiplicative) for the special effect from enchanted bolts (Inlcluding PvP)"),
+			new UnlockReward("Ability to toggle Camelot Teleport to outside Seers' Village bank"));
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
+
 		PanelDetails chargeOrbSteps = new PanelDetails("Charge Water Orb", Arrays.asList(moveToTavDungeon, moveToOb,
 			waterOrb), waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey);
 		chargeOrbSteps.setDisplayCondition(notWaterOrb);
+		chargeOrbSteps.setLockingStep(waterOrbTask);
 		allSteps.add(chargeOrbSteps);
 
 		PanelDetails agilitySteps = new PanelDetails("Seers' Village Rooftop", Collections.singletonList(seersRooftop),
 			new SkillRequirement(Skill.AGILITY, 60, true));
 		agilitySteps.setDisplayCondition(notSeersRooftop);
+		agilitySteps.setLockingStep(seersRooftopTask);
 		allSteps.add(agilitySteps);
 
 		PanelDetails yewLongSteps = new PanelDetails("Yew Longbow from Scratch", Arrays.asList(yewLong, cutLongbow,
 			stringBow), new SkillRequirement(Skill.FLETCHING, 70, true),
-			new SkillRequirement(Skill.WOODCUTTING, 60, true),
-			axe, bowString, knife);
+			new SkillRequirement(Skill.WOODCUTTING, 60, true), axe, bowString, knife);
 		yewLongSteps.setDisplayCondition(notYewLong);
+		yewLongSteps.setLockingStep(yewLongTask);
 		allSteps.add(yewLongSteps);
 
 		PanelDetails pietySteps = new PanelDetails("Piety in the Courthouse", Collections.singletonList(pietyCourt),
 			new QuestRequirement(QuestHelperQuest.KINGS_RANSOM, QuestState.FINISHED),
-			knightWaves,
-			new SkillRequirement(Skill.PRAYER, 70),
-			new SkillRequirement(Skill.DEFENCE, 70));
+			knightWaves, new SkillRequirement(Skill.PRAYER, 70), new SkillRequirement(Skill.DEFENCE, 70));
 		pietySteps.setDisplayCondition(notPietyCourt);
+		pietySteps.setLockingStep(pietyCourtTask);
 		allSteps.add(pietySteps);
 
 		PanelDetails burnMapleSteps = new PanelDetails("Burn Maple logs with a bow", Arrays.asList(moveToSeers, burnMaple),
-			new SkillRequirement(Skill.FIREMAKING, 65, true),
-			barbFiremaking, mapleLogs, bow);
+			new SkillRequirement(Skill.FIREMAKING, 65, true), barbFiremaking, mapleLogs, bow);
 		burnMapleSteps.setDisplayCondition(notBurnMaple);
+		burnMapleSteps.setLockingStep(burnMapleTask);
 		allSteps.add(burnMapleSteps);
 
 		PanelDetails fancyStoneSteps = new PanelDetails("Fancy Stone Decoration", Collections.singletonList(fancyStone),
-			new SkillRequirement(Skill.CONSTRUCTION, 50),
-			coins.quantity(25000));
+			new SkillRequirement(Skill.CONSTRUCTION, 50), coins.quantity(25000));
 		fancyStoneSteps.setDisplayCondition(notFancyStone);
+		fancyStoneSteps.setLockingStep(fancyStoneTask);
 		allSteps.add(fancyStoneSteps);
 
 		PanelDetails killHoundSteps = new PanelDetails("Kill a Shadow Hound", Arrays.asList(moveToShadow, shadowHound),
 			desertTreasure, ringOfVis, combatGear, food);
 		killHoundSteps.setDisplayCondition(notShadowHound);
+		killHoundSteps.setLockingStep(shadowHoundTask);
 		allSteps.add(killHoundSteps);
 
-		PanelDetails fishSturgeonSteps = new PanelDetails("Fish a Leaping Sturgeon",
-			Collections.singletonList(catchStur),
-			new SkillRequirement(Skill.FISHING, 70, true),
-			new SkillRequirement(Skill.AGILITY, 45),
-			new SkillRequirement(Skill.STRENGTH, 45),
-			barbFishing, barbRod, feather.quantity(20));
+		PanelDetails fishSturgeonSteps = new PanelDetails("Fish a Leaping Sturgeon", Collections.singletonList(catchStur),
+			new SkillRequirement(Skill.FISHING, 70, true), new SkillRequirement(Skill.AGILITY, 45),
+			new SkillRequirement(Skill.STRENGTH, 45), barbFishing, barbRod, feather.quantity(20));
 		fishSturgeonSteps.setDisplayCondition(notCatchStur);
+		fishSturgeonSteps.setLockingStep(catchSturTask);
 		allSteps.add(fishSturgeonSteps);
 
 		PanelDetails smithSpearSteps = new PanelDetails("Smith an Adamant Spear", Collections.singletonList(addySpear),
-			new SkillRequirement(Skill.SMITHING, 75, true),
-			barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer);
+			new SkillRequirement(Skill.SMITHING, 75, true), barbSmithing, taiBwoWannai, yewLogs, addyBar, hammer);
 		smithSpearSteps.setDisplayCondition(notAddySpear);
+		smithSpearSteps.setLockingStep(addySpearTask);
 		allSteps.add(smithSpearSteps);
 
 		PanelDetails killMithSteps = new PanelDetails("Kill a Mithril Dragon", Arrays.asList(moveToWhirl,
 			moveToAncient2, moveToAncient3, mithrilDrag), barbFiremaking, combatGear, antidragonfire, food);
 		killMithSteps.setDisplayCondition(notMithrilDrag);
+		killMithSteps.setLockingStep(mithrilDragTask);
 		allSteps.add(killMithSteps);
 
 		PanelDetails buyGraniteSteps = new PanelDetails("Purchase Granite Body", Collections.singletonList(buyGranite),
 			coins.quantity(95000), combatGear);
 		buyGraniteSteps.setDisplayCondition(notBuyGranite);
+		buyGraniteSteps.setLockingStep(buyGraniteTask);
 		allSteps.add(buyGraniteSteps);
 
 		PanelDetails finishOffSteps = new PanelDetails("Finishing off", Collections.singletonList(claimReward));

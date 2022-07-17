@@ -89,6 +89,9 @@ public class WildernessHard extends ComplexStateQuestHelper
 
 	ZoneRequirement inEdge, inAir, inResource, inGodWars1, inGodWars2, inScorpCave;
 
+	ConditionalStep godSpellsTask, airOrbTask, blackSallyTask, addyScimTask, lavaDragTask, chaosEleTask, threeBossesTask,
+		trollWildyTask, sprirtualWarriorTask, rawLavaEelTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -98,22 +101,41 @@ public class WildernessHard extends ComplexStateQuestHelper
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
 
-		doHard.addStep(new Conditions(notAirOrb, inAir), airOrb);
-		doHard.addStep(new Conditions(notAirOrb, inEdge), moveToAir);
-		doHard.addStep(notAirOrb, moveToEdge);
-		doHard.addStep(notBlackSally, blackSally);
-		doHard.addStep(new Conditions(notLavaDrag, lavaDragonBones), buryBone);
-		doHard.addStep(notLavaDrag, lavaDrag);
-		doHard.addStep(notRawLavaEel, rawLavaEel);
-		doHard.addStep(new Conditions(notSprirtualWarrior, inGodWars2), sprirtualWarrior);
-		doHard.addStep(new Conditions(notSprirtualWarrior, inGodWars1), moveToGodWars2);
-		doHard.addStep(notSprirtualWarrior, moveToGodWars1);
-		doHard.addStep(notTrollWildy, trollWildy);
-		doHard.addStep(new Conditions(notAddyScim, inResource), addyScim);
-		doHard.addStep(notAddyScim, moveToResource);
-		doHard.addStep(notChaosEle, chaosEle);
-		doHard.addStep(notThreeBosses, threeBosses);
-		doHard.addStep(notGodSpells, godSpells);
+		airOrbTask = new ConditionalStep(this, moveToEdge);
+		airOrbTask.addStep(inEdge, moveToAir);
+		airOrbTask.addStep(inAir, airOrb);
+		doHard.addStep(notAirOrb, airOrbTask);
+
+		blackSallyTask = new ConditionalStep(this, blackSally);
+		doHard.addStep(notBlackSally, blackSallyTask);
+
+		lavaDragTask = new ConditionalStep(this, lavaDrag);
+		lavaDragTask.addStep(lavaDragonBones, buryBone);
+		doHard.addStep(notLavaDrag, lavaDragTask);
+
+		rawLavaEelTask = new ConditionalStep(this, rawLavaEel);
+		doHard.addStep(notRawLavaEel, rawLavaEelTask);
+
+		sprirtualWarriorTask = new ConditionalStep(this, moveToGodWars1);
+		sprirtualWarriorTask.addStep(inGodWars1, moveToGodWars2);
+		sprirtualWarriorTask.addStep(inGodWars2, sprirtualWarrior);
+		doHard.addStep(notSprirtualWarrior, sprirtualWarriorTask);
+
+		trollWildyTask = new ConditionalStep(this, trollWildy);
+		doHard.addStep(notTrollWildy, trollWildyTask);
+
+		addyScimTask = new ConditionalStep(this, moveToResource);
+		addyScimTask.addStep(inResource, addyScim);
+		doHard.addStep(notAddyScim, addyScimTask);
+
+		chaosEleTask = new ConditionalStep(this, chaosEle);
+		doHard.addStep(notChaosEle, chaosEleTask);
+
+		threeBossesTask = new ConditionalStep(this, threeBosses);
+		doHard.addStep(notThreeBosses, threeBossesTask);
+
+		godSpellsTask = new ConditionalStep(this, godSpells);
+		doHard.addStep(notGodSpells, godSpellsTask);
 
 		return doHard;
 	}
@@ -159,8 +181,8 @@ public class WildernessHard extends ComplexStateQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
 		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
 
-		enterGodwars = new ComplexRequirement(LogicType.OR,"60 Agility or Strength",
-			new SkillRequirement(Skill.AGILITY,	60), new SkillRequirement(Skill.STRENGTH, 60));
+		enterGodwars = new ComplexRequirement(LogicType.OR, "60 Agility or Strength",
+			new SkillRequirement(Skill.AGILITY, 60), new SkillRequirement(Skill.STRENGTH, 60));
 
 		inEdge = new ZoneRequirement(edge);
 		inAir = new ZoneRequirement(air);
@@ -170,7 +192,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		inScorpCave = new ZoneRequirement(scorpCave);
 
 		mageArena = new QuestRequirement(QuestHelperQuest.THE_MAGE_ARENA, QuestState.FINISHED);
-		deathPlateau = new QuestRequirement(QuestHelperQuest.DEATH_PLATEAU, QuestState.FINISHED);
+		deathPlateau = new QuestRequirement(QuestHelperQuest.DEATH_PLATEAU, QuestState.IN_PROGRESS);
 	}
 
 	public void loadZones()
@@ -308,50 +330,61 @@ public class WildernessHard extends ComplexStateQuestHelper
 		PanelDetails airSteps = new PanelDetails("Air Orb", Arrays.asList(moveToEdge, moveToAir, airOrb),
 			new SkillRequirement(Skill.MAGIC, 60), airRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
 		airSteps.setDisplayCondition(notAirOrb);
+		airSteps.setLockingStep(airOrbTask);
 		allSteps.add(airSteps);
 
 		PanelDetails sallySteps = new PanelDetails("Black Salamander", Collections.singletonList(blackSally),
 			new SkillRequirement(Skill.HUNTER, 67), smallFishingNet, rope);
 		sallySteps.setDisplayCondition(notBlackSally);
+		sallySteps.setLockingStep(blackSallyTask);
 		allSteps.add(sallySteps);
 
 		PanelDetails lavaSteps = new PanelDetails("Lava Dragon and Bury", Collections.singletonList(lavaDrag),
 			combatGear, food);
 		lavaSteps.setDisplayCondition(notLavaDrag);
+		lavaSteps.setLockingStep(lavaDragTask);
 		allSteps.add(lavaSteps);
 
 		PanelDetails rawLavaEelSteps = new PanelDetails("Fishing a Raw Lava Eel", Collections.singletonList(rawLavaEel),
 			new SkillRequirement(Skill.FISHING, 53), oilyRod, fishingBait, knife);
 		rawLavaEelSteps.setDisplayCondition(notRawLavaEel);
+		rawLavaEelSteps.setLockingStep(rawLavaEelTask);
 		allSteps.add(rawLavaEelSteps);
 
-		PanelDetails Steps = new PanelDetails("Spiritual Warrior", Arrays.asList(moveToGodWars1, moveToGodWars2, sprirtualWarrior),
+		PanelDetails warrSteps = new PanelDetails("Spiritual Warrior", Arrays.asList(moveToGodWars1, moveToGodWars2,
+			sprirtualWarrior),
 			enterGodwars, new SkillRequirement(Skill.SLAYER, 68), combatGear, food, godEquip);
-		Steps.setDisplayCondition(notSprirtualWarrior);
-		allSteps.add(Steps);
+		warrSteps.setDisplayCondition(notSprirtualWarrior);
+		warrSteps.setLockingStep(sprirtualWarriorTask);
+		allSteps.add(warrSteps);
 
 		PanelDetails trollSteps = new PanelDetails("Agility Shortcut", Collections.singletonList(trollWildy),
 			new SkillRequirement(Skill.AGILITY, 64), deathPlateau);
 		trollSteps.setDisplayCondition(notTrollWildy);
+		trollSteps.setLockingStep(trollWildyTask);
 		allSteps.add(trollSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Adamant Scimitar in Resource Area", Arrays.asList(moveToResource,
 			addyScim), new SkillRequirement(Skill.SMITHING, 75), barsOrPick);
 		scimSteps.setDisplayCondition(notAddyScim);
+		scimSteps.setLockingStep(addyScimTask);
 		allSteps.add(scimSteps);
 
 		PanelDetails chaosSteps = new PanelDetails("Chaos Elemental", Collections.singletonList(chaosEle), combatGear, food);
 		chaosSteps.setDisplayCondition(notChaosEle);
+		chaosSteps.setLockingStep(chaosEleTask);
 		allSteps.add(chaosSteps);
 
 		PanelDetails bossesSteps = new PanelDetails("Three Bosses", Collections.singletonList(threeBosses), combatGear,
 			food);
 		bossesSteps.setDisplayCondition(notThreeBosses);
+		bossesSteps.setLockingStep(threeBossesTask);
 		allSteps.add(bossesSteps);
 
 		PanelDetails godSpellSteps = new PanelDetails("God Spell on Player", Collections.singletonList(godSpells),
 			new SkillRequirement(Skill.MAGIC, 60), godStaff, godRunes);
 		godSpellSteps.setDisplayCondition(notGodSpells);
+		godSpellSteps.setLockingStep(godSpellsTask);
 		allSteps.add(godSpellSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

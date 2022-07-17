@@ -98,6 +98,9 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 
 	ZoneRequirement inSkavidCaves, inPlatform, inBasement, inEntrana, inWall;
 
+	ConditionalStep uniPenTask, grapYanTask, ardyStrawTask, tpArdyTask, balloonCWTask, claimSandTask, fishOnPlatformTask,
+		pickMasterFarmerTask, caveNightshadeTask, killSwordchickTask, ibanUpgradeTask, necroTowerTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -106,25 +109,49 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
-		doMedium.addStep(new Conditions(notBalloonCW, notCWBallon), balloonCW);
-		doMedium.addStep(new Conditions(notBalloonCW, inEntrana), talkToAug);
-		doMedium.addStep(notBalloonCW, moveToEntrana);
-		doMedium.addStep(new Conditions(notCaveNightshade, inSkavidCaves), caveNightshade);
-		doMedium.addStep(notCaveNightshade, moveToSkavid);
-		doMedium.addStep(new Conditions(notGrapYan, grapUp, inWall), grapYan2);
-		doMedium.addStep(notGrapYan, grapYan);
-		doMedium.addStep(notClaimSand, claimSand);
-		doMedium.addStep(notTPArdy, tPArdy);
-		doMedium.addStep(new Conditions(notKillSwordchick, inEntrana), talkToAug);
-		doMedium.addStep(notKillSwordchick, moveToBasement);
-		doMedium.addStep(new Conditions(notFishOnPlatform, inPlatform), fishOnPlatform);
-		doMedium.addStep(notFishOnPlatform, moveToPlatform);
-		doMedium.addStep(notPickMasterFarmer, pickMasterFarmer);
-		doMedium.addStep(new Conditions(notIbanUpgrade, ibanStaffU.alsoCheckBank(questBank)), equipIban);
-		doMedium.addStep(notIbanUpgrade, ibanUpgrade);
-		doMedium.addStep(notUniPen, uniPen);
-		doMedium.addStep(notNecroTower, necroTower);
-		doMedium.addStep(notArdyStraw, ardyStraw);
+
+		ardyStrawTask = new ConditionalStep(this, ardyStraw);
+		doMedium.addStep(notArdyStraw, ardyStrawTask);
+
+		balloonCWTask = new ConditionalStep(this, moveToEntrana);
+		balloonCWTask.addStep(inEntrana, talkToAug);
+		balloonCWTask.addStep(notCWBallon, balloonCW);
+		doMedium.addStep(notBalloonCW, balloonCWTask);
+
+		caveNightshadeTask = new ConditionalStep(this, moveToSkavid);
+		caveNightshadeTask.addStep(inSkavidCaves, caveNightshade);
+		doMedium.addStep(notCaveNightshade, caveNightshadeTask);
+
+		grapYanTask = new ConditionalStep(this, grapYan);
+		grapYanTask.addStep(new Conditions(grapUp, inWall), grapYan2);
+		doMedium.addStep(notGrapYan, grapYanTask);
+
+		claimSandTask = new ConditionalStep(this, claimSand);
+		doMedium.addStep(notClaimSand, claimSandTask);
+
+		tpArdyTask = new ConditionalStep(this, tPArdy);
+		doMedium.addStep(notTPArdy, tpArdyTask);
+
+		killSwordchickTask = new ConditionalStep(this, moveToBasement);
+		killSwordchickTask.addStep(inBasement, killSwordchick);
+		doMedium.addStep(notKillSwordchick, killSwordchickTask);
+
+		fishOnPlatformTask = new ConditionalStep(this, moveToPlatform);
+		fishOnPlatformTask.addStep(inPlatform, fishOnPlatform);
+		doMedium.addStep(notFishOnPlatform, fishOnPlatformTask);
+
+		pickMasterFarmerTask = new ConditionalStep(this, pickMasterFarmer);
+		doMedium.addStep(notPickMasterFarmer, pickMasterFarmerTask);
+
+		ibanUpgradeTask = new ConditionalStep(this, ibanUpgrade);
+		ibanUpgradeTask.addStep(ibanStaffU.alsoCheckBank(questBank), equipIban);
+		doMedium.addStep(notIbanUpgrade, ibanUpgradeTask);
+
+		uniPenTask = new ConditionalStep(this, uniPen);
+		doMedium.addStep(notUniPen, uniPenTask);
+
+		necroTowerTask = new ConditionalStep(this, necroTower);
+		doMedium.addStep(notNecroTower, necroTowerTask);
 
 		return doMedium;
 	}
@@ -262,7 +289,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		caveNightshade = new ItemStep(this, "Pickup the Cave nightshade.", nightshade);
 
 		moveToPlatform = new NpcStep(this, NpcID.JEB, new WorldPoint(2719, 3305, 0),
-				"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
+			"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
 		((NpcStep) (moveToPlatform)).addAlternateNpcs(NpcID.HOLGART_7789);
 		fishOnPlatform = new NpcStep(this, FishingSpot.SHRIMP.getIds(), new WorldPoint(2790, 3276, 0),
 			"Catch any fish on the Fishing Platform.", smallFishingNet);
@@ -355,70 +382,83 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
+		PanelDetails strawSteps = new PanelDetails("Ardougne Strawberries", Collections.singletonList(ardyStraw),
+			new SkillRequirement(Skill.FARMING, 31), rake, strawSeeds.quantity(3), seedDib, spade);
+		strawSteps.setDisplayCondition(notArdyStraw);
+		strawSteps.setLockingStep(ardyStrawTask);
+		allSteps.add(strawSteps);
+
 		PanelDetails cwSteps = new PanelDetails("Castle Wars Balloon", Arrays.asList(moveToEntrana, talkToAug,
 			balloonCW), new SkillRequirement(Skill.FIREMAKING, 50), enlightenedJourney, yewLog11);
 		cwSteps.setDisplayCondition(new Conditions(notBalloonCW, notCWBallon2));
+		cwSteps.setLockingStep(balloonCWTask);
 		allSteps.add(cwSteps);
 
 		PanelDetails cw2Steps = new PanelDetails("Castle Wars Balloon", Collections.singletonList(balloonCW),
 			new SkillRequirement(Skill.FIREMAKING, 50), enlightenedJourney, yewLog1);
 		cw2Steps.setDisplayCondition(new Conditions(notBalloonCW, notCWBallon));
+		cw2Steps.setLockingStep(balloonCWTask);
 		allSteps.add(cw2Steps);
 
 		PanelDetails nightSteps = new PanelDetails("Cave Nightshade", Arrays.asList(moveToSkavid, caveNightshade),
 			watchtower, lightSource, skavMap);
 		nightSteps.setDisplayCondition(notCaveNightshade);
+		nightSteps.setLockingStep(caveNightshadeTask);
 		allSteps.add(nightSteps);
 
 		PanelDetails grapSteps = new PanelDetails("Yanille Wall Grapple", Arrays.asList(grapYan, grapYan2),
 			new SkillRequirement(Skill.AGILITY, 39), new SkillRequirement(Skill.STRENGTH, 38),
 			new SkillRequirement(Skill.RANGED, 21), mithGrap, crossbow);
 		grapSteps.setDisplayCondition(notGrapYan);
+		grapSteps.setLockingStep(grapYanTask);
 		allSteps.add(grapSteps);
 
 		PanelDetails sandSteps = new PanelDetails("Claim Sand", Collections.singletonList(claimSand), handInSand);
 		sandSteps.setDisplayCondition(notClaimSand);
+		sandSteps.setLockingStep(claimSandTask);
 		allSteps.add(sandSteps);
 
 		PanelDetails tpSteps = new PanelDetails("Teleport to Ardougne", Collections.singletonList(tPArdy),
 			new SkillRequirement(Skill.MAGIC, 51), plagueCity, normalBook, lawRune.quantity(2), waterRune.quantity(2));
 		tpSteps.setDisplayCondition(notTPArdy);
+		tpSteps.setLockingStep(tpArdyTask);
 		allSteps.add(tpSteps);
 
 		PanelDetails chickSteps = new PanelDetails("Kill Swordchick", Arrays.asList(moveToBasement, killSwordchick),
 			towerOfLife, rawSword, rawChick, combatGear, food);
 		chickSteps.setDisplayCondition(notKillSwordchick);
+		chickSteps.setLockingStep(killSwordchickTask);
 		allSteps.add(chickSteps);
 
 		PanelDetails fishSteps = new PanelDetails("Fishing Platform", Arrays.asList(moveToPlatform, fishOnPlatform),
 			seaSlug, smallFishingNet);
 		fishSteps.setDisplayCondition(notFishOnPlatform);
+		fishSteps.setLockingStep(fishOnPlatformTask);
 		allSteps.add(fishSteps);
 
 		PanelDetails farmerSteps = new PanelDetails("Pickpocket Master Farmer",
 			Collections.singletonList(pickMasterFarmer), new SkillRequirement(Skill.THIEVING, 38));
 		farmerSteps.setDisplayCondition(notPickMasterFarmer);
+		farmerSteps.setLockingStep(pickMasterFarmerTask);
 		allSteps.add(farmerSteps);
 
 		PanelDetails ibanSteps = new PanelDetails("Iban Upgrade", Collections.singletonList(ibanUpgrade),
 			undergroundPass, ibanStaff, coins.quantity(200000));
 		ibanSteps.setDisplayCondition(notIbanUpgrade);
+		ibanSteps.setLockingStep(ibanUpgradeTask);
 		allSteps.add(ibanSteps);
 
 		PanelDetails uniSteps = new PanelDetails("Fairy Ring to Unicorn Pen", Collections.singletonList(uniPen),
 			fairyTaleII, fairyAccess);
 		uniSteps.setDisplayCondition(notUniPen);
+		uniSteps.setLockingStep(uniPenTask);
 		allSteps.add(uniSteps);
 
 		PanelDetails necroSteps = new PanelDetails("Fairy Ring to Necromancer Tower",
 			Collections.singletonList(necroTower), fairyTaleII, fairyAccess);
 		necroSteps.setDisplayCondition(notNecroTower);
+		necroSteps.setLockingStep(necroTowerTask);
 		allSteps.add(necroSteps);
-
-		PanelDetails strawSteps = new PanelDetails("Ardougne Strawberries", Collections.singletonList(ardyStraw),
-			new SkillRequirement(Skill.FARMING, 31), rake, strawSeeds.quantity(3), seedDib, spade);
-		strawSteps.setDisplayCondition(notArdyStraw);
-		allSteps.add(strawSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

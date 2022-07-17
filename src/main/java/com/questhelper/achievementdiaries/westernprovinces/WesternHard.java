@@ -95,6 +95,9 @@ public class WesternHard extends ComplexStateQuestHelper
 
 	ZoneRequirement inPest, inApeAtoll, inPisc;
 
+	ConditionalStep elfCystalBowTask, monkfishPiscTask, vetPestTask, dashingKebbitTask, apeAtollAgiTask, mahoganyBurnedTask,
+		mineAddyOreTask, lletyaPalmTask, chompyHatTask, isafdarPaintingTask, killZulrahTask, tpApeTask, pickpocketGnomeTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -103,25 +106,51 @@ public class WesternHard extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
-		doHard.addStep(new Conditions(notMonkfishPisc, rawMonkfish, caughtMonkfish), monkfishPisc);
-		doHard.addStep(notMonkfishPisc, fishMonkfish);
-		doHard.addStep(new Conditions(notDashingKebbit, birdReady), dashingKebbit);
-		doHard.addStep(notDashingKebbit, getBird);
-		doHard.addStep(notPickpocketGnome, pickpocketGnome);
-		doHard.addStep(notTPApe, tpApe);
-		doHard.addStep(new Conditions(notMahoganyBurned, inApeAtoll, mahoganyLogs, choppedLogs), mahoganyBurned);
-		doHard.addStep(new Conditions(notMahoganyBurned, inApeAtoll), mahoganyChopped);
-		doHard.addStep(notMahoganyBurned, moveToApeMahogany);
-		doHard.addStep(new Conditions(notApeAtollAgi, inApeAtoll), apeAtollAgi);
-		doHard.addStep(notApeAtollAgi, moveToApeAgi);
-		doHard.addStep(notKillZulrah, killZulrah);
-		doHard.addStep(notMineAddyOre, mineAddyOre);
-		doHard.addStep(notElfCystalBow, elfCrystalBow);
-		doHard.addStep(new Conditions(notVetPest, inPest), vetPest);
-		doHard.addStep(notVetPest, moveToPest);
-		doHard.addStep(notIsafdarPainting, isafdarPainting);
-		doHard.addStep(notChompyHat, chompyHat);
-		doHard.addStep(notLletyaPalm, lletyaPalm);
+
+		lletyaPalmTask = new ConditionalStep(this, lletyaPalm);
+		doHard.addStep(notLletyaPalm, lletyaPalmTask);
+
+		monkfishPiscTask = new ConditionalStep(this, fishMonkfish);
+		monkfishPiscTask.addStep(new Conditions(rawMonkfish, caughtMonkfish), monkfishPisc);
+		doHard.addStep(notMonkfishPisc, monkfishPiscTask);
+
+		dashingKebbitTask = new ConditionalStep(this, getBird);
+		dashingKebbitTask.addStep(birdReady, dashingKebbit);
+		doHard.addStep(notDashingKebbit, dashingKebbitTask);
+
+		pickpocketGnomeTask = new ConditionalStep(this, pickpocketGnome);
+		doHard.addStep(notPickpocketGnome, pickpocketGnomeTask);
+
+		tpApeTask = new ConditionalStep(this, tpApe);
+		doHard.addStep(notTPApe, tpApeTask);
+
+		mahoganyBurnedTask = new ConditionalStep(this, moveToApeMahogany);
+		mahoganyBurnedTask.addStep(inApeAtoll, mahoganyChopped);
+		mahoganyBurnedTask.addStep(new Conditions(inApeAtoll, mahoganyLogs, choppedLogs), mahoganyBurned);
+		doHard.addStep(notMahoganyBurned, mahoganyBurnedTask);
+
+		apeAtollAgiTask = new ConditionalStep(this, moveToApeAgi);
+		apeAtollAgiTask.addStep(inApeAtoll, apeAtollAgi);
+		doHard.addStep(notApeAtollAgi, apeAtollAgiTask);
+
+		killZulrahTask = new ConditionalStep(this, killZulrah);
+		doHard.addStep(notKillZulrah, killZulrahTask);
+
+		mineAddyOreTask = new ConditionalStep(this, mineAddyOre);
+		doHard.addStep(notMineAddyOre, mineAddyOreTask);
+
+		elfCystalBowTask = new ConditionalStep(this, elfCrystalBow);
+		doHard.addStep(notElfCystalBow, elfCystalBowTask);
+
+		vetPestTask = new ConditionalStep(this, moveToPest);
+		vetPestTask.addStep(inPest, vetPest);
+		doHard.addStep(notVetPest, vetPestTask);
+
+		isafdarPaintingTask = new ConditionalStep(this, isafdarPainting);
+		doHard.addStep(notIsafdarPainting, isafdarPaintingTask);
+
+		chompyHatTask = new ConditionalStep(this, chompyHat);
+		doHard.addStep(notChompyHat, chompyHatTask);
 
 		return doHard;
 	}
@@ -367,71 +396,84 @@ public class WesternHard extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
+		PanelDetails palmSteps = new PanelDetails("Lletya Palm tree", Collections.singletonList(lletyaPalm),
+			new SkillRequirement(Skill.FARMING, 68), mourningsEndPartI, palmSapling, rake, spade);
+		palmSteps.setDisplayCondition(notLletyaPalm);
+		palmSteps.setLockingStep(lletyaPalmTask);
+		allSteps.add(palmSteps);
+
 		PanelDetails fishSteps = new PanelDetails("Catch And Cook Monkfish", Arrays.asList(fishMonkfish, monkfishPisc),
 			new SkillRequirement(Skill.COOKING, 62), new SkillRequirement(Skill.FISHING, 62),
 			swanSong, smallFishingNet);
 		fishSteps.setDisplayCondition(notMonkfishPisc);
+		fishSteps.setLockingStep(monkfishPiscTask);
 		allSteps.add(fishSteps);
 
 		PanelDetails kebbitSteps = new PanelDetails("Dashing Kebbit", Arrays.asList(getBird, dashingKebbit),
 			new SkillRequirement(Skill.HUNTER, 69), coins);
 		kebbitSteps.setDisplayCondition(notDashingKebbit);
+		kebbitSteps.setLockingStep(dashingKebbitTask);
 		allSteps.add(kebbitSteps);
 
 		PanelDetails gnomeSteps = new PanelDetails("Pickpocket A Gnome", Collections.singletonList(pickpocketGnome),
 			new SkillRequirement(Skill.THIEVING, 75), treeGnomeVillage);
 		gnomeSteps.setDisplayCondition(notPickpocketGnome);
+		gnomeSteps.setLockingStep(pickpocketGnomeTask);
 		allSteps.add(gnomeSteps);
 
 		PanelDetails tpSteps = new PanelDetails("Teleport To Ape Atoll", Collections.singletonList(tpApe),
 			new SkillRequirement(Skill.MAGIC, 64), awowogeiRFD, normalBook, lawRunes2, fireRunes2, waterRunes2, banana);
 		tpSteps.setDisplayCondition(notTPApe);
+		tpSteps.setLockingStep(tpApeTask);
 		allSteps.add(tpSteps);
 
 		PanelDetails mahoSteps = new PanelDetails("Mahogany On Ape Atoll", Arrays.asList(moveToApeMahogany,
 			mahoganyChopped, mahoganyBurned), new SkillRequirement(Skill.FIREMAKING, 50),
 			new SkillRequirement(Skill.WOODCUTTING, 50), monkeyMadnessI, axe, tinderbox);
 		mahoSteps.setDisplayCondition(notMahoganyBurned);
+		mahoSteps.setLockingStep(mahoganyBurnedTask);
 		allSteps.add(mahoSteps);
 
 		PanelDetails agiSteps = new PanelDetails("Ape Atoll Agility Course", Arrays.asList(moveToApeAgi, apeAtollAgi),
 			new SkillRequirement(Skill.AGILITY, 48), monkeyMadnessI, ninjaGreegree);
 		agiSteps.setDisplayCondition(notApeAtollAgi);
+		agiSteps.setLockingStep(apeAtollAgiTask);
 		allSteps.add(agiSteps);
 
 		PanelDetails zulSteps = new PanelDetails("Kill Zulrah", Collections.singletonList(killZulrah), regicide,
 			combatGear);
 		zulSteps.setDisplayCondition(notKillZulrah);
+		zulSteps.setLockingStep(killZulrahTask);
 		allSteps.add(zulSteps);
 
 		PanelDetails addySteps = new PanelDetails("Mine Adamantite in Tirannwn", Collections.singletonList(mineAddyOre),
 			new SkillRequirement(Skill.MINING, 70), regicide, pickaxe);
 		addySteps.setDisplayCondition(notMineAddyOre);
+		addySteps.setLockingStep(mineAddyOreTask);
 		allSteps.add(addySteps);
 
 		PanelDetails elfSteps = new PanelDetails("Kill Elf With Crystal Bow", Collections.singletonList(elfCrystalBow));
 		elfSteps.setDisplayCondition(notElfCystalBow);
+		elfSteps.setLockingStep(elfCystalBowTask);
 		allSteps.add(elfSteps);
 
 		PanelDetails pestSteps = new PanelDetails("Veteran Pest Control", Arrays.asList(moveToPest, vetPest),
 			new CombatLevelRequirement(70), combatGear);
 		pestSteps.setDisplayCondition(notVetPest);
+		pestSteps.setLockingStep(vetPestTask);
 		allSteps.add(pestSteps);
 
 		PanelDetails isaSteps = new PanelDetails("Isafdar Painting In POH", Collections.singletonList(isafdarPainting),
 			new SkillRequirement(Skill.CONSTRUCTION, 65), rovingElves, mahoganyPlank, painting, saw, hammer);
 		isaSteps.setDisplayCondition(notIsafdarPainting);
+		isaSteps.setLockingStep(isafdarPaintingTask);
 		allSteps.add(isaSteps);
 
 		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
 			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
 		hatSteps.setDisplayCondition(notChompyHat);
+		hatSteps.setLockingStep(chompyHatTask);
 		allSteps.add(hatSteps);
-
-		PanelDetails palmSteps = new PanelDetails("Lletya Palm tree", Collections.singletonList(lletyaPalm),
-			new SkillRequirement(Skill.FARMING, 68), mourningsEndPartI, palmSapling, rake, spade);
-		palmSteps.setDisplayCondition(notLletyaPalm);
-		allSteps.add(palmSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
 

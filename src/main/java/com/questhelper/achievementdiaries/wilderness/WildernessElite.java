@@ -87,6 +87,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 
 	ZoneRequirement inResource, inGodWars2, inGodWars1;
 
+	ConditionalStep threeBossesTask, tpGhorrockTask, darkCrabTask, runeScimTask, roguesChestTask, spiritMageTask, magicLogsTask;
+
 	@Override
 	public QuestStep loadStep()
 	{
@@ -95,22 +97,36 @@ public class WildernessElite extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(notTPGhorrock, tPGhorrock);
-		doElite.addStep(new Conditions(notMagicLogs, inResource, gatheredLogs, magicLog), burnLogs);
-		doElite.addStep(new Conditions(notMagicLogs, inResource), magicLogs);
-		doElite.addStep(notMagicLogs, moveToResource1);
-		doElite.addStep(new Conditions(notRuneScim, inResource, runeBar.quantity(2), barsSmelted), runeScim);
-		doElite.addStep(new Conditions(notRuneScim, inResource, runeOre.quantity(2), coal.quantity(16), runiteFromGolems), smeltBar);
-		doElite.addStep(new Conditions(notRuneScim, inResource), runiteGolem);
-		doElite.addStep(notRuneScim, moveToResource2);
-		doElite.addStep(new Conditions(notDarkCrab, inResource, caughtCrab, rawDarkCrab), cookDarkCrab);
-		doElite.addStep(new Conditions(notDarkCrab, inResource), darkCrab);
-		doElite.addStep(notDarkCrab, moveToResource3);
-		doElite.addStep(notRoguesChest, roguesChest);
-		doElite.addStep(new Conditions(notSpiritMage, inGodWars2), spiritMage);
-		doElite.addStep(new Conditions(notSpiritMage, inGodWars1), moveToGodWars2);
-		doElite.addStep(notSpiritMage, moveToGodWars1);
-		doElite.addStep(notThreeBosses, threeBosses);
+
+		tpGhorrockTask = new ConditionalStep(this, tPGhorrock);
+		doElite.addStep(notTPGhorrock, tpGhorrockTask);
+
+		magicLogsTask = new ConditionalStep(this, moveToResource1);
+		magicLogsTask.addStep(inResource, magicLogs);
+		magicLogsTask.addStep(new Conditions(inResource, gatheredLogs, magicLog), burnLogs);
+		doElite.addStep(notMagicLogs, magicLogsTask);
+
+		runeScimTask = new ConditionalStep(this, moveToResource2);
+		runeScimTask.addStep(inResource, runiteGolem);
+		runeScimTask.addStep(new Conditions(inResource, runeOre.quantity(2), coal.quantity(16), runiteFromGolems), smeltBar);
+		runeScimTask.addStep(new Conditions(inResource, runeBar.quantity(2), barsSmelted), runeScim);
+		doElite.addStep(notRuneScim, runeScimTask);
+
+		darkCrabTask = new ConditionalStep(this, moveToResource3);
+		darkCrabTask.addStep(inResource, darkCrab);
+		darkCrabTask.addStep(new Conditions(inResource, caughtCrab, rawDarkCrab), cookDarkCrab);
+		doElite.addStep(notDarkCrab, darkCrabTask);
+
+		roguesChestTask = new ConditionalStep(this, roguesChest);
+		doElite.addStep(notRoguesChest, roguesChestTask);
+
+		spiritMageTask = new ConditionalStep(this, moveToGodWars1);
+		spiritMageTask.addStep(inGodWars1, moveToGodWars2);
+		spiritMageTask.addStep(inGodWars2, spiritMage);
+		doElite.addStep(notSpiritMage, spiritMageTask);
+
+		threeBossesTask = new ConditionalStep(this, threeBosses);
+		doElite.addStep(notThreeBosses, threeBossesTask);
 
 		return doElite;
 	}
@@ -332,12 +348,14 @@ public class WildernessElite extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.MAGIC, 96), desertTreasure, ancientBook, lawRune.quantity(2),
 			waterRune.quantity(8));
 		tpSteps.setDisplayCondition(notTPGhorrock);
+		tpSteps.setLockingStep(tpGhorrockTask);
 		allSteps.add(tpSteps);
 
 		PanelDetails magicSteps = new PanelDetails("Chop and Burn Magic Logs", Arrays.asList(moveToResource1, magicLogs,
 			burnLogs), new SkillRequirement(Skill.FIREMAKING, 75), new SkillRequirement(Skill.WOODCUTTING, 75),
 			coins.quantity(6000), axe, tinderbox);
 		magicSteps.setDisplayCondition(notMagicLogs);
+		magicSteps.setLockingStep(magicLogsTask);
 		allSteps.add(magicSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Rune Scimitar in Resource Area",
@@ -345,26 +363,31 @@ public class WildernessElite extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.SMITHING, 90), coins.quantity(6000), combatGear, food, pickaxe,
 			coal.quantity(16));
 		scimSteps.setDisplayCondition(notRuneScim);
+		scimSteps.setLockingStep(runeScimTask);
 		allSteps.add(scimSteps);
 
 		PanelDetails crabSteps = new PanelDetails("Dark Crab in Resource Area", Arrays.asList(moveToResource3, darkCrab,
 			cookDarkCrab), new SkillRequirement(Skill.COOKING, 90), new SkillRequirement(Skill.FISHING, 85),
 			coins.quantity(6000), lobsterPot, darkFishingBait);
 		crabSteps.setDisplayCondition(notDarkCrab);
+		crabSteps.setLockingStep(darkCrabTask);
 		allSteps.add(crabSteps);
 
 		PanelDetails chestSteps = new PanelDetails("Rogues' Castle Chest", Collections.singletonList(roguesChest));
 		chestSteps.setDisplayCondition(notRoguesChest);
+		chestSteps.setLockingStep(roguesChestTask);
 		allSteps.add(chestSteps);
 
 		PanelDetails mageSteps = new PanelDetails("Spiritual Mage", Arrays.asList(moveToGodWars1, moveToGodWars2,
 			spiritMage), enterGodwars, combatGear, food, godEquip);
 		mageSteps.setDisplayCondition(notSpiritMage);
+		mageSteps.setLockingStep(spiritMageTask);
 		allSteps.add(mageSteps);
 
 		PanelDetails bossSteps = new PanelDetails("Three bosses", Collections.singletonList(threeBosses), combatGear,
 			food);
 		bossSteps.setDisplayCondition(notThreeBosses);
+		bossSteps.setLockingStep(threeBossesTask);
 		allSteps.add(bossSteps);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

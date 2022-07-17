@@ -47,20 +47,13 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.steps.*;
 
-import java.lang.reflect.Array;
-import java.util.Collections;
 import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.concurrent.locks.Condition;
-import java.util.regex.Pattern;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.plugins.achievementdiary.diaries.VarrockDiaryRequirement;
 
 @QuestDescriptor(
 		quest = QuestHelperQuest.HOPESPEARS_WILL
@@ -79,7 +72,10 @@ public class HopespearsWill extends BasicQuestHelper
 	Requirement inGoblinCave, nothingEquipped, goblinWidgetActive, isAGoblin, inGoblinTemple, isInCrypt, inYubiusk,
 				snotheadAlive, snailfeetAlive, mosschinAlive, redeyesAlive, strongbonesAlive,
 				snotheadBuried, snailfeetBuried, mosschinBuried, redeyesBuried, strongbonesBuried;
-	ItemRequirement hasSnotheadBones, hasSnailfeetBones, hasMosschinBones, hasRedeyesBones, hasStrongbonesBones;
+
+	ItemRequirement snotheadBones, snailfeetBones, mosschinBones, redeyesBones, strongbonesBones;
+
+	Conditions hasSnotheadBones, hasSnailfeetBones, hasMosschinBones, hasRedeyesBones, hasStrongbonesBones;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -99,11 +95,7 @@ public class HopespearsWill extends BasicQuestHelper
 
 		steps.put(0, startQuest);
 
-		Conditions hasAllBones = new Conditions(new Conditions(LogicType.OR, hasSnotheadBones, snotheadBuried),
-				new Conditions(LogicType.OR, hasSnailfeetBones, snailfeetBuried),
-				new Conditions(LogicType.OR, hasMosschinBones, mosschinBuried),
-				new Conditions(LogicType.OR, hasRedeyesBones, redeyesBuried),
-				new Conditions(LogicType.OR, hasStrongbonesBones, strongbonesBuried));
+		Conditions hasAllBones = new Conditions(hasSnotheadBones, hasSnailfeetBones, hasMosschinBones, hasRedeyesBones, hasStrongbonesBones);
 
 		ConditionalStep defeatGoblins = new ConditionalStep(this, openCryptDoor);
 		defeatGoblins.addStep(snotheadAlive, defeatSnothead);
@@ -116,18 +108,18 @@ public class HopespearsWill extends BasicQuestHelper
 		defeatGoblins.addStep(new ItemOnTileRequirement(ItemID.MOSSCHINS_BONE), pickUpMosschinBone);
 		defeatGoblins.addStep(new ItemOnTileRequirement(ItemID.REDEYES_BONE), pickUpRedeyesBone);
 		defeatGoblins.addStep(new ItemOnTileRequirement(ItemID.STRONGBONES_BONE), pickUpStrongbonesBone);
-		defeatGoblins.addStep(new Conditions(LogicType.NOR, hasSnotheadBones, snotheadBuried), sayNameSnothead);
-		defeatGoblins.addStep(new Conditions(LogicType.NOR, hasSnailfeetBones, snailfeetBuried), sayNameSnailfeet);
-		defeatGoblins.addStep(new Conditions(LogicType.NOR, hasMosschinBones, mosschinBuried), sayNameMosschin);
-		defeatGoblins.addStep(new Conditions(LogicType.NOR, hasRedeyesBones, redeyesBuried), sayNameRedeyes);
-		defeatGoblins.addStep(new Conditions(LogicType.NOR, hasStrongbonesBones, strongbonesBuried), sayNameStrongbones);
+		defeatGoblins.addStep(nor(hasSnotheadBones), sayNameSnothead);
+		defeatGoblins.addStep(nor(hasSnailfeetBones), sayNameSnailfeet);
+		defeatGoblins.addStep(nor(hasMosschinBones), sayNameMosschin);
+		defeatGoblins.addStep(nor(hasRedeyesBones), sayNameRedeyes);
+		defeatGoblins.addStep(nor(hasStrongbonesBones), sayNameStrongbones);
 
 		ConditionalStep buryBones = new ConditionalStep(this, goToYubiusk);
-		buryBones.addStep(new Conditions(LogicType.NOR, snotheadBuried), burySnothead);
-		buryBones.addStep(new Conditions(LogicType.NOR, snailfeetBuried), burySnailfeet);
-		buryBones.addStep(new Conditions(LogicType.NOR, mosschinBuried), buryMosschin);
-		buryBones.addStep(new Conditions(LogicType.NOR, redeyesBuried), buryRedeyes);
-		buryBones.addStep(new Conditions(LogicType.NOR, strongbonesBuried), buryStrongbones);
+		buryBones.addStep(nor(snotheadBuried), burySnothead);
+		buryBones.addStep(nor(snailfeetBuried), burySnailfeet);
+		buryBones.addStep(nor(mosschinBuried), buryMosschin);
+		buryBones.addStep(nor(redeyesBuried), buryRedeyes);
+		buryBones.addStep(nor(strongbonesBuried), buryStrongbones);
 
 		ConditionalStep finishQuest = new ConditionalStep(this, goToGoblinCaveAfterStart);
 		finishQuest.addStep(new Conditions(inYubiusk, hasAllBones), buryBones);
@@ -167,6 +159,12 @@ public class HopespearsWill extends BasicQuestHelper
 		plainOfMudSphere.addAlternates(ItemID.PLAIN_OF_MUD_SPHERE);
 		combatLevel = new ItemRequirement("90+ combat", -1, -1);
 
+		snotheadBones = new ItemRequirement("Snothead bones", ItemID.SNOTHEADS_BONE).alsoCheckBank(questBank);
+		snailfeetBones = new ItemRequirement("Snailfeet bones", ItemID.SNAILFEETS_BONE).alsoCheckBank(questBank);
+		mosschinBones = new ItemRequirement("Mosschin bones", ItemID.MOSSCHINS_BONE).alsoCheckBank(questBank);
+		redeyesBones = new ItemRequirement("Redeyes bones", ItemID.REDEYES_BONE).alsoCheckBank(questBank);
+		strongbonesBones = new ItemRequirement("Strongbones bones", ItemID.STRONGBONES_BONE).alsoCheckBank(questBank);
+
 		inGoblinCave = new ZoneRequirement(goblinCave);
 		nothingEquipped = new NoItemRequirement("No items equipped", ItemSlots.ANY_EQUIPPED);
 		goblinWidgetActive = new WidgetTextRequirement(739, 2, 1, "Select Your Goblin");
@@ -181,17 +179,17 @@ public class HopespearsWill extends BasicQuestHelper
 		redeyesAlive = new NpcRequirement("Redeyes", NpcID.REDEYES);
 		strongbonesAlive = new NpcRequirement("Strongbones", NpcID.STRONGBONES);
 
-		hasSnotheadBones = new ItemRequirement("Snothead bones", ItemID.SNOTHEADS_BONE);
-		hasSnailfeetBones = new ItemRequirement("Snailfeet bones", ItemID.SNAILFEETS_BONE);
-		hasMosschinBones = new ItemRequirement("Mosschin bones", ItemID.MOSSCHINS_BONE);
-		hasRedeyesBones = new ItemRequirement("Redeyes bones", ItemID.REDEYES_BONE);
-		hasStrongbonesBones = new ItemRequirement("Strongbones bones", ItemID.STRONGBONES_BONE);
-
 		snotheadBuried = new VarbitRequirement(13620, 1);
 		snailfeetBuried = new VarbitRequirement(13621, 1);
 		mosschinBuried = new VarbitRequirement(13622, 1);
 		redeyesBuried = new VarbitRequirement(13623, 1);
 		strongbonesBuried = new VarbitRequirement(13624, 1);
+
+		hasSnotheadBones = new Conditions(LogicType.OR, snotheadBones, snotheadBuried);
+		hasSnailfeetBones = new Conditions(LogicType.OR, snailfeetBones, snailfeetBuried);
+		hasMosschinBones = new Conditions(LogicType.OR, mosschinBones, mosschinBuried);
+		hasRedeyesBones = new Conditions(LogicType.OR, redeyesBones, redeyesBuried);
+		hasStrongbonesBones = new Conditions(LogicType.OR, strongbonesBones, strongbonesBuried);
 	}
 
 	public void setupSteps()
@@ -206,9 +204,9 @@ public class HopespearsWill extends BasicQuestHelper
 		goDownStairs.addDialogStep("Yes.");
 		openCryptDoor = new ObjectStep(this, ObjectID.DOOR_43088, new WorldPoint(3744, 4332, 0),
 				"Enter the door to the crypt. Don't equip your items yet!", ringOfVisibility, ghostspeakAmulet);
-		talkToGhost = new NpcStep(this, NpcID.GHOST_11301, WorldPoint.fromLocalInstance(client, new LocalPoint(7232, 8128)),
+		talkToGhost = new NpcStep(this, NpcID.GHOST_11301, new WorldPoint(3742, 4389, 0),
 				"Equip your ring and ghostspeak item and talk to the ghost in the crypt.", ringOfVisibility.equipped().highlighted(), ghostspeakAmulet.equipped().highlighted());
-
+		talkToGhost.addDialogSteps("Why are you here?", "I visited Yu'biusk.", "It was a wasteland.", "What favour?", "Yes.");
 		goToGoblinCaveAfterStart = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0),
 				"Enter the Goblin Cave next to the Fishing Guild. A plain of mud sphere will teleport you inside the cave.",
 				goblinPotion, potionsAndFood);
@@ -239,24 +237,25 @@ public class HopespearsWill extends BasicQuestHelper
 		defeatRedeyes = new NpcStep(this, NpcID.REDEYES, "Defeat Redeyes WITHOUT using weapons, armour, or magic. He attacks using melee and magic, and lowers your attack, strength, and defence.");
 		defeatStrongbones = new NpcStep(this, NpcID.STRONGBONES, "Defeat Strongbones WITHOUT using weapons, armour, or magic. He attacks using all 3 combat styles, lowers your attack, strength and defence. Ignore the level 29 Skoblins he spawns.");
 
-		pickUpSnotheadBone = new DetailedQuestStep(this, "Pick up Snothead's bone from the ground.", hasSnotheadBones);
-		pickUpSnailfeetBone = new DetailedQuestStep(this, "Pick up Snailfeet's bone from the ground.", hasSnailfeetBones);
-		pickUpMosschinBone = new DetailedQuestStep(this, "Pick up Mosschin's bone from the ground.", hasMosschinBones);
-		pickUpRedeyesBone = new DetailedQuestStep(this, "Pick up Redeyes's bone from the ground.", hasRedeyesBones);
-		pickUpStrongbonesBone = new DetailedQuestStep(this, "Pick up Strongbones's bone from the ground.", hasStrongbonesBones);
+		pickUpSnotheadBone = new DetailedQuestStep(this, "Pick up Snothead's bone from the ground.", snotheadBones.hideConditioned(snotheadBuried));
+		pickUpSnailfeetBone = new DetailedQuestStep(this, "Pick up Snailfeet's bone from the ground.", snailfeetBones.hideConditioned(snailfeetBuried));
+		pickUpMosschinBone = new DetailedQuestStep(this, "Pick up Mosschin's bone from the ground.", mosschinBones.hideConditioned(mosschinBuried));
+		pickUpRedeyesBone = new DetailedQuestStep(this, "Pick up Redeyes's bone from the ground.", redeyesBones.hideConditioned(redeyesBuried));
+		pickUpStrongbonesBone = new DetailedQuestStep(this, "Pick up Strongbones's bone from the ground.", strongbonesBones.hideConditioned(strongbonesBuried));
 
 		goToYubiusk = new DetailedQuestStep(this, "Take all five bones to Yu'Biusk. You must get there via fairy ring BLQ.",
-				hasSnotheadBones, hasSnailfeetBones, hasMosschinBones, hasRedeyesBones, hasStrongbonesBones);
-		burySnothead = new DetailedQuestStep(this, "Bury Snothead's bone.", hasSnotheadBones.highlighted());
-		burySnailfeet = new DetailedQuestStep(this, "Bury Snailfeet's bone.", hasSnailfeetBones.highlighted());
-		buryMosschin = new DetailedQuestStep(this, "Bury Mosschin's bone.", hasMosschinBones.highlighted());
-		buryRedeyes = new DetailedQuestStep(this, "Bury Redeyes' bone.", hasRedeyesBones.highlighted());
-		buryStrongbones = new DetailedQuestStep(this, "Bury Strongbones' bone.", hasStrongbonesBones.highlighted());
+			snotheadBones.hideConditioned(snotheadBuried), snailfeetBones.hideConditioned(snailfeetBuried), mosschinBones.hideConditioned(mosschinBuried),
+			redeyesBones.hideConditioned(redeyesBuried), strongbonesBones.hideConditioned(strongbonesBuried));
+		burySnothead = new DetailedQuestStep(this, "Bury Snothead's bone.", snotheadBones.highlighted());
+		burySnailfeet = new DetailedQuestStep(this, "Bury Snailfeet's bone.", snailfeetBones.highlighted());
+		buryMosschin = new DetailedQuestStep(this, "Bury Mosschin's bone.", mosschinBones.highlighted());
+		buryRedeyes = new DetailedQuestStep(this, "Bury Redeyes' bone.", redeyesBones.highlighted());
+		buryStrongbones = new DetailedQuestStep(this, "Bury Strongbones' bone.", strongbonesBones.highlighted());
 
 		goToGoblinCave.addSubSteps(goToGoblinCaveAfterStart);
 		drinkGoblinPotion.addSubSteps(confirmGoblin);
-		goDownStairs.addSubSteps(goDownStairsAfterStart);
-		openCryptDoor.addSubSteps(openCryptDoorAfterStart);
+		goDownStairsAfterStart.addSubSteps(goDownStairs);
+		openCryptDoorAfterStart.addSubSteps(openCryptDoor);
 		defeatSnothead.addSubSteps(sayNameSnothead, pickUpSnotheadBone);
 		defeatSnailfeet.addSubSteps(sayNameSnailfeet, pickUpSnailfeetBone);
 		defeatMosschin.addSubSteps(sayNameMosschin, pickUpMosschinBone);
@@ -315,7 +314,7 @@ public class HopespearsWill extends BasicQuestHelper
 				Arrays.asList(plainOfMudSphere)));
 		panels.add(new PanelDetails("Freeing the Goblin Souls",
 				Arrays.asList(goToYubiusk, burySnothead, burySnailfeet, buryMosschin, buryRedeyes, buryStrongbones),
-				Arrays.asList(dramenStaff, hasSnotheadBones, hasSnailfeetBones, hasMosschinBones, hasRedeyesBones, hasStrongbonesBones)));
+				Arrays.asList(dramenStaff, snotheadBones, snailfeetBones, mosschinBones, redeyesBones, strongbonesBones)));
 		return panels;
 	}
 }

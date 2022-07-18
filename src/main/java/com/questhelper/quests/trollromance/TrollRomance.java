@@ -63,7 +63,7 @@ public class TrollRomance extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, wax, sled, waxedSled, trollweissFlowers,
-		combatGear, sledEquipped, climbingBoots;
+		combatGear, sledEquipped, climbingBoots, gamesNeck;
 
 	Requirement inStrongholdFloor1, inStrongholdFloor2, inPrison, inTrollweiss, atFlowerLocation, inTrollCave, fightableArrgNearby;
 
@@ -161,6 +161,7 @@ public class TrollRomance extends BasicQuestHelper
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
 	}
 
 	public void loadZones()
@@ -265,7 +266,12 @@ public class TrollRomance extends BasicQuestHelper
 	{
 		return Arrays.asList(ironBar, mapleLog, rope, cakeTin, swampTar, bucketOfWax, combatGear, climbingBoots);
 	}
-
+	
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(gamesNeck);
+	}
 
 	@Override
 	public List<String> getCombatRequirements()

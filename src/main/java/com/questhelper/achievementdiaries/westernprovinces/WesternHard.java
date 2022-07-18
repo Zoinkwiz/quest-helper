@@ -458,7 +458,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		allSteps.add(elfSteps);
 
 		PanelDetails pestSteps = new PanelDetails("Veteran Pest Control", Arrays.asList(moveToPest, vetPest),
-			new CombatLevelRequirement(70), combatGear);
+			new CombatLevelRequirement(100), combatGear);
 		pestSteps.setDisplayCondition(notVetPest);
 		pestSteps.setLockingStep(vetPestTask);
 		allSteps.add(pestSteps);

@@ -66,7 +66,8 @@ public class KaramjaMedium extends BasicQuestHelper
 {
 	// Items required
 	ItemRequirement pickaxe, coins, spiderCarcass, skewerTicksOrArrowShaft, goutTuber, rake, fruitTreeSapling,
-		teasingStick, knife, logs, axe, tradingSticks, opal, smallFishingNet, karambwanVessel, rawKarambwanjiOrSmallFishingNet;
+		teasingStick, knife, logs, axe, tradingSticks, opal, smallFishingNet, karambwanVessel, rawKarambwanji,
+		rawKarambwanjiOrSmallFishingNet;
 
 	ItemRequirement spade, machete;
 
@@ -85,7 +86,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	Requirement grandTree, taiBwoWannaiTrio, dragonSlayerI, shiloVillage, junglePotion;
 
 	QuestStep enterAgilityArena, tag2Pillars, enterVolcano, returnThroughWall, useCart, doCleanup, makeSpiderStick, cookSpider,
-		climbUpToBoat, travelToKhazard, cutTeak, cutMahogany, catchKarambwan, getMachete, flyToKaramja, growFruitTree,
+		climbUpToBoat, travelToKhazard, cutTeak, cutMahogany, catchKarambwanji, catchKarambwan, getMachete, flyToKaramja, growFruitTree,
 		trapGraahk, chopVines, crossLava, climbBrimhavenStaircase, charterFromShipyard, mineRedTopaz, enterCrandor,
 		enterBrimDungeonVine, enterBrimDungeonLava, enterBrimDungeonStairs, claimReward;
 
@@ -136,6 +137,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		doMedium.addStep(notUsedGlider, usedGliderTask);
 
 		caughtKarambwanTask = new ConditionalStep(this, catchKarambwan);
+		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(questBank), catchKarambwanji);
 		doMedium.addStep(notCaughtKarambwan, caughtKarambwanTask);
 
 		charteredFromShipyardTask = new ConditionalStep(this, charterFromShipyard);
@@ -231,6 +233,8 @@ public class KaramjaMedium extends BasicQuestHelper
 			"sticks");
 		karambwanVessel = new ItemRequirement("Karambwan vessel", ItemID.KARAMBWAN_VESSEL).showConditioned(notCaughtKarambwan);
 		karambwanVessel.addAlternates(ItemID.KARAMBWAN_VESSEL_3159);
+		rawKarambwanji = new ItemRequirement("Raw karambwanji",
+		ItemID.RAW_KARAMBWANJI).showConditioned(notCaughtKarambwan);
 		rawKarambwanjiOrSmallFishingNet = new ItemRequirement("Raw karambwanji, or a small fishing net to catch some",
 			ItemID.RAW_KARAMBWANJI).showConditioned(notCaughtKarambwan);
 		rawKarambwanjiOrSmallFishingNet.addAlternates(ItemID.SMALL_FISHING_NET);
@@ -302,8 +306,10 @@ public class KaramjaMedium extends BasicQuestHelper
 		cutMahogany = new ObjectStep(this, ObjectID.MAHOGANY, new WorldPoint(2820, 3080, 0), "Chop a mahogany tree " +
 			"down either in the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe,
 			tradingSticks.quantity(100));
+		catchKarambwanji = new NpcStep(this, NpcID.FISHING_SPOT_4710, new WorldPoint(2791,3019,0),
+			"Using your small fishing net, catch some raw karambwanji just south of Tai Bwo Wannai, or buy some from the GE.", smallFishingNet);
 		catchKarambwan = new NpcStep(this, NpcID.FISHING_SPOT_4712, new WorldPoint(2899, 3119, 0),
-			"Fish a karambwan from the north east coast of Karamja.", karambwanVessel, rawKarambwanjiOrSmallFishingNet);
+			"Fish a karambwan from the north east coast of Karamja.", karambwanVessel, rawKarambwanji);
 		getMachete = new NpcStep(this, NpcID.SAFTA_DOC_6423, new WorldPoint(2790, 3100, 0),
 			"Get a gem machete from Safta Doc. If you want to make a red topaz one, you'll need 1200 trading sticks.",
 			goutTuber, opal.quantity(3), tradingSticks.quantity(300));

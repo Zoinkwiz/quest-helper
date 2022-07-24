@@ -464,7 +464,6 @@ public class QuestOrders
 		QuestHelperQuest.SINS_OF_THE_FATHER,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
-		// Hopespear's Will
 		QuestHelperQuest.MONKEY_MADNESS_II,
 		QuestHelperQuest.FREMENNIK_MEDIUM,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
@@ -484,6 +483,7 @@ public class QuestOrders
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,
 		QuestHelperQuest.FAMILY_PEST,
+		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.THE_MAGE_ARENA,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
 		QuestHelperQuest.WESTERN_MEDIUM,

@@ -675,7 +675,7 @@ public class Watchtower extends BasicQuestHelper
 			giveTobanDragonBones, searchChestForTobansGold, talkToOgAgain, useRopeOnBranchAgain, talkToGrewAgain, talkToWizardWithRelic), dragonBones, rope2));
 		allSteps.add(new PanelDetails("Enter Gu'Tanoth", Arrays.asList(enterGuTanoth, stealRockCake, talkToGuardBattlement, talkToGuardWithRockCake, jumpGap, talkToCityGuard, talkToCityGuardAgain), ogreRelic, coins20, deathRune, goldBar, lightSource));
 		allSteps.add(new PanelDetails("Learn the Skavid language", Arrays.asList(enterScaredSkavidCave, talkToScaredSkavid, enterSkavid1Cave, tryToGoThroughToInsaneSkavid, enterInsaneSkavidCave, talkToInsaneSkavid,
-			pickUp2Nightshade, useNightshadeOnGuard), goldBar, lightSource, skavidMap, fireRes));
+			pickUp2Nightshade, useNightshadeOnGuard), Arrays.asList(goldBar, lightSource, skavidMap), Collections.singletonList(fireRes)));
 		allSteps.add(new PanelDetails("Getting the other crystals", Arrays.asList(talkToWizardAgainEnclave, useJangerberriesOnGuam, grindBatBones, useBonesOnPotion, talkToWizardWithPotion, useNightshadeOnGuardAgain, usePotionOnOgre1, mineRock, talkToWizardWithCrystals, useCrystal1, pullLever),
 			guamUnf, jangerberries, pestleAndMortar, batBones, nightshade, pickaxe));
 		return allSteps;

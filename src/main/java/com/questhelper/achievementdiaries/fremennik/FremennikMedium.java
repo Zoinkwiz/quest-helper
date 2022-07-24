@@ -420,6 +420,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 42, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
 			"43 Prayer for protection prayers"));
+		req.add(olafsQuest);
 		return req;
 	}
 

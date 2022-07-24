@@ -70,7 +70,7 @@ public class Watchtower extends BasicQuestHelper
 	//Items Required
 	ItemRequirement coins20, goldBar, deathRune, pickaxe, dragonBones, rope2, guamUnf, fingernails, rope, tobansKey, goradsTooth, relic3, relic1, relic2, tobansGold,
 		crystal, ogreRelic, rockCake, skavidMap, lightSource, nightshade, nightshade2, crystal2, jangerberries, batBones, groundBatBones, pestleAndMortar, partialPotion, potion,
-		magicPotion, magicPotionHighlight, crystal3, crystal4, crystalHighlight, crystal2Highlight, crystal3Highlight, crystal4Highlight;
+		magicPotion, magicPotionHighlight, crystal3, crystal4, crystalHighlight, crystal2Highlight, crystal3Highlight, crystal4Highlight, fireRes;
 
 	Requirement inWatchtowerFloor1, inWatchtowerFloor2, hasTobansKey, onGrewIsland, talkedToGrew, talkedToOg, knownOgreStep, onTobanIsland, hasGoradsTooth,
 		talkedToToban, hasTobansGold, hasRelic1, hasRelic2, hasRelic3,gettingOgreRockCake, gaveCake, inEndOfJumpingPath, hasBeenAtEndOfPath, knowsRiddle, inScaredSkavidRoom,
@@ -309,6 +309,9 @@ public class Watchtower extends BasicQuestHelper
 		magicPotionHighlight = new ItemRequirement("Magic ogre potion", ItemID.MAGIC_OGRE_POTION);
 		magicPotionHighlight.setTooltip("You can make another with a guam unf potion, adding jangerberries then ground bat bones, and having the Watchtower Wizard enchant it");
 		magicPotionHighlight.setHighlightInInventory(true);
+
+		fireRes = new ItemRequirement("Shields/potions that mitigate dragon's fire", ItemCollections.getAntifireShields(), -1);
+		fireRes.addAlternates(ItemCollections.getAntiFirePotions());
 	}
 
 	public void loadZones()
@@ -612,6 +615,11 @@ public class Watchtower extends BasicQuestHelper
 		return reqs;
 	}
 
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(fireRes);
+	}
 
 	@Override
 	public List<String> getCombatRequirements()
@@ -667,7 +675,7 @@ public class Watchtower extends BasicQuestHelper
 			giveTobanDragonBones, searchChestForTobansGold, talkToOgAgain, useRopeOnBranchAgain, talkToGrewAgain, talkToWizardWithRelic), dragonBones, rope2));
 		allSteps.add(new PanelDetails("Enter Gu'Tanoth", Arrays.asList(enterGuTanoth, stealRockCake, talkToGuardBattlement, talkToGuardWithRockCake, jumpGap, talkToCityGuard, talkToCityGuardAgain), ogreRelic, coins20, deathRune, goldBar, lightSource));
 		allSteps.add(new PanelDetails("Learn the Skavid language", Arrays.asList(enterScaredSkavidCave, talkToScaredSkavid, enterSkavid1Cave, tryToGoThroughToInsaneSkavid, enterInsaneSkavidCave, talkToInsaneSkavid,
-			pickUp2Nightshade, useNightshadeOnGuard), goldBar, lightSource, skavidMap));
+			pickUp2Nightshade, useNightshadeOnGuard), goldBar, lightSource, skavidMap, fireRes));
 		allSteps.add(new PanelDetails("Getting the other crystals", Arrays.asList(talkToWizardAgainEnclave, useJangerberriesOnGuam, grindBatBones, useBonesOnPotion, talkToWizardWithPotion, useNightshadeOnGuardAgain, usePotionOnOgre1, mineRock, talkToWizardWithCrystals, useCrystal1, pullLever),
 			guamUnf, jangerberries, pestleAndMortar, batBones, nightshade, pickaxe));
 		return allSteps;

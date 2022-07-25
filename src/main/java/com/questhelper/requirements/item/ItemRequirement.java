@@ -199,6 +199,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setConditionToHide(conditionToHide);
 		newItem.questBank = questBank;
 		newItem.setTooltip(getTooltip());
+		newItem.setUrlSuffix(getUrlSuffix());
 
 		return newItem;
 	}

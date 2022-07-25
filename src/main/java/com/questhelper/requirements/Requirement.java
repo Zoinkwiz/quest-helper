@@ -95,6 +95,27 @@ public interface Requirement
 	 * @param tooltip the new tooltip
 	 */
 	default void setTooltip(@Nullable String tooltip) {}
+	
+	/**
+	 * If a custom suffix has been set it will be used
+	 * over the default ItemID.
+	 *
+	 * @return custom url
+	 */
+	@Nullable
+	default String getUrlSuffix()
+	{
+		return null;
+	}
+	
+	/**
+	 * Set the suffix of the URL to the argument provided,
+	 *  overrides the url set from the ItemID.
+	 *
+	 * @param urlSuffix the new url
+	 */
+	default void setUrlSuffix(@Nullable String urlSuffix) {}
+	
 
 	default List<LineComponent> getDisplayTextWithChecks(Client client, QuestHelperConfig config)
 	{

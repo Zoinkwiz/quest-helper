@@ -44,7 +44,7 @@ public class FollowerItemRequirement extends ItemRequirement
 
 	public FollowerItemRequirement(String name, ItemCollections itemIDs, List<Integer> followerIDs)
 	{
-		super(name, itemIDs.getItems());
+		super(name, itemIDs);
 		this.followerIDs = followerIDs;
 	}
 	@Override

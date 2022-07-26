@@ -881,7 +881,7 @@ public enum ItemCollections
 		ItemID.MORYTANIA_LEGS_4
 	)),
 
-	LIGHT_SOURCES(ImmutableList.of(
+	LIGHT_SOURCES("Light_sources", ImmutableList.of(
 		ItemID.FIREMAKING_CAPET,
 		ItemID.FIREMAKING_CAPE,
 		ItemID.MAX_CAPE,

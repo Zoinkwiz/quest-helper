@@ -157,7 +157,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlighted.setHighlightInInventory(true);
 		ropeReqs = new ItemRequirement("Rope, or 15 coins / 4 balls of wool to obtain during the quest", ItemID.ROPE);
-		coins100 = new ItemRequirement("Coins minimum", ItemCollections.getCoins(), 100);
+		coins100 = new ItemRequirement("Coins minimum", ItemCollections.COINS, 100);
 		wig = new ItemRequirement("Wig", ItemID.WIG_2421);
 		wig.setHighlightInInventory(true);
 		dyedWig = new ItemRequirement("Wig (dyed)", ItemID.WIG);
@@ -166,7 +166,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		key = new ItemRequirement("Bronze key", ItemID.BRONZE_KEY);
 		key.setTooltip("You can get another from Leela for 15 coins");
 		yellowDyeReqs = new ItemRequirement("Yellow dye, or 2 onions + 5 coins to obtain during quest", ItemID.YELLOW_DYE);
-		glory = new ItemRequirement("Amulet of Glory for Al Kharid and Draynor Village teleports", ItemCollections.getAmuletOfGlories());
+		glory = new ItemRequirement("Amulet of Glory for Al Kharid and Draynor Village teleports", ItemCollections.AMULET_OF_GLORIES);
 	}
 
 	public void setupConditions()

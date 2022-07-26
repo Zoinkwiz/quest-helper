@@ -216,8 +216,8 @@ public class Regicide extends BasicQuestHelper
 		rope1.setTooltip("Bring extras as you can fail");
 		rope2 = rope1.quantity(2);
 		ropeHighlight = rope1.highlighted();
-		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.getBows(), 1, true);
-		arrows = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.getMetalArrows());
+		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.BOWS, 1, true);
+		arrows = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.METAL_ARROWS);
 		arrowsHighlight = arrows.highlighted();
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		spadeHighlight = spade.highlighted();
@@ -232,12 +232,12 @@ public class Regicide extends BasicQuestHelper
 		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(ItemID.SHARK);
-		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
-		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemCollections.getCoins(), 750);
+		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
+		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemCollections.COINS, 750);
 		agilityPotions = new ItemRequirement("Agility boosting items like Summer Pie (+5) or Agility potion (+3)",
 			ItemID.SUMMER_PIE, 5);
 		agilityPotions.addAlternates(ItemID.PART_SUMMER_PIE);
-		agilityPotions.addAlternates(ItemCollections.getAgilityPotions());
+		agilityPotions.addAlternates(ItemCollections.AGILITY_POTIONS);
 		oilyCloth = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
 		oilyCloth.setTooltip("You can get another by searching the equipment by the fireplace beside Koftik.");
 		oilyClothHighlight = oilyCloth.highlighted();
@@ -277,14 +277,14 @@ public class Regicide extends BasicQuestHelper
 		cookedRabbit.setTooltip("Raw Rabbit can be killed around Isafdar or purchased from the");
 		cookedRabbit.appendToTooltip(" Charter Ship near the Tyras Camp for 50gp.");
 
-		antipoisons = new ItemRequirement("Antidotes/antipoisons", ItemCollections.getAntipoisons(), -1);
+		antipoisons = new ItemRequirement("Antidotes/antipoisons", ItemCollections.ANTIPOISONS, -1);
 		antipoisons.setTooltip("No amount specified. Bring as many doses as you feel comfortable bringing.");
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 		westArdougneTeleport = new ItemRequirement("West Ardougne teleport", ItemID.WEST_ARDOUGNE_TELEPORT, 4);
 		summerPie = new ItemRequirement("Summer pie as food + agility boost", ItemID.SUMMER_PIE, -1);
 		summerPie.addAlternates(ItemID.HALF_A_SUMMER_PIE);
 		summerPie.setTooltip("This is, most likely, not needed if you have 70+ Agility. Bring more if you have lower Agility.");
-		axe = new ItemRequirement("An Axe to cook raw rabbit in case you fail too many obstacles.", ItemCollections.getAxes(), 1);
+		axe = new ItemRequirement("An Axe to cook raw rabbit in case you fail too many obstacles.", ItemCollections.AXES, 1);
 
 		crystalPendant = new ItemRequirement("Crystal pendant", ItemID.CRYSTAL_PENDANT);
 		crystalPendant.setTooltip("You can get another from Lord Iorwerth");

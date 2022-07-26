@@ -121,7 +121,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemCollections.getCoins(), 3000);
+		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemCollections.COINS, 3000);
 		noItemRequirement = new NoItemRequirement("No items or equipment carried", ItemSlots.ANY_EQUIPPED_AND_INVENTORY);
 
 		femaleReq = new PlayerModelRequirement(true);

@@ -165,12 +165,12 @@ public class DesertMedium extends ComplexStateQuestHelper
 		// 1558 0->1 talking to simon
 		talkedToSimon = new VarbitRequirement(1558, 1, Operation.EQUAL);
 
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notMagicCarpet);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notMagicCarpet);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notOrangeSally,
 			notEagleTravel, notVisitGenie));
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notOrangeSally);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notChopTeak);
-		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopTeak);
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notVisitGenie);
 		scrollOfRedir = new ItemRequirement("Scroll of redirection", ItemID.SCROLL_OF_REDIRECTION)
 			.showConditioned(notTPPollnivneach);
@@ -188,9 +188,9 @@ public class DesertMedium extends ComplexStateQuestHelper
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
 		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
 		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
-		waterskin = new ItemRequirement("Waterskin", ItemCollections.getWaterskin());
+		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN);
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inDesert = new ZoneRequirement(desert);
 		inEagleArea = new ZoneRequirement(eagleArea);

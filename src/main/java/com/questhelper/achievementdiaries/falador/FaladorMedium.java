@@ -214,12 +214,12 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre);
 		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall);
-		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.getCrossbows()).showConditioned(notGrappleNorthWall);
+		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleNorthWall);
 		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar);
 		initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar);
 		initiateLegs = new ItemRequirement("Initiate Legs", ItemID.INITIATE_CUISSE).showConditioned(notPrayAtAltar);
-		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineGold);
-		axe = new ItemRequirement("Any Axe", ItemCollections.getAxes()).showConditioned(notChopBurnWillowTav);
+		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES).showConditioned(notMineGold);
+		axe = new ItemRequirement("Any Axe", ItemCollections.AXES).showConditioned(notChopBurnWillowTav);
 		brownApron = new ItemRequirement("Brown Apron", ItemID.BROWN_APRON).showConditioned(notMineGold);
 		willowBranch6 = new ItemRequirement("Willow Branches", ItemID.WILLOW_BRANCH, 6).showConditioned(notBasketFalLoom);
 
@@ -231,8 +231,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		faladorTeleport = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
 		explorersRing = new ItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2);
 		explorersRing.addAlternates(ItemID.EXPLORERS_RING_4, ItemID.EXPLORERS_RING_3);
-		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.getCombatBracelets());
-		combatBracelet.addAlternates(ItemCollections.getGamesNecklaces());
+		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS);
+		combatBracelet.addAlternates(ItemCollections.GAMES_NECKLACES);
 
 		inChemist = new ZoneRequirement(chemist);
 		inChaosTemple = new ZoneRequirement(chaosTemple);

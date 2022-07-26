@@ -146,7 +146,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
 		battlefrontTeleports2 = new ItemRequirement("Battlefront teleports", ItemID.BATTLEFRONT_TELEPORT, 2);
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
-		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces());
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

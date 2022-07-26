@@ -35,7 +35,6 @@ import java.util.Map;
 
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -82,7 +81,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 
 	private void setupRequirements() {
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		glory = new ItemRequirement("Amulet of Glory for faster teleport to Draynor Village.", ItemCollections.getAmuletOfGlories());
+		glory = new ItemRequirement("Amulet of Glory for faster teleport to Draynor Village.", ItemCollections.AMULET_OF_GLORIES);
 	}
 
 	private void setupSteps() {

@@ -162,13 +162,13 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		notPuroImp = new VarplayerRequirement(1194, false, 23);
 		notCraftLava = new VarplayerRequirement(1194, false, 24);
 
-		crossbow = new ItemRequirement("A crossbow", ItemCollections.getCrossbows()).showConditioned(notGrappleLum);
+		crossbow = new ItemRequirement("A crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleLum);
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleLum);
 		earthTali = new ItemRequirement("Earth talisman", ItemID.EARTH_TALISMAN).showConditioned(notCraftLava);
-		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.getFireAltar()).showConditioned(notCraftLava);
+		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.FIRE_ALTAR).showConditioned(notCraftLava);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE)
 			.showConditioned(new Conditions(LogicType.OR, notCraftLava, notTPlumb));
-		essence = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notCraftLava);
+		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notCraftLava);
 		bindingNeck = new ItemRequirement("Binding necklace", ItemID.BINDING_NECKLACE).showConditioned(notCraftLava);
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSalmon);
 		flyFishingRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notCatchSalmon);
@@ -178,12 +178,12 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPlumb);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPlumb);
 		steelArrows = new ItemRequirement("Steel arrows", ItemID.STEEL_ARROW).showConditioned(notUpgradeDevice);
-		coins = new ItemRequirement("999 Coins", ItemCollections.getCoins()).showConditioned(notUpgradeDevice);
+		coins = new ItemRequirement("999 Coins", ItemCollections.COINS).showConditioned(notUpgradeDevice);
 		avasAttractor = new ItemRequirement("Ava's Attractor", ItemID.AVAS_ATTRACTOR).showConditioned(notUpgradeDevice);
 		avasAccumulator = new ItemRequirements(LogicType.OR, "999 Coins or Ava's Attractor", coins.quantity(999),
 			avasAttractor);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notChopWillow);
-		fairyAccess = new ItemRequirement("Lunar or Dramen staff", ItemCollections.getFairyStaff())
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopWillow);
+		fairyAccess = new ItemRequirement("Lunar or Dramen staff", ItemCollections.FAIRY_STAFF)
 			.showConditioned(new Conditions(LogicType.OR, notChaeldarTask, notPuroImp, notWizardFairy));
 		butterflyNet = new ItemRequirement("Butterfly net", ItemID.BUTTERFLY_NET).showConditioned(notPuroImp);
 		implingJar = new ItemRequirement("Impling jar", ItemID.IMPLING_JAR).showConditioned(notPuroImp);

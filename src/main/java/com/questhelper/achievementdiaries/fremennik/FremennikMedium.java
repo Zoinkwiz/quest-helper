@@ -186,13 +186,13 @@ public class FremennikMedium extends ComplexStateQuestHelper
 
 		specialAttackEnabled = new SpecialAttackRequirement(SpecialAttack.ON);
 
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notPetRockPOH);
-		coinsForFerry = new ItemRequirement("Coins", ItemCollections.getCoins());
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notPetRockPOH);
+		coinsForFerry = new ItemRequirement("Coins", ItemCollections.COINS);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSnowyHunter);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notSlayBrineRat);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(
 			new Conditions(LogicType.OR, notMineGold, notMineCoal));
-		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff()).showConditioned(notTravelMisc);
+		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMisc);
 		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight);
 		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight);
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).showConditioned(new Conditions(LogicType.OR,
@@ -208,9 +208,9 @@ public class FremennikMedium extends ComplexStateQuestHelper
 			notSlayBrineRat, notLighthouse));
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		prayerPot = new ItemRequirement("Prayer Potions", ItemCollections.getPrayerPotions(), -1);
-		stamPot = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		prayerPot = new ItemRequirement("Prayer Potions", ItemCollections.PRAYER_POTIONS, -1);
+		stamPot = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS, -1);
 
 		protectMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
 		protectMissiles = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);

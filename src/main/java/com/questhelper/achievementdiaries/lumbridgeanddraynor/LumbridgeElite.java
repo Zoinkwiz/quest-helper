@@ -138,19 +138,19 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		allQuests = new QuestPointRequirement(290, Operation.EQUAL);
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest);
-		crossbow = new ItemRequirement("Crossbow", ItemCollections.getCrossbows()).showConditioned(notMovario);
+		crossbow = new ItemRequirement("Crossbow", ItemCollections.CROSSBOWS).showConditioned(notMovario);
 		mithgrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notMovario);
-		lightsource = new ItemRequirement("A lightsource", ItemCollections.getLightSources()).showConditioned(notMovario);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notChopMagic);
+		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES).showConditioned(notMovario);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopMagic);
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddyPlatebody);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyPlatebody);
-		essence = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notWaterRunes);
+		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRunes);
 		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss",
 			ItemID.WATER_TIARA).showConditioned(notWaterRunes);
-		qcCape = new ItemRequirement("Quest cape", ItemCollections.getQuestCape()).showConditioned(notQCEmote);
+		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote);
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE)
 			.showConditioned(new Conditions(notMovario, notRichChest));
-		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.getRingOfDuelings())
+		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS)
 			.showConditioned(notChopMagic);
 
 		inUnderground = new ZoneRequirement(underground);

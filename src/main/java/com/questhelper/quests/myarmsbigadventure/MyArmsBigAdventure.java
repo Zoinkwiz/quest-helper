@@ -242,8 +242,8 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		hardyGout.setTooltip("You can get more from Murcaily");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 
 		rakeHighlight = new ItemRequirement("Rake", ItemID.RAKE);
 		rakeHighlight.setHighlightInInventory(true);
@@ -272,7 +272,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		rakeHandle.setHighlightInInventory(true);
 
 		gamesNecklace = new ItemRequirement("Games necklace for Burthorpe teleport",
-			ItemCollections.getGamesNecklaces());
+			ItemCollections.GAMES_NECKLACES);
 	}
 
 	public void loadZones()

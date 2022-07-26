@@ -214,7 +214,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		sigilMould = new ItemRequirement("Demonic sigil mould", ItemID.DEMONIC_SIGIL_MOULD);
 		combatGear = new ItemRequirement("Combat gear + potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		coinsForCarpet = new ItemRequirement("Coins or more for carpet rides", ItemCollections.getCoins(), 400);
+		coinsForCarpet = new ItemRequirement("Coins or more for carpet rides", ItemCollections.COINS, 400);
 		sigil = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
 		sigil.setTooltip("You can make another if needed with the demonic sigil mould");
 		sigil2 = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL, 2);

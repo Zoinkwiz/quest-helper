@@ -594,12 +594,12 @@ public class SongOfTheElves extends BasicQuestHelper
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted.setHighlightInInventory(true);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		saw = new ItemRequirement("Saw", ItemCollections.SAW);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		pickaxeHighlighted.setHighlightInInventory(true);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 
 		ardyFullHelm = new ItemRequirement("Ardougne knight helm", ItemID.ARDOUGNE_KNIGHT_HELM);
@@ -623,7 +623,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		crystalSeed = new ItemRequirement("Crystal seed", ItemID.CRYSTAL_SEED_23810);
 		crystalSeed.setHighlightInInventory(true);
 
-		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		hammerHighlighted.setHighlightInInventory(true);
 
 		elderCadantine = new ItemRequirement("Elder cadantine", ItemID.ELDER_CADANTINE);
@@ -655,7 +655,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		teleCrystal =  new ItemRequirement("Teleport crystal", ItemID.TELEPORT_CRYSTAL_1);
 		teleCrystal.addAlternates(ItemID.TELEPORT_CRYSTAL_2, ItemID.TELEPORT_CRYSTAL_3, ItemID.TELEPORT_CRYSTAL_4, ItemID.TELEPORT_CRYSTAL_5);
 		iorwerthCampTeleport = new ItemRequirement("Iorwerth camp teleport", ItemID.IORWERTH_CAMP_TELEPORT);
-		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 	}
 
 	public void setupConditions()

@@ -132,7 +132,7 @@ public class FightArena extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		khazardHelmet = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET);
 		khazardPlatebody = new ItemRequirement("Khazard armour", ItemID.KHAZARD_ARMOUR);
 		khazardHelmetEquipped = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET, 1, true);

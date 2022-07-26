@@ -162,13 +162,13 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		runeAxe = new ItemRequirement("Rune axe or better", ItemCollections.getRuneAxeBetter())
+		runeAxe = new ItemRequirement("Rune axe or better", ItemCollections.RUNE_AXE_BETTER)
 			.showConditioned(notEntYew);
-		antiDragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.getAntifireShields())
+		antiDragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.ANTIFIRE_SHIELDS)
 			.showConditioned(notKillGreenDrag);
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
 			.showConditioned(notWildyGWBloodveld);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes())
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
 			.showConditioned(notMineMith);
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notEarthOrb);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notEarthOrb);
@@ -177,15 +177,15 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		muddyKey = new ItemRequirement("Muddy key", ItemID.MUDDY_KEY).showConditioned(notMuddyChest);
 		goldHelmet = new ItemRequirement("Golden helmet not in inventory or bank (make sure this is red)",
 			ItemID.GOLD_HELMET).showConditioned(notGoldHelm);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notGoldHelm);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notGoldHelm);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notGoldHelm);
 		goldOre = new ItemRequirement("Gold ore", ItemID.GOLD_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notGoldHelm);
 		barsOrPick = new ItemRequirements(LogicType.OR, "3 gold bars or a pickaxe", goldBar.quantity(3), pickaxe);
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
-		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.BURNING_AMULETS);
+		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 
 		enterGodwars = new ComplexRequirement(LogicType.OR, "60 Agility or Strength",
 			new SkillRequirement(Skill.AGILITY, 60), new SkillRequirement(Skill.STRENGTH, 60));

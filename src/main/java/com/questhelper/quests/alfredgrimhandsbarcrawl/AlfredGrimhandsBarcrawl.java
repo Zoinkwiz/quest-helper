@@ -101,23 +101,23 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins208 = new ItemRequirement("Coins", ItemCollections.getCoins(), 208);
-		coins50 = new ItemRequirement("Coins", ItemCollections.getCoins(), 50);
-		coins10 = new ItemRequirement("Coins", ItemCollections.getCoins(), 10);
-		coins70 = new ItemRequirement("Coins", ItemCollections.getCoins(), 70);
-		coins8 = new ItemRequirement("Coins", ItemCollections.getCoins(), 8);
-		coins7 = new ItemRequirement("Coins", ItemCollections.getCoins(), 7);
-		coins15 = new ItemRequirement("Coins", ItemCollections.getCoins(), 15);
-		coins18 = new ItemRequirement("Coins", ItemCollections.getCoins(), 18);
-		coins12 = new ItemRequirement("Coins", ItemCollections.getCoins(), 12);
+		coins208 = new ItemRequirement("Coins", ItemCollections.COINS, 208);
+		coins50 = new ItemRequirement("Coins", ItemCollections.COINS, 50);
+		coins10 = new ItemRequirement("Coins", ItemCollections.COINS, 10);
+		coins70 = new ItemRequirement("Coins", ItemCollections.COINS, 70);
+		coins8 = new ItemRequirement("Coins", ItemCollections.COINS, 8);
+		coins7 = new ItemRequirement("Coins", ItemCollections.COINS, 7);
+		coins15 = new ItemRequirement("Coins", ItemCollections.COINS, 15);
+		coins18 = new ItemRequirement("Coins", ItemCollections.COINS, 18);
+		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
 
-			gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
+			gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
-		glory = new ItemRequirement("Amulet of Glory", ItemCollections.getAmuletOfGlories());
+		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT);
-		duelingRing = new ItemRequirement("Ring of dueling", ItemCollections.getRingOfDuelings());
+		duelingRing = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS);
 
 		barcrawlCard = new ItemRequirement("Barcrawl card", ItemID.BARCRAWL_CARD);
 		barcrawlCard.setTooltip("If you've lost it you can get another from the Barbarian Guard");

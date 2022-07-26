@@ -257,23 +257,23 @@ public class Wanted extends BasicQuestHelper
 		ItemRequirement moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 1);
 		commorbComponents = new ItemRequirements("A law rune, an enchanted gem and some molten glass", lawRune, enchantedGem, moltenGlass);
 		commorbComponents.setTooltip("Alternatively, you can bring 10k gp.");
-		tenThousandGp = new ItemRequirement("10k gp", ItemCollections.getCoins(), 10000);
+		tenThousandGp = new ItemRequirement("10k gp", ItemCollections.COINS, 10000);
 		commorbComponentsOrTenThousandGp = new ItemRequirements(LogicType.OR, "A law rune, an enchanted gem and some molten glass OR 10k gp", commorbComponents, tenThousandGp);
 		
 		runeEssence = new ItemRequirement("20 Rune Essence (UNNOTED)", ItemID.RUNE_ESSENCE, 20);
 		pureEssence = new ItemRequirement("20 Pure Essence (UNNOTED)", ItemID.PURE_ESSENCE, 20);
 		essence =  new ItemRequirements(LogicType.OR, "20 Rune or Pure Essence (UNNOTED)", runeEssence, pureEssence);
-		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
 		rope = new ItemRequirement("A rope", ItemID.ROPE);
 
 		spinyHelmet = new ItemRequirement("A spiny helmet or slayer helm", ItemID.SPINY_HELMET);
-		spinyHelmet.addAlternates(ItemCollections.getSlayerHelmets());
+		spinyHelmet.addAlternates(ItemCollections.SLAYER_HELMETS);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		amuletOfGlory = new ItemRequirement("Amulet of Glory", ItemCollections.getAmuletOfGlories());
-		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.getRingOfDuelings());
+		amuletOfGlory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
+		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.RING_OF_DUELINGS);
 		faladorTeleport = new ItemRequirement("A teleport to Falador", ItemID.FALADOR_TELEPORT, -1);
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT, -1);
 		canifisTeleport = new ItemRequirement("A teleport to Canifis", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, -1);

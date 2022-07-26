@@ -45,7 +45,6 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -431,7 +430,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		freeInventorySlots = new FreeInventorySlotRequirement(InventoryID.INVENTORY,  1);
 
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS);
-		anyAxe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		anyAxe = new ItemRequirement("Any axe", ItemCollections.AXES);
 		rosesNote2 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25806);
 		rosesNote2.setTooltip("You can get another from the panel in the Forthos Ruin");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
@@ -442,11 +441,11 @@ public class AKingdomDivided extends BasicQuestHelper
 		rosesNote3.setTooltip("You can get another from the panel in the Settlement Ruins south west of the Wintertodt camp.");
 		food = new ItemRequirement("Decent food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
-		gamesNecklace = new ItemRequirement("Games necklace for Wintertodt camp teleport", ItemCollections.getGamesNecklaces());
+		gamesNecklace = new ItemRequirement("Games necklace for Wintertodt camp teleport", ItemCollections.GAMES_NECKLACES);
 		rosesNote4 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25808);
-		fairyRingStaff = new ItemRequirement("Staff for Fairy rings", ItemCollections.getFairyStaff());
-		fairyRingStaffOrGamesNecklace = new ItemRequirement("Staff for Fairy rings or a Skills Necklace", ItemCollections.getFairyStaff());
-		fairyRingStaffOrGamesNecklace.addAlternates(ItemCollections.getSkillsNecklaces());
+		fairyRingStaff = new ItemRequirement("Staff for Fairy rings", ItemCollections.FAIRY_STAFF);
+		fairyRingStaffOrGamesNecklace = new ItemRequirement("Staff for Fairy rings or a Skills Necklace", ItemCollections.FAIRY_STAFF);
+		fairyRingStaffOrGamesNecklace.addAlternates(ItemCollections.SKILLS_NECKLACES);
 		combatGearForXamphur = new ItemRequirement("Melee or range gear to fight Xamphur.", -1, -1);
 		combatGearForXamphur.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		combatGearForXamphur.setTooltip("Xamphur is immune to magic attacks.");

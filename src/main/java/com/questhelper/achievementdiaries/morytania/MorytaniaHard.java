@@ -169,15 +169,15 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		piety = new PrayerRequirement("Piety activated", Prayer.PIETY);
 
 		crystalMineKey = new ItemRequirement("Crystal mine key", ItemID.CRYSTALMINE_KEY).showConditioned(notMithOre);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMithOre);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notKharyrll);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMithOre);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKharyrll);
 		limestoneBrick = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK).showConditioned(notKharyrll);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notKharyrll);
 		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notKharyrll);
 		teakPlank = new ItemRequirement("Teak plank", ItemID.TEAK_PLANK).showConditioned(notKharyrll);
 		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notKharyrll);
 		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE).showConditioned(notKharyrll);
-		noseProtection = new ItemRequirement("Nose protection", ItemCollections.getNoseProtection())
+		noseProtection = new ItemRequirement("Nose protection", ItemCollections.NOSE_PROTECTION)
 			.showConditioned(notAdvancedSpikes);
 		watermelonSeeds = new ItemRequirement("Watermelon seeds", ItemID.WATERMELON_SEED)
 			.showConditioned(notHarvestWatermelon);
@@ -185,11 +185,11 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon));
 		rake = new ItemRequirement("Rake", ItemID.RAKE)
 			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon));
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notBurnMaho);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notBurnMaho);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnMaho);
 		witchwoodIcon = new ItemRequirement("Witchwood icon", ItemID.WITCHWOOD_ICON)
 			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho));
-		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho));
 		mushroomSpore = new ItemRequirement("Mushroom spores", ItemID.MUSHROOM_SPORE).showConditioned(notBittercapMush);
 		spade = new ItemRequirement("Spade", ItemID.SPADE)
@@ -199,10 +199,10 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		fairyAccess = new ItemRequirement("Access to the fairy ring system", ItemCollections.getFairyStaff())
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		fairyAccess = new ItemRequirement("Access to the fairy ring system", ItemCollections.FAIRY_STAFF)
 			.showConditioned(new Conditions(LogicType.OR, notBridgeSalve, notPietyAltar));
-		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.getSlayerRings());
+		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.SLAYER_RINGS);
 
 		inHauntedMine1 = new ZoneRequirement(hauntedMine1);
 		inHauntedMine2 = new ZoneRequirement(hauntedMine2);

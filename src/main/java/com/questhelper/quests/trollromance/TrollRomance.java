@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.trollromance;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -161,7 +162,7 @@ public class TrollRomance extends BasicQuestHelper
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
+		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 	}
 
 	public void loadZones()

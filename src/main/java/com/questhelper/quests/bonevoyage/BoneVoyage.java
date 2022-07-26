@@ -152,12 +152,12 @@ public class BoneVoyage extends BasicQuestHelper
 		vodka2 = new ItemRequirement("Vodka", ItemID.VODKA, 2);
 		marrentillPotionUnf = new ItemRequirement("Marrentill potion (unf)", ItemID.MARRENTILL_POTION_UNF);
 
-		digsiteTeleport = new ItemRequirement("Teleport to the Digsite", ItemCollections.getDigsitePendants());
+		digsiteTeleport = new ItemRequirement("Teleport to the Digsite", ItemCollections.DIGSITE_PENDANTS);
 		digsiteTeleport.addAlternates(ItemID.DIGSITE_TELEPORT);
-		woodcuttingGuildTeleport = new ItemRequirement("Teleport to the Woodcutting Guild", ItemCollections.getSkillsNecklaces());
+		woodcuttingGuildTeleport = new ItemRequirement("Teleport to the Woodcutting Guild", ItemCollections.SKILLS_NECKLACES);
 		woodcuttingGuildTeleport.addAlternates(ItemID.XERICS_TALISMAN, ItemID.KHAREDSTS_MEMOIRS);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		sarimTeleport = new ItemRequirement("Port Sarim teleport", ItemCollections.getAmuletOfGlories());
+		sarimTeleport = new ItemRequirement("Port Sarim teleport", ItemCollections.AMULET_OF_GLORIES);
 		sarimTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
 		lumberyardTeleport = new ItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
 

@@ -154,7 +154,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 		//Magnet
 		ironBar5 = new ItemRequirement("Iron Bar", ItemID.IRON_BAR, 5);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		selectedIron = new ItemRequirement("Selected Iron", ItemID.SELECTED_IRON);
 		barMagnet = new ItemRequirement("Bar magnet", ItemID.BAR_MAGNET);
 
@@ -172,8 +172,8 @@ public class AnimalMagnetism extends BasicQuestHelper
 		polishedButtons.setHighlightInInventory(true);
 
 		draynorTeleport = new ItemRequirement("Teleport to Draynor", ItemID.DRAYNOR_MANOR_TELEPORT, 5);
-		draynorTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
-		burthorpeTeleport = new ItemRequirement("Teleport to Burthorpe", ItemCollections.getGamesNecklaces());
+		draynorTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
+		burthorpeTeleport = new ItemRequirement("Teleport to Burthorpe", ItemCollections.GAMES_NECKLACES);
 		portPhasmatysTeleport = new ItemRequirement("Teleport to Port Phasmatys", ItemID.ECTOPHIAL);
 		portPhasmatysTeleport.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
 

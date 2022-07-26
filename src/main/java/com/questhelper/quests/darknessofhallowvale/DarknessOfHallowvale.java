@@ -199,12 +199,12 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		planks2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
 		planks1 = new ItemRequirement("Plank", ItemID.PLANK);
-		nails8 = new ItemRequirement("Nails", ItemCollections.getNails(), 8);
-		nails4 = new ItemRequirement("Nails", ItemCollections.getNails(), 4);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		nails8 = new ItemRequirement("Nails", ItemCollections.NAILS, 8);
+		nails4 = new ItemRequirement("Nails", ItemCollections.NAILS, 4);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);

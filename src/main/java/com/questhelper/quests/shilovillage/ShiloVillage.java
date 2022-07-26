@@ -184,10 +184,10 @@ public class ShiloVillage extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		staminas = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions(), -1);
-		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons(), -1);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		staminas = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, -1);
+		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS, -1);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		quickTeleport = new ItemRequirement("A quick teleport for escaping", -1, -1);
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);

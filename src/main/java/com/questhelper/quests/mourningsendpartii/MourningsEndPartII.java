@@ -427,8 +427,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee",
-			ItemCollections.getPrayerPotions(), -1);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+			ItemCollections.PRAYER_POTIONS, -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		teleportCrystal = new ItemRequirement("Teleport Crystal", ItemID.TELEPORT_CRYSTAL);
 
 		newKey = new ItemRequirement("New key", ItemID.NEW_KEY);

@@ -168,9 +168,9 @@ public class GettingAhead extends BasicQuestHelper
 		//Recommended
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		staminaPotions = new ItemRequirement("Stamina Potion", ItemCollections.getStaminaPotions());
-		skillsNeck = new ItemRequirement("Skills Necklace", ItemCollections.getSkillsNecklaces());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		staminaPotions = new ItemRequirement("Stamina Potion", ItemCollections.STAMINA_POTIONS);
+		skillsNeck = new ItemRequirement("Skills Necklace", ItemCollections.SKILLS_NECKLACES);
 
 		//Required
 		bearFur = new ItemRequirement("Bear Fur", ItemID.BEAR_FUR);
@@ -180,14 +180,14 @@ public class GettingAhead extends BasicQuestHelper
 		softClay = new ItemRequirement("Soft Clay", ItemID.SOFT_CLAY, 1);
 		softClay.canBeObtainedDuringQuest();
 		softClay.setHighlightInInventory(true);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer(), 1);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER, 1);
 		hammer.canBeObtainedDuringQuest();
 		saw = new ItemRequirement("Any saw", ItemID.SAW, 1);
 		saw.canBeObtainedDuringQuest();
 		saw.addAlternates(ItemID.CRYSTAL_SAW, ItemID.AMYS_SAW);
 		planks = new ItemRequirement("Planks", ItemID.PLANK, 2);
 		planks.canBeObtainedDuringQuest();
-		nails = new ItemRequirement("Nails", ItemCollections.getNails(), 6);
+		nails = new ItemRequirement("Nails", ItemCollections.NAILS, 6);
 		nails.canBeObtainedDuringQuest();
 		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1);
 		knife.canBeObtainedDuringQuest();
@@ -202,7 +202,7 @@ public class GettingAhead extends BasicQuestHelper
 		needle.canBeObtainedDuringQuest();
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 1);
 		thread.canBeObtainedDuringQuest();
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		pickaxe.canBeObtainedDuringQuest();
 		clay = new ItemRequirement("Clay", ItemID.CLAY);
 		clay.canBeObtainedDuringQuest();

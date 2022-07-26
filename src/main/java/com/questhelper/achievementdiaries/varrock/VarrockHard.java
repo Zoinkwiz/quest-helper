@@ -199,9 +199,9 @@ public class VarrockHard extends ComplexStateQuestHelper
 		combinedSkullSceptre = new ItemRequirement("Skull sceptre", ItemID.SKULL_SCEPTRE).showConditioned(notSkullSceptre);
 		dashingKeb = new ItemRequirement("Dashing kebbit fur", ItemID.DASHING_KEBBIT_FUR).showConditioned(notSpottyCape);
 		dashingKeb.setTooltip("Requires 69 hunter to obtain.");
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR, notSpottyCape, notFancyStone));
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR, notSpottyCape, notFancyStone));
 		cape = new ItemRequirement("Spottier cape", ItemID.SPOTTIER_CAPE).showConditioned(notSpottyCape);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
 			notWakkaEdge, notYewChurch, notYewRoots));
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notPaddewwaTP);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notPaddewwaTP);
@@ -215,7 +215,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inStronghold1 = new ZoneRequirement(stronghold1);
 		inStronghold2 = new ZoneRequirement(stronghold2);

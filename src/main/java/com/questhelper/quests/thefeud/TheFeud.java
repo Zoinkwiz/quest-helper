@@ -240,12 +240,12 @@ public class TheFeud extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 800);
-		unspecifiedCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), -1);
-		highlightedCoins = new ItemRequirement("Coins", ItemCollections.getCoins());
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 800);
+		unspecifiedCoins = new ItemRequirement("Coins", ItemCollections.COINS, -1);
+		highlightedCoins = new ItemRequirement("Coins", ItemCollections.COINS);
 		highlightedCoins.setHighlightInInventory(true);
 		gloves = new ItemRequirement("Leather or Graceful Gloves", ItemID.LEATHER_GLOVES);
-		gloves.addAlternates(ItemCollections.getGracefulGloves());
+		gloves.addAlternates(ItemCollections.GRACEFUL_GLOVES);
 
 		headPiece = new ItemRequirement("Kharidian Headpiece", ItemID.KHARIDIAN_HEADPIECE);
 		headPiece.setHighlightInInventory(true);

@@ -28,10 +28,8 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -150,7 +148,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		notTPWaterbirth = new VarplayerRequirement(1184, false, 29);
 		notFreeBlast = new VarplayerRequirement(1184, false, 30);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineAddy);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddy);
 		bronzeNail = new ItemRequirement("Bronze nails", ItemID.BRONZE_NAILS).showConditioned(notCraftShield);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notCraftShield);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPTroll);
@@ -160,7 +158,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notTPTroll);
 		teasingStick = new ItemRequirement("Teasing Stick", ItemID.TEASING_STICK).showConditioned(notCatchKyatt);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notCatchKyatt);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notCraftShield);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notCraftShield);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notCraftShield);
 		arcticLog = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOGS).showConditioned(notCraftShield);
 		cadantineUnfPot = new ItemRequirement("Cadantine unf pot", ItemID.CADANTINE_POTION_UNF).showConditioned(notMixSuperDef);

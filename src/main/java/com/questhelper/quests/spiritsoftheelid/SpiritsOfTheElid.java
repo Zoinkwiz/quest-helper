@@ -149,15 +149,15 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		stabWep.setDisplayItemId(ItemID.RUNE_SWORD);
 		slashWep = new ItemRequirement("Slash Weapon Style", -1, 1);
 		slashWep.setDisplayItemId(ItemID.RUNE_SCIMITAR);
-		lightSource = new ItemRequirement("Lightsource", ItemCollections.getLightSources(), 1);
+		lightSource = new ItemRequirement("Lightsource", ItemCollections.LIGHT_SOURCES, 1);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1);
 		knife.setHighlightInInventory(true);
 		rope = new ItemRequirement("Rope", ItemID.ROPE, 1);
 		rope.setHighlightInInventory(true);
-		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.getPickaxes(), 1);
-		bow = new ItemRequirement("Any bow", ItemCollections.getBows(), 1, true);
+		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES, 1);
+		bow = new ItemRequirement("Any bow", ItemCollections.BOWS, 1, true);
 		bow.setTooltip("Short bow obtainable during quest east of the cave entrance");
-		arrows = new ItemRequirement("Arrows for bow", ItemCollections.getMetalArrows(), 1, true);
+		arrows = new ItemRequirement("Arrows for bow", ItemCollections.METAL_ARROWS, 1, true);
 		arrows.setTooltip("Bronze arrows obtainable during quest south of cave entrance");
 
 		//Quest Items
@@ -184,11 +184,11 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
 		waterskins.addAlternates(ItemID.WATERSKIN3, ItemID.WATERSKIN2, ItemID.WATERSKIN1);
 		shantaypass = new ItemRequirement("Shantay Passes", ItemID.SHANTAY_PASS, -1);
-		coins = new ItemRequirement("Coins for magic carpet", ItemCollections.getCoins(), -1);
+		coins = new ItemRequirement("Coins for magic carpet", ItemCollections.COINS, -1);
 		spear = new ItemRequirement("Spear or Hasta for the 3 weapon styles", -1, 1);
 		spear.setDisplayItemId(ItemID.DRAGON_SPEAR);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.getNecklaceOfPassages(), 1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.NECKLACE_OF_PASSAGES, 1);
 	}
 
 	public void setupZones()

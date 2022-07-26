@@ -414,21 +414,21 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		pickaxeHighlighted.setHighlightInInventory(true);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
 		oakPlank8 = new ItemRequirement("Oak planks", ItemID.OAK_PLANK, 8);
 		swampPaste10 = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE, 10);
-		nails12OrMore = new ItemRequirement("Nails, bring more in case some break", ItemCollections.getNails(), 12);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		nails12OrMore = new ItemRequirement("Nails, bring more in case some break", ItemCollections.NAILS, 12);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		hammerHighlighted.setHighlightInInventory(true);
-		machete = new ItemRequirement("Any machete", ItemCollections.getMachete());
-		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
+		machete = new ItemRequirement("Any machete", ItemCollections.MACHETE);
+		saw = new ItemRequirement("Saw", ItemCollections.SAW);
 		catspeakAmulet = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
 		catspeakAmulet.setTooltip("You can get another basic amulet from the Sphinx (bring a cat), and then get it enchanted by Hild in Burthorpe for 5 death runes");
-		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);
+		ghostspeakOrMory2 = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK, 1, true);
 		ghostspeakOrMory2.setTooltip("Morytania Legs 2 and above are also valid.");
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
 		goutweed.setHighlightInInventory(true);
@@ -467,15 +467,15 @@ public class DragonSlayerII extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
 
 		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
 		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 
-		dragonfireProtection = new ItemRequirement("Protection from dragonfire", ItemCollections.getAntifireShields());
-		venomProtection = new ItemRequirement("Anti venom", ItemCollections.getAntivenoms());
-		salveE = new ItemRequirement("Salve amulet", ItemCollections.getSalveAmulet());
+		dragonfireProtection = new ItemRequirement("Protection from dragonfire", ItemCollections.ANTIFIRE_SHIELDS);
+		venomProtection = new ItemRequirement("Anti venom", ItemCollections.ANTIVENOMS);
+		salveE = new ItemRequirement("Salve amulet", ItemCollections.SALVE_AMULET);
 
 		// Chest 1 map pieces
 		map1 = new ItemRequirement("Map piece", ItemID.MAP_PIECE);
@@ -557,7 +557,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		dragonKey = new ItemRequirement("Dragon key", ItemID.DRAGON_KEY);
 		dragonKey.setTooltip("If you've lost it you'll need to recover the 4 pieces and reforge it");
 
-		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.getAntifireShields(), 1, true);
+		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.ANTIFIRE_SHIELDS, 1, true);
 
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);

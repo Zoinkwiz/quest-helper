@@ -245,12 +245,12 @@ public class RoyalTrouble extends BasicQuestHelper
 			coalOrPickaxe = coal5;
 		}
 
-		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		antipoison = new ItemRequirement("Any antipoison", ItemCollections.getAntipoisons(), 1);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		antipoison = new ItemRequirement("Any antipoison", ItemCollections.ANTIPOISONS, 1);
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL_7968);
 		scroll.setTooltip("You can get another from King Vargas");
 		prop = new ItemRequirement("Mining prop", ItemID.MINING_PROP);

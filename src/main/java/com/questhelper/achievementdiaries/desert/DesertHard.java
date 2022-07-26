@@ -31,13 +31,11 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -155,16 +153,16 @@ public class DesertHard extends ComplexStateQuestHelper
 
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 
-		blackjack = new ItemRequirement("Blackjack", ItemCollections.getBlackjacks()).showConditioned(notMenaThug);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notGranite);
+		blackjack = new ItemRequirement("Blackjack", ItemCollections.BLACKJACKS).showConditioned(notMenaThug);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notGranite);
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notRefillWaterskin);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notRefillWaterskin);
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notRefillWaterskin);
 		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATERSKIN0).showConditioned(notRefillWaterskin);
-		slayerHelm = new ItemRequirement("Slayer Helmet", ItemCollections.getSlayerHelmets())
+		slayerHelm = new ItemRequirement("Slayer Helmet", ItemCollections.SLAYER_HELMETS)
 			.showConditioned(notKillDust);
-		keris = new ItemRequirement("Keris", ItemCollections.getKeris()).showConditioned(notKillLocustRider);
-		lightsource = new ItemRequirement("Light soruce", ItemCollections.getLightSources())
+		keris = new ItemRequirement("Keris", ItemCollections.KERIS).showConditioned(notKillLocustRider);
+		lightsource = new ItemRequirement("Light soruce", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notKillLocustRider);
 		yewLog = new ItemRequirement("Yew log", ItemID.YEW_LOGS).showConditioned(notBurnYew);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnYew);
@@ -176,12 +174,12 @@ public class DesertHard extends ComplexStateQuestHelper
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
 		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
 		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
-		waterskin = new ItemRequirement("Waterskin", ItemCollections.getWaterskin());
+		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inKalph = new ZoneRequirement(kalph);
 		inSmoke = new ZoneRequirement(smoke);

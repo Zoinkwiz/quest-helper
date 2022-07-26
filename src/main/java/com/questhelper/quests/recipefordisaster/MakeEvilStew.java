@@ -155,7 +155,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 		stew.setHighlightInInventory(true);
 
 		cat = new FollowerItemRequirement("A non-overgrown cat for catching rats",
-			ItemCollections.getHuntingCats(),
+			ItemCollections.HUNTING_CATS,
 			NpcCollections.getHuntingCats());
 	}
 

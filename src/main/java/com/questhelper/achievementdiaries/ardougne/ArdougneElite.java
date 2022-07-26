@@ -159,19 +159,19 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notIceBarrage);
 		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE).showConditioned(notIceBarrage);
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notYanAgi);
-		salveAmmy = new ItemRequirement("Salve amulet", ItemCollections.getImbuableSalveAmulet())
+		salveAmmy = new ItemRequirement("Salve amulet", ItemCollections.IMBUABLE_SALVE_AMULET)
 			.showConditioned(notImbueSalve);
-		imbuedSalve = new ItemRequirement("Salve amulet", ItemCollections.getImbuedSalveAmulet())
+		imbuedSalve = new ItemRequirement("Salve amulet", ItemCollections.IMBUED_SALVE_AMULET)
 			.showConditioned(notImbueSalve);
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickTorstol);
 		torstolSeed = new ItemRequirement("Torstol seed", ItemID.TORSTOL_SEED).showConditioned(notPickTorstol);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickTorstol);
-		compost = new ItemRequirement("Compost", ItemCollections.getCompost()).showConditioned(notPickTorstol);
+		compost = new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(notPickTorstol);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickTorstol);
 		yewLog = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notRuneCrossbow);
 		runeBar = new ItemRequirement("Rune bar", ItemID.RUNITE_BAR).showConditioned(notRuneCrossbow);
 		sinew = new ItemRequirement("Sinew", ItemID.SINEW).showConditioned(notRuneCrossbow);
-		root = new ItemRequirement("Root", ItemCollections.getNonMagicTreeRoot()).showConditioned(notRuneCrossbow);
+		root = new ItemRequirement("Root", ItemCollections.NON_MAGIC_TREE_ROOT).showConditioned(notRuneCrossbow);
 		sinewOrRoot = new ItemRequirements(LogicType.OR, "Sinew or non-magic tree root", root, sinew)
 			.showConditioned(notRuneCrossbow);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneCrossbow);
@@ -182,7 +182,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		yewStock = new ItemRequirement("Yew stock", ItemID.YEW_STOCK).showConditioned(notRuneCrossbow);
 		runeLimbs = new ItemRequirement("Runite limbs", ItemID.RUNITE_LIMBS).showConditioned(notRuneCrossbow);
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inYanAgilityCave = new ZoneRequirement(yanAgilityCave);
 		inYanille = new ZoneRequirement(yanille);

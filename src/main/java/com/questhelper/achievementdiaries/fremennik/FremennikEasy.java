@@ -152,14 +152,14 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		notEnterTrollStronghold = new VarplayerRequirement(1184, false, 9);
 		notChopAndBurnOak = new VarplayerRequirement(1184, false, 10);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notCraftTiara);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notChangeBoots);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notCraftTiara);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notChangeBoots);
 		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notCatchCerulean);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notChopAndBurnOak);
 		tiaraMould = new ItemRequirement("Tiara mould", ItemID.TIARA_MOULD).showConditioned(notCraftTiara);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFillBucket);
 		climbingBoots = new ItemRequirement("Climbing boots", ItemID.BUCKET).showConditioned(notEnterTrollStronghold);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notChopAndBurnOak);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopAndBurnOak);
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		silverOre = new ItemRequirement("Silver ore", ItemID.SILVER_ORE);
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
@@ -168,7 +168,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notKilledCrabs);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		fremennikTrials = new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED);
 		giantDwarf = new QuestRequirement(QuestHelperQuest.THE_GIANT_DWARF, QuestState.FINISHED);
 		trollStronghold = new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED);

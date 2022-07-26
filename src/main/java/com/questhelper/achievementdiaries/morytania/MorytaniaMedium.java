@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -172,7 +171,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSwampLizard);
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET)
 			.showConditioned(notSwampLizard);
-		axe = new ItemRequirement("Axe", ItemCollections.getAxes()).showConditioned(notHollowTree);
+		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notHollowTree);
 		ectoToken = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN).showConditioned(notDragontoothIsland);
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak Amulet", ItemID.GHOSTSPEAK_AMULET)
 			.showConditioned(notDragontoothIsland);
@@ -184,16 +183,16 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC).showConditioned(notGuthBalance);
 		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST).showConditioned(notGuthBalance);
 		silverDust.setTooltip("Created by grinding a silver bar in the ectofuntus bone grinder.");
-		guthixBalanceUnf = new ItemRequirement("Guthix balance (unf)", ItemCollections.getGuthixBalanceUnf());
+		guthixBalanceUnf = new ItemRequirement("Guthix balance (unf)", ItemCollections.GUTHIX_BALANCE_UNF);
 
-		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.getSlayerRings()).showConditioned(notTerrorDog);
-		fairyAccess = new ItemRequirement("Access to the fairy ring system", ItemCollections.getFairyStaff())
+		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.SLAYER_RINGS).showConditioned(notTerrorDog);
+		fairyAccess = new ItemRequirement("Access to the fairy ring system", ItemCollections.FAIRY_STAFF)
 			.showConditioned(new Conditions(LogicType.OR, notSwampBoaty, notHollowTree));
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inHauntedMineZone = new ZoneRequirement(hauntedMineZone);
 		inRoom1 = new ZoneRequirement(room1);

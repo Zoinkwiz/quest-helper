@@ -104,7 +104,7 @@ public class FixWall extends DetailedOwnerStep
 	{
 		ironSheets = new ItemRequirement("Iron sheet", ItemID.IRON_SHEET, 5);
 		ironBars = new ItemRequirement("Iron bars", ItemID.IRON_BAR, 5);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		hammer.setTooltip("Franklin will give you one");
 		ironBars.setHighlightInInventory(true);
 		ironSheets.setHighlightInInventory(true);

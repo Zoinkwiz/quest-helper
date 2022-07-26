@@ -41,9 +41,7 @@ import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -159,12 +157,12 @@ public class KourendElite extends ComplexStateQuestHelper
 		onArceuusSpellbook = new SpellbookRequirement(Spellbook.ARCEUUS);
 
 		// Items required
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes())
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
 			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport));
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL)
 			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport));
 		chisel.setTooltip("One can be found in the Arceuus essence mine.");
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notChopRedwood);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopRedwood);
 		darkTotem = new ItemRequirement("Dark Totem", ItemID.DARK_TOTEM).showConditioned(notDefeatSkotizo);
 		totemBase = new ItemRequirement("Dark totem base", ItemID.DARK_TOTEM_BASE);
 		totemMiddle = new ItemRequirement("Dark totem middle", ItemID.DARK_TOTEM_MIDDLE);
@@ -181,15 +179,15 @@ public class KourendElite extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1)
 			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid));
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood())
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD)
 			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid));
-		prayerPotion = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions())
+		prayerPotion = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS)
 			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid));
 		celastrusBark = new ItemRequirement("Celastrus bark", ItemID.CELASTRUS_BARK);
 		darkEssenceBlock = new ItemRequirement("Dark essence block", ItemID.DARK_ESSENCE_BLOCK);
 		darkEssenceFragment = new ItemRequirement("Dark essence fragments", ItemID.DARK_ESSENCE_FRAGMENTS);
 		rawAnglerfish = new ItemRequirement("Raw anglerfish", ItemID.RAW_ANGLERFISH);
-		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.getStoneBoots()).showConditioned(notKillHydra);
+		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.STONE_BOOTS).showConditioned(notKillHydra);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notFletchBattlestaff);
 
 		// Items recommended
@@ -197,12 +195,12 @@ public class KourendElite extends ComplexStateQuestHelper
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
 			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS));
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
-		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff());
+		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF);
 		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.RADAS_BLESSING_1,
 			ItemID.RADAS_BLESSING_2, ItemID.RADAS_BLESSING_3));
-		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces());
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES);
 		potatoCactus = new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS, 8);
-		ultraCompost = new ItemRequirement("Compost", ItemCollections.getCompost());
+		ultraCompost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 
 		arceuusFavour = new FavourRequirement(Favour.ARCEUUS, 100);
 		hosidiusFavour60 = new FavourRequirement(Favour.HOSIDIUS, 60);

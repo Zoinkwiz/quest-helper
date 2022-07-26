@@ -26,6 +26,7 @@ package com.questhelper;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
@@ -36,12 +37,12 @@ import net.runelite.api.ItemID;
  * or highest dose to lowest dose, etc.
  * As long as the list is consistent in how it is ordered.
  */
-public class ItemCollections
+@AllArgsConstructor
+@Getter
+public enum ItemCollections
 {
 	// Tools
-
-	@Getter
-	private static final List<Integer> axes = ImmutableList.of(
+	AXES("Axe", ImmutableList.of(
 		ItemID.CRYSTAL_AXE,
 		ItemID._3RD_AGE_AXE,
 		ItemID.TRAILBLAZER_AXE,
@@ -57,10 +58,9 @@ public class ItemCollections
 		ItemID.STEEL_AXE,
 		ItemID.IRON_AXE,
 		ItemID.BRONZE_AXE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> pickaxes = ImmutableList.of(
+	PICKAXES("Pickaxe", ImmutableList.of(
 		ItemID.INFERNAL_PICKAXE_OR,
 		ItemID.TRAILBLAZER_PICKAXE,
 		ItemID.CRYSTAL_PICKAXE,
@@ -79,41 +79,36 @@ public class ItemCollections
 		ItemID.STEEL_PICKAXE,
 		ItemID.IRON_PICKAXE,
 		ItemID.BRONZE_PICKAXE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> harpoons = ImmutableList.of(
+	HARPOONS("Harpoon", ImmutableList.of(
 		ItemID.INFERNAL_HARPOON_OR,
 		ItemID.TRAILBLAZER_HARPOON,
 		ItemID.INFERNAL_HARPOON,
 		ItemID.DRAGON_HARPOON,
 		ItemID.BARBTAIL_HARPOON,
 		ItemID.HARPOON
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> machete = ImmutableList.of(
+	MACHETE("Machete", ImmutableList.of(
 		ItemID.RED_TOPAZ_MACHETE,
 		ItemID.JADE_MACHETE,
 		ItemID.OPAL_MACHETE,
 		ItemID.MACHETE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> hammer = ImmutableList.of(
+	HAMMER("Hammer", ImmutableList.of(
 		ItemID.HAMMER,
 		ItemID.IMCANDO_HAMMER
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> saw = ImmutableList.of(
+	SAW("Saw", ImmutableList.of(
 		ItemID.SAW,
 		ItemID.AMYS_SAW,
 		ItemID.CRYSTAL_SAW
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> nails = ImmutableList.of(
+	NAILS("Nails", ImmutableList.of(
 		ItemID.STEEL_NAILS,
 		ItemID.IRON_NAILS,
 		ItemID.BRONZE_NAILS,
@@ -121,10 +116,9 @@ public class ItemCollections
 		ItemID.MITHRIL_NAILS,
 		ItemID.ADAMANTITE_NAILS,
 		ItemID.RUNE_NAILS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> bows = ImmutableList.of(
+	BOWS("Bows", ImmutableList.of(
 		ItemID.MAGIC_SHORTBOW,
 		ItemID.MAGIC_SHORTBOW_I,
 		ItemID.DARK_BOW,
@@ -139,10 +133,9 @@ public class ItemCollections
 		ItemID.OAK_LONGBOW,
 		ItemID.SHORTBOW,
 		ItemID.LONGBOW
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> crossbows = ImmutableList.of(
+	CROSSBOWS("Crossbows", ImmutableList.of(
 		ItemID.ARMADYL_CROSSBOW,
 		ItemID.DRAGON_HUNTER_CROSSBOW,
 		ItemID.HUNTERS_CROSSBOW,
@@ -157,10 +150,9 @@ public class ItemCollections
 		ItemID.BRONZE_CROSSBOW,
 		ItemID.PHOENIX_CROSSBOW,
 		ItemID.CROSSBOW
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> swords = ImmutableList.of(
+	SWORDS("Swords", ImmutableList.of(
 		ItemID.BRONZE_SWORD,
 		ItemID.BRONZE_LONGSWORD,
 		ItemID.IRON_SWORD,
@@ -179,20 +171,18 @@ public class ItemCollections
 		ItemID.WILDERNESS_SWORD_2,
 		ItemID.WILDERNESS_SWORD_3,
 		ItemID.WILDERNESS_SWORD_4
-	);
-
-	@Getter
-	private static final List<Integer> metalArrows = ImmutableList.of(
+	)),
+	
+	METAL_ARROWS(ImmutableList.of(
 		ItemID.RUNE_ARROW,
 		ItemID.ADAMANT_ARROW,
 		ItemID.MITHRIL_ARROW,
 		ItemID.STEEL_ARROW,
 		ItemID.IRON_ARROW,
 		ItemID.BRONZE_ARROW
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> arrows = ImmutableList.of(
+	ARROWS(ImmutableList.of(
 		ItemID.DRAGON_ARROW,
 		ItemID.AMETHYST_ARROW,
 		ItemID.RUNE_ARROW,
@@ -201,10 +191,9 @@ public class ItemCollections
 		ItemID.STEEL_ARROW,
 		ItemID.IRON_ARROW,
 		ItemID.BRONZE_ARROW
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> brutalArrows = ImmutableList.of(
+	BRUTAL_ARROWS(ImmutableList.of(
 		ItemID.RUNE_BRUTAL,
 		ItemID.ADAMANT_BRUTAL,
 		ItemID.MITHRIL_BRUTAL,
@@ -212,10 +201,9 @@ public class ItemCollections
 		ItemID.STEEL_BRUTAL,
 		ItemID.IRON_BRUTAL,
 		ItemID.BRONZE_BRUTAL
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> fireArrows = ImmutableList.of(
+	FIRE_ARROWS(ImmutableList.of(
 		ItemID.DRAGON_FIRE_ARROW,
 		ItemID.DRAGON_FIRE_ARROW_LIT,
 		ItemID.AMETHYST_FIRE_ARROW,
@@ -232,18 +220,16 @@ public class ItemCollections
 		ItemID.IRON_FIRE_ARROW_LIT,
 		ItemID.BRONZE_FIRE_ARROW,
 		ItemID.BRONZE_FIRE_ARROW_LIT
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> specialArrows = ImmutableList.of(
+	SPECIAL_ARROWS(ImmutableList.of(
 		ItemID.BROAD_ARROWS,
 		ItemID.OGRE_ARROW,
 		ItemID.TRAINING_ARROWS,
 		ItemID.ICE_ARROWS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> arrowtips = ImmutableList.of(
+	ARROW_TIPS(ImmutableList.of(
 		ItemID.DRAGON_ARROWTIPS,
 		ItemID.AMETHYST_ARROWTIPS,
 		ItemID.RUNE_ARROWTIPS,
@@ -252,18 +238,16 @@ public class ItemCollections
 		ItemID.STEEL_ARROWTIPS,
 		ItemID.IRON_ARROWTIPS,
 		ItemID.BRONZE_ARROWTIPS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> airRune = ImmutableList.of(
+	AIR_RUNE(ImmutableList.of(
 		ItemID.AIR_RUNE,
 		ItemID.MIST_RUNE,
 		ItemID.SMOKE_RUNE,
 		ItemID.DUST_RUNE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> airStaff = ImmutableList.of(
+	AIR_STAFF(ImmutableList.of(
 		ItemID.AIR_BATTLESTAFF,
 		ItemID.MYSTIC_AIR_STAFF,
 		ItemID.STAFF_OF_AIR,
@@ -273,18 +257,16 @@ public class ItemCollections
 		ItemID.MYSTIC_DUST_STAFF,
 		ItemID.MIST_BATTLESTAFF,
 		ItemID.MYSTIC_MIST_STAFF
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> fireRune = ImmutableList.of(
+	FIRE_RUNE(ImmutableList.of(
 		ItemID.FIRE_RUNE,
 		ItemID.LAVA_RUNE,
 		ItemID.SMOKE_RUNE,
 		ItemID.STEAM_RUNE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> fireStaff = ImmutableList.of(
+	FIRE_STAFF(ImmutableList.of(
 		ItemID.FIRE_BATTLESTAFF,
 		ItemID.MYSTIC_FIRE_STAFF,
 		ItemID.STAFF_OF_FIRE,
@@ -294,18 +276,16 @@ public class ItemCollections
 		ItemID.MYSTIC_LAVA_STAFF,
 		ItemID.STEAM_BATTLESTAFF,
 		ItemID.MYSTIC_STEAM_STAFF
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> waterRune = ImmutableList.of(
+	WATER_RUNE(ImmutableList.of(
 		ItemID.WATER_RUNE,
 		ItemID.MUD_RUNE,
 		ItemID.MIST_RUNE,
 		ItemID.STEAM_RUNE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> waterStaff = ImmutableList.of(
+	WATER_STAFF(ImmutableList.of(
 		ItemID.FIRE_BATTLESTAFF,
 		ItemID.MYSTIC_FIRE_STAFF,
 		ItemID.STAFF_OF_FIRE,
@@ -315,18 +295,16 @@ public class ItemCollections
 		ItemID.MYSTIC_MIST_STAFF,
 		ItemID.STEAM_BATTLESTAFF,
 		ItemID.MYSTIC_STEAM_STAFF
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> earthRune = ImmutableList.of(
+	EARTH_RUNE(ImmutableList.of(
 		ItemID.EARTH_RUNE,
 		ItemID.MUD_RUNE,
 		ItemID.LAVA_RUNE,
 		ItemID.DUST_RUNE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> earthStaff = ImmutableList.of(
+	EARTH_STAFF(ImmutableList.of(
 		ItemID.EARTH_BATTLESTAFF,
 		ItemID.MYSTIC_EARTH_STAFF,
 		ItemID.STAFF_OF_EARTH,
@@ -336,12 +314,11 @@ public class ItemCollections
 		ItemID.MYSTIC_DUST_STAFF,
 		ItemID.LAVA_BATTLESTAFF,
 		ItemID.MYSTIC_LAVA_STAFF
-	);
+	)),
 
 	// Potions
 
-	@Getter
-	private static final List<Integer> antipoisons = ImmutableList.of(
+	ANTIPOISONS(ImmutableList.of(
 		ItemID.ANTIVENOM4_12913,
 		ItemID.ANTIVENOM3_12915,
 		ItemID.ANTIVENOM4_12913,
@@ -381,10 +358,9 @@ public class ItemCollections
 		ItemID.ANTIPOISON_MIX1,
 		ItemID.ANTIDOTE_MIX2,
 		ItemID.ANTIDOTE_MIX1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> antivenoms = ImmutableList.of(
+	ANTIVENOMS(ImmutableList.of(
 		ItemID.ANTIVENOM4_12913,
 		ItemID.ANTIVENOM3_12915,
 		ItemID.ANTIVENOM2_12917,
@@ -393,10 +369,9 @@ public class ItemCollections
 		ItemID.ANTIVENOM3,
 		ItemID.ANTIVENOM2,
 		ItemID.ANTIVENOM1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> antidisease = ImmutableList.of(
+	ANTIDISEASE(ImmutableList.of(
 		ItemID.INOCULATION_BRACELET,
 		ItemID.RELICYMS_BALM4,
 		ItemID.RELICYMS_BALM3,
@@ -408,10 +383,9 @@ public class ItemCollections
 		ItemID.SANFEW_SERUM1,
 		ItemID.RELICYMS_MIX2,
 		ItemID.RELICYMS_MIX1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> antifire = ImmutableList.of(
+	ANTIFIRE(ImmutableList.of(
 		ItemID.EXTENDED_SUPER_ANTIFIRE4,
 		ItemID.EXTENDED_SUPER_ANTIFIRE3,
 		ItemID.EXTENDED_SUPER_ANTIFIRE2,
@@ -436,18 +410,16 @@ public class ItemCollections
 		ItemID.ANTIFIRE_POTION1,
 		ItemID.ANTIFIRE_MIX2,
 		ItemID.ANTIFIRE_MIX1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> prayerPotions = ImmutableList.of(
+	PRAYER_POTIONS(ImmutableList.of(
 		ItemID.PRAYER_POTION4,
 		ItemID.PRAYER_POTION3,
 		ItemID.PRAYER_POTION2,
 		ItemID.PRAYER_POTION1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> restorePotions = ImmutableList.of(
+	RESTORE_POTIONS(ImmutableList.of(
 		ItemID.SUPER_RESTORE4,
 		ItemID.SUPER_RESTORE3,
 		ItemID.SUPER_RESTORE2,
@@ -456,26 +428,23 @@ public class ItemCollections
 		ItemID.RESTORE_POTION3,
 		ItemID.RESTORE_POTION2,
 		ItemID.RESTORE_POTION1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> superRestorePotions = ImmutableList.of(
+	SUPER_RESTORE_POTIONS(ImmutableList.of(
 		ItemID.SUPER_RESTORE4,
 		ItemID.SUPER_RESTORE3,
 		ItemID.SUPER_RESTORE2,
 		ItemID.SUPER_RESTORE1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> saradominBrews = ImmutableList.of(
+	SARADOMIN_BREWS(ImmutableList.of(
 		ItemID.SARADOMIN_BREW4,
 		ItemID.SARADOMIN_BREW3,
 		ItemID.SARADOMIN_BREW2,
 		ItemID.SARADOMIN_BREW1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> runRestoreItems = ImmutableList.of(
+	RUN_RESTORE_ITEMS(ImmutableList.of(
 		ItemID.AGILITY_CAPE,
 		ItemID.AGILITY_CAPET,
 		ItemID.EXPLORERS_RING_4,
@@ -507,29 +476,25 @@ public class ItemCollections
 		ItemID.GUTHIX_REST2,
 		ItemID.GUTHIX_REST1,
 		ItemID.PAPAYA_FRUIT
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> staminaPotions = ImmutableList.of(
+	STAMINA_POTIONS(ImmutableList.of(
 		ItemID.STAMINA_POTION4,
 		ItemID.STAMINA_POTION3,
 		ItemID.STAMINA_POTION2,
 		ItemID.STAMINA_POTION1,
 		ItemID.STAMINA_MIX2,
 		ItemID.STAMINA_MIX1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> agilityPotions = ImmutableList.of(
+	AGILITY_POTIONS(ImmutableList.of(
 		ItemID.AGILITY_POTION4,
 		ItemID.AGILITY_POTION3,
 		ItemID.AGILITY_POTION2,
 		ItemID.AGILITY_POTION1
-	);
+	)),
 
-
-	@Getter
-	private static final List<Integer> antiFirePotions = ImmutableList.of(
+	ANTIFIRE_POTIONS(ImmutableList.of(
 		ItemID.ANTIFIRE_POTION4,
 		ItemID.ANTIFIRE_POTION3,
 		ItemID.ANTIFIRE_POTION2,
@@ -550,11 +515,11 @@ public class ItemCollections
 		ItemID.ANTIFIRE_MIX1,
 		ItemID.SUPER_ANTIFIRE_MIX2,
 		ItemID.SUPER_ANTIFIRE_MIX1
-	);
+	)),
 
 	// Food
-	@Getter
-	private static final List<Integer> goodEatingFood = ImmutableList.of(
+
+	GOOD_EATING_FOOD(ImmutableList.of(
 		ItemID.DARK_CRAB,
 		ItemID.TUNA_POTATO,
 		ItemID.MANTA_RAY,
@@ -590,11 +555,9 @@ public class ItemCollections
 		ItemID.COOKED_MEAT,
 		ItemID.COOKED_CHICKEN,
 		ItemID.SHRIMPS
-	);
+	)),
 
-
-	@Getter
-	private static final List<Integer> fishFood = ImmutableList.of(
+	FISH_FOOD(ImmutableList.of(
 		ItemID.DARK_CRAB,
 		ItemID.MANTA_RAY,
 		ItemID.ANGLERFISH,
@@ -618,10 +581,9 @@ public class ItemCollections
 		ItemID.HERRING,
 		ItemID.SARDINE,
 		ItemID.SHRIMPS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> gnomeFood = ImmutableList.of(
+	GNOME_FOOD(ImmutableList.of(
 		ItemID.TANGLED_TOADS_LEGS,
 		ItemID.TANGLED_TOADS_LEGS_9551,
 		ItemID.CHOCOLATE_BOMB,
@@ -664,25 +626,21 @@ public class ItemCollections
 		ItemID.DRUNK_DRAGON_9516,
 		ItemID.CHOC_SATURDAY,
 		ItemID.CHOC_SATURDAY_9518
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> stews = ImmutableList.of(
+	STEWS(ImmutableList.of(
 		ItemID.STEW,
 		ItemID.CURRY
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> pizzas = ImmutableList.of(
+	PIZZAS(ImmutableList.of(
 		ItemID.PINEAPPLE_PIZZA,
 		ItemID.ANCHOVY_PIZZA,
 		ItemID.MEAT_PIZZA,
 		ItemID.PLAIN_PIZZA
-	);
+	)),
 
-
-	@Getter
-	private static final List<Integer> potatoFood = ImmutableList.of(
+	POTATO_FOOD(ImmutableList.of(
 		ItemID.TUNA_POTATO,
 		ItemID.MUSHROOM_POTATO,
 		ItemID.EGG_POTATO,
@@ -690,10 +648,9 @@ public class ItemCollections
 		ItemID.CHILLI_POTATO,
 		ItemID.POTATO_WITH_BUTTER,
 		ItemID.BAKED_POTATO
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> pies = ImmutableList.of(
+	PIES(ImmutableList.of(
 		ItemID.SUMMER_PIE,
 		ItemID.WILD_PIE,
 		ItemID.DRAGONFRUIT_PIE,
@@ -706,12 +663,11 @@ public class ItemCollections
 		ItemID.MUD_PIE,
 		ItemID.MEAT_PIE,
 		ItemID.REDBERRY_PIE
-	);
+	)),
 
 	// Teleport items
 
-	@Getter
-	private static final List<Integer> gamesNecklaces = ImmutableList.of(
+	GAMES_NECKLACES(ImmutableList.of(
 		ItemID.GAMES_NECKLACE1,
 		ItemID.GAMES_NECKLACE2,
 		ItemID.GAMES_NECKLACE3,
@@ -720,10 +676,9 @@ public class ItemCollections
 		ItemID.GAMES_NECKLACE6,
 		ItemID.GAMES_NECKLACE7,
 		ItemID.GAMES_NECKLACE8
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ringOfDuelings = ImmutableList.of(
+	RING_OF_DUELINGS(ImmutableList.of(
 		ItemID.RING_OF_DUELING1,
 		ItemID.RING_OF_DUELING2,
 		ItemID.RING_OF_DUELING3,
@@ -732,38 +687,34 @@ public class ItemCollections
 		ItemID.RING_OF_DUELING6,
 		ItemID.RING_OF_DUELING7,
 		ItemID.RING_OF_DUELING8
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> burningAmulets = ImmutableList.of(
+	BURNING_AMULETS(ImmutableList.of(
 		ItemID.BURNING_AMULET1,
 		ItemID.BURNING_AMULET2,
 		ItemID.BURNING_AMULET3,
 		ItemID.BURNING_AMULET4,
 		ItemID.BURNING_AMULET5
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> necklaceOfPassages = ImmutableList.of(
+	NECKLACE_OF_PASSAGES(ImmutableList.of(
 		ItemID.NECKLACE_OF_PASSAGE1,
 		ItemID.NECKLACE_OF_PASSAGE2,
 		ItemID.NECKLACE_OF_PASSAGE3,
 		ItemID.NECKLACE_OF_PASSAGE4,
 		ItemID.NECKLACE_OF_PASSAGE5
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> skillsNecklaces = ImmutableList.of(
+	SKILLS_NECKLACES(ImmutableList.of(
 		ItemID.SKILLS_NECKLACE1,
 		ItemID.SKILLS_NECKLACE2,
 		ItemID.SKILLS_NECKLACE3,
 		ItemID.SKILLS_NECKLACE4,
 		ItemID.SKILLS_NECKLACE5,
 		ItemID.SKILLS_NECKLACE6
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ringOfWealths = ImmutableList.of(
+	RING_OF_WEALTHS(ImmutableList.of(
 		ItemID.RING_OF_WEALTH_1,
 		ItemID.RING_OF_WEALTH_I1,
 		ItemID.RING_OF_WEALTH_2,
@@ -774,20 +725,18 @@ public class ItemCollections
 		ItemID.RING_OF_WEALTH_I4,
 		ItemID.RING_OF_WEALTH_5,
 		ItemID.RING_OF_WEALTH_I5
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> combatBracelets = ImmutableList.of(
+	COMBAT_BRACELETS(ImmutableList.of(
 		ItemID.COMBAT_BRACELET1,
 		ItemID.COMBAT_BRACELET2,
 		ItemID.COMBAT_BRACELET3,
 		ItemID.COMBAT_BRACELET4,
 		ItemID.COMBAT_BRACELET5,
 		ItemID.COMBAT_BRACELET6
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> amuletOfGlories = ImmutableList.of(
+	AMULET_OF_GLORIES(ImmutableList.of(
 		ItemID.AMULET_OF_ETERNAL_GLORY,
 		ItemID.AMULET_OF_GLORY1,
 		ItemID.AMULET_OF_GLORY_T1,
@@ -801,19 +750,17 @@ public class ItemCollections
 		ItemID.AMULET_OF_GLORY_T5,
 		ItemID.AMULET_OF_GLORY6,
 		ItemID.AMULET_OF_GLORY_T6
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> digsitePendants = ImmutableList.of(
+	DIGSITE_PENDANTS(ImmutableList.of(
 		ItemID.DIGSITE_PENDANT_1,
 		ItemID.DIGSITE_PENDANT_2,
 		ItemID.DIGSITE_PENDANT_3,
 		ItemID.DIGSITE_PENDANT_4,
 		ItemID.DIGSITE_PENDANT_5
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> slayerRings = ImmutableList.of(
+	SLAYER_RINGS(ImmutableList.of(
 		ItemID.SLAYER_RING_ETERNAL,
 		ItemID.SLAYER_RING_1,
 		ItemID.SLAYER_RING_2,
@@ -823,10 +770,9 @@ public class ItemCollections
 		ItemID.SLAYER_RING_6,
 		ItemID.SLAYER_RING_7,
 		ItemID.SLAYER_RING_8
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> pharoahSceptre = ImmutableList.of(
+	PHAROAH_SCEPTRE(ImmutableList.of(
 		ItemID.PHARAOHS_SCEPTRE,
 		ItemID.PHARAOHS_SCEPTRE_9045,
 		ItemID.PHARAOHS_SCEPTRE_9046,
@@ -845,12 +791,11 @@ public class ItemCollections
 		ItemID.PHARAOHS_SCEPTRE_21446,
 		ItemID.PHARAOHS_SCEPTRE_UNCHARGED,
 		ItemID.PHARAOHS_SCEPTRE_26948
-	);
+	)),
 
 	// Logs
 
-	@Getter
-	private static final List<Integer> logsForFire = ImmutableList.of(
+	LOGS_FOR_FIRE(ImmutableList.of(
 		ItemID.LOGS,
 		ItemID.OAK_LOGS,
 		ItemID.WILLOW_LOGS,
@@ -878,10 +823,9 @@ public class ItemCollections
 		ItemID.PURPLE_LOGS,
 		ItemID.WHITE_LOGS,
 		ItemID.BLUE_LOGS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> bones = ImmutableList.of(
+	BONES(ImmutableList.of(
 		ItemID.BONES,
 		ItemID.BURNT_BONES,
 		ItemID.WOLF_BONES,
@@ -891,12 +835,11 @@ public class ItemCollections
 		ItemID.BABYDRAGON_BONES,
 		ItemID.DRAGON_BONES,
 		ItemID.DAGANNOTH_BONES
-	);
+	)),
 
 	// Other
 
-	@Getter
-	private static final List<Integer> greegrees = ImmutableList.of(
+	GREEGREES(ImmutableList.of(
 		ItemID.KARAMJAN_MONKEY_GREEGREE,
 		ItemID.GORILLA_GREEGREE,
 		ItemID.ANCIENT_GORILLA_GREEGREE,
@@ -906,10 +849,9 @@ public class ItemCollections
 		ItemID.ZOMBIE_MONKEY_GREEGREE,
 		ItemID.ZOMBIE_MONKEY_GREEGREE_4030,
 		ItemID.NINJA_MONKEY_GREEGREE_4025
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> antifireShields = ImmutableList.of(
+	ANTIFIRE_SHIELDS(ImmutableList.of(
 		ItemID.DRAGONFIRE_SHIELD,
 		ItemID.DRAGONFIRE_SHIELD_11284,
 		ItemID.DRAGONFIRE_WARD,
@@ -918,10 +860,9 @@ public class ItemCollections
 		ItemID.ANCIENT_WYVERN_SHIELD_21634,
 		ItemID.ANTIDRAGON_SHIELD,
 		ItemID.ANTIDRAGON_SHIELD_8282
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> antiWyvernShields = ImmutableList.of(
+	ANTI_WYVERN_SHIELDS(ImmutableList.of(
 		ItemID.DRAGONFIRE_SHIELD,
 		ItemID.DRAGONFIRE_SHIELD_11284,
 		ItemID.DRAGONFIRE_WARD,
@@ -930,19 +871,17 @@ public class ItemCollections
 		ItemID.ANCIENT_WYVERN_SHIELD_21634,
 		ItemID.MIND_SHIELD,
 		ItemID.ELEMENTAL_SHIELD
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ghostspeak = ImmutableList.of(
+	GHOSTSPEAK(ImmutableList.of(
 		ItemID.GHOSTSPEAK_AMULET,
 		ItemID.GHOSTSPEAK_AMULET_4250,
 		ItemID.MORYTANIA_LEGS_2,
 		ItemID.MORYTANIA_LEGS_3,
 		ItemID.MORYTANIA_LEGS_4
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> lightSources = ImmutableList.of(
+	LIGHT_SOURCES(ImmutableList.of(
 		ItemID.FIREMAKING_CAPET,
 		ItemID.FIREMAKING_CAPE,
 		ItemID.MAX_CAPE,
@@ -962,10 +901,9 @@ public class ItemCollections
 		ItemID.LIT_TORCH,
 		ItemID.LIT_CANDLE,
 		ItemID.LIT_BLACK_CANDLE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> cats = ImmutableList.of(
+	CATS(ImmutableList.of(
 		ItemID.WILY_HELLCAT,
 		ItemID.WILY_CAT,
 		ItemID.WILY_CAT_6556,
@@ -1005,10 +943,9 @@ public class ItemCollections
 		ItemID.PET_CAT_1570,
 		ItemID.PET_CAT_1571,
 		ItemID.PET_CAT_1572
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> huntingCats = ImmutableList.of(
+	HUNTING_CATS(ImmutableList.of(
 		ItemID.WILY_HELLCAT,
 		ItemID.WILY_CAT,
 		ItemID.WILY_CAT_6556,
@@ -1040,11 +977,9 @@ public class ItemCollections
 		ItemID.PET_KITTEN_1558,
 		ItemID.PET_KITTEN_1559,
 		ItemID.PET_KITTEN_1560
-	);
+	)),
 
-
-	@Getter
-	private static final List<Integer> flowers = ImmutableList.of(
+	FLOWERS(ImmutableList.of(
 		ItemID.RED_FLOWERS,
 		ItemID.YELLOW_FLOWERS,
 		ItemID.PURPLE_FLOWERS,
@@ -1055,10 +990,9 @@ public class ItemCollections
 		ItemID.WHITE_FLOWERS,
 		ItemID.RED_FLOWERS_8938,
 		ItemID.BLUE_FLOWERS_8936
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> rodOfIvandis = ImmutableList.of(
+	ROD_OF_IVANDIS(ImmutableList.of(
 		ItemID.ROD_OF_IVANDIS_10,
 		ItemID.ROD_OF_IVANDIS_9,
 		ItemID.ROD_OF_IVANDIS_8,
@@ -1069,20 +1003,18 @@ public class ItemCollections
 		ItemID.ROD_OF_IVANDIS_3,
 		ItemID.ROD_OF_IVANDIS_2,
 		ItemID.ROD_OF_IVANDIS_1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> salveAmulet = ImmutableList.of(
+	SALVE_AMULET(ImmutableList.of(
 		ItemID.SALVE_AMULETEI,
 		ItemID.SALVE_AMULET_E,
 		ItemID.SALVE_AMULETI,
 		ItemID.SALVE_AMULET,
 		ItemID.SALVE_AMULETEI_25278,
 		ItemID.SALVE_AMULETI_25250
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> wateringCans = ImmutableList.of(
+	WATERING_CANS(ImmutableList.of(
 		ItemID.GRICOLLERS_CAN,
 		ItemID.WATERING_CAN8,
 		ItemID.WATERING_CAN7,
@@ -1092,20 +1024,18 @@ public class ItemCollections
 		ItemID.WATERING_CAN3,
 		ItemID.WATERING_CAN2,
 		ItemID.WATERING_CAN1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> enchantedLyre = ImmutableList.of(
+	ENCHANTED_LYRE(ImmutableList.of(
 		ItemID.ENCHANTED_LYREI,
 		ItemID.ENCHANTED_LYRE5,
 		ItemID.ENCHANTED_LYRE4,
 		ItemID.ENCHANTED_LYRE3,
 		ItemID.ENCHANTED_LYRE2,
 		ItemID.ENCHANTED_LYRE1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> skillCape = ImmutableList.of(
+	SKILLCAPE(ImmutableList.of(
 		ItemID.AGILITY_CAPE,
 		ItemID.AGILITY_CAPET,
 		ItemID.ATTACK_CAPE,
@@ -1154,10 +1084,9 @@ public class ItemCollections
 		ItemID.WOODCUT_CAPET,
 		ItemID.QUEST_POINT_CAPE,
 		ItemID.QUEST_POINT_CAPE_T
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> slayerHelmets = ImmutableList.of(
+	SLAYER_HELMETS(ImmutableList.of(
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
 		ItemID.SLAYER_HELMET_I_25177,
@@ -1191,10 +1120,9 @@ public class ItemCollections
 		ItemID.TZTOK_SLAYER_HELMET,
 		ItemID.TZTOK_SLAYER_HELMET_I,
 		ItemID.TZTOK_SLAYER_HELMET_I_25902
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> rawFish = ImmutableList.of(
+	RAW_FISH(ImmutableList.of(
 		ItemID.RAW_SHRIMPS,
 		ItemID.RAW_SARDINE,
 		ItemID.RAW_KARAMBWANJI,
@@ -1220,70 +1148,61 @@ public class ItemCollections
 		ItemID.RAW_MANTA_RAY,
 		ItemID.RAW_ANGLERFISH,
 		ItemID.RAW_DARK_CRAB
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> compost = ImmutableList.of(
+	COMPOST(ImmutableList.of(
 		ItemID.BOTTOMLESS_COMPOST_BUCKET_22997,
 		ItemID.ULTRACOMPOST,
 		ItemID.SUPERCOMPOST,
 		ItemID.COMPOST
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> fairyStaff = ImmutableList.of(
+	FAIRY_STAFF(ImmutableList.of(
 		ItemID.LUNAR_STAFF,
 		ItemID.LUNAR_STAFF__PT3,
 		ItemID.LUNAR_STAFF__PT2,
 		ItemID.LUNAR_STAFF__PT1,
 		ItemID.DRAMEN_STAFF
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> earthAltar = ImmutableList.of(
+	EARTH_ALTAR(ImmutableList.of(
 		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.EARTH_TIARA,
 		ItemID.EARTH_TALISMAN
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> essenceLow = ImmutableList.of(
+	ESSENCE_LOW(ImmutableList.of(
 		ItemID.DAEYALT_ESSENCE,
 		ItemID.PURE_ESSENCE,
 		ItemID.RUNE_ESSENCE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> essenceHigh = ImmutableList.of(
+	ESSENCE_HIGH(ImmutableList.of(
 		ItemID.DAEYALT_ESSENCE,
 		ItemID.PURE_ESSENCE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> coins = ImmutableList.of(
+	COINS(ImmutableList.of(
 		ItemID.COINS_995,
 		ItemID.COINS_8890,
 		ItemID.COINS_6964,
 		ItemID.COINS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> cookingGuild = ImmutableList.of(
+	COOKING_GUILD(ImmutableList.of(
 		ItemID.CHEFS_HAT,
 		ItemID.VARROCK_ARMOUR_3,
 		ItemID.VARROCK_ARMOUR_4,
 		ItemID.COOKING_CAPET,
 		ItemID.COOKING_CAPE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> miningHelm = ImmutableList.of(
+	MINING_HELM(ImmutableList.of(
 		ItemID.MINING_HELMET_5014,
 		ItemID.MINING_HELMET
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> gloves = ImmutableList.of(
+	GLOVES(ImmutableList.of(
 		ItemID.FEROCIOUS_GLOVES,
 		ItemID.BARROWS_GLOVES,
 		ItemID.DRAGON_GLOVES,
@@ -1315,32 +1234,28 @@ public class ItemCollections
 		ItemID.SLAYER_GLOVES,
 		ItemID.VOID_KNIGHT_GLOVES,
 		ItemID.WHITE_GLOVES
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> gracefulGloves = ImmutableList.of(
+	GRACEFUL_GLOVES(ImmutableList.of(
 		ItemID.GRACEFUL_GLOVES, ItemID.GRACEFUL_GLOVES_11859, ItemID.GRACEFUL_GLOVES_13587,
 		ItemID.GRACEFUL_GLOVES_13588, ItemID.GRACEFUL_GLOVES_13599, ItemID.GRACEFUL_GLOVES_13600,
 		ItemID.GRACEFUL_GLOVES_13611, ItemID.GRACEFUL_GLOVES_13612, ItemID.GRACEFUL_GLOVES_13623, ItemID.GRACEFUL_GLOVES_13624,
 		ItemID.GRACEFUL_GLOVES_13635, ItemID.GRACEFUL_GLOVES_13636, ItemID.GRACEFUL_GLOVES_13675, ItemID.GRACEFUL_GLOVES_13676,
 		ItemID.GRACEFUL_GLOVES_21073, ItemID.GRACEFUL_GLOVES_21075, ItemID.GRACEFUL_GLOVES_24755, ItemID.GRACEFUL_GLOVES_24757,
 		ItemID.GRACEFUL_GLOVES_25081, ItemID.GRACEFUL_GLOVES_25083
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> questCape = ImmutableList.of(
+	QUEST_CAPE(ImmutableList.of(
 		ItemID.QUEST_POINT_CAPE_T,
 		ItemID.QUEST_POINT_CAPE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> cosmicAltar = ImmutableList.of(
+	COSMIC_ALTAR(ImmutableList.of(
 		ItemID.COSMIC_TIARA,
 		ItemID.COSMIC_TALISMAN
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> wallBeast = ImmutableList.of(
+	WALL_BEAST(ImmutableList.of(
 		ItemID.SPINY_HELMET,
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
@@ -1366,24 +1281,21 @@ public class ItemCollections
 		ItemID.TWISTED_SLAYER_HELMET,
 		ItemID.TWISTED_SLAYER_HELMET_I,
 		ItemID.TWISTED_SLAYER_HELMET_I_25191
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> waterAltar = ImmutableList.of(
+	WATER_ALTAR(ImmutableList.of(
 		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.WATER_TIARA,
 		ItemID.WATER_TALISMAN
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> fireAltar = ImmutableList.of(
+	FIRE_ALTAR(ImmutableList.of(
 		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.FIRE_TIARA,
 		ItemID.FIRE_TALISMAN
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> plunderArtefacts = ImmutableList.of(
+	PLUNDER_ARTEFACTS(ImmutableList.of(
 		ItemID.IVORY_COMB,
 		ItemID.POTTERY_SCARAB,
 		ItemID.POTTERY_STATUETTE,
@@ -1393,18 +1305,16 @@ public class ItemCollections
 		ItemID.GOLD_SEAL,
 		ItemID.GOLDEN_SCARAB,
 		ItemID.GOLDEN_STATUETTE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> waterskin = ImmutableList.of(
+	WATERSKIN(ImmutableList.of(
 		ItemID.WATERSKIN4,
 		ItemID.WATERSKIN3,
 		ItemID.WATERSKIN2,
 		ItemID.WATERSKIN1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> grimyHerb = ImmutableList.of(
+	GRIMY_HERB(ImmutableList.of(
 		ItemID.GRIMY_AVANTOE,
 		ItemID.GRIMY_CADANTINE,
 		ItemID.GRIMY_DWARF_WEED,
@@ -1419,10 +1329,9 @@ public class ItemCollections
 		ItemID.GRIMY_TARROMIN,
 		ItemID.GRIMY_TOADFLAX,
 		ItemID.GRIMY_TORSTOL
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> blackjacks = ImmutableList.of(
+	BLACKJACKS(ImmutableList.of(
 		ItemID.MAPLE_BLACKJACKD,
 		ItemID.MAPLE_BLACKJACKO,
 		ItemID.MAPLE_BLACKJACK,
@@ -1432,24 +1341,21 @@ public class ItemCollections
 		ItemID.OAK_BLACKJACKO,
 		ItemID.OAK_BLACKJACKD,
 		ItemID.OAK_BLACKJACK
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> keris = ImmutableList.of(
+	KERIS(ImmutableList.of(
 		ItemID.KERISP_10584,
 		ItemID.KERISP_10583,
 		ItemID.KERISP,
 		ItemID.KERIS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> stuffedKQHead = ImmutableList.of(
+	STUFFED_KQ_HEAD(ImmutableList.of(
 		ItemID.STUFFED_KQ_HEAD,
 		ItemID.STUFFED_KQ_HEAD_TATTERED
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> rechargeableNeckBracelet = ImmutableList.of(
+	RECHARGEABLE_NECK_BRACELET(ImmutableList.of(
 		ItemID.SKILLS_NECKLACE3,
 		ItemID.COMBAT_BRACELET3,
 		ItemID.SKILLS_NECKLACE2,
@@ -1458,47 +1364,41 @@ public class ItemCollections
 		ItemID.COMBAT_BRACELET1,
 		ItemID.SKILLS_NECKLACE,
 		ItemID.COMBAT_BRACELET
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> deathAltar = ImmutableList.of(
+	DEATHALTAR(ImmutableList.of(
 		ItemID.DEATH_TIARA,
 		ItemID.DEATH_TALISMAN
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> imbuableSalveAmulet = ImmutableList.of(
+	IMBUABLE_SALVE_AMULET(ImmutableList.of(
 		ItemID.SALVE_AMULET_E,
 		ItemID.SALVE_AMULET
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> imbuedSalveAmulet = ImmutableList.of(
+	IMBUED_SALVE_AMULET(ImmutableList.of(
 		ItemID.SALVE_AMULETEI,
 		ItemID.SALVE_AMULETI,
 		ItemID.SALVE_AMULETEI_25278,
 		ItemID.SALVE_AMULETI_25250
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> nonMagicTreeRoot = ImmutableList.of(
+	NON_MAGIC_TREE_ROOT(ImmutableList.of(
 		ItemID.OAK_ROOTS,
 		ItemID.WILLOW_ROOTS,
 		ItemID.MAPLE_ROOTS,
 		ItemID.YEW_ROOTS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ardyCloaks = ImmutableList.of(
+	ARDY_CLOAKS(ImmutableList.of(
 		ItemID.ARDOUGNE_CLOAK_1,
 		ItemID.ARDOUGNE_CLOAK_2,
 		ItemID.ARDOUGNE_CLOAK_3,
 		ItemID.ARDOUGNE_CLOAK_4,
 		ItemID.ARDOUGNE_MAX_CAPE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> teamCape = ImmutableList.of(
+	TEAM_CAPE(ImmutableList.of(
 		ItemID.TEAM1_CAPE,
 		ItemID.TEAM2_CAPE,
 		ItemID.TEAM3_CAPE,
@@ -1549,16 +1449,14 @@ public class ItemCollections
 		ItemID.TEAM48_CAPE,
 		ItemID.TEAM49_CAPE,
 		ItemID.TEAM50_CAPE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> chaosAltar = ImmutableList.of(
+	CHAOS_ALTAR(ImmutableList.of(
 		ItemID.CHAOS_TIARA,
 		ItemID.CHAOS_TALISMAN
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> runeAxeBetter = ImmutableList.of(
+	RUNE_AXE_BETTER(ImmutableList.of(
 		ItemID.RUNE_AXE,
 		ItemID.DRAGON_AXE,
 		ItemID.INFERNAL_AXE_UNCHARGED,
@@ -1566,10 +1464,9 @@ public class ItemCollections
 		ItemID.CRYSTAL_AXE_INACTIVE,
 		ItemID.CRYSTAL_AXE,
 		ItemID.CRYSTAL_AXE_23862
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> godStaff = ImmutableList.of(
+	GOD_STAFF(ImmutableList.of(
 		ItemID.ZAMORAK_STAFF,
 		ItemID.STAFF_OF_THE_DEAD,
 		ItemID.STAFF_OF_THE_DEAD_23613,
@@ -1582,9 +1479,9 @@ public class ItemCollections
 		ItemID.STAFF_OF_BALANCE,
 		ItemID.SARADOMIN_STAFF,
 		ItemID.STAFF_OF_LIGHT
-	);
-	@Getter
-	private static final List<Integer> snailShells = ImmutableList.of(
+	)),
+
+	SNAIL_SHELLS(ImmutableList.of(
 		ItemID.BLAMISH_BARK_SHELL,
 		ItemID.BLAMISH_BLUE_SHELL,
 		ItemID.BLAMISH_MYRE_SHELL,
@@ -1594,10 +1491,9 @@ public class ItemCollections
 		ItemID.BLAMISH_RED_SHELL_3357,
 		ItemID.BLAMISH_OCHRE_SHELL,
 		ItemID.BLAMISH_OCHRE_SHELL_3359
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> tannableHide = ImmutableList.of(
+	TANNABLE_HIDE(ImmutableList.of(
 		ItemID.BLACK_DRAGONHIDE,
 		ItemID.RED_DRAGONHIDE,
 		ItemID.BLUE_DRAGONHIDE,
@@ -1605,10 +1501,9 @@ public class ItemCollections
 		ItemID.SNAKE_HIDE_7801,
 		ItemID.SNAKE_HIDE,
 		ItemID.COWHIDE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> bonemeal = ImmutableList.of(
+	BONEMEAL(ImmutableList.of(
 		ItemID.BONEMEAL,
 		ItemID.BAT_BONEMEAL,
 		ItemID.BURNT_BONEMEAL,
@@ -1638,10 +1533,9 @@ public class ItemCollections
 		ItemID.ZOGRE_BONEMEAL,
 		ItemID.SMALL_ZOMBIE_MONKEY_BONEMEAL,
 		ItemID.WYVERN_BONEMEAL
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> earProtection = ImmutableList.of(
+	EAR_PROTECTION(ImmutableList.of(
 		ItemID.EARMUFFS,
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
@@ -1676,10 +1570,9 @@ public class ItemCollections
 		ItemID.TZTOK_SLAYER_HELMET,
 		ItemID.TZTOK_SLAYER_HELMET_I,
 		ItemID.TZTOK_SLAYER_HELMET_I_25902
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> noseProtection = ImmutableList.of(
+	NOSE_PROTECTION(ImmutableList.of(
 		ItemID.NOSE_PEG,
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
@@ -1714,242 +1607,215 @@ public class ItemCollections
 		ItemID.TZTOK_SLAYER_HELMET,
 		ItemID.TZTOK_SLAYER_HELMET_I,
 		ItemID.TZTOK_SLAYER_HELMET_I_25902
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> elitePyreLogs = ImmutableList.of(
+	ELITE_PYRE_LOGS(ImmutableList.of(
 		ItemID.MAGIC_PYRE_LOGS,
 		ItemID.REDWOOD_PYRE_LOGS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> shadeRemains = ImmutableList.of(
+	SHADE_REMAINS(ImmutableList.of(
 		ItemID.LOAR_REMAINS,
 		ItemID.PHRIN_REMAINS,
 		ItemID.RIYL_REMAINS,
 		ItemID.ASYN_REMAINS,
 		ItemID.FIYR_REMAINS,
 		ItemID.URIUM_REMAINS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ahrimHood = ImmutableList.of(
+	AHRIM_HOOD(ImmutableList.of(
 		ItemID.AHRIMS_HOOD,
 		ItemID.AHRIMS_HOOD_100,
 		ItemID.AHRIMS_HOOD_75,
 		ItemID.AHRIMS_HOOD_50,
 		ItemID.AHRIMS_HOOD_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ahrimRobeSkirt = ImmutableList.of(
+	AHRIM_ROBESKIRT(ImmutableList.of(
 		ItemID.AHRIMS_ROBESKIRT,
 		ItemID.AHRIMS_ROBESKIRT_100,
 		ItemID.AHRIMS_ROBESKIRT_75,
 		ItemID.AHRIMS_ROBESKIRT_50,
 		ItemID.AHRIMS_ROBESKIRT_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ahrimRobeTop = ImmutableList.of(
+	AHRIM_ROBETOP(ImmutableList.of(
 		ItemID.AHRIMS_ROBETOP,
 		ItemID.AHRIMS_ROBETOP_100,
 		ItemID.AHRIMS_ROBETOP_75,
 		ItemID.AHRIMS_ROBETOP_50,
 		ItemID.AHRIMS_ROBETOP_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ahrimStaff = ImmutableList.of(
+	AHRIM_STAFF(ImmutableList.of(
 		ItemID.AHRIMS_STAFF,
 		ItemID.AHRIMS_STAFF_100,
 		ItemID.AHRIMS_STAFF_75,
 		ItemID.AHRIMS_STAFF_50,
 		ItemID.AHRIMS_STAFF_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> karilCrossbow = ImmutableList.of(
+	KARIL_CROSSBOW(ImmutableList.of(
 		ItemID.KARILS_CROSSBOW,
 		ItemID.KARILS_CROSSBOW_100,
 		ItemID.KARILS_CROSSBOW_75,
 		ItemID.KARILS_CROSSBOW_50,
 		ItemID.KARILS_CROSSBOW_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> karilCoif = ImmutableList.of(
+	KARIL_COIF(ImmutableList.of(
 		ItemID.KARILS_COIF,
 		ItemID.KARILS_COIF_100,
 		ItemID.KARILS_COIF_75,
 		ItemID.KARILS_COIF_50,
 		ItemID.KARILS_COIF_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> karilSkirt = ImmutableList.of(
+	KARIL_SKIRT(ImmutableList.of(
 		ItemID.KARILS_LEATHERSKIRT,
 		ItemID.KARILS_LEATHERSKIRT_100,
 		ItemID.KARILS_LEATHERSKIRT_75,
 		ItemID.KARILS_LEATHERSKIRT_50,
 		ItemID.KARILS_LEATHERSKIRT_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> karilTop = ImmutableList.of(
+	KARIL_TOP(ImmutableList.of(
 		ItemID.KARILS_LEATHERTOP,
 		ItemID.KARILS_LEATHERTOP_100,
 		ItemID.KARILS_LEATHERTOP_75,
 		ItemID.KARILS_LEATHERTOP_50,
 		ItemID.KARILS_LEATHERTOP_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> dharokAxe = ImmutableList.of(
+	DHAROK_AXE(ImmutableList.of(
 		ItemID.DHAROKS_GREATAXE,
 		ItemID.DHAROKS_GREATAXE_100,
 		ItemID.DHAROKS_GREATAXE_75,
 		ItemID.DHAROKS_GREATAXE_50,
 		ItemID.DHAROKS_GREATAXE_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> dharokHelm = ImmutableList.of(
+	DHAROK_HELM(ImmutableList.of(
 		ItemID.DHAROKS_HELM,
 		ItemID.DHAROKS_HELM_100,
 		ItemID.DHAROKS_HELM_75,
 		ItemID.DHAROKS_HELM_50,
 		ItemID.DHAROKS_HELM_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> dharokBody = ImmutableList.of(
+	DHAROK_BODY(ImmutableList.of(
 		ItemID.DHAROKS_PLATEBODY,
 		ItemID.DHAROKS_PLATEBODY_100,
 		ItemID.DHAROKS_PLATEBODY_75,
 		ItemID.DHAROKS_PLATEBODY_50,
 		ItemID.DHAROKS_PLATEBODY_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> dharokLegs = ImmutableList.of(
+	DHAROK_LEGS(ImmutableList.of(
 		ItemID.DHAROKS_PLATELEGS,
 		ItemID.DHAROKS_PLATELEGS_100,
 		ItemID.DHAROKS_PLATELEGS_75,
 		ItemID.DHAROKS_PLATELEGS_50,
 		ItemID.DHAROKS_PLATELEGS_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> guthanWarspear = ImmutableList.of(
+	GUTHAN_WARSPEAR(ImmutableList.of(
 		ItemID.GUTHANS_WARSPEAR,
 		ItemID.GUTHANS_WARSPEAR_100,
 		ItemID.GUTHANS_WARSPEAR_75,
 		ItemID.GUTHANS_WARSPEAR_50,
 		ItemID.GUTHANS_WARSPEAR_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> guthanHelm = ImmutableList.of(
+	GUTHAN_HELM(ImmutableList.of(
 		ItemID.GUTHANS_HELM,
 		ItemID.GUTHANS_HELM_100,
 		ItemID.GUTHANS_HELM_75,
 		ItemID.GUTHANS_HELM_50,
 		ItemID.GUTHANS_HELM_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> guthanBody = ImmutableList.of(
+	GUTHAN_BODY(ImmutableList.of(
 		ItemID.GUTHANS_PLATEBODY,
 		ItemID.GUTHANS_PLATEBODY_100,
 		ItemID.GUTHANS_PLATEBODY_75,
 		ItemID.GUTHANS_PLATEBODY_50,
 		ItemID.GUTHANS_PLATEBODY_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> guthanSkirt = ImmutableList.of(
+	GUTHAN_SKIRT(ImmutableList.of(
 		ItemID.GUTHANS_CHAINSKIRT,
 		ItemID.GUTHANS_CHAINSKIRT_100,
 		ItemID.GUTHANS_CHAINSKIRT_75,
 		ItemID.GUTHANS_CHAINSKIRT_50,
 		ItemID.GUTHANS_CHAINSKIRT_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> toragHammers = ImmutableList.of(
+	TORAG_HAMMERS(ImmutableList.of(
 		ItemID.TORAGS_HAMMERS,
 		ItemID.TORAGS_HAMMERS_100,
 		ItemID.TORAGS_HAMMERS_75,
 		ItemID.TORAGS_HAMMERS_50,
 		ItemID.TORAGS_HAMMERS_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> toragHelm = ImmutableList.of(
+	TORAG_HELM(ImmutableList.of(
 		ItemID.TORAGS_HELM,
 		ItemID.TORAGS_HELM_100,
 		ItemID.TORAGS_HELM_75,
 		ItemID.TORAGS_HELM_50,
 		ItemID.TORAGS_HELM_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> toragBody = ImmutableList.of(
+	TORAG_BODY(ImmutableList.of(
 		ItemID.TORAGS_PLATEBODY,
 		ItemID.TORAGS_PLATEBODY_100,
 		ItemID.TORAGS_PLATEBODY_75,
 		ItemID.TORAGS_PLATEBODY_50,
 		ItemID.TORAGS_PLATEBODY_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> toragLegs = ImmutableList.of(
+	TORAG_LEGS(ImmutableList.of(
 		ItemID.TORAGS_PLATELEGS,
 		ItemID.TORAGS_PLATELEGS_100,
 		ItemID.TORAGS_PLATELEGS_75,
 		ItemID.TORAGS_PLATELEGS_50,
 		ItemID.TORAGS_PLATELEGS_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> veracFlail = ImmutableList.of(
+	VERAC_FLAIL(ImmutableList.of(
 		ItemID.VERACS_FLAIL,
 		ItemID.VERACS_FLAIL_100,
 		ItemID.VERACS_FLAIL_75,
 		ItemID.VERACS_FLAIL_50,
 		ItemID.VERACS_FLAIL_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> veracBrassard = ImmutableList.of(
+	VERAC_BRASSARD(ImmutableList.of(
 		ItemID.VERACS_BRASSARD,
 		ItemID.VERACS_BRASSARD_100,
 		ItemID.VERACS_BRASSARD_75,
 		ItemID.VERACS_BRASSARD_50,
 		ItemID.VERACS_BRASSARD_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> veracHelm = ImmutableList.of(
+	VERAC_HELM(ImmutableList.of(
 		ItemID.VERACS_HELM,
 		ItemID.VERACS_HELM_100,
 		ItemID.VERACS_HELM_75,
 		ItemID.VERACS_HELM_50,
 		ItemID.VERACS_HELM_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> veracSkirt = ImmutableList.of(
+	VERAC_SKIRT(ImmutableList.of(
 		ItemID.VERACS_PLATESKIRT,
 		ItemID.VERACS_PLATESKIRT_100,
 		ItemID.VERACS_PLATESKIRT_75,
 		ItemID.VERACS_PLATESKIRT_50,
 		ItemID.VERACS_PLATESKIRT_25
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> arceuusBooks = ImmutableList.of(
+	ARCEUUS_BOOKS(ImmutableList.of(
 		ItemID.RADAS_CENSUS,
 		ItemID.RICKTORS_DIARY_7,
 		ItemID.EATHRAM__RADA_EXTRACT,
@@ -1964,10 +1830,9 @@ public class ItemCollections
 		ItemID.TRISTESSAS_TRAGEDY,
 		ItemID.TREACHERY_OF_ROYALTY,
 		ItemID.TRANSPORTATION_INCANTATIONS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> warmClothing = ImmutableList.of(
+	WARM_CLOTHING(ImmutableList.of(
 		ItemID.SANTA_MASK,
 		ItemID.SANTA_JACKET,
 		ItemID.SANTA_PANTALOONS,
@@ -2066,23 +1931,20 @@ public class ItemCollections
 		ItemID.LIT_BUG_LANTERN,
 		ItemID.UGLY_HALLOWEEN_JUMPER_BLACK,
 		ItemID.UGLY_HALLOWEEN_JUMPER_ORANGE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> stoneBoots = ImmutableList.of(
+	STONE_BOOTS(ImmutableList.of(
 		ItemID.BOOTS_OF_STONE,
 		ItemID.BOOTS_OF_BRIMSTONE,
 		ItemID.GRANITE_BOOTS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> fishingRod = ImmutableList.of(
+	FISHING_ROD(ImmutableList.of(
 		ItemID.PEARL_FISHING_ROD,
 		ItemID.FISHING_ROD
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> OgreBrutalArrows = ImmutableList.of(
+	OGRE_BRUTAL_ARROWS(ImmutableList.of(
 		ItemID.RUNE_BRUTAL,
 		ItemID.ADAMANT_BRUTAL,
 		ItemID.MITHRIL_BRUTAL,
@@ -2091,40 +1953,35 @@ public class ItemCollections
 		ItemID.IRON_BRUTAL,
 		ItemID.BRONZE_BRUTAL,
 		ItemID.OGRE_ARROW
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> OgreBellows = ImmutableList.of(
+	OGRE_BELLOWS(ImmutableList.of(
 		ItemID.OGRE_BELLOWS_3,
 		ItemID.OGRE_BELLOWS_2,
 		ItemID.OGRE_BELLOWS_1,
 		ItemID.OGRE_BELLOWS
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> OgreBow = ImmutableList.of(
+	OGRE_BOW(ImmutableList.of(
 		ItemID.OGRE_BOW,
 		ItemID.COMP_OGRE_BOW
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> teleportCrystal = ImmutableList.of(
+	TELEPORT_CRYSTAL(ImmutableList.of(
 		ItemID.TELEPORT_CRYSTAL_5,
 		ItemID.TELEPORT_CRYSTAL_4,
 		ItemID.TELEPORT_CRYSTAL_3,
 		ItemID.TELEPORT_CRYSTAL_2,
 		ItemID.TELEPORT_CRYSTAL_1
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> ninjaGreegree = ImmutableList.of(
+	NINJA_GREEGREE(ImmutableList.of(
 		ItemID.KRUK_MONKEY_GREEGREE,
 		ItemID.NINJA_MONKEY_GREEGREE,
 		ItemID.NINJA_MONKEY_GREEGREE_4025
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> crystalBow = ImmutableList.of(
+	CRYSTAL_BOW(ImmutableList.of(
 		ItemID.NEW_CRYSTAL_BOW_4213,
 		ItemID.NEW_CRYSTAL_BOW_16888,
 		ItemID.NEW_CRYSTAL_BOW_I,
@@ -2151,10 +2008,9 @@ public class ItemCollections
 		ItemID.CRYSTAL_BOW_910,
 		ItemID.CRYSTAL_BOW_FULL,
 		ItemID.CRYSTAL_BOW_FULL_I
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> mouthProtection = ImmutableList.of(
+	MOUTH_PROTECTION(ImmutableList.of(
 		ItemID.FACEMASK,
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
@@ -2189,32 +2045,43 @@ public class ItemCollections
 		ItemID.TZTOK_SLAYER_HELMET,
 		ItemID.TZTOK_SLAYER_HELMET_I,
 		ItemID.TZTOK_SLAYER_HELMET_I_25902
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> voidHelm = ImmutableList.of(
+	VOID_HELM(ImmutableList.of(
 		ItemID.VOID_MAGE_HELM,
 		ItemID.VOID_MELEE_HELM,
 		ItemID.VOID_RANGER_HELM
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> voidTop = ImmutableList.of(
+	VOID_TOP(ImmutableList.of(
 		ItemID.ELITE_VOID_TOP,
 		ItemID.VOID_KNIGHT_TOP
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> voidRobe = ImmutableList.of(
+	VOID_ROBE(ImmutableList.of(
 		ItemID.ELITE_VOID_ROBE,
 		ItemID.VOID_KNIGHT_ROBE
-	);
+	)),
 
-	@Getter
-	private static final List<Integer> guthixBalanceUnf = ImmutableList.of(
+	GUTHIX_BALANCE_UNF(ImmutableList.of(
 		ItemID.GUTHIX_BALANCE_UNF,
 		ItemID.GUTHIX_BALANCE_UNF_7654,
 		ItemID.GUTHIX_BALANCE_UNF_7656,
 		ItemID.GUTHIX_BALANCE_UNF_7658
-	);
+	));
+
+	private final List<Integer> items;
+	private final String wikiTerm;
+
+	ItemCollections(String wikiTerm, List<Integer> items)
+	{
+		this.wikiTerm = wikiTerm;
+		this.items = items;
+	}
+
+	ItemCollections(List<Integer> items)
+	{
+		this.wikiTerm = null;
+		this.items = items;
+	}
 }

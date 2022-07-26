@@ -340,9 +340,9 @@ public class OneSmallFavour extends BasicQuestHelper
 		guam = new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF);
 		marrentill = new ItemRequirement("Marrentill", ItemID.MARRENTILL);
 		harralander = new ItemRequirement("Harralander", ItemID.HARRALANDER);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 
-		hammerHighlight = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammerHighlight = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		hammerHighlight.setHighlightInInventory(true);
 		emptyCup = new ItemRequirement("Empty cup", ItemID.EMPTY_CUP);
 		emptyCup.setTooltip("You can find a cup of tea in a house north of Sanfew. Drink it for an empty cup");

@@ -165,20 +165,20 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 		notMoreKudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 50, "50+ Kudos");
 
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 150).showConditioned(new Conditions(LogicType.OR,
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 150).showConditioned(new Conditions(LogicType.OR,
 			notNews, notPlank));
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notIron);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIron);
 		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notPlank);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notDyingTree);
-		bone = new ItemRequirement("Bones", ItemCollections.getBones()).showConditioned(notDogBone);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notDyingTree);
+		bone = new ItemRequirement("Bones", ItemCollections.BONES).showConditioned(notDogBone);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY).showConditioned(notBowl);
-		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.getEarthAltar()).showConditioned(notEarthRune);
-		essence = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notEarthRune);
+		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.EARTH_ALTAR).showConditioned(notEarthRune);
+		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notEarthRune);
 		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout);
 		feathers = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notTrout);
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 

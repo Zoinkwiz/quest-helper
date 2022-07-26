@@ -128,10 +128,10 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		ghostspeak.addAlternates(ItemID.GHOSTSPEAK_AMULET_4250);
 
-		coins40 = new ItemRequirement("Coins", ItemCollections.getCoins(), 40);
+		coins40 = new ItemRequirement("Coins", ItemCollections.COINS, 40);
 		inventorySlot = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 1);
 
-		kharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.getAmuletOfGlories());
+		kharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.AMULET_OF_GLORIES);
 		gnomeTeleport = new ItemRequirement("Teleport to Tree Gnome Stronghold", -1);
 		gnomeTeleport.setDisplayItemId(ItemID.SPIRIT_TREE);
 		rellekkaTeleport = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT, 3);

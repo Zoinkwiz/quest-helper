@@ -214,13 +214,13 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		cat = new FollowerItemRequirement("A cat",
-			ItemCollections.getCats(),
+			ItemCollections.CATS,
 			NpcCollections.getCats());
 
 		catFollower = new FollowerRequirement("Any cat following you", NpcCollections.getCats());
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		waterskin4 = new ItemRequirement("Waterskin(4), bring a few to avoid drinking it", ItemID.WATERSKIN4);
-		coins600 = new ItemRequirement("Coins or more for various payments", ItemCollections.getCoins(), 600);
+		coins600 = new ItemRequirement("Coins or more for various payments", ItemCollections.COINS, 600);
 		bagOfSaltOrBucket = new ItemRequirement("Bag of Salt from a Slayer Master, or an empty bucket to get some", ItemID.BAG_OF_SALT).hideConditioned(givenSalt);
 		bagOfSaltOrBucket.addAlternates(ItemID.PILE_OF_SALT, ItemID.BUCKET);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
@@ -228,7 +228,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		salt.addAlternates(ItemID.PILE_OF_SALT);
 
 
-		coins30 = new ItemRequirement("Coins", ItemCollections.getCoins(), 30).hideConditioned(givenLinen);
+		coins30 = new ItemRequirement("Coins", ItemCollections.COINS, 30).hideConditioned(givenLinen);
 		linen = new ItemRequirement("Linen", ItemID.LINEN).hideConditioned(givenLinen);
 
 		coinsOrLinen = new ItemRequirements(LogicType.OR, "1 x Linen or 30 coins to buy some", coins30, linen).hideConditioned(givenLinen);
@@ -238,10 +238,10 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, -1);
 		combatGear = new ItemRequirement("Combat equipment", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 

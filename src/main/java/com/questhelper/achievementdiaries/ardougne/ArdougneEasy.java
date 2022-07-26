@@ -127,7 +127,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 
 		silk = new ItemRequirement("Silk", ItemID.SILK).showConditioned(notSellSilk);
 		rustySword = new ItemRequirement("Rusty sword", ItemID.RUSTY_SWORD).showConditioned(notIdentifySword);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notIdentifySword);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notIdentifySword);
 
 		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 		biohazard = new QuestRequirement(QuestHelperQuest.BIOHAZARD, QuestState.FINISHED);

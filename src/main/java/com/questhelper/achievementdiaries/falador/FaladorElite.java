@@ -132,12 +132,12 @@ public class FaladorElite extends ComplexStateQuestHelper
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.PURE_ESSENCE, 28).showConditioned(notCraftedAirRunes);
 		airTiara = new ItemRequirement("Air Tiara", ItemID.AIR_TIARA, 1, true).showConditioned(notCraftedAirRunes);
-		coins1920 = new ItemRequirement("Coins", ItemCollections.getCoins(), 1920).showConditioned(notPurchasedWhite2hSword);
+		coins1920 = new ItemRequirement("Coins", ItemCollections.COINS, 1920).showConditioned(notPurchasedWhite2hSword);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots);
-		axe = new ItemRequirement("Axe", ItemCollections.getAxes()).showConditioned(notGotMagicRoots);
+		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots);
 		magicTreeSapling = new ItemRequirement("Magic Sapling", ItemID.MAGIC_SAPLING).showConditioned(notGotMagicRoots);
-		skillCape = new ItemRequirement("Any Skill Cape or Quest Cape", ItemCollections.getSkillCape()).showConditioned(notPerformedSkillCapeEmote);
+		skillCape = new ItemRequirement("Any Skill Cape or Quest Cape", ItemCollections.SKILLCAPE).showConditioned(notPerformedSkillCapeEmote);
 		toadflaxPotionUnf = new ItemRequirement("Toadflax Potion (unf)", ItemID.TOADFLAX_POTION_UNF).showConditioned(notMadeSaraBrew);
 		crushedNest = new ItemRequirement("Crushed Nest", ItemID.CRUSHED_NEST).showConditioned(notMadeSaraBrew);
 

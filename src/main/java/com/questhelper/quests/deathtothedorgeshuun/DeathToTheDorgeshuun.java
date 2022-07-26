@@ -180,10 +180,10 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		pickaxeHighlighted.setHighlightInInventory(true);
-		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
 		brooch = new ItemRequirement("Brooch", ItemID.BROOCH);
 		book = new ItemRequirement("Goblin symbol book", ItemID.GOBLIN_SYMBOL_BOOK);
 		book.setHighlightInInventory(true);

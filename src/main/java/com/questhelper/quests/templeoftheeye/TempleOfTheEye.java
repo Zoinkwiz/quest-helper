@@ -224,12 +224,12 @@ public class TempleOfTheEye extends BasicQuestHelper
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.canBeObtainedDuringQuest();
-		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES);
 		pickaxe.canBeObtainedDuringQuest();
 
 		varrockTeleport = new ItemRequirement("Method of teleportation to Varrock", ItemID.VARROCK_TELEPORT);
-		alKharidTeleport = new ItemRequirement("Method of teleportation to Al Kharid", ItemCollections.getRingOfDuelings());
-		alKharidTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
+		alKharidTeleport = new ItemRequirement("Method of teleportation to Al Kharid", ItemCollections.RING_OF_DUELINGS);
+		alKharidTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		alKharidTeleport.addAlternates(ItemID.LUMBRIDGE_TELEPORT);
 
 		strongTea = new ItemRequirement("Strong Cup of Tea", ItemID.STRONG_CUP_OF_TEA);

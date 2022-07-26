@@ -164,24 +164,24 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 
 		addedRopeToHole = new VarbitRequirement(279, 1);
 
-		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources()).showConditioned(notKillCaveBug);
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).showConditioned(notKillCaveBug);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKillCaveBug);
 		spinyHelm = new ItemRequirement("Spiny helmet or slayer helmet (Recommended for low combat levels / Ironmen)",
-			ItemCollections.getWallBeast()).showConditioned(notKillCaveBug);
+			ItemCollections.WALL_BEAST).showConditioned(notKillCaveBug);
 		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss.",
-			ItemCollections.getWaterAltar()).showConditioned(notWaterRune);
-		runeEss = new ItemRequirement("Essence", ItemCollections.getEssenceLow()).showConditioned(notWaterRune);
+			ItemCollections.WATER_ALTAR).showConditioned(notWaterRune);
+		runeEss = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRune);
 		dough = new ItemRequirement("Bread dough", ItemID.BREAD_DOUGH).showConditioned(notBread);
 		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS).showConditioned(notOak);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notOak);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notOak);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notIron);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notOak);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIron);
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notFishAnchovies);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inCave = new ZoneRequirement(cave);
 		inSewer = new ZoneRequirement(sewer);

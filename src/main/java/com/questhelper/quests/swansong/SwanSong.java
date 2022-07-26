@@ -183,8 +183,8 @@ public class SwanSong extends BasicQuestHelper
 		smallNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET);
 		smallNet.setTooltip("You can get one from Arnold");
 
-		hammerPanel = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.getHammer());
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammerPanel = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		hammer.setTooltip("Franklin will give you one");
 		brownApron = new ItemRequirement("Brown apron", ItemID.BROWN_APRON, 1, true);
 		brownApron.setTooltip("Malignius will give you one");

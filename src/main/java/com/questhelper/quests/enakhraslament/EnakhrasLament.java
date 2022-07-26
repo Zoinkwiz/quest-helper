@@ -190,7 +190,7 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselHighlighted.setHighlightInInventory(true);
 
@@ -259,11 +259,11 @@ public class EnakhrasLament extends BasicQuestHelper
 		candle = new ItemRequirement("Candle", ItemID.CANDLE);
 		candle.setHighlightInInventory(true);
 
-		air2 = new ItemRequirement("Air rune", ItemCollections.getAirRune(), 2);
-		airStaff = new ItemRequirement("Air staff", ItemCollections.getAirStaff(), 1, true);
+		air2 = new ItemRequirement("Air rune", ItemCollections.AIR_RUNE, 2);
+		airStaff = new ItemRequirement("Air staff", ItemCollections.AIR_STAFF, 1, true);
 		airRuneOrStaff = new ItemRequirements(LogicType.OR, "2 air runes", air2, airStaff);
-		earth2 = new ItemRequirement("Earth rune", ItemCollections.getEarthRune(), 2);
-		earthStaff = new ItemRequirement("Air staff", ItemCollections.getEarthStaff(), 1, true);
+		earth2 = new ItemRequirement("Earth rune", ItemCollections.EARTH_RUNE, 2);
+		earthStaff = new ItemRequirement("Air staff", ItemCollections.EARTH_STAFF, 1, true);
 		earthRuneOrStaff = new ItemRequirements(LogicType.OR, "2 earth runes", earth2, earthStaff);
 		chaos = new ItemRequirement("Chaos rune", ItemID.CHAOS_RUNE);
 

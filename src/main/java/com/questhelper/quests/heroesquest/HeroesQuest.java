@@ -209,7 +209,7 @@ public class HeroesQuest extends BasicQuestHelper
 		dustyKeyHint = new ItemRequirement("Dusty key (obtainable in quest)", ItemID.DUSTY_KEY);
 		harralanderUnf = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDER_POTION_UNF);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE);
-		pickaxe.addAlternates(ItemCollections.getPickaxes());
+		pickaxe.addAlternates(ItemCollections.PICKAXES);
 		blamishSlime = new ItemRequirement("Blamish snail slime", ItemID.BLAMISH_SNAIL_SLIME);
 		blamishOil = new ItemRequirement("Blamish oil", ItemID.BLAMISH_OIL);
 		oilRod = new ItemRequirement("Oily fishing rod", ItemID.OILY_FISHING_ROD);

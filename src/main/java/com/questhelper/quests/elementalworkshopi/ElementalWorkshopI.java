@@ -141,14 +141,14 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		knife.setHighlightInInventory(true);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		needle.setTooltip("You can obtain this during the quest");
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
 		leather.setTooltip("You can obtain this during the quest");
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		coal4 = new ItemRequirement("Coal", ItemID.COAL, 4);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);

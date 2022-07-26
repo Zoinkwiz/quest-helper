@@ -143,7 +143,7 @@ public class FairytaleI extends BasicQuestHelper
 		skullOrSpade = new ItemRequirement("Draynor skull or a spade to get it", ItemID.DRAYNOR_SKULL);
 		skullOrSpade.addAlternates(ItemID.SPADE);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak(), 1, true);
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK, 1, true);
 		ghostspeak.setTooltip("You can get another from Father Urhney in the Lumbridge Swamp");
 		dramenOrLunarStaff = new ItemRequirement("Dramen or lunar staff", ItemID.DRAMEN_STAFF, 1, true);
 		dramenOrLunarStaff.addAlternates(ItemID.LUNAR_STAFF);
@@ -155,7 +155,7 @@ public class FairytaleI extends BasicQuestHelper
 		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.LUMBRIDGE_TELEPORT);
 		moryTele = new ItemRequirement("Teleport to Morytania", ItemID.MORTTON_TELEPORT);
 		moryTele.addAlternates(ItemID.BARROWS_TELEPORT, ItemID.ECTOPHIAL);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		symptomsList = new ItemRequirement("Symptoms list", ItemID.SYMPTOMS_LIST);
 		symptomsList.setTooltip("You can get another from Fairy Nuff");

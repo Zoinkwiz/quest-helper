@@ -169,7 +169,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT);
 		armour = new ItemRequirement("Armour", -1, -1);
 		armour.setDisplayItemId(BankSlotIcons.getArmour());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
 	private void setupConditions()

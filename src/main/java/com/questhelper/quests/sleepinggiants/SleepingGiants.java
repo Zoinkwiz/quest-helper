@@ -205,8 +205,8 @@ public class SleepingGiants extends BasicQuestHelper
 
 		freeInventorySpace = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 20);
 
-		alKharidTeleport = new ItemRequirement("Al Kharid Teleport", ItemCollections.getRingOfDuelings());
-		alKharidTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
+		alKharidTeleport = new ItemRequirement("Al Kharid Teleport", ItemCollections.RING_OF_DUELINGS);
+		alKharidTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		alKharidTeleport.setTooltip("Ring of Dueling or Amulet of Glory; Can be used to quickly reach the Giants' Foundry.");
 
 		twoOakLogs = new ItemRequirement("Oak Logs", ItemID.OAK_LOGS);

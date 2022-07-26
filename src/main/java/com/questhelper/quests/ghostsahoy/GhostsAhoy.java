@@ -225,7 +225,7 @@ public class GhostsAhoy extends BasicQuestHelper
 
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		enchantedGhostspeakEquipped = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET_4250, 1, true);
-		coins400 = new ItemRequirement("400+ coins", ItemCollections.getCoins(), -1);
+		coins400 = new ItemRequirement("400+ coins", ItemCollections.COINS, -1);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted.setHighlightInInventory(true);

@@ -150,7 +150,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 		draynorTeleport = new ItemRequirement("Draynor/Port Sarim teleport", ItemID.EXPLORERS_RING_3);
 		draynorTeleport.addAlternates(ItemID.EXPLORERS_RING_4, ItemID.DRAYNOR_MANOR_TELEPORT);
-		draynorTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
+		draynorTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 
 		balloonStructure = new ItemRequirement("Balloon structure", ItemID.BALLOON_STRUCTURE);
 		origamiBalloon = new ItemRequirement("Origami balloon", ItemID.ORIGAMI_BALLOON);

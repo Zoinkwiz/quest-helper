@@ -162,8 +162,7 @@ public class BoneVoyage extends BasicQuestHelper
 		sarimTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
 		lumberyardTeleport = new ItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
 		
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		hammer.addAlternates(ItemID.IMCANDO_HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
 		oakPlanks = new ItemRequirement("Oak plank", ItemID.OAK_PLANK, 2);
 		nails = new ItemRequirement("Nails", ItemCollections.getNails(), 5);

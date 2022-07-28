@@ -69,7 +69,7 @@ import net.runelite.api.coords.WorldPoint;
 public class DesertTreasure extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement combatGear, food, prayerPotions, restorePotions, energyOrStaminas;
+	ItemRequirement combatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele;
 
 	//Items Required
 	ItemRequirement coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal, bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots,
@@ -264,8 +264,8 @@ public class DesertTreasure extends BasicQuestHelper
 		bloodDiamondHighlighted = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
 		bloodDiamondHighlighted.setTooltip("You can get another from Malak in Canifis");
 
-		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES, 1, true);
-		iceGloves.setTooltip("You can kill the Ice Queen under White Wolf Mountain for ice gloves");
+		iceGloves = new ItemRequirement("Ice gloves/smiths gloves(i)", ItemID.ICE_GLOVES, 1, true);
+		iceGloves.setTooltip("to be able to wield a weapon against Fareed if not using water spells with runes only");
 		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
 
 		waterSpellOrMelee = new ItemRequirement("Water spells or melee gear", -1, -1);
@@ -297,9 +297,11 @@ public class DesertTreasure extends BasicQuestHelper
 		combatGear = new ItemRequirement("Decent combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
+		digTele = new ItemRequirement("Digsite pendant/teleport", ItemCollections.DIGSITE_PENDANTS);
+		digTele.addAlternates(ItemID.DIGSITE_TELEPORT);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS));
 		restorePotions = new ItemRequirement("Restore potions", ItemCollections.RESTORE_POTIONS);
-		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS);
+		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS));
 	}
 
 	public void loadZones()
@@ -390,7 +392,7 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
 
-		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert in the Exam Centre east of Varrock.", etchings);
+		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
 		talkToExpert.addDialogStep("Ask about the Desert Treasure quest.");
 
 		talkToExpertAgain = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert again.");
@@ -566,7 +568,7 @@ public class DesertTreasure extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, food, prayerPotions, energyOrStaminas, restorePotions);
+		return Arrays.asList(combatGear, food, prayerPotions, energyOrStaminas, restorePotions, digTele);
 	}
 
 

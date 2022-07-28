@@ -267,11 +267,11 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		pestleHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleHighlighted.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
-		lightSource = new ItemRequirement("A lightsource", ItemCollections.getLightSources());
-		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.getHammer());
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		lightSource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES);
+		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselSidebar = new ItemRequirement("Chisel (obtainable in quest)", ItemID.CHISEL);
 		mspeakAmulet = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET);
@@ -279,7 +279,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		talisman = new ItemRequirement("Monkey talisman", ItemID.MONKEY_TALISMAN);
 		talisman.setTooltip("You can buy one from the Ape Atoll magic shop for 1000 coins");
-		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemCollections.getCoins(), 1000));
+		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemCollections.COINS, 1000));
 		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE);
 		ninjaGreegree.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
 
@@ -290,10 +290,10 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		translationBook.setTooltip("If it's not in your bank you can get another from Narnode during the quest");
 
 		magicLog = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions(), -1);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
-		antidote = new ItemRequirement("Antidote", ItemCollections.getAntipoisons(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, -1);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
+		antidote = new ItemRequirement("Antidote", ItemCollections.ANTIPOISONS, -1);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
@@ -322,8 +322,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		noCombatItems = new ItemRequirement("No combat items to travel to Entrana", -1, -1);
 
-		greegree = new ItemRequirement("Greegree", ItemCollections.getGreegrees());
-		greegreeEquipped = new ItemRequirement("Any greegree", ItemCollections.getGreegrees(), 1, true);
+		greegree = new ItemRequirement("Greegree", ItemCollections.GREEGREES);
+		greegreeEquipped = new ItemRequirement("Any greegree", ItemCollections.GREEGREES, 1, true);
 
 		kruksPaw = new ItemRequirement("Kruk's paw", ItemID.KRUKS_PAW);
 		kruksPaw.setTooltip("You can get another from where you fought Kruk");
@@ -331,7 +331,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		krukGreegree = new ItemRequirement("Kruk monkey greegree", ItemID.KRUK_MONKEY_GREEGREE, 1, true);
 		krukGreegree.setTooltip("If you've lost this you can get another from Zooknock");
 
-		coins20 = new ItemRequirement("Coins", ItemCollections.getCoins(), 20);
+		coins20 = new ItemRequirement("Coins", ItemCollections.COINS, 20);
 
 		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chiselHighlighted.setHighlightInInventory(true);

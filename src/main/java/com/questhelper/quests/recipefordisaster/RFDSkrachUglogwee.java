@@ -142,13 +142,13 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		cookedJubbly = new ItemRequirement("Cooked jubbly", ItemID.COOKED_JUBBLY);
 		cookedJubblyHighlighted = new ItemRequirement("Cooked jubbly", ItemID.COOKED_JUBBLY);
 		cookedJubblyHighlighted.setHighlightInInventory(true);
-		axeHighlighted = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		axeHighlighted = new ItemRequirement("Any axe", ItemCollections.AXES);
 		axeHighlighted.setHighlightInInventory(true);
 		ironSpit = new ItemRequirement("Iron spit", ItemID.IRON_SPIT);
 		ironSpit.setHighlightInInventory(true);
-		log = new ItemRequirement("Any log to burn", ItemCollections.getLogsForFire());
+		log = new ItemRequirement("Any log to burn", ItemCollections.LOGS_FOR_FIRE);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		ogreBellows = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS);
 		ogreBellows.addAlternates(ItemID.OGRE_BELLOWS_1, ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);
 		ogreBellowsFilled = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS_1);

@@ -41,10 +41,8 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -377,18 +375,18 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD);
 		drakansMedallion = new ItemRequirement("Drakan's Medallion", ItemID.DRAKANS_MEDALLION, 1);
-		antiVenom = new ItemRequirement("Anti-venom", ItemCollections.getAntivenoms(), 1);
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), 1);
-		fairyRings = new ItemRequirement("Access to fairy rings", ItemCollections.getFairyStaff(), 1);
+		antiVenom = new ItemRequirement("Anti-venom", ItemCollections.ANTIVENOMS, 1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, 1);
+		fairyRings = new ItemRequirement("Access to fairy rings", ItemCollections.FAIRY_STAFF, 1);
 
 		flail = new ItemRequirement("Ivandis/Blisterwood flail", ItemID.IVANDIS_FLAIL);
 		flail.addAlternates(ItemID.BLISTERWOOD_FLAIL);
-		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
-		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak());
+		saw = new ItemRequirement("Saw", ItemCollections.SAW);
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK);
 		ghostSpeakAmulet.setTooltip("Morytania legs 2+ work as well.");
-		axe = new ItemRequirement("An axe", ItemCollections.getAxes());
+		axe = new ItemRequirement("An axe", ItemCollections.AXES);
 
 		cryptKey = new ItemRequirement("Crypt key", ItemID.CRYPT_KEY);
 		ranisHead = new ItemRequirement("Ranis' Head", ItemID.RANIS_HEAD);

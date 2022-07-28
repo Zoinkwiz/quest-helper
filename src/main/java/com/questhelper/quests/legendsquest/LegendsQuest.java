@@ -387,10 +387,10 @@ public class LegendsQuest extends BasicQuestHelper
 
 	private void setupItemRequirements()
 	{
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		machete = new ItemRequirement("A machete", ItemCollections.getMachete());
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		machete = new ItemRequirement("A machete", ItemCollections.MACHETE);
 
-		macheteHighlighted = new ItemRequirement("A machete", ItemCollections.getMachete());
+		macheteHighlighted = new ItemRequirement("A machete", ItemCollections.MACHETE);
 		macheteHighlighted.setHighlightInInventory(true);
 
 		anyNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
@@ -457,7 +457,7 @@ public class LegendsQuest extends BasicQuestHelper
 		diamondHighlighted = new ItemRequirement("Diamond", ItemID.DIAMOND);
 		diamondHighlighted.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 
 		bindingBook = new ItemRequirement("Binding book", ItemID.BINDING_BOOK);
 		bindingBookHighlighted = new ItemRequirement("Binding book", ItemID.BINDING_BOOK);
@@ -465,7 +465,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		goldBar2 = new ItemRequirement("Gold bar", ItemID.GOLD_BAR, 2);
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 
 		goldBowl = new ItemRequirement("Gold bowl", ItemID.GOLD_BOWL);
 		goldBowl.addAlternates(ItemID.GOLDEN_BOWL, ItemID.GOLDEN_BOWL_724, ItemID.GOLDEN_BOWL_725, ItemID.GOLDEN_BOWL_726, ItemID.BLESSED_GOLD_BOWL);

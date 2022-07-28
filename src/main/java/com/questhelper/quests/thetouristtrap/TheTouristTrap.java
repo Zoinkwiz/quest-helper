@@ -204,7 +204,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		desertBottomWorn = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE, 1, true);
 		desertBootWorn = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS, 1, true);
 		bronzeBar3 = new ItemRequirement("Bronze bars", ItemID.BRONZE_BAR, 3);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 
 		metalKey = new ItemRequirement("Metal key", ItemID.METAL_KEY);
 		metalKey.setTooltip("You can get another by killing the Mercenary Guard outside the Desert Mining Camp");
@@ -246,8 +246,8 @@ public class TheTouristTrap extends BasicQuestHelper
 
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		coins100 = new ItemRequirement("Coins", ItemCollections.getCoins(), 100);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		coins100 = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 	}
 
 	public void loadZones()

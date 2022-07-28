@@ -151,8 +151,8 @@ public class ASoulsBane extends BasicQuestHelper
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 		digsiteTeleport = new ItemRequirement("Digsite Teleport", ItemID.DIGSITE_TELEPORT);
-		digsiteTeleport.addAlternates(ItemCollections.getDigsitePendants());
-		antipoison = new ItemRequirement("Antipoison (or equivalent)", ItemCollections.getAntipoisons());
+		digsiteTeleport.addAlternates(ItemCollections.DIGSITE_PENDANTS);
+		antipoison = new ItemRequirement("Antipoison (or equivalent)", ItemCollections.ANTIPOISONS);
 	}
 
 	public void setupConditions()

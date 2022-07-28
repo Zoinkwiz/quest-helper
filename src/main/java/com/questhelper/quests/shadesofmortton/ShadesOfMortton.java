@@ -151,14 +151,14 @@ public class ShadesOfMortton extends BasicQuestHelper
 		ashes2 = new ItemRequirement("Ashes", ItemID.ASHES, 2);
 		ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);
 		ashesHighlighted.setHighlightInInventory(true);
-		coins5000 = new ItemRequirement("Coins, more if you want to buy a Flamtaer Hammer", ItemCollections.getCoins(), 5000);
-		hammerOrFlam = new ItemRequirement("Hammer or Flamtaer Hammer", ItemCollections.getHammer());
+		coins5000 = new ItemRequirement("Coins, more if you want to buy a Flamtaer Hammer", ItemCollections.COINS, 5000);
+		hammerOrFlam = new ItemRequirement("Hammer or Flamtaer Hammer", ItemCollections.HAMMER);
 		hammerOrFlam.addAlternates(ItemID.FLAMTAER_HAMMER);
 		flamHammer = new ItemRequirement("Flamtaer hammer", ItemID.FLAMTAER_HAMMER);
 		flamHammer.setTooltip("This speeds up the repair section of the quest considerably");
 		morttonTele = new ItemRequirement("A Mort'ton teleport or Barrows teleport tablet", ItemID.MORTTON_TELEPORT);
 		morttonTele.addAlternates(ItemID.BARROWS_TELEPORT);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		flamtaerBracelet = new ItemRequirement("Flamtaer bracelet", ItemID.FLAMTAER_BRACELET);
 		flamtaerBracelet.setTooltip("This speeds up the repair section of the quest considerably");

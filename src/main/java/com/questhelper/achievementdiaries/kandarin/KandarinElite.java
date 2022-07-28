@@ -55,7 +55,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import net.runelite.client.game.FishingSpot;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.KANDARIN_ELITE
@@ -150,7 +149,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickDwarf);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickDwarf);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickDwarf);
-		compost = new ItemRequirement("Any compost", ItemCollections.getCompost()).showConditioned(notPickDwarf);
+		compost = new ItemRequirement("Any compost", ItemCollections.COMPOST).showConditioned(notPickDwarf);
 		harpoon = new ItemRequirement("Harpoon", ItemID.HARPOON).showConditioned(not5Shark);
 		cookingGaunt = new ItemRequirement("Cooking gauntlets", ItemID.COOKING_GAUNTLETS).showConditioned(not5Shark);
 		stamPot = new ItemRequirement("Stamina potion (2)", ItemID.STAMINA_POTION2).showConditioned(notStamMix);
@@ -165,7 +164,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 		chewedBone = new ItemRequirement("Chewed bones", ItemID.CHEWED_BONES).showConditioned(notPyre);
 		chewedBone.setTooltip("These are a rare drop from mithril dragons");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notPyre);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notPyre);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notPyre);
 		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notTPCath);
 		astralRune = new ItemRequirement("Astral runes", ItemID.ASTRAL_RUNE).showConditioned(notTPCath);
 		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notTPCath);

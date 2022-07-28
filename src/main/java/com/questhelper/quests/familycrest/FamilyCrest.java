@@ -146,14 +146,14 @@ public class FamilyCrest extends BasicQuestHelper
 		varrockTele = new ItemRequirement("Varrock Teleports", ItemID.VARROCK_TELEPORT, 2);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
 		ardyTele = new ItemRequirement("Ardounge Teleport", ItemID.ARDOUGNE_TELEPORT);
-		alkharidTele = new ItemRequirement("Al-Kharid Teleport", ItemCollections.getRingOfDuelings());
+		alkharidTele = new ItemRequirement("Al-Kharid Teleport", ItemCollections.RING_OF_DUELINGS);
 		catherbyTele = new ItemRequirement("Camelot/Catherby Teleport", ItemID.CATHERBY_TELEPORT);
 
 		varrockTele.addAlternates(ItemID.ACHIEVEMENT_DIARY_CAPE, ItemID.ACHIEVEMENT_DIARY_CAPE_T);
-		varrockTele.addAlternates(ItemCollections.getRingOfWealths());
-		ardyTele.addAlternates(ItemCollections.getArdyCloaks());
-		alkharidTele.addAlternates(ItemCollections.getRingOfDuelings());
-		alkharidTele.addAlternates(ItemCollections.getAmuletOfGlories());
+		varrockTele.addAlternates(ItemCollections.RING_OF_WEALTHS);
+		ardyTele.addAlternates(ItemCollections.ARDY_CLOAKS);
+		alkharidTele.addAlternates(ItemCollections.RING_OF_DUELINGS);
+		alkharidTele.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		catherbyTele.addAlternates(ItemID.CAMELOT_TELEPORT);
 
 		// Required
@@ -163,13 +163,13 @@ public class FamilyCrest extends BasicQuestHelper
 		bass = new ItemRequirement("Bass", ItemID.BASS);
 		swordfish = new ItemRequirement("Swordfish", ItemID.SWORDFISH);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		ruby = new ItemRequirement("Ruby", ItemID.RUBY);
 		ruby2 = new ItemRequirement("Ruby", ItemID.RUBY, 2);
 		ringMould = new ItemRequirement("Ring mould", ItemID.RING_MOULD);
 		necklaceMould = new ItemRequirement("Necklace mould", ItemID.NECKLACE_MOULD);
 
-		antipoison = new ItemRequirement("At least one dose of antipoison or superantipoison", ItemCollections.getAntipoisons());
+		antipoison = new ItemRequirement("At least one dose of antipoison or superantipoison", ItemCollections.ANTIPOISONS);
 
 		runesForBlasts = new ItemRequirement("Runes for casting each of the 4 blast spells", -1, -1);
 		runesForBlasts.setDisplayItemId(ItemID.DEATH_RUNE);

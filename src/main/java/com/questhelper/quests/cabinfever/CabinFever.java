@@ -345,7 +345,7 @@ public class CabinFever extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		fuse1 = new ItemRequirement("Fuse", ItemID.FUSE);
 		ropes4 = new ItemRequirement("Rope", ItemID.ROPE, 4);
 		ropes2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
@@ -365,7 +365,7 @@ public class CabinFever extends BasicQuestHelper
 		planks2 = new ItemRequirement("Repair plank", ItemID.REPAIR_PLANK_7148, 2);
 		planks4 = new ItemRequirement("Repair plank", ItemID.REPAIR_PLANK_7148, 4);
 		planks6 = new ItemRequirement("Repair plank", ItemID.REPAIR_PLANK_7148, 6);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		tacks10 = new ItemRequirement("Tacks", ItemID.TACKS, 10);
 		tacks20 = new ItemRequirement("Tacks", ItemID.TACKS, 20);
 		tacks30 = new ItemRequirement("Tacks", ItemID.TACKS, 30);

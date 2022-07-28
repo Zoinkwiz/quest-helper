@@ -410,8 +410,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old" +
 			" Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard");
 
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		axeEquipped = new ItemRequirement("Any axe", ItemCollections.getAxes(), 1, true);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		axeEquipped = new ItemRequirement("Any axe", ItemCollections.AXES, 1, true);
 
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		vine3 = new ItemRequirement("Short vine", ItemID.SHORT_VINE, 3);
@@ -436,8 +436,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		sickle = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_B);
 		sickle.setHighlightInInventory(true);
 
-		fireRune5 = new ItemRequirement("Fire rune", ItemCollections.getFireRune(), 5);
-		fireStaff = new ItemRequirement("Fire staff", ItemCollections.getFireStaff());
+		fireRune5 = new ItemRequirement("Fire rune", ItemCollections.FIRE_RUNE, 5);
+		fireStaff = new ItemRequirement("Fire staff", ItemCollections.FIRE_STAFF);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
 
 		enchantRunes = new ItemRequirements("Ruby enchant runes", new ItemRequirements(LogicType.OR, "3 air runes", fireRune5, fireStaff), cosmicRune);
@@ -457,8 +457,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		rangedWeaponForBloodveld = new ItemRequirement("Anything to range the bloodveld during bossfight", -1, -1);
 		rangedWeaponForBloodveld.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		ItemRequirements vyrewatchOutfit = new ItemRequirements("Vyrewatch outfit",
 			new ItemRequirement("Vyrewatch top", ItemID.VYREWATCH_TOP),
@@ -466,7 +466,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			new ItemRequirement("Vyrewatch shoes", ItemID.VYREWATCH_SHOES));
 
 		vyrewatchOutfitOrCoins = new ItemRequirements(LogicType.OR, "Vyrewatch outfit or 1950 coins", vyrewatchOutfit,
-			new ItemRequirement("Coins", ItemCollections.getCoins(), 1950));
+			new ItemRequirement("Coins", ItemCollections.COINS, 1950));
 
 		drakanMedallion = new ItemRequirement("Drakan's medallion", ItemID.DRAKANS_MEDALLION);
 		moryLegs3 = new ItemRequirement("Morytania legs 3/4", ItemID.MORYTANIA_LEGS_3);

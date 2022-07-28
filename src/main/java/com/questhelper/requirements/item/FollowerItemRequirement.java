@@ -26,6 +26,7 @@
  */
 package com.questhelper.requirements.item;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.requirements.item.ItemRequirement;
 import java.util.List;
 import net.runelite.api.Client;
@@ -41,6 +42,11 @@ public class FollowerItemRequirement extends ItemRequirement
 		this.followerIDs = followerIDs;
 	}
 
+	public FollowerItemRequirement(String name, ItemCollections itemIDs, List<Integer> followerIDs)
+	{
+		super(name, itemIDs);
+		this.followerIDs = followerIDs;
+	}
 	@Override
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{

@@ -31,7 +31,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -134,7 +133,7 @@ public class DesertElite extends ComplexStateQuestHelper
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notTalkKQHead);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notTalkKQHead);
 		rawPie = new ItemRequirement("Raw wild pie", ItemID.RAW_WILD_PIE).showConditioned(notWildPie);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notIceBarrage);
 		bloodRune = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE).showConditioned(notIceBarrage);
@@ -145,18 +144,18 @@ public class DesertElite extends ComplexStateQuestHelper
 		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF_8784).showConditioned(notTalkKQHead);
 		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notTalkKQHead);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead);
-		kqHead = new ItemRequirement("Stuffed KQ head", ItemCollections.getStuffedKQHead()).showConditioned(notTalkKQHead);
+		kqHead = new ItemRequirement("Stuffed KQ head", ItemCollections.STUFFED_KQ_HEAD).showConditioned(notTalkKQHead);
 
-		pharaohSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.getPharoahSceptre());
+		pharaohSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE);
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
 		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
 		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
-		waterskin = new ItemRequirement("Waterskin", ItemCollections.getWaterskin());
+		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inBed = new ZoneRequirement(bed);
 		inLastRoom = new ZoneRequirement(lastRoom);

@@ -35,6 +35,9 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 public abstract class AbstractRequirement implements Requirement
 {
 	private String tooltip;
+	
+	private String urlSuffix;
+
 	private Requirement panelReplacement = null;
 
 	protected boolean shouldCountForFilter = false;
@@ -60,6 +63,19 @@ public abstract class AbstractRequirement implements Requirement
 	public void setTooltip(String tooltip)
 	{
 		this.tooltip = tooltip;
+	}
+	
+	@Nullable
+	@Override
+	public String getUrlSuffix()
+	{
+		return urlSuffix;
+	}
+
+	@Override
+	public void setUrlSuffix(String urlSuffix)
+	{
+		this.urlSuffix = urlSuffix;
 	}
 
 	@Override

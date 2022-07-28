@@ -55,7 +55,6 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import java.util.Collections;
 import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -422,7 +421,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		inYubiusk = new InInstanceRequirement();
 
 		// ItemRequirements
-		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources());
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES);
 		toadflaxPotionUnf = new ItemRequirement("Toadflax potion (unf)", ItemID.TOADFLAX_POTION_UNF);
 		goblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL).hideConditioned(unlockedDoor);
 		goblinMail.canBeObtainedDuringQuest();
@@ -437,7 +436,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		blackDye.setTooltip("Black mushrooms obtainable during quest - bring empty vial and pestle and mortar");
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).hideConditioned(new Conditions(LogicType.OR, unlockedDoor, saragorgakKey));
 		rawSlimyEel = new ItemRequirement("Raw slimy eel", ItemID.RAW_SLIMY_EEL).hideConditioned(new Conditions(LogicType.OR, unlockedDoor, saragorgakKey));
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5).hideConditioned(new Conditions(LogicType.OR, unlockedDoor, saragorgakKey));
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5).hideConditioned(new Conditions(LogicType.OR, unlockedDoor, saragorgakKey));
 		noPet = new NoFollowerRequirement("No pet following you");
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 
@@ -451,12 +450,12 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
 		dramenStaff.setTooltip("For transportation via fairy rings");
-		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces());
-		combatBracelet = new ItemRequirement("Combat bracelet", ItemCollections.getCombatBracelets());
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES);
+		combatBracelet = new ItemRequirement("Combat bracelet", ItemCollections.COMBAT_BRACELETS);
 		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", -1, 2);
 		draynorTeleport = new ItemRequirement("Draynor Village teleport", -1, 2);
 		explorersRing = new ItemRequirement("Explorer's ring 3 or 4", Arrays.asList(ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4));
-		salveAmulet = new ItemRequirement("Salve amulet or Salve amulet (e)", ItemCollections.getSalveAmulet());
+		salveAmulet = new ItemRequirement("Salve amulet or Salve amulet (e)", ItemCollections.SALVE_AMULET);
 	}
 
 	public void setupSteps()

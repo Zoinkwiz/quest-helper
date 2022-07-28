@@ -257,14 +257,14 @@ public class EadgarsRuse extends BasicQuestHelper
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
 		pineappleChunks.setTooltip("You can make these by using a knife on a pineapple");
 		logs2 = new ItemRequirement("Logs", ItemID.LOGS, 2);
-		logs1 = new ItemRequirement("Logs", ItemCollections.getLogsForFire());
+		logs1 = new ItemRequirement("Logs", ItemCollections.LOGS_FOR_FIRE);
 		grain10 = new ItemRequirement("Grain", ItemID.GRAIN, 10);
 		rawChicken5 = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN, 5);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		pestleAndMortar = new ItemRequirement("Pestle and Mortar", ItemID.PESTLE_AND_MORTAR);
 		ranarrPotionUnf = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARR_POTION_UNF);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
-		coins12 = new ItemRequirement("Coins", ItemCollections.getCoins(), 12);
+		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
 		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);
 		vodkaHighlight = new ItemRequirement("Vodka", ItemID.VODKA);
 		vodkaHighlight.setTooltip("You can buy some from the Gnome Stronghold drinks shop");
@@ -290,7 +290,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		thistle = new ItemRequirement("Troll thistle", ItemID.TROLL_THISTLE);
 		thistle.setHighlightInInventory(true);
 
-		logHighlight = new ItemRequirement("Logs", ItemCollections.getLogsForFire());
+		logHighlight = new ItemRequirement("Logs", ItemCollections.LOGS_FOR_FIRE);
 		logHighlight.setHighlightInInventory(true);
 
 		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);

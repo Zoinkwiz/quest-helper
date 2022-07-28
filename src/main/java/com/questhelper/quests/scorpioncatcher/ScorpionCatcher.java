@@ -140,14 +140,14 @@ public class ScorpionCatcher extends BasicQuestHelper
 		scorpionCageFull = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE_463);
 
 		// Recommended
-		antiDragonShield = new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.getAntifireShields());
-		antiPoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		antiDragonShield = new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS);
+		antiPoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		teleRunesFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT, -1);
 		camelotTeleport = new ItemRequirement("Teleport to Camelot", ItemID.CAMELOT_TELEPORT, -1);
-		gamesNecklace = new ItemRequirement("Games Necklace", ItemCollections.getGamesNecklaces());
-		gloryOrCombatBracelet = new ItemRequirement("A charged glory or a combat bracelet", ItemCollections.getAmuletOfGlories());
-		gloryOrCombatBracelet.addAlternates(ItemCollections.getCombatBracelets());
+		gamesNecklace = new ItemRequirement("Games Necklace", ItemCollections.GAMES_NECKLACES);
+		gloryOrCombatBracelet = new ItemRequirement("A charged glory or a combat bracelet", ItemCollections.AMULET_OF_GLORIES);
+		gloryOrCombatBracelet.addAlternates(ItemCollections.COMBAT_BRACELETS);
 		fairyRingAccess = new QuestRequirement(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS, "Fairy ring access");
 		fairyRingAccess.setTooltip(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN.getName() + " is required to at least be started in order to use fairy rings");
 

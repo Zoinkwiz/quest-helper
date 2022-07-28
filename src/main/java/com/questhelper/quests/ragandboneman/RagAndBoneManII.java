@@ -217,12 +217,12 @@ public class RagAndBoneManII extends BasicQuestHelper
 	private void setupRequirements()
 	{
 		// Required items
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
+		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		pots = new ItemRequirement("Pot", ItemID.POT);
 		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources());
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES);
 		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY);
 		dustyKey.canBeObtainedDuringQuest();
 		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD);
@@ -230,30 +230,30 @@ public class RagAndBoneManII extends BasicQuestHelper
 		iceCooler = new ItemRequirement("Ice coolers", ItemID.ICE_COOLER, 10);
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE, 10);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
 
 
 		// Optional items
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.LUMBRIDGE_TELEPORT);
-		digsitePendant = new ItemRequirement("Digsite pendant", ItemCollections.getDigsitePendants());
-		draynorTeleport = new ItemRequirement("Draynor teleport", ItemCollections.getAmuletOfGlories());
+		digsitePendant = new ItemRequirement("Digsite pendant", ItemCollections.DIGSITE_PENDANTS);
+		draynorTeleport = new ItemRequirement("Draynor teleport", ItemCollections.AMULET_OF_GLORIES);
 		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
-		karamjaTeleport = new ItemRequirement("Karamja teleport", ItemCollections.getAmuletOfGlories());
+		karamjaTeleport = new ItemRequirement("Karamja teleport", ItemCollections.AMULET_OF_GLORIES);
 		karamjaTeleport.addAlternates(ItemID.BRIMHAVEN_TELEPORT, ItemID.TAI_BWO_WANNAI_TELEPORT);
 
-		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.getAntifireShields());
+		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.ANTIFIRE_SHIELDS);
 		inoculationBracelet = new ItemRequirement("Inoculation bracelet or a potion for Disease",
-			ItemCollections.getAntidisease());
+			ItemCollections.ANTIDISEASE);
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL);
-		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.getRingOfDuelings());
-		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
+		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 		nardahTeleport = new ItemRequirement("Nardah teleport", ItemID.NARDAH_TELEPORT);
-		nardahTeleport.addAlternates(ItemCollections.getPharoahSceptre());
+		nardahTeleport.addAlternates(ItemCollections.PHAROAH_SCEPTRE);
 		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.TAVERLEY_TELEPORT);
 		taverleyTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
-		rellekkaTeleport = new ItemRequirement("Rellekka teleport", ItemCollections.getEnchantedLyre());
+		rellekkaTeleport = new ItemRequirement("Rellekka teleport", ItemCollections.ENCHANTED_LYRE);
 		rellekkaTeleport.addAlternates(ItemID.RELLEKKA_TELEPORT);
 		gnomeTeleport = new ItemRequirement("Teleport to Gnome Stronghold (Spirit tree/Gnome Glider", -1, 1);
 		feldipTeleport = new ItemRequirement("Teleport to Feldip Hills (Gnome Glider)", ItemID.FELDIP_HILLS_TELEPORT);

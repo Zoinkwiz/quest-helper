@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -101,8 +100,8 @@ public class EnterTheAbyss extends BasicQuestHelper
 	{
 		varrockTeleport = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, 2);
 		ardougneTeleport = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT);
-		edgevilleTeleport = new ItemRequirement("Teleport to Edgeville", ItemCollections.getAmuletOfGlories());
-		passageTeleport = new ItemRequirement("Teleport to Wizards' Tower", ItemCollections.getNecklaceOfPassages());
+		edgevilleTeleport = new ItemRequirement("Teleport to Edgeville", ItemCollections.AMULET_OF_GLORIES);
+		passageTeleport = new ItemRequirement("Teleport to Wizards' Tower", ItemCollections.NECKLACE_OF_PASSAGES);
 
 		scryingOrb = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB_5519);
 		scryingOrb.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");

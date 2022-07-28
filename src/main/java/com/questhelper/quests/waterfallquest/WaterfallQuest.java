@@ -169,8 +169,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		waterRunes = new ItemRequirement("Water runes", ItemID.WATER_RUNE, 6);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
 
-		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
 	public void loadZones()

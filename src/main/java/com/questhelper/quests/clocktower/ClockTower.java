@@ -154,7 +154,7 @@ public class ClockTower extends BasicQuestHelper
 		bucketOfWater.setTooltip("There is a bucket spawn next to the well east of the Clocktower. You can fill it on" +
 			" the well");
 		noteAboutWater = new ItemRequirement("There's a bucket and a well and just next to brother cedric for the black cog", -1, -1);
-		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
+		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
 		ardougneCloak = new ItemRequirement("Ardougne Cloak to teleport to monastery", ItemID.ARDOUGNE_CLOAK_1);
 		ardougneCloak.addAlternates(ItemID.ARDOUGNE_CLOAK_2, ItemID.ARDOUGNE_CLOAK_3, ItemID.ARDOUGNE_CLOAK_4);
 		redCog = new ItemRequirement("Red Cog", ItemID.RED_COG);

@@ -104,7 +104,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		draynorManorTeleport = new ItemRequirement("Draynor manor teleport", ItemID.DRAYNOR_MANOR_TELEPORT);
 		stake = new ItemRequirement("Stake", ItemID.STAKE);
 		stake.setTooltip("You can get another from Dr. Harlow in the Blue Moon Inn in Varrock.");
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		garlic.setTooltip("Optional, makes Count Draynor weaker");
 		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);

@@ -144,8 +144,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		sweetcorn = new ItemRequirement("Sweetcorn", ItemID.SWEETCORN);
 
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
-		machete = new ItemRequirement("Any machete", ItemCollections.getMachete());
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		machete = new ItemRequirement("Any machete", ItemCollections.MACHETE);
 		radimusNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
 		radimusNotes.addAlternates(ItemID.RADIMUS_NOTES_715);
 		if (QuestHelperQuest.LEGENDS_QUEST.getState(client) == QuestState.FINISHED)
@@ -177,8 +177,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		iceGloves.setTooltip("Although optional, you'll take a lot of damage if you're not wearing them");
 		rawChicken = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN);
 		rawChicken.setHighlightInInventory(true);
-		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.getAntifireShields());
-		antifirePotion = new ItemRequirement("Antifire potion", ItemCollections.getAntifire());
+		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.ANTIFIRE_SHIELDS);
+		antifirePotion = new ItemRequirement("Antifire potion", ItemCollections.ANTIFIRE);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 

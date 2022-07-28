@@ -281,10 +281,10 @@ public class BeneathCursedSands extends BasicQuestHelper
 		waterskins = new ItemRequirement("Waterskin(s)", ItemID.WATERSKIN4);
 		waterskins.addAlternates(ItemID.WATERSKIN3, ItemID.WATERSKIN2, ItemID.WATERSKIN1);
 		waterskins.setTooltip("Used for protection against the desert heat");
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);
-		pharaosSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.getPharoahSceptre());
+		pharaosSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE);
 		pharaosSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
@@ -292,11 +292,11 @@ public class BeneathCursedSands extends BasicQuestHelper
 		meleeCombatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
 		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
-		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions(), -1);
+		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS, -1);
 		nardahTeleport = new ItemRequirement("Nardah Teleport", ItemID.DESERT_AMULET_4);
 		nardahTeleport.addAlternates(ItemID.NARDAH_TELEPORT, ItemID.DESERT_AMULET_3, ItemID.DESERT_AMULET_2);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
-		prayerPotions.addAlternates(ItemCollections.getSuperRestorePotions());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
+		prayerPotions.addAlternates(ItemCollections.SUPER_RESTORE_POTIONS);
 
 		messageFromJamila = new ItemRequirement("Message", ItemID.MESSAGE_26942);
 		messageFromJamila.setHighlightInInventory(true);
@@ -310,7 +310,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		scarabEmblem.setHighlightInInventory(true);
 		rustyKey = new ItemRequirement("Rusty key", ItemID.RUSTY_KEY);
 		rustyKey.setHighlightInInventory(true);
-		fiveCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5);
+		fiveCoins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		lilyOfTheElid = new ItemRequirement("Lily of the Elid", ItemID.LILY_OF_THE_ELID);
 		cureCrate = new ItemRequirement("Cure crate", ItemID.CURE_CRATE);
 	}

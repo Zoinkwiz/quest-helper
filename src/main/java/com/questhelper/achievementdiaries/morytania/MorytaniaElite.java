@@ -31,7 +31,6 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -49,7 +48,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.IconID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -135,10 +133,10 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		notAbyssalDemon = new VarplayerRequirement(1181, false, 7);
 		notBarrowsChest = new VarplayerRequirement(1181, false, 8);
 
-		magicRedwoodPyreLogs = new ItemRequirement("Magic / Redwood pyrelogs", ItemCollections.getElitePyreLogs())
+		magicRedwoodPyreLogs = new ItemRequirement("Magic / Redwood pyrelogs", ItemCollections.ELITE_PYRE_LOGS)
 			.showConditioned(notCremateShade);
 		magicRedwoodPyreLogs.setTooltip("Can be created by using sacred oil on magic / redwood logs");
-		shadeRemains = new ItemRequirement("Shade remains", ItemCollections.getShadeRemains()).showConditioned(notCremateShade);
+		shadeRemains = new ItemRequirement("Shade remains", ItemCollections.SHADE_REMAINS).showConditioned(notCremateShade);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notCremateShade);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notFertilizeHerb);
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notFertilizeHerb);
@@ -148,30 +146,30 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftBlackDhideBody);
 
 
-		ahrimSet = new ItemRequirements("Ahrim Set", new ItemRequirement("Hood", ItemCollections.getAhrimHood()),
-			new ItemRequirement("Staff", ItemCollections.getAhrimStaff()), new ItemRequirement("Top",
-			ItemCollections.getAhrimRobeTop()), new ItemRequirement("Skirt", ItemCollections.getAhrimRobeSkirt()));
+		ahrimSet = new ItemRequirements("Ahrim Set", new ItemRequirement("Hood", ItemCollections.AHRIM_HOOD),
+			new ItemRequirement("Staff", ItemCollections.AHRIM_STAFF), new ItemRequirement("Top",
+			ItemCollections.AHRIM_ROBETOP), new ItemRequirement("Skirt", ItemCollections.AHRIM_ROBESKIRT));
 
 		karilSet = new ItemRequirements("Karil Set", new ItemRequirement("Crossbow",
-			ItemCollections.getKarilCrossbow()), new ItemRequirement("Coif", ItemCollections.getKarilCoif()),
-			new ItemRequirement("Top", ItemCollections.getKarilTop()), new ItemRequirement("Skirt",
-			ItemCollections.getKarilSkirt()));
+			ItemCollections.KARIL_CROSSBOW), new ItemRequirement("Coif", ItemCollections.KARIL_COIF),
+			new ItemRequirement("Top", ItemCollections.KARIL_TOP), new ItemRequirement("Skirt",
+			ItemCollections.KARIL_SKIRT));
 
-		guthanSet = new ItemRequirements("Guthan Set", new ItemRequirement("Helm", ItemCollections.getGuthanHelm()),
-			new ItemRequirement("Spear", ItemCollections.getGuthanWarspear()), new ItemRequirement("Body",
-			ItemCollections.getGuthanBody()), new ItemRequirement("Skirt", ItemCollections.getGuthanSkirt()));
+		guthanSet = new ItemRequirements("Guthan Set", new ItemRequirement("Helm", ItemCollections.GUTHAN_HELM),
+			new ItemRequirement("Spear", ItemCollections.GUTHAN_WARSPEAR), new ItemRequirement("Body",
+			ItemCollections.GUTHAN_BODY), new ItemRequirement("Skirt", ItemCollections.GUTHAN_SKIRT));
 
-		veracSet = new ItemRequirements("Verac Set", new ItemRequirement("Helm", ItemCollections.getVeracHelm()),
-			new ItemRequirement("Flail", ItemCollections.getVeracFlail()), new ItemRequirement("Brassard",
-			ItemCollections.getVeracBrassard()), new ItemRequirement("Skirt", ItemCollections.getVeracSkirt()));
+		veracSet = new ItemRequirements("Verac Set", new ItemRequirement("Helm", ItemCollections.VERAC_HELM),
+			new ItemRequirement("Flail", ItemCollections.VERAC_FLAIL), new ItemRequirement("Brassard",
+			ItemCollections.VERAC_BRASSARD), new ItemRequirement("Skirt", ItemCollections.VERAC_SKIRT));
 
-		dharokSet = new ItemRequirements("Dharok Set", new ItemRequirement("Helm", ItemCollections.getDharokHelm()),
-			new ItemRequirement("Axe", ItemCollections.getDharokAxe()), new ItemRequirement("Body",
-			ItemCollections.getDharokBody()), new ItemRequirement("Legs", ItemCollections.getDharokLegs()));
+		dharokSet = new ItemRequirements("Dharok Set", new ItemRequirement("Helm", ItemCollections.DHAROK_HELM),
+			new ItemRequirement("Axe", ItemCollections.DHAROK_AXE), new ItemRequirement("Body",
+			ItemCollections.DHAROK_BODY), new ItemRequirement("Legs", ItemCollections.DHAROK_LEGS));
 
-		toragSet = new ItemRequirements("Torag Set", new ItemRequirement("Helm", ItemCollections.getToragHelm()),
-			new ItemRequirement("Hammers", ItemCollections.getToragHammers()), new ItemRequirement("Body",
-			ItemCollections.getToragBody()), new ItemRequirement("legs", ItemCollections.getToragLegs()));
+		toragSet = new ItemRequirements("Torag Set", new ItemRequirement("Helm", ItemCollections.TORAG_HELM),
+			new ItemRequirement("Hammers", ItemCollections.TORAG_HAMMERS), new ItemRequirement("Body",
+			ItemCollections.TORAG_BODY), new ItemRequirement("legs", ItemCollections.TORAG_LEGS));
 
 		barrowsSet = new ItemRequirements(LogicType.OR, "Any complete barrows set", ahrimSet, karilSet, guthanSet,
 			veracSet, dharokSet, toragSet).showConditioned(notBarrowsChest);
@@ -179,9 +177,9 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		barrowsTab = new ItemRequirement("Barrows teleport", ItemID.BARROWS_TELEPORT);
-		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.getSlayerRings());
+		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.SLAYER_RINGS);
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL);
 		mortTP = new ItemRequirement("Mort'ton Teleport", ItemID.MORTTON_TELEPORT);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notBarrowsChest);

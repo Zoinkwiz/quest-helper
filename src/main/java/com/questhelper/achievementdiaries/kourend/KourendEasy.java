@@ -33,13 +33,11 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -157,11 +155,11 @@ public class KourendEasy extends ComplexStateQuestHelper
 		notFishTrout = new VarplayerRequirement(2085, false, 12);
 
 		// Required items
-		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineIron);
+		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES).showConditioned(notMineIron);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notDigSaltpetre);
-		libraryBook = new ItemRequirement("Arceuus library book", ItemCollections.getArceuusBooks()).showConditioned(notArceuusBook);
+		libraryBook = new ItemRequirement("Arceuus library book", ItemCollections.ARCEUUS_BOOKS).showConditioned(notArceuusBook);
 
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 8075).showConditioned(notEnterPoh);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 8075).showConditioned(notEnterPoh);
 		medpack = new ItemRequirement("Medpacks", ItemID.SHAYZIEN_MEDPACK).showConditioned(notHealSoldier);
 		tarrominPotU = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF).showConditioned(notStrengthPotion);
 		limpwurtRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notStrengthPotion);
@@ -172,7 +170,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		// Recommended items
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		inPub = new ZoneRequirement(deeperLodePub);
 		inWarrens = new ZoneRequirement(warrens);
 		inCastleF1 = new ZoneRequirement(castleF1);

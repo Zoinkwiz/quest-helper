@@ -199,7 +199,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins650 = new ItemRequirement("Coins", ItemCollections.getCoins(), 650);
+		coins650 = new ItemRequirement("Coins", ItemCollections.COINS, 650);
 		magicLogs12 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 12);
 		magicLogs12.addAlternates(NullItemID.NULL_1514);
 		steelBars6 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 6);
@@ -277,7 +277,7 @@ public class DesertTreasure extends BasicQuestHelper
 		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
 		ringOfVisibility.setTooltip("You can get another from Rasolo south of Baxtorian Falls");
 
-		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
+		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS);
 
 		silverPot = new ItemRequirement("Silver pot", ItemID.SILVER_POT_4658);
 		silverPot2 = new ItemRequirement("Blessed pot", ItemID.BLESSED_POT);
@@ -296,10 +296,10 @@ public class DesertTreasure extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Decent combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions());
-		restorePotions = new ItemRequirement("Restore potions", ItemCollections.getRestorePotions());
-		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.getRunRestoreItems());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
+		restorePotions = new ItemRequirement("Restore potions", ItemCollections.RESTORE_POTIONS);
+		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS);
 	}
 
 	public void loadZones()

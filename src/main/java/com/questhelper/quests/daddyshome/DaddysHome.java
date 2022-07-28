@@ -122,16 +122,16 @@ public class DaddysHome extends BasicQuestHelper
 	{
 		plank10 = new ItemRequirement("Plank", ItemID.PLANK, 10);
 		bolt5 = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH, 5);
-		nails20 = new ItemRequirement("Nails (bring more in case you fail with some)", ItemCollections.getNails(), 14);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
-		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
+		nails20 = new ItemRequirement("Nails (bring more in case you fail with some)", ItemCollections.NAILS, 14);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		saw = new ItemRequirement("Saw", ItemCollections.SAW);
 		waxwoodLog3 = new ItemRequirement("Waxwood log", ItemID.WAXWOOD_LOG, 3);
 		waxwoodPlank3 = new ItemRequirement("Waxwood plank", ItemID.WAXWOOD_PLANK, 3);
 
 		bolt2 = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH, 2);
 		bolt3 = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH, 3);
-		nails2 = new ItemRequirement("Nails", ItemCollections.getNails(), 2);
-		nails4 = new ItemRequirement("Nails", ItemCollections.getNails(), 4);
+		nails2 = new ItemRequirement("Nails", ItemCollections.NAILS, 2);
+		nails4 = new ItemRequirement("Nails", ItemCollections.NAILS, 4);
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		plank3 = new ItemRequirement("Plank", ItemID.PLANK, 3);
 		plank2 = new ItemRequirement("Plank", ItemID.PLANK, 2);

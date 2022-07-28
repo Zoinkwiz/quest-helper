@@ -195,8 +195,8 @@ public class KingsRansom extends BasicQuestHelper
 		blackHelm = new ItemRequirement("Black knight helm", ItemID.BLACK_KNIGHT_HELM);
 		criminalsThread = new ItemRequirement("Criminal's thread", ItemID.CRIMINALS_THREAD_1809);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
-		airRune = new ItemRequirement("Air rune", ItemCollections.getAirRune());
-		airRune.addAlternates(ItemCollections.getAirStaff());
+		airRune = new ItemRequirement("Air rune", ItemCollections.AIR_RUNE);
+		airRune.addAlternates(ItemCollections.AIR_STAFF);
 		hairclip = new ItemRequirement("Hair clip", ItemID.HAIR_CLIP);
 		hairclip.setHighlightInInventory(true);
 
@@ -222,7 +222,7 @@ public class KingsRansom extends BasicQuestHelper
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK);
 
 		telegrab = new ItemRequirements("Telegrab runes", new ItemRequirement("Law rune", ItemID.LAW_RUNE),
-			new ItemRequirements(LogicType.OR, "Air runes or staff", new ItemRequirement("Air runes", ItemCollections.getAirRune()), new ItemRequirement("Air staff", ItemCollections.getAirStaff())));
+			new ItemRequirements(LogicType.OR, "Air runes or staff", new ItemRequirement("Air runes", ItemCollections.AIR_RUNE), new ItemRequirement("Air staff", ItemCollections.AIR_STAFF)));
 
 		grabOrLockpick = new ItemRequirements(LogicType.OR, "Runes for telekinetic grab or a lockpick", new ItemRequirement("Lockpick", ItemID.LOCKPICK), telegrab);
 

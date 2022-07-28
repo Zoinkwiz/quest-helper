@@ -117,7 +117,7 @@ public class DeviousMinds extends BasicQuestHelper
 		//Recommended
 		fallyTele = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
 		lumberTele = new ItemRequirement("Lumberyard Teleports", ItemID.LUMBERYARD_TELEPORT);
-		glory = new ItemRequirement("Amulet of Glory", ItemCollections.getAmuletOfGlories());
+		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
 
 		//Required
 		mith2h = new ItemRequirement("Mithril 2h Sword", ItemID.MITHRIL_2H_SWORD);

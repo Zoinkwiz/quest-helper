@@ -299,9 +299,9 @@ public class DesertTreasure extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		digTele = new ItemRequirement("Digsite pendant/teleport", ItemCollections.DIGSITE_PENDANTS);
 		digTele.addAlternates(ItemID.DIGSITE_TELEPORT);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS));
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 		restorePotions = new ItemRequirement("Restore potions", ItemCollections.RESTORE_POTIONS);
-		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS));
+		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS);
 	}
 
 	public void loadZones()

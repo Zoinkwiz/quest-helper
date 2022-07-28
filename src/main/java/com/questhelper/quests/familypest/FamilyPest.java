@@ -105,7 +105,7 @@ public class FamilyPest extends BasicQuestHelper
 		lumberTele = new ItemRequirement("Lumberyard Teleport", -1, -1);
 
 		//Required
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 500000);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 500000);
 	}
 
 	public void setupSteps()

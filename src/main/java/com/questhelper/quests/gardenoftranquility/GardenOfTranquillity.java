@@ -227,13 +227,13 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		secateurs = new ItemRequirement("Secateurs", ItemID.SECATEURS);
 		secateurs.addAlternates(ItemID.MAGIC_SECATEURS);
-		wateringCan = new ItemRequirement("Watering can", ItemCollections.getWateringCans());
+		wateringCan = new ItemRequirement("Watering can", ItemCollections.WATERING_CANS);
 		trowel = new ItemRequirement("Gardening trowel", ItemID.GARDENING_TROWEL);
 		plantCure2 = new ItemRequirement("Plant cure", ItemID.PLANT_CURE, 2);
 		marigoldSeed = new ItemRequirement("Marigold seed", ItemID.MARIGOLD_SEED);
 		cabbageSeed3 = new ItemRequirement("Cabbage seeds (6 to be safe)", ItemID.CABBAGE_SEED, 3);
 		onionSeed3 = new ItemRequirement("Onion seeds (6 to be safe)", ItemID.ONION_SEED, 3);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		essence = new ItemRequirement("Rune/Pure essence", ItemID.RUNE_ESSENCE);
 		essence.addAlternates(ItemID.PURE_ESSENCE);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
@@ -251,7 +251,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
 		fishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		draynorTeleport = new ItemRequirement("Draynor teleport", ItemCollections.getAmuletOfGlories());
+		draynorTeleport = new ItemRequirement("Draynor teleport", ItemCollections.AMULET_OF_GLORIES);
 		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
 		phasTeleport = new ItemRequirement("Port Phasmatys teleport", ItemID.ECTOPHIAL);
 		phasTeleport.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
@@ -259,8 +259,8 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		ardougneTeleport.addAlternates(ItemID.ARDOUGNE_CLOAK_4, ItemID.ARDOUGNE_TELEPORT, ItemID.ARDOUGNE_CLOAK_2,
 			ItemID.ARDOUGNE_CLOAK_1);
 		catherbyTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT);
-		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.getGamesNecklaces());
-		edgevilleTeleport = new ItemRequirement("Edgeville teleport", ItemCollections.getAmuletOfGlories());
+		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.GAMES_NECKLACES);
+		edgevilleTeleport = new ItemRequirement("Edgeville teleport", ItemCollections.AMULET_OF_GLORIES);
 		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.LUMBRIDGE_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.TAVERLEY_TELEPORT);

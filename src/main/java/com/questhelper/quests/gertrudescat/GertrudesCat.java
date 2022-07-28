@@ -212,7 +212,7 @@ public class GertrudesCat extends BasicQuestHelper
 		milkHighlighted = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
 		milkHighlighted.setHighlightInInventory(true);
 
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 100);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 
 		seasonedSardine = new ItemRequirement("Seasoned Sardine", ItemID.SEASONED_SARDINE);
 		seasonedSardine.setTooltip("Can be created by using a sardine on Doogle leaves(South of Gertrudes House)");

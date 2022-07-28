@@ -241,10 +241,10 @@ public class TheFremennikExiles extends BasicQuestHelper
 		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES);
 		iceGloves.setTooltip("You can get another pair of ice gloves by killing the Ice Queen under White Wolf Mountain");
 		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		restorePot = new ItemRequirement("Restore potions", ItemCollections.getRestorePotions());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		restorePot = new ItemRequirement("Restore potions", ItemCollections.RESTORE_POTIONS);
 		restorePot.setTooltip("Highly recommended to make up for mistakes");
 
 		runeThrowingaxeOrFriend = new ItemRequirement("Rune thrownaxe, or a friend to help enter Waterbirth Isle " +
@@ -260,15 +260,15 @@ public class TheFremennikExiles extends BasicQuestHelper
 		coins150kOrCharos = new ItemRequirements(LogicType.OR,
 			"Ring of Charos(a) or 150k coins",
 			new ItemRequirement("Ring of Charos(a)", ItemID.RING_OF_CHAROSA),
-			new ItemRequirement("Coins", ItemCollections.getCoins(), 150000));
+			new ItemRequirement("Coins", ItemCollections.COINS, 150000));
 
-		coins650 = new ItemRequirement("Coins", ItemCollections.getCoins(), 650);
+		coins650 = new ItemRequirement("Coins", ItemCollections.COINS, 650);
 		kegs2Or650Coins = new ItemRequirements(LogicType.OR, "2x kegs of beer or 650 coins", kegsOfBeer.quantity(2), coins650);
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		rellekkaTeleport = new ItemRequirement("Rellekka teleports", ItemID.RELLEKKA_TELEPORT, -1);
-		rellekkaTeleport.addAlternates(ItemCollections.getEnchantedLyre());
-		rellekkaTeleport.addAlternates(ItemCollections.getSlayerRings());
+		rellekkaTeleport.addAlternates(ItemCollections.ENCHANTED_LYRE);
+		rellekkaTeleport.addAlternates(ItemCollections.SLAYER_RINGS);
 
 
 		// Quest items

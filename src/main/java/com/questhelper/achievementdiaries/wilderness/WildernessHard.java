@@ -32,7 +32,6 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -159,7 +158,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		godRunes = new ItemRequirement("Runes for a god spell that correspond with your god staff", -1, -1)
 			.showConditioned(notGodSpells);
-		godStaff = new ItemRequirement("Any god staff", ItemCollections.getGodStaff()).showConditioned(notGodSpells);
+		godStaff = new ItemRequirement("Any god staff", ItemCollections.GOD_STAFF).showConditioned(notGodSpells);
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notAirOrb);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notAirOrb);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notAirOrb);
@@ -170,16 +169,16 @@ public class WildernessHard extends ComplexStateQuestHelper
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT).showConditioned(notRawLavaEel);
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
 			.showConditioned(notSprirtualWarrior);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notAddyScim);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notAddyScim);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notAddyScim);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notAddyScim);
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR, 2).showConditioned(notAddyScim);
 		addyOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim);
 		barsOrPick = new ItemRequirements(LogicType.OR, "2 Adamantite bars or a pickaxe", addyBar, pickaxe);
 		lavaDragonBones = new ItemRequirement("Lava Dragon Bones", ItemID.LAVA_DRAGON_BONES);
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.BURNING_AMULETS);
 
 		enterGodwars = new ComplexRequirement(LogicType.OR, "60 Agility or Strength",
 			new SkillRequirement(Skill.AGILITY, 60), new SkillRequirement(Skill.STRENGTH, 60));

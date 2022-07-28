@@ -157,12 +157,12 @@ public class DeathPlateau extends BasicQuestHelper
 
 		ItemRequirement premadeBlurb = new ItemRequirement("Premade blurb' sp.", ItemID.PREMADE_BLURB_SP);
 		premadeBlurb.addAlternates(ItemID.BLURBERRY_SPECIAL);
-		ItemRequirement coins500 = new ItemRequirement("Coins", ItemCollections.getCoins(), 500);
+		ItemRequirement coins500 = new ItemRequirement("Coins", ItemCollections.COINS, 500);
 
 		premadeBlurbOrCoins = new ItemRequirements(LogicType.OR,
 			"Premade blurb' sp. (or a Blurberry special, or 500 coins to gamble with)",
 			premadeBlurb, coins500);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 60);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
 		bread = new ItemRequirement("Bread (UNNOTED)", ItemID.BREAD, 10);
 		trout = new ItemRequirement("Trout (UNNOTED)", ItemID.TROUT, 10);
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
@@ -185,7 +185,7 @@ public class DeathPlateau extends BasicQuestHelper
 		secretMap = new ItemRequirement("Secret way map", ItemID.SECRET_WAY_MAP);
 		combination = new ItemRequirement("Combination", ItemID.COMBINATION);
 		combination.setTooltip("You can get another by talking to Harold upstairs in Burthorpe's Pub");
-		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces());
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 	}
 
 	public void setupZones()

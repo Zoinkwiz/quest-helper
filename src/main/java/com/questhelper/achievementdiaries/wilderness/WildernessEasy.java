@@ -26,19 +26,16 @@ package com.questhelper.achievementdiaries.wilderness;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -53,10 +50,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -167,17 +162,17 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		chaosAccess = new ItemRequirement("Access to Chaos altar, or travel through abyss",
-			ItemCollections.getChaosAltar()).showConditioned(notChaosTemple);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notIronOre);
-		teamCape = new ItemRequirement("Any team cape", ItemCollections.getTeamCape()).showConditioned(notEquipTeamCape);
+			ItemCollections.CHAOS_ALTAR).showConditioned(notChaosTemple);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIronOre);
+		teamCape = new ItemRequirement("Any team cape", ItemCollections.TEAM_CAPE).showConditioned(notEquipTeamCape);
 		redSpiderEggs = new ItemRequirement("Red spider eggs", ItemID.RED_SPIDERS_EGGS).showConditioned(notSpiderEggs);
 		alchable = new ItemRequirement("Any item that is alch-able", 1, -1);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.getBurningAmulets());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.BURNING_AMULETS);
 		oneClick = new ItemRequirement("A one click teleport or accept imminent death", 1, -1)
 			.showConditioned(notEnterKBDLair);
 

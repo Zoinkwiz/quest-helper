@@ -31,7 +31,6 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.quests.woodcutting.Woodcutting;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -42,9 +41,7 @@ import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -162,9 +159,9 @@ public class KourendHard extends ComplexStateQuestHelper
 		// Items required
 		adamantiteOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE).showConditioned(notSmeltAddyBar);
 		coal = new ItemRequirement("Coal", ItemID.COAL).showConditioned(notSmeltAddyBar);
-		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.getStoneBoots()).showConditioned(notKillWyrm);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineLovakite);
-		lightSource = new ItemRequirement("Light source", ItemCollections.getLightSources())
+		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.STONE_BOOTS).showConditioned(notKillWyrm);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineLovakite);
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notKillZombie);
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", Arrays.asList(ItemID.XERICS_TALISMAN,
 			ItemID.MOUNTED_XERICS_TALISMAN)).showConditioned(notTeleportHeart);
@@ -174,7 +171,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notExamineMonster);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notExamineMonster);
 		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE).showConditioned(notExamineMonster);
-		wateringCan = new ItemRequirement("Watering can", ItemCollections.getWateringCans())
+		wateringCan = new ItemRequirement("Watering can", ItemCollections.WATERING_CANS)
 			.showConditioned(notPlantLogavano);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPlantLogavano);
 		artifact = new ItemRequirement("Artifact", ItemID.ARTEFACT).showConditioned(notDeliverArtifact);
@@ -183,15 +180,15 @@ public class KourendHard extends ComplexStateQuestHelper
 		// Items recommended
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		antipoison = new ItemRequirement("Anti-poison", ItemCollections.getAntipoisons(), -1)
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		antipoison = new ItemRequirement("Anti-poison", ItemCollections.ANTIPOISONS, -1)
 			.showConditioned(notKillLizardmanShaman);
-		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff(), -1);
+		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF, -1);
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
 			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS), -1);
 		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.RADAS_BLESSING_1,
 			ItemID.RADAS_BLESSING_2), -1).showConditioned(notWoodcuttingGuild);
-		skillsNecklace = new ItemRequirement("Skills neckalce", ItemCollections.getSkillsNecklaces(), -1);
+		skillsNecklace = new ItemRequirement("Skills neckalce", ItemCollections.SKILLS_NECKLACES, -1);
 		shayzienHelmet = new ItemRequirement("Shayzien Helmet (5)", ItemID.SHAYZIEN_HELM_5)
 			.showConditioned(notKillLizardmanShaman);
 		shayzienBody = new ItemRequirement("Shayzien Body (5)", ItemID.SHAYZIEN_BODY_5)

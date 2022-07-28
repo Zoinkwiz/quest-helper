@@ -119,9 +119,9 @@ public class UndergroundPass extends BasicQuestHelper
 		rope2 = new ItemRequirement("Rope, multiple in case you fail an agility check", ItemID.ROPE, -1);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
-		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.getBows(), 1, true);
-		arrows = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.getMetalArrows());
-		arrowsHighlight = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.getMetalArrows());
+		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.BOWS, 1, true);
+		arrows = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.METAL_ARROWS);
+		arrowsHighlight = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.METAL_ARROWS);
 		arrowsHighlight.setHighlightInInventory(true);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		spadeHighlight = new ItemRequirement("Spade", ItemID.SPADE);
@@ -140,9 +140,9 @@ public class UndergroundPass extends BasicQuestHelper
 		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(ItemID.SHARK);
-		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.getStaminaPotions());
-		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemCollections.getCoins(), 750);
-		agilityPotions = new ItemRequirement("Agility Potions", ItemCollections.getAgilityPotions());
+		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
+		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemCollections.COINS, 750);
+		agilityPotions = new ItemRequirement("Agility Potions", ItemCollections.AGILITY_POTIONS);
 		telegrabRunes = new ItemRequirements("Telegrab Runes", new ItemRequirement("Air rune", ItemID.AIR_RUNE),
 			new ItemRequirement("Law rune", ItemID.LAW_RUNE));
 		oilyCloth = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);

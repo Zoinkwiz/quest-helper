@@ -150,32 +150,32 @@ public class DesertEasy extends ComplexStateQuestHelper
 		notCutCactus = new VarplayerRequirement(1198, false, 10);
 		notMagicCarpet = new VarplayerRequirement(1198, false, 11);
 
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins())
+		coins = new ItemRequirement("Coins", ItemCollections.COINS)
 			.showConditioned(new Conditions(LogicType.OR, notNardahHerb, notMagicCarpet));
 		potatoCacti = new ItemRequirement("Potato Cacti", ItemID.POTATO_CACTUS).showConditioned(notCollectCacti);
 		rope = new ItemRequirement("Rope", ItemID.ROPE)
 			.showConditioned(new Conditions(LogicType.OR, notEnterKalph, notCollectCacti));
 		shantayPass = new ItemRequirement("Shantay pass", ItemID.SHANTAY_PASS).showConditioned(notEnterDesert);
 		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notGoldWarbler);
-		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.getPickaxes()).showConditioned(notFiveClay);
+		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES).showConditioned(notFiveClay);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notCutCactus);
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS).showConditioned(notEnterDesert);
 		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE).showConditioned(notEnterDesert);
 		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT).showConditioned(notEnterDesert);
 		pyramidPlunderArtefact = new ItemRequirement("Any Artefact from Pyramid Plunder",
-			ItemCollections.getPlunderArtefacts()).showConditioned(notSellArtefact);
+			ItemCollections.PLUNDER_ARTEFACTS).showConditioned(notSellArtefact);
 		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATERSKIN0).showConditioned(notCutCactus);
-		grimyHerb = new ItemRequirement("Grimy herb", ItemCollections.getGrimyHerb());
+		grimyHerb = new ItemRequirement("Grimy herb", ItemCollections.GRIMY_HERB);
 
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
-		waterskin = new ItemRequirement("Waterskin", ItemCollections.getWaterskin());
-		pharaohSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.getPharoahSceptre());
-		necklaceOfPassage = new ItemRequirement("Necklace of passage", ItemCollections.getNecklaceOfPassages());
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
+		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN);
+		pharaohSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE);
+		necklaceOfPassage = new ItemRequirement("Necklace of passage", ItemCollections.NECKLACE_OF_PASSAGES);
 
 		combatGear = new ItemRequirement("Combat gear and ranged weapon or runes for multiple spell casts", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inFirstRoom = new ZoneRequirement(firstRoom);
 		inPyramidPlunderLobby = new ZoneRequirement(pyramidPlunderLobby);

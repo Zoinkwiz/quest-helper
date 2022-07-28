@@ -130,7 +130,7 @@ public class Contact extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
 		parchment.setHighlightInInventory(true);
@@ -138,15 +138,15 @@ public class Contact extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
-		antipoison = new ItemRequirement("Antipoisons", ItemCollections.getAntipoisons());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
+		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS);
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
 
-		coins = new ItemRequirement("Coins for carpet rides", ItemCollections.getCoins());
-		glory = new ItemRequirement("Amulet of glory for getting to Osman", ItemCollections.getAmuletOfGlories());
+		coins = new ItemRequirement("Coins for carpet rides", ItemCollections.COINS);
+		glory = new ItemRequirement("Amulet of glory for getting to Osman", ItemCollections.AMULET_OF_GLORIES);
 	}
 
 	public void setupZones()

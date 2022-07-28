@@ -139,12 +139,12 @@ public class RovingElves extends BasicQuestHelper
 		highlightRope = new ItemRequirement("Rope", ItemID.ROPE);
 		highlightRope.setHighlightInInventory(true);
 		prayerPotions = new ItemRequirement("A few prayer potions", ItemID.PRAYER_POTION4);
-		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.getSkillsNecklaces(), 1);
-		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.getGamesNecklaces(), 1);
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES, 1);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES, 1);
 		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT, -1);
 		camelotTeleports = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, -1);
 		iorwerthCampTeleports = new ItemRequirement("Iorwerth camp teleports", ItemID.IORWERTH_CAMP_TELEPORT, -1);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
 	public void setupConditions()

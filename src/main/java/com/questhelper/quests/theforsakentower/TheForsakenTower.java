@@ -139,7 +139,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		crank = new ItemRequirement("Generator crank", ItemID.GENERATOR_CRANK);
 		oldNotes = new ItemRequirement("Old notes", ItemID.OLD_NOTES_22774);
 		dinhsHammer = new ItemRequirement("Dinh's hammer", ItemID.DINHS_HAMMER);
-		gamesNecklace = new ItemRequirement("Games necklace for accessing Wintertodt", ItemCollections.getGamesNecklaces());
+		gamesNecklace = new ItemRequirement("Games necklace for accessing Wintertodt", ItemCollections.GAMES_NECKLACES);
 	}
 
 	public void setupConditions()

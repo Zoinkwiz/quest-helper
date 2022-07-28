@@ -26,7 +26,6 @@ package com.questhelper.achievementdiaries.westernprovinces;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -54,7 +53,6 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -186,7 +184,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		logs = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notSpinedLarupia);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notSpinedLarupia);
 		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notApeBass);
-		axe = new ItemRequirement("Axe", ItemCollections.getAxes()).showConditioned(notApeTeak);
+		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notApeTeak);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notApeTeak);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notEagleFeldip);
 		gnomebowl = new ItemRequirement("Gnomebowl mould", ItemID.GNOMEBOWL_MOULD).showConditioned(notChocolateBomb);
@@ -202,18 +200,18 @@ public class WesternMedium extends ComplexStateQuestHelper
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST).showConditioned(notChocolateBomb);
 		chocolateDust.setTooltip("can be purchased at Grand Tree Groceries");
 		crystalSawSeed = new ItemRequirement("Crystal saw seed", ItemID.CRYSTAL_SAW_SEED).showConditioned(notCrystalSaw);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineGold);
-		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.getOgreBellows()).showConditioned(notChompyHat);
-		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.getOgreBow()).showConditioned(notChompyHat);
-		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.getOgreBrutalArrows()).showConditioned(notChompyHat);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineGold);
+		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat);
+		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat);
+		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.OGRE_BRUTAL_ARROWS).showConditioned(notChompyHat);
 		teakLogs = new ItemRequirement("Teak logs", ItemID.TEAK_LOGS);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF);
 		seedPod = new ItemRequirement("Royal seed pod", ItemID.ROYAL_SEED_POD);
 
 		inBrimstailCave = new ZoneRequirement(brimstailCave);

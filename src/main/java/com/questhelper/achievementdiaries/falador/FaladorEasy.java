@@ -152,12 +152,12 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		notBluriteLimbs = new VarplayerRequirement(1186, false, 10);
 
 		//Required
-		coins2000 = new ItemRequirement("Coins", ItemCollections.getCoins(), 2000).showConditioned(notGotHaircut);
+		coins2000 = new ItemRequirement("Coins", ItemCollections.COINS, 2000).showConditioned(notGotHaircut);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFilledWater);
 		tiara = new ItemRequirement("Silver Tiara", ItemID.TIARA).showConditioned(notMindTiara);
 		mindTalisman = new ItemRequirement("Mind Talisman", ItemID.MIND_TALISMAN).showConditioned(notMindTiara);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs));
-		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.getPickaxes()).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs));
+		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs));
 		combatGear = new ItemRequirement("A range or mage attack to kill a Duck (Level 1)", -1, -1).showConditioned(notKilledDuck);
 		combatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 

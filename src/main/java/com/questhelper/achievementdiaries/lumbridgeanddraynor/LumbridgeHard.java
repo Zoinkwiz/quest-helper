@@ -172,7 +172,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 		smiteActive = new PrayerRequirement("Smite prayer active", Prayer.SMITE);
 		bonesToPeaches = new VarbitRequirement(1505, Operation.EQUAL, 1, "Bones to peaches unlocked");
-		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.getRingOfDuelings())
+		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS)
 			.showConditioned(new Conditions(LogicType.OR, notSmiteAltar, notBonesToPeachesPalace));
 		bones = new ItemRequirement("Bones", ItemID.BONES).showConditioned(notBonesToPeachesPalace);
 		earthRune4 = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE, 4)
@@ -184,9 +184,9 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		earthRune = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 4).showConditioned(notBonesToPeachesPalace);
 		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE, 2).showConditioned(notBonesToPeachesPalace);
-		fairyAccess = new ItemRequirement("Lunar or Dramen staff", ItemCollections.getFairyStaff())
+		fairyAccess = new ItemRequirement("Lunar or Dramen staff", ItemCollections.FAIRY_STAFF)
 			.showConditioned(new Conditions(LogicType.OR, notCosmics, notJuttingWall));
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notWakaToEdge);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notWakaToEdge);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notPowerAmmy);
 		cutDiamond = new ItemRequirement("Diamond", ItemID.DIAMOND).showConditioned(notPowerAmmy);
 		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notPowerAmmy);
@@ -194,20 +194,20 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notPowerAmmy);
 		diamondAmuletU = new ItemRequirement("Diamond amulet (u)", ItemID.DIAMOND_AMULET_U).showConditioned(notPowerAmmy);
 		diamondAmulet = new ItemRequirement("Diamond amulet", ItemID.DIAMOND_AMULET).showConditioned(notPowerAmmy);
-		miningHelm = new ItemRequirement("Mining helmet", ItemCollections.getMiningHelm()).showConditioned(notLightMiningHelm);
+		miningHelm = new ItemRequirement("Mining helmet", ItemCollections.MINING_HELM).showConditioned(notLightMiningHelm);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notLightMiningHelm);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 130000).showConditioned(notBarrowsGloves);
-		gamesNeck = new ItemRequirement("Games Necklace", ItemCollections.getGamesNecklaces()).showConditioned(notHundredTears);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 130000).showConditioned(notBarrowsGloves);
+		gamesNeck = new ItemRequirement("Games Necklace", ItemCollections.GAMES_NECKLACES).showConditioned(notHundredTears);
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE).showConditioned(notTrainToKeld);
-		essence = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.getEssenceHigh(), 28).showConditioned(notCosmics);
+		essence = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH, 28).showConditioned(notCosmics);
 		cosmicAccessOrAbyss = new ItemRequirement("Access to cosmic altar, or travel through abyss. Tiara recommended unless using essence pouches",
-			ItemCollections.getCosmicAltar()).showConditioned(notCosmics);
+			ItemCollections.COSMIC_ALTAR).showConditioned(notCosmics);
 		bellaSeed = new ItemRequirement("Belladonna seed", ItemID.BELLADONNA_SEED).showConditioned(notBelladonna);
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notBelladonna);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notBelladonna);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notBelladonna);
-		gloves = new ItemRequirement("Gloves", ItemCollections.getGloves()).showConditioned(notBelladonna);
-		lightsource = new ItemRequirement("A lightsource", ItemCollections.getLightSources())
+		gloves = new ItemRequirement("Gloves", ItemCollections.GLOVES).showConditioned(notBelladonna);
+		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(new Conditions(LogicType.OR, notHundredTears, notTrainToKeld));
 
 

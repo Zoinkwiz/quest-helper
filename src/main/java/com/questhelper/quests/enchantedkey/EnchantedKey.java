@@ -81,7 +81,7 @@ public class EnchantedKey extends BasicQuestHelper
 		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
 		rellekkaTeleports = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT);
-		passage = new ItemRequirement("Necklace of passage", ItemCollections.getNecklaceOfPassages());
+		passage = new ItemRequirement("Necklace of passage", ItemCollections.NECKLACE_OF_PASSAGES);
 	}
 
 	private void setupSteps()

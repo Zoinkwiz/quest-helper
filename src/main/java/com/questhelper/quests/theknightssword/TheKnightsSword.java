@@ -115,7 +115,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		ironBars = new ItemRequirement("Iron bar", ItemID.IRON_BAR, 2);
 		bluriteOre = new ItemRequirement("Blurite ore", ItemID.BLURITE_ORE);
 		bluriteSword = new ItemRequirement("Blurite sword", ItemID.BLURITE_SWORD);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 4);
 		homeTele = new ItemRequirement("A teleport near Mudskipper Point, such as POH teleport or Fairy Ring to AIQ",

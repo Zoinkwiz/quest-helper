@@ -192,7 +192,7 @@ public class Biohazard extends BasicQuestHelper
 		teleportVarrock = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		teleportArdougne = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
 		teleportRimmington = new ItemRequirement("Teleport to Rimmington", ItemID.RIMMINGTON_TELEPORT);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 30);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 30);
 	}
 
 	public void loadZones()

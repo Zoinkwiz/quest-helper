@@ -172,7 +172,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notTPWatchtower);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPWatchtower);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins())
+		coins = new ItemRequirement("Coins", ItemCollections.COINS)
 			.showConditioned(new Conditions(notYanHouse, notYanPOH));
 		mithBar = new ItemRequirement("Mithril bar", ItemID.MITHRIL_BAR).showConditioned(notMithPlate);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER)
@@ -180,16 +180,16 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notRedSally);
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notRedSally);
 		rechargableJewelry = new ItemRequirement("Skills necklace or Combat bracelet under 4 charges",
-			ItemCollections.getRechargeableNeckBracelet()).showConditioned(notRecharge);
+			ItemCollections.RECHARGEABLE_NECK_BRACELET).showConditioned(notRecharge);
 		greeGree = new ItemRequirement("Karamja monkey greegree", ItemID.KARAMJAN_MONKEY_GREEGREE)
 			.showConditioned(notMonkeyCage);
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notStealChest);
 		shieldLeft = new ItemRequirement("Shield left half", ItemID.SHIELD_LEFT_HALF).showConditioned(notDragSquare);
 		shieldRight = new ItemRequirement("Shield right half", ItemID.SHIELD_RIGHT_HALF).showConditioned(notDragSquare);
 		deathAccess = new ItemRequirement("Access to Death altar, or travel through abyss",
-			ItemCollections.getDeathAltar()).showConditioned(notDeathRune);
+			ItemCollections.DEATHALTAR).showConditioned(notDeathRune);
 		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.CRYSTAL_TRINKET).showConditioned(notDeathRune);
-		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.getEssenceHigh())
+		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH)
 			.showConditioned(notDeathRune);
 		newKey = new ItemRequirement("New key", ItemID.NEW_KEY).showConditioned(notDeathRune);
 		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");
@@ -210,7 +210,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		poisonIvySeed = new ItemRequirement("Poison ivy seed", ItemID.POISON_IVY_SEED).showConditioned(notPoisonIvy);
 		palmSap = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING).showConditioned(notPalmTree);
 		papaya = new ItemRequirement("Papaya fruit", ItemID.PAPAYA_FRUIT).showConditioned(notPalmTree);
-		compost = new ItemRequirement("Compost", ItemCollections.getCompost()).showConditioned(notPalmTree);
+		compost = new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(notPalmTree);
 		papayaOrCompost = new ItemRequirements(LogicType.OR, "15 Papaya fruit or Compost", papaya.quantity(15), compost)
 			.showConditioned(notPalmTree);
 

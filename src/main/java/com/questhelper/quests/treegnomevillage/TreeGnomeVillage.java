@@ -153,7 +153,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7621, new WorldPoint(2456, 3301, 0),
 			"Talk to the Warlord south west of West Ardougne, ready to fight him.");
 
-		ItemRequirement food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		ItemRequirement food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		ItemRequirement combatGear = new ItemRequirement("A Weapon & Armour (magic is best)", -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
@@ -362,7 +362,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 			talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
 			firstTracker, secondTracker, thirdTracker, fireBalistaConditional), logRequirement));
 
-		ItemRequirement food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		ItemRequirement food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		ItemRequirement combatGear = new ItemRequirement("Weapon & Armour (magic is best)", -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 

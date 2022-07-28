@@ -157,7 +157,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 		barbRod = new ItemRequirement("Barbarian fishing rod", ItemID.BARBARIAN_ROD).showConditioned(notCatchStur);
 		feather = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchStur);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(notYewLong);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notYewLong);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notYewLong);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notYewLong);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notWaterOrb);
@@ -171,9 +171,9 @@ public class KandarinHard extends ComplexStateQuestHelper
 		dustyKey.setTooltip("You can get this by killing the Jailor in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
 		mapleLogs = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS).showConditioned(notBurnMaple);
-		bow = new ItemRequirement("Any bow", ItemCollections.getBows()).showConditioned(notBurnMaple);
+		bow = new ItemRequirement("Any bow", ItemCollections.BOWS).showConditioned(notBurnMaple);
 		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins())
+		coins = new ItemRequirement("Coins", ItemCollections.COINS)
 			.showConditioned(new Conditions(LogicType.OR, notFancyStone, notBuyGranite));
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddySpear);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddySpear);
@@ -183,9 +183,9 @@ public class KandarinHard extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(new Conditions(LogicType.OR, notShadowHound, notMithrilDrag));
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		antidragonfire = new ItemRequirement("An antifire shield", ItemCollections.getAntifireShields());
+		antidragonfire = new ItemRequirement("An antifire shield", ItemCollections.ANTIFIRE_SHIELDS);
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		setupGeneralRequirements();
 

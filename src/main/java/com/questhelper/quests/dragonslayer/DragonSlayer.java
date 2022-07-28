@@ -205,10 +205,10 @@ public class DragonSlayer extends BasicQuestHelper
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		ItemRequirement telegrab = new ItemRequirement("Telekinetic grab", ItemID.TELEKINETIC_GRAB, 1);
 		telegrabOrTenK = new ItemRequirements(LogicType.OR, "Either 33 Magic for Telegrab and a ranged/mage weapon, or 10,000 coins",
-			new ItemRequirement("Coins", ItemCollections.getCoins(), 10000), telegrab);
+			new ItemRequirement("Coins", ItemCollections.COINS, 10000), telegrab);
 		ringsOfRecoil = new ItemRequirement("Rings of Recoil for Elvarg", ItemID.RING_OF_RECOIL, -1);
 		chronicle = new ItemRequirement("The Chronicle for teleports to Champions' Guild", ItemID.CHRONICLE);
-		antifirePotion = new ItemRequirement("Antifire potion for Elvarg", ItemCollections.getAntiFirePotions(), -1);
+		antifirePotion = new ItemRequirement("Antifire potion for Elvarg", ItemCollections.ANTIFIRE_POTIONS, -1);
 		edgevilleTeleport = new ItemRequirement("Teleports to Edgeville for getting to Oziach", ItemID.AMULET_OF_GLORY_T6, -1);
 		rimmingtonTeleport = new ItemRequirement("Teleports to Port Sarim/Rimmington/Draynor Village area", ItemID.AMULET_OF_GLORY_T6, -1);
 
@@ -225,17 +225,17 @@ public class DragonSlayer extends BasicQuestHelper
 		demonKey = 	new ItemRequirement("Key", ItemID.KEY_1548);
 		combatGear = new ItemRequirement("Combat equipment", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.getAntifireShields());
-		antidragonShieldEquipped = new ItemRequirement("Anti-dragon shield", ItemCollections.getAntifireShields(), 1, true);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.ANTIFIRE_SHIELDS);
+		antidragonShieldEquipped = new ItemRequirement("Anti-dragon shield", ItemCollections.ANTIFIRE_SHIELDS, 1, true);
 		planks3 = new ItemRequirement("Planks", ItemID.PLANK, 3);
 		planks2 = new ItemRequirement("Planks", ItemID.PLANK, 2);
 		planks1 = new ItemRequirement("Plank", ItemID.PLANK);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		nails90 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 90);
 		nails60 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 60);
 		nails30 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 30);
-		twoThousandCoins = new ItemRequirement("Coins", ItemCollections.getCoins(), 2000);
+		twoThousandCoins = new ItemRequirement("Coins", ItemCollections.COINS, 2000);
 		fullMap = new ItemRequirement("Crandor map", ItemID.CRANDOR_MAP);
 	}
 

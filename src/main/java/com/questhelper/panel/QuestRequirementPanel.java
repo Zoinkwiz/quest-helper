@@ -27,14 +27,14 @@ package com.questhelper.panel;
 import com.questhelper.Icon;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Insets;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,6 +83,49 @@ public class QuestRequirementPanel extends JPanel
 		label.setSize(label.getPreferredSize());
 		setPreferredSize(label.getSize());
 		add(label, BorderLayout.WEST);
+
+		if (requirement instanceof ItemRequirement)
+		{
+			JPopupMenu menu = new JPopupMenu("Menu");
+			int id = ((ItemRequirement)requirement).getId();
+			JMenuItem wikiLink = new JMenuItem(new AbstractAction("Go to wiki..")
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					try {
+						if(requirement.getUrlSuffix() == null)
+						{
+							Desktop.getDesktop().browse(new URI("https://oldschool.runescape.wiki/w/Special:Lookup?type=item&id=" + id));
+						}
+						else
+						{
+							Desktop.getDesktop().browse(new URI( "https://oldschool.runescape.wiki/w/" + requirement.getUrlSuffix()));
+						}
+					} catch (IOException | URISyntaxException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+			
+			menu.add(wikiLink);
+
+			label.addMouseListener(new MouseAdapter()
+			{
+				public void mouseClicked(MouseEvent e)
+				{
+					ItemRequirement iReq = ((ItemRequirement)requirement);
+					//right mouse click event
+					if( iReq.getId() != -1 || (iReq.getId() != -1 && iReq.getUrlSuffix() != null)
+					|| (iReq.getId() == -1 && iReq.getUrlSuffix() != null) )
+					{
+						if (SwingUtilities.isRightMouseButton(e) && e.getClickCount() == 1)
+						{
+							menu.show(label, e.getX(), e.getY());
+						}
+					}
+				}
+			});
+		}
 
 		if (requirement.getTooltip() != null)
 		{

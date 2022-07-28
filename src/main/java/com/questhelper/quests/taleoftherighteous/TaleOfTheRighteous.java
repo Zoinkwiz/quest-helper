@@ -170,7 +170,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.getPickaxes());
+		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES);
 		rangedWeapon = new ItemRequirement("Any ranged weapon + ammo", -1, -1);
 		rangedWeapon.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		runesForCombat = new ItemRequirement("Runes for a few casts of a combat spell", -1, -1);
@@ -181,7 +181,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		xericTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
 		meleeWeapon = new ItemRequirement("A melee weapon, or your bare hands", -1, -1);
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
-		antiPoison = new ItemRequirement("Antipoison for lizardmen", ItemCollections.getAntipoisons());
+		antiPoison = new ItemRequirement("Antipoison for lizardmen", ItemCollections.ANTIPOISONS);
 	}
 
 	public void loadZones()

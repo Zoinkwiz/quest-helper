@@ -221,7 +221,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		divingApparatus.setTooltip("You can get another from Murphy in Port Khazard");
 		woodenCats = new ItemRequirement("Wooden cat", ItemID.WOODEN_CAT);
 		oakPlank = new ItemRequirement("Oak plank", ItemID.OAK_PLANK);
-		saw = new ItemRequirement("Saw", ItemCollections.getSaw());
+		saw = new ItemRequirement("Saw", ItemCollections.SAW);
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		fur = new ItemRequirement("Fur", ItemID.FUR);
 		fur.addAlternates(ItemID.BEAR_FUR, ItemID.GREY_WOLF_FUR);
@@ -239,15 +239,15 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 		// Item recommended
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL);
-		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.getCombatBracelets());
-		edgevilleTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
+		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.COMBAT_BRACELETS);
+		edgevilleTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		fenkenstrainTeleport = new ItemRequirement("Fenkenstrain's Castle teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
 		watermelonSeeds = new ItemRequirement("Watermelon seeds to plant on Harmony for Hard Morytania Diary",
 			ItemID.WATERMELON_SEED);
 		combatGearForSafespotting = new ItemRequirement("Combat gear for safespotting", -1, -1);
 		combatGearForSafespotting.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood());
-		prayerPotions = new ItemRequirement("Prayer potion", ItemCollections.getPrayerPotions());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD);
+		prayerPotions = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS);
 
 		// Quest items
 		prayerBook = new ItemRequirement("Prayer book", ItemID.PRAYER_BOOK);

@@ -42,7 +42,6 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
-import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -227,9 +226,9 @@ public class TheSlugMenace extends BasicQuestHelper
 		accessToAltars = new ItemRequirements("Access to air, water, earth, fire, and mind runecrafting altars",
 			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman);
 
-		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.getNecklaceOfPassages());
+		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.NECKLACE_OF_PASSAGES);
 
-		airAltarTeleport = new ItemRequirement("Teleport near Air Altar", ItemCollections.getSkillsNecklaces());
+		airAltarTeleport = new ItemRequirement("Teleport near Air Altar", ItemCollections.SKILLS_NECKLACES);
 		airAltarTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.RIMMINGTON_TELEPORT);
 		airAltarTeleport.setDisplayMatchedItemName(true);
 		airAltarTeleport.setTooltip("The best items for this are (in order):");
@@ -237,7 +236,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		airAltarTeleport.appendToTooltip("Falador Teleport");
 		airAltarTeleport.appendToTooltip("Rimmington/House Teleport");
 
-		earthAltarTeleport = new ItemRequirement("Teleport near Earth Altar", ItemCollections.getDigsitePendants());
+		earthAltarTeleport = new ItemRequirement("Teleport near Earth Altar", ItemCollections.DIGSITE_PENDANTS);
 		earthAltarTeleport.addAlternates(ItemID.VARROCK_TELEPORT, ItemID.LUMBERYARD_TELEPORT, ItemID.DIGSITE_TELEPORT);
 		earthAltarTeleport.setDisplayMatchedItemName(true);
 		earthAltarTeleport.setTooltip("The best items for this are (in order):");
@@ -246,8 +245,8 @@ public class TheSlugMenace extends BasicQuestHelper
 		earthAltarTeleport.appendToTooltip("Digsite Teleport");
 		earthAltarTeleport.appendToTooltip("Varrock Teleports");
 
-		fireAltarTeleport = new ItemRequirement("Teleport near Fire Altar", ItemCollections.getRingOfDuelings());
-		fireAltarTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
+		fireAltarTeleport = new ItemRequirement("Teleport near Fire Altar", ItemCollections.RING_OF_DUELINGS);
+		fireAltarTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		fireAltarTeleport.setTooltip("The best items for this are (in order):");
 		fireAltarTeleport.appendToTooltip("Ring of Dueling");
 		fireAltarTeleport.appendToTooltip("Amulet of Glory (to Al Kharid)");
@@ -259,7 +258,7 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		mindAltarTeleport = new ItemRequirement("Teleport near Mind Altar", ItemID.MIND_ALTAR_TELEPORT);
 		mindAltarTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.LASSAR_TELEPORT, ItemID.TAVERLEY_TELEPORT);
-		mindAltarTeleport.addAlternates(ItemCollections.getCombatBracelets());
+		mindAltarTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
 		mindAltarTeleport.setTooltip("The best items for this are (in order):");
 		mindAltarTeleport.appendToTooltip("Mind Altar Teleport (highly recommended)");
 		mindAltarTeleport.appendToTooltip("Lassar Teleport (Ice Mountain)");

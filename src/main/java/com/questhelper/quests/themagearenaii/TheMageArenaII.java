@@ -127,9 +127,9 @@ public class TheMageArenaII extends BasicQuestHelper
 		magicCombatGear = new ItemRequirement("Magic combat gear", -1, 1);
 		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE);
-		brews =  new ItemRequirement("Saradomin brews", ItemCollections.getSaradominBrews(), -1);
-		restores = new ItemRequirement("Super restores", ItemCollections.getSuperRestorePotions(), -1);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		brews =  new ItemRequirement("Saradomin brews", ItemCollections.SARADOMIN_BREWS, -1);
+		restores = new ItemRequirement("Super restores", ItemCollections.SUPER_RESTORE_POTIONS, -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		recoils = new ItemRequirement("Rings of recoil", ItemID.RING_OF_RECOIL);
 
 		enchantedSymbol = new ItemRequirement("Enchanted symbol", ItemID.ENCHANTED_SYMBOL);

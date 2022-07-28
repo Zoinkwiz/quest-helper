@@ -167,8 +167,8 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		notAssignedTask = new VarbitRequirement(3608, 0);
 		notKilledDragon = new VarbitRequirement(3609, 0);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notKilledDeathwing);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notKilledDragon);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notKilledDeathwing);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKilledDragon);
 		oomlieWrap = new ItemRequirement("Oomlie wrap", ItemID.COOKED_OOMLIE_WRAP).showConditioned(notEatenWrap);
 		oomlieWrap.setTooltip("You can make one by using a palm leaf on a raw oomlie and cooking it. Both are " +
 			"obtained from the Kharazi Jungle");
@@ -177,7 +177,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 			.showConditioned(notCraftedNature);
 		natureTalismanOrAbyss.addAlternates(ItemID.NATURE_TIARA);
 		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN).showConditioned(notCookedKarambwan);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
 			notCollectedLeaves, notKilledDeathwing));
 		machete = new ItemRequirement("Any machete", ItemID.MACHETE).showConditioned(new Conditions(LogicType.OR,
 			notCollectedLeaves, notKilledDeathwing));
@@ -190,9 +190,9 @@ public class KaramjaHard extends ComplexStateQuestHelper
 			ItemID.BLURITE_CROSSBOW);
 		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notUsedShortcut);
 		antidragonShield =
-			new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.getAntifireShields())
+			new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS)
 				.showConditioned(notKilledDragon);
-		antifirePotions = new ItemRequirement("Antifire potions", ItemCollections.getAntifire())
+		antifirePotions = new ItemRequirement("Antifire potions", ItemCollections.ANTIFIRE)
 			.showConditioned(notKilledDragon);
 
 		combatGear = new ItemRequirement("Combat gear to defeat a deathwing and a metal dragon", -1, -1);
@@ -200,8 +200,8 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		fightCaveCombatGear = new ItemRequirement("Combat gear to reach wave 31 in the Fight Caves and defeat a " +
 			"Ket-Zek", -1, -1);
 		fightCaveCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, -1);
 
 		inCave = new ZoneRequirement(cave);
 		inTzhaar = new ZoneRequirement(tzhaar);

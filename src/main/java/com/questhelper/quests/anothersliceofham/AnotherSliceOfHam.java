@@ -155,7 +155,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		lightSource = new ItemRequirement("A light source", ItemCollections.getLightSources());
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
 
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);
 

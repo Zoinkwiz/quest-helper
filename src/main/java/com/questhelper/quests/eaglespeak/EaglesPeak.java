@@ -186,7 +186,7 @@ public class EaglesPeak extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 50);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 50);
 		tar = new ItemRequirement("Swamp tar", ItemID.SWAMP_TAR);
 		birdBook = new ItemRequirement("Bird book", ItemID.BIRD_BOOK);
 		birdBook.setHighlightInInventory(true);
@@ -206,7 +206,7 @@ public class EaglesPeak extends BasicQuestHelper
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		dramenStaffOrNecklaceOfPassage = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
-		dramenStaffOrNecklaceOfPassage.addAlternates(ItemCollections.getNecklaceOfPassages());
+		dramenStaffOrNecklaceOfPassage.addAlternates(ItemCollections.NECKLACE_OF_PASSAGES);
 		dramenStaffOrNecklaceOfPassage.setDisplayMatchedItemName(true);
 		dramenStaffOrNecklaceOfPassage.setTooltip("Necklace of Passage can also be used.");
 

@@ -286,9 +286,9 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 5250);
-		coins250 = new ItemRequirement("Coins", ItemCollections.getCoins(), 250);
-		coins5000 = new ItemRequirement("Coins", ItemCollections.getCoins(), 5000);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5250);
+		coins250 = new ItemRequirement("Coins", ItemCollections.COINS, 250);
+		coins5000 = new ItemRequirement("Coins", ItemCollections.COINS, 5000);
 		beer = new ItemRequirement(true, "Beer", ItemID.BEER);
 		beer.addAlternates(ItemID.BEER_TANKARD);
 		rawShark = new ItemRequirement("Raw shark, manta ray or sea turtle", ItemID.RAW_SHARK);
@@ -300,7 +300,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		rellekkaTeleports = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT);
 
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		potato = new ItemRequirement("Potato", ItemID.POTATO);
 		onion = new ItemRequirement("Onion", ItemID.ONION);

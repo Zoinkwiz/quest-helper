@@ -196,7 +196,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		yewOrBetterBow.addAlternates(ItemID.YEW_LONGBOW, ItemID.YEW_COMP_BOW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I,
 			ItemID.MAGIC_LONGBOW, ItemID.DARK_BOW);
 		knife = new ItemRequirement("Knife to get the boots of lightness", ItemID.KNIFE);
-		lightSource = new ItemRequirement("A light source to get the boots of lightness", ItemCollections.getLightSources());
+		lightSource = new ItemRequirement("A light source to get the boots of lightness", ItemCollections.LIGHT_SOURCES);
 
 		iceArrows20 = new ItemRequirement("Ice arrows", ItemID.ICE_ARROWS, 20);
 

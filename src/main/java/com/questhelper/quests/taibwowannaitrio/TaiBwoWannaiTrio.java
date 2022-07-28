@@ -468,7 +468,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 	private void setupItemRequirements()
 	{
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 
 		slicedBanana = new ItemRequirement("Sliced Banana", ItemID.SLICED_BANANA);
 		banana = new ItemRequirement("Banana", ItemID.BANANA);
@@ -478,7 +478,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		smallFishingNet = new ItemRequirement("Small Fishing Net", ItemID.SMALL_FISHING_NET);
 		pestleAndMortar = new ItemRequirement("Pestle And Mortar", ItemID.PESTLE_AND_MORTAR);
-		logsForFire = new ItemRequirement("Any logs to make a fire", ItemCollections.getLogsForFire());
+		logsForFire = new ItemRequirement("Any logs to make a fire", ItemCollections.LOGS_FOR_FIRE);
 		spear = new ItemRequirement("Iron spear or better (You will lose the spear)", ItemID.IRON_SPEAR);
 		spear.setTooltip("Bone and black spear does NOT work");
 		spear.addAlternates(ItemID.STEEL_SPEAR, ItemID.MITHRIL_SPEAR, ItemID.ADAMANT_SPEAR, ItemID.RUNE_SPEAR,
@@ -506,7 +506,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		karamjanRum = new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM);
 		karambwanji = new ItemRequirement("Or More Raw Karambwanji", ItemID.RAW_KARAMBWANJI, 23);
 		rawKarambwans = new ItemRequirement("Karambwan", ItemID.RAW_KARAMBWAN);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins());
+		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		poisonKarambwan = new ItemRequirement("Poison karambwan", ItemID.POISON_KARAMBWAN);
 		karambwanjiPaste = new ItemRequirement("Karambwanji paste", ItemID.KARAMBWANJI_PASTE);
 
@@ -538,8 +538,8 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(new ItemRequirement("Jogre Bones, obtainable during the quest", ItemID.JOGRE_BONES));
 		reqs.add(new ItemRequirement("Extra Karambwans in case you burn the one given", ItemID.RAW_KARAMBWAN));
-		reqs.add(new ItemRequirement("Any Antipoisons", ItemCollections.getAntipoisons()));
-		reqs.add(new ItemRequirement("Stamina potions", ItemCollections.getStaminaPotions()));
+		reqs.add(new ItemRequirement("Any Antipoisons", ItemCollections.ANTIPOISONS));
+		reqs.add(new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS));
 		reqs.add(new ItemRequirement("Dramen staff if you have access to fairy rings", ItemID.DRAMEN_STAFF));
 		reqs.add(new ItemRequirement("Sliced Banana (Use a knife on a banana)", ItemID.SLICED_BANANA));
 		reqs.add(new ItemRequirement("Poison Karambwan", ItemID.POISON_KARAMBWAN));

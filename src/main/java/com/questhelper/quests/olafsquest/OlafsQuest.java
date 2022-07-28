@@ -146,10 +146,15 @@ public class OlafsQuest extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.getPrayerPotions(), -1);
+		
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		food.setUrlSuffix("Food");
+		
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		axe.setUrlSuffix("Axe");
+		
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 

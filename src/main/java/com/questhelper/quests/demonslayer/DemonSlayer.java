@@ -145,8 +145,8 @@ public class DemonSlayer extends BasicQuestHelper
 		bucketOfWaterOptional = new ItemRequirement("Bucket of water (obtainable during quest)", ItemID.BUCKET_OF_WATER);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		wizardsTowerTeleport = new ItemRequirement("Teleport to the Wizards' Tower", ItemID.NECKLACE_OF_PASSAGE5);
-		coin = new ItemRequirement("Coin", ItemCollections.getCoins());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		coin = new ItemRequirement("Coin", ItemCollections.COINS);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
 	public void setupConditions()

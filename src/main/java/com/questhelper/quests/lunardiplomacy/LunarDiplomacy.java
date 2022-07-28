@@ -409,13 +409,13 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		lunarStaff = new ItemRequirement("Lunar staff", ItemID.LUNAR_STAFF);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes());
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		coins400 = new ItemRequirement("Coins", ItemCollections.getCoins(), 400);
+		coins400 = new ItemRequirement("Coins", ItemCollections.COINS, 400);
 
 		combatRunes = new ItemRequirement("Combat runes", -1, -1);
 		combatRunes.setDisplayItemId(ItemID.DEATH_RUNE);

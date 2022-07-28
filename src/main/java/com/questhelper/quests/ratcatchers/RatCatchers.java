@@ -209,7 +209,7 @@ public class RatCatchers extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		cat = new FollowerItemRequirement("A non-overgrown cat",
-			ItemCollections.getHuntingCats(),
+			ItemCollections.HUNTING_CATS,
 			NpcCollections.getHuntingCats());
 
 		catFollower = new FollowerRequirement("A non-overgrown cat following you", NpcCollections.getHuntingCats());
@@ -226,18 +226,18 @@ public class RatCatchers extends BasicQuestHelper
 		potOfWeeds = new ItemRequirement("Pot of weeds", ItemID.POT_OF_WEEDS);
 		potOfWeeds.setTooltip("You can make this by using some weeds on a pot");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		coins101 = new ItemRequirement("Coins", ItemCollections.getCoins(), 101);
-		coin = new ItemRequirement("Coins", ItemCollections.getCoins());
+		coins101 = new ItemRequirement("Coins", ItemCollections.COINS, 101);
+		coin = new ItemRequirement("Coins", ItemCollections.COINS);
 		kwuarm = new ItemRequirement("Clean kwuarm", ItemID.KWUARM);
 		redEggs = new ItemRequirement("Red spiders' eggs", ItemID.RED_SPIDERS_EGGS);
 		vial = new ItemRequirement("Empty vial", ItemID.VIAL);
 		snakeCharm = new ItemRequirement("Snake charm", ItemID.SNAKE_CHARM);
 		snakeCharm.canBeObtainedDuringQuest();
-		fish8 = new ItemRequirement("Fish or more, raw or cooked", ItemCollections.getFishFood(), 8);
-		fish8.addAlternates(ItemCollections.getRawFish());
+		fish8 = new ItemRequirement("Fish or more, raw or cooked", ItemCollections.FISH_FOOD, 8);
+		fish8.addAlternates(ItemCollections.RAW_FISH);
 
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		sarimTeleport = new ItemRequirement("Port Sarim teleport", ItemCollections.getAmuletOfGlories());
+		sarimTeleport = new ItemRequirement("Port Sarim teleport", ItemCollections.AMULET_OF_GLORIES);
 		sarimTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
 		pollnivneachTeleport = new ItemRequirement("Pollnivneach teleport", ItemID.POLLNIVNEACH_TELEPORT);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
@@ -245,7 +245,7 @@ public class RatCatchers extends BasicQuestHelper
 			ItemID.ARDOUGNE_CLOAK_4);
 		keldagrimTeleport = new ItemRequirement("Mine cart access to Keldagrim from the GE", -1, -1);
 		keldagrimTeleport.setDisplayItemId(ItemID.MINECART_TICKET);
-		carpetCoins = new ItemRequirement("Coins for magic carpet travel", ItemCollections.getCoins(), 1000);
+		carpetCoins = new ItemRequirement("Coins for magic carpet travel", ItemCollections.COINS, 1000);
 
 		directions = new ItemRequirement("Directions", ItemID.DIRECTIONS);
 
@@ -532,7 +532,7 @@ public class RatCatchers extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Helping Jack",
 			Arrays.asList(talkToJack, useRatPoisonOnCheese, climbJackLadder, useCheeseOnHole1, talkToJackAfterCheese,
 				talkToApoth, talkToJackAfterApoth, climbJackLadderAgain, useCatOnHole, feedCatAsItFights, talkToJackAfterFight),
-			cheese.quantity(4), bucketOfMilk, marrentill, unicornHornDust, cat, fish8, vial, kwuarm, redEggs, ratPoison)));
+			cheese.quantity(4), bucketOfMilk, marrentill, unicornHornDust, cat, fish8, vial, kwuarm, redEggs, ratPoison));
 		allSteps.add(new PanelDetails("Helping Joe", Arrays.asList(travelToKeldagrim, talkToSmokinJoe, usePotOnHole,
 			usePotOnHoleAgain, talkToJoeAgain), cat, catspeakAmuletOrDS2, potOfWeeds, tinderbox));
 

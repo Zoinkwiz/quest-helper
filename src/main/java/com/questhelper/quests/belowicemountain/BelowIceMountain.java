@@ -133,7 +133,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		cookedMeat = new ItemRequirement("Cooked Meat", ItemID.COOKED_MEAT, 1);
 		bread = new ItemRequirement("Bread", ItemID.BREAD, 1);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins(), 3);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 3);
 
 		knifeHighlight = new ItemRequirement(true, "Knife", ItemID.KNIFE);
 		breadHighlight = new ItemRequirement(true, "Bread", ItemID.BREAD);
@@ -142,8 +142,8 @@ public class BelowIceMountain extends BasicQuestHelper
 
 		beerHighlight = new ItemRequirement(true, "Asgarnian Ale", ItemID.ASGARNIAN_ALE);
 
-		iceMountainTeleport = new ItemRequirement("A teleport to near Ice Mountain", ItemCollections.getAmuletOfGlories());
-		iceMountainTeleport.addAlternates(ItemCollections.getCombatBracelets());
+		iceMountainTeleport = new ItemRequirement("A teleport to near Ice Mountain", ItemCollections.AMULET_OF_GLORIES);
+		iceMountainTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
 		iceMountainTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.LASSAR_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);

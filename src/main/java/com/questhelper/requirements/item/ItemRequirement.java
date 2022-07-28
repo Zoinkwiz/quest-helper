@@ -26,6 +26,7 @@
  */
 package com.questhelper.requirements.item;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestBank;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.AbstractRequirement;
@@ -131,9 +132,36 @@ public class ItemRequirement extends AbstractRequirement
 		this.addAlternates(items.subList(1, items.size()));
 	}
 
+	public ItemRequirement(String name, ItemCollections itemCollection)
+	{
+		this(name, itemCollection.getItems().get(0), 1);
+		this.setUrlSuffix(itemCollection.getWikiTerm());
+		this.addAlternates(itemCollection.getItems().subList(1, itemCollection.getItems().size()));
+	}
+
+	public ItemRequirement(String name, ItemCollections itemCollection, int quantity)
+	{
+		this(name, itemCollection.getItems().get(0), quantity);
+		this.setUrlSuffix(itemCollection.getWikiTerm());
+		this.addAlternates(itemCollection.getItems().subList(1, itemCollection.getItems().size()));
+	}
+
+	public ItemRequirement(String name, ItemCollections itemCollection, int quantity, boolean equip)
+	{
+		this(name, itemCollection.getItems().get(0), quantity);
+		this.setUrlSuffix(itemCollection.getWikiTerm());
+		this.equip = equip;
+		this.addAlternates(itemCollection.getItems().subList(1, itemCollection.getItems().size()));
+	}
+
 	public void addAlternates(List<Integer> alternates)
 	{
 		this.alternateItems.addAll(alternates);
+	}
+
+	public void addAlternates(ItemCollections alternates)
+	{
+		this.alternateItems.addAll(alternates.getItems());
 	}
 
 	public void addAlternates(Integer... alternates)
@@ -199,6 +227,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setConditionToHide(conditionToHide);
 		newItem.questBank = questBank;
 		newItem.setTooltip(getTooltip());
+		newItem.setUrlSuffix(getUrlSuffix());
 
 		return newItem;
 	}

@@ -293,9 +293,9 @@ public class TheFremennikIsles extends BasicQuestHelper
 	{
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
-		coins15 = new ItemRequirement("Coins", ItemCollections.getCoins(), 15);
+		coins15 = new ItemRequirement("Coins", ItemCollections.COINS, 15);
 		bronzeNail = new ItemRequirement("Bronze nail", ItemID.BRONZE_NAILS);
-		hammer = new ItemRequirement("Hammer", ItemCollections.getHammer());
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope9 = new ItemRequirement("Rope", ItemID.ROPE, 9);
 		yakTopWorn = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR, 1, true);
@@ -303,9 +303,9 @@ public class TheFremennikIsles extends BasicQuestHelper
 		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD, 1, true);
 		meleeWeapon = new ItemRequirement("Melee gear", -1, -1);
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food + potions", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food + potions", ItemCollections.GOOD_EATING_FOOD, -1);
 		tuna = new ItemRequirement("Raw tuna", ItemID.RAW_TUNA);
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes());
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
 
 		tuna.setTooltip("You can buy some from Flosi in east Jatizso, or fish some from the pier.");
 		if (client.getRealSkillLevel(Skill.MINING) >= 55)

@@ -32,7 +32,6 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -142,24 +141,24 @@ public class WesternElite extends ComplexStateQuestHelper
 		magicLongU = new ItemRequirement("Magic longbow (u)", ItemID.MAGIC_LONGBOW_U).showConditioned(notMagicLong);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notMagicLong);
 		mouthProtection =
-			new ItemRequirement("Mouth protection", ItemCollections.getMouthProtection()).showConditioned(notKillThermy);
+			new ItemRequirement("Mouth protection", ItemCollections.MOUTH_PROTECTION).showConditioned(notKillThermy);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPrissyScilla);
 		magicSapling = new ItemRequirement("Magic sapling", ItemID.MAGIC_SAPLING).showConditioned(notPrissyScilla);
 		coconuts25 = new ItemRequirement("Coconuts", ItemID.COCONUT, 25).showConditioned(notPrissyScilla);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPrissyScilla);
-		voidHelm = new ItemRequirement("Any void knight helm", ItemCollections.getVoidHelm()).showConditioned(notFullVoid);
-		voidTop = new ItemRequirement("Void knight top", ItemCollections.getVoidTop()).showConditioned(notFullVoid);
-		voidRobe = new ItemRequirement("Void knight robe", ItemCollections.getVoidRobe()).showConditioned(notFullVoid);
+		voidHelm = new ItemRequirement("Any void knight helm", ItemCollections.VOID_HELM).showConditioned(notFullVoid);
+		voidTop = new ItemRequirement("Void knight top", ItemCollections.VOID_TOP).showConditioned(notFullVoid);
+		voidRobe = new ItemRequirement("Void knight robe", ItemCollections.VOID_ROBE).showConditioned(notFullVoid);
 		voidGloves = new ItemRequirement("Void knight gloves", ItemID.VOID_KNIGHT_GLOVES).showConditioned(notFullVoid);
-		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.getOgreBellows()).showConditioned(notChompyHat);
-		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.getOgreBow()).showConditioned(notChompyHat);
-		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.getOgreBrutalArrows()).showConditioned(notChompyHat);
+		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat);
+		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat);
+		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.OGRE_BRUTAL_ARROWS).showConditioned(notChompyHat);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		tpCrystal = new ItemRequirement("Teleport Crystal", ItemCollections.getTeleportCrystal());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		tpCrystal = new ItemRequirement("Teleport Crystal", ItemCollections.TELEPORT_CRYSTAL);
 
 		inTirannwn = new ZoneRequirement(tirannwn);
 		inSmokeDungeon = new ZoneRequirement(smokeDungeon);

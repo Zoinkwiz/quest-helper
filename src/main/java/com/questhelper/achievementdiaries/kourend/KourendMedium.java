@@ -172,21 +172,21 @@ public class KourendMedium extends ComplexStateQuestHelper
 		memoirPis = new VarbitRequirement(7921, Operation.EQUAL, 0, "");
 
 		// Required items
-		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff(), 1, true)
+		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF, 1, true)
 			.showConditioned(notFairyRing);
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
 			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS)).showConditioned(notTravelWithMemoirs);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineSulphur);
-		faceMask = new ItemRequirement("Facemask or slayer helmet", ItemCollections.getSlayerHelmets(), 1, true)
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineSulphur);
+		faceMask = new ItemRequirement("Facemask or slayer helmet", ItemCollections.SLAYER_HELMETS, 1, true)
 			.showConditioned(notMineSulphur);
 		faceMask.addAlternates(ItemID.FACEMASK, ItemID.GAS_MASK);
-		hammer = new ItemRequirement("A hammer", ItemCollections.getHammer()).showConditioned(notRepairCrane);
-		nails = new ItemRequirement("Nails", ItemCollections.getNails(), 50).showConditioned(notRepairCrane);
+		hammer = new ItemRequirement("A hammer", ItemCollections.HAMMER).showConditioned(notRepairCrane);
+		nails = new ItemRequirement("Nails", ItemCollections.NAILS, 50).showConditioned(notRepairCrane);
 		planks = new ItemRequirement("Plank", ItemID.PLANK, 3).showConditioned(notRepairCrane);
 		kingWorm = new ItemRequirement("King worm or fish chunks", ItemID.KING_WORM).showConditioned(notCatchBluegill);
 		kingWorm.addAlternates(ItemID.FISH_CHUNKS);
 		kingWorm.setTooltip("Obtainable on Molch Island");
-		axe = new ItemRequirement("Any axe", ItemCollections.getAxes()).showConditioned(new Conditions(LogicType.OR,
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
 			notSubdueWintertodt, notChopMahoganyTree));
 		tinderbox = new ItemRequirement("Tinderbox", Arrays.asList(ItemID.BRUMA_TORCH, ItemID.TINDERBOX))
 			.showConditioned(notSubdueWintertodt);
@@ -195,12 +195,12 @@ public class KourendMedium extends ComplexStateQuestHelper
 
 		// Recommended items
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notSubdueWintertodt);
-		warmClothing = new ItemRequirement("Warm clothing", ItemCollections.getWarmClothing(), 4, true)
+		warmClothing = new ItemRequirement("Warm clothing", ItemCollections.WARM_CLOTHING, 4, true)
 			.showConditioned(notSubdueWintertodt);
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1).showConditioned(notKillLizardman);
-		antipoison = new ItemRequirement("Anti-poison", ItemCollections.getAntipoisons())
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1).showConditioned(notKillLizardman);
+		antipoison = new ItemRequirement("Anti-poison", ItemCollections.ANTIPOISONS)
 			.showConditioned(notKillLizardman);
 		radasBlessing1 = new ItemRequirement("Rada's Blessing (1)", ItemID.RADAS_BLESSING_1, -1)
 			.showConditioned(notCatchChinchompa);

@@ -42,7 +42,6 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -107,8 +106,8 @@ public class TribalTotem extends BasicQuestHelper
 
     public void setupItemRequirements()
     {
-        coins = new ItemRequirement("Coins or more for boat trips", ItemCollections.getCoins(), 90);
-        amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.getAmuletOfGlories());
+        coins = new ItemRequirement("Coins or more for boat trips", ItemCollections.COINS, 90);
+        amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.AMULET_OF_GLORIES);
         ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
         addressLabel = new ItemRequirement("Address label", ItemID.ADDRESS_LABEL);
         addressLabel.setHighlightInInventory(true);

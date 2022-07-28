@@ -145,7 +145,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		notTalkSherlock = new VarplayerRequirement(1178, false, 10);
 		notLogShortcut = new VarplayerRequirement(1178, false, 11);
 
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR, notPetFish, notBuyCandle, notBuyStew));
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR, notPetFish, notBuyCandle, notBuyStew));
 		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notCatchMackerel);
 
 		emptyFishbowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL).showConditioned(notPetFish);
@@ -165,7 +165,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear to defeat all types of elementals (level 35)", -1, -1).showConditioned(notKillEle);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inWorkshop = new ZoneRequirement(workshop);
 

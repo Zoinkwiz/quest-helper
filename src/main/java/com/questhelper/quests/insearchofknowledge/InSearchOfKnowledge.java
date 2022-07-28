@@ -118,8 +118,8 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food5 = new ItemRequirement("Food", ItemCollections.getFishFood(), 5);
-		food5Highlighted = new ItemRequirement("Food", ItemCollections.getFishFood(), 5);
+		food5 = new ItemRequirement("Food", ItemCollections.FISH_FOOD, 5);
+		food5Highlighted = new ItemRequirement("Food", ItemCollections.FISH_FOOD, 5);
 		food5Highlighted.setHighlightInInventory(true);
 		knife = new ItemRequirement("Knife or slash weapon to cut through a web", ItemID.KNIFE);
 

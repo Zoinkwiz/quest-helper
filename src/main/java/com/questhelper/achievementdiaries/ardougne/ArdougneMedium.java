@@ -177,14 +177,14 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff())
+		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF)
 			.showConditioned(new Conditions(LogicType.OR, notNecroTower, notUniPen));
 		skavMap = new ItemRequirement("Skavid map", ItemID.SKAVID_MAP).showConditioned(notCaveNightshade);
-		lightSource = new ItemRequirement("Any light source", ItemCollections.getLightSources())
+		lightSource = new ItemRequirement("Any light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notCaveNightshade);
 		nightshade = new ItemRequirement("Cave nightshade", ItemID.CAVE_NIGHTSHADE);
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapYan);
-		crossbow = new ItemRequirement("Any crossbow", ItemCollections.getCrossbows()).showConditioned(notGrapYan);
+		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapYan);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET)
 			.showConditioned(new Conditions(notClaimSand));
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPArdy);
@@ -192,7 +192,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		rawChick = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN).showConditioned(notKillSwordchick);
 		rawSword = new ItemRequirement("Raw swordfish", ItemID.RAW_SWORDFISH).showConditioned(notKillSwordchick);
 		ibanStaff = new ItemRequirement("Iban staff", ItemID.IBANS_STAFF).showConditioned(notIbanUpgrade);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(notIbanUpgrade);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notIbanUpgrade);
 		ibanStaffU = new ItemRequirement("Iban staff Upgraded", ItemID.IBANS_STAFF_U).showConditioned(notIbanUpgrade);
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notArdyStraw);
 		strawSeeds = new ItemRequirement("Strawberry seeds", ItemID.STRAWBERRY_SEED).showConditioned(notArdyStraw);
@@ -204,11 +204,11 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		yewLog11 = new ItemRequirement("Yew logs", ItemID.YEW_LOGS, 11).showConditioned(new Conditions(notBalloonCW,
 			notCWBallon2));
 		basket = new ItemRequirement("Basket of apples", ItemID.APPLES5).showConditioned(notArdyStraw);
-		compost = new ItemRequirement("Compost", ItemCollections.getCompost()).showConditioned(notArdyStraw);
+		compost = new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(notArdyStraw);
 		basketOrCompost = new ItemRequirements(LogicType.OR, "Basket of apples or compost", compost, basket).showConditioned(notArdyStraw);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notArdyStraw);
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		inSkavidCaves = new ZoneRequirement(skavidCaves);
 		inBasement = new ZoneRequirement(basement);

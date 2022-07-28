@@ -220,7 +220,7 @@ public class TheGolem extends BasicQuestHelper
 		statuetteHighlight.setTooltip("If you've lost it, talk to the Curator in the Varrock museum again");
 
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		digsiteTeleport = new ItemRequirement("Digsite teleport", ItemCollections.getDigsitePendants());
+		digsiteTeleport = new ItemRequirement("Digsite teleport", ItemCollections.DIGSITE_PENDANTS);
 		digsiteTeleport.addAlternates(ItemID.DIGSITE_TELEPORT);
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
 	}

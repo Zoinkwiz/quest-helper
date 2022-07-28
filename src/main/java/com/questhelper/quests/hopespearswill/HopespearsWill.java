@@ -145,17 +145,17 @@ public class HopespearsWill extends BasicQuestHelper
 
 	public void setupRequirements()
 	{
-		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.getGhostspeak());
+		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK);
 		ghostspeakAmulet.setTooltip("or Morytania legs 2 or greater");
 		ringOfVisibility = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY);
 		ringOfVisibility.setTooltip("Obtain from Rasolo south of Baxtorian Falls");
 		goblinPotion = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.GOBLIN_POTION1, ItemID.GOBLIN_POTION2, ItemID.GOBLIN_POTION3, ItemID.GOBLIN_POTION4));
 		goblinPotion.setTooltip("Made by mixing a toadflax potion (unf) and Pharmakos berries from near the Makeover Mage");
-		dramenStaff = new ItemRequirement("Dramen or lunar staff", ItemCollections.getFairyStaff());
+		dramenStaff = new ItemRequirement("Dramen or lunar staff", ItemCollections.FAIRY_STAFF);
 		dramenStaff.setTooltip("For fairy ring access - not required if Lumbridge Elite is complete");
 
 		potionsAndFood = new ItemRequirement("Food and potions to defeat 5 enemies without armour, weapons, or magic", -1, -1);
-		plainOfMudSphere = new ItemRequirement("Plain of mud sphere or charged Skills necklace", ItemCollections.getSkillsNecklaces());
+		plainOfMudSphere = new ItemRequirement("Plain of mud sphere or charged Skills necklace", ItemCollections.SKILLS_NECKLACES);
 		plainOfMudSphere.addAlternates(ItemID.PLAIN_OF_MUD_SPHERE);
 		combatLevel = new ItemRequirement("90+ combat", -1, -1);
 

@@ -36,7 +36,7 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class FeedingAimeri extends NpcStep
 {
-	static ItemRequirement food5Highlighted = new ItemRequirement("Food", ItemCollections.getFishFood(), 5);
+	static ItemRequirement food5Highlighted = new ItemRequirement("Food", ItemCollections.FISH_FOOD, 5);
 	static ItemRequirement knife = new ItemRequirement("Knife or slash weapon to cut through a web",ItemID.KNIFE);
 
 	public FeedingAimeri(QuestHelper questHelper)

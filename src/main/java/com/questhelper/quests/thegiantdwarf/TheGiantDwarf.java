@@ -106,9 +106,9 @@ public class TheGiantDwarf extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		// Required
-		coins2500 = new ItemRequirement("coins", ItemCollections.getCoins(), 2500);
+		coins2500 = new ItemRequirement("coins", ItemCollections.COINS, 2500);
 		coins2500.setTooltip("Bring more to be safe.");
-		coins200 = new ItemRequirement("Coins", ItemCollections.getCoins(), 200);
+		coins200 = new ItemRequirement("Coins", ItemCollections.COINS, 200);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		logs.setTooltip("Most logs will work, however, arctic pine logs do not work.");
 		logs.addAlternates(ItemID.OAK_LOGS, ItemID.WILLOW_LOGS, ItemID.TEAK_LOGS, ItemID.MAPLE_LOGS,
@@ -138,13 +138,13 @@ public class TheGiantDwarf extends BasicQuestHelper
 		rellekkaTeleport = new ItemRequirement("A Camelot/Rellekka teleport (for starting the quest)", ItemID.ENCHANTED_LYRE5);
 		rellekkaTeleport.addAlternates(ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2,
 			ItemID.ENCHANTED_LYRE1, ItemID.RELLEKKA_TELEPORT, ItemID.CAMELOT_TELEPORT);
-		rellekkaTeleport.addAlternates(ItemCollections.getSlayerRings());
+		rellekkaTeleport.addAlternates(ItemCollections.SLAYER_RINGS);
 		fairyRings = new ItemRequirement("Access to fairy rings", -1, -1);
 		fairyRings.setDisplayItemId(ItemID.FAIRY_RING);
-		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", ItemCollections.getStaminaPotions());
+		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", ItemCollections.STAMINA_POTIONS);
 		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", ItemID.VARROCK_TELEPORT);
-		varrockTeleport.addAlternates(ItemCollections.getRingOfWealths());
-		varrockTeleport.addAlternates(ItemCollections.getAmuletOfGlories());
+		varrockTeleport.addAlternates(ItemCollections.RING_OF_WEALTHS);
+		varrockTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		clay10 = new ItemRequirement("Clay", ItemID.CLAY, 10);
 		copperOre10 = new ItemRequirement("Copper ore", ItemID.COPPER_ORE, 10);
 		tinOre10 = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 10);

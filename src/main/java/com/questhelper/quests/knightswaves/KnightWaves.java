@@ -103,7 +103,7 @@ public class KnightWaves extends BasicQuestHelper
 		combatGear = new ItemRequirement("Melee combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		poisonedWeapon = new ItemRequirement("Poisoned weapon such as Dragon dagger (p++)", ItemID.DRAGON_DAGGERP_5698);
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), 25);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, 25);
 		potions = new ItemRequirement("Attack and strength potions for boost", -1, -1);
 
 		talkedToSquire = new VarbitRequirement(3908, 1);

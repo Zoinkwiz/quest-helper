@@ -302,7 +302,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons());
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 	}
 
 	public void loadZones()

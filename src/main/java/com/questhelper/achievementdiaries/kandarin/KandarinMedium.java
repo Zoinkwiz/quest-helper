@@ -177,7 +177,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
 
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapOb);
-		crossbow = new ItemRequirement("Any crossbow", ItemCollections.getCrossbows()).showConditioned(notGrapOb);
+		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapOb);
 		unfIrit = new ItemRequirement("Unfinished Irit potion", ItemID.IRIT_POTION_UNF, 1).showConditioned(notSuperAnti);
 		unicornHorn = new ItemRequirement("Unicorn horn", ItemID.UNICORN_HORN, 1).showConditioned(notSuperAnti);
 		mortarPest = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).showConditioned(notSuperAnti);
@@ -205,15 +205,15 @@ public class KandarinMedium extends ComplexStateQuestHelper
 
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notFireGiant);
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notStealHemen);
-		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.getFairyStaff()).showConditioned(notTravelMcGrubor);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMineCoal);
+		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMcGrubor);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineCoal);
 		rawBass = new ItemRequirement("Raw bass", ItemID.RAW_BASS).showConditioned(notCatchCookBass);
-		compost = new ItemRequirement("Compost", ItemCollections.getCompost()).showConditioned(notPickLimp);
+		compost = new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(notPickLimp);
 
 		combatGear = new ItemRequirement("Combat gear to kill a fire giant and complete a wave of Barbarian Assault", -1, -1).showConditioned(new Conditions(LogicType.OR, notFireGiant, notBarbAss));
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 

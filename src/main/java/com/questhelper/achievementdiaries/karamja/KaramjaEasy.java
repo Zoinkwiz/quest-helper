@@ -142,15 +142,15 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 		notEnteredFightCave = new VarbitRequirement(3574, 0);
 		notKilledJogre = new VarbitRequirement(3575, 0);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.getPickaxes()).showConditioned(notMinedGold);
-		coins = new ItemRequirement("Coins", ItemCollections.getCoins()).showConditioned(new Conditions(LogicType.OR,
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMinedGold);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR,
 			notGoneToSarim, notGoneToArdougne));
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notFished);
 		combatGear = new ItemRequirement("Combat gear to defeat a Jogre (level 56)", -1, -1).showConditioned(notKilledJogre);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		food = new ItemRequirement("Food", ItemCollections.getGoodEatingFood(), -1);
-		antipoison = new ItemRequirement("Antipoison", ItemCollections.getAntipoisons(), -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, -1);
 
 		inCave = new ZoneRequirement(cave);
 		inTzhaar = new ZoneRequirement(tzhaar);

@@ -326,7 +326,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 		talkToArianwyn = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		talkToArianwyn.addDialogStep("Okay, let's begin.");
-		killMourner = new NpcStep(this, NpcID.MOURNER_9013, new WorldPoint(2385, 3326, 0), "Kill a mourner travelling through the Arandar pass. This is more easily accessed from the north entrance.", true);
+		killMourner = new NpcStep(this, NpcID.MOURNER_9013, new WorldPoint(2385, 3326, 0), "Kill a mourner travelling through the Arandar pass. This is more easily accessed from the north entrance. You'll need 7 free inventory spaces.", true);
 		pickUpLoot = new DetailedQuestStep(this, "Pick up everything the mourner dropped.", mournerBoots, mournerCloak, mournerGloves, mournerLegsBroken, mournerMask, mournerLetter, bloodyMournerBody);
 
 		searchLaundry = new ObjectStep(this, ObjectID.LAUNDRY_BASKET, new WorldPoint(2912, 3418, 0), "Search Tegid's laundry basket in south Taverley for some soap.");

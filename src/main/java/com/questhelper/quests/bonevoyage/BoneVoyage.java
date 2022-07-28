@@ -68,7 +68,8 @@ public class BoneVoyage extends BasicQuestHelper
 	ItemRequirement vodka2, marrentillPotionUnf;
 
 	//Items Recommended
-	ItemRequirement digsiteTeleport, woodcuttingGuildTeleport, varrockTeleport, sarimTeleport, lumberyardTeleport;
+	ItemRequirement digsiteTeleport, woodcuttingGuildTeleport, varrockTeleport, sarimTeleport, lumberyardTeleport,
+		hammer, ironBar, oakPlanks, nails;
 
 	ItemRequirement sawmillAgreement, boneCharm, potionOfSealegs, sawmillProposal;
 
@@ -160,6 +161,11 @@ public class BoneVoyage extends BasicQuestHelper
 		sarimTeleport = new ItemRequirement("Port Sarim teleport", ItemCollections.AMULET_OF_GLORIES);
 		sarimTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
 		lumberyardTeleport = new ItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
+		
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
+		oakPlanks = new ItemRequirement("Oak plank", ItemID.OAK_PLANK, 2);
+		nails = new ItemRequirement("Nails", ItemCollections.NAILS, 5);
 
 		sawmillProposal = new ItemRequirement("Sawmill proposal", ItemID.SAWMILL_PROPOSAL);
 		sawmillProposal.setTooltip("You can get another from the sawmill operator near Varrock");
@@ -274,7 +280,7 @@ public class BoneVoyage extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(digsiteTeleport.quantity(4), woodcuttingGuildTeleport, varrockTeleport, sarimTeleport,
-			lumberyardTeleport.quantity(2));
+			lumberyardTeleport.quantity(2), hammer, ironBar, oakPlanks, nails);
 	}
 
 	@Override
@@ -311,5 +317,12 @@ public class BoneVoyage extends BasicQuestHelper
 			boardBargeWithPotionAndCharm, giveJuniorBone, giveLeadPotion), marrentillPotionUnf, vodka2));
 		allSteps.add(new PanelDetails("The voyage", Collections.singletonList(navigateShip)));
 		return allSteps;
+	}
+	
+	@Override
+	public List<String> getNotes()
+	{
+		return Collections.singletonList("After quest completion you can use the iron bar, oak planks, nails and hammer" +
+				" to build a bank chest on Fossil Island (requires 21 Construction).");
 	}
 }

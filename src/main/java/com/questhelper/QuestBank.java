@@ -25,7 +25,7 @@
 package com.questhelper;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonSyntaxException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
@@ -51,6 +51,7 @@ public class QuestBank
 	private static final String BANK_KEY = "bankitems";
 
 	private List<Item> bankItems;
+	private final QuestBankData questBankData;
 	private String rsProfileKey;
 	private RuneScapeProfileType worldType;
 
@@ -63,12 +64,8 @@ public class QuestBank
 		this.configManager = configManager;
 		this.client = client;
 		this.gson = gson;
+		this.questBankData = new QuestBankData();
 		this.bankItems = new ArrayList<>();
-	}
-
-	public void updateLocalBank(Item[] items)
-	{
-		bankItems = Arrays.asList(items);
 	}
 
 	public List<Item> getBankItems()
@@ -76,10 +73,17 @@ public class QuestBank
 		return bankItems;
 	}
 
+	public void updateLocalBank(Item[] items)
+	{
+		questBankData.set(items);
+		bankItems = questBankData.getAsList();
+	}
+
 	public void emptyState()
 	{
 		rsProfileKey = null;
 		worldType = null;
+		questBankData.setEmpty();
 		bankItems = new ArrayList<>();
 	}
 
@@ -104,17 +108,19 @@ public class QuestBank
 
 		rsProfileKey = configManager.getRSProfileKey();
 		worldType = RuneScapeProfileType.getCurrent(client);
-		List<Item> storedItems = gson.fromJson(
-			configManager.getRSProfileConfiguration(CONFIG_GROUP, BANK_KEY),
-			new TypeToken<List<Item>>(){}.getType());
-		if (storedItems != null)
+
+		String json = configManager.getRSProfileConfiguration(CONFIG_GROUP, BANK_KEY);
+		try
 		{
-			bankItems = storedItems;
+			questBankData.setIdAndQuantity(gson.fromJson(json, int[].class));
 		}
-		else
+		catch (JsonSyntaxException err)
 		{
-			bankItems = new ArrayList<>();
+			// Due to changing data format from list to array, need to handle for old users
+			questBankData.setIdAndQuantity(new int[0]);
+			saveBankToConfig();
 		}
+		bankItems = questBankData.getAsList();
 	}
 
 	public void saveBankToConfig()
@@ -123,7 +129,8 @@ public class QuestBank
 		{
 			return;
 		}
-		configManager.setConfiguration(CONFIG_GROUP, rsProfileKey, BANK_KEY, gson.toJson(bankItems));
+
+		configManager.setConfiguration(CONFIG_GROUP, rsProfileKey, BANK_KEY, gson.toJson(questBankData.getIdAndQuantity()));
 	}
 
 	private String getCurrentKey()

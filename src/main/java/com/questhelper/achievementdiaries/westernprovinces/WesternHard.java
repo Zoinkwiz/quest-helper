@@ -315,7 +315,8 @@ public class WesternHard extends ComplexStateQuestHelper
 		chompyHat.addDialogStep("Can I have a hat please?");
 
 		lletyaPalm = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2346, 3161, 0),
-			"Check the health of your palm tree in Lletya. It will take about 16 hours to grow fully.", rake, spade,
+			"Check the health of your palm tree in Lletya. It will take about 16 hours to grow fully. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.", rake, spade,
 			palmSapling);
 
 		claimReward = new NpcStep(this, NpcID.ELDER_GNOME_CHILD, new WorldPoint(2466, 3460, 0),

@@ -283,7 +283,9 @@ public class ArdougneElite extends ComplexStateQuestHelper
 			crossbowString.highlighted());
 
 		pickTorstol = new ObjectStep(this, NullObjectID.NULL_8152, new WorldPoint(2670, 3374, 0),
-			"Plant and harvest the Torstol from the north Ardougne herb patch.", rake, spade, seedDib, torstolSeed);
+			"Plant and harvest the Torstol from the north Ardougne herb patch. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			rake, spade, seedDib, torstolSeed);
 
 		claimReward = new NpcStep(this, NpcID.TWOPINTS, new WorldPoint(2574, 3323, 0),
 			"Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");

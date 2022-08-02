@@ -304,8 +304,9 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		equipIban = new ItemStep(this, "Equip Iban's staff (u).", ibanStaffU);
 
 		ardyStraw = new ObjectStep(this, NullObjectID.NULL_8555, new WorldPoint(2667, 3371, 0),
-			"Plant and harvest the strawberries from the north Ardougne allotment.", true, rake, spade,
-			seedDib, strawSeeds.quantity(3));
+			"Plant and harvest the strawberries from the north Ardougne allotment. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			true, rake, spade, seedDib, strawSeeds.quantity(3));
 
 		claimReward = new NpcStep(this, NpcID.TWOPINTS, new WorldPoint(2574, 3323, 0),
 			"Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");

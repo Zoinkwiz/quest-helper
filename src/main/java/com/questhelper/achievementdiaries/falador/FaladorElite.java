@@ -188,7 +188,9 @@ public class FaladorElite extends ComplexStateQuestHelper
 
 		//Step 3 - Magic Roots
 		growMagicTree = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
-			"Grow and check the health of a magic tree in Falador Park, afterwards dig up the stump to get the Magic Roots.", magicTreeSapling, rake, spade);
+			"Grow and check the health of a magic tree in Falador Park, afterwards dig up the stump to get the Magic Roots. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			magicTreeSapling, rake, spade);
 		chopMagicTree = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
 			"Chop the magic tree that you grew in Falador Park, afterwards dig up the stump to get the Magic Roots.", axe, spade);
 		digUpStumpForRoots = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),

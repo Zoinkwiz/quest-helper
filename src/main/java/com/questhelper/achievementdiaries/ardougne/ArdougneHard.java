@@ -301,10 +301,14 @@ public class ArdougneHard extends ComplexStateQuestHelper
 				+ "TURN THE MIDDLE PILLAR TO POINT BACK EAST OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.", highEss);
 
 		poisonIvy = new ObjectStep(this, 7580, new WorldPoint(2618, 3226, 0),
-			"Plant and harvest poison ivy in the Ardougne Monastery bush patch.", rake, seedDib, poisonIvySeed);
+			"Plant and harvest poison ivy in the Ardougne Monastery bush patch. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			rake, seedDib, poisonIvySeed);
 
 		palmTree = new ObjectStep(this, 7963, new WorldPoint(2490, 3180, 0),
-			"Check the health of a palm tree near Tree Gnome Village", spade, rake, palmSap);
+			"Check the health of a palm tree near Tree Gnome Village. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			spade, rake, palmSap);
 
 		claimReward = new NpcStep(this, NpcID.TWOPINTS, new WorldPoint(2574, 3323, 0),
 			"Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");

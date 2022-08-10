@@ -46,12 +46,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -206,7 +202,7 @@ public class TrollStronghold extends BasicQuestHelper
 		climbOverStile = new ObjectStep(this, ObjectID.STILE_3730, new WorldPoint(2817, 3563, 0), "Climb over the stile north of Tenzing.");
 		climbOverRocks = new ObjectStep(this, ObjectID.ROCKS_3748, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBootsEquipped);
 		enterArena = new ObjectStep(this, ObjectID.ARENA_ENTRANCE_3783, new WorldPoint(2897, 3619, 0), "Follow the path from here east until you enter the arena.");
-		fightDad = new NpcStep(this, NpcID.DAD, new WorldPoint(2913, 3617, 0), "Fight Dad until he gives up. You can safe spot him from the gate you entered through.");
+		fightDad = new CombatStep(this, NpcID.DAD, new WorldPoint(2913, 3617, 0), "Fight Dad until he gives up. You can safe spot him from the gate you entered through.", "Dad (level 101) (safespottable)");
 		fightDad.addDialogStep("I accept your challenge!");
 		((NpcStep) fightDad).addSafeSpots(new WorldPoint(2897, 3619, 0));
 
@@ -220,7 +216,7 @@ public class TrollStronghold extends BasicQuestHelper
 			enterStronghold.getText().add("They can be avoided by taking the agility shortcuts across the mountain.");
 		}
 
-		killGeneral = new NpcStep(this, NpcID.TROLL_GENERAL, new WorldPoint(2830, 10086, 2), "Enter the west rooms and kill any of the Troll Generals for a prison key.");
+		killGeneral = new CombatStep(this, NpcID.TROLL_GENERAL, new WorldPoint(2830, 10086, 2), "Enter the west rooms and kill any of the Troll Generals for a prison key.", "Troll Generall (level 113) (safespottable)");
 		pickupPrisonKey = new ItemStep(this, "Pick up the prison key.", prisonKey);
 
 		goDownInStronghold = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Climb down the north staircase.");
@@ -260,11 +256,12 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Dad (level 101) (safespottable)");
-		reqs.add("Troll Generall (level 113) (safespottable)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(fightDad);
+		reqs.add(killGeneral);
+
 		return reqs;
 	}
 

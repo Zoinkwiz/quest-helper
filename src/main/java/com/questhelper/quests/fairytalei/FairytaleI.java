@@ -42,12 +42,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -270,8 +266,8 @@ public class FairytaleI extends BasicQuestHelper
 					dramenOrLunarStaff, magicSecateurs);
 		enterTanglefootRoom = new ObjectStep(this, NullObjectID.NULL_11999, new WorldPoint(2399, 4379, 0),
 			"Enter the tanglefoot lair in the south of Zanaris, near the cosmic altar.", magicSecateursEquipped, food);
-		killTanglefoot = new NpcStep(this, NpcID.TANGLEFOOT, new WorldPoint(2375, 4385, 0), "Kill the large " +
-			"Tanglefoot with the Magic Secateurs. You can flinch it on a corner.", magicSecateursEquipped);
+		killTanglefoot = new CombatStep(this, NpcID.TANGLEFOOT, new WorldPoint(2375, 4385, 0), "Kill the large " +
+			"Tanglefoot with the Magic Secateurs. You can flinch it on a corner.", "Tanglefoot (level 111)", magicSecateursEquipped);
 		pickUpSecateurs = new ItemStep(this, "Pick up the queen's secateurs.", queensSecateurs);
 
 		enterZanarisForEnd = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
@@ -303,9 +299,12 @@ public class FairytaleI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Tanglefoot (level 111)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killTanglefoot);
+
+		return reqs;
 	}
 
 	@Override

@@ -43,10 +43,7 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import java.util.ArrayList;
@@ -199,8 +196,8 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 			" of Magic in Arceuus, ready to fight some level 16 Tormented Souls.", combatGear);
 		enterTowerOfMagic.addDialogStep("Yes.");
 
-		killTormentedSouls = new NpcStep(this, NpcID.TORMENTED_SOUL, new WorldPoint(1585, 3821, 0),
-			"Defeat the tormented souls.", true, combatGear);
+		killTormentedSouls = new CombatStep(this, NpcID.TORMENTED_SOUL, new WorldPoint(1585, 3821, 0),
+			"Defeat the tormented souls.", "5 Tormented Souls (level 16)", true, combatGear);
 		((NpcStep) killTormentedSouls).addAlternateNpcs(NpcID.TORMENTED_SOUL_8513);
 
 		goUpstairsTowerOfMagic = new ObjectStep(this, ObjectID.STAIRS_33575, new WorldPoint(1585, 3821, 0),
@@ -237,8 +234,8 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 
 		inspectTrack6 = new ObjectStep(this, NullObjectID.NULL_34625, new WorldPoint(1282, 3726, 0),
 			"Inspect the final plant and kill the Trapped Soul (level 30) which appears.", combatGear);
-		killTrappedSoul = new NpcStep(this, NpcID.TRAPPED_SOUL, new WorldPoint(1281, 3724, 0),
-			"Kill the Trapped Soul.");
+		killTrappedSoul = new CombatStep(this, NpcID.TRAPPED_SOUL, new WorldPoint(1281, 3724, 0),
+			"Kill the Trapped Soul.", "Trapped Soul (level 30)");
 		inspectTrack6.addSubSteps(killTrappedSoul);
 
 		enterKaruulmAgain = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0),
@@ -266,9 +263,13 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("5 Tormented Souls (level 16)", "Trapped Soul (level 30)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killTormentedSouls);
+		reqs.add(killTrappedSoul);
+
+		return reqs;
 	}
 
 	@Override

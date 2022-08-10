@@ -46,11 +46,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -238,7 +234,7 @@ public class SwanSong extends BasicQuestHelper
 		talkToWomAtColony.addDialogStep("I'm ready to fight.");
 		enterColony = new ObjectStep(this, ObjectID.HOLE_12656, new WorldPoint(2344, 3651, 0), "Enter the Fishing Colony, prepared to fight trolls.", combatGear, log, tinderbox, ironBar5, hammer);
 		talkToWomAtColony.addSubSteps(enterColony);
-		kill79Trolls = new NpcStep(this, NpcID.SEA_TROLL, new WorldPoint(2343, 3657, 0), "Kill the sea trolls.", true);
+		kill79Trolls = new CombatStep(this, NpcID.SEA_TROLL, new WorldPoint(2343, 3657, 0), "Kill the sea trolls.", "11 Sea trolls (levels 65/79/87/101)", true);
 		talkToHermanInBuilding = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0), "Talk to Herman in the east of the Fishing Colony.");
 		talkToFranklin = new NpcStep(this, NpcID.FRANKLIN_CARANOS, new WorldPoint(2341, 3667, 0), "Talk to Franklin in the middle of the Fishing Colony.");
 		useLog = new ObjectStep(this, NullObjectID.NULL_13702, new WorldPoint(2344, 3676, 0), "Add some logs to the firebox in the building with a furnace.", logHiglight);
@@ -274,7 +270,7 @@ public class SwanSong extends BasicQuestHelper
 		talkToHermanForFinalFight.addDialogStep("I'm ready. Let's fight!");
 		talkToHermanForFinalFight.addSubSteps(talkToHermanWithPot);
 
-		killQueen = new NpcStep(this, NpcID.SEA_TROLL_QUEEN, new WorldPoint(2347, 3704, 0), "Kill the Sea Troll Queen.", combatGearRanged);
+		killQueen = new CombatStep(this, NpcID.SEA_TROLL_QUEEN, new WorldPoint(2347, 3704, 0), "Kill the Sea Troll Queen.", "Sea troll queen (level 170)", combatGearRanged);
 		killQueen.addDialogStep("No, I'm ready to move on with the quest.");
 		talkToHermanToFinish = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0), "Talk to the Herman to finish the quest.");
 	}
@@ -287,11 +283,12 @@ public class SwanSong extends BasicQuestHelper
 
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("11 Sea trolls (levels 65/79/87/101)");
-		reqs.add("Sea troll queen (level 170)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(kill79Trolls);
+		reqs.add(killQueen);
+
 		return reqs;
 	}
 

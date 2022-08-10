@@ -46,13 +46,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.EmoteStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1221,8 +1215,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		goUpLletyaLadder = new ObjectStep(this, ObjectID.LADDER_8744, new WorldPoint(2911, 6168, 0), "Go upstairs.");
 		searchCookingPots = new ObjectStep(this, ObjectID.COOKING_POTS_35875, new WorldPoint(2915, 6164, 1),
 				"Search the nearby cooking pots.");
-		fightArianwyn = new NpcStep(this, NpcID.ARIANWYN_8865, new WorldPoint(2906, 6179, 0),
-			"Defeat Arianwyn. Protect from Ranged. Move when he shoots orange arrows.");
+		fightArianwyn = new CombatStep(this, NpcID.ARIANWYN_8865, new WorldPoint(2906, 6179, 0),
+			"Defeat Arianwyn. Protect from Ranged. Move when he shoots orange arrows.", "Arianwyn (level 182)");
 
 		talkToBaxAfterLletyaFightForIthellClue = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2801, 6116, 0),
 			"Talk to Baxtorian in Lletya about Ithell and Meilyr.");
@@ -1300,12 +1294,12 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToBaxAfterFillingHoles.addDialogStep("I'm ready.");
 		defendDwarfCamp = new NpcStep(this, NpcID.IORWERTH_ARCHER_8953, "Defend the camp.", true);
 		((NpcStep) defendDwarfCamp).addAlternateNpcs(NpcID.IORWERTH_ARCHER_8954, NpcID.IORWERTH_WARRIOR_8955, NpcID.IORWERTH_WARRIOR_8956);
-		defeatEssyllt = new NpcStep(this, NpcID.ESSYLLT_8950, new WorldPoint(2442, 6094, 0),
-				"Defeat Essyllt. Protect from melee. He can drain your stats, so drink super restores when needed.");
+		defeatEssyllt = new CombatStep(this, NpcID.ESSYLLT_8950, new WorldPoint(2442, 6094, 0),
+				"Defeat Essyllt. Protect from melee. He can drain your stats, so drink super restores when needed.", "Essyllt (level 236)");
 		defeatEssyllt.addText("When he shoves you, flick to Protect from Ranged then back to Protect from Melee.");
 		enterWellCaveForFragmentFight = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_4006, new WorldPoint(2314, 3217, 0),
 			"Enter the Underground Pass from the Elven Lands entrance, and make your way to the dwarven camp. Make sure you're prepared for battle with magic gear.");
-		defeatFragmentOfSeren = new NpcStep(this, NpcID.FRAGMENT_OF_SEREN, "");
+		defeatFragmentOfSeren = new CombatStep(this, NpcID.FRAGMENT_OF_SEREN, "", "Fragment of Seren (level 494)");
 		defeatFragmentOfSeren.addSubSteps(enterWellCaveForFragmentFight);
 
 		defeatFragmentSidebar = new DetailedQuestStep(this, "Defeat the Fragment of Seren. Protect from Ranged, and keep your distance.");
@@ -1383,10 +1377,15 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Many Mourners, Paladins and Knights of Ardougne", "Arianwyn" +
-			" (level 182)", "Essyllt (level 236)", "Fragment of Seren (level 494)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, -1, "Many Mourners, Paladins and Knights of Ardougne"));
+		reqs.add(fightArianwyn);
+		reqs.add(defeatEssyllt);
+		reqs.add(defeatFragmentOfSeren);
+
+		return reqs;
 	}
 
 	@Override

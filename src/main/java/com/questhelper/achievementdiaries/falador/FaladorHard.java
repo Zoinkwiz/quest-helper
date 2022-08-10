@@ -244,16 +244,16 @@ public class FaladorHard extends ComplexStateQuestHelper
 		//Giant Mole
 		goToGiantMole = new ObjectStep(this, ObjectID.MOLE_HILL, new WorldPoint(2989, 3378, 0),
 			"Use a spade on one of the Mole Hills in Falador Park", combatGear, food, lightSource, spade);
-		killGiantMole = new NpcStep(this, NpcID.GIANT_MOLE,
-			"Kill the Giant Mole.", combatGear, food, lightSource);
+		killGiantMole = new CombatStep(this, NpcID.GIANT_MOLE,
+			"Kill the Giant Mole.", "Giant Mole (level 230)", combatGear, food, lightSource);
 
 		//Wyvern
 		goToIceDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0),
 			"Go down the ladder south of Port Sarim.", combatGear, food, wyvernProtection);
 		enterWyvernCavern = new ObjectStep(this, ObjectID.ICY_CAVERN_10596, new WorldPoint(3055, 9560, 0),
 			"Enter the Icy Cavern at the back of the dungeon.", combatGear, food, wyvernProtection);
-		killWyvern = new NpcStep(this, NpcID.SKELETAL_WYVERN,
-			"Kill a Skeletal Wyvern.", combatGear, food, wyvernProtection);
+		killWyvern = new CombatStep(this, NpcID.SKELETAL_WYVERN,
+			"Kill a Skeletal Wyvern.", "Skeletal Wyvern (level 140)", combatGear, food, wyvernProtection);
 
 		//Agi Course
 		completeAgiCourse = new ObjectStep(this, ObjectID.ROUGH_WALL_14898, new WorldPoint(3036, 3341, 0),
@@ -270,8 +270,8 @@ public class FaladorHard extends ComplexStateQuestHelper
 			"Go to the Hero's Guild south of Burthorpe. You can get here faster by teleporting with a Combat Bracelet to the Warriors Guild.", combatGear, food, dragonfireProtection);
 		enterHerosGuildBasement = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2892, 3507, 0),
 			"Climb down the ladder in the Hero's Guild.");
-		killBlueDragon = new NpcStep(this, NpcID.BLUE_DRAGON_266,
-			"Kill the Blue Dragon to complete your task.");
+		killBlueDragon = new CombatStep(this, NpcID.BLUE_DRAGON_266,
+			"Kill the Blue Dragon to complete your task.", "Blue dragon (level 140)");
 
 		//Rogues Den
 		enterRoguesDen = new ObjectStep(this, ObjectID.TRAPDOOR_7257, new WorldPoint(2905, 3537, 0),
@@ -305,9 +305,14 @@ public class FaladorHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Giant Mole (lvl 230)", "Skeletal Wyvern (lvl 140)", "Blue dragon (lvl 111)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGiantMole);
+		reqs.add(killWyvern);
+		reqs.add(killBlueDragon);
+
+		return reqs;
 	}
 
 	@Override

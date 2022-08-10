@@ -44,11 +44,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -625,7 +622,7 @@ public class Regicide extends BasicQuestHelper
 			"");
 		climbThroughForest = new ObjectStep(this, ObjectID.DENSE_FOREST_3939, new WorldPoint(2239, 3149, 0),
 			"");
-		killGuard = new NpcStep(this, NpcID.TYRAS_GUARD, "Kill the guard.");
+		killGuard = new CombatStep(this, NpcID.TYRAS_GUARD, "Kill the guard.", "Tyras guard (level 110)");
 		crossTripwire = new ObjectStep(this, ObjectID.TRIPWIRE_3921, new WorldPoint(2220, 3154, 0),
 			"Cross the tripwire to the north. It may poison you if you fail it.");
 		goKillGuardAtSecondForest = new NpcStep(this, NpcID.TYRAS_GUARD_3433, new WorldPoint(2188, 3170, 0),
@@ -895,9 +892,12 @@ public class Regicide extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Tyras guard (level 110)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGuard);
+
+		return reqs;
 	}
 
 	@Override

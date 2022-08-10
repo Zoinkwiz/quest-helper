@@ -224,8 +224,8 @@ public class BelowIceMountain extends BasicQuestHelper
 			"dungeon to finish the quest.");
 		reenterDungeon.addDialogStep("Yes.");
 
-		defeatGuardian = new NpcStep(this, NpcID.ANCIENT_GUARDIAN, "Defeat the Lvl-25 Ancient Guardian. " +
-			"Alternatively, with Level 10 Mining, mine the 4 pillars in the corners.");
+		defeatGuardian = new CombatStep(this, NpcID.ANCIENT_GUARDIAN, "Defeat the Lvl-25 Ancient Guardian. " +
+			"Alternatively, with Level 10 Mining, mine the 4 pillars in the corners.", "Ancient Guardian (level 25), or 10 mining + a pickaxe");
 		defeatGuardian.addSubSteps(reenterDungeon);
 
 		watchCutscene = new ObjectStep(this, NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0), "Watch the cutscene to " +
@@ -251,9 +251,12 @@ public class BelowIceMountain extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Ancient Guardian (level 25), or 10 mining + a pickaxe");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(defeatGuardian);
+
+	return reqs;
 	}
 
 	@Override

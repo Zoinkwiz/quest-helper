@@ -46,12 +46,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -312,8 +308,8 @@ public class TempleOfIkov extends BasicQuestHelper
 		tryToEnterWitchRoom = new ObjectStep(this, ObjectID.DOOR_93, new WorldPoint(2646, 9870, 0),
 			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows.", yewOrBetterBow, iceArrowsEquipped);
 
-		fightLes = new NpcStep(this, NpcID.FIRE_WARRIOR_OF_LESARKUS, new WorldPoint(2646, 9866, 0),
-			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBow, iceArrowsEquipped);
+		fightLes = new CombatStep(this, NpcID.FIRE_WARRIOR_OF_LESARKUS, new WorldPoint(2646, 9866, 0),
+			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", "Fire Warrior of Lesarkus (level 84) with ranged", yewOrBetterBow, iceArrowsEquipped);
 
 		enterDungeonKilledLes = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2677, 3405, 0),
 			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, limpwurt20);
@@ -366,12 +362,14 @@ public class TempleOfIkov extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Able to survive multiple aggressive spiders (level 61) and demons (level 82)");
-		reqs.add("Fire Warrior of Lesarkus (level 84) with ranged");
-		reqs.add("If siding with Lucien, Guardian of Armadyl (level 43)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, -1, "Able to survive multiple aggressive spiders (level 61) and demons (level 82)"));
+		reqs.add(fightLes);
+		reqs.add(new CombatStep(this, NpcID.GUARDIAN_OF_ARMADYL, "If siding with Lucien, Guardian of Armadyl (level 43)"));
+		reqs.add(new CombatStep(this, NpcID.LUCIEN, "If opposing him, Lucien (level 14)"));
+
 		return reqs;
 	}
 

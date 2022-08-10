@@ -46,13 +46,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -548,9 +543,9 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		talkToSnowflake = new NpcStep(this, NpcID.SNOWFLAKE, new WorldPoint(2852, 10334, 0), "Talk to Snowflake. Be prepared to fight Don't Know What. Protect from Ranged, and move around to avoid his attacks.", combatRangeMelee);
 		talkToSnowflake.addDialogStep("So I can't teleport, and I may lose stuff? Okay.");
 
-		killDontKnowWhat = new NpcStep(this, NpcID.DONT_KNOW_WHAT_8439, "Kill Don't Know What. Move around and Protect from Ranged to avoid his attacks.");
+		killDontKnowWhat = new CombatStep(this, NpcID.DONT_KNOW_WHAT_8439, "Kill Don't Know What. Move around and Protect from Ranged to avoid his attacks.", "Don't Know What (level 163)");
 
-		killMother = new NpcStep(this, NpcID.MOTHER_8430, "Kill Mother. Protect from Ranged, keep moving and keep your distance.");
+		killMother = new CombatStep(this, NpcID.MOTHER_8430, "Kill Mother. Protect from Ranged, keep moving and keep your distance.", "Mother (level 198)");
 		killMother.addAlternateNpcs(NpcID.MOTHER_8428, NpcID.MOTHER_8429);
 
 		pickUpBucket = new ObjectStep(this, ObjectID.BUCKETS, new WorldPoint(2867, 3934, 0), "You now need to put out the fire. Pick up a bucket from the bucket pile.");
@@ -590,9 +585,14 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Don't Know What (level 163)", "Mother (level 198)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killDontKnowWhat);
+		reqs.add(killMother);
+
+		return reqs;
+
 	}
 
 	@Override

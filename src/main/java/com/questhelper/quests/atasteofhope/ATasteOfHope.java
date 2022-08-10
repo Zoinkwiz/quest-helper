@@ -35,9 +35,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -59,8 +57,6 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.A_TASTE_OF_HOPE
@@ -485,7 +481,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		enterBaseAfterSerafina.addSubSteps(pressDecoratedWallAfterSerafina);
 
 		talkToSafalaanForAbominationFight = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan, ready for a fight.");
-		killAbomination = new NpcStep(this, NpcID.ABOMINATION, new WorldPoint(3627, 9644, 0), "Kill the abomination. It can be safe spotted with a long-ranged weapon.");
+		killAbomination = new CombatStep(this, NpcID.ABOMINATION, new WorldPoint(3627, 9644, 0), "Kill the abomination. It can be safe spotted with a long-ranged weapon.", "Abomination (level 149, safespottable)");
 		((NpcStep) (killAbomination)).addAlternateNpcs(NpcID.ABOMINATION_8261, NpcID.ABOMINATION_8262);
 		talkToSafalaanAfterAbominationFight = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8219, new WorldPoint(3627, 9644, 0), "Talk to Safalaan.");
 
@@ -526,8 +522,8 @@ public class ATasteOfHope extends BasicQuestHelper
 		killRanisSidebar.addText("In his last phase he will only attack with melee, so make sure to use protect from melee!");
 
 
-		killRanis = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis. His " +
-			"various mechanics are listed in the helper's sidebar.", ivandisFlailEquipped, food);
+		killRanis = new CombatStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis. His " +
+			"various mechanics are listed in the helper's sidebar.", "Ranis Drakan (level 233, melee only)", ivandisFlailEquipped, food);
 		((NpcStep) (killRanis)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
 		killRanisSidebar.addSubSteps(killRanis);
 
@@ -551,9 +547,13 @@ public class ATasteOfHope extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Abomination (level 149, safespottable)", "Ranis Drakan (level 233, melee only)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killAbomination);
+		reqs.add(killRanis);
+
+		return reqs;
 	}
 
 	@Override

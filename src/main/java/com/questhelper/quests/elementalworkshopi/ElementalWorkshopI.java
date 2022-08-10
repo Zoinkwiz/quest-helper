@@ -46,12 +46,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -209,8 +205,8 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		useLavaOnFurnace.addIcon(ItemID.A_STONE_BOWL_2889);
 		mineRock = new NpcStep(this, NpcID.ELEMENTAL_ROCK, new WorldPoint(2703, 9894, 0),
 			"Mine one of the elemental rocks in the west room, ready to fight a level 35.", true, pickaxe);
-		killRock = new NpcStep(this, NpcID.EARTH_ELEMENTAL_1367, new WorldPoint(2703, 9897, 0),
-			"Kill the rock elemental that appeared.");
+		killRock = new CombatStep(this, NpcID.EARTH_ELEMENTAL_1367, new WorldPoint(2703, 9897, 0),
+			"Kill the rock elemental that appeared.", "Earth elemental (level 35)");
 		pickUpOre = new ItemStep(this, "Pick up the elemental ore.", elementalOre);
 		forgeBar = new ObjectStep(this, NullObjectID.NULL_3410, new WorldPoint(2726, 9875, 0),
 			"Use the elemental ore on the furnace in the south room.", elementalOre, coal4);
@@ -308,9 +304,12 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Earth elemental (level 35)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killRock);
+
+		return reqs;
 	}
 
 	@Override

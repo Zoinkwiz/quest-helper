@@ -44,12 +44,7 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -394,14 +389,14 @@ public class RumDeal extends BasicQuestHelper
 		talkToDavey = new NpcStep(this, NpcID.DAVEY, new WorldPoint(2132, 5100, 1), "Talk to Davey south west of Captain Braindeath.", wrench, prayerPoints47);
 		useWrenchOnControl = new ObjectStep(this, NullObjectID.NULL_10104, new WorldPoint(2144, 5101, 1), "Use the holy wrench on the brewing control. Be prepared to fight an evil spirit.", holyWrench);
 		useWrenchOnControl.addIcon(ItemID.HOLY_WRENCH);
-		killSpirit = new NpcStep(this, NpcID.EVIL_SPIRIT, "Kill the Evil Spirit.", prayerPoints47);
+		killSpirit = new CombatStep(this, NpcID.EVIL_SPIRIT, "Kill the Evil Spirit.", "Evil spirit (level 150)", prayerPoints47);
 
 		goUpFromSpiders = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Go up the ladder.");
 
 		talkToBraindeathAfterSpirit = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 		goDownToSpiders = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2139, 5105, 1), "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves);
 
-		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER, "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves.equipped());
+		killSpider = new CombatStep(this, NpcID.FEVER_SPIDER, "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", "Fever spider (level 49)", slayerGloves.equipped());
 		pickUpCarcass = new ItemStep(this, "Pick up the fever spider body.", spiderCarcass);
 		goUpFromSpidersWithCorpse = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Add the spider body to the hopper on the top floor.", spiderCarcass);
 		goUpToDropSpider = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1), "Add the spider body to the hopper on the top floor.", spiderCarcass);
@@ -433,9 +428,13 @@ public class RumDeal extends BasicQuestHelper
 
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Evil spirit (level 150)", "Fever spider (level 49)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSpirit);
+		reqs.add(killSpider);
+
+		return reqs;
 	}
 
 	@Override

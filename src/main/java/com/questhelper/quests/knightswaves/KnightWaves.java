@@ -34,8 +34,8 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,8 +48,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
 import com.questhelper.QuestDescriptor;
 
 @QuestDescriptor(
@@ -192,8 +190,24 @@ public class KnightWaves extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("8 Knights of the Round Table (levels 110-127)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.SIR_BEDIVERE_4345,"Sir Bedivere (level 110)"));
+		reqs.add(new CombatStep(this, NpcID.SIR_PELLEAS_4347, "Sir Pelleas (level 112)"));
+		reqs.add(new CombatStep(this, NpcID.SIR_TRISTRAM, "Sir Tristram (level 115)"));
+		reqs.add(new CombatStep(this, NpcID.SIR_PALOMEDES, "Sir Palomedes (level 118)"));
+		reqs.add(new CombatStep(this, NpcID.SIR_LUCAN, "Sir Lucan (level 120)"));
+		reqs.add(new CombatStep(this, NpcID.SIR_GAWAIN_4356, "Sir Gawain(level 122)"));
+		reqs.add(new CombatStep(this, NpcID.SIR_KAY, "Sir Kay (level 124)"));
+		reqs.add(new CombatStep(this, NpcID.SIR_LANCELOT, "Sir Lancelot(level 126)"));
+
+		return reqs;
+	}
+
+	@Override
+	public List<String> getNotes()
+	{
+		return Collections.singletonList("Do not leave the training room via door. It will reset your wave back to the first one. If you die, you go back to the knight you left off on. You can also freely teleport out of the training room and it will save your progress.");
 	}
 }

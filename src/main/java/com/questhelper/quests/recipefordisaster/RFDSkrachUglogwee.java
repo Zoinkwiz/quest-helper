@@ -43,12 +43,8 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -216,7 +212,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		getRock = new ObjectStep(this, ObjectID.PILE_OF_ROCK_12564, new WorldPoint(2567, 2960, 0), "Mine a pile of rocks near the Feldip Hills Fairy Ring for a rock.", pickaxe);
 		useBellowOnToadInInv = new DetailedQuestStep(this, "Use the bellows on your toad with a ball of wool in your inventory.", ogreBellowsFilled, toad, ballOfWool);
 		dropBalloonToad = new DetailedQuestStep(this, new WorldPoint(2593, 2964, 0), "Drop the balloon toad near a swamp and wait for a Jubbly to arrive.", toadReady, ogreBowAndArrows);
-		killJubbly = new NpcStep(this, NpcID.JUBBLY_BIRD, "Kill then pluck jubbly.", ogreBowAndArrows);
+		killJubbly = new CombatStep(this, NpcID.JUBBLY_BIRD, "Kill then pluck jubbly.", "Jubbly (level 9)", ogreBowAndArrows);
 		pickUpRawJubbly = new ItemStep(this, "Pick up the raw jubbly.", rawJubbly);
 		lootJubbly = new NpcStep(this, NpcID.JUBBLY_BIRD_4864, "Pluck the jubbly's carcass.");
 		cookJubbly = new ObjectStep(this, NullObjectID.NULL_6895, new WorldPoint(2631, 2990, 0), "Cook the raw jubbly on Rantz's spit.", rawJubbly);
@@ -235,9 +231,12 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Jubbly (level 9)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killJubbly);
+
+		return reqs;
 	}
 
 	@Override

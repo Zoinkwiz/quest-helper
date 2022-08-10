@@ -39,10 +39,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,7 +54,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WESTERN_ELITE
@@ -191,8 +188,8 @@ public class WesternElite extends ComplexStateQuestHelper
 			"Enter the Smoke Devil Dungeon.", combatGear, food, mouthProtection);
 		moveToThermy = new ObjectStep(this, ObjectID.CREVICE, new WorldPoint(2378, 9452, 0),
 			"Enter the boss area of the Thermonuclear smoke devil.", combatGear, food, mouthProtection);
-		killThermy = new NpcStep(this, NpcID.THERMONUCLEAR_SMOKE_DEVIL, new WorldPoint(2356, 9456, 0),
-			"Defeat the Thermonuclear smoke devil. You are allowed one kill off-task for the diary.", combatGear, food,
+		killThermy = new CombatStep(this, NpcID.THERMONUCLEAR_SMOKE_DEVIL, new WorldPoint(2356, 9456, 0),
+			"Defeat the Thermonuclear smoke devil. You are allowed one kill off-task for the diary.", "Thermonuclear smoke devil (lvl 301)", combatGear, food,
 			mouthProtection);
 
 		advancedAgi = new ObjectStep(this, ObjectID.ROCKS_16515, new WorldPoint(2337, 3253, 0),
@@ -247,9 +244,12 @@ public class WesternElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Thermonuclear smoke devil (lvl 301)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killThermy);
+
+		return reqs;
 	}
 
 	@Override

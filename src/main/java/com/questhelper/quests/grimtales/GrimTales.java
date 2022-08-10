@@ -43,13 +43,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -354,7 +349,7 @@ public class GrimTales extends BasicQuestHelper
 		climbBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Climb the bean stalk, ready to fight Glod.", combatGear);
 		climbBeanForStatue = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Climb the bean stalk for another golden goblin.");
 
-		killGlod = new NpcStep(this, NpcID.GLOD, "Kill Glod.");
+		killGlod = new CombatStep(this, NpcID.GLOD, "Kill Glod.", "Glod (level 138)");
 
 		pickUpGoldenGoblin = new ItemStep(this, "Pick up the golden goblin.", goldenGoblin);
 
@@ -374,10 +369,11 @@ public class GrimTales extends BasicQuestHelper
 
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Glod (level 138)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGlod);
+
 		return reqs;
 	}
 

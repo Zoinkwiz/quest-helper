@@ -39,11 +39,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -227,10 +223,14 @@ public class TheMageArenaII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Porazdir (level 235)", "Justiciar Zachariah (level 348)", "Derwen " +
-			"(level 235)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.PORAZDIR, "Porazdir (level 235)"));
+		reqs.add(new CombatStep(this, NpcID.JUSTICIAR_ZACHARIAH, "Justiciar Zachariah (level 348)"));
+		reqs.add(new CombatStep(this, NpcID.DERWEN, "Derwen (level 235)"));
+
+		return reqs;
 	}
 
 	@Override

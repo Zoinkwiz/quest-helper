@@ -37,11 +37,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -148,7 +145,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 		talkToSpria = new NpcStep(this, NpcID.SPRIA_10434, new WorldPoint(3092, 3267, 0), "Talk to Spria in Draynor Village.");
 
 		enterHoleAgain = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor. Be prepared to fight Sourhog (level 37)", reinforcedGoggles, slashItem, combatGear);
-		killSourhog = new NpcStep(this, NpcID.SOURHOG_10436, "Kill Sourhog.", reinforcedGoggles);
+		killSourhog = new CombatStep(this, NpcID.SOURHOG_10436, "Kill Sourhog.", "Sourhog (level 37)", reinforcedGoggles);
 		killSourhog.addDialogStep("Yes");
 
 		enterHoleForFoot = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.", slashItem);
@@ -174,9 +171,12 @@ public class APorcineOfInterest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Sourhog (level 37)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSourhog);
+
+		return reqs;
 	}
 
 	@Override

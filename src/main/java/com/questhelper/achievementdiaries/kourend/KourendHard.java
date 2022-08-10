@@ -248,8 +248,8 @@ public class KourendHard extends ComplexStateQuestHelper
 		enterLizardmanTemple = new ObjectStep(this, ObjectID.LIZARD_DWELLING_34405, new WorldPoint(1312, 3686, 0),
 			"Enter the lizardman temple.", shayzienHelmet.equipped(), shayzienBody.equipped(), shayzienGreaves.equipped(),
 			shayzienBoots.equipped(), shayzienGloves.equipped(), antipoison, combatGear);
-		killLizardmanShaman = new NpcStep(this, NpcID.LIZARDMAN_SHAMAN_8565, new WorldPoint(1292, 10096, 0),
-			"Kill a Lizardman Shaman.", shayzienFavour, shayzienHelmet.equipped(), shayzienBody.equipped(),
+		killLizardmanShaman = new CombatStep(this, NpcID.LIZARDMAN_SHAMAN_8565, new WorldPoint(1292, 10096, 0),
+			"Kill a Lizardman Shaman.", "Kill a Lizardman Shaman (level 150)", shayzienFavour, shayzienHelmet.equipped(), shayzienBody.equipped(),
 			shayzienGreaves.equipped(), shayzienBoots.equipped(), shayzienGloves.equipped(), antipoison, combatGear);
 
 		// Mine some lovakite ore
@@ -270,8 +270,8 @@ public class KourendHard extends ComplexStateQuestHelper
 		// Kill a zombie
 		entershayzienCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0),
 			"Enter the shayzien crypt.", lightSource);
-		killZombie = new NpcStep(this, NpcID.ZOMBIE_8068, new WorldPoint(1491, 9949, 3),
-			"Kill a zombie in the shayzien crypt.", combatGear, food);
+		killZombie = new CombatStep(this, NpcID.ZOMBIE_8068, new WorldPoint(1491, 9949, 3),
+			"Kill a zombie in the shayzien crypt.", "Kill a Zombie (level 132)", combatGear, food);
 		killZombie.addSubSteps(entershayzienCrypt);
 
 		// Teleport to Xeric's heart
@@ -292,8 +292,8 @@ public class KourendHard extends ComplexStateQuestHelper
 			"Enter the Mount Karuulm Slayer Dungeon.", bootsOfStone.equipped(), combatGear, food);
 		enterWyrmArea = new ObjectStep(this, ObjectID.ROCKS_34544, new WorldPoint(1302, 10205, 0),
 			"Enter the wyrm area.", bootsOfStone.equipped());
-		killWyrm = new NpcStep(this, NpcID.WYRM, new WorldPoint(1282, 10189, 0),
-			"Kill a wyrm.", combatGear, food);
+		killWyrm = new CombatStep(this, NpcID.WYRM, new WorldPoint(1282, 10189, 0),
+			"Kill a wyrm.", "Kill a Wyrm (level 99)", combatGear, food);
 		killWyrm.addSubSteps(enterMountKaruulmDungeon, enterWyrmArea);
 
 		// Cast monster examine
@@ -309,12 +309,14 @@ public class KourendHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList(
-			"Kill a Lizardman Shaman (level 150)",
-			"Kill a Zombie (level 132)",
-			"Kill a Wyrm (level 99)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killLizardmanShaman);
+		reqs.add(killZombie);
+		reqs.add(killWyrm);
+
+		return reqs;
 	}
 
 	@Override

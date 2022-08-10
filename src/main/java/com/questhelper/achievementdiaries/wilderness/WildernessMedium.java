@@ -40,9 +40,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,7 +55,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WILDERNESS_MEDIUM
@@ -211,19 +209,19 @@ public class WildernessMedium extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		entYew = new NpcStep(this, NpcID.ENT, new WorldPoint(3227, 3666, 0),
-			"Kill an Ent in the wilderness and cut yew logs from its trunk after killing it.", combatGear, runeAxe);
+		entYew = new CombatStep(this, NpcID.ENT, new WorldPoint(3227, 3666, 0),
+			"Kill an Ent in the wilderness and cut yew logs from its trunk after killing it.", "Ent (level 101)",combatGear, runeAxe);
 		entYew.addAlternateNpcs(NpcID.ENT_TRUNK);
 
 		moveToSlayer1 = new ObjectStep(this, ObjectID.STAIRS_40388, new WorldPoint(3260, 3665, 0),
 			"Enter the Wilderness Slayer Cave.", combatGear, food);
-		killAnkou = new NpcStep(this, NpcID.ANKOU_7864, new WorldPoint(3373, 10073, 0),
-			"Kill an Ankou in the Wilderness Slayer Cave.", true, combatGear, food);
+		killAnkou = new CombatStep(this, NpcID.ANKOU_7864, new WorldPoint(3373, 10073, 0),
+			"Kill an Ankou in the Wilderness Slayer Cave.", "Ankou (level 98)",true, combatGear, food);
 
 		moveToSlayer2 = new ObjectStep(this, ObjectID.STAIRS_40388, new WorldPoint(3260, 3665, 0),
 			"Enter the Wilderness Slayer Cave.", combatGear, food, antiDragonShield);
-		killGreenDrag = new NpcStep(this, NpcID.GREEN_DRAGON_7868, new WorldPoint(3412, 10066, 0),
-			"Kill a Green dragon in the Wilderness Slayer Cave.", true, combatGear, food, antiDragonShield);
+		killGreenDrag = new CombatStep(this, NpcID.GREEN_DRAGON_7868, new WorldPoint(3412, 10066, 0),
+			"Kill a Green dragon in the Wilderness Slayer Cave.", "Green dragon (level 88)",true, combatGear, food, antiDragonShield);
 		killGreenDrag.addAlternateNpcs(NpcID.GREEN_DRAGON_7869, NpcID.GREEN_DRAGON_7870);
 
 		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3017, 3738, 0),
@@ -233,8 +231,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		wildyGodwars = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 3),
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the West.",
 			combatGear, food, godEquip);
-		wildyGWBloodveld = new NpcStep(this, NpcID.BLOODVELD_3138, new WorldPoint(3050, 10131, 0),
-			"Kill a Bloodveld in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
+		wildyGWBloodveld = new CombatStep(this, NpcID.BLOODVELD_3138, new WorldPoint(3050, 10131, 0),
+			"Kill a Bloodveld in the Wilderness God Wars Dungeon.", "Bloodveld (level 81)", combatGear, food, godEquip);
 
 		mineMith = new ObjectStep(this, ObjectID.ROCKS_11373, new WorldPoint(3057, 3944, 0),
 			"Mine mithril in the Wilderness.", pickaxe);
@@ -301,10 +299,15 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Bloodveld (lvl 81)", "Green dragon (lvl 88)", "Ankou (lvl 98)",
-			"Ent (lvl 101)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(wildyGWBloodveld);
+		reqs.add(killGreenDrag);
+		reqs.add(killAnkou);
+		reqs.add(entYew);
+
+		return reqs;
 	}
 
 	@Override

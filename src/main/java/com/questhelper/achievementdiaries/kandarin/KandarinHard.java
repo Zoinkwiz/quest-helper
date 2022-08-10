@@ -250,8 +250,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 		fancyStone.addDialogStep("Can you redecorate my house please?");
 		moveToShadow = new ObjectStep(this, NullObjectID.NULL_6560, new WorldPoint(2547, 3421, 0),
 			"Climb down the shadow ladder south of Glarial's Tomb.", ringOfVis.equipped(), combatGear);
-		shadowHound = new NpcStep(this, NpcID.SHADOW_HOUND, new WorldPoint(2699, 5095, 0),
-			"Kill a shadow hound.", true);
+		shadowHound = new CombatStep(this, NpcID.SHADOW_HOUND, new WorldPoint(2699, 5095, 0),
+			"Kill a shadow hound.", "Shadow Hound (Level 63)", true);
 		catchStur = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2501, 3504, 0),
 			"Catch a leaping Sturgeon south of Barbarian Assault.", true, barbRod, feather.quantity(20));
 		addySpear = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
@@ -263,8 +263,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 			"Go down the stairs.");
 		moveToAncient3 = new ObjectStep(this, ObjectID.STAIRS_25339, new WorldPoint(1778, 5345, 0),
 			"Go up the stairs in the east of the cavern.");
-		mithrilDrag = new NpcStep(this, NpcID.MITHRIL_DRAGON, new WorldPoint(1779, 5344, 1),
-			"Kill a mithril dragon.", true, combatGear, antidragonfire.equipped(), food);
+		mithrilDrag = new CombatStep(this, NpcID.MITHRIL_DRAGON, new WorldPoint(1779, 5344, 1),
+			"Kill a mithril dragon.", "Mithril Dragon (level 304)", true, combatGear, antidragonfire.equipped(), food);
 		buyGranite = new NpcStep(this, NpcID.COMMANDER_CONNAD, new WorldPoint(2535, 3576, 0),
 			"Buy and equip a granite body from Commander Connad. (Requires at least 1 Penance Queen kill)",
 			coins.quantity(95000));
@@ -329,9 +329,13 @@ public class KandarinHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Shadow Hound (Level 63), Mithril Dragon (level 304)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(shadowHound);
+		reqs.add(mithrilDrag);
+
+		return reqs;
 	}
 
 	@Override

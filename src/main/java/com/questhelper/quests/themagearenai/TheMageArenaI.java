@@ -37,11 +37,8 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -132,8 +129,8 @@ public class TheMageArenaI extends BasicQuestHelper
 			"for fighting him in the Mage Arena.", runesForCasts);
 		talkToKolodion.addDialogSteps("Can I fight here?", "Yes indeedy.", "Okay, let's fight.");
 
-		fightKolodion = new NpcStep(this, NpcID.KOLODION_1604, new WorldPoint(3105, 3934, 0), "Defeat Kolodion's " +
-			"various forms.");
+		fightKolodion = new CombatStep(this, NpcID.KOLODION_1604, new WorldPoint(3105, 3934, 0), "Defeat Kolodion's " +
+			"various forms.", "Kolodion in 5 forms, up to level 112");
 		((NpcStep) fightKolodion).addAlternateNpcs(NpcID.KOLODION_1605, NpcID.KOLODION_1606, NpcID.KOLODION_1607,
 			NpcID.KOLODION_1608, NpcID.KOLODION_1609);
 
@@ -159,9 +156,12 @@ public class TheMageArenaI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kolodion in 5 forms, up to level 112");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(fightKolodion);
+
+		return reqs;
 	}
 
 	@Override

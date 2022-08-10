@@ -37,11 +37,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 
@@ -51,7 +47,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -260,8 +255,8 @@ public class Contact extends BasicQuestHelper
 				"and use protection prayers against the monsters.");
 		((DetailedQuestStep) goDownToChasmAgain).setLinePoints(path);
 
-		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(2272, 4323, 0),
-			"Kill the Giant Scarab near the chasm. It can extinguish your light source and poison you, so be careful. Pray melee if you are meleeing it, range if you are attacking it from a distance.");
+		killGiantScarab = new CombatStep(this, NpcID.GIANT_SCARAB, new WorldPoint(2272, 4323, 0),
+			"Kill the Giant Scarab near the chasm. It can extinguish your light source and poison you, so be careful. Pray melee if you are meleeing it, range if you are attacking it from a distance.", "Giant Scarab (level 191)");
 
 		pickUpKeris = new ItemStep(this, "Pick up the Keris.", keris);
 
@@ -293,10 +288,11 @@ public class Contact extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Giant Scarab (level 191)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGiantScarab);
+
 		return reqs;
 	}
 

@@ -34,6 +34,7 @@ import java.util.Map;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.steps.CombatStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
@@ -121,8 +122,11 @@ public class ImpCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Imps (level 2) if you plan on collecting the beads yourself");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.IMP, "Imps (level 2) if you plan on collecting the beads yourself"));
+
+		return reqs;
 	}
 }

@@ -361,9 +361,19 @@ public class FremennikElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("God Wars Generals (level ~600), 3 Dagannoth Kings (level 303), and a Spiritual mage (level 120)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.GENERAL_GRAARDOR, "", "Bandos' General Graardor (level 624)"));
+		reqs.add(new CombatStep(this, NpcID.COMMANDER_ZILYANA, "", "Saradomin's Commander Zilyana (level 596)"));
+		reqs.add(new CombatStep(this, NpcID.KREEARRA, "", "Armadyl General, Kree'arra (level 580)"));
+		reqs.add(new CombatStep(this, NpcID.KRIL_TSUTSAROTH, "", "Zammorak General, K'ril Tsutsaroth (level 624)"));
+		reqs.add(new CombatStep(this, -1, "tank many hits in the Waterbirth Island Dungeon"));
+		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_PRIME, "", "Dagannoth Prime (level 303)" ));
+		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_REX, "", "Dagannoth Rex (level 303)" ));
+		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_SUPREME, "", "Dagannoth Supreme  (level 303)" ));
+		reqs.add(new CombatStep(this, NpcID.SPIRITUAL_MAGE, "", "Spiritual Mage (level 120)"));
+		return reqs;
 	}
 
 	@Override

@@ -48,11 +48,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -584,9 +580,9 @@ public class AKingdomDivided extends BasicQuestHelper
 			"Port Piscarilius, ready to fight the Judge of Yama.");
 		talkToCabinBoyHerbertSidebar.addSubSteps(talkToCabinBoyHerbert);
 
-		fightJudgeofYama = new NpcStep(this, NpcID.JUDGE_OF_YAMA_10938,
+		fightJudgeofYama = new CombatStep(this, NpcID.JUDGE_OF_YAMA_10938,
 			"Fight the Judge of Yama. This boss uses magic + range prayer so melee is required. Run in the gaps of " +
-				"the fire waves to approach the boss.", combatGearForJudgeOfYama, food);
+				"the fire waves to approach the boss.", "Judge of Yama (level 168)", combatGearForJudgeOfYama, food);
 
 		enterJudgeOfYamaFightPortal = new ObjectStep(this, ObjectID.PORTAL_41808, new WorldPoint(1823, 3686, 0),
 			"Prepare to fight the Judge of Yama. This boss uses magic + range prayer so melee is required. Run in the " +
@@ -631,7 +627,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToMartinHoltSettlementRuins = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0),
 			"Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp. " +
 			"Be prepared to fight a level 132 assassin who uses a dragon dagger and dragon darts.", combatGear, food);
-		killAssassin = new NpcStep(this, NpcID.ASSASSIN_10940, "Kill the Assassin.", combatGear, food);
+		killAssassin = new CombatStep(this, NpcID.ASSASSIN_10940, "Kill the Assassin.", "2 Assassins (level 132)",combatGear, food);
 		talkToMartinHoltSettlementRuins.addSubSteps(killAssassin);
 		talkToMartinHoltSettlementRuins2 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp.");
 		castFireSpellOnIce = new NpcStep(this, NpcID.ICE_CHUNKS_11029, new WorldPoint(1541, 3886, 0), "Cast FIRE bolt or stronger on the ice chunks south west of Martin Holt in the Settlement Ruins.", fireSpellGear);
@@ -689,7 +685,7 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		fightXamphurSidebar = new DetailedQuestStep(this, "Fight Xamphur.", combatGearForXamphur, food);
 		fightXamphurSidebar.addText("Xamphur uses several special mechanics. It is recommended to read or watch a guide on the fight.");
-		fightXamphur = new NpcStep(this, NpcID.XAMPHUR_10955, "Fight Xamphur.", combatGearForXamphur, food);
+		fightXamphur = new CombatStep(this, NpcID.XAMPHUR_10955, "Fight Xamphur.", "Xamphur (level 239)", combatGearForXamphur, food);
 		fightXamphurSidebar.addSubSteps(openXamphurGate, openDoorNearKahtNoKey, fightXamphur, enterLizardTempleToFightXamphur);
 
 		watchCutsceneAfterXamphur = new DetailedQuestStep(this, "");
@@ -746,7 +742,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		useShieldingPotionOnDinhsDoor = new ObjectStep(this, ObjectID.DOORS_OF_DINH, new WorldPoint(1630, 3965, 0), "Use the Shielding potion on the Doors of Dinh in the Wintertodt camp. Use a games necklace to get there quickly.", shieldingPotion.highlighted());
 		useShieldingPotionOnDinhsDoor.addIcon(ItemID.SHIELDING_POTION);
 		goDownLadderInKourendWoodland = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", combatGear, food);
-		killBarbarianInKourendWoodland = new NpcStep(this, NpcID.BARBARIAN_WARLORD, "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", combatGear, food);
+		killBarbarianInKourendWoodland = new CombatStep(this, NpcID.BARBARIAN_WARLORD, "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", "Barbarian Warlord (level 91)", combatGear, food);
 		goDownLadderInKourendWoodland.addSubSteps(killBarbarianInKourendWoodland);
 		goDownLadderInKourendAfterBarbFight = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Talk to Phileas Rimor in the Barbarian Warlords prison.");
 		talkToPhileasRimor = new NpcStep(this, NpcID.PHILEAS_RIMOR, "Talk to Phileas Rimor in the Barbarian Warlords prison.");
@@ -819,14 +815,15 @@ public class AKingdomDivided extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Lizardman Brute (level 75)");
-		reqs.add("Barbarian Warlord (level 91)");
-		reqs.add("2 Assassins (level 132)");
-		reqs.add("Judge of Yama (level 168)");
-		reqs.add("Xamphur (level 239)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.LIZARDMAN, "Lizardman (level 75)"));
+		reqs.add(killBarbarianInKourendWoodland);
+		reqs.add(killAssassin);
+		reqs.add(fightJudgeofYama);
+		reqs.add(fightXamphur);
+
 		return reqs;
 	}
 

@@ -39,11 +39,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -185,8 +182,8 @@ public class WhatLiesBelow extends BasicQuestHelper
 		talkToRat = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Talk to Rat Burgiss south of Varrock.");
 		talkToRat.addDialogStep("Shall I get them back for you?");
 		talkToRat.addDialogStep("Of course! Tell me what you need me to do.");
-		killOutlaws = new NpcStep(this, NpcID.OUTLAW, new WorldPoint(3118, 3472, 0),
-			"Go to the Bandits west of the Grand Exchange and kill 5 for intel. Put the intel into the folder Rat gave you.", true, folder, intel5);
+		killOutlaws = new CombatStep(this, NpcID.OUTLAW, new WorldPoint(3118, 3472, 0),
+			"Go to the Bandits west of the Grand Exchange and kill 5 for intel. Put the intel into the folder Rat gave you.", "5 outlaws (level 32)", true, folder, intel5);
 		killOutlaws.addAlternateNpcs(NpcID.OUTLAW_4168, NpcID.OUTLAW_4169, NpcID.OUTLAW_4170, NpcID.OUTLAW_4171, NpcID.OUTLAW_4172, NpcID.OUTLAW_4173, NpcID.OUTLAW_4174, NpcID.OUTLAW_4175, NpcID.OUTLAW_4176);
 		bringFolderToRat = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.", fullFolder);
 		talkToRatAfterFolder = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.");
@@ -213,7 +210,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 		talkToZaff.addDialogStep("Rat Burgiss sent me!");
 		talkToSurokToFight = new NpcStep(this, NpcID.SUROK_MAGIS_4160, new WorldPoint(3211, 3493, 0), "Prepare to fight King Roald (level 47), then go talk to Surok Magis in the Varrock Library.", beaconRing);
 		talkToSurokToFight.addDialogStep("Bring it on!");
-		fightRoald = new NpcStep(this, NpcID.KING_ROALD_4163, new WorldPoint(3211, 3493, 0), "Fight King Roald. When he's at 1hp, right-click operate the beacon ring.", beaconRing);
+		fightRoald = new CombatStep(this, NpcID.KING_ROALD_4163, new WorldPoint(3211, 3493, 0), "Fight King Roald. When he's at 1hp, right-click operate the beacon ring.", "King Roald (level 47)", beaconRing);
 		talkToRatToFinish = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock to finish the quest.");
 	}
 
@@ -236,11 +233,12 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("5 outlaws (level 32)");
-		reqs.add("King Roald (level 47)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killOutlaws);
+		reqs.add(fightRoald);
+
 		return reqs;
 	}
 

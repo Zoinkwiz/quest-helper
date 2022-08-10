@@ -35,7 +35,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -57,10 +57,6 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TALE_OF_THE_RIGHTEOUS
@@ -260,8 +256,8 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 
 		tryToEnterBarrier = new ObjectStep(this, ObjectID.MAGIC_GATE, new WorldPoint(1172, 9947, 0),
 			"Attempt to enter the magic gate to the south room. You will need to kill the corrupted lizardman who appears.");
-		killLizardman = new NpcStep(this, NpcID.CORRUPT_LIZARDMAN_8000, new WorldPoint(1172, 9947, 0),
-			"Kill the corrupt lizardman.");
+		killLizardman = new CombatStep(this, NpcID.CORRUPT_LIZARDMAN_8000, new WorldPoint(1172, 9947, 0),
+			"Kill the corrupt lizardman.", "Corrupt Lizardman (level 46)");
 		tryToEnterBarrier.addSubSteps(killLizardman);
 
 		inspectUnstableAltar = new ObjectStep(this, ObjectID.UNSTABLE_ALTAR, new WorldPoint(1172, 9929, 0),
@@ -323,10 +319,11 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Corrupt Lizardman (level 46)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killLizardman);
+
 		return reqs;
 	}
 

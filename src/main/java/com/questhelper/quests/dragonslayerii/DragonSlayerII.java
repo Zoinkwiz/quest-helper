@@ -48,11 +48,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -726,7 +723,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		enterBlockage = new ObjectStep(this, NullObjectID.NULL_29873, new WorldPoint(2860, 9648, 0), "Enter the passage in the north east of Elvarg's Lair.", combatGear);
 		investigateMural = new ObjectStep(this, ObjectID.ANCIENT_MURAL, new WorldPoint(2867, 9680, 0), "Inspect the mural.");
-		killSpawn = new NpcStep(this, NpcID.SPAWN_8056, new WorldPoint(2867, 9676, 0), "Kill the spawn.", combatGear);
+		killSpawn = new CombatStep(this, NpcID.SPAWN_8056, new WorldPoint(2867, 9676, 0), "Kill the spawn.", "Spawn (level 100)", combatGear);
 		investigateMuralAgain = new ObjectStep(this, ObjectID.ANCIENT_MURAL, new WorldPoint(2867, 9680, 0), "Investigate the mural again.");
 		talkToDallasAfterMural = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(2867, 9680, 0), "Talk to Dallas about the mural.");
 
@@ -803,7 +800,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		talkToBobInDream = new NpcStep(this, NpcID.BOB_8112, new WorldPoint(1824, 5209, 2), "Talk to Bob in the dream.");
 		talkToBobInDream.addSubSteps(talkToBobToEnterDreamAgain);
-		killRobertTheStrong = new NpcStep(this, NpcID.ROBERT_THE_STRONG_8057, new WorldPoint(1824, 5224, 2), "When you're ready, fight Robert.");
+		killRobertTheStrong = new CombatStep(this, NpcID.ROBERT_THE_STRONG_8057, new WorldPoint(1824, 5224, 2), "When you're ready, fight Robert.", "Robert the Strong (level 194)");
 		killRobertTheStrong.addText("Use Protect from Missiles");
 		killRobertTheStrong.addText("When he shouts 'See if you can hide from this!', hide behind a pillar.");
 
@@ -850,8 +847,8 @@ public class DragonSlayerII extends BasicQuestHelper
 			"sidebar first.", rangedCombatGear);
 		((NpcStep) (killVorkath)).addAlternateNpcs(NpcID.VORKATH_8058, NpcID.VORKATH_8059, NpcID.VORKATH_8060, NpcID.VORKATH_8061);
 
-		killVorkathSidebar = new NpcStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
-			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video on it first.", rangedCombatGear);
+		killVorkathSidebar = new CombatStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
+			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video on it first.", "Vorkath (level 392)", rangedCombatGear);
 		killVorkathSidebar.addSubSteps(killVorkath);
 
 			killVorkathSidebar.addText("Protect from Magic, and drink an antifire and antivenom potion.");
@@ -1062,8 +1059,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		killMithAddyAndRuneDragons.addText("Occasionally Galvek will shoot a fireball in the air, move to avoid it.");
 		killMithAddyAndRuneDragons.addText("");
 		((NpcStep) (killMithAddyAndRuneDragons)).addAlternateNpcs(NpcID.MITHRIL_DRAGON_8089, NpcID.ADAMANT_DRAGON, NpcID.ADAMANT_DRAGON_8090, NpcID.RUNE_DRAGON, NpcID.RUNE_DRAGON_8091);
-		killGalvek = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2), "Kill Galvek. Read the " +
-			"sidebar for more details.",true);
+		killGalvek = new CombatStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2), "Kill Galvek. Read the " +
+			"sidebar for more details.", "Galvek (level 608)", true);
 		((NpcStep) (killGalvek)).addAlternateNpcs(NpcID.GALVEK_8096, NpcID.GALVEK_8097, NpcID.GALVEK_8098);
 
 		killGalvekSidebar = new NpcStep(this, NpcID.GALVEK_8095, new WorldPoint(1631, 5735, 2),
@@ -1139,9 +1136,16 @@ public class DragonSlayerII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Spawn (level 100)", "Robert the Strong (level 194)", "Vorkath (level 392)", "Numerous chromatic and metal dragons", "Galvek (level 608)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSpawn);
+		reqs.add(killRobertTheStrong);
+		reqs.add(killVorkath);
+		reqs.add(new CombatStep(this, -1, "Numerous chromatic and metal dragons"));
+		reqs.add(killGalvek);
+
+		return reqs;
 	}
 
 	@Override

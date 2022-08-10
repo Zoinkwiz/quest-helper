@@ -47,12 +47,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -499,8 +495,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		lightFuse = new ObjectStep(this, NullObjectID.NULL_22492, new WorldPoint(3803, 2844, 0),
 			"Light the fuse.", tinderbox.highlighted());
 		lightFuse.addIcon(ItemID.TINDERBOX);
-		killSorebones = new NpcStep(this, NpcID.SOREBONES, new WorldPoint(3815, 2843, 0),
-			"Kill sorebones in the church for items.", true,
+		killSorebones = new CombatStep(this, NpcID.SOREBONES, new WorldPoint(3815, 2843, 0),
+			"Kill sorebones in the church for items.", "4x Sorebones (level 57)", true,
 			cranialClamp.hideConditioned(givenClamp), brainTongs.hideConditioned(givenTongs),
 			neededJars.hideConditioned(givenBells), neededStaples.hideConditioned(givenStaples));
 		((NpcStep) killSorebones).addAlternateNpcs(NpcID.SOREBONES_562);
@@ -526,8 +522,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			divingApparatus.equipped(), combatGearForSafespotting);
 		confrontMigor = new NpcStep(this, NpcID.MIGOR, new WorldPoint(3815, 2844, 0),
 			"Confront Migor.");
-		defeatBarrelchest = new NpcStep(this, NpcID.BARRELCHEST, new WorldPoint(3815, 2844, 0),
-			"Defeat the barrelchest. You can safespot it from the door if you leave and re-enter the instance.");
+		defeatBarrelchest = new CombatStep(this, NpcID.BARRELCHEST, new WorldPoint(3815, 2844, 0),
+			"Defeat the barrelchest. You can safespot it from the door if you leave and re-enter the instance.", "Barrelchest (level 190, safespottable)");
 		((NpcStep) defeatBarrelchest).addSafeSpots(new WorldPoint(3806, 2844, 0));
 
 		pickupAnchor = new ItemStep(this, "Pickup the anchor.", anchor);
@@ -567,9 +563,13 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Barrelchest (level 190, safespottable)", "4 Sorebones (level 57)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(defeatBarrelchest);
+		reqs.add(killSorebones);
+
+		return reqs;
 	}
 
 	@Override

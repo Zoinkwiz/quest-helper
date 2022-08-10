@@ -34,6 +34,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.steps.CombatStep;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
@@ -99,9 +100,11 @@ public class DagRouteHelper extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Tank many hits in the Waterbirth Island Dungeon");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, -1, "Tank many hits in the Waterbirth Island Dungeon"));
+		return reqs;
 	}
 
 	@Override

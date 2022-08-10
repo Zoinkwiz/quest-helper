@@ -49,11 +49,7 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -437,8 +433,8 @@ public class Wanted extends BasicQuestHelper
 		talkToLordDaquarius.addSubSteps(enterTaverleyDungeon);
 
 		goToBlackKnightsBase = new DetailedQuestStep(this, new WorldPoint(2896, 9681, 0), "Go to the Black Knights' Base in Taverley Dungeon.");
-		killBlackKnight = new NpcStep(this, NpcID.BLACK_KNIGHT, new WorldPoint(2891, 9681, 0),
-			"Kill a Black Knight near Daquarius.", true, combatGear);
+		killBlackKnight = new CombatStep(this, NpcID.BLACK_KNIGHT, new WorldPoint(2891, 9681, 0),
+			"Kill a Black Knight near Daquarius.", "Black Knight (level 33)", true, combatGear);
 		talkToIntimidatedLordDaquarius = new NpcStep(this, NpcID.LORD_DAQUARIUS, new WorldPoint(2891, 9681, 0), "Talk to Lord Daquarius in Taverley Dungeon again.");
 
 		talkToMageOfZamorakInWilderness = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK, new WorldPoint(3106, 3558, 0), "Talk to the Mage of Zamorak in the wilderness just north of Edgeville.", commorb);
@@ -497,7 +493,7 @@ public class Wanted extends BasicQuestHelper
 
 		// Final battle
 		goToEssenceMine = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3402, 0), "Go to the Rune Essence mine by talking to any of the NPC's that can teleport you there.", commorb, combatGear);
-		killSolus = new NpcStep(this, NpcID.SOLUS_DELLAGAR_4962, "Kill Solus Dellagar.", combatGear);
+		killSolus = new CombatStep(this, NpcID.SOLUS_DELLAGAR_4962, "Kill Solus Dellagar.", "Solus Dellagar (similar strength)", combatGear);
 
 		// Wrapping up
 		QuestStep talkToSirAmikAfterSolusFight = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, "Talk to Sir Amik Varze at the White Knights' Castle in Falador.");
@@ -536,9 +532,13 @@ public class Wanted extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Black Knight (level 33)", "Solus Dellagar (similar strength)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killBlackKnight);
+		reqs.add(killSolus);
+
+		return reqs;
 	}
 
 	@Override

@@ -41,11 +41,7 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -303,10 +299,13 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Black Golem, Grey Golem, White Golem (Level 75)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.BLACK_GOLEM, "Black Golem (level 75)"));
+		reqs.add(new CombatStep(this, NpcID.GREY_GOLEM, "Grey Golem (level 75)"));
+		reqs.add(new CombatStep(this, NpcID.WHITE_GOLEM, "White Golem (level 75)"));
+
 		return reqs;
 	}
 

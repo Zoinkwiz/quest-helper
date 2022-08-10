@@ -40,10 +40,8 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -180,20 +178,20 @@ public class FightArena extends BasicQuestHelper
 			"Get ready to fight the monsters (all safespottable), starting with Khazard Ogre (level 63). Use the keys on Sammy's cell door to free him.", combatGear, cellKeys);
 		openCell.addIcon(ItemID.KHAZARD_CELL_KEYS);
 		talkToSammy = new NpcStep(this, NpcID.SAMMY_SERVIL_1221, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the ogre.");
-		killOgre = new NpcStep(this, NpcID.KHAZARD_OGRE, new WorldPoint(2601, 3163, 0),
-			"Kill the Ogre. You can lure it behind a skeleton to safespot it.", combatGear);
+		killOgre = new CombatStep(this, NpcID.KHAZARD_OGRE, new WorldPoint(2601, 3163, 0),
+			"Kill the Ogre. You can lure it behind a skeleton to safespot it.", "Khazard Ogre (level 63) (safespottable)", combatGear);
 		killOgre.addSubSteps(talkToSammy);
-		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2605, 3153, 0), "Talk to General Khazard.");
+		talkToKhazard = new CombatStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2605, 3153, 0), "Talk to General Khazard.", "General Khazard (level 112) (safespottable) (optional)");
 		talkToHengrad = new NpcStep(this, NpcID.HENGRAD, new WorldPoint(2599, 3143, 0),
 			"Talk to Hengrad.");
 		talkToHengrad.addSubSteps(talkToKhazard);
 		talkToSammyForScorpion = new NpcStep(this, NpcID.SAMMY_SERVIL_1221, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the scorpion.");
-		killScorpion = new NpcStep(this, NpcID.KHAZARD_SCORPION, new WorldPoint(2601, 3163, 0),
-			"Kill the Scorpion. You can lure it behind a skeleton to safespot it.", combatGear);
+		killScorpion = new CombatStep(this, NpcID.KHAZARD_SCORPION, new WorldPoint(2601, 3163, 0),
+			"Kill the Scorpion. You can lure it behind a skeleton to safespot it.", "Khazard Scorpion (level 44) (safespottable)", combatGear);
 		killScorpion.addSubSteps(talkToSammyForScorpion);
 		talkToSammyForBouncer = new NpcStep(this, NpcID.SAMMY_SERVIL_1221, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight Bouncer.");
-		killBouncer = new NpcStep(this, NpcID.BOUNCER, new WorldPoint(2601, 3163, 0),
-			"Kill Bouncer. You can lure it behind a skeleton to safespot it. Warning: After Bouncer is killed, you will be unable to re-enter the arena.", combatGear);
+		killBouncer = new CombatStep(this, NpcID.BOUNCER, new WorldPoint(2601, 3163, 0),
+			"Kill Bouncer. You can lure it behind a skeleton to safespot it. Warning: After Bouncer is killed, you will be unable to re-enter the arena.", "Bouncer (level 137) (safespottable)", combatGear);
 		killBouncer.addSubSteps(talkToSammyForBouncer);
 		leaveArena = new ObjectStep(this, ObjectID.DOOR_82, new WorldPoint(2606, 3152, 0),
 			"Exit the arena (can ignore General Khazard). Warning: You will be unable to re-enter the arena.");
@@ -214,13 +212,14 @@ public class FightArena extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Khazard Scorpion (level 44) (safespottable)");
-		reqs.add("Khazard Ogre (level 63) (safespottable)");
-		reqs.add("Bouncer (level 137) (safespottable)");
-		reqs.add("General Khazard (level 112) (safespottable) (optional)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killScorpion);
+		reqs.add(killOgre);
+		reqs.add(killBouncer);
+		reqs.add(talkToKhazard);
+
 		return reqs;
 	}
 

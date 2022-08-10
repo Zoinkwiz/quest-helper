@@ -43,12 +43,8 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -210,7 +206,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		enterVerSinhazaCrypts.addDialogSteps("Yes.");
 
 		killVyrewatchForKey = new NpcStep(this, NpcID.VYREWATCH_11173,
-			"Kill a vyrewatch for a key. You must have your flail equipped in order to damage the vyrewatches.", true, flail.equipped(), combatGear, food);
+			"Kill a vyrewatch for a key. You must have your flail equipped in order to damage the vyrewatches.",  true, flail.equipped(), combatGear, food);
 		((NpcStep) killVyrewatchForKey).addAlternateNpcs(NpcID.VYREWATCH_11169, NpcID.VYREWATCH_11170, NpcID.VYREWATCH_11171, NpcID.VYREWATCH_11172, NpcID.VYREWATCH_11173);
 		pickupCryptKey = new ItemStep(this, "Pick up the crypt key", cryptKey);
 		killVyrewatchForKey.addSubSteps(pickupCryptKey);
@@ -335,7 +331,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 				hesporiFightText, combatGear, food, antipoison, axe);
 		goToHesporiFight.addSubSteps(exitNatureGrotto, activateHesporiFight);
 
-		fightHespori = new NpcStep(this, NpcID.HESPORI_11192, "Fight Hespori.");
+		fightHespori = new CombatStep(this, NpcID.HESPORI_11192, "Fight Hespori.", "Hespori (level 302)");
 
 		chopHesporiForBark = new ObjectStep(this, ObjectID.HESPORI_42592, new WorldPoint(3507, 3357, 0), "Chop Hespori to obtain Hespori bark.", axe);
 		returnToMysteriousStrangerWithBark = new NpcStep(this, NpcID.MYSTERIOUS_STRANGER_10876, new WorldPoint(3673, 3223, 0),
@@ -441,13 +437,18 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Vyrewatch (level 105)");
-		reqs.add("Several venomous spiders (level 87 and 123)");
-		reqs.add("Hespori (level 302)");
-		reqs.add("All ToB Bosses");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.VYREWATCH_11173,"Vyrewatch (level 105)" ));
+		reqs.add(new CombatStep(this, NpcID.SPIDER_11176, "Several venomous spiders (level 87 and 123)"));
+		reqs.add(fightHespori);
+		reqs.add(new CombatStep(this, NpcID.THE_MAIDEN_OF_SUGADINTI, "Maiden of Sugadinti -ToB Boss #1 (940)"));
+		reqs.add(new CombatStep(this, NpcID.PESTILENT_BLOAT, "Pestilent Bloat -ToB Boss #2 (870)"));
+		reqs.add(new CombatStep(this, NpcID.NYLOCAS, "Nylocas Vasilias -ToB Boss #3 (800)"));
+		reqs.add(new CombatStep(this, NpcID.SOTETSEG, "Sotetseg -ToB Boss #4 (995)"));
+		reqs.add(new CombatStep(this, NpcID.XARPUS, "Xarpus -ToB Boss #5"));
+		reqs.add(new CombatStep(this, NpcID.VERZIK_VITUR, "Verzik Vitur -ToB FINAL Boss"));
 
 		return reqs;
 	}

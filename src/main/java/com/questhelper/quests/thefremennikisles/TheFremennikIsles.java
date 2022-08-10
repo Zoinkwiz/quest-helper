@@ -39,10 +39,7 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
@@ -55,7 +52,6 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -542,7 +538,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 		killTrolls = new KillTrolls(this);
 		enterKingRoom = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21316, new WorldPoint(2385, 10263, 1), "Cross the rope bridge. Be prepared to fight the Ice Troll King. Use the Protect from Magic prayer for the fight.");
-		killKing = new NpcStep(this, NpcID.ICE_TROLL_KING, new WorldPoint(2386, 10249, 1), "Kill the king. Use the Protect from Magic prayer for the fight.");
+		killKing = new CombatStep(this, NpcID.ICE_TROLL_KING, new WorldPoint(2386, 10249, 1), "Kill the king. Use the Protect from Magic prayer for the fight.", "Ice Troll King (level 122)");
 		decapitateKing = new ObjectStep(this, ObjectID.ICE_TROLL_KING, "Decapitate the king's head.");
 		finishQuest = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis with the Ice Troll King's head to complete the quest.", head);
 		finishQuestGivenHead = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to complete the quest.");
@@ -573,9 +569,13 @@ public class TheFremennikIsles extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("10 Ice Trolls (level 74-82)", "Ice Troll King (level 122)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.ICE_TROLL_MALE_5824, "10x Ice Trolls (level 74-82)"));
+		reqs.add(killKing);
+
+		return reqs;
 	}
 
 

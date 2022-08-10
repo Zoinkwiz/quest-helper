@@ -46,11 +46,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -444,7 +440,7 @@ public class DesertTreasure extends BasicQuestHelper
 		enterFareedRoom = new ObjectStep(this, ObjectID.GATE_6452, new WorldPoint(3305, 9376, 0),
 			"Enter the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", iceGloves, waterSpellOrMelee);
 		useWarmKey.addSubSteps(enterFareedRoom);
-		killFareed = new NpcStep(this, NpcID.FAREED, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells.", iceGloves, waterSpellOrMelee);
+		killFareed = new CombatStep(this, NpcID.FAREED, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells.", "Fareed (level 167)", iceGloves, waterSpellOrMelee);
 
 		talkToRasolo = new NpcStep(this, NpcID.RASOLO, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
 		talkToRasolo.addDialogStep("Ask about the Diamonds of Azzanadra");
@@ -466,7 +462,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		waitForDamis = new DetailedQuestStep(this, new WorldPoint(2745, 5115, 0), "Go to the far eastern room of the dungeon, and wait for Damis to spawn.");
 
-		killDamis1 = new NpcStep(this, NpcID.DAMIS, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
+		killDamis1 = new CombatStep(this, NpcID.DAMIS, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.", "Damis (level 103, then level 174 in second phase)");
 		killDamis2 = new NpcStep(this, NpcID.DAMIS_683, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
 		killDamis1.addSubSteps(killDamis2);
 
@@ -487,7 +483,7 @@ public class DesertTreasure extends BasicQuestHelper
 		usePotOnGrave = new ObjectStep(this, ObjectID.VAMPYRE_TOMB, new WorldPoint(3570, 3402, 0),
 			"Use the blessed pot on the vampyre tomb in the graveyard south east of Canifis. Be prepared to fight Dessous.", potComplete);
 		usePotOnGrave.addIcon(ItemID.BLESSED_POT_4665);
-		killDessous = new NpcStep(this, NpcID.DESSOUS, new WorldPoint(3570, 3403, 0), "Kill Dessous.");
+		killDessous = new CombatStep(this, NpcID.DESSOUS, new WorldPoint(3570, 3403, 0), "Kill Dessous.", "Dessous (level 139)");
 
 		talkToMalakForDiamond = new NpcStep(this, NpcID.MALAK, new WorldPoint(3496, 3479, 0), "Return to Malak in Canifis to get the Blood Diamond.");
 
@@ -497,13 +493,13 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToChildTroll.addDialogStep("Yes");
 
 		enterIceGate = new ObjectStep(this, ObjectID.ICE_GATE, new WorldPoint(2838, 3740, 0), "Enter the ice gate east of the troll child. Make sure you're prepared for combat, and your stats to be continually drained.", fireSpells, spikedBoots);
-		killIceTrolls = new NpcStep(this, NpcID.ICE_TROLL_699, new WorldPoint(2854, 3733, 0), "Kill 5 ice trolls.", true);
+		killIceTrolls = new CombatStep(this, NpcID.ICE_TROLL_699, new WorldPoint(2854, 3733, 0), "Kill 5 ice trolls.", "5 ice trolls (level 120-124)", true);
 		killIceTrolls.addAlternateNpcs(NpcID.ICE_TROLL_700, NpcID.ICE_TROLL_701, NpcID.ICE_TROLL_702, NpcID.ICE_TROLL_703, NpcID.ICE_TROLL_704, NpcID.ICE_TROLL_705);
 		enterTrollCave = new ObjectStep(this, NullObjectID.NULL_6440, new WorldPoint(2869, 3719, 0), "Continue along the path through the cave to the east.");
 
-		killKamil = new NpcStep(this, NpcID.KAMIL, new WorldPoint(2863, 3757, 0),
+		killKamil = new CombatStep(this, NpcID.KAMIL, new WorldPoint(2863, 3757, 0),
 			"Continue along the path until you find Kamil. Kill him with fire spells. Get into melee distance and " +
-				"protect from melee.", fireSpells);
+				"protect from melee.", "Kamil (level 154)", fireSpells);
 		climbOnToLedge = new ObjectStep(this, ObjectID.ICE_LEDGE, new WorldPoint(2837, 3804, 0),
 			"Equip the spiked boots, then continue along the path until you reach an ice ledge. Climb up it.", spikedBootsEquipped);
 		goThroughPathGate = new ObjectStep(this, ObjectID.ICE_GATE_6462, new WorldPoint(2854, 3811, 1),
@@ -573,14 +569,15 @@ public class DesertTreasure extends BasicQuestHelper
 
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Dessous (level 139)");
-		reqs.add("Kamil (level 154)");
-		reqs.add("Fareed (level 167)");
-		reqs.add("Damis (level 103, then level 174 in second phase)");
-		reqs.add("5 ice trolls (level 120-124)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killDessous);
+		reqs.add(killKamil);
+		reqs.add(killFareed);
+		reqs.add(killDamis1);
+		reqs.add(killIceTrolls);
+
 		return reqs;
 	}
 

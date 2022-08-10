@@ -46,11 +46,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -261,7 +257,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		talkToNung = new NpcStep(this, NpcID.NUNG, new WorldPoint(2971, 9513, 1), "Talk to Nung in the north of the area.");
 		pickUpRocks = new DetailedQuestStep(this, new WorldPoint(2950, 9511, 1), "Pick up 5 rocks in the west of the area.", rocks5);
 		enterCave = new ObjectStep(this, ObjectID.UNDERWATER_CAVERN_ENTRANCE_12461, new WorldPoint(2950, 9516, 1), "Enter the underwater cave entrance.");
-		killMudksippers5 = new NpcStep(this, NpcID.MUDSKIPPER, new WorldPoint(2951, 9526, 1), "Kill mudskippers for 5 hides.", true, mudskipperHide5);
+		killMudksippers5 = new CombatStep(this, NpcID.MUDSKIPPER, new WorldPoint(2951, 9526, 1), "Kill mudskippers for 5 hides.", "5 Mudskippers (level 30/31)", true, mudskipperHide5);
 		((NpcStep) (killMudksippers5)).addAlternateNpcs(NpcID.MUDSKIPPER_4821);
 		returnToNung = new NpcStep(this, NpcID.NUNG, new WorldPoint(2971, 9513, 1), "Bring the hides to Nung.", mudskipperHide5);
 		talkToNungAgain = new NpcStep(this, NpcID.NUNG, new WorldPoint(2971, 9513, 1), "Talk to Nung again.");
@@ -271,7 +267,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		goDivingAgain = new NpcStep(this, NpcID.MURPHY, new WorldPoint(2664, 3160, 0), "Talk to Murphy again to go diving.", divingAparatus, divingHelmet, canSwim);
 		goDiving.addDialogSteps("Talk about Recipe for Disaster.", "Yes, Let's go diving.");
 		pickUpRocksAgain = new DetailedQuestStep(this, new WorldPoint(2950, 9511, 1), "Pick up 5 rocks so you can kill the crabs.", rocks5);
-		killCrab = new NpcStep(this, NpcID.CRAB_4819, new WorldPoint(2977, 9518, 1), "Kill the crabs for some crab meat. Get 2-3 to be safe.", true, crabMeat);
+		killCrab = new CombatStep(this, NpcID.CRAB_4819, new WorldPoint(2977, 9518, 1), "Kill the crabs for some crab meat. Get 2-3 to be safe.", "Crab (level 21/23)", true, crabMeat);
 		killCrab.addSubSteps(pickUpRocksAgain);
 		grindKelp = new DetailedQuestStep(this, "Use a pestle and mortar on the kelp.", pestleHighlighted, kelpHighlighted);
 		grindCrab = new DetailedQuestStep(this, "Use a pestle and mortar on the crab.", pestleHighlighted, crabMeatHighlighted);
@@ -305,9 +301,13 @@ public class RFDPiratePete extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("5 Mudskippers (level 30/31)", "Crab (level 21/23)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killMudksippers5);
+		reqs.add(killCrab);
+
+		return reqs;
 	}
 
 	@Override

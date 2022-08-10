@@ -45,11 +45,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -230,7 +227,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		goToCrashIsland = new NpcStep(this, NpcID.LUMDO_1454, new WorldPoint(2802, 2706, 0), "Travel to Crash Island with Lumdo.", combatGear);
 		enterCrashHole = new ObjectStep(this, ObjectID.PIT_15572, new WorldPoint(2922, 2722, 0), "Enter the hole on Crash Island. Protect melee when entering as you'll be attacked straight away by snakes.", combatGear, protectMelee);
 		enterCrashHole.addDialogStep("Yes, I'm as hard as nails.");
-		killSnake = new NpcStep(this, NpcID.BIG_SNAKE, new WorldPoint(3019, 5485, 0), "Kill a giant snake for its corpse. Kill a few in case you burn it.", snakeCorpse);
+		killSnake = new CombatStep(this, NpcID.BIG_SNAKE, new WorldPoint(3019, 5485, 0), "Kill a giant snake for its corpse. Kill a few in case you burn it.", "Big Snake (level 84)", snakeCorpse);
 		leaveSnakeHole = new ObjectStep(this, ObjectID.ROPE_15571, new WorldPoint(3024, 5489, 0), "Leave the hole.");
 		returnToApeAtoll = new NpcStep(this, NpcID.LUMDO_1454, new WorldPoint(2892, 2723, 0), "Travel back to Ape Atoll with Lumdo.");
 
@@ -264,9 +261,12 @@ public class RFDAwowogei extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Big Snake (level 84)", "If you need the greegrees still, a zombie, ninja, and guard monkey");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSnake);
+		reqs.add(new CombatStep(this, -1, "If you need the greegrees still, a zombie, ninja, and guard monkey"));
+		return reqs;
 	}
 
 	@Override

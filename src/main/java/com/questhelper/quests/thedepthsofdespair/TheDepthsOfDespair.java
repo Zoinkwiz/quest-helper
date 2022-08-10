@@ -43,12 +43,8 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -210,7 +206,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 		talkToArturHosidius = new NpcStep(this, NpcID.ARTUR_HOSIDIUS_7899, "Speak to Artur Hosidius.");
 
-		killSandSnake = new NpcStep(this, NpcID.SAND_SNAKE_7903, "Kill the Sand Snake.");
+		killSandSnake = new CombatStep(this, NpcID.SAND_SNAKE_7903, "Kill the Sand Snake.", "Sand Snake (level 36)");
 
 		searchChest = new ObjectStep(this, ObjectID.CHEST_31703, "Search the chest.");
 
@@ -225,9 +221,12 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Sand Snake (level 36)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSandSnake);
+
+		return reqs;
 	}
 
 	@Override

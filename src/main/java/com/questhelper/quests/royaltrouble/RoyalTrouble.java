@@ -45,12 +45,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -544,7 +539,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		enterSnakesRoom = new ObjectStep(this, ObjectID.CREVICE_15194, new WorldPoint(2585, 10260, 0), "Enter the crevice at the end of the path.");
 		enterBossRoom = new ObjectStep(this, ObjectID.CREVICE_15196, new WorldPoint(2617, 10272, 0), "Prepare to fight the Giant Sea Snake. It will only use ranged attacks if you stand at a distance. It can poison you.");
 
-		killBoss = new NpcStep(this, NpcID.GIANT_SEA_SNAKE, new WorldPoint(2615, 10280, 0), "Kill the Giant Sea Snake.");
+		killBoss = new CombatStep(this, NpcID.GIANT_SEA_SNAKE, new WorldPoint(2615, 10280, 0), "Kill the Giant Sea Snake.", "Giant Sea Snake (level 149)");
 
 		talkToArmod = new NpcStep(this, NpcID.ARMOD, new WorldPoint(2572, 10277, 0), "Talk to Armod.");
 
@@ -572,10 +567,11 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Giant Sea Snake (level 149)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killBoss);
+
 		return reqs;
 	}
 

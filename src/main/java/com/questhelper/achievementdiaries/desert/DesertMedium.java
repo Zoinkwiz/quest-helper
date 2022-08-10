@@ -40,12 +40,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +55,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DESERT_MEDIUM
@@ -237,8 +232,8 @@ public class DesertMedium extends ComplexStateQuestHelper
 		chopTeak = new ObjectStep(this, ObjectID.TEAK, new WorldPoint(3510, 3073, 0),
 			"Chop some teak logs near Uzer.", axe);
 
-		desertLizard = new NpcStep(this, NpcID.SMALL_LIZARD, new WorldPoint(3437, 3067, 0),
-			"Use an Ice cooler on a low hp Lizard in the desert.", iceCooler, combatGear);
+		desertLizard = new CombatStep(this, NpcID.SMALL_LIZARD, new WorldPoint(3437, 3067, 0),
+			"Use an Ice cooler on a low hp Lizard in the desert.", "Kill a Desert lizard (lvl 24)", iceCooler, combatGear);
 
 		prayElidinis = new ObjectStep(this, ObjectID.ELIDINIS_STATUETTE, new WorldPoint(3427, 2930, 0),
 			"Pray at the Elidinis Statuette in Nardah. If it doesn't complete expend some prayer points then try again.");
@@ -306,9 +301,12 @@ public class DesertMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill a Desert lizard (lvl 24)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(desertLizard);
+
+		return reqs;
 	}
 
 	@Override

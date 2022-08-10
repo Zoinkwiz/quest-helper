@@ -40,10 +40,8 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +56,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MORYTANIA_ELITE
@@ -229,8 +226,8 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		moveToSlayer3 = new ObjectStep(this, ObjectID.STAIRCASE_2119, new WorldPoint(3415, 3541, 1),
 			"Climb the stairs or the Spikey chains in the Slayer tower to ascend to the higher level.", combatGear,
 			food);
-		abyssalDemon = new NpcStep(this, NpcID.ABYSSAL_DEMON_415, new WorldPoint(3420, 3569, 2),
-			"Kill an Abyssal demon.", combatGear, food);
+		abyssalDemon = new CombatStep(this, NpcID.ABYSSAL_DEMON_415, new WorldPoint(3420, 3569, 2),
+			"Kill an Abyssal demon.", "Abyssal demon (lvl 124)", combatGear, food);
 
 		moveToCanifisBank = new DetailedQuestStep(this, new WorldPoint(3511, 3480, 0),
 			"Move to the bank in Canifis.", blackLeather.quantity(3).highlighted(), needle.highlighted(), thread);
@@ -284,9 +281,12 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("One Abyssal Demon (lvl 124)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(abyssalDemon);
+
+		return reqs;
 	}
 
 	@Override

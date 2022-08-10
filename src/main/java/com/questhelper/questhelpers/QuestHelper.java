@@ -43,10 +43,12 @@ import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 
+import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
+import com.questhelper.steps.CombatStep;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -219,7 +221,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return null;
 	}
 
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
 		return null;
 	}

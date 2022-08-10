@@ -45,12 +45,7 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
@@ -254,10 +249,10 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		useChickenOnShrine = new ObjectStep(this, ObjectID.CHICKEN_SHRINE, new WorldPoint(2453, 4477, 0),
 			"Use a raw chicken on the Chicken Shrine in the north east of Zanaris.", rawChicken, combatGear);
 		useChickenOnShrine.addIcon(ItemID.RAW_CHICKEN);
-		killEvilChicken = new NpcStep(this, NpcID.EVIL_CHICKEN, new WorldPoint(2455, 4399, 0), "Kill the Evil Chicken in the north of the range. Pray protect from magic against it.");
+		killEvilChicken = new CombatStep(this, NpcID.EVIL_CHICKEN, new WorldPoint(2455, 4399, 0), "Kill the Evil Chicken in the north of the range. Pray protect from magic against it.", "Evil Chicken (level " + evilChickenLevel + ")");
 		pickUpEgg = new ItemStep(this, "Pick up the evil chicken egg.", evilEgg);
 		useEggOnBrulee = new DetailedQuestStep(this, "Use the evil chickens egg on the brulee.", evilEgg, baseBrulee, pestleAndMortar);
-		killBlackDragon = new NpcStep(this, NpcID.BLACK_DRAGON, new WorldPoint(2461, 4367, 0), "Kill a black dragon.", combatGear, antidragonShield);
+		killBlackDragon = new CombatStep(this, NpcID.BLACK_DRAGON, new WorldPoint(2461, 4367, 0), "Kill a black dragon.", "Black dragon (level 227) (Can be safespotted)", combatGear, antidragonShield);
 		pickUpToken = new ItemStep(this, "Pick up the dragon token.", token);
 		grindBranch = new DetailedQuestStep(this, "Use a pestle and mortar on the dramen branch.", pestleAndMortarHighlighted, dramenBranch);
 		useCinnamonOnBrulee = new DetailedQuestStep(this, "Use the cinnamon on the brulee.", cinnamon, bruleeWithEgg);
@@ -319,9 +314,13 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Evil Chicken (level " + evilChickenLevel + ")", "Black dragon (level 227) (Can be safespotted)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killBlackDragon);
+		reqs.add(killEvilChicken);
+
+		return reqs;
 	}
 
 	@Override

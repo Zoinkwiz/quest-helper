@@ -51,12 +51,7 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -910,10 +905,10 @@ public class LegendsQuest extends BasicQuestHelper
 			yommiTotemHighlighted,	combatGear);
 		useTotemOnTotem.addAlternateObjects(ObjectID.TOTEM_POLE_2936);
 		useTotemOnTotem.addIcon(ItemID.YOMMI_TOTEM);
-		killRanalph = new NpcStep(this, NpcID.RANALPH_DEVERE, "Kill Ranalph.");
-		killIrvig = new NpcStep(this, NpcID.IRVIG_SENAY, "Kill Irvig.");
-		killSan = new NpcStep(this, NpcID.SAN_TOJALON, "Kill San.");
-		defeatDemon = new NpcStep(this, NpcID.NEZIKCHENED, "Defeat Nezikchened.");
+		killRanalph = new CombatStep(this, NpcID.RANALPH_DEVERE, "Kill Ranalph.", "Ranalph Devere (level 92)");
+		killIrvig = new CombatStep(this, NpcID.IRVIG_SENAY, "Kill Irvig.", "Irvig Senay (level 100)");
+		killSan = new CombatStep(this, NpcID.SAN_TOJALON, "Kill San.", "San Tojalon (level 106)");
+		defeatDemon = new CombatStep(this, NpcID.NEZIKCHENED, "Defeat Nezikchened.", "3 x Nezikchened (level 187)");
 
 		useTotemOnTotemAgain = new ObjectStep(this, ObjectID.TOTEM_POLE_2938, new WorldPoint(2852, 2917, 0), "Use the new totem on one of the corrupted totems.", yommiTotemHighlighted);
 		useTotemOnTotemAgain.addAlternateObjects(ObjectID.TOTEM_POLE_2936);
@@ -935,9 +930,15 @@ public class LegendsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Nezikchened (level 187) 3 times", "Ranalph Devere (level 92)", "Irvig Senay (level 100)", "San Tojalon (level 106)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killRanalph);
+		reqs.add(killIrvig);
+		reqs.add(killSan);
+		reqs.add(defeatDemon);
+
+		return reqs;
 	}
 
 	@Override

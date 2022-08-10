@@ -45,13 +45,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -299,8 +294,8 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		enterExperimentCave = new ObjectStep(this, ObjectID.MEMORIAL, new WorldPoint(3578, 3528, 0),
 			"Push the memorial south east of the castle.");
 
-		killExperiment = new NpcStep(this, NpcID.EXPERIMENT, new WorldPoint(3557, 9946, 0),
-			"Kill the level 51 Experiment north-west of the ladder to get a key.", true);
+		killExperiment = new CombatStep(this, NpcID.EXPERIMENT, new WorldPoint(3557, 9946, 0),
+			"Kill the level 51 Experiment north-west of the ladder to get a key.", "Able to defeat an experiment (level 51)", true);
 
 		pickupKey = new ItemStep(this, "Pick up the key.", cavernKey);
 		killExperiment.addSubSteps(pickupKey);
@@ -384,9 +379,13 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Able to defeat an experiment (level 51)"));
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killExperiment);
+
+		return reqs;
+
 	}
 
 	@Override

@@ -42,12 +42,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -260,8 +256,8 @@ public class GettingAhead extends BasicQuestHelper
 
 		goToMine = new ObjectStep(this, ObjectID.CAVE_20852, new WorldPoint(1212, 3647, 0), "Enter the Kebos Lowlands mine just west of the bridge and kill the Headless Beast (level 82).");
 		goToMine.addDialogStep("Yes.");
-		killBeast = new NpcStep(this, NpcID.HEADLESS_BEAST_10506, new WorldPoint(1191, 10021, 0), "Kill the headless " +
-			"beast. You can safespot it from the south west corner of the pond in the cave.");
+		killBeast = new CombatStep(this, NpcID.HEADLESS_BEAST_10506, new WorldPoint(1191, 10021, 0), "Kill the headless " +
+			"beast. You can safespot it from the south west corner of the pond in the cave.", "Headless Beast (level 82, safespottable)");
 		((NpcStep) killBeast).addSafeSpots(new WorldPoint(1190, 10017, 0));
 		goToMine.addSubSteps(killBeast);
 
@@ -319,9 +315,12 @@ public class GettingAhead extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Headless Beast (level 82, safespottable)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killBeast);
+
+		return reqs;
 	}
 
 	@Override

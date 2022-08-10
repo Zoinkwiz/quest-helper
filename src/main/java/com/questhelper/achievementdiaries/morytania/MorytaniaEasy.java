@@ -40,12 +40,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +55,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MORYTANIA_EASY
@@ -211,8 +206,8 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		killGhoul = new NpcStep(this, NpcID.GHOUL, new WorldPoint(3434, 3461, 0),
-			"Kill a ghoul in Morytania.", combatGear);
+		killGhoul = new CombatStep(this, NpcID.GHOUL, new WorldPoint(3434, 3461, 0),
+			"Kill a ghoul in Morytania.", "Ghoul (lvl 42)", combatGear);
 		enterSwamp = new ObjectStep(this, ObjectID.GATE_3507, new WorldPoint(3443, 3458, 0),
 			"Enter the Mort Myre Swamp.");
 		craftSnelm = new ItemStep(this, "Craft a snelm in Morytania. Note: Do not be in the swamp when completing " +
@@ -223,11 +218,11 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		restorePrayer = new ObjectStep(this, ObjectID.ALTAR_OF_NATURE, new WorldPoint(3442, 9741, 1),
 			"Pray at the altar.");
 
-		killBanshee = new NpcStep(this, NpcID.BANSHEE, new WorldPoint(3436, 3550, 0),
-			"Kill a banshee.", true, earProtection.equipped(), combatGear);
+		killBanshee = new CombatStep(this, NpcID.BANSHEE, new WorldPoint(3436, 3550, 0),
+			"Kill a banshee.", "Banshee (lvl 23)",  true, earProtection.equipped(), combatGear);
 
-		killWerewolf = new NpcStep(this, NpcID.ZOJA, new WorldPoint(3501, 3488, 0),
-			"Kill any attackable NPC in Canifis with the wolfbane dagger.", wolfbane.equipped());
+		killWerewolf = new CombatStep(this, NpcID.ZOJA, new WorldPoint(3501, 3488, 0),
+			"Kill any attackable NPC in Canifis with the wolfbane dagger.", "Werewolf in human form (lvl 24)", wolfbane.equipped());
 		mazchna = new NpcStep(this, NpcID.MAZCHNA, new WorldPoint(3513, 3510, 0),
 			"Get a slayer task from Mazchna.");
 		sbottTan = new NpcStep(this, NpcID.SBOTT, new WorldPoint(3490, 3501, 0),
@@ -296,9 +291,14 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Ghoul (lvl 42)", "Banshee (lvl 23)", "Werewolf in human form (lvl 24)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGhoul);
+		reqs.add(killBanshee);
+		reqs.add(killWerewolf);
+
+		return reqs;
 	}
 
 	@Override

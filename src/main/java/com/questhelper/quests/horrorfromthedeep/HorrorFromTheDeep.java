@@ -44,10 +44,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -295,10 +293,10 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		goThroughDoor = new ObjectStep(this, ObjectID.STRANGE_WALL_4545, new WorldPoint(2516, 4627, 0), "Go through " +
 			"the strange wall, ready for fighting.");
 		talkToJossik = new NpcStep(this, NpcID.JOSSIK_4424, new WorldPoint(2518, 4634, 0), "Talk to Jossik.");
-		killDagannoth = new NpcStep(this, NpcID.DAGANNOTH_979, new WorldPoint(2518, 4640, 0), "Defeat the dagannoth.");
-		killMother = new NpcStep(this, NpcID.DAGANNOTH_MOTHER, new WorldPoint(2518, 4640, 0), "Defeat the Dagannoth " +
+		killDagannoth = new CombatStep(this, NpcID.DAGANNOTH_979, new WorldPoint(2518, 4640, 0), "Defeat the dagannoth.", "Dagannoth (level 100)");
+		killMother = new CombatStep(this, NpcID.DAGANNOTH_MOTHER, new WorldPoint(2518, 4640, 0), "Defeat the Dagannoth " +
 			"mother. She can only be hurt by air spells when white, water spells when blue, earth spells when brown, " +
-			"fire spells when red, melee when orange and ranged when green.", protectFromMissiles, magicCombat, combatRunes);
+			"fire spells when red, melee when orange and ranged when green.", "Dagannoth Mother (level 100)", protectFromMissiles, magicCombat, combatRunes);
 		((NpcStep) killMother).addAlternateNpcs(NpcID.DAGANNOTH_MOTHER_981,
 			NpcID.DAGANNOTH_MOTHER_982, NpcID.DAGANNOTH_MOTHER_983, NpcID.DAGANNOTH_MOTHER_984,
 			NpcID.DAGANNOTH_MOTHER_985, NpcID.DAGANNOTH_MOTHER_986, NpcID.DAGANNOTH_MOTHER_987,
@@ -328,9 +326,13 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Dagannoth (level 100)", "Dagannoth Mother (level 100)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killDagannoth);
+		reqs.add(killMother);
+
+		return reqs;
 	}
 
 	@Override

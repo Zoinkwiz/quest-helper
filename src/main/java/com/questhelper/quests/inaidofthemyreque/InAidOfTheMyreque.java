@@ -45,11 +45,8 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -572,9 +569,13 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Gadderanks (level 35)", "Vampyre Juvenites (levels 50-75)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.GADDERANKS, "Gadderanks (level 35)"));
+		reqs.add(new CombatStep(this, NpcID.VAMPYRE_JUVINATE_4487, "Vampyre Juvenites (levels 50-75)"));
+
+		return reqs;
 	}
 
 	@Override

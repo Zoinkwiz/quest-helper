@@ -41,10 +41,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +57,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MORYTANIA_MEDIUM
@@ -276,8 +273,8 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		getToTerrorDogs = new TarnRoute(this);
 		moveToMine = new ObjectStep(this, ObjectID.CART_TUNNEL, new WorldPoint(3440, 3232, 0),
 			"Enter the Haunted Mine or use slayer ring to teleport directly to Tarn's Lair.");
-		terrorDog = new NpcStep(this, NpcID.TERROR_DOG, new WorldPoint(3149, 4652, 0),
-			"Kill a terror dog. You can enter the room with the diary if you need a safe zone.", true);
+		terrorDog = new CombatStep(this, NpcID.TERROR_DOG, new WorldPoint(3149, 4652, 0),
+			"Kill a terror dog. You can enter the room with the diary if you need a safe zone.", "Terror dog (lvl 100)", true);
 		terrorDog.addAlternateNpcs(NpcID.TERROR_DOG_6474);
 
 		canifisAgi = new ObjectStep(this, ObjectID.TALL_TREE_14843, new WorldPoint(3507, 3489, 0),
@@ -311,8 +308,8 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		moveToBrainDeath.addDialogStep("Okay!");
 		moveToDownstairs = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2139, 5105, 1),
 			"Climb down the ladder.");
-		feverSpider = new NpcStep(this, NpcID.FEVER_SPIDER, new WorldPoint(2141, 5103, 0),
-			"Kill a Fever spider.", slayerGloves, combatGear, food);
+		feverSpider = new CombatStep(this, NpcID.FEVER_SPIDER, new WorldPoint(2141, 5103, 0),
+			"Kill a Fever spider.", "Fever spider (lvl 49)", slayerGloves, combatGear, food);
 
 		moveToCapt = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
 			"Cross the gangplank to Bill Teach's ship. Alternatively use the Group finder to teleport directly there.");
@@ -362,9 +359,14 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("a Terror dog (lvl 100) and a Fever spider (lvl 49)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(terrorDog);
+		reqs.add(feverSpider);
+
+		return reqs;
+
 	}
 
 	@Override

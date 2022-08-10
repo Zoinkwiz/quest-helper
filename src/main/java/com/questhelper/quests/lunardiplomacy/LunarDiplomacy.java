@@ -45,14 +45,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -732,7 +726,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		talkToMeteora = new NpcStep(this, NpcID.METEORA, new WorldPoint(2083, 3890, 0), "Talk to Meteora in the south of Lunar Isle's town.", sealOfPassage);
 		talkToSelene = new NpcStep(this, NpcID.SELENE, new WorldPoint(2079, 3912, 0), "Talk to Selene in the west of Lunar Isle's town.", sealOfPassage);
 		talkToSelene.addDialogStep("I'm looking for a ring.");
-		killSuqahForTiara = new NpcStep(this, NpcID.SUQAH, "Kill the Suqah outside the town for a special tiara. You'll also need 4 hides for making clothes, so pick them up.", true);
+		killSuqahForTiara = new CombatStep(this, NpcID.SUQAH, "Kill the Suqah outside the town for a special tiara. You'll also need 4 hides for making clothes, so pick them up.", "Multiple Suqah (level 111)", true);
 		pickUpTiara = new ItemStep(this, "Pick up the tiara.", tiara);
 		killSuqahForTiara.addSubSteps(pickUpTiara);
 		returnTiaraToMeteora = new NpcStep(this, NpcID.METEORA, new WorldPoint(2083, 3890, 0),
@@ -797,7 +791,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		startRace = new NpcStep(this, NpcID.ETHEREAL_EXPERT, new WorldPoint(1788, 5068, 2), "Talk to the Ethereal Expert. Be prepared to race!");
 		startRace.addDialogStep("Ok.");
 
-		fightMe = new NpcStep(this, NpcID.ME, new WorldPoint(1823, 5087, 2), "Fight Me.");
+		fightMe = new CombatStep(this, NpcID.ME, new WorldPoint(1823, 5087, 2), "Fight Me.", "Me (level 79)");
 		fightMe.addAlternateNpcs(NpcID.ME_786);
 
 		leaveLecturn = new ObjectStep(this, ObjectID.MY_LIFE, new WorldPoint(1760, 5088, 2), "Read My life to return to Lunar Isle.");
@@ -872,9 +866,13 @@ public class LunarDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Multiple Suqah (level 111)", "Me (level 79)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSuqahForTiara);
+		reqs.add(fightMe);
+
+		return reqs;
 	}
 
 	@Override

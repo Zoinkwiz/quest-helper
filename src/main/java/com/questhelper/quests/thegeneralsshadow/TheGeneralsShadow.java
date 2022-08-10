@@ -41,10 +41,8 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -211,8 +209,8 @@ public class TheGeneralsShadow extends BasicQuestHelper
 			"the north east of the caves.", combatGear, serveredLeg);
 		enterCrack.addDialogStep("Yes");
 
-		killBouncer = new NpcStep(this, NpcID.BOUNCER_3509, new WorldPoint(8969, 2184, 0), "Kill Bouncer. You cannot " +
-			"use prayers.", combatGear, serveredLeg);
+		killBouncer = new CombatStep(this, NpcID.BOUNCER_3509, new WorldPoint(8969, 2184, 0), "Kill Bouncer. You cannot " +
+			"use prayers.", "Bouncer (level 160, can't use prayer)", combatGear, serveredLeg);
 	}
 
 	@Override
@@ -230,9 +228,12 @@ public class TheGeneralsShadow extends BasicQuestHelper
 
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Bouncer (level 160, can't use prayer)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killBouncer);
+
+		return reqs;
 	}
 
 	@Override

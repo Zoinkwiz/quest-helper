@@ -45,12 +45,8 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -148,8 +144,8 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	{
 		NpcHintArrowRequirement fightingWarlord = new NpcHintArrowRequirement(NpcID.KHAZARD_WARLORD_7622);
 
-		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7622, new WorldPoint(2456, 3301, 0),
-			"Defeat the warlord and retrieve orbs.");
+		fightTheWarlord = new CombatStep(this, NpcID.KHAZARD_WARLORD_7622, new WorldPoint(2456, 3301, 0),
+			"Defeat the warlord and retrieve orbs.", "Khazard Warlord (level 112)");
 		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7621, new WorldPoint(2456, 3301, 0),
 			"Talk to the Warlord south west of West Ardougne, ready to fight him.");
 
@@ -329,9 +325,12 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Khazard Warlord (level 112)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(fightTheWarlord);
+
+		return reqs;
 	}
 
 	@Override

@@ -44,11 +44,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -310,7 +307,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 			"Climb the tree to the north of the boat.", combatGear);
 		enterDoorsHellhound = new ObjectStep(this, ObjectID.WOODEN_DOORS_5061, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.", combatGear);
 		enterCaveHellhound = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5046, new WorldPoint(3492, 9823, 0), "Enter the cave to the north on the east side.");
-		killHellhound = new NpcStep(this, NpcID.SKELETON_HELLHOUND, new WorldPoint(3506, 9837, 0), "Kill the Skeleton Hellhound.");
+		killHellhound = new CombatStep(this, NpcID.SKELETON_HELLHOUND, new WorldPoint(3506, 9837, 0), "Kill the Skeleton Hellhound.", "Skeleton hellhound (level 97)");
 		killHellhound.addSubSteps(climbTreeHellhound, enterCaveHellhound, enterDoorsHellhound);
 
 		climbTreeLeave = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
@@ -346,9 +343,12 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Skeleton hellhound (level 97)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killHellhound);
+
+		return reqs;
 	}
 
 	@Override

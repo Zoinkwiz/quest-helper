@@ -41,11 +41,8 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -292,8 +289,8 @@ public class HazeelCult extends BasicQuestHelper
 			"Re-enter the cave.");
 		boardRaftToKill = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2568, 9679, 0),
 			"Board the raft.");
-		killAlomone = new NpcStep(this, NpcID.ALOMONE, new WorldPoint(2607, 9673, 0),
-			"Kill Almone and pickup the carnillean armour.");
+		killAlomone = new CombatStep(this, NpcID.ALOMONE, new WorldPoint(2607, 9673, 0),
+			"Kill Almone and pickup the carnillean armour.", "Alomone (level 13) if taking Ceril's side");
 		pickupArmour = new ItemStep(this, "Pickup the armour.", carnilleanArmour);
 		killAlomone.addSubSteps(pickupArmour);
 		returnOnRaftAfterKilling = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2607, 9693, 0),
@@ -324,9 +321,12 @@ public class HazeelCult extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Alomone (level 13) if taking Ceril's side");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killAlomone);
+
+		return reqs;
 	}
 
 	@Override

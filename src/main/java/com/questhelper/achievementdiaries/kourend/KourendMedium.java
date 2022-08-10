@@ -267,8 +267,8 @@ public class KourendMedium extends ComplexStateQuestHelper
 			"Travel from any fairy ring to south of Mount Karuulm (CIR).", dramenStaff.highlighted());
 
 		// Kill a lizardman
-		killLizardman = new NpcStep(this, NpcID.LIZARDMAN, new WorldPoint(1507, 3683, 0),
-			"Kill a lizardman.", true, combatGear, antipoison, food);
+		killLizardman = new CombatStep(this, NpcID.LIZARDMAN, new WorldPoint(1507, 3683, 0),
+			"Kill a lizardman.", "Kill a Lizardman (level 53)",true, combatGear, antipoison, food);
 		killLizardman.addAlternateNpcs(NpcID.LIZARDMAN_6915, NpcID.LIZARDMAN_6916, NpcID.LIZARDMAN_6917,
 			NpcID.LIZARDMAN_BRUTE, NpcID.LIZARDMAN_BRUTE_6919);
 
@@ -339,9 +339,12 @@ public class KourendMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill a Lizardman (level 53)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killLizardman);
+
+		return reqs;
 	}
 
 	@Override

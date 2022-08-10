@@ -246,9 +246,15 @@ public class KandarinEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("4 level 35 elementals");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.FIRE_ELEMENTAL, "Fire Elemental (level 35)"));
+		reqs.add(new CombatStep(this, NpcID.WATER_ELEMENTAL, "Water Elemental (level 35)"));
+		reqs.add(new CombatStep(this, NpcID.AIR_ELEMENTAL, "Air Elemental (level 35)"));
+		reqs.add(new CombatStep(this, NpcID.EARTH_ELEMENTAL, "Earth Elemental (level 35)"));
+
+		return reqs;
 	}
 
 	@Override

@@ -49,11 +49,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -405,7 +402,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		enterEastRoomAgain = new ObjectStep(this, ObjectID.DOOR_44060, new WorldPoint(3306, 9199, 0), "Enter the east room again.");
 
-		killPriest = new NpcStep(this, NpcID.POSSESSED_PRIEST, new WorldPoint(3306, 9196, 0), "Kill the possessed priest. Pray protect from magic against the priest.");
+		killPriest = new CombatStep(this, NpcID.POSSESSED_PRIEST, new WorldPoint(3306, 9196, 0), "Kill the possessed priest. Pray protect from magic against the priest.", "Possessed priest (level 91)");
 
 		talkToHighPriestInPyramid = new NpcStep(this, NpcID.HIGH_PRIEST_11603, new WorldPoint(3306, 9196, 0),
 			"Talk to the High Priest in the north east room of the pyramid.");
@@ -426,9 +423,13 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Level 75 or 81 guardian", "Possessed priest (level 91)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, -1, "Level 75 or 81 guardian"));
+		reqs.add(killPriest);
+
+		return reqs;
 	}
 
 	@Override

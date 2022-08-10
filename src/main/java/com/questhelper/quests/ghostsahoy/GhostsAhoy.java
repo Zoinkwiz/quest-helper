@@ -43,13 +43,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -350,7 +344,7 @@ public class GhostsAhoy extends BasicQuestHelper
 
 		searchChestForLobster = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3618, 3542, 0), "Attempt to search the chest in the east of the hull of the ship west of Port Phasmatys. A giant lobster will spawn you need to kill.");
 		((ObjectStep) (searchChestForLobster)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
-		killLobster = new NpcStep(this, NpcID.GIANT_LOBSTER, "Kill the Giant Lobster.");
+		killLobster = new CombatStep(this, NpcID.GIANT_LOBSTER, "Kill the Giant Lobster.", "Giant lobster (level 32) (safespottable)");
 		searchChestAfterLobster = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3618, 3542, 0), "Search the chest in the east of the hull again.");
 		((ObjectStep) (searchChestAfterLobster)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
 
@@ -444,9 +438,12 @@ public class GhostsAhoy extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Giant lobster (level 32) (safespottable)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killLobster);
+
+		return reqs;
 	}
 
 	@Override

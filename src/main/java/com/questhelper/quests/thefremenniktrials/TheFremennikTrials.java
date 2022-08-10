@@ -47,12 +47,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.QuestSyncStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -808,7 +804,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		bringChampionsTokenToThorvald.addDialogStep("Yes");
 		goDownLadderToKoschei = new ObjectStep(this, ObjectID.LADDER_4187, new WorldPoint(2667, 3694, 0), "When you're ready to fight Koschei, go down the ladder.", koscheiGear, optionalKoscheiGear);
 		waitForKoschei = new DetailedQuestStep(this, "Wait for Koschei the Deathless to spawn. If you brought a dramen branch you should now fletch it and equip the staff.");
-		killKoschei1 = new NpcStep(this, NpcID.KOSCHEI_THE_DEATHLESS, new WorldPoint(2660, 10080, 2), "Fight Koschei the Deathless and 'kill' him at least 3 times. Dying to his fourth phase is a SAFE death.");
+		killKoschei1 = new CombatStep(this, NpcID.KOSCHEI_THE_DEATHLESS, new WorldPoint(2660, 10080, 2), "Fight Koschei the Deathless and 'kill' him at least 3 times. Dying to his fourth phase is a SAFE death.", "Koschei the deathless");
 		killKoschei2 = new NpcStep(this, NpcID.KOSCHEI_THE_DEATHLESS, new WorldPoint(2660, 10080, 2), "Fight Koschei the Deathless and 'kill' him at least 3 times. Dying to his fourth phase is a SAFE death.");
 		killKoschei3 = new NpcStep(this, NpcID.KOSCHEI_THE_DEATHLESS, new WorldPoint(2660, 10080, 2), "Fight Koschei the Deathless and 'kill' him at least 3 times. Dying to his fourth phase is a SAFE death.");
 		killKoschei4 = new NpcStep(this, NpcID.KOSCHEI_THE_DEATHLESS, new WorldPoint(2660, 10080, 2), "You must now either die (SAFE DEATH), or defeat Koschei once more. Do not leave or you'll have to fight him again.");
@@ -956,11 +952,12 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Koschei the deathless");
-		reqs.add("Draugen (level 69)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killKoschei1);
+		reqs.add(new CombatStep(this, NpcID.THE_DRAUGEN, "Draugen (level 69)"));
+
 		return reqs;
 	}
 

@@ -48,12 +48,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -453,8 +449,8 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		mineRock = new NpcStep(this, NpcID.ELEMENTAL_ROCK, new WorldPoint(2703, 9894, 0),
 			"You need 2 elemental bars. Mine one of the elemental rocks in the west room, ready to fight a level 35.",
 			true, pickaxe);
-		killRock = new NpcStep(this, NpcID.EARTH_ELEMENTAL_1367, new WorldPoint(2703, 9897, 0),
-			"Kill the rock elemental that appeared.");
+		killRock = new CombatStep(this, NpcID.EARTH_ELEMENTAL_1367, new WorldPoint(2703, 9897, 0),
+			"Kill the rock elemental that appeared.", "2 Earth elementals (level 35)");
 		pickUpOre = new ItemStep(this, "Pick up the elemental ore.", elementalOre);
 		forgeBars = new ObjectStep(this, NullObjectID.NULL_3410, new WorldPoint(2726, 9875, 0),
 			"Use the elemental ores on the furnace in the south room.", elementalOre.quantity(2), coal.quantity(8));
@@ -618,9 +614,12 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("2 Earth elementals (level 35)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killRock);
+
+		return reqs;
 	}
 
 	@Override

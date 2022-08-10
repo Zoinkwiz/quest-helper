@@ -41,11 +41,8 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +56,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WILDERNESS_HARD
@@ -216,15 +212,15 @@ public class WildernessHard extends ComplexStateQuestHelper
 		airOrb = new ObjectStep(this, ObjectID.OBELISK_OF_AIR, new WorldPoint(3088, 3569, 0),
 			"Cast charge air orb on the Obelisk of Air.", airRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
 
-		chaosEle = new NpcStep(this, NpcID.CHAOS_ELEMENTAL, new WorldPoint(3263, 3918, 0),
-			"Kill the Chaos Elemental.", combatGear, food);
+		chaosEle = new CombatStep(this, NpcID.CHAOS_ELEMENTAL, new WorldPoint(3263, 3918, 0),
+			"Kill the Chaos Elemental.", "Chaos Elemental (level 305)", combatGear, food);
 		chaosEle.addAlternateNpcs(NpcID.CHAOS_ELEMENTAL_6505);
 
 		blackSally = new ObjectStep(this, ObjectID.YOUNG_TREE_9000, new WorldPoint(3296, 3671, 0),
 			"Set a trap and catch a Black salamander in the Wilderness.", true);
 
-		lavaDrag = new NpcStep(this, NpcID.LAVA_DRAGON, new WorldPoint(3209, 3848, 0),
-			"Kill a Lava dragon and bury the bones on Lava Dragon Isle.", true, combatGear, food);
+		lavaDrag = new CombatStep(this, NpcID.LAVA_DRAGON, new WorldPoint(3209, 3848, 0),
+			"Kill a Lava dragon and bury the bones on Lava Dragon Isle.", "Lava dragon (level 252)",true, combatGear, food);
 		buryBone = new ItemStep(this, "Bury the dragon bones", lavaDragonBones.highlighted());
 
 		rawLavaEel = new NpcStep(this, NpcID.FISHING_SPOT_6784, new WorldPoint(3071, 3839, 0),
@@ -240,8 +236,8 @@ public class WildernessHard extends ComplexStateQuestHelper
 		moveToGodWars2 = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 3),
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the West.",
 			combatGear, food, godEquip);
-		sprirtualWarrior = new NpcStep(this, NpcID.SPIRITUAL_WARRIOR, new WorldPoint(3050, 10131, 0),
-			"Kill a Spiritual Warrior in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
+		sprirtualWarrior = new CombatStep(this, NpcID.SPIRITUAL_WARRIOR, new WorldPoint(3050, 10131, 0),
+			"Kill a Spiritual Warrior in the Wilderness God Wars Dungeon.", "Spiritual warrior (level 115-134)", combatGear, food, godEquip);
 		sprirtualWarrior.addAlternateNpcs(NpcID.SPIRITUAL_WARRIOR_2243, NpcID.SPIRITUAL_WARRIOR_3159,
 			NpcID.SPIRITUAL_WARRIOR_3166);
 
@@ -290,10 +286,17 @@ public class WildernessHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Chaos Elemental (lvl 305)", "Crazy archaeologist (lvl 204)",
-			"Chaos Fanatic (lvl 202)", "Lava dragon (lvl 252)", "Scorpia (lvl 225)", "Spiritual warrior (lvl 115-134)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(chaosEle);
+		reqs.add(new CombatStep(this, NpcID.CRAZY_ARCHAEOLOGIST, "Crazy archaeologist (level 204)"));
+		reqs.add(new CombatStep(this, NpcID.CHAOS_FANATIC, "Chaos Fanatic (level 202)"));
+		reqs.add(new CombatStep(this, NpcID.SCORPIA, "Scorpia (level 225)"));
+		reqs.add(lavaDrag);
+		reqs.add(sprirtualWarrior);
+
+		return reqs;
 	}
 
 	@Override

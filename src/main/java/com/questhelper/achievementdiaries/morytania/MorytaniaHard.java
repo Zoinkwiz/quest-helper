@@ -40,11 +40,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,7 +57,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MORYTANIA_HARD
@@ -285,8 +281,8 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			"Talk to Bill Teach to travel to Mos Le'Harmless.", witchwoodIcon.equipped(), lightSource, combatGear, food);
 		moveToCaveHorror = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3650, new WorldPoint(3748, 2973, 0),
 			"Enter the Mos Le'Harmless Cave.", witchwoodIcon.equipped(), lightSource, combatGear, food);
-		caveHorror = new NpcStep(this, NpcID.CAVE_HORROR, new WorldPoint(3740, 9373, 0),
-			"Kill a Cave horror.", witchwoodIcon.equipped());
+		caveHorror = new CombatStep(this, NpcID.CAVE_HORROR, new WorldPoint(3740, 9373, 0),
+			"Kill a Cave horror.", "Cave horror (lvl 80)", witchwoodIcon.equipped());
 		caveHorror.addAlternateNpcs(NpcID.CAVE_HORROR_1048, NpcID.CAVE_HORROR_1049, NpcID.CAVE_HORROR_1050,
 			NpcID.CAVE_HORROR_1051);
 		moveToCaptMaho = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
@@ -363,9 +359,12 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill a cave horror (lvl 80)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(caveHorror);
+
+		return reqs;
 	}
 
 	@Override

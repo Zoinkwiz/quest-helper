@@ -47,11 +47,8 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -772,9 +769,13 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Able to survive 5 hits from Vanstrom Klause (level 169)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.VANSTROM_KLAUSE_3734, "Able to survive 5 hits from Vanstrom Klause (level 169)"));
+
+		return reqs;
+
 	}
 
 	@Override

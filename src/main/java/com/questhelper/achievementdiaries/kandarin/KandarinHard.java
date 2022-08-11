@@ -103,8 +103,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 		doHard.addStep(notSeersRooftop, seersRooftopTask);
 
 		yewLongTask = new ConditionalStep(this, yewLong);
-		yewLongTask.addStep(unstrungYewLong, cutLongbow);
-		yewLongTask.addStep(new Conditions(yewLogs, choppedLogs), stringBow);
+		yewLongTask.addStep(unstrungYewLong, stringBow);
+		yewLongTask.addStep(new Conditions(yewLogs, choppedLogs), cutLongbow);
 		doHard.addStep(notYewLong, yewLongTask);
 
 		pietyCourtTask = new ConditionalStep(this, pietyCourt);

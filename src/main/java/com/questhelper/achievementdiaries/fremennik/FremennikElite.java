@@ -364,15 +364,15 @@ public class FremennikElite extends ComplexStateQuestHelper
 	public List<QuestStep> getCombatRequirements()
 	{
 		ArrayList<QuestStep> reqs = new ArrayList<>();
-		reqs.add(new CombatStep(this, NpcID.GENERAL_GRAARDOR, "", "Bandos' General Graardor (level 624)"));
-		reqs.add(new CombatStep(this, NpcID.COMMANDER_ZILYANA, "", "Saradomin's Commander Zilyana (level 596)"));
-		reqs.add(new CombatStep(this, NpcID.KREEARRA, "", "Armadyl General, Kree'arra (level 580)"));
-		reqs.add(new CombatStep(this, NpcID.KRIL_TSUTSAROTH, "", "Zammorak General, K'ril Tsutsaroth (level 624)"));
+		reqs.add(new CombatStep(this, NpcID.GENERAL_GRAARDOR, "Bandos' General Graardor (level 624)"));
+		reqs.add(new CombatStep(this, NpcID.COMMANDER_ZILYANA, "Saradomin's Commander Zilyana (level 596)"));
+		reqs.add(new CombatStep(this, NpcID.KREEARRA, "Armadyl General, Kree'arra (level 580)"));
+		reqs.add(new CombatStep(this, NpcID.KRIL_TSUTSAROTH, "Zammorak General, K'ril Tsutsaroth (level 624)"));
 		reqs.add(new CombatStep(this, -1, "tank many hits in the Waterbirth Island Dungeon"));
-		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_PRIME, "", "Dagannoth Prime (level 303)" ));
-		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_REX, "", "Dagannoth Rex (level 303)" ));
-		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_SUPREME, "", "Dagannoth Supreme  (level 303)" ));
-		reqs.add(new CombatStep(this, NpcID.SPIRITUAL_MAGE, "", "Spiritual Mage (level 120)"));
+		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_PRIME, "Dagannoth Prime (level 303)" ));
+		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_REX, "Dagannoth Rex (level 303)" ));
+		reqs.add(new CombatStep(this, NpcID.DAGANNOTH_SUPREME, "Dagannoth Supreme  (level 303)" ));
+		reqs.add(new CombatStep(this, NpcID.SPIRITUAL_MAGE, "Spiritual Mage (level 120)"));
 		return reqs;
 	}
 

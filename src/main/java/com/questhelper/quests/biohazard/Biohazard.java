@@ -342,7 +342,7 @@ public class Biohazard extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Getting back into West Ardougne",
 			Arrays.asList(talkToJerico, getBirdFeed, getPigeonCage, investigateWatchtower, clickPigeonCage, talkToOmartAgain)));
 		allSteps.add(new PanelDetails("Getting the Distillator",
-			pickupRottenApple, enterBackyardOfHeadquarters,  useRottenAppleOnCauldron, searchSarahsCupboard,
+			enterBackyardOfHeadquarters, pickupRottenApple, useRottenAppleOnCauldron, searchSarahsCupboard,
 			enterMournerHeadquarters, goUpstairsInMournerBuilding, searchCrateForDistillator, talkToElenaWithDistillator));
 
 		List<QuestStep> testingSteps = QuestUtil.toArrayList(talkToTheChemist);

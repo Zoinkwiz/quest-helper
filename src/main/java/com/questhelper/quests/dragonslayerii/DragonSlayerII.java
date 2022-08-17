@@ -800,6 +800,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		talkToBobInDream = new NpcStep(this, NpcID.BOB_8112, new WorldPoint(1824, 5209, 2), "Talk to Bob in the dream.");
 		talkToBobInDream.addSubSteps(talkToBobToEnterDreamAgain);
+
 		killRobertTheStrong = new CombatStep(this, NpcID.ROBERT_THE_STRONG_8057, new WorldPoint(1824, 5224, 2), "When you're ready, fight Robert.", "Robert the Strong (level 194)");
 		killRobertTheStrong.addText("Use Protect from Missiles");
 		killRobertTheStrong.addText("When he shouts 'See if you can hide from this!', hide behind a pillar.");

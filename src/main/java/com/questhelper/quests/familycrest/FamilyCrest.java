@@ -141,7 +141,7 @@ public class FamilyCrest extends BasicQuestHelper
 		// Recommended
 		varrockTele = new ItemRequirement("Varrock Teleports", ItemID.VARROCK_TELEPORT, 2);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
-		ardyTele = new ItemRequirement("Ardounge Teleport", ItemID.ARDOUGNE_TELEPORT);
+		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.ARDOUGNE_TELEPORT);
 		alkharidTele = new ItemRequirement("Al-Kharid Teleport", ItemCollections.RING_OF_DUELINGS);
 		catherbyTele = new ItemRequirement("Camelot/Catherby Teleport", ItemID.CATHERBY_TELEPORT);
 

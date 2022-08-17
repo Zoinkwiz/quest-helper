@@ -448,7 +448,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		talkToGhrim2.addSubSteps(goUpToGhrim2);
 
 		goDownToSailor = new ObjectStep(this, ObjectID.STAIRCASE_16676, new WorldPoint(2506, 3849, 1), "Talk to the Sailor on the Miscellania docks.");
-		talkToSailor = new NpcStep(this, NpcID.SAILOR_3936, new WorldPoint(2578, 3845, 0), "Talk to the Sailor on the Miscellania docks.");
+		talkToSailor = new NpcStep(this, NpcID.SAILOR, new WorldPoint(2578, 3845, 0), "Talk to the Sailor on the Miscellania docks.");
 		talkToSailor.addDialogStep("I'm looking for a sailor...");
 		talkToSailor.addSubSteps(goDownToSailor);
 

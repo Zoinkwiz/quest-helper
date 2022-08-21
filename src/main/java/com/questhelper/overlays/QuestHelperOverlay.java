@@ -33,6 +33,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
+import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
@@ -40,18 +44,28 @@ public class QuestHelperOverlay extends OverlayPanel
 {
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 
+	@Inject
+	private Client client;
+
+
 	private final QuestHelperPlugin plugin;
 
 	@Inject
 	public QuestHelperOverlay(QuestHelperPlugin plugin)
 	{
 		this.plugin = plugin;
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGHEST);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (plugin.getConfig().showOverlay() && plugin.getConfig().hideOverlayBank() && !(itemContainer == null))
+		{
+			return super.render(graphics);
+		}
 		if (!plugin.getConfig().showOverlay())
 		{
 			return super.render(graphics);

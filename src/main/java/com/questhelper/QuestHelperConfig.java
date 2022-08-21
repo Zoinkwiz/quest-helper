@@ -201,6 +201,16 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideOverlayPanelBank",
+		name = "Hide overlay when bank opened",
+		description = "Chose whether the overlay should be displayed when bank opened"
+	)
+	default boolean hideOverlayBank()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "stewBoostsPanel",
 		name = "Use Spicy stew for boosts",
 		description = "Raises the boost maximum boost for certain skills to 5"

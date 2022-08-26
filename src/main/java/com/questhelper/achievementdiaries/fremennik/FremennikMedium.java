@@ -110,7 +110,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
-		slayBrineRatTask = new ConditionalStep(this, moveToCave);
+		slayBrineRatTask = new ConditionalStep(this, enterBrineCave);
 		slayBrineRatTask.addStep(inBrineRatCave, slayBrineRat);
 		doMedium.addStep(notSlayBrineRat, slayBrineRatTask);
 		doMedium.addStep(inBrineRatCave, rollBoulderExit);

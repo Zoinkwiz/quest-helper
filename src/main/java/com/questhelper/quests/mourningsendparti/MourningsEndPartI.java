@@ -476,8 +476,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.THIEVING, 25000),
-				new ExperienceReward(Skill.HITPOINTS, 25000));
+			new ExperienceReward(Skill.THIEVING, 25000),
+			new ExperienceReward(Skill.HITPOINTS, 25000));
 	}
 
 	@Override
@@ -516,16 +516,20 @@ public class MourningsEndPartI extends BasicQuestHelper
 		allSteps.add(cleanPanel);
 		allSteps.add(repairPanel);
 
-		PanelDetails enterWestArdougnePanel = new PanelDetails("Infiltrate the Mourners", Arrays.asList(enterMournerBase, enterBasement, talkToEssyllt, talkToGnome, useFeatherOnGnome, talkToGnomeWithItems, releaseGnome, giveGnomeItems),
+		PanelDetails enterWestArdougnePanel = new PanelDetails("Infiltrate the Mourners", Arrays.asList(enterMournerBase,
+			enterBasement, talkToEssyllt, talkToGnome, useFeatherOnGnome, talkToGnomeWithItems, releaseGnome, giveGnomeItems),
 			fullMourners, mournerLetter, feather, toadCrunchies, magicLogs, leather);
 
 		allSteps.add(enterWestArdougnePanel);
 
-		allSteps.add(new PanelDetails("Dye the sheep", Arrays.asList(getToads, dyeSheep, enterBaseAfterSheep, enterBasementAfterSheep, talkToEssylltAfterSheep), fixedDevice, ogreBellows, redDye, yellowDye, greenDye, blueDye));
+		allSteps.add(new PanelDetails("Dye the sheep", Arrays.asList(getToads, dyeSheep, enterBaseAfterSheep,
+			enterBasementAfterSheep, talkToEssylltAfterSheep), fixedDevice, ogreBellows, redDye, yellowDye, greenDye, blueDye));
 
 
 		allSteps.add(new PanelDetails("Poison the citizens",
-			Arrays.asList(pickUpRottenApple, talkToElena, pickUpBarrel, useBarrelOnPile, useApplesOnPress, getNaphtha, useNaphthaOnBarrel, useSieveOnBarrel, cookNaphtha, usePowderOnFood1, usePowderOnFood2, talkToEssylltAfterPoison), coal20OrNaphtha));
+			Arrays.asList(pickUpRottenApple, talkToElena, pickUpBarrel, useBarrelOnPile, useApplesOnPress, getNaphtha,
+				useNaphthaOnBarrel, useSieveOnBarrel, cookNaphtha, usePowderOnFood1, usePowderOnFood2,
+				talkToEssylltAfterPoison), coal20OrNaphtha, fullMourners));
 
 		allSteps.add(new PanelDetails("Report back to Arianwyn",
 			Collections.singletonList(returnToArianwyn)));

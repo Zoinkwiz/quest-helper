@@ -453,9 +453,9 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.THIEVING, 4500),
-				new ExperienceReward(Skill.AGILITY, 4000),
-				new ExperienceReward(Skill.WOODCUTTING, 4000));
+			new ExperienceReward(Skill.THIEVING, 4500),
+			new ExperienceReward(Skill.AGILITY, 4000),
+			new ExperienceReward(Skill.WOODCUTTING, 4000));
 	}
 
 	@Override
@@ -468,8 +468,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Access to the city of Sophanem."),
-				new UnlockReward("Ability to take carpet rides from Pollnivneah to Sophanem and Menaphos."));
+			new UnlockReward("Access to the city of Sophanem."),
+			new UnlockReward("Ability to take carpet rides from Pollnivneah to Sophanem and Menaphos."));
 	}
 
 	@Override
@@ -484,7 +484,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Returning the jar",
 			Arrays.asList(talkToSphinx, talkToHighPriest, openPyramidDoor, jumpPitAgain, pickUpAnyJar,
-				pickUpAnyJarAgain, returnOverPit, jumpOverPitAgain, solvePuzzleAgain, dropJar, leavePyramid), cat));
+				pickUpAnyJarAgain, returnOverPit, jumpOverPitAgain, solvePuzzleAgain, dropJar, leavePyramid),
+			combatGear, food, cat));
 
 		allSteps.add(new PanelDetails("Prepare the ritual",
 			Arrays.asList(talkToEmbalmer, buyLinen, talkToEmbalmerAgain, talkToCarpenter), bucketOfSap, bagOfSaltOrBucket, coinsOrLinen, willowLog));
@@ -492,7 +493,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Save the ritual",
 			Arrays.asList(openPyramidDoorWithSymbol, jumpPitWithSymbol, enterEastRoom, useSymbolOnSarcopagus,
 				leaveEastRoom, jumpPitWithSymbolAgain, enterEastRoomAgain, killPriest, talkToHighPriestInPyramid,
-				leavePyramidToFinish, talkToHighPriestToFinish), cat));
+				leavePyramidToFinish, talkToHighPriestToFinish), combatGear, food, cat));
 
 		return allSteps;
 	}

@@ -336,7 +336,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new CombatLevelRequirement(85));
-		req.add(new SkillRequirement(Skill.FARMING, 74));
+		req.add(new SkillRequirement(Skill.FARMING, 74, true));
 		req.add(new SkillRequirement(Skill.MAGIC, 66, true));
 		req.add(new SkillRequirement(Skill.MINING, 65, true));
 		req.add(new SkillRequirement(Skill.SLAYER, 62, true));

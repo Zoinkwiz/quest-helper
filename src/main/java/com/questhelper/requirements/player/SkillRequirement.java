@@ -49,6 +49,9 @@ public class SkillRequirement extends AbstractRequirement
 	private String displayText;
 	private Boosts boosts;
 	private QuestHelperPlugin questHelperPlugin;
+	private Boosts selectedSkill;
+	private int currentSkill;
+	private int highestBoost;
 
 	/**
 	 * Check if a player has a certain skill level
@@ -114,7 +117,6 @@ public class SkillRequirement extends AbstractRequirement
 
 	public boolean checkRange(Skill skill, int requiredLevel, Client client, QuestHelperConfig config)
 	{
-		Boosts selectedSkill = null;
 		for (Boosts boostSkills : boosts.values())
 		{
 			if (skill.getName().equals(boostSkills.getName()))
@@ -123,20 +125,15 @@ public class SkillRequirement extends AbstractRequirement
 			}
 		}
 
-		int currentSkill = Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill));
-		int highestBoost = selectedSkill.getHighestBoost();
+		currentSkill = Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill));
+		highestBoost = selectedSkill.getHighestBoost();
 
 		if (config.stewBoosts() && highestBoost < 5)
 		{
 			highestBoost = 5;
 		}
 
-		if (requiredLevel-highestBoost <= currentSkill)
-		{
-			return true;
-		}
-
-		return false;
+		return requiredLevel - highestBoost <= currentSkill;
 	}
 
 	public int checkBoosted(Client client, QuestHelperConfig config)

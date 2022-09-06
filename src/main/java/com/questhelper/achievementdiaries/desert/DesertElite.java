@@ -212,7 +212,7 @@ public class DesertElite extends ComplexStateQuestHelper
 		iceBarrage.addAlternateNpcs(NpcID.VULTURE_1268);
 
 		wildPie = new ObjectStep(this, ObjectID.CLAY_OVEN, new WorldPoint(3434, 2886, 0),
-			"Cook a wild pie on the clay over in Nardah.", rawPie);
+			"Cook a wild pie on the clay oven in Nardah.", rawPie);
 
 		moveToBed = new TileStep(this, new WorldPoint(3175, 3041, 0),
 			"Go to Bedabin Camp south-west of Al Karid.");

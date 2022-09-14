@@ -143,7 +143,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		talkToHarlowAgain = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow again with a beer. You can buy one for 2gp in the Blue Moon Inn.", beer);
 		enterDraynorManor = new ObjectStep(this, ObjectID.LARGE_DOOR_134, new WorldPoint(3108, 3353, 0), "Prepare to fight Count Draynor (level 34), and enter Draynor Manor.", combatGear, stake, hammer, garlic);
 		goDownToBasement = new ObjectStep(this, ObjectID.STAIRS_2616, new WorldPoint(3116, 3358, 0), "Enter Draynor Manor's basement.", combatGear, stake, hammer, garlic);
-		openCoffin = new ObjectStep(this, ObjectID.COFFIN_2614, new WorldPoint(3078, 9776, 0), "Open the coffin and kill Count Draynor.", combatGear, stake, hammer, garlic);
+		openCoffin = new ObjectStep(this, ObjectID.COFFIN_46237, new WorldPoint(3078, 9776, 0), "Open the coffin and kill Count Draynor.", combatGear, stake, hammer, garlic);
 		killDraynor = new NpcStep(this, NpcID.COUNT_DRAYNOR, new WorldPoint(3077, 9769, 0), "Kill Count Draynor.", combatGear, stake, hammer, garlic);
 		openCoffin.addSubSteps(killDraynor);
 	}

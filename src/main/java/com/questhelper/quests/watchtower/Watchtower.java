@@ -43,11 +43,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -460,7 +457,7 @@ public class Watchtower extends BasicQuestHelper
 
 		enterHoleSouthOfGuTanoth = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2811, new WorldPoint(2500, 2990, 0), "Enter the hole south of Gu'Tanoth.");
 
-		killGorad = new NpcStep(this, NpcID.GORAD, new WorldPoint(2578, 3022, 0), "Kill Gorad and pick up his tooth.");
+		killGorad = new CombatStep(this, NpcID.GORAD, new WorldPoint(2578, 3022, 0), "Kill Gorad and pick up his tooth.", "Gorad (level 68)");
 		talkToToban = new NpcStep(this, NpcID.TOBAN, new WorldPoint(2574, 3027, 0), "Talk to Toban on the island east of Gu'Tanoth.");
 		talkToToban.addDialogStep("I seek entrance to the city of ogres.");
 		talkToToban.addDialogStep("I could do something for you...");
@@ -622,11 +619,12 @@ public class Watchtower extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Gorad (level 68)");
-		reqs.add("Able to survive blue dragons, ogres, and greater demons attacking you");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGorad);
+		reqs.add(new CombatStep(this, -1, "Able to survive blue dragons, ogres, and greater demons attacking you"));
+
 		return reqs;
 	}
 

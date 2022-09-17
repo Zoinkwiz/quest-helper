@@ -45,11 +45,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -383,8 +380,8 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		searchCrate = new ObjectStep(this, ObjectID.CRATE_15704, new WorldPoint(3228, 3280, 0), "Search a crate south of the farm east of the Lumbridge.", zanikFollower, combatGear, hamSet);
 		searchCrate.addDialogSteps("I don't know, what are you thinking?", "Good idea.");
 		enterMill = new ObjectStep(this, NullObjectID.NULL_15765, new WorldPoint(3230, 3286, 0), "Enter the trapdoor outside the farm.", combatGear, hamSet);
-		killGuards = new NpcStep(this, NpcID.GUARD, new WorldPoint(2000, 5087, 0), "Kill the guards to the west.", true);
-		killSigmund = new NpcStep(this, NpcID.SIGMUND_991, new WorldPoint(2000, 5087, 0), "Defeat Sigmund. You need to use magic or melee to hurt him.", combatGear);
+		killGuards = new CombatStep(this, NpcID.GUARD, new WorldPoint(2000, 5087, 0), "Kill the guards to the west.", "3 H.A.M. Guards (level 22)", true);
+		killSigmund = new CombatStep(this, NpcID.SIGMUND_991, new WorldPoint(2000, 5087, 0), "Defeat Sigmund. You need to use magic or melee to hurt him.", "Sigmund (level 50, melee or magic only)", combatGear);
 		smashDrill = new ObjectStep(this, ObjectID.DRILLING_MACHINE, new WorldPoint(1998, 5088, 0), "Destroy the drilling machine.");
 		enterExit = new ObjectStep(this, NullObjectID.NULL_15764, new WorldPoint(3245, 9661, 0), "Leave the area via the exit to the south to finish the quest.");
 	}
@@ -499,9 +496,13 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("3 H.A.M. Guards (level 22)", "Sigmund (level 50, melee or magic only)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGuards);
+		reqs.add(killSigmund);
+
+		return reqs;
 	}
 
 	@Override

@@ -32,11 +32,15 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.rewards.Reward;
+import com.questhelper.steps.CombatStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
@@ -95,6 +99,8 @@ public class QuestOverviewPanel extends JPanel
 	private static final ImageIcon INFO_ICON = Icon.INFO_ICON.getIcon();
 
 	private final JButton collapseBtn = new JButton();
+
+	private JLabel combatLabel;
 
 	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
 
@@ -462,27 +468,62 @@ public class QuestOverviewPanel extends JPanel
 		}
 	}
 
-	private void updateCombatRequirementsPanels(List<String> combatRequirementList)
+	private void updateCombatRequirementsPanels(List<QuestStep> combatRequirementList)
 	{
-		JLabel combatLabel = new JLabel();
-		combatLabel.setForeground(Color.GRAY);
 		StringBuilder textCombat = new StringBuilder();
 		if (combatRequirementList == null)
 		{
+			combatLabel = new JLabel();
+			combatLabel.setForeground(Color.GRAY);
+
 			textCombat.append("None");
+			combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat + "</body></html>");
+			questCombatRequirementsListPanel.add(combatLabel);
 		}
 		else
 		{
-			for (String combatRequirement : combatRequirementList)
+			for (QuestStep combatRequirement : combatRequirementList)
 			{
-				textCombat.append(combatRequirement);
-				textCombat.append("<br>");
+				combatLabel = new JLabel();
+				combatLabel.setForeground(Color.GRAY);
+				textCombat = new StringBuilder();
+				textCombat.append(((CombatStep) combatRequirement).getCombatText());
+
+				JPopupMenu menu = new JPopupMenu("Menu");
+				int id = ((CombatStep)combatRequirement).getNpcID();
+				JMenuItem wikiLink = new JMenuItem(new AbstractAction("Go to wiki..")
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						if(id != 1)
+						{
+							try
+							{
+								Desktop.getDesktop().browse(new URI("https://oldschool.runescape.wiki/w/Special:Lookup?type=npc&id=" + id));
+							} catch (IOException | URISyntaxException e1)
+							{
+								e1.printStackTrace();
+							}
+						}
+					}
+				});
+				menu.add(wikiLink);
+				combatLabel.addMouseListener(new MouseAdapter()
+				{
+					public void mouseClicked(MouseEvent e)
+					{
+						if (id != -1 && SwingUtilities.isRightMouseButton(e) && e.getClickCount() == 1)
+						{
+							menu.show(e.getComponent(),  e.getX(), e.getY());
+						}
+					}
+				});
+				combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat + "</body></html>");
+				questCombatRequirementsListPanel.add(combatLabel);
 			}
 		}
-		combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat + "</body></html>");
-
-		questCombatRequirementsListPanel.add(combatLabel);
 	}
+
 
 	private void updateExternalResourcesPanel(QuestHelper quest)
 	{
@@ -614,5 +655,37 @@ public class QuestOverviewPanel extends JPanel
 
 			requirementPanel.getLabel().setForeground(newColor);
 		}
+	}
+
+	public void attachLink(QuestStep combatRequirement)
+	{
+		JPopupMenu menu = new JPopupMenu("Menu");
+		int id = ((CombatStep)combatRequirement).getNpcID();
+
+		JMenuItem wikiLink = new JMenuItem(new AbstractAction("Go to wiki..")
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					if(id != -1) {
+						Desktop.getDesktop().browse(new URI("https://oldschool.runescape.wiki/w/Special:Lookup?type=npc&id=" + id));
+					}
+				} catch (IOException | URISyntaxException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
+		menu.add(wikiLink);
+		combatLabel.addMouseListener(new MouseAdapter()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				if (SwingUtilities.isRightMouseButton(e) && e.getClickCount() == 1) {
+					menu.show(combatLabel, e.getX(), e.getY());
+				}
+			}
+		});
 	}
 }

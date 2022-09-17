@@ -46,11 +46,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -201,8 +198,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 		VarbitRequirement finishedRoom = new VarbitRequirement(661, 1);
 
 		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye");
-		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
-			"Kill Sir Leye to win this challenge. You must be a female character or you can't kill him.", true,
+		killSirLeye = new CombatStep(this, NpcID.SIR_LEYE,
+			"Kill Sir Leye to win this challenge. You must be a female character or you can't kill him.", "Sir Leye (level 20) with no items", true,
 			femaleReq);
 
 		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
@@ -372,9 +369,12 @@ public class RecruitmentDrive extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Sir Leye (level 20) with no items");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSirLeye);
+
+		return reqs;
 	}
 
 	@Override

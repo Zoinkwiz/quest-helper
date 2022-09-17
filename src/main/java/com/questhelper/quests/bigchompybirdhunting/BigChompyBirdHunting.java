@@ -43,11 +43,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -282,7 +279,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		talkToRantzForBow.addDialogSteps("Come on, let me have a go...", "I'm actually quite strong...please let me try.");
 		placeAnotherToad = new DetailedQuestStep(this, new WorldPoint(2635, 2967, 0), "Drop another bloated toad in the clearing south of Rantz, and wait for a chompy to come.", ogreBow, ogreArrows);
 
-		killChompy = new NpcStep(this, NpcID.CHOMPY_BIRD, new WorldPoint(2635, 2966, 0), "Kill the chompy. You can only hurt it with an ogre bow + ogre arrows.", ogreBow, ogreArrows);
+		killChompy = new CombatStep(this, NpcID.CHOMPY_BIRD, new WorldPoint(2635, 2966, 0), "Kill the chompy. You can only hurt it with an ogre bow + ogre arrows.", "Chompy (level 6) ", ogreBow, ogreArrows);
 		pluckCarcass = new NpcStep(this, NpcID.CHOMPY_BIRD_1476, new WorldPoint(2635, 2966, 0), "Pluck the chompy.");
 		talkToRantzWithChompy = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Talk to Rantz in the east of Feldip Hills.", chompy);
 
@@ -313,9 +310,12 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Chompy");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killChompy);
+
+		return reqs;
 	}
 
 	@Override

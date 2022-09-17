@@ -40,6 +40,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+
+import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -58,6 +60,7 @@ public class NpcStep extends DetailedQuestStep
 	@Inject
 	protected Client client;
 
+	@Getter
 	private final int npcID;
 	private final List<Integer> alternateNpcIDs = new ArrayList<>();
 

@@ -43,12 +43,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -363,7 +359,7 @@ public class MountainDaughter extends BasicQuestHelper
 		talkToKendal.addDialogStep("I humbly request to be given the remains.");
 		talkToKendal.addDialogStep("I will kill you myself!");
 
-		killKendal = new NpcStep(this, NpcID.THE_KENDAL, new WorldPoint(2788, 10081, 0), "Kill the kendal.");
+		killKendal = new CombatStep(this, NpcID.THE_KENDAL, new WorldPoint(2788, 10081, 0), "Kill the kendal.", "The Kendal (level 70)");
 		talkToKendal.addSubSteps(killKendal);
 
 		grabCorpse = new TileStep(this, new WorldPoint(2784, 10078, 0), "Pick up the Corpse of Woman.");
@@ -409,9 +405,12 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("The Kendal (level 70)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killKendal);
+
+		return reqs;
 	}
 
 	@Override

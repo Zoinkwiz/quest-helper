@@ -41,9 +41,7 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,8 +54,6 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.CLOCK_TOWER
@@ -343,9 +339,12 @@ public class ClockTower extends BasicQuestHelper
     }
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Able to survive a hit or 2 from an Ogre (level 53)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.OGRE, "Able to survive a hit or 2 from an Ogre (level 53)"));
+
+		return reqs;
 	}
 
 	@Override

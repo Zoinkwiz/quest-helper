@@ -37,11 +37,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -239,10 +236,12 @@ public class JunglePotion extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Survive against level 53 Jogres and level 46 Harpie Bug Swarms.");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.JOGRE, "Survive against Jogres (level 53)"));
+		reqs.add(new CombatStep(this, NpcID.HARPIE_BUG_SWARM, "Survive against Harpie Bug Swarms (level 46)"));
+
 		return reqs;
 	}
 

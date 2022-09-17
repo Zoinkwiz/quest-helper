@@ -43,11 +43,8 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,7 +59,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.ARDOUGNE_ELITE
@@ -327,9 +323,12 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Nightmare Zone monsters (levels vary)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		CombatStep nmz = new CombatStep(this, -1, "Nightmare Zone monster (levels vary)");
+		reqs.add(nmz);
+		return reqs;
 	}
 
 	@Override

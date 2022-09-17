@@ -38,12 +38,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -335,7 +330,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 
 		goUpToIthoiToKill = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Go kill Ithoi (level 35) in his hut.");
 		goUpToIthoiToKill.addDialogStep("I'll be back.");
-		killIthoi = new NpcStep(this, NpcID.ITHOI_THE_NAVIGATOR_7964, new WorldPoint(2529, 2840, 1), "Kill Ithoi (level 35).");
+		killIthoi = new CombatStep(this, NpcID.ITHOI_THE_NAVIGATOR_7964, new WorldPoint(2529, 2840, 1), "Kill Ithoi (level 35).", "Ithoi the Navigator (level 34)");
 		killIthoi.addSubSteps(goUpToIthoiToKill);
 
 		goOntoShip4 = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2839, 0), "Talk to Captain Tock on the ship to finish the quest.");
@@ -353,10 +348,11 @@ public class TheCorsairCurse extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Ithoi the Navigator (level 34)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killIthoi);
+
 		return reqs;
 	}
 

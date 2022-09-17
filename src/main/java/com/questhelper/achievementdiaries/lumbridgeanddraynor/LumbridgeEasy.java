@@ -40,10 +40,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,7 +55,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.LUMBRIDGE_EASY
@@ -220,8 +217,8 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		moveToDraySewer = new ObjectStep(this, ObjectID.TRAPDOOR_6435, new WorldPoint(3118, 3244, 0),
 			"Climb down into the Draynor Sewer.");
 		moveToDraySewer.addAlternateObjects(ObjectID.TRAPDOOR_6434);
-		killZombie = new NpcStep(this, NpcID.ZOMBIE_38, new WorldPoint(3123, 9648, 0),
-			"Kill a zombie.", true);
+		killZombie = new CombatStep(this, NpcID.ZOMBIE_38, new WorldPoint(3123, 9648, 0),
+			"Kill a zombie.", "Zombie (level 13)", true);
 		killZombie.addAlternateNpcs(NpcID.ZOMBIE_40, NpcID.ZOMBIE_57, NpcID.ZOMBIE_55, NpcID.ZOMBIE_56);
 
 		moveToSed = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
@@ -241,8 +238,8 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 			lightSource, rope.highlighted(), combatGear);
 		addRopeToHole.addSubSteps(moveToDarkHole);
 		addRopeToHole.addIcon(ItemID.ROPE);
-		killCaveBug = new NpcStep(this, NpcID.CAVE_BUG, new WorldPoint(3151, 9574, 0),
-			"Kill a Cave Bug.", combatGear, lightSource);
+		killCaveBug = new CombatStep(this, NpcID.CAVE_BUG, new WorldPoint(3151, 9574, 0),
+			"Kill a Cave Bug.", "Cave bug (level 6)", combatGear, lightSource);
 
 		moveToWaterAltar = new ObjectStep(this, 34815, new WorldPoint(3185, 3165, 0),
 			"Enter the water altar in Lumbridge Swamp.", waterAccessOrAbyss.highlighted(), runeEss);
@@ -309,9 +306,13 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Zombie (lvl 13) and cave bug (lvl 6)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killZombie);
+		reqs.add(killCaveBug);
+
+		return reqs;
 	}
 
 	@Override

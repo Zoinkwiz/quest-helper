@@ -207,8 +207,8 @@ public class KourendEasy extends ComplexStateQuestHelper
 		mineIron.addAlternateObjects(ObjectID.ROCKS_11365);
 
 		// Kill a sand crab
-		sandCrab = new NpcStep(this, NpcID.SAND_CRAB, new WorldPoint(1739, 3468, 0),
-			"Kill a sand crab.", true, combatGear, food);
+		sandCrab = new CombatStep(this, NpcID.SAND_CRAB, new WorldPoint(1739, 3468, 0),
+			"Kill a sand crab.", "Kill a Sand Crab (level 15)", true, combatGear, food);
 
 		// Hand in a book in the Arceuus library
 		arceuusBook = new NpcStep(this, NpcID.PROFESSOR_GRACKLEBONE, new WorldPoint(1625, 3801, 0),
@@ -279,9 +279,12 @@ public class KourendEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill a Sand Crab (level 15)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(sandCrab);
+
+		return reqs;
 	}
 
 	@Override

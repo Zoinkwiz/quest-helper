@@ -38,11 +38,8 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,7 +53,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DESERT_HARD
@@ -227,8 +223,8 @@ public class DesertHard extends ComplexStateQuestHelper
 
 		moveToSmoke = new ObjectStep(this, ObjectID.SMOKEY_WELL, new WorldPoint(3310, 2962, 0),
 			"Go down the Smokey well.");
-		killDust = new NpcStep(this, NpcID.DUST_DEVIL, new WorldPoint(3219, 9370, 0),
-			"Kill a Dust devil with a slayer helm equipped.", slayerHelm.equipped());
+		killDust = new CombatStep(this, NpcID.DUST_DEVIL, new WorldPoint(3219, 9370, 0),
+			"Kill a Dust devil with a slayer helm equipped.", "Kill a Dust devil (lvl 93)", slayerHelm.equipped());
 
 		moveToPyramid = new ObjectStep(this, ObjectID.TUNNEL_6481, new WorldPoint(3233, 2889, 0),
 			"Enter the Jaldraocht Pyramid.");
@@ -250,8 +246,8 @@ public class DesertHard extends ComplexStateQuestHelper
 			"Climb down the ladder to enter the Sophanem Dungeon.", combatGear, lightsource);
 		moveToSoph2 = new ObjectStep(this, ObjectID.LADDER_20278, new WorldPoint(2800, 5159, 0),
 			"Climb down the ladder again.", combatGear, lightsource);
-		killLocustRider = new NpcStep(this, NpcID.LOCUST_RIDER_796, new WorldPoint(3296, 9267, 2),
-			"Kill a Scarab mage or Locust rider with keris.", true, combatGear, keris.equipped());
+		killLocustRider = new CombatStep(this, NpcID.LOCUST_RIDER_796, new WorldPoint(3296, 9267, 2),
+			"Kill a Scarab mage or Locust rider with keris.", "Locust rider (lvl 98)", true, combatGear, keris.equipped());
 		killLocustRider.addAlternateNpcs(NpcID.SCARAB_MAGE, NpcID.SCARAB_MAGE_799, NpcID.LOCUST_RIDER,
 			NpcID.LOCUST_RIDER_800, NpcID.LOCUST_RIDER_801);
 
@@ -297,9 +293,14 @@ public class DesertHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill a Dust devil (lvl 93), Locust rider (lvl 98), Kalphite Queen (lvl 333)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killDust);
+		reqs.add(killLocustRider);
+		reqs.add(new CombatStep(this, NpcID.KALPHITE_QUEEN, "Kalphite Queen (lvl 333)"));
+
+		return reqs;
 	}
 
 	@Override

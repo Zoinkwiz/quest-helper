@@ -300,8 +300,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		enterBrineCave = new DigStep(this, new WorldPoint(2749, 3732, 0),
 			"Use a spade to enter the Brine Rat Cavern.", spade, combatGear, olafsQuest);
 		enterBrineCave.addIcon(ItemID.SPADE);
-		slayBrineRat = new NpcStep(this, NpcID.BRINE_RAT, new WorldPoint(2706, 10133, 0),
-			"Kill a brine rat.", true);
+		slayBrineRat = new CombatStep(this, NpcID.BRINE_RAT, new WorldPoint(2706, 10133, 0),
+			"Kill a brine rat.", "Brine rat (level 70)",  true);
 		rollBoulderExit = new NpcStep(this, NpcID.BOULDER_4502, new WorldPoint(2692, 10125, 0),
 			"Roll the boulder and exit the cave.");
 		travelMisc = new ObjectStep(this, 29495, new WorldPoint(2744, 3719, 0),
@@ -424,9 +424,13 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Brine rat (level 70) and tank many hits in the Waterbirth Island Dungeon");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(slayBrineRat);
+		reqs.add(new CombatStep(this, -1, "tank many hits in the Waterbirth Island Dungeon"));
+
+		return reqs;
 	}
 
 	@Override

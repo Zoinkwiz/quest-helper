@@ -35,12 +35,14 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.steps.CombatStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
@@ -122,10 +124,14 @@ public class MA2Locator extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Porazdir (level 235)", "Justiciar Zachariah (level 348)", "Derwen " +
-			"(level 235)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.PORAZDIR, "Porazdir (level 235)"));
+		reqs.add(new CombatStep(this, NpcID.JUSTICIAR_ZACHARIAH, "Justiciar Zachariah (level 348)"));
+		reqs.add(new CombatStep(this, NpcID.DERWEN, "Derwen (level 235)"));
+
+		return reqs;
 	}
 
 	@Override

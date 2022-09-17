@@ -212,8 +212,8 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	{
 		catchCerulean = new ObjectStep(this, ObjectID.BIRD_SNARE_9375, new WorldPoint(2724, 3773, 0),
 			"Catch a Cerulean Twitch in the Rellekka Hunter area.", birdSnare.highlighted());
-		killedCrabs = new NpcStep(this, NpcID.ROCK_CRAB, new WorldPoint(2707, 3723, 0),
-			"Kill 5 Rock crabs.", true, combatGear);
+		killedCrabs = new CombatStep(this, NpcID.ROCK_CRAB, new WorldPoint(2707, 3723, 0),
+			"Kill 5 Rock crabs.","5 Rock Crabs (Level 13)", true, combatGear);
 		killedCrabs.addAlternateNpcs(NpcID.ROCK_CRAB_102);
 
 		chopOak = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(2714, 3664, 0),
@@ -287,9 +287,12 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("5 Rock Crabs (Level 13)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killedCrabs);
+
+		return reqs;
 	}
 
 	@Override

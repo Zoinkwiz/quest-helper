@@ -37,11 +37,8 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -145,7 +142,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 
 		goUpToWeaponStore = new ObjectStep(this, ObjectID.LADDER_11794, new WorldPoint(3252, 3384, 0), "Go up the ladder in south east Varrock to the Phoenix Weapon Storeroom.", storeRoomKey);
 
-		killWeaponsMaster = new NpcStep(this, NpcID.WEAPONSMASTER, new WorldPoint(3247, 3384, 1), "Kill the Weaponsmaster, or have someone else kill him.");
+		killWeaponsMaster = new CombatStep(this, NpcID.WEAPONSMASTER, new WorldPoint(3247, 3384, 1), "Kill the Weaponsmaster, or have someone else kill him.", "Weaponsmaster (level 23), or a friend to kill him for you");
 
 		// TODO: Issue with this step, as a crossbow upon killing the weaponsmaster dissappears/appears, the initial despawn doesn't effect the initial area check, so a blue marker remains on the floor
 		pickupTwoCrossbows = new DetailedQuestStep(this, "Pick up TWO phoenix crossbows", twoPhoenixCrossbow);
@@ -196,9 +193,12 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Weaponsmaster (level 23), or a friend to kill him for you");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killWeaponsMaster);
+
+		return reqs;
 	}
 
 	@Override

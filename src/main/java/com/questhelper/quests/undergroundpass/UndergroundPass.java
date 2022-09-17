@@ -45,12 +45,7 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -490,7 +485,7 @@ public class UndergroundPass extends BasicQuestHelper
 		useCatOnDoor.addIcon(ItemID.WITCHS_CAT);
 		searchWitchsChest = new ObjectStep(this, ObjectID.CHEST_3272, new WorldPoint(2157, 4564, 1), "Search the chest in the witch's house. You'll need 4 empty inventory slots.");
 
-		killHolthion = new NpcStep(this, NpcID.HOLTHION, new WorldPoint(2133, 4555, 1), "From the south east corner of the area, head west then south along the pathways. Kill Holthion and pick up his amulet.", amuletHolthion);
+		killHolthion = new CombatStep(this, NpcID.HOLTHION, new WorldPoint(2133, 4555, 1), "From the south east corner of the area, head west then south along the pathways. Kill Holthion and pick up his amulet.", "Holthion (level 91, safespottable)", amuletHolthion);
 		killHolthion.setLinePoints(Arrays.asList(
 			new WorldPoint(2169, 4582, 1),
 			new WorldPoint(2152, 4582, 1),
@@ -500,8 +495,8 @@ public class UndergroundPass extends BasicQuestHelper
 			new WorldPoint(2137, 4556, 1)
 		));
 
-		killDoomion = new NpcStep(this, NpcID.DOOMION, new WorldPoint(2135, 4566, 1), "Kill Doomion and pick up his amulet.", amuletDoomion);
-		killOthanian = new NpcStep(this, NpcID.OTHAINIAN, new WorldPoint(2123, 4563, 1), "Kill Othanian and pick up his amulet.", amuletOthanian);
+		killDoomion = new CombatStep(this, NpcID.DOOMION, new WorldPoint(2135, 4566, 1), "Kill Doomion and pick up his amulet.", "Doomion (level 91, safespottable)", amuletDoomion);
+		killOthanian = new CombatStep(this, NpcID.OTHAINIAN, new WorldPoint(2123, 4563, 1), "Kill Othanian and pick up his amulet.", "Othanian (level 91, safespottable)", amuletOthanian);
 		useShadowOnDoll = new DetailedQuestStep(this, "Use the shadow on the doll.", ibansShadow, dollOfIbanHighlighted);
 		searchDoomionsChest = new ObjectStep(this, ObjectID.CHEST_3274, new WorldPoint(2136, 4578, 1), "Search the chest north of Doomion.");
 		searchDoomionsChest.addSubSteps(useShadowOnDoll);
@@ -515,7 +510,7 @@ public class UndergroundPass extends BasicQuestHelper
 		useTinderboxOnTomb = new ObjectStep(this, ObjectID.TOMB, new WorldPoint(2357, 9802, 0), "Light the tomb with a tinderbox.", tinderboxHighlight);
 		useTinderboxOnTomb.addSubSteps(useAshOnDoll);
 		useTinderboxOnTomb.addIcon(ItemID.TINDERBOX);
-		killKalrag = new NpcStep(this, NpcID.KALRAG, new WorldPoint(2356, 9913, 0), "Kill Kalrag the spider. Protect From Melee can keep you safe in this fight.", dollOfIban);
+		killKalrag = new CombatStep(this, NpcID.KALRAG, new WorldPoint(2356, 9913, 0), "Kill Kalrag the spider. Protect From Melee can keep you safe in this fight.", "Kalrag (level 89)", dollOfIban);
 		ascendToHalfSouless = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2304, 9915, 0), "Ascend to the upper level of the cave again via the north west exit.");
 		searchCage = new ObjectStep(this, ObjectID.CAGE_3351, new WorldPoint(2135, 4703, 1), "Search the marked cage in the north west of the area while wearing Klank's gauntlets.", klanksGauntletsEquipped);
 		searchCage.setLinePoints(Arrays.asList(
@@ -533,7 +528,7 @@ public class UndergroundPass extends BasicQuestHelper
 		));
 		searchCage.addSubSteps(ascendToHalfSouless, useDoveOnDoll);
 
-		killDisciple = new NpcStep(this, NpcID.DISCIPLE_OF_IBAN, new WorldPoint(2163, 4648, 1), "Travel along the pathways from the north west corner of the area to the middle. Kill a disciple of Iban and take their robes.", true, dollOfIban);
+		killDisciple = new CombatStep(this, NpcID.DISCIPLE_OF_IBAN, new WorldPoint(2163, 4648, 1), "Travel along the pathways from the north west corner of the area to the middle. Kill a disciple of Iban and take their robes.", "Disciple of Iban (level 13)", true, dollOfIban);
 		killDisciple.setLinePoints(Arrays.asList(
 			new WorldPoint(2117, 4686, 1),
 			new WorldPoint(2128, 4686, 1),
@@ -751,13 +746,17 @@ public class UndergroundPass extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("3 Demons (level 91, safespottable)");
-		reqs.add("3 Paladins (level 62, safespottable)");
-		reqs.add("Kalrag (level 89)");
-		reqs.add("Disciple of Iban (level 13)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+
+		reqs.add(killOthanian);
+		reqs.add(killDoomion);
+		reqs.add(killHolthion);
+		reqs.add(new CombatStep(this, NpcID.PALADIN, "3 Paladins (level 62, safespottable)"));
+		reqs.add(killKalrag);
+		reqs.add(killDisciple);
+
 		return reqs;
 	}
 

@@ -42,10 +42,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -131,27 +128,27 @@ public class RFDFinal extends BasicQuestHelper
 	public void setupSteps()
 	{
 		enterPortal = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight. You can leave between fights to re-gear.", combatGear);
-		killAgrith = new NpcStep(this, NpcID.AGRITHNANA, new WorldPoint(1900, 5355, 2),"Kill Agrith-Na-Na. He uses magic at ranged, and melee up close.");
+		killAgrith = new CombatStep(this, NpcID.AGRITHNANA, new WorldPoint(1900, 5355, 2),"Kill Agrith-Na-Na. He uses magic at ranged, and melee up close.", "Agrith-Na-Na (level 146)");
 
 		enterPortalFlambeed = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight kill Flambeed. Water spells are especially effective.", combatGear, iceGloves);
-		killFlambeed = new NpcStep(this, NpcID.FLAMBEED, new WorldPoint(1900, 5355, 2),"Equip ice gloves and kill Flambeed. Water spells are especially effective.", iceGloves);
+		killFlambeed = new CombatStep(this, NpcID.FLAMBEED, new WorldPoint(1900, 5355, 2),"Equip ice gloves and kill Flambeed. Water spells are especially effective.", "Flambeed (level 149)", iceGloves);
 		killFlambeed.addSubSteps(enterPortalFlambeed);
 
 		enterPortalKaramel = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal to fight Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
-		killKaramel = new NpcStep(this, NpcID.KARAMEL, new WorldPoint(1900, 5355, 2), "Kill Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
+		killKaramel = new CombatStep(this, NpcID.KARAMEL, new WorldPoint(1900, 5355, 2), "Kill Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", "Karamel (level 136)", combatGear, restorePotions);
 		killKaramel.addSubSteps(enterPortalKaramel);
 
 		enterPortalDessourt = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight Dessourt.", combatGear);
-		killDessourt = new NpcStep(this, NpcID.DESSOURT, new WorldPoint(1900, 5355, 2), "Kill Dessourt.");
+		killDessourt = new CombatStep(this, NpcID.DESSOURT, new WorldPoint(1900, 5355, 2), "Kill Dessourt.", "Dessourt (level 121)");
 		killDessourt.addSubSteps(enterPortalDessourt);
 
 		enterPortalMother = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue.", combatGear);
-		killMother = new NpcStep(this, NpcID.GELATINNOTH_MOTHER, new WorldPoint(1900, 5355, 2), "Kill the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue, melee when orange and ranged when green.");
+		killMother = new CombatStep(this, NpcID.GELATINNOTH_MOTHER, new WorldPoint(1900, 5355, 2), "Kill the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue, melee when orange and ranged when green.", "Gelatinnoth Mother (level 130)");
 		((NpcStep)(killMother)).addAlternateNpcs(NpcID.GELATINNOTH_MOTHER_4885, NpcID.GELATINNOTH_MOTHER_4886, NpcID.GELATINNOTH_MOTHER_4887, NpcID.GELATINNOTH_MOTHER_4888, NpcID.GELATINNOTH_MOTHER_4889);
 		killMother.addSubSteps(enterPortalMother);
 
 		enterPortalCulinaromancer = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Culinaromancer. Try to keep your distance.", combatGear);
-		killCulinaromancer = new NpcStep(this, NpcID.CULINAROMANCER_4878,  new WorldPoint(1900, 5355, 2), "Kill the Culinaromancer. Try to keep your distance.");
+		killCulinaromancer = new CombatStep(this, NpcID.CULINAROMANCER_4878,  new WorldPoint(1900, 5355, 2), "Kill the Culinaromancer. Try to keep your distance.", "Culinaromancer (level 75)");
 		killCulinaromancer.addSubSteps(enterPortalCulinaromancer);
 	}
 
@@ -162,9 +159,17 @@ public class RFDFinal extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Agrith-Na-Na (level 146)", "Flambeed (level 149)", "Karamel (level 136)", "Dessourt (level 121)", "Gelatinnoth Mother (level 130)", "Culinaromancer (level 75)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killAgrith);
+		reqs.add(killFlambeed);
+		reqs.add(killKaramel);
+		reqs.add(killDessourt);
+		reqs.add(killMother);
+		reqs.add(killCulinaromancer);
+
+		return reqs;
 	}
 
 	@Override

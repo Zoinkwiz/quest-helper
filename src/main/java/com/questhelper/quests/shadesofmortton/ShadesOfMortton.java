@@ -38,11 +38,7 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.Operation;
@@ -307,9 +303,12 @@ public class ShadesOfMortton extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("5 Loar Shades (level 40)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.LOAR_SHADE,"5 Loar Shades (level 40)"));
+
+		return reqs;
 	}
 
 	@Override

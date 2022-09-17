@@ -47,11 +47,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -490,9 +486,13 @@ public class TheFeud extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Bandit Champion (level 70) - Safespottable", "Tough Guy (level 75) - Safespottable");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.BANDIT_CHAMPION, "Bandit Champion (level 70) - Safespottable"));
+		reqs.add(new CombatStep(this, NpcID.TOUGH_GUY, "Tough Guy (level 75) - Safespottable"));
+
+		return reqs;
 	}
 
 	@Override

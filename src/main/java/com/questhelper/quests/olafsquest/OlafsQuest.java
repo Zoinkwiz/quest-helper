@@ -46,14 +46,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -229,7 +222,7 @@ public class OlafsQuest extends BasicQuestHelper
 		talkToOlafAfterPlanks.addDialogStep("Alright, here, have some food. Now give me the map.");
 		digHole = new DigStep(this, new WorldPoint(2748, 3732, 0), "Dig next to the Windswept Tree.");
 
-		killSkeleton = new NpcStep(this, NpcID.SKELETON_FREMENNIK, new WorldPoint(2727, 10141, 0), "Go deeper into the caverns and kill a Skeleton Fremennik for a key.", true);
+		killSkeleton = new CombatStep(this, NpcID.SKELETON_FREMENNIK, new WorldPoint(2727, 10141, 0), "Go deeper into the caverns and kill a Skeleton Fremennik for a key.", "Skeleton fremennik (level 40)", true);
 		killSkeleton.addAlternateNpcs(NpcID.SKELETON_FREMENNIK_4492, NpcID.SKELETON_FREMENNIK_4493, NpcID.SKELETON_FREMENNIK_4494, NpcID.SKELETON_FREMENNIK_4495,
 			NpcID.SKELETON_FREMENNIK_4496, NpcID.SKELETON_FREMENNIK_4497, NpcID.SKELETON_FREMENNIK_4498, NpcID.SKELETON_FREMENNIK_4499);
 
@@ -260,7 +253,7 @@ public class OlafsQuest extends BasicQuestHelper
 		searchChest = new ObjectStep(this, ObjectID.CHEST_14197, new WorldPoint(2740, 10164, 0), "WALK off the remaining walkway, and search the chest in the wreck. Be prepared to fight Ulfric.");
 		searchChest.addAlternateObjects(ObjectID.CHEST_14196);
 
-		killUlfric = new NpcStep(this, NpcID.ULFRIC, new WorldPoint(2740, 10164, 0), "Kill Ulfric.");
+		killUlfric = new CombatStep(this, NpcID.ULFRIC, new WorldPoint(2740, 10164, 0), "Kill Ulfric.", "Ulfric (level 100)");
 
 		searchChestAgain = new ObjectStep(this, ObjectID.CHEST_14197, new WorldPoint(2740, 10164, 0), "Search the chest again to finish the quest.");
 		searchChestAgain.addAlternateObjects(ObjectID.CHEST_14196);
@@ -279,9 +272,13 @@ public class OlafsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Skeleton fremennik (level 40)", "Ulfric (level 100)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSkeleton);
+		reqs.add(killUlfric);
+
+		return reqs;
 	}
 
 	@Override

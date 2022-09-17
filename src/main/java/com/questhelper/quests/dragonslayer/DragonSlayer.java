@@ -33,6 +33,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -44,11 +45,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -78,6 +76,8 @@ public class DragonSlayer extends BasicQuestHelper
 		inRoomToBasement, inZombieRoom, inMelzarRoom, inDemonRoom, inLastMelzarRoom, hasShield, inShipHull, onShipDeck, hasBoughtBoat,
 		hasRepairedHullOnce, hasRepairedHullTwice, fullyRepairedHull, onCrandorSurface, inCrandorUnderground, inElvargArea, inKaramjaVolcano, unlockedShortcut;
 
+	NpcRequirement
+			enemRat, enemGhost, enemSkele, enemMelz, enemElvarg, enemDem, enemZomb;
 	ConditionalStep getLozarPiece, getThalzarPiece, getMelzarPiece, getShieldSteps;
 
 	QuestStep startQuest, talkToOziach, returnToGuildmaster, askAboutShield, askAboutMelzar, askAboutThalzar, askAboutLozar, talkToOracle,
@@ -392,28 +392,36 @@ public class DragonSlayer extends BasicQuestHelper
 		enterMelzarsMaze = new ObjectStep(this, ObjectID.DOOR_2595, new WorldPoint(2941, 3248, 0), "Enter Melzar's Maze north of Rimmington. Be prepared to fight multiple monsters up to a level 82 lesser demon.", melzarsKey);
 		enterMelzarsMaze.addDialogSteps("About my quest to kill the dragon...", "I talked to Oziach...", "How can I find the route to Crandor?", "Where is Melzar's map piece?");
 
-		killRat = new NpcStep(this, NpcID.ZOMBIE_RAT, new WorldPoint(2933, 3250, 0), "Kill the marked zombie rat for a key.");
+		killRat = new CombatStep(this, NpcID.ZOMBIE_RAT, new WorldPoint(2933, 3250, 0), "Kill the marked zombie rat for a key.", "Zombie Rat (level 3)");
+
+
 		openRedDoor = new ObjectStep(this, ObjectID.RED_DOOR, new WorldPoint(2926, 3253, 0), "Go through the north west red door", ratKey);
 		goUpRatLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2928, 3256, 0), "Climb up the ladder.");
 
-		killGhost = new NpcStep(this, NpcID.GHOST_3975, new WorldPoint(2927, 3253, 1), "Kill the marked ghost for a key.", ghostKey);
+		killGhost = new CombatStep(this, NpcID.GHOST_3975, new WorldPoint(2927, 3253, 1), "Kill the marked ghost for a key.", "Ghosts (level 19)", ghostKey);
+
 
 		openOrangeDoor = new ObjectStep(this, ObjectID.ORANGE_DOOR, new WorldPoint(2931, 3253, 1), "Go through second yellow door from the north.", ghostKey);
 		goUpGhostLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2934, 3254, 1), "Climb up the ladder.");
 
-		killSkeleton = new NpcStep(this, NpcID.SKELETON_3972, new WorldPoint(2927, 3253, 2), "Kill the marked skeleton for a key", skeletonKey);
+		killSkeleton = new CombatStep(this, NpcID.SKELETON_3972, new WorldPoint(2927, 3253, 2), "Kill the marked skeleton for a key", "Skeletons (level 22)", skeletonKey);
+
 		openYellowDoor = new ObjectStep(this, ObjectID.YELLOW_DOOR, new WorldPoint(2924, 3249, 2), "Go through south west yellow door.", skeletonKey);
 		goDownSkeletonLadder = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2940, 3240, 2), "Climb down the ladder.");
 
 		goDownLadderRoomLadder = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2937, 3240, 1), "Climb down again.");
 		goDownBasementEntryLadder = new ObjectStep(this, ObjectID.LADDER_2605, new WorldPoint(2932, 3240, 0), "Climb down the ladder into the basement.");
-		killZombie = new NpcStep(this, NpcID.ZOMBIE_3980, new WorldPoint(2932, 9643, 0), "Kill the marked zombie for a key", zombieKey);
+		killZombie = new CombatStep(this, NpcID.ZOMBIE_3980, new WorldPoint(2932, 9643, 0), "Kill the marked zombie for a key", "Zombies (level 24)", zombieKey);
+
 		openBlueDoor = new ObjectStep(this, ObjectID.BLUE_DOOR, new WorldPoint(2931, 9644, 0), "Go through the blue door in the north west corner.");
 
-		killMelzar = new NpcStep(this, NpcID.MELZAR_THE_MAD, new WorldPoint(2929, 9649, 0), "Kill Melzar the Mad for a magenta key.", melzarKey);
+		killMelzar = new CombatStep(this, NpcID.MELZAR_THE_MAD, new WorldPoint(2929, 9649, 0),
+				"Kill Melzar the Mad for a magenta key.", "Melzar the Mad (level 43)", melzarKey);
+
 		openMagntaDoor = new ObjectStep(this, ObjectID.MAGENTA_DOOR, new WorldPoint(2929, 9652, 0), "Go through the magenta door.");
 
-		killLesserDemon = new NpcStep(this, NpcID.LESSER_DEMON_3982, new WorldPoint(2936, 9652, 0), "Kill the lesser demon. You can safe spot it from the spot east of the magenta door.", demonKey);
+		killLesserDemon = new CombatStep(this, NpcID.LESSER_DEMON_3982, new WorldPoint(2936, 9652, 0), "Kill the lesser demon. You can safe spot it from the spot east of the magenta door.", "Lesser Demon (level 82) (safespottable)", demonKey);
+
 		openGreenDoor = new ObjectStep(this, ObjectID.GREEN_DOOR, new WorldPoint(2936, 9655, 0), "Go through the green door.", demonKey);
 
 		openMelzarChest = new ObjectStep(this, ObjectID.CHEST_2603, new WorldPoint(2935, 9657, 0), "Open the chest and get Melzar's map part.");
@@ -461,22 +469,23 @@ public class DragonSlayer extends BasicQuestHelper
 		repairShipAgainAndSail = new DetailedQuestStep(this, "As you did not unlock the shortcut, you will need to repair your ship again and sail to Crandor.", planks3, nails90, hammer);
 		enterElvargArea.addSubSteps(goDownIntoKaramjaVolcano, repairShipAgainAndSail);
 
-		killElvarg = new NpcStep(this, NpcID.ELVARG_8033, new WorldPoint(2855, 9637, 0), "Kill Elvarg.");
+
+		killElvarg = new CombatStep(this, NpcID.ELVARG_8033, new WorldPoint(2855, 9637, 0), "Kill Elvarg.", "Elvarg (level 83)");
 
 		finishQuest = new NpcStep(this, NpcID.OZIACH, new WorldPoint(3068, 3517, 0), "Talk to Oziach in his house in north western Edgeville to finish the quest.");
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Zombie rats (level 3)");
-		reqs.add("Ghosts (level 19)");
-		reqs.add("Skeletons (level 22)");
-		reqs.add("Zombies (level 24)");
-		reqs.add("Melzar the Mad (level 43)");
-		reqs.add("Lesser demon (level 82) (safespottable)");
-		reqs.add("Elvarg (level 83)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killRat);
+		reqs.add(killGhost);
+		reqs.add(killSkeleton);
+		reqs.add(killZombie);
+		reqs.add(killMelzar);
+		reqs.add(killLesserDemon);
+		reqs.add(killElvarg);
 
 		return reqs;
 	}
@@ -502,7 +511,6 @@ public class DragonSlayer extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-
 		reqs.add(chronicle);
 		reqs.add(rimmingtonTeleport);
 		reqs.add(edgevilleTeleport);

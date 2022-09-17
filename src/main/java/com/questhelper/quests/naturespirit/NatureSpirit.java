@@ -43,11 +43,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -268,7 +265,7 @@ public class NatureSpirit extends BasicQuestHelper
 		talkToFillimanInGrotto = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3441, 9738, 0), "Talk to Filliman in the grotto to bless your sickle.", ghostspeak, silverSickle);
 		blessSickle = new NpcStep(this, NpcID.NATURE_SPIRIT, new WorldPoint(3441, 9738, 0), "Talk to the Nature Spirit in the grotto to bless your sickle.", ghostspeak, silverSickle);
 		fillPouches = new DetailedQuestStep(this, "Right-click 'bloom' the blessed sickle next to rotten logs for mort myre fungi. Use these to fill the druid pouch.", blessedSickle);
-		killGhasts = new NpcStep(this, NpcID.GHAST, "Use the filled druid pouch on a ghast to make it attackable and kill it. You'll need to kill 3.", druidPouchFull);
+		killGhasts = new CombatStep(this, NpcID.GHAST, "Use the filled druid pouch on a ghast to make it attackable and kill it. You'll need to kill 3.", "3 Ghasts (level 30)", druidPouchFull);
 		killGhast = new NpcStep(this, NpcID.GHAST_946, "Kill the ghast.", druidPouchFull);
 		killGhasts.addSubSteps(killGhast);
 		enterGrottoAgain = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3337, 0), "Enter the Grotto in the south of Mort Myre.", ghostspeak);
@@ -296,9 +293,12 @@ public class NatureSpirit extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("3 Ghasts (level 30)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGhasts);
+
+		return reqs;
 	}
 
 	@Override

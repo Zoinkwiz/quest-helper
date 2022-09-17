@@ -253,8 +253,8 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		mineCoal.addIcon(ItemID.RUNE_PICKAXE);
 		moveToWaterfall = new ObjectStep(this, ObjectID.DOOR_2010, new WorldPoint(2511, 3464, 0),
 			"Enter the waterfall dungeon.", rope, combatGear);
-		fireGiant = new NpcStep(this, NpcID.FIRE_GIANT_2080, new WorldPoint(2566, 9887, 0),
-			"Kill a Fire giant.", true, combatGear);
+		fireGiant = new CombatStep(this, NpcID.FIRE_GIANT_2080, new WorldPoint(2566, 9887, 0),
+			"Kill a Fire giant.","Fire giant (Level 86)", true, combatGear);
 		fireGiant.addAlternateNpcs(NpcID.FIRE_GIANT_2079, NpcID.FIRE_GIANT_2078);
 		moveToWorkshop = new ObjectStep(this, ObjectID.STAIRCASE_3415, new WorldPoint(2711, 3498, 0),
 			"Enter the Elemental Workshop.", batteredKey, primedMind);
@@ -348,9 +348,12 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Fire giant (Level 86)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(fireGiant);
+
+		return reqs;
 	}
 
 	@Override

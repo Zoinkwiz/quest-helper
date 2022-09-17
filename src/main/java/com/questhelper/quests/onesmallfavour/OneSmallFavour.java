@@ -42,12 +42,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -679,7 +675,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		standNextToSculpture.addSubSteps(readScroll);
 
-		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith.");
+		killSlagilith = new CombatStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith.", "Slagilith (level 92)");
 		readScrollAgain = new DetailedQuestStep(this, "Read the animate rock scroll", animateRockScrollHighlight);
 		talkToPetra = new NpcStep(this, NpcID.PETRA_FIYED, new WorldPoint(2617, 9837, 0), "Talk to Petra Fiyed.");
 
@@ -745,7 +741,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToHammerspike = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToHammerspike.addSubSteps(goDownToHammerspikeAgain);
 
-		killGangMembers = new NpcStep(this, NpcID.DWARF_GANG_MEMBER, new WorldPoint(2968, 9811, 0), "Kill 3 dwarf gang members until Hammerspike gives in. One dwarf gang member should appear after each kill");
+		killGangMembers = new CombatStep(this, NpcID.DWARF_GANG_MEMBER, new WorldPoint(2968, 9811, 0), "Kill 3 dwarf gang members until Hammerspike gives in. One dwarf gang member should appear after each kill", "3x Dwarf gang members (level 44)");
 		talkToHammerspikeFinal = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToTassie = new NpcStep(this, NpcID.TASSIE_SLIPCAST, new WorldPoint(3085, 3409, 0), "Return to Tassie Slipcast in the Barbarian Village pottery building.");
 		spinPotLid = new ObjectStep(this, ObjectID.POTTERS_WHEEL_14887, new WorldPoint(3087, 3409, 0), "Spin the clay into a pot lid.", softClay);
@@ -809,9 +805,13 @@ public class OneSmallFavour extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Slagilith (level 92)", "3x Dwarf gang members (level 44)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSlagilith);
+		reqs.add(killGangMembers);
+
+		return reqs;
 	}
 
 	@Override

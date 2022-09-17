@@ -46,11 +46,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -355,10 +352,10 @@ public class DreamMentor extends BasicQuestHelper
 		talkToCyrisusForDream = new NpcStep(this, NpcID.CYRISUS_3468, new WorldPoint(2075, 3912, 0), "Talk to Cyrisus to enter the dream.", combatGear, sealOfPassage);
 		((NpcStep) (talkToCyrisusForDream)).addAlternateNpcs(NpcID.CYRISUS_3469, NpcID.CYRISUS_3470, NpcID.CYRISUS_3471);
 		talkToCyrisusForDream.addDialogStep("Yes, let's go!");
-		killInadaquacy = new NpcStep(this, NpcID.THE_INADEQUACY, new WorldPoint(1824, 5150, 2), "Kill The Inadequacy.");
-		killEverlasting = new NpcStep(this, NpcID.THE_EVERLASTING, new WorldPoint(1824, 5150, 2), "Kill The Everlasting. You can safe spot it by the entry book.");
-		killUntouchable = new NpcStep(this, NpcID.THE_UNTOUCHABLE, new WorldPoint(1824, 5150, 2), "Kill The Untouchable. You can safe spot it by the entry book.");
-		killIllusive = new NpcStep(this, NpcID.THE_ILLUSIVE, new WorldPoint(1824, 5150, 2), "Kill The Illusive.");
+		killInadaquacy = new CombatStep(this, NpcID.THE_INADEQUACY, new WorldPoint(1824, 5150, 2), "Kill The Inadequacy.", "The Inadequacy (level 343)");
+		killEverlasting = new CombatStep(this, NpcID.THE_EVERLASTING, new WorldPoint(1824, 5150, 2), "Kill The Everlasting. You can safe spot it by the entry book.", "The Everlasting (level 223, safespottable)");
+		killUntouchable = new CombatStep(this, NpcID.THE_UNTOUCHABLE, new WorldPoint(1824, 5150, 2), "Kill The Untouchable. You can safe spot it by the entry book.", "The Untouchable (level 274, safespottable)");
+		killIllusive = new CombatStep(this, NpcID.THE_ILLUSIVE, new WorldPoint(1824, 5150, 2), "Kill The Illusive.", "The Illusive (level 108, won't attack you)");
 		returnToOneiromancer = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Talk to the Oneiromancer to finish the quest!", sealOfPassage);
 		returnToOneiromancer.addDialogStep("Cyrisus.");
 	}
@@ -370,9 +367,15 @@ public class DreamMentor extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("The Inadequacy (level 343)", "The Everlasting (level 223, safespottable)", "The Untouchable (level 274, safespottable)", "The Illusive (level 108, won't attack you)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killInadaquacy);
+		reqs.add(killEverlasting);
+		reqs.add(killUntouchable);
+		reqs.add(killIllusive);
+
+		return reqs;
 	}
 
 	@Override

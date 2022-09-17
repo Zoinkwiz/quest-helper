@@ -35,10 +35,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.Requirement;
 import java.util.*;
 import net.runelite.api.*;
@@ -47,7 +44,6 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -217,10 +213,13 @@ public class DeviousMinds extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Survive against Abyssal Creatures in multicombat in the " +
-			"Abyss"));
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, -1, "Survive against Abyssal Creatures in multicombat in the " +
+				"Abyss"));
+
+		return reqs;
 	}
 
 	@Override

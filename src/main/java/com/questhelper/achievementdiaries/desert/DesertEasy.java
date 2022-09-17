@@ -38,10 +38,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,7 +52,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DESERT_EASY
@@ -216,8 +213,8 @@ public class DesertEasy extends ComplexStateQuestHelper
 			"Have Zahur in Nardah clean a grimy herb for you.", grimyHerb, coins.quantity(200));
 		nardahHerb.addDialogStep("Please clean all my herbs.");
 
-		killVulture = new NpcStep(this, NpcID.VULTURE, new WorldPoint(3334, 2865, 0),
-			"Kill a vulture.", true);
+		killVulture = new CombatStep(this, NpcID.VULTURE, new WorldPoint(3334, 2865, 0),
+			"Kill a vulture.","Kill a Vulture (lvl 31)", true);
 		killVulture.addAlternateNpcs(NpcID.VULTURE_1268);
 
 		moveToPyramidPlunder = new ObjectStep(this, 26622, new WorldPoint(3289, 2800, 0),
@@ -276,9 +273,12 @@ public class DesertEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill a Vulture (lvl 31), tank hits from Kalphite Soldier (lvl 85)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killVulture);
+		reqs.add(new CombatStep(this, ItemID.KALPHITE_SOLDIER, "tank hits from Kalphite Soldier (lvl 85)"));
+		return reqs;
 	}
 
 	@Override

@@ -44,12 +44,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -406,11 +401,11 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 
 		talkToMyArmAfterGrow = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0),
 			"Talk to My Arm. Be prepared to fight a baby and giant Roc.");
-		killBabyRoc = new NpcStep(this, NpcID.BABY_ROC, "Kill the Baby Roc.");
+		killBabyRoc = new CombatStep(this, NpcID.BABY_ROC, "Kill the Baby Roc.", "Baby Roc (level 75)");
 		talkToMyArmAfterBaby = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0),
 			"Talk to My Arm. Be prepared to fight the Giant Roc.");
 
-		killGiantRoc = new NpcStep(this, NpcID.GIANT_ROC, "Kill the Giant Roc.");
+		killGiantRoc = new CombatStep(this, NpcID.GIANT_ROC, "Kill the Giant Roc.", "Giant Roc (level 172)");
 		talkToMyArmAfterHarvest = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Talk to My Arm.");
 		giveSpade = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Give My Arm a spade.", spadeHighlight);
 		giveSpade.addIcon(ItemID.SPADE);
@@ -449,11 +444,12 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Baby Roc (level 75)");
-		reqs.add("Giant Roc (level 172)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killBabyRoc);
+		reqs.add(killGiantRoc);
+
 		return reqs;
 	}
 

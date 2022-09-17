@@ -392,9 +392,12 @@ public class VarrockHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill various monsters in the stronghold of security (levels 13-86)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, -1, "Kill various monsters in the stronghold of security (levels 13-86)"));
+
+		return reqs;
 	}
 
 	@Override

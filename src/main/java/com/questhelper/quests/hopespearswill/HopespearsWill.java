@@ -231,11 +231,11 @@ public class HopespearsWill extends BasicQuestHelper
 				"Unequip all weapons and armour (the ring of visibility and ghostspeak amulet can stay on but you MUST unequip Morytania legs). Say Strongbones's name at the north grave.");
 		sayNameStrongbones.addDialogStep("Strongbones.");
 
-		defeatSnothead = new NpcStep(this, NpcID.SNOTHEAD, "Defeat Snothead WITHOUT using weapons, armour, or magic. He attacks using melee.");
-		defeatSnailfeet = new NpcStep(this, NpcID.SNAILFEET, "Defeat Snailfeet WITHOUT using weapons, armour, or magic. He attacks using melee and range.");
-		defeatMosschin = new NpcStep(this, NpcID.MOSSCHIN, "Defeat Mosschin WITHOUT using weapons, armour, or magic. He attacks using melee and magic.");
-		defeatRedeyes = new NpcStep(this, NpcID.REDEYES, "Defeat Redeyes WITHOUT using weapons, armour, or magic. He attacks using melee and magic, and lowers your attack, strength, and defence.");
-		defeatStrongbones = new NpcStep(this, NpcID.STRONGBONES, "Defeat Strongbones WITHOUT using weapons, armour, or magic. He attacks using all 3 combat styles, lowers your attack, strength and defence. Ignore the level 29 Skoblins he spawns.");
+		defeatSnothead = new CombatStep(this, NpcID.SNOTHEAD, "Defeat Snothead WITHOUT using weapons, armour, or magic. He attacks using melee.", "Snothead (level 32)");
+		defeatSnailfeet = new CombatStep(this, NpcID.SNAILFEET, "Defeat Snailfeet WITHOUT using weapons, armour, or magic. He attacks using melee and range.", "Snailfeet (level 56)");
+		defeatMosschin = new CombatStep(this, NpcID.MOSSCHIN, "Defeat Mosschin WITHOUT using weapons, armour, or magic. He attacks using melee and magic.", "Mosschin (level 88)");
+		defeatRedeyes = new CombatStep(this, NpcID.REDEYES, "Defeat Redeyes WITHOUT using weapons, armour, or magic. He attacks using melee and magic, and lowers your attack, strength, and defence.", "Redeyes (level 121)");
+		defeatStrongbones = new CombatStep(this, NpcID.STRONGBONES, "Defeat Strongbones WITHOUT using weapons, armour, or magic. He attacks using all 3 combat styles, lowers your attack, strength and defence. Ignore the level 29 Skoblins he spawns.", "Strongbones (level 184)");
 
 		pickUpSnotheadBone = new DetailedQuestStep(this, "Pick up Snothead's bone from the ground.", snotheadBones.hideConditioned(snotheadBuried));
 		pickUpSnailfeetBone = new DetailedQuestStep(this, "Pick up Snailfeet's bone from the ground.", snailfeetBones.hideConditioned(snailfeetBuried));
@@ -276,13 +276,16 @@ public class HopespearsWill extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return new ArrayList<>(ImmutableList.of("Snothead (level 32)",
-				"Snailfeet (level 56)",
-				"Mosschin (level 88)",
-				"Redeyes (level 121)",
-				"Strongbones (level 184)"));
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(defeatSnothead);
+		reqs.add(defeatSnailfeet);
+		reqs.add(defeatMosschin);
+		reqs.add(defeatRedeyes);
+		reqs.add(defeatStrongbones);
+
+		return reqs;
 	}
 
 	@Override

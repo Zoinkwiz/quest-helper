@@ -23,13 +23,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -392,7 +387,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		talkToCitizenOrGuard = new NpcStep(this, NpcID.CITIZEN_11537, new WorldPoint(3347, 2718, 0), "Prepare to fight the Head Menaphite Guard, and talk to either a citizen or Menaphite Guard to start the fight.", true);
 		((NpcStep) talkToCitizenOrGuard).addAlternateNpcs(NpcID.CITIZEN_11536, NpcID.CITIZEN_11534, NpcID.MENAPHITE_GUARD_11515, NpcID.MENAPHITE_GUARD_11516, NpcID.MENAPHITE_GUARD_11518);
 
-		fightHeadMenaphiteGuard = new NpcStep(this, NpcID.HEAD_MENAPHITE_GUARD_11529, "Fight the Head Menaphite Guard. This boss uses melee, and can hit up to 16. DO NOT USE ANY OVERHEAD PROTECTION PRAYERS, OR YOU WILL GET HIT FOR 1/3RD OF YOUR HITPOINTS", meleeCombatGear, food);
+		fightHeadMenaphiteGuard = new CombatStep(this, NpcID.HEAD_MENAPHITE_GUARD_11529, "Fight the Head Menaphite Guard. This boss uses melee, and can hit up to 16. DO NOT USE ANY OVERHEAD PROTECTION PRAYERS, OR YOU WILL GET HIT FOR 1/3RD OF YOUR HITPOINTS", "Head Menaphite Guard (lvl 174) without protection prayers", meleeCombatGear, food);
 
 		talkToMaisaPostFightCutsceneInterruption = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Talk to Maisa to continue the quest.");
 
@@ -439,7 +434,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		enterDungeonToFightScarabMages = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3409, 2848, 0),
 			"Enter the dungeon.", meleeCombatGear, food);
 		enterDungeon = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3409, 2848, 0), "Enter the dungeon.");
-		fightScarabMages = new NpcStep(this, NpcID.SCARAB_MAGE_11508, "Use Protect from Magic and defeat the two Scarab Mages.", meleeCombatGear, food, antipoison);
+		fightScarabMages = new CombatStep(this, NpcID.SCARAB_MAGE_11508, "Use Protect from Magic and defeat the two Scarab Mages.", "Two Scabarite Mages (lvl 119)", meleeCombatGear, food, antipoison);
 
 		climbDownStairsAgain = new ObjectStep(this, ObjectID.STAIRS_43959, "Climb down the stairs.");
 		((ObjectStep) climbDownStairsAgain).addAlternateObjects(ObjectID.STAIRS_43958);
@@ -478,7 +473,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 
 		openBossDoor = new ObjectStep(this, ObjectID.DOOR_43960, "Prepare to fight the Champion of Scabaras, and open the door to start the fight.", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions);
 
-		fightChampionOfScabaras = new NpcStep(this, NpcID.CHAMPION_OF_SCABARAS_11483, "Fight the Champion of Scabaras.", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions);
+		fightChampionOfScabaras = new CombatStep(this, NpcID.CHAMPION_OF_SCABARAS_11483, "Fight the Champion of Scabaras.", "Champion of Scabaras (lvl 379)", rangedCombatGear, food, antipoison, staminaPotions, prayerPotions);
 		fightChampionOfScabaras.addText("Protect from Magic, and keep 4+ tiles distance at all times.");
 		fightChampionOfScabaras.addText("Whenever a rift or swarm appears, kill it.");
 		fightChampionOfScabaras.addText("He is weak to ranged attacks, so bring your best ranged gear.");
@@ -522,9 +517,9 @@ public class BeneathCursedSands extends BasicQuestHelper
 		// Fight with the Menaphite Akh
 		prepareFightMenaphiteAkh = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3327, 2740, 0), "Prepare to fight the Menaphite Akh (lvl 351), and talk to Maisa in Necropolis when ready.", meleeCombatGear, waterskins);
 
-		defeatMenaphiteAkh = new NpcStep(this, NpcID.MENAPHITE_AKH_11492, "Defeat the Menaphite Akh. This boss uses melee, and will occasionally cast lightning in front of her, " +
+		defeatMenaphiteAkh = new CombatStep(this, NpcID.MENAPHITE_AKH_11492, "Defeat the Menaphite Akh. This boss uses melee, and will occasionally cast lightning in front of her, " +
 			"so be prepared to walk behind her to avoid this attack. Whenever a shadow version of them appears, kill " +
-			"them quickly as they'll deal a lot of damage.", meleeCombatGear,waterskins);
+			"them quickly as they'll deal a lot of damage.", "Menaphite Akh (lvl 351)", meleeCombatGear,waterskins);
 //		defeatMenaphiteShadow = new NpcStep(this, NpcID.MENAPHITE_SHADOW, "Quickly defeat the Menaphite Shadow, which attack using Ranged and Magic and can deal large damage.");
 
 		talkToOsman = new NpcStep(this, NpcID.OSMAN_11486, new WorldPoint(3369, 2799, 0), "Talk to Osman");
@@ -546,9 +541,16 @@ public class BeneathCursedSands extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Head Menaphite Guard (lvl 174) without protection prayers", "Two Scabarite Mages (lvl 119)", "Champion of Scabaras (lvl 379)", "Menaphite Akh (lvl 351)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(fightHeadMenaphiteGuard);
+		reqs.add(fightScarabMages);
+		reqs.add(fightChampionOfScabaras);
+		reqs.add(defeatMenaphiteAkh);
+
+		return reqs;
+
 	}
 
 	@Override

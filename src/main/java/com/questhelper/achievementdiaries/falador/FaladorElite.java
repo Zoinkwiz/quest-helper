@@ -225,12 +225,12 @@ public class FaladorElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Giant Mole (level 230)");
-		reqs.add("Skeletal Wyvern (level 140)");
-		reqs.add("Blue dragon (level 140)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.GIANT_MOLE, "Giant Mole (level 230)"));
+		reqs.add(new CombatStep(this, NpcID.SKELETAL_WYVERN, "Skeletal Wyvern (level 140)"));
+		reqs.add(new CombatStep(this, NpcID.BLUE_DRAGON, "Blue dragon (level 140)"));
 		return reqs;
 	}
 

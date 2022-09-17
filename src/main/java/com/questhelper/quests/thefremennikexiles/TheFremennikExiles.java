@@ -46,10 +46,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,8 +67,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_FREMENNIK_EXILES
@@ -344,8 +340,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Search the sand pit near Freygerd, ready to fight a basilisk youngling.", combatGear, mirrorShield.equipped());
 		searchSandpitForLetter = new ObjectStep(this, NullObjectID.NULL_4373, new WorldPoint(2668, 3708, 0),
 			"Search the sand pit near Freygerd for a letter.", letter.highlighted());
-		killYoungling = new NpcStep(this, NpcID.BASILISK_YOUNGLING, new WorldPoint(2666, 3708, 0),
-			"Defeat the Basilisk Youngling.", combatGear, mirrorShield.equipped());
+		killYoungling = new CombatStep(this, NpcID.BASILISK_YOUNGLING, new WorldPoint(2666, 3708, 0),
+			"Defeat the Basilisk Youngling.", "Basilisk Youngling (level 53)", combatGear, mirrorShield.equipped());
 		pickupLetter = new ItemStep(this, "Pick up the letter.", letter);
 		pickupLetter.addSubSteps(searchSandpitForLetter);
 		readLetter = new DetailedQuestStep(this, "Read the letter.", letter.highlighted());
@@ -428,8 +424,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Waterbirth Dungeon or Bardur in Waterbirth " +
 			"Dungeon for 150k, or for free with the Ring of Charos(a). You'll need a friend to get there, or a rune " +
 			"thrownaxe and a pet rock.", coins150kOrCharos);
-		killBasilisks = new NpcStep(this, NpcID.BASILISK_9283, new WorldPoint(2644, 3677, 0),
-			"Kill basilisks until you're told to stop.", true, vShield.equipped(), combatGear, food);
+		killBasilisks = new CombatStep(this, NpcID.BASILISK_9283, new WorldPoint(2644, 3677, 0),
+			"Kill basilisks until you're told to stop.", "Several Basilisk (level 61)", true, vShield.equipped(), combatGear, food);
 		((NpcStep) killBasilisks).addAlternateNpcs(NpcID.BASILISK_9284, NpcID.BASILISK_9285, NpcID.BASILISK_9286,
 			NpcID.MONSTROUS_BASILISK_9287, NpcID.MONSTROUS_BASILISK_9288);
 		travelToIsleOfStone = new ObjectStep(this, NullObjectID.NULL_37432, new WorldPoint(2623, 3693, 0),
@@ -445,13 +441,13 @@ public class TheFremennikExiles extends BasicQuestHelper
 		enterCaveToFight = new ObjectStep(this, NullObjectID.NULL_37433, new WorldPoint(2465, 4012, 0),
 			"Enter the door, ready to fight.", combatGear, vShield.equipped());
 		enterCaveToFight.addDialogStep("Yes.");
-		fightTyphor = new NpcStep(this, NpcID.TYPHOR, new WorldPoint(2457, 10384, 0), "Fight Typhor, who attacks " +
-			"with both Melee and Magic", vShield.equipped());
+		fightTyphor = new CombatStep(this, NpcID.TYPHOR, new WorldPoint(2457, 10384, 0), "Fight Typhor, who attacks " +
+			"with both Melee and Magic", "Typhor (level 218)", vShield.equipped());
 		((NpcStep) fightTyphor).addAlternateNpcs(NpcID.TYPHOR_9296);
 
 		PrayerRequirement protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
-		fightJormungand = new NpcStep(this, NpcID.THE_JORMUNGAND, new WorldPoint(2457, 10384, 0), "Defeat the " +
-			"Jormungand.", vShield.equipped(), protectFromMagic);
+		fightJormungand = new CombatStep(this, NpcID.THE_JORMUNGAND, new WorldPoint(2457, 10384, 0), "Defeat the " +
+			"Jormungand.", "The Jormungand (level 363)", vShield.equipped(), protectFromMagic);
 		fightJormungand.addText("When the screen turns red, have your character face away from him.");
 		fightJormungand.addText("When frozen in rock, click repeatedly to break out.");
 		((NpcStep) fightJormungand).addAlternateNpcs(NpcID.THE_JORMUNGAND_9290, NpcID.THE_JORMUNGAND_9291, NpcID.THE_JORMUNGAND_9292);
@@ -476,15 +472,16 @@ public class TheFremennikExiles extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList(
-			"Basilisk Youngling (level 53)",
-			"Basilisk (level 61)",
-			"Monstrous Basilisk (level 135)",
-			"Typhor (level 218)",
-			"The Jormungand (level 363)"
-		);
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killYoungling);
+		reqs.add(killBasilisks);
+		reqs.add(new CombatStep(this, NpcID.MONSTROUS_BASILISK_9287, "Monstrous Basilisk (level 135)"));
+		reqs.add(fightTyphor);
+		reqs.add(fightJormungand);
+
+		return reqs;
 	}
 
 	@Override

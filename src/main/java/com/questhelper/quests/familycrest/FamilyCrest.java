@@ -39,12 +39,8 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -288,9 +284,9 @@ public class FamilyCrest extends BasicQuestHelper
 			"Enter the Edgeville Wilderness Dungeon, ready to kill Chronozon. Other players will be able to attack you.", runesForBlasts);
 		goDownToChronizon.addAlternateObjects(ObjectID.TRAPDOOR_1579);
 
-		killChronizon = new NpcStep(this, NpcID.CHRONOZON, new WorldPoint(3087, 9936, 0),
+		killChronizon = new CombatStep(this, NpcID.CHRONOZON, new WorldPoint(3087, 9936, 0),
 			"Kill Chronozon in the south west corner of the Edgeville Wilderness Dungeon. You need to hit him at least once with all 4 elemental blast spell.",
-			runesForBlasts);
+				"Chronozon (level 170, in the Wilderness)", runesForBlasts);
 		killChronizon.addSubSteps(goDownToChronizon);
 
 		pickUpCrest3 = new ItemStep(this, "Pick up the crest part.", crestPiece3);
@@ -336,10 +332,11 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Chronozon (level 170, in the Wilderness)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killChronizon);
+
 		return reqs;
 	}
 

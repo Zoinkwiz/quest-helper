@@ -279,9 +279,12 @@ public class KandarinElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Mithril Dragons (level 304) for chewed bones");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.MITHRIL_DRAGON, "Mithril Dragons (level 304) for chewed bones"));
+
+		return reqs;
 	}
 
 	@Override

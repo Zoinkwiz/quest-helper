@@ -46,12 +46,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -391,7 +387,7 @@ public class HeroesQuest extends BasicQuestHelper
 		pushWall = new ObjectStep(this, ObjectID.WALL_2629, new WorldPoint(2787, 3190, 0), "Push the wall to enter Pete's garden.");
 		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_2622, new WorldPoint(2781, 3197, 0), "Use the misc key on the door to the north west.", miscKey);
 		useKeyOnDoor.addIcon(ItemID.MISCELLANEOUS_KEY);
-		killGrip = new NpcStep(this, NpcID.GRIP, new WorldPoint(2775, 3192, 0), "Wait for your partner to lure Grip into the room next to yours, and kill him with magic/ranged. Afterwards, trade your partner for a candlestick.");
+		killGrip = new CombatStep(this, NpcID.GRIP, new WorldPoint(2775, 3192, 0), "Wait for your partner to lure Grip into the room next to yours, and kill him with magic/ranged. Afterwards, trade your partner for a candlestick.", "Grip (level 26)");
 		getCandlestick = new DetailedQuestStep(this, "Get your candlestick from your partner.");
 		killGrip.addSubSteps(getCandlestick);
 		enterPhoenixBaseAgain = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Bring the candlestick back to Straven.");
@@ -404,7 +400,7 @@ public class HeroesQuest extends BasicQuestHelper
 		takeLadder3Down = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2827, 3510, 0), "Take the east ladder down.");
 		takeLadder4Up = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2857, 9917, 0), "Follow the path around until you reach a ladder, then climb it.");
 		takeLadder5Down = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2859, 3519, 0), "Take the south ladder down.");
-		killIceQueen = new NpcStep(this, NpcID.ICE_QUEEN, new WorldPoint(2865, 9948, 0), "Kill the Ice Queen for ice gloves.");
+		killIceQueen = new CombatStep(this, NpcID.ICE_QUEEN, new WorldPoint(2865, 9948, 0), "Kill the Ice Queen for ice gloves.", "Ice Queen (level 111) for ice gloves");
 		pickupIceGloves = new DetailedQuestStep(this, "Pick up the ice gloves.", iceGloves);
 		killIceQueen.addSubSteps(pickupIceGloves);
 
@@ -416,13 +412,13 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Ice Queen (level 111) for ice gloves");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killIceQueen);
 		if (!inBlackArmGang.check(client))
 		{
-			reqs.add("Grip (level 26)");
+			reqs.add(killGrip);
 		}
 		return reqs;
 	}

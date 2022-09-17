@@ -46,11 +46,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -352,7 +348,7 @@ public class HauntedMine extends BasicQuestHelper
 
 		tryToPickUpKey = new NpcStep(this, NpcID.INNOCENTLOOKING_KEY, new WorldPoint(2788, 4455, 0), "Attempt to pick up the innocent-looking key. Treus Dayth (level 95) will spawn. Kill him.");
 
-		killDayth = new NpcStep(this, NpcID.TREUS_DAYTH, new WorldPoint(2788, 4450, 0), "Kill Treus Dayth.");
+		killDayth = new CombatStep(this, NpcID.TREUS_DAYTH, new WorldPoint(2788, 4450, 0), "Kill Treus Dayth.", "Treus Dayth (level 95)");
 
 		tryToPickUpKey.addSubSteps(killDayth);
 
@@ -386,10 +382,11 @@ public class HauntedMine extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Treus Dayth (level 95)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killDayth);
+
 		return reqs;
 	}
 

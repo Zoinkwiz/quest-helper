@@ -48,11 +48,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -365,8 +362,8 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 			"defeat him.",	ancientMace.equipped().highlighted());
 		((NpcStep) useSpecial).addAlternateNpcs(NpcID.SIGMUND_5143, NpcID.SIGMUND_5144, NpcID.SIGMUND_5145);
 
-		defeatSigmund = new NpcStep(this, NpcID.SIGMUND_5146, new WorldPoint(2543, 5511, 0),
-			"Defeat Sigmund.");
+		defeatSigmund = new CombatStep(this, NpcID.SIGMUND_5146, new WorldPoint(2543, 5511, 0),
+			"Defeat Sigmund.", "Sigmund (level 64)");
 		useSpecial.addSubSteps(defeatSigmund);
 
 		untieZanik = new ObjectStep(this, ObjectID.ZANIK_23284, new WorldPoint(2542, 5513, 0), "Untie Zanik.");
@@ -435,9 +432,14 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("H.A.M. Archer (level 30)", "H.A.M. Mage (level 30)", "Sigmund (level 64)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.HAM_ARCHER, "H.A.M. Archer (level 30)"));
+		reqs.add(new CombatStep(this, NpcID.HAM_MAGE, "H.A.M. Mage (level 30)"));
+		reqs.add(defeatSigmund);
+
+		return reqs;
 	}
 
 	@Override

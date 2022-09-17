@@ -42,12 +42,8 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -124,7 +120,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	public void setupSteps()
 	{
 		tarnRoute = new TarnRoute(this);
-		killTarn = new NpcStep(this, NpcID.MUTANT_TARN, new WorldPoint(3186, 4619, 0), "Kill Mutant and Ghost Tarn.");
+		killTarn = new CombatStep(this, NpcID.MUTANT_TARN, new WorldPoint(3186, 4619, 0), "Kill Mutant and Ghost Tarn.", "Tarn (level 69) twice");
 		killTarn.addAlternateNpcs(NpcID.TARN, NpcID.TARN_6476);
 
 		enterFinalRoom = new ObjectStep(this, ObjectID.PASSAGEWAY_15774, new WorldPoint(3186, 4627, 0), "Go into the north passageway. If you would like to complete a task for the Morytania Diary, you should kill a Terror Dog now.");
@@ -138,9 +134,12 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Tarn (level 69) twice");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killTarn);
+
+		return reqs;
 	}
 
 	@Override
@@ -149,6 +148,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.HAUNTED_MINE, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.SLAYER, 40));
+
 		return req;
 	}
 

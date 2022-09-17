@@ -44,12 +44,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -360,7 +356,7 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		enterWallAgain = new ObjectStep(this, NullObjectID.NULL_19124, new WorldPoint(2701, 9688, 0), "Enter the wall just east of where you come down.");
 		useEmptyRunesOnDoor = new ObjectStep(this, ObjectID.IMPOSING_DOORS, new WorldPoint(2351, 5093, 0), "Use the runes on the imposing doors at the end of the path.", airRune, waterRune, earthRune, fireRune, mindRune);
-		killSlugPrince = new NpcStep(this, NpcID.SLUG_PRINCE, new WorldPoint(2351, 5093, 0), "Kill the Slug Prince. Only melee can hurt it.");
+		killSlugPrince = new CombatStep(this, NpcID.SLUG_PRINCE, new WorldPoint(2351, 5093, 0), "Kill the Slug Prince. Only melee can hurt it.", "Slug Prince (level 62) (can only be hurt by melee)");
 
 		reportBackToTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2996, 3373, 0), "Report back to Sir Tiffy Cashien in Falador Park.");
 		reportBackToTiffy.addDialogStep("Slug Menace.");
@@ -390,10 +386,11 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Slug Prince (level 62) (can only be hurt by melee)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killSlugPrince);
+
 		return reqs;
 	}
 

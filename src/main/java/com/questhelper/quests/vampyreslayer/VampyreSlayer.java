@@ -37,11 +37,7 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -169,10 +165,11 @@ public class VampyreSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Count Draynor (level 34)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killDraynor);
+
 		return reqs;
 	}
 

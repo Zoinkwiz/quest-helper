@@ -47,12 +47,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -327,7 +323,7 @@ public class FairytaleII extends BasicQuestHelper
 		goToDir = new ObjectStep(this, NullObjectID.NULL_29560, "Travel to D.I.R. with a Fairy Ring, ready to kill a " +
 			"Gorak. Goraks can hit through protection prayers.", dramenOrLunarStaff.equipped(), combatGear);
 		((ObjectStep) goToDir).addAlternateObjects(NullObjectID.NULL_29495);
-		killGorak = new NpcStep(this, NpcID.GORAK, "Kill Goraks for their claws.", true);
+		killGorak = new CombatStep(this, NpcID.GORAK, "Kill Goraks for their claws.", "At least 1 Gorak (level 145)", true);
 		pickupGorakClaw = new ItemStep(this, "Pickup the gorak's claws.", gorakClaw);
 
 		useStarFlowerOnVial = new DetailedQuestStep(this, "Add the star flower to a vial of water.",
@@ -378,9 +374,12 @@ public class FairytaleII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("At least 1 Gorak (level 145)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGorak);
+
+		return reqs;
 	}
 
 	@Override

@@ -583,11 +583,11 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		sayNameStrongbones = new ObjectStep(this, ObjectID.GRAVE_43126, new WorldPoint(3742, 4393, 0), "Say Strongbones's name at the north grave.");
 		sayNameStrongbones.addDialogStep("Strongbones.");
 
-		defeatSnothead = new NpcStep(this, NpcID.SNOTHEAD, "Defeat Snothead. He attacks using melee.");
-		defeatSnailfeet = new NpcStep(this, NpcID.SNAILFEET, "Defeat Snailfeet. He attacks using melee and range.");
-		defeatMosschin = new NpcStep(this, NpcID.MOSSCHIN, "Defeat Mosschin. He attacks using melee and magic.");
-		defeatRedeyes = new NpcStep(this, NpcID.REDEYES, "Defeat Redeyes. He attacks using melee and magic, and lowers your attack, strength, and defence.");
-		defeatStrongbones = new NpcStep(this, NpcID.STRONGBONES, "Defeat Strongbones. He attacks using all 3 combat styles, lowers your attack, strength and defence. Ignore the level 29 Skoblins he spawns.");
+		defeatSnothead = new CombatStep(this, NpcID.SNOTHEAD, "Defeat Snothead. He attacks using melee.", "Snothead (level 32)");
+		defeatSnailfeet = new CombatStep(this, NpcID.SNAILFEET, "Defeat Snailfeet. He attacks using melee and range.", "Snailfeet (level 56)");
+		defeatMosschin = new CombatStep(this, NpcID.MOSSCHIN, "Defeat Mosschin. He attacks using melee and magic.", "Mosschin (level 88)");
+		defeatRedeyes = new CombatStep(this, NpcID.REDEYES, "Defeat Redeyes. He attacks using melee and magic, and lowers your attack, strength, and defence.", "Redeyes (level 121)");
+		defeatStrongbones = new CombatStep(this, NpcID.STRONGBONES, "Defeat Strongbones. He attacks using all 3 combat styles, lowers your attack, strength and defence. Ignore the level 29 Skoblins he spawns.", "Strongbones (level 184)");
 
 		learnSnailfeet = new NpcStep(this, NpcID.SNOTHEAD_11274, "Talk to Snothead to learn the name of the next priest.");
 		learnSnailfeet.addDialogStep("What was your predecessor's name?");
@@ -672,13 +672,16 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return new ArrayList<>(ImmutableList.of("Snothead (level 32)",
-				"Snailfeet (level 56)",
-				"Mosschin (level 88)",
-				"Redeyes (level 121)",
-				"Strongbones (level 184)"));
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(defeatSnothead);
+		reqs.add(defeatSnailfeet);
+		reqs.add(defeatMosschin);
+		reqs.add(defeatRedeyes);
+		reqs.add(defeatStrongbones);
+
+		return reqs;
 	}
 
 	@Override

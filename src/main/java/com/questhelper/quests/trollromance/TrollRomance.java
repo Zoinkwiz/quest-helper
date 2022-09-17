@@ -42,11 +42,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -256,7 +252,7 @@ public class TrollRomance extends BasicQuestHelper
 		challengeArrg.setWorldMapPoint(new WorldPoint(2892, 10127, 0));
 		challengeArrg.addSubSteps(enterStrongholdForFight, goUpToUgForFight, goDownToUgForFight);
 
-		killArrg = new NpcStep(this, NpcID.ARRG_643, "Kill Arrg.");
+		killArrg = new CombatStep(this, NpcID.ARRG_643, "Kill Arrg.", "Arrg (level 113) can be safe spotted");
 		returnToUg = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room to finish the quest.");
 		returnToUg.setWorldMapPoint(new WorldPoint(2891, 10097, 0));
 		returnToUg.addSubSteps(goDownToUgForEnd, goUpToUgForEnd, enterStrongholdForEnd);
@@ -275,10 +271,11 @@ public class TrollRomance extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Arrg (level 113) can be safe spotted");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killArrg);
+
 		return reqs;
 	}
 

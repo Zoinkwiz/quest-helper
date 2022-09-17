@@ -41,11 +41,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +56,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WILDERNESS_EASY
@@ -196,8 +192,8 @@ public class WildernessEasy extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		killMammoth = new NpcStep(this, NpcID.MAMMOTH, new WorldPoint(3164, 3593, 0),
-			"Kill a Mammoth in the Wilderness.", combatGear);
+		killMammoth = new CombatStep(this, NpcID.MAMMOTH, new WorldPoint(3164, 3593, 0),
+			"Kill a Mammoth in the Wilderness.", "Mammoth (level 80)",combatGear);
 
 		moveToEdgeSpider = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
 			"Enter the Edgeville dungeon.", food);
@@ -229,8 +225,8 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		spiderEggs = new ItemStep(this, new WorldPoint(3122, 9953, 0), "Pickup 5 red spider eggs in the Edgeville " +
 			"Wilderness Dungeon.", redSpiderEggs);
 
-		earthWarrior = new NpcStep(this, NpcID.EARTH_WARRIOR, new WorldPoint(3121, 9972, 0),
-			"Kill an Earth warrior in the north of the Edgeville Wilderness Dungeon.", combatGear, food);
+		earthWarrior = new CombatStep(this, NpcID.EARTH_WARRIOR, new WorldPoint(3121, 9972, 0),
+			"Kill an Earth warrior in the north of the Edgeville Wilderness Dungeon.", "Earth warrior (level 51)", combatGear, food);
 
 		wildyLever = new ObjectStep(this, ObjectID.LEVER_26761, new WorldPoint(3090, 3475, 0),
 			"Pull the Lever in Edgeville. This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
@@ -278,9 +274,13 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill an Earth Warrior (lvl 51) and a Mammoth (lvl 80).");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(earthWarrior);
+		reqs.add(killMammoth);
+
+		return reqs;
 	}
 
 	@Override

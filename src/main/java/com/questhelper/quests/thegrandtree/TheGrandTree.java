@@ -42,11 +42,8 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -398,7 +395,7 @@ public class TheGrandTree extends BasicQuestHelper
 		// The black demon
 		climbDownTrapDoor = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door. Be prepared for the fight against a Black Demon (level 172).");
 		talkToGloughBeforeFight = new NpcStep(this, NpcID.GLOUGH, "Talk to Glough. You can safespot the Demon from where he stands.");
-		killBlackDemon = new NpcStep(this, NpcID.BLACK_DEMON_1432, "Kill the black Demon. You can safespot from where Glough stands.");
+		killBlackDemon = new CombatStep(this, NpcID.BLACK_DEMON_1432, "Kill the black Demon. You can safespot from where Glough stands.", "Black demon (level 172) (can be safespotted)");
 		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2492, 9865, 0));
 		climbDownTrapDoorAfterFight = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door again.");
 		talkToKingAfterFight = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0), "Talk to King Narnode deeper in the cave.");
@@ -431,9 +428,12 @@ public class TheGrandTree extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Black demon (level 172) (can be safespotted)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killBlackDemon);
+
+		return reqs;
 	}
 
 	@Override

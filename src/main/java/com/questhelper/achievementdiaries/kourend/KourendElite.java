@@ -281,7 +281,7 @@ public class KourendElite extends ComplexStateQuestHelper
 		enterSkotizoLair = new ObjectStep(this, ObjectID.ALTAR_28900, "Enter Skotizo's Lair.",
 			darkTotem.highlighted());
 		enterSkotizoLair.addIcon(ItemID.DARK_TOTEM);
-		defeatSkotizo = new NpcStep(this, NpcID.SKOTIZO, "Defeat Skotizo.", combatGear, food, prayerPotion);
+		defeatSkotizo = new CombatStep(this, NpcID.SKOTIZO, "Defeat Skotizo.", "Kill Skotizo (level 321)", combatGear, food, prayerPotion);
 
 		// Catch and cook and an anglerfish
 		catchAngler = new NpcStep(this, NpcID.ROD_FISHING_SPOT_6825, "Catch a raw anglerfish.",
@@ -294,8 +294,8 @@ public class KourendElite extends ComplexStateQuestHelper
 			"Enter the Mount Karuulm Slayer Dungeon.");
 		enterHydraArea = new ObjectStep(this, ObjectID.ROCKS_34544, new WorldPoint(1312, 10215, 0),
 			"Enter the hydra area.", bootsOfStone.equipped());
-		killHydra = new NpcStep(this, NpcID.HYDRA, new WorldPoint(1312, 10232, 0),
-			"Kill a hydra.", combatGear, food);
+		killHydra = new CombatStep(this, NpcID.HYDRA, new WorldPoint(1312, 10232, 0),
+			"Kill a hydra.", "Kill a Hydra (level 194)", combatGear, food);
 		killHydra.addSubSteps(enterMountKaruulmDungeon, enterHydraArea);
 
 		// Create an Ape Atoll teleport tab
@@ -329,12 +329,14 @@ public class KourendElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList(
-			"Kill Skotizo (level 321)",
-			"Kill a Hydra (level 194)",
-			"Various enemies in Chambers of Xeric");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(defeatSkotizo);
+		reqs.add(killHydra);
+		reqs.add(new CombatStep(this, -1, "Various enemies in Chambers of Xeric"));
+
+		return reqs;
 	}
 
 	@Override

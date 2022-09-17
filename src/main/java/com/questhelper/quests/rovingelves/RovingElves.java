@@ -40,12 +40,8 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -180,7 +176,7 @@ public class RovingElves extends BasicQuestHelper
 			glarialsPebble);
 		enterGlarialsTombstone.addIcon(ItemID.GLARIALS_PEBBLE);
 
-		killGuardian = new NpcStep(this, NpcID.MOSS_GUARDIAN, new WorldPoint(2515, 9844, 0), "Kill the Moss Guardian for a Consecration seed.");
+		killGuardian = new CombatStep(this, NpcID.MOSS_GUARDIAN, new WorldPoint(2515, 9844, 0), "Kill the Moss Guardian for a Consecration seed.", "Moss Guardian (level 84) without runes, weapons, or armour");
 
 		pickUpSeed = new ItemStep(this, "Pick up the consecration seed.", seed);
 
@@ -214,9 +210,12 @@ public class RovingElves extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Moss Guardian (level 84) without runes, weapons, or armour");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killGuardian);
+
+		return reqs;
 	}
 
 	@Override

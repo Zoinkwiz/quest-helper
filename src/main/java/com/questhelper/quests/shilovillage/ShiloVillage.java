@@ -49,12 +49,8 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -356,9 +352,9 @@ public class ShiloVillage extends BasicQuestHelper
 		searchDolmenForFight = new ObjectStep(this, ObjectID.TOMB_DOLMEN_2258, new WorldPoint(2893, 9488, 0),
 			"Search the dolmen, ready to fight.");
 
-		killNazastarool = new NpcStep(this, NpcID.NAZASTAROOL, new WorldPoint(2892, 9488, 0),
+		killNazastarool = new CombatStep(this, NpcID.NAZASTAROOL, new WorldPoint(2892, 9488, 0),
 			"Defeat Nazastrool's 3 forms. You can safe spot them over the dolem, and the Crumble Undead spell is very" +
-				" strong against them.");
+				" strong against them.", "Nazastarool 3 times (levels 68, 91, 93) (safespottable)");
 		((NpcStep) killNazastarool).addAlternateNpcs(NpcID.NAZASTAROOL_5354, NpcID.NAZASTAROOL_5355);
 		((NpcStep)killNazastarool).addSafeSpots(new WorldPoint(2894, 9486, 0), new WorldPoint(2891, 9486, 0));
 		pickupCorpse = new ItemStep(this, "Pickup Rashiliyia's corpse.", rashCorpse);
@@ -385,9 +381,12 @@ public class ShiloVillage extends BasicQuestHelper
 
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Nazastarool 3 times (levels 68, 91, 93) (safespottable)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killNazastarool);
+
+		return reqs;
 	}
 
 	@Override

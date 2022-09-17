@@ -40,11 +40,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -263,8 +260,8 @@ public class PriestInPeril extends BasicQuestHelper
 		goDownToDog = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3405, 3507, 0), "Go down the ladder north of the temple.");
 		goDownToDog.addDialogStep("Yes.");
 		((ObjectStep) (goDownToDog)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
-		killTheDog = new NpcStep(this, NpcID.TEMPLE_GUARDIAN, new WorldPoint(3405, 9901, 0),
-			"Kill the Temple Guardian (level 30). It is immune to magic so you will need to use either ranged or melee.");
+		killTheDog = new CombatStep(this, NpcID.TEMPLE_GUARDIAN, new WorldPoint(3405, 9901, 0),
+			"Kill the Temple Guardian (level 30). It is immune to magic so you will need to use either ranged or melee.", "Temple Guardian (level 30). You cannot use Magic. Rings of recoil will not award the kill.");
 		climbUpAfterKillingDog = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(3405, 9907, 0),
 			"Climb back up the ladder and return to King Roald.");
 		returnToKingRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3222, 3473, 0),
@@ -273,7 +270,7 @@ public class PriestInPeril extends BasicQuestHelper
 
 		returnToTemple = new ObjectStep(this, ObjectID.LARGE_DOOR_3490, new WorldPoint(3408, 3488, 0),
 			"Return to the temple.", bucket, lotsOfRuneEssence, rangedMagedGear);
-		killMonk = new NpcStep(this, NpcID.MONK_OF_ZAMORAK_3486, new WorldPoint(3412, 3488, 0), "Kill a Monk of Zamorak (level 30) for a golden key. You can safespot using the pews.", true, goldenKey);
+		killMonk = new CombatStep(this, NpcID.MONK_OF_ZAMORAK_3486, new WorldPoint(3412, 3488, 0), "Kill a Monk of Zamorak (level 30) for a golden key. You can safespot using the pews.", "Monk of Zamorak (level 30)", true, goldenKey);
 
 		goUpToFloorOneTemple = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(3418, 3493, 0), "Go upstairs.");
 		goUpToFloorTwoTemple = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3410, 3485, 1), "Climb up the ladder.");
@@ -338,9 +335,14 @@ public class PriestInPeril extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Temple Guardian (level 30). You cannot use Magic. Rings of recoil will not award the kill.",  "Monk of Zamorak (level 30)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killTheDog);
+		reqs.add(killMonk);
+
+		return reqs;
+
 	}
 
 	@Override

@@ -40,11 +40,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -182,9 +179,9 @@ public class ObservatoryQuest extends BasicQuestHelper
 			"Unmarked chests contain monsters and may poison you.");
 		((ObjectStep) searchChests).addAlternateObjects(ObjectID.CHEST_25386, ObjectID.CHEST_25387,
 			ObjectID.CHEST_25388, ObjectID.CHEST_25389, ObjectID.CHEST_25390);
-		prodGuard = new NpcStep(this, NpcID.SLEEPING_GUARD, new WorldPoint(2327, 9394, 0),
+		prodGuard = new CombatStep(this, NpcID.SLEEPING_GUARD, new WorldPoint(2327, 9394, 0),
 			"Prod the sleeping guard in the north of the dungeon. He'll attack you. You need to then either kill him," +
-				" or get him in the marked spot to the north of the gate.");
+				" or get him in the marked spot to the north of the gate.", "Goblin Guard (level 42, or you can lure it/have someone else kill it)");
 		prodGuard.addTileMarker(new WorldPoint(2327, 9399, 0), SpriteID.BARBARIAN_ASSAULT_HORN_FOR_HEALER_ICON);
 		inspectStove = new ObjectStep(this, NullObjectID.NULL_25442, new WorldPoint(2327, 9389, 0),
 			"Either kill or trap the guard on the marked tile to the north, then search the goblin stove.");
@@ -224,9 +221,12 @@ public class ObservatoryQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Goblin Guard (level 42, or you can lure it/have someone else kill it)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(prodGuard);
+
+		return reqs;
 	}
 
 	@Override

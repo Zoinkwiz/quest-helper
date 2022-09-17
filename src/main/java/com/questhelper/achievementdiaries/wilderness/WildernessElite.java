@@ -41,11 +41,8 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +56,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WILDERNESS_ELITE
@@ -236,8 +232,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 
 		moveToResource2 = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(6000), combatGear, food, pickaxe, coal.quantity(16), hammer);
-		runiteGolem = new NpcStep(this, NpcID.RUNITE_GOLEM, new WorldPoint(3189, 3938, 0),
-			"Kill and mine the Runite Golems in the Resource Area.", true, combatGear, food,
+		runiteGolem = new CombatStep(this, NpcID.RUNITE_GOLEM, new WorldPoint(3189, 3938, 0),
+			"Kill and mine the Runite Golems in the Resource Area.", "Runite Golem (level 178)",true, combatGear, food,
 			pickaxe, coal.quantity(16), hammer);
 		runiteGolem.addAlternateNpcs(NpcID.ROCKS_6601);
 		smeltBar = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
@@ -260,8 +256,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 		moveToGodWars2 = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 0),
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the west.",
 			combatGear, food, godEquip);
-		spiritMage = new NpcStep(this, NpcID.SPIRITUAL_MAGE, new WorldPoint(3050, 10131, 0),
-			"Kill a Spiritual Warrior in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
+		spiritMage = new CombatStep(this, NpcID.SPIRITUAL_MAGE, new WorldPoint(3050, 10131, 0),
+			"Kill a Spiritual Warrior in the Wilderness God Wars Dungeon.", "Spiritual Mage (level 121)", combatGear, food, godEquip);
 		spiritMage.addAlternateNpcs(NpcID.SPIRITUAL_MAGE_2244, NpcID.SPIRITUAL_MAGE_3161, NpcID.SPIRITUAL_MAGE_3168);
 
 		threeBosses = new NpcStep(this, NpcID.CALLISTO, new WorldPoint(3291, 3844, 0),
@@ -311,10 +307,16 @@ public class WildernessElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Callisto (lvl 470)", "Venenatis (lvl 464)", "Vet'ion (lvl 454)",
-			"Runite Golem (lvl 178)", "Spiritual Mage (lvl 121)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.CALLISTO, "Callisto (level 470)"));
+		reqs.add(new CombatStep(this, NpcID.VENENATIS, "Venenatis (level 464)"));
+		reqs.add(new CombatStep(this, NpcID.VETION, "Vet'ion (level 454)"));
+		reqs.add(runiteGolem);
+		reqs.add(spiritMage);
+
+		return reqs;
 	}
 
 	@Override

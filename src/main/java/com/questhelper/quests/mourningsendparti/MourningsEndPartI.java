@@ -36,9 +36,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -60,8 +58,6 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MOURNINGS_END_PART_I
@@ -326,7 +322,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 		talkToArianwyn = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		talkToArianwyn.addDialogStep("Okay, let's begin.");
-		killMourner = new NpcStep(this, NpcID.MOURNER_9013, new WorldPoint(2385, 3326, 0), "Kill a mourner travelling through the Arandar pass. This is more easily accessed from the north entrance. You'll need 7 free inventory spaces.", true);
+		killMourner = new CombatStep(this, NpcID.MOURNER_9013, new WorldPoint(2385, 3326, 0), "Kill a mourner travelling through the Arandar pass. This is more easily accessed from the north entrance. You'll need 7 free inventory spaces.", "Mourner (level 11)", true);
 		pickUpLoot = new DetailedQuestStep(this, "Pick up everything the mourner dropped.", mournerBoots, mournerCloak, mournerGloves, mournerLegsBroken, mournerMask, mournerLetter, bloodyMournerBody);
 
 		searchLaundry = new ObjectStep(this, ObjectID.LAUNDRY_BASKET, new WorldPoint(2912, 3418, 0), "Search Tegid's laundry basket in south Taverley for some soap.");
@@ -449,9 +445,12 @@ public class MourningsEndPartI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Mourner (level 11)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killMourner);
+
+		return reqs;
 	}
 
 	@Override

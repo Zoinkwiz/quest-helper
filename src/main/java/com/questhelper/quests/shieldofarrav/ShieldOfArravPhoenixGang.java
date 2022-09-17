@@ -30,10 +30,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -52,7 +49,6 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG
@@ -149,7 +145,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		talkToStraven.addDialogStep("I'd like to offer you my services.");
 
 		goUpFromPhoenixGang = new ObjectStep(this, ObjectID.LADDER_2405, new WorldPoint(3244, 9783, 0), "Go back up to the surface.");
-		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD, new WorldPoint(3222, 3395, 0), "Kill Jonny the Beard in the Blue Moon Inn in Varrock.");
+		killJonny = new CombatStep(this, NpcID.JONNY_THE_BEARD, new WorldPoint(3222, 3395, 0), "Kill Jonny the Beard in the Blue Moon Inn in Varrock.", "Jonny the beard (level 2)");
 		pickupIntelReport = new DetailedQuestStep(this, "Pick up the Intel Report.", intelReport);
 		returnDownLadder = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Return to the Phoenix Gang's base.");
 		talkToStravenAgain = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Talk to Staven again.");
@@ -199,9 +195,12 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Collections.singletonList("Jonny the beard (level 2)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killJonny);
+
+		return reqs;
 	}
 
 	@Override

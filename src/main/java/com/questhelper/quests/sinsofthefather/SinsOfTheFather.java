@@ -43,11 +43,7 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -521,8 +517,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		goDownToKroy = new ObjectStep(this, ObjectID.STAIRS_32637, new WorldPoint(3728, 3301, 0), "Go down the stairs to fight Kroy.");
 		goDownToKroy.addDialogStep("Continue the Sins of the Father quest.");
 
-		killKroy = new NpcStep(this, NpcID.KROY_9560, new WorldPoint(3734, 9763, 1),
-			"Kill Kroy.");
+		killKroy = new CombatStep(this, NpcID.KROY_9560, new WorldPoint(3734, 9763, 1),
+			"Kill Kroy.", "Kroy (level 133)");
 		killKroy.addSubSteps(goDownToKroy);
 
 		destroyLab = new ObjectStep(this, NullObjectID.NULL_39516, new WorldPoint(3730, 9760, 1),
@@ -585,7 +581,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		leaveBridgeArea.addDialogStep("Yes.");
 
 		/* Vampyre Juvinate section */
-		killJuvinates = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_9615, new WorldPoint(2396, 5011, 0), "Kill the juvinates with the Ivandis Flail. Try to attack the one near Ivan before it can attack him.", true, ivandisFlailEquipped);
+		killJuvinates = new CombatStep(this, NpcID.VAMPYRE_JUVINATE_9615, new WorldPoint(2396, 5011, 0), "Kill the juvinates with the Ivandis Flail. Try to attack the one near Ivan before it can attack him.", "Vampyre juveniles (level 122 and 119)", true, ivandisFlailEquipped);
 		((NpcStep) (killJuvinates)).addAlternateNpcs(NpcID.VAMPYRE_JUVINATE_9614);
 		leaveJuvinateArea = new ObjectStep(this, ObjectID.PATH_38011, new WorldPoint(2397, 5023, 0), "Continue the trek.");
 		leaveJuvinateArea.addDialogStep("Yes.");
@@ -640,8 +636,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		talkToSafalaanInLab.addDialogStep("Shall we get going then?");
 		talkToSafalaanInLab.addDialogStep("Let's go.");
 		enterDeepLab = new ObjectStep(this, ObjectID.DOOR_17911, new WorldPoint(3629, 9680, 0), "Enter the door to the deeper labs.");
-		killBloodveld = new NpcStep(this, NpcID.MUTATED_BLOODVELD_9611, new WorldPoint(3611, 9737, 0),
-			"Defeat the Mutated Bloodveld (lvl-123).");
+		killBloodveld = new CombatStep(this, NpcID.MUTATED_BLOODVELD_9611, new WorldPoint(3611, 9737, 0),
+			"Defeat the Mutated Bloodveld.", "Mutated bloodveld (level 123)");
 		talkToSafalaanInDeepLab = new NpcStep(this, NpcID.SAFALAAN_HALLOW_9537, new WorldPoint(3611, 9737, 0),
 			"Finish speaking with Safalaan in the Lab.");
 		searchLabBookcase = new ObjectStep(this, ObjectID.BOOKSHELF_38017, new WorldPoint(3589, 9745, 0),
@@ -682,8 +678,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 			unscentedTop, unscentedLegs, unscentedShoes, ivandisFlailEquipped);
 		talkToVeliafForFight.addDialogSteps("Slepe.", "Let's do this.");
 
-		killDamien = new NpcStep(this, NpcID.DAMIEN_LEUCURTE_9564, new WorldPoint(3717, 3358, 1),
-			"Kill Damien Leucurte (lvl-204). He can poison you. Stomp out any of the fires he spawns.",
+		killDamien = new CombatStep(this, NpcID.DAMIEN_LEUCURTE_9564, new WorldPoint(3717, 3358, 1),
+			"Kill Damien Leucurte (lvl-204). He can poison you. Stomp out any of the fires he spawns.", "Damien Leucurte (level 204)",
 			unscentedTop, unscentedLegs, unscentedShoes, ivandisFlailEquipped);
 		killDamien.addDialogSteps("Slepe.", "Let's do this.");
 
@@ -828,9 +824,17 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Kroy (level 133)", "Vampyre juveniles (level 122 and 119)", "Nail beasts (level 143 and 67)", "Mutated bloodveld (level 123)", "Damien Leucurte (level 204)", "Vanstrom Klause (level 413)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(killKroy);
+		reqs.add(killJuvinates);
+		reqs.add(new CombatStep(this, NpcID.NAIL_BEAST, "Nail beasts (level 143 and 67)"));
+		reqs.add(killBloodveld);
+		reqs.add(killDamien);
+		reqs.add(new CombatStep(this, NpcID.VANSTROM_KLAUSE, "Vanstrom Klause (level 413)"));
+
+		return reqs;
 	}
 
 	@Override

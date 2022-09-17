@@ -54,12 +54,8 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -541,7 +537,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		talkToKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
 		talkToKob.addDialogSteps("I know about your deal with the monkeys.", "You won't be around to crush anyone when I'm done with you.", "I accept your challenge.");
 
-		fightKob = new NpcStep(this, NpcID.KOB_7107, new WorldPoint(2831, 10060, 2), "Fight Kob. He can be safespotted from the doorway.");
+		fightKob = new CombatStep(this, NpcID.KOB_7107, new WorldPoint(2831, 10060, 2), "Fight Kob. He can be safespotted from the doorway.", "Kob (level 185, safespottable)");
 		fightKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
 
 		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 71)
@@ -554,7 +550,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		}
 		talkToKeef.addDialogSteps("I know about your deal with the monkeys.", "I offer to spare your life.", "I accept your challenge.");
 
-		fightKeef = new NpcStep(this, NpcID.KEEF_7105, new WorldPoint(2542, 3031, 0), "Fight Keef. He can be safespotted.");
+		fightKeef = new CombatStep(this, NpcID.KEEF_7105, new WorldPoint(2542, 3031, 0), "Fight Keef. He can be safespotted.", "Keef (level 178, safespottable)");
 		talkToGarkorAfterKeef = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.", krukGreegree);
 		findSmith = new DetailedQuestStep(this, "Search around the various rooftops in Ape Atoll for Assistant Le Smith.", krukGreegree);
 		talkToSmith = new NpcStep(this, NpcID.ASSISTANT_LE_SMITH_6806, "Talk to Assistant Le Smith.", krukGreegree);
@@ -600,7 +596,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		enterNorthOfTreeNoNieve = new ObjectStep(this, NullObjectID.NULL_28807, new WorldPoint(2435, 3520, 0), "Enter the breach north west of the Grand Tree.", combatGear, food, prayerPotions);
 
-		fightGlough = new NpcStep(this, NpcID.GLOUGH_7101, new WorldPoint(2075, 5677, 0), "Defeat Glough. He has 3 phases, changing rooms each time. You can safe spot the first 2 phases. Protect from Melee if you're next to him, or Protect from Magic if not in the third phase.", true);
+		fightGlough = new CombatStep(this, NpcID.GLOUGH_7101, new WorldPoint(2075, 5677, 0), "Defeat Glough. He has 3 phases, changing rooms each time. You can safe spot the first 2 phases. Protect from Melee if you're next to him, or Protect from Magic if not in the third phase.", "Glough (level 378)", true);
 		fightGlough.addText("The easiest way to do phase 3 is to attack him from 1 tile away, have Protect from Magic on, and step away a tile whenever he pulls you closer.");
 		((NpcStep) (fightGlough)).addAlternateNpcs(NpcID.GLOUGH_7102, NpcID.GLOUGH_7103, NpcID.GLOUGH_7100);
 		((NpcStep) (fightGlough)).setMaxRoamRange(200);
@@ -667,9 +663,17 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Kruk (level 149, flinchable)", "Keef (level 178, safespottable)", "Kob (level 185, safespottable)", "9 Tortured gorillas (level 141)", "2 Demonic Gorillas (level 275)", "Glough (level 378)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.KRUK_6805, "Kruk (level 149, flinchable)"));
+		reqs.add(fightKeef);
+		reqs.add(fightKob);
+		reqs.add(new CombatStep(this, NpcID.TORTURED_GORILLA_7150, "9 Tortured gorillas (level 141)"));
+		reqs.add(new CombatStep(this, NpcID.DEMONIC_GORILLA_7152, "2 Demonic Gorillas (level 275)"));
+		reqs.add(fightGlough);
+
+		return reqs;
 	}
 
 	@Override

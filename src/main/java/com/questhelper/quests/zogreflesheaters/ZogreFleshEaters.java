@@ -36,10 +36,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -64,8 +61,6 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
@@ -259,7 +254,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 		goDownStairs = new ObjectStep(this, ObjectID.STAIRS_6841, new WorldPoint(2486, 3043, 0), "Climb down the stairs to the east.");
 		searchSkeleton = new ObjectStep(this, ObjectID.SKELETON_6893, new WorldPoint(2442, 9459, 2), "Search the skeleton in the north west corner of this area.");
-		killZombie = new NpcStep(this, NpcID.ZOMBIE_880, new WorldPoint(2442, 9459, 2), "Kill the zombie which appeared, and pick up the ruined backpack that appeared.");
+		killZombie = new CombatStep(this, NpcID.ZOMBIE_880, new WorldPoint(2442, 9459, 2), "Kill the zombie which appeared, and pick up the ruined backpack that appeared.", "Zombie (level 39)");
 		openBackpack = new DetailedQuestStep(this, "Open the backpack for a knife and a dragon inn tankard.", backpack);
 
 		searchLectern = new ObjectStep(this, ObjectID.BROKEN_LECTURN, new WorldPoint(2443, 9459, 2), "Search the broken lecturn in the north west corner of the tombs.");
@@ -345,11 +340,12 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Slash Bash (level 111)");
-		reqs.add("Zombie (level 39)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(new CombatStep(this, NpcID.SLASH_BASH, "Slash Bash (level 111)"));
+		reqs.add(killZombie);
+
 		return reqs;
 	}
 

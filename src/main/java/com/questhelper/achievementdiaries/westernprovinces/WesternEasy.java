@@ -37,11 +37,8 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,7 +52,6 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WESTERN_EASY
@@ -198,8 +194,8 @@ public class WesternEasy extends ComplexStateQuestHelper
 			"Have Brimstail teleport you to the Essence mine");
 		brimstailEssence.addDialogStep("I need to mine some rune essence.");
 
-		terrorbird = new NpcStep(this, NpcID.TERRORBIRD, new WorldPoint(2379, 3432, 0),
-			"Kill a terrorbird in the terrorbird enclosure.", true, combatGear);
+		terrorbird = new CombatStep(this, NpcID.TERRORBIRD, new WorldPoint(2379, 3432, 0),
+			"Kill a terrorbird in the terrorbird enclosure.", "Terrorbird (level 28)",true, combatGear);
 		terrorbird.addAlternateNpcs(NpcID.TERRORBIRD_2065, NpcID.TERRORBIRD_2066);
 
 		gnomeBall = new NpcStep(this, NpcID.GNOME_BALL_REFEREE, new WorldPoint(2385, 3487, 0),
@@ -264,9 +260,13 @@ public class WesternEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		return Arrays.asList("Terror bird (lvl 28)", "Complete a Novice Pest Control game");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(terrorbird);
+		reqs.add(new CombatStep(this, -1, "Complete a Novice Pest Control game"));
+
+		return reqs;
 	}
 
 	@Override

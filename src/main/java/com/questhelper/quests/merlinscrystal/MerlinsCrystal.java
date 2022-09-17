@@ -40,11 +40,8 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -226,7 +223,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 
 		goToFirstFloor = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2770, 3405, 0), "Go up the stairs in the fortress.");
 		goToSecondFloor = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2770, 3399, 1), "Go up another floor.");
-		attackMordred = new NpcStep(this, NpcID.SIR_MORDRED, new WorldPoint(2770, 3403, 2), "Attack Sir Mordred down to 0hp to cause Morgan Le Faye to spawn.");
+		attackMordred = new CombatStep(this, NpcID.SIR_MORDRED, new WorldPoint(2770, 3403, 2), "Attack Sir Mordred down to 0hp to cause Morgan Le Faye to spawn.", "Sir Mordred (level 39)");
 		attackMordred.addDialogStep("Tell me how to untrap Merlin and I might.");
 		attackMordred.addDialogStep("Ok I will do all that.");
 		talkToMorgan = new DetailedQuestStep(this, "Go through Morgan le Faye's dialog. IF YOU EXIT FROM THIS DIALOG YOU WILL HAVE TO FIGHT MORDRED AGAIN.");
@@ -278,10 +275,11 @@ public class MerlinsCrystal extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public List<QuestStep> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Sir Mordred (level 39)");
+		ArrayList<QuestStep> reqs = new ArrayList<>();
+		reqs.add(attackMordred);
+
 		return reqs;
 	}
 

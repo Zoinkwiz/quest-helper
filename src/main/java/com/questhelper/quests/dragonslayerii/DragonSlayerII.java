@@ -1221,8 +1221,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		allSteps.add(karamjaKeyPanel);
 
 		allSteps.add(new PanelDetails("Unlocking the door", Arrays.asList(goEnterMithDoorFirstTime, castFireOnHead, goSmithKey,
-			goOpenDoorWithKey, openDoorWithoutKey, goTalkToBobAfterRelease),
-			ancientKey, runesForFireWaveOrSurge3, fremennikKeyPiece, karamjaKeyPiece, varrocKeyPiece, kourendKeyPiece, hammer));
+			goOpenDoorWithKey, openDoorWithoutKey, goTalkToBobAfterRelease), ancientKey, runesForFireWaveOrSurge3, fremennikKeyPiece,
+			karamjaKeyPiece, varrocKeyPiece, kourendKeyPiece, hammer, antifireShield));
 
 		allSteps.add(new PanelDetails("Creating an army", Arrays.asList(talkToRoald, talkToBrundtAboutThreat, talkToAmik, talkToLathasOrThoros, enterVarrockDiningRoom, talkToBobAfterDiningRoom)));
 

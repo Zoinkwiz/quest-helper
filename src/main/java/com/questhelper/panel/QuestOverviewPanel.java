@@ -437,7 +437,7 @@ public class QuestOverviewPanel extends JPanel
 	private void updateRewardsPanels(List<Reward> rewards)
 	{
 		Reward lastReward = null;
-		if (rewards != null)
+		if (!rewards.isEmpty())
 		{
 			for (Reward reward : rewards)
 			{

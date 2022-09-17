@@ -337,7 +337,9 @@ public class VarrockHard extends ComplexStateQuestHelper
 		fancyStone.addDialogStep("Can you redecorate my house please?");
 		growYew = new ObjectStep(this, 8513, new WorldPoint(3229, 3459, 0),
 			"Grow and check the health of a yew tree in front of Varrock palace. " +
-				"Afterwards, dig up the stump to get the yew roots.", yewSap, rake, spade);
+				"Afterwards, dig up the stump to get the yew roots. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			yewSap, rake, spade);
 		chopYew = new ObjectStep(this, 8513, new WorldPoint(3229, 3459, 0),
 			"Chop the yew tree that you grew in front of Varrock palace. Afterwards, dig up the stump to get the Yew " +
 				"roots.", axe, spade);

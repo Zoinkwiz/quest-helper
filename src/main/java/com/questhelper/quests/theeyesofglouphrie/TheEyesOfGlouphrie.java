@@ -239,8 +239,9 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		talkToBrimstailAgain.addDialogStep("Of course, I'd love to!");
 
 		goUpToHazelmere = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2677, 3087, 0),
-			"Go talk to Hazelmere in his hut east of Yanille. Fairy Ring CLS is very close to him.");
-		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, new WorldPoint(2677, 3087, 1), "Go talk to Hazelmere in his hut east of Yanille.");
+			"Go talk to Hazelmere in his hut east of Yanille (Fairy Ring CLS).");
+		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, new WorldPoint(2677, 3087, 1),
+			"Go talk to Hazelmere in his hut east of Yanille (Fairy Ring CLS).");
 		talkToHazelmere.addSubSteps(goUpToHazelmere);
 
 		enterCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2404, 3419, 0), "Go back to Brimstail's cave in west Tree Gnome Stronghold.", pestleAndMortar, mudRune, bucketOfSap, oakLog, mapleLog, saw, hammer);

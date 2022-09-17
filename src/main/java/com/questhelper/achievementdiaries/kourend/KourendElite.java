@@ -316,7 +316,8 @@ public class KourendElite extends ComplexStateQuestHelper
 
 		// Fletch a battlestaff from scratch
 		plantCelastrusTree = new ObjectStep(this, NullObjectID.NULL_34629, new WorldPoint(1244, 3750, 0),
-			"Plant a celastrus sapling (Fully grown after 13 hours). When it's fully grown harvest its bark.",
+			"Plant a celastrus sapling (Fully grown after 13 hours). When it's fully grown harvest its bark. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			celastrusSapling, spade, axe);
 		fletchBattlestaff = new ItemStep(this, "Fletch a battlestaff.", knife.highlighted(),
 			celastrusBark.highlighted());

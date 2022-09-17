@@ -200,6 +200,16 @@ public interface QuestHelperConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "stewBoostsPanel",
+		name = "Use Spicy stew for boosts",
+		description = "Raises the boost maximum boost for certain skills to 5"
+	)
+	default boolean stewBoosts()
+	{
+		return false;
+	}
+
 	@ConfigSection(
 		position = 1,
 		name = "Quest Hints",
@@ -311,6 +321,17 @@ public interface QuestHelperConfig extends Config
 	default Color failColour()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "boostColour",
+		name = "Colour of boostable skill",
+		description = "Change the colour that will indicate a skill level check has passed",
+		section = colorSection
+	)
+	default Color boostColour()
+	{
+		return Color.ORANGE;
 	}
 
 	@ConfigItem(

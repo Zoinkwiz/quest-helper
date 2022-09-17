@@ -276,7 +276,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		spade.setTooltip("Obtainable during quest");
 		meat = new ItemRequirement("Any cooked or raw meat", ItemID.COOKED_MEAT);
-		meat.addAlternates(ItemID.RAW_BEEF, ItemID.RAW_BEAR_MEAT, ItemID.RAW_BOAR_MEAT, ItemID.RAW_RAT_MEAT, ItemID.RAW_YAK_MEAT);
+		meat.addAlternates(ItemID.RAW_BEEF, ItemID.RAW_BEAR_MEAT, ItemID.RAW_BOAR_MEAT, ItemID.RAW_RAT_MEAT);
 		meat.setTooltip("Purchasable from a shop during the quest. Fish will NOT work");
 		waterskins = new ItemRequirement("Waterskin(s)", ItemID.WATERSKIN4);
 		waterskins.addAlternates(ItemID.WATERSKIN3, ItemID.WATERSKIN2, ItemID.WATERSKIN1);

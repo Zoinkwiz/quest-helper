@@ -318,7 +318,9 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		cosmics = new ObjectStep(this, ObjectID.ALTAR_34766, new WorldPoint(2142, 4833, 0),
 			"Craft 56 cosmic runes.", essence);
 		belladonna = new ObjectStep(this, 7572, new WorldPoint(3087, 3355, 0),
-			"Grow and pick some belladonna from the Draynor Manor farming patch.", bellaSeed, rake, spade, gloves, seedDib);
+			"Grow and pick some belladonna from the Draynor Manor farming patch. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			bellaSeed, rake, spade, gloves, seedDib);
 
 		claimReward = new NpcStep(this, NpcID.HATIUS_COSAINTUS, new WorldPoint(3235, 3213, 0),
 			"Talk to Hatius Cosaintus in Lumbridge to claim your reward!");

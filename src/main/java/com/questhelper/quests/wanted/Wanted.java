@@ -529,6 +529,7 @@ public class Wanted extends BasicQuestHelper
 	{
 		return QuestUtil.toArrayList(
 			new QuestPointRequirement(32),
+			new QuestRequirement(QuestHelperQuest.ENTER_THE_ABYSS, QuestState.FINISHED),
 			new QuestRequirement(QuestHelperQuest.RECRUITMENT_DRIVE, QuestState.FINISHED),
 			new QuestRequirement(QuestHelperQuest.THE_LOST_TRIBE, QuestState.FINISHED),
 			new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED)

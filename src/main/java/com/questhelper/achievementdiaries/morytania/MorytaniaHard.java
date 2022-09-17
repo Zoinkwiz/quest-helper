@@ -271,7 +271,8 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 				"top-down.");
 
 		bittercapMush = new ObjectStep(this, NullObjectID.NULL_8337, new WorldPoint(3452, 3473, 0),
-			"Plant and harvest the bittercap mushrooms in Canifis. It takes 4 hours to fully grow.", rake, seedDibber,
+			"Plant and harvest the bittercap mushrooms in Canifis. It takes 4 hours to fully grow." +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.", rake, seedDibber,
 			mushroomSpore);
 
 		moveToUpstairs = new ObjectStep(this, ObjectID.SPIKEY_CHAIN, new WorldPoint(3422, 3550, 0),
@@ -309,7 +310,8 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			"Talk to Brother Tranquility to travel to Harmony Island.", watermelonSeeds.quantity(3), seedDibber, spade, rake);
 		moveToHarmony.addDialogStep("Yes, please.");
 		harvestWatermelon = new ObjectStep(this, NullObjectID.NULL_21950, new WorldPoint(3794, 2836, 0),
-			"Plant and harvest watermelon on Harmony Island. It takes 80 minutes to fully grow.",
+			"Plant and harvest watermelon on Harmony Island. It takes 80 minutes to fully grow. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			watermelonSeeds.quantity(3), seedDibber, spade, rake);
 
 		kharyrll = new DetailedQuestStep(this, "Enter the Kharyll portal in your POH. Through a Portal Chamber or " +

@@ -201,17 +201,15 @@ public class KaramjaMedium extends BasicQuestHelper
 		notTraveledToKhazard = new VarbitRequirement(3596, 0);
 		notCharteredFromShipyard = new VarbitRequirement(3597, 0);
 
-		pickaxe =
-			new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(new Conditions(LogicType.OR,
-				notMinedRedRopaz, notEarned100));
-		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR,
-			notClaimedTicket, notUsedCart, notTraveledToKhazard, notCharteredFromShipyard));
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
+			.showConditioned(new Conditions(LogicType.OR, notMinedRedRopaz, notEarned100));
+		coins = new ItemRequirement("Coins", ItemCollections.COINS)
+			.showConditioned(new Conditions(LogicType.OR, notClaimedTicket, notUsedCart, notTraveledToKhazard, notCharteredFromShipyard));
 		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notCaughtKarambwan);
 
 		spiderCarcass = new ItemRequirement("Spider carcass", ItemID.SPIDER_CARCASS).showConditioned(notCookedSpider);
 		spiderCarcass.setTooltip("You can get one killing a spider during Tai Bwo Wannai Cleanup");
-		skewerTicksOrArrowShaft =
-			new ItemRequirement("Arrow shaft or skewer stick", ItemID.ARROW_SHAFT).showConditioned(notCookedSpider);
+		skewerTicksOrArrowShaft = new ItemRequirement("Arrow shaft or skewer stick", ItemID.ARROW_SHAFT).showConditioned(notCookedSpider);
 		skewerTicksOrArrowShaft.addAlternates(ItemID.SKEWER_STICK);
 		goutTuber = new ItemRequirement("Gout tuber", ItemID.GOUT_TUBER).showConditioned(notExchangedGems);
 		goutTuber.setTooltip("This can be obtained rarely during Tai Bwo Wannai Cleanup. Have a spade to dig it up");
@@ -229,8 +227,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		tradingSticks = new ItemRequirement("Trading sticks", ItemID.TRADING_STICKS).showConditioned(notExchangedGems);
 		tradingSticks.setTooltip("You can get these from villagers when doing Tai Bwo Wannai Cleanup");
 		opal = new ItemRequirement("Opal", ItemID.OPAL).showConditioned(notExchangedGems);
-		opal.setTooltip("You can bring a jade or red topaz instead for a machete if you also bring more trading " +
-			"sticks");
+		opal.setTooltip("You can bring a jade or red topaz instead for a machete if you also bring more trading sticks");
 		karambwanVessel = new ItemRequirement("Karambwan vessel", ItemID.KARAMBWAN_VESSEL).showConditioned(notCaughtKarambwan);
 		karambwanVessel.addAlternates(ItemID.KARAMBWAN_VESSEL_3159);
 		rawKarambwanji = new ItemRequirement("Raw karambwanji",
@@ -317,7 +314,9 @@ public class KaramjaMedium extends BasicQuestHelper
 		flyToKaramja = new NpcStep(this, NpcID.CAPTAIN_DALBUR, new WorldPoint(3284, 3213, 0),
 			"Fly on a Gnome Glider to Karamja.");
 		growFruitTree = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
-			"Grow a fruit tree in the Brimhaven patch.", fruitTreeSapling, rake, spade);
+			"Grow a fruit tree in the Brimhaven patch. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			fruitTreeSapling, rake, spade);
 		trapGraahk = new NpcStep(this, NpcID.HORNED_GRAAHK, new WorldPoint(2770, 3003, 0),
 			"Place logs over a pit north of Cairn Isle, and poke a graahk with a teasing stick. Jump over the pits " +
 				"until the graahk falls in and loot it.", teasingStick, knife, logs);

@@ -110,36 +110,36 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
-		slayBrineRatTask = new ConditionalStep(this, moveToCave);
+		slayBrineRatTask = new ConditionalStep(this, enterBrineCave);
 		slayBrineRatTask.addStep(inBrineRatCave, slayBrineRat);
+		slayBrineRatTask.addStep(inBrineRatCave, rollBoulderExit);
 		doMedium.addStep(notSlayBrineRat, slayBrineRatTask);
-		doMedium.addStep(inBrineRatCave, rollBoulderExit);
 
 		travelMiscTask = new ConditionalStep(this, travelMisc);
 		doMedium.addStep(notTravelMisc, travelMiscTask);
 
+		snowyHunterTask = new ConditionalStep(this, enterEaglesPeak);
+		snowyHunterTask.addStep(inEagleArea, snowyHunter);
+		snowyHunterTask.addStep(inIceCave, exitIceCave);
+		doMedium.addStep(notSnowyHunter, snowyHunterTask);
 
-		doMedium.addStep(inIceCave, exitIceCave);
-		doMedium.addStep(new Conditions(notSnowyHunter, inEagleArea), snowyHunter);
-		doMedium.addStep(notSnowyHunter, enterEaglesPeak);
+		snowyKnightTask = new ConditionalStep(this, snowyKnight0);
+		snowyKnightTask.addStep(inHunterArea1, snowyKnight1);
+		snowyKnightTask.addStep(inHunterArea0, snowyKnight0);
+		doMedium.addStep(notSnowyKnight, snowyKnightTask);
 
-		snowyHunterTask = new ConditionalStep(this, snowyKnight0);
-		snowyHunterTask.addStep(inHunterArea1, snowyKnight1);
-		snowyHunterTask.addStep(inHunterArea0, snowyKnight0);
-		doMedium.addStep(notSnowyKnight, snowyHunterTask);
-
-		stealFishTask = new ConditionalStep(this, stealFish);
-		doMedium.addStep(notStealFish, stealFishTask);
+		mineGoldTask = new ConditionalStep(this, moveToCave);
+		mineGoldTask.addStep(inCaveArea, moveToRiver);
+		mineGoldTask.addStep(inRiverArea, moveToCannon);
+		mineGoldTask.addStep(inCannonArea, moveToArzinian);
+		mineGoldTask.addStep(inArzinianMine, mineGold);
+		doMedium.addStep(notMineGold, mineGoldTask);
 
 		mineCoalTask = new ConditionalStep(this, mineCoal);
 		doMedium.addStep(notMineCoal, mineCoalTask);
 
-		mineCoalTask = new ConditionalStep(this, moveToCave);
-		mineCoalTask.addStep(inCaveArea, moveToRiver);
-		mineCoalTask.addStep(inRiverArea, moveToCannon);
-		mineCoalTask.addStep(inCannonArea, moveToArzinian);
-		mineCoalTask.addStep(inArzinianMine, mineGold);
-		doMedium.addStep(notMineGold, mineCoalTask);
+		stealFishTask = new ConditionalStep(this, stealFish);
+		doMedium.addStep(notStealFish, stealFishTask);
 
 		lighthouseTask = new ConditionalStep(this, moveToWaterbirth);
 		lighthouseTask.addStep(inWaterbirthIsland, moveToDagCave);
@@ -167,7 +167,6 @@ public class FremennikMedium extends ComplexStateQuestHelper
 
 		petRockPOHTask = new ConditionalStep(this, petRockPOH);
 		doMedium.addStep(notPetRockPOH, petRockPOHTask);
-
 
 		return doMedium;
 	}

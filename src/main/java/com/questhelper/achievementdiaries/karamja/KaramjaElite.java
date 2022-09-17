@@ -149,9 +149,13 @@ public class KaramjaElite extends ComplexStateQuestHelper
 			"Craft a full inventory of nature runes.", pureEssence.quantity(28));
 		equipCape = new DetailedQuestStep(this, "Equip a fire or infernal cape.", fireCapeOrInfernal.equipped());
 		checkPalm = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
-			"Grow and check the health of a palm tree in the Brimhaven patch.", palmTreeSapling, rake, spade);
+			"Grow and check the health of a palm tree in the Brimhaven patch. " +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			palmTreeSapling, rake, spade);
 		checkCalquat = new ObjectStep(this, NullObjectID.NULL_7807, new WorldPoint(2796, 3101, 0),
-			"Grow and check the health of a Calquat in Tai Bwo Wannai.", calquatSapling, rake, spade);
+			"Grow and check the health of a Calquat in Tai Bwo Wannai." +
+				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
+			calquatSapling, rake, spade);
 		moveToHorseShoe = new DetailedQuestStep(this, new WorldPoint(2734, 3224, 0),
 			"Go to the horse shoe mine north west of Brimhaven.");
 		makePotion = new DetailedQuestStep(this, new WorldPoint(2734, 3224, 0),

@@ -27,8 +27,11 @@
 
 package com.questhelper.requirements.player;
 
+import com.questhelper.QuestHelperConfig;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
+import java.awt.Color;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
@@ -44,6 +47,11 @@ public class SkillRequirement extends AbstractRequirement
 	private final Operation operation;
 	private boolean canBeBoosted;
 	private String displayText;
+	private Boosts boosts;
+	private QuestHelperPlugin questHelperPlugin;
+	private Boosts selectedSkill;
+	private int currentSkill;
+	private int highestBoost;
 
 	/**
 	 * Check if a player has a certain skill level
@@ -99,13 +107,49 @@ public class SkillRequirement extends AbstractRequirement
 		this.displayText = displayText;
 	}
 
-
 	@Override
 	public boolean check(Client client)
 	{
 		int skillLevel = canBeBoosted ? Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill)) :
 			client.getRealSkillLevel(skill);
 		return skillLevel >= requiredLevel;
+	}
+
+	public boolean checkRange(Skill skill, int requiredLevel, Client client, QuestHelperConfig config)
+	{
+		for (Boosts boostSkills : boosts.values())
+		{
+			if (skill.getName().equals(boostSkills.getName()))
+			{
+				selectedSkill = boostSkills;
+			}
+		}
+
+		currentSkill = Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill));
+		highestBoost = selectedSkill.getHighestBoost();
+
+		if (config.stewBoosts() && highestBoost < 5)
+		{
+			highestBoost = 5;
+		}
+
+		return requiredLevel - highestBoost <= currentSkill;
+	}
+
+	public int checkBoosted(Client client, QuestHelperConfig config)
+	{
+		int skillLevel = canBeBoosted ? Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill)) :
+			client.getRealSkillLevel(skill);
+
+		if (skillLevel >= requiredLevel)
+		{
+			return 1;
+		} else if (canBeBoosted && checkRange(skill, requiredLevel, client, config))
+		{
+			return 2;
+		} else {
+			return 3;
+		}
 	}
 
 	@Override
@@ -127,5 +171,19 @@ public class SkillRequirement extends AbstractRequirement
 		}
 
 		return returnText;
+	}
+
+	@Override
+	public Color getColor(Client client, QuestHelperConfig config)
+	{
+		switch (checkBoosted(client, config)){
+			case 1:
+				return config.passColour();
+			case 2:
+				return config.boostColour();
+			case 3:
+				return config.failColour();
+		}
+		return config.failColour();
 	}
 }

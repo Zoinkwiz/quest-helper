@@ -914,6 +914,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToSpiceSeller.addDialogStep("I'm here to tell you about some new taxes.");
 		talkToSilkMerchant = new NpcStep(this, NpcID.SILK_MERCHANT_8728, new WorldPoint(2656, 3301, 0),
 			"Talk to the silk merchant in the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
+		talkToSilkMerchant.addDialogStep("I'm here to tell you about some new taxes.");
 
 		talkToTownCrier = new NpcStep(this, NpcID.TOWN_CRIER_279, new WorldPoint(2666, 3312, 0),
 			"Talk to the town crier in the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);

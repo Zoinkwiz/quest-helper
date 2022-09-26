@@ -972,7 +972,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToYsgawyn.addSubSteps(goUpToYsgawyn);
 		goDownToElena = new ObjectStep(this, ObjectID.LADDER_8746, new WorldPoint(2352, 3180, 1), "Talk to Elena in the south west of Lletya.");
 		talkToElenaInLletya = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0), "Talk to Elena in the south west of Lletya.");
-		talkToElenaInLletya.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.");
+		talkToElenaInLletya.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.",
+				"I don't know.");
 		talkToElenaInLletya.addSubSteps(goDownToElena);
 		talkToArianwynAfterElena = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn again.");
 		talkToArianwynAfterMeeting = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn after the meeting.");

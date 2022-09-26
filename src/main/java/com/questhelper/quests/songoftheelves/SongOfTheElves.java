@@ -1004,6 +1004,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToArianwynAfterBax = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		talkToElenaAfterBax = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0),
 			"Talk to Elena in the south west of Lletya.", seedDibber, cadantineSeed);
+		talkToElenaAfterBax.addDialogStep("Now's not the time for stories, Elena.");
 
 		plantCadantine = new ObjectStep(this, NullObjectID.NULL_37270, new WorldPoint(2322, 3152, 0),
 			"Plant a cadantine seed in the Lletya farm patch.", seedDibber, cadantineSeed);

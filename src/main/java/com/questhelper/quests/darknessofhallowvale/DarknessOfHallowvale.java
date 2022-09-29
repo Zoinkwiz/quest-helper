@@ -562,7 +562,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		drawNorthWall = new DetailedQuestStep(this, new WorldPoint(3556, 3379, 0), "");
 		drawWestWall = new DetailedQuestStep(this, new WorldPoint(3522, 3357, 0), "");
 		drawSouthWall = new DetailedQuestStep(this, new WorldPoint(3572, 3331, 0), "");
-		tankVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_3735, new WorldPoint(3572, 3331, 0), "Tank Vanstrom for 5 hits.");
+		tankVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_3735, new WorldPoint(3572, 3331, 0), "Tank Vanstrom for 5 hits or use Protect from Melee.");
 		((NpcStep) tankVanstrom).addAlternateNpcs(NpcID.VANSTROM_KLAUSE_3734);
 		finishSouthSketch = new DetailedQuestStep(this, new WorldPoint(3572, 3331, 0), "");
 		talkToSarius = new NpcStep(this, NpcID.SARIUS_GUILE, new WorldPoint(3572, 3331, 0), "");
@@ -774,7 +774,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Able to survive 5 hits from Vanstrom Klause (level 169)");
+		return Collections.singletonList("Able to survive 5 hits from Vanstrom Klause (level 169) or use Protect from Melee to negate all his damage.");
 	}
 
 	@Override

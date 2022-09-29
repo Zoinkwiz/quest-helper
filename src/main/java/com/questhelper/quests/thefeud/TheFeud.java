@@ -441,7 +441,7 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 22
 		//Poison The Drink
-		poisonTheDrink = new ObjectStep(this, ObjectID.TABLE_6246, new WorldPoint(3356, 2957, 0), "Use the poison on the beer glass to kill Traiterous Ali.", poisonHighlighted);
+		poisonTheDrink = new ObjectStep(this, ObjectID.TABLE_6246, new WorldPoint(3356, 2957, 0), "Use the poison on the beer glass to kill Traitorous Ali.", poisonHighlighted);
 		poisonTheDrink.addIcon(ItemID.HAGS_POISON);
 
 		//Step 23

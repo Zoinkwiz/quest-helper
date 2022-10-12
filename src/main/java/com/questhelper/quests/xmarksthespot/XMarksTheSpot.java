@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.questhelper.quests.eaglespeak.EaglesPeak;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import net.runelite.api.ItemID;
@@ -89,6 +90,8 @@ public class XMarksTheSpot extends BasicQuestHelper
 			"Talk to Veos in The Sheared Ram pub in Lumbridge to start the quest.");
 		speakVeosLumbridge.addDialogStep("I'm looking for a quest.");
 		speakVeosLumbridge.addDialogStep("Sounds good, what should I do?");
+		speakVeosLumbridge.addDialogSteps("Can I help?", "Yes.");
+
 
 		digOutsideBob = new DigStep(this, new WorldPoint(3230, 3209, 0),
 			"Dig north of Bob's Brilliant Axes, on the west side of the plant against the wall of his house.");

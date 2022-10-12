@@ -82,7 +82,6 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
@@ -244,10 +243,6 @@ public class QuestHelperPlugin extends Plugin
 
 	private boolean displayNameKnown;
 
-	private boolean enteredSpeedrunningWorld;
-
-	private boolean onSpeedrunningWorld;
-
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -319,14 +314,6 @@ public class QuestHelperPlugin extends Plugin
 				questBank.loadState();
 			}
 		}
-
-		if (enteredSpeedrunningWorld)
-		{
-			shutDownQuest(false);
-			SwingUtilities.invokeLater(() -> panel.onSpeedrunningWorldMessage());
-			enteredSpeedrunningWorld = false;
-		}
-
 		if (sidebarSelectedQuest != null)
 		{
 			startUpQuest(sidebarSelectedQuest);
@@ -381,16 +368,6 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGGED_IN)
 		{
-			if (RuneScapeProfileType.getCurrent(client) == RuneScapeProfileType.QUEST_SPEEDRUNNING)
-			{
-				enteredSpeedrunningWorld = true;
-				onSpeedrunningWorld = true;
-				return;
-			}
-			else
-			{
-				onSpeedrunningWorld = false;
-			}
 			loadQuestList = true;
 			displayNameKnown = false;
 		}
@@ -521,8 +498,6 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (onSpeedrunningWorld) return;
-
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();

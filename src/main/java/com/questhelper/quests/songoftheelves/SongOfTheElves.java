@@ -914,6 +914,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToSpiceSeller.addDialogStep("I'm here to tell you about some new taxes.");
 		talkToSilkMerchant = new NpcStep(this, NpcID.SILK_MERCHANT_8728, new WorldPoint(2656, 3301, 0),
 			"Talk to the silk merchant in the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
+		talkToSilkMerchant.addDialogStep("I'm here to tell you about some new taxes.");
 
 		talkToTownCrier = new NpcStep(this, NpcID.TOWN_CRIER_279, new WorldPoint(2666, 3312, 0),
 			"Talk to the town crier in the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
@@ -971,7 +972,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToYsgawyn.addSubSteps(goUpToYsgawyn);
 		goDownToElena = new ObjectStep(this, ObjectID.LADDER_8746, new WorldPoint(2352, 3180, 1), "Talk to Elena in the south west of Lletya.");
 		talkToElenaInLletya = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0), "Talk to Elena in the south west of Lletya.");
-		talkToElenaInLletya.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.");
+		talkToElenaInLletya.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.",
+				"I don't know.");
 		talkToElenaInLletya.addSubSteps(goDownToElena);
 		talkToArianwynAfterElena = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn again.");
 		talkToArianwynAfterMeeting = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn after the meeting.");
@@ -1002,6 +1004,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToArianwynAfterBax = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		talkToElenaAfterBax = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0),
 			"Talk to Elena in the south west of Lletya.", seedDibber, cadantineSeed);
+		talkToElenaAfterBax.addDialogStep("Now's not the time for stories, Elena.");
 
 		plantCadantine = new ObjectStep(this, NullObjectID.NULL_37270, new WorldPoint(2322, 3152, 0),
 			"Plant a cadantine seed in the Lletya farm patch.", seedDibber, cadantineSeed);

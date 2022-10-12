@@ -527,7 +527,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		travelWithIvan.addStep(inTempleTrekArea, killJuvinates);
 		travelWithIvan.addStep(inMyrequeCave, talkToIvanForTrek);
 
-		goIntoCavesAgain = new ConditionalStep(this, climbDownCanifis, "Enter trapdoor behind Canifis.", hammer, softClay);
+		goIntoCavesAgain = new ConditionalStep(this, climbDownCanifis, "Enter the trapdoor behind the Canifis pub.", hammer, softClay);
 
 		ConditionalStep enterPaterToBless = new ConditionalStep(this, goDownToDrezel, enchantedRod, rope);
 

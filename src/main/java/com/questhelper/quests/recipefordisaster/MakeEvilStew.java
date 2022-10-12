@@ -81,10 +81,10 @@ public class MakeEvilStew extends DetailedOwnerStep
 		int brownNeeded = client.getVarbitValue(1885);
 		int orangeNeeded = client.getVarbitValue(1886);
 
-		int redInStew = client.getVar(Varbits.SPICY_STEW_RED_SPICES);
-		int yellowInStew = client.getVar(Varbits.SPICY_STEW_YELLOW_SPICES);
-		int brownInStew = client.getVar(Varbits.SPICY_STEW_BROWN_SPICES);
-		int orangeInStew = client.getVar(Varbits.SPICY_STEW_ORANGE_SPICES);
+		int redInStew = client.getVarbitValue(Varbits.SPICY_STEW_RED_SPICES);
+		int yellowInStew = client.getVarbitValue(Varbits.SPICY_STEW_YELLOW_SPICES);
+		int brownInStew = client.getVarbitValue(Varbits.SPICY_STEW_BROWN_SPICES);
+		int orangeInStew = client.getVarbitValue(Varbits.SPICY_STEW_ORANGE_SPICES);
 
 		int numRedStillNeeded = redNeeded - redInStew;
 		int numOrangeStillNeeded = orangeNeeded - orangeInStew;

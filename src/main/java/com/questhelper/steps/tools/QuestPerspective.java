@@ -199,7 +199,7 @@ public class QuestPerspective
 		Widget minimapDrawWidget;
 		if (client.isResized())
 		{
-			if (client.getVar(Varbits.SIDE_PANELS) == 1)
+			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
 			{
 				minimapDrawWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
 			}

@@ -70,7 +70,7 @@ public class QuestPointRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return operation.check(client.getVar(VarPlayer.QUEST_POINTS), requiredQuestPoints);
+		return operation.check(client.getVarpValue(VarPlayer.QUEST_POINTS), requiredQuestPoints);
 	}
 
 	@Override

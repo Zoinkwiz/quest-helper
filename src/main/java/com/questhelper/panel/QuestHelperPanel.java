@@ -58,6 +58,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.QuestState;
+import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -397,6 +398,23 @@ public class QuestHelperPanel extends PluginPanel
 		});
 	}
 
+	public void onSpeedrunningWorldMessage()
+	{
+		questSelectPanels.forEach(questListPanel::remove);
+		questSelectPanels.clear();
+
+		allQuestsCompletedPanel.removeAll();
+		JLabel noMatch = new JLabel();
+		noMatch.setForeground(Color.GRAY);
+		noMatch.setText("<html><body style='text-align:left'>Quest Helper is disabled on speedrunning worlds</body></html>");
+
+		allQuestsCompletedPanel.add(noMatch);
+		allQuestsCompletedPanel.setVisible(questSelectPanels.isEmpty());
+
+		repaint();
+		revalidate();
+	}
+
 	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut,
 						Map<QuestHelperQuest, QuestState> completedQuests, QuestHelperConfig.QuestFilter... questFilters)
 	{
@@ -437,7 +455,7 @@ public class QuestHelperPanel extends PluginPanel
 
 		Set<QuestHelperQuest> quests = completedQuests.keySet();
 		boolean hasMoreQuests = quests.stream().anyMatch(q -> completedQuests.get(q) != QuestState.FINISHED);
-		if (questSelectPanels.isEmpty() && hasMoreQuests)
+		if (questSelectPanels.isEmpty() || !hasMoreQuests)
 		{
 			allQuestsCompletedPanel.removeAll();
 			JLabel noMatch = new JLabel();

@@ -67,6 +67,8 @@ class QuestBankData
 	{
 		List<Item> items = new ArrayList<>();
 
+		if (idAndQuantity == null) return items;
+
 		for (int i = 0; i < idAndQuantity.length - 2; i += 2)
 		{
 			items.add(new Item(idAndQuantity[i], idAndQuantity[i+1]));

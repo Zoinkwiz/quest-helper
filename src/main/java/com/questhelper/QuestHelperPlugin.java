@@ -66,8 +66,12 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Perspective;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.QuestState;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
@@ -80,7 +84,10 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -147,6 +154,7 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_STARTGENERICHELPER = "Start Helper";
 	private static final String MENUOP_STOPGENERICHELPER = "Stop Helper";
 	private static final String MENUOP_GENERICHELPER = "Helper";
+	private static final String MENUOP_EXAMINE_PLAYER = "Examine";
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
@@ -243,6 +251,13 @@ public class QuestHelperPlugin extends Plugin
 
 	private boolean displayNameKnown;
 
+	@Getter
+	private Cheerer cheerer;
+
+	private int tickAddedCheerer = -1;
+
+	private int currentQuestPoints = -1;
+
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -305,6 +320,12 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (tickAddedCheerer != -1 && tickAddedCheerer < client.getTickCount() - 20)
+		{
+			tickAddedCheerer = -1;
+			removeCheerer();
+		}
+
 		if (!displayNameKnown)
 		{
 			Player localPlayer = client.getLocalPlayer();
@@ -357,8 +378,9 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
+			currentQuestPoints = -1;
 			questBank.saveBankToConfig();
-			panel.refresh(Collections.emptyList(), true, new HashMap<>());
+			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBank.emptyState();
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
@@ -379,6 +401,16 @@ public class QuestHelperPlugin extends Plugin
 		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
 			return;
+		}
+
+		if (event.getVarpId() == VarPlayer.QUEST_POINTS.getId()
+			&& client.getGameState() == GameState.LOGGED_IN)
+		{
+			if (config.showFan() && currentQuestPoints != -1 && currentQuestPoints < event.getValue())
+			{
+				addCheerer();
+			}
+			currentQuestPoints = event.getValue();
 		}
 
 		if (selectedQuest == null)
@@ -472,6 +504,21 @@ public class QuestHelperPlugin extends Plugin
 				event.consume();
 				shutDownQuest(true);
 				break;
+			case MENUOP_EXAMINE_PLAYER:
+				System.out.println(event.getMenuTarget());
+				if (!event.getMenuTarget().equals("<col=ffff00>" + cheerer.getName() + "</col>")) break;
+				event.consume();
+				String chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append("Loves questing.")
+					.build();
+
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.NPC_EXAMINE)
+					.runeLiteFormattedMessage(chatMessage)
+					.timestamp((int) (System.currentTimeMillis() / 1000))
+					.build());
+				break;
 		}
 	}
 
@@ -495,12 +542,66 @@ public class QuestHelperPlugin extends Plugin
 		return menuEntries;
 	}
 
+	private void addCheerer()
+	{
+		WorldPoint worldPoint = client.getLocalPlayer().getWorldLocation();
+		WorldPoint wpUp = new WorldPoint(worldPoint.getX(), worldPoint.getY() + 1, worldPoint.getPlane());
+		if (cheerer == null)
+		{
+			cheerer = new Cheerer(client, clientThread, wpUp, Cheerer.Style.FAN, chatMessageManager, "Zoinkwiz",
+				"Congratz on completing the quest!");
+		}
+
+		tickAddedCheerer = client.getTickCount();
+	}
+
+	private void removeCheerer()
+	{
+		if (cheerer != null)
+		{
+			cheerer.remove();
+			cheerer = null;
+		}
+	}
+
+	public MenuEntry[] addCheererExamine(MenuEntry[] menuEntries, int widgetIndex, int widgetID)
+	{
+		LocalPoint lp = LocalPoint.fromWorld(client, cheerer.worldPoint);
+
+		if (lp == null) return menuEntries;
+
+		Point p = Perspective.localToCanvas(client, lp, client.getPlane(),
+			cheerer.runeLiteObject.getModelHeight() / 2);
+		if (p == null) return menuEntries;
+
+
+		if (p.distanceTo(client.getMouseCanvasPosition()) > 100) return menuEntries;
+
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+		client.createMenuEntry(menuEntries.length - 1)
+			.setOption("Examine")
+			.setTarget("<col=ffff00>" + cheerer.getName() + "</col>")
+			.setType(MenuAction.RUNELITE)
+			.setParam0(widgetIndex)
+			.setParam1(widgetID);
+
+		return menuEntries;
+	}
+
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		if (cheerer != null && cheerer.runeLiteObject != null && cheerer.runeLiteObject.getModel() != null &&
+			event.getOption().equals("Walk here"))
+		{
+			menuEntries = addCheererExamine(menuEntries, widgetIndex, widgetID);
+		}
+
 		String target = Text.removeTags(event.getTarget());
 
 		if (Ints.contains(ACHIEVEMENTLIST_WIDGET_IDS, widgetID) && event.getOption().contains("Open "))

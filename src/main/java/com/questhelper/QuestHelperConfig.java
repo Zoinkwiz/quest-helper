@@ -210,6 +210,16 @@ public interface QuestHelperConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "showFan",
+		name = "Have fan appear on quest completion",
+		description = "Have someone appear to celebrate whenever you complete a quest"
+	)
+	default boolean showFan()
+	{
+		return true;
+	}
+
 	@ConfigSection(
 		position = 1,
 		name = "Quest Hints",

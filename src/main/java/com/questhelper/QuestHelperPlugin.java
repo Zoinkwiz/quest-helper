@@ -70,7 +70,6 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.QuestState;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -81,6 +80,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
@@ -256,8 +256,6 @@ public class QuestHelperPlugin extends Plugin
 
 	private int tickAddedCheerer = -1;
 
-	private int currentQuestPoints = -1;
-
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -363,6 +361,17 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	{
+
+		if (widgetLoaded.getGroupId() == WidgetInfo.QUEST_COMPLETED.getGroupId() && config.showFan())
+			if (client.getWidget(WidgetInfo.QUEST_COMPLETED) != null)
+			{
+				addCheerer();
+			}
+	}
+
+	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
@@ -378,7 +387,6 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
-			currentQuestPoints = -1;
 			questBank.saveBankToConfig();
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBank.emptyState();
@@ -401,16 +409,6 @@ public class QuestHelperPlugin extends Plugin
 		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
 			return;
-		}
-
-		if (event.getVarpId() == VarPlayer.QUEST_POINTS.getId()
-			&& client.getGameState() == GameState.LOGGED_IN)
-		{
-			if (config.showFan() && currentQuestPoints != -1 && currentQuestPoints < event.getValue())
-			{
-				addCheerer();
-			}
-			currentQuestPoints = event.getValue();
 		}
 
 		if (selectedQuest == null)
@@ -505,7 +503,6 @@ public class QuestHelperPlugin extends Plugin
 				shutDownQuest(true);
 				break;
 			case MENUOP_EXAMINE_PLAYER:
-				System.out.println(event.getMenuTarget());
 				if (!event.getMenuTarget().equals("<col=ffff00>" + cheerer.getName() + "</col>")) break;
 				event.consume();
 				String chatMessage = new ChatMessageBuilder()

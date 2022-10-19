@@ -217,7 +217,7 @@ public interface QuestHelperConfig extends Config
 	)
 	default boolean showFan()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigSection(

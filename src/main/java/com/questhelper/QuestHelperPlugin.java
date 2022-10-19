@@ -361,17 +361,6 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
-	{
-
-		if (widgetLoaded.getGroupId() == WidgetInfo.QUEST_COMPLETED.getGroupId() && config.showFan())
-			if (client.getWidget(WidgetInfo.QUEST_COMPLETED) != null)
-			{
-				addCheerer();
-			}
-	}
-
-	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
@@ -678,6 +667,13 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
+		if (config.showFan() && chatMessage.getType() == ChatMessageType.GAMEMESSAGE) {
+			if (chatMessage.getMessage().contains("Congratulations! Quest complete!") ||
+			chatMessage.getMessage().contains("you've completed a quest"))
+			{
+				addCheerer();
+			}
+		}
 		if (config.autoStartQuests() && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			if (selectedQuest == null && chatMessage.getMessage().contains("You've started a new quest"))

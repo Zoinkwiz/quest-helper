@@ -80,7 +80,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
@@ -492,11 +491,11 @@ public class QuestHelperPlugin extends Plugin
 				shutDownQuest(true);
 				break;
 			case MENUOP_EXAMINE_PLAYER:
-				if (!event.getMenuTarget().equals("<col=ffff00>" + cheerer.getName() + "</col>")) break;
+				if (!event.getMenuTarget().equals("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")) break;
 				event.consume();
 				String chatMessage = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
-					.append("Loves questing.")
+					.append(cheerer.getStyle().getExamine())
 					.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
@@ -534,7 +533,7 @@ public class QuestHelperPlugin extends Plugin
 		WorldPoint wpUp = new WorldPoint(worldPoint.getX(), worldPoint.getY() + 1, worldPoint.getPlane());
 		if (cheerer == null)
 		{
-			cheerer = new Cheerer(client, clientThread, wpUp, Cheerer.Style.FAN, chatMessageManager, "Zoinkwiz",
+			cheerer = new Cheerer(client, clientThread, wpUp, Cheerer.Style.randomCheerer(), chatMessageManager,
 				"Congratz on completing the quest!");
 		}
 
@@ -567,7 +566,7 @@ public class QuestHelperPlugin extends Plugin
 
 		client.createMenuEntry(menuEntries.length - 1)
 			.setOption("Examine")
-			.setTarget("<col=ffff00>" + cheerer.getName() + "</col>")
+			.setTarget("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")
 			.setType(MenuAction.RUNELITE)
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);

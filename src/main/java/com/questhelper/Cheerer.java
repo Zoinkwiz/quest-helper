@@ -25,6 +25,10 @@
  */
 package com.questhelper;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -51,15 +55,17 @@ public class Cheerer
 	public final WorldPoint worldPoint;
 	private final Client client;
 	private final ClientThread clientThread;
+	@Getter
 	private final Style style;
 
-	@Getter
-	private final String name;
 	@Getter
 	private final String message;
 
 	@Getter
-	private int textShift = 0;
+	private final int textShift;
+
+	private static final int QUEST_HOOD_MALE = 18914;
+	private static final int QUEST_CAPE_MALE = 18946;
 
 	@RequiredArgsConstructor
 	public enum Style
@@ -68,35 +74,74 @@ public class Cheerer
 		{
 			short qpcDark = (short) -22440;
 
-			ModelData hood = l.client.loadModelData(18914).cloneColors()
+			ModelData hood = l.client.loadModelData(QUEST_HOOD_MALE).cloneColors()
 				.recolor((short) -21568, qpcDark) // Inside
 				.recolor((short) 22464, qpcDark)
 				.recolor((short) 960, qpcDark);
 
-			ModelData cape = l.client.loadModelData(18946).cloneColors()
+			ModelData cape = l.client.loadModelData(QUEST_CAPE_MALE).cloneColors()
 				.recolor((short) -8256, qpcDark) // Outside trim
-				.recolor((short) -11353, JagexColor.rgbToHSL(Color.WHITE.getRGB(), 1.0d)); // Inside trim!!!
+				.recolor((short) -11353, JagexColor.rgbToHSL(Color.WHITE.getRGB(), 1.0d)); // Inside trim
 
-			ModelData[] mda = new ModelData[]{ hood, // QP Hood
-				cape, // QP Cape
-				l.client.loadModelData(11359),
-				l.client.loadModelData(38101), // crystal body
-				l.client.loadModelData(38079), // crystal legs
-				l.client.loadModelData(4925), // Beard
-				l.client.loadModelData(10706), // Hands
-				l.client.loadModelData(358) // Feet
-			};
-
-			ModelData mdf = l.client.mergeModels(mda);
+			ModelData mdf = createModel(l.client,
+				11359, 38101, 38079, 4925, 10706, 358);
+			mdf = createModel(l.client, mdf, hood, cape);
 
 			return mdf.cloneColors()
 				.light(10 + ModelData.DEFAULT_AMBIENT, 1875 + ModelData.DEFAULT_CONTRAST,
 					ModelData.DEFAULT_X, ModelData.DEFAULT_Y, 20);
-		}, anim(862)),
+		}, anim(862), "Zoinkwiz", "Loves questing."),
+		WISE_OLD_MAN(l ->
+		{
+			short clothingColor = JagexColor.rgbToHSL(new Color(102, 93, 44).getRGB(), 0.6d);
+			short blue = JagexColor.rgbToHSL(Color.BLUE.getRGB(), 1.0d);
+			ModelData skirt = l.client.loadModelData(265).cloneColors()
+				.recolor((short)25238, clothingColor);
+
+			ModelData shirt = l.client.loadModelData(292).cloneColors()
+				.recolor((short)8741, clothingColor);
+
+			ModelData arms = l.client.loadModelData(170).cloneColors()
+				.recolor((short)8741, clothingColor);
+
+			// 8741
+			ModelData cape = l.client.loadModelData(323).cloneColors()
+				.recolor((short) 926, blue) // Inside
+				.recolor((short) 7700, blue) // Mail cape
+				.recolor((short) 11200, (short)8741); // Trim
+
+			ModelData partyhat = l.client.loadModelData(187).cloneColors()
+				.recolor((short)926, blue);
+			ModelData mdf = createModel(l.client,
+				9103, // face
+				4925, // beard
+				176, // hands
+				181); // feet?
+
+			mdf = createModel(l.client, mdf, skirt, shirt, arms, cape, partyhat);
+
+			return mdf.cloneColors()
+				.light();
+		}, anim(862), "Wise Old Man", "Loves questing."),
 		;
 
 		private final Function<Cheerer, Model> modelSupplier;
 		private final Function<Cheerer, Animation> animationSupplier;
+
+		@Getter
+		private final String displayName;
+
+		@Getter
+		private final String examine;
+
+		private static final List<Style> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+		private static final int SIZE = VALUES.size();
+		private static final Random RANDOM = new Random();
+
+		public static Style randomCheerer()
+		{
+			return VALUES.get(RANDOM.nextInt(SIZE));
+		}
 	}
 
 	private static Function<Cheerer, Animation> anim(int id)
@@ -104,14 +149,28 @@ public class Cheerer
 		return b -> b.client.loadAnimation(id);
 	}
 
-	public Cheerer(Client client, ClientThread clientThread, WorldPoint worldPoint, Style style, ChatMessageManager chatMessageManager, String name, String message)
+	private static ModelData createModel(Client client, ModelData... data)
+	{
+		return client.mergeModels(data);
+	}
+
+	private static ModelData createModel(Client client, int... data)
+	{
+		ModelData[] modelData = new ModelData[data.length];
+		for (int i = 0; i < data.length; i++)
+		{
+			modelData[i] = client.loadModelData(data[i]);
+		}
+		return client.mergeModels(modelData);
+	}
+
+	public Cheerer(Client client, ClientThread clientThread, WorldPoint worldPoint, Style style, ChatMessageManager chatMessageManager, String message)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.style = style;
 		this.runeLiteObject = client.createRuneLiteObject();
 		this.worldPoint = worldPoint;
-		this.name = name;
 		this.message = message;
 
 		update();
@@ -129,7 +188,7 @@ public class Cheerer
 
 		chatMessageManager.queue(QueuedMessage.builder()
 			.type(ChatMessageType.PUBLICCHAT)
-			.name(name)
+			.name(style.getDisplayName())
 			.runeLiteFormattedMessage(chatMessage)
 			.timestamp((int) (System.currentTimeMillis() / 1000))
 			.build());

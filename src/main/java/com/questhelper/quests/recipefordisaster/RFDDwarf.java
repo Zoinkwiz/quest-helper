@@ -203,7 +203,7 @@ public class RFDDwarf extends BasicQuestHelper
 		coolRockCakeSidebar = new NpcStep(this, NpcID.ICEFIEND, new WorldPoint(3008, 3471, 0),
 			"If you didn't pick up the rock cake with ice gloves, kill an icefiend to cool the rock cake.",
 			rockCakeHot);
-		coolRockCakeSidebar.addSubSteps(coolRockCakeSidebar);
+		coolRockCakeSidebar.addSubSteps(coolRockCake);
 		enterDiningRoomAgain = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
 			"Go use the dwarven rock cake on the dwarf.");
 		useRockCakeOnDwarf = new ObjectStep(this, ObjectID.DWARF_12330, new WorldPoint(1862, 5321, 0),

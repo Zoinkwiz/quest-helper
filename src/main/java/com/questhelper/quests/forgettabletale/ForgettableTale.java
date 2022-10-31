@@ -982,7 +982,7 @@ public class ForgettableTale extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Dwarven Stout (m)", ItemID.DWARVEN_STOUTM, 1));
+		return Collections.singletonList(new ItemReward("Dwarven Stout (m)", ItemID.DWARVEN_STOUTM, 2));
 	}
 
 	@Override

@@ -437,6 +437,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		//((NpcStep) talkToSecretary).addAlternateNpcs(NpcID.PURPLE_PEWTER_SECRETARY, NpcID.GREEN_GEMSTONE_SECRETARY,
 		// NpcID.SILVER_COG_SECRETARY, NpcID.WHITE_CHISEL_SECRETARY);
 		talkToSecretary.addDialogStep("Is there anything I can help you with?");
+		talkToSecretary.addDialogStep("I'll take it.");
 		talkToSecretary.addDialogStep("Do you have another task for me?");
 
 		talkToDirector = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2879, 10199, 1),
@@ -444,6 +445,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 				"just talk to them again for a different one.");
 		((NpcStep) talkToDirector).addAlternateNpcs(NpcID.BLUE_OPAL_DIRECTOR);
 		talkToDirector.addDialogStep("Do you have any more tasks for me?");
+		talkToDirector.addDialogStep("I'll take it.");
 
 		joinCompany = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2879, 10199, 1),
 			"Talk to the director to join the company.");

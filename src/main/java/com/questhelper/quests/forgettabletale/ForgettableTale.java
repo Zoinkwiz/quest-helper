@@ -557,6 +557,7 @@ public class ForgettableTale extends BasicQuestHelper
 	{
 		travelToKeldagrim = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
 			"Travel to Keldagrim.");
+		travelToKeldagrim.addDialogStep("Yes please.");
 		talkToVeldaban = new NpcStep(this, NpcID.COMMANDER_VELDABAN_6045, new WorldPoint(2827, 10214, 0),
 			"");
 		talkToVeldaban.addDialogSteps("Very interested!", "Yes.", "Sounds like just the job for me!");

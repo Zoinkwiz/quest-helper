@@ -461,10 +461,11 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToDirectorAfterJoining.addDialogStep("Yes! Long live the Blue Opal!");
 
 		leaveConsortium = new ObjectStep(this, ObjectID.STAIRS_6088, new WorldPoint(2863, 10210, 1),
-			"Talk to Commander Veldaban in west Keldagrim.");
+			"Go down the stairs.");
 
 		talkToVeldabanAfterJoining = new NpcStep(this, NpcID.COMMANDER_VELDABAN_6045, new WorldPoint(2827, 10214, 0),
 			"Talk to Commander Veldaban.");
+		talkToVeldabanAfterJoining.addSubSteps(leaveConsortium);
 		talkToVeldabanAfterJoining.addDialogStep("I'm ready.");
 	}
 

@@ -402,7 +402,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 		PanelDetails peachesPalaceSteps = new PanelDetails("Bones to Peaches Palace",
 			Arrays.asList(unlockBonesToPeaches, moveToPalace, bonesToPeachesPalace),
-			new SkillRequirement(Skill.MAGIC, 60), bonesToPeaches, bones, earthRune4,
+			new SkillRequirement(Skill.MAGIC, 60), bonesToPeaches, bones, earthRune.quantity(4),
 			waterRune, natureRune);
 		peachesPalaceSteps.setDisplayCondition(notBonesToPeachesPalace);
 		peachesPalaceSteps.setLockingStep(bonesToPeachesPalaceTask);
@@ -417,7 +417,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		PanelDetails powerAmuletSteps = new PanelDetails("Power Amulet", Arrays.asList(moveToLumby, smeltAmmy,
 			stringAmmy, powerAmmy), new SkillRequirement(Skill.CRAFTING, 70, true),
 			new SkillRequirement(Skill.MAGIC, 57), goldBar, cutDiamond, amuletMould, ballOfWool,
-			cosmicRune.quantity(1), earthRune10);
+			cosmicRune.quantity(1), earthRune.quantity(10));
 		powerAmuletSteps.setDisplayCondition(notPowerAmmy);
 		powerAmuletSteps.setLockingStep(powerAmmyTask);
 		allSteps.add(powerAmuletSteps);

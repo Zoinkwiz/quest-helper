@@ -114,7 +114,7 @@ public class KnightWaves extends BasicQuestHelper
 
 		goToFloor1 = new ObjectStep(this, ObjectID.LADDER_26107, new WorldPoint(2747, 3493, 0),
 			"Climb the south west ladder of Camelot.");
-		goToFloor2 = new ObjectStep(this, ObjectID.LADDER_26107, new WorldPoint(2747, 3493, 0),
+		goToFloor2 = new ObjectStep(this, ObjectID.LADDER_26107, new WorldPoint(2749, 3491, 1),
 			"Climb up to the roof.");
 		talkToSquire = new NpcStep(this, NpcID.SQUIRE_4353, new WorldPoint(2750, 3507, 2),
 			"");

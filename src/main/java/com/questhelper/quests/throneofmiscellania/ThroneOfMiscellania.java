@@ -52,7 +52,6 @@ import java.util.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Player;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -507,15 +506,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		ItemRequirement giftItem;
-		Player player = client.getLocalPlayer();
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			giftItem = bow;
-		}
-		else
-		{
-			giftItem = cake;
-		}
+		giftItem = bow;
 
 		allSteps.add(new PanelDetails("Talk to King Vargas", Arrays.asList(travelToMisc, getFlowers,
 			talkToVargas), flowers, giftItem, ring, ironBar, logs, reputationItems));

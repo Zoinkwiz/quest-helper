@@ -10,7 +10,7 @@ repositories {
 	mavenCentral()
 }
 
-def runeLiteVersion = '1.9.1'
+def runeLiteVersion = '1.9.3'
 
 dependencies {
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion

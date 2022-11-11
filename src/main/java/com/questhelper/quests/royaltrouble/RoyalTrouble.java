@@ -74,13 +74,13 @@ public class RoyalTrouble extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement antipoison, food, prayerPotions;
 
-	Requirement inMiscFloor1, inEtcFloor1, onIslands, hasCoalOrPickaxe, partnerIsAstrid, startedInvestigation, talkedToMiscSubject,
+	Requirement inMiscFloor1, inEtcFloor1, onIslands, hasCoalOrPickaxe, astridIsHeir, startedInvestigation, talkedToMiscSubject,
 		talkedToSigrid, talkedToEtcSubject, reportedToVargas, reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas,
 		enteredDungeon, inDungeon, inLiftRoom, inPath1, inPath2, inPath3, inPath4, talkedToDonal, usedProp,
 		hasUsedPulley, hasUsedLongerPulley, hasUsedPulley2, hasUsedRope, hasUsedBeam, hasUsedEngine, has1CoalInEngine, has2CoalInEngine, has3CoalInEngine,
 		has4CoalInEngine, hasFullEngine, hasRepairedScaffold, inPlankRoom, inLiftOrPlankOrTunnel1Room, attachedRope, onJumpIsland1, onJumpIsland2, onJumpIsland3,
 		inPaths, seenFire, searchedFire1, searchedFire2, searchedFire3, searchedFire4, searchedFire5, hasReadDiary, enteredSnakeRoom, talkedToKids,
-		inBossRoom, killedBoss, finishedFinalConvoWithSigrid;
+		inBossRoom, killedBoss, finishedFinalConvoWithSigrid, isMarryingNotFriend;
 
 	QuestStep travelToMisc, goUpToGhrim, talkToGhrim, goUpToPartner, talkToPartner, talkToVargas, goUpToVargas, goDownFromVargas, talkToGunnhild, goBackUpToVargas, talkToVargasAgain, goDownFromVargas2, goUpToSigrid,
 		talkToSigrid, goDownFromSigridToMatilda, talkToMatilda, goBackUpToSigrid, talkToSigridAfterMatilda, getCoalOrPickaxe, goDownFromSigridToVargas, goBackUpToVargasFromSigrid, talkToVargasAfterSigrid, talkToGhrim2,
@@ -332,8 +332,9 @@ public class RoyalTrouble extends BasicQuestHelper
 		{
 			hasCoalOrPickaxe = coal5;
 		}
-		partnerIsAstrid = new VarbitRequirement(98, 0);
 
+		astridIsHeir = new VarbitRequirement(14607, 0); // Goes to 1 for Brand
+		isMarryingNotFriend = new VarbitRequirement(14608, 0); // Goes to 1 for friend
 		startedInvestigation = new VarbitRequirement(2141, 10);
 		reportedToVargas = new VarbitRequirement(2141, 20, Operation.GREATER_EQUAL);
 		talkedToGhrimInInvestigation = new VarbitRequirement(2141, 30);
@@ -378,7 +379,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		searchedFire4 = new VarbitRequirement(2148, 4, Operation.GREATER_EQUAL);
 		searchedFire5 = new VarbitRequirement(2148, 5, Operation.GREATER_EQUAL);
 
-		// TODO: hasReadyDiary probably wrong varbit, need to verify
+		// TODO: hasReadDiary probably wrong varbit, need to verify
 		hasReadDiary = new VarbitRequirement(2149, 1);
 		enteredSnakeRoom = new VarbitRequirement(2157, 1);
 	}
@@ -393,7 +394,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		talkToGhrim.addDialogStep("Very well, I'll sort it out.");
 		talkToGhrim.addSubSteps(goUpToGhrim);
 
-		if (partnerIsAstrid.check(client))
+		if (astridIsHeir.check(client))
 		{
 			talkToPartner = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Talk to Princess Astrid  in Miscellania castle.");
 			goUpToPartner = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3872, 0), "Talk to Princess Astrid in Miscellania castle.");

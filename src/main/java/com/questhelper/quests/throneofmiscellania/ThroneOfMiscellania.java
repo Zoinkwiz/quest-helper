@@ -169,14 +169,9 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		ConditionalStep courting;
 
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
-		{
-			courting = courtBrand;
-		}
-		else
-		{
-			courting = courtAstrid;
-		}
+		courting = courtAstrid;
+
+		// TODO: Add toggle for Brand once confirmed what's up with new progression
 
 		ConditionalStep becomeRoyalty1 = new ConditionalStep(this, courting);
 		ConditionalStep becomeRoyalty2 = new ConditionalStep(this, courting);
@@ -457,16 +452,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		reqs.add(ring);
 		reqs.add(flowers);
 
-		Player player = client.getLocalPlayer();
-
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			reqs.add(bow);
-		}
-		else
-		{
-			reqs.add(cake);
-		}
+		reqs.add(bow);
+//		reqs.add(cake);
 		reqs.add(reputationItems);
 		return reqs;
 	}
@@ -475,7 +462,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Whether you marry Brand or Astrid depends on whether you're female or male respectively. If you have a preference on who you'd like to marry, you can change to male or female prior to the quest.");
+		reqs.add("Currently this helper only shows you how to marry Astrid. If you'd like to be friends with her or choose to be with Brand, " +
+			"you can either follow an external guide for now, or simply talk to King Vargas after the quest to change.");
 		return reqs;
 	}
 
@@ -536,18 +524,13 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 			Arrays.asList(goUpstairsToAstrid, talkAstrid1, giveFlowersToAstrid, danceForAstrid, talkAstrid2,
 				giveBowToAstrid, talkAstrid3, blowKissToAstrid, useRingOnAstrid));
 
-		PanelDetails brandPanel = new PanelDetails("Win over Brand",
-			Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
-				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand));
+//		PanelDetails brandPanel = new PanelDetails("Win over Brand",
+//			Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
+//				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand));
 
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			allSteps.add(astridPanel);
-		}
-		else
-		{
-			allSteps.add(brandPanel);
-		}
+
+		allSteps.add(astridPanel);
+//		allSteps.add(brandPanel);
 
 		allSteps.add(new PanelDetails("Establish peace",
 			Arrays.asList(talkToSigridDip1, talkToVargasDip1, talkToSigridDip2, talkToBrandDip, talkToGhrimDip, talkToSigridDip3, talkToVargasDip2,

@@ -52,7 +52,6 @@ import java.util.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Player;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -169,14 +168,9 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		ConditionalStep courting;
 
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
-		{
-			courting = courtBrand;
-		}
-		else
-		{
-			courting = courtAstrid;
-		}
+		courting = courtAstrid;
+
+		// TODO: Add toggle for Brand once confirmed what's up with new progression
 
 		ConditionalStep becomeRoyalty1 = new ConditionalStep(this, courting);
 		ConditionalStep becomeRoyalty2 = new ConditionalStep(this, courting);
@@ -457,16 +451,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		reqs.add(ring);
 		reqs.add(flowers);
 
-		Player player = client.getLocalPlayer();
-
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			reqs.add(bow);
-		}
-		else
-		{
-			reqs.add(cake);
-		}
+		reqs.add(bow);
+//		reqs.add(cake);
 		reqs.add(reputationItems);
 		return reqs;
 	}
@@ -475,7 +461,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Whether you marry Brand or Astrid depends on whether you're female or male respectively. If you have a preference on who you'd like to marry, you can change to male or female prior to the quest.");
+		reqs.add("Currently this helper only shows you how to marry Astrid. If you'd like to be friends with her or choose to be with Brand, " +
+			"you can either follow an external guide for now, or simply talk to King Vargas after the quest to change.");
 		return reqs;
 	}
 
@@ -519,15 +506,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		ItemRequirement giftItem;
-		Player player = client.getLocalPlayer();
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			giftItem = bow;
-		}
-		else
-		{
-			giftItem = cake;
-		}
+		giftItem = bow;
 
 		allSteps.add(new PanelDetails("Talk to King Vargas", Arrays.asList(travelToMisc, getFlowers,
 			talkToVargas), flowers, giftItem, ring, ironBar, logs, reputationItems));
@@ -536,18 +515,13 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 			Arrays.asList(goUpstairsToAstrid, talkAstrid1, giveFlowersToAstrid, danceForAstrid, talkAstrid2,
 				giveBowToAstrid, talkAstrid3, blowKissToAstrid, useRingOnAstrid));
 
-		PanelDetails brandPanel = new PanelDetails("Win over Brand",
-			Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
-				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand));
+//		PanelDetails brandPanel = new PanelDetails("Win over Brand",
+//			Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
+//				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand));
 
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			allSteps.add(astridPanel);
-		}
-		else
-		{
-			allSteps.add(brandPanel);
-		}
+
+		allSteps.add(astridPanel);
+//		allSteps.add(brandPanel);
 
 		allSteps.add(new PanelDetails("Establish peace",
 			Arrays.asList(talkToSigridDip1, talkToVargasDip1, talkToSigridDip2, talkToBrandDip, talkToGhrimDip, talkToSigridDip3, talkToVargasDip2,

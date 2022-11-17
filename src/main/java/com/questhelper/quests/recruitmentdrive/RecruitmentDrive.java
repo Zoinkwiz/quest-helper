@@ -377,7 +377,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
-		reqs.add(new PlayerModelRequirement(true));
 		return reqs;
 	}
 

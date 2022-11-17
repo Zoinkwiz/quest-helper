@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.player.PlayerModelRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -68,7 +67,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 {
 	private ItemRequirement coinsRequirement;
 	private NoItemRequirement noItemRequirement;
-	private Requirement femaleReq;
 	private ZoneRequirement isFirstFloorCastle, isSecondFloorCastle,
 		isInSirTinleysRoom, isInMsHynnRoom, isInSirKuamsRoom,
 		isInSirSpishyusRoom, isInSirRenItchood, isInladyTableRoom;
@@ -121,10 +119,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemCollections.COINS, 3000);
 		noItemRequirement = new NoItemRequirement("No items or equipment carried", ItemSlots.ANY_EQUIPPED_AND_INVENTORY);
-
-		femaleReq = new PlayerModelRequirement(true);
 	}
 
 	public void SetupZones()
@@ -202,8 +197,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye");
 		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
-			"Kill Sir Leye to win this challenge. You must be a female character or you can't kill him.", true,
-			femaleReq);
+			"Kill Sir Leye to win this challenge. You must use the mace or you can't kill him.", true);
 
 		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
 		NpcCondition npcCondition = new NpcCondition(NpcID.SIR_LEYE);

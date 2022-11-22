@@ -264,7 +264,7 @@ public class TrollStronghold extends BasicQuestHelper
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Dad (level 101) (safespottable)");
-		reqs.add("Troll Generall (level 113) (safespottable)");
+		reqs.add("Troll General (level 113) (safespottable)");
 		return reqs;
 	}
 

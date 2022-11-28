@@ -273,6 +273,8 @@ public enum ExternalQuestResources {
 	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
 	DAG_ROUTE("https://oldschool.runescape.wiki/w/Waterbirth_Island"),
 
+	// Skills
+	AGILITY("https://oldschool.runescape.wiki/w/Agility"),
 	WOODCUTTING("https://oldschool.runescape.wiki/w/Pay-to-play_Woodcutting_training");
 
 	ExternalQuestResources()

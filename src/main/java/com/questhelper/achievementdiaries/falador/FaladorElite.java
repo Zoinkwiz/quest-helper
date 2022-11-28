@@ -32,11 +32,14 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -254,7 +257,14 @@ public class FaladorElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 80, true));
 		req.add(new SkillRequirement(Skill.FARMING, 91, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 81, true));
-		req.add(new SkillRequirement(Skill.RUNECRAFT, 88, true));
+		req.add(new ComplexRequirement(LogicType.OR, "88 Runecraft or 55 with Raiments of the Eye set",
+			new SkillRequirement(Skill.RUNECRAFT, 88, true, "88 Runecraft"),
+			new ItemRequirements("55 with Raiments of the Eye set",
+				new ItemRequirement("Hat", ItemCollections.EYE_HAT),
+				new ItemRequirement("Top", ItemCollections.EYE_TOP),
+				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM),
+				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE))
+		));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 
 		req.add(wanted);

@@ -31,6 +31,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -39,6 +40,7 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.WarriorsGuildAccessRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -331,7 +333,14 @@ public class FaladorHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.DEFENCE, 50));
 		req.add(new SkillRequirement(Skill.MINING, 60, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 70));
-		req.add(new SkillRequirement(Skill.RUNECRAFT, 56, true));
+		req.add(new ComplexRequirement(LogicType.OR, "56 Runecraft or 42 with Raiments of the Eye set",
+			new SkillRequirement(Skill.RUNECRAFT, 56, true, "56 Runecraft"),
+			new ItemRequirements("42 with Raiments of the Eye set",
+				new ItemRequirement("Hat", ItemCollections.EYE_HAT),
+				new ItemRequirement("Top", ItemCollections.EYE_TOP),
+				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM),
+				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE))
+		));
 		req.add(new SkillRequirement(Skill.SLAYER, 72, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 50, true));
 		req.add(new WarriorsGuildAccessRequirement());

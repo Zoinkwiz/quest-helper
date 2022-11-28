@@ -28,12 +28,15 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -147,6 +150,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRunes);
 		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss",
 			ItemID.WATER_TIARA).showConditioned(notWaterRunes);
+		waterAccessOrAbyss.setTooltip("Water talisman or tiara");
 		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote);
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE)
 			.showConditioned(new Conditions(notMovario, notRichChest));
@@ -245,7 +249,16 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.AGILITY, 70));
 		reqs.add(new SkillRequirement(Skill.RANGED, 70));
-		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 76));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 76, true,
+			"76 Runecraft or 57 with Raiments of the Eye set"));
+		reqs.add(new ComplexRequirement(LogicType.OR, "76 Runecraft or 57 with Raiments of the Eye set",
+			new SkillRequirement(Skill.RUNECRAFT, 76, true, "76 Runecraft"),
+			new ItemRequirements("57 with Raiments of the Eye set",
+				new ItemRequirement("Hat", ItemCollections.EYE_HAT),
+				new ItemRequirement("Top", ItemCollections.EYE_TOP),
+				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM),
+				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE))
+		));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 88));
 		reqs.add(new SkillRequirement(Skill.STRENGTH, 70));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 78));

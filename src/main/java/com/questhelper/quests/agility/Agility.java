@@ -1,11 +1,13 @@
 package com.questhelper.quests.agility;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.UnlockReward;
@@ -28,7 +30,7 @@ public class Agility extends ComplexStateQuestHelper
 {
 
 	// Items recommended
-	ItemRequirement bootsOfLightness, gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape;
+	ItemRequirement bootsOfLightness, gracefulOutfit, gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape;
 
 	SkillRequirement ag10, ag20, ag30, ag40, ag50, ag60, ag70, ag80, ag90;
 
@@ -43,15 +45,15 @@ public class Agility extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep fullTraining = new ConditionalStep(this, gnomeStronghold);
-		fullTraining.addStep(ag10, draynorVillage);
-		fullTraining.addStep(ag20, alKharid);
-		fullTraining.addStep(ag30, varrock);
-		fullTraining.addStep(ag40, canifis);
-		fullTraining.addStep(ag50, falador);
-		fullTraining.addStep(ag60, seersVillage);
-		fullTraining.addStep(ag70, pollnivneach);
-		fullTraining.addStep(ag80, rellekka);
-		fullTraining.addStep(ag90, ardougne);
+		fullTraining.addStep(ag10, draynorVillage, true);
+		fullTraining.addStep(ag20, alKharid, true);
+		fullTraining.addStep(ag30, varrock, true);
+		fullTraining.addStep(ag40, canifis, true);
+		fullTraining.addStep(ag50, falador, true);
+		fullTraining.addStep(ag60, seersVillage, true);
+		fullTraining.addStep(ag70, pollnivneach, true);
+		fullTraining.addStep(ag80, rellekka, true);
+		fullTraining.addStep(ag90, ardougne, true);
 
 		return fullTraining;
 	}
@@ -71,75 +73,80 @@ public class Agility extends ComplexStateQuestHelper
 
 		ag45 = new SkillRequirement(Skill.AGILITY, 45);
 
-		bootsOfLightness = new ItemRequirement("Boots of Lightness", ItemID.BOOTS_OF_LIGHTNESS).showConditioned(
+
+		bootsOfLightness = new ItemRequirement(
+			"Boots of Lightness", ItemID.BOOTS_OF_LIGHTNESS).showConditioned(
 			new Conditions(LogicType.NOR, ag45)
 		);
-		bootsOfLightness = bootsOfLightness.showConditioned(bootsOfLightness.alsoCheckBank(questBank));
 
-
-		gracefulHood = new ItemRequirement("Graceful hood", ItemID.GRACEFUL_HOOD).showConditioned(
+		gracefulHood = new ItemRequirement(
+			"Graceful hood", ItemCollections.GRACEFUL_HOOD, 1, true).showConditioned(
 			new Conditions(ag45)
 		);
 
-		gracefulHood = gracefulHood.showConditioned(gracefulHood.alsoCheckBank(questBank));
-
-		gracefulTop = new ItemRequirement("Graceful top", ItemID.GRACEFUL_TOP).showConditioned(
+		gracefulTop = new ItemRequirement(
+			"Graceful top", ItemCollections.GRACEFUL_TOP, 1, true).showConditioned(
 			new Conditions(ag45)
 		);
-			gracefulTop = gracefulTop.showConditioned(gracefulTop.alsoCheckBank(questBank));
 
-		gracefulLegs = new ItemRequirement("Graceful legs", ItemID.GRACEFUL_LEGS).showConditioned(
+		gracefulLegs = new ItemRequirement(
+			"Graceful legs", ItemCollections.GRACEFUL_LEGS, 1, true).showConditioned(
 			new Conditions(ag45)
 		);
-		gracefulLegs = gracefulLegs.showConditioned(gracefulLegs.alsoCheckBank(questBank));
 
-		gracefulGloves = new ItemRequirement("Graceful gloves", ItemID.GRACEFUL_GLOVES).showConditioned(
+		gracefulCape = new ItemRequirement(
+			"Graceful cape", ItemCollections.GRACEFUL_CAPE, 1, true).showConditioned(
 			new Conditions(ag45)
 		);
-		gracefulGloves = gracefulGloves.showConditioned(gracefulGloves.alsoCheckBank(questBank));
 
-		gracefulGloves = new ItemRequirement("Graceful boots", ItemID.GRACEFUL_BOOTS).showConditioned(
+		gracefulGloves = new ItemRequirement(
+			"Graceful gloves", ItemCollections.GRACEFUL_GLOVES, 1, true).showConditioned(
 			new Conditions(ag45)
 		);
-		gracefulGloves = gracefulBoots.showConditioned(gracefulBoots.alsoCheckBank(questBank));
 
-		gracefulGloves = new ItemRequirement("Graceful cape", ItemID.GRACEFUL_CAPE).showConditioned(
+		gracefulBoots = new ItemRequirement(
+			"Graceful boots", ItemCollections.GRACEFUL_BOOTS, 1, true).showConditioned(
 			new Conditions(ag45)
 		);
-		gracefulGloves = gracefulCape.showConditioned(gracefulCape.alsoCheckBank(questBank));
+		gracefulBoots.addAlternates(ItemID.BOOTS_OF_LIGHTNESS);
+
+		gracefulOutfit = new ItemRequirements(
+			"Full graceful outfit sets (6 pieces)(equipped)",
+			gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape);
+
 	}
 
 	private void setupSteps()
 	{
 		gnomeStronghold = new ObjectStep(this, ObjectID.LOG_BALANCE, new WorldPoint(3192, 3223, 0),
-			"Train agility at the Gnome Stronghold Agility Course", true, bootsOfLightness);
+			"Train agility at the Gnome Stronghold Agility Course", bootsOfLightness);
 
 		draynorVillage = new ObjectStep(this, ObjectID.ROUGH_WALL, new WorldPoint(3190, 3247, 0),
-			"Train agility at the Draynor Village Rooftop Course", true, bootsOfLightness);
+			"Train agility at the Draynor Village Rooftop Course", bootsOfLightness);
 
 		alKharid = new ObjectStep(this, ObjectID.CABLE, new WorldPoint(2335, 3048, 0),
-			"Train agility at the Al Kharid Rooftop Course", true, bootsOfLightness);
+			"Train agility at the Al Kharid Rooftop Course", bootsOfLightness);
 
 		varrock = new ObjectStep(this, ObjectID.CABLE, new WorldPoint(2335, 3048, 0),
-			"Train agility at the Varrock Rooftop Course", true, bootsOfLightness);
+			"Train agility at the Varrock Rooftop Course", bootsOfLightness);
 
 		canifis = new ObjectStep(this, ObjectID.CABLE, new WorldPoint(2335, 3048, 0),
-			"Train agility at the Canifis Rooftop Course", true, bootsOfLightness);
+			"Train agility at the Canifis Rooftop Course", gracefulOutfit);
 
 		falador = new ObjectStep(this, ObjectID.CABLE, new WorldPoint(2335, 3048, 0),
-			"Train agility at the Falador Rooftop Course", true, bootsOfLightness);
+			"Train agility at the Falador Rooftop Course", gracefulOutfit);
 
 		seersVillage = new ObjectStep(this, ObjectID.EDGE_14925, new WorldPoint(2335, 3048, 0),
-			"Train agility at Seer's Village Rooftop Course", true, bootsOfLightness);
+			"Train agility at Seer's Village Rooftop Course", gracefulOutfit);
 
 		pollnivneach = new ObjectStep(this, ObjectID.EDGE, new WorldPoint(2335, 3048, 0),
-			"Train agility at the Pollnivneach Rooftop Course", true, bootsOfLightness);
+			"Train agility at the Pollnivneach Rooftop Course", gracefulOutfit);
 
 		rellekka = new ObjectStep(this, ObjectID.GAP_2831, new WorldPoint(2335, 3048, 0),
-			"Train agility at the Rellekka Rooftop Course", true, bootsOfLightness);
+			"Train agility at the Rellekka Rooftop Course", gracefulOutfit);
 
 		ardougne = new ObjectStep(this, ObjectID.GAP, new WorldPoint(2335, 3048, 0),
-			"Train agility at the Ardougne Rooftop Course", true, bootsOfLightness);
+			"Train agility at the Ardougne Rooftop Course", gracefulOutfit);
 	}
 
 	@Override
@@ -166,37 +173,31 @@ public class Agility extends ComplexStateQuestHelper
 			new PanelDetails("1 - 10: Gnome Stronghold Agility Course", Collections.singletonList(gnomeStronghold))
 		);
 		allSteps.add(
-			new PanelDetails("10 - 20: Draynor Village Rooftop Course", Collections.singletonList(draynorVillage))
+			new PanelDetails("10 - 20: Draynor Village Rooftop Course", Collections.singletonList(draynorVillage), ag10)
 		);
 		allSteps.add(
-			new PanelDetails("20 - 30: Al Kharid Rooftop Course", Collections.singletonList(alKharid))
+			new PanelDetails("20 - 30: Al Kharid Rooftop Course", Collections.singletonList(alKharid), ag20)
 		);
 		allSteps.add(
-			new PanelDetails("30 - 40: Varrock Rooftop Course", Collections.singletonList(alKharid))
+			new PanelDetails("30 - 40: Varrock Rooftop Course", Collections.singletonList(varrock), ag30)
 		);
 		allSteps.add(
-			new PanelDetails("40 - 50: Canifis Rooftop Course", Collections.singletonList(alKharid),
-				gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape)
+			new PanelDetails("40 - 50: Canifis Rooftop Course", Collections.singletonList(canifis), ag40)
 		);
 		allSteps.add(
-			new PanelDetails("50 - 60: Falador Rooftop Course", Collections.singletonList(alKharid),
-				gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape)
+			new PanelDetails("50 - 60: Falador Rooftop Course", Collections.singletonList(falador), ag50)
 		);
 		allSteps.add(
-			new PanelDetails("60 - 70: Seer's Village Rooftop Course", Collections.singletonList(alKharid),
-				gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape)
+			new PanelDetails("60 - 70: Seer's Village Rooftop Course", Collections.singletonList(seersVillage), ag60)
 		);
 		allSteps.add(
-			new PanelDetails("70 - 80: Pollnivneach Rooftop Course", Collections.singletonList(alKharid),
-				gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape)
+			new PanelDetails("70 - 80: Pollnivneach Rooftop Course", Collections.singletonList(pollnivneach), ag70)
 		);
 		allSteps.add(
-			new PanelDetails("80 - 90: Rellekka Rooftop Course", Collections.singletonList(alKharid),
-				gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape)
+			new PanelDetails("80 - 90: Rellekka Rooftop Course", Collections.singletonList(rellekka), ag80)
 		);
 		allSteps.add(
-			new PanelDetails("90 - 99: Ardougne Rooftop Course", Collections.singletonList(alKharid),
-				gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape)
+			new PanelDetails("90 - 99: Ardougne Rooftop Course", Collections.singletonList(ardougne), ag90)
 		);
 		return allSteps;
 	}

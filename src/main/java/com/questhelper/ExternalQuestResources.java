@@ -274,7 +274,7 @@ public enum ExternalQuestResources {
 	DAG_ROUTE("https://oldschool.runescape.wiki/w/Waterbirth_Island"),
 
 	// Skills
-	AGILITY("https://oldschool.runescape.wiki/w/Agility"),
+	AGILITY("https://oldschool.runescape.wiki/w/Agility_training"),
 	WOODCUTTING("https://oldschool.runescape.wiki/w/Pay-to-play_Woodcutting_training");
 
 	ExternalQuestResources()

@@ -34,6 +34,8 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -57,7 +59,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-        quest = QuestHelperQuest.SPIRITS_OF_THE_ELID
+	quest = QuestHelperQuest.SPIRITS_OF_THE_ELID
 )
 public class SpiritsOfTheElid extends BasicQuestHelper
 {
@@ -75,7 +77,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	QuestStep speakToAwusah2, takeShoes, leaveAwusah, cutShoes, enterCrevice, talkToGenie, talkToGenieAgain, useStatuette;
 
 	//Conditions
-	Requirement hasTornRobeTop, whiteGolem, greyGolem, blackGolem, stabChannel, slashChannel, crushChannel;
+	Requirement hasTornRobeTop, whiteGolem, greyGolem, blackGolem, stabChannel, slashChannel, crushChannel, normalBook;
 	Requirement inCaveEntrance, inWhiteGolemRoom, inGreyGolemRoom, inBlackGolemRoom, notAwusahHouse, insideCrevice,
 		inSourceCave;
 
@@ -160,6 +162,8 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		arrows = new ItemRequirement("Arrows for bow", ItemCollections.METAL_ARROWS, 1, true);
 		arrows.setTooltip("Bronze arrows obtainable during quest south of cave entrance");
 
+		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
+
 		//Quest Items
 		tornRobeTop = new ItemRequirement("Torn Robe (top)", ItemID.TORN_ROBE, 1);
 		tornRobeTop.setHighlightInInventory(true);
@@ -235,7 +239,8 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		useNeedleTornRobes = new DetailedQuestStep(this, "Use the needle and thread on the torn robes (both top and bottom).", needle, tornRobeBottom);
 		useNeedleTornRobesTop = new DetailedQuestStep(this, "Use the needle and thread on the torn robes (both top and bottom).", needle, tornRobeTop);
 		useNeedleTornRobes.addSubSteps(useNeedleTornRobesTop);
-		telegrabKey = new ObjectStep(this, ObjectID.TABLE_10490, new WorldPoint(3432, 2929, 0), "Cast telegrab on the ancestral key on the table.", airRune, lawRune);
+		telegrabKey = new ObjectStep(this, ObjectID.TABLE_10490, new WorldPoint(3432, 2929, 0),
+			"Cast telegrab on the ancestral key on the table.", normalBook, airRune, lawRune);
 
 		//The Golems
 		enterCave = new ObjectStep(this, ObjectID.ROOT_6382, new WorldPoint(3370, 3132, 0), "Enter the cave north-west of Nardah where the river turns into a waterfall.", rope);
@@ -318,6 +323,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		reqs.add(new SkillRequirement(Skill.RANGED, 37, true));
 		reqs.add(new SkillRequirement(Skill.MINING, 37, true));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 37, true));
+		reqs.add(normalBook);
 		return reqs;
 	}
 
@@ -331,9 +337,9 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.PRAYER, 8000),
-				new ExperienceReward(Skill.THIEVING, 1000),
-				new ExperienceReward(Skill.MAGIC, 1000));
+			new ExperienceReward(Skill.PRAYER, 8000),
+			new ExperienceReward(Skill.THIEVING, 1000),
+			new ExperienceReward(Skill.MAGIC, 1000));
 	}
 
 	@Override

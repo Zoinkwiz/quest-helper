@@ -2090,6 +2090,11 @@ public enum ItemCollections
 		ItemID.ROBE_BOTTOMS_OF_THE_EYE_BLUE,
 		ItemID.ROBE_BOTTOMS_OF_THE_EYE_GREEN,
 		ItemID.ROBE_BOTTOMS_OF_THE_EYE_RED
+	)),
+
+	CLIMBING_BOOTS(ImmutableList.of(
+		ItemID.CLIMBING_BOOTS,
+		ItemID.CLIMBING_BOOTS_G
 	));
 
 	private final List<Integer> items;

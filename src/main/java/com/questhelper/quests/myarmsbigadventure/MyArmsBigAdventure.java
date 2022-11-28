@@ -261,7 +261,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 
 		supercompost7 = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST, 7);
 		superCompost8 = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST, 8);
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
 
 		cureOrCompost = new ItemRequirement("Either super/ultra compost, or a plant cure", ItemID.PLANT_CURE);
 		cureOrCompost.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);

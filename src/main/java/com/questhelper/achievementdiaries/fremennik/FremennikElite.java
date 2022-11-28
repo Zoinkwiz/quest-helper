@@ -171,7 +171,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notDragonAmulet);
 		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notDragonAmulet);
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE).showConditioned(notDagKings);
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));

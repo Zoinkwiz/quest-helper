@@ -39,6 +39,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -164,6 +165,7 @@ public class TheGrandTree extends BasicQuestHelper
 				"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
 		}
 		goTalkToCharlie3.addRequirement(lumberOrder);
+		goTalkToCharlie3.addRequirement(oneThousandCoins);
 		steps.put(90, goTalkToCharlie3);
 
 		goGetAnitaKey = new ConditionalStep(this, climbUpToAnita, "Talk to Anita in her house west of the Grand Tree.");
@@ -211,7 +213,8 @@ public class TheGrandTree extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
-		oneThousandCoins = new ItemRequirement("Coins", ItemCollections.COINS, 1000);
+		oneThousandCoins = new ItemRequirement("Coins to enter the Stronghold if you didn't help Femi previously", ItemCollections.COINS, 1000)
+			.hideConditioned(new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED));
 
 		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);

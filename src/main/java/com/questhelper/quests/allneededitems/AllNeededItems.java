@@ -56,12 +56,12 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		List<ItemRequirement> reqs = new ArrayList<>();
-		questHelperPlugin.itemRequirements.forEach((name, questReqs) -> reqs.addAll(questReqs));
-		questHelperPlugin.itemRecommended.forEach((name, questRecommended) -> reqs.addAll(questRecommended));
+		Map<Integer, ItemRequirement> reqs = new LinkedHashMap<>();
+		questHelperPlugin.itemRequirements.forEach((name, questReqs) -> refinedList(name, reqs, questReqs));
+		questHelperPlugin.itemRecommended.forEach((name, questRecommended) -> refinedList(name, reqs, questRecommended));
 
 		step1 = new DetailedQuestStep(this, "Get all items you need. You can have items being highlighted that you" +
-			" need without running this helper if you activate it in the Quest Helper settings.", refinedList(reqs));
+			" need without running this helper if you activate it in the Quest Helper settings.", new ArrayList<>(reqs.values()));
 		step1.hideRequirements = true;
 		step1.considerBankForItemHighlight = true;
 		step1.iconToUseForNeededItems = SpriteID.TAB_QUESTS;
@@ -69,10 +69,10 @@ public class AllNeededItems extends ComplexStateQuestHelper
 		return step1;
 	}
 
-	private List<ItemRequirement> refinedList(List<ItemRequirement> reqs)
+	private List<ItemRequirement> refinedList(String questName, Map<Integer, ItemRequirement> compressedReqs, List<ItemRequirement> reqs)
 	{
-		Map<Integer, ItemRequirement> compressedReqs = new LinkedHashMap<>();
-
+		// TODO: Rather than an ItemRequirement, shift to an ItemRequirements with each itemreq as an ItemRequirement in it
+		// This would allow for better mixed IDs between items
 		for (ItemRequirement req : reqs)
 		{
 			ItemRequirement newReq = req;
@@ -85,11 +85,15 @@ public class AllNeededItems extends ComplexStateQuestHelper
 
 			if (!compressedReqs.containsKey(newReq.getId()))
 			{
-				compressedReqs.put(newReq.getId(), new ItemRequirement(req.getName(), newReq.getId(), newReq.getQuantity()));
+				ItemRequirement freshReq = new ItemRequirement(req.getName(), newReq.getId(), newReq.getQuantity());
+				String tip = "Needed for " + questName;
+				freshReq.setTooltip(tip);
+				compressedReqs.put(newReq.getId(), freshReq);
 			}
 			else
 			{
 				ItemRequirement currentReq = compressedReqs.get(newReq.getId());
+				currentReq.appendToTooltip(questName);
 				if (newReq.isConsumedItem())
 				{
 					currentReq.setQuantity(currentReq.getQuantity() + newReq.getQuantity());
@@ -109,17 +113,17 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		List<ItemRequirement> reqs = new ArrayList<>();
-		questHelperPlugin.itemRequirements.forEach((name, questReqs) -> reqs.addAll(questReqs));
-		return refinedList(reqs);
+		Map<Integer, ItemRequirement> reqs = new LinkedHashMap<>();
+		questHelperPlugin.itemRequirements.forEach((name, questReqs) -> refinedList(name, reqs, questReqs));
+		return new ArrayList<>(reqs.values());
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		List<ItemRequirement> reqs = new ArrayList<>();
-		questHelperPlugin.itemRecommended.forEach((name, questReqs) -> reqs.addAll(questReqs));
-		return refinedList(reqs);
+		Map<Integer, ItemRequirement> reqs = new LinkedHashMap<>();
+		questHelperPlugin.itemRecommended.forEach((name, questRecs) -> refinedList(name, reqs, questRecs));
+		return new ArrayList<>(reqs.values());
 	}
 
 	@Override

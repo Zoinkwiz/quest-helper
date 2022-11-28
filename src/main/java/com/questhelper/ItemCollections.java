@@ -154,6 +154,7 @@ public enum ItemCollections
 	)),
 
 	SWORDS("Swords", ImmutableList.of(
+		ItemID.TRAINING_SWORD,
 		ItemID.BRONZE_SWORD,
 		ItemID.BRONZE_LONGSWORD,
 		ItemID.IRON_SWORD,

@@ -162,7 +162,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		slayerHelm = new ItemRequirement("Slayer Helmet", ItemCollections.SLAYER_HELMETS)
 			.showConditioned(notKillDust);
 		keris = new ItemRequirement("Keris", ItemCollections.KERIS).showConditioned(notKillLocustRider);
-		lightsource = new ItemRequirement("Light soruce", ItemCollections.LIGHT_SOURCES)
+		lightsource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notKillLocustRider);
 		yewLog = new ItemRequirement("Yew log", ItemID.YEW_LOGS).showConditioned(notBurnYew);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnYew);

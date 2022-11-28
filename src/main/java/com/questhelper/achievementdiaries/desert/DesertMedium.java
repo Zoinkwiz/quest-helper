@@ -257,7 +257,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 		tpEnakhra = new DetailedQuestStep(this, "Teleport to Enakhra's Temple with the Camulet.", camulet);
 
-		if (client.getAccountType().isIronman())
+		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
 		{
 			tpPollnivneach = new DetailedQuestStep(this, "Move your house to Pollnivneach, then enter your house " +
 				"there.", coins.quantity(7500));
@@ -400,7 +400,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		eagleSteps.setLockingStep(eagleTravelTask);
 		allSteps.add(eagleSteps);
 
-		PanelDetails teleportToPollnivneachSteps = new PanelDetails("Teleport to Pollnivneach",
+		PanelDetails teleportToPollnivneachSteps = new PanelDetails("Pollnivneach House",
 			Collections.singletonList(tpPollnivneach), new SkillRequirement(Skill.CONSTRUCTION, 20), teleToHouse,
 			scrollOfRedir);
 		teleportToPollnivneachSteps.setDisplayCondition(notTPPollnivneach);

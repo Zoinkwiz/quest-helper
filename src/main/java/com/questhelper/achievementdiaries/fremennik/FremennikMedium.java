@@ -76,7 +76,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		fremennikTrials, betweenARock, dwarfCannon, fishingContest;
 
 	// Steps
-	QuestStep rollBoulderExit, slayBrineRat, enterEaglesPeak, snowyHunter, exitIceCave, mineCoal, stealFish,
+	QuestStep slayBrineRat, enterEaglesPeak, snowyHunter, exitIceCave, mineCoal, stealFish,
 		travelMisc, snowyKnight0, snowyKnight1, petRockPOH, moveToCannon, moveToCave, moveToRiver, moveToArzinian,
 		mineGold, lighthouse, moveToWaterbirth, moveToDagCave, moveToAxeSpot, throwAxe, moveToDagCave1,
 		moveToDagCave2, moveToDagCave3, moveToDagCave4, moveToDagCave5, moveToDagCave6, moveToDagCave7,
@@ -112,7 +112,6 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
 		slayBrineRatTask = new ConditionalStep(this, enterBrineCave);
 		slayBrineRatTask.addStep(inBrineRatCave, slayBrineRat);
-		slayBrineRatTask.addStep(inBrineRatCave, rollBoulderExit);
 		doMedium.addStep(notSlayBrineRat, slayBrineRatTask);
 
 		travelMiscTask = new ConditionalStep(this, travelMisc);
@@ -301,9 +300,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 			"Use a spade to enter the Brine Rat Cavern.", spade, combatGear, olafsQuest);
 		enterBrineCave.addIcon(ItemID.SPADE);
 		slayBrineRat = new NpcStep(this, NpcID.BRINE_RAT, new WorldPoint(2706, 10133, 0),
-			"Kill a brine rat.", true);
-		rollBoulderExit = new NpcStep(this, NpcID.BOULDER_4502, new WorldPoint(2692, 10125, 0),
-			"Roll the boulder and exit the cave.");
+			"Kill a brine rat then roll the boulder and exit the cave..", true);
 		travelMisc = new ObjectStep(this, 29495, new WorldPoint(2744, 3719, 0),
 			"Use a fairy ring and travel to (CIP).", fairyTaleII);
 		enterEaglesPeak = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
@@ -450,8 +447,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails brineRatSteps = new PanelDetails("Brine Rat Slayer", Arrays.asList(enterBrineCave, slayBrineRat,
-			rollBoulderExit), olafsQuest, new SkillRequirement(Skill.SLAYER, 47, true), spade, combatGear);
+		PanelDetails brineRatSteps = new PanelDetails("Brine Rat Slayer", Arrays.asList(enterBrineCave, slayBrineRat),
+			olafsQuest, new SkillRequirement(Skill.SLAYER, 47, true), spade, combatGear);
 		brineRatSteps.setDisplayCondition(notSlayBrineRat);
 		brineRatSteps.setLockingStep(slayBrineRatTask);
 		allSteps.add(brineRatSteps);

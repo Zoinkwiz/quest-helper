@@ -62,7 +62,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	//Items Required
 	ItemRequirement book, intelReport, twentyCoins, shieldHalf, certificateHalf, blackArmCertificateHalf, certificate;
 
-	Requirement inPhoenixEntry,intelReportNearby, inPhoenixBase, chestOpen;
+	Requirement inPhoenixEntry, intelReportNearby, inPhoenixBase, chestOpen;
 
 	QuestStep startQuest, searchBookcase, talkToReldoAgain, talkToBaraek, goDownToPhoenixGang, talkToStraven, goUpFromPhoenixGang, killJonny, pickupIntelReport,
 		returnDownLadder, talkToStravenAgain, getShieldHalf, getShieldHalf1, tradeCertificateHalf, combineCertificate, talkToHaig, talkToRoald, leaveAfterGettingShieldHalf;
@@ -95,7 +95,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		goToKillJonny.addStep(intelReportNearby, pickupIntelReport);
 		goToKillJonny.addStep(inPhoenixEntry, goUpFromPhoenixGang);
 
-		steps.put(5, goToKillJonny);
+		steps.put(8, goToKillJonny);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, returnDownLadder);
 		completeQuest.addStep(certificate.alsoCheckBank(questBank), talkToRoald);
@@ -106,7 +106,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		completeQuest.addStep(new Conditions(inPhoenixBase, chestOpen), getShieldHalf1);
 		completeQuest.addStep(inPhoenixBase, getShieldHalf);
 
-		steps.put(6, completeQuest);
+		steps.put(9, completeQuest);
 		return steps;
 	}
 
@@ -137,34 +137,54 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		startQuest = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3210, 3494, 0), "Talk to Reldo in the Varrock Castle library.");
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_2402, new WorldPoint(3212, 3493, 0), "Search the marked bookcase for a book, then read it.", book);
-		talkToReldoAgain = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3210, 3494, 0), "Talk to Reldo again.");
-		talkToBaraek = new NpcStep(this, NpcID.BARAEK, new WorldPoint(3218, 3435, 0), "Talk to Baraek in the Varrock Square.", twentyCoins);
+		startQuest = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3210, 3494, 0),
+			"Talk to Reldo in the Varrock Castle library.");
+		startQuest.addDialogSteps("I'm in search of a quest.", "Yes.");
+		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_2402, new WorldPoint(3212, 3493, 0),
+			"Search the marked bookcase for a book, then read it.", book.highlighted());
+		talkToReldoAgain = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3210, 3494, 0),
+			"Talk to Reldo again.");
+		talkToBaraek = new NpcStep(this, NpcID.BARAEK, new WorldPoint(3218, 3435, 0),
+			"Talk to Baraek in the Varrock Square.", twentyCoins);
 		talkToBaraek.addDialogStep("Can you tell me where I can find the Phoenix Gang?");
 		talkToBaraek.addDialogStep("Okay. Have 20 gold coins.");
-		goDownToPhoenixGang = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Head into the Phoenix Gang's base in south Varrock.");
-		talkToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Talk to Staven.");
+		goDownToPhoenixGang = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0),
+			"Head into the Phoenix Gang's base in south Varrock.");
+		talkToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0),
+			"Talk to Staven.");
 		talkToStraven.addDialogStep("I know who you are!");
 		talkToStraven.addDialogStep("I'd like to offer you my services.");
 
-		goUpFromPhoenixGang = new ObjectStep(this, ObjectID.LADDER_2405, new WorldPoint(3244, 9783, 0), "Go back up to the surface.");
-		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD, new WorldPoint(3222, 3395, 0), "Kill Jonny the Beard in the Blue Moon Inn in Varrock.");
+		goUpFromPhoenixGang = new ObjectStep(this, ObjectID.LADDER_2405, new WorldPoint(3244, 9783, 0),
+			"Go back up to the surface.");
+		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD, new WorldPoint(3222, 3395, 0),
+			"Kill Jonny the Beard in the Blue Moon Inn in Varrock.");
 		pickupIntelReport = new DetailedQuestStep(this, "Pick up the Intel Report.", intelReport);
-		returnDownLadder = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Return to the Phoenix Gang's base.");
-		talkToStravenAgain = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Talk to Staven again.");
+		returnDownLadder = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0),
+			"Return to the Phoenix Gang's base.");
+		talkToStravenAgain = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0),
+			"Talk to Staven again.");
 
-		getShieldHalf = new ObjectStep(this, ObjectID.CHEST_2403, new WorldPoint(3235, 9761, 0), "Search the chest in the Phoenix base for half of the Shield of Arrav.");
-		getShieldHalf1 = new ObjectStep(this, ObjectID.CHEST_2404, new WorldPoint(3235, 9761, 0), "Search the chest in the Phoenix base for half of the Shield of Arrav.");
+		getShieldHalf = new ObjectStep(this, ObjectID.CHEST_2403, new WorldPoint(3235, 9761, 0),
+			"Search the chest in the Phoenix base for half of the Shield of Arrav.");
+		getShieldHalf1 = new ObjectStep(this, ObjectID.CHEST_2404, new WorldPoint(3235, 9761, 0),
+			"Search the chest in the Phoenix base for half of the Shield of Arrav.");
 		getShieldHalf.addSubSteps(getShieldHalf1);
 
-		leaveAfterGettingShieldHalf = new ObjectStep(this, ObjectID.LADDER_2405, new WorldPoint(3244, 9783, 0), "Go back up to the surface.");
-		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3255, 3449, 0), "Trade your weapon store key to your partner. If you can't trade, use the key on them to drop it at their feet. AFTERWARDS, talk to Curator Haig in the Varrock Museum.", shieldHalf);
+		leaveAfterGettingShieldHalf = new ObjectStep(this, ObjectID.LADDER_2405, new WorldPoint(3244, 9783, 0),
+			"Go back up to the surface.");
+		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3255, 3449, 0),
+			"Trade your weapon store key to your partner. If you can't trade, use the key on them to drop it at their feet. " +
+				"AFTERWARDS, talk to Curator Haig in the Varrock Museum.", shieldHalf);
 		talkToHaig.addSubSteps(leaveAfterGettingShieldHalf);
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle to finish the quest.", certificate);
+		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3222, 3473, 0),
+			"Talk to King Roald in Varrock Castle to finish the quest.", certificate);
 
-		tradeCertificateHalf = new DetailedQuestStep(this, "Trade one of your certificate halves for the other half with another player.  If you cannot trade, use the certificate on them to drop it at their feet. They can do the same for you.");
-		combineCertificate = new DetailedQuestStep(this, "Use the two certificate halves together to create the certificate.", certificateHalf, blackArmCertificateHalf);
+		tradeCertificateHalf = new DetailedQuestStep(this,
+			"Trade one of your certificate halves for the other half with another player.  If you cannot trade, use " +
+				"the certificate on them to drop it at their feet. They can do the same for you.");
+		combineCertificate = new DetailedQuestStep(this,
+			"Use the two certificate halves together to create the certificate.", certificateHalf, blackArmCertificateHalf);
 	}
 
 	@Override

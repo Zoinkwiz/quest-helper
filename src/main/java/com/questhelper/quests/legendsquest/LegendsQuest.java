@@ -510,7 +510,7 @@ public class LegendsQuest extends BasicQuestHelper
 		elemental30.addAlternates(ItemID.FIRE_RUNE, ItemID.EARTH_RUNE, ItemID.AIR_RUNE);
 		elemental30.setExclusiveToOneItemType(true);
 
-		chargeOrbRunes = new ItemRequirements("Runes for charge orb spell", cosmic3, elemental30);
+		chargeOrbRunes = new ItemRequirements("Runes for any charge orb spell you have the level to cast", cosmic3, elemental30);
 
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB);
 

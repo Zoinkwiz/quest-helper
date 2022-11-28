@@ -65,7 +65,6 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class RecruitmentDrive extends BasicQuestHelper
 {
-	private ItemRequirement coinsRequirement;
 	private NoItemRequirement noItemRequirement;
 	private ZoneRequirement isFirstFloorCastle, isSecondFloorCastle,
 		isInSirTinleysRoom, isInMsHynnRoom, isInSirKuamsRoom,
@@ -197,7 +196,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye");
 		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
-			"Kill Sir Leye to win this challenge. You must use the mace or you can't kill him.", true);
+			"Kill Sir Leye to win this challenge. You must use the warhammer or you can't kill him.", true);
 
 		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
 		NpcCondition npcCondition = new NpcCondition(NpcID.SIR_LEYE);
@@ -360,12 +359,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return Collections.singletonList(coinsRequirement);
-	}
-
-	@Override
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Sir Leye (level 20) with no items");
@@ -400,8 +393,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new ItemReward("Initiate Helm", ItemID.INITIATE_SALLET, 1),
-				new ItemReward("3000 Coins", ItemID.COINS_995, 3000),
-				new ItemReward("Makeover Voucher (If male when starting quest)", ItemID.MAKEOVER_VOUCHER, 1));
+				new ItemReward("3000 Coins", ItemID.COINS_995, 3000));
 	}
 
 	@Override

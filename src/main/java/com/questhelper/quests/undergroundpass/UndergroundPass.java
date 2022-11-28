@@ -116,7 +116,7 @@ public class UndergroundPass extends BasicQuestHelper
 	private void setupItemReqs()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
-		rope2 = new ItemRequirement("Rope, multiple in case you fail an agility check", ItemID.ROPE, -1);
+		rope2 = new ItemRequirement("Rope, multiple in case you fail an agility check", ItemID.ROPE);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
 		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.BOWS, 1, true);

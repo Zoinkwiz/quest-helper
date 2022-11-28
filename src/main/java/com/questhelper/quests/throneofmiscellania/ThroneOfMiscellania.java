@@ -292,7 +292,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		talked3P3 = new VarbitRequirement(93, 1);
 		blownKiss = new VarbitRequirement(97, 1);
 
-		hasCourted = new VarbitRequirement(75, 1);
+		hasCourted = new VarbitRequirement(14606, 1);
 
 		diplomacyStep1 = new VarplayerRequirement(359, 20);
 		diplomacyStep2 = new VarplayerRequirement(359, 30);

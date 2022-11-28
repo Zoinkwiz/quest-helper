@@ -909,7 +909,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		enterDeathAltarBarrier = new ObjectStep(this, NullObjectID.NULL_9788, new WorldPoint(1865, 4639, 0), "Enter the barrier to the death altar to the west.");
 
-		if (client.getAccountType().isIronman())
+		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
 		{
 			if (client.getRealSkillLevel(Skill.SLAYER) > 85)
 			{

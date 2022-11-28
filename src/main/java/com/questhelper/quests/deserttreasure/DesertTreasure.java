@@ -200,11 +200,11 @@ public class DesertTreasure extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		coins650 = new ItemRequirement("Coins", ItemCollections.COINS, 650);
-		magicLogs12 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 12);
+		magicLogs12 = new ItemRequirement("Magic logs (can be noted)", ItemID.MAGIC_LOGS, 12);
 		magicLogs12.addAlternates(NullItemID.NULL_1514);
-		steelBars6 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 6);
+		steelBars6 = new ItemRequirement("Steel bar (can be noted)", ItemID.STEEL_BAR, 6);
 		steelBars6.addAlternates(NullItemID.NULL_2354);
-		moltenGlass6 = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 6);
+		moltenGlass6 = new ItemRequirement("Molten glass (can be noted)", ItemID.MOLTEN_GLASS, 6);
 		moltenGlass6.addAlternates(NullItemID.NULL_1776);
 		ashes = new ItemRequirement("Ashes", ItemID.ASHES);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);

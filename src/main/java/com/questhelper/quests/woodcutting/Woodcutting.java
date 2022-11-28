@@ -131,7 +131,7 @@ public class Woodcutting extends ComplexStateQuestHelper
 			lumberjackBoots);
 
 		chopOakTrees = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(3190, 3247, 0),
-			"Chop normal trees around Lumbridge until 35 Woodcutting. You can choose to burn the logs as you go, drop" +
+			"Chop oak trees around Lumbridge until 35 Woodcutting. You can choose to burn the logs as you go, drop" +
 				" them, or bank them.", true, blackAxe, mithrilAxe, adamantAxe,
 			lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots);
 

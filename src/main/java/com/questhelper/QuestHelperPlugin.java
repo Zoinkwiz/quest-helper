@@ -44,6 +44,7 @@ import com.questhelper.overlays.QuestHelperWorldOverlay;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.steps.QuestStep;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -242,6 +243,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	ConfigManager configManager;
 
+	@Getter
+	GameStateManager gameStateManager;
+
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
@@ -267,9 +271,13 @@ public class QuestHelperPlugin extends Plugin
 		bankTagService = new QuestHelperBankTagService(this, questBank);
 		bankTagsMain = new QuestBankTab(this);
 		bankTagsMain.startUp();
-
 		injector.injectMembers(bankTagsMain);
 		eventBus.register(bankTagsMain);
+
+		gameStateManager = new GameStateManager();
+		injector.injectMembers(gameStateManager);
+		eventBus.register(gameStateManager);
+		gameStateManager.startUp();
 
 		quests = scanAndInstantiate(getClass().getClassLoader());
 		overlayManager.add(questHelperOverlay);
@@ -300,6 +308,10 @@ public class QuestHelperPlugin extends Plugin
 	protected void shutDown()
 	{
 		eventBus.unregister(bankTagsMain);
+		bankTagsMain.shutDown();
+
+		eventBus.unregister(gameStateManager);
+
 		overlayManager.remove(questHelperOverlay);
 		overlayManager.remove(questHelperWorldOverlay);
 		overlayManager.remove(questHelperWorldArrowOverlay);

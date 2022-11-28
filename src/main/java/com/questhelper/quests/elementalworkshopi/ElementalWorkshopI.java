@@ -26,6 +26,7 @@
 package com.questhelper.quests.elementalworkshopi;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -35,6 +36,7 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -158,7 +160,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		slashedBook = new ItemRequirement("Slashed book", ItemID.SLASHED_BOOK);
 		slashedBook.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
-		batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY);
+		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY);
 		batteredKey.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
 		elementalOre = new ItemRequirement("Elemental ore", ItemID.ELEMENTAL_ORE);

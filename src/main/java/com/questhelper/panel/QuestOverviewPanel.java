@@ -607,6 +607,10 @@ public class QuestOverviewPanel extends JPanel
 			{
 				requirementPanel.getLabel().setToolTipText("In bank");
 			}
+			else if (newColor == Color.ORANGE)
+			{
+				requirementPanel.getLabel().setToolTipText("On steel key ring");
+			}
 			else
 			{
 				requirementPanel.getLabel().setToolTipText("");

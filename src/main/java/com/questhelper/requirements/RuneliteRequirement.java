@@ -49,11 +49,6 @@ public class RuneliteRequirement extends AbstractRequirement
 		this(configManager, id, "false", expectedValue, text, requirements);
 	}
 
-	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text)
-	{
-		this(configManager, id, "false", expectedValue, text);
-	}
-
 	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue)
 	{
 		this(configManager, id, "true", expectedValue, new HashMap<>());
@@ -93,10 +88,23 @@ public class RuneliteRequirement extends AbstractRequirement
 		initWithValue(initValue);
 	}
 
+	// Used for the KeyringRequirement
+	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text)
+	{
+		this.configManager = configManager;
+		this.runeliteIdentifier = id;
+		this.displayText = text;
+		this.expectedValue = expectedValue;
+		this.requirements = new HashMap<>();
+	}
+
 	@Override
 	public boolean check(Client client)
 	{
-		return getConfigValue().equals(expectedValue);
+		String value = getConfigValue();
+		if (value == null) return false;
+
+		return value.equals(expectedValue);
 	}
 
 	public void validateCondition(Client client)

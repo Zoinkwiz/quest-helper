@@ -421,7 +421,7 @@ public class LegendsQuest extends BasicQuestHelper
 		bullRoarerHighlight.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
 		bullRoarerHighlight.setHighlightInInventory(true);
 
-		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK);
+		lockpick = new ItemRequirement("Lockpick (multiple in case they break)", ItemID.LOCKPICK);
 		soulRune = new ItemRequirement("Soul rune", ItemID.SOUL_RUNE);
 		soulRuneHighlight = new ItemRequirement("Soul rune", ItemID.SOUL_RUNE);
 		soulRuneHighlight.setHighlightInInventory(true);

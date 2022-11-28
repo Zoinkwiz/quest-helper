@@ -43,7 +43,7 @@ class QuestBankData
 
 	void set(List<Item> items)
 	{
-		int[] newIdAndQuantity = new int[items.size() * 2];
+		int[] newIdAndQuantity = new int[(items.size() + 1) * 2];
 		for (int i = 0; i < items.size(); i++)
 		{
 			Item item = items.get(i);

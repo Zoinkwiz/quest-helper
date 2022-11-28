@@ -127,7 +127,20 @@ public interface QuestHelperConfig extends Config
 		 * Show all generic helpers
 		 */
 		GENERIC_HELPER("Generic helpers", QuestDetails.Type.GENERIC),
-		SKILL("Skill helpers", QuestDetails.Type.SKILL);
+
+		/**
+		 * Show all free-to-play skills
+		 */
+		SKILL_FREE_TO_PLAY(QuestDetails.Type.SKILL_F2P),
+		/**
+		 * Show all members' skills
+		 */
+		SKILL_MEMBERS(QuestDetails.Type.SKILL_P2P),
+		/**
+		 * Show all skills
+		 */
+		SKILL("Skill helpers", q -> q.getQuest().getQuestType() == QuestDetails.Type.SKILL_P2P ||
+			q.getQuest().getQuestType() == QuestDetails.Type.SKILL_F2P);
 
 		private final Predicate<QuestHelper> predicate;
 

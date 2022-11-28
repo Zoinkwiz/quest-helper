@@ -356,9 +356,9 @@ public enum QuestHelperQuest
 		QuestDetails.Difficulty.GENERIC),
 
 	// Skill
-	AGILITY("Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL, QuestDetails.Difficulty.SKILL),
+	AGILITY("Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 
-	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL, QuestDetails.Difficulty.SKILL);
+	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL);
 
 	@Getter
 	private final int id;

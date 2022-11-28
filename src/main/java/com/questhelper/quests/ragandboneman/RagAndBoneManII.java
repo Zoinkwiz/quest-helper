@@ -273,7 +273,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		coinsOrVinegar.addAlternates(ItemID.JUG_OF_VINEGAR, ItemID.COINS_995);
 
 		List<Integer> bonesInVinegar = new ArrayList<>();
-		for (int i = ItemID.BONE_IN_VINEGAR; i <= ItemID.BONE_IN_VINEGAR_7915; i++)
+		for (int i = ItemID.BONE_IN_VINEGAR; i <= ItemID.BONE_IN_VINEGAR_7915; i+=3)
 		{
 			bonesInVinegar.add(i);
 		}

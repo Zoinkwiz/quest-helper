@@ -586,10 +586,11 @@ public class TheFremennikIsles extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
-		req.add(new ComplexRequirement(LogicType.OR, "56 Woodcutting if an Ironman",
-				new IronmanRequirement(false),
-				new SkillRequirement(Skill.WOODCUTTING, 56, true))
-		);
+		req.add(new ComplexRequirement(LogicType.OR, "56 Woodcutting if an Ironman", new IronmanRequirement(false),
+			new SkillRequirement(Skill.WOODCUTTING, 56, true)));
+		req.add(new ComplexRequirement(LogicType.OR, "46 Crafting if an Ironman", new IronmanRequirement(false),
+			new SkillRequirement(Skill.CRAFTING, 46, true)));
+
 		return req;
 	}
 
@@ -603,19 +604,19 @@ public class TheFremennikIsles extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.CONSTRUCTION, 5000),
-				new ExperienceReward(Skill.CRAFTING, 5000),
-				new ExperienceReward(Skill.WOODCUTTING, 10000));
+			new ExperienceReward(Skill.CONSTRUCTION, 5000),
+			new ExperienceReward(Skill.CRAFTING, 5000),
+			new ExperienceReward(Skill.WOODCUTTING, 10000));
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
-				new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
-				new ItemReward("Jester Outfit", ItemID.JESTER, 1),
-				new ItemReward("Around 20,000 coins in assorted rewards during quest", ItemID.COINS));
+			new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
+			new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
+			new ItemReward("Jester Outfit", ItemID.JESTER, 1),
+			new ItemReward("Around 20,000 coins in assorted rewards during quest", ItemID.COINS));
 	}
 
 	@Override

@@ -143,6 +143,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		chocolateCake = new ItemRequirement("Chocolate cake", ItemID.CHOCOLATE_CAKE);
 		chocolateCake.setHighlightInInventory(true);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
+		logs.addAlternates(ItemCollections.LOGS_FOR_FIRE);
 		logs.setHighlightInInventory(true);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		tinderbox.setHighlightInInventory(true);

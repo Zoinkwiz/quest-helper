@@ -173,7 +173,7 @@ public enum ItemCollections
 		ItemID.WILDERNESS_SWORD_3,
 		ItemID.WILDERNESS_SWORD_4
 	)),
-	
+
 	METAL_ARROWS(ImmutableList.of(
 		ItemID.RUNE_ARROW,
 		ItemID.ADAMANT_ARROW,
@@ -2069,6 +2069,27 @@ public enum ItemCollections
 		ItemID.GUTHIX_BALANCE_UNF_7654,
 		ItemID.GUTHIX_BALANCE_UNF_7656,
 		ItemID.GUTHIX_BALANCE_UNF_7658
+	)),
+
+	EYE_HAT(ImmutableList.of(
+		ItemID.HAT_OF_THE_EYE,
+		ItemID.HAT_OF_THE_EYE_BLUE,
+		ItemID.HAT_OF_THE_EYE_GREEN,
+		ItemID.HAT_OF_THE_EYE_RED
+	)),
+
+	EYE_TOP(ImmutableList.of(
+		ItemID.ROBE_TOP_OF_THE_EYE,
+		ItemID.ROBE_TOP_OF_THE_EYE_BLUE,
+		ItemID.ROBE_TOP_OF_THE_EYE_GREEN,
+		ItemID.ROBE_TOP_OF_THE_EYE_RED
+	)),
+
+	EYE_BOTTOM(ImmutableList.of(
+		ItemID.ROBE_BOTTOMS_OF_THE_EYE,
+		ItemID.ROBE_BOTTOMS_OF_THE_EYE_BLUE,
+		ItemID.ROBE_BOTTOMS_OF_THE_EYE_GREEN,
+		ItemID.ROBE_BOTTOMS_OF_THE_EYE_RED
 	));
 
 	private final List<Integer> items;

@@ -170,6 +170,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 			ItemCollections.WALL_BEAST).showConditioned(notKillCaveBug);
 		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss.",
 			ItemCollections.WATER_ALTAR).showConditioned(notWaterRune);
+		waterAccessOrAbyss.setTooltip("Water talisman or tiara");
 		runeEss = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRune);
 		dough = new ItemRequirement("Bread dough", ItemID.BREAD_DOUGH).showConditioned(notBread);
 		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS).showConditioned(notOak);

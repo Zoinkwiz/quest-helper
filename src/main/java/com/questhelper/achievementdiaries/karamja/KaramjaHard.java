@@ -176,6 +176,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		natureTalismanOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemID.NATURE_TALISMAN)
 			.showConditioned(notCraftedNature);
 		natureTalismanOrAbyss.addAlternates(ItemID.NATURE_TIARA);
+		natureTalismanOrAbyss.setTooltip("Nature talisman or tiara");
 		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN).showConditioned(notCookedKarambwan);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
 			notCollectedLeaves, notKilledDeathwing));

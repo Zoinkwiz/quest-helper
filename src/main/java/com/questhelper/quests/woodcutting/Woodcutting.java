@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2022, jLereback <https://github.com/jLereback>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,8 +68,8 @@ public class Woodcutting extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep fullTraining = new ConditionalStep(this, chopNormalTree);
-		fullTraining.addStep(wc15, chopOakTrees);
 		fullTraining.addStep(wc30, chopWillowTrees);
+		fullTraining.addStep(wc15, chopOakTrees);
 
 		return fullTraining;
 	}
@@ -123,7 +124,7 @@ public class Woodcutting extends ComplexStateQuestHelper
 				" them, or bank them.", true, steelAxe, blackAxe, mithrilAxe, adamantAxe
 		);
 
-		chopWillowTrees = new ObjectStep(this, ObjectID.WILLOW, new WorldPoint(3190, 3048, 0),
+		chopWillowTrees = new ObjectStep(this, ObjectID.WILLOW, new WorldPoint(3059, 3253, 0),
 			"Chop willow trees east of the Rusty Anchor Inn in Port Sarim until 99 Woodcutting. You can deposit them" +
 				" at the bank deposit box just south on the docks next to the monks." +
 				" If choose to burn the logs as you go or drop them, oak trees gives faster XP until 60 Woodcutting",

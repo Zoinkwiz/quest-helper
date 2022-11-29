@@ -140,7 +140,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		rellekkaTeleport.addAlternates(ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2,
 			ItemID.ENCHANTED_LYRE1, ItemID.RELLEKKA_TELEPORT, ItemID.CAMELOT_TELEPORT);
 		rellekkaTeleport.addAlternates(ItemCollections.SLAYER_RINGS);
-		fairyRings = new ItemRequirement("Access to fairy rings", -1, -1);
+		fairyRings = new ItemRequirement("Access to fairy rings", -1, -1).isNotConsumed();
 		fairyRings.setDisplayItemId(ItemID.FAIRY_RING);
 		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", ItemCollections.STAMINA_POTIONS);
 		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", ItemID.VARROCK_TELEPORT);

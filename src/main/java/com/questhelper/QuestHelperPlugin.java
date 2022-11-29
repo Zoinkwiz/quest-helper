@@ -259,8 +259,8 @@ public class QuestHelperPlugin extends Plugin
 	private boolean displayNameKnown;
 
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
-	public SortedMap<String, List<ItemRequirement>> itemRequirements = new TreeMap<>();
-	public SortedMap<String, List<ItemRequirement>> itemRecommended = new TreeMap<>();
+	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
+	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
 
 	@Getter
 	private Cheerer cheerer;
@@ -1025,16 +1025,16 @@ public class QuestHelperPlugin extends Plugin
 				.collect(Collectors.toList());
 
 			clientThread.invokeLater(() -> {
-				SortedMap<String, List<ItemRequirement>> newReqs = new TreeMap<>();
-				SortedMap<String, List<ItemRequirement>> newRecommended = new TreeMap<>();
+				SortedMap<QuestHelperQuest, List<ItemRequirement>> newReqs = new TreeMap<>();
+				SortedMap<QuestHelperQuest, List<ItemRequirement>> newRecommended = new TreeMap<>();
 				filteredQuests.forEach((QuestHelper questHelper) -> {
 					if (questHelper.getItemRequirements() != null)
 					{
-						newReqs.put(questHelper.getQuest().getName(), questHelper.getItemRequirements());
+						newReqs.put(questHelper.getQuest(), questHelper.getItemRequirements());
 					}
 					if (questHelper.getItemRecommended() != null)
 					{
-						newRecommended.put(questHelper.getQuest().getName(), questHelper.getItemRecommended());
+						newRecommended.put(questHelper.getQuest(), questHelper.getItemRecommended());
 					}
 				});
 				itemRequirements = newReqs;

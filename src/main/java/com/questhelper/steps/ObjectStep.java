@@ -83,6 +83,13 @@ public class ObjectStep extends DetailedQuestStep
 		this.objectID = objectID;
 	}
 
+	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, List<Requirement> requirements, List<Requirement> recommended)
+	{
+		super(questHelper, worldPoint, text, requirements, recommended);
+		this.objectID = objectID;
+		this.showAllInArea = false;
+	}
+
 	public void setRevalidateObjects(boolean value)
 	{
 		this.revalidateObjects = value;

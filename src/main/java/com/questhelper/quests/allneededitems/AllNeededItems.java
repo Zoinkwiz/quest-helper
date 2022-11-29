@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
@@ -57,8 +58,8 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		Map<Integer, ItemRequirement> reqs = new LinkedHashMap<>();
-		questHelperPlugin.itemRequirements.forEach((name, questReqs) -> refinedList(name, reqs, questReqs));
-		questHelperPlugin.itemRecommended.forEach((name, questRecommended) -> refinedList(name, reqs, questRecommended));
+		questHelperPlugin.itemRequirements.forEach((qhQuest, questReqs) -> refinedList(qhQuest.getName(), reqs, questReqs));
+		questHelperPlugin.itemRecommended.forEach((qhQuest, questRecommended) -> refinedList(qhQuest.getName(), reqs, questRecommended));
 
 		step1 = new DetailedQuestStep(this, "Get all items you need. You can have items being highlighted that you" +
 			" need without running this helper if you activate it in the Quest Helper settings.", new ArrayList<>(reqs.values()));
@@ -114,7 +115,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		Map<Integer, ItemRequirement> reqs = new LinkedHashMap<>();
-		questHelperPlugin.itemRequirements.forEach((name, questReqs) -> refinedList(name, reqs, questReqs));
+		questHelperPlugin.itemRequirements.forEach((qhQuest, questReqs) -> refinedList(qhQuest.getName(), reqs, questReqs));
 		return new ArrayList<>(reqs.values());
 	}
 
@@ -122,7 +123,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		Map<Integer, ItemRequirement> reqs = new LinkedHashMap<>();
-		questHelperPlugin.itemRecommended.forEach((name, questRecs) -> refinedList(name, reqs, questRecs));
+		questHelperPlugin.itemRecommended.forEach((qhQuest, questRecs) -> refinedList(qhQuest.getName(), reqs, questRecs));
 		return new ArrayList<>(reqs.values());
 	}
 
@@ -131,9 +132,46 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(step1)));
-		questHelperPlugin.itemRequirements.forEach((name, reqs) -> allSteps.add(new PanelDetails(name, Collections.emptyList(),
-			(List<Requirement>)(List<?>) reqs,
-			(List<Requirement>)(List<?>) questHelperPlugin.itemRecommended.get(name))));
+		Map<Integer, ItemRequirement> questsReq = new LinkedHashMap<>();
+		Map<Integer, ItemRequirement> miniquestsReq = new LinkedHashMap<>();
+		Map<Integer, ItemRequirement> diariesReq = new LinkedHashMap<>();
+		Map<Integer, ItemRequirement> questsRec = new LinkedHashMap<>();
+		Map<Integer, ItemRequirement> miniquestsRec = new LinkedHashMap<>();
+		Map<Integer, ItemRequirement> diariesRec = new LinkedHashMap<>();
+
+		questHelperPlugin.itemRequirements.forEach((qhQuest, reqs) -> {
+			QuestDetails.Type type = qhQuest.getQuestType();
+			if (type == QuestDetails.Type.P2P || type == QuestDetails.Type.F2P)
+			{
+				refinedList(qhQuest.getName(), questsReq, reqs);
+				refinedList(qhQuest.getName(), questsRec, reqs);
+			}
+			else if (type == QuestDetails.Type.MINIQUEST)
+			{
+				refinedList(qhQuest.getName(), miniquestsReq, reqs);
+				refinedList(qhQuest.getName(), miniquestsRec, reqs);
+			}
+			else if (type == QuestDetails.Type.ACHIEVEMENT_DIARY)
+			{
+				refinedList(qhQuest.getName(), diariesReq, reqs);
+				refinedList(qhQuest.getName(), diariesRec, reqs);
+			}
+		});
+		if (questsReq.size() > 0)
+		{
+			allSteps.add(new PanelDetails("Quests", Collections.emptyList(), new ArrayList<>(questsReq.values()), new ArrayList<>(questsRec.values())));
+		}
+
+		if (miniquestsReq.size() > 0)
+		{
+			allSteps.add(new PanelDetails("Miniquests", Collections.emptyList(), new ArrayList<>(miniquestsReq.values()), new ArrayList<>(miniquestsRec.values())));
+		}
+
+		if (diariesReq.size() > 0)
+		{
+			allSteps.add(new PanelDetails("Achievement Diaries", Collections.emptyList(), new ArrayList<>(diariesReq.values()), new ArrayList<>(diariesRec.values())));
+		}
+
 		return allSteps;
 	}
 }

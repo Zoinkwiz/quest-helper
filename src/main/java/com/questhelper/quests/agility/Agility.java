@@ -82,7 +82,8 @@ public class Agility extends ComplexStateQuestHelper
 		return fullTraining;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		ag10 = new SkillRequirement(Skill.AGILITY, 10);
 		ag20 = new SkillRequirement(Skill.AGILITY, 20);
@@ -100,43 +101,43 @@ public class Agility extends ComplexStateQuestHelper
 		bootsOfLightness = new ItemRequirement(
 			"Boots of Lightness", ItemID.BOOTS_OF_LIGHTNESS).showConditioned(
 			new Conditions(LogicType.NOR, ag45)
-		);
+		).isNotConsumed();
 
 		gracefulHood = new ItemRequirement(
 			"Graceful hood", ItemCollections.GRACEFUL_HOOD, 1 ,true).showConditioned(
 			new Conditions(ag45)
-		);
+		).isNotConsumed();
 
 		gracefulTop = new ItemRequirement(
 			"Graceful top", ItemCollections.GRACEFUL_TOP, 1, true).showConditioned(
 			new Conditions(ag45)
-		);
+		).isNotConsumed();
 
 		gracefulLegs = new ItemRequirement(
 			"Graceful legs", ItemCollections.GRACEFUL_LEGS, 1, true).showConditioned(
 			new Conditions(ag45)
-		);
+		).isNotConsumed();
 
 		gracefulCape = new ItemRequirement(
 			"Graceful cape", ItemCollections.GRACEFUL_CAPE, 1, true).showConditioned(
 			new Conditions(ag45)
-		);
+		).isNotConsumed();
 
 		gracefulGloves = new ItemRequirement(
 			"Graceful gloves", ItemCollections.GRACEFUL_GLOVES, 1, true).showConditioned(
 			new Conditions(ag45)
-		);
+		).isNotConsumed();
 
 		gracefulBoots = new ItemRequirement(
 			"Graceful boots", ItemCollections.GRACEFUL_BOOTS, 1, true).showConditioned(
 			new Conditions(ag45)
-		);
+		).isNotConsumed();
 		gracefulBoots.addAlternates(ItemID.BOOTS_OF_LIGHTNESS);
 
 		gracefulOutfit = new ItemRequirements(
 			"Graceful outfit (equipped)",
 			gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape
-		);
+		).isNotConsumed();
 	}
 
 	private void setupSteps()

@@ -60,10 +60,6 @@ public class Cheerer
 
 	@Getter
 	private final String message;
-
-	@Getter
-	private final int textShift;
-
 	private static final int QUEST_HOOD_MALE = 18914;
 	private static final int QUEST_CAPE_MALE = 18946;
 
@@ -183,8 +179,6 @@ public class Cheerer
 			.append(ChatColorType.NORMAL)
 			.append(this.message)
 			.build();
-
-		this.textShift = this.message.length() * 2 + 20;
 
 		chatMessageManager.queue(QueuedMessage.builder()
 			.type(ChatMessageType.PUBLICCHAT)

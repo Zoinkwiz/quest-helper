@@ -1154,10 +1154,10 @@ public class DragonSlayerII extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.SMITHING, 25000),
-				new ExperienceReward(Skill.MINING, 18000),
-				new ExperienceReward(Skill.AGILITY, 15000),
-				new ExperienceReward(Skill.THIEVING, 15000));
+				new ExperienceReward(Skill.SMITHING, 80000),
+				new ExperienceReward(Skill.MINING, 60000),
+				new ExperienceReward(Skill.AGILITY, 50000),
+				new ExperienceReward(Skill.THIEVING, 50000));
 	}
 
 	@Override

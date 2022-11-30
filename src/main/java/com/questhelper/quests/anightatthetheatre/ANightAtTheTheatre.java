@@ -461,7 +461,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Antique Lamp (20,000 Exp. Any Combat Skill)", ItemID.ANTIQUE_LAMP, 3));
+		return Collections.singletonList(new ItemReward("Antique Lamp (20,000 Exp. Any Combat Skill, excluding prayer)", ItemID.ANTIQUE_LAMP, 4));
 	}
 
 	@Override

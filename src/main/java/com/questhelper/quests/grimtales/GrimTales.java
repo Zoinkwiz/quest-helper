@@ -391,12 +391,12 @@ public class GrimTales extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.FARMING, 4000),
-				new ExperienceReward(Skill.HERBLORE, 5000),
+				new ExperienceReward(Skill.FARMING, 10000),
+				new ExperienceReward(Skill.HERBLORE, 15000),
 				new ExperienceReward(Skill.HITPOINTS, 5000),
-				new ExperienceReward(Skill.WOODCUTTING, 14000),
-				new ExperienceReward(Skill.AGILITY, 6000),
-				new ExperienceReward(Skill.THIEVING, 6000));
+				new ExperienceReward(Skill.WOODCUTTING, 60000),
+				new ExperienceReward(Skill.AGILITY, 25000),
+				new ExperienceReward(Skill.THIEVING, 25000));
 	}
 
 	@Override

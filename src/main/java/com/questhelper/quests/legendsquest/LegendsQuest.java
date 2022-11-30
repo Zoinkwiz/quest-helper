@@ -949,7 +949,7 @@ public class LegendsQuest extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("7,650 experience in four skills of your choice (limited to Attack, Defence, Strength, Hitpoints, Prayer, Magic, Woodcutting, Crafting, Smithing, Herblore, Agility or Thieving", -1, 4)); //4447 Is placeholder for filtering.
+		return Collections.singletonList(new ItemReward("30,000 experience in four skills of your choice (limited to Attack, Defence, Strength, Hitpoints, Prayer, Magic, Woodcutting, Crafting, Smithing, Herblore, Agility or Thieving", -1, 4)); //4447 Is placeholder for filtering.
 	}
 
 	@Override

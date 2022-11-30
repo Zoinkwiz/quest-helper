@@ -323,7 +323,7 @@ public class SwanSong extends BasicQuestHelper
 		return Arrays.asList(
 				new ExperienceReward(Skill.MAGIC, 15000),
 				new ExperienceReward(Skill.PRAYER, 10000),
-				new ExperienceReward(Skill.FISHING, 10000)
+				new ExperienceReward(Skill.FISHING, 50000)
 		);
 	}
 

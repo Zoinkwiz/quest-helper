@@ -1027,7 +1027,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 20000));
+		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 60000));
 	}
 
 	@Override

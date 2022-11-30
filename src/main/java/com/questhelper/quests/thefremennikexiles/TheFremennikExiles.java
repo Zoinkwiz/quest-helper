@@ -513,9 +513,9 @@ public class TheFremennikExiles extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.SLAYER, 15000),
-				new ExperienceReward(Skill.CRAFTING, 15000),
-				new ExperienceReward(Skill.RUNECRAFT, 5000));
+				new ExperienceReward(Skill.SLAYER, 50000),
+				new ExperienceReward(Skill.CRAFTING, 50000),
+				new ExperienceReward(Skill.RUNECRAFT, 30000));
 	}
 
 	@Override

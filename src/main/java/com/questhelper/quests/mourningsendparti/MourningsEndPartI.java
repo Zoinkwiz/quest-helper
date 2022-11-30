@@ -476,7 +476,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-			new ExperienceReward(Skill.THIEVING, 25000),
+			new ExperienceReward(Skill.THIEVING, 40000),
 			new ExperienceReward(Skill.HITPOINTS, 25000));
 	}
 

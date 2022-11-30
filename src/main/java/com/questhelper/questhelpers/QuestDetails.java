@@ -71,6 +71,8 @@ public interface QuestDetails
 		ACHIEVEMENT_DIARY,
 		GENERIC,
 		SKILL,
+		SKILL_F2P,
+		SKILL_P2P
 		;
 
 		@Override

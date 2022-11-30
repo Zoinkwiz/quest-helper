@@ -48,10 +48,10 @@ public interface QuestHelperConfig extends Config
 	{
 		/** Sort quests in alphabetical order */
 		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
+			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER),
 		/** Sort quests in reverse alphabetical order */
 		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
+			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
 		OPTIMAL(QuestOrders.sortOptimalOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (Ironman version) (https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman) */
@@ -127,7 +127,20 @@ public interface QuestHelperConfig extends Config
 		 * Show all generic helpers
 		 */
 		GENERIC_HELPER("Generic helpers", QuestDetails.Type.GENERIC),
-		SKILL("Skill helpers", QuestDetails.Type.SKILL);
+		/**
+		 * Show all skills
+		 */
+		SKILL_HELPER("Skill helpers", q -> q.getQuest().getQuestType() == QuestDetails.Type.SKILL_P2P ||
+			q.getQuest().getQuestType() == QuestDetails.Type.SKILL_F2P),
+		/**
+		 * Show all free-to-play skills
+		 */
+		SKILL_FREE_TO_PLAY(QuestDetails.Type.SKILL_F2P),
+		/**
+		 * Show all members' skills
+		 */
+		SKILL_MEMBERS(QuestDetails.Type.SKILL_P2P);
+
 
 		private final Predicate<QuestHelper> predicate;
 

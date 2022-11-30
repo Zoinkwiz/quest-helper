@@ -355,7 +355,11 @@ public enum QuestHelperQuest
 	DAG_ROUTE("Daganoth Kings Route", QuestVarbits.QUEST_THE_FREMENNIK_ISLES, -1, QuestDetails.Type.GENERIC,
 		QuestDetails.Difficulty.GENERIC),
 
-	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL, QuestDetails.Difficulty.SKILL);
+	// Skill
+	AGILITY("Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
+	WOODCUTTING_MEMBER("Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
+
+	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL);
 
 	@Getter
 	private final int id;

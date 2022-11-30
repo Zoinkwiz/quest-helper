@@ -605,10 +605,10 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.CONSTRUCTION, 2000),
-				new ExperienceReward(Skill.FIREMAKING, 5000),
-				new ExperienceReward(Skill.MINING, 10000),
-				new ExperienceReward(Skill.AGILITY, 10000));
+				new ExperienceReward(Skill.CONSTRUCTION, 10000),
+				new ExperienceReward(Skill.FIREMAKING, 40000),
+				new ExperienceReward(Skill.MINING, 50000),
+				new ExperienceReward(Skill.AGILITY, 50000));
 	}
 
 	@Override

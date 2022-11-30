@@ -560,7 +560,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 20000));
+		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 50000));
 	}
 
 	@Override

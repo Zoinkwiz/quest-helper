@@ -682,10 +682,10 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.SLAYER, 25000),
-				new ExperienceReward(Skill.AGILITY, 20000),
-				new ExperienceReward(Skill.THIEVING, 15000),
-				new ExperienceReward(Skill.HUNTER, 15000));
+				new ExperienceReward(Skill.SLAYER, 80000),
+				new ExperienceReward(Skill.AGILITY, 60000),
+				new ExperienceReward(Skill.THIEVING, 50000),
+				new ExperienceReward(Skill.HUNTER, 50000));
 	}
 
 	@Override

@@ -214,7 +214,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 
 		pickupPoison = new DetailedQuestStep(this, new WorldPoint(3097, 3366, 0), "Pick up the poison from the north west room.", poison);
 		usePoisonOnFishFood = new DetailedQuestStep(this, "Use the poison on the fish food", poison, fishFood);
-		pickupSpade = new DetailedQuestStep(this, new WorldPoint(3120, 3359, 0), "Pick up the spade in the east room.", spade);
+		pickupSpade = new DetailedQuestStep(this, new WorldPoint(3120, 3359, 0), "Pick up the spade in the east room. Exit the manor through the door in the same room.", spade);
 		searchCompost = new ObjectStep(this, ObjectID.COMPOST_HEAP, new WorldPoint(3085, 3361, 0), "Search the compost heap west of the manor.", spade);
 		useFishFoodOnFountain = new ObjectStep(this, ObjectID.FOUNTAIN, new WorldPoint(3088, 3335, 0),
 			"Use the poisoned fish food on the fountain south west of the manor.", poisonedFishFood);

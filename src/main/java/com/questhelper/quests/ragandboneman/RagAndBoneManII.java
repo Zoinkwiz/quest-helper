@@ -25,6 +25,7 @@
 package com.questhelper.quests.ragandboneman;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestTile;
@@ -38,6 +39,7 @@ import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -223,7 +225,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES);
-		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY);
+		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY);
 		dustyKey.canBeObtainedDuringQuest();
 		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD);
 		mirrorShield.addAlternates(ItemID.VS_SHIELD, ItemID.VS_SHIELD_24266);
@@ -273,7 +275,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		coinsOrVinegar.addAlternates(ItemID.JUG_OF_VINEGAR, ItemID.COINS_995);
 
 		List<Integer> bonesInVinegar = new ArrayList<>();
-		for (int i = ItemID.BONE_IN_VINEGAR; i <= ItemID.BONE_IN_VINEGAR_7915; i++)
+		for (int i = ItemID.BONE_IN_VINEGAR; i <= ItemID.BONE_IN_VINEGAR_7915; i+=3)
 		{
 			bonesInVinegar.add(i);
 		}

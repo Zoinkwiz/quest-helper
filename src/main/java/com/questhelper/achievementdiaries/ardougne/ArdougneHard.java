@@ -25,6 +25,7 @@
 package com.questhelper.achievementdiaries.ardougne;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -32,6 +33,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -192,7 +194,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.CRYSTAL_TRINKET).showConditioned(notDeathRune);
 		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH)
 			.showConditioned(notDeathRune);
-		newKey = new ItemRequirement("New key", ItemID.NEW_KEY).showConditioned(notDeathRune);
+		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune);
 		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS);
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK);

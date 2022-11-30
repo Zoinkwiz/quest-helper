@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,55 +24,61 @@
  */
 package com.questhelper;
 
-
+import com.questhelper.requirements.item.KeyringRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import lombok.Data;
-import net.runelite.api.Item;
+import lombok.Getter;
+import net.runelite.api.ItemID;
+import net.runelite.client.config.ConfigManager;
 
-@Data
-class QuestBankData
+public enum KeyringCollection
 {
-	int[] idAndQuantity;
+	SHINY_KEY(ItemID.SHINY_KEY),
+	BRASS_KEY(ItemID.BRASS_KEY),
+	METAL_KEY(ItemID.METAL_KEY),
+	WROUGHT_IRON_KEY(ItemID.WROUGHT_IRON_KEY),
+	DUSTY_KEY(ItemID.DUSTY_KEY),
+	BATTERED_KEY(ItemID.BATTERED_KEY),
+	CRYSTAL_MINE_KEY(ItemID.CRYSTALMINE_KEY),
+	KEY(ItemID.ANCESTRAL_KEY),
+	MAZE_KEY(ItemID.MAZE_KEY),
+	WEAPON_STORE_KEY(ItemID.WEAPON_STORE_KEY),
+	BONE_KEY(ItemID.BONE_KEY),
+	ENCHANTED_KEY(ItemID.ENCHANTED_KEY),
+	NEW_KEY(ItemID.NEW_KEY);
 
-	QuestBankData()
+	@Getter
+	private final int itemID;
+	KeyringCollection(int itemID)
 	{
-		idAndQuantity = new int[0];
+		this.itemID = itemID;
 	}
 
-	void set(List<Item> items)
+	public String toChatText()
 	{
-		int[] newIdAndQuantity = new int[(items.size() + 1) * 2];
-		for (int i = 0; i < items.size(); i++)
+		return name().toLowerCase().replaceAll("_", " ");
+	}
+
+	public String runeliteName()
+	{
+		return name().toLowerCase().replaceAll("_", "");
+	}
+
+	public static List<KeyringRequirement> allKeyRequirements(ConfigManager configManager)
+	{
+		List<KeyringRequirement> keys = new ArrayList<>();
+		for (KeyringCollection keyringCollection : Collections.unmodifiableList(Arrays.asList(values())))
 		{
-			Item item = items.get(i);
-			newIdAndQuantity[i*2] = item.getId();
-			newIdAndQuantity[(i*2)+1] = item.getQuantity();
+			keys.add(new KeyringRequirement(configManager, keyringCollection));
 		}
-		idAndQuantity = newIdAndQuantity;
+
+		return keys;
 	}
 
-	void set(Item[] items)
+	public KeyringRequirement getRequirement(ConfigManager configManager)
 	{
-		set(Arrays.asList(items));
-	}
-
-	void setEmpty()
-	{
-		idAndQuantity = new int[0];
-	}
-
-	List<Item> getAsList()
-	{
-		List<Item> items = new ArrayList<>();
-
-		if (idAndQuantity == null) return items;
-
-		for (int i = 0; i < idAndQuantity.length - 2; i += 2)
-		{
-			items.add(new Item(idAndQuantity[i], idAndQuantity[i+1]));
-		}
-		return items;
+		return new KeyringRequirement(configManager, this);
 	}
 }

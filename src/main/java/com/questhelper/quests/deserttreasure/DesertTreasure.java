@@ -200,11 +200,11 @@ public class DesertTreasure extends BasicQuestHelper
 	public void setupItemRequirements()
 	{
 		coins650 = new ItemRequirement("Coins", ItemCollections.COINS, 650);
-		magicLogs12 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 12);
+		magicLogs12 = new ItemRequirement("Magic logs (can be noted)", ItemID.MAGIC_LOGS, 12);
 		magicLogs12.addAlternates(NullItemID.NULL_1514);
-		steelBars6 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 6);
+		steelBars6 = new ItemRequirement("Steel bar (can be noted)", ItemID.STEEL_BAR, 6);
 		steelBars6.addAlternates(NullItemID.NULL_2354);
-		moltenGlass6 = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 6);
+		moltenGlass6 = new ItemRequirement("Molten glass (can be noted)", ItemID.MOLTEN_GLASS, 6);
 		moltenGlass6.addAlternates(NullItemID.NULL_1776);
 		ashes = new ItemRequirement("Ashes", ItemID.ASHES);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
@@ -228,7 +228,7 @@ public class DesertTreasure extends BasicQuestHelper
 		spikedBootsEquipped = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS, 1, true);
 		spikedBootsEquipped.setTooltip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
 
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
 		faceMask = new ItemRequirement("Facemask (or other face covering)", ItemID.FACEMASK, 1, true);
 		faceMask.setTooltip("Slayer mask and gas mask can also be used.");
 		faceMask.addAlternates(ItemID.FACEMASK, ItemID.SLAYER_HELMET, ItemID.SLAYER_HELMET_I, ItemID.SLAYER_HELMET_I_25177, ItemID.GAS_MASK);

@@ -26,12 +26,14 @@ package com.questhelper.quests.elementalworkshopii;
 
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -266,7 +268,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		coal = new ItemRequirement("Coal", ItemID.COAL, 8);
-		batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY);
+		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY);
 		batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the elemental " +
 			"workshop's entrance");
 

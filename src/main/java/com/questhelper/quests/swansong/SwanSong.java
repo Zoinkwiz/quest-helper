@@ -356,7 +356,8 @@ public class SwanSong extends BasicQuestHelper
 		helpingArnoldSteps.add(talkToHermanAfterTasks);
 
 		allSteps.add(new PanelDetails("Helping Arnold", helpingArnoldSteps, combatGear));
-		allSteps.add(new PanelDetails("Making an army", Arrays.asList(talkToFruscone, talkToMalignius, talkToCrafter, makeAirtightPot, talkToMaligniusWithPot), bones7, pot, potLid, combatGearRanged));
+		allSteps.add(new PanelDetails("Making an army", Arrays.asList(talkToFruscone, talkToMalignius,
+			talkToCrafter, makeAirtightPot, talkToMaligniusWithPot), bones7, pot, potLid, combatGearRanged));
 		allSteps.add(new PanelDetails("Defeating the trolls", Arrays.asList(talkToHermanForFinalFight, killQueen, talkToHermanToFinish), combatGearRanged));
 		return allSteps;
 	}

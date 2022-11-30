@@ -25,6 +25,7 @@
 package com.questhelper.achievementdiaries.kandarin;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
@@ -33,6 +34,7 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -184,7 +186,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		hornDust = new ItemRequirement("Horn Dust", ItemID.UNICORN_HORN_DUST, 1).showConditioned(notSuperAnti);
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER, 1).showConditioned(notSuperAnti);
 		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF, 1).showConditioned(notSuperAnti);
-		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
+		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
 			notGrapOb));
 		dustyKey.setTooltip("You can get this by killing the Jailor in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
@@ -199,7 +201,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		primedMind = new ItemRequirement("Mind bar", ItemID.PRIMED_MIND_BAR).showConditioned(notMindHelm);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMindHelm);
 		beatenBook = new ItemRequirement("Beaten Book", ItemID.BEATEN_BOOK).showConditioned(notMindHelm);
-		batteredKey = new ItemRequirement("Battered Key", ItemID.BATTERED_KEY).showConditioned(notMindHelm);
+		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY).showConditioned(notMindHelm);
 		batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
 			"Workshop, then reading the book you get from it");
 

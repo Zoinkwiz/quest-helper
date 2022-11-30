@@ -49,6 +49,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
@@ -65,7 +66,6 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -92,6 +92,9 @@ public class DetailedQuestStep extends QuestStep
 
 	@Getter
 	protected final List<Requirement> requirements = new ArrayList<>();
+
+	@Getter
+	protected final List<Requirement> recommended = new ArrayList<>();
 
 	protected Multimap<Tile, Integer> tileHighlights = ArrayListMultimap.create();
 
@@ -124,6 +127,14 @@ public class DetailedQuestStep extends QuestStep
 		this.requirements.addAll(Arrays.asList(requirements));
 	}
 
+	public DetailedQuestStep(QuestHelper questHelper, WorldPoint worldPoint, String text, List<Requirement> requirements, List<Requirement> recommended)
+	{
+		super(questHelper, text);
+		this.worldPoint = worldPoint;
+		this.requirements.addAll(requirements);
+		this.recommended.addAll(recommended);
+	}
+
 	@Override
 	public void startUp()
 	{
@@ -139,6 +150,7 @@ public class DetailedQuestStep extends QuestStep
 			worldMapPointManager.add(mapPoint);
 		}
 		addItemTiles(requirements);
+		addItemTiles(recommended);
 		started = true;
 	}
 
@@ -174,6 +186,17 @@ public class DetailedQuestStep extends QuestStep
 	{
 		requirements.clear();
 		requirements.addAll(newRequirements);
+	}
+
+	public void addRecommended(Requirement newRecommended)
+	{
+		recommended.add(newRecommended);
+	}
+
+	public void setRecommended(List<Requirement> newRecommended)
+	{
+		recommended.clear();
+		recommended.addAll(newRecommended);
 	}
 
 	@Subscribe
@@ -404,23 +427,23 @@ public class DetailedQuestStep extends QuestStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
-		super.makeOverlayHint(panelComponent, plugin, additionalText);
+		super.makeOverlayHint(panelComponent, plugin, additionalText, new ArrayList<>());
 
 		if (inCutscene)
 		{
 			return;
 		}
 
-		if (!requirements.isEmpty() || (additionalRequirements != null && additionalRequirements.length > 0))
+		if (!requirements.isEmpty() || additionalRequirements.size() > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Requirements:").build());
 		}
 		Stream<Requirement> stream = requirements.stream();
-		if (additionalRequirements != null && additionalRequirements.length > 0)
+		if (additionalRequirements.size() > 0)
 		{
-			stream = Stream.concat(stream, Stream.of(additionalRequirements));
+			stream = Stream.concat(stream, additionalRequirements.stream());
 		}
 		stream
 			.distinct()
@@ -428,6 +451,16 @@ public class DetailedQuestStep extends QuestStep
 			.flatMap(Collection::stream)
 			.forEach(line -> panelComponent.getChildren().add(line));
 
+		if (!recommended.isEmpty())
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Recommended:").build());
+		}
+		Stream<Requirement> streamRecommended = recommended.stream();
+		streamRecommended
+			.distinct()
+			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
+			.flatMap(Collection::stream)
+			.forEach(line -> panelComponent.getChildren().add(line));
 	}
 
 	private void renderInventory(Graphics2D graphics)

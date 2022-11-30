@@ -79,6 +79,9 @@ public class TheFremennikTrials extends BasicQuestHelper
 		optionalKoscheiGear, redHerring, woodenDisk, redDiskOld, emptyJug, redDiskNew, stickyRedGoop, emptyBucket, vase, fullBucket, fullJug, vaseLid,
 		jug23, jug13, bucket45, bucket35, bucket25, bucket15, filledVase, filledVaseWithLid, vaseWithLidWrong, frozenKey, seersKey, frozenVase;
 
+
+	Requirement emptySlot4;
+
 	//Items Recommended
 	ItemRequirement camelotTeleport, rellekkaTeleports, ringsOfRecoil, combatGear;
 
@@ -310,6 +313,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 		lyre = new ItemRequirement("Lyre", ItemID.LYRE);
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK);
 		petRock.setTooltip("You can get another from Askeladden");
+
+		emptySlot4 = new ItemRequirement("4 empty inventory slots", -1, 4);
 
 		goldenWool = new ItemRequirement("Golden wool", ItemID.GOLDEN_WOOL);
 		goldenFleece = new ItemRequirement("Golden fleece", ItemID.GOLDEN_FLEECE);
@@ -1003,7 +1008,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		PanelDetails olafPanel = new PanelDetails("Olaf's task",
 			Arrays.asList(talkToOlaf, talkToLalli, talkToAskeladdenForRock, useOnion, talkToLaliAfterStew, chopSwayingTree,
-				fletchLyre, spinWool, makeLyre, enchantLyre, performMusic), axe, knife, rawShark);
+				fletchLyre, spinWool, makeLyre, enchantLyre, performMusic), axe, knife, rawShark, emptySlot4);
 		olafPanel.setLockingStep(olafTask);
 		olafPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 

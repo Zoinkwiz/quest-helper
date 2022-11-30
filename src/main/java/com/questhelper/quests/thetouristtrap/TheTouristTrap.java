@@ -25,10 +25,12 @@
 package com.questhelper.quests.thetouristtrap;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -206,7 +208,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		bronzeBar3 = new ItemRequirement("Bronze bars", ItemID.BRONZE_BAR, 3);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 
-		metalKey = new ItemRequirement("Metal key", ItemID.METAL_KEY);
+		metalKey = new KeyringRequirement("Metal key", configManager, KeyringCollection.METAL_KEY);
 		metalKey.setTooltip("You can get another by killing the Mercenary Guard outside the Desert Mining Camp");
 		slaveTop = new ItemRequirement("Slave shirt", ItemID.SLAVE_SHIRT);
 		slaveTop.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");

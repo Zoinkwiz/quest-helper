@@ -25,6 +25,7 @@
 package com.questhelper.quests.heroesquest;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -33,6 +34,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -205,7 +207,7 @@ public class HeroesQuest extends BasicQuestHelper
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
 		jailKey = new ItemRequirement("Jail key", ItemID.JAIL_KEY);
-		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY);
+		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY);
 		dustyKeyHint = new ItemRequirement("Dusty key (obtainable in quest)", ItemID.DUSTY_KEY);
 		harralanderUnf = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDER_POTION_UNF);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE);

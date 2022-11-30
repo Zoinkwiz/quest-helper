@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,55 +24,47 @@
  */
 package com.questhelper;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.questhelper.requirements.item.KeyringRequirement;
 import java.util.List;
-import lombok.Data;
-import net.runelite.api.Item;
+import javax.inject.Inject;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 
-@Data
-class QuestBankData
+public class GameStateManager
 {
-	int[] idAndQuantity;
+	@Inject
+	ConfigManager configManager;
 
-	QuestBankData()
+	List<KeyringRequirement> keyringKeys;
+
+	public void startUp()
 	{
-		idAndQuantity = new int[0];
+		keyringKeys = KeyringCollection.allKeyRequirements(configManager);
 	}
 
-	void set(List<Item> items)
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
 	{
-		int[] newIdAndQuantity = new int[(items.size() + 1) * 2];
-		for (int i = 0; i < items.size(); i++)
+		if (chatMessage.getMessage().contains("to your key ring."))
 		{
-			Item item = items.get(i);
-			newIdAndQuantity[i*2] = item.getId();
-			newIdAndQuantity[(i*2)+1] = item.getQuantity();
+			for (KeyringRequirement keyringKey : keyringKeys)
+			{
+				if (chatMessage.getMessage().contains("You add the " + keyringKey.chatboxText()))
+				{
+					keyringKey.setConfigValue("true");
+				}
+			}
 		}
-		idAndQuantity = newIdAndQuantity;
-	}
-
-	void set(Item[] items)
-	{
-		set(Arrays.asList(items));
-	}
-
-	void setEmpty()
-	{
-		idAndQuantity = new int[0];
-	}
-
-	List<Item> getAsList()
-	{
-		List<Item> items = new ArrayList<>();
-
-		if (idAndQuantity == null) return items;
-
-		for (int i = 0; i < idAndQuantity.length - 2; i += 2)
+		if (chatMessage.getMessage().contains("from your key ring."))
 		{
-			items.add(new Item(idAndQuantity[i], idAndQuantity[i+1]));
+			for (KeyringRequirement keyringKey : keyringKeys)
+			{
+				if (chatMessage.getMessage().contains("You remove the " + keyringKey.chatboxText()))
+				{
+					keyringKey.setConfigValue("false");
+				}
+			}
 		}
-		return items;
 	}
 }

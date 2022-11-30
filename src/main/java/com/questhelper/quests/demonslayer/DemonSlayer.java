@@ -177,7 +177,7 @@ public class DemonSlayer extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToAris = new NpcStep(this, NpcID.GYPSY_ARIS, new WorldPoint(3204, 3424, 0), "Talk to Gypsy Aris in her tent in Varrock Square.", coin);
+		talkToAris = new NpcStep(this, NpcID.ARIS, new WorldPoint(3204, 3424, 0), "Talk to Aris in her tent in Varrock Square.", coin);
 		talkToAris.addDialogStep("Yes.");
 		talkToAris.addDialogStep("Ok, here you go.");
 		talkToAris.addDialogStep("Okay, where is he? I'll kill him for you!");

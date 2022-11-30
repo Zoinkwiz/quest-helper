@@ -415,9 +415,9 @@ public class LegendsQuest extends BasicQuestHelper
 		sketch = new ItemRequirement("Sketch", ItemID.SKETCH);
 		sketch.setTooltip("You can get another by summoning Gujuo with the bull roarer again");
 
-		bullRoarer = new ItemRequirement("Bull roarer", ItemID.BULL_ROARER);
+		bullRoarer = new ItemRequirement("Bull roarer", ItemID.BULLROARER);
 		bullRoarer.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
-		bullRoarerHighlight = new ItemRequirement("Bull roarer", ItemID.BULL_ROARER);
+		bullRoarerHighlight = new ItemRequirement("Bull roarer", ItemID.BULLROARER);
 		bullRoarerHighlight.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
 		bullRoarerHighlight.setHighlightInInventory(true);
 

@@ -124,15 +124,15 @@ public class DeviousMinds extends BasicQuestHelper
 		mith2h.setHighlightInInventory(true);
 		bowString = new ItemRequirement("Bow String", ItemID.BOW_STRING);
 		bowString.setHighlightInInventory(true);
-		largePouch = new ItemRequirement("Large Pouch (non-degraded)", ItemID.LARGE_POUCH);
-		largePouch.addAlternates(ItemID.LARGE_POUCH_6819);
+		largePouch = new ItemRequirement("Large/Colossal Pouch (non-degraded)", ItemID.LARGE_POUCH);
+		largePouch.addAlternates(ItemID.LARGE_POUCH_6819, ItemID.COLOSSAL_POUCH, ItemID.COLOSSAL_POUCH_26906);
 		largePouch.setHighlightInInventory(true);
 		slenderBlade = new ItemRequirement("Slender Blade", ItemID.SLENDER_BLADE);
 		slenderBlade.setHighlightInInventory(true);
 		bowSword = new ItemRequirement("Bow Sword", ItemID.BOWSWORD);
 		orb = new ItemRequirement("Orb", ItemID.ORB);
 		orb.setHighlightInInventory(true);
-		illumPouch = new ItemRequirement("Illuminated Pouch", ItemID.LARGE_POUCH_6819);
+		illumPouch = new ItemRequirement("Illuminated Pouch", ItemID.LARGE_POUCH_6819, ItemID.COLOSSAL_POUCH_26906);
 		noEquipment = new ItemRequirement("Banked all equipment and weapons", -1, -1);
 	}
 
@@ -171,7 +171,7 @@ public class DeviousMinds extends BasicQuestHelper
 		talkToMonk2 = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3406, 3494, 0),
 			"Return to the monk near the Paterdomus temple with the bow-sword.", bowSword);
 		talkToMonk2.addDialogStep("Yep, got it right here for you.");
-		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large Pouch.", orb, largePouch);
+		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large/Colossal Pouch.", orb, largePouch);
 
 		teleToAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3106, 3556, 0),
 			"Teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +

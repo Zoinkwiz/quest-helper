@@ -106,6 +106,7 @@ public class ClientOfKourend extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		feather = new ItemRequirement("Feather", ItemID.FEATHER);
+		feather.setTooltip("Can be purchased from Gerrant's Fishy Business in Port Sarim.");
 		feather.addAlternates(ItemID.BLUE_FEATHER, ItemID.ORANGE_FEATHER, ItemID.RED_FEATHER, ItemID.YELLOW_FEATHER,
 			ItemID.EAGLE_FEATHER, ItemID.STRIPY_FEATHER);
 		feather.setHighlightInInventory(true);
@@ -129,7 +130,7 @@ public class ClientOfKourend extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToVeos = new NpcStep(this, NpcID.VEOS_10727, new WorldPoint(1824, 3690, 0), "Talk to Veos on the Port Piscarilius docks. You can travel to him by talking to Veos in Port Sarim, where a feather can be purchased from Gerrant's Fishy Business for 2gp.");
+		talkToVeos = new NpcStep(this, NpcID.VEOS_10727, new WorldPoint(1824, 3690, 0), "Talk to Veos on the Port Piscarilius docks. You can travel to him by talking to Veos in Port Sarim.");
 		talkToVeos.addDialogStep("Sounds interesting! How can I help?");
 		talkToVeos.addDialogStep("Can you take me to Great Kourend?");
 		talkToVeos.addDialogStep("Have you got any quests for me?");

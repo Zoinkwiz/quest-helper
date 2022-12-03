@@ -249,15 +249,13 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.AGILITY, 70));
 		reqs.add(new SkillRequirement(Skill.RANGED, 70));
-		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 76, true,
-			"76 Runecraft or 57 with Raiments of the Eye set"));
 		reqs.add(new ComplexRequirement(LogicType.OR, "76 Runecraft or 57 with Raiments of the Eye set",
 			new SkillRequirement(Skill.RUNECRAFT, 76, true, "76 Runecraft"),
 			new ItemRequirements("57 with Raiments of the Eye set",
-				new ItemRequirement("Hat", ItemCollections.EYE_HAT),
-				new ItemRequirement("Top", ItemCollections.EYE_TOP),
-				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM),
-				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE))
+				new ItemRequirement("Hat", ItemCollections.EYE_HAT).alsoCheckBank(questBank),
+				new ItemRequirement("Top", ItemCollections.EYE_TOP).alsoCheckBank(questBank),
+				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM).alsoCheckBank(questBank),
+				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE)).alsoCheckBank(questBank)
 		));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 88));
 		reqs.add(new SkillRequirement(Skill.STRENGTH, 70));

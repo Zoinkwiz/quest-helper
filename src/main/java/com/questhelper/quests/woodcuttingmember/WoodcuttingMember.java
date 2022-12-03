@@ -165,13 +165,12 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("1 - 15: Cut normal trees", Collections.singletonList(chopNormalTree), ironAxe,
-			steelAxe, blackAxe,
-			lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots));
-		allSteps.add(new PanelDetails("15 - 35: Cut oak trees", Collections.singletonList(chopOakTrees), blackAxe,
-			mithrilAxe, adamantAxe, lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots));
-		allSteps.add(new PanelDetails("35 - 99: Cut teak trees", Collections.singletonList(chopTeakTrees), adamantAxe,
-			runeAxe, dragonAxe, lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots));
+		allSteps.add(new PanelDetails("1 - 15: Cut normal trees", Collections.singletonList(chopNormalTree), Arrays.asList(ironAxe,
+			steelAxe, blackAxe), Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
+		allSteps.add(new PanelDetails("15 - 35: Cut oak trees", Collections.singletonList(chopOakTrees), Arrays.asList(blackAxe,
+			mithrilAxe, adamantAxe), Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
+		allSteps.add(new PanelDetails("35 - 99: Cut teak trees", Collections.singletonList(chopTeakTrees), Arrays.asList(adamantAxe,
+			runeAxe, dragonAxe), Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
 		return allSteps;
 	}
 }

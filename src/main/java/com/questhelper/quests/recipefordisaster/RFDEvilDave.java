@@ -136,7 +136,7 @@ public class RFDEvilDave extends BasicQuestHelper
 		talkToDoris = new NpcStep(this, NpcID.DORIS, new WorldPoint(3079, 3494, 0), "Talk to Doris.");
 
 		enterBasement = new ObjectStep(this, ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
-			"Enter Doris's basement.");
+			"Enter Doris's basement in Edgeville.");
 		((ObjectStep) enterBasement).addAlternateObjects(ObjectID.OPEN_TRAPDOOR);
 
 		talkToEvilDave = new NpcStep(this, NpcID.EVIL_DAVE_4806, new WorldPoint(3080, 9889, 0), "Talk to Evil Dave.");

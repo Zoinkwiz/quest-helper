@@ -38,6 +38,8 @@ public class RuneliteRequirement extends AbstractRequirement
 
 	private final String displayText;
 	private final String runeliteIdentifier;
+
+	@Getter
 	private final String expectedValue;
 	private final ConfigManager configManager;
 
@@ -51,25 +53,19 @@ public class RuneliteRequirement extends AbstractRequirement
 
 	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue)
 	{
-		this(configManager, id, "true", expectedValue, new HashMap<>());
+		this(configManager, id, expectedValue, new HashMap<>());
 	}
 
 	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue,
 							   Map<String, Requirement> requirements)
 	{
-		this(configManager, id, "true", expectedValue, requirements);
+		this(configManager, id, expectedValue, "Expecting " + expectedValue, requirements);
 	}
 
 	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue,
 							  Requirement requirement)
 	{
 		this(configManager, id, expectedValue, Collections.singletonMap(expectedValue, requirement));
-	}
-
-	public RuneliteRequirement(ConfigManager configManager, String id, String initValue, String expectedValue,
-							   String text)
-	{
-		this(configManager, id, initValue, expectedValue, text, new HashMap<>());
 	}
 
 	public RuneliteRequirement(ConfigManager configManager, String id, Requirement requirement)

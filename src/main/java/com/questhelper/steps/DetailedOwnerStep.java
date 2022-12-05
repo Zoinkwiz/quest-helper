@@ -113,25 +113,6 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 	{
 	}
 
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<Requirement> additionalRequirements)
-	{
-		List<Requirement> allRequirements = new ArrayList<>(additionalRequirements);
-		allRequirements.addAll(requirements);
-
-		if (currentStep != null)
-		{
-			if (text == null)
-			{
-				currentStep.makeOverlayHint(panelComponent, plugin, allRequirements);
-			}
-			else
-			{
-				currentStep.makeOverlayHint(panelComponent, plugin, text, allRequirements);
-			}
-		}
-	}
-
 	// This should only have been called from a parent ConditionalStep, so default the additional text to the passed in text
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
@@ -139,9 +120,12 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 		List<Requirement> allRequirements = new ArrayList<>(additionalRequirements);
 		allRequirements.addAll(requirements);
 
+		List<String> allAdditionalText = new ArrayList<>(additionalText);
+		if (text != null) allAdditionalText.addAll(text);
+
 		if (currentStep != null)
 		{
-			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, allRequirements);
+			currentStep.makeOverlayHint(panelComponent, plugin, allAdditionalText, allRequirements);
 		}
 	}
 

@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import java.util.List;
+import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -372,9 +373,9 @@ public class DoorPuzzleStep extends DetailedQuestStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<Requirement> requirement)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> requirement)
 	{
-		super.makeOverlayHint(panelComponent, plugin, requirement);
+		super.makeOverlayHint(panelComponent, plugin, additionalText, requirement);
 		Widget panels = client.getWidget(665, 32);
 		if (result == null && panels != null)
 		{

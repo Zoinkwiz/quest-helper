@@ -350,16 +350,6 @@ public abstract class QuestStep implements Module
 		addWidgetLastLoadedCondition(widgetValue, widgetGroupID, widgetChildID, choiceValue, 219, 1);
 	}
 
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin)
-	{
-		makeOverlayHint(panelComponent, plugin, new ArrayList<>(), new ArrayList<>());
-	}
-
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<Requirement> additionalRequirements)
-	{
-		makeOverlayHint(panelComponent, plugin, new ArrayList<>(), additionalRequirements);
-	}
-
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
 		addTitleToPanel(panelComponent);

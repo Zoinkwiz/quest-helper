@@ -156,8 +156,8 @@ public class TheGrandTree extends BasicQuestHelper
 		if (QuestHelperQuest.TREE_GNOME_VILLAGE.getState(client) == QuestState.FINISHED)
 		{
 			goTalkToCharlie3.setText("Return to Charlie. You won't be able to enter through the main entrance, so " +
-				"make use of a Spirit Tree to enter the Tree Gnome Stronghold. The easiest tree to use is the one in " +
-				"the Grand Exchange.");
+				"speak to Femi outside the main gate to be snuck in, or make use of a Spirit Tree to enter the Tree Gnome Stronghold." +
+				"The easiest Spirit Tree to use is the one in the Grand Exchange.");
 		}
 		else
 		{

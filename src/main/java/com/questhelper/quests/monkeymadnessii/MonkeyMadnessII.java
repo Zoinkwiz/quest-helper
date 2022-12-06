@@ -537,7 +537,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		enterTrollStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold, ready to fight Kob.");
 
-		talkToKob = new NpcStep(this, NpcID.KOB, new WorldPoint(2831, 10060, 2), "Talk to Kob with Protect from Melee on, ready to fight..");
+		talkToKob = new NpcStep(this, NpcID.KOB, new WorldPoint(2831, 10060, 2), "Talk to Kob with Protect from Melee on, ready to fight.");
 		talkToKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
 		talkToKob.addDialogSteps("I know about your deal with the monkeys.", "You won't be around to crush anyone when I'm done with you.", "I accept your challenge.");
 
@@ -715,7 +715,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off",
 			Arrays.asList(talkToNarnode, goInvestigateGloughHouse, goTalkToAnita, goToGlough3rdFloor, investigateStatue, searchRemains, searchCrate,
 				usePestleOnLemon, useNotesOnCandles, usePestleOnGrapes, useBrushOnNote, readScrawledNote, useTranslationOnNote, goShowNoteToNarnode, goTalkToAnitaWithNote,
-				bringTranslationToNarnode, talkToAuguste, talkToNarnodeAfterEntrana), lemon, grapesHighlighted, translationBook, pestleHighlighted, logs, noCombatItems));
+				bringTranslationToNarnode, talkToAuguste, talkToNarnodeAfterEntrana),
+			Arrays.asList(lemon, grapesHighlighted, translationBook, pestleHighlighted, noCombatItems), Arrays.asList(logs, magicLog)));
 
 		List<QuestStep> chapter2Steps = QuestUtil.toArrayList(talkToGarkor, talkToAwowogei, talkToGarkorAfterAwow, talkToArcher, enterTrapdoor);
 		chapter2Steps.addAll(((AgilityDungeonSteps) (doAgilitySection)).getDisplaySteps());
@@ -727,7 +728,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 			coins20.hideConditioned(new SkillRequirement(Skill.AGILITY, 71, true))));
 
 		List<QuestStep> sabotageSteps = QuestUtil.toArrayList(talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,
-			talkToGarkorAfterSmith, talkToMonkeyGuard);
+			talkToMonkeyGuard);
 		sabotageSteps.addAll(sabotageShips.getDisplaySteps());
 		allSteps.add(new PanelDetails("Sabotage",
 			sabotageSteps, krukGreegree, mspeakAmulet));

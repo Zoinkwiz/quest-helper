@@ -98,9 +98,10 @@ public enum MM2Route
 		new ChatMessageRequirement(new ZoneRequirement(new WorldPoint(2590, 9237, 1)), "Something about this route feels wrong."),
 		Arrays.asList(new WorldPoint(2591, 9237, 1), new WorldPoint(2586, 9237, 1))),
 
-	S5E6(5, 6, new Zone(new WorldPoint(2593, 9232, 1)), new Zone(new WorldPoint(2600, 9237, 1)),
-		new ChatMessageRequirement(new ZoneRequirement(new WorldPoint(2599, 9233, 1)), "Something about this route feels wrong."),
-		Arrays.asList(new WorldPoint(2598, 9233, 1), new WorldPoint(2600, 9233, 1),
+	S5E6(5, 6, new Zone(new WorldPoint(2593, 9232, 1), new WorldPoint(2593, 9236, 1)),
+		new Zone(new WorldPoint(2594, 9233, 1), new WorldPoint(2595, 9236, 1)),
+		new ChatMessageRequirement(new ZoneRequirement(new Zone(new WorldPoint(2593, 9232, 1), new WorldPoint(2595, 9237, 1))), "Something about this route feels wrong."),
+		Arrays.asList(new WorldPoint(2591, 9233, 1), new WorldPoint(2598, 9233, 1), new WorldPoint(2600, 9233, 1),
 			new WorldPoint(2600, 9232, 1), new WorldPoint(2602, 9232, 1))),
 	S6E5(6, 5, new Zone(new WorldPoint(2601, 9232, 1)), new Zone(new WorldPoint(2600, 9232, 1)),
 		new ChatMessageRequirement(new ZoneRequirement(new WorldPoint(2601, 9232, 1)), "Something about this route feels wrong."),

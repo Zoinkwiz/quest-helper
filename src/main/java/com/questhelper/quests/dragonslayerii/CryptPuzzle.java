@@ -90,20 +90,20 @@ public class CryptPuzzle extends DetailedOwnerStep
 	{
 		super(questHelper, "Solve the bust puzzle.");
 
-		locations.put("Zartharim", AIVAS);
-		locations.put("Saranthium", CAMORRA);
-		locations.put("Arkney", ROBERT);
-		locations.put("Karville", TRISTAN);
+		locations.put("Zartharim sat at the north of the table", AIVAS);
+		locations.put("Saranthium sat at the north of the table", CAMORRA);
+		locations.put("Arkney sat at the north of the table", ROBERT);
+		locations.put("Karville sat at the north of the table", TRISTAN);
 
-		weaponsSouth.put("the crossbow", AIVAS);
-		weaponsSouth.put("the axe", CAMORRA);
-		weaponsSouth.put("the bow", ROBERT);
-		weaponsSouth.put("the sword", TRISTAN);
+		weaponsSouth.put("opposite the one with the crossbow", AIVAS);
+		weaponsSouth.put("opposite the one with the axe", CAMORRA);
+		weaponsSouth.put("opposite the one with the bow", ROBERT);
+		weaponsSouth.put("opposite the one with the sword", TRISTAN);
 
-		weaponsWest.put("a crossbow", AIVAS);
-		weaponsWest.put("an axe", CAMORRA);
-		weaponsWest.put("a bow", ROBERT);
-		weaponsWest.put("a sword", TRISTAN);
+		weaponsWest.put("The one with a crossbow asked the", AIVAS);
+		weaponsWest.put("The one with an axe asked the", CAMORRA);
+		weaponsWest.put("The one with a bow asked the", ROBERT);
+		weaponsWest.put("The one with a sword asked the", TRISTAN);
 
 		getBustSteps.put(AIVAS, takeAivasBust);
 		getBustSteps.put(CAMORRA, takeCamorraBust);
@@ -117,7 +117,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 		items.put(AIVAS, aivasBust);
 		items.put(CAMORRA, camorraBust);
-		items.put(ROBERT,robertBust);
+		items.put(ROBERT, robertBust);
 		items.put(TRISTAN, tristanBust);
 	}
 
@@ -135,7 +135,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onGameTick(GameTick ignoredEvent)
 	{
 		updateSteps();
 	}
@@ -257,49 +257,58 @@ public class CryptPuzzle extends DetailedOwnerStep
 		if (!solutionFound && widgetLoaded.getGroupId() == 748)
 		{
 			List<Integer> potentialBusts = QuestUtil.toArrayList(AIVAS, CAMORRA, ROBERT, TRISTAN);
+			Widget parentWidget = client.getWidget(748, 2);
+			if (parentWidget == null || parentWidget.getStaticChildren() == null) return;
 
-			Widget northWidget = client.getWidget(748, 6);
-			Widget southAndWestWidget = client.getWidget(748, 7);
-			if (northWidget != null && southAndWestWidget != null)
+			StringBuilder storyString = new StringBuilder();
+
+			for (Widget child : parentWidget.getStaticChildren())
 			{
-				northBust = locations.entrySet().stream()
-					.filter(e -> northWidget.getText().contains(e.getKey()))
-					.map(Map.Entry::getValue).findFirst()
-					.orElse(null);
-
-
-				southBust = weaponsSouth.entrySet().stream()
-					.filter(e -> southAndWestWidget.getText().contains(e.getKey()))
-					.map(Map.Entry::getValue).findFirst()
-					.orElse(null);
-
-
-				westBust = weaponsWest.entrySet().stream()
-					.filter(e -> southAndWestWidget.getText().contains(e.getKey()))
-					.map(Map.Entry::getValue).findFirst()
-					.orElse(null);
-
-				if (northBust == null || southBust == null || westBust == null)
-				{
-					return;
-				}
-
-				potentialBusts.remove(northBust);
-				potentialBusts.remove(southBust);
-				potentialBusts.remove(westBust);
-
-				eastBust = potentialBusts.iterator().next();
-
-				placeBustNorth.addItemRequirements(Collections.singletonList(items.get(northBust)));
-				placeBustNorth.addIcon(items.get(northBust).getId());
-				placeBustEast.addItemRequirements(Collections.singletonList(items.get(eastBust)));
-				placeBustEast.addIcon(items.get(eastBust).getId());
-				placeBustSouth.addItemRequirements(Collections.singletonList(items.get(southBust)));
-				placeBustSouth.addIcon(items.get(southBust).getId());
-				placeBustWest.addItemRequirements(Collections.singletonList(items.get(westBust)));
-				placeBustWest.addIcon(items.get(westBust).getId());
-				solutionFound = true;
+				storyString.append(child.getText()).append(" ");
 			}
+
+			String fullStory = storyString.toString();
+
+			northBust = locations.entrySet().stream()
+				.filter(e -> fullStory.contains(e.getKey()))
+				.map(Map.Entry::getValue).findFirst()
+				.orElse(null);
+
+			southBust = weaponsSouth.entrySet().stream()
+				.filter(e -> fullStory.contains(e.getKey()))
+				.map(Map.Entry::getValue).findFirst()
+				.orElse(null);
+
+			westBust = weaponsWest.entrySet().stream()
+				.filter(e -> fullStory.contains(e.getKey()))
+				.map(Map.Entry::getValue).findFirst()
+				.orElse(null);
+
+			System.out.println(northBust);
+			System.out.println(southBust);
+			System.out.println(westBust);
+			System.out.println("LOL");
+
+			if (northBust == null || southBust == null || westBust == null)
+			{
+				return;
+			}
+
+			potentialBusts.remove(northBust);
+			potentialBusts.remove(southBust);
+			potentialBusts.remove(westBust);
+
+			eastBust = potentialBusts.iterator().next();
+
+			placeBustNorth.addItemRequirements(Collections.singletonList(items.get(northBust)));
+			placeBustNorth.addIcon(items.get(northBust).getId());
+			placeBustEast.addItemRequirements(Collections.singletonList(items.get(eastBust)));
+			placeBustEast.addIcon(items.get(eastBust).getId());
+			placeBustSouth.addItemRequirements(Collections.singletonList(items.get(southBust)));
+			placeBustSouth.addIcon(items.get(southBust).getId());
+			placeBustWest.addItemRequirements(Collections.singletonList(items.get(westBust)));
+			placeBustWest.addIcon(items.get(westBust).getId());
+			solutionFound = true;
 		}
 	}
 }

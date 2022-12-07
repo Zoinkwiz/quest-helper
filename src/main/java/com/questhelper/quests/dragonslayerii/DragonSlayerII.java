@@ -693,6 +693,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkedToAvaAgain = new VarbitRequirement(6107, 50, Operation.GREATER_EQUAL);
 
 		// 6141, presumbly represents location of treasure
+		// 10: 3487, 3409, 0
 		// 11: 3442, 3421, 0
 
 		// Fremennik key piece

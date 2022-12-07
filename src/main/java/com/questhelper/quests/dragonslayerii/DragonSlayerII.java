@@ -1024,8 +1024,8 @@ public class DragonSlayerII extends BasicQuestHelper
 			new WorldPoint(1698, 5715, 0),
 			new WorldPoint(1702, 5719, 0),
 			new WorldPoint(1702, 5723, 0),
-			new WorldPoint(1702, 5724, 1),
-			new WorldPoint(1703, 5727, 1),
+			new WorldPoint(1708, 5723, 1),
+			new WorldPoint(1708, 5728, 1),
 			new WorldPoint(1708, 5729, 0),
 			new WorldPoint(1710, 5731, 0),
 			new WorldPoint(1710, 5734, 0),
@@ -1075,7 +1075,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		killGalvekSidebar.addText("Phase 1 - Fire traps appear - if you go near them you die.");
 		killGalvekSidebar.addText("Phase 2 - Fires transparent projectile which drains stats.");
 		killGalvekSidebar.addText("Phase 3 - Waves of fire appear. Go through the gap in them to avoid.");
-		killGalvekSidebar.addText("Phase 4 - Fire binding projective. Avoid it by moving.");
+		killGalvekSidebar.addText("Phase 4 - Fires a binding projectile. Avoid it by moving.");
 		killGalvekSidebar.addSubSteps(killGalvek);
 
 		talkToAlecToFinish = new NpcStep(this, NpcID.ALEC_KINCADE, new WorldPoint(2458, 2869, 0), "Talk to Alec Kincade to become a Myth!");

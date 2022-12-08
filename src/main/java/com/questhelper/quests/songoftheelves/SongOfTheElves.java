@@ -627,6 +627,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		hammerHighlighted.setHighlightInInventory(true);
 
 		elderCadantine = new ItemRequirement("Elder cadantine", ItemID.ELDER_CADANTINE);
+		elderCadantine.addAlternates(ItemID.ELDER_CADANTINE_POTION_UNF);
 
 		elderCadantineHighlighted = new ItemRequirement("Elder cadantine", ItemID.ELDER_CADANTINE);
 		elderCadantineHighlighted.setHighlightInInventory(true);

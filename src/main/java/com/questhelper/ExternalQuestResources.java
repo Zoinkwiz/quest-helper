@@ -174,6 +174,7 @@ public enum ExternalQuestResources {
 	ZOGRE_FLESH_EATERS("https://oldschool.runescape.wiki/w/Zogre_Flesh_Eaters"),
 	THE_FREMENNIK_EXILES("https://oldschool.runescape.wiki/w/The_Fremennik_Exiles"),
 	A_PORCINE_OF_INTEREST("https://oldschool.runescape.wiki/w/A_Porcine_of_Interest"),
+	THE_GARDEN_OF_DEATH("https://oldschool.runescape.wiki/w/The_Garden_of_Death"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

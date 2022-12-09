@@ -119,13 +119,13 @@ public class WidgetTextRequirement extends SimpleRequirement
 				{
 					if (checkChildren)
 					{
-						if (getChildren(widget, textOption))
+						if (getChildren(widget, textOption) && !widget.isHidden())
 						{
 							return true;
 						}
 					}
 
-					if (widget.getText().contains(textOption))
+					if (widget.getText().contains(textOption) && !widget.isHidden())
 					{
 						return true;
 					}

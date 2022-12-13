@@ -312,20 +312,20 @@ public class QuestHelperPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			clientThread.invokeLater(() -> {
-				quests.forEach((name, questHelper) -> {
-					eventBus.register(questHelper);
-					questHelper.setupRequirements();
-					eventBus.unregister(questHelper);
-				});
+		clientThread.invokeLater(() -> {
+			quests.forEach((name, questHelper) -> {
+				eventBus.register(questHelper);
+				questHelper.setupRequirements();
+				eventBus.unregister(questHelper);
+			});
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
 				// Update with new items
 				quests.get(QuestHelperQuest.CHECK_ITEMS.getName()).init();
 				getAllItemRequirements();
 				loadQuestList = true;
-			});
-		}
+			}
+		});
 	}
 
 	@Override

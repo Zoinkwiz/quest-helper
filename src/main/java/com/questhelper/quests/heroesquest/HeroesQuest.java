@@ -155,7 +155,7 @@ public class HeroesQuest extends BasicQuestHelper
 			getThievesArmband.addStep(inSecretRoom, killGrip);
 			getThievesArmband.addStep(new Conditions(inGarden, miscKey), useKeyOnDoor);
 			getThievesArmband.addStep(new Conditions(talkedToCharlie, miscKey), pushWall);
-			getThievesArmband.addStep(miscKey, talkToCharlie);
+			getThievesArmband.addStep(new Conditions(talkedToAlfonse, miscKey), talkToCharlie);
 			getThievesArmband.addStep(talkedToAlfonse, getKeyFromPartner);
 			getThievesArmband.addStep(talkedToStraven, talkToAlfonse);
 			getThievesArmband.addStep(inPhoenixBase, talkToStraven);

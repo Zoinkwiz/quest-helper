@@ -25,6 +25,7 @@
 package com.questhelper.achievementdiaries.morytania;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
@@ -33,6 +34,7 @@ import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -169,7 +171,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 
 		piety = new PrayerRequirement("Piety activated", Prayer.PIETY);
 
-		crystalMineKey = new ItemRequirement("Crystal mine key", ItemID.CRYSTALMINE_KEY).showConditioned(notMithOre).isNotConsumed();
+		crystalMineKey = new KeyringRequirement(configManager, KeyringCollection.CRYSTAL_MINE_KEY).showConditioned(notMithOre).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMithOre).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKharyrll);
 		limestoneBrick = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK).showConditioned(notKharyrll);

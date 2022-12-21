@@ -150,6 +150,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final String QUEST_PACKAGE = "com.questhelper.quests";
 	private static final String ACHIEVEMENT_PACKAGE = "com.questhelper.achievementdiaries";
+	private static final String SKILL_PACKAGE = "com.questhelper.skills";
 
 	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
@@ -996,6 +997,7 @@ public class QuestHelperPlugin extends Plugin
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.QUEST_PACKAGE));
 
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.ACHIEVEMENT_PACKAGE));
+		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.SKILL_PACKAGE));
 
 		return scannedQuests;
 	}

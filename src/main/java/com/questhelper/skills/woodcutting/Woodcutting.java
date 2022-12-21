@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2022, jLereback <https://github.com/jLereback>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.quests.woodcuttingmember;
+package com.questhelper.skills.woodcutting;
 
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -46,21 +47,19 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.WOODCUTTING_MEMBER
+	quest = QuestHelperQuest.WOODCUTTING
 )
-public class WoodcuttingMember extends ComplexStateQuestHelper
+public class Woodcutting extends ComplexStateQuestHelper
 {
 	//Items Required
-	ItemRequirement ironAxe, steelAxe, blackAxe, mithrilAxe, adamantAxe, runeAxe, dragonAxe;
+	ItemRequirement ironAxe, steelAxe, blackAxe, mithrilAxe, adamantAxe, runeAxe;
 
-	// Items recommended
-	ItemRequirement lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots;
-
+	// Levels for axes
 	SkillRequirement wc6, wc11, wc21, wc31, wc41, wc61;
 
-	SkillRequirement wc15, wc35;
+	SkillRequirement wc15, wc30;
 
-	QuestStep chopNormalTree, chopOakTrees, chopTeakTrees;
+	QuestStep chopNormalTree, chopOakTrees, chopWillowTrees;
 
 	@Override
 	public QuestStep loadStep()
@@ -69,7 +68,7 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep fullTraining = new ConditionalStep(this, chopNormalTree);
-		fullTraining.addStep(wc35, chopTeakTrees);
+		fullTraining.addStep(wc30, chopWillowTrees);
 		fullTraining.addStep(wc15, chopOakTrees);
 
 		return fullTraining;
@@ -86,60 +85,52 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 		wc61 = new SkillRequirement(Skill.WOODCUTTING, 61);
 
 		wc15 = new SkillRequirement(Skill.WOODCUTTING, 15);
-		wc35 = new SkillRequirement(Skill.WOODCUTTING, 35);
+		wc30 = new SkillRequirement(Skill.WOODCUTTING, 30);
 
-		ironAxe = new ItemRequirement("Iron axe", ItemID.IRON_AXE).showConditioned(
+		ironAxe = new ItemRequirement(
+			"Iron axe", ItemID.IRON_AXE).showConditioned(
 			new Conditions(LogicType.NOR, wc6)
 		).isNotConsumed();
-		steelAxe = new ItemRequirement("Steel axe", ItemID.STEEL_AXE).showConditioned(
+		steelAxe = new ItemRequirement(
+			"Steel axe", ItemID.STEEL_AXE).showConditioned(
 			new Conditions(wc6, new Conditions(LogicType.NOR, wc11))
 		).isNotConsumed();
-		blackAxe = new ItemRequirement("Black axe", ItemID.BLACK_AXE).showConditioned(
+		blackAxe = new ItemRequirement(
+			"Black axe", ItemID.BLACK_AXE).showConditioned(
 			new Conditions(wc11, new Conditions(LogicType.NOR, wc21))
 		).isNotConsumed();
-		mithrilAxe = new ItemRequirement("Mithril axe", ItemID.MITHRIL_AXE).showConditioned(
+		mithrilAxe = new ItemRequirement(
+			"Mithril axe", ItemID.MITHRIL_AXE).showConditioned(
 			new Conditions(wc21, new Conditions(LogicType.NOR, wc31))
 		).isNotConsumed();
-		adamantAxe = new ItemRequirement("Adamant axe", ItemID.ADAMANT_AXE).showConditioned(
+		adamantAxe = new ItemRequirement(
+			"Adamant axe", ItemID.ADAMANT_AXE).showConditioned(
 			new Conditions(wc31, new Conditions(LogicType.NOR, wc41))
 		).isNotConsumed();
-		runeAxe = new ItemRequirement("Rune axe", ItemID.RUNE_AXE).showConditioned(
-			new Conditions(wc41, new Conditions(LogicType.NOR, wc61))
+		runeAxe = new ItemRequirement(
+			"Rune axe", ItemID.RUNE_AXE).showConditioned(
+			new Conditions(wc41)
 		).isNotConsumed();
-		dragonAxe = new ItemRequirement("Dragon axe", ItemID.DRAGON_AXE).showConditioned(
-			new Conditions(wc61)
-		).isNotConsumed();
-
-
-		lumberjackBody = new ItemRequirement("Lumberjack top", ItemID.LUMBERJACK_TOP);
-		lumberjackBody = lumberjackBody.showConditioned(lumberjackBody.alsoCheckBank(questBank));
-
-		lumberjackHat = new ItemRequirement("Lumberjack hat", ItemID.LUMBERJACK_HAT);
-		lumberjackHat = lumberjackHat.showConditioned(lumberjackHat.alsoCheckBank(questBank));
-
-		lumberjackLegs = new ItemRequirement("Lumberjack legs", ItemID.LUMBERJACK_LEGS);
-		lumberjackLegs = lumberjackLegs.showConditioned(lumberjackLegs.alsoCheckBank(questBank));
-
-		lumberjackBoots = new ItemRequirement("Lumberjack boots", ItemID.LUMBERJACK_BOOTS);
-		lumberjackBoots = lumberjackBoots.showConditioned(lumberjackBoots.alsoCheckBank(questBank));
 	}
 
 	private void setupSteps()
 	{
 		chopNormalTree = new ObjectStep(this, ObjectID.TREE, new WorldPoint(3192, 3223, 0),
 			"Chop normal trees around Lumbridge until 15 Woodcutting. You can choose to burn the logs as you go, drop" +
-				" them, or bank them.", true, ironAxe, steelAxe, blackAxe, lumberjackHat, lumberjackBody, lumberjackLegs,
-			lumberjackBoots);
+				" them, or bank them.", true, ironAxe, steelAxe, blackAxe
+		);
 
 		chopOakTrees = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(3190, 3247, 0),
-			"Chop oak trees around Lumbridge until 35 Woodcutting. You can choose to burn the logs as you go, drop" +
-				" them, or bank them.", true, blackAxe, mithrilAxe, adamantAxe,
-			lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots);
+			"Chop oak trees around Lumbridge until 30 Woodcutting. You can choose to burn the logs as you go, drop" +
+				" them, or bank them.", true, steelAxe, blackAxe, mithrilAxe, adamantAxe
+		);
 
-		chopTeakTrees = new ObjectStep(this, ObjectID.TEAK, new WorldPoint(2335, 3048, 0),
-			"Chop teak trees south of Castle Wars until 99 Woodcutting. You can choose to burn the logs as you go, " +
-				"drop them, or bank them.", true, adamantAxe, runeAxe, dragonAxe, lumberjackHat, lumberjackBody, lumberjackLegs,
-			lumberjackBoots);
+		chopWillowTrees = new ObjectStep(this, ObjectID.WILLOW, new WorldPoint(3059, 3253, 0),
+			"Chop willow trees east of the Rusty Anchor Inn in Port Sarim until 99 Woodcutting. You can deposit them" +
+				" at the bank deposit box just south on the docks next to the monks." +
+				" If choose to burn the logs as you go or drop them, oak trees gives faster XP until 60 Woodcutting",
+			true, steelAxe, blackAxe, mithrilAxe, adamantAxe, runeAxe
+		);
 	}
 
 	@Override
@@ -153,25 +144,19 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(ironAxe, steelAxe, blackAxe, mithrilAxe, adamantAxe, runeAxe, dragonAxe);
-	}
-
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots);
+		return Arrays.asList(ironAxe, steelAxe, blackAxe, mithrilAxe, adamantAxe, runeAxe);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("1 - 15: Cut normal trees", Collections.singletonList(chopNormalTree), Arrays.asList(ironAxe,
-			steelAxe, blackAxe), Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
-		allSteps.add(new PanelDetails("15 - 35: Cut oak trees", Collections.singletonList(chopOakTrees), Arrays.asList(blackAxe,
-			mithrilAxe, adamantAxe), Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
-		allSteps.add(new PanelDetails("35 - 99: Cut teak trees", Collections.singletonList(chopTeakTrees), Arrays.asList(adamantAxe,
-			runeAxe, dragonAxe), Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
+		allSteps.add(new PanelDetails("1 - 15: Cut normal trees", Collections.singletonList(chopNormalTree),
+			ironAxe, steelAxe, blackAxe));
+		allSteps.add(new PanelDetails("15 - 30: Cut oak trees", Collections.singletonList(chopOakTrees),
+			steelAxe, blackAxe, mithrilAxe, adamantAxe));
+		allSteps.add(new PanelDetails("30 - 99: Cut willow trees", Collections.singletonList(chopWillowTrees),
+			steelAxe, blackAxe, mithrilAxe, adamantAxe, runeAxe));
 		return allSteps;
 	}
 }

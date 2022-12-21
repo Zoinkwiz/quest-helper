@@ -55,7 +55,8 @@ public class Woodcutting extends ComplexStateQuestHelper
 	ItemRequirement ironAxe, steelAxe, blackAxe, mithrilAxe, adamantAxe, runeAxe;
 
 	// Levels for axes
-	SkillRequirement wc6, wc11, wc21, wc31, wc41, wc61;
+	SkillRequirement wc6, wc11, wc21, wc31, wc41;
+	SkillRequirement at5, at10, at20, at30, at40;
 
 	SkillRequirement wc15, wc30;
 
@@ -77,39 +78,51 @@ public class Woodcutting extends ComplexStateQuestHelper
 	@Override
 	public void setupRequirements()
 	{
+		at5 = new SkillRequirement(Skill.ATTACK, 5);
+		at10 = new SkillRequirement(Skill.ATTACK, 10);
+		at20 = new SkillRequirement(Skill.ATTACK, 20);
+		at30 = new SkillRequirement(Skill.ATTACK, 30);
+		at40 = new SkillRequirement(Skill.ATTACK, 40);
+
 		wc6 = new SkillRequirement(Skill.WOODCUTTING, 6);
 		wc11 = new SkillRequirement(Skill.WOODCUTTING, 11);
 		wc21 = new SkillRequirement(Skill.WOODCUTTING, 21);
 		wc31 = new SkillRequirement(Skill.WOODCUTTING, 31);
 		wc41 = new SkillRequirement(Skill.WOODCUTTING, 41);
-		wc61 = new SkillRequirement(Skill.WOODCUTTING, 61);
+
 
 		wc15 = new SkillRequirement(Skill.WOODCUTTING, 15);
 		wc30 = new SkillRequirement(Skill.WOODCUTTING, 30);
 
 		ironAxe = new ItemRequirement(
 			"Iron axe", ItemID.IRON_AXE).showConditioned(
-			new Conditions(LogicType.NOR, wc6)
+			new Conditions(LogicType.NOR, wc6)).showConditioned(
+			new Conditions(LogicType.NOR, at5)
 		).isNotConsumed();
 		steelAxe = new ItemRequirement(
 			"Steel axe", ItemID.STEEL_AXE).showConditioned(
-			new Conditions(wc6, new Conditions(LogicType.NOR, wc11))
+			new Conditions(wc6, new Conditions(LogicType.NOR, wc11))).showConditioned(
+			new Conditions(at5, new Conditions(LogicType.NOR, at10))
 		).isNotConsumed();
 		blackAxe = new ItemRequirement(
 			"Black axe", ItemID.BLACK_AXE).showConditioned(
-			new Conditions(wc11, new Conditions(LogicType.NOR, wc21))
+			new Conditions(wc11, new Conditions(LogicType.NOR, wc21))).showConditioned(
+			new Conditions(at10, new Conditions(LogicType.NOR, at20))
 		).isNotConsumed();
 		mithrilAxe = new ItemRequirement(
 			"Mithril axe", ItemID.MITHRIL_AXE).showConditioned(
-			new Conditions(wc21, new Conditions(LogicType.NOR, wc31))
+			new Conditions(wc21, new Conditions(LogicType.NOR, wc31))).showConditioned(
+			new Conditions(at20, new Conditions(LogicType.NOR, at30))
 		).isNotConsumed();
 		adamantAxe = new ItemRequirement(
 			"Adamant axe", ItemID.ADAMANT_AXE).showConditioned(
-			new Conditions(wc31, new Conditions(LogicType.NOR, wc41))
+			new Conditions(wc31, new Conditions(LogicType.NOR, wc41))).showConditioned(
+			new Conditions(at30, new Conditions(LogicType.NOR, at40))
 		).isNotConsumed();
 		runeAxe = new ItemRequirement(
 			"Rune axe", ItemID.RUNE_AXE).showConditioned(
-			new Conditions(wc41)
+			new Conditions(wc41)).showConditioned(
+			new Conditions(at40)
 		).isNotConsumed();
 	}
 

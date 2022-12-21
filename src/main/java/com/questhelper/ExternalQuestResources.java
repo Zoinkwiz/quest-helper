@@ -278,6 +278,7 @@ public enum ExternalQuestResources {
 	AGILITY("https://oldschool.runescape.wiki/w/Agility_training"),
 	WOODCUTTING_MEMBER("https://oldschool.runescape.wiki/w/Pay-to-play_Woodcutting_training"),
 	WOODCUTTING("https://oldschool.runescape.wiki/w/Free-to-play_Woodcutting_training"),
+	MINING_MEMBER("https://oldschool.runescape.wiki/w/Pay-to-play_Mining_training"),
 	MINING("https://oldschool.runescape.wiki/w/Free-to-play_Mining_training");
 
 	ExternalQuestResources()

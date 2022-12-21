@@ -361,7 +361,9 @@ public enum QuestHelperQuest
 	AGILITY("Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 	WOODCUTTING_MEMBER("Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 
-	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL);
+	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
+	MINING_MEMBER("Mining - Member", Skill.MINING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
+	MINING("Mining", Skill.MINING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL);
 
 	@Getter
 	private final int id;

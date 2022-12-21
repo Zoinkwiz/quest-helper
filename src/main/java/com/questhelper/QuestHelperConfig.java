@@ -203,7 +203,7 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		keyName = "hideOverlayPanelBank",
 		name = "Hide overlay when bank opened",
-		description = "Chose whether the overlay should be displayed when bank opened"
+		description = "Choose whether the overlay should be displayed when a bank tab is open"
 	)
 	default boolean hideOverlayBank()
 	{

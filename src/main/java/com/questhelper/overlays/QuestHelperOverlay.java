@@ -62,7 +62,7 @@ public class QuestHelperOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		if (plugin.getConfig().showOverlay() && plugin.getConfig().hideOverlayBank() && !(itemContainer == null))
+		if (plugin.getConfig().showOverlay() && plugin.getConfig().hideOverlayBank() && itemContainer != null)
 		{
 			return super.render(graphics);
 		}

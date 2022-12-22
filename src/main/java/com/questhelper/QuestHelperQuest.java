@@ -362,7 +362,7 @@ public enum QuestHelperQuest
 	WOODCUTTING_MEMBER("Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 
 	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
-	MINING_MEMBER("Mining - Member", Skill.MINING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
+
 	MINING("Mining", Skill.MINING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL);
 
 	@Getter

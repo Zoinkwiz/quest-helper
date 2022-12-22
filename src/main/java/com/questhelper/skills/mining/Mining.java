@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
  * Copyright (c) 2022, jLereback <https://github.com/jLereback>
  * All rights reserved.
  *
@@ -29,8 +28,6 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -117,7 +114,6 @@ public class Mining extends ComplexStateQuestHelper
 			new Conditions(mi41)).showConditioned(
 			new Conditions(at40)
 		).isNotConsumed();
-
 	}
 
 	private void setupSteps()
@@ -127,7 +123,7 @@ public class Mining extends ComplexStateQuestHelper
 				"the ores as you go or bank them in the eastern Varrock bank.", true,
 			ironPickaxe, steelPickaxe, blackPickaxe
 		);
-		mineCopperOrTin.addAlternateObjects(ObjectID.ROCKS_11161);
+		mineCopperOrTin.addAlternateObjects(ObjectID.ROCKS_11360, ObjectID.ROCKS_11161, ObjectID.ROCKS_10943);
 
 		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(3294, 3310, 0),
 			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go" +

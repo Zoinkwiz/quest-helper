@@ -82,55 +82,54 @@ public class Mining extends ComplexStateQuestHelper
 		mi31 = new SkillRequirement(Skill.MINING, 31);
 		mi41 = new SkillRequirement(Skill.MINING, 41);
 
-		mi15 = new SkillRequirement(Skill.MINING, 15);
+		mi15 = new SkillRequirement(Skill.MINING, 60);
 
-		ironPickaxe = new ItemRequirement(
-			"Iron pickaxe", ItemID.IRON_PICKAXE).showConditioned(
-			new Conditions(LogicType.NOR, mi6)).showConditioned(
-			new Conditions(LogicType.NOR, at5)
+
+		ironPickaxe = new ItemRequirement("Iron pickaxe", ItemID.IRON_PICKAXE);
+		steelPickaxe = new ItemRequirement("Steel pickaxe", ItemID.STEEL_PICKAXE);
+		blackPickaxe = new ItemRequirement("Black pickaxe", ItemID.BLACK_PICKAXE);
+		mithrilPickaxe = new ItemRequirement("Mithril pickaxe", ItemID.MITHRIL_PICKAXE);
+		adamantPickaxe = new ItemRequirement("Adamant pickaxe", ItemID.ADAMANT_PICKAXE);
+		runePickaxe = new ItemRequirement("Rune pickaxe", ItemID.RUNE_PICKAXE);
+
+		ironPickaxe = ironPickaxe.showConditioned(
+			new Conditions(LogicType.NOR, mi6, new Conditions(LogicType.NOR, at5))
 		).isNotConsumed();
-		steelPickaxe = new ItemRequirement(
-			"Steel pickaxe", ItemID.STEEL_PICKAXE).showConditioned(
-			new Conditions(mi6, new Conditions(LogicType.NOR, mi11))).showConditioned(
-			new Conditions(at5, new Conditions(LogicType.NOR, at10))
+		steelPickaxe = steelPickaxe.showConditioned(
+			new Conditions(mi6, new Conditions(LogicType.NOR, mi11),
+				new Conditions(at5, new Conditions(LogicType.NOR, at10)))
 		).isNotConsumed();
-		blackPickaxe = new ItemRequirement(
-			"Black pickaxe", ItemID.BLACK_PICKAXE).showConditioned(
-			new Conditions(mi11, new Conditions(LogicType.NOR, mi21))).showConditioned(
-			new Conditions(at10, new Conditions(LogicType.NOR, at20))
+		blackPickaxe = blackPickaxe.showConditioned(
+			new Conditions(mi11, new Conditions(LogicType.NOR, mi21),
+			new Conditions(at10, new Conditions(LogicType.NOR, at20)))
 		).isNotConsumed();
-		mithrilPickaxe = new ItemRequirement(
-			"Mithril pickaxe", ItemID.MITHRIL_PICKAXE).showConditioned(
-			new Conditions(mi21, new Conditions(LogicType.NOR, mi31))).showConditioned(
-			new Conditions(at20, new Conditions(LogicType.NOR, at30))
+		mithrilPickaxe = mithrilPickaxe.showConditioned(
+			new Conditions(mi21, new Conditions(LogicType.NOR, mi31),
+				new Conditions(at20, new Conditions(LogicType.NOR, at30)))
 		).isNotConsumed();
-		adamantPickaxe = new ItemRequirement(
-			"Adamant pickaxe", ItemID.ADAMANT_PICKAXE).showConditioned(
-			new Conditions(mi31, new Conditions(LogicType.NOR, mi41))).showConditioned(
-			new Conditions(at30, new Conditions(LogicType.NOR, at40))
+		adamantPickaxe = adamantPickaxe.showConditioned(
+			new Conditions(mi31, new Conditions(LogicType.NOR, mi41),
+				new Conditions(at30, new Conditions(LogicType.NOR, at40)))
 		).isNotConsumed();
-		runePickaxe = new ItemRequirement(
-			"Rune pickaxe", ItemID.RUNE_PICKAXE).showConditioned(
-			new Conditions(mi41)).showConditioned(
-			new Conditions(at40)
+		runePickaxe = runePickaxe.showConditioned(new Conditions(mi41, new Conditions(at40))
 		).isNotConsumed();
 	}
 
 	private void setupSteps()
 	{
-		mineCopperOrTin = new ObjectStep(this, ObjectID.ROCKS_11360, new WorldPoint(3287, 3366, 0),
+		mineCopperOrTin = new ObjectStep(this,ObjectID.ROCKS_11360, new WorldPoint(3287, 3366, 0),
 			"Mine Copper ore and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
 				"the ores as you go or bank them in the eastern Varrock bank.", true,
 			ironPickaxe, steelPickaxe, blackPickaxe
 		);
 		mineCopperOrTin.addAlternateObjects(ObjectID.ROCKS_11360, ObjectID.ROCKS_11161, ObjectID.ROCKS_10943);
 
-		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(3294, 3310, 0),
-			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go" +
-				" or bank them at the Al Kharid bank.", true,
+		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(3295, 3310, 0),
+			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
+				" smelt them on the way to the Al Kharid bank or bank the ores as they are.", true,
 			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe
 		);
-		mineIron.addAlternateObjects(ObjectID.ROCKS_11365);
+		mineIron.addIcon(ItemID.RUNE_PICKAXE);
 	}
 
 	@Override

@@ -26,8 +26,11 @@ package com.questhelper.skills.mining;
 
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -36,6 +39,7 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,6 +47,7 @@ import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -61,15 +66,23 @@ public class Mining extends ComplexStateQuestHelper
 
 	ObjectStep mineCopperOrTin, mineIron;
 
+	Requirement test;
+	Requirement inCopperZone, inIronZone;
+	Zone copperZone, ironZone;
+	TileStep copperStep, ironStep;
+
+	WorldPoint COPPER_POINT = new WorldPoint(3287, 3366, 0);
+	WorldPoint IRON_POINT = new WorldPoint(3295, 3310, 0);
+
 	@Override
 	public QuestStep loadStep()
 	{
 		setupRequirements();
+		setupZones();
 		setupSteps();
 
 		ConditionalStep fullTraining = new ConditionalStep(this, mineCopperOrTin);
 		fullTraining.addStep(mi15, mineIron);
-
 		return fullTraining;
 	}
 
@@ -82,7 +95,7 @@ public class Mining extends ComplexStateQuestHelper
 		mi31 = new SkillRequirement(Skill.MINING, 31);
 		mi41 = new SkillRequirement(Skill.MINING, 41);
 
-		mi15 = new SkillRequirement(Skill.MINING, 60);
+		mi15 = new SkillRequirement(Skill.MINING, 15);
 
 
 		ironPickaxe = new ItemRequirement("Iron pickaxe", ItemID.IRON_PICKAXE);
@@ -92,44 +105,62 @@ public class Mining extends ComplexStateQuestHelper
 		adamantPickaxe = new ItemRequirement("Adamant pickaxe", ItemID.ADAMANT_PICKAXE);
 		runePickaxe = new ItemRequirement("Rune pickaxe", ItemID.RUNE_PICKAXE);
 
-		ironPickaxe = ironPickaxe.showConditioned(
-			new Conditions(LogicType.NOR, mi6, new Conditions(LogicType.NOR, at5))
+		ironPickaxe = ironPickaxe.showConditioned(new Conditions(LogicType.NOR, at5, mi6)
 		).isNotConsumed();
 		steelPickaxe = steelPickaxe.showConditioned(
-			new Conditions(mi6, new Conditions(LogicType.NOR, mi11),
-				new Conditions(at5, new Conditions(LogicType.NOR, at10)))
+			new Conditions(at5, mi6, new Conditions(LogicType.NOR, at10, mi11))
 		).isNotConsumed();
 		blackPickaxe = blackPickaxe.showConditioned(
-			new Conditions(mi11, new Conditions(LogicType.NOR, mi21),
-			new Conditions(at10, new Conditions(LogicType.NOR, at20)))
+			new Conditions(at10, mi11, new Conditions(LogicType.NOR, at20, mi21))
 		).isNotConsumed();
 		mithrilPickaxe = mithrilPickaxe.showConditioned(
-			new Conditions(mi21, new Conditions(LogicType.NOR, mi31),
-				new Conditions(at20, new Conditions(LogicType.NOR, at30)))
+			new Conditions(at20, mi21, new Conditions(LogicType.NOR, at30, mi31))
 		).isNotConsumed();
 		adamantPickaxe = adamantPickaxe.showConditioned(
-			new Conditions(mi31, new Conditions(LogicType.NOR, mi41),
-				new Conditions(at30, new Conditions(LogicType.NOR, at40)))
+			new Conditions(at30, mi31, new Conditions(LogicType.NOR, at40, mi41))
 		).isNotConsumed();
-		runePickaxe = runePickaxe.showConditioned(new Conditions(mi41, new Conditions(at40))
+		runePickaxe = runePickaxe.showConditioned(new Conditions(mi41, at40)
 		).isNotConsumed();
+	}
+
+	public void setupConditions()
+	{
+		inCopperZone = new ZoneRequirement(copperZone);
+		inIronZone = new ZoneRequirement(ironZone);
+	}
+
+	public void setupZones()
+	{
+		copperZone = new Zone(new WorldPoint(3287, 3366, 0), new WorldPoint(3288, 3367, 0));
+		ironZone = new Zone(new WorldPoint(3295, 3310, 0), new WorldPoint(3294, 3311, 0));
 	}
 
 	private void setupSteps()
 	{
-		mineCopperOrTin = new ObjectStep(this,ObjectID.ROCKS_11360, new WorldPoint(3287, 3366, 0),
-			"Mine Copper ore and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
-				"the ores as you go or bank them in the eastern Varrock bank.", true,
+/*		copperStep = new TileStep(this, COPPER_POINT,
+			"Stand next to the Copper- and Tin ore");
+		copperStep.addTileMarkers(SpriteID.SKILL_MINING, COPPER_POINT);
+
+		ironStep = new TileStep(this, IRON_POINT,
+			"Stand between the Iron ores");
+		ironStep.addTileMarkers(SpriteID.SKILL_MINING, IRON_POINT);*/
+
+
+		mineCopperOrTin = new ObjectStep(this, ObjectID.ROCKS_11360, COPPER_POINT,
+			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
+				"the ores as you go or bank them in the eastern Varrock bank.",
 			ironPickaxe, steelPickaxe, blackPickaxe
 		);
 		mineCopperOrTin.addAlternateObjects(ObjectID.ROCKS_11360, ObjectID.ROCKS_11161, ObjectID.ROCKS_10943);
+		//mineCopperOrTin.addTileMarkers(SpriteID.SKILL_MINING, COPPER_POINT);
 
-		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(3295, 3310, 0),
+		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, IRON_POINT,
 			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
-				" smelt them on the way to the Al Kharid bank or bank the ores as they are.", true,
+				" smelt them on the way to the Al Kharid bank or bank the ores as they are.",
 			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe
 		);
-		mineIron.addIcon(ItemID.RUNE_PICKAXE);
+		mineIron.addAlternateObjects(ObjectID.ROCKS_11365);
+		//mineCopperOrTin.addTileMarkers(SpriteID.SKILL_MINING, IRON_POINT);
 	}
 
 	@Override
@@ -150,9 +181,9 @@ public class Mining extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("1 - 15: Mine Copper/Tin", Collections.singletonList(mineCopperOrTin),
+		allSteps.add(new PanelDetails("1 - 15: Mine Copper/Tin", Arrays.asList(copperStep, mineCopperOrTin),
 			ironPickaxe, steelPickaxe, blackPickaxe));
-		allSteps.add(new PanelDetails("15 - 99: Mine Iron ore", Collections.singletonList(mineIron),
+		allSteps.add(new PanelDetails("15 - 99: Mine Iron ore", Arrays.asList(ironStep, mineIron),
 			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe));
 		return allSteps;
 	}

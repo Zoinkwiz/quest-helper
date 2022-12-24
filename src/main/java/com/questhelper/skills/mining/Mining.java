@@ -65,8 +65,6 @@ public class Mining extends ComplexStateQuestHelper
 	SkillRequirement mi15;
 
 	ObjectStep mineCopperOrTin, mineIron;
-
-	Requirement test;
 	Requirement inCopperZone, inIronZone;
 	Zone copperZone, ironZone;
 	TileStep copperStep, ironStep;
@@ -78,11 +76,14 @@ public class Mining extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		setupRequirements();
+		setupConditions();
 		setupZones();
 		setupSteps();
 
-		ConditionalStep fullTraining = new ConditionalStep(this, mineCopperOrTin);
-		fullTraining.addStep(mi15, mineIron);
+		ConditionalStep fullTraining = new ConditionalStep(this, copperStep);
+		fullTraining.addStep(new Conditions(inCopperZone), mineCopperOrTin);
+		fullTraining.addStep(new Conditions(mi15, inIronZone), mineIron);
+		fullTraining.addStep(mi15, ironStep);
 		return fullTraining;
 	}
 
@@ -131,36 +132,36 @@ public class Mining extends ComplexStateQuestHelper
 
 	public void setupZones()
 	{
-		copperZone = new Zone(new WorldPoint(3287, 3366, 0), new WorldPoint(3288, 3367, 0));
-		ironZone = new Zone(new WorldPoint(3295, 3310, 0), new WorldPoint(3294, 3311, 0));
+		copperZone = new Zone(COPPER_POINT);
+		ironZone = new Zone(IRON_POINT);
 	}
 
 	private void setupSteps()
 	{
-/*		copperStep = new TileStep(this, COPPER_POINT,
-			"Stand next to the Copper- and Tin ore");
-		copperStep.addTileMarkers(SpriteID.SKILL_MINING, COPPER_POINT);
+		copperStep = new TileStep(this, COPPER_POINT,
+			"Stand next to the Copper- and Tin ore",
+			ironPickaxe, steelPickaxe, blackPickaxe);
+		copperStep.addTileMarker(COPPER_POINT, SpriteID.SKILL_MINING);
 
 		ironStep = new TileStep(this, IRON_POINT,
-			"Stand between the Iron ores");
-		ironStep.addTileMarkers(SpriteID.SKILL_MINING, IRON_POINT);*/
+			"Stand between the Iron ores",
+			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe);
+		ironStep.addTileMarker(IRON_POINT, SpriteID.SKILL_MINING);
 
 
 		mineCopperOrTin = new ObjectStep(this, ObjectID.ROCKS_11360, COPPER_POINT,
 			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
-				"the ores as you go or bank them in the eastern Varrock bank.",
+				"the ores as you go or bank them in the eastern Varrock bank.", true,
 			ironPickaxe, steelPickaxe, blackPickaxe
 		);
 		mineCopperOrTin.addAlternateObjects(ObjectID.ROCKS_11360, ObjectID.ROCKS_11161, ObjectID.ROCKS_10943);
-		//mineCopperOrTin.addTileMarkers(SpriteID.SKILL_MINING, COPPER_POINT);
 
 		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, IRON_POINT,
 			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
-				" smelt them on the way to the Al Kharid bank or bank the ores as they are.",
+				" smelt them on the way to the Al Kharid bank or bank the ores as they are.", true,
 			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe
 		);
 		mineIron.addAlternateObjects(ObjectID.ROCKS_11365);
-		//mineCopperOrTin.addTileMarkers(SpriteID.SKILL_MINING, IRON_POINT);
 	}
 
 	@Override

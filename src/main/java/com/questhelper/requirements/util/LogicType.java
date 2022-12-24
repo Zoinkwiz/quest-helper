@@ -36,7 +36,7 @@ public enum LogicType
 	AND(Stream::allMatch, (n1, n2) -> n1.doubleValue() == n2.doubleValue()),
 	/** Returns true if any inputs match the supplied predicate. */
 	OR(Stream::anyMatch, (n1, n2) -> n1.doubleValue() > 0.0D),
-	/** The output is false is all inputs match the supplied predicate. Otherwise returns true. */
+	/** The output is false if all inputs match the supplied predicate. Otherwise returns true. */
 	NAND((s,p) -> !s.allMatch(p), (n1, n2) -> n1.doubleValue() < n2.doubleValue()),
 	/** Returns true if all elements do not match the supplied predicate. */
 	NOR(Stream::noneMatch, (n1, n2) -> n1.doubleValue() == 0.0D),

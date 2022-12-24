@@ -90,6 +90,13 @@ public class ObjectStep extends DetailedQuestStep
 		this.showAllInArea = false;
 	}
 
+	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, boolean showAllInArea, List<Requirement> recommended, Requirement... requirements)
+	{
+		super(questHelper, worldPoint, text, recommended, requirements);
+		this.objectID = objectID;
+		this.showAllInArea = showAllInArea;
+	}
+
 	public void setRevalidateObjects(boolean value)
 	{
 		this.revalidateObjects = value;
@@ -303,7 +310,7 @@ public class ObjectStep extends DetailedQuestStep
 			if (clickbox != null && !inCutscene)
 			{
 				Rectangle2D boundingBox = clickbox.getBounds2D();
-				graphics.drawImage(icon, (int) boundingBox.getCenterX() - 15,  (int) boundingBox.getCenterY() - 10,
+				graphics.drawImage(icon, (int) boundingBox.getCenterX() - 15, (int) boundingBox.getCenterY() - 10,
 					null);
 			}
 		}

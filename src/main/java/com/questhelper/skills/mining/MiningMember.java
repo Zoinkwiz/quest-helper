@@ -50,11 +50,15 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
+/*@QuestDescriptor(
 	quest = QuestHelperQuest.MINING_MEMBER
-)
+)*/
 public class MiningMember extends ComplexStateQuestHelper
 {
+
+// TODO::MINING_MEMBER ARE NOT DONE AND NEED TO BE UPDATED SINCE THE STEPS ARE THE SAME AS MINING F2P AT THIS TIME
+
+
 	//Items Required
 	ItemRequirement ironPickaxe, steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe, dragonPickaxe;
 

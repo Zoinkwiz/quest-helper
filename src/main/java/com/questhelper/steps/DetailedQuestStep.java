@@ -149,6 +149,14 @@ public class DetailedQuestStep extends QuestStep
 		this.recommended.addAll(recommended);
 	}
 
+	public DetailedQuestStep(QuestHelper questHelper, WorldPoint worldPoint, String text, List<Requirement> recommended, Requirement... requirements)
+	{
+		super(questHelper, text);
+		this.worldPoint = worldPoint;
+		this.requirements.addAll(Arrays.asList(requirements));
+		this.recommended.addAll(recommended);
+	}
+
 	@Override
 	public void startUp()
 	{

@@ -55,7 +55,7 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 	ItemRequirement ironAxe, steelAxe, blackAxe, mithrilAxe, adamantAxe, runeAxe, dragonAxe;
 
 	// Items recommended
-	ItemRequirement lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots;
+	ItemRequirement dragonAxeRec, lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots;
 
 	SkillRequirement wc6, wc11, wc21, wc31, wc41, wc61;
 	SkillRequirement at5, at10, at20, at30, at40, at60;
@@ -99,40 +99,38 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 		wc15 = new SkillRequirement(Skill.WOODCUTTING, 15);
 		wc35 = new SkillRequirement(Skill.WOODCUTTING, 35);
 
-		ironAxe = new ItemRequirement(
-			"Iron axe", ItemID.IRON_AXE).showConditioned(
-			new Conditions(LogicType.NOR, wc6)).showConditioned(
-			new Conditions(LogicType.NOR, at5)
+
+		ironAxe = new ItemRequirement("Iron axe", ItemID.IRON_AXE);
+		steelAxe = new ItemRequirement("Steel axe", ItemID.STEEL_AXE);
+		blackAxe = new ItemRequirement("Black axe", ItemID.BLACK_AXE);
+		mithrilAxe = new ItemRequirement("Mithril axe", ItemID.MITHRIL_AXE);
+		adamantAxe = new ItemRequirement("Adamant axe", ItemID.ADAMANT_AXE);
+		dragonAxeRec = new ItemRequirement("Dragon axe", ItemID.DRAGON_AXE);
+		dragonAxe = new ItemRequirement("Dragon axe", ItemID.DRAGON_AXE);
+		runeAxe = new ItemRequirement("Rune axe", ItemID.RUNE_AXE);
+
+		ironAxe = ironAxe.showConditioned(new Conditions(LogicType.NOR, at5, wc6)
 		).isNotConsumed();
-		steelAxe = new ItemRequirement(
-			"Steel axe", ItemID.STEEL_AXE).showConditioned(
-			new Conditions(wc6, new Conditions(LogicType.NOR, wc11))).showConditioned(
-			new Conditions(at5, new Conditions(LogicType.NOR, at10))
+		steelAxe = steelAxe.showConditioned(
+			new Conditions(at5, wc6, new Conditions(LogicType.NOR, at10, wc11))
 		).isNotConsumed();
-		blackAxe = new ItemRequirement(
-			"Black axe", ItemID.BLACK_AXE).showConditioned(
-			new Conditions(wc11, new Conditions(LogicType.NOR, wc21))).showConditioned(
-			new Conditions(at10, new Conditions(LogicType.NOR, at20))
+		blackAxe = blackAxe.showConditioned(
+			new Conditions(at10, wc11, new Conditions(LogicType.NOR, at20, wc21))
 		).isNotConsumed();
-		mithrilAxe = new ItemRequirement(
-			"Mithril axe", ItemID.MITHRIL_AXE).showConditioned(
-			new Conditions(wc21, new Conditions(LogicType.NOR, wc31))).showConditioned(
-			new Conditions(at20, new Conditions(LogicType.NOR, at30))
+		mithrilAxe = mithrilAxe.showConditioned(
+			new Conditions(at20, wc21, new Conditions(LogicType.NOR, at30, wc31))
 		).isNotConsumed();
-		adamantAxe = new ItemRequirement(
-			"Adamant axe", ItemID.ADAMANT_AXE).showConditioned(
-			new Conditions(wc31, new Conditions(LogicType.NOR, wc41))).showConditioned(
-			new Conditions(at30, new Conditions(LogicType.NOR, at40))
+		adamantAxe = adamantAxe.showConditioned(
+			new Conditions(at30, wc31, new Conditions(LogicType.NOR, at40, wc41))
 		).isNotConsumed();
-		runeAxe = new ItemRequirement(
-			"Rune axe", ItemID.RUNE_AXE).showConditioned(
-			new Conditions(wc41, new Conditions(LogicType.NOR, wc61))).showConditioned(
-				new Conditions(at40, new Conditions(LogicType.NOR, at60))
-			).isNotConsumed();
-		dragonAxe = new ItemRequirement(
-			"Dragon axe", ItemID.DRAGON_AXE).showConditioned(
-			new Conditions(wc61)).showConditioned(
-				new Conditions(at60)
+		dragonAxeRec = dragonAxeRec.showConditioned(
+			new Conditions(wc61, at60, new Conditions(LogicType.NOR, dragonAxe.alsoCheckBank(questBank)))
+		).isNotConsumed();
+		runeAxe = runeAxe.showConditioned(
+			new Conditions(at40, wc41, new Conditions(LogicType.NOR, dragonAxe.alsoCheckBank(questBank)))
+		).isNotConsumed();
+		dragonAxe = dragonAxe.showConditioned(
+			new Conditions(wc61, at60, dragonAxe.alsoCheckBank(questBank))
 		).isNotConsumed();
 
 
@@ -163,7 +161,7 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 
 		chopTeakTrees = new ObjectStep(this, ObjectID.TEAK, new WorldPoint(2335, 3048, 0),
 			"Chop teak trees south of Castle Wars until 99 Woodcutting. You can choose to burn the logs as you go, " +
-				"drop them, or bank them.", true, adamantAxe, runeAxe, dragonAxe, lumberjackHat, lumberjackBody, lumberjackLegs,
+				"drop them, or bank them.", true, adamantAxe, runeAxe, dragonAxe, dragonAxeRec, lumberjackHat, lumberjackBody, lumberjackLegs,
 			lumberjackBoots);
 	}
 
@@ -184,7 +182,7 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots);
+		return Arrays.asList(dragonAxeRec, lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots);
 	}
 
 	@Override
@@ -196,7 +194,7 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("15 - 35: Cut oak trees", Collections.singletonList(chopOakTrees), Arrays.asList(blackAxe,
 			mithrilAxe, adamantAxe), Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
 		allSteps.add(new PanelDetails("35 - 99: Cut teak trees", Collections.singletonList(chopTeakTrees), Arrays.asList(adamantAxe,
-			runeAxe, dragonAxe), Arrays.asList(lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
+			runeAxe, dragonAxe), Arrays.asList(dragonAxeRec, lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots)));
 		return allSteps;
 	}
 }

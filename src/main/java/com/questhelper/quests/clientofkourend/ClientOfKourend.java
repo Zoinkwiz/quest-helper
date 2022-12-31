@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.clientofkourend;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -173,7 +174,7 @@ public class ClientOfKourend extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(gamesNecklace)
+		return Arrays.asList(gamesNecklace);
 	}
 	
 	@Override

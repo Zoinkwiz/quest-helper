@@ -140,22 +140,21 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		notQCEmote = new VarplayerRequirement(1195, false, 9);
 
         allQuests = new Requirement() {
-			@Override
-			public boolean check(Client client) {
-				boolean allQuestsCompleted = true;
-				for(QuestHelperQuest quest : QuestHelperQuest.values())
-				{
-					if(quest.getQuestType() == QuestDetails.Type.F2P || quest.getQuestType() == QuestDetails.Type.P2P){
-						if (quest.getState(client) != QuestState.FINISHED)
-						{
-							allQuestsCompleted = false;
-							break;
-						}
-					}
-				}
+            @Override
+            public boolean check(Client client) {
+                boolean allQuestsCompleted = true;
+                for (QuestHelperQuest quest : QuestHelperQuest.values()) {
+                    if (quest.getQuestType() == QuestDetails.Type.F2P
+                            || quest.getQuestType() == QuestDetails.Type.P2P) {
+                        if (quest.getState(client) != QuestState.FINISHED) {
+                            allQuestsCompleted = false;
+                            break;
+                        }
+                    }
+                }
 
-				return allQuestsCompleted;
-			}
+                return allQuestsCompleted;
+            }
 
 			@Nonnull
 			@Override

@@ -28,16 +28,15 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
@@ -51,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -61,6 +61,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
+import javax.annotation.Nonnull;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.LUMBRIDGE_ELITE
@@ -138,19 +139,30 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		notWaterRunes = new VarplayerRequirement(1195, false, 8);
 		notQCEmote = new VarplayerRequirement(1195, false, 9);
 
-		// todo find better way to check for all quests completed
-        boolean allQuestsCompleted = true;
-        for(QuestHelperQuest quest : QuestHelperQuest.values())
-        {
-            if (quest.getState(client) != QuestState.FINISHED)
-            {
-                allQuestsCompleted = false;
-                break;
-            }
-        }
-        allQuests = new Conditions(allQuestsCompleted);
-		// allQuests = new QuestPointRequirement(291, Operation.EQUAL);
+        allQuests = new Requirement() {
+			@Override
+			public boolean check(Client client) {
+				boolean allQuestsCompleted = true;
+				for(QuestHelperQuest quest : QuestHelperQuest.values())
+				{
+					if(quest.getQuestType() == QuestDetails.Type.F2P || quest.getQuestType() == QuestDetails.Type.P2P){
+						if (quest.getState(client) != QuestState.FINISHED)
+						{
+							allQuestsCompleted = false;
+							break;
+						}
+					}
+				}
 
+				return allQuestsCompleted;
+			}
+
+			@Nonnull
+			@Override
+			public String getDisplayText() {
+				return "All Quests are Completed";
+			}
+		};
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest).isNotConsumed();
 		crossbow = new ItemRequirement("Crossbow", ItemCollections.CROSSBOWS).showConditioned(notMovario).isNotConsumed();

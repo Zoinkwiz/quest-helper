@@ -416,8 +416,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToThurgoAfterPie.addDialogStep("Return to Keldagrim immediately.");
 
 		// Halfway there
-		giveItemsToRiki = new NpcStep(this, NpcID.RIKI_THE_SCULPTORS_MODEL, new WorldPoint(2887, 10188, 0),
-			"Talk to Ricky the sculptor's model to give him the clothes, axe and boots.",
+		giveItemsToRiki = new NpcStep(this, NpcID.RIKI_THE_SCULPTORS_MODEL, new WorldPoint(2904, 10207, 0),
+			"Talk to Riki the sculptor's model to give him the clothes, axe and boots.",
 			exquisiteClothes.hideConditioned(givenExquisiteClothes), exquisiteBoots.hideConditioned(givenExquisiteBoots),
 			dwarvenBattleaxe.hideConditioned(givenDwarvenBattleaxe));
 		giveItemsToRiki.addDialogStep("Return to Keldagrim immediately.");

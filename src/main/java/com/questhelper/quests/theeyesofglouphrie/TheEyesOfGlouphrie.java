@@ -269,7 +269,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		unlockMachine.addSubSteps(operateMachine);
 
 		killCreature1 = new NpcStep(this, NpcID.EVIL_CREATURE, new WorldPoint(3408, 9819, 0), "Kill the evil creature next to Brimstail.");
-		killCreature2 = new NpcStep(this, NpcID.EVIL_CREATURE_1244, new WorldPoint(2465, 3494, 0), "Kill the evil creature next to Narode.");
+		killCreature2 = new NpcStep(this, NpcID.EVIL_CREATURE_1244, new WorldPoint(2465, 3494, 0), "Kill the evil creature next to Narnode.");
 		killCreature3 = new NpcStep(this, NpcID.EVIL_CREATURE_1247, new WorldPoint(2466, 3496, 3), "Kill the evil creature at the top of the Grand Tree.");
 		killCreature4 = new NpcStep(this, NpcID.EVIL_CREATURE_1250, new WorldPoint(2422, 3526, 0), "Kill the evil creature in the north west of the Stronghold.");
 		killCreature5 = new NpcStep(this, NpcID.EVIL_CREATURE_1253, new WorldPoint(2461, 3388, 0), "Kill the evil creature next to the Stronghold's entrance.");

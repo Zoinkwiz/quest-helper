@@ -400,7 +400,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-			new UnlockReward("Dagganoth bones will be dropped in noted form"),
+			new UnlockReward("Dagannoth bones will be dropped in noted form"),
 			new UnlockReward("Enchanted lyre can now teleport to Jatizso and Neitiznot"),
 			new UnlockReward("Even faster approval gain in Miscellania"),
 			new UnlockReward("Seal of passage is no longer needed to interact with anyone on Lunar Isle"),

@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.clientofkourend;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -56,6 +57,9 @@ public class ClientOfKourend extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement feather;
+	
+	//Items Recommended
+	ItemRequirement gamesNecklace;
 
 	//Other items used
 	ItemRequirement enchantedScroll, enchantedQuill, mysteriousOrb;
@@ -105,6 +109,7 @@ public class ClientOfKourend extends BasicQuestHelper
 		feather.addAlternates(ItemID.BLUE_FEATHER, ItemID.ORANGE_FEATHER, ItemID.RED_FEATHER, ItemID.YELLOW_FEATHER,
 			ItemID.EAGLE_FEATHER, ItemID.STRIPY_FEATHER);
 		feather.setHighlightInInventory(true);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 		enchantedScroll = new ItemRequirement("Enchanted scroll", ItemID.ENCHANTED_SCROLL);
 		enchantedScroll.setHighlightInInventory(true);
 		mysteriousOrb = new ItemRequirement("Mysterious orb", ItemID.MYSTERIOUS_ORB);
@@ -164,6 +169,12 @@ public class ClientOfKourend extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(feather);
 		return reqs;
+	}
+	
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(gamesNecklace);
 	}
 	
 	@Override

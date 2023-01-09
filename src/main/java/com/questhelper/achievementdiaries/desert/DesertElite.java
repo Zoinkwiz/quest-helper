@@ -216,7 +216,7 @@ public class DesertElite extends ComplexStateQuestHelper
 			"Cook a wild pie on the clay oven in Nardah.", rawPie);
 
 		moveToBed = new TileStep(this, new WorldPoint(3175, 3041, 0),
-			"Go to Bedabin Camp south-west of Al Karid.");
+			"Go to Bedabin Camp south-west of Al Kharid.");
 		dragonDarts = new ItemStep(this, "Fletch a dragon dart.", dragonDartTip.highlighted(), feather.highlighted());
 
 		talkKQHead = new DetailedQuestStep(this, "Mount and then talk to a Kalphite Queen head in your POH. The 50k " +

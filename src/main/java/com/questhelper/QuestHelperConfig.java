@@ -255,8 +255,8 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "highlightNeededQuestItems",
-		name = "Highlight quest items",
-		description = "Highlight all quest items you're missing on the floor",
+		name = "Highlight active quest items",
+		description = "Highlight all the active quest's items you're missing on the floor",
 		section = itemSection
 	)
 	default boolean highlightNeededQuestItems()

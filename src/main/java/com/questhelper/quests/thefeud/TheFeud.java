@@ -419,7 +419,7 @@ public class TheFeud extends BasicQuestHelper
 		giveCoinToSnakeCharmer = new ObjectStep(this, ObjectID.MONEY_POT, new WorldPoint(3355, 2953, 0), "Use coins on the snake charmer's money pot to get a snake charm and a snake basket.", highlightedCoins);
 		giveCoinToSnakeCharmer.addIcon(ItemID.COINS);
 
-		catchSnake = new NpcStep(this, NpcID.DESERT_SNAKE, new WorldPoint(3332, 2958, 0), "Use the Snake Charm on a snake to capture it.", true, snakeCharmHighlighted, snakeBasket);
+		catchSnake = new NpcStep(this, NpcID.SNAKE_3544, new WorldPoint(3332, 2958, 0), "Use the Snake Charm on a snake to capture it.", true, snakeCharmHighlighted, snakeBasket);
 		catchSnake.addIcon(ItemID.SNAKE_CHARM);
 
 		givePoisonToAliTheHag = new NpcStep(this, NpcID.ALI_THE_HAG, new WorldPoint(3345, 2986, 0), "Give the snake to Ali the Hag.", snakeBasketFull);

@@ -172,7 +172,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD_3510, new WorldPoint(2718, 3628, 0), "Talk to General" +
+		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0), "Talk to General" +
 			" Khazard south east of Rellekka.", ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyCloak, ghostlyBoots,
 			ghostlyGloves, ringOfVisibility, ghostspeak);
 		talkToKhazard.addDialogSteps("I just have one of those faces.", "I'm a very trustworthy person.");
@@ -184,10 +184,10 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		talkToSeer.addDialogSteps("Bribe", "Here's the money.");
 		talkToSeer.addSubSteps(goUpToSeer);
 
-		talkToKhazardAfterSeer = new NpcStep(this, NpcID.GENERAL_KHAZARD_3510, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterSeer = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", sinSeersNote, ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToKhazardAfterNote = new NpcStep(this, NpcID.GENERAL_KHAZARD_3510, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterNote = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToGnomeScout = new NpcStep(this, NpcID.SCOUT_3512, new WorldPoint(2458, 3358, 0), "Talk to the scout " +
@@ -202,7 +202,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		talkToKaramjaScout = new NpcStep(this, NpcID.SCOUT, new WorldPoint(2825, 3053, 0), "Talk to the scout " +
 			"south east of Tai Bwo Wannai.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToKhazardAfterScouts = new NpcStep(this, NpcID.GENERAL_KHAZARD_3510, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterScouts = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0),

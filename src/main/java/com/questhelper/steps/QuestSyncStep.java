@@ -32,7 +32,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import net.runelite.api.ScriptID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.util.ColorUtil;
 
 public class QuestSyncStep extends QuestStep
 {
@@ -60,6 +60,8 @@ public class QuestSyncStep extends QuestStep
 
 		Widget finalEmoteWidget = null;
 
+		Color overlayColor = questHelper.getConfig().targetOverlayColor();
+
 
 		for (Widget questWidget : questsContainer.getDynamicChildren())
 		{
@@ -69,9 +71,7 @@ public class QuestSyncStep extends QuestStep
 				if (questWidget.getCanvasLocation().getY() > questContainer.getCanvasLocation().getY() &&
 					questWidget.getCanvasLocation().getY() < questContainer.getCanvasLocation().getY() + questContainer.getHeight())
 				{
-					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-						questHelper.getConfig().targetOverlayColor().getGreen(),
-						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+					graphics.setColor(ColorUtil.colorWithAlpha(overlayColor, 65));
 					graphics.fill(questWidget.getBounds());
 					graphics.setColor(questHelper.getConfig().targetOverlayColor());
 					graphics.draw(questWidget.getBounds());

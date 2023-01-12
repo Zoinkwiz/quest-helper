@@ -25,12 +25,16 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import static com.questhelper.overlays.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
@@ -38,12 +42,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
@@ -51,7 +55,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import static com.questhelper.overlays.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.util.ColorUtil;
 
 public class NpcStep extends DetailedQuestStep
 {
@@ -233,10 +237,57 @@ public class NpcStep extends DetailedQuestStep
 			}
 		}
 
+		Color configColor = getQuestHelper().getConfig().targetOverlayColor();
+
 		for (NPC npc : npcs)
 		{
-			OverlayUtil.renderActorOverlayImage(graphics, npc, icon, questHelper.getConfig().targetOverlayColor(),
-				IMAGE_Z_OFFSET);
+
+			highlightNpc(npc, configColor, graphics);
+
+			if (questHelper.getConfig().showSymbolOverlay())
+			{
+				int zOffset = questHelper.getConfig().highlightStyleNpcs() == QuestHelperConfig.NpcHighlightStyle.TILE
+					? IMAGE_Z_OFFSET
+					: (npc.getLogicalHeight() / 2);
+
+				Point imageLocation = npc.getCanvasImageLocation(icon, zOffset);
+				if (imageLocation != null)
+				{
+					OverlayUtil.renderImageLocation(graphics, imageLocation, icon);
+				}
+			}
+		}
+	}
+
+	private void highlightNpc(NPC npc, Color color, Graphics2D graphics)
+	{
+		switch (questHelper.getConfig().highlightStyleNpcs())
+		{
+			case CONVEX_HULL:
+				OverlayUtil.renderHoverableArea(
+					graphics,
+					npc.getConvexHull(),
+					client.getMouseCanvasPosition(),
+					ColorUtil.colorWithAlpha(color, 20),
+					questHelper.getConfig().targetOverlayColor().darker(),
+					questHelper.getConfig().targetOverlayColor());
+				break;
+			case OUTLINE:
+				modelOutlineRenderer.drawOutline(
+					npc,
+					questHelper.getConfig().outlineThickness(),
+					color,
+					questHelper.getConfig().outlineFeathering()
+				);
+				break;
+			case TILE:
+				Polygon poly = npc.getCanvasTilePoly();
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, color);
+				}
+				break;
+			default:
 		}
 	}
 

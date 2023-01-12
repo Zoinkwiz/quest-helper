@@ -64,6 +64,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
 public abstract class QuestStep implements Module
 {
@@ -78,6 +79,10 @@ public abstract class QuestStep implements Module
 
 	@Inject
 	SpriteManager spriteManager;
+
+	@Inject
+	ModelOutlineRenderer modelOutlineRenderer;
+
 
 	@Getter
 	protected List<String> text;
@@ -334,8 +339,7 @@ public abstract class QuestStep implements Module
 		widgetChoices.addChoice(new WidgetTextChange(questHelper.getConfig(), choice, groupID, childID, newText));
 	}
 
-	public void addWidgetLastLoadedCondition(String widgetValue, int widgetGroupID, int widgetChildID, String choiceValue,
-											 int choiceGroupId, int choiceChildId)
+	public void addWidgetLastLoadedCondition(String widgetValue, int widgetGroupID, int widgetChildID, String choiceValue, int choiceGroupId, int choiceChildId)
 	{
 		WidgetLastState conditionWidget = new WidgetLastState(questHelper.getConfig(), widgetValue, widgetGroupID, widgetChildID);
 		widgetChoices.addChoice(conditionWidget);

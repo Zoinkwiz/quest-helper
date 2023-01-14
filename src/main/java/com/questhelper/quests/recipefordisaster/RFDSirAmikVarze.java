@@ -149,7 +149,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		machete = new ItemRequirement("Any machete", ItemCollections.MACHETE).isNotConsumed();
 		radimusNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES).isNotConsumed();
 		radimusNotes.addAlternates(ItemID.RADIMUS_NOTES_715);
-		if (QuestHelperQuest.LEGENDS_QUEST.getState(client) == QuestState.FINISHED)
+		if (client.getGameState() == GameState.LOGGED_IN && QuestHelperQuest.LEGENDS_QUEST.getState(client) == QuestState.FINISHED)
 		{
 			macheteAndRadimus = machete;
 		}

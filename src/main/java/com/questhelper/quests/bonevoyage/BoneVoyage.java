@@ -45,6 +45,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -171,7 +173,7 @@ public class BoneVoyage extends BasicQuestHelper
 		sawmillProposal = new ItemRequirement("Sawmill proposal", ItemID.SAWMILL_PROPOSAL);
 		sawmillProposal.setTooltip("You can get another from the sawmill operator near Varrock");
 		sawmillAgreement = new ItemRequirement("Sawmill agreement", ItemID.SAWMILL_AGREEMENT);
-		if (canEnterGuild.check(client))
+		if (client.getGameState() == GameState.LOGGED_IN && canEnterGuild.check(client))
 		{
 			sawmillAgreement.setTooltip("You can get another from the sawmill operator in the Woodcutting Guild");
 		}

@@ -425,7 +425,7 @@ public interface QuestHelperConfig extends Config
 	@ConfigItem(
 		keyName = "outlineFeathering",
 		name = "Outline feathering",
-		description = "Choose the thickness of target model outlines",
+		description = "Choose how the model outline is faded out",
 		section = hintsSection
 	)
 	default int outlineFeathering()

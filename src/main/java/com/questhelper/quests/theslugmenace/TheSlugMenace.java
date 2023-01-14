@@ -233,6 +233,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		airAltarTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.RIMMINGTON_TELEPORT);
 		airAltarTeleport.setDisplayMatchedItemName(true);
 		airAltarTeleport.setTooltip("The best items for this are (in order):");
+		airAltarTeleport.appendToTooltip("Ring Of The Elements");
 		airAltarTeleport.appendToTooltip("Skills Necklace (to Crafting Guild)");
 		airAltarTeleport.appendToTooltip("Falador Teleport");
 		airAltarTeleport.appendToTooltip("Rimmington/House Teleport");
@@ -241,6 +242,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		earthAltarTeleport.addAlternates(ItemID.VARROCK_TELEPORT, ItemID.LUMBERYARD_TELEPORT, ItemID.DIGSITE_TELEPORT);
 		earthAltarTeleport.setDisplayMatchedItemName(true);
 		earthAltarTeleport.setTooltip("The best items for this are (in order):");
+		earthAltarTeleport.appendToTooltip("Ring Of The Elements");
 		earthAltarTeleport.appendToTooltip("Lumberyard Teleport");
 		earthAltarTeleport.appendToTooltip("Digsite Pendant(s)");
 		earthAltarTeleport.appendToTooltip("Digsite Teleport");
@@ -249,12 +251,13 @@ public class TheSlugMenace extends BasicQuestHelper
 		fireAltarTeleport = new ItemRequirement("Teleport near Fire Altar", ItemCollections.RING_OF_DUELINGS);
 		fireAltarTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		fireAltarTeleport.setTooltip("The best items for this are (in order):");
+		fireAltarTeleport.appendToTooltip("Ring Of The Elements");
 		fireAltarTeleport.appendToTooltip("Ring of Dueling");
 		fireAltarTeleport.appendToTooltip("Amulet of Glory (to Al Kharid)");
 
 		waterAltarTeleport = new ItemRequirement("Teleport near Water Altar", ItemID.LUMBRIDGE_TELEPORT);
 		waterAltarTeleport.setTooltip("The best items for this are (in order):");
-		waterAltarTeleport.appendToTooltip("Lumbridge Graveyard Teleport");
+		waterAltarTeleport.appendToTooltip("Ring Of The Elements");
 		waterAltarTeleport.appendToTooltip("Lumbridge Teleport");
 
 		mindAltarTeleport = new ItemRequirement("Teleport near Mind Altar", ItemID.MIND_ALTAR_TELEPORT);

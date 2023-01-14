@@ -130,7 +130,6 @@ public class DetailedQuestStep extends QuestStep
 	{
 		super(questHelper, text);
 		this.requirements.addAll(Arrays.asList(requirements));
-
 	}
 
 	public DetailedQuestStep(QuestHelper questHelper, String text, List<ItemRequirement> requirements)
@@ -144,7 +143,6 @@ public class DetailedQuestStep extends QuestStep
 		super(questHelper, text);
 		this.worldPoint = worldPoint;
 		this.requirements.addAll(Arrays.asList(requirements));
-
 	}
 
 	public DetailedQuestStep(QuestHelper questHelper, WorldPoint worldPoint, String text, List<Requirement> requirements, List<Requirement> recommended)

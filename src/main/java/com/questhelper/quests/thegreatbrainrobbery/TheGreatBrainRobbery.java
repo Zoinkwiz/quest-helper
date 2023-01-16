@@ -269,8 +269,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		skullStaples = new ItemRequirement("Skull staple", ItemID.SKULL_STAPLE);
 		anchor = new ItemRequirement("Barrelchest anchor", ItemID.BARRELCHEST_ANCHOR_10888);
 
-		neededJars = bellJars.quantity(3 - client.getVarbitValue(3399));
-		neededStaples = skullStaples.quantity(30 - client.getVarbitValue(3400));
+		neededJars = bellJars.quantity(3);
+		neededStaples = skullStaples.quantity(30);
 	}
 
 	public void setupZones()

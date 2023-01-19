@@ -281,7 +281,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear, lawRune.quantity(2), waterRune.quantity(8), coins.quantity(3750), axe,
+		return Arrays.asList(combatGear, hammer, lawRune.quantity(2), waterRune.quantity(8), coins.quantity(3750), axe,
 			tinderbox, pickaxe, coal.quantity(16), lobsterPot, darkFishingBait, godEquip);
 	}
 

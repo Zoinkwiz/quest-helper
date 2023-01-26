@@ -96,7 +96,6 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		System.out.println(this.getQuest().getVar(client));
 		steps.put(0, getJournal);
 		steps.put(2, readJournal);
 

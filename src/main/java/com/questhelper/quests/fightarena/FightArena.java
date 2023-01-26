@@ -221,7 +221,7 @@ public class FightArena extends BasicQuestHelper
 		reqs.add("Khazard Scorpion (level 44) (safespottable)");
 		reqs.add("Khazard Ogre (level 63) (safespottable)");
 		reqs.add("Bouncer (level 137) (safespottable)");
-		reqs.add("General Khazard (level 112) (safespottable) (optional)");
+		reqs.add("General Khazard (level 142) (safespottable) (optional)");
 		return reqs;
 	}
 

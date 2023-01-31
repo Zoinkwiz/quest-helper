@@ -30,6 +30,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
@@ -39,7 +40,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public class SeersVillage extends AgilityCourse
 {
-	QuestStep climbWall, jumpFirstGap, crossTightrope, jumpSecondGap, jumpThirdGap, jumpEdgeZone;
+	QuestStep climbWall, jumpFirstGap, crossTightrope, jumpSecondGap, jumpThirdGap, jumpEdgeZone, seersSidebar;
 	Zone firstGapZone, tightropeZone, secondGapZone, thirdGapZone, edgeZone;
 	ZoneRequirement inFirstGapZone, inTightropeZone, inSecondGapZone, inThirdGapZone, inEdgeZone;
 
@@ -57,13 +58,6 @@ public class SeersVillage extends AgilityCourse
 		setupZones();
 		setupConditions();
 		setupSteps();
-
-		seersStep = new ConditionalStep(this.questHelper, climbWall);
-		seersStep.addStep(new Conditions(inFirstGapZone), jumpFirstGap);
-		seersStep.addStep(new Conditions(inTightropeZone), crossTightrope);
-		seersStep.addStep(new Conditions(inSecondGapZone), jumpSecondGap);
-		seersStep.addStep(new Conditions(inThirdGapZone), jumpThirdGap);
-		seersStep.addStep(new Conditions(inEdgeZone), jumpEdgeZone);
 
 		return seersStep;
 	}
@@ -87,35 +81,44 @@ public class SeersVillage extends AgilityCourse
 		thirdGapZone = new Zone(new WorldPoint(2699, 3468, 3), new WorldPoint(2716, 3475, 3));
 		edgeZone = new Zone(new WorldPoint(2690, 3459, 3), new WorldPoint(2703, 3467, 2));
 	}
-
 	@Override
 	protected void setupSteps()
 	{
 		//Seer's village obstacles
 		climbWall = new ObjectStep(this.questHelper, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
-			"Climb wall", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
+				"Climb wall", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
 		jumpFirstGap = new ObjectStep(this.questHelper, ObjectID.GAP_14928, new WorldPoint(2720, 3494, 3),
-			"Jump first gap", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
+				"Jump first gap", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
 		crossTightrope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE_14932, new WorldPoint(2710, 3489, 2),
-			"Cross tightrope", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
+				"Cross tightrope", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
 		jumpSecondGap = new ObjectStep(this.questHelper, ObjectID.GAP_14929, new WorldPoint(2712, 3476, 2),
-			"Jump second gap", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
+				"Jump second gap", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
 		jumpThirdGap = new ObjectStep(this.questHelper, ObjectID.GAP_14930, new WorldPoint(2702, 3469, 3),
-			"Jump third gap", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
+				"Jump third gap", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
 		jumpEdgeZone = new ObjectStep(this.questHelper, ObjectID.EDGE_14931, new WorldPoint(2703, 3463, 2),
-			"Jump edge", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
+				"Jump edge", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
+
+		//Conditional step to group up the obstacles
+		seersStep = new ConditionalStep(this.questHelper, climbWall);
+		seersStep.addStep(new Conditions(inFirstGapZone), jumpFirstGap);
+		seersStep.addStep(new Conditions(inTightropeZone), crossTightrope);
+		seersStep.addStep(new Conditions(inSecondGapZone), jumpSecondGap);
+		seersStep.addStep(new Conditions(inThirdGapZone), jumpThirdGap);
+		seersStep.addStep(new Conditions(inEdgeZone), jumpEdgeZone);
+
+		seersSidebar = new DetailedQuestStep(this.questHelper, "Do the Seers' Village course, starting from the Seers' Bank.");
+		seersSidebar.addSubSteps(climbWall, jumpFirstGap, crossTightrope, jumpSecondGap, jumpThirdGap, jumpEdgeZone, seersStep);
 	}
 
 	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		seersPanels = new PanelDetails("60 - 70/80: Seer's Village", Arrays.asList(
-			climbWall, jumpFirstGap, crossTightrope, jumpSecondGap, jumpThirdGap, jumpEdgeZone)
+		seersPanels = new PanelDetails("60 - 70/80: Seer's Village", Arrays.asList(seersSidebar)
 		);
 		seersPanels.setLockingStep(this.seersStep);
 		return seersPanels;

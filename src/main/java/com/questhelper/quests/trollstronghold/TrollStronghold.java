@@ -93,7 +93,7 @@ public class TrollStronghold extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -132,14 +132,15 @@ public class TrollStronghold extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
-		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS).isNotConsumed();
+		climbingBootsEquipped = climbingBoots.equipped();
 		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
-		climbingBootsOr12Coins = new ItemRequirements(LogicType.OR, "Climbing boots or 12 coins", climbingBoots, coins12);
+		climbingBootsOr12Coins = new ItemRequirements(LogicType.OR, "Climbing boots or 12 coins", climbingBoots, coins12).isNotConsumed();
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
-		mageRangedGear = new ItemRequirement("Mage or ranged gear for safe spotting", -1, -1);
+		mageRangedGear = new ItemRequirement("Mage or ranged gear for safe spotting", -1, -1).isNotConsumed();
 		mageRangedGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		foodAndPotions = new ItemRequirement("Food + prayer potions", ItemCollections.GOOD_EATING_FOOD, -1);
 		prisonKey = new ItemRequirement("Prison key", ItemID.PRISON_KEY);
@@ -264,7 +265,7 @@ public class TrollStronghold extends BasicQuestHelper
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Dad (level 101) (safespottable)");
-		reqs.add("Troll Generall (level 113) (safespottable)");
+		reqs.add("Troll General (level 113) (safespottable)");
 		return reqs;
 	}
 

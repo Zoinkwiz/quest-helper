@@ -88,6 +88,14 @@ public class ItemRequirement extends AbstractRequirement
 	@Setter
 	private QuestBank questBank;
 
+	@Getter
+	protected boolean hadItemLastCheck;
+
+	@Getter
+	protected boolean isConsumedItem = true;
+
+	protected boolean shouldAggregate = true;
+
 	public ItemRequirement(String name, int id)
 	{
 		this(name, id, 1);
@@ -195,6 +203,20 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement isNotConsumed()
+	{
+		ItemRequirement newItem = copy();
+		newItem.isConsumedItem = false;
+		return newItem;
+	}
+
+	public ItemRequirement doNotAggregate()
+	{
+		ItemRequirement newItem = copy();
+		newItem.shouldAggregate = false;
+		return newItem;
+	}
+
 	public ItemRequirement quantity(int newQuantity)
 	{
 		ItemRequirement newItem = copy();
@@ -226,6 +248,9 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
 		newItem.setConditionToHide(conditionToHide);
 		newItem.questBank = questBank;
+		newItem.hadItemLastCheck = hadItemLastCheck;
+		newItem.isConsumedItem = isConsumedItem;
+		newItem.shouldAggregate = shouldAggregate;
 		newItem.setTooltip(getTooltip());
 		newItem.setUrlSuffix(getUrlSuffix());
 
@@ -445,9 +470,11 @@ public class ItemRequirement extends AbstractRequirement
 				allItems));
 			if (remainder <= 0)
 			{
+				hadItemLastCheck = true;
 				return true;
 			}
 		}
+		hadItemLastCheck = false;
 		return false;
 	}
 

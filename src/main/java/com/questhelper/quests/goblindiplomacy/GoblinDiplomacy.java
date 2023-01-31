@@ -71,7 +71,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -112,7 +112,8 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE);
 		blueDye.setTooltip("You can have Aggie in Draynor Village make you some for 2 woad leaves (bought from Wyson in Falador Park for 20 coins) and 5 coins.");
@@ -121,7 +122,8 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		orangeDye.setTooltip("This is made from red dye and yellow dye. Bring Aggie in Draynor Village 3 redberries and 5 coins for red dye, then 2 onions and 5 coins for yellow dye.");
 		orangeDye.setHighlightInInventory(true);
 		goblinMailThree = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 3);
-		mailReq = new ItemRequirement("Goblin mail (obtainable during quest)", ItemID.GOBLIN_MAIL, 3);
+		mailReq = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 3);
+		mailReq.canBeObtainedDuringQuest();
 		goblinMailTwo = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 2);
 
 		goblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL);

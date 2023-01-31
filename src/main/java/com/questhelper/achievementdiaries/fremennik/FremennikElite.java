@@ -151,6 +151,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notDagKings = new VarplayerRequirement(1184, false, 31);
@@ -165,19 +166,24 @@ public class FremennikElite extends ComplexStateQuestHelper
 		protectMissiles = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
 		protectMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
-		petRock = new ItemRequirement("Pet Rock", ItemID.PET_ROCK).showConditioned(notDagKings);
+		petRock = new ItemRequirement("Pet Rock", ItemID.PET_ROCK).showConditioned(notDagKings).isNotConsumed();
 		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notAstralRunes);
 		dragonstone = new ItemRequirement("Cut dragonstone", ItemID.DRAGONSTONE).showConditioned(notDragonAmulet);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notDragonAmulet);
-		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notDragonAmulet);
+		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notDragonAmulet).isNotConsumed();
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE).showConditioned(notDagKings);
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS)
+		.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
-		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
-		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
+		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS)
+			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419)
+			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER)
+			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
 
-		combatGear = new ItemRequirement("High tier combat gear", -1, -1).showConditioned(new Conditions(LogicType.OR, notDagKings, notGodwarsGenerals, notSpiritualMage));
+		combatGear = new ItemRequirement("High tier combat gear", -1, -1)
+			.showConditioned(new Conditions(LogicType.OR, notDagKings, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -394,7 +400,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-			new UnlockReward("Dagganoth bones will be dropped in noted form"),
+			new UnlockReward("Dagannoth bones will be dropped in noted form"),
 			new UnlockReward("Enchanted lyre can now teleport to Jatizso and Neitiznot"),
 			new UnlockReward("Even faster approval gain in Miscellania"),
 			new UnlockReward("Seal of passage is no longer needed to interact with anyone on Lunar Isle"),

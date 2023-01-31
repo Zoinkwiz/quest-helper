@@ -108,7 +108,8 @@ public class SheepHerder extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 

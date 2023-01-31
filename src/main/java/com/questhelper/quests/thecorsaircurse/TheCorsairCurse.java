@@ -78,7 +78,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -180,12 +180,13 @@ public class TheCorsairCurse extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear + food to defeat Ithoi (level 34), who uses magic", -1, -1);
+		combatGear = new ItemRequirement("Combat gear + food to defeat Ithoi (level 34), who uses magic", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		ogreArtfact = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT_21837);
 	}
 

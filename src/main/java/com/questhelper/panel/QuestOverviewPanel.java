@@ -486,7 +486,14 @@ public class QuestOverviewPanel extends JPanel
 
 	private void updateExternalResourcesPanel(QuestHelper quest)
 	{
-		List<ExternalQuestResources> externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
+		List<ExternalQuestResources> externalResourcesList;
+		try
+		{
+			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
+		} catch (Exception e)
+		{
+			return;
+		}
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);
 		JButton wikiBtn = new JButton();
@@ -564,10 +571,9 @@ public class QuestOverviewPanel extends JPanel
 
 		if (questStepPanelList != null)
 		{
-			for (QuestStepPanel questStepPanel : questStepPanelList)
-			{
+			questStepPanelList.forEach((questStepPanel) -> {
 				questStepPanel.updateRequirements(client, bankItems, this);
-			}
+			});
 		}
 		revalidate();
 	}
@@ -606,6 +612,10 @@ public class QuestOverviewPanel extends JPanel
 			if (newColor == Color.WHITE)
 			{
 				requirementPanel.getLabel().setToolTipText("In bank");
+			}
+			else if (newColor == Color.ORANGE)
+			{
+				requirementPanel.getLabel().setToolTipText("On steel key ring");
 			}
 			else
 			{

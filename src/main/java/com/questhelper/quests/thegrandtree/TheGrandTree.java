@@ -39,6 +39,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -96,7 +97,7 @@ public class TheGrandTree extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -155,8 +156,8 @@ public class TheGrandTree extends BasicQuestHelper
 		if (QuestHelperQuest.TREE_GNOME_VILLAGE.getState(client) == QuestState.FINISHED)
 		{
 			goTalkToCharlie3.setText("Return to Charlie. You won't be able to enter through the main entrance, so " +
-				"make use of a Spirit Tree to enter the Tree Gnome Stronghold. The easiest tree to use is the one in " +
-				"the Grand Exchange.");
+				"speak to Femi outside the main gate to be snuck in, or make use of a Spirit Tree to enter the Tree Gnome Stronghold." +
+				"The easiest Spirit Tree to use is the one in the Grand Exchange.");
 		}
 		else
 		{
@@ -164,6 +165,7 @@ public class TheGrandTree extends BasicQuestHelper
 				"need to talk to Femi there. If you didn't help them previously you'll need to pay them 1k.");
 		}
 		goTalkToCharlie3.addRequirement(lumberOrder);
+		goTalkToCharlie3.addRequirement(oneThousandCoins);
 		steps.put(90, goTalkToCharlie3);
 
 		goGetAnitaKey = new ConditionalStep(this, climbUpToAnita, "Talk to Anita in her house west of the Grand Tree.");
@@ -209,15 +211,16 @@ public class TheGrandTree extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		oneThousandCoins = new ItemRequirement("Coins", ItemCollections.COINS, 1000);
+		oneThousandCoins = new ItemRequirement("Coins to enter the Stronghold if you didn't help Femi previously", ItemCollections.COINS, 1000)
+			.hideConditioned(new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED));
 
-		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
-		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);
+		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemCollections.FAIRY_STAFF).isNotConsumed();
 
 		energyOrStaminaPotions = new ItemRequirement("Energy restoration", ItemCollections.RUN_RESTORE_ITEMS, -1);
-		combatGear = new ItemRequirement("Combat gear. Safespotting is possible.", -1, -1);
+		combatGear = new ItemRequirement("Combat gear. Safespotting is possible.", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);

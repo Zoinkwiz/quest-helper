@@ -25,10 +25,12 @@
 package com.questhelper.quests.thetouristtrap;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -94,7 +96,7 @@ public class TheTouristTrap extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -193,9 +195,10 @@ public class TheTouristTrap extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
 		desertBottom = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
@@ -204,9 +207,9 @@ public class TheTouristTrap extends BasicQuestHelper
 		desertBottomWorn = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE, 1, true);
 		desertBootWorn = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS, 1, true);
 		bronzeBar3 = new ItemRequirement("Bronze bars", ItemID.BRONZE_BAR, 3);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 
-		metalKey = new ItemRequirement("Metal key", ItemID.METAL_KEY);
+		metalKey = new KeyringRequirement("Metal key", configManager, KeyringCollection.METAL_KEY);
 		metalKey.setTooltip("You can get another by killing the Mercenary Guard outside the Desert Mining Camp");
 		slaveTop = new ItemRequirement("Slave shirt", ItemID.SLAVE_SHIRT);
 		slaveTop.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");
@@ -245,8 +248,8 @@ public class TheTouristTrap extends BasicQuestHelper
 		anaInABarrelHighlighted.setHighlightInInventory(true);
 
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		coins100 = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 	}
 

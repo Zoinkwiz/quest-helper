@@ -83,7 +83,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -121,7 +121,8 @@ public class ObservatoryQuest extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
@@ -132,9 +133,9 @@ public class ObservatoryQuest extends BasicQuestHelper
 		antipoison = new ItemRequirement("Antipoison (there is a spawn near the Observatory of superantipoison)",
 			ItemCollections.ANTIPOISONS);
 
-		mould = new ItemRequirement("Lens mould", ItemID.LENS_MOULD);
-		lens = new ItemRequirement("Observatory lens", ItemID.OBSERVATORY_LENS);
-		key = new ItemRequirement("Goblin kitchen key", ItemID.GOBLIN_KITCHEN_KEY);
+		mould = new ItemRequirement("Lens mould", ItemID.LENS_MOULD).isNotConsumed();
+		lens = new ItemRequirement("Observatory lens", ItemID.OBSERVATORY_LENS).isNotConsumed();
+		key = new ItemRequirement("Goblin kitchen key", ItemID.GOBLIN_KITCHEN_KEY).isNotConsumed();
 	}
 
 	public void setupConditions()

@@ -172,17 +172,18 @@ public class ShiloVillage extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		torchOrCandle = new ItemRequirement("Lit torch or candle", ItemID.LIT_TORCH);
 		torchOrCandle.addAlternates(ItemID.LIT_CANDLE);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		bronzeWire = new ItemRequirement("Bronze wire", ItemID.BRONZE_WIRE);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		bones3 = new ItemRequirement("Bones", ItemID.BONES, 3);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		staminas = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, -1);
@@ -357,7 +358,7 @@ public class ShiloVillage extends BasicQuestHelper
 			"Search the dolmen, ready to fight.");
 
 		killNazastarool = new NpcStep(this, NpcID.NAZASTAROOL, new WorldPoint(2892, 9488, 0),
-			"Defeat Nazastrool's 3 forms. You can safe spot them over the dolem, and the Crumble Undead spell is very" +
+			"Defeat Nazastrool's 3 forms. You can safe spot them over the dolmen, and the Crumble Undead spell is very" +
 				" strong against them.");
 		((NpcStep) killNazastarool).addAlternateNpcs(NpcID.NAZASTAROOL_5354, NpcID.NAZASTAROOL_5355);
 		((NpcStep)killNazastarool).addSafeSpots(new WorldPoint(2894, 9486, 0), new WorldPoint(2891, 9486, 0));

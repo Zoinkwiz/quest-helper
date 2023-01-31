@@ -74,7 +74,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -128,38 +128,40 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		catspeak = new ItemRequirement("Catspeak amulet", ItemID.CATSPEAK_AMULET, 1, true);
+		catspeak = new ItemRequirement("Catspeak amulet", ItemID.CATSPEAK_AMULET, 1, true).isNotConsumed();
 		catspeak.setTooltip("You can get another from the Sphinx in Sophanem");
-		catspeakE = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE);
-		catspeakEWorn = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE, 1, true);
+		catspeakE = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE).isNotConsumed();
+		catspeakEWorn = catspeakE.equipped();
 		catspeakE.setHighlightInInventory(true);
 		deathRune5 = new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 5);
 		cat = new FollowerItemRequirement("A cat",
 			ItemCollections.CATS,
-			NpcCollections.getCats());
+			NpcCollections.getCats()).isNotConsumed();
 
 		chocolateCake = new ItemRequirement("Chocolate cake", ItemID.CHOCOLATE_CAKE);
 		chocolateCake.setHighlightInInventory(true);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
+		logs.addAlternates(ItemCollections.LOGS_FOR_FIRE);
 		logs.setHighlightInInventory(true);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.setHighlightInInventory(true);
-		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
+		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK).isNotConsumed();
 		milk.setHighlightInInventory(true);
-		shears = new ItemRequirement("Shears", ItemID.SHEARS);
+		shears = new ItemRequirement("Shears", ItemID.SHEARS).isNotConsumed();
 		shears.setHighlightInInventory(true);
 		potatoSeed4 = new ItemRequirement("Potato seeds", ItemID.POTATO_SEED, 4);
 		potatoSeed4.setHighlightInInventory(true);
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		rake.setHighlightInInventory(true);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
 
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
-		desertBottom = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE, 1, true);
-		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT, 1, true);
-		hat = new ItemRequirement("Doctor's or Nurse hat", ItemID.DOCTORS_HAT, 1, true);
+		desertBottom = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE, 1, true).isNotConsumed();
+		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT, 1, true).isNotConsumed();
+		hat = new ItemRequirement("Doctor's or Nurse hat", ItemID.DOCTORS_HAT, 1, true).isNotConsumed();
 		hat.addAlternates(ItemID.NURSE_HAT);
 		hat.setDisplayMatchedItemName(true);
 	}

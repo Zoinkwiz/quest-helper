@@ -46,12 +46,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.IconID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Prayer;
+import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -99,7 +101,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		updateSection3Route();
 	}
 
-	public void setupItemRequirements()
+	public void setupRequirements()
 	{
 		bronzeKey = new ItemRequirement("Bronze key", ItemID.BRONZE_KEY_19566);
 		protectFromMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
@@ -243,7 +245,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		fifthSectionRightPaths = new int[fifthSectionMap.length];
 		Arrays.fill(fifthSectionRightPaths, -1);
 
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupPaths();
@@ -279,7 +281,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		goToKruk.addSubSteps(enterShortcut);
 
 		fightKruk = new NpcStep(getQuestHelper(), NpcID.KRUK_6805, new WorldPoint(2535, 9213, 1),
-			"Kill Kruk. He can be flinched on a corner in the room.");
+			"Kill Kruk. He can be flinched on a corner in the room by keeping him on a north east tile to you.");
+		fightKruk.addTileMarker(new WorldPoint(2528, 9220, 1), SpriteID.RS2_SWORD_POINTED_LEFT);
+		fightKruk.addTileMarker(new WorldPoint(2529, 9221, 1), SpriteID.EQUIPMENT_SLOT_SHIELD);
 	}
 
 	private void updateSection1Route()
@@ -448,7 +452,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onGameTick(GameTick ignoredEvent)
 	{
 		if (!shouldUsePath1V2.check(client))
 		{

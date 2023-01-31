@@ -154,24 +154,25 @@ public class RFDPiratePete extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		canSwim = new WeightRequirement("Weight less than 27kg", 26, Operation.LESS_EQUAL);
 
-		pestleHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestleHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleHighlighted.setHighlightInInventory(true);
 		rawCodHighlighted = new ItemRequirement("Raw cod (more if you burn cake)", ItemID.RAW_COD);
 		rawCodHighlighted.setHighlightInInventory(true);
-		knifeHighlighted = new ItemRequirement("Knife", ItemID.KNIFE);
+		knifeHighlighted = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knifeHighlighted.setHighlightInInventory(true);
 		breadHighlighted = new ItemRequirement("Bread (more if you burn cake)", ItemID.BREAD);
 		breadHighlighted.setTooltip("You can make this by using a knife on bread");
 		breadHighlighted.setHighlightInInventory(true);
-		divingAparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS, 1, true);
-		divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET, 1, true);
+		divingAparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS, 1, true).isNotConsumed();
+		divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET, 1, true).isNotConsumed();
 		fishBowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL);
 		bronzeWire3 = new ItemRequirement("Bronze wire", ItemID.BRONZE_WIRE, 3);
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		fishCake = new ItemRequirement("Cooked fishcake", ItemID.COOKED_FISHCAKE);
 		fishCakeHighlighted = new ItemRequirement("Cooked fishcake", ItemID.COOKED_FISHCAKE);
 		fishCakeHighlighted.setHighlightInInventory(true);
@@ -225,7 +226,7 @@ public class RFDPiratePete extends BasicQuestHelper
 
 		generalReqs = new ArrayList<>();
 		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
-		if (client.getAccountType().isIronman())
+		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
 		{
 			generalReqs.add(new ComplexRequirement(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
 				new SkillRequirement(Skill.CRAFTING, 42, true),

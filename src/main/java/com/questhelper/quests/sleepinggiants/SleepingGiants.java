@@ -102,7 +102,7 @@ public class SleepingGiants extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -151,6 +151,7 @@ public class SleepingGiants extends BasicQuestHelper
 		speakToKovacForCommission.addStep(new Conditions(LogicType.NOR, talkedToKovacAboutPouringMetal), talkToKovakAfterMould);
 		speakToKovacForCommission.addStep(new Conditions(LogicType.NOR, metalPoured), pourMetal);
 
+		// TODO: Setup condition for sword cooled down with bucket of water for picking up
 		speakToKovacForCommission.addStep(new Conditions(new Conditions(LogicType.NOR, preformObtained),
 			new Conditions(LogicType.OR, iceGloves, bucketOfWater)), coolDownSword);
 		speakToKovacForCommission.addStep(new Conditions(new Conditions(LogicType.NOR, preformObtained), bucket), fillBucketWaterfall);
@@ -177,7 +178,7 @@ public class SleepingGiants extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	public void setupRequirements()
 	{
 		oakLogs = new ItemRequirement("Oak Logs", ItemID.OAK_LOGS);
 		oakLogs.setQuantity(3);
@@ -276,7 +277,7 @@ public class SleepingGiants extends BasicQuestHelper
 	public void setupSteps()
 	{
 		goToDesertPlateau = new DetailedQuestStep(this, new WorldPoint(3362, 3148, 0),
-			"Go to the Desert Plateau east of Al Kharid to start the quest.", oakLogs, wool, nails, chisel, iceGloves);
+			"Go to the Desert Plateau east of Al Kharid to start the quest.", Arrays.asList(oakLogs, wool, nails, chisel), Arrays.asList(iceGloves));
 		((DetailedQuestStep) goToDesertPlateau).setLinePoints(Arrays.asList(new WorldPoint(3293, 3180, 0),
 			new WorldPoint(3306, 3180, 0),
 			new WorldPoint(3313, 3171, 0),
@@ -349,7 +350,8 @@ public class SleepingGiants extends BasicQuestHelper
 		pourMetal = new ObjectStep(this, NullObjectID.NULL_44776 /* Crucible (empty */, "Pour the full Crucible into the mould.");
 
 		coolDownSword = new ObjectStep(this, NullObjectID.NULL_44777, "Pick up the sword from the mould with a bucket of water or ice gloves equipped.",
-			iceGloves.equipped().showConditioned(iceGloves), bucketOfWater.showConditioned(bucketOfWater));
+			iceGloves.equipped().showConditioned(iceGloves), bucketOfWater.showConditioned(bucketOfWater).highlighted());
+		coolDownSword.addIcon(ItemID.BUCKET_OF_WATER);
 		fillBucketWaterfall = new ObjectStep(this, ObjectID.WATERFALL_44632,
 			"Fill the bucket with water by using it on the Waterfall.", bucketOfWater);
 

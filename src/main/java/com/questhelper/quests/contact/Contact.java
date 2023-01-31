@@ -64,7 +64,7 @@ public class Contact extends BasicQuestHelper
 	ItemRequirement lightSource, tinderbox, combatGear, parchment, keris, food, prayerPotions;
 
 	// Item recommended
-	ItemRequirement coins, glory, antipoison;
+	ItemRequirement coins, glory, antipoison, waterskin;
 
 	Requirement inBank, inDungeon, inChasm, hasReadParchment, kerisNearby;
 
@@ -77,7 +77,7 @@ public class Contact extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -128,20 +128,22 @@ public class Contact extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
 		parchment.setHighlightInInventory(true);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS);
+		waterskin = new ItemRequirement("Waterskins for desert travel", ItemCollections.WATERSKIN);
 
 		keris = new ItemRequirement("Keris", ItemID.KERIS);
 
@@ -289,6 +291,7 @@ public class Contact extends BasicQuestHelper
 		reqs.add(coins.quantity(1000));
 		reqs.add(glory);
 		reqs.add(antipoison);
+		reqs.add(waterskin);
 		return reqs;
 	}
 

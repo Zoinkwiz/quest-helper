@@ -356,15 +356,16 @@ public class ForgettableTale extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		coins500 = new ItemRequirement("Coins", ItemCollections.COINS, 500);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		barleyMalt2 = new ItemRequirement("Barley malt", ItemID.BARLEY_MALT, 2);
 		bucketOfWater2 = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER, 2);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		yeast = new ItemRequirement("Ale yeast", ItemID.ALE_YEAST);
 		kebab = new ItemRequirement("Kebab", ItemID.KEBAB);
 		kebab.setTooltip("You can buy one for 1 coin in the food shop northeast in Keldagrim");
@@ -557,6 +558,7 @@ public class ForgettableTale extends BasicQuestHelper
 	{
 		travelToKeldagrim = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
 			"Travel to Keldagrim.");
+		travelToKeldagrim.addDialogStep("Yes please.");
 		talkToVeldaban = new NpcStep(this, NpcID.COMMANDER_VELDABAN_6045, new WorldPoint(2827, 10214, 0),
 			"");
 		talkToVeldaban.addDialogSteps("Very interested!", "Yes.", "Sounds like just the job for me!");
@@ -981,7 +983,7 @@ public class ForgettableTale extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Dwarven Stout (m)", ItemID.DWARVEN_STOUTM, 1));
+		return Collections.singletonList(new ItemReward("Dwarven Stout (m)", ItemID.DWARVEN_STOUTM, 2));
 	}
 
 	@Override

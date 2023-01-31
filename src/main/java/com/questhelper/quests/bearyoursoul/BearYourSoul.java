@@ -24,6 +24,7 @@
  */
 package com.questhelper.quests.bearyoursoul;
 
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -32,6 +33,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -69,7 +71,7 @@ public class BearYourSoul extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -87,10 +89,13 @@ public class BearYourSoul extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		dustyKeyOr70AgilOrKeyMasterTeleport = new ItemRequirement("Dusty key, or another way to get into the deep Taverley Dungeon", ItemID.DUSTY_KEY);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		dustyKeyOr70AgilOrKeyMasterTeleport =
+		new KeyringRequirement("Dusty key, or another way to get into the deep Taverley Dungeon",
+			configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		damagedSoulBearer = new ItemRequirement("Damaged soul bearer", ItemID.DAMAGED_SOUL_BEARER);
 	}
 

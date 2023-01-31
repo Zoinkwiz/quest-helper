@@ -103,7 +103,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupWorldPoints();
 		setupZones();
 		setupConditions();
@@ -466,18 +466,19 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		lubufuZone = new Zone(new WorldPoint(2759,3173,0), new WorldPoint(2780,3162,0));
 	}
 
-	private void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 
 		slicedBanana = new ItemRequirement("Sliced Banana", ItemID.SLICED_BANANA);
 		banana = new ItemRequirement("Banana", ItemID.BANANA);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setTooltip("There's one on the counter in the Musa Point general store");
 		slicedBananaOrKnife = new ItemRequirements(LogicType.OR, slicedBanana, knife);
 
-		smallFishingNet = new ItemRequirement("Small Fishing Net", ItemID.SMALL_FISHING_NET);
-		pestleAndMortar = new ItemRequirement("Pestle And Mortar", ItemID.PESTLE_AND_MORTAR);
+		smallFishingNet = new ItemRequirement("Small Fishing Net", ItemID.SMALL_FISHING_NET).isNotConsumed();
+		pestleAndMortar = new ItemRequirement("Pestle And Mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		logsForFire = new ItemRequirement("Any logs to make a fire", ItemCollections.LOGS_FOR_FIRE);
 		spear = new ItemRequirement("Iron spear or better (You will lose the spear)", ItemID.IRON_SPEAR);
 		spear.setTooltip("Bone and black spear does NOT work");
@@ -488,11 +489,12 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			ItemID.DRAGON_SPEARKP);
 
 		agilityPotion4 = new ItemRequirement("Agility Potion (4)", ItemID.AGILITY_POTION4);
-		rangedOrMagic = new ItemRequirement("Ranged or Magic equipment to kill a level 3 monkey", -1, -1);
+		rangedOrMagic = new ItemRequirement("Ranged or Magic equipment to kill a level 3 monkey", -1, -1).isNotConsumed();
 		rangedOrMagic.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
 		jogreBones = new ItemRequirement("Jogre Bones", ItemID.JOGRE_BONES);
+		jogreBones.canBeObtainedDuringQuest();
 		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN);
 		karambwanPaste = new ItemRequirement("Karambwan paste", ItemID.KARAMBWAN_PASTE);
 		karambwanPaste.addAlternates(ItemID.KARAMBWAN_PASTE_3153, ItemID.KARAMBWAN_PASTE_3154);
@@ -536,11 +538,11 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(new ItemRequirement("Jogre Bones, obtainable during the quest", ItemID.JOGRE_BONES));
+		reqs.add(jogreBones);
 		reqs.add(new ItemRequirement("Extra Karambwans in case you burn the one given", ItemID.RAW_KARAMBWAN));
 		reqs.add(new ItemRequirement("Any Antipoisons", ItemCollections.ANTIPOISONS));
 		reqs.add(new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS));
-		reqs.add(new ItemRequirement("Dramen staff if you have access to fairy rings", ItemID.DRAMEN_STAFF));
+		reqs.add(new ItemRequirement("Dramen staff if you have access to fairy rings", ItemCollections.FAIRY_STAFF));
 		reqs.add(new ItemRequirement("Sliced Banana (Use a knife on a banana)", ItemID.SLICED_BANANA));
 		reqs.add(new ItemRequirement("Poison Karambwan", ItemID.POISON_KARAMBWAN));
 		reqs.add(new ItemRequirement("Food", -1, -1));

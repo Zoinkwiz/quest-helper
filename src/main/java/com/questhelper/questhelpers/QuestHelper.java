@@ -88,11 +88,16 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Setter
 	private Injector injector;
 
+	@Setter
+	@Getter
+	protected QuestHelperPlugin questHelperPlugin;
 
 	@Override
 	public void configure(Binder binder)
 	{
 	}
+
+	public abstract void init();
 
 	public abstract void startUp(QuestHelperConfig config);
 
@@ -198,6 +203,8 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	{
 		return quest.getVar(client);
 	}
+
+	public abstract void setupRequirements();
 
 	public List<ItemRequirement> getItemRequirements()
 	{

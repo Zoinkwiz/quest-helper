@@ -32,11 +32,14 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -121,6 +124,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCraftedAirRunes = new VarplayerRequirement(1187, false, 5);
@@ -131,11 +135,11 @@ public class FaladorElite extends ComplexStateQuestHelper
 		notMadeSaraBrew = new VarplayerRequirement(1187, false, 10);
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.PURE_ESSENCE, 28).showConditioned(notCraftedAirRunes);
-		airTiara = new ItemRequirement("Air Tiara", ItemID.AIR_TIARA, 1, true).showConditioned(notCraftedAirRunes);
+		airTiara = new ItemRequirement("Air Tiara", ItemID.AIR_TIARA, 1, true).showConditioned(notCraftedAirRunes).isNotConsumed();
 		coins1920 = new ItemRequirement("Coins", ItemCollections.COINS, 1920).showConditioned(notPurchasedWhite2hSword);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots);
-		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots).isNotConsumed();
+		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots).isNotConsumed();
 		magicTreeSapling = new ItemRequirement("Magic Sapling", ItemID.MAGIC_SAPLING).showConditioned(notGotMagicRoots);
 		skillCape = new ItemRequirement("Any Skill Cape or Quest Cape", ItemCollections.SKILLCAPE).showConditioned(notPerformedSkillCapeEmote);
 		toadflaxPotionUnf = new ItemRequirement("Toadflax Potion (unf)", ItemID.TOADFLAX_POTION_UNF).showConditioned(notMadeSaraBrew);
@@ -254,7 +258,14 @@ public class FaladorElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 80, true));
 		req.add(new SkillRequirement(Skill.FARMING, 91, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 81, true));
-		req.add(new SkillRequirement(Skill.RUNECRAFT, 88, true));
+		req.add(new ComplexRequirement(LogicType.OR, "88 Runecraft or 55 with Raiments of the Eye set",
+			new SkillRequirement(Skill.RUNECRAFT, 88, true, "88 Runecraft"),
+			new ItemRequirements("55 with Raiments of the Eye set",
+				new ItemRequirement("Hat", ItemCollections.EYE_HAT),
+				new ItemRequirement("Top", ItemCollections.EYE_TOP),
+				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM),
+				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE))
+		));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 
 		req.add(wanted);

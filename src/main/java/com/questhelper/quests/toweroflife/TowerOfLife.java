@@ -110,7 +110,7 @@ public class TowerOfLife extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -131,14 +131,15 @@ public class TowerOfLife extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		rawSwordfish = new ItemRequirement("Raw swordfish (for diary task)", ItemID.RAW_SWORDFISH);
 		rawChicken = new ItemRequirement("Raw chicken (for diary task)", ItemID.RAW_CHICKEN);
 
 		beer = new ItemRequirement("Beer", ItemID.BEER);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
 
 		buildersHat = new ItemRequirement("Hard Hat", ItemID.HARD_HAT);
 		buildersShirt = new ItemRequirement("Builder's Shirt", ItemID.BUILDERS_SHIRT);

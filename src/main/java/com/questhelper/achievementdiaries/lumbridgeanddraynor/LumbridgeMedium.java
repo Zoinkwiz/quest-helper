@@ -79,10 +79,10 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	// Quests required
 	Requirement animalMagnetism, fairyTaleII, lostCity;
 
-	Requirement notAlKaridRooftop, notGrappleLum, notUpgradeDevice, notWizardFairy, notTPlumb, notCatchSalmon,
+	Requirement notAlKharidRooftop, notGrappleLum, notUpgradeDevice, notWizardFairy, notTPlumb, notCatchSalmon,
 		notCraftCoif, notChopWillow, notPickGardener, notChaeldarTask, notPuroImp, notCraftLava;
 
-	QuestStep claimReward, moveToCowPen, moveToZanarisChaeldar, moveToZanarisPuro, moveToPuro, moveToLavaAltar, alKaridRooftop,
+	QuestStep claimReward, moveToCowPen, moveToZanarisChaeldar, moveToZanarisPuro, moveToPuro, moveToLavaAltar, alKharidRooftop,
 		grappleLum, upgradeDevice, wizardFairy, tpLumb, catchSalmon, craftCoif, chopWillow, pickGardener, chaeldarTask, craftLava;
 
 	NpcStep puroImp;
@@ -91,7 +91,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 
 	ZoneRequirement inPuroPuro, inCowPen, inZanaris, inLavaAltar;
 
-	ConditionalStep alKaridRooftopTask, grappleLumTask, upgradeDeviceTask, wizardFairyTask, tplumbTask, catchSalmonTask,
+	ConditionalStep alKharidRooftopTask, grappleLumTask, upgradeDeviceTask, wizardFairyTask, tplumbTask, catchSalmonTask,
 		craftCoifTask, chopWillowTask, pickGardenerTask, chaeldarTaskTask, puroImpTask, craftLavaTask;
 
 	@Override
@@ -134,8 +134,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		craftCoifTask.addStep(inCowPen, craftCoif);
 		doMedium.addStep(notCraftCoif, craftCoifTask);
 
-		alKaridRooftopTask = new ConditionalStep(this, alKaridRooftop);
-		doMedium.addStep(notAlKaridRooftop, alKaridRooftopTask);
+		alKharidRooftopTask = new ConditionalStep(this, alKharidRooftop);
+		doMedium.addStep(notAlKharidRooftop, alKharidRooftopTask);
 
 		grappleLumTask = new ConditionalStep(this, grappleLum);
 		doMedium.addStep(notGrappleLum, grappleLumTask);
@@ -147,9 +147,10 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
-		notAlKaridRooftop = new VarplayerRequirement(1194, false, 13);
+		notAlKharidRooftop = new VarplayerRequirement(1194, false, 13);
 		notGrappleLum = new VarplayerRequirement(1194, false, 14);
 		notUpgradeDevice = new VarplayerRequirement(1194, false, 15);
 		notWizardFairy = new VarplayerRequirement(1194, false, 16);
@@ -162,18 +163,19 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		notPuroImp = new VarplayerRequirement(1194, false, 23);
 		notCraftLava = new VarplayerRequirement(1194, false, 24);
 
-		crossbow = new ItemRequirement("A crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleLum);
-		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleLum);
+		crossbow = new ItemRequirement("A crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleLum).isNotConsumed();
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleLum).isNotConsumed();
 		earthTali = new ItemRequirement("Earth talisman", ItemID.EARTH_TALISMAN).showConditioned(notCraftLava);
-		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.FIRE_ALTAR).showConditioned(notCraftLava);
+		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.FIRE_ALTAR).showConditioned(notCraftLava).isNotConsumed();
+		fireAccess.setTooltip("Fire talisman or tiara");
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE)
 			.showConditioned(new Conditions(LogicType.OR, notCraftLava, notTPlumb));
-		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notCraftLava);
+		essence = new ItemRequirement("Pure essence", ItemCollections.ESSENCE_HIGH).showConditioned(notCraftLava);
 		bindingNeck = new ItemRequirement("Binding necklace", ItemID.BINDING_NECKLACE).showConditioned(notCraftLava);
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSalmon);
-		flyFishingRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notCatchSalmon);
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE).showConditioned(notCraftCoif);
-		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftCoif);
+		flyFishingRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notCatchSalmon).isNotConsumed();
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).showConditioned(notCraftCoif).isNotConsumed();
+		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftCoif).isNotConsumed();
 		leather = new ItemRequirement("Leather", ItemID.LEATHER).showConditioned(notCraftCoif);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPlumb);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPlumb);
@@ -182,11 +184,11 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		avasAttractor = new ItemRequirement("Ava's Attractor", ItemID.AVAS_ATTRACTOR).showConditioned(notUpgradeDevice);
 		avasAccumulator = new ItemRequirements(LogicType.OR, "999 Coins or Ava's Attractor", coins.quantity(999),
 			avasAttractor);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopWillow);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopWillow).isNotConsumed();
 		fairyAccess = new ItemRequirement("Lunar or Dramen staff", ItemCollections.FAIRY_STAFF)
-			.showConditioned(new Conditions(LogicType.OR, notChaeldarTask, notPuroImp, notWizardFairy));
-		butterflyNet = new ItemRequirement("Butterfly net", ItemID.BUTTERFLY_NET).showConditioned(notPuroImp);
-		implingJar = new ItemRequirement("Impling jar", ItemID.IMPLING_JAR).showConditioned(notPuroImp);
+			.showConditioned(new Conditions(LogicType.OR, notChaeldarTask, notPuroImp, notWizardFairy)).isNotConsumed();
+		butterflyNet = new ItemRequirement("Butterfly net", ItemID.BUTTERFLY_NET).showConditioned(notPuroImp).isNotConsumed();
+		implingJar = new ItemRequirement("Impling jar", ItemID.IMPLING_JAR).showConditioned(notPuroImp).isNotConsumed();
 
 
 		inLavaAltar = new ZoneRequirement(lavaAltar);
@@ -209,8 +211,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		alKaridRooftop = new ObjectStep(this, ObjectID.ROUGH_WALL_11633, new WorldPoint(3273, 3195, 0),
-			"Complete the Al Karid Rooftop Course.");
+		alKharidRooftop = new ObjectStep(this, ObjectID.ROUGH_WALL_11633, new WorldPoint(3273, 3195, 0),
+			"Complete the Al Kharid Rooftop Course.");
 
 		grappleLum = new ObjectStep(this, ObjectID.BROKEN_RAFT, new WorldPoint(3252, 3179, 0),
 			"Grapple across the River Lum.", mithGrap.equipped(), crossbow.equipped());
@@ -378,11 +380,11 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		craftACoifSteps.setLockingStep(craftCoifTask);
 		allSteps.add(craftACoifSteps);
 
-		PanelDetails alKaridRooftopCourseSteps = new PanelDetails("Al Karid Rooftop Course",
-			Collections.singletonList(alKaridRooftop), new SkillRequirement(Skill.AGILITY, 20));
-		alKaridRooftopCourseSteps.setDisplayCondition(notAlKaridRooftop);
-		alKaridRooftopCourseSteps.setLockingStep(alKaridRooftopTask);
-		allSteps.add(alKaridRooftopCourseSteps);
+		PanelDetails alKharidRooftopCourseSteps = new PanelDetails("Al Kharid Rooftop Course",
+			Collections.singletonList(alKharidRooftop), new SkillRequirement(Skill.AGILITY, 20));
+		alKharidRooftopCourseSteps.setDisplayCondition(notAlKharidRooftop);
+		alKharidRooftopCourseSteps.setLockingStep(alKharidRooftopTask);
+		allSteps.add(alKharidRooftopCourseSteps);
 
 		PanelDetails grappleRiverLumSteps = new PanelDetails("Grapple River Lum",
 			Collections.singletonList(grappleLum), new SkillRequirement(Skill.AGILITY, 8),

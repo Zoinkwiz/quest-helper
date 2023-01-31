@@ -111,7 +111,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -219,7 +219,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	public void setupRequirements()
 	{
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);

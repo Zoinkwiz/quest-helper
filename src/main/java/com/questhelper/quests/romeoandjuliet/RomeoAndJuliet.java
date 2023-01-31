@@ -66,7 +66,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -92,7 +92,8 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		cadavaBerry = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
 		cadavaBerry.setTooltip("You can pick some from bushes south east of Varrock");

@@ -306,7 +306,7 @@ public class MsCheevesSetup
 		isInMsCheeversRoom = new ZoneRequirement(missCheevesZone);
 	}
 
-	private void setupRequirements()
+	public void setupRequirements()
 	{
 		metalSpade = new ItemRequirement("Metal Spade", ItemID.METAL_SPADE);
 		metalSpade.setTooltip("If you are missing this item pick another up off the table.");

@@ -146,6 +146,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		return doMedium;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notAgiPyramid = new VarplayerRequirement(1198, false, 12);
@@ -167,11 +168,11 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notMagicCarpet);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notOrangeSally,
-			notEagleTravel, notVisitGenie));
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notOrangeSally);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopTeak);
+			notEagleTravel, notVisitGenie)).isNotConsumed();
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notOrangeSally).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopTeak).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
-			.showConditioned(notVisitGenie);
+			.showConditioned(notVisitGenie).isNotConsumed();
 		scrollOfRedir = new ItemRequirement("Scroll of redirection", ItemID.SCROLL_OF_REDIRECTION)
 			.showConditioned(notTPPollnivneach);
 		teleToHouse = new ItemRequirement("Teleport to house", ItemID.TELEPORT_TO_HOUSE)
@@ -185,10 +186,10 @@ public class DesertMedium extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
-		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
-		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
-		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN);
+		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS).isNotConsumed();
+		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE).isNotConsumed();
+		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT).isNotConsumed();
+		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN).isNotConsumed();
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
@@ -257,7 +258,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 		tpEnakhra = new DetailedQuestStep(this, "Teleport to Enakhra's Temple with the Camulet.", camulet);
 
-		if (client.getAccountType().isIronman())
+		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
 		{
 			tpPollnivneach = new DetailedQuestStep(this, "Move your house to Pollnivneach, then enter your house " +
 				"there.", coins.quantity(7500));
@@ -400,7 +401,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		eagleSteps.setLockingStep(eagleTravelTask);
 		allSteps.add(eagleSteps);
 
-		PanelDetails teleportToPollnivneachSteps = new PanelDetails("Teleport to Pollnivneach",
+		PanelDetails teleportToPollnivneachSteps = new PanelDetails("Pollnivneach House",
 			Collections.singletonList(tpPollnivneach), new SkillRequirement(Skill.CONSTRUCTION, 20), teleToHouse,
 			scrollOfRedir);
 		teleportToPollnivneachSteps.setDisplayCondition(notTPPollnivneach);

@@ -118,6 +118,8 @@ public class QuestOrders
 		QuestHelperQuest.ERNEST_THE_CHICKEN,
 		QuestHelperQuest.WANTED,
 		QuestHelperQuest.GHOSTS_AHOY,
+		QuestHelperQuest.DEMON_SLAYER,
+		QuestHelperQuest.SHADOW_OF_THE_STORM,
 		QuestHelperQuest.ANIMAL_MAGNETISM,
 		QuestHelperQuest.CREATURE_OF_FENKENSTRAIN,
 		QuestHelperQuest.BIG_CHOMPY_BIRD_HUNTING,
@@ -146,8 +148,6 @@ public class QuestOrders
 		QuestHelperQuest.DRAGON_SLAYER_I,
 		QuestHelperQuest.THE_FREMENNIK_TRIALS,
 		QuestHelperQuest.THE_FREMENNIK_ISLES,
-		QuestHelperQuest.DEMON_SLAYER,
-		QuestHelperQuest.SHADOW_OF_THE_STORM,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_EVIL_DAVE,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE,
 		QuestHelperQuest.TAI_BWO_WANNAI_TRIO,
@@ -178,6 +178,7 @@ public class QuestOrders
 		QuestHelperQuest.ENAKHRAS_LAMENT,
 		QuestHelperQuest.EADGARS_RUSE,
 		QuestHelperQuest.MY_ARMS_BIG_ADVENTURE,
+		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.RAG_AND_BONE_MAN_II,
 		QuestHelperQuest.RUM_DEAL,
 		QuestHelperQuest.CABIN_FEVER,
@@ -210,6 +211,7 @@ public class QuestOrders
 		QuestHelperQuest.KANDARIN_MEDIUM,
 		QuestHelperQuest.KOUREND_MEDIUM,
 		QuestHelperQuest.LUMBRIDGE_MEDIUM,
+		QuestHelperQuest.MORYTANIA_MEDIUM,
 		QuestHelperQuest.VARROCK_MEDIUM,
 		QuestHelperQuest.WESTERN_MEDIUM,
 		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
@@ -236,19 +238,22 @@ public class QuestOrders
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.MONKEY_MADNESS_II,
+		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
+		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
-		// Remaining section is unordered as not part of list
-		QuestHelperQuest.MORYTANIA_MEDIUM,
+
+		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.THE_MAGE_ARENA,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
+		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition. (Miniquest)
 		QuestHelperQuest.ARDOUGNE_HARD,
 		QuestHelperQuest.ARDOUGNE_ELITE,
 		QuestHelperQuest.DESERT_HARD,
@@ -294,6 +299,8 @@ public class QuestOrders
 		QuestHelperQuest.PLAGUE_CITY,
 		QuestHelperQuest.BIOHAZARD,
 		QuestHelperQuest.FIGHT_ARENA,
+		QuestHelperQuest.CLOCK_TOWER,
+		QuestHelperQuest.SHEEP_HERDER,
 		QuestHelperQuest.DWARF_CANNON,
 		QuestHelperQuest.WATERFALL_QUEST,
 		QuestHelperQuest.MURDER_MYSTERY,
@@ -312,12 +319,12 @@ public class QuestOrders
 		QuestHelperQuest.SCORPION_CATCHER,
 		QuestHelperQuest.JUNGLE_POTION,
 		QuestHelperQuest.VAMPYRE_SLAYER,
+		QuestHelperQuest.A_PORCINE_OF_INTEREST,
 		QuestHelperQuest.DEATH_PLATEAU,
 		QuestHelperQuest.GOBLIN_DIPLOMACY,
 		QuestHelperQuest.THE_QUEEN_OF_THIEVES,
 		QuestHelperQuest.THE_DEPTHS_OF_DESPAIR,
 		QuestHelperQuest.MOUNTAIN_DAUGHTER,
-		QuestHelperQuest.ICTHLARINS_LITTLE_HELPER,
 		QuestHelperQuest.THE_GRAND_TREE,
 		QuestHelperQuest.TRIBAL_TOTEM,
 		QuestHelperQuest.THE_DIG_SITE,
@@ -352,12 +359,13 @@ public class QuestOrders
 		QuestHelperQuest.TROLL_ROMANCE,
 		QuestHelperQuest.DRAGON_SLAYER_I,
 		QuestHelperQuest.HORROR_FROM_THE_DEEP,
-		QuestHelperQuest.A_PORCINE_OF_INTEREST,
 		QuestHelperQuest.ERNEST_THE_CHICKEN,
 		QuestHelperQuest.ANIMAL_MAGNETISM,
 		QuestHelperQuest.SHILO_VILLAGE,
 		QuestHelperQuest.DORICS_QUEST,
 		QuestHelperQuest.SPIRITS_OF_THE_ELID,
+		QuestHelperQuest.ICTHLARINS_LITTLE_HELPER,
+		QuestHelperQuest.RATCATCHERS,
 		QuestHelperQuest.DARKNESS_OF_HALLOWVALE,
 		QuestHelperQuest.TOWER_OF_LIFE,
 		QuestHelperQuest.FISHING_CONTEST,
@@ -388,7 +396,6 @@ public class QuestOrders
 		QuestHelperQuest.SEA_SLUG,
 		QuestHelperQuest.OLAFS_QUEST,
 		QuestHelperQuest.TEARS_OF_GUTHIX,
-		QuestHelperQuest.RATCATCHERS,
 		QuestHelperQuest.TEMPLE_OF_IKOV,
 		QuestHelperQuest.ONE_SMALL_FAVOUR,
 		QuestHelperQuest.A_TAIL_OF_TWO_CATS,
@@ -442,7 +449,6 @@ public class QuestOrders
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
 		QuestHelperQuest.REGICIDE,
-		QuestHelperQuest.SHEEP_HERDER,
 		QuestHelperQuest.ROVING_ELVES,
 		QuestHelperQuest.MOURNINGS_END_PART_I,
 		QuestHelperQuest.MOURNINGS_END_PART_II,
@@ -470,7 +476,6 @@ public class QuestOrders
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
-		QuestHelperQuest.CLOCK_TOWER,
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
 
@@ -479,6 +484,10 @@ public class QuestOrders
 		//QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE - Placeholder for later addition.
 		//QuestHelperQuest.BALLOON_TRANSPORT_VARROCK - Placeholder for later addition.
 		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
+		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
+		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition. (Miniquest)
+		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
+		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,
@@ -677,12 +686,12 @@ public class QuestOrders
 		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
-		//QuestHelperQuest.THE_FROZEN_DOOR - Placeholder for future addition.
 		QuestHelperQuest.LAND_OF_THE_GOBLINS,
-		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.SLEEPING_GIANTS,
+		QuestHelperQuest.THE_GARDEN_OF_DEATH,
+		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for future addition
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,
@@ -697,7 +706,10 @@ public class QuestOrders
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
-		QuestHelperQuest.DADDYS_HOME
+		QuestHelperQuest.DADDYS_HOME,
+		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
+		QuestHelperQuest.HOPESPEARS_WILL
+		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
 	);
 
 	public static String normalizeQuestName(String questName)

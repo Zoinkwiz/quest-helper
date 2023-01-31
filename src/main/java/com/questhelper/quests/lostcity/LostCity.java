@@ -76,7 +76,7 @@ public class LostCity extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -116,13 +116,14 @@ public class LostCity extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		bronzeAxe = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE);
-		axe = new ItemRequirement("Any axe", ItemID.BRONZE_AXE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
+		bronzeAxe = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemID.BRONZE_AXE).isNotConsumed();
 		axe.addAlternates(ItemCollections.AXES);
-		combatGear = new ItemRequirement("Runes, or a way of dealing damage which you can smuggle onto Entrana. Runes for Crumble Undead (level 39 Magic) are best.", -1, -1);
+		combatGear = new ItemRequirement("Runes, or a way of dealing damage which you can smuggle onto Entrana. Runes for Crumble Undead (level 39 Magic) are best.", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(ItemID.SKULL);
 		teleport = new ItemRequirement("Teleport to Lumbridge. Home teleport will work if off cooldown.", ItemID.LUMBRIDGE_TELEPORT);
 		dramenBranch = new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH);
@@ -162,7 +163,7 @@ public class LostCity extends BasicQuestHelper
 		getAxe = new DetailedQuestStep(this, new WorldPoint(2843, 9760, 0), "Kill zombies until one drops a bronze axe.");
 		pickupAxe = new DetailedQuestStep(this, "Pick up the bronze axe", bronzeAxe);
 		attemptToCutDramen = new ObjectStep(this, ObjectID.DRAMEN_TREE, new WorldPoint(2861, 9735, 0), "Attempt to cut a branch from the Dramen tree. Be prepared for a Tree Spirit (level 101) to appear, which you can safespot behind nearby fungus.", bronzeAxe);
-		killDramenSpirit = new NpcStep(this, NpcID.TREE_SPIRIT, new WorldPoint(2859, 9734, 0), "Kill the Tree Spirit. They can be safespotted behind the nearby fungus.");
+		killDramenSpirit = new NpcStep(this, NpcID.TREE_SPIRIT, new WorldPoint(2859, 9734, 0), "Kill the Tree Spirit. They can be safespotted behind nearby fungi to the east.");
 		cutDramenBranch = new ObjectStep(this, ObjectID.DRAMEN_TREE, new WorldPoint(2861, 9735, 0), "Cut at least one branch from the Dramen tree. It's recommended you cut at least 4 branches so you don't have to return in future quests.");
 		teleportAway = new DetailedQuestStep(this, "Teleport away with the branches.", dramenBranch);
 		getAnotherBranch = new DetailedQuestStep(this, "If you've lost your Dramen branch/staff, you will need to return to Entrana and cut another. You will not need to defeat the Tree Spirit again.");

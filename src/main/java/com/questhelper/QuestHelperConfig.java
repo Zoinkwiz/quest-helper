@@ -48,10 +48,10 @@ public interface QuestHelperConfig extends Config
 	{
 		/** Sort quests in alphabetical order */
 		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
+			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER),
 		/** Sort quests in reverse alphabetical order */
 		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL, QuestFilter.GENERIC_HELPER),
+			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide) */
 		OPTIMAL(QuestOrders.sortOptimalOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
 		/** Sort quests according to the Optimal Quest Guide (Ironman version) (https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman) */
@@ -127,7 +127,20 @@ public interface QuestHelperConfig extends Config
 		 * Show all generic helpers
 		 */
 		GENERIC_HELPER("Generic helpers", QuestDetails.Type.GENERIC),
-		SKILL("Skill helpers", QuestDetails.Type.SKILL);
+		/**
+		 * Show all skills
+		 */
+		SKILL_HELPER("Skill helpers", q -> q.getQuest().getQuestType() == QuestDetails.Type.SKILL_P2P ||
+			q.getQuest().getQuestType() == QuestDetails.Type.SKILL_F2P),
+		/**
+		 * Show all free-to-play skills
+		 */
+		SKILL_FREE_TO_PLAY(QuestDetails.Type.SKILL_F2P),
+		/**
+		 * Show all members' skills
+		 */
+		SKILL_MEMBERS(QuestDetails.Type.SKILL_P2P);
+
 
 		private final Predicate<QuestHelper> predicate;
 
@@ -218,6 +231,71 @@ public interface QuestHelperConfig extends Config
 	default boolean stewBoosts()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showFan",
+		name = "Have fan appear on quest completion",
+		description = "Have someone appear to celebrate whenever you complete a quest"
+	)
+	default boolean showFan()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		position = 0,
+		name = "Item highlighting",
+		description = "Determines what items to highlight in the background"
+	)
+	String itemSection = "itemSection";
+
+	@ConfigItem(
+		position = 0,
+		keyName = "highlightItemsBackground",
+		name = "Always highlight needed items",
+		description = "Highlight items you need for marked content type at all times",
+		section = itemSection
+	)
+	default boolean highlightItemsBackground()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "highlightNeededQuestItems",
+		name = "Highlight active quest items",
+		description = "Highlight all the active quest's items you're missing on the floor",
+		section = itemSection
+	)
+	default boolean highlightNeededQuestItems()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "highlightNeededMiniquestItems",
+		name = "Highlight miniquest items",
+		description = "Highlight all miniquest items you're missing on the floor",
+		section = itemSection
+	)
+	default boolean highlightNeededMiniquestItems()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "highlightNeededAchievementDiaryItems",
+		name = "Highlight achievement diary items",
+		description = "Highlight all achievement diary items you're missing on the floor",
+		section = itemSection
+	)
+	default boolean highlightNeededAchievementDiaryItems()
+	{
+		return true;
 	}
 
 	@ConfigSection(

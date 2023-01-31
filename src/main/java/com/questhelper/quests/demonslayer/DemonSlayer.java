@@ -71,9 +71,12 @@ public class DemonSlayer extends BasicQuestHelper
 	Requirement inVarrockSewer, inCastleNWFloor1, inCastleNWFloor2, inCastleNEFloor1,
 		hasPouredWaterIntoDrain, inTowerFloor1, obtainedSilverlight, delrithNearby, delrithWeakenedNearby, inInstance;
 
-	QuestStep talkToAris, talkToPrysin, goUpToRovin, goUpToRovin2, talkToRovin, goDownstairsFromRovin, goDownstairsFromRovin2, goUpToBucket, pickupBucket,
+	QuestStep talkToPrysin, goUpToRovin, goUpToRovin2, talkToRovin, goDownstairsFromRovin, goDownstairsFromRovin2,
+		goUpToBucket, pickupBucket,
 		goDownFromBucket, fillBucket, useFilledBucketOnDrain, goDownManhole, pickupSecondKey, goUpManhole, goUpstairsWizard, talkToTraiborn, returnToPrysin,
 		getSilverlightBack, killDelrith, killDelrithStep;
+
+	NpcStep talkToAris;
 
 	ConditionalStep getFirstKey, getSecondKey, getThirdKey, goAndKillDelrith;
 
@@ -83,7 +86,7 @@ public class DemonSlayer extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -127,9 +130,10 @@ public class DemonSlayer extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
 		bucket.setHighlightInInventory(true);
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.setHighlightInInventory(true);
@@ -137,12 +141,14 @@ public class DemonSlayer extends BasicQuestHelper
 		key2 = new ItemRequirement("Silverlight key", ItemID.SILVERLIGHT_KEY_2401);
 		key3 = new ItemRequirement("Silverlight key", ItemID.SILVERLIGHT_KEY);
 		bones = new ItemRequirement("Bones (UNNOTED)", ItemID.BONES, 25);
-		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
-		silverlightEquipped = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT, 1, true);
-		combatGear = new ItemRequirement("Armour", -1, -1);
+		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT).isNotConsumed();
+		silverlightEquipped = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT, 1, true).isNotConsumed();
+		combatGear = new ItemRequirement("Armour", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getArmour());
 
-		bucketOfWaterOptional = new ItemRequirement("Bucket of water (obtainable during quest)", ItemID.BUCKET_OF_WATER);
+		bucketOfWaterOptional = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
+		bucketOfWaterOptional.canBeObtainedDuringQuest();
+
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		wizardsTowerTeleport = new ItemRequirement("Teleport to the Wizards' Tower", ItemID.NECKLACE_OF_PASSAGE5);
 		coin = new ItemRequirement("Coin", ItemCollections.COINS);
@@ -174,12 +180,14 @@ public class DemonSlayer extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToAris = new NpcStep(this, NpcID.GYPSY_ARIS, new WorldPoint(3204, 3424, 0), "Talk to Gypsy Aris in her tent in Varrock Square.", coin);
+		talkToAris = new NpcStep(this, NpcID.ARIS, new WorldPoint(3204, 3424, 0), "Talk to Aris in her tent in Varrock Square.", coin);
+		talkToAris.addDialogStep("Yes.");
 		talkToAris.addDialogStep("Ok, here you go.");
 		talkToAris.addDialogStep("Okay, where is he? I'll kill him for you!");
 		talkToAris.addDialogStep("So how did Wally kill Delrith?");
+		talkToAris.addAlternateNpcs(11868);
 		talkToPrysin = new NpcStep(this, NpcID.SIR_PRYSIN, new WorldPoint(3203, 3472, 0), "Talk to Sir Prysin in the south west corner of Varrock Castle.");
-		talkToPrysin.addDialogStep("Gypsy Aris said I should come and talk to you.");
+		talkToPrysin.addDialogStep("Aris said I should come and talk to you.");
 		talkToPrysin.addDialogStep("I need to find Silverlight.");
 		talkToPrysin.addDialogStep("He's back and unfortunately I've got to deal with him.");
 		talkToPrysin.addDialogStep("So give me the keys!");

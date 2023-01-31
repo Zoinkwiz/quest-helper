@@ -31,7 +31,6 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
-import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
@@ -83,7 +82,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -123,7 +122,8 @@ public class TheHandInTheSand extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		beer = new ItemRequirement("Beer", ItemID.BEER);
 		bottledWater = new ItemRequirement("Bottled water", ItemID.BOTTLED_WATER);
@@ -234,8 +234,8 @@ public class TheHandInTheSand extends BasicQuestHelper
 		talkToBettyAgain = new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3014, 3258, 0), "Talk to Betty with the pink lens.");
 		talkToBettyAgain.addDialogStep("Talk to Betty about the Hand in the Sand.");
 
-		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3016, 3259, 0), "Stand in the Betty's doorway and use the rose-tinted lens on the counter.");
-		useLensOnCounter = new ObjectStep(this, ObjectID.COUNTER, new WorldPoint(3013, 3259, 0), "\"Stand in the Betty's doorway and use the rose-tinted lens on the counter.", roseLens);
+		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3016, 3259, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.");
+		useLensOnCounter = new ObjectStep(this, ObjectID.COUNTER, new WorldPoint(3013, 3259, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.", roseLens);
 		useLensOnCounter.addIcon(ItemID.ROSE_TINTED_LENS);
 		useLensOnCounter.addSubSteps(standInDoorway);
 		talkToBettyOnceMore =  new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3014, 3258, 0), "Talk to Betty again.", truthSerum, sand);

@@ -25,6 +25,7 @@
 package com.questhelper.quests.ragandboneman;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestTile;
@@ -38,6 +39,7 @@ import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -214,23 +216,24 @@ public class RagAndBoneManII extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		// Required items
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
-		pots = new ItemRequirement("Pot", ItemID.POT);
-		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted();
+		pots = new ItemRequirement("Pot", ItemID.POT).isNotConsumed();
+		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted().isNotConsumed();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES);
-		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
+		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.canBeObtainedDuringQuest();
-		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD);
+		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD).isNotConsumed();
 		mirrorShield.addAlternates(ItemID.VS_SHIELD, ItemID.VS_SHIELD_24266);
 		iceCooler = new ItemRequirement("Ice coolers", ItemID.ICE_COOLER, 10);
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE, 10);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 
 
 		// Optional items
@@ -243,10 +246,10 @@ public class RagAndBoneManII extends BasicQuestHelper
 		karamjaTeleport = new ItemRequirement("Karamja teleport", ItemCollections.AMULET_OF_GLORIES);
 		karamjaTeleport.addAlternates(ItemID.BRIMHAVEN_TELEPORT, ItemID.TAI_BWO_WANNAI_TELEPORT);
 
-		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.ANTIFIRE_SHIELDS);
+		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.ANTIFIRE_SHIELDS).isNotConsumed();
 		inoculationBracelet = new ItemRequirement("Inoculation bracelet or a potion for Disease",
 			ItemCollections.ANTIDISEASE);
-		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL);
+		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).isNotConsumed();
 		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 		nardahTeleport = new ItemRequirement("Nardah teleport", ItemID.NARDAH_TELEPORT);
@@ -258,7 +261,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		gnomeTeleport = new ItemRequirement("Teleport to Gnome Stronghold (Spirit tree/Gnome Glider", -1, 1);
 		feldipTeleport = new ItemRequirement("Teleport to Feldip Hills (Gnome Glider)", ItemID.FELDIP_HILLS_TELEPORT);
 
-		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
+		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
 
 
@@ -273,7 +276,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		coinsOrVinegar.addAlternates(ItemID.JUG_OF_VINEGAR, ItemID.COINS_995);
 
 		List<Integer> bonesInVinegar = new ArrayList<>();
-		for (int i = ItemID.BONE_IN_VINEGAR; i <= ItemID.BONE_IN_VINEGAR_7915; i++)
+		for (int i = ItemID.BONE_IN_VINEGAR; i <= ItemID.BONE_IN_VINEGAR_7915; i+=3)
 		{
 			bonesInVinegar.add(i);
 		}
@@ -435,7 +438,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 
 		killJackal = new NpcStep(this, NpcID.JACKAL, new WorldPoint(3400, 2997, 0),
 			"Kill Jackals north of Nardah.", true);
-		killSnake = new NpcStep(this, NpcID.DESERT_SNAKE, new WorldPoint(3400, 3035, 0),
+		killSnake = new NpcStep(this, NpcID.SNAKE_3544, new WorldPoint(3400, 3035, 0),
 			"Kill desert snakes north of Nardah.", true);
 		killLizard = new NpcStep(this, NpcID.LIZARD, new WorldPoint(3439, 3036, 0),
 			"Kill the giant lizards north of Nardah.", true, iceCooler);

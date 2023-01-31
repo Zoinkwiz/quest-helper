@@ -97,7 +97,7 @@ public class GettingAhead extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -161,12 +161,13 @@ public class GettingAhead extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		itemsTip = new ItemRequirement("You can get all the required items during the quest.", -1, -1);
 
 		//Recommended
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		staminaPotions = new ItemRequirement("Stamina Potion", ItemCollections.STAMINA_POTIONS);
@@ -180,16 +181,16 @@ public class GettingAhead extends BasicQuestHelper
 		softClay = new ItemRequirement("Soft Clay", ItemID.SOFT_CLAY, 1);
 		softClay.canBeObtainedDuringQuest();
 		softClay.setHighlightInInventory(true);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER, 1);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.canBeObtainedDuringQuest();
-		saw = new ItemRequirement("Any saw", ItemID.SAW, 1);
+		saw = new ItemRequirement("Any saw", ItemID.SAW).isNotConsumed();
 		saw.canBeObtainedDuringQuest();
 		saw.addAlternates(ItemID.CRYSTAL_SAW, ItemID.AMYS_SAW);
 		planks = new ItemRequirement("Planks", ItemID.PLANK, 2);
 		planks.canBeObtainedDuringQuest();
 		nails = new ItemRequirement("Nails", ItemCollections.NAILS, 6);
 		nails.canBeObtainedDuringQuest();
-		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE, 1).isNotConsumed();
 		knife.canBeObtainedDuringQuest();
 		knife.setHighlightInInventory(true);
 		redDye = new ItemRequirement("Red Dye", ItemID.RED_DYE, 1);
@@ -198,11 +199,11 @@ public class GettingAhead extends BasicQuestHelper
 		potOfFlour = new ItemRequirement("Pot of Flour", ItemID.POT_OF_FLOUR, 1);
 		potOfFlour.canBeObtainedDuringQuest();
 		potOfFlour.setHighlightInInventory(true);
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE, 1);
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE, 1).isNotConsumed();
 		needle.canBeObtainedDuringQuest();
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 1);
 		thread.canBeObtainedDuringQuest();
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		pickaxe.canBeObtainedDuringQuest();
 		clay = new ItemRequirement("Clay", ItemID.CLAY);
 		clay.canBeObtainedDuringQuest();

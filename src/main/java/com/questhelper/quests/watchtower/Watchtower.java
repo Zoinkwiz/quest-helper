@@ -96,7 +96,7 @@ public class Watchtower extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -219,12 +219,13 @@ public class Watchtower extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		guamUnf = new ItemRequirement("Guam potion (unf)", ItemID.GUAM_POTION_UNF);
 		guamUnf.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 
 		fingernails = new ItemRequirement("Fingernails", ItemID.FINGERNAILS);
 		rope2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
@@ -257,7 +258,7 @@ public class Watchtower extends BasicQuestHelper
 		skavidMap = new ItemRequirement("Skavid map", ItemID.SKAVID_MAP);
 		skavidMap.setTooltip("You can get another from the city guard in south east Gu'Tanoth.");
 
-		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES);
+		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
 
@@ -286,7 +287,7 @@ public class Watchtower extends BasicQuestHelper
 		crystal4Highlight.setTooltip("You can get another from the Rock of Dalgroth in the Ogre Enclave");
 		crystal4Highlight.setHighlightInInventory(true);
 
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortar.setHighlightInInventory(true);
 
 		batBones = new ItemRequirement("Bat bones", ItemID.BAT_BONES);
@@ -501,9 +502,16 @@ public class Watchtower extends BasicQuestHelper
 		leaveScaredSkavidRoom = new ObjectStep(this, ObjectID.CAVE_EXIT_2821, new WorldPoint(2504, 9442, 0), "Talk to four other skavids in their caves.");
 
 		enterSkavid1Cave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2808, new WorldPoint(2554, 3053, 0), "Talk to four other skavids in their caves.", skavidMap, lightSource);
+		enterSkavid1Cave.addDialogStep("I'll be fine without a tinderbox.");
+
 		enterSkavid2Cave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2807, new WorldPoint(2541, 3053, 0), "Talk to four other skavids in their caves.", skavidMap, lightSource);
+		enterSkavid2Cave.addDialogStep("I'll be fine without a tinderbox.");
+
 		enterSkavid3Cave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2806, new WorldPoint(2524, 3069, 0), "Talk to four other skavids in their caves.", skavidMap, lightSource);
+		enterSkavid3Cave.addDialogStep("I'll be fine without a tinderbox.");
+
 		enterSkavid4Cave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2805, new WorldPoint(2561, 3024, 0), "Talk to four other skavids in their caves.", skavidMap, lightSource);
+		enterSkavid4Cave.addDialogStep("I'll be fine without a tinderbox.");
 
 		talkToSkavid1 = new NpcStep(this, NpcID.SKAVID_4378, new WorldPoint(2503, 9449, 0), "Talk to the skavid.");
 		talkToSkavid1.addDialogStep("Cur.");
@@ -528,6 +536,7 @@ public class Watchtower extends BasicQuestHelper
 			"Try to go through the gate to the south east cave of Gu'Tanoth. Give the guard a gold bar and go through.", goldBar);
 
 		enterInsaneSkavidCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2810, new WorldPoint(2528, 3013, 0), "Enter the mad skavid's cave.");
+		enterInsaneSkavidCave.addDialogStep("I'll be fine without a tinderbox.");
 
 		talkToInsaneSkavid = new SkavidChoice(this);
 

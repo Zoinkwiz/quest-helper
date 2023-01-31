@@ -97,7 +97,8 @@ public class ItemRequirements extends ItemRequirement
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
 		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
-		return logicType.compare(successes, itemRequirements.size());
+		hadItemLastCheck = logicType.compare(successes, itemRequirements.size());
+		return hadItemLastCheck;
 	}
 
 	@Override
@@ -105,7 +106,8 @@ public class ItemRequirements extends ItemRequirement
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
 		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
-		return logicType.compare(successes, itemRequirements.size());
+		hadItemLastCheck = logicType.compare(successes, itemRequirements.size());
+		return hadItemLastCheck;
 	}
 
 	@Override

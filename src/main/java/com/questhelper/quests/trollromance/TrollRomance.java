@@ -81,7 +81,7 @@ public class TrollRomance extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -136,7 +136,8 @@ public class TrollRomance extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
 		mapleLog = new ItemRequirement("Maple/yew logs", ItemID.MAPLE_LOGS);
@@ -159,7 +160,7 @@ public class TrollRomance extends BasicQuestHelper
 		sledEquipped.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
 		trollweissFlowers = new ItemRequirement("Trollweiss", ItemID.TROLLWEISS);
 		trollweissFlowers.setTooltip("You can get another from the Trollweiss mountain");
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		gamesNeck = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);

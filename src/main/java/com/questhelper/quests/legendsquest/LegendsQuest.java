@@ -124,7 +124,7 @@ public class LegendsQuest extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -385,13 +385,13 @@ public class LegendsQuest extends BasicQuestHelper
 		challengeCave = new Zone(new WorldPoint(2369, 4672, 0), new WorldPoint(2430, 4736, 0));
 	}
 
-	private void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		machete = new ItemRequirement("A machete", ItemCollections.MACHETE);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		machete = new ItemRequirement("A machete", ItemCollections.MACHETE).isNotConsumed();
 
-		macheteHighlighted = new ItemRequirement("A machete", ItemCollections.MACHETE);
-		macheteHighlighted.setHighlightInInventory(true);
+		macheteHighlighted = machete.highlighted();
 
 		anyNotes = new ItemRequirement("Radimus notes", ItemID.RADIMUS_NOTES);
 		anyNotes.addAlternates(ItemID.RADIMUS_NOTES_715);
@@ -415,13 +415,13 @@ public class LegendsQuest extends BasicQuestHelper
 		sketch = new ItemRequirement("Sketch", ItemID.SKETCH);
 		sketch.setTooltip("You can get another by summoning Gujuo with the bull roarer again");
 
-		bullRoarer = new ItemRequirement("Bull roarer", ItemID.BULL_ROARER);
+		bullRoarer = new ItemRequirement("Bull roarer", ItemID.BULLROARER);
 		bullRoarer.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
-		bullRoarerHighlight = new ItemRequirement("Bull roarer", ItemID.BULL_ROARER);
+		bullRoarerHighlight = new ItemRequirement("Bull roarer", ItemID.BULLROARER);
 		bullRoarerHighlight.setTooltip("You can get another by using a complete Radimus notes on a Jungle Forester");
 		bullRoarerHighlight.setHighlightInInventory(true);
 
-		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK);
+		lockpick = new ItemRequirement("Lockpick (multiple in case they break)", ItemID.LOCKPICK).isNotConsumed();
 		soulRune = new ItemRequirement("Soul rune", ItemID.SOUL_RUNE);
 		soulRuneHighlight = new ItemRequirement("Soul rune", ItemID.SOUL_RUNE);
 		soulRuneHighlight.setHighlightInInventory(true);
@@ -457,7 +457,7 @@ public class LegendsQuest extends BasicQuestHelper
 		diamondHighlighted = new ItemRequirement("Diamond", ItemID.DIAMOND);
 		diamondHighlighted.setHighlightInInventory(true);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 
 		bindingBook = new ItemRequirement("Binding book", ItemID.BINDING_BOOK);
 		bindingBookHighlighted = new ItemRequirement("Binding book", ItemID.BINDING_BOOK);
@@ -465,14 +465,14 @@ public class LegendsQuest extends BasicQuestHelper
 
 		goldBar2 = new ItemRequirement("Gold bar", ItemID.GOLD_BAR, 2);
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 
 		goldBowl = new ItemRequirement("Gold bowl", ItemID.GOLD_BOWL);
 		goldBowl.addAlternates(ItemID.GOLDEN_BOWL, ItemID.GOLDEN_BOWL_724, ItemID.GOLDEN_BOWL_725, ItemID.GOLDEN_BOWL_726, ItemID.BLESSED_GOLD_BOWL);
 		goldBowlHighlighted = new ItemRequirement("Gold bowl", ItemID.GOLD_BOWL);
 		goldBowlHighlighted.setHighlightInInventory(true);
 
-		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		goldBowlBlessed = new ItemRequirement("Blessed gold bowl", ItemID.BLESSED_GOLD_BOWL);
@@ -494,7 +494,7 @@ public class LegendsQuest extends BasicQuestHelper
 		germinatedSeedsHighlighted.setTooltip("You can get more seeds from Ungadulu, and use sacred water on them");
 		germinatedSeedsHighlighted.setHighlightInInventory(true);
 
-		runeOrDragonAxe = new ItemRequirement("Rune or Dragon axe", ItemID.RUNE_AXE);
+		runeOrDragonAxe = new ItemRequirement("Rune or Dragon axe", ItemID.RUNE_AXE).isNotConsumed();
 		runeOrDragonAxe.addAlternates(ItemID.DRAGON_AXE);
 		ardrigal = new ItemRequirement("Ardrigal", ItemID.ARDRIGAL);
 		ardrigal.setTooltip("You can find some in the palm trees north east of Tai Bwo Wannai");
@@ -510,7 +510,7 @@ public class LegendsQuest extends BasicQuestHelper
 		elemental30.addAlternates(ItemID.FIRE_RUNE, ItemID.EARTH_RUNE, ItemID.AIR_RUNE);
 		elemental30.setExclusiveToOneItemType(true);
 
-		chargeOrbRunes = new ItemRequirements("Runes for charge orb spell", cosmic3, elemental30);
+		chargeOrbRunes = new ItemRequirements("Runes for any charge orb spell you have the level to cast", cosmic3, elemental30);
 
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB);
 
@@ -743,7 +743,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		makeBowl = new DetailedQuestStep(this, "Travel to an anvil and make a gold bowl.", goldBar2, sketch, hammer);
 
-		enterJungleWithBowl = new DetailedQuestStep(this, "Return to the Kharazi Jungle with your gold bowl, and be prepared for a fight.", bullRoarer, goldBowl, bindingBook, axe, machete, combatGear);
+		enterJungleWithBowl = new DetailedQuestStep(this, "Return to the Kharazi Jungle with your gold bowl, and be prepared for a fight.", completedNotes, bullRoarer, goldBowl, bindingBook, axe, machete, combatGear);
 
 		spinBullToBless = new DetailedQuestStep(this, "Swing the bull roarer until Gujuo appears.", bullRoarerHighlight, goldBowl);
 
@@ -793,12 +793,12 @@ public class LegendsQuest extends BasicQuestHelper
 		talkToGujuoAfterSeeds.addDialogSteps("The water pool has dried up and I need more water.", "Where is the source of the spring of pure water?");
 
 		enterJungleAfterSeeds = new DetailedQuestStep(this, "Return to the Kharazi Jungle with your bull roarer, and be prepared for some fights.",
-			bullRoarer, runeOrDragonAxe, machete, pickaxe, lockpick, vialOfWater, snakeWeed, ardrigal, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, combatGear, normalSpellbook);
+			completedNotes, bullRoarer, runeOrDragonAxe, machete, pickaxe, lockpick, vialOfWater, snakeWeed, ardrigal, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, combatGear, normalSpellbook);
 
 		useMacheteOnReedsAgain.addSubSteps(enterJungleAfterSeeds);
 
 		enterJungleToGoToSource = new DetailedQuestStep(this, "Return to the Kharazi Jungle and be prepared for some fights.",
-			runeOrDragonAxe, machete, pickaxe, lockpick, braveryPotion, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed,
+			completedNotes, runeOrDragonAxe, machete, pickaxe, lockpick, braveryPotion, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed,
 			combatGear, normalSpellbook);
 
 		addArdrigal = new DetailedQuestStep(this, "Add ardrigal and snake weed to a vial of water to make a bravery potion.", ardrigal, vialOfWater);
@@ -892,7 +892,7 @@ public class LegendsQuest extends BasicQuestHelper
 		useReedOnPoolEnd.addIcon(ItemID.HOLLOW_REED);
 
 		enterJungleToPlant = new DetailedQuestStep(this, "Return to the Kharazi Jungle and be prepared for some fights.",
-			runeOrDragonAxe, machete, goldBowlBlessed, germinatedSeeds, combatGear);
+			completedNotes,runeOrDragonAxe, machete, goldBowlBlessed, germinatedSeeds, combatGear);
 
 		useAxe = new ObjectStep(this, ObjectID.ADULT_YOMMI_TREE, "Use your axe on the adult yommi tree.", runeOrDragonAxe);
 		useAxe.addIcon(ItemID.RUNE_AXE);
@@ -949,7 +949,7 @@ public class LegendsQuest extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("7,650 experience in four skills of your choice (limited to Attack, Defence, Strength, Hitpoints, Prayer, Magic, Woodcutting, Crafting, Smithing, Herblore, Agility or Thieving", -1, 4)); //4447 Is placeholder for filtering.
+		return Collections.singletonList(new ItemReward("30,000 experience in four skills of your choice (limited to Attack, Defence, Strength, Hitpoints, Prayer, Magic, Woodcutting, Crafting, Smithing, Herblore, Agility or Thieving", -1, 4)); //4447 Is placeholder for filtering.
 	}
 
 	@Override

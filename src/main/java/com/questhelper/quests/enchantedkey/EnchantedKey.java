@@ -25,7 +25,9 @@
 package com.questhelper.quests.enchantedkey;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import java.util.ArrayList;
@@ -73,10 +75,11 @@ public class EnchantedKey extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		key = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		key = new KeyringRequirement("Enchanted key", configManager, KeyringCollection.ENCHANTED_KEY);
 		varrockTeleports = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT);
 		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
 		rellekkaTeleports = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);

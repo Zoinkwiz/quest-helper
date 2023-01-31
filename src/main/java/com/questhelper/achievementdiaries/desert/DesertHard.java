@@ -138,6 +138,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notMenaThug = new VarplayerRequirement(1198, false, 24);
@@ -153,30 +154,30 @@ public class DesertHard extends ComplexStateQuestHelper
 
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 
-		blackjack = new ItemRequirement("Blackjack", ItemCollections.BLACKJACKS).showConditioned(notMenaThug);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notGranite);
+		blackjack = new ItemRequirement("Blackjack", ItemCollections.BLACKJACKS).showConditioned(notMenaThug).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notGranite).isNotConsumed();
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notRefillWaterskin);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notRefillWaterskin);
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notRefillWaterskin);
-		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATERSKIN0).showConditioned(notRefillWaterskin);
+		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATERSKIN0).showConditioned(notRefillWaterskin).isNotConsumed();
 		slayerHelm = new ItemRequirement("Slayer Helmet", ItemCollections.SLAYER_HELMETS)
-			.showConditioned(notKillDust);
-		keris = new ItemRequirement("Keris", ItemCollections.KERIS).showConditioned(notKillLocustRider);
-		lightsource = new ItemRequirement("Light soruce", ItemCollections.LIGHT_SOURCES)
-			.showConditioned(notKillLocustRider);
+			.showConditioned(notKillDust).isNotConsumed();
+		keris = new ItemRequirement("Keris", ItemCollections.KERIS).showConditioned(notKillLocustRider).isNotConsumed();
+		lightsource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
+			.showConditioned(notKillLocustRider).isNotConsumed();
 		yewLog = new ItemRequirement("Yew log", ItemID.YEW_LOGS).showConditioned(notBurnYew);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnYew);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnYew).isNotConsumed();
 		mithBar = new ItemRequirement("Mithril bar", ItemID.MITHRIL_BAR).showConditioned(notMithPlatebody);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMithPlatebody);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMithPlatebody).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKalphQueen);
 
 		nardahTP = new ItemRequirement("Nardah teleport", ItemID.NARDAH_TELEPORT);
-		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS);
-		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE);
-		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT);
-		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN);
+		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS).isNotConsumed();
+		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE).isNotConsumed();
+		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT).isNotConsumed();
+		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN).isNotConsumed();
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

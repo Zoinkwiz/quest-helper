@@ -82,7 +82,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -168,7 +168,8 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
 		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
@@ -185,11 +186,10 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		mudRuneHighlight.setHighlightInInventory(true);
 		mapleLog = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS);
 		oakLog = new ItemRequirement("Oak logs", ItemID.OAK_LOGS);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleHighlight = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleHighlight.setHighlightInInventory(true);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
+		pestleHighlight = pestleAndMortar.highlighted();
 		magicGlue = new ItemRequirement("Magic glue", ItemID.MAGIC_GLUE);
 		magicGlue.setHighlightInInventory(true);
 	}
@@ -269,7 +269,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		unlockMachine.addSubSteps(operateMachine);
 
 		killCreature1 = new NpcStep(this, NpcID.EVIL_CREATURE, new WorldPoint(3408, 9819, 0), "Kill the evil creature next to Brimstail.");
-		killCreature2 = new NpcStep(this, NpcID.EVIL_CREATURE_1244, new WorldPoint(2465, 3494, 0), "Kill the evil creature next to Narode.");
+		killCreature2 = new NpcStep(this, NpcID.EVIL_CREATURE_1244, new WorldPoint(2465, 3494, 0), "Kill the evil creature next to Narnode.");
 		killCreature3 = new NpcStep(this, NpcID.EVIL_CREATURE_1247, new WorldPoint(2466, 3496, 3), "Kill the evil creature at the top of the Grand Tree.");
 		killCreature4 = new NpcStep(this, NpcID.EVIL_CREATURE_1250, new WorldPoint(2422, 3526, 0), "Kill the evil creature in the north west of the Stronghold.");
 		killCreature5 = new NpcStep(this, NpcID.EVIL_CREATURE_1253, new WorldPoint(2461, 3388, 0), "Kill the evil creature next to the Stronghold's entrance.");

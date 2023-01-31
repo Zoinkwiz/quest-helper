@@ -141,6 +141,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notWoodcuttingGuild = new VarplayerRequirement(2085, false, 26);
@@ -159,46 +160,46 @@ public class KourendHard extends ComplexStateQuestHelper
 		// Items required
 		adamantiteOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE).showConditioned(notSmeltAddyBar);
 		coal = new ItemRequirement("Coal", ItemID.COAL).showConditioned(notSmeltAddyBar);
-		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.STONE_BOOTS).showConditioned(notKillWyrm);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineLovakite);
+		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.STONE_BOOTS).showConditioned(notKillWyrm).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineLovakite).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
-			.showConditioned(notKillZombie);
+			.showConditioned(notKillZombie).isNotConsumed();
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", Arrays.asList(ItemID.XERICS_TALISMAN,
-			ItemID.MOUNTED_XERICS_TALISMAN)).showConditioned(notTeleportHeart);
+			ItemID.MOUNTED_XERICS_TALISMAN)).showConditioned(notTeleportHeart).isNotConsumed();
 		xericsTalisman.setTooltip("Obtained from Lizardmen as a rare drop and charged with a Lizardman fang");
-		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notDeliverArtifact);
-		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantLogavano);
+		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notDeliverArtifact).isNotConsumed();
+		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantLogavano).isNotConsumed();
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notExamineMonster);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notExamineMonster);
 		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE).showConditioned(notExamineMonster);
 		wateringCan = new ItemRequirement("Watering can", ItemCollections.WATERING_CANS)
-			.showConditioned(notPlantLogavano);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPlantLogavano);
+			.showConditioned(notPlantLogavano).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPlantLogavano).isNotConsumed();
 		artifact = new ItemRequirement("Artifact", ItemID.ARTEFACT).showConditioned(notDeliverArtifact);
 		logavanoSeeds = new ItemRequirement("Logavano seeds", ItemID.LOGAVANO_SEED).showConditioned(notPlantLogavano);
 
 		// Items recommended
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		antipoison = new ItemRequirement("Anti-poison", ItemCollections.ANTIPOISONS, -1)
 			.showConditioned(notKillLizardmanShaman);
-		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF, -1);
+		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF, -1).isNotConsumed();
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
-			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS), -1);
+			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS), -1).isNotConsumed();
 		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.RADAS_BLESSING_1,
-			ItemID.RADAS_BLESSING_2), -1).showConditioned(notWoodcuttingGuild);
-		skillsNecklace = new ItemRequirement("Skills neckalce", ItemCollections.SKILLS_NECKLACES, -1);
+			ItemID.RADAS_BLESSING_2), -1).showConditioned(notWoodcuttingGuild).isNotConsumed();
+		skillsNecklace = new ItemRequirement("Skills neckalce", ItemCollections.SKILLS_NECKLACES, -1).isNotConsumed();
 		shayzienHelmet = new ItemRequirement("Shayzien Helmet (5)", ItemID.SHAYZIEN_HELM_5)
-			.showConditioned(notKillLizardmanShaman);
+			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 		shayzienBody = new ItemRequirement("Shayzien Body (5)", ItemID.SHAYZIEN_BODY_5)
-			.showConditioned(notKillLizardmanShaman);
+			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 		shayzienGreaves = new ItemRequirement("Shayzien Greaves (5)", ItemID.SHAYZIEN_GREAVES_5)
-			.showConditioned(notKillLizardmanShaman);
+			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 		shayzienBoots = new ItemRequirement("Shayzien Boots (5)", ItemID.SHAYZIEN_BOOTS_5)
-			.showConditioned(notKillLizardmanShaman);
+			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 		shayzienGloves = new ItemRequirement("Shayzien Gloves (5)", ItemID.SHAYZIEN_GLOVES_5)
-			.showConditioned(notKillLizardmanShaman);
+			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 
 		// Quests required
 		architecturalAlliance = new QuestRequirement(QuestHelperQuest.ARCHITECTURAL_ALLIANCE, QuestState.FINISHED);

@@ -197,16 +197,17 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		planks2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
 		planks1 = new ItemRequirement("Plank", ItemID.PLANK);
 		nails8 = new ItemRequirement("Nails", ItemCollections.NAILS, 8);
 		nails4 = new ItemRequirement("Nails", ItemCollections.NAILS, 4);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		pickaxe.setTooltip("You can get one from one of the miners in the mine");
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
 
@@ -562,7 +563,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		drawNorthWall = new DetailedQuestStep(this, new WorldPoint(3556, 3379, 0), "");
 		drawWestWall = new DetailedQuestStep(this, new WorldPoint(3522, 3357, 0), "");
 		drawSouthWall = new DetailedQuestStep(this, new WorldPoint(3572, 3331, 0), "");
-		tankVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_3735, new WorldPoint(3572, 3331, 0), "Tank Vanstrom for 5 hits.");
+		tankVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_3735, new WorldPoint(3572, 3331, 0), "Tank Vanstrom for 5 hits or use Protect from Melee.");
 		((NpcStep) tankVanstrom).addAlternateNpcs(NpcID.VANSTROM_KLAUSE_3734);
 		finishSouthSketch = new DetailedQuestStep(this, new WorldPoint(3572, 3331, 0), "");
 		talkToSarius = new NpcStep(this, NpcID.SARIUS_GUILE, new WorldPoint(3572, 3331, 0), "");
@@ -774,7 +775,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Able to survive 5 hits from Vanstrom Klause (level 169)");
+		return Collections.singletonList("Able to survive 5 hits from Vanstrom Klause (level 169) or use Protect from Melee to negate all his damage.");
 	}
 
 	@Override

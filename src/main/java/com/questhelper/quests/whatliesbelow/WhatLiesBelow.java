@@ -83,7 +83,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -133,7 +133,8 @@ public class WhatLiesBelow extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		intel5 = new ItemRequirement("Rat's paper", ItemID.RATS_PAPER, 5);
 		intel5.setHighlightInInventory(true);
@@ -155,7 +156,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 		infusedWand = new ItemRequirement("Infused wand", ItemID.INFUSED_WAND);
 		infusedWand.setTooltip("You can make another by getting a wand from Surok, and using it on the chaos altar with 15 chaos runes");
-		chaosTalismanOrAbyss = new ItemRequirement("Chaos Talisman or access to the Abyss", ItemID.CHAOS_TALISMAN);
+		chaosTalismanOrAbyss = new ItemRequirement("Chaos Talisman or access to the Abyss", ItemID.CHAOS_TALISMAN).isNotConsumed();
 
 		beaconRing = new ItemRequirement("Beacon ring", ItemID.BEACON_RING);
 		beaconRing.setTooltip("You can get another from Zaff");

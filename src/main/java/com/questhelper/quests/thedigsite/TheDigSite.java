@@ -83,8 +83,8 @@ public class TheDigSite extends BasicQuestHelper
 	QuestStep talkToExaminer, talkToHaig, talkToExaminer2, searchBush, takeTray, talkToGuide, panWater, pickpocketWorkmen, talkToFemaleStudent, talkToFemaleStudent2,
 		talkToOrangeStudent, talkToOrangeStudent2, talkToGreenStudent, talkToGreenStudent2, takeTest1, talkToFemaleStudent3, talkToOrangeStudent3, talkToGreenStudent3,
 		takeTest2, talkToFemaleStudent4, takeTest3, getJar, getBrush, digForTalisman, talkToExpert, useInvitationOnWorkman, useRopeOnWinch, goDownWinch, pickUpRoot,
-		searchBricks, goUpRope, goDownToDoug, talkToDoug, goUpFromDoug, unlockChest, searchChest, useTrowelOnBarrel, useVialOnBarrel, grindCharcoal, usePowderOnExpert,
-		useLiquidOnExpert, mixNitroWithNitrate, addCharcoal, addRoot, goDownToExplode, useCompound, useTinderbox, takeTablet, useTabletOnExpert, syncStep, talkToFemaleStudent5,
+		searchBricks, goUpRope, goDownToDoug, talkToDoug, goUpFromDoug, unlockChest, searchChest, useTrowelOnBarrel, useVialOnBarrel, usePowderOnExpert, useLiquidOnExpert,
+		mixNitroWithNitrate, grindCharcoal, addCharcoal, addRoot, goDownToExplode, useCompound, useTinderbox, takeTablet, useTabletOnExpert, syncStep, talkToFemaleStudent5,
 		talkToOrangeStudent4, talkToGreenStudent4, useRopeOnWinch2, goDownToExplode2, goDownForTablet, goUpWithTablet, searchPanningTray;
 
 	//Zones
@@ -94,7 +94,7 @@ public class TheDigSite extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -170,7 +170,8 @@ public class TheDigSite extends BasicQuestHelper
 
 		makeExplosives.addStep(new Conditions(chemicalCompound), goDownToExplode);
 		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals2), addRoot);
-		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals), addCharcoal);
+		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals, groundCharcoal), addCharcoal);
+		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals, charcoal), grindCharcoal);
 		makeExplosives.addStep(new Conditions(arcenia, nitrate, nitro), mixNitroWithNitrate);
 		makeExplosives.addStep(new Conditions(arcenia, powder, nitro), usePowderOnExpert);
 		makeExplosives.addStep(new Conditions(arcenia, powder, liquid), useLiquidOnExpert);
@@ -201,14 +202,15 @@ public class TheDigSite extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
+		pestleAndMortar.setHighlightInInventory(true);
 		vialHighlighted = new ItemRequirement("Vial", ItemID.VIAL);
 		vialHighlighted.setHighlightInInventory(true);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlighted.setHighlightInInventory(true);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderboxHighlighted = tinderbox.highlighted();
 		tea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_1978);
 		ropes2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
@@ -218,14 +220,15 @@ public class TheDigSite extends BasicQuestHelper
 		opal.addAlternates(ItemID.UNCUT_OPAL);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		charcoal.setTooltip("Obtainable during quest by searching specimen trays");
-		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH);
-		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR);
-		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY);
+		charcoal.setHighlightInInventory(true);
+		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH).isNotConsumed();
+		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR).isNotConsumed();
+		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY).isNotConsumed();
 		panningTray.addAlternates(ItemID.PANNING_TRAY_678, ItemID.PANNING_TRAY_679);
-		panningTrayFull = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY_679);
-		trowel = new ItemRequirement("Trowel", ItemID.TROWEL);
+		panningTrayFull = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY_679).isNotConsumed();
+		trowel = new ItemRequirement("Trowel", ItemID.TROWEL).isNotConsumed();
 		trowel.setTooltip("You can get another from one of the Examiners");
-		trowelHighlighted = new ItemRequirement("Trowel", ItemID.TROWEL);
+		trowelHighlighted = new ItemRequirement("Trowel", ItemID.TROWEL).isNotConsumed();
 		trowelHighlighted.setHighlightInInventory(true);
 		trowelHighlighted.setTooltip("You can get another from one of the Examiners");
 		varrock2 = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);
@@ -479,12 +482,12 @@ public class TheDigSite extends BasicQuestHelper
 		useTrowelOnBarrel.addIcon(ItemID.TROWEL);
 		useVialOnBarrel = new ObjectStep(this, NullObjectID.NULL_2359, new WorldPoint(3364, 3378, 0), "Use a vial on the barrel west of the chest's tent.", vialHighlighted);
 		useVialOnBarrel.addIcon(ItemID.VIAL);
-		grindCharcoal = new DetailedQuestStep(this, "Grind charcoal with a pestle and mortar.", pestleAndMortar, charcoal);
 		usePowderOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the powder on the Archaeological expert in the Exam Centre.", powder);
 		usePowderOnExpert.addIcon(ItemID.CHEMICAL_POWDER);
 		useLiquidOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "(DO NOT LEFT CLICK) Right-click use the liquid on the Archaeological expert in the Exam Centre.", liquid);
 		useLiquidOnExpert.addIcon(ItemID.UNIDENTIFIED_LIQUID);
 		mixNitroWithNitrate = new DetailedQuestStep(this, "Mix the nitroglycerin and ammonium nitrate together.", nitro, nitrate);
+		grindCharcoal = new DetailedQuestStep(this, "Grind charcoal with a pestle and mortar.", pestleAndMortar, charcoal);
 		addCharcoal = new DetailedQuestStep(this, "Add charcoal to the vial.", groundCharcoal, mixedChemicals);
 		addRoot = new DetailedQuestStep(this, "Add arcenia root to the vial.", arcenia, mixedChemicals2);
 		goDownToExplode = new ObjectStep(this, ObjectID.WINCH_2350, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.", chemicalCompound, tinderbox);

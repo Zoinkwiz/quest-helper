@@ -113,19 +113,20 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
-		ghostlyHood = new ItemRequirement("Ghostly hood", ItemID.GHOSTLY_HOOD, 1, true);
-		ghostlyBody = new ItemRequirement("Ghostly robe (top)", ItemID.GHOSTLY_ROBE, 1, true);
-		ghostlyLegs = new ItemRequirement("Ghostly robe (bottom)", ItemID.GHOSTLY_ROBE_6108, 1, true);
-		ghostlyGloves = new ItemRequirement("Ghostly gloves", ItemID.GHOSTLY_GLOVES, 1, true);
-		ghostlyBoots = new ItemRequirement("Ghostly boots", ItemID.GHOSTLY_BOOTS, 1, true);
-		ghostlyCloak = new ItemRequirement("Ghostly cloak", ItemID.GHOSTLY_CLOAK, 1, true);
+		ghostlyHood = new ItemRequirement("Ghostly hood", ItemID.GHOSTLY_HOOD, 1, true).isNotConsumed();
+		ghostlyBody = new ItemRequirement("Ghostly robe (top)", ItemID.GHOSTLY_ROBE, 1, true).isNotConsumed();
+		ghostlyLegs = new ItemRequirement("Ghostly robe (bottom)", ItemID.GHOSTLY_ROBE_6108, 1, true).isNotConsumed();
+		ghostlyGloves = new ItemRequirement("Ghostly gloves", ItemID.GHOSTLY_GLOVES, 1, true).isNotConsumed();
+		ghostlyBoots = new ItemRequirement("Ghostly boots", ItemID.GHOSTLY_BOOTS, 1, true).isNotConsumed();
+		ghostlyCloak = new ItemRequirement("Ghostly cloak", ItemID.GHOSTLY_CLOAK, 1, true).isNotConsumed();
 		ghostlyRobes = new ItemRequirements("Ghostly robes", ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyGloves,
-			ghostlyBoots, ghostlyCloak);
+			ghostlyBoots, ghostlyCloak).isNotConsumed();
 
-		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true);
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
+		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true).isNotConsumed();
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
 		ghostspeak.addAlternates(ItemID.GHOSTSPEAK_AMULET_4250);
 
 		coins40 = new ItemRequirement("Coins", ItemCollections.COINS, 40);
@@ -137,7 +138,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		rellekkaTeleport = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT, 3);
 		karamjaTeleport = new ItemRequirement("Teleport to Tai Bwo Wannai", ItemID.TAI_BWO_WANNAI_TELEPORT);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		serveredLeg = new ItemRequirement("Severed leg", ItemID.SEVERED_LEG);
@@ -171,7 +172,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD_3510, new WorldPoint(2718, 3628, 0), "Talk to General" +
+		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0), "Talk to General" +
 			" Khazard south east of Rellekka.", ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyCloak, ghostlyBoots,
 			ghostlyGloves, ringOfVisibility, ghostspeak);
 		talkToKhazard.addDialogSteps("I just have one of those faces.", "I'm a very trustworthy person.");
@@ -183,10 +184,10 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		talkToSeer.addDialogSteps("Bribe", "Here's the money.");
 		talkToSeer.addSubSteps(goUpToSeer);
 
-		talkToKhazardAfterSeer = new NpcStep(this, NpcID.GENERAL_KHAZARD_3510, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterSeer = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", sinSeersNote, ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToKhazardAfterNote = new NpcStep(this, NpcID.GENERAL_KHAZARD_3510, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterNote = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToGnomeScout = new NpcStep(this, NpcID.SCOUT_3512, new WorldPoint(2458, 3358, 0), "Talk to the scout " +
@@ -201,7 +202,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		talkToKaramjaScout = new NpcStep(this, NpcID.SCOUT, new WorldPoint(2825, 3053, 0), "Talk to the scout " +
 			"south east of Tai Bwo Wannai.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToKhazardAfterScouts = new NpcStep(this, NpcID.GENERAL_KHAZARD_3510, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterScouts = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0),

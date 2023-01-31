@@ -155,6 +155,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notBonesToPeachesPalace = new VarplayerRequirement(1194, false, 25);
@@ -185,31 +186,31 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 4).showConditioned(notBonesToPeachesPalace);
 		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE, 2).showConditioned(notBonesToPeachesPalace);
 		fairyAccess = new ItemRequirement("Lunar or Dramen staff", ItemCollections.FAIRY_STAFF)
-			.showConditioned(new Conditions(LogicType.OR, notCosmics, notJuttingWall));
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notWakaToEdge);
+			.showConditioned(new Conditions(LogicType.OR, notCosmics, notJuttingWall)).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notWakaToEdge).isNotConsumed();
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notPowerAmmy);
 		cutDiamond = new ItemRequirement("Diamond", ItemID.DIAMOND).showConditioned(notPowerAmmy);
-		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notPowerAmmy);
+		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notPowerAmmy).isNotConsumed();
 		ballOfWool = new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL).showConditioned(notPowerAmmy);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notPowerAmmy);
 		diamondAmuletU = new ItemRequirement("Diamond amulet (u)", ItemID.DIAMOND_AMULET_U).showConditioned(notPowerAmmy);
 		diamondAmulet = new ItemRequirement("Diamond amulet", ItemID.DIAMOND_AMULET).showConditioned(notPowerAmmy);
-		miningHelm = new ItemRequirement("Mining helmet", ItemCollections.MINING_HELM).showConditioned(notLightMiningHelm);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notLightMiningHelm);
+		miningHelm = new ItemRequirement("Mining helmet", ItemCollections.MINING_HELM).showConditioned(notLightMiningHelm).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notLightMiningHelm).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 130000).showConditioned(notBarrowsGloves);
 		gamesNeck = new ItemRequirement("Games Necklace", ItemCollections.GAMES_NECKLACES).showConditioned(notHundredTears);
 		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE).showConditioned(notTrainToKeld);
 		essence = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH, 28).showConditioned(notCosmics);
 		cosmicAccessOrAbyss = new ItemRequirement("Access to cosmic altar, or travel through abyss. Tiara recommended unless using essence pouches",
-			ItemCollections.COSMIC_ALTAR).showConditioned(notCosmics);
+			ItemCollections.COSMIC_ALTAR).showConditioned(notCosmics).isNotConsumed();
+		cosmicAccessOrAbyss.setTooltip("Cosmic talisman or tiara");
 		bellaSeed = new ItemRequirement("Belladonna seed", ItemID.BELLADONNA_SEED).showConditioned(notBelladonna);
-		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notBelladonna);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notBelladonna);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notBelladonna);
-		gloves = new ItemRequirement("Gloves", ItemCollections.GLOVES).showConditioned(notBelladonna);
+		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notBelladonna).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notBelladonna).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notBelladonna).isNotConsumed();
+		gloves = new ItemRequirement("Gloves", ItemCollections.GLOVES).showConditioned(notBelladonna).isNotConsumed();
 		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES)
-			.showConditioned(new Conditions(LogicType.OR, notHundredTears, notTrainToKeld));
-
+			.showConditioned(new Conditions(LogicType.OR, notHundredTears, notTrainToKeld)).isNotConsumed();
 
 		inZanaris = new ZoneRequirement(zanaris);
 		inBasement = new ZoneRequirement(basement);
@@ -402,7 +403,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 		PanelDetails peachesPalaceSteps = new PanelDetails("Bones to Peaches Palace",
 			Arrays.asList(unlockBonesToPeaches, moveToPalace, bonesToPeachesPalace),
-			new SkillRequirement(Skill.MAGIC, 60), bonesToPeaches, bones, earthRune4,
+			new SkillRequirement(Skill.MAGIC, 60), bonesToPeaches, bones, earthRune.quantity(4),
 			waterRune, natureRune);
 		peachesPalaceSteps.setDisplayCondition(notBonesToPeachesPalace);
 		peachesPalaceSteps.setLockingStep(bonesToPeachesPalaceTask);
@@ -417,7 +418,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		PanelDetails powerAmuletSteps = new PanelDetails("Power Amulet", Arrays.asList(moveToLumby, smeltAmmy,
 			stringAmmy, powerAmmy), new SkillRequirement(Skill.CRAFTING, 70, true),
 			new SkillRequirement(Skill.MAGIC, 57), goldBar, cutDiamond, amuletMould, ballOfWool,
-			cosmicRune.quantity(1), earthRune10);
+			cosmicRune.quantity(1), earthRune.quantity(10));
 		powerAmuletSteps.setDisplayCondition(notPowerAmmy);
 		powerAmuletSteps.setLockingStep(powerAmmyTask);
 		allSteps.add(powerAmuletSteps);

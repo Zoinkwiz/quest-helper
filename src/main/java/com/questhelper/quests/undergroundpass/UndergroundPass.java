@@ -113,19 +113,18 @@ public class UndergroundPass extends BasicQuestHelper
 		inUndergroundSection2P1, inUndergroundSection2P2, inUndergroundSection2P3, inUndergroundSection2P4,
 		inUndergroundSection3, inMaze1, inMaze2, inPostIbanArea;
 
-	private void setupItemReqs()
+	@Override
+	public void setupRequirements()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
-		rope2 = new ItemRequirement("Rope, multiple in case you fail an agility check", ItemID.ROPE, -1);
+		rope2 = new ItemRequirement("Rope, multiple in case you fail an agility check", ItemID.ROPE);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
-		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.BOWS, 1, true);
+		bow = new ItemRequirement("Bow (not crossbow)", ItemCollections.BOWS, 1, true).isNotConsumed();
 		arrows = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.METAL_ARROWS);
-		arrowsHighlight = new ItemRequirement("Arrows (metal, unpoisoned)", ItemCollections.METAL_ARROWS);
-		arrowsHighlight.setHighlightInInventory(true);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		spadeHighlight = new ItemRequirement("Spade", ItemID.SPADE);
-		spadeHighlight.setHighlightInInventory(true);
+		arrowsHighlight = arrows.highlighted();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		spadeHighlight = spade.highlighted();
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		plankHighlight = new ItemRequirement("Plank", ItemID.PLANK);
 		plankHighlight.setHighlightInInventory(true);
@@ -133,10 +132,9 @@ public class UndergroundPass extends BasicQuestHelper
 		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlight.setHighlightInInventory(true);
 		bucketHighlight.setTooltip("You can grab a bucket from the southwest corner of the large dwarf encampment building.");
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderboxHighlight.setHighlightInInventory(true);
-		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderboxHighlight = tinderbox.highlighted();
+		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1).isNotConsumed();
 		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(ItemID.SHARK);
@@ -590,7 +588,7 @@ public class UndergroundPass extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemReqs();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();

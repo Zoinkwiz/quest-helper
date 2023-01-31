@@ -90,7 +90,7 @@ public class BetweenARock extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -174,10 +174,11 @@ public class BetweenARock extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		coins5 = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		page1 = new ItemRequirement("Book page 1", ItemID.BOOK_PAGE_1);
 		page2 = new ItemRequirement("Book page 2", ItemID.BOOK_PAGE_2);
@@ -217,7 +218,7 @@ public class BetweenARock extends BasicQuestHelper
 
 		solvedSchematic = new ItemRequirement("Schematic", ItemID.SCHEMATIC_4578);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -293,7 +294,7 @@ public class BetweenARock extends BasicQuestHelper
 
 		goBackUpToRolad = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3019, 9850, 0), "Go back up to Rolad.", pages);
 
-		returnToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0), "Talk Rolad again.", pages);
+		returnToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0), "Talk to Rolad again.", pages);
 		returnToRolad.addSubSteps(goBackUpToRolad);
 
 		readEntireBook = new DetailedQuestStep(this, "Read the entire dwarven lore book.", dwarvenLoreHighlight);

@@ -90,7 +90,7 @@ public class DeathPlateau extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -151,7 +151,8 @@ public class DeathPlateau extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		asgarnianAle = new ItemRequirement("Asgarnian ale", ItemID.ASGARNIAN_ALE);
 
@@ -180,7 +181,7 @@ public class DeathPlateau extends BasicQuestHelper
 		greenStone = new ItemRequirement("Stone ball", ItemID.STONE_BALL_3113);
 		greenStone.setHighlightInInventory(true);
 		certificate = new ItemRequirement("Certificate", ItemID.CERTIFICATE_3114);
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
 		spikedBoots = new ItemRequirement("Spiked boots", ItemID.SPIKED_BOOTS);
 		secretMap = new ItemRequirement("Secret way map", ItemID.SECRET_WAY_MAP);
 		combination = new ItemRequirement("Combination", ItemID.COMBINATION);

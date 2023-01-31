@@ -36,6 +36,11 @@ public interface QuestDetails
 		return quest.getConfig().showCompletedQuests() && quest.isCompleted() || !quest.isCompleted();
 	}
 
+	public static boolean isNotCompleted(QuestHelper quest)
+	{
+		return !quest.isCompleted();
+	}
+
 	/**
 	 * Describes the difficulty of a {@link QuestHelperQuest}
 	 */
@@ -71,6 +76,8 @@ public interface QuestDetails
 		ACHIEVEMENT_DIARY,
 		GENERIC,
 		SKILL,
+		SKILL_F2P,
+		SKILL_P2P
 		;
 
 		@Override

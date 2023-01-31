@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
@@ -94,9 +95,9 @@ public class MageArenaBossStep extends DetailedQuestStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
-		super.makeOverlayHint(panelComponent, plugin, additionalText);
+		super.makeOverlayHint(panelComponent, plugin, additionalText, additionalRequirements);
 		if (mageArenaSolver == null)
 		{
 			return;

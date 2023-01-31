@@ -58,7 +58,7 @@ import net.runelite.api.coords.WorldPoint;
 public class PiratesTreasure extends BasicQuestHelper
 {
 	//ItemRequirements
-	ItemRequirement sixtyCoins, spade;
+	ItemRequirement sixtyCoins, spade, pirateMessage, chestKey;
 
 	private NpcStep speakToRedbeard;
 
@@ -77,8 +77,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		setupRequirements();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -92,10 +91,6 @@ public class PiratesTreasure extends BasicQuestHelper
 		smuggleRum = new RumSmugglingStep(this);
 
 		steps.put(1, smuggleRum);
-
-		ItemRequirement pirateMessage = new ItemRequirement("Pirate message", ItemID.PIRATE_MESSAGE);
-		ItemRequirement chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
-		chestKey.setTooltip("You can get another one from Redbeard Frank");
 
 		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage.highlighted());
 		climbStairs = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(3228, 3393, 0),
@@ -119,6 +114,16 @@ public class PiratesTreasure extends BasicQuestHelper
 
 		steps.put(3, digUpTreasure);
 		return steps;
+	}
+
+	@Override
+	public void setupRequirements()
+	{
+		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		pirateMessage = new ItemRequirement("Pirate message", ItemID.PIRATE_MESSAGE);
+		chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
+		chestKey.setTooltip("You can get another one from Redbeard Frank");
 	}
 
 	@Override

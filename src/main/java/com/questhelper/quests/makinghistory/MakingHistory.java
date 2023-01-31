@@ -25,12 +25,14 @@
 package com.questhelper.quests.makinghistory;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
@@ -86,7 +88,7 @@ public class MakingHistory extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -125,15 +127,16 @@ public class MakingHistory extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		saphAmulet = new ItemRequirement("Sapphire amulet", ItemID.SAPPHIRE_AMULET);
-		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK, 1, true);
+		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK).equipped().isNotConsumed();
 		ghostSpeakAmulet.setTooltip("You can also wear the Morytania Legs 2 or higher.");
 		ardougneTeleport = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 3);
 
-		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL);
+		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL).isNotConsumed();
 		ectophial.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT, ItemID.KHARYRLL_TELEPORT);
 		ectophial.addAlternates(ItemCollections.SLAYER_RINGS); // Slayer Tower
 		ectophial.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
@@ -156,7 +159,7 @@ public class MakingHistory extends BasicQuestHelper
 		portPhasmatysEntry.setTooltip(ectoTokens.getTooltip());
 
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.RING_OF_DUELINGS);
-		enchantedKey = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
+		enchantedKey = new KeyringRequirement("Enchanted key", configManager, KeyringCollection.ENCHANTED_KEY);
 		enchantedKey.setTooltip("You can get another from the silver merchant in East Ardougne's market");
 
 		enchantedKeyHighlighted = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);

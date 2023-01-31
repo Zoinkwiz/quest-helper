@@ -72,7 +72,7 @@ public class ColdWar extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -181,16 +181,16 @@ public class ColdWar extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		oakPlanks = new ItemRequirement("Oak Planks (unnoted)", ItemID.OAK_PLANK, 10);
 		oakPlankHighlight = new ItemRequirement("Oak Plank", ItemID.OAK_PLANK, 1);
 		oakPlankHighlight.setHighlightInInventory(true);
 		steelNails = new ItemRequirement("Steel Nails", ItemID.STEEL_NAILS, 10);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER, 1);
-		spade = new ItemRequirement("Spade", ItemID.SPADE, 1);
-		spadeHighlight = new ItemRequirement("Spade", ItemID.SPADE, 1);
-		spadeHighlight.setHighlightInInventory(true);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE, 1).isNotConsumed();
+		spadeHighlight = spade.highlighted();
 		clockworkOrSteelBar = new ItemRequirement("Clockwork or Steel Bar", ItemID.STEEL_BAR);
 		clockworkOrSteelBar.addAlternates(ItemID.CLOCKWORK);
 		clockworkOrSteelBar.setDisplayMatchedItemName(true);
@@ -198,7 +198,7 @@ public class ColdWar extends BasicQuestHelper
 		clockwork = new ItemRequirement("Clockwork", ItemID.CLOCKWORK, 1);
 		plank = new ItemRequirement("Normal Plank", ItemID.PLANK, 1);
 		silk = new ItemRequirement("Silk", ItemID.SILK, 1);
-		rawCodOrCharos = new ItemRequirement("Raw Cod", ItemID.RAW_COD);
+		rawCodOrCharos = new ItemRequirement("Raw Cod", ItemID.RAW_COD).doNotAggregate();
 		rawCodOrCharos.addAlternates(ItemID.RING_OF_CHAROSA);
 		rawCodOrCharos.setDisplayMatchedItemName(true);
 		rawCodOrCharos.setTooltip("Ring of Charos (a) can also be used.");
@@ -227,7 +227,7 @@ public class ColdWar extends BasicQuestHelper
 		bongos = new ItemRequirement("Penguin bongos", ItemID.PENGUIN_BONGOS);
 		kgpId = new ItemRequirement("Kgp id card", ItemID.KGP_ID_CARD);
 		kgpId.setTooltip("You can get another from Noodle");
-		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
+		combatGear = new ItemRequirement("Combat gear and food", -1, -1).isNotConsumed();
 	}
 
 	public void setupZones()

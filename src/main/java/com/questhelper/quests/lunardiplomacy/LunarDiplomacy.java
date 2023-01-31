@@ -127,7 +127,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -305,25 +305,25 @@ public class LunarDiplomacy extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
+		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE).isNotConsumed();
 		sealOfPassage.setTooltip("You can get another from Brundt");
 
-		sealOfPassageEquipped = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE, 1, true);
-		sealOfPassageEquipped.setTooltip("You can get another from Brundt");
+		sealOfPassageEquipped = sealOfPassage.equipped();
 
-		bullseyeLantern = new ItemRequirement("Bullseye lantern", ItemID.BULLSEYE_LANTERN);
+		bullseyeLantern = new ItemRequirement("Bullseye lantern", ItemID.BULLSEYE_LANTERN).isNotConsumed();
 		bullseyeLantern.addAlternates(ItemID.SAPPHIRE_LANTERN_4701);
-		bullseyeLanternHighlighted = new ItemRequirement("Bullseye lantern", ItemID.BULLSEYE_LANTERN);
+		bullseyeLanternHighlighted = new ItemRequirement("Bullseye lantern", ItemID.BULLSEYE_LANTERN).isNotConsumed();
 		bullseyeLanternHighlighted.addAlternates(ItemID.SAPPHIRE_LANTERN_4701);
 		bullseyeLanternHighlighted.setHighlightInInventory(true);
 
-		bullseyeLanternLit = new ItemRequirement("Bullseye lantern", ItemID.BULLSEYE_LANTERN_4550);
+		bullseyeLanternLit = new ItemRequirement("Bullseye lantern", ItemID.BULLSEYE_LANTERN_4550).isNotConsumed();
 		bullseyeLanternLit.setHighlightInInventory(true);
 		bullseyeLanternLit.addAlternates(ItemID.SAPPHIRE_LANTERN_4702);
 
-		emeraldLantern = new ItemRequirement("Emerald lantern", ItemID.EMERALD_LANTERN);
+		emeraldLantern = new ItemRequirement("Emerald lantern", ItemID.EMERALD_LANTERN).isNotConsumed();
 		emeraldLantern.setHighlightInInventory(true);
 
 		emeraldLanternLit = new ItemRequirement("Emerald lantern", ItemID.EMERALD_LANTERN_9065);
@@ -337,7 +337,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		emeraldLensHighlighted.setTooltip("You can get another from the Cabin boy");
 		emeraldLensHighlighted.setHighlightInInventory(true);
 
-		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderboxHighlighted.setHighlightInInventory(true);
 
 		guam = new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF);
@@ -374,24 +374,24 @@ public class LunarDiplomacy extends BasicQuestHelper
 		sleepPotionHighlighted = new ItemRequirement("Waking sleep vial", ItemID.WAKING_SLEEP_VIAL);
 		sleepPotionHighlighted.setHighlightInInventory(true);
 
-		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestle.setHighlightInInventory(true);
 
-		airTalisman = new ItemRequirement("Air talisman/tiara, or access via the Abyss", ItemID.AIR_TALISMAN);
+		airTalisman = new ItemRequirement("Air talisman/tiara, or access via the Abyss", ItemID.AIR_TALISMAN).isNotConsumed();
 		airTalisman.addAlternates(ItemID.AIR_TIARA, ItemID.ELEMENTAL_TALISMAN);
 
-		fireTalisman = new ItemRequirement("Fire talisman/tiara, or access via the Abyss", ItemID.FIRE_TALISMAN);
+		fireTalisman = new ItemRequirement("Fire talisman/tiara, or access via the Abyss", ItemID.FIRE_TALISMAN).isNotConsumed();
 		fireTalisman.addAlternates(ItemID.FIRE_TIARA, ItemID.ELEMENTAL_TALISMAN);
 
-		earthTalisman = new ItemRequirement("Earth talisman/tiara, or access via the Abyss", ItemID.EARTH_TALISMAN);
+		earthTalisman = new ItemRequirement("Earth talisman/tiara, or access via the Abyss", ItemID.EARTH_TALISMAN).isNotConsumed();
 		earthTalisman.addAlternates(ItemID.EARTH_TIARA, ItemID.ELEMENTAL_TALISMAN);
 
-		waterTalisman = new ItemRequirement("Water talisman/tiara, or access via the Abyss", ItemID.WATER_TALISMAN);
+		waterTalisman = new ItemRequirement("Water talisman/tiara, or access via the Abyss", ItemID.WATER_TALISMAN).isNotConsumed();
 		waterTalisman.addAlternates(ItemID.WATER_TIARA, ItemID.ELEMENTAL_TALISMAN);
 
-		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
+		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaff.setTooltip("You can get another from under Entrana");
-		dramenStaffHighlighted = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
+		dramenStaffHighlighted = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaffHighlighted.setTooltip("You can get another from under Entrana");
 		dramenStaffHighlighted.setHighlightInInventory(true);
 
@@ -409,18 +409,18 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		lunarStaff = new ItemRequirement("Lunar staff", ItemID.LUNAR_STAFF);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
-		thread = new ItemRequirement("Thread", ItemID.THREAD);
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
+		thread = new ItemRequirement("Thread", ItemID.THREAD).isNotConsumed();
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		coins400 = new ItemRequirement("Coins", ItemCollections.COINS, 400);
 
 		combatRunes = new ItemRequirement("Combat runes", -1, -1);
 		combatRunes.setDisplayItemId(ItemID.DEATH_RUNE);
 
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 
 		lunarOre = new ItemRequirement("Lunar ore", ItemID.LUNAR_ORE);
 		lunarBar = new ItemRequirement("Lunar bar", ItemID.LUNAR_BAR);
@@ -762,7 +762,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 			cloakEquipped, amuletEquipped, ringEquipped, lunarStaffEquipped);
 		useKindlingOnBrazier.addIcon(ItemID.SOAKED_KINDLING);
 
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
 		{
 			talkToEthereal = new NpcStep(this, NpcID.ETHEREAL_LADY, new WorldPoint(1762, 5088, 2), "Talk to the Ethereal Lady.");
 			talkWithEtherealToFight = new NpcStep(this, NpcID.ETHEREAL_LADY, new WorldPoint(1762, 5088, 2), "Talk to the Ethereal Lady. Be prepared to fight.");

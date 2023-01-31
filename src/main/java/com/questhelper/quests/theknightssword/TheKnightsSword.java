@@ -80,7 +80,7 @@ public class TheKnightsSword extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -109,13 +109,14 @@ public class TheKnightsSword extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		redberryPie = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
 		ironBars = new ItemRequirement("Iron bar", ItemID.IRON_BAR, 2);
 		bluriteOre = new ItemRequirement("Blurite ore", ItemID.BLURITE_ORE);
 		bluriteSword = new ItemRequirement("Blurite sword", ItemID.BLURITE_SWORD);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT);
 		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 4);
 		homeTele = new ItemRequirement("A teleport near Mudskipper Point, such as POH teleport or Fairy Ring to AIQ",

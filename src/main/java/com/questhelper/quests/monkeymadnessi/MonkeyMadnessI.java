@@ -106,7 +106,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -233,7 +233,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		royalSeal = new ItemRequirement("Gnome royal seal", ItemID.GNOME_ROYAL_SEAL);
 		royalSeal.setTooltip("You can get another from King Narnode");
@@ -248,7 +249,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ballOfWoolHighlight.setHighlightInInventory(true);
 
 		bananaReq = new ItemRequirement("Banana", ItemID.BANANA, 5);
-		bananaReq.setTooltip("Obtainable during quest");
+		bananaReq.canBeObtainedDuringQuest();
 
 		monkeyBonesOrCorpse = new ItemRequirement("Monkey bones or corpse", ItemID.MONKEY_BONES);
 		monkeyBonesOrCorpse.addAlternates(ItemID.MONKEY_CORPSE);
@@ -299,7 +300,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		sigilEquipped = new ItemRequirement("10th squad sigil", ItemID._10TH_SQUAD_SIGIL, 1, true);
 		sigilEquipped.setTooltip("You can get another from Waymottin next to Zooknock");
 
-		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);

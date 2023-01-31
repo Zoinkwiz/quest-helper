@@ -58,6 +58,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntUnaryOperator;
+
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -114,7 +117,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -212,35 +215,37 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		// Item reqs
-		fishbowlHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET);
+		fishbowlHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET).isNotConsumed();
 		fishbowlHelmet.setTooltip("You can get another from Murphy in Port Khazard");
-		divingApparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS);
+		divingApparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS).isNotConsumed();
 		divingApparatus.setTooltip("You can get another from Murphy in Port Khazard");
 		woodenCats = new ItemRequirement("Wooden cat", ItemID.WOODEN_CAT);
 		oakPlank = new ItemRequirement("Oak plank", ItemID.OAK_PLANK);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		fur = new ItemRequirement("Fur", ItemID.FUR);
 		fur.addAlternates(ItemID.BEAR_FUR, ItemID.GREY_WOLF_FUR);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.setTooltip("a standard hammer, NOT Imcando Hammer, as it will be given to Dr. Fenkenstrain");
 		nails = new ItemRequirement("Nails", ItemCollections.NAILS);
-		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL);
-		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS);
+		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL).isNotConsumed();
+		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS).isNotConsumed();
 		ringOfCharos.addAlternates(ItemID.RING_OF_CHAROSA);
 		ringOfCharos.setDisplayMatchedItemName(true);
 		catsOrResources = new ItemRequirements(LogicType.OR, "10 Wooden cats, or 10 planks and 10 furs to make them",
 			woodenCats.quantity(10), new ItemRequirements(plank.quantity(10), fur.quantity(10)));
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.addAlternates(ItemID.TINDERBOX_7156);
 
 		// Item recommended
-		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL);
+		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).isNotConsumed();
 		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.COMBAT_BRACELETS);
 		edgevilleTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
+
 		fenkenstrainTeleport = new ItemRequirement("Fenkenstrain's Castle teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
 		watermelonSeeds = new ItemRequirement("Watermelon seeds to plant on Harmony for Hard Morytania Diary",
 			ItemID.WATERMELON_SEED);
@@ -267,8 +272,9 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		skullStaples = new ItemRequirement("Skull staple", ItemID.SKULL_STAPLE);
 		anchor = new ItemRequirement("Barrelchest anchor", ItemID.BARRELCHEST_ANCHOR_10888);
 
-		neededJars = bellJars.quantity(3 - client.getVarbitValue(3399));
-		neededStaples = skullStaples.quantity(30 - client.getVarbitValue(3400));
+		IntUnaryOperator varbit = id -> client.getGameState() == GameState.LOGGED_IN ? client.getVarbitValue(id) : 0;
+		neededJars = bellJars.quantity(3 - varbit.applyAsInt(3399));
+		neededStaples = skullStaples.quantity(30 - varbit.applyAsInt(3400));
 	}
 
 	public void setupZones()

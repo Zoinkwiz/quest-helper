@@ -30,10 +30,12 @@ import com.questhelper.requirements.RuneliteRequirement;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
@@ -47,7 +49,6 @@ import net.runelite.client.eventbus.Subscribe;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import org.apache.commons.lang3.ArrayUtils;
@@ -67,12 +68,12 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected QuestStep currentStep;
 
-	protected Requirement[] requirements;
+	protected List<Requirement> requirements = new ArrayList<>();
 
 	public ConditionalStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
 		super(questHelper);
-		this.requirements = requirements;
+		this.requirements.addAll(Arrays.asList(requirements));
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
 	}
@@ -80,7 +81,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	public ConditionalStep(QuestHelper questHelper, QuestStep step, String text, Requirement... requirements)
 	{
 		super(questHelper, text);
-		this.requirements = requirements;
+		this.requirements.addAll(Arrays.asList(requirements));
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
 	}
@@ -203,7 +204,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	public void addRequirement(Requirement requirement)
 	{
-		ArrayUtils.add(requirements, requirement);
+		requirements.add(requirement);
 	}
 
 	@Subscribe
@@ -295,33 +296,19 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 	}
 
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... additionalRequirements)
-	{
-		Requirement[] allRequirements = ArrayUtils.addAll(additionalRequirements, requirements);
-
-		if (currentStep != null)
-		{
-			if (text == null)
-			{
-				currentStep.makeOverlayHint(panelComponent, plugin, allRequirements);
-			}
-			else
-			{
-				currentStep.makeOverlayHint(panelComponent, plugin, text, allRequirements);
-			}
-		}
-	}
-
 	// This should only have been called from a parent ConditionalStep, so default the additional text to the passed in text
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, Requirement... additionalRequirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
-		Requirement[] allRequirements = ArrayUtils.addAll(additionalRequirements, requirements);
+		List<Requirement> allRequirements = new ArrayList<>(additionalRequirements);
+		allRequirements.addAll(requirements);
+
+		List<String> allAdditionalText = new ArrayList<>(additionalText);
+		if (text != null) allAdditionalText.addAll(text);
 
 		if (currentStep != null)
 		{
-			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, allRequirements);
+			currentStep.makeOverlayHint(panelComponent, plugin, allAdditionalText, allRequirements);
 		}
 	}
 

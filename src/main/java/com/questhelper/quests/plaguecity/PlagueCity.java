@@ -81,7 +81,7 @@ public class PlagueCity extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -193,13 +193,14 @@ public class PlagueCity extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		dwellberries = new ItemRequirement("Dwellberries", ItemID.DWELLBERRIES);
 		dwellberries.setTooltip("You can get these from McGrubor's Wood west of Seers' Village");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		spade.setHighlightInInventory(true);
 		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 4);
 		fourBucketsOfWater.setHighlightInInventory(true);
@@ -219,7 +220,7 @@ public class PlagueCity extends BasicQuestHelper
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
 		snapeGrass.setHighlightInInventory(true);
 		pictureOfElena = new ItemRequirement("Picture", ItemID.PICTURE);
-		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
+		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
 		gasMask.setTooltip("You can get another from the cupboard in Edmond's house.");
 		book = new ItemRequirement("Book", ItemID.BOOK_1509);
 		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
@@ -290,7 +291,7 @@ public class PlagueCity extends BasicQuestHelper
 
 		talkToEdmondUnderground = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
 
-		climbThroughPipe = new ObjectStep(this, ObjectID.PIPE, new WorldPoint(2514, 9738, 0), "Climb through the pipe.", gasMask);
+		climbThroughPipe = new ObjectStep(this, ObjectID.PIPE, new WorldPoint(2514, 9738, 0), "Equip the gas mask and climb through the pipe.", gasMask.highlighted());
 
 		talkToJethick = new NpcStep(this, NpcID.JETHICK_8974, new WorldPoint(2540, 3305, 0), "Talk to Jethick east of where you emerge.", gasMask, pictureOfElena);
 		talkToJethick.addDialogStep("Yes, I'll return it for you.");

@@ -86,7 +86,7 @@ public class FamilyCrest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -140,7 +140,8 @@ public class FamilyCrest extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		// Recommended
 		varrockTele = new ItemRequirement("Varrock Teleports", ItemID.VARROCK_TELEPORT, 2);
@@ -163,11 +164,11 @@ public class FamilyCrest extends BasicQuestHelper
 		bass = new ItemRequirement("Bass", ItemID.BASS);
 		swordfish = new ItemRequirement("Swordfish", ItemID.SWORDFISH);
 
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		ruby = new ItemRequirement("Ruby", ItemID.RUBY);
 		ruby2 = new ItemRequirement("Ruby", ItemID.RUBY, 2);
-		ringMould = new ItemRequirement("Ring mould", ItemID.RING_MOULD);
-		necklaceMould = new ItemRequirement("Necklace mould", ItemID.NECKLACE_MOULD);
+		ringMould = new ItemRequirement("Ring mould", ItemID.RING_MOULD).isNotConsumed();
+		necklaceMould = new ItemRequirement("Necklace mould", ItemID.NECKLACE_MOULD).isNotConsumed();
 
 		antipoison = new ItemRequirement("At least one dose of antipoison or superantipoison", ItemCollections.ANTIPOISONS);
 

@@ -97,7 +97,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -267,30 +267,31 @@ public class BeneathCursedSands extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		coal = new ItemRequirement("Coal", ItemID.COAL);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderbox.setTooltip("Obtainable during quest");
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderbox.canBeObtainedDuringQuest();
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		spade.setTooltip("Obtainable during quest");
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+		spade.canBeObtainedDuringQuest();
 		meat = new ItemRequirement("Any cooked or raw meat", ItemID.COOKED_MEAT);
 		meat.addAlternates(ItemID.RAW_BEEF, ItemID.RAW_BEAR_MEAT, ItemID.RAW_BOAR_MEAT, ItemID.RAW_RAT_MEAT);
 		meat.setTooltip("Purchasable from a shop during the quest. Fish will NOT work");
-		waterskins = new ItemRequirement("Waterskin(s)", ItemID.WATERSKIN4);
+		waterskins = new ItemRequirement("Waterskin(s)", ItemID.WATERSKIN4).isNotConsumed();
 		waterskins.addAlternates(ItemID.WATERSKIN3, ItemID.WATERSKIN2, ItemID.WATERSKIN1);
 		waterskins.setTooltip("Used for protection against the desert heat");
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
-		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
+		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);
-		pharaosSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE);
+		pharaosSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
 		pharaosSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
-		meleeCombatGear = new ItemRequirement("Melee combat gear", -1, -1);
+		meleeCombatGear = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
 		meleeCombatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
-		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
+		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1).isNotConsumed();
 		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS, -1);
 		nardahTeleport = new ItemRequirement("Nardah Teleport", ItemID.DESERT_AMULET_4);
@@ -560,7 +561,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 20000));
+		return Collections.singletonList(new ExperienceReward(Skill.AGILITY, 50000));
 	}
 
 	@Override

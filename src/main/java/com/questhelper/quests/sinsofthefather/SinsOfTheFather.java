@@ -111,7 +111,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -366,12 +366,13 @@ public class SinsOfTheFather extends BasicQuestHelper
 		talkedToIvan = new VarbitRequirement(10349, 1);
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		haemBook = new ItemRequirement("Haemalchemy volume 2", ItemID.HAEMALCHEMY_VOLUME_2);
 		haemBook.setTooltip("If you lost the book, search the bookshelf in the room west of Safalaan to get it back");
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 
 		vyreTop = new ItemRequirement("Vyrewatch top", ItemID.VYREWATCH_TOP);
 		vyreTop.setTooltip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");
@@ -410,10 +411,10 @@ public class SinsOfTheFather extends BasicQuestHelper
 		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Vertida in the Myreque Hideout in Old" +
 			" Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard");
 
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		axeEquipped = new ItemRequirement("Any axe", ItemCollections.AXES, 1, true);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		axeEquipped = axe.equipped();
 
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		vine3 = new ItemRequirement("Short vine", ItemID.SHORT_VINE, 3);
 		vine3.setHighlightInInventory(true);
 		longVine = new ItemRequirement("Long vine", ItemID.LONG_VINE);
@@ -453,12 +454,12 @@ public class SinsOfTheFather extends BasicQuestHelper
 		blisterwoodSickle = new ItemRequirement("Blisterwood sickle", ItemID.BLISTERWOOD_SICKLE);
 		blisterwoodSickle.setHighlightInInventory(true);
 
-		combatGear = new ItemRequirement("Combat gear + food", -1, -1);
+		combatGear = new ItemRequirement("Combat gear + food", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		rangedWeaponForBloodveld = new ItemRequirement("Anything to range the bloodveld during bossfight", -1, -1);
+		rangedWeaponForBloodveld = new ItemRequirement("Anything to range the bloodveld during bossfight", -1, -1).isNotConsumed();
 		rangedWeaponForBloodveld.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		ItemRequirements vyrewatchOutfit = new ItemRequirements("Vyrewatch outfit",
 			new ItemRequirement("Vyrewatch top", ItemID.VYREWATCH_TOP),
@@ -859,7 +860,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("3 x 15,000 Experince Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 3), //4447 is placeholder for filter
+				new ItemReward("6 x 15,000 Experince Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 6), //4447 is placeholder for filter
 				new ItemReward("A Blisterwood Flail", ItemID.BLISTERWOOD_FLAIL, 1));
 	}
 

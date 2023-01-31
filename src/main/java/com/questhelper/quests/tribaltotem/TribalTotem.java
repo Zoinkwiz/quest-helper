@@ -80,7 +80,7 @@ public class TribalTotem extends BasicQuestHelper
     public Map<Integer, QuestStep> loadSteps()
     {
         loadZones();
-        setupItemRequirements();
+        setupRequirements();
         setupConditions();
         setupSteps();
 
@@ -104,10 +104,11 @@ public class TribalTotem extends BasicQuestHelper
                 .build();
     }
 
-    public void setupItemRequirements()
+ @Override
+ public void setupRequirements()
     {
         coins = new ItemRequirement("Coins or more for boat trips", ItemCollections.COINS, 90);
-        amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.AMULET_OF_GLORIES);
+        amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
         ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
         addressLabel = new ItemRequirement("Address label", ItemID.ADDRESS_LABEL);
         addressLabel.setHighlightInInventory(true);

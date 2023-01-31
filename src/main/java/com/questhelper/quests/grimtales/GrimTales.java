@@ -90,7 +90,7 @@ public class GrimTales extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -174,18 +174,19 @@ public class GrimTales extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		tarrominUnf2 = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF, 2);
 		tarrominUnf = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
 		tarrominUnfHighlight = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
 		tarrominUnfHighlight.setHighlightInInventory(true);
 
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
-		can = new ItemRequirement("Watering can with at least 1 use", ItemCollections.WATERING_CANS);
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		can = new ItemRequirement("Watering can with at least 1 use", ItemCollections.WATERING_CANS).isNotConsumed();
 		can.setTooltip("Gricollers' can is also valid. ");
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		combatGear = new ItemRequirement("Combat gear and food", -1, -1);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		combatGear = new ItemRequirement("Combat gear and food", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
@@ -391,12 +392,12 @@ public class GrimTales extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.FARMING, 4000),
-				new ExperienceReward(Skill.HERBLORE, 5000),
+				new ExperienceReward(Skill.FARMING, 10000),
+				new ExperienceReward(Skill.HERBLORE, 15000),
 				new ExperienceReward(Skill.HITPOINTS, 5000),
-				new ExperienceReward(Skill.WOODCUTTING, 14000),
-				new ExperienceReward(Skill.AGILITY, 6000),
-				new ExperienceReward(Skill.THIEVING, 6000));
+				new ExperienceReward(Skill.WOODCUTTING, 60000),
+				new ExperienceReward(Skill.AGILITY, 25000),
+				new ExperienceReward(Skill.THIEVING, 25000));
 	}
 
 	@Override

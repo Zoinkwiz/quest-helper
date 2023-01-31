@@ -32,7 +32,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.player.PlayerModelRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -66,9 +65,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class RecruitmentDrive extends BasicQuestHelper
 {
-	private ItemRequirement coinsRequirement;
 	private NoItemRequirement noItemRequirement;
-	private Requirement femaleReq;
 	private ZoneRequirement isFirstFloorCastle, isSecondFloorCastle,
 		isInSirTinleysRoom, isInMsHynnRoom, isInSirKuamsRoom,
 		isInSirSpishyusRoom, isInSirRenItchood, isInladyTableRoom;
@@ -103,7 +100,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		SetupZones();
 
 		return getSteps();
@@ -119,12 +116,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		coinsRequirement = new ItemRequirement("Coins(If you are male)", ItemCollections.COINS, 3000);
 		noItemRequirement = new NoItemRequirement("No items or equipment carried", ItemSlots.ANY_EQUIPPED_AND_INVENTORY);
-
-		femaleReq = new PlayerModelRequirement(true);
 	}
 
 	public void SetupZones()
@@ -202,8 +197,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye");
 		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
-			"Kill Sir Leye to win this challenge. You must be a female character or you can't kill him.", true,
-			femaleReq);
+			"Kill Sir Leye to win this challenge. You must use the warhammer or you can't kill him.", true);
 
 		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
 		NpcCondition npcCondition = new NpcCondition(NpcID.SIR_LEYE);
@@ -366,12 +360,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return Collections.singletonList(coinsRequirement);
-	}
-
-	@Override
 	public List<String> getCombatRequirements()
 	{
 		return Collections.singletonList("Sir Leye (level 20) with no items");
@@ -383,7 +371,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
-		reqs.add(new PlayerModelRequirement(true));
 		return reqs;
 	}
 
@@ -407,8 +394,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new ItemReward("Initiate Helm", ItemID.INITIATE_SALLET, 1),
-				new ItemReward("3000 Coins", ItemID.COINS_995, 3000),
-				new ItemReward("Makeover Voucher (If male when starting quest)", ItemID.MAKEOVER_VOUCHER, 1));
+				new ItemReward("3000 Coins", ItemID.COINS_995, 3000));
 	}
 
 	@Override

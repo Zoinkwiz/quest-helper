@@ -161,7 +161,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -545,17 +545,18 @@ public class SongOfTheElves extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true);
-		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
-		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true);
-		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true);
-		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true);
-		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true);
-		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers, mournerCloak, mournerBoots, mournerGloves);
+		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true).isNotConsumed();
+		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
+		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true).isNotConsumed();
+		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true).isNotConsumed();
+		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true).isNotConsumed();
+		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true).isNotConsumed();
+		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers, mournerCloak, mournerBoots, mournerGloves).isNotConsumed();
 
-		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 
 		steelFullHelm = new ItemRequirement("Steel full helm", ItemID.STEEL_FULL_HELM);
 		steelFullHelm.setHighlightInInventory(true);
@@ -569,11 +570,11 @@ public class SongOfTheElves extends BasicQuestHelper
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		runiteBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR);
 		limestoneBricks8 = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK, 8);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		rope = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
+		tinderboxHighlighted = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderboxHighlighted.setHighlightInInventory(true);
-		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE);
+		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
 		ropeHighlighted.setHighlightInInventory(true);
 		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE);
 		iritLeafOrFlowers = new ItemRequirement("Irit leaf or a flower", ItemID.IRIT_LEAF);
@@ -589,18 +590,17 @@ public class SongOfTheElves extends BasicQuestHelper
 			ItemID.BLACK_DAGGERP, ItemID.BLACK_DAGGERP_5682, ItemID.BLACK_DAGGERP_5700);
 		cadantineSeed = new ItemRequirement("Cadantine seed", ItemID.CADANTINE_SEED);
 		cadantineSeed.setHighlightInInventory(true);
-		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
+		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
-		pestleAndMortarHighlighted.setHighlightInInventory(true);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		saw = new ItemRequirement("Saw", ItemCollections.SAW);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
+		pestleAndMortarHighlighted = pestleAndMortar.highlighted();
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		pickaxeHighlighted = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).highlighted().isNotConsumed();
 		pickaxeHighlighted.setHighlightInInventory(true);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 
 		ardyFullHelm = new ItemRequirement("Ardougne knight helm", ItemID.ARDOUGNE_KNIGHT_HELM);
 		ardyPlatebody = new ItemRequirement("Ardougne knight platebody", ItemID.ARDOUGNE_KNIGHT_PLATEBODY);
@@ -615,7 +615,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		steelPlatelegsEquipped.addAlternates(ItemID.ARDOUGNE_KNIGHT_PLATELEGS);
 
 		clearLiquid = new ItemRequirement("Clear liquid", ItemID.CLEAR_LIQUID);
-		baxKey = new ItemRequirement("Key", ItemID.KEY_298);
+		baxKey = new ItemRequirement("Key", ItemID.KEY_298).isNotConsumed();
 
 		odeToEternityHighlighted = new ItemRequirement("Ode to Eternity", ItemID.ODE_TO_ETERNITY);
 		odeToEternityHighlighted.setHighlightInInventory(true);
@@ -623,10 +623,10 @@ public class SongOfTheElves extends BasicQuestHelper
 		crystalSeed = new ItemRequirement("Crystal seed", ItemID.CRYSTAL_SEED_23810);
 		crystalSeed.setHighlightInInventory(true);
 
-		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		hammerHighlighted.setHighlightInInventory(true);
+		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER).highlighted().isNotConsumed();
 
 		elderCadantine = new ItemRequirement("Elder cadantine", ItemID.ELDER_CADANTINE);
+		elderCadantine.addAlternates(ItemID.ELDER_CADANTINE_POTION_UNF);
 
 		elderCadantineHighlighted = new ItemRequirement("Elder cadantine", ItemID.ELDER_CADANTINE);
 		elderCadantineHighlighted.setHighlightInInventory(true);
@@ -652,7 +652,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		saradominBrews = new ItemRequirement("Saradomin brews", ItemID.SARADOMIN_BREW4);
 		superRestorePotions = new ItemRequirement("Super restores", ItemID.SUPER_RESTORE4);
 
-		teleCrystal =  new ItemRequirement("Teleport crystal", ItemID.TELEPORT_CRYSTAL_1);
+		teleCrystal = new ItemRequirement("Teleport crystal", ItemID.TELEPORT_CRYSTAL_1);
 		teleCrystal.addAlternates(ItemID.TELEPORT_CRYSTAL_2, ItemID.TELEPORT_CRYSTAL_3, ItemID.TELEPORT_CRYSTAL_4, ItemID.TELEPORT_CRYSTAL_5);
 		iorwerthCampTeleport = new ItemRequirement("Iorwerth camp teleport", ItemID.IORWERTH_CAMP_TELEPORT);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
@@ -914,6 +914,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToSpiceSeller.addDialogStep("I'm here to tell you about some new taxes.");
 		talkToSilkMerchant = new NpcStep(this, NpcID.SILK_MERCHANT_8728, new WorldPoint(2656, 3301, 0),
 			"Talk to the silk merchant in the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
+		talkToSilkMerchant.addDialogStep("I'm here to tell you about some new taxes.");
 
 		talkToTownCrier = new NpcStep(this, NpcID.TOWN_CRIER_279, new WorldPoint(2666, 3312, 0),
 			"Talk to the town crier in the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
@@ -971,7 +972,8 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToYsgawyn.addSubSteps(goUpToYsgawyn);
 		goDownToElena = new ObjectStep(this, ObjectID.LADDER_8746, new WorldPoint(2352, 3180, 1), "Talk to Elena in the south west of Lletya.");
 		talkToElenaInLletya = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0), "Talk to Elena in the south west of Lletya.");
-		talkToElenaInLletya.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.");
+		talkToElenaInLletya.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.",
+				"I don't know.");
 		talkToElenaInLletya.addSubSteps(goDownToElena);
 		talkToArianwynAfterElena = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn again.");
 		talkToArianwynAfterMeeting = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn after the meeting.");
@@ -1002,6 +1004,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToArianwynAfterBax = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		talkToElenaAfterBax = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0),
 			"Talk to Elena in the south west of Lletya.", seedDibber, cadantineSeed);
+		talkToElenaAfterBax.addDialogStep("Now's not the time for stories, Elena.");
 
 		plantCadantine = new ObjectStep(this, NullObjectID.NULL_37270, new WorldPoint(2322, 3152, 0),
 			"Plant a cadantine seed in the Lletya farm patch.", seedDibber, cadantineSeed);
@@ -1425,14 +1428,14 @@ public class SongOfTheElves extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.AGILITY, 20000),
-				new ExperienceReward(Skill.CONSTRUCTION, 20000),
-				new ExperienceReward(Skill.FARMING, 20000),
-				new ExperienceReward(Skill.HERBLORE, 20000),
-				new ExperienceReward(Skill.HUNTER, 20000),
-				new ExperienceReward(Skill.MINING, 20000),
-				new ExperienceReward(Skill.SMITHING, 20000),
-				new ExperienceReward(Skill.WOODCUTTING, 20000)
+				new ExperienceReward(Skill.AGILITY, 40000),
+				new ExperienceReward(Skill.CONSTRUCTION, 40000),
+				new ExperienceReward(Skill.FARMING, 40000),
+				new ExperienceReward(Skill.HERBLORE, 40000),
+				new ExperienceReward(Skill.HUNTER, 40000),
+				new ExperienceReward(Skill.MINING, 40000),
+				new ExperienceReward(Skill.SMITHING, 40000),
+				new ExperienceReward(Skill.WOODCUTTING, 40000)
 		);
 	}
 

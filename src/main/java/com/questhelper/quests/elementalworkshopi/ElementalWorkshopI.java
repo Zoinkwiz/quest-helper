@@ -26,6 +26,7 @@
 package com.questhelper.quests.elementalworkshopi;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -35,6 +36,7 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -88,7 +90,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -137,28 +139,29 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		return quest;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setHighlightInInventory(true);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		needle.setTooltip("You can obtain this during the quest");
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
 		leather.setTooltip("You can obtain this during the quest");
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		coal4 = new ItemRequirement("Coal", ItemID.COAL, 4);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		batteredBook = new ItemRequirement("Battered book", ItemID.BATTERED_BOOK);
 		batteredBook.setHighlightInInventory(true);
 		slashedBook = new ItemRequirement("Slashed book", ItemID.SLASHED_BOOK);
 		slashedBook.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
-		batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY);
+		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY);
 		batteredKey.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
 		elementalOre = new ItemRequirement("Elemental ore", ItemID.ELEMENTAL_ORE);

@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
@@ -111,7 +112,7 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onGameTick(GameTick ignoredEvent)
 	{
 		updateSteps();
 	}
@@ -291,11 +292,11 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 	}
 
 	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin,Requirement ... requirements)
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> requirements)
 	{
 		if (currentStep != null)
 		{
-			currentStep.makeOverlayHint(panelComponent, plugin, requirements);
+			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, requirements);
 		}
 	}
 

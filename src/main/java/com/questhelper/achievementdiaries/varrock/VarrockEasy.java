@@ -146,6 +146,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notThessalia = new VarplayerRequirement(1176, false, 1);
@@ -167,14 +168,16 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 150).showConditioned(new Conditions(LogicType.OR,
 			notNews, notPlank));
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIron);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIron).isNotConsumed();
 		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notPlank);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notDyingTree);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notDyingTree).isNotConsumed();
 		bone = new ItemRequirement("Bones", ItemCollections.BONES).showConditioned(notDogBone);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY).showConditioned(notBowl);
-		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.EARTH_ALTAR).showConditioned(notEarthRune);
+		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.EARTH_ALTAR)
+			.showConditioned(notEarthRune).isNotConsumed();
+		earthTali.setTooltip("Earth talisman or tiara");
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notEarthRune);
-		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout);
+		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout).isNotConsumed();
 		feathers = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notTrout);
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
 

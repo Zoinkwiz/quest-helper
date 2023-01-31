@@ -25,6 +25,7 @@
 package com.questhelper.quests.heroesquest;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -33,6 +34,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -103,8 +105,7 @@ public class HeroesQuest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
-		setupConditions();
+		setupRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -153,7 +154,7 @@ public class HeroesQuest extends BasicQuestHelper
 			getThievesArmband.addStep(inSecretRoom, killGrip);
 			getThievesArmband.addStep(new Conditions(inGarden, miscKey), useKeyOnDoor);
 			getThievesArmband.addStep(new Conditions(talkedToCharlie, miscKey), pushWall);
-			getThievesArmband.addStep(miscKey, talkToCharlie);
+			getThievesArmband.addStep(new Conditions(talkedToAlfonse, miscKey), talkToCharlie);
 			getThievesArmband.addStep(talkedToAlfonse, getKeyFromPartner);
 			getThievesArmband.addStep(talkedToStraven, talkToAlfonse);
 			getThievesArmband.addStep(inPhoenixBase, talkToStraven);
@@ -198,42 +199,46 @@ public class HeroesQuest extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		iceGloves = new ItemRequirement("Ice gloves (obtainable in quest)", ItemID.ICE_GLOVES);
-		equippedIceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true);
-		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
+		iceGloves = new ItemRequirement("Ice gloves (obtainable in quest)", ItemID.ICE_GLOVES).isNotConsumed();
+		equippedIceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true).isNotConsumed();
+		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
-		jailKey = new ItemRequirement("Jail key", ItemID.JAIL_KEY);
-		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY);
-		dustyKeyHint = new ItemRequirement("Dusty key (obtainable in quest)", ItemID.DUSTY_KEY);
+		jailKey = new ItemRequirement("Jail key", ItemID.JAIL_KEY).isNotConsumed();
+		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
+		dustyKeyHint = new KeyringRequirement("Dusty key (obtainable in quest)", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		harralanderUnf = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDER_POTION_UNF);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE).isNotConsumed();
 		pickaxe.addAlternates(ItemCollections.PICKAXES);
 		blamishSlime = new ItemRequirement("Blamish snail slime", ItemID.BLAMISH_SNAIL_SLIME);
 		blamishOil = new ItemRequirement("Blamish oil", ItemID.BLAMISH_OIL);
-		oilRod = new ItemRequirement("Oily fishing rod", ItemID.OILY_FISHING_ROD);
+		oilRod = new ItemRequirement("Oily fishing rod", ItemID.OILY_FISHING_ROD).isNotConsumed();
 		lavaEel = new ItemRequirement("Lava eel", ItemID.LAVA_EEL);
 		rawLavaEel = new ItemRequirement("Raw lava eel", ItemID.RAW_LAVA_EEL);
 
 		thievesArmband = new ItemRequirement("Thieves' armband", ItemID.THIEVES_ARMBAND);
 
-		rangedMage = new ItemRequirement("A ranged or magic attack method", -1, -1);
+		rangedMage = new ItemRequirement("A ranged or magic attack method", -1, -1).isNotConsumed();
 		rangedMage.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		miscKey = new ItemRequirement("Miscellaneous key", ItemID.MISCELLANEOUS_KEY);
-		blackFullHelm = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM, 1, true);
-		blackPlatebody = new ItemRequirement("Black platebody", ItemID.BLACK_PLATEBODY, 1, true);
-		blackPlatelegs = new ItemRequirement("Black platelegs", ItemID.BLACK_PLATELEGS, 1, true);
+		blackFullHelm = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM, 1, true).isNotConsumed();
+		blackPlatebody = new ItemRequirement("Black platebody", ItemID.BLACK_PLATEBODY, 1, true).isNotConsumed();
+		blackPlatelegs = new ItemRequirement("Black platelegs", ItemID.BLACK_PLATELEGS, 1, true).isNotConsumed();
 		idPapers = new ItemRequirement("Id papers", ItemID.ID_PAPERS);
 		idPapers.setTooltip("You can get another from Trobert in the building in east Brimhaven.");
 		candlestick = new ItemRequirement("Pete's candlestick", ItemID.PETES_CANDLESTICK);
 		gripsKey = new ItemRequirement("Grip's keyring", ItemID.GRIPS_KEYRING);
 		fireFeather = new ItemRequirement("Fire feather", ItemID.FIRE_FEATHER);
 
-		combatGear = new ItemRequirement("Weapons, armour and food for the Ice Queen", -1, -1);
+		combatGear = new ItemRequirement("Weapons, armour and food for the Ice Queen", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		antifireShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD);
+		antifireShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD).isNotConsumed();
+
+		// This is here so that conditions are set for the item highlighter helper
+		setupConditions();
 	}
 
 	public void loadZones()
@@ -541,7 +546,7 @@ public class HeroesQuest extends BasicQuestHelper
 		PanelDetails fourthPanel = new PanelDetails("Get ice gloves", Arrays.asList(mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down, killIceQueen), pickaxe);
 		fourthPanel.setLockingStep(getIceGloves);
 
-		PanelDetails fifthPanel = new PanelDetails("Get fire feather", Arrays.asList(goToEntrana, killFireBird));
+		PanelDetails fifthPanel = new PanelDetails("Get fire feather", Arrays.asList(goToEntrana, killFireBird), iceGloves);
 		fifthPanel.setLockingStep(getFireFeather);
 
 		PanelDetails sixthPanel = new PanelDetails("Finish off", Collections.singletonList(finishQuest), fireFeather, thievesArmband, lavaEel);

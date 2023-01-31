@@ -140,15 +140,16 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
-		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF);
+		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
 		battlefrontTeleports2 = new ItemRequirement("Battlefront teleports", ItemID.BATTLEFRONT_TELEPORT, 2);
-		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
-		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES);
+		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES).isNotConsumed();
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 

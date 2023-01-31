@@ -91,7 +91,8 @@ public class KnightWaves extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		floor1 = new Zone(new WorldPoint(2740, 3480, 1), new WorldPoint(2770, 3518, 1));
 		floor2 = new Zone(new WorldPoint(2740, 3480, 2), new WorldPoint(2770, 3518, 2));
@@ -100,7 +101,7 @@ public class KnightWaves extends BasicQuestHelper
 		onFloor2 = new ZoneRequirement(floor2);
 		inRoom = new ZoneRequirement(room);
 
-		combatGear = new ItemRequirement("Melee combat gear", -1, -1);
+		combatGear = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		poisonedWeapon = new ItemRequirement("Poisoned weapon such as Dragon dagger (p++)", ItemID.DRAGON_DAGGERP_5698);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, 25);
@@ -114,7 +115,7 @@ public class KnightWaves extends BasicQuestHelper
 
 		goToFloor1 = new ObjectStep(this, ObjectID.LADDER_26107, new WorldPoint(2747, 3493, 0),
 			"Climb the south west ladder of Camelot.");
-		goToFloor2 = new ObjectStep(this, ObjectID.LADDER_26107, new WorldPoint(2747, 3493, 0),
+		goToFloor2 = new ObjectStep(this, ObjectID.LADDER_26107, new WorldPoint(2749, 3491, 1),
 			"Climb up to the roof.");
 		talkToSquire = new NpcStep(this, NpcID.SQUIRE_4353, new WorldPoint(2750, 3507, 2),
 			"");

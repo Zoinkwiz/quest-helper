@@ -87,7 +87,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -143,9 +143,10 @@ public class AnimalMagnetism extends BasicQuestHelper
 		ironMine = new Zone(new WorldPoint(2971, 3248, 0), new WorldPoint(2987, 3234, 0));
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET);
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET).isNotConsumed();
 		ghostspeakEquip = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);
 		croneMadeAmulet = new ItemRequirement("Crone-made amulet", ItemID.CRONEMADE_AMULET);
 		ectoToken20 = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN, 20);
@@ -154,13 +155,13 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 		//Magnet
 		ironBar5 = new ItemRequirement("Iron Bar", ItemID.IRON_BAR, 5);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		selectedIron = new ItemRequirement("Selected Iron", ItemID.SELECTED_IRON);
 		barMagnet = new ItemRequirement("Bar magnet", ItemID.BAR_MAGNET);
 
 		//Undead twigs
 		mithrilAxe = new ItemRequirement("Mithril Axe", ItemID.MITHRIL_AXE);
-		holySymbol = new ItemRequirement("Holy Symbol", ItemID.HOLY_SYMBOL);
+		holySymbol = new ItemRequirement("Holy Symbol", ItemID.HOLY_SYMBOL).isNotConsumed();
 		blessedAxe = new ItemRequirement("Blessed axe", ItemID.BLESSED_AXE);
 		twigs = new ItemRequirement("Undead twigs", ItemID.UNDEAD_TWIGS);
 		researchNotes = new ItemRequirement("Research notes", ItemID.RESEARCH_NOTES);
@@ -192,14 +193,14 @@ public class AnimalMagnetism extends BasicQuestHelper
 		talkToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Talk to Ava to begin the quest.");
 		talkToAva.addDialogStep("I would be happy to make your home a better place.");
-		talkToAlicesHusband = new NpcStep(this, NpcID.ALICES_HUSBAND, new WorldPoint(3618, 3526, 0),
-			"Talk to Alice's husband at the farm west of the Ectofuntus.",
+		talkToAlicesHusband = new NpcStep(this, NpcID.MALCOLM, new WorldPoint(3618, 3526, 0),
+			"Talk to Malcolm at the farm west of the Ectofuntus.",
 			ghostspeakEquip);
 		talkToAlice = new NpcStep(this, NpcID.ALICE, new WorldPoint(3627, 3526, 0),
 			"Talk to Alice.");
 		talkToAlice.addDialogStep("I'm here about a quest.");
-		talkToAlicesHusband2 = new NpcStep(this, NpcID.ALICES_HUSBAND, new WorldPoint(3618, 3526, 0),
-			"Talk to Alice's husband again.",
+		talkToAlicesHusband2 = new NpcStep(this, NpcID.MALCOLM, new WorldPoint(3618, 3526, 0),
+			"Talk to Malcolm again.",
 			ghostspeakEquip);
 		talkToAlice2 = new NpcStep(this, NpcID.ALICE, new WorldPoint(3627, 3526, 0),
 			"Talk to Alice again.");
@@ -208,15 +209,15 @@ public class AnimalMagnetism extends BasicQuestHelper
 			"Talk to the Old crone just east of the Slayer Tower twice.",
 			ghostspeakEquip);
 		talkToOldCrone.addDialogStep("I'm here about the farmers east of here.");
-		giveAmuletToHusband = new NpcStep(this, NpcID.ALICES_HUSBAND, new WorldPoint(3618, 3526, 0),
-			"Give the Crone-made amulet to Alice's Husband.",
+		giveAmuletToHusband = new NpcStep(this, NpcID.MALCOLM, new WorldPoint(3618, 3526, 0),
+			"Give the Crone-made amulet to Malcolm.",
 			ghostspeakEquip, croneMadeAmulet);
 		giveAmuletToHusband.addDialogStep("Okay, you need it more than I do, I suppose.");
-		talkToAlicesHusband3 = new NpcStep(this, NpcID.ALICES_HUSBAND_4412, new WorldPoint(3618, 3526, 0),
-			"Talk to Alice's husband again to watch a cutscene.",
+		talkToAlicesHusband3 = new NpcStep(this, NpcID.MALCOLM_4412, new WorldPoint(3618, 3526, 0),
+			"Talk to Malcolm again to watch a cutscene.",
 			ghostspeakEquip);
-		buyUndeadChickens = new NpcStep(this, NpcID.ALICES_HUSBAND_4412, new WorldPoint(3618, 3526, 0),
-			"Buy two undead chickens from Alice's husband. You can acquire ecto-tokens using the Ectofuntus to the east.",
+		buyUndeadChickens = new NpcStep(this, NpcID.MALCOLM_4412, new WorldPoint(3618, 3526, 0),
+			"Buy two undead chickens from Malcolm. You can acquire ecto-tokens using the Ectofuntus to the east.",
 			ghostspeakEquip, ectoToken20);
 		buyUndeadChickens.addDialogSteps("Could I buy those chickens now, then?", "Could I buy 2 chickens?");
 		giveChickensToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),

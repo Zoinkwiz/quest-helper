@@ -1,6 +1,7 @@
 package com.questhelper.quests.scorpioncatcher;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
@@ -8,6 +9,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -54,7 +56,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -117,9 +119,10 @@ public class ScorpionCatcher extends BasicQuestHelper
 		barbarianOutpost = new Zone(new WorldPoint(2546, 3573, 0), new WorldPoint(2555, 3560, 0));
 	}
 
-	private void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		dustyKey = new ItemRequirement("Dusty Key", ItemID.DUSTY_KEY);
+		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");
 		jailKey = new ItemRequirement("Jail Key", ItemID.JAIL_KEY);
 
@@ -140,7 +143,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 		scorpionCageFull = new ItemRequirement("Scorpion Cage", ItemID.SCORPION_CAGE_463);
 
 		// Recommended
-		antiDragonShield = new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS);
+		antiDragonShield = new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS).isNotConsumed();
 		antiPoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		teleRunesFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT, -1);

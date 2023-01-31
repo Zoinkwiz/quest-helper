@@ -90,7 +90,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -222,11 +222,12 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		goutLump = new ItemRequirement("Goutweedy lump", ItemID.GOUTWEEDY_LUMP);
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
-		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
+		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
 		bucketHighlight.setHighlightInInventory(true);
 		farmingManual = new ItemRequirement("Farming manual", ItemID.FARMING_MANUAL);
 		farmingManual.setTooltip("You can get another from My Arm on the Troll Stronghold roof");
@@ -234,23 +235,20 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		ugthanki3 = new ItemRequirement("Ugthanki dung", ItemID.UGTHANKI_DUNG, 3);
 		ugthanki3.setHighlightInInventory(true);
 
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
+		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		superCompost = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
 		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
 		hardyGout.setTooltip("You can get more from Murcaily");
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 
-		rakeHighlight = new ItemRequirement("Rake", ItemID.RAKE);
-		rakeHighlight.setHighlightInInventory(true);
-		dibberHighlight = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
-		dibberHighlight.setHighlightInInventory(true);
-		spadeHighlight = new ItemRequirement("Spade", ItemID.SPADE);
-		spadeHighlight.setHighlightInInventory(true);
+		rakeHighlight = rake.highlighted();
+		dibberHighlight = dibber.highlighted();
+		spadeHighlight = spade.highlighted();
 		superCompostHighlight = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
 		superCompostHighlight.setHighlightInInventory(true);
 		hardyGoutHighlight = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
@@ -261,7 +259,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 
 		supercompost7 = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST, 7);
 		superCompost8 = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST, 8);
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 
 		cureOrCompost = new ItemRequirement("Either super/ultra compost, or a plant cure", ItemID.PLANT_CURE);
 		cureOrCompost.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);

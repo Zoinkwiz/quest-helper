@@ -52,7 +52,6 @@ import java.util.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Player;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -91,7 +90,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -169,14 +168,9 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		ConditionalStep courting;
 
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getPlayerComposition() != null && client.getLocalPlayer().getPlayerComposition().isFemale())
-		{
-			courting = courtBrand;
-		}
-		else
-		{
-			courting = courtAstrid;
-		}
+		courting = courtAstrid;
+
+		// TODO: Add toggle for Brand once confirmed what's up with new progression
 
 		ConditionalStep becomeRoyalty1 = new ConditionalStep(this, courting);
 		ConditionalStep becomeRoyalty2 = new ConditionalStep(this, courting);
@@ -214,16 +208,17 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		logs.setHighlightInInventory(true);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		rake = new ItemRequirement("Rake", ItemID.RAKE);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		harpoon = new ItemRequirement("Harpoon", ItemCollections.HARPOONS);
-		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		harpoon = new ItemRequirement("Harpoon", ItemCollections.HARPOONS).isNotConsumed();
+		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT).isNotConsumed();
 		ring = new ItemRequirement("Any non-silver ring you are willing to lose", ItemID.GOLD_RING);
 		ring.addAlternates(ItemID.SAPPHIRE_RING, ItemID.EMERALD_RING, ItemID.RUBY_RING, ItemID.DIAMOND_RING);
 
@@ -236,7 +231,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		bow.addAlternates(ItemID.LONGBOW, ItemID.OAK_SHORTBOW, ItemID.OAK_LONGBOW, ItemID.WILLOW_SHORTBOW, ItemID.WILLOW_LONGBOW, ItemID.MAPLE_SHORTBOW, ItemID.MAPLE_LONGBOW, ItemID.YEW_SHORTBOW, ItemID.YEW_LONGBOW);
 		bow.setTooltip("You will lose this bow");
 		bow.setHighlightInInventory(true);
-		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemCollections.FAIRY_STAFF);
+		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemCollections.FAIRY_STAFF).isNotConsumed();
 		giantNib = new ItemRequirement("Giant nib", ItemID.GIANT_NIB);
 		giantNib.setHighlightInInventory(true);
 		giantPen = new ItemRequirement("Giant pen", ItemID.GIANT_PEN);
@@ -298,7 +293,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		talked3P3 = new VarbitRequirement(93, 1);
 		blownKiss = new VarbitRequirement(97, 1);
 
-		hasCourted = new VarbitRequirement(75, 1);
+		hasCourted = new VarbitRequirement(14606, 1);
 
 		diplomacyStep1 = new VarplayerRequirement(359, 20);
 		diplomacyStep2 = new VarplayerRequirement(359, 30);
@@ -457,16 +452,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		reqs.add(ring);
 		reqs.add(flowers);
 
-		Player player = client.getLocalPlayer();
-
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			reqs.add(bow);
-		}
-		else
-		{
-			reqs.add(cake);
-		}
+		reqs.add(bow);
+//		reqs.add(cake);
 		reqs.add(reputationItems);
 		return reqs;
 	}
@@ -475,7 +462,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Whether you marry Brand or Astrid depends on whether you're female or male respectively. If you have a preference on who you'd like to marry, you can change to male or female prior to the quest.");
+		reqs.add("Currently this helper only shows you how to marry Astrid. If you'd like to be friends with her or choose to be with Brand, " +
+			"you can either follow an external guide for now, or simply talk to King Vargas after the quest to change.");
 		return reqs;
 	}
 
@@ -519,15 +507,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		ItemRequirement giftItem;
-		Player player = client.getLocalPlayer();
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			giftItem = bow;
-		}
-		else
-		{
-			giftItem = cake;
-		}
+		giftItem = bow;
 
 		allSteps.add(new PanelDetails("Talk to King Vargas", Arrays.asList(travelToMisc, getFlowers,
 			talkToVargas), flowers, giftItem, ring, ironBar, logs, reputationItems));
@@ -536,18 +516,13 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 			Arrays.asList(goUpstairsToAstrid, talkAstrid1, giveFlowersToAstrid, danceForAstrid, talkAstrid2,
 				giveBowToAstrid, talkAstrid3, blowKissToAstrid, useRingOnAstrid));
 
-		PanelDetails brandPanel = new PanelDetails("Win over Brand",
-			Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
-				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand));
+//		PanelDetails brandPanel = new PanelDetails("Win over Brand",
+//			Arrays.asList(goUpstairsToBrand, talkBrand1, giveFlowersToBrand, clapForBrand, talkBrand2,
+//				giveCakeToBrand, talkBrand3, blowKissToBrand, useRingOnBrand));
 
-		if (player != null && player.getPlayerComposition() != null && !player.getPlayerComposition().isFemale())
-		{
-			allSteps.add(astridPanel);
-		}
-		else
-		{
-			allSteps.add(brandPanel);
-		}
+
+		allSteps.add(astridPanel);
+//		allSteps.add(brandPanel);
 
 		allSteps.add(new PanelDetails("Establish peace",
 			Arrays.asList(talkToSigridDip1, talkToVargasDip1, talkToSigridDip2, talkToBrandDip, talkToGhrimDip, talkToSigridDip3, talkToVargasDip2,

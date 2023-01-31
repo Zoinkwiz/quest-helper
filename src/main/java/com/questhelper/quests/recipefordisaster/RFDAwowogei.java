@@ -131,6 +131,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		cookedSnake = new ItemRequirement("Stuffed snake", ItemID.STUFFED_SNAKE);
@@ -138,26 +139,26 @@ public class RFDAwowogei extends BasicQuestHelper
 		cookedSnakeHighlighted.setHighlightInInventory(true);
 
 		mAmulet = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET, 1, true);
-		gorillaGreegree = new ItemRequirement("Gorilla greegree", ItemID.GORILLA_GREEGREE, 1, true);
+		gorillaGreegree = new ItemRequirement("Gorilla greegree", ItemID.GORILLA_GREEGREE, 1, true).isNotConsumed();
 		gorillaGreegree.addAlternates(ItemID.ANCIENT_GORILLA_GREEGREE, ItemID.BEARDED_GORILLA_GREEGREE);
 		gorillaGreegree.setTooltip("Kill a gorilla in the monkey temple for their bones, and make a greegree from them");
-		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE, 1, true);
+		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE, 1, true).isNotConsumed();
 		ninjaGreegree.setTooltip("Kill a monkey archer in the monkey market for its bones and make a greegree from them");
 		ninjaGreegree.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025, ItemID.KRUK_MONKEY_GREEGREE);
-		zombieGreegree = new ItemRequirement("Zombie greegree", ItemID.ZOMBIE_MONKEY_GREEGREE, 1, true);
+		zombieGreegree = new ItemRequirement("Zombie greegree", ItemID.ZOMBIE_MONKEY_GREEGREE, 1, true).isNotConsumed();
 		zombieGreegree.setTooltip("Kill a zombie monkey under the monkey temple and make a greegree from them");
 		zombieGreegree.addAlternates(ItemID.ZOMBIE_MONKEY_GREEGREE_4030);
-		greegreeEquipped = new ItemRequirement("Any greegree", ItemCollections.GREEGREES, 1, true);
+		greegreeEquipped = new ItemRequirement("Any greegree", ItemCollections.GREEGREES).equipped().isNotConsumed();
 		bananaHighlighted = new ItemRequirement("Banana", ItemID.BANANA);
 		bananaHighlighted.setHighlightInInventory(true);
 		monkeyNutsHighlighted = new ItemRequirement("Monkey nuts", ItemID.MONKEY_NUTS);
 		monkeyNutsHighlighted.setHighlightInInventory(true);
 		monkeyNutsHighlighted.setTooltip("You can buy some from Solihib in the monkey market");
-		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE);
+		ropeHighlighted = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
 		ropeHighlighted.setHighlightInInventory(true);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setHighlightInInventory(true);
-		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
+		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortar.setHighlightInInventory(true);
 
 		tchikiNuts = new ItemRequirement("Tchiki monkey nuts", ItemID.TCHIKI_MONKEY_NUTS);
@@ -178,7 +179,7 @@ public class RFDAwowogei extends BasicQuestHelper
 		paste = new ItemRequirement("Tchiki nut paste", ItemID.TCHIKI_NUT_PASTE);
 		paste.setHighlightInInventory(true);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		protectMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);

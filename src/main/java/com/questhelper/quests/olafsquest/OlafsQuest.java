@@ -94,7 +94,7 @@ public class OlafsQuest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -142,9 +142,10 @@ public class OlafsQuest extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -152,11 +153,9 @@ public class OlafsQuest extends BasicQuestHelper
 		
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
-		axe.setUrlSuffix("Axe");
-		
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 
 		dampPlanks = new ItemRequirement("Damp planks", ItemID.DAMP_PLANKS);
 		windsweptLogs = new ItemRequirement("Windswept logs", ItemID.WINDSWEPT_LOGS);

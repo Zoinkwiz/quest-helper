@@ -80,7 +80,7 @@ public class MisthalinMystery extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
+		setupRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -258,7 +258,8 @@ public class MisthalinMystery extends BasicQuestHelper
 		inBossRoom = new ZoneRequirement(bossRoom);
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		manorKey = new ItemRequirement("Manor key", ItemID.MANOR_KEY_21052);

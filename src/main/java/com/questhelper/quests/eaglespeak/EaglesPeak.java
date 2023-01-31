@@ -94,7 +94,7 @@ public class EaglesPeak extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -183,7 +183,8 @@ public class EaglesPeak extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 50);
@@ -205,7 +206,7 @@ public class EaglesPeak extends BasicQuestHelper
 		goldFeather = new ItemRequirement("Golden feather", ItemID.GOLDEN_FEATHER_10175);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
-		dramenStaffOrNecklaceOfPassage = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
+		dramenStaffOrNecklaceOfPassage = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaffOrNecklaceOfPassage.addAlternates(ItemCollections.NECKLACE_OF_PASSAGES);
 		dramenStaffOrNecklaceOfPassage.setDisplayMatchedItemName(true);
 		dramenStaffOrNecklaceOfPassage.setTooltip("Necklace of Passage can also be used.");

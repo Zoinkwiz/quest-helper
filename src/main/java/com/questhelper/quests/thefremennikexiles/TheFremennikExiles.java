@@ -223,27 +223,28 @@ public class TheFremennikExiles extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
-		combatGear = new ItemRequirement("Combat gear", -1, -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD);
+		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD).isNotConsumed();
 		kegsOfBeer = new ItemRequirement("Kegs of beer", ItemID.KEG_OF_BEER_3801);
 		kegsOfBeer.setTooltip("You can buy some from Rasolo south east of Baxtorian Falls");
 		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
 		astralRunes = new ItemRequirement("Astral runes", ItemID.ASTRAL_RUNE);
-		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK);
+		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).isNotConsumed();
 		petRock.setTooltip("You can get another from Askeladden in Rellekka");
-		fishingOrFlyFishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD);
+		fishingOrFlyFishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingOrFlyFishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
 		fremennikShield = new ItemRequirement("Fremennik shield", ItemID.FREMENNIK_SHIELD);
 		fremennikShield.setTooltip("Obtainable during the quest for 150k, or free with a Ring of Charos(a)");
-		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES);
+		iceGloves = new ItemRequirement("Ice gloves or smiths gloves(i)", ItemID.ICE_GLOVES).isNotConsumed();
 		iceGloves.setTooltip("You can get another pair of ice gloves by killing the Ice Queen under White Wolf Mountain");
 		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE);
-		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWING_PIPE).isNotConsumed();
+		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		restorePot = new ItemRequirement("Restore potions", ItemCollections.RESTORE_POTIONS);
 		restorePot.setTooltip("Highly recommended to make up for mistakes");
 
@@ -251,7 +252,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Dungeon",
 			ItemID.RUNE_THROWNAXE);
 
-		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
+		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE).isNotConsumed();
 		sealOfPassageOrEliteDiary = ComplexRequirementBuilder.or("Seal of Passage")
 			.with(new VarbitRequirement(Varbits.DIARY_FREMENNIK_ELITE, 1))
 			.with(sealOfPassage)
@@ -424,7 +425,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		talkToBrundtBackInRellekka = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
 			"Return to Brundt in Rellekka's longhall.", combatGear, food);
 		talkToBrundtBackInRellekka.addDialogStep("Ask about the Jormungand.");
-		getFremennikShield = new DetailedQuestStep(this, "You can get a fremennik shield from dagganoths in " +
+		getFremennikShield = new DetailedQuestStep(this, "You can get a fremennik shield from dagannoths in " +
 			"Waterbirth Dungeon or Bardur in Waterbirth " +
 			"Dungeon for 150k, or for free with the Ring of Charos(a). You'll need a friend to get there, or a rune " +
 			"thrownaxe and a pet rock.", coins150kOrCharos);
@@ -513,9 +514,9 @@ public class TheFremennikExiles extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.SLAYER, 15000),
-				new ExperienceReward(Skill.CRAFTING, 15000),
-				new ExperienceReward(Skill.RUNECRAFT, 5000));
+				new ExperienceReward(Skill.SLAYER, 50000),
+				new ExperienceReward(Skill.CRAFTING, 50000),
+				new ExperienceReward(Skill.RUNECRAFT, 30000));
 	}
 
 	@Override

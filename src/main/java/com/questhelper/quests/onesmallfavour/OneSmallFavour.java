@@ -104,7 +104,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -325,14 +325,15 @@ public class OneSmallFavour extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		steelBars4 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 4);
 		steelBars3 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 3);
 		steelBar = new ItemRequirement("Steel bar", ItemID.STEEL_BAR);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
 		softClay.setHighlightInInventory(true);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		chisel.setHighlightInInventory(true);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
@@ -340,10 +341,9 @@ public class OneSmallFavour extends BasicQuestHelper
 		guam = new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF);
 		marrentill = new ItemRequirement("Marrentill", ItemID.MARRENTILL);
 		harralander = new ItemRequirement("Harralander", ItemID.HARRALANDER);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 
-		hammerHighlight = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		hammerHighlight.setHighlightInInventory(true);
+		hammerHighlight = hammer.highlighted();
 		emptyCup = new ItemRequirement("Empty cup", ItemID.EMPTY_CUP);
 		emptyCup.setTooltip("You can find a cup of tea in a house north of Sanfew. Drink it for an empty cup");
 		pigeonCages5 = new ItemRequirement("Pigeon cages", ItemID.PIGEON_CAGE, 5);

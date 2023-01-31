@@ -91,7 +91,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -151,12 +151,13 @@ public class TheSlugMenace extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		commorb = new ItemRequirement("Commorb (can get another from Sir Tiffy)", ItemID.COMMORB);
+		commorb = new ItemRequirement("Commorb (can get another from Sir Tiffy)", ItemID.COMMORB).isNotConsumed();
 		commorb.addAlternates(ItemID.COMMORB_V2);
 
-		commorb2 = new ItemRequirement("Commorb v2", ItemID.COMMORB_V2);
+		commorb2 = new ItemRequirement("Commorb v2", ItemID.COMMORB_V2).isNotConsumed();
 		commorb2.setHighlightInInventory(true);
 
 		deadSeaSlug = new ItemRequirement("Dead sea slug", ItemID.DEAD_SEA_SLUG);
@@ -191,7 +192,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		blankFire = new ItemRequirement("Blank fire rune", ItemID.BLANK_FIRE_RUNE);
 		blankMind = new ItemRequirement("Blank mind rune", ItemID.BLANK_MIND_RUNE);
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE_9693);
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE_9695);
@@ -199,7 +200,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE_9699);
 		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE_9697);
 
-		meleeGear = new ItemRequirement("Melee weapon to fight the Slug Prince", -1, -1);
+		meleeGear = new ItemRequirement("Melee weapon to fight the Slug Prince", -1, -1).isNotConsumed();
 		meleeGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		doorTranscript = new ItemRequirement("Door transcription", ItemID.DOOR_TRANSCRIPTION);
@@ -224,7 +225,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		mindTalisman.addAlternates(ItemID.MIND_TIARA);
 
 		accessToAltars = new ItemRequirements("Access to air, water, earth, fire, and mind runecrafting altars",
-			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman);
+			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman).isNotConsumed();
 
 		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.NECKLACE_OF_PASSAGES);
 
@@ -232,6 +233,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		airAltarTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.RIMMINGTON_TELEPORT);
 		airAltarTeleport.setDisplayMatchedItemName(true);
 		airAltarTeleport.setTooltip("The best items for this are (in order):");
+		airAltarTeleport.appendToTooltip("Ring Of The Elements");
 		airAltarTeleport.appendToTooltip("Skills Necklace (to Crafting Guild)");
 		airAltarTeleport.appendToTooltip("Falador Teleport");
 		airAltarTeleport.appendToTooltip("Rimmington/House Teleport");
@@ -240,6 +242,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		earthAltarTeleport.addAlternates(ItemID.VARROCK_TELEPORT, ItemID.LUMBERYARD_TELEPORT, ItemID.DIGSITE_TELEPORT);
 		earthAltarTeleport.setDisplayMatchedItemName(true);
 		earthAltarTeleport.setTooltip("The best items for this are (in order):");
+		earthAltarTeleport.appendToTooltip("Ring Of The Elements");
 		earthAltarTeleport.appendToTooltip("Lumberyard Teleport");
 		earthAltarTeleport.appendToTooltip("Digsite Pendant(s)");
 		earthAltarTeleport.appendToTooltip("Digsite Teleport");
@@ -248,12 +251,13 @@ public class TheSlugMenace extends BasicQuestHelper
 		fireAltarTeleport = new ItemRequirement("Teleport near Fire Altar", ItemCollections.RING_OF_DUELINGS);
 		fireAltarTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		fireAltarTeleport.setTooltip("The best items for this are (in order):");
+		fireAltarTeleport.appendToTooltip("Ring Of The Elements");
 		fireAltarTeleport.appendToTooltip("Ring of Dueling");
 		fireAltarTeleport.appendToTooltip("Amulet of Glory (to Al Kharid)");
 
 		waterAltarTeleport = new ItemRequirement("Teleport near Water Altar", ItemID.LUMBRIDGE_TELEPORT);
 		waterAltarTeleport.setTooltip("The best items for this are (in order):");
-		waterAltarTeleport.appendToTooltip("Lumbridge Graveyard Teleport");
+		waterAltarTeleport.appendToTooltip("Ring Of The Elements");
 		waterAltarTeleport.appendToTooltip("Lumbridge Teleport");
 
 		mindAltarTeleport = new ItemRequirement("Teleport near Mind Altar", ItemID.MIND_ALTAR_TELEPORT);

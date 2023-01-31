@@ -29,9 +29,11 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -116,6 +118,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notSuperCombat = new VarplayerRequirement(1177, false, 7);
@@ -135,16 +138,17 @@ public class VarrockElite extends ComplexStateQuestHelper
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notPlankMake);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notPlankMake);
 		mahoganyLog = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS).showConditioned(notPlankMake);
-		cookingGuild = new ItemRequirement("Access to cooking guild", ItemCollections.COOKING_GUILD).showConditioned(notSummerPie);
+		cookingGuild = new ItemRequirement("Access to cooking guild", ItemCollections.COOKING_GUILD).showConditioned(notSummerPie).isNotConsumed();
 		cookingGuild.setTooltip("A chef's hat, Varrock Armour 3, or Cooking Cape");
 		rawPie = new ItemRequirement("Raw summer pie", ItemID.RAW_SUMMER_PIE).showConditioned(notSummerPie);
 		runeBar = new ItemRequirement("Rune bar", ItemID.RUNITE_BAR).showConditioned(notRuneDart);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notRuneDart);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneDart);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneDart).isNotConsumed();
 		runeDartTip = new ItemRequirement("Rune dart tip", ItemID.RUNE_DART_TIP);
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(not100Earth);
 		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss",
-			ItemCollections.EARTH_ALTAR).showConditioned(not100Earth);
+			ItemCollections.EARTH_ALTAR).showConditioned(not100Earth).isNotConsumed();
+		earthTali.setTooltip("Earth talisman or tiara");
 
 		inBank = new ZoneRequirement(bank);
 		inLumb = new ZoneRequirement(lumb);
@@ -224,7 +228,14 @@ public class VarrockElite extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.FLETCHING, 81));
 		reqs.add(new SkillRequirement(Skill.HERBLORE, 90));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 86));
-		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 78));
+		reqs.add(new ComplexRequirement(LogicType.OR, "78 Runecraft or 52 with Raiments of the Eye set",
+			new SkillRequirement(Skill.RUNECRAFT, 78, true, "78 Runecraft"),
+			new ItemRequirements("52 with Raiments of the Eye set",
+				new ItemRequirement("Hat", ItemCollections.EYE_HAT),
+				new ItemRequirement("Top", ItemCollections.EYE_TOP),
+				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM),
+				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE))
+		));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 89));
 
 		reqs.add(dreamMentor);

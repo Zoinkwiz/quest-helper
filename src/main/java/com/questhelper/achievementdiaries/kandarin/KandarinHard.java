@@ -25,6 +25,7 @@
 package com.questhelper.achievementdiaries.kandarin;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.KeyringCollection;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
@@ -33,6 +34,7 @@ import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -139,6 +141,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		return doHard;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCatchStur = new VarplayerRequirement(1178, false, 26);
@@ -155,35 +158,36 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 		piety = new PrayerRequirement("Piety", Prayer.PIETY);
 
-		barbRod = new ItemRequirement("Barbarian fishing rod", ItemID.BARBARIAN_ROD).showConditioned(notCatchStur);
+		barbRod = new ItemRequirement("Barbarian fishing rod", ItemID.BARBARIAN_ROD).showConditioned(notCatchStur).isNotConsumed();
 		feather = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchStur);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notYewLong);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notYewLong).isNotConsumed();
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notYewLong);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notYewLong);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notYewLong).isNotConsumed();
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notWaterOrb);
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notWaterOrb);
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notWaterOrb);
 
 		Conditions not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
 
-		dustyKey = new ItemRequirement("Dusty key", ItemID.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
-			notWaterOrb));
+		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
+			notWaterOrb)).isNotConsumed();
 		dustyKey.setTooltip("You can get this by killing the Jailor in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
 		mapleLogs = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS).showConditioned(notBurnMaple);
-		bow = new ItemRequirement("Any bow", ItemCollections.BOWS).showConditioned(notBurnMaple);
-		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound);
+		bow = new ItemRequirement("Any bow", ItemCollections.BOWS).showConditioned(notBurnMaple).isNotConsumed();
+		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS)
 			.showConditioned(new Conditions(LogicType.OR, notFancyStone, notBuyGranite));
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddySpear);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddySpear);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddySpear).isNotConsumed();
 		yewLogs = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notAddySpear);
 		unstrungYewLong = new ItemRequirement("Unstrung yew longbow", ItemID.YEW_LONGBOW_U);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(new Conditions(LogicType.OR, notShadowHound, notMithrilDrag));
+		combatGear = new ItemRequirement("Combat gear", -1, -1)
+			.showConditioned(new Conditions(LogicType.OR, notShadowHound, notMithrilDrag)).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		antidragonfire = new ItemRequirement("An antifire shield", ItemCollections.ANTIFIRE_SHIELDS);
+		antidragonfire = new ItemRequirement("An antifire shield", ItemCollections.ANTIFIRE_SHIELDS).isNotConsumed();
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 

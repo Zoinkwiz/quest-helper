@@ -143,6 +143,7 @@ public class KourendElite extends ComplexStateQuestHelper
 		return doElite;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		notCraftBloodRune = new VarplayerRequirement(2086, false, 4);
@@ -158,11 +159,11 @@ public class KourendElite extends ComplexStateQuestHelper
 
 		// Items required
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
-			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport));
+			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport)).isNotConsumed();
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL)
-			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport));
+			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport)).isNotConsumed();
 		chisel.setTooltip("One can be found in the Arceuus essence mine.");
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopRedwood);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopRedwood).isNotConsumed();
 		darkTotem = new ItemRequirement("Dark Totem", ItemID.DARK_TOTEM).showConditioned(notDefeatSkotizo);
 		totemBase = new ItemRequirement("Dark totem base", ItemID.DARK_TOTEM_BASE);
 		totemMiddle = new ItemRequirement("Dark totem middle", ItemID.DARK_TOTEM_MIDDLE);
@@ -172,12 +173,12 @@ public class KourendElite extends ComplexStateQuestHelper
 		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE, 2).showConditioned(notCreateTeleport);
 		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2).showConditioned(notCreateTeleport);
 		soulRune = new ItemRequirement("Soul runes", ItemID.SOUL_RUNE, 2).showConditioned(notCreateTeleport);
-		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).showConditioned(notCatchAngler);
+		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).showConditioned(notCatchAngler).isNotConsumed();
 		sandworm = new ItemRequirement("Sandworms", ItemID.SANDWORMS).showConditioned(notCatchAngler);
 		celastrusSapling = new ItemRequirement("Celastrus sapling", ItemID.CELASTRUS_SAPLING).showConditioned(notFletchBattlestaff);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notFletchBattlestaff);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notFletchBattlestaff).isNotConsumed();
 		combatGear = new ItemRequirement("Combat gear", -1, -1)
-			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid));
+			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid)).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD)
 			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid));
@@ -187,18 +188,18 @@ public class KourendElite extends ComplexStateQuestHelper
 		darkEssenceBlock = new ItemRequirement("Dark essence block", ItemID.DARK_ESSENCE_BLOCK);
 		darkEssenceFragment = new ItemRequirement("Dark essence fragments", ItemID.DARK_ESSENCE_FRAGMENTS);
 		rawAnglerfish = new ItemRequirement("Raw anglerfish", ItemID.RAW_ANGLERFISH);
-		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.STONE_BOOTS).showConditioned(notKillHydra);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notFletchBattlestaff);
+		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.STONE_BOOTS).showConditioned(notKillHydra).isNotConsumed();
+		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notFletchBattlestaff).isNotConsumed();
 
 		// Items recommended
-		arclight = new ItemRequirement("Arclight", ItemID.ARCLIGHT).showConditioned(notDefeatSkotizo);
+		arclight = new ItemRequirement("Arclight", ItemID.ARCLIGHT).showConditioned(notDefeatSkotizo).isNotConsumed();
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
-			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS));
-		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN);
-		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF);
+			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS)).isNotConsumed();
+		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
+		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).isNotConsumed();
 		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.RADAS_BLESSING_1,
-			ItemID.RADAS_BLESSING_2, ItemID.RADAS_BLESSING_3));
-		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES);
+			ItemID.RADAS_BLESSING_2, ItemID.RADAS_BLESSING_3)).isNotConsumed();
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES).isNotConsumed();
 		potatoCactus = new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS, 8);
 		ultraCompost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 

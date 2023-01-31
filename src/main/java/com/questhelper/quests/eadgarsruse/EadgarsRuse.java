@@ -100,7 +100,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		if (freedEadgar.check(client))
@@ -249,10 +249,11 @@ public class EadgarsRuse extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS);
-		climbingBootsEquipped = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS, 1, true);
+		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS).isNotConsumed();
+		climbingBootsEquipped = climbingBoots.equipped();
 		vodka = new ItemRequirement("Vodka", ItemID.VODKA);
 		pineappleChunks = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
 		pineappleChunks.setTooltip("You can make these by using a knife on a pineapple");
@@ -260,8 +261,8 @@ public class EadgarsRuse extends BasicQuestHelper
 		logs1 = new ItemRequirement("Logs", ItemCollections.LOGS_FOR_FIRE);
 		grain10 = new ItemRequirement("Grain", ItemID.GRAIN, 10);
 		rawChicken5 = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN, 5);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		pestleAndMortar = new ItemRequirement("Pestle and Mortar", ItemID.PESTLE_AND_MORTAR);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		pestleAndMortar = new ItemRequirement("Pestle and Mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		ranarrPotionUnf = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARR_POTION_UNF);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
@@ -269,7 +270,8 @@ public class EadgarsRuse extends BasicQuestHelper
 		vodkaHighlight = new ItemRequirement("Vodka", ItemID.VODKA);
 		vodkaHighlight.setTooltip("You can buy some from the Gnome Stronghold drinks shop");
 		vodkaHighlight.setHighlightInInventory(true);
-		climbingBootsOr12Coins = new ItemRequirements(LogicType.OR, "Climbing boots or 12 coins", coins12, climbingBoots);
+		// TODO: Does this meet up the item aggregation?
+		climbingBootsOr12Coins = new ItemRequirements(LogicType.OR, "Climbing boots or 12 coins", coins12, climbingBoots).isNotConsumed();
 
 		pineappleChunksHighlight = new ItemRequirement("Pineapple chunks", ItemID.PINEAPPLE_CHUNKS);
 		pineappleChunksHighlight.setTooltip("You can cut a pineapple into chunks with a knife");

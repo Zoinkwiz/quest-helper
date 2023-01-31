@@ -108,7 +108,8 @@ public class FishingContest extends BasicQuestHelper
 		onContestGrounds = new ZoneRequirement(contestGroundsEntrance, tilesEastOfPipe);
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		coins.setTooltip("10 if you buy a fishing rod from Jack");
@@ -117,9 +118,9 @@ public class FishingContest extends BasicQuestHelper
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		garlic.setTooltip("This can be obtained during the quest.");
 		garlic.setHighlightInInventory(true);
-		fishingRod = new ItemRequirement("Fishing Rod", ItemID.FISHING_ROD);
+		fishingRod = new ItemRequirement("Fishing Rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingRod.setTooltip("This can be obtained during the quest.");
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		redVineWorm = new ItemRequirement("Red Vine Worm", ItemID.RED_VINE_WORM, 1);
 		redVineWorm.setTooltip("This can be obtained during the quest.");
 		food = new ItemRequirement("Food for low levels", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -227,7 +228,7 @@ public class FishingContest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 

@@ -56,6 +56,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -100,7 +101,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupItemRequirements();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 		setupPanels();
@@ -289,23 +290,24 @@ public class TheFremennikIsles extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupItemRequirements()
+	@Override
+	public void setupRequirements()
 	{
-		needle = new ItemRequirement("Needle", ItemID.NEEDLE);
+		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		coins15 = new ItemRequirement("Coins", ItemCollections.COINS, 15);
 		bronzeNail = new ItemRequirement("Bronze nail", ItemID.BRONZE_NAILS);
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope9 = new ItemRequirement("Rope", ItemID.ROPE, 9);
-		yakTopWorn = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR, 1, true);
-		yakBottomWorn = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824, 1, true);
-		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD, 1, true);
-		meleeWeapon = new ItemRequirement("Melee gear", -1, -1);
+		yakTopWorn = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR, 1, true).isNotConsumed();
+		yakBottomWorn = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824, 1, true).isNotConsumed();
+		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD, 1, true).isNotConsumed();
+		meleeWeapon = new ItemRequirement("Melee gear", -1, -1).isNotConsumed();
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food + potions", ItemCollections.GOOD_EATING_FOOD, -1);
 		tuna = new ItemRequirement("Raw tuna", ItemID.RAW_TUNA);
-		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 
 		tuna.setTooltip("You can buy some from Flosi in east Jatizso, or fish some from the pier.");
 		if (client.getRealSkillLevel(Skill.MINING) >= 55)
@@ -329,45 +331,48 @@ public class TheFremennikIsles extends BasicQuestHelper
 		arcticLogs8 = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOGS, 8);
 		splitLogs8 = new ItemRequirement("Split log", ItemID.SPLIT_LOG, 8);
 		splitLogs4 = new ItemRequirement("Split log", ItemID.SPLIT_LOG, 4);
-		yakTop = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR);
-		yakBottom = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824);
-		roundShield = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD);
+		yakTop = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR).isNotConsumed();
+		yakBottom = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824).isNotConsumed();
+		roundShield = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD).isNotConsumed();
 
-		if (client.getAccountType().isIronman())
+		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			splitLogs8.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-			splitLogs4.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-			yakTop.setTooltip("Kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-			yakBottom.setTooltip("Kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-			roundShield.setTooltip("Get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
-		}
-		else
-		{
-			if (client.getRealSkillLevel(Skill.WOODCUTTING) >= 56)
+			if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
 			{
-				splitLogs8.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-				splitLogs4.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-				roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
+				splitLogs8.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+				splitLogs4.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+				yakTop.setTooltip("Kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+				yakBottom.setTooltip("Kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+				roundShield.setTooltip("Get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
 			}
 			else
 			{
-				splitLogs8.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
-				splitLogs4.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
-				roundShield.setTooltip("Buy from the GE, or get level 56 Woodcutting");
-			}
+				if (client.getRealSkillLevel(Skill.WOODCUTTING) >= 56)
+				{
+					splitLogs8.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+					splitLogs4.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+					roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
+				}
+				else
+				{
+					splitLogs8.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
+					splitLogs4.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
+					roundShield.setTooltip("Buy from the GE, or get level 56 Woodcutting");
+				}
 
-			if (client.getRealSkillLevel(Skill.CRAFTING) >= 46)
-			{
-				yakTop.setTooltip("Buy from the GE, or kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-				yakBottom.setTooltip("Buy from the GE, or kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-			}
-			else
-			{
-				yakBottom.setTooltip("Buy from the GE, or get 46 crafting");
-				yakTop.setTooltip("Buy from the GE, or get 46 crafting");
+				if (client.getRealSkillLevel(Skill.CRAFTING) >= 46)
+				{
+					yakTop.setTooltip("Buy from the GE, or kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+					yakBottom.setTooltip("Buy from the GE, or kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+				}
+				else
+				{
+					yakBottom.setTooltip("Buy from the GE, or get 46 crafting");
+					yakTop.setTooltip("Buy from the GE, or get 46 crafting");
+				}
 			}
 		}
-		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		rope8 = new ItemRequirement("Rope", ItemID.ROPE, 8);
 		rope4 = new ItemRequirement("Rope", ItemID.ROPE, 4);
 
@@ -551,7 +556,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	public void setupPanels()
 	{
-		if (client.getAccountType().isIronman())
+		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
 		{
 			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, axe, knife);
 			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), needle, thread, coins15, bronzeNail, hammer, rope);
@@ -586,10 +591,11 @@ public class TheFremennikIsles extends BasicQuestHelper
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
-		req.add(new ComplexRequirement(LogicType.OR, "56 Woodcutting if an Ironman",
-				new IronmanRequirement(false),
-				new SkillRequirement(Skill.WOODCUTTING, 56, true))
-		);
+		req.add(new ComplexRequirement(LogicType.OR, "56 Woodcutting if an Ironman", new IronmanRequirement(false),
+			new SkillRequirement(Skill.WOODCUTTING, 56, true)));
+		req.add(new ComplexRequirement(LogicType.OR, "46 Crafting if an Ironman", new IronmanRequirement(false),
+			new SkillRequirement(Skill.CRAFTING, 46, true)));
+
 		return req;
 	}
 
@@ -603,19 +609,19 @@ public class TheFremennikIsles extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.CONSTRUCTION, 5000),
-				new ExperienceReward(Skill.CRAFTING, 5000),
-				new ExperienceReward(Skill.WOODCUTTING, 10000));
+			new ExperienceReward(Skill.CONSTRUCTION, 5000),
+			new ExperienceReward(Skill.CRAFTING, 5000),
+			new ExperienceReward(Skill.WOODCUTTING, 10000));
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
-				new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
-				new ItemReward("Jester Outfit", ItemID.JESTER, 1),
-				new ItemReward("Around 20,000 coins in assorted rewards during quest", ItemID.COINS));
+			new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
+			new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
+			new ItemReward("Jester Outfit", ItemID.JESTER, 1),
+			new ItemReward("Around 20,000 coins in assorted rewards during quest", ItemID.COINS));
 	}
 
 	@Override

@@ -262,9 +262,6 @@ public class WaterfallQuest extends BasicQuestHelper
 			new WorldPoint(2545, 3155, 0),
 			new WorldPoint(2533, 3155, 0)
 			));
-		enterGnomeDungeonNoPath = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0),
-			"Go down the ladder.");
-		enterGnomeDungeon.addSubSteps(enterGnomeDungeonNoPath);
 		searchGnomeCrate = new ObjectStep(this, ObjectID.CRATE_1990, new WorldPoint(2548, 9565, 0), "Search the off-coloured crate in the east room.");
 		enterGnomeDoor = new ObjectStep(this, ObjectID.DOOR_1991, new WorldPoint(2515, 9575, 0), "Go through the gate in the west room.", key);
 		talkToGolrie = new NpcStep(this, NpcID.GOLRIE_4183, new WorldPoint(2514, 9580, 0), "Talk to Golrie.");

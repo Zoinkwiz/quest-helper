@@ -68,7 +68,6 @@ public class Agility extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupCourses();
 		setupRequirements();
 		setupSteps();
 
@@ -97,8 +96,10 @@ public class Agility extends ComplexStateQuestHelper
 		return superStep;
 	}
 
-	private void setupCourses()
+	@Override
+	public void setupRequirements()
 	{
+		//Setup courses
 		gnomeStronghold = new GnomeStronghold(this);
 		draynorVillage = new DraynorVillage(this);
 		alKharid = new AlKharid(this);
@@ -108,11 +109,7 @@ public class Agility extends ComplexStateQuestHelper
 		seersVillage = new SeersVillage(this);
 		pollnivneach = new Pollnivneach(this);
 
-	}
-
-	@Override
-	public void setupRequirements()
-	{
+		//Setup skill requirements
 		ag10 = new SkillRequirement(AGILITY, 10);
 		ag20 = new SkillRequirement(AGILITY, 20);
 		ag30 = new SkillRequirement(AGILITY, 30);
@@ -126,6 +123,7 @@ public class Agility extends ComplexStateQuestHelper
 		ag45 = new SkillRequirement(AGILITY, 45);
 
 
+		//Setup item requirements
 		bootsOfLightness = new ItemRequirement(
 			"Boots of Lightness", ItemID.BOOTS_OF_LIGHTNESS).showConditioned(
 			new Conditions(LogicType.NOR, ag45)
@@ -232,8 +230,10 @@ public class Agility extends ComplexStateQuestHelper
 	@Override
 	public List<String> getNotes()
 	{
-		return Arrays.asList("40-60 Agility: Canifis Rooftop Course is the best source of Mark of Grace until 60 Agility. \n" +
-				"Stay on Canifis Rooftop Course for fastest spawn of Mark of Grace until 60 Agility, then go directly to Seer's Village\n\n",
-			"60-80 Agility: If completed Kandarin Hard Diary, configure the Camelot Teleport Spell to Seer's and stay on Seer's rooftop course until 80 Agility. After each completed lap, use the teleport spell to get close to the course starting point");
+		return Arrays.asList("40-60 Agility: Stay on Canifis Rooftop Course for best spawn of Mark of Grace" +
+				" until 60 Agility, then go directly to Seer's Village\n\n",
+			"60-80 Agility: If completed Kandarin Hard Diary, configure the Camelot Teleport Spell" +
+				" to Seer's and stay on Seer's rooftop course until 80 Agility." +
+				" After each completed lap, use the teleport spell to get close to the course starting point");
 	}
 }

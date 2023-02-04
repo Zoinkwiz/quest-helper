@@ -90,7 +90,7 @@ public class GnomeStronghold extends AgilityCourse
 	{
 		//Gnome Stronghold obstacles
 		walkLog = new ObjectStep(this.questHelper, ObjectID.LOG_BALANCE_23145, new WorldPoint(2474, 3435, 0),
-			"Walk-across log", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
+			"Walk-across log southeast of the Spirit tree in Gnome Stronghold", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
 		climbFirstNet = new ObjectStep(this.questHelper, ObjectID.OBSTACLE_NET_23134, new WorldPoint(2473, 3425, 0),
 			"Climb-over net", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));

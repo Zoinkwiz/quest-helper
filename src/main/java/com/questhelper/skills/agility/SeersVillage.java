@@ -120,7 +120,7 @@ public class SeersVillage extends AgilityCourse
 
 		seersSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Seer's Village Rooftop Course, starting just outside the Seer's Bank.\n\n" +
 			"60-80 Agility: If completed Kandarin Hard Diary, configure the Camelot Teleport Spell to Seer's and stay on Seer's rooftop course until 80 Agility. " +
-			"After each completed lap, use the teleport spell to get close to the course starting point\"");
+			"After each completed lap, use the teleport spell to get close to the course starting point");
 		seersSidebar.addSubSteps(climbWall, jumpFirstGap, crossTightrope, jumpSecondGap, jumpThirdGap, jumpEdgeZone, seersStep);
 	}
 

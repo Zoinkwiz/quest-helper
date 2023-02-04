@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, jLereback <https://github.com/jLereback>
+ * Copyright (c) 2023, jLereback <https://github.com/jLereback>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
@@ -55,6 +56,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class Mining extends ComplexStateQuestHelper
 {
+	QuestStep copperSidebar, ironSidebar;
 	//Items Required
 	ItemRequirement ironPickaxe, steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe;
 
@@ -64,10 +66,10 @@ public class Mining extends ComplexStateQuestHelper
 
 	SkillRequirement mi15;
 
-	ObjectStep mineCopperOrTin, mineIron;
+	ObjectStep mineCopper, mineIron;
 	Requirement inCopperZone, inIronZone;
 	Zone copperZone, ironZone;
-	TileStep copperStep, ironStep;
+	DetailedQuestStep copperStep, ironStep;
 
 	WorldPoint COPPER_POINT = new WorldPoint(3287, 3366, 0);
 	WorldPoint IRON_POINT = new WorldPoint(3295, 3310, 0);
@@ -81,9 +83,21 @@ public class Mining extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep fullTraining = new ConditionalStep(this, copperStep);
-		fullTraining.addStep(new Conditions(inCopperZone), mineCopperOrTin);
+		fullTraining.addStep(new Conditions(inCopperZone), mineCopper);
 		fullTraining.addStep(new Conditions(mi15, inIronZone), mineIron);
 		fullTraining.addStep(mi15, ironStep);
+
+		copperSidebar = new DetailedQuestStep(this,
+			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop" +
+				" the ores as you go or bank them in the eastern Varrock bank.");
+		copperSidebar.addSubSteps(copperStep, mineCopper);
+
+
+		ironSidebar = new DetailedQuestStep(this,
+			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
+				" smelt them on the way to the Al Kharid bank or bank the ores as they are.");
+		ironSidebar.addSubSteps(ironStep, mineIron);
+
 		return fullTraining;
 	}
 
@@ -138,23 +152,25 @@ public class Mining extends ComplexStateQuestHelper
 
 	private void setupSteps()
 	{
-		copperStep = new TileStep(this, COPPER_POINT,
-			"Stand next to the Copper- and Tin ore",
+		copperStep = new DetailedQuestStep(this, COPPER_POINT,
+			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
+				"the ores as you go or bank them in the eastern Varrock bank.",
 			ironPickaxe, steelPickaxe, blackPickaxe);
 		copperStep.addTileMarker(COPPER_POINT, SpriteID.SKILL_MINING);
 
-		ironStep = new TileStep(this, IRON_POINT,
-			"Stand between the Iron ores",
+		ironStep = new DetailedQuestStep(this, IRON_POINT,
+			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
+				" smelt them on the way to the Al Kharid bank or bank the ores as they are.",
 			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe);
 		ironStep.addTileMarker(IRON_POINT, SpriteID.SKILL_MINING);
 
 
-		mineCopperOrTin = new ObjectStep(this, ObjectID.ROCKS_11360, COPPER_POINT,
+		mineCopper = new ObjectStep(this, ObjectID.ROCKS_11360, COPPER_POINT,
 			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
 				"the ores as you go or bank them in the eastern Varrock bank.", true,
 			ironPickaxe, steelPickaxe, blackPickaxe
 		);
-		mineCopperOrTin.addAlternateObjects(ObjectID.ROCKS_11360, ObjectID.ROCKS_11161, ObjectID.ROCKS_10943);
+		mineCopper.addAlternateObjects(ObjectID.ROCKS_11360, ObjectID.ROCKS_11161, ObjectID.ROCKS_10943);
 
 		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, IRON_POINT,
 			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
@@ -182,9 +198,9 @@ public class Mining extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("1 - 15: Mine Copper/Tin", Arrays.asList(copperStep, mineCopperOrTin),
+		allSteps.add(new PanelDetails("1 - 15: Mine Copper/Tin", Collections.singletonList(copperSidebar),
 			ironPickaxe, steelPickaxe, blackPickaxe));
-		allSteps.add(new PanelDetails("15 - 99: Mine Iron ore", Arrays.asList(ironStep, mineIron),
+		allSteps.add(new PanelDetails("15 - 99: Mine Iron ore", Collections.singletonList(ironSidebar),
 			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe));
 		return allSteps;
 	}

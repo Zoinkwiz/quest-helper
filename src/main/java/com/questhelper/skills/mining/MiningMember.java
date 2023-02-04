@@ -37,6 +37,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
@@ -57,23 +58,20 @@ public class MiningMember extends ComplexStateQuestHelper
 {
 
 // TODO::MINING_MEMBER ARE NOT DONE AND NEED TO BE UPDATED SINCE THE STEPS ARE THE SAME AS MINING F2P AT THIS TIME
-
-
+	QuestStep copperSidebar, ironSidebar;
 	//Items Required
-	ItemRequirement ironPickaxe, steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe, dragonPickaxe;
+	ItemRequirement ironPickaxe, steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe;
 
 	// Levels for pickaxes
-	SkillRequirement mi6, mi11, mi21, mi31, mi41, mi61;
-	SkillRequirement at5, at10, at20, at30, at40, at60;
+	SkillRequirement mi6, mi11, mi21, mi31, mi41;
+	SkillRequirement at5, at10, at20, at30, at40;
+
 	SkillRequirement mi15;
 
-	ItemRequirement dragonPickaxeRec, varrockArmour1, prospectorHelmet, prospectorJacket, prospectorLegs, prospectorBoots;
-
-
-	ObjectStep mineCopperOrTin, mineIron;
+	ObjectStep mineCopper, mineIron;
 	Requirement inCopperZone, inIronZone;
 	Zone copperZone, ironZone;
-	TileStep copperStep, ironStep;
+	DetailedQuestStep copperStep, ironStep;
 
 	WorldPoint COPPER_POINT = new WorldPoint(3287, 3366, 0);
 	WorldPoint IRON_POINT = new WorldPoint(3295, 3310, 0);
@@ -87,9 +85,21 @@ public class MiningMember extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep fullTraining = new ConditionalStep(this, copperStep);
-		fullTraining.addStep(new Conditions(inCopperZone), mineCopperOrTin);
+		fullTraining.addStep(new Conditions(inCopperZone), mineCopper);
 		fullTraining.addStep(new Conditions(mi15, inIronZone), mineIron);
 		fullTraining.addStep(mi15, ironStep);
+
+		copperSidebar = new DetailedQuestStep(this,
+			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop" +
+				" the ores as you go or bank them in the eastern Varrock bank.");
+		copperSidebar.addSubSteps(copperStep, mineCopper);
+
+
+		ironSidebar = new DetailedQuestStep(this,
+			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
+				" smelt them on the way to the Al Kharid bank or bank the ores as they are.");
+		ironSidebar.addSubSteps(ironStep, mineIron);
+
 		return fullTraining;
 	}
 
@@ -104,15 +114,13 @@ public class MiningMember extends ComplexStateQuestHelper
 
 		mi15 = new SkillRequirement(Skill.MINING, 15);
 
-		ironPickaxe = new ItemRequirement("Iron axe", ItemID.IRON_PICKAXE);
-		steelPickaxe = new ItemRequirement("Steel axe", ItemID.STEEL_PICKAXE);
-		blackPickaxe = new ItemRequirement("Black axe", ItemID.BLACK_PICKAXE);
-		mithrilPickaxe = new ItemRequirement("Mithril axe", ItemID.MITHRIL_PICKAXE);
-		adamantPickaxe = new ItemRequirement("Adamant axe", ItemID.ADAMANT_PICKAXE);
-		dragonPickaxe = new ItemRequirement("Dragon axe", ItemID.DRAGON_PICKAXE);
-		dragonPickaxeRec = new ItemRequirement("Dragon axe", ItemID.DRAGON_PICKAXE);
-		runePickaxe = new ItemRequirement("Rune axe", ItemID.RUNE_PICKAXE);
 
+		ironPickaxe = new ItemRequirement("Iron pickaxe", ItemID.IRON_PICKAXE);
+		steelPickaxe = new ItemRequirement("Steel pickaxe", ItemID.STEEL_PICKAXE);
+		blackPickaxe = new ItemRequirement("Black pickaxe", ItemID.BLACK_PICKAXE);
+		mithrilPickaxe = new ItemRequirement("Mithril pickaxe", ItemID.MITHRIL_PICKAXE);
+		adamantPickaxe = new ItemRequirement("Adamant pickaxe", ItemID.ADAMANT_PICKAXE);
+		runePickaxe = new ItemRequirement("Rune pickaxe", ItemID.RUNE_PICKAXE);
 
 		ironPickaxe = ironPickaxe.showConditioned(new Conditions(LogicType.NOR, at5, mi6)
 		).isNotConsumed();
@@ -128,41 +136,8 @@ public class MiningMember extends ComplexStateQuestHelper
 		adamantPickaxe = adamantPickaxe.showConditioned(
 			new Conditions(at30, mi31, new Conditions(LogicType.NOR, at40, mi41))
 		).isNotConsumed();
-		dragonPickaxeRec = dragonPickaxeRec.showConditioned(
-			new Conditions(mi61, at60, new Conditions(LogicType.NOR, dragonPickaxe.alsoCheckBank(questBank)))
+		runePickaxe = runePickaxe.showConditioned(new Conditions(mi41, at40)
 		).isNotConsumed();
-		runePickaxe = runePickaxe.showConditioned(
-			new Conditions(at40, mi41, new Conditions(LogicType.NOR, dragonPickaxe.alsoCheckBank(questBank)))
-		).isNotConsumed();
-		dragonPickaxe = dragonPickaxe.showConditioned(
-			new Conditions(mi61, at60, dragonPickaxe.alsoCheckBank(questBank))
-		).isNotConsumed();
-
-
-		//Recommended items
-		prospectorHelmet = new ItemRequirement("Prospector helmet", ItemID.PROSPECTOR_HELMET);
-		prospectorJacket = new ItemRequirement("Prospector jacket", ItemID.PROSPECTOR_JACKET);
-		prospectorLegs = new ItemRequirement("Prospector legs", ItemID.PROSPECTOR_LEGS);
-		prospectorBoots = new ItemRequirement("Prospector boots", ItemID.PROSPECTOR_BOOTS);
-		varrockArmour1 = new ItemRequirement("Varrock Armour", ItemID.VARROCK_ARMOUR_1);
-
-		prospectorHelmet = prospectorHelmet.showConditioned(prospectorHelmet.alsoCheckBank(questBank));
-		prospectorHelmet.addAlternates(ItemID.GOLDEN_PROSPECTOR_HELMET);
-
-		prospectorJacket = prospectorJacket.showConditioned(prospectorJacket.alsoCheckBank(questBank));
-		prospectorJacket.addAlternates(ItemID.GOLDEN_PROSPECTOR_JACKET, ItemID.VARROCK_ARMOUR_4);
-
-		prospectorLegs = prospectorLegs.showConditioned(prospectorLegs.alsoCheckBank(questBank));
-		prospectorLegs.addAlternates(ItemID.GOLDEN_PROSPECTOR_LEGS);
-
-		prospectorBoots = prospectorBoots.showConditioned(prospectorBoots.alsoCheckBank(questBank));
-		prospectorBoots.addAlternates(ItemID.GOLDEN_PROSPECTOR_BOOTS);
-
-		varrockArmour1.showConditioned(
-			new Conditions(mi15, varrockArmour1.alsoCheckBank(questBank),
-				new Conditions(LogicType.NOR, prospectorJacket.alsoCheckBank(questBank)))
-		);
-		varrockArmour1.addAlternates(ItemID.VARROCK_ARMOUR, ItemID.VARROCK_ARMOUR_2, ItemID.VARROCK_ARMOUR_3);
 	}
 
 	public void setupConditions()
@@ -179,28 +154,30 @@ public class MiningMember extends ComplexStateQuestHelper
 
 	private void setupSteps()
 	{
-		copperStep = new TileStep(this, COPPER_POINT,
-			"Stand next to the Copper- and Tin ore",
+		copperStep = new DetailedQuestStep(this, COPPER_POINT,
+			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
+				"the ores as you go or bank them in the eastern Varrock bank.",
 			ironPickaxe, steelPickaxe, blackPickaxe);
 		copperStep.addTileMarker(COPPER_POINT, SpriteID.SKILL_MINING);
 
-		ironStep = new TileStep(this, IRON_POINT,
-			"Stand between the Iron ores",
-			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe, dragonPickaxe);
+		ironStep = new DetailedQuestStep(this, IRON_POINT,
+			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
+				" smelt them on the way to the Al Kharid bank or bank the ores as they are.",
+			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe);
 		ironStep.addTileMarker(IRON_POINT, SpriteID.SKILL_MINING);
 
 
-		mineCopperOrTin = new ObjectStep(this, ObjectID.ROCKS_11360, COPPER_POINT,
+		mineCopper = new ObjectStep(this, ObjectID.ROCKS_11360, COPPER_POINT,
 			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
 				"the ores as you go or bank them in the eastern Varrock bank.", true,
 			ironPickaxe, steelPickaxe, blackPickaxe
 		);
-		mineCopperOrTin.addAlternateObjects(ObjectID.ROCKS_11360, ObjectID.ROCKS_11161, ObjectID.ROCKS_10943);
+		mineCopper.addAlternateObjects(ObjectID.ROCKS_11360, ObjectID.ROCKS_11161, ObjectID.ROCKS_10943);
 
 		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, IRON_POINT,
 			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
 				" smelt them on the way to the Al Kharid bank or bank the ores as they are.", true,
-			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe, dragonPickaxe
+			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe
 		);
 		mineIron.addAlternateObjects(ObjectID.ROCKS_11365);
 	}
@@ -216,25 +193,17 @@ public class MiningMember extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(
-			ironPickaxe, steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe, dragonPickaxe);
-	}
-
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return Arrays.asList(dragonPickaxeRec, prospectorHelmet, prospectorJacket, prospectorLegs, prospectorBoots);
+		return Arrays.asList(ironPickaxe, steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("1 - 15: Mine Copper/Tin", Arrays.asList(copperStep, mineCopperOrTin),
+		allSteps.add(new PanelDetails("1 - 15: Mine Copper/Tin", Collections.singletonList(copperSidebar),
 			ironPickaxe, steelPickaxe, blackPickaxe));
-		allSteps.add(new PanelDetails("15 - 99: Mine Iron ore", Arrays.asList(ironStep, mineIron),
-			Arrays.asList(steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe, dragonPickaxe),
-			Arrays.asList(dragonPickaxeRec, varrockArmour1, prospectorHelmet, prospectorJacket, prospectorLegs, prospectorBoots)));
+		allSteps.add(new PanelDetails("15 - 99: Mine Iron ore", Collections.singletonList(ironSidebar),
+			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe));
 		return allSteps;
 	}
 }

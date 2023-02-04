@@ -28,7 +28,9 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
@@ -38,6 +40,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public class AlKharid extends AgilityCourse
 {
+	QuestStep alKharidSidebar;
 	QuestStep climbRoughWall, walkFirstRope, swingCable, gripZipLine, swingTree, climbBeams, walkSecondRope, jumpGap;
 	Zone firstRopeZone, cableZone, zipLineZone, treeZone, beamsZone, secondRopeZone, gapZone;
 	ZoneRequirement inFirstRopeZone, inCableZone, inZipLineZone, inTreeZone, inBeamsZone, inSecondRopeZone, inGapZone;
@@ -56,15 +59,8 @@ public class AlKharid extends AgilityCourse
 		setupZones();
 		setupConditions();
 		setupSteps();
+		addSteps();
 
-		alKharidStep = new ConditionalStep(this.questHelper, climbRoughWall);
-		alKharidStep.addStep(inFirstRopeZone, walkFirstRope);
-		alKharidStep.addStep(inCableZone, swingCable);
-		alKharidStep.addStep(inZipLineZone, gripZipLine);
-		alKharidStep.addStep(inTreeZone, swingTree);
-		alKharidStep.addStep(inBeamsZone, climbBeams);
-		alKharidStep.addStep(inSecondRopeZone, walkSecondRope);
-		alKharidStep.addStep(inGapZone, jumpGap);
 		return alKharidStep;
 	}
 
@@ -123,11 +119,28 @@ public class AlKharid extends AgilityCourse
 	}
 
 	@Override
+	protected void addSteps()
+	{
+		alKharidStep = new ConditionalStep(this.questHelper, climbRoughWall);
+		alKharidStep.addStep(inFirstRopeZone, walkFirstRope);
+		alKharidStep.addStep(inCableZone, swingCable);
+		alKharidStep.addStep(inZipLineZone, gripZipLine);
+		alKharidStep.addStep(inTreeZone, swingTree);
+		alKharidStep.addStep(inBeamsZone, climbBeams);
+		alKharidStep.addStep(inSecondRopeZone, walkSecondRope);
+		alKharidStep.addStep(inGapZone, jumpGap);
+
+		alKharidSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Al Kharid Rooftop Course, starting north of the Tannery.");
+		alKharidSidebar.addSubSteps( climbRoughWall, walkFirstRope, swingCable, gripZipLine, swingTree, climbBeams, walkSecondRope, jumpGap, alKharidStep);
+	}
+
+	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		alKharidPanels = new PanelDetails("20 - 30: Al Kharid", Arrays.asList(climbRoughWall, walkFirstRope,
-			swingCable, gripZipLine, swingTree, climbBeams, walkSecondRope, jumpGap)
+		alKharidPanels = new PanelDetails("20 - 30: Al Kharid", Collections.singletonList(alKharidSidebar)
 		);
+		alKharidPanels.setLockingStep(this.alKharidStep);
+
 		return alKharidPanels;
 	}
 }

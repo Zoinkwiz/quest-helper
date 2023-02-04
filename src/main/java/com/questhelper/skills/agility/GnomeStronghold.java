@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public class GnomeStronghold extends AgilityCourse
 {
+	QuestStep gnomeSidebar;
 	QuestStep walkLog, climbFirstNet, climbFirstTree, walkRope, climbSecondTree, climbSecondNet, squeezePipe;
 	Zone firstNetZone, firstTreeZone, ropeZone, secondTreeZone, secondNetZone, pipeZone;
 	ZoneRequirement inFirstNetZone, inFirstTreeZone, inRopeZone, inSecondTreeZone, inSecondNetZone, inPipeZone;
@@ -56,14 +58,8 @@ public class GnomeStronghold extends AgilityCourse
 		setupZones();
 		setupConditions();
 		setupSteps();
+		addSteps();
 
-		gnomeStep = new ConditionalStep(this.questHelper, walkLog);
-		gnomeStep.addStep(inFirstNetZone, climbFirstNet);
-		gnomeStep.addStep(inFirstTreeZone, climbFirstTree);
-		gnomeStep.addStep(inRopeZone, walkRope);
-		gnomeStep.addStep(inSecondTreeZone, climbSecondTree);
-		gnomeStep.addStep(inSecondNetZone, climbSecondNet);
-		gnomeStep.addStep(inPipeZone, squeezePipe);
 		return gnomeStep;
 	}
 
@@ -116,11 +112,27 @@ public class GnomeStronghold extends AgilityCourse
 	}
 
 	@Override
+	protected void addSteps()
+	{
+		gnomeStep = new ConditionalStep(this.questHelper, walkLog);
+		gnomeStep.addStep(inFirstNetZone, climbFirstNet);
+		gnomeStep.addStep(inFirstTreeZone, climbFirstTree);
+		gnomeStep.addStep(inRopeZone, walkRope);
+		gnomeStep.addStep(inSecondTreeZone, climbSecondTree);
+		gnomeStep.addStep(inSecondNetZone, climbSecondNet);
+		gnomeStep.addStep(inPipeZone, squeezePipe);
+
+		gnomeSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Gnome Stronghold Agility Course");
+		gnomeSidebar.addSubSteps(walkLog, climbFirstNet, climbFirstTree, walkRope, climbSecondTree, climbSecondNet, squeezePipe);
+	}
+
+	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		gnomePanels = new PanelDetails("1 - 10: Gnome Stronghold", Arrays.asList(walkLog, climbFirstNet,
-			climbFirstTree, walkRope, climbSecondTree, climbSecondNet, squeezePipe)
+		gnomePanels = new PanelDetails("1 - 10: Gnome Stronghold", Collections.singletonList(gnomeSidebar)
 		);
+		gnomePanels.setLockingStep(this.gnomeStep);
+
 		return gnomePanels;
 	}
 }

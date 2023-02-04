@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public class Falador extends AgilityCourse
 {
+	QuestStep faladorSidebar;
 	QuestStep climbRoughWall, crossFirstTightrope, crossHandHolds, jumpFirstGap, jumpSecondGap, crossSecondTightrope,
 		crossThirdTightrope, jumpThirdGap, jumpFirstLedge, jumpSecondLedge, jumpThirdLedge, jumpFourthLedge, jumpEdge;
 	Zone firstTightropeZone, handHoldsZone, firstGapZone, secondGapZone, secondTightropeZone, thirdTightropeZone,
@@ -59,20 +61,8 @@ public class Falador extends AgilityCourse
 		setupZones();
 		setupConditions();
 		setupSteps();
+		addSteps();
 
-		faladorStep = new ConditionalStep(this.questHelper, climbRoughWall);
-		faladorStep.addStep(inFirstTightropeZone, crossFirstTightrope);
-		faladorStep.addStep(inHandHoldsZone, crossHandHolds);
-		faladorStep.addStep(inFirstGapZone, jumpFirstGap);
-		faladorStep.addStep(inSecondGapZone, jumpSecondGap);
-		faladorStep.addStep(inSecondTightropeZone, crossSecondTightrope);
-		faladorStep.addStep(inThirdTightropeZone, crossThirdTightrope);
-		faladorStep.addStep(inThirdGapZone, jumpThirdGap);
-		faladorStep.addStep(inFirstLedgeZone, jumpFirstLedge);
-		faladorStep.addStep(inSecondLedgeZone, jumpSecondLedge);
-		faladorStep.addStep(inThirdLedgeZone, jumpThirdLedge);
-		faladorStep.addStep(inFourthLedgeZone, jumpFourthLedge);
-		faladorStep.addStep(inEdgeZone, jumpEdge);
 		return faladorStep;
 	}
 
@@ -156,12 +146,35 @@ public class Falador extends AgilityCourse
 	}
 
 	@Override
+	protected void addSteps()
+	{
+		faladorStep = new ConditionalStep(this.questHelper, climbRoughWall);
+		faladorStep.addStep(inFirstTightropeZone, crossFirstTightrope);
+		faladorStep.addStep(inHandHoldsZone, crossHandHolds);
+		faladorStep.addStep(inFirstGapZone, jumpFirstGap);
+		faladorStep.addStep(inSecondGapZone, jumpSecondGap);
+		faladorStep.addStep(inSecondTightropeZone, crossSecondTightrope);
+		faladorStep.addStep(inThirdTightropeZone, crossThirdTightrope);
+		faladorStep.addStep(inThirdGapZone, jumpThirdGap);
+		faladorStep.addStep(inFirstLedgeZone, jumpFirstLedge);
+		faladorStep.addStep(inSecondLedgeZone, jumpSecondLedge);
+		faladorStep.addStep(inThirdLedgeZone, jumpThirdLedge);
+		faladorStep.addStep(inFourthLedgeZone, jumpFourthLedge);
+		faladorStep.addStep(inEdgeZone, jumpEdge);
+
+		faladorSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Falador Rooftop Course");
+		faladorSidebar.addSubSteps(climbRoughWall, crossFirstTightrope, crossHandHolds, jumpFirstGap, jumpSecondGap, crossSecondTightrope,
+			crossThirdTightrope, jumpThirdGap, jumpFirstLedge, jumpSecondLedge, jumpThirdLedge, jumpFourthLedge, jumpEdge);
+
+	}
+
+	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		faladorPanels = new PanelDetails("50 - 60: Falador", Arrays.asList(
-			climbRoughWall, crossFirstTightrope, crossHandHolds, jumpFirstGap, jumpSecondGap, crossSecondTightrope,
-			crossThirdTightrope, jumpThirdGap, jumpFirstLedge, jumpSecondLedge, jumpThirdLedge, jumpFourthLedge, jumpEdge)
+		faladorPanels = new PanelDetails("50 - 60: Falador", Collections.singletonList(faladorSidebar)
 		);
+		faladorPanels.setLockingStep(this.faladorStep);
+
 		return faladorPanels;
 	}
 }

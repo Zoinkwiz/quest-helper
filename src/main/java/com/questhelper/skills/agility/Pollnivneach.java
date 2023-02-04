@@ -30,6 +30,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
@@ -39,13 +40,13 @@ import net.runelite.api.coords.WorldPoint;
 
 public class Pollnivneach extends AgilityCourse
 {
+	QuestStep pollnivneachSidebar;
 	QuestStep climbBasket, jumpUpMarketStall, grabBanner, leapGap, jumpUpTree, climbRoughWall, crossMonkeyBars, jumpUpTree2, jumpUpDryingLine;
 	Zone marketStallZone, bannerZone, gapZone, firstTreeZone, roughWallZone, monkeyBarsZone, secondTreeZone, dryingLineZone;
 	ZoneRequirement inMarketStallZone, inBannerZone, inGapZone, inFirstTreeZone, inRoughWallZone, inMonkeyBarsZone, inSecondTreeZone, inDryingLineZone;
 
 	ConditionalStep pollnivneachStep;
 	PanelDetails pollnivneachPanels;
-
 
 	public Pollnivneach(QuestHelper questHelper)
 	{
@@ -58,16 +59,7 @@ public class Pollnivneach extends AgilityCourse
 		setupZones();
 		setupConditions();
 		setupSteps();
-
-		pollnivneachStep = new ConditionalStep(this.questHelper, climbBasket);
-		pollnivneachStep.addStep(new Conditions(inMarketStallZone), jumpUpMarketStall);
-		pollnivneachStep.addStep(new Conditions(inBannerZone), grabBanner);
-		pollnivneachStep.addStep(new Conditions(inGapZone), leapGap);
-		pollnivneachStep.addStep(new Conditions(inFirstTreeZone), jumpUpTree);
-		pollnivneachStep.addStep(new Conditions(inRoughWallZone), climbRoughWall);
-		pollnivneachStep.addStep(new Conditions(inMonkeyBarsZone), crossMonkeyBars);
-		pollnivneachStep.addStep(new Conditions(inSecondTreeZone), jumpUpTree2);
-		pollnivneachStep.addStep(new Conditions(inDryingLineZone), jumpUpDryingLine);
+		addSteps();
 
 		return pollnivneachStep;
 	}
@@ -131,11 +123,30 @@ public class Pollnivneach extends AgilityCourse
 	}
 
 	@Override
+	protected void addSteps()
+	{
+		//Conditional step to group up the obstacles
+		pollnivneachStep = new ConditionalStep(this.questHelper, climbBasket);
+		pollnivneachStep.addStep(new Conditions(inMarketStallZone), jumpUpMarketStall);
+		pollnivneachStep.addStep(new Conditions(inBannerZone), grabBanner);
+		pollnivneachStep.addStep(new Conditions(inGapZone), leapGap);
+		pollnivneachStep.addStep(new Conditions(inFirstTreeZone), jumpUpTree);
+		pollnivneachStep.addStep(new Conditions(inRoughWallZone), climbRoughWall);
+		pollnivneachStep.addStep(new Conditions(inMonkeyBarsZone), crossMonkeyBars);
+		pollnivneachStep.addStep(new Conditions(inSecondTreeZone), jumpUpTree2);
+		pollnivneachStep.addStep(new Conditions(inDryingLineZone), jumpUpDryingLine);
+
+		pollnivneachSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Pollnivneach Rooftop Course");
+		pollnivneachSidebar.addSubSteps(climbBasket, jumpUpMarketStall, grabBanner, leapGap, jumpUpTree, climbRoughWall, crossMonkeyBars, jumpUpTree2, jumpUpDryingLine, pollnivneachStep);
+	}
+
+	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		pollnivneachPanels = new PanelDetails("70 - 80: Pollnivneach", Arrays.asList(climbBasket, jumpUpMarketStall,
-			grabBanner, leapGap, jumpUpTree, climbRoughWall, crossMonkeyBars, jumpUpTree2, jumpUpDryingLine)
+		pollnivneachPanels = new PanelDetails("70 - 80: Pollnivneach", Collections.singletonList(pollnivneachSidebar)
 		);
+		pollnivneachPanels.setLockingStep(this.pollnivneachStep);
+
 		return pollnivneachPanels;
 	}
 }

@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public class DraynorVillage extends AgilityCourse
 {
+	QuestStep draynorSidebar;
 	QuestStep climbRoughWall, walkFirstRope, walkSecondRope, balanceWall, jumpUpWall, jumpGap, climbDownCrate;
 	Zone firstRopeZone, secondRopeZone, narrowWallZone, wallZone, gapZone, crateZone;
 	ZoneRequirement inFirstRopeZone, inSecondRopeZone, inNarrowWallZone, inWallZone, inGapZone, inCrateZone;
@@ -56,14 +58,8 @@ public class DraynorVillage extends AgilityCourse
 		setupZones();
 		setupConditions();
 		setupSteps();
+		addSteps();
 
-		draynorStep = new ConditionalStep(this.questHelper, climbRoughWall);
-		draynorStep.addStep(inFirstRopeZone, walkFirstRope);
-		draynorStep.addStep(inSecondRopeZone, walkSecondRope);
-		draynorStep.addStep(inNarrowWallZone, balanceWall);
-		draynorStep.addStep(inWallZone, jumpUpWall);
-		draynorStep.addStep(inGapZone, jumpGap);
-		draynorStep.addStep(inCrateZone, climbDownCrate);
 		return draynorStep;
 	}
 
@@ -117,11 +113,26 @@ public class DraynorVillage extends AgilityCourse
 	}
 
 	@Override
+	protected void addSteps()
+	{
+		draynorStep = new ConditionalStep(this.questHelper, climbRoughWall);
+		draynorStep.addStep(inFirstRopeZone, walkFirstRope);
+		draynorStep.addStep(inSecondRopeZone, walkSecondRope);
+		draynorStep.addStep(inNarrowWallZone, balanceWall);
+		draynorStep.addStep(inWallZone, jumpUpWall);
+		draynorStep.addStep(inGapZone, jumpGap);
+		draynorStep.addStep(inCrateZone, climbDownCrate);
+
+		draynorSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Draynor Village Rooftop Course");
+		draynorSidebar.addSubSteps(climbRoughWall, walkFirstRope, walkSecondRope, balanceWall, jumpUpWall, jumpGap, climbDownCrate);
+	}
+
+	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		draynorPanels = new PanelDetails("10 - 20: Draynor Village", Arrays.asList(climbRoughWall, walkFirstRope,
-			walkSecondRope, balanceWall, jumpUpWall, jumpGap, climbDownCrate)
+		draynorPanels = new PanelDetails("10 - 20: Draynor Village", Collections.singletonList(draynorSidebar)
 		);
+		draynorPanels.setLockingStep(this.draynorStep);
 		return draynorPanels;
 	}
 }

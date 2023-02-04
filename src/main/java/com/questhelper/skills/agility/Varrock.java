@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public class Varrock extends AgilityCourse
 {
+	QuestStep varrockSidebar;
 	QuestStep climbRoughWall, crossClothesLine, leapFirstGap, balanceWall, leapSecondGap, leapThirdGap, leapFourthGap, hurdleLedge, jumpEdge;
 	Zone clothesLineZone, firstGapZone, wallZone, secondGapZone, thirdGapZone, fourthGapZone, ledgeZone, edgeZone;
 	ZoneRequirement inClothesLineZone, inFirstGapZone, inWallZone, inSecondGapZone, inThirdGapZone, inFourthGapZone, inLedgeZone, inEdgeZone;
@@ -57,15 +59,7 @@ public class Varrock extends AgilityCourse
 		setupConditions();
 		setupSteps();
 
-		varrockStep = new ConditionalStep(this.questHelper, climbRoughWall);
-		varrockStep.addStep(inClothesLineZone, crossClothesLine);
-		varrockStep.addStep(inFirstGapZone, leapFirstGap);
-		varrockStep.addStep(inWallZone, balanceWall);
-		varrockStep.addStep(inSecondGapZone, leapSecondGap);
-		varrockStep.addStep(inThirdGapZone, leapThirdGap);
-		varrockStep.addStep(inFourthGapZone, leapFourthGap);
-		varrockStep.addStep(inLedgeZone, hurdleLedge);
-		varrockStep.addStep(inEdgeZone, jumpEdge);
+		addSteps();
 		return varrockStep;
 	}
 
@@ -129,11 +123,30 @@ public class Varrock extends AgilityCourse
 	}
 
 	@Override
+	protected void addSteps()
+	{
+		varrockStep = new ConditionalStep(this.questHelper, climbRoughWall);
+		varrockStep.addStep(inClothesLineZone, crossClothesLine);
+		varrockStep.addStep(inFirstGapZone, leapFirstGap);
+		varrockStep.addStep(inWallZone, balanceWall);
+		varrockStep.addStep(inSecondGapZone, leapSecondGap);
+		varrockStep.addStep(inThirdGapZone, leapThirdGap);
+		varrockStep.addStep(inFourthGapZone, leapFourthGap);
+		varrockStep.addStep(inLedgeZone, hurdleLedge);
+		varrockStep.addStep(inEdgeZone, jumpEdge);
+
+		varrockSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Varrock Rooftop Course");
+		varrockSidebar.addSubSteps(climbRoughWall, crossClothesLine, leapFirstGap, balanceWall, leapSecondGap, leapThirdGap, leapFourthGap, hurdleLedge, jumpEdge, varrockStep);
+
+	}
+
+	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		varrockPanels = new PanelDetails("30 - 40: Varrock", Arrays.asList(climbRoughWall, crossClothesLine,
-			leapFirstGap, balanceWall, leapSecondGap, leapThirdGap, leapFourthGap, hurdleLedge, jumpEdge)
+		varrockPanels = new PanelDetails("30 - 40: Varrock", Collections.singletonList(varrockSidebar)
 		);
+		varrockPanels.setLockingStep(this.varrockStep);
+
 		return varrockPanels;
 	}
 }

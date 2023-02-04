@@ -47,6 +47,8 @@ public abstract class AgilityCourse extends QuestStep
 
 	protected abstract void setupSteps();
 
+	protected abstract void addSteps();
+
 	protected abstract PanelDetails getPanelDetails();
 
 	protected void setRecommended(ItemRequirement... items)

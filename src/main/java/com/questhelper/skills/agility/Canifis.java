@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public class Canifis extends AgilityCourse
 {
+	QuestStep canifisSidebar;
 	QuestStep climbTallTree, jumpFirstGap, jumpSecondGap, jumpThirdGap, jumpFourthGap, vaultPoleVault, jumpFifthGap, jumpSixthGap;
 	Zone firstGapZone, secondGapZone, thirdGapZone, fourthGapZone, poleVaultZone, fifthGapZone, sixthGapzone;
 	ZoneRequirement inFirstGapZone, inSecondGapZone, inThirdGapZone, inFourthGapZone, inPoleVaultZone, inFifthGapZone, inSixthGapZone;
@@ -56,15 +58,8 @@ public class Canifis extends AgilityCourse
 		setupZones();
 		setupConditions();
 		setupSteps();
+		addSteps();
 
-		canifisStep = new ConditionalStep(this.questHelper, climbTallTree);
-		canifisStep.addStep(inFirstGapZone, jumpFirstGap);
-		canifisStep.addStep(inSecondGapZone, jumpSecondGap);
-		canifisStep.addStep(inThirdGapZone, jumpThirdGap);
-		canifisStep.addStep(inFourthGapZone, jumpFourthGap);
-		canifisStep.addStep(inPoleVaultZone, vaultPoleVault);
-		canifisStep.addStep(inFifthGapZone, jumpFifthGap);
-		canifisStep.addStep(inSixthGapZone, jumpSixthGap);
 		return canifisStep;
 	}
 
@@ -123,10 +118,28 @@ public class Canifis extends AgilityCourse
 	}
 
 	@Override
+	protected void addSteps()
+	{
+		canifisStep = new ConditionalStep(this.questHelper, climbTallTree);
+		canifisStep.addStep(inFirstGapZone, jumpFirstGap);
+		canifisStep.addStep(inSecondGapZone, jumpSecondGap);
+		canifisStep.addStep(inThirdGapZone, jumpThirdGap);
+		canifisStep.addStep(inFourthGapZone, jumpFourthGap);
+		canifisStep.addStep(inPoleVaultZone, vaultPoleVault);
+		canifisStep.addStep(inFifthGapZone, jumpFifthGap);
+		canifisStep.addStep(inSixthGapZone, jumpSixthGap);
+
+		canifisSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Canifis Rooftop Course, starting just north of Canifis Bank.\n\n" +
+			"40-60 Agility: Canifis Rooftop Course is the best source of Mark of Grace until 60 Agility.\n" +
+			"Stay on Canifis Rooftop Course for fastest spawn of Mark of Grace until 60 Agility, then go directly to Seer's Village");
+		canifisSidebar.addSubSteps(climbTallTree, jumpFirstGap, jumpSecondGap, jumpThirdGap, jumpFourthGap, vaultPoleVault, jumpFifthGap, jumpSixthGap, canifisStep);
+
+	}
+
+	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		canifisPanels = new PanelDetails("40 - 50/60: Canifis", Arrays.asList(climbTallTree, jumpFirstGap,
-			jumpSecondGap, jumpThirdGap, jumpFourthGap, vaultPoleVault, jumpFifthGap, jumpSixthGap)
+		canifisPanels = new PanelDetails("40 - 50/60: Canifis", Collections.singletonList(canifisSidebar)
 		);
 		canifisPanels.setLockingStep(this.canifisStep);
 		return canifisPanels;

@@ -105,6 +105,7 @@ public enum QuestVarbits
 	QUEST_TEMPLE_OF_THE_EYE(13738),
 	QUEST_SLEEPING_GIANTS(13902),
 	QUEST_THE_GARDEN_OF_DEATH(14609),
+	QUEST_SECRETS_OF_THE_NORTH(14722),
 
 	/**
 	 * mini-quest varbits, these don't hold the completion value.

@@ -604,8 +604,8 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 	{
 		return Arrays.asList(
 			new ExperienceReward(Skill.AGILITY, 60000),
-			new ExperienceReward(Skill.FARMING, 50000),
-			new ExperienceReward(Skill.FARMING, 40000)
+			new ExperienceReward(Skill.THIEVING, 50000),
+			new ExperienceReward(Skill.HUNTER, 40000)
 		);
 	}
 

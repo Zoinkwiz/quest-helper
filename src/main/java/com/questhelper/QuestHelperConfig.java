@@ -39,6 +39,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 import net.runelite.client.util.Text;
 
 @ConfigGroup("questhelper")
@@ -410,7 +411,10 @@ public interface QuestHelperConfig extends Config
 		return InventoryItemHighlightStyle.FILLED_OUTLINE;
 	}
 
-
+	@Range(
+		min = 0,
+		max = 50
+	)
 	@ConfigItem(
 		keyName = "outlineThickness",
 		name = "Outline thickness",
@@ -422,6 +426,10 @@ public interface QuestHelperConfig extends Config
 		return 4;
 	}
 
+	@Range(
+		min = 0,
+		max = 4
+	)
 	@ConfigItem(
 		keyName = "outlineFeathering",
 		name = "Outline feathering",

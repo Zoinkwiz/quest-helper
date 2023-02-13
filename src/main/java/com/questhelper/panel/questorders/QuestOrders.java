@@ -710,7 +710,7 @@ public class QuestOrders
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.DADDYS_HOME,
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
-		QuestHelperQuest.HOPESPEARS_WILL
+		QuestHelperQuest.HOPESPEARS_WILL,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
 		QuestHelperQuest.THE_SECRETS_OF_THE_NORTH
 	);

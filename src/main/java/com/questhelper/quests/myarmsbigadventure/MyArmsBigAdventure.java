@@ -465,7 +465,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 10));
 		req.add(new SkillRequirement(Skill.FARMING, 29, true));
 		// 907 is the Varbit for tai bwo wannai cleanup favour
-		req.add(new VarbitRequirement(907, Operation.GREATER_EQUAL, 60, "At least 60% favor in the Tai Bwo Wannai Cleanup minigame"));
+		req.add(new VarbitRequirement(907, Operation.GREATER_EQUAL, 60, "At least 60% favor in the Tai Bwo Wannai Cleanup minigame", false));
 		return req;
 	}
 

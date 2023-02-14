@@ -144,16 +144,28 @@ public class AllNeededItems extends ComplexStateQuestHelper
 			if (type == QuestDetails.Type.P2P || type == QuestDetails.Type.F2P)
 			{
 				refinedList(qhQuest.getName(), questsReq, reqs);
-				refinedList(qhQuest.getName(), questsRec, reqs);
 			}
 			else if (type == QuestDetails.Type.MINIQUEST)
 			{
 				refinedList(qhQuest.getName(), miniquestsReq, reqs);
-				refinedList(qhQuest.getName(), miniquestsRec, reqs);
 			}
 			else if (type == QuestDetails.Type.ACHIEVEMENT_DIARY)
 			{
 				refinedList(qhQuest.getName(), diariesReq, reqs);
+			}
+		});
+		questHelperPlugin.itemRecommended.forEach((qhQuest, reqs) -> {
+			QuestDetails.Type type = qhQuest.getQuestType();
+			if (type == QuestDetails.Type.P2P || type == QuestDetails.Type.F2P)
+			{
+				refinedList(qhQuest.getName(), questsRec, reqs);
+			}
+			else if (type == QuestDetails.Type.MINIQUEST)
+			{
+				refinedList(qhQuest.getName(), miniquestsRec, reqs);
+			}
+			else if (type == QuestDetails.Type.ACHIEVEMENT_DIARY)
+			{
 				refinedList(qhQuest.getName(), diariesRec, reqs);
 			}
 		});

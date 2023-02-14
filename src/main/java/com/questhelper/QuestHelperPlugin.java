@@ -315,9 +315,7 @@ public class QuestHelperPlugin extends Plugin
 
 		clientThread.invokeLater(() -> {
 			quests.forEach((name, questHelper) -> {
-				eventBus.register(questHelper);
 				questHelper.setupRequirements();
-				eventBus.unregister(questHelper);
 			});
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
@@ -950,7 +948,6 @@ public class QuestHelperPlugin extends Plugin
 		clientThread.invokeLater(() -> {
 			if (!questHelper.isCompleted())
 			{
-
 				eventBus.register(questHelper);
 				questHelper.startUp(config);
 				backgroundHelpers.put(questHelperName, questHelper);

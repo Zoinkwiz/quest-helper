@@ -70,6 +70,25 @@ public class VarbitRequirement extends AbstractRequirement
 	}
 
 	/**
+	 * Check if the player's varbit value meets the required level using the given
+	 * {@link Operation}.
+	 *
+	 * @param varbitID             the {@link Varbits} id to use
+	 * @param operation            the {@link Operation} to check with
+	 * @param requiredValue        the required varbit value to pass this requirement
+	 * @param displayText          the display text
+	 * @param shouldCountForFilter if the requirement should count for quest filtering
+	 */
+	public VarbitRequirement(int varbitID, Operation operation, int requiredValue, String displayText, boolean shouldCountForFilter)
+	{
+		this.varbitID = varbitID;
+		this.operation = operation;
+		this.requiredValue = requiredValue;
+		this.displayText = displayText;
+		this.shouldCountForFilter = shouldCountForFilter;
+	}
+
+	/**
 	 * Check if a specified varbit value is exactly the supplied value.
 	 *
 	 * @param varbitID the varbit id

@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -270,10 +271,9 @@ public class HazeelCult extends BasicQuestHelper
 			"Go upstairs in the house.", key);
 		climbLadderWithKey = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2573, 3271, 1),
 			"Knock the wall to enter the hidden room, then climb up the ladder.", key);
-		searchChestForScroll = new ObjectStep(this, ObjectID.CHEST_2856, new WorldPoint(2571, 3269, 2),
+		searchChestForScroll = new ObjectStep(this, NullObjectID.NULL_46903, new WorldPoint(2571, 3269, 2),
 			"Open the chest.", key.highlighted());
 		searchChestForScroll.addIcon(ItemID.CHEST_KEY_2404);
-		((ObjectStep) searchChestForScroll).addAlternateObjects(ObjectID.CHEST_2857);
 		goF2ToF1WithScroll = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2573, 3271, 2),
 			"Return to Almone with the scroll.", hazeelScroll);
 		goF1ToF0WithScroll = new ObjectStep(this, ObjectID.STAIRCASE_15648, new WorldPoint(2569, 3269, 1),

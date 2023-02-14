@@ -189,7 +189,7 @@ public class KourendHard extends ComplexStateQuestHelper
 			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS), -1).isNotConsumed();
 		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.RADAS_BLESSING_1,
 			ItemID.RADAS_BLESSING_2), -1).showConditioned(notWoodcuttingGuild).isNotConsumed();
-		skillsNecklace = new ItemRequirement("Skills neckalce", ItemCollections.SKILLS_NECKLACES, -1).isNotConsumed();
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES, -1).isNotConsumed();
 		shayzienHelmet = new ItemRequirement("Shayzien Helmet (5)", ItemID.SHAYZIEN_HELM_5)
 			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 		shayzienBody = new ItemRequirement("Shayzien Body (5)", ItemID.SHAYZIEN_BODY_5)

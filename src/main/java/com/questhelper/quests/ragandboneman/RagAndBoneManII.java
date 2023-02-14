@@ -438,7 +438,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 
 		killJackal = new NpcStep(this, NpcID.JACKAL, new WorldPoint(3400, 2997, 0),
 			"Kill Jackals north of Nardah.", true);
-		killSnake = new NpcStep(this, NpcID.DESERT_SNAKE, new WorldPoint(3400, 3035, 0),
+		killSnake = new NpcStep(this, NpcID.SNAKE_3544, new WorldPoint(3400, 3035, 0),
 			"Kill desert snakes north of Nardah.", true);
 		killLizard = new NpcStep(this, NpcID.LIZARD, new WorldPoint(3439, 3036, 0),
 			"Kill the giant lizards north of Nardah.", true, iceCooler);

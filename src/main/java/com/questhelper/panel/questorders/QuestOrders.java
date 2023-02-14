@@ -178,6 +178,7 @@ public class QuestOrders
 		QuestHelperQuest.ENAKHRAS_LAMENT,
 		QuestHelperQuest.EADGARS_RUSE,
 		QuestHelperQuest.MY_ARMS_BIG_ADVENTURE,
+		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.RAG_AND_BONE_MAN_II,
 		QuestHelperQuest.RUM_DEAL,
 		QuestHelperQuest.CABIN_FEVER,
@@ -237,19 +238,23 @@ public class QuestOrders
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.MONKEY_MADNESS_II,
-		// Into the Tombs (Miniquest) - Placeholder for later addition.
+		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
+		QuestHelperQuest.THE_SECRETS_OF_THE_NORTH,
+		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
-		// Remaining section is unordered as not part of list
+
+		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.THE_MAGE_ARENA,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
+		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition. (Miniquest)
 		QuestHelperQuest.ARDOUGNE_HARD,
 		QuestHelperQuest.ARDOUGNE_ELITE,
 		QuestHelperQuest.DESERT_HARD,
@@ -470,6 +475,7 @@ public class QuestOrders
 		QuestHelperQuest.FREMENNIK_MEDIUM,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
+		QuestHelperQuest.THE_SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 
@@ -480,6 +486,10 @@ public class QuestOrders
 		//QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE - Placeholder for later addition.
 		//QuestHelperQuest.BALLOON_TRANSPORT_VARROCK - Placeholder for later addition.
 		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
+		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
+		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition. (Miniquest)
+		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
+		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,
@@ -678,12 +688,12 @@ public class QuestOrders
 		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
-		//QuestHelperQuest.THE_FROZEN_DOOR - Placeholder for future addition.
 		QuestHelperQuest.LAND_OF_THE_GOBLINS,
-		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.TEMPLE_OF_THE_EYE,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.SLEEPING_GIANTS,
+		QuestHelperQuest.THE_GARDEN_OF_DEATH,
+		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for future addition
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,
@@ -698,7 +708,11 @@ public class QuestOrders
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
-		QuestHelperQuest.DADDYS_HOME
+		QuestHelperQuest.DADDYS_HOME,
+		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
+		QuestHelperQuest.HOPESPEARS_WILL,
+		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
+		QuestHelperQuest.THE_SECRETS_OF_THE_NORTH
 	);
 
 	public static String normalizeQuestName(String questName)

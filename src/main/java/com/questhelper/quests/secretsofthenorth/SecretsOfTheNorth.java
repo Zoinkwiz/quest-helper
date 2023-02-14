@@ -417,7 +417,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 
 		downStaircaseToKhaz = new ObjectStep(this, ObjectID.STAIRCASE_46705, "Climb down the staircase.");
 		speakToBarman = new NpcStep(this, NpcID.KHAZARD_BARMAN, new WorldPoint(2566, 3140, 0),
-			"Head to the Fight Arena Bar and talk to th Khazard Barman.", coins, combatGear);
+			"Head to the Fight Arena Bar and talk to the Khazard Barman.", coins, combatGear);
 		speakToBarman.addDialogStep("Do you know anyone called Evelot?");
 		inspectBarrel = new ObjectStep(this, 46873, new WorldPoint(2568, 3152, 0),
 			"Inspect the barrels outside the Fight Arena Bar entrance.",  combatGear);

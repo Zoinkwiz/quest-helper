@@ -42,6 +42,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -597,6 +598,12 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 64, false));
 		req.add(new SkillRequirement(Skill.HUNTER, 56, false));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
 	}
 
 	@Override

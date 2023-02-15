@@ -2,7 +2,7 @@
 charset = utf-8
 end_of_line = lf
 indent_size = 4
-indent_style = space
+indent_style = tab
 insert_final_newline = true
 max_line_length = 120
 tab_width = 4
@@ -324,20 +324,6 @@ ij_markdown_min_lines_around_header = 1
 ij_markdown_min_lines_between_paragraphs = 1
 ij_markdown_wrap_text_if_long = true
 ij_markdown_wrap_text_inside_blockquotes = true
-
-[{*.pb,*.textproto}]
-indent_size = 2
-tab_width = 2
-ij_continuation_indent_size = 4
-ij_prototext_keep_blank_lines_in_code = 2
-ij_prototext_keep_indents_on_empty_lines = false
-ij_prototext_keep_line_breaks = true
-ij_prototext_space_after_colon = true
-ij_prototext_space_after_comma = true
-ij_prototext_space_before_colon = false
-ij_prototext_space_before_comma = false
-ij_prototext_spaces_within_braces = true
-ij_prototext_spaces_within_brackets = false
 
 [{*.properties,spring.handlers,spring.schemas}]
 ij_properties_align_group_field_declarations = false

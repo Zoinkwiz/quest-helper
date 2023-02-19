@@ -29,21 +29,35 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
-import lombok.Setter;
-import net.runelite.api.Point;
-import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.overlay.OverlayUtil;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import lombok.Setter;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GroundObjectDespawned;
+import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class ObjectStep extends DetailedQuestStep
 {
@@ -69,8 +83,7 @@ public class ObjectStep extends DetailedQuestStep
 		this.showAllInArea = false;
 	}
 
-	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, boolean showAllInArea,
-					  Requirement... requirements)
+	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, boolean showAllInArea, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
 		this.showAllInArea = showAllInArea;
@@ -289,11 +302,23 @@ public class ObjectStep extends DetailedQuestStep
 				{
 					closestObject = tileObject;
 				}
+
 				Color configColor = getQuestHelper().getConfig().targetOverlayColor();
-				Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 20);
-				OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition, fillColor,
-					getQuestHelper().getConfig().targetOverlayColor().darker(),
-					getQuestHelper().getConfig().targetOverlayColor());
+
+				switch (questHelper.getConfig().highlightStyleObjects())
+				{
+					case CLICK_BOX:
+						Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 20);
+						OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition, fillColor,
+							questHelper.getConfig().targetOverlayColor().darker(),
+							questHelper.getConfig().targetOverlayColor());
+						break;
+					case OUTLINE:
+						modelOutlineRenderer.drawOutline(tileObject, questHelper.getConfig().outlineThickness(), configColor, questHelper.getConfig().outlineFeathering());
+						break;
+					default:
+				}
+
 			}
 		}
 
@@ -303,7 +328,7 @@ public class ObjectStep extends DetailedQuestStep
 			if (clickbox != null && !inCutscene)
 			{
 				Rectangle2D boundingBox = clickbox.getBounds2D();
-				graphics.drawImage(icon, (int) boundingBox.getCenterX() - 15,  (int) boundingBox.getCenterY() - 10,
+				graphics.drawImage(icon, (int) boundingBox.getCenterX() - 15, (int) boundingBox.getCenterY() - 10,
 					null);
 			}
 		}

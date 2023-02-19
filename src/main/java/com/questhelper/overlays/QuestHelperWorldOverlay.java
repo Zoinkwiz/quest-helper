@@ -25,6 +25,7 @@
  */
 package com.questhelper.overlays;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -59,7 +60,11 @@ public class QuestHelperWorldOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.getConfig().showSymbolOverlay())
+		boolean noOverlaysDrawn = !plugin.getConfig().showSymbolOverlay()
+			&& plugin.getConfig().highlightStyleGroundItems() == QuestHelperConfig.GroundItemHighlightStyle.NONE
+			&& plugin.getConfig().highlightStyleNpcs() == QuestHelperConfig.NpcHighlightStyle.NONE
+			&& plugin.getConfig().highlightStyleObjects() == QuestHelperConfig.ObjectHighlightStyle.NONE;
+		if (noOverlaysDrawn)
 		{
 			return null;
 		}

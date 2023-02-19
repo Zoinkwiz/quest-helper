@@ -32,13 +32,14 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperWorldMapPoint;
 import com.questhelper.QuestTile;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.overlay.WorldLines;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -72,6 +73,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 
 public class DetailedQuestStep extends QuestStep
 {
@@ -121,6 +124,7 @@ public class DetailedQuestStep extends QuestStep
 	public boolean hideRequirements;
 	public boolean considerBankForItemHighlight;
 	public int iconToUseForNeededItems = -1;
+
 
 	public DetailedQuestStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
@@ -379,7 +383,10 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		if (hideRequirements) return;
+		if (hideRequirements)
+		{
+			return;
+		}
 		renderInventory(graphics);
 		if (!hideMinimapLines)
 		{
@@ -496,20 +503,42 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
+		Color baseColor = questHelper.getConfig().targetOverlayColor();
+
 		for (Widget item : inventoryWidget.getDynamicChildren())
 		{
 			for (Requirement requirement : requirements)
 			{
 				if (isValidRequirementForRenderInInventory(requirement, item))
 				{
-					Rectangle slotBounds = item.getBounds();
-					int red = getQuestHelper().getConfig().targetOverlayColor().getRed();
-					int green = getQuestHelper().getConfig().targetOverlayColor().getGreen();
-					int blue = getQuestHelper().getConfig().targetOverlayColor().getBlue();
-					graphics.setColor(new Color(red, green, blue, 65));
-					graphics.fill(slotBounds);
+					highlightInventoryItem(item, baseColor, graphics);
 				}
 			}
+		}
+	}
+
+	private void highlightInventoryItem(Widget item, Color color, Graphics2D graphics)
+	{
+		Rectangle slotBounds = item.getBounds();
+		switch (questHelper.getConfig().highlightStyleInventoryItems())
+		{
+			case SQUARE:
+				graphics.setColor(ColorUtil.colorWithAlpha(color, 65));
+				graphics.fill(slotBounds);
+				graphics.setColor(color);
+				graphics.draw(slotBounds);
+				break;
+			case OUTLINE:
+				BufferedImage outlined = itemManager.getItemOutline(item.getItemId(), 1, color);
+				graphics.drawImage(outlined, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
+				break;
+			case FILLED_OUTLINE:
+				BufferedImage outline = itemManager.getItemOutline(item.getItemId(), 1, color);
+				graphics.drawImage(outline, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
+				Image image = ImageUtil.fillImage(itemManager.getImage(item.getItemId(), 1, false), ColorUtil.colorWithAlpha(color, 65));
+				graphics.drawImage(image, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
+				break;
+			default:
 		}
 	}
 
@@ -561,7 +590,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 		Tile[][] squareOfTiles = client.getScene().getTiles()[client.getPlane()];
 
-		// Reduce the two dimensional array into a single list for processing.
+		// Reduce the two-dimensional array into a single list for processing.
 		List<Tile> tiles = Stream.of(squareOfTiles)
 			.flatMap(Arrays::stream)
 			.filter(Objects::nonNull)
@@ -654,6 +683,8 @@ public class DetailedQuestStep extends QuestStep
 				return;
 			}
 
+			Color highlightColor = questHelper.getConfig().targetOverlayColor();
+
 			for (Requirement requirement : requirements)
 			{
 				if (isReqValidForHighlighting(requirement, ids))
@@ -669,11 +700,31 @@ public class DetailedQuestStep extends QuestStep
 					}
 					else
 					{
-						OverlayUtil.renderPolygon(graphics, poly, questHelper.getConfig().targetOverlayColor());
+						highlightGroundItem(tile, highlightColor, graphics, poly);
 					}
 					return;
 				}
 			}
+		}
+	}
+
+	private void highlightGroundItem(Tile tile, Color color, Graphics2D graphics, Polygon poly)
+	{
+		switch (questHelper.getConfig().highlightStyleGroundItems())
+		{
+			case CLICK_BOX:
+				break;
+			case OUTLINE:
+				modelOutlineRenderer.drawOutline(
+					tile.getItemLayer(),
+					questHelper.getConfig().outlineThickness(),
+					color,
+					questHelper.getConfig().outlineFeathering());
+				break;
+			case TILE:
+				OverlayUtil.renderPolygon(graphics, poly, color);
+				break;
+			default:
 		}
 	}
 
@@ -684,7 +735,7 @@ public class DetailedQuestStep extends QuestStep
 			&& requirementContainsID((ItemRequirement) requirement, ids)
 			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
 			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
-			    ( considerBankForItemHighlight &&
-				 !((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
+			(considerBankForItemHighlight &&
+				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
 	}
 }

@@ -175,6 +175,7 @@ public enum ExternalQuestResources {
 	THE_FREMENNIK_EXILES("https://oldschool.runescape.wiki/w/The_Fremennik_Exiles"),
 	A_PORCINE_OF_INTEREST("https://oldschool.runescape.wiki/w/A_Porcine_of_Interest"),
 	THE_GARDEN_OF_DEATH("https://oldschool.runescape.wiki/w/The_Garden_of_Death"),
+	SECRETS_OF_THE_NORTH("https://oldschool.runescape.wiki/w/Secrets_of_the_North"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

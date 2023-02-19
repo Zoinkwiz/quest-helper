@@ -220,7 +220,48 @@ public class WaterfallQuest extends BasicQuestHelper
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_1989, new WorldPoint(2520, 3427, 1), "Search the south east bookcase.");
 		readBook = new DetailedQuestStep(this, "Read the book.", book);
 
-		enterGnomeDungeon = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0), "Go to the centre of the Tree Gnome Village and go down the ladder at the entrance.");
+		enterGnomeDungeon = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0), 
+			"Go to the centre of the Tree Gnome Village and go down the ladder at the entrance.");
+		((ObjectStep) enterGnomeDungeon).setLinePoints(Arrays.asList(
+			new WorldPoint(2505, 3190, 0),
+			new WorldPoint(2512, 3190, 0),
+			new WorldPoint(2512, 3188, 0),
+			new WorldPoint(2532, 3188, 0),
+			new WorldPoint(2532, 3182, 0),
+			new WorldPoint(2523, 3181, 0),
+			new WorldPoint(2523, 3185, 0),
+			new WorldPoint(2521, 3185, 0),
+			new WorldPoint(2520, 3179, 0),
+			new WorldPoint(2514, 3179, 0),
+			new WorldPoint(2514, 3177, 0),
+			new WorldPoint(2527, 3177, 0),
+			new WorldPoint(2527, 3179, 0),
+			new WorldPoint(2529, 3179, 0),
+			new WorldPoint(2529, 3177, 0),
+			new WorldPoint(2531, 3177, 0),
+			new WorldPoint(2531, 3179, 0),
+			new WorldPoint(2533, 3179, 0),
+			new WorldPoint(2533, 3177, 0),
+			new WorldPoint(2544, 3177, 0),
+			new WorldPoint(2544, 3174, 0),
+			new WorldPoint(2549, 3174, 0),
+			new WorldPoint(2549, 3165, 0),
+			new WorldPoint(2545, 3165, 0),
+			new WorldPoint(2545, 3159, 0),
+			new WorldPoint(2550, 3159, 0),
+			new WorldPoint(2550, 3156, 0),
+			new WorldPoint(2548, 3156, 0),
+			new WorldPoint(2548, 3145, 0),
+			new WorldPoint(2538, 3145, 0),
+			new WorldPoint(2538, 3150, 0),
+			new WorldPoint(2541, 3150, 0),
+			new WorldPoint(2541, 3148, 0),
+			new WorldPoint(2544, 3148, 0),
+			new WorldPoint(2544, 3150, 0),
+			new WorldPoint(2545, 3150, 0),
+			new WorldPoint(2545, 3155, 0),
+			new WorldPoint(2533, 3155, 0)
+			));
 		searchGnomeCrate = new ObjectStep(this, ObjectID.CRATE_1990, new WorldPoint(2548, 9565, 0), "Search the off-coloured crate in the east room.");
 		enterGnomeDoor = new ObjectStep(this, ObjectID.DOOR_1991, new WorldPoint(2515, 9575, 0), "Go through the gate in the west room.", key);
 		talkToGolrie = new NpcStep(this, NpcID.GOLRIE_4183, new WorldPoint(2514, 9580, 0), "Talk to Golrie.");

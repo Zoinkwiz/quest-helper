@@ -27,6 +27,7 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.questhelper.VisibilityHelper;
 import static com.questhelper.overlays.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestVarbits;
@@ -83,6 +84,8 @@ public abstract class QuestStep implements Module
 	@Inject
 	ModelOutlineRenderer modelOutlineRenderer;
 
+	@Inject
+	VisibilityHelper visibilityHelper;
 
 	@Getter
 	protected List<String> text;

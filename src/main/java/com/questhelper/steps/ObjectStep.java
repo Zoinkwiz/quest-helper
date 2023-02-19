@@ -24,6 +24,8 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.QuestHelperConfig;
+import static com.questhelper.QuestHelperConfig.ObjectHighlightStyle.OUTLINE;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -305,20 +307,34 @@ public class ObjectStep extends DetailedQuestStep
 
 				Color configColor = getQuestHelper().getConfig().targetOverlayColor();
 
-				switch (questHelper.getConfig().highlightStyleObjects())
+				QuestHelperConfig.ObjectHighlightStyle highlightStyle = visibilityHelper.isObjectVisible(tileObject)
+					? questHelper.getConfig().highlightStyleObjects()
+					: OUTLINE;
+
+				switch (highlightStyle)
 				{
 					case CLICK_BOX:
 						Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 20);
-						OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition, fillColor,
+						OverlayUtil.renderHoverableArea(
+							graphics,
+							tileObject.getClickbox(),
+							mousePosition,
+							fillColor,
 							questHelper.getConfig().targetOverlayColor().darker(),
-							questHelper.getConfig().targetOverlayColor());
+							questHelper.getConfig().targetOverlayColor()
+						);
 						break;
 					case OUTLINE:
-						modelOutlineRenderer.drawOutline(tileObject, questHelper.getConfig().outlineThickness(), configColor, questHelper.getConfig().outlineFeathering());
+						modelOutlineRenderer.drawOutline(
+							tileObject,
+							questHelper.getConfig().outlineThickness(),
+							configColor,
+							questHelper.getConfig().
+								outlineFeathering()
+						);
 						break;
 					default:
 				}
-
 			}
 		}
 

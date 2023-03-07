@@ -139,28 +139,34 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		notWaterRunes = new VarplayerRequirement(1195, false, 8);
 		notQCEmote = new VarplayerRequirement(1195, false, 9);
 
-    allQuests = new Requirement() {
-        @Override
-        public boolean check(Client client) {
-            boolean allQuestsCompleted = true;
-            for (QuestHelperQuest quest : QuestHelperQuest.values()) {
-                if (quest.getQuestType() == QuestDetails.Type.F2P
-                        || quest.getQuestType() == QuestDetails.Type.P2P) {
-                    if (quest.getState(client) != QuestState.FINISHED) {
-                        allQuestsCompleted = false;
-                        break;
-                    }
-                }
-            }
+		allQuests = new Requirement()
+		{
+			@Override
+			public boolean check(Client client)
+			{
+				boolean allQuestsCompleted = true;
+				for (QuestHelperQuest quest : QuestHelperQuest.values())
+				{
+					if (quest.getQuestType() == QuestDetails.Type.F2P
+						|| quest.getQuestType() == QuestDetails.Type.P2P)
+					{
+						if (quest.getState(client) != QuestState.FINISHED)
+						{
+							allQuestsCompleted = false;
+							break;
+						}
+					}
+				}
 
-            return allQuestsCompleted;
-        }
+				return allQuestsCompleted;
+			}
 
-		    @Nonnull
-		    @Override
-		    public String getDisplayText() {
-		        return "All Quests are Completed";
-		    }
+			@Nonnull
+			@Override
+			public String getDisplayText()
+			{
+				return "All Quests are Completed";
+			}
 		};
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest).isNotConsumed();

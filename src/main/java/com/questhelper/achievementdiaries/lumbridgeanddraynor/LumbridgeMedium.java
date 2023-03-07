@@ -79,10 +79,10 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	// Quests required
 	Requirement animalMagnetism, fairyTaleII, lostCity;
 
-	Requirement notAlKaridRooftop, notGrappleLum, notUpgradeDevice, notWizardFairy, notTPlumb, notCatchSalmon,
+	Requirement notAlKharidRooftop, notGrappleLum, notUpgradeDevice, notWizardFairy, notTPlumb, notCatchSalmon,
 		notCraftCoif, notChopWillow, notPickGardener, notChaeldarTask, notPuroImp, notCraftLava;
 
-	QuestStep claimReward, moveToCowPen, moveToZanarisChaeldar, moveToZanarisPuro, moveToPuro, moveToLavaAltar, alKaridRooftop,
+	QuestStep claimReward, moveToCowPen, moveToZanarisChaeldar, moveToZanarisPuro, moveToPuro, moveToLavaAltar, alKharidRooftop,
 		grappleLum, upgradeDevice, wizardFairy, tpLumb, catchSalmon, craftCoif, chopWillow, pickGardener, chaeldarTask, craftLava;
 
 	NpcStep puroImp;
@@ -91,7 +91,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 
 	ZoneRequirement inPuroPuro, inCowPen, inZanaris, inLavaAltar;
 
-	ConditionalStep alKaridRooftopTask, grappleLumTask, upgradeDeviceTask, wizardFairyTask, tplumbTask, catchSalmonTask,
+	ConditionalStep alKharidRooftopTask, grappleLumTask, upgradeDeviceTask, wizardFairyTask, tplumbTask, catchSalmonTask,
 		craftCoifTask, chopWillowTask, pickGardenerTask, chaeldarTaskTask, puroImpTask, craftLavaTask;
 
 	@Override
@@ -134,8 +134,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		craftCoifTask.addStep(inCowPen, craftCoif);
 		doMedium.addStep(notCraftCoif, craftCoifTask);
 
-		alKaridRooftopTask = new ConditionalStep(this, alKaridRooftop);
-		doMedium.addStep(notAlKaridRooftop, alKaridRooftopTask);
+		alKharidRooftopTask = new ConditionalStep(this, alKharidRooftop);
+		doMedium.addStep(notAlKharidRooftop, alKharidRooftopTask);
 
 		grappleLumTask = new ConditionalStep(this, grappleLum);
 		doMedium.addStep(notGrappleLum, grappleLumTask);
@@ -150,7 +150,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		notAlKaridRooftop = new VarplayerRequirement(1194, false, 13);
+		notAlKharidRooftop = new VarplayerRequirement(1194, false, 13);
 		notGrappleLum = new VarplayerRequirement(1194, false, 14);
 		notUpgradeDevice = new VarplayerRequirement(1194, false, 15);
 		notWizardFairy = new VarplayerRequirement(1194, false, 16);
@@ -211,8 +211,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		alKaridRooftop = new ObjectStep(this, ObjectID.ROUGH_WALL_11633, new WorldPoint(3273, 3195, 0),
-			"Complete the Al Karid Rooftop Course.");
+		alKharidRooftop = new ObjectStep(this, ObjectID.ROUGH_WALL_11633, new WorldPoint(3273, 3195, 0),
+			"Complete the Al Kharid Rooftop Course.");
 
 		grappleLum = new ObjectStep(this, ObjectID.BROKEN_RAFT, new WorldPoint(3252, 3179, 0),
 			"Grapple across the River Lum.", mithGrap.equipped(), crossbow.equipped());
@@ -380,11 +380,11 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		craftACoifSteps.setLockingStep(craftCoifTask);
 		allSteps.add(craftACoifSteps);
 
-		PanelDetails alKaridRooftopCourseSteps = new PanelDetails("Al Karid Rooftop Course",
-			Collections.singletonList(alKaridRooftop), new SkillRequirement(Skill.AGILITY, 20));
-		alKaridRooftopCourseSteps.setDisplayCondition(notAlKaridRooftop);
-		alKaridRooftopCourseSteps.setLockingStep(alKaridRooftopTask);
-		allSteps.add(alKaridRooftopCourseSteps);
+		PanelDetails alKharidRooftopCourseSteps = new PanelDetails("Al Kharid Rooftop Course",
+			Collections.singletonList(alKharidRooftop), new SkillRequirement(Skill.AGILITY, 20));
+		alKharidRooftopCourseSteps.setDisplayCondition(notAlKharidRooftop);
+		alKharidRooftopCourseSteps.setLockingStep(alKharidRooftopTask);
+		allSteps.add(alKharidRooftopCourseSteps);
 
 		PanelDetails grappleRiverLumSteps = new PanelDetails("Grapple River Lum",
 			Collections.singletonList(grappleLum), new SkillRequirement(Skill.AGILITY, 8),

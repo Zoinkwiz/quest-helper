@@ -425,7 +425,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		talkToBrundtBackInRellekka = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
 			"Return to Brundt in Rellekka's longhall.", combatGear, food);
 		talkToBrundtBackInRellekka.addDialogStep("Ask about the Jormungand.");
-		getFremennikShield = new DetailedQuestStep(this, "You can get a fremennik shield from dagganoths in " +
+		getFremennikShield = new DetailedQuestStep(this, "You can get a fremennik shield from dagannoths in " +
 			"Waterbirth Dungeon or Bardur in Waterbirth " +
 			"Dungeon for 150k, or for free with the Ring of Charos(a). You'll need a friend to get there, or a rune " +
 			"thrownaxe and a pet rock.", coins150kOrCharos);

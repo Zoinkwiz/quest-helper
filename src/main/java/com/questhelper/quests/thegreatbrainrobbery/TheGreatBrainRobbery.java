@@ -58,6 +58,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntUnaryOperator;
+
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -269,8 +272,9 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		skullStaples = new ItemRequirement("Skull staple", ItemID.SKULL_STAPLE);
 		anchor = new ItemRequirement("Barrelchest anchor", ItemID.BARRELCHEST_ANCHOR_10888);
 
-		neededJars = bellJars.quantity(3 - client.getVarbitValue(3399));
-		neededStaples = skullStaples.quantity(30 - client.getVarbitValue(3400));
+		IntUnaryOperator varbit = id -> client.getGameState() == GameState.LOGGED_IN ? client.getVarbitValue(id) : 0;
+		neededJars = bellJars.quantity(3 - varbit.applyAsInt(3399));
+		neededStaples = skullStaples.quantity(30 - varbit.applyAsInt(3400));
 	}
 
 	public void setupZones()

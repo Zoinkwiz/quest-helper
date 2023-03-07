@@ -56,6 +56,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -334,38 +335,41 @@ public class TheFremennikIsles extends BasicQuestHelper
 		yakBottom = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824).isNotConsumed();
 		roundShield = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD).isNotConsumed();
 
-		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
+		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			splitLogs8.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-			splitLogs4.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-			yakTop.setTooltip("Kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-			yakBottom.setTooltip("Kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-			roundShield.setTooltip("Get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
-		}
-		else
-		{
-			if (client.getRealSkillLevel(Skill.WOODCUTTING) >= 56)
+			if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
 			{
-				splitLogs8.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-				splitLogs4.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
-				roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
+				splitLogs8.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+				splitLogs4.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+				yakTop.setTooltip("Kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+				yakBottom.setTooltip("Kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+				roundShield.setTooltip("Get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
 			}
 			else
 			{
-				splitLogs8.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
-				splitLogs4.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
-				roundShield.setTooltip("Buy from the GE, or get level 56 Woodcutting");
-			}
+				if (client.getRealSkillLevel(Skill.WOODCUTTING) >= 56)
+				{
+					splitLogs8.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+					splitLogs4.setTooltip("Buy some from the GE, or cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
+					roundShield.setTooltip("Buy from the GE, or get 2 arctic pine logs, a bronze nail, a hammer, and a rope, and make the shield on the woodcutting stump in central Neitiznot");
+				}
+				else
+				{
+					splitLogs8.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
+					splitLogs4.setTooltip("Buy some from the GE, or get level 56 Woodcutting");
+					roundShield.setTooltip("Buy from the GE, or get level 56 Woodcutting");
+				}
 
-			if (client.getRealSkillLevel(Skill.CRAFTING) >= 46)
-			{
-				yakTop.setTooltip("Buy from the GE, or kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-				yakBottom.setTooltip("Buy from the GE, or kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
-			}
-			else
-			{
-				yakBottom.setTooltip("Buy from the GE, or get 46 crafting");
-				yakTop.setTooltip("Buy from the GE, or get 46 crafting");
+				if (client.getRealSkillLevel(Skill.CRAFTING) >= 46)
+				{
+					yakTop.setTooltip("Buy from the GE, or kill yaks for 2 hides, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+					yakBottom.setTooltip("Buy from the GE, or kill yaks for a hide, have Thakkrad next to Mawnis cure them, and use a thread + needle to craft");
+				}
+				else
+				{
+					yakBottom.setTooltip("Buy from the GE, or get 46 crafting");
+					yakTop.setTooltip("Buy from the GE, or get 46 crafting");
+				}
 			}
 		}
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();

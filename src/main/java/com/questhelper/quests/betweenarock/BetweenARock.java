@@ -294,7 +294,7 @@ public class BetweenARock extends BasicQuestHelper
 
 		goBackUpToRolad = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3019, 9850, 0), "Go back up to Rolad.", pages);
 
-		returnToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0), "Talk Rolad again.", pages);
+		returnToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0), "Talk to Rolad again.", pages);
 		returnToRolad.addSubSteps(goBackUpToRolad);
 
 		readEntireBook = new DetailedQuestStep(this, "Read the entire dwarven lore book.", dwarvenLoreHighlight);

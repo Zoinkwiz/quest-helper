@@ -33,7 +33,6 @@ import lombok.Setter;
 import net.runelite.api.widgets.Widget;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.api.widgets.WidgetItem;
 
 public class WidgetStep extends DetailedQuestStep
 {
@@ -70,17 +69,6 @@ public class WidgetStep extends DetailedQuestStep
 				if (tmpWidget != null)
 				{
 					widget = tmpWidget;
-				}
-				else
-				{
-					WidgetItem widgetItem = widget.getWidgetItem(widgetDetail.childChildID);
-					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-						questHelper.getConfig().targetOverlayColor().getGreen(),
-						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
-					graphics.fill(widgetItem.getCanvasBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
-					graphics.draw(widgetItem.getCanvasBounds());
-					continue;
 				}
 			}
 			graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),

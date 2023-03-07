@@ -318,8 +318,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(combatGear, crossbow, mithGrap, rake, strawSeeds.quantity(3), seedDib, ibanStaff,
-			coins.quantity(200000), skavMap, lightSource, smallFishingNet, rawChick, rawSword, yewLog1, yewLog11,
-			fairyAccess, spade);
+			coins.quantity(200000), skavMap, lawRune.quantity(2), waterRune.quantity(2), lightSource, 
+			smallFishingNet, rawChick, rawSword, yewLog1, yewLog11, fairyAccess, spade);
 	}
 
 	@Override

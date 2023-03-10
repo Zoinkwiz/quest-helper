@@ -564,8 +564,6 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 				"Talk to Hazeel for a teleport to Ardougne");
 		finishQuest.addAlternateNpcs(NpcID.HAZEEL_12051);
 		finishQuest.addDialogStep("Yes.");
-
-
 	}
 
 	@Override

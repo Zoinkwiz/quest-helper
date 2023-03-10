@@ -582,13 +582,13 @@ public class OneSmallFavour extends BasicQuestHelper
 				guamHarrTea, guam2Tea, guam2MarrTea, guamMarrTea, guam2HarrTea, guamHarrMarrTea)).highlighted());
 		makeGuthixRest = new DetailedQuestStep(this, "Make Guthix Rest by using a bowl of hot water on an empty tea cup, then using 2 guams, a marrentill and a harralander on it.", emptyCup, hotWaterBowl, guam2, marrentill, harralander);
 		makeGuthixRest.addSubSteps(useBowlOnCup, useHerbsOnCup);
-		talkToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.", guthixRest);
+		talkToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Right-click talk to Captain Bleemadge on White Wolf Mountain.", guthixRest);
 		((NpcStep) talkToBleemadge).addAlternateNpcs(NpcID.CAPTAIN_BLEEMADGE_10461, NpcID.CAPTAIN_BLEEMADGE_10462,
 			NpcID.CAPTAIN_BLEEMADGE_10463, NpcID.CAPTAIN_BLEEMADGE_10464, NpcID.CAPTAIN_BLEEMADGE_10465,
 			NpcID.CAPTAIN_BLEEMADGE_10466);
 		talkToBleemadge.addDialogStep("I have a special tea here for you from Sanfew!");
 
-		talkToBleemadgeNoTea = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.");
+		talkToBleemadgeNoTea = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Right-click talk to Captain Bleemadge on White Wolf Mountain.");
 		((NpcStep) talkToBleemadgeNoTea).addAlternateNpcs(NpcID.CAPTAIN_BLEEMADGE_10461, NpcID.CAPTAIN_BLEEMADGE_10462,
 			NpcID.CAPTAIN_BLEEMADGE_10463, NpcID.CAPTAIN_BLEEMADGE_10464, NpcID.CAPTAIN_BLEEMADGE_10465,
 			NpcID.CAPTAIN_BLEEMADGE_10466);
@@ -731,7 +731,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2804, 3432, 0), "Talk to Arhein in Catherby.", weatherReport);
 		returnToArhein.addDialogStep("I have the weather report for you.");
 
-		returnToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Talk to Captain Bleemadge on White Wolf Mountain.");
+		returnToBleemadge = new NpcStep(this, NpcID.CAPTAIN_BLEEMADGE, new WorldPoint(2847, 3498, 0), "Right-click talk to Captain Bleemadge on White Wolf Mountain.");
 		returnToBleemadge.addDialogStep("Hey there, did you get your T.R.A.S.H?");
 		((NpcStep) returnToBleemadge).addAlternateNpcs(NpcID.CAPTAIN_BLEEMADGE_10461, NpcID.CAPTAIN_BLEEMADGE_10462,
 			NpcID.CAPTAIN_BLEEMADGE_10463, NpcID.CAPTAIN_BLEEMADGE_10464, NpcID.CAPTAIN_BLEEMADGE_10465,

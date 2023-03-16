@@ -240,7 +240,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 		runiteGolem = new NpcStep(this, NpcID.RUNITE_GOLEM, new WorldPoint(3189, 3938, 0),
 			"Kill and mine the Runite Golems in the Resource Area.", true, combatGear, food,
 			pickaxe, coal.quantity(16), hammer);
-		runiteGolem.addAlternateNpcs(NpcID.ROCKS_6601);
+		runiteGolem.addAlternateNpcs(NpcID.RUNITE_ROCKS);
 		smeltBar = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
 			"Smelt the ore into runite bars.", hammer, runeOre.quantity(2), coal.quantity(16), hammer);
 		runeScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),

@@ -214,7 +214,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 			"Browse Thessalia's store.");
 		aubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0),
 			"Teleport to the essence mine via Aubury.");
-		iron = new ObjectStep(this, ObjectID.ROCKS_11365, new WorldPoint(3288, 3370, 0),
+		iron = new ObjectStep(this, ObjectID.IRON_ROCKS_11365, new WorldPoint(3288, 3370, 0),
 			"Mine iron south-east of Varrock.", pickaxe);
 		plank = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0),
 			"Make a regular plank at the sawmill.", log);

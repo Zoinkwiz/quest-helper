@@ -173,7 +173,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 			"Pick 5 bananas from the banana plantation.");
 		((ObjectStep) pickBananas).addAlternateObjects(ObjectID.BANANA_TREE_2074, ObjectID.BANANA_TREE_2075,
 			ObjectID.BANANA_TREE_2076, ObjectID.BANANA_TREE_2077);
-		mineGold = new ObjectStep(this, ObjectID.ROCKS_11371, new WorldPoint(2732, 3223, 0),
+		mineGold = new ObjectStep(this, ObjectID.GOLD_ROCKS_11371, new WorldPoint(2732, 3223, 0),
 			"Mine a gold rock north west of Brimhaven.", pickaxe);
 		goSarim = new NpcStep(this, NpcID.CUSTOMS_OFFICER, new WorldPoint(2954, 3147, 0),
 			"Travel to Port Sarim from Musa Point with the Customs officer.", coins.quantity(30));

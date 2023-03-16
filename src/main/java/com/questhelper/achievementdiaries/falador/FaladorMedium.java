@@ -338,7 +338,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		//Mine Gold in Crafting Guild
 		goToCraftingGuild = new ObjectStep(this, ObjectID.GUILD_DOOR_14910, new WorldPoint(2933, 3289, 0),
 			"Go to the Crafting Guild west of Falador. You will need to equip a brown apron to enter.", brownApron, pickaxe);
-		mineGold = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(2938, 3280, 0),
+		mineGold = new ObjectStep(this, ObjectID.GOLD_ROCKS, new WorldPoint(2938, 3280, 0),
 			"Mine a gold ore.", pickaxe);
 
 		//Dwarven Mines Shortcut

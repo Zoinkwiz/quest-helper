@@ -224,7 +224,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		enterAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3105, 3556, 0),
 			"Speak with the Mage of Zamorak in the Wilderness to teleport to the Abyss.");
 
-		ironOre = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(3104, 3570, 0),
+		ironOre = new ObjectStep(this, ObjectID.IRON_ROCKS, new WorldPoint(3104, 3570, 0),
 			"Mine iron in the Wilderness.", pickaxe);
 
 		spiderEggs = new ItemStep(this, new WorldPoint(3122, 9953, 0), "Pickup 5 red spider eggs in the Edgeville " +

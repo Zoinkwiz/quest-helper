@@ -210,9 +210,9 @@ public class WesternEasy extends ComplexStateQuestHelper
 		swampToadCollect = new ItemStep(this, new WorldPoint(2422, 3507, 0),
 			"Collect a swamp toad at the Gnome Stronghold.", swampToad.highlighted());
 
-		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(2338, 3640, 0),
+		mineIron = new ObjectStep(this, ObjectID.IRON_ROCKS, new WorldPoint(2338, 3640, 0),
 			"Mine some iron ore near Piscatoris.", true, pickaxe);
-		mineIron.addAlternateObjects(ObjectID.ROCKS_11365);
+		mineIron.addAlternateObjects(ObjectID.IRON_ROCKS_11365);
 
 		copperLongtail = new ObjectStep(this, ObjectID.BIRD_SNARE_9379, new WorldPoint(2341, 3598, 0),
 			"Catch a copper longtail.", true, birdSnare.highlighted());

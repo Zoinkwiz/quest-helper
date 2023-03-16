@@ -263,7 +263,7 @@ public class FamilyCrest extends BasicQuestHelper
 
 		followPathAroundEast = new DetailedQuestStep(this, new WorldPoint(2721, 9700, 0), "Follow the dungeon around to the east.");
 
-		mineGold = new ObjectStep(this, ObjectID.ROCKS_11371, new WorldPoint(2732, 9680, 0),
+		mineGold = new ObjectStep(this, ObjectID.GOLD_ROCKS_11371, new WorldPoint(2732, 9680, 0),
 				"Mine 2 perfect gold in the east room.",true, pickaxe, gold2);
 		((ObjectStep) mineGold).setMaxObjectDistance(5000);
 

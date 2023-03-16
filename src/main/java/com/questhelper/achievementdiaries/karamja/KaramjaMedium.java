@@ -336,9 +336,9 @@ public class KaramjaMedium extends BasicQuestHelper
 		charterFromShipyard = new NpcStep(this, NpcID.TRADER_CREWMEMBER_9349, new WorldPoint(3001, 3032, 0),
 			"Travel with the charter ship in the Shipyard. Musa Point is the cheapest destination.", coins.quantity(200));
 		charterFromShipyard.addDialogSteps("Glough sent me.", "Ka.", "Lu.", "Min.");
-		mineRedTopaz = new ObjectStep(this, ObjectID.ROCKS_11380, new WorldPoint(2823, 2999, 0),
+		mineRedTopaz = new ObjectStep(this, ObjectID.GEM_ROCKS, new WorldPoint(2823, 2999, 0),
 			"Mine gem rocks until you get a red topaz.", pickaxe);
-		((ObjectStep) mineRedTopaz).addAlternateObjects(ObjectID.ROCKS_11381);
+		((ObjectStep) mineRedTopaz).addAlternateObjects(ObjectID.GEM_ROCKS_11381);
 		enterCrandor = new ObjectStep(this, ObjectID.CLIMBING_ROPE_25213, new WorldPoint(2833, 9657, 0),
 			"Climb the rope to Crandor Isle.");
 

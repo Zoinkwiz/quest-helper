@@ -278,7 +278,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 			"Open the trapdoor to enter the underground of the Grand Tree.", pickaxe);
 		moveToStrongBase2.addDialogStep("Climb Down.");
 		moveToStrongBase.addSubSteps(moveToStrongBase2);
-		mineGold = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(2490, 9916, 0),
+		mineGold = new ObjectStep(this, ObjectID.GOLD_ROCKS, new WorldPoint(2490, 9916, 0),
 			"Mine some gold ore underneath the Grand Tree.", true, pickaxe);
 
 		moveToBrimstailCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2403, 3419, 0),

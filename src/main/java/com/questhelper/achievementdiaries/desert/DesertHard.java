@@ -236,7 +236,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		ancientMagicks = new ObjectStep(this, ObjectID.ALTAR_6552, new WorldPoint(3233, 9311, 0),
 			"Pray at the altar.");
 
-		granite = new ObjectStep(this, ObjectID.ROCKS_11387, new WorldPoint(3167, 2911, 0),
+		granite = new ObjectStep(this, ObjectID.GRANITE_ROCKS, new WorldPoint(3167, 2911, 0),
 			"Mine granite in the mine south of the Bandit Camp.", pickaxe);
 
 		moveToMayor = new ObjectStep(this, ObjectID.STAIRCASE_10525, new WorldPoint(3447, 2912, 0),

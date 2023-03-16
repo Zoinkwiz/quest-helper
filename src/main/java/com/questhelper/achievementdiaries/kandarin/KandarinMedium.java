@@ -252,7 +252,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			"Enter the Ranging Guild.");
 		stealHemen = new ObjectStep(this, ObjectID.CHEST_11742, new WorldPoint(2639, 3424, 0),
 			"Steal from the chest in Hemenster.", lockpick);
-		mineCoal = new ObjectStep(this, ObjectID.ROCKS_11366, new WorldPoint(2590, 3476, 0),
+		mineCoal = new ObjectStep(this, ObjectID.COAL_ROCKS_11366, new WorldPoint(2590, 3476, 0),
 			"Mine coal near the Coal Trucks.", pickaxe);
 		mineCoal.addIcon(ItemID.RUNE_PICKAXE);
 		moveToWaterfall = new ObjectStep(this, ObjectID.DOOR_2010, new WorldPoint(2511, 3464, 0),

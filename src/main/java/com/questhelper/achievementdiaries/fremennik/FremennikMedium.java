@@ -316,7 +316,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 			"Catch a Snowy Knight at the Fremennik Hunter Area.", butterFlyNet.equipped());
 		stealFish = new ObjectStep(this, ObjectID.FISH_STALL, new WorldPoint(2648, 3677, 0),
 			"Steal from the Rellekka fish stall.");
-		mineCoal = new ObjectStep(this, ObjectID.ROCKS_11367, new WorldPoint(2683, 3702, 0),
+		mineCoal = new ObjectStep(this, ObjectID.COAL_ROCKS_11367, new WorldPoint(2683, 3702, 0),
 			"Mine some coal.", pickaxe);
 		mineCoal.addIcon(ItemID.RUNE_PICKAXE);
 		moveToCave = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
@@ -329,7 +329,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		moveToArzinian = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF_4891, new WorldPoint(2824, 10168, 0),
 			"Speak with Dondakan to enter the mine.", goldHelm.equipped(), pickaxe);
 		moveToArzinian.addDialogStep("Can you shoot me into the rock again?");
-		mineGold = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(2614, 4968, 0),
+		mineGold = new ObjectStep(this, ObjectID.GOLD_ROCKS, new WorldPoint(2614, 4968, 0),
 			"Mine the nearby gold. Remove helmet to escape area.", pickaxe);
 		mineGold.addIcon(ItemID.RUNE_PICKAXE);
 		moveToWaterbirth = new NpcStep(this, NpcID.JARVALD, new WorldPoint(2620, 3686, 0),

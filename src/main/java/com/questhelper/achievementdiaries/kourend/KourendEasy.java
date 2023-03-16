@@ -203,9 +203,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		// Mine some iron
-		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(1275, 3817, 0),
+		mineIron = new ObjectStep(this, ObjectID.IRON_ROCKS, new WorldPoint(1275, 3817, 0),
 			"Mine some iron ore at the Mount Karuulm mine.", true, pickaxe);
-		mineIron.addAlternateObjects(ObjectID.ROCKS_11365);
+		mineIron.addAlternateObjects(ObjectID.IRON_ROCKS_11365);
 
 		// Kill a sand crab
 		sandCrab = new NpcStep(this, NpcID.SAND_CRAB, new WorldPoint(1739, 3468, 0),

@@ -227,7 +227,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 			"Fill a bucket at the Rellekka well.", bucket);
 		fillBucket.addIcon(ItemID.BUCKET);
 
-		mineSilver = new ObjectStep(this, ObjectID.ROCKS_11368, new WorldPoint(2685, 3702, 0),
+		mineSilver = new ObjectStep(this, ObjectID.SILVER_ROCKS, new WorldPoint(2685, 3702, 0),
 			"Mine a silver ore in Rellekka.", pickaxe, fremennikTrials);
 		mineSilver.addIcon(ItemID.RUNE_PICKAXE);
 		smeltSilver = new ObjectStep(this, ObjectID.FURNACE_4304, new WorldPoint(2617, 3667, 0),

@@ -210,7 +210,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 				"successfully get water.", true, knife, emptyWaterskin);
 		((ObjectStep) cutCactus).setMaxObjectDistance(5000);
 
-		fiveClay = new ObjectStep(this, ObjectID.ROCKS_11362, new WorldPoint(3420, 3163, 0),
+		fiveClay = new ObjectStep(this, ObjectID.CLAY_ROCKS, new WorldPoint(3420, 3163, 0),
 			"Mine five clay in the north east of the desert.");
 
 		nardahHerb = new NpcStep(this, NpcID.ZAHUR, new WorldPoint(3425, 2906, 0),

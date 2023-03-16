@@ -268,7 +268,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),
 			oakLogs.highlighted());
 
-		mineIron = new ObjectStep(this, ObjectID.ROCKS_11364, new WorldPoint(3303, 3284, 0),
+		mineIron = new ObjectStep(this, ObjectID.IRON_ROCKS, new WorldPoint(3303, 3284, 0),
 			"Mine some iron ore at the Al-Kharid mine.", pickaxe);
 
 		fishAnchovies = new NpcStep(this, NpcID.FISHING_SPOT_1528, new WorldPoint(3267, 3148, 0),

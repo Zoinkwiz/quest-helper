@@ -237,7 +237,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		wildyGWBloodveld = new NpcStep(this, NpcID.BLOODVELD_3138, new WorldPoint(3050, 10131, 0),
 			"Kill a Bloodveld in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
 
-		mineMith = new ObjectStep(this, ObjectID.ROCKS_11373, new WorldPoint(3057, 3944, 0),
+		mineMith = new ObjectStep(this, ObjectID.MITHRIL_ROCKS_11373, new WorldPoint(3057, 3944, 0),
 			"Mine mithril in the Wilderness.", pickaxe);
 
 		wildyAgi = new ObjectStep(this, ObjectID.DOOR_23555, new WorldPoint(2998, 3917, 0),
@@ -259,7 +259,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			coins.quantity(7500), hammer, barsOrPick, goldHelmet);
 		smeltGoldOre = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
 			"Smelt the gold ore into gold bars.", hammer, goldOre.quantity(3));
-		mineGoldOre = new ObjectStep(this, ObjectID.ROCKS_11370, new WorldPoint(3184, 3941, 0),
+		mineGoldOre = new ObjectStep(this, ObjectID.GOLD_ROCKS, new WorldPoint(3184, 3941, 0),
 			"Mine gold ore.", true, hammer, pickaxe);
 
 		muddyChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_170, new WorldPoint(3089, 3859, 0),

@@ -254,7 +254,7 @@ public class KourendHard extends ComplexStateQuestHelper
 			shayzienGreaves.equipped(), shayzienBoots.equipped(), shayzienGloves.equipped(), antipoison, combatGear);
 
 		// Mine some lovakite ore
-		mineLovakiteOre = new ObjectStep(this, ObjectID.ROCKS_28597, new WorldPoint(1438, 3816, 0),
+		mineLovakiteOre = new ObjectStep(this, ObjectID.LOVAKITE_ROCKS_28597, new WorldPoint(1438, 3816, 0),
 			"Mine some lovakite ore.", pickaxe);
 
 		// Plant some logavano seeds

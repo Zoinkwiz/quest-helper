@@ -257,7 +257,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 			"Get a pickaxe in Rimmington if you do not have one.");
 		enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0),
 			"Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, hammer);
-		mineBlurite = new ObjectStep(this, ObjectID.ROCKS_11378, new WorldPoint(3049, 9566, 0),
+		mineBlurite = new ObjectStep(this, ObjectID.BLURITE_ROCKS, new WorldPoint(3049, 9566, 0),
 			"Mine a blurite ore in the eastern cavern.", pickaxe, hammer);
 		smeltBlurite = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(2976, 3368, 0),
 			"Smelt the blurite ore into a blurite bar.", hammer, bluriteOre);

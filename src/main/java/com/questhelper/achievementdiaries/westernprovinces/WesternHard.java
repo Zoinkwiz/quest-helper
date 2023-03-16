@@ -291,9 +291,9 @@ public class WesternHard extends ComplexStateQuestHelper
 		killZulrah = new ObjectStep(this, ObjectID.SACRIFICIAL_BOAT, new WorldPoint(2215, 3057, 0),
 			"Kill Zulrah.", combatGear, food);
 
-		mineAddyOre = new ObjectStep(this, ObjectID.ROCKS_11374, new WorldPoint(2277, 3160, 0),
+		mineAddyOre = new ObjectStep(this, ObjectID.ADAMANTITE_ROCKS, new WorldPoint(2277, 3160, 0),
 			"Mine some adamantite ore in Tirannwn.", true, pickaxe);
-		mineAddyOre.addAlternateObjects(ObjectID.ROCKS_11375);
+		mineAddyOre.addAlternateObjects(ObjectID.ADAMANTITE_ROCKS_11375);
 
 		elfCrystalBow = new NpcStep(this, NpcID.ELF_ARCHER, new WorldPoint(2333, 3171, 0), "Kill an elf with a crystal" +
 			" bow.", true, crystalBow.equipped());

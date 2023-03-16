@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.questhelper.quests.gettingahead;
 
 import com.questhelper.ItemCollections;
@@ -277,7 +276,7 @@ public class GettingAhead extends BasicQuestHelper
 
 		talkToMary2 = new NpcStep(this, NpcID.MARY_10502, new WorldPoint(1237, 3678, 0), "Talk to Mary inside the house.");
 		takePickaxe = new ObjectStep(this, ObjectID.ROCKS_40365, new WorldPoint(1222, 3653, 0), "Take the pickaxe in the mine.");
-		mineClay = new ObjectStep(this, ObjectID.ROCKS_11362, new WorldPoint(1217, 3657, 0), "Mine some clay.", pickaxe);
+		mineClay = new ObjectStep(this, ObjectID.CLAY_ROCKS, new WorldPoint(1217, 3657, 0), "Mine some clay.", pickaxe);
 		takeKnife = new DetailedQuestStep(this, new WorldPoint(1241, 3679, 0), "Take the knife near Mary.", knife);
 		takeBucket = new DetailedQuestStep(this, new WorldPoint(1244, 3682, 0), "Take the bucket in the house.", bucket);
 		fillBucket = new ObjectStep(this, ObjectID.SINK_1763, new WorldPoint(1240, 3677, 0), "Fill the bucket on the sink.", bucket);

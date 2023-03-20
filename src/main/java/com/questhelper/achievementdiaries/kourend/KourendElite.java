@@ -391,7 +391,7 @@ public class KourendElite extends ComplexStateQuestHelper
 			new UnlockReward("Completing a slayer task from Konar quo Maten gives 20 Slayer points (up from 18)"),
 			new UnlockReward("10% reduced burn chance at the city kitchens (up from 5%)"),
 			new UnlockReward("Protection from the burn effect in Karuulm Slayer Dungeon without boots of stone"),
-			new UnlockReward("5% increased chance ot save a harvest life at the Hosidius and Farming Guild herb patches."),
+			new UnlockReward("5% increased chance to save a harvest life at the Hosidius and Farming Guild herb patches."),
 			new UnlockReward("80 free Dynamite per day from Thirus"),
 			new UnlockReward("10% additional blood runes from blood runecrafting (no additional xp)"),
 			new UnlockReward("Reduced tanning prices at Eodan in Forthos Dungeon to 20%."));

@@ -63,7 +63,7 @@ public class ImpCatcher extends BasicQuestHelper
 		setupRequirements();
 
 		doQuest = new NpcStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
-			"Talk to Wizard Mizgog on the top floor of the Wizards' Tower with the required items to finish the quest.",
+			"Talk to Wizard Mizgog on the top floor of the Wizards' Tower with the required beads to finish the quest. You can kill imps for these beads, or buy them on the Grand Exchange.",
 			blackBead, whiteBead, redBead, yellowBead);
 		doQuest.addDialogStep("Give me a quest please.");
 

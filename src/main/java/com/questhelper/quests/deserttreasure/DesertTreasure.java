@@ -562,7 +562,7 @@ public class DesertTreasure extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal,
-			bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots, climbingBoots, faceMask, tinderbox, manyLockpicks);
+			bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots, climbingBoots, faceMask, tinderbox, iceGloves, manyLockpicks);
 	}
 
 	@Override

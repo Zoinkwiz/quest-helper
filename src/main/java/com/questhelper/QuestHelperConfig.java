@@ -51,12 +51,12 @@ public interface QuestHelperConfig extends Config
 		 * Sort quests in alphabetical order
 		 */
 		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER),
+			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER, QuestFilter.PLAYER_MADE_QUESTS),
 		/**
 		 * Sort quests in reverse alphabetical order
 		 */
 		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER),
+			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER, QuestFilter.PLAYER_MADE_QUESTS),
 		/**
 		 * Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide)
 		 */
@@ -152,7 +152,9 @@ public interface QuestHelperConfig extends Config
 		/**
 		 * Show all members' skills
 		 */
-		SKILL_MEMBERS(QuestDetails.Type.SKILL_P2P);
+		SKILL_MEMBERS(QuestDetails.Type.SKILL_P2P),
+
+		PLAYER_MADE_QUESTS("Player-made quests", q -> q.getQuest().getQuestType() == QuestDetails.Type.PLAYER_QUEST);
 
 
 		private final Predicate<QuestHelper> predicate;

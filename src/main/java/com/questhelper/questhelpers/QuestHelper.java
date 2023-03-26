@@ -58,7 +58,6 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
 public abstract class QuestHelper implements Module, QuestDebugRenderer
 {
@@ -168,7 +167,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	public QuestState getState(Client client)
 	{
-		return quest.getState(client);
+		return quest.getState(client, configManager);
 	}
 
 	public boolean clientMeetsRequirements()

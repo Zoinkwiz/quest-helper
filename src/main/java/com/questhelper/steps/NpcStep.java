@@ -241,7 +241,6 @@ public class NpcStep extends DetailedQuestStep
 
 		for (NPC npc : npcs)
 		{
-
 			highlightNpc(npc, configColor, graphics);
 
 			if (questHelper.getConfig().showSymbolOverlay())

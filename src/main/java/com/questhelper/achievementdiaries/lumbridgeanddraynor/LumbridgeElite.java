@@ -150,7 +150,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 					if (quest.getQuestType() == QuestDetails.Type.F2P
 						|| quest.getQuestType() == QuestDetails.Type.P2P)
 					{
-						if (quest.getState(client) != QuestState.FINISHED)
+						if (quest.getState(client, configManager) != QuestState.FINISHED)
 						{
 							allQuestsCompleted = false;
 							break;

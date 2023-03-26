@@ -27,7 +27,7 @@ package com.questhelper.quests.murdermystery;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.RuneliteRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;

@@ -79,10 +79,10 @@ public abstract class QuestStep implements Module
 	ItemManager itemManager;
 
 	@Inject
-	SpriteManager spriteManager;
+	protected SpriteManager spriteManager;
 
 	@Inject
-	ModelOutlineRenderer modelOutlineRenderer;
+	protected ModelOutlineRenderer modelOutlineRenderer;
 
 	@Inject
 	VisibilityHelper visibilityHelper;

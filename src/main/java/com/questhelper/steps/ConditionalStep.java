@@ -26,7 +26,7 @@ package com.questhelper.steps;
 
 import com.google.inject.Inject;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.RuneliteRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -51,7 +51,6 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import org.apache.commons.lang3.ArrayUtils;
 
 /* Conditions are checked in the order they were added */
 public class ConditionalStep extends QuestStep implements OwnerStep

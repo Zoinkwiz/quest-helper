@@ -150,6 +150,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final String QUEST_PACKAGE = "com.questhelper.quests";
 	private static final String ACHIEVEMENT_PACKAGE = "com.questhelper.achievementdiaries";
+	private static final String PLAYER_QUEST_PACKAGE = "com.questhelper.playerquests";
 
 	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
@@ -635,7 +636,7 @@ public class QuestHelperPlugin extends Plugin
 
 		client.createMenuEntry(menuEntries.length - 1)
 			.setOption("Examine")
-			.setTarget("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")
+			.setTarget("<col=ffff00;id=cheerer>" + cheerer.getStyle().getDisplayName() + "</col>")
 			.setType(MenuAction.RUNELITE)
 			.onClick(menuEntry -> {
 				if (cheerer == null) return;
@@ -993,6 +994,8 @@ public class QuestHelperPlugin extends Plugin
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.QUEST_PACKAGE));
 
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.ACHIEVEMENT_PACKAGE));
+
+		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.PLAYER_QUEST_PACKAGE));
 
 		return scannedQuests;
 	}

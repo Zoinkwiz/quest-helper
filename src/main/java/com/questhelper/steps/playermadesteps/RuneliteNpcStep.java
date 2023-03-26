@@ -364,7 +364,7 @@ public class RuneliteNpcStep extends DetailedQuestStep
 
 	private void setupChatBox()
 	{
-		new NpcChatBox(chatboxPanelManager, clientThread)
+		new NpcChatBox(client, chatboxPanelManager, clientThread)
 			.dialog(dialogTree)
 			.build();
 	}

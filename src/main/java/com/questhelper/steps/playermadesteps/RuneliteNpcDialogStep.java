@@ -28,42 +28,22 @@ import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
-public class RuneliteNpcDialogStep
+public class RuneliteNpcDialogStep extends RuneliteDialogStep
 {
-	@Getter
-	private String name;
-
-	@Getter
-	private final String text;
-
-	@Getter
-	private int faceID;
-
-	@Getter
-	private final int animation;
-
 	@Setter
 	@Getter
-	private RuneliteNpcDialogStep continueDialog;
+	private RuneliteDialogStep continueDialog;
 
 	@Getter
-	private final ArrayList<RuneliteNpcDialogStep> dialogChoices = new ArrayList<>();
+	private final ArrayList<RuneliteDialogStep> dialogChoices = new ArrayList<>();
 
 	public RuneliteNpcDialogStep(String name, String text, int faceID, int animation)
 	{
-		this.name = name;
-		this.text = text;
-		this.faceID = faceID;
-		this.animation = animation;
+		super(name, text, faceID, animation);
 	}
 
 	public RuneliteNpcDialogStep(String name, String text, int faceID)
 	{
 		this(name, text, faceID, 570);
-	}
-
-	public void addNewDialogChoice(RuneliteNpcDialogStep step)
-	{
-		dialogChoices.add(step);
 	}
 }

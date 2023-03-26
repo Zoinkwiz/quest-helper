@@ -38,6 +38,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteNpcStep;
+import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -102,7 +103,9 @@ public class CooksHelper extends ComplexStateQuestHelper
 		RuneliteNpcDialogStep dialog = talkToCook.createDialogStepForNpc(
 			"You were seriously great when you defeated the Culinaromancer! I can't believe I nearly caused all of those people to be killed! So how is the adventuring going now?");
 		RuneliteNpcDialogStep dialog2 = talkToCook.createDialogStepForNpc("Are you ready for the next bit of action?");
+		RunelitePlayerDialogStep dialog3 = new RunelitePlayerDialogStep(client, "I sure am!");
 		dialog.setContinueDialog(dialog2);
+		dialog2.setContinueDialog(dialog3);
 		talkToCook.setDialogTree(dialog);
 	}
 

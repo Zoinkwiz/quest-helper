@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
- * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,19 +24,25 @@
  */
 package com.questhelper.steps.playermadesteps;
 
-
 import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
 
-public class NpcChatBox extends ChatBox
+public class RunelitePlayerDialogStep extends RuneliteDialogStep
 {
-
-	protected NpcChatBox(Client client, ChatboxPanelManager chatboxPanelManager, ClientThread clientThread)
+	public RunelitePlayerDialogStep(Client client, String text, int animation)
 	{
-		super(client, chatboxPanelManager, clientThread);
+		super(client.getLocalPlayer().getName(), text, -1, animation);
+		client.getLocalPlayer().getName();
 	}
 
+	public RunelitePlayerDialogStep(Client client, String text)
+	{
+		this(client, text, 570);
+	}
 
+	@Override
+	public boolean isPlayer()
+	{
+		return true;
+	}
 }
 

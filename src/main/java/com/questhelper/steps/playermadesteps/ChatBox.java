@@ -197,6 +197,8 @@ public class ChatBox extends ChatboxInput implements KeyListener
 
 	protected void continueChat()
 	{
+		dialog.progressState();
+
 		RuneliteDialogStep nextDialog = dialog.getContinueDialog();
 		if (nextDialog == null)
 		{
@@ -237,7 +239,6 @@ public class ChatBox extends ChatboxInput implements KeyListener
 			onClose.run();
 		}
 	}
-
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -289,4 +290,3 @@ public class ChatBox extends ChatboxInput implements KeyListener
 	{
 	}
 }
-

@@ -25,7 +25,6 @@
  */
 package com.questhelper.steps.playermadesteps;
 
-
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
@@ -37,4 +36,3 @@ public class NpcChatBox extends ChatBox
 		super(client, chatboxPanelManager, clientThread);
 	}
 }
-

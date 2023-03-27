@@ -24,6 +24,7 @@
  */
 package com.questhelper.steps.playermadesteps;
 
+import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
 import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,10 @@ public class RuneliteDialogStep
 	@Getter
 	private RuneliteDialogStep continueDialog;
 
+	@Setter
+	@Getter
+	private RuneliteConfigSetter stateProgression;
+
 	@Getter
 	private final ArrayList<RuneliteDialogStep> dialogChoices = new ArrayList<>();
 
@@ -66,5 +71,18 @@ public class RuneliteDialogStep
 	public boolean isPlayer()
 	{
 		return false;
+	}
+
+	public boolean isStateChanger()
+	{
+		return stateProgression != null;
+	}
+
+	public void progressState()
+	{
+		if (isStateChanger())
+		{
+			stateProgression.setConfigValue();
+		}
 	}
 }

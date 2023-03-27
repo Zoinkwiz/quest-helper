@@ -33,7 +33,6 @@ import net.runelite.api.ModelData;
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import java.awt.Color;
 import net.runelite.client.callback.ClientThread;
 
 class RuneliteNpc

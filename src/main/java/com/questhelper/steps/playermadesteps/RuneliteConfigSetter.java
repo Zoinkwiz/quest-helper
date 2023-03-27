@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements.runelite;
+package com.questhelper.steps.playermadesteps;
 
+import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 
-public class PlayerQuestStateRequirement extends RuneliteRequirement
+public class RuneliteConfigSetter
 {
-	private final int expectedIntValue;
+	@Getter
+	protected final String CONFIG_GROUP = "questhelpervars";
 
-	public PlayerQuestStateRequirement(ConfigManager configManager, String runeliteIdentifier, int expectedValue)
+	protected final String runeliteIdentifier;
+
+	@Getter
+	protected final String setValue;
+	protected final ConfigManager configManager;
+
+
+	public RuneliteConfigSetter(ConfigManager configManager, String id, String setValue)
 	{
-		super(configManager, runeliteIdentifier, Integer.toString(expectedValue));
-		expectedIntValue = expectedValue;
+		this.configManager = configManager;
+		this.runeliteIdentifier = id;
+		this.setValue = setValue;
 	}
 
-	public PlayerQuestStateRequirement getNewState(int incrementedStateQuantity)
+	public String getConfigValue()
 	{
-		return new PlayerQuestStateRequirement(configManager, runeliteIdentifier, expectedIntValue + incrementedStateQuantity);
+		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier);
+	}
+
+	public void setConfigValue()
+	{
+		configManager.setRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier, setValue);
+	}
+
+	public boolean configExists()
+	{
+		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier) != null;
 	}
 }
+
+

@@ -115,12 +115,6 @@ public class ChatBox extends ChatboxInput implements KeyListener
 	{
 		Widget container = chatboxPanelManager.getContainerWidget();
 
-		int WRAPPER_HEIGHT_ADJUSTMENT = 17;
-		int WRAPPER_WIDTH_ADJUSTMENT = 12;
-
-		// 12 -> 5
-		// 19 -> 10
-
 		Widget npcFaceWidget = container.createChild(0, WidgetType.RECTANGLE);
 		npcFaceWidget.setType(WidgetType.MODEL);
 		npcFaceWidget.setModelId(dialog.getFaceID());
@@ -137,12 +131,20 @@ public class ChatBox extends ChatboxInput implements KeyListener
 		npcFaceWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
 		npcFaceWidget.revalidate();
 
+		setupDialog(container, 96);
+	}
+
+	public void setupDialog(Widget container, int x)
+	{
+		int WRAPPER_HEIGHT_ADJUSTMENT = 17;
+		int WRAPPER_WIDTH_ADJUSTMENT = 12;
+
 		Widget nameWidget = container.createChild(-1, WidgetType.TEXT);
 		nameWidget.setText(dialog.getName());
 		nameWidget.setTextColor(0x800000);
 		nameWidget.setFontId(FontID.QUILL_8);
 		nameWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		nameWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + 96);
+		nameWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + x);
 		nameWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
 		nameWidget.setOriginalY(WRAPPER_HEIGHT_ADJUSTMENT);
 		nameWidget.setOriginalWidth(380);
@@ -157,7 +159,7 @@ public class ChatBox extends ChatboxInput implements KeyListener
 		continueWidget.setTextColor(0xff);
 		continueWidget.setFontId(FontID.QUILL_8);
 		continueWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		continueWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + 96);
+		continueWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + x);
 		continueWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
 		continueWidget.setOriginalY(WRAPPER_HEIGHT_ADJUSTMENT + 80);
 		continueWidget.setOriginalWidth(380);
@@ -182,7 +184,7 @@ public class ChatBox extends ChatboxInput implements KeyListener
 		dialogWidget.setTextColor(0x0);
 		dialogWidget.setFontId(FontID.QUILL_8);
 		dialogWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		dialogWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + 96);
+		dialogWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + x);
 		dialogWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
 		dialogWidget.setOriginalY(WRAPPER_HEIGHT_ADJUSTMENT + 16);
 		dialogWidget.setOriginalWidth(380);

@@ -32,12 +32,9 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 
 public class NpcChatBox extends ChatBox
 {
-
 	protected NpcChatBox(Client client, ChatboxPanelManager chatboxPanelManager, ClientThread clientThread)
 	{
 		super(client, chatboxPanelManager, clientThread);
 	}
-
-
 }
 

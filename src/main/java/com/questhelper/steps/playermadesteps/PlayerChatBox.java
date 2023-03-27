@@ -50,21 +50,15 @@ public class PlayerChatBox extends ChatBox
 	{
 		Widget container = chatboxPanelManager.getContainerWidget();
 
-		int WRAPPER_HEIGHT_ADJUSTMENT = 17;
-		int WRAPPER_WIDTH_ADJUSTMENT = 12;
-
-		// 12 -> 5
-		// 19 -> 10
-
 		Widget npcFaceWidget = container.createChild(0, WidgetType.RECTANGLE);
 		npcFaceWidget.setType(WidgetType.MODEL);
 		npcFaceWidget.setModelId(dialog.getFaceID());
 		npcFaceWidget.setAnimationId(dialog.getAnimation());
 		npcFaceWidget.setRotationX(40);
-		npcFaceWidget.setRotationZ(1882);
+		npcFaceWidget.setRotationZ(166);
 		npcFaceWidget.setModelZoom(796);
-		npcFaceWidget.setOriginalX(46);
-		npcFaceWidget.setOriginalY(53);
+		npcFaceWidget.setOriginalX(420);
+		npcFaceWidget.setOriginalY(50);
 		npcFaceWidget.setOriginalWidth(32);
 		npcFaceWidget.setOriginalHeight(32);
 		npcFaceWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
@@ -72,60 +66,7 @@ public class PlayerChatBox extends ChatBox
 		npcFaceWidget.setModelType(WidgetModelType.LOCAL_PLAYER_CHATHEAD);
 		npcFaceWidget.revalidate();
 
-		Widget nameWidget = container.createChild(-1, WidgetType.TEXT);
-		nameWidget.setText(dialog.getName());
-		nameWidget.setTextColor(0x800000);
-		nameWidget.setFontId(FontID.QUILL_8);
-		nameWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		nameWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + 96);
-		nameWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		nameWidget.setOriginalY(WRAPPER_HEIGHT_ADJUSTMENT);
-		nameWidget.setOriginalWidth(380);
-		nameWidget.setOriginalHeight(17);
-		nameWidget.setXTextAlignment(WidgetTextAlignment.CENTER);
-		nameWidget.setYTextAlignment(WidgetTextAlignment.CENTER);
-		nameWidget.setWidthMode(WidgetSizeMode.ABSOLUTE);
-		nameWidget.revalidate();
-
-		Widget continueWidget = container.createChild(-1, WidgetType.TEXT);
-		continueWidget.setText("Click here to continue");
-		continueWidget.setTextColor(0xff);
-		continueWidget.setFontId(FontID.QUILL_8);
-		continueWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		continueWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + 96);
-		continueWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		continueWidget.setOriginalY(WRAPPER_HEIGHT_ADJUSTMENT + 80);
-		continueWidget.setOriginalWidth(380);
-		continueWidget.setOriginalHeight(17);
-		continueWidget.setXTextAlignment(WidgetTextAlignment.CENTER);
-		continueWidget.setYTextAlignment(WidgetTextAlignment.CENTER);
-		continueWidget.setWidthMode(WidgetSizeMode.ABSOLUTE);
-		continueWidget.setAction(0, "Continue");
-		continueWidget.setOnOpListener((JavaScriptCallback) ev -> {
-			continueWidget.setText("Please wait...");
-			continueChat();
-		});
-		continueWidget.setOnMouseOverListener((JavaScriptCallback) ev -> continueWidget.setTextColor(0xFFFFFF));
-		continueWidget.setOnMouseLeaveListener((JavaScriptCallback) ev -> continueWidget.setTextColor(0xff));
-		continueWidget.setHasListener(true);
-		continueWidget.revalidate();
-
-		continueW = continueWidget;
-
-		Widget dialogWidget = container.createChild(-1, WidgetType.TEXT);
-		dialogWidget.setText(dialog.getText());
-		dialogWidget.setTextColor(0x0);
-		dialogWidget.setFontId(FontID.QUILL_8);
-		dialogWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		dialogWidget.setOriginalX(WRAPPER_WIDTH_ADJUSTMENT + 96);
-		dialogWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		dialogWidget.setOriginalY(WRAPPER_HEIGHT_ADJUSTMENT + 16);
-		dialogWidget.setOriginalWidth(380);
-		dialogWidget.setOriginalHeight(67);
-		dialogWidget.setXTextAlignment(WidgetTextAlignment.CENTER);
-		dialogWidget.setYTextAlignment(WidgetTextAlignment.CENTER);
-		dialogWidget.setWidthMode(WidgetSizeMode.ABSOLUTE);
-		dialogWidget.revalidate();
+		setupDialog(container, 5);
 	}
 
 }

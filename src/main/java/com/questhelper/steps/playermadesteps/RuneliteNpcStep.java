@@ -41,6 +41,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
@@ -316,6 +317,10 @@ public class RuneliteNpcStep extends DetailedQuestStep
 		Color configColor = getQuestHelper().getConfig().targetOverlayColor();
 		highlightNpc(configColor, graphics);
 		renderRedClick(graphics);
+
+		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+		hideIfNpcOnTile();
+		hideIfPlayerOnTile(playerPosition);
 	}
 
 	private void highlightNpc(Color color, Graphics2D graphics)
@@ -324,6 +329,7 @@ public class RuneliteNpcStep extends DetailedQuestStep
 		{
 			case CONVEX_HULL:
 			case OUTLINE:
+				if (!runeliteNpc.isActive()) break;
 				modelOutlineRenderer.drawOutline(
 					runeliteNpc.getRuneLiteObject(),
 					questHelper.getConfig().outlineThickness(),
@@ -369,11 +375,62 @@ public class RuneliteNpcStep extends DetailedQuestStep
 			.build();
 	}
 
+	boolean playerBeenOnTile = false;
+	boolean npcBeenOnTile = false;
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		super.onGameTick(event);
-		WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-		if (wp.distanceTo(worldPoint) > 1) chatboxPanelManager.close();
+		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+		if (playerPosition.distanceTo(worldPoint) > 1) chatboxPanelManager.close();
+	}
+
+	private void hideIfNpcOnTile()
+	{
+		boolean npcCurrentlyOnTile = false;
+		for (NPC npc : client.getNpcs())
+		{
+			WorldPoint wpNpc = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
+			if (wpNpc.distanceTo(worldPoint) == 0)
+			{
+				npcCurrentlyOnTile = true;
+				break;
+			}
+		}
+		if (npcCurrentlyOnTile && !npcBeenOnTile)
+		{
+			npcBeenOnTile = true;
+			removeRuneliteNpc();
+		}
+		else if (!npcCurrentlyOnTile && npcBeenOnTile)
+		{
+			npcBeenOnTile = false;
+
+			if (playerBeenOnTile) return;
+
+			LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+			if (lp == null) return;
+			runeliteNpc.setActive(lp);
+		}
+	}
+
+	private void hideIfPlayerOnTile(WorldPoint playerPosition)
+	{
+		if (playerPosition.distanceTo(worldPoint) == 0 && !playerBeenOnTile)
+		{
+			playerBeenOnTile = true;
+			removeRuneliteNpc();
+			runeliteNpc.remove();
+		}
+		else if (playerBeenOnTile && !runeliteNpc.isActive() && playerPosition.distanceTo(worldPoint) != 0)
+		{
+			playerBeenOnTile = false;
+
+			if (npcBeenOnTile) return;
+
+			LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+			if (lp == null) return;
+			runeliteNpc.setActive(lp);
+		}
 	}
 }

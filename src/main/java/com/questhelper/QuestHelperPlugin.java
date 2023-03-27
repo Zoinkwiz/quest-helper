@@ -638,6 +638,8 @@ public class QuestHelperPlugin extends Plugin
 			.setTarget("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")
 			.setType(MenuAction.RUNELITE)
 			.onClick(menuEntry -> {
+				if (cheerer == null) return;
+
 				String chatMessage = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
 					.append(cheerer.getStyle().getExamine())

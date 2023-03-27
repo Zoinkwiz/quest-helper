@@ -24,9 +24,8 @@
  */
 package com.questhelper.steps.playermadesteps;
 
-import java.util.function.Function;
 import lombok.Getter;
-import net.runelite.api.Animation;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Model;
 import net.runelite.api.ModelData;
@@ -34,27 +33,39 @@ import net.runelite.api.RuneLiteObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 
-class RuneliteNpc
+public class RuneliteNpc
 {
 	@Getter
-	private final RuneLiteObject runeLiteObject;
+	private final RuneLiteObject runeliteObject;
 	private final Client client;
 	private final ClientThread clientThread;
+
+	@Setter
+	private RuneliteNpcDialogStep dialogTree;
 
 	private Model model;
 	private int animation;
 
-	private static Function<RuneliteNpc, Animation> anim(int id)
-	{
-		return b -> b.client.loadAnimation(id);
-	}
+	@Setter
+	@Getter
+	private WorldPoint worldPoint;
+
+	@Setter
+	private int face = -1;
+
+	@Getter
+	@Setter
+	private String name = "Test";
+
+	ChatBox currentChatBox;
 
 	public RuneliteNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
-		runeLiteObject = client.createRuneLiteObject();
+		runeliteObject = client.createRuneLiteObject();
 
 		ModelData mdf = createModel(client, model);
 
@@ -63,13 +74,13 @@ class RuneliteNpc
 
 		this.animation = animation;
 		update();
-		runeLiteObject.setShouldLoop(true);
+		runeliteObject.setShouldLoop(true);
+
+		this.worldPoint = worldPoint;
 
 		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
 		if (lp == null) return;
-		runeLiteObject.setLocation(lp, client.getPlane());
-
-		runeLiteObject.setActive(true);
+		runeliteObject.setLocation(lp, client.getPlane());
 	}
 
 	private static ModelData createModel(Client client, int[] data)
@@ -110,26 +121,52 @@ class RuneliteNpc
 	{
 		clientThread.invoke(() ->
 		{
-			runeLiteObject.setAnimation(client.loadAnimation(animation));
-			runeLiteObject.setModel(model);
+			runeliteObject.setAnimation(client.loadAnimation(animation));
+			runeliteObject.setModel(model);
 			return true;
 		});
 	}
 
-	public void setActive(LocalPoint lp)
-	{
-		runeLiteObject.setLocation(lp, client.getPlane());
-		runeLiteObject.setActive(true);
-	}
-
 	public boolean isActive()
 	{
-		return runeLiteObject.isActive();
+		return runeliteObject.isActive();
 	}
 
 	public void remove()
 	{
-		runeLiteObject.setActive(false);
+		runeliteObject.setActive(false);
 	}
 
+	public RuneliteNpcDialogStep createDialogStepForNpc(String text, int faceAnimation)
+	{
+		if (face == -1)
+		{
+			throw new IllegalStateException("Face value must be positive");
+		}
+		if (name == null)
+		{
+			throw new IllegalStateException("Name must be assigned");
+		}
+		return new RuneliteNpcDialogStep(name, text, face, faceAnimation);
+	}
+
+	public RuneliteNpcDialogStep createDialogStepForNpc(String text)
+	{
+		if (face == -1)
+		{
+			throw new IllegalStateException("Face value must be positive");
+		}
+		if (name == null)
+		{
+			throw new IllegalStateException("Name must be assigned");
+		}
+		return new RuneliteNpcDialogStep(name, text, face);
+	}
+
+	public void setupChatBox(ChatboxPanelManager chatboxPanelManager)
+	{
+		currentChatBox = new ChatBox(client, chatboxPanelManager, clientThread)
+			.dialog(dialogTree)
+			.build();
+	}
 }

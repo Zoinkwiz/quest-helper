@@ -38,13 +38,16 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
+import com.questhelper.steps.playermadesteps.RuneliteNpc;
 import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteNpcStep;
+import com.questhelper.steps.playermadesteps.RuneliteObjectManager;
 import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -56,6 +59,9 @@ import net.runelite.api.coords.WorldPoint;
 public class CooksHelper extends ComplexStateQuestHelper
 {
 	private RuneliteNpcStep talkToCook;
+
+	@Inject
+	RuneliteObjectManager runeliteObjectManager;
 
 	@Override
 	public QuestStep loadStep()
@@ -98,18 +104,21 @@ public class CooksHelper extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		talkToCook = new RuneliteNpcStep(this, client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0),
-			"Talk to the Lumbridge Cook.");
-		talkToCook.setFace(4626);
-		talkToCook.setName("Cook's Cousin");
-		RuneliteNpcDialogStep dialog = talkToCook.createDialogStepForNpc(
+		RuneliteNpc cooksCousin = runeliteObjectManager.createRuneliteNpc("cooks_cousin", client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0), 808);
+		cooksCousin.setName("Cook's Cousin");
+		cooksCousin.setFace(4626);
+
+		talkToCook = new RuneliteNpcStep(this, cooksCousin, new WorldPoint(3209, 3215, 0), "Talk to the Lumbridge Cook.");
+		talkToCook.addNpcToDelete("cooks_cousin");
+
+		RuneliteNpcDialogStep dialog = cooksCousin.createDialogStepForNpc(
 			"You were seriously great when you defeated the Culinaromancer! I can't believe I nearly caused all of those people to be killed! So how is the adventuring going now?");
-		RuneliteNpcDialogStep dialog2 = talkToCook.createDialogStepForNpc("Are you ready for the next bit of action?");
+		RuneliteNpcDialogStep dialog2 = cooksCousin.createDialogStepForNpc("Are you ready for the next bit of action?");
 		RunelitePlayerDialogStep dialog3 = new RunelitePlayerDialogStep(client, "I sure am!");
 		dialog3.setStateProgression(new RuneliteConfigSetter(configManager, "cookshelper", "1"));
 		dialog.setContinueDialog(dialog2);
 		dialog2.setContinueDialog(dialog3);
-		talkToCook.setDialogTree(dialog);
+		cooksCousin.setDialogTree(dialog);
 	}
 
 	@Override

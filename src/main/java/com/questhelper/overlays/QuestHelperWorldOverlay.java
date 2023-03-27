@@ -98,6 +98,8 @@ public class QuestHelperWorldOverlay extends Overlay
 
 		plugin.backgroundHelpers.forEach((name, questHelper) -> questHelper.getCurrentStep().makeWorldOverlayHint(graphics, plugin));
 
+		plugin.getRuneliteObjectManager().makeWorldOverlayHint(graphics);
+
 		return null;
 	}
 }

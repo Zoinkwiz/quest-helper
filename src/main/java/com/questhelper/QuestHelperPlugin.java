@@ -46,6 +46,7 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.playermadesteps.RuneliteObjectManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -242,6 +243,10 @@ public class QuestHelperPlugin extends Plugin
 
 	@Getter
 	@Inject
+	RuneliteObjectManager runeliteObjectManager;
+
+	@Getter
+	@Inject
 	private ColorPickerManager colorPickerManager;
 
 	@Getter
@@ -294,6 +299,9 @@ public class QuestHelperPlugin extends Plugin
 		eventBus.register(gameStateManager);
 		gameStateManager.startUp();
 
+		eventBus.register(runeliteObjectManager);
+		runeliteObjectManager.startUp();
+
 		quests = scanAndInstantiate(getClass().getClassLoader());
 		overlayManager.add(questHelperOverlay);
 		overlayManager.add(questHelperWorldOverlay);
@@ -332,8 +340,10 @@ public class QuestHelperPlugin extends Plugin
 	{
 		eventBus.unregister(bankTagsMain);
 		bankTagsMain.shutDown();
+		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(gameStateManager);
+		eventBus.unregister(runeliteObjectManager);
 
 		overlayManager.remove(questHelperOverlay);
 		overlayManager.remove(questHelperWorldOverlay);
@@ -434,11 +444,6 @@ public class QuestHelperPlugin extends Plugin
 			loadQuestList = true;
 			displayNameKnown = false;
 			clientThread.invokeLater(() -> {
-				quests.forEach((name, questHelper) -> {
-					eventBus.register(questHelper);
-					questHelper.init();
-					eventBus.unregister(questHelper);
-				});
 				quests.get(QuestHelperQuest.CHECK_ITEMS.getName()).init();
 				getAllItemRequirements();
 			});

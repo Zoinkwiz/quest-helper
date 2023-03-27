@@ -35,7 +35,9 @@ import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteNpcStep;
 import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
@@ -62,12 +64,12 @@ public class CooksHelper extends ComplexStateQuestHelper
 		setupConditions();
 		setupSteps();
 
-		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, "cookshelper-1", 1);
+		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, "cookshelper", 1);
 
+		DetailedQuestStep lol = new DetailedQuestStep(this, "WOW IT WORKED!!!!");
 		ConditionalStep questSteps = new ConditionalStep(this, talkToCook);
 //		questSteps.addStep(req.getNewState(1), lol);
 //		questSteps.addStep(req, lol);
-
 
 		// We want something which can be added to a requirement, which
 
@@ -79,7 +81,7 @@ public class CooksHelper extends ComplexStateQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		// TODO: Option to add a runelite variable, which is called once 'continue' is pressed on a dialog step
+		// NPCs should persist through quest steps unless actively removed? Dialog should be conditional on step (sometimes)
 		// Hide/show NPCs/the runelite character when NPCs go on it/you go over it
 		// Handle cancelling dialog boxes (even just moving a tile away should remove for example)
 		// Properly handle removing NPC from screen when changing floors and such
@@ -104,6 +106,7 @@ public class CooksHelper extends ComplexStateQuestHelper
 			"You were seriously great when you defeated the Culinaromancer! I can't believe I nearly caused all of those people to be killed! So how is the adventuring going now?");
 		RuneliteNpcDialogStep dialog2 = talkToCook.createDialogStepForNpc("Are you ready for the next bit of action?");
 		RunelitePlayerDialogStep dialog3 = new RunelitePlayerDialogStep(client, "I sure am!");
+		dialog3.setStateProgression(new RuneliteConfigSetter(configManager, "cookshelper", "1"));
 		dialog.setContinueDialog(dialog2);
 		dialog2.setContinueDialog(dialog3);
 		talkToCook.setDialogTree(dialog);

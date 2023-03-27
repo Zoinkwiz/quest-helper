@@ -24,6 +24,7 @@
  */
 package com.questhelper.steps.playermadesteps;
 
+import com.google.common.collect.ImmutableList;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -35,8 +36,10 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import lombok.Setter;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
@@ -54,7 +57,6 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -67,9 +69,6 @@ public class RuneliteNpcStep extends DetailedQuestStep
 
 	@Inject
 	ChatMessageManager chatMessageManager;
-
-	@Inject
-	EventBus eventBus;
 
 	private RuneliteNpc runeliteNpc;
 
@@ -164,6 +163,20 @@ public class RuneliteNpcStep extends DetailedQuestStep
 		}
 	}
 
+	private static final List<MenuAction> OBJECT_MENU_TYPES = ImmutableList.of(
+		MenuAction.GAME_OBJECT_FIRST_OPTION,
+		MenuAction.GAME_OBJECT_SECOND_OPTION,
+		MenuAction.GAME_OBJECT_THIRD_OPTION,
+		MenuAction.GAME_OBJECT_FOURTH_OPTION,
+		MenuAction.GAME_OBJECT_FIFTH_OPTION,
+		MenuAction.WIDGET_TARGET_ON_GAME_OBJECT,
+
+		MenuAction.GROUND_ITEM_FIRST_OPTION,
+		MenuAction.GROUND_ITEM_SECOND_OPTION,
+		MenuAction.GROUND_ITEM_THIRD_OPTION,
+		MenuAction.GROUND_ITEM_FOURTH_OPTION,
+		MenuAction.GROUND_ITEM_FIFTH_OPTION);
+
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
@@ -171,30 +184,56 @@ public class RuneliteNpcStep extends DetailedQuestStep
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		// Anything added after should be de-prioritized
-		// TODO: How to determine where the RuneliteObject is in ordering
+		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+
 		if (runeliteNpc != null && runeliteNpc.getRuneLiteObject() != null && runeliteNpc.getRuneLiteObject().getModel() != null)
 		{
-			boolean hasAddedNpc = false;
-			for (MenuEntry menuEntry : menuEntries)
-			{
-				if (!(menuEntry.getOption().equals("Talk") && menuEntry.getType() == MenuAction.RUNELITE))
-				{
-
-//					menuEntry.setDeprioritized(true);
-				}
-			}
+			if (!hasClickedNpc()) return;
 			if (event.getOption().equals("Walk here"))
 			{
 				addExamine(menuEntries, widgetIndex, widgetID);
-				addTalkOption(menuEntries, widgetIndex, widgetID);
+				addTalkOption(widgetIndex, widgetID);
+			}
+
+			if (lp != null && OBJECT_MENU_TYPES.contains(event.getMenuEntry().getType()))
+			{
+				updatePriorities(event, event.getActionParam0(), event.getActionParam1(), menuEntries, lp);
+			}
+			Actor actor = event.getMenuEntry().getActor();
+			if (actor != null)
+			{
+				LocalPoint actorLp = actor.getLocalLocation();
+				updatePriorities(event, actorLp.getSceneX(), actorLp.getSceneY(), menuEntries, lp);
 			}
 		}
 	}
 
-	public MenuEntry[] addExamine(MenuEntry[] menuEntries, int widgetIndex, int widgetID)
+	private void updatePriorities(MenuEntryAdded event, int currentItemX, int currentItemY, MenuEntry[] menuEntries, LocalPoint runeliteObjectLp)
 	{
-		if (!hasClickedNpc()) return menuEntries;
+		int cameraX = client.getCameraX();
+		int cameraY = client.getCameraY();
+		int playerX = client.getLocalPlayer().getLocalLocation().getX();
+		int playerY = client.getLocalPlayer().getLocalLocation().getY();
+
+		if ((cameraX - playerX + 15 > 0 && currentItemX < runeliteObjectLp.getSceneX()) // Facing west
+			|| (cameraX - playerX + 15 < 0 && currentItemX > runeliteObjectLp.getSceneX()) // Facing east
+			|| (cameraY - playerY - 15 > 0 && currentItemY < runeliteObjectLp.getSceneY()) // Facing south
+			|| (cameraY - playerY - 15 < 0 && currentItemY > runeliteObjectLp.getSceneY())) // Facing north
+		{
+			event.getMenuEntry().setDeprioritized(true);
+			for (MenuEntry menuEntry : menuEntries)
+			{
+				if (menuEntry.getType() == MenuAction.RUNELITE_HIGH_PRIORITY)
+				{
+					menuEntry.setDeprioritized(false);
+				}
+			}
+		}
+	}
+
+	public void addExamine(MenuEntry[] menuEntries, int widgetIndex, int widgetID)
+	{
+		if (!hasClickedNpc()) return;
 
 		// This is important for getting talk to be left-clickable, but don't fully understand why
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
@@ -218,15 +257,13 @@ public class RuneliteNpcStep extends DetailedQuestStep
 			.setType(MenuAction.RUNELITE)
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
-
-		return menuEntries;
 	}
 
-	public MenuEntry[] addTalkOption(MenuEntry[] menuEntries, int widgetIndex, int widgetID)
+	public void addTalkOption(int widgetIndex, int widgetID)
 	{
-		if (!hasClickedNpc()) return menuEntries;
+		if (!hasClickedNpc()) return;
 
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+//		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 		client.createMenuEntry(-2)
 			.setOption("Talk")
@@ -255,7 +292,7 @@ public class RuneliteNpcStep extends DetailedQuestStep
 			}))
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
-		return menuEntries;
+		return;
 	}
 
 	private boolean hasClickedNpc()
@@ -353,6 +390,7 @@ public class RuneliteNpcStep extends DetailedQuestStep
 		if (clickPos != null && clickAnimationFrame < 4)
 		{
 			BufferedImage img = spriteManager.getSprite(redClick[clickAnimationFrame], 0);
+			if (img == null) return;
 			Point point = new Point(clickPos.getX() - (img.getWidth() / 2), clickPos.getY() - (img.getHeight() / 2));
 			OverlayUtil.renderImageLocation(graphics, point, img);
 			bufferAnimation = Math.floorMod(bufferAnimation + 1, ANIMATION_PERIOD);
@@ -368,9 +406,11 @@ public class RuneliteNpcStep extends DetailedQuestStep
 		}
 	}
 
+	ChatBox currentChatBox;
+
 	private void setupChatBox()
 	{
-		new NpcChatBox(client, chatboxPanelManager, clientThread)
+		currentChatBox = new ChatBox(client, chatboxPanelManager, clientThread)
 			.dialog(dialogTree)
 			.build();
 	}
@@ -382,7 +422,39 @@ public class RuneliteNpcStep extends DetailedQuestStep
 	{
 		super.onGameTick(event);
 		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-		if (playerPosition.distanceTo(worldPoint) > 1) chatboxPanelManager.close();
+		if (playerPosition.distanceTo(worldPoint) > 1 && chatboxPanelManager.getCurrentInput() instanceof ChatBox) chatboxPanelManager.close();
+
+		// South -> North
+		//6589
+		//5713
+		//-822
+
+		// West -> East
+		// 5457
+		//6845
+		//-822
+
+		// North -> South
+		//6579
+		//7984
+		//-822
+
+		// East -> West
+		// 7728
+		// 6866
+		//-824
+
+		// Is facing west->east if 5460 X
+		// Is east->west if 7728 X
+		// MID is 6592 for X
+
+		// If (cameraX > 6592 (facing west) AND optionPosX < objPos) reduce priority
+		// If (cameraX < 6592 (facing east) AND optionPosX > objPos) reduce priority
+		// If (cameraY > 6961 (facing south) AND optionPosX < objPos) reduce priority
+		// If (cameraY < 6961 (facing north) AND optionPosX > objPos) reduce priority
+
+
+		// 6961 MID for Y
 	}
 
 	private void hideIfNpcOnTile()

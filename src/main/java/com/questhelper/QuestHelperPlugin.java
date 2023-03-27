@@ -573,20 +573,6 @@ public class QuestHelperPlugin extends Plugin
 				event.consume();
 				shutDownQuest(true);
 				break;
-			case MENUOP_EXAMINE_PLAYER:
-				if (!event.getMenuTarget().equals("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")) break;
-				event.consume();
-				String chatMessage = new ChatMessageBuilder()
-					.append(ChatColorType.NORMAL)
-					.append(cheerer.getStyle().getExamine())
-					.build();
-
-				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.NPC_EXAMINE)
-					.runeLiteFormattedMessage(chatMessage)
-					.timestamp((int) (System.currentTimeMillis() / 1000))
-					.build());
-				break;
 		}
 	}
 
@@ -651,6 +637,18 @@ public class QuestHelperPlugin extends Plugin
 			.setOption("Examine")
 			.setTarget("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")
 			.setType(MenuAction.RUNELITE)
+			.onClick(menuEntry -> {
+				String chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append(cheerer.getStyle().getExamine())
+					.build();
+
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.NPC_EXAMINE)
+					.runeLiteFormattedMessage(chatMessage)
+					.timestamp((int) (System.currentTimeMillis() / 1000))
+					.build());
+			})
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
 

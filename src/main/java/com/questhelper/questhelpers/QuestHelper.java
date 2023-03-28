@@ -36,6 +36,8 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteNpc;
+import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteObjectManager;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,6 +69,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Inject
 	@Getter
 	protected ConfigManager configManager;
+
+	@Inject
+	protected RuneliteObjectManager runeliteObjectManager;
 
 	@Inject
 	protected QuestBank questBank;
@@ -101,7 +106,15 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	public abstract void startUp(QuestHelperConfig config);
 
-	public abstract void shutDown();
+	public void shutDown()
+	{
+		removeRuneliteObjects();
+	}
+
+	public void removeRuneliteObjects()
+	{
+		runeliteObjectManager.removeGroupAndSubgroups(toString());
+	}
 
 	public abstract boolean updateQuest();
 

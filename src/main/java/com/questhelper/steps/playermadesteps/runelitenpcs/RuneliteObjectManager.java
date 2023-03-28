@@ -87,11 +87,6 @@ public class RuneliteObjectManager
 	int[] redClick = new int[]{SpriteID.RED_CLICK_ANIMATION_1, SpriteID.RED_CLICK_ANIMATION_2, SpriteID.RED_CLICK_ANIMATION_3, SpriteID.RED_CLICK_ANIMATION_4};
 	final int ANIMATION_PERIOD = 5;
 
-	// Hiding NPCs
-	// TODO: Need to be per object
-	boolean playerBeenOnTile = false;
-	boolean npcBeenOnTile = false;
-
 	RuneliteNpc lastInteractedWithNpc;
 
 	private static final List<MenuAction> OBJECT_MENU_TYPES = ImmutableList.of(
@@ -139,9 +134,7 @@ public class RuneliteObjectManager
 
 	private void removeRuneliteNpcs()
 	{
-		npcGroups.forEach((groupID, npcGroup) -> {
-			npcGroup.removeAll(this);
-		});
+		disableRuneliteNpcs();
 		npcGroups.clear();
 	}
 
@@ -182,7 +175,10 @@ public class RuneliteObjectManager
 
 	public void removeGroupAndSubgroups(String groupID)
 	{
-		npcGroups.get(groupID).removeAllIncludingSubgroups(this);
+		if (npcGroups.get(groupID) == null) return;
+		clientThread.invokeLater(() -> {
+			npcGroups.get(groupID).removeAllIncludingSubgroups(this);
+		});
 	}
 
 	public void removeRuneliteNpc(String groupID, RuneliteNpc npc)
@@ -191,7 +187,7 @@ public class RuneliteObjectManager
 		{
 			throw new IllegalStateException("Attempted to remove null RuneliteObject from Manager");
 		}
-		npc.remove();
+		npc.disable();
 
 		RuneliteNpcs groupNpcs = npcGroups.get(groupID);
 
@@ -236,6 +232,16 @@ public class RuneliteObjectManager
 				return;
 			}
 
+			boolean isHighPriorityOnTile = false;
+			for (MenuEntry menuEntry : menuEntries)
+			{
+				if (menuEntry.getType() == MenuAction.RUNELITE_HIGH_PRIORITY)
+				{
+					isHighPriorityOnTile = true;
+				}
+			}
+			if (!isHighPriorityOnTile) return;
+
 			if (OBJECT_MENU_TYPES.contains(event.getMenuEntry().getType()))
 			{
 				updatePriorities(event, event.getActionParam0(), event.getActionParam1(), menuEntries, lp, false);
@@ -264,14 +270,9 @@ public class RuneliteObjectManager
 		npc.activate();
 	}
 
-	public boolean isActive(RuneliteNpc runeliteNpc)
+	public void disableObject(RuneliteNpc runeliteNpc)
 	{
-		return runeliteNpc.getRuneliteObject().isActive();
-	}
-
-	public void remove(RuneliteNpc runeliteNpc)
-	{
-		runeliteNpc.remove();
+		runeliteNpc.disable();
 	}
 
 	public void removeGroup(String groupID)
@@ -310,6 +311,8 @@ public class RuneliteObjectManager
 
 	public void addExamine(RuneliteNpc npc, MenuEntry[] menuEntries, int widgetIndex, int widgetID)
 	{
+		if (npc.getExamine() == null) return;
+
 		// This is important for getting talk to be left-clickable, but don't fully understand why
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
@@ -339,7 +342,12 @@ public class RuneliteObjectManager
 
 	public void addTalkOption(RuneliteNpc runeliteNpc, int widgetIndex, int widgetID)
 	{
-		MenuEntry talkEntry = client.createMenuEntry(-2)
+		if (runeliteNpc.getDialogTrees() == null)
+		{
+			return;
+		}
+
+		client.createMenuEntry(-2)
 			.setOption("Talk")
 			.setTarget("<col=ffff00>" + runeliteNpc.getName() + "</col>")
 			.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
@@ -393,14 +401,6 @@ public class RuneliteObjectManager
 
 		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
 		if (lastInteractedWithNpc != null && playerPosition.distanceTo(lastInteractedWithNpc.getWorldPoint()) > 1 && chatboxPanelManager.getCurrentInput() instanceof ChatBox) chatboxPanelManager.close();
-
-		npcGroups.forEach((groupID, npcGroup) -> {
-			for (RuneliteNpc npc : npcGroup.npcs)
-			{
-				hideIfNpcOnTile(npc);
-				hideIfPlayerOnTile(npc, playerPosition);
-			}
-		});
 	}
 
 	private void renderRedClick(Graphics2D graphics)
@@ -424,52 +424,23 @@ public class RuneliteObjectManager
 		}
 	}
 
-	private void hideIfNpcOnTile(RuneliteNpc runeliteNpc)
+	private boolean isNpcOnTile(RuneliteNpc runeliteNpc)
 	{
-		boolean npcCurrentlyOnTile = false;
 		for (NPC npc : client.getNpcs())
 		{
-			WorldPoint wpNpc = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-			if (wpNpc != null && wpNpc.distanceTo2D(runeliteNpc.getWorldPoint()) == 0)
+			WorldPoint wpNpc = npc.getWorldLocation();
+			if (wpNpc != null && wpNpc.distanceTo(runeliteNpc.getWorldPoint()) == 0)
 			{
-				npcCurrentlyOnTile = true;
-				break;
+				return true;
 			}
 		}
-		if (npcCurrentlyOnTile && !npcBeenOnTile)
-		{
-			npcBeenOnTile = true;
-			remove(runeliteNpc);
-		}
-		else if (!npcCurrentlyOnTile && npcBeenOnTile)
-		{
-			npcBeenOnTile = false;
 
-			if (playerBeenOnTile) return;
-
-			LocalPoint lp = LocalPoint.fromWorld(client, runeliteNpc.getWorldPoint());
-			if (lp == null) return;
-			setActive(runeliteNpc);
-		}
+		return false;
 	}
 
-	private void hideIfPlayerOnTile(RuneliteNpc runeliteNpc, WorldPoint playerPosition)
+	private boolean isPlayerOnTile(RuneliteNpc runeliteNpc, WorldPoint playerPosition)
 	{
-		if (playerPosition.distanceTo(runeliteNpc.getWorldPoint()) == 0 && !playerBeenOnTile)
-		{
-			playerBeenOnTile = true;
-			remove(runeliteNpc);
-		}
-		else if (playerBeenOnTile && !runeliteNpc.getRuneliteObject().isActive() && playerPosition.distanceTo(runeliteNpc.getWorldPoint()) != 0)
-		{
-			playerBeenOnTile = false;
-
-			if (npcBeenOnTile) return;
-
-			LocalPoint lp = LocalPoint.fromWorld(client, runeliteNpc.getWorldPoint());
-			if (lp == null) return;
-			setActive(runeliteNpc);
-		}
+		return playerPosition.distanceTo(runeliteNpc.getWorldPoint()) == 0;
 	}
 
 	@Subscribe
@@ -483,6 +454,22 @@ public class RuneliteObjectManager
 	public void onClientTick(ClientTick event)
 	{
 		rotatingObjectsToPlayer.removeIf((runeliteNpc) -> runeliteNpc.partiallyRotateToPlayer(client));
+
+		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+		npcGroups.forEach((groupID, npcGroup) -> {
+			for (RuneliteNpc npc : npcGroup.npcs)
+			{
+				boolean isVisible = npc.isActive();
+				if (isNpcOnTile(npc) || isPlayerOnTile(npc, playerPosition))
+				{
+					if (isVisible) disableObject(npc);
+				}
+				else if (!isVisible)
+				{
+					setActive(npc);
+				}
+			}
+		});
 	}
 
 	@Subscribe
@@ -504,7 +491,7 @@ public class RuneliteObjectManager
 			npcGroups.forEach((groupID, npcGroup) -> {
 				for (RuneliteNpc npc : npcGroup.npcs)
 				{
-					remove(npc);
+					disableObject(npc);
 				}
 			});
 		}

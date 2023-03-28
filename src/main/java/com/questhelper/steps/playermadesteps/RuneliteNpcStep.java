@@ -55,9 +55,9 @@ public class RuneliteNpcStep extends DetailedQuestStep
 	List<String> npcsGroupsToDelete = new ArrayList<>();
 	HashMap<String, RuneliteNpc> npcsToDelete = new HashMap<>();
 
-	public RuneliteNpcStep(QuestHelper questHelper, RuneliteNpc runeliteNpc, WorldPoint wp, String text, Requirement... requirements)
+	public RuneliteNpcStep(QuestHelper questHelper, RuneliteNpc runeliteNpc, String text, Requirement... requirements)
 	{
-		super(questHelper, wp, text, requirements);
+		super(questHelper, runeliteNpc.getWorldPoint(), text, requirements);
 		this.runeliteNpc = runeliteNpc;
 	}
 
@@ -77,19 +77,7 @@ public class RuneliteNpcStep extends DetailedQuestStep
 
 	private void removeRuneliteNpcs()
 	{
-		npcsToDelete.forEach((groupID, runeliteNpc) -> {
-			runeliteObjectManager.removeRuneliteNpc(groupID, runeliteNpc);
-		});
-	}
-
-	public void addNpcToDelete(String groupID, RuneliteNpc npc)
-	{
-		npcsToDelete.put(groupID, npc);
-	}
-
-	public void addNpcToDelete(QuestHelper questHelper, RuneliteNpc npc)
-	{
-		npcsToDelete.put(questHelper.toString(), npc);
+		runeliteObjectManager.removeGroupAndSubgroups(this.toString());
 	}
 
 	@Override

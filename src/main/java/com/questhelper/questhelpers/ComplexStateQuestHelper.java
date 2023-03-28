@@ -58,6 +58,7 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 	@Override
 	public void shutDown()
 	{
+		super.shutDown();
 		shutDownStep();
 	}
 

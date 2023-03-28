@@ -30,9 +30,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
-import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -41,28 +39,20 @@ import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteNpc;
 import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteNpcStep;
-import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteObjectManager;
 import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.inject.Inject;
-import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.callback.ClientThread;
-
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.COOKS_HELPER
 )
 public class CooksHelper extends ComplexStateQuestHelper
 {
-	private RuneliteNpcStep talkToCook;
-
-	@Inject
-	RuneliteObjectManager runeliteObjectManager;
+	private RuneliteNpcStep talkToCook, talkToHopleez;
 
 	@Override
 	public QuestStep loadStep()
@@ -75,8 +65,8 @@ public class CooksHelper extends ComplexStateQuestHelper
 
 		DetailedQuestStep lol = new DetailedQuestStep(this, "WOW IT WORKED!!!!");
 		ConditionalStep questSteps = new ConditionalStep(this, talkToCook);
-//		questSteps.addStep(req.getNewState(1), lol);
-//		questSteps.addStep(req, lol);
+		questSteps.addStep(req.getNewState(1), lol);
+		questSteps.addStep(req, talkToHopleez);
 
 		// We want something which can be added to a requirement, which
 
@@ -112,18 +102,19 @@ public class CooksHelper extends ComplexStateQuestHelper
 		// NPC exists during a step (align to a Requirement?)
 		// NPC exists always (align to a Requirement?)
 
-		// Solutions:
-		// Whilst Helper: Add to a group related to the Helper, remove when helper closed
-		// Whilst Requirement: onGameTick change?
-		// Whilst step: Add to step as done currently???
-		// Npc always: Just add it to a group of perm npcs?
+		// TODO: Add conditional dialog
+		// Currently added to the NPC. When click 'Talk', iterate through the Requirements
+		// NOTE: Some requirements kinda require an external tracking element, so may need to shove into a ConditionalStep or some weirdness?
+
 		RuneliteNpc cooksCousin = runeliteObjectManager.createRuneliteNpc(this, client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0), 808);
 		cooksCousin.setName("Cook's Cousin");
 		cooksCousin.setFace(4626);
 		cooksCousin.setExamine("The Cook's cousin, Vinny.");
 
-		talkToCook = new RuneliteNpcStep(this, cooksCousin, new WorldPoint(3209, 3215, 0), "Talk to the Lumbridge Cook.");
-		talkToCook.addNpcToDelete(this, cooksCousin);
+		// TODO: Need a way to define the groupID of a runelite object to be a quest step without it being stuck
+		// Add each step's groupID as a sub-group
+		talkToCook = new RuneliteNpcStep(this, cooksCousin, "Talk to the Lumbridge Cook.");
+//		talkToCook.addNpcToDelete(this, cooksCousin);
 
 		RuneliteNpcDialogStep dialog = cooksCousin.createDialogStepForNpc(
 			"You were seriously great when you defeated the Culinaromancer! I can't believe I nearly caused all of those people to be killed! So how is the adventuring going now?");
@@ -132,21 +123,32 @@ public class CooksHelper extends ComplexStateQuestHelper
 		dialog3.setStateProgression(new RuneliteConfigSetter(configManager, "cookshelper", "1"));
 		dialog.setContinueDialog(dialog2);
 		dialog2.setContinueDialog(dialog3);
-		cooksCousin.setDialogTree(dialog);
-	}
+		cooksCousin.addDialogTree(null, dialog);
 
-	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		List<ItemRequirement> reqs = new ArrayList<>();
+		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, "cookshelper", 1);
+		RuneliteNpcDialogStep dialogV2 = cooksCousin.createDialogStepForNpc(
+			"That terribly dressed person is still outside the castle, go talk to them!");
+		cooksCousin.addDialogTree(req, dialogV2);
 
-		return reqs;
-	}
+		RuneliteNpc hopleez = runeliteObjectManager.createRuneliteNpc(this, client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808);
+		hopleez.setName("Hopleez");
+		hopleez.setFace(7481);
+		hopleez.setExamine("He was here first.");
+		talkToHopleez = new RuneliteNpcStep(this, hopleez, "Talk to Hopleez east of Lumbridge Castle.");
 
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return Arrays.asList();
+		RuneliteNpcDialogStep hopleezDialog1 = hopleez.createDialogStepForNpc("Hop noob.");
+		RunelitePlayerDialogStep playerHopleez1 = new RunelitePlayerDialogStep(client, "What? Also, what are you wearing?");
+		RuneliteNpcDialogStep hopleezDialog2 = hopleez.createDialogStepForNpc("Hop NOOB.");
+		hopleezDialog1.setContinueDialog(playerHopleez1);
+		playerHopleez1.setContinueDialog(hopleezDialog2);
+		hopleez.addDialogTree(null, hopleezDialog1);
+
+		RuneliteNpcDialogStep hopleezDialog1V2 = hopleez.createDialogStepForNpc("Hop noob.");
+		RunelitePlayerDialogStep playerHopleez1V2 = new RunelitePlayerDialogStep(client, "What? The Cook's Cousin sent me to see what you were doing here.");
+		RuneliteNpcDialogStep hopleezDialog2V2 = hopleez.createDialogStepForNpc("I was here first but this noob is crashing me!");
+		hopleezDialog1V2.setContinueDialog(playerHopleez1V2);
+		playerHopleez1V2.setContinueDialog(hopleezDialog2V2);
+		hopleez.addDialogTree(req, hopleezDialog1V2);
 	}
 
 	@Override
@@ -156,15 +158,10 @@ public class CooksHelper extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemReward> getItemRewards()
-	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 2000));
-	}
-
-	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
+		return Collections.singletonList(
+			new UnlockReward("A sense of pride and accomplishment")
 		);
 	}
 
@@ -172,8 +169,8 @@ public class CooksHelper extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		PanelDetails chopMagicsSteps = new PanelDetails("Helping the Cook", Collections.singletonList(talkToCook));
-		allSteps.add(chopMagicsSteps);
+		PanelDetails helpingTheCousinSteps = new PanelDetails("Helping the Cook's Cousin", Arrays.asList(talkToCook, talkToHopleez));
+		allSteps.add(helpingTheCousinSteps);
 
 		return allSteps;
 	}

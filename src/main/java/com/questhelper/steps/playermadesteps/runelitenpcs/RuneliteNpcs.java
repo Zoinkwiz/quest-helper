@@ -55,7 +55,7 @@ public class RuneliteNpcs
 	{
 		for (RuneliteNpc npc : npcs)
 		{
-			npc.remove();
+			npc.disable();
 		}
 	}
 

@@ -25,7 +25,9 @@
 package com.questhelper.steps.playermadesteps.runelitenpcs;
 
 import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
+import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -44,8 +46,8 @@ public class RuneliteNpc
 	private final Client client;
 	private final ClientThread clientThread;
 
-	@Setter
-	private RuneliteNpcDialogStep dialogTree;
+	@Getter
+	private HashMap<Requirement, RuneliteDialogStep> dialogTrees = new HashMap<>();
 
 	private Model model;
 	private int animation;
@@ -63,7 +65,7 @@ public class RuneliteNpc
 
 	@Getter
 	@Setter
-	private String examine = "Test examine.";
+	private String examine;
 
 	@Getter
 	@Setter
@@ -150,9 +152,15 @@ public class RuneliteNpc
 		}
 	}
 
-	public void remove()
+	public void disable()
 	{
 		runeliteObject.setActive(false);
+	}
+
+	// Won't have a null default at start inherently
+	public void addDialogTree(Requirement req, RuneliteDialogStep dialogTree)
+	{
+		dialogTrees.put(req, dialogTree);
 	}
 
 	public RuneliteNpcDialogStep createDialogStepForNpc(String text, int faceAnimation)
@@ -183,18 +191,25 @@ public class RuneliteNpc
 
 	public void setupChatBox(ChatboxPanelManager chatboxPanelManager)
 	{
-		if (dialogTree.isPlayer())
-		{
-			currentChatBox = new PlayerChatBox(client, chatboxPanelManager)
-				.dialog(dialogTree)
-				.build();
-		}
-		else
-		{
-			currentChatBox = new NpcChatBox(client, chatboxPanelManager)
-				.dialog(dialogTree)
-				.build();
-		}
+		dialogTrees.forEach(((requirement, runeliteDialogStep) -> {
+			if (requirement == null || requirement.check(client))
+			{
+				if (runeliteDialogStep.isPlayer())
+				{
+					currentChatBox = new PlayerChatBox(client, chatboxPanelManager)
+						.dialog(runeliteDialogStep)
+						.build();
+				}
+				else
+				{
+					currentChatBox = new NpcChatBox(client, chatboxPanelManager)
+						.dialog(runeliteDialogStep)
+						.build();
+				}
+				return;
+			}
+			throw new IllegalStateException("No default dialog specified for " + getName());
+		}));
 	}
 
 	public void progressDialog()

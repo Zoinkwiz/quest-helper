@@ -23,8 +23,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps;
+package com.questhelper.steps.playermadesteps.runelitenpcs;
 
+import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,6 @@ import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.chatbox.ChatboxInput;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.KeyListener;
@@ -59,7 +59,6 @@ public class ChatBox extends ChatboxInput implements KeyListener
 	protected final Client client;
 
 	protected final ChatboxPanelManager chatboxPanelManager;
-	protected final ClientThread clientThread;
 
 	@Getter
 	protected RuneliteDialogStep dialog;
@@ -70,12 +69,16 @@ public class ChatBox extends ChatboxInput implements KeyListener
 	@Getter
 	private Runnable onClose;
 
+	RuneliteDialogStep nextDialog;
+	ChatBox nextChatBox;
+
+	boolean chatProgressed = false;
+
 	@Inject
-	protected ChatBox(Client client, ChatboxPanelManager chatboxPanelManager, ClientThread clientThread)
+	protected ChatBox(Client client, ChatboxPanelManager chatboxPanelManager)
 	{
 		this.client = client;
 		this.chatboxPanelManager = chatboxPanelManager;
-		this.clientThread = clientThread;
 	}
 
 	public ChatBox dialog(RuneliteDialogStep dialog)
@@ -195,30 +198,42 @@ public class ChatBox extends ChatboxInput implements KeyListener
 		dialogWidget.revalidate();
 	}
 
+	public void progressDialog()
+	{
+		if (nextDialog == null) return;
+
+		// If already progressed, try to progress next step
+		if (nextChatBox != null)
+		{
+			nextChatBox.progressDialog();
+			return;
+		}
+
+		if (nextDialog.isPlayer())
+		{
+			nextChatBox = new PlayerChatBox(client, chatboxPanelManager)
+				.dialog(nextDialog)
+				.build();
+			return;
+		}
+		nextChatBox = new NpcChatBox(client, chatboxPanelManager)
+			.dialog(nextDialog)
+			.build();
+	}
+
 	protected void continueChat()
 	{
 		dialog.progressState();
 
-		RuneliteDialogStep nextDialog = dialog.getContinueDialog();
+		// Already clicked an option
+		if (nextDialog != null) return;
+
+		// TODO: Possible race condition once we add multiple choices, need to make sure they lock choices once one is clicked
+		nextDialog = dialog.getContinueDialog();
 		if (nextDialog == null)
 		{
 			chatboxPanelManager.close();
-			return;
 		}
-
-		// Intended to add a small delay, rubbish way to do it
-		clientThread.invokeLater(() -> {
-			if (nextDialog.isPlayer())
-			{
-				new PlayerChatBox(client, chatboxPanelManager, clientThread)
-					.dialog(nextDialog)
-					.build();
-				return;
-			}
-			new NpcChatBox(client, chatboxPanelManager, clientThread)
-				.dialog(nextDialog)
-				.build();
-		});
 	}
 
 	private void callback(Entry entry)

@@ -29,17 +29,18 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.overlay.DirectionArrow;
+import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteNpc;
+import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteObjectManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 // TODO: Separate out NPC logic from Step logic
@@ -51,7 +52,8 @@ public class RuneliteNpcStep extends DetailedQuestStep
 	private final RuneliteNpc runeliteNpc;
 
 	// TODO: Maybe a list of npcs to 'delete' with this?
-	List<String> npcsToDelete = new ArrayList<>();
+	List<String> npcsGroupsToDelete = new ArrayList<>();
+	HashMap<String, RuneliteNpc> npcsToDelete = new HashMap<>();
 
 	public RuneliteNpcStep(QuestHelper questHelper, RuneliteNpc runeliteNpc, WorldPoint wp, String text, Requirement... requirements)
 	{
@@ -70,20 +72,24 @@ public class RuneliteNpcStep extends DetailedQuestStep
 	{
 		super.shutDown();
 		// Delete all fake npcs associated
-		clientThread.invokeLater(this::removeRuneliteNpc);
+		clientThread.invokeLater(this::removeRuneliteNpcs);
 	}
 
-	private void removeRuneliteNpc()
+	private void removeRuneliteNpcs()
 	{
-		for (String npcGroupID : npcsToDelete)
-		{
-			runeliteObjectManager.remove(npcGroupID);
-		}
+		npcsToDelete.forEach((groupID, runeliteNpc) -> {
+			runeliteObjectManager.removeRuneliteNpc(groupID, runeliteNpc);
+		});
 	}
 
-	public void addNpcToDelete(String id)
+	public void addNpcToDelete(String groupID, RuneliteNpc npc)
 	{
-		npcsToDelete.add(id);
+		npcsToDelete.put(groupID, npc);
+	}
+
+	public void addNpcToDelete(QuestHelper questHelper, RuneliteNpc npc)
+	{
+		npcsToDelete.put(questHelper.toString(), npc);
 	}
 
 	@Override

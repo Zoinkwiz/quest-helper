@@ -23,16 +23,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps;
+package com.questhelper.steps.playermadesteps.runelitenpcs;
+
 
 import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetModelType;
+import net.runelite.api.widgets.WidgetPositionMode;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 
-public class NpcChatBox extends ChatBox
+public class PlayerChatBox extends ChatBox
 {
-	protected NpcChatBox(Client client, ChatboxPanelManager chatboxPanelManager, ClientThread clientThread)
+	protected PlayerChatBox(Client client, ChatboxPanelManager chatboxPanelManager)
 	{
-		super(client, chatboxPanelManager, clientThread);
+		super(client, chatboxPanelManager);
+	}
+
+	@Override
+	protected void open()
+	{
+		Widget container = chatboxPanelManager.getContainerWidget();
+
+		Widget npcFaceWidget = container.createChild(0, WidgetType.RECTANGLE);
+		npcFaceWidget.setType(WidgetType.MODEL);
+		npcFaceWidget.setModelId(dialog.getFaceID());
+		npcFaceWidget.setAnimationId(dialog.getAnimation());
+		npcFaceWidget.setRotationX(40);
+		npcFaceWidget.setRotationZ(166);
+		npcFaceWidget.setModelZoom(796);
+		npcFaceWidget.setOriginalX(420);
+		npcFaceWidget.setOriginalY(50);
+		npcFaceWidget.setOriginalWidth(32);
+		npcFaceWidget.setOriginalHeight(32);
+		npcFaceWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
+		npcFaceWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
+		npcFaceWidget.setModelType(WidgetModelType.LOCAL_PLAYER_CHATHEAD);
+		npcFaceWidget.revalidate();
+
+		setupDialog(container, 5);
 	}
 }
+

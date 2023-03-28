@@ -38,10 +38,10 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
-import com.questhelper.steps.playermadesteps.RuneliteNpc;
+import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteNpc;
 import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteNpcStep;
-import com.questhelper.steps.playermadesteps.RuneliteObjectManager;
+import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteObjectManager;
 import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +51,7 @@ import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.callback.ClientThread;
 
 
 @QuestDescriptor(
@@ -104,12 +105,25 @@ public class CooksHelper extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		RuneliteNpc cooksCousin = runeliteObjectManager.createRuneliteNpc("cooks_cousin", client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0), 808);
+		// TODO: Decide on logic for NPCs being maintained in the world
+		// Use-cases:
+		// NPC exists whilst a Helper is open
+		// NPC exists whilst a Requirement is true
+		// NPC exists during a step (align to a Requirement?)
+		// NPC exists always (align to a Requirement?)
+
+		// Solutions:
+		// Whilst Helper: Add to a group related to the Helper, remove when helper closed
+		// Whilst Requirement: onGameTick change?
+		// Whilst step: Add to step as done currently???
+		// Npc always: Just add it to a group of perm npcs?
+		RuneliteNpc cooksCousin = runeliteObjectManager.createRuneliteNpc(this, client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0), 808);
 		cooksCousin.setName("Cook's Cousin");
 		cooksCousin.setFace(4626);
+		cooksCousin.setExamine("The Cook's cousin, Vinny.");
 
 		talkToCook = new RuneliteNpcStep(this, cooksCousin, new WorldPoint(3209, 3215, 0), "Talk to the Lumbridge Cook.");
-		talkToCook.addNpcToDelete("cooks_cousin");
+		talkToCook.addNpcToDelete(this, cooksCousin);
 
 		RuneliteNpcDialogStep dialog = cooksCousin.createDialogStepForNpc(
 			"You were seriously great when you defeated the Culinaromancer! I can't believe I nearly caused all of those people to be killed! So how is the adventuring going now?");

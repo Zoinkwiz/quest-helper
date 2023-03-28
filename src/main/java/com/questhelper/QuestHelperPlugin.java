@@ -46,7 +46,7 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.playermadesteps.RuneliteObjectManager;
+import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteObjectManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;

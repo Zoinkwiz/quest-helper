@@ -279,7 +279,7 @@ public class RuneliteNpc
 
 		runeliteObject.setOrientation(actualNewOrientation);
 
-		boolean isFacingPlayer = actualNewOrientation != newOrientation;
+		boolean isFacingPlayer = actualNewOrientation == newOrientation;
 		if (!isFacingPlayer)
 		{
 			runeliteObject.setAnimation(client.loadAnimation(819));

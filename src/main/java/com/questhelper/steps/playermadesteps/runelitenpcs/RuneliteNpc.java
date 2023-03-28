@@ -251,7 +251,7 @@ public class RuneliteNpc
 
 	public boolean partiallyRotateToPlayer(Client client)
 	{
-		final int MAX_ROTATION_PER_CALL = 30;
+		final int MAX_ROTATION_PER_CALL = 32;
 		final int MAX_ROTATION = 2048;
 		double playerX = client.getLocalPlayer().getLocalLocation().getX();
 		double playerY = client.getLocalPlayer().getLocalLocation().getY();

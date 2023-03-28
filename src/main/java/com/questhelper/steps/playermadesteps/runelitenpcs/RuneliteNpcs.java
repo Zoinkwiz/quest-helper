@@ -75,7 +75,9 @@ public class RuneliteNpcs
 		// Remove all associated groups
 		for (RuneliteNpcs subGroup : subGroups)
 		{
-			runeliteObjectManager.removeGroup(subGroup.getGroupName());
+			runeliteObjectManager.removeGroupAndSubgroups(subGroup.getGroupName());
 		}
+		npcs.clear();
+		subGroups.clear();
 	}
 }

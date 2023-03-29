@@ -113,7 +113,7 @@ public class RuneliteNpcStep extends DetailedQuestStep
 
 	private void highlightNpc(Color color, Graphics2D graphics)
 	{
-//		if (!runeliteNpc.getWorldPoint().isInScene(client)) return;
+		if (!runeliteNpc.getWorldPoint().isInScene(client)) return;
 		switch (questHelper.getConfig().highlightStyleNpcs())
 		{
 			case CONVEX_HULL:

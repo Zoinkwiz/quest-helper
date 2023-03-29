@@ -354,6 +354,8 @@ public class RuneliteObjectManager
 			.setDeprioritized(false)
 			.onClick((menuEntry -> {
 				clickPos = client.getMouseCanvasPosition();
+				clickAnimationFrame = 0;
+				bufferAnimation = 0;
 
 				WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
 				if (wp.distanceTo(runeliteNpc.getWorldPoint()) > 1)

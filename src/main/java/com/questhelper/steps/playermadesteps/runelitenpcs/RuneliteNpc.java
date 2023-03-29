@@ -28,9 +28,11 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
 import java.util.HashMap;
+import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
 import net.runelite.api.ModelData;
 import net.runelite.api.RuneLiteObject;
@@ -72,6 +74,12 @@ public class RuneliteNpc
 	private Requirement displayReq;
 
 	ChatBox currentChatBox;
+
+	@Getter
+	private final HashMap<String, Consumer<MenuEntry>> actions = new HashMap<>();
+
+	@Getter
+	private final HashMap<String, Consumer<MenuEntry>> priorityActions = new HashMap<>();
 
 	protected RuneliteNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
@@ -161,6 +169,26 @@ public class RuneliteNpc
 	public void addDialogTree(Requirement req, RuneliteDialogStep dialogTree)
 	{
 		dialogTrees.put(req, dialogTree);
+	}
+
+	public void addTalkAction(RuneliteObjectManager runeliteObjectManager)
+	{
+		priorityActions.put("Talk", runeliteObjectManager.getTalkAction(this));
+	}
+
+	public void addExamineAction(RuneliteObjectManager runeliteObjectManager)
+	{
+		actions.put("Examine", runeliteObjectManager.getExamineAction(this));
+	}
+
+	public void addAction(String name, Consumer<MenuEntry> action)
+	{
+		actions.put(name, action);
+	}
+
+	public void addPriorityAction(String name, Consumer<MenuEntry> action)
+	{
+		priorityActions.put(name, action);
 	}
 
 	public RuneliteNpcDialogStep createDialogStepForNpc(String text, int faceAnimation)

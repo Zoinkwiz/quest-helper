@@ -110,6 +110,8 @@ public class CooksHelper extends ComplexStateQuestHelper
 		cooksCousin.setName("Cook's Cousin");
 		cooksCousin.setFace(4626);
 		cooksCousin.setExamine("The Cook's cousin, Vinny.");
+		cooksCousin.addTalkAction(runeliteObjectManager);
+		cooksCousin.addExamineAction(runeliteObjectManager);
 
 		// TODO: Need a way to define the groupID of a runelite object to be a quest step without it being stuck
 		// Add each step's groupID as a sub-group
@@ -134,6 +136,9 @@ public class CooksHelper extends ComplexStateQuestHelper
 		hopleez.setName("Hopleez");
 		hopleez.setFace(7481);
 		hopleez.setExamine("He was here first.");
+		hopleez.addTalkAction(runeliteObjectManager);
+		hopleez.addExamineAction(runeliteObjectManager);
+
 		talkToHopleez = new RuneliteNpcStep(this, hopleez, "Talk to Hopleez east of Lumbridge Castle.");
 
 		RuneliteNpcDialogStep hopleezDialog1 = hopleez.createDialogStepForNpc("Hop noob.");

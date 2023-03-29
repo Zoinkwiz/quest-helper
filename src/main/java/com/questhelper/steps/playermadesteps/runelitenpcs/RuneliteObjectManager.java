@@ -27,8 +27,10 @@ package com.questhelper.steps.playermadesteps.runelitenpcs;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.questhelper.Cheerer;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Graphics2D;
+import java.awt.Menu;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -43,6 +47,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Model;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -223,8 +228,12 @@ public class RuneliteObjectManager
 			if (!isMouseOverNpc(npc)) return;
 			if (event.getOption().equals("Walk here") && isMouseOverNpc(npc))
 			{
-				addExamine(npc, menuEntries, widgetIndex, widgetID);
-				addTalkOption(npc, widgetIndex, widgetID);
+				npc.getActions().forEach((name, action) -> {
+					addAction(npc, widgetIndex, widgetID, action, name);
+				});
+				npc.getPriorityActions().forEach((name, action) -> {
+					addPriorityAction(npc, widgetIndex, widgetID, action, name);
+				});
 			}
 
 			if (lp == null)
@@ -309,81 +318,91 @@ public class RuneliteObjectManager
 		}
 	}
 
-	public void addExamine(RuneliteNpc npc, MenuEntry[] menuEntries, int widgetIndex, int widgetID)
+	public Consumer<MenuEntry> getExamineAction(RuneliteNpc npc)
 	{
-		if (npc.getExamine() == null) return;
+		return menuEntry -> {
+			clickPos = client.getMouseCanvasPosition();
+			clickAnimationFrame = 0;
+			bufferAnimation = 0;
 
-		// This is important for getting talk to be left-clickable, but don't fully understand why
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append(npc.getExamine())
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.NPC_EXAMINE)
+				.runeLiteFormattedMessage(chatMessage)
+				.timestamp((int) (System.currentTimeMillis() / 1000))
+				.build());
+		};
+	}
+
+	public Consumer<MenuEntry> getTalkAction(RuneliteNpc runeliteNpc)
+	{
+		return menuEntry -> {
+			clickPos = client.getMouseCanvasPosition();
+		clickAnimationFrame = 0;
+		bufferAnimation = 0;
+
+		WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+		if (wp.distanceTo(runeliteNpc.getWorldPoint()) > 1)
+		{
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("You'll need to move closer to them to talk!")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.NPC_EXAMINE)
+				.runeLiteFormattedMessage(chatMessage)
+				.timestamp((int) (System.currentTimeMillis() / 1000))
+				.build());
+			return;
+		}
+		lastInteractedWithNpc = runeliteNpc;
+
+		// Set to rotate towards player
+		rotatingObjectsToPlayer.add(runeliteNpc);
+		runeliteNpc.setupChatBox(chatboxPanelManager);
+		};
+	}
+
+	private void addPriorityAction(RuneliteNpc runeliteNpc, int widgetIndex, int widgetID, Consumer<MenuEntry> action, String actionWord)
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		client.createMenuEntry(menuEntries.length - 1)
-			.setOption("Examine")
-			.setTarget("<col=ffff00>" + npc.getName() + "</col>")
-			.onClick(menuEntry -> {
-				clickPos = client.getMouseCanvasPosition();
-				clickAnimationFrame = 0;
-				bufferAnimation = 0;
-
-				String chatMessage = new ChatMessageBuilder()
-					.append(ChatColorType.NORMAL)
-					.append(npc.getExamine())
-					.build();
-
-				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.NPC_EXAMINE)
-					.runeLiteFormattedMessage(chatMessage)
-					.timestamp((int) (System.currentTimeMillis() / 1000))
-					.build());
-			})
-			.setType(MenuAction.RUNELITE)
+		client.createMenuEntry(-2)
+			.setOption(actionWord)
+			.setTarget("<col=ffff00>" + runeliteNpc.getName() + "</col>")
+			.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
+			.setDeprioritized(false)
+			.onClick(action)
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
 	}
 
-	public void addTalkOption(RuneliteNpc runeliteNpc, int widgetIndex, int widgetID)
+	private void addAction(RuneliteNpc runeliteNpc, int widgetIndex, int widgetID, Consumer<MenuEntry> action, String actionWord)
 	{
-		if (runeliteNpc.getDialogTrees() == null)
-		{
-			return;
-		}
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		client.createMenuEntry(-2)
-			.setOption("Talk")
+		client.createMenuEntry(menuEntries.length - 1)
+			.setOption(actionWord)
 			.setTarget("<col=ffff00>" + runeliteNpc.getName() + "</col>")
-			.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
+			.setType(MenuAction.RUNELITE)
 			.setDeprioritized(false)
-			.onClick((menuEntry -> {
-				clickPos = client.getMouseCanvasPosition();
-				clickAnimationFrame = 0;
-				bufferAnimation = 0;
-
-				WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-				if (wp.distanceTo(runeliteNpc.getWorldPoint()) > 1)
-				{
-					String chatMessage = new ChatMessageBuilder()
-						.append(ChatColorType.NORMAL)
-						.append("You'll need to move closer to them to talk!")
-						.build();
-
-					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.NPC_EXAMINE)
-						.runeLiteFormattedMessage(chatMessage)
-						.timestamp((int) (System.currentTimeMillis() / 1000))
-						.build());
-					return;
-				}
-				lastInteractedWithNpc = runeliteNpc;
-
-				// Set to rotate towards player
-				rotatingObjectsToPlayer.add(runeliteNpc);
-				runeliteNpc.setupChatBox(chatboxPanelManager);
-			}))
+			.onClick(action)
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
 	}
 
 	private boolean isMouseOverNpc(RuneliteNpc runeliteNpc)
 	{
+		Consumer<MenuEntry> lol = (MenuEntry t) -> {
+
+		};
 		LocalPoint lp = LocalPoint.fromWorld(client, runeliteNpc.getWorldPoint());
 
 		if (lp == null) return false;

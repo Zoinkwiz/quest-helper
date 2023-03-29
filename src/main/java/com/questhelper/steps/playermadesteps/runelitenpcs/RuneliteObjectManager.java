@@ -446,6 +446,15 @@ public class RuneliteObjectManager
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		npcGroups.forEach((groupID, npcGroup) -> {
+			for (RuneliteNpc npc : npcGroup.npcs)
+			{
+				if (npc.isActive() && client.getPlane() != npc.getWorldPoint().getPlane())
+				{
+					disableObject(npc);
+				}
+			}
+		});
 		if (lastInteractedWithNpc == null) return;
 		lastInteractedWithNpc.progressDialog();
 	}

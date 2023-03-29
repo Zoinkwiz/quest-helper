@@ -22,15 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.runelitenpcs;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.questhelper.Cheerer;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Graphics2D;
-import java.awt.Menu;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -39,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -47,7 +44,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Model;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -83,7 +79,7 @@ public class RuneliteObjectManager
 	protected final ChatMessageManager chatMessageManager;
 	protected final SpriteManager spriteManager;
 
-	protected final Map<String, RuneliteNpcs> npcGroups = new HashMap<>();
+	protected final Map<String, ExtendedRuneliteObjects> runeliteObjectGroups = new HashMap<>();
 
 	// Red Click
 	Point clickPos;
@@ -92,7 +88,7 @@ public class RuneliteObjectManager
 	int[] redClick = new int[]{SpriteID.RED_CLICK_ANIMATION_1, SpriteID.RED_CLICK_ANIMATION_2, SpriteID.RED_CLICK_ANIMATION_3, SpriteID.RED_CLICK_ANIMATION_4};
 	final int ANIMATION_PERIOD = 5;
 
-	RuneliteNpc lastInteractedWithNpc;
+	ExtendedRuneliteObject lastInteractedWithRuneliteObject;
 
 	private static final List<MenuAction> OBJECT_MENU_TYPES = ImmutableList.of(
 		MenuAction.GAME_OBJECT_FIRST_OPTION,
@@ -111,7 +107,7 @@ public class RuneliteObjectManager
 		MenuAction.GROUND_ITEM_FIFTH_OPTION
 	);
 
-	List<RuneliteNpc> rotatingObjectsToPlayer = new ArrayList<>();
+	List<ExtendedRuneliteObject> rotatingObjectsToPlayer = new ArrayList<>();
 
 	@Inject
 	public RuneliteObjectManager(Client client, EventBus eventBus, ChatboxPanelManager chatboxPanelManager, ClientThread clientThread, ChatMessageManager chatMessageManager, SpriteManager spriteManager)
@@ -134,105 +130,106 @@ public class RuneliteObjectManager
 		// Need to close dialogs
 		if (chatboxPanelManager.getCurrentInput() instanceof ChatBox) chatboxPanelManager.close();
 
-		clientThread.invokeLater(this::removeRuneliteNpcs);
+		clientThread.invokeLater(this::removeRuneliteObjects);
 	}
 
-	private void removeRuneliteNpcs()
+	private void removeRuneliteObjects()
 	{
-		disableRuneliteNpcs();
-		npcGroups.clear();
+		disableRuneliteObjects();
+		runeliteObjectGroups.clear();
 	}
 
-	private void disableRuneliteNpcs()
+	private void disableRuneliteObjects()
 	{
-		npcGroups.forEach((groupID, npcGroup) -> {
-			npcGroup.disableAll(this);
+		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
+			extendedRuneliteObjectGroup.disableAll(this);
 		});
 	}
 
-	public RuneliteNpc createRuneliteNpc(String groupID, int[] model, WorldPoint wp, int animation)
+	public ExtendedRuneliteObject createRuneliteObject(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		RuneliteNpc runeliteNpc = new RuneliteNpc(client, clientThread, wp, model, animation);
+		ExtendedRuneliteObject extendedRuneliteObject = new ExtendedRuneliteObject(client, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
-		runeliteNpc.activate();
+		extendedRuneliteObject.activate();
 
-		npcGroups.computeIfAbsent(groupID, (existingVal) -> new RuneliteNpcs(groupID));
-		npcGroups.get(groupID).addNpc(runeliteNpc);
+		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
 
-		return runeliteNpc;
+		return extendedRuneliteObject;
 	}
 
-	public RuneliteNpc createRuneliteNpc(RuneliteNpcs group, int[] model, WorldPoint wp, int animation)
+	public ExtendedRuneliteObject createRuneliteObject(ExtendedRuneliteObjects group, int[] model, WorldPoint wp, int animation)
 	{
-		RuneliteNpc runeliteNpc = new RuneliteNpc(client, clientThread, wp, model, animation);
+		ExtendedRuneliteObject extendedRuneliteObject = new ExtendedRuneliteObject(client, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
-		runeliteNpc.activate();
+		extendedRuneliteObject.activate();
 
-		group.addNpc(runeliteNpc);
-		return runeliteNpc;
+		group.addExtendedRuneliteObject(extendedRuneliteObject);
+		return extendedRuneliteObject;
 	}
 
-	public RuneliteNpc createRuneliteNpc(QuestHelper questHelper, int[] model, WorldPoint wp, int animation)
+	public ExtendedRuneliteObject createRuneliteObject(QuestHelper questHelper, int[] model, WorldPoint wp, int animation)
 	{
 		String groupID = questHelper.toString();
-		return createRuneliteNpc(groupID, model, wp, animation);
+		return createRuneliteObject(groupID, model, wp, animation);
 	}
 
 	public void removeGroupAndSubgroups(String groupID)
 	{
-		if (npcGroups.get(groupID) == null) return;
+		if (runeliteObjectGroups.get(groupID) == null) return;
 		clientThread.invokeLater(() -> {
-			npcGroups.get(groupID).removeAllIncludingSubgroups(this);
+			runeliteObjectGroups.get(groupID).removeAllIncludingSubgroups(this);
 		});
 	}
 
-	public void removeRuneliteNpc(String groupID, RuneliteNpc npc)
+	public void removeRuneliteObject(String groupID, ExtendedRuneliteObject eRuneliteObject)
 	{
-		if (npc == null)
+		if (eRuneliteObject == null)
 		{
 			throw new IllegalStateException("Attempted to remove null RuneliteObject from Manager");
 		}
-		npc.disable();
+		eRuneliteObject.disable();
 
-		RuneliteNpcs groupNpcs = npcGroups.get(groupID);
+		ExtendedRuneliteObjects groupERuneliteObjects = runeliteObjectGroups.get(groupID);
 
-		if (groupNpcs == null)
+		if (groupERuneliteObjects == null)
 		{
-			throw new IllegalStateException("Attempted to remove non-added RuneliteNpcs " + groupID + "from Manager");
+			throw new IllegalStateException("Attempted to remove non-added ExtendedRuneliteObjects " + groupID + "from Manager");
 		}
 
-		groupNpcs.remove(npc);
+		groupERuneliteObjects.remove(eRuneliteObject);
 	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		npcGroups.forEach((groupID, npcGroup) -> {
-			for (RuneliteNpc npc : npcGroup.npcs)
+		runeliteObjectGroups.forEach((groupID, runeliteObjectGroup) -> {
+			for (ExtendedRuneliteObject runeliteObject : runeliteObjectGroup.extendedRuneliteObjects)
 			{
-				setupMenuOptions(npc, event);
+				setupMenuOptions(runeliteObject, event);
 			}
 		});
 	}
 
-	private void setupMenuOptions(RuneliteNpc npc, MenuEntryAdded event)
+	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject
+		, MenuEntryAdded event)
 	{
-		LocalPoint lp = LocalPoint.fromWorld(client, npc.getWorldPoint());
+		LocalPoint lp = LocalPoint.fromWorld(client, extendedRuneliteObject.getWorldPoint());
 
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		if (npc.getRuneliteObject() != null && npc.getRuneliteObject().getModel() != null)
+		if (extendedRuneliteObject.getRuneliteObject() != null && extendedRuneliteObject.getRuneliteObject().getModel() != null)
 		{
-			if (!isMouseOverNpc(npc)) return;
-			if (event.getOption().equals("Walk here") && isMouseOverNpc(npc))
+			if (!isMouseOverObject(extendedRuneliteObject)) return;
+			if (event.getOption().equals("Walk here") && isMouseOverObject(extendedRuneliteObject))
 			{
-				npc.getActions().forEach((name, action) -> {
-					addAction(npc, widgetIndex, widgetID, action, name);
+				extendedRuneliteObject.getActions().forEach((name, action) -> {
+					addAction(extendedRuneliteObject, widgetIndex, widgetID, action, name);
 				});
-				npc.getPriorityActions().forEach((name, action) -> {
-					addPriorityAction(npc, widgetIndex, widgetID, action, name);
+				extendedRuneliteObject.getPriorityActions().forEach((name, action) -> {
+					addPriorityAction(extendedRuneliteObject, widgetIndex, widgetID, action, name);
 				});
 			}
 
@@ -270,24 +267,24 @@ public class RuneliteObjectManager
 		}
 	}
 
-	public void setActive(RuneliteNpc npc)
+	public void setActive(ExtendedRuneliteObject extendedRuneliteObject)
 	{
-		LocalPoint lp = LocalPoint.fromWorld(client, npc.getWorldPoint());
+		LocalPoint lp = LocalPoint.fromWorld(client, extendedRuneliteObject.getWorldPoint());
 		if (lp == null) return;
 
-		npc.getRuneliteObject().setLocation(lp, client.getPlane());
-		npc.activate();
+		extendedRuneliteObject.getRuneliteObject().setLocation(lp, client.getPlane());
+		extendedRuneliteObject.activate();
 	}
 
-	public void disableObject(RuneliteNpc runeliteNpc)
+	public void disableObject(ExtendedRuneliteObject extendedRuneliteObject)
 	{
-		runeliteNpc.disable();
+		extendedRuneliteObject.disable();
 	}
 
 	public void removeGroup(String groupID)
 	{
-		npcGroups.get(groupID).removeAll(this);
-		npcGroups.remove(groupID);
+		runeliteObjectGroups.get(groupID).removeAll(this);
+		runeliteObjectGroups.remove(groupID);
 	}
 
 	private void updatePriorities(MenuEntryAdded event, int currentItemX, int currentItemY, MenuEntry[] menuEntries, LocalPoint runeliteObjectLp, boolean shouldPrioritizeObject)
@@ -318,7 +315,7 @@ public class RuneliteObjectManager
 		}
 	}
 
-	public Consumer<MenuEntry> getExamineAction(RuneliteNpc npc)
+	public Consumer<MenuEntry> getExamineAction(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		return menuEntry -> {
 			clickPos = client.getMouseCanvasPosition();
@@ -327,7 +324,7 @@ public class RuneliteObjectManager
 
 			String chatMessage = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append(npc.getExamine())
+				.append(extendedRuneliteObject.getExamine())
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
@@ -338,7 +335,7 @@ public class RuneliteObjectManager
 		};
 	}
 
-	public Consumer<MenuEntry> getTalkAction(RuneliteNpc runeliteNpc)
+	public Consumer<MenuEntry> getTalkAction(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		return menuEntry -> {
 			clickPos = client.getMouseCanvasPosition();
@@ -346,7 +343,7 @@ public class RuneliteObjectManager
 		bufferAnimation = 0;
 
 		WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-		if (wp.distanceTo(runeliteNpc.getWorldPoint()) > 1)
+		if (wp.distanceTo(extendedRuneliteObject.getWorldPoint()) > 1)
 		{
 			String chatMessage = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
@@ -360,22 +357,22 @@ public class RuneliteObjectManager
 				.build());
 			return;
 		}
-		lastInteractedWithNpc = runeliteNpc;
+		lastInteractedWithRuneliteObject = extendedRuneliteObject;
 
 		// Set to rotate towards player
-		rotatingObjectsToPlayer.add(runeliteNpc);
-		runeliteNpc.setupChatBox(chatboxPanelManager);
+		rotatingObjectsToPlayer.add(extendedRuneliteObject);
+		extendedRuneliteObject.setupChatBox(chatboxPanelManager);
 		};
 	}
 
-	private void addPriorityAction(RuneliteNpc runeliteNpc, int widgetIndex, int widgetID, Consumer<MenuEntry> action, String actionWord)
+	private void addPriorityAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, Consumer<MenuEntry> action, String actionWord)
 	{
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 		client.createMenuEntry(-2)
 			.setOption(actionWord)
-			.setTarget("<col=ffff00>" + runeliteNpc.getName() + "</col>")
+			.setTarget("<col=ffff00>" + extendedRuneliteObject.getName() + "</col>")
 			.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
 			.setDeprioritized(false)
 			.onClick(action)
@@ -383,14 +380,14 @@ public class RuneliteObjectManager
 			.setParam1(widgetID);
 	}
 
-	private void addAction(RuneliteNpc runeliteNpc, int widgetIndex, int widgetID, Consumer<MenuEntry> action, String actionWord)
+	private void addAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, Consumer<MenuEntry> action, String actionWord)
 	{
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 		client.createMenuEntry(menuEntries.length - 1)
 			.setOption(actionWord)
-			.setTarget("<col=ffff00>" + runeliteNpc.getName() + "</col>")
+			.setTarget("<col=ffff00>" + extendedRuneliteObject.getName() + "</col>")
 			.setType(MenuAction.RUNELITE)
 			.setDeprioritized(false)
 			.onClick(action)
@@ -398,16 +395,16 @@ public class RuneliteObjectManager
 			.setParam1(widgetID);
 	}
 
-	private boolean isMouseOverNpc(RuneliteNpc runeliteNpc)
+	private boolean isMouseOverObject(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		Consumer<MenuEntry> lol = (MenuEntry t) -> {
 
 		};
-		LocalPoint lp = LocalPoint.fromWorld(client, runeliteNpc.getWorldPoint());
+		LocalPoint lp = LocalPoint.fromWorld(client, extendedRuneliteObject.getWorldPoint());
 
 		if (lp == null) return false;
-		Shape clickbox = Perspective.getClickbox(client, runeliteNpc.getRuneliteObject().getModel(), runeliteNpc.getRuneliteObject().getOrientation(), lp.getX(), lp.getY(),
-			Perspective.getTileHeight(client, lp, runeliteNpc.getWorldPoint().getPlane()));
+		Shape clickbox = Perspective.getClickbox(client, extendedRuneliteObject.getRuneliteObject().getModel(), extendedRuneliteObject.getRuneliteObject().getOrientation(), lp.getX(), lp.getY(),
+			Perspective.getTileHeight(client, lp, extendedRuneliteObject.getWorldPoint().getPlane()));
 
 		if (clickbox == null) return false;
 
@@ -421,7 +418,7 @@ public class RuneliteObjectManager
 		renderRedClick(graphics);
 
 		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-		if (lastInteractedWithNpc != null && playerPosition.distanceTo(lastInteractedWithNpc.getWorldPoint()) > 1 && chatboxPanelManager.getCurrentInput() instanceof ChatBox) chatboxPanelManager.close();
+		if (lastInteractedWithRuneliteObject != null && playerPosition.distanceTo(lastInteractedWithRuneliteObject.getWorldPoint()) > 1 && chatboxPanelManager.getCurrentInput() instanceof ChatBox) chatboxPanelManager.close();
 	}
 
 	private void renderRedClick(Graphics2D graphics)
@@ -445,12 +442,12 @@ public class RuneliteObjectManager
 		}
 	}
 
-	private boolean isNpcOnTile(RuneliteNpc runeliteNpc)
+	private boolean isNpcOnTile(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		for (NPC npc : client.getNpcs())
 		{
 			WorldPoint wpNpc = npc.getWorldLocation();
-			if (wpNpc != null && wpNpc.distanceTo(runeliteNpc.getWorldPoint()) == 0)
+			if (wpNpc != null && wpNpc.distanceTo(extendedRuneliteObject.getWorldPoint()) == 0)
 			{
 				return true;
 			}
@@ -459,44 +456,44 @@ public class RuneliteObjectManager
 		return false;
 	}
 
-	private boolean isPlayerOnTile(RuneliteNpc runeliteNpc, WorldPoint playerPosition)
+	private boolean isPlayerOnTile(ExtendedRuneliteObject extendedRuneliteObject, WorldPoint playerPosition)
 	{
-		return playerPosition.distanceTo(runeliteNpc.getWorldPoint()) == 0;
+		return playerPosition.distanceTo(extendedRuneliteObject.getWorldPoint()) == 0;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		npcGroups.forEach((groupID, npcGroup) -> {
-			for (RuneliteNpc npc : npcGroup.npcs)
+		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectsGroup) -> {
+			for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectsGroup.extendedRuneliteObjects)
 			{
-				if (npc.isActive() && client.getPlane() != npc.getWorldPoint().getPlane())
+				if (extendedRuneliteObject.isActive() && client.getPlane() != extendedRuneliteObject.getWorldPoint().getPlane())
 				{
-					disableObject(npc);
+					disableObject(extendedRuneliteObject);
 				}
 			}
 		});
-		if (lastInteractedWithNpc == null) return;
-		lastInteractedWithNpc.progressDialog();
+		if (lastInteractedWithRuneliteObject == null) return;
+		lastInteractedWithRuneliteObject.progressDialog();
 	}
 
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
-		rotatingObjectsToPlayer.removeIf((runeliteNpc) -> runeliteNpc.partiallyRotateToPlayer(client));
+		rotatingObjectsToPlayer.removeIf((extendedRuneliteObject) -> extendedRuneliteObject.partiallyRotateToPlayer(client));
 
 		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-		npcGroups.forEach((groupID, npcGroup) -> {
-			for (RuneliteNpc npc : npcGroup.npcs)
+		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
+			for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectGroup.extendedRuneliteObjects)
 			{
-				boolean isVisible = npc.isActive();
-				if (isNpcOnTile(npc) || isPlayerOnTile(npc, playerPosition))
+				boolean isVisible = extendedRuneliteObject.isActive();
+				if (isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition))
 				{
-					if (isVisible) disableObject(npc);
+					if (isVisible) disableObject(extendedRuneliteObject);
 				}
 				else if (!isVisible)
 				{
-					setActive(npc);
+					setActive(extendedRuneliteObject);
 				}
 			}
 		});
@@ -507,21 +504,21 @@ public class RuneliteObjectManager
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			npcGroups.forEach((groupID, npcGroup) -> {
-				for (RuneliteNpc npc : npcGroup.npcs)
+			runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
+				for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectGroup.extendedRuneliteObjects)
 				{
-					LocalPoint lp = LocalPoint.fromWorld(client, npc.getWorldPoint());
+					LocalPoint lp = LocalPoint.fromWorld(client, extendedRuneliteObject.getWorldPoint());
 					if (lp == null) return;
-					setActive(npc);
+					setActive(extendedRuneliteObject);
 				}
 			});
 		}
 		else if (event.getGameState() == GameState.LOADING)
 		{
-			npcGroups.forEach((groupID, npcGroup) -> {
-				for (RuneliteNpc npc : npcGroup.npcs)
+			runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
+				for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectGroup.extendedRuneliteObjects)
 				{
-					disableObject(npc);
+					disableObject(extendedRuneliteObject);
 				}
 			});
 		}

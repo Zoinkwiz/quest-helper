@@ -36,9 +36,9 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
-import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteNpc;
-import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
-import com.questhelper.steps.playermadesteps.RuneliteNpcStep;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ExtendedRuneliteObject;
+import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
+import com.questhelper.steps.playermadesteps.RuneliteObjectStep;
 import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class CooksHelper extends ComplexStateQuestHelper
 {
-	private RuneliteNpcStep talkToCook, talkToHopleez;
+	private RuneliteObjectStep talkToCook, talkToHopleez;
 
 	@Override
 	public QuestStep loadStep()
@@ -106,7 +106,7 @@ public class CooksHelper extends ComplexStateQuestHelper
 		// Currently added to the NPC. When click 'Talk', iterate through the Requirements
 		// NOTE: Some requirements kinda require an external tracking element, so may need to shove into a ConditionalStep or some weirdness?
 
-		RuneliteNpc cooksCousin = runeliteObjectManager.createRuneliteNpc(this, client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0), 808);
+		ExtendedRuneliteObject cooksCousin = runeliteObjectManager.createRuneliteObject(this, client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0), 808);
 		cooksCousin.setName("Cook's Cousin");
 		cooksCousin.setFace(4626);
 		cooksCousin.setExamine("The Cook's cousin, Vinny.");
@@ -115,12 +115,12 @@ public class CooksHelper extends ComplexStateQuestHelper
 
 		// TODO: Need a way to define the groupID of a runelite object to be a quest step without it being stuck
 		// Add each step's groupID as a sub-group
-		talkToCook = new RuneliteNpcStep(this, cooksCousin, "Talk to the Lumbridge Cook.");
+		talkToCook = new RuneliteObjectStep(this, cooksCousin, "Talk to the Lumbridge Cook.");
 //		talkToCook.addNpcToDelete(this, cooksCousin);
 
-		RuneliteNpcDialogStep dialog = cooksCousin.createDialogStepForNpc(
+		RuneliteObjectDialogStep dialog = cooksCousin.createDialogStepForNpc(
 			"You were seriously great when you defeated the Culinaromancer! I can't believe I nearly caused all of those people to be killed! So how is the adventuring going now?");
-		RuneliteNpcDialogStep dialog2 = cooksCousin.createDialogStepForNpc("Are you ready for the next bit of action?");
+		RuneliteObjectDialogStep dialog2 = cooksCousin.createDialogStepForNpc("Are you ready for the next bit of action?");
 		RunelitePlayerDialogStep dialog3 = new RunelitePlayerDialogStep(client, "I sure am!");
 		dialog3.setStateProgression(new RuneliteConfigSetter(configManager, "cookshelper", "1"));
 		dialog.setContinueDialog(dialog2);
@@ -128,29 +128,29 @@ public class CooksHelper extends ComplexStateQuestHelper
 		cooksCousin.addDialogTree(null, dialog);
 
 		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, "cookshelper", 1);
-		RuneliteNpcDialogStep dialogV2 = cooksCousin.createDialogStepForNpc(
+		RuneliteObjectDialogStep dialogV2 = cooksCousin.createDialogStepForNpc(
 			"That terribly dressed person is still outside the castle, go talk to them!");
 		cooksCousin.addDialogTree(req, dialogV2);
 
-		RuneliteNpc hopleez = runeliteObjectManager.createRuneliteNpc(this, client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808);
+		ExtendedRuneliteObject hopleez = runeliteObjectManager.createRuneliteObject(this, client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808);
 		hopleez.setName("Hopleez");
 		hopleez.setFace(7481);
 		hopleez.setExamine("He was here first.");
 		hopleez.addTalkAction(runeliteObjectManager);
 		hopleez.addExamineAction(runeliteObjectManager);
 
-		talkToHopleez = new RuneliteNpcStep(this, hopleez, "Talk to Hopleez east of Lumbridge Castle.");
+		talkToHopleez = new RuneliteObjectStep(this, hopleez, "Talk to Hopleez east of Lumbridge Castle.");
 
-		RuneliteNpcDialogStep hopleezDialog1 = hopleez.createDialogStepForNpc("Hop noob.");
+		RuneliteObjectDialogStep hopleezDialog1 = hopleez.createDialogStepForNpc("Hop noob.");
 		RunelitePlayerDialogStep playerHopleez1 = new RunelitePlayerDialogStep(client, "What? Also, what are you wearing?");
-		RuneliteNpcDialogStep hopleezDialog2 = hopleez.createDialogStepForNpc("Hop NOOB.");
+		RuneliteObjectDialogStep hopleezDialog2 = hopleez.createDialogStepForNpc("Hop NOOB.");
 		hopleezDialog1.setContinueDialog(playerHopleez1);
 		playerHopleez1.setContinueDialog(hopleezDialog2);
 		hopleez.addDialogTree(null, hopleezDialog1);
 
-		RuneliteNpcDialogStep hopleezDialog1V2 = hopleez.createDialogStepForNpc("Hop noob.");
+		RuneliteObjectDialogStep hopleezDialog1V2 = hopleez.createDialogStepForNpc("Hop noob.");
 		RunelitePlayerDialogStep playerHopleez1V2 = new RunelitePlayerDialogStep(client, "What? The Cook's Cousin sent me to see what you were doing here.");
-		RuneliteNpcDialogStep hopleezDialog2V2 = hopleez.createDialogStepForNpc("I was here first but this noob is crashing me!");
+		RuneliteObjectDialogStep hopleezDialog2V2 = hopleez.createDialogStepForNpc("I was here first but this noob is crashing me!");
 		hopleezDialog1V2.setContinueDialog(playerHopleez1V2);
 		playerHopleez1V2.setContinueDialog(hopleezDialog2V2);
 		hopleez.addDialogTree(req, hopleezDialog1V2);

@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.runelitenpcs;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import java.awt.event.KeyEvent;

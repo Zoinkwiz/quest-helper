@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,28 +23,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
-import java.util.ArrayList;
-import lombok.Getter;
-import lombok.Setter;
+import net.runelite.api.Client;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 
-public class RuneliteNpcDialogStep extends RuneliteDialogStep
+public class NpcChatBox extends ChatBox
 {
-	@Setter
-	@Getter
-	private RuneliteDialogStep continueDialog;
-
-	@Getter
-	private final ArrayList<RuneliteDialogStep> dialogChoices = new ArrayList<>();
-
-	public RuneliteNpcDialogStep(String name, String text, int faceID, int animation)
+	protected NpcChatBox(Client client, ChatboxPanelManager chatboxPanelManager)
 	{
-		super(name, text, faceID, animation);
-	}
-
-	public RuneliteNpcDialogStep(String name, String text, int faceID)
-	{
-		this(name, text, faceID, 570);
+		super(client, chatboxPanelManager);
 	}
 }

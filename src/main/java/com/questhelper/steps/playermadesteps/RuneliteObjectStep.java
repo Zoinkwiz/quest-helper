@@ -29,8 +29,8 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.overlay.DirectionArrow;
-import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteNpc;
-import com.questhelper.steps.playermadesteps.runelitenpcs.RuneliteObjectManager;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ExtendedRuneliteObject;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -40,25 +40,24 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 // TODO: Separate out NPC logic from Step logic
-public class RuneliteNpcStep extends DetailedQuestStep
+public class RuneliteObjectStep extends DetailedQuestStep
 {
 	@Inject
 	private RuneliteObjectManager runeliteObjectManager;
 
-	private final RuneliteNpc runeliteNpc;
+	private final ExtendedRuneliteObject extendedRuneliteObject;
 
 	// TODO: Maybe a list of npcs to 'delete' with this?
 	List<String> npcsGroupsToDelete = new ArrayList<>();
-	HashMap<String, RuneliteNpc> npcsToDelete = new HashMap<>();
+	HashMap<String, ExtendedRuneliteObject> npcsToDelete = new HashMap<>();
 
-	public RuneliteNpcStep(QuestHelper questHelper, RuneliteNpc runeliteNpc, String text, Requirement... requirements)
+	public RuneliteObjectStep(QuestHelper questHelper, ExtendedRuneliteObject extendedRuneliteObject, String text, Requirement... requirements)
 	{
-		super(questHelper, runeliteNpc.getWorldPoint(), text, requirements);
-		this.runeliteNpc = runeliteNpc;
+		super(questHelper, extendedRuneliteObject.getWorldPoint(), text, requirements);
+		this.extendedRuneliteObject = extendedRuneliteObject;
 	}
 
 	@Override
@@ -83,17 +82,17 @@ public class RuneliteNpcStep extends DetailedQuestStep
 	@Override
 	public void renderArrow(Graphics2D graphics)
 	{
-		if (!runeliteNpc.getWorldPoint().isInScene(client)) return;
+		if (!extendedRuneliteObject.getWorldPoint().isInScene(client)) return;
 		if (questHelper.getConfig().showMiniMapArrow())
 		{
-			if (!runeliteNpc.isActive())
+			if (!extendedRuneliteObject.isActive())
 			{
 				super.renderArrow(graphics);
 			}
 			else if (!hideWorldArrow)
 			{
-				Point p = Perspective.localToCanvas(client, runeliteNpc.getRuneliteObject().getLocation(), client.getPlane(),
-					runeliteNpc.getRuneliteObject().getModelHeight());
+				Point p = Perspective.localToCanvas(client, extendedRuneliteObject.getRuneliteObject().getLocation(), client.getPlane(),
+					extendedRuneliteObject.getRuneliteObject().getModelHeight());
 				if (p != null)
 				{
 					DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), p.getX(), p.getY() - ARROW_SHIFT_Y);
@@ -113,21 +112,21 @@ public class RuneliteNpcStep extends DetailedQuestStep
 
 	private void highlightNpc(Color color, Graphics2D graphics)
 	{
-		if (!runeliteNpc.getWorldPoint().isInScene(client)) return;
+		if (!extendedRuneliteObject.getWorldPoint().isInScene(client)) return;
 		switch (questHelper.getConfig().highlightStyleNpcs())
 		{
 			case CONVEX_HULL:
 			case OUTLINE:
-				if (!runeliteNpc.getRuneliteObject().isActive()) break;
+				if (!extendedRuneliteObject.getRuneliteObject().isActive()) break;
 				modelOutlineRenderer.drawOutline(
-					runeliteNpc.getRuneliteObject(),
+					extendedRuneliteObject.getRuneliteObject(),
 					questHelper.getConfig().outlineThickness(),
 					color,
 					questHelper.getConfig().outlineFeathering()
 				);
 				break;
 			case TILE:
-				Polygon poly = Perspective.getCanvasTilePoly(client, runeliteNpc.getRuneliteObject().getLocation());
+				Polygon poly = Perspective.getCanvasTilePoly(client, extendedRuneliteObject.getRuneliteObject().getLocation());
 				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color);

@@ -22,11 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.runelitenpcs;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
-import com.questhelper.steps.playermadesteps.RuneliteNpcDialogStep;
+import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
 import java.util.HashMap;
 import java.util.function.Consumer;
 import lombok.Getter;
@@ -41,7 +41,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 
-public class RuneliteNpc
+public class ExtendedRuneliteObject
 {
 	@Getter
 	private final RuneLiteObject runeliteObject;
@@ -81,7 +81,7 @@ public class RuneliteNpc
 	@Getter
 	private final HashMap<String, Consumer<MenuEntry>> priorityActions = new HashMap<>();
 
-	protected RuneliteNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
@@ -191,7 +191,7 @@ public class RuneliteNpc
 		priorityActions.put(name, action);
 	}
 
-	public RuneliteNpcDialogStep createDialogStepForNpc(String text, int faceAnimation)
+	public RuneliteObjectDialogStep createDialogStepForNpc(String text, int faceAnimation)
 	{
 		if (face == -1)
 		{
@@ -201,10 +201,10 @@ public class RuneliteNpc
 		{
 			throw new IllegalStateException("Name must be assigned");
 		}
-		return new RuneliteNpcDialogStep(name, text, face, faceAnimation);
+		return new RuneliteObjectDialogStep(name, text, face, faceAnimation);
 	}
 
-	public RuneliteNpcDialogStep createDialogStepForNpc(String text)
+	public RuneliteObjectDialogStep createDialogStepForNpc(String text)
 	{
 		if (face == -1)
 		{
@@ -214,7 +214,7 @@ public class RuneliteNpc
 		{
 			throw new IllegalStateException("Name must be assigned");
 		}
-		return new RuneliteNpcDialogStep(name, text, face);
+		return new RuneliteObjectDialogStep(name, text, face);
 	}
 
 	public void setupChatBox(ChatboxPanelManager chatboxPanelManager)

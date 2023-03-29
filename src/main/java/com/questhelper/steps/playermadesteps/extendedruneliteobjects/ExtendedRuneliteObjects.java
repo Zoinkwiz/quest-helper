@@ -1,59 +1,59 @@
-package com.questhelper.steps.playermadesteps.runelitenpcs;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
 // A group of RuneliteNpcs, which are used as a group in RuneliteObjectManager
-public class RuneliteNpcs
+public class ExtendedRuneliteObjects
 {
 	@Getter
 	private final String groupName;
-	List<RuneliteNpc> npcs = new ArrayList<>();
+	List<ExtendedRuneliteObject> extendedRuneliteObjects = new ArrayList<>();
 
-	List<RuneliteNpcs> subGroups = new ArrayList<>();
+	List<ExtendedRuneliteObjects> subGroups = new ArrayList<>();
 
-	public RuneliteNpcs(String groupName)
+	public ExtendedRuneliteObjects(String groupName)
 	{
 		this.groupName = groupName;
 	}
 
-	public RuneliteNpcs(String groupName, RuneliteNpc npc)
+	public ExtendedRuneliteObjects(String groupName, ExtendedRuneliteObject npc)
 	{
 		this.groupName = groupName;
-		this.npcs.add(npc);
+		this.extendedRuneliteObjects.add(npc);
 	}
 
-	public RuneliteNpcs(String groupName, List<RuneliteNpc> npcs)
+	public ExtendedRuneliteObjects(String groupName, List<ExtendedRuneliteObject> extendedRuneliteObjects)
 	{
 		this.groupName = groupName;
-		this.npcs.addAll(npcs);
+		this.extendedRuneliteObjects.addAll(extendedRuneliteObjects);
 	}
 
-	public void addNpc(RuneliteNpc npc)
+	public void addExtendedRuneliteObject(ExtendedRuneliteObject npc)
 	{
-		npcs.add(npc);
+		extendedRuneliteObjects.add(npc);
 	}
 
-	public void addSubGroup(RuneliteNpcs subgroup)
+	public void addSubGroup(ExtendedRuneliteObjects subgroup)
 	{
 		subGroups.add(subgroup);
 	}
 
-	public void remove(RuneliteNpc npc)
+	public void remove(ExtendedRuneliteObject npc)
 	{
-		npcs.remove(npc);
+		extendedRuneliteObjects.remove(npc);
 	}
 
 	public void removeAll(RuneliteObjectManager runeliteObjectManager)
 	{
 		disableAll(runeliteObjectManager);
-		npcs.clear();
+		extendedRuneliteObjects.clear();
 	}
 
 	public void disableAll(RuneliteObjectManager runeliteObjectManager)
 	{
-		for (RuneliteNpc npc : npcs)
+		for (ExtendedRuneliteObject npc : extendedRuneliteObjects)
 		{
 			npc.disable();
 		}
@@ -63,7 +63,7 @@ public class RuneliteNpcs
 	{
 		disableAll(runeliteObjectManager);
 		// Remove all associated groups
-		for (RuneliteNpcs subGroup : subGroups)
+		for (ExtendedRuneliteObjects subGroup : subGroups)
 		{
 			runeliteObjectManager.removeGroup(subGroup.getGroupName());
 		}
@@ -73,11 +73,11 @@ public class RuneliteNpcs
 	{
 		disableAllIncludingSubgroups(runeliteObjectManager);
 		// Remove all associated groups
-		for (RuneliteNpcs subGroup : subGroups)
+		for (ExtendedRuneliteObjects subGroup : subGroups)
 		{
 			runeliteObjectManager.removeGroupAndSubgroups(subGroup.getGroupName());
 		}
-		npcs.clear();
+		extendedRuneliteObjects.clear();
 		subGroups.clear();
 	}
 }

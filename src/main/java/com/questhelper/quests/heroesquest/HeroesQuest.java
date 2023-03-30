@@ -531,7 +531,7 @@ public class HeroesQuest extends BasicQuestHelper
 		if (inBlackArmGang.check(client))
 		{
 			thirdPanel = new PanelDetails("Get thieves' armband",
-				Arrays.asList(talkToKatrine, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey, enterTreasureRoom, searchChest, returnToKatrine),
+				Arrays.asList(talkToKatrine, tryToEnterTrobertHouse, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey, enterTreasureRoom, searchChest, returnToKatrine),
 				blackFullHelm, blackPlatebody, blackPlatelegs);
 		}
 		else

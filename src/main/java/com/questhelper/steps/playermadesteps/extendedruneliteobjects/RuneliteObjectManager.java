@@ -27,7 +27,6 @@ package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
@@ -83,10 +82,10 @@ public class RuneliteObjectManager
 
 	// Red Click
 	Point clickPos;
-	int clickAnimationFrame = 0;
-	int bufferAnimation = 0;
+	int redClickAnimationFrame = 0;
+	int bufferRedClickAnimation = 0;
 	int[] redClick = new int[]{SpriteID.RED_CLICK_ANIMATION_1, SpriteID.RED_CLICK_ANIMATION_2, SpriteID.RED_CLICK_ANIMATION_3, SpriteID.RED_CLICK_ANIMATION_4};
-	final int ANIMATION_PERIOD = 5;
+	final int ANIMATION_PERIOD = 10;
 
 	ExtendedRuneliteObject lastInteractedWithRuneliteObject;
 
@@ -146,9 +145,9 @@ public class RuneliteObjectManager
 		});
 	}
 
-	public ExtendedRuneliteObject createRuneliteObject(String groupID, int[] model, WorldPoint wp, int animation)
+	public FakeNpc createFakeNpc(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		ExtendedRuneliteObject extendedRuneliteObject = new ExtendedRuneliteObject(client, clientThread, wp, model, animation);
+		FakeNpc extendedRuneliteObject = new FakeNpc(client, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -158,21 +157,47 @@ public class RuneliteObjectManager
 		return extendedRuneliteObject;
 	}
 
-	public ExtendedRuneliteObject createRuneliteObject(ExtendedRuneliteObjects group, int[] model, WorldPoint wp, int animation)
+	public FakeItem createFakeItem(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		ExtendedRuneliteObject extendedRuneliteObject = new ExtendedRuneliteObject(client, clientThread, wp, model, animation);
+		FakeItem extendedRuneliteObject = new FakeItem(client, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
-		group.addExtendedRuneliteObject(extendedRuneliteObject);
+		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
+
 		return extendedRuneliteObject;
 	}
 
-	public ExtendedRuneliteObject createRuneliteObject(QuestHelper questHelper, int[] model, WorldPoint wp, int animation)
+	public FakeObject createFakeObject(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		String groupID = questHelper.toString();
-		return createRuneliteObject(groupID, model, wp, animation);
+		FakeObject extendedRuneliteObject = new FakeObject(client, clientThread, wp, model, animation);
+		// Should this be here or a separate 'activate' step?
+		extendedRuneliteObject.activate();
+
+		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
+
+		return extendedRuneliteObject;
 	}
+
+//	public ExtendedRuneliteObject createRuneliteObject(String groupID, int[] model, WorldPoint wp, int animation)
+//	{
+//		ExtendedRuneliteObject extendedRuneliteObject = new ExtendedRuneliteObject(client, clientThread, wp, model, animation);
+//		// Should this be here or a separate 'activate' step?
+//		extendedRuneliteObject.activate();
+//
+//		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+//		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
+//
+//		return extendedRuneliteObject;
+//	}
+
+//	public ExtendedRuneliteObject createRuneliteObject(QuestHelper questHelper, int[] model, WorldPoint wp, int animation)
+//	{
+//		String groupID = questHelper.toString();
+//		return createRuneliteObject(groupID, model, wp, animation);
+//	}
 
 	public void removeGroupAndSubgroups(String groupID)
 	{
@@ -220,7 +245,7 @@ public class RuneliteObjectManager
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		if (extendedRuneliteObject.getRuneliteObject() != null && extendedRuneliteObject.getRuneliteObject().getModel() != null)
+		if (!extendedRuneliteObject.isHiddenNoOptions() && extendedRuneliteObject.getRuneliteObject() != null && extendedRuneliteObject.getRuneliteObject().getModel() != null)
 		{
 			if (!isMouseOverObject(extendedRuneliteObject)) return;
 			if (event.getOption().equals("Walk here") && isMouseOverObject(extendedRuneliteObject))
@@ -231,6 +256,11 @@ public class RuneliteObjectManager
 				extendedRuneliteObject.getPriorityActions().forEach((name, action) -> {
 					addPriorityAction(extendedRuneliteObject, widgetIndex, widgetID, action, name);
 				});
+
+				if (extendedRuneliteObject.getReplaceWalkAction() != null && extendedRuneliteObject.getReplaceWalkActionText() != null)
+				{
+					addReplaceWalkAction(event.getMenuEntry(), extendedRuneliteObject);
+				}
 			}
 
 			if (lp == null)
@@ -315,54 +345,52 @@ public class RuneliteObjectManager
 		}
 	}
 
+	public void createChatboxMessage(String text)
+	{
+		String chatMessage = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append(text)
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.NPC_EXAMINE)
+			.runeLiteFormattedMessage(chatMessage)
+			.timestamp((int) (System.currentTimeMillis() / 1000))
+			.build());
+	}
+
 	public Consumer<MenuEntry> getExamineAction(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		return menuEntry -> {
-			clickPos = client.getMouseCanvasPosition();
-			clickAnimationFrame = 0;
-			bufferAnimation = 0;
-
-			String chatMessage = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append(extendedRuneliteObject.getExamine())
-				.build();
-
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.NPC_EXAMINE)
-				.runeLiteFormattedMessage(chatMessage)
-				.timestamp((int) (System.currentTimeMillis() / 1000))
-				.build());
+			createChatboxMessage(extendedRuneliteObject.getExamine());
 		};
 	}
-
+	
 	public Consumer<MenuEntry> getTalkAction(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		return menuEntry -> {
-			clickPos = client.getMouseCanvasPosition();
-		clickAnimationFrame = 0;
-		bufferAnimation = 0;
+			WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+			if (wp.distanceTo(extendedRuneliteObject.getWorldPoint()) > 1)
+			{
+				createChatboxMessage("You'll need to move closer to them to talk!");
+				return;
+			}
 
-		WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-		if (wp.distanceTo(extendedRuneliteObject.getWorldPoint()) > 1)
-		{
-			String chatMessage = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("You'll need to move closer to them to talk!")
-				.build();
-
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.NPC_EXAMINE)
-				.runeLiteFormattedMessage(chatMessage)
-				.timestamp((int) (System.currentTimeMillis() / 1000))
-				.build());
-			return;
-		}
-		lastInteractedWithRuneliteObject = extendedRuneliteObject;
-
-		// Set to rotate towards player
-		rotatingObjectsToPlayer.add(extendedRuneliteObject);
-		extendedRuneliteObject.setupChatBox(chatboxPanelManager);
+			// Set to rotate towards player
+			rotatingObjectsToPlayer.add(extendedRuneliteObject);
+			extendedRuneliteObject.setupChatBox(chatboxPanelManager);
 		};
+	}
+
+	private void addReplaceWalkAction(MenuEntry menuEntry, ExtendedRuneliteObject extendedRuneliteObject)
+	{
+		menuEntry.setOption(extendedRuneliteObject.getReplaceWalkActionText());
+		menuEntry.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>");
+		menuEntry.onClick(menuEnt -> {
+			resetRedClick();
+			lastInteractedWithRuneliteObject = extendedRuneliteObject;
+			extendedRuneliteObject.getReplaceWalkAction().accept(menuEnt);
+		});
 	}
 
 	private void addPriorityAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, Consumer<MenuEntry> action, String actionWord)
@@ -372,10 +400,14 @@ public class RuneliteObjectManager
 
 		client.createMenuEntry(-2)
 			.setOption(actionWord)
-			.setTarget("<col=ffff00>" + extendedRuneliteObject.getName() + "</col>")
+			.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
 			.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
 			.setDeprioritized(false)
-			.onClick(action)
+			.onClick(menuEntry -> {;
+				resetRedClick();
+				lastInteractedWithRuneliteObject = extendedRuneliteObject;
+				action.accept(menuEntry);
+			})
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
 	}
@@ -387,19 +419,25 @@ public class RuneliteObjectManager
 
 		client.createMenuEntry(menuEntries.length - 1)
 			.setOption(actionWord)
-			.setTarget("<col=ffff00>" + extendedRuneliteObject.getName() + "</col>")
+			.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
 			.setType(MenuAction.RUNELITE)
-			.setDeprioritized(false)
-			.onClick(action)
+			.onClick(menuEntry -> {;
+				resetRedClick();
+				action.accept(menuEntry);
+			})
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
 	}
 
+	private void resetRedClick()
+	{
+		clickPos = client.getMouseCanvasPosition();
+		redClickAnimationFrame = 0;
+		bufferRedClickAnimation = 0;
+	}
+
 	private boolean isMouseOverObject(ExtendedRuneliteObject extendedRuneliteObject)
 	{
-		Consumer<MenuEntry> lol = (MenuEntry t) -> {
-
-		};
 		LocalPoint lp = LocalPoint.fromWorld(client, extendedRuneliteObject.getWorldPoint());
 
 		if (lp == null) return false;
@@ -413,7 +451,7 @@ public class RuneliteObjectManager
 		return clickbox.contains(p.getX(), p.getY());
 	}
 
-	public void makeWorldOverlayHint(Graphics2D graphics)
+	public void makeWidgetOverlayHint(Graphics2D graphics)
 	{
 		renderRedClick(graphics);
 
@@ -423,22 +461,22 @@ public class RuneliteObjectManager
 
 	private void renderRedClick(Graphics2D graphics)
 	{
-		if (clickPos != null && clickAnimationFrame < 4)
+		if (clickPos != null && redClickAnimationFrame < 4)
 		{
-			BufferedImage img = spriteManager.getSprite(redClick[clickAnimationFrame], 0);
+			BufferedImage img = spriteManager.getSprite(redClick[redClickAnimationFrame], 0);
 			if (img == null) return;
 			Point point = new Point(clickPos.getX() - (img.getWidth() / 2), clickPos.getY() - (img.getHeight() / 2));
 			OverlayUtil.renderImageLocation(graphics, point, img);
-			bufferAnimation = Math.floorMod(bufferAnimation + 1, ANIMATION_PERIOD);
-			if (bufferAnimation == 0)
+			bufferRedClickAnimation = Math.floorMod(bufferRedClickAnimation + 1, ANIMATION_PERIOD);
+			if (bufferRedClickAnimation == 0)
 			{
-				clickAnimationFrame++;
+				redClickAnimationFrame++;
 			}
 		}
 		else
 		{
 			clickPos = null;
-			clickAnimationFrame = 0;
+			redClickAnimationFrame = 0;
 		}
 	}
 
@@ -467,14 +505,30 @@ public class RuneliteObjectManager
 		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectsGroup) -> {
 			for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectsGroup.extendedRuneliteObjects)
 			{
-				if (extendedRuneliteObject.isActive() && client.getPlane() != extendedRuneliteObject.getWorldPoint().getPlane())
+				if (extendedRuneliteObject.isActive())
 				{
-					disableObject(extendedRuneliteObject);
+					if (client.getPlane() != extendedRuneliteObject.getWorldPoint().getPlane())
+					{
+						disableObject(extendedRuneliteObject);
+					}
+					if (extendedRuneliteObject.isHiddenNoOptions())
+					{
+						disableObject(extendedRuneliteObject);
+					}
 				}
 			}
 		});
-		if (lastInteractedWithRuneliteObject == null) return;
-		lastInteractedWithRuneliteObject.progressDialog();
+
+		// TODO: This needs to be more generic, for checking what action is 'pending'. Currently this is used just to keep to a tick system for dialog loading
+		if (lastInteractedWithRuneliteObject != null)
+		{
+			lastInteractedWithRuneliteObject.checkPendingAction();
+			if (lastInteractedWithRuneliteObject.getActions().get("Talk") != null ||
+				lastInteractedWithRuneliteObject.getPriorityActions().get("Talk") != null)
+			{
+				lastInteractedWithRuneliteObject.progressDialog();
+			}
+		}
 	}
 
 	@Subscribe

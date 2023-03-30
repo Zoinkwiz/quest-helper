@@ -25,17 +25,24 @@
 package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
 import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
 import net.runelite.api.ModelData;
 import net.runelite.api.RuneLiteObject;
+import net.runelite.api.Scene;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
@@ -48,8 +55,9 @@ public class ExtendedRuneliteObject
 	private final Client client;
 	private final ClientThread clientThread;
 
+	// TODO: Some requirements kinda require an external tracking element, so may need to shove into a ConditionalStep or some weirdness?
 	@Getter
-	private HashMap<Requirement, RuneliteDialogStep> dialogTrees = new HashMap<>();
+	private LinkedHashMap<Requirement, RuneliteDialogStep> dialogTrees = new LinkedHashMap<>();
 
 	private Model model;
 	private int animation;
@@ -70,16 +78,35 @@ public class ExtendedRuneliteObject
 	private String examine;
 
 	@Getter
-	@Setter
 	private Requirement displayReq;
 
 	ChatBox currentChatBox;
+
+	@Getter
+	private ReplacedObject objectToRemove;
+
+	@Getter
+	@Setter
+	private Consumer<MenuEntry> replaceWalkAction;
+
+	@Getter
+	@Setter
+	private String replaceWalkActionText;
 
 	@Getter
 	private final HashMap<String, Consumer<MenuEntry>> actions = new HashMap<>();
 
 	@Getter
 	private final HashMap<String, Consumer<MenuEntry>> priorityActions = new HashMap<>();
+
+	protected RuneliteObjectTypes objectType = RuneliteObjectTypes.UNDEFINED;
+
+	@Getter
+	protected String nameColor = "ffff00";
+
+	@Getter
+	@Setter
+	private boolean isHiddenNoOptions;
 
 	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
@@ -101,6 +128,7 @@ public class ExtendedRuneliteObject
 		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
 		if (lp == null) return;
 		runeliteObject.setLocation(lp, client.getPlane());
+		activate();
 	}
 
 	private static ModelData createModel(Client client, int[] data)
@@ -156,13 +184,66 @@ public class ExtendedRuneliteObject
 	{
 		if (displayReq == null || displayReq.check(client))
 		{
+			if (objectToRemove != null)
+			{
+				removeOtherObjects();
+				// Delete item
+			}
+			isHiddenNoOptions = false;
 			runeliteObject.setActive(true);
+		}
+		else
+		{
+			isHiddenNoOptions = true;
+			runeliteObject.setActive(false);
 		}
 	}
 
 	public void disable()
 	{
+		if (objectToRemove != null)
+		{
+			// Add item
+			// TODO: Can't recreate object, but could create a fake RuneliteObject to represent it
+		}
 		runeliteObject.setActive(false);
+	}
+
+	public void setObjectToRemove(ReplacedObject replacedObject)
+	{
+		this.objectToRemove = replacedObject;
+		if (isActive())
+		{
+			removeOtherObjects();
+		}
+	}
+
+	public void setDisplayRequirement(Requirement req)
+	{
+		this.displayReq = req;
+		activate();
+	}
+
+	private void removeOtherObjects()
+	{
+		Scene scene = client.getScene();
+		Tile[][] tiles = scene.getTiles()[client.getPlane()];
+
+		LocalPoint lp = LocalPoint.fromWorld(client, objectToRemove.getWp());
+		if (lp == null) return;
+		Tile tile = tiles[lp.getSceneX()][lp.getSceneY()];
+		if (tile == null) return;
+
+		for (GameObject gameObject : tile.getGameObjects())
+		{
+			if (gameObject == null) continue;;
+			if (gameObject.getId() == objectToRemove.getObjectID())
+			{
+				// Currently it's not possible to re-add the Game Object outside of an area load
+				scene.removeGameObject(gameObject);
+			}
+		}
+
 	}
 
 	// Won't have a null default at start inherently
@@ -179,6 +260,18 @@ public class ExtendedRuneliteObject
 	public void addExamineAction(RuneliteObjectManager runeliteObjectManager)
 	{
 		actions.put("Examine", runeliteObjectManager.getExamineAction(this));
+	}
+
+	@Setter
+	@Getter
+	private Supplier<Boolean> pendingAction;
+
+	public void checkPendingAction()
+	{
+		if (pendingAction != null && pendingAction.get())
+		{
+			pendingAction = null;
+		}
 	}
 
 	public void addAction(String name, Consumer<MenuEntry> action)
@@ -217,9 +310,38 @@ public class ExtendedRuneliteObject
 		return new RuneliteObjectDialogStep(name, text, face);
 	}
 
+	public RuneliteObjectDialogStep createDialogStepForNpc(String text, RuneliteConfigSetter setter)
+	{
+		if (face == -1)
+		{
+			throw new IllegalStateException("Face value must be positive");
+		}
+		if (name == null)
+		{
+			throw new IllegalStateException("Name must be assigned");
+		}
+		return new RuneliteObjectDialogStep(name, text, face, setter);
+	}
+
+	public RuneliteObjectDialogStep createDialogStepForNpc(String text, int faceAnimation, RuneliteConfigSetter setter)
+	{
+		if (face == -1)
+		{
+			throw new IllegalStateException("Face value must be positive");
+		}
+		if (name == null)
+		{
+			throw new IllegalStateException("Name must be assigned");
+		}
+		return new RuneliteObjectDialogStep(name, text, face, faceAnimation, setter);
+	}
+
 	public void setupChatBox(ChatboxPanelManager chatboxPanelManager)
 	{
-		dialogTrees.forEach(((requirement, runeliteDialogStep) -> {
+		for (Map.Entry<Requirement, RuneliteDialogStep> dialogTree : dialogTrees.entrySet())
+		{
+			Requirement requirement = dialogTree.getKey();
+			RuneliteDialogStep runeliteDialogStep = dialogTree.getValue();
 			if (requirement == null || requirement.check(client))
 			{
 				if (runeliteDialogStep.isPlayer())
@@ -234,10 +356,9 @@ public class ExtendedRuneliteObject
 						.dialog(runeliteDialogStep)
 						.build();
 				}
-				return;
 			}
-			throw new IllegalStateException("No default dialog specified for " + getName());
-		}));
+		}
+		if (currentChatBox == null) throw new IllegalStateException("No default dialog specified for " + getName());
 	}
 
 	public void progressDialog()

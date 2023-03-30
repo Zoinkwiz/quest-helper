@@ -27,19 +27,26 @@ package com.questhelper.steps.playermadesteps;
 import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.Client;
 
 public class RuneliteObjectDialogStep extends RuneliteDialogStep
 {
-	@Setter
-	@Getter
-	private RuneliteDialogStep continueDialog;
-
 	@Getter
 	private final ArrayList<RuneliteDialogStep> dialogChoices = new ArrayList<>();
 
 	public RuneliteObjectDialogStep(String name, String text, int faceID, int animation)
 	{
 		super(name, text, faceID, animation);
+	}
+
+	public RuneliteObjectDialogStep(String name, String text, int faceID, int animation, RuneliteConfigSetter setter)
+	{
+		super(name, text, faceID, animation, setter);
+	}
+
+	public RuneliteObjectDialogStep(String name, String text, int faceID, RuneliteConfigSetter setter)
+	{
+		super(name, text, faceID, 570, setter);
 	}
 
 	public RuneliteObjectDialogStep(String name, String text, int faceID)

@@ -25,7 +25,6 @@
 package com.questhelper.steps.playermadesteps;
 
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 
 public class RuneliteConfigSetter

@@ -22,33 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
-import net.runelite.api.Client;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
 
-public class RunelitePlayerDialogStep extends RuneliteDialogStep
+@AllArgsConstructor
+public class ReplacedObject
 {
-	public RunelitePlayerDialogStep(Client client, String text, int animation)
-	{
-		super(client.getLocalPlayer().getName(), text, -1, animation);
-		client.getLocalPlayer().getName();
-	}
+	@Getter
+	private int objectID;
 
-	public RunelitePlayerDialogStep(Client client, String text)
-	{
-		this(client, text, 570);
-	}
-
-	public RunelitePlayerDialogStep(Client client, String text, RuneliteConfigSetter setter)
-	{
-		this(client, text, 570);
-		this.setStateProgression(setter);
-	}
-
-	@Override
-	public boolean isPlayer()
-	{
-		return true;
-	}
+	@Getter
+	private WorldPoint wp;
 }
-

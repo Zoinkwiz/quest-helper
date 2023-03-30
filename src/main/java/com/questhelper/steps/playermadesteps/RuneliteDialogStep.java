@@ -24,7 +24,6 @@
  */
 package com.questhelper.steps.playermadesteps;
 
-import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
 import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +43,6 @@ public class RuneliteDialogStep
 	@Getter
 	protected final int animation;
 
-	@Setter
 	@Getter
 	private RuneliteDialogStep continueDialog;
 
@@ -61,6 +59,15 @@ public class RuneliteDialogStep
 		this.text = text;
 		this.animation = animation;
 		this.faceID = faceID;
+	}
+
+	public RuneliteDialogStep(String name, String text, int faceID, int animation, RuneliteConfigSetter setter)
+	{
+		this.name = name;
+		this.text = text;
+		this.animation = animation;
+		this.faceID = faceID;
+		this.setStateProgression(setter);
 	}
 
 	public void addNewDialogChoice(RuneliteDialogStep step)
@@ -84,5 +91,11 @@ public class RuneliteDialogStep
 		{
 			stateProgression.setConfigValue();
 		}
+	}
+
+	public RuneliteDialogStep addContinueDialog(RuneliteDialogStep continueDialog)
+	{
+		this.continueDialog = continueDialog;
+		return continueDialog;
 	}
 }

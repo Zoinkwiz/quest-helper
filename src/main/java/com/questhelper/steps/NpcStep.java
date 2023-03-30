@@ -94,6 +94,12 @@ public class NpcStep extends DetailedQuestStep
 		this.npcID = npcID;
 	}
 
+	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, List<Requirement> requirements, List<Requirement> optionalRequirements)
+	{
+		super(questHelper, worldPoint, text, requirements, optionalRequirements);
+		this.npcID = npcID;
+	}
+
 	public NpcStep(QuestHelper questHelper, int[] npcID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);

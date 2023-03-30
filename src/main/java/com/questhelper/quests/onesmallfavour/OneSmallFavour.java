@@ -77,7 +77,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		guam2HarrTea, guamHarrMarrTea, herbTeaMix;
 
 	//Items Recommended
-	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports;
+	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports, pickaxe;
 
 	Requirement inSanfewRoom, inHamBase, inDwarvenMine, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
 		lamp3Empty, lamp3Full, lamp4Empty, lamp4Full, lamp5Empty, lamp5Full, lamp6Empty, lamp6Full, lamp7Empty, lamp7Full, lamp8Empty, lamp8Full, allEmpty, allFull, inScrollSpot,
@@ -357,6 +357,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		ardougneTeleports = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 2);
 		camelotTeleports = new ItemRequirement("Teleports to Camelot", ItemID.CAMELOT_TELEPORT, 2);
 		lumbridgeTeleports = new ItemRequirement("Teleports to Lumbridge", ItemID.LUMBRIDGE_TELEPORT, 2);
+		pickaxe = new ItemRequirement("Any pickaxe to kill Slagilith", ItemCollections.PICKAXES).isNotConsumed();
 
 		bluntAxe = new ItemRequirement("Blunt axe", ItemID.BLUNT_AXE);
 		bluntAxe.setTooltip("You can get another from a Jungle Forester south of Shilo Village");
@@ -673,13 +674,15 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		getPigeonCages = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get 5 pigeon cages from behind Jerico's house in central East Ardougne.", pigeonCages5);
 
-		enterGoblinCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild. Be prepared to fight the Slagilith (level 92, weak to crush/magic).", pigeonCages5, animateRockScroll);
+		enterGoblinCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild. " +
+			"Be prepared to fight the Slagilith(level 92, takes reduced damage from anything other than pickaxes).", Arrays.asList(pigeonCages5, animateRockScroll), Collections.singletonList(pickaxe));
 		standNextToSculpture = new DetailedQuestStep(this, new WorldPoint(2616, 9835, 0), "Use the animate rock scroll next to the sculpture in the north east cavern.", animateRockScroll);
 		readScroll = new DetailedQuestStep(this, "Read the animate rock scroll.", animateRockScrollHighlight);
 
 		standNextToSculpture.addSubSteps(readScroll);
 
-		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith.");
+		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith. They take reduced damage from anything other than a pickaxe.",
+			Collections.EMPTY_LIST, Collections.singletonList(pickaxe));
 		readScrollAgain = new DetailedQuestStep(this, "Read the animate rock scroll", animateRockScrollHighlight);
 		talkToPetra = new NpcStep(this, NpcID.PETRA_FIYED, new WorldPoint(2617, 9837, 0), "Talk to Petra Fiyed.");
 
@@ -805,6 +808,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		reqs.add(opal.quantity(2));
 		reqs.add(jade.quantity(2));
 		reqs.add(redTopaz.quantity(2));
+		reqs.add(pickaxe);
 		return reqs;
 	}
 

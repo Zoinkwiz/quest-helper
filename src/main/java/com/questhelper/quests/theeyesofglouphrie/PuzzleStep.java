@@ -91,7 +91,6 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 	Item[] currentInv;
 
-	int mostMatch2 = 0;
 	int newMostMatch3 = -1;
 	int mostMatch4 = -1;
 
@@ -234,9 +233,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		Item[] inventoryItemsArr = itemContainer.getItems();
 
-		List<Item> inventoryItems = new ArrayList<>(Arrays.asList(inventoryItemsArr));
-
-		List<ItemRequirement> allRequirements = new ArrayList<>();
+		List<Item> inventoryItems = Arrays.asList(inventoryItemsArr);
 
 		Widget insertWidget = client.getWidget(189, 0);
 
@@ -249,22 +246,23 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		int slot5 = client.getVarpValue(854);
 		int slot6 = client.getVarpValue(855);
 
-		mostMatch2 = 0;
 		newMostMatch3 = -1;
 		mostMatch4 = -1;
 
 		lastInv = inventoryItemsArr;
 
 		// Puzzle 2
+
+		// Loop through all shapes which have equal value to goal
 		for (Integer id : shapeValues.get(answer2).getAllIds())
 		{
 			items2 = Collections.singletonList(shapeValues.get(answer2));
 			int match = checkForItems(inventoryItems, id);
+
+			// If found item in inventory
 			if (match != -1)
 			{
-				mostMatch2++;
 
-				inventoryItems.remove(match);
 				if (inventoryItems.get(match).getQuantity() > 1)
 				{
 					Item newItem = new Item(inventoryItems.get(match).getId(), inventoryItems.get(match).getQuantity() - 1);
@@ -274,16 +272,17 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 				{
 					inventoryItems.remove(match);
 				}
+			}
 
-				if (id == slot1)
-				{
-					items2 = new ArrayList<>();
-				}
+			// If the item is already inserted into the slot, don't indicate to add it
+			if (id == slot1)
+			{
+				items2 = new ArrayList<>();
 				break;
 			}
 		}
 
-		allRequirements.addAll(items2);
+		List<ItemRequirement> allRequirements = new ArrayList<>(items2);
 
 		// Puzzle 3
 		List<ItemRequirement> newReq3 = new ArrayList<>();
@@ -313,6 +312,8 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 						{
 							tmpInventory3.remove(match);
 						}
+
+						// If this shape has already been added, remove it from requirements as well as slot?
 						if (currentSlotIDs3.contains(req.getAllIds().get(i)))
 						{
 							tmpReqs.remove(req);
@@ -322,7 +323,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 					}
 				}
 			}
-			// If have more of a piece, OR have same amount of pieces already but more already in the machine
+			// If we have more pieces, OR have same amount of pieces already but more already in the machine
 			if (currentMatches > newMostMatch3 || (currentMatches == newMostMatch3 && newReq3.size() > tmpReqs.size()))
 			{
 				newMostMatch3 = currentMatches;
@@ -605,21 +606,10 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		for (int i = 0; i < 35; i++)
 		{
+			ItemRequirement shape1 = shapeValues.get(i);
 			for (int j = 0; j < 35; j++)
 			{
-				ItemRequirement shape1 = shapeValues.get(i);
 				ItemRequirement shape2 = shapeValues.get(j);
-				for (int k = 0; k < 35; k++)
-				{
-					ItemRequirement shape3 = shapeValues.get(k);
-					if (shape1 == null || shape2 == null || shape3 == null)
-					{
-						continue;
-					}
-
-					shapeValues4.computeIfAbsent(i + j + k, sv3 -> new ArrayList<>());
-					shapeValues4.get(i + j + k).add(Arrays.asList(shape1, shape2, shape3));
-				}
 
 				if (shape1 == null || shape2 == null)
 				{
@@ -627,6 +617,18 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 				}
 				shapeValues3.computeIfAbsent(i + j, sv2 -> new ArrayList<>());
 				shapeValues3.get(i + j).add(Arrays.asList(shape1, shape2));
+
+				for (int k = 0; k < 35; k++)
+				{
+					ItemRequirement shape3 = shapeValues.get(k);
+					if (shape3 == null)
+					{
+						continue;
+					}
+
+					shapeValues4.computeIfAbsent(i + j + k, sv3 -> new ArrayList<>());
+					shapeValues4.get(i + j + k).add(Arrays.asList(shape1, shape2, shape3));
+				}
 			}
 		}
 	}

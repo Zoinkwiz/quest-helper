@@ -46,6 +46,7 @@ import com.questhelper.steps.playermadesteps.RuneliteObjectStep;
 import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeItem;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedObject;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ import net.runelite.api.coords.WorldPoint;
 public class CooksHelper extends ComplexStateQuestHelper
 {
 	private RuneliteObjectStep talkToCook, talkToHopleez, grabCabbage, returnToHopleez;
+	private ReplacedNpc replacedHopleez;
 
 	private FakeNpc cooksCousin, hopleez;
 
@@ -160,6 +162,13 @@ public class CooksHelper extends ComplexStateQuestHelper
 
 	private void setupHopleez()
 	{
+		replacedHopleez = runeliteObjectManager.createReplacedNpc(this.toString(), client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808, NpcID.HATIUS_COSAINTUS);
+		replacedHopleez.setName("Hopleez");
+		replacedHopleez.setFace(7481);
+		replacedHopleez.setExamine("He was here first.");
+//		hopleez.addTalkAction(runeliteObjectManager);
+//		hopleez.addExamineAction(runeliteObjectManager);
+
 		// Hopleez
 		hopleez = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808);
 		hopleez.setName("Hopleez");

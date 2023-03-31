@@ -28,6 +28,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
+import java.awt.Shape;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,6 +41,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
 import net.runelite.api.ModelData;
+import net.runelite.api.Perspective;
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
@@ -52,7 +54,7 @@ public class ExtendedRuneliteObject
 {
 	@Getter
 	private final RuneLiteObject runeliteObject;
-	private final Client client;
+	protected final Client client;
 	private final ClientThread clientThread;
 
 	// TODO: Some requirements kinda require an external tracking element, so may need to shove into a ConditionalStep or some weirdness?
@@ -145,6 +147,12 @@ public class ExtendedRuneliteObject
 	private static ModelData createModel(Client client, ModelData[] data)
 	{
 		return client.mergeModels(data);
+	}
+
+	public Shape getClickbox()
+	{
+		return Perspective.getClickbox(client, getRuneliteObject().getModel(), getRuneliteObject().getOrientation(), getRuneliteObject().getLocation().getX(), getRuneliteObject().getLocation().getY(),
+			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), getWorldPoint().getPlane()));
 	}
 
 	public void setAnimation(int animation)

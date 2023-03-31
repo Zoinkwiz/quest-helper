@@ -110,6 +110,10 @@ public class ExtendedRuneliteObject
 	@Setter
 	private boolean isHiddenNoOptions;
 
+	@Getter
+	@Setter
+	private int orientationGoal;
+
 	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
 		this.client = client;
@@ -173,12 +177,13 @@ public class ExtendedRuneliteObject
 		update();
 	}
 
-	private void update()
+	protected void update()
 	{
 		clientThread.invoke(() ->
 		{
 			runeliteObject.setAnimation(client.loadAnimation(animation));
 			runeliteObject.setModel(model);
+			runeliteObject.setShouldLoop(true);
 			return true;
 		});
 	}
@@ -387,7 +392,6 @@ public class ExtendedRuneliteObject
 
 	public int calculateRotationFromAtoB(double aX, double aY, double bX, double bY)
 	{
-
 		double xDiff = bX - aX;
 		double yDiff = bY - aY;
 
@@ -421,17 +425,24 @@ public class ExtendedRuneliteObject
 		return nextOrientation;
 	}
 
-	public boolean partiallyRotateToPlayer(Client client)
+	public void setOrientationGoalAsPlayer(Client client)
 	{
-		final int MAX_ROTATION_PER_CALL = 32;
-		final int MAX_ROTATION = 2048;
 		double playerX = client.getLocalPlayer().getLocalLocation().getX();
 		double playerY = client.getLocalPlayer().getLocalLocation().getY();
-
 		double currentNPCX = runeliteObject.getLocation().getX();
 		double currentNPCY = runeliteObject.getLocation().getY();
 
 		int newOrientation = calculateRotationFromAtoB(playerX, playerY, currentNPCX, currentNPCY);
+		setOrientationGoal(newOrientation);
+	}
+
+	public boolean partiallyRotateToGoal(Client client)
+	{
+		final int MAX_ROTATION_PER_CALL = 32;
+		final int MAX_ROTATION = 2048;
+
+		int newOrientation = getOrientationGoal();
+
 		int existingOrientation = runeliteObject.getOrientation();
 
 		boolean isClockwise = Math.floorMod(existingOrientation - newOrientation, MAX_ROTATION) >
@@ -454,11 +465,11 @@ public class ExtendedRuneliteObject
 		boolean isFacingPlayer = actualNewOrientation == newOrientation;
 		if (!isFacingPlayer)
 		{
-			runeliteObject.setAnimation(client.loadAnimation(819));
+//			runeliteObject.setAnimation(client.loadAnimation(819));
 		}
 		else
 		{
-			runeliteObject.setAnimation(client.loadAnimation(animation));
+//			runeliteObject.setAnimation(client.loadAnimation(animation));
 		}
 		return isFacingPlayer;
 	}

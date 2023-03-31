@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.WorldPoint;
@@ -24,19 +23,29 @@ public class ReplacedNpc extends FakeNpc
 	@Getter
 	private final ArrayList<MenuEntryWrapper> entries = new ArrayList<>();
 
-	protected ReplacedNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation, int npcIDToReplace)
+	protected ReplacedNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int npcIDToReplace)
 	{
-		super(client, clientThread, worldPoint, model, animation);
+		super(client, clientThread, worldPoint, model, 808);
 		this.npcIDToReplace = npcIDToReplace;
-		disable();
+//		disable();
 	}
 
 	public void updateNpcSync(Client client)
 	{
+		if (npc.getAnimation() != -1)
+		{
+			setAnimation(npc.getAnimation());
+		}
+		else if (npc.getLocalLocation().distanceTo(getRuneliteObject().getLocation()) == 0)
+		{
+				setAnimation(npc.getIdlePoseAnimation());
+		}
+		else
+		{
+			setAnimation(npc.getWalkAnimation());
+		}
 		getRuneliteObject().setLocation(npc.getLocalLocation(), client.getPlane());
-		setAnimation(npc.getAnimation());
-		getRuneliteObject().setOrientation(npc.getOrientation());
-		getRuneliteObject().setActive(true);
+		setOrientationGoal(npc.getOrientation());
 	}
 
 	public void addMenuEntry(MenuEntryWrapper menuEntry)
@@ -44,9 +53,10 @@ public class ReplacedNpc extends FakeNpc
 		entries.add(menuEntry);
 	}
 
+	// This changes the clickbox to be the original NPC's clickbox to avoid any possible advantage is interacting
 	public Shape getClickbox()
 	{
-		return Perspective.getClickbox(client, getRuneliteObject().getModel(), getRuneliteObject().getOrientation(), getRuneliteObject().getLocation().getX(), getRuneliteObject().getLocation().getY(),
-			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), getWorldPoint().getPlane()));
+		return Perspective.getClickbox(client, npc.getModel(), npc.getOrientation(), npc.getLocalLocation().getX(), npc.getLocalLocation().getY(),
+			Perspective.getTileHeight(client, npc.getLocalLocation(), getWorldPoint().getPlane()));
 	}
 }

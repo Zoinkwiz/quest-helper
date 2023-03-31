@@ -30,7 +30,6 @@ import com.google.inject.Singleton;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +43,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.SpriteID;
@@ -115,8 +113,6 @@ public class RuneliteObjectManager
 		MenuAction.GROUND_ITEM_FIFTH_OPTION
 	);
 
-	List<ExtendedRuneliteObject> rotatingObjectsToPlayer = new ArrayList<>();
-
 	@Inject
 	public RuneliteObjectManager(Client client, EventBus eventBus, ChatboxPanelManager chatboxPanelManager, ClientThread clientThread, ChatMessageManager chatMessageManager, SpriteManager spriteManager)
 	{
@@ -167,9 +163,9 @@ public class RuneliteObjectManager
 		return extendedRuneliteObject;
 	}
 
-	public ReplacedNpc createReplacedNpc(String groupID, int[] model, WorldPoint wp, int animation, int npcIDToReplace)
+	public ReplacedNpc createReplacedNpc(String groupID, int[] model, WorldPoint wp, int npcIDToReplace)
 	{
-		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, animation, npcIDToReplace);
+		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, npcIDToReplace);
 		// Should this be here or a separate 'activate' step?
 		for (NPC clientNpc : client.getNpcs())
 		{
@@ -179,7 +175,6 @@ public class RuneliteObjectManager
 				break;
 			}
 		}
-//		extendedRuneliteObject.activate();
 
 		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
 		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
@@ -358,7 +353,7 @@ public class RuneliteObjectManager
 							client.createMenuEntry(-1)
 								.setOption(entry.getOption())
 								.setType(entry.getType())
-								.setTarget(entry.getTarget())
+								.setTarget("<col=" + replacedNpc.getNameColor() + ">" + replacedNpc.getName() + "</col>")
 								.setIdentifier(entry.getIdentifier())
 								.setParam0(0)
 								.setParam1(0)
@@ -494,7 +489,7 @@ public class RuneliteObjectManager
 			}
 
 			// Set to rotate towards player
-			rotatingObjectsToPlayer.add(extendedRuneliteObject);
+			extendedRuneliteObject.setOrientationGoalAsPlayer(client);
 			extendedRuneliteObject.setupChatBox(chatboxPanelManager);
 		};
 	}
@@ -558,8 +553,7 @@ public class RuneliteObjectManager
 		LocalPoint lp = extendedRuneliteObject.getRuneliteObject().getLocation();
 
 		if (lp == null) return false;
-		Shape clickbox = Perspective.getClickbox(client, extendedRuneliteObject.getRuneliteObject().getModel(), extendedRuneliteObject.getRuneliteObject().getOrientation(), lp.getX(), lp.getY(),
-			Perspective.getTileHeight(client, lp, extendedRuneliteObject.getWorldPoint().getPlane()));
+		Shape clickbox = extendedRuneliteObject.getClickbox();
 
 		if (clickbox == null) return false;
 
@@ -696,8 +690,6 @@ public class RuneliteObjectManager
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
-		rotatingObjectsToPlayer.removeIf((extendedRuneliteObject) -> extendedRuneliteObject.partiallyRotateToPlayer(client));
-
 		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
 		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
 			for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectGroup.extendedRuneliteObjects)
@@ -709,10 +701,12 @@ public class RuneliteObjectManager
 					NPC npc = replacedNpc.getNpc();
 					if (npc != null)
 					{
-//						replacedNpc.setLocalPoint(npc.getLocalLocation());
 						replacedNpc.updateNpcSync(client);
-//						replacedNpc.setAnimation(npc.getAnimation());
 					}
+				}
+				if (extendedRuneliteObject.getOrientationGoal() != extendedRuneliteObject.getRuneliteObject().getOrientation())
+				{
+					extendedRuneliteObject.partiallyRotateToGoal(client);
 				}
 				boolean isVisible = extendedRuneliteObject.isActive();
 				if (isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition))

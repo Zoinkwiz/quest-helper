@@ -291,13 +291,6 @@ public class RuneliteObjectManager
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-//		client.createMenuEntry();
-//		System.out.println(event.getActionParam0());
-//		System.out.println(event.getActionParam1());
-//		System.out.println(event.getIdentifier());
-//		System.out.println(event.getOption());
-//		System.out.println(event.getTarget());
-//		System.out.println(event.getType());
 		NPC npc = event.getMenuEntry().getNpc();
 		if (npc != null)
 		{
@@ -310,14 +303,20 @@ public class RuneliteObjectManager
 					{
 						ReplacedNpc replacedNpc = (ReplacedNpc) extendedRuneliteObject;
 						if (replacedNpc.getNpc() == npc)
-						// AND if menu option gotten
 						{
 							boolean shouldSkip = false;
 							for (MenuEntryWrapper entry : replacedNpc.getEntries())
 							{
+								// If seen option before, skip it
 								if (entry.option.equals(event.getOption()))
 								{
 									shouldSkip = true;
+									break;
+								}
+								if (event.getOption().equals("Examine"))
+								{
+									shouldSkip = true;
+									break;
 								}
 							}
 							if (shouldSkip) continue;
@@ -336,8 +335,7 @@ public class RuneliteObjectManager
 		});
 	}
 
-	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject
-		, MenuEntryAdded event)
+	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
 	{
 		LocalPoint lp =extendedRuneliteObject.getRuneliteObject().getLocation();
 
@@ -364,8 +362,7 @@ public class RuneliteObjectManager
 								.setIdentifier(entry.getIdentifier())
 								.setParam0(0)
 								.setParam1(0)
-								.setParent(event.getMenuEntry().getParent())
-							;
+								.setParent(event.getMenuEntry().getParent());
 						}
 					}
 				}

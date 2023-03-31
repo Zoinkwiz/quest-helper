@@ -166,6 +166,7 @@ public class CooksHelper extends ComplexStateQuestHelper
 		replacedHopleez.setName("Hopleez");
 		replacedHopleez.setFace(7481);
 		replacedHopleez.setExamine("He was here first.");
+		replacedHopleez.addExamineAction(runeliteObjectManager);
 
 		// Hopleez
 		hopleez = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808);

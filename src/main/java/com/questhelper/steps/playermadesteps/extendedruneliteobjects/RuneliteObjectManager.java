@@ -43,6 +43,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.SpriteID;
@@ -55,6 +56,9 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatColorType;
@@ -726,9 +730,48 @@ public class RuneliteObjectManager
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	public void onWidgetLoaded(WidgetLoaded event)
 	{
+		runeliteObjectGroups.forEach((groupID, group) -> {
+			for (ExtendedRuneliteObject extendedRuneliteObject : group.extendedRuneliteObjects)
+			{
+				if (extendedRuneliteObject instanceof ReplacedNpc)
+				{
+					replaceWidgetsForReplacedNpcs((ReplacedNpc) extendedRuneliteObject, event);
+				}
+			}
+		});
+	}
 
+	public void replaceWidgetsForReplacedNpcs(ReplacedNpc object, WidgetLoaded event)
+	{
+		// When talking to Steve
+		if (event.getGroupId() == WidgetID.DIALOG_NPC_GROUP_ID)
+		{
+			Widget npcChatName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME);
+			Widget npcChatHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
+
+			clientThread.invokeLater(() -> {
+				if (npcChatHead == null || npcChatName == null)
+				{
+					return;
+				}
+				NPCComposition comp = client.getNpcDefinition(object.getNpcIDToReplace());
+
+				if (npcChatName.getText().equals(comp.getName()))
+				{
+					npcChatName.setText(object.getName());
+				}
+
+				if (npcChatHead.getModelId() == object.getNpcIDToReplace())
+				{
+					if (object.getFace() != -1)
+					{
+						npcChatHead.setModelId(object.getFace());
+					}
+				}
+			});
+		}
 	}
 
 	@Subscribe

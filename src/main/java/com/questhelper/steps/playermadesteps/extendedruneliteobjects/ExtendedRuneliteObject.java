@@ -64,11 +64,11 @@ public class ExtendedRuneliteObject
 	private Model model;
 	private int animation;
 
-	@Setter
 	@Getter
 	private WorldPoint worldPoint;
 
 	@Setter
+	@Getter
 	private int face = -1;
 
 	@Getter
@@ -156,7 +156,7 @@ public class ExtendedRuneliteObject
 	public Shape getClickbox()
 	{
 		return Perspective.getClickbox(client, getRuneliteObject().getModel(), getRuneliteObject().getOrientation(), getRuneliteObject().getLocation().getX(), getRuneliteObject().getLocation().getY(),
-			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), getWorldPoint().getPlane()));
+			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), client.getPlane()));
 	}
 
 	public void setAnimation(int animation)

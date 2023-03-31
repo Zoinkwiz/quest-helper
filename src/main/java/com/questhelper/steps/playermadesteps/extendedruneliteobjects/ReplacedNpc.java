@@ -46,6 +46,10 @@ public class ReplacedNpc extends FakeNpc
 		}
 		getRuneliteObject().setLocation(npc.getLocalLocation(), client.getPlane());
 		setOrientationGoal(npc.getOrientation());
+		if (!isActive())
+		{
+			activate();
+		}
 	}
 
 	public void addMenuEntry(MenuEntryWrapper menuEntry)

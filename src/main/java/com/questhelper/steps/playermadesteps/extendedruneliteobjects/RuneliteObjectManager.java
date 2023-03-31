@@ -238,10 +238,16 @@ public class RuneliteObjectManager
 					if (extendedRuneliteObject instanceof ReplacedNpc)
 					{
 						ReplacedNpc replacedNpc = (ReplacedNpc) extendedRuneliteObject;
-						if (replacedNpc.getNpc() == npc && !replacedNpc.getEntries().isEmpty())
+						if (replacedNpc.getNpc() == npc)
 						// AND if menu option gotten
 						{
-							return false;
+							Point p = client.getMouseCanvasPosition();
+							// is hovered
+							if (!replacedNpc.getEntries().isEmpty())
+							{
+								return false;
+							}
+							else return replacedNpc.getClickbox().contains(p.getX(), p.getY());
 						}
 					}
 				}

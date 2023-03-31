@@ -54,6 +54,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatColorType;
@@ -685,8 +686,8 @@ public class RuneliteObjectManager
 		if (lastInteractedWithRuneliteObject != null)
 		{
 			lastInteractedWithRuneliteObject.checkPendingAction();
-			if (lastInteractedWithRuneliteObject.getActions().get("Talk") != null ||
-				lastInteractedWithRuneliteObject.getPriorityActions().get("Talk") != null)
+			if (lastInteractedWithRuneliteObject.getActions().get("Talk-to") != null ||
+				lastInteractedWithRuneliteObject.getPriorityActions().get("Talk-to") != null)
 			{
 				lastInteractedWithRuneliteObject.progressDialog();
 			}
@@ -725,6 +726,12 @@ public class RuneliteObjectManager
 				}
 			}
 		});
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	{
+
 	}
 
 	@Subscribe

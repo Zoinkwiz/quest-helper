@@ -267,7 +267,7 @@ public class ExtendedRuneliteObject
 
 	public void addTalkAction(RuneliteObjectManager runeliteObjectManager)
 	{
-		priorityActions.put("Talk", runeliteObjectManager.getTalkAction(this));
+		priorityActions.put("Talk-to", runeliteObjectManager.getTalkAction(this));
 	}
 
 	public void addExamineAction(RuneliteObjectManager runeliteObjectManager)

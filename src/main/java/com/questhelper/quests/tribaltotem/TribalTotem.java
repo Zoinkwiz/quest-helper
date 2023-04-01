@@ -158,7 +158,7 @@ public class TribalTotem extends BasicQuestHelper
         talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2683, 3326, 0), "Talk to Wizard Cromperty in north east Ardougne.");
         talkToCromperty.addDialogSteps("Chat.", "So what have you invented?", "Can I be teleported please?", "Yes, that sounds good. Teleport me!");
 
-        enterPassword = new ObjectStep(this, ObjectID.DOOR_2705, new WorldPoint(2634, 3323, 0), "Try and open the door to the west.");
+        enterPassword = new ObjectStep(this, ObjectID.DOOR_2705, new WorldPoint(2634, 3323, 0), "Try and open the door to the west. The password is 'KURT', (K=10 right, U=6 left, R=9 left, T=7 left)");
         solvePassword = new PuzzleStep(this);
         climbStairs = new ObjectStep(this, ObjectID.STAIRS_2711, new WorldPoint(2632, 3323, 0), "FIRST Right-click 'Investigate' the stairs to disable a trap, then climb the stairs.");
 

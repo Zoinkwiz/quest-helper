@@ -25,6 +25,7 @@
 package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
 import com.questhelper.steps.WidgetDetails;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,6 +97,7 @@ public class ReplacedNpc extends FakeNpc
 	// This changes the clickbox to be the original NPC's clickbox to avoid any possible advantage is interacting
 	public Shape getClickbox()
 	{
+		if (npc == null) return new Rectangle(0, 0, 0, 0);
 		return Perspective.getClickbox(client, npc.getModel(), npc.getOrientation(), npc.getLocalLocation().getX(), npc.getLocalLocation().getY(),
 			Perspective.getTileHeight(client, npc.getLocalLocation(), getWorldPoint().getPlane()));
 	}

@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements.runelite;
 
+import com.questhelper.RuneliteConfigIdentifier;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import net.runelite.api.Client;
@@ -34,22 +35,26 @@ public class PlayerQuestStateRequirement extends RuneliteRequirement
 	private final int expectedIntValue;
 	private Operation operation;
 
-	public PlayerQuestStateRequirement(ConfigManager configManager, String runeliteIdentifier, int expectedValue)
+	private final RuneliteConfigIdentifier runeliteConfigIdentifier;
+
+	public PlayerQuestStateRequirement(ConfigManager configManager, RuneliteConfigIdentifier runeliteIdentifier, int expectedValue)
 	{
-		super(configManager, runeliteIdentifier, Integer.toString(expectedValue));
+		super(configManager, runeliteIdentifier.getConfigID(), Integer.toString(expectedValue));
 		expectedIntValue = expectedValue;
+		runeliteConfigIdentifier = runeliteIdentifier;
 	}
 
-	public PlayerQuestStateRequirement(ConfigManager configManager, String runeliteIdentifier, int expectedValue, Operation operation)
+	public PlayerQuestStateRequirement(ConfigManager configManager, RuneliteConfigIdentifier runeliteIdentifier, int expectedValue, Operation operation)
 	{
-		super(configManager, runeliteIdentifier, Integer.toString(expectedValue));
+		super(configManager, runeliteIdentifier.getConfigID(), Integer.toString(expectedValue));
 		this.operation = operation;
 		expectedIntValue = expectedValue;
+		runeliteConfigIdentifier = runeliteIdentifier;
 	}
 
 	public PlayerQuestStateRequirement getNewState(int incrementedStateQuantity)
 	{
-		return new PlayerQuestStateRequirement(configManager, runeliteIdentifier, expectedIntValue + incrementedStateQuantity);
+		return new PlayerQuestStateRequirement(configManager, runeliteConfigIdentifier, expectedIntValue + incrementedStateQuantity);
 	}
 
 	@Override

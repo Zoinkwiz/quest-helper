@@ -26,6 +26,7 @@ package com.questhelper.playerquests.cookshelper;
 
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.RuneliteConfigIdentifier;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -38,7 +39,6 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetDetails;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
@@ -48,7 +48,6 @@ import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeItem;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedObject;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.WidgetReplacement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +58,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.COOKS_HELPER
@@ -67,7 +65,8 @@ import net.runelite.api.widgets.WidgetInfo;
 public class CooksHelper extends ComplexStateQuestHelper
 {
 	private RuneliteObjectStep talkToCook, talkToHopleez, grabCabbage, returnToHopleez;
-	private ReplacedNpc replacedHopleez;
+
+	private RuneliteConfigIdentifier cooksHelperConfigID = RuneliteConfigIdentifier.COOKS_HELPER;
 
 	private FakeNpc cooksCousin, hopleez;
 
@@ -82,7 +81,7 @@ public class CooksHelper extends ComplexStateQuestHelper
 		createRuneliteObjects();
 		setupSteps();
 
-		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, "cookshelper", 1);
+		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 1);
 
 		ConditionalStep questSteps = new ConditionalStep(this, talkToCook);
 		questSteps.addStep(req.getNewState(2), returnToHopleez);
@@ -106,10 +105,10 @@ public class CooksHelper extends ComplexStateQuestHelper
 		// Work out how to do proper priority on the npcs being clicked
 		// Wandering NPCs?
 		// Objects + items (basically same as NPCs)
-		talkedToCooksCousin = new PlayerQuestStateRequirement(configManager, "cookshelper", 1, Operation.GREATER_EQUAL);
-		talkedToHopleez = new PlayerQuestStateRequirement(configManager, "cookshelper", 2, Operation.GREATER_EQUAL);
-		pickedCabbage = new PlayerQuestStateRequirement(configManager, "cookshelper", 3, Operation.GREATER_EQUAL);
-		returnedToHopleez = new PlayerQuestStateRequirement(configManager, "cookshelper", 4, Operation.GREATER_EQUAL);
+		talkedToCooksCousin = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 1, Operation.GREATER_EQUAL);
+		talkedToHopleez = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 2, Operation.GREATER_EQUAL);
+		pickedCabbage = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 3, Operation.GREATER_EQUAL);
+		returnedToHopleez = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 4, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
@@ -163,13 +162,6 @@ public class CooksHelper extends ComplexStateQuestHelper
 
 	private void setupHopleez()
 	{
-		replacedHopleez = runeliteObjectManager.createReplacedNpc(this.toString(), client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_COSAINTUS);
-		replacedHopleez.setName("Hopleez");
-		replacedHopleez.setFace(7481);
-		replacedHopleez.setExamine("He was here first.");
-		replacedHopleez.addExamineAction(runeliteObjectManager);
-		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(WidgetInfo.DIALOG_NPC_TEXT), "Hatius Cosaintus", "Hopleez"));
-
 		// Hopleez
 		hopleez = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808);
 		hopleez.setName("Hopleez");

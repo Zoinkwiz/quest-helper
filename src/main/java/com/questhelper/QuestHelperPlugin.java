@@ -332,6 +332,7 @@ public class QuestHelperPlugin extends Plugin
 				getAllItemRequirements();
 				loadQuestList = true;
 			}
+			GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
 		});
 	}
 

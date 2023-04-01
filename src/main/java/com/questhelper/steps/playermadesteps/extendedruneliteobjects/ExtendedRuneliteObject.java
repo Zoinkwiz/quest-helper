@@ -115,6 +115,8 @@ public class ExtendedRuneliteObject
 	@Setter
 	private int orientationGoal;
 
+	public static final int MAX_TALK_DISTANCE = 3;
+
 	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
 		this.client = client;
@@ -378,17 +380,6 @@ public class ExtendedRuneliteObject
 	public void progressDialog()
 	{
 		if (currentChatBox != null) currentChatBox.progressDialog();
-	}
-
-	public void facePlayer(Client client)
-	{
-		double playerX = client.getLocalPlayer().getLocalLocation().getX();
-		double playerY = client.getLocalPlayer().getLocalLocation().getY();
-
-		double currentNPCX = runeliteObject.getLocation().getX();
-		double currentNPCY = runeliteObject.getLocation().getY();
-		int nextOrientation = calculateRotationFromAtoB(playerX, playerY, currentNPCX, currentNPCY);
-		runeliteObject.setOrientation(nextOrientation);
 	}
 
 	public int calculateRotationFromAtoB(double aX, double aY, double bX, double bY)

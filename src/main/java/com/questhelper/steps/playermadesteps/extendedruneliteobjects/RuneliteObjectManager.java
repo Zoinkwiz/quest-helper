@@ -35,7 +35,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -170,6 +169,26 @@ public class RuneliteObjectManager
 		return extendedRuneliteObject;
 	}
 
+	public ReplacedNpc createReplacedNpc(int[] model, WorldPoint wp, int npcIDToReplace)
+	{
+		String groupID = "global";
+		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, npcIDToReplace);
+		// Should this be here or a separate 'activate' step?
+		for (NPC clientNpc : client.getNpcs())
+		{
+			if (clientNpc.getId() == npcIDToReplace)
+			{
+				extendedRuneliteObject.setNpc(clientNpc);
+				break;
+			}
+		}
+
+		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
+
+		return extendedRuneliteObject;
+	}
+
 	public ReplacedNpc createReplacedNpc(String groupID, int[] model, WorldPoint wp, int npcIDToReplace)
 	{
 		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, npcIDToReplace);
@@ -213,24 +232,6 @@ public class RuneliteObjectManager
 		return extendedRuneliteObject;
 	}
 
-//	public ExtendedRuneliteObject createRuneliteObject(String groupID, int[] model, WorldPoint wp, int animation)
-//	{
-//		ExtendedRuneliteObject extendedRuneliteObject = new ExtendedRuneliteObject(client, clientThread, wp, model, animation);
-//		// Should this be here or a separate 'activate' step?
-//		extendedRuneliteObject.activate();
-//
-//		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
-//		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
-//
-//		return extendedRuneliteObject;
-//	}
-
-//	public ExtendedRuneliteObject createRuneliteObject(QuestHelper questHelper, int[] model, WorldPoint wp, int animation)
-//	{
-//		String groupID = questHelper.toString();
-//		return createRuneliteObject(groupID, model, wp, animation);
-//	}
-
 	boolean shouldDraw(Renderable renderable, boolean drawingUI)
 	{
 		if (renderable instanceof NPC)
@@ -246,15 +247,19 @@ public class RuneliteObjectManager
 					{
 						ReplacedNpc replacedNpc = (ReplacedNpc) extendedRuneliteObject;
 						if (replacedNpc.getNpc() == npc)
-						// AND if menu option gotten
 						{
 							Point p = client.getMouseCanvasPosition();
+							boolean passesRequirementToShowReplacement = replacedNpc.getDisplayReq() == null || replacedNpc.getDisplayReq().check(client);
 							// is hovered
+							if (!passesRequirementToShowReplacement) return true;
 							if (!replacedNpc.getEntries().isEmpty())
 							{
 								return false;
 							}
-							else return replacedNpc.getClickbox().contains(p.getX(), p.getY());
+							else
+							{
+								return replacedNpc.getClickbox().contains(p.getX(), p.getY());
+							}
 						}
 					}
 				}
@@ -492,7 +497,7 @@ public class RuneliteObjectManager
 	{
 		return menuEntry -> {
 			WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-			if (wp.distanceTo(extendedRuneliteObject.getWorldPoint()) > 1)
+			if (wp.distanceTo(extendedRuneliteObject.getWorldPoint()) > ExtendedRuneliteObject.MAX_TALK_DISTANCE)
 			{
 				createChatboxMessage("You'll need to move closer to them to talk!");
 				return;
@@ -577,7 +582,12 @@ public class RuneliteObjectManager
 		renderRedClick(graphics);
 
 		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-		if (lastInteractedWithRuneliteObject != null && playerPosition.distanceTo(lastInteractedWithRuneliteObject.getWorldPoint()) > 1 && chatboxPanelManager.getCurrentInput() instanceof ChatBox) chatboxPanelManager.close();
+		if (lastInteractedWithRuneliteObject != null
+			&& playerPosition.distanceTo(lastInteractedWithRuneliteObject.getWorldPoint()) > ExtendedRuneliteObject.MAX_TALK_DISTANCE
+			&& chatboxPanelManager.getCurrentInput() instanceof ChatBox)
+		{
+			chatboxPanelManager.close();
+		}
 	}
 
 	private void renderRedClick(Graphics2D graphics)
@@ -719,7 +729,8 @@ public class RuneliteObjectManager
 					extendedRuneliteObject.partiallyRotateToGoal(client);
 				}
 				boolean isVisible = extendedRuneliteObject.isActive();
-				if (isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition))
+				boolean shouldDisplayReqPassed =  extendedRuneliteObject.getDisplayReq() == null || extendedRuneliteObject.getDisplayReq().check(client);
+				if (!shouldDisplayReqPassed || isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition))
 				{
 					if (isVisible) disableObject(extendedRuneliteObject);
 				}
@@ -747,6 +758,8 @@ public class RuneliteObjectManager
 
 	public void replaceWidgetsForReplacedNpcs(ReplacedNpc object, WidgetLoaded event)
 	{
+		if (object.getDisplayReq() != null && !object.getDisplayReq().check(client)) return;
+
 		for (WidgetReplacement widgetReplacement : object.getWidgetReplacements())
 		{
 			WidgetDetails widgetDetails = widgetReplacement.getWidgetDetails();

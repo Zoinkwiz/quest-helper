@@ -27,6 +27,7 @@ package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.questhelper.steps.WidgetDetails;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
@@ -34,6 +35,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -737,7 +739,7 @@ public class RuneliteObjectManager
 			{
 				if (extendedRuneliteObject instanceof ReplacedNpc)
 				{
-					replaceWidgetsForReplacedNpcs((ReplacedNpc) extendedRuneliteObject, event);
+					clientThread.invokeLater(() -> replaceWidgetsForReplacedNpcs((ReplacedNpc) extendedRuneliteObject, event));
 				}
 			}
 		});
@@ -745,7 +747,24 @@ public class RuneliteObjectManager
 
 	public void replaceWidgetsForReplacedNpcs(ReplacedNpc object, WidgetLoaded event)
 	{
-		// When talking to Steve
+		for (WidgetReplacement widgetReplacement : object.getWidgetReplacements())
+		{
+			WidgetDetails widgetDetails = widgetReplacement.getWidgetDetails();
+			if (event.getGroupId() == widgetDetails.getGroupID())
+			{
+				Widget widget = client.getWidget(widgetDetails.getGroupID(), widgetDetails.getChildID());
+				if (widget == null) continue;
+
+				if (widgetDetails.getChildChildID() != -1)
+				{
+					widget = widget.getChild(widgetDetails.getChildChildID());
+					if (widget == null) continue;
+				}
+				widget.setText(widget.getText().replace(widgetReplacement.getTextToReplace(), widgetReplacement.getReplacementText()));
+				widget.revalidate();
+			}
+		}
+
 		if (event.getGroupId() == WidgetID.DIALOG_NPC_GROUP_ID)
 		{
 			Widget npcChatName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME);

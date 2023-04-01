@@ -37,8 +37,8 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.WidgetDetails;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
@@ -48,7 +48,7 @@ import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeItem;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedObject;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.WidgetReplacement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,6 +59,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.COOKS_HELPER
@@ -167,6 +168,7 @@ public class CooksHelper extends ComplexStateQuestHelper
 		replacedHopleez.setFace(7481);
 		replacedHopleez.setExamine("He was here first.");
 		replacedHopleez.addExamineAction(runeliteObjectManager);
+		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(WidgetInfo.DIALOG_NPC_TEXT), "Hatius Cosaintus", "Hopleez"));
 
 		// Hopleez
 		hopleez = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808);

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * Copyright (c) 2021, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
@@ -59,13 +60,13 @@ public class ExtendedRuneliteObject
 
 	// TODO: Some requirements kinda require an external tracking element, so may need to shove into a ConditionalStep or some weirdness?
 	@Getter
-	private LinkedHashMap<Requirement, RuneliteDialogStep> dialogTrees = new LinkedHashMap<>();
+	private final LinkedHashMap<Requirement, RuneliteDialogStep> dialogTrees = new LinkedHashMap<>();
 
 	private Model model;
 	private int animation;
 
 	@Getter
-	private WorldPoint worldPoint;
+	private final WorldPoint worldPoint;
 
 	@Setter
 	@Getter

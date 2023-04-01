@@ -22,24 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
-import lombok.AllArgsConstructor;
-import lombok.Value;
+import com.questhelper.steps.WidgetDetails;
+import lombok.Getter;
 import net.runelite.api.widgets.WidgetInfo;
 
-@Value
-@AllArgsConstructor
-public class WidgetDetails
+public class WidgetReplacement
 {
-	public int groupID;
-	public int childID;
-	public int childChildID;
+	@Getter
+	private final WidgetDetails widgetDetails;
+	@Getter
+	private final String textToReplace;
+	@Getter
+	private final String replacementText;
 
-	public WidgetDetails(WidgetInfo widgetInfo)
+//	Requirement requirement;
+
+	public WidgetReplacement(WidgetDetails widgetDetails, String textToReplace, String replacementText)
 	{
-		groupID = widgetInfo.getGroupId();
-		childID = widgetInfo.getChildId();
-		childChildID = -1;
+		this.widgetDetails = widgetDetails;
+		this.textToReplace = textToReplace;
+		this.replacementText = replacementText;
+	}
+
+	public WidgetReplacement(WidgetInfo widgetInfo, String textToReplace, String replacementText)
+	{
+		this.widgetDetails = new WidgetDetails(widgetInfo);
+		this.textToReplace = textToReplace;
+		this.replacementText = replacementText;
 	}
 }

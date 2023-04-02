@@ -274,6 +274,7 @@ public class RuneliteObjectManager
 	{
 		if (runeliteObjectGroups.get(groupID) == null) return;
 		clientThread.invokeLater(() -> {
+			if (runeliteObjectGroups.get(groupID) == null) return;
 			runeliteObjectGroups.get(groupID).removeAllIncludingSubgroups(this);
 		});
 	}

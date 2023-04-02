@@ -138,6 +138,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 		dialog.addContinueDialog(new RunelitePlayerDialogStep(client, "I have yeah, what's wrong? Does he need some more eggs? Maybe I can just get him a chicken instead?"))
 			.addContinueDialog(cooksCousin.createDialogStepForNpc("No no, nothing like that. Have you seen that terribly dressed person outside the courtyard?"))
 			.addContinueDialog(cooksCousin.createDialogStepForNpc("I don't know who they are, but can you please get them to move along please?"))
+			.addContinueDialog(cooksCousin.createDialogStepForNpc("They seem to be attracting more troublemakers...."))
 			.addContinueDialog(new RunelitePlayerDialogStep(client, "You mean Hatius? If so it'd be my pleasure.").setStateProgression(talkedToCooksCousin.getSetter()));
 		cooksCousin.addDialogTree(hasDoneCooksAssistant, dialog);
 
@@ -172,7 +173,6 @@ public class CooksHelper extends PlayerMadeQuestHelper
 		RuneliteDialogStep hopleezWaitingForCabbageDialog = hopleez.createDialogStepForNpc("Get me that cabbage!");
 		hopleez.addDialogTree(talkedToHopleez, hopleezWaitingForCabbageDialog);
 
-		RuneliteConfigSetter restartQuest = new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "0");
 		RuneliteConfigSetter endQuest = new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "4");
 		RuneliteDialogStep hopleezGiveCabbageDialog = hopleez.createDialogStepForNpc("Have you got the cabbage?");
 		hopleezGiveCabbageDialog
@@ -191,28 +191,9 @@ public class CooksHelper extends PlayerMadeQuestHelper
 		cabbage.setExamine("A mouldy looking cabbage.");
 		cabbage.addExamineAction(runeliteObjectManager);
 		cabbage.setDisplayRequirement(displayCabbage);
-		cabbage.setReplaceWalkAction((menuEntry) -> {
-			// Bend down and pick up the item
-			cabbage.setPendingAction(() -> {
-				// Kinda needs to be a 'last interacted object'
-				Player player = client.getLocalPlayer();
-				// TODO: Won't work in instances?
-				if (player.getWorldLocation().distanceTo(cabbage.getWorldPoint()) <= 1)
-				{
-					runeliteObjectManager.createChatboxMessage("You pick up the old cabbage.");
-					player.setAnimation(AnimationID.BURYING_BONES);
-					player.setAnimationFrame(0);
+		cabbage.addTakeAction(runeliteObjectManager, new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "3"),
+			"You pick up the old cabbage.");
 
-					// Set variable
-					new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "3").setConfigValue();
-					cabbage.activate();
-
-					return true;
-				}
-				return false;
-			});
-		});
-		cabbage.setReplaceWalkActionText("Pick");
 		cabbage.setObjectToRemove(new ReplacedObject(NullObjectID.NULL_37348, new WorldPoint(3231, 3235, 0)));
 	}
 

@@ -90,6 +90,7 @@ public class RuneliteObjectManager
 
 	@Inject
 	private Hooks hooks;
+	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
 	// Red Click
 	Point clickPos;
@@ -97,8 +98,6 @@ public class RuneliteObjectManager
 	int bufferRedClickAnimation = 0;
 	int[] redClick = new int[]{SpriteID.RED_CLICK_ANIMATION_1, SpriteID.RED_CLICK_ANIMATION_2, SpriteID.RED_CLICK_ANIMATION_3, SpriteID.RED_CLICK_ANIMATION_4};
 	final int ANIMATION_PERIOD = 10;
-
-	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
 	ExtendedRuneliteObject lastInteractedWithRuneliteObject;
 
@@ -264,9 +263,9 @@ public class RuneliteObjectManager
 					}
 				}
 			}
-			if (name == null) return true;
-//			return !(name.equals("Lumbridge Guide") && !drawingUI);
 		}
+		// TODO: Maybe one day this will work for GameObjects
+
 		return true;
 	}
 
@@ -311,30 +310,7 @@ public class RuneliteObjectManager
 				ExtendedRuneliteObjects group = runeliteObjectGroups.get(groupID);
 				for (ExtendedRuneliteObject extendedRuneliteObject : group.extendedRuneliteObjects)
 				{
-					if (extendedRuneliteObject instanceof ReplacedNpc)
-					{
-						ReplacedNpc replacedNpc = (ReplacedNpc) extendedRuneliteObject;
-						if (replacedNpc.getNpc() == npc)
-						{
-							boolean shouldSkip = false;
-							for (MenuEntryWrapper entry : replacedNpc.getEntries())
-							{
-								// If seen option before, skip it
-								if (entry.option.equals(event.getOption()))
-								{
-									shouldSkip = true;
-									break;
-								}
-								if (event.getOption().equals("Examine"))
-								{
-									shouldSkip = true;
-									break;
-								}
-							}
-							if (shouldSkip) continue;
-							replacedNpc.addMenuEntry(new MenuEntryWrapper(event.getOption(), event.getMenuEntry().getType(), event.getTarget(), event.getIdentifier(), 0, 0));
-						}
-					}
+					copyMenuEntry(extendedRuneliteObject, event, npc);
 				}
 			}
 		}
@@ -345,6 +321,34 @@ public class RuneliteObjectManager
 				setupMenuOptions(runeliteObject, event);
 			}
 		});
+	}
+
+	private void copyMenuEntry(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event, NPC npc)
+	{
+		if (extendedRuneliteObject instanceof ReplacedNpc)
+		{
+			ReplacedNpc replacedNpc = (ReplacedNpc) extendedRuneliteObject;
+			if (replacedNpc.getNpc() == npc)
+			{
+				boolean shouldSkip = false;
+				for (MenuEntryWrapper entry : replacedNpc.getEntries())
+				{
+					// If seen option before, skip it
+					if (entry.option.equals(event.getOption()))
+					{
+						shouldSkip = true;
+						break;
+					}
+					if (event.getOption().equals("Examine"))
+					{
+						shouldSkip = true;
+						break;
+					}
+				}
+				if (shouldSkip) return;
+				replacedNpc.addMenuEntry(new MenuEntryWrapper(event.getOption(), event.getMenuEntry().getType(), event.getTarget(), event.getIdentifier(), 0, 0));
+			}
+		}
 	}
 
 	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
@@ -362,25 +366,13 @@ public class RuneliteObjectManager
 			{
 				if (extendedRuneliteObject instanceof ReplacedNpc)
 				{
-					ReplacedNpc replacedNpc = (ReplacedNpc) extendedRuneliteObject;
-					if (!replacedNpc.getEntries().isEmpty())
-					{
-						for (MenuEntryWrapper entry : replacedNpc.getEntries())
-						{
-							client.createMenuEntry(-1)
-								.setOption(entry.getOption())
-								.setType(entry.getType())
-								.setTarget("<col=" + replacedNpc.getNameColor() + ">" + replacedNpc.getName() + "</col>")
-								.setIdentifier(entry.getIdentifier())
-								.setParam0(0)
-								.setParam1(0)
-								.setParent(event.getMenuEntry().getParent());
-						}
-					}
+					addReplacedNpcOptions(extendedRuneliteObject, event);
 				}
+
 				extendedRuneliteObject.getActions().forEach((name, action) -> {
 					addAction(extendedRuneliteObject, widgetIndex, widgetID, action, name);
 				});
+
 				extendedRuneliteObject.getPriorityActions().forEach((name, action) -> {
 					addPriorityAction(extendedRuneliteObject, widgetIndex, widgetID, action, name);
 				});
@@ -421,6 +413,25 @@ public class RuneliteObjectManager
 			{
 				LocalPoint actorLp = actor.getLocalLocation();
 				updatePriorities(event, actorLp.getSceneX(), actorLp.getSceneY(), menuEntries, lp, false);
+			}
+		}
+	}
+
+	private void addReplacedNpcOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
+	{
+		ReplacedNpc replacedNpc = (ReplacedNpc) extendedRuneliteObject;
+		if (!replacedNpc.getEntries().isEmpty())
+		{
+			for (MenuEntryWrapper entry : replacedNpc.getEntries())
+			{
+				client.createMenuEntry(-1)
+					.setOption(entry.getOption())
+					.setType(entry.getType())
+					.setTarget("<col=" + replacedNpc.getNameColor() + ">" + replacedNpc.getName() + "</col>")
+					.setIdentifier(entry.getIdentifier())
+					.setParam0(0)
+					.setParam1(0)
+					.setParent(event.getMenuEntry().getParent());
 			}
 		}
 	}

@@ -26,18 +26,15 @@ package com.questhelper.playerquests.cookshelper;
 
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.RuneliteConfigIdentifier;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questhelpers.PlayerMadeQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
-import com.questhelper.requirements.quest.QuestPointRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
@@ -46,7 +43,6 @@ import com.questhelper.steps.playermadesteps.RuneliteObjectStep;
 import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeItem;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedObject;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,17 +58,15 @@ import net.runelite.api.coords.WorldPoint;
 @QuestDescriptor(
 	quest = QuestHelperQuest.COOKS_HELPER
 )
-public class CooksHelper extends ComplexStateQuestHelper
+public class CooksHelper extends PlayerMadeQuestHelper
 {
 	private RuneliteObjectStep talkToCook, talkToHopleez, grabCabbage, returnToHopleez;
-
-	private RuneliteConfigIdentifier cooksHelperConfigID = RuneliteConfigIdentifier.COOKS_HELPER;
 
 	private FakeNpc cooksCousin, hopleez;
 
 	private FakeItem cabbage;
 
-	private PlayerQuestStateRequirement talkedToCooksCousin, talkedToHopleez, pickedCabbage, returnedToHopleez;
+	private PlayerQuestStateRequirement talkedToCooksCousin, talkedToHopleez, displayCabbage, pickedCabbage;
 
 	@Override
 	public QuestStep loadStep()
@@ -81,12 +75,13 @@ public class CooksHelper extends ComplexStateQuestHelper
 		createRuneliteObjects();
 		setupSteps();
 
-		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 1);
+		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 0);
 
 		ConditionalStep questSteps = new ConditionalStep(this, talkToCook);
-		questSteps.addStep(req.getNewState(2), returnToHopleez);
-		questSteps.addStep(req.getNewState(1), grabCabbage);
-		questSteps.addStep(req, talkToHopleez);
+		questSteps.addStep(req.getNewState(4), new DetailedQuestStep(this, "Quest completed!"));
+		questSteps.addStep(req.getNewState(3), returnToHopleez);
+		questSteps.addStep(req.getNewState(2), grabCabbage);
+		questSteps.addStep(req.getNewState(1), talkToHopleez);
 
 		// We want something which can be added to a requirement, which
 
@@ -105,10 +100,10 @@ public class CooksHelper extends ComplexStateQuestHelper
 		// Work out how to do proper priority on the npcs being clicked
 		// Wandering NPCs?
 		// Objects + items (basically same as NPCs)
-		talkedToCooksCousin = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 1, Operation.GREATER_EQUAL);
-		talkedToHopleez = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 2, Operation.GREATER_EQUAL);
-		pickedCabbage = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 3, Operation.GREATER_EQUAL);
-		returnedToHopleez = new PlayerQuestStateRequirement(configManager, cooksHelperConfigID, 4, Operation.GREATER_EQUAL);
+		talkedToCooksCousin = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 1, Operation.GREATER_EQUAL);
+		talkedToHopleez = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 2, Operation.GREATER_EQUAL);
+		pickedCabbage = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 3, Operation.GREATER_EQUAL);
+		displayCabbage = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 2);
 	}
 
 	public void setupSteps()
@@ -116,7 +111,6 @@ public class CooksHelper extends ComplexStateQuestHelper
 		// TODO: Need a way to define the groupID of a runelite object to be a quest step without it being stuck
 		// Add each step's groupID as a sub-group
 		talkToCook = new RuneliteObjectStep(this, cooksCousin, "Talk to the Lumbridge Cook.");
-//		talkToCook.addNpcToDelete(this, cooksCousin);
 
 		talkToHopleez = new RuneliteObjectStep(this, hopleez, "Talk to Hopleez east of Lumbridge Castle.");
 
@@ -131,30 +125,21 @@ public class CooksHelper extends ComplexStateQuestHelper
 		cooksCousin = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0), 808);
 		cooksCousin.setName("Cook's Cousin");
 		cooksCousin.setFace(4626);
-		cooksCousin.setExamine("The Cook's cousin, Vinny.");
+		cooksCousin.setExamine("The Cook's cousin.");
 		cooksCousin.addTalkAction(runeliteObjectManager);
 		cooksCousin.addExamineAction(runeliteObjectManager);
 
 		QuestRequirement hasDoneCooksAssistant = new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED);
-		String cookHelpedReplyText = "";
-		if (hasDoneCooksAssistant.check(client))
-		{
-			cookHelpedReplyText = "Yes, why?";
-		}
-		else
-		{
-			cookHelpedReplyText = "No, never even seen them before.";
-		}
-		RuneliteObjectDialogStep dialog = cooksCousin.createDialogStepForNpc(
-			"Hey, you there! You helped out my cousin before right?");
-		RuneliteObjectDialogStep dialog2 = cooksCousin.createDialogStepForNpc("Well can you do me a favour? There's a terribly dressed person outside the castle's courtyard.");
-		RunelitePlayerDialogStep dialog3 = new RunelitePlayerDialogStep(client, "Sure thing!");
-		dialog3.setStateProgression(talkedToCooksCousin.getSetter());
-		dialog.addContinueDialog(new RunelitePlayerDialogStep(client, cookHelpedReplyText))
-			.addContinueDialog(dialog2)
-			.addContinueDialog(cooksCousin.createDialogStepForNpc("Can you please get them to move along please?"))
-			.addContinueDialog(dialog3);
-		cooksCousin.addDialogTree(null, dialog);
+
+		RuneliteObjectDialogStep dontMeetReqDialog = cooksCousin.createDialogStepForNpc("Come talk to me once you've helped my cousin out.");
+		cooksCousin.addDialogTree(null, dontMeetReqDialog);
+
+		RuneliteDialogStep dialog = cooksCousin.createDialogStepForNpc("Hey, you there! You helped out my cousin before right?");
+		dialog.addContinueDialog(new RunelitePlayerDialogStep(client, "I have yeah, what's wrong? Does he need some more eggs? Maybe I can just get him a chicken instead?"))
+			.addContinueDialog(cooksCousin.createDialogStepForNpc("No no, nothing like that. Have you seen that terribly dressed person outside the courtyard?"))
+			.addContinueDialog(cooksCousin.createDialogStepForNpc("I don't know who they are, but can you please get them to move along please?"))
+			.addContinueDialog(new RunelitePlayerDialogStep(client, "You mean Hatius? If so it'd be my pleasure.").setStateProgression(talkedToCooksCousin.getSetter()));
+		cooksCousin.addDialogTree(hasDoneCooksAssistant, dialog);
 
 		RuneliteObjectDialogStep dialogV2 = cooksCousin.createDialogStepForNpc("That terribly dressed person is still outside the castle, go talk to them!");
 		cooksCousin.addDialogTree(talkedToCooksCousin, dialogV2);
@@ -187,10 +172,14 @@ public class CooksHelper extends ComplexStateQuestHelper
 		RuneliteDialogStep hopleezWaitingForCabbageDialog = hopleez.createDialogStepForNpc("Get me that cabbage!");
 		hopleez.addDialogTree(talkedToHopleez, hopleezWaitingForCabbageDialog);
 
-		RuneliteConfigSetter restartQuest = new RuneliteConfigSetter(configManager, "cookshelper", "0");
+		RuneliteConfigSetter restartQuest = new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "0");
+		RuneliteConfigSetter endQuest = new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "4");
 		RuneliteDialogStep hopleezGiveCabbageDialog = hopleez.createDialogStepForNpc("Have you got the cabbage?");
-		hopleezGiveCabbageDialog.addContinueDialog(new RunelitePlayerDialogStep(client, "I have!"))
-				.addContinueDialog(hopleez.createDialogStepForNpc("Nice! Now let's sort out this crasher...", restartQuest));
+		hopleezGiveCabbageDialog
+			.addContinueDialog(new RunelitePlayerDialogStep(client, "I have!"))
+			.addContinueDialog(hopleez.createDialogStepForNpc("Nice! Now let's sort out this crasher..."))
+			.addContinueDialog(hopleez.createDialogStepForNpc("Oi noob, take this!"))
+			.addContinueDialog(new RuneliteObjectDialogStep("Hatius Cosaintus", "What on earth?", NpcID.HATIUS_COSAINTUS).setStateProgression(endQuest));
 		hopleez.addDialogTree(pickedCabbage, hopleezGiveCabbageDialog);
 	}
 
@@ -201,7 +190,7 @@ public class CooksHelper extends ComplexStateQuestHelper
 		cabbage.setName("Old cabbage");
 		cabbage.setExamine("A mouldy looking cabbage.");
 		cabbage.addExamineAction(runeliteObjectManager);
-		cabbage.setDisplayRequirement(new Conditions(LogicType.NOR, pickedCabbage));
+		cabbage.setDisplayRequirement(displayCabbage);
 		cabbage.setReplaceWalkAction((menuEntry) -> {
 			// Bend down and pick up the item
 			cabbage.setPendingAction(() -> {
@@ -215,7 +204,7 @@ public class CooksHelper extends ComplexStateQuestHelper
 					player.setAnimationFrame(0);
 
 					// Set variable
-					pickedCabbage.getSetter().setConfigValue();
+					new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "3").setConfigValue();
 					cabbage.activate();
 
 					return true;
@@ -237,14 +226,14 @@ public class CooksHelper extends ComplexStateQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Collections.singletonList(new QuestPointRequirement(16));
+		return Collections.singletonList(new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Collections.singletonList(
-			new UnlockReward("A sense of pride and accomplishment")
+			new UnlockReward("A replacement for Hatius Cosaintus")
 		);
 	}
 

@@ -22,19 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper;
+package com.questhelper.questhelpers;
 
-import lombok.Getter;
+import net.runelite.api.QuestState;
 
-public enum RuneliteConfigIdentifier
+public abstract class PlayerMadeQuestHelper extends ComplexStateQuestHelper
 {
-	COOKS_HELPER("cookshelper");
-
-	@Getter
-	private final String configID;
-
-	RuneliteConfigIdentifier(String configID)
+	@Override
+	public void shutDown()
 	{
-		this.configID = configID;
+		super.shutDown();
+		if (getQuest().getState(client, configManager) == QuestState.FINISHED)
+		{
+			runeliteObjectManager.createChatboxMessage("Quest completed!");
+		}
 	}
 }

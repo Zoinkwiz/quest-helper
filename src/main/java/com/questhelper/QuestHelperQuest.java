@@ -366,7 +366,7 @@ public enum QuestHelperQuest
 	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
 
 	// Player Quests
-	COOKS_HELPER("Cook's Helper", PlayerQuests.COOKS_HELPER, 10);
+	COOKS_HELPER("Cook's Helper", PlayerQuests.COOKS_HELPER, 4);
 
 	@Getter
 	private final int id;
@@ -389,6 +389,7 @@ public enum QuestHelperQuest
 
 	private Skill skill;
 
+	@Getter
 	private PlayerQuests playerQuests;
 
 	private final int completeValue;
@@ -515,18 +516,38 @@ public enum QuestHelperQuest
 	{
 		if (playerQuests != null)
 		{
-			Integer currentState = configManager.getRSProfileConfiguration("questhelper", playerQuests.getConfigValue(), Integer.class);
-			if (currentState != null)
+			String currentStateString = configManager.getRSProfileConfiguration(QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP, playerQuests.getConfigValue());
+			try
 			{
+				int currentState = Integer.parseInt(currentStateString);
 				if (currentState == 0) return QuestState.NOT_STARTED;
 				if (currentState >= completeValue) return QuestState.FINISHED;
 				return QuestState.IN_PROGRESS;
+
+			}
+			catch (NumberFormatException err)
+			{
+				configManager.setRSProfileConfiguration(QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP, playerQuests.getConfigValue(), "0");
+				return QuestState.NOT_STARTED;
 			}
 		}
 		return getState(client);
 	}
+	public QuestState getQuestState(Client client)
+	{
+		client.runScript(ScriptID.QUEST_STATUS_GET, id);
+		switch (client.getIntStack()[0])
+		{
+			case 2:
+				return QuestState.FINISHED;
+			case 1:
+				return QuestState.NOT_STARTED;
+			default:
+				return QuestState.IN_PROGRESS;
+		}
+	}
 
-	public QuestState getState(Client client)
+	private QuestState getState(Client client)
 	{
 		if (skill != null)
 		{
@@ -556,16 +577,7 @@ public enum QuestHelperQuest
 			return QuestState.IN_PROGRESS;
 		}
 
-		client.runScript(ScriptID.QUEST_STATUS_GET, id);
-		switch (client.getIntStack()[0])
-		{
-			case 2:
-				return QuestState.FINISHED;
-			case 1:
-				return QuestState.NOT_STARTED;
-			default:
-				return QuestState.IN_PROGRESS;
-		}
+		return getQuestState(client);
 	}
 
 	public int getVar(Client client)

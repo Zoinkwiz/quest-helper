@@ -46,7 +46,6 @@ public class RuneliteDialogStep
 	@Getter
 	private RuneliteDialogStep continueDialog;
 
-	@Setter
 	@Getter
 	private RuneliteConfigSetter stateProgression;
 
@@ -68,6 +67,12 @@ public class RuneliteDialogStep
 		this.animation = animation;
 		this.faceID = faceID;
 		this.setStateProgression(setter);
+	}
+
+	public RuneliteDialogStep setStateProgression(RuneliteConfigSetter stateProgression)
+	{
+		this.stateProgression = stateProgression;
+		return this;
 	}
 
 	public void addNewDialogChoice(RuneliteDialogStep step)

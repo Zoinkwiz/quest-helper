@@ -153,7 +153,7 @@ public class TheGrandTree extends BasicQuestHelper
 
 		// Tuzo
 		goTalkToCharlie3 = goTalkToCharlie.copy();
-		if (QuestHelperQuest.TREE_GNOME_VILLAGE.getState(client) == QuestState.FINISHED)
+		if (QuestHelperQuest.TREE_GNOME_VILLAGE.getState(client, configManager) == QuestState.FINISHED)
 		{
 			goTalkToCharlie3.setText("Return to Charlie. You won't be able to enter through the main entrance, so " +
 				"speak to Femi outside the main gate to be snuck in, or make use of a Spirit Tree to enter the Tree Gnome Stronghold." +

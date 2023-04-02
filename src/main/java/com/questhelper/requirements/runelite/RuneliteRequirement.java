@@ -24,9 +24,9 @@
  */
 package com.questhelper.requirements.runelite;
 
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +37,7 @@ import net.runelite.client.config.ConfigManager;
 public class RuneliteRequirement extends AbstractRequirement
 {
 	@Getter
-	protected final String CONFIG_GROUP = "questhelpervars";
+	protected final String CONFIG_GROUP = QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP;
 
 	protected final String displayText;
 	protected final String runeliteIdentifier;

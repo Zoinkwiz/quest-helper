@@ -25,6 +25,7 @@
 package com.questhelper;
 
 import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.WidgetDetails;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
@@ -44,7 +45,7 @@ public class GlobalFakeObjects
 		replacedHopleez.setFace(7481);
 		replacedHopleez.setExamine("He was here first.");
 		replacedHopleez.addExamineAction(runeliteObjectManager);
-		replacedHopleez.setDisplayRequirement(new PlayerQuestStateRequirement(configManager, RuneliteConfigIdentifier.COOKS_HELPER, 2));
+		replacedHopleez.setDisplayRequirement(new PlayerQuestStateRequirement(configManager, PlayerQuests.COOKS_HELPER, 4, Operation.GREATER_EQUAL));
 		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(WidgetInfo.DIALOG_NPC_TEXT), "Hatius Cosaintus", "Hopleez"));
 	}
 }

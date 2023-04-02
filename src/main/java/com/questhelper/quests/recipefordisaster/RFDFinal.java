@@ -213,7 +213,7 @@ public class RFDFinal extends BasicQuestHelper
 			return QuestState.NOT_STARTED;
 		}
 
-		return getQuest().getState(client);
+		return getQuest().getState(client, configManager);
 	}
 
 	@Override

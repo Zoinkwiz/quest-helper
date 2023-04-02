@@ -162,6 +162,8 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_GENERICHELPER = "Helper";
 	private static final String MENUOP_EXAMINE_PLAYER = "Examine";
 
+	public static final String QUESTHELPER_QUEST_CONFIG_GROUP = "questhelpervars";
+
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
 	@Inject
@@ -483,6 +485,14 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		// Catches Player Made Quests
+		clientThread.invokeLater(() -> {
+			if ((selectedQuest != null) && selectedQuest.isCompleted())
+			{
+				shutDownQuest(true);
+			}
+		});
+
 		if (!event.getGroup().equals("questhelper"))
 		{
 			return;

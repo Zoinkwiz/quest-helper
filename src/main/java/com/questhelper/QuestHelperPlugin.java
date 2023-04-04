@@ -550,7 +550,7 @@ public class QuestHelperPlugin extends Plugin
 		}
 		else if (developerMode && commandExecuted.getCommand().equals("reset-cooks-helper"))
 		{
-			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), "0");
+			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), "0").setConfigValue();
 		}
 	}
 

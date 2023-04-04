@@ -24,15 +24,21 @@
  */
 package com.questhelper.steps.playermadesteps;
 
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FaceAnimationIDs;
 import java.util.ArrayList;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.Client;
 
 public class RuneliteObjectDialogStep extends RuneliteDialogStep
 {
 	@Getter
 	private final ArrayList<RuneliteDialogStep> dialogChoices = new ArrayList<>();
+
+	public RuneliteObjectDialogStep(Client client, String text, FaceAnimationIDs animation)
+	{
+		super(client.getLocalPlayer().getName(), text, -1, animation.getAnimationID());
+		client.getLocalPlayer().getName();
+	}
 
 	public RuneliteObjectDialogStep(String name, String text, int faceID, int animation)
 	{

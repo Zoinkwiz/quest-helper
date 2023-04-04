@@ -300,6 +300,11 @@ public class ExtendedRuneliteObject
 		priorityActions.put(name, action);
 	}
 
+	public RuneliteObjectDialogStep createDialogStepForNpc(String text, FaceAnimationIDs faceAnimation)
+	{
+		return createDialogStepForNpc(text, faceAnimation.getAnimationID());
+	}
+
 	public RuneliteObjectDialogStep createDialogStepForNpc(String text, int faceAnimation)
 	{
 		if (face == -1)

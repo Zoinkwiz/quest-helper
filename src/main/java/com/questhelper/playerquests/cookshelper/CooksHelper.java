@@ -41,6 +41,7 @@ import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectStep;
 import com.questhelper.steps.playermadesteps.RunelitePlayerDialogStep;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FaceAnimationIDs;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeItem;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedObject;
@@ -48,10 +49,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.AnimationID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.Player;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
@@ -136,8 +135,8 @@ public class CooksHelper extends PlayerMadeQuestHelper
 
 		RuneliteDialogStep dialog = cooksCousin.createDialogStepForNpc("Hey, you there! You helped out my cousin before right?");
 		dialog.addContinueDialog(new RunelitePlayerDialogStep(client, "I have yeah, what's wrong? Does he need some more eggs? Maybe I can just get him a chicken instead?"))
-			.addContinueDialog(cooksCousin.createDialogStepForNpc("No no, nothing like that. Have you seen that terribly dressed person outside the courtyard?"))
-			.addContinueDialog(cooksCousin.createDialogStepForNpc("I don't know who they are, but can you please get them to move along please?"))
+			.addContinueDialog(cooksCousin.createDialogStepForNpc("No no, nothing like that. Have you seen that terribly dressed person outside the courtyard?", FaceAnimationIDs.FRIENDLY_QUESTIONING))
+			.addContinueDialog(cooksCousin.createDialogStepForNpc("I don't know who they are, but can you please get them to move along please?", FaceAnimationIDs.FRIENDLY_QUESTIONING))
 			.addContinueDialog(cooksCousin.createDialogStepForNpc("They seem to be attracting more troublemakers...."))
 			.addContinueDialog(new RunelitePlayerDialogStep(client, "You mean Hatius? If so it'd be my pleasure.").setStateProgression(talkedToCooksCousin.getSetter()));
 		cooksCousin.addDialogTree(hasDoneCooksAssistant, dialog);
@@ -162,11 +161,15 @@ public class CooksHelper extends PlayerMadeQuestHelper
 			.addContinueDialog(hopleez.createDialogStepForNpc("Hop NOOB."));
 		hopleez.addDialogTree(null, hopleezDialogPreQuest);
 
-		RuneliteDialogStep hopleezDialog1 = hopleez.createDialogStepForNpc("Hop noob.");
-		hopleezDialog1.addContinueDialog(new RunelitePlayerDialogStep(client, "What? The Cook's Cousin sent me to see what you were doing here."))
-			.addContinueDialog(hopleez.createDialogStepForNpc("I was here first but this noob is crashing me!"))
+		RuneliteDialogStep hopleezDialog1 = hopleez.createDialogStepForNpc("Hop noob.", FaceAnimationIDs.ANNOYED);
+		hopleezDialog1.addContinueDialog(new RunelitePlayerDialogStep(client, "What? The Cook's Cousin sent me to see what you were doing here.", FaceAnimationIDs.QUIZZICAL))
+			.addContinueDialog(hopleez.createDialogStepForNpc("One moment I was relaxing in Zeah killing some crabs. I closed my eyes for a second, and suddenly I'm here."))
+			.addContinueDialog(hopleez.createDialogStepForNpc("People would always try to steal my spot in Zeah, and it seems it's no different here!", FaceAnimationIDs.ANNOYED))
+			.addContinueDialog(hopleez.createDialogStepForNpc("Not only is this guy crashing me, but he's trying to outdress me too!", FaceAnimationIDs.ANNOYED_2))
+			.addContinueDialog(new RunelitePlayerDialogStep(client, "I'm pretty sure he's been here much longer than you....", FaceAnimationIDs.QUESTIONING))
+			.addContinueDialog(hopleez.createDialogStepForNpc("I swear he wasn't here when I first arrived, I went away for a second and suddenly he's here!", FaceAnimationIDs.ANNOYED_2))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Help me teach him a lesson, get me that old cabbage from outside the The Sheared Ram."))
-			.addContinueDialog(new RunelitePlayerDialogStep(client, "Ummm okay....", talkedToHopleez.getSetter()));
+			.addContinueDialog(new RunelitePlayerDialogStep(client, "Umm, sure....", talkedToHopleez.getSetter()));
 		hopleez.addDialogTree(talkedToCooksCousin, hopleezDialog1);
 
 
@@ -176,7 +179,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 		RuneliteConfigSetter endQuest = new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "4");
 		RuneliteDialogStep hopleezGiveCabbageDialog = hopleez.createDialogStepForNpc("Have you got the cabbage?");
 		hopleezGiveCabbageDialog
-			.addContinueDialog(new RunelitePlayerDialogStep(client, "I have!"))
+			.addContinueDialog(new RunelitePlayerDialogStep(client, "I have! Here you go, why do you need it?"))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Nice! Now let's sort out this crasher..."))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Oi noob, take this!"))
 			.addContinueDialog(new RuneliteObjectDialogStep("Hatius Cosaintus", "What on earth?", NpcID.HATIUS_COSAINTUS).setStateProgression(endQuest));

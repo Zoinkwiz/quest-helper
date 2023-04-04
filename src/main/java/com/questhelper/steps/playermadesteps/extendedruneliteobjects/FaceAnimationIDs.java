@@ -22,40 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FaceAnimationIDs;
-import net.runelite.api.Client;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public class RunelitePlayerDialogStep extends RuneliteDialogStep
+@AllArgsConstructor
+public enum FaceAnimationIDs
 {
-	public RunelitePlayerDialogStep(Client client, String text, FaceAnimationIDs animation)
-	{
-		super(client.getLocalPlayer().getName(), text, -1, animation.getAnimationID());
-		client.getLocalPlayer().getName();
-	}
-
-	public RunelitePlayerDialogStep(Client client, String text, int animation)
-	{
-		super(client.getLocalPlayer().getName(), text, -1, animation);
-		client.getLocalPlayer().getName();
-	}
-
-	public RunelitePlayerDialogStep(Client client, String text)
-	{
-		this(client, text, 570);
-	}
-
-	public RunelitePlayerDialogStep(Client client, String text, RuneliteConfigSetter setter)
-	{
-		this(client, text, 570);
-		this.setStateProgression(setter);
-	}
-
-	@Override
-	public boolean isPlayer()
-	{
-		return true;
-	}
+	NORMAL(554),
+	FRIENDLY(567),
+	YES(568),
+	QUIZZICAL(569),
+	CHATTY(570),
+	QUESTIONING(575),
+	FRIENDLY_QUESTIONING(588),
+	FRIENDLY_2(589),
+	SHORT_LAUGH(605),
+	LAUGHING(606),
+	BIG_LAUGH(607),
+	SAD(610),
+	WORRIED_SAD(612),
+	ANNOYED(614),
+	ANNOYED_2(615);
+	@Getter
+	private final int animationID;
 }
-

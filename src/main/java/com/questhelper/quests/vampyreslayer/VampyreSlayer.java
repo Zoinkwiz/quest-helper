@@ -137,6 +137,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		talkToMorgan.addDialogStep("Accept quest");
 		goUpstairsMorgan = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(3100, 3267, 0), "Go upstairs in Morgan's house and search the cupboard for some garlic.");
 		getGarlic = new ObjectStep(this, ObjectID.CUPBOARD_2613, new WorldPoint(3096, 3270, 1), "Search the cupboard upstairs in Morgan's house.");
+		((ObjectStep) getGarlic).addAlternateObjects(ObjectID.CUPBOARD_2612);
 		ifNeedGarlic = new DetailedQuestStep(this, "If you need garlic, you can get some from the cupboard upstairs in Morgan's house.");
 		ifNeedGarlic.addSubSteps(goUpstairsMorgan, getGarlic);
 

@@ -46,6 +46,7 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.image.BufferedImage;
@@ -541,6 +542,10 @@ public class QuestHelperPlugin extends Plugin
 			}
 			else if ((Arrays.stream(commandExecuted.getArguments()).toArray()[0]).equals("enable"))
 				overlayManager.add(questHelperDebugOverlay);
+		}
+		else if (developerMode && commandExecuted.getCommand().equals("reset-cooks-helper"))
+		{
+			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), "0");
 		}
 	}
 

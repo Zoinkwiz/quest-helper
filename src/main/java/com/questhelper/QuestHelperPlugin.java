@@ -481,7 +481,7 @@ public class QuestHelperPlugin extends Plugin
 		});
 	}
 
-	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
+	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Subscribe
@@ -494,6 +494,11 @@ public class QuestHelperPlugin extends Plugin
 				shutDownQuest(true);
 			}
 		});
+
+		if (event.getGroup().equals(QUESTHELPER_QUEST_CONFIG_GROUP))
+		{
+			clientThread.invokeLater(this::updateQuestList);
+		}
 
 		if (!event.getGroup().equals("questhelper"))
 		{

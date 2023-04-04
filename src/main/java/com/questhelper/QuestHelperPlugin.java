@@ -46,6 +46,7 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -70,6 +71,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Perspective;
@@ -240,12 +242,11 @@ public class QuestHelperPlugin extends Plugin
 
 	private Map<String, QuestHelper> quests;
 
-	@Inject
-	SpriteManager spriteManager;
-
 	@Getter
 	@Inject
 	RuneliteObjectManager runeliteObjectManager;
+
+	QuestCompletedWidget questCompletedWidget = new QuestCompletedWidget();
 
 	@Getter
 	@Inject
@@ -256,6 +257,7 @@ public class QuestHelperPlugin extends Plugin
 	ConfigManager configManager;
 
 	@Getter
+	@Inject
 	GameStateManager gameStateManager;
 
 	private QuestHelperPanel panel;
@@ -296,7 +298,6 @@ public class QuestHelperPlugin extends Plugin
 		injector.injectMembers(bankTagsMain);
 		eventBus.register(bankTagsMain);
 
-		gameStateManager = new GameStateManager();
 		injector.injectMembers(gameStateManager);
 		eventBus.register(gameStateManager);
 		gameStateManager.startUp();

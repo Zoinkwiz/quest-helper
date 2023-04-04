@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
@@ -70,6 +71,10 @@ public class CooksHelper extends PlayerMadeQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
+		itemWidget = ItemID.TOP_HAT;
+		rotationX = 100;
+		zoom = 200;
+
 		setupRequirements();
 		createRuneliteObjects();
 		setupSteps();
@@ -166,7 +171,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 			.addContinueDialog(hopleez.createDialogStepForNpc("One moment I was relaxing in Zeah killing some crabs. I closed my eyes for a second, and suddenly I'm here."))
 			.addContinueDialog(hopleez.createDialogStepForNpc("People would always try to steal my spot in Zeah, and it seems it's no different here!", FaceAnimationIDs.ANNOYED))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Not only is this guy crashing me, but he's trying to outdress me too!", FaceAnimationIDs.ANNOYED_2))
-			.addContinueDialog(new RunelitePlayerDialogStep(client, "I'm pretty sure he's been here much longer than you....", FaceAnimationIDs.QUESTIONING))
+			.addContinueDialog(new RunelitePlayerDialogStep(client, "Hatius? I'm pretty sure he's been here much longer than you....", FaceAnimationIDs.QUESTIONING))
 			.addContinueDialog(hopleez.createDialogStepForNpc("I swear he wasn't here when I first arrived, I went away for a second and suddenly he's here!", FaceAnimationIDs.ANNOYED_2))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Help me teach him a lesson, get me that old cabbage from outside the The Sheared Ram."))
 			.addContinueDialog(new RunelitePlayerDialogStep(client, "Umm, sure....", talkedToHopleez.getSetter()));

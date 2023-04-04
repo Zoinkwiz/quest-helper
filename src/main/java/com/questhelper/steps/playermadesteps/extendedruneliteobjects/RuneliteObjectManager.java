@@ -257,7 +257,7 @@ public class RuneliteObjectManager
 							}
 							else
 							{
-								return replacedNpc.getClickbox().contains(p.getX(), p.getY());
+								return replacedNpc.getClickbox()  == null || replacedNpc.getClickbox().contains(p.getX(), p.getY());
 							}
 						}
 					}

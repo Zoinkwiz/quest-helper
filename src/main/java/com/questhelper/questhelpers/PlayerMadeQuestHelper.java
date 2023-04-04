@@ -24,10 +24,34 @@
  */
 package com.questhelper.questhelpers;
 
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
+import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.QuestState;
 
 public abstract class PlayerMadeQuestHelper extends ComplexStateQuestHelper
 {
+	@Inject
+	QuestCompletedWidget questCompletedWidget;
+
+	@Getter
+	protected int itemWidget = -1;
+
+	@Getter
+	protected int rotationX = 0;
+	@Getter
+	protected int rotationY = 0;
+	@Getter
+	protected int rotationZ = 0;
+	@Getter
+	protected int zoom = 0;
+
+	@Override
+	public void init()
+	{
+		super.init();
+	}
+
 	@Override
 	public void shutDown()
 	{
@@ -35,6 +59,7 @@ public abstract class PlayerMadeQuestHelper extends ComplexStateQuestHelper
 		if (getQuest().getState(client, configManager) == QuestState.FINISHED)
 		{
 			runeliteObjectManager.createChatboxMessage("Quest completed!");
+			questCompletedWidget.createWidget(client, getQuest().getName(), getQuestRewards(), getItemWidget(), rotationX, rotationY, rotationZ, zoom);
 		}
 	}
 }

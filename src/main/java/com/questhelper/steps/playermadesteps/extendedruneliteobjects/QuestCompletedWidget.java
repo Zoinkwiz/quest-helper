@@ -42,7 +42,15 @@ public class QuestCompletedWidget
 		close(client);
 
 		Widget container = client.getWidget(164, 7);
-		if (container == null) return;
+		if (container == null)
+		{
+			container = client.getWidget(548, 25);
+			if (container == null)
+			{
+				container = client.getWidget(161, 7);
+				if (container == null) return;
+			}
+		}
 
 		Widget backgroundWidget = container.createChild(-1, WidgetType.MODEL);
 		backgroundWidget.setModelId(3032);
@@ -63,7 +71,7 @@ public class QuestCompletedWidget
 		Widget congratulationWidget = container.createChild(-1, WidgetType.TEXT);
 		congratulationWidget.setText("Congratulations!");
 		congratulationWidget.setFontId(497);
-		congratulationWidget.setTextColor(JagexColors.TOOLTIP_TEXT.getRGB()); //CHANGE
+		congratulationWidget.setTextColor(Integer.parseInt("37242b", 16)); //CHANGE
 		congratulationWidget.setOriginalY(-92);
 		congratulationWidget.setOriginalWidth(162);
 		congratulationWidget.setOriginalHeight(18);
@@ -75,7 +83,7 @@ public class QuestCompletedWidget
 		Widget questCompleteWidget = container.createChild(-1, WidgetType.TEXT);
 		questCompleteWidget.setText("You have completed " + questName + "!");
 		questCompleteWidget.setFontId(495);
-		questCompleteWidget.setTextColor(8); // CHANGE
+		questCompleteWidget.setTextColor(Integer.parseInt("321e25", 16)); // CHANGE
 		questCompleteWidget.setOriginalY(-70);
 		questCompleteWidget.setOriginalWidth(210);
 		questCompleteWidget.setOriginalHeight(14);
@@ -101,7 +109,7 @@ public class QuestCompletedWidget
 		Widget awardedWidget = container.createChild(-1, WidgetType.TEXT);
 		awardedWidget.setText("You are awarded:");
 		awardedWidget.setFontId(495);
-		awardedWidget.setTextColor(8); // CHANGE
+		awardedWidget.setTextColor(Integer.parseInt("321e25", 16)); // CHANGE
 		awardedWidget.setOriginalY(-35);
 		awardedWidget.setOriginalWidth(180);
 		awardedWidget.setOriginalHeight(14);
@@ -115,7 +123,7 @@ public class QuestCompletedWidget
 			Widget rewardWidget = container.createChild(-1, WidgetType.TEXT);
 			rewardWidget.setText(rewards.get(i));
 			rewardWidget.setFontId(495);
-			rewardWidget.setTextColor(8); // CHANGE
+			rewardWidget.setTextColor(Integer.parseInt("321e25", 16)); // CHANGE
 			rewardWidget.setOriginalY(-14 + (i * 15));
 			rewardWidget.setOriginalWidth(180);
 			rewardWidget.setOriginalHeight(14);

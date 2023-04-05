@@ -30,7 +30,6 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
-import net.runelite.client.ui.JagexColors;
 
 public class QuestCompletedWidget
 {
@@ -174,7 +173,15 @@ public class QuestCompletedWidget
 		if (!activeWidget) return;
 
 		Widget container = client.getWidget(164, 7);
-		if (container == null) return;
+		if (container == null)
+		{
+			container = client.getWidget(548, 25);
+			if (container == null)
+			{
+				container = client.getWidget(161, 7);
+				if (container == null) return;
+			}
+		}
 		container.deleteAllChildren();
 	}
 }

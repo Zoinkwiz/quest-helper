@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.questhelpers;
+package com.questhelper.steps.playermadesteps;
 
-import com.questhelper.QuestHelperConfig;
-import java.util.ArrayList;
-import java.util.Collections;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
-import java.util.List;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FaceAnimationIDs;
+import net.runelite.api.Client;
 
-public abstract class ComplexStateQuestHelper extends QuestHelper
+public class RunelitePlayerDialogStep extends RuneliteDialogStep
 {
-	protected QuestStep step;
-	protected int var;
-
-	@Override
-	public void init()
+	public RunelitePlayerDialogStep(Client client, String text, FaceAnimationIDs animation)
 	{
-		if (step == null)
-		{
-			step = loadStep();
-		}
+		super(client.getLocalPlayer().getName(), text, -1, animation.getAnimationID());
+		client.getLocalPlayer().getName();
+	}
+
+	public RunelitePlayerDialogStep(Client client, String text, int animation)
+	{
+		super(client.getLocalPlayer().getName(), text, -1, animation);
+		client.getLocalPlayer().getName();
+	}
+
+	public RunelitePlayerDialogStep(Client client, String text)
+	{
+		this(client, text, 570);
+	}
+
+	public RunelitePlayerDialogStep(Client client, String text, RuneliteConfigSetter setter)
+	{
+		this(client, text, 570);
+		this.setStateProgression(setter);
 	}
 
 	@Override
-	public void startUp(QuestHelperConfig config)
-	{
-		step = loadStep();
-		this.config = config;
-		instantiateSteps(Collections.singletonList(step));
-		var = getVar();
-		startUpStep(step);
-	}
-
-	@Override
-	public void shutDown()
-	{
-		super.shutDown();
-		shutDownStep();
-	}
-
-	@Override
-	public boolean updateQuest()
+	public boolean isPlayer()
 	{
 		return true;
 	}
-
-	public List<PanelDetails> getPanels()
-	{
-		return new ArrayList<>();
-	}
-
-	public abstract QuestStep loadStep();
 }
+

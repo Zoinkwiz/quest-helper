@@ -26,7 +26,7 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.KeyringCollection;
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.requirements.RuneliteRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;

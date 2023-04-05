@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.*;
+import net.runelite.client.config.ConfigManager;
 
 public enum QuestHelperQuest
 {
@@ -362,7 +363,10 @@ public enum QuestHelperQuest
 	AGILITY("Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 	WOODCUTTING_MEMBER("Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 
-	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL);
+	WOODCUTTING("Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
+
+	// Player Quests
+	COOKS_HELPER("Cook's Helper", PlayerQuests.COOKS_HELPER, 4);
 
 	@Getter
 	private final int id;
@@ -384,6 +388,9 @@ public enum QuestHelperQuest
 	private final QuestVarPlayer varPlayer;
 
 	private Skill skill;
+
+	@Getter
+	private PlayerQuests playerQuests;
 
 	private final int completeValue;
 
@@ -482,7 +489,22 @@ public enum QuestHelperQuest
 		this.skill = skill;
 		this.questType = questType;
 		this.difficulty = difficulty;
-		this.completeValue = 99;
+		this.completeValue = completeValue;
+	}
+
+	// User for Player Quests
+	QuestHelperQuest(String name, PlayerQuests playerQuests, int completeValue)
+	{
+		this.id = -1;
+		this.name = name;
+		this.keywords = titleToKeywords(name);
+		this.varbit = null;
+		this.varPlayer = null;
+		this.skill = null;
+		this.playerQuests = playerQuests;
+		this.questType = QuestDetails.Type.PLAYER_QUEST;
+		this.difficulty = QuestDetails.Difficulty.PLAYER_QUEST;
+		this.completeValue = completeValue;
 	}
 
 	private List<String> titleToKeywords(String title)
@@ -490,7 +512,42 @@ public enum QuestHelperQuest
 		return Arrays.asList(title.toLowerCase().split(" "));
 	}
 
-	public QuestState getState(Client client)
+	public QuestState getState(Client client, ConfigManager configManager)
+	{
+		if (playerQuests != null)
+		{
+			String currentStateString = configManager.getRSProfileConfiguration(QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP, playerQuests.getConfigValue());
+			try
+			{
+				int currentState = Integer.parseInt(currentStateString);
+				if (currentState == 0) return QuestState.NOT_STARTED;
+				if (currentState >= completeValue) return QuestState.FINISHED;
+				return QuestState.IN_PROGRESS;
+
+			}
+			catch (NumberFormatException err)
+			{
+				configManager.setRSProfileConfiguration(QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP, playerQuests.getConfigValue(), "0");
+				return QuestState.NOT_STARTED;
+			}
+		}
+		return getState(client);
+	}
+	public QuestState getQuestState(Client client)
+	{
+		client.runScript(ScriptID.QUEST_STATUS_GET, id);
+		switch (client.getIntStack()[0])
+		{
+			case 2:
+				return QuestState.FINISHED;
+			case 1:
+				return QuestState.NOT_STARTED;
+			default:
+				return QuestState.IN_PROGRESS;
+		}
+	}
+
+	private QuestState getState(Client client)
 	{
 		if (skill != null)
 		{
@@ -520,16 +577,7 @@ public enum QuestHelperQuest
 			return QuestState.IN_PROGRESS;
 		}
 
-		client.runScript(ScriptID.QUEST_STATUS_GET, id);
-		switch (client.getIntStack()[0])
-		{
-			case 2:
-				return QuestState.FINISHED;
-			case 1:
-				return QuestState.NOT_STARTED;
-			default:
-				return QuestState.IN_PROGRESS;
-		}
+		return getQuestState(client);
 	}
 
 	public int getVar(Client client)

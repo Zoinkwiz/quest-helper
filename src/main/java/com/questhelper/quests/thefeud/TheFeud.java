@@ -272,6 +272,10 @@ public class TheFeud extends BasicQuestHelper
 		dung = new ItemRequirement("Dung", ItemID.UGTHANKI_DUNG);
 		poisonHighlighted = new ItemRequirement("Hag's Poison", ItemID.HAGS_POISON);
 		poisonHighlighted.setHighlightInInventory(true);
+
+		//Combat Gear
+		combatGear = new ItemRequirement("Combat Gear bring Range or Mage Gear if safe spotting.", -1, -1 );
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void loadZones()
@@ -302,10 +306,6 @@ public class TheFeud extends BasicQuestHelper
 		//Dung
 		doesNotHaveBucket = new ComplexRequirement(LogicType.NOR, "", new ItemRequirement("Bucket", ItemID.BUCKET));
 		dungNearby = new ObjectCondition(ObjectID.DUNG);
-
-		//Combat Gear
-		combatGear = new ItemRequirement("Combat Gear bring Range or Mage Gear if safe spotting.", -1, -1 );
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
 	public void setupSteps()

@@ -165,7 +165,7 @@ public class RFDStart extends BasicQuestHelper
 		{
 			return QuestState.FINISHED;
 		}
-		return getQuest().getState(client);
+		return getQuest().getState(client, configManager);
 	}
 
 	@Override

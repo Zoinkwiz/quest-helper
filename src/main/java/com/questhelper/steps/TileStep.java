@@ -13,8 +13,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TileStep extends DetailedQuestStep
 {
-	private final WorldPoint worldPoint;
-
 	public TileStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, text, requirements);

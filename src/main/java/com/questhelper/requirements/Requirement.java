@@ -33,6 +33,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 /**
@@ -48,6 +49,16 @@ public interface Requirement
 	 * @return true if the client meets this requirement
 	 */
 	boolean check(Client client);
+
+	default boolean checkWithConfigChange(Client client, ConfigManager configManager, String configName, String value)
+	{
+		if (check(client))
+		{
+			configManager.setRSProfileConfiguration("questhelper", configName, value);
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * @return whether the requirement should be considered for filtering in the sidebar

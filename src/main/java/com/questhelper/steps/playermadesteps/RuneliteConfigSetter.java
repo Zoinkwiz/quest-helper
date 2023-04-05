@@ -1,9 +1,5 @@
-package com.questhelper.overlays;
-
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
- * Copyright (c) 2020 Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,45 +22,45 @@ package com.questhelper.overlays;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.questhelper.steps.playermadesteps;
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import lombok.Getter;
+import net.runelite.client.config.ConfigManager;
 
-public class QuestHelperWidgetOverlay extends Overlay
+public class RuneliteConfigSetter
 {
-	private final QuestHelperPlugin plugin;
+	@Getter
+	protected final String CONFIG_GROUP = QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP;
 
-	@Inject
-	public QuestHelperWidgetOverlay(QuestHelperPlugin plugin)
+	protected final String runeliteIdentifier;
+
+	@Getter
+	protected final String setValue;
+	protected final ConfigManager configManager;
+
+
+	public RuneliteConfigSetter(ConfigManager configManager, String id, String setValue)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		setPriority(OverlayPriority.HIGH);
-		this.plugin = plugin;
+		this.configManager = configManager;
+		this.runeliteIdentifier = id;
+		this.setValue = setValue;
 	}
 
-	@Override
-	public Dimension render(Graphics2D graphics)
+	public String getConfigValue()
 	{
-		if (!plugin.getConfig().showWidgetHints())
-		{
-			return null;
-		}
+		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier);
+	}
 
-		QuestHelper quest = plugin.getSelectedQuest();
+	public void setConfigValue()
+	{
+		configManager.setRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier, setValue);
+	}
 
-		if (quest != null && quest.getCurrentStep() != null && quest.getCurrentStep().getActiveStep() != null)
-		{
-			quest.getCurrentStep().getActiveStep().makeWidgetOverlayHint(graphics, plugin);
-		}
-		plugin.getRuneliteObjectManager().makeWidgetOverlayHint(graphics);
-		return null;
+	public boolean configExists()
+	{
+		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier) != null;
 	}
 }
+
+

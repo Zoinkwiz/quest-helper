@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.questhelpers;
+package com.questhelper.steps.playermadesteps;
 
-import com.questhelper.QuestHelperConfig;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FaceAnimationIDs;
 import java.util.ArrayList;
-import java.util.Collections;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
-import java.util.List;
+import lombok.Getter;
+import net.runelite.api.Client;
 
-public abstract class ComplexStateQuestHelper extends QuestHelper
+public class RuneliteObjectDialogStep extends RuneliteDialogStep
 {
-	protected QuestStep step;
-	protected int var;
+	@Getter
+	private final ArrayList<RuneliteDialogStep> dialogChoices = new ArrayList<>();
 
-	@Override
-	public void init()
+	public RuneliteObjectDialogStep(Client client, String text, FaceAnimationIDs animation)
 	{
-		if (step == null)
-		{
-			step = loadStep();
-		}
+		super(client.getLocalPlayer().getName(), text, -1, animation.getAnimationID());
+		client.getLocalPlayer().getName();
 	}
 
-	@Override
-	public void startUp(QuestHelperConfig config)
+	public RuneliteObjectDialogStep(String name, String text, int faceID, int animation)
 	{
-		step = loadStep();
-		this.config = config;
-		instantiateSteps(Collections.singletonList(step));
-		var = getVar();
-		startUpStep(step);
+		super(name, text, faceID, animation);
 	}
 
-	@Override
-	public void shutDown()
+	public RuneliteObjectDialogStep(String name, String text, int faceID, int animation, RuneliteConfigSetter setter)
 	{
-		super.shutDown();
-		shutDownStep();
+		super(name, text, faceID, animation, setter);
 	}
 
-	@Override
-	public boolean updateQuest()
+	public RuneliteObjectDialogStep(String name, String text, int faceID, RuneliteConfigSetter setter)
 	{
-		return true;
+		super(name, text, faceID, 570, setter);
 	}
 
-	public List<PanelDetails> getPanels()
+	public RuneliteObjectDialogStep(String name, String text, int faceID)
 	{
-		return new ArrayList<>();
+		this(name, text, faceID, 570);
 	}
-
-	public abstract QuestStep loadStep();
 }

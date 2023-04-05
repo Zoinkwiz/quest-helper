@@ -46,6 +46,9 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -69,6 +72,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Perspective;
@@ -150,6 +154,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final String QUEST_PACKAGE = "com.questhelper.quests";
 	private static final String ACHIEVEMENT_PACKAGE = "com.questhelper.achievementdiaries";
+	private static final String PLAYER_QUEST_PACKAGE = "com.questhelper.playerquests";
 
 	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
@@ -159,6 +164,8 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_STOPGENERICHELPER = "Stop Helper";
 	private static final String MENUOP_GENERICHELPER = "Helper";
 	private static final String MENUOP_EXAMINE_PLAYER = "Examine";
+
+	public static final String QUESTHELPER_QUEST_CONFIG_GROUP = "questhelpervars";
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
@@ -236,8 +243,11 @@ public class QuestHelperPlugin extends Plugin
 
 	private Map<String, QuestHelper> quests;
 
+	@Getter
 	@Inject
-	SpriteManager spriteManager;
+	RuneliteObjectManager runeliteObjectManager;
+
+	QuestCompletedWidget questCompletedWidget = new QuestCompletedWidget();
 
 	@Getter
 	@Inject
@@ -248,6 +258,7 @@ public class QuestHelperPlugin extends Plugin
 	ConfigManager configManager;
 
 	@Getter
+	@Inject
 	GameStateManager gameStateManager;
 
 	private QuestHelperPanel panel;
@@ -288,10 +299,12 @@ public class QuestHelperPlugin extends Plugin
 		injector.injectMembers(bankTagsMain);
 		eventBus.register(bankTagsMain);
 
-		gameStateManager = new GameStateManager();
 		injector.injectMembers(gameStateManager);
 		eventBus.register(gameStateManager);
 		gameStateManager.startUp();
+
+		eventBus.register(runeliteObjectManager);
+		runeliteObjectManager.startUp();
 
 		quests = scanAndInstantiate(getClass().getClassLoader());
 		overlayManager.add(questHelperOverlay);
@@ -323,6 +336,7 @@ public class QuestHelperPlugin extends Plugin
 				getAllItemRequirements();
 				loadQuestList = true;
 			}
+			GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
 		});
 	}
 
@@ -331,8 +345,10 @@ public class QuestHelperPlugin extends Plugin
 	{
 		eventBus.unregister(bankTagsMain);
 		bankTagsMain.shutDown();
+		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(gameStateManager);
+		eventBus.unregister(runeliteObjectManager);
 
 		overlayManager.remove(questHelperOverlay);
 		overlayManager.remove(questHelperWorldOverlay);
@@ -433,11 +449,6 @@ public class QuestHelperPlugin extends Plugin
 			loadQuestList = true;
 			displayNameKnown = false;
 			clientThread.invokeLater(() -> {
-				quests.forEach((name, questHelper) -> {
-					eventBus.register(questHelper);
-					questHelper.init();
-					eventBus.unregister(questHelper);
-				});
 				quests.get(QuestHelperQuest.CHECK_ITEMS.getName()).init();
 				getAllItemRequirements();
 			});
@@ -470,12 +481,25 @@ public class QuestHelperPlugin extends Plugin
 		});
 	}
 
-	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
+	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		// Catches Player Made Quests
+		clientThread.invokeLater(() -> {
+			if ((selectedQuest != null) && selectedQuest.isCompleted())
+			{
+				shutDownQuest(true);
+			}
+		});
+
+		if (event.getGroup().equals(QUESTHELPER_QUEST_CONFIG_GROUP))
+		{
+			clientThread.invokeLater(this::updateQuestList);
+		}
+
 		if (!event.getGroup().equals("questhelper"))
 		{
 			return;
@@ -523,6 +547,11 @@ public class QuestHelperPlugin extends Plugin
 			}
 			else if ((Arrays.stream(commandExecuted.getArguments()).toArray()[0]).equals("enable"))
 				overlayManager.add(questHelperDebugOverlay);
+		}
+		else if (developerMode && commandExecuted.getCommand().equals("reset-cooks-helper"))
+		{
+			String step = (String) (Arrays.stream(commandExecuted.getArguments()).toArray()[0]);
+			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), step).setConfigValue();
 		}
 	}
 
@@ -635,7 +664,7 @@ public class QuestHelperPlugin extends Plugin
 
 		client.createMenuEntry(menuEntries.length - 1)
 			.setOption("Examine")
-			.setTarget("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")
+			.setTarget("<col=ffff00;id=cheerer>" + cheerer.getStyle().getDisplayName() + "</col>")
 			.setType(MenuAction.RUNELITE)
 			.onClick(menuEntry -> {
 				if (cheerer == null) return;
@@ -993,6 +1022,8 @@ public class QuestHelperPlugin extends Plugin
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.QUEST_PACKAGE));
 
 		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.ACHIEVEMENT_PACKAGE));
+
+		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.PLAYER_QUEST_PACKAGE));
 
 		return scannedQuests;
 	}

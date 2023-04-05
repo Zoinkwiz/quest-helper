@@ -1,9 +1,5 @@
-package com.questhelper.overlays;
-
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
- * Copyright (c) 2020 Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,45 +22,44 @@ package com.questhelper.overlays;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.questhelper.questhelpers;
 
-import com.questhelper.QuestHelperPlugin;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
 import javax.inject.Inject;
-import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import lombok.Getter;
+import net.runelite.api.QuestState;
 
-public class QuestHelperWidgetOverlay extends Overlay
+public abstract class PlayerMadeQuestHelper extends ComplexStateQuestHelper
 {
-	private final QuestHelperPlugin plugin;
-
 	@Inject
-	public QuestHelperWidgetOverlay(QuestHelperPlugin plugin)
+	QuestCompletedWidget questCompletedWidget;
+
+	@Getter
+	protected int itemWidget = -1;
+
+	@Getter
+	protected int rotationX = 0;
+	@Getter
+	protected int rotationY = 0;
+	@Getter
+	protected int rotationZ = 0;
+	@Getter
+	protected int zoom = 0;
+
+	@Override
+	public void init()
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		setPriority(OverlayPriority.HIGH);
-		this.plugin = plugin;
+		super.init();
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public void shutDown()
 	{
-		if (!plugin.getConfig().showWidgetHints())
+		super.shutDown();
+		if (getQuest().getState(client, configManager) == QuestState.FINISHED)
 		{
-			return null;
+			runeliteObjectManager.createChatboxMessage("Quest completed!");
+			questCompletedWidget.createWidget(client, getQuest().getName(), getQuestRewards(), getItemWidget(), rotationX, rotationY, rotationZ, zoom);
 		}
-
-		QuestHelper quest = plugin.getSelectedQuest();
-
-		if (quest != null && quest.getCurrentStep() != null && quest.getCurrentStep().getActiveStep() != null)
-		{
-			quest.getCurrentStep().getActiveStep().makeWidgetOverlayHint(graphics, plugin);
-		}
-		plugin.getRuneliteObjectManager().makeWidgetOverlayHint(graphics);
-		return null;
 	}
 }

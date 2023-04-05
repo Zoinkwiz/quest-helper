@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.questhelpers;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
-import com.questhelper.QuestHelperConfig;
-import java.util.ArrayList;
-import java.util.Collections;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
-import java.util.List;
+import lombok.Getter;
+import net.runelite.api.MenuAction;
 
-public abstract class ComplexStateQuestHelper extends QuestHelper
+@Getter
+public class MenuEntryWrapper
 {
-	protected QuestStep step;
-	protected int var;
+	String option;
+	MenuAction type;
+	String target;
+	int identifier;
+	int param0;
+	int param1;
 
-	@Override
-	public void init()
+	public MenuEntryWrapper(String option, MenuAction type, String target, int identifier, int param0, int param1)
 	{
-		if (step == null)
-		{
-			step = loadStep();
-		}
+		this.option = option;
+		this.type = type;
+		this.target = target;
+		this.identifier = identifier;
+		this.param0 = param0;
+		this.param1 = param1;
 	}
-
-	@Override
-	public void startUp(QuestHelperConfig config)
-	{
-		step = loadStep();
-		this.config = config;
-		instantiateSteps(Collections.singletonList(step));
-		var = getVar();
-		startUpStep(step);
-	}
-
-	@Override
-	public void shutDown()
-	{
-		super.shutDown();
-		shutDownStep();
-	}
-
-	@Override
-	public boolean updateQuest()
-	{
-		return true;
-	}
-
-	public List<PanelDetails> getPanels()
-	{
-		return new ArrayList<>();
-	}
-
-	public abstract QuestStep loadStep();
 }

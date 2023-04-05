@@ -309,7 +309,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-			new UnlockReward("Ability to change enchanted lyre teleport desination to Waterbirth Island."),
+			new UnlockReward("Ability to change enchanted lyre teleport destination to Waterbirth Island."),
 			new UnlockReward("Aviansies in the God Wars Dungeon will drop noted adamantite bars."),
 			new UnlockReward("Shortcut to roof on the Troll Stronghold"),
 			new UnlockReward("Stony Basalt teleport destination can be changed to the roof of Troll Stronghold"),

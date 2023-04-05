@@ -169,7 +169,7 @@ public class DagRoute extends ConditionalStep
 		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
 		moveToAxeSpot = new ObjectStep(questHelper, 8945, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.", thrownaxe);
-		activateSpecial = new DetailedQuestStep(questHelper, "Activate special attack with the rune thrownaxes equpped.",
+		activateSpecial = new DetailedQuestStep(questHelper, "Activate special attack with the rune thrownaxes equipped.",
 			thrownaxe.equipped(), specialAttackEnabled);
 		throwAxe = new NpcStep(questHelper, 2253, new WorldPoint(2543, 10143, 0),
 			"Attack the Door-Support with a rune thrownaxe special attack. If done correctly the axe should ricochet" +

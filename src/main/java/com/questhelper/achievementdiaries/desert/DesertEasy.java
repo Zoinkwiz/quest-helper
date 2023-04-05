@@ -206,7 +206,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		magicCarpet.addDialogSteps("Yes please.", "I want to travel to Pollnivneach.");
 
 		cutCactus = new ObjectStep(this, ObjectID.KHARIDIAN_CACTUS_HEALTHY, new WorldPoint(3290, 3103, 0),
-			"Cut Khardian cacti and fill up your waterskin. You may need to cut multiple cacti before you " +
+			"Cut Kharidian cacti and fill up your waterskin. You may need to cut multiple cacti before you " +
 				"successfully get water.", true, knife, emptyWaterskin);
 		((ObjectStep) cutCactus).setMaxObjectDistance(5000);
 

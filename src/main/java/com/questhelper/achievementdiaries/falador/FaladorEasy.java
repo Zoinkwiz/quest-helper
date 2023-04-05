@@ -246,7 +246,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 			"Deposit all your combat gear and talk to the Monk of Entrana in Port Sarim to take the boat.");
 		goEntrana.addDialogStep("Yes, okay, I'm ready to go.");
 
-		//Claim a security book from the Security Guard at Port Sarim Jaiil.
+		//Claim a security book from the Security Guard at Port Sarim Jail.
 		climbLadderPortSarimJail = new ObjectStep(this, ObjectID.LADDER_9558, new WorldPoint(3010, 3184, 0),
 			"Climb in the Port Sarim Jail to speak to the Security Guard.");
 		getSecurityBook = new NpcStep(this, NpcID.SECURITY_GUARD, new WorldPoint(3013, 3192, 1),

@@ -178,7 +178,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 		goSarim = new NpcStep(this, NpcID.CUSTOMS_OFFICER, new WorldPoint(2954, 3147, 0),
 			"Travel to Port Sarim from Musa Point with the Customs officer.", coins.quantity(30));
 		goArdougne = new NpcStep(this, NpcID.CAPTAIN_BARNABY_8764, new WorldPoint(2772, 3228, 0),
-			"Travel to Ardougne from Brimhaven with Captain Barbaby.", coins.quantity(30));
+			"Travel to Ardougne from Brimhaven with Captain Barnaby.", coins.quantity(30));
 		goCairn = new DetailedQuestStep(this, new WorldPoint(2770, 2979, 0),
 			"Travel to Cairn Island by climbing up the rocks east of it, then crossing the bridge.");
 		goFish = new NpcStep(this, NpcID.FISHING_SPOT_1521, new WorldPoint(2924, 3178, 0),
@@ -237,7 +237,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("Better prices in shops on Karamja and in Tzhaar City."),
-			new UnlockReward("Half price ships from Ardogune to Brimhaven and Musa Point to Port Sarim."));
+			new UnlockReward("Half price ships from Ardougne to Brimhaven and Musa Point to Port Sarim."));
 	}
 
 	@Override

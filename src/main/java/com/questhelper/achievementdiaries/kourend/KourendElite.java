@@ -447,7 +447,7 @@ public class KourendElite extends ComplexStateQuestHelper
 		catchAnglerStep.setLockingStep(catchAnglerTask);
 		allSteps.add(catchAnglerStep);
 
-		PanelDetails raidStep = new PanelDetails("Complete Chambers Of Xerric Raid", Collections.singletonList(
+		PanelDetails raidStep = new PanelDetails("Complete Chambers Of Xeric Raid", Collections.singletonList(
 			completeRaid));
 		raidStep.setDisplayCondition(notCompleteRaid);
 		raidStep.setLockingStep(completeRaidTask);

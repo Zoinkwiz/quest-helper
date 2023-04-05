@@ -349,7 +349,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//Chop and burn Willow in Tav
 		goToTav = new DetailedQuestStep(this, new WorldPoint(2921, 3431, 0),
-			"Go to Taverly, north west of Falador.", axe, tinderbox);
+			"Go to Taverley, north west of Falador.", axe, tinderbox);
 		chopWillowLog = new ObjectStep(this, ObjectID.WILLOW, new WorldPoint(2925, 3412, 0),
 			"Chop a Willow Tree while within Taverley.", axe, tinderbox);
 		burnWillowLog = new DetailedQuestStep(this,

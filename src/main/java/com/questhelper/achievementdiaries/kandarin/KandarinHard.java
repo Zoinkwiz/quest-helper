@@ -356,7 +356,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 			new UnlockReward("15% more marks of grace on Seers' Village Rooftop Course"),
 			new UnlockReward("10% increased chance to save a harvest life from the Catherby herb patch"),
 			new UnlockReward("10% increased reward points from Barbarian Assault"),
-			new UnlockReward("10% increased activation chance (multiplicative) for the special effect from enchanted bolts (Inlcluding PvP)"),
+			new UnlockReward("10% increased activation chance (multiplicative) for the special effect from enchanted bolts (Including PvP)"),
 			new UnlockReward("Ability to toggle Camelot Teleport to outside Seers' Village bank"));
 	}
 

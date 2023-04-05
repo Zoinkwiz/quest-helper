@@ -278,7 +278,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		moveToStronghold = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
 			"Enter the Security Stronghold.", combatGear, food);
 		killMino = new NpcStep(this, NpcID.MINOTAUR, new WorldPoint(1888, 5220, 0),
-			"Kill Minotaurs until you recieve a right skull half.", rightSkull, combatGear, food);
+			"Kill Minotaurs until you receive a right skull half.", rightSkull, combatGear, food);
 		killMino.addAlternateNpcs(NpcID.MINOTAUR_2482);
 		killMino.addAlternateNpcs(NpcID.MINOTAUR_2483);
 		moveToStronghold2 = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
@@ -354,7 +354,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
 			"Enter the Edgeville dungeon.");
 		obsPipe = new ObjectStep(this, 16511, new WorldPoint(3150, 9906, 0),
-			"Climb through the pipe shortcut near Vannakka.");
+			"Climb through the pipe shortcut near Vannaka.");
 
 		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");

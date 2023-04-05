@@ -251,7 +251,7 @@ public class SwanSong extends BasicQuestHelper
 		fishAndCookMonkfish = new FishMonkfish(this);
 
 		talkToFranklinAgain = new NpcStep(this, NpcID.FRANKLIN_CARANOS, new WorldPoint(2341, 3667, 0), "Talk to Franklin again.");
-		talkToHermanAfterTasks = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0), "Talk to the Herman in the east of the colony again.");
+		talkToHermanAfterTasks = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0), "Talk to Herman in the east of the colony again.");
 
 		enterWizardsBasement = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2594, 3085, 0), "Talk to Wizard Frumscone in the Wizards' Guild basement.");
 
@@ -276,7 +276,7 @@ public class SwanSong extends BasicQuestHelper
 
 		killQueen = new NpcStep(this, NpcID.SEA_TROLL_QUEEN, new WorldPoint(2347, 3704, 0), "Kill the Sea Troll Queen.", combatGearRanged);
 		killQueen.addDialogStep("No, I'm ready to move on with the quest.");
-		talkToHermanToFinish = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0), "Talk to the Herman to finish the quest.");
+		talkToHermanToFinish = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0), "Talk to Herman to finish the quest.");
 	}
 
 	@Override

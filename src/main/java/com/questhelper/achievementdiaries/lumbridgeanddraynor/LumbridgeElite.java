@@ -181,7 +181,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			ItemID.WATER_TIARA).showConditioned(notWaterRunes).isNotConsumed();
 		waterAccessOrAbyss.setTooltip("Water talisman or tiara");
 		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote).isNotConsumed();
-		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE)
+		dorgSphere = new ItemRequirement("Dorgesh-kaan Sphere", ItemID.DORGESHKAAN_SPHERE)
 			.showConditioned(new Conditions(notMovario, notRichChest));
 		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS)
 			.showConditioned(notChopMagic);

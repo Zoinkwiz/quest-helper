@@ -344,7 +344,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
 		moveToAxeSpot = new ObjectStep(this, 8945, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.", thrownaxe);
-		activateSpecial = new DetailedQuestStep(this, "Activate special attack with the rune thrownaxes equpped.",
+		activateSpecial = new DetailedQuestStep(this, "Activate special attack with the rune thrownaxes equipped.",
 			thrownaxe.equipped(), specialAttackEnabled);
 		throwAxe = new NpcStep(this, 2253, new WorldPoint(2543, 10143, 0),
 			"Attack the Door-Support with a rune thrownaxe special attack. If done correctly the axe should ricochet" +

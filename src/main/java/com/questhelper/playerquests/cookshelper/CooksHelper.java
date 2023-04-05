@@ -26,9 +26,12 @@ package com.questhelper.playerquests.cookshelper;
 
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.PlayerMadeQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
 import com.questhelper.requirements.util.Operation;
@@ -36,6 +39,7 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
@@ -54,6 +58,8 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.COOKS_HELPER
@@ -61,6 +67,10 @@ import net.runelite.api.coords.WorldPoint;
 public class CooksHelper extends PlayerMadeQuestHelper
 {
 	private RuneliteObjectStep talkToCook, talkToHopleez, grabCabbage, returnToHopleez;
+
+	private DetailedQuestStep standNextToCook, standNextToHopleez, standNextToHopleez2;
+
+	private Requirement nearCook, nearHopleez;
 
 	private FakeNpc cooksCousin, hopleez;
 
@@ -81,11 +91,14 @@ public class CooksHelper extends PlayerMadeQuestHelper
 
 		PlayerQuestStateRequirement req = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 0);
 
-		ConditionalStep questSteps = new ConditionalStep(this, talkToCook);
+		ConditionalStep questSteps = new ConditionalStep(this, standNextToCook);
 		questSteps.addStep(req.getNewState(4), new DetailedQuestStep(this, "Quest completed!"));
-		questSteps.addStep(req.getNewState(3), returnToHopleez);
+		questSteps.addStep(new Conditions(req.getNewState(3), nearHopleez), returnToHopleez);
+		questSteps.addStep(req.getNewState(3), standNextToHopleez2);
 		questSteps.addStep(req.getNewState(2), grabCabbage);
-		questSteps.addStep(req.getNewState(1), talkToHopleez);
+		questSteps.addStep(new Conditions(req.getNewState(1), nearHopleez), talkToHopleez);
+		questSteps.addStep(req.getNewState(1), standNextToHopleez);
+		questSteps.addStep(nearCook, talkToCook);
 
 		// We want something which can be added to a requirement, which
 
@@ -108,19 +121,28 @@ public class CooksHelper extends PlayerMadeQuestHelper
 		talkedToHopleez = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 2, Operation.GREATER_EQUAL);
 		pickedCabbage = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 3, Operation.GREATER_EQUAL);
 		displayCabbage = new PlayerQuestStateRequirement(configManager, getQuest().getPlayerQuests(), 2);
+		nearCook = new ZoneRequirement(new Zone(new WorldPoint(3206, 3212, 0), new WorldPoint(3212, 3218, 0)));
+		nearHopleez = new ZoneRequirement(new Zone(new WorldPoint(3232, 3212, 0), new WorldPoint(3238, 3218, 0)));
 	}
 
 	public void setupSteps()
 	{
 		// TODO: Need a way to define the groupID of a runelite object to be a quest step without it being stuck
 		// Add each step's groupID as a sub-group
-		talkToCook = new RuneliteObjectStep(this, cooksCousin, "Talk to the Lumbridge Cook.");
+
+		talkToCook = new RuneliteObjectStep(this, cooksCousin, "Talk to the Lumbridge Cook's Cousin.");
+		standNextToCook = new TileStep(this, new WorldPoint(3210, 3215, 0), "Talk to the Lumbridge Cook's Cousin.");
+		talkToCook.addSubSteps(standNextToCook);
 
 		talkToHopleez = new RuneliteObjectStep(this, hopleez, "Talk to Hopleez east of Lumbridge Castle.");
+		standNextToHopleez = new TileStep(this, new WorldPoint(3236, 3215, 0), "Talk to Hopleez east of Lumbridge Castle.");
+		talkToHopleez.addSubSteps(standNextToHopleez);
 
 		grabCabbage = new RuneliteObjectStep(this, cabbage, "Get the cabbage to the north of Hopleez, outside the Sheared Ram.");
 
 		returnToHopleez = new RuneliteObjectStep(this, hopleez, "Return to Hopleez east of Lumbridge Castle.");
+		standNextToHopleez2 = new DetailedQuestStep(this, new WorldPoint(3235, 3216, 0), "Return to Hopleez east of Lumbridge Castle.");
+		returnToHopleez.addSubSteps(standNextToHopleez2);
 	}
 
 	private void setupCooksCousin()

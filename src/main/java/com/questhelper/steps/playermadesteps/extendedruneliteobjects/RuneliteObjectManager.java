@@ -97,7 +97,7 @@ public class RuneliteObjectManager
 	int redClickAnimationFrame = 0;
 	int bufferRedClickAnimation = 0;
 	int[] redClick = new int[]{SpriteID.RED_CLICK_ANIMATION_1, SpriteID.RED_CLICK_ANIMATION_2, SpriteID.RED_CLICK_ANIMATION_3, SpriteID.RED_CLICK_ANIMATION_4};
-	final int ANIMATION_PERIOD = 10;
+	final int ANIMATION_PERIOD = 5;
 
 	ExtendedRuneliteObject lastInteractedWithRuneliteObject;
 
@@ -610,11 +610,6 @@ public class RuneliteObjectManager
 			if (img == null) return;
 			Point point = new Point(clickPos.getX() - (img.getWidth() / 2), clickPos.getY() - (img.getHeight() / 2));
 			OverlayUtil.renderImageLocation(graphics, point, img);
-			bufferRedClickAnimation = Math.floorMod(bufferRedClickAnimation + 1, ANIMATION_PERIOD);
-			if (bufferRedClickAnimation == 0)
-			{
-				redClickAnimationFrame++;
-			}
 		}
 		else
 		{
@@ -722,6 +717,11 @@ public class RuneliteObjectManager
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
+		bufferRedClickAnimation = Math.floorMod(bufferRedClickAnimation + 1, ANIMATION_PERIOD);
+		if (bufferRedClickAnimation == 0)
+		{
+			redClickAnimationFrame++;
+		}
 		WorldPoint playerPosition = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
 		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
 			for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectGroup.extendedRuneliteObjects)

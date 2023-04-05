@@ -40,17 +40,30 @@ public class QuestCompletedWidget
 		// Close an existing widget
 		close(client);
 
-		Widget container = client.getWidget(164, 7);
-		if (container == null)
+		// Fixed
+		Widget fixedContainer = client.getWidget(548, 9);
+		if (fixedContainer != null)
 		{
-			container = client.getWidget(548, 25);
-			if (container == null)
-			{
-				container = client.getWidget(161, 7);
-				if (container == null) return;
-			}
+			createWidgets(client, fixedContainer, questName, rewards, itemID, rotationX, rotationY, rotationZ, zoom);
+		}
+		// Resizable classic
+		Widget classicContainer = client.getWidget(161, 7);
+		if (classicContainer != null)
+		{
+			createWidgets(client, classicContainer, questName, rewards, itemID, rotationX, rotationY, rotationZ, zoom);
+		}
+		// Resizable modern
+		Widget modernContainer = client.getWidget(164, 7);
+		if (modernContainer != null)
+		{
+			createWidgets(client, modernContainer, questName, rewards, itemID, rotationX, rotationY, rotationZ, zoom);
 		}
 
+		activeWidget = true;
+	}
+
+	private void createWidgets(Client client, Widget container, String questName, List<String> rewards, int itemID, int rotationX, int rotationY, int rotationZ, int zoom)
+	{
 		Widget backgroundWidget = container.createChild(-1, WidgetType.MODEL);
 		backgroundWidget.setModelId(3032);
 		backgroundWidget.setXPositionMode(1);
@@ -159,8 +172,6 @@ public class QuestCompletedWidget
 		});
 		closeWidget.setNoClickThrough(true);
 		closeWidget.revalidate();
-
-		activeWidget = true;
 	}
 
 	public void createWidget(Client client, String questName, List<String> rewards, int itemID)
@@ -172,16 +183,23 @@ public class QuestCompletedWidget
 	{
 		if (!activeWidget) return;
 
-		Widget container = client.getWidget(164, 7);
-		if (container == null)
+		// Fixed
+		Widget fixedContainer = client.getWidget(548, 9);
+		if (fixedContainer != null)
 		{
-			container = client.getWidget(548, 25);
-			if (container == null)
-			{
-				container = client.getWidget(161, 7);
-				if (container == null) return;
-			}
+			fixedContainer.deleteAllChildren();
 		}
-		container.deleteAllChildren();
+		// Resizable classic
+		Widget classicContainer = client.getWidget(161, 7);
+		if (classicContainer != null)
+		{
+			classicContainer.deleteAllChildren();
+		}
+		// Resizable modern
+		Widget modernContainer = client.getWidget(164, 7);
+		if (modernContainer != null)
+		{
+			modernContainer.deleteAllChildren();
+		}
 	}
 }

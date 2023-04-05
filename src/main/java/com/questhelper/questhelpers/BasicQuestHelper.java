@@ -61,6 +61,7 @@ public abstract class BasicQuestHelper extends QuestHelper
 	@Override
 	public void shutDown()
 	{
+		super.shutDown();
 		shutDownStep();
 	}
 

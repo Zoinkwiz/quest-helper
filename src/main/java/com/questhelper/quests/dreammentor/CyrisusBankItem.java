@@ -44,7 +44,6 @@ enum CyrisusBankItem
 	RANGER_BOOTS("Ranger boots", 30, 2577),
 	ADAMANT_BOOTS("Adamant boots", 31, 4129);
 
-
 	@Getter
 	private final String name;
 
@@ -54,7 +53,6 @@ enum CyrisusBankItem
 	@Getter
 	private final int widgetID;
 
-
 	CyrisusBankItem(String name, int varbitID, int widgetID)
 	{
 		this.name = name;
@@ -62,4 +60,3 @@ enum CyrisusBankItem
 		this.widgetID = widgetID;
 	}
 }
-

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.questhelpers;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
-import com.questhelper.QuestHelperConfig;
-import java.util.ArrayList;
-import java.util.Collections;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
-import java.util.List;
+import com.questhelper.steps.WidgetDetails;
+import lombok.Getter;
+import net.runelite.api.widgets.WidgetInfo;
 
-public abstract class ComplexStateQuestHelper extends QuestHelper
+public class WidgetReplacement
 {
-	protected QuestStep step;
-	protected int var;
+	@Getter
+	private final WidgetDetails widgetDetails;
+	@Getter
+	private final String textToReplace;
+	@Getter
+	private final String replacementText;
 
-	@Override
-	public void init()
+//	Requirement requirement;
+
+	public WidgetReplacement(WidgetDetails widgetDetails, String textToReplace, String replacementText)
 	{
-		if (step == null)
-		{
-			step = loadStep();
-		}
+		this.widgetDetails = widgetDetails;
+		this.textToReplace = textToReplace;
+		this.replacementText = replacementText;
 	}
 
-	@Override
-	public void startUp(QuestHelperConfig config)
+	public WidgetReplacement(WidgetInfo widgetInfo, String textToReplace, String replacementText)
 	{
-		step = loadStep();
-		this.config = config;
-		instantiateSteps(Collections.singletonList(step));
-		var = getVar();
-		startUpStep(step);
+		this.widgetDetails = new WidgetDetails(widgetInfo);
+		this.textToReplace = textToReplace;
+		this.replacementText = replacementText;
 	}
-
-	@Override
-	public void shutDown()
-	{
-		super.shutDown();
-		shutDownStep();
-	}
-
-	@Override
-	public boolean updateQuest()
-	{
-		return true;
-	}
-
-	public List<PanelDetails> getPanels()
-	{
-		return new ArrayList<>();
-	}
-
-	public abstract QuestStep loadStep();
 }

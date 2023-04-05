@@ -25,18 +25,33 @@
 package com.questhelper;
 
 import com.questhelper.requirements.item.KeyringRequirement;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 
+@Singleton
 public class GameStateManager
 {
 	@Inject
+	Client client;
+
+	@Inject
 	ConfigManager configManager;
 
+	@Inject
+	QuestCompletedWidget playerQuestCompleteWidget;
+
 	List<KeyringRequirement> keyringKeys;
+
+	WorldPoint lastPlayerPos = null;
 
 	public void startUp()
 	{
@@ -46,6 +61,7 @@ public class GameStateManager
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
+		if (keyringKeys == null) return;
 		if (chatMessage.getMessage().contains("to your key ring."))
 		{
 			for (KeyringRequirement keyringKey : keyringKeys)
@@ -65,6 +81,24 @@ public class GameStateManager
 					keyringKey.setConfigValue("false");
 				}
 			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		Player player = client.getLocalPlayer();
+		if (player != null)
+		{
+			WorldPoint newPos = player.getWorldLocation();
+			if (newPos != null && lastPlayerPos != null)
+			{
+				if (newPos.distanceTo(lastPlayerPos) != 0)
+				{
+					playerQuestCompleteWidget.close(client);
+				}
+			}
+			lastPlayerPos = newPos;
 		}
 	}
 }

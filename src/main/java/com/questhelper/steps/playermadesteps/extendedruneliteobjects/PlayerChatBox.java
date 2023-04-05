@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +23,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
-import lombok.AllArgsConstructor;
-import lombok.Value;
-import net.runelite.api.widgets.WidgetInfo;
 
-@Value
-@AllArgsConstructor
-public class WidgetDetails
+import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetModelType;
+import net.runelite.api.widgets.WidgetPositionMode;
+import net.runelite.api.widgets.WidgetType;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
+
+public class PlayerChatBox extends ChatBox
 {
-	public int groupID;
-	public int childID;
-	public int childChildID;
-
-	public WidgetDetails(WidgetInfo widgetInfo)
+	protected PlayerChatBox(Client client, ChatboxPanelManager chatboxPanelManager)
 	{
-		groupID = widgetInfo.getGroupId();
-		childID = widgetInfo.getChildId();
-		childChildID = -1;
+		super(client, chatboxPanelManager);
+	}
+
+	@Override
+	protected void open()
+	{
+		Widget container = chatboxPanelManager.getContainerWidget();
+
+		Widget npcFaceWidget = container.createChild(0, WidgetType.RECTANGLE);
+		npcFaceWidget.setType(WidgetType.MODEL);
+		npcFaceWidget.setModelId(dialog.getFaceID());
+		npcFaceWidget.setAnimationId(dialog.getAnimation());
+		npcFaceWidget.setRotationX(40);
+		npcFaceWidget.setRotationZ(166);
+		npcFaceWidget.setModelZoom(796);
+		npcFaceWidget.setOriginalX(420);
+		npcFaceWidget.setOriginalY(50);
+		npcFaceWidget.setOriginalWidth(32);
+		npcFaceWidget.setOriginalHeight(32);
+		npcFaceWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
+		npcFaceWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
+		npcFaceWidget.setModelType(WidgetModelType.LOCAL_PLAYER_CHATHEAD);
+		npcFaceWidget.revalidate();
+
+		setupDialog(container, 5);
 	}
 }
+

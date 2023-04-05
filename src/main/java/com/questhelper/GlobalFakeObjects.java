@@ -22,24 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps;
+package com.questhelper;
 
-import lombok.AllArgsConstructor;
-import lombok.Value;
+import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedNpc;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.WidgetReplacement;
+import net.runelite.api.Client;
+import net.runelite.api.NpcID;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 
-@Value
-@AllArgsConstructor
-public class WidgetDetails
+public class GlobalFakeObjects
 {
-	public int groupID;
-	public int childID;
-	public int childChildID;
-
-	public WidgetDetails(WidgetInfo widgetInfo)
+	public static void initNpcs(Client client, RuneliteObjectManager runeliteObjectManager, ConfigManager configManager)
 	{
-		groupID = widgetInfo.getGroupId();
-		childID = widgetInfo.getChildId();
-		childChildID = -1;
+		ReplacedNpc replacedHopleez = runeliteObjectManager.createReplacedNpc(client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_COSAINTUS);
+		replacedHopleez.setName("Hopleez");
+		replacedHopleez.setFace(7481);
+		replacedHopleez.setExamine("He was here first.");
+		replacedHopleez.addExamineAction(runeliteObjectManager);
+		replacedHopleez.setDisplayRequirement(new PlayerQuestStateRequirement(configManager, PlayerQuests.COOKS_HELPER, 4, Operation.GREATER_EQUAL));
+		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(WidgetInfo.DIALOG_NPC_TEXT), "Hatius Cosaintus", "Hopleez"));
 	}
 }

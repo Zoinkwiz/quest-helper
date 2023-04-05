@@ -22,9 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.requirements.runelite;
 
-import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.requirements.Requirement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,17 +36,18 @@ import net.runelite.client.config.ConfigManager;
 
 public class RuneliteRequirement extends AbstractRequirement
 {
-	private final String CONFIG_GROUP = "questhelpervars";
+	@Getter
+	protected final String CONFIG_GROUP = QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP;
 
-	private final String displayText;
-	private final String runeliteIdentifier;
+	protected final String displayText;
+	protected final String runeliteIdentifier;
 
 	@Getter
-	private final String expectedValue;
-	private final ConfigManager configManager;
+	protected final String expectedValue;
+	protected final ConfigManager configManager;
 
 	@Getter
-	private final Map<String, Requirement> requirements;
+	protected final Map<String, Requirement> requirements;
 
 	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text, Map<String, Requirement> requirements)
 	{
@@ -98,9 +101,8 @@ public class RuneliteRequirement extends AbstractRequirement
 	public boolean check(Client client)
 	{
 		String value = getConfigValue();
-		if (value == null) return false;
 
-		return value.equals(expectedValue);
+		return expectedValue.equals(value);
 	}
 
 	public void validateCondition(Client client)

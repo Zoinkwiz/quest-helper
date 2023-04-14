@@ -25,13 +25,9 @@
  */
 package com.questhelper;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Ints;
-import com.google.common.reflect.ClassPath;
 import com.google.inject.Binder;
-import com.google.inject.CreationException;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.questhelper.banktab.QuestBankTab;
 import com.questhelper.banktab.QuestHelperBankTagService;
@@ -47,8 +43,8 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import com.google.inject.Module;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -72,7 +68,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Perspective;
@@ -102,7 +97,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.bank.BankSearch;
@@ -152,10 +146,6 @@ public class QuestHelperPlugin extends Plugin
 			"Easy"
 		};
 
-	private static final String QUEST_PACKAGE = "com.questhelper.quests";
-	private static final String ACHIEVEMENT_PACKAGE = "com.questhelper.achievementdiaries";
-	private static final String PLAYER_QUEST_PACKAGE = "com.questhelper.playerquests";
-
 	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
 	private static final String MENUOP_QUESTHELPER = "Quest Helper";
@@ -163,7 +153,6 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_STARTGENERICHELPER = "Start Helper";
 	private static final String MENUOP_STOPGENERICHELPER = "Stop Helper";
 	private static final String MENUOP_GENERICHELPER = "Helper";
-	private static final String MENUOP_EXAMINE_PLAYER = "Examine";
 
 	public static final String QUESTHELPER_QUEST_CONFIG_GROUP = "questhelpervars";
 
@@ -241,13 +230,9 @@ public class QuestHelperPlugin extends Plugin
 
 	private QuestStep lastStep = null;
 
-	private Map<String, QuestHelper> quests;
-
 	@Getter
 	@Inject
 	RuneliteObjectManager runeliteObjectManager;
-
-	QuestCompletedWidget questCompletedWidget = new QuestCompletedWidget();
 
 	@Getter
 	@Inject
@@ -306,7 +291,7 @@ public class QuestHelperPlugin extends Plugin
 		eventBus.register(runeliteObjectManager);
 		runeliteObjectManager.startUp();
 
-		quests = scanAndInstantiate(getClass().getClassLoader());
+		scanAndInstantiate();
 		overlayManager.add(questHelperOverlay);
 		overlayManager.add(questHelperWorldOverlay);
 		overlayManager.add(questHelperWorldArrowOverlay);
@@ -326,13 +311,15 @@ public class QuestHelperPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		clientThread.invokeLater(() -> {
-			quests.forEach((name, questHelper) -> {
-				questHelper.setupRequirements();
-			});
+			for (QuestHelperQuest questHelperQuest : QuestHelperQuest.values())
+			{
+				questHelperQuest.getQuestHelper().setupRequirements();
+			}
+
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				// Update with new items
-				quests.get(QuestHelperQuest.CHECK_ITEMS.getName()).init();
+				QuestHelperQuest.CHECK_ITEMS.getQuestHelper().init();
 				getAllItemRequirements();
 				loadQuestList = true;
 				GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
@@ -361,7 +348,6 @@ public class QuestHelperPlugin extends Plugin
 		shutDownQuest(false);
 		bankTagService = null;
 		bankTagsMain = null;
-		quests = null;
 	}
 
 	@Subscribe
@@ -450,7 +436,7 @@ public class QuestHelperPlugin extends Plugin
 			loadQuestList = true;
 			displayNameKnown = false;
 			clientThread.invokeLater(() -> {
-				quests.get(QuestHelperQuest.CHECK_ITEMS.getName()).init();
+				QuestHelperQuest.CHECK_ITEMS.getQuestHelper().init();
 				getAllItemRequirements();
 			});
 		}
@@ -516,9 +502,7 @@ public class QuestHelperPlugin extends Plugin
 			getAllItemRequirements();
 			if (selectedQuest != null && selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS)
 			{
-				clientThread.invokeLater(() -> {
-					startUpQuest(quests.get(QuestHelperQuest.CHECK_ITEMS.getName()), false);
-				});
+				clientThread.invokeLater(() -> startUpQuest(QuestHelperQuest.CHECK_ITEMS.getQuestHelper(), false));
 			}
 		}
 
@@ -566,19 +550,17 @@ public class QuestHelperPlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			List<QuestHelper> filteredQuests = quests.values()
+			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers()
 				.stream()
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
 				.filter(QuestDetails::showCompletedQuests)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
-			Map<QuestHelperQuest, QuestState> completedQuests = quests.values()
+			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers()
 				.stream()
 				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
-			SwingUtilities.invokeLater(() -> {
-				panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections());
-			});
+			SwingUtilities.invokeLater(() -> panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections()));
 		}
 	}
 
@@ -596,7 +578,7 @@ public class QuestHelperPlugin extends Plugin
 			case MENUOP_STARTGENERICHELPER:
 				event.consume();
 				String quest = Text.removeTags(event.getMenuTarget());
-				startUpQuest(quests.get(quest));
+				startUpQuest(QuestHelperQuest.getByName(quest));
 				break;
 			case MENUOP_STOPHELPER:
 			case MENUOP_STOPGENERICHELPER:
@@ -610,7 +592,7 @@ public class QuestHelperPlugin extends Plugin
 												 MenuEntry[] menuEntries,
 												 int widgetIndex, int widgetID)
 	{
-		QuestHelper questHelper = quests.get(helperName);
+		QuestHelper questHelper = QuestHelperQuest.getByName(helperName);
 		if (questHelper != null && !questHelper.isCompleted())
 		{
 			if (selectedQuest != null && selectedQuest.getQuest().getName().equals(helperName))
@@ -727,14 +709,14 @@ public class QuestHelperPlugin extends Plugin
 				{
 					String phoenixName = QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName();
 					String blackArmName = QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName();
-					QuestHelper questHelperPhoenix = quests.get(phoenixName);
-					QuestHelper questHelperBlackArm = quests.get(blackArmName);
-					if (!questHelperPhoenix.isCompleted())
+					QuestHelper questHelperPhoenix = QuestHelperQuest.getByName(phoenixName);
+					QuestHelper questHelperBlackArm = QuestHelperQuest.getByName(blackArmName);
+					if (questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
 					{
 						menuEntries = addRightClickMenuOptions(phoenixName, MENUOP_QUESTHELPER,
 							"<col=ff9040>" + phoenixName + "</col>", menuEntries, widgetIndex, widgetID);
 					}
-					if (!questHelperBlackArm.isCompleted())
+					if (questHelperBlackArm != null &&  !questHelperBlackArm.isCompleted())
 					{
 						addRightClickMenuOptions(blackArmName, MENUOP_QUESTHELPER,
 							"<col=ff9040>" + blackArmName + "</col>", menuEntries, widgetIndex, widgetID);
@@ -760,7 +742,7 @@ public class QuestHelperPlugin extends Plugin
 			}
 			else
 			{
-				QuestHelper questHelper = quests.get(target);
+				QuestHelper questHelper = QuestHelperQuest.getByName(target);
 				if (questHelper != null && !questHelper.isCompleted())
 				{
 					if (selectedQuest != null && selectedQuest.getQuest().getName().equals(target))
@@ -805,20 +787,20 @@ public class QuestHelperPlugin extends Plugin
 
 					if (PHOENIX_START_ZONE.contains(location))
 					{
-						startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()));
+						startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()));
 					}
 					else
 					{
-						startUpQuest(quests.get(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName()));
+						startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName()));
 					}
 				}
 				else if (questName.equals("Recipe for Disaster"))
 				{
-					startUpQuest(quests.get(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
+					startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
 				}
 				else
 				{
-					QuestHelper questHelper = quests.get(questName);
+					QuestHelper questHelper = QuestHelperQuest.getByName(questName);
 					if (questHelper != null)
 					{
 						startUpQuest(questHelper);
@@ -968,7 +950,7 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		QuestHelper questHelper = quests.get(questHelperName);
+		QuestHelper questHelper = QuestHelperQuest.getByName(questHelperName);
 
 		if (questHelper == null)
 		{
@@ -1015,20 +997,6 @@ public class QuestHelperPlugin extends Plugin
 
 	}
 
-	private Map<String, QuestHelper> scanAndInstantiate(ClassLoader classLoader) throws IOException
-	{
-		Map<String, QuestHelper> scannedQuests = new HashMap<>();
-		ClassPath classPath = ClassPath.from(classLoader);
-
-		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.QUEST_PACKAGE));
-
-		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.ACHIEVEMENT_PACKAGE));
-
-		scannedQuests.putAll(instantiate(classPath, QuestHelperPlugin.PLAYER_QUEST_PACKAGE));
-
-		return scannedQuests;
-	}
-
 	private void getAllItemRequirements()
 	{
 		clientThread.invokeLater(() -> {
@@ -1046,7 +1014,7 @@ public class QuestHelperPlugin extends Plugin
 				pred = pred.or(QuestHelperConfig.QuestFilter.ACHIEVEMENT_DIARY);
 			}
 
-			List<QuestHelper> filteredQuests = quests.values()
+			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers()
 				.stream()
 				.filter(pred)
 				.filter(QuestDetails::isNotCompleted)
@@ -1079,81 +1047,30 @@ public class QuestHelperPlugin extends Plugin
 		});
 	}
 
-	private Map<String, QuestHelper> instantiate(ClassPath classPath, String packageName)
+	private void scanAndInstantiate()
 	{
-		Map<String, QuestHelper> scannedQuests = new HashMap<>();
-		Map<QuestHelperQuest, Class<? extends QuestHelper>> tmpQuests = new HashMap<>();
-
-		ImmutableSet<ClassPath.ClassInfo> classes = classPath.getTopLevelClassesRecursive(packageName);
-		for (ClassPath.ClassInfo classInfo : classes)
+		for (QuestHelperQuest qhq : QuestHelperQuest.values())
 		{
-			Class<?> clazz = classInfo.load();
-			QuestDescriptor questDescriptor = clazz.getAnnotation(QuestDescriptor.class);
-
-			if (questDescriptor == null)
-			{
-				if (clazz.getSuperclass() == QuestHelper.class)
-				{
-					log.warn("Class {} is a quest helper, but has no quest descriptor",
-						clazz);
-				}
-				continue;
-			}
-
-			if (clazz.isAssignableFrom(QuestHelper.class))
-			{
-				log.warn("Class {} has quest descriptor, but is not a quest helper",
-					clazz);
-				continue;
-			}
-
-			Class<QuestHelper> questClass = (Class<QuestHelper>) clazz;
-			tmpQuests.put(questDescriptor.quest(), questClass);
+			instantiate(qhq);
 		}
-
-		for (Map.Entry<QuestHelperQuest, Class<? extends QuestHelper>> questClazz : tmpQuests.entrySet())
-		{
-			QuestHelper questHelper;
-			try
-			{
-				questHelper = instantiate((Class<QuestHelper>) questClazz.getValue(), questClazz.getKey());
-			}
-			catch (QuestInstantiationException ex)
-			{
-				log.warn("Error instantiating quest helper!", ex);
-				continue;
-			}
-
-			scannedQuests.put(questClazz.getKey().getName(), questHelper);
-		}
-
-		return scannedQuests;
 	}
 
-	private QuestHelper instantiate(Class<QuestHelper> clazz, QuestHelperQuest quest) throws QuestInstantiationException
+	private void instantiate(QuestHelperQuest quest)
 	{
-		QuestHelper questHelper;
-		try
-		{
-			questHelper = clazz.newInstance();
+		QuestHelper questHelper = quest.getQuestHelper();
+
 			Module questModule = (Binder binder) ->
 			{
-				binder.bind(clazz).toInstance(questHelper);
+				binder.bind(QuestHelper.class).toInstance(questHelper);
 				binder.install(questHelper);
 			};
-			Injector questInjector = RuneLite.getInjector().createChildInjector(questModule);
-			questInjector.injectMembers(questHelper);
-			questHelper.setInjector(questInjector);
-			questHelper.setQuest(quest);
-			questHelper.setConfig(config);
-			questHelper.setQuestHelperPlugin(this);
-		}
-		catch (InstantiationException | IllegalAccessException | CreationException ex)
-		{
-			throw new QuestInstantiationException(ex);
-		}
+		Injector questInjector = RuneLite.getInjector().createChildInjector(questModule);
+		injector.injectMembers(questHelper);
+		questHelper.setInjector(questInjector);
+		questHelper.setQuest(quest);
+		questHelper.setConfig(config);
+		questHelper.setQuestHelperPlugin(this);
 
-		log.debug("Loaded quest helper {}", clazz.getSimpleName());
-		return questHelper;
+		log.debug("Loaded quest helper {}", quest.name());
 	}
 }

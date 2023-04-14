@@ -74,7 +74,7 @@ public class HazeelCult extends BasicQuestHelper
 	QuestStep talkToCeril, enterCave, talkToClivet, leaveCaveForValves;
 
 	// Hazeel side
-	QuestStep leaveCaveForPoison, enterKitchen, usePoisonOnRange, leaveKitchen,
+	QuestStep leaveCaveForPoison, enterKitchen, usePoisonOnRange, leaveKitchen, talkToCerilAfterPoison,
 		enterCaveAfterPoison,
 		talkToClivetAfterPoison, boardRaftAfterPoison, talkToAlomone, returnOnRaftAfterAlmone, leaveCaveAfterAlmone,
 		enterKitchenAfterButler, searchCrateForKey, leaveKitchenWithKey, goToF1WithKey,
@@ -244,6 +244,8 @@ public class HazeelCult extends BasicQuestHelper
 		usePoisonOnRange.addIcon(ItemID.POISON);
 		leaveKitchen = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2570, 9667, 0),
 			"Leave the kitchen.");
+		talkToCerilAfterPoison = new NpcStep(this, NpcID.CERIL_CARNILLEAN, new WorldPoint(2569, 3275, 0),
+			"Talk to Ceril Carnillean.");
 
 		enterCaveAfterPoison = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2852, new WorldPoint(2587, 3235, 0),
 			"Return to Clivet.");

@@ -335,8 +335,8 @@ public class QuestHelperPlugin extends Plugin
 				quests.get(QuestHelperQuest.CHECK_ITEMS.getName()).init();
 				getAllItemRequirements();
 				loadQuestList = true;
+				GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
 			}
-			GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
 		});
 	}
 
@@ -446,6 +446,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGGED_IN)
 		{
+			GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
 			loadQuestList = true;
 			displayNameKnown = false;
 			clientThread.invokeLater(() -> {

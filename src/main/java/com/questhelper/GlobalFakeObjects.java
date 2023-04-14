@@ -38,9 +38,11 @@ import net.runelite.client.config.ConfigManager;
 
 public class GlobalFakeObjects
 {
+	private static ReplacedNpc replacedHopleez;
 	public static void initNpcs(Client client, RuneliteObjectManager runeliteObjectManager, ConfigManager configManager)
 	{
-		ReplacedNpc replacedHopleez = runeliteObjectManager.createReplacedNpc(client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_COSAINTUS);
+		if (replacedHopleez != null) return;
+		replacedHopleez = runeliteObjectManager.createReplacedNpc(client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_COSAINTUS);
 		replacedHopleez.setName("Hopleez");
 		replacedHopleez.setFace(7481);
 		replacedHopleez.setExamine("He was here first.");

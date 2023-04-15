@@ -4,6 +4,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperWorldMapPoint;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.overlay.WorldLines;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import net.runelite.api.Perspective;
@@ -17,18 +18,6 @@ public class TileStep extends DetailedQuestStep
 	{
 		super(questHelper, text, requirements);
 		this.worldPoint = worldPoint;
-	}
-
-	@Override
-	public void startUp()
-	{
-		worldMapPointManager.add(new QuestHelperWorldMapPoint(worldPoint, getQuestImage()));
-	}
-
-	@Override
-	public void shutDown()
-	{
-		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
 	}
 
 	@Override

@@ -348,6 +348,8 @@ public class QuestHelperPlugin extends Plugin
 		shutDownQuest(false);
 		bankTagService = null;
 		bankTagsMain = null;
+
+		GlobalFakeObjects.setInitialized(false);
 	}
 
 	@Subscribe

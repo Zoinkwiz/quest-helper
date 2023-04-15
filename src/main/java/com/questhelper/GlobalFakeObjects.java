@@ -30,6 +30,7 @@ import com.questhelper.steps.WidgetDetails;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ReplacedNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.WidgetReplacement;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -38,11 +39,13 @@ import net.runelite.client.config.ConfigManager;
 
 public class GlobalFakeObjects
 {
-	private static ReplacedNpc replacedHopleez;
+	@Setter
+	private static boolean initialized;
 	public static void initNpcs(Client client, RuneliteObjectManager runeliteObjectManager, ConfigManager configManager)
 	{
-		if (replacedHopleez != null) return;
-		replacedHopleez = runeliteObjectManager.createReplacedNpc(client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_COSAINTUS);
+		if (initialized) return;
+		initialized = true;
+		ReplacedNpc replacedHopleez = runeliteObjectManager.createReplacedNpc(client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_COSAINTUS);
 		replacedHopleez.setName("Hopleez");
 		replacedHopleez.setFace(7481);
 		replacedHopleez.setExamine("He was here first.");

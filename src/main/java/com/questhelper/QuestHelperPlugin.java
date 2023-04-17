@@ -322,7 +322,10 @@ public class QuestHelperPlugin extends Plugin
 				QuestHelperQuest.CHECK_ITEMS.getQuestHelper().init();
 				getAllItemRequirements();
 				loadQuestList = true;
-				GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
+				if (config.showRuneliteObjects())
+				{
+					GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
+				}
 			}
 		});
 	}
@@ -492,6 +495,20 @@ public class QuestHelperPlugin extends Plugin
 		if (!event.getGroup().equals("questhelper"))
 		{
 			return;
+		}
+
+		if (event.getKey().equals("showRuneliteObjects"))
+		{
+			clientThread.invokeLater(() -> {
+				if (config.showRuneliteObjects())
+				{
+					GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
+				}
+				else
+				{
+					GlobalFakeObjects.disableNpcs(runeliteObjectManager);
+				}
+			});
 		}
 
 		if (configEvents.contains(event.getKey()))

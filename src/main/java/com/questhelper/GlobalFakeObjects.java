@@ -53,4 +53,11 @@ public class GlobalFakeObjects
 		replacedHopleez.setDisplayRequirement(new PlayerQuestStateRequirement(configManager, PlayerQuests.COOKS_HELPER, 4, Operation.GREATER_EQUAL));
 		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(WidgetInfo.DIALOG_NPC_TEXT), "Hatius Cosaintus", "Hopleez"));
 	}
+
+	public static void disableNpcs(RuneliteObjectManager runeliteObjectManager)
+	{
+		if (!initialized) return;
+		runeliteObjectManager.removeGroupAndSubgroups("global");
+		initialized = false;
+	}
 }

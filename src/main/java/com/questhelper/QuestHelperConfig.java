@@ -277,12 +277,22 @@ public interface QuestHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "showFan",
-		name = "Have fan appear on quest completion",
+		name = "Fan appears on quest completion",
 		description = "Have someone appear to celebrate whenever you complete a quest"
 	)
 	default boolean showFan()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showRuneliteObjects",
+		name = "Show player-made quest rewards",
+		description = "Choose whether changes from player-made quests are displayed"
+	)
+	default boolean showRuneliteObjects()
+	{
+		return true;
 	}
 
 	@ConfigSection(

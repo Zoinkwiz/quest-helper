@@ -84,6 +84,7 @@ public class DetailedQuestStep extends QuestStep
 	@Inject
 	private QuestBank questBank;
 
+	@Getter
 	protected WorldPoint worldPoint;
 
 	@Setter

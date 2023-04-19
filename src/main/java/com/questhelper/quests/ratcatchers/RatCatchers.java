@@ -311,7 +311,7 @@ public class RatCatchers extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToGertrude = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3413, 0),
-			"Talk to Gertrude west of Varrock.");
+			"Talk to Gertrude west of Varrock.", catspeakAmuletOrDS2.equipped());
 
 		enterSewer = new ObjectStep(this, ObjectID.MANHOLE_882, new WorldPoint(3237, 3458, 0),
 			"Go down into Varrock Sewer via the Manhole south east of Varrock Castle.", cat);
@@ -426,7 +426,7 @@ public class RatCatchers extends BasicQuestHelper
 		lightWeeds = new DetailedQuestStep(this, "Use a tinderbox on the pot of weeds.", potOfWeeds.highlighted(),
 			tinderbox.highlighted());
 		usePotOnHole = new ObjectStep(this, ObjectID.RAT_HOLE_10350, new WorldPoint(2933, 10212, 0),
-			"Use the smouldering pot on the hole east of Joe with your cat following you.",
+			"Use the smouldering pot on the hole east of Joe with your cat following you and your catspeak amulet equipped.",
 			smoulderingPot.highlighted(), catFollower, catspeakAmuletOrDS2.equipped());
 		usePotOnHole.addIcon(ItemID.SMOULDERING_POT);
 		usePotOnHoleAgain = new ObjectStep(this, ObjectID.RAT_HOLE_10350, new WorldPoint(2933, 10212, 0),

@@ -467,7 +467,7 @@ public class TowerOfLife extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRecommended()
 	{
-		return Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11));
+		return Collections.singletonList(new FreeInventorySlotRequirement(11));
 	}
 
 	@Override

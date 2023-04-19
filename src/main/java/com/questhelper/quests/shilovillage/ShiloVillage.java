@@ -194,7 +194,7 @@ public class ShiloVillage extends BasicQuestHelper
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		crumbleUndead = new ItemRequirement("Crumble undead spell for final boss", -1, -1);
 
-		emptySlot3 = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 3);
+		emptySlot3 = new FreeInventorySlotRequirement(3);
 
 		belt = new ItemRequirement("Wampum belt", ItemID.WAMPUM_BELT);
 		stonePlaque = new ItemRequirement("Stone-plaque", ItemID.STONEPLAQUE);

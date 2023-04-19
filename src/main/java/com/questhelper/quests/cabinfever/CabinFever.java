@@ -689,7 +689,7 @@ public class CabinFever extends BasicQuestHelper
 	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 11));
+		req.add(new FreeInventorySlotRequirement(11));
 		return req;
 	}
 

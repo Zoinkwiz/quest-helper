@@ -204,7 +204,7 @@ public class SleepingGiants extends BasicQuestHelper
 		bucketOfWater = new ItemRequirement("Bucket of Water", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.canBeObtainedDuringQuest();
 
-		freeInventorySpace = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 20);
+		freeInventorySpace = new FreeInventorySlotRequirement(20);
 
 		alKharidTeleport = new ItemRequirement("Al Kharid Teleport", ItemCollections.RING_OF_DUELINGS);
 		alKharidTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);

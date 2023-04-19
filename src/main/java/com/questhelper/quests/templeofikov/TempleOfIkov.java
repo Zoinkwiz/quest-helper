@@ -213,7 +213,7 @@ public class TempleOfIkov extends BasicQuestHelper
 
 		staffOfArmadyl = new ItemRequirement("Staff of Armadyl", ItemID.STAFF_OF_ARMADYL);
 
-		emptyInventorySpot = new FreeInventorySlotRequirement(InventoryID.INVENTORY,  1);
+		emptyInventorySpot = new FreeInventorySlotRequirement(1);
 	}
 
 	public void loadZones()

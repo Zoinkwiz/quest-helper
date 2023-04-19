@@ -483,7 +483,7 @@ public class RumDeal extends BasicQuestHelper
 	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 6));
+		req.add(new FreeInventorySlotRequirement(6));
 		return req;
 	}
 

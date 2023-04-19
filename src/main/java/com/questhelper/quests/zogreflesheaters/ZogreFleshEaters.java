@@ -370,7 +370,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 5));
+		req.add(new FreeInventorySlotRequirement(5));
 		req.add(sanfew);
 		return req;
 	}

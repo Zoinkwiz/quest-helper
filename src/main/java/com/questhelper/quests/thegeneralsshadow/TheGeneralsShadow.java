@@ -130,7 +130,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		ghostspeak.addAlternates(ItemID.GHOSTSPEAK_AMULET_4250);
 
 		coins40 = new ItemRequirement("Coins", ItemCollections.COINS, 40);
-		inventorySlot = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 1);
+		inventorySlot = new FreeInventorySlotRequirement(1);
 
 		kharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.AMULET_OF_GLORIES);
 		gnomeTeleport = new ItemRequirement("Teleport to Tree Gnome Stronghold", -1);

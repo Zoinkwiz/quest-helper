@@ -32,6 +32,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -52,6 +53,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -71,7 +73,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 	//Items Recommended
 	ItemRequirement morttonTele, food, flamHammer, flamtaerBracelet;
 
-	Requirement razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, has20Sanctity, curedRazmire, curedUlsquire;
+	Requirement inventorySpace11, razmirePartlyCured, ulsquirePartlyCured, repairedTemple, litFire, has20Sanctity, curedRazmire, curedUlsquire;
 
 	QuestStep searchShelf, readDiary, addAshes, use207OnRazmire, talkToRazmire, kill5Shades, kill4Shades, kill3Shades, kill2Shades, kill1Shades, use207OnRazmireAgain, talkToRazmireAgain, buyTimberLimeAndSwamp,
 		use207OnUlsquire, talkToUlsquire, talkToUlsquireAgain, repairTemple, lightAltar, useOilOnFlame, use207OnFlame, useOilOnLog, burnCorpse, repairTo20Sanctity, use208OnRazmire, use208OnUlsquire, talkToUlsquireToFinish;
@@ -205,6 +207,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		loar = new ItemRequirement("Loar remains", ItemID.LOAR_REMAINS);
 		loar.setHighlightInInventory(true);
 		loar5 = new ItemRequirement("Loar remains", ItemID.LOAR_REMAINS, 5);
+		inventorySpace11 = new FreeInventorySlotRequirement(11);
 	}
 
 	public void setupConditions()
@@ -299,6 +302,14 @@ public class ShadesOfMortton extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(combatGear, morttonTele, food, flamHammer, flamtaerBracelet);
+	}
+
+	@Override
+	public List<Requirement> getGeneralRecommended()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(inventorySpace11);
+		return req;
 	}
 
 	@Override

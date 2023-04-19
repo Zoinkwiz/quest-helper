@@ -166,7 +166,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		inventorySpace = new ItemRequirement("Free inventory slot", -1);
 
 		weightBelow30Check = new WeightRequirement("Weight below 30 kg", 30, Operation.LESS_EQUAL);
-		inventorySpaceCheck = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 1);
+		inventorySpaceCheck = new FreeInventorySlotRequirement(1);
 
 		// Quest
 		bookOnCostumes = new ItemRequirement("Book on costumes", ItemID.BOOK_ON_COSTUMES);

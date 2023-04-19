@@ -28,6 +28,7 @@
 package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.stream.Stream;
 import lombok.Getter;
@@ -43,6 +44,7 @@ import net.runelite.api.ItemContainer;
 @Getter
 public class FreeInventorySlotRequirement extends AbstractRequirement
 {
+	private final int NUM_INVENTORY_SLOTS_TOTAL = 28;
 	private InventoryID inventoryID;
 	private int numSlotsFree;
 
@@ -53,9 +55,9 @@ public class FreeInventorySlotRequirement extends AbstractRequirement
 	 * @param inventoryID the inventory to check
 	 * @param numSlotsFree the required number of slots free
 	 */
-	public FreeInventorySlotRequirement(InventoryID inventoryID, int numSlotsFree)
+	public FreeInventorySlotRequirement(int numSlotsFree)
 	{
-		this.inventoryID = inventoryID;
+		this.inventoryID = InventoryID.INVENTORY;
 		this.numSlotsFree = numSlotsFree;
 	}
 
@@ -63,9 +65,10 @@ public class FreeInventorySlotRequirement extends AbstractRequirement
 	public boolean check(Client client)
 	{
 		ItemContainer container = client.getItemContainer(getInventoryID());
+
 		if (container != null)
 		{
-			return Stream.of(container.getItems()).filter(this::isOpenSlot).count() >= getNumSlotsFree();
+			return NUM_INVENTORY_SLOTS_TOTAL - container.count() >= getNumSlotsFree();
 		}
 		return false;
 	}

@@ -233,7 +233,7 @@ public class WitchsHouse extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRecommended()
 	{
-		return Collections.singletonList(new FreeInventorySlotRequirement(InventoryID.INVENTORY, 2));
+		return Collections.singletonList(new FreeInventorySlotRequirement(2));
 	}
 
 	@Override

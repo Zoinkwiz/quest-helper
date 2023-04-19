@@ -428,7 +428,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		rosesNote.setTooltip("You can get another from Martin Holt, east of Kourend Castle");
 		receipt = new ItemRequirement("Receipt", ItemID.RECEIPT_25793);
 
-		freeInventorySlots = new FreeInventorySlotRequirement(InventoryID.INVENTORY,  1);
+		freeInventorySlots = new FreeInventorySlotRequirement(1);
 
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS).isNotConsumed();
 		anyAxe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();

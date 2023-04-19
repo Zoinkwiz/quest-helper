@@ -236,7 +236,7 @@ public class TheGrandTree extends BasicQuestHelper
 		highlightedGloughsKey.setHighlightInInventory(true);
 		invasionPlans = new ItemRequirement("Invasion plans", ItemID.INVASION_PLANS);
 		invasionPlans.setTooltip("You can get another from Glough's house in a chest");
-		fourFreeInventorySlots = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 4);
+		fourFreeInventorySlots = new FreeInventorySlotRequirement(4);
 		daconiaStone = new ItemRequirement("Daconia stone", ItemID.DACONIA_ROCK);
 
 		twigsT = new ItemRequirement("Twigs (T)", ItemID.TWIGS);

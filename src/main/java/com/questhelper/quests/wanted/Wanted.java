@@ -320,7 +320,7 @@ public class Wanted extends BasicQuestHelper
 
 	public void setupOtherRequirements()
 	{
-		oneFreeInventorySlot = new FreeInventorySlotRequirement(InventoryID.INVENTORY, 1);
+		oneFreeInventorySlot = new FreeInventorySlotRequirement(1);
 
 		startedEnterTheAbyss = new VarplayerRequirement(492, 1, Operation.GREATER_EQUAL);
 

@@ -44,9 +44,9 @@ public class ScorpionCatcher extends BasicQuestHelper
 	QuestRequirement fairyRingAccess;
 	Zone sorcerersTower3, sorcerersTower2, sorcerersTower1, taverleyDungeon, deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4,
 		jailCell, taverleyScorpionRoom, upstairsMonastery, barbarianOutpost;
-	Requirement has70Agility, inTaverleyDungeon, inDeepTaverleyDungeon, inJailCell, inSorcerersTower1, inSorcerersTower2,
+	Requirement has70Agility, has80Agility, inTaverleyDungeon, inDeepTaverleyDungeon, inJailCell, inSorcerersTower1, inSorcerersTower2,
 		inSorcerersTower3, inTaverleyScorpionRoom, inUpstairsMonastery, inBarbarianOutpost, jailKeyNearby;
-	QuestStep speakToThormac, speakToSeer1, enterTaverleyDungeon, goThroughPipe, killJailerForKey,
+	QuestStep speakToThormac, speakToSeer1, enterTaverleyDungeon, goThroughPipe, goOverStrangeFloor, killJailerForKey,
 		getDustyFromAdventurer, enterDeeperTaverley, pickUpJailKey,
 		searchOldWall, catchTaverleyScorpion, sorcerersTowerLadder0, sorcerersTowerLadder1, sorcerersTowerLadder2, enterMonastery, catchMonasteryScorpion,
 		catchOutpostScorpion, enterOutpost, returnToThormac;
@@ -77,6 +77,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 		ConditionalStep goGetTaverleyScorpion = new ConditionalStep(this, enterTaverleyDungeon);
 		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyScorpionRoom), catchTaverleyScorpion);
 		goGetTaverleyScorpion.addStep(new Conditions(inDeepTaverleyDungeon), searchOldWall);
+		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, has80Agility), goOverStrangeFloor);
 		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, has70Agility), goThroughPipe);
 		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, dustyKey), enterDeeperTaverley);
 		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, new Conditions(LogicType.OR, inJailCell, jailKey)), getDustyFromAdventurer);
@@ -158,7 +159,8 @@ public class ScorpionCatcher extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		has70Agility = new SkillRequirement(Skill.AGILITY, 70);
+		has70Agility = new SkillRequirement(Skill.AGILITY, 70, true);
+		has80Agility = new SkillRequirement(Skill.AGILITY, 70, true);
 
 		inSorcerersTower1 = new ZoneRequirement(sorcerersTower1);
 		inSorcerersTower2 = new ZoneRequirement(sorcerersTower2);
@@ -206,6 +208,8 @@ public class ScorpionCatcher extends BasicQuestHelper
 				"Go to Taverley Dungeon. Bring a dusty key if you have one, otherwise you can get one in the dungeon.", scorpionCageMissingTaverley, dustyKey);
 		}
 
+		goOverStrangeFloor = new ObjectStep(this, ObjectID.STRANGE_FLOOR, new WorldPoint(2879, 9813, 0), "Go over the strange floor.");
+
 		goThroughPipe = new ObjectStep(this, ObjectID.OBSTACLE_PIPE_16509, new WorldPoint(2888, 9799, 0),
 			"Squeeze through the obstacle pipe.");
 		killJailerForKey = new NpcStep(this, NpcID.JAILER, new WorldPoint(2930, 9692, 0),
@@ -217,7 +221,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 		getDustyFromAdventurer.addDialogStep("Yes please!");
 		enterDeeperTaverley = new ObjectStep(this, ObjectID.GATE_2623, new WorldPoint(2924, 9803, 0),
 			"Enter the gate to the deeper Taverley dungeon.", dustyKey);
-		enterTaverleyDungeon.addSubSteps(goThroughPipe, killJailerForKey, getDustyFromAdventurer, enterDeeperTaverley);
+		enterTaverleyDungeon.addSubSteps(goThroughPipe, goOverStrangeFloor, killJailerForKey, getDustyFromAdventurer, enterDeeperTaverley);
 		searchOldWall = new ObjectStep(this, ObjectID.OLD_WALL, new WorldPoint(2875, 9799, 0), "Search the Old wall.");
 		// TODO: Highlight item
 		catchTaverleyScorpion = new NpcStep(this, NpcID.KHARID_SCORPION, "Use the scorpion cage on the scorpion.", scorpionCageMissingTaverley);

@@ -61,7 +61,7 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.THE_SECRETS_OF_THE_NORTH
+	quest = QuestHelperQuest.SECRETS_OF_THE_NORTH
 )
 public class SecretsOfTheNorth extends BasicQuestHelper
 {

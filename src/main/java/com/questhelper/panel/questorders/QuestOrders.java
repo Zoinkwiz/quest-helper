@@ -241,7 +241,7 @@ public class QuestOrders
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
-		QuestHelperQuest.THE_SECRETS_OF_THE_NORTH,
+		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
@@ -475,7 +475,7 @@ public class QuestOrders
 		QuestHelperQuest.FREMENNIK_MEDIUM,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
-		QuestHelperQuest.THE_SECRETS_OF_THE_NORTH,
+		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 
@@ -712,7 +712,7 @@ public class QuestOrders
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
 		QuestHelperQuest.HOPESPEARS_WILL,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
-		QuestHelperQuest.THE_SECRETS_OF_THE_NORTH
+		QuestHelperQuest.SECRETS_OF_THE_NORTH
 	);
 
 	public static String normalizeQuestName(String questName)

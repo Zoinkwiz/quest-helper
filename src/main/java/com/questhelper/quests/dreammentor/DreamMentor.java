@@ -70,6 +70,9 @@ public class DreamMentor extends BasicQuestHelper
 	ItemRequirement sealOfPassage, dreamVial, astralRune, astralRuneShards, groundAstralRune, dreamVialWater, dreamVialWithGoutweed,
 		pestleAndMortar, dreamPotion, foodAll1, foodAll2, foodAll3, food4, food6, goutweed, tinderbox, hammer, combatGear, food14, chest;
 
+	// Recommended
+	ItemRequirement lunarIsleTeleport, stamina;
+
 	Requirement inLunarMine, inCyrisusRoom, at40Health, at70Health, lookingAtBank, gotItems, cyrisusDressed, at100Health, litBrazier,
 		inArena, unlockedDream, inadaquacyNearby, everlastingNearby, untouchableNearby, illusiveNearby;
 
@@ -210,6 +213,10 @@ public class DreamMentor extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		// Recommeneded
+		lunarIsleTeleport = new ItemRequirement("Lunar isle teleport", ItemID.LUNAR_ISLE_TELEPORT);
+		stamina = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS);
 	}
 
 	public void loadZones()
@@ -371,6 +378,12 @@ public class DreamMentor extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(lunarIsleTeleport.quantity(3), stamina);
+	}
+
+	@Override
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList("The Inadequacy (level 343)", "The Everlasting (level 223, safespottable)", "The Untouchable (level 274, safespottable)", "The Illusive (level 108, won't attack you)");
@@ -416,7 +429,7 @@ public class DreamMentor extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping Cyrisus", Arrays.asList(goDownToCyrisus, enterCyrisusCave,
 			talkToCyrisus, feed4Food, talkToCyrisus2, feed4Food2, talkToCyrisus3, feed6Food, talkToCyrisus4, talkToJack, giveCyrisusGear,
-			useFood3, supportCyrisusToRecovery), foodAll1, foodAll2, foodAll3, sealOfPassage));
+			useFood3, supportCyrisusToRecovery), Arrays.asList(foodAll1, foodAll2, foodAll3, sealOfPassage), Arrays.asList(lunarIsleTeleport.quantity(3), stamina)));
 		allSteps.add(new PanelDetails("Defeating his fear", Arrays.asList(talkToOneiromancer, fillVialWithWater, addGoutweed,
 			useHammerOnAstralRune, usePestleOnShards, useGroundAstralOnVial, lightBrazier, talkToCyrisusForDream, killInadaquacy,
 			killEverlasting, killUntouchable, killIllusive, returnToOneiromancer), sealOfPassage, goutweed, astralRune, hammer,

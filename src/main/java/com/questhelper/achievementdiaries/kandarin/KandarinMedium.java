@@ -283,7 +283,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		crushHorn = new DetailedQuestStep(this,
 			"Crush a unicorn horn.", unicornHorn.highlighted(), mortarPest.highlighted());
 		superAnti = new DetailedQuestStep(this,
-			"Create a super antipoision potion.", hornDust.highlighted(), unfIrit.highlighted());
+			"Create a super antipoison potion.", hornDust.highlighted(), unfIrit.highlighted());
 		plantAndPickLimp = new ObjectStep(this, NullObjectID.NULL_7848, new WorldPoint(2810, 3464, 0),
 			"Plant a limpwurt seed in the Catherby Flower Patch, wait for it to grow then pick it. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",

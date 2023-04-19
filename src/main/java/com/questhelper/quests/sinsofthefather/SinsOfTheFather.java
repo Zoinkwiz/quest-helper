@@ -860,7 +860,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("6 x 15,000 Experince Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 6), //4447 is placeholder for filter
+				new ItemReward("6 x 15,000 Experience Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 6), //4447 is placeholder for filter
 				new ItemReward("A Blisterwood Flail", ItemID.BLISTERWOOD_FLAIL, 1));
 	}
 

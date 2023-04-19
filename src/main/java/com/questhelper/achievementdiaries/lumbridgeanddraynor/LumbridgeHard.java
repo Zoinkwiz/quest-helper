@@ -199,7 +199,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notLightMiningHelm).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 130000).showConditioned(notBarrowsGloves);
 		gamesNeck = new ItemRequirement("Games Necklace", ItemCollections.GAMES_NECKLACES).showConditioned(notHundredTears);
-		dorgSphere = new ItemRequirement("Dorgesh-kann Sphere", ItemID.DORGESHKAAN_SPHERE).showConditioned(notTrainToKeld);
+		dorgSphere = new ItemRequirement("Dorgesh-kaan Sphere", ItemID.DORGESHKAAN_SPHERE).showConditioned(notTrainToKeld);
 		essence = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH, 28).showConditioned(notCosmics);
 		cosmicAccessOrAbyss = new ItemRequirement("Access to cosmic altar, or travel through abyss. Tiara recommended unless using essence pouches",
 			ItemCollections.COSMIC_ALTAR).showConditioned(notCosmics).isNotConsumed();

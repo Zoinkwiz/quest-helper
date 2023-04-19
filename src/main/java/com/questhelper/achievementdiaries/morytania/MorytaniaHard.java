@@ -317,8 +317,8 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			watermelonSeeds.quantity(3), seedDibber, spade, rake);
 
-		kharyrll = new DetailedQuestStep(this, "Enter the Kharyll portal in your POH. Through a Portal Chamber or " +
-			"Portal Nexus. Either make or construct a Portal Chamber / Kharyll Portal.", coins.quantity(100000),
+		kharyrll = new DetailedQuestStep(this, "Enter the Kharyrll portal in your POH. Through a Portal Chamber or " +
+			"Portal Nexus. Either make or construct a Portal Chamber / Kharyrll Portal.", coins.quantity(100000),
 			limestoneBrick.quantity(2), hammer, saw, teakPlank.quantity(3), lawRune.quantity(200), bloodRune.quantity(100));
 
 		claimReward = new NpcStep(this, NpcID.LESABR, new WorldPoint(3464, 3480, 0),
@@ -460,7 +460,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		mahoSteps.setLockingStep(burnMahoTask);
 		allSteps.add(mahoSteps);
 
-		PanelDetails kharyllSteps = new PanelDetails("Kharyll Portal", Collections.singletonList(kharyrll),
+		PanelDetails kharyllSteps = new PanelDetails("Kharyrll Portal", Collections.singletonList(kharyrll),
 			new SkillRequirement(Skill.MAGIC, 66), new SkillRequirement(Skill.CONSTRUCTION, 50),
 			desertTreasure, coins.quantity(100000), limestoneBrick.quantity(2), hammer, saw, teakPlank.quantity(3),
 			lawRune.quantity(200), bloodRune.quantity(100));

@@ -204,7 +204,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 			new UnlockReward("Free cart rides on Hajedy's cart system"),
 			new UnlockReward("Free access to the Hardwood Grove"),
 			new UnlockReward("Access to the stepping stones shortcut leading to the red dragons in Brimhaven Dungeon"),
-			new UnlockReward("Red and Metal in Brimhaven Dungeon will drop noted draonhide and bars"),
+			new UnlockReward("Red and Metal in Brimhaven Dungeon will drop noted dragonhide and bars"),
 			new UnlockReward("One free resurrection per day in the Fight Caves (Not the Inferno)"),
 			new UnlockReward("Double Tokkul from TzHaar Fight Caves, Inferno and Ket-Rak's Challenges"));
 	}

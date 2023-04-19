@@ -262,7 +262,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the west.",
 			combatGear, food, godEquip);
 		spiritMage = new NpcStep(this, NpcID.SPIRITUAL_MAGE, new WorldPoint(3050, 10131, 0),
-			"Kill a Spiritual Warrior in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
+			"Kill a Spiritual Mage in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
 		spiritMage.addAlternateNpcs(NpcID.SPIRITUAL_MAGE_2244, NpcID.SPIRITUAL_MAGE_3161, NpcID.SPIRITUAL_MAGE_3168);
 
 		threeBosses = new NpcStep(this, NpcID.CALLISTO, new WorldPoint(3291, 3844, 0),

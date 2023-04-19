@@ -785,7 +785,7 @@ public enum QuestHelperQuest
 		}
 		return getState(client);
 	}
-	public QuestState getQuestState(Client client)
+	private QuestState getQuestState(Client client)
 	{
 		client.runScript(ScriptID.QUEST_STATUS_GET, id);
 		switch (client.getIntStack()[0])
@@ -799,8 +799,13 @@ public enum QuestHelperQuest
 		}
 	}
 
-	private QuestState getState(Client client)
+	public QuestState getState(Client client)
 	{
+		if (id != -1)
+		{
+			return getQuestState(client);
+		}
+
 		if (skill != null)
 		{
 			if (client.getRealSkillLevel(skill) >= completeValue)
@@ -829,7 +834,7 @@ public enum QuestHelperQuest
 			return QuestState.IN_PROGRESS;
 		}
 
-		return getQuestState(client);
+		return QuestState.NOT_STARTED;
 	}
 
 	public int getVar(Client client)

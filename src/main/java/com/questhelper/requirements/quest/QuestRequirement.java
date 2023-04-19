@@ -108,7 +108,7 @@ public class QuestRequirement extends AbstractRequirement
 			return quest.getVar(client) >= minimumVarValue;
 		}
 
-		QuestState state = quest.getQuestState(client);
+		QuestState state = quest.getState(client);
 		if (requiredState == QuestState.IN_PROGRESS && state == QuestState.FINISHED)
 		{
 			return true;

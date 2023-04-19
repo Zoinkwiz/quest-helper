@@ -71,6 +71,9 @@ public class SwanSong extends BasicQuestHelper
 	ItemRequirement mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammer, brownApron, monkfish5, rawMonkfish5, combatGear, potHiglight,
 		potLidHiglight, tinderboxHiglight, ironBar5Higlight, logHiglight, ironSheet5, smallNet, airtightPot, combatGearRanged, boneSeeds, hammerPanel;
 
+	// Recommended
+	ItemRequirement draynorTeleport, piscTeleport, yanilleTeleport, craftingGuildTeleport, cookingGauntlets;
+
 	Requirement inColonyEntrance, talkedToFranklin, addedLog, litLog, wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed, wallsFixed,
 		talkedToArnold, finishedFranklin, inBasement, queenNearby;
 
@@ -180,6 +183,13 @@ public class SwanSong extends BasicQuestHelper
 		logHiglight.setHighlightInInventory(true);
 		tinderboxHiglight = tinderbox.highlighted();
 
+		// Recommended
+		draynorTeleport = new ItemRequirement("Teleport to Draynor Village", ItemCollections.AMULET_OF_GLORIES);
+		piscTeleport = new ItemRequirement("Piscatoris teleport", ItemID.PISCATORIS_TELEPORT);
+		yanilleTeleport = new ItemRequirement("Yanille teleport or Nightmare Zone minigame teleport", ItemID.WATCHTOWER_TELEPORT);
+		craftingGuildTeleport = new ItemRequirement("Crafting Guild teleport", ItemCollections.SKILLS_NECKLACES);
+		cookingGauntlets = new ItemRequirement("Cooking gauntlets for lower burn chance on monkfish", ItemID.COOKING_GAUNTLETS);
+
 		smallNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).isNotConsumed();
 		smallNet.setTooltip("You can get one from Arnold");
 
@@ -285,6 +295,12 @@ public class SwanSong extends BasicQuestHelper
 		return Arrays.asList(mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammerPanel);
 	}
 
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(draynorTeleport, piscTeleport.quantity(2), yanilleTeleport, craftingGuildTeleport, cookingGauntlets);
+	}
+
 
 	@Override
 	public List<String> getCombatRequirements()
@@ -345,19 +361,20 @@ public class SwanSong extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHerman, talkToWom), blood5, mist10, lava10));
-		allSteps.add(new PanelDetails("Entering the colony", Arrays.asList(talkToWomAtColony, kill79Trolls, talkToHermanInBuilding), combatGear, log, tinderbox, ironBar5, hammerPanel));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHerman, talkToWom), Arrays.asList(blood5, mist10, lava10), Arrays.asList(piscTeleport, draynorTeleport)));
+		allSteps.add(new PanelDetails("Entering the colony", Arrays.asList(talkToWomAtColony, kill79Trolls, talkToHermanInBuilding), Arrays.asList(combatGear, log, tinderbox, ironBar5, hammerPanel),
+			Collections.singletonList(piscTeleport)));
 		List<QuestStep> helpingSteps = QuestUtil.toArrayList(talkToFranklin, useLog, useTinderbox);
 		helpingSteps.addAll(repairWall.getDisplaySteps());
-		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, combatGear, log, tinderbox, ironBar5, hammerPanel));
+		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, Arrays.asList(combatGear, log, tinderbox, ironBar5, hammerPanel)));
 
 		List<QuestStep> helpingArnoldSteps = QuestUtil.toArrayList(talkToArnold);
 		helpingArnoldSteps.addAll(fishAndCookMonkfish.getSteps());
 		helpingArnoldSteps.add(talkToHermanAfterTasks);
 
-		allSteps.add(new PanelDetails("Helping Arnold", helpingArnoldSteps, combatGear));
+		allSteps.add(new PanelDetails("Helping Arnold", helpingArnoldSteps, Collections.singletonList(combatGear), Collections.singletonList(cookingGauntlets)));
 		allSteps.add(new PanelDetails("Making an army", Arrays.asList(talkToFruscone, talkToMalignius,
-			talkToCrafter, makeAirtightPot, talkToMaligniusWithPot), bones7, pot, potLid, combatGearRanged));
+			talkToCrafter, makeAirtightPot, talkToMaligniusWithPot), Arrays.asList(bones7, pot, potLid, combatGearRanged), Arrays.asList(yanilleTeleport, craftingGuildTeleport)));
 		allSteps.add(new PanelDetails("Defeating the trolls", Arrays.asList(talkToHermanForFinalFight, killQueen, talkToHermanToFinish), combatGearRanged));
 		return allSteps;
 	}

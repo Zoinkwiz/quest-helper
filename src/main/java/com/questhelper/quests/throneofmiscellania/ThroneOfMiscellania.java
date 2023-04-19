@@ -43,10 +43,12 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.EmoteStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 
+import com.questhelper.steps.emote.QuestEmote;
 import java.util.*;
 
 import net.runelite.api.ItemID;
@@ -336,8 +338,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		giveFlowersToAstrid.addDialogStep("Yes");
 		giveBowToAstrid = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Use any bow on Astrid.", bow);
 		giveBowToAstrid.addDialogStep("Yes");
-		danceForAstrid = new DetailedQuestStep(this, "Dance in Princess Astrid's room.");
-		blowKissToAstrid = new DetailedQuestStep(this, "Blow kiss emote next to Princess Astrid.");
+		danceForAstrid = new EmoteStep(this, QuestEmote.DANCE, "Dance in Princess Astrid's room.");
+		blowKissToAstrid = new EmoteStep(this, QuestEmote.BLOW_KISS, "Blow kiss emote next to Princess Astrid.");
 		useRingOnAstrid = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Use a ring on Astrid.", ring);
 		useRingOnAstrid.addDialogStep("Yes");
 
@@ -358,8 +360,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		giveCakeToBrand = new NpcStep(this, NpcID.PRINCE_BRAND, new WorldPoint(2502, 3852, 1), "Give Prince Brand a cake.", cake);
 		giveFlowersToBrand = new NpcStep(this, NpcID.PRINCE_BRAND, new WorldPoint(2502, 3852, 1), "Use flowers on Prince Brand.", flowers);
-		blowKissToBrand = new DetailedQuestStep(this, "Use the blow kiss emote next to Prince Brand");
-		clapForBrand = new DetailedQuestStep(this, "Use the Clap emote next to Prince Brand");
+		blowKissToBrand = new EmoteStep(this, QuestEmote.BLOW_KISS, "Use the blow kiss emote next to Prince Brand");
+		clapForBrand = new EmoteStep(this, QuestEmote.CLAP, "Use the Clap emote next to Prince Brand");
 		useRingOnBrand = new NpcStep(this, NpcID.PRINCE_BRAND, new WorldPoint(2502, 3852, 1), "Use a ring on Prince Brand.", ring);
 
 		goUpstairsToBrand = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3849, 0), "Go upstairs in the Miscellania castle.");

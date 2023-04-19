@@ -32,6 +32,7 @@ public enum QuestEmote
 {
 	SKILL_CAPE("Skill Cape", EMOTE_SKILLCAPE),
 	FLEX("Flex", 2426),
+	CLAP("Clap", EMOTE_CLAP),
 	CRY("Cry", EMOTE_CRY),
 	BOW("Bow", EMOTE_BOW),
 	DANCE("Dance", EMOTE_DANCE),

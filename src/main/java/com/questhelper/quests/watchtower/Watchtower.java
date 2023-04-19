@@ -33,6 +33,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -359,16 +360,16 @@ public class Watchtower extends BasicQuestHelper
 		onTobanIsland = new ZoneRequirement(tobanIsland);
 
 		knownOgreStep = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "In the meantime, I'll throw those fingernails out for you."),
+			new DialogRequirement("In the meantime, I'll throw those fingernails out for you."),
 			new WidgetTextRequirement(119, 3, true, "deal with the tribal ogres."));
 
-		talkedToGrew = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The morsel is back.", "Heheheheh!"),
+		talkedToGrew = new Conditions(true, LogicType.OR, new DialogRequirement("The morsel is back.", "Heheheheh!"),
 			new WidgetTextRequirement(119, 3, true, "Grew wants me to give him", "I have <col=800000>one of Gorad's teeth"));
 
-		talkedToOg = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Here is a key to the chest it's in.", "Where my gold from dat dirty Toban?"),
+		talkedToOg = new Conditions(true, LogicType.OR, new DialogRequirement("Here is a key to the chest it's in.", "Where my gold from dat dirty Toban?"),
 			new WidgetTextRequirement(119, 3, true, "Og wants me to", "I have Og's <col=800000>stolen gold"), hasTobansKey);
 
-		talkedToToban = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Prove to me your might", "Hahaha! Small t'ing returns."),
+		talkedToToban = new Conditions(true, LogicType.OR, new DialogRequirement("Prove to me your might", "Hahaha! Small t'ing returns."),
 			new WidgetTextRequirement(119, 3, true, "Toban wants me to give him", "I have the <col=800000>dragon bones"));
 
 		hasRelic1 = new Conditions(true, LogicType.OR, relic1,
@@ -382,15 +383,15 @@ public class Watchtower extends BasicQuestHelper
 
 		gettingOgreRockCake = new VarbitRequirement(3120, 1);
 		gaveCake = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "This time we will let it go."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Well, well, look at this."),
+			new DialogRequirement("This time we will let it go."),
+			new DialogRequirement("Well, well, look at this."),
 			new WidgetTextRequirement(119, 3, true, "<str>I gave the north-east guard a rock cake."),
 			inAreaBeforeBridgeJump
 		);
 		// 3319, 1, tried to enter city
 		knowsRiddle = new VarbitRequirement(3121, 1);
 
-		talkedToScaredSkavid = new Conditions(true, LogicType.OR, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Master, how are you doing", "Those will gets you started."),
+		talkedToScaredSkavid = new Conditions(true, LogicType.OR, new DialogRequirement("Master, how are you doing", "Those will gets you started."),
 			new WidgetTextRequirement(119, 3, true, "ar, nod, gor, ig, cur"));
 
 		talkedToSkavid1 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom1, "It seems the skavid understood you.", "You have already talked to this skavid."),

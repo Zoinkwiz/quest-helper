@@ -33,6 +33,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -324,8 +325,8 @@ public class Wanted extends BasicQuestHelper
 
 		startedEnterTheAbyss = new VarplayerRequirement(492, 1, Operation.GREATER_EQUAL);
 
-		isInCommorbWithGpConversation = new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You have that kind of money with you?");
-		isInCommorbWithComponentsConversation = new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You wish me to make you one now then, what?");
+		isInCommorbWithGpConversation = new DialogRequirement("You have that kind of money with you?");
+		isInCommorbWithComponentsConversation = new DialogRequirement("You wish me to make you one now then, what?");
 
 		isInTaverleyDungeon = new ZoneRequirement(taverleyDungeonP1, taverleyDungeonP2);
 		isInWhiteKnightsCastleF1 = new ZoneRequirement(whiteKnightsCastleF1);

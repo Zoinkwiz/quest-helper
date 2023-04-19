@@ -37,6 +37,7 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
@@ -216,12 +217,12 @@ public class DeathPlateau extends BasicQuestHelper
 		inSabaCave = new ZoneRequirement(sabaCave);
 		isFarEnough = new ChatMessageRequirement("You should go and speak to Denulth.");
 		talkedToSaba = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Before the trolls came there used to be a nettlesome"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Have you got rid of those pesky trolls yet?")
+			new DialogRequirement("Before the trolls came there used to be a nettlesome"),
+			new DialogRequirement("Have you got rid of those pesky trolls yet?")
 		);
 		talkedToDunstan = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "My son has just turned 16"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Have you managed to get my son")
+			new DialogRequirement("My son has just turned 16"),
+			new DialogRequirement("Have you managed to get my son")
 		);
 	}
 

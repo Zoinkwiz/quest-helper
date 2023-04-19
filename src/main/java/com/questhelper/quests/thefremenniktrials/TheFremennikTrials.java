@@ -32,6 +32,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -398,13 +399,13 @@ public class TheFremennikTrials extends BasicQuestHelper
 		inQuestJournal = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, "The Fremennik Trials");
 
 		Requirement syncedReqs = new Conditions(true, LogicType.OR, inQuestJournal,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "I think I would enjoy the challenge"));
+			new DialogRequirement("I think I would enjoy the challenge"));
 		synced = new RuneliteRequirement(configManager, "fremmytrialssynced", syncedReqs);
 
 		hasStartedOlaf = new RuneliteRequirement(configManager, "fremmytrialsstartedolaf",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is great news outerlander! We always need more<br>music lovers here!"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "So how would I go about writing this epic?"),
+			new DialogRequirement("That is great news outerlander! We always need more<br>music lovers here!"),
+			new DialogRequirement("So how would I go about writing this epic?"),
 			new WidgetTextRequirement(119, 3, true, "Bard<col=000080> will vote for me if"))
 		);
 
@@ -412,8 +413,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		talkedToLalli = new RuneliteRequirement(configManager, "fremmytrialstalkedtolalli",
 			new Conditions(true, LogicType.OR,
-				new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "I see... okay, well, bye!"),
-				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Human call itself Askeladden!")
+				new DialogRequirement("I see... okay, well, bye!"),
+				new DialogRequirement("Human call itself Askeladden!")
 			));
 		gottenRock = new VarbitRequirement(6486, 1);
 
@@ -431,7 +432,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 			new ChatMessageRequirement("You put an onion into the cauldron.")
 		);
 
-		cauldronFilledDialog = new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Indeed it is. Try it and see.");
+		cauldronFilledDialog = new DialogRequirement("Indeed it is. Try it and see.");
 
 		stewReady = new RuneliteRequirement(configManager, "fremmytrialsstewready",
 			new Conditions(petRockInCauldron, cabbageInCauldron, potatoInCauldron, onionInCauldron, cauldronFilledDialog));
@@ -443,8 +444,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		talkedToManniWidget = new Conditions(true, new WidgetTextRequirement(119, 3, true, "Reveller<col=000080> will vote for me"));
 		talkedToManniChat = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "pick up a keg from that table over there"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Grab a keg of beer<br>from that table near the bar, and come back here with<br>it.")
+			new DialogRequirement("pick up a keg from that table over there"),
+			new DialogRequirement("Grab a keg of beer<br>from that table near the bar, and come back here with<br>it.")
 		);
 		talkedToManni = new RuneliteRequirement(configManager, "fremmytrialsstartedmanni",
 			new Conditions(true, LogicType.OR, talkedToManniWidget, talkedToManniChat)
@@ -480,26 +481,26 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		getFlower = new RuneliteRequirement(configManager, "fremmytrialsstartedsigmund",
 			new Conditions(true, LogicType.OR,
-				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are a very insular clan"),
-				new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Any<br>suggestions on where to start looking for this flower?"),
-				new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Did you manage to<br>obtain my flower for me yet?"),
+				new DialogRequirement("We are a very insular clan"),
+				new DialogRequirement("Any<br>suggestions on where to start looking for this flower?"),
+				new DialogRequirement("Did you manage to<br>obtain my flower for me yet?"),
 				new WidgetTextRequirement(119, 3, true, "has a <col=800000>rare flower<col=000080> that he wants."))
 		);
 
 		talkedToSailor = new RuneliteRequirement(configManager, "fremmytrialssigmundsailor",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That sounds like a fair deal to me, outerlander."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "find a<br>love ballad, do you?"))
+			new DialogRequirement("That sounds like a fair deal to me, outerlander."),
+			new DialogRequirement("find a<br>love ballad, do you?"))
 		);
 
 		talkedToOlafForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundolaf",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "composing you a romantic ballad"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "where I could find<br>some custom sturdy boots, do you?"))
+			new DialogRequirement("composing you a romantic ballad"),
+			new DialogRequirement("where I could find<br>some custom sturdy boots, do you?"))
 		);
 
 		Conditions ysraAsked = new Conditions(true, LogicType.AND,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "Okay, I will see what I can do."),
+			new DialogRequirement("Okay, I will see what I can do."),
 			new ZoneRequirement(new Zone(new WorldPoint(2622, 3672, 0), new WorldPoint(2629, 3679, 0))));
 
 		talkedToYsra = new RuneliteRequirement(configManager, "fremmytrialssigmundysra",
@@ -512,41 +513,41 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		talkedToBrundtForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundbrundt",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Speak to Sigli then, and you may have my promise to<br>reduce our sales taxes. And best of luck with the rest<br>of your trials."),
+			new DialogRequirement("Speak to Sigli then, and you may have my promise to<br>reduce our sales taxes. And best of luck with the rest<br>of your trials."),
 			new WidgetTextRequirement(119, 3, true, "The <col=800000>chieftain<col=000080> wants a <col=800000>map of new hunting grounds<col=000080>...")
 			));
 
 		talkedToSigliForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundsigli",
 			new Conditions(true, LogicType.OR,
 			// TODO: Fix this check, missing a br
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "who knows where<br>my hunting ground is."),
+			new DialogRequirement("who knows where<br>my hunting ground is."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>The hunter<col=000080> is looking for a <col=800000>custom bow string<col=000080>...")
 			));
 
 		talkedToSkulgrimenForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundskulgrimen",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Sounds good to me."),
+			new DialogRequirement("Sounds good to me."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>armourer<col=000080> is looking for a <col=800000>rare inedible fish<col=000080>...")
 			));
 
 		talkedToFishermanForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundfisherman",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "I'll see what I can do."),
+			new DialogRequirement("I'll see what I can do."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>fisherman<col=000080> is looking for a <col=800000>map of fishing spots<col=000080>..."))
 		);
 
 		talkedToSwensenForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundswensen",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, " take the time to make a forecast<br>somehow."),
+			new DialogRequirement(" take the time to make a forecast<br>somehow."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>navigator<col=000080> is looking for a <col=800000>weather forecast<col=000080>..."))
 		);
 
 		talkedToPeerForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundpeer",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That is all."),
+			new DialogRequirement("That is all."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>seer<col=000080> is looking for a <col=800000>warrior to be his bodyguard<col=000080>..."))
 		);
-		Conditions thorvaldAsked = new Conditions(true, LogicType.AND, new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Okay, I'll see what I can do."),
+		Conditions thorvaldAsked = new Conditions(true, LogicType.AND, new DialogRequirement("Okay, I'll see what I can do."),
 			new ZoneRequirement(new Zone(new WorldPoint(2661, 3690, 0), new WorldPoint(2669, 3696, 0))));
 
 		talkedToThorvaldForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundthorvald",
@@ -557,13 +558,13 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		talkedToManniForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundmanni",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That's all."),
+			new DialogRequirement("That's all."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>The <col=800000>reveller<col=000080> is looking for a <col=800000>legendary cocktail<col=000080>..."))
 		);
 
 		talkedToThoraForSigmund = new RuneliteRequirement(configManager, "fremmytrialssigmundthora",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "cash. You should go ask him"),
+			new DialogRequirement("cash. You should go ask him"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>All <col=800000>Askeladden<col=000080> wants is " +
 				"<col=800000>some money<col=000080>!"),
 			new WidgetTextRequirement(119, 3, true, "<col=800000>Thora")
@@ -583,7 +584,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		inKoscheiRoom = new ZoneRequirement(koscheiRoom);
 		talkedToThorvald = new RuneliteRequirement(configManager, "fremmytrialsthorvaldstarted",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hahahahaha! I'm beginning"),
+			new DialogRequirement("Hahahahaha! I'm beginning"),
 			new WidgetTextRequirement(119, 3, true, "Warrior<col=000080> will vote for me if"))
 		);
 
@@ -602,7 +603,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		talkedToSwensen = new RuneliteRequirement(configManager, "fremmytrialsswensenstarted",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "A maze? Is that all?"),
+			new DialogRequirement("A maze? Is that all?"),
 			new WidgetTextRequirement(119, 3, true, "Navigator<col=000080> will vote for me if"))
 		);
 
@@ -619,7 +620,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		syncedSwensen = new Conditions(talkedToSwensen);
 		finishedSwensenTask = new RuneliteRequirement(configManager, "fremmytrialswensenfinished",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Outerlander! You have finished my maze!"),
+			new DialogRequirement("Outerlander! You have finished my maze!"),
 			new WidgetTextRequirement(119, 3, true, "I now have the Navigator's vote"))
 		);
 
@@ -627,8 +628,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		talkedToPeer = new RuneliteRequirement(configManager, "fremmytrialpeerstarted",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, true, "I have one small question"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "So I can bring nothing with me when I enter your<br>house?"),
+			new DialogRequirement("I have one small question"),
+			new DialogRequirement("So I can bring nothing with me when I enter your<br>house?"),
 			new WidgetTextRequirement(119, 3, true, "Seer<col=000080> will vote for me if")));
 
 		isMind = new Conditions(true, new WidgetTextRequirement(229, 1, "My first is in mage"));
@@ -656,7 +657,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		hasAnyJug = new Conditions(LogicType.OR, jug13, jug23, emptyJug, fullJug);
 
 		finishedPeerTask = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "To have solved my puzzle"),
+			new DialogRequirement("To have solved my puzzle"),
 			new WidgetTextRequirement(119, 3, true, "I now have the Seer's vote"));
 
 		syncedPeer = new Conditions(talkedToPeer);

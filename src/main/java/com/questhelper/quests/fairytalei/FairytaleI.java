@@ -30,6 +30,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -208,8 +209,8 @@ public class FairytaleI extends BasicQuestHelper
 
 		talkedToFarmers = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "back and talk to <col=800000>Martin"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Right, well thanks for your input."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I don't think the crops ARE failing"));
+			new DialogRequirement("Right, well thanks for your input."),
+			new DialogRequirement("I don't think the crops ARE failing"));
 
 		secateursNearby = new ItemOnTileRequirement(queensSecateurs);
 	}

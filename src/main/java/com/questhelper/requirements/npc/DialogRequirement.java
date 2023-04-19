@@ -25,19 +25,29 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.SimpleRequirement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import net.runelite.api.Client;
 
 public class DialogRequirement extends SimpleRequirement
 {
 	final String talkerName;
-	final String text;
+	final List<String> text = new ArrayList<>();
 	final boolean mustBeActive;
 
 	boolean hasSeenDialog = false;
+
+	public DialogRequirement(String... text)
+	{
+		this.talkerName = null;
+		this.text.add(Arrays.toString(text));
+		this.mustBeActive = false;
+	}
 	public DialogRequirement(String talkerName, String text, boolean mustBeActive)
 	{
 		this.talkerName = talkerName;
-		this.text = text;
+		this.text.add(text);
 		this.mustBeActive = mustBeActive;
 	}
 
@@ -73,6 +83,6 @@ public class DialogRequirement extends SimpleRequirement
 	private boolean isCurrentDialogMatching(String dialogMessage)
 	{
 		if (talkerName != null && !dialogMessage.contains(talkerName + "|")) return false;
-		return dialogMessage.contains(text);
+		return text.stream().anyMatch(dialogMessage::contains);
 	}
 }

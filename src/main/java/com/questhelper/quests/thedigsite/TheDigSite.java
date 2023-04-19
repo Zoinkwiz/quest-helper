@@ -31,6 +31,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -295,13 +296,13 @@ public class TheDigSite extends BasicQuestHelper
 
 		syncedUp2 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedFirstExam,
 			new WidgetTextRequirement(119, 2, "The Dig Site"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct. Well done!"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Hey! Excellent!"));
+			new DialogRequirement("You got all the questions correct. Well done!"),
+			new DialogRequirement("Hey! Excellent!"));
 
 		syncedUp3 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedSecondExam,
 			new WidgetTextRequirement(119,	2, "The Dig Site"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "You got all the questions correct, well done!"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Great, I'm getting good at this."));
+			new DialogRequirement("You got all the questions correct, well done!"),
+			new DialogRequirement("Great, I'm getting good at this."));
 
 		talkedToGuide = new VarbitRequirement(2544, 1);
 		tea = tea.hideConditioned(talkedToGuide);
@@ -309,71 +310,71 @@ public class TheDigSite extends BasicQuestHelper
 
 		// Exam questions 1
 		talkedToFemaleStudent = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hey! My lucky mascot!"),
+			new DialogRequirement("Hey! My lucky mascot!"),
 			new WidgetTextRequirement(119, 3, true, "I should talk to her to see if she can help"));
 		femaleStudentQ1Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The proper health and safety points are"),
+			new DialogRequirement("The proper health and safety points are"),
 			new WidgetTextRequirement(119, 3, true, "She gave me an answer"));
 
 		WidgetTextRequirement orangeGivenAnswer1Diary = new WidgetTextRequirement(119, 3, true, "He gave me an answer to one of the questions");
 		orangeGivenAnswer1Diary.addRange(20, 35);
 		talkedToOrangeStudent = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Look what I found!"),
+			new DialogRequirement("Look what I found!"),
 			new WidgetTextRequirement(119, 3, true, "<str>to find it and return it to him."));
 		orangeStudentQ1Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The people eligible to use the digsite are:"),
+			new DialogRequirement("The people eligible to use the digsite are:"),
 			orangeGivenAnswer1Diary);
 
 		WidgetTextRequirement greenGivenAnswer1Diary = new WidgetTextRequirement(119, 3, true, "He gave me an answer to one of the questions");
 		greenGivenAnswer1Diary.addRange(0, 19);
 
 		talkedToGreenStudent = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Oh wow! You've found it!"),
+			new DialogRequirement("Oh wow! You've found it!"),
 			new WidgetTextRequirement(119, 3, true, "<str>to him; maybe someone has picked it up?"));
 		greenStudentQ1Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The study of Earth Sciences is:"),
+			new DialogRequirement("The study of Earth Sciences is:"),
 			greenGivenAnswer1Diary);
 
 		// Exam questions 2
 		WidgetTextRequirement femaleGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
 		femaleGivenAnswer2Diary.addRange(43, 52);
 		femaleStudentQ2Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Finds handling: Finds must"),
+			new DialogRequirement("Finds handling: Finds must"),
 			femaleGivenAnswer2Diary);
 
 		WidgetTextRequirement orangeGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the orange top about the");
 		orangeGivenAnswer2Diary.addRange(43, 52);
 		orangeStudentQ2Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Correct sample transportation: "),
+			new DialogRequirement("Correct sample transportation: "),
 			orangeGivenAnswer2Diary);
 
 		WidgetTextRequirement greenGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the green top about the");
 		greenGivenAnswer2Diary.addRange(43, 52);
 		greenStudentQ2Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Correct rock pick usage: Always handle"),
+			new DialogRequirement("Correct rock pick usage: Always handle"),
 			greenGivenAnswer2Diary);
 
 		// Exam questions 3
 		femaleExtorting = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "OK, I'll see what I can turn up for you."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Well, I have seen people get them from panning"),
+			new DialogRequirement("OK, I'll see what I can turn up for you."),
+			new DialogRequirement("Well, I have seen people get them from panning"),
 			new WidgetTextRequirement(119, 3, true, "I need to bring her an opal"));
 		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
 		femaleGivenAnswer3Diary.addRange(56, 63);
 		femaleStudentQ3Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Sample preparation: Samples cleaned"),
+			new DialogRequirement("Sample preparation: Samples cleaned"),
 			femaleGivenAnswer3Diary);
 
 		WidgetTextRequirement orangeGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the orange top about the");
 		orangeGivenAnswer3Diary.addRange(56, 63);
 		orangeStudentQ3Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The proper technique for handling bones is: Handle"),
+			new DialogRequirement("The proper technique for handling bones is: Handle"),
 			orangeGivenAnswer3Diary);
 
 		WidgetTextRequirement greenGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the green top about the");
 		greenGivenAnswer3Diary.addRange(56, 63);
 		greenStudentQ3Learnt = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Specimen brush use: Brush carefully"),
+			new DialogRequirement("Specimen brush use: Brush carefully"),
 			greenGivenAnswer3Diary);
 
 		// 2550 = 1, gotten invite

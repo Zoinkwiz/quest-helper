@@ -31,6 +31,7 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -229,12 +230,12 @@ public class ShiloVillage extends BasicQuestHelper
 		inCavern4 = new ZoneRequirement(cavern4);
 
 		shownCorpse = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The ground in the centre of the village"),
+			new DialogRequirement("The ground in the centre of the village"),
 			boneShard
 		);
 
 		shownStone = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "If you have found anything else that you need " +
+			new DialogRequirement("If you have found anything else that you need " +
 				"help<br>with, please just let me know."),
 			new WidgetTextRequirement(119, 3, true, "<str>Trufitus identified the plaque")
 		);

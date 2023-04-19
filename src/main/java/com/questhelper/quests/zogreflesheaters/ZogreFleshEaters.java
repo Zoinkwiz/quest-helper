@@ -26,6 +26,7 @@ package com.questhelper.quests.zogreflesheaters;
 
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
@@ -44,14 +45,12 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -213,7 +212,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		askedAboutSickies = new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Da sickies is when yous creature goes like orange");
+		askedAboutSickies = new DialogRequirement("Da sickies is when yous creature goes like orange");
 		inSurface = new ZoneRequirement(surface);
 		inTombF2 = new ZoneRequirement(tombF2);
 		inTombF0 = new ZoneRequirement(tombF0);
@@ -370,7 +369,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	public List<Requirement> getGeneralRecommended()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new FreeInventorySlotRequirement(5));
+		req.add(new FreeInventorySlotRequirement(8));
 		req.add(sanfew);
 		return req;
 	}
@@ -411,7 +410,8 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGrish, talkToGuard, goDownStairs, searchSkeleton, killZombie, openBackpack, searchLectern, searchCoffin, useKnifeOnCoffin, openCoffin, searchCoffinProperly)));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGrish, talkToGuard, goDownStairs, searchSkeleton, killZombie, openBackpack, searchLectern, searchCoffin, useKnifeOnCoffin,
+			openCoffin, searchCoffinProperly)));
 		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToZavistic, goUpToSith, searchWardrobe, searchCupboard, searchDrawers, usePapyrusOnSith, useTankardOnBartender, usePortraitOnBartender, bringSignedPortraitToZavistic)));
 		allSteps.add(new PanelDetails("Discover the truth", Arrays.asList(goUpToSithAgain, usePotionOnTea, goDownstairsFromSith, goUpToOgreSith, talkToSithForAnswers)));
 		allSteps.add(new PanelDetails("Help the ogres", Arrays.asList(talkToGrishForKey, talkToGrishForBow, climbBarricadeForBoss, goDownStairsForBoss, enterDoors, goDownToBoss, searchStand, pickUpOgreArtefact, returnArtefactToGrish), combatGear));

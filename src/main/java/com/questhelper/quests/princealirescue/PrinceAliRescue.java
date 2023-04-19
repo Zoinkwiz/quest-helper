@@ -30,6 +30,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
@@ -178,8 +179,8 @@ public class PrinceAliRescue extends BasicQuestHelper
 			new WidgetTextRequirement(119, 3, true, "I have duplicated a key, I need to get it from"),
 			new WidgetTextRequirement(119, 3, true, "I got a duplicated cell door key"),
 			new WidgetTextRequirement(11, 2, true, "You give Osman the imprint along with a bronze bar."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I'll use this to have a copy of the key made. I'll send it<br>to Leela once it's ready."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "I think I have everything needed."),
+			new DialogRequirement("I'll use this to have a copy of the key made. I'll send it<br>to Leela once it's ready."),
+			new DialogRequirement("I think I have everything needed."),
 			key.alsoCheckBank(questBank));
 		madeMould = new RuneliteRequirement(getConfigManager(), "princealikeymouldhandedin", "true", givenKeyMould);
 		madeMould.initWithValue("false");

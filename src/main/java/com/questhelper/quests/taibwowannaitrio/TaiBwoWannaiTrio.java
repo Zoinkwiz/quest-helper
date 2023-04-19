@@ -34,6 +34,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -361,7 +362,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		givenVessel = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "<str>He has successfully caught a Karambwan."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the Karambwan vessel to Tiadeche."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "What is it?")
+			new DialogRequirement("What is it?")
 		);
 
 		givenKarambwanji = new Conditions(true, LogicType.OR,
@@ -374,13 +375,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		talkedToTiadeche = new Conditions(true, LogicType.OR,
 			givenVessel,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I will return only when I have caught a Karambwan."),
+			new DialogRequirement("I will return only when I have caught a Karambwan."),
 			new WidgetTextRequirement(219, 1, 4, "How are you fishing for the Karambwan?"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>He will only return to the village once he has caught a")
 		);
 
 		beenAskedToResearchVessel = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Take a Karambwan vessel to my brother Tinsay."),
+			new DialogRequirement("Take a Karambwan vessel to my brother Tinsay."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I must take a <col=800000>Karambwan vessel<col=000080> to <col=800000>Tinsay<col=000080> and retrieve")
 		);
 
@@ -392,26 +393,26 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		wentOnHunt = new Conditions(true, LogicType.OR,
 			new NpcCondition(NpcID.TAMAYU_4705),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I simply cannot match the Shaikahan's agility!",
+			new DialogRequirement("I simply cannot match the Shaikahan's agility!",
 				"I cannot do enough damage with this spear..."),
 			new WidgetTextRequirement(119, 3, true, "He appears to be having difficulty in the hunt.")
 		);
 
 		givenPotion = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the agility potion to Tamayu."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Thank you Bwana. Now I must prepare for my next"),
+			new DialogRequirement("Thank you Bwana. Now I must prepare for my next"),
 			new WidgetTextRequirement(119, 3, true, "<str>I have increased his agility to match the Shaikahan's.")
 		);
 		givenSpear = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Tamayu, try using this weapon."),
+			new DialogRequirement("Tamayu, try using this weapon."),
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have give him a stronger and Karambwan poisoned spear.")
 		);
 
 		defeatedBeast = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I did it! I, Tamayu, first son of Timfraku, did slay " +
+			new DialogRequirement("I did it! I, Tamayu, first son of Timfraku, did slay " +
 				"the<br>Shaikahan!"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "The deaths of my kin have been avenged. You are my<br>witness."),
+			new DialogRequirement("The deaths of my kin have been avenged. You are my<br>witness."),
 			new WidgetTextRequirement(119, 3, true, "<str>Tamayu has slain the Shaikahan!")
 		);
 
@@ -422,13 +423,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		givenBones = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the burnt Jogre bones marinated"),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him a burnt Jogre bones marinated in"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Finally! A near lifetime of craving satisfied!")
+			new DialogRequirement("Finally! A near lifetime of craving satisfied!")
 		);
 
 		givenSandwich = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the seaweed in monkey skin sandwich."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him a seaweed in monkey skin sandwich."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Yes ... perfect! You really do not understand how<br>necessary that was."),
+			new DialogRequirement("Yes ... perfect! You really do not understand how<br>necessary that was."),
 			givenBones
 		);
 
@@ -436,7 +437,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the sliced bananas in Karamjan " +
 				"rum."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him sliced banana in Karamja rum."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Yes ... that's it! Hits just the spot!"),
+			new DialogRequirement("Yes ... that's it! Hits just the spot!"),
 			givenSandwich,
 			givenBones
 		);
@@ -449,8 +450,8 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		talkedTinsay1 = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "<col=000080>He requires <col=800000>banana in Karamja " +
 				"rum<col=000080> to repair the tribal"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "And you're going to use this to repair the"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Hmm ... I think I need banana in Karamjan rum.")
+			new DialogRequirement("And you're going to use this to repair the"),
+			new DialogRequirement("Hmm ... I think I need banana in Karamjan rum.")
 		);
 
 		hadManual = new Conditions(true, LogicType.OR,

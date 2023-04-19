@@ -35,6 +35,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -85,7 +86,8 @@ public class FishingContest extends BasicQuestHelper
 	ItemRequirement noCombatBracelet, noFishingRod, noGarlic, noWorms;
 	Requirement hasEverything, notNearWorms, inWoods, notInWoods, enteredContest, hasPutGarlicInPipe;
 	VarbitRequirement garlicInPipeVarbit;
-	WidgetTextRequirement garlicInPipeScreen, confirmGarlicInPipe;
+	WidgetTextRequirement garlicInPipeScreen;
+	DialogRequirement confirmGarlicInPipe;
 
 	// Zones
 	Zone mcGruborWoodEntrance, cmbBraceletTeleportZone, nearRedVineWorms, contestGroundsEntrance;
@@ -220,7 +222,7 @@ public class FishingContest extends BasicQuestHelper
 		garlicInPipeVarbit = new VarbitRequirement(2054, 1);
 		enteredContest = new Conditions(true, LogicType.AND, hasEverything, onContestGrounds);
 		garlicInPipeScreen = new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You stash the garlic in the pipe.");
-		confirmGarlicInPipe = new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "I shoved some garlic up here.");
+		confirmGarlicInPipe = new DialogRequirement(client.getLocalPlayer().getName(), "I shoved some garlic up here.");
 		hasPutGarlicInPipe = new Conditions(true, LogicType.OR, garlicInPipeVarbit, garlicInPipeScreen, confirmGarlicInPipe);
 	}
 

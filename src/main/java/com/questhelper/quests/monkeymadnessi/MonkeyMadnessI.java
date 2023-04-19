@@ -32,6 +32,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -416,13 +417,13 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		);
 
 		talkedToGarkorWithGreeGree = new VarbitRequirement(126, 3, Operation.GREATER_EQUAL);
-		talkedToGuard = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "He goes by the name of Kruk."));
+		talkedToGuard = new Conditions(true, new DialogRequirement("He goes by the name of Kruk."));
 		talkedToKruk = new Conditions(true,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "As you wish.", "I see. Very well, you look genuine enough. Follow me.")
+			new DialogRequirement("As you wish.", "I see. Very well, you look genuine enough. Follow me.")
 		);
 
 		givenMonkey = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "We are still pondering your proposition", "You have shown yourself to be very resourceful."),
+			new DialogRequirement("We are still pondering your proposition", "You have shown yourself to be very resourceful."),
 			new WidgetTextRequirement(119, 3, true, "appear to have earnt Awowogei's favour.")
 		);
 

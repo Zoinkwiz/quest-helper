@@ -32,6 +32,7 @@ import com.questhelper.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
@@ -210,7 +211,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		// 573 0->1
 
 		talkedToVermundi = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Great, thanks a lot, I'll check out the library!"),
+			new DialogRequirement("Great, thanks a lot, I'll check out the library!"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I should speak to the " +
 				"<col=800000>librarian<col=000080> in Keldagrim-West. He"),
 			new WidgetTextRequirement(219, 1, 2, "Yes, about those special clothes again..."));
@@ -233,13 +234,13 @@ public class TheGiantDwarf extends BasicQuestHelper
 		askedToStartMachine = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT,
 				"Don't worry, I'll get them for you. Let's see... some<br>coal and some logs. Shouldn't be too hard."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Well, like I said, I can't do anything really " +
+			new DialogRequirement("Well, like I said, I can't do anything really " +
 				"without my<br>spinning machine."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I must get <col=800000>coal<col=000080> and <col=800000>logs<col=000080>.")
 		);
 
 		usedCoalOnMachine = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "it needs to be powered up."),
+			new DialogRequirement("it needs to be powered up."),
 			new ChatMessageRequirement("You load the spinning machine with coal and logs."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
 
@@ -255,16 +256,16 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		talkedToSaro = new Conditions(true, LogicType.OR,
 			// TODO: You need to click 'click to continue' here for the step to actually progress
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Thanks!"),
+			new DialogRequirement("Thanks!"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I thought I already told you where to get them?")
+			new DialogRequirement("I thought I already told you where to get them?")
 		);
 
 		talkedToDromund = new Conditions(true, LogicType.OR,
 			// TODO: You need to click 'click to continue' here for the step to actually progress
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Get out you pesky human! The boots are mine and"),
+			new DialogRequirement("Get out you pesky human! The boots are mine and"),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Are you sure you don't want to give me those boots?"));
+			new DialogRequirement("Are you sure you don't want to give me those boots?"));
 
 		hasLeftBoot = new Conditions(true, LogicType.OR,
 			leftBoot,
@@ -286,12 +287,12 @@ public class TheGiantDwarf extends BasicQuestHelper
 			dwarvenBattleaxeSapphires);
 
 		talkedToLibrarianAboutReldo = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I suppose you could try Reldo"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Do you think he can help me?"),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "He lives quite a good deal closer"));
+			new DialogRequirement("I suppose you could try Reldo"),
+			new DialogRequirement("Do you think he can help me?"),
+			new DialogRequirement("He lives quite a good deal closer"));
 		previouslyGivenPieToThurgo = new VarplayerRequirement(QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD.getId(), 3, Operation.GREATER_EQUAL);
 		talkedToReldo = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "you could try taking them some redberry pie."));
+			new DialogRequirement("you could try taking them some redberry pie."));
 
 		givenThurgoPie = new VarbitRequirement(580, 1);
 		// Thurgo makes axe, 2781 = 1
@@ -303,8 +304,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		inConsortium = new ZoneRequirement(consortium);
 
-		completedSecretaryTasks = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I'm afraid I have no more work to offer you", "You should speak directly to the director."));
-		completedDirectorTasks = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Have you ever considered joining"));
+		completedSecretaryTasks = new Conditions(true, new DialogRequirement("I'm afraid I have no more work to offer you", "You should speak directly to the director."));
+		completedDirectorTasks = new Conditions(true, new DialogRequirement("Have you ever considered joining"));
 		joinedCompany = new Conditions(true, LogicType.OR,
 			new VarbitRequirement(578, 1), // Purple Pewter
 			new VarbitRequirement(578, 2), // Yellow Fortune
@@ -314,8 +315,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new VarbitRequirement(578, 6), // Silver Cog
 			new VarbitRequirement(578, 7), // Brown Engine
 			new VarbitRequirement(578, 8), // Would be Red Axe?
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I will not disappoint you."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Come in, come in my friend!"));
+			new DialogRequirement("I will not disappoint you."),
+			new DialogRequirement("Come in, come in my friend!"));
 	}
 
 	public void setupSteps()

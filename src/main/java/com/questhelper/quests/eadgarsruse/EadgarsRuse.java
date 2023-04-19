@@ -32,6 +32,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -354,12 +355,12 @@ public class EadgarsRuse extends BasicQuestHelper
 		inEadgarsCave = new ZoneRequirement(eadgarsCave);
 		inTrollheimArea = new ZoneRequirement(trollheimArea);
 
-		askedAboutAlcohol = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Just recently."));
-		askedAboutPineapple = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "fruit and grain mostly"));
+		askedAboutAlcohol = new Conditions(true, new DialogRequirement("Just recently."));
+		askedAboutPineapple = new Conditions(true, new DialogRequirement("fruit and grain mostly"));
 
 		fireNearby = new ObjectCondition(ObjectID.FIRE_26185);
 
-		foundOutAboutKey = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "That's some well-guarded secret alright"));
+		foundOutAboutKey = new Conditions(true, new DialogRequirement("That's some well-guarded secret alright"));
 		inStoreroom = new ZoneRequirement(storeroom);
 	}
 

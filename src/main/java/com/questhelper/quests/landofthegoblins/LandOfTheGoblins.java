@@ -33,6 +33,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.npc.NoFollowerRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
@@ -89,7 +90,6 @@ public class LandOfTheGoblins extends BasicQuestHelper
 			inDorgeshKaanCaveLower, learnedAboutMachine, firstGreater, firstLess, secondGreater, secondLess, thirdGreater, thirdLess, fairyRingMachineWidgetPresent,
 			fairyRingMachineFixed, inYubiusk, unlockedDoor;
 	Requirement grubfootFollowing;
-	WidgetTextRequirement firstQuestion;
 	ConditionalStep goTalkToGrubfoot, goTalkToZanik, goReturnToDorg;
 	QuestStep goDownIntoBasement, climbThroughHole, talkToKazgar;
 	QuestStep talkToGrubfoot, enterDorgeshKaan, talkToZanik, enterGoblinCave, talkToZanikGoblinCave, talkToGuard,
@@ -359,8 +359,6 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		inNorthEastRoom = new Conditions(LogicType.OR, new ZoneRequirement(northEastRoomSouth), new ZoneRequirement(northEastRoomNorth));
 		dorgeshKaanSphere = new ItemRequirement("Dorgesh-Kaan sphere", ItemID.DORGESHKAAN_SPHERE);
 		blackDyeOrBlackGoblinMail = new Conditions(LogicType.OR, blackDye, blackGoblinMail);
-
-		firstQuestion = new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "");
 
 		huzamogaarbKey = new ItemRequirement("Huzamogaarb key", ItemID.HUZAMOGAARB_KEY).alsoCheckBank(questBank);
 		knowsAboutWhitefish = new VarbitRequirement(13602, 1);

@@ -342,7 +342,8 @@ public class TheSlugMenace extends BasicQuestHelper
 		tryToOpenImposingDoor = new ObjectStep(this, ObjectID.IMPOSING_DOORS, new WorldPoint(2351, 5093, 0), "Follow the path until you reach an imposing door, and try opening it. After, try scanning with the commorb v2.", commorb2);
 		scanWithComm = new DetailedQuestStep(this, "Try scanning with the commorb.", commorb);
 		pickUpDeadSlug = new ItemStep(this, "Pick up the dead sea slug next to the imposing door.", deadSeaSlug);
-		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3347, 0), "Talk to Jorral north of West Ardougne.", necklaceOfPassage);
+		talkToJorral = new NpcStep(this, NpcID.JORRAL, new WorldPoint(2436, 3347, 0), "Talk to Jorral north of West Ardougne.", Collections.singletonList(doorTranscript),
+			Collections.singletonList(necklaceOfPassage));
 		talkToJorral.addDialogStep("Translations");
 		talkToNiall3 = new NpcStep(this, NpcID.COL_ONIALL, new WorldPoint(2739, 3311, 0), "Return to Col. O'Niall on the pier in Witchaven.");
 		talkToMaledict2 = new NpcStep(this, NpcID.BROTHER_MALEDICT, new WorldPoint(2724, 3283, 0), "Talk to Brother Maledict in the church.");
@@ -447,7 +448,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Uncovering the truth", Arrays.asList(talkToJorral,
 			talkToNiall3, talkToMaledict2, searchMayorsDesk, talkToLovecraft, talkToNiall4,
 			useSwampPasteOnFragments, talkToJeb, talkToBailey, useGlueOnFragment, solvePuzzle,
-			useEmptyRunes), commorb2, deadSeaSlug, swampPaste, chisel, essence5, accessToAltars));
+			useEmptyRunes), doorTranscript, commorb2, deadSeaSlug, swampPaste, chisel, essence5, accessToAltars));
 		allSteps.add(new PanelDetails("Facing the prince", Arrays.asList(enterDungeonAgain,
 			enterWallAgain, useEmptyRunesOnDoor, killSlugPrince, reportBackToTiffy),
 			meleeGear, airRune, waterRune, earthRune, fireRune, mindRune, commorb2));

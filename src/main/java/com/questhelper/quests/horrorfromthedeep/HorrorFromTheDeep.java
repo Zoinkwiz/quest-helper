@@ -50,6 +50,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -326,6 +327,13 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		reqs.add(new SkillRequirement(Skill.AGILITY, 35, true));
 		reqs.add(new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED));
 		return reqs;
+	}
+
+	@Override
+	public List<String> getNotes()
+	{
+		return Collections.singletonList("The Dagannoth Mother will swap over time between being vulnerable to melee, ranged, and each of the 4 magic elements. " +
+			"You can bring multiple combat types, or just wait for her to swap to what you have brought along.");
 	}
 
 	@Override

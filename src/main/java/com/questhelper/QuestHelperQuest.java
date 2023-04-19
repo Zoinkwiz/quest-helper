@@ -443,7 +443,7 @@ public enum QuestHelperQuest
 	A_KINGDOM_DIVIDED(new AKingdomDivided(), Quest.A_KINGDOM_DIVIDED, QuestVarbits.QUEST_A_KINGDOM_DIVIDED, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	A_NIGHT_AT_THE_THEATRE(new ANightAtTheTheatre(), Quest.A_NIGHT_AT_THE_THEATRE, QuestVarbits.QUEST_A_NIGHT_AT_THE_THEATRE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	THE_GARDEN_OF_DEATH(new TheGardenOfDeath(), Quest.THE_GARDEN_OF_DEATH, QuestVarbits.QUEST_THE_GARDEN_OF_DEATH, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
-	THE_SECRETS_OF_THE_NORTH(new SecretsOfTheNorth(), Quest.SECRETS_OF_THE_NORTH, QuestVarbits.QUEST_SECRETS_OF_THE_NORTH, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	SECRETS_OF_THE_NORTH(new SecretsOfTheNorth(), Quest.SECRETS_OF_THE_NORTH, QuestVarbits.QUEST_SECRETS_OF_THE_NORTH, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

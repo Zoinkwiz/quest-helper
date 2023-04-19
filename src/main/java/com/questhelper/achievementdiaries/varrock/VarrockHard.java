@@ -79,7 +79,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 	Requirement ancientBook;
 
 	Requirement notSpottyCape, not153Kudos, notWakkaEdge, notPaddewwaTP, notSkullSceptre, notYewChurch,
-		notFancyStone, notYewRoots, notSmiteAltar, notPipe, notMoreKudos, yewNotChecked, yewChecked, yewStump, smiteActive;
+		notFancyStone, notYewRoots, notSmiteAltar, notPipe, atleast153Kudos, yewNotChecked, yewChecked, yewStump, smiteActive;
 
 	Requirement cutYewTree, boughtSpotterCape;
 
@@ -118,8 +118,8 @@ public class VarrockHard extends ComplexStateQuestHelper
 		doHard.addStep(notSpottyCape, spottyCapeTask);
 
 		kudosTask = new ConditionalStep(this, getKudos);
-		kudosTask.addStep(new Conditions(not153Kudos, notMoreKudos), moveToBasement);
-		kudosTask.addStep(new Conditions(not153Kudos, inBasement, notMoreKudos), kudos);
+		kudosTask.addStep(new Conditions(not153Kudos, atleast153Kudos), moveToBasement);
+		kudosTask.addStep(new Conditions(not153Kudos, inBasement, atleast153Kudos), kudos);
 		doHard.addStep(not153Kudos, kudosTask);
 
 		yewChurchTask = new ConditionalStep(this, cutYew);
@@ -181,7 +181,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		notSmiteAltar = new VarplayerRequirement(1177, false, 5);
 		notPipe = new VarplayerRequirement(1177, false, 6);
 
-		notMoreKudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 153, "153+ Kudos");
+		atleast153Kudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 153, "153+ Kudos");
 
 		smiteActive = new VarbitRequirement(4121, Operation.EQUAL, 1, "Smite Active");
 
@@ -386,6 +386,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.MAGIC, 54));
 		reqs.add(new SkillRequirement(Skill.PRAYER, 52));
 		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 60));
+		reqs.add(atleast153Kudos);
 		reqs.add(ancientBook);
 		reqs.add(desertTreasure);
 
@@ -436,7 +437,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		allSteps.add(spottierCapeSteps);
 
 		PanelDetails kudosSteps = new PanelDetails("Speak with Orlando With 153+ Kudos", Arrays.asList(getKudos,
-			moveToBasement, kudos), notMoreKudos);
+			moveToBasement, kudos), atleast153Kudos);
 		kudosSteps.setDisplayCondition(not153Kudos);
 		kudosSteps.setLockingStep(kudosTask);
 		allSteps.add(kudosSteps);

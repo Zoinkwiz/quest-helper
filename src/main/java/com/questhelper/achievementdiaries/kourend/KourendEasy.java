@@ -254,7 +254,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		relocateHouse.addDialogStep(1, "Can you move my house please?");
 		relocateHouse.addDialogStep(4, "Hosidius (8,750)");
 		enterPoh = new ObjectStep(this, ObjectID.PORTAL_28822, new WorldPoint(1742, 3517, 0),
-			"Enter your player-owned house from Hosidius.", houseInKourend);
+			"Enter your player-owned house from Hosidius.");
 		enterPoh.addSubSteps(relocateHouse);
 
 		// Heal a wounded shayzien soldier

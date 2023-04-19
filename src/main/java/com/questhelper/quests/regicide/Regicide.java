@@ -236,7 +236,7 @@ public class Regicide extends BasicQuestHelper
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
 		coins = new ItemRequirement("Coins (to buy food, 75 ea)", ItemCollections.COINS, 750);
 		agilityPotions = new ItemRequirement("Agility boosting items like Summer Pie (+5) or Agility potion (+3)",
-			ItemID.SUMMER_PIE, 5);
+			ItemID.SUMMER_PIE, 5).hideConditioned(new SkillRequirement(Skill.AGILITY, 56));
 		agilityPotions.addAlternates(ItemID.PART_SUMMER_PIE);
 		agilityPotions.addAlternates(ItemCollections.AGILITY_POTIONS);
 		oilyCloth = new ItemRequirement("Oily Cloth", ItemID.OILY_CLOTH);
@@ -947,23 +947,12 @@ public class Regicide extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(talkToKingLathas)));
 
-		if (client.getRealSkillLevel(Skill.AGILITY) < 56)
-		{
-			allSteps.add(new PanelDetails("To the Elven Lands",
-				Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
-					goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
-					killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
-				Arrays.asList(bow, arrows, rope1, spade, antipoisons, combatEquipment, agilityPotions),
-				Collections.singletonList(staminaPotions)));
-		}
-		else
-		{
-			allSteps.add(new PanelDetails("To the Elven Lands",
-				Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
-					goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
-					killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
-				Arrays.asList(bow, arrows, rope1, spade, antipoisons, combatEquipment), Collections.singletonList(staminaPotions)));
-		}
+		allSteps.add(new PanelDetails("To the Elven Lands",
+			Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
+				goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
+				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
+			Arrays.asList(bow, arrows, rope1, spade, antipoisons, combatEquipment, agilityPotions),
+			Collections.singletonList(staminaPotions)));
 		allSteps.add(new PanelDetails("Making a bomb", Arrays.asList(useLimestoneOnFurnace, usePestleOnQuicklime,
 			usePestleOnSulphur, talkToChemist, useTarOnFractionalisingStill, operateStill, useQuicklimeOnNaphtha,
 			useGroundSulphurOnNaphtha, useClothOnBarrelBomb),
@@ -971,7 +960,7 @@ public class Regicide extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Regicide", Arrays.asList(goThroughUndergroundPassAgain, goGiveRabbitToGuard,
 			useBombOnCatapult, goTalkToIorwerthAfterRegicide, talkToArianwyn, goTalkToLathasToFinish),
-			bow, arrows, rope1, tinderbox, spade, antipoisons, barrelBombFused, cookedRabbit));
+			bow, arrows, rope1, tinderbox, spade, antipoisons, barrelBombFused, cookedRabbit, agilityPotions));
 		return allSteps;
 	}
 }

@@ -53,7 +53,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -338,7 +337,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 	@Override
 	public QuestPointReward getQuestPointReward()
 	{
-		return new QuestPointReward(1);
+		return new QuestPointReward(3);
 	}
 
 	@Override

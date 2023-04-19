@@ -27,6 +27,7 @@ package com.questhelper.quests.murdermystery;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -55,7 +56,6 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 
 @QuestDescriptor(
@@ -64,7 +64,7 @@ import net.runelite.client.eventbus.Subscribe;
 public class MurderMystery extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement pot, pot3, pungentPot, criminalsDaggerAny, criminalsDagger, criminalsDaggerFlour, criminalsThread, criminalsThread1, criminalsThread2, criminalsThread3,
+	ItemRequirement pot, pungentPot, criminalsDaggerAny, criminalsDagger, criminalsDaggerFlour, criminalsThread, criminalsThread1, criminalsThread2, criminalsThread3,
 		twoFlypaper, potOfFlourHighlighted, flypaper, unknownPrint, silverNecklace, silverBook, silverBookFlour, silverNecklaceFlour, annaPrint, davidPrint, killersPrint, silverNeedle,
 		silverPot, silverNeedleFlour, silverPotFlour, elizabethPrint, frankPrint, criminalsDaggerHighlighted, criminalsDaggerFlourHighlighted, silverCup, silverCupFlour, silverBottle,
 		silverBottleFlour, bobPrint, carolPrint;
@@ -85,6 +85,7 @@ public class MurderMystery extends BasicQuestHelper
 
 	QuestStep useFlourOnNecklace, useFlourOnCup, useFlourOnBottle, useFlourOnBook, useFlourOnNeedle, useFlourOnPot;
 	QuestStep useFlypaperOnNecklace, useFlypaperOnCup, useFlypaperOnBottle, useFlypaperOnBook, useFlypaperOnNeedle, useFlypaperOnPot;
+	QuestStep collectFlypaper, fillPotWithFlourForSilver;
 	QuestStep compareAnna, compareBob, compareCarol, compareDavid, compareElizabeth, compareFrank;
 	QuestStep talkToAnna, talkToBob, talkToFrank, talkToDavid, talkToCarol, talkToElizabeth;
 	QuestStep searchAnna, searchBob, searchCarol, searchDavid, searchElizabeth, searchFrank;
@@ -103,29 +104,35 @@ public class MurderMystery extends BasicQuestHelper
 
 		steps.put(0, talkToGuard);
 
-		Requirement doesntNeedMoreFlypaper = new Conditions(LogicType.OR, twoFlypaper, hadKillerPrint);
+		Requirement doesntNeedMoreFlypaper = new Conditions(LogicType.OR, twoFlypaper, new Conditions(flypaper, unknownPrint));
 
-		ConditionalStep investigating = new ConditionalStep(this, collectTwoFlypaper);
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, hadKillerPrint, checkedSuspect), finishQuest);
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, hadKillerPrint, talkedToSuspect), searchSuspectItem);
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, hadKillerPrint, talkedToPoisonSalesman), talkToSuspect);
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, hadKillerPrint, heardAboutPoisonSalesman), talkToPoisonSalesman);
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, hadKillerPrint), talkToGossip);
+		Conditions hadPotAndThread = new Conditions(hadThread, hadPot);
 
+		ConditionalStep checkingPrintSteps = new ConditionalStep(this, pickUpDagger);
 		/* compare prints */
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, unknownPrint, hasSuspectPrint), comparePrints);
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, unknownPrint, hasSilverItemFlour), useFlypaper);
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, unknownPrint, hasCriminalSilverItem), useFlour);
+		checkingPrintSteps.addStep(new Conditions(unknownPrint, hasSuspectPrint), comparePrints);
+		checkingPrintSteps.addStep(new Conditions(unknownPrint, hasSilverItemFlour, flypaper), useFlypaper);
+		checkingPrintSteps.addStep(new Conditions(unknownPrint, hasCriminalSilverItem, flypaper, potOfFlourHighlighted), useFlour);
+		checkingPrintSteps.addStep(new Conditions(unknownPrint, hasCriminalSilverItem, flypaper), fillPotWithFlourForSilver);
+		checkingPrintSteps.addStep(new Conditions(unknownPrint, hasCriminalSilverItem), collectFlypaper);
+		/* Unknown print */
+		checkingPrintSteps.addStep(new Conditions(criminalsDaggerFlour, hasCriminalSilverItem), useFlypaperOnDagger);
+		checkingPrintSteps.addStep(new Conditions(criminalsDaggerAny, hasCriminalSilverItem, potOfFlourHighlighted), useFlourOnDagger);
+		checkingPrintSteps.addStep(new Conditions(criminalsDaggerAny, doesntNeedMoreFlypaper, hasCriminalSilverItem), fillPotWithFlour);
+		checkingPrintSteps.addStep(new Conditions(criminalsDaggerAny, doesntNeedMoreFlypaper), searchBarrel);
+		checkingPrintSteps.addStep(new Conditions(criminalsDaggerAny), collectTwoFlypaper);
+
+		ConditionalStep investigating = new ConditionalStep(this, searchWindowForThread);
+		investigating.addStep(new Conditions(hadPotAndThread, hadKillerPrint, checkedSuspect), finishQuest);
+		investigating.addStep(new Conditions(hadPotAndThread, hadKillerPrint, talkedToSuspect), searchSuspectItem);
+		investigating.addStep(new Conditions(hadPotAndThread, hadKillerPrint, talkedToPoisonSalesman), talkToSuspect);
+		investigating.addStep(new Conditions(hadPotAndThread, hadKillerPrint, heardAboutPoisonSalesman), talkToPoisonSalesman);
+		investigating.addStep(new Conditions(hadPotAndThread, hadKillerPrint), talkToGossip);
 
 		/* Get dagger print */
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, hasCriminalSilverItem), useFlypaperOnDagger);
-		investigating.addStep(new Conditions(hadThread, criminalsDaggerAny, hadPot, hasCriminalSilverItem, potOfFlourHighlighted), useFlourOnDagger);
-		investigating.addStep(new Conditions(doesntNeedMoreFlypaper, hadThread, criminalsDaggerAny, hadPot, hasCriminalSilverItem), fillPotWithFlour);
-
-		investigating.addStep(new Conditions(doesntNeedMoreFlypaper, hadThread, criminalsDaggerAny, hadPot), searchBarrel);
+		investigating.addStep(hadPotAndThread, checkingPrintSteps);
 
 		investigating.addStep(new Conditions(doesntNeedMoreFlypaper, hadThread, criminalsDaggerAny), pickUpPungentPot);
-		investigating.addStep(new Conditions(doesntNeedMoreFlypaper, hadThread), pickUpDagger);
 		investigating.addStep(doesntNeedMoreFlypaper, searchWindowForThread);
 
 		steps.put(1, investigating);
@@ -145,6 +152,7 @@ public class MurderMystery extends BasicQuestHelper
 
 	private void updateSuspect()
 	{
+		// 5 for me
 		int suspect = client.getVarpValue(195);
 		if (suspect == 1)
 		{
@@ -214,10 +222,10 @@ public class MurderMystery extends BasicQuestHelper
 		hadThread = new RuneliteRequirement(getConfigManager(), "murdermysteryhadthread", criminalsThread.alsoCheckBank(questBank));
 		hadPot = new RuneliteRequirement(getConfigManager(), "murdermysteryhadpot", pungentPot.alsoCheckBank(questBank));
 		heardAboutPoisonSalesman = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtogossip",
-			new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Especially as I heard that the poison salesman in the<br>Seers' village made a big sale to one of the family the<br>other day."))
+			new Conditions(true, new DialogRequirement( "Especially as I heard that the poison salesman in the<br>Seers' village made a big sale to one of the family the<br>other day."))
 		);
 		talkedToPoisonSalesman = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtopoisonsalesman",
-			new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT, "Uh... no, it's ok."))
+			new Conditions(true, new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok."))
 		);
 
 		hasCriminalSilverItem = new Conditions(
@@ -246,6 +254,11 @@ public class MurderMystery extends BasicQuestHelper
 			new Conditions(elizabethGuilty, elizabethPrint),
 			new Conditions(frankGuilty, frankPrint)
 		);
+
+		hadKillerPrint = new RuneliteRequirement(getConfigManager(), "murdermysteryhadkillerprint",
+			new Conditions(killersPrint)
+		);
+
 		hasSilverItemFlour = new Conditions(
 			LogicType.OR,
 			new Conditions(annaGuilty, silverNecklaceFlour),
@@ -261,27 +274,27 @@ public class MurderMystery extends BasicQuestHelper
 
 		talkedToAnna = new Conditions(
 			true,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "That useless Gardener Stanford has let his compost")
+			new DialogRequirement("Anna", "That useless Gardener Stanford has let his compost")
 		);
 		talkedToBob = new Conditions(
 			true,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "What's it to you anyway? If you absolutely")
+			new DialogRequirement("Bob", "What's it to you anyway? If you absolutely")
 		);
 		talkedToCarol = new Conditions(
 			true,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "I felt I had to do it myself.")
+			new DialogRequirement("Carol", "I felt I had to do it myself.")
 		);
 		talkedToDavid = new Conditions(
 			true,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "fire the whole workshy lot")
+			new DialogRequirement("David", "fire the whole workshy lot")
 		);
 		talkedToElizabeth = new Conditions(
 			true,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "Doesn't everyone?")
+			new DialogRequirement("Elizabeth", "Doesn't everyone?")
 		);
 		talkedToFrank = new Conditions(
 			true,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT, "clean that family crest")
+			new DialogRequirement("Frank", "clean that family crest")
 		);
 		talkedToSuspect = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtosuspect",
 			new Conditions(
@@ -336,7 +349,6 @@ public class MurderMystery extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		pot = new ItemRequirement("Pot", ItemID.POT);
-		pot3 = new ItemRequirement("Pot", ItemID.POT, 3);
 		pungentPot = new ItemRequirement("Pungent pot", ItemID.PUNGENT_POT);
 
 		criminalsDaggerAny = new ItemRequirement("Criminal's dagger", ItemID.CRIMINALS_DAGGER);
@@ -393,7 +405,7 @@ public class MurderMystery extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToGuard = new NpcStep(this, NpcID.GUARD_4218, new WorldPoint(2741, 3561, 0), "Talk to the Guard in the Sinclair Manor north of Camelot.");
-		talkToGuard.addDialogStep("Sure, I'll help.");
+		talkToGuard.addDialogSteps("Yes.", "Sure, I'll help.");
 
 		pickUpPungentPot = new DetailedQuestStep(this, new WorldPoint(2747, 3579, 0), "Enter the mansion and pick up the pungent pot inside the east room.", pungentPot);
 		pickUpDagger = new DetailedQuestStep(this, new WorldPoint(2746, 3578, 0), "Pick up the criminal's dagger.", criminalsDaggerAny);
@@ -423,6 +435,11 @@ public class MurderMystery extends BasicQuestHelper
 		((ConditionalStep) searchElizabethsBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.ELIZABETHS_BARREL, new WorldPoint(2747, 3581, 1), ""));
 
 		useFlypaperOnDagger = new DetailedQuestStep(this, "Use the flypaper on the dagger.", flypaper, criminalsDaggerFlourHighlighted);
+
+		collectFlypaper = new ObjectStep(this, ObjectID.SACKS_2663, new WorldPoint(2731, 3582, 0), "Investigate the sacks in the shed for 1 flypaper.", flypaper);
+		collectFlypaper.addDialogStep("Yes, it might be useful.");
+		fillPotWithFlourForSilver = new ObjectStep(this, ObjectID.BARREL_OF_FLOUR_26122, new WorldPoint(2733, 3582, 0), "Fill your pot with flour from the barrel in the mansion's kitchen.", pot);
+		fillPotWithFlourForSilver.addSubSteps(collectFlypaper);
 
 		useFlourOnNecklace = new DetailedQuestStep(this, "Use flour on the silver necklace.", silverNecklace.highlighted(), potOfFlourHighlighted);
 		useFlourOnCup = new DetailedQuestStep(this, "Use flour on the silver cup.", silverCup.highlighted(), potOfFlourHighlighted);
@@ -460,7 +477,7 @@ public class MurderMystery extends BasicQuestHelper
 		talkToCarol = new ConditionalStep(this, goUpstairs, "Talk to Carol upstairs in the mansion about what she used her poison for. Make sure to finish the dialog.");
 		((ConditionalStep) talkToCarol).addStep(isUpstairs, new NpcStep(this, NpcID.CAROL, new WorldPoint(2734, 3581, 1), ""));
 		talkToElizabeth = new ConditionalStep(this, goUpstairs, "Talk to Elizabeth upstairs in the mansion about what she used her poison for.");
-		((ConditionalStep) talkToElizabeth).addStep(isUpstairs, new NpcStep(this, NpcID.ELIZABETH, new WorldPoint(2736, 2576, 1), ""));
+		((ConditionalStep) talkToElizabeth).addStep(isUpstairs, new NpcStep(this, NpcID.ELIZABETH, new WorldPoint(2746, 3581, 1), ""));
 
 		searchAnna = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_COMPOST_HEAP, new WorldPoint(2730, 3572, 0), "Search the compost heap south west of the mansion. If a dialog box doesn't come up, go back to Anna to ask about poison, and COMPLETE THE DIALOG.");
 		searchBob = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_BEEHIVE, new WorldPoint(2730, 3559, 0), "Search the beehive south west of the mansion. If a dialog box doesn't come up, go back to Bob to ask about poison, and COMPLETE THE DIALOG.");
@@ -546,7 +563,7 @@ public class MurderMystery extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> required = new ArrayList<>();
-		required.add(pot3);
+		required.add(pot);
 		return required;
 	}
 
@@ -573,10 +590,10 @@ public class MurderMystery extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Go to the Sinclair Manor", Collections.singletonList(talkToGuard), pot3));
+		allSteps.add(new PanelDetails("Go to the Sinclair Manor", Collections.singletonList(talkToGuard), pot));
 		allSteps.add(new PanelDetails("Collect evidence", Arrays.asList(pickUpPungentPot, pickUpDagger, searchWindowForThread)));
 		allSteps.add(new PanelDetails("Collect fingerprints", Arrays.asList(collectTwoFlypaper, searchBarrelSidebar, fillPotWithFlour,
-			useFlourOnDagger, useFlypaperOnDagger, useFlourSidebar, useFlypaperSidebar, comparePrintsSidebar)));
+			useFlourOnDagger, useFlypaperOnDagger, fillPotWithFlourForSilver, useFlourSidebar, useFlypaperSidebar, comparePrintsSidebar)));
 		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(talkToGossip, talkToPoisonSalesman, talkToSuspectSidebar, searchSuspectItemSidebar, finishQuest)));
 		return allSteps;
 	}

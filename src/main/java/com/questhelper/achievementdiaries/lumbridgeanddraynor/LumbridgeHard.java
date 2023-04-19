@@ -256,7 +256,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		smiteAltar = new ObjectStep(this, ObjectID.ALTAR, new WorldPoint(3377, 3285, 0),
-			"Pray at the altar at the Duel Arena with smite active.", smiteActive);
+			"Pray at the altar at the Emir's Arena with smite active.", smiteActive);
 
 		moveToPalace = new DetailedQuestStep(this, new WorldPoint(3293, 3164, 0),
 			"Enter the Al Kharid palace.");

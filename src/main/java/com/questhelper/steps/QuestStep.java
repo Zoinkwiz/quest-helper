@@ -420,6 +420,10 @@ public abstract class QuestStep implements Module
 	{
 	}
 
+	public void makeDirectionOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+	}
+
 	public void setLockedManually(boolean isLocked)
 	{
 		locked = isLocked;

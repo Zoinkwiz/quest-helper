@@ -53,16 +53,15 @@ public class QuestHelperWidgetOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.getConfig().showWidgetHints())
-		{
-			return null;
-		}
-
 		QuestHelper quest = plugin.getSelectedQuest();
 
 		if (quest != null && quest.getCurrentStep() != null && quest.getCurrentStep().getActiveStep() != null)
 		{
-			quest.getCurrentStep().getActiveStep().makeWidgetOverlayHint(graphics, plugin);
+			quest.getCurrentStep().getActiveStep().makeDirectionOverlayHint(graphics, plugin);
+			if (plugin.getConfig().showWidgetHints())
+			{
+				quest.getCurrentStep().getActiveStep().makeWidgetOverlayHint(graphics, plugin);
+			}
 		}
 		plugin.getRuneliteObjectManager().makeWidgetOverlayHint(graphics);
 		return null;

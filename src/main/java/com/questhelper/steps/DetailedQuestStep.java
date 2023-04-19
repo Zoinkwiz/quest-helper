@@ -388,7 +388,12 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
+
 		renderInventory(graphics);
+	}
+
+	public void makeDirectionOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
 		if (!hideMinimapLines)
 		{
 			WorldLines.createMinimapLines(graphics, client, linePoints, getQuestHelper().getConfig().targetOverlayColor());

@@ -28,12 +28,14 @@ import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
@@ -44,12 +46,14 @@ public class HazeelValves extends DetailedOwnerStep
 {
 
 	DetailedQuestStep turnValve1, turnValve2, turnValve3, turnValve4, turnValve5;
+	DetailedQuestStep turnValve1NoDialog, turnValve2NoDialog,
+		turnValve3NoDialog, turnValve4NoDialog, turnValve5NoDialog;
 
 	private Zone valve1, valve2, valve3, valve4, valve5;
 
 	private ZoneRequirement atValve1, atValve2, atValve3, atValve4, atValve5;
 
-	private boolean solved1, solved2, solved3, solved4, solved5;
+	private RuneliteRequirement solved1, solved2, solved3, solved4, solved5;
 
 	public ManualRequirement solved;
 
@@ -61,38 +65,88 @@ public class HazeelValves extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (!solved1)
+		if (!solved1.check(client))
 		{
-			startUpStep(turnValve1);
+			if (atValve1.check(client))
+			{
+				startUpStep(turnValve1);
+			}
+			else
+			{
+				startUpStep(turnValve1NoDialog);
+			}
 		}
-		else if (!solved2)
+		else if (!solved2.check(client))
 		{
-			startUpStep(turnValve2);
+			if (atValve2.check(client))
+			{
+				startUpStep(turnValve2);
+			}
+			else
+			{
+				startUpStep(turnValve2NoDialog);
+			}
 		}
-		else if (!solved3)
+		else if (!solved3.check(client))
 		{
-			startUpStep(turnValve3);
+			if (atValve3.check(client))
+			{
+				startUpStep(turnValve3);
+			}
+			else
+			{
+				startUpStep(turnValve3NoDialog);
+			}
 		}
-		else if (!solved4)
+		else if (!solved4.check(client))
 		{
-			startUpStep(turnValve4);
+			if (atValve4.check(client))
+			{
+				startUpStep(turnValve4);
+			}
+			else
+			{
+				startUpStep(turnValve4NoDialog);
+			}
 		}
-		else if (!solved5)
+		else if (!solved5.check(client))
 		{
-			startUpStep(turnValve5);
+			if (atValve5.check(client))
+			{
+				startUpStep(turnValve5);
+			}
+			else
+			{
+				startUpStep(turnValve5NoDialog);
+			}
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget widgetText = client.getWidget(229, 1);
-		if (widgetText == null)
+		Widget currentStateWidget = client.getWidget(219, 1);
+		String currentStateText = null;
+		if (currentStateWidget != null)
 		{
-			return;
+			Widget textContainingWidget = currentStateWidget.getChild(0);
+			if (textContainingWidget != null)
+			{
+				currentStateText = textContainingWidget.getText();
+			}
 		}
-
-		String text = widgetText.getText();
+		// Could also use MESBOX here
+		// Chat message type MESBOX: You turn the valve to the right. Beneath your feet you hear the sudden sound of rushing water.
+		Widget wheelTurnedWidget = client.getWidget(229, 1);
+		String wheelTurnedText = null;
+		if (wheelTurnedWidget != null)
+		{
+			wheelTurnedText = wheelTurnedWidget.getText();
+		}
+		String text = null;
+		if (wheelTurnedText != null) text = wheelTurnedText;
+		if (currentStateText != null) text = currentStateText;
+		if (text == null) return;
 
 		boolean turnedLeft = text.contains("left");
 
@@ -103,28 +157,41 @@ public class HazeelValves extends DetailedOwnerStep
 
 		if (atValve1.check(client))
 		{
-			solved1 = !turnedLeft;
+			updateState(!turnedLeft, solved1);
 		}
 		else if (atValve2.check(client))
 		{
-			solved2 = !turnedLeft;
+			updateState(!turnedLeft, solved2);
 		}
 		else if (atValve3.check(client))
 		{
-			solved3 = turnedLeft;
+			updateState(turnedLeft, solved3);
 		}
 		else if (atValve4.check(client))
 		{
-			solved4 = !turnedLeft;
+			updateState(!turnedLeft, solved4);
 		}
 		else if (atValve5.check(client))
 		{
-			solved5 = !turnedLeft;
+			updateState(!turnedLeft, solved5);
 		}
 
-		solved.setShouldPass(solved1 && solved2 && solved3 && solved4 && solved5);
+		solved.setShouldPass(solved1.check(client) && solved2.check(client) && solved3.check(client)
+			&& solved4.check(client) && solved5.check(client));
 
 		updateSteps();
+	}
+
+	private void updateState(boolean shouldPass, RuneliteRequirement req)
+	{
+		if (shouldPass)
+		{
+			req.setConfigValue("true");
+		}
+		else
+		{
+			req.setConfigValue("false");
+		}
 	}
 
 	protected void setupZones()
@@ -138,6 +205,17 @@ public class HazeelValves extends DetailedOwnerStep
 
 	protected void setupConditions()
 	{
+		solved1 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "hazeelvalves1", "true");
+		solved1.initWithValue("false");
+		solved2 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "hazeelvalves2", "true");
+		solved2.initWithValue("false");
+		solved3 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "hazeelvalves3", "true");
+		solved3.initWithValue("false");
+		solved4 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "hazeelvalves4", "true");
+		solved4.initWithValue("false");
+		solved5 = new RuneliteRequirement(getQuestHelper().getConfigManager(), "hazeelvalves5", "true");
+		solved5.initWithValue("false");
+
 		atValve1 = new ZoneRequirement(valve1);
 		atValve2 = new ZoneRequirement(valve2);
 		atValve3 = new ZoneRequirement(valve3);
@@ -154,22 +232,52 @@ public class HazeelValves extends DetailedOwnerStep
 
 		turnValve1 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE, new WorldPoint(2562, 3247, 0),
 			"Turn the valve west of the Clocktower to the right.");
+		turnValve1.addDialogStep("Turn it to the right.");
 
 		turnValve2 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2845, new WorldPoint(2572, 3263, 0),
 			"Turn the valve next to the Carnillean home to the right.");
+		turnValve2.addDialogStep("Turn it to the right.");
 
 		turnValve3 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2846, new WorldPoint(2585, 3245, 0),
 			"Turn the valve east of the Clocktower to the left.");
+		turnValve3.addDialogStep("Turn it to the left.");
 
 		turnValve4 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2847, new WorldPoint(2597, 3263, 0),
 			"Turn the valve next to the zoo to the right.");
+		turnValve4.addDialogStep("Turn it to the right.");
 
 		turnValve5 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2848, new WorldPoint(2611, 3242, 0),
 			"Turn the valve north of the monastery to the right.");
+		turnValve5.addDialogStep("Turn it to the right.");
+
+		turnValve1NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE, new WorldPoint(2562, 3247, 0),
+			"Turn the valve west of the Clocktower to the right.");
+		turnValve1.addSubSteps(turnValve1NoDialog);
+
+		turnValve2NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2845, new WorldPoint(2572, 3263, 0),
+			"Turn the valve next to the Carnillean home to the right.");
+		turnValve2.addSubSteps(turnValve2NoDialog);
+
+		turnValve3NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2846, new WorldPoint(2585, 3245, 0),
+			"Turn the valve east of the Clocktower to the left.");
+		turnValve3.addSubSteps(turnValve3NoDialog);
+
+		turnValve4NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2847, new WorldPoint(2597, 3263, 0),
+			"Turn the valve next to the zoo to the right.");
+		turnValve4.addSubSteps(turnValve4NoDialog);
+
+		turnValve5NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2848, new WorldPoint(2611, 3242, 0),
+			"Turn the valve north of the monastery to the right.");
+		turnValve5.addSubSteps(turnValve5NoDialog);
 	}
 
 	@Override
 	public Collection<QuestStep> getSteps()
+	{
+		return Arrays.asList(turnValve1, turnValve2, turnValve3, turnValve4, turnValve5, turnValve1NoDialog, turnValve2NoDialog, turnValve3NoDialog, turnValve4NoDialog, turnValve5NoDialog);
+	}
+
+	public List<QuestStep> getDisplaySteps()
 	{
 		return Arrays.asList(turnValve1, turnValve2, turnValve3, turnValve4, turnValve5);
 	}

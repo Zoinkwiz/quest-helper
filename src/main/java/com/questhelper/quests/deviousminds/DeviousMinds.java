@@ -133,7 +133,8 @@ public class DeviousMinds extends BasicQuestHelper
 		bowSword = new ItemRequirement("Bow Sword", ItemID.BOWSWORD);
 		orb = new ItemRequirement("Orb", ItemID.ORB);
 		orb.setHighlightInInventory(true);
-		illumPouch = new ItemRequirement("Illuminated Pouch", ItemID.LARGE_POUCH_6819, ItemID.COLOSSAL_POUCH_26906);
+		illumPouch = new ItemRequirement("Illuminated Pouch", ItemID.LARGE_POUCH_6819);
+		illumPouch.addAlternates(ItemID.COLOSSAL_POUCH_26906);
 		noEquipment = new ItemRequirement("Banked all equipment and weapons", -1, -1);
 	}
 

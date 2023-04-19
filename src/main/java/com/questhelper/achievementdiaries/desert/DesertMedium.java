@@ -32,6 +32,7 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.player.IronmanRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -77,7 +78,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 	Requirement theGolem, eaglesPeak, spiritsOfTheElid, enakhrasLament;
 
 	Requirement notAgiPyramid, notDesertLizard, notOrangeSally, notPhoenixFeather, notMagicCarpet, notEagleTravel,
-		notPrayElidinis, notCombatPot, notTPEnakhra, notVisitGenie, notTPPollnivneach, notChopTeak, talkedToSimon;
+		notPrayElidinis, notCombatPot, notTPEnakhra, notIronman, notVisitGenie, notTPPollnivneach, notChopTeak, talkedToSimon;
 
 	QuestStep claimReward, agiPyramid, orangeSally, phoenixFeather, magicCarpet, eagleTravel, prayElidinis,
 		combatPot, tpEnakhra, visitGenie, tpPollnivneach, chopTeak, moveToEagle, moveToDesert, moveToGenie,
@@ -161,6 +162,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		notVisitGenie = new VarplayerRequirement(1198, false, 21);
 		notTPPollnivneach = new VarplayerRequirement(1198, false, 22);// iron varb different
 		notChopTeak = new VarplayerRequirement(1198, false, 23);
+		notIronman = new IronmanRequirement(false);
 
 		// 1557 0->1 talking to simon
 		// 1558 0->1 talking to simon
@@ -174,9 +176,9 @@ public class DesertMedium extends ComplexStateQuestHelper
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notVisitGenie).isNotConsumed();
 		scrollOfRedir = new ItemRequirement("Scroll of redirection", ItemID.SCROLL_OF_REDIRECTION)
-			.showConditioned(notTPPollnivneach);
+			.showConditioned(new Conditions(notTPPollnivneach, notIronman));
 		teleToHouse = new ItemRequirement("Teleport to house", ItemID.TELEPORT_TO_HOUSE)
-			.showConditioned(notTPPollnivneach);
+			.showConditioned(new Conditions(notTPPollnivneach, notIronman));
 		harraPot = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDER_POTION_UNF)
 			.showConditioned(notCombatPot);
 		goatHornDust = new ItemRequirement("Goat horn dust", ItemID.GOAT_HORN_DUST).showConditioned(notCombatPot);

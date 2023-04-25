@@ -318,16 +318,15 @@ public class QuestBankTab
 		}
 		fakeToRealItem.clear();
 
-		clientThread.invokeLater(() -> {
-			Widget[] containerChildren = itemContainer.getDynamicChildren();
 
-			ArrayList<BankTabItems> tabLayout = questHelper.getBankTagService().getPluginBankTagItemsForSections(false);
+		Widget[] containerChildren = itemContainer.getDynamicChildren();
 
-			if (tabLayout != null)
-			{
-				sortBankTabItems(itemContainer, containerChildren, tabLayout);
-			}
-		});
+		ArrayList<BankTabItems> tabLayout = questHelper.getBankTagService().getPluginBankTagItemsForSections(false);
+
+		if (tabLayout != null)
+		{
+			sortBankTabItems(itemContainer, containerChildren, tabLayout);
+		}
 	}
 
 	private void sortBankTabItems(Widget itemContainer, Widget[] containerChildren, List<BankTabItems> newLayout)

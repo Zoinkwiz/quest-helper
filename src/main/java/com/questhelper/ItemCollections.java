@@ -2040,6 +2040,23 @@ public enum ItemCollections
 	CLIMBING_BOOTS(ImmutableList.of(
 		ItemID.CLIMBING_BOOTS,
 		ItemID.CLIMBING_BOOTS_G
+	)),
+
+	SEEDS(ImmutableList.of(
+		ItemID.GUAM_SEED,
+		ItemID.MARRENTILL_SEED,
+		ItemID.TARROMIN_SEED,
+		ItemID.HARRALANDER_SEED,
+		ItemID.RANARR_SEED,
+		ItemID.TOADFLAX_SEED,
+		ItemID.IRIT_SEED,
+		ItemID.AVANTOE_SEED,
+		ItemID.KWUARM_SEED,
+		ItemID.SNAPDRAGON_SEED,
+		ItemID.CADANTINE_SEED,
+		ItemID.LANTADYME_SEED,
+		ItemID.DWARF_WEED_SEED,
+		ItemID.TORSTOL_SEED
 	));
 
 	private final List<Integer> items;

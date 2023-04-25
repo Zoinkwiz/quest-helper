@@ -9,11 +9,11 @@ Firstly, download the Quest Helper from the Runelite Plugin Hub.
 
 You should then see the quest helper icon appear in the Runelite sidebar. You can click it to see a list of all quests which you've yet to complete. Select the icon quest you're wanting to do, and the helper for that quest will start up.
 
-![](https://i.imgur.com/qp9ONMJ.png)
+![](https://user-images.githubusercontent.com/41973452/234351938-0db43249-7f0c-4e7c-8bb3-8ca2fa294f04.png)
 
 Once the quest is started, the sidebar will change to show the requirements for the quest, as well as listing all the steps you'll need to complete to finish the quest. In the top-left corner the current step is displayed. The world map will display an arrow to where you need to go, the minimap an arrow to the location, and the object, NPC, or tile you need to go to will be highlighted as seen below.
 
-![](https://i.imgur.com/iWeTVfP.png)
+![](https://user-images.githubusercontent.com/41973452/234352011-145fa8b9-d978-4dd7-a88f-28f1e21e13f8.png)
 
 At this stage, simply follow the steps until you've completed the quest!
 

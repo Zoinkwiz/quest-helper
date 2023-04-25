@@ -34,7 +34,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 /*
-* Routes are from Start (S) X to End (E) Y. The nodes are as labeled in https://imgur.com/a/CRQTC1d
+* Routes are from Start (S) X to End (E) Y. The nodes are as labeled in https://user-images.githubusercontent.com/41973452/234354170-0f5a83bd-8301-49d8-bc47-784d2aea3920.png
 * */
 @AllArgsConstructor
 @Getter

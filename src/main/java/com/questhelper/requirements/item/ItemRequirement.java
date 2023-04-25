@@ -324,7 +324,7 @@ public class ItemRequirement extends AbstractRequirement
 	@Override
 	public boolean shouldDisplayText(Client client)
 	{
-		return !conditionToHide.check(client);
+		return conditionToHide == null || !conditionToHide.check(client);
 	}
 
 	@Override

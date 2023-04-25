@@ -104,7 +104,7 @@ public class QuestHelperBankTagService
 				.stream()
 				.filter(ItemRequirement.class::isInstance)
 				.map(ItemRequirement.class::cast)
-				.filter(i -> !onlyGetMissingItems || !i.check(plugin.getClient(), false, questBank.getBankItems()))
+				.filter(i -> !onlyGetMissingItems || !i.check(plugin.getClient(), false, questBank.getBankItems()) || !i.shouldDisplayText(plugin.getClient()))
 				.collect(Collectors.toList());
 
 			BankTabItems pluginItems = new BankTabItems(questSection.getHeader());

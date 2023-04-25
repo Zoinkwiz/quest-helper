@@ -83,7 +83,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final FixedWidthPanel questListPanel = new FixedWidthPanel();
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
 	private final JScrollPane scrollableContainer;
-	private final int DROPDOWN_HEIGHT = 20;
+	public static final int DROPDOWN_HEIGHT = 20;
 //	private boolean settingsPanelActive = false;
 	public boolean questActive = false;
 

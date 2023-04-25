@@ -29,6 +29,7 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.questhelper.ExternalQuestResources;
+import com.questhelper.HelperConfig;
 import com.questhelper.QuestBank;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
@@ -309,6 +310,11 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	}
 
 	public List<ExternalQuestResources> getExternalResources()
+	{
+		return null;
+	}
+
+	public List<HelperConfig> getConfigs()
 	{
 		return null;
 	}

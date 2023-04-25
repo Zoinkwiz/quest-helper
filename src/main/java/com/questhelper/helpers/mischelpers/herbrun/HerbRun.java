@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.mischelpers.herbrun;
 
+import com.questhelper.HelperConfig;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -46,6 +47,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
@@ -56,14 +58,19 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.farming.CropState;
+import net.runelite.client.util.Text;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.HERB_RUN
 )
 public class HerbRun extends ComplexStateQuestHelper
 {
+	// TODO: Updating setId and setName in ItemRequirement
+	// TODO: Add update to bank when updating config for seed
+	// TODO: Clean up specification of config groups to configmanager
 	@Inject
 	private FarmingWorld farmingWorld;
 
@@ -80,6 +87,22 @@ public class HerbRun extends ComplexStateQuestHelper
 
 	ManualRequirement ardougneEmpty, catherbyEmpty, faladorEmpty, farmingGuildEmpty, harmonyEmpty, morytaniaEmpty, trollStrongholdEmpty, weissEmpty;
 	ManualRequirement ardougneReady, catherbyReady, faladorReady, farmingGuildReady, harmonyReady, morytaniaReady, trollStrongholdReady, weissReady;
+
+	private enum Seed {
+		GUAM(ItemID.GUAM_SEED), MARRENTILL(ItemID.MARRENTILL_SEED), TARROMIN(ItemID.TARROMIN_SEED), HARRALANDER(ItemID.HARRALANDER_SEED),
+		RANARR(ItemID.RANARR_SEED), TOADFLAX(ItemID.TOADFLAX_SEED), IRIT(ItemID.IRIT_SEED), AVANTOE(ItemID.AVANTOE_SEED), KWUARM(ItemID.KWUARM_SEED),
+		SNAPDRAGON(ItemID.SNAPDRAGON_SEED), CADANTINE(ItemID.CADANTINE_SEED), LATANDYME(ItemID.LANTADYME_SEED), DWARF_WEED(ItemID.DWARF_WEED_SEED),
+		TORSTOL(ItemID.TORSTOL_SEED);
+
+		final int seedID;
+
+		Seed(int seedID)
+		{
+			this.seedID = seedID;
+		}
+	}
+
+	private final String HERB_SEEDS = "herbSeeds";
 
 	@Override
 	public QuestStep loadStep()
@@ -150,7 +173,26 @@ public class HerbRun extends ComplexStateQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));
+
 		seed = new ItemRequirement("Seeds of your choice", ItemCollections.SEEDS);
+		// TODO: Not working?
+		seed.setDisplayMatchedItemName(true);
+
+		String seedName = configManager.getConfiguration("questhelperconfigs", HERB_SEEDS);
+
+		if (seedName != null)
+		{
+			try
+			{
+				seed.setId(Seed.valueOf(seedName).seedID);
+			} catch (IllegalArgumentException err)
+			{
+				questHelperPlugin.getConfigManager().setConfiguration("questhelperconfigs", HERB_SEEDS, Seed.GUAM);
+			}
+		} else
+		{
+			questHelperPlugin.getConfigManager().setConfiguration("questhelperconfigs", HERB_SEEDS, Seed.GUAM);
+		}
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.FINISHED));
@@ -267,6 +309,28 @@ public class HerbRun extends ComplexStateQuestHelper
 	}
 
 	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("questhelperconfigs"))
+		{
+			return;
+		}
+
+		if (event.getKey().equals(HERB_SEEDS))
+		{
+			try
+			{
+				Seed selectedSeed = Seed.valueOf(event.getNewValue());
+				seed.setId(selectedSeed.seedID);
+//				seed.setName(Text.titleCase(selectedSeed));
+			} catch (IllegalArgumentException err)
+			{
+				questHelperPlugin.getConfigManager().setConfiguration("questhelperconfigs", HERB_SEEDS, Seed.GUAM);
+			}
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		for (FarmingPatch patch : farmingWorld.getTabs().get(Tab.HERB))
@@ -322,6 +386,13 @@ public class HerbRun extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit);
+	}
+
+	@Override
+	public List<HelperConfig> getConfigs()
+	{
+		HelperConfig helperConfig = new HelperConfig("Seeds", HERB_SEEDS, Seed.values());
+		return Collections.singletonList(helperConfig);
 	}
 
 	@Override

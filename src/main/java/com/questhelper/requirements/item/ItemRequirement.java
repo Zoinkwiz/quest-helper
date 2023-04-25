@@ -51,10 +51,12 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ItemRequirement extends AbstractRequirement
 {
+	@Setter
 	@Getter
-	private final int id;
+	private int id;
 
-	private final String name;
+	@Setter
+	private String name;
 
 	@Setter
 	@Getter

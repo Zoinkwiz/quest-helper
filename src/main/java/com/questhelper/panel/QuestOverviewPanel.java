@@ -25,7 +25,9 @@
 package com.questhelper.panel;
 
 import com.questhelper.ExternalQuestResources;
+import com.questhelper.HelperConfig;
 import com.questhelper.Icon;
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -34,6 +36,7 @@ import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.rewards.Reward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
+import java.awt.event.ItemEvent;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,6 +45,7 @@ import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
 
@@ -62,6 +66,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private final JPanel questStepsContainer = new JPanel();
 	private final JPanel actionsContainer = new JPanel();
+	private final JPanel configContainer = new JPanel();
 
 	private final JPanel introPanel = new JPanel();
 	private final JLabel questOverviewNotes = new JLabel();
@@ -138,6 +143,28 @@ public class QuestOverviewPanel extends JPanel
 
 		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 
+		/* Quest config panel */
+		configContainer.setLayout(new BorderLayout());
+		configContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		configContainer.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR),
+			BorderFactory.createEmptyBorder(5, 5, 5, 5)
+		));
+		BoxLayout boxLayoutOverview2 = new BoxLayout(configContainer, BoxLayout.Y_AXIS);
+		configContainer.setLayout(boxLayoutOverview2);
+		configContainer.setVisible(false);
+
+		JPanel configHeaderPanel = new JPanel();
+		configHeaderPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		configHeaderPanel.setLayout(new BorderLayout());
+		configHeaderPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
+		JLabel configHeaderText = new JLabel();
+		configHeaderText.setForeground(Color.WHITE);
+		configHeaderText.setText("Configuration:");
+		configHeaderText.setMinimumSize(new Dimension(1, configHeaderPanel.getPreferredSize().height));
+		configHeaderPanel.add(configHeaderText);
+		configContainer.add(configHeaderPanel);
+
 		/* Quest overview panel */
 		introPanel.setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR),
@@ -147,7 +174,7 @@ public class QuestOverviewPanel extends JPanel
 		introPanel.setLayout(new BorderLayout());
 		introPanel.setVisible(false);
 
-		/* Panel for all overview details*/
+		/* Panel for all overview details */
 		final JPanel overviewPanel = new JPanel();
 		BoxLayout boxLayoutOverview = new BoxLayout(overviewPanel, BoxLayout.Y_AXIS);
 		overviewPanel.setLayout(boxLayoutOverview);
@@ -173,8 +200,51 @@ public class QuestOverviewPanel extends JPanel
 		questStepsContainer.setLayout(new BoxLayout(questStepsContainer, BoxLayout.Y_AXIS));
 
 		add(actionsContainer);
+		add(configContainer);
 		add(introPanel);
 		add(questStepsContainer);
+	}
+
+	private JComboBox<Enum> makeNewDropdown(Enum[] values, String key)
+	{
+		JComboBox<Enum> dropdown = new JComboBox<>(values);
+		dropdown.setFocusable(false);
+		dropdown.setForeground(Color.WHITE);
+		dropdown.setRenderer(new DropdownRenderer());
+		dropdown.addItemListener(e ->
+		{
+			if (e.getStateChange() == ItemEvent.SELECTED)
+			{
+				Enum source = (Enum) e.getItem();
+				questHelperPlugin.getConfigManager().setConfiguration("questhelperconfigs", key,
+					source);
+			}
+		});
+		String currentVal =  questHelperPlugin.getConfigManager().getConfiguration("questhelperconfigs", key);
+		for (Enum value : values)
+		{
+			if (value.name().equals(currentVal))
+			{
+				dropdown.setSelectedItem(value);
+			}
+		}
+
+		return dropdown;
+	}
+
+	private JPanel makeDropdownPanel(JComboBox dropdown, String name)
+	{
+		// Filters
+		JLabel filterName = new JLabel(name);
+		filterName.setForeground(Color.WHITE);
+
+		JPanel filtersPanel = new JPanel();
+		filtersPanel.setLayout(new BorderLayout());
+		filtersPanel.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+		filtersPanel.add(filterName, BorderLayout.CENTER);
+		filtersPanel.add(dropdown, BorderLayout.EAST);
+
+		return filtersPanel;
 	}
 
 	private JPanel generateRequirementPanel(JPanel listPanel, JPanel headerPanel, String header)
@@ -222,6 +292,9 @@ public class QuestOverviewPanel extends JPanel
 		{
 			questNameLabel.setText(quest.getQuest().getName());
 			actionsContainer.setVisible(true);
+
+			// if configs
+			configContainer.setVisible(true);
 
 			setupQuestRequirements(quest);
 			introPanel.setVisible(true);
@@ -326,6 +399,8 @@ public class QuestOverviewPanel extends JPanel
 	{
 		actionsContainer.setVisible(false);
 		introPanel.setVisible(false);
+		configContainer.setVisible(false);
+		configContainer.removeAll();
 		questStepsContainer.removeAll();
 		questGeneralRequirementsListPanel.removeAll();
 		questGeneralRecommendedListPanel.removeAll();
@@ -358,6 +433,20 @@ public class QuestOverviewPanel extends JPanel
 
 	public void setupQuestRequirements(QuestHelper quest)
 	{
+		/* Config setup */
+		if (quest.getConfigs() != null)
+		{
+			List<HelperConfig> configs = quest.getConfigs();
+			for (HelperConfig config : configs)
+			{
+				JComboBox dropdown = makeNewDropdown(config.getEnums(), config.getKey());
+				JPanel dropdownPanel = makeDropdownPanel(dropdown, config.getName());
+				dropdownPanel.setPreferredSize(new Dimension(PANEL_WIDTH, QuestHelperPanel.DROPDOWN_HEIGHT));
+
+				configContainer.add(dropdownPanel);
+			}
+		}
+
 		/* Non-item requirements */
 		updateRequirementsPanels(questGeneralRequirementsHeader, questGeneralRequirementsListPanel, requirementPanels, quest.getGeneralRequirements());
 
@@ -562,11 +651,12 @@ public class QuestOverviewPanel extends JPanel
 	@Override
 	public Dimension getPreferredSize()
 	{
-		return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
+		return new Dimension(PANEL_WIDTH, super.getPreferredSize().height);
 	}
 
 	public void updateRequirements(Client client, List<Item> bankItems)
 	{
+
 		updateRequirementPanels(client, requirementPanels, bankItems);
 
 		if (questStepPanelList != null)

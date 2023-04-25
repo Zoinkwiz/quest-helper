@@ -167,7 +167,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		Item[] inventoryItemsArr = itemContainer.getItems();
 
 		items1 = -1;
-		List<Item> inventoryItems = Arrays.asList(inventoryItemsArr);
+		List<Item> inventoryItems = new ArrayList<>(Arrays.asList(inventoryItemsArr));
 
 		for (Integer id : shapeValues.get(answer1).getAllIds())
 		{
@@ -233,7 +233,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 		Item[] inventoryItemsArr = itemContainer.getItems();
 
-		List<Item> inventoryItems = Arrays.asList(inventoryItemsArr);
+		List<Item> inventoryItems = new ArrayList<>(Arrays.asList(inventoryItemsArr));
 
 		Widget insertWidget = client.getWidget(189, 0);
 

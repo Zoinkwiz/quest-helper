@@ -436,6 +436,17 @@ public class QuestOverviewPanel extends JPanel
 		/* Config setup */
 		if (quest.getConfigs() != null)
 		{
+			JPanel configHeaderPanel = new JPanel();
+			configHeaderPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			configHeaderPanel.setLayout(new BorderLayout());
+			configHeaderPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
+			JLabel configHeaderText = new JLabel();
+			configHeaderText.setForeground(Color.WHITE);
+			configHeaderText.setText("Configuration:");
+			configHeaderText.setMinimumSize(new Dimension(1, configHeaderPanel.getPreferredSize().height));
+			configHeaderPanel.add(configHeaderText);
+			configContainer.add(configHeaderPanel);
+
 			List<HelperConfig> configs = quest.getConfigs();
 			for (HelperConfig config : configs)
 			{

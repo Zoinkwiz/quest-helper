@@ -216,11 +216,11 @@ public class QuestOverviewPanel extends JPanel
 			if (e.getStateChange() == ItemEvent.SELECTED)
 			{
 				Enum source = (Enum) e.getItem();
-				questHelperPlugin.getConfigManager().setConfiguration("questhelperconfigs", key,
+				questHelperPlugin.getConfigManager().setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, key,
 					source);
 			}
 		});
-		String currentVal =  questHelperPlugin.getConfigManager().getConfiguration("questhelperconfigs", key);
+		String currentVal =  questHelperPlugin.getConfigManager().getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, key);
 		for (Enum value : values)
 		{
 			if (value.name().equals(currentVal))

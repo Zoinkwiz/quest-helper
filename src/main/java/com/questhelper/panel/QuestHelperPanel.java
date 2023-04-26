@@ -355,7 +355,7 @@ public class QuestHelperPanel extends PluginPanel
 			if (e.getStateChange() == ItemEvent.SELECTED)
 			{
 				Enum source = (Enum) e.getItem();
-				questHelperPlugin.getConfigManager().setConfiguration("questhelper", key,
+				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, key,
 					source);
 			}
 		});

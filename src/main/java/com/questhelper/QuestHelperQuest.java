@@ -774,7 +774,7 @@ public enum QuestHelperQuest
 	{
 		if (playerQuests != null)
 		{
-			String currentStateString = configManager.getRSProfileConfiguration(QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP, playerQuests.getConfigValue());
+			String currentStateString = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, playerQuests.getConfigValue());
 			try
 			{
 				int currentState = Integer.parseInt(currentStateString);
@@ -785,7 +785,7 @@ public enum QuestHelperQuest
 			}
 			catch (NumberFormatException err)
 			{
-				configManager.setRSProfileConfiguration(QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP, playerQuests.getConfigValue(), "0");
+				configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, playerQuests.getConfigValue(), "0");
 				return QuestState.NOT_STARTED;
 			}
 		}

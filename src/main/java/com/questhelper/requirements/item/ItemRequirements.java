@@ -121,7 +121,7 @@ public class ItemRequirements extends ItemRequirement
 										 List<Item> bankItems, QuestHelperConfig config)
 	{
 		Color color = config.failColour();
-		if (!this.isActualItem() && !(this.getItemRequirements() instanceof ArrayList))
+		if (!this.isActualItem() && this.getItemRequirements() == null)
 		{
 			color = Color.GRAY;
 		}

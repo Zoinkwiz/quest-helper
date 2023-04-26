@@ -66,14 +66,8 @@ public class QuestRequirementPanel extends JPanel
 				text.append(itemRequirement.getQuantity()).append(" x ");
 			}
 		}
-		try {text.append(requirement.getDisplayText()); }
-		catch (Exception e) {
-			e.getCause();
-		}
-		if (requirement == null)
-		{
-			StringBuilder wer = new StringBuilder();
-		}
+
+		text.append(requirement.getDisplayText());
 
 		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
 		String html2 = "</body></html>";
@@ -87,36 +81,39 @@ public class QuestRequirementPanel extends JPanel
 		if (requirement instanceof ItemRequirement)
 		{
 			JPopupMenu menu = new JPopupMenu("Menu");
-			int id = ((ItemRequirement)requirement).getId();
+			int id = ((ItemRequirement) requirement).getId();
 			JMenuItem wikiLink = new JMenuItem(new AbstractAction("Go to wiki..")
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					try {
-						if(requirement.getUrlSuffix() == null)
+					try
+					{
+						if (requirement.getUrlSuffix() == null)
 						{
 							Desktop.getDesktop().browse(new URI("https://oldschool.runescape.wiki/w/Special:Lookup?type=item&id=" + id));
 						}
 						else
 						{
-							Desktop.getDesktop().browse(new URI( "https://oldschool.runescape.wiki/w/" + requirement.getUrlSuffix()));
+							Desktop.getDesktop().browse(new URI("https://oldschool.runescape.wiki/w/" + requirement.getUrlSuffix()));
 						}
-					} catch (IOException | URISyntaxException e1) {
+					}
+					catch (IOException | URISyntaxException e1)
+					{
 						e1.printStackTrace();
 					}
 				}
 			});
-			
+
 			menu.add(wikiLink);
 
 			label.addMouseListener(new MouseAdapter()
 			{
 				public void mouseClicked(MouseEvent e)
 				{
-					ItemRequirement iReq = ((ItemRequirement)requirement);
+					ItemRequirement iReq = ((ItemRequirement) requirement);
 					//right mouse click event
-					if( iReq.getId() != -1 || (iReq.getId() != -1 && iReq.getUrlSuffix() != null)
-					|| (iReq.getId() == -1 && iReq.getUrlSuffix() != null) )
+					if (iReq.getId() != -1 || (iReq.getId() != -1 && iReq.getUrlSuffix() != null)
+						|| (iReq.getId() == -1 && iReq.getUrlSuffix() != null))
 					{
 						if (SwingUtilities.isRightMouseButton(e) && e.getClickCount() == 1)
 						{

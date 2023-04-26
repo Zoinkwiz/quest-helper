@@ -85,6 +85,15 @@ public class QuestHelperBankTagService
 		}
 
 		List<ItemRequirement> recommendedItems = plugin.getSelectedQuest().getItemRecommended();
+		if (recommendedItems != null)
+		{
+			recommendedItems =  recommendedItems.stream()
+			.filter(Objects::nonNull)
+			.filter(i -> (!onlyGetMissingItems
+			|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+			&& i.shouldDisplayText(plugin.getClient()))
+			.collect(Collectors.toList());
+		}
 
 		if (recommendedItems != null && !recommendedItems.isEmpty())
 		{
@@ -104,7 +113,9 @@ public class QuestHelperBankTagService
 				.stream()
 				.filter(ItemRequirement.class::isInstance)
 				.map(ItemRequirement.class::cast)
-				.filter(i -> !onlyGetMissingItems || !i.check(plugin.getClient(), false, questBank.getBankItems()) || !i.shouldDisplayText(plugin.getClient()))
+				.filter(i -> (!onlyGetMissingItems
+					|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+					&& i.shouldDisplayText(plugin.getClient()))
 				.collect(Collectors.toList());
 
 			BankTabItems pluginItems = new BankTabItems(questSection.getHeader());

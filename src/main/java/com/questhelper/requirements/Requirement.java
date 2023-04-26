@@ -54,7 +54,7 @@ public interface Requirement
 	{
 		if (check(client))
 		{
-			configManager.setRSProfileConfiguration("questhelper", configName, value);
+			configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, configName, value);
 			return true;
 		}
 		return false;

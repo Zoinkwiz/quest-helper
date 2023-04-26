@@ -154,8 +154,6 @@ public class QuestHelperPlugin extends Plugin
 	private static final String MENUOP_STOPGENERICHELPER = "Stop Helper";
 	private static final String MENUOP_GENERICHELPER = "Helper";
 
-	public static final String QUESTHELPER_QUEST_CONFIG_GROUP = "questhelpervars";
-
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
 	@Inject
@@ -487,12 +485,12 @@ public class QuestHelperPlugin extends Plugin
 			}
 		});
 
-		if (event.getGroup().equals(QUESTHELPER_QUEST_CONFIG_GROUP))
+		if (event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
 		{
 			clientThread.invokeLater(this::updateQuestList);
 		}
 
-		if (!event.getGroup().equals("questhelper"))
+		if (!event.getGroup().equals(QuestHelperConfig.QUEST_HELPER_GROUP))
 		{
 			return;
 		}
@@ -563,6 +561,11 @@ public class QuestHelperPlugin extends Plugin
 	private void onClientShutdown(ClientShutdown e)
 	{
 		questBank.saveBankToConfig();
+	}
+
+	public void refreshBank()
+	{
+		clientThread.invokeLater(() -> bankTagsMain.refreshBankTab());
 	}
 
 	public void updateQuestList()

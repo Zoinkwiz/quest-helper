@@ -27,6 +27,7 @@ package com.questhelper.helpers.mischelpers.herbrun;
 import com.questhelper.HelperConfig;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -39,6 +40,7 @@ import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -69,8 +71,6 @@ import net.runelite.client.util.Text;
 public class HerbRun extends ComplexStateQuestHelper
 {
 	// TODO: Updating setId and setName in ItemRequirement
-	// TODO: Add update to bank when updating config for seed
-	// TODO: Clean up specification of config groups to configmanager
 	@Inject
 	private FarmingWorld farmingWorld;
 
@@ -82,6 +82,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	ItemRequirement spade, dibber, rake, seed, compost;
 	ItemRequirement ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport;
 	ItemRequirement gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape, gracefulOutfit;
+	ItemRequirement farmingHat, farmingTop, farmingLegs, farmingBoots, farmersOutfit;
 
 	Requirement accessToHarmony, accessToWeiss, accessToTrollStronghold, accessToFarmingGuildPatch;
 
@@ -102,7 +103,14 @@ public class HerbRun extends ComplexStateQuestHelper
 		}
 	}
 
+	private enum GracefulOrFarming {
+		NONE(),
+		GRACEFUL(),
+		FARMING();
+	}
+
 	private final String HERB_SEEDS = "herbSeeds";
+	private final String GRACEFUL_OR_FARMING = "gracefulOrFarming";
 
 	@Override
 	public QuestStep loadStep()
@@ -174,11 +182,9 @@ public class HerbRun extends ComplexStateQuestHelper
 		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));
 
-		seed = new ItemRequirement("Seeds of your choice", ItemCollections.SEEDS);
-		// TODO: Not working?
-		seed.setDisplayMatchedItemName(true);
+		seed = new ItemRequirement("Seeds of your choice", ItemID.GUAM_SEED);
 
-		String seedName = configManager.getConfiguration("questhelperconfigs", HERB_SEEDS);
+		String seedName = configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS);
 
 		if (seedName != null)
 		{
@@ -187,11 +193,12 @@ public class HerbRun extends ComplexStateQuestHelper
 				seed.setId(Seed.valueOf(seedName).seedID);
 			} catch (IllegalArgumentException err)
 			{
-				questHelperPlugin.getConfigManager().setConfiguration("questhelperconfigs", HERB_SEEDS, Seed.GUAM);
+				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
 			}
+			seed.setName(Text.titleCase(Seed.valueOf(seedName)) + " seed");
 		} else
 		{
-			questHelperPlugin.getConfigManager().setConfiguration("questhelperconfigs", HERB_SEEDS, Seed.GUAM);
+			questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
 		}
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 
@@ -246,7 +253,30 @@ public class HerbRun extends ComplexStateQuestHelper
 		gracefulOutfit = new ItemRequirements(
 			"Graceful outfit (equipped)",
 			gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape
-		).isNotConsumed();
+		).isNotConsumed().showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, GracefulOrFarming.GRACEFUL.name()));
+
+		farmingHat = new ItemRequirement(
+			"Farmer's strawhat", ItemID.FARMERS_STRAWHAT, 1 ,true).isNotConsumed();
+		farmingHat.addAlternates(ItemID.FARMERS_STRAWHAT_13647, ItemID.FARMERS_STRAWHAT_21253, ItemID.FARMERS_STRAWHAT_21254);
+
+		farmingTop = new ItemRequirement(
+			"Farmer's top", ItemID.FARMERS_JACKET, 1, true).isNotConsumed();
+		farmingTop.addAlternates(ItemID.FARMERS_SHIRT);
+
+
+		farmingLegs = new ItemRequirement(
+			"Farmer's boro trousers", ItemID.FARMERS_BORO_TROUSERS, 1, true).isNotConsumed();
+		farmingLegs.addAlternates(ItemID.FARMERS_BORO_TROUSERS_13641);
+
+		farmingBoots = new ItemRequirement(
+			"Graceful cape", ItemID.FARMERS_BOOTS, 1, true).isNotConsumed();
+		farmingBoots.addAlternates(ItemID.FARMERS_BOOTS_13645);
+
+
+		farmersOutfit = new ItemRequirements(
+			"Farmer's outfit (equipped)",
+			farmingHat, farmingTop, farmingLegs, farmingBoots
+		).isNotConsumed().showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, GracefulOrFarming.FARMING.name()));
 	}
 
 	public void setupSteps()
@@ -311,7 +341,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("questhelperconfigs"))
+		if (!event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
 		{
 			return;
 		}
@@ -322,11 +352,16 @@ public class HerbRun extends ComplexStateQuestHelper
 			{
 				Seed selectedSeed = Seed.valueOf(event.getNewValue());
 				seed.setId(selectedSeed.seedID);
-//				seed.setName(Text.titleCase(selectedSeed));
+				seed.setName(Text.titleCase(selectedSeed) + " seed");
+				questHelperPlugin.refreshBank();
 			} catch (IllegalArgumentException err)
 			{
-				questHelperPlugin.getConfigManager().setConfiguration("questhelperconfigs", HERB_SEEDS, Seed.GUAM);
+				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
 			}
+		}
+		if (event.getKey().equals(GRACEFUL_OR_FARMING))
+		{
+			questHelperPlugin.refreshBank();
 		}
 	}
 
@@ -385,14 +420,15 @@ public class HerbRun extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit);
+		return Arrays.asList(ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit, farmersOutfit);
 	}
 
 	@Override
 	public List<HelperConfig> getConfigs()
 	{
-		HelperConfig helperConfig = new HelperConfig("Seeds", HERB_SEEDS, Seed.values());
-		return Collections.singletonList(helperConfig);
+		HelperConfig seedsConfig = new HelperConfig("Seeds", HERB_SEEDS, Seed.values());
+		HelperConfig outfitConfig = new HelperConfig("Outfit", GRACEFUL_OR_FARMING, GracefulOrFarming.values());
+		return Arrays.asList(seedsConfig, outfitConfig);
 	}
 
 	@Override
@@ -401,7 +437,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Farm run", Arrays.asList(faladorPatch, ardougnePatch, catherbyPatch, morytaniaPatch,
 			trollStrongholdPatch, weissPatch, harmonyPatch, farmingGuildPatch), Arrays.asList(spade, dibber, rake, seed, magicSec),
-			Arrays.asList(ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit)));
+			Arrays.asList(ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit, farmersOutfit)));
 
 		return allSteps;
 	}

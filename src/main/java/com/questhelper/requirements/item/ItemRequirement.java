@@ -84,7 +84,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	@Setter
 	@Getter
-	private Requirement conditionToHide;
+	protected Requirement conditionToHide;
 
 	@Getter
 	@Setter
@@ -287,7 +287,7 @@ public class ItemRequirement extends AbstractRequirement
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
-		if (conditionToHide != null && conditionToHide.check(client))
+		if (!shouldDisplayText(client))
 		{
 			return lines;
 		}
@@ -326,6 +326,7 @@ public class ItemRequirement extends AbstractRequirement
 	@Override
 	public boolean shouldDisplayText(Client client)
 	{
+		if (this instanceof ItemRequirements) System.out.println(conditionToHide == null || !conditionToHide.check(client));
 		return conditionToHide == null || !conditionToHide.check(client);
 	}
 

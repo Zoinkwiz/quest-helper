@@ -188,6 +188,29 @@ public class QuestBankTabInterface
 		}
 	}
 
+	public void refreshTab()
+	{
+		if (!questTabActive)
+		{
+			return;
+		}
+
+		client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+
+		bankSearch.reset(true); // clear search dialog & relayout bank for new tab.
+
+		// When searching the button has a script on timer to detect search end, that will set the background back
+		// and remove the timer. However since we are going from a bank search to our fake search this will not remove
+		// the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
+		// same as bankmain_search_setbutton.
+		Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+		if (searchButtonBackground != null)
+		{
+			searchButtonBackground.setOnTimerListener((Object[]) null);
+			searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
+		}
+	}
+
 	private void activateTab()
 	{
 		if (questTabActive)

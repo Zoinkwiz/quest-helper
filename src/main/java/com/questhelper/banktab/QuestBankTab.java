@@ -143,6 +143,11 @@ public class QuestBankTab
 		}
 	}
 
+	public void refreshBankTab()
+	{
+		questBankTabInterface.refreshTab();
+	}
+
 	@Subscribe
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
@@ -291,7 +296,7 @@ public class QuestBankTab
 			return;
 		}
 
-		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD)
+		if (event.getScriptId() != ScriptID.BANKMAIN_FINISHBUILDING)
 		{
 			return;
 		}
@@ -318,15 +323,16 @@ public class QuestBankTab
 		}
 		fakeToRealItem.clear();
 
-
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
 
-		ArrayList<BankTabItems> tabLayout = questHelper.getBankTagService().getPluginBankTagItemsForSections(false);
+		clientThread.invokeAtTickEnd(() -> {
+			ArrayList<BankTabItems> tabLayout = questHelper.getBankTagService().getPluginBankTagItemsForSections(false);
 
-		if (tabLayout != null)
-		{
-			sortBankTabItems(itemContainer, containerChildren, tabLayout);
-		}
+			if (tabLayout != null)
+			{
+				sortBankTabItems(itemContainer, containerChildren, tabLayout);
+			}
+		});
 	}
 
 	private void sortBankTabItems(Widget itemContainer, Widget[] containerChildren, List<BankTabItems> newLayout)

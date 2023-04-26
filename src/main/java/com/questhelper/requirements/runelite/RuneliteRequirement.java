@@ -24,7 +24,7 @@
  */
 package com.questhelper.requirements.runelite;
 
-import com.questhelper.QuestHelperPlugin;
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
 import java.util.Collections;
@@ -37,7 +37,7 @@ import net.runelite.client.config.ConfigManager;
 public class RuneliteRequirement extends AbstractRequirement
 {
 	@Getter
-	protected final String CONFIG_GROUP = QuestHelperPlugin.QUESTHELPER_QUEST_CONFIG_GROUP;
+	protected final String CONFIG_GROUP = QuestHelperConfig.QUEST_BACKGROUND_GROUP;
 
 	protected final String displayText;
 	protected final String runeliteIdentifier;
@@ -101,7 +101,6 @@ public class RuneliteRequirement extends AbstractRequirement
 	public boolean check(Client client)
 	{
 		String value = getConfigValue();
-
 		return expectedValue.equals(value);
 	}
 

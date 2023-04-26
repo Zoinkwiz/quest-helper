@@ -119,7 +119,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		setupConditions();
 		setupSteps();
 
-		ConditionalStep steps = new ConditionalStep(this, waitForHerbs);
+		ConditionalStep steps = new ConditionalStep(this, waitForHerbs, spade, dibber, rake, seed, magicSec, farmersOutfit, gracefulOutfit);
 		steps.addStep(faladorReady, faladorPatch);
 		steps.addStep(faladorEmpty, faladorPlant);
 
@@ -138,11 +138,11 @@ public class HerbRun extends ComplexStateQuestHelper
 		steps.addStep(new Conditions(accessToWeiss, weissReady), weissPatch);
 		steps.addStep(new Conditions(accessToWeiss, weissEmpty), weissPlant);
 
-		steps.addStep(new Conditions(accessToHarmony, harmonyReady), harmonyPatch);
-		steps.addStep(new Conditions(accessToHarmony, harmonyEmpty), harmonyPlant);
-
 		steps.addStep(new Conditions(accessToFarmingGuildPatch, farmingGuildReady), farmingGuildPatch);
 		steps.addStep(new Conditions(accessToFarmingGuildPatch, farmingGuildEmpty), farmingGuildPlant);
+
+		steps.addStep(new Conditions(accessToHarmony, harmonyReady), harmonyPatch);
+		steps.addStep(new Conditions(accessToHarmony, harmonyEmpty), harmonyPlant);
 
 		return steps;
 	}
@@ -281,57 +281,57 @@ public class HerbRun extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		waitForHerbs = new DetailedQuestStep(this, "Wait for your herbs to grow.");
-		ardougnePatch = new ObjectStep(this, NullObjectID.NULL_8152, new WorldPoint(2670, 3374, 0), "Harvest your herbs from the Ardougne patch.", spade, dibber, rake, seed, ardyCloak2);
-		catherbyPatch = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2813, 3463, 0), "Harvest your herbs from the Catherby patch.", spade, dibber, rake, seed, catherbyTeleport);
-		faladorPatch = new ObjectStep(this, NullObjectID.NULL_8150, new WorldPoint(3058, 3311, 0), "Harvest your herbs from the Falador patch.", spade, dibber, rake, seed, explorerRing2);
+		ardougnePatch = new ObjectStep(this, NullObjectID.NULL_8152, new WorldPoint(2670, 3374, 0), "Harvest your herbs from the Ardougne patch.", ardyCloak2);
+		catherbyPatch = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2813, 3463, 0), "Harvest your herbs from the Catherby patch.", catherbyTeleport);
+		faladorPatch = new ObjectStep(this, NullObjectID.NULL_8150, new WorldPoint(3058, 3311, 0), "Harvest your herbs from the Falador patch.", explorerRing2);
 
-		farmingGuildPatch = new ObjectStep(this, NullObjectID.NULL_38979, new WorldPoint(1238, 3726, 0), "Harvest your herbs from the Farming Guild patch.", spade, dibber, rake, seed);
+		farmingGuildPatch = new ObjectStep(this, NullObjectID.NULL_38979, new WorldPoint(1238, 3726, 0), "Harvest your herbs from the Farming Guild patch.", farmingGuildTeleport);
 		farmingGuildPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildPatch));
 
-		harmonyPatch = new ObjectStep(this, NullObjectID.NULL_9372, new WorldPoint(3789, 2837, 0), "Harvest your herbs from the Harmony patch.", spade, dibber, rake, seed, ectophial);
+		harmonyPatch = new ObjectStep(this, NullObjectID.NULL_9372, new WorldPoint(3789, 2837, 0), "Harvest your herbs from the Harmony patch.", ectophial);
 		harmonyPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToHarmony));
 
-		morytaniaPatch = new ObjectStep(this, NullObjectID.NULL_8153, new WorldPoint(3605, 3529, 0), "Harvest your herbs from the Morytania patch.", spade, dibber, rake, seed, ectophial);
+		morytaniaPatch = new ObjectStep(this, NullObjectID.NULL_8153, new WorldPoint(3605, 3529, 0), "Harvest your herbs from the Morytania patch.", ectophial);
 
 		trollStrongholdPatch = new ObjectStep(this, NullObjectID.NULL_18816, new WorldPoint(2826, 3694, 0), "Harvest your herbs from the Troll Stronghold patch.",
-			spade, dibber, rake, seed, trollheimTeleport, stonyBasalt);
+			trollheimTeleport, stonyBasalt);
 		trollStrongholdPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToTrollStronghold));
-		weissPatch = new ObjectStep(this, NullObjectID.NULL_33176, new WorldPoint(2848, 3934, 0), "Harvest your herbs from the Weiss patch.", spade, dibber, rake, seed, icyBasalt);
+		weissPatch = new ObjectStep(this, NullObjectID.NULL_33176, new WorldPoint(2848, 3934, 0), "Harvest your herbs from the Weiss patch.", icyBasalt);
 		weissPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToWeiss));
 
-		ardougnePlant = new ObjectStep(this, NullObjectID.NULL_8152, new WorldPoint(2670, 3374, 0), "Plant your seeds into the Ardougne patch.", spade, dibber, rake, seed, ardyCloak2);
+		ardougnePlant = new ObjectStep(this, NullObjectID.NULL_8152, new WorldPoint(2670, 3374, 0), "Plant your seeds into the Ardougne patch.", ardyCloak2);
 		ardougnePlant.addIcon(ItemID.RANARR_SEED);
 		ardougnePatch.addSubSteps(ardougnePlant);
 
-		catherbyPlant = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2813, 3463, 0), "Plant your seeds into the Catherby patch.", spade, dibber, rake, seed, catherbyTeleport);
+		catherbyPlant = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2813, 3463, 0), "Plant your seeds into the Catherby patch.", catherbyTeleport);
 		catherbyPlant.addIcon(ItemID.RANARR_SEED);
 		catherbyPatch.addSubSteps(catherbyPlant);
 
-		faladorPlant = new ObjectStep(this, NullObjectID.NULL_8150, new WorldPoint(3058, 3311, 0), "Plant your seeds into the Falador patch.", spade, dibber, rake, seed, explorerRing2);
+		faladorPlant = new ObjectStep(this, NullObjectID.NULL_8150, new WorldPoint(3058, 3311, 0), "Plant your seeds into the Falador patch.", explorerRing2);
 		faladorPlant.addIcon(ItemID.RANARR_SEED);
 		faladorPatch.addSubSteps(faladorPlant);
 
-		farmingGuildPlant = new ObjectStep(this, NullObjectID.NULL_38979, new WorldPoint(1238, 3726, 0), "Plant your seeds into the Farming Guild patch.", spade, dibber, rake, seed);
+		farmingGuildPlant = new ObjectStep(this, NullObjectID.NULL_38979, new WorldPoint(1238, 3726, 0), "Plant your seeds into the Farming Guild patch.", farmingGuildTeleport);
 		farmingGuildPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildPatch));
 		farmingGuildPlant.addIcon(ItemID.RANARR_SEED);
 		farmingGuildPatch.addSubSteps(farmingGuildPlant);
 
-		harmonyPlant = new ObjectStep(this, NullObjectID.NULL_9372, new WorldPoint(3789, 2837, 0), "Plant your seeds into the Harmony patch.", spade, dibber, rake, seed, ectophial);
+		harmonyPlant = new ObjectStep(this, NullObjectID.NULL_9372, new WorldPoint(3789, 2837, 0), "Plant your seeds into the Harmony patch.", ectophial);
 		harmonyPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToHarmony));
 		harmonyPlant.addIcon(ItemID.RANARR_SEED);
 		harmonyPatch.addSubSteps(harmonyPlant);
 
-		morytaniaPlant = new ObjectStep(this, NullObjectID.NULL_8153, new WorldPoint(3605, 3529, 0), "Plant your seeds into the Morytania patch.", spade, dibber, rake, seed, ectophial);
+		morytaniaPlant = new ObjectStep(this, NullObjectID.NULL_8153, new WorldPoint(3605, 3529, 0), "Plant your seeds into the Morytania patch.", ectophial);
 		morytaniaPlant.addIcon(ItemID.RANARR_SEED);
 		morytaniaPatch.addSubSteps(morytaniaPlant);
 
 		trollStrongholdPlant = new ObjectStep(this, NullObjectID.NULL_18816, new WorldPoint(2826, 3694, 0), "Plant your seeds into the Troll Stronghold patch.",
-			spade, dibber, rake, seed, trollheimTeleport, stonyBasalt);
+			trollheimTeleport, stonyBasalt);
 		trollStrongholdPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToTrollStronghold));
 		trollStrongholdPlant.addIcon(ItemID.RANARR_SEED);
 		trollStrongholdPatch.addSubSteps(trollStrongholdPlant);
 
-		weissPlant = new ObjectStep(this, NullObjectID.NULL_33176, new WorldPoint(2848, 3934, 0), "Plant your seeds into the Weiss patch.", spade, dibber, rake, seed, icyBasalt);
+		weissPlant = new ObjectStep(this, NullObjectID.NULL_33176, new WorldPoint(2848, 3934, 0), "Plant your seeds into the Weiss patch.", icyBasalt);
 		weissPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToWeiss));
 		weissPlant.addIcon(ItemID.RANARR_SEED);
 		weissPatch.addSubSteps(weissPlant);
@@ -435,7 +435,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Farm run", Arrays.asList(faladorPatch, ardougnePatch, catherbyPatch, morytaniaPatch,
-			trollStrongholdPatch, weissPatch, harmonyPatch, farmingGuildPatch), Arrays.asList(spade, dibber, rake, seed, magicSec),
+			trollStrongholdPatch, weissPatch, farmingGuildPatch, harmonyPatch), Arrays.asList(spade, dibber, rake, seed, magicSec),
 			Arrays.asList(ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit, farmersOutfit)));
 
 		return allSteps;

@@ -49,7 +49,6 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
@@ -184,7 +183,7 @@ public class HerbRun extends ComplexStateQuestHelper
 
 		seed = new ItemRequirement("Seeds of your choice", ItemID.GUAM_SEED);
 
-		String seedName = configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS);
+		String seedName = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS);
 
 		if (seedName != null)
 		{
@@ -193,7 +192,7 @@ public class HerbRun extends ComplexStateQuestHelper
 				seed.setId(Seed.valueOf(seedName).seedID);
 			} catch (IllegalArgumentException err)
 			{
-				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
+				questHelperPlugin.getConfigManager().setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
 			}
 			seed.setName(Text.titleCase(Seed.valueOf(seedName)) + " seed");
 		} else

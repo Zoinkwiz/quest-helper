@@ -160,7 +160,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	private void setupConditions()
 	{
 		has70Agility = new SkillRequirement(Skill.AGILITY, 70, true);
-		has80Agility = new SkillRequirement(Skill.AGILITY, 70, true);
+		has80Agility = new SkillRequirement(Skill.AGILITY, 80, true);
 
 		inSorcerersTower1 = new ZoneRequirement(sorcerersTower1);
 		inSorcerersTower2 = new ZoneRequirement(sorcerersTower2);

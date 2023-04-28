@@ -974,7 +974,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	@Override
 	public QuestPointReward getQuestPointReward()
 	{
-		return new QuestPointReward(2);
+		return new QuestPointReward(3);
 	}
 
 	@Override

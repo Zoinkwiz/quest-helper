@@ -693,7 +693,8 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public QuestPointReward getQuestPointReward() {
+	public QuestPointReward getQuestPointReward()
+	{
 		return new QuestPointReward(2);
 	}
 

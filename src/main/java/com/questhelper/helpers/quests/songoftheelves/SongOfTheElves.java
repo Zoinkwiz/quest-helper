@@ -56,6 +56,7 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		natureRune, iritLeafOrFlowers, adamantChainbody, wineOfZamorakOrZamorakBrew, cabbage, blackKnifeOrBlackDagger, cadantineSeed, seedDibber,
 		vialOfWater, pestleAndMortar, hammer, saw, pickaxe, axe, spade, hammerHighlighted, elderCadantine, elderCadantineHighlighted, crystal,
 		pestleAndMortarHighlighted, vialOfWaterHighlighted, crystalDust, elderCadantineVial, inversionPotion, explosivePotion, magicCombatGear,
-		saradominBrews, superRestorePotions, teleCrystal, iorwerthCampTeleport, gamesNecklace;
+		saradominBrews, superRestorePotions, teleCrystal, iorwerthCampTeleport, gamesNecklace, staminaPotions;
 
 	NoItemRequirement nothingEquipped;
 
@@ -656,6 +657,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		teleCrystal.addAlternates(ItemID.TELEPORT_CRYSTAL_2, ItemID.TELEPORT_CRYSTAL_3, ItemID.TELEPORT_CRYSTAL_4, ItemID.TELEPORT_CRYSTAL_5);
 		iorwerthCampTeleport = new ItemRequirement("Iorwerth camp teleport", ItemID.IORWERTH_CAMP_TELEPORT);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
+		staminaPotions = new ItemRequirement("or more Stamina potions", ItemCollections.STAMINA_POTIONS, 6);
 	}
 
 	public void setupConditions()
@@ -1382,7 +1384,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(teleCrystal, iorwerthCampTeleport, gamesNecklace, combatGear, magicCombatGear, saradominBrews, superRestorePotions);
+		return Arrays.asList(teleCrystal, iorwerthCampTeleport, gamesNecklace, combatGear, magicCombatGear, saradominBrews, superRestorePotions, staminaPotions);
 	}
 
 	@Override
@@ -1488,7 +1490,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Making the potion", Arrays.asList(talkToElenaAfterTra, talkToArianwynAfterTra, usePestleOnCrystal,
 				useCadantineOnVial, useDustOnVial, talkToArianwynAfterPotion), pestleAndMortar, vialOfWater));
 
-		allSteps.add(new PanelDetails("Entering the Crystal", Arrays.asList(talkToAmlodd, goTouchFirstSeal)));
+		allSteps.add(new PanelDetails("Entering the Crystal", Arrays.asList(talkToAmlodd, goTouchFirstSeal), new ArrayList<>(), Collections.singletonList(staminaPotions)));
 
 		allSteps.add(new PanelDetails("Ithell Seal", Arrays.asList(openIthellSeal, goTouchIthellSeal)));
 

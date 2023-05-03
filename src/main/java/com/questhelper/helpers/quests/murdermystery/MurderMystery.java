@@ -128,12 +128,8 @@ public class MurderMystery extends BasicQuestHelper
 		investigating.addStep(new Conditions(hadPotAndThread, hadKillerPrint, talkedToPoisonSalesman), talkToSuspect);
 		investigating.addStep(new Conditions(hadPotAndThread, hadKillerPrint, heardAboutPoisonSalesman), talkToPoisonSalesman);
 		investigating.addStep(new Conditions(hadPotAndThread, hadKillerPrint), talkToGossip);
-
-		/* Get dagger print */
-		investigating.addStep(hadPotAndThread, checkingPrintSteps);
-
-		investigating.addStep(new Conditions(doesntNeedMoreFlypaper, hadThread, criminalsDaggerAny), pickUpPungentPot);
-		investigating.addStep(doesntNeedMoreFlypaper, searchWindowForThread);
+		investigating.addStep(hadPotAndThread, checkingPrintSteps); /* Get dagger print */
+		investigating.addStep(hadThread, pickUpPungentPot);
 
 		steps.put(1, investigating);
 

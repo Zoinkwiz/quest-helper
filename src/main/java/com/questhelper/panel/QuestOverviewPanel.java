@@ -689,9 +689,12 @@ public class QuestOverviewPanel extends JPanel
 		{
 			Color newColor;
 
+			ItemRequirement itemRequirement;
 			if (requirementPanel.getRequirement() instanceof ItemRequirement)
 			{
-				ItemRequirement itemRequirement = (ItemRequirement) requirementPanel.getRequirement();
+				itemRequirement = (ItemRequirement) requirementPanel.getRequirement();
+
+				requirementPanel.getLabel().setText(itemRequirement.getSidebarText());
 
 				requirementPanel.setVisible(itemRequirement.getConditionToHide() == null || !itemRequirement.getConditionToHide().check(client));
 

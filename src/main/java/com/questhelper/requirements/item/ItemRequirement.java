@@ -323,6 +323,23 @@ public class ItemRequirement extends AbstractRequirement
 		return getName();
 	}
 
+	public String getSidebarText()
+	{
+		StringBuilder text = new StringBuilder();
+
+		if (showQuantity())
+		{
+			text.append(getQuantity()).append(" x ");
+		}
+
+		text.append(getDisplayText());
+
+		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
+		String html2 = "</body></html>";
+
+		return html1 + text + html2;
+	}
+
 	@Override
 	public boolean shouldDisplayText(Client client)
 	{

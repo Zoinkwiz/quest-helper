@@ -57,6 +57,7 @@ public class QuestRequirementPanel extends JPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 
+		// TODO: Create generic getSidebarText which handles generating sidebar text for all requirement types
 		StringBuilder text = new StringBuilder();
 		if (requirement instanceof ItemRequirement)
 		{

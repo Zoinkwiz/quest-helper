@@ -411,8 +411,8 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		defeatedBeast = new Conditions(true, LogicType.OR,
 			new DialogRequirement("I did it! I, Tamayu, first son of Timfraku, did slay " +
-				"the<br>Shaikahan!"),
-			new DialogRequirement("The deaths of my kin have been avenged. You are my<br>witness."),
+				"the Shaikahan!"),
+			new DialogRequirement("The deaths of my kin have been avenged. You are my witness."),
 			new WidgetTextRequirement(119, 3, true, "<str>Tamayu has slain the Shaikahan!")
 		);
 
@@ -429,7 +429,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		givenSandwich = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the seaweed in monkey skin sandwich."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him a seaweed in monkey skin sandwich."),
-			new DialogRequirement("Yes ... perfect! You really do not understand how<br>necessary that was."),
+			new DialogRequirement("Yes ... perfect! You really do not understand how necessary that was."),
 			givenBones
 		);
 

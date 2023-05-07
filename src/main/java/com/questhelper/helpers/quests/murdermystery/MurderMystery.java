@@ -218,7 +218,7 @@ public class MurderMystery extends BasicQuestHelper
 		hadThread = new RuneliteRequirement(getConfigManager(), "murdermysteryhadthread", criminalsThread.alsoCheckBank(questBank));
 		hadPot = new RuneliteRequirement(getConfigManager(), "murdermysteryhadpot", pungentPot.alsoCheckBank(questBank));
 		heardAboutPoisonSalesman = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtogossip",
-			new Conditions(true, new DialogRequirement( "Especially as I heard that the poison salesman in the<br>Seers' village made a big sale to one of the family the<br>other day."))
+			new Conditions(true, new DialogRequirement( "Especially as I heard that the poison salesman in the Seers' village made a big sale to one of the family the other day."))
 		);
 		talkedToPoisonSalesman = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtopoisonsalesman",
 			new Conditions(true, new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok."))

@@ -232,10 +232,10 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkedToVermundiWithBook = new VarbitRequirement(584, 1);
 
 		askedToStartMachine = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT,
-				"Don't worry, I'll get them for you. Let's see... some<br>coal and some logs. Shouldn't be too hard."),
+			new DialogRequirement(client.getLocalPlayer().getName(),
+				"Don't worry, I'll get them for you. Let's see... some coal and some logs. Shouldn't be too hard."),
 			new DialogRequirement("Well, like I said, I can't do anything really " +
-				"without my<br>spinning machine."),
+				"without my spinning machine."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I must get <col=800000>coal<col=000080> and <col=800000>logs<col=000080>.")
 		);
 

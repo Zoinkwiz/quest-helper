@@ -234,7 +234,7 @@ public class HolyGrail extends BasicQuestHelper
 			new ZoneRequirement(fisherKingRealmAfterTitan1),
 			new ZoneRequirement(fisherKingRealmAfterTitan2),
 			new ZoneRequirement(fisherKingRealmAfterTitan3));
-		talkedToFisherman = new Conditions(true, new DialogRequirement("You must be blind then. There's ALWAYS bells there<br>when I go to the castle."));
+		talkedToFisherman = new Conditions(true, new DialogRequirement("You must be blind then. There's ALWAYS bells there when I go to the castle."));
 		inGrailBellRingLocation = new ZoneRequirement(grailBellRingLocation);
 		inFisherKingCastle1BottomFloor = new ZoneRequirement(fisherKingRealmCastle1BottomFloor);
 		inFisherKingCastle1SecondFloor = new ZoneRequirement(fisherKingRealmCastle1SecondFloor);

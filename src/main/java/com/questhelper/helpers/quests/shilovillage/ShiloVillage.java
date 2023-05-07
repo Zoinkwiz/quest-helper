@@ -236,7 +236,7 @@ public class ShiloVillage extends BasicQuestHelper
 
 		shownStone = new Conditions(true, LogicType.OR,
 			new DialogRequirement("If you have found anything else that you need " +
-				"help<br>with, please just let me know."),
+				"help with, please just let me know."),
 			new WidgetTextRequirement(119, 3, true, "<str>Trufitus identified the plaque")
 		);
 

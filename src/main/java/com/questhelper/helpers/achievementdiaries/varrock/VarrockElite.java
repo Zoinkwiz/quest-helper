@@ -142,7 +142,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 		cookingGuild.setTooltip("A chef's hat, Varrock Armour 3, or Cooking Cape");
 		rawPie = new ItemRequirement("Raw summer pie", ItemID.RAW_SUMMER_PIE).showConditioned(notSummerPie);
 		runeBar = new ItemRequirement("Rune bar", ItemID.RUNITE_BAR).showConditioned(notRuneDart);
-		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notRuneDart);
+		feather = new ItemRequirement("Feather", ItemID.FEATHER, 10).showConditioned(notRuneDart);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneDart).isNotConsumed();
 		runeDartTip = new ItemRequirement("Rune dart tip", ItemID.RUNE_DART_TIP);
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(not100Earth);
@@ -201,11 +201,11 @@ public class VarrockElite extends ComplexStateQuestHelper
 		earthRune100 = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft the earth runes.", essence.quantity(25));
 		moveToAnvil = new DetailedQuestStep(this, new WorldPoint(3188, 3426, 0),
-			"Go to the anvil beside the west Varrock bank.", runeBar, feather.quantity(10), hammer);
+			"Go to the anvil beside the west Varrock bank.", runeBar, feather, hammer);
 		dartTip = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3188, 3426, 0),
 			"Make rune dart tips on the anvil in west Varrock.", runeBar);
 		runeDart = new ItemStep(this, "Use feathers on the rune dart tips.", runeDartTip.highlighted(),
-			feather.quantity(10).highlighted());
+			feather.highlighted());
 
 		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");
@@ -283,7 +283,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 
 		PanelDetails runeDartsSteps = new PanelDetails("Smith and Fletch 10 Rune Darts", Arrays.asList(moveToAnvil,
 			dartTip, runeDart), new SkillRequirement(Skill.FLETCHING, 81), new SkillRequirement(Skill.SMITHING, 89),
-			touristTrap, runeBar, feather.quantity(10), hammer);
+			touristTrap, runeBar, feather, hammer);
 		runeDartsSteps.setDisplayCondition(notRuneDart);
 		runeDartsSteps.setLockingStep(runeDartTask);
 		allSteps.add(runeDartsSteps);

@@ -193,7 +193,7 @@ public class JunglePotion extends BasicQuestHelper
 	{
 		getArdrigal = new ObjectStep(this, ObjectID.PALM_TREE_2577, new WorldPoint(2871, 3116, 0),
 			"Search the palm trees north east of Tai Bwo Wannai for an Ardrigal herb.");
-		getArdrigal.addText("If you want to do Zogre Flesh Eaters or Legends' Quest grab one for each as you will need them later.");
+		getArdrigal.addText("If you want to do Legends' Quest grab one extra as you will need it later.");
 		return getArdrigal;
 	}
 

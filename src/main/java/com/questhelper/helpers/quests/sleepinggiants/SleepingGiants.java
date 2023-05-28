@@ -430,7 +430,7 @@ public class SleepingGiants extends BasicQuestHelper
 			fixPolishingStone, fixGrindstone, fixHammer, speakToKovacAfterRepairs),
 			Arrays.asList(oakLogs, wool, nails, hammer, chisel), Collections.singletonList(freeInventorySpace)));
 		allSteps.add(new PanelDetails("Creating the sword", Arrays.asList(speakToKovacContinue, searchCrate, fillCrucible,
-			speakToKovacAboutMould, setMould, talkToKovakAfterMould, pourMetal, coolDownSword, hitPreformWhileRed, grindstonePreform, polishPreform,
+			speakToKovacAboutMould, setMould, interactWithMould, talkToKovakAfterMould, pourMetal, coolDownSword, hitPreformWhileRed, grindstonePreform, polishPreform,
 			handInPreform), Arrays.asList(iceGloves, bucket)));
 
 		return allSteps;

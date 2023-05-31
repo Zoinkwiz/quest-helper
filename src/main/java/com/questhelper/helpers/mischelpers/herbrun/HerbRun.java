@@ -311,7 +311,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		faladorPlant.addIcon(ItemID.RANARR_SEED);
 		faladorPatch.addSubSteps(faladorPlant);
 
-		farmingGuildPlant = new ObjectStep(this, NullObjectID.NULL_38979, new WorldPoint(1238, 3726, 0), "Plant your seeds into the Farming Guild patch.", farmingGuildTeleport);
+		farmingGuildPlant = new ObjectStep(this, NullObjectID.NULL_33979, new WorldPoint(1238, 3726, 0), "Plant your seeds into the Farming Guild patch.", farmingGuildTeleport);
 		farmingGuildPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildPatch));
 		farmingGuildPlant.addIcon(ItemID.RANARR_SEED);
 		farmingGuildPatch.addSubSteps(farmingGuildPlant);

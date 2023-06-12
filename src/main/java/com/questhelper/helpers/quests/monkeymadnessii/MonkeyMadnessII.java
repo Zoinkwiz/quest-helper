@@ -669,7 +669,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Arrays.asList("Kruk (level 149, flinchable)", "Keef (level 178, safespottable)", "Kob (level 185, safespottable)", "9 Tortured gorillas (level 141)", "2 Demonic Gorillas (level 275)", "Glough (level 378)");
+		return Arrays.asList("Kruk (level 149, flinchable)", "Keef (level 178, safespottable)", "Kob (level 185, safespottable)", "9 Tortured gorillas (level 141)", "2 Demonic Gorillas (level 275)", "Glough (level 431)");
 	}
 
 	@Override
@@ -682,30 +682,30 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.SLAYER, 80000),
-				new ExperienceReward(Skill.AGILITY, 60000),
-				new ExperienceReward(Skill.THIEVING, 50000),
-				new ExperienceReward(Skill.HUNTER, 50000));
+			new ExperienceReward(Skill.SLAYER, 80000),
+			new ExperienceReward(Skill.AGILITY, 60000),
+			new ExperienceReward(Skill.THIEVING, 50000),
+			new ExperienceReward(Skill.HUNTER, 50000));
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2 x 50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
-				new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
-				new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
+			new ItemReward("2 x 50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+			new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
+			new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Access to Demonic Gorillas"),
-				new UnlockReward("A new Gnome Glider location"),
-				new UnlockReward("Access to a bank on Ape Atoll"),
-				new UnlockReward("Ability to wield the Heavy Ballista"),
-				new UnlockReward("Access to Maniacal Monkey hunting area"));
+			new UnlockReward("Access to Demonic Gorillas"),
+			new UnlockReward("A new Gnome Glider location"),
+			new UnlockReward("Access to a bank on Ape Atoll"),
+			new UnlockReward("Ability to wield the Heavy Ballista"),
+			new UnlockReward("Access to Maniacal Monkey hunting area"));
 	}
 
 	@Override
@@ -760,7 +760,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		req.add(strongholdBalloon);
 		req.add(new QuestRequirement(QuestHelperQuest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
 		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getId(),
-			Operation.GREATER_EQUAL,  50, "Finished the 'Freeing King Awowogei' subquest of RFD"));
+			Operation.GREATER_EQUAL, 50, "Finished the 'Freeing King Awowogei' subquest of RFD"));
 		req.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.WATCHTOWER, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.SLAYER, 69));

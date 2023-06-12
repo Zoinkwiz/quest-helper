@@ -232,7 +232,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		prototypeDartTip = new ItemRequirement("Prototype dart tip", ItemID.PROTOTYPE_DART_TIP);
 		prototypeDartTip.setHighlightInInventory(true);
 
-		feather10 = new ItemRequirement("Feather", ItemID.FEATHER, 10);
+		feather10 = new ItemRequirement("Feather", ItemID.FEATHER, 30);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		bronzeBarHighlighted = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		bronzeBarHighlighted.setHighlightInInventory(true);

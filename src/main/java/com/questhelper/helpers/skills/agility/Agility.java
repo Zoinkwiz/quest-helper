@@ -176,7 +176,7 @@ public class Agility extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("Ability to purchase Agility Cape for 99k"),
-			new UnlockReward("Ability to traverse various shortcuts throughout gielinor"),
+			new UnlockReward("Ability to traverse various shortcuts throughout Gielinor"),
 			new UnlockReward("Increased run energy restoration")
 		);
 	}

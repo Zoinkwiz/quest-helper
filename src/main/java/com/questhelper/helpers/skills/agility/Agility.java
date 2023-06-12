@@ -56,9 +56,7 @@ public class Agility extends ComplexStateQuestHelper
 	// Items recommended
 	ItemRequirement bootsOfLightness, gracefulOutfit, gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape;
 
-	SkillRequirement ag10, ag20, ag30, ag40, ag50, ag60, ag70, ag80, ag90;
-
-	SkillRequirement ag45;
+	SkillRequirement ag10, ag20, ag30, ag40, ag45, ag50, ag60, ag70, ag80, ag90;
 
 	QuestStep gnomeStronghold, draynorVillage, alKharid, varrock, canifis, falador, seersVillage, pollnivneach, rellekka, ardougne;
 
@@ -89,14 +87,12 @@ public class Agility extends ComplexStateQuestHelper
 		ag20 = new SkillRequirement(Skill.AGILITY, 20);
 		ag30 = new SkillRequirement(Skill.AGILITY, 30);
 		ag40 = new SkillRequirement(Skill.AGILITY, 40);
+		ag45 = new SkillRequirement(Skill.AGILITY, 45);
 		ag50 = new SkillRequirement(Skill.AGILITY, 50);
 		ag60 = new SkillRequirement(Skill.AGILITY, 60);
 		ag70 = new SkillRequirement(Skill.AGILITY, 70);
 		ag80 = new SkillRequirement(Skill.AGILITY, 80);
 		ag90 = new SkillRequirement(Skill.AGILITY, 90);
-
-		ag45 = new SkillRequirement(Skill.AGILITY, 45);
-
 
 		bootsOfLightness = new ItemRequirement(
 			"Boots of Lightness", ItemID.BOOTS_OF_LIGHTNESS).showConditioned(
@@ -104,7 +100,7 @@ public class Agility extends ComplexStateQuestHelper
 		).isNotConsumed();
 
 		gracefulHood = new ItemRequirement(
-			"Graceful hood", ItemCollections.GRACEFUL_HOOD, 1 ,true).showConditioned(
+			"Graceful hood", ItemCollections.GRACEFUL_HOOD, 1, true).showConditioned(
 			new Conditions(ag45)
 		).isNotConsumed();
 
@@ -143,43 +139,45 @@ public class Agility extends ComplexStateQuestHelper
 	private void setupSteps()
 	{
 		gnomeStronghold = new ObjectStep(this, ObjectID.LOG_BALANCE_23145, new WorldPoint(2474, 3435, 0),
-			"Train agility at the Gnome Stronghold Agility Course.",  Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+			"Train agility at the Gnome Stronghold Agility Course.", gracefulOutfit);
 
 		draynorVillage = new ObjectStep(this, ObjectID.ROUGH_WALL, new WorldPoint(3103, 3279, 0),
-			"Train agility at the Draynor Village Rooftop Course.",  Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+			"Train agility at the Draynor Village Rooftop Course.", gracefulOutfit);
 
 		alKharid = new ObjectStep(this, ObjectID.ROUGH_WALL_11633, new WorldPoint(3273, 3195, 0),
-			"Train agility at the Al Kharid Rooftop Course.",  Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+			"Train agility at the Al Kharid Rooftop Course.", gracefulOutfit);
 
 		varrock = new ObjectStep(this, ObjectID.ROUGH_WALL_14412, new WorldPoint(3221, 3414, 0),
-			"Train agility at the Varrock Rooftop Course.", Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+			"Train agility at the Varrock Rooftop Course.", gracefulOutfit);
 
 		canifis = new ObjectStep(this, ObjectID.TALL_TREE_14843, new WorldPoint(3508, 3488, 0),
 			"Train agility at the Canifis Rooftop Course. For best spawn of Mark of Grace, " +
-				"stay on this course until 60 Agility.", Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+				"stay on this course until 60 Agility.", gracefulOutfit);
 
 		falador = new ObjectStep(this, ObjectID.ROUGH_WALL_14898, new WorldPoint(3036, 3341, 0),
 			"Train agility at the Falador Rooftop Course. For best spawn of Mark of Grace," +
-				" stay on Canifis Rooftop Course until 60 Agility, then go directly to Seer's Village.", Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+				" stay on Canifis Rooftop Course until 60 Agility, then go directly to Seer's Village.", gracefulOutfit);
 
 		seersVillage = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
-			"Train agility at Seer's Village Rooftop Course.", Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+			"Train agility at Seer's Village Rooftop Course.", gracefulOutfit);
 
 		pollnivneach = new ObjectStep(this, ObjectID.BASKET_14935, new WorldPoint(3351, 2962, 0),
-			"Train agility at the Pollnivneach Rooftop Course.", Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+			"Train agility at the Pollnivneach Rooftop Course.", gracefulOutfit);
 
 		rellekka = new ObjectStep(this, ObjectID.ROUGH_WALL_14946, new WorldPoint(2625, 2677, 0),
-			"Train agility at the Rellekka Rooftop Course.", Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+			"Train agility at the Rellekka Rooftop Course.", gracefulOutfit);
 
 		ardougne = new ObjectStep(this, ObjectID.WOODEN_BEAMS, new WorldPoint(2673, 3298, 0),
-			"Train agility at the Ardougne Rooftop Course.", Collections.EMPTY_LIST, Collections.singletonList(gracefulOutfit));
+			"Train agility at the Ardougne Rooftop Course.", gracefulOutfit);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(
-			new UnlockReward("Ability to purchase AGILITY Cape for 99k")
+		return Arrays.asList(
+			new UnlockReward("Ability to purchase Agility Cape for 99k"),
+			new UnlockReward("Ability to traverse various shortcuts throughout gielinor"),
+			new UnlockReward("Increased run energy restoration")
 		);
 	}
 

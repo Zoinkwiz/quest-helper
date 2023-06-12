@@ -132,6 +132,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		cookedMeat = new ItemRequirement("Cooked Meat", ItemID.COOKED_MEAT, 1);
+		cookedMeat.canBeObtainedDuringQuest();
 		bread = new ItemRequirement("Bread", ItemID.BREAD, 1);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 3);

@@ -67,12 +67,14 @@ public class MisthalinMystery extends BasicQuestHelper
 		playedA, playedAnyKey, inGemWidget, selectedSaphire, selectedDiamond, selectedZenyte, selectedEmerald, selectedOnyx,
 		selectAnyGem, inBossRoom;
 
-	QuestStep talkToAbigale, takeTheBoat, takeTheBucket, searchTheBarrel, useBucketOnBarrel, searchTheBarrelForKey, openManorDoor,
-		takeKnife, tryToOpenPinkKnobDoor, takeNote1, readNotes1, useKnifeOnPainting, searchPainting, goThroughRubyDoor, takeTinderbox, lightCandle1, lightCandle2,
+	QuestStep talkToAbigale, takeTheBoat, takeTheBucket, searchTheBarrel, useBucketOnBarrel, searchTheBarrelForKey, takeKnife,
+		tryToOpenPinkKnobDoor, takeNote1, readNotes1, useKnifeOnPainting, searchPainting, goThroughRubyDoor, takeTinderbox, lightCandle1, lightCandle2,
 		lightCandle3, lightCandle4, lightBarrel, leaveExplosionRoom, climbWall, observeThroughTree, takeNote2, readNotes2, playPiano, playD, playE, playA, playDAgain, restartPiano,
 		searchThePiano, returnOverBrokenWall, openEmeraldDoor, enterBandosGodswordRoomStep, takeNote3, readNotes3, useKnifeOnFireplace, searchFireplace, clickSapphire, clickDiamond,
 		clickZenyte, clickEmerald, clickOnyx, clickRuby, restartGems, searchFireplaceForSapphireKey, goThroughSapphireDoor, reflectKnives, continueThroughSapphireDoor, pickUpKillersKnife,
 		fightAbigale, leaveSapphireRoom, talkToMandy;
+
+	ObjectStep openManorDoor;
 
 	//Zones
 	private Zone island, outside1, outside2, outside3, bossRoom;
@@ -280,32 +282,34 @@ public class MisthalinMystery extends BasicQuestHelper
 		talkToAbigale = new NpcStep(this, NpcID.ABIGALE, new WorldPoint(3237, 3155, 0), "Talk to Abigale in the south east corner of Lumbridge Swamp.");
 		talkToAbigale.addDialogStep("What has happened here?");
 		talkToAbigale.addDialogStep("What do you want me to do?");
+		talkToAbigale.addDialogStep("Yes.");
 		takeTheBoat = new ObjectStep(this, ObjectID.ROWBOAT_30108, new WorldPoint(3240, 3140, 0), "Board the rowboat south of Abigale.");
 		takeTheBucket = new ObjectStep(this, ObjectID.BUCKET_30147, new WorldPoint(1619, 4816, 0), "Pick up the bucket near the fountain.", bucket);
 		searchTheBarrel = new ObjectStep(this, NullObjectID.NULL_29649, new WorldPoint(1615, 4829, 0), "Search the barrel of rainwater north of the fountain to trigger a cutscene.", bucket);
 		useBucketOnBarrel = new ObjectStep(this, NullObjectID.NULL_29649, new WorldPoint(1615, 4829, 0), "Use the bucket on the barrel of rainwater.", bucket);
 		searchTheBarrelForKey = new ObjectStep(this, NullObjectID.NULL_29649, new WorldPoint(1615, 4829, 0), "Search the barrel of rainwater for the manor key.");
 		useBucketOnBarrel.addIcon(ItemID.BUCKET);
-		openManorDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_30110, new WorldPoint(1636, 4824, 0), "Enter the manor.");
+		openManorDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_30110, new WorldPoint(1636, 4824, 0), "Enter the manor.", true);
+		openManorDoor.addAlternateObjects(ObjectID.LARGE_DOOR_30111);
 		takeKnife = new ObjectStep(this, ObjectID.TABLE_30145, new WorldPoint(1639, 4831, 0), "Take the knife from the table.", knife);
 		tryToOpenPinkKnobDoor = new ObjectStep(this, ObjectID.DOOR_30112, new WorldPoint(1635, 4838, 0), "Try to open the pink-handled door.");
 		takeNote1 = new ObjectStep(this, NullObjectID.NULL_2266, new WorldPoint(1635, 4839, 0), "Pick up the note that appeared.");
-		readNotes1 = new DetailedQuestStep(this, "Read the notes.", notes1);
+		readNotes1 = new DetailedQuestStep(this, "Read the notes.", notes1.highlighted());
 		useKnifeOnPainting = new ObjectStep(this, NullObjectID.NULL_29650, new WorldPoint(1632, 4833, 0), "Use a knife on the marked painting.", knife);
 		useKnifeOnPainting.addIcon(ItemID.KNIFE);
 		searchPainting = new ObjectStep(this, NullObjectID.NULL_29650, new WorldPoint(1632, 4833, 0), "Search the painting for a ruby key.");
 		goThroughRubyDoor = new ObjectStep(this, ObjectID.DOOR_30116, new WorldPoint(1640, 4828, 0), "Go through the door with a ruby handle.", rubyKey);
 		takeTinderbox = new ObjectStep(this, ObjectID.SHELVES_30146, new WorldPoint(1646, 4826, 0), "Search shelves for a tinderbox.");
 
-		lightCandle1 = new ObjectStep(this, NullObjectID.NULL_29655, new WorldPoint(1641, 4826, 0), "Light the unlit candles in the room.", tinderbox);
+		lightCandle1 = new ObjectStep(this, NullObjectID.NULL_29655, new WorldPoint(1641, 4826, 0), "Light the unlit candles in the room.", tinderbox.highlighted());
 		lightCandle1.addIcon(ItemID.TINDERBOX);
-		lightCandle2 = new ObjectStep(this, NullObjectID.NULL_29654, new WorldPoint(1647, 4827, 0), "Light the unlit candles in the room.", tinderbox);
+		lightCandle2 = new ObjectStep(this, NullObjectID.NULL_29654, new WorldPoint(1647, 4827, 0), "Light the unlit candles in the room.", tinderbox.highlighted());
 		lightCandle2.addIcon(ItemID.TINDERBOX);
-		lightCandle3 = new ObjectStep(this, NullObjectID.NULL_29652, new WorldPoint(1641, 4831, 0), "Light the unlit candles in the room.", tinderbox);
+		lightCandle3 = new ObjectStep(this, NullObjectID.NULL_29652, new WorldPoint(1641, 4831, 0), "Light the unlit candles in the room.", tinderbox.highlighted());
 		lightCandle3.addIcon(ItemID.TINDERBOX);
-		lightCandle4 = new ObjectStep(this, NullObjectID.NULL_29653, new WorldPoint(1646, 4832, 0), "Light the unlit candles in the room.", tinderbox);
+		lightCandle4 = new ObjectStep(this, NullObjectID.NULL_29653, new WorldPoint(1646, 4832, 0), "Light the unlit candles in the room.", tinderbox.highlighted());
 		lightCandle4.addIcon(ItemID.TINDERBOX);
-		lightBarrel = new ObjectStep(this, NullObjectID.NULL_29651, new WorldPoint(1647, 4830, 0), "Light the fuse on the barrel.", tinderbox);
+		lightBarrel = new ObjectStep(this, NullObjectID.NULL_29651, new WorldPoint(1647, 4830, 0), "Light the fuse on the barrel.", tinderbox.highlighted());
 		lightBarrel.addIcon(ItemID.TINDERBOX);
 		leaveExplosionRoom = new ObjectStep(this, ObjectID.DOOR_30116, new WorldPoint(1640, 4828, 0), "Leave the room to trigger the explosion.");
 
@@ -313,7 +317,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		observeThroughTree = new ObjectStep(this, ObjectID.DEAD_TREE_30150, new WorldPoint(1630, 4849, 0), "Observe Lacey through the trees.");
 
 		takeNote2 = new ObjectStep(this, NullObjectID.NULL_2267, new WorldPoint(1632, 4850, 0), "Pick up the note that appeared by the fence.");
-		readNotes2 = new DetailedQuestStep(this, "Read the notes.", notes2);
+		readNotes2 = new DetailedQuestStep(this, "Read the notes.", notes2.highlighted());
 
 		playPiano = new ObjectStep(this, NullObjectID.NULL_29658, new WorldPoint(1647, 4842, 0), "Play the piano in the room to the south.");
 		playD = new WidgetStep(this, "Play the D key.", 554, 21);
@@ -322,7 +326,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		playDAgain = new WidgetStep(this, "Play the D key again.", 554, 21);
 		restartPiano = new DetailedQuestStep(this, "Unfortunately you've played an incorrect key. Restart.");
 
-		searchThePiano = new ObjectStep(this, NullObjectID.NULL_29658, new WorldPoint(1647, 4842, 0), "Search the piano for the emerald key.");
+		searchThePiano = new ObjectStep(this, NullObjectID.NULL_29658, new WorldPoint(1647, 4842, 0), "Right-click search the piano for the emerald key.");
 
 		returnOverBrokenWall = new ObjectStep(this, NullObjectID.NULL_29657, new WorldPoint(1648, 4829, 0),
 			"Climb back over the damaged wall into the manor.", emeraldKey);
@@ -332,7 +336,7 @@ public class MisthalinMystery extends BasicQuestHelper
 			"Try to enter the room with a Bandos Godsword in it.");
 
 		takeNote3 = new ObjectStep(this, NullObjectID.NULL_29648, new WorldPoint(1630, 4842, 0), "Pick up the note that appeared by the door.");
-		readNotes3 = new DetailedQuestStep(this, "Read the notes.", notes3);
+		readNotes3 = new DetailedQuestStep(this, "Read the notes.", notes3.highlighted());
 		useKnifeOnFireplace = new ObjectStep(this, NullObjectID.NULL_29659, new WorldPoint(1647, 4836, 0), "Use a knife on the unlit fireplace in the eastern room.", knife);
 		useKnifeOnFireplace.addIcon(ItemID.KNIFE);
 

@@ -48,7 +48,7 @@ public class QuestOrders
 		QuestHelperQuest.IMP_CATCHER,
 		QuestHelperQuest.WITCHS_POTION,
 		QuestHelperQuest.GERTRUDES_CAT,
-		// https://oldschool.runescape.wiki/w/Natural_history_quiz
+		//QuestHelperQuest.NATURAL_HITORY_QUIZ - Placeholder for future addition.
 		QuestHelperQuest.DADDYS_HOME,
 		QuestHelperQuest.DWARF_CANNON,
 		QuestHelperQuest.WATERFALL_QUEST,
@@ -109,6 +109,7 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF,
 		QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG,
 		QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG,
+		//QuestHelperQuest.VARROCK_MUSEUM_KUDOS, - Placeholder for future addition.
 		QuestHelperQuest.BONE_VOYAGE,
 		QuestHelperQuest.WATCHTOWER,
 		QuestHelperQuest.THE_GIANT_DWARF,
@@ -151,6 +152,7 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_EVIL_DAVE,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE,
 		QuestHelperQuest.TAI_BWO_WANNAI_TRIO,
+		QuestHelperQuest.KANDARIN_EASY,
 		QuestHelperQuest.CONTACT,
 		QuestHelperQuest.TEMPLE_OF_IKOV,
 		QuestHelperQuest.THE_EYES_OF_GLOUPHRIE,
@@ -160,7 +162,6 @@ public class QuestOrders
 		QuestHelperQuest.TALE_OF_THE_RIGHTEOUS,
 		QuestHelperQuest.WILDERNESS_EASY,
 		QuestHelperQuest.DESERT_EASY,
-		QuestHelperQuest.KANDARIN_EASY,
 		QuestHelperQuest.FALADOR_EASY,
 		QuestHelperQuest.LUMBRIDGE_EASY,
 		QuestHelperQuest.MORYTANIA_EASY,
@@ -173,6 +174,7 @@ public class QuestOrders
 		QuestHelperQuest.ARCHITECTURAL_ALLIANCE,
 		QuestHelperQuest.THE_SLUG_MENACE,
 		QuestHelperQuest.GETTING_AHEAD,
+		//QuestHelperQuest.MUSEUM_CAMP, - Placeholder for future addition.
 		QuestHelperQuest.COLD_WAR,
 		QuestHelperQuest.THE_HAND_IN_THE_SAND,
 		QuestHelperQuest.ENAKHRAS_LAMENT,
@@ -204,6 +206,7 @@ public class QuestOrders
 		QuestHelperQuest.OLAFS_QUEST,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		QuestHelperQuest.A_TASTE_OF_HOPE,
+		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for addition in future.
 		QuestHelperQuest.ARDOUGNE_MEDIUM,
 		QuestHelperQuest.DESERT_MEDIUM,
 		QuestHelperQuest.FALADOR_MEDIUM,
@@ -214,9 +217,9 @@ public class QuestOrders
 		QuestHelperQuest.MORYTANIA_MEDIUM,
 		QuestHelperQuest.VARROCK_MEDIUM,
 		QuestHelperQuest.WESTERN_MEDIUM,
-		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
 		QuestHelperQuest.CURSE_OF_THE_EMPTY_LORD,
 		QuestHelperQuest.THE_GENERALS_SHADOW,
+		//QuestHelperQuest.VARROCK_MUSEUM_KUDOS_II - Placeholder for addition in future.
 		QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY,
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
@@ -236,13 +239,12 @@ public class QuestOrders
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
-		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.MONKEY_MADNESS_II,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
+		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
-		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
@@ -293,6 +295,7 @@ public class QuestOrders
 		QuestHelperQuest.ROMEO__JULIET,
 		QuestHelperQuest.GERTRUDES_CAT,
 		QuestHelperQuest.DADDYS_HOME,
+		//QuestHelperQuest.NATURAL_HITORY_QUIZ - Placeholder for future addition.
 		QuestHelperQuest.RUNE_MYSTERIES,
 		QuestHelperQuest.TREE_GNOME_VILLAGE,
 		QuestHelperQuest.MONKS_FRIEND,
@@ -488,7 +491,9 @@ public class QuestOrders
 		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition. (Miniquest)
-		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
+		//QuestHelperQuest.VARROCK_MUSEUM_KUDOS, - Placeholder for future addition.
+		//QuestHelperQuest.MUSEUM_CAMP, - Placeholder for future addition.
+		//QuestHelperQuest.VARROCK_MUSEUM_KUDOS_II - Placeholder for addition in future.
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.BEAR_YOUR_SOUL,
@@ -693,7 +698,7 @@ public class QuestOrders
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.SLEEPING_GIANTS,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
-		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for future addition
+		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,
@@ -710,9 +715,8 @@ public class QuestOrders
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.DADDYS_HOME,
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
-		QuestHelperQuest.HOPESPEARS_WILL,
+		QuestHelperQuest.HOPESPEARS_WILL
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
-		QuestHelperQuest.SECRETS_OF_THE_NORTH
 	);
 
 	public static String normalizeQuestName(String questName)

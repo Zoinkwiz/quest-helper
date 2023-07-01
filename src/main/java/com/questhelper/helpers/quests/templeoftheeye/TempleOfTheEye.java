@@ -387,7 +387,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 			"Get puzzle from Apprentice Felix.");
 		talkToTamara = new NpcStep(this, NpcID.APPRENTICE_TAMARA, new WorldPoint(3112, 3162, 1),
 			"Get puzzle from Apprentice Tamara.");
-		talkToCordelia = new NpcStep(this, NpcID.APPRENTICE_CORDELIA_11443, new WorldPoint(3112, 3162, 1),
+		talkToCordelia = new NpcStep(this, NpcID.APPRENTICE_CORDELIA, new WorldPoint(3112, 3162, 1),
 			"Get puzzle from Apprentice Cordelia.");
 
 		talktoTrailborn2 = new NpcStep(this, NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 1),

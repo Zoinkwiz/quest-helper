@@ -478,8 +478,8 @@ public class MurderMystery extends BasicQuestHelper
 		searchAnna = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_COMPOST_HEAP, new WorldPoint(2730, 3572, 0), "Search the compost heap south west of the mansion. If a dialog box doesn't come up, go back to Anna to ask about poison, and COMPLETE THE DIALOG.");
 		searchBob = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_BEEHIVE, new WorldPoint(2730, 3559, 0), "Search the beehive south west of the mansion. If a dialog box doesn't come up, go back to Bob to ask about poison, and COMPLETE THE DIALOG.");
 		searchCarol = new ObjectStep(this, ObjectID.SINCLAIR_MANSION_DRAIN, new WorldPoint(2736, 3573, 0), "Search the drain south of the mansion. If a dialog box doesn't come up, go back to Carol to ask about poison, and COMPLETE THE DIALOG.");
-		searchDavid = new ConditionalStep(this, goUpstairs);
-		((ConditionalStep)searchDavid).addStep(isUpstairs, new ObjectStep(this, ObjectID.SPIDERS_NEST, new WorldPoint(2740, 3574, 1), "Search the spider's nest, upstairs in the mansion to the south. If a dialog box doesn't come up, go back to David to ask about poison, and COMPLETE THE DIALOG."));
+		searchDavid = new ConditionalStep(this, goUpstairs, "Search the spider's nest, upstairs in the mansion to the south. If a dialog box doesn't come up, go back to David to ask about poison, and COMPLETE THE DIALOG.");
+		((ConditionalStep)searchDavid).addStep(isUpstairs, new ObjectStep(this, ObjectID.SPIDERS_NEST, new WorldPoint(2740, 3574, 1), ""));
 		searchElizabeth = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_FOUNTAIN, new WorldPoint(2747, 3563, 0), "Search the fountain south east of the mansion. If a dialog box doesn't come up, go back to Elizabeth to ask about poison, and COMPLETE THE DIALOG.");
 		searchFrank = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_CREST, new WorldPoint(2746, 3573, 0), "Search the family crest attached to the south side of the mansion to the east. If a dialog box doesn't come up, go back to Frank to ask about poison, and COMPLETE THE DIALOG.");
 

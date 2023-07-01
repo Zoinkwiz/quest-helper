@@ -105,7 +105,7 @@ public class ImpCatcher extends BasicQuestHelper
 		collectBeads = new DetailedQuestStep(this, "Collect one of each bead. You can kill imps for these beads, or buy them on the Grand Exchange.",
 			blackBead, whiteBead, redBead, yellowBead);
 		moveToTower = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(3103, 3159, 0),
-			"Head to the Wizards' Tower and climb the staircase with the require beads.", blackBead, whiteBead, redBead, yellowBead);
+			"Head to the Wizards' Tower and climb up the staircase with the required beads.", blackBead, whiteBead, redBead, yellowBead);
 		climbTower = new ObjectStep(this, ObjectID.STAIRCASE_12537, new WorldPoint(3103, 3159, 1),
 			"Climb the staircase again.", blackBead, whiteBead, redBead, yellowBead);
 		turnInQuest = new NpcStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),

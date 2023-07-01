@@ -252,7 +252,7 @@ public class TrollRomance extends BasicQuestHelper
 		goUpToUgForFight.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 
-		challengeArrg = new NpcStep(this, NpcID.ARRG, new WorldPoint(2829, 10095, 1), "Challenge to Arrg to fight.", combatGear);
+		challengeArrg = new NpcStep(this, NpcID.ARRG, new WorldPoint(2829, 10095, 1), "Challenge Arrg to a fight.", combatGear);
 		challengeArrg.addDialogStep("I am here to kill you!");
 		challengeArrg.setWorldMapPoint(new WorldPoint(2892, 10127, 0));
 		challengeArrg.addSubSteps(enterStrongholdForFight, goUpToUgForFight, goDownToUgForFight);

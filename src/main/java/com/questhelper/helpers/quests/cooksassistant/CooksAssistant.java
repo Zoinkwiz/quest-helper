@@ -32,7 +32,6 @@ import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ import java.util.Map;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -64,7 +62,7 @@ import com.questhelper.steps.QuestStep;
 public class CooksAssistant extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement egg, milk, flour, bucket, pot, coins, wheat;
+	ItemRequirement egg, milk, flour, bucket, pot, coins, grain;
 
 	Requirement controlsUsed;
 
@@ -91,10 +89,10 @@ public class CooksAssistant extends BasicQuestHelper
 		doQuest.addStep(new Conditions(milk, pot, egg, controlsUsed, inMillThird), climbLadderThree);
 		doQuest.addStep(new Conditions(milk, pot, egg, controlsUsed, inMillSecond), climbLadderTwoDown);
 		doQuest.addStep(new Conditions(milk, pot, egg, controlsUsed), collectFlour);
-		doQuest.addStep(new Conditions(milk, pot, egg, wheat, inMillThird), fillHopper);
+		doQuest.addStep(new Conditions(milk, pot, egg, grain, inMillThird), fillHopper);
 		doQuest.addStep(new Conditions(milk, pot, egg, inMillThird), operateControls);
-		doQuest.addStep(new Conditions(milk, pot, egg, wheat, inMillSecond), climbLadderTwoUp);
-		doQuest.addStep(new Conditions(milk, pot, egg, wheat), climbLadderOne);
+		doQuest.addStep(new Conditions(milk, pot, egg, grain, inMillSecond), climbLadderTwoUp);
+		doQuest.addStep(new Conditions(milk, pot, egg, grain), climbLadderOne);
 		doQuest.addStep(new Conditions(milk, pot, egg), getWheat);
 		doQuest.addStep(new Conditions(milk, pot), getEgg);
 		doQuest.addStep(new Conditions(bucket, pot), milkCow);
@@ -119,7 +117,7 @@ public class CooksAssistant extends BasicQuestHelper
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		coins.setTooltip("Necessary if you do not have a pot / bucket");
-		wheat = new ItemRequirement("Wheat", ItemID.GRAIN);
+		grain = new ItemRequirement("Grain", ItemID.GRAIN);
 
 		controlsUsed = new VarbitRequirement(4920, 1);
 	}
@@ -142,6 +140,7 @@ public class CooksAssistant extends BasicQuestHelper
 			"Grab an egg from the farm north of Lumbridge.", egg);
 		getBucket = new NpcStep(this, NpcID.SHOP_KEEPER, new WorldPoint(3212, 3246, 0),
 			"Purchase a bucket from the Lumbridge General Store.", coins.quantity(3));
+		getBucket.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BUCKET, true);
 		getBucket.addAlternateNpcs(NpcID.SHOP_ASSISTANT);
 		getPot = new NpcStep(this, NpcID.SHOP_KEEPER, new WorldPoint(3212, 3246, 0),
 			"Purchase a pot from the Lumbridge General Store.", coins.quantity(3));
@@ -149,21 +148,27 @@ public class CooksAssistant extends BasicQuestHelper
 		milkCow = new ObjectStep(this, ObjectID.DAIRY_COW, new WorldPoint(3254, 3272, 0),
 			"Milk the cow north-east of Lumbridge.", bucket);
 		getWheat = new ObjectStep(this, ObjectID.WHEAT_15507, new WorldPoint(3161, 3292, 0),
-			"Pick wheat north of Lumbridge.");
+			"Pick some wheat north of Lumbridge.");
 		climbLadderOne = new ObjectStep(this, ObjectID.LADDER_12964, new WorldPoint(3164, 3307, 0),
-			"Climb up the ladder in the Mill.", pot, wheat);
+			"Climb up the ladder in the Mill north of Lumbridge to the top floor.", pot, grain);
 		climbLadderTwoUp = new ObjectStep(this, ObjectID.LADDER_12965, new WorldPoint(3164, 3307, 1),
-			"Climb up the ladder in the Mill.", pot, wheat);
+			"Climb up the ladder in the Mill north of Lumbridge to the top floor.", pot, grain);
+		climbLadderTwoUp.addDialogStep("Climb Up.");
+		climbLadderOne.addSubSteps(climbLadderTwoUp);
 		fillHopper = new ObjectStep(this, ObjectID.HOPPER_24961, new WorldPoint(3166, 3307, 2),
-			"Fill the hopper with your grain.", pot, wheat);
+			"Fill the hopper with your grain.", pot, grain.highlighted());
+		fillHopper.addIcon(ItemID.GRAIN);
 		operateControls = new ObjectStep(this, ObjectID.HOPPER_CONTROLS_24964, new WorldPoint(3166, 3305, 2),
 			"Operate the hopper controls.", pot);
 		climbLadderThree = new ObjectStep(this, ObjectID.LADDER_12966, new WorldPoint(3164, 3307, 2),
-			"Climb down the ladder in the Mill.", pot);
+			"Climb down the ladder in the Mill to the ground floor.", pot);
 		climbLadderTwoDown = new ObjectStep(this, ObjectID.LADDER_12965, new WorldPoint(3164, 3307, 1),
-			"Climb down the ladder in the Mill.", pot);
+			"Climb down the ladder in the Mill to the ground floor.", pot);
+		climbLadderTwoDown.addDialogStep("Climb Down.");
+		climbLadderThree.addSubSteps(climbLadderTwoDown);
 		collectFlour = new ObjectStep(this, ObjectID.FLOUR_BIN, new WorldPoint(3166, 3306, 0),
-			"Collect the flour in the bin.", pot);
+			"Collect the flour in the bin.", pot.highlighted());
+		collectFlour.addIcon(ItemID.POT);
 		finishQuest = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3206, 3214, 0),
 			"Give the Cook in Lumbridge Castle's kitchen the required items to finish the quest.",
 			egg, milk, flour);
@@ -211,8 +216,8 @@ public class CooksAssistant extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(getBucket, getPot), coins.quantity(3)));
 		allSteps.add(new PanelDetails("Getting the Milk", Collections.singletonList(milkCow), bucket));
 		allSteps.add(new PanelDetails("Getting the Egg", Collections.singletonList(getEgg)));
-		allSteps.add(new PanelDetails("Getting the Flour", Arrays.asList(getWheat, climbLadderOne, climbLadderTwoUp, fillHopper,
-			operateControls, climbLadderThree, climbLadderTwoDown, collectFlour), pot));
+		allSteps.add(new PanelDetails("Getting the Flour", Arrays.asList(getWheat, climbLadderOne, fillHopper,
+			operateControls, climbLadderThree, collectFlour), pot));
 		allSteps.add(new PanelDetails("Finishing up", Collections.singletonList(finishQuest), egg, flour, milk));
 
 		return allSteps;

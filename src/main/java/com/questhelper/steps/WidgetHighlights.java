@@ -38,16 +38,55 @@ public class WidgetHighlights
 
 	protected final int childId;
 
+	@Getter
+	protected Integer itemIdRequirement;
+
+	protected final boolean checkChildren;
+
 	public WidgetHighlights(int groupId, int childId)
 	{
 		this.groupId = groupId;
 		this.childId = childId;
+		this.checkChildren = false;
 	}
 
-	public void highlightChoice(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
+	public WidgetHighlights(int groupId, int childId, int itemIdRequirement)
+	{
+		this(groupId, childId, itemIdRequirement, false);
+	}
+
+	public WidgetHighlights(int groupId, int childId, int itemIdRequirement, boolean checkChildren)
+	{
+		this.groupId = groupId;
+		this.childId = childId;
+		this.itemIdRequirement = itemIdRequirement;
+		this.checkChildren = checkChildren;
+	}
+
+	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{
 		Widget widgetToHighlight = client.getWidget(groupId, childId);
 		if (widgetToHighlight == null) return;
+
+		if (checkChildren)
+		{
+			Widget[] widgets = widgetToHighlight.getChildren();
+			if (widgets == null) return;
+
+			for (Widget widget : widgets)
+			{
+				highlightChoice(graphics, questHelper, widget);
+			}
+		}
+		else
+		{
+			highlightChoice(graphics, questHelper, widgetToHighlight);
+		}
+	}
+
+	private void highlightChoice(Graphics2D graphics, QuestHelperPlugin questHelper, Widget widgetToHighlight)
+	{
+		if (widgetToHighlight == null || (itemIdRequirement != null && widgetToHighlight.getItemId() != itemIdRequirement)) return;
 
 		graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
 			questHelper.getConfig().targetOverlayColor().getGreen(),

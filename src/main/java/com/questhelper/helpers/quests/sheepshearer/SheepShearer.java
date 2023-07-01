@@ -108,7 +108,7 @@ public class SheepShearer extends BasicQuestHelper
 		wool = new ItemRequirement("Wool", ItemID.WOOL);
 		wool.addAlternates(ItemID.BALL_OF_WOOL);
 
-		woolNeeded = client.getVarpValue(179) != 1 ? 21 - client.getVarpValue(179) : 20;
+		woolNeeded = client.getVarpValue(179) > 1 ? 21 - client.getVarpValue(179) : 20;
 	}
 
 	public void loadZones()

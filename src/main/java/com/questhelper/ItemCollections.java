@@ -1456,6 +1456,14 @@ public enum ItemCollections
 		ItemID.ARDOUGNE_MAX_CAPE
 	)),
 
+	SHAYZIEN_GLOVES(ImmutableList.of(
+		ItemID.SHAYZIEN_GLOVES_1,
+		ItemID.SHAYZIEN_GLOVES_2,
+		ItemID.SHAYZIEN_GLOVES_3,
+		ItemID.SHAYZIEN_GLOVES_4,
+		ItemID.SHAYZIEN_GLOVES_5
+	)),
+
 	TEAM_CAPE(ImmutableList.of(
 		ItemID.TEAM1_CAPE,
 		ItemID.TEAM2_CAPE,

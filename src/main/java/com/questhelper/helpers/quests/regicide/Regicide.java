@@ -258,21 +258,21 @@ public class Regicide extends BasicQuestHelper
 		stripOfCloth.setTooltip("Made on a loom with 4 balls of wool.");
 		stripOfCloth.appendToTooltip("There is a loom available at the Falador Farm");
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
-		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemID.LEATHER_GLOVES).isNotConsumed();
-		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
-			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
-			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES, ItemID.GRACEFUL_GLOVES_11859,
-			ItemID.GRACEFUL_GLOVES_13587, ItemID.GRACEFUL_GLOVES_13588, ItemID.GRACEFUL_GLOVES_13599, ItemID.GRACEFUL_GLOVES_13600,
-			ItemID.GRACEFUL_GLOVES_13611, ItemID.GRACEFUL_GLOVES_13612, ItemID.GRACEFUL_GLOVES_13623, ItemID.GRACEFUL_GLOVES_13624,
-			ItemID.GRACEFUL_GLOVES_13635, ItemID.GRACEFUL_GLOVES_13636, ItemID.GRACEFUL_GLOVES_13675, ItemID.GRACEFUL_GLOVES_13676,
-			ItemID.GRACEFUL_GLOVES_21073, ItemID.GRACEFUL_GLOVES_21075, ItemID.GRACEFUL_GLOVES_24755, ItemID.GRACEFUL_GLOVES_24757,
-			ItemID.GRACEFUL_GLOVES_25081, ItemID.GRACEFUL_GLOVES_25083);
-		gloves.setTooltip("The following gloves are valid:");
-		gloves.appendToTooltip("All RFD Gloves");
-		gloves.appendToTooltip("Leather Gloves");
-		gloves.appendToTooltip("Ferocious Gloves");
-		gloves.appendToTooltip("Graceful Gloves");
-		gloves.appendToTooltip("Granite Gloves");
+
+		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemCollections.GLOVES).isNotConsumed();
+		gloves.addAlternates(ItemCollections.GRACEFUL_GLOVES);
+		gloves.addAlternates(ItemCollections.SHAYZIEN_GLOVES);
+		gloves.addAlternates(ItemID.ANCIENT_CEREMONIAL_GLOVES, ItemID.BLOODBARK_GAUNTLETS, ItemID.BUNNY_PAWS, ItemID.CHAOS_GAUNTLETS,
+			ItemID.CLUE_HUNTER_GLOVES,ItemID.COOKING_GAUNTLETS,ItemID.CRAB_CLAW,ItemID.CRABCLAW_HOOK, ItemID.DRAGONSTONE_GAUNTLETS,
+			ItemID.EXPERT_MINING_GLOVES,ItemID.GILDED_DHIDE_VAMBRACES,ItemID.GLOVES_OF_DARKNESS,ItemID.GOLDSMITH_GAUNTLETS,
+			ItemID.GROUP_IRON_BRACERS,ItemID.GROUP_IRON_BRACERS_UNRANKED,ItemID.HARDCORE_GROUP_IRON_BRACERS,ItemID.HOLY_WRAPS,
+			ItemID.KLANKS_GAUNTLETS,ItemID.MINING_GLOVES,ItemID.ORNATE_GLOVES,ItemID.PIRATES_HOOK,ItemID.RANGER_GLOVES,ItemID.REGEN_BRACELET,
+			ItemID.SAMURAI_GLOVES,ItemID.SMITHS_GLOVES_I,ItemID.SNOW_IMP_COSTUME_GLOVES,ItemID.SPLITBARK_GAUNTLETS,ItemID.SPOOKIER_GLOVES,
+			ItemID.SPOOKY_GLOVES,ItemID.STEEL_GAUNTLETS,ItemID.SUPERIOR_MINING_GLOVES,ItemID.SWAMPBARK_GAUNTLETS,ItemID.WARM_GLOVES,
+			ItemID.ZARYTE_VAMBRACES);
+		gloves.setUrlSuffix("Quicklime");
+		gloves.setTooltip("'Go to wiki..' to see valid options for handling Quicklime");
+
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		cookedRabbit = new ItemRequirement("Cooked rabbit", ItemID.COOKED_RABBIT);
 		cookedRabbit.setTooltip("Raw Rabbit can be killed around Isafdar or purchased from the");

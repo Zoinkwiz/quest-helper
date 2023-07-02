@@ -146,7 +146,7 @@ public class TheLostTribe extends BasicQuestHelper
 
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);
-		faladorTeleport = new ItemRequirement("Falador teleports", ItemID.FALADOR_TELEPORT);
+		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 	}
 
 	public void loadZones()

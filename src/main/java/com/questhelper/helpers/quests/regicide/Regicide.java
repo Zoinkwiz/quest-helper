@@ -270,7 +270,7 @@ public class Regicide extends BasicQuestHelper
 			ItemID.SAMURAI_GLOVES,ItemID.SMITHS_GLOVES_I,ItemID.SNOW_IMP_COSTUME_GLOVES,ItemID.SPLITBARK_GAUNTLETS,ItemID.SPOOKIER_GLOVES,
 			ItemID.SPOOKY_GLOVES,ItemID.STEEL_GAUNTLETS,ItemID.SUPERIOR_MINING_GLOVES,ItemID.SWAMPBARK_GAUNTLETS,ItemID.WARM_GLOVES,
 			ItemID.ZARYTE_VAMBRACES);
-		gloves.setUrlSuffix("Quicklime");
+		gloves.setUrlSuffix("Quicklime#Gloves");
 		gloves.setTooltip("'Go to wiki..' to see valid options for handling Quicklime");
 
 		pot = new ItemRequirement("Pot", ItemID.POT);

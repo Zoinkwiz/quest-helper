@@ -261,8 +261,6 @@ public class Regicide extends BasicQuestHelper
 
 		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemCollections.QUICKLIME_GLOVES).isNotConsumed();
 		gloves.addAlternates(ItemCollections.GRACEFUL_GLOVES);
-		gloves.addAlternates(ItemCollections.SHAYZIEN_GLOVES);
-		gloves.addAlternates(ItemCollections.KARAMJA_GLOVES);
 		gloves.setUrlSuffix("Quicklime#Gloves");
 		gloves.setTooltip("'Go to wiki..' to see valid options for handling Quicklime");
 

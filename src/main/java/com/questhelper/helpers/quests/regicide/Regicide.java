@@ -259,17 +259,10 @@ public class Regicide extends BasicQuestHelper
 		stripOfCloth.appendToTooltip("There is a loom available at the Falador Farm");
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 
-		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemCollections.GLOVES).isNotConsumed();
+		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemCollections.QUICKLIME_GLOVES).isNotConsumed();
 		gloves.addAlternates(ItemCollections.GRACEFUL_GLOVES);
 		gloves.addAlternates(ItemCollections.SHAYZIEN_GLOVES);
-		gloves.addAlternates(ItemID.ANCIENT_CEREMONIAL_GLOVES, ItemID.BLOODBARK_GAUNTLETS, ItemID.BUNNY_PAWS, ItemID.CHAOS_GAUNTLETS,
-			ItemID.CLUE_HUNTER_GLOVES,ItemID.COOKING_GAUNTLETS,ItemID.CRAB_CLAW,ItemID.CRABCLAW_HOOK, ItemID.DRAGONSTONE_GAUNTLETS,
-			ItemID.EXPERT_MINING_GLOVES,ItemID.GILDED_DHIDE_VAMBRACES,ItemID.GLOVES_OF_DARKNESS,ItemID.GOLDSMITH_GAUNTLETS,
-			ItemID.GROUP_IRON_BRACERS,ItemID.GROUP_IRON_BRACERS_UNRANKED,ItemID.HARDCORE_GROUP_IRON_BRACERS,ItemID.HOLY_WRAPS,
-			ItemID.KLANKS_GAUNTLETS,ItemID.MINING_GLOVES,ItemID.ORNATE_GLOVES,ItemID.PIRATES_HOOK,ItemID.RANGER_GLOVES,ItemID.REGEN_BRACELET,
-			ItemID.SAMURAI_GLOVES,ItemID.SMITHS_GLOVES_I,ItemID.SNOW_IMP_COSTUME_GLOVES,ItemID.SPLITBARK_GAUNTLETS,ItemID.SPOOKIER_GLOVES,
-			ItemID.SPOOKY_GLOVES,ItemID.STEEL_GAUNTLETS,ItemID.SUPERIOR_MINING_GLOVES,ItemID.SWAMPBARK_GAUNTLETS,ItemID.WARM_GLOVES,
-			ItemID.ZARYTE_VAMBRACES);
+		gloves.addAlternates(ItemCollections.KARAMJA_GLOVES);
 		gloves.setUrlSuffix("Quicklime#Gloves");
 		gloves.setTooltip("'Go to wiki..' to see valid options for handling Quicklime");
 

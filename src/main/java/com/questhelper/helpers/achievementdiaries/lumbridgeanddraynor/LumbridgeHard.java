@@ -208,7 +208,10 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notBelladonna).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notBelladonna).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notBelladonna).isNotConsumed();
-		gloves = new ItemRequirement("Gloves", ItemCollections.GLOVES).showConditioned(notBelladonna).isNotConsumed();
+		gloves = new ItemRequirement("Gloves", ItemCollections.BELLADONNA_GLOVES).showConditioned(notBelladonna).isNotConsumed();
+		gloves.addAlternates(ItemCollections.GRACEFUL_GLOVES);
+		gloves.setUrlSuffix("Belladonna#Gloves");
+		gloves.setTooltip("'Go to wiki..' to see valid options for handling belladonna");
 		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(new Conditions(LogicType.OR, notHundredTears, notTrainToKeld)).isNotConsumed();
 

@@ -258,21 +258,12 @@ public class Regicide extends BasicQuestHelper
 		stripOfCloth.setTooltip("Made on a loom with 4 balls of wool.");
 		stripOfCloth.appendToTooltip("There is a loom available at the Falador Farm");
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
-		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemID.LEATHER_GLOVES).isNotConsumed();
-		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
-			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
-			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES, ItemID.GRACEFUL_GLOVES_11859,
-			ItemID.GRACEFUL_GLOVES_13587, ItemID.GRACEFUL_GLOVES_13588, ItemID.GRACEFUL_GLOVES_13599, ItemID.GRACEFUL_GLOVES_13600,
-			ItemID.GRACEFUL_GLOVES_13611, ItemID.GRACEFUL_GLOVES_13612, ItemID.GRACEFUL_GLOVES_13623, ItemID.GRACEFUL_GLOVES_13624,
-			ItemID.GRACEFUL_GLOVES_13635, ItemID.GRACEFUL_GLOVES_13636, ItemID.GRACEFUL_GLOVES_13675, ItemID.GRACEFUL_GLOVES_13676,
-			ItemID.GRACEFUL_GLOVES_21073, ItemID.GRACEFUL_GLOVES_21075, ItemID.GRACEFUL_GLOVES_24755, ItemID.GRACEFUL_GLOVES_24757,
-			ItemID.GRACEFUL_GLOVES_25081, ItemID.GRACEFUL_GLOVES_25083);
-		gloves.setTooltip("The following gloves are valid:");
-		gloves.appendToTooltip("All RFD Gloves");
-		gloves.appendToTooltip("Leather Gloves");
-		gloves.appendToTooltip("Ferocious Gloves");
-		gloves.appendToTooltip("Graceful Gloves");
-		gloves.appendToTooltip("Granite Gloves");
+
+		gloves = new ItemRequirement("Gloves which fully cover your hand", ItemCollections.QUICKLIME_GLOVES).isNotConsumed();
+		gloves.addAlternates(ItemCollections.GRACEFUL_GLOVES);
+		gloves.setUrlSuffix("Quicklime#Gloves");
+		gloves.setTooltip("'Go to wiki..' to see valid options for handling Quicklime");
+
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		cookedRabbit = new ItemRequirement("Cooked rabbit", ItemID.COOKED_RABBIT);
 		cookedRabbit.setTooltip("Raw Rabbit can be killed around Isafdar or purchased from the");

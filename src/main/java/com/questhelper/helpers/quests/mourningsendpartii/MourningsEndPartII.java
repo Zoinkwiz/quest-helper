@@ -73,7 +73,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement deathTalisman, deathTalismanHeader, mournersOutfit, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak, chisel, rope, ropeHighlight, prayerPotions, food, newKey, edernsJournal,
-		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, deathTalismanNote, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight, teleportCrystal;
+		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight, teleportCrystal;
 
 	Requirement inMournerBasement, inMournerHQ, inCave, inTempleF0, inTempleF1, inTempleF2, inTempleF2NorthRoom, inCaveOrF0, inTempleStairSquare, inNorthF2, inSouthF2,
 		knowToUseCrystal, inBlueRoom, inCyanRoom, solvedPuzzle1, solvedPuzzle2, solvedPuzzle3, solvedPuzzle4, solvedPuzzle5, dispenserEmpty, inYellowRoom, usedRope,
@@ -411,10 +411,12 @@ public class MourningsEndPartII extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		deathTalisman = new ItemRequirement("Death talisman", ItemID.DEATH_TALISMAN).isNotConsumed();
-		deathTalisman.addAlternates(ItemID.DEATH_TALISMAN, ItemID.RUNECRAFT_CAPE, ItemID.CATALYTIC_TALISMAN);
-
+		deathTalisman.addAlternates(ItemID.DEATH_TIARA, ItemID.RUNECRAFT_CAPE, ItemID.CATALYTIC_TALISMAN, ItemID.CATALYTIC_TIARA);
+		deathTalisman.setTooltip("Catalytic talisman/tiara may be used instead");
+		deathTalisman.appendToTooltip("or bring the dwarf the 50 items asked later");
 		deathTalismanHeader = new ItemRequirement("Death talisman or 50 items asked of you by a dwarf", ItemID.DEATH_TALISMAN).isNotConsumed();
-		deathTalismanNote = new ItemRequirement("Death talisman, or if you're an ironman you can earn one later", ItemID.DEATH_TALISMAN);
+		deathTalismanHeader.addAlternates(ItemID.DEATH_TIARA, ItemID.RUNECRAFT_CAPE, ItemID.CATALYTIC_TALISMAN, ItemID.CATALYTIC_TIARA);
+		deathTalismanHeader.setTooltip("Catalytic talisman/tiara may be used instead");
 
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true).isNotConsumed();
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
@@ -660,13 +662,13 @@ public class MourningsEndPartII extends BasicQuestHelper
 		talkToArianwynAfterGivingCrystal.setLockingCondition(knowToUseCrystal);
 
 		goBackIntoMournerHQ = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
-			"Return to the Temple of Light.", rope, newKey, gasMask, mournerTop, mournerTrousers, mournerCloak, mournerGloves, mournerBoots, deathTalismanNote, newlyIfOneTrip);
+			"Return to the Temple of Light.", rope, newKey, gasMask, mournerTop, mournerTrousers, mournerCloak, mournerGloves, mournerBoots, deathTalisman, newlyIfOneTrip);
 
 		goBackIntoMournerBasement = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Enter the Mourner HQ basement.");
 
 		goBackIntoMournerCave = new ObjectStep(this, ObjectID.DOOR_8789, new WorldPoint(2034, 4636, 0), "Enter the Mourner Caves.", newKey);
 
-		enterTempleOfLight = new DetailedQuestStep(this, new WorldPoint(1907, 4640, 0), "Return to the Temple of Light. Make sure you're prepared for shadows to be continuously attacking you.");
+		enterTempleOfLight = new DetailedQuestStep(this, new WorldPoint(1907, 4640, 0), "If you are an ironman, you can earn the death talisman later. Return to the Temple of Light. Make sure you're prepared for shadows to be continuously attacking you.");
 		enterTempleOfLight.addSubSteps(goBackIntoMournerHQ, goBackIntoMournerBasement, goBackIntoMournerCave);
 
 		goUpStairsTempleC1 = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1903, 4639, 0), "Go up the stairs to the first floor.");
@@ -1058,7 +1060,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 			Arrays.asList(talkToEssyllt, enterCave, searchCorpse, goUpStairsTemple, goUpSouthLadder, goToMiddleFromSouth, goUpFromMiddleToNorth, useChisel, bringCrystalToArianwyn,
 				talkToElunedAfterGivingCrystal, talkToArianwynAfterGivingCrystal), chisel));
 
-		allSteps.add(new PanelDetails("Return to the Temple", Collections.singletonList(enterTempleOfLight), rope, mournersOutfit, deathTalismanNote, newKey, newlyIfOneTrip));
+		allSteps.add(new PanelDetails("Return to the Temple", Collections.singletonList(enterTempleOfLight), rope, mournersOutfit, deathTalisman, newKey, newlyIfOneTrip));
 
 		allSteps.add(new PanelDetails("Puzzle 1", Arrays.asList(goUpStairsTempleC1, pullDispenser1, puzzle1Pillar1, puzzle1Pillar2, puzzle1Pillar3, puzzle1Pillar4, puzzle1Pillar5, climbWallSupport, searchBlueChest)));
 		allSteps.add(new PanelDetails("Puzzle 2", Arrays.asList(pullDispenser2, puzzle2Pillar1, puzzle2Pillar2, puzzle2Pillar3, puzzle2Pillar4, puzzle2Pillar5, puzzle2Pillar6, searchMagentaChest)));

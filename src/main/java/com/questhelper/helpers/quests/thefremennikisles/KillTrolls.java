@@ -11,8 +11,8 @@ public class KillTrolls extends NpcStep
 {
 	public KillTrolls(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.ICE_TROLL_MALE_5824, new WorldPoint(2390, 10280, 1), "Kill 10 ice trolls.", true);
-		this.addAlternateNpcs(NpcID.ICE_TROLL_MALE_5829, NpcID.ICE_TROLL_FEMALE_5825, NpcID.ICE_TROLL_FEMALE_5830, NpcID.ICE_TROLL_RUNT_5823, NpcID.ICE_TROLL_RUNT_5828);
+		super(questHelper, NpcID.FRENZIED_ICE_TROLL_MALE, new WorldPoint(2390, 10280, 1), "Kill 10 ice trolls.", true);
+		this.addAlternateNpcs(NpcID.ICE_TROLL_MALE_5829, NpcID.FRENZIED_ICE_TROLL_FEMALE, NpcID.ICE_TROLL_FEMALE_5830, NpcID.FRENZIED_ICE_TROLL_RUNT, NpcID.ICE_TROLL_RUNT_5828);
 	}
 
 	@Subscribe

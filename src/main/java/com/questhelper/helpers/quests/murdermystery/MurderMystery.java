@@ -221,7 +221,10 @@ public class MurderMystery extends BasicQuestHelper
 			new Conditions(true, new DialogRequirement( "Especially as I heard that the poison salesman in the Seers' village made a big sale to one of the family the other day."))
 		);
 		talkedToPoisonSalesman = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtopoisonsalesman",
-			new Conditions(true, new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok."))
+			new Conditions(true, LogicType.OR,
+		    	new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok.")),
+				new DialogRequirement("Anna, Bob, Carol, David, Elizabeth and Frank all bought a bottle! " +
+				"In fact they bought the last of my supplies!")
 		);
 
 		hasCriminalSilverItem = new Conditions(

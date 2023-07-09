@@ -468,8 +468,8 @@ public class MurderMystery extends BasicQuestHelper
 
 		talkToAnna = new NpcStep(this, NpcID.ANNA_4220, new WorldPoint(2734, 3575, 0), "Talk to Anna in the mansion about what she used the poison for. Make sure to finish the dialog.");
 		talkToBob = new NpcStep(this, NpcID.BOB_4221, new WorldPoint(2748, 3559, 0), "Talk to Bob south of the mansion about what he used the poison for. Make sure to finish the dialog.");
-		talkToFrank = new NpcStep(this, NpcID.FRANK, new WorldPoint(2742, 3577, 0), "Talk to Anna in the mansion about what he used the poison for. Make sure to finish the dialog.");
-		talkToDavid = new NpcStep(this, NpcID.DAVID_4223, new WorldPoint(2739, 3581, 0), "Talk to Anna in the mansion about what he used the poison for. Make sure to finish the dialog.");
+		talkToFrank = new NpcStep(this, NpcID.FRANK, new WorldPoint(2742, 3577, 0), "Talk to Frank in the mansion about what he used the poison for. Make sure to finish the dialog.");
+		talkToDavid = new NpcStep(this, NpcID.DAVID_4223, new WorldPoint(2739, 3581, 0), "Talk to David in the mansion about what he used the poison for. Make sure to finish the dialog.");
 		talkToCarol = new ConditionalStep(this, goUpstairs, "Talk to Carol upstairs in the mansion about what she used her poison for. Make sure to finish the dialog.");
 		((ConditionalStep) talkToCarol).addStep(isUpstairs, new NpcStep(this, NpcID.CAROL, new WorldPoint(2734, 3581, 1), ""));
 		talkToElizabeth = new ConditionalStep(this, goUpstairs, "Talk to Elizabeth upstairs in the mansion about what she used her poison for.");

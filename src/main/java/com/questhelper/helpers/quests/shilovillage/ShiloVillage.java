@@ -359,7 +359,7 @@ public class ShiloVillage extends BasicQuestHelper
 			"Search the dolmen, ready to fight.");
 
 		killNazastarool = new NpcStep(this, NpcID.NAZASTAROOL, new WorldPoint(2892, 9488, 0),
-			"Defeat Nazastrool's 3 forms. You can safe spot them over the dolmen, and the Crumble Undead spell is very" +
+			"Defeat Nazastarool's 3 forms. You can safe spot them over the dolmen, and the Crumble Undead spell is very" +
 				" strong against them.");
 		((NpcStep) killNazastarool).addAlternateNpcs(NpcID.NAZASTAROOL_5354, NpcID.NAZASTAROOL_5355);
 		((NpcStep)killNazastarool).addSafeSpots(new WorldPoint(2894, 9486, 0), new WorldPoint(2891, 9486, 0));

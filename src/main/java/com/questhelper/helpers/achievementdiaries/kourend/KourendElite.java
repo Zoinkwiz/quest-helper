@@ -271,8 +271,8 @@ public class KourendElite extends ComplexStateQuestHelper
 			"Enter the Woodcutting Guild.", true);
 		enterWoodcuttingGuild.addAlternateObjects(ObjectID.GATE_28852);
 		climbRedwoodTree = new ObjectStep(this, ObjectID.ROPE_LADDER_28857, "Climb the redwood tree.", axe);
-		chopRedwood = new ObjectStep(this, ObjectID.REDWOOD, "Chop the redwood tree.", axe);
-		chopRedwood.addAlternateObjects(ObjectID.REDWOOD_29670);
+		chopRedwood = new ObjectStep(this, ObjectID.REDWOOD_TREE, "Chop the redwood tree.", axe);
+		chopRedwood.addAlternateObjects(ObjectID.REDWOOD_TREE_29669, ObjectID.REDWOOD_TREE_29670, ObjectID.REDWOOD_TREE_29671);
 
 		// Defeat Skotizo
 		combineDarkTotem = new ItemStep(this, "Collect and combine dark totem pieces.", totemTop.highlighted(),

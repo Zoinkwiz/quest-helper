@@ -131,12 +131,12 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 				" them, or bank them.", true, ironAxe, steelAxe, blackAxe, lumberjackHat, lumberjackBody, lumberjackLegs,
 			lumberjackBoots);
 
-		chopOakTrees = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(3190, 3247, 0),
+		chopOakTrees = new ObjectStep(this, ObjectID.OAK_TREE_10820, new WorldPoint(3190, 3247, 0),
 			"Chop oak trees around Lumbridge until 35 Woodcutting. You can choose to burn the logs as you go, drop" +
 				" them, or bank them.", true, blackAxe, mithrilAxe, adamantAxe,
 			lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots);
 
-		chopTeakTrees = new ObjectStep(this, ObjectID.TEAK, new WorldPoint(2335, 3048, 0),
+		chopTeakTrees = new ObjectStep(this, ObjectID.TEAK_TREE, new WorldPoint(2335, 3048, 0),
 			"Chop teak trees south of Castle Wars until 99 Woodcutting. You can choose to burn the logs as you go, " +
 				"drop them, or bank them.", true, adamantAxe, runeAxe, dragonAxe, lumberjackHat, lumberjackBody, lumberjackLegs,
 			lumberjackBoots);

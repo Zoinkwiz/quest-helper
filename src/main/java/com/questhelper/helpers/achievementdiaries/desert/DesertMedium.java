@@ -237,7 +237,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		moveToDesert = new TileStep(this, new WorldPoint(3305, 3112, 0),
 			"Enter the desert and be out of any city limits (You must be losing health or water from the heat).");
 
-		chopTeak = new ObjectStep(this, ObjectID.TEAK, new WorldPoint(3510, 3073, 0),
+		chopTeak = new ObjectStep(this, ObjectID.TEAK_TREE, new WorldPoint(3510, 3073, 0),
 			"Chop some teak logs near Uzer.", axe);
 
 		desertLizard = new NpcStep(this, NpcID.SMALL_LIZARD, new WorldPoint(3437, 3067, 0),

@@ -222,10 +222,10 @@ public class MurderMystery extends BasicQuestHelper
 		);
 		talkedToPoisonSalesman = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtopoisonsalesman",
 			new Conditions(true, LogicType.OR,
-		    	new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok.")),
+		    	new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok."),
 				new DialogRequirement("Anna, Bob, Carol, David, Elizabeth and Frank all bought a bottle! " +
 				"In fact they bought the last of my supplies!")
-		);
+		));
 
 		hasCriminalSilverItem = new Conditions(
 			LogicType.OR,

@@ -752,7 +752,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToHammerspikeFinal = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToTassie = new NpcStep(this, NpcID.TASSIE_SLIPCAST, new WorldPoint(3085, 3409, 0), "Return to Tassie Slipcast in the Barbarian Village pottery building.");
 		spinPotLid = new ObjectStep(this, ObjectID.POTTERS_WHEEL_14887, new WorldPoint(3087, 3409, 0), "Spin the clay into a pot lid.", softClay);
-		spinPotLid.addWidgetHighlight(270, 18);
+		spinPotLid.addWidgetHighlightWithItemIdRequirement(270, 19, ItemID.UNFIRED_POT_LID, true);
 		pickUpPot = new ItemStep(this, "Get a pot to put your lid on. There's one in the Barbarian Village helmet shop.", pot);
 		firePotLid = new ObjectStep(this, ObjectID.POTTERY_OVEN_11601, new WorldPoint(3085, 3407, 0), "Fire the unfired pot lid", unfiredPotLid);
 		usePotLidOnPot = new DetailedQuestStep(this, "Use the pot lid on a pot.", pot, potLid);

@@ -247,7 +247,6 @@ public class EnakhrasLament extends BasicQuestHelper
 		crumbleUndeadRunes = new ItemRequirement("Runes for crumble undead spell", -1, -1);
 		crumbleUndeadRunes.setDisplayItemId(ItemID.SKULL);
 
-
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		log.setHighlightInInventory(true);
 		mapleLog = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS);

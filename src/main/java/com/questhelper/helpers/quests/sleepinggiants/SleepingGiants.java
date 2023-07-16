@@ -190,7 +190,9 @@ public class SleepingGiants extends BasicQuestHelper
 		nails.setQuantity(10);
 
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer.addAlternates(ItemID.IMCANDO_HAMMER);
 		hammer.canBeObtainedDuringQuest();
+		hammer.setTooltip("Imcando hammer also works");
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 

@@ -193,7 +193,7 @@ public class RFDGoblins extends BasicQuestHelper
 
 		talkToCook = new NpcStep(this, NpcID.GOBLIN_COOK, new WorldPoint(2981, 9909, 0), "");
 		((NpcStep)talkToCook).addAlternateNpcs(NpcID.GOBLIN_COOK_4852);
-		talkToCookAfterChar = new NpcStep(this, NpcID.GOBLIN_COOK_4851, new WorldPoint(2981, 9909, 0),
+		talkToCookAfterChar = new NpcStep(this, NpcID.GOBLIN_COOK_4851, new WorldPoint(2981, 9868, 0),
 			"");
 
 		useWaterOnBread = new DetailedQuestStep(this, "Use a bucket of water on some bread.", bucketOfWaterHighlighted,

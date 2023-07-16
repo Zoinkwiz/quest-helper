@@ -669,7 +669,7 @@ public class QuestHelperPlugin extends Plugin
 
 		client.createMenuEntry(menuEntries.length - 1)
 			.setOption("Examine")
-			.setTarget("<col=ffff00;id=cheerer>" + cheerer.getStyle().getDisplayName() + "</col>")
+			.setTarget("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")
 			.setType(MenuAction.RUNELITE)
 			.onClick(menuEntry -> {
 				if (cheerer == null) return;

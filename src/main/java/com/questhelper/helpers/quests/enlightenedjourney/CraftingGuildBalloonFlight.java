@@ -32,6 +32,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
@@ -43,14 +45,16 @@ import net.runelite.api.ItemID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 
+
 @QuestDescriptor(
-	quest = QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS
+	quest = QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD
 )
-public class BalloonFlight4 extends ComplexStateQuestHelper
+public class CraftingGuildBalloonFlight extends ComplexStateQuestHelper
 {
 	BalloonFlightStep fly;
 
-	ItemRequirement yewLogs;
+
+	ItemRequirement oakLogs;
 
 	@Override
 	public QuestStep loadStep()
@@ -58,27 +62,27 @@ public class BalloonFlight4 extends ComplexStateQuestHelper
 		setupRequirements();
 
 		HashMap<Integer, List<Integer>> sections = new HashMap<>();
-		List<Integer> section1 = Arrays.asList(5, 7, 9, 10, 10, 10, 10, 10, 10, 8, 9, 9, 9, 7, 7, 7, 8, 9, 9, 9, 9);
-		List<Integer> section2 = Arrays.asList(9, 10, 10, 10, 8, 7, 7, 7, 7, 7, 7, 7, 7, 9, 9, 9, 7, 8, 7, 7);
-		List<Integer> section3 = Arrays.asList(7, 8, 8, 8, 7, 7, 7, 7, 8, 6, 6, 6, 6, 6, 8, 6, 6, 6, 5);
-		sections.put(10, section1);
-		sections.put(11, section2);
-		sections.put(12, section3);
+		List<Integer> section1 = Arrays.asList(8, 8, 8, 8, 9, 10, 10, 10, 8, 8, 8, 8, 8, 9, 7, 7, 7, 6, 6, 7, 7);
+		List<Integer> section2 = Arrays.asList(7, 7, 7, 6, 6, 7, 7,  7,  7,  7, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7);
+		List<Integer> section3 = Arrays.asList(7, 7, 7, 7, 9, 9, 9, 9, 9, 9, 9, 7, 7, 7, 7, 6, 6, 6, 6, 5);
+		sections.put(4, section1);
+		sections.put(5, section2);
+		sections.put(6, section3);
 
-		fly = new BalloonFlightStep(this, "Navigate the balloon to Castle Wars.", sections);
+		fly = new BalloonFlightStep(this, "Navigate the balloon on Entrana to the Crafting Guild.", sections, oakLogs);
 		return fly;
 	}
 
 	@Override
 	public void setupRequirements()
 	{
-		yewLogs = new ItemRequirement("Yew logs", ItemID.YEW_LOGS, 10);
+		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS, 10);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Collections.singletonList(yewLogs);
+		return Collections.singletonList(oakLogs);
 	}
 
 
@@ -87,15 +91,21 @@ public class BalloonFlight4 extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new QuestRequirement(QuestHelperQuest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 50));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 30));
 		return reqs;
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.FIREMAKING, 2000));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Collections.singletonList(
-			new UnlockReward("Ability to fly via balloon to Castle Wars with 1 yew log")
+			new UnlockReward("Ability to fly via balloon to the Crafting Guild with 1 oak log")
 		);
 	}
 
@@ -105,7 +115,7 @@ public class BalloonFlight4 extends ComplexStateQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Flying to Castle Wars", Collections.singletonList(fly)));
+		allSteps.add(new PanelDetails("Flying to the Crafting Guild", Collections.singletonList(fly), oakLogs));
 
 		return allSteps;
 	}

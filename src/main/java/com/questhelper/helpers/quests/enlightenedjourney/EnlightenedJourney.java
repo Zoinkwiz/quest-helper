@@ -217,7 +217,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 			"Talk to Auguste to fly.", logs10, tinderbox);
 		talkToAugusteWithLogsAndTinderbox.addDialogSteps("Okay.");
 
-		doPuzzle = new BalloonFlight1(this);
+		doPuzzle = new TaverleyBalloonFlight(this);
 
 		talkToAugusteToFinish = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2937, 3421, 0),
 			"Talk to Auguste in Taverley to finish the quest.");

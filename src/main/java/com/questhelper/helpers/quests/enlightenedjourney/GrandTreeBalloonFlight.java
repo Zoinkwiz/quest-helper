@@ -32,6 +32,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
@@ -43,15 +45,14 @@ import net.runelite.api.ItemID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 
-
 @QuestDescriptor(
-	quest = QuestHelperQuest.BALLOON_TRANSPORT_VARROCK
+	quest = QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE
 )
-public class BalloonFlight3 extends ComplexStateQuestHelper
+public class GrandTreeBalloonFlight extends ComplexStateQuestHelper
 {
 	BalloonFlightStep fly;
 
-	ItemRequirement willowLogs;
+	ItemRequirement magicLogs;
 
 	@Override
 	public QuestStep loadStep()
@@ -59,27 +60,27 @@ public class BalloonFlight3 extends ComplexStateQuestHelper
 		setupRequirements();
 
 		HashMap<Integer, List<Integer>> sections = new HashMap<>();
-		List<Integer> section1 = Arrays.asList(6, 7, 8, 9, 10, 10, 10, 9, 8,  7,  7, 7, 6, 7, 7, 7, 6, 7, 8, 8, 8);
-		List<Integer> section2 = Arrays.asList(8, 8, 8, 8, 8, 8,  8,  8,  9, 10, 10, 8, 6, 6, 6, 6, 8, 8, 8, 8, 8);
-		List<Integer> section3 = Arrays.asList(8, 8, 8, 8, 8, 10, 10, 9, 8, 10, 10, 9, 8, 10, 10, 8, 8, 8, 6, 5);
-		sections.put(7, section1);
-		sections.put(8, section2);
-		sections.put(9, section3);
+		List<Integer> section1 = Arrays.asList(8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
+		List<Integer> section2 = Arrays.asList(7, 7, 8, 7, 8, 7, 8, 8, 8, 9, 7, 7, 7, 9, 9, 9, 7, 7, 6, 6);
+		List<Integer> section3 = Arrays.asList(6, 6, 7, 8, 9, 9, 9, 8, 9, 9, 9, 9, 9, 9, 7, 7, 5, 4, 4, 4);
+		sections.put(10, section1);
+		sections.put(11, section2);
+		sections.put(12, section3);
 
-		fly = new BalloonFlightStep(this, "Navigate the balloon to Varrock.", sections);
+		fly = new BalloonFlightStep(this, "Navigate the balloon on Entrana to the Grand Tree.", sections, magicLogs);
 		return fly;
 	}
 
 	@Override
 	public void setupRequirements()
 	{
-		willowLogs = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS, 10);
+		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 10);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Collections.singletonList(willowLogs);
+		return Collections.singletonList(magicLogs);
 	}
 
 
@@ -88,15 +89,21 @@ public class BalloonFlight3 extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new QuestRequirement(QuestHelperQuest.ENLIGHTENED_JOURNEY, QuestState.FINISHED));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 40));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60));
 		return reqs;
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Collections.singletonList(new ExperienceReward(Skill.FIREMAKING, 2000));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Collections.singletonList(
-			new UnlockReward("Ability to fly via balloon to Varrock with 1 willow log")
+			new UnlockReward("Ability to fly via balloon to the Grand Tree with 1 magic log")
 		);
 	}
 
@@ -106,7 +113,7 @@ public class BalloonFlight3 extends ComplexStateQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Flying to Varrock", Collections.singletonList(fly)));
+		allSteps.add(new PanelDetails("Flying to the Grand Tree", Collections.singletonList(fly), magicLogs));
 
 		return allSteps;
 	}

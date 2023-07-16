@@ -34,11 +34,9 @@ import java.util.Collection;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 
-public class BalloonFlight1 extends DetailedOwnerStep
+public class TaverleyBalloonFlight extends DetailedOwnerStep
 {
 	WidgetStep dropSand, burnLog, pullRope, pullRedRope, goStraight;
-
-//	HashMap<Integer, WidgetStep> actions = new HashMap<>();
 
 	// Current position, next position
 	ArrayList<Integer> section1;
@@ -47,7 +45,7 @@ public class BalloonFlight1 extends DetailedOwnerStep
 
 	ArrayList<ArrayList<Integer>> sections;
 
-	public BalloonFlight1(QuestHelper questHelper)
+	public TaverleyBalloonFlight(QuestHelper questHelper)
 	{
 		super(questHelper, "Navigate the balloon.");
 	}

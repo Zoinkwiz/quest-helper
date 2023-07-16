@@ -25,13 +25,19 @@
 package com.questhelper.helpers.quests.enlightenedjourney;
 
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import net.runelite.api.NpcID;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -39,18 +45,24 @@ public class BalloonFlightStep extends DetailedOwnerStep
 {
 	WidgetStep dropSand, burnLog, pullRope, pullRedRope, goStraight;
 
+	NpcStep startFlight;
+
 	// Shift is to get the 'section'
 	HashMap<Integer, List<Integer>> sections;
 
-	public BalloonFlightStep(QuestHelper questHelper, String text, HashMap<Integer, List<Integer>> sections)
+	WidgetTextRequirement flying;
+
+	public BalloonFlightStep(QuestHelper questHelper, String text, HashMap<Integer, List<Integer>> sections, ItemRequirement... itemRequirements)
 	{
-		super(questHelper, text);
+		super(questHelper, text, itemRequirements);
 		this.sections = sections;
+		flying = new WidgetTextRequirement(471, 1, "Balloon Controls");
 	}
 
 	@Override
 	protected void setupSteps()
 	{
+		startFlight = new NpcStep(getQuestHelper(), NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0), "");
 		dropSand = new WidgetStep(getQuestHelper(),  "Drop a sandbag.", 471, 2);
 		burnLog = new WidgetStep(getQuestHelper(),  "Burn a log.", 471, 3);
 		pullRope = new WidgetStep(getQuestHelper(),  "Pull the brown rope.", 471, 6);
@@ -66,8 +78,20 @@ public class BalloonFlightStep extends DetailedOwnerStep
 		updateSteps();
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		updateSteps();
+	}
+
 	protected void updateSteps()
 	{
+		if (!flying.check(client))
+		{
+			startUpStep(startFlight);
+			return;
+		}
+
 		int section = client.getVarbitValue(2884);
 		int xPos = client.getVarbitValue(2882);
 		int yPos = client.getVarbitValue(2883);
@@ -105,6 +129,6 @@ public class BalloonFlightStep extends DetailedOwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		return Arrays.asList(dropSand, burnLog, pullRope, pullRedRope, goStraight);
+		return Arrays.asList(startFlight, dropSand, burnLog, pullRope, pullRedRope, goStraight);
 	}
 }

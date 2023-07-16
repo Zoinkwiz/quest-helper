@@ -196,6 +196,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 		talkToAugusteWithPapyrus = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste with 2 papyrus and a sack of potatoes.", papyrus2, sackOfPotatoes);
+		talkToAugusteWithPapyrus.addDialogStep("Yes, I have them here.");
 
 		talkToAugusteAfterMob = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste after the flash mob.");

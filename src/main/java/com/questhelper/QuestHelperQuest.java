@@ -120,6 +120,10 @@ import com.questhelper.helpers.quests.elementalworkshopi.ElementalWorkshopI;
 import com.questhelper.helpers.quests.elementalworkshopii.ElementalWorkshopII;
 import com.questhelper.helpers.quests.enakhraslament.EnakhrasLament;
 import com.questhelper.helpers.miniquests.enchantedkey.EnchantedKey;
+import com.questhelper.helpers.quests.enlightenedjourney.BalloonFlight2;
+import com.questhelper.helpers.quests.enlightenedjourney.BalloonFlight3;
+import com.questhelper.helpers.quests.enlightenedjourney.BalloonFlight4;
+import com.questhelper.helpers.quests.enlightenedjourney.BalloonFlight5;
 import com.questhelper.helpers.quests.enlightenedjourney.EnlightenedJourney;
 import com.questhelper.helpers.quests.entertheabyss.EnterTheAbyss;
 import com.questhelper.helpers.quests.ernestthechicken.ErnestTheChicken;
@@ -470,6 +474,15 @@ public enum QuestHelperQuest
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS(new KnightWaves(), "Knight Waves Training Grounds", QuestVarbits.KNIGHT_WAVES_TRAINING_GROUNDS, 8,
 		QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	BALLOON_TRANSPORT_CRAFTING_GUILD(new BalloonFlight2(), "Balloon Transport - Crafting Guild", QuestVarbits.BALLOON_TRANSPORT_CRAFTING_GUILD, 1, QuestDetails.Type.MINIQUEST,
+		 QuestDetails.Difficulty.MINIQUEST),
+	BALLOON_TRANSPORT_VARROCK(new BalloonFlight3(), "Balloon Transport - Varrock", QuestVarbits.BALLOON_TRANSPORT_VARROCK, 1, QuestDetails.Type.MINIQUEST,
+		QuestDetails.Difficulty.MINIQUEST),
+	BALLOON_TRANSPORT_CASTLE_WARS(new BalloonFlight4(), "Balloon Transport - Castle Wars", QuestVarbits.BALLOON_TRANSPORT_CASTLE_WARS, 1, QuestDetails.Type.MINIQUEST,
+		QuestDetails.Difficulty.MINIQUEST),
+	BALLOON_TRANSPORT_GRAND_TREE(new BalloonFlight5(), "Balloon Transport - Grand Tree", QuestVarbits.BALLOON_TRANSPORT_GRAND_TREE, 1, QuestDetails.Type.MINIQUEST,
+		QuestDetails.Difficulty.MINIQUEST),
+
 
 	// Achievement diaries
 

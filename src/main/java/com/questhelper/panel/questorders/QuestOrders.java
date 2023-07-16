@@ -132,8 +132,8 @@ public class QuestOrders
 		QuestHelperQuest.SPIRITS_OF_THE_ELID,
 		QuestHelperQuest.GARDEN_OF_TRANQUILLITY,
 		QuestHelperQuest.ENLIGHTENED_JOURNEY,
-		//QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD - Placeholder for addition in future.
-		//QuestHelperQuest.BALLOON_TRANSPORT_VARROCK - Placeholder for later addition.
+		QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD,
+		QuestHelperQuest.BALLOON_TRANSPORT_VARROCK,
 		QuestHelperQuest.ROMEO__JULIET,
 		QuestHelperQuest.TEARS_OF_GUTHIX,
 		QuestHelperQuest.IN_SEARCH_OF_THE_MYREQUE,
@@ -214,7 +214,7 @@ public class QuestOrders
 		QuestHelperQuest.MORYTANIA_MEDIUM,
 		QuestHelperQuest.VARROCK_MEDIUM,
 		QuestHelperQuest.WESTERN_MEDIUM,
-		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
+		QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS,
 		QuestHelperQuest.CURSE_OF_THE_EMPTY_LORD,
 		QuestHelperQuest.THE_GENERALS_SHADOW,
 		QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY,
@@ -232,7 +232,7 @@ public class QuestOrders
 		QuestHelperQuest.WILDERNESS_MEDIUM,
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
 		QuestHelperQuest.SINS_OF_THE_FATHER,
-		//QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE - Placeholder for later addition.
+		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
@@ -242,7 +242,6 @@ public class QuestOrders
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
-		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,

@@ -66,6 +66,7 @@ public class ObjectStep extends DetailedQuestStep
 	private final int objectID;
 	private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
 	private TileObject closestObject = null;
+
 	private boolean showAllInArea;
 
 	private final List<TileObject> objects = new ArrayList<>();
@@ -95,6 +96,13 @@ public class ObjectStep extends DetailedQuestStep
 	public ObjectStep(QuestHelper questHelper, int objectID, String text, Requirement... requirements)
 	{
 		super(questHelper, null, text, requirements);
+		this.objectID = objectID;
+	}
+
+	public ObjectStep(QuestHelper questHelper, int objectID, String text, boolean showAllInArea, Requirement... requirements)
+	{
+		super(questHelper, null, text, requirements);
+		this.showAllInArea = showAllInArea;
 		this.objectID = objectID;
 	}
 

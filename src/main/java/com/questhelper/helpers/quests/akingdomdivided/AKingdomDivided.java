@@ -794,7 +794,7 @@ public class AKingdomDivided extends BasicQuestHelper
 			new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore again at Xeric's Lookout.");
 
 		talkToHosidiusXericsLookoutFinal = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_10971,
-			new WorldPoint(1568, 9955, 0), "Speak with Lord Hosidius Xeric's Lookout basement.");
+			new WorldPoint(1568, 9955, 0), "Speak with Lord Hosidius in Xeric's Lookout basement.");
 
 		talkToFulloreFinalCutscene = new NpcStep(this, NpcID.COMMANDER_FULLORE,
 			new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore to begin the final cutscene.");

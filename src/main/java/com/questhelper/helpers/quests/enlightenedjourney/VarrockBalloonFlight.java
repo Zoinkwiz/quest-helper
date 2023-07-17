@@ -32,10 +32,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +43,6 @@ import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.BALLOON_TRANSPORT_VARROCK

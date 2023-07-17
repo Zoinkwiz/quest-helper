@@ -60,11 +60,11 @@ public class CastleWarsBalloonFlight extends ComplexStateQuestHelper
 
 		HashMap<Integer, List<Integer>> sections = new HashMap<>();
 		List<Integer> section1 = Arrays.asList(5, 7, 9, 10, 10, 10, 10, 10, 10, 8, 9, 9, 9, 7, 7, 7, 8, 9, 9, 9, 9);
-		List<Integer> section2 = Arrays.asList(9, 10, 10, 10, 8, 7, 7, 7, 7, 7, 7, 7, 7, 9, 9, 9, 7, 8, 7, 7);
-		List<Integer> section3 = Arrays.asList(7, 8, 8, 8, 7, 7, 7, 7, 8, 6, 6, 6, 6, 6, 8, 6, 6, 6, 5);
-		sections.put(7, section1);
-		sections.put(8, section2);
-		sections.put(9, section3);
+		List<Integer> section2 = Arrays.asList(9, 10, 10, 10, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 9, 9, 9, 7, 8, 7, 7);
+		List<Integer> section3 = Arrays.asList(7, 8, 8, 8, 7, 7, 7, 7, 7, 8, 6, 6, 6, 6, 6, 8, 6, 6, 6, 5);
+		sections.put(10, section1);
+		sections.put(11, section2);
+		sections.put(12, section3);
 
 		fly = new BalloonFlightStep(this, "Fly the balloon on Entrana to Castle Wars.", sections, yewLogs);
 		return fly;

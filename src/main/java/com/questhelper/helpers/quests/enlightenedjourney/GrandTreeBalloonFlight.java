@@ -63,9 +63,9 @@ public class GrandTreeBalloonFlight extends ComplexStateQuestHelper
 		List<Integer> section1 = Arrays.asList(8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
 		List<Integer> section2 = Arrays.asList(7, 7, 8, 7, 8, 7, 8, 8, 8, 9, 7, 7, 7, 9, 9, 9, 7, 7, 6, 6);
 		List<Integer> section3 = Arrays.asList(6, 6, 7, 8, 9, 9, 9, 8, 9, 9, 9, 9, 9, 9, 7, 7, 5, 4, 4, 4);
-		sections.put(10, section1);
-		sections.put(11, section2);
-		sections.put(12, section3);
+		sections.put(7, section1);
+		sections.put(8, section2);
+		sections.put(9, section3);
 
 		fly = new BalloonFlightStep(this, "Navigate the balloon on Entrana to the Grand Tree.", sections, magicLogs);
 		return fly;

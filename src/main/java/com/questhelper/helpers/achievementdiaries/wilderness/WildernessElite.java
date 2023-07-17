@@ -362,7 +362,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 		PanelDetails scimSteps = new PanelDetails("Rune Scimitar in Resource Area",
 			Arrays.asList(moveToResource2, runiteGolem, smeltBar, runeScim), new SkillRequirement(Skill.MINING, 85),
 			new SkillRequirement(Skill.SMITHING, 90), coins.quantity(6000), combatGear, food, pickaxe,
-			coal.quantity(16));
+			coal.quantity(16), hammer);
 		scimSteps.setDisplayCondition(notRuneScim);
 		scimSteps.setLockingStep(runeScimTask);
 		allSteps.add(scimSteps);

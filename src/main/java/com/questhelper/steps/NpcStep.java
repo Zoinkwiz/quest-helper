@@ -72,6 +72,8 @@ public class NpcStep extends DetailedQuestStep
 	@Setter
 	private int maxRoamRange = 48;
 
+	private boolean mustBeFocused = false;
+
 	public NpcStep(QuestHelper questHelper, int npcID, String text, Requirement... requirements)
 	{
 		super(questHelper, text, requirements);
@@ -161,6 +163,12 @@ public class NpcStep extends DetailedQuestStep
 		return ids;
 	}
 
+	public void setMustBeFocused(boolean mustBeFocused)
+	{
+		this.mustBeFocused = mustBeFocused;
+		if (mustBeFocused) allowMultipleHighlights = true;
+	}
+
 	@Override
 	public void shutDown()
 	{
@@ -247,6 +255,7 @@ public class NpcStep extends DetailedQuestStep
 
 		for (NPC npc : npcs)
 		{
+			if (mustBeFocused && npc.getInteracting() != client.getLocalPlayer()) continue;
 			highlightNpc(npc, configColor, graphics);
 
 			if (questHelper.getConfig().showSymbolOverlay())

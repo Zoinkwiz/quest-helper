@@ -74,6 +74,8 @@ public class HisFaithfulServants extends BasicQuestHelper
 	// Recommended
 	ItemRequirement barrowsTeleport, strangeOldLockpick, ghommalHilt2;
 
+	// Quest items
+	ItemRequirement strangeIcon;
 
 	Requirement inAhrim, inDharok, inVerac, inTorag, inKaril, inGuthan, inCrypt;
 
@@ -85,9 +87,9 @@ public class HisFaithfulServants extends BasicQuestHelper
 	QuestStep enterAhrim2, enterDharok2, enterGuthan2, enterKaril2, enterTorag2, enterVerac2;
 	QuestStep enterAhrimSarc, enterDharokSarc, enterKarilSarc, enterVeracSarc, enterToragSarc, enterGuthanSarc, enterSarc;
 
-	QuestStep openChest, searchChest, killFinalBrother;
+	DetailedQuestStep openChest, searchChest, killFinalBrother, finishQuest, continueTalkingToFinish;
 
-	Zone ahrimRoom, dharokRoom, veracRoom, toragRoom, karilRoom, guthanRoom, dungeon;
+	Zone ahrimRoom, dharokRoom, veracRoom, toragRoom, karilRoom, guthanRoom, crypt;
 
 	NpcInteractingRequirement dharokAttacking, ahrimAttacking, karilAttacking, guthanAttacking, toragAttacking, veracAttacking;
 
@@ -157,6 +159,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 		finishingTheRun.addStep(new Conditions(isDharokTunnel, inDharok), enterDharokSarc);
 
 		ConditionalStep doingBarrows = new ConditionalStep(this, enterVerac);
+		doingBarrows.addStep(strangeIcon.alsoCheckBank(questBank), finishQuest);
 		doingBarrows.addStep(doneWithAll, finishingTheRun);
 		// Top condition is for catching 1 remains to point to tomb to raid
 		doingBarrows.addStep(new Conditions(doneWithDharok, inDharok), leaveDharok);
@@ -172,10 +175,10 @@ public class HisFaithfulServants extends BasicQuestHelper
 		doingBarrows.addStep(new Conditions(LogicType.NOR, doneWithTorag), killingTorag);
 		doingBarrows.addStep(new Conditions(LogicType.NOR, doneWithVerac), killingVerac);
 
-		// Verac
-
 		steps.put(2, doingBarrows);
 		steps.put(4, doingBarrows);
+		steps.put(6, continueTalkingToFinish);
+		steps.put(8, continueTalkingToFinish);
 
 		return steps;
 	}
@@ -193,6 +196,8 @@ public class HisFaithfulServants extends BasicQuestHelper
 		ghommalHilt2 = new ItemRequirement("Ghommal's hilt 2 or higher to remove prayer drain in crypts", ItemID.GHOMMALS_HILT_2);
 		ghommalHilt2.addAlternates(ItemID.GHOMMALS_HILT_3, ItemID.GHOMMALS_HILT_4, ItemID.GHOMMALS_HILT_5, ItemID.GHOMMALS_HILT_6,
 			ItemID.GHOMMALS_AVERNIC_DEFENDER_5, ItemID.GHOMMALS_AVERNIC_DEFENDER_5_L, ItemID.GHOMMALS_AVERNIC_DEFENDER_6, ItemID.GHOMMALS_AVERNIC_DEFENDER_6_L);
+
+		strangeIcon = new ItemRequirement("Strange icon", ItemID.STRANGE_ICON);
 	}
 
 	public void loadZones()
@@ -203,7 +208,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 		karilRoom = new Zone(new WorldPoint(3544, 9678, 3), new WorldPoint(3559, 9690, 3));
 		toragRoom = new Zone(new WorldPoint(3563, 9682, 3), new WorldPoint(3577, 9694, 3));
 		veracRoom = new Zone(new WorldPoint(3567, 9701, 3), new WorldPoint(3580, 9712, 3));
-		dungeon = new Zone(new WorldPoint(3520, 9660, 0), new WorldPoint(3597, 9733, 0));
+		crypt = new Zone(new WorldPoint(3520, 9660, 0), new WorldPoint(3597, 9733, 0));
 	}
 
 	public void setupConditions()
@@ -214,7 +219,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 		inKaril = new ZoneRequirement(karilRoom);
 		inTorag = new ZoneRequirement(toragRoom);
 		inVerac = new ZoneRequirement(veracRoom);
-		inCrypt = new ZoneRequirement(dungeon);
+		inCrypt = new ZoneRequirement(crypt);
 
 		killedAhrim = new VarbitRequirement(Varbits.BARROWS_KILLED_AHRIM, 1);
 		killedDharok = new VarbitRequirement(Varbits.BARROWS_KILLED_DHAROK, 1);
@@ -268,7 +273,16 @@ public class HisFaithfulServants extends BasicQuestHelper
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		((BarrowsRouteStep) searchChest).startDelving(client);
+		if (inCrypt.check(client))
+		{
+			List<WorldPoint> barrowsRoute = BarrowsRouteCalculator.startDelving(client);
+			if (barrowsRoute != null)
+			{
+				searchChest.setLinePoints(barrowsRoute);
+				openChest.setLinePoints(barrowsRoute);
+			}
+		}
+
 		Widget textBox = client.getWidget(WidgetInfo.DIALOG_OPTION_OPTIONS);
 		if (textBox == null)
 		{
@@ -395,18 +409,17 @@ public class HisFaithfulServants extends BasicQuestHelper
 			NpcID.TORAG_THE_CORRUPTED, NpcID.VERAC_THE_DEFILED);
 		((NpcStep) killFinalBrother).setMustBeFocused(true);
 
-//		searchChest = new ObjectStep(this, ObjectID.CHEST_20723, new WorldPoint(3551, 9695, 0),
-//			"Search the chest in the middle of the crypt.");
-//		((ObjectStep) searchChest).addAlternateObjects(ObjectID.CHEST_20724);
+		searchChest = new ObjectStep(this, ObjectID.CHEST_20723, new WorldPoint(3551, 9695, 0),
+			"Search the chest in the middle of the crypt for the strange icon.");
+		((ObjectStep) searchChest).addAlternateObjects(ObjectID.CHEST_20724);
 
-		searchChest = new BarrowsRouteStep(this, "Search the chest m'hearty!");
-		// Collected loot, 14973 = 4, 1502 vplayer 0->1
+		finishQuest = new NpcStep(this, NpcID.STRANGE_OLD_MAN, new WorldPoint(3564, 3294, 0),
+			"Return to the Strange Old Man with the strange icon.", strangeIcon);
 
-		// Optimal route solver:
-		// Checks for corner you're in
-		// Checks for corner which door is open
-		// Checks which of the middle doors is open
-		// Path goes through first door, then loops AWAY from original room to door
+		continueTalkingToFinish = new NpcStep(this, NpcID.STRANGE_OLD_MAN, new WorldPoint(3564, 3294, 0),
+			"Return to the Strange Old Man.");
+
+		finishQuest.addSubSteps(continueTalkingToFinish);
 	}
 
 	@Override
@@ -461,7 +474,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping Them",
 			Arrays.asList(talkToStrangeOldMan, killDharok, killAhrim, killKaril, killGuthan, killTorag, killVerac,
-				enterSarc, openChest, killFinalBrother, searchChest),
+				enterSarc, openChest, killFinalBrother, searchChest, finishQuest),
 			Arrays.asList(combatGear, spade), Arrays.asList(barrowsTeleport, strangeOldLockpick, ghommalHilt2)));
 
 		return allSteps;

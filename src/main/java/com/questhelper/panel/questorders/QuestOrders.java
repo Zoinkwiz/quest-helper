@@ -217,6 +217,7 @@ public class QuestOrders
 		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
 		QuestHelperQuest.CURSE_OF_THE_EMPTY_LORD,
 		QuestHelperQuest.THE_GENERALS_SHADOW,
+		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
 		QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY,
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
@@ -242,8 +243,9 @@ public class QuestOrders
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
-		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
+		// TODO: Verify position of DT2
 		QuestHelperQuest.SONG_OF_THE_ELVES,
+		QuestHelperQuest.DESERT_TREASURE_II,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
@@ -422,6 +424,7 @@ public class QuestOrders
 		QuestHelperQuest.DESERT_TREASURE,
 		QuestHelperQuest.CURSE_OF_THE_EMPTY_LORD,
 		QuestHelperQuest.THE_GENERALS_SHADOW,
+		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
 		QuestHelperQuest.A_TASTE_OF_HOPE,
 		QuestHelperQuest.FAMILY_CREST,
 		QuestHelperQuest.LEGENDS_QUEST,
@@ -476,7 +479,9 @@ public class QuestOrders
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
+		// TODO: Verify DT2 position
 		QuestHelperQuest.SONG_OF_THE_ELVES,
+		QuestHelperQuest.DESERT_TREASURE_II,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
@@ -712,7 +717,9 @@ public class QuestOrders
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
 		QuestHelperQuest.HOPESPEARS_WILL,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
-		QuestHelperQuest.SECRETS_OF_THE_NORTH
+		QuestHelperQuest.SECRETS_OF_THE_NORTH,
+		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
+		QuestHelperQuest.DESERT_TREASURE_II
 	);
 
 	public static String normalizeQuestName(String questName)

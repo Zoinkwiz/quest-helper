@@ -261,8 +261,9 @@ import com.questhelper.helpers.quests.witchspotion.WitchsPotion;
 import com.questhelper.helpers.quests.xmarksthespot.XMarksTheSpot;
 import com.questhelper.helpers.quests.zogreflesheaters.ZogreFleshEaters;
 import com.questhelper.helpers.skills.agility.Agility;
+import com.questhelper.helpers.skills.mining.Mining;
 import com.questhelper.helpers.skills.woodcutting.Woodcutting;
-import com.questhelper.helpers.skills.woodcuttingmember.WoodcuttingMember;
+import com.questhelper.helpers.skills.woodcutting.WoodcuttingMember;
 import com.questhelper.playerquests.cookshelper.CooksHelper;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -612,6 +613,8 @@ public enum QuestHelperQuest
 	WOODCUTTING_MEMBER(new WoodcuttingMember(), "Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 
 	WOODCUTTING(new Woodcutting(), "Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
+
+	MINING(new Mining(), "Mining", Skill.MINING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
 
 	// Player Quests
 	COOKS_HELPER(new CooksHelper(), "Cook's Helper", PlayerQuests.COOKS_HELPER, 4);

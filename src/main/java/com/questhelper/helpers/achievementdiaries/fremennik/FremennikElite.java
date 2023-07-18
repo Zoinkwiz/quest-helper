@@ -447,7 +447,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		allSteps.add(spiritualMageSteps);
 
 		PanelDetails godWarsSteps = new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWarsGWD,
-			godwarsGenerals), trollStronghold, new SkillRequirement(Skill.AGILITY, 70, true),
+			godwarsGenerals), trollStronghold, new SkillRequirement(Skill.AGILITY, 70, false),
 			new SkillRequirement(Skill.STRENGTH, 70, false), new SkillRequirement(Skill.HITPOINTS, 70, false),
 			new SkillRequirement(Skill.RANGED, 70, false), combatGear, rope.quantity(2), climbingBoots, hammer,
 			mithGrap, crossbow);

@@ -418,6 +418,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
 			"43 Prayer for protection prayers"));
 		req.add(olafsQuest);
+		req.add(eaglesPeak);
+		req.add(betweenARock);
 		return req;
 	}
 

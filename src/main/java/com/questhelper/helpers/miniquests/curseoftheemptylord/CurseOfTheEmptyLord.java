@@ -65,7 +65,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	private int currentPath = 0;
 
 	//Items Required
-	ItemRequirement ringOfVis, ghostspeakItems, ghostspeak, knife;
+	ItemRequirement ringOfVis, ghostspeakItems, ghostspeak, slashItem;
 
 	Requirement talkedToValdez, talkedToRennard, talkedToKharrim, talkedToLennissa, talkedToDhalak, talkedToViggora, inRoguesCastle, inEdgevilleDungeon, inSlayerTower,
 		inEdgevilleMonastery, inPartyRoom, onPath1, onPath2, onPath3;
@@ -135,7 +135,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		ghostspeakItems = new ItemRequirement("Ghostspeak amulet or Morytania legs 2 or better", ItemID.GHOSTSPEAK_AMULET,
 			1, true).isNotConsumed();
 		ghostspeakItems.addAlternates(ItemID.MORYTANIA_LEGS_2, ItemID.MORYTANIA_LEGS_3, ItemID.MORYTANIA_LEGS_4);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(new VarbitRequirement(PATH_VARBIT, 3)).isNotConsumed();
+		slashItem = new ItemRequirement("A knife or slash weapon", ItemID.KNIFE).showConditioned(new VarbitRequirement(PATH_VARBIT, 3)).isNotConsumed();
 	}
 
 	public void setupConditions()
@@ -207,38 +207,47 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		if (pathID == 1)
 		{
 			talkToRennard.setText("Talk to the Mysterious Ghost near the shipwrecked ship near the Wilderness Agility Course in 52 Wilderness.");
+			talkToRennard.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToRennard.setWorldPoint(3019, 3946, 0);
 
 			talkToKharrim.setText("Talk to the Mysterious Ghost at the Chaos Temple in 38 Wilderness.");
+			talkToKharrim.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToKharrim.setWorldPoint(2954, 3821, 0);
 
 			talkToLennissa.setText("Talk to the Mysterious Ghost in the church on Entrana.");
-			talkToLennissa.setRequirements(Arrays.asList(ghostspeak, ringOfVis));
+			talkToLennissa.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToLennissa.setWorldPoint(2846, 3349, 0);
 
 			talkToDhalak.setText("Talk to the Mysterious Ghost in the Wizard's Tower ground floor.");
+			talkToDhalak.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToDhalak.setWorldPoint(3109, 3163, 0);
 
 			talkToViggora.setText("Talk to the Mysterious Ghost Viggora upstairs in the Rogues' Castle in 54 Wilderness.");
+			talkToDhalak.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToViggora.setWorldPoint(3295, 3934, 1);
 			talkToViggora.addSubSteps(goUpstairsRoguesCastle);
 		}
 		else if (pathID == 2)
 		{
 			talkToRennard.setText("Talk to the Mysterious Ghost in the Bandit Camp in the Wilderness.");
+			talkToRennard.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToRennard.setWorldPoint(3031, 3703, 0);
 
 			talkToKharrim.setText("Talk to the Mysterious Ghost in the Graveyard of Shadows in the Wilderness.");
+			talkToKharrim.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToKharrim.setWorldPoint(3160, 3670, 0);
 
 			talkToLennissa.setText("Talk to the Mysterious Ghost on the south of the Port Sarim dock.");
+			talkToLennissa.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToLennissa.setWorldPoint(3041, 3203, 0);
 
 			talkToDhalak.setText("Talk to the Mysterious Ghost upstairs in the Edgeville Monastery.");
+			talkToDhalak.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToDhalak.setWorldPoint(3052, 3497, 1);
 			talkToDhalak.addSubSteps(goUpstairsMonastery);
 
 			talkToViggora.setText("Talk to the Mysterious Ghost upstairs in the Slayer Tower, near the Infernal Mages.");
+			talkToViggora.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToViggora.setWorldPoint(3447, 3547, 1);
 			talkToViggora.addSubSteps(goUpstairsSlayerTower);
 
@@ -246,20 +255,24 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		else if (pathID == 3)
 		{
 			talkToRennard.setText("Talk to the Mysterious Ghost in the Bandit Camp in the desert.");
+			talkToRennard.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToRennard.setWorldPoint(3163, 2981, 0);
 
 			talkToKharrim.setText("Talk to the Mysterious Ghost in the centre of the Lava Maze.");
-			talkToKharrim.addItemRequirements(Collections.singletonList(knife));
+			talkToKharrim.setRequirements(Arrays.asList(slashItem, ghostspeakItems, ringOfVis));
 			talkToKharrim.setWorldPoint(3076, 3861, 0);
 
 			talkToLennissa.setText("Talk to the Mysterious Ghost in the west of the Tree Gnome Stronghold.");
+			talkToLennissa.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToLennissa.setWorldPoint(2396, 3476, 0);
 
 			talkToDhalak.setText("Talk to the Mysterious Ghost upstairs in the Falador Party Room.");
+			talkToDhalak.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToDhalak.setWorldPoint(3052, 3378, 1);
 			talkToDhalak.addSubSteps(goUpstairsPartyRoom);
 
 			talkToViggora.setText("Talk to the Mysterious Ghost in the Edgeville Wilderness Dungeon, near the Earth Warriors.");
+			talkToViggora.setRequirements(Arrays.asList(ghostspeakItems, ringOfVis));
 			talkToViggora.setWorldPoint(3121, 9995, 0);
 			talkToViggora.addSubSteps(goDownIntoEdgevilleDungeon);
 		}
@@ -268,7 +281,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(ringOfVis, ghostspeakItems, knife);
+		return Arrays.asList(ringOfVis, ghostspeakItems, slashItem);
 	}
 
 	@Override
@@ -289,7 +302,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Learn about the Empty Lord",
 			Arrays.asList(talkToValdez, talkToRennard, talkToKharrim, talkToLennissa, talkToDhalak, talkToViggora),
-			ghostspeakItems, ringOfVis, knife));
+			ghostspeakItems, ringOfVis, slashItem));
 
 		return allSteps;
 	}

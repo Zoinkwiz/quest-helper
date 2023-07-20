@@ -247,6 +247,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		inWizardBasement = new ZoneRequirement(wizardBasement);
 		inWizardFloorOne = new ZoneRequirement(wizardFloorOne);
 		inTempleOfTheEye = new ZoneRequirement(templeOfTheEye);
+		// TODO: this should also consider the mind altar as part of the area
 		inTempleOfTheEyeTutorial = new ZoneRequirement(templeOfTheEye2);
 
 		canTeleportFromHerbert = new VarbitRequirement(13740, 0);

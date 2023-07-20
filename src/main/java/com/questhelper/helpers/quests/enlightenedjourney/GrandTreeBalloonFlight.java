@@ -60,9 +60,9 @@ public class GrandTreeBalloonFlight extends ComplexStateQuestHelper
 		setupRequirements();
 
 		HashMap<Integer, List<Integer>> sections = new HashMap<>();
-		List<Integer> section1 = Arrays.asList(8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
-		List<Integer> section2 = Arrays.asList(7, 7, 8, 7, 8, 7, 8, 8, 8, 9, 7, 7, 7, 9, 9, 9, 7, 7, 6, 6);
-		List<Integer> section3 = Arrays.asList(6, 6, 7, 8, 9, 9, 9, 8, 9, 9, 9, 9, 9, 9, 7, 7, 5, 4, 4, 4);
+		List<Integer> section1 = Arrays.asList(8, 8, 8,  8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
+		List<Integer> section2 = Arrays.asList(7, 7, 8, 7, 8, 7, 8, 8, 8, 9, 8, 8, 8, 10, 10, 10, 8, 8, 7, 7);
+		List<Integer> section3 = Arrays.asList(7, 7, 8, 9, 10, 10, 10, 9, 10, 10, 10, 10, 10, 10, 8, 8, 6, 5, 5, 5);
 		sections.put(7, section1);
 		sections.put(8, section2);
 		sections.put(9, section3);

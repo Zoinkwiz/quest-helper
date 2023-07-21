@@ -132,8 +132,8 @@ public class QuestOrders
 		QuestHelperQuest.SPIRITS_OF_THE_ELID,
 		QuestHelperQuest.GARDEN_OF_TRANQUILLITY,
 		QuestHelperQuest.ENLIGHTENED_JOURNEY,
-		//QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD - Placeholder for addition in future.
-		//QuestHelperQuest.BALLOON_TRANSPORT_VARROCK - Placeholder for later addition.
+		QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD,
+		QuestHelperQuest.BALLOON_TRANSPORT_VARROCK,
 		QuestHelperQuest.ROMEO__JULIET,
 		QuestHelperQuest.TEARS_OF_GUTHIX,
 		QuestHelperQuest.IN_SEARCH_OF_THE_MYREQUE,
@@ -214,7 +214,7 @@ public class QuestOrders
 		QuestHelperQuest.MORYTANIA_MEDIUM,
 		QuestHelperQuest.VARROCK_MEDIUM,
 		QuestHelperQuest.WESTERN_MEDIUM,
-		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
+		QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS,
 		QuestHelperQuest.CURSE_OF_THE_EMPTY_LORD,
 		QuestHelperQuest.THE_GENERALS_SHADOW,
 		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
@@ -233,7 +233,7 @@ public class QuestOrders
 		QuestHelperQuest.WILDERNESS_MEDIUM,
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
 		QuestHelperQuest.SINS_OF_THE_FATHER,
-		//QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE - Placeholder for later addition.
+		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
@@ -487,13 +487,13 @@ public class QuestOrders
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
 
 		//QuestHelperQuest.STRONGHOLD_OF_SECURITY - Placeholder for future addition.
-		//QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD - Placeholder for addition in future.
-		//QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE - Placeholder for later addition.
-		//QuestHelperQuest.BALLOON_TRANSPORT_VARROCK - Placeholder for later addition.
-		//QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS - Placeholder for later addition.
+		QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD,
+		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,
+		QuestHelperQuest.BALLOON_TRANSPORT_VARROCK,
+		QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition. (Miniquest)
-		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for later addition.
+		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.BEAR_YOUR_SOUL,

@@ -82,7 +82,7 @@ public class Pollnivneach extends AgilityCourse
 	{
 		marketStallZone = new Zone(new WorldPoint(3346, 2963, 1), new WorldPoint(3351, 2973, 2));
 		bannerZone = new Zone(new WorldPoint(3352, 2973, 1), new WorldPoint(3359, 2979, 2));
-		gapZone = new Zone(new WorldPoint(3360, 2977, 1), new WorldPoint(3365, 2976, 2));
+		gapZone = new Zone(new WorldPoint(3360, 2977, 1), new WorldPoint(3365, 2979, 2));
 		firstTreeZone = new Zone(new WorldPoint(3366, 2974, 1), new WorldPoint(3370, 2981, 2));
 		roughWallZone = new Zone(new WorldPoint(3365, 2982, 1), new WorldPoint(3369, 2986, 1));
 		monkeyBarsZone = new Zone(new WorldPoint(3355, 2980, 2), new WorldPoint(3365, 2989, 3));

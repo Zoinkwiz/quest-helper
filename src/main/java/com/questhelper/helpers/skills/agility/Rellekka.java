@@ -85,7 +85,7 @@ public class Rellekka extends AgilityCourse
 		secondGapZone = new Zone(new WorldPoint(2626, 3651, 3), new WorldPoint(2637, 3659, 3));
 		thirdGapZone = new Zone(new WorldPoint(2638, 3649, 3), new WorldPoint(2644, 3655, 3));
 		secondRopeZone = new Zone(new WorldPoint(2643, 3656, 3), new WorldPoint(2653, 3670, 3));
-		fishZone = new Zone(new WorldPoint(2649, 3665, 3), new WorldPoint(2664, 3685, 3));
+		fishZone = new Zone(new WorldPoint(2649, 3665, 3), new WorldPoint(2666, 3685, 3));
 	}
 
 	@Override

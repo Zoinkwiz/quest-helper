@@ -320,10 +320,7 @@ public class QuestHelperPlugin extends Plugin
 				QuestHelperQuest.CHECK_ITEMS.getQuestHelper().init();
 				getAllItemRequirements();
 				loadQuestList = true;
-				if (config.showRuneliteObjects())
-				{
-					GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
-				}
+				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			}
 		});
 	}
@@ -435,7 +432,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGGED_IN)
 		{
-			GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
+			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			loadQuestList = true;
 			displayNameKnown = false;
 			clientThread.invokeLater(() -> {
@@ -500,7 +497,7 @@ public class QuestHelperPlugin extends Plugin
 			clientThread.invokeLater(() -> {
 				if (config.showRuneliteObjects())
 				{
-					GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
+					GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 				}
 				else
 				{

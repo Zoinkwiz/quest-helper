@@ -41,9 +41,9 @@ public class GlobalFakeObjects
 {
 	@Setter
 	private static boolean initialized;
-	public static void initNpcs(Client client, RuneliteObjectManager runeliteObjectManager, ConfigManager configManager)
+	public static void createNpcs(Client client, RuneliteObjectManager runeliteObjectManager, ConfigManager configManager, QuestHelperConfig questHelperConfig)
 	{
-		if (initialized) return;
+		if (initialized || !questHelperConfig.showRuneliteObjects()) return;
 		initialized = true;
 		ReplacedNpc replacedHopleez = runeliteObjectManager.createReplacedNpc(client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_COSAINTUS);
 		replacedHopleez.setName("Hopleez");

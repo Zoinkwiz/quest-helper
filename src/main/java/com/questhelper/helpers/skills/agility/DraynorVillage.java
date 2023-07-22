@@ -90,7 +90,7 @@ public class DraynorVillage extends AgilityCourse
 	{
 		//Draynor Village obstacles
 		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROUGH_WALL, new WorldPoint(3103, 3279, 0),
-			"Climb the rough wall just northeast of the gate of the big wheat-field in Draynor Village.",
+			"Climb the rough wall just north-west of the gate of the big wheat-field in Draynor Village.",
 			Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
 		walkFirstRope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE, new WorldPoint(3098, 3277, 3),
@@ -124,7 +124,7 @@ public class DraynorVillage extends AgilityCourse
 		draynorStep.addStep(inCrateZone, climbDownCrate);
 
 		draynorSidebar = new DetailedQuestStep(this.questHelper, "Train agility at the Draynor Village Rooftop Course" +
-			", starting just northeast of the gate of the big wheat-field in Draynor Village.");
+			", starting just north-west of the gate of the big wheat-field in Draynor Village.");
 		draynorSidebar.addSubSteps(climbRoughWall, walkFirstRope, walkSecondRope, balanceWall, jumpUpWall, jumpGap, climbDownCrate);
 	}
 

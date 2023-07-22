@@ -100,7 +100,7 @@ public class TheFeud extends BasicQuestHelper
 			givenPoisonToHag, menaphiteThugAlive, talkedToVillagerAboutMenaphite, banditChampionSpawned, mayorSpawned;
 
 	//Zones
-	ZoneRequirement inPollniveach, secondFloorMansion, inShantayDesertSide;
+	ZoneRequirement inPollnivneach, secondFloorMansion, inShantayDesertSide;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -114,13 +114,13 @@ public class TheFeud extends BasicQuestHelper
 
 		steps.put(0, startQuest);
 
-		ConditionalStep goToPollniveach = new ConditionalStep(this, buyShantayPass);
-		goToPollniveach.addStep(new Conditions(hasDisguise, inPollniveach), drunkenAli);
-		goToPollniveach.addStep(new Conditions(hasDisguise, inShantayDesertSide), talkToRugMerchant);
-		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
-		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
-		goToPollniveach.addStep(new Conditions(notThroughShantayGate, shantayPass), goToShantay);
-		steps.put(1, goToPollniveach);
+		ConditionalStep goToPollnivneach = new ConditionalStep(this, buyShantayPass);
+		goToPollnivneach.addStep(new Conditions(hasDisguise, inPollnivneach), drunkenAli);
+		goToPollnivneach.addStep(new Conditions(hasDisguise, inShantayDesertSide), talkToRugMerchant);
+		goToPollnivneach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
+		goToPollnivneach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
+		goToPollnivneach.addStep(new Conditions(notThroughShantayGate, shantayPass), goToShantay);
+		steps.put(1, goToPollnivneach);
 
 		ConditionalStep findBeef = new ConditionalStep(this, talkToThug);
 		findBeef.addStep(talkedToBandit, talkToCamelman);
@@ -280,11 +280,11 @@ public class TheFeud extends BasicQuestHelper
 
 	public void loadZones()
 	{
-		Zone pollniveachZone = new Zone(new WorldPoint(3320, 2926, 0), new WorldPoint(3381, 3006, 0));
+		Zone pollnivneachZone = new Zone(new WorldPoint(3320, 2926, 0), new WorldPoint(3381, 3006, 0));
 		Zone secondFloor = new Zone(new WorldPoint(3366, 2965, 1), new WorldPoint(3375, 2979, 1));
 		Zone shantayDesertSide = new Zone(new WorldPoint(3325, 3116, 0), new WorldPoint(3278, 3086, 0));
 
-		inPollniveach = new ZoneRequirement(pollniveachZone);
+		inPollnivneach = new ZoneRequirement(pollnivneachZone);
 		secondFloorMansion = new ZoneRequirement(secondFloor);
 		inShantayDesertSide = new ZoneRequirement(shantayDesertSide);
 	}

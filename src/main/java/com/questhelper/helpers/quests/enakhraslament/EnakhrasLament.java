@@ -342,7 +342,7 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToLazim = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Talk to Lazim in the quarry south of the Bandit Camp.", pickaxe, onNormals);
+		talkToLazim = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Before you begin, ensure that you have enough prayer points to use Protect from Melee for around five seconds (you will need this later in the temple). Talk to Lazim in the quarry south of the Bandit Camp.", pickaxe, onNormals);
 		talkToLazim.addDialogStep("Of course!");
 		bringLazim32Sandstone = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Get 32kg of sandstone and give it to Lazim. This can be done in batches, and you can mine some nearby.");
 		bringLazim32Sandstone.addDialogStep("Okay, I'll get on with it.");

@@ -301,7 +301,7 @@ public class TheTouristTrap extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToIrena = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shanty Pass.");
+		talkToIrena = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shantay Pass.");
 		talkToIrena.addDialogSteps("What's the matter?", "Is there a reward if I get her back?", "I'll look for your daughter.", "Okay Irena, calm down. I'll get your daughter back for you.", "Yes, I'll go on this quest!");
 		talkToCaptain = new NpcStep(this, NpcID.MERCENARY_CAPTAIN, new WorldPoint(3271, 3029, 0), "Talk the Mercenary Captain outside the Desert Mining Camp. When he attacks you, kill him for a key.", combatGear);
 		talkToCaptain.addDialogSteps("Wow! A real captain!", "I'd love to work for a tough guy like you!", "Can't I do something for a strong Captain like you?", "Sorry Sir, I don't think I can do that.", "It's a funny captain who can't fight his own battles!");
@@ -371,9 +371,9 @@ public class TheTouristTrap extends BasicQuestHelper
 		talkToDriver = new NpcStep(this, NpcID.MINE_CART_DRIVER, new WorldPoint(3287, 3021, 0), "Talk to the Mine Cart Driver to escape. Once he's agreed to take you, right-click search the wooden cart to escape.");
 		talkToDriver.addDialogSteps("Nice cart.", "One wagon wheel says to the other, 'I'll see you around'.", "'One good turn deserves another'", "Fired... no, shot perhaps!",
 			"In for a penny in for a pound.", "Well, you see, it's like this...", "Prison riot in ten minutes, get your cart out of here!", "You can't leave me here, I'll get killed!", "Yes, I'll get on.");
-		returnToIrena = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Bring Ana to Irena south of the Shanty Pass.", anaInABarrel);
-		talkToAna = new NpcStep(this, NpcID.ANA, new WorldPoint(3302, 3110, 0), "Talk to Ana outside the Shanty Pass.");
-		talkToIrenaToFinish = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shanty Pass to finish the quest!");
+		returnToIrena = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Bring Ana to Irena south of the Shantay Pass.", anaInABarrel);
+		talkToAna = new NpcStep(this, NpcID.ANA, new WorldPoint(3302, 3110, 0), "Talk to Ana outside the Shantay Pass.");
+		talkToIrenaToFinish = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shantay Pass to finish the quest!");
 
 		mineRocks = new DetailedQuestStep(this, "Mine 15 rocks to be able to leave.");
 	}

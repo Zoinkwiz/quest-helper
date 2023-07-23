@@ -388,7 +388,7 @@ public class DesertTreasure extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToArchaeologist = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0), "Talk to the " +
-			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shanty Pass to get here.");
+			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
 

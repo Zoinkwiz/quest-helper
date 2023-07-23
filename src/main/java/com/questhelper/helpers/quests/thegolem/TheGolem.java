@@ -357,7 +357,7 @@ public class TheGolem extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Ability to take the Carpet ride from Shanty Pass to Uzer."));
+		return Collections.singletonList(new UnlockReward("Ability to take the Carpet ride from Shantay Pass to Uzer."));
 	}
 
 	@Override

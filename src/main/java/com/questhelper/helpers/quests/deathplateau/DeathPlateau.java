@@ -288,7 +288,7 @@ public class DeathPlateau extends BasicQuestHelper
 
 		talkToTenzing2 = new NpcStep(this, NpcID.TENZING, new WorldPoint(2820, 3555, 0), "Bring the spiked boots, along with (unnoted) 10 bread and 10 trout to Tenzing.", spikedBoots, bread, trout);
 
-		goNorth = new DetailedQuestStep(this, new WorldPoint(2865, 3609, 0), "Exit Tenzing's house through the north door, and go north, past the Death Plateau warning, and around to the east until you stop and say you've went far enough.", secretMap);
+		goNorth = new DetailedQuestStep(this, new WorldPoint(2865, 3609, 0), "Exit Tenzing's house through the north door, and go north, past the Death Plateau warning, and around to the east until you stop and say you've gone far enough.", secretMap);
 
 		goToHaroldStairs3 = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2915, 3540, 0), "If you lost the Combination, retrieve it from Harold.");
 		goToHaroldDoor3 = new ObjectStep(this, ObjectID.DOOR_3747, new WorldPoint(2906, 3543, 1), "If you lost the Combination, retrieve it from Harold.");

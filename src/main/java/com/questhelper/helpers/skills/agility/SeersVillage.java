@@ -129,7 +129,6 @@ public class SeersVillage extends AgilityCourse
 	{
 		seersPanels = new PanelDetails("60 - 70/80: Seer's Village", Collections.singletonList(seersSidebar)
 		);
-		seersPanels.setLockingStep(this.seersStep);
 		return seersPanels;
 	}
 }

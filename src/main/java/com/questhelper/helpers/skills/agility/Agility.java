@@ -33,6 +33,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -42,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
+import net.runelite.api.QuestState;
 import static net.runelite.api.Skill.AGILITY;
 
 @QuestDescriptor(
@@ -82,8 +84,9 @@ public class Agility extends ComplexStateQuestHelper
 		ConditionalStep superStep = new ConditionalStep(this, gnomeStep);
 		superStep.addStep(ag90, ardougneStep);
 		superStep.addStep(ag80, rellekkaStep);
+		superStep.addStep(new Conditions(LogicType.NAND, ag70,
+			new QuestRequirement(QuestHelperQuest.KANDARIN_HARD, QuestState.FINISHED)), pollnivneachStep);
 		superStep.addStep(ag60, seersStep);
-		superStep.addStep(ag70, pollnivneachStep);
 		superStep.addStep(ag40, canifisStep);
 		superStep.addStep(ag50, faladorStep);
 		superStep.addStep(ag30, varrockStep);

@@ -387,7 +387,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToArchaeologist = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0), "Talk to the " +
+		talkToArchaeologist = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0), "Talk to the " +
 			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shanty Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
@@ -398,9 +398,9 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToExpertAgain = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert again.");
 		talkToExpertAgain.addDialogStep("Ask about the Desert Treasure quest.");
 
-		bringTranslationToArchaeologist = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0),
+		bringTranslationToArchaeologist = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0),
 			"Bring the translation to the Archaeologist in the Bedabin Camp.", translation);
-		talkToArchaeologistAgainAfterTranslation = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist again.");
+		talkToArchaeologistAgainAfterTranslation = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist again.");
 		talkToArchaeologistAgainAfterTranslation.addDialogStep("Help him");
 		buyDrink = new NpcStep(this, NpcID.BARTENDER, new WorldPoint(3159, 2978, 0), "Buy a drink from the pub in the Bandit Camp, then talk to the Bartender again.", coins650);
 		buyDrink.addDialogStep("Buy a drink");

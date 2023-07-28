@@ -237,7 +237,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		planks11 = new ItemRequirement("Plank", ItemID.PLANK, 11);
 		nails44 = new ItemRequirement("Any nails", ItemCollections.NAILS, 44);
-		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
+		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE, 2);
 		snails10 = new ItemRequirement("Raw snail", ItemID.THIN_SNAIL_MEAT);
 		snails10.addAlternates(ItemID.FAT_SNAIL_MEAT, ItemID.LEAN_SNAIL_MEAT);
 		mackerel10 = new ItemRequirement("Raw mackerel", ItemID.RAW_MACKEREL, 10);

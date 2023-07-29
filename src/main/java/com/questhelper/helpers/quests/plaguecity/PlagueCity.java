@@ -224,6 +224,7 @@ public class PlagueCity extends BasicQuestHelper
 		gasMask.setTooltip("You can get another from the cupboard in Edmond's house.");
 		book = new ItemRequirement("Book", ItemID.BOOK_1509);
 		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
+		bucketOfChocolateMilk.setHighlightInInventory(true);
 		hangoverCure = new ItemRequirement("Hangover cure", ItemID.HANGOVER_CURE);
 		warrant = new ItemRequirement("Warrant", ItemID.WARRANT);
 		inPlagueHouse = new ZoneRequirement(plagueHouse1, plagueHouse2);

@@ -211,7 +211,8 @@ public class MerlinsCrystal extends BasicQuestHelper
 	public void setupSteps()
 	{
 		startQuest = new NpcStep(this, NpcID.KING_ARTHUR, new WorldPoint(2763, 3513, 0), "Talk to King Arthur in Camelot Castle to start.");
-		startQuest.addDialogStep("I want to become a knight of the round table!");
+		startQuest.addDialogStep("Yes.");
+		startQuest.addDialogStep("I want to become a Knight of the Round Table!");
 		talkToGawain = new NpcStep(this, NpcID.SIR_GAWAIN, new WorldPoint(2758, 3504, 0), "Talk to Sir Gawain about how Merlin got trapped.");
 		talkToGawain.addDialogStep("Do you know how Merlin got trapped?");
 

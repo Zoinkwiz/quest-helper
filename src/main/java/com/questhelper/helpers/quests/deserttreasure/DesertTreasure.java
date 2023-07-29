@@ -390,6 +390,7 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToArchaeologist = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0), "Talk to the " +
 			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
+		talkToArchaeologist.addDialogStep("Yes.");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
 
 		talkToExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
@@ -448,7 +449,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		talkToRasolo = new NpcStep(this, NpcID.RASOLO, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
 		talkToRasolo.addDialogStep("Ask about the Diamonds of Azzanadra");
-		talkToRasolo.addDialogStepWithExclusion("Yes.", "Ask about the Diamonds of Azzanadra");
+		talkToRasolo.addDialogStepWithExclusion("Yes", "Ask about the Diamonds of Azzanadra");
 
 		getCross = new ObjectStep(this, ObjectID.SECURE_CHEST, new WorldPoint(3169, 2967, 0), "Bring antipoison, food, and as many picklocks as you can to the Bandit Camp, and try opening the chest in the south of the Bandit Camp. Keep trying until you succeed.", manyLockpicks, antipoison);
 

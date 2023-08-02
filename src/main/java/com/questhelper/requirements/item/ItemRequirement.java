@@ -198,6 +198,13 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement named(String name)
+	{
+		ItemRequirement newItem = copy();
+		newItem.setName(name);
+		return newItem;
+	}
+
 	public ItemRequirement equipped()
 	{
 		ItemRequirement newItem = copy();

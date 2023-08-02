@@ -224,10 +224,10 @@ public class TowerOfLife extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEffigy = new NpcStep(this, NpcID.EFFIGY, new WorldPoint(2637, 3218, 0), "Talk to Effigy outside the Tower of Life");
+		talkToEffigy = new NpcStep(this, NpcID.EFFIGY, new WorldPoint(2637, 3218, 0), "Talk to Effigy outside the Tower of Life.");
 		talkToEffigy.addDialogStep("Sure, why not.");
 
-		talkToBonafido = new NpcStep(this, NpcID.BONAFIDO, new WorldPoint(2651, 3228, 0), "Talk to Bonafido");
+		talkToBonafido = new NpcStep(this, NpcID.BONAFIDO, new WorldPoint(2651, 3228, 0), "Talk to Bonafido.");
 
 		setupGetBuildersCostume();
 
@@ -236,30 +236,26 @@ public class TowerOfLife extends BasicQuestHelper
 		climbUpToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2645, 3220, 0), "Go upstairs.");
 		climbUpToFloor2 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2653, 3220, 1), "Go upstairs.");
 		climbUpToFloor3 = new ObjectStep(this, ObjectID.LADDER_17974, new WorldPoint(2647, 3221, 2), "Go upstairs.");
-		climbDownToGround = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2645, 3220, 1), "Go downstairs" +
-			".");
-		climbDownToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2653, 3220, 2), "Go downstairs" +
-			".");
-		climbDownToFloor2 = new ObjectStep(this, ObjectID.LADDER_17975, new WorldPoint(2647, 3221, 3), "Go downstairs" +
-			".");
+		climbDownToGround = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2645, 3220, 1), "Go downstairs.");
+		climbDownToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2653, 3220, 2), "Go downstairs.");
+		climbDownToFloor2 = new ObjectStep(this, ObjectID.LADDER_17975, new WorldPoint(2647, 3221, 3), "Go downstairs.");
 
-		climbDownToBasement = new ObjectStep(this, NullObjectID.NULL_21944, new WorldPoint(2648, 3212, 0), "Go " +
-			"downstairs.");
+		climbDownToBasement = new ObjectStep(this, NullObjectID.NULL_21944, new WorldPoint(2648, 3212, 0), "Go downstairs.");
 
-		enterTowerAgain = new ObjectStep(this, ObjectID.TOWER_DOOR, new WorldPoint(2649, 3225, 0), "Go back into the " +
-			"tower.");
-		climbBackUpToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2645, 3220, 0), "Go back " +
-			"upstairs.");
-		climbBackUpToFloor2 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2653, 3220, 1), "Go back " +
-			"upstairs.");
-		climbBackUpToFloor3 = new ObjectStep(this, ObjectID.LADDER_17974, new WorldPoint(2647, 3221, 2), "Go back " +
-			"upstairs.");
-		climbBackDownToGround = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2645, 3220, 1), "Go back " +
-			"downstairs.");
-		climbBackDownToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2653, 3220, 2), "Go back " +
-			"downstairs.");
-		climbBackDownToFloor2 = new ObjectStep(this, ObjectID.LADDER_17975, new WorldPoint(2647, 3221, 3), "Go back " +
-			"downstairs.");
+		enterTowerAgain = new ObjectStep(this, ObjectID.TOWER_DOOR, new WorldPoint(2649, 3225, 0),
+			"Go back into the tower.");
+		climbBackUpToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2645, 3220, 0),
+			"Go back upstairs.");
+		climbBackUpToFloor2 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2653, 3220, 1),
+			"Go back upstairs.");
+		climbBackUpToFloor3 = new ObjectStep(this, ObjectID.LADDER_17974, new WorldPoint(2647, 3221, 2),
+			"Go back upstairs.");
+		climbBackDownToGround = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2645, 3220, 1),
+			"Go back downstairs.");
+		climbBackDownToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2653, 3220, 2),
+			"Go back downstairs.");
+		climbBackDownToFloor2 = new ObjectStep(this, ObjectID.LADDER_17975, new WorldPoint(2647, 3221, 3),
+			"Go back downstairs.");
 
 		setupFixTower();
 

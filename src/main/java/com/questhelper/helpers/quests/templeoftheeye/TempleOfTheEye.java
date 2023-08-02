@@ -263,6 +263,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		tamaraRiftTalk = new VarbitRequirement(13754, 0);
 		cordeliaRiftTalk = new VarbitRequirement(13756, 0);
 
+		// TODO: Seems to be generally done for cutscenes? Happens in Enahkra's Lament
 		mysteriousVisionSeen = new VarbitRequirement(12139, 1);
 	}
 

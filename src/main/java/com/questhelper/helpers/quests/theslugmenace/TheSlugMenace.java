@@ -37,10 +37,10 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.widget.WidgetModelRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -194,11 +194,17 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE_9693);
-		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE_9695);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE_9691);
-		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE_9699);
-		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE_9697);
+		usedAirRune = new VarbitRequirement(2623, 1);
+		usedEarthRune = new VarbitRequirement(2622, 1);
+		usedWaterRune = new VarbitRequirement(2625, 1);
+		usedFireRune = new VarbitRequirement(2624, 1);
+		usedMindRune = new VarbitRequirement(2626, 1);
+
+		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE_9693).hideConditioned(usedAirRune);
+		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE_9695).hideConditioned(usedEarthRune);
+		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE_9691).hideConditioned(usedWaterRune);
+		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE_9699).hideConditioned(usedFireRune);
+		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE_9697).hideConditioned(usedMindRune);
 
 		meleeGear = new ItemRequirement("Melee weapon to fight the Slug Prince", -1, -1).isNotConsumed();
 		meleeGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -290,23 +296,17 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		onPlatform = new ZoneRequirement(platform);
 
-		puzzleUp = new WidgetModelRequirement(460, 4, 18393);
+		puzzleUp = new WidgetPresenceRequirement(460, 8);
 
 		repairedPage = new VarbitRequirement(2611, 1);
 
 		pickedUpSlug = new VarbitRequirement(2631, 1);
 
-		usedAirRune = new VarbitRequirement(2623, 1);
-		usedEarthRune = new VarbitRequirement(2622, 1);
-		usedWaterRune = new VarbitRequirement(2625, 1);
-		usedFireRune = new VarbitRequirement(2624, 1);
-		usedMindRune = new VarbitRequirement(2626, 1);
-
-		hasOrUsedAirRune = new Conditions(LogicType.OR, airRune, usedAirRune);
-		hasOrUsedWaterRune = new Conditions(LogicType.OR, waterRune, usedWaterRune);
-		hasOrUsedEarthRune = new Conditions(LogicType.OR, earthRune, usedEarthRune);
-		hasOrUsedFireRune = new Conditions(LogicType.OR, fireRune, usedFireRune);
-		hasOrUsedMindRune = new Conditions(LogicType.OR, mindRune, usedMindRune);
+		hasOrUsedAirRune = new Conditions(LogicType.OR, airRune.alsoCheckBank(questBank), usedAirRune);
+		hasOrUsedWaterRune = new Conditions(LogicType.OR, waterRune.alsoCheckBank(questBank), usedWaterRune);
+		hasOrUsedEarthRune = new Conditions(LogicType.OR, earthRune.alsoCheckBank(questBank), usedEarthRune);
+		hasOrUsedFireRune = new Conditions(LogicType.OR, fireRune.alsoCheckBank(questBank), usedFireRune);
+		hasOrUsedMindRune = new Conditions(LogicType.OR, mindRune.alsoCheckBank(questBank), usedMindRune);
 
 		hasAllRunes = new Conditions(hasOrUsedAirRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune, hasOrUsedWaterRune);
 
@@ -358,6 +358,7 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		solvePuzzle = new PuzzleStep(this);
 
+		// TODO: Expand out this section to be more descriptive and guiding
 		useEmptyRunes = new DetailedQuestStep(this, "Right-click each page to turn rune/pure essence into empty runes. Take each empty rune and use it on its respective Runecrafting Altar. Bring extra essence (~10 extra) as it is possible to accidentally destroy the essence upon creation.", page1, page2, page3, essence, chisel);
 
 		enterDungeonAgain = new ObjectStep(this, ObjectID.OLD_RUIN_ENTRANCE, new WorldPoint(2696, 3283, 0), "Prepare to fight the Slug Prince (level 62). Only melee can hurt it. Then, enter the old ruin entrance west of Witchaven.", meleeGear, airRune, waterRune, earthRune, fireRune, mindRune);
@@ -425,9 +426,9 @@ public class TheSlugMenace extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.RUNECRAFT, 3500),
-				new ExperienceReward(Skill.CRAFTING, 3500),
-				new ExperienceReward(Skill.THIEVING, 3500));
+			new ExperienceReward(Skill.RUNECRAFT, 3500),
+			new ExperienceReward(Skill.CRAFTING, 3500),
+			new ExperienceReward(Skill.THIEVING, 3500));
 	}
 
 	@Override

@@ -134,18 +134,21 @@ public class GettingAhead extends BasicQuestHelper
 		makeClayHead.addStep(new Conditions(bucket, clay), fillBucket);
 		makeClayHead.addStep(clay, takeBucket);
 		makeClayHead.addStep(pickaxe, mineClay);
+		makeClayHead.addSubSteps(talkToGordonGen);
 		steps.put(18, makeClayHead);
-
 		steps.put(20, talkToGordonGen);
+
 		addFurToHead = new ConditionalStep(this, goUpstairsHouse, "Use the bear fur on the clay head then talk to Gordon.");
 		addFurToHead.addStep(new Conditions(thread, needle), useFurOnHead);
 		addFurToHead.addStep(new Conditions(inUpstairsHouse, needle), getThread);
 		addFurToHead.addStep(inUpstairsHouse, getNeedle);
+		addFurToHead.addSubSteps(talkToGordonGen2);
 		steps.put(22, addFurToHead);
 		steps.put(24, talkToGordonGen2);
 
 		dyeHead = new ConditionalStep(this, takeDye, "Use the red dye on the fur head then talk to Gordon.");
 		dyeHead.addStep(redDye, useDyeOnHead);
+		dyeHead.addSubSteps(talkToGordonGen3);
 		steps.put(26, dyeHead);
 		steps.put(28, talkToGordonGen3);
 

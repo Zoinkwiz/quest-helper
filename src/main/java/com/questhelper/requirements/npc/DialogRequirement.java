@@ -51,11 +51,6 @@ public class DialogRequirement extends SimpleRequirement
 		this.mustBeActive = mustBeActive;
 	}
 
-	public DialogRequirement(String talkerName, String text)
-	{
-		this(talkerName, text, false);
-	}
-
 	public DialogRequirement(String text)
 	{
 		this(null, text, false);

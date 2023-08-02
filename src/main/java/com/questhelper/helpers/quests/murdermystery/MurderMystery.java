@@ -222,7 +222,7 @@ public class MurderMystery extends BasicQuestHelper
 		);
 		talkedToPoisonSalesman = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtopoisonsalesman",
 			new Conditions(true, LogicType.OR,
-		    	new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok."),
+		    	new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok.", false),
 				new DialogRequirement("Anna, Bob, Carol, David, Elizabeth and Frank all bought a bottle! " +
 				"In fact they bought the last of my supplies!")
 		));
@@ -273,27 +273,27 @@ public class MurderMystery extends BasicQuestHelper
 
 		talkedToAnna = new Conditions(
 			true,
-			new DialogRequirement("Anna", "That useless Gardener Stanford has let his compost")
+			new DialogRequirement("Anna", "That useless Gardener Stanford has let his compost", false)
 		);
 		talkedToBob = new Conditions(
 			true,
-			new DialogRequirement("Bob", "What's it to you anyway? If you absolutely")
+			new DialogRequirement("Bob", "What's it to you anyway? If you absolutely", false)
 		);
 		talkedToCarol = new Conditions(
 			true,
-			new DialogRequirement("Carol", "I felt I had to do it myself.")
+			new DialogRequirement("Carol", "I felt I had to do it myself.", false)
 		);
 		talkedToDavid = new Conditions(
 			true,
-			new DialogRequirement("David", "fire the whole workshy lot")
+			new DialogRequirement("David", "fire the whole workshy lot", false)
 		);
 		talkedToElizabeth = new Conditions(
 			true,
-			new DialogRequirement("Elizabeth", "Doesn't everyone?")
+			new DialogRequirement("Elizabeth", "Doesn't everyone?", false)
 		);
 		talkedToFrank = new Conditions(
 			true,
-			new DialogRequirement("Frank", "clean that family crest")
+			new DialogRequirement("Frank", "clean that family crest", false)
 		);
 		talkedToSuspect = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtosuspect",
 			new Conditions(

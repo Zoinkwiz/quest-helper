@@ -97,10 +97,15 @@ public class DesertTreasureII extends BasicQuestHelper
 		askedAboutPerseriya, askedAboutSucellus, askedAboutWhisperer;
 
 	/* Vardovis */
-	DetailedQuestStep talkToElissa, talkToBarus, searchDesk, readPotionNote, drinkPotion, boardBoat;
-	Requirement talkedToElissa, talkedToBarus, haveReadPotionNote, haveDrunkPotion, inStrangewood;
-	ItemRequirement potionNote, potion;
-	Zone stranglewood;
+	DetailedQuestStep talkToElissa, talkToBarus, searchDesk, readPotionNote, drinkPotion, boardBoat, runIntoStanglewood,
+		talkToKasonde, enterEntry, defendKasonde, defendKasondeSidebar, leaveTowerDefenseRoom, talkToKasondeAfterTowerDefense,
+		getBerry, getHerb, getHerbSidebar, goDownToKasonde, defendKasondeHerb, talkToKasondeWithHerbAndBerry, addHerb, addBerry,
+		goToRitualSite;
+	Requirement talkedToElissa, talkedToBarus, haveReadPotionNote, haveDrunkPotion, inStrangewood, finishedStranglewoodCutscene,
+		talkedToKasonde, inTowerDefenseRoom, defendedKasonde, toldAboutHerbAndBerry, herbTaken, berryTaken,
+		inStranglewoodPyramidRoom, defendedKasondeWithHerb, receivedSerum;
+	ItemRequirement potionNote, potion, freezes, berry, herb, unfinishedSerum, serumWithHerb, completeSerum;
+	Zone stranglewood, towerDefenseRoom, stranglewoodPyramidRoom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -211,7 +216,17 @@ public class DesertTreasureII extends BasicQuestHelper
 		steps.put(40, goOperateGolemLastTime);
 
 		ConditionalStep findingVardorvis = new ConditionalStep(this, talkToElissa);
-		findingVardorvis.addStep(new Conditions(haveDrunkPotion, inStrangewood), boardBoat);
+		findingVardorvis.addStep(new Conditions(inStranglewoodPyramidRoom, defendedKasondeWithHerb, herbTaken, berryTaken), talkToKasondeWithHerbAndBerry);
+		findingVardorvis.addStep(new Conditions(inStranglewoodPyramidRoom, herbTaken, berryTaken), defendKasondeHerb);
+		findingVardorvis.addStep(new Conditions(inStrangewood, herbTaken, berryTaken), goDownToKasonde);
+		findingVardorvis.addStep(new Conditions(inStrangewood, herbTaken), getBerry);
+		findingVardorvis.addStep(new Conditions(inStrangewood, toldAboutHerbAndBerry), getHerb);
+		findingVardorvis.addStep(new Conditions(inTowerDefenseRoom, defendedKasonde), leaveTowerDefenseRoom);
+		findingVardorvis.addStep(new Conditions(inStrangewood, defendedKasonde), talkToKasondeAfterTowerDefense);
+		findingVardorvis.addStep(new Conditions(inTowerDefenseRoom), defendKasonde);
+		findingVardorvis.addStep(new Conditions(inStrangewood, talkedToKasonde), enterEntry);
+		findingVardorvis.addStep(new Conditions(inStrangewood, finishedStranglewoodCutscene), talkToKasonde);
+		findingVardorvis.addStep(new Conditions(inStrangewood), runIntoStanglewood);
 		findingVardorvis.addStep(new Conditions(haveDrunkPotion), boardBoat);
 		findingVardorvis.addStep(new Conditions(haveReadPotionNote, potion.alsoCheckBank(questBank)), drinkPotion);
 		findingVardorvis.addStep(new Conditions(nor(haveReadPotionNote), potionNote.alsoCheckBank(questBank)), readPotionNote);
@@ -281,6 +296,12 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		potionNote = new ItemRequirement("Potion note", ItemID.POTION_NOTE);
 		potion = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION_28383);
+		freezes = new ItemRequirement("Freezing spells STRONGLY recommended", -1);
+		berry = new ItemRequirement("Argian berries", ItemID.ARGIAN_BERRIES);
+		herb = new ItemRequirement("Korbal herb", ItemID.KORBAL_HERB);
+		unfinishedSerum = new ItemRequirement("Unfinished serum", ItemID.UNFINISHED_SERUM);
+		serumWithHerb = new ItemRequirement("Unfinished serum (herb added)", ItemID.UNFINISHED_SERUM_28387);
+		completeSerum = new ItemRequirement("Strangler serum", ItemID.STRANGLER_SERUM);
 	}
 
 	public void loadZones()
@@ -289,6 +310,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		digsiteHole = new Zone(new WorldPoint(3400, 9800, 0), new WorldPoint(3419, 9824, 0));
 		golemRoom = new Zone(new WorldPoint(2767, 6425, 0), new WorldPoint(2807, 6459, 0));
 		stranglewood = new Zone(new WorldPoint(1087, 3264, 0), new WorldPoint(1261, 3458, 0));
+		towerDefenseRoom = new Zone(new WorldPoint(1160, 9740, 0), new WorldPoint(1210, 9780, 0));
+		stranglewoodPyramidRoom = new Zone(new WorldPoint(1177, 9810, 0), new WorldPoint(1190, 9846, 0));
 	}
 
 	public void setupConditions()
@@ -348,11 +371,46 @@ public class DesertTreasureII extends BasicQuestHelper
 		haveReadPotionNote = new VarbitRequirement(15125, 8, Operation.GREATER_EQUAL);
 		haveDrunkPotion = new VarbitRequirement(15125, 10, Operation.GREATER_EQUAL);
 		inStrangewood = new ZoneRequirement(stranglewood);
+//		seenStranglewoodCutscene = new VarbitRequirement(15125, 14, Operation.GREATER_EQUAL);
+		finishedStranglewoodCutscene = new VarbitRequirement(15125, 16, Operation.GREATER_EQUAL);
 		// Entered Stranglewood
 		// 15125 10->12
 		// 14862 42->44
 		// 15160 0->3, happens whenever you enter the Stranglewood
 		// 15099 = how infected you are
+
+		// Cutscene upon entering area
+		// 15160 3->2
+		// 12139 0->1
+
+		// After Cutscene, 15099 44->39
+		// 12427 0->1
+		// 12428 0->2
+		talkedToKasonde = new VarbitRequirement(15125, 18, Operation.GREATER_EQUAL);
+
+		// 15100, 0->400 (is a timer for tower defense)
+		// 15125 18->20, gone into Entry
+		// 15101 0->85 (Kasonde's health)
+
+		// A, SW CHest
+		// VarClientInt 1121 0->5
+		// VarClientInt 1122 0->5
+		// VarClientInt 1123 0->5
+		inTowerDefenseRoom = new ZoneRequirement(towerDefenseRoom);
+
+		defendedKasonde = new VarbitRequirement(15125, 22, Operation.GREATER_EQUAL);
+		toldAboutHerbAndBerry = new VarbitRequirement(15125, 24, Operation.GREATER_EQUAL);
+		// 15136 0->2 taken herb
+		// 15125 24->26, herb taken
+		herbTaken = new VarbitRequirement(15136, 2);
+		// 15125 26->28, picked berry
+		// 15137, 0->1 berry taken
+		berryTaken = new VarbitRequirement(15137, 1);
+
+		// 15125 28->30->32 when entering pyramid
+		inStranglewoodPyramidRoom = new ZoneRequirement(stranglewoodPyramidRoom);
+		defendedKasondeWithHerb = new VarbitRequirement(15125, 34, Operation.GREATER_EQUAL);
+		receivedSerum = new VarbitRequirement(15125, 36, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
@@ -505,7 +563,94 @@ public class DesertTreasureII extends BasicQuestHelper
 		drinkPotion = new ItemStep(this, "Drink the strange potion.", potion.highlighted());
 		boardBoat = new ObjectStep(this, NullObjectID.NULL_49491, new WorldPoint(1227, 3470, 0),
 			"Board the boat south of Quidamortem into The Stranglewood.");
+		runIntoStanglewood = new DetailedQuestStep(this, new WorldPoint(1194, 3394, 0), "Run deeper into Stranglewood. " +
+			"Be careful of the Strangled, as they'll bind you and deal damage.");
+		talkToKasonde = new NpcStep(this, NpcID.KASONDE, new WorldPoint(1191, 3404, 0), "Talk to Kasonde.");
+		enterEntry = new ObjectStep(this, ObjectID.ENTRY_48722, new WorldPoint(1191, 3411, 0), "Hide away in the Entry in the north west of the room.");
+		defendKasondeSidebar = new DetailedQuestStep(this, "Defend Kasonde! There are barricades in the stone chests you can set up to block routes. " +
+			"There are also satchels you can place on the floor, and detonate using the Detonator. This will kill all of the Strangled in a 7x7 area, as well as damaging you or " +
+			"Kasonde if either of you are in the blast radius.");
+		defendKasondeSidebar.addText("Closed chests require you to guess the correct code to open, with correct numbers in the correct place being marked in green, " +
+			"and correct numbers in the wrong places being marked with blue.");
+		defendKasondeSidebar.addText("It's recommended to also use freezes if you have ancient magicks with you to keep them off of Kasonde. If you have freezes, you can largely ignore the barricading and explosives.");
+
+		defendKasonde = new DetailedQuestStep(this, "Defend Kasonde! Read the sidebar for more details.");
+		defendKasonde.addRecommended(freezes);
+		defendKasondeSidebar.addSubSteps(defendKasonde);
+
+		// TODO: Get actual coordinate and ladder ID!
+		leaveTowerDefenseRoom = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(1175, 9755, 0),
+			"Leave the dungeon up the ladder.");
+		talkToKasondeAfterTowerDefense = new NpcStep(this, NpcID.KASONDE, new WorldPoint(1191, 3404, 0),
+			"Talk to Kasonde on the surface.");
+		getHerb = new ObjectStep(this, ObjectID.KORBAL_HERBS, new WorldPoint(1155, 3447, 0),
+			"Go get the herb from the north west corner of the area. " +
+				"The stangled will attack you, so bring food and freezes to trap them. More info in the sidebar.");
+		getHerb.setLinePoints(Arrays.asList(
+			new WorldPoint(1193, 3403, 0),
+			new WorldPoint(1193, 3395, 0),
+			new WorldPoint(1186, 3395, 0),
+			new WorldPoint(1186, 3416, 0),
+			new WorldPoint(1165, 3415, 0),
+			new WorldPoint(1161, 3415, 0),
+			new WorldPoint(1161, 3426, 0),
+			new WorldPoint(1159, 3426, 0),
+			new WorldPoint(1159, 3428, 0),
+			new WorldPoint(1161, 3441, 0)
+		));
+
+		getHerbSidebar = new ObjectStep(this, ObjectID.KORBAL_HERBS, new WorldPoint(1111, 3434, 0),
+			"Go get the herb. The Strangled will attack you, so have food. If your infected bar reaches full, " +
+				"you'll be teleported to the starting room again. ");
+		getHerbSidebar.addText("You can get some stink bombs from the chest in the south east corner of Kasonde's room, " +
+				"which when used attract the Strangled to the location. This can be useful for avoiding them.");
+		getHerbSidebar.addText("Freezes and blood spells are useful for trapping them and healing up.");
+		getHerbSidebar.addSubSteps(getHerb);
+
+		getBerry = new ObjectStep(this, ObjectID.ARGIAN_BUSH, new WorldPoint(1126, 3323, 0),
+			"Get the berry from the south west part of the area. Beware the Strangled still.");
+		getBerry.setLinePoints(Arrays.asList(
+			new WorldPoint(1161, 3441, 0),
+			new WorldPoint(1159, 3428, 0),
+			new WorldPoint(1159, 3426, 0),
+			new WorldPoint(1161, 3426, 0),
+			new WorldPoint(1162, 3415, 0),
+			new WorldPoint(1162, 3404, 0),
+			new WorldPoint(1162, 3399, 0),
+			new WorldPoint(1163, 3399, 0),
+			new WorldPoint(1163, 3381, 0),
+			new WorldPoint(1148, 3378, 0),
+			new WorldPoint(1145, 3373, 0),
+			new WorldPoint(1144, 3342, 0),
+			new WorldPoint(1126, 3323, 0)
+		));
+
+		goDownToKasonde = new ObjectStep(this, ObjectID.ENTRY_48723, new WorldPoint(1174, 3428, 0),
+			"Go to Kasonde, who is inside the main pyramid of the area to the north. Be ready to fight a few Strangled.", combatGear, berry, herb);
+		goDownToKasonde.setLinePoints(Arrays.asList(
+			new WorldPoint(1126, 3323, 0),
+			new WorldPoint(1144, 3342, 0),
+			new WorldPoint(1144, 3357, 0),
+			new WorldPoint(1145, 3373, 0),
+			new WorldPoint(1148, 3378, 0),
+			new WorldPoint(1163, 3381, 0),
+			new WorldPoint(1163, 3399, 0),
+			new WorldPoint(1162, 3399, 0),
+			new WorldPoint(1162, 3404, 0),
+			new WorldPoint(1162, 3415, 0),
+			new WorldPoint(1174, 3416, 0),
+			new WorldPoint(1174, 3427, 0)
+		));
+		defendKasondeHerb = new NpcStep(this, NpcID.STRANGLED_12280, new WorldPoint(1183, 9824, 0),
+			"Defeat the Strangled attacking Kasonde.", true);
+		((NpcStep) defendKasondeHerb).addAlternateNpcs(NpcID.STRANGLED_12279);
+
+		talkToKasondeWithHerbAndBerry = new NpcStep(this, NpcID.KASONDE_12258, new WorldPoint(1183, 9824, 0),
+			"Give Kasonde the berry and herb.", berry, herb);
+		addHerb = new DetailedQuestStep(this, "Add the herb to unfinished serum", herb.highlighted(), unfinishedSerum.highlighted());
+		addBerry = new DetailedQuestStep(this, "Add the berries to the serum.", serumWithHerb.highlighted(), berry.highlighted());
 	}
+
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
@@ -570,9 +715,12 @@ public class DesertTreasureII extends BasicQuestHelper
 			Arrays.asList(combatGear, allBursts),
 			Arrays.asList(senntistenTeleport)));
 		allSteps.add(new PanelDetails("Vardorvis",
-			Arrays.asList(talkToElissa, talkToBarus, searchDesk, readPotionNote, drinkPotion),
+			Arrays.asList(talkToElissa, talkToBarus, searchDesk, readPotionNote, drinkPotion, boardBoat,
+				runIntoStanglewood, talkToKasonde, enterEntry, defendKasondeSidebar, leaveTowerDefenseRoom,
+				talkToKasondeAfterTowerDefense, getHerbSidebar, getBerry, goDownToKasonde, defendKasondeHerb,
+				talkToKasondeWithHerbAndBerry),
 			Arrays.asList(combatGear),
-			Arrays.asList(xericTalisman)));
+			Arrays.asList(xericTalisman, freezes)));
 
 		return allSteps;
 	}

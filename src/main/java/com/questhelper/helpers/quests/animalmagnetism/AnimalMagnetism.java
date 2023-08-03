@@ -151,7 +151,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		croneMadeAmulet = new ItemRequirement("Crone-made amulet", ItemID.CRONEMADE_AMULET);
 		ectoToken20 = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN, 20);
 		undeadChicken2 = new ItemRequirement("Undead chicken", ItemID.UNDEAD_CHICKEN, 2);
-		undeadChicken2.canBeObtainedDuringQuest();
+		undeadChicken2.setTooltip("You will buy the undead chickens from Malcolm.");
 
 		//Magnet
 		ironBar5 = new ItemRequirement("Iron Bar", ItemID.IRON_BAR, 5);
@@ -334,9 +334,9 @@ public class AnimalMagnetism extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Undead Chickens",
 			Arrays.asList(talkToAlicesHusband, talkToAlice, talkToAlicesHusband2, talkToAlice2, talkToOldCrone,
 				giveAmuletToHusband, talkToAlicesHusband3, buyUndeadChickens, giveChickensToAva),
-			ghostspeak, ectoToken20));
+			ghostspeak, ectoToken20, undeadChicken2));
 		allSteps.add(new PanelDetails("Magnet",
-			Arrays.asList(talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva), ironBar5, hammer, undeadChicken2));
+			Arrays.asList(talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva), ironBar5, hammer));
 		allSteps.add(new PanelDetails("Undead twigs",
 			Arrays.asList(attemptToCutTree, talkToTurael, cutTree, giveTwigsToAva, getNotesFromAva, translateNotes, giveNotesToAva, buildPattern, giveContainerToAva),
 			mithrilAxe, polishedButtons, hardLeather, holySymbol));

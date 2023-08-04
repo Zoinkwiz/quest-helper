@@ -22,13 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper;
+package com.questhelper.statemanagement;
 
+import com.questhelper.KeyringCollection;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
@@ -56,12 +58,13 @@ public class GameStateManager
 	public void startUp()
 	{
 		keyringKeys = KeyringCollection.allKeyRequirements(configManager);
+		AchievementDiaryStepManager.setup(configManager);
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (keyringKeys == null) return;
+		if (keyringKeys == null || chatMessage.getType() != ChatMessageType.GAMEMESSAGE) return;
 		if (chatMessage.getMessage().contains("to your key ring."))
 		{
 			for (KeyringRequirement keyringKey : keyringKeys)
@@ -81,6 +84,11 @@ public class GameStateManager
 					keyringKey.setConfigValue("false");
 				}
 			}
+		}
+
+		if (chatMessage.getMessage().contains("Achievement Diary Stage Task - "))
+		{
+			AchievementDiaryStepManager.check(client);
 		}
 	}
 

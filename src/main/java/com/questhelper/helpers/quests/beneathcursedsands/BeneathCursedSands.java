@@ -53,7 +53,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	ItemRequirement coal, tinderbox, ironBar, spade, meat, prayerPotions, fiveCoins;
 
 	// Items Recommended
-	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, meleeCombatGear,
+	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaohSceptre, food, meleeCombatGear,
 		rangedCombatGear, staminaPotions, nardahTeleport;
 
 	// Quest Items

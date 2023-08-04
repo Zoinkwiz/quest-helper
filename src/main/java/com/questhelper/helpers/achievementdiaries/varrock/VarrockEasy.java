@@ -178,7 +178,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		earthTali.setTooltip("Earth talisman or tiara");
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notEarthRune);
 		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout).isNotConsumed();
-		feathers = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notTrout);
+		feathers = new ItemRequirement("Feather", ItemID.FEATHER, 10).showConditioned(notTrout);
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -218,6 +218,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 			"Mine iron south-east of Varrock.", pickaxe);
 		plank = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0),
 			"Make a regular plank at the sawmill.", log);
+		plank.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.LOGS, true);
 		moveToStronghold1 = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
 			"Enter the Stronghold of Security.");
 		moveToStronghold2 = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
@@ -230,19 +231,22 @@ public class VarrockEasy extends ComplexStateQuestHelper
 			"Speak with Benny in the Varrock Square to purchase a newspaper.", coins.quantity(50));
 		news.addDialogSteps("Can I have a newspaper, please?", "Sure, here you go...");
 		dogBone = new NpcStep(this, NpcID.STRAY_DOG_2922, new WorldPoint(3184, 3431, 0),
-			"Give the stray dog a bone. If the dog isn't nearby consider changing worlds.");
+			"Give the stray dog a bone. If the dog isn't nearby consider changing worlds.", bone.highlighted());
 		dogBone.addIcon(ItemID.BONES);
 		potteryWheel = new ObjectStep(this, ObjectID.POTTERS_WHEEL_14887, new WorldPoint(3087, 3410, 0),
 			"Use the potters wheel in Barbarian Village to make an unfired bowl.", softClay);
+		potteryWheel.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.UNFIRED_BOWL, true);
 		bowl = new ObjectStep(this, ObjectID.POTTERY_OVEN_11601, new WorldPoint(3085, 3407, 0),
 			"Put the unfired bowl in the oven.", unfiredBowl);
 		bowl.addIcon(ItemID.UNFIRED_BOWL);
+		bowl.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.UNFIRED_BOWL, true);
+
 		moreKudos = new DetailedQuestStep(this,
 			"Get more kudos from either quests, miniquests, or turning in fossils.");
 		kudos = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3258, 3449, 0),
 			"Speak to Curator Haig Halen.", notMoreKudos);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
-			"Travel to the earth altar or go through the abyss.", earthTali, essence);
+			"Travel to the earth altar or go through the abyss.", earthTali.highlighted(), essence);
 		moveToEarthRune.addIcon(ItemID.EARTH_TALISMAN);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft an earth rune.", essence);

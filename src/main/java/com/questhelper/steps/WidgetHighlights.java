@@ -68,20 +68,29 @@ public class WidgetHighlights
 		Widget widgetToHighlight = client.getWidget(groupId, childId);
 		if (widgetToHighlight == null) return;
 
-		if (checkChildren)
-		{
-			Widget[] widgets = widgetToHighlight.getChildren();
-			if (widgets == null) return;
+		highlightChoices(widgetToHighlight, graphics, questHelper);
+	}
 
+	public void highlightChoices(Widget parentWidget, Graphics2D graphics, QuestHelperPlugin questHelper)
+	{
+		if (parentWidget == null) return;
+
+		Widget[] widgets = parentWidget.getChildren();
+		Widget[] wow = parentWidget.getStaticChildren();
+
+		if (checkChildren && widgets != null)
+		{
 			for (Widget widget : widgets)
 			{
-				highlightChoice(graphics, questHelper, widget);
+				highlightChoices(widget, graphics, questHelper);
+			}
+			for (Widget widget : wow)
+			{
+				highlightChoices(widget, graphics, questHelper);
 			}
 		}
-		else
-		{
-			highlightChoice(graphics, questHelper, widgetToHighlight);
-		}
+
+		highlightChoice(graphics, questHelper, parentWidget);
 	}
 
 	private void highlightChoice(Graphics2D graphics, QuestHelperPlugin questHelper, Widget widgetToHighlight)

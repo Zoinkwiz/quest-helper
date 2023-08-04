@@ -128,6 +128,11 @@ public class NpcStep extends DetailedQuestStep
 	{
 		super.startUp();
 
+		scanForNpcs();
+	}
+
+	public void scanForNpcs()
+	{
 		for (NPC npc : client.getNpcs())
 		{
 			if (npcID == npc.getId() || alternateNpcIDs.contains(npc.getId()))
@@ -184,6 +189,10 @@ public class NpcStep extends DetailedQuestStep
 		if (event.getGameState() == GameState.HOPPING)
 		{
 			npcs.clear();
+		}
+		else if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			scanForNpcs();
 		}
 	}
 

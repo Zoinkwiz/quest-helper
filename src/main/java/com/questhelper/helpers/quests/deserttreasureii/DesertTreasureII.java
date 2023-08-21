@@ -658,6 +658,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		// 18->20, burned ship
 		// TODO: Verify if this is a required progression
 		// 15128 20->22, talked to Persten
+
+		// Attempted to enter room 2, 22->24
 	}
 
 	public void setupSteps()

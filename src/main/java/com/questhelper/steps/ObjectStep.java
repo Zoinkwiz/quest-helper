@@ -64,7 +64,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class ObjectStep extends DetailedQuestStep
 {
 	private final int objectID;
-	private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
+	protected final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
 	private TileObject closestObject = null;
 
 	private boolean showAllInArea;
@@ -132,7 +132,7 @@ public class ObjectStep extends DetailedQuestStep
 		}
 	}
 
-	private void loadObjects()
+	protected void loadObjects()
 	{
 		objects.clear();
 		Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];

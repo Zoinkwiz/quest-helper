@@ -264,6 +264,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private int tickAddedCheerer = -1;
 
+	// TODO: Use this for item checks
 	@Getter
 	private int lastTickInventoryUpdated = -1;
 
@@ -540,6 +541,16 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
+		if (developerMode && commandExecuted.getCommand().equals("inv"))
+		{
+			ItemContainer items = client.getItemContainer(InventoryID.INVENTORY);
+			StringBuilder itemsString = new StringBuilder();
+			for (Item item : items.getItems())
+			{
+				itemsString.append(client.getItemDefinition(item.getId())).append(" : ").append(item.getId()).append("\n");
+			}
+			System.out.println(itemsString);
+		}
 		if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
 		{
 			if (commandExecuted.getArguments().length == 0 ||

@@ -28,8 +28,11 @@ package com.questhelper.requirements.npc;
 
 import com.questhelper.Zone;
 import com.questhelper.requirements.AbstractRequirement;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -37,6 +40,10 @@ import net.runelite.api.coords.WorldPoint;
 public class NpcRequirement extends AbstractRequirement
 {
 	private final int npcID;
+	private final String npcName;
+
+	@Setter
+	short[] npcColorOverrides;
 	private final Zone zone;
 	private final String displayText;
 	private final boolean checkNotInZone;
@@ -88,10 +95,21 @@ public class NpcRequirement extends AbstractRequirement
 	 */
 	public NpcRequirement(String displayText, int npcID, boolean checkNotInZone, Zone zone)
 	{
+		this(displayText, npcID, null, checkNotInZone, zone);
+	}
+
+	public NpcRequirement(String displayText, int npcID, String npcName, boolean checkNotInZone, Zone zone)
+	{
 		this.displayText = displayText;
+		this.npcName = npcName;
 		this.npcID = npcID;
 		this.zone = zone;
 		this.checkNotInZone = checkNotInZone;
+	}
+
+	public NpcRequirement(int npcID, String npcName)
+	{
+		this("DO NOT DISPLAY", npcID, npcName, false, null);
 	}
 
 	@Override
@@ -99,6 +117,7 @@ public class NpcRequirement extends AbstractRequirement
 	{
 		List<NPC> found = client.getNpcs().stream()
 			.filter(npc -> npc.getId() == npcID)
+			.filter(npc -> npcName == null || (npc.getName() != null && npc.getName().equals(npcName)))
 			.collect(Collectors.toList());
 
 		if (!found.isEmpty())
@@ -114,6 +133,7 @@ public class NpcRequirement extends AbstractRequirement
 						return inZone && !checkNotInZone || (!inZone && checkNotInZone);
 					}
 				}
+				return checkNotInZone;
 			}
 			return true; // the NPC exists, and we aren't checking for its location
 		}

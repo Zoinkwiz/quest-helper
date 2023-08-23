@@ -91,4 +91,14 @@ public abstract class BasicQuestHelper extends QuestHelper
 	{
 		return new Conditions(LogicType.NOR, condition);
 	}
+
+	protected Requirement or(Requirement... condition)
+	{
+		return new Conditions(LogicType.OR, condition);
+	}
+
+	protected Requirement and(Requirement... condition)
+	{
+		return new Conditions(LogicType.AND, condition);
+	}
 }

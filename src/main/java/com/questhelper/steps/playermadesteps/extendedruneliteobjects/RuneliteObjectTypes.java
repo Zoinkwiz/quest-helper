@@ -7,5 +7,6 @@ public enum RuneliteObjectTypes
 	UNDEFINED(),
 	OBJECT(),
 	NPC(),
+	GRAPHICS_OBJECT(),
 	ITEM();
 }

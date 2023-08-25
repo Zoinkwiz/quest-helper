@@ -54,16 +54,16 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 public class ExtendedRuneliteObject
 {
 	@Getter
-	private final RuneLiteObject runeliteObject;
+	protected final RuneLiteObject runeliteObject;
 	protected final Client client;
-	private final ClientThread clientThread;
+	protected final ClientThread clientThread;
 
 	// TODO: Some requirements kinda require an external tracking element, so may need to shove into a ConditionalStep or some weirdness?
 	@Getter
 	private final LinkedHashMap<Requirement, RuneliteDialogStep> dialogTrees = new LinkedHashMap<>();
 
-	private Model model;
-	private int animation;
+	protected Model model;
+	protected int animation;
 
 	@Getter
 	private final WorldPoint worldPoint;
@@ -116,6 +116,9 @@ public class ExtendedRuneliteObject
 	private int orientationGoal;
 
 	public static final int MAX_TALK_DISTANCE = 3;
+
+	@Setter
+	private boolean enabled = true;
 
 	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
@@ -186,7 +189,6 @@ public class ExtendedRuneliteObject
 		{
 			runeliteObject.setAnimation(client.loadAnimation(animation));
 			runeliteObject.setModel(model);
-			runeliteObject.setShouldLoop(true);
 			return true;
 		});
 	}
@@ -198,6 +200,7 @@ public class ExtendedRuneliteObject
 
 	public void activate()
 	{
+		if (!enabled) return;
 		if (displayReq == null || displayReq.check(client))
 		{
 			if (objectToRemove != null)
@@ -232,6 +235,11 @@ public class ExtendedRuneliteObject
 		{
 			removeOtherObjects();
 		}
+	}
+
+	protected void actionOnGameTick()
+	{
+
 	}
 
 	public void setDisplayRequirement(Requirement req)

@@ -158,7 +158,7 @@ public class RuneliteObjectManager
 
 	public FakeNpc createFakeNpc(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		FakeNpc extendedRuneliteObject = new FakeNpc(client, clientThread, wp, model, animation);
+		FakeNpc extendedRuneliteObject = new FakeNpc(client, clientThread, wp, model, animation, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -210,6 +210,18 @@ public class RuneliteObjectManager
 	public FakeItem createFakeItem(String groupID, int[] model, WorldPoint wp, int animation)
 	{
 		FakeItem extendedRuneliteObject = new FakeItem(client, clientThread, wp, model, animation);
+		// Should this be here or a separate 'activate' step?
+		extendedRuneliteObject.activate();
+
+		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
+
+		return extendedRuneliteObject;
+	}
+
+	public FakeGraphicsObject createGraphicsFakeObject(String groupID, int[] model, WorldPoint wp, int animation, ExtendedRuneliteObject obj)
+	{
+		FakeGraphicsObject extendedRuneliteObject = new FakeGraphicsObject(client, clientThread, wp, model, animation, obj);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -726,6 +738,8 @@ public class RuneliteObjectManager
 		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
 			for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectGroup.extendedRuneliteObjects)
 			{
+				extendedRuneliteObject.actionOnGameTick();
+
 				// If replaced NPC and active,
 				if (extendedRuneliteObject instanceof ReplacedNpc)
 				{
@@ -742,7 +756,8 @@ public class RuneliteObjectManager
 				}
 				boolean isVisible = extendedRuneliteObject.isActive();
 				boolean shouldDisplayReqPassed =  extendedRuneliteObject.getDisplayReq() == null || extendedRuneliteObject.getDisplayReq().check(client);
-				if (!shouldDisplayReqPassed || isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition))
+				if (extendedRuneliteObject.objectType == RuneliteObjectTypes.NPC &&
+					(!shouldDisplayReqPassed || isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition)))
 				{
 					if (isVisible) disableObject(extendedRuneliteObject);
 				}

@@ -25,6 +25,7 @@
  */
 package com.questhelper;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
@@ -44,6 +45,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.statemanagement.GameStateManager;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import java.awt.image.BufferedImage;
@@ -71,8 +73,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -85,6 +90,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
@@ -326,6 +332,7 @@ public class QuestHelperPlugin extends Plugin
 				loadQuestList = true;
 				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			}
+			npc = runeliteObjectManager.createFakeNpc("lol", new int[] { 0 }, new WorldPoint(2043, 6437, 0), 10313);
 		});
 	}
 
@@ -475,6 +482,8 @@ public class QuestHelperPlugin extends Plugin
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
+	private FakeNpc npc;
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -486,6 +495,7 @@ public class QuestHelperPlugin extends Plugin
 			}
 		});
 
+
 		if (event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
 		{
 			clientThread.invokeLater(this::updateQuestList);
@@ -494,6 +504,13 @@ public class QuestHelperPlugin extends Plugin
 		if (!event.getGroup().equals(QuestHelperConfig.QUEST_HELPER_GROUP))
 		{
 			return;
+		}
+
+		if (event.getKey().equals("setModelId"))
+		{
+			clientThread.invokeLater(() -> {
+				npc.setModel(new int[]{Integer.parseInt((String) (event.getNewValue()))});
+			});
 		}
 
 		if (event.getKey().equals("showRuneliteObjects"))
@@ -550,6 +567,40 @@ public class QuestHelperPlugin extends Plugin
 				itemsString.append(client.getItemDefinition(item.getId())).append(" : ").append(item.getId()).append("\n");
 			}
 			System.out.println(itemsString);
+		}
+		if (developerMode && commandExecuted.getCommand().equals("spawn"))
+		{
+//			NpcID.THE_LEVIATHAN
+			// MODEL ID: 49285, 49283
+			// Idle animation: 10276
+			// LEV: NpcID = 12214
+			// 2484
+			// 18282
+
+			// 10278 - Ranged
+			// 10281 - Magic
+			// 10282 - Boulders
+
+			// G
+			// 2484 RANGED
+			// 2486 MAGIC
+
+			// PROJECTILE
+			// 2487 RANGED
+			// 2489 magic
+			//
+
+			// 2480 = boulder shadow
+
+			if (commandExecuted.getArguments().length == 2)
+			{
+				WorldPoint wp = client.getLocalPlayer().getWorldLocation();
+				int objectID = Integer.parseInt((String)
+					(Arrays.stream(commandExecuted.getArguments()).toArray()[0]));
+				int animationID = Integer.parseInt((String) (Arrays.stream(commandExecuted.getArguments()).toArray()[1]));
+				runeliteObjectManager.createFakeNpc("DT2",
+					new int[] { objectID }, wp, animationID);
+			}
 		}
 		if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
 		{

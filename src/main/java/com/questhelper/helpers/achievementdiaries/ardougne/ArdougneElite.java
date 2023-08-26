@@ -171,7 +171,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickTorstol).isNotConsumed();
 
 		yewLog = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notRuneCrossbow);
-		runeBar = new ItemRequirement("Rune bar", ItemID.RUNITE_BAR).showConditioned(notRuneCrossbow);
+		runeBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR).showConditioned(notRuneCrossbow);
 		sinew = new ItemRequirement("Sinew", ItemID.SINEW).showConditioned(notRuneCrossbow);
 		root = new ItemRequirement("Root", ItemCollections.NON_MAGIC_TREE_ROOT).showConditioned(notRuneCrossbow);
 		sinewOrRoot = new ItemRequirements(LogicType.OR, "Sinew or non-magic tree root", root, sinew)

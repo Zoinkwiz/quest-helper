@@ -191,8 +191,10 @@ public class DesertTreasureII extends BasicQuestHelper
 	Zone leviathanArea, neLeviathanArea;
 
 	Requirement inLeviathanArea, readyToFightLeviathan, inNELeviathanArea, defeatedLeviathan, perstenAtShip,
-		perstenLeft, foundPerseriyasMedallion;
+		perstenLeft, foundPerseriyasMedallion, finishedPerseriya;
 
+
+	DetailedQuestStep moreComingSoon;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -453,6 +455,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		findingPerseriya.addStep(inDemonArea, goKillDemons);
 
 		ConditionalStep findingTheFour = new ConditionalStep(this, findingVardorvis);
+		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya), moreComingSoon);
 		findingTheFour.addStep(finishedVardorvis, findingPerseriya);
 		steps.put(42, findingTheFour);
 		/* Entered stranglewood */
@@ -548,9 +551,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		strangePotion = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION_28383);
 		freezes = new ItemRequirement("Freezing spells STRONGLY recommended", -1);
 		berry = new ItemRequirement("Argian berries", ItemID.ARGIAN_BERRIES);
-		berry.setTooltip("You can get another from the south west corner of The Stranglewood");
+		berry.setTooltip("You can get another from the south-west corner of The Stranglewood");
 		herb = new ItemRequirement("Korbal herb", ItemID.KORBAL_HERB);
-		herb.setTooltip("You can get another from the north west corner of The Stranglewood");
+		herb.setTooltip("You can get another from the north-west corner of The Stranglewood");
 		unfinishedSerum = new ItemRequirement("Unfinished serum", ItemID.UNFINISHED_SERUM);
 		serumWithHerb = new ItemRequirement("Unfinished serum (herb added)", ItemID.UNFINISHED_SERUM_28387);
 		stranglerSerum = new ItemRequirement("Strangler serum", ItemID.STRANGLER_SERUM);
@@ -997,18 +1000,20 @@ public class DesertTreasureII extends BasicQuestHelper
 		// 15128 48->50
 		// 14862 64->66
 		// 15133 0->4
+
+		finishedPerseriya = new VarbitRequirement(PERSERIYA_VARBIT, 50, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
 	{
 		attemptToEnterVaultDoor = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
 			new WorldPoint(3511, 2971, 0),
-			"Attempt to enter the Vault door north east of Nardah.", ancientMagicksActive);
+			"Attempt to enter the Vault door north-east of Nardah.", ancientMagicksActive);
 		attemptToEnterVaultDoor.addDialogStep("Yes.");
 
 		attemptToEnterVaultDoor2 = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
 			new WorldPoint(3511, 2971, 0),
-			"Attempt to enter the Vault door north east of Nardah.");
+			"Attempt to enter the Vault door north-east of Nardah.");
 		attemptToEnterVaultDoor.addSubSteps(attemptToEnterVaultDoor2);
 
 		talkToAsgarnia = new NpcStep(this, NpcID.ASGARNIA_SMITH_12291,
@@ -1018,13 +1023,13 @@ public class DesertTreasureII extends BasicQuestHelper
 			new WorldPoint(3944, 9631, 1), "Inspect the plaque.");
 
 		inspectStatueNE = new ObjectStep(this, NullObjectID.NULL_49499, new WorldPoint(3942, 9636, 1),
-			"Inspect the north east statue.");
+			"Inspect the north-east statue.");
 		inspectStatueNW = new ObjectStep(this, NullObjectID.NULL_49501, new WorldPoint(3932, 9636, 1),
-			"Inspect the north west statue.");
+			"Inspect the north-west statue.");
 		inspectStatueSW = new ObjectStep(this, NullObjectID.NULL_49503, new WorldPoint(3932, 9626, 1),
-			"Inspect the south west statue.");
+			"Inspect the south-west statue.");
 		inspectStatueSE = new ObjectStep(this, NullObjectID.NULL_49505, new WorldPoint(3942, 9626, 1),
-			"Inspect the south east statue.");
+			"Inspect the south-east statue.");
 
 		talkToAsgarniaAgain = new NpcStep(this, NpcID.ASGARNIA_SMITH_12291,
 			new WorldPoint(3932, 9631, 1), "Talk to Asgarnia Smith inside the Vault.");
@@ -1040,16 +1045,16 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Talk to Dr Banikan.");
 
 		getPickaxe = new ObjectStep(this, ObjectID.CRATE_48923, new WorldPoint(3414, 9819, 0),
-			"Get a pickaxe from the crate in the north east of the cavern.");
+			"Get a pickaxe from the crate in the north-east of the cavern.");
 
 		mineRocks = new ObjectStep(this, NullObjectID.NULL_49510, new WorldPoint(3411, 9811, 0),
-			"Mine the rocks in the south east of the cavern.", pickaxe);
+			"Mine the rocks in the south-east of the cavern.", pickaxe);
 
 		enterDigsiteHole = new ObjectStep(this, NullObjectID.NULL_49510, new WorldPoint(3411, 9811, 0),
-			"Enter the hole in the south east of the cavern, ready for a fight.", combatGear);
+			"Enter the hole in the south-east of the cavern, ready for a fight.", combatGear);
 
 		enterDigsiteHoleAgain = new ObjectStep(this, NullObjectID.NULL_49510, new WorldPoint(3411, 9811, 0),
-			"Enter the hole in the south east of the cavern.");
+			"Enter the hole in the south-east of the cavern.");
 
 		killAncientGuardian = new NpcStep(this, NpcID.ANCIENT_GUARDIAN_12337, new WorldPoint(2783, 6431, 0)
 		, "Kill the Ancient Guardian. The shield needs to be broken to hurt it, " +
@@ -1063,7 +1068,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		inspectGolem = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
 			"Inspect the golem to the north.");
 		inspectAltar = new ObjectStep(this, NullObjectID.NULL_49512, new WorldPoint(2773, 6442, 0),
-			"Inspect the altar to the north west.");
+			"Inspect the altar to the north-west.");
 
 		castOnBloodStatue = new NpcStep(this, NpcID.BLOOD_TOTEM, new WorldPoint(2775, 6445, 0),
 			"Cast blood burst or higher on the blood totem.", bloodBurstRunes);
@@ -1137,9 +1142,9 @@ public class DesertTreasureII extends BasicQuestHelper
 
 
 		/* Vardovis */
-		talkToElissa = new NpcStep(this, NpcID.ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north east of the Digsite on the surface.");
+		talkToElissa = new NpcStep(this, NpcID.ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north-east of the Digsite on the surface.");
 		talkToElissa.addDialogStep("I hear you visited Lovakengj recently.");
-		talkToBarus = new NpcStep(this, NpcID.BARUS, new WorldPoint(1459, 3782, 0), "Talk to Barus near the burning man in south west Lovakengj.");
+		talkToBarus = new NpcStep(this, NpcID.BARUS, new WorldPoint(1459, 3782, 0), "Talk to Barus near the burning man in south-west Lovakengj.");
 		talkToBarus.addTeleport(xericTalisman.named("Xeric's talisman (Xeric's Inferno)"));
 
 		searchDesk = new ObjectStep(this, NullObjectID.NULL_49490, new WorldPoint(1781, 3619, 0),
@@ -1153,7 +1158,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		runIntoStanglewood = new DetailedQuestStep(this, new WorldPoint(1194, 3394, 0), "Run deeper into Stranglewood. " +
 			"Be careful of the Strangled, as they'll bind you and deal damage.");
 		talkToKasonde = new NpcStep(this, NpcID.KASONDE, new WorldPoint(1191, 3404, 0), "Talk to Kasonde.");
-		enterEntry = new ObjectStep(this, ObjectID.ENTRY_48722, new WorldPoint(1191, 3411, 0), "Hide away in the Entry in the north west of the room.");
+		enterEntry = new ObjectStep(this, ObjectID.ENTRY_48722, new WorldPoint(1191, 3411, 0), "Hide away in the Entry in the north-west of the room.");
 		defendKasondeSidebar = new DetailedQuestStep(this, "Defend Kasonde! There are barricades in the stone chests you can set up to block routes. " +
 			"There are also satchels you can place on the floor, and detonate using the Detonator. This will kill all of the Strangled in a 7x7 area, as well as damaging you or " +
 			"Kasonde if either of you are in the blast radius.");
@@ -1171,7 +1176,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		talkToKasondeAfterTowerDefense = new NpcStep(this, NpcID.KASONDE, new WorldPoint(1191, 3404, 0),
 			"Talk to Kasonde on the surface.");
 		getHerb = new ObjectStep(this, ObjectID.KORBAL_HERBS, new WorldPoint(1155, 3447, 0),
-			"Go get the herb from the north west corner of the area. " +
+			"Go get the herb from the north-west corner of the area. " +
 				"The stangled will attack you, so bring food and freezes to trap them. More info in the sidebar.");
 		getHerb.setLinePoints(Arrays.asList(
 			new WorldPoint(1193, 3403, 0),
@@ -1189,13 +1194,13 @@ public class DesertTreasureII extends BasicQuestHelper
 		getHerbSidebar = new ObjectStep(this, ObjectID.KORBAL_HERBS, new WorldPoint(1111, 3434, 0),
 			"Go get the herb. The Strangled will attack you, so have food. If your infected bar reaches full, " +
 				"you'll be teleported to the starting room again. ");
-		getHerbSidebar.addText("You can get some stink bombs from the chest in the south east corner of Kasonde's room, " +
+		getHerbSidebar.addText("You can get some stink bombs from the chest in the south-east corner of Kasonde's room, " +
 				"which when used attract the Strangled to the location. This can be useful for avoiding them.");
 		getHerbSidebar.addText("Freezes and blood spells are useful for trapping them and healing up.");
 		getHerbSidebar.addSubSteps(getHerb);
 
 		getBerry = new ObjectStep(this, ObjectID.ARGIAN_BUSH, new WorldPoint(1126, 3323, 0),
-			"Get the berry from the south west part of the area. Beware the Strangled still.");
+			"Get the berry from the south-west part of the area. Beware the Strangled still.");
 		getBerry.setLinePoints(Arrays.asList(
 			new WorldPoint(1161, 3441, 0),
 			new WorldPoint(1159, 3428, 0),
@@ -1319,16 +1324,16 @@ public class DesertTreasureII extends BasicQuestHelper
 		/* Getting the medallion */
 		ObjectStep leavePyramid = new ObjectStep(this, ObjectID.STAIRS_48730, new WorldPoint(1183, 9809, 0), "");
 		goGetVardorvisMedallion = new ConditionalStep(this, boardBoat,
-			"Search the north east chest in Kadsone's initial hideout for a medallion.");
+			"Search the north-east chest in Kadsone's initial hideout for a medallion.");
 		goGetVardorvisMedallion.addStep(inStranglewoodPyramidRoom, leavePyramid);
 		goGetVardorvisMedallion.addStep(new Conditions(inAnyStranglewood), searchChestForVardorvisMedallion);
 
 		returnToDesertWithVardorvisMedallion = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
-			new WorldPoint(3511, 2971, 0), "Return to the Vault door north east of Nardah.", vardorvisMedallion);
+			new WorldPoint(3511, 2971, 0), "Return to the Vault door north-east of Nardah.", vardorvisMedallion);
 		returnToDesertWithVardorvisMedallion.addTeleport(nardahTeleport);
 
 		useVardorviaMedallionOnStatue = new ObjectStep(this, NullObjectID.NULL_49499, new WorldPoint(3942, 9636, 1),
-			"Use the medallion on the north east statue.", vardorvisMedallion.highlighted());
+			"Use the medallion on the north-east statue.", vardorvisMedallion.highlighted());
 		useVardorviaMedallionOnStatue.addIcon(ItemID.VARDORVIS_MEDALLION);
 
 
@@ -1379,7 +1384,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		goTalkToPersten.addStep(inDemonArea, hopOverSteppingStone);
 
 		enterPassage1 = new ObjectStep(this, NullObjectID.NULL_49526, new WorldPoint(2043, 6441, 0),
-			"Enter the north west passage.");
+			"Enter the north-west passage.");
 
 		goDoPassage1 = new ConditionalStep(this, goToAbyss, facemask);
 		goDoPassage1.addStep(inTentArea, enterPassage1);
@@ -1450,10 +1455,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		));
 
 		enterGreenTeleporter1 = new ObjectStep(this, ObjectID.NEURAL_TELEPORTER_49415, new WorldPoint(2234, 6461, 0),
-			"Enter the neural teleporter in the north east corner.");
+			"Enter the neural teleporter in the north-east corner.");
 
 		enterCatalystRoom = new ObjectStep(this, ObjectID.PASSAGE_49411, new WorldPoint(2190, 6412, 0),
-			"Enter the catalyst room in the south west corner of the area.");
+			"Enter the catalyst room in the south-west corner of the area.");
 
 		solveCatalystRoom = new DetailedQuestStep(this, "You need to use the rune nerves on the catalyst which match the current symbol until the walkers die.");
 		solveCatalystRoom.addText("You can make additional rune nerves by combining nerves:");
@@ -1475,16 +1480,16 @@ public class DesertTreasureII extends BasicQuestHelper
 		growthPuzzle = new GrowthPuzzleStep(this);
 
 		returnThroughBlueNeuralTeleporter = new ObjectStep(this, ObjectID.NEURAL_TELEPORTER,
-			new WorldPoint(2237, 6444, 0), "Head to the south east room via the blue neural transmitter.");
+			new WorldPoint(2237, 6444, 0), "Head to the south-east room via the blue neural transmitter.");
 		enterBoatRoom1 = new ObjectStep(this, ObjectID.PASSAGE_49418, new WorldPoint(2220, 6402, 0),
-			"Enter the south east room via the southern corridor.");
+			"Enter the south-east room via the southern corridor.");
 
-		getTinderbox = new ObjectStep(this, ObjectID.CRATE_49425, new WorldPoint(2236, 6402, 0), "Search the south eastern crate for a tinderbox.");
+		getTinderbox = new ObjectStep(this, ObjectID.CRATE_49425, new WorldPoint(2236, 6402, 0), "Search the south-eastern crate for a tinderbox.");
 		burnBoat1 = new ObjectStep(this, ObjectID.SHIPWRECK, new WorldPoint(2235, 6409, 0), "Burn the boat.");
 		searchSkeletonForKey = new ObjectStep(this, ObjectID.SKELETON_49426, new WorldPoint(2221, 6414, 0),
-			"Search the north west skeleton for a key.");
+			"Search the north-west skeleton for a key.");
 		searchSkeletonForGunpowder = new ObjectStep(this, ObjectID.SKELETON_49427, new WorldPoint(2223, 6402, 0),
-			"Search the south west skeleton for gunpowder.");
+			"Search the south-west skeleton for gunpowder.");
 		getOldTablet = new ObjectStep(this, ObjectID.CHEST_49420, new WorldPoint(2231, 6413, 0),
 			"Open the chest in the north of the room for a tablet.", slimyKey);
 		((ObjectStep) getOldTablet).addAlternateObjects(ObjectID.CHEST_49422);
@@ -1571,17 +1576,17 @@ public class DesertTreasureII extends BasicQuestHelper
 		makeMatchingNerves.addSubSteps(getEarthNerve, getWaterNerve, getFireNerve, getAirNerve, makeDustNerve, makeLavaNerve, makeSmokeNerve, makeSteamNerve, repairLavaNerve, repairSmokeNerve, repairDustNerve, repairSteamNerve);
 
 		returnThroughBlueNeuralTeleporter2 = new ObjectStep(this, ObjectID.NEURAL_TELEPORTER, new WorldPoint(1789, 6418, 0), "Return through the blue teleporter.");
-		enterGreenTeleporter2 = new ObjectStep(this, ObjectID.NEURAL_TELEPORTER_49415, new WorldPoint(1741, 6403, 0), "Enter the green teleporter in the south west.");
+		enterGreenTeleporter2 = new ObjectStep(this, ObjectID.NEURAL_TELEPORTER_49415, new WorldPoint(1741, 6403, 0), "Enter the green teleporter in the south-west.");
 		enterSummoningRoom = new ObjectStep(this, ObjectID.PASSAGE_49412, new WorldPoint(1744, 6457, 0), "Enter the room with a summoning circle in it.");
 
 		killImps = new NpcStep(this, NpcID.SCARRED_IMP, new WorldPoint(1744, 6448, 0),
 			"Kill the scarred imps to remove the lessers' prayers. Ignore the other scarred monsters which appear.", true);
 		killLesserDemons = new NpcStep(this, NpcID.LESSER_DEMON, new WorldPoint(1744, 6448, 0), "Kill the lesser demons.", true);
 
-		enterBoatRoom2 = new ObjectStep(this, ObjectID.PASSAGE_49418, new WorldPoint(1771, 6459, 0), "Enter the boat room to the north east.");
-		getTinderboxRoom2 = new ObjectStep(this, ObjectID.CRATE_49425, new WorldPoint(1774, 6448, 0), "Search the crate in the south west of the room for a tinderbox.");
+		enterBoatRoom2 = new ObjectStep(this, ObjectID.PASSAGE_49418, new WorldPoint(1771, 6459, 0), "Enter the boat room to the north-east.");
+		getTinderboxRoom2 = new ObjectStep(this, ObjectID.CRATE_49425, new WorldPoint(1774, 6448, 0), "Search the crate in the south-west of the room for a tinderbox.");
 		getGunpowderRoom2 = new ObjectStep(this, ObjectID.SKELETON_49427, new WorldPoint(1779, 6448, 0), "Search the skeleton near the crate for some gunpowder.");
-		getSlimyKey = new ObjectStep(this, ObjectID.SKELETON_49426, new WorldPoint(1789, 6449, 0), "Search the skeleton in the south east for a slimy key.");
+		getSlimyKey = new ObjectStep(this, ObjectID.SKELETON_49426, new WorldPoint(1789, 6449, 0), "Search the skeleton in the south-east for a slimy key.");
 		getDampTablet = new ObjectStep(this, ObjectID.CHEST_49420, new WorldPoint(1775, 6460, 0), "Search the chest for a tablet.");
 		((ObjectStep) getDampTablet).addAlternateObjects(ObjectID.CHEST_49422);
 		readDampTablet = new DetailedQuestStep(this, "Read the old tablet.", dampTablet.highlighted());
@@ -1602,13 +1607,13 @@ public class DesertTreasureII extends BasicQuestHelper
 		returnThroughGreenPortal = new ObjectStep(this, ObjectID.NEURAL_TELEPORTER_49415,
 			new WorldPoint(1862, 6410, 0), "Return back through the green portal to the south.");
 
-		enterBoatRoom3 = new ObjectStep(this, ObjectID.PASSAGE_49418, new WorldPoint(1899, 6456, 0), "Enter the boat room in the north east.");
+		enterBoatRoom3 = new ObjectStep(this, ObjectID.PASSAGE_49418, new WorldPoint(1899, 6456, 0), "Enter the boat room in the north-east.");
 		getTinderBoxRoom3 = new ObjectStep(this, ObjectID.CRATE_49425, new WorldPoint(1915, 6460, 0),
-			"Search the north east crate for a tinderbox.");
+			"Search the north-east crate for a tinderbox.");
 		getGunpowderRoom3 = new ObjectStep(this, ObjectID.SKELETON_49427, new WorldPoint(1912, 6446, 0),
-			"Search the skeleton in the south east corner for gunpowder.");
+			"Search the skeleton in the south-east corner for gunpowder.");
 		getSlimyKeyRoom3 = new ObjectStep(this, ObjectID.SKELETON_49426, new WorldPoint(1902, 6459, 0),
-			"Search the skeleton in the north west for a slimy key.");
+			"Search the skeleton in the north-west for a slimy key.");
 		getDampTablet2 = new ObjectStep(this, ObjectID.CHEST_49420, new WorldPoint(1909, 6449, 0),
 			"Search the chest to the south for a tablet.");
 		((ObjectStep) getDampTablet2).addAlternateObjects(ObjectID.CHEST_49422);
@@ -1668,14 +1673,14 @@ public class DesertTreasureII extends BasicQuestHelper
 		createLeviathan(client, this, runeliteObjectManager);
 
 		climbDownFromLeviathan = new ObjectStep(this, ObjectID.HANDHOLDS_47594, new WorldPoint(2091, 6380, 0),
-			"Climb down the handholds in the north eastern corner of the Leviathan area.");
+			"Climb down the handholds in the north-eastern corner of the Leviathan area.");
 		hopAcrossFromLeviathan = new ObjectStep(this, NullObjectID.NULL_49529,
 			new WorldPoint(2096, 6382, 0), "Cross the stepping stone.");
 
 		talkToPerstenAtShip = new NpcStep(this, NpcID.WIZARD_PERSTEN_12380, new WorldPoint(2098, 6374, 0),
 			"");
 
-		goToShip = new ConditionalStep(this, goToAbyss, "Go to the ship north east of the Leviathan boss area, and talk to Persten there..");
+		goToShip = new ConditionalStep(this, goToAbyss, "Go to the ship north-east of the Leviathan boss area, and talk to Persten there..");
 		goToShip.addStep(and(inNELeviathanArea, perstenAtShip), talkToPerstenAtShip);
 		goToShip.addStep(inNELeviathanArea, hopAcrossFromLeviathan);
 		goToShip.addStep(inLeviathanArea, climbDownFromLeviathan);
@@ -1687,14 +1692,15 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		returnToDesertWithPerseriyasMedallion = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
 			new WorldPoint(3511, 2971, 0),
-			"Return to the Vault door north east of Nardah. Be wary of an assassin coming to kill you! They can run, freeze, and teleblock you.",
+			"Return to the Vault door north-east of Nardah. Be wary of an assassin coming to kill you! They can run, freeze, and teleblock you.",
 			perseriyasMedallion);
 		returnToDesertWithPerseriyasMedallion.addTeleport(nardahTeleport);
 
 		usePerseriyasMedallionOnStatue = new ObjectStep(this, NullObjectID.NULL_49505, new WorldPoint(3942, 9626, 1),
-			"Use the medallion on the south east statue.", perseriyasMedallion.highlighted());
+			"Use the medallion on the south-east statue.", perseriyasMedallion.highlighted());
 		usePerseriyasMedallionOnStatue.addIcon(ItemID.PERSERIYAS_MEDALLION);
 
+		moreComingSoon = new DetailedQuestStep(this, "The rest of the Quest Helper will come out once it's ready.");
 	}
 
 	final BufferedImage missIcon = Icon.BLUE_HITSPLAT.getImage();
@@ -1812,10 +1818,11 @@ public class DesertTreasureII extends BasicQuestHelper
 			Arrays.asList(facemask),
 			Arrays.asList(eyeTeleport, staminaPotions)));
 		allSteps.add(new PanelDetails("Perseriya - The battle",
-			Arrays.asList(talkToPerstenAfterRooms, killLeviathanSidebar, goToShip, searchDebris, returnToDesertWithPerseriyasMedallion, usePerseriyasMedallionOnStatue),
+			Arrays.asList(talkToPerstenAfterRooms, killLeviathanSidebar, goToShip, searchDebris,
+				returnToDesertWithPerseriyasMedallion, usePerseriyasMedallionOnStatue),
 			Arrays.asList(rangedCombatGear, shadowBurstRunes),
 			Arrays.asList(eyeTeleport, staminaPotions, food, prayerPotions)));
-
+		allSteps.add(new PanelDetails("More to come...", Arrays.asList(moreComingSoon)));
 		return allSteps;
 	}
 

@@ -549,7 +549,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 
 		xericTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERICS_TALISMAN);
-		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
+		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, 20);
 		facemask = new ItemRequirement("Facemask", ItemCollections.SLAYER_HELMETS);
 		facemask.addAlternates(ItemID.FACEMASK, ItemID.GAS_MASK);
 
@@ -1743,7 +1743,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions);
+		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions, freezes, xericTalisman);
 	}
 
 

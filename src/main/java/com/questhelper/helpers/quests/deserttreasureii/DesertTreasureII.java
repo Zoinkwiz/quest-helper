@@ -1157,11 +1157,12 @@ public class DesertTreasureII extends BasicQuestHelper
 		talkToElissa.addDialogStep("I hear you visited Lovakengj recently.");
 		talkToElissa.addTeleport(senntistenTeleport);
 		talkToBarus = new NpcStep(this, NpcID.BARUS, new WorldPoint(1459, 3782, 0), "Talk to Barus near the burning man in south-west Lovakengj.");
+		// TODO: Highlight the widget
 		talkToBarus.addTeleport(xericTalisman.named("Xeric's talisman ([3] Xeric's Inferno)"));
 
 		searchDesk = new ObjectStep(this, NullObjectID.NULL_49490, new WorldPoint(1781, 3619, 0),
 			"Search the desk in the house south of the Hosidius Estate Agent.");
-		searchDesk.addTeleport(xericTalisman.named("Xeric's talisman (Xeric's Glade)"));
+		searchDesk.addTeleport(xericTalisman.named("Xeric's talisman ([2] Xeric's Glade)"));
 
 		readPotionNote = new ItemStep(this, "Read the potion note.", potionNote.highlighted());
 		drinkPotion = new ItemStep(this, "Drink the strange potion.", strangePotion.highlighted());
@@ -1801,7 +1802,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			Arrays.asList(talkToElissa, talkToBarus, searchDesk, readPotionNote, drinkPotion, boardBoat,
 				runIntoStanglewood, talkToKasonde, enterEntry, defendKasondeSidebar, leaveTowerDefenseRoom,
 				talkToKasondeAfterTowerDefense, getHerbSidebar, getBerry, goDownToKasonde, defendKasondeHerb,
-				talkToKasondeWithHerbAndBerry, addHerb, addBerry, drinkPotion, goToRitualSite, fightVardorvisSidebar,
+				talkToKasondeWithHerbAndBerry, addHerb, addBerry, drinkStranglewoodPotion, goToRitualSite, fightVardorvisSidebar,
 				pickUpTempleKey, returnToKasondeWithTempleKey, defeatKasonde, goTalkToKasondeAfterFight,
 				goGetVardorvisMedallion, returnToDesertWithVardorvisMedallion, useVardorvisMedallionOnStatue),
 			Arrays.asList(combatGear),

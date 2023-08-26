@@ -1185,7 +1185,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		defendKasondeSidebar.addSubSteps(defendKasonde);
 
 		// TODO: Get actual coordinate and ladder ID!
-		leaveTowerDefenseRoom = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(1175, 9755, 0),
+		leaveTowerDefenseRoom = new ObjectStep(this, ObjectID.LADDER_48732, new WorldPoint(1187, 9764, 0),
 			"Leave the dungeon up the ladder.");
 		talkToKasondeAfterTowerDefense = new NpcStep(this, NpcID.KASONDE, new WorldPoint(1191, 3404, 0),
 			"Talk to Kasonde on the surface.");

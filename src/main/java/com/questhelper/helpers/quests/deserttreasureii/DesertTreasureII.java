@@ -1155,8 +1155,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		/* Vardorvis */
 		talkToElissa = new NpcStep(this, NpcID.ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north-east of the Digsite on the surface.");
 		talkToElissa.addDialogStep("I hear you visited Lovakengj recently.");
+		talkToElissa.addTeleport(senntistenTeleport);
 		talkToBarus = new NpcStep(this, NpcID.BARUS, new WorldPoint(1459, 3782, 0), "Talk to Barus near the burning man in south-west Lovakengj.");
-		talkToBarus.addTeleport(xericTalisman.named("Xeric's talisman (Xeric's Inferno)"));
+		talkToBarus.addTeleport(xericTalisman.named("Xeric's talisman ([3] Xeric's Inferno)"));
 
 		searchDesk = new ObjectStep(this, NullObjectID.NULL_49490, new WorldPoint(1781, 3619, 0),
 			"Search the desk in the house south of the Hosidius Estate Agent.");

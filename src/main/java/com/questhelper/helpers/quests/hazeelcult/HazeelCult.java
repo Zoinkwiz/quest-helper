@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -94,6 +95,8 @@ public class HazeelCult extends BasicQuestHelper
 
 	ConditionalStep cerilSteps, hazeel4Steps;
 
+	NpcCondition alomoneNearby;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -125,7 +128,7 @@ public class HazeelCult extends BasicQuestHelper
 		// Probably don't actually need the mark but nice to ensure the player gets it
 		goTalkToClivetAfterPoison.addStep(new Conditions(inCultRoom, hazeelMark.alsoCheckBank(questBank)), talkToAlomone);
 		goTalkToClivetAfterPoison.addStep(new Conditions(inCultEntrance, valveStepsHazeel.solved,
-				hazeelMark.alsoCheckBank(questBank)), boardRaftAfterPoison);
+			hazeelMark.alsoCheckBank(questBank)), boardRaftAfterPoison);
 		goTalkToClivetAfterPoison.addStep(new Conditions(inCultEntrance, valveStepsHazeel.solved), talkToClivetAfterPoison);
 		goTalkToClivetAfterPoison.addStep(valveStepsHazeel.solved, enterCaveAfterPoison);
 		goTalkToClivetAfterPoison.addStep(talkedToCerilAfterPoison, valveStepsHazeel);
@@ -153,8 +156,8 @@ public class HazeelCult extends BasicQuestHelper
 		cerilSteps.addStep(new Conditions(inCultEntrance, carnilleanArmour.alsoCheckBank(questBank)), leaveCaveAfterKilling);
 		cerilSteps.addStep(new Conditions(inCultRoom, carnilleanArmour.alsoCheckBank(questBank)), returnOnRaftAfterKilling);
 		cerilSteps.addStep(new Conditions(carnilleanArmour.alsoCheckBank(questBank)), goUpToCeril);
-		cerilSteps.addStep(new Conditions(armourNearby), pickupArmour);
-		cerilSteps.addStep(new Conditions(inCultRoom), killAlomone);
+		cerilSteps.addStep(new Conditions(inCultRoom), pickupArmour);
+		cerilSteps.addStep(new Conditions(inCultRoom, alomoneNearby), killAlomone);
 		cerilSteps.addStep(new Conditions(inCultEntrance, valveStepsCeril.solved), boardRaftToKill);
 		cerilSteps.addStep(valveStepsCeril.solved, enterCaveAfterValvesForCeril);
 		cerilSteps.addStep(inCultEntrance, leaveCaveForValves);
@@ -202,6 +205,8 @@ public class HazeelCult extends BasicQuestHelper
 		inManorBasement = new ZoneRequirement(manorBasement);
 		inManorF1 = new ZoneRequirement(manorF1);
 		inManorF2 = new ZoneRequirement(manorF2);
+
+		alomoneNearby = new NpcCondition(NpcID.ALOMONE);
 
 		talkedToCerilAfterPoison = new VarbitRequirement(14775, 1);
 		armourNearby = new ItemOnTileRequirement(carnilleanArmour);
@@ -306,14 +311,13 @@ public class HazeelCult extends BasicQuestHelper
 		boardRaftToKill = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2568, 9679, 0),
 			"Board the raft.");
 		killAlomone = new NpcStep(this, NpcID.ALOMONE, new WorldPoint(2607, 9673, 0),
-			"Kill Almone and pickup the carnillean armour.");
-		pickupArmour = new ItemStep(this, "Pickup the armour.", carnilleanArmour);
-		killAlomone.addSubSteps(pickupArmour);
+			"Kill Almone.");
+		pickupArmour = new ObjectStep(this, ObjectID.CHEST_46713, new WorldPoint(2611, 9674, 0),
+			"Retrieve armour from the chest.", carnilleanArmour);
 		returnOnRaftAfterKilling = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2607, 9693, 0),
 			"Return to Ceril Carnillean.", carnilleanArmour);
 		leaveCaveAfterKilling = new ObjectStep(this, ObjectID.STAIRS_2853, new WorldPoint(2571, 9684, 0),
 			"Return to Ceril Carnillean.", carnilleanArmour);
-
 		talkToJonesAfterKilling = new NpcStep(this, NpcID.BUTLER_JONES, new WorldPoint(2569, 3271, 0),
 			"Talk to Butler Jones.");
 		goUpToCeril = new ObjectStep(this, ObjectID.STAIRCASE_15645, new WorldPoint(2569, 3269, 0),
@@ -378,7 +382,7 @@ public class HazeelCult extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToCeril, enterCave, talkToClivet)));
 
 		List<QuestStep> cerilSteps = new ArrayList<>(valveStepsCeril.getSteps());
-		cerilSteps.addAll(Arrays.asList(enterCaveAfterValvesForCeril, boardRaftToKill, killAlomone,
+		cerilSteps.addAll(Arrays.asList(enterCaveAfterValvesForCeril, boardRaftToKill, killAlomone, pickupArmour,
 			talkToCerilAfterKilling, talkToJonesAfterKilling, searchCupboardForEvidence));
 		PanelDetails cerilPanel = new PanelDetails("Siding with Ceril", cerilSteps);
 		cerilPanel.setLockingStep(this.cerilSteps);

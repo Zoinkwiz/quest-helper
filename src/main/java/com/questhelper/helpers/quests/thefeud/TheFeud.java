@@ -91,7 +91,7 @@ public class TheFeud extends BasicQuestHelper
 	NpcStep buyShantayPass, talkToRugMerchant, drunkenAli, talkToThug, talkToBandit, talkToCamelman, talkToBanditReturnedCamel, talkToMenaphiteReturnedCamel,
 			talkToAliTheOperator, pickpocketVillager, pickPocketVillagerWithUrchin, getBlackjackFromAli, blackjackVillager,
 			talkToAliToGetSecondJob, giveTheJewelsToAli, talkMenaphiteToFindTraitor, tellAliYouFoundTraitor, talkToAliTheBarman,
-			talkToAliTheHag, catchSnake, givePoisonToAliTheHag, talkToAliTheKebabSalesman, givenDungToHag, tellAliOperatorPoisoned,
+			talkToAliTheHag, catchSnake, giveSnakeToHag, talkToAliTheKebabSalesman, givenDungToHag, tellAliOperatorPoisoned,
 			talkToMenaphiteLeader, talkToAVillager, talkToBanditLeader, talkToAVillagerToSpawnMayor, talkToMayor, finishQuest;
 
 	ObjectStep hideBehindCactus, pickupDung, openTheDoor, goUpStairs, crackTheSafe, goDownStairs, giveCoinToSnakeCharmer, getDung, poisonTheDrink;
@@ -100,7 +100,7 @@ public class TheFeud extends BasicQuestHelper
 			givenPoisonToHag, menaphiteThugAlive, talkedToVillagerAboutMenaphite, banditChampionSpawned, mayorSpawned;
 
 	//Zones
-	ZoneRequirement inPollniveach, secondFloorMansion, inShantayDesertSide;
+	ZoneRequirement inPollnivneach, secondFloorMansion, inShantayDesertSide;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -114,13 +114,13 @@ public class TheFeud extends BasicQuestHelper
 
 		steps.put(0, startQuest);
 
-		ConditionalStep goToPollniveach = new ConditionalStep(this, buyShantayPass);
-		goToPollniveach.addStep(new Conditions(hasDisguise, inPollniveach), drunkenAli);
-		goToPollniveach.addStep(new Conditions(hasDisguise, inShantayDesertSide), talkToRugMerchant);
-		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
-		goToPollniveach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
-		goToPollniveach.addStep(new Conditions(notThroughShantayGate, shantayPass), goToShantay);
-		steps.put(1, goToPollniveach);
+		ConditionalStep goToPollnivneach = new ConditionalStep(this, buyShantayPass);
+		goToPollnivneach.addStep(new Conditions(hasDisguise, inPollnivneach), drunkenAli);
+		goToPollnivneach.addStep(new Conditions(hasDisguise, inShantayDesertSide), talkToRugMerchant);
+		goToPollnivneach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, doesNotHaveDisguiseComponents), buyDisguiseGear);
+		goToPollnivneach.addStep(new Conditions(notThroughShantayGate, doesNotHaveDisguise, hasDisguiseComponents), createDisguise);
+		goToPollnivneach.addStep(new Conditions(notThroughShantayGate, shantayPass), goToShantay);
+		steps.put(1, goToPollnivneach);
 
 		ConditionalStep findBeef = new ConditionalStep(this, talkToThug);
 		findBeef.addStep(talkedToBandit, talkToCamelman);
@@ -164,7 +164,7 @@ public class TheFeud extends BasicQuestHelper
 
 		ConditionalStep getSnake = new ConditionalStep(this, talkToAliTheBarman);
 		getSnake.addStep(givenPoisonToHag, talkToAliTheKebabSalesman);
-		getSnake.addStep(snakeBasketFull, givePoisonToAliTheHag);
+		getSnake.addStep(snakeBasketFull, giveSnakeToHag);
 		getSnake.addStep(new Conditions(talkedToAliTheHag, snakeCharmHighlighted, snakeBasket), catchSnake);
 		getSnake.addStep(talkedToAliTheHag, giveCoinToSnakeCharmer);
 		getSnake.addStep(talkedToBarman, talkToAliTheHag);
@@ -280,11 +280,11 @@ public class TheFeud extends BasicQuestHelper
 
 	public void loadZones()
 	{
-		Zone pollniveachZone = new Zone(new WorldPoint(3320, 2926, 0), new WorldPoint(3381, 3006, 0));
+		Zone pollnivneachZone = new Zone(new WorldPoint(3320, 2926, 0), new WorldPoint(3381, 3006, 0));
 		Zone secondFloor = new Zone(new WorldPoint(3366, 2965, 1), new WorldPoint(3375, 2979, 1));
 		Zone shantayDesertSide = new Zone(new WorldPoint(3325, 3116, 0), new WorldPoint(3278, 3086, 0));
 
-		inPollniveach = new ZoneRequirement(pollniveachZone);
+		inPollnivneach = new ZoneRequirement(pollnivneachZone);
 		secondFloorMansion = new ZoneRequirement(secondFloor);
 		inShantayDesertSide = new ZoneRequirement(shantayDesertSide);
 	}
@@ -422,7 +422,7 @@ public class TheFeud extends BasicQuestHelper
 		catchSnake = new NpcStep(this, NpcID.SNAKE_3544, new WorldPoint(3332, 2958, 0), "Use the Snake Charm on a snake to capture it.", true, snakeCharmHighlighted, snakeBasket);
 		catchSnake.addIcon(ItemID.SNAKE_CHARM);
 
-		givePoisonToAliTheHag = new NpcStep(this, NpcID.ALI_THE_HAG, new WorldPoint(3345, 2986, 0), "Give the snake to Ali the Hag.", snakeBasketFull);
+		giveSnakeToHag = new NpcStep(this, NpcID.ALI_THE_HAG, new WorldPoint(3345, 2986, 0), "Give the snake to Ali the Hag.", snakeBasketFull);
 
 		//Step 18
 		//Camel Dung - Get Dung
@@ -543,7 +543,7 @@ public class TheFeud extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Second job",
 				Arrays.asList(talkToAliToGetSecondJob, hideBehindCactus, openTheDoor, goUpStairs, crackTheSafe, giveTheJewelsToAli), desertDisguise, gloves));
 		allSteps.add(new PanelDetails("Rising up",
-				Arrays.asList(talkMenaphiteToFindTraitor, tellAliYouFoundTraitor, talkToAliTheBarman, talkToAliTheHag, giveCoinToSnakeCharmer, catchSnake, givePoisonToAliTheHag, talkToAliTheKebabSalesman, getDung, givenDungToHag, tellAliOperatorPoisoned), unspecifiedCoins));
+				Arrays.asList(talkMenaphiteToFindTraitor, tellAliYouFoundTraitor, talkToAliTheBarman, talkToAliTheHag, giveCoinToSnakeCharmer, catchSnake, giveSnakeToHag, talkToAliTheKebabSalesman, getDung, givenDungToHag, poisonTheDrink, tellAliOperatorPoisoned), unspecifiedCoins));
 		allSteps.add(new PanelDetails("Finishing off",
 				Arrays.asList(talkToMenaphiteLeader, talkToAVillager, talkToBanditLeader, talkToAVillagerToSpawnMayor, talkToMayor, finishQuest), combatGear));
 

@@ -73,6 +73,8 @@ import com.questhelper.helpers.achievementdiaries.wilderness.WildernessEasy;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessElite;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessHard;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessMedium;
+import com.questhelper.helpers.miniquests.hisfaithfulservants.BarrowsHelper;
+import com.questhelper.helpers.miniquests.hisfaithfulservants.HisFaithfulServants;
 import com.questhelper.helpers.mischelpers.allneededitems.AllNeededItems;
 import com.questhelper.helpers.mischelpers.herbrun.HerbRun;
 import com.questhelper.helpers.quests.akingdomdivided.AKingdomDivided;
@@ -107,6 +109,7 @@ import com.questhelper.helpers.quests.deathplateau.DeathPlateau;
 import com.questhelper.helpers.quests.deathtothedorgeshuun.DeathToTheDorgeshuun;
 import com.questhelper.helpers.quests.demonslayer.DemonSlayer;
 import com.questhelper.helpers.quests.deserttreasure.DesertTreasure;
+import com.questhelper.helpers.quests.deserttreasureii.DesertTreasureII;
 import com.questhelper.helpers.quests.deviousminds.DeviousMinds;
 import com.questhelper.helpers.quests.doricsquest.DoricsQuest;
 import com.questhelper.helpers.quests.dragonslayer.DragonSlayer;
@@ -120,6 +123,10 @@ import com.questhelper.helpers.quests.elementalworkshopi.ElementalWorkshopI;
 import com.questhelper.helpers.quests.elementalworkshopii.ElementalWorkshopII;
 import com.questhelper.helpers.quests.enakhraslament.EnakhrasLament;
 import com.questhelper.helpers.miniquests.enchantedkey.EnchantedKey;
+import com.questhelper.helpers.quests.enlightenedjourney.CraftingGuildBalloonFlight;
+import com.questhelper.helpers.quests.enlightenedjourney.VarrockBalloonFlight;
+import com.questhelper.helpers.quests.enlightenedjourney.CastleWarsBalloonFlight;
+import com.questhelper.helpers.quests.enlightenedjourney.GrandTreeBalloonFlight;
 import com.questhelper.helpers.quests.enlightenedjourney.EnlightenedJourney;
 import com.questhelper.helpers.quests.entertheabyss.EnterTheAbyss;
 import com.questhelper.helpers.quests.ernestthechicken.ErnestTheChicken;
@@ -259,8 +266,9 @@ import com.questhelper.helpers.quests.witchspotion.WitchsPotion;
 import com.questhelper.helpers.quests.xmarksthespot.XMarksTheSpot;
 import com.questhelper.helpers.quests.zogreflesheaters.ZogreFleshEaters;
 import com.questhelper.helpers.skills.agility.Agility;
+import com.questhelper.helpers.skills.mining.Mining;
 import com.questhelper.helpers.skills.woodcutting.Woodcutting;
-import com.questhelper.helpers.skills.woodcuttingmember.WoodcuttingMember;
+import com.questhelper.helpers.skills.woodcutting.WoodcuttingMember;
 import com.questhelper.playerquests.cookshelper.CooksHelper;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -321,6 +329,7 @@ public enum QuestHelperQuest
 	DEATH_TO_THE_DORGESHUUN(new DeathToTheDorgeshuun(), Quest.DEATH_TO_THE_DORGESHUUN, QuestVarbits.QUEST_DEATH_TO_THE_DORGESHUUN, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	THE_DEPTHS_OF_DESPAIR(new TheDepthsOfDespair(), Quest.THE_DEPTHS_OF_DESPAIR, QuestVarbits.QUEST_THE_DEPTHS_OF_DESPAIR, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	DESERT_TREASURE(new DesertTreasure(), Quest.DESERT_TREASURE_I, QuestVarbits.QUEST_DESERT_TREASURE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	DESERT_TREASURE_II(new DesertTreasureII(), "Desert Treasure II", QuestVarbits.QUEST_DESERT_TREASURE_II, 1, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
 	DEVIOUS_MINDS(new DeviousMinds(), Quest.DEVIOUS_MINDS, QuestVarbits.QUEST_DEVIOUS_MINDS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_DIG_SITE(new TheDigSite(), Quest.THE_DIG_SITE, QuestVarPlayer.QUEST_THE_DIG_SITE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	DRAGON_SLAYER_II(new DragonSlayerII(), Quest.DRAGON_SLAYER_II, QuestVarbits.QUEST_DRAGON_SLAYER_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
@@ -466,10 +475,20 @@ public enum QuestHelperQuest
 	IN_SEARCH_OF_KNOWLEDGE(new InSearchOfKnowledge(), Quest.IN_SEARCH_OF_KNOWLEDGE, QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	DADDYS_HOME(new DaddysHome(), Quest.DADDYS_HOME, QuestVarbits.QUEST_DADDYS_HOME, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	HOPESPEARS_WILL(new HopespearsWill(), Quest.HOPESPEARS_WILL, QuestVarbits.QUEST_HOPESPEARS_WILL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	HIS_FAITHFUL_SERVANTS(new HisFaithfulServants(), Quest.HIS_FAITHFUL_SERVANTS, QuestVarbits.HIS_FAITHFUL_SERVANTS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS(new KnightWaves(), "Knight Waves Training Grounds", QuestVarbits.KNIGHT_WAVES_TRAINING_GROUNDS, 8,
 		QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	BALLOON_TRANSPORT_CRAFTING_GUILD(new CraftingGuildBalloonFlight(), "Balloon Transport - Crafting Guild", QuestVarbits.BALLOON_TRANSPORT_CRAFTING_GUILD, 1, QuestDetails.Type.MINIQUEST,
+		 QuestDetails.Difficulty.MINIQUEST),
+	BALLOON_TRANSPORT_VARROCK(new VarrockBalloonFlight(), "Balloon Transport - Varrock", QuestVarbits.BALLOON_TRANSPORT_VARROCK, 1, QuestDetails.Type.MINIQUEST,
+		QuestDetails.Difficulty.MINIQUEST),
+	BALLOON_TRANSPORT_CASTLE_WARS(new CastleWarsBalloonFlight(), "Balloon Transport - Castle Wars", QuestVarbits.BALLOON_TRANSPORT_CASTLE_WARS, 1, QuestDetails.Type.MINIQUEST,
+		QuestDetails.Difficulty.MINIQUEST),
+	BALLOON_TRANSPORT_GRAND_TREE(new GrandTreeBalloonFlight(), "Balloon Transport - Grand Tree", QuestVarbits.BALLOON_TRANSPORT_GRAND_TREE, 1, QuestDetails.Type.MINIQUEST,
+		QuestDetails.Difficulty.MINIQUEST),
+
 
 	// Achievement diaries
 
@@ -603,12 +622,14 @@ public enum QuestHelperQuest
 	DAG_ROUTE(new DagRouteHelper(), "Dagannoth Kings Route", QuestVarbits.QUEST_THE_FREMENNIK_ISLES, -1, QuestDetails.Type.GENERIC,
 		QuestDetails.Difficulty.GENERIC),
 	HERB_RUN(new HerbRun(), "Herb run", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
-
+	BARROWS_HELPER(new BarrowsHelper(), "Barrows helper", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	// Skill
 	AGILITY(new Agility(), "Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 	WOODCUTTING_MEMBER(new WoodcuttingMember(), "Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 
 	WOODCUTTING(new Woodcutting(), "Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
+
+	MINING(new Mining(), "Mining", Skill.MINING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
 
 	// Player Quests
 	COOKS_HELPER(new CooksHelper(), "Cook's Helper", PlayerQuests.COOKS_HELPER, 4);

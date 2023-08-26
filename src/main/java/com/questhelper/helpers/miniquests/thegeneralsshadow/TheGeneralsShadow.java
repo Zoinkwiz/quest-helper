@@ -70,10 +70,10 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	Requirement inventorySlot;
 
 	Requirement inGoblinCave, inBouncerCave, inSinRoom, hasNote, givenNote, talkedToGnomeScout,
-		talkedToKaramjaScout, talkedToShantyScout, talkedToFaladorScout;
+		talkedToKaramjaScout, talkedToShantayScout, talkedToFaladorScout;
 
 	QuestStep talkToKhazard, goUpToSeer, talkToSeer, talkToKhazardAfterSeer, talkToKhazardAfterNote,
-		talkToKaramjaScout, talkToGnomeScout, talkToFaladorScout, talkToShantyScout, talkToKhazardAfterScouts,
+		talkToKaramjaScout, talkToGnomeScout, talkToFaladorScout, talkToShantayScout, talkToKhazardAfterScouts,
 		enterCave, enterCrack, killBouncer;
 
 	Zone goblinCave, bouncerCave, sinRoom;
@@ -97,9 +97,9 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		steps.put(10, talkToKhazardAfterNote);
 
 		ConditionalStep goTalkToScouts = new ConditionalStep(this, talkToGnomeScout);
-		goTalkToScouts.addStep(new Conditions(talkedToGnomeScout, talkedToFaladorScout, talkedToShantyScout),
+		goTalkToScouts.addStep(new Conditions(talkedToGnomeScout, talkedToFaladorScout, talkedToShantayScout),
 			talkToKaramjaScout);
-		goTalkToScouts.addStep(new Conditions(talkedToGnomeScout, talkedToFaladorScout), talkToShantyScout);
+		goTalkToScouts.addStep(new Conditions(talkedToGnomeScout, talkedToFaladorScout), talkToShantayScout);
 		goTalkToScouts.addStep(talkedToGnomeScout, talkToFaladorScout);
 		steps.put(15, goTalkToScouts);
 
@@ -163,7 +163,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		givenNote = new VarbitRequirement(3335, 2);
 		talkedToGnomeScout = new VarbitRequirement(3332, 1);
 		talkedToFaladorScout = new VarbitRequirement(3333, 1);
-		talkedToShantyScout = new VarbitRequirement(3334, 1);
+		talkedToShantayScout = new VarbitRequirement(3334, 1);
 		talkedToKaramjaScout = new VarbitRequirement(3331, 1);
 
 		// 3336 0->2 attempted to bribe Seer
@@ -196,8 +196,8 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		talkToFaladorScout = new NpcStep(this, NpcID.SCOUT_3513, new WorldPoint(3073, 3336, 0), "Talk to the scout " +
 			"east of Falador.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToShantyScout = new NpcStep(this, NpcID.SCOUT_3514, new WorldPoint(3304, 3084, 0), "Talk to the scout " +
-			"south of the Shanty Pass.", ghostlyRobes, ringOfVisibility, ghostspeak);
+		talkToShantayScout = new NpcStep(this, NpcID.SCOUT_3514, new WorldPoint(3304, 3084, 0), "Talk to the scout " +
+			"south of the Shantay Pass.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToKaramjaScout = new NpcStep(this, NpcID.SCOUT, new WorldPoint(2825, 3053, 0), "Talk to the scout " +
 			"south east of Tai Bwo Wannai.", ghostlyRobes, ringOfVisibility, ghostspeak);
@@ -266,7 +266,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 			ringOfVisibility, ghostspeak, coins40));
 
 		allSteps.add(new PanelDetails("Finding the Scouts",
-			Arrays.asList(talkToGnomeScout, talkToFaladorScout, talkToShantyScout, talkToKaramjaScout,
+			Arrays.asList(talkToGnomeScout, talkToFaladorScout, talkToShantayScout, talkToKaramjaScout,
 				talkToKhazardAfterScouts), ghostlyRobes, ringOfVisibility, ghostspeak));
 
 		allSteps.add(new PanelDetails("Defeat Bouncer",

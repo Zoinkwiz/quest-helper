@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,125 +25,49 @@
 package com.questhelper.helpers.quests.enlightenedjourney;
 
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import net.runelite.api.NpcID;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 
-public class BalloonFlight1 extends DetailedOwnerStep
+public class BalloonFlightStep extends DetailedOwnerStep
 {
 	WidgetStep dropSand, burnLog, pullRope, pullRedRope, goStraight;
 
-//	HashMap<Integer, WidgetStep> actions = new HashMap<>();
+	NpcStep startFlight;
 
-	// Current position, next position
-	ArrayList<Integer> section1;
-	ArrayList<Integer> section2;
-	ArrayList<Integer> section3;
+	// Shift is to get the 'section'
+	HashMap<Integer, List<Integer>> sections;
 
-	ArrayList<ArrayList<Integer>> sections;
+	WidgetTextRequirement flying;
 
-	public BalloonFlight1(QuestHelper questHelper)
+	public BalloonFlightStep(QuestHelper questHelper, String text, HashMap<Integer, List<Integer>> sections, ItemRequirement... itemRequirements)
 	{
-		super(questHelper, "Navigate the balloon.");
+		super(questHelper, text, itemRequirements);
+		this.sections = sections;
+		flying = new WidgetTextRequirement(471, 1, "Balloon Controls");
 	}
 
 	@Override
 	protected void setupSteps()
 	{
-		dropSand = new WidgetStep(getQuestHelper(),  "Drop a sandbag.", 471, 17);
-		burnLog = new WidgetStep(getQuestHelper(),  "Burn a log.", 471, 24);
+		startFlight = new NpcStep(getQuestHelper(), NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0), "");
+		dropSand = new WidgetStep(getQuestHelper(),  "Drop a sandbag.", 471, 2);
+		burnLog = new WidgetStep(getQuestHelper(),  "Burn a log.", 471, 3);
 		pullRope = new WidgetStep(getQuestHelper(),  "Pull the brown rope.", 471, 6);
 		pullRedRope = new WidgetStep(getQuestHelper(),  "Pull the red rope.", 471, 9);
-		goStraight = new WidgetStep(getQuestHelper(),  "Press relax.", 471, 27);
-
-		section1 = new ArrayList<>();
-		section1.add(5);
-		// Drop sandbag
-		section1.add(7);
-		// Burn log
-		section1.add(8);
-		section1.add(8);
-		section1.add(8);
-		section1.add(8);
-		section1.add(8);
-		section1.add(8);
-		section1.add(8);
-		section1.add(8);
-		section1.add(8);
-		section1.add(8);
-		// Drop down 2
-		section1.add(6);
-		section1.add(6);
-		section1.add(6);
-		// Drop down 1
-		section1.add(5);
-		section1.add(5);
-		section1.add(5);
-		section1.add(5);
-		section1.add(5);
-		// Off screen
-		section1.add(5);
-
-		section2 = new ArrayList<>();
-		// Not gone to
-		section2.add(5);
-
-		section2.add(5);
-		// Burn log
-		section2.add(6);
-		section2.add(6);
-		// Burn log
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		section2.add(7);
-		// Burn log
-		section2.add(8);
-		section2.add(8);
-		section2.add(8);
-		section2.add(8);
-		section2.add(8);
-		// Off screen
-		section2.add(8);
-
-		section3 = new ArrayList<>();
-		// Not gone to
-		section3.add(8);
-
-		section3.add(8);
-		section3.add(8);
-		section3.add(8);
-		section3.add(8);
-		section3.add(8);
-		section3.add(8);
-		section3.add(8);
-		section3.add(8);
-		section3.add(6);
-		section3.add(5);
-		section3.add(5);
-		section3.add(5);
-		section3.add(5);
-		section3.add(6);
-		section3.add(6);
-		section3.add(6);
-		section3.add(6);
-		section3.add(6);
-		section3.add(5);
-		section3.add(5);
-
-		sections = new ArrayList<>(Arrays.asList(section1, section2, section3));
+		goStraight = new WidgetStep(getQuestHelper(),  "Press relax.", 471, 4);
 	}
 
 	@Subscribe
@@ -154,12 +78,25 @@ public class BalloonFlight1 extends DetailedOwnerStep
 		updateSteps();
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		updateSteps();
+	}
+
 	protected void updateSteps()
 	{
-		int section = client.getVarbitValue(2884) - 1;
+		if (!flying.check(client))
+		{
+			startUpStep(startFlight);
+			return;
+		}
+
+		int section = client.getVarbitValue(2884);
 		int xPos = client.getVarbitValue(2882);
 		int yPos = client.getVarbitValue(2883);
 
+		if (sections.get(section) == null) return;
 		// If we've gone to next section before updating the pos, return
 		if (sections.get(section).size() <= xPos + 1)
 		{
@@ -192,6 +129,6 @@ public class BalloonFlight1 extends DetailedOwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		return Arrays.asList(dropSand, burnLog, pullRope, pullRedRope, goStraight);
+		return Arrays.asList(startFlight, dropSand, burnLog, pullRope, pullRedRope, goStraight);
 	}
 }

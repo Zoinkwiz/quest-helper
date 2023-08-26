@@ -117,7 +117,7 @@ public class GrimTales extends BasicQuestHelper
 		getHelmet.addStep(new Conditions(inHouse, shrinkPotion), drinkPotion);
 		getHelmet.addStep(new Conditions(inBasement, shrinkPotion), leaveBasement);
 		getHelmet.addStep(new Conditions(shrinkPotion), enterWitchsHouseWithPotion);
-		getHelmet.addStep(new Conditions(unlockedPiano), makePotions);
+		getHelmet.addStep(new Conditions(searchedPiano), makePotions);
 		getHelmet.addStep(new Conditions(inBasement, unlockedPiano), searchPiano);
 		getHelmet.addStep(new Conditions(inPianoWidget, talkedToMiazrqa, pressed8), lowerAAgain);
 		getHelmet.addStep(new Conditions(inPianoWidget, talkedToMiazrqa, pressed7), lowerG);

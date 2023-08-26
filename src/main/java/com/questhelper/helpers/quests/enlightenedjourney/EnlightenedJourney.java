@@ -196,6 +196,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 		talkToAugusteWithPapyrus = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste with 2 papyrus and a sack of potatoes.", papyrus2, sackOfPotatoes);
+		talkToAugusteWithPapyrus.addDialogStep("Yes, I have them here.");
 
 		talkToAugusteAfterMob = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste after the flash mob.");
@@ -216,7 +217,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 			"Talk to Auguste to fly.", logs10, tinderbox);
 		talkToAugusteWithLogsAndTinderbox.addDialogSteps("Okay.");
 
-		doPuzzle = new BalloonFlight1(this);
+		doPuzzle = new TaverleyBalloonFlight(this);
 
 		talkToAugusteToFinish = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2937, 3421, 0),
 			"Talk to Auguste in Taverley to finish the quest.");

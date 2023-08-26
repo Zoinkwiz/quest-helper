@@ -239,7 +239,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		waterOrb.addIcon(ItemID.WATER_ORB);
 		seersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
 			"Complete a lap of the Seers' village Rooftop course.");
-		yewLong = new ObjectStep(this, ObjectID.YEW, new WorldPoint(2715, 3460, 0),
+		yewLong = new ObjectStep(this, ObjectID.YEW_TREE_10822, new WorldPoint(2715, 3460, 0),
 			"Cut some yew logs near Seers' Village. Make sure to use the knife on the ones you cut.", axe);
 		cutLongbow = new ItemStep(this, "Use knife on yew logs to make a yew longbow (u)", yewLogs.highlighted(), knife.highlighted());
 		stringBow = new ItemStep(this, "String the bow.", bowString.highlighted(), unstrungYewLong.highlighted());

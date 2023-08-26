@@ -239,7 +239,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		pickGardener = new NpcStep(this, NpcID.MARTIN_THE_MASTER_GARDENER, new WorldPoint(3077, 3263, 0),
 			"Pickpocket Martin the Master Gardener in Draynor Village.");
 
-		chopWillow = new ObjectStep(this, ObjectID.WILLOW, new WorldPoint(3089, 3235, 0),
+		chopWillow = new ObjectStep(this, ObjectID.WILLOW_TREE_10819, new WorldPoint(3089, 3235, 0),
 			"Chop some Willow logs in Draynor Village.", axe);
 
 		moveToZanarisChaeldar = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),

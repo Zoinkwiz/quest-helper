@@ -65,7 +65,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement softClay, ballsOfWool3, yellowDye, redberries, ashes, bucketOfWater, potOfFlour, bronzeBar, pinkSkirt, beers3, rope, coins100, wig, dyedWig, paste, keyMould, key,
-		ropeReqs, yellowDyeReqs, ropeHighlighted;
+		ropeReqs, yellowDyeReqs, ropeHighlighted, keyHighlighted;
 
 	//Items Recommended
 	ItemRequirement glory;
@@ -167,6 +167,9 @@ public class PrinceAliRescue extends BasicQuestHelper
 		keyMould = new ItemRequirement("Key print", ItemID.KEY_PRINT);
 		key = new ItemRequirement("Bronze key", ItemID.BRONZE_KEY);
 		key.setTooltip("You can get another from Leela for 15 coins");
+
+		keyHighlighted = new ItemRequirement("Bronze key", ItemID.BRONZE_KEY);
+		keyHighlighted.setHighlightInInventory(true);
 		yellowDyeReqs = new ItemRequirement("Yellow dye, or 2 onions + 5 coins to obtain during quest", ItemID.YELLOW_DYE);
 		glory = new ItemRequirement("Amulet of Glory for Al Kharid and Draynor Village teleports", ItemCollections.AMULET_OF_GLORIES);
 	}
@@ -219,7 +222,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		talkToJoe.addDialogStep("I have some beer here. Fancy one?");
 		useRopeOnKeli = new NpcStep(this, NpcID.LADY_KELI, new WorldPoint(3127, 3244, 0), "Use rope on Keli.", ropeHighlighted);
 		useRopeOnKeli.addIcon(ItemID.ROPE);
-		useKeyOnDoor = new ObjectStep(this, ObjectID.PRISON_GATE, new WorldPoint(3123, 3243, 0), "Use the key on the prison door. If Lady Keli respawned you'll need to tie her up again.", key, dyedWig, paste, pinkSkirt);
+		useKeyOnDoor = new ObjectStep(this, ObjectID.PRISON_GATE_2881, new WorldPoint(3123, 3243, 0), "Use the key on the prison door. If Lady Keli respawned you'll need to tie her up again.", keyHighlighted, dyedWig, paste, pinkSkirt);
 		useKeyOnDoor.addIcon(ItemID.BRONZE_KEY);
 		talkToAli = new NpcStep(this, NpcID.PRINCE_ALI, new WorldPoint(3123, 3240, 0), "Talk to Prince Ali and free him.", key, dyedWig, paste, pinkSkirt);
 

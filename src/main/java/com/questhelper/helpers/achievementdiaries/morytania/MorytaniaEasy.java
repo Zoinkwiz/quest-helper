@@ -175,6 +175,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlaceScarecrow).isNotConsumed();
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK);
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
+		// TODO: This whole process needs to be improved in the helper, such as recommending the sub-items beforehand if no scarecrow
 		scarecrowItems = new ItemRequirements(LogicType.OR, "1 x Scarecrow", scarecrow, new ItemRequirements(sack,
 			watermelon, bronzeSpear));
 		scarecrowItems.setTooltip("Created by combining a bronze spear, watermelon, and hay sack " +

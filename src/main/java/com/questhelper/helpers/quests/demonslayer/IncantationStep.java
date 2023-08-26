@@ -27,11 +27,13 @@ package com.questhelper.helpers.quests.demonslayer;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 
 import java.util.HashMap;
+import net.runelite.client.eventbus.Subscribe;
 
 public class IncantationStep extends ConditionalStep
 {
@@ -65,11 +67,11 @@ public class IncantationStep extends ConditionalStep
 		int groupId = event.getGroupId();
 		if (groupId == WidgetID.DIALOG_PLAYER_GROUP_ID)
 		{
-			clientThread.invokeLater(() -> resetIncarnationIfRequired());
+			clientThread.invokeLater(this::resetIncarnationIfRequired);
 		}
 		else if (groupId == WidgetID.DIALOG_OPTION_GROUP_ID)
 		{
-			clientThread.invokeLater(() -> updateChoiceIfRequired());
+			clientThread.invokeLater(this::updateChoiceIfRequired);
 		}
 
 		super.onWidgetLoaded(event);
@@ -136,6 +138,7 @@ public class IncantationStep extends ConditionalStep
 	{
 		if (incantationOrder != null || (client.getVarbitValue(2562) == 0 && client.getVarbitValue(2563) == 0))
 		{
+			startUpStep(incantationStep);
 			return;
 		}
 		incantationOrder = new String[]{

@@ -312,8 +312,8 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		openedDoor1 = new VarbitRequirement(1608, 1);
 		openedDoor2 = new VarbitRequirement(1609, 1);
-		openedDoor3 = new VarbitRequirement(1610, 1);
-		openedDoor4 = new VarbitRequirement(1611, 1);
+		openedDoor3 = new VarbitRequirement(1607, 1);
+		openedDoor4 = new VarbitRequirement(1610, 1);
 
 		zPlaced = new VarbitRequirement(1611, 1);
 		mPlaced = new VarbitRequirement(1612, 1);
@@ -342,7 +342,7 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToLazim = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Talk to Lazim in the quarry south of the Bandit Camp.", pickaxe, onNormals);
+		talkToLazim = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Before you begin, ensure that you have enough prayer points to use Protect from Melee for around five seconds (you will need this later in the temple). Talk to Lazim in the quarry south of the Bandit Camp.", pickaxe, onNormals);
 		talkToLazim.addDialogStep("Of course!");
 		bringLazim32Sandstone = new NpcStep(this, NpcID.LAZIM, new WorldPoint(3190, 2925, 0), "Get 32kg of sandstone and give it to Lazim. This can be done in batches, and you can mine some nearby.");
 		bringLazim32Sandstone.addDialogStep("Okay, I'll get on with it.");
@@ -446,8 +446,11 @@ public class EnakhrasLament extends BasicQuestHelper
 		useChiselOnWall = new ObjectStep(this, NullObjectID.NULL_11027, new WorldPoint(3107, 9291, 1), "Use a chisel on the wall.", chiselHighlighted);
 		useChiselOnWall.addDialogSteps("Of course, I'll help you out.", "Okay, I'll start building.");
 		useChiselOnWall.addIcon(ItemID.CHISEL);
+		repairWall.addSubSteps(useChiselOnWall);
 
 		talkToAkthankos = new NpcStep(this, NpcID.BONEGUARD_3577, new WorldPoint(3105, 9297, 1), "Talk to the Boneguard to finish the quest.");
+		((NpcStep) talkToAkthankos).addAlternateNpcs(NpcID.AKTHANAKOS);
+
 	}
 
 	@Override
@@ -532,7 +535,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Explore the ground floor", Arrays.asList(talkToLazimInTemple, cutOffLimb, takeM, enterDoor1, enterDoor2, enterMDoor, goUpToPuzzles)));
 		allSteps.add(new PanelDetails("Solve the puzzles", Arrays.asList(useSoftClayOnPedestal, useChiselOnGranite, useStoneHeadOnPedestal, useBread, castFireSpell, castAirSpell,
 			useLog, useOakLog, useWillowLog, useMapleLog, useCandle, useCoal)));
-		allSteps.add(new PanelDetails("Free Akthankos", Arrays.asList(passBarrier, goUpFromPuzzleRoom, castCrumbleUndead, goDownToFinalRoom, protectThenTalk, repairWall)));
+		allSteps.add(new PanelDetails("Free Akthankos", Arrays.asList(passBarrier, goUpFromPuzzleRoom, castCrumbleUndead, goDownToFinalRoom, protectThenTalk, repairWall, talkToAkthankos)));
 
 		return allSteps;
 	}

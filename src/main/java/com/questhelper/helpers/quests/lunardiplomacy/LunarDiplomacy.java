@@ -939,7 +939,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 			talkToBentleyToSail), bullseyeLantern, tinderboxHighlighted));
 		allSteps.add(new PanelDetails("Starting diplomacy", Arrays.asList(
 			enterTown, talkToOneiromancer, returnToTalkToYaga, fillVial, addGuam, addMarrentil, returnToMakePotion, grindTooth,
-			addToothToPotion, returnToOneWithPotion), guam, marrentill, pestle, sealOfPassage));
+			addToothToPotion, returnToOneWithPotion), guam, marrentill, pestle, sealOfPassage, combatGear));
 		allSteps.add(new PanelDetails("Making the staff", Arrays.asList(
 			enterAirAltar, enterFireAltar, enterWaterAltar, enterEarthAltar, returnWithStaff),
 			dramenStaff, airTalisman, fireTalisman, waterTalisman, earthTalisman));
@@ -964,7 +964,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		allSteps.add(gettingRingPanel);
 
 		PanelDetails gettingClothingPanel = new PanelDetails("Making the clothing", Collections.singletonList(
-			makeClothes), coins400, needle, thread);
+			makeClothes), coins400, needle, thread, suqahHide4);
 		gettingClothingPanel.setLockingStep(gettingClothes);
 		allSteps.add(gettingClothingPanel);
 
@@ -979,7 +979,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Chance challenge", Arrays.asList(goToChance, doChanceChallenge)));
 		allSteps.add(new PanelDetails("Memory challenge", Arrays.asList(goToMemory, doMemoryChallenge)));
 		allSteps.add(new PanelDetails("Tree challenge", Arrays.asList(goToTrees, doTreeChallenge)));
-		allSteps.add(new PanelDetails("Final challenge", Arrays.asList(talkWithEtherealToFight, fightMe, leaveLecturn, finishQuest)));
+		allSteps.add(new PanelDetails("Final challenge", Arrays.asList(talkWithEtherealToFight, fightMe, leaveLecturn, finishQuest), combatGear));
 		return allSteps;
 	}
 }

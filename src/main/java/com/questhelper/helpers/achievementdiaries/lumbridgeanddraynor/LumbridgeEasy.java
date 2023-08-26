@@ -263,7 +263,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 			"Pickpocket a man or woman infront of Lumbridge Castle.", true);
 		pickpocket.addAlternateNpcs(NpcID.MAN_3108, NpcID.WOMAN_3111, NpcID.MAN_3106);
 
-		chopOak = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(3219, 3206, 0),
+		chopOak = new ObjectStep(this, ObjectID.OAK_TREE_10820, new WorldPoint(3219, 3206, 0),
 			"Chop the oak tree in the Lumbridge Castle Courtyard.", axe);
 		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),
 			oakLogs.highlighted());

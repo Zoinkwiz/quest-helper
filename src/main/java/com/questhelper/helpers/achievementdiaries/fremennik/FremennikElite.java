@@ -376,11 +376,11 @@ public class FremennikElite extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.AGILITY, 80));
-		req.add(new SkillRequirement(Skill.CRAFTING, 80));
+		req.add(new SkillRequirement(Skill.AGILITY, 80, true));
+		req.add(new SkillRequirement(Skill.CRAFTING, 80, true));
 		req.add(new SkillRequirement(Skill.HITPOINTS, 70, false));
 		req.add(new SkillRequirement(Skill.RANGED, 70, false));
-		req.add(new SkillRequirement(Skill.RUNECRAFT, 82));
+		req.add(new SkillRequirement(Skill.RUNECRAFT, 82, true));
 		req.add(new SkillRequirement(Skill.SLAYER, 83, true));
 		req.add(new SkillRequirement(Skill.STRENGTH, 70, false));
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
@@ -421,20 +421,20 @@ public class FremennikElite extends ComplexStateQuestHelper
 		allSteps.add(dagannothKingsSteps);
 
 		PanelDetails dragonstoneAmuletSteps = new PanelDetails("Dragonstone Amulet", Arrays.asList(moveToNeit, dragonAmulet),
-			fremIsles, new SkillRequirement(Skill.CRAFTING, 80), dragonstone, goldBar, amuletMould);
+			fremIsles, new SkillRequirement(Skill.CRAFTING, 80, true), dragonstone, goldBar, amuletMould);
 		dragonstoneAmuletSteps.setDisplayCondition(notDragonAmulet);
 		dragonstoneAmuletSteps.setLockingStep(dragonAmuletTask);
 		allSteps.add(dragonstoneAmuletSteps);
 
 		PanelDetails astralRunesSteps = new PanelDetails("Astral Runes", Arrays.asList(moveToPirates, moveToCaptain,
 			moveToCaptain2, moveToLunarIsle, moveToAltar1, moveToAltar2), lunarDiplomacy,
-			new SkillRequirement(Skill.RUNECRAFT, 82), pureEssence.quantity(28));
+			new SkillRequirement(Skill.RUNECRAFT, 82, true), pureEssence.quantity(28));
 		astralRunesSteps.setDisplayCondition(notAstralRunes);
 		astralRunesSteps.setLockingStep(astralRunesTask);
 		allSteps.add(astralRunesSteps);
 
 		PanelDetails rellekkaRooftopsSteps = new PanelDetails("Rellekka Rooftops", Collections.singletonList(rellRooftop),
-			new SkillRequirement(Skill.AGILITY, 80));
+			new SkillRequirement(Skill.AGILITY, 80, true));
 		rellekkaRooftopsSteps.setDisplayCondition(notRellRooftop);
 		rellekkaRooftopsSteps.setLockingStep(rellRooftopTask);
 		allSteps.add(rellekkaRooftopsSteps);
@@ -447,7 +447,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		allSteps.add(spiritualMageSteps);
 
 		PanelDetails godWarsSteps = new PanelDetails("God Wars Generals", Arrays.asList(moveToGodWarsGWD,
-			godwarsGenerals), trollStronghold, new SkillRequirement(Skill.AGILITY, 70),
+			godwarsGenerals), trollStronghold, new SkillRequirement(Skill.AGILITY, 70, false),
 			new SkillRequirement(Skill.STRENGTH, 70, false), new SkillRequirement(Skill.HITPOINTS, 70, false),
 			new SkillRequirement(Skill.RANGED, 70, false), combatGear, rope.quantity(2), climbingBoots, hammer,
 			mithGrap, crossbow);

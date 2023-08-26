@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -56,6 +57,8 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DEMON_SLAYER
@@ -101,7 +104,7 @@ public class DemonSlayer extends BasicQuestHelper
 		getFirstKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key1.alsoCheckBank(questBank)));
 
 		getSecondKey = new ConditionalStep(this, goUpToBucket);
-		getSecondKey.addStep(inVarrockSewer, pickupSecondKey);
+		getSecondKey.addStep(new Conditions(hasPouredWaterIntoDrain, inVarrockSewer), pickupSecondKey);
 		getSecondKey.addStep(hasPouredWaterIntoDrain, goDownManhole);
 		getSecondKey.addStep(inCastleNWFloor1, goDownstairsFromRovin2);
 		getSecondKey.addStep(inCastleNWFloor2, goDownstairsFromRovin);
@@ -162,6 +165,7 @@ public class DemonSlayer extends BasicQuestHelper
 		inCastleNWFloor2 = new ZoneRequirement(castleNWFloor2);
 		inVarrockSewer = new ZoneRequirement(varrockSewer);
 		inTowerFloor1 = new ZoneRequirement(towerFloor1);
+		// 2568 going to 2 means you've taken the key, thus the key won't be there to be picked up should the key be deleted
 		hasPouredWaterIntoDrain = new VarbitRequirement(2568, 1);
 		obtainedSilverlight = new VarbitRequirement(2567, 1);
 		delrithNearby = new NpcCondition(NpcID.DELRITH);
@@ -211,6 +215,7 @@ public class DemonSlayer extends BasicQuestHelper
 		fillBucket = new ObjectStep(this, ObjectID.SINK_7422, new WorldPoint(3224, 3495, 0), "Use the bucket on the sink.", bucket);
 		fillBucket.addIcon(ItemID.BUCKET);
 		useFilledBucketOnDrain = new ObjectStep(this, ObjectID.DRAIN_17424, new WorldPoint(3225, 3496, 0), "Use the bucket of water on the drain outside the kitchen.", bucketOfWater);
+		((ObjectStep) useFilledBucketOnDrain).addAlternateObjects(ObjectID.DRAIN_17423);
 		useFilledBucketOnDrain.addIcon(ItemID.BUCKET_OF_WATER);
 		useFilledBucketOnDrain.addSubSteps(goDownstairsFromRovin, goDownstairsFromRovin2, goUpToBucket, pickupBucket, goDownFromBucket, fillBucket);
 		goDownManhole = new ObjectStep(this, ObjectID.MANHOLE_882, new WorldPoint(3237, 3458, 0), "Go down into Varrock Sewer via the Manhole south east of Varrock Castle.");
@@ -220,6 +225,7 @@ public class DemonSlayer extends BasicQuestHelper
 		goUpManhole = new ObjectStep(this, ObjectID.LADDER_11806, new WorldPoint(3237, 9858, 0), "Bring Wizard Traiborn 25 bones in the Wizards' Tower.", bones);
 		goUpstairsWizard = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(3104, 3160, 0), "Bring Wizard Traiborn 25 bones in the Wizards' Tower.", bones);
 		talkToTraiborn = new NpcStep(this, NpcID.WIZARD_TRAIBORN, new WorldPoint(3114, 3163, 1), "Bring Wizard Traiborn 25 bones in the Wizards' Tower. You don't need to bring them all at once.", bones);
+		talkToTraiborn.addDialogStep("Talk about Demon Slayer.");
 		talkToTraiborn.addDialogStep("I need to get a key given to you by Sir Prysin.");
 		talkToTraiborn.addDialogStep("Well, have you got any keys knocking around?");
 		talkToTraiborn.addDialogStep("I'll get the bones for you.");

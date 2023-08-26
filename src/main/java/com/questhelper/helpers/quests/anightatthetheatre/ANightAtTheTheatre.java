@@ -485,11 +485,11 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 			enterVerSinhazaCrypts, killVyrewatchForKey, unlockTheCryptGate, searchTheCoffinInVerSinhazaCrypts,
 			speakWithMysteriousStrangerWithRanisHead, speakMoreWithMysteriousStranger, enterSpiderCave, searchSpiderCaveSkeleton,
 			readStickyNote, speakWithDaerKrand, returnToSpiderCave, returnToMysteriousStrangerWithEggs,
-			mysteriousStrangerCutscenes), combatGear, food.quantity(20), flail, saw, antiVenom, drakansMedallion));
+			mysteriousStrangerCutscenes), combatGear, food, flail, saw, antiVenom, drakansMedallion));
 
 		allSteps.add(new PanelDetails("In Touch with Nature", Arrays.asList(goToNatureGrotto, goToHesporiFight, fightHespori,
 			chopHesporiForBark, returnToMysteriousStrangerWithBark, mysteriousStrangerCutscenes2), combatGear,
-			food.quantity(20),
+			food,
 			ghostSpeakAmulet, axe, antipoison));
 
 		allSteps.add(new PanelDetails("Theatre of Blood", Arrays.asList(completeTob, speakWithMysteriousStrangerToFinish)));

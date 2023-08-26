@@ -190,7 +190,9 @@ public class SleepingGiants extends BasicQuestHelper
 		nails.setQuantity(10);
 
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		hammer.addAlternates(ItemID.IMCANDO_HAMMER);
 		hammer.canBeObtainedDuringQuest();
+		hammer.setTooltip("Imcando hammer also works");
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 
@@ -430,7 +432,7 @@ public class SleepingGiants extends BasicQuestHelper
 			fixPolishingStone, fixGrindstone, fixHammer, speakToKovacAfterRepairs),
 			Arrays.asList(oakLogs, wool, nails, hammer, chisel), Collections.singletonList(freeInventorySpace)));
 		allSteps.add(new PanelDetails("Creating the sword", Arrays.asList(speakToKovacContinue, searchCrate, fillCrucible,
-			speakToKovacAboutMould, setMould, talkToKovakAfterMould, pourMetal, coolDownSword, hitPreformWhileRed, grindstonePreform, polishPreform,
+			speakToKovacAboutMould, setMould, interactWithMould, talkToKovakAfterMould, pourMetal, coolDownSword, hitPreformWhileRed, grindstonePreform, polishPreform,
 			handInPreform), Arrays.asList(iceGloves, bucket)));
 
 		return allSteps;

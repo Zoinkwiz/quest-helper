@@ -120,10 +120,10 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notGotSecurityBook, gotSecurityBookTask);
 
 		bluriteLimbsTask = new ConditionalStep(this, getPickaxe);
-		bluriteLimbsTask.addStep(pickaxe, enterDungeon);
-		bluriteLimbsTask.addStep(new Conditions(pickaxe, inBluriteDungeon), mineBlurite);
-		bluriteLimbsTask.addStep(hasBluriteOre, smeltBlurite);
 		bluriteLimbsTask.addStep(hasBluriteBar, smithBluriteLimbs);
+		bluriteLimbsTask.addStep(hasBluriteOre, smeltBlurite);
+		bluriteLimbsTask.addStep(new Conditions(pickaxe, inBluriteDungeon), mineBlurite);
+		bluriteLimbsTask.addStep(pickaxe, enterDungeon);
 		doEasy.addStep(notBluriteLimbs, bluriteLimbsTask);
 
 		mindTiaraTask = new ConditionalStep(this, enterMindAltar);
@@ -259,17 +259,21 @@ public class FaladorEasy extends ComplexStateQuestHelper
 			"Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, hammer);
 		mineBlurite = new ObjectStep(this, ObjectID.BLURITE_ROCKS, new WorldPoint(3049, 9566, 0),
 			"Mine a blurite ore in the eastern cavern.", pickaxe, hammer);
-		smeltBlurite = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(2976, 3368, 0),
+		smeltBlurite = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(2976, 3369, 0),
 			"Smelt the blurite ore into a blurite bar.", hammer, bluriteOre);
+		smeltBlurite.addWidgetHighlightWithItemIdRequirement(270, 15, ItemID.BLURITE_BAR, true);
 		smithBluriteLimbs = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(2950, 3451, 0),
 			"Smith the blurite bar into blurite limbs on Doric's Anvil, north of Falador.", hammer, bluriteBar);
 		smithBluriteLimbs.addSubSteps(enterDungeon, mineBlurite, smeltBlurite);
+		smithBluriteLimbs.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.BLURITE_LIMBS, true);
+
 
 		//Make a Mind Tiara
 		enterMindAltar = new ObjectStep(this, ObjectID.MYSTERIOUS_RUINS_29094, new WorldPoint(2982, 3514, 0),
 			"Use the mind talisman on the Mysterious Ruins to access the Mind Altar.", mindTalisman.highlighted(), tiara);
-		getMindTiara = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2785, 4840, 0),
-			"Use the mind talisman on the Altar", mindTalisman, tiara);
+		getMindTiara = new ObjectStep(this, ObjectID.ALTAR_34761, new WorldPoint(2786, 4841, 0),
+			"Use the mind talisman on the Altar", mindTalisman.highlighted(), tiara);
+		getMindTiara.addIcon(ItemID.MIND_TALISMAN);
 		enterMindAltar.addSubSteps(getMindTiara);
 
 		//Claim Reward

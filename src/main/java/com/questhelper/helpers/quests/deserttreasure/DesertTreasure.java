@@ -387,20 +387,21 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToArchaeologist = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0), "Talk to the " +
-			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shanty Pass to get here.");
+		talkToArchaeologist = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0), "Talk to the " +
+			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
+		talkToArchaeologist.addDialogStep("Yes.");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
 
-		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
+		talkToExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
 		talkToExpert.addDialogStep("Ask about the Desert Treasure quest.");
 
-		talkToExpertAgain = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert again.");
+		talkToExpertAgain = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3359, 3334, 0), "Talk to the Archaeological Expert again.");
 		talkToExpertAgain.addDialogStep("Ask about the Desert Treasure quest.");
 
-		bringTranslationToArchaeologist = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0),
+		bringTranslationToArchaeologist = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0),
 			"Bring the translation to the Archaeologist in the Bedabin Camp.", translation);
-		talkToArchaeologistAgainAfterTranslation = new NpcStep(this, NpcID.ARCHAEOLOGIST, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist again.");
+		talkToArchaeologistAgainAfterTranslation = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist again.");
 		talkToArchaeologistAgainAfterTranslation.addDialogStep("Help him");
 		buyDrink = new NpcStep(this, NpcID.BARTENDER, new WorldPoint(3159, 2978, 0), "Buy a drink from the pub in the Bandit Camp, then talk to the Bartender again.", coins650);
 		buyDrink.addDialogStep("Buy a drink");
@@ -448,7 +449,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		talkToRasolo = new NpcStep(this, NpcID.RASOLO, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
 		talkToRasolo.addDialogStep("Ask about the Diamonds of Azzanadra");
-		talkToRasolo.addDialogStepWithExclusion("Yes.", "Ask about the Diamonds of Azzanadra");
+		talkToRasolo.addDialogStepWithExclusion("Yes", "Ask about the Diamonds of Azzanadra");
 
 		getCross = new ObjectStep(this, ObjectID.SECURE_CHEST, new WorldPoint(3169, 2967, 0), "Bring antipoison, food, and as many picklocks as you can to the Bandit Camp, and try opening the chest in the south of the Bandit Camp. Keep trying until you succeed.", manyLockpicks, antipoison);
 

@@ -217,7 +217,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 			"Kill 5 Rock crabs.", true, combatGear);
 		killedCrabs.addAlternateNpcs(NpcID.ROCK_CRAB_102);
 
-		chopOak = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(2714, 3664, 0),
+		chopOak = new ObjectStep(this, ObjectID.OAK_TREE_10820, new WorldPoint(2714, 3664, 0),
 			"Chop some oak logs in Rellekka.", axe, tinderbox);
 		chopOak.addIcon(6739);
 		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),

@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.questhelper.steps.WidgetStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -77,7 +78,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		guam2HarrTea, guamHarrMarrTea, herbTeaMix;
 
 	//Items Recommended
-	ItemRequirement varrockTeleports, lumbridgeTeleports, ardougneTeleports, camelotTeleports, faladorTeleports, pickaxe;
+	ItemRequirement draynorVillageTeleports, lumbridgeTeleports, varrockTeleports, taverleyOrFaladorTeleports, camelotTeleports, fishingGuildAndDwarvenMineTeleports, ardougneTeleports, khazardTeleports, feldipHillsTeleports, pickaxe;
 
 	Requirement inSanfewRoom, inHamBase, inDwarvenMine, inGoblinCave, lamp1Empty, lamp1Full, lamp2Empty, lamp2Full,
 		lamp3Empty, lamp3Full, lamp4Empty, lamp4Full, lamp5Empty, lamp5Full, lamp6Empty, lamp6Full, lamp7Empty, lamp7Full, lamp8Empty, lamp8Full, allEmpty, allFull, inScrollSpot,
@@ -352,11 +353,19 @@ public class OneSmallFavour extends BasicQuestHelper
 		pot.setHighlightInInventory(true);
 		hotWaterBowl = new ItemRequirement("Bowl of hot water", ItemID.BOWL_OF_HOT_WATER);
 		hotWaterBowl.setTooltip("You can find a bowl in Lumbridge castle. Fill it up, then boil it on the range");
+
+		draynorVillageTeleports = new ItemRequirement("Draynor Teleport with glory, 2 or more charges", ItemCollections.AMULET_OF_GLORIES);
+		lumbridgeTeleports = new ItemRequirement("Teleports to Lumbridge", ItemID.LUMBRIDGE_TELEPORT, 4);
 		varrockTeleports = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, 2);
-		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 2);
+		taverleyOrFaladorTeleports = new ItemRequirement("Teleports to Tavelery or Falador", ItemID.TAVERLEY_TELEPORT, 2);
+		camelotTeleports = new ItemRequirement("Teleports to Camelot or Catherby", ItemID.CAMELOT_TELEPORT, 2);
+		camelotTeleports.addAlternates(ItemID.CATHERBY_TELEPORT);
+		fishingGuildAndDwarvenMineTeleports = new ItemRequirement("Fishing and Mining Guild Teleport for Dwarven Mine with skills necklace, 4 or more charges", ItemID.SKILLS_NECKLACE4);
+		fishingGuildAndDwarvenMineTeleports.addAlternates(ItemID.SKILLS_NECKLACE5, ItemID.SKILLS_NECKLACE6);
 		ardougneTeleports = new ItemRequirement("Teleports to Ardougne", ItemID.ARDOUGNE_TELEPORT, 2);
-		camelotTeleports = new ItemRequirement("Teleports to Camelot", ItemID.CAMELOT_TELEPORT, 2);
-		lumbridgeTeleports = new ItemRequirement("Teleports to Lumbridge", ItemID.LUMBRIDGE_TELEPORT, 2);
+		khazardTeleports = new ItemRequirement("Teleports to Port Khazard", ItemID.KHAZARD_TELEPORT, 2);
+		feldipHillsTeleports = new ItemRequirement("Teleports to Feldip Hills", ItemID.FELDIP_HILLS_TELEPORT, 2);
+
 		pickaxe = new ItemRequirement("Any pickaxe to kill Slagilith", ItemCollections.PICKAXES).isNotConsumed();
 
 		bluntAxe = new ItemRequirement("Blunt axe", ItemID.BLUNT_AXE);
@@ -513,7 +522,8 @@ public class OneSmallFavour extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToYanni = new NpcStep(this, NpcID.YANNI_SALIKA, new WorldPoint(2836, 2983, 0), "Talk to Yanni Salika in Shilo Village.");
+		talkToYanni = new NpcStep(this, NpcID.YANNI_SALIKA, new WorldPoint(2836, 2983, 0), "Talk to Yanni Salika in Shilo Village. CKR fairy ring or take cart from Brimhaven.");
+		talkToYanni.addDialogStep("Yes.");
 		talkToYanni.addDialogSteps("Is there anything else interesting to do around here?", "Ok, see you in a tick!");
 		talkToJungleForester = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2861, 2942, 0), "Talk to a Jungle Forester south of Shilo Village.", bluntAxe);
 		talkToJungleForester.addDialogSteps("I'll get going then!", "I need to talk to you about red mahogany.");
@@ -611,13 +621,15 @@ public class OneSmallFavour extends BasicQuestHelper
 		searchWall = new ObjectStep(this, ObjectID.SCULPTURE, new WorldPoint(2621, 9835, 0), "Right-click search the sculpture in the wall in the north east corner of the cave.");
 
 		talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Cromperty in north east Ardougne.");
+		((NpcStep) talkToCromperty).addAlternateNpcs(NpcID.WIZARD_CROMPERTY, NpcID.WIZARD_CROMPERTY_8481);
+		talkToCromperty.addDialogStep("Chat.");
 		talkToCromperty.addDialogStep("I need to talk to you about a girl stuck in some rock!");
 		talkToCromperty.addDialogStep("Oh! Ok, one more 'small favour' isn't going to kill me...I hope!");
 
 		talkToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Talk to Tindel Marchant in Port Khazard.");
 		talkToTindel.addDialogSteps("Wizard Cromperty sent me to get some iron oxide.", "Ask about iron oxide.", "Okay, I'll do it!");
 
-		talkToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2969, 0), "Talk to Rantz in Feldip Hills.");
+		talkToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2969, 0), "Talk to Rantz in the Feldip Hills. AKS fairy ring or Feldip Hills Teleport.");
 		talkToRantz.addDialogStep("I need to talk to you about a mattress.");
 		talkToRantz.addDialogStep("Ok, I'll see what I can do.");
 
@@ -664,12 +676,14 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToGnormadiumAgain = new NpcStep(this, NpcID.GNORMADIUM_AVLAFRIM, new WorldPoint(2542, 2968, 0), "Talk to Gnormadium Avlafrim again.");
 		talkToGnormadiumAgain.addDialogStep("I've fixed all the lights!");
 
-		returnToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2975, 0), "Return to Rantz in Feldip Hills.", stodgyMattress);
+		returnToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2975, 0), "Return to Rantz in the Feldip Hills. AKS fairy ring or Feldip Hills Teleport.", stodgyMattress);
 		returnToRantz.addDialogStep("Ok, I've helped that Gnome, he shouldn't bother you anymore.");
 		returnToTindel = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2678, 3153, 0), "Return to Tindel Marchant in Port Khazard.", mattress);
 		returnToTindel.addDialogStep("I have the mattress.");
 
 		returnToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0), "Return to Wizard Cromperty in north east Ardougne.", ironOxide);
+		((NpcStep) returnToCromperty).addAlternateNpcs(NpcID.WIZARD_CROMPERTY, NpcID.WIZARD_CROMPERTY_8481);
+		returnToCromperty.addDialogStep("Chat.");
 		returnToCromperty.addDialogStep("I have that iron oxide you asked for!");
 
 		getPigeonCages = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get 5 pigeon cages from behind Jerico's house in central East Ardougne.", pigeonCages5);
@@ -683,7 +697,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith. They take reduced damage from anything other than a pickaxe.",
 			Collections.EMPTY_LIST, Collections.singletonList(pickaxe));
-		readScrollAgain = new DetailedQuestStep(this, "Read the animate rock scroll", animateRockScrollHighlight);
+		readScrollAgain = new DetailedQuestStep(this, "Read the animate rock scroll.", animateRockScrollHighlight);
 		talkToPetra = new NpcStep(this, NpcID.PETRA_FIYED, new WorldPoint(2617, 9837, 0), "Talk to Petra Fiyed.");
 
 		returnToPhantuwti = new NpcStep(this, NpcID.PHANTUWTI_FANSTUWI_FARSIGHT, new WorldPoint(2702, 3473, 0), "Return to Phantuwti in the south west house of Seers' Village.");
@@ -748,12 +762,14 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToHammerspike = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToHammerspike.addSubSteps(goDownToHammerspikeAgain);
 
-		killGangMembers = new NpcStep(this, NpcID.DWARF_GANG_MEMBER, new WorldPoint(2968, 9811, 0), "Kill 3 dwarf gang members until Hammerspike gives in. One dwarf gang member should appear after each kill");
+		killGangMembers = new NpcStep(this, NpcID.DWARF_GANG_MEMBER, new WorldPoint(2968, 9811, 0), "Kill 3 dwarf gang members until Hammerspike gives in. One dwarf gang member should appear after each kill.");
 		talkToHammerspikeFinal = new NpcStep(this, NpcID.HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToTassie = new NpcStep(this, NpcID.TASSIE_SLIPCAST, new WorldPoint(3085, 3409, 0), "Return to Tassie Slipcast in the Barbarian Village pottery building.");
 		spinPotLid = new ObjectStep(this, ObjectID.POTTERS_WHEEL_14887, new WorldPoint(3087, 3409, 0), "Spin the clay into a pot lid.", softClay);
+		spinPotLid.addWidgetHighlightWithItemIdRequirement(270, 19, ItemID.UNFIRED_POT_LID, true);
 		pickUpPot = new ItemStep(this, "Get a pot to put your lid on. There's one in the Barbarian Village helmet shop.", pot);
-		firePotLid = new ObjectStep(this, ObjectID.POTTERY_OVEN_11601, new WorldPoint(3085, 3407, 0), "Fire the unfired pot lid", unfiredPotLid);
+		firePotLid = new ObjectStep(this, ObjectID.POTTERY_OVEN_11601, new WorldPoint(3085, 3407, 0), "Fire the unfired pot lid.", unfiredPotLid);
+		firePotLid.addWidgetHighlightWithItemIdRequirement(270, 19, ItemID.POT_LID, true);
 		usePotLidOnPot = new DetailedQuestStep(this, "Use the pot lid on a pot.", pot, potLid);
 		returnToApothecary = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3196, 3404, 0), "Return to the Apothecary in west Varrock.", potWithLid);
 		returnToApothecary.addDialogStep("Talk about One Small Favour.");
@@ -771,7 +787,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToBrian = new NpcStep(this, NpcID.BRIAN, new WorldPoint(3027, 3249, 0), "Return to Brian in the Port Sarim axe shop.");
 		returnToBrian.addDialogStep("I've returned with good news.");
 
-		returnToForester = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2861, 2942, 0), "Return to a Jungle Forester south of Shilo Village.", sharpenedAxe);
+		returnToForester = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2861, 2942, 0), "Return to a Jungle Forester south of Shilo Village. CKR fairy ring or take cart from Brimhaven.", sharpenedAxe);
 		returnToForester.addDialogStep("Good news, I have your sharpened axe!");
 		returnToYanni = new NpcStep(this, NpcID.YANNI_SALIKA, new WorldPoint(2836, 2983, 0), "Return to Yanni Salika in Shilo Village.", redMahog);
 		returnToYanni.addDialogStep("Here's the red mahogany you asked for.");
@@ -800,11 +816,15 @@ public class OneSmallFavour extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(varrockTeleports);
+		reqs.add(draynorVillageTeleports);
 		reqs.add(lumbridgeTeleports);
-		reqs.add(faladorTeleports);
-		reqs.add(ardougneTeleports);
+		reqs.add(varrockTeleports);
+		reqs.add(taverleyOrFaladorTeleports);
 		reqs.add(camelotTeleports);
+		reqs.add(fishingGuildAndDwarvenMineTeleports);
+		reqs.add(ardougneTeleports);
+		reqs.add(khazardTeleports);
+		reqs.add(feldipHillsTeleports);
 		reqs.add(opal.quantity(2));
 		reqs.add(jade.quantity(2));
 		reqs.add(redTopaz.quantity(2));

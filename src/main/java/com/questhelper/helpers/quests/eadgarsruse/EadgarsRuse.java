@@ -548,7 +548,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		searchDrawers = new ObjectStep(this, ObjectID.KITCHEN_DRAWERS, new WorldPoint(2853, 10050, 1), "Search the kitchen drawers south east of Burntmeat.");
 		searchDrawers.addAlternateObjects(ObjectID.KITCHEN_DRAWERS_3817);
 
-		goDownToStoreroom = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10061, 1), "Go down to the storeroom from the Troll Stronghold kitchen.");
+		goDownToStoreroom = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2852, 10061, 1), "Go down to the storeroom from the Troll Stronghold kitchen.");
 
 		enterStoreroomDoor = new ObjectStep(this, ObjectID.STOREROOM_DOOR, new WorldPoint(2869, 10085, 0), "Enter the storeroom.", storeroomKey);
 

@@ -454,7 +454,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		talkToLarryAgain = new NpcStep(this, NpcID.LARRY_828, new WorldPoint(2707, 3733, 0), "Talk to Larry again.");
 		talkToLarryAgain.addDialogSteps("Can I transport My Arm in your boat?", "Never mind, I just need to borrow your boat.");
 
-		boardBoat = new ObjectStep(this, NullObjectID.NULL_21176, new WorldPoint(2709, 3735, 0), "Board Larry's boat.");
+		boardBoat = new ObjectStep(this, NullObjectID.NULL_21176, new WorldPoint(2709, 3735, 0), "Board Larry's boat to Weiss.");
 		boardBoat.addDialogStep("Travel to Weiss.");
 		// 6719 0->2 on boat
 
@@ -491,7 +491,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		enterHole = new ObjectStep(this, ObjectID.HOLE_33227, new WorldPoint(2854, 3944,0), "Wait a few seconds, and run into the hole.");
 		goSouthSneak.addSubSteps(goWestSneak1, goWestSneak2, goWestSneak3, goNorth, enterHole);
-		enterNarrowHole = new ObjectStep(this, ObjectID.NARROW_GAP, new WorldPoint(7248, 2978, 0), "Enter the narrow gap to the south quickly.");
+		enterNarrowHole = new ObjectStep(this, ObjectID.NARROW_GAP, new WorldPoint(2704, 5794, 0), "Enter the narrow gap to the south quickly.");
 
 		enterWater = new ObjectStep(this, ObjectID.WATERS_EDGE, new WorldPoint(2710, 5782, 0), "Enter the water.");
 
@@ -526,7 +526,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		pickUpCoffin = new ObjectStep(this, NullObjectID.NULL_33332, new WorldPoint(3090, 3254, 0), "Pick up the coffin in the Wise Old Man's house.");
 
-		takeBoatWithWom = new ObjectStep(this, NullObjectID.NULL_21176, new WorldPoint(2709, 3735, 0), "Board Larry's boat.", coffin, combatRangeMelee);
+		takeBoatWithWom = new ObjectStep(this, NullObjectID.NULL_21176, new WorldPoint(2709, 3735, 0), "Board Larry's boat to Weiss.", coffin, combatRangeMelee);
 		takeBoatWithWom.addDialogStep("Travel to Weiss.");
 
 		enterCaveWithWom = new ObjectStep(this, NullObjectID.NULL_33329, new WorldPoint(2859, 3967, 0), "Enter the cave entrance.", coffin, combatRangeMelee);
@@ -536,7 +536,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		talkToMyArmAfterGivingWom = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2877, 3947, 0), "Talk to My Arm in Weiss.");
 		talkToMyArmWithWom.addSubSteps(takeBoatWithWom, enterCaveWithWom, talkToMyArmAfterGivingWom);
 
-		takeBoatToPrison = new ObjectStep(this, NullObjectID.NULL_21176, new WorldPoint(2709, 3735, 0), "Board Larry's boat.");
+		takeBoatToPrison = new ObjectStep(this, NullObjectID.NULL_21176, new WorldPoint(2709, 3735, 0), "Board Larry's boat to Weiss.");
 		takeBoatToPrison.addDialogStep("Travel to Weiss.");
 
 		enterCaveToPrison = new ObjectStep(this, NullObjectID.NULL_33329, new WorldPoint(2859, 3967, 0), "Enter the cave entrance. Be prepared to fight.", combatRangeMelee);
@@ -554,7 +554,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		killMother = new NpcStep(this, NpcID.MOTHER_8430, "Kill Mother. Protect from Ranged, keep moving and keep your distance.");
 		killMother.addAlternateNpcs(NpcID.MOTHER_8428, NpcID.MOTHER_8429);
 
-		pickUpBucket = new ObjectStep(this, ObjectID.BUCKETS, new WorldPoint(2867, 3934, 0), "You now need to put out the fire. Pick up a bucket from the bucket pile.");
+		pickUpBucket = new ObjectStep(this, ObjectID.PILE_OF_BUCKETS, new WorldPoint(2867, 3934, 0), "You now need to put out the fire. Pick up a bucket from the bucket pile.");
 		useBucketOnWater = new ObjectStep(this, ObjectID.BARREL_OF_WATER, new WorldPoint(2869, 3933, 0), "Fill the bucket on the barrel of water.", bucketHighlight);
 		useBucketOnWater.addIcon(ItemID.BUCKET);
 
@@ -634,7 +634,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Faking death", Arrays.asList(talkToWom, buildCoffin, talkToApoth, talkToWomAfterPrep, pickUpCoffin),
 			saw, hammer, mahogPlanks5, boltOfCloth, cadavaBerries));
 		allSteps.add(new PanelDetails("Rising up", Arrays.asList(talkToMyArmWithWom, talkToOddMushroom, talkToSnowflake, killDontKnowWhat,
-			pickUpBucket, useBucketOnWater, useBucketOnFire, killMother), combatRangeMelee));
+			pickUpBucket, useBucketOnWater, useBucketOnFire, killMother), coffin, combatRangeMelee));
 		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(talkToMyArmAfterFight, talkToWomAfterFight, talkToSnowflakeAfterFight,
 			pickUpGoatDung, bringDungToSnowflake, readNotes, talkToSnowflakeToFinish)));
 

@@ -455,7 +455,7 @@ public class TheDigSite extends BasicQuestHelper
 		digForTalisman = new ObjectStep(this, ObjectID.SOIL_2377, new WorldPoint(3374, 3438, 0), "Dig in the north east dig spot in the Digsite until you get a talisman.",
 			trowelHighlighted, specimenJar, specimenBrush);
 		digForTalisman.addIcon(ItemID.TROWEL);
-		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Talk Archaeological expert in the Exam Centre.", talisman);
+		talkToExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3357, 3334, 0), "Talk Archaeological expert in the Exam Centre.", talisman);
 
 		useInvitationOnWorkman = new NpcStep(this, NpcID.DIGSITE_WORKMAN, new WorldPoint(3360, 3415, 0), "Use the invitation on any workman.", true, invitation);
 		useInvitationOnWorkman.addIcon(ItemID.INVITATION_LETTER);
@@ -483,9 +483,9 @@ public class TheDigSite extends BasicQuestHelper
 		useTrowelOnBarrel.addIcon(ItemID.TROWEL);
 		useVialOnBarrel = new ObjectStep(this, NullObjectID.NULL_2359, new WorldPoint(3364, 3378, 0), "Use a vial on the barrel west of the chest's tent.", vialHighlighted);
 		useVialOnBarrel.addIcon(ItemID.VIAL);
-		usePowderOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the powder on the Archaeological expert in the Exam Centre.", powder);
+		usePowderOnExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3357, 3334, 0), "Use the powder on the Archaeological expert in the Exam Centre.", powder);
 		usePowderOnExpert.addIcon(ItemID.CHEMICAL_POWDER);
-		useLiquidOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "(DO NOT LEFT CLICK) Right-click use the liquid on the Archaeological expert in the Exam Centre.", liquid);
+		useLiquidOnExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3357, 3334, 0), "(DO NOT LEFT CLICK) Right-click use the liquid on the Archaeological expert in the Exam Centre.", liquid);
 		useLiquidOnExpert.addIcon(ItemID.UNIDENTIFIED_LIQUID);
 		mixNitroWithNitrate = new DetailedQuestStep(this, "Mix the nitroglycerin and ammonium nitrate together.", nitro, nitrate);
 		grindCharcoal = new DetailedQuestStep(this, "Grind charcoal with a pestle and mortar.", pestleAndMortar, charcoal);
@@ -504,7 +504,7 @@ public class TheDigSite extends BasicQuestHelper
 		takeTablet.addSubSteps(goDownForTablet);
 
 		goUpWithTablet = new ObjectStep(this, ObjectID.ROPE_2353, new WorldPoint(3369, 9762, 0), "Use the tablet on the Archaeological expert in the Exam Centre to complete the quest.", tablet);
-		useTabletOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the tablet on the Archaeological expert in the Exam Centre to complete the quest.", tablet);
+		useTabletOnExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3357, 3334, 0), "Use the tablet on the Archaeological expert in the Exam Centre to complete the quest.", tablet);
 		useTabletOnExpert.addIcon(ItemID.STONE_TABLET);
 		useTabletOnExpert.addSubSteps(goUpWithTablet);
 

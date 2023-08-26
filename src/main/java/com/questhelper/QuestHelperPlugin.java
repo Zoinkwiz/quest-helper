@@ -41,6 +41,7 @@ import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.statemanagement.GameStateManager;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
@@ -68,6 +69,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Perspective;
@@ -320,10 +323,7 @@ public class QuestHelperPlugin extends Plugin
 				QuestHelperQuest.CHECK_ITEMS.getQuestHelper().init();
 				getAllItemRequirements();
 				loadQuestList = true;
-				if (config.showRuneliteObjects())
-				{
-					GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
-				}
+				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			}
 		});
 	}
@@ -435,7 +435,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGGED_IN)
 		{
-			GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
+			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			loadQuestList = true;
 			displayNameKnown = false;
 			clientThread.invokeLater(() -> {
@@ -500,7 +500,7 @@ public class QuestHelperPlugin extends Plugin
 			clientThread.invokeLater(() -> {
 				if (config.showRuneliteObjects())
 				{
-					GlobalFakeObjects.initNpcs(client, runeliteObjectManager, configManager);
+					GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 				}
 				else
 				{
@@ -554,6 +554,19 @@ public class QuestHelperPlugin extends Plugin
 		{
 			String step = (String) (Arrays.stream(commandExecuted.getArguments()).toArray()[0]);
 			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), step).setConfigValue();
+		}
+		else if (developerMode && commandExecuted.getCommand().equals("inv"))
+		{
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			StringBuilder inv = new StringBuilder();
+			if (inventory != null)
+			{
+				for (Item item : inventory.getItems())
+				{
+					inv.append(item.getId()).append("\n");
+				}
+			}
+			System.out.println(inv);
 		}
 	}
 
@@ -669,7 +682,7 @@ public class QuestHelperPlugin extends Plugin
 
 		client.createMenuEntry(menuEntries.length - 1)
 			.setOption("Examine")
-			.setTarget("<col=ffff00;id=cheerer>" + cheerer.getStyle().getDisplayName() + "</col>")
+			.setTarget("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")
 			.setType(MenuAction.RUNELITE)
 			.onClick(menuEntry -> {
 				if (cheerer == null) return;

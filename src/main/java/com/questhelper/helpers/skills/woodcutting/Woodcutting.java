@@ -120,12 +120,12 @@ public class Woodcutting extends ComplexStateQuestHelper
 				" them, or bank them.", true, ironAxe, steelAxe, blackAxe
 		);
 
-		chopOakTrees = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(3190, 3247, 0),
+		chopOakTrees = new ObjectStep(this, ObjectID.OAK_TREE_10820, new WorldPoint(3190, 3247, 0),
 			"Chop oak trees around Lumbridge until 30 Woodcutting. You can choose to burn the logs as you go, drop" +
 				" them, or bank them.", true, steelAxe, blackAxe, mithrilAxe, adamantAxe
 		);
 
-		chopWillowTrees = new ObjectStep(this, ObjectID.WILLOW, new WorldPoint(3059, 3253, 0),
+		chopWillowTrees = new ObjectStep(this, ObjectID.WILLOW_TREE_10819, new WorldPoint(3059, 3253, 0),
 			"Chop willow trees east of the Rusty Anchor Inn in Port Sarim until 99 Woodcutting. You can deposit them" +
 				" at the bank deposit box just south on the docks next to the monks." +
 				" If choose to burn the logs as you go or drop them, oak trees gives faster XP until 60 Woodcutting",

@@ -497,6 +497,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		jogreBones = new ItemRequirement("Jogre Bones", ItemID.JOGRE_BONES);
 		jogreBones.canBeObtainedDuringQuest();
 		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN);
+		rawKarambwan.setTooltip("You can obtain during quest with 65 Fishing.");
 		karambwanPaste = new ItemRequirement("Karambwan paste", ItemID.KARAMBWAN_PASTE);
 		karambwanPaste.addAlternates(ItemID.KARAMBWAN_PASTE_3153, ItemID.KARAMBWAN_PASTE_3154);
 		burntJogreBones = new ItemRequirement("Burnt Jogre Bones", ItemID.BURNT_JOGRE_BONES);
@@ -508,7 +509,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED);
 		karamjanRum = new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM);
 		karambwanji = new ItemRequirement("Or More Raw Karambwanji", ItemID.RAW_KARAMBWANJI, 23);
-		rawKarambwans = new ItemRequirement("Karambwan", ItemID.RAW_KARAMBWAN);
+		rawKarambwans = new ItemRequirement("Raw Karambwan", ItemID.RAW_KARAMBWAN);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		poisonKarambwan = new ItemRequirement("Poison karambwan", ItemID.POISON_KARAMBWAN);
 		karambwanjiPaste = new ItemRequirement("Karambwanji paste", ItemID.KARAMBWANJI_PASTE);
@@ -531,7 +532,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	{
 		return new ArrayList<>(Arrays.asList(
 			coins.quantity(30), hammer, smallFishingNet, pestleAndMortar, spear, agilityPotion4,
-			rangedOrMagic, tinderbox, slicedBananaOrKnife, logsForFire
+			rangedOrMagic, tinderbox, slicedBananaOrKnife, logsForFire, rawKarambwan
 		));
 	}
 
@@ -540,12 +541,11 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(jogreBones);
-		reqs.add(new ItemRequirement("Extra Karambwans in case you burn the one given", ItemID.RAW_KARAMBWAN));
+		reqs.add(new ItemRequirement("Extra Raw Karambwans in case you burn the one given", ItemID.RAW_KARAMBWAN));
 		reqs.add(new ItemRequirement("Any Antipoisons", ItemCollections.ANTIPOISONS));
 		reqs.add(new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS));
 		reqs.add(new ItemRequirement("Dramen staff if you have access to fairy rings", ItemCollections.FAIRY_STAFF));
 		reqs.add(new ItemRequirement("Sliced Banana (Use a knife on a banana)", ItemID.SLICED_BANANA));
-		reqs.add(new ItemRequirement("Poison Karambwan", ItemID.POISON_KARAMBWAN));
 		reqs.add(new ItemRequirement("Food", -1, -1));
 		return reqs;
 	}
@@ -559,6 +559,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 15, false));
 		req.add(new SkillRequirement(Skill.COOKING, 30, false));
 		req.add(new SkillRequirement(Skill.FISHING, 5, false));
+		req.add(new ItemRequirement("65 Fishing for Raw Karambwan if any type of Ironman account.", -1, -1));
 		return req;
 	}
 

@@ -390,6 +390,10 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		renderInventory(graphics);
+		for (WidgetHighlights widgetHighlights : widgetsToHighlight)
+		{
+			widgetHighlights.highlightChoices(graphics, client, plugin);
+		}
 	}
 
 	public void makeDirectionOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)

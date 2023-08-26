@@ -521,14 +521,21 @@ public class DesertTreasureII extends BasicQuestHelper
 		shadowBurstRunes = new ItemRequirements("Shadow burst runes",
 			new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 2),
 			new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 4),
-			new ItemRequirement("Blood runes", ItemID.SOUL_RUNE, 2),
+			new ItemRequirement("Soul runes", ItemID.SOUL_RUNE, 2),
 			new ItemRequirement("Air runes", ItemID.AIR_RUNE, 1));
 		smokeBurstRunes = new ItemRequirements("Smoke burst runes",
 			new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 2),
 			new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 4),
 			new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 2),
 			new ItemRequirement("Air runes", ItemID.AIR_RUNE, 2));
-		allBursts = new ItemRequirements("Runes for shadow, smoke, blood, and ice burst", bloodBurstRunes, iceBurstRunes, shadowBurstRunes, smokeBurstRunes);
+		allBursts = new ItemRequirements("Runes for shadow, smoke, blood, and ice burst",
+			new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 8),
+			new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 16),
+			new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE, 2),
+			new ItemRequirement("Water runes", ItemID.WATER_RUNE, 4),
+			new ItemRequirement("Soul runes", ItemID.SOUL_RUNE, 2),
+			new ItemRequirement("Air runes", ItemID.AIR_RUNE, 3),
+			new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 2));
 
 		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1);
 		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
@@ -1009,6 +1016,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		attemptToEnterVaultDoor = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
 			new WorldPoint(3511, 2971, 0),
 			"Attempt to enter the Vault door north-east of Nardah.", ancientMagicksActive);
+		attemptToEnterVaultDoor.addTeleport(nardahTeleport);
 		attemptToEnterVaultDoor.addDialogStep("Yes.");
 
 		attemptToEnterVaultDoor2 = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
@@ -1755,7 +1763,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	{
 		return Arrays.asList(
 			new ItemReward("Ring of Shadows", ItemID.RING_OF_SHADOWS),
-			new ItemReward("Ancient Lamp (100k exp in a combat skill)", ItemID.ANCIENT_LAMP)
+			new ItemReward("Ancient Lamp (100k exp in a combat skill)", ItemID.ANCIENT_LAMP, 3)
 		);
 	}
 

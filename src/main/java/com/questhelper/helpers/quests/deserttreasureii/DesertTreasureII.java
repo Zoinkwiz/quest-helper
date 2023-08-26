@@ -1293,9 +1293,9 @@ public class DesertTreasureII extends BasicQuestHelper
 			new WorldPoint(1163, 3395, 0)
 		));
 
-		fightVardorvis = new NpcStep(this, NpcID.VARDORVIS, new WorldPoint(1129, 3419, 0), "Defeat Vardorvis. Look at the sidebar for more details. Protect from Melee when he's not using a special attack.");
+		fightVardorvis = new NpcStep(this, NpcID.VARDORVIS, new WorldPoint(1129, 3419, 0), "Defeat Vardorvis, who's weak to slash. Look at the sidebar for more details. Protect from Melee when he's not using a special attack.");
 		((NpcStep) fightVardorvis).addAlternateNpcs(NpcID.VARDORVIS_12224, NpcID.VARDORVIS_12228, NpcID.VARDORVIS_12425, NpcID.VARDORVIS_12426);
-		fightVardorvisSidebar = new DetailedQuestStep(this, "Defeat Vardorvis. It's recommended to watch a video to get an understanding of his abilities.");
+		fightVardorvisSidebar = new DetailedQuestStep(this, "Defeat Vardorvis. He's weak to slash weapons. It's recommended to watch a video to get an understanding of his abilities.");
 		fightVardorvisSidebar.addText("Swinging axes: He will spawn axes around the arena, which will go to the opposite corner to which they appear. Avoid them.");
 		fightVardorvisSidebar.addText("Homing spikes: Vardorvis hits the ground, causing a spike to appear under you. Move off the tile to avoid.");
 		fightVardorvisSidebar.addText("Head projectile: A tentacle will appear with a head on it, firing a green projectile. Protect from Missiles should be flicked to.");

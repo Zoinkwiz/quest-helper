@@ -230,7 +230,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 
 		// Take a boat from Land's End
 		boatLandsEnd = new NpcStep(this, NpcID.CABIN_BOY_HERBERT, new WorldPoint(1826, 3691, 0),
-			"Take a boat to Land's End", true);
+			"Take a boat to Land's End.", true);
 		boatLandsEnd.addAlternateNpcs(NpcID.VEOS_10727);
 		boatLandsEnd.addDialogStep("Can you take me somewhere?");
 		boatLandsEnd.addDialogStep("Travel to Land's End.");

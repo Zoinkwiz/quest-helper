@@ -562,7 +562,7 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		potionNote = new ItemRequirement("Potion note", ItemID.POTION_NOTE);
 		strangePotion = new ItemRequirement("Strange potion", ItemID.STRANGE_POTION_28383);
-		freezes = new ItemRequirement("Freezing spells STRONGLY recommended", -1);
+		freezes = new ItemRequirement("Freezing spells STRONGLY recommended + reasonable mage accuracy", -1);
 		berry = new ItemRequirement("Argian berries", ItemID.ARGIAN_BERRIES);
 		berry.setTooltip("You can get another from the south-west corner of The Stranglewood");
 		herb = new ItemRequirement("Korbal herb", ItemID.KORBAL_HERB);
@@ -1172,12 +1172,13 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Be careful of the Strangled, as they'll bind you and deal damage.");
 		talkToKasonde = new NpcStep(this, NpcID.KASONDE, new WorldPoint(1191, 3404, 0), "Talk to Kasonde.");
 		enterEntry = new ObjectStep(this, ObjectID.ENTRY_48722, new WorldPoint(1191, 3411, 0), "Hide away in the Entry in the north-west of the room.");
-		defendKasondeSidebar = new DetailedQuestStep(this, "Defend Kasonde! There are barricades in the stone chests you can set up to block routes. " +
+		defendKasondeSidebar = new NpcStep(this, NpcID.STRANGLED_12275, "Defend Kasonde! There are barricades in the stone chests you can set up to block routes. " +
 			"There are also satchels you can place on the floor, and detonate using the Detonator. This will kill all of the Strangled in a 7x7 area, as well as damaging you or " +
-			"Kasonde if either of you are in the blast radius.");
+			"Kasonde if either of you are in the blast radius.", true);
 		defendKasondeSidebar.addText("Closed chests require you to guess the correct code to open, with correct numbers in the correct place being marked in green, " +
 			"and correct numbers in the wrong places being marked with blue.");
 		defendKasondeSidebar.addText("It's recommended to also use freezes if you have ancient magicks with you to keep them off of Kasonde. If you have freezes, you can largely ignore the barricading and explosives.");
+		((NpcStep) defendKasondeSidebar).addAlternateNpcs(NpcID.STRANGLED_12276, NpcID.STRANGLED_12277, NpcID.STRANGLED_12278);
 
 		defendKasonde = new DetailedQuestStep(this, "Defend Kasonde! Read the sidebar for more details.");
 		defendKasonde.addRecommended(freezes);

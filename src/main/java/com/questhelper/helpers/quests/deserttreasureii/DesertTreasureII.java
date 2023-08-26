@@ -104,7 +104,8 @@ public class DesertTreasureII extends BasicQuestHelper
 
 	ItemRequirement waterSource, senntistenTeleport, pickaxe, combatGear, bloodBurstRunes, iceBurstRunes,
 		shadowBurstRunes, smokeBurstRunes, allBursts, uncharedCells, chargedCells, xericTalisman,
-		facemask, staminaPotions, eyeTeleport, rangedCombatGear, food, prayerPotions, nardahTeleport;
+		facemask, staminaPotions, eyeTeleport, rangedCombatGear, food, prayerPotions, nardahTeleport,
+		arclight;
 
 	Zone vault, digsiteHole, golemRoom;
 	Requirement inVault, inDigsiteHole, inGolemRoom;
@@ -360,7 +361,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			searchSkeletonForKey);
 		solveAbyssRoom1.addStep(new Conditions(new Conditions(LogicType.OR, inGrowthRoom, isNearGrowthRoom),
 			completedCatalystRoom, destroyedTether, solvedGrowthRoom), returnThroughBlueNeuralTeleporter);
-		solveAbyssRoom1.addStep(new Conditions(completedCatalystRoom, destroyedTether), enterBoatRoom1);
+		solveAbyssRoom1.addStep(new Conditions(completedCatalystRoom, destroyedTether, solvedGrowthRoom), enterBoatRoom1);
 		solveAbyssRoom1.addStep(new Conditions(inGrowthRoom, completedCatalystRoom, destroyedTether, repairedGrowths), growthPuzzle);
 		solveAbyssRoom1.addStep(new Conditions(inGrowthRoom, completedCatalystRoom, destroyedTether), repairGrowths);
 		solveAbyssRoom1.addStep(new Conditions(isNearGrowthRoom, completedCatalystRoom, destroyedTether), enterGrowthRoom);
@@ -557,6 +558,8 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		eyeTeleport = new ItemRequirement("Teleport to Temple of the Eye via minigame teleport or Amulet of the Eye", ItemID.AMULET_OF_THE_EYE_26990);
 		eyeTeleport.addAlternates(ItemID.AMULET_OF_THE_EYE, ItemID.AMULET_OF_THE_EYE_26992, ItemID.AMULET_OF_THE_EYE_26994);
+
+		arclight = new ItemRequirement("Arclight", ItemID.ARCLIGHT);
 
 		/* Quest Items */
 		uncharedCells = new ItemRequirement("Uncharged cells", ItemID.UNCHARGED_CELL_28402);
@@ -1486,6 +1489,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		enterCatalystRoom = new ObjectStep(this, ObjectID.PASSAGE_49411, new WorldPoint(2190, 6412, 0),
 			"Enter the catalyst room in the south-west corner of the area.");
 
+		// TODO: improve guidance on this section
 		solveCatalystRoom = new DetailedQuestStep(this, "You need to use the rune nerves on the catalyst which match the current symbol until the walkers die.");
 		solveCatalystRoom.addText("You can make additional rune nerves by combining nerves:");
 		solveCatalystRoom.addText("Mind + mind = soul.");
@@ -1822,26 +1826,26 @@ public class DesertTreasureII extends BasicQuestHelper
 			Arrays.asList(xericTalisman, freezes)));
 		allSteps.add(new PanelDetails("Perseriya",
 			Arrays.asList(goTalkToCatalyticGuardian, goKillDemons, hopOverSteppingStone, goBoardBoat, goTalkToPersten),
-			Arrays.asList(combatGear, facemask),
+			Arrays.asList(combatGear, facemask, arclight),
 			Arrays.asList(eyeTeleport, staminaPotions)));
 		allSteps.add(new PanelDetails("Perseriya - Room 1",
 			Arrays.asList(enterPassage1,
 				enterPathfinderRoom, doPath1, doPath2, doPath3, doPath4, doPath5, doPath6, enterGreenTeleporter1, enterCatalystRoom,
 				solveCatalystRoom, enterBlueTeleporter1, enterGrowthRoom, repairGrowths, growthPuzzle, returnThroughBlueNeuralTeleporter,
 				enterBoatRoom1, searchSkeletonForKey, getOldTablet, readOldTablet, searchSkeletonForGunpowder, getTinderbox, burnBoat1),
-			Arrays.asList(facemask),
+			Arrays.asList(facemask, arclight),
 			Arrays.asList(eyeTeleport, staminaPotions)));
 		allSteps.add(new PanelDetails("Perseriya - Room 2",
 			Arrays.asList(talkToPerstenAfterRoom1, enterSouthEastPassage, enterAxonRoom, hitCosmicAxon, hitFireAxon, hitNatureAxon, hitWaterAxon, enterBlueTeleporter2, enterNerveRoom,
 				makeMatchingNerves, returnThroughBlueNeuralTeleporter2, enterGreenTeleporter2, enterSummoningRoom, killImps, killLesserDemons, enterBoatRoom2,
 				getSlimyKey, getDampTablet, readDampTablet, getTinderboxRoom2, getGunpowderRoom2, burnBoat2),
-			Arrays.asList(facemask),
+			Arrays.asList(facemask, arclight),
 			Arrays.asList(eyeTeleport, staminaPotions)));
 		allSteps.add(new PanelDetails("Perseriya - Room 3",
 			Arrays.asList(talkToPerstenAfterRoom2, enterMiddlePassage, enterMemoryPuzzle, memoryPuzzleSteps, enterTreeRoom,
 				killTreeMonsters, enterGreenTeleporter3, enterLightLeechRoom, repairGrowthsRoom3, repairCrimsonVeins, repairRadiantVeins, returnThroughGreenPortal,
 				enterBoatRoom3, getSlimyKeyRoom3, getDampTablet2, readDampTablet2, getTinderBoxRoom3, getGunpowderRoom3, burnBoat3),
-			Arrays.asList(facemask),
+			Arrays.asList(facemask, arclight),
 			Arrays.asList(eyeTeleport, staminaPotions)));
 		allSteps.add(new PanelDetails("Perseriya - The battle",
 			Arrays.asList(talkToPerstenAfterRooms, killLeviathanSidebar, goToShip, searchDebris,

@@ -440,14 +440,14 @@ public class DesertTreasureII extends BasicQuestHelper
 		findingPerseriya.addStep(readyToFightLeviathan, goKillLeviathan);
 		findingPerseriya.addStep(new Conditions(inTentArea, completedRoom3), talkToPerstenAfterRooms);
 		findingPerseriya.addStep(and(nor(haveReadDampTablet2), dampTablet2), readDampTablet2);
+		findingPerseriya.addStep(and(nor(haveReadDampTablet), dampTablet), readDampTablet);
+		findingPerseriya.addStep(and(nor(haveReadOldTablet), oldTablet), readOldTablet);
 		findingPerseriya.addStep(inAbyssRoom3, solveAbyssRoom3);
 		findingPerseriya.addStep(new Conditions(inTentArea, talkedToPerstenAfterRoom2), enterMiddlePassage);
 		findingPerseriya.addStep(new Conditions(inTentArea, completedRoom2), talkToPerstenAfterRoom2);
-		findingPerseriya.addStep(and(nor(haveReadDampTablet), dampTablet), readDampTablet);
 		findingPerseriya.addStep(inAbyssRoom2, solveAbyssRoom2);
 		findingPerseriya.addStep(new Conditions(inTentArea, talkedToPerstenAfterRoom1), enterSouthEastPassage);
 		findingPerseriya.addStep(new Conditions(inTentArea, completedRoom1), talkToPerstenAfterRoom1);
-		findingPerseriya.addStep(and(nor(haveReadOldTablet), oldTablet), readOldTablet);
 		findingPerseriya.addStep(inAbyssRoom1, solveAbyssRoom1);
 		findingPerseriya.addStep(talkedToPersten, goDoPassage1);
 		findingPerseriya.addStep(attemptedToBoardBoat, goTalkToPersten);
@@ -1306,6 +1306,12 @@ public class DesertTreasureII extends BasicQuestHelper
 		getTempleKeyFromRocks = new ObjectStep(this, NullObjectID.NULL_49495, new WorldPoint(1118, 3428, 0),
 			"Go to the ritual site to the west, and search the rocks to get another Temple Key.");
 
+		// TODO: Leave area step
+		// 48742, 1118, 3428, 0
+
+		// TODO: Add shortcut as well
+		// 48746, 1147, 3433, 0
+
 		DetailedQuestStep enterKasondeWithKey = new ObjectStep(this, ObjectID.ENTRY_48723, new WorldPoint(1174, 3428, 0),
 		"");
 		DetailedQuestStep giveKasondeKey =  new NpcStep(this, NpcID.KASONDE_12258, new WorldPoint(1183, 9824, 0),
@@ -1319,8 +1325,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		returnToKasondeWithTempleKey.addStep(templeKeyNearby, pickUpTempleKey);
 		returnToKasondeWithTempleKey.addStep(inAnyStranglewood, getTempleKeyFromRocks);
 
-		DetailedQuestStep kasondeFight = new NpcStep(this, NpcID.KASONDE_12263, new WorldPoint(1183, 9824, 0),
+		NpcStep kasondeFight = new NpcStep(this, NpcID.KASONDE_12262, new WorldPoint(1183, 9824, 0),
 			"");
+		kasondeFight.addAlternateNpcs(NpcID.KASONDE_12263);
 		defeatKasonde = new ConditionalStep(this, boardBoat,
 			"Defeat Kasonde in the pyramid. Avoid the potions he throws. If he throws his hands up, hide behind a pillar.", combatGear);
 		defeatKasonde.addStep(new Conditions(inStranglewoodPyramidRoom), kasondeFight);
@@ -1648,9 +1655,9 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Enter the light leech room.");
 		// Repaired all, 15210 = 4
 		repairCrimsonVeins = new ObjectStep(this, NullObjectID.NULL_49537,
-			"Kill crimson sanguisphera for crimson fibre to repair all the crimson veins.", true);
+			"Kill crimson sanguisphera for crimson fibre to repair all 3 of the crimson veins.", true);
 		repairRadiantVeins = new ObjectStep(this, NullObjectID.NULL_49536,
-			"Kill radiant sanguisphera for radiant fibre to repair all the radiant veins.", true);
+			"Kill radiant sanguisphera for radiant fibre to repair all 3 of the radiant veins.", true);
 
 		getLure = new NpcStep(this, NpcID.LIGHT_LEECH, "Light leech", new WorldPoint(1868, 6430, 0),
 			"Get a lure from a light lure.", true);
@@ -1746,7 +1753,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions, freezes, xericTalisman);
+		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions, freezes, xericTalisman, eyeTeleport);
 	}
 
 
@@ -1810,7 +1817,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			Arrays.asList(xericTalisman, freezes)));
 		allSteps.add(new PanelDetails("Perseriya",
 			Arrays.asList(goTalkToCatalyticGuardian, goKillDemons, hopOverSteppingStone, goBoardBoat, goTalkToPersten),
-			Arrays.asList(facemask),
+			Arrays.asList(combatGear, facemask),
 			Arrays.asList(eyeTeleport, staminaPotions)));
 		allSteps.add(new PanelDetails("Perseriya - Room 1",
 			Arrays.asList(enterPassage1,

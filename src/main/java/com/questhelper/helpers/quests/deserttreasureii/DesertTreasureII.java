@@ -1167,7 +1167,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		readPotionNote = new ItemStep(this, "Read the potion note.", potionNote.highlighted());
 		drinkPotion = new ItemStep(this, "Drink the strange potion.", strangePotion.highlighted());
 		boardBoat = new ObjectStep(this, NullObjectID.NULL_49491, new WorldPoint(1227, 3470, 0),
-			"Board the boat south of Quidamortem into The Stranglewood.");
+			"Board the boat south of Quidamortem into The Stranglewood. You can use the Fairy Ring BLS to get nearby.");
 		runIntoStanglewood = new DetailedQuestStep(this, new WorldPoint(1194, 3394, 0), "Run deeper into Stranglewood. " +
 			"Be careful of the Strangled, as they'll bind you and deal damage.");
 		talkToKasonde = new NpcStep(this, NpcID.KASONDE, new WorldPoint(1191, 3404, 0), "Talk to Kasonde.");

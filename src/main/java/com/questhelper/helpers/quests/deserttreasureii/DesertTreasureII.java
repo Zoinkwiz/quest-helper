@@ -147,7 +147,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		nearGrowth2, boatRoom1;
 	Requirement onPath1, onPath2, onPath3, onPath4, onPath5, onPath6, isNearCatalystRoom, inCatalystRoom, completedCatalystRoom,
 		isNearGrowthRoom, growthRepairedSE, growthRepairedSW, growthRepairedNE, growthRepairedNW, inGrowthRoom, repairedGrowths,
-		solvedGrowthRoom, inBoatRoom1, haveReadTablet, completedRoom1, talkedToPerstenAfterRoom1;
+		solvedGrowthRoom, inBoatRoom1, haveReadOldTablet, completedRoom1, talkedToPerstenAfterRoom1;
 	DetailedQuestStep doPath1, doPath2, doPath3, doPath4, doPath5, doPath6, enterGreenTeleporter1, enterCatalystRoom, solveCatalystRoom,
 		enterBlueTeleporter1, enterGrowthRoom, repairGrowths, growthPuzzle, returnThroughBlueNeuralTeleporter, enterBoatRoom1, getTinderbox,
 		burnBoat1, searchSkeletonForKey, searchSkeletonForGunpowder, getOldTablet, readOldTablet, talkToPerstenAfterRoom1;
@@ -162,7 +162,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		smokeNerve, steamNerve, dampTablet, illuminatingLure;
 	Requirement inAxonRoom, cosmicAxonPresent, waterAxonPresent, natureAxonPresent, fireAxonPresent, completedAxonRoom, nothingInHands,
 		inNorthOfAbyssRoom2, inNerveRoom, inSummoningRoom, inBoatRoom2, steamNerveBroken, lavaNerveBroken, dustNerveBroken,
-		smokeNerveBroken, completedNerveRoom, inNervePassage, impsNearby, completedSummoningRoom, completedRoom2,
+		smokeNerveBroken, completedNerveRoom, inNervePassage, impsNearby, completedSummoningRoom, haveReadDampTablet, completedRoom2,
 		talkedToPerstenAfterRoom2;
 	Zone axonRoom1, axonRoom2, axonRoom3, northAbyssRoom2P1, northAbyssRoom2P2, northAbyssRoom2P3, northAbyssRoom2P4, northAbyssRoom2P5,
 		nerveRoom1, nerveRoom2, nerveRoom3, summoningRoom1, summoningRoom2, summoningRoom3, boatRoom2, nervePassage;
@@ -177,7 +177,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	ItemRequirement dampTablet2, radiantFibre, crimsonFibre, perseriyasMedallion;
 
 	Requirement inMemoryPuzzle, inTreeRoom, inLeechRoom, solvedMemoryRoom, solvedTreeRoom,
-		solvedLeechRoom, inSwRoom3, inBoatRoom3, repairedGrowthRoom3, repairedCrimsonVeins,
+		solvedLeechRoom, inSwRoom3, inBoatRoom3, haveReadDampTablet2, repairedGrowthRoom3, repairedCrimsonVeins,
 		protectFromMagic, completedRoom3;
 
 	Zone memoryPuzzle, treeRoom, leechRoom, swRoom3P1, swRoom3P2, swRoom3P3, swRoom3P4, swRoom3P5, boatRoom3;
@@ -195,6 +195,8 @@ public class DesertTreasureII extends BasicQuestHelper
 
 
 	DetailedQuestStep moreComingSoon;
+
+	Requirement shouldReadBook1, shouldReadBook2, shouldreadBook3;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -347,10 +349,10 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		ConditionalStep solveAbyssRoom1 = new ConditionalStep(this, enterPathfinderRoom);
 		solveAbyssRoom1.addStep(new Conditions(inBoatRoom1, completedCatalystRoom, destroyedTether, solvedGrowthRoom,
-			haveReadTablet, gunpowder, tinderbox), burnBoat1);
+			haveReadOldTablet, gunpowder, tinderbox), burnBoat1);
 		solveAbyssRoom1.addStep(new Conditions(inBoatRoom1, completedCatalystRoom, destroyedTether, solvedGrowthRoom,
-			haveReadTablet, gunpowder), getTinderbox);
-		solveAbyssRoom1.addStep(new Conditions(inBoatRoom1, completedCatalystRoom, destroyedTether, solvedGrowthRoom, haveReadTablet),
+			haveReadOldTablet, gunpowder), getTinderbox);
+		solveAbyssRoom1.addStep(new Conditions(inBoatRoom1, completedCatalystRoom, destroyedTether, solvedGrowthRoom, haveReadOldTablet),
 			searchSkeletonForGunpowder);
 		solveAbyssRoom1.addStep(new Conditions(inBoatRoom1, completedCatalystRoom, destroyedTether, solvedGrowthRoom, slimyKey),
 			getOldTablet);
@@ -389,9 +391,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		repairNerve.addStep(and(waterNerve), getFireNerve);
 
 		ConditionalStep solveAbyssRoom2 = new ConditionalStep(this, enterSouthEastPassage);
-		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, haveReadTablet, tinderbox, gunpowder), burnBoat2);
-		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, haveReadTablet, tinderbox), getGunpowderRoom2);
-		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, haveReadTablet), getTinderboxRoom2);
+		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, haveReadDampTablet, tinderbox, gunpowder), burnBoat2);
+		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, haveReadDampTablet, tinderbox), getGunpowderRoom2);
+		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, haveReadDampTablet), getTinderboxRoom2);
 		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, slimyKey), getDampTablet);
 		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2), getSlimyKey);
 		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inNorthOfAbyssRoom2), enterBoatRoom2);
@@ -410,9 +412,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		solveAbyssRoom2.addStep(inAbyssRoom2, enterAxonRoom);
 
 		ConditionalStep solveAbyssRoom3 = new ConditionalStep(this, enterMemoryPuzzle);
-		solveAbyssRoom3.addStep(and(solvedMemoryRoom, inBoatRoom3, haveReadTablet, tinderbox, gunpowder), burnBoat3);
-		solveAbyssRoom3.addStep(and(solvedMemoryRoom, inBoatRoom3, haveReadTablet, tinderbox), getGunpowderRoom3);
-		solveAbyssRoom3.addStep(and(solvedMemoryRoom, inBoatRoom3, haveReadTablet), getTinderBoxRoom3);
+		solveAbyssRoom3.addStep(and(solvedMemoryRoom, inBoatRoom3, haveReadDampTablet2, tinderbox, gunpowder), burnBoat3);
+		solveAbyssRoom3.addStep(and(solvedMemoryRoom, inBoatRoom3, haveReadDampTablet2, tinderbox), getGunpowderRoom3);
+		solveAbyssRoom3.addStep(and(solvedMemoryRoom, inBoatRoom3, haveReadDampTablet2), getTinderBoxRoom3);
 		solveAbyssRoom3.addStep(and(solvedMemoryRoom, inBoatRoom3, slimyKey), getDampTablet2);
 		solveAbyssRoom3.addStep(and(solvedMemoryRoom, inBoatRoom3), getSlimyKeyRoom3);
 		solveAbyssRoom3.addStep(and(solvedMemoryRoom, solvedTreeRoom, solvedLeechRoom, inSwRoom3), returnThroughGreenPortal);
@@ -439,9 +441,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		findingPerseriya.addStep(defeatedLeviathan, goToShip);
 		findingPerseriya.addStep(readyToFightLeviathan, goKillLeviathan);
 		findingPerseriya.addStep(new Conditions(inTentArea, completedRoom3), talkToPerstenAfterRooms);
-		findingPerseriya.addStep(and(nor(haveReadTablet), dampTablet2), readDampTablet2);
-		findingPerseriya.addStep(and(nor(haveReadTablet), dampTablet), readDampTablet);
-		findingPerseriya.addStep(and(nor(haveReadTablet), oldTablet), readOldTablet);
+		findingPerseriya.addStep(and(shouldReadTablet1, dampTablet2), readDampTablet2);
+		findingPerseriya.addStep(and(shouldReadTablet2, dampTablet), readDampTablet);
+		findingPerseriya.addStep(and(shouldReadTablet3, oldTablet), readOldTablet);
 		findingPerseriya.addStep(inAbyssRoom3, solveAbyssRoom3);
 		findingPerseriya.addStep(new Conditions(inTentArea, talkedToPerstenAfterRoom2), enterMiddlePassage);
 		findingPerseriya.addStep(new Conditions(inTentArea, completedRoom2), talkToPerstenAfterRoom2);
@@ -685,6 +687,7 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		inspectedGolem = new VarbitRequirement(QuestVarbits.QUEST_DESERT_TREASURE_II.getId(), 30,
 			Operation.GREATER_EQUAL);
+		// TODO: FIX CHECK FOR INSPECTED ALTAR, THOUGHT IT WAS 15111 BUT IT WASN'T
 		inspectedAltar = new VarbitRequirement(15109, 1);
 
 		// CAST BLOOD BARRAGE
@@ -863,11 +866,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		// Entered boat room, 15261 0->1
 		inBoatRoom1 = new ZoneRequirement(boatRoom1);
 		// TODO: Verify if order is random for this stuff, and thus variable needs to consider some shift based on area?
-		haveReadTablet = new Conditions(LogicType.OR,
-			new VarbitRequirement(PERSERIYA_VARBIT, 18),
-			new VarbitRequirement(PERSERIYA_VARBIT, 26),
-			new VarbitRequirement(PERSERIYA_VARBIT, 34)
-		);
+		haveReadOldTablet = new VarbitRequirement(PERSERIYA_VARBIT, 18, Operation.GREATER_EQUAL);
 
 		// 18->20, burned ship
 		// TODO: Verify if this is a required progression
@@ -907,6 +906,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		impsNearby = new NpcRequirement("Scarred imp", NpcID.SCARRED_IMP);
 		completedSummoningRoom = new VarbitRequirement(15260, 1);
 		// Entered boat room, 15261 0->1. Seems to indicate 'teleport to boat room if they leave'
+		shouldReadBook1 = new VarbitRequirement(PERSERIYA_VARBIT, 16);
+		shouldReadBook2 = new VarbitRequirement(PERSERIYA_VARBIT, 24);
+		shouldReadBook3 = new VarbitRequirement(PERSERIYA_VARBIT, 32);
+		haveReadDampTablet = new VarbitRequirement(PERSERIYA_VARBIT, 26, Operation.GREATER_EQUAL);
 
 		// 15128 26->28 burnt second boat
 		// 15260 1->0
@@ -949,6 +952,8 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		repairedGrowthRoom3 = new VarbitRequirement(15210, 4);
 		repairedCrimsonVeins = new VarbitRequirement(15219, 3);
+
+		haveReadDampTablet2 = new VarbitRequirement(PERSERIYA_VARBIT, 34, Operation.GREATER_EQUAL);
 
 		completedRoom3 = new VarbitRequirement(PERSERIYA_VARBIT, 36, Operation.GREATER_EQUAL);
 

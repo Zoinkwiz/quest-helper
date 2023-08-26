@@ -196,7 +196,7 @@ public class DesertTreasureII extends BasicQuestHelper
 
 	DetailedQuestStep moreComingSoon;
 
-	Requirement shouldReadBook1, shouldReadBook2, shouldreadBook3;
+	Requirement shouldReadTablet1, shouldReadTablet2, shouldReadTablet3;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -441,9 +441,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		findingPerseriya.addStep(defeatedLeviathan, goToShip);
 		findingPerseriya.addStep(readyToFightLeviathan, goKillLeviathan);
 		findingPerseriya.addStep(new Conditions(inTentArea, completedRoom3), talkToPerstenAfterRooms);
-		findingPerseriya.addStep(and(shouldReadTablet1, dampTablet2), readDampTablet2);
+		findingPerseriya.addStep(and(shouldReadTablet3, dampTablet2), readDampTablet2);
 		findingPerseriya.addStep(and(shouldReadTablet2, dampTablet), readDampTablet);
-		findingPerseriya.addStep(and(shouldReadTablet3, oldTablet), readOldTablet);
+		findingPerseriya.addStep(and(shouldReadTablet1, oldTablet), readOldTablet);
 		findingPerseriya.addStep(inAbyssRoom3, solveAbyssRoom3);
 		findingPerseriya.addStep(new Conditions(inTentArea, talkedToPerstenAfterRoom2), enterMiddlePassage);
 		findingPerseriya.addStep(new Conditions(inTentArea, completedRoom2), talkToPerstenAfterRoom2);
@@ -906,9 +906,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		impsNearby = new NpcRequirement("Scarred imp", NpcID.SCARRED_IMP);
 		completedSummoningRoom = new VarbitRequirement(15260, 1);
 		// Entered boat room, 15261 0->1. Seems to indicate 'teleport to boat room if they leave'
-		shouldReadBook1 = new VarbitRequirement(PERSERIYA_VARBIT, 16);
-		shouldReadBook2 = new VarbitRequirement(PERSERIYA_VARBIT, 24);
-		shouldReadBook3 = new VarbitRequirement(PERSERIYA_VARBIT, 32);
+		shouldReadTablet1 = new VarbitRequirement(PERSERIYA_VARBIT, 16);
+		shouldReadTablet2 = new VarbitRequirement(PERSERIYA_VARBIT, 24);
+		shouldReadTablet3 = new VarbitRequirement(PERSERIYA_VARBIT, 32);
 		haveReadDampTablet = new VarbitRequirement(PERSERIYA_VARBIT, 26, Operation.GREATER_EQUAL);
 
 		// 15128 26->28 burnt second boat

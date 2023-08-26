@@ -334,7 +334,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Undead Chickens",
 			Arrays.asList(talkToAlicesHusband, talkToAlice, talkToAlicesHusband2, talkToAlice2, talkToOldCrone,
 				giveAmuletToHusband, talkToAlicesHusband3, buyUndeadChickens, giveChickensToAva),
-			ghostspeak, ectoToken20, undeadChicken2));
+			ghostspeak, ectoToken20));
 		allSteps.add(new PanelDetails("Magnet",
 			Arrays.asList(talkToWitch, goToIronMine, useHammerOnMagnet, giveMagnetToAva), ironBar5, hammer));
 		allSteps.add(new PanelDetails("Undead twigs",

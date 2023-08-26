@@ -103,8 +103,8 @@ public class DesertTreasureII extends BasicQuestHelper
 	SpellbookRequirement ancientMagicksActive;
 
 	ItemRequirement waterSource, senntistenTeleport, pickaxe, combatGear, bloodBurstRunes, iceBurstRunes,
-		shadowBurstRunes, smokeBurstRunes, allBursts, uncharedCells, chargedCells, nardahTeleport, xericTalisman,
-		facemask, staminaPotions, eyeTeleport, rangedCombatGear, food, prayerPotions;
+		shadowBurstRunes, smokeBurstRunes, allBursts, uncharedCells, chargedCells, xericTalisman,
+		facemask, staminaPotions, eyeTeleport, rangedCombatGear, food, prayerPotions, nardahTeleport;
 
 	Zone vault, digsiteHole, golemRoom;
 	Requirement inVault, inDigsiteHole, inGolemRoom;
@@ -489,8 +489,12 @@ public class DesertTreasureII extends BasicQuestHelper
 		waterSource.addAlternates(ItemID.DESERT_AMULET_4, ItemID.WATERSKIN4, ItemID.WATERSKIN3, ItemID.WATERSKIN2, ItemID.WATERSKIN1);
 		ancientMagicksActive = new SpellbookRequirement(Spellbook.ANCIENT);
 
-		nardahTeleport = new ItemRequirement("Nardah teleport", ItemID.DESERT_AMULET_4);
+		// 5672-
+		VarbitRequirement nardahTeleportInBook = new VarbitRequirement(5672, 1, Operation.GREATER_EQUAL);
+		nardahTeleport = new ItemRequirement("Nardah teleport, or Fairy Ring to DLQ", ItemID.DESERT_AMULET_4);
+		nardahTeleport.setAdditionalOptions(nardahTeleportInBook);
 		nardahTeleport.addAlternates(ItemID.DESERT_AMULET_3, ItemID.NARDAH_TELEPORT, ItemID.DESERT_AMULET_2);
+		nardahTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
 		ItemRequirement digsitePendant = new ItemRequirement("Digsite pendant", ItemID.DIGSITE_PENDANT_5);
 		digsitePendant.addAlternates(ItemID.DIGSITE_PENDANT_4, ItemID.DIGSITE_PENDANT_3, ItemID.DIGSITE_PENDANT_2,
@@ -1740,7 +1744,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(waterSource, senntistenTeleport, staminaPotions);
+		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions);
 	}
 
 

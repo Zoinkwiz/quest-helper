@@ -115,12 +115,12 @@ public class DesertTreasureII extends BasicQuestHelper
 	Requirement searchedVardorvis, searchedPerseriya, searchedSucellus, searchedWhisperer, askedAboutVardorvis,
 		askedAboutPerseriya, askedAboutSucellus, askedAboutWhisperer;
 
-	/* Vardovis */
+	/* Vardorvis */
 	DetailedQuestStep talkToElissa, talkToBarus, searchDesk, readPotionNote, drinkPotion, boardBoat, runIntoStanglewood,
 		talkToKasonde, enterEntry, defendKasonde, defendKasondeSidebar, leaveTowerDefenseRoom, talkToKasondeAfterTowerDefense,
 		getBerry, getHerb, getHerbSidebar, goDownToKasonde, defendKasondeHerb, talkToKasondeWithHerbAndBerry, addHerb, addBerry,
 		drinkStranglewoodPotion, goToRitualSite, fightVardorvis, fightVardorvisSidebar, pickUpTempleKey, getTempleKeyFromRocks,
-		returnToDesertWithVardorvisMedallion, useVardorviaMedallionOnStatue;
+		returnToDesertWithVardorvisMedallion, useVardorvisMedallionOnStatue;
 
 	ConditionalStep returnToKasondeWithTempleKey, defeatKasonde, goTalkToKasondeAfterFight, goGetVardorvisMedallion;
 	Requirement talkedToElissa, talkedToBarus, haveReadPotionNote, haveDrunkPotion, inStrangewood, finishedStranglewoodCutscene,
@@ -305,7 +305,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		steps.put(40, goOperateGolemLastTime);
 
 		ConditionalStep findingVardorvis = new ConditionalStep(this, talkToElissa);
-		findingVardorvis.addStep(new Conditions(gotVardorvisMedallion, inVault), useVardorviaMedallionOnStatue);
+		findingVardorvis.addStep(new Conditions(gotVardorvisMedallion, inVault), useVardorvisMedallionOnStatue);
 		findingVardorvis.addStep(gotVardorvisMedallion, returnToDesertWithVardorvisMedallion);
 		findingVardorvis.addStep(kasondeRevealedMedallion, goGetVardorvisMedallion);
 		findingVardorvis.addStep(defeatedKasonde, goTalkToKasondeAfterFight);
@@ -460,7 +460,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		steps.put(42, findingTheFour);
 		/* Entered stranglewood */
 		steps.put(44, findingTheFour);
-		/* Entered vardovis arena */
+		/* Entered vardorvis arena */
 		steps.put(46, findingTheFour);
 		/* Defeated vardorvis */
 		steps.put(48, findingTheFour);
@@ -1153,7 +1153,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Try operating the golem again until Banikan leaves, and the golem lets you know the last search term.");
 
 
-		/* Vardovis */
+		/* Vardorvis */
 		talkToElissa = new NpcStep(this, NpcID.ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north-east of the Digsite on the surface.");
 		talkToElissa.addDialogStep("I hear you visited Lovakengj recently.");
 		talkToBarus = new NpcStep(this, NpcID.BARUS, new WorldPoint(1459, 3782, 0), "Talk to Barus near the burning man in south-west Lovakengj.");
@@ -1344,9 +1344,9 @@ public class DesertTreasureII extends BasicQuestHelper
 			new WorldPoint(3511, 2971, 0), "Return to the Vault door north-east of Nardah.", vardorvisMedallion);
 		returnToDesertWithVardorvisMedallion.addTeleport(nardahTeleport);
 
-		useVardorviaMedallionOnStatue = new ObjectStep(this, NullObjectID.NULL_49499, new WorldPoint(3942, 9636, 1),
+		useVardorvisMedallionOnStatue = new ObjectStep(this, NullObjectID.NULL_49499, new WorldPoint(3942, 9636, 1),
 			"Use the medallion on the north-east statue.", vardorvisMedallion.highlighted());
-		useVardorviaMedallionOnStatue.addIcon(ItemID.VARDORVIS_MEDALLION);
+		useVardorvisMedallionOnStatue.addIcon(ItemID.VARDORVIS_MEDALLION);
 
 
 		/* Perseriya */
@@ -1803,7 +1803,7 @@ public class DesertTreasureII extends BasicQuestHelper
 				talkToKasondeAfterTowerDefense, getHerbSidebar, getBerry, goDownToKasonde, defendKasondeHerb,
 				talkToKasondeWithHerbAndBerry, addHerb, addBerry, drinkPotion, goToRitualSite, fightVardorvisSidebar,
 				pickUpTempleKey, returnToKasondeWithTempleKey, defeatKasonde, goTalkToKasondeAfterFight,
-				goGetVardorvisMedallion, returnToDesertWithVardorvisMedallion, useVardorviaMedallionOnStatue),
+				goGetVardorvisMedallion, returnToDesertWithVardorvisMedallion, useVardorvisMedallionOnStatue),
 			Arrays.asList(combatGear),
 			Arrays.asList(xericTalisman, freezes)));
 		allSteps.add(new PanelDetails("Perseriya",

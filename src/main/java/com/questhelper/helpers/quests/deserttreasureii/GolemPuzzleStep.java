@@ -51,7 +51,7 @@ public class GolemPuzzleStep extends QuestStep
 
 	int[] goalPositions =
 		{
-			16, 10, 27, 33, 52, 5, 62, 47
+			47, 62, 5, 52, 33, 27, 10, 16
 		};
 
 	public GolemPuzzleStep(QuestHelper questHelper)

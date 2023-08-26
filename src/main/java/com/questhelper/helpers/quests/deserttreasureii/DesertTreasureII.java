@@ -520,7 +520,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 2),
 			new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 4),
 			new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE, 2));
-		iceBurstRunes = new ItemRequirements("ice burst runes",
+		iceBurstRunes = new ItemRequirements("Ice burst runes",
 		new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 2),
 		new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 4),
 		new ItemRequirement("Water runes", ItemID.WATER_RUNE, 4));

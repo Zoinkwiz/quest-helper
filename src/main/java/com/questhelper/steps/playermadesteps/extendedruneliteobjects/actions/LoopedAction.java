@@ -22,37 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions;
 
-import net.runelite.api.Client;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.callback.ClientThread;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import lombok.Getter;
+import net.runelite.api.MenuEntry;
 
-public class FakeGraphicsObject extends ExtendedRuneliteObject
+public class LoopedAction extends Action
 {
-	ExtendedRuneliteObject objectToSpawnAfter;
-	protected FakeGraphicsObject(Client client, ClientThread clientThread, WorldPoint worldPoint,
-								 int[] model, int animation, ExtendedRuneliteObject objectToSpawnAfter)
+	@Getter
+	AtomicInteger ticksBetweenActions;
+
+
+	public LoopedAction(Consumer<MenuEntry> action, AtomicInteger ticksBetweenActions)
 	{
-		super(client, clientThread, worldPoint, model, animation);
-		objectType = RuneliteObjectTypes.GRAPHICS_OBJECT;
-		this.objectToSpawnAfter = objectToSpawnAfter;
-		runeliteObject.setShouldLoop(false);
-		runeliteObject.setActive(false);
+		super(action);
+		this.ticksBetweenActions = ticksBetweenActions;
 	}
 
 	@Override
-	protected void actionOnClientTick()
+	protected Consumer<MenuEntry> createEndAction()
 	{
-		if (runeliteObject.getAnimation().getNumFrames() <= runeliteObject.getAnimationFrame() + 1)
-		{
-			setEnabled(false);
-			disable();
-			if (objectToSpawnAfter != null)
-			{
-				objectToSpawnAfter.setEnabled(true);
-				objectToSpawnAfter.activate();
-			}
-		}
+		return (menuEntry -> {
+		});
 	}
 }

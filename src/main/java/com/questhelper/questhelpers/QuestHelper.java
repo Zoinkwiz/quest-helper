@@ -39,6 +39,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -220,6 +221,11 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	public int getVar()
 	{
 		return quest.getVar(client);
+	}
+
+	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+
 	}
 
 	public abstract void setupRequirements();

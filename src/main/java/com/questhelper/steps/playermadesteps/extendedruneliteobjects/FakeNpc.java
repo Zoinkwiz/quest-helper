@@ -76,8 +76,9 @@ public class FakeNpc extends ExtendedRuneliteObject
 	}
 
 	@Override
-	protected void actionOnGameTick()
+	protected void actionOnClientTick()
 	{
+		super.actionOnClientTick();
 		if (animation != idleAnimation)
 		{
 			if (runeliteObject.getAnimation().getNumFrames() <= runeliteObject.getAnimationFrame() + 1)

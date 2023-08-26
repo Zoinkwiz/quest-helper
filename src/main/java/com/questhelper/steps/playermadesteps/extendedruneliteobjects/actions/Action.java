@@ -22,37 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions;
 
-import net.runelite.api.Client;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.callback.ClientThread;
+import java.util.function.Consumer;
+import lombok.Getter;
+import net.runelite.api.MenuEntry;
 
-public class FakeGraphicsObject extends ExtendedRuneliteObject
+public class Action
 {
-	ExtendedRuneliteObject objectToSpawnAfter;
-	protected FakeGraphicsObject(Client client, ClientThread clientThread, WorldPoint worldPoint,
-								 int[] model, int animation, ExtendedRuneliteObject objectToSpawnAfter)
+	protected Consumer<MenuEntry> action;
+
+	protected boolean isActive = false;
+
+	@Getter
+	MenuEntry menuEntry;
+
+	public Action(Consumer<MenuEntry> action)
 	{
-		super(client, clientThread, worldPoint, model, animation);
-		objectType = RuneliteObjectTypes.GRAPHICS_OBJECT;
-		this.objectToSpawnAfter = objectToSpawnAfter;
-		runeliteObject.setShouldLoop(false);
-		runeliteObject.setActive(false);
+		this.action = action.andThen(createEndAction());
 	}
 
-	@Override
-	protected void actionOnClientTick()
+	protected Consumer<MenuEntry> createEndAction()
 	{
-		if (runeliteObject.getAnimation().getNumFrames() <= runeliteObject.getAnimationFrame() + 1)
-		{
-			setEnabled(false);
-			disable();
-			if (objectToSpawnAfter != null)
-			{
-				objectToSpawnAfter.setEnabled(true);
-				objectToSpawnAfter.activate();
-			}
-		}
+		return (menuEntry -> {
+			isActive = false;
+		});
+	}
+
+	public void activate(MenuEntry menuEntry)
+	{
+		isActive = true;
+		this.menuEntry = menuEntry;
+		action.accept(menuEntry);
+	}
+
+	public void deactivate()
+	{
+		this.menuEntry = null;
+		isActive = false;
 	}
 }

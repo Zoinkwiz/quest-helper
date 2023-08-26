@@ -93,6 +93,7 @@ public class QuestHelperWorldOverlay extends Overlay
 
 		if (quest != null && quest.getCurrentStep() != null)
 		{
+			quest.makeWorldOverlayHint(graphics, plugin);
 			quest.getCurrentStep().makeWorldOverlayHint(graphics, plugin);
 		}
 

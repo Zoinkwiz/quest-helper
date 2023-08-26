@@ -24,12 +24,17 @@
  */
 package com.questhelper.helpers.quests.deserttreasureii;
 
+import com.questhelper.Icon;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.createLeviathan;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showBlueHitsplatUntilTick;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showRedHitsplatUntilTick;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
@@ -61,32 +66,21 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeGraphicsObject;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeObject;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.MenuEntryWrapper;
-import java.io.File;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.*;
 
-import java.util.function.Consumer;
-import net.runelite.api.GraphicID;
-import net.runelite.api.GraphicsObject;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Point;
 import net.runelite.api.Prayer;
-import net.runelite.api.Projectile;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GraphicsObjectCreated;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DESERT_TREASURE_II
@@ -180,7 +174,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		enterBoatRoom3, getTinderBoxRoom3, getGunpowderRoom3, getSlimyKeyRoom3, getDampTablet2,
 		readDampTablet2, burnBoat3, getLure, killCrimson, killRadiant;
 
-	ItemRequirement dampTablet2, radiantFibre, crimsonFibre;
+	ItemRequirement dampTablet2, radiantFibre, crimsonFibre, perseriyasMedallion;
 
 	Requirement inMemoryPuzzle, inTreeRoom, inLeechRoom, solvedMemoryRoom, solvedTreeRoom,
 		solvedLeechRoom, inSwRoom3, inBoatRoom3, haveReadDampTablet2, repairedGrowthRoom3, repairedCrimsonVeins,
@@ -188,13 +182,16 @@ public class DesertTreasureII extends BasicQuestHelper
 
 	Zone memoryPuzzle, treeRoom, leechRoom, swRoom3P1, swRoom3P2, swRoom3P3, swRoom3P4, swRoom3P5, boatRoom3;
 
-	DetailedQuestStep talkToPerstenAfterRooms, boardBoatToLeviathan, killLeviathan, killLeviathanSidebar;
+	DetailedQuestStep talkToPerstenAfterRooms, boardBoatToLeviathan, killLeviathan,
+		killLeviathanSidebar, climbDownFromLeviathan, hopAcrossFromLeviathan, talkToPerstenAtShip,
+		searchDebris, returnToDesertWithPerseriyasMedallion, usePerseriyasMedallionOnStatue;
 
-	ConditionalStep goKillLeviathan;
+	ConditionalStep goKillLeviathan, goToShip;
 
-	Zone leviathanArea;
+	Zone leviathanArea, neLeviathanArea;
 
-	Requirement inLeviathanArea, readyToFightLeviathan;
+	Requirement inLeviathanArea, readyToFightLeviathan, inNELeviathanArea, defeatedLeviathan, perstenAtShip,
+		perstenLeft, foundPerseriyasMedallion;
 
 
 	@Override
@@ -434,6 +431,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		solveAbyssRoom3.addStep(inMemoryPuzzle, memoryPuzzleSteps);
 
 		ConditionalStep findingPerseriya = new ConditionalStep(this, goTalkToCatalyticGuardian);
+		findingPerseriya.addStep(and(inVault, foundPerseriyasMedallion), usePerseriyasMedallionOnStatue);
+		findingPerseriya.addStep(foundPerseriyasMedallion, returnToDesertWithPerseriyasMedallion);
+		findingPerseriya.addStep(and(perstenLeft, inNELeviathanArea), searchDebris);
+		findingPerseriya.addStep(defeatedLeviathan, goToShip);
 		findingPerseriya.addStep(readyToFightLeviathan, goKillLeviathan);
 		findingPerseriya.addStep(new Conditions(inTentArea, completedRoom3), talkToPerstenAfterRooms);
 		findingPerseriya.addStep(and(nor(haveReadDampTablet2), dampTablet2), readDampTablet2);
@@ -578,6 +579,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		illuminatingLure = new ItemRequirement("Illuminating lure", ItemID.ILLUMINATING_LURE);
 		crimsonFibre = new ItemRequirement("Crimson fibre", ItemID.CRIMSON_FIBRE);
 		radiantFibre = new ItemRequirement("Radiant fibre", ItemID.RADIANT_FIBRE);
+
+		perseriyasMedallion = new ItemRequirement("Perseriya's medallion", ItemID.PERSERIYAS_MEDALLION);
+		perseriyasMedallion.setTooltip("You can get another from the debris at the ship in the Leviathan area");
 	}
 
 	public void loadZones()
@@ -645,7 +649,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		swRoom3P5 = new Zone(new WorldPoint(1868, 6442, 0), new WorldPoint(1872, 6446, 0));
 		boatRoom3 = new Zone(new WorldPoint(1901, 6444, 0), new WorldPoint(1917, 6461, 0));
 
-		leviathanArea = new Zone(new WorldPoint(2068, 6356, 0), new WorldPoint(2094, 6387, 0));
+		leviathanArea = new Zone(new WorldPoint(2060, 6356, 0), new WorldPoint(2094, 6387, 0));
+		neLeviathanArea = new Zone(new WorldPoint(2092, 6374, 0), new WorldPoint(2110, 6388, 0));
 	}
 
 	public void setupConditions()
@@ -936,6 +941,62 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		readyToFightLeviathan = new VarbitRequirement(PERSERIYA_VARBIT, 38, Operation.GREATER_EQUAL);
 		inLeviathanArea = new ZoneRequirement(leviathanArea);
+
+		// Killed leviathan
+		// 3968 0->1
+		// 15128 40->42
+		// 14862 58->60
+		// 1683 12215->-1
+		// 12401 1->0 (healthbar?)
+
+		defeatedLeviathan = new VarbitRequirement(PERSERIYA_VARBIT, 42, Operation.GREATER_EQUAL);
+		inNELeviathanArea = new ZoneRequirement(neLeviathanArea);
+		perstenAtShip = new VarbitRequirement(PERSERIYA_VARBIT, 44, Operation.GREATER_EQUAL);
+		perstenLeft = new VarbitRequirement(PERSERIYA_VARBIT, 46, Operation.GREATER_EQUAL);
+
+		// Searched debris
+		// 15128 46->48
+		// 14862 60->62
+
+		// Afterwards
+		// 15161 0->1->2->3...
+		// 0->1 happens 110 ticks after first obtaining medallion
+		// Up once every 110 ticks (66 seconds?)
+		// Obtain medallion again, resets
+		// Seemed to cap at 10
+
+		foundPerseriyasMedallion = new VarbitRequirement(PERSERIYA_VARBIT, 48, Operation.GREATER_EQUAL);
+
+		// Entered the Eye area:
+		// 3575 36347648 -> 36413184
+		// 14862 62->64
+		// 15161 10->0
+		// 14192 0->7
+
+		// Enter Desert through Shanty Pass: 13137 0->50
+		// With clothes on, 50->160
+		// No top, 140
+		// Updates upon damage taken
+
+		// On login, 12164 0->1
+		// 933 0->1
+		// 13989 0->1
+
+		// Spawned at 3326, 2896, 0:
+		// 14192 0->7
+		// Teled out of dessert, 13140 17->0?
+
+		// At house:...
+		//
+
+		// Outside vault
+		// 14192 0->7
+		// Only got invaded once the counter hit 10
+
+		// Placed perseriya's medallion
+		// 15128 48->50
+		// 14862 64->66
+		// 15133 0->4
 	}
 
 	public void setupSteps()
@@ -1273,7 +1334,7 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		/* Perseriya */
 		enterWizardBasement = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
-			"Go to the Temple of the Eye.", facemask);
+			"Go to the Temple of the Eye.");
 		enterWizardBasement.addTeleport(eyeTeleport);
 		enterPortalToTempleOfTheEye = new ObjectStep(this, ObjectID.PORTAL_43765, new WorldPoint(3104, 9574, 0),
 			"Enter the portal to the Temple of the Eye.");
@@ -1296,9 +1357,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		goToAbyss.addStep(inWizardBasement, enterPortalToTempleOfTheEye);
 
 		goTalkToCatalyticGuardian = new ConditionalStep(this, goToAbyss,
-			"Talk to the Catalytic Guardian by the portal in the Temple of the Eye.", combatGear);
+			"Talk to the Catalytic Guardian by the portal in the Temple of the Eye.", combatGear, facemask);
 
-		goKillDemons = new ConditionalStep(this, goToAbyss, "Kill all the demons and abyssal entities in the rift.", combatGear);
+		goKillDemons = new ConditionalStep(this, goToAbyss, "Kill all the demons and abyssal entities in the rift.",
+			combatGear, facemask);
 		goKillDemons.addStep(inDemonArea, killDemons);
 
 		hopOverSteppingStone = new ObjectStep(this, ObjectID.STEPPING_STONE_49209, new WorldPoint(2031, 6430, 0),
@@ -1307,20 +1369,19 @@ public class DesertTreasureII extends BasicQuestHelper
 		ObjectStep boardAbyssBoat = new ObjectStep(this, ObjectID.ROWBOAT_49212, new WorldPoint(2065, 6436, 0),
 			"");
 
-		goBoardBoat = new ConditionalStep(this, goToAbyss, "Attempt to board the boat to the east.");
+		goBoardBoat = new ConditionalStep(this, goToAbyss, "Attempt to board the boat to the east.", facemask);
 		goBoardBoat.addStep(inTentArea, boardAbyssBoat);
 		goBoardBoat.addStep(inDemonArea, hopOverSteppingStone);
 
-
 		talkToPersten = new NpcStep(this, NpcID.WIZARD_PERSTEN_12380, new WorldPoint(2051, 6443, 0), "");
-		goTalkToPersten = new ConditionalStep(this, goToAbyss, "Talk to Wizard Persten in the Rift.");
+		goTalkToPersten = new ConditionalStep(this, goToAbyss, "Talk to Wizard Persten in the Rift.", facemask);
 		goTalkToPersten.addStep(inTentArea, talkToPersten);
 		goTalkToPersten.addStep(inDemonArea, hopOverSteppingStone);
 
 		enterPassage1 = new ObjectStep(this, NullObjectID.NULL_49526, new WorldPoint(2043, 6441, 0),
 			"Enter the north west passage.");
 
-		goDoPassage1 = new ConditionalStep(this, goToAbyss);
+		goDoPassage1 = new ConditionalStep(this, goToAbyss, facemask);
 		goDoPassage1.addStep(inTentArea, enterPassage1);
 		goDoPassage1.addStep(inDemonArea, hopOverSteppingStone);
 
@@ -1586,7 +1647,7 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		talkToPerstenAfterRooms = new NpcStep(this, NpcID.WIZARD_PERSTEN_12380, new WorldPoint(2051, 6443, 0), "Talk to Wizard Persten.");
 
-		boardBoatToLeviathan = new ObjectStep(this, ObjectID.ROWBOAT_49212, new WorldPoint(2065, 6436, 0), "Board the boat to the Leviathan fight.");
+		boardBoatToLeviathan = new ObjectStep(this, ObjectID.ROWBOAT_49212, new WorldPoint(2065, 6436, 0), "Board the boat to the Leviathan area.");
 		killLeviathan = new NpcStep(this, NpcID.THE_LEVIATHAN, "");
 		((NpcStep) killLeviathan).addAlternateNpcs(NpcID.THE_LEVIATHAN_12215, NpcID.THE_LEVIATHAN_12219, NpcID.THE_LEVIATHAN_12221);
 		goKillLeviathan = new ConditionalStep(this, goToAbyss,
@@ -1603,114 +1664,57 @@ public class DesertTreasureII extends BasicQuestHelper
 		killLeviathanSidebar.addText("Run away from electricity attacks. When boulders start falling, walk them in a line to create a wall which you can hide behind from the Leviathan, as after 10 rocks you will need to use them to avoid a blast attack.");
 		killLeviathanSidebar.addText("At 20% health, the leviathan will become enraged, constantly dropping rocks. You need to locate an abyssal pathfinder and stay near it until you kill the Leviathan.");
 		killLeviathanSidebar.addSubSteps(goKillLeviathan);
-		// In leviathan room first time:
-		// 12139 = 1, cutscene
-		// 15128 38->40
-		// 14862 56->58
 
-		// 2484
-		// 18282
+		createLeviathan(client, this, runeliteObjectManager);
 
-		// 10278 - Ranged
-		// 10281 - Magic
-		// 10282 - Boulders
+		climbDownFromLeviathan = new ObjectStep(this, ObjectID.HANDHOLDS_47594, new WorldPoint(2091, 6380, 0),
+			"Climb down the handholds in the north eastern corner of the Leviathan area.");
+		hopAcrossFromLeviathan = new ObjectStep(this, NullObjectID.NULL_49529,
+			new WorldPoint(2096, 6382, 0), "Cross the stepping stone.");
 
-		// G
-		// 2484 RANGED
-		// 2486 MAGIC
+		talkToPerstenAtShip = new NpcStep(this, NpcID.WIZARD_PERSTEN_12380, new WorldPoint(2098, 6374, 0),
+			"");
 
-		// PROJECTILE
-		// 2487 RANGED
-		// 2489 magic
-		//
+		goToShip = new ConditionalStep(this, goToAbyss, "Go to the ship north east of the Leviathan boss area, and talk to Persten there..");
+		goToShip.addStep(and(inNELeviathanArea, perstenAtShip), talkToPerstenAtShip);
+		goToShip.addStep(inNELeviathanArea, hopAcrossFromLeviathan);
+		goToShip.addStep(inLeviathanArea, climbDownFromLeviathan);
+		goToShip.addStep(inTentArea, boardBoatToLeviathan);
+		goToShip.addStep(inDemonArea, hopOverSteppingStone);
 
-		// 2480 = boulder shadow
-		createLeviathan();
+		searchDebris = new ObjectStep(this, NullObjectID.NULL_49218, new WorldPoint(2099, 6374, 0),
+			"Search the debris next to the ship.");
+
+		returnToDesertWithPerseriyasMedallion = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
+			new WorldPoint(3511, 2971, 0),
+			"Return to the Vault door north east of Nardah. Be wary of an assassin coming to kill you! They can run, freeze, and teleblock you.",
+			perseriyasMedallion);
+		returnToDesertWithPerseriyasMedallion.addTeleport(nardahTeleport);
+
+		usePerseriyasMedallionOnStatue = new ObjectStep(this, NullObjectID.NULL_49505, new WorldPoint(3942, 9626, 1),
+			"Use the medallion on the south east statue.", perseriyasMedallion.highlighted());
+		usePerseriyasMedallionOnStatue.addIcon(ItemID.PERSERIYAS_MEDALLION);
+
 	}
 
-	FakeNpc leviathan;
-	public void createLeviathan()
+	final BufferedImage missIcon = Icon.BLUE_HITSPLAT.getImage();
+	final BufferedImage hitIcon = Icon.MAX_HITSPLAT.getImage();
+
+	@Override
+	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		Consumer<MenuEntry> spawnBoulder = (menuEntry) -> {
-			leviathan.setAnimation(10282);
-			client.playSoundEffect(7043, 5);
-			WorldPoint pPoint = client.getLocalPlayer().getWorldLocation();
-			FakeObject rock = runeliteObjectManager.createFakeObject(this.toString(), new int[] { 49266 }, pPoint, -1);
-			rock.setEnabled(false);
-			rock.disable();
-			FakeGraphicsObject fallingRock = runeliteObjectManager.createGraphicsFakeObject(this.toString(), new int[] { 49264 },
-				pPoint, 10318, rock);
-			fallingRock.setOrientationGoal(512);
-			fallingRock.getRuneliteObject().setOrientation(512);
-
-			// 2475: 10313
-			// 2476: 10314
-			// 2477: 10315
-			// 2479: 10317
-			// 2480: 10318
-			// Object: 47590
-//			runeliteObjectManager.createFakeObject(this.toString(), );
-		};
-
-		Consumer<MenuEntry> rangedAttack = (menuEntry) -> {
-			leviathan.setAnimation(10278, 10281);
-			client.playSoundEffect(7023);
-			createProjectile(2487);
-			// 2128
-			// 2248
-		};
-
-		Consumer<MenuEntry> meleeAttack = (menuEntry) -> {
-			leviathan.setAnimation(10278, 10281);
-			client.playSoundEffect(7023);
-			createProjectile(2488);
-		};
-
-		Consumer<MenuEntry> magicAttack = (menuEntry) -> {
-			leviathan.setAnimation(10278, 10281);
-			client.playSoundEffect(7030);
-			createProjectile(2489);
-		};
-
-		leviathan = runeliteObjectManager.createFakeNpc(this.toString(),
-			new int[]{49285},
-			new WorldPoint(2068, 6425, 0),
-			10276);
-		leviathan.setName("The Leviathan");
-		leviathan.setExamine("A fake leviathan.");
-		leviathan.addAction("Ranged attack", rangedAttack);
-		leviathan.addAction("Melee attack", meleeAttack);
-		leviathan.addAction("Magic attack", magicAttack);
-		leviathan.addAction("Boulder", spawnBoulder);
-		// Set display requirement
-		leviathan.setOrientationGoalAsPlayer(client);
-		leviathan.setAlwaysFacePlayer(true);
-	}
-
-	private void createProjectile(int projectileID)
-	{
-		int tileHeight = client.getTileHeights()[0]
-			[client.getLocalPlayer().getLocalLocation().getSceneX()]
-			[client.getLocalPlayer().getLocalLocation().getSceneY()];
-
-		LocalPoint lp = LocalPoint.fromWorld(client, leviathan.getWorldPoint().getX(), leviathan.getWorldPoint().getY());
-
-		Projectile proj = client.createProjectile(projectileID,
-			client.getPlane(),
-			lp.getX(),
-			lp.getY(),
-			tileHeight - 30, // z coordinate
-			client.getGameCycle(),  // start cycle
-			client.getGameCycle() + 120,  // end cycle
-			30, // slope ???
-			124, // start height
-			100, // end height
-			client.getLocalPlayer(),
-			client.getLocalPlayer().getLocalLocation().getX(),
-			client.getLocalPlayer().getLocalLocation().getY()
-		);
-		client.getProjectiles()
-			.addLast(proj);
+		Point imageLocation = client.getLocalPlayer().getCanvasImageLocation(missIcon, client.getLocalPlayer().getLogicalHeight() / 2);
+		if (imageLocation != null)
+		{
+			if (showBlueHitsplatUntilTick >= client.getTickCount())
+			{
+				OverlayUtil.renderImageLocation(graphics, imageLocation, missIcon);
+			}
+			if (showRedHitsplatUntilTick >= client.getTickCount())
+			{
+				OverlayUtil.renderImageLocation(graphics, imageLocation, hitIcon);
+			}
+		}
 	}
 
 	@Override
@@ -1808,7 +1812,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			Arrays.asList(facemask),
 			Arrays.asList(eyeTeleport, staminaPotions)));
 		allSteps.add(new PanelDetails("Perseriya - The battle",
-			Arrays.asList(talkToPerstenAfterRooms, killLeviathanSidebar),
+			Arrays.asList(talkToPerstenAfterRooms, killLeviathanSidebar, goToShip, searchDebris, returnToDesertWithPerseriyasMedallion, usePerseriyasMedallionOnStatue),
 			Arrays.asList(rangedCombatGear, shadowBurstRunes),
 			Arrays.asList(eyeTeleport, staminaPotions, food, prayerPotions)));
 

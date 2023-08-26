@@ -24,12 +24,9 @@
  */
 package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
 
-import java.awt.Color;
 import net.runelite.api.Client;
-import net.runelite.api.JagexColor;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.ui.JagexColors;
 
 public class FakeObject extends ExtendedRuneliteObject
 {

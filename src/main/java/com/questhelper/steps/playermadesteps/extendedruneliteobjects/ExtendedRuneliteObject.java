@@ -29,10 +29,16 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
 import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions.Action;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions.LoopedAction;
+import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Shape;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import lombok.Getter;
@@ -97,10 +103,15 @@ public class ExtendedRuneliteObject
 	private String replaceWalkActionText;
 
 	@Getter
-	private final HashMap<String, Consumer<MenuEntry>> actions = new HashMap<>();
+	private final Map<String, Action> actions = new HashMap<>();
 
 	@Getter
-	private final HashMap<String, Consumer<MenuEntry>> priorityActions = new HashMap<>();
+	private final Map<String, Action> priorityActions = new HashMap<>();
+
+	@Setter
+	private LoopedAction activeLoopedAction;
+
+	private Map<Action, Integer> delayedActions = new HashMap<>();
 
 	protected RuneliteObjectTypes objectType = RuneliteObjectTypes.UNDEFINED;
 
@@ -119,6 +130,14 @@ public class ExtendedRuneliteObject
 
 	@Setter
 	private boolean enabled = true;
+
+
+	int lastActionPerformedAt;
+	boolean wasActiveLastTick = false;
+
+	@Setter
+	@Getter
+	private boolean needToBeCloseToTalk = true;
 
 	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
@@ -161,7 +180,11 @@ public class ExtendedRuneliteObject
 
 	public Shape getClickbox()
 	{
-		return Perspective.getClickbox(client, getRuneliteObject().getModel(), getRuneliteObject().getOrientation(), getRuneliteObject().getLocation().getX(), getRuneliteObject().getLocation().getY(),
+		return Perspective.getClickbox(client,
+			getRuneliteObject().getModel(),
+			getRuneliteObject().getOrientation(),
+			getRuneliteObject().getLocation().getX(),
+			getRuneliteObject().getLocation().getY(),
 			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), client.getPlane()));
 	}
 
@@ -237,9 +260,74 @@ public class ExtendedRuneliteObject
 		}
 	}
 
-	protected void actionOnGameTick()
+	protected void actionOnClientTick()
 	{
 
+	}
+
+	protected void actionOnGameTick()
+	{
+		List<Action> actionsToPerform = new ArrayList<>();
+		delayedActions.forEach((action, tickToPerform) -> {
+			if (client.getTickCount() >= tickToPerform)
+			{
+				actionsToPerform.add(action);
+			}
+		});
+
+		for (Action action : actionsToPerform)
+		{
+			delayedActions.remove(action);
+			action.activate(action.getMenuEntry());
+		}
+
+		if (!wasActiveLastTick && activeLoopedAction != null)
+		{
+			wasActiveLastTick = true;
+			lastActionPerformedAt = client.getTickCount();
+		}
+		WorldPoint playerPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+		if (playerPoint.distanceTo(worldPoint) > 20)
+		{
+			disableActiveLoopedAction();
+		}
+		else if (activeLoopedAction != null && activeLoopedAction.getTicksBetweenActions().get() <= client.getTickCount() - lastActionPerformedAt)
+		{
+			activeLoopedAction.activate(activeLoopedAction.getMenuEntry());
+			lastActionPerformedAt = client.getTickCount();
+		}
+	}
+
+	public void addDelayedAction(int delayInTicks, Action action)
+	{
+		delayedActions.put(action, client.getTickCount() + delayInTicks);
+	}
+
+	public void disableActiveLoopedAction()
+	{
+		if (activeLoopedAction == null) return;
+		activeLoopedAction.deactivate();
+		activeLoopedAction = null;
+		wasActiveLastTick = false;
+	}
+
+	public void activateAction(String actionID, MenuEntry menuEntry)
+	{
+		Action action = actions.get(actionID);
+		if (action instanceof LoopedAction)
+		{
+			if (activeLoopedAction != null)
+			{
+				activeLoopedAction.deactivate();
+			}
+			setActiveLoopedAction((LoopedAction) action);
+		}
+		action.activate(menuEntry);
+	}
+
+	public void activatePriorityAction(String actionID, MenuEntry menuEntry)
+	{
+		priorityActions.get(actionID).activate(menuEntry);
 	}
 
 	public void setDisplayRequirement(Requirement req)
@@ -278,12 +366,12 @@ public class ExtendedRuneliteObject
 
 	public void addTalkAction(RuneliteObjectManager runeliteObjectManager)
 	{
-		priorityActions.put("Talk-to", runeliteObjectManager.getTalkAction(this));
+		priorityActions.put("Talk-to", new Action(runeliteObjectManager.getTalkAction(this)));
 	}
 
 	public void addExamineAction(RuneliteObjectManager runeliteObjectManager)
 	{
-		actions.put("Examine", runeliteObjectManager.getExamineAction(this));
+		actions.put("Examine", new Action(runeliteObjectManager.getExamineAction(this)));
 	}
 
 	@Setter
@@ -300,12 +388,12 @@ public class ExtendedRuneliteObject
 
 	public void addAction(String name, Consumer<MenuEntry> action)
 	{
-		actions.put(name, action);
+		actions.put(name, new Action(action));
 	}
 
-	public void addPriorityAction(String name, Consumer<MenuEntry> action)
+	public void addLoopedAction(String name, Consumer<MenuEntry> action, AtomicInteger ticksBetweenActions)
 	{
-		priorityActions.put(name, action);
+		actions.put(name, new LoopedAction(action, ticksBetweenActions));
 	}
 
 	public RuneliteObjectDialogStep createDialogStepForNpc(String text, FaceAnimationIDs faceAnimation)
@@ -441,7 +529,7 @@ public class ExtendedRuneliteObject
 		setOrientationGoal(newOrientation);
 	}
 
-	public boolean partiallyRotateToGoal(Client client)
+	public boolean partiallyRotateToGoal()
 	{
 		final int MAX_ROTATION_PER_CALL = 32;
 		final int MAX_ROTATION = 2048;

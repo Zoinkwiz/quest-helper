@@ -53,7 +53,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	ItemRequirement coal, tinderbox, ironBar, spade, meat, prayerPotions, fiveCoins;
 
 	// Items Recommended
-	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, meleeCombatGear,
+	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaohsSceptre, food, meleeCombatGear,
 		rangedCombatGear, staminaPotions, nardahTeleport;
 
 	// Quest Items
@@ -285,8 +285,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);
-		pharaosSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
-		pharaosSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
+		pharaohsSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
+		pharaohsSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 		meleeCombatGear = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
@@ -537,7 +537,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(waterskins, antipoison, accessToFairyRings, pharaosSceptre, meleeCombatGear, food, staminaPotions, nardahTeleport);
+		return Arrays.asList(waterskins, antipoison, accessToFairyRings, pharaohsSceptre, meleeCombatGear, food, staminaPotions, nardahTeleport);
 	}
 
 	@Override

@@ -489,7 +489,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		waterSource.addAlternates(ItemID.DESERT_AMULET_4, ItemID.WATERSKIN4, ItemID.WATERSKIN3, ItemID.WATERSKIN2, ItemID.WATERSKIN1);
 		ancientMagicksActive = new SpellbookRequirement(Spellbook.ANCIENT);
 
-		// 5672-
+		// TODO: Add check where IF you have nardah teleport in scroll box, show scroll box as requirement
 		VarbitRequirement nardahTeleportInBook = new VarbitRequirement(5672, 1, Operation.GREATER_EQUAL);
 		nardahTeleport = new ItemRequirement("Nardah teleport, or Fairy Ring to DLQ", ItemID.DESERT_AMULET_4);
 		nardahTeleport.setAdditionalOptions(nardahTeleportInBook);
@@ -500,6 +500,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		digsitePendant.addAlternates(ItemID.DIGSITE_PENDANT_4, ItemID.DIGSITE_PENDANT_3, ItemID.DIGSITE_PENDANT_2,
 			ItemID.DIGSITE_PENDANT_1);
 
+		// TODO: Make a spell SpellRequirement, which will change the highlight to be for the spellbook widget not runes
+		// Check if have requirement + runes for spell
 		senntistenTeleport = new ItemRequirements(LogicType.OR, "Senntisten teleport",
 			new ItemRequirement("Senntisten teleport", ItemID.SENNTISTEN_TELEPORT),
 			new ItemRequirements(
@@ -511,7 +513,7 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 
-		combatGear = new ItemRequirement("Combat gear", -1);
+		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		bloodBurstRunes = new ItemRequirements("Blood burst runes",
@@ -904,8 +906,6 @@ public class DesertTreasureII extends BasicQuestHelper
 		// Entered boat room, 15261 0->1. Seems to indicate 'teleport to boat room if they leave'
 		haveReadDampTablet = new VarbitRequirement(PERSERIYA_VARBIT, 26, Operation.GREATER_EQUAL);
 
-		// TODO: Read tablet steps need to be shared or outside of the general functions
-
 		// 15128 26->28 burnt second boat
 		// 15260 1->0
 		// 15259 1->0
@@ -932,7 +932,6 @@ public class DesertTreasureII extends BasicQuestHelper
 		// 1 = NW
 		// 2 = NE
 		// 3 = SE
-
 
 		// Room 3
 		inMemoryPuzzle = new ZoneRequirement(memoryPuzzle);

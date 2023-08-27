@@ -193,9 +193,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		VarbitRequirement finishedRoom = new VarbitRequirement(661, 1);
 
-		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye");
+		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye.");
 		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
-			"Kill Sir Leye to win this challenge. You must use the warhammer or you can't kill him.", true);
+			"Defeat Sir Leye to win this challenge. You must use the steel warhammer or your barehands to deal the final hit on him.", true);
 
 		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
 		NpcCondition npcCondition = new NpcCondition(NpcID.SIR_LEYE);

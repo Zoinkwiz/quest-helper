@@ -43,6 +43,7 @@ import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;

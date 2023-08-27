@@ -54,7 +54,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.steps.WidgetStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -695,8 +694,8 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		standNextToSculpture.addSubSteps(readScroll);
 
-		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith. They take reduced damage from anything other than a pickaxe.",
-			Collections.EMPTY_LIST, Collections.singletonList(pickaxe));
+		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith. They take reduced damage from anything other than a pickaxe.");
+		killSlagilith.addRecommended(pickaxe);
 		readScrollAgain = new DetailedQuestStep(this, "Read the animate rock scroll.", animateRockScrollHighlight);
 		talkToPetra = new NpcStep(this, NpcID.PETRA_FIYED, new WorldPoint(2617, 9837, 0), "Talk to Petra Fiyed.");
 

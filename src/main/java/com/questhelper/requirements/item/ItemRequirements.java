@@ -154,6 +154,7 @@ public class ItemRequirements extends ItemRequirement
 		newItem.setQuestBank(getQuestBank());
 		newItem.setTooltip(getTooltip());
 		newItem.logicType = logicType;
+		newItem.additionalOptions = additionalOptions;
 
 		return newItem;
 	}

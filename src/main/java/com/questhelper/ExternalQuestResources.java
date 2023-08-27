@@ -53,6 +53,7 @@ public enum ExternalQuestResources {
 	DEATH_TO_THE_DORGESHUUN("https://oldschool.runescape.wiki/w/Death_to_the_Dorgeshuun"),
 	THE_DEPTHS_OF_DESPAIR("https://oldschool.runescape.wiki/w/The_Depths_of_Despair"),
 	DESERT_TREASURE("https://oldschool.runescape.wiki/w/Desert_Treasure"),
+	DESERT_TREASURE_II("https://oldschool.runescape.wiki/w/Desert_Treasure_II"),
 	DEVIOUS_MINDS("https://oldschool.runescape.wiki/w/Devious_Minds"),
 	THE_DIG_SITE("https://oldschool.runescape.wiki/w/The_Dig_Site"),
 	DRAGON_SLAYER_II("https://oldschool.runescape.wiki/w/Dragon_Slayer_II"),

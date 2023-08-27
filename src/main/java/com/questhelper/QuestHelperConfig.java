@@ -237,7 +237,15 @@ public interface QuestHelperConfig extends Config
 		FILLED_OUTLINE
 	}
 
-
+	@ConfigItem(
+		keyName = "setModelId",
+		name = "SetModelID",
+		description = "Automatically start the quest helper when you start a quest"
+	)
+	default int setModelId()
+	{
+		return 0;
+	}
 	@ConfigItem(
 		keyName = "autostartQuests",
 		name = "Auto start helper",

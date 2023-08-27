@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -74,6 +75,9 @@ public class NpcStep extends DetailedQuestStep
 
 	private boolean mustBeFocused = false;
 
+	@Setter
+	private String npcName;
+
 	public NpcStep(QuestHelper questHelper, int npcID, String text, Requirement... requirements)
 	{
 		super(questHelper, text, requirements);
@@ -94,6 +98,21 @@ public class NpcStep extends DetailedQuestStep
 	{
 		super(questHelper, worldPoint, text, requirements);
 		this.npcID = npcID;
+	}
+
+	public NpcStep(QuestHelper questHelper, int npcID, String npcName, WorldPoint worldPoint, String text, Requirement... requirements)
+	{
+		super(questHelper, worldPoint, text, requirements);
+		this.npcID = npcID;
+		this.npcName = npcName;
+	}
+
+	public NpcStep(QuestHelper questHelper, int npcID, String npcName, WorldPoint worldPoint, String text, boolean allowMultipleHighlights, Requirement... requirements)
+	{
+		super(questHelper, worldPoint, text, requirements);
+		this.npcID = npcID;
+		this.npcName = npcName;
+		this.allowMultipleHighlights = allowMultipleHighlights;
 	}
 
 	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, List<Requirement> requirements, List<Requirement> optionalRequirements)
@@ -123,6 +142,12 @@ public class NpcStep extends DetailedQuestStep
 		this(questHelper, npcID, null, text, allowMultipleHighlights, requirements);
 	}
 
+	private boolean npcPassesChecks(NPC npc)
+	{
+		if (npcName != null && (npc.getName() == null || !npc.getName().equals(npcName))) return false;
+		return npcID == npc.getId() || alternateNpcIDs.contains(npc.getId());
+	}
+
 	@Override
 	public void startUp()
 	{
@@ -135,7 +160,7 @@ public class NpcStep extends DetailedQuestStep
 	{
 		for (NPC npc : client.getNpcs())
 		{
-			if (npcID == npc.getId() || alternateNpcIDs.contains(npc.getId()))
+			if (npcPassesChecks(npc))
 			{
 				WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
 				if (this.npcs.size() == 0 && (worldPoint == null || npcPoint.distanceTo(worldPoint) < maxRoamRange))
@@ -199,7 +224,7 @@ public class NpcStep extends DetailedQuestStep
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (event.getNpc().getId() == npcID || alternateNpcIDs.contains(event.getNpc().getId()))
+		if (npcPassesChecks(event.getNpc()))
 		{
 			WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, event.getNpc().getLocalLocation());
 			if (npcs.size() == 0)

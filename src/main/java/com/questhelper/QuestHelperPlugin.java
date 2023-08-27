@@ -25,6 +25,7 @@
  */
 package com.questhelper;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
@@ -44,6 +45,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.statemanagement.GameStateManager;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
+import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import java.awt.image.BufferedImage;
@@ -71,8 +73,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -85,6 +90,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
@@ -264,6 +270,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private int tickAddedCheerer = -1;
 
+	// TODO: Use this for item checks
 	@Getter
 	private int lastTickInventoryUpdated = -1;
 
@@ -540,6 +547,16 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
+		if (developerMode && commandExecuted.getCommand().equals("inv"))
+		{
+			ItemContainer items = client.getItemContainer(InventoryID.INVENTORY);
+			StringBuilder itemsString = new StringBuilder();
+			for (Item item : items.getItems())
+			{
+				itemsString.append(client.getItemDefinition(item.getId())).append(" : ").append(item.getId()).append("\n");
+			}
+			System.out.println(itemsString);
+		}
 		if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
 		{
 			if (commandExecuted.getArguments().length == 0 ||

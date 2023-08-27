@@ -9,6 +9,8 @@ public class ExtendedRuneliteObjects
 {
 	@Getter
 	private final String groupName;
+
+	@Getter
 	List<ExtendedRuneliteObject> extendedRuneliteObjects = new ArrayList<>();
 
 	List<ExtendedRuneliteObjects> subGroups = new ArrayList<>();

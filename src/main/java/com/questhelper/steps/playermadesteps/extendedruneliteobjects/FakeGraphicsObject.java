@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,12 +28,31 @@ import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
 
-public class FakeObject extends ExtendedRuneliteObject
+public class FakeGraphicsObject extends ExtendedRuneliteObject
 {
-	protected FakeObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	ExtendedRuneliteObject objectToSpawnAfter;
+	protected FakeGraphicsObject(Client client, ClientThread clientThread, WorldPoint worldPoint,
+								 int[] model, int animation, ExtendedRuneliteObject objectToSpawnAfter)
 	{
 		super(client, clientThread, worldPoint, model, animation);
-		objectType = RuneliteObjectTypes.OBJECT;
-		nameColor = "00FFFF";
+		objectType = RuneliteObjectTypes.GRAPHICS_OBJECT;
+		this.objectToSpawnAfter = objectToSpawnAfter;
+		runeliteObject.setShouldLoop(false);
+		runeliteObject.setActive(false);
+	}
+
+	@Override
+	protected void actionOnClientTick()
+	{
+		if (runeliteObject.getAnimation().getNumFrames() <= runeliteObject.getAnimationFrame() + 1)
+		{
+			setEnabled(false);
+			disable();
+			if (objectToSpawnAfter != null)
+			{
+				objectToSpawnAfter.setEnabled(true);
+				objectToSpawnAfter.activate();
+			}
+		}
 	}
 }

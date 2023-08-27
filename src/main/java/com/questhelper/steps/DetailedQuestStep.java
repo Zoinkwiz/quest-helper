@@ -104,6 +104,9 @@ public class DetailedQuestStep extends QuestStep
 	@Getter
 	protected final List<Requirement> recommended = new ArrayList<>();
 
+	@Getter
+	protected final List<Requirement> teleport = new ArrayList<>();
+
 	protected Multimap<Tile, Integer> tileHighlights = ArrayListMultimap.create();
 
 	protected QuestHelperWorldMapPoint mapPoint;
@@ -216,6 +219,11 @@ public class DetailedQuestStep extends QuestStep
 	{
 		recommended.clear();
 		recommended.addAll(newRecommended);
+	}
+
+	public void addTeleport(Requirement newTeleport)
+	{
+	teleport.add(newTeleport);
 	}
 
 	@Subscribe
@@ -493,6 +501,18 @@ public class DetailedQuestStep extends QuestStep
 			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
 			.flatMap(Collection::stream)
 			.forEach(line -> panelComponent.getChildren().add(line));
+
+		/* Teleports */
+		if (!teleport.isEmpty())
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Teleport:").build());
+		}
+		Stream<Requirement> streamTeleport = teleport.stream();
+		streamTeleport
+			.distinct()
+			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
+			.flatMap(Collection::stream)
+			.forEach(line -> panelComponent.getChildren().add(line));
 	}
 
 	private void renderInventory(Graphics2D graphics)
@@ -501,6 +521,28 @@ public class DetailedQuestStep extends QuestStep
 		if (inventoryWidget == null || inventoryWidget.isHidden())
 		{
 			return;
+		}
+
+		Color baseColor = questHelper.getConfig().targetOverlayColor();
+
+		if (worldPoint != null)
+		{
+			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+			WorldPoint goalWp = QuestPerspective.getInstanceWorldPoint(client, worldPoint);
+			if (goalWp != null && playerLocation.distanceTo(goalWp) > 30)
+			{
+				for (Requirement requirement : teleport)
+				{
+					for (Widget item : inventoryWidget.getDynamicChildren())
+					{
+						if (requirement instanceof ItemRequirement && ((ItemRequirement) requirement).getAllIds().contains(item.getItemId()))
+						{;
+							highlightInventoryItem(item, baseColor, graphics);
+						}
+						// TODO: If teleport, highlight teleport in spellbook
+					}
+				}
+			}
 		}
 
 		if (requirements.isEmpty())
@@ -512,8 +554,6 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-
-		Color baseColor = questHelper.getConfig().targetOverlayColor();
 
 		for (Widget item : inventoryWidget.getDynamicChildren())
 		{

@@ -67,6 +67,7 @@ public class WidgetHighlights
 	{
 		Widget widgetToHighlight = client.getWidget(groupId, childId);
 		if (widgetToHighlight == null) return;
+		if (widgetToHighlight.isHidden()) return;
 
 		highlightChoices(widgetToHighlight, graphics, questHelper);
 	}

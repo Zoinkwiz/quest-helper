@@ -98,6 +98,9 @@ public class ItemRequirement extends AbstractRequirement
 
 	protected boolean shouldAggregate = true;
 
+	@Setter
+	protected Requirement additionalOptions;
+
 	public ItemRequirement(String name, int id)
 	{
 		this(name, id, 1);
@@ -198,6 +201,13 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public ItemRequirement named(String name)
+	{
+		ItemRequirement newItem = copy();
+		newItem.setName(name);
+		return newItem;
+	}
+
 	public ItemRequirement equipped()
 	{
 		ItemRequirement newItem = copy();
@@ -255,6 +265,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.shouldAggregate = shouldAggregate;
 		newItem.setTooltip(getTooltip());
 		newItem.setUrlSuffix(getUrlSuffix());
+		newItem.additionalOptions = additionalOptions;
 
 		return newItem;
 	}
@@ -470,6 +481,11 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
+		if (additionalOptions != null && additionalOptions.check(client))
+		{
+			return true;
+		}
+
 		List<Item> allItems = new ArrayList<>(items);
 		if (questBank != null && questBank.getBankItems() != null)
 		{

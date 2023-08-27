@@ -230,17 +230,17 @@ public class KourendEasy extends ComplexStateQuestHelper
 
 		// Take a boat from Land's End
 		boatLandsEnd = new NpcStep(this, NpcID.CABIN_BOY_HERBERT, new WorldPoint(1826, 3691, 0),
-			"Take a boat to Land's End", true);
+			"Take a boat to Land's End.", true);
 		boatLandsEnd.addAlternateNpcs(NpcID.VEOS_10727);
 		boatLandsEnd.addDialogStep("Can you take me somewhere?");
 		boatLandsEnd.addDialogStep("Travel to Land's End.");
 
 		// Pray at the Kourend castle altar
-		enterCastleF1 = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(1618, 3681, 0),
+		enterCastleF1 = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(1616, 3680, 0),
 			"Climb the stairs to the second floor of the Kourend Castle.");
-		enterCastleF2 = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(1616, 3686, 1),
+		enterCastleF2 = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(1616, 3687, 1),
 			"Climb the stairs to the third floor of the Kourend Castle.");
-		prayCastle = new ObjectStep(this, ObjectID.ALTAR_18258, new WorldPoint(1616, 3672, 2),
+		prayCastle = new ObjectStep(this, ObjectID.ALTAR_18258, new WorldPoint(1617, 3673, 2),
 			"Pray at the Kourend Castle altar.");
 		prayCastle.addSubSteps(enterCastleF1, enterCastleF2);
 

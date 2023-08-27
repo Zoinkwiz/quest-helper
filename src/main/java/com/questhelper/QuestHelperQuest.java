@@ -329,7 +329,7 @@ public enum QuestHelperQuest
 	DEATH_TO_THE_DORGESHUUN(new DeathToTheDorgeshuun(), Quest.DEATH_TO_THE_DORGESHUUN, QuestVarbits.QUEST_DEATH_TO_THE_DORGESHUUN, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	THE_DEPTHS_OF_DESPAIR(new TheDepthsOfDespair(), Quest.THE_DEPTHS_OF_DESPAIR, QuestVarbits.QUEST_THE_DEPTHS_OF_DESPAIR, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	DESERT_TREASURE(new DesertTreasure(), Quest.DESERT_TREASURE_I, QuestVarbits.QUEST_DESERT_TREASURE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
-	DESERT_TREASURE_II(new DesertTreasureII(), "Desert Treasure II", QuestVarbits.QUEST_DESERT_TREASURE_II, 1, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+	DESERT_TREASURE_II(new DesertTreasureII(), Quest.DESERT_TREASURE_II__THE_FALLEN_EMPIRE, QuestVarbits.QUEST_DESERT_TREASURE_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
 	DEVIOUS_MINDS(new DeviousMinds(), Quest.DEVIOUS_MINDS, QuestVarbits.QUEST_DEVIOUS_MINDS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_DIG_SITE(new TheDigSite(), Quest.THE_DIG_SITE, QuestVarPlayer.QUEST_THE_DIG_SITE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	DRAGON_SLAYER_II(new DragonSlayerII(), Quest.DRAGON_SLAYER_II, QuestVarbits.QUEST_DRAGON_SLAYER_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),

@@ -54,6 +54,8 @@ public enum Icon
 	QUEST_STEP_ARROW_270("/quest_step_arrow_270.png"),
 	QUEST_STEP_ARROW_315("/quest_step_arrow_315.png"),
 	START("/start.png"),
+	MAX_HITSPLAT("/maxHitsplat.png"),
+	BLUE_HITSPLAT("/blueHitsplat.png"),
 	;
 
 	private final String file;

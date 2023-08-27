@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions;
 
-import net.runelite.api.Client;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.callback.ClientThread;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import lombok.Getter;
+import net.runelite.api.MenuEntry;
 
-public class FakeObject extends ExtendedRuneliteObject
+public class LoopedAction extends Action
 {
-	protected FakeObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	@Getter
+	AtomicInteger ticksBetweenActions;
+
+
+	public LoopedAction(Consumer<MenuEntry> action, AtomicInteger ticksBetweenActions)
 	{
-		super(client, clientThread, worldPoint, model, animation);
-		objectType = RuneliteObjectTypes.OBJECT;
-		nameColor = "00FFFF";
+		super(action);
+		this.ticksBetweenActions = ticksBetweenActions;
+	}
+
+	@Override
+	protected Consumer<MenuEntry> createEndAction()
+	{
+		return (menuEntry -> {
+		});
 	}
 }

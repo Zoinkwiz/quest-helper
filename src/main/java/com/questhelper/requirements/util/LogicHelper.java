@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2023, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,68 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.questhelpers;
+package com.questhelper.requirements.util;
 
-import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
-public abstract class BasicQuestHelper extends QuestHelper
+public class LogicHelper
 {
-	protected Map<Integer, QuestStep> steps;
-	protected int var;
-
-	@Override
-	public void init()
+	public static Requirement nor(Requirement... condition)
 	{
-		if (steps == null)
-		{
-			steps = loadSteps();
-		}
+		return new Conditions(LogicType.NOR, condition);
 	}
 
-	@Override
-	public void startUp(QuestHelperConfig config)
+	public static Requirement or(Requirement... condition)
 	{
-		steps = loadSteps();
-		this.config = config;
-		instantiateSteps(steps.values());
-		var = getVar();
-		startUpStep(steps.get(var));
+		return new Conditions(LogicType.OR, condition);
 	}
 
-	@Override
-	public void shutDown()
+	public static Requirement and(Requirement... condition)
 	{
-		super.shutDown();
-		shutDownStep();
+		return new Conditions(LogicType.AND, condition);
 	}
-
-	@Override
-	public boolean updateQuest()
-	{
-		if (var < getVar())
-		{
-			var = getVar();
-			shutDownStep();
-			startUpStep(steps.get(var));
-			return true;
-		}
-		return false;
-	}
-
-	public List<PanelDetails> getPanels()
-	{
-		List<PanelDetails> panelSteps = new ArrayList<>();
-		steps.forEach((id, step) -> panelSteps.add(new PanelDetails("", step)));
-		return panelSteps;
-	}
-
-	public abstract Map<Integer, QuestStep> loadSteps();
 }

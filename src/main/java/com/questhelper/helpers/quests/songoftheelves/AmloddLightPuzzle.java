@@ -62,7 +62,7 @@ public class AmloddLightPuzzle extends ConditionalStep
 	Requirement hasMirrorsAndCrystal, onF1, onF2, onF0, notResetCrwys, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15,
 		r16, r17, r18, r19;
 
-	public AmloddLightPuzzle(QuestHelper questHelper,ConditionalStep goToF1Steps, ConditionalStep goToF0Steps)
+	public AmloddLightPuzzle(QuestHelper questHelper, ConditionalStep goToF1Steps, ConditionalStep goToF0Steps)
 	{
 		super(questHelper, goToF1Steps);
 		setupItemRequirements();

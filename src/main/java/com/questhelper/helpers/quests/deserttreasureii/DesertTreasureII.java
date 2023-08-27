@@ -1714,7 +1714,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		talkToPerstenAtShip = new NpcStep(this, NpcID.WIZARD_PERSTEN_12380, new WorldPoint(2098, 6374, 0),
 			"");
 
-		goToShip = new ConditionalStep(this, goToAbyss, "Go to the ship north-east of the Leviathan boss area, and talk to Persten there..");
+		goToShip = new ConditionalStep(this, goToAbyss, "Go to the ship north-east of the Leviathan boss area, and talk to Persten there.");
 		goToShip.addStep(and(inNELeviathanArea, perstenAtShip), talkToPerstenAtShip);
 		goToShip.addStep(inNELeviathanArea, hopAcrossFromLeviathan);
 		goToShip.addStep(inLeviathanArea, climbDownFromLeviathan);

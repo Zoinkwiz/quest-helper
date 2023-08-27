@@ -337,12 +337,15 @@ public class RuneliteObjectManager
 			}
 		}
 
+		List<ExtendedRuneliteObject> objs = new ArrayList<>();
 		runeliteObjectGroups.forEach((groupID, runeliteObjectGroup) -> {
-			for (ExtendedRuneliteObject runeliteObject : runeliteObjectGroup.extendedRuneliteObjects)
-			{
-				setupMenuOptions(runeliteObject, event);
-			}
+			objs.addAll(runeliteObjectGroup.extendedRuneliteObjects);
 		});
+
+		for (ExtendedRuneliteObject obj : objs)
+		{
+			setupMenuOptions(obj, event);
+		}
 	}
 
 	private void copyMenuEntry(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event, NPC npc)
@@ -375,13 +378,16 @@ public class RuneliteObjectManager
 
 	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
 	{
+		if (extendedRuneliteObject.getActions().size() == 0) return;
 		LocalPoint lp = extendedRuneliteObject.getRuneliteObject().getLocation();
 
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		if (!extendedRuneliteObject.isHiddenNoOptions() && extendedRuneliteObject.getRuneliteObject() != null && extendedRuneliteObject.getRuneliteObject().getModel() != null)
+		if (!extendedRuneliteObject.isHiddenNoOptions()
+			&& extendedRuneliteObject.getRuneliteObject() != null
+			&& extendedRuneliteObject.getRuneliteObject().getModel() != null)
 		{
 			if (!isMouseOverObject(extendedRuneliteObject)) return;
 			if (event.getOption().equals("Walk here") && isMouseOverObject(extendedRuneliteObject))

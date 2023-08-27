@@ -62,6 +62,9 @@ public class FakeLeviathan
 			new WorldPoint(2068, 6425, 0),
 			10276);
 
+		int MAX_ROCKS = 5;
+		AtomicInteger currentRocks = new AtomicInteger(0);
+
 		String BOULDERS_SUBGROUP = "leviathanBoulders";
 		Consumer<MenuEntry> spawnBoulder = (menuEntry) -> {
 			leviathan.setAnimation(10282);
@@ -80,8 +83,9 @@ public class FakeLeviathan
 			}
 
 			FakeObject rock = null;
-			if (!skipRockSpawn)
+			if (!skipRockSpawn && currentRocks.get() <= MAX_ROCKS)
 			{
+				currentRocks.set(currentRocks.get() + 1);
 				rock = runeliteObjectManager.createFakeObject(BOULDERS_SUBGROUP, new int[]{49266}, pPoint, -1);
 				rock.setEnabled(false);
 				rock.disable();
@@ -178,6 +182,7 @@ public class FakeLeviathan
 			runeliteObjectManager.removeGroup(BOULDERS_SUBGROUP);
 			leviathan.disableActiveLoopedAction();
 			phase.set(0);
+			currentRocks.set(0);
 		};
 
 		leviathan.setName("The Leviathan");

@@ -292,7 +292,7 @@ public class QuestOverviewPanel extends JPanel
 		{
 			questNameLabel.setText(quest.getQuest().getName());
 			actionsContainer.setVisible(true);
-			
+
 			if (quest.getConfigs() != null)
 			{
 				configContainer.setVisible(true);

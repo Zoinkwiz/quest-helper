@@ -38,17 +38,12 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.npc.NpcRequirement;
-import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.util.ItemSlots;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -73,10 +68,8 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Point;
-import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
@@ -103,7 +96,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	ItemRequirement waterSource, senntistenTeleport, pickaxe, combatGear, bloodBurstRunes, iceBurstRunes,
 		shadowBurstRunes, smokeBurstRunes, allBursts, uncharedCells, chargedCells, xericTalisman,
 		facemask, staminaPotions, eyeTeleport, rangedCombatGear, food, prayerPotions, nardahTeleport,
-		arclight, freezes;
+		arclight, freezes, icyBasalt, meleeCombatGear;
 
 	Zone vault, digsiteHole, golemRoom;
 	Requirement inVault, inDigsiteHole, inGolemRoom;
@@ -120,7 +113,7 @@ public class DesertTreasureII extends BasicQuestHelper
 
 	PerseriyaSteps perseriyaSteps;
 
-	DetailedQuestStep moreComingSoon;
+	SucellusSteps sucellusSteps;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -231,7 +224,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		steps.put(40, goOperateGolemLastTime);
 
 		ConditionalStep findingTheFour = new ConditionalStep(this, vardorvisSteps);
-		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya), moreComingSoon);
+		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya), sucellusSteps);
 		findingTheFour.addStep(finishedVardorvis, perseriyaSteps);
 		steps.put(42, findingTheFour);
 		/* Entered stranglewood */
@@ -335,6 +328,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		eyeTeleport.addAlternates(ItemID.AMULET_OF_THE_EYE, ItemID.AMULET_OF_THE_EYE_26992, ItemID.AMULET_OF_THE_EYE_26994);
 
 		arclight = new ItemRequirement("Arclight", ItemID.ARCLIGHT);
+
+		icyBasalt = new ItemRequirement("Icy basalt", ItemID.ICY_BASALT);
+		meleeCombatGear = new ItemRequirement("Melee combat gear", -1, -1);
+		meleeCombatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 
 		/* Quest Items */
 		uncharedCells = new ItemRequirement("Uncharged cells", ItemID.UNCHARGED_CELL_28402);
@@ -583,10 +580,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		talkToElissa.addTeleport(senntistenTeleport);
 
 		vardorvisSteps = new VardorvisSteps(this, talkToElissa, questBank);
-
-		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "WOOPS"), runeliteObjectManager);
-
-		moreComingSoon = new DetailedQuestStep(this, "The rest of the Quest Helper will come out once it's ready.");
+		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "Do Perseriya steps."), runeliteObjectManager);
+		sucellusSteps = new SucellusSteps(this, new DetailedQuestStep(this, "Do Sucellus steps."));
 	}
 
 	final BufferedImage missIcon = Icon.BLUE_HITSPLAT.getImage();
@@ -618,7 +613,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions, freezes, xericTalisman, eyeTeleport);
+		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions, freezes, xericTalisman, eyeTeleport, icyBasalt);
 	}
 
 
@@ -677,25 +672,28 @@ public class DesertTreasureII extends BasicQuestHelper
 			Arrays.asList(xericTalisman, freezes)));
 		allSteps.add(new PanelDetails("Perseriya",
 			perseriyaSteps.getStartSteps(),
-			Arrays.asList(combatGear, facemask, arclight),
-			Arrays.asList(eyeTeleport, staminaPotions)));
+			Arrays.asList(combatGear, facemask),
+			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
 		allSteps.add(new PanelDetails("Perseriya - Room 1",
 			perseriyaSteps.getRoom1Steps(),
-			Arrays.asList(facemask, arclight),
-			Arrays.asList(eyeTeleport, staminaPotions)));
+			Arrays.asList(facemask),
+			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
 		allSteps.add(new PanelDetails("Perseriya - Room 2",
 			perseriyaSteps.getRoom2Steps(),
-			Arrays.asList(facemask, arclight),
-			Arrays.asList(eyeTeleport, staminaPotions)));
+			Arrays.asList(facemask),
+			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
 		allSteps.add(new PanelDetails("Perseriya - Room 3",
 			perseriyaSteps.getRoom3Steps(),
-			Arrays.asList(facemask, arclight),
-			Arrays.asList(eyeTeleport, staminaPotions)));
+			Arrays.asList(facemask),
+			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
 		allSteps.add(new PanelDetails("Perseriya - The battle",
 			perseriyaSteps.getBattleSteps(),
 			Arrays.asList(rangedCombatGear, shadowBurstRunes),
 			Arrays.asList(eyeTeleport, staminaPotions, food, prayerPotions)));
-		allSteps.add(new PanelDetails("More to come...", Arrays.asList(moreComingSoon)));
+		allSteps.add(new PanelDetails("Sucellus",
+			sucellusSteps.getDisplaySteps(),
+			Arrays.asList(meleeCombatGear, food),
+			Arrays.asList(prayerPotions, staminaPotions, icyBasalt)));
 		return allSteps;
 	}
 

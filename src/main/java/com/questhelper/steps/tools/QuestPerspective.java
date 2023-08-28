@@ -139,7 +139,7 @@ public class QuestPerspective
 	public static Point mapWorldPointToGraphicsPoint(Client client, WorldPoint worldPoint)
 	{
 		RenderOverview ro = client.getRenderOverview();
-
+		if (worldPoint == null) return null;
 		if (!ro.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
 		{
 			return null;

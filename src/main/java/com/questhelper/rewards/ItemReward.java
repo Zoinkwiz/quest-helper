@@ -65,6 +65,12 @@ public class ItemReward implements Reward
 	@Override
 	public String getDisplayText()
 	{
-		return getName();
+		String text = "";
+		if (quantity > 1)
+		{
+			text = quantity + " x ";
+		}
+		text += getName();
+		return text;
 	}
 }

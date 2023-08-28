@@ -32,6 +32,8 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeDukeSucellus.showBlueHitsplatFromDukeUntilTick;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeDukeSucellus.showRedHitsplatFromDukeUntilTick;
 import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showBlueHitsplatUntilTick;
 import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showRedHitsplatUntilTick;
 import com.questhelper.panel.PanelDetails;
@@ -96,7 +98,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	ItemRequirement waterSource, senntistenTeleport, pickaxe, combatGear, bloodBurstRunes, iceBurstRunes,
 		shadowBurstRunes, smokeBurstRunes, allBursts, uncharedCells, chargedCells, xericTalisman,
 		facemask, staminaPotions, eyeTeleport, rangedCombatGear, food, prayerPotions, nardahTeleport,
-		arclight, freezes, icyBasalt, meleeCombatGear;
+		arclight, freezes, icyBasalt, meleeCombatGear, ringOfVisibility, lassarTeleport, magicCombatGear;
 
 	Zone vault, digsiteHole, golemRoom;
 	Requirement inVault, inDigsiteHole, inGolemRoom;
@@ -107,13 +109,15 @@ public class DesertTreasureII extends BasicQuestHelper
 	Requirement searchedVardorvis, searchedPerseriya, searchedSucellus, searchedWhisperer, askedAboutVardorvis,
 		askedAboutPerseriya, askedAboutSucellus, askedAboutWhisperer;
 
-	Requirement finishedVardorvis, finishedPerseriya;
+	Requirement finishedVardorvis, finishedPerseriya, finishedSucellus;
 
 	VardorvisSteps vardorvisSteps;
 
 	PerseriyaSteps perseriyaSteps;
 
 	SucellusSteps sucellusSteps;
+
+	WhispererSteps whispererSteps;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -224,6 +228,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		steps.put(40, goOperateGolemLastTime);
 
 		ConditionalStep findingTheFour = new ConditionalStep(this, vardorvisSteps);
+		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya, finishedSucellus), whispererSteps);
 		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya), sucellusSteps);
 		findingTheFour.addStep(finishedVardorvis, perseriyaSteps);
 		steps.put(42, findingTheFour);
@@ -247,6 +252,16 @@ public class DesertTreasureII extends BasicQuestHelper
 		steps.put(66, findingTheFour);
 		steps.put(68, findingTheFour);
 		steps.put(70, findingTheFour);
+		steps.put(72, findingTheFour);
+		steps.put(74, findingTheFour);
+		steps.put(76, findingTheFour);
+		steps.put(78, findingTheFour);
+		steps.put(80, findingTheFour);
+		steps.put(82, findingTheFour);
+		steps.put(84, findingTheFour);
+		steps.put(86, findingTheFour);
+		steps.put(88, findingTheFour);
+		steps.put(90, findingTheFour);
 
 		return steps;
 	}
@@ -320,7 +335,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 
 		xericTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERICS_TALISMAN);
-		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, 20);
+		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, 4);
 		facemask = new ItemRequirement("Facemask", ItemCollections.SLAYER_HELMETS);
 		facemask.addAlternates(ItemID.FACEMASK, ItemID.GAS_MASK);
 
@@ -332,6 +347,12 @@ public class DesertTreasureII extends BasicQuestHelper
 		icyBasalt = new ItemRequirement("Icy basalt", ItemID.ICY_BASALT);
 		meleeCombatGear = new ItemRequirement("Melee combat gear", -1, -1);
 		meleeCombatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
+		magicCombatGear = new ItemRequirement("Magic combat gear", -1, -1);
+		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
+		lassarTeleport = new ItemRequirement("Mind altar or lassar teleport", ItemID.MIND_ALTAR_TELEPORT);
+		lassarTeleport.addAlternates(ItemID.LASSAR_TELEPORT);
+
+		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY);
 
 		/* Quest Items */
 		uncharedCells = new ItemRequirement("Uncharged cells", ItemID.UNCHARGED_CELL_28402);
@@ -434,6 +455,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		// 15133 0->4
 
 		finishedPerseriya = new VarbitRequirement(15128, 50, Operation.GREATER_EQUAL);
+		finishedSucellus = new VarbitRequirement(15127, 70, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
@@ -582,6 +604,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		vardorvisSteps = new VardorvisSteps(this, talkToElissa, questBank);
 		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "Do Perseriya steps."), runeliteObjectManager);
 		sucellusSteps = new SucellusSteps(this, new DetailedQuestStep(this, "Do Sucellus steps."));
+		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."));
 	}
 
 	final BufferedImage missIcon = Icon.BLUE_HITSPLAT.getImage();
@@ -593,11 +616,13 @@ public class DesertTreasureII extends BasicQuestHelper
 		Point imageLocation = client.getLocalPlayer().getCanvasImageLocation(missIcon, client.getLocalPlayer().getLogicalHeight() / 2);
 		if (imageLocation != null)
 		{
-			if (showBlueHitsplatUntilTick >= client.getTickCount())
+			if (showBlueHitsplatUntilTick >= client.getTickCount()
+				|| showBlueHitsplatFromDukeUntilTick >= client.getTickCount())
 			{
 				OverlayUtil.renderImageLocation(graphics, imageLocation, missIcon);
 			}
-			if (showRedHitsplatUntilTick >= client.getTickCount())
+			if (showRedHitsplatUntilTick >= client.getTickCount()
+			 || showRedHitsplatFromDukeUntilTick >= client.getTickCount())
 			{
 				OverlayUtil.renderImageLocation(graphics, imageLocation, hitIcon);
 			}
@@ -607,13 +632,14 @@ public class DesertTreasureII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(combatGear, allBursts, facemask);
+		return Arrays.asList(combatGear, allBursts, facemask, ringOfVisibility);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions, freezes, xericTalisman, eyeTeleport, icyBasalt);
+		return Arrays.asList(nardahTeleport, waterSource, senntistenTeleport, staminaPotions, freezes, xericTalisman, eyeTeleport,
+			icyBasalt, lassarTeleport);
 	}
 
 
@@ -694,6 +720,10 @@ public class DesertTreasureII extends BasicQuestHelper
 			sucellusSteps.getDisplaySteps(),
 			Arrays.asList(meleeCombatGear, food),
 			Arrays.asList(prayerPotions, staminaPotions, icyBasalt)));
+		allSteps.add(new PanelDetails("The Whisperer",
+			whispererSteps.getDisplaySteps(),
+			Arrays.asList(magicCombatGear, ringOfVisibility, food),
+			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport)));
 		return allSteps;
 	}
 

@@ -21,7 +21,8 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */package com.questhelper.helpers.quests.deserttreasureii;
+ */
+package com.questhelper.helpers.quests.deserttreasureii;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
@@ -31,46 +32,35 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.client.ui.FontManager;
 
 public class ChestCodeStep extends QuestStep
 {
 
-	private final int ARROW_ONE_DOWN = 3;
-	private final int ARROW_ONE_UP = 4;
-	private final int ARROW_TWO_DOWN = 10;
-	private final int ARROW_TWO_UP = 11;
-	private final int ARROW_THREE_DOWN = 17;
-	private final int ARROW_THREE_UP = 18;
-	private final int ARROW_FOUR_DOWN = 24;
-	private final int ARROW_FOUR_UP = 25;
-	private final int ARROW_FIVE_DOWN = 31;
-	private final int ARROW_FIVE_UP = 32;
-	private final int ARROW_SIX_DOWN = 38;
-	private final int ARROW_SIX_UP = 39;
+	private final int NUMBER_OF_DIALS;
+	private final int SIZE_OF_LOOP;
 
-	private final int COMPLETE = 5;
+	private final int[] buttonToPress;
+	private final int[] distance;
+	private final int[] goalValues;
 
-	private final HashMap<Integer, Integer> highlightButtons = new HashMap<>();
-	private final HashMap<Integer, Integer> distance = new HashMap<>();
+	private boolean SHOULD_PRESS_CONFIRM;
 
-	public ChestCodeStep(QuestHelper questHelper)
+	public ChestCodeStep(QuestHelper questHelper, String answer, int sizeOfLoop, int... targets)
 	{
-		super(questHelper, "Open the chest using the code \"214013\".");
-		highlightButtons.put(1, ARROW_ONE_DOWN);
-		highlightButtons.put(2, ARROW_TWO_DOWN);
-		highlightButtons.put(3, ARROW_THREE_DOWN);
-		highlightButtons.put(4, ARROW_FOUR_DOWN);
-		highlightButtons.put(5, ARROW_FIVE_DOWN);
-		highlightButtons.put(6, ARROW_SIX_DOWN);
-		distance.put(1, 0);
-		distance.put(2, 0);
-		distance.put(3, 0);
-		distance.put(4, 0);
-		distance.put(5, 0);
-		distance.put(6, 0);
+		super(questHelper, "Open the chest using the code " + answer + ".");
+		SIZE_OF_LOOP = sizeOfLoop;
+		NUMBER_OF_DIALS = targets.length;
+		buttonToPress = new int[NUMBER_OF_DIALS];
+		distance = new int[NUMBER_OF_DIALS];
+		goalValues = new int[NUMBER_OF_DIALS];
+
+		for (int i = 0; i < NUMBER_OF_DIALS; i++)
+		{
+			buttonToPress[i] = 0;
+			distance[i] = 0;
+			goalValues[i] = targets[i];
+		}
 	}
 
 	@Subscribe
@@ -81,53 +71,33 @@ public class ChestCodeStep extends QuestStep
 
 	private void updateSolvedPositionState()
 	{
-		final int SLOT_ONE = 1113;
-		final int SLOT_TWO = 1114;
-		final int SLOT_THREE = 1115;
-		final int SLOT_FOUR = 1116;
-		final int SLOT_FIVE = 1117;
-		final int SLOT_SIX = 1118;
-
-		final int ENTRY_ONE = 2;
-		final int ENTRY_TWO = 1;
-		final int ENTRY_THREE = 4;
-		final int ENTRY_FOUR = 0;
-		final int ENTRY_FIVE = 1;
-		final int ENTRY_SIX = 3;
-
-		highlightButtons.replace(1, matchStateToSolution(SLOT_ONE, ENTRY_ONE, ARROW_ONE_DOWN, ARROW_ONE_UP));
-		highlightButtons.replace(2, matchStateToSolution(SLOT_TWO, ENTRY_TWO, ARROW_TWO_DOWN, ARROW_TWO_UP));
-		highlightButtons.replace(3, matchStateToSolution(SLOT_THREE, ENTRY_THREE, ARROW_THREE_DOWN, ARROW_THREE_UP));
-		highlightButtons.replace(4, matchStateToSolution(SLOT_FOUR, ENTRY_FOUR, ARROW_FOUR_DOWN, ARROW_FOUR_UP));
-		highlightButtons.replace(5, matchStateToSolution(SLOT_FIVE, ENTRY_FIVE, ARROW_FIVE_DOWN, ARROW_FIVE_UP));
-		highlightButtons.replace(6, matchStateToSolution(SLOT_SIX, ENTRY_SIX, ARROW_SIX_DOWN, ARROW_SIX_UP));
-
-		distance.replace(1, matchStateToDistance(SLOT_ONE, ENTRY_ONE));
-		distance.replace(2, matchStateToDistance(SLOT_TWO, ENTRY_TWO));
-		distance.replace(3, matchStateToDistance(SLOT_THREE, ENTRY_THREE));
-		distance.replace(4, matchStateToDistance(SLOT_FOUR, ENTRY_FOUR));
-		distance.replace(5, matchStateToDistance(SLOT_FIVE, ENTRY_FIVE));
-		distance.replace(6, matchStateToDistance(SLOT_SIX, ENTRY_SIX));
-
-		if (highlightButtons.get(1) == 0 &&
-			highlightButtons.get(2) == 0 &&
-			highlightButtons.get(3) == 0 &&
-			highlightButtons.get(4) == 0 &&
-			highlightButtons.get(5) == 0 &&
-			highlightButtons.get(6) == 0)
+		for (int i = 0; i < NUMBER_OF_DIALS; i++)
 		{
-			highlightButtons.put(5, COMPLETE);
+			int START_VARCLIENTINT_POS = 1113;
+			int varcIntID = START_VARCLIENTINT_POS + i;
+			int START_DOWN_ARROW = 3;
+			int ARROW_INTERVAL = 7;
+			int arrowDownID = START_DOWN_ARROW + (ARROW_INTERVAL * i);
+			int arrowUPID = START_DOWN_ARROW + 1 + (ARROW_INTERVAL * i);
+			buttonToPress[i] = matchStateToSolution(varcIntID, goalValues[i], arrowDownID, arrowUPID);
+			distance[i] = matchStateToDistance(varcIntID, goalValues[i]);
 		}
-		else
+
+		SHOULD_PRESS_CONFIRM = true;
+		for (int d : distance)
 		{
-			highlightButtons.put(5, 0);
+			if (d != 0)
+			{
+				SHOULD_PRESS_CONFIRM = false;
+				break;
+			}
 		}
 	}
 
-	private int matchStateToSolution(final int slot, final int target, int arrowRightId, int arrowLeftId)
+	private int matchStateToSolution(final int slot, final int target, int arrowDownId, int arrowUpId)
 	{
 		int currentValue = client.getVarcIntValue(slot);
-		int id = Math.floorMod(currentValue - target, 5) < Math.floorMod(target - currentValue, 5) ? arrowRightId : arrowLeftId;
+		int id = Math.floorMod(currentValue - target, SIZE_OF_LOOP) < Math.floorMod(target - currentValue, SIZE_OF_LOOP) ? arrowDownId : arrowUpId;
 		if (currentValue != target) return id;
 		return 0;
 	}
@@ -135,39 +105,34 @@ public class ChestCodeStep extends QuestStep
 	private int matchStateToDistance(final int slot, final int target)
 	{
 		int currentValue = client.getVarcIntValue(slot);
-		return Math.min(Math.floorMod(currentValue - target, 5), Math.floorMod(target - currentValue, 5));
+		return Math.min(Math.floorMod(currentValue - target, SIZE_OF_LOOP), Math.floorMod(target - currentValue, SIZE_OF_LOOP));
 	}
 
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
-		for (Map.Entry<Integer, Integer> entry : highlightButtons.entrySet())
+		if (SHOULD_PRESS_CONFIRM)
 		{
-			if (entry.getValue() == 0)
+			Widget widget = client.getWidget(809, 5);
+			if (widget != null)
 			{
-				continue;
+				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+					questHelper.getConfig().targetOverlayColor().getGreen(),
+					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.fill(widget.getBounds());
+				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.draw(widget.getBounds());
 			}
-
-			if (entry.getKey() == 5)
-			{
-				Widget widget = client.getWidget(809, 5);
-				if (widget != null)
-				{
-					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-						questHelper.getConfig().targetOverlayColor().getGreen(),
-						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
-					graphics.fill(widget.getBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
-					graphics.draw(widget.getBounds());
-				}
-				continue;
-			}
-
+		}
+		for (int i = 0; i < NUMBER_OF_DIALS; i++)
+		{
+			int button = buttonToPress[i];
+			if (button == 0) continue;
 			Widget widget = client.getWidget(809, 4);
 			if (widget != null)
 			{
-				Widget arrow = widget.getChild(entry.getValue());
+				Widget arrow = widget.getChild(button);
 				if (arrow == null) break;
 				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
 					questHelper.getConfig().targetOverlayColor().getGreen(),
@@ -176,14 +141,12 @@ public class ChestCodeStep extends QuestStep
 				graphics.setColor(questHelper.getConfig().targetOverlayColor());
 				graphics.draw(arrow.getBounds());
 
-				if (distance.get(entry.getKey()) != null)
-				{
-					int widgetX = arrow.getCanvasLocation().getX() + (arrow.getWidth() / 2) - 30;
-					int widgetY = arrow.getCanvasLocation().getY() + (arrow.getHeight() / 2) + 4;
-					Font font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
-					graphics.setFont(font);
-					graphics.drawString(Integer.toString(distance.get(entry.getKey())), widgetX, widgetY);
-				}
+				int widgetX = arrow.getCanvasLocation().getX() + (arrow.getWidth() / 2) - 30;
+				int widgetY = arrow.getCanvasLocation().getY() + (arrow.getHeight() / 2) + 4;
+				Font font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
+				graphics.setFont(font);
+				graphics.drawString(Integer.toString(distance[i]), widgetX, widgetY);
+
 			}
 		}
 	}

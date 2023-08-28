@@ -406,7 +406,7 @@ public class DetailedQuestStep extends QuestStep
 
 	public void makeDirectionOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		if (!hideMinimapLines)
+		if (!hideMinimapLines && plugin.getConfig().showWorldLines())
 		{
 			WorldLines.createMinimapLines(graphics, client, linePoints, getQuestHelper().getConfig().targetOverlayColor());
 		}

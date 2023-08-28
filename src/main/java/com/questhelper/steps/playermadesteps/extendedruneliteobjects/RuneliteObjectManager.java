@@ -232,6 +232,18 @@ public class RuneliteObjectManager
 		return extendedRuneliteObject;
 	}
 
+	public FakeGraphicsObject createGraphicsFakeObject(String groupID, int[] model, WorldPoint wp, int animation)
+	{
+		FakeGraphicsObject extendedRuneliteObject = new FakeGraphicsObject(client, clientThread, wp, model, animation);
+		// Should this be here or a separate 'activate' step?
+		extendedRuneliteObject.activate();
+
+		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
+
+		return extendedRuneliteObject;
+	}
+
 	public FakeObject createFakeObject(String groupID, int[] model, WorldPoint wp, int animation)
 	{
 		FakeObject extendedRuneliteObject = new FakeObject(client, clientThread, wp, model, animation);
@@ -378,7 +390,7 @@ public class RuneliteObjectManager
 
 	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
 	{
-		if (extendedRuneliteObject.getActions().size() == 0) return;
+		if (extendedRuneliteObject.getActions().size() == 0 && !(extendedRuneliteObject instanceof ReplacedNpc)) return;
 		LocalPoint lp = extendedRuneliteObject.getRuneliteObject().getLocation();
 
 		int widgetIndex = event.getActionParam0();

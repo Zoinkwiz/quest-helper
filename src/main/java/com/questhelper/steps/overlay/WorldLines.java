@@ -159,6 +159,10 @@ public class WorldLines
 		{
 			WorldPoint startWp = linePoints.get(i);
 			WorldPoint endWp = linePoints.get(i+1);
+
+			if (startWp == null || endWp == null) continue;
+			if (startWp.equals(new WorldPoint(0, 0, 0))) continue;
+			if (endWp.equals(new WorldPoint(0, 0, 0))) continue;
 			LocalPoint startLp = QuestPerspective.getInstanceLocalPoint(client, startWp);
 			LocalPoint endLp = QuestPerspective.getInstanceLocalPoint(client, endWp);
 			if (startLp == null && endLp == null)

@@ -41,6 +41,9 @@ public class ObjectCondition extends ConditionForStep
 	@Setter
 	private int maxDistanceFromPlayer = -1;
 
+	@Setter
+	private boolean onlyCheckGameObjects = false;
+
 	public ObjectCondition(int objectID)
 	{
 		this.objectID = objectID;
@@ -98,6 +101,8 @@ public class ObjectCondition extends ConditionForStep
 		{
 			if (checkForObjects(object)) return true;
 		}
+		if (onlyCheckGameObjects) return false;
+
 		if (checkForObjects(tile.getDecorativeObject())) return true;
 		if (checkForObjects(tile.getGroundObject())) return true;
 		if (checkForObjects(tile.getWallObject())) return true;
@@ -107,7 +112,7 @@ public class ObjectCondition extends ConditionForStep
 
 	private boolean checkForObjects(TileObject object)
 	{
-		return object != null && object.getId() == objectID;
+		return object != null && (object.getId() == objectID || objectID == -1);
 	}
 
 	@Override

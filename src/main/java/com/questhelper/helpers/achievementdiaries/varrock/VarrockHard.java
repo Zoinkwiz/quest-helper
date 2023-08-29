@@ -33,6 +33,7 @@ import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -52,6 +53,7 @@ import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -79,14 +81,14 @@ public class VarrockHard extends ComplexStateQuestHelper
 	Requirement ancientBook;
 
 	Requirement notSpottyCape, not153Kudos, notWakkaEdge, notPaddewwaTP, notSkullSceptre, notYewChurch,
-		notFancyStone, notYewRoots, notSmiteAltar, notPipe, atleast153Kudos, yewNotChecked, yewChecked, yewStump, smiteActive;
+		notFancyStone, notYewRoots, notSmiteAltar, notPipe, atleast153Kudos, yewNotChecked, yewChecked, yewStump, smiteActive, notSmiteActive;
 
 	Requirement cutYewTree, boughtSpotterCape;
 
 	QuestStep claimReward, moveToStronghold, moveToStronghold2, moveToStronghold3, moveToStronghold4, makeSceptre,
 		makeSkull, skullSceptre, makeSkullSceptre, getCape, spottyCape, getKudos, wakkaEdge, moveToBasement, kudos,
 		paddewwaTP, cutYew, goUp1, goUp2, goUp3, burnLogs, fancyStone, growYew, chopYew, digUpYewRoots,
-		moveToUpstairs, activateSmite, prayAtAltar, obsPipe, moveToEdge;
+		moveToUpstairs, prayAtAltar, obsPipe, moveToEdge;
 
 	NpcStep killMino, killFlesh, killCatablepon, killAnkou;
 
@@ -133,8 +135,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		doHard.addStep(notFancyStone, fancyStoneTask);
 
 		smiteAltarTask = new ConditionalStep(this, moveToUpstairs);
-		smiteAltarTask.addStep(new Conditions(notSmiteAltar, inUpstairs), activateSmite);
-		smiteAltarTask.addStep(new Conditions(notSmiteAltar, inUpstairs, smiteActive), prayAtAltar);
+		smiteAltarTask.addStep(new Conditions(notSmiteAltar, inUpstairs), prayAtAltar);
 		doHard.addStep(notSmiteAltar, smiteAltarTask);
 
 		wakkaEdgeTask = new ConditionalStep(this, wakkaEdge);
@@ -183,7 +184,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 
 		atleast153Kudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 153, "153+ Kudos");
 
-		smiteActive = new VarbitRequirement(4121, Operation.EQUAL, 1, "Smite Active");
+		smiteActive = new PrayerRequirement("Smite", Prayer.SMITE);
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
@@ -348,9 +349,8 @@ public class VarrockHard extends ComplexStateQuestHelper
 			"Dig up the stump to get the Yew roots.", spade);
 		moveToUpstairs = new ObjectStep(this, ObjectID.STAIRCASE_11789, new WorldPoint(3219, 3497, 0),
 			"Climb the stairs in the back of the Varrock palace.");
-		activateSmite = new DetailedQuestStep(this, "Activate smite.");
 		prayAtAltar = new ObjectStep(this, ObjectID.ALTAR, new WorldPoint(3208, 3495, 1),
-			"Pray at altar.", smiteActive);
+			"Pray at altar with Smite active.", smiteActive);
 		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
 			"Enter the Edgeville dungeon.");
 		obsPipe = new ObjectStep(this, 16511, new WorldPoint(3150, 9906, 0),
@@ -455,7 +455,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		fancyStoneSteps.setLockingStep(fancyStoneTask);
 		allSteps.add(fancyStoneSteps);
 
-		PanelDetails smitedSteps = new PanelDetails("Altar Smited", Arrays.asList(moveToUpstairs, activateSmite,
+		PanelDetails smitedSteps = new PanelDetails("Altar Smited", Arrays.asList(moveToUpstairs,
 			prayAtAltar), new SkillRequirement(Skill.PRAYER, 52));
 		smitedSteps.setDisplayCondition(notSmiteAltar);
 		smitedSteps.setLockingStep(smiteAltarTask);

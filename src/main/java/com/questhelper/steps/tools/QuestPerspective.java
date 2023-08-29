@@ -49,6 +49,8 @@ public class QuestPerspective
 			return Collections.singleton(worldPoint);
 		}
 
+		if (worldPoint == null) return Collections.singleton(null);
+
 		// find instance chunks using the template point. there might be more than one.
 		List<WorldPoint> worldPoints = new ArrayList<>();
 

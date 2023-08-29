@@ -34,8 +34,10 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import static com.questhelper.helpers.quests.deserttreasureii.FakeDukeSucellus.showBlueHitsplatFromDukeUntilTick;
 import static com.questhelper.helpers.quests.deserttreasureii.FakeDukeSucellus.showRedHitsplatFromDukeUntilTick;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showBlueHitsplatUntilTick;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showRedHitsplatUntilTick;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showBlueHitsplatFromLeviathanUntilTick;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showRedHitsplatFromLeviathanUntilTick;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeWhisperer.showBlueHitsplatWhispererUntilTick;
+import static com.questhelper.helpers.quests.deserttreasureii.FakeWhisperer.showRedHitsplatWhispererUntilTick;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
@@ -604,7 +606,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		vardorvisSteps = new VardorvisSteps(this, talkToElissa, questBank);
 		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "Do Perseriya steps."), runeliteObjectManager);
 		sucellusSteps = new SucellusSteps(this, new DetailedQuestStep(this, "Do Sucellus steps."));
-		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."));
+		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."), questBank, runeliteObjectManager);
 	}
 
 	final BufferedImage missIcon = Icon.BLUE_HITSPLAT.getImage();
@@ -616,13 +618,15 @@ public class DesertTreasureII extends BasicQuestHelper
 		Point imageLocation = client.getLocalPlayer().getCanvasImageLocation(missIcon, client.getLocalPlayer().getLogicalHeight() / 2);
 		if (imageLocation != null)
 		{
-			if (showBlueHitsplatUntilTick >= client.getTickCount()
-				|| showBlueHitsplatFromDukeUntilTick >= client.getTickCount())
+			if (showBlueHitsplatFromLeviathanUntilTick >= client.getTickCount()
+				|| showBlueHitsplatFromDukeUntilTick >= client.getTickCount()
+				|| showBlueHitsplatWhispererUntilTick >= client.getTickCount())
 			{
 				OverlayUtil.renderImageLocation(graphics, imageLocation, missIcon);
 			}
-			if (showRedHitsplatUntilTick >= client.getTickCount()
-			 || showRedHitsplatFromDukeUntilTick >= client.getTickCount())
+			if (showRedHitsplatFromLeviathanUntilTick >= client.getTickCount()
+			 || showRedHitsplatFromDukeUntilTick >= client.getTickCount()
+			 || showRedHitsplatWhispererUntilTick >= client.getTickCount())
 			{
 				OverlayUtil.renderImageLocation(graphics, imageLocation, hitIcon);
 			}
@@ -722,6 +726,10 @@ public class DesertTreasureII extends BasicQuestHelper
 			Arrays.asList(prayerPotions, staminaPotions, icyBasalt)));
 		allSteps.add(new PanelDetails("The Whisperer",
 			whispererSteps.getDisplaySteps(),
+			Arrays.asList(magicCombatGear, ringOfVisibility, food),
+			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport)));
+		allSteps.add(new PanelDetails("The Whisperer - Choir",
+			whispererSteps.getDisplayStepsSilentChoir(),
 			Arrays.asList(magicCombatGear, ringOfVisibility, food),
 			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport)));
 		return allSteps;

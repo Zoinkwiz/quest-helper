@@ -53,8 +53,8 @@ import net.runelite.api.coords.WorldPoint;
 
 public class FakeLeviathan
 {
-	public static int showRedHitsplatUntilTick = 0;
-	public static int showBlueHitsplatUntilTick = 0;
+	public static int showRedHitsplatFromLeviathanUntilTick = 0;
+	public static int showBlueHitsplatFromLeviathanUntilTick = 0;
 	public static void createLeviathan(Client client, QuestHelper qh, RuneliteObjectManager runeliteObjectManager)
 	{
 		FakeNpc leviathan = runeliteObjectManager.createFakeNpc(qh.toString(),
@@ -97,11 +97,11 @@ public class FakeLeviathan
 			leviathan.addDelayedAction(4, new Action(menuEntryA -> {
 				if (client.getLocalPlayer().getWorldLocation().distanceTo(pPoint) == 0)
 				{
-					showRedHitsplatUntilTick = client.getTickCount() + 1;
+					showRedHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
 				}
 				else
 				{
-					showBlueHitsplatUntilTick = client.getTickCount() + 1;
+					showBlueHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
 				}
 			}));
 		};
@@ -113,11 +113,11 @@ public class FakeLeviathan
 			leviathan.addDelayedAction(4, new Action(menuEntryA -> {
 				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.RANGED)
 				{
-					showRedHitsplatUntilTick = client.getTickCount() + 1;
+					showRedHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
 				}
 				else
 				{
-					showBlueHitsplatUntilTick = client.getTickCount() + 1;
+					showBlueHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
 				}
 			}));
 		};
@@ -129,11 +129,11 @@ public class FakeLeviathan
 			leviathan.addDelayedAction(4, new Action(menuEntryA -> {
 				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.MELEE)
 				{
-					showRedHitsplatUntilTick = client.getTickCount() + 1;
+					showRedHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
 				}
 				else
 				{
-					showBlueHitsplatUntilTick = client.getTickCount() + 1;
+					showBlueHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
 				}
 			}));
 		};
@@ -145,11 +145,11 @@ public class FakeLeviathan
 			leviathan.addDelayedAction(4, new Action(menuEntryA -> {
 				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.MAGIC)
 				{
-					showRedHitsplatUntilTick = client.getTickCount() + 1;
+					showRedHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
 				}
 				else
 				{
-					showBlueHitsplatUntilTick = client.getTickCount() + 1;
+					showBlueHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
 				}
 			}));
 		};

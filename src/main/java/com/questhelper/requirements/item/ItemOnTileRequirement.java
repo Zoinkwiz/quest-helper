@@ -28,6 +28,7 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.requirements.conditional.ConditionForStep;
+import com.questhelper.steps.tools.QuestPerspective;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -79,7 +80,7 @@ public class ItemOnTileRequirement extends ConditionForStep
 
 			for (WorldPoint point : localWorldPoints)
 			{
-				LocalPoint localPoint = LocalPoint.fromWorld(client, point);
+				LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, point);
 				if (localPoint == null)
 				{
 					continue;

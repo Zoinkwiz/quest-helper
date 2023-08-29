@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
@@ -390,7 +391,10 @@ public class RuneliteObjectManager
 
 	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
 	{
-		if (extendedRuneliteObject.getActions().size() == 0 && !(extendedRuneliteObject instanceof ReplacedNpc)) return;
+		if (extendedRuneliteObject.getActions().size() == 0 && !(extendedRuneliteObject instanceof ReplacedNpc))
+		{
+			return;
+		}
 		LocalPoint lp = extendedRuneliteObject.getRuneliteObject().getLocation();
 
 		int widgetIndex = event.getActionParam0();
@@ -478,7 +482,7 @@ public class RuneliteObjectManager
 
 	public void setActive(ExtendedRuneliteObject extendedRuneliteObject)
 	{
-		LocalPoint lp = LocalPoint.fromWorld(client, extendedRuneliteObject.getWorldPoint());
+		LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, extendedRuneliteObject.getWorldPoint());
 		if (lp == null) return;
 
 		extendedRuneliteObject.getRuneliteObject().setLocation(lp, client.getPlane());
@@ -621,16 +625,9 @@ public class RuneliteObjectManager
 
 	private boolean isMouseOverObject(ExtendedRuneliteObject extendedRuneliteObject)
 	{
-		LocalPoint lp = extendedRuneliteObject.getRuneliteObject().getLocation();
-		if (!WorldPoint.fromLocal(client, lp).equals(extendedRuneliteObject.getWorldPoint()))
-		{
-			return false;
-		}
-
 		Shape clickbox = extendedRuneliteObject.getClickbox();
 
 		if (clickbox == null) return false;
-
 		Point p = client.getMouseCanvasPosition();
 
 		return clickbox.contains(p.getX(), p.getY());

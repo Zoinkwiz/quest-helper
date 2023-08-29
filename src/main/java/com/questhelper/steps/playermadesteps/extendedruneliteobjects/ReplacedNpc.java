@@ -97,7 +97,7 @@ public class ReplacedNpc extends FakeNpc
 	// This changes the clickbox to be the original NPC's clickbox to avoid any possible advantage is interacting
 	public Shape getClickbox()
 	{
-		if (npc == null) return new Rectangle(0, 0, 0, 0);
+		if (npc == null) return null;
 		return Perspective.getClickbox(client, npc.getModel(), npc.getOrientation(), npc.getLocalLocation().getX(), npc.getLocalLocation().getY(),
 			Perspective.getTileHeight(client, npc.getLocalLocation(), getWorldPoint().getPlane()));
 	}

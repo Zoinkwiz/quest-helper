@@ -182,7 +182,7 @@ public class ObjectStep extends DetailedQuestStep
 
 		for (WorldPoint point : localWorldPoints)
 		{
-			LocalPoint localPoint = LocalPoint.fromWorld(client, point);
+			LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, point);
 			if (localPoint == null)
 			{
 				continue;

@@ -34,6 +34,11 @@ public class LogicHelper
 		return new Conditions(LogicType.NOR, condition);
 	}
 
+	public static Requirement nand(Requirement... condition)
+	{
+		return new Conditions(LogicType.NAND, condition);
+	}
+
 	public static Requirement or(Requirement... condition)
 	{
 		return new Conditions(LogicType.OR, condition);

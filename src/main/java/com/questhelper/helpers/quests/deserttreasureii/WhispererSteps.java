@@ -71,7 +71,10 @@ public class WhispererSteps extends ConditionalStep
 		getBlueShadowKeyRealRealm, activateBlackstoneFragment3, recallDevices, placeShadowBlockerWestResidential,
 		enterResedentialWestPuddle, openPubDoor, takeSuperiorTorchSchematic, bringKetlaTheSuperiorTorchSchematic,
 		activateBlackstoneFragment4, takeSuperiorTorchSchematicRealWorld, claimSuperiorShadowTorch, enterSciencePuddle2,
-		getAnimaPortalSchematic;
+		getAnimaPortalSchematic, getAnimaPortalSchematicRealWorld, activateBlackstoneFragment5, bringKetlaTheAnimaPortalSchematic;
+
+	DetailedQuestStep claimAnimaPortal, enterPlazaPuddle, destroyTentacles3, activateBlackstoneFragment6, takeWhiteShadowKey,
+		placeThingsAroundChest, enterPlazaPuddle2, lightBraziers, openFinalChest;
 
 	ItemRequirement magicCombatGear, food, prayerPotions, staminaPotions, nardahTeleport, ringOfVisibility, lassarTeleport;
 
@@ -86,7 +89,7 @@ public class WhispererSteps extends ConditionalStep
 		activatedTeleporter5, activatedTeleporter6, activatedTeleporter7, passedOutAtCathedral, finishedTalkingToKetla,
 		givenShadowBlockerSchematic, blockerNearby, blockerPlacedAtDoor, inLassarShadowRealm, purpleKeyTaken, inFurnaceHouse,
 		givenTorchSchematic, destroyedTentacles, givenIdolSchematic, idolPlaced, destroyedTentacles2, blockerPlacedAtPub,
-		inPubShadowRealm, usedBlueKey, givenSuperiorTorchSchematic;
+		inPubShadowRealm, usedBlueKey, givenSuperiorTorchSchematic, destroyedTentacles3, givenAnimaPortalSchematic;
 
 	Requirement hadGreenKey, hadPurpleKey, hadShadowBlockerSchematic;
 
@@ -135,6 +138,9 @@ public class WhispererSteps extends ConditionalStep
 		pubSteps.addStep(shadowBlocker, placeShadowBlockerWestResidential);
 
 		ConditionalStep getAnimaPortalSteps = new ConditionalStep(getQuestHelper(), claimSuperiorShadowTorch);
+		getAnimaPortalSteps.addStep(and(animaPortalSchematic, inLassar), bringKetlaTheAnimaPortalSchematic);
+		getAnimaPortalSteps.addStep(and(animaPortalSchematic, inLassarShadowRealm), activateBlackstoneFragment5);
+//		getAnimaPortalSteps.addStep(and(superiorTorch, inLassar, destroyedTentacles3), getAnimaPortalSchematicRealWorld);
 		getAnimaPortalSteps.addStep(and(superiorTorch, inLassarShadowRealm), getAnimaPortalSchematic);
 		getAnimaPortalSteps.addStep(superiorTorch, enterSciencePuddle2);
 
@@ -375,8 +381,14 @@ public class WhispererSteps extends ConditionalStep
 		givenSuperiorTorchSchematic = new VarbitRequirement(15086, 1);
 		// 22->24
 
+		destroyedTentacles3 = new Conditions(
+			new TileIsLoadedRequirement(new WorldPoint(2578, 63983, 0)),
+			new ObjectCondition(NullObjectID.NULL_48207, new WorldPoint(2578, 6398, 0))
+		);
 		// Anima portal real world block:
-		// 48207, new W(2578, y=6398, 0)
+		// 48207, new W(2578, y=6398, 0) Shadow Realm: ObjectID.TENTACLE_48208
+
+		givenAnimaPortalSchematic = new VarbitRequirement(15084, 1);
 	}
 
 	protected void setupSteps()
@@ -530,7 +542,7 @@ public class WhispererSteps extends ConditionalStep
 		activateBlackstoneFragment4 = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
 			blackstoneFragment.highlighted());
 		bringKetlaTheSuperiorTorchSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
-			"Bring the basic superior shadow torch schematic to Ketla, next to the Western Residential District teleport.",
+			"Bring the superior shadow torch schematic to Ketla, next to the Western Residential District teleport.",
 			superiorTorchSchematic);
 		bringKetlaTheSuperiorTorchSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 
@@ -541,8 +553,26 @@ public class WhispererSteps extends ConditionalStep
 		enterSciencePuddle2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
 		"Enter the puddle outside of the building with furnaces in it in the Science District.");
 		enterSciencePuddle2.addDialogStep("Northern Science District.");
-		getAnimaPortalSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2580, 6402, 0), "Go to the north-west of the science district," +
+		getAnimaPortalSchematicRealWorld = new ItemStep(getQuestHelper(), new WorldPoint(2580, 6402, 0), "Go to the north-west of the science district," +
 			" and burn the tentacles there to grab the Anima portal schematic.", animaPortalSchematic);
+		getAnimaPortalSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2324, 6402, 0), "Go to the north-west of the science district," +
+			" and burn the tentacles there to grab the Anima portal schematic.", animaPortalSchematic);
+		getAnimaPortalSchematic.addSubSteps(getAnimaPortalSchematicRealWorld);
+
+		activateBlackstoneFragment5 = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
+			blackstoneFragment.highlighted());
+
+		bringKetlaTheAnimaPortalSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			"Bring the anima portal schematic to Ketla, next to the Western Residential District teleport.",
+			animaPortalSchematic);
+		bringKetlaTheAnimaPortalSchematic.addDialogSteps("More options.", "Western Residential District.", "I have a schematic here.");
+
+		claimAnimaPortal = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			"Get the anima portal from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot);
+		claimSuperiorShadowTorch.addDialogSteps("Take it.", "Western Residential District.", "Take the Anima Portal.", "Take everything.");
+
+		enterPlazaPuddle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2618, 6404, 0), "Enter the puddle on the Plaza.");
+		enterPlazaPuddle.addDialogSteps("Plaza.");
 	}
 
 	protected List<QuestStep> getDisplaySteps()
@@ -557,6 +587,6 @@ public class WhispererSteps extends ConditionalStep
 			placeIdol, enterResedentialPuddleAgain, destroyTentacles2, getBlueShadowKeyRealRealm, recallDevices,
 			placeShadowBlockerWestResidential, enterResedentialWestPuddle, openPubDoor, takeSuperiorTorchSchematic,
 			activateBlackstoneFragment4, bringKetlaTheSuperiorTorchSchematic, claimSuperiorShadowTorch, enterSciencePuddle2,
-			getAnimaPortalSchematic);
+			getAnimaPortalSchematic, activateBlackstoneFragment5, bringKetlaTheAnimaPortalSchematic, enterPlazaPuddle);
 	}
 }

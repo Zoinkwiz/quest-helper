@@ -309,7 +309,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 			"Right-click on the Skull sceptre and select 'Invoke' to teleport to the stronghold.",
 			combinedSkullSceptre.highlighted());
 		getCape = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398, 0),
-			"Have Asyff make a spotty cape.", dashingKeb.quantity(2), coins.quantity(800));
+			"Have Asyff make a spottier cape.", dashingKeb.quantity(2), coins.quantity(800));
 		getCape.addDialogStep("Could you make anything out of this fur that I got from hunting?");
 		spottyCape = new ItemStep(this, "Equip the spottier cape.", cape.highlighted());
 		moveToBasement = new ObjectStep(this, ObjectID.STAIRS_24428, new WorldPoint(3256, 3452, 0),

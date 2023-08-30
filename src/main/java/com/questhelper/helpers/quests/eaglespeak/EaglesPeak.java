@@ -139,7 +139,7 @@ public class EaglesPeak extends BasicQuestHelper
 		createDisguises.addStep(new Conditions(inGoldRoom, lever1Pulled, bird2Moved), fillFeeder3);
 		createDisguises.addStep(new Conditions(inGoldRoom, lever1Pulled, bird1Moved), fillFeeder2);
 		createDisguises.addStep(new Conditions(inGoldRoom, lever1Pulled), fillFeeder1);
-		createDisguises.addStep(new Conditions(inGoldRoom, birdFeed), pullLever1Down);
+		createDisguises.addStep(new Conditions(inGoldRoom, birdFeed6), pullLever1Down);
 		createDisguises.addStep(new Conditions(inGoldRoom), collectFeed);
 		createDisguises.addStep(new Conditions(inMainCavern, hasSilverFeatherOrUsed, hasBronzeFeatherOrUsed), enterGoldRoom);
 		createDisguises.addStep(new Conditions(inSilverRoom, hasSilverFeatherOrUsed), enterMainCavernFromSilver);

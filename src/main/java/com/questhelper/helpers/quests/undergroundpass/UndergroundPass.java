@@ -129,10 +129,12 @@ public class UndergroundPass extends BasicQuestHelper
 		plankHighlight = new ItemRequirement("Plank", ItemID.PLANK);
 		plankHighlight.setHighlightInInventory(true);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket.canBeObtainedDuringQuest();
 		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlight.setHighlightInInventory(true);
 		bucketHighlight.setTooltip("You can grab a bucket from the southwest corner of the large dwarf encampment building.");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderbox.canBeObtainedDuringQuest();
 		tinderboxHighlight = tinderbox.highlighted();
 		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1).isNotConsumed();
 		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());

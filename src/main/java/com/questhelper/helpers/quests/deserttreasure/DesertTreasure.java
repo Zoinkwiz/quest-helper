@@ -642,7 +642,7 @@ public class DesertTreasure extends BasicQuestHelper
 		iceDiamondPanel.setLockingStep(getIceDiamond);
 
 		PanelDetails finishingPanel = new PanelDetails("Freeing Azzanadra",
-			Arrays.asList(placeBlood, enterPyramid, goDownFromFirstFloor, enterMiddleOfPyramid, talkToAzz), energyOrStaminas, food, prayerPotions);
+			Arrays.asList(placeBlood, enterPyramid, goDownFromFirstFloor, enterMiddleOfPyramid, talkToAzz), energyOrStaminas, food, prayerPotions, antipoison);
 
 		allSteps.add(smokeDiamondPanel);
 		allSteps.add(shadowDiamondPanel);

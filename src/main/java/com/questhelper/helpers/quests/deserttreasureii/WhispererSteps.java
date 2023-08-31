@@ -58,8 +58,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.client.eventbus.Subscribe;
 
 
 public class WhispererSteps extends ConditionalStep
@@ -90,7 +88,8 @@ public class WhispererSteps extends ConditionalStep
 		destroyTentacles6, activateBlackstoneFragment9, getRedShadowKey, placeBlockerInRedRoom, enterPuddleNearPub3, openRedChest, activateBlackstoneFragment10,
 		openRedChestRealWorld, openGreenChest, openGreenChestRealWorld, enterSciencePuddle3, activateBlackstoneFragment11, makeIcon,
 		enterDrain, useIconInDrain, goDownDrainLadder, inspectPillar, talkToMe, talkToKetlaAfterVision, claimPerfectShadowTorch, enterPuddleNearPub4,
-		destroyCathedralTentacles, activateBlackstoneFragment12, enterTheCathedral, fightWhispererSidebar;
+		destroyCathedralTentacles, activateBlackstoneFragment12, enterTheCathedral, fightWhispererSidebar, searchEntrails, returnToDesertWithWhisperersMedallion,
+		useWhisperersMedallionOnStatue;
 
 	ItemRequirement magicCombatGear, food, prayerPotions, staminaPotions, nardahTeleport, ringOfVisibility, lassarTeleport;
 
@@ -107,12 +106,14 @@ public class WhispererSteps extends ConditionalStep
 		givenShadowBlockerSchematic, blockerNearby, blockerPlacedAtDoor, inLassarShadowRealm, purpleKeyTaken, inFurnaceHouse,
 		givenTorchSchematic, destroyedTentacles, givenIdolSchematic, idolPlaced, destroyedTentacles2, blockerPlacedAtPub,
 		inPubShadowRealm, usedBlueKey, givenSuperiorTorchSchematic, destroyedTentacles3, givenAnimaPortalSchematic,
-		destroyedTentacles4, braziersLit, obtainedPerfectedSchematic, perfectSchematicGiven, learntAboutSilentChoir;
+		destroyedTentacles4, braziersLit, obtainedPerfectedSchematic, perfectSchematicGiven, learntAboutSilentChoir,
+		killedWhisperer;
 
 	Requirement hadGreenShadowKey, hadPurpleKey, hadShadowBlockerSchematic, placedBlockerWhiteChest, placedAnimaWhiteChest,
 		placedIdolWhiteChest, inPubUpstairsShadowRealm, touchedPubRemnant, destroyedTentacles5, destroyedTentacles6,
 		blockerPlacedInRedRoom, hadRedShadowKey, redKeyUsed, inLassarShadowRealmSW, greenKeyUsed, iconUsed, inDrainF0,
-		inDrainF1, inVision, escapedVision, unlockedPerfectShadowTorch, destroyedCathedralTentacles, enteredCathedral;
+		inDrainF1, inVision, escapedVision, unlockedPerfectShadowTorch, destroyedCathedralTentacles, enteredCathedral,
+		completedOtherMedallions;
 
 	Zone vault, camdozaal, lassar, lassarShadowRealm, furnaceHouse, externalFurnaceHouse, pub, pubUpstairsShadowRealm,
 		lassarShadowRealmSW, drainF0, drainF1, visionRegion;
@@ -210,6 +211,7 @@ public class WhispererSteps extends ConditionalStep
 
 
 		/* Top steps */
+		addStep(and(inLassar, killedWhisperer), searchEntrails);
 		addStep(and(inLassar, or(destroyedCathedralTentacles, enteredCathedral)), enterTheCathedral);
 		addStep(and(inLassarShadowRealm, destroyedCathedralTentacles), activateBlackstoneFragment12);
 		addStep(and(inLassarShadowRealm, perfectShadowTorch), destroyCathedralTentacles);
@@ -659,6 +661,25 @@ public class WhispererSteps extends ConditionalStep
 
 		// 14862 80->82
 		enteredCathedral = new VarbitRequirement(WHISPERER_VARBIT, 42, Operation.GREATER_EQUAL);
+
+		// Killed Whisperer:
+		// 15064 0->100 (insanity?)
+		// Varplayer 3969 0->1
+		// 15126 42->44
+		// 14862 82->84
+		//
+		killedWhisperer = new VarbitRequirement(WHISPERER_VARBIT, 44, Operation.GREATER_EQUAL);
+		// Obtained medallion
+		// 15126 44->46
+		// 14862 84->86
+		// 15161 1->0
+
+		completedOtherMedallions = and(
+			new VarbitRequirement(15128, 50, Operation.GREATER_EQUAL),
+			new VarbitRequirement(15127, 70, Operation.GREATER_EQUAL),
+			new VarbitRequirement(15125, 56, Operation.GREATER_EQUAL)
+		);
+		// Told Ramarno about Ketla, 15149 0->1
 	}
 
 	protected void setupSteps()
@@ -984,10 +1005,26 @@ public class WhispererSteps extends ConditionalStep
 		fightWhispererSidebar.addText("Corrupted seeds: Activate the blackstone fragment in your inventory. Avoid the dark green seeds, and step on the light green ones.");
 		fightWhispererSidebar.addText("Screech: Pillars appear, which you must hide behind to avoid damage.");
 		fightWhispererSidebar.addText("After each special attack, the Whisperer fire out a binding spell if you are within 10 tiles of her, dealing Melee damage.");
-		fightWhispererSidebar.addText("When she hits 0 health, she will heal back to 140, and start attacking rapidly. Finish her off.");
+		fightWhispererSidebar.addText("When she hits 0 health, she will heal back to 140, and start attacking rapidly with random ranged and magic attacks. Finish her off.");
 		fightWhispererSidebar.addSubSteps(enterTheCathedral);
 
 		FakeWhisperer.createWhisperer(getQuestHelper().getQuestHelperPlugin().getClient(), getQuestHelper(), getQuestHelper().getQuestHelperPlugin().getRuneliteObjectManager());
+
+		searchEntrails = new ObjectStep(getQuestHelper(), NullObjectID.NULL_47578, new WorldPoint(2656, 6370, 0),
+			"Search the entrails dropped by the Whisperer.", true);
+		searchEntrails.addDialogStep("The Cathedral.");
+
+		returnToDesertWithWhisperersMedallion = new ObjectStep(getQuestHelper(), ObjectID.VAULT_DOOR_46743,
+			new WorldPoint(3511, 2971, 0),
+			"Return to the Vault door north-east of Nardah. Be wary of an assassin coming to kill you! They can run, freeze, and teleblock you.",
+			whisperersMedallion);
+		returnToDesertWithWhisperersMedallion.addTeleport(nardahTeleport);
+		returnToDesertWithWhisperersMedallion.conditionToHideInSidebar(completedOtherMedallions);
+
+		useWhisperersMedallionOnStatue =new ObjectStep(getQuestHelper(), NullObjectID.NULL_49501, new WorldPoint(3932, 9636, 1),
+			"Use the medallion on the north-west statue.", whisperersMedallion.highlighted());
+		useWhisperersMedallionOnStatue.addIcon(ItemID.WHISPERERS_MEDALLION);
+		useWhisperersMedallionOnStatue.conditionToHideInSidebar(completedOtherMedallions);
 	}
 
 	protected List<QuestStep> getDisplaySteps()
@@ -1014,6 +1051,6 @@ public class WhispererSteps extends ConditionalStep
 			destroyTentacles5, destroyTentacles6, activateBlackstoneFragment9, getRedShadowKey, placeBlockerInRedRoom, enterPuddleNearPub3, openRedChest,
 			activateBlackstoneFragment10, enterSciencePuddle3, openGreenChest, activateBlackstoneFragment11, makeIcon, enterDrain, useIconInDrain,
 			goDownDrainLadder, inspectPillar, talkToMe, talkToKetlaAfterVision, claimPerfectShadowTorch, enterPuddleNearPub4, destroyCathedralTentacles,
-			activateBlackstoneFragment12, fightWhispererSidebar);
+			activateBlackstoneFragment12, fightWhispererSidebar, searchEntrails, returnToDesertWithWhisperersMedallion, useWhisperersMedallionOnStatue);
 	}
 }

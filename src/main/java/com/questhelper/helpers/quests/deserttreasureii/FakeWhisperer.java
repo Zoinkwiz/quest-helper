@@ -253,7 +253,7 @@ public class FakeWhisperer
 			// 7374
 			// 7322? - quite woosh
 			// 7354?
-//			client.playSoundEffect(7472);
+			client.playSoundEffect(7354);
 
 			createProjectile(client, 2445, whisperer);
 			whisperer.addDelayedAction(3, new Action(menuEntryA -> {
@@ -277,6 +277,23 @@ public class FakeWhisperer
 			{
 				actionsPerformed.set(actionsPerformed.get() + 1);
 			}
+		};
+
+		Consumer<MenuEntry> orbAttack = (menuEntry) -> {
+			// Noise to tele
+			// 7330
+			// Wind-up
+			// 7447
+			// Spawn orbs
+			// 7289
+			// 7263 = crushed orb
+
+
+			// Orbs objects, 47575, A 10271
+			// Used blackstone, was yellow outline version
+			// Light-green: 47573, A 10270
+			// Dark-green: 47574, A: 10271
+			// Orb stepped on: 2463 SpotAnim
 		};
 
 		AtomicInteger ticksBetweenActions = new AtomicInteger(1);

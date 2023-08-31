@@ -42,13 +42,16 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
@@ -59,6 +62,7 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -102,7 +106,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		facemask, staminaPotions, eyeTeleport, rangedCombatGear, food, prayerPotions, nardahTeleport,
 		arclight, freezes, icyBasalt, meleeCombatGear, ringOfVisibility, lassarTeleport, magicCombatGear;
 
-	Zone vault, digsiteHole, golemRoom;
+	ItemRequirement whisperersMedallion, vardorvisMedallion, sucellusMedallion, perseriyaMedallion, hairClip, medallion;
+
+	Zone vault, vault2, digsiteHole, golemRoom;
 	Requirement inVault, inDigsiteHole, inGolemRoom;
 
 	Requirement inspectedStatueSE, inspectedStatueSW, inspectedStatueNE, inspectedStatueNW, inspectedPlaque,
@@ -111,7 +117,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	Requirement searchedVardorvis, searchedPerseriya, searchedSucellus, searchedWhisperer, askedAboutVardorvis,
 		askedAboutPerseriya, askedAboutSucellus, askedAboutWhisperer;
 
-	Requirement finishedVardorvis, finishedPerseriya, finishedSucellus;
+	Requirement finishedVardorvis, finishedPerseriya, finishedSucellus, finishedWhisperer;
 
 	VardorvisSteps vardorvisSteps;
 
@@ -120,6 +126,16 @@ public class DesertTreasureII extends BasicQuestHelper
 	SucellusSteps sucellusSteps;
 
 	WhispererSteps whispererSteps;
+
+	DetailedQuestStep returnToDesertWithFinalMedallion, searchBedForHairClip, unlockCell, getItemsFromCell,
+		investigateAltar, returnToMysteriousFigure, fightMysteriousFigure, enterAncientVault, returnToPickUpMedallion,
+		pickUpMedallion, getMedallionFromChest, goDownSteps, enterVaultFinalSteps, defeatAssassin, defeatKetla,
+		defeatKasonde, defeatPersten, cutsceneThenWights, talkToAzzanandra;
+
+	Requirement cellUnlocked, itemsRetrieved, inCellRegion, defeatedStranger, medallionNearby, inFinalRoom,
+		assassinAttacking, ketlaAttacking, kasondeAttacking, perstenAttacking, defeatedWights;
+
+	Zone cellRegion, finalRoom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -261,9 +277,43 @@ public class DesertTreasureII extends BasicQuestHelper
 		steps.put(80, findingTheFour);
 		steps.put(82, findingTheFour);
 		steps.put(84, findingTheFour);
-		steps.put(86, findingTheFour);
-		steps.put(88, findingTheFour);
-		steps.put(90, findingTheFour);
+
+		steps.put(86, returnToDesertWithFinalMedallion);
+
+		ConditionalStep escapeCell = new ConditionalStep(this, searchBedForHairClip);
+		escapeCell.addStep(itemsRetrieved, investigateAltar);
+		escapeCell.addStep(cellUnlocked, getItemsFromCell);
+		escapeCell.addStep(hairClip, unlockCell);
+		steps.put(88, escapeCell);
+		steps.put(90, escapeCell);
+
+		ConditionalStep defeatStranger = new ConditionalStep(this, returnToMysteriousFigure);
+		defeatStranger.addStep(inCellRegion, fightMysteriousFigure);
+		steps.put(92, defeatStranger);
+
+		ConditionalStep goPlaceFinalMedallion = new ConditionalStep(this, returnToPickUpMedallion);
+		goPlaceFinalMedallion.addStep(medallion, enterAncientVault);
+		goPlaceFinalMedallion.addStep(medallionNearby, pickUpMedallion);
+		goPlaceFinalMedallion.addStep(inCellRegion, getMedallionFromChest);
+		steps.put(94, goPlaceFinalMedallion);
+		steps.put(96, goPlaceFinalMedallion);
+//		steps.put(98, defeatWights);
+		ConditionalStep finalBit = new ConditionalStep(this, enterVaultFinalSteps);
+		finalBit.addStep(and(inFinalRoom, defeatedWights), talkToAzzanandra);
+		finalBit.addStep(and(inFinalRoom, perstenAttacking), defeatPersten);
+		finalBit.addStep(and(inFinalRoom, kasondeAttacking), defeatKasonde);
+		finalBit.addStep(and(inFinalRoom, ketlaAttacking), defeatKetla);
+		finalBit.addStep(and(inFinalRoom, assassinAttacking), defeatAssassin);
+		finalBit.addStep(inVault, goDownSteps);
+		steps.put(100, finalBit);
+		steps.put(102, finalBit);
+		steps.put(104, finalBit);
+		steps.put(106, finalBit);
+		steps.put(108, finalBit);
+		steps.put(110, finalBit);
+		/* Post-fight */
+		steps.put(112, finalBit);
+		steps.put(114, finalBit);
 
 		return steps;
 	}
@@ -359,20 +409,33 @@ public class DesertTreasureII extends BasicQuestHelper
 		/* Quest Items */
 		uncharedCells = new ItemRequirement("Uncharged cells", ItemID.UNCHARGED_CELL_28402);
 		chargedCells = new ItemRequirement("Charged cells", ItemID.CHARGED_CELL);
+
+		perseriyaMedallion = new ItemRequirement("Perseriya's medallion", ItemID.PERSERIYAS_MEDALLION);
+		vardorvisMedallion = new ItemRequirement("Vardorvis' medallion", ItemID.VARDORVIS_MEDALLION);
+		sucellusMedallion = new ItemRequirement("Sucellus' medallion", ItemID.SUCELLUS_MEDALLION);
+		whisperersMedallion = new ItemRequirement("Whisperer's medallion", ItemID.WHISPERERS_MEDALLION);
+		hairClip = new ItemRequirement("Hair clip", ItemID.HAIR_CLIP_28408);
+
+		medallion = new ItemRequirement("Medallion", ItemID.WHISPERERS_MEDALLION);
+		medallion.addAlternates(ItemID.SUCELLUS_MEDALLION, ItemID.PERSERIYAS_MEDALLION, ItemID.VARDORVIS_MEDALLION);
 	}
 
 	public void loadZones()
 	{
 		vault = new Zone(new WorldPoint(3925, 9620, 1), new WorldPoint(3949, 9643, 1));
+		vault2 = new Zone(new WorldPoint(3159, 6421, 1), new WorldPoint(3181, 6442, 1));
 		digsiteHole = new Zone(new WorldPoint(3400, 9800, 0), new WorldPoint(3419, 9824, 0));
 		golemRoom = new Zone(new WorldPoint(2767, 6425, 0), new WorldPoint(2807, 6459, 0));
+		cellRegion = new Zone(new WorldPoint(3082, 9243, 0), new WorldPoint(3122, 9271, 0));
+		finalRoom = new Zone(new WorldPoint(3275, 6397, 0), new WorldPoint(3314, 6463, 0));
 	}
 
 	public void setupConditions()
 	{
-		inVault = new ZoneRequirement(vault);
+		inVault = new ZoneRequirement(vault, vault2);
 		inDigsiteHole = new ZoneRequirement(digsiteHole);
 		inGolemRoom = new ZoneRequirement(golemRoom);
+		inFinalRoom = new ZoneRequirement(finalRoom);
 
 		inspectedPlaque = new VarbitRequirement(15105, 1);
 		inspectedStatueNE = new VarbitRequirement(15106, 1);
@@ -420,7 +483,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		// 15130 0->1
 
 		// Probably 15132 0->1 for placed medallion works too
-		finishedVardorvis = new VarbitRequirement(15125, 56, Operation.GREATER_EQUAL);
+
 		// 15122 0->1, talked to Asgarnia with medallion first time?
 
 		/* Perseriya */
@@ -456,8 +519,62 @@ public class DesertTreasureII extends BasicQuestHelper
 		// 14862 64->66
 		// 15133 0->4
 
+		finishedVardorvis = new VarbitRequirement(15125, 56, Operation.GREATER_EQUAL);
 		finishedPerseriya = new VarbitRequirement(15128, 50, Operation.GREATER_EQUAL);
 		finishedSucellus = new VarbitRequirement(15127, 70, Operation.GREATER_EQUAL);
+		finishedWhisperer = new VarbitRequirement(15126, 48, Operation.GREATER_EQUAL);
+
+		// Items removed
+		// 14283 0->3
+
+		// In jail
+		// 14862 86->88
+		// 15129 0->1
+
+		cellUnlocked = new VarbitRequirement(15124, 1);
+		// Left cell, 88->90
+
+		itemsRetrieved = new VarbitRequirement(14283, 0);
+		// Stranger cutscene
+		// 4606 0->3
+		// 12139 0->1
+
+		// Fight started
+		// 14862 90->92
+
+		inCellRegion = new ZoneRequirement(cellRegion);
+
+		defeatedStranger = new VarbitRequirement(14862, 94, Operation.GREATER_EQUAL);
+		medallionNearby = new ItemOnTileRequirement(medallion);
+
+		// Whisperer done / all done
+		// 15126 46->48
+		// TODO: Skipped step???
+		// 14862 96->100
+		// 15159 1->0
+
+		// Cutscene with horn
+		// 15174 0->1, ->2 during it?
+		// 15174 2->3, Azzanadra transform
+
+		// Sliske revealed
+		// 3575 54525696 -> 58720000
+
+		assassinAttacking = new NpcInteractingRequirement(NpcID.THE_FORSAKEN_ASSASSIN);
+		perstenAttacking = new NpcInteractingRequirement(NpcID.PERSTEN_THE_DECEITFUL);
+		ketlaAttacking = or(new NpcInteractingRequirement(NpcID.KETLA_THE_UNWORTHY),
+			new NpcInteractingRequirement(NpcID.KETLA_THE_UNWORTHY_12330));
+		kasondeAttacking = or(new NpcInteractingRequirement(NpcID.KASONDE_THE_CRAVEN),
+			new NpcInteractingRequirement(NpcID.KASONDE_THE_CRAVEN_12332));
+
+		defeatedWights = new VarbitRequirement(14862, 112, Operation.GREATER_EQUAL);
+
+		// Into dungeon, 15158 0->1
+
+		// QUEST COMPLETED
+		// 14862 114->118
+		// 15175 0->1
+		// 15138 0->1
 	}
 
 	public void setupSteps()
@@ -597,7 +714,6 @@ public class DesertTreasureII extends BasicQuestHelper
 		operateGolemFrostenhorn = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
 			"Try operating the golem again until Banikan leaves, and the golem lets you know the last search term.");
 
-
 		/* Vardorvis */
 		NpcStep talkToElissa = new NpcStep(this, NpcID.ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north-east of the Digsite on the surface.");
 		talkToElissa.addDialogStep("I hear you visited Lovakengj recently.");
@@ -607,6 +723,73 @@ public class DesertTreasureII extends BasicQuestHelper
 		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "Do Perseriya steps."), runeliteObjectManager);
 		sucellusSteps = new SucellusSteps(this, new DetailedQuestStep(this, "Do Sucellus steps."));
 		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."), questBank, runeliteObjectManager);
+
+		returnToDesertWithFinalMedallion = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
+			new WorldPoint(3511, 2971, 0),
+			"Return to the Vault door north-east of Nardah with the final medallion. Come equipped with two combat styles.",
+			whisperersMedallion.hideConditioned(finishedWhisperer),
+			vardorvisMedallion.hideConditioned(finishedVardorvis),
+			sucellusMedallion.hideConditioned(finishedSucellus),
+			perseriyaMedallion.hideConditioned(finishedPerseriya),
+			meleeCombatGear, rangedCombatGear, food, prayerPotions);
+		returnToDesertWithFinalMedallion.addTeleport(nardahTeleport);
+
+		searchBedForHairClip = new ObjectStep(this, ObjectID.BED_48777, new WorldPoint(3103, 9246, 0),
+			"Search the bed for a hairclip.");
+		unlockCell = new ObjectStep(this, ObjectID.GATE_48774, new WorldPoint(3107, 9248, 0),
+			"Escape the cell.", hairClip);
+		getItemsFromCell = new ObjectStep(this, ObjectID.CHEST_48771, new WorldPoint(3115, 9263, 0),
+			"Retrieve your items from the chest in the north-east room.");
+		investigateAltar = new ObjectStep(this, ObjectID.ALTAR_48779, new WorldPoint(3086, 9260, 0),
+			"Inspect the altar in the north-west room.");
+		fightMysteriousFigure = new NpcStep(this, NpcID.MYSTERIOUS_FIGURE_12301, "Fight the Mysterious Figure. " +
+			"When frozen, spam-click to move away to avoid taking damage.");
+		enterAncientVault = new ObjectStep(this, ObjectID.VAULT_DOOR_46743, new WorldPoint(3511, 2971, 0),
+		"Enter to the Vault door north-east of Nardah with the final medallion, ready to fight.",
+		whisperersMedallion.hideConditioned(finishedWhisperer),
+		vardorvisMedallion.hideConditioned(finishedVardorvis),
+		sucellusMedallion.hideConditioned(finishedSucellus),
+		perseriyaMedallion.hideConditioned(finishedPerseriya),
+			combatGear, food, prayerPotions);
+		enterAncientVault.addTeleport(nardahTeleport);
+
+		returnToMysteriousFigure = new ObjectStep(this, NullObjectID.NULL_49497, new WorldPoint(3175, 2887, 0),
+			"Return to fight the Mysterious Figure, through the portal south of the Quarry in the desert.", meleeCombatGear, rangedCombatGear,
+			food, prayerPotions);
+		fightMysteriousFigure.addSubSteps(returnToMysteriousFigure);
+
+		returnToPickUpMedallion = new ObjectStep(this, NullObjectID.NULL_49497, new WorldPoint(3175, 2887, 0),
+		"Retrieve the medallion from the portal south of the Quarry.");
+		getMedallionFromChest = new ObjectStep(this, ObjectID.CHEST_48771, new WorldPoint(3115, 9263, 0),
+			"Retrieve the medallion from the chest in the north-east room.");
+
+		pickUpMedallion = new ItemStep(this, "Pick up the medallion.", medallion);
+		pickUpMedallion.addSubSteps(returnToPickUpMedallion, getMedallionFromChest);
+
+		enterVaultFinalSteps = new ObjectStep(this, ObjectID.VAULT_DOOR_46743, new WorldPoint(3511, 2971, 0),
+			"Enter to the Vault door north-east of Nardah, ready to fight.",
+			combatGear, food, prayerPotions);
+		enterVaultFinalSteps.addTeleport(nardahTeleport);
+		enterAncientVault.addSubSteps(enterVaultFinalSteps);
+
+		goDownSteps = new ObjectStep(this, ObjectID.STEPS_48797, new WorldPoint(3169, 6431, 1),
+			"Go deeper into the Vault down the steps.", combatGear);
+
+		defeatAssassin = new NpcStep(this, NpcID.THE_FORSAKEN_ASSASSIN, new WorldPoint(3296, 6444, 0),
+			"Defeat The Forsaken Assassin. Protect from ranged, and lure him into the white smoke.");
+		defeatKetla = new NpcStep(this, NpcID.KETLA_THE_UNWORTHY, new WorldPoint(3296, 6444, 0),
+			"Defeat Ketla the Unworthy. Protect from ranged. She will spawn shadow clones, which you should hide behind whenever she has a skull above her.");
+		((NpcStep) defeatKetla).addAlternateNpcs(NpcID.KETLA_THE_UNWORTHY_12330);
+		defeatKasonde = new NpcStep(this, NpcID.THE_FORSAKEN_ASSASSIN, new WorldPoint(3296, 6444, 0),
+			"Defeat Kasonde the Craven. Protect from ranged if at a distance or melee if up close. The fight is similar to earlier in the quest.");
+		((NpcStep) defeatKasonde).addAlternateNpcs(NpcID.KASONDE_THE_CRAVEN_12332);
+		defeatPersten = new NpcStep(this, NpcID.PERSTEN_THE_DECEITFUL, new WorldPoint(3296, 6444, 0),
+			"Defeat Persten the Deceitful. Protect from Magic. Avoid the lighting strikes by moving. Destroy any portals she spawns.");
+
+		cutsceneThenWights = new DetailedQuestStep(this, "Watch the cutscene, then defeat the wights.");
+
+		talkToAzzanandra = new NpcStep(this, NpcID.AZZANADRA_12305, new WorldPoint(3298, 6441, 0),
+			"Talk to Azzanadra.");
 	}
 
 	final BufferedImage missIcon = Icon.BLUE_HITSPLAT.getImage();
@@ -732,6 +915,13 @@ public class DesertTreasureII extends BasicQuestHelper
 			whispererSteps.getDisplayStepsSilentChoir(),
 			Arrays.asList(magicCombatGear, ringOfVisibility, food),
 			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport)));
+		allSteps.add(new PanelDetails("Secrets",
+			Arrays.asList(returnToDesertWithFinalMedallion, searchBedForHairClip, unlockCell,
+				getItemsFromCell, investigateAltar, fightMysteriousFigure, pickUpMedallion, enterAncientVault,
+				goDownSteps, cutsceneThenWights, defeatAssassin, defeatKetla, defeatKasonde, defeatPersten,
+				talkToAzzanandra),
+			Arrays.asList(meleeCombatGear, rangedCombatGear, food, prayerPotions),
+			Arrays.asList(nardahTeleport, staminaPotions)));
 		return allSteps;
 	}
 

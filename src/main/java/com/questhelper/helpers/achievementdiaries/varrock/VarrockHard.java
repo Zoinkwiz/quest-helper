@@ -81,7 +81,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 	Requirement ancientBook;
 
 	Requirement notSpottyCape, not153Kudos, notWakkaEdge, notPaddewwaTP, notSkullSceptre, notYewChurch,
-		notFancyStone, notYewRoots, notSmiteAltar, notPipe, atleast153Kudos, yewNotChecked, yewChecked, yewStump, smiteActive, notSmiteActive;
+		notFancyStone, notYewRoots, notSmiteAltar, notPipe, atleast153Kudos, yewNotChecked, yewChecked, yewStump, smiteActive;
 
 	Requirement cutYewTree, boughtSpotterCape;
 

@@ -359,6 +359,11 @@ public class ObjectStep extends DetailedQuestStep
 	}
 
 	@Override
+	protected void renderTileIcon(Graphics2D graphics)
+	{
+	}
+
+	@Override
 	public void renderArrow(Graphics2D graphics)
 	{
 		if (questHelper.getConfig().showMiniMapArrow())

@@ -49,6 +49,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
@@ -305,6 +306,11 @@ public class NpcStep extends DetailedQuestStep
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void renderTileIcon(Graphics2D graphics)
+	{
 	}
 
 	private void highlightNpc(NPC npc, Color color, Graphics2D graphics)

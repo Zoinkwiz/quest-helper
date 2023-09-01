@@ -109,6 +109,7 @@ public class QuestHelperBankTagService
 
 		for (PanelDetails questSection : shouldShowSections)
 		{
+			if (questSection.getRequirements() == null) continue;
 			List<ItemRequirement> items = questSection.getRequirements()
 				.stream()
 				.filter(ItemRequirement.class::isInstance)

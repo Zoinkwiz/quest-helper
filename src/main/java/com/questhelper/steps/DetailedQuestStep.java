@@ -288,7 +288,11 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
+		renderTileIcon(graphics);
+	}
 
+	protected void renderTileIcon(Graphics2D graphics)
+	{
 		LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
 		if (lp != null && icon != null && iconItemID != -1)
 		{

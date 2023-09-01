@@ -27,6 +27,7 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperConfig;
 import static com.questhelper.QuestHelperConfig.ObjectHighlightStyle.OUTLINE;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
@@ -37,7 +38,6 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import lombok.Setter;
 import net.runelite.api.GameObject;
@@ -134,6 +134,7 @@ public class ObjectStep extends DetailedQuestStep
 
 	protected void loadObjects()
 	{
+		// TODO: This needs to be tested in Shadow of the Storm's Demon Room
 		objects.clear();
 		Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
 		for (Tile[] lineOfTiles : tiles)
@@ -178,29 +179,17 @@ public class ObjectStep extends DetailedQuestStep
 
 	public void checkTileForObject(WorldPoint wp)
 	{
-		Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstance(client, wp);
+		LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, wp);
+		if (localPoint == null) return;
+		Tile[][][] tiles = client.getScene().getTiles();
 
-		for (WorldPoint point : localWorldPoints)
+		Tile tile = tiles[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+		if (tile != null)
 		{
-			LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, point);
-			if (localPoint == null)
-			{
-				continue;
-			}
-			Tile[][][] tiles = client.getScene().getTiles();
-			if (tiles == null)
-			{
-				continue;
-			}
-
-			Tile tile = tiles[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-			if (tile != null)
-			{
-				Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
-				handleObjects(tile.getDecorativeObject());
-				handleObjects(tile.getGroundObject());
-				handleObjects(tile.getWallObject());
-			}
+			Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
+			handleObjects(tile.getDecorativeObject());
+			handleObjects(tile.getGroundObject());
+			handleObjects(tile.getWallObject());
 		}
 	}
 
@@ -400,16 +389,9 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			return;
 		}
-
-		Collection<WorldPoint> localWorldPoints = null;
-		if (worldPoint != null)
-		{
-			localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
-		}
-
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
-			setObjects(object, localWorldPoints);
+			setObjects(object);
 			return;
 		}
 
@@ -422,16 +404,18 @@ public class ObjectStep extends DetailedQuestStep
 			boolean imposterIsAlternateObject = alternateObjectIDs.contains(comp.getImpostor().getId());
 			if (imposterIsMainObject || imposterIsAlternateObject)
 			{
-				setObjects(object, localWorldPoints);
+				setObjects(object);
 			}
 		}
 	}
 
-	private void setObjects(TileObject object, Collection<WorldPoint> localWorldPoints)
+	private void setObjects(TileObject object)
 	{
-		if (localWorldPoints != null &&
-			(localWorldPoints.contains(object.getWorldLocation()) ||
-				localWorldPoints.contains(objLocation(object))))
+		LocalPoint targetLP = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
+		if (
+			(targetLP != null && targetLP.equals(object.getLocalLocation())) ||
+			(object instanceof GameObject && objZone((GameObject) object).contains(worldPoint))
+		)
 		{
 			if (!this.objects.contains(object))
 			{
@@ -445,25 +429,26 @@ public class ObjectStep extends DetailedQuestStep
 				this.objects.add(object);
 			}
 		}
-		else if (localWorldPoints != null && showAllInArea)
+		else if (showAllInArea)
 		{
-			for (WorldPoint localWorldPoint : localWorldPoints)
-			{
-				if (localWorldPoint.distanceTo(objLocation(object)) < maxObjectDistance)
+				if (targetLP != null && targetLP.distanceTo(object.getLocalLocation()) < maxObjectDistance)
 				{
 					if (!this.objects.contains(object))
 					{
 						this.objects.add(object);
 					}
 				}
-			}
 		}
 	}
 
 	// This is required due to changes in how object.getWorldLocation() works
 	// See https://github.com/runelite/runelite/commit/4f34a0de6a0100adf79cac5b92198aa432debc4c
-	private WorldPoint objLocation(TileObject obj)
+	private Zone objZone(GameObject obj)
 	{
-		return WorldPoint.fromLocal(client, obj.getX(), obj.getY(), obj.getPlane());
+		WorldPoint bottomLeftCorner = WorldPoint.fromLocalInstance(client, new LocalPoint(obj.getX(), obj.getY()));
+		return new Zone(
+			new WorldPoint(bottomLeftCorner.getX(), bottomLeftCorner.getY(), bottomLeftCorner.getPlane()),
+			new WorldPoint(bottomLeftCorner.getX() + obj.sizeX(), bottomLeftCorner.getY() + obj.sizeY(), bottomLeftCorner.getPlane())
+		);
 	}
 }

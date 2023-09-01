@@ -25,7 +25,6 @@
  */
 package com.questhelper;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
@@ -45,7 +44,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.statemanagement.GameStateManager;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import java.awt.image.BufferedImage;
@@ -73,11 +71,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -90,7 +85,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;

@@ -99,7 +99,7 @@ public class WhispererSteps extends ConditionalStep
 		openRedChestRealWorld, openGreenChest, openGreenChestRealWorld, enterSciencePuddle3, activateBlackstoneFragment11, makeIcon,
 		enterDrain, useIconInDrain, goDownDrainLadder, inspectPillar, talkToMe, talkToKetlaAfterVision, claimPerfectShadowTorch, enterPuddleNearPub4,
 		destroyCathedralTentacles, activateBlackstoneFragment12, enterTheCathedral, fightWhispererSidebar, searchEntrails, returnToDesertWithWhisperersMedallion,
-		useWhisperersMedallionOnStatue;
+		useWhisperersMedallionOnStatue, restoreSanity;
 
 	ItemRequirement magicCombatGear, food, prayerPotions, staminaPotions, nardahTeleport, ringOfVisibility, lassarTeleport;
 
@@ -117,7 +117,7 @@ public class WhispererSteps extends ConditionalStep
 		givenTorchSchematic, destroyedTentacles, givenIdolSchematic, idolPlaced, destroyedTentacles2, blockerPlacedAtPub,
 		inPubShadowRealm, usedBlueKey, givenSuperiorTorchSchematic, destroyedTentacles3, givenAnimaPortalSchematic,
 		destroyedTentacles4, braziersLit, obtainedPerfectedSchematic, perfectSchematicGiven, learntAboutSilentChoir,
-		killedWhisperer, idolNearby;
+		killedWhisperer, idolNearby, idolShadowRealmFullNearby, lowSanity;
 
 	Requirement hadGreenShadowKey, hadPurpleKey, hadShadowBlockerSchematic, placedBlockerWhiteChest, placedAnimaWhiteChest,
 		placedIdolWhiteChest, inPubUpstairsShadowRealm, touchedPubRemnant, destroyedTentacles5, destroyedTentacles6,
@@ -197,6 +197,7 @@ public class WhispererSteps extends ConditionalStep
 
 		ConditionalStep getPerfectedSchematicSteps = new ConditionalStep(getQuestHelper(), placeBlockerWhiteChest);
 		getPerfectedSchematicSteps.addStep(and(inLassarShadowRealm, braziersLit), openFinalChest);
+		getPerfectedSchematicSteps.addStep(and(inLassarShadowRealm, lowSanity, idolShadowRealmFullNearby), restoreSanity);
 		getPerfectedSchematicSteps.addStep(and(inLassarShadowRealm), lightBraziers);
 		getPerfectedSchematicSteps.addStep(and(placedBlockerWhiteChest, placedAnimaWhiteChest, placedIdolWhiteChest), enterPlazaPuddle2);
 		getPerfectedSchematicSteps.addStep(and(placedBlockerWhiteChest, placedAnimaWhiteChest), placeIdolWhiteChest);
@@ -431,6 +432,8 @@ public class WhispererSteps extends ConditionalStep
 		// TODO: Work out a way to determine if the door is unlocked?
 
 		idolNearby = new ObjectCondition(ObjectID.REVITALISING_IDOL);
+
+		idolShadowRealmFullNearby = new ObjectCondition(ObjectID.REVITALISING_IDOL_48216);
 
 		purpleKeyTaken = nor(new ItemOnTileRequirement(ItemID.SHADOW_KEY, new WorldPoint(2593, 6352, 0)));
 
@@ -740,6 +743,8 @@ public class WhispererSteps extends ConditionalStep
 		// new WorldPoint(2689, 6415, 0)
 		// new WorldPoint(2672, 6443, 0)
 		// 6415 - (6443 + 1) = 29
+
+		lowSanity = new VarbitRequirement(15064, 20, Operation.LESS_EQUAL);
 	}
 
 	@Subscribe
@@ -1025,6 +1030,8 @@ public class WhispererSteps extends ConditionalStep
 		lightBraziers = new ObjectStep(getQuestHelper(), ObjectID.BRAZIER_48253, new WorldPoint(2319, 6448, 0),
 			"Run to the chest in the shadow realm, and use the revitalising idol to increase your Sanity. Light the 4 braziers near the chest.",
 			true);
+		restoreSanity = new ObjectStep(getQuestHelper(), ObjectID.REVITALISING_IDOL_48216, "Restore sanity with the revitalizing idol.");
+		lightBraziers.addSubSteps(restoreSanity);
 		openFinalChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48235, new WorldPoint(2316, 6450, 0), "Open the chest in the palace.");
 		openFinalChestRealWorld = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48231, new WorldPoint(2572, 6450, 0), "Open the chest in the palace.");
 		openFinalChest.addSubSteps(openFinalChestRealWorld);

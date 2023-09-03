@@ -696,8 +696,10 @@ public class WhispererSteps extends ConditionalStep
 	}
 
 	@Subscribe
+	@Override
 	public void onGameTick(GameTick event)
 	{
+		super.onGameTick(event);
 		WidgetTextRequirement benchEmpty = new WidgetTextRequirement(229, 1,
 			"You search the workbench, but find nothing of interest.");
 		if (benchEmpty.check(client) && !shadowBlocker.check(client))

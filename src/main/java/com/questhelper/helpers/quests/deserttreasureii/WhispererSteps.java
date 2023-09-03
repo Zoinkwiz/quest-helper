@@ -938,7 +938,7 @@ public class WhispererSteps extends ConditionalStep
 			"Take the superior torch schematic.", superiorTorchSchematic);
 		takeSuperiorTorchSchematicRealWorld = new ItemStep(getQuestHelper(), new WorldPoint(2637, 6423, 0),
 			"Take the superior torch schematic.", superiorTorchSchematic);
-		enterPubRealWorld = new ObjectStep(getQuestHelper(), ObjectID.DOORS_48254, new WorldPoint(2385, 6427, 0),
+		enterPubRealWorld = new ObjectStep(getQuestHelper(), ObjectID.DOORS_48254, new WorldPoint(2641, 6427, 0),
 			"Enter the pub and claim the superior torch schematic.");
 		takeSuperiorTorchSchematic.addSubSteps(takeSuperiorTorchSchematicRealWorld, enterPubRealWorld);
 		activateBlackstoneFragment4 = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",

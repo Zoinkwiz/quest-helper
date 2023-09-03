@@ -30,6 +30,7 @@ import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.steps.tools.QuestPerspective;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
@@ -53,7 +54,11 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	public boolean check(Client client)
 	{
 		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		return lp != null && lp.isInScene();
+		if (lp == null) return false;
+		// Final tiles of a scene do not have objects of them
+		if (lp.getSceneX() == Constants.SCENE_SIZE - 1) return false;
+		if (lp.getSceneY() == Constants.SCENE_SIZE - 1) return false;
+		return true;
 	}
 
 	@Nonnull

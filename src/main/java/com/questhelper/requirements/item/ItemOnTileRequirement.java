@@ -71,38 +71,28 @@ public class ItemOnTileRequirement extends ConditionForStep
 		return checkAllTiles(client);
 	}
 
-	// TODO: Make this not massively inefficient
 	private boolean checkAllTiles(Client client)
 	{
 		if (worldPoint != null)
 		{
-			Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, worldPoint);
+			LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+			if (localPoint == null) return false;
 
-			for (WorldPoint point : localWorldPoints)
+			Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+			if (tile != null)
 			{
-				LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, point);
-				if (localPoint == null)
+				List<TileItem> items = tile.getGroundItems();
+				if (items == null) return false;
+				for (TileItem item : items)
 				{
-					continue;
-				}
-
-				Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-				if (tile != null)
-				{
-					List<TileItem> items = tile.getGroundItems();
-					if (items != null)
+					if (itemID.contains(item.getId()))
 					{
-						for (TileItem item : items)
-						{
-							if (itemID.contains(item.getId()))
-							{
-								return true;
-							}
-						}
+						return true;
 					}
 				}
+
+				return false;
 			}
-			return false;
 		}
 
 		Tile[][] squareOfTiles = client.getScene().getTiles()[client.getPlane()];

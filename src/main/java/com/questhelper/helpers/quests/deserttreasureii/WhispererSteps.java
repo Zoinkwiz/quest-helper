@@ -144,7 +144,7 @@ public class WhispererSteps extends ConditionalStep
 		lockedDoorSteps.addStep(and(inLassarShadowRealm, basicShadowTorchSchematic),
 			activateBlackstoneFragment);
 		lockedDoorSteps.addStep(and(inFurnaceHouse, nor(givenTorchSchematic)), takeShadowTorchSchematic);
-		lockedDoorSteps.addStep(and(inLassarShadowRealm, blockerPlacedAtDoor), unlockDoor);
+		lockedDoorSteps.addStep(and(inLassarShadowRealm, hadPurpleKey, blockerPlacedAtDoor), unlockDoor);
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerPlacedAtDoor), enterSciencePuddle);
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerNearby), retrieveShadowBlocker);
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerNotInBenchOrInventory), recallShadowBlocker);

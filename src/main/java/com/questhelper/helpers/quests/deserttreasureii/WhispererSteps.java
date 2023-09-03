@@ -41,7 +41,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nand;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
@@ -124,12 +123,13 @@ public class WhispererSteps extends ConditionalStep
 		placedIdolWhiteChest, inPubUpstairsShadowRealm, touchedPubRemnant, destroyedTentacles5, destroyedTentacles6,
 		blockerPlacedInRedRoom, hadRedShadowKey, redKeyUsed, inLassarShadowRealmSW, greenKeyUsed, iconUsed, inDrainF0,
 		inDrainF1, inVision, escapedVision, unlockedPerfectShadowTorch, destroyedCathedralTentacles, enteredCathedral,
-		completedOtherMedallions, inStartingRoom, inScienceDistrict, inResidentialDistrict, inEastShadowRealm;
+		completedOtherMedallions, inStartingRoom, inScienceDistrict, inResidentialDistrict, inEastShadowRealm, inRealPub;
 
 	RuneliteRequirement blockerNotInBenchOrInventory;
 
-	Zone vault, camdozaal, lassar, lassarShadowRealm, furnaceHouse, externalFurnaceHouse, pub, pubUpstairsShadowRealm,
-		lassarShadowRealmSW, drainF0, drainF1, visionRegion, startingRoom, scienceDistrict, residentialDistrict, eastShadowRealm;
+	Zone vault, camdozaal, lassar, lassarShadowRealm, furnaceHouse, externalFurnaceHouse, shadowPub, pubUpstairsShadowRealm,
+		lassarShadowRealmSW, drainF0, drainF1, visionRegion, startingRoom, scienceDistrict, residentialDistrict,
+		eastShadowRealm, realPub;
 
 	public WhispererSteps(QuestHelper questHelper, QuestStep defaultStep, QuestBank questBank, RuneliteObjectManager runeliteObjectManager)
 	{
@@ -174,7 +174,7 @@ public class WhispererSteps extends ConditionalStep
 		ConditionalStep pubSteps = new ConditionalStep(getQuestHelper(), recallDevices);
 		pubSteps.addStep(new Conditions(inLassar, superiorTorchSchematic), bringKetlaTheSuperiorTorchSchematic);
 		pubSteps.addStep(new Conditions(inLassarShadowRealm, superiorTorchSchematic), activateBlackstoneFragment4);
-		pubSteps.addStep(new Conditions(inPubShadowRealm, usedBlueKey), takeSuperiorTorchSchematicRealWorld);
+		pubSteps.addStep(new Conditions(inRealPub, usedBlueKey), takeSuperiorTorchSchematicRealWorld);
 		pubSteps.addStep(new Conditions(inLassar, usedBlueKey), enterPubRealWorld);
 		pubSteps.addStep(new Conditions(inLassarShadowRealm, usedBlueKey), takeSuperiorTorchSchematic);
 		pubSteps.addStep(new Conditions(inLassarShadowRealm, blockerPlacedAtPub), openPubDoor);
@@ -344,7 +344,8 @@ public class WhispererSteps extends ConditionalStep
 		lassarShadowRealm = new Zone(new WorldPoint(2284, 6262, 0), new WorldPoint(2501, 6476, 3));
 		furnaceHouse = new Zone(new WorldPoint(2345, 6353, 0), new WorldPoint(2360, 6366, 3));
 		externalFurnaceHouse = new Zone(new WorldPoint(2345, 6357, 0), new WorldPoint(2350, 6362, 0));
-		pub = new Zone(new WorldPoint(2371, 6421, 0), new WorldPoint(2384, 6435, 3));
+		shadowPub = new Zone(new WorldPoint(2371, 6421, 0), new WorldPoint(2384, 6435, 3));
+		realPub = new Zone(new WorldPoint(2627, 6421, 0), new WorldPoint(2640, 6435, 3));
 		pubUpstairsShadowRealm = new Zone(new WorldPoint(2371, 6421, 1), new WorldPoint(2384, 6435, 3));
 		lassarShadowRealmSW = new Zone(new WorldPoint(2299, 6290, 0), new WorldPoint(2372, 6408, 3));
 		drainF0 = new Zone(new WorldPoint(2750, 6270, 0), new WorldPoint(2815, 6340, 0));
@@ -363,7 +364,8 @@ public class WhispererSteps extends ConditionalStep
 		inLassar = new ZoneRequirement(lassar);
 		inLassarShadowRealm = new ZoneRequirement(lassarShadowRealm);
 		inFurnaceHouse = new Conditions(nor(new ZoneRequirement(externalFurnaceHouse)), new ZoneRequirement(furnaceHouse));
-		inPubShadowRealm = new ZoneRequirement(pub);
+		inPubShadowRealm = new ZoneRequirement(shadowPub);
+		inRealPub = new ZoneRequirement(realPub);
 		inPubUpstairsShadowRealm = new ZoneRequirement(pubUpstairsShadowRealm);
 		inLassarShadowRealmSW = new ZoneRequirement(lassarShadowRealmSW);
 		inDrainF0 = new ZoneRequirement(drainF0);

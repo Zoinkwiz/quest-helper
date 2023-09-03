@@ -314,17 +314,21 @@ public class WhispererSteps extends ConditionalStep
 		greenShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY_28374);
 		purpleShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY);
 		shadowBlocker = new ItemRequirement("Shadow blocker", ItemID.SHADOW_BLOCKER);
+		shadowBlocker.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
 		basicShadowTorchSchematic = new ItemRequirement("Basic shadow torch schematic",
 			ItemID.BASIC_SHADOW_TORCH_SCHEMATIC);
 		blackstoneFragment = new ItemRequirement("Blackstone fragment", ItemID.BLACKSTONE_FRAGMENT_28357);
 		blackstoneFragment.setTooltip("You can get another from Ketla");
 		basicShadowTorch = new ItemRequirement("Basic shadow torch", ItemID.BASIC_SHADOW_TORCH);
+		basicShadowTorch.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
 		revitalisingIdolSchematic = new ItemRequirement("Revitalising idol schematic", ItemID.REVITALISING_IDOL_SCHEMATIC);
 		revitalisingIdol = new ItemRequirement("Revitalising idol", ItemID.REVITALISING_IDOL);
+		revitalisingIdol.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
 		blueShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY_28371);
 		superiorTorchSchematic = new ItemRequirement("Superior shadow torch schematic",
 			ItemID.SUPERIOR_SHADOW_TORCH_SCHEMATIC);
 		superiorTorch = new ItemRequirement("Superior shadow torch", ItemID.SUPERIOR_SHADOW_TORCH);
+		superiorTorch.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
 
 		animaPortalSchematic = new ItemRequirement("Anima portal schematic", ItemID.ANIMA_PORTAL_SCHEMATIC);
 		animaPortal = new ItemRequirement("Anima portal", ItemID.ANIMA_PORTAL);
@@ -996,20 +1000,24 @@ public class WhispererSteps extends ConditionalStep
 			"Destroy the tentacles in front of the building to the south of the Plaza.", superiorTorch);
 		activateBlackstoneFragment6 = new DetailedQuestStep(getQuestHelper(),
 			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
-		takeWhiteShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2597, 6392, 0), "Get the shadow key from the house.",
+		takeWhiteShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2597, 6392, 0),
+			"Get the shadow key from the house.",
 			whiteShadowKey);
 
 		placeBlockerWhiteChest = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2574, 6449, 0),
-			"Return to the palace in the north-west, and place the shadow blocker near to the chest there.", shadowBlocker.highlighted());
+			"Return to the palace in the north-west, and place the shadow blocker near to the chest there. " +
+				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", shadowBlocker.highlighted());
 		placeBlockerWhiteChest.addDialogSteps("Palace.");
 		placeBlockerWhiteChest.addIcon(ItemID.SHADOW_BLOCKER);
 
 		placeAnimaWhiteChest = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2576, 6447, 0),
-			"Place the anima portal between the two braziers near the chest.", animaPortal.highlighted());
+			"Place the anima portal between the two braziers near the chest. " +
+				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", animaPortal.highlighted());
 		placeAnimaWhiteChest.addIcon(ItemID.ANIMA_PORTAL);
 
 		placeIdolWhiteChest = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2578, 6445, 0),
-			"Place the idol near to the chest.", revitalisingIdol.highlighted());
+			"Place the idol near to the chest. " +
+				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", revitalisingIdol.highlighted());
 		placeIdolWhiteChest.addIcon(ItemID.REVITALISING_IDOL);
 
 		enterPlazaPuddle2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2618, 6404, 0),

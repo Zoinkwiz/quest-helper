@@ -662,7 +662,7 @@ public class WhispererSteps extends ConditionalStep
 
 		redKeyUsed = and(
 			not(redShadowKey),
-			not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.SHADOW_KEY_28373, new WorldPoint(2593, 6352, 0)))
+			not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.SHADOW_KEY_28373, new WorldPoint(2638, 6405, 0)))
 		);
 
 		hadRedShadowKey = new Conditions(or(

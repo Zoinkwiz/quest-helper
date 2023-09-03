@@ -117,12 +117,12 @@ public class WhispererSteps extends ConditionalStep
 		placedIdolWhiteChest, inPubUpstairsShadowRealm, touchedPubRemnant, destroyedTentacles5, destroyedTentacles6,
 		blockerPlacedInRedRoom, hadRedShadowKey, redKeyUsed, inLassarShadowRealmSW, greenKeyUsed, iconUsed, inDrainF0,
 		inDrainF1, inVision, escapedVision, unlockedPerfectShadowTorch, destroyedCathedralTentacles, enteredCathedral,
-		completedOtherMedallions, inStartingRoom;
+		completedOtherMedallions, inStartingRoom, inScienceDistrict, inResidentialDistrict;
 
 	RuneliteRequirement blockerNotInBenchOrInventory;
 
 	Zone vault, camdozaal, lassar, lassarShadowRealm, furnaceHouse, externalFurnaceHouse, pub, pubUpstairsShadowRealm,
-		lassarShadowRealmSW, drainF0, drainF1, visionRegion, startingRoom;
+		lassarShadowRealmSW, drainF0, drainF1, visionRegion, startingRoom, scienceDistrict, residentialDistrict;
 
 	public WhispererSteps(QuestHelper questHelper, QuestStep defaultStep, QuestBank questBank, RuneliteObjectManager runeliteObjectManager)
 	{
@@ -340,6 +340,8 @@ public class WhispererSteps extends ConditionalStep
 		drainF1 = new Zone(new WorldPoint(2750, 6270, 1), new WorldPoint(2815, 6340, 1));
 		visionRegion = new Zone(new WorldPoint(3222, 6294, 0), new WorldPoint(3239, 6313, 0));
 		startingRoom = new Zone(new WorldPoint(2558, 6413, 0), new WorldPoint(2609, 6468, 0));
+		scienceDistrict = new Zone(new WorldPoint(2554, 6295, 0), new WorldPoint(2629, 6397, 3));
+		residentialDistrict = new Zone(new WorldPoint(2624, 6397, 0), new WorldPoint(2730, 6468, 3));
 	}
 
 	protected void setupConditions()
@@ -356,6 +358,8 @@ public class WhispererSteps extends ConditionalStep
 		inDrainF1 = new ZoneRequirement(drainF1);
 		inVision = new ZoneRequirement(visionRegion);
 		inStartingRoom = new ZoneRequirement(startingRoom);
+		inScienceDistrict = new ZoneRequirement(scienceDistrict);
+		inResidentialDistrict = new ZoneRequirement(residentialDistrict);
 
 		int WHISPERER_VARBIT = 15126;
 
@@ -478,7 +482,7 @@ public class WhispererSteps extends ConditionalStep
 			)
 		);
 
-		blockerPlacedAtDoor = new Conditions(LogicType.OR,
+		blockerPlacedAtPub = new Conditions(LogicType.OR,
 			new ObjectCondition(ObjectID.SHADOW_BLOCKER,
 				new Zone(new WorldPoint(2641, 6428, 0),
 					new WorldPoint(2641, 6427, 0))
@@ -787,6 +791,7 @@ public class WhispererSteps extends ConditionalStep
 
 		retrieveShadowBlocker = new ObjectStep(getQuestHelper(), ObjectID.SHADOW_BLOCKER, "Pick up the shadow blocker.");
 		recallShadowBlocker = new DetailedQuestStep(getQuestHelper(), "Use the blackstone to recall everything.", blackstoneFragment.highlighted());
+		recallShadowBlocker.addDialogStep("Yes.");
 		retrieveShadowBlocker.addSubSteps(recallShadowBlocker);
 		placeBlockerInFurnaceBuilding.addSubSteps(retrieveShadowBlocker);
 

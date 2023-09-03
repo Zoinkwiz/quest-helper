@@ -961,7 +961,18 @@ public class WhispererSteps extends ConditionalStep
 			" and burn the tentacles there to grab the Anima portal schematic.", animaPortalSchematic);
 		getAnimaPortalSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2324, 6402, 0), "Go to the north-west of the science district," +
 			" and burn the tentacles there to grab the Anima portal schematic.", animaPortalSchematic);
+		WorldPoint animaPoint = getAnimaPortalSchematic.getWorldPoint();
+		getAnimaPortalSchematic.setWorldMapPoint(new WorldPoint(animaPoint.getX() + 256, animaPoint.getY(), animaPoint.getPlane()));
 		getAnimaPortalSchematic.addSubSteps(getAnimaPortalSchematicRealWorld);
+		getAnimaPortalSchematic.setLinePoints(Arrays.asList(
+			new WorldPoint(2338, 6368, 0),
+			new WorldPoint(2323, 6368, 0),
+			new WorldPoint(2323, 6376, 0),
+			new WorldPoint(2317, 6381, 0),
+			new WorldPoint(2317, 6390, 0),
+			new WorldPoint(2322, 6393, 0),
+			new WorldPoint(2322, 6399, 0)
+		));
 
 		activateBlackstoneFragment5 = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
 			blackstoneFragment.highlighted());

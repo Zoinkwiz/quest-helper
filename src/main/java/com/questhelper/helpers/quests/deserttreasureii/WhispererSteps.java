@@ -504,7 +504,6 @@ public class WhispererSteps extends ConditionalStep
 		);
 
 		usedBlueKey = new Conditions(
-			true,
 			LogicType.OR,
 			inPubShadowRealm,
 			new Conditions(

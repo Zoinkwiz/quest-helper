@@ -660,9 +660,10 @@ public class WhispererSteps extends ConditionalStep
 			)
 		);
 
-		redKeyUsed = nor(redShadowKey,
-			new ItemOnTileRequirement(ItemID.SHADOW_KEY, new WorldPoint(2593, 6352, 0)
-			));
+		redKeyUsed = and(
+			not(redShadowKey),
+			not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.SHADOW_KEY, new WorldPoint(2593, 6352, 0)))
+		);
 
 		hadRedShadowKey = new Conditions(or(
 			redShadowKey,
@@ -1041,7 +1042,8 @@ public class WhispererSteps extends ConditionalStep
 		bringKetlaThePerfectSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
 			"Bring the perfected shadow torch schematic to Ketla, next to the Western Residential District teleport.",
 			perfectShadowTorchSchematic);
-		bringKetlaThePerfectSchematic.addDialogSteps("More options...", "Western Residential District.", "I have a schematic here.");
+		bringKetlaThePerfectSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
+		bringKetlaThePerfectSchematic.addDialogStepWithExclusion("More options...", "How did you end up down here?");
 		talkToKetlaAfterPerfectGiven = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
 			"Talk to Ketla, next to the Western Residential District teleport.");
 		talkToKetlaAfterPerfectGiven.addDialogSteps("More options...", "Western Residential District.", "I have a schematic here.");

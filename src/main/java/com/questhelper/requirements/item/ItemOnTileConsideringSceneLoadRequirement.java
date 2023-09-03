@@ -35,6 +35,14 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 		tileLoadedReq = new TileIsLoadedRequirement(worldPoint);
 	}
 
+	public ItemOnTileConsideringSceneLoadRequirement(int itemID, WorldPoint worldPoint)
+	{
+		this.itemID = Collections.singletonList(itemID);
+		this.worldPoint = worldPoint;
+		tileLoadedReq = new TileIsLoadedRequirement(worldPoint);
+	}
+
+
 	public boolean check(Client client)
 	{
 		// Scenario 1:

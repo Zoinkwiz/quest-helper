@@ -698,6 +698,7 @@ public class WhispererSteps extends ConditionalStep
 
 		descendDownRope = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49477, new WorldPoint(2922, 5827, 0),
 			"Descend into the sinkhole.");
+		descendDownRope.addDialogStep("Yes.");
 
 		activateTeleporter1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
 			"Activate the teleporter to the south-east of the rope. You can use teleporters you've activated to go to other activated teleporters.");

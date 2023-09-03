@@ -412,17 +412,17 @@ public class ObjectStep extends DetailedQuestStep
 	private void setObjects(TileObject object)
 	{
 		LocalPoint targetLP = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
-		if (
-			(targetLP != null && targetLP.equals(object.getLocalLocation())) ||
-			(object instanceof GameObject && objZone((GameObject) object).contains(worldPoint))
-		)
+		if (worldPoint == null)
 		{
 			if (!this.objects.contains(object))
 			{
 				this.objects.add(object);
 			}
 		}
-		else if (worldPoint == null)
+		else if (
+			(targetLP != null && targetLP.equals(object.getLocalLocation())) ||
+			(object instanceof GameObject && objZone((GameObject) object).contains(worldPoint))
+		)
 		{
 			if (!this.objects.contains(object))
 			{

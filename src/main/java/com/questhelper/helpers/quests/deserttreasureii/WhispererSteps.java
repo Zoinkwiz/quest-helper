@@ -746,11 +746,11 @@ public class WhispererSteps extends ConditionalStep
 
 		useTeleporterToKetla = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
 			"Use the teleporter to the Western Residential District.");
-		useTeleporterToKetla.addDialogSteps("Western Residential District.", "Take the Shadow Torch.");
+		useTeleporterToKetla.addDialogSteps("Western Residential District.", "More options...", "Take the Shadow Torch.");
 		takeShadowBlockerSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2590, 6380, 0),
 			"Enter the north-western building in the Science District, and take the Shadow Schematic which is on top of a barrel in there.",
 			shadowBlockerSchematic);
-		takeShadowBlockerSchematic.addDialogSteps("More options.", "Northern Science District.");
+		takeShadowBlockerSchematic.addDialogSteps("More options...", "Northern Science District.");
 		takeShadowBlockerSchematic.addSubSteps(useTeleporterToKetla);
 		takeGreenShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2581, 6387, 0),
 			"Take the shadow key from the north-western room of the Science District.", greenShadowKey);

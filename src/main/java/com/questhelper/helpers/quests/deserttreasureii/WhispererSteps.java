@@ -72,7 +72,7 @@ public class WhispererSteps extends ConditionalStep
 
 	DetailedQuestStep enterRuinsOfCamdozaal, talkToRamarno, talkToPrescott, attachRope, descendDownRope,
 		activateTeleporter1, activateTeleporter2, activateTeleporter3, activateTeleporter4, activateTeleporter5,
-		activateTeleporter6, activateTeleporter7, recallShadowBlocker, useTeleporterToKetla,
+		activateTeleporter6, activateTeleporter7, recallShadowBlocker, useTeleporterToKetla, useTeleporterToScienceDistrict,
 		takeShadowBlockerSchematic, takeGreenShadowKey, takePurpleShadowKey, tryToEnterSunkenCathedral, talkToKetla,
 		giveKetlaBlockerSchematic, claimShadowBlocker, enterSciencePuddle, retrieveShadowBlocker, placeBlockerInFurnaceBuilding,
 		unlockDoor, takeShadowTorchSchematic, activateBlackstoneFragment, bringKetlaTheBasicTorchSchematic, claimShadowTorch,
@@ -148,6 +148,7 @@ public class WhispererSteps extends ConditionalStep
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerPlacedAtDoor), enterSciencePuddle);
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerNearby), retrieveShadowBlocker);
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerNotInBenchOrInventory), recallShadowBlocker);
+		lockedDoorSteps.addStep(and(hadPurpleKey, shadowBlocker, inStartingRoom), useTeleporterToScienceDistrict);
 		lockedDoorSteps.addStep(and(hadPurpleKey, shadowBlocker), placeBlockerInFurnaceBuilding);
 		lockedDoorSteps.addStep(and(hadPurpleKey, inStartingRoom), useTeleporterToKetla);
 		lockedDoorSteps.addStep(and(hadPurpleKey), claimShadowBlocker);
@@ -789,6 +790,11 @@ public class WhispererSteps extends ConditionalStep
 		placeBlockerInFurnaceBuilding.addDialogStep("Southern Science District.");
 		placeBlockerInFurnaceBuilding.addIcon(ItemID.SHADOW_BLOCKER);
 
+		useTeleporterToScienceDistrict = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
+		"Teleport to the Southern Science District.");
+		useTeleporterToScienceDistrict.addDialogStep("Southern Science District.");
+		placeBlockerInFurnaceBuilding.addSubSteps(useTeleporterToScienceDistrict);
+
 		retrieveShadowBlocker = new ObjectStep(getQuestHelper(), ObjectID.SHADOW_BLOCKER, "Pick up the shadow blocker.");
 		recallShadowBlocker = new DetailedQuestStep(getQuestHelper(), "Use the blackstone to recall everything.", blackstoneFragment.highlighted());
 		recallShadowBlocker.addDialogStep("Yes.");
@@ -803,7 +809,7 @@ public class WhispererSteps extends ConditionalStep
 		// Unlocking door uses up purple key
 		unlockDoor = new ObjectStep(getQuestHelper(), ObjectID.DOORS_48258, new WorldPoint(2350, 6360, 0),
 			"Unlock the door inside the furnace building. " +
-			"As long as you're near the Shadow Blocker you placed you will be safe from lost souls.");
+			"As long as you're directly next to the Shadow Blocker you placed you will be safe from lost souls.");
 
 		takeShadowTorchSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2353, 6367, 0),
 			"Take the basic shadow torch schematic.",

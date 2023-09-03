@@ -51,7 +51,7 @@ public class RegionHintArrowRequirement extends SimpleRequirement
 			return false;
 		}
 
-		WorldPoint wp = QuestPerspective.getInstanceWorldPoint(client, hintArrowPoint);
+		WorldPoint wp = QuestPerspective.getInstanceWorldPointFromReal(client, hintArrowPoint);
 		if (wp == null)
 		{
 			return false;

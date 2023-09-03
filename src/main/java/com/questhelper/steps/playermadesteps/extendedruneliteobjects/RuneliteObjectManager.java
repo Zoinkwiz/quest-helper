@@ -482,7 +482,7 @@ public class RuneliteObjectManager
 
 	public void setActive(ExtendedRuneliteObject extendedRuneliteObject)
 	{
-		LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, extendedRuneliteObject.getWorldPoint());
+		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, extendedRuneliteObject.getWorldPoint());
 		if (lp == null) return;
 
 		extendedRuneliteObject.getRuneliteObject().setLocation(lp, client.getPlane());

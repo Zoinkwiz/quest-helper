@@ -279,7 +279,7 @@ public class DetailedQuestStep extends QuestStep
 			for (QuestTile location : markedTiles)
 			{
 				BufferedImage combatIcon = spriteManager.getSprite(location.getIconID(), 0);
-				LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, location.getWorldPoint());
+				LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, location.getWorldPoint());
 				if (localPoint != null)
 				{
 					OverlayUtil.renderTileOverlay(client, graphics, localPoint, combatIcon, questHelper.getConfig().targetOverlayColor());
@@ -288,8 +288,12 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
+		renderTileIcon(graphics);
+	}
 
-		LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
+	protected void renderTileIcon(Graphics2D graphics)
+	{
+		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 		if (lp != null && icon != null && iconItemID != -1)
 		{
 			OverlayUtil.renderTileOverlay(client, graphics, lp, icon, questHelper.getConfig().targetOverlayColor());
@@ -349,7 +353,7 @@ public class DetailedQuestStep extends QuestStep
 				return;
 			}
 
-			LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
+			LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 			if (lp == null)
 			{
 				return;
@@ -534,7 +538,7 @@ public class DetailedQuestStep extends QuestStep
 		if (worldPoint != null)
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-			WorldPoint goalWp = QuestPerspective.getInstanceWorldPoint(client, worldPoint);
+			WorldPoint goalWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
 			if (goalWp != null && playerLocation.distanceTo(goalWp) > 30)
 			{
 				for (Requirement requirement : teleport)
@@ -748,7 +752,7 @@ public class DetailedQuestStep extends QuestStep
 					if (iconToUseForNeededItems != -1)
 					{
 						BufferedImage icon = spriteManager.getSprite(iconToUseForNeededItems, 0);
-						LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, tile.getWorldLocation());
+						LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, tile.getWorldLocation());
 						if (localPoint != null)
 						{
 							OverlayUtil.renderTileOverlay(client, graphics, localPoint, icon, questHelper.getConfig().targetOverlayColor());

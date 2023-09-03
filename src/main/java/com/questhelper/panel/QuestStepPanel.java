@@ -116,7 +116,7 @@ public class QuestStepPanel extends JPanel
 		bodyPanel.setLayout(new BorderLayout());
 		bodyPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
-		if (!panelDetails.getRequirements().isEmpty())
+		if (panelDetails.getRequirements() != null && !panelDetails.getRequirements().isEmpty())
 		{
 			addRequirements("Bring the following items:", panelDetails.getRequirements(), BorderLayout.NORTH);
 		}

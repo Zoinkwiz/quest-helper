@@ -31,6 +31,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemOnTileConsideringSceneLoadRequirement;
 import com.questhelper.requirements.location.TileIsLoadedRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -508,10 +509,14 @@ public class WhispererSteps extends ConditionalStep
 			inPubShadowRealm,
 			new Conditions(
 				new TileIsLoadedRequirement(new WorldPoint(2672, 6443, 0)),
-				not(new ItemOnTileRequirement(blueShadowKey, new WorldPoint(2672, 6443, 0))),
+				not(new ItemOnTileConsideringSceneLoadRequirement(blueShadowKey, new WorldPoint(2672, 6443, 0))),
 				not(blueShadowKey)
 			)
 		);
+
+		// 6443 is tile key is on
+		// 6416 is the tile it rends within
+
 
 		// Picked up superior schematics
 		// 15126 20->22
@@ -641,10 +646,6 @@ public class WhispererSteps extends ConditionalStep
 			)
 		);
 
-		hadRedShadowKey = new Conditions(
-
-		);
-
 		redKeyUsed = nor(redShadowKey,
 			new ItemOnTileRequirement(ItemID.SHADOW_KEY, new WorldPoint(2593, 6352, 0)
 			));
@@ -724,6 +725,10 @@ public class WhispererSteps extends ConditionalStep
 
 		// East near water
 		// 15096 0->4
+
+		// new WorldPoint(2689, 6415, 0)
+		// new WorldPoint(2672, 6443, 0)
+		// 6415 - (6443 + 1) = 29
 	}
 
 	@Subscribe

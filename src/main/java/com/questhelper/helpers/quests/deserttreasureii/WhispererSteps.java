@@ -56,6 +56,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -86,6 +87,8 @@ public class WhispererSteps extends ConditionalStep
 		activateBlackstoneFragment4, takeSuperiorTorchSchematicRealWorld, claimSuperiorShadowTorch, enterSciencePuddle2,
 		getAnimaPortalSchematic, getAnimaPortalSchematicRealWorld, activateBlackstoneFragment5, bringKetlaTheAnimaPortalSchematic;
 
+	DetailedQuestStep pickUpIdol;
+
 	DetailedQuestStep claimAnimaPortal, enterPlazaPuddle, destroyTentacles4, activateBlackstoneFragment6, takeWhiteShadowKey,
 		placeBlockerWhiteChest, placeAnimaWhiteChest, placeIdolWhiteChest, enterPlazaPuddle2, lightBraziers, openFinalChest,
 		activateBlackstoneFragment7, openFinalChestRealWorld, bringKetlaThePerfectSchematic, talkToKetlaAfterPerfectGiven;
@@ -114,7 +117,7 @@ public class WhispererSteps extends ConditionalStep
 		givenTorchSchematic, destroyedTentacles, givenIdolSchematic, idolPlaced, destroyedTentacles2, blockerPlacedAtPub,
 		inPubShadowRealm, usedBlueKey, givenSuperiorTorchSchematic, destroyedTentacles3, givenAnimaPortalSchematic,
 		destroyedTentacles4, braziersLit, obtainedPerfectedSchematic, perfectSchematicGiven, learntAboutSilentChoir,
-		killedWhisperer;
+		killedWhisperer, idolNearby;
 
 	Requirement hadGreenShadowKey, hadPurpleKey, hadShadowBlockerSchematic, placedBlockerWhiteChest, placedAnimaWhiteChest,
 		placedIdolWhiteChest, inPubUpstairsShadowRealm, touchedPubRemnant, destroyedTentacles5, destroyedTentacles6,
@@ -162,6 +165,7 @@ public class WhispererSteps extends ConditionalStep
 		blueKeySteps.addStep(and(inLassar, destroyedTentacles2), getBlueShadowKeyRealRealm);
 		blueKeySteps.addStep(and(inLassarShadowRealm), destroyTentacles2);
 		blueKeySteps.addStep(and(idolPlaced, basicShadowTorch), enterResedentialPuddleAgain);
+		blueKeySteps.addStep(and(idolNearby, basicShadowTorch, activatedTeleporter7), pickUpIdol);
 		blueKeySteps.addStep(and(revitalisingIdol, basicShadowTorch, activatedTeleporter7), placeIdol);
 		blueKeySteps.addStep(and(revitalisingIdol, basicShadowTorch), activateTeleporter7);
 
@@ -414,6 +418,8 @@ public class WhispererSteps extends ConditionalStep
 
 		// TODO: Work out a way to determine if the door is unlocked?
 
+		idolNearby = new ObjectCondition(ObjectID.REVITALISING_IDOL);
+
 		purpleKeyTaken = nor(new ItemOnTileRequirement(ItemID.SHADOW_KEY, new WorldPoint(2593, 6352, 0)));
 
 		hadPurpleKey = new Conditions(or(
@@ -463,7 +469,8 @@ public class WhispererSteps extends ConditionalStep
 
 		givenIdolSchematic = new VarbitRequirement(15083, 1);
 
-		idolPlaced = new ObjectCondition(ObjectID.REVITALISING_IDOL, new WorldPoint(2689, 6415, 0));
+		idolPlaced = new ObjectCondition(ObjectID.REVITALISING_IDOL,
+			new Zone(new WorldPoint(2685, 6414, 0), new WorldPoint(2700, 6427, 0)));
 
 		ObjectCondition realWorldTentacle2Exists = new ObjectCondition(NullObjectID.NULL_48204,
 			new Zone(new WorldPoint(2679, 6439, 0), new WorldPoint(2680, 6439, 0))
@@ -700,6 +707,24 @@ public class WhispererSteps extends ConditionalStep
 			new VarbitRequirement(15125, 56, Operation.GREATER_EQUAL)
 		);
 		// Told Ramarno about Ketla, 15149 0->1
+		// Told Ramarno about Ketla being fake, 15150, 0->1
+		// Told Ramarno about Thurgo, 15222 0->1
+
+
+		// LISTENED TO UPSTAIRS EAST RESIDENTIAL DISTRICT PORTAL
+		// 15097 0->1
+
+		// Demon dies
+		// 15164 0->3->2->1
+
+		// Upstairs Science District north
+		// 15098 0->2
+
+		// West near water
+		// 15095 0->3
+
+		// East near water
+		// 15096 0->4
 	}
 
 	@Subscribe
@@ -848,12 +873,36 @@ public class WhispererSteps extends ConditionalStep
 		claimRevitalisingIdol.addDialogSteps("Take it.", "Western Residential District.", "Take the Revitalising Idol.", "Take everything.");
 		placeIdol = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2689, 6415, 0), "Place the idol by the teleporter.",
 			revitalisingIdol.highlighted());
+		placeIdol.setLinePoints(Arrays.asList(
+			new WorldPoint(2668, 6414, 0),
+			new WorldPoint(2682, 6414, 0),
+			new WorldPoint(2682, 6407, 0),
+			new WorldPoint(2688, 6407, 0),
+			new WorldPoint(2688, 6419, 0)
+		));
+
+		pickUpIdol = new ObjectStep(getQuestHelper(), ObjectID.REVITALISING_IDOL, "Pick up the revitalising idol.");
+		placeIdol.addSubSteps(pickUpIdol);
 
 		enterResedentialPuddleAgain = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla.");
 
-		destroyTentacles2 = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2424, 6439, 0), "Run around through the building and up north, making sure to restore sanity at the idol." +
+		destroyTentacles2 = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2424, 6439, 0),
+			"Run around through the building and up north, making sure to RESTORE SANITY AT THE IDOL." +
 			" Destroy the tentacles blocking the door at the end of the path.", basicShadowTorch);
+		destroyTentacles2.setLinePoints(Arrays.asList(
+			new WorldPoint(2668, 6414, 0),
+			new WorldPoint(2682, 6414, 0),
+			new WorldPoint(2682, 6407, 0),
+			new WorldPoint(2688, 6407, 0),
+			new WorldPoint(2688, 6419, 0),
+			new WorldPoint(2697, 6427, 0),
+			new WorldPoint(2695, 6437, 0),
+			new WorldPoint(2687, 6437, 0),
+			new WorldPoint(2687, 6431, 0),
+			new WorldPoint(2680, 6431, 0),
+			new WorldPoint(2680, 6437, 0)
+		));
 
 		getBlueShadowKeyRealRealm = new ItemStep(getQuestHelper(), new WorldPoint(2672, 6443, 0), "Grab the shadow key in the room you've just unlocked.", blueShadowKey);
 		getBlueShadowKeyShadowRealm = new ItemStep(getQuestHelper(), new WorldPoint(2416, 6443, 0), "Grab the shadow key in the room you've just unlocked.", blueShadowKey);

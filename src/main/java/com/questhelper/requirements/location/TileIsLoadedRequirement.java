@@ -51,7 +51,7 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return (QuestPerspective.getInstanceLocalPoint(client, worldPoint) != null);
+		return (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint) != null);
 	}
 
 	@Nonnull

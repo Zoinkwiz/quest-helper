@@ -27,7 +27,6 @@ package com.questhelper.helpers.quests.deserttreasureii;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.player.InInstanceRequirement;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -328,7 +327,7 @@ public class FakeWhisperer
 			[client.getLocalPlayer().getLocalLocation().getSceneX()]
 			[client.getLocalPlayer().getLocalLocation().getSceneY()];
 
-		LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, whisperer.getWorldPoint());
+		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, whisperer.getWorldPoint());
 
 		Projectile proj = client.createProjectile(projectileID,
 			client.getPlane(),

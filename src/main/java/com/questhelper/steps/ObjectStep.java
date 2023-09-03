@@ -179,7 +179,8 @@ public class ObjectStep extends DetailedQuestStep
 
 	public void checkTileForObject(WorldPoint wp)
 	{
-		LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, wp);
+		LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, wp);
+
 		if (localPoint == null) return;
 		Tile[][][] tiles = client.getScene().getTiles();
 
@@ -411,16 +412,21 @@ public class ObjectStep extends DetailedQuestStep
 
 	private void setObjects(TileObject object)
 	{
-		LocalPoint targetLP = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
 		if (worldPoint == null)
 		{
 			if (!this.objects.contains(object))
 			{
 				this.objects.add(object);
 			}
+			return;
 		}
-		else if (
-			(targetLP != null && targetLP.equals(object.getLocalLocation())) ||
+
+		WorldPoint objectWP = QuestPerspective.getRealWorldPointFromLocal(client, object.getWorldLocation());
+
+		if (objectWP == null) return;
+
+		if (
+			(worldPoint.equals(objectWP)) ||
 			(object instanceof GameObject && objZone((GameObject) object).contains(worldPoint))
 		)
 		{
@@ -431,7 +437,7 @@ public class ObjectStep extends DetailedQuestStep
 		}
 		else if (showAllInArea)
 		{
-				if (targetLP != null && targetLP.distanceTo(object.getLocalLocation()) < maxObjectDistance)
+				if (worldPoint != null && worldPoint.distanceTo(objectWP) < maxObjectDistance)
 				{
 					if (!this.objects.contains(object))
 					{
@@ -445,10 +451,19 @@ public class ObjectStep extends DetailedQuestStep
 	// See https://github.com/runelite/runelite/commit/4f34a0de6a0100adf79cac5b92198aa432debc4c
 	private Zone objZone(GameObject obj)
 	{
-		WorldPoint bottomLeftCorner = WorldPoint.fromLocalInstance(client, new LocalPoint(obj.getX(), obj.getY()));
+		WorldPoint bottomLeftCorner = QuestPerspective.getRealWorldPointFromLocal(client, obj.getWorldLocation());
+		if (bottomLeftCorner == null) return new Zone();
+
+		int bottomX = bottomLeftCorner.getX() - ((obj.sizeX() - 1) / 2);
+		int bottomY = bottomLeftCorner.getY() - ((obj.sizeY() - 1) / 2);
 		return new Zone(
-			new WorldPoint(bottomLeftCorner.getX(), bottomLeftCorner.getY(), bottomLeftCorner.getPlane()),
-			new WorldPoint(bottomLeftCorner.getX() + obj.sizeX(), bottomLeftCorner.getY() + obj.sizeY(), bottomLeftCorner.getPlane())
+			new WorldPoint(bottomX,
+				bottomY,
+				bottomLeftCorner.getPlane()),
+
+			new WorldPoint(bottomX + obj.sizeX() - 1,
+				bottomY + obj.sizeY() - 1,
+				bottomLeftCorner.getPlane())
 		);
 	}
 }

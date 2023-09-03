@@ -156,7 +156,7 @@ public class ExtendedRuneliteObject
 
 		this.worldPoint = worldPoint;
 
-		LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
+		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 		if (lp == null) return;
 		runeliteObject.setLocation(lp, client.getPlane());
 		activate();
@@ -180,7 +180,7 @@ public class ExtendedRuneliteObject
 
 	public Shape getClickbox()
 	{
-		if (QuestPerspective.getInstanceLocalPoint(client, worldPoint) == null) return null;
+		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint) == null) return null;
 
 		return Perspective.getClickbox(client,
 			getRuneliteObject().getModel(),

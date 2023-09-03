@@ -79,7 +79,7 @@ public class MemoryChallenge extends DetailedQuestStep
 		// If started path, check furthest we've reached in path
 		WorldPoint lastPoint = currentPath.get(currentPath.size() - 1);
 
-		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPoint(client, wps.get(lastPos));
+		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPointFromReal(client, wps.get(lastPos));
 		if (instanceWp == null)
 		{
 			return;
@@ -93,7 +93,7 @@ public class MemoryChallenge extends DetailedQuestStep
 
 	public void checkNextTile(int wpsPos)
 	{
-		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPoint(client, wps.get(wpsPos));
+		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPointFromReal(client, wps.get(wpsPos));
 		if (instanceWp == null)
 		{
 			return;

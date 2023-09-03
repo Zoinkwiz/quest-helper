@@ -80,7 +80,7 @@ public class ItemOnTileRequirement extends ConditionForStep
 
 			for (WorldPoint point : localWorldPoints)
 			{
-				LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, point);
+				LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, point);
 				if (localPoint == null)
 				{
 					continue;

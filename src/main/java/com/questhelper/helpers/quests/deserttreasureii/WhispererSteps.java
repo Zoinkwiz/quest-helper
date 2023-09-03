@@ -890,17 +890,17 @@ public class WhispererSteps extends ConditionalStep
 			"Run around through the building and up north, making sure to RESTORE SANITY AT THE IDOL." +
 			" Destroy the tentacles blocking the door at the end of the path.", basicShadowTorch);
 		destroyTentacles2.setLinePoints(Arrays.asList(
-			new WorldPoint(2668, 6414, 0),
-			new WorldPoint(2682, 6414, 0),
-			new WorldPoint(2682, 6407, 0),
-			new WorldPoint(2688, 6407, 0),
-			new WorldPoint(2688, 6419, 0),
-			new WorldPoint(2697, 6427, 0),
-			new WorldPoint(2695, 6437, 0),
-			new WorldPoint(2687, 6437, 0),
-			new WorldPoint(2687, 6431, 0),
-			new WorldPoint(2680, 6431, 0),
-			new WorldPoint(2680, 6437, 0)
+			new WorldPoint(2412, 6414, 0),
+			new WorldPoint(2412, 6414, 0),
+			new WorldPoint(2412, 6407, 0),
+			new WorldPoint(2418, 6407, 0),
+			new WorldPoint(2418, 6419, 0),
+			new WorldPoint(2427, 6427, 0),
+			new WorldPoint(2425, 6437, 0),
+			new WorldPoint(2417, 6437, 0),
+			new WorldPoint(2417, 6431, 0),
+			new WorldPoint(2410, 6431, 0),
+			new WorldPoint(2410, 6437, 0)
 		));
 
 		getBlueShadowKeyRealRealm = new ItemStep(getQuestHelper(), new WorldPoint(2672, 6443, 0), "Grab the shadow key in the room you've just unlocked.", blueShadowKey);

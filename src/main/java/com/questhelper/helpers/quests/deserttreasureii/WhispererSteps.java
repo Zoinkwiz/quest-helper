@@ -38,12 +38,14 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -58,6 +60,8 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
 
 public class WhispererSteps extends ConditionalStep
@@ -68,7 +72,7 @@ public class WhispererSteps extends ConditionalStep
 
 	DetailedQuestStep enterRuinsOfCamdozaal, talkToRamarno, talkToPrescott, attachRope, descendDownRope,
 		activateTeleporter1, activateTeleporter2, activateTeleporter3, activateTeleporter4, activateTeleporter5,
-		activateTeleporter6, activateTeleporter7,
+		activateTeleporter6, activateTeleporter7, recallShadowBlocker,
 		takeShadowBlockerSchematic, takeGreenShadowKey, takePurpleShadowKey, tryToEnterSunkenCathedral, talkToKetla,
 		giveKetlaBlockerSchematic, claimShadowBlocker, enterSciencePuddle, retrieveShadowBlocker, placeBlockerInFurnaceBuilding,
 		unlockDoor, takeShadowTorchSchematic, activateBlackstoneFragment, bringKetlaTheBasicTorchSchematic, claimShadowTorch,
@@ -115,6 +119,8 @@ public class WhispererSteps extends ConditionalStep
 		inDrainF1, inVision, escapedVision, unlockedPerfectShadowTorch, destroyedCathedralTentacles, enteredCathedral,
 		completedOtherMedallions;
 
+	RuneliteRequirement blockerNotInBenchOrInventory;
+
 	Zone vault, camdozaal, lassar, lassarShadowRealm, furnaceHouse, externalFurnaceHouse, pub, pubUpstairsShadowRealm,
 		lassarShadowRealmSW, drainF0, drainF1, visionRegion;
 
@@ -141,6 +147,7 @@ public class WhispererSteps extends ConditionalStep
 		lockedDoorSteps.addStep(and(inLassarShadowRealm, blockerPlacedAtDoor), unlockDoor);
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerPlacedAtDoor), enterSciencePuddle);
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerNearby), retrieveShadowBlocker);
+		lockedDoorSteps.addStep(and(hadPurpleKey, blockerNotInBenchOrInventory), recallShadowBlocker);
 		lockedDoorSteps.addStep(and(hadPurpleKey, shadowBlocker), placeBlockerInFurnaceBuilding);
 		lockedDoorSteps.addStep(and(hadPurpleKey), claimShadowBlocker);
 
@@ -380,6 +387,9 @@ public class WhispererSteps extends ConditionalStep
 		// 15163 0->3->13->14->15->16->17...100, ticks up to 100
 		// 15064 = sanity, 0->100
 		// 15069 0->453704->05->...09, left
+		blockerNotInBenchOrInventory = new RuneliteRequirement(getQuestHelper().getConfigManager(), "dt2Blockerinbench", "true");
+		blockerNotInBenchOrInventory.initWithValue("false");
+
 		blockerNearby = new ObjectCondition(ObjectID.SHADOW_BLOCKER);
 		blockerPlacedAtDoor = new Conditions(LogicType.OR,
 			new ObjectCondition(ObjectID.SHADOW_BLOCKER,
@@ -682,6 +692,21 @@ public class WhispererSteps extends ConditionalStep
 		// Told Ramarno about Ketla, 15149 0->1
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		WidgetTextRequirement benchEmpty = new WidgetTextRequirement(229, 1,
+			"You search the workbench, but find nothing of interest.");
+		if (benchEmpty.check(client) && !shadowBlocker.check(client))
+		{
+			blockerNotInBenchOrInventory.setConfigValue("true");
+		}
+		else if (shadowBlocker.check(client))
+		{
+			blockerNotInBenchOrInventory.setConfigValue("false");
+		}
+	}
+
 	protected void setupSteps()
 	{
 		enterRuinsOfCamdozaal = new ObjectStep(getQuestHelper(), NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0),
@@ -720,7 +745,7 @@ public class WhispererSteps extends ConditionalStep
 		takeShadowBlockerSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2590, 6380, 0),
 			"Enter the north-western building in the Science District, and take the Shadow Schematic which is on top of a barrel in there.",
 			shadowBlockerSchematic);
-		takeShadowBlockerSchematic.addDialogStep("Northern Science District.");
+		takeShadowBlockerSchematic.addDialogSteps("More options.", "Northern Science District.");
 		takeGreenShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2581, 6387, 0),
 			"Take the shadow key from the north-western room of the Science District.", greenShadowKey);
 		takeGreenShadowKey.addDialogStep("Northern Science District.");
@@ -752,6 +777,8 @@ public class WhispererSteps extends ConditionalStep
 		placeBlockerInFurnaceBuilding.addIcon(ItemID.SHADOW_BLOCKER);
 
 		retrieveShadowBlocker = new ObjectStep(getQuestHelper(), ObjectID.SHADOW_BLOCKER, "Pick up the shadow blocker.");
+		recallShadowBlocker = new DetailedQuestStep(getQuestHelper(), "Use the blackstone to recall everything.", blackstoneFragment.highlighted());
+		retrieveShadowBlocker.addSubSteps(recallShadowBlocker);
 		placeBlockerInFurnaceBuilding.addSubSteps(retrieveShadowBlocker);
 
 		enterSciencePuddle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),

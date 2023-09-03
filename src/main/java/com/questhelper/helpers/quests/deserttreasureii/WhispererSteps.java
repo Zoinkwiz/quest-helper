@@ -232,9 +232,9 @@ public class WhispererSteps extends ConditionalStep
 		/* Top steps */
 		addStep(and(inLassar, killedWhisperer), searchEntrails);
 		addStep(and(inLassar, unlockedPerfectShadowTorch, or(destroyedCathedralTentacles, enteredCathedral)), enterTheCathedral);
-		addStep(and(inLassarShadowRealm, destroyedCathedralTentacles), activateBlackstoneFragment12);
-		addStep(and(inLassarShadowRealm, perfectShadowTorch), destroyCathedralTentacles);
-		addStep(and(inLassar, perfectShadowTorch), enterPuddleNearPub4);
+		addStep(and(inLassarShadowRealm, unlockedPerfectShadowTorch, destroyedCathedralTentacles), activateBlackstoneFragment12);
+		addStep(and(inLassarShadowRealm, unlockedPerfectShadowTorch, perfectShadowTorch), destroyCathedralTentacles);
+		addStep(and(inLassar, unlockedPerfectShadowTorch, perfectShadowTorch), enterPuddleNearPub4);
 		addStep(and(inLassar, unlockedPerfectShadowTorch), claimPerfectShadowTorch);
 		addStep(and(inLassar, escapedVision), talkToKetlaAfterVision);
 		addStep(inVision, talkToMe);

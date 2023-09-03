@@ -241,7 +241,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		superCompost = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
 		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
 		hardyGout.setTooltip("You can get more from Murcaily");
-		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
+		combatGear = new ItemRequirement("Combat gear, preferably magic", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
@@ -326,6 +326,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		useBucketOnPot = new ObjectStep(this, ObjectID.COOKING_POT, new WorldPoint(2864, 3591, 0),
 			"Use a bucket on the cooking pot on the Death Plateau. You can find a bucket next to the pot.", bucketHighlight);
 		useBucketOnPot.addIcon(ItemID.BUCKET);
+		useBucketOnPot.addTeleport(gamesNecklace);
 
 		enterStrongholdWithLump = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to My Arm with the goutweedy lump.", goutLump);
 
@@ -406,9 +407,9 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 			"Talk to My Arm. Be prepared to fight a baby and giant Roc.");
 		killBabyRoc = new NpcStep(this, NpcID.BABY_ROC, "Kill the Baby Roc.");
 		talkToMyArmAfterBaby = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0),
-			"Talk to My Arm. Be prepared to fight the Giant Roc.");
+			"Talk to My Arm. Be prepared to fight the Giant Roc.", combatGear, spade);
 
-		killGiantRoc = new NpcStep(this, NpcID.GIANT_ROC, "Kill the Giant Roc.");
+		killGiantRoc = new NpcStep(this, NpcID.GIANT_ROC, "Kill the Giant Roc. Use protected from ranged, and keep your distance. You can dodge the boulders it throws.");
 		talkToMyArmAfterHarvest = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Talk to My Arm.");
 		giveSpade = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Give My Arm a spade.", spadeHighlight);
 		giveSpade.addIcon(ItemID.SPADE);
@@ -493,10 +494,13 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToBurntmeat, talkToMyArm), climbingBoots));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToBurntmeat, talkToMyArm),
+			Collections.singletonList(climbingBoots),
+			Collections.singletonList(gamesNecklace)));
 		allSteps.add(new PanelDetails("Preparing to grow", Arrays.asList(useBucketOnPot, talkToArmWithLump,
 			talkToMyArmUpstairs, readBook, talkToMyArmAfterReading, useUgthankiDung, useCompost, talkToMyArmAfterFertilising),
-			climbingBoots, bucket, spade, supercompost7, ugthanki3));
+			Arrays.asList(climbingBoots, bucket, spade, supercompost7, ugthanki3),
+			Collections.singletonList(gamesNecklace)));
 		allSteps.add(new PanelDetails("Karamja adventure", Arrays.asList(talkToBarnaby, talkAfterBoat, talkToMyArmAtTai, talkToMurcaily, talkToMyArmAfterMurcaily)));
 		allSteps.add(new PanelDetails("Troll farming", Arrays.asList(talkToMyArmForFight, giveRake, giveSupercompost, giveHardyGout,
 			giveDibber, talkToMyArmAfterGrow, killBabyRoc, killGiantRoc, giveSpade, talkToMyArmAfterHarvest, talkToBurntmeatAgain,

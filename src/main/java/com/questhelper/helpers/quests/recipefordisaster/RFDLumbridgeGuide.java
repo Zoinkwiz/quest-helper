@@ -66,8 +66,10 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 
 	Requirement inDiningRoom, inUpstairsTrailborn;
 
-	QuestStep enterDiningRoom, inspectLumbridgeGuide, goUpToTraiborn, talkToTraiborn, cookCake, enterDiningRoomAgain,
+	DetailedQuestStep enterDiningRoom, inspectLumbridgeGuide, goUpToTraiborn, cookCake, enterDiningRoomAgain,
 		useCakeOnLumbridgeGuide, mixIngredients;
+
+	QuizSteps talkToTraiborn;
 
 	//Zones
 	Zone diningRoom, upstairsTrailborn, quizSpot;
@@ -142,12 +144,18 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterDiningRoom = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0), "Go inspect the Lumbridge Guide in the Lumbridge Castle dining room.");
-		inspectLumbridgeGuide = new ObjectStep(this, ObjectID.LUMBRIDGE_GUIDE_12339, new WorldPoint(1865, 5325, 0), "Inspect the Lumbridge Guide in the Lumbridge Castle dining room.");
-		inspectLumbridgeGuide.addDialogStep("Yes, I'm sure I can make a cake.");
+		enterDiningRoom = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
+			"Go inspect the Lumbridge Guide in the Lumbridge Castle dining room.");
+		enterDiningRoom.addTeleport(lumbridgeTeleport);
+		inspectLumbridgeGuide = new ObjectStep(this, ObjectID.LUMBRIDGE_GUIDE_12339, new WorldPoint(1865, 5325, 0),
+			"Inspect the Lumbridge Guide in the Lumbridge Castle dining room.");
+		inspectLumbridgeGuide.addDialogSteps("Yes, I'm sure I can make a cake.");
 		inspectLumbridgeGuide.addSubSteps(enterDiningRoom);
 
-		goUpToTraiborn = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(3104, 3160, 0), "Go talk to Traiborn in the Wizards' Tower.", egg, flour, milk, tin);
+		goUpToTraiborn = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(3104, 3160, 0),
+			"Go talk to Traiborn in the Wizards' Tower.", egg, flour, milk, tin);
+		goUpToTraiborn.addDialogStep("Wizards' Tower");
+		goUpToTraiborn.addTeleport(wizardsTowerTeleport);
 		talkToTraiborn = new QuizSteps(this);
 
 		cookCake = new DetailedQuestStep(this, "Cook the Guidance Cake.", rawGuidanceCake);

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 
 public class KeyringRequirement extends ItemRequirement
@@ -42,9 +43,12 @@ public class KeyringRequirement extends ItemRequirement
 
 	ConfigManager configManager;
 
+	ItemRequirement keyring;
+
 	public KeyringRequirement(String name, ConfigManager configManager, KeyringCollection key)
 	{
 		super(name, key.getItemID());
+		keyring = new ItemRequirement("Steel key ring", ItemID.STEEL_KEY_RING);
 		runeliteRequirement = new RuneliteRequirement(configManager, key.runeliteName(),
 			"true", key.toChatText());
 		this.keyringCollection = key;
@@ -54,6 +58,7 @@ public class KeyringRequirement extends ItemRequirement
 	public KeyringRequirement(ConfigManager configManager, KeyringCollection key)
 	{
 		super(key.toChatText(), key.getItemID());
+		keyring = new ItemRequirement("Steel key ring", ItemID.STEEL_KEY_RING);
 		runeliteRequirement = new RuneliteRequirement(configManager, key.runeliteName(),
 			"true", key.toChatText());
 		this.keyringCollection = key;
@@ -92,7 +97,7 @@ public class KeyringRequirement extends ItemRequirement
 	{
 		boolean match = runeliteRequirement.check(client);
 
-		if (match)
+		if (match && keyring.check(client))
 		{
 			return true;
 		}

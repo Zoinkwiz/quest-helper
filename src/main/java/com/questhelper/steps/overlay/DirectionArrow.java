@@ -65,7 +65,7 @@ public class DirectionArrow
 			return;
 		}
 
-		WorldPoint fakeDestinationWp = QuestPerspective.getInstanceWorldPoint(client, worldPoint);
+		WorldPoint fakeDestinationWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
 
 		if (fakeDestinationWp == null) return;
 

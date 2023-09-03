@@ -72,7 +72,7 @@ public class WhispererSteps extends ConditionalStep
 
 	DetailedQuestStep enterRuinsOfCamdozaal, talkToRamarno, talkToPrescott, attachRope, descendDownRope,
 		activateTeleporter1, activateTeleporter2, activateTeleporter3, activateTeleporter4, activateTeleporter5,
-		activateTeleporter6, activateTeleporter7, recallShadowBlocker,
+		activateTeleporter6, activateTeleporter7, recallShadowBlocker, useTeleporterToKetla,
 		takeShadowBlockerSchematic, takeGreenShadowKey, takePurpleShadowKey, tryToEnterSunkenCathedral, talkToKetla,
 		giveKetlaBlockerSchematic, claimShadowBlocker, enterSciencePuddle, retrieveShadowBlocker, placeBlockerInFurnaceBuilding,
 		unlockDoor, takeShadowTorchSchematic, activateBlackstoneFragment, bringKetlaTheBasicTorchSchematic, claimShadowTorch,
@@ -117,12 +117,12 @@ public class WhispererSteps extends ConditionalStep
 		placedIdolWhiteChest, inPubUpstairsShadowRealm, touchedPubRemnant, destroyedTentacles5, destroyedTentacles6,
 		blockerPlacedInRedRoom, hadRedShadowKey, redKeyUsed, inLassarShadowRealmSW, greenKeyUsed, iconUsed, inDrainF0,
 		inDrainF1, inVision, escapedVision, unlockedPerfectShadowTorch, destroyedCathedralTentacles, enteredCathedral,
-		completedOtherMedallions;
+		completedOtherMedallions, inStartingRoom;
 
 	RuneliteRequirement blockerNotInBenchOrInventory;
 
 	Zone vault, camdozaal, lassar, lassarShadowRealm, furnaceHouse, externalFurnaceHouse, pub, pubUpstairsShadowRealm,
-		lassarShadowRealmSW, drainF0, drainF1, visionRegion;
+		lassarShadowRealmSW, drainF0, drainF1, visionRegion, startingRoom;
 
 	public WhispererSteps(QuestHelper questHelper, QuestStep defaultStep, QuestBank questBank, RuneliteObjectManager runeliteObjectManager)
 	{
@@ -149,6 +149,7 @@ public class WhispererSteps extends ConditionalStep
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerNearby), retrieveShadowBlocker);
 		lockedDoorSteps.addStep(and(hadPurpleKey, blockerNotInBenchOrInventory), recallShadowBlocker);
 		lockedDoorSteps.addStep(and(hadPurpleKey, shadowBlocker), placeBlockerInFurnaceBuilding);
+		lockedDoorSteps.addStep(and(hadPurpleKey, inStartingRoom), useTeleporterToKetla);
 		lockedDoorSteps.addStep(and(hadPurpleKey), claimShadowBlocker);
 
 		ConditionalStep blueKeySteps = new ConditionalStep(getQuestHelper(), claimRevitalisingIdol);
@@ -338,6 +339,7 @@ public class WhispererSteps extends ConditionalStep
 		drainF0 = new Zone(new WorldPoint(2750, 6270, 0), new WorldPoint(2815, 6340, 0));
 		drainF1 = new Zone(new WorldPoint(2750, 6270, 1), new WorldPoint(2815, 6340, 1));
 		visionRegion = new Zone(new WorldPoint(3222, 6294, 0), new WorldPoint(3239, 6313, 0));
+		startingRoom = new Zone(new WorldPoint(2558, 6413, 0), new WorldPoint(2609, 6468, 0));
 	}
 
 	protected void setupConditions()
@@ -353,6 +355,7 @@ public class WhispererSteps extends ConditionalStep
 		inDrainF0 = new ZoneRequirement(drainF0);
 		inDrainF1 = new ZoneRequirement(drainF1);
 		inVision = new ZoneRequirement(visionRegion);
+		inStartingRoom = new ZoneRequirement(startingRoom);
 
 		int WHISPERER_VARBIT = 15126;
 
@@ -741,11 +744,14 @@ public class WhispererSteps extends ConditionalStep
 		activateTeleporter7 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49485, new WorldPoint(2691, 6415, 0),
 			"Activate the teleporter in the far east of the resedential area, through the building you unlocked for the idol.");
 
-
+		useTeleporterToKetla = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
+			"Use the teleporter to the Western Residential District.");
+		useTeleporterToKetla.addDialogSteps("Western Residential District.", "Take the Shadow Torch.");
 		takeShadowBlockerSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2590, 6380, 0),
 			"Enter the north-western building in the Science District, and take the Shadow Schematic which is on top of a barrel in there.",
 			shadowBlockerSchematic);
 		takeShadowBlockerSchematic.addDialogSteps("More options.", "Northern Science District.");
+		takeShadowBlockerSchematic.addSubSteps(useTeleporterToKetla);
 		takeGreenShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2581, 6387, 0),
 			"Take the shadow key from the north-western room of the Science District.", greenShadowKey);
 		takeGreenShadowKey.addDialogStep("Northern Science District.");

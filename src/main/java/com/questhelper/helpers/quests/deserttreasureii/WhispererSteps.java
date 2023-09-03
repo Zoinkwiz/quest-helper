@@ -714,6 +714,7 @@ public class WhispererSteps extends ConditionalStep
 	{
 		enterRuinsOfCamdozaal = new ObjectStep(getQuestHelper(), NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0),
 			"Enter Camdozaal, west of Ice Mountain.", ringOfVisibility.hideConditioned(finishedTalkingToKetla));
+		enterRuinsOfCamdozaal.addTeleport(lassarTeleport);
 		talkToRamarno = new NpcStep(getQuestHelper(), NpcID.RAMARNO_10685, new WorldPoint(2959, 5809, 0),
 			"Talk to Ramarno to the north by the sacred forge.");
 		talkToRamarno.addDialogStep("Have you seen any archeologists around here?");

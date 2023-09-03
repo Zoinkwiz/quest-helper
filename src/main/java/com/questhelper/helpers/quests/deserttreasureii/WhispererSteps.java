@@ -36,7 +36,6 @@ import com.questhelper.requirements.location.TileIsLoadedRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
@@ -121,7 +120,7 @@ public class WhispererSteps extends ConditionalStep
 
 	Requirement hadGreenShadowKey, hadPurpleKey, hadShadowBlockerSchematic, placedBlockerWhiteChest, placedAnimaWhiteChest,
 		placedIdolWhiteChest, inPubUpstairsShadowRealm, touchedPubRemnant, destroyedTentacles5, destroyedTentacles6,
-		blockerPlacedInRedRoom, hadRedShadowKey, redKeyUsed, inLassarShadowRealmSW, greenKeyUsed, iconUsed, inDrainF0,
+		blockerPlacedInRedRoom, hadRedShadowKey, redKeyUsed, inLassarShadowRealmSW, usedGreenKey, iconUsed, inDrainF0,
 		inDrainF1, inVision, escapedVision, unlockedPerfectShadowTorch, destroyedCathedralTentacles, enteredCathedral,
 		completedOtherMedallions, inStartingRoom, inScienceDistrict, inResidentialDistrict, inEastShadowRealm, inRealPub;
 
@@ -211,7 +210,7 @@ public class WhispererSteps extends ConditionalStep
 		silentChoirSteps.addStep(and(inDrainF1, strangeIcon), useIconInDrain);
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, or(strangeIcon, iconUsed)), enterDrain);
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, iconSegment2), makeIcon);
-		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, greenKeyUsed), openGreenChestRealWorld);
+		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, usedGreenKey), openGreenChestRealWorld);
 		silentChoirSteps.addStep(and(inLassarShadowRealm, touchedPubRemnant, iconSegment1, iconSegment2), activateBlackstoneFragment11);
 		silentChoirSteps.addStep(and(inLassarShadowRealmSW, touchedPubRemnant, iconSegment1, greenShadowKey), openGreenChest);
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, greenShadowKey), enterSciencePuddle3);
@@ -435,20 +434,31 @@ public class WhispererSteps extends ConditionalStep
 
 		idolShadowRealmFullNearby = new ObjectCondition(ObjectID.REVITALISING_IDOL_48216);
 
-		purpleKeyTaken = nor(new ItemOnTileRequirement(ItemID.SHADOW_KEY, new WorldPoint(2593, 6352, 0)));
+		purpleKeyTaken = not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.SHADOW_KEY, new WorldPoint(2593, 6352, 0)));
 
 		hadPurpleKey = new Conditions(or(
 			purpleShadowKey,
 			purpleKeyTaken
 		));
 
-		greenKeyUsed = nor(greenShadowKey,
-			new ItemOnTileRequirement(ItemID.SHADOW_KEY_28374, new WorldPoint(2581, 6387, 0)
-			));
+		usedBlueKey = new Conditions(
+			LogicType.OR,
+			inPubShadowRealm,
+			new Conditions(
+				new TileIsLoadedRequirement(new WorldPoint(2672, 6443, 0)),
+				not(new ItemOnTileConsideringSceneLoadRequirement(blueShadowKey, new WorldPoint(2672, 6443, 0))),
+				not(blueShadowKey)
+			)
+		);
+
+		usedGreenKey = and(
+			not(greenShadowKey),
+			not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.SHADOW_KEY_28374, new WorldPoint(2581, 6387, 0)))
+		);
 
 		hadGreenShadowKey = new Conditions(or(
 			greenShadowKey,
-			greenKeyUsed
+			usedGreenKey
 		));
 
 		hadShadowBlockerSchematic = new Conditions(or(shadowBlockerSchematic, givenShadowBlockerSchematic));

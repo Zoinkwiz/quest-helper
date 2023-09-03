@@ -192,7 +192,8 @@ public class WhispererSteps extends ConditionalStep
 		getWhiteKeySteps.addStep(and(inLassar, destroyedTentacles4), takeWhiteShadowKey);
 		getWhiteKeySteps.addStep(and(inLassarShadowRealm, destroyedTentacles4), activateBlackstoneFragment6);
 		getWhiteKeySteps.addStep(and(inLassarShadowRealm, superiorTorch), destroyTentacles4);
-		getWhiteKeySteps.addStep(superiorTorch, enterPlazaPuddle);
+		getWhiteKeySteps.addStep(and(superiorTorch, animaPortal), enterPlazaPuddle);
+		getWhiteKeySteps.addStep(animaPortal, claimAnimaPortal);
 
 		ConditionalStep getPerfectedSchematicSteps = new ConditionalStep(getQuestHelper(), placeBlockerWhiteChest);
 		getPerfectedSchematicSteps.addStep(and(inLassarShadowRealm, braziersLit), openFinalChest);
@@ -327,6 +328,7 @@ public class WhispererSteps extends ConditionalStep
 
 		animaPortalSchematic = new ItemRequirement("Anima portal schematic", ItemID.ANIMA_PORTAL_SCHEMATIC);
 		animaPortal = new ItemRequirement("Anima portal", ItemID.ANIMA_PORTAL);
+		animaPortal.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
 		whiteShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY_28372);
 		perfectShadowTorchSchematic = new ItemRequirement("Perfected shadow torch schematic", ItemID.PERFECTED_SHADOW_TORCH_SCHEMATIC_28381);
 		redShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY_28373);
@@ -998,7 +1000,7 @@ public class WhispererSteps extends ConditionalStep
 			whiteShadowKey);
 
 		placeBlockerWhiteChest = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2574, 6449, 0),
-			"Return to the palace in the north-west, and place the shadow blocker next to it.", shadowBlocker.highlighted());
+			"Return to the palace in the north-west, and place the shadow blocker near to the chest there.", shadowBlocker.highlighted());
 		placeBlockerWhiteChest.addDialogSteps("Palace.");
 		placeBlockerWhiteChest.addIcon(ItemID.SHADOW_BLOCKER);
 

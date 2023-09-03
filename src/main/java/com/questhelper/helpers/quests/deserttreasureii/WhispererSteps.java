@@ -40,7 +40,9 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nand;
 import static com.questhelper.requirements.util.LogicHelper.nor;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -73,6 +75,7 @@ public class WhispererSteps extends ConditionalStep
 	DetailedQuestStep enterRuinsOfCamdozaal, talkToRamarno, talkToPrescott, attachRope, descendDownRope,
 		activateTeleporter1, activateTeleporter2, activateTeleporter3, activateTeleporter4, activateTeleporter5,
 		activateTeleporter6, activateTeleporter7, recallShadowBlocker, useTeleporterToKetla, useTeleporterToScienceDistrict,
+		useTeleporterToKetlaFromScienceDistrict,
 		takeShadowBlockerSchematic, takeGreenShadowKey, takePurpleShadowKey, tryToEnterSunkenCathedral, talkToKetla,
 		giveKetlaBlockerSchematic, claimShadowBlocker, enterSciencePuddle, retrieveShadowBlocker, placeBlockerInFurnaceBuilding,
 		unlockDoor, takeShadowTorchSchematic, activateBlackstoneFragment, bringKetlaTheBasicTorchSchematic, claimShadowTorch,
@@ -494,14 +497,13 @@ public class WhispererSteps extends ConditionalStep
 		);
 
 		usedBlueKey = new Conditions(
-			true, LogicType.OR,
+			true,
+			LogicType.OR,
 			inPubShadowRealm,
 			new Conditions(
 				new TileIsLoadedRequirement(new WorldPoint(2672, 6443, 0)),
-				nor(
-					new ItemOnTileRequirement(blueShadowKey, new WorldPoint(2672, 6443, 0)),
-					blueShadowKey
-				)
+				not(new ItemOnTileRequirement(blueShadowKey, new WorldPoint(2672, 6443, 0))),
+				not(blueShadowKey)
 			)
 		);
 
@@ -822,6 +824,8 @@ public class WhispererSteps extends ConditionalStep
 			"Bring the basic shadow torch schematic to Ketla, next to the Western Residential District teleport.",
 			basicShadowTorchSchematic);
 		bringKetlaTheBasicTorchSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
+
+//		useTeleporterToKetlaFromScienceDistrict = new ObjectStep(getQuestHelper());
 		claimShadowTorch = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
 			"Get the Shadow Torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot);
 		claimShadowTorch.addDialogSteps("Take it.", "Western Residential District.", "Take the Shadow Torch.", "Take everything.");

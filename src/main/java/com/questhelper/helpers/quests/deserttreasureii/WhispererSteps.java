@@ -980,8 +980,8 @@ public class WhispererSteps extends ConditionalStep
 		bringKetlaTheAnimaPortalSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
 			"Bring the anima portal schematic to Ketla, next to the Western Residential District teleport.",
 			animaPortalSchematic);
-		bringKetlaTheAnimaPortalSchematic.addDialogSteps("More options...", "Western Residential District.", "I have a schematic here.");
-
+		bringKetlaTheAnimaPortalSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
+		bringKetlaTheAnimaPortalSchematic.addDialogStepWithExclusion("More options...", "How did you end up down here?");
 		claimAnimaPortal = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
 			"Get the anima portal from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot);
 		claimAnimaPortal.addDialogSteps("Take it.", "Western Residential District.", "Take the Anima Portal.", "Take everything.");

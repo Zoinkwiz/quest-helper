@@ -892,15 +892,15 @@ public class WhispererSteps extends ConditionalStep
 		destroyTentacles2.setLinePoints(Arrays.asList(
 			new WorldPoint(2412, 6414, 0),
 			new WorldPoint(2412, 6414, 0),
-			new WorldPoint(2412, 6407, 0),
-			new WorldPoint(2418, 6407, 0),
-			new WorldPoint(2418, 6419, 0),
-			new WorldPoint(2427, 6427, 0),
-			new WorldPoint(2425, 6437, 0),
-			new WorldPoint(2417, 6437, 0),
-			new WorldPoint(2417, 6431, 0),
-			new WorldPoint(2410, 6431, 0),
-			new WorldPoint(2410, 6437, 0)
+			new WorldPoint(2426, 6407, 0),
+			new WorldPoint(2432, 6407, 0),
+			new WorldPoint(2432, 6419, 0),
+			new WorldPoint(2441, 6427, 0),
+			new WorldPoint(2439, 6437, 0),
+			new WorldPoint(2431, 6437, 0),
+			new WorldPoint(2431, 6431, 0),
+			new WorldPoint(2424, 6431, 0),
+			new WorldPoint(2424, 6437, 0)
 		));
 
 		getBlueShadowKeyRealRealm = new ItemStep(getQuestHelper(), new WorldPoint(2672, 6443, 0), "Grab the shadow key in the room you've just unlocked.", blueShadowKey);

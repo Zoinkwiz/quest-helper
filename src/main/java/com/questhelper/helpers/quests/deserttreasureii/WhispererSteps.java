@@ -197,8 +197,7 @@ public class WhispererSteps extends ConditionalStep
 
 		ConditionalStep getPerfectedSchematicSteps = new ConditionalStep(getQuestHelper(), placeBlockerWhiteChest);
 		getPerfectedSchematicSteps.addStep(and(inLassarShadowRealm, braziersLit), openFinalChest);
-		getPerfectedSchematicSteps.addStep(and(inLassarShadowRealm, placedBlockerWhiteChest, placedAnimaWhiteChest,
-			placedIdolWhiteChest), lightBraziers);
+		getPerfectedSchematicSteps.addStep(and(inLassarShadowRealm), lightBraziers);
 		getPerfectedSchematicSteps.addStep(and(placedBlockerWhiteChest, placedAnimaWhiteChest, placedIdolWhiteChest), enterPlazaPuddle2);
 		getPerfectedSchematicSteps.addStep(and(placedBlockerWhiteChest, placedAnimaWhiteChest), placeIdolWhiteChest);
 		getPerfectedSchematicSteps.addStep(placedBlockerWhiteChest, placeAnimaWhiteChest);

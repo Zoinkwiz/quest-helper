@@ -57,7 +57,6 @@ public class QuestHelperWidgetOverlay extends Overlay
 
 		if (quest != null && quest.getCurrentStep() != null && quest.getCurrentStep().getActiveStep() != null)
 		{
-			quest.getCurrentStep().getActiveStep().makeDirectionOverlayHint(graphics, plugin);
 			if (plugin.getConfig().showWidgetHints())
 			{
 				quest.getCurrentStep().getActiveStep().makeWidgetOverlayHint(graphics, plugin);

@@ -32,6 +32,7 @@ import com.google.inject.Provides;
 import com.questhelper.banktab.QuestBankTab;
 import com.questhelper.banktab.QuestHelperBankTagService;
 import com.questhelper.overlays.QuestHelperDebugOverlay;
+import com.questhelper.overlays.QuestHelperMinimapOverlay;
 import com.questhelper.overlays.QuestHelperOverlay;
 import com.questhelper.overlays.QuestHelperWidgetOverlay;
 import com.questhelper.overlays.QuestHelperWorldArrowOverlay;
@@ -191,6 +192,9 @@ public class QuestHelperPlugin extends Plugin
 	private QuestHelperWidgetOverlay questHelperWidgetOverlay;
 
 	@Inject
+	private QuestHelperMinimapOverlay questHelperMinimapOverlay;
+
+	@Inject
 	private QuestHelperWorldOverlay questHelperWorldOverlay;
 
 	@Inject
@@ -299,6 +303,7 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.add(questHelperWorldArrowOverlay);
 		overlayManager.add(questHelperWorldLineOverlay);
 		overlayManager.add(questHelperWidgetOverlay);
+		overlayManager.add(questHelperMinimapOverlay);
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
@@ -345,6 +350,7 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.remove(questHelperWorldLineOverlay);
 		overlayManager.remove(questHelperWidgetOverlay);
 		overlayManager.remove(questHelperDebugOverlay);
+		overlayManager.remove(questHelperMinimapOverlay);
 
 		clientToolbar.removeNavigation(navButton);
 		shutDownQuest(false);

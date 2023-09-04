@@ -14,7 +14,7 @@ public class FarmingConfigChangeHandler
 	{
 		if (event.getKey().equals(configKey))
 		{
-			try 
+			try
 			{
 				T selectedEnumValue = Enum.valueOf(enumClass, event.getNewValue());
 				updateAction.accept(selectedEnumValue);

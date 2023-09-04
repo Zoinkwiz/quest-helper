@@ -153,8 +153,19 @@ public class DetailedQuestStep extends QuestStep
 	{
 		super(questHelper, text);
 		this.worldPoint = worldPoint;
-		this.requirements.addAll(requirements);
-		this.recommended.addAll(recommended);
+		if (requirements != null)
+		{
+			this.requirements.addAll(requirements);
+		}
+		if (recommended != null)
+		{
+			this.recommended.addAll(recommended);
+		}
+	}
+
+	public DetailedQuestStep(QuestHelper questHelper, String text, List<Requirement> requirements, List<Requirement> recommended)
+	{
+		this(questHelper, null, text, requirements, recommended);
 	}
 
 	@Override

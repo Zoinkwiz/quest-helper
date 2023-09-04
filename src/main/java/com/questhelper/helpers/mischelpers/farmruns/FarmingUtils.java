@@ -36,8 +36,8 @@ public class FarmingUtils
 				Enum<?> seedEnum = Enum.valueOf(defaultValue.getDeclaringClass(), seedName);
 				seedRequirement.setId(getItemIdFromEnum(seedEnum));
 				if (seedEnum instanceof HardwoodTreeSapling ||
-				seedEnum instanceof FruitTreeSapling ||
-				seedEnum instanceof TreeSapling)
+					seedEnum instanceof FruitTreeSapling ||
+					seedEnum instanceof TreeSapling)
 				{
 					seedRequirement.setName(Text.titleCase(seedEnum) + " sapling");
 				}

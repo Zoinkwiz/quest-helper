@@ -86,9 +86,10 @@ import com.questhelper.helpers.miniquests.themagearenai.TheMageArenaI;
 import com.questhelper.helpers.miniquests.themagearenaii.MA2Locator;
 import com.questhelper.helpers.miniquests.themagearenaii.TheMageArenaII;
 import com.questhelper.helpers.mischelpers.allneededitems.AllNeededItems;
-import com.questhelper.helpers.mischelpers.herbrun.HerbRun;
 import com.questhelper.helpers.mischelpers.knightswaves.KnightWaves;
 import com.questhelper.helpers.mischelpers.strongholdofsecurity.StrongholdOfSecurity;
+import com.questhelper.helpers.mischelpers.farmruns.HerbRun;
+import com.questhelper.helpers.mischelpers.farmruns.TreeRun;
 import com.questhelper.helpers.quests.akingdomdivided.AKingdomDivided;
 import com.questhelper.helpers.quests.anightatthetheatre.ANightAtTheTheatre;
 import com.questhelper.helpers.quests.animalmagnetism.AnimalMagnetism;
@@ -630,6 +631,7 @@ public enum QuestHelperQuest
 	DAG_ROUTE(new DagRouteHelper(), "Dagannoth Kings Route", QuestVarbits.QUEST_THE_FREMENNIK_ISLES, -1, QuestDetails.Type.GENERIC,
 		QuestDetails.Difficulty.GENERIC),
 	HERB_RUN(new HerbRun(), "Herb run", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
+	TREE_RUN(new TreeRun(), "Tree run", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	BARROWS_HELPER(new BarrowsHelper(), "Barrows helper", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	STRONGHOLD_OF_SECURITY(new StrongholdOfSecurity(), "Stronghold of Security", QuestVarbits.STRONGHOLD_OF_SECURITY, 1,
 		QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),

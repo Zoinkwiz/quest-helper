@@ -34,7 +34,7 @@ public class FarmingUtils
 			try
 			{
 				Enum<?> seedEnum = Enum.valueOf(defaultValue.getDeclaringClass(), seedName);
-				seedRequirement.setId(getItemIdFromEnum(seedEnum));
+				seedRequirement.setId(getSeedItemIdFromEnum(seedEnum));
 				if (seedEnum instanceof HardwoodTreeSapling ||
 					seedEnum instanceof FruitTreeSapling ||
 					seedEnum instanceof TreeSapling)
@@ -60,7 +60,7 @@ public class FarmingUtils
 		return seedRequirement;
 	}
 
-	private static int getItemIdFromEnum(Enum<?> enumValue)
+	public static int getSeedItemIdFromEnum(Enum<?> enumValue)
 	{
 		if (enumValue instanceof TreeSapling)
 		{

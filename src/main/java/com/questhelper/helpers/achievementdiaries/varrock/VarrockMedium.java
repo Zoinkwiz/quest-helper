@@ -236,7 +236,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		champs = new ObjectStep(this, ObjectID.DOOR_1805, new WorldPoint(3191, 3363, 0),
 			"Enter the Champions' Guild.", qp);
 		colourCat = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3415, 0),
-			"Check your bank if you own a cat/kitten and shoo them. Then speak with Gertrude for a new kitten.",
+			"Check your bank if you own a cat/kitten and either store them in the POH Menagerie or shoo them. Then speak with Gertrude for a new kitten.",
 			coins.quantity(100), ringOfCharos.equipped());
 		colourCat.addDialogSteps("Do you have any more kittens?", "[Charm] I'm quite fussy over cats - can I pick my own?");
 		geSpirit = new ObjectStep(this, 1295, new WorldPoint(3185, 3510, 0),

@@ -238,7 +238,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		craftTiara.addIcon(ItemID.SILVER_BAR);
 		changeBoots = new NpcStep(this, NpcID.YRSA_3933, new WorldPoint(2625, 3674, 0),
 			"Change your boots at Yrsa's Shoe Store.", coins.quantity(500));
-		goneToWaterbirth = new NpcStep(this, NpcID.JARVALD, new WorldPoint(2620, 3686, 0),
+		goneToWaterbirth = new NpcStep(this, new int[]{NpcID.JARVALD, NpcID.JARVALD_7205}, new WorldPoint(2620, 3686, 0),
 			"Speak with Jarvald to travel to Waterbirth Island.");
 		goneToWaterbirth.addDialogStep("What Jarvald is doing.");
 		goneToWaterbirth.addDialogStep("Can I come?");

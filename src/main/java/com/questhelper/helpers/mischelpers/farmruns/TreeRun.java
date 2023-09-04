@@ -23,19 +23,15 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
-import net.runelite.api.World;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.util.Text;
-import sun.reflect.generics.tree.Tree;
 import java.util.Arrays;
 import java.util.List;
 
@@ -453,105 +449,29 @@ public class TreeRun extends ComplexStateQuestHelper
 			return;
 		}
 
-		if (event.getKey().equals(TREE_SAPLING)) {
-			FarmingConfigChangeHandler.handleConfigChange(
-				questHelperPlugin.getConfigManager(),
-				QuestHelperConfig.QUEST_BACKGROUND_GROUP,
-				TreeSapling.OAK,
-				(selectedTreeSapling) -> {
-					treeSapling.setId(FarmingUtils.getSeedItemIdFromEnum(selectedTreeSapling));
-					treeSapling.setName(Text.titleCase(selectedTreeSapling) + " sapling");
-					questHelperPlugin.refreshBank();
-				}
-			);
-		}
+		FarmingConfigChangeHandler.handleEnumConfigChange(event, TREE_SAPLING, TreeSapling.class, this::updateTreeSapling, TreeSapling.OAK, configManager, questHelperPlugin);
+		FarmingConfigChangeHandler.handleEnumConfigChange(event, FRUIT_TREE_SAPLING, FruitTreeSapling.class, this::updateFruitTreeSapling, FruitTreeSapling.APPLE, configManager, questHelperPlugin);
+		FarmingConfigChangeHandler.handleEnumConfigChange(event, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.class, this::updateHardwoodTreeSapling, HardwoodTreeSapling.TEAK, configManager, questHelperPlugin);
 
-		if (event.getKey().equals(FRUIT_TREE_SAPLING)) {
-			FarmingConfigChangeHandler.handleConfigChange(
-				questHelperPlugin.getConfigManager(),
-				QuestHelperConfig.QUEST_BACKGROUND_GROUP,
-				FruitTreeSapling.APPLE,
-				(selectedFruitTreeSapling) -> {
-					fruitTreeSapling.setId(FarmingUtils.getSeedItemIdFromEnum(selectedFruitTreeSapling));
-					fruitTreeSapling.setName(Text.titleCase(selectedFruitTreeSapling) + " sapling");
-					questHelperPlugin.refreshBank();
-				}
-			);
-		}
-
-		if (event.getKey().equals(HARDWOOD_TREE_SAPLING)) {
-			FarmingConfigChangeHandler.handleConfigChange(
-				questHelperPlugin.getConfigManager(),
-				QuestHelperConfig.QUEST_BACKGROUND_GROUP,
-				HardwoodTreeSapling.TEAK,
-				(selectedHardwoodTreeSapling) -> {
-					hardwoodSapling.setId(FarmingUtils.getSeedItemIdFromEnum(selectedHardwoodTreeSapling));
-					hardwoodSapling.setName(Text.titleCase(selectedHardwoodTreeSapling) + " sapling");
-					questHelperPlugin.refreshBank();
-				}
-			);
+		if (event.getKey().equals(GRACEFUL_OR_FARMING)) {
+			questHelperPlugin.refreshBank();
 		}
 	}
 
+	private void updateTreeSapling(TreeSapling selectedTreeSapling) {
+		treeSapling.setId(selectedTreeSapling.treeSaplingID);
+		treeSapling.setName(Text.titleCase(selectedTreeSapling) + " sapling");
+	}
 
-/*	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (!event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
-		{
-			return;
-		}
+	private void updateFruitTreeSapling(FruitTreeSapling selectedFruitTreeSapling) {
+		fruitTreeSapling.setId(selectedFruitTreeSapling.fruitTreeSaplingId);
+		fruitTreeSapling.setName(Text.titleCase(selectedFruitTreeSapling) + " sapling");
+	}
 
-		if (event.getKey().equals(TREE_SAPLING))
-		{
-			try
-			{
-				TreeSapling selectedTreeSapling = TreeSapling.valueOf(event.getNewValue());
-				treeSapling.setId(selectedTreeSapling.treeSaplingID);
-				treeSapling.setName(Text.titleCase(selectedTreeSapling) + " sapling");
-				questHelperPlugin.refreshBank();
-			}
-			catch (IllegalArgumentException e)
-			{
-				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, TREE_SAPLING, TreeSapling.OAK);
-			}
-		}
-
-		if (event.getKey().equals(FRUIT_TREE_SAPLING))
-		{
-			try
-			{
-				FruitTreeSapling selectedFruitTreeSapling = FruitTreeSapling.valueOf(event.getNewValue());
-				fruitTreeSapling.setId(selectedFruitTreeSapling.fruitTreeSaplingId);
-				fruitTreeSapling.setName(Text.titleCase(selectedFruitTreeSapling) + " sapling");
-				questHelperPlugin.refreshBank();
-			}
-			catch (IllegalArgumentException e)
-			{
-				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, FRUIT_TREE_SAPLING, FruitTreeSapling.APPLE);
-			}
-		}
-
-		if (event.getKey().equals(HARDWOOD_TREE_SAPLING))
-		{
-			try
-			{
-				HardwoodTreeSapling selectedHardwoodTreeSapling = HardwoodTreeSapling.valueOf(event.getNewValue());
-				hardwoodSapling.setId(selectedHardwoodTreeSapling.hardwoodTreeSaplingId);
-				hardwoodSapling.setName(Text.titleCase(selectedHardwoodTreeSapling) + " sapling");
-				questHelperPlugin.refreshBank();
-			}
-			catch (IllegalArgumentException e)
-			{
-				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.TEAK);
-			}
-		}
-
-		if (event.getKey().equals(GRACEFUL_OR_FARMING))
-		{
-			questHelperPlugin.refreshBank();
-		}
-	}*/
+	private void updateHardwoodTreeSapling(HardwoodTreeSapling selectedHardwoodTreeSapling) {
+		hardwoodSapling.setId(selectedHardwoodTreeSapling.hardwoodTreeSaplingId);
+		hardwoodSapling.setName(Text.titleCase(selectedHardwoodTreeSapling) + " sapling");
+	}
 
 	@Override
 	public List<HelperConfig> getConfigs()

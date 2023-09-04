@@ -33,10 +33,13 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
+import com.questhelper.requirements.util.ItemSlots;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
@@ -78,13 +81,14 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		monkey, karamjanGreegreeEquipped, sigilEquipped, bananaReq;
 
 	//Items Recommended
-	ItemRequirement combatGear, antipoison, food, prayerPotions, escapeTeleport, ardougneTeleport, staminaPotions, zombieBones, gorillaBones, ninjaBones;
+	ItemRequirement combatGear, antipoison, food, prayerPotions, escapeTeleport, ardougneTeleport, staminaPotions, zombieBones, gorillaBones, ninjaBones,
+		anyTalisman, ninjaGreegree, zombieGreegree, gorillaGreegree;
 
 	Requirement inStronghold, inFloor1, inFloor2, inFloor3, inKaramja, talkedToCaranock, reportedBackToNarnode, talkedToDaero, inHangar, startedPuzzle, solvedPuzzle,
 		talkedToDaeroAfterPuzzle, onCrashIsland, talkedToLumdo, talkedToWaydar, onApeAtollSouth, inPrison, onApeAtollNorth, talkedToGarkor, inDentureBuilding,
 		inMouldRoom, hadDenturesAndMould, inZooknockDungeon, talkedToZooknock, givenDentures, givenBar, givenMould, hadEnchantedBar,
 		inTempleDungeon, givenTalisman, givenBones, inMonkeyPen, talkedToGarkorWithGreeGree, talkedToGuard, talkedToKruk, onApeAtollNorthBridge,
-		onApeAtollOverBridge, inThroneRoom, givenMonkey, gotSigil, inJungleDemonRoom, hasTalisman, protectFromRanged, protectFromMelee;
+		onApeAtollOverBridge, inThroneRoom, givenMonkey, gotSigil, inJungleDemonRoom, hasTalisman, protectFromRanged, protectFromMelee, protectFromMagic;
 
 	DetailedQuestStep talkToNarnode, goUpF0ToF1, goUpF1ToF2, goUpF2ToF3, flyGandius, enterShipyard, talkToCaranock, talkToNarnodeAfterShipyard, goUpToDaero,
 		clickPuzzle, enterValley, leavePrison, talkToGarkor, enterDentureBuilding, searchForDentures, goDownFromDentures, leaveToPrepareForAmulet, enterValleyForAmuletMake,
@@ -181,19 +185,19 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		makeAmulet.addStep(inHangar, talkToWaydarForAmuletMake);
 		makeAmulet.addStep(inFloor1, talkToDaeroForAmuletMake);
 		makeAmulet.addStep(inZooknockDungeon, leaveToPrepareForAmulet);
-		makeAmulet.setLockingCondition(amulet);
+		makeAmulet.setLockingCondition(amulet.alsoCheckBank(questBank));
 
 		getTalisman = new ConditionalStep(this, leaveTempleDungeon);
 		getTalisman.addStep(onApeAtollNorth, talkToMonkeyChild);
 		getTalisman.setLockingCondition(hasTalisman);
 
-		ItemRequirement talismans4 = talisman.quantity(4).alsoCheckBank(questBank);
+		ItemRequirement talismans4 = anyTalisman.quantity(4).alsoCheckBank(questBank);
 		getBones = new ConditionalStep(this, talkToChildFor4Talismans);
 		getBones.addStep(and(talismans4, ninjaBones, gorillaBones, inTempleDungeon), killZombie);
 		getBones.addStep(and(talismans4, ninjaBones, gorillaBones), goDownToZombie);
 		getBones.addStep(and(talismans4, ninjaBones), killGorilla);
 		getBones.addStep(talismans4, killNinja);
-		getBones.setLockable(true);
+		getBones.setLockingCondition(and(talismans4, ninjaBones, gorillaBones, zombieBones));
 
 		makeKaramjanGreeGree = new ConditionalStep(this, goUpToDaeroForTalismanRun);
 		makeKaramjanGreeGree.addStep(new Conditions(inZooknockDungeon, givenTalisman, givenBones), talkToZooknockForTalisman);
@@ -314,8 +318,21 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talismanHighlight.setHighlightInInventory(true);
 		talismanHighlight.setTooltip("You can get another from the monkey child");
 
+		anyTalisman = new ItemRequirement("Any talisman", ItemID.MONKEY_TALISMAN);
+		anyTalisman.addAlternates(ItemID.KARAMJAN_MONKEY_GREEGREE, ItemID.NINJA_MONKEY_GREEGREE, ItemID.NINJA_MONKEY_GREEGREE_4025,
+			ItemID.GORILLA_GREEGREE, ItemID.BEARDED_GORILLA_GREEGREE, ItemID.ZOMBIE_MONKEY_GREEGREE, ItemID.ZOMBIE_MONKEY_GREEGREE_4030);
+
 		karamjanGreegree = new ItemRequirement("Karamjan monkey greegree", ItemID.KARAMJAN_MONKEY_GREEGREE);
 		karamjanGreegreeEquipped = new ItemRequirement("Karamjan monkey greegree", ItemID.KARAMJAN_MONKEY_GREEGREE, 1, true);
+
+		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE);
+		ninjaGreegree.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
+
+		gorillaGreegree = new ItemRequirement("Gorilla greegree", ItemID.GORILLA_GREEGREE);
+		gorillaGreegree.addAlternates(ItemID.BEARDED_GORILLA_GREEGREE);
+
+		zombieGreegree = new ItemRequirement("Zombie greegree", ItemID.ZOMBIE_MONKEY_GREEGREE);
+		zombieGreegree.addAlternates(ItemID.ZOMBIE_MONKEY_GREEGREE_4030);
 
 		monkey = new ItemRequirement("Monkey", ItemID.MONKEY);
 
@@ -333,6 +350,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		protectFromRanged = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
 		protectFromMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
+		protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 		escapeTeleport = new ItemRequirement("Any teleport to leave Ape Atoll", ItemID.VARROCK_TELEPORT);
 		ItemRequirement ardougneTeleTab = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		ItemRequirement ardougneTeleRunes = new ItemRequirements("Ardougne teleport",
@@ -451,7 +469,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		hasTalisman = new Conditions(LogicType.OR, karamjanGreegree, talisman);
 
-		hadEnchantedBar = new Conditions(LogicType.OR, talisman, unstrungAmuletHighlight, amulet, enchantedBar);
+		hadEnchantedBar = new Conditions(LogicType.OR, talisman, unstrungAmuletHighlight, amulet, enchantedBar, hasTalisman);
 		hadDenturesAndMould = new Conditions(LogicType.OR, hadEnchantedBar, new Conditions(monkeyDentures, mould));
 
 		givenTalisman = new Conditions(true, LogicType.OR,
@@ -464,17 +482,26 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		);
 
 		talkedToGarkorWithGreeGree = new VarbitRequirement(126, 3, Operation.GREATER_EQUAL);
-		talkedToGuard = new Conditions(true, new DialogRequirement("He goes by the name of Kruk."));
-		talkedToKruk = new Conditions(true,
+		talkedToGuard = new RuneliteRequirement(getConfigManager(), "mm1talkedtoguard",
+			new Conditions(true, new DialogRequirement("He goes by the name of Kruk.")));
+		talkedToKruk = new RuneliteRequirement(getConfigManager(), "mm1talkedtokruk", new Conditions(true,
 			new DialogRequirement("As you wish.", "I see. Very well, you look genuine enough. Follow me.")
-		);
+		));
 
-		givenMonkey = new Conditions(true, LogicType.OR,
-			new DialogRequirement("We are still pondering your proposition", "You have shown yourself to be very resourceful."),
+		DialogRequirement givenMonkeyDialog = new DialogRequirement("I must think upon it some more and discuss the matter with my advisers",
+			"We are still pondering your proposition...We will let you know when we have an answer...",
+			"You have shown yourself to be very resourceful.");
+		givenMonkeyDialog.setTalkerName("King Awowogei");
+
+		givenMonkey = new RuneliteRequirement(getConfigManager(), "mm1givenmonkey", new Conditions(true,
+			LogicType.OR,
+			givenMonkeyDialog,
 			new WidgetTextRequirement(119, 3, true, "appear to have earnt Awowogei's favour.")
-		);
+		));
 
 		gotSigil = new VarbitRequirement(126, 6, Operation.GREATER_EQUAL);
+
+		// Claimed exp rewards, 365 9->10
 	}
 
 	public void setupSteps()
@@ -645,7 +672,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkToZooknock.addDialogSteps("What do we need for the monkey amulet?", "I'll be back later.");
 		talkToZooknock.setLinePoints(zooknockDungeonPath);
 
-		useDentures = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0), "Use the monkey dentures on Zooknock in the north east of the dungeon. If you've already done so, open the quest journal to re-sync your current state.", monkeyDenturesHighlight);
+		useDentures = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0),
+			"Use the monkey dentures on Zooknock in the north east of the dungeon. If you've already done so, open the quest journal to re-sync your current state.", monkeyDenturesHighlight);
 		useDentures.addIcon(ItemID.MONKEY_DENTURES);
 
 		useMould = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0), "Use the m'amulet mould on Zooknock in the north east of the dungeon. If you've already done so, open the quest journal to re-sync your current state.", mouldHighlight);
@@ -770,6 +798,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			"Get food, antipoison, prayer potions, and return to Ape Atoll.",
 			Arrays.asList(talisman, monkeyBonesOrCorpse),
 			Arrays.asList(food, antipoison, prayerPotions, staminaPotions, ardougneTeleport));
+		goUpToDaeroForTalismanRun.addTeleport(grandTreeTeleport);
 
 		talkToDaeroForTalismanRun = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1),
 			"Travel with Daero on the 1st floor of the Tree Gnome Stronghold.",
@@ -789,7 +818,9 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		enterDungeonForTalismanRun = new ObjectStep(this, ObjectID.BAMBOO_LADDER_4780, new WorldPoint(2763, 2703, 0), "Enter the dungeon in south Ape Atoll.", talisman, monkeyBonesOrCorpse);
 
-		useTalisman = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0), "Use the monkey talisman on Zooknock in the north east of the dungeon. If you've already done so, open the quest journal to re-sync your current state.", talismanHighlight);
+		useTalisman = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0),
+			"Use the monkey talisman on Zooknock in the north east of the dungeon. " +
+				"If you've already done so, open the quest journal to re-sync your current state.", talismanHighlight);
 		useTalisman.addIcon(ItemID.MONKEY_TALISMAN);
 		useTalisman.setLinePoints(zooknockDungeonPath);
 
@@ -798,18 +829,25 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		talkToZooknockForTalisman = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0), "Talk to Zooknock in the north east of the dungeon for the talisman.");
 		talkToZooknockForTalisman.addDialogStep("What do we need for the monkey talisman?");
+		useBones.addSubSteps(talkToZooknockForTalisman);
 
-		leaveDungeonWithGreeGree = new DetailedQuestStep(this, "If you want to make a zombie, ninja and gorilla greegree talk to and give " +
-			"Zooknock the bones/talismans. Once you're done, teleport away for the next step.");
-		leaveDungeonWithGreeGree.addTeleport(ardougneTeleport);
+		leaveDungeonWithGreeGree = new DetailedQuestStep(this, "If you want to make a zombie, ninja and gorilla greegree for RFD talk to and give " +
+			"Zooknock the bones/talismans. Once you're done, teleport away for the next step.", null, Arrays.asList(
+				talismanHighlight.hideConditioned(and(ninjaGreegree, gorillaGreegree, zombieGreegree)),
+			ninjaBones.highlighted().hideConditioned(ninjaGreegree), gorillaBones.highlighted().hideConditioned(gorillaGreegree),
+			zombieBones.highlighted().hideConditioned(zombieGreegree)
+		));
+		leaveDungeonWithGreeGree.addTeleport(ardougneTeleport.highlighted());
 		leaveDungeonWithGreeGree.addDialogSteps("Can you make another monkey talisman?", "Yes");
 
 		talkToMinder = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "Talk to the Monkey " +
-			"Minder in the Ardougne Zoo whilst wielding the Karamjan monkey greegree.", karamjanGreegreeEquipped, amuletWorn);
+			"Minder in the Ardougne Zoo whilst wielding the Karamjan monkey greegree.", Arrays.asList(karamjanGreegreeEquipped, amuletWorn), Collections.singletonList(staminaPotions));
 		talkToMonkeyAtZoo = new NpcStep(this, NpcID.MONKEY_5279, new WorldPoint(2603, 3278, 0), "Talk to a monkey in the pen.", true);
-		talkToMinderAgain = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0), "UNEQUIP the greegree, then talk to the Monkey Minder again to leave.");
+		talkToMinderAgain = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0),
+			"UNEQUIP the greegree, then talk to the Monkey Minder again to leave.", new NoItemRequirement("Un-equipped greegree", ItemSlots.WEAPON));
 
-		goUpToDaeroForTalkingToAwow = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "WALK/RUN to Daero to return to Ape Atoll. If you teleport, you'll have to start again.", karamjanGreegree, amuletWorn, monkey);
+		goUpToDaeroForTalkingToAwow = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+			"WALK/RUN to Daero to return to Ape Atoll. If you teleport, you'll have to start again.", Arrays.asList(karamjanGreegree, amuletWorn, monkey), Collections.singletonList(staminaPotions));
 
 		talkToDaeroForTalkingToAwow = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Travel with Daero on the 1st floor of the Tree Gnome Stronghold.", karamjanGreegree, amulet, monkey);
 		talkToDaeroForTalkingToAwow.addDialogSteps("Yes");
@@ -824,9 +862,12 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		goUpToDaeroForTalkingToAwow.addSubSteps(talkToDaeroForTalkingToAwow, talkToWaydarForTalkingToAwow, talkToLumdoForTalkingToAwow);
 
-		talkToGuard = new NpcStep(this, NpcID.ELDER_GUARD_5278, new WorldPoint(2802, 2758, 0), "Talk to a guard outside the building in the south east of Marim. If you already have, open the quest guide to resync.");
+		talkToGuard = new NpcStep(this, NpcID.ELDER_GUARD_5278, new WorldPoint(2802, 2758, 0),
+			"Talk to a guard outside the building in the south east of Marim. If you already have, open the quest guide to resync.");
 
-		enterGate = new ObjectStep(this, ObjectID.BAMBOO_GATE_4788, new WorldPoint(2722, 2766, 0), "EQUIP THE GREEGREE and enter the gate to Marim. The monkeys will not attack you if you're holding it.", karamjanGreegreeEquipped, amuletWorn, monkey);
+		enterGate = new ObjectStep(this, ObjectID.BAMBOO_GATE_4788, new WorldPoint(2722, 2766, 0),
+			"EQUIP THE GREEGREE and enter the gate to Marim. The monkeys will not attack you if you're holding it.",
+			karamjanGreegreeEquipped.highlighted(), amuletWorn.highlighted(), monkey);
 
 		goUpToBridge = new ObjectStep(this, ObjectID.BAMBOO_LADDER_4775, new WorldPoint(2713, 2766, 0), "Talk to Kruk in the north west of the island.", karamjanGreegreeEquipped, amuletWorn, monkey);
 		goDownFromBridge = new ObjectStep(this, ObjectID.BAMBOO_LADDER_4776, new WorldPoint(2729, 2766, 2), "Talk to Kruk in the north west of the island.", karamjanGreegreeEquipped, amuletWorn, monkey);
@@ -841,9 +882,11 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		prepareForBattle = new DetailedQuestStep(this, "Prepare to fight the Jungle Demon. Once you're ready, equip the 10th squad sigil.",
 			Collections.singletonList(sigilEquipped),
 			Arrays.asList(combatGear, food, prayerPotions));
-		killDemon = new DetailedQuestStep(this, "Kill the Jungle Demon.");
+		killDemon = new DetailedQuestStep(this, "Kill the Jungle Demon. Use Protect from Magic and keep your distance to kill it safely.", protectFromMagic);
 
-		talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Return to King Narnode Shareen in the Tree Gnome Stronghold.");
+		talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0),
+			"Return to King Narnode Shareen in the Tree Gnome Stronghold.");
+		talkToNarnodeToFinish.addTeleport(grandTreeTeleport);
 	}
 
 	@Override
@@ -903,7 +946,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToNarnode), Collections.singletonList(grandTreeTeleport)));
+		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToNarnode), null, Collections.singletonList(grandTreeTeleport)));
 		allSteps.add(new PanelDetails("Investigate the shipyard", Arrays.asList(flyGandius, talkToCaranock, talkToNarnodeAfterShipyard)));
 		allSteps.add(new PanelDetails("Traveling to Ape Atoll",
 			Arrays.asList(talkToDaero, talkToDaeroInHangar, clickPuzzle, talkToDaeroAfterPuzzle, talkToWaydarAfterPuzzle, talkToLumdo, talkToWaydarOnCrash),
@@ -925,7 +968,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		PanelDetails makeAmuletPanel = new PanelDetails("Making an amulet",
 			Arrays.asList(leaveToPrepareForAmulet, goUpToDaeroForAmuletMake, enterValleyForAmuletMake, enterTemple, useBarOnFlame),
 			Arrays.asList(enchantedBar, mould, ballOfWool),
-			Arrays.asList(banana5, antipoison, food, prayerPotions, staminaPotions, grandTreeTeleport, escapeTeleport));
+			Arrays.asList(banana5, antipoison, food, combatGear, prayerPotions, staminaPotions, grandTreeTeleport, escapeTeleport));
 		makeAmuletPanel.setLockingStep(makeAmulet);
 		allSteps.add(makeAmuletPanel);
 
@@ -935,14 +978,14 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		getTalismanPanel.setLockingStep(getTalisman);
 		allSteps.add(getTalismanPanel);
 
-		PanelDetails getBonesPanel = new PanelDetails("Getting bones for RFD (optional)",
+		PanelDetails getBonesPanel = new PanelDetails("Bones for RFD (optional)",
 			Arrays.asList(talkToChildFor4Talismans, killNinja, killGorilla, goDownToZombie, killZombie),
 			Collections.singletonList(amulet), Collections.singletonList(combatGear));
 		getBonesPanel.setLockingStep(getBones);
 		allSteps.add(getBonesPanel);
 
 		allSteps.add(new PanelDetails("Making a greegree", Arrays.asList(leaveToPrepareForTalismanRun, goUpToDaeroForTalismanRun,
-			enterDungeonForTalismanRun, useTalisman, useBones),
+			enterDungeonForTalismanRun, useTalisman, useBones, leaveDungeonWithGreeGree),
 			Arrays.asList(talisman, monkeyBonesOrCorpse),
 			Arrays.asList(prayerPotions, food, antipoison, staminaPotions, ardougneTeleport, ninjaBones, gorillaBones, zombieBones, talisman.quantity(4))));
 		allSteps.add(new PanelDetails("Save a monkey", Arrays.asList(talkToMinder, talkToMonkeyAtZoo, talkToMinderAgain, goUpToDaeroForTalkingToAwow,
@@ -951,7 +994,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			Arrays.asList(staminaPotions)));
 		allSteps.add(new PanelDetails("Defeat the demon", Arrays.asList(prepareForBattle, killDemon, talkToNarnodeToFinish),
 			Arrays.asList(combatGear),
-			Arrays.asList(food, prayerPotions)));
+			Arrays.asList(food, prayerPotions, grandTreeTeleport)));
 
 		return allSteps;
 	}

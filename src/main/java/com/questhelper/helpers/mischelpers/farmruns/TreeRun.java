@@ -1,6 +1,8 @@
 package com.questhelper.helpers.mischelpers.farmruns;
 
 import com.google.inject.Inject;
+import com.questhelper.HelperConfig;
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperQuest;
@@ -9,22 +11,33 @@ import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.World;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.util.Text;
 import sun.reflect.generics.tree.Tree;
+import java.util.Arrays;
+import java.util.List;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TREE_RUN
@@ -41,7 +54,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	// Trees
 	DetailedQuestStep farmingGuildTreePatch, lumbridgeTreePatch, faladorTreePatch, taverleyTreePatch, varrockTreePatch,
 		gnomeStrongholdTreePatch;
-	DetailedQuestStep farmingGuildTreePatchPlant, lumbridgeTreePatchPlant, faladorTreePatchPlant, taverlyTreePatchPlant,
+	DetailedQuestStep farmingGuildTreePatchPlant, lumbridgeTreePatchPlant, faladorTreePatchPlant, taverleyTreePatchPlant,
 		varrockTreePatchPlant, gnomeStrongholdTreePatchPlant;
 
 	// Fruit Trees
@@ -59,6 +72,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 	// Teleport Items
 	// TODO: Add these...
+	ItemRequirement farmingGuildTeleport;
 
 	// Graceful Set
 	ItemRequirement gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape, gracefulOutfit;
@@ -70,9 +84,9 @@ public class TreeRun extends ComplexStateQuestHelper
 	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToLletya, accessToFossilIsland;
 
 	// Tree Requirements
-	ManualRequirement  lumbridgeTreePatchEmpty, faladorTreePatchEmpty, taverlyTreePatchEmpty,
+	ManualRequirement  lumbridgeTreePatchEmpty, faladorTreePatchEmpty, taverleyTreePatchEmpty,
 		varrockTreePatchEmpty, gnomeStrongholdTreePatchEmpty, farmingGuildTreePatchEmpty;
-	ManualRequirement  lumbridgeTreePatchReady, faladorTreePatchReady, taverlyTreePatchReady,
+	ManualRequirement  lumbridgeTreePatchReady, faladorTreePatchReady, taverleyTreePatchReady,
 		varrockTreePatchReady, gnomeStrongholdTreePatchReady, farmingGuildTreePatchReady;
 
 	// Fruit Tree Requirements
@@ -155,7 +169,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		// Tree Patch Ready Requirements
 		lumbridgeTreePatchReady = new ManualRequirement();
 		faladorTreePatchReady = new ManualRequirement();
-		taverlyTreePatchReady = new ManualRequirement();
+		taverleyTreePatchReady = new ManualRequirement();
 		varrockTreePatchReady = new ManualRequirement();
 		gnomeStrongholdTreePatchReady = new ManualRequirement();
 		farmingGuildTreePatchReady = new ManualRequirement();
@@ -163,7 +177,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		// Tree Patch Empty Requirements
 		lumbridgeTreePatchEmpty = new ManualRequirement();
 		faladorTreePatchEmpty = new ManualRequirement();
-		taverlyTreePatchEmpty = new ManualRequirement();
+		taverleyTreePatchEmpty = new ManualRequirement();
 		varrockTreePatchEmpty = new ManualRequirement();
 		gnomeStrongholdTreePatchEmpty = new ManualRequirement();
 		farmingGuildTreePatchEmpty = new ManualRequirement();
@@ -206,6 +220,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			new FavourRequirement(Favour.HOSIDIUS, 60),
 			new SkillRequirement(Skill.FARMING, 85)
 		);
+
 	}
 
 	@Override
@@ -332,12 +347,173 @@ public class TreeRun extends ComplexStateQuestHelper
 			ItemID.TEAK_SAPLING
 		);
 
+		compost	= new ItemRequirement("Compost", ItemCollections.COMPOST);
+
+		// Teleport Items
+		farmingGuildTeleport = new ItemRequirement("Farming Guild Teleport", ItemCollections.SKILLS_NECKLACES);
+
+		// Graceful and Farming Outfit
+		// TODO: Extract to FarmingUtils
+
+		gracefulHood = new ItemRequirement(
+			"Graceful hood", ItemCollections.GRACEFUL_HOOD, 1 ,true).isNotConsumed();
+
+		gracefulTop = new ItemRequirement(
+			"Graceful top", ItemCollections.GRACEFUL_TOP, 1, true).isNotConsumed();
+
+		gracefulLegs = new ItemRequirement(
+			"Graceful legs", ItemCollections.GRACEFUL_LEGS, 1, true).isNotConsumed();
+
+		gracefulCape = new ItemRequirement(
+			"Graceful cape", ItemCollections.GRACEFUL_CAPE, 1, true).isNotConsumed();
+
+		gracefulGloves = new ItemRequirement(
+			"Graceful gloves", ItemCollections.GRACEFUL_GLOVES, 1, true).isNotConsumed();
+
+		gracefulBoots = new ItemRequirement(
+			"Graceful boots", ItemCollections.GRACEFUL_BOOTS, 1, true).isNotConsumed();
+		gracefulBoots.addAlternates(ItemID.BOOTS_OF_LIGHTNESS);
+
+		gracefulOutfit = new ItemRequirements(
+			"Graceful outfit (equipped)",
+			gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape
+		).isNotConsumed().showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, TreeRun.GracefulOrFarming.GRACEFUL.name()));
+
+		farmingHat = new ItemRequirement(
+			"Farmer's strawhat", ItemID.FARMERS_STRAWHAT, 1 ,true).isNotConsumed();
+		farmingHat.addAlternates(ItemID.FARMERS_STRAWHAT_13647, ItemID.FARMERS_STRAWHAT_21253, ItemID.FARMERS_STRAWHAT_21254);
+
+		farmingTop = new ItemRequirement(
+			"Farmer's top", ItemID.FARMERS_JACKET, 1, true).isNotConsumed();
+		farmingTop.addAlternates(ItemID.FARMERS_SHIRT);
+
+
+		farmingLegs = new ItemRequirement(
+			"Farmer's boro trousers", ItemID.FARMERS_BORO_TROUSERS, 1, true).isNotConsumed();
+		farmingLegs.addAlternates(ItemID.FARMERS_BORO_TROUSERS_13641);
+
+		farmingBoots = new ItemRequirement(
+			"Graceful cape", ItemID.FARMERS_BOOTS, 1, true).isNotConsumed();
+		farmingBoots.addAlternates(ItemID.FARMERS_BOOTS_13645);
+
+
+		farmersOutfit = new ItemRequirements(
+			"Farmer's outfit (equipped)",
+			farmingHat, farmingTop, farmingLegs, farmingBoots
+		).isNotConsumed().showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, TreeRun.GracefulOrFarming.FARMING.name()));
 
 	}
 
 	private void setupSteps()
 	{
+		waitForTree = new DetailedQuestStep(this, "Wait for your trees to grow! This may take a while..!");
+
+		// Tree Steps
+		lumbridgeTreePatch = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3192, 3230, 0),
+			"Check the health of the tree planted in Lumbridge.");
+		faladorTreePatch = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3003, 3372, 0),
+			"Check the health of the tree planted in Falador.");
+		taverleyTreePatch = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2935, 3437, 0),
+			"Check the health of the tree planted in Taverley.");
+		varrockTreePatch = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3228, 3458, 0),
+			"Check the health of the tree planted in Varrock.");
+		gnomeStrongholdTreePatch = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2435, 3414, 0),
+			"Check the health of the tree planted in the Tree Gnome Stronghold.");
+
+		farmingGuildTreePatch = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1231, 3735, 0),
+			"Check the health of the tree planted in the Farming Guild.");
+		farmingGuildTreePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
+
+
+
+		// Fruit Tree Steps
+		gnomeStrongholdFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2475, 3445, 0),
+			"Check the health of the fruit tree planted in the Tree Gnome Stronghold.");
+		gnomeVillageFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2489, 3179, 0),
+			"Check the health of the fruit tree planted outside the Tree Gnome Village. Follow Elkoy to get out quickly.");
+		brimhavenFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2764, 3212, 0),
+			"Check the health of the fruit tree planted in Brimhaven.");
+		catherbyFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2680, 3433, 0),
+			"Check the health of the fruit tree planted in Catherby");
+
+		lletyaFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2346, 3161, 0),
+			"Check the health of the fruit tree planted in Lletya.");
+		lletyaFruitTreePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
+
+		farmingGuildFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1242, 3759, 0),
+			"Check the health of the fruit tree planted in the Farming Guild.");
+		farmingGuildFruitTreePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
+
+
 	}
 
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
+		{
+			return;
+		}
+
+		if (event.getKey().equals(TREE_SAPLING))
+		{
+			try
+			{
+				TreeSapling selectedTreeSapling = TreeSapling.valueOf(event.getNewValue());
+				treeSapling.setId(selectedTreeSapling.treeSaplingID);
+				treeSapling.setName(Text.titleCase(selectedTreeSapling) + " sapling");
+				questHelperPlugin.refreshBank();
+			}
+			catch (IllegalArgumentException e)
+			{
+				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, TREE_SAPLING, TreeSapling.OAK);
+			}
+		}
+
+		if (event.getKey().equals(FRUIT_TREE_SAPLING))
+		{
+			try
+			{
+				FruitTreeSapling selectedFruitTreeSapling = FruitTreeSapling.valueOf(event.getNewValue());
+				fruitTreeSapling.setId(selectedFruitTreeSapling.fruitTreeSaplingId);
+				fruitTreeSapling.setName(Text.titleCase(selectedFruitTreeSapling) + " sapling");
+				questHelperPlugin.refreshBank();
+			}
+			catch (IllegalArgumentException e)
+			{
+				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, FRUIT_TREE_SAPLING, FruitTreeSapling.APPLE);
+			}
+		}
+
+		if (event.getKey().equals(HARDWOOD_TREE_SAPLING))
+		{
+			try
+			{
+				HardwoodTreeSapling selectedHardwoodTreeSapling = HardwoodTreeSapling.valueOf(event.getNewValue());
+				hardwoodSapling.setId(selectedHardwoodTreeSapling.hardwoodTreeSaplingId);
+				hardwoodSapling.setName(Text.titleCase(selectedHardwoodTreeSapling) + " sapling");
+				questHelperPlugin.refreshBank();
+			}
+			catch (IllegalArgumentException e)
+			{
+				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.TEAK);
+			}
+		}
+
+		if (event.getKey().equals(GRACEFUL_OR_FARMING))
+		{
+			questHelperPlugin.refreshBank();
+		}
+	}
+
+	@Override
+	public List<HelperConfig> getConfigs()
+	{
+		HelperConfig treesConfig = new HelperConfig("Trees", TREE_SAPLING, TreeRun.TreeSapling.values());
+		HelperConfig fruitTreesConfig = new HelperConfig("Fruit Trees", FRUIT_TREE_SAPLING, TreeRun.FruitTreeSapling.values());
+		HelperConfig hardwoodTreesConfig = new HelperConfig("Hardwood Trees", HARDWOOD_TREE_SAPLING, TreeRun.HardwoodTreeSapling.values());
+		HelperConfig outfitConfig = new HelperConfig("Outfit", GRACEFUL_OR_FARMING, TreeRun.GracefulOrFarming.values());
+		return Arrays.asList(treesConfig, fruitTreesConfig, hardwoodTreesConfig, outfitConfig);
+	}
 
 }

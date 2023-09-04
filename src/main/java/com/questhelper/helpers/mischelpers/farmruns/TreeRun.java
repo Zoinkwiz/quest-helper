@@ -449,9 +449,9 @@ public class TreeRun extends ComplexStateQuestHelper
 			return;
 		}
 
-		FarmingConfigChangeHandler.handleEnumConfigChange(event, TREE_SAPLING, TreeSapling.class, this::updateTreeSapling, TreeSapling.OAK, configManager, questHelperPlugin);
-		FarmingConfigChangeHandler.handleEnumConfigChange(event, FRUIT_TREE_SAPLING, FruitTreeSapling.class, this::updateFruitTreeSapling, FruitTreeSapling.APPLE, configManager, questHelperPlugin);
-		FarmingConfigChangeHandler.handleEnumConfigChange(event, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.class, this::updateHardwoodTreeSapling, HardwoodTreeSapling.TEAK, configManager, questHelperPlugin);
+		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, TREE_SAPLING, TreeSapling.class, this::updateTreeSapling, TreeSapling.OAK, configManager, questHelperPlugin);
+		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, FRUIT_TREE_SAPLING, FruitTreeSapling.class, this::updateFruitTreeSapling, FruitTreeSapling.APPLE, configManager, questHelperPlugin);
+		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.class, this::updateHardwoodTreeSapling, HardwoodTreeSapling.TEAK, configManager, questHelperPlugin);
 
 		if (event.getKey().equals(GRACEFUL_OR_FARMING)) {
 			questHelperPlugin.refreshBank();

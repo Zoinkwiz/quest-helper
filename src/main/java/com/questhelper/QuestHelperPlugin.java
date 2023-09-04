@@ -541,16 +541,6 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (developerMode && commandExecuted.getCommand().equals("inv"))
-		{
-			ItemContainer items = client.getItemContainer(InventoryID.INVENTORY);
-			StringBuilder itemsString = new StringBuilder();
-			for (Item item : items.getItems())
-			{
-				itemsString.append(client.getItemDefinition(item.getId())).append(" : ").append(item.getId()).append("\n");
-			}
-			System.out.println(itemsString);
-		}
 		if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
 		{
 			if (commandExecuted.getArguments().length == 0 ||
@@ -566,7 +556,7 @@ public class QuestHelperPlugin extends Plugin
 			String step = (String) (Arrays.stream(commandExecuted.getArguments()).toArray()[0]);
 			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), step).setConfigValue();
 		}
-		else if (developerMode && commandExecuted.getCommand().equals("inv"))
+		else if (developerMode && commandExecuted.getCommand().equals("qh-inv"))
 		{
 			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 			StringBuilder inv = new StringBuilder();

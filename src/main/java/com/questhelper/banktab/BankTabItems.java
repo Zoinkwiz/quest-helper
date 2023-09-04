@@ -41,10 +41,28 @@ public class BankTabItems
 	@Getter
 	private final List<BankTabItem> items;
 
+	@Getter
+	private final List<BankTabItem> recommendedItems;
+
 	public BankTabItems(String name, BankTabItem... items)
 	{
 		this.name = name;
 		this.items = QuestUtil.toArrayList(items);
+		this.recommendedItems = new ArrayList<>();
+	}
+
+	public BankTabItems(String name, List<BankTabItem> items)
+	{
+		this.name = name;
+		this.items = items;
+		this.recommendedItems = new ArrayList<>();
+	}
+
+	public BankTabItems(String name, List<BankTabItem> items, List<BankTabItem> recommendedItems)
+	{
+		this.name = name;
+		this.items = items;
+		this.recommendedItems = recommendedItems;
 	}
 
 	public void addItems(BankTabItem... items)
@@ -52,8 +70,8 @@ public class BankTabItems
 		this.items.addAll(Arrays.asList(items));
 	}
 
-	public void addItems(ArrayList<BankTabItem> items)
+	public void addRecommendedItems(BankTabItem... items)
 	{
-		this.items.addAll(items);
+		this.recommendedItems.addAll(Arrays.asList(items));
 	}
 }

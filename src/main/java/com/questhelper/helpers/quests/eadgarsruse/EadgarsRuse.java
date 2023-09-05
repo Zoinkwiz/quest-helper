@@ -75,7 +75,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		fakeMan, storeroomKey, goutweed, climbingBootsEquipped;
 
 	//Items Recommended
-	ItemRequirement ardougneTeleport;
+	ItemRequirement ardougneTeleport, burthorpeTeleport;
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom;
@@ -266,6 +266,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		pestleAndMortar = new ItemRequirement("Pestle and Mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		ranarrPotionUnf = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARR_POTION_UNF);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
+		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.GAMES_NECKLACES);
 		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
 		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);
 		vodkaHighlight = new ItemRequirement("Vodka", ItemID.VODKA);
@@ -581,6 +582,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ardougneTeleport);
+		reqs.add(burthorpeTeleport);
 		return reqs;
 	}
 

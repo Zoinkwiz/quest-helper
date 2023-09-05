@@ -80,38 +80,51 @@ public class FarmingUtils
 		}
 	}
 
-	public enum TreeSapling {
+	public enum TreeSapling
+	{
 		OAK(ItemID.OAK_SAPLING), WILLOW(ItemID.WILLOW_SAPLING), MAPLE(ItemID.MAPLE_SAPLING), YEW(ItemID.YEW_SAPLING),
 		MAGIC(ItemID.MAGIC_SAPLING);
 
 		final int treeSaplingID;
 
-		TreeSapling(int treeSaplingID) {
+		TreeSapling(int treeSaplingID)
+		{
 			this.treeSaplingID = treeSaplingID;
 		}
 	}
 
-	public enum FruitTreeSapling {
+	public enum FruitTreeSapling
+	{
 		APPLE(ItemID.APPLE_SAPLING), BANANA(ItemID.BANANA_SAPLING), ORANGE(ItemID.ORANGE_SAPLING),
 		CURRY(ItemID.CURRY_SAPLING), PINEAPPLE(ItemID.PINEAPPLE_SAPLING), PAPAYA(ItemID.PAPAYA_SAPLING),
 		PALM(ItemID.PALM_SAPLING), DRAGONFRUIT(ItemID.DRAGONFRUIT_SAPLING);
 
 		final int fruitTreeSaplingId;
 
-		FruitTreeSapling(int fruitTreeSaplingId) {
+		FruitTreeSapling(int fruitTreeSaplingId)
+		{
 			this.fruitTreeSaplingId = fruitTreeSaplingId;
 		}
 	}
 
-	public enum HardwoodTreeSapling {
+	public enum HardwoodTreeSapling
+	{
 		TEAK(ItemID.TEAK_SAPLING),
 		MAHOGANY(ItemID.MAHOGANY_SAPLING);
 
 		final int hardwoodTreeSaplingId;
 
-		HardwoodTreeSapling(int hardwoodTreeSaplingId) {
+		HardwoodTreeSapling(int hardwoodTreeSaplingId)
+		{
 			this.hardwoodTreeSaplingId = hardwoodTreeSaplingId;
 		}
+	}
+
+	public enum GracefulOrFarming
+	{
+		NONE(),
+		GRACEFUL(),
+		FARMING();
 	}
 }
 

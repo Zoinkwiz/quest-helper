@@ -6,6 +6,10 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.FruitTreeSapling;
+import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.GracefulOrFarming;
+import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.HardwoodTreeSapling;
+import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.TreeSapling;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
@@ -29,8 +33,11 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.plugins.timetracking.Tab;
+import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.util.Text;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +46,14 @@ import java.util.List;
 	quest = QuestHelperQuest.TREE_RUN
 )
 
+/*
+*
+* TODO LIST:
+*  Add option for protection of items, have as config option.
+*  Add steps to highlight farmer for clearing.
+*  Config for chop or clear?
+*
+* */
 public class TreeRun extends ComplexStateQuestHelper
 {
 	@Inject
@@ -64,7 +79,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	DetailedQuestStep eastHardwoodTreePatchPlant, westHardwoodTreePatchPlant, middleHardwoodTreePatchPlant;
 
 	// Farming Items
-	ItemRequirement coins, spade, rake, treeSapling, fruitTreeSapling, hardwoodSapling, compost;
+	ItemRequirement coins, spade, rake, treeSapling, fruitTreeSapling, hardwoodSapling, compost, axe, protectionItem;
 
 	// Teleport Items
 	// TODO: Add these...
@@ -94,52 +109,6 @@ public class TreeRun extends ComplexStateQuestHelper
 	// Hardwood Tree Requirements
 	ManualRequirement eastHardwoodTreePatchEmpty, westHardwoodTreePatchEmpty, middleHardwoodTreePatchEmpty;
 	ManualRequirement eastHardwoodTreePatchReady, westHardwoodTreePatchReady, middleHardwoodTreePatchReady;
-
-	private enum TreeSapling
-	{
-		OAK(ItemID.OAK_SAPLING), WILLOW(ItemID.WILLOW_SAPLING), MAPLE(ItemID.MAPLE_SAPLING), YEW(ItemID.YEW_SAPLING),
-		MAGIC(ItemID.MAGIC_SAPLING);
-
-		final int treeSaplingID;
-
-		TreeSapling(int treeSaplingID)
-		{
-			this.treeSaplingID = treeSaplingID;
-		}
-	}
-
-	private enum FruitTreeSapling
-	{
-		APPLE(ItemID.APPLE_SAPLING), BANANA(ItemID.BANANA_SAPLING), ORANGE(ItemID.ORANGE_SAPLING),
-		CURRY(ItemID.CURRY_SAPLING), PINEAPPLE(ItemID.PINEAPPLE_SAPLING), PAPAYA(ItemID.PAPAYA_SAPLING),
-		PALM(ItemID.PALM_SAPLING), DRAGONFRUIT(ItemID.DRAGONFRUIT_SAPLING);
-
-		final int fruitTreeSaplingId;
-
-		FruitTreeSapling(int fruitTreeSaplingId)
-		{
-			this.fruitTreeSaplingId = fruitTreeSaplingId;
-		}
-	}
-
-	private enum HardwoodTreeSapling
-	{
-		TEAK(ItemID.TEAK_SAPLING),
-		MAHOGANY(ItemID.MAHOGANY_SAPLING);
-
-		final int hardwoodTreeSaplingId;
-
-		HardwoodTreeSapling(int hardwoodTreeSaplingId)
-		{
-			this.hardwoodTreeSaplingId = hardwoodTreeSaplingId;
-		}
-	}
-
-	private enum GracefulOrFarming {
-		NONE(),
-		GRACEFUL(),
-		FARMING();
-	}
 
 	private final String TREE_SAPLING = "treeSaplings";
 	private final String FRUIT_TREE_SAPLING = "fruitTreeSaplings";
@@ -373,7 +342,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		gracefulOutfit = new ItemRequirements(
 			"Graceful outfit (equipped)",
 			gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape
-		).isNotConsumed().showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, TreeRun.GracefulOrFarming.GRACEFUL.name()));
+		).isNotConsumed().showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, GracefulOrFarming.GRACEFUL.name()));
 
 		farmingHat = new ItemRequirement(
 			"Farmer's strawhat", ItemID.FARMERS_STRAWHAT, 1 ,true).isNotConsumed();
@@ -395,8 +364,8 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		farmersOutfit = new ItemRequirements(
 			"Farmer's outfit (equipped)",
-			farmingHat, farmingTop, farmingLegs, farmingBoots
-		).isNotConsumed().showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, TreeRun.GracefulOrFarming.FARMING.name()));
+			farmingHat, farmingTop, farmingLegs, farmingBoots).isNotConsumed()
+			.showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, GracefulOrFarming.FARMING.name()));
 
 	}
 
@@ -404,7 +373,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	{
 		waitForTree = new DetailedQuestStep(this, "Wait for your trees to grow! This may take a while..!");
 
-		// Tree Steps
+		// Tree Patch Steps
 		lumbridgeTreePatch = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3192, 3230, 0),
 			"Check the health of the tree planted in Lumbridge.");
 		faladorTreePatch = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3003, 3372, 0),
@@ -420,7 +389,37 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Check the health of the tree planted in the Farming Guild.");
 		farmingGuildTreePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 
+		// Tree Plant Steps
+		lumbridgeTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3192, 3230, 0),
+			"Plant your sapling in the Lumbridge patch.");
+		lumbridgeTreePatchPlant.addIcon(treeSapling.getId());
+		lumbridgeTreePatch.addSubSteps(lumbridgeTreePatchPlant);
 
+		faladorTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3003, 3372, 0),
+			"Plant your sapling in the Falador patch.");
+		faladorTreePatchPlant.addIcon(treeSapling.getId());
+		faladorTreePatch.addSubSteps(faladorTreePatchPlant);
+
+		taverleyTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2935, 3437, 0),
+			"Plant your sapling in the Taverley patch.");
+		taverleyTreePatchPlant.addIcon(treeSapling.getId());
+		taverleyTreePatch.addSubSteps(taverleyTreePatchPlant);
+
+		varrockTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3228, 3458, 0),
+			"Plant your sapling in the Varrock patch.");
+		varrockTreePatchPlant.addIcon(treeSapling.getId());
+		varrockTreePatch.addSubSteps(varrockTreePatchPlant);
+
+		gnomeStrongholdTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2435, 3414, 0),
+			"Plant your sapling in the Gnome Stronghold patch.");
+		gnomeStrongholdTreePatchPlant.addIcon(treeSapling.getId());
+		gnomeStrongholdTreePatch.addSubSteps(gnomeStrongholdTreePatchPlant);
+
+		farmingGuildTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1231, 3735, 0),
+			"Plant your sapling in the Farming Guild tree patch.");
+		farmingGuildTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
+		farmingGuildTreePatchPlant.addIcon(treeSapling.getId());
+		farmingGuildTreePatch.addSubSteps(farmingGuildTreePatchPlant);
 
 		// Fruit Tree Steps
 		gnomeStrongholdFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2475, 3445, 0),
@@ -440,47 +439,159 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Check the health of the fruit tree planted in the Farming Guild.");
 		farmingGuildFruitTreePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
 
+		// Fruit Tree Plant Steps
+		gnomeStrongholdFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2475, 3445, 0),
+			"Plant your sapling in the Tree Gnome Stronghold patch.");
+		gnomeStrongholdFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		gnomeStrongholdTreePatch.addSubSteps(gnomeStrongholdTreePatchPlant);
 
+		gnomeVillageFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2489, 3179, 0),
+			"Plant your sapling in the Tree Gnome Village patch. Follow Elkoy to get out quickly.");
+		gnomeVillageFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		gnomeVillageFruitTreePatch.addSubSteps(gnomeVillageFruitTreePatchPlant);
+
+		brimhavenFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2764, 3212, 0),
+			"Plant your sapling in the Brimhaven patch.");
+		brimhavenFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		brimhavenFruitTreePatch.addSubSteps(brimhavenFruitTreePatchPlant);
+
+		catherbyFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2680, 3433, 0),
+			"Plant your sapling in the Catherby patch.");
+		catherbyFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		catherbyFruitTreePatch.addSubSteps(catherbyFruitTreePatchPlant);
+
+		lletyaFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2346, 3161, 0),
+			"Plant your sapling in the Lletya patch.");
+		lletyaFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
+		lletyaFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		lletyaFruitTreePatch.addSubSteps(lletyaFruitTreePatchPlant);
+
+		farmingGuildFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1242, 3759, 0),
+			"Plant your sapling in the Farming Guild patch.");
+		farmingGuildFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
+		farmingGuildFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		farmingGuildFruitTreePatch.addSubSteps(farmingGuildFruitTreePatchPlant);
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event) {
-		if (!event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP)) {
+	public void onGameTick(GameTick event)
+	{
+		for (FarmingPatch treePatch : farmingWorld.getTabs().get(Tab.TREE))
+		{
+			CropState treeState = farmingHandler.predictPatch(treePatch);
+			boolean isTreePatchHarvestable = treeState == CropState.HARVESTABLE;
+			boolean isTreePatchPlantable = treeState == CropState.EMPTY || treeState == CropState.DEAD;
+
+			switch (treePatch.getRegion().getName())
+			{
+				case "Lumbridge":
+					lumbridgeTreePatchReady.setShouldPass(isTreePatchHarvestable);
+					lumbridgeTreePatchEmpty.setShouldPass(isTreePatchPlantable);
+					break;
+				case "Varrock":
+					varrockTreePatchReady.setShouldPass(isTreePatchHarvestable);
+					varrockTreePatchEmpty.setShouldPass(isTreePatchPlantable);
+					break;
+				case "Falador":
+					faladorTreePatchReady.setShouldPass(isTreePatchHarvestable);
+					faladorTreePatchEmpty.setShouldPass(isTreePatchPlantable);
+					break;
+				case "Gnome Stronghold":
+					gnomeStrongholdTreePatchReady.setShouldPass(isTreePatchHarvestable);
+					gnomeStrongholdTreePatchEmpty.setShouldPass(isTreePatchPlantable);
+					break;
+				case "Taverley":
+					taverleyTreePatchReady.setShouldPass(isTreePatchHarvestable);
+					taverleyTreePatchEmpty.setShouldPass(isTreePatchPlantable);
+					break;
+				case "Farming Guild":
+					farmingGuildTreePatchReady.setShouldPass(isTreePatchHarvestable);
+					farmingGuildTreePatchEmpty.setShouldPass(isTreePatchPlantable);
+					break;
+			}
+		}
+
+		for (FarmingPatch fruitTreePatch : farmingWorld.getTabs().get(Tab.FRUIT_TREE))
+		{
+			CropState fruitTreeState = farmingHandler.predictPatch(fruitTreePatch);
+			boolean isFruitTreePatchHarvestable = fruitTreeState == CropState.HARVESTABLE;
+			boolean isFruitTreePatchPlantable = fruitTreeState == CropState.EMPTY || fruitTreeState == CropState.DEAD;
+
+			switch (fruitTreePatch.getRegion().getName())
+			{
+				case "Catherby":
+					catherbyFruitTreePatchReady.setShouldPass(isFruitTreePatchHarvestable);
+					catherbyFruitTreePatchEmpty.setShouldPass(isFruitTreePatchPlantable);
+					break;
+				case "Brimhaven":
+					brimhavenFruitTreePatchReady.setShouldPass(isFruitTreePatchHarvestable);
+					brimhavenFruitTreePatchEmpty.setShouldPass(isFruitTreePatchPlantable);
+					break;
+				case "Tree Gnome Village":
+					gnomeVillageFruitTreePatchReady.setShouldPass(isFruitTreePatchHarvestable);
+					gnomeVillageFruitTreePatchEmpty.setShouldPass(isFruitTreePatchPlantable);
+					break;
+				case "Gnome Stronghold":
+					gnomeStrongholdFruitTreePatchReady.setShouldPass(isFruitTreePatchHarvestable);
+					gnomeStrongholdFruitTreePatchEmpty.setShouldPass(isFruitTreePatchPlantable);
+					break;
+				case "Lletya":
+					lletyaFruitTreePatchReady.setShouldPass(isFruitTreePatchHarvestable);
+					lletyaFruitTreePatchEmpty.setShouldPass(isFruitTreePatchPlantable);
+					break;
+				case "Farming Guild":
+					farmingGuildFruitTreePatchReady.setShouldPass(isFruitTreePatchHarvestable);
+					farmingGuildFruitTreePatchEmpty.setShouldPass(isFruitTreePatchPlantable);
+					break;
+			}
+		}
+	}
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
+		{
 			return;
 		}
 
-		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, TREE_SAPLING, TreeSapling.class, this::updateTreeSapling, TreeSapling.OAK, configManager, questHelperPlugin);
-		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, FRUIT_TREE_SAPLING, FruitTreeSapling.class, this::updateFruitTreeSapling, FruitTreeSapling.APPLE, configManager, questHelperPlugin);
-		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.class, this::updateHardwoodTreeSapling, HardwoodTreeSapling.TEAK, configManager, questHelperPlugin);
+		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, TREE_SAPLING, TreeSapling.class,
+			this::updateTreeSapling, TreeSapling.OAK, configManager, questHelperPlugin);
+		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, FRUIT_TREE_SAPLING, FruitTreeSapling.class,
+			this::updateFruitTreeSapling, FruitTreeSapling.APPLE, configManager, questHelperPlugin);
+		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.class,
+			this::updateHardwoodTreeSapling, HardwoodTreeSapling.TEAK, configManager, questHelperPlugin);
 
-		if (event.getKey().equals(GRACEFUL_OR_FARMING)) {
+		if (event.getKey().equals(GRACEFUL_OR_FARMING))
+		{
 			questHelperPlugin.refreshBank();
 		}
-	}
-
-	private void updateTreeSapling(TreeSapling selectedTreeSapling) {
-		treeSapling.setId(selectedTreeSapling.treeSaplingID);
-		treeSapling.setName(Text.titleCase(selectedTreeSapling) + " sapling");
-	}
-
-	private void updateFruitTreeSapling(FruitTreeSapling selectedFruitTreeSapling) {
-		fruitTreeSapling.setId(selectedFruitTreeSapling.fruitTreeSaplingId);
-		fruitTreeSapling.setName(Text.titleCase(selectedFruitTreeSapling) + " sapling");
-	}
-
-	private void updateHardwoodTreeSapling(HardwoodTreeSapling selectedHardwoodTreeSapling) {
-		hardwoodSapling.setId(selectedHardwoodTreeSapling.hardwoodTreeSaplingId);
-		hardwoodSapling.setName(Text.titleCase(selectedHardwoodTreeSapling) + " sapling");
 	}
 
 	@Override
 	public List<HelperConfig> getConfigs()
 	{
-		HelperConfig treesConfig = new HelperConfig("Trees", TREE_SAPLING, TreeRun.TreeSapling.values());
-		HelperConfig fruitTreesConfig = new HelperConfig("Fruit Trees", FRUIT_TREE_SAPLING, TreeRun.FruitTreeSapling.values());
-		HelperConfig hardwoodTreesConfig = new HelperConfig("Hardwood Trees", HARDWOOD_TREE_SAPLING, TreeRun.HardwoodTreeSapling.values());
-		HelperConfig outfitConfig = new HelperConfig("Outfit", GRACEFUL_OR_FARMING, TreeRun.GracefulOrFarming.values());
+		HelperConfig treesConfig = new HelperConfig("Trees", TREE_SAPLING, TreeSapling.values());
+		HelperConfig fruitTreesConfig = new HelperConfig("Fruit Trees", FRUIT_TREE_SAPLING, FruitTreeSapling.values());
+		HelperConfig hardwoodTreesConfig = new HelperConfig("Hardwood Trees", HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.values());
+		HelperConfig outfitConfig = new HelperConfig("Outfit", GRACEFUL_OR_FARMING, GracefulOrFarming.values());
 		return Arrays.asList(treesConfig, fruitTreesConfig, hardwoodTreesConfig, outfitConfig);
 	}
 
+	private void updateTreeSapling(TreeSapling selectedTreeSapling)
+	{
+		treeSapling.setId(selectedTreeSapling.treeSaplingID);
+		treeSapling.setName(Text.titleCase(selectedTreeSapling) + " sapling");
+	}
+
+	private void updateFruitTreeSapling(FruitTreeSapling selectedFruitTreeSapling)
+	{
+		fruitTreeSapling.setId(selectedFruitTreeSapling.fruitTreeSaplingId);
+		fruitTreeSapling.setName(Text.titleCase(selectedFruitTreeSapling) + " sapling");
+	}
+
+	private void updateHardwoodTreeSapling(HardwoodTreeSapling selectedHardwoodTreeSapling)
+	{
+		hardwoodSapling.setId(selectedHardwoodTreeSapling.hardwoodTreeSaplingId);
+		hardwoodSapling.setName(Text.titleCase(selectedHardwoodTreeSapling) + " sapling");
+	}
 }

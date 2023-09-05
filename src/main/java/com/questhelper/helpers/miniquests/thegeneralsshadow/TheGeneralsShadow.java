@@ -138,10 +138,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		rellekkaTeleport = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT, 3);
 		karamjaTeleport = new ItemRequirement("Teleport to Tai Bwo Wannai", ItemID.TAI_BWO_WANNAI_TELEPORT);
 		draynorTeleport = new ItemRequirement("Teleport to Draynor Manor", ItemCollections.AMULET_OF_GLORIES);
-		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
-		draynorTeleport.addAlternates(ItemID.EXPLORERS_RING_2);
-		draynorTeleport.addAlternates(ItemID.EXPLORERS_RING_3);
-		draynorTeleport.addAlternates(ItemID.EXPLORERS_RING_4);
+		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT, ItemID.EXPLORERS_RING_2, ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

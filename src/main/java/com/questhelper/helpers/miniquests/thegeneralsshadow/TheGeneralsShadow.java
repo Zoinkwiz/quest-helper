@@ -65,7 +65,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	ringOfVisibility, ghostspeak, combatGear, coins40, sinSeersNote, ghostlyRobes, serveredLeg;
 
 	// Recommended
-	ItemRequirement kharidTeleport, gnomeTeleport, rellekkaTeleport, karamjaTeleport;
+	ItemRequirement kharidTeleport, gnomeTeleport, rellekkaTeleport, karamjaTeleport, draynorTeleport;
 
 	Requirement inventorySlot;
 
@@ -137,6 +137,11 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		gnomeTeleport.setDisplayItemId(ItemID.SPIRIT_TREE);
 		rellekkaTeleport = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT, 3);
 		karamjaTeleport = new ItemRequirement("Teleport to Tai Bwo Wannai", ItemID.TAI_BWO_WANNAI_TELEPORT);
+		draynorTeleport = new ItemRequirement("Teleport to Draynor Manor", ItemCollections.AMULET_OF_GLORIES);
+		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
+		draynorTeleport.addAlternates(ItemID.EXPLORERS_RING_2);
+		draynorTeleport.addAlternates(ItemID.EXPLORERS_RING_3);
+		draynorTeleport.addAlternates(ItemID.EXPLORERS_RING_4);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -194,7 +199,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 			"south of the Tree Gnome Stronghold.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToFaladorScout = new NpcStep(this, NpcID.SCOUT_3513, new WorldPoint(3073, 3336, 0), "Talk to the scout " +
-			"east of Falador.", ghostlyRobes, ringOfVisibility, ghostspeak);
+			"west of Draynor Manor.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToShantayScout = new NpcStep(this, NpcID.SCOUT_3514, new WorldPoint(3304, 3084, 0), "Talk to the scout " +
 			"south of the Shantay Pass.", ghostlyRobes, ringOfVisibility, ghostspeak);
@@ -226,7 +231,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(rellekkaTeleport, gnomeTeleport, kharidTeleport, karamjaTeleport);
+		return Arrays.asList(rellekkaTeleport, gnomeTeleport, kharidTeleport, karamjaTeleport, draynorTeleport);
 	}
 
 

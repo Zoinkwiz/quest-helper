@@ -44,6 +44,7 @@ import net.runelite.client.util.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TREE_RUN
@@ -55,7 +56,7 @@ import java.util.List;
 *  Add option for protection of items, have as config option.
 *  Add steps to highlight farmer for clearing.
 *  Config for chop or clear?
-*
+*  PRIORITY: Add checked or notchecked checks, varbits used for patch checked status?
 * */
 public class TreeRun extends ComplexStateQuestHelper
 {
@@ -126,8 +127,57 @@ public class TreeRun extends ComplexStateQuestHelper
 		setupConditions();
 		setupSteps();
 
-		ConditionalStep steps = new ConditionalStep(this, waitForTree, spade, coins, rake, treeSapling,
+		ConditionalStep steps = new ConditionalStep(this, waitForTree, spade, coins, rake, compost, treeSapling,
 			fruitTreeSapling, hardwoodSapling, farmersOutfit, gracefulOutfit);
+
+		// Farming Guild Tree -> Farming Guild Fruit Tree -> Lumbridge -> Falador -> Taverley
+		// Varrock -> Gnome Stronghold Fruit -> Gnome Stronghold Tree -> Gnome Village -> Brimhaven
+		// -> catherby -> lletya -> east hardwood -> middle hardwood -> west hardwood.
+
+		steps.addStep(new Conditions(accessToFarmingGuildTreePatch, farmingGuildTreePatchReady), farmingGuildTreePatch);
+		steps.addStep(new Conditions(accessToFarmingGuildTreePatch, farmingGuildTreePatchEmpty), farmingGuildTreePatchPlant);
+
+		steps.addStep(new Conditions(accessToFarmingGuildFruitTreePatch, farmingGuildFruitTreePatchReady), farmingGuildFruitTreePatch);
+		steps.addStep(new Conditions(accessToFarmingGuildFruitTreePatch, farmingGuildFruitTreePatchEmpty), farmingGuildFruitTreePatchPlant);
+
+		steps.addStep(lumbridgeTreePatchReady, lumbridgeTreePatch);
+		steps.addStep(lumbridgeTreePatchEmpty, lumbridgeTreePatchPlant);
+
+		steps.addStep(faladorTreePatchReady, faladorTreePatch);
+		steps.addStep(faladorTreePatchEmpty, faladorTreePatchPlant);
+
+		steps.addStep(taverleyTreePatchReady, taverleyTreePatch);
+		steps.addStep(taverleyTreePatchEmpty, taverleyTreePatchPlant);
+
+		steps.addStep(varrockTreePatchReady, varrockTreePatch);
+		steps.addStep(varrockTreePatchEmpty, varrockTreePatchPlant);
+
+		steps.addStep(gnomeStrongholdFruitTreePatchReady, gnomeStrongholdFruitTreePatch);
+		steps.addStep(gnomeStrongholdFruitTreePatchEmpty, gnomeStrongholdFruitTreePatchPlant);
+
+		steps.addStep(gnomeStrongholdTreePatchReady, gnomeStrongholdTreePatch);
+		steps.addStep(gnomeStrongholdTreePatchEmpty, gnomeStrongholdFruitTreePatchPlant);
+
+		steps.addStep(gnomeVillageFruitTreePatchReady, gnomeVillageFruitTreePatch);
+		steps.addStep(gnomeVillageFruitTreePatchEmpty, gnomeVillageFruitTreePatchPlant);
+
+		steps.addStep(brimhavenFruitTreePatchReady, brimhavenFruitTreePatch);
+		steps.addStep(brimhavenFruitTreePatchEmpty, brimhavenFruitTreePatchPlant);
+
+		steps.addStep(catherbyFruitTreePatchReady, catherbyFruitTreePatch);
+		steps.addStep(catherbyFruitTreePatchEmpty, catherbyFruitTreePatchPlant);
+
+		steps.addStep(new Conditions(accessToLletya, lletyaFruitTreePatchReady), lletyaFruitTreePatch);
+		steps.addStep(new Conditions(accessToLletya, lletyaFruitTreePatchEmpty), lletyaFruitTreePatchPlant);
+
+		steps.addStep(new Conditions(accessToFossilIsland, eastHardwoodTreePatchReady), eastHardwoodTreePatch);
+		steps.addStep(new Conditions(accessToFossilIsland, eastHardwoodTreePatchEmpty), eastHardwoodTreePatchPlant);
+
+		steps.addStep(new Conditions(accessToFossilIsland, middleHardwoodTreePatchReady), middleHardwoodTreePatch);
+		steps.addStep(new Conditions(accessToFossilIsland, middleHardwoodTreePatchEmpty), middleHardwoodTreePatchPlant);
+
+		steps.addStep(new Conditions(accessToFossilIsland, westHardwoodTreePatchReady), westHardwoodTreePatch);
+		steps.addStep(new Conditions(accessToFossilIsland, westHardwoodTreePatchEmpty), westHardwoodTreePatchPlant);
 
 		return steps;
 	}
@@ -283,124 +333,124 @@ public class TreeRun extends ComplexStateQuestHelper
 		waitForTree = new DetailedQuestStep(this, "Wait for your trees to grow! This may take a while..!");
 
 		// Tree Patch Steps
-		lumbridgeTreePatch = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3192, 3230, 0),
+		lumbridgeTreePatch = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3193, 3231, 0),
 			"Check the health of the tree planted in Lumbridge.");
-		faladorTreePatch = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3003, 3372, 0),
+		faladorTreePatch = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
 			"Check the health of the tree planted in Falador.");
-		taverleyTreePatch = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2935, 3437, 0),
+		taverleyTreePatch = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2936, 3438, 0),
 			"Check the health of the tree planted in Taverley.");
-		varrockTreePatch = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3228, 3458, 0),
+		varrockTreePatch = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3229, 3459, 0),
 			"Check the health of the tree planted in Varrock.");
-		gnomeStrongholdTreePatch = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2435, 3414, 0),
+		gnomeStrongholdTreePatch = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2436, 3415, 0),
 			"Check the health of the tree planted in the Tree Gnome Stronghold.");
 
-		farmingGuildTreePatch = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1231, 3735, 0),
+		farmingGuildTreePatch = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1232, 3736, 0),
 			"Check the health of the tree planted in the Farming Guild.");
 		farmingGuildTreePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 
 		// Tree Plant Steps
-		lumbridgeTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3192, 3230, 0),
+		lumbridgeTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3193, 3231, 0),
 			"Plant your sapling in the Lumbridge patch.");
 		lumbridgeTreePatchPlant.addIcon(treeSapling.getId());
 		lumbridgeTreePatch.addSubSteps(lumbridgeTreePatchPlant);
 
-		faladorTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3003, 3372, 0),
+		faladorTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
 			"Plant your sapling in the Falador patch.");
 		faladorTreePatchPlant.addIcon(treeSapling.getId());
 		faladorTreePatch.addSubSteps(faladorTreePatchPlant);
 
-		taverleyTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2935, 3437, 0),
+		taverleyTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2936, 3438, 0),
 			"Plant your sapling in the Taverley patch.");
 		taverleyTreePatchPlant.addIcon(treeSapling.getId());
 		taverleyTreePatch.addSubSteps(taverleyTreePatchPlant);
 
-		varrockTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3228, 3458, 0),
+		varrockTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3229, 3459, 0),
 			"Plant your sapling in the Varrock patch.");
 		varrockTreePatchPlant.addIcon(treeSapling.getId());
 		varrockTreePatch.addSubSteps(varrockTreePatchPlant);
 
-		gnomeStrongholdTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2435, 3414, 0),
+		gnomeStrongholdTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2436, 3415, 0),
 			"Plant your sapling in the Gnome Stronghold patch.");
 		gnomeStrongholdTreePatchPlant.addIcon(treeSapling.getId());
 		gnomeStrongholdTreePatch.addSubSteps(gnomeStrongholdTreePatchPlant);
 
-		farmingGuildTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1231, 3735, 0),
+		farmingGuildTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1232, 3736, 0),
 			"Plant your sapling in the Farming Guild tree patch.");
 		farmingGuildTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchPlant.addIcon(treeSapling.getId());
 		farmingGuildTreePatch.addSubSteps(farmingGuildTreePatchPlant);
 
 		// Fruit Tree Steps
-		gnomeStrongholdFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2475, 3445, 0),
+		gnomeStrongholdFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2476, 3446, 0),
 			"Check the health of the fruit tree planted in the Tree Gnome Stronghold.");
-		gnomeVillageFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2489, 3179, 0),
+		gnomeVillageFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2490, 3180, 0),
 			"Check the health of the fruit tree planted outside the Tree Gnome Village. Follow Elkoy to get out quickly.");
-		brimhavenFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2764, 3212, 0),
+		brimhavenFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
 			"Check the health of the fruit tree planted in Brimhaven.");
-		catherbyFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2680, 3433, 0),
+		catherbyFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2681, 3434, 0),
 			"Check the health of the fruit tree planted in Catherby");
 
-		lletyaFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2346, 3161, 0),
+		lletyaFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2347, 3162, 0),
 			"Check the health of the fruit tree planted in Lletya.");
 		lletyaFruitTreePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
 
-		farmingGuildFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1242, 3759, 0),
+		farmingGuildFruitTreePatch = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1243, 3760, 0),
 			"Check the health of the fruit tree planted in the Farming Guild.");
 		farmingGuildFruitTreePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
 
 		// Fruit Tree Plant Steps
-		gnomeStrongholdFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2475, 3445, 0),
+		gnomeStrongholdFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2476, 3446, 0),
 			"Plant your sapling in the Tree Gnome Stronghold patch.");
 		gnomeStrongholdFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		gnomeStrongholdTreePatch.addSubSteps(gnomeStrongholdTreePatchPlant);
 
-		gnomeVillageFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2489, 3179, 0),
+		gnomeVillageFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2490, 3180, 0),
 			"Plant your sapling in the Tree Gnome Village patch. Follow Elkoy to get out quickly.");
 		gnomeVillageFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		gnomeVillageFruitTreePatch.addSubSteps(gnomeVillageFruitTreePatchPlant);
 
-		brimhavenFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2764, 3212, 0),
+		brimhavenFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
 			"Plant your sapling in the Brimhaven patch.");
 		brimhavenFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		brimhavenFruitTreePatch.addSubSteps(brimhavenFruitTreePatchPlant);
 
-		catherbyFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2680, 3433, 0),
+		catherbyFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2681, 3434, 0),
 			"Plant your sapling in the Catherby patch.");
 		catherbyFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		catherbyFruitTreePatch.addSubSteps(catherbyFruitTreePatchPlant);
 
-		lletyaFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2346, 3161, 0),
+		lletyaFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2347, 3162, 0),
 			"Plant your sapling in the Lletya patch.");
 		lletyaFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
 		lletyaFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		lletyaFruitTreePatch.addSubSteps(lletyaFruitTreePatchPlant);
 
-		farmingGuildFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1242, 3759, 0),
+		farmingGuildFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1243, 3760, 0),
 			"Plant your sapling in the Farming Guild patch.");
 		farmingGuildFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
 		farmingGuildFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		farmingGuildFruitTreePatch.addSubSteps(farmingGuildFruitTreePatchPlant);
 
 		// Hardwood Tree Steps
-		westHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3701, 3836, 0),
+		westHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
 			"Check the health of the western hardwood tree on Fossil Island.");
-		middleHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3707, 3832, 0),
+		middleHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3708, 3833, 0),
 			"Check the health of the centre hardwood tree on Fossil Island.");
-		eastHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3714, 3834, 0),
+		eastHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
 			"Check the health of the eastern hardwood tree on Fossil Island.");
 
 		// Hardwood Tree Plant Steps
-		westHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3701, 3836, 0),
+		westHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
 			"Plant your sapling on the western hardwood tree on Fossil Island.");
 		westHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		westHardwoodTreePatch.addSubSteps(westHardwoodTreePatchPlant);
 
-		middleHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3707, 3832, 0),
+		middleHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3708, 3833, 0),
 			"Plant your sapling on the centre hardwood tree on Fossil Island.");
 		middleHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		middleHardwoodTreePatch.addSubSteps(middleHardwoodTreePatchPlant);
 
-		eastHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3714, 3834, 0),
+		eastHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
 			"Plant your sapling on the eastern hardwood tree on Fossil Island.");
 		eastHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		eastHardwoodTreePatch.addSubSteps(eastHardwoodTreePatchPlant);

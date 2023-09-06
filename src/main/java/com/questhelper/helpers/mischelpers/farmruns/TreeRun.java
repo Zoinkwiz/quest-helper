@@ -32,6 +32,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.World;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
@@ -197,97 +198,6 @@ public class TreeRun extends ComplexStateQuestHelper
 			.hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));
 		coins = new ItemRequirement("Coins to quickly remove trees.", ItemID.COINS_995, -1);
 
-		// TODO: Make a util function that can ingest the ItemRequirement and other required objects to make below 3 single function calls instead of the current repetition, should work for all farming helpers.
-		// Saplings
-		// Tree
-		/*treeSapling = new ItemRequirement("Tree saplings of your choice", ItemID.OAK_SAPLING);
-
-		String treeSaplingName = configManager.getRSProfileConfiguration(
-			QuestHelperConfig.QUEST_BACKGROUND_GROUP, TREE_SAPLING
-		);
-
-		if (treeSaplingName != null)
-		{
-			try
-			{
-				treeSapling.setId(TreeSapling.valueOf(treeSaplingName).treeSaplingID);
-			}
-			catch (IllegalArgumentException e)
-			{
-				questHelperPlugin.getConfigManager().setRSProfileConfiguration(
-					QuestHelperConfig.QUEST_BACKGROUND_GROUP, TREE_SAPLING, TreeSapling.OAK
-				);
-			}
-
-			treeSapling.setName(Text.titleCase(TreeSapling.valueOf(treeSaplingName)) + " sapling");
-		}
-		else
-		{
-			questHelperPlugin.getConfigManager().setConfiguration(
-				QuestHelperConfig.QUEST_BACKGROUND_GROUP, TREE_SAPLING, TreeSapling.OAK
-			);
-		}
-
-		// Fruit Tree
-		fruitTreeSapling = new ItemRequirement("Fruit tree saplings of your choice", ItemID.APPLE_SAPLING);
-
-		String fruitTreeSaplingName = configManager.getRSProfileConfiguration(
-			QuestHelperConfig.QUEST_BACKGROUND_GROUP, FRUIT_TREE_SAPLING
-		);
-
-		if (fruitTreeSaplingName != null)
-		{
-			try
-			{
-				fruitTreeSapling.setId(FruitTreeSapling.valueOf(fruitTreeSaplingName).fruitTreeSaplingId);
-			}
-			catch (IllegalArgumentException e)
-			{
-				questHelperPlugin.getConfigManager().setRSProfileConfiguration(
-					QuestHelperConfig.QUEST_BACKGROUND_GROUP, FRUIT_TREE_SAPLING, FruitTreeSapling.APPLE
-				);
-			}
-
-			fruitTreeSapling.setName(Text.titleCase(FruitTreeSapling.valueOf(fruitTreeSaplingName)) + "sapling");
-		}
-		else
-		{
-			questHelperPlugin.getConfigManager().setConfiguration(
-				QuestHelperConfig.QUEST_BACKGROUND_GROUP, FRUIT_TREE_SAPLING, FruitTreeSapling.APPLE
-			);
-		}
-
-		// Hardwood Tree
-		hardwoodSapling = new ItemRequirement("Hardwood tree saplings of your choice", ItemID.TEAK_SAPLING);
-
-		String hardwoodTreeSaplingName = configManager.getRSProfileConfiguration(
-			QuestHelperConfig.QUEST_BACKGROUND_GROUP, HARDWOOD_TREE_SAPLING
-		);
-
-		if (hardwoodTreeSaplingName != null)
-		{
-			try
-			{
-				hardwoodSapling.setId(HardwoodTreeSapling.valueOf(hardwoodTreeSaplingName).hardwoodTreeSaplingId);
-			}
-			catch (IllegalArgumentException e)
-			{
-				questHelperPlugin.getConfigManager().setRSProfileConfiguration(
-					QuestHelperConfig.QUEST_BACKGROUND_GROUP, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.TEAK
-				);
-			}
-
-			hardwoodSapling.setName(Text.titleCase(HardwoodTreeSapling.valueOf(hardwoodTreeSaplingName)) + " sapling");
-		}
-		else
-		{
-			questHelperPlugin.getConfigManager().setConfiguration(
-				QuestHelperConfig.QUEST_BACKGROUND_GROUP, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.TEAK
-			);
-		}*/
-
-		// Replace the existing code for treeSapling, fruitTreeSapling, and hardwoodSapling setup with the following:
-
 		treeSapling = FarmingUtils.createSeedRequirement(
 			configManager,
 			QuestHelperConfig.QUEST_BACKGROUND_GROUP,
@@ -318,8 +228,6 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildTeleport = new ItemRequirement("Farming Guild Teleport", ItemCollections.SKILLS_NECKLACES);
 
 		// Graceful and Farming Outfit
-		// TODO: Extract to FarmingUtils
-
 		gracefulHood = new ItemRequirement(
 			"Graceful hood", ItemCollections.GRACEFUL_HOOD, 1 ,true).isNotConsumed();
 
@@ -344,6 +252,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape
 		).isNotConsumed().showConditioned(new RuneliteRequirement(configManager, GRACEFUL_OR_FARMING, GracefulOrFarming.GRACEFUL.name()));
 
+
 		farmingHat = new ItemRequirement(
 			"Farmer's strawhat", ItemID.FARMERS_STRAWHAT, 1 ,true).isNotConsumed();
 		farmingHat.addAlternates(ItemID.FARMERS_STRAWHAT_13647, ItemID.FARMERS_STRAWHAT_21253, ItemID.FARMERS_STRAWHAT_21254);
@@ -352,7 +261,6 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Farmer's top", ItemID.FARMERS_JACKET, 1, true).isNotConsumed();
 		farmingTop.addAlternates(ItemID.FARMERS_SHIRT);
 
-
 		farmingLegs = new ItemRequirement(
 			"Farmer's boro trousers", ItemID.FARMERS_BORO_TROUSERS, 1, true).isNotConsumed();
 		farmingLegs.addAlternates(ItemID.FARMERS_BORO_TROUSERS_13641);
@@ -360,7 +268,6 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingBoots = new ItemRequirement(
 			"Graceful cape", ItemID.FARMERS_BOOTS, 1, true).isNotConsumed();
 		farmingBoots.addAlternates(ItemID.FARMERS_BOOTS_13645);
-
 
 		farmersOutfit = new ItemRequirements(
 			"Farmer's outfit (equipped)",
@@ -471,6 +378,30 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
 		farmingGuildFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		farmingGuildFruitTreePatch.addSubSteps(farmingGuildFruitTreePatchPlant);
+
+		// Hardwood Tree Steps
+		westHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3701, 3836, 0),
+			"Check the health of the western hardwood tree on Fossil Island.");
+		middleHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3707, 3832, 0),
+			"Check the health of the centre hardwood tree on Fossil Island.");
+		eastHardwoodTreePatch = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3714, 3834, 0),
+			"Check the health of the eastern hardwood tree on Fossil Island.");
+
+		// Hardwood Tree Plant Steps
+		westHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3701, 3836, 0),
+			"Plant your sapling on the western hardwood tree on Fossil Island.");
+		westHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
+		westHardwoodTreePatch.addSubSteps(westHardwoodTreePatchPlant);
+
+		middleHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3707, 3832, 0),
+			"Plant your sapling on the centre hardwood tree on Fossil Island.");
+		middleHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
+		middleHardwoodTreePatch.addSubSteps(middleHardwoodTreePatchPlant);
+
+		eastHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3714, 3834, 0),
+			"Plant your sapling on the eastern hardwood tree on Fossil Island.");
+		eastHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
+		eastHardwoodTreePatch.addSubSteps(eastHardwoodTreePatchPlant);
 	}
 
 	@Subscribe

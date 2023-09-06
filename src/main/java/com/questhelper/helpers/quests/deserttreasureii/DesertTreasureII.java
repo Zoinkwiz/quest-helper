@@ -112,7 +112,7 @@ public class DesertTreasureII extends BasicQuestHelper
 	Requirement inVault, inDigsiteHole, inGolemRoom;
 
 	Requirement inspectedStatueSE, inspectedStatueSW, inspectedStatueNE, inspectedStatueNW, inspectedPlaque,
-	inspectedGolem, inspectedAltar, bloodBeenCast, iceBeenCast, shadowBeenCast, smokeBeenCast, castAllSpells, inPuzzle;
+		inspectedGolem, inspectedAltar, bloodBeenCast, iceBeenCast, shadowBeenCast, smokeBeenCast, castAllSpells, inPuzzle;
 
 	Requirement searchedVardorvis, searchedPerseriya, searchedSucellus, searchedWhisperer, askedAboutVardorvis,
 		askedAboutPerseriya, askedAboutSucellus, askedAboutWhisperer;
@@ -199,7 +199,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			imbueAtAltar);
 		goInspectAltarAndGolem.addStep(new Conditions(inGolemRoom, inspectedGolem, castAllSpells), searchCrateForCharges);
 		goInspectAltarAndGolem.addStep(new Conditions(inGolemRoom, inspectedGolem, bloodBeenCast, shadowBeenCast,
-				smokeBeenCast), castOnIceStatue);
+			smokeBeenCast), castOnIceStatue);
 		goInspectAltarAndGolem.addStep(new Conditions(inGolemRoom, inspectedGolem, bloodBeenCast, shadowBeenCast),
 			castOnSmokeStatue);
 		goInspectAltarAndGolem.addStep(new Conditions(inGolemRoom, inspectedGolem, bloodBeenCast),
@@ -357,9 +357,9 @@ public class DesertTreasureII extends BasicQuestHelper
 			new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 4),
 			new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE, 2));
 		iceBurstRunes = new ItemRequirements("Ice burst runes",
-		new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 2),
-		new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 4),
-		new ItemRequirement("Water runes", ItemID.WATER_RUNE, 4));
+			new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 2),
+			new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 4),
+			new ItemRequirement("Water runes", ItemID.WATER_RUNE, 4));
 		shadowBurstRunes = new ItemRequirements("Shadow burst runes",
 			new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 2),
 			new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 4),
@@ -631,7 +631,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Enter the hole in the south-east of the cavern.");
 
 		killAncientGuardian = new NpcStep(this, NpcID.ANCIENT_GUARDIAN_12337, new WorldPoint(2783, 6431, 0)
-		, "Kill the Ancient Guardian. The shield needs to be broken to hurt it, " +
+			, "Kill the Ancient Guardian. The shield needs to be broken to hurt it, " +
 			"and it will regenerate the shield unless you are using melee attacks with a pickaxe in the inventory.", combatGear);
 		((NpcStep) killAncientGuardian).addAlternateNpcs(NpcID.ANCIENT_GUARDIAN_12336);
 
@@ -670,7 +670,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Imbue the cells at the altar.", uncharedCells);
 
 		chargeGolem = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
-		"Inspect the golem again.");
+			"Inspect the golem again.");
 
 		solveGolemPuzzle = new GolemPuzzleStep(this);
 
@@ -737,7 +737,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		searchBedForHairClip = new ObjectStep(this, ObjectID.BED_48777, new WorldPoint(3103, 9246, 0),
 			"Search the bed for a hairclip.");
 		unlockCell = new ObjectStep(this, ObjectID.GATE_48774, new WorldPoint(3107, 9248, 0),
-			"Escape the cell.", hairClip);
+			"Escape the cell. Guess the correct code to open, with correct numbers in the correct place being marked in green, and correct numbers in the wrong places being marked with blue.", hairClip);
 		getItemsFromCell = new ObjectStep(this, ObjectID.CHEST_48771, new WorldPoint(3115, 9263, 0),
 			"Retrieve your items from the chest in the north-east room.");
 		investigateAltar = new ObjectStep(this, ObjectID.ALTAR_48779, new WorldPoint(3086, 9260, 0),
@@ -745,11 +745,11 @@ public class DesertTreasureII extends BasicQuestHelper
 		fightMysteriousFigure = new NpcStep(this, NpcID.MYSTERIOUS_FIGURE_12301, "Fight the Mysterious Figure. " +
 			"When frozen, spam-click to move away to avoid taking damage.");
 		enterAncientVault = new ObjectStep(this, ObjectID.VAULT_DOOR_46743, new WorldPoint(3511, 2971, 0),
-		"Enter to the Vault door north-east of Nardah with the final medallion, ready to fight.",
-		whisperersMedallion.hideConditioned(finishedWhisperer),
-		vardorvisMedallion.hideConditioned(finishedVardorvis),
-		sucellusMedallion.hideConditioned(finishedSucellus),
-		perseriyaMedallion.hideConditioned(finishedPerseriya),
+			"Enter to the Vault door north-east of Nardah with the final medallion, ready to fight.",
+			whisperersMedallion.hideConditioned(finishedWhisperer),
+			vardorvisMedallion.hideConditioned(finishedVardorvis),
+			sucellusMedallion.hideConditioned(finishedSucellus),
+			perseriyaMedallion.hideConditioned(finishedPerseriya),
 			combatGear, food, prayerPotions);
 		enterAncientVault.addTeleport(nardahTeleport);
 
@@ -759,7 +759,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		fightMysteriousFigure.addSubSteps(returnToMysteriousFigure);
 
 		returnToPickUpMedallion = new ObjectStep(this, NullObjectID.NULL_49497, new WorldPoint(3175, 2887, 0),
-		"Retrieve the medallion from the portal south of the Quarry.");
+			"Retrieve the medallion from the portal south of the Quarry.");
 		getMedallionFromChest = new ObjectStep(this, ObjectID.CHEST_48771, new WorldPoint(3115, 9263, 0),
 			"Retrieve the medallion from the chest in the north-east room.");
 
@@ -776,7 +776,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Go deeper into the Vault down the steps.", combatGear);
 
 		defeatAssassin = new NpcStep(this, NpcID.THE_FORSAKEN_ASSASSIN, new WorldPoint(3296, 6444, 0),
-			"Defeat The Forsaken Assassin. Protect from ranged, and lure him into the white smoke.");
+			"Defeat The Forsaken Assassin. Protect from ranged, and lure him into the white smoke. He will sometimes throw 3 vials, avoid them, as they will poison you and deal large damage.");
 		defeatKetla = new NpcStep(this, NpcID.KETLA_THE_UNWORTHY, new WorldPoint(3296, 6444, 0),
 			"Defeat Ketla the Unworthy. Protect from ranged. She will spawn shadow clones, which you should hide behind whenever she has a skull above her.");
 		((NpcStep) defeatKetla).addAlternateNpcs(NpcID.KETLA_THE_UNWORTHY_12330);
@@ -784,7 +784,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Defeat Kasonde the Craven. Protect from ranged if at a distance or melee if up close. The fight is similar to earlier in the quest.");
 		((NpcStep) defeatKasonde).addAlternateNpcs(NpcID.KASONDE_THE_CRAVEN_12332);
 		defeatPersten = new NpcStep(this, NpcID.PERSTEN_THE_DECEITFUL, new WorldPoint(3296, 6444, 0),
-			"Defeat Persten the Deceitful. Protect from Magic. Avoid the lighting strikes by moving. Destroy any portals she spawns.");
+			"Defeat Persten the Deceitful. Protect from Magic. Avoid the lighting strikes by moving. Destroy any portals she spawns, or run from corner to corner avoiding the leeches that spawn from the portal.");
 
 		cutsceneThenWights = new DetailedQuestStep(this, "Watch the cutscene, then defeat the wights.");
 
@@ -808,8 +808,8 @@ public class DesertTreasureII extends BasicQuestHelper
 				OverlayUtil.renderImageLocation(graphics, imageLocation, missIcon);
 			}
 			if (showRedHitsplatFromLeviathanUntilTick >= client.getTickCount()
-			 || showRedHitsplatFromDukeUntilTick >= client.getTickCount()
-			 || showRedHitsplatWhispererUntilTick >= client.getTickCount())
+				|| showRedHitsplatFromDukeUntilTick >= client.getTickCount()
+				|| showRedHitsplatWhispererUntilTick >= client.getTickCount())
 			{
 				OverlayUtil.renderImageLocation(graphics, imageLocation, hitIcon);
 			}

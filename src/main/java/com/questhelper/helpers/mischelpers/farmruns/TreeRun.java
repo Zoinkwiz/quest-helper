@@ -10,6 +10,7 @@ import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.FruitTreeSaplin
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.GracefulOrFarming;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.HardwoodTreeSapling;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.TreeSapling;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
@@ -40,6 +41,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.util.Text;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -506,6 +508,32 @@ public class TreeRun extends ComplexStateQuestHelper
 		HelperConfig hardwoodTreesConfig = new HelperConfig("Hardwood Trees", HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.values());
 		HelperConfig outfitConfig = new HelperConfig("Outfit", GRACEFUL_OR_FARMING, GracefulOrFarming.values());
 		return Arrays.asList(treesConfig, fruitTreesConfig, hardwoodTreesConfig, outfitConfig);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return Arrays.asList(spade, rake, coins, treeSapling, fruitTreeSapling, hardwoodSapling);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(gracefulOutfit, farmersOutfit);
+	}
+
+	@Override
+	public List<PanelDetails> getPanels()
+	{
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Farm run", Arrays.asList(farmingGuildTreePatch, farmingGuildFruitTreePatch,
+			lumbridgeTreePatch, faladorTreePatch, taverleyTreePatch, varrockTreePatch, gnomeStrongholdFruitTreePatch,
+			gnomeStrongholdTreePatch, gnomeVillageFruitTreePatch, brimhavenFruitTreePatch, catherbyFruitTreePatch,
+			lletyaFruitTreePatch, eastHardwoodTreePatch, middleHardwoodTreePatch, westHardwoodTreePatch),
+			Arrays.asList(spade, rake, coins, treeSapling, fruitTreeSapling, hardwoodSapling),
+			Arrays.asList(gracefulOutfit, farmersOutfit)));
+
+		return allSteps;
 	}
 
 	private void updateTreeSapling(TreeSapling selectedTreeSapling)

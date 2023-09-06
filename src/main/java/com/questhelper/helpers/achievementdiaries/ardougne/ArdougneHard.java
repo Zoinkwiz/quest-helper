@@ -343,7 +343,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.HUNTER, 59));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 66));
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 65, true));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 68));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 68, true));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 72));
 
 		reqs.add(monkeyMadness);
@@ -416,7 +416,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		allSteps.add(mgSteps);
 
 		PanelDetails plateSteps = new PanelDetails("Mithril Platebody", Collections.singletonList(mithPlate),
-			new SkillRequirement(Skill.SMITHING, 68), mithBar.quantity(5), hammer);
+			new SkillRequirement(Skill.SMITHING, 68, true), mithBar.quantity(5), hammer);
 		plateSteps.setDisplayCondition(notMithPlate);
 		plateSteps.setLockingStep(mithPlateTask);
 		allSteps.add(plateSteps);

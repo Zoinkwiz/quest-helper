@@ -200,7 +200,7 @@ public class DirectionArrow
 	public static void drawLine(Graphics2D graphics, Line2D.Double line, Color color, Rectangle clippingRegion)
 	{
 		graphics.setStroke(new BasicStroke(1));
-//		graphics.setClip(clippingRegion);
+		graphics.setClip(clippingRegion);
 		graphics.setColor(color);
 		graphics.draw(line);
 

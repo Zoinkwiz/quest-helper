@@ -72,7 +72,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		engine, pulleyBeam, longPulleyBeam, longerPulleyBeam, rope, beam, plank, diary5, box, letter;
 
 	//Items Recommended
-	ItemRequirement antipoison, food, prayerPotions;
+	ItemRequirement antipoison, food, prayerPotions, rellekkaTeleport;
 
 	Requirement inMiscFloor1, inEtcFloor1, onIslands, hasCoalOrPickaxe, astridIsHeir, startedInvestigation, talkedToMiscSubject,
 		talkedToSigrid, talkedToEtcSubject, reportedToVargas, reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas,
@@ -82,7 +82,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		inPaths, seenFire, searchedFire1, searchedFire2, searchedFire3, searchedFire4, searchedFire5, hasReadDiary, enteredSnakeRoom, talkedToKids,
 		inBossRoom, killedBoss, finishedFinalConvoWithSigrid, isMarryingNotFriend;
 
-	QuestStep travelToMisc, goUpToGhrim, talkToGhrim, goUpToPartner, talkToPartner, talkToVargas, goUpToVargas, goDownFromVargas, talkToGunnhild, goBackUpToVargas, talkToVargasAgain, goDownFromVargas2, goUpToSigrid,
+	DetailedQuestStep travelToMisc, goUpToGhrim, talkToGhrim, goUpToPartner, talkToPartner, talkToVargas, goUpToVargas, goDownFromVargas, talkToGunnhild, goBackUpToVargas, talkToVargasAgain, goDownFromVargas2, goUpToSigrid,
 		talkToSigrid, goDownFromSigridToMatilda, talkToMatilda, goBackUpToSigrid, talkToSigridAfterMatilda, getCoalOrPickaxe, goDownFromSigridToVargas, goBackUpToVargasFromSigrid, talkToVargasAfterSigrid, talkToGhrim2,
 		goUpToGhrim2, goDownToSailor, talkToSailor, goUpToVargasAfterSailor, talkToVargasAfterSailor, goDownStairsToDungeon, goDownLadderToDungeon, goDownToDungeonNoScroll, talkToDonal, usePropOnCrevice, enterCrevice,
 		pickUpEngine, putCoalIntoEngine, putCoalIntoEngine2, putCoalIntoEngine3, putCoalIntoEngine4, putCoalIntoEngine5, takePulley, usePulleyOnScaffold, takePulley2, takeBeam, useBeamOnPulley,
@@ -252,6 +252,10 @@ public class RoyalTrouble extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		antipoison = new ItemRequirement("Any antipoison", ItemCollections.ANTIPOISONS, 1);
+		rellekkaTeleport = new ItemRequirement("Miscellania teleport (Fairy Ring (CIP), tablet, lyre)", ItemCollections.FAIRY_STAFF);
+		rellekkaTeleport.addAlternates(ItemID.RELLEKKA_TELEPORT, ItemID.ENCHANTED_LYREI, ItemID.ENCHANTED_LYRE5, ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2, ItemID.ENCHANTED_LYRE1);
+
+
 		scroll = new ItemRequirement("Scroll", ItemID.SCROLL_7968);
 		scroll.setTooltip("You can get another from King Vargas");
 		prop = new ItemRequirement("Mining prop", ItemID.MINING_PROP);
@@ -389,6 +393,8 @@ public class RoyalTrouble extends BasicQuestHelper
 	{
 		String travelText = "Travel to Miscellania. You can take a boat from Rellekka. You can also use Fairy Rings to teleport there with the code CIP If you've unlocked them.";
 		travelToMisc = new NpcStep(this, NpcID.SAILOR_3936, new WorldPoint(2629, 3693, 0), travelText);
+		travelToMisc.addDialogStep("Yes.");
+		travelToMisc.addTeleport(rellekkaTeleport);
 		goUpToGhrim = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3849, 0), "Talk to Advisor Ghrim in Miscellania castle.");
 		talkToGhrim = new NpcStep(this, NpcID.ADVISOR_GHRIM_5448, new WorldPoint(2499, 3857, 1), "Talk to Advisor Ghrim in Miscellania castle.");
 		talkToGhrim.addDialogStep("Has anything been happening in the kingdom recently?");
@@ -447,7 +453,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		goDownFromSigridToVargas = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(2614, 3867, 1), "Go downstairs from Queen Sigrid.");
 		goBackUpToVargasFromSigrid = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3849, 0), "Return to King Vargas in Miscellania castle.");
 		talkToVargasAfterSigrid = new NpcStep(this, NpcID.KING_VARGAS, new WorldPoint(2501, 3860, 1), "Return to King Vargas in Miscellania castle.");
-		talkToVargas.addSubSteps(goBackUpToVargasFromSigrid, goDownFromSigridToVargas);
+		talkToVargasAfterSigrid.addSubSteps(goBackUpToVargasFromSigrid, goDownFromSigridToVargas);
 
 		goUpToGhrim2 = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3849, 0), "Talk to Advisor Ghrim in Miscellania castle.");
 		talkToGhrim2 = new NpcStep(this, NpcID.ADVISOR_GHRIM_5448, new WorldPoint(2499, 3857, 1), "Talk to Advisor Ghrim in Miscellania castle.");
@@ -461,6 +467,7 @@ public class RoyalTrouble extends BasicQuestHelper
 
 		goUpToVargasAfterSailor = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3849, 0), "Return to King Vargas in Miscellania castle.");
 		talkToVargasAfterSailor = new NpcStep(this, NpcID.KING_VARGAS, new WorldPoint(2501, 3860, 1), "Return to King Vargas in Miscellania castle to get a scroll.");
+		talkToVargasAfterSailor.addSubSteps(goUpToVargasAfterSailor);
 
 		goDownStairsToDungeon = new ObjectStep(this, ObjectID.STAIRCASE_16676, new WorldPoint(2506, 3849, 1), "Go down the ladder south of Miscellania castle.", scroll);
 		goDownLadderToDungeon = new ObjectStep(this, ObjectID.LADDER_15116, new WorldPoint(2509, 3846, 0), "Go down the ladder south of Miscellania castle.", scroll);
@@ -522,6 +529,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		goBackToPlank = new ObjectStep(this, ObjectID.TUNNEL_15189, new WorldPoint(2514, 10290, 0), "Go back through the tunnel to get a plank.", plank);
 
 		attachRope = new ObjectStep(this, NullObjectID.NULL_15252, new WorldPoint(2540, 10299, 0), "Use a rope on the rock over the water blocking the path.", rope);
+		attachRope.addIcon(ItemID.ROPE);
 		swingOverRope = new ObjectStep(this, NullObjectID.NULL_15252, new WorldPoint(2540, 10299, 0), "Swing over the water on the ropeswing.");
 
 		searchFire1 = new ObjectStep(this, ObjectID.FIRE_REMAINS_15206, new WorldPoint(2555, 10295, 0), "Search the fire remains.");
@@ -620,7 +628,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Collections.singletonList(
-			new ItemReward("20,000 Coins", ItemID.COINS_995, 20000));
+			new ItemReward("Coins", ItemID.COINS_995, 20000));
 	}
 
 	@Override
@@ -634,7 +642,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(travelToMisc, talkToGhrim)));
-		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToPartner, talkToVargas, talkToGunnhild, talkToVargasAgain, talkToSigrid, talkToMatilda)));
+		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToPartner, talkToVargas, talkToGunnhild, talkToSigrid, talkToMatilda)));
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
 			allSteps.add(new PanelDetails("Digging deeper", Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon), coalOrPickaxe, combatGear, antipoison));
@@ -643,7 +651,8 @@ public class RoyalTrouble extends BasicQuestHelper
 		{
 			allSteps.add(new PanelDetails("Digging deeper", Arrays.asList(getCoalOrPickaxe, talkToVargasAfterSigrid, talkToGhrim2, talkToSailor, talkToVargasAfterSailor, goDownLadderToDungeon), coal5, combatGear, antipoison));
 		}
-		allSteps.add(new PanelDetails("Repair the lift", Arrays.asList(talkToDonal, usePropOnCrevice, enterCrevice, takePulley, usePulleyOnScaffold, takePulley2, takeBeam, useBeamOnPulley, takeBeam2, useBeamOnLongPulley, useLongerPulleyOnScaffold, takePulley3, usePulleyOnScaffold2, takeRope, useRopeOnScaffold, takeBeam3, useBeamOnPlatform, pickUpEngine, useEngineOnPlatform, putCoalIntoEngine)));
+		allSteps.add(new PanelDetails("Repair the lift", Arrays.asList(talkToDonal, usePropOnCrevice, enterCrevice, takePulley, usePulleyOnScaffold, takePulley2, takeBeam, useBeamOnPulley, takeBeam2, useBeamOnLongPulley,
+			useLongerPulleyOnScaffold, takePulley3, usePulleyOnScaffold2, takeRope, useRopeOnScaffold, takeBeam3, useBeamOnPlatform, pickUpEngine, useEngineOnPlatform, putCoalIntoEngine, takeRope2)));
 		allSteps.add(new PanelDetails("Investigate the caves", Arrays.asList(useLift, takePlank, enterTunnelFromPlankRoom, attachRope, swingOverRope, searchFire1, plankRock1, searchFire2, searchFire3, searchFire4, searchFire5, readDiary, enterSnakesRoom)));
 		allSteps.add(new PanelDetails("Investigate the caves", Arrays.asList(talkToArmod, enterBossRoom, killBoss, pickUpBox, leaveBossRoom, goUpRope, talkToSigridToFinish, talkToVargasToFinish)));
 

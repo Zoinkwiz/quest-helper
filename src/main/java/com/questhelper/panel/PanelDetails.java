@@ -97,6 +97,7 @@ public class PanelDetails
 		setHideCondition(new Conditions(LogicType.NOR, req));
 	}
 
+	/* Set the states of the quest the steps in the sidebar should be active */
 	public void setVars(Integer... vars)
 	{
 		this.vars = Arrays.asList(vars);

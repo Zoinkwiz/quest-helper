@@ -153,8 +153,19 @@ public class DetailedQuestStep extends QuestStep
 	{
 		super(questHelper, text);
 		this.worldPoint = worldPoint;
-		this.requirements.addAll(requirements);
-		this.recommended.addAll(recommended);
+		if (requirements != null)
+		{
+			this.requirements.addAll(requirements);
+		}
+		if (recommended != null)
+		{
+			this.recommended.addAll(recommended);
+		}
+	}
+
+	public DetailedQuestStep(QuestHelper questHelper, String text, List<Requirement> requirements, List<Requirement> recommended)
+	{
+		this(questHelper, null, text, requirements, recommended);
 	}
 
 	@Override
@@ -279,7 +290,7 @@ public class DetailedQuestStep extends QuestStep
 			for (QuestTile location : markedTiles)
 			{
 				BufferedImage combatIcon = spriteManager.getSprite(location.getIconID(), 0);
-				LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, location.getWorldPoint());
+				LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, location.getWorldPoint());
 				if (localPoint != null)
 				{
 					OverlayUtil.renderTileOverlay(client, graphics, localPoint, combatIcon, questHelper.getConfig().targetOverlayColor());
@@ -288,6 +299,16 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));
+		renderTileIcon(graphics);
+	}
+
+	protected void renderTileIcon(Graphics2D graphics)
+	{
+		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+		if (lp != null && icon != null && iconItemID != -1)
+		{
+			OverlayUtil.renderTileOverlay(client, graphics, lp, icon, questHelper.getConfig().targetOverlayColor());
+		}
 	}
 
 	@Subscribe
@@ -343,7 +364,7 @@ public class DetailedQuestStep extends QuestStep
 				return;
 			}
 
-			LocalPoint lp = QuestPerspective.getInstanceLocalPoint(client, worldPoint);
+			LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 			if (lp == null)
 			{
 				return;
@@ -406,7 +427,7 @@ public class DetailedQuestStep extends QuestStep
 
 	public void makeDirectionOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		if (!hideMinimapLines)
+		if (!hideMinimapLines && plugin.getConfig().showWorldLines())
 		{
 			WorldLines.createMinimapLines(graphics, client, linePoints, getQuestHelper().getConfig().targetOverlayColor());
 		}
@@ -525,22 +546,20 @@ public class DetailedQuestStep extends QuestStep
 
 		Color baseColor = questHelper.getConfig().targetOverlayColor();
 
-		if (worldPoint != null)
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+		WorldPoint goalWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
+		if (goalWp == null || playerLocation.distanceTo(goalWp) > 30)
 		{
-			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-			WorldPoint goalWp = QuestPerspective.getInstanceWorldPoint(client, worldPoint);
-			if (goalWp != null && playerLocation.distanceTo(goalWp) > 30)
+			for (Requirement requirement : teleport)
 			{
-				for (Requirement requirement : teleport)
+				for (Widget item : inventoryWidget.getDynamicChildren())
 				{
-					for (Widget item : inventoryWidget.getDynamicChildren())
+					if (requirement instanceof ItemRequirement && ((ItemRequirement) requirement).getAllIds().contains(item.getItemId()))
 					{
-						if (requirement instanceof ItemRequirement && ((ItemRequirement) requirement).getAllIds().contains(item.getItemId()))
-						{;
-							highlightInventoryItem(item, baseColor, graphics);
-						}
-						// TODO: If teleport, highlight teleport in spellbook
+						;
+						highlightInventoryItem(item, baseColor, graphics);
 					}
+					// TODO: If teleport, highlight teleport in spellbook
 				}
 			}
 		}
@@ -742,7 +761,7 @@ public class DetailedQuestStep extends QuestStep
 					if (iconToUseForNeededItems != -1)
 					{
 						BufferedImage icon = spriteManager.getSprite(iconToUseForNeededItems, 0);
-						LocalPoint localPoint = QuestPerspective.getInstanceLocalPoint(client, tile.getWorldLocation());
+						LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, tile.getWorldLocation());
 						if (localPoint != null)
 						{
 							OverlayUtil.renderTileOverlay(client, graphics, localPoint, icon, questHelper.getConfig().targetOverlayColor());

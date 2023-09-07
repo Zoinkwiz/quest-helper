@@ -26,6 +26,7 @@ package com.questhelper.helpers.miniquests.architecturalalliance;
 
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarbits;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -43,8 +44,10 @@ import com.questhelper.steps.QuestStep;
 
 import java.util.*;
 
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -165,5 +168,28 @@ public class ArchitecturalAlliance extends BasicQuestHelper
 		req.add(kharedstsMemoirs);
 
 		return req;
+	}
+
+	@Override
+	public QuestState getState(Client client)
+	{
+		int questState = client.getVarbitValue(QuestVarbits.QUEST_ARCHITECTURAL_ALLIANCE.getId());
+		if (questState == 0)
+		{
+			return QuestState.NOT_STARTED;
+		}
+
+		if (questState < 5)
+		{
+			return QuestState.IN_PROGRESS;
+		}
+
+		return QuestState.FINISHED;
+	}
+
+	@Override
+	public boolean isCompleted()
+	{
+		return (client.getVarbitValue(QuestVarbits.QUEST_ARCHITECTURAL_ALLIANCE.getId()) >= 5);
 	}
 }

@@ -78,7 +78,7 @@ public class HeroesQuest extends BasicQuestHelper
 		gripsKey, fireFeather;
 
 	//Items Recommended
-	ItemRequirement combatGear, antifireShield, varrockTeleport;
+	ItemRequirement combatGear, antifireShield, varrockTeleport, burthorpeTeleport, brimhavenTeleport, taverleyTeleport, portSarimTeleport;
 
 	Requirement inTaverleyDungeon, has70Agility, inDeepTaverleyDungeon,
 		talkedToKatrine, talkedToStraven, inJailCell, inBlackArmGang, inPhoenixBase, talkedToAlfonse, blackArmGangDoorUnlocked, gottenPapers,
@@ -86,7 +86,7 @@ public class HeroesQuest extends BasicQuestHelper
 		unlockedCandlestickBlackArm, unlockedCandlestickPhoenix, finishedBlackArm, finishedPhoenix, inIceEntrance, inIceUndergroundRoom1, inIceUndergroundRoom2,
 		inIceAboveGround1, inIceAboveGround2, iceGlovesNearby, inThroneRoom, fireFeatherNearby, onEntrana;
 
-	QuestStep talkToAchietties, talkToGerrant, makeBlamishOil, useOilOnRod, enterTaverleyDungeon, goThroughPipe, killJailerForKey, getDustyFromAdventurer,
+	DetailedQuestStep talkToAchietties, talkToGerrant, makeBlamishOil, useOilOnRod, enterTaverleyDungeon, goThroughPipe, killJailerForKey, getDustyFromAdventurer,
 		enterDeeperTaverley, fishLavaEel, cookLavaEel, talkToKatrine, tryToEnterTrobertHouse, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey,
 		enterTreasureRoom, searchChest, returnToKatrine, enterPhoenixBase, talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, useKeyOnDoor, pushWall,
 		killGrip, enterPhoenixBaseAgain, bringCandlestickToStraven, mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down,
@@ -205,6 +205,7 @@ public class HeroesQuest extends BasicQuestHelper
 		iceGloves = new ItemRequirement("Ice gloves (obtainable in quest)", ItemID.ICE_GLOVES).isNotConsumed();
 		equippedIceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true).isNotConsumed();
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
+		fishingRod.addAlternates(ItemID.OILY_FISHING_ROD);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
 		jailKey = new ItemRequirement("Jail key", ItemID.JAIL_KEY).isNotConsumed();
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
@@ -236,6 +237,16 @@ public class HeroesQuest extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		antifireShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD).isNotConsumed();
+
+
+		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.GAMES_NECKLACES);
+		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.TAVERLEY_TELEPORT);
+		taverleyTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
+		brimhavenTeleport = new ItemRequirement("Brimhaven teleport, or travel by boat from Ardougne/Port Sarim for 30gp", ItemID.BRIMHAVEN_TELEPORT);
+		portSarimTeleport = new ItemRequirement("Port Sarim teleport (Explorer's ring 2/3/4, Amulet of Glory to Draynor)", ItemID.EXPLORERS_RING_4);
+		portSarimTeleport.addAlternates(ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_2, ItemID.EXPLORERS_RING_1);
+		portSarimTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
+
 
 		// This is here so that conditions are set for the item highlighter helper
 		setupConditions();
@@ -330,8 +341,11 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToAchietties = new NpcStep(this, NpcID.ACHIETTIES, new WorldPoint(2904, 3511, 0), "Talk to Achietties outside the Heroes' Guild, south of Burthorpe.");
 		talkToAchietties.addDialogStep("I'm a hero, may I apply to join?");
 		talkToAchietties.addDialogStep("I'll start looking for all those things then.");
+		talkToAchietties.addTeleport(burthorpeTeleport);
+
 		talkToGerrant = new NpcStep(this, NpcID.GERRANT_2891, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
 		talkToGerrant.addDialogStep("I want to find out how to catch a lava eel.");
+		talkToGerrant.addTeleport(portSarimTeleport);
 		makeBlamishOil = new DetailedQuestStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf, blamishSlime);
 		useOilOnRod = new DetailedQuestStep(this, "Use the Blamish oil on your fishing rod.", blamishOil, fishingRod);
 
@@ -345,6 +359,7 @@ public class HeroesQuest extends BasicQuestHelper
 			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
 				"Go to Taverley Dungeon. Bring a dusty key if you have one, otherwise you can get one in the dungeon.", oilRod, fishingBait, dustyKey);
 		}
+		enterTaverleyDungeon.addTeleport(taverleyTeleport);
 
 		goThroughPipe = new ObjectStep(this, ObjectID.OBSTACLE_PIPE_16509, new WorldPoint(2888, 9799, 0), "Squeeze through the obstacle pipe.");
 
@@ -360,9 +375,11 @@ public class HeroesQuest extends BasicQuestHelper
 		/* Black Arm Gang steps */
 		talkToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Talk to Katrine at the Black Arm Gang base in South west Varrock.");
 		talkToKatrine.addDialogStep("Is there any way I can get the rank of master thief?");
+		talkToKatrine.addTeleport(varrockTeleport);
 
 		tryToEnterTrobertHouse = new ObjectStep(this, ObjectID.DOOR_2626, new WorldPoint(2811, 3170, 0), "Try to enter the house in east Brimhaven.");
 		tryToEnterTrobertHouse.addDialogStep("Four leaved clover.");
+		tryToEnterTrobertHouse.addTeleport(brimhavenTeleport);
 		talkToTrobert = new NpcStep(this, NpcID.TROBERT, new WorldPoint(2807, 3174, 0), "Talk to Trobert inside.");
 		talkToTrobert.addDialogStep("So can you help me get Scarface Pete's candlesticks?");
 		talkToTrobert.addDialogStep("I volunteer to undertake that mission!");
@@ -383,10 +400,13 @@ public class HeroesQuest extends BasicQuestHelper
 
 		returnToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Give one of Pete's candlesticks to your partner. Afterwards, return to Katrine with Pete's candlestick", candlestick);
 		returnToKatrine.addDialogStep("I have a candlestick now.");
+		returnToKatrine.addTeleport(varrockTeleport);
 
 		/* Phoenix Gang steps */
 		enterPhoenixBase = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Head into the Phoenix Gang's base in south Varrock.");
+		enterPhoenixBase.addTeleport(varrockTeleport);
 		talkToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Talk to Straven.");
+		talkToStraven.addTeleport(brimhavenTeleport);
 		talkToAlfonse = new NpcStep(this, NpcID.ALFONSE_THE_WAITER, new WorldPoint(2792, 3186, 0), "Talk to Alfonse the Waiter in the restaurant in Brimhaven.", rangedMage);
 		talkToAlfonse.addDialogStep("Do you sell Gherkins?");
 		getKeyFromPartner = new DetailedQuestStep(this, "You'll need your partner to give you a miscellaneous key.");
@@ -400,10 +420,12 @@ public class HeroesQuest extends BasicQuestHelper
 		getCandlestick = new DetailedQuestStep(this, "Get your candlestick from your partner.");
 		killGrip.addSubSteps(getCandlestick);
 		enterPhoenixBaseAgain = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Bring the candlestick back to Straven.");
+		enterPhoenixBaseAgain.addTeleport(varrockTeleport);
 		bringCandlestickToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Bring the candlestick back to Straven.");
 		bringCandlestickToStraven.addSubSteps(enterPhoenixBaseAgain);
 
 		mineEntranceRocks = new ObjectStep(this, ObjectID.ROCK_SLIDE, new WorldPoint(2839, 3518, 0), "Head to White Wolf Mountain, and mine a rockslide in the northern part.", pickaxe);
+		mineEntranceRocks.addTeleport(taverleyTeleport);
 		takeLadder1Down = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2848, 3513, 0), "Take the south east ladder down.");
 		takeLadder2Up = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2824, 9907, 0), "Follow the tunnel south, then go up the ladder there.");
 		takeLadder3Down = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2827, 3510, 0), "Take the east ladder down.");
@@ -414,10 +436,12 @@ public class HeroesQuest extends BasicQuestHelper
 		killIceQueen.addSubSteps(pickupIceGloves);
 
 		goToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3047, 3236, 0), "Travel to Entrana with the monks in Port Sarim.", equippedIceGloves);
+		goToEntrana.addTeleport(portSarimTeleport);
 		killFireBird = new NpcStep(this, NpcID.ENTRANA_FIREBIRD, new WorldPoint(2840, 3374, 0), "Kill the entrana firebird on the north of Entrana.", equippedIceGloves);
 		pickupFireFeather = new ItemStep(this, "Pick up the fire feather.", fireFeather);
 
 		finishQuest = new NpcStep(this, NpcID.ACHIETTIES, new WorldPoint(2904, 3511, 0), "Bring Achietties all the items to finish.", fireFeather, thievesArmband, lavaEel);
+		finishQuest.addTeleport(burthorpeTeleport);
 	}
 
 	@Override
@@ -465,6 +489,11 @@ public class HeroesQuest extends BasicQuestHelper
 		reqs.add(combatGear);
 		reqs.add(varrockTeleport);
 		reqs.add(antifireShield);
+		reqs.add(burthorpeTeleport.quantity(2));
+		reqs.add(taverleyTeleport.quantity(2));
+		reqs.add(varrockTeleport.quantity(2));
+		reqs.add(portSarimTeleport.quantity(2));
+		reqs.add(brimhavenTeleport);
 
 		return reqs;
 	}
@@ -522,9 +551,11 @@ public class HeroesQuest extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails firstPanel = new PanelDetails("Start the quest", Collections.singletonList(talkToAchietties));
+		PanelDetails firstPanel = new PanelDetails("Start the quest", Collections.singletonList(talkToAchietties), Collections.singletonList(burthorpeTeleport));
 
-		PanelDetails secondPanel = new PanelDetails("Get the Lava Eel", Arrays.asList(talkToGerrant, makeBlamishOil, useOilOnRod, enterTaverleyDungeon, fishLavaEel, cookLavaEel), harralanderUnf, fishingRod, fishingBait, dustyKey);
+		PanelDetails secondPanel = new PanelDetails("Get the Lava Eel", Arrays.asList(talkToGerrant, makeBlamishOil, useOilOnRod, enterTaverleyDungeon, fishLavaEel, cookLavaEel),
+			Arrays.asList(harralanderUnf, fishingRod, fishingBait, dustyKey),
+			Arrays.asList(portSarimTeleport, taverleyTeleport));
 		secondPanel.setLockingStep(getLavaEel);
 		PanelDetails thirdPanel;
 
@@ -532,24 +563,29 @@ public class HeroesQuest extends BasicQuestHelper
 		{
 			thirdPanel = new PanelDetails("Get thieves' armband",
 				Arrays.asList(talkToKatrine, tryToEnterTrobertHouse, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey, enterTreasureRoom, searchChest, returnToKatrine),
-				blackFullHelm, blackPlatebody, blackPlatelegs);
+				Arrays.asList(blackFullHelm, blackPlatebody, blackPlatelegs),
+				Arrays.asList(varrockTeleport.quantity(2), brimhavenTeleport));
 		}
 		else
 		{
 			thirdPanel = new PanelDetails("Get thieves' armband", 
 				Arrays.asList(talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, pushWall, useKeyOnDoor,
-					killGrip, bringCandlestickToStraven), rangedMage);
+					killGrip, bringCandlestickToStraven), Collections.singletonList(rangedMage),
+				Arrays.asList(varrockTeleport.quantity(2), brimhavenTeleport));
 		}
 
 		thirdPanel.setLockingStep(getThievesArmband);
 
-		PanelDetails fourthPanel = new PanelDetails("Get ice gloves", Arrays.asList(mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down, killIceQueen), pickaxe);
+		PanelDetails fourthPanel = new PanelDetails("Get ice gloves",
+			Arrays.asList(mineEntranceRocks, takeLadder1Down, takeLadder2Up, takeLadder3Down, takeLadder4Up, takeLadder5Down, killIceQueen),
+			Collections.singletonList(pickaxe), Collections.singletonList(taverleyTeleport));
 		fourthPanel.setLockingStep(getIceGloves);
 
-		PanelDetails fifthPanel = new PanelDetails("Get fire feather", Arrays.asList(goToEntrana, killFireBird), iceGloves);
+		PanelDetails fifthPanel = new PanelDetails("Get fire feather", Arrays.asList(goToEntrana, killFireBird),
+			Collections.singletonList(iceGloves), Collections.singletonList(portSarimTeleport));
 		fifthPanel.setLockingStep(getFireFeather);
 
-		PanelDetails sixthPanel = new PanelDetails("Finish off", Collections.singletonList(finishQuest), fireFeather, thievesArmband, lavaEel);
+		PanelDetails sixthPanel = new PanelDetails("Finish off", Collections.singletonList(finishQuest), Arrays.asList(fireFeather, thievesArmband, lavaEel), Collections.singletonList(burthorpeTeleport));
 
 		allSteps.add(firstPanel);
 		allSteps.add(secondPanel);

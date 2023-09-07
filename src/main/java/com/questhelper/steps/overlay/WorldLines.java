@@ -67,8 +67,8 @@ public class WorldLines
 		}
 		for (int i = 0; i < linePoints.size() - 1; i++)
 		{
-			LocalPoint startPoint = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i));
-			LocalPoint destinationPoint = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i+1));
+			LocalPoint startPoint = QuestPerspective.getInstanceLocalPointFromReal(client, linePoints.get(i));
+			LocalPoint destinationPoint = QuestPerspective.getInstanceLocalPointFromReal(client, linePoints.get(i+1));
 			if (startPoint == null || destinationPoint == null)
 			{
 				continue;
@@ -157,12 +157,100 @@ public class WorldLines
 	{
 		for (int i = 0; i < linePoints.size() - 1; i++)
 		{
-			LocalPoint startLp = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i));
-			LocalPoint endLp = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i+1));
-			if (startLp == null || endLp == null)
+			WorldPoint startWp = linePoints.get(i);
+			WorldPoint endWp = linePoints.get(i+1);
+
+			if (startWp == null || endWp == null) continue;
+			if (startWp.equals(new WorldPoint(0, 0, 0))) continue;
+			if (endWp.equals(new WorldPoint(0, 0, 0))) continue;
+			LocalPoint startLp = QuestPerspective.getInstanceLocalPointFromReal(client, startWp);
+			LocalPoint endLp = QuestPerspective.getInstanceLocalPointFromReal(client, endWp);
+			if (startLp == null && endLp == null)
 			{
 				continue;
 			}
+
+			int MAX_LP = 13056;
+
+			if (endLp == null)
+			{
+				// Work out point of intersection of loaded area
+				int xDiff = endWp.getX() - startWp.getX();
+				int yDiff = endWp.getY() - startWp.getY();
+
+				int changeToGetXToBorder;
+				if (xDiff != 0)
+				{
+					int goalLine = 0;
+					if (xDiff > 0) goalLine = MAX_LP;
+					changeToGetXToBorder = (goalLine - startLp.getX()) / xDiff;
+				}
+				else
+				{
+					changeToGetXToBorder = Integer.MAX_VALUE;
+				}
+				int changeToGetYToBorder;
+				if (yDiff != 0)
+				{
+					int goalLine = 0;
+					if (yDiff > 0) goalLine = MAX_LP;
+					changeToGetYToBorder =(goalLine - startLp.getY()) / yDiff;
+				}
+				else
+				{
+					changeToGetYToBorder = Integer.MAX_VALUE;
+				}
+				if (Math.abs(changeToGetXToBorder) < Math.abs(changeToGetYToBorder))
+				{
+					endLp = new LocalPoint(startLp.getX() + (xDiff * changeToGetXToBorder), startLp.getY() + (yDiff * changeToGetXToBorder));
+				}
+				else
+				{
+					endLp = new LocalPoint(startLp.getX() + (xDiff * changeToGetYToBorder), startLp.getY() + (yDiff * changeToGetYToBorder));
+				}
+			}
+
+			if (startLp == null)
+			{
+				// Work out point of intersection of loaded area
+				int xDiff = startWp.getX() - endWp.getX();
+				int yDiff = startWp.getY() - endWp.getY();
+
+				// if diff negative, go to 0?
+				int changeToGetXToBorder;
+				if (xDiff != 0)
+				{
+					int goalLine = 0;
+					if (xDiff > 0) goalLine = MAX_LP;
+					changeToGetXToBorder = (goalLine - endLp.getX()) / xDiff;
+				}
+				else
+				{
+					changeToGetXToBorder = 1000000000;
+				}
+				int changeToGetYToBorder;
+				if (yDiff != 0)
+				{
+					int goalLine = 0;
+					if (yDiff > 0) goalLine = MAX_LP;
+					changeToGetYToBorder = (goalLine - endLp.getY()) / yDiff;
+				}
+				else
+				{
+					changeToGetYToBorder = 1000000000;
+				}
+
+				if (Math.abs(changeToGetXToBorder) < Math.abs(changeToGetYToBorder))
+				{
+					startLp = new LocalPoint(endLp.getX() + (xDiff * changeToGetXToBorder), endLp.getY() + (yDiff * changeToGetXToBorder));
+				}
+				else
+				{
+					startLp = new LocalPoint(endLp.getX() + (xDiff * changeToGetYToBorder), endLp.getY() + (yDiff * changeToGetYToBorder));
+				}
+			}
+
+			// If one is in scene, find local point we intersect with
 
 			Line2D.Double newLine = getWorldLines(client, startLp, endLp);
 			if (newLine != null)

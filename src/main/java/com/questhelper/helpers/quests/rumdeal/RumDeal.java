@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.PrayerPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -214,7 +215,7 @@ public class RumDeal extends BasicQuestHelper
 		ConditionalStep makeBrewForDonnieStart = new ConditionalStep(this, talkToPete);
 		makeBrewForDonnieStart.addStep(inSpiderRoom, goUpFromSpiders);
 		makeBrewForDonnieStart.addStep(onIslandF1, talkToBraindeathAfterSpider);
-		makeBrewForDonnieStart.addStep(onIslandF2, goDownFromTop);
+		makeBrewForDonnieStart.addStep(onIslandF2, goDownAfterSpider);
 		makeBrewForDonnieStart.addStep(onIslandF0, goUpFromBottom);
 
 		steps.put(16, makeBrewForDonnieStart);
@@ -257,7 +258,7 @@ public class RumDeal extends BasicQuestHelper
 		blindweed = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
 		blindweed.setTooltip("You can get another from Captain Braindeath");
 
-		blindweedHighlight = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
+		blindweedHighlight = new ItemRequirement(true, "Blindweed", ItemID.BLINDWEED);
 		blindweedHighlight.setTooltip("You can get another from Captain Braindeath");
 
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
@@ -290,7 +291,7 @@ public class RumDeal extends BasicQuestHelper
 
 		swill = new ItemRequirement("Unsanitary swill", ItemID.UNSANITARY_SWILL);
 
-		prayerPoints47 = new ItemRequirement("47 prayer points", -1, -1);
+		prayerPoints47 = new PrayerPointRequirement(47);
 	}
 
 	public void loadZones()
@@ -327,7 +328,7 @@ public class RumDeal extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToPete = new NpcStep(this, NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.");
-		talkToPete.addDialogSteps("Yes!", "Of course, I fear no demon!", "Nonsense! Keep the money!", "I've decided to help you for free.", "Okay!");
+		talkToPete.addDialogSteps("Yes.", "Yes!", "Of course, I fear no demon!", "Nonsense! Keep the money!", "I've decided to help you for free.", "Okay!");
 		talkToBraindeath = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 
 		goDownFromTop = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Go down the ladder.");
@@ -401,7 +402,10 @@ public class RumDeal extends BasicQuestHelper
 		talkToBraindeathAfterSpirit = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 		goDownToSpiders = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2139, 5105, 1), "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves);
 
-		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER, "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves.equipped());
+		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER,
+			"Go into the brewery's basement and kill a fever spider. " +
+				"If you're not wearing slayer gloves they'll afflict you with disease.", true, slayerGloves.equipped());
+		killSpider.addSubSteps(goDownToSpiders);
 		pickUpCarcass = new ItemStep(this, "Pick up the fever spider body.", spiderCarcass);
 		goUpFromSpidersWithCorpse = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Add the spider body to the hopper on the top floor.", spiderCarcass);
 		goUpToDropSpider = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1), "Add the spider body to the hopper on the top floor.", spiderCarcass);
@@ -497,6 +501,7 @@ public class RumDeal extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.FARMING, 40, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 47, true));
 		req.add(new SkillRequirement(Skill.SLAYER, 42));
+		req.add(new PrayerPointRequirement(47));
 		return req;
 	}
 }

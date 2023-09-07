@@ -326,6 +326,9 @@ public class QuestBankTab
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
 
 		clientThread.invokeAtTickEnd(() -> {
+			// Desired extra functionality:
+			// X - Recommended items also included in section
+			// X - Expand option to see alternative items for a recommended item
 			ArrayList<BankTabItems> tabLayout = questHelper.getBankTagService().getPluginBankTagItemsForSections(false);
 
 			if (tabLayout != null)
@@ -361,8 +364,7 @@ public class QuestBankTab
 
 		for (BankTabItems bankTabItems : newLayout)
 		{
-			totalSectionsHeight = addPluginTabSection(itemContainer, bankTabItems.getItems(), itemList,
-				bankTabItems.getName(), totalSectionsHeight, bankItemTexts, itemIDsAdded);
+			totalSectionsHeight = addPluginTabSection(itemContainer, bankTabItems, itemList, totalSectionsHeight, bankItemTexts, itemIDsAdded);
 		}
 
 		// We add item texts after all items are added so they always overlay
@@ -394,19 +396,44 @@ public class QuestBankTab
 				itemContainerScroll));
 	}
 
-	private int addPluginTabSection(Widget itemContainer, List<BankTabItem> items, List<Integer> itemIds,
-									String title, int totalSectionsHeight, List<BankText> bankItemTexts,
+	private int addPluginTabSection(Widget itemContainer, BankTabItems items, List<Integer> itemIds,
+									int totalSectionsHeight, List<BankText> bankItemTexts,
 									HashMap<Integer, BankWidget> itemIDsAdded)
 	{
-		int totalItemsAdded = 0;
+		int newHeight = totalSectionsHeight;
 
 		// Contains list of items used, for easy identification for duplicate items
 
-		if (items == null)
+		if (items == null || (items.getItems().isEmpty() && items.getRecommendedItems().isEmpty()))
 		{
-			return 0;
+			return newHeight;
 		}
 
+		// Presume there'll be some content as we have fake items now
+		newHeight = addSectionHeader(itemContainer, items.getName(), totalSectionsHeight);
+
+		if (!items.getItems().isEmpty())
+		{
+			newHeight = createPartialSection(itemContainer, items.getItems(), itemIds, newHeight, bankItemTexts, itemIDsAdded);
+		}
+
+		if (!items.getRecommendedItems().isEmpty())
+		{
+			newHeight = addSubSectionHeader(itemContainer, "Recommended", newHeight);
+			newHeight = createPartialSection(itemContainer, items.getRecommendedItems(), itemIds, newHeight, bankItemTexts, itemIDsAdded);
+		}
+
+		return newHeight;
+	}
+
+
+	// Returns number of items added in partial section
+	private int createPartialSection(Widget itemContainer, List<BankTabItem> items, List<Integer> itemIds,
+									 int totalSectionsHeight, List<BankText> bankItemTexts,
+									 HashMap<Integer, BankWidget> itemIDsAdded)
+	{
+		int totalItemsAdded = 0;
+		// Loop through all items in section
 		for (BankTabItem bankTabItem : items)
 		{
 			boolean foundItem = false;
@@ -414,15 +441,12 @@ public class QuestBankTab
 			// If item exists, move it to correct pos + append a quantity required string
 			if (!Collections.disjoint(itemIds, bankTabItem.getItemIDs()))
 			{
+				// Loop through all widgets to find there's a real item in bank
 				for (Widget widget : itemContainer.getDynamicChildren())
 				{
 					if (!widget.isHidden() && widget.getOpacity() != 150 && (bankTabItem.getItemIDs().contains(widget.getItemId())))
 					{
 						foundItem = true;
-						if (totalItemsAdded == 0)
-						{
-							totalSectionsHeight = addSectionHeader(itemContainer, title, totalSectionsHeight);
-						}
 
 						Point point = placeItem(widget, totalItemsAdded, totalSectionsHeight);
 						widget.setItemQuantityMode(1);
@@ -456,11 +480,6 @@ public class QuestBankTab
 
 			if (!foundItem)
 			{
-				if (totalItemsAdded == 0)
-				{
-					totalSectionsHeight = addSectionHeader(itemContainer, title, totalSectionsHeight);
-				}
-
 				// calculate correct item position as if this was a normal tab
 				int adjXOffset = (totalItemsAdded % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
 				int adjYOffset = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
@@ -515,7 +534,6 @@ public class QuestBankTab
 
 		int newHeight = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
 		newHeight = totalItemsAdded % ITEMS_PER_ROW != 0 ? newHeight + ITEM_VERTICAL_SPACING : newHeight;
-
 		return newHeight;
 	}
 
@@ -548,6 +566,14 @@ public class QuestBankTab
 		newHeight = totalItemsAdded % ITEMS_PER_ROW != 0 ? newHeight + ITEM_VERTICAL_SPACING : newHeight;
 
 		return newHeight;
+	}
+
+	private int addSubSectionHeader(Widget itemContainer, String title, int totalSectionsHeight)
+	{
+		addedWidgets.add(createText(itemContainer, title, new Color(228, 216, 162).getRGB(), (ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING) + ITEM_ROW_START
+			, TEXT_HEIGHT, ITEM_ROW_START, totalSectionsHeight + LINE_VERTICAL_SPACING));
+
+		return totalSectionsHeight + LINE_VERTICAL_SPACING + TEXT_HEIGHT;
 	}
 
 	private int addSectionHeader(Widget itemContainer, String title, int totalSectionsHeight)

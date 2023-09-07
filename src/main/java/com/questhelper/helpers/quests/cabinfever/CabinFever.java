@@ -54,7 +54,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -458,6 +457,14 @@ public class CabinFever extends BasicQuestHelper
 		usedFuse = new VarbitRequirement(1741, 3);
 		firedCannon = new VarbitRequirement(1746, 1);
 
+
+		// SHOTS CAN FAIL
+		// Second cannonball
+		// 1750 1->2
+
+		// Third succesful shot:
+		// 1750 2->3
+
 		canisterInWrong = new VarbitRequirement(1747, 1);
 
 		// 1752 = num plunder stashed
@@ -466,7 +473,7 @@ public class CabinFever extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToBill = new NpcStep(this, NpcID.BILL_TEACH, new WorldPoint(3678, 3494, 0), "Talk to Bill Teach in Port Phasmatys.");
-		talkToBill.addDialogSteps("Yes, I've always wanted to be a pirate!", "Yes, I am a woman of my word.", "Yes, I am a man of my word.");
+		talkToBill.addDialogSteps("Yes.", "Yes, I've always wanted to be a pirate!", "Yes, I am a woman of my word.", "Yes, I am a man of my word.");
 		goOnBillBoat = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0), "Talk to Bill Teach on his boat in Port Phasmatys.");
 		talkToBillOnBoat = new NpcStep(this, NpcID.BILL_TEACH, new WorldPoint(3714, 3496, 1), "Talk to Bill Teach on his boat in Port Phasmatys.");
 		talkToBillOnBoat.addDialogStep("Let's go Cap'n!");

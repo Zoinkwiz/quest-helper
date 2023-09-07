@@ -34,7 +34,6 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.npc.DialogRequirement;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -60,7 +59,6 @@ import java.util.*;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.WANTED

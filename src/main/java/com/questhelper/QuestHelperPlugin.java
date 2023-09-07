@@ -25,7 +25,6 @@
  */
 package com.questhelper;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
@@ -33,6 +32,7 @@ import com.google.inject.Provides;
 import com.questhelper.banktab.QuestBankTab;
 import com.questhelper.banktab.QuestHelperBankTagService;
 import com.questhelper.overlays.QuestHelperDebugOverlay;
+import com.questhelper.overlays.QuestHelperMinimapOverlay;
 import com.questhelper.overlays.QuestHelperOverlay;
 import com.questhelper.overlays.QuestHelperWidgetOverlay;
 import com.questhelper.overlays.QuestHelperWorldArrowOverlay;
@@ -45,7 +45,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.statemanagement.GameStateManager;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
 import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import java.awt.image.BufferedImage;
@@ -73,11 +72,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -90,7 +86,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
@@ -195,6 +190,9 @@ public class QuestHelperPlugin extends Plugin
 
 	@Inject
 	private QuestHelperWidgetOverlay questHelperWidgetOverlay;
+
+	@Inject
+	private QuestHelperMinimapOverlay questHelperMinimapOverlay;
 
 	@Inject
 	private QuestHelperWorldOverlay questHelperWorldOverlay;
@@ -305,6 +303,7 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.add(questHelperWorldArrowOverlay);
 		overlayManager.add(questHelperWorldLineOverlay);
 		overlayManager.add(questHelperWidgetOverlay);
+		overlayManager.add(questHelperMinimapOverlay);
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
@@ -351,6 +350,7 @@ public class QuestHelperPlugin extends Plugin
 		overlayManager.remove(questHelperWorldLineOverlay);
 		overlayManager.remove(questHelperWidgetOverlay);
 		overlayManager.remove(questHelperDebugOverlay);
+		overlayManager.remove(questHelperMinimapOverlay);
 
 		clientToolbar.removeNavigation(navButton);
 		shutDownQuest(false);
@@ -547,16 +547,6 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (developerMode && commandExecuted.getCommand().equals("inv"))
-		{
-			ItemContainer items = client.getItemContainer(InventoryID.INVENTORY);
-			StringBuilder itemsString = new StringBuilder();
-			for (Item item : items.getItems())
-			{
-				itemsString.append(client.getItemDefinition(item.getId())).append(" : ").append(item.getId()).append("\n");
-			}
-			System.out.println(itemsString);
-		}
 		if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
 		{
 			if (commandExecuted.getArguments().length == 0 ||
@@ -572,7 +562,7 @@ public class QuestHelperPlugin extends Plugin
 			String step = (String) (Arrays.stream(commandExecuted.getArguments()).toArray()[0]);
 			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), step).setConfigValue();
 		}
-		else if (developerMode && commandExecuted.getCommand().equals("inv"))
+		else if (developerMode && commandExecuted.getCommand().equals("qh-inv"))
 		{
 			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 			StringBuilder inv = new StringBuilder();

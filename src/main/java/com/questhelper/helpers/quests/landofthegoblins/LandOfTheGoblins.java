@@ -33,7 +33,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.npc.NoFollowerRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
@@ -63,7 +62,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.regex.Pattern;
-import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 		quest = QuestHelperQuest.LAND_OF_THE_GOBLINS

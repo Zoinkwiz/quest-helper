@@ -41,6 +41,16 @@ public class FakeGraphicsObject extends ExtendedRuneliteObject
 		runeliteObject.setActive(false);
 	}
 
+	protected FakeGraphicsObject(Client client, ClientThread clientThread, WorldPoint worldPoint,
+								 int[] model, int animation)
+	{
+		super(client, clientThread, worldPoint, model, animation);
+		objectType = RuneliteObjectTypes.GRAPHICS_OBJECT;
+		this.objectToSpawnAfter = null;
+		runeliteObject.setShouldLoop(false);
+		runeliteObject.setActive(false);
+	}
+
 	@Override
 	protected void actionOnClientTick()
 	{

@@ -116,7 +116,7 @@ public class QuestStepPanel extends JPanel
 		bodyPanel.setLayout(new BorderLayout());
 		bodyPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
-		if (!panelDetails.getRequirements().isEmpty())
+		if (panelDetails.getRequirements() != null && !panelDetails.getRequirements().isEmpty())
 		{
 			addRequirements("Bring the following items:", panelDetails.getRequirements(), BorderLayout.NORTH);
 		}
@@ -130,14 +130,20 @@ public class QuestStepPanel extends JPanel
 		questStepsPanel.setLayout(new BoxLayout(questStepsPanel, BoxLayout.Y_AXIS));
 		questStepsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
+
 		for (QuestStep step : panelDetails.getSteps())
 		{
 			JLabel questStepLabel = new JLabel();
 			questStepLabel.setLayout(new BorderLayout());
-			questStepLabel.setBorder(new EmptyBorder(0, 0, 10, 0));
 			questStepLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			questStepLabel.setVerticalAlignment(SwingConstants.TOP);
+			questStepLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			questStepLabel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(1, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR.brighter()),
+				BorderFactory.createEmptyBorder(5, 5, 10, 0)
+			));
 			questStepLabel.setText(generateText(step));
+			questStepLabel.setOpaque(true);
 			questStepLabel.setVisible(step.isShowInSidebar());
 
 			steps.put(step, questStepLabel);
@@ -199,7 +205,7 @@ public class QuestStepPanel extends JPanel
 		step.getText().forEach(line -> text.append(line).append("<br><br>"));
 		text.replace(text.length()-8, text.length(), "");
 
-		return "<html><body style = 'text-align:left'>" + text + "</body></html>";
+		return "<html><body style='text-align:left'>" + text + "</body></html>";
 	}
 
 	public List<QuestStep> getSteps()

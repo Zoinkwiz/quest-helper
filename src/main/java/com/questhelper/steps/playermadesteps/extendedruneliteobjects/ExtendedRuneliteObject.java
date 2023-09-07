@@ -156,7 +156,7 @@ public class ExtendedRuneliteObject
 
 		this.worldPoint = worldPoint;
 
-		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 		if (lp == null) return;
 		runeliteObject.setLocation(lp, client.getPlane());
 		activate();
@@ -180,6 +180,8 @@ public class ExtendedRuneliteObject
 
 	public Shape getClickbox()
 	{
+		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint) == null) return null;
+
 		return Perspective.getClickbox(client,
 			getRuneliteObject().getModel(),
 			getRuneliteObject().getOrientation(),
@@ -202,6 +204,16 @@ public class ExtendedRuneliteObject
 	public void setModel(int[] model)
 	{
 		this.model = createModel(client, model).cloneColors()
+			.light();
+		update();
+	}
+
+	public void setScaledModel(int[] model, int xScale, int yScale, int zScale)
+	{
+		this.model = createModel(client, model)
+			.cloneColors()
+			.cloneVertices()
+			.scale(xScale, yScale, zScale)
 			.light();
 		update();
 	}
@@ -287,7 +299,7 @@ public class ExtendedRuneliteObject
 			lastActionPerformedAt = client.getTickCount();
 		}
 		WorldPoint playerPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-		if (playerPoint.distanceTo(worldPoint) > 20)
+		if (playerPoint.distanceTo(worldPoint) > 30)
 		{
 			disableActiveLoopedAction();
 		}
@@ -321,8 +333,12 @@ public class ExtendedRuneliteObject
 				activeLoopedAction.deactivate();
 			}
 			setActiveLoopedAction((LoopedAction) action);
+			// Currently don't activate, so we keep a consistent on-tick rate
 		}
-		action.activate(menuEntry);
+		else
+		{
+			action.activate(menuEntry);
+		}
 	}
 
 	public void activatePriorityAction(String actionID, MenuEntry menuEntry)

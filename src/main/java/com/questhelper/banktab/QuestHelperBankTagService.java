@@ -87,18 +87,19 @@ public class QuestHelperBankTagService
 		List<ItemRequirement> recommendedItems = plugin.getSelectedQuest().getItemRecommended();
 		if (recommendedItems != null)
 		{
-			recommendedItems =  recommendedItems.stream()
-			.filter(Objects::nonNull)
-			.filter(i -> (!onlyGetMissingItems
-			|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
-			&& i.shouldDisplayText(plugin.getClient()))
-			.collect(Collectors.toList());
+			recommendedItems = recommendedItems.stream()
+				.filter(Objects::nonNull)
+				.filter(i -> (!onlyGetMissingItems
+					|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+					&& i.shouldDisplayText(plugin.getClient()))
+				.collect(Collectors.toList());
 		}
 
 		if (recommendedItems != null && !recommendedItems.isEmpty())
 		{
 			BankTabItems pluginItems = new BankTabItems("Recommended items");
-			recommendedItems.forEach(item -> getItemsFromRequirement(pluginItems, item));
+			// Here we specify getItems so as to avoid a double 'Recommended' title
+			recommendedItems.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item));
 			newList.add(pluginItems);
 		}
 
@@ -109,24 +110,42 @@ public class QuestHelperBankTagService
 
 		for (PanelDetails questSection : shouldShowSections)
 		{
-			List<ItemRequirement> items = questSection.getRequirements()
-				.stream()
-				.filter(ItemRequirement.class::isInstance)
-				.map(ItemRequirement.class::cast)
-				.filter(i -> (!onlyGetMissingItems
-					|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
-					&& i.shouldDisplayText(plugin.getClient()))
-				.collect(Collectors.toList());
+			List<ItemRequirement> items = new ArrayList<>();
+			if (questSection.getRequirements() != null)
+			{
+				items = questSection.getRequirements()
+					.stream()
+					.filter(ItemRequirement.class::isInstance)
+					.map(ItemRequirement.class::cast)
+					.filter(i -> (!onlyGetMissingItems
+						|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+						&& i.shouldDisplayText(plugin.getClient()))
+					.collect(Collectors.toList());
+			}
+			List<ItemRequirement> recommendedItemsForSection = new ArrayList<>();
+			if (questSection.getRecommended() != null)
+			{
+				recommendedItemsForSection = questSection.getRecommended()
+					.stream()
+					.filter(ItemRequirement.class::isInstance)
+					.map(ItemRequirement.class::cast)
+					.filter(i -> (!onlyGetMissingItems
+						|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+						&& i.shouldDisplayText(plugin.getClient()))
+					.collect(Collectors.toList());
+			}
 
 			BankTabItems pluginItems = new BankTabItems(questSection.getHeader());
-			items.forEach(item -> getItemsFromRequirement(pluginItems, item));
+			items.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item));
+			recommendedItemsForSection.forEach(item -> getItemsFromRequirement(pluginItems.getRecommendedItems(), item));
+			// We don't add the recommended items as they're already used
 			newList.add(pluginItems);
 		}
 
 		return newList;
 	}
 
-	private void getItemsFromRequirement(BankTabItems pluginItems, ItemRequirement itemRequirement)
+	private void getItemsFromRequirement(List<BankTabItem> pluginItems, ItemRequirement itemRequirement)
 	{
 		if (itemRequirement instanceof ItemRequirements)
 		{
@@ -151,11 +170,11 @@ public class QuestHelperBankTagService
 		{
 			if (itemRequirement.getDisplayItemId() != null)
 			{
-				pluginItems.addItems(new BankTabItem(itemRequirement));
+				pluginItems.add(new BankTabItem(itemRequirement));
 			}
 			else if (!itemRequirement.getDisplayItemIds().contains(-1))
 			{
-				pluginItems.addItems(makeBankTabItem(itemRequirement));
+				pluginItems.add(makeBankTabItem(itemRequirement));
 			}
 		}
 	}

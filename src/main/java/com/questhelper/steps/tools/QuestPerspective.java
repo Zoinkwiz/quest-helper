@@ -42,12 +42,14 @@ import net.runelite.api.widgets.WidgetInfo;
 
 public class QuestPerspective
 {
-	public static Collection<WorldPoint> toLocalInstance(Client client, WorldPoint worldPoint)
+	public static Collection<WorldPoint> toLocalInstanceFromReal(Client client, WorldPoint worldPoint)
 	{
 		if (!client.isInInstancedRegion())
 		{
 			return Collections.singleton(worldPoint);
 		}
+
+		if (worldPoint == null) return Collections.singleton(null);
 
 		// find instance chunks using the template point. there might be more than one.
 		List<WorldPoint> worldPoints = new ArrayList<>();
@@ -100,9 +102,9 @@ public class QuestPerspective
 		return point;
 	}
 
-	public static LocalPoint getInstanceLocalPoint(Client client, WorldPoint wp)
+	public static LocalPoint getInstanceLocalPointFromReal(Client client, WorldPoint wp)
 	{
-		WorldPoint instanceWorldPoint = getInstanceWorldPoint(client, wp);
+		WorldPoint instanceWorldPoint = getInstanceWorldPointFromReal(client, wp);
 		if (instanceWorldPoint == null)
 		{
 			return null;
@@ -111,9 +113,9 @@ public class QuestPerspective
 		return LocalPoint.fromWorld(client, instanceWorldPoint);
 	}
 
-	public static WorldPoint getInstanceWorldPoint(Client client, WorldPoint wp)
+	public static WorldPoint getInstanceWorldPointFromReal(Client client, WorldPoint wp)
 	{
-		Collection<WorldPoint> points = QuestPerspective.toLocalInstance(client, wp);
+		Collection<WorldPoint> points = QuestPerspective.toLocalInstanceFromReal(client, wp);
 
 		for (WorldPoint point : points)
 		{
@@ -123,6 +125,14 @@ public class QuestPerspective
 			}
 		}
 		return null;
+	}
+
+	public static WorldPoint getRealWorldPointFromLocal(Client client, WorldPoint wp)
+	{
+		LocalPoint lp = LocalPoint.fromWorld(client, wp);
+		if (lp == null) return null;
+
+		return WorldPoint.fromLocalInstance(client, lp);
 	}
 
 	public static Rectangle getWorldMapClipArea(Client client)
@@ -139,7 +149,7 @@ public class QuestPerspective
 	public static Point mapWorldPointToGraphicsPoint(Client client, WorldPoint worldPoint)
 	{
 		RenderOverview ro = client.getRenderOverview();
-
+		if (worldPoint == null) return null;
 		if (!ro.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
 		{
 			return null;

@@ -58,7 +58,6 @@ import java.util.Map;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS

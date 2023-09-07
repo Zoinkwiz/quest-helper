@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -119,6 +118,13 @@ public class NpcStep extends DetailedQuestStep
 	{
 		super(questHelper, worldPoint, text, requirements, optionalRequirements);
 		this.npcID = npcID;
+	}
+
+	public NpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, boolean allowMultipleHighlights, List<Requirement> requirements, List<Requirement> optionalRequirements)
+	{
+		super(questHelper, worldPoint, text, requirements, optionalRequirements);
+		this.npcID = npcID;
+		this.allowMultipleHighlights = allowMultipleHighlights;
 	}
 
 	public NpcStep(QuestHelper questHelper, int[] npcID, WorldPoint worldPoint, String text, Requirement... requirements)
@@ -278,7 +284,7 @@ public class NpcStep extends DetailedQuestStep
 
 		if (worldPoint != null)
 		{
-			Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
+			Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstanceFromReal(client, worldPoint);
 			if (localWorldPoints.isEmpty())
 			{
 				return;
@@ -305,6 +311,11 @@ public class NpcStep extends DetailedQuestStep
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void renderTileIcon(Graphics2D graphics)
+	{
 	}
 
 	private void highlightNpc(NPC npc, Color color, Graphics2D graphics)

@@ -65,7 +65,8 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	ringOfVisibility, ghostspeak, combatGear, coins40, sinSeersNote, ghostlyRobes, serveredLeg;
 
 	// Recommended
-	ItemRequirement kharidTeleport, gnomeTeleport, rellekkaTeleport, karamjaTeleport, draynorTeleport;
+	ItemRequirement kharidTeleport, gnomeTeleport, rellekkaTeleport, karamjaTeleport, draynorTeleport, camelotTeleport,
+		skillsNecklace;
 
 	Requirement inventorySlot;
 
@@ -133,12 +134,15 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		inventorySlot = new FreeInventorySlotRequirement(1);
 
 		kharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.AMULET_OF_GLORIES);
-		gnomeTeleport = new ItemRequirement("Teleport to Tree Gnome Stronghold", -1);
+		gnomeTeleport = new ItemRequirement("Necklace of Passage, or a teleport to Tree Gnome Stronghold", -1);
 		gnomeTeleport.setDisplayItemId(ItemID.SPIRIT_TREE);
+		gnomeTeleport.addAlternates(ItemCollections.NECKLACE_OF_PASSAGES);
 		rellekkaTeleport = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT, 3);
 		karamjaTeleport = new ItemRequirement("Teleport to Tai Bwo Wannai", ItemID.TAI_BWO_WANNAI_TELEPORT);
 		draynorTeleport = new ItemRequirement("Teleport to Draynor Manor", ItemCollections.AMULET_OF_GLORIES);
 		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT, ItemID.EXPLORERS_RING_2, ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4);
+		camelotTeleport = new ItemRequirement("Teleport to Seer's Village", ItemID.CAMELOT_TELEPORT);
+		skillsNecklace = new ItemRequirement("Teleport to Fishing Guild", ItemCollections.SKILLS_NECKLACES);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -193,7 +197,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 			"Return to General Khazard south east of Rellekka.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToGnomeScout = new NpcStep(this, NpcID.SCOUT_3512, new WorldPoint(2458, 3358, 0), "Talk to the scout " +
-			"south of the Tree Gnome Stronghold.", ghostlyRobes, ringOfVisibility, ghostspeak);
+			"near The Outpost, south of the Tree Gnome Stronghold.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
 		talkToFaladorScout = new NpcStep(this, NpcID.SCOUT_3513, new WorldPoint(3073, 3336, 0), "Talk to the scout " +
 			"west of Draynor Manor.", ghostlyRobes, ringOfVisibility, ghostspeak);

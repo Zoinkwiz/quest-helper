@@ -1,7 +1,9 @@
 package com.questhelper.helpers.mischelpers.farmruns;
 
 import com.questhelper.requirements.item.ItemRequirement;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.Varbits;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.util.Text;
 
@@ -78,6 +80,20 @@ public class FarmingUtils
 		{
 			throw new IllegalArgumentException("Unsupported enum type");
 		}
+	}
+
+	public static boolean getPatchState(Client client, int[] patchStates, int varbit)
+	{
+		for (int stateVarb : patchStates)
+		{
+			if (client.getVarbitValue(varbit) == stateVarb)
+			{
+				System.out.println("Found patch state: " + client.getVarbitValue(varbit) + " " + stateVarb);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public enum TreeSapling

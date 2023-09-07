@@ -26,14 +26,16 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.sun.source.doctree.ValueTree;
 import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
-import net.runelite.api.World;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
@@ -44,7 +46,6 @@ import net.runelite.client.util.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TREE_RUN
@@ -72,15 +73,23 @@ public class TreeRun extends ComplexStateQuestHelper
 	DetailedQuestStep farmingGuildTreePatchPlant, lumbridgeTreePatchPlant, faladorTreePatchPlant, taverleyTreePatchPlant,
 		varrockTreePatchPlant, gnomeStrongholdTreePatchPlant;
 
+	DetailedQuestStep lumbridgeTreePatchClear, faladorTreePatchClear, taverleyTreePatchClear, varrockTreePatchClear,
+		gnomeStrongholdTreePatchClear, farmingGuildTreePatchClear;
+
 	// Fruit Trees
 	DetailedQuestStep farmingGuildFruitTreePatch, gnomeStrongholdFruitTreePatch, gnomeVillageFruitTreePatch,
 		brimhavenFruitTreePatch, lletyaFruitTreePatch, catherbyFruitTreePatch;
 	DetailedQuestStep farmingGuildFruitTreePatchPlant, gnomeStrongholdFruitTreePatchPlant, gnomeVillageFruitTreePatchPlant,
 		brimhavenFruitTreePatchPlant, lletyaFruitTreePatchPlant, catherbyFruitTreePatchPlant;
 
+	DetailedQuestStep farmingGuildFruitTreePatchClear, gnomeStrongholdFruitTreePatchClear, gnomeVillageFruitTreePatchClear,
+		brimhavenFruitTreePatchClear, lletyaFruitTreePatchClear, catherbyFruitTreePatchClear;
+
 	// Hardwood Trees
 	DetailedQuestStep eastHardwoodTreePatch, westHardwoodTreePatch, middleHardwoodTreePatch;
 	DetailedQuestStep eastHardwoodTreePatchPlant, westHardwoodTreePatchPlant, middleHardwoodTreePatchPlant;
+
+	DetailedQuestStep eastHardwoodTreePatchClear, westHardwoodTreePatchClear, middleHardwoodTreePatchClear;
 
 	// Farming Items
 	ItemRequirement coins, spade, rake, treeSapling, fruitTreeSapling, hardwoodSapling, compost, axe, protectionItem;
@@ -103,6 +112,12 @@ public class TreeRun extends ComplexStateQuestHelper
 		varrockTreePatchEmpty, gnomeStrongholdTreePatchEmpty, farmingGuildTreePatchEmpty;
 	ManualRequirement  lumbridgeTreePatchReady, faladorTreePatchReady, taverleyTreePatchReady,
 		varrockTreePatchReady, gnomeStrongholdTreePatchReady, farmingGuildTreePatchReady;
+	ManualRequirement faladorTreePatchNotChecked, faladorTreePatchChecked, faladorTreePatchIsStump,
+		lumbridgeTreePatchNotChecked, lumbridgeTreePatchChecked, lumbridgeTreePatchIsStump,
+		farmingGuildTreePatchNotChecked, farmingGuildTreePatchChecked, farmingGuildTreePatchIsStump,
+		taverleyTreePatchNotChecked, taverleyTreePatchChecked, taverleyTreePatchIsStump,
+		varrockTreePatchNotChecked, varrockTreePatchChecked, varrockTreePatchIsStump,
+		gnomeStrongholdTreePatchNotChecked, gnomeStrongholdTreePatchChecked, gnomeStrongholdTreePatchIsStump;
 
 	// Fruit Tree Requirements
 	ManualRequirement gnomeStrongholdFruitTreePatchEmpty, gnomeVillageFruitTreePatchEmpty,
@@ -110,14 +125,30 @@ public class TreeRun extends ComplexStateQuestHelper
 	ManualRequirement gnomeStrongholdFruitTreePatchReady, gnomeVillageFruitTreePatchReady,
 		brimhavenFruitTreePatchReady, lletyaFruitTreePatchReady, catherbyFruitTreePatchReady, farmingGuildFruitTreePatchReady;
 
+	ManualRequirement gnomeStrongholdFruitTreePatchNotChecked, gnomeStrongholdFruitTreePatchChecked, gnomeStrongholdFruitTreePatchIsStump,
+		gnomeVillageFruitTreePatchNotChecked, gnomeVillageFruitTreePatchChecked, gnomeVillageFruitTreePatchIsStump,
+		brimhavenFruitTreePatchNotChecked, brimhavenFruitTreePatchChecked, brimhavenFruitTreePatchIsStump,
+		lletyaFruitTreePatchNotChecked, lletyaFruitTreePatchChecked, lletyaFruitTreePatchIsStump,
+		catherbyFruitTreePatchNotChecked, catherbyFruitTreePatchChecked, catherbyFruitTreePatchIsStump,
+		farmingGuildFruitTreePatchNotChecked, farmingGuildFruitTreePatchChecked, farmingGuildFruitTreePatchIsStump;
+
 	// Hardwood Tree Requirements
 	ManualRequirement eastHardwoodTreePatchEmpty, westHardwoodTreePatchEmpty, middleHardwoodTreePatchEmpty;
 	ManualRequirement eastHardwoodTreePatchReady, westHardwoodTreePatchReady, middleHardwoodTreePatchReady;
+
+	ManualRequirement eastHardwoodTreePatchNotChecked, eastHardwoodTreePatchChecked, eastHardwoodTreePatchIsStump,
+		westHardwoodTreePatchNotChecked, westHardwoodTreePatchChecked, westHardwoodTreePatchIsStump,
+		middleHardwoodTreePatchNotChecked, middleHardwoodTreePatchChecked, middleHardwoodTreePatchIsStump;
 
 	private final String TREE_SAPLING = "treeSaplings";
 	private final String FRUIT_TREE_SAPLING = "fruitTreeSaplings";
 	private final String HARDWOOD_TREE_SAPLING = "hardwoodTreeSaplings";
 	private final String GRACEFUL_OR_FARMING = "gracefulOrFarming";
+
+	private final int[] TREE_UNCHECKED = { 12, 21, 32, 45, 60 };
+	// 192 - 197 for Willow tree final state? Are all trees like this?
+	private final int[] TREE_CHECKED = {13, 22, 33, 46, 61, 192, 193, 194, 195, 196, 197};
+	private final int[] TREE_STUMP = {14, 23, 34, 47, 62};
 
 	@Override
 	public QuestStep loadStep()
@@ -143,7 +174,8 @@ public class TreeRun extends ComplexStateQuestHelper
 		steps.addStep(lumbridgeTreePatchReady, lumbridgeTreePatch);
 		steps.addStep(lumbridgeTreePatchEmpty, lumbridgeTreePatchPlant);
 
-		steps.addStep(faladorTreePatchReady, faladorTreePatch);
+		steps.addStep(new Conditions(faladorTreePatchReady, faladorTreePatchNotChecked), faladorTreePatch);
+		steps.addStep(new Conditions(faladorTreePatchReady, faladorTreePatchChecked), faladorTreePatchClear);
 		steps.addStep(faladorTreePatchEmpty, faladorTreePatchPlant);
 
 		steps.addStep(taverleyTreePatchReady, taverleyTreePatch);
@@ -239,6 +271,69 @@ public class TreeRun extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.FARMING, 85)
 		);
 
+		// Tree Not Checked
+		lumbridgeTreePatchNotChecked = new ManualRequirement();
+		lumbridgeTreePatchChecked = new ManualRequirement();
+		lumbridgeTreePatchIsStump = new ManualRequirement();
+
+		faladorTreePatchNotChecked = new ManualRequirement();
+		faladorTreePatchChecked = new ManualRequirement();
+		faladorTreePatchIsStump = new ManualRequirement();
+
+		taverleyTreePatchNotChecked = new ManualRequirement();
+		taverleyTreePatchChecked = new ManualRequirement();
+		taverleyTreePatchIsStump = new ManualRequirement();
+
+		varrockTreePatchNotChecked = new ManualRequirement();
+		varrockTreePatchChecked = new ManualRequirement();
+		varrockTreePatchIsStump = new ManualRequirement();
+
+		gnomeStrongholdTreePatchNotChecked = new ManualRequirement();
+		gnomeStrongholdTreePatchChecked = new ManualRequirement();
+		gnomeStrongholdTreePatchIsStump = new ManualRequirement();
+
+		farmingGuildTreePatchNotChecked = new ManualRequirement();
+		farmingGuildTreePatchChecked = new ManualRequirement();
+		farmingGuildTreePatchIsStump = new ManualRequirement();
+
+		// Fruit Tree Not Checked
+		gnomeStrongholdFruitTreePatchNotChecked = new ManualRequirement();
+		gnomeStrongholdFruitTreePatchChecked = new ManualRequirement();
+		gnomeStrongholdFruitTreePatchIsStump = new ManualRequirement();
+
+		gnomeVillageFruitTreePatchNotChecked = new ManualRequirement();
+		gnomeVillageFruitTreePatchChecked = new ManualRequirement();
+		gnomeVillageFruitTreePatchIsStump = new ManualRequirement();
+
+		brimhavenFruitTreePatchNotChecked = new ManualRequirement();
+		brimhavenFruitTreePatchChecked = new ManualRequirement();
+		brimhavenFruitTreePatchIsStump = new ManualRequirement();
+
+		lletyaFruitTreePatchNotChecked = new ManualRequirement();
+		lletyaFruitTreePatchChecked = new ManualRequirement();
+		lletyaFruitTreePatchIsStump = new ManualRequirement();
+
+		catherbyFruitTreePatchNotChecked = new ManualRequirement();
+		catherbyFruitTreePatchChecked = new ManualRequirement();
+		catherbyFruitTreePatchIsStump = new ManualRequirement();
+
+		farmingGuildFruitTreePatchNotChecked = new ManualRequirement();
+		farmingGuildFruitTreePatchChecked = new ManualRequirement();
+		farmingGuildFruitTreePatchIsStump = new ManualRequirement();
+
+		// Hardwood Tree Not Checked
+		eastHardwoodTreePatchNotChecked = new ManualRequirement();
+		eastHardwoodTreePatchChecked = new ManualRequirement();
+		eastHardwoodTreePatchIsStump = new ManualRequirement();
+
+		westHardwoodTreePatchNotChecked = new ManualRequirement();
+		westHardwoodTreePatchChecked = new ManualRequirement();
+		westHardwoodTreePatchIsStump = new ManualRequirement();
+
+		middleHardwoodTreePatchNotChecked = new ManualRequirement();
+		middleHardwoodTreePatchChecked = new ManualRequirement();
+		middleHardwoodTreePatchIsStump = new ManualRequirement();
+
 	}
 
 	@Override
@@ -257,6 +352,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			TreeSapling.OAK,
 			ItemID.OAK_SAPLING
 		);
+		treeSapling.setHighlightInInventory(true);
 
 		fruitTreeSapling = FarmingUtils.createSeedRequirement(
 			configManager,
@@ -265,6 +361,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			FruitTreeSapling.APPLE,
 			ItemID.APPLE_SAPLING
 		);
+		fruitTreeSapling.setHighlightInInventory(true);
 
 		hardwoodSapling = FarmingUtils.createSeedRequirement (
 			configManager,
@@ -273,6 +370,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			HardwoodTreeSapling.TEAK,
 			ItemID.TEAK_SAPLING
 		);
+		hardwoodSapling.setHighlightInInventory(true);
 
 		compost	= new ItemRequirement("Compost", ItemCollections.COMPOST);
 
@@ -332,6 +430,30 @@ public class TreeRun extends ComplexStateQuestHelper
 	{
 		waitForTree = new DetailedQuestStep(this, "Wait for your trees to grow! This may take a while..!");
 
+		// Tree Patch Clear Steps
+
+		lumbridgeTreePatchClear = new NpcStep(this, NpcID.FARMER, new WorldPoint(3226, 3219, 0),
+			"Speak to the farmer to clear the patch.");
+		lumbridgeTreePatchClear.addDialogStep("Yes.");
+
+		faladorTreePatchClear = new NpcStep(this, NpcID.FAYETH, "Speak to the farmer to clear the patch.");
+		faladorTreePatchClear.addDialogStep("Yes.");
+
+		taverleyTreePatchClear = new NpcStep(this, NpcID.ALAIN, "Speak to the farmer to clear the patch.");
+		taverleyTreePatchClear.addDialogStep("Yes.");
+
+		varrockTreePatchClear = new NpcStep(this, NpcID.TREZNOR_11957, new WorldPoint(3226, 3219, 0),
+			"Speak to the farmer to clear the patch.");
+		varrockTreePatchClear.addDialogStep("Yes.");
+
+		gnomeStrongholdTreePatchClear = new NpcStep(this, NpcID.PRISSY_SCILLA, new WorldPoint(3226, 3219, 0),
+			"Speak to the farmer to clear the patch.");
+		gnomeStrongholdTreePatchClear.addDialogStep("Yes.");
+
+		farmingGuildTreePatchClear = new NpcStep(this, NpcID.ROSIE, new WorldPoint(3226, 3219, 0),
+			"Speak to the farmer to clear the patch.");
+		farmingGuildTreePatchClear.addDialogStep("Yes.");
+
 		// Tree Patch Steps
 		lumbridgeTreePatch = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3193, 3231, 0),
 			"Check the health of the tree planted in Lumbridge.");
@@ -350,32 +472,33 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		// Tree Plant Steps
 		lumbridgeTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3193, 3231, 0),
-			"Plant your sapling in the Lumbridge patch.");
+			"Plant your sapling in the Lumbridge patch.", treeSapling);
+		treeSapling.highlighted();
 		lumbridgeTreePatchPlant.addIcon(treeSapling.getId());
 		lumbridgeTreePatch.addSubSteps(lumbridgeTreePatchPlant);
 
 		faladorTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
-			"Plant your sapling in the Falador patch.");
+			"Plant your sapling in the Falador patch.", treeSapling);
 		faladorTreePatchPlant.addIcon(treeSapling.getId());
 		faladorTreePatch.addSubSteps(faladorTreePatchPlant);
 
 		taverleyTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2936, 3438, 0),
-			"Plant your sapling in the Taverley patch.");
+			"Plant your sapling in the Taverley patch.", treeSapling);
 		taverleyTreePatchPlant.addIcon(treeSapling.getId());
 		taverleyTreePatch.addSubSteps(taverleyTreePatchPlant);
 
 		varrockTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3229, 3459, 0),
-			"Plant your sapling in the Varrock patch.");
+			"Plant your sapling in the Varrock patch.", treeSapling);
 		varrockTreePatchPlant.addIcon(treeSapling.getId());
 		varrockTreePatch.addSubSteps(varrockTreePatchPlant);
 
 		gnomeStrongholdTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2436, 3415, 0),
-			"Plant your sapling in the Gnome Stronghold patch.");
+			"Plant your sapling in the Gnome Stronghold patch.", treeSapling);
 		gnomeStrongholdTreePatchPlant.addIcon(treeSapling.getId());
 		gnomeStrongholdTreePatch.addSubSteps(gnomeStrongholdTreePatchPlant);
 
 		farmingGuildTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1232, 3736, 0),
-			"Plant your sapling in the Farming Guild tree patch.");
+			"Plant your sapling in the Farming Guild tree patch.", treeSapling);
 		farmingGuildTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchPlant.addIcon(treeSapling.getId());
 		farmingGuildTreePatch.addSubSteps(farmingGuildTreePatchPlant);
@@ -400,33 +523,33 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		// Fruit Tree Plant Steps
 		gnomeStrongholdFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2476, 3446, 0),
-			"Plant your sapling in the Tree Gnome Stronghold patch.");
+			"Plant your sapling in the Tree Gnome Stronghold patch.", fruitTreeSapling);
 		gnomeStrongholdFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		gnomeStrongholdTreePatch.addSubSteps(gnomeStrongholdTreePatchPlant);
 
 		gnomeVillageFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2490, 3180, 0),
-			"Plant your sapling in the Tree Gnome Village patch. Follow Elkoy to get out quickly.");
+			"Plant your sapling in the Tree Gnome Village patch. Follow Elkoy to get out quickly.", fruitTreeSapling);
 		gnomeVillageFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		gnomeVillageFruitTreePatch.addSubSteps(gnomeVillageFruitTreePatchPlant);
 
 		brimhavenFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
-			"Plant your sapling in the Brimhaven patch.");
+			"Plant your sapling in the Brimhaven patch.", fruitTreeSapling);
 		brimhavenFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		brimhavenFruitTreePatch.addSubSteps(brimhavenFruitTreePatchPlant);
 
 		catherbyFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2681, 3434, 0),
-			"Plant your sapling in the Catherby patch.");
+			"Plant your sapling in the Catherby patch.", fruitTreeSapling);
 		catherbyFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		catherbyFruitTreePatch.addSubSteps(catherbyFruitTreePatchPlant);
 
 		lletyaFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2347, 3162, 0),
-			"Plant your sapling in the Lletya patch.");
+			"Plant your sapling in the Lletya patch.", fruitTreeSapling);
 		lletyaFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
 		lletyaFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		lletyaFruitTreePatch.addSubSteps(lletyaFruitTreePatchPlant);
 
 		farmingGuildFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1243, 3760, 0),
-			"Plant your sapling in the Farming Guild patch.");
+			"Plant your sapling in the Farming Guild patch.", fruitTreeSapling);
 		farmingGuildFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
 		farmingGuildFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		farmingGuildFruitTreePatch.addSubSteps(farmingGuildFruitTreePatchPlant);
@@ -441,24 +564,37 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		// Hardwood Tree Plant Steps
 		westHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
-			"Plant your sapling on the western hardwood tree on Fossil Island.");
+			"Plant your sapling on the western hardwood tree on Fossil Island.", hardwoodSapling);
 		westHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		westHardwoodTreePatch.addSubSteps(westHardwoodTreePatchPlant);
 
 		middleHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3708, 3833, 0),
-			"Plant your sapling on the centre hardwood tree on Fossil Island.");
+			"Plant your sapling on the centre hardwood tree on Fossil Island.", hardwoodSapling);
 		middleHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		middleHardwoodTreePatch.addSubSteps(middleHardwoodTreePatchPlant);
 
 		eastHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
-			"Plant your sapling on the eastern hardwood tree on Fossil Island.");
+			"Plant your sapling on the eastern hardwood tree on Fossil Island.", hardwoodSapling);
 		eastHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		eastHardwoodTreePatch.addSubSteps(eastHardwoodTreePatchPlant);
 	}
 
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+
+		// Tree Patch Checks
+		// Since these all use the same values, it is probably redundant as it will always return the same thing..
+		// Should instead use a single Checked/NotChecked/Stump conditional for 4771 and another for 7905?
+		// Need to see radius that causes varb to update, as sometimes update doesn't trigger....
+		checkTreePatch(lumbridgeTreePatchNotChecked, lumbridgeTreePatchChecked, lumbridgeTreePatchIsStump, Varbits.FARMING_4771);
+		checkTreePatch(faladorTreePatchNotChecked, faladorTreePatchChecked, faladorTreePatchIsStump, Varbits.FARMING_4771);
+		checkTreePatch(taverleyTreePatchNotChecked, taverleyTreePatchChecked, taverleyTreePatchIsStump, Varbits.FARMING_4771);
+		checkTreePatch(varrockTreePatchNotChecked, varrockTreePatchChecked, varrockTreePatchIsStump, Varbits.FARMING_4771);
+		checkTreePatch(gnomeStrongholdTreePatchNotChecked, gnomeStrongholdTreePatchChecked, gnomeStrongholdTreePatchIsStump, Varbits.FARMING_4771);
+		checkTreePatch(farmingGuildTreePatchNotChecked, farmingGuildTreePatchChecked, farmingGuildTreePatchIsStump, Varbits.FARMING_7905);
+
 		for (FarmingPatch treePatch : farmingWorld.getTabs().get(Tab.TREE))
 		{
 			CropState treeState = farmingHandler.predictPatch(treePatch);
@@ -529,6 +665,26 @@ public class TreeRun extends ComplexStateQuestHelper
 			}
 		}
 	}
+
+	private void checkTreePatch(ManualRequirement treePatchUnchecked, ManualRequirement treePatchChecked,
+									   ManualRequirement treePatchIsStump, int farmingVarbit)
+	{
+		if (FarmingUtils.getPatchState(client, TREE_UNCHECKED, farmingVarbit))
+		{
+			treePatchUnchecked.setShouldPass(true);
+		}
+
+		if (FarmingUtils.getPatchState(client, TREE_CHECKED, farmingVarbit))
+		{
+			treePatchChecked.setShouldPass(true);
+		}
+
+		if (FarmingUtils.getPatchState(client, TREE_STUMP, farmingVarbit))
+		{
+			treePatchIsStump.setShouldPass(true);
+		}
+	}
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{

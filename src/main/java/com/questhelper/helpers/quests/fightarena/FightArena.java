@@ -243,7 +243,7 @@ public class FightArena extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("1,000 Coins", ItemID.COINS_995, 1000),
+				new ItemReward("Coins", ItemID.COINS_995, 1000),
 				new ItemReward("Khazard Armor", ItemID.KHAZARD_ARMOUR, 1));
 	}
 

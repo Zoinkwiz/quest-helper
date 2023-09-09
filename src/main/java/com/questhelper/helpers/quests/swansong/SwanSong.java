@@ -346,7 +346,7 @@ public class SwanSong extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("25,000 Coins", ItemID.COINS_995, 25000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 25000));
 	}
 
 	@Override

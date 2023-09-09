@@ -221,14 +221,14 @@ public class DaddysHome extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("25 x Planks", ItemID.PLANK, 25),
-				new ItemReward("10 x Oak Planks", ItemID.OAK_PLANK, 10),
-				new ItemReward("50 x Mithril Nails", ItemID.MITHRIL_NAILS, 50),
-				new ItemReward("5 x Steel Bars", ItemID.STEEL_BAR, 5),
-				new ItemReward("8 x Bolt of Cloth", ItemID.BOLT_OF_CLOTH, 8),
-				new ItemReward("5 x House Teleport Tablets", ItemID.TELEPORT_TO_HOUSE, 5),
-				new ItemReward("1 x Falador Teleport Tablet", ItemID.FALADOR_TELEPORT, 1),
-				new ItemReward("POH in Rimmington or 1,000 Coins", ItemID.COINS_995, 1000));
+			new ItemReward("Planks", ItemID.PLANK, 25),
+			new ItemReward("Oak Planks", ItemID.OAK_PLANK, 10),
+			new ItemReward("Mithril Nails", ItemID.MITHRIL_NAILS, 50),
+			new ItemReward("Steel Bars", ItemID.STEEL_BAR, 5),
+			new ItemReward("Bolt of Cloth", ItemID.BOLT_OF_CLOTH, 8),
+			new ItemReward("House Teleport Tablets", ItemID.TELEPORT_TO_HOUSE, 5),
+			new ItemReward("Falador Teleport Tablet", ItemID.FALADOR_TELEPORT, 1),
+			new ItemReward("POH in Rimmington or 1,000 Coins", ItemID.COINS_995, 1));
 	}
 
 	@Override

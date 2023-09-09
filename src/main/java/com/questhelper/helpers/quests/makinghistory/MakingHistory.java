@@ -293,7 +293,7 @@ public class MakingHistory extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("750 Coins", ItemID.COINS_995, 750),
+				new ItemReward("Coins", ItemID.COINS_995, 750),
 				new ItemReward("An Enchanted Key", ItemID.ENCHANTED_KEY, 1));
 	}
 

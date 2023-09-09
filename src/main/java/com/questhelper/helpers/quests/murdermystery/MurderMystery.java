@@ -581,7 +581,7 @@ public class MurderMystery extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("2,000 Coins", ItemID.COINS_995, 2000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 2000));
 	}
 
 	@Override

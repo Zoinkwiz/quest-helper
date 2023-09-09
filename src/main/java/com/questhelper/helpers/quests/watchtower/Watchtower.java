@@ -666,7 +666,7 @@ public class Watchtower extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("5,000 Coins", ItemID.COINS_995, 5000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 5000));
 	}
 
 	@Override

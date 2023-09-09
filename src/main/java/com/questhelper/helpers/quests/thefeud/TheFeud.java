@@ -512,7 +512,7 @@ public class TheFeud extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("500 Coins", ItemID.COINS_995, 500),
+				new ItemReward("Coins", ItemID.COINS_995, 500),
 				new ItemReward("Oak Blackjack", ItemID.OAK_BLACKJACK, 1),
 				new ItemReward("Desert Disguise", ItemID.DESERT_DISGUISE, 1),
 				new ItemReward("Willow Blackjack", ItemID.WILLOW_BLACKJACK, 1),

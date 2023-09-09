@@ -555,7 +555,7 @@ public class TheDigSite extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("2 x Gold Bars", ItemID.GOLD_BAR, 2));
+		return Collections.singletonList(new ItemReward("Gold Bars", ItemID.GOLD_BAR, 2));
 	}
 
 	@Override

@@ -569,7 +569,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		return Arrays.asList(
 				new ItemReward("Ivandis Flail", ItemID.IVANDIS_FLAIL, 1),
 				new ItemReward("Drakan's Medallion", ItemID.DRAKANS_MEDALLION, 1),
-				new ItemReward("3 x 2,500 Experience Tomes (Any skill over level 35).", ItemID.TOME_OF_EXPERIENCE, 3) //22415 is placeholder
+				new ItemReward("2,500 Experience Tomes (Any skill over level 35).", ItemID.TOME_OF_EXPERIENCE, 3) //22415 is placeholder
 		);
 	}
 

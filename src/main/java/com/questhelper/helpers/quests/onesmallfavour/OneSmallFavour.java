@@ -861,7 +861,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2 x 10,000 Experience Lamps (Any skill over level 30)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+				new ItemReward("10,000 Experience Lamps (Any skill over level 30)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
 				new ItemReward("A Steel Keyring", ItemID.STEEL_KEY_RING, 1));
 	}
 

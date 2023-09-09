@@ -286,7 +286,7 @@ public class BetweenARock extends BasicQuestHelper
 
 		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0), "Enter the Dwarven Mine.", pickaxe);
 
-		searchCart = new DetailedQuestStep(this, "Search the mine carts for a page.");
+		searchCart = new ObjectStep(this, ObjectID.MINE_CART_6045, "Search the mine carts for a page.");
 
 		killScorpion = new DetailedQuestStep(this, "Kill scorpions for a page.");
 

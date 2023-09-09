@@ -453,7 +453,7 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToRasolo.addDialogStep("Ask about the Diamonds of Azzanadra");
 		talkToRasolo.addDialogStepWithExclusion("Yes", "Ask about the Diamonds of Azzanadra");
 
-		getCross = new ObjectStep(this, ObjectID.SECURE_CHEST, new WorldPoint(3169, 2967, 0), "Bring antipoison, food, and as many picklocks as you can to the Bandit Camp, and try opening the chest in the south of the Bandit Camp. Keep trying until you succeed.", manyLockpicks, antipoison);
+		getCross = new ObjectStep(this, ObjectID.SECURE_CHEST, new WorldPoint(3169, 2967, 0), "Bring antipoison, food, and as many lockpicks as you can to the Bandit Camp, and try opening the chest in the south of the Bandit Camp. Keep trying until you succeed.", manyLockpicks, antipoison);
 
 		talkToMalak = new NpcStep(this, NpcID.MALAK, new WorldPoint(3496, 3479, 0), "Talk to Malak in the pub in Canifis.");
 		talkToMalak.addDialogStep("I am looking for a special Diamond...");

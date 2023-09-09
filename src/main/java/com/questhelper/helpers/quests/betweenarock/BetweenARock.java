@@ -76,7 +76,9 @@ public class BetweenARock extends BasicQuestHelper
 		inKhorvakRoom, inRealm, avatarNearby, hasSolvedSchematic;
 
 	QuestStep enterDwarfCave, enterDwarfCave2, talkToFerryman, talkToDondakan, travelBackWithFerryman, talkToBoatman, talkToEngineer, talkToRolad, enterDwarvenMine, killScorpion,
-		searchCart, mineRock, goBackUpToRolad, returnToRolad, readEntireBook, travelToKeldagrim, enterDwarfCaveWithBook, enterDwarfCave2WithBook, talkToFerrymanWithBook, talkToDondakanWithBook,
+		searchCart;
+	ObjectStep mineRock;
+	QuestStep goBackUpToRolad, returnToRolad, readEntireBook, travelToKeldagrim, enterDwarfCaveWithBook, enterDwarfCave2WithBook, talkToFerrymanWithBook, talkToDondakanWithBook,
 		useGoldBarOnDondakan, makeGoldCannonball, enterDwarfCaveWithCannonball, enterDwarfCave2WithCannonball, talkToFerrymanWithCannonball, useGoldCannonballOnDondakan, talkToDondakanAfterShot,
 		readBookAgain, talkToEngineerAgain, travelBackWithFerrymanAgain, travelToKeldagrimAgain, talkToBoatmanAgain, useGoldBarOnAnvil, enterKhorvakRoom, talkToKhorvak, assembleSchematic, enterDwarfCaveWithHelmet,
 		enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanWithHelmet, mine6GoldOre, talkToDondakanForEnd, talkToSecondFlame, finishQuest;
@@ -290,7 +292,16 @@ public class BetweenARock extends BasicQuestHelper
 
 		killScorpion = new NpcStep(this, NpcID.SCORPION_3024, new WorldPoint(3043, 9796, 0), "Kill scorpions for a page.", true);
 
-		mineRock = new DetailedQuestStep(this, "Mine low level rocks for a page.", pickaxe);
+		mineRock = new ObjectStep(this, ObjectID.TIN_ROCKS_11361, "Mine low level rocks for a page.", true, pickaxe);
+		mineRock.addAlternateObjects(
+			ObjectID.TIN_ROCKS_11360,
+			ObjectID.CLAY_ROCKS,
+			ObjectID.CLAY_ROCKS_11363,
+			ObjectID.IRON_ROCKS,
+			ObjectID.IRON_ROCKS_11365,
+			ObjectID.COPPER_ROCKS_11161,
+			ObjectID.COPPER_ROCKS_10943
+			);
 
 		goBackUpToRolad = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3019, 9850, 0), "Go back up to Rolad.", pages);
 

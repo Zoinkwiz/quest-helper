@@ -62,17 +62,17 @@ public class QuestHelperBankTagService
 
 		ArrayList<Integer> flattenedList = new ArrayList<>();
 
-		 sortedItems.stream()
-					.map(BankTabItems::getItems)
-					.flatMap(Collection::stream)
-					.map(BankTabItem::getItemIDs)
-					.flatMap(Collection::stream)
-					.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
-					.filter(id -> !flattenedList.contains(id))
-					.forEach(flattenedList::add);
+		sortedItems.stream()
+			.map(BankTabItems::getItems)
+			.flatMap(Collection::stream)
+			.map(BankTabItem::getItemIDs)
+			.flatMap(Collection::stream)
+			.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
+			.filter(id -> !flattenedList.contains(id))
+			.forEach(flattenedList::add);
 		return flattenedList;
 	}
-	
+
 	public ArrayList<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems)
 	{
 		ArrayList<BankTabItems> newList = new ArrayList<>();
@@ -99,7 +99,7 @@ public class QuestHelperBankTagService
 		{
 			BankTabItems pluginItems = new BankTabItems("Recommended items");
 			// Here we specify getItems so as to avoid a double 'Recommended' title
-			recommendedItems.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item));
+			recommendedItems.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item, item));
 			newList.add(pluginItems);
 		}
 
@@ -136,8 +136,8 @@ public class QuestHelperBankTagService
 			}
 
 			BankTabItems pluginItems = new BankTabItems(questSection.getHeader());
-			items.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item));
-			recommendedItemsForSection.forEach(item -> getItemsFromRequirement(pluginItems.getRecommendedItems(), item));
+			items.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item, item));
+			recommendedItemsForSection.forEach(item -> getItemsFromRequirement(pluginItems.getRecommendedItems(), item, item));
 			// We don't add the recommended items as they're already used
 			newList.add(pluginItems);
 		}
@@ -145,7 +145,7 @@ public class QuestHelperBankTagService
 		return newList;
 	}
 
-	private void getItemsFromRequirement(List<BankTabItem> pluginItems, ItemRequirement itemRequirement)
+	private void getItemsFromRequirement(List<BankTabItem> pluginItems, ItemRequirement itemRequirement, ItemRequirement realItem)
 	{
 		if (itemRequirement instanceof ItemRequirements)
 		{
@@ -154,7 +154,7 @@ public class QuestHelperBankTagService
 			ArrayList<ItemRequirement> requirements = itemRequirements.getItemRequirements();
 			if (logicType == LogicType.AND)
 			{
-				requirements.forEach(req -> getItemsFromRequirement(pluginItems, req));
+				requirements.forEach(req -> getItemsFromRequirement(pluginItems, req, realItem));
 			}
 			if (logicType == LogicType.OR)
 			{
@@ -163,18 +163,18 @@ public class QuestHelperBankTagService
 					.findFirst()
 					.orElse(requirements.get(0));
 
-				getItemsFromRequirement(pluginItems, match);
+				getItemsFromRequirement(pluginItems, match, realItem);
 			}
 		}
 		else
 		{
 			if (itemRequirement.getDisplayItemId() != null)
 			{
-				pluginItems.add(new BankTabItem(itemRequirement));
+				pluginItems.add(new BankTabItem(realItem));
 			}
 			else if (!itemRequirement.getDisplayItemIds().contains(-1))
 			{
-				pluginItems.add(makeBankTabItem(itemRequirement));
+				pluginItems.add(makeBankTabItem(realItem));
 			}
 		}
 	}
@@ -185,7 +185,7 @@ public class QuestHelperBankTagService
 
 		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
 
-		return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTooltip());
+		return new BankTabItem(item, displayId);
 	}
 
 	public boolean hasItemInBank(int itemID)

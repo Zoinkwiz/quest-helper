@@ -419,7 +419,7 @@ public class TheTouristTrap extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("4,650 Exp. Lamps (Agility, Fletching, Smithing or Theiving)", ItemID.ANTIQUE_LAMP, 2));
+		return Collections.singletonList(new ItemReward("4,650 Exp. Lamps (Agility, Fletching, Smithing or Thieving)", ItemID.ANTIQUE_LAMP, 2));
 	}
 
 	@Override

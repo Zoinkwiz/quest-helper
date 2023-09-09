@@ -195,8 +195,8 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 		moveToBrim = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2403, 3419, 0),
 			"Enter Brimstail's cave.");
-		brimstailEssence = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2409, 9817, 0),
-			"Have Brimstail teleport you to the Essence mine");
+		brimstailEssence = new NpcStep(this, new int[]{NpcID.BRIMSTAIL, NpcID.BRIMSTAIL_11431},
+			new WorldPoint(2409, 9817, 0), "Have Brimstail teleport you to the Essence mine");
 		brimstailEssence.addDialogStep("I need to mine some rune essence.");
 
 		terrorbird = new NpcStep(this, NpcID.TERRORBIRD, new WorldPoint(2379, 3432, 0),

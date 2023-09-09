@@ -293,6 +293,7 @@ public class BetweenARock extends BasicQuestHelper
 		killScorpion = new NpcStep(this, NpcID.SCORPION_3024, new WorldPoint(3043, 9796, 0), "Kill scorpions for a page.", true);
 
 		mineRock = new ObjectStep(this, ObjectID.TIN_ROCKS_11361, "Mine low level rocks for a page.", true, pickaxe);
+		mineRock.setOverlayText("Mine low level rocks for a page.\n\nYou can continue mining the same rocks.");
 		mineRock.addAlternateObjects(
 			ObjectID.TIN_ROCKS_11360,
 			ObjectID.CLAY_ROCKS,

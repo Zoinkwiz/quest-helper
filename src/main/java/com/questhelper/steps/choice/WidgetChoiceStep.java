@@ -36,16 +36,12 @@ import net.runelite.api.*;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 
-
 public class WidgetChoiceStep
 {
 	protected final QuestHelperConfig config;
 
 	@Getter
 	private final String choice;
-
-	@Setter
-	WidgetLastState widgetToCheck;
 
 	@Setter
 	String expectedTextInWidget;
@@ -166,11 +162,6 @@ public class WidgetChoiceStep
 		Widget dialogChoice = client.getWidget(groupId, childId);
 
 		if (dialogChoice == null)
-		{
-			return;
-		}
-
-		if (widgetToCheck != null && !widgetToCheck.priorTextMatches())
 		{
 			return;
 		}

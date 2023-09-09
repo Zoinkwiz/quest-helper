@@ -288,7 +288,7 @@ public class BetweenARock extends BasicQuestHelper
 
 		searchCart = new ObjectStep(this, ObjectID.MINE_CART_6045, "Search the mine carts for a page.");
 
-		killScorpion = new DetailedQuestStep(this, "Kill scorpions for a page.");
+		killScorpion = new NpcStep(this, NpcID.SCORPION_3024, new WorldPoint(3043, 9796, 0), "Kill scorpions for a page.", true);
 
 		mineRock = new DetailedQuestStep(this, "Mine low level rocks for a page.", pickaxe);
 

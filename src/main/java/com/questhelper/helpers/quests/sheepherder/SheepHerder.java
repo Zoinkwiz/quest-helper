@@ -256,7 +256,7 @@ public class SheepHerder extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("3,100 Coins", ItemID.COINS_995, 3100));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 3100));
 	}
 
 	@Override

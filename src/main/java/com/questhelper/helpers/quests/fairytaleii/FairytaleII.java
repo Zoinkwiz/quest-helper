@@ -401,7 +401,7 @@ public class FairytaleII extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("2 x 2,500 Experience Lamps (Any skill over level 30.)", ItemID.ANTIQUE_LAMP, 2)); //4447 Is placeholder for filter.
+		return Collections.singletonList(new ItemReward("2,500 Experience Lamps (Any skill over level 30.)", ItemID.ANTIQUE_LAMP, 2)); //4447 Is placeholder for filter.
 	}
 
 	@Override

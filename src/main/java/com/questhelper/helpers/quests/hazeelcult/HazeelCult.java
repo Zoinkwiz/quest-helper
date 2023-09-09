@@ -361,7 +361,7 @@ public class HazeelCult extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("2,000 (2,005 if siding with Ceril) Coins", ItemID.COINS_995, 2000),
+			new ItemReward("(2,005 if siding with Ceril) Coins", ItemID.COINS_995, 2000),
 			new ItemReward("Hazeel's mark (if you sided with Hazeel)", ItemID.HAZEELS_MARK),
 			new ItemReward("Carnillean armour (if you sided with Ceril)", ItemID.CARNILLEAN_ARMOUR)
 		);

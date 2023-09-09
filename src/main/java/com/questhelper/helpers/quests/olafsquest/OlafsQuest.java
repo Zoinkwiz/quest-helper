@@ -308,7 +308,7 @@ public class OlafsQuest extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("4 x Rubies", ItemID.RUBY, 4));
+		return Collections.singletonList(new ItemReward("Rubies", ItemID.RUBY, 4));
 	}
 
 	@Override

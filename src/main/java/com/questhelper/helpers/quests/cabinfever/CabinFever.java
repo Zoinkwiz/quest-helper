@@ -662,7 +662,7 @@ public class CabinFever extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("10,000 Coins", ItemID.COINS_995, 10000),
+				new ItemReward("Coins", ItemID.COINS_995, 10000),
 				new ItemReward("The Book o' Piracy", ItemID.BOOK_O_PIRACY, 1));
 	}
 

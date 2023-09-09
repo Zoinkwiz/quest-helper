@@ -914,7 +914,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("50 x Astral Runes", ItemID.ASTRAL_RUNE, 50),
+				new ItemReward("Astral Runes", ItemID.ASTRAL_RUNE, 50),
 				new ItemReward("A Seal of Passage", ItemID.SEAL_OF_PASSAGE, 1),
 				new ItemReward("A set of Lunar Equipment", -1, 1));
 	}

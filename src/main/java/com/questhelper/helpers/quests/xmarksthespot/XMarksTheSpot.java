@@ -149,7 +149,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 	{
 		return Arrays.asList(
 			new ItemReward("300 Exp. Lamp (Any Skill)", ItemID.ANTIQUE_LAMP, 1),
-			new ItemReward("200 Coins", ItemID.COINS_995, 200),
+			new ItemReward("Coins", ItemID.COINS_995, 200),
 			new ItemReward("A Beginner Clue Scroll", ItemID.CLUE_SCROLL_BEGINNER, 1));
 	}
 

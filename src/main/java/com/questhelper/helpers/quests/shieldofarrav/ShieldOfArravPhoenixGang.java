@@ -205,7 +205,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("600 Coins", ItemID.COINS_995, 600));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 600));
 	}
 
 	@Override

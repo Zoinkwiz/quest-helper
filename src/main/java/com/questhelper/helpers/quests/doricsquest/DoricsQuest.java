@@ -119,7 +119,7 @@ public class DoricsQuest extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("180 Coins", ItemID.COINS_995, 180));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 180));
 	}
 
 	@Override

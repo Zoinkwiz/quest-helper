@@ -196,7 +196,7 @@ public class ClientOfKourend extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2 x 500 Experience Lamps (Any Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 Placeholder until confirmed.
+				new ItemReward("500 Experience Lamps (Any Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 Placeholder until confirmed.
 				new ItemReward("20% Kourend Favour Certificate", ItemID.KOUREND_FAVOUR_CERTIFICATE, 1),
 				new ItemReward("Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}

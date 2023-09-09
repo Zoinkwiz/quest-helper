@@ -167,7 +167,7 @@ public class SheepShearer extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("60 Coins", ItemID.COINS_995, 60));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 60));
 	}
 
 	@Override

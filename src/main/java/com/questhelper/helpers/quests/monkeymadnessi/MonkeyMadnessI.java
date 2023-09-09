@@ -930,7 +930,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new ItemReward("55,000 Experience Combat Lamp (Over multiple Skills)", ItemID.ANTIQUE_LAMP, 1), //4447 is placeholder for filter
-				new ItemReward("10,000 Coins", ItemID.COINS_995, 10000),
+				new ItemReward("Coins", ItemID.COINS_995, 10000),
 				new ItemReward("3 Diamonds", ItemID.DIAMOND, 3));
 	}
 

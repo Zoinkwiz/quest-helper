@@ -49,6 +49,8 @@ public class RuneliteRequirement extends AbstractRequirement
 	@Getter
 	protected final Map<String, Requirement> requirements;
 
+	protected String initValue;
+
 	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text, Map<String, Requirement> requirements)
 	{
 		this(configManager, id, "false", expectedValue, text, requirements);
@@ -84,6 +86,7 @@ public class RuneliteRequirement extends AbstractRequirement
 		this.displayText = text;
 		this.expectedValue = expectedValue;
 		this.requirements = requirements;
+		this.initValue = initValue;
 		initWithValue(initValue);
 	}
 
@@ -129,11 +132,18 @@ public class RuneliteRequirement extends AbstractRequirement
 
 	public String getConfigValue()
 	{
+		String value = configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier);
+		if (initValue != null && value == null)
+		{
+			setConfigValue(initValue);
+			return initValue;
+		}
 		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier);
 	}
 
 	public void setConfigValue(String obj)
 	{
+		if (configManager.getRSProfileKey() == null) return;
 		configManager.setRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier, obj);
 	}
 

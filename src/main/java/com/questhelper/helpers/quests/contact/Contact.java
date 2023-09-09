@@ -319,7 +319,7 @@ public class Contact extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2 x 7,000 Experience Lamps (Combat Skills)", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("7,000 Experience Lamps (Combat Skills)", ItemID.ANTIQUE_LAMP, 2),
 				new ItemReward("Keris", ItemID.KERIS, 1)
 		);
 	}

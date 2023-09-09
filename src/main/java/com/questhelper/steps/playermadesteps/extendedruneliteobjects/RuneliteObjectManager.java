@@ -391,6 +391,7 @@ public class RuneliteObjectManager
 
 	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
 	{
+		if (!extendedRuneliteObject.isActive()) return;
 		if (extendedRuneliteObject.getActions().size() == 0 && !(extendedRuneliteObject instanceof ReplacedNpc))
 		{
 			return;

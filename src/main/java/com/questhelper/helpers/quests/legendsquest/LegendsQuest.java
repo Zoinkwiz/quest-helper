@@ -1059,7 +1059,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		returnToRadimus = new NpcStep(this, NpcID.RADIMUS_ERKLE, new WorldPoint(2725, 3368, 0), "Return to Radimus Erkle inside the Legends' Guild's grounds.", gildedTotem, completeNotes);
 		returnToRadimus.setMaxRoamRange(5);
-		talkToRadimusInGuild = new NpcStep(this, NpcID.RADIMUS_ERKLE, new WorldPoint(2729, 3382, 0), "Talk to Radimus Erkle inside the Legends' Guild".);
+		talkToRadimusInGuild = new NpcStep(this, NpcID.RADIMUS_ERKLE, new WorldPoint(2729, 3382, 0), "Talk to Radimus Erkle inside the Legends' Guild.");
 		talkToRadimusInGuild.setMaxRoamRange(13);
 		talkToRadimusInGuild.addDialogStep("Yes, I'll train now.");
 		talkToRadimusInGuildAgain = new NpcStep(this, NpcID.RADIMUS_ERKLE, new WorldPoint(2729, 3382, 0), "Talk to Radimus Erkle inside the Legends' Guild once more.");

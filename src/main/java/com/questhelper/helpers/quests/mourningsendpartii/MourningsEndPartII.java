@@ -72,8 +72,11 @@ import net.runelite.api.widgets.WidgetInfo;
 public class MourningsEndPartII extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement deathTalisman, deathTalismanHeader, mournersOutfit, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak, chisel, rope, ropeHighlight, prayerPotions, food, newKey, edernsJournal,
-		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight, teleportCrystal;
+	ItemRequirement deathTalisman, deathTalismanHeader, mournersOutfit, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak, chisel, rope, ropeHighlight, newKey, edernsJournal,
+		blackenedCrystal, newlyMadeCrystal, newlyIfOneTrip, mirror, yellowCrystal, cyanCrystal, blueCrystal, fracturedCrystal, fracturedCrystal2, chargedCrystal, chargedCrystalHighlight, newlyMadeCrystalHighlight;
+
+	// Items recommended
+	ItemRequirement westArdougneTeleport, lletyaTeleport, staminaPotions, prayerPotions, food;
 
 	Requirement inMournerBasement, inMournerHQ, inCave, inTempleF0, inTempleF1, inTempleF2, inTempleF2NorthRoom, inCaveOrF0, inTempleStairSquare, inNorthF2, inSouthF2,
 		knowToUseCrystal, inBlueRoom, inCyanRoom, solvedPuzzle1, solvedPuzzle2, solvedPuzzle3, solvedPuzzle4, solvedPuzzle5, dispenserEmpty, inYellowRoom, usedRope,
@@ -115,7 +118,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		f2r1c3N, f2r3c3W,
 		f2r3c2WB;
 
-	QuestStep talkToArianwyn, enterMournerHQ, enterMournerBasement, talkToEssyllt, enterCave, searchCorpse, goUpStairsTemple, goUpSouthLadder, goToMiddleFromSouth, goUpFromMiddleToNorth, useChisel,
+	DetailedQuestStep talkToArianwyn, enterMournerHQ, enterMournerBasement, talkToEssyllt, enterCave, searchCorpse, goUpStairsTemple, goUpSouthLadder, goToMiddleFromSouth, goUpFromMiddleToNorth, useChisel,
 		bringCrystalToArianwyn, talkToElunedAfterGivingCrystal, talkToArianwynAfterGivingCrystal, goBackIntoMournerHQ, goBackIntoMournerBasement, goBackIntoMournerCave, enterTempleOfLight, goUpStairsTempleC1,
 		genericGoDownToFloor1, genericGoDownToFloor0, genericGoUpToFloor1, genericGoUpToFloor2, pullDispenser1, puzzle1Pillar1, puzzle1Pillar2, puzzle1Pillar3, puzzle1Pillar4, puzzle1Pillar5,
 		climbWallSupport, pullDispenser2, puzzle2Pillar1, puzzle2Pillar2, puzzle2Pillar3, puzzle2Pillar4, puzzle2Pillar5, puzzle2Pillar6, pullDispenser3, puzzle3Pillar1, puzzle3Pillar2, puzzle3Pillar3, puzzle3Pillar4,
@@ -214,10 +217,10 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle3.addStep(new Conditions(inYellowRoom, f2r4c0DB), puzzle3Pillar9);
 		puzzle3.addStep(new Conditions(inTempleF0, f2r4c0DB), enterNorthWestRoomPuzzle3);
 		puzzle3.addStep(new Conditions(inTempleF1, f2r4c0DB), goDownFromF1Puzzle3);
+		puzzle3.addStep(new Conditions(inTempleF2NorthRoom, f2r4c3WC), goDownFromF2NorthRoomPuzzle3);
 		puzzle3.addStep(new Conditions(inTempleF2, f2r4c0DB), goDownFromF2Puzzle3);
 		puzzle3.addStep(new Conditions(inTempleF2, f2r4c3WC), puzzle3Pillar8);
 		puzzle3.addStep(new Conditions(inTempleF1, f2r4c3WC), goUpToFloor2Puzzle3);
-		puzzle3.addStep(new Conditions(inTempleF2NorthRoom, f2r4c3WC), goDownFromF2NorthRoomPuzzle3);
 		puzzle3.addStep(new Conditions(inTempleF2NorthRoom, f1r4c3UC), puzzle3Pillar7);
 		puzzle3.addStep(new Conditions(inTempleF1, f1r4c3UC), goUpLadderNorthForPuzzle3);
 		puzzle3.addStep(new Conditions(inTempleF1, f1r4c3EG), puzzle3Pillar6RemoveYellow);
@@ -246,7 +249,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle4.addStep(new Conditions(inTempleF2, f2r4c0SR), puzzle4Pillar9);
 		puzzle4.addStep(new Conditions(inYellowRoom, f0r4c0SB), yellowRoomRotateToLeave);
 		puzzle4.addStep(new Conditions(inTempleF0), goUpToFirstFloorPuzzle4);
-		puzzle4.addStep(new Conditions(inTempleF2, f2r4c3WY), puzzle4Pillar8);
+		puzzle4.addStep(new Conditions(inTempleF2, f2r4c3WY), puzzle4Pillar8); // Says to place even when placed
 		puzzle4.addStep(new Conditions(inTempleF1, f2r4c3WY), goUpToFloor2Puzzle4);
 		puzzle4.addStep(new Conditions(inTempleF2NorthRoom, f2r4c3WY), goDownFromF2NorthRoomPuzzle4);
 		puzzle4.addStep(new Conditions(inTempleF2NorthRoom, f1r4c3UY), puzzle4Pillar7);
@@ -277,7 +280,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle5PlaceBlue.addStep(new Conditions(inTempleF1, dispenserEmpty, startColumnN), puzzle5Pillar2);
 		puzzle5PlaceBlue.addStep(new Conditions(inTempleF1, dispenserEmpty), puzzle5Pillar1);
 		puzzle5PlaceBlue.addStep(inTempleF1, pullDispenser5);
-		puzzle5PlaceBlue.addStep(inYellowRoom, climbUpRope);
+		puzzle5PlaceBlue.addStep(inCyanRoom, climbUpRope);
 		puzzle5PlaceBlue.addStep(inTempleF2, genericGoDownToFloor1);
 		puzzle5PlaceBlue.addStep(inTempleF0, genericGoUpToFloor1);
 		puzzle5PlaceBlue.addStep(inCave, enterTempleOfLight);
@@ -426,15 +429,20 @@ public class MourningsEndPartII extends BasicQuestHelper
 		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true).isNotConsumed();
 		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers, mournerCloak, mournerBoots, mournerGloves).isNotConsumed();
 
+		// Teleports
+		lletyaTeleport = new ItemRequirement("Lletya teleport. Teleport crystal", ItemCollections.TELEPORT_CRYSTAL).isNotConsumed();
+		westArdougneTeleport = new ItemRequirement("West ardougne teleport", ItemID.WEST_ARDOUGNE_TELEPORT);
+		westArdougneTeleport.addAlternates(ItemID.ARDOUGNE_TELEPORT);
+
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
 		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee",
 			ItemCollections.PRAYER_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		teleportCrystal = new ItemRequirement("Teleport Crystal", ItemID.TELEPORT_CRYSTAL).isNotConsumed();
 
 		newKey = new KeyringRequirement("New Key", configManager, KeyringCollection.NEW_KEY);
 		newKey.setTooltip("You can get another from Essyllt's desk");
@@ -512,6 +520,9 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		dispenserEmpty = new VarbitRequirement(1106, 0);
 
+		// 1108 yellow crystal in dispenser
+		// 1107, blue crystal in dispenser
+
 		usedRope = new VarbitRequirement(1328, 1);
 
 		knowToUseCrystal = new VarbitRequirement(1104, 1);
@@ -549,9 +560,18 @@ public class MourningsEndPartII extends BasicQuestHelper
 		f1r0c3EY = new VarbitRequirement(1209, YELLOW);
 
 		// TODO: Add other directions from this pillar
+		// 1226 = up?
+		// 1192 = down?
+		// West: 1210?
 		f1r0c3 = new Conditions(LogicType.OR,
-			new VarbitRequirement(1209, 1, Operation.GREATER_EQUAL)
+			new VarbitRequirement(1209, 1, Operation.GREATER_EQUAL), // East
+			new VarbitRequirement(1226, 1, Operation.GREATER_EQUAL), // Up
+			new VarbitRequirement(1192, 1, Operation.GREATER_EQUAL), // Down
+			new VarbitRequirement(1210, 1, Operation.GREATER_EQUAL) // West
 		);
+
+		// 1269 0->16???
+
 		f1r1c3SY = new VarbitRequirement(1207, YELLOW);
 		f1r3c2NC = new VarbitRequirement(1196, CYAN);
 		f1r3c2NY = new VarbitRequirement(1196, YELLOW);
@@ -625,13 +645,14 @@ public class MourningsEndPartII extends BasicQuestHelper
 	{
 		talkToArianwyn = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		talkToArianwyn.addDialogStep("Yes.");
+		talkToArianwyn.addTeleport(lletyaTeleport);
 
 		enterMournerHQ = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
 			"Talk to Essyllt in the Mourner HQ basement.", chisel, gasMask, mournerTop, mournerTrousers, mournerCloak, mournerGloves, mournerBoots);
-
+		enterMournerHQ.addTeleport(westArdougneTeleport);
 		enterMournerBasement = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Enter the Mourner HQ basement.");
 
-		talkToEssyllt = new NpcStep(this, NpcID.ESSYLLT_9016, new WorldPoint(2043, 4631, 0), "Enter the Mourner HQ basement.");
+		talkToEssyllt = new NpcStep(this, NpcID.ESSYLLT_9016, new WorldPoint(2043, 4631, 0), "Talk to Essyllt.");
 		talkToEssyllt.addSubSteps(enterMournerHQ, enterMournerHQ);
 
 		enterCave = new ObjectStep(this, ObjectID.DOOR_8789, new WorldPoint(2034, 4636, 0), "Enter the Mourner Caves.", newKey);
@@ -647,7 +668,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		goToMiddleFromSouth = new ObjectStep(this, ObjectID.STAIRCASE_10016, new WorldPoint(1891, 4636, 2), "Go down the staircase north of you.");
 
 		useChisel = new ObjectStep(this, NullObjectID.NULL_9750, new WorldPoint(1909, 4639, 2),
-			"Use a chisel on the dark crystal to the east.", chisel);
+			"Use a chisel on the dark crystal to the east.", chisel.highlighted());
 		useChisel.addIcon(ItemID.CHISEL);
 
 		goUpFromMiddleToSouth = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1891, 4636, 1), "Go up the stairs to the south.");
@@ -657,13 +678,14 @@ public class MourningsEndPartII extends BasicQuestHelper
 		useRope = new ObjectStep(this, ObjectID.ROCK_10036, new WorldPoint(1876, 4620, 1), "Use a rope on the rocks in the small room in the south of the first floor.", ropeHighlight);
 		useRope.addIcon(ItemID.ROPE);
 		bringCrystalToArianwyn = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Bring the crystal to Arianwyn in Lletya.", blackenedCrystal);
+		bringCrystalToArianwyn.addTeleport(lletyaTeleport);
 		talkToElunedAfterGivingCrystal = new NpcStep(this, NpcID.ELUNED, new WorldPoint(2354, 3169, 0), "Talk to Eluned in Lletya next to Arianwyn.");
 		talkToArianwynAfterGivingCrystal = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		talkToArianwynAfterGivingCrystal.setLockingCondition(knowToUseCrystal);
 
 		goBackIntoMournerHQ = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
 			"Return to the Temple of Light.", rope, newKey, gasMask, mournerTop, mournerTrousers, mournerCloak, mournerGloves, mournerBoots, deathTalisman, newlyIfOneTrip);
-
+		goBackIntoMournerHQ.addTeleport(westArdougneTeleport);
 		goBackIntoMournerBasement = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Enter the Mourner HQ basement.");
 
 		goBackIntoMournerCave = new ObjectStep(this, ObjectID.DOOR_8789, new WorldPoint(2034, 4636, 0), "Enter the Mourner Caves.", newKey);
@@ -688,7 +710,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle1Pillar4.addIcon(ItemID.YELLOW_CRYSTAL);
 		puzzle1Pillar5 = new ObjectStep(this, NullObjectID.NULL_9959, new WorldPoint(1898, 4613, 1), "Put a mirror in the pillar to the south and point it east.", mirror);
 		puzzle1Pillar5.addIcon(ItemID.HAND_MIRROR);
-		climbWallSupport = new ObjectStep(this, ObjectID.WALL_SUPPORT_10033, new WorldPoint(1902, 4612, 1), "Attempt to climb the wall support to the south west. You may fail this multiple times.");
+		climbWallSupport = new ObjectStep(this, ObjectID.WALL_SUPPORT_10033, new WorldPoint(1902, 4612, 1), "Attempt to climb the wall support to the south west. " +
+			"You may fail this multiple times. Agility boosts help your chances.");
 		searchBlueChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_9754, new WorldPoint(1917, 4613, 1), "Search the chest in the blue light room.");
 		searchBlueChest.addAlternateObjects(ObjectID.OPEN_CHEST_9753);
 
@@ -954,6 +977,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		enterMournerHQCharging = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
 			"Return to the Temple of Light with a Death Talisman, or items for Thorgel for his.", deathTalisman, newlyMadeCrystal, newKey, gasMask, mournerTop, mournerTrousers, mournerCloak, mournerGloves, mournerBoots);
+		enterMournerHQCharging.addTeleport(westArdougneTeleport);
 		enterMournerBasementCharging = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Enter the Mourner HQ basement.");
 		enterMournerCaveCharging = new ObjectStep(this, ObjectID.DOOR_8789, new WorldPoint(2034, 4636, 0), "Enter the Mourner Caves.", newKey);
 		enterUndergroundPass = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_4006, new WorldPoint(2314, 3217, 0),
@@ -963,7 +987,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		leavePassCentre = new ObjectStep(this, ObjectID.DOOR_3333, new WorldPoint(2016, 4712, 1), "Leave the well area, and head to the dwarven camp below to the south.");
 		enterSouthPass = new ObjectStep(this, ObjectID.CAVE_3222, new WorldPoint(2150, 4545, 1), "Enter the south cave to go to the lower level of the pass.");
 		enterAltarFromBehind = new ObjectStep(this, NullObjectID.NULL_9974, new WorldPoint(2311, 9792, 0), "Enter the cave entrance behind the dwarf camp under Iban's area to the south.");
-		enterDeathAltar = new ObjectStep(this, NullObjectID.NULL_34823, new WorldPoint(1860, 4639, 0), "Enter the death altar ruins.", deathTalisman);
+		enterDeathAltar = new ObjectStep(this, NullObjectID.NULL_34823, new WorldPoint(1860, 4639, 0),
+			"Enter the death altar ruins.", deathTalisman.highlighted());
 		enterDeathAltar.addIcon(ItemID.DEATH_TALISMAN);
 		turnKeyMirrorCharging = new ObjectStep(this, NullObjectID.NULL_9939, new WorldPoint(1881, 4639, 0), "Enter the central area, and turn the pillar's mirror west.");
 		goUpToF1ForCharging = new ObjectStep(this, ObjectID.STAIRCASE_10015, new WorldPoint(1903, 4639, 0), "Enter the Temple of Light, and go up the south staircase to the second floor.");
@@ -983,6 +1008,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		enterMournerHQCrystal = new ObjectStep(this, ObjectID.DOOR_2036, new WorldPoint(2551, 3320, 0),
 			"Return to the Temple of Light with a Death Talisman, or items for Thorgel for his.", deathTalisman, newlyMadeCrystal, newKey, gasMask, mournerTop, mournerTrousers, mournerCloak, mournerGloves, mournerBoots);
+		enterMournerHQCrystal.addTeleport(westArdougneTeleport);
 		enterMournerBasementCrystal = new ObjectStep(this, ObjectID.TRAPDOOR_8783, new WorldPoint(2542, 3327, 0), "Enter the Mourner HQ basement.");
 		enterMournerCaveCrystal = new ObjectStep(this, ObjectID.DOOR_8789, new WorldPoint(2034, 4636, 0), "Enter the Mourner Caves.", newKey);
 
@@ -993,6 +1019,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		leaveDeathAltar.addSubSteps(enterMournerHQCrystal, enterMournerBasementCrystal, enterMournerCaveCrystal, enterFloor1Crystal, enterFloor2Crystal, goDownToMiddleFromSouthCrystal, useCrystalOnCrystal, goUpToNorthToCharge, goUpFromCentre, turnPillarFromTemple);
 
 		returnToArianwyn = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Return to Arianwyn in Lletya.");
+		returnToArianwyn.addTeleport(lletyaTeleport);
 	}
 
 	@Override
@@ -1004,7 +1031,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(prayerPotions, food, teleportCrystal);
+		return Arrays.asList(staminaPotions, prayerPotions, food, westArdougneTeleport, lletyaTeleport);
 	}
 
 	@Override
@@ -1058,9 +1085,11 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Explore the caves",
 			Arrays.asList(talkToEssyllt, enterCave, searchCorpse, goUpStairsTemple, goUpSouthLadder, goToMiddleFromSouth, goUpFromMiddleToNorth, useChisel, bringCrystalToArianwyn,
-				talkToElunedAfterGivingCrystal, talkToArianwynAfterGivingCrystal), chisel));
+				talkToElunedAfterGivingCrystal, talkToArianwynAfterGivingCrystal), Arrays.asList(chisel, mournersOutfit),
+			Arrays.asList(westArdougneTeleport, lletyaTeleport)));
 
-		allSteps.add(new PanelDetails("Return to the Temple", Collections.singletonList(enterTempleOfLight), rope, mournersOutfit, deathTalisman, newKey, newlyIfOneTrip));
+		allSteps.add(new PanelDetails("Return to the Temple", Collections.singletonList(enterTempleOfLight),
+			rope, mournersOutfit, deathTalisman, newKey, newlyIfOneTrip));
 
 		allSteps.add(new PanelDetails("Puzzle 1", Arrays.asList(goUpStairsTempleC1, pullDispenser1, puzzle1Pillar1, puzzle1Pillar2, puzzle1Pillar3, puzzle1Pillar4, puzzle1Pillar5, climbWallSupport, searchBlueChest)));
 		allSteps.add(new PanelDetails("Puzzle 2", Arrays.asList(pullDispenser2, puzzle2Pillar1, puzzle2Pillar2, puzzle2Pillar3, puzzle2Pillar4, puzzle2Pillar5, puzzle2Pillar6, searchMagentaChest)));

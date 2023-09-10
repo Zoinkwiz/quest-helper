@@ -657,9 +657,9 @@ public class QuestBankTab
 		widget.setOriginalY(y);
 
 		List<Integer> itemIDs = bankTabItem.getItemIDs();
-		if (bankTabItem.getDisplayID() != null)
+		if (bankTabItem.getItemRequirement().getDisplayItemId() != null)
 		{
-			itemIDs = Collections.singletonList(bankTabItem.getDisplayID());
+			itemIDs = Collections.singletonList(bankTabItem.getItemRequirement().getDisplayItemId());
 		}
 
 		if (itemIDs.size() == 0)

@@ -481,6 +481,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
+		if (!shouldDisplayText(client)) return false;
 		if (additionalOptions != null && additionalOptions.check(client))
 		{
 			return true;

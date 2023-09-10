@@ -154,16 +154,26 @@ public class QuestHelperBankTagService
 			ArrayList<ItemRequirement> requirements = itemRequirements.getItemRequirements();
 			if (logicType == LogicType.AND)
 			{
-				requirements.forEach(req -> getItemsFromRequirement(pluginItems, req, realItem));
+				requirements.forEach(req -> getItemsFromRequirement(pluginItems, req, req));
 			}
 			if (logicType == LogicType.OR)
 			{
-				ItemRequirement match = requirements.stream()
-					.filter(r -> r.checkBank(plugin.getClient()))
-					.findFirst()
-					.orElse(requirements.get(0));
+				List<ItemRequirement> itemsWhichPassReq = requirements.stream()
+					.filter(r -> r.shouldDisplayText(plugin.getClient()))
+					.collect(Collectors.toList());
+				if (itemsWhichPassReq.isEmpty())
+				{
+					getItemsFromRequirement(pluginItems, requirements.get(0), requirements.get(0));
+				}
+				else
+				{
+					ItemRequirement match = itemsWhichPassReq.stream()
+						.filter(r -> r.checkBank(plugin.getClient()))
+						.findFirst()
+						.orElse(itemsWhichPassReq.get(0));
 
-				getItemsFromRequirement(pluginItems, match, realItem);
+					getItemsFromRequirement(pluginItems, match, match);
+				}
 			}
 		}
 		else

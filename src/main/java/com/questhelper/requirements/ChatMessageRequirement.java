@@ -30,19 +30,21 @@ import com.questhelper.requirements.conditional.ConditionForStep;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Setter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
 
 public class ChatMessageRequirement extends ConditionForStep
 {
 	@Setter
-	private boolean hasReceivedChatMessage = false;
+	protected boolean hasReceivedChatMessage = false;
 
-	private Requirement condition;
+	protected Requirement condition;
 
 	@Setter
-	private ChatMessageRequirement invalidateRequirement;
+	protected ChatMessageRequirement invalidateRequirement;
 
-	private final List<String> messages;
+	protected final List<String> messages;
 
 	public ChatMessageRequirement(String... message)
 	{
@@ -61,11 +63,16 @@ public class ChatMessageRequirement extends ConditionForStep
 		return hasReceivedChatMessage;
 	}
 
-	public void validateCondition(Client client, String chatMessage)
+	public void validateCondition(Client client, ChatMessage chatMessage)
 	{
+		if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE && chatMessage.getType() == ChatMessageType.ENGINE)
+		{
+			return;
+		}
+
 		if (!hasReceivedChatMessage)
 		{
-			if (messages.contains(chatMessage))
+			if (messages.contains(chatMessage.getMessage()))
 			{
 				if (condition == null || condition.check(client))
 				{

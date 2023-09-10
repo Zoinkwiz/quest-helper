@@ -221,10 +221,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.ENGINE)
-		{
-			chatConditions.forEach(step -> step.validateCondition(client, chatMessage.getMessage()));
-		}
+		chatConditions.forEach(step -> step.validateCondition(client, chatMessage));
 
 		if (chatMessage.getType() == ChatMessageType.DIALOG)
 		{

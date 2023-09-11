@@ -350,7 +350,7 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToGerrant.addDialogStep("I want to find out how to catch a lava eel.");
 		talkToGerrant.addTeleport(portSarimTeleport);
 		makeBlamishOil = new ItemStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf.highlighted(), blamishSlime.highlighted());
-		useOilOnRod = new DetailedQuestStep(this, "Use the Blamish oil on your fishing rod.", blamishOil, fishingRod);
+		useOilOnRod = new ItemStep(this, "Use the Blamish oil on your fishing rod.", blamishOil.highlighted(), fishingRod.highlighted());
 
 		if (client.getRealSkillLevel(Skill.AGILITY) >= 70)
 		{

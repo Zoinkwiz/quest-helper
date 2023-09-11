@@ -412,7 +412,8 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToAlfonse = new NpcStep(this, NpcID.ALFONSE_THE_WAITER, new WorldPoint(2792, 3186, 0), "Talk to Alfonse the Waiter in the restaurant in Brimhaven.", rangedMage);
 		talkToAlfonse.addTeleport(brimhavenTeleport);
 		talkToAlfonse.addDialogStep("Do you sell Gherkins?");
-		getKeyFromPartner = new DetailedQuestStep(this, "You'll need your partner to give you a miscellaneous key.");
+		getKeyFromPartner = new ItemStep(this, "You'll need your partner to give you a miscellaneous key.", miscKey);
+		getKeyFromPartner.hideRequirements = true;
 		talkToCharlie = new NpcStep(this, NpcID.CHARLIE_THE_COOK, new WorldPoint(2790, 3191, 0), "Talk to Charlie the Cook in the back of the restaurant.");
 		talkToCharlie.addDialogStep("I'm looking for a gherkin...");
 		talkToCharlie.addDialogStep("I want to steal Scarface Pete's candlesticks.");

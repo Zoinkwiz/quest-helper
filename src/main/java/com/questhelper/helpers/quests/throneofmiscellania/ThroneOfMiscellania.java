@@ -68,7 +68,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		giantNib, giantPen, goodAnthem, awfulAnthem, treaty;
 
 	//Items Recommended
-	ItemRequirement dramenStaff, rellekkaTeleport;
+	ItemRequirement runRestoreItems, dramenStaff, rellekkaTeleport;
 
 	Requirement inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom,
 		talked1P1, talked1P2, talked1P3, givenFlowers, doneEmote, talked1P4, talked2P1, talked2P2, talked2P3, givenBowOrCake,
@@ -234,6 +234,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		bow.addAlternates(ItemID.LONGBOW, ItemID.OAK_SHORTBOW, ItemID.OAK_LONGBOW, ItemID.WILLOW_SHORTBOW, ItemID.WILLOW_LONGBOW, ItemID.MAPLE_SHORTBOW, ItemID.MAPLE_LONGBOW, ItemID.YEW_SHORTBOW, ItemID.YEW_LONGBOW);
 		bow.setTooltip("You will lose this bow");
 		bow.setHighlightInInventory(true);
+		runRestoreItems = new ItemRequirement("Potions/Items to restore run energy", ItemCollections.RUN_RESTORE_ITEMS);
 		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemCollections.FAIRY_STAFF).isNotConsumed();
 		rellekkaTeleport = new ItemRequirement("Miscellania teleport (Fairy Ring (CIP), tablet, lyre)", ItemCollections.FAIRY_STAFF);
 		rellekkaTeleport.addAlternates(ItemID.RELLEKKA_TELEPORT, ItemID.ENCHANTED_LYREI, ItemID.ENCHANTED_LYRE5, ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2, ItemID.ENCHANTED_LYRE1);
@@ -499,6 +500,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(dramenStaff);
+		reqs.add(runRestoreItems);
 		return reqs;
 	}
 

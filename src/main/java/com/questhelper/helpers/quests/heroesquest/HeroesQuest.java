@@ -421,7 +421,8 @@ public class HeroesQuest extends BasicQuestHelper
 		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_2622, new WorldPoint(2781, 3197, 0), "Use the misc key on the door to the north west.", miscKey.highlighted());
 		useKeyOnDoor.addIcon(ItemID.MISCELLANEOUS_KEY);
 		killGrip = new NpcStep(this, NpcID.GRIP, new WorldPoint(2775, 3192, 0), "Wait for your partner to lure Grip into the room next to yours, and kill him with magic/ranged. Afterwards, trade your partner for a candlestick.");
-		getCandlestick = new DetailedQuestStep(this, "Get your candlestick from your partner.");
+		getCandlestick = new ItemStep(this, "Get your candlestick from your partner.", candlestick);
+		getCandlestick.hideRequirements = true;
 		killGrip.addSubSteps(getCandlestick);
 		enterPhoenixBaseAgain = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Bring the candlestick back to Straven.");
 		enterPhoenixBaseAgain.addTeleport(varrockTeleport);

@@ -418,7 +418,7 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToCharlie.addDialogStep("I'm looking for a gherkin...");
 		talkToCharlie.addDialogStep("I want to steal Scarface Pete's candlesticks.");
 		pushWall = new ObjectStep(this, ObjectID.WALL_2629, new WorldPoint(2787, 3190, 0), "Push the wall to enter Pete's garden.");
-		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_2622, new WorldPoint(2781, 3197, 0), "Use the misc key on the door to the north west.", miscKey);
+		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_2622, new WorldPoint(2781, 3197, 0), "Use the misc key on the door to the north west.", miscKey.highlighted());
 		useKeyOnDoor.addIcon(ItemID.MISCELLANEOUS_KEY);
 		killGrip = new NpcStep(this, NpcID.GRIP, new WorldPoint(2775, 3192, 0), "Wait for your partner to lure Grip into the room next to yours, and kill him with magic/ranged. Afterwards, trade your partner for a candlestick.");
 		getCandlestick = new DetailedQuestStep(this, "Get your candlestick from your partner.");

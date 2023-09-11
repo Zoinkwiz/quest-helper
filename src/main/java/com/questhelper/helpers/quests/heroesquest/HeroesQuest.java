@@ -349,7 +349,7 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToGerrant = new NpcStep(this, NpcID.GERRANT_2891, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
 		talkToGerrant.addDialogStep("I want to find out how to catch a lava eel.");
 		talkToGerrant.addTeleport(portSarimTeleport);
-		makeBlamishOil = new DetailedQuestStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf, blamishSlime);
+		makeBlamishOil = new ItemStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf.highlighted(), blamishSlime.highlighted());
 		useOilOnRod = new DetailedQuestStep(this, "Use the Blamish oil on your fishing rod.", blamishOil, fishingRod);
 
 		if (client.getRealSkillLevel(Skill.AGILITY) >= 70)

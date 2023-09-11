@@ -333,7 +333,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		/* Winning over Astrid */
 		talkAstrid1 = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Talk to Princess Astrid a few times.");
-		talkAstrid1.addDialogStep("Archery is a noble Art!");
+		talkAstrid1.addDialogStep("Archery is a noble art!");
 		talkAstrid1.addDialogStep("He's been very helpful.");
 		talkAstrid1.addDialogStep("Hahahaha!");
 

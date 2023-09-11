@@ -202,9 +202,11 @@ public class HeroesQuest extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		iceGloves = new ItemRequirement("Ice gloves (obtainable in quest)", ItemID.ICE_GLOVES).isNotConsumed();
+		iceGloves = new ItemRequirement("Ice gloves/Smiths gloves (i)", ItemID.ICE_GLOVES).isNotConsumed();
 		iceGloves.canBeObtainedDuringQuest();
-		equippedIceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true).isNotConsumed();
+		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
+		equippedIceGloves = new ItemRequirement("Ice gloves/Smiths gloves (i)", ItemID.ICE_GLOVES, 1, true).isNotConsumed();
+		equippedIceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingRod.addAlternates(ItemID.OILY_FISHING_ROD);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);

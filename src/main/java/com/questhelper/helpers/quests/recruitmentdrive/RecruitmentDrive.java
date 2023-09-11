@@ -392,7 +392,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new ItemReward("Initiate Helm", ItemID.INITIATE_SALLET, 1),
-				new ItemReward("3000 Coins", ItemID.COINS_995, 3000));
+				new ItemReward("Coins", ItemID.COINS_995, 3000));
 	}
 
 	@Override

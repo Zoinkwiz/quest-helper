@@ -305,7 +305,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("2,500 Coins", ItemID.COINS_995, 2500));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 2500));
 	}
 
 	@Override

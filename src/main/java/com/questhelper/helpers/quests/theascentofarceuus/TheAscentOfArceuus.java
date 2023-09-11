@@ -299,7 +299,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2,000 Coins", ItemID.COINS_995, 2000),
+				new ItemReward("Coins", ItemID.COINS_995, 2000),
 				new ItemReward("Arceuus Favour Certificate", ItemID.ARCEUUS_FAVOUR_CERTIFICATE, 1),
 				new ItemReward("A Kharedst's Memoirs page", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}

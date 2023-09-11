@@ -266,7 +266,7 @@ public class ErnestTheChicken extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("300 Coins", ItemID.COINS_995, 300));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 300));
 	}
 
 	@Override

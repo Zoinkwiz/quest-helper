@@ -272,7 +272,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("700 Coins", ItemID.COINS_995, 700));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 700));
 	}
 
 	@Override

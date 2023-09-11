@@ -341,7 +341,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("8,000 Coins", ItemID.COINS_995, 8000),
+				new ItemReward("Coins", ItemID.COINS_995, 8000),
 				new ItemReward("Shayzien Favour Certificate", ItemID.SHAYZIEN_FAVOUR_CERTIFICATE, 1),
 				new ItemReward("A Memoir Page", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}

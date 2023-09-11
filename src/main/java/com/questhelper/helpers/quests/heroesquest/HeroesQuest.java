@@ -409,8 +409,8 @@ public class HeroesQuest extends BasicQuestHelper
 		enterPhoenixBase = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Head into the Phoenix Gang's base in south Varrock.");
 		enterPhoenixBase.addTeleport(varrockTeleport);
 		talkToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Talk to Straven.");
-		talkToStraven.addTeleport(brimhavenTeleport);
 		talkToAlfonse = new NpcStep(this, NpcID.ALFONSE_THE_WAITER, new WorldPoint(2792, 3186, 0), "Talk to Alfonse the Waiter in the restaurant in Brimhaven.", rangedMage);
+		talkToAlfonse.addTeleport(brimhavenTeleport);
 		talkToAlfonse.addDialogStep("Do you sell Gherkins?");
 		getKeyFromPartner = new DetailedQuestStep(this, "You'll need your partner to give you a miscellaneous key.");
 		talkToCharlie = new NpcStep(this, NpcID.CHARLIE_THE_COOK, new WorldPoint(2790, 3191, 0), "Talk to Charlie the Cook in the back of the restaurant.");

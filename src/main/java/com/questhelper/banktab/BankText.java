@@ -29,11 +29,24 @@ public class BankText
 	String text;
 	int x;
 	int y;
+	int spriteID = -1;
+	int spriteX;
+	int spriteY;
 
 	public BankText(String text, int x, int y)
 	{
 		this.text = text;
 		this.x = x;
 		this.y = y;
+	}
+
+	public BankText(String text, int x, int y, int spriteID, int spriteX, int spriteY)
+	{
+		this.text = text;
+		this.x = x;
+		this.y = y;
+		this.spriteID = spriteID;
+		this.spriteX = spriteX;
+		this.spriteY = spriteY;
 	}
 }

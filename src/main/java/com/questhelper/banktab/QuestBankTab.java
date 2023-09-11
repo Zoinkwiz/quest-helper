@@ -30,6 +30,7 @@ package com.questhelper.banktab;
 
 import com.google.common.primitives.Shorts;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.requirements.item.ItemRequirement;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -84,6 +85,10 @@ public class QuestBankTab
 	private static final int EMPTY_BANK_SLOT_ID = 6512;
 
 	private static final int MAX_RESULT_COUNT = 250;
+
+	private static final int CROSS_SPRITE_ID = 1216;
+	private static final int TICK_SPRITE_ID = 1217;
+
 
 	private final ArrayList<Widget> addedWidgets = new ArrayList<>();
 
@@ -379,6 +384,19 @@ public class QuestBankTab
 				bankText.y);
 
 			addedWidgets.add(realItemQuantityText);
+
+			if (bankText.spriteID != -1)
+			{
+				Widget realItemInInventorySprite = createIcon(itemContainer,
+					bankText.spriteID,
+					10,
+					10,
+					bankText.spriteX,
+					bankText.spriteY
+				);
+				addedWidgets.add(realItemInInventorySprite);
+			}
+
 		}
 
 		totalSectionsHeight = addGeneralSection(itemContainer, itemList, totalSectionsHeight);
@@ -454,20 +472,7 @@ public class QuestBankTab
 
 						if (bankTabItem.getQuantity() > 0)
 						{
-							String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
-							int extraLength =
-								QuantityFormatter.quantityToStackSize(widget.getItemQuantity()).length() * 6;
-							int requirementLength = quantityString.length() * 6;
-
-							int xPos = point.x + 2 + extraLength;
-							int yPos = point.y - 1;
-							if (extraLength + requirementLength > 24)
-							{
-								xPos = point.x;
-								yPos = point.y + 9;
-							}
-
-							bankItemTexts.add(new BankText("/ " + quantityString, xPos, yPos));
+							makeBankText(widget.getItemQuantity(), bankTabItem.getQuantity(), point.x, point.y, bankTabItem.getItemRequirement(), bankItemTexts);
 						}
 
 						totalItemsAdded++;
@@ -509,20 +514,7 @@ public class QuestBankTab
 
 				if (bankTabItem.getQuantity() > 0)
 				{
-					String quantityString = QuantityFormatter.quantityToStackSize(bankTabItem.getQuantity());
-					int requirementLength = quantityString.length() * 6;
-					int extraLength =
-						QuantityFormatter.quantityToStackSize(fakeItemWidget.getItemQuantity()).length() * 6;
-
-					int xPos = adjXOffset + 2 + extraLength;
-					int yPos = adjYOffset - 1;
-					if (extraLength + requirementLength > 24)
-					{
-						xPos = adjXOffset;
-						yPos = adjYOffset + 9;
-					}
-
-					bankItemTexts.add(new BankText("/ " + quantityString, xPos, yPos));
+					makeBankText(fakeItemWidget.getItemQuantity(), bankTabItem.getQuantity(), adjXOffset, adjYOffset, bankTabItem.getItemRequirement(), bankItemTexts);
 				}
 
 				widgetItems.put(fakeItemWidget, bankTabItem);
@@ -535,6 +527,41 @@ public class QuestBankTab
 		int newHeight = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
 		newHeight = totalItemsAdded % ITEMS_PER_ROW != 0 ? newHeight + ITEM_VERTICAL_SPACING : newHeight;
 		return newHeight;
+	}
+
+	private void makeBankText(int currentQuantity, int goalQuantity, int baseX, int baseY, ItemRequirement item, List<BankText> bankItemTexts)
+	{
+		String quantityString = QuantityFormatter.quantityToStackSize(goalQuantity);
+		int requirementLength = (int) Math.round(quantityString.length() * 5.5);
+		int extraLength =
+			QuantityFormatter.quantityToStackSize(currentQuantity).length() * 6;
+
+		int xPos = baseX + 2 + extraLength;
+		int yPos = baseY - 1;
+		if (extraLength + requirementLength > 20)
+		{
+			xPos = baseX;
+			yPos = baseY + 9;
+		}
+
+		boolean hasItem = item.check(client);
+		int spritePosX = xPos + requirementLength + 10;
+		int spritePosY = yPos;
+		// If required quantity moved down a line, put tick/cross after current quantity
+		if (yPos != baseY - 1)
+		{
+			spritePosX = baseX + 2 + extraLength;
+			spritePosY = baseY - 1;
+		}
+
+		if (hasItem)
+		{
+			bankItemTexts.add(new BankText("/ " + quantityString, xPos, yPos, TICK_SPRITE_ID, spritePosX, spritePosY));
+		}
+		else
+		{
+			bankItemTexts.add(new BankText("/ " + quantityString, xPos, yPos, CROSS_SPRITE_ID, spritePosX, spritePosY));
+		}
 	}
 
 	private int addGeneralSection(Widget itemContainer, List<Integer> items, int totalSectionsHeight)
@@ -630,9 +657,9 @@ public class QuestBankTab
 		widget.setOriginalY(y);
 
 		List<Integer> itemIDs = bankTabItem.getItemIDs();
-		if (bankTabItem.getDisplayID() != null)
+		if (bankTabItem.getItemRequirement().getDisplayItemId() != null)
 		{
-			itemIDs = Collections.singletonList(bankTabItem.getDisplayID());
+			itemIDs = Collections.singletonList(bankTabItem.getItemRequirement().getDisplayItemId());
 		}
 
 		if (itemIDs.size() == 0)
@@ -741,6 +768,21 @@ public class QuestBankTab
 		widget.setFontId(FontID.PLAIN_11);
 		widget.setTextColor(color);
 		widget.setTextShadowed(true);
+
+		widget.revalidate();
+
+		return widget;
+	}
+
+	private Widget createIcon(Widget container, int spriteID, int width, int height, int x, int y)
+	{
+		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
+		widget.setOriginalWidth(width);
+		widget.setOriginalHeight(height);
+		widget.setOriginalX(x);
+		widget.setOriginalY(y);
+
+		widget.setSpriteId(spriteID);
 
 		widget.revalidate();
 

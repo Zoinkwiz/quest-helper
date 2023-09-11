@@ -32,18 +32,20 @@ import java.util.Collections;
 
 public class DialogChoiceSteps
 {
-    @Getter
-    final private ArrayList<DialogChoiceStep> choices = new ArrayList<>();
+	@Getter
+	final private ArrayList<DialogChoiceStep> choices = new ArrayList<>();
 
-	public DialogChoiceSteps(DialogChoiceStep... choices) {
-        Collections.addAll(this.choices, choices);
-    }
+	public DialogChoiceSteps(DialogChoiceStep... choices)
+	{
+		Collections.addAll(this.choices, choices);
+	}
 
-    public void addChoice(DialogChoiceStep choice) {
-        choices.add(choice);
-    }
+	public void addChoice(DialogChoiceStep choice)
+	{
+		choices.add(choice);
+	}
 
-    public void addDialogChoiceWithExclusion(DialogChoiceStep choice, String exclusionString)
+	public void addDialogChoiceWithExclusion(DialogChoiceStep choice, String exclusionString)
 	{
 		choice.addExclusion(219, 1, exclusionString);
 		addChoice(choice);
@@ -55,20 +57,29 @@ public class DialogChoiceSteps
 		addChoice(choice);
 	}
 
-    public void checkChoices(Client client) {
-        if (choices.size() == 0) {
-            return;
-        }
+	public void checkChoices(Client client, String lastDialog)
+	{
+		if (choices.size() == 0)
+		{
+			return;
+		}
 
-        for (DialogChoiceStep currentChoice : choices) {
+		for (DialogChoiceStep currentChoice : choices)
+		{
+			if (currentChoice.getExpectedPreviousLine() != null &&
+				!lastDialog.contains(currentChoice.getExpectedPreviousLine()))
+			{
+				continue;
+			}
 			currentChoice.highlightChoice(client);
-        }
-    }
+		}
+	}
 
-    /**
-     * Clears all choices previously set for this dialogs step.
-     */
-    public void resetChoices() {
-	    choices.clear();
-    }
+	/**
+	 * Clears all choices previously set for this dialogs step.
+	 */
+	public void resetChoices()
+	{
+		choices.clear();
+	}
 }

@@ -64,7 +64,7 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 @QuestDescriptor(
-		quest = QuestHelperQuest.LAND_OF_THE_GOBLINS
+	quest = QuestHelperQuest.LAND_OF_THE_GOBLINS
 )
 public class LandOfTheGoblins extends BasicQuestHelper
 {
@@ -73,38 +73,38 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	ItemRequirement tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing, salveAmulet;
 	CombatLevelRequirement recommendedCombatLevel;
 	ItemRequirement pharmakosBerryHighlight, toadflaxUnfHighlight, goblinPotion, goblinPotionHighlight, noEquippedItems,
-					dorgeshKaanSphere, blackGoblinMail, huzamogaarbKey, hemensterWhitefish, pestleAndMortar, vial,
-					blackMushroom, whiteGoblinMail, yellowGoblinMail, blueGoblinMail, orangeGoblinMail, purpleGoblinMail,
-					saragorgakKey, yurkolgokhKey, ekeleshuunKey, nargoshuunKey, horogothgarKey, anyGoblinMail;
+		dorgeshKaanSphere, blackGoblinMail, huzamogaarbKey, hemensterWhitefish, pestleAndMortar, vial,
+		blackMushroom, whiteGoblinMail, yellowGoblinMail, blueGoblinMail, orangeGoblinMail, purpleGoblinMail,
+		saragorgakKey, yurkolgokhKey, ekeleshuunKey, nargoshuunKey, horogothgarKey, anyGoblinMail;
 	Zone basement, tunnels, mines, cityF0, cityF1, dorgeshKaan, goblinCave, guardArea, goblinTemple, northEastRoomSouth,
 		northEastRoomNorth, hemenster, whitePriestRoom, yellowPriestRoom, bluePriestRoom, orangePriestRoom, purplePriestRoom,
 		crypt, dorgeshKaanF1, dorgeshKaanCaveUpper, dorgeshKaanCaveLower;
 	Requirement inMines, inTunnels, inBasement, inDorgeshKaanF0, inDorgeshKaanWithGrubfoot, invSpaceToUnequip, inGoblinCave, inGoblinCaveWithZanik,
-			inGoblinCaveWithGoblinPotion, inFrontOfGuardsWithGoblinPotion, goblinSelectionActive, isAGoblin,
-			hasBlackMushroomsOrDye, inGoblinTemple, blackGoblinMailEquipped, inNorthEastRoom, blackDyeOrBlackGoblinMail,
-			knowsAboutWhitefish, inHemenster, inWhitePriestRoom, inYellowPriestRoom, inBluePriestRoom, inOrangePriestRoom, inPurplePriestRoom,
-			hasAllGoblinKeys, inCrypt, snotheadAlive, snailfeetAlive, mosschinAlive, redeyesAlive, strongbonesAlive,
-			snotheadDead, snailfeetDead, mosschinDead, redeyesDead, strongbonesDead, inDorgeshKaanF1, inDorgeshKaanCaveUpper,
-			inDorgeshKaanCaveLower, learnedAboutMachine, firstGreater, firstLess, secondGreater, secondLess, thirdGreater, thirdLess, fairyRingMachineWidgetPresent,
-			fairyRingMachineFixed, inYubiusk, unlockedDoor;
+		inGoblinCaveWithGoblinPotion, inFrontOfGuardsWithGoblinPotion, goblinSelectionActive, isAGoblin,
+		hasBlackMushroomsOrDye, inGoblinTemple, blackGoblinMailEquipped, inNorthEastRoom, blackDyeOrBlackGoblinMail,
+		knowsAboutWhitefish, inHemenster, inWhitePriestRoom, inYellowPriestRoom, inBluePriestRoom, inOrangePriestRoom, inPurplePriestRoom,
+		hasAllGoblinKeys, inCrypt, snotheadAlive, snailfeetAlive, mosschinAlive, redeyesAlive, strongbonesAlive,
+		snotheadDead, snailfeetDead, mosschinDead, redeyesDead, strongbonesDead, inDorgeshKaanF1, inDorgeshKaanCaveUpper,
+		inDorgeshKaanCaveLower, learnedAboutMachine, firstGreater, firstLess, secondGreater, secondLess, thirdGreater, thirdLess, fairyRingMachineWidgetPresent,
+		fairyRingMachineFixed, inYubiusk, unlockedDoor;
 	Requirement grubfootFollowing;
 	ConditionalStep goTalkToGrubfoot, goTalkToZanik, goReturnToDorg;
 	QuestStep goDownIntoBasement, climbThroughHole, talkToKazgar;
 	QuestStep talkToGrubfoot, enterDorgeshKaan, talkToZanik, enterGoblinCave, talkToZanikGoblinCave, talkToGuard,
-			talkToMakeoverMage, pickPharmakosBerry, mixGoblinPotion, goBackToGoblinCave, goToGuards, drinkGoblinPotion,
-			makeBlackDye, confirmGoblin, pickBlackMushrooms, talkToGuardAsGoblin, getGoblinMail, dyeGoblinMail, enterTempleDoorForThieving,
-			enterNorthEastRoom, searchCrateForSphere, talkToZanikInCell, leaveNorthEastRoom, talkToPriestInTemple, enterNorthEastRoomForKey,
-			goBackToGoblinCaveNoDye, goToGuardsNoDye, drinkGoblinPotionNoDye, talkToGuardAsGoblinNoDye, pickpocketPriest,
-			talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, enterGoblinCaveForKilling,
-			passWhiteGuard, passYellowGuard, passBlueGuard, passOrangeGuard, passPurpleGuard,
-			pickpocketWhitePriest, pickpocketYellowPriest, pickpocketBluePriest, pickpocketOrangePriest, pickpocketPurplePriest,
-			dyeGoblinMailBlue, dyeGoblinMailYellow, dyeGoblinMailOrange, dyeGoblinMailPurple, unlockCrypt, enterCrypt,
-			sayNameSnothead, sayNameSnailfeet, sayNameMosschin, sayNameRedeyes, sayNameStrongbones,
-			defeatSnothead, defeatSnailfeet, defeatMosschin, defeatRedeyes, defeatStrongbones,
-			learnSnailfeet, learnMosschin, learnRedeyes, learnStrongbones, learnYubiusk,
-			talkToOldak, returnToDorgeshKaanOrFairyRing, climbDorgeshKaanStairsF0, climbDorgeshKaanStairsF1,
-			climbLadderTop, talkToOldakAtMachine, inspectMachine, increaseFirst, decreaseFirst, increaseSecond, decreaseSecond, increaseThird, decreaseThird,
-			confirmFixMachine, watchYubiuskCutscene, goToYubiusk, openBox;
+		talkToMakeoverMage, pickPharmakosBerry, mixGoblinPotion, goBackToGoblinCave, goToGuards, drinkGoblinPotion,
+		makeBlackDye, confirmGoblin, pickBlackMushrooms, talkToGuardAsGoblin, getGoblinMail, dyeGoblinMail, enterTempleDoorForThieving,
+		enterNorthEastRoom, searchCrateForSphere, talkToZanikInCell, leaveNorthEastRoom, talkToPriestInTemple, enterNorthEastRoomForKey,
+		goBackToGoblinCaveNoDye, goToGuardsNoDye, drinkGoblinPotionNoDye, talkToGuardAsGoblinNoDye, pickpocketPriest,
+		talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, enterGoblinCaveForKilling,
+		passWhiteGuard, passYellowGuard, passBlueGuard, passOrangeGuard, passPurpleGuard,
+		pickpocketWhitePriest, pickpocketYellowPriest, pickpocketBluePriest, pickpocketOrangePriest, pickpocketPurplePriest,
+		dyeGoblinMailBlue, dyeGoblinMailYellow, dyeGoblinMailOrange, dyeGoblinMailPurple, unlockCrypt, enterCrypt,
+		sayNameSnothead, sayNameSnailfeet, sayNameMosschin, sayNameRedeyes, sayNameStrongbones,
+		defeatSnothead, defeatSnailfeet, defeatMosschin, defeatRedeyes, defeatStrongbones,
+		learnSnailfeet, learnMosschin, learnRedeyes, learnStrongbones, learnYubiusk,
+		talkToOldak, returnToDorgeshKaanOrFairyRing, climbDorgeshKaanStairsF0, climbDorgeshKaanStairsF1,
+		climbLadderTop, talkToOldakAtMachine, inspectMachine, increaseFirst, decreaseFirst, increaseSecond, decreaseSecond, increaseThird, decreaseThird,
+		confirmFixMachine, watchYubiuskCutscene, goToYubiusk, openBox;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -503,11 +503,11 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		talkToZanikInCell = new NpcStep(this, NpcID.ZANIK_11260, new WorldPoint(3751, 4343, 0), "Talk to Zanik in the cell.", dorgeshKaanSphere);
 		leaveNorthEastRoom = new NpcStep(this, NpcID.GUARD_11318, new WorldPoint(3753, 4329, 0), "Pass by the guard to leave the northeastern room.");
 		talkToPriestInTemple = new NpcStep(this, NpcID.HIGH_PRIEST_BIGHEAD, new WorldPoint(3744, 4328, 0), "Talk to High Priest Bighead. When prompted, answer in this order: True, False, False.");
-		talkToPriestInTemple.addDialogLastLoadedCondition("True or false: Those who do not believe in Big High War God, whether they goblins or other races, must die.", 231, 6,
+		talkToPriestInTemple.addDialogConsideringLastLineCondition("True or false: Those who do not believe in Big High War God, whether they goblins or other races, must die.",
 			"True.");
-		talkToPriestInTemple.addDialogLastLoadedCondition("Second question. True or false: Big High War God chose goblins to be his race because goblins mighty warriors.", 231, 6,
+		talkToPriestInTemple.addDialogConsideringLastLineCondition("Second question. True or false: Big High War God chose goblins to be his race because goblins mighty warriors.",
 			"False.");
-		talkToPriestInTemple.addDialogLastLoadedCondition("Third question. True or false: Goblin leaders should be good at planning in order to win battles.", 231, 6,
+		talkToPriestInTemple.addDialogConsideringLastLineCondition("Third question. True or false: Goblin leaders should be good at planning in order to win battles.",
 			"False.");
 		talkToPriestInTemple.addDialogStep("Yes.");
 		talkToPriestInTemple.addDialogStep("I understand Big High War God.");
@@ -541,7 +541,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		talkToAggieWithFish = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3258, 0), "Bring the whitefish and black goblin mail to Aggie.", coins, hemensterWhitefish, blackGoblinMail);
 		talkToAggieWithFish.addDialogSteps("Can you make dyes for me please?", "Could you remove the dye from this goblin mail?");
 		goToTempleWithDyes = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0),
-				"", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
+			"", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
 
 		enterTempleDoorForThieving = new ObjectStep(this, ObjectID.STAIRS_43261, new WorldPoint(2581, 9853, 0), "Enter the temple.");
 
@@ -671,10 +671,10 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	public ArrayList<String> getCombatRequirements()
 	{
 		return new ArrayList<>(ImmutableList.of("Snothead (level 32)",
-				"Snailfeet (level 56)",
-				"Mosschin (level 88)",
-				"Redeyes (level 121)",
-				"Strongbones (level 184)"));
+			"Snailfeet (level 56)",
+			"Mosschin (level 88)",
+			"Redeyes (level 121)",
+			"Strongbones (level 184)"));
 	}
 
 	@Override
@@ -699,17 +699,17 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards() {
 		return Arrays.asList(new ExperienceReward(Skill.AGILITY, 8000),
-				new ExperienceReward(Skill.FISHING, 8000),
-				new ExperienceReward(Skill.THIEVING, 8000),
-				new ExperienceReward(Skill.HERBLORE, 8000));
+			new ExperienceReward(Skill.FISHING, 8000),
+			new ExperienceReward(Skill.THIEVING, 8000),
+			new ExperienceReward(Skill.HERBLORE, 8000));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards() {
 		return Arrays.asList(new UnlockReward("Access to the Goblin Temple"),
-				new UnlockReward("Access to Yu'Biusk (with fairy ring code BLQ)"),
-				new UnlockReward("Ability to purchase plain of mud spheres"),
-				new UnlockReward("Ability to make goblin potions"));
+			new UnlockReward("Access to Yu'Biusk (with fairy ring code BLQ)"),
+			new UnlockReward("Ability to purchase plain of mud spheres"),
+			new UnlockReward("Ability to make goblin potions"));
 	}
 
 	@Override
@@ -717,30 +717,30 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	{
 		ArrayList<PanelDetails> panels = new ArrayList<>();
 		panels.add(new PanelDetails("Grubfoot's Dream",
-				Arrays.asList(goTalkToGrubfoot, enterDorgeshKaan, talkToZanik),
-				lightSource, noPet));
+			Arrays.asList(goTalkToGrubfoot, enterDorgeshKaan, talkToZanik),
+			lightSource, noPet));
 		panels.add(new PanelDetails("Impostor Among Goblins",
-				Arrays.asList(enterGoblinCave, talkToZanikGoblinCave, talkToGuard, talkToMakeoverMage, pickPharmakosBerry, mixGoblinPotion),
+			Arrays.asList(enterGoblinCave, talkToZanikGoblinCave, talkToGuard, talkToMakeoverMage, pickPharmakosBerry, mixGoblinPotion),
 			Collections.singletonList(toadflaxPotionUnf),
-				Arrays.asList(skillsNecklace, invSpaceToUnequip)));
+			Arrays.asList(skillsNecklace, invSpaceToUnequip)));
 		panels.add(new PanelDetails("The Temple of Tribes",
-				Arrays.asList(goBackToGoblinCave, goToGuards, pickBlackMushrooms, makeBlackDye, drinkGoblinPotion, talkToGuardAsGoblin, dyeGoblinMail, enterNorthEastRoom, searchCrateForSphere, talkToZanikInCell,
-					leaveNorthEastRoom, talkToPriestInTemple, enterNorthEastRoomForKey, pickpocketPriest),
-				Arrays.asList(noPet, goblinPotion, vial, pestleAndMortar, goblinMail),
-				Arrays.asList(invSpaceToUnequip, dorgeshKaanSphereRec)));
+			Arrays.asList(goBackToGoblinCave, goToGuards, pickBlackMushrooms, makeBlackDye, drinkGoblinPotion, talkToGuardAsGoblin, dyeGoblinMail, enterNorthEastRoom, searchCrateForSphere, talkToZanikInCell,
+				leaveNorthEastRoom, talkToPriestInTemple, enterNorthEastRoomForKey, pickpocketPriest),
+			Arrays.asList(noPet, goblinPotion, vial, pestleAndMortar, goblinMail),
+			Arrays.asList(invSpaceToUnequip, dorgeshKaanSphereRec)));
 		panels.add(new PanelDetails("Keys to the Crypt",
-				Arrays.asList(talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, pickpocketWhitePriest, dyeGoblinMailYellow,
-					pickpocketYellowPriest, dyeGoblinMailBlue, pickpocketBluePriest, dyeGoblinMailOrange, pickpocketOrangePriest,
-					dyeGoblinMailPurple, pickpocketPurplePriest, unlockCrypt),
-				Arrays.asList(fishingRod, rawSlimyEel, coins, yellowDye, blueDye, orangeDye, purpleDye, blackGoblinMail, goblinPotion, huzamogaarbKey, combatGear),
-				Arrays.asList(draynorTeleport, combatBracelet)));
+			Arrays.asList(talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, pickpocketWhitePriest, dyeGoblinMailYellow,
+				pickpocketYellowPriest, dyeGoblinMailBlue, pickpocketBluePriest, dyeGoblinMailOrange, pickpocketOrangePriest,
+				dyeGoblinMailPurple, pickpocketPurplePriest, unlockCrypt),
+			Arrays.asList(fishingRod, rawSlimyEel, coins, yellowDye, blueDye, orangeDye, purpleDye, blackGoblinMail, goblinPotion, huzamogaarbKey, combatGear),
+			Arrays.asList(draynorTeleport, combatBracelet)));
 		panels.add(new PanelDetails("High Priests of Ages Past",
-				Arrays.asList(enterCrypt, sayNameSnothead, defeatSnothead, sayNameSnailfeet, defeatSnailfeet, sayNameMosschin, defeatMosschin, sayNameRedeyes, defeatRedeyes, sayNameStrongbones, defeatStrongbones, learnYubiusk),
-				combatGear));
+			Arrays.asList(enterCrypt, sayNameSnothead, defeatSnothead, sayNameSnailfeet, defeatSnailfeet, sayNameMosschin, defeatMosschin, sayNameRedeyes, defeatRedeyes, sayNameStrongbones, defeatStrongbones, learnYubiusk),
+			combatGear));
 		panels.add(new PanelDetails("Path to Yu'biusk",
-				Arrays.asList(goReturnToDorg, talkToOldak, talkToOldakAtMachine, inspectMachine, watchYubiuskCutscene, openBox),
+			Arrays.asList(goReturnToDorg, talkToOldak, talkToOldakAtMachine, inspectMachine, watchYubiuskCutscene, openBox),
 			Collections.singletonList(lightSource),
-				Arrays.asList(dorgeshKaanSphereRec, dramenStaff)));
+			Arrays.asList(dorgeshKaanSphereRec, dramenStaff)));
 		return panels;
 	}
 }

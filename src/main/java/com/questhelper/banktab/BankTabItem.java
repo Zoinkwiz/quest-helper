@@ -48,26 +48,26 @@ public class BankTabItem
 	@Getter
 	private final String details;
 
-	public BankTabItem(int quantity, String text, int itemID, String details)
-	{
-		this.quantity = quantity;
-		this.text = text;
-		this.itemIDs =  Collections.singletonList(itemID);
-		this.details = details;
-		this.displayID = null;
-	}
+	@Getter
+	private final ItemRequirement itemRequirement;
 
-	public BankTabItem(int quantity, String text, int itemID, String details, int displayID)
+	public BankTabItem(ItemRequirement item, int displayID)
 	{
-		this.quantity = quantity;
-		this.text = text;
-		this.itemIDs = Collections.singletonList(itemID);
-		this.details = details;
+		this.quantity = item.getQuantity();
+		this.text = item.getName();
+		this.itemIDs = Collections.singletonList(displayID);
+		this.details = item.getTooltip();
 		this.displayID = displayID;
+		this.itemRequirement = item;
 	}
 
 	public BankTabItem(ItemRequirement item)
 	{
-		this(item.getQuantity(), item.getName(), item.getId(), item.getTooltip(), item.getDisplayItemId());
+		this.quantity = item.getQuantity();
+		this.text = item.getName();
+		this.itemIDs = Collections.singletonList(item.getId());
+		this.details = item.getTooltip();
+		this.displayID = null;
+		this.itemRequirement = item;
 	}
 }

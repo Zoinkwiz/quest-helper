@@ -3,9 +3,14 @@ package com.questhelper.steps.choice;
 import com.questhelper.QuestHelperConfig;
 
 import java.util.regex.Pattern;
+import lombok.Getter;
+import lombok.Setter;
 
 public class DialogChoiceStep extends WidgetChoiceStep
 {
+	@Setter
+	@Getter
+	protected String expectedPreviousLine;
 
 	public DialogChoiceStep(QuestHelperConfig config, String choice)
 	{

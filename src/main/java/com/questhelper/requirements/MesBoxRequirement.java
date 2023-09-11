@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Zoinkwiz
+ * Copyright (c) 2023, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.choice;
+package com.questhelper.requirements;
 
-import com.questhelper.QuestHelperConfig;
-import java.util.Objects;
-import lombok.Getter;
-import net.runelite.api.*;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
 
-public class WidgetLastState extends WidgetChoiceStep
+public class MesBoxRequirement extends ChatMessageRequirement
 {
 
-	@Getter
-	private String lastVersionSeen;
-
-	public WidgetLastState(QuestHelperConfig config, String text, int groupId, int childId)
+	public MesBoxRequirement(String... text)
 	{
-		super(config, text, groupId, childId);
+		super(text);
 	}
 
-	public boolean priorTextMatches()
+	public void validateCondition(Client client, ChatMessage chatMessage)
 	{
-		return Objects.equals(lastVersionSeen, getChoice());
-	}
-
-	@Override
-	public void highlightChoice(Client client)
-	{
-		Widget exclusionDialogChoice = client.getWidget(excludedGroupId, excludedChildId);
-		if (exclusionDialogChoice != null)
+		if (chatMessage.getType() != ChatMessageType.MESBOX)
 		{
-			Widget[] exclusionChoices = exclusionDialogChoice.getChildren();
-			if (exclusionChoices != null)
+			return;
+		}
+		if (!hasReceivedChatMessage)
+		{
+			hasReceivedChatMessage = isCurrentDialogMatching(chatMessage.getMessage());
+		}
+
+		if (!hasReceivedChatMessage)
+		{
+			if (messages.contains(chatMessage.getMessage()))
 			{
-				for (Widget currentExclusionChoice : exclusionChoices)
+				if (condition == null || condition.check(client))
 				{
-					if (excludedStrings.contains(currentExclusionChoice.getText()))
-					{
-						return;
-					}
+					hasReceivedChatMessage = true;
 				}
 			}
 		}
-		Widget dialogChoice = client.getWidget(groupId, childId);
-		if (dialogChoice != null && dialogChoice.getText() != null)
+		else if (invalidateRequirement != null)
 		{
-			lastVersionSeen = dialogChoice.getText();
+			invalidateRequirement.validateCondition(client, chatMessage);
+			if (invalidateRequirement.check(client))
+			{
+				invalidateRequirement.setHasReceivedChatMessage(false);
+				setHasReceivedChatMessage(false);
+			}
 		}
+	}
+
+	private boolean isCurrentDialogMatching(String dialogMessage)
+	{
+		return messages.stream().anyMatch(dialogMessage::contains);
 	}
 }

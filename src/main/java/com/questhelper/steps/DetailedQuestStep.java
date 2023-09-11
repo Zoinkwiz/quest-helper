@@ -508,6 +508,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 		stream
 			.distinct()
+			.filter(Objects::nonNull)
 			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
 			.flatMap(Collection::stream)
 			.forEach(line -> panelComponent.getChildren().add(line));
@@ -519,6 +520,7 @@ public class DetailedQuestStep extends QuestStep
 		Stream<Requirement> streamRecommended = recommended.stream();
 		streamRecommended
 			.distinct()
+			.filter(Objects::nonNull)
 			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
 			.flatMap(Collection::stream)
 			.forEach(line -> panelComponent.getChildren().add(line));

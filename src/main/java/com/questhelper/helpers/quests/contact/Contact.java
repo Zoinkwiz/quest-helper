@@ -222,7 +222,7 @@ public class Contact extends BasicQuestHelper
 			new WorldPoint(2149, 4374, 2),
 			new WorldPoint(2151, 4374, 2),
 
-			new WorldPoint(3304, 9238, 3),
+			new WorldPoint(0, 0, 0),
 
 			new WorldPoint(2154, 4374, 2),
 			new WorldPoint(2157, 4374, 2),

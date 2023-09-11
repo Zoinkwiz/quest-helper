@@ -224,8 +224,9 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		int[] brimstailNPCs = new int[]{NpcID.BRIMSTAIL, NpcID.BRIMSTAIL_11431};
 		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2404, 3419, 0), "Go talk to Brimstail in his cave in west Tree Gnome Stronghold.");
-		talkToBrimstail = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
+		talkToBrimstail = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstail.addDialogStep("What's that cute creature wandering around?");
 		talkToBrimstail.addDialogStep("Yes, that sounds fascinating...");
 		talkToBrimstail.addDialogStep("Oh, yes I love a bit of History.");
@@ -234,7 +235,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		inspectBowl = new ObjectStep(this, ObjectID.SINGING_BOWL, new WorldPoint(2388, 9813, 0), "Inspect the singing bowl in the west room.");
 		inspectMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0),
 			"Attempt to unlock oaknock's machine in the north of the cave.");
-		talkToBrimstailAgain = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail again.");
+		talkToBrimstailAgain = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail again.");
 		talkToBrimstailAgain.addDialogStep("I've had a look in the other room now.");
 		talkToBrimstailAgain.addDialogStep("Of course, I'd love to!");
 
@@ -245,7 +246,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		talkToHazelmere.addSubSteps(goUpToHazelmere);
 
 		enterCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2404, 3419, 0), "Go back to Brimstail's cave in west Tree Gnome Stronghold.", pestleAndMortar, mudRune, bucketOfSap, oakLog, mapleLog, saw, hammer);
-		talkToBrimstailAfterHazelmere = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
+		talkToBrimstailAfterHazelmere = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstailAfterHazelmere.addDialogStep("I've visited Hazelmere, he told me all sorts of interesting things.");
 		talkToBrimstailAfterHazelmere.addSubSteps(enterCaveAgain);
 
@@ -258,9 +259,9 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 			"Use the magic glue on oaknock's machine in the north of the cave.", magicGlue, oakLog, mapleLog, saw, hammer);
 		repairMachine.addIcon(ItemID.MAGIC_GLUE);
 
-		talkToBrimstailAfterRepairing = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
+		talkToBrimstailAfterRepairing = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstailAfterRepairing.addDialogStep("I think I've fixed the machine now!");
-		talkToBrimstailForMoreDisks = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail for more disks.");
+		talkToBrimstailForMoreDisks = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail for more disks.");
 		talkToBrimstailForMoreDisks.addDialogStep("I can't work out what to do with these discs!");
 		unlockMachine = new PuzzleStep(this);
 		unlockMachine.addSubSteps(unlockMachine.getSteps());
@@ -268,7 +269,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		operateMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Operate the machine.");
 		unlockMachine.addSubSteps(operateMachine);
 
-		killCreature1 = new NpcStep(this, NpcID.EVIL_CREATURE, new WorldPoint(3408, 9819, 0), "Kill the evil creature next to Brimstail.");
+		killCreature1 = new NpcStep(this, NpcID.EVIL_CREATURE, new WorldPoint(2408, 9819, 0), "Kill the evil creature next to Brimstail.");
 		killCreature2 = new NpcStep(this, NpcID.EVIL_CREATURE_1244, new WorldPoint(2465, 3494, 0), "Kill the evil creature next to Narnode.");
 		killCreature3 = new NpcStep(this, NpcID.EVIL_CREATURE_1247, new WorldPoint(2466, 3496, 3), "Kill the evil creature at the top of the Grand Tree.");
 		killCreature4 = new NpcStep(this, NpcID.EVIL_CREATURE_1250, new WorldPoint(2422, 3526, 0), "Kill the evil creature in the north west of the Stronghold.");
@@ -276,7 +277,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		killCreature6 = new NpcStep(this, NpcID.EVIL_CREATURE_1256, new WorldPoint(2462, 3443, 0), "Kill the evil creature next to the Stronghold's Spirit Tree.");
 		//killCreature7 = new NpcStep(this, NpcID.EVIL_CREATURE, new WorldPoint(3408, 9819, 0), "Kill the evil creature next to Brimstail.");
 
-		talkToBrimstailAfterIllusion = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2410, 9818, 0), "Talk to Brimstail again.");
+		talkToBrimstailAfterIllusion = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail again.");
 		talkToBrimstailAfterIllusion.addDialogStep("Phew! I've got that machine working now. What do I need to do now?");
 
 		climbUpToF1Tree = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Kill the evil creature at the top of the Grand Tree.");

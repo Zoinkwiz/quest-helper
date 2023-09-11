@@ -692,7 +692,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2 x 50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+				new ItemReward("50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
 				new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
 				new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
 	}

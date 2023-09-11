@@ -173,7 +173,7 @@ public class MonksFriend extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("8 Law Runes", ItemID.LAW_RUNE, 8));
+		return Collections.singletonList(new ItemReward("Law Runes", ItemID.LAW_RUNE, 8));
 	}
 
 	@Override

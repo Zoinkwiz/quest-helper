@@ -72,7 +72,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		engine, pulleyBeam, longPulleyBeam, longerPulleyBeam, rope, beam, plank, diary5, box, letter;
 
 	//Items Recommended
-	ItemRequirement antipoison, food, prayerPotions, rellekkaTeleport;
+	ItemRequirement antipoison, food, prayerPotions, runRestoreItems, rellekkaTeleport;
 
 	Requirement inMiscFloor1, inEtcFloor1, onIslands, hasCoalOrPickaxe, astridIsHeir, startedInvestigation, talkedToMiscSubject,
 		talkedToSigrid, talkedToEtcSubject, reportedToVargas, reportedToSigrid, talkedToGhrimInInvestigation, talkedToSailor, gottenScrollFromVargas,
@@ -252,6 +252,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		antipoison = new ItemRequirement("Any antipoison", ItemCollections.ANTIPOISONS, 1);
+		runRestoreItems = new ItemRequirement("Potions/Items to restore run energy", ItemCollections.RUN_RESTORE_ITEMS, 1);
 		rellekkaTeleport = new ItemRequirement("Miscellania teleport (Fairy Ring (CIP), tablet, lyre)", ItemCollections.FAIRY_STAFF);
 		rellekkaTeleport.addAlternates(ItemID.RELLEKKA_TELEPORT, ItemID.ENCHANTED_LYREI, ItemID.ENCHANTED_LYRE5, ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2, ItemID.ENCHANTED_LYRE1);
 
@@ -596,6 +597,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		reqs.add(antipoison);
 		reqs.add(food);
 		reqs.add(prayerPotions);
+		reqs.add(runRestoreItems);
 		return reqs;
 	}
 

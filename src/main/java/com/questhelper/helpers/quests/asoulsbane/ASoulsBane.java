@@ -312,7 +312,7 @@ public class ASoulsBane extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("500 Coins", ItemID.COINS_995, 500));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 500));
 	}
 
 	@Override

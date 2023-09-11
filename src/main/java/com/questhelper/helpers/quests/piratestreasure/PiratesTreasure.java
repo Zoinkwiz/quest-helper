@@ -165,7 +165,7 @@ public class PiratesTreasure extends BasicQuestHelper
 		return Arrays.asList(
 				new ItemReward("A Gold Ring", ItemID.GOLD_RING, 1),
 				new ItemReward("An Emerald", ItemID.EMERALD, 1),
-				new ItemReward("450 Coins", ItemID.COINS_995, 450));
+				new ItemReward("Coins", ItemID.COINS_995, 450));
 	}
 
 	@Override

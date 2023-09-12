@@ -76,7 +76,9 @@ public class FamilyCrest extends BasicQuestHelper
 	ObjectStep enterDwarvenMine;
 	NpcStep talkToBoot;
 	ObjectStep enterWitchavenDungeon, pullNorthLever, pullSouthRoomLever, pullNorthLeverAgain, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2;
-	QuestStep followPathAroundEast, mineGold, smeltGold, makeRing, makeNecklace, returnToMan, goUpToJohnathon, talkToJohnathon, giveJohnathonAntipoison,
+	QuestStep followPathAroundEast, mineGold;
+	DetailedQuestStep smeltGold;
+	QuestStep makeRing, makeNecklace, returnToMan, goUpToJohnathon, talkToJohnathon, giveJohnathonAntipoison,
 		killChronizon, pickUpCrest3, repairCrest, returnCrest;
 
 	ObjectStep goDownToChronizon;
@@ -157,7 +159,6 @@ public class FamilyCrest extends BasicQuestHelper
 		varrockTele.addAlternates(ItemID.ACHIEVEMENT_DIARY_CAPE, ItemID.ACHIEVEMENT_DIARY_CAPE_T);
 		varrockTele.addAlternates(ItemCollections.RING_OF_WEALTHS);
 		ardyTele.addAlternates(ItemCollections.ARDY_CLOAKS);
-		alkharidTele.addAlternates(ItemCollections.RING_OF_DUELINGS);
 		alkharidTele.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		catherbyTele.addAlternates(ItemID.CAMELOT_TELEPORT);
 
@@ -276,6 +277,7 @@ public class FamilyCrest extends BasicQuestHelper
 		((ObjectStep) mineGold).setMaxObjectDistance(5000);
 
 		smeltGold = new DetailedQuestStep(this, "Smelt the perfect gold ore into bars.", gold2);
+		smeltGold.addTeleport(alkharidTele);
 
 		makeNecklace = new DetailedQuestStep(this, "Make a perfect ruby necklace at a furnace.", goldBar, ruby, necklaceMould);
 		makeRing = new DetailedQuestStep(this, "Make a perfect ruby ring at a furnace.", goldBar, ruby, ringMould);

@@ -67,7 +67,7 @@ public class FamilyCrest extends BasicQuestHelper
 		perfectRing, perfectNecklace, goldBar, goldBar2, crestPiece1, crestPiece2, crestPiece3, crest;
 
 	// Items Recommended
-	ItemRequirement varrockTele, faladorTele, ardyTele, alkharidTele, catherbyTele;
+	ItemRequirement varrockTele, faladorTele, ardyTele, alkharidTele, catherbyTele, dwarvenMineTele;
 
 	Requirement inDwarvenMines, inHobgoblinDungeon, northWallUp, southRoomUp, northRoomUp, northWallDown, southRoomDown, northRoomDown,
 		inJollyBoar, inEdgevilleDungeon, crest3Nearby;
@@ -151,6 +151,8 @@ public class FamilyCrest extends BasicQuestHelper
 		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.ARDOUGNE_TELEPORT);
 		alkharidTele = new ItemRequirement("Al-Kharid Teleport", ItemCollections.RING_OF_DUELINGS);
 		catherbyTele = new ItemRequirement("Camelot/Catherby Teleport", ItemID.CATHERBY_TELEPORT);
+		dwarvenMineTele = new ItemRequirement("Teleport to the Dwarven Mine (Combat Bracelet [3], Skills Necklace [2])", ItemCollections.SKILLS_NECKLACES);
+		dwarvenMineTele.addAlternates(ItemCollections.COMBAT_BRACELETS);
 
 		varrockTele.addAlternates(ItemID.ACHIEVEMENT_DIARY_CAPE, ItemID.ACHIEVEMENT_DIARY_CAPE_T);
 		varrockTele.addAlternates(ItemCollections.RING_OF_WEALTHS);
@@ -246,6 +248,7 @@ public class FamilyCrest extends BasicQuestHelper
 		talkToMan.addDialogStep("I'm looking for a man named Avan Fitzharmon.");
 		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0),
 			"Talk to Boot in the south western Dwarven Mines.");
+		enterDwarvenMine.addTeleport(dwarvenMineTele);
 		talkToBoot = new NpcStep(this, NpcID.BOOT, new WorldPoint(2984, 9810, 0), "Talk to Boot in the south western Dwarven Mines.");
 		talkToBoot.addDialogStep("Hello. I'm in search of very high quality gold.");
 		talkToBoot.addSubSteps(enterDwarvenMine);
@@ -328,7 +331,7 @@ public class FamilyCrest extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(varrockTele, catherbyTele, faladorTele, ardyTele, alkharidTele);
+		return Arrays.asList(varrockTele, catherbyTele, faladorTele, ardyTele, alkharidTele, dwarvenMineTele);
 	}
 
 	@Override

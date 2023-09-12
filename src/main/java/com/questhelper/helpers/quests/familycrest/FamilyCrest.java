@@ -255,6 +255,7 @@ public class FamilyCrest extends BasicQuestHelper
 
 		enterWitchavenDungeon = new ObjectStep(this, ObjectID.OLD_RUIN_ENTRANCE, new WorldPoint(2696, 3283, 0),
 			"Enter the old ruin entrance west of Witchaven.");
+		enterWitchavenDungeon.addTeleport(ardyTele);
 
 		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_2421, new WorldPoint(2722, 9710, 0),
 			"Follow the path around, and pull the lever on the wall in the north east corner.");

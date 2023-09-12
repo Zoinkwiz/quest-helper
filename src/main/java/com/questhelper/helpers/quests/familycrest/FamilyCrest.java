@@ -151,7 +151,8 @@ public class FamilyCrest extends BasicQuestHelper
 		varrockTele = new ItemRequirement("Varrock Teleports", ItemID.VARROCK_TELEPORT, 2);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
 		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.ARDOUGNE_TELEPORT);
-		alkharidTele = new ItemRequirement("Al-Kharid Teleport", ItemCollections.RING_OF_DUELINGS);
+		alkharidTele = new ItemRequirement("Al-Kharid Teleport", ItemCollections.RING_OF_DUELINGS, 2);
+		alkharidTele.setChargedItem(true);
 		catherbyTele = new ItemRequirement("Camelot/Catherby Teleport", ItemID.CATHERBY_TELEPORT);
 		dwarvenMineTele = new ItemRequirement("Teleport to the Dwarven Mine (Combat Bracelet [3], Skills Necklace [2])", ItemCollections.SKILLS_NECKLACES);
 		dwarvenMineTele.addAlternates(ItemCollections.COMBAT_BRACELETS);
@@ -244,7 +245,7 @@ public class FamilyCrest extends BasicQuestHelper
 
 		talkToGemTrader = new NpcStep(this, NpcID.GEM_TRADER, new WorldPoint(3286, 3211, 0), "Talk to the Gem Trader in Al Kharid.");
 		talkToGemTrader.addDialogStep("I'm in search of a man named Avan Fitzharmon.");
-		talkToGemTrader.addTeleport(alkharidTele);
+		talkToGemTrader.addTeleport(alkharidTele.quantity(1));
 		talkToMan = new NpcStep(this, NpcID.MAN, new WorldPoint(3295, 3275, 0), "Talk to the man south of the Al Kharid mine.");
 		talkToMan.addDialogStep("I'm looking for a man named Avan Fitzharmon.");
 		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0),
@@ -277,7 +278,7 @@ public class FamilyCrest extends BasicQuestHelper
 		((ObjectStep) mineGold).setMaxObjectDistance(5000);
 
 		smeltGold = new DetailedQuestStep(this, "Smelt the perfect gold ore into bars.", gold2);
-		smeltGold.addTeleport(alkharidTele);
+		smeltGold.addTeleport(alkharidTele.quantity(1));
 
 		makeNecklace = new DetailedQuestStep(this, "Make a perfect ruby necklace at a furnace.", goldBar, ruby, necklaceMould);
 		makeRing = new DetailedQuestStep(this, "Make a perfect ruby ring at a furnace.", goldBar, ruby, ringMould);

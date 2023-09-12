@@ -72,7 +72,9 @@ public class FamilyCrest extends BasicQuestHelper
 	Requirement inDwarvenMines, inHobgoblinDungeon, northWallUp, southRoomUp, northRoomUp, northWallDown, southRoomDown, northRoomDown,
 		inJollyBoar, inEdgevilleDungeon, crest3Nearby;
 
-	QuestStep talkToDimintheis, talkToCaleb, talkToCalebWithFish, talkToCalebOnceMore, talkToGemTrader, talkToMan, enterDwarvenMine, talkToBoot,
+	QuestStep talkToDimintheis;
+	NpcStep talkToCaleb;
+	QuestStep talkToCalebWithFish, talkToCalebOnceMore, talkToGemTrader, talkToMan, enterDwarvenMine, talkToBoot,
 		enterWitchavenDungeon, pullNorthLever, pullSouthRoomLever, pullNorthLeverAgain, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2,
 		followPathAroundEast, mineGold, smeltGold, makeRing, makeNecklace, returnToMan, goUpToJohnathon, talkToJohnathon, giveJohnathonAntipoison,
 		killChronizon, pickUpCrest3, repairCrest, returnCrest;
@@ -229,6 +231,7 @@ public class FamilyCrest extends BasicQuestHelper
 		talkToCaleb.addDialogStep("Are you Caleb Fitzharmon?");
 		talkToCaleb.addDialogStep("So can I have your bit?");
 		talkToCaleb.addDialogStep("Ok, I will get those.");
+		talkToCaleb.addTeleport(catherbyTele);
 		talkToCalebWithFish = new NpcStep(this, NpcID.CALEB, new WorldPoint(2819, 3452, 0),
 			"Talk to Caleb again with the required fish.", shrimp, salmon, tuna, bass, swordfish);
 

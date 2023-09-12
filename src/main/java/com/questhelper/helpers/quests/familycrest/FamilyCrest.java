@@ -77,7 +77,7 @@ public class FamilyCrest extends BasicQuestHelper
 	NpcStep talkToBoot;
 	ObjectStep enterWitchavenDungeon, pullNorthLever, pullSouthRoomLever, pullNorthLeverAgain, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2;
 	QuestStep followPathAroundEast, mineGold;
-	DetailedQuestStep smeltGold;
+	ObjectStep smeltGold;
 	QuestStep makeRing, makeNecklace, returnToMan, goUpToJohnathon, talkToJohnathon, giveJohnathonAntipoison,
 		killChronizon, pickUpCrest3, repairCrest, returnCrest;
 
@@ -110,7 +110,8 @@ public class FamilyCrest extends BasicQuestHelper
 		ConditionalStep getGold = new ConditionalStep(this, enterWitchavenDungeon);
 		getGold.addStep(new Conditions(perfectNecklace.alsoCheckBank(questBank), perfectRing.alsoCheckBank(questBank)), returnToMan);
 		getGold.addStep(perfectNecklace.alsoCheckBank(questBank), makeRing);
-		getGold.addStep(goldBar2.alsoCheckBank(questBank), makeNecklace);
+		getGold.addStep(new Conditions(gold.alsoCheckBank(questBank), goldBar.alsoCheckBank(questBank)), smeltGold);
+		getGold.addStep(goldBar.alsoCheckBank(questBank), makeNecklace);
 		getGold.addStep(gold2.alsoCheckBank(questBank), smeltGold);
 		getGold.addStep(new Conditions(northRoomUp, southRoomDown), mineGold);
 		getGold.addStep(new Conditions(northRoomUp, northWallUp), pullSouthRoomLever2);
@@ -277,11 +278,12 @@ public class FamilyCrest extends BasicQuestHelper
 			"Mine 2 perfect gold in the east room.", true, pickaxe, gold2);
 		((ObjectStep) mineGold).setMaxObjectDistance(5000);
 
-		smeltGold = new DetailedQuestStep(this, "Smelt the perfect gold ore into bars.", gold2);
+		smeltGold = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(3273, 3186, 0), "Smelt the perfect gold ore into bars.", gold2.highlighted());
+		smeltGold.addIcon(ItemID.GOLD_ORE);
 		smeltGold.addTeleport(alkharidTele.quantity(1));
 
-		makeNecklace = new DetailedQuestStep(this, "Make a perfect ruby necklace at a furnace.", goldBar, ruby, necklaceMould);
-		makeRing = new DetailedQuestStep(this, "Make a perfect ruby ring at a furnace.", goldBar, ruby, ringMould);
+		makeNecklace = new ObjectStep(this, ObjectID.FURNACE_24009, "Make a perfect ruby necklace at a furnace. Make sure to only craft one.", goldBar, ruby, necklaceMould);
+		makeRing = new ObjectStep(this, ObjectID.FURNACE_24009, "Make a perfect ruby ring at a furnace. Make sure to only craft one.", goldBar, ruby, ringMould);
 
 		returnToMan = new NpcStep(this, NpcID.AVAN, new WorldPoint(3295, 3275, 0),
 			"Return to the man south of the Al Kharid mine.", perfectRing, perfectNecklace);

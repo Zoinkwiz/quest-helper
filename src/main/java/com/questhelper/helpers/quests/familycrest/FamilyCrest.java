@@ -72,11 +72,11 @@ public class FamilyCrest extends BasicQuestHelper
 	Requirement inDwarvenMines, inHobgoblinDungeon, northWallUp, southRoomUp, northRoomUp, northWallDown, southRoomDown, northRoomDown,
 		inJollyBoar, inEdgevilleDungeon, crest3Nearby;
 
-	QuestStep talkToDimintheis;
-	NpcStep talkToCaleb;
-	QuestStep talkToCalebWithFish, talkToCalebOnceMore, talkToGemTrader, talkToMan, enterDwarvenMine, talkToBoot,
-		enterWitchavenDungeon, pullNorthLever, pullSouthRoomLever, pullNorthLeverAgain, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2,
-		followPathAroundEast, mineGold, smeltGold, makeRing, makeNecklace, returnToMan, goUpToJohnathon, talkToJohnathon, giveJohnathonAntipoison,
+	NpcStep talkToDimintheis, talkToCaleb, talkToCalebWithFish, talkToCalebOnceMore, talkToGemTrader, talkToMan;
+	ObjectStep enterDwarvenMine;
+	NpcStep talkToBoot;
+	ObjectStep enterWitchavenDungeon, pullNorthLever, pullSouthRoomLever, pullNorthLeverAgain, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2;
+	QuestStep followPathAroundEast, mineGold, smeltGold, makeRing, makeNecklace, returnToMan, goUpToJohnathon, talkToJohnathon, giveJohnathonAntipoison,
 		killChronizon, pickUpCrest3, repairCrest, returnCrest;
 
 	ObjectStep goDownToChronizon;
@@ -241,6 +241,7 @@ public class FamilyCrest extends BasicQuestHelper
 
 		talkToGemTrader = new NpcStep(this, NpcID.GEM_TRADER, new WorldPoint(3286, 3211, 0), "Talk to the Gem Trader in Al Kharid.");
 		talkToGemTrader.addDialogStep("I'm in search of a man named Avan Fitzharmon.");
+		talkToGemTrader.addTeleport(alkharidTele);
 		talkToMan = new NpcStep(this, NpcID.MAN, new WorldPoint(3295, 3275, 0), "Talk to the man south of the Al Kharid mine.");
 		talkToMan.addDialogStep("I'm looking for a man named Avan Fitzharmon.");
 		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0),

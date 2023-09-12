@@ -78,7 +78,9 @@ public class FamilyCrest extends BasicQuestHelper
 	ObjectStep enterWitchavenDungeon, pullNorthLever, pullSouthRoomLever, pullNorthLeverAgain, pullNorthRoomLever, pullNorthLever3, pullSouthRoomLever2;
 	QuestStep followPathAroundEast, mineGold;
 	ObjectStep smeltGold;
-	QuestStep makeRing, makeNecklace, returnToMan, goUpToJohnathon, talkToJohnathon, giveJohnathonAntipoison,
+	QuestStep makeRing, makeNecklace, returnToMan;
+	ObjectStep goUpToJohnathon;
+	QuestStep talkToJohnathon, giveJohnathonAntipoison,
 		killChronizon, pickUpCrest3, repairCrest, returnCrest;
 
 	ObjectStep goDownToChronizon;
@@ -290,6 +292,7 @@ public class FamilyCrest extends BasicQuestHelper
 
 		goUpToJohnathon = new ObjectStep(this, ObjectID.STAIRCASE_11797, new WorldPoint(3286, 3494, 0),
 			"Go upstairs in the Jolly Boar Inn north east of Varrock and talk to Johnathon.", antipoison);
+		goUpToJohnathon.addTeleport(varrockTele.quantity(1));
 
 		talkToJohnathon = new NpcStep(this, NpcID.JOHNATHON, new WorldPoint(3277, 3504, 1), "Talk to Johnathon.", antipoison);
 		giveJohnathonAntipoison = new NpcStep(this, NpcID.JOHNATHON, new WorldPoint(3277, 3504, 1),

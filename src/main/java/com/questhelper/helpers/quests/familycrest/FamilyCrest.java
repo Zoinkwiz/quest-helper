@@ -296,7 +296,7 @@ public class FamilyCrest extends BasicQuestHelper
 
 		talkToJohnathon = new NpcStep(this, NpcID.JOHNATHON, new WorldPoint(3277, 3504, 1), "Talk to Johnathon.", antipoison);
 		giveJohnathonAntipoison = new NpcStep(this, NpcID.JOHNATHON, new WorldPoint(3277, 3504, 1),
-			"Give Johnathon some antipoison.", antipoison);
+			"Give Johnathon some antipoison.", antipoison.highlighted());
 		giveJohnathonAntipoison.addIcon(ItemID.ANTIPOISON3);
 
 		goUpToJohnathon.addSubSteps(talkToJohnathon);

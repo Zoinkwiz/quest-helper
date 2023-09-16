@@ -1189,7 +1189,7 @@ public class LegendsQuest extends BasicQuestHelper
 			completeNotes, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, goldBowlBlessed, germinatedSeeds, combatGear));
 
 		allSteps.add(new PanelDetails("Option 1: Kill",
-			Arrays.asList(killViyeldi, giveDaggerToEchned),
+			Arrays.asList(killViyeldi, pushBoulderAgain, giveDaggerToEchned),
 			completeNotes, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, goldBowlBlessed,
 			germinatedSeeds, combatGear));
 

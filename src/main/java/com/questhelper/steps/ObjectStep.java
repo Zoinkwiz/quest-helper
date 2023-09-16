@@ -38,6 +38,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import lombok.Setter;
 import net.runelite.api.GameObject;
@@ -65,19 +66,16 @@ public class ObjectStep extends DetailedQuestStep
 {
 	private final int objectID;
 	protected final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
-	private TileObject closestObject = null;
-
 	private boolean showAllInArea;
+	@Setter
+	private int maxObjectDistance = 50;
+	@Setter
+	private int maxRenderDistance = 50;
 
+	private TileObject closestObject = null;
 	private final List<TileObject> objects = new ArrayList<>();
 	private int lastPlane;
 	private boolean revalidateObjects;
-
-	@Setter
-	private int maxObjectDistance = 50;
-
-	@Setter
-	private int maxRenderDistance = 50;
 
 	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
@@ -111,6 +109,21 @@ public class ObjectStep extends DetailedQuestStep
 		super(questHelper, worldPoint, text, requirements, recommended);
 		this.objectID = objectID;
 		this.showAllInArea = false;
+	}
+
+	public ObjectStep copy()
+	{
+		ObjectStep newStep = new ObjectStep(getQuestHelper(), objectID, worldPoint, null, requirements, recommended);
+		if (text != null)
+		{
+			newStep.setText(text);
+		}
+		newStep.showAllInArea = showAllInArea;
+		newStep.addAlternateObjects(alternateObjectIDs);
+		newStep.setMaxObjectDistance(maxObjectDistance);
+		newStep.setMaxRenderDistance(maxRenderDistance);
+
+		return newStep;
 	}
 
 	public void setRevalidateObjects(boolean value)
@@ -216,6 +229,11 @@ public class ObjectStep extends DetailedQuestStep
 	public void addAlternateObjects(Integer... alternateObjectIDs)
 	{
 		this.alternateObjectIDs.addAll(Arrays.asList(alternateObjectIDs));
+	}
+
+	public void addAlternateObjects(Collection<Integer> alternateObjectIDs)
+	{
+		this.alternateObjectIDs.addAll(alternateObjectIDs);
 	}
 
 	@Subscribe

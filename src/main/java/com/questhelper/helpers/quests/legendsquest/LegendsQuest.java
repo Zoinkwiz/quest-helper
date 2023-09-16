@@ -952,7 +952,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		drinkBraveryPotionAndClimbDown = new ObjectStep(this, ObjectID.WINCH_2934, new WorldPoint(2761, 9331, 0), "Drink the bravery potion, then climb down the winch.", braveryPotionHighlighted);
 		drinkBraveryPotionAndClimbDown.addAlternateObjects(ObjectID.WINCH_2935);
-		drinkBraveryPotionAndClimbDown.addDialogSteps("Yes, I'll bravely drink the Bravery Potion.", "Yes, I'll shimmy down the rope into possible doom.");
+		drinkBraveryPotionAndClimbDown.addDialogSteps("Yes, I'll bravely drink the Bravery Potion.", "Yes, I'll shimmy down the rope into possible doom.", "I'm not scared. Let's go!");
 		// MesBox: You bravely swig down the entire contents of the vial and then wait for some sort of internal explosion. After a few seconds, you realise that you actually feel alright.
 
 

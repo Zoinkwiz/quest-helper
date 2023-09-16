@@ -732,7 +732,7 @@ public class LegendsQuest extends BasicQuestHelper
 			"Talk to Radimus Erkle inside the Legends' Guild's grounds.");
 		talkToRadimus.addDialogSteps("Yes actually, what's involved?", "Yes, it sounds great!", "Yes.");
 
-		enterJungle = new DetailedQuestStep(this, "Travel to the Kharazi Jungle in south Karamja. " +
+		enterJungle = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0), "Travel to the Kharazi Jungle in south Karamja. " +
 			"You'll need to cut through some trees and bushes to enter.", anyNotes, axe, machete, papyrus3, charcoal3);
 		((DetailedQuestStep) enterJungle).addTeleport(teleToJungleHint);
 

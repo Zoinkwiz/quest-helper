@@ -114,14 +114,16 @@ public class LegendsQuest extends BasicQuestHelper
 	QuestStep enterGate1;
 	ConditionalStep enterGate2;
 	QuestStep enterGate2Door, enterGate2Boulder1, enterGate2Boulder2, enterGate2Boulder3;
-	QuestStep searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2, useSapphire,
+	ObjectStep searchMarkedWall;
+	QuestStep useSoul, useMind, useEarth, useLaw, useLaw2, useSapphire,
 		useOpal, useTopaz, useJade, useEmerald, useRuby, useDiamond, waitForBook, pickUpBook, makeBowl, enterJungleWithBowl,
 		spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall,
 		fightNezikchenedInFire, enterMossyRockAfterFight, enterFireAfterFight, talkToUngadulu, useBowlOnSeeds, plantSeed,
 		leaveCaveWithSeed, useMacheteOnReedsAgain, spinBullAfterSeeds, talkToGujuoAfterSeeds, enterJungleAfterSeeds, addArdrigal,
 		addSnake, addArdrigalToSnake, enterJungleToGoToSource, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource;
 	ConditionalStep enterGate2ToSource;
-	QuestStep searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, enterMossyRockForViyeldi, useCrystalsOnFurnace,
+	ObjectStep searchMarkedWallToSource;
+	QuestStep useSpellOnDoor, useRopeOnWinch, enterMossyRockForViyeldi, useCrystalsOnFurnace,
 		useHeartOnRock, useHeartOnRecess, pushBoulder, talkToEchned, pickUpHat, talkToUngaduluForForce, killViyeldi, pushBoulderAgain, giveDaggerToEchned,
 		fightNezikchenedAtSource, castForce, pushBoulderWithForce, pushBoulderAfterFight, useBowlOnSacredWater, returnToSurface,
 		useWaterOnTree, useMacheteOnReedsEnd, useReedOnPoolEnd, useAxe, useAxeAgain, enterJungleToPlant, craftTree, pickUpTotem,
@@ -129,7 +131,8 @@ public class LegendsQuest extends BasicQuestHelper
 
 	DetailedQuestStep enterMossyRockHolyForce, enterBookcaseHolyForce, enterGate1HolyForce;
 	ConditionalStep enterGate2HolyForce;
-	DetailedQuestStep searchMarkedWallHolyForce, useSpellOnDoorHolyForce, climbDownWinchHolyForce;
+	ObjectStep searchMarkedWallHolyForce;
+	DetailedQuestStep useSpellOnDoorHolyForce, climbDownWinchHolyForce;
 
 	DetailedQuestStep summonGujou, talkToGujouForTotem;
 
@@ -1024,8 +1027,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		enterGate2HolyForce = enterGate2.copy();
 
-		searchMarkedWallHolyForce = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Follow the cave around until you reach a marked wall. Use it.");
-		searchMarkedWallHolyForce.addDialogSteps("Investigate the outline of the door.", "Yes, I'll go through!");
+		searchMarkedWallHolyForce = searchMarkedWallToSource.copy();
 
 		useSpellOnDoorHolyForce = new ObjectStep(this, ObjectID.ANCIENT_GATE_2930, new WorldPoint(2763, 9314, 0), "Cast a charge orb spell on the ancient gate.", chargeOrbRunes, unpoweredOrb, normalSpellbook);
 		useSpellOnDoorHolyForce.addWidgetHighlight(218, 41);

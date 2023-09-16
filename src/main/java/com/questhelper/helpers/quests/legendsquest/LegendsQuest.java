@@ -96,6 +96,8 @@ public class LegendsQuest extends BasicQuestHelper
 
 	SpellbookRequirement normalSpellbook;
 
+	ItemRequirement teleToLegendsGuildHint;
+
 	Requirement inGuild, inKharazi, completeEast, completeMiddle, completeWest, completeTextAppeared, inWest, inMiddle,
 		inEast, finishedMap, gujuoNearby, inCaveRoom1, inCaves, talkedToUngadulu, hadSketch, inCaveRoom2, inCaveRoom3, inCaveRoom4,
 		addedSoulRune, addedMindRune, addedEarthRune, addedLawRune, addedLawRune2, searchedMarkedWall, inCaveRoom5, sapphirePlaced,
@@ -561,6 +563,8 @@ public class LegendsQuest extends BasicQuestHelper
 
 		chargeOrbRunes = new ItemRequirements(LogicType.AND, "Runes for any charge orb spell you have the level to cast", cosmic3, elemental30);
 
+		teleToLegendsGuildHint = new ItemRequirement("Fairy ring BLR, or Ardougne Teleport then run north-east", -1, -1);
+
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB);
 
 		ardrigalMixture = new ItemRequirement("Ardrigal mixture", ItemID.ARDRIGAL_MIXTURE);
@@ -719,6 +723,7 @@ public class LegendsQuest extends BasicQuestHelper
 	{
 		talkToGuard = new NpcStep(this, NpcID.LEGENDS_GUARD, new WorldPoint(2729, 3348, 0),
 			"Talk to one of the guards outside the Legends' Guild.");
+		((NpcStep) talkToGuard).addTeleport(teleToLegendsGuildHint);
 		talkToGuard.addDialogSteps("Can I speak to someone in charge?", "Can I go on the quest?",
 			"Yes, I'd like to talk to Grand Vizier Erkle.");
 

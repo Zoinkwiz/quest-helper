@@ -109,9 +109,8 @@ public class LegendsQuest extends BasicQuestHelper
 
 	QuestStep talkToGuard, talkToRadimus, enterJungle, moveToWest, doSketchWest, sketchWest, moveToMiddle, doSketchMiddle,
 		sketchMiddle, moveToEast, doSketchEast, sketchEast, enterJungleWithRoarer, spinBull,
-		talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain, enterMossyRockAgain,
-		enterBookcase;
-	QuestStep enterGate1;
+		talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain, enterMossyRockAgain;
+	ObjectStep enterBookcase, enterGate1;
 	ConditionalStep enterGate2;
 	QuestStep enterGate2Door, enterGate2Boulder1, enterGate2Boulder2, enterGate2Boulder3;
 	ObjectStep searchMarkedWall;
@@ -120,7 +119,8 @@ public class LegendsQuest extends BasicQuestHelper
 		spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall,
 		fightNezikchenedInFire, enterMossyRockAfterFight, enterFireAfterFight, talkToUngadulu, useBowlOnSeeds, plantSeed,
 		leaveCaveWithSeed, useMacheteOnReedsAgain, spinBullAfterSeeds, talkToGujuoAfterSeeds, enterJungleAfterSeeds, addArdrigal,
-		addSnake, addArdrigalToSnake, enterJungleToGoToSource, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource;
+		addSnake, addArdrigalToSnake, enterJungleToGoToSource, enterMossyRockToSource;
+	ObjectStep enterBookcaseToSource, enterGate1ToSource;
 	ConditionalStep enterGate2ToSource;
 	ObjectStep searchMarkedWallToSource;
 	QuestStep useSpellOnDoor, useRopeOnWinch, enterMossyRockForViyeldi, useCrystalsOnFurnace,
@@ -937,11 +937,8 @@ public class LegendsQuest extends BasicQuestHelper
 		enterMossyRockToSource = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0), "Search and then enter the Mossy Rocks in the north west of the Kharazi.");
 		enterMossyRockToSource.addDialogStep("Yes, I'll crawl through. I'm very athletic.");
 
-		enterBookcaseToSource = new ObjectStep(this, ObjectID.BOOKCASE_2911, new WorldPoint(2796, 9339, 0), "Search the bookcase and slide past it.");
-		enterBookcaseToSource.addDialogStep("Yes please, I love crevices!");
-
-		enterGate1ToSource = new ObjectStep(this, ObjectID.ANCIENT_GATE, new WorldPoint(2810, 9332, 0), "Right-click search the gate.", lockpick);
-
+		enterBookcaseToSource = enterBookcase.copy();
+		enterGate1ToSource = enterGate1.copy();
 		enterGate2ToSource = enterGate2.copy();
 
 		searchMarkedWallToSource = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Follow the cave around until you reach a marked wall. Use it.");
@@ -1020,13 +1017,9 @@ public class LegendsQuest extends BasicQuestHelper
 			darkDagger, runeOrDragonAxe, machete, pickaxe, lockpick, chargeOrbRunes, unpoweredOrb, goldBowlBlessed, combatGear, normalSpellbook);
 		enterMossyRockHolyForce.addDialogStep("Yes, I'll crawl through. I'm very athletic.");
 
-		enterBookcaseHolyForce = new ObjectStep(this, ObjectID.BOOKCASE_2911, new WorldPoint(2796, 9339, 0), "Search the bookcase and slide past it.");
-		enterBookcaseHolyForce.addDialogStep("Yes please, I love crevices!");
-
-		enterGate1HolyForce = new ObjectStep(this, ObjectID.ANCIENT_GATE, new WorldPoint(2810, 9332, 0), "Right-click search the gate.", lockpick);
-
+		enterBookcaseHolyForce = enterBookcase.copy();
+		enterGate1HolyForce = enterGate1.copy();
 		enterGate2HolyForce = enterGate2.copy();
-
 		searchMarkedWallHolyForce = searchMarkedWallToSource.copy();
 
 		useSpellOnDoorHolyForce = new ObjectStep(this, ObjectID.ANCIENT_GATE_2930, new WorldPoint(2763, 9314, 0), "Cast a charge orb spell on the ancient gate.", chargeOrbRunes, unpoweredOrb, normalSpellbook);

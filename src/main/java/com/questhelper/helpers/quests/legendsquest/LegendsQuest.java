@@ -96,7 +96,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 	SpellbookRequirement normalSpellbook;
 
-	ItemRequirement teleToLegendsGuildHint;
+	ItemRequirement teleToLegendsGuildHint, teleToJungleHint;
 
 	Requirement inGuild, inKharazi, completeEast, completeMiddle, completeWest, completeTextAppeared, inWest, inMiddle,
 		inEast, finishedMap, gujuoNearby, inCaveRoom1, inCaves, talkedToUngadulu, hadSketch, inCaveRoom2, inCaveRoom3, inCaveRoom4,
@@ -564,6 +564,7 @@ public class LegendsQuest extends BasicQuestHelper
 		chargeOrbRunes = new ItemRequirements(LogicType.AND, "Runes for any charge orb spell you have the level to cast", cosmic3, elemental30);
 
 		teleToLegendsGuildHint = new ItemRequirement("Fairy ring BLR, or Ardougne Teleport then run north-east", -1, -1);
+		teleToJungleHint = new ItemRequirement("Fairy ring CKR then run south, or Brimhaven teleport then take Hajedy's cart to Shilo Village for 200 coins", -1, -1);
 
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB);
 
@@ -733,6 +734,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		enterJungle = new DetailedQuestStep(this, "Travel to the Kharazi Jungle in south Karamja. " +
 			"You'll need to cut through some trees and bushes to enter.", anyNotes, axe, machete, papyrus3, charcoal3);
+		((DetailedQuestStep) enterJungle).addTeleport(teleToJungleHint);
 
 		sketchWest = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0),
 			"Stand in the west of the Kharazi Jungle and right-click complete the Radimus note.", anyNotesHighlighted, papyrus, charcoal);

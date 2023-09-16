@@ -115,8 +115,9 @@ public class LegendsQuest extends BasicQuestHelper
 	QuestStep enterGate2Door, enterGate2Boulder1, enterGate2Boulder2, enterGate2Boulder3;
 	ObjectStep searchMarkedWall;
 	QuestStep useSoul, useMind, useEarth, useLaw, useLaw2, useSapphire,
-		useOpal, useTopaz, useJade, useEmerald, useRuby, useDiamond, waitForBook, pickUpBook, makeBowl, enterJungleWithBowl,
-		spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall,
+		useOpal, useTopaz, useJade, useEmerald, useRuby, useDiamond, waitForBook, pickUpBook, makeBowl;
+	DetailedQuestStep enterJungleWithBowl;
+	QuestStep spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall,
 		fightNezikchenedInFire, enterMossyRockAfterFight, enterFireAfterFight, talkToUngadulu, useBowlOnSeeds, plantSeed,
 		leaveCaveWithSeed, useMacheteOnReedsAgain, spinBullAfterSeeds, talkToGujuoAfterSeeds, enterJungleAfterSeeds, addArdrigal,
 		addSnake, addArdrigalToSnake, enterJungleToGoToSource, enterMossyRockToSource;
@@ -864,10 +865,11 @@ public class LegendsQuest extends BasicQuestHelper
 		makeBowl = new DetailedQuestStep(this, "Travel to an anvil and make a gold bowl.", goldBar2, sketch, hammer);
 		makeBowl.addDialogStep("Yes.");
 
-		enterJungleWithBowl = new DetailedQuestStep(this,
+		enterJungleWithBowl = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0),
 			"Return to the Kharazi Jungle with your gold bowl, and be prepared for a fight.",
 			Arrays.asList(completeNotes, bullroarer, goldBowl, bindingBook, axe, machete, combatGear, prayer42),
 			Arrays.asList(prayerPotions));
+		enterJungleWithBowl.addTeleport(teleToJungleHint);
 
 		spinBullToBless = new DetailedQuestStep(this, "Swing the Bullroarer until Gujuo appears.",
 			bullroarerHighlight, goldBowl, prayer42);

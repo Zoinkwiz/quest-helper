@@ -1060,7 +1060,7 @@ public class LegendsQuest extends BasicQuestHelper
 		useBowlOnSacredWater = new ObjectStep(this, ObjectID.SACRED_WATER, "Use the blessed bowl on the sacred water.",
 			goldBowlBlessed.highlighted());
 		useBowlOnSacredWater.addIcon(ItemID.BLESSED_GOLD_BOWL);
-		returnToSurface = new DetailedQuestStep(this, "Return to the surface.");
+		returnToSurface = new DetailedQuestStep(this, "Return to the surface. Teleporting out will evaporate the water but the pool above ground is restored and can be used.");
 
 		useWaterOnTree = new ObjectStep(this, ObjectID.YOMMI_TREE_SAPLING, "Use the golden bowl on the sapling.", goldBowlFullHighlighted);
 		useWaterOnTree.addIcon(ItemID.GOLDEN_BOWL_726);

@@ -154,7 +154,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			"Check what pets you have insured with Probita in East Ardougne (right-click her to Check).");
 
 		wildyLever = new ObjectStep(this, ObjectID.LEVER_1814, new WorldPoint(2561, 3311, 0),
-			"Use the Ardougne lever to teleport to the Wilderness (you may pull the lever there to return).");
+			"Use the Ardougne lever to teleport to the Wilderness (you may pull the lever there to return). This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
 
 		enterCombatCamp = new ObjectStep(this, ObjectID.GATE_2041, new WorldPoint(2518, 3356, 0),
 			"Enter the Combat Training Camp north of West Ardougne.");

@@ -1156,7 +1156,7 @@ public class LegendsQuest extends BasicQuestHelper
 			talkToGujuoAfterSeeds), completeNotes, machete, axe, goldBowlFull, yommiSeeds, bullroarer));
 
 		allSteps.add(new PanelDetails("To the source", Arrays.asList(
-			enterJungleToGoToSource, addArdrigal, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource,
+			addArdrigal, enterJungleToGoToSource, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource,
 			enterGate2ToSource, searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, climbDownWinch),
 			completeNotes, ardrigal, snakeWeed, vialOfWater, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, germinatedSeeds, combatGear));
 

@@ -64,6 +64,7 @@ import com.questhelper.steps.QuestStep;
 
 import java.util.*;
 
+import com.questhelper.steps.TileStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -105,7 +106,8 @@ public class LegendsQuest extends BasicQuestHelper
 		inCaveRoom6, addedRope, inChallengeCave, echnedNearby, viyeldiNearby, sacredWaterNearby, saplingNearby, adultNearby, felledNearby,
 		trimmedNearby, totemNearby, ranalphNearby, irvigNearby, sanNearby;
 
-	QuestStep talkToGuard, talkToRadimus, enterJungle, sketchWest, sketchMiddle, sketchEast, enterJungleWithRoarer, spinBull,
+	QuestStep talkToGuard, talkToRadimus, enterJungle, moveToWest, doSketchWest, sketchWest, moveToMiddle, doSketchMiddle,
+		sketchMiddle, moveToEast, doSketchEast, sketchEast, enterJungleWithRoarer, spinBull,
 		talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain, enterMossyRockAgain,
 		enterBookcase, enterGate1, enterGate2, searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2, useSapphire,
 		useOpal, useTopaz, useJade, useEmerald, useRuby, useDiamond, waitForBook, pickUpBook, makeBowl, enterJungleWithBowl,
@@ -737,15 +739,26 @@ public class LegendsQuest extends BasicQuestHelper
 			"Bring everything from the section's item requirements.", anyNotes, axe, machete, papyrus3, charcoal3);
 		((DetailedQuestStep) enterJungle).addTeleport(teleToJungleHint);
 
-		sketchWest = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0),
-			"Stand in the west of the Kharazi Jungle and right-click complete the Radimus note.", anyNotesHighlighted, papyrus, charcoal);
-		sketchWest.addDialogStep("Start Mapping Kharazi Jungle.");
+		// TODO: Validate that these coordinates we use for "move to west" are sane
+		moveToWest = new TileStep(this, new WorldPoint(2791, 2917, 0), "", anyNotes, papyrus, charcoal);
+		doSketchWest = new DetailedQuestStep(this, new WorldPoint(2791, 2917, 0),
+			"", anyNotesHighlighted, papyrus, charcoal);
+		doSketchWest.addDialogStep("Start Mapping Kharazi Jungle.");
+		sketchWest = new ConditionalStep(this, moveToWest, "Stand in the west of the Kharazi Jungle and right-click complete the Radimus note.");
+		((ConditionalStep) sketchWest).addStep(inWest, doSketchWest);
 
-		sketchMiddle = new DetailedQuestStep(this, new WorldPoint(2852, 2915, 0), "Stand in the middle of the Kharazi Jungle and right-click complete the Radimus note.", anyNotesHighlighted, papyrus, charcoal);
-		sketchMiddle.addDialogStep("Start Mapping Kharazi Jungle.");
+		// TODO: Validate that these coordinates we use for "move to middle" are sane
+		moveToMiddle = new TileStep(this, new WorldPoint(2852, 2915, 0), "", anyNotes, papyrus, charcoal);
+		doSketchMiddle = new DetailedQuestStep(this, new WorldPoint(2852, 2915, 0), "", anyNotesHighlighted, papyrus, charcoal);
+		doSketchMiddle.addDialogStep("Start Mapping Kharazi Jungle.");
+		sketchMiddle = new ConditionalStep(this, moveToMiddle, "Stand in the middle of the Kharazi Jungle and right-click complete the Radimus note.");
+		((ConditionalStep) sketchMiddle).addStep(inMiddle, doSketchMiddle);
 
-		sketchEast = new DetailedQuestStep(this, new WorldPoint(2944, 2916, 0), "Stand in the east of the Kharazi Jungle and right-click complete the Radimus note.", anyNotesHighlighted, papyrus, charcoal);
-		sketchEast.addDialogStep("Start Mapping Kharazi Jungle.");
+		moveToEast = new TileStep(this, new WorldPoint(2910, 2916, 0), "", anyNotes, papyrus, charcoal);
+		doSketchEast = new DetailedQuestStep(this, new WorldPoint(2910, 2916, 0), "", anyNotesHighlighted, papyrus, charcoal);
+		doSketchEast.addDialogStep("Start Mapping Kharazi Jungle.");
+		sketchEast = new ConditionalStep(this, moveToEast, "Stand in the east of the Kharazi Jungle and right-click complete the Radimus note.");
+		((ConditionalStep) sketchEast).addStep(inEast, doSketchEast);
 
 		useNotes = new NpcStep(this, NpcID.JUNGLE_FORESTER, new WorldPoint(2867, 2942, 0),
 			"Use the Radimus notes on a Jungle Forester outside the Kharazi Jungle. Whilst in the jungle, " +

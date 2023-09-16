@@ -503,6 +503,7 @@ public class LegendsQuest extends BasicQuestHelper
 		bindingBookHighlighted.setHighlightInInventory(true);
 
 		goldBar2 = new ItemRequirement("Gold bar", ItemID.GOLD_BAR, 2);
+		goldBar2.setTooltip("Bring a few extra in case it fails");
 
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 

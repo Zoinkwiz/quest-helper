@@ -1113,7 +1113,7 @@ public class LegendsQuest extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGuard, talkToRadimus)));
 		allSteps.add(new PanelDetails("Mapping Kharazi",
 			Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes),
-			papyrus3, charcoal, completeNotes, bullRoarer, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));
+			papyrus3, charcoal, completeNotes, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));
 
 		allSteps.add(new PanelDetails("Contacting the locals", Arrays.asList(enterJungleWithRoarer, spinBull, talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain,
 			talkToGujuoAgain),

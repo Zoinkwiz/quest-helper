@@ -888,7 +888,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		spinBullAfterSeeds = new DetailedQuestStep(this, "Swing the Bullroarer until Gujuo appears.", bullroarerHighlight);
 		talkToGujuoAfterSeeds = new NpcStep(this, NpcID.GUJUO, "Talk to Gujuo about what's happened to the water pool.");
-		talkToGujuoAfterSeeds.addDialogSteps("The water pool has dried up, but I need more pure water.",
+		talkToGujuoAfterSeeds.addDialogSteps("The water pool has dried up, but I need more water.",
 			"Where's the source of the pure water?");
 
 		enterJungleAfterSeeds = new DetailedQuestStep(this, "Return to the Kharazi Jungle with your Bullroarer, and be prepared for some fights.",

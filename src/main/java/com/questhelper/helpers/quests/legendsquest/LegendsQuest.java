@@ -965,6 +965,10 @@ public class LegendsQuest extends BasicQuestHelper
 			runeOrDragonAxe, machete, pickaxe, lockpick, chargeOrbRunes, unpoweredOrb, goldBowlBlessed, combatGear, normalSpellbook);
 		enterMossyRockForViyeldi.addDialogStep("Yes, I'll crawl through. I'm very athletic.");
 
+		// TODO: Mark the NPCs if you don't have the relevant crystal
+		// Right now, none of the NPCs are marked and you have to look around for the skeletons yourself.
+		// Some of the skeletons have a tendency of hiding, so marking the skeletons you don't have the crystal from
+		// would help make that search a bit easier.
 		useCrystalsOnFurnace = new ObjectStep(this, ObjectID.FURNACE_2966, new WorldPoint(2427, 4727, 0),
 			"Follow the path down, and kill each of the 3 skeletons (Irvig, San, and Ranalph) for crystal pieces. Use them on the furnace in the north east of the area.",
 			lumpCrystal, chunkCrystal, hunkCrystal);

@@ -100,7 +100,8 @@ public class LegendsQuest extends BasicQuestHelper
 	ItemRequirement teleToLegendsGuildHint, teleToJungleHint;
 
 	Requirement inGuild, inKharazi, completeEast, completeMiddle, completeWest, completeTextAppeared, inWest, inMiddle,
-		inEast, finishedMap, gujuoNearby, inCaveRoom1, inCaves, talkedToUngadulu, hadSketch, inCaveRoom2, inCaveRoom3, inCaveRoom4,
+		inEast, finishedMap, gujuoNearby, inCaveRoom1, inCaves, talkedToUngadulu, hadSketch, inCaveRoom2, atBoulder1, atBoulder2, atBoulder3,
+		inCaveRoom3, inCaveRoom4,
 		addedSoulRune, addedMindRune, addedEarthRune, addedLawRune, addedLawRune2, searchedMarkedWall, inCaveRoom5, sapphirePlaced,
 		opalPlaced, jadePlaced, topazPlaced, emeraldPlaced, rubyPlaced, diamondPlaced, bookAppearing, bookNearby, inFire, nezNearby,
 		inCaveRoom6, addedRope, inChallengeCave, echnedNearby, viyeldiNearby, sacredWaterNearby, saplingNearby, adultNearby, felledNearby,
@@ -109,20 +110,26 @@ public class LegendsQuest extends BasicQuestHelper
 	QuestStep talkToGuard, talkToRadimus, enterJungle, moveToWest, doSketchWest, sketchWest, moveToMiddle, doSketchMiddle,
 		sketchMiddle, moveToEast, doSketchEast, sketchEast, enterJungleWithRoarer, spinBull,
 		talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain, talkToGujuoAgain, enterMossyRockAgain,
-		enterBookcase, enterGate1, enterGate2, searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2, useSapphire,
+		enterBookcase;
+	QuestStep enterGate1;
+	ConditionalStep enterGate2;
+	QuestStep enterGate2Door, enterGate2Boulder1, enterGate2Boulder2, enterGate2Boulder3;
+	QuestStep searchMarkedWall, useSoul, useMind, useEarth, useLaw, useLaw2, useSapphire,
 		useOpal, useTopaz, useJade, useEmerald, useRuby, useDiamond, waitForBook, pickUpBook, makeBowl, enterJungleWithBowl,
 		spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall,
 		fightNezikchenedInFire, enterMossyRockAfterFight, enterFireAfterFight, talkToUngadulu, useBowlOnSeeds, plantSeed,
 		leaveCaveWithSeed, useMacheteOnReedsAgain, spinBullAfterSeeds, talkToGujuoAfterSeeds, enterJungleAfterSeeds, addArdrigal,
-		addSnake, addArdrigalToSnake, enterJungleToGoToSource, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource,
-		enterGate2ToSource, searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, enterMossyRockForViyeldi, useCrystalsOnFurnace,
+		addSnake, addArdrigalToSnake, enterJungleToGoToSource, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource;
+	ConditionalStep enterGate2ToSource;
+	QuestStep searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, enterMossyRockForViyeldi, useCrystalsOnFurnace,
 		useHeartOnRock, useHeartOnRecess, pushBoulder, talkToEchned, pickUpHat, talkToUngaduluForForce, killViyeldi, pushBoulderAgain, giveDaggerToEchned,
 		fightNezikchenedAtSource, castForce, pushBoulderWithForce, pushBoulderAfterFight, useBowlOnSacredWater, returnToSurface,
 		useWaterOnTree, useMacheteOnReedsEnd, useReedOnPoolEnd, useAxe, useAxeAgain, enterJungleToPlant, craftTree, pickUpTotem,
 		killRanalph, killIrvig, killSan, defeatDemon;
 
-	DetailedQuestStep enterMossyRockHolyForce, enterBookcaseHolyForce, enterGate1HolyForce,
-		enterGate2HolyForce, searchMarkedWallHolyForce, useSpellOnDoorHolyForce, climbDownWinchHolyForce;
+	DetailedQuestStep enterMossyRockHolyForce, enterBookcaseHolyForce, enterGate1HolyForce;
+	ConditionalStep enterGate2HolyForce;
+	DetailedQuestStep searchMarkedWallHolyForce, useSpellOnDoorHolyForce, climbDownWinchHolyForce;
 
 	DetailedQuestStep summonGujou, talkToGujouForTotem;
 
@@ -133,7 +140,8 @@ public class LegendsQuest extends BasicQuestHelper
 	ObjectStep useReedOnPoolAgain, climbDownWinch, drinkBraveryPotionAndClimbDown, useTotemOnTotem, useTotemOnTotemAgain;
 
 	//Zones
-	Zone guild1, guild2, guild3, kharazi1, kharazi2, kharazi3, kharazi4, eastKharazi, westKharazi, middleKharazi, caveRoom1P1, caveRoom1P2,
+	Zone guild1, guild2, guild3, kharazi1, kharazi2, kharazi3, kharazi4, eastKharazi, westKharazi, middleKharazi, caveRoom1P1,
+		boulder1, boulder2, boulder3, caveRoom1P2,
 		caves, caveRoom2P1, caveRoom2P2, caveRoom3, caveRoom4P1, caveRoom4P2, caveRoom4P3, caveRoom5P1, caveRoom5P2, caveRoom5P3, fire1,
 		fire2, fire3, caveRoom6P1, caveRoom6P2, challengeCave;
 
@@ -309,7 +317,7 @@ public class LegendsQuest extends BasicQuestHelper
 		saveViy.addStep(inCaveRoom6, climbDownWinchHolyForce);
 		saveViy.addStep(inCaveRoom5, useSpellOnDoorHolyForce);
 		saveViy.addStep(inCaveRoom4, searchMarkedWallHolyForce);
-		saveViy.addStep(inCaveRoom3, enterGate2HolyForce);
+		saveViy.addStep(inCaveRoom3, enterGate2ToSource);
 		saveViy.addStep(inCaveRoom2, enterGate1HolyForce);
 		saveViy.addStep(inCaveRoom1, enterBookcaseHolyForce);
 
@@ -404,6 +412,9 @@ public class LegendsQuest extends BasicQuestHelper
 		westKharazi = new Zone(new WorldPoint(2753, 2880, 0), new WorldPoint(2815, 2940, 0));
 		middleKharazi = new Zone(new WorldPoint(2816, 2880, 0), new WorldPoint(2879, 2940, 0));
 		caveRoom1P1 = new Zone(new WorldPoint(2780, 9317, 0), new WorldPoint(2803, 9335, 0));
+		boulder1 = new Zone(new WorldPoint(2807, 9329, 0), new WorldPoint(2811, 9331, 0));
+		boulder2 = new Zone(new WorldPoint(2807, 9325, 0), new WorldPoint(2811, 9328, 0));
+		boulder3 = new Zone(new WorldPoint(2807, 9321, 0), new WorldPoint(2811, 9324, 0));
 		caveRoom1P2 = new Zone(new WorldPoint(2770, 9336, 0), new WorldPoint(2797, 9343, 0));
 		caveRoom2P1 = new Zone(new WorldPoint(2804, 9332, 0), new WorldPoint(2812, 9342, 0));
 		caveRoom2P2 = new Zone(new WorldPoint(2799, 9336, 0), new WorldPoint(2803, 9341, 0));
@@ -632,6 +643,9 @@ public class LegendsQuest extends BasicQuestHelper
 		inCaveRoom1 = new ZoneRequirement(caveRoom1P1, caveRoom1P2);
 		inCaves = new ZoneRequirement(caves, challengeCave);
 		inCaveRoom2 = new ZoneRequirement(caveRoom2P1, caveRoom2P2);
+		atBoulder1 = new ZoneRequirement(boulder1);
+		atBoulder2 = new ZoneRequirement(boulder2);
+		atBoulder3 = new ZoneRequirement(boulder3);
 		inCaveRoom3 = new ZoneRequirement(caveRoom3);
 		inCaveRoom4 = new ZoneRequirement(caveRoom4P1, caveRoom4P2, caveRoom4P3);
 		inCaveRoom5 = new ZoneRequirement(caveRoom5P1, caveRoom5P2, caveRoom5P3);
@@ -797,8 +811,20 @@ public class LegendsQuest extends BasicQuestHelper
 		enterBookcase.addDialogStep("Yes please, I love crevices!");
 
 		enterGate1 = new ObjectStep(this, ObjectID.ANCIENT_GATE, new WorldPoint(2810, 9332, 0), "Right-click search the gate.", lockpick);
-		enterGate2 = new ObjectStep(this, ObjectID.ANCIENT_GATE_2922, new WorldPoint(2810, 9314, 0), "Smash through the boulders and enter the gate at the end of the corridor.", pickaxe);
-		enterGate2.addDialogStep("Yes, I'm very strong, I'll force them open.");
+
+		// Stone boulder objects:
+		// First one: 2919
+		// Second one: 2920 (highlight when in 2809, 9325 and 2810, 9326)
+		// Third one: 2921	(highlight when in 2809, 9321 and 2810, 9322)
+		enterGate2Door = new ObjectStep(this, ObjectID.ANCIENT_GATE_2922, new WorldPoint(2810, 9314, 0), "", pickaxe);
+		enterGate2Door.addDialogStep("Yes, I'm very strong, I'll force them open.");
+		enterGate2Boulder1 = new ObjectStep(this, ObjectID.BOULDER, new WorldPoint(2810, 9328, 0), "", pickaxe);
+		enterGate2Boulder2 = new ObjectStep(this, ObjectID.BOULDER_2920, new WorldPoint(2810, 9324, 0), "", pickaxe);
+		enterGate2Boulder3 = new ObjectStep(this, ObjectID.BOULDER_2921, new WorldPoint(2810, 9320, 0), "", pickaxe);
+		enterGate2 = new ConditionalStep(this, enterGate2Door, "Smash through the boulders and enter the gate at the end of the corridor.");
+		enterGate2.addStep(atBoulder1, enterGate2Boulder1);
+		enterGate2.addStep(atBoulder2, enterGate2Boulder2);
+		enterGate2.addStep(atBoulder3, enterGate2Boulder3);
 
 		searchMarkedWall = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Follow the cave around until you reach a marked wall. Right-click search it. Kill a Deathwing for the Karamja Achievement Diary whilst you're here.");
 		searchMarkedWall.addDialogSteps("Investigate the outline of the door.", "Yes, I'll go through!", "Yes, I'll read it.");
@@ -912,8 +938,8 @@ public class LegendsQuest extends BasicQuestHelper
 		enterBookcaseToSource.addDialogStep("Yes please, I love crevices!");
 
 		enterGate1ToSource = new ObjectStep(this, ObjectID.ANCIENT_GATE, new WorldPoint(2810, 9332, 0), "Right-click search the gate.", lockpick);
-		enterGate2ToSource = new ObjectStep(this, ObjectID.ANCIENT_GATE_2922, new WorldPoint(2810, 9314, 0), "Smash through the boulders and enter the gate at the end of the corridor.", pickaxe);
-		enterGate2ToSource.addDialogStep("Yes, I'm very strong, I'll force them open.");
+
+		enterGate2ToSource = enterGate2.copy();
 
 		searchMarkedWallToSource = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Follow the cave around until you reach a marked wall. Use it.");
 		searchMarkedWallToSource.addDialogSteps("Investigate the outline of the door.", "Yes, I'll go through!");
@@ -996,8 +1022,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		enterGate1HolyForce = new ObjectStep(this, ObjectID.ANCIENT_GATE, new WorldPoint(2810, 9332, 0), "Right-click search the gate.", lockpick);
 
-		enterGate2HolyForce = new ObjectStep(this, ObjectID.ANCIENT_GATE_2922, new WorldPoint(2810, 9314, 0), "Smash through the boulders and enter the gate at the end of the corridor.", pickaxe);
-		enterGate2HolyForce.addDialogStep("Yes, I'm very strong, I'll force them open.");
+		enterGate2HolyForce = enterGate2.copy();
 
 		searchMarkedWallHolyForce = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Follow the cave around until you reach a marked wall. Use it.");
 		searchMarkedWallHolyForce.addDialogSteps("Investigate the outline of the door.", "Yes, I'll go through!");

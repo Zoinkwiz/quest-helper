@@ -359,16 +359,16 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.COOKING, 4000),
-				new ExperienceReward(Skill.HITPOINTS, 4000));
+			new ExperienceReward(Skill.COOKING, 4000),
+			new ExperienceReward(Skill.HITPOINTS, 4000));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Access to the Evil Chickens Lair"),
-				new UnlockReward("Further access to the Culinaromancer's Chest"));
+			new UnlockReward("Access to the Evil Chickens Lair"),
+			new UnlockReward("Further access to the Culinaromancer's Chest"));
 	}
 
 	@Override

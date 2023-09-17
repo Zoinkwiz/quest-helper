@@ -27,6 +27,7 @@ package com.questhelper.helpers.quests.legendsquest;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -49,6 +50,8 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
@@ -579,7 +582,14 @@ public class LegendsQuest extends BasicQuestHelper
 
 		chargeOrbRunes = new ItemRequirements(LogicType.AND, "Runes for any charge orb spell you have the level to cast", cosmic3, elemental30);
 
-		teleToLegendsGuildHint = new ItemRequirement("Fairy ring BLR, or Ardougne Teleport then run north-east", -1, -1);
+		ItemRequirement teleToLegendsGuildFairyRing = new ItemRequirement("Fairy ring to Legends' Guild (BLR)", ItemCollections.FAIRY_STAFF)
+			.showConditioned(new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(),
+				Operation.GREATER_EQUAL, 40, "Partial completion of Fairytale II for access to fairy rings"));
+		ItemRequirement teleToLegendsGuildArdougne = new ItemRequirement("Ardougne teleport and run north-east to Legends' Guild", ItemID.ARDOUGNE_TELEPORT);
+		teleToLegendsGuildHint = new ItemRequirements(LogicType.OR,
+			"Fairy ring BLR, or Ardougne Teleport then run north-east",
+			teleToLegendsGuildFairyRing,
+			teleToLegendsGuildArdougne);
 		teleToJungleHint = new ItemRequirement("Fairy ring CKR then run south, or Brimhaven teleport then take Hajedy's cart to Shilo Village for 200 coins", -1, -1);
 
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB);
@@ -1152,7 +1162,7 @@ public class LegendsQuest extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGuard, talkToRadimus)));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGuard, talkToRadimus), null, Arrays.asList(teleToLegendsGuildHint)));
 		allSteps.add(new PanelDetails("Mapping Kharazi",
 			Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes),
 			papyrus3, charcoal, anyNotes, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));

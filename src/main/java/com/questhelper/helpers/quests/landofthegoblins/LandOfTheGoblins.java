@@ -446,7 +446,8 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
 		dramenStaff.setTooltip("For transportation via fairy rings");
-		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES);
+		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES, 3);
+		skillsNecklace.setChargedItem(true);
 		combatBracelet = new ItemRequirement("Combat bracelet", ItemCollections.COMBAT_BRACELETS);
 		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", -1, 2);
 		draynorTeleport = new ItemRequirement("Draynor Village teleport", -1, 2);
@@ -478,11 +479,13 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		talkToGuard = new NpcStep(this, NpcID.GOBLIN_GUARD_11314, new WorldPoint(2580, 9852, 0), "Talk to the goblin guard in the northwest of the cave.");
 		talkToMakeoverMage = new NpcStep(this, new int[]{NpcID.MAKEOVER_MAGE, NpcID.MAKEOVER_MAGE_1307}, new WorldPoint(2917, 3322, 0),
 			"Talk to the Makeover Mage southwest of Falador.", toadflaxPotionUnf);
+		((NpcStep) talkToMakeoverMage).addTeleport(skillsNecklace.quantity(1).named("Skills necklace (Crafting Guild [3])"));
 		talkToMakeoverMage.addDialogSteps("Can you turn me into a goblin?", "I need to slip past some goblin guards.", "Can you turn me into a goblin or not?");
 		pickPharmakosBerry = new ObjectStep(this, ObjectID.PHARMAKOS_BUSH, "Pick some Pharmakos berries from the bushes outside.", toadflaxPotionUnf);
 		mixGoblinPotion = new DetailedQuestStep(this, "Use the pharmakos berries on the unfinished toadflax potion.", pharmakosBerryHighlight, toadflaxUnfHighlight);
 		goBackToGoblinCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Go back to the Goblin Cave outside the Fishing Guild.",
 			goblinPotion, vial, pestleAndMortar, noEquippedItems);
+		((ObjectStep) goBackToGoblinCave).addTeleport(skillsNecklace.quantity(1).named("Skills necklace (Fishing Guild [1])"));
 		pickBlackMushrooms = new ObjectStep(this, ObjectID.BLACK_MUSHROOMS, new WorldPoint(2577, 9845, 0), "Pick some black mushrooms and use it on a vial to make black dye.",
 			goblinPotion, vial, pestleAndMortar, noEquippedItems);
 		makeBlackDye = new DetailedQuestStep(this, "Make black dye by using the blackmushrooms on a vial.", blackMushroom.highlighted(), vial.highlighted(), pestleAndMortar);
@@ -543,6 +546,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		talkToAggieWithFish.addDialogSteps("Can you make dyes for me please?", "Could you remove the dye from this goblin mail?");
 		goToTempleWithDyes = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0),
 			"", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
+		((ObjectStep) goToTempleWithDyes).addTeleport(skillsNecklace.quantity(1).named("Skills necklace (Fishing Guild [1])"));
 
 		enterTempleDoorForThieving = new ObjectStep(this, ObjectID.STAIRS_43261, new WorldPoint(2581, 9853, 0), "Enter the temple.");
 
@@ -728,13 +732,13 @@ public class LandOfTheGoblins extends BasicQuestHelper
 			Arrays.asList(goBackToGoblinCave, goToGuards, pickBlackMushrooms, makeBlackDye, drinkGoblinPotion, talkToGuardAsGoblin, dyeGoblinMail, enterNorthEastRoom, searchCrateForSphere, talkToZanikInCell,
 				leaveNorthEastRoom, talkToPriestInTemple, enterNorthEastRoomForKey, pickpocketPriest),
 			Arrays.asList(noPet, goblinPotion, vial, pestleAndMortar, goblinMail),
-			Arrays.asList(invSpaceToUnequip, dorgeshKaanSphereRec)));
+			Arrays.asList(skillsNecklace.quantity(1), invSpaceToUnequip, dorgeshKaanSphereRec)));
 		panels.add(new PanelDetails("Keys to the Crypt",
 			Arrays.asList(talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, pickpocketWhitePriest, dyeGoblinMailYellow,
 				pickpocketYellowPriest, dyeGoblinMailBlue, pickpocketBluePriest, dyeGoblinMailOrange, pickpocketOrangePriest,
 				dyeGoblinMailPurple, pickpocketPurplePriest, unlockCrypt),
 			Arrays.asList(fishingRod, rawSlimyEel, coins, yellowDye, blueDye, orangeDye, purpleDye, blackGoblinMail, goblinPotion, huzamogaarbKey, combatGear),
-			Arrays.asList(draynorTeleport, combatBracelet)));
+			Arrays.asList(draynorTeleport, combatBracelet, skillsNecklace.quantity(1))));
 		panels.add(new PanelDetails("High Priests of Ages Past",
 			Arrays.asList(enterCrypt, sayNameSnothead, defeatSnothead, sayNameSnailfeet, defeatSnailfeet, sayNameMosschin, defeatMosschin, sayNameRedeyes, defeatRedeyes, sayNameStrongbones, defeatStrongbones, learnYubiusk),
 			combatGear));

@@ -232,7 +232,8 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(rellekkaTeleport, gnomeTeleport, kharidTeleport, karamjaTeleport, draynorTeleport);
+		return Arrays.asList(rellekkaTeleport, gnomeTeleport, kharidTeleport, karamjaTeleport, draynorTeleport,
+			camelotTeleport, skillsNecklace);
 	}
 
 

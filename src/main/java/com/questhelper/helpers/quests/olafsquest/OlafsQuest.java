@@ -76,7 +76,7 @@ public class OlafsQuest extends BasicQuestHelper
 		triangleKey, circleKey, starKey;
 
 	//Items Recommended
-	ItemRequirement  prayerPotions, food, combatGear;
+	ItemRequirement prayerPotions, food, combatGear;
 
 	Requirement givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
 		keyInterfaceOpen, ulfricNearby, killedUlfric, tenFreeSlots;
@@ -148,10 +148,10 @@ public class OlafsQuest extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		
+
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		food.setUrlSuffix("Food");
-		
+
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();

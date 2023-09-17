@@ -450,7 +450,8 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		skillsNecklace.setChargedItem(true);
 		combatBracelet = new ItemRequirement("Combat bracelet", ItemCollections.COMBAT_BRACELETS);
 		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", -1, 2);
-		draynorTeleport = new ItemRequirement("Draynor Village teleport", -1, 2);
+		draynorTeleport = new ItemRequirement("Draynor Village teleport", ItemCollections.AMULET_OF_GLORIES, 2);
+		draynorTeleport.setChargedItem(true);
 		explorersRing = new ItemRequirement("Explorer's ring 3 or 4", Arrays.asList(ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4));
 		salveAmulet = new ItemRequirement("Salve amulet or Salve amulet (e)", ItemCollections.SALVE_AMULET);
 	}
@@ -538,12 +539,14 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 		pickpocketPriest = new NpcStep(this, NpcID.PRIEST_11307, new WorldPoint(3754, 4340, 0), "Pickpocket a key from the priest.");
 		talkToAggie = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3258, 0), "Talk to Aggie in Draynor Village.");
-		talkToAggie.addDialogSteps("Can you make dyes for me please?", "Can you make black or white dye?", "Thanks.");
+		((NpcStep) talkToAggie).addTeleport(draynorTeleport.quantity(1).named("Amulet of glory (Draynor Village [3])"));
+		talkToAggie.addDialogSteps("Draynor Village", "Can you make dyes for me please?", "Can you make black or white dye?", "Thanks.");
 		goToHemenster = new ObjectStep(this, ObjectID.GATE_48, new WorldPoint(2642, 3441, 0), "Go to Hemenster to catch a whitefish.", fishingRod, rawSlimyEel);
 		goToHemenster.addDialogStep("I need to catch a Hemenster Whitefish.");
 		catchWhitefish = new NpcStep(this, NpcID.FISHING_SPOT_4080, new WorldPoint(2637, 3444, 0), "Catch a Hemenster whitefish.", fishingRod, rawSlimyEel);
 		talkToAggieWithFish = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3258, 0), "Bring the whitefish and black goblin mail to Aggie.", coins, hemensterWhitefish, blackGoblinMail);
-		talkToAggieWithFish.addDialogSteps("Can you make dyes for me please?", "Could you remove the dye from this goblin mail?");
+		((NpcStep) talkToAggieWithFish).addTeleport(draynorTeleport.quantity(1).named("Amulet of glory (Draynor Village [3])"));
+		talkToAggieWithFish.addDialogSteps("Draynor Village", "Can you make dyes for me please?", "Could you remove the dye from this goblin mail?");
 		goToTempleWithDyes = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0),
 			"", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
 		((ObjectStep) goToTempleWithDyes).addTeleport(skillsNecklace.quantity(1).named("Skills necklace (Fishing Guild [1])"));

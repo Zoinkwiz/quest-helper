@@ -798,6 +798,8 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		talkToMori = new NpcStep(this, NpcID.MORI_8502, new WorldPoint(1703, 3797, 2), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass);
 		climbUpStairsArceuusChurchF0toF1 = new ObjectStep(this, ObjectID.STAIRS_27854, new WorldPoint(1680, 3784, 0), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass);
+		climbUpStairsArceuusChurchF0toF1.addDialogStep("'A Dark Disposition' - Arceuus");
+		((ObjectStep) climbUpStairsArceuusChurchF0toF1).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [5]"));
 		climbUpStairsArceuusChurchF1toF2 = new ObjectStep(this, ObjectID.STAIRS_27853, new WorldPoint(1708, 3793, 1), "Talk to Mori on the top floor of the Arceuus church.", darkEssenceBlock, moltenGlass);
 
 		talkToMori.addSubSteps(climbUpStairsArceuusChurchF0toF1, climbUpStairsArceuusChurchF1toF2);

@@ -543,7 +543,8 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		((NpcStep) talkToAggie).addTeleport(draynorTeleport.quantity(1).named("Amulet of glory (Draynor Village [3])"));
 		talkToAggie.addDialogSteps("Draynor Village", "Can you make dyes for me please?", "Can you make black or white dye?", "Thanks.");
 		goToHemenster = new ObjectStep(this, ObjectID.GATE_48, new WorldPoint(2642, 3441, 0), "Go to Hemenster to catch a whitefish.", fishingRod, rawSlimyEel);
-		goToHemenster.addDialogStep("I need to catch a Hemenster Whitefish.");
+		((ObjectStep) goToHemenster).addTeleport(combatBracelet.named("Combat bracelet (Ranging Guild [4])"));
+		goToHemenster.addDialogSteps("Ranging Guild", "I need to catch a Hemenster Whitefish.");
 		catchWhitefish = new NpcStep(this, NpcID.FISHING_SPOT_4080, new WorldPoint(2637, 3444, 0), "Catch a Hemenster whitefish.", fishingRod, rawSlimyEel);
 		talkToAggieWithFish = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3258, 0), "Bring the whitefish and black goblin mail to Aggie.", coins, hemensterWhitefish, blackGoblinMail);
 		((NpcStep) talkToAggieWithFish).addTeleport(draynorTeleport.quantity(1).named("Amulet of glory (Draynor Village [3])"));

@@ -232,11 +232,12 @@ public class OlafsQuest extends BasicQuestHelper
 		talkToOlafAfterPlanks.addDialogStep("Alright, here, have some food. Now give me the map.");
 		digHole = new DigStep(this, new WorldPoint(2748, 3732, 0), "Dig next to the Windswept Tree.");
 
+		pickUpKey = new ItemStep(this, "Pick up the dropped key.", key);
+
 		killSkeleton = new NpcStep(this, NpcID.SKELETON_FREMENNIK, new WorldPoint(2727, 10141, 0), "Go deeper into the caverns and kill a Skeleton Fremennik for a key.", true);
 		killSkeleton.addAlternateNpcs(NpcID.SKELETON_FREMENNIK_4492, NpcID.SKELETON_FREMENNIK_4493, NpcID.SKELETON_FREMENNIK_4494, NpcID.SKELETON_FREMENNIK_4495,
 			NpcID.SKELETON_FREMENNIK_4496, NpcID.SKELETON_FREMENNIK_4497, NpcID.SKELETON_FREMENNIK_4498, NpcID.SKELETON_FREMENNIK_4499);
-
-		pickUpKey = new ItemStep(this, "Pick up the dropped key.", key);
+		killSkeleton.addSubSteps(pickUpKey);
 
 		searchPainting = new ObjectStep(this, ObjectID.PICTURE_WALL, new WorldPoint(2707, 10147, 0), "Search the picture wall in the north room.");
 

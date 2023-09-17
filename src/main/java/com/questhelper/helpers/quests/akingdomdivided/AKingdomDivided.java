@@ -464,6 +464,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		darkEssenceBlock = new ItemRequirement("Dark essence block", ItemID.DARK_ESSENCE_BLOCK);
 		darkEssenceBlock.setTooltip("Untradeable. Mine a Dense essence block in Arceuus then use the Dark Altar.");
 		brokenRedirector = new ItemRequirement("Broken redirector", ItemID.BROKEN_REDIRECTOR);
+		brokenRedirector.setTooltip("You can get a new one by talking to Lord Arceuus at Xeric's Lookout");
 		sulphurPotion = new ItemRequirement("Sulphur potion", ItemID.SULPHUR_POTION);
 		shieldingPotion = new ItemRequirement("Shielding potion", ItemID.SHIELDING_POTION);
 		lovaDeclaration = new ItemRequirement("Declaration", ItemID.DECLARATION);

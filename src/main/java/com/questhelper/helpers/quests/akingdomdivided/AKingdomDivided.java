@@ -634,6 +634,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToMartinHoltSettlementRuins = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0),
 			"Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp. " +
 			"Be prepared to fight a level 132 assassin who uses a dragon dagger and dragon darts.", combatGear, food);
+		((NpcStep) talkToMartinHoltSettlementRuins).addTeleport(gamesNecklace.named("Games necklace (Wintertodt Camp [5])"));
+		talkToMartinHoltSettlementRuins.addDialogStep("Wintertodt Camp.");
 		killAssassin = new NpcStep(this, NpcID.ASSASSIN_10940, "Kill the Assassin.", combatGear, food);
 		talkToMartinHoltSettlementRuins.addSubSteps(killAssassin);
 		talkToMartinHoltSettlementRuins2 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp.");

@@ -39,6 +39,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -71,8 +72,9 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		vanillaPod, dramenStaffOrLunar, dramenBranch, pestleAndMortar, iceGloves, rawChicken, antidragonShield,
 		antifirePotion, radimusNotes, bruleeWithEgg, baseBrulee, uncookedBrulee, finishedBrulee, finishedBruleeHighlighted,
 		milkyMixture, cornflourMixture, evilEgg, token, cinnamon, pestleAndMortarHighlighted, tokenHighlighted;
+	ItemRequirement draynorVillageTele;
 
-	Requirement inDiningRoom, talkedToWom, inEvilChickenLair, inZanaris, hasEggAndToken, tokenNearby, eggNearby;
+	Requirement inDiningRoom, talkedToWom, inEvilChickenLair, inZanaris, inDraynorVillage, hasEggAndToken, tokenNearby, eggNearby;
 
 	QuestStep enterDiningRoom, inspectAmik, enterKitchen, talkToCook, enterDiningRoomAgain, useBruleeOnVarze, talkToWom, useMilkOnCream,
 		useCornflourOnMilky, addPodToCornflourMixture, enterZanaris, useChickenOnShrine, killEvilChicken, pickUpEgg, useEggOnBrulee,
@@ -81,7 +83,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	ConditionalStep tokenAndEggSteps;
 
 	//Zones
-	Zone diningRoom, zanaris, evilChickenLair;
+	Zone diningRoom, zanaris, evilChickenLair, draynorVillage;
 
 	int evilChickenLevel = 19;
 
@@ -181,6 +183,9 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		antifirePotion = new ItemRequirement("Antifire potion", ItemCollections.ANTIFIRE);
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		draynorVillageTele = new ItemRequirement("Draynor Village teleport", ItemCollections.AMULET_OF_GLORIES, 1);
+		draynorVillageTele.setChargedItem(true);
+		draynorVillageTele.showConditioned(new Conditions(LogicType.NOR, inDraynorVillage));
 
 		milkyMixture = new ItemRequirement("Milky mixture", ItemID.MILKY_MIXTURE);
 		milkyMixture.setHighlightInInventory(true);
@@ -214,6 +219,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
 		zanaris = new Zone(new WorldPoint(2368, 4353, 0), new WorldPoint(2495, 4479, 0));
 		evilChickenLair = new Zone(new WorldPoint(2430, 4355, 0), new WorldPoint(2492, 4407, 0));
+		draynorVillage = new Zone(new WorldPoint(3060, 3221, 0), new WorldPoint(3121, 3283, 0));
 	}
 
 	public void setupConditions()
@@ -226,6 +232,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		// 1919 = 2 when entered black dragon lair once
 
 		inEvilChickenLair = new ZoneRequirement(evilChickenLair);
+		inDraynorVillage = new ZoneRequirement(draynorVillage);
 		inZanaris = new ZoneRequirement(zanaris);
 		hasEggAndToken = new Conditions(evilEgg, token);
 		tokenNearby = new ItemOnTileRequirement(token);
@@ -245,7 +252,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		talkToCook.addSubSteps(enterKitchen);
 
 		talkToWom = new NpcStep(this, NpcID.WISE_OLD_MAN, new WorldPoint(3088, 3255, 0), "Talk to the Wise Old Man in Draynor Village about strange beasts and the Evil Chicken.");
-		talkToWom.addDialogSteps("I'd just like to ask you something.", "Strange beasts", "The Evil Chicken");
+		((NpcStep) talkToWom).addTeleport(draynorVillageTele.quantity(1).named("Amulet of glory (Draynor Village [3])"));
+		talkToWom.addDialogSteps("Draynor Village", "I'd just like to ask you something.", "Strange beasts", "The Evil Chicken");
 
 		useMilkOnCream = new DetailedQuestStep(this, "Use a bucket of milk on a pot of cream.", bucketOfMilk, potOfCream);
 		useCornflourOnMilky = new DetailedQuestStep(this, "Use cornflour on the milky mixture.", cornflour, milkyMixture);
@@ -315,7 +323,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, antidragonShield, antifirePotion);
+		return Arrays.asList(combatGear, antidragonShield, antifirePotion, draynorVillageTele);
 	}
 
 	@Override
@@ -365,7 +373,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectAmik, talkToCook, talkToWom)));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectAmik, talkToCook, talkToWom), null, Arrays.asList(draynorVillageTele.quantity(1))));
 		PanelDetails tokenAndEggPanel = new PanelDetails("Get token and egg", Arrays.asList(enterZanaris, useChickenOnShrine,
 			killEvilChicken, pickUpEgg, killBlackDragon, pickUpToken),
 			dramenStaffOrLunar, rawChicken, combatGear, antidragonShield, antifirePotion);

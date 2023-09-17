@@ -568,7 +568,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToTomasLawry.addDialogStep("I've found something that might be useful.");
 		talkToTomasLawry.addSubSteps(goDownCouncillorsHomeF2toF1, goDownCouncillorsHomeF3toF2WithReceipt);
 		goToLovakengjPub = new NpcStep(this, NpcID.FUGGY, new WorldPoint(1569, 3758, 0), "Talk to Fuggy in the pub in southeast Lovakengj.");
-		goToLovakengjPub.addDialogSteps("Had any councillors stay here recently?", "So about the Councillor.");
+		goToLovakengjPub.addDialogSteps("'Jewellery of Jubilation' - Lovakengj", "Had any councillors stay here recently?", "So about the Councillor.");
+		((NpcStep) goToLovakengjPub).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [4]"));
 
 		enterHomeForClueSearch = new DetailedQuestStep(this, new WorldPoint(1676, 3680, 0), "Search the Councillor's home east of Kourend castle for clues.");
 		enterHomeForClueSearch.addSubSteps(getReceipt, inspectReceipt,

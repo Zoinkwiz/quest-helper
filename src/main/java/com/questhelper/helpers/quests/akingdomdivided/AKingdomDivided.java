@@ -744,6 +744,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToLordShayzienSidebar.addSubSteps(talkToLordShayzien, climbUpLadderLordShayzien);
 
 		talkToFulloreXericsLookout = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore at Xeric's Lookout located south east of Shayzien.");
+		talkToFulloreXericsLookout.addDialogStep("'History and Hearsay' - Shayzien");
+		((NpcStep) talkToFulloreXericsLookout).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [3] and run east (or Xeric's Talisman [1])"));
 
 		talkToAllMembersInXericsLookoutSidebar = new DetailedQuestStep(this, "Speak with all the leaders again on each floor of Xeric's Lookout. Lord Hosidius can be found in the basement and Lord Arceeus just outside the door of the Lookout.");
 		talkToArceuusLookout = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_10962, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceeus in Xeric's Lookout.");

@@ -590,7 +590,15 @@ public class LegendsQuest extends BasicQuestHelper
 			"Fairy ring BLR, or Ardougne Teleport then run north-east",
 			teleToLegendsGuildFairyRing,
 			teleToLegendsGuildArdougne);
-		teleToJungleHint = new ItemRequirement("Fairy ring CKR then run south, or Brimhaven teleport then take Hajedy's cart to Shilo Village for 200 coins", -1, -1);
+		ItemRequirement teleToJungleFairyRing = new ItemRequirement("Fairy ring to Karamja: South of Tai Bwo Wannai Village (CKR) then run south", ItemCollections.FAIRY_STAFF)
+			.showConditioned(new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(),
+				Operation.GREATER_EQUAL, 40, "Partial completion of Fairytale II for access to fairy rings"));
+		ItemRequirement cartFromBrimhavenToShiloVillage = new ItemRequirement("Take Hajedy's cart to Shilo Village for 200 coins (by Brimhaven teleport or Amulet of Glory [2])", ItemID.COINS, 200);
+		teleToJungleHint = new ItemRequirements(LogicType.OR,
+			"Fairy ring CKR then run south, or take Hajedy's cart from Brimhaven to Shilo Village for 200 coins (by Brimhaven teleport or Amulet of Glory [2])",
+			teleToJungleFairyRing,
+			cartFromBrimhavenToShiloVillage
+		);
 
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB);
 
@@ -1165,7 +1173,8 @@ public class LegendsQuest extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGuard, talkToRadimus), null, Arrays.asList(teleToLegendsGuildHint)));
 		allSteps.add(new PanelDetails("Mapping Kharazi",
 			Arrays.asList(enterJungle, sketchWest, sketchMiddle, sketchEast, useNotes),
-			papyrus3, charcoal, anyNotes, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond));
+			Arrays.asList(papyrus3, charcoal, anyNotes, axe, machete, lockpick, pickaxe, soulRune, mindRune, earthRune, lawRune2, opal, jade, topaz, sapphire, emerald, ruby, diamond),
+			Arrays.asList(teleToJungleHint)));
 
 		allSteps.add(new PanelDetails("Contacting the locals", Arrays.asList(enterJungleWithRoarer, spinBull, talkToGujuo, enterMossyRock, investigateFireWall, leaveCave, spinBullAgain,
 			talkToGujuoAgain),
@@ -1186,7 +1195,7 @@ public class LegendsQuest extends BasicQuestHelper
 			Arrays.asList(makeBowl, enterJungleWithBowl, spinBullToBless, talkToGujuoWithBowl, useMacheteOnReeds, useReedOnPool, enterMossyRockWithBowl, useBowlOnFireWall, useBindingBookOnUngadulu,
 				fightNezikchenedInFire, talkToUngadulu),
 			Arrays.asList(completeNotes, bullroarer, goldBar2, hammer, axe, machete, bindingBook, combatGear),
-			Arrays.asList(prayerPotions)));
+			Arrays.asList(prayerPotions, teleToJungleHint)));
 
 		allSteps.add(new PanelDetails("Attempted planting", Arrays.asList(
 			useBowlOnSeeds, leaveCaveWithSeed, useMacheteOnReedsAgain, useReedOnPoolAgain, spinBullAfterSeeds,

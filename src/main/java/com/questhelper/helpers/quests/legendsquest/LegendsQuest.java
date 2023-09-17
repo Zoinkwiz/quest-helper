@@ -321,7 +321,7 @@ public class LegendsQuest extends BasicQuestHelper
 		saveViy.addStep(inCaveRoom6, climbDownWinchHolyForce);
 		saveViy.addStep(inCaveRoom5, useSpellOnDoorHolyForce);
 		saveViy.addStep(inCaveRoom4, searchMarkedWallHolyForce);
-		saveViy.addStep(inCaveRoom3, enterGate2ToSource);
+		saveViy.addStep(inCaveRoom3, enterGate2HolyForce);
 		saveViy.addStep(inCaveRoom2, enterGate1HolyForce);
 		saveViy.addStep(inCaveRoom1, enterBookcaseHolyForce);
 

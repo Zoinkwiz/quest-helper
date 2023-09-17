@@ -68,7 +68,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		giantNib, giantPen, goodAnthem, awfulAnthem, treaty;
 
 	//Items Recommended
-	ItemRequirement dramenStaff, rellekkaTeleport;
+	ItemRequirement runRestoreItems, dramenStaff, rellekkaTeleport;
 
 	Requirement inIslands, inMiscCastleFirstFloor, inEtcCastleFirstFloor, inAstridRoom, inBrandRoom,
 		talked1P1, talked1P2, talked1P3, givenFlowers, doneEmote, talked1P4, talked2P1, talked2P2, talked2P3, givenBowOrCake,
@@ -234,6 +234,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		bow.addAlternates(ItemID.LONGBOW, ItemID.OAK_SHORTBOW, ItemID.OAK_LONGBOW, ItemID.WILLOW_SHORTBOW, ItemID.WILLOW_LONGBOW, ItemID.MAPLE_SHORTBOW, ItemID.MAPLE_LONGBOW, ItemID.YEW_SHORTBOW, ItemID.YEW_LONGBOW);
 		bow.setTooltip("You will lose this bow");
 		bow.setHighlightInInventory(true);
+		runRestoreItems = new ItemRequirement("Potions/Items to restore run energy", ItemCollections.RUN_RESTORE_ITEMS);
 		dramenStaff = new ItemRequirement("Dramen staff if travelling via Fairy Ring CIP", ItemCollections.FAIRY_STAFF).isNotConsumed();
 		rellekkaTeleport = new ItemRequirement("Miscellania teleport (Fairy Ring (CIP), tablet, lyre)", ItemCollections.FAIRY_STAFF);
 		rellekkaTeleport.addAlternates(ItemID.RELLEKKA_TELEPORT, ItemID.ENCHANTED_LYREI, ItemID.ENCHANTED_LYRE5, ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2, ItemID.ENCHANTED_LYRE1);
@@ -333,7 +334,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 
 		/* Winning over Astrid */
 		talkAstrid1 = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Talk to Princess Astrid a few times.");
-		talkAstrid1.addDialogStep("Archery is a noble Art!");
+		talkAstrid1.addDialogStep("Archery is a noble art!");
 		talkAstrid1.addDialogStep("He's been very helpful.");
 		talkAstrid1.addDialogStep("Hahahaha!");
 
@@ -416,6 +417,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		talkToBrandDip.addSubSteps(goDownEtcDip2, goUpMiscDip2, getAnotherAwfulAnthem);
 
 		talkToGhrimDip = new NpcStep(this, NpcID.ADVISOR_GHRIM, new WorldPoint(2499, 3857, 1), "Talk to Advisor Ghrim.");
+		talkToGhrimDip.addDialogStep("How do I make peace with Etceteria?");
 
 		goDownMiscDip2 = new ObjectStep(this, ObjectID.STAIRCASE_16676, new WorldPoint(2506, 3849, 1), "Go downstairs and return to Queen Sigrid.");
 		goDownMiscDip2.addDialogStep("Climb down the stairs.");
@@ -499,6 +501,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(dramenStaff);
+		reqs.add(runRestoreItems);
 		return reqs;
 	}
 

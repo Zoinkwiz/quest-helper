@@ -184,7 +184,8 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		returnToTempleWithDyes.addStep(isAGoblin, enterTempleDoorForThieving);
 		returnToTempleWithDyes.addStep(goblinSelectionActive, confirmGoblin);
 		returnToTempleWithDyes.addStep(inFrontOfGuardsWithGoblinPotion, drinkGoblinPotion);
-		returnToTempleWithDyes.addStep(new Conditions(LogicType.NOR, isAGoblin), goToGuards);
+		returnToTempleWithDyes.addStep(inGoblinCaveWithGoblinPotion, goToGuards);
+		returnToTempleWithDyes.addStep(goblinPotion.alsoCheckBank(questBank), goBackToGoblinCave);
 		goToTempleWithDyes.addSubSteps(returnToTempleWithDyes);
 
 		ConditionalStep dyeing = new ConditionalStep(this, goToHemenster);

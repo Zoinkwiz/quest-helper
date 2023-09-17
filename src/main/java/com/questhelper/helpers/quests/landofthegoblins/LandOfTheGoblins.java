@@ -185,6 +185,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		returnToTempleWithDyes.addStep(goblinSelectionActive, confirmGoblin);
 		returnToTempleWithDyes.addStep(inFrontOfGuardsWithGoblinPotion, drinkGoblinPotion);
 		returnToTempleWithDyes.addStep(new Conditions(LogicType.NOR, isAGoblin), goToGuards);
+		goToTempleWithDyes.addSubSteps(returnToTempleWithDyes);
 
 		ConditionalStep dyeing = new ConditionalStep(this, goToHemenster);
 		dyeing.addStep(hasAllGoblinKeys, unlockCrypt);
@@ -548,7 +549,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		((NpcStep) talkToAggieWithFish).addTeleport(draynorTeleport.quantity(1).named("Amulet of glory (Draynor Village [3])"));
 		talkToAggieWithFish.addDialogSteps("Draynor Village", "Can you make dyes for me please?", "Could you remove the dye from this goblin mail?");
 		goToTempleWithDyes = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0),
-			"", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
+			"Return to the goblin temple with all the dyes and some combat gear.", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
 		((ObjectStep) goToTempleWithDyes).addTeleport(skillsNecklace.quantity(1).named("Skills necklace (Fishing Guild [1])"));
 
 		enterTempleDoorForThieving = new ObjectStep(this, ObjectID.STAIRS_43261, new WorldPoint(2581, 9853, 0), "Enter the temple.");

@@ -247,9 +247,9 @@ public class OlafsQuest extends BasicQuestHelper
 		pickUpItems2 = new DetailedQuestStep(this, "Pick up 1 rotten barrels and 3 ropes from around the room.", rottenBarrel, ropes3);
 		pickUpItems.addSubSteps(pickUpItems2);
 
-		useBarrel = new ObjectStep(this, ObjectID.WALKWAY, new WorldPoint(2722, 10168, 0), "WALK onto the walkway to the east, and use a barrel on it to repair it.", rottenBarrel, ropes3);
+		useBarrel = new ObjectStep(this, ObjectID.WALKWAY, new WorldPoint(2722, 10168, 0), "WALK onto the walkway to the east, and use a barrel on it to repair it.", rottenBarrel.highlighted(), ropes3);
 		useBarrel.addIcon(ItemID.ROTTEN_BARREL_11045);
-		useBarrel2 = new ObjectStep(this, ObjectID.WALKWAY_23214, new WorldPoint(2724, 10168, 0), "WALK on the walkway and repair the next hole in it.", rottenBarrel, ropes3);
+		useBarrel2 = new ObjectStep(this, ObjectID.WALKWAY_23214, new WorldPoint(2724, 10168, 0), "WALK on the walkway and repair the next hole in it.", rottenBarrel.highlighted(), ropes3);
 		useBarrel2.addIcon(ItemID.ROTTEN_BARREL_11045);
 
 		openGate = new ObjectStep(this, ObjectID.GATE_23216, new WorldPoint(2725, 10168, 0), "Open the gate on the walkway, clicking the key hole which matches your key.", key);

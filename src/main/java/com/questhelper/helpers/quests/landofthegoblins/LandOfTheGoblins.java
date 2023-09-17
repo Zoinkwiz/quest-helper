@@ -643,6 +643,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		goTalkToZanik.addStep(inDorgeshKaanWithGrubfoot, talkToZanik);
 		goTalkToZanik.addStep(grubfootFollowing, enterCity);
 
+		// TODO: Add a teleport step to use one of the Dorgesh-Kaan spheres
 		goReturnToDorg = new ConditionalStep(this, enterCity, "Return to Dorgesh-Kaan and speak to Oldak.");
 
 		returnToDorgeshKaanOrFairyRing = new ConditionalStep(this, enterCity, "If you have access to fairy rings, travel to AJQ. Otherwise, return to Dorgesh-Kaan.");

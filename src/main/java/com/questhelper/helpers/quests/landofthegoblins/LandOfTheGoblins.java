@@ -459,6 +459,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		goDownIntoBasement = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0), "Enter the Lumbridge Castle basement.");
 		climbThroughHole = new ObjectStep(this, NullObjectID.NULL_6898, new WorldPoint(3219, 9618, 0), "");
 		talkToKazgar = new NpcStep(this, NpcID.KAZGAR_7301, new WorldPoint(3230, 9610, 0), "Travel with Kazgar to shortcut to Mistag.");
+		talkToKazgar.addDialogStep("Can you show me the way to the mines?");
 
 		talkToGrubfoot = new NpcStep(this, NpcID.GRUBFOOT_11255, new WorldPoint(3318, 9611, 0), "");
 		talkToGrubfoot.addDialogStep("Yes.");

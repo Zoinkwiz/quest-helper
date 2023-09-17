@@ -722,6 +722,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToLordArceuusSidebar.addSubSteps(talkToLordArceuus, climbTowerOfMagicStairs);
 
 		talkToLordHosidius = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0), "Speak to Lord Hosidius in his home on the south east side of Hosidius.");
+		talkToLordHosidius.addDialogStep("'Lunch by the Lancalliums' - Hosidius");
+		((NpcStep) talkToLordHosidius).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [1] (or Xeric's amulet [2])"));
 		talkToLadyLova = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ_11035, new WorldPoint(1484, 3748, 0), "Speak to Lady Lovakengj in the Lovakengj Assembly.");
 
 		talkToLadyPiscSidebar = new NpcStep(this, NpcID.LADY_SHAUNA_PISCARILIUS, "Speak to Lady Piscarilius in the sewers under Port Piscarilius.");

@@ -279,7 +279,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		killFrogSteps.addStep(addedRope, enterSwamp);
 
 		killMonkey = new NpcStep(this, NpcID.MONKEY_2848, new WorldPoint(2886, 3167, 0),
-			"Kill a monkey on karamja.", true);
+			"Kill a monkey on Karamja.", true);
 
 		enterKaramjaDungeon = new ObjectStep(this, ObjectID.ROCKS_11441, new WorldPoint(2857, 3169, 0),
 			"Kill a giant bat in the Karamja Volcano Dungeon.");

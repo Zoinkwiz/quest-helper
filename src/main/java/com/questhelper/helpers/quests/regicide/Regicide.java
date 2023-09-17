@@ -918,7 +918,7 @@ public class Regicide extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("15,000 Coins", ItemID.COINS_995, 15000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 15000));
 	}
 
 	@Override

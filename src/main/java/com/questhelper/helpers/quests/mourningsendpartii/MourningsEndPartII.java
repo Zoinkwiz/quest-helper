@@ -421,12 +421,12 @@ public class MourningsEndPartII extends BasicQuestHelper
 		deathTalismanHeader.addAlternates(ItemID.DEATH_TIARA, ItemID.RUNECRAFT_CAPE, ItemID.CATALYTIC_TALISMAN, ItemID.CATALYTIC_TIARA);
 		deathTalismanHeader.setTooltip("Catalytic talisman/tiara may be used instead");
 
-		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true).isNotConsumed();
-		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
-		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true).isNotConsumed();
-		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true).isNotConsumed();
-		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true).isNotConsumed();
-		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true).isNotConsumed();
+		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true).isNotConsumed().highlighted();
+		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed().highlighted();
+		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true).isNotConsumed().highlighted();
+		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true).isNotConsumed().highlighted();
+		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true).isNotConsumed().highlighted();
+		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true).isNotConsumed().highlighted();
 		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers, mournerCloak, mournerBoots, mournerGloves).isNotConsumed();
 
 		// Teleports

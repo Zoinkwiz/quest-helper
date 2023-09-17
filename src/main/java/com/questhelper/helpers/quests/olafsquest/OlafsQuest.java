@@ -33,6 +33,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -78,7 +79,7 @@ public class OlafsQuest extends BasicQuestHelper
 	ItemRequirement  prayerPotions, food, combatGear;
 
 	Requirement givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
-		keyInterfaceOpen, ulfricNearby, killedUlfric;
+		keyInterfaceOpen, ulfricNearby, killedUlfric, tenFreeSlots;
 
 	QuestStep talkToOlaf, chopTree, giveLogToOlaf, talkToIngrid, talkToVolf, returnToOlaf, useDampPlanks, talkToOlafAfterPlanks, digHole, pickUpKey, searchPainting, doPuzzle, pickUpItems,
 		pickUpItems2, useBarrel, useBarrel2, openGate, chooseSquare, chooseCross, chooseTriangle, chooseCircle, chooseStar, killUlfric;
@@ -173,6 +174,9 @@ public class OlafsQuest extends BasicQuestHelper
 		triangleKey = new ItemRequirement("Key", ItemID.KEY_11041);
 		circleKey = new ItemRequirement("Key", ItemID.KEY_11042);
 		starKey = new ItemRequirement("Key", ItemID.KEY_11043);
+
+		tenFreeSlots = new FreeInventorySlotRequirement(10);
+		tenFreeSlots.setTooltip("Only need 4 slots free if bringing 6 rope with you.");
 
 		rottenBarrel = new ItemRequirement("Rotten barrel", ItemID.ROTTEN_BARREL);
 		rottenBarrel.addAlternates(ItemID.ROTTEN_BARREL_11045);
@@ -327,7 +331,7 @@ public class OlafsQuest extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Finding treasure",
 			Arrays.asList(digHole, killSkeleton, searchPainting, doPuzzle, pickUpItems,
-				useBarrel, useBarrel2, openGate, searchChest, killUlfric, searchChestAgain)));
+				useBarrel, useBarrel2, openGate, searchChest, killUlfric, searchChestAgain), spade, tenFreeSlots, combatGear));
 		return allSteps;
 	}
 }

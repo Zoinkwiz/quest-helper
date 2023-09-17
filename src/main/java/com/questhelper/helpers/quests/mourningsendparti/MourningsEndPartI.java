@@ -246,12 +246,12 @@ public class MourningsEndPartI extends BasicQuestHelper
 		tarnishedKey = new ItemRequirement("Tarnished key", ItemID.TARNISHED_KEY);
 		fullMourners = new ItemRequirements("Full mourners' outfit", mournerMask, mournerBody, mournerLegs, mournerCloak, mournerBoots, mournerGloves);
 
-		equippedMournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true);
-		equippedMournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true);
-		equippedMournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true);
-		equippedMournerBody = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true);
-		equippedMournerLegs = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true);
-		equippedMournerMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true);
+		equippedMournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true).isNotConsumed().highlighted();
+		equippedMournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNER_GLOVES, 1, true).isNotConsumed().highlighted();
+		equippedMournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNER_CLOAK, 1, true).isNotConsumed().highlighted();
+		equippedMournerBody = new ItemRequirement("Mourner top", ItemID.MOURNER_TOP, 1, true).isNotConsumed().highlighted();
+		equippedMournerLegs = new ItemRequirement("Mourner trousers", ItemID.MOURNER_TROUSERS, 1, true).isNotConsumed().highlighted();
+		equippedMournerMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed().highlighted();
 
 		brokenDevice = new ItemRequirement("Broken device", ItemID.BROKEN_DEVICE);
 		fixedDevice = new ItemRequirement("Fixed device", ItemID.FIXED_DEVICE);

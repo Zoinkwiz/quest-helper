@@ -28,6 +28,7 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestBank;
+import com.questhelper.ItemWithCharge;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
@@ -97,6 +98,14 @@ public class ItemRequirement extends AbstractRequirement
 	protected boolean isConsumedItem = true;
 
 	protected boolean shouldAggregate = true;
+
+	/**
+	 * Denotes whether the quantity-check should take into consideration item charges.
+	 * With this enabled, 1xRing of dueling(7) will count as 7 quantity.
+	 */
+	@Setter
+	@Getter
+	protected boolean isChargedItem = false;
 
 	@Setter
 	protected Requirement additionalOptions;
@@ -266,6 +275,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setTooltip(getTooltip());
 		newItem.setUrlSuffix(getUrlSuffix());
 		newItem.additionalOptions = additionalOptions;
+		newItem.isChargedItem = isChargedItem;
 
 		return newItem;
 	}
@@ -553,6 +563,24 @@ public class ItemRequirement extends AbstractRequirement
 
 	public int getNumMatches(List<Item> items, int itemID)
 	{
+		if (isChargedItem)
+		{
+			return items.stream()
+				.filter(Objects::nonNull)
+				.filter(i -> i.getId() == itemID)
+				.mapToInt(i -> {
+					ItemWithCharge itemWithCharge = ItemWithCharge.findItem(i.getId());
+					if (itemWithCharge != null)
+					{
+						return itemWithCharge.getCharges();
+					}
+
+					// Fall back to using the item's quantity
+					return i.getQuantity();
+				})
+				.sum();
+		}
+
 		return items.stream()
 			.filter(Objects::nonNull)
 			.filter(i -> i.getId() == itemID)

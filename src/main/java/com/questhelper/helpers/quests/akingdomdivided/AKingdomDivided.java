@@ -580,7 +580,8 @@ public class AKingdomDivided extends BasicQuestHelper
 				"gaps of the fire waves to approach the boss.\n\nTalk to Cabin Boy Herbert next to Veos's ship in Port" +
 				" Piscarilius to initiate the fight.",
 			combatGearForJudgeOfYama, food);
-		talkToCabinBoyHerbert.addDialogStep("I'm looking for a councillor.");
+		((NpcStep) talkToCabinBoyHerbert).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [2]"));
+		talkToCabinBoyHerbert.addDialogSteps("'The Fisher's Flute' - Piscarilius", "I'm looking for a councillor.");
 
 		talkToCabinBoyHerbertSidebar = new DetailedQuestStep(this, "Talk to Cabin Boy Herbert next to Veos's ship in " +
 			"Port Piscarilius, ready to fight the Judge of Yama.");

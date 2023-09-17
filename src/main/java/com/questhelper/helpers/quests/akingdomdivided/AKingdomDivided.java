@@ -119,7 +119,7 @@ public class AKingdomDivided extends BasicQuestHelper
 
 	ItemRequirement combatGearForJudgeOfYama, food, bluishKey, rosesDiary, rosesNote, receipt,
 		kharedstsMemoirs, anyAxe, rosesNote2, combatGear, fireSpellGear, coldKey, rosesNote3, gamesNecklace, rosesNote4,
-		fairyRingStaffOrGamesNecklace, combatGearForXamphur, kahtEgg, dampKey, defencePotion, volcanicSulphur, moltenGlass,
+		fairyRingStaffOrSkillsNecklace, combatGearForXamphur, kahtEgg, dampKey, defencePotion, volcanicSulphur, moltenGlass,
 		darkEssenceBlock, brokenRedirector, sulphurPotion, shieldingPotion, lovaDeclaration, fairyRingStaff, darkNullifier,
 		shayzienJournal;
 
@@ -444,9 +444,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		gamesNecklace = new ItemRequirement("Games necklace for Wintertodt camp teleport", ItemCollections.GAMES_NECKLACES);
 		rosesNote4 = new ItemRequirement("Rose's note", ItemID.ROSES_NOTE_25808);
 		fairyRingStaff = new ItemRequirement("Staff for Fairy rings", ItemCollections.FAIRY_STAFF);
-		fairyRingStaffOrGamesNecklace = new ItemRequirement("Staff for Fairy rings or a Skills Necklace",
+		fairyRingStaffOrSkillsNecklace = new ItemRequirement("Staff for Fairy rings or a Skills Necklace",
 			ItemCollections.FAIRY_STAFF).isNotConsumed();
-		fairyRingStaffOrGamesNecklace.addAlternates(ItemCollections.SKILLS_NECKLACES);
+		fairyRingStaffOrSkillsNecklace.addAlternates(ItemCollections.SKILLS_NECKLACES);
 		combatGearForXamphur = new ItemRequirement("Melee or range gear to fight Xamphur.", -1, -1).isNotConsumed();
 		combatGearForXamphur.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		combatGearForXamphur.setTooltip("Xamphur is immune to magic attacks.");
@@ -656,7 +656,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		readRosesNote4 = new DetailedQuestStep(this, "Read Rose's note from the panel on the wall.", rosesNote4.highlighted());
 
 		inspectCratesInShack = new ObjectStep(this, ObjectID.CRATES_41851, new WorldPoint(1281, 3763, 0),
-			"Inspect the crates in the north west corner of the shack located north east of the farming guild.  Use fairy ring CIR or a skill necklace to get there quickly.", fairyRingStaffOrGamesNecklace);
+			"Inspect the crates in the north west corner of the shack located north east of the farming guild.");
+		((ObjectStep) inspectCratesInShack).addTeleport(fairyRingStaffOrSkillsNecklace.named("Fairy ring to CIR or Skills Necklace (Farming Guild [6])"));
 		inspectCratesInShack.addDialogSteps("Climb through it.");
 		watchCutsceneInShack = new DetailedQuestStep(this, "Watch the cutscene.");
 		inspectCratesInShack.addSubSteps(watchCutsceneInShack);
@@ -702,8 +703,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		watchCutsceneAfterXamphur = new DetailedQuestStep(this, "");
 		searchTableAfterXamphur = new ObjectStep(this, ObjectID.TABLE_41880, "");
 		returnToFulloreAgainSidebar = new DetailedQuestStep(this, "Return to Commandore Fullore in the shack basement north east of the Farming guild.");
-		inspectCratesInShack2 = new ObjectStep(this, ObjectID.CRATES_41851, new WorldPoint(1281, 3763, 0), "Inspect the crates in the north west corner of the shack located north east of the farming guild.  " +
-			"Use fairy ring CIR or a skill necklace to get there quickly. ", fairyRingStaffOrGamesNecklace);
+		inspectCratesInShack2 = new ObjectStep(this, ObjectID.CRATES_41851, new WorldPoint(1281, 3763, 0),
+			"Inspect the crates in the north west corner of the shack located north east of the farming guild.");
+		((ObjectStep) inspectCratesInShack2).addTeleport(fairyRingStaffOrSkillsNecklace.named("Fairy ring to CIR or Skills Necklace (Farming Guild [6])"));
 		returnToFulloreAgainSidebar.addSubSteps(inspectCratesInShack2);
 
 		talkToFulloreForBurial = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1273, 3760, 0),
@@ -822,7 +824,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS),
-			fairyRingStaffOrGamesNecklace, gamesNecklace);
+			fairyRingStaffOrSkillsNecklace, gamesNecklace);
 	}
 
 	@Override
@@ -899,14 +901,14 @@ public class AKingdomDivided extends BasicQuestHelper
 			killAssassin, talkToMartinHoltSettlementRuins2, castFireSpellOnIce, searchIce, openSettlementRuinsPanel,
 			readRosesNote3, talkToMartinHoltSettlementRuins3, talkToMartinHoltLeglessFaun, solveStatuesPuzzle,
 			checkLeglessFaunPanel, readRosesNote4, inspectCratesInShack, watchCutsceneInShack), anyAxe, fireSpellGear, kharedstsMemoirs,
-			gamesNecklace, fairyRingStaffOrGamesNecklace, combatGear, food)
+			gamesNecklace, fairyRingStaffOrSkillsNecklace, combatGear, food)
 		);
 
 		allSteps.add(new PanelDetails("The Mysterious Mage", Arrays.asList(enterLizardTempleFirstTime, talkToKahtbalam,
 			collectEgg, returntoKahtBalam, openDoorNearKaht, fightXamphurSidebar, xamphurCutscene, xamphurTableSearch,
 			returnToFulloreAgainSidebar, watchCutsceneAfterTalkingToFulloreInBasement,
 			talkToLordArceuusSidebar, talkToLordHosidius, talkToLadyLova, talkToLadyPiscSidebar, talkToLordShayzienSidebar,
-			talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar), fairyRingStaffOrGamesNecklace, kharedstsMemoirs,
+			talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar), fairyRingStaffOrSkillsNecklace, kharedstsMemoirs,
 			combatGearForXamphur, food)
 		);
 

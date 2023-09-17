@@ -732,6 +732,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToLadyPisc = new NpcStep(this, NpcID.LADY_SHAUNA_PISCARILIUS, new WorldPoint(1764, 10158, 0), "Speak to Lady Piscarilius in the sewers under Port Piscarilius.");
 		climbDownSewerLadyPisc = new ObjectStep(this, ObjectID.MANHOLE_31706, new WorldPoint(1813, 3745, 0), "Climb down the man hole in Port Piscarilius.");
 		((ObjectStep) climbDownSewerLadyPisc).addAlternateObjects(ObjectID.MANHOLE_31707);
+		climbDownSewerLadyPisc.addDialogStep("'The Fisher's Flute' - Piscarilius");
+		((ObjectStep) climbDownSewerLadyPisc).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [2]"));
 		talkToLadyPiscSidebar.addSubSteps(climbDownSewerLadyPisc, talkToLadyPisc);
 
 		talkToLordShayzienSidebar = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_11038, "Speak to Lord Shayzien upstairs of the War Tent in the Shayzien Encampment.");

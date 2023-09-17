@@ -246,7 +246,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("6000 Coins", ItemID.COINS_995, 6000),
+				new ItemReward("Coins", ItemID.COINS_995, 6000),
 				new ItemReward("Lovakenj Favour Certificate", ItemID.LOVAKENGJ_FAVOUR_CERTIFICATE, 1),
 				new ItemReward("A page for Kharedst's memoirs.", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}

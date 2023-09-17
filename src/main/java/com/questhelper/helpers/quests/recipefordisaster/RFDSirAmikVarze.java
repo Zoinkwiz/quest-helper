@@ -72,7 +72,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		vanillaPod, dramenStaffOrLunar, dramenBranch, pestleAndMortar, iceGloves, rawChicken, antidragonShield,
 		antifirePotion, radimusNotes, bruleeWithEgg, baseBrulee, uncookedBrulee, finishedBrulee, finishedBruleeHighlighted,
 		milkyMixture, cornflourMixture, evilEgg, token, cinnamon, pestleAndMortarHighlighted, tokenHighlighted;
-	ItemRequirement draynorVillageTele;
+	ItemRequirement draynorVillageTele, lumbridgeTele;
 
 	Requirement inDiningRoom, talkedToWom, inEvilChickenLair, inZanaris, inDraynorVillage, hasEggAndToken, tokenNearby, eggNearby;
 
@@ -186,6 +186,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		draynorVillageTele = new ItemRequirement("Draynor Village teleport", ItemCollections.AMULET_OF_GLORIES, 1);
 		draynorVillageTele.setChargedItem(true);
 		draynorVillageTele.showConditioned(new Conditions(LogicType.NOR, inDraynorVillage));
+		lumbridgeTele = new ItemRequirement("Lumbridge Teleport", ItemID.LUMBRIDGE_TELEPORT, 1);
 
 		milkyMixture = new ItemRequirement("Milky mixture", ItemID.MILKY_MIXTURE);
 		milkyMixture.setHighlightInInventory(true);
@@ -273,6 +274,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		rubToken.addDialogStep("Please flambe this creme brulee for me.");
 
 		enterDiningRoomAgain = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Go give the Brulee to Sir Amik Varze to finish the quest.", finishedBrulee);
+		((ObjectStep) enterDiningRoomAgain).addTeleport(lumbridgeTele);
 		useBruleeOnVarze = new ObjectStep(this, ObjectID.SIR_AMIK_VARZE_12345, new WorldPoint(1865, 5321, 0), "Give the Brulee to Sir Amik Varze to finish the quest.", finishedBruleeHighlighted);
 		useBruleeOnVarze.addIcon(ItemID.BRULEE_SUPREME);
 		useBruleeOnVarze.addSubSteps(enterDiningRoomAgain);
@@ -323,7 +325,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, antidragonShield, antifirePotion, draynorVillageTele);
+		return Arrays.asList(combatGear, antidragonShield, antifirePotion, draynorVillageTele, lumbridgeTele);
 	}
 
 	@Override
@@ -381,7 +383,8 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		allSteps.add(tokenAndEggPanel);
 		allSteps.add(new PanelDetails("Making the brulee", Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture,
 			useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze),
-			bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token, iceGloves));
+			Arrays.asList(bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token, iceGloves),
+			Arrays.asList(lumbridgeTele)));
 
 		return allSteps;
 	}

@@ -202,8 +202,11 @@ public class HeroesQuest extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		iceGloves = new ItemRequirement("Ice gloves (obtainable in quest)", ItemID.ICE_GLOVES).isNotConsumed();
-		equippedIceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES, 1, true).isNotConsumed();
+		iceGloves = new ItemRequirement("Ice gloves/Smiths gloves (i)", ItemID.ICE_GLOVES).isNotConsumed();
+		iceGloves.canBeObtainedDuringQuest();
+		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
+		equippedIceGloves = new ItemRequirement("Ice gloves/Smiths gloves (i)", ItemID.ICE_GLOVES, 1, true).isNotConsumed();
+		equippedIceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingRod.addAlternates(ItemID.OILY_FISHING_ROD);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
@@ -346,8 +349,8 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToGerrant = new NpcStep(this, NpcID.GERRANT_2891, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
 		talkToGerrant.addDialogStep("I want to find out how to catch a lava eel.");
 		talkToGerrant.addTeleport(portSarimTeleport);
-		makeBlamishOil = new DetailedQuestStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf, blamishSlime);
-		useOilOnRod = new DetailedQuestStep(this, "Use the Blamish oil on your fishing rod.", blamishOil, fishingRod);
+		makeBlamishOil = new ItemStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf.highlighted(), blamishSlime.highlighted());
+		useOilOnRod = new ItemStep(this, "Use the Blamish oil on your fishing rod.", blamishOil.highlighted(), fishingRod.highlighted());
 
 		if (client.getRealSkillLevel(Skill.AGILITY) >= 70)
 		{
@@ -406,18 +409,20 @@ public class HeroesQuest extends BasicQuestHelper
 		enterPhoenixBase = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Head into the Phoenix Gang's base in south Varrock.");
 		enterPhoenixBase.addTeleport(varrockTeleport);
 		talkToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Talk to Straven.");
-		talkToStraven.addTeleport(brimhavenTeleport);
 		talkToAlfonse = new NpcStep(this, NpcID.ALFONSE_THE_WAITER, new WorldPoint(2792, 3186, 0), "Talk to Alfonse the Waiter in the restaurant in Brimhaven.", rangedMage);
+		talkToAlfonse.addTeleport(brimhavenTeleport);
 		talkToAlfonse.addDialogStep("Do you sell Gherkins?");
-		getKeyFromPartner = new DetailedQuestStep(this, "You'll need your partner to give you a miscellaneous key.");
+		getKeyFromPartner = new ItemStep(this, "You'll need your partner to give you a miscellaneous key.", miscKey);
+		getKeyFromPartner.hideRequirements = true;
 		talkToCharlie = new NpcStep(this, NpcID.CHARLIE_THE_COOK, new WorldPoint(2790, 3191, 0), "Talk to Charlie the Cook in the back of the restaurant.");
 		talkToCharlie.addDialogStep("I'm looking for a gherkin...");
 		talkToCharlie.addDialogStep("I want to steal Scarface Pete's candlesticks.");
 		pushWall = new ObjectStep(this, ObjectID.WALL_2629, new WorldPoint(2787, 3190, 0), "Push the wall to enter Pete's garden.");
-		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_2622, new WorldPoint(2781, 3197, 0), "Use the misc key on the door to the north west.", miscKey);
+		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_2622, new WorldPoint(2781, 3197, 0), "Use the misc key on the door to the north west.", miscKey.highlighted());
 		useKeyOnDoor.addIcon(ItemID.MISCELLANEOUS_KEY);
 		killGrip = new NpcStep(this, NpcID.GRIP, new WorldPoint(2775, 3192, 0), "Wait for your partner to lure Grip into the room next to yours, and kill him with magic/ranged. Afterwards, trade your partner for a candlestick.");
-		getCandlestick = new DetailedQuestStep(this, "Get your candlestick from your partner.");
+		getCandlestick = new ItemStep(this, "Get your candlestick from your partner.", candlestick);
+		getCandlestick.hideRequirements = true;
 		killGrip.addSubSteps(getCandlestick);
 		enterPhoenixBaseAgain = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Bring the candlestick back to Straven.");
 		enterPhoenixBaseAgain.addTeleport(varrockTeleport);

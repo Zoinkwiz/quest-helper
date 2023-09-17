@@ -717,6 +717,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToLordArceuusSidebar = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_8505, "Speak to Lord Arceuus in the Tower of Magic, north west of Arceuus.");
 		talkToLordArceuus = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_8505, "Speak to Lord Arceuus in the Tower of Magic, north west of Arceuus.");
 		climbTowerOfMagicStairs = new ObjectStep(this, ObjectID.STAIRS_33575, new WorldPoint(1585, 3821, 0), "Climb up the stairs in the Tower of Magic in Arceuus.");
+		climbTowerOfMagicStairs.addDialogSteps("'Jewellery of Jubilation' - Lovakengj");
+		((ObjectStep) climbTowerOfMagicStairs).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [4]"));
 		talkToLordArceuusSidebar.addSubSteps(talkToLordArceuus, climbTowerOfMagicStairs);
 
 		talkToLordHosidius = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0), "Speak to Lord Hosidius in his home on the south east side of Hosidius.");

@@ -161,16 +161,17 @@ public class QuestHelperBankTagService
 				List<ItemRequirement> itemsWhichPassReq = requirements.stream()
 					.filter(r -> r.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
+
 				if (itemsWhichPassReq.isEmpty())
 				{
-					getItemsFromRequirement(pluginItems, requirements.get(0), requirements.get(0));
+					getItemsFromRequirement(pluginItems, requirements.get(0).named(itemRequirements.getName()), requirements.get(0));
 				}
 				else
 				{
 					ItemRequirement match = itemsWhichPassReq.stream()
 						.filter(r -> r.checkBank(plugin.getClient()))
 						.findFirst()
-						.orElse(itemsWhichPassReq.get(0));
+						.orElse(itemsWhichPassReq.get(0).named(itemRequirements.getName()));
 
 					getItemsFromRequirement(pluginItems, match, match);
 				}

@@ -646,6 +646,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		readRosesNote3 = new DetailedQuestStep(this, "Read Rose's note from the panel on the wall.", rosesNote3.highlighted());
 		talkToMartinHoltSettlementRuins3 = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0), "Talk to Martin Holt in the Settlement Ruins again.");
 		talkToMartinHoltLeglessFaun = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1775, 3681, 0), "Talk to Martin Holt at the Legless Faun pub in the south west corner of Port Piscarilius.");
+		((NpcStep) talkToMartinHoltLeglessFaun).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [2]"));
+		talkToMartinHoltLeglessFaun.addDialogStep("'The Fisher's Flute' - Piscarilius");
 		climbUpPillarLeglessFaun = new ObjectStep(this, ObjectID.PILLAR_41836, new WorldPoint(1772, 3680, 0), "Climb up the pillar west of Martin Holt again.");
 		checkLeglessFaunPanel = new ObjectStep(this, ObjectID.PANEL_41834, new WorldPoint(1768, 3686, 1), "Check the panel on the wall again.");
 		checkLeglessFaunPanel.addSubSteps(climbUpPillarLeglessFaun);

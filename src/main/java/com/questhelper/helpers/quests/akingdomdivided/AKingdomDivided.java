@@ -121,7 +121,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		kharedstsMemoirs, anyAxe, rosesNote2, combatGear, fireSpellGear, coldKey, rosesNote3, gamesNecklace, rosesNote4,
 		fairyRingStaffOrSkillsNecklace, combatGearForXamphur, kahtEgg, dampKey, defencePotion, volcanicSulphur, moltenGlass,
 		darkEssenceBlock, brokenRedirector, sulphurPotion, shieldingPotion, lovaDeclaration, fairyRingStaff, darkNullifier,
-		shayzienJournal;
+		shayzienJournal, radasBlessingOrSkillsNecklace;
 
 	Requirement freeInventorySlots;
 
@@ -473,6 +473,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		darkNullifier.setTooltip("You can obtain another from Mori in the Arceuus Church.");
 		shayzienJournal = new ItemRequirement("Shayzien Journal", ItemID.SHAYZIEN_JOURNAL);
 		shayzienJournal.setTooltip("You can get another one from the chest inside of the barrel in the Hosidious vinery.");
+		radasBlessingOrSkillsNecklace = new ItemRequirement("Rada's blessing or Skills necklace", ItemCollections.SKILLS_NECKLACES);
+		radasBlessingOrSkillsNecklace.addAlternates(ItemID.RADAS_BLESSING, ItemID.RADAS_BLESSING_1, ItemID.RADAS_BLESSING_2,
+			ItemID.RADAS_BLESSING_3, ItemID.RADAS_BLESSING_4);
 	}
 
 	public void setupConditions()
@@ -772,8 +775,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		useShieldingPotionOnDinhsDoor.addIcon(ItemID.SHIELDING_POTION);
 		((ObjectStep) useShieldingPotionOnDinhsDoor).addTeleport(gamesNecklace.named("Games necklace (Wintertodt Camp [5])"));
 		useShieldingPotionOnDinhsDoor.addDialogStep("Wintertodt Camp.");
-		goDownLadderInKourendWoodland = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", combatGear, food);
-		killBarbarianInKourendWoodland = new NpcStep(this, NpcID.BARBARIAN_WARLORD, "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands. Use a skills necklace (woodcutting guild) or Radas blessing to get there quickly.", combatGear, food);
+		goDownLadderInKourendWoodland = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands.", combatGear, food);
+		((ObjectStep) goDownLadderInKourendWoodland).addTeleport(radasBlessingOrSkillsNecklace.named("Rada's blessing to Kourend Woodland or Skills necklace [5]"));
+		killBarbarianInKourendWoodland = new NpcStep(this, NpcID.BARBARIAN_WARLORD, "Fight and kill the Barbarian Warlord (level 91) in the Kourend Woodlands.", combatGear, food);
 		goDownLadderInKourendWoodland.addSubSteps(killBarbarianInKourendWoodland);
 		goDownLadderInKourendAfterBarbFight = new ObjectStep(this, ObjectID.LADDER_41924, new WorldPoint(1582, 3428, 0), "Talk to Phileas Rimor in the Barbarian Warlords prison.");
 		talkToPhileasRimor = new NpcStep(this, NpcID.PHILEAS_RIMOR, "Talk to Phileas Rimor in the Barbarian Warlords prison.");
@@ -842,7 +846,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS),
-			fairyRingStaffOrSkillsNecklace, gamesNecklace, antipoison);
+			fairyRingStaffOrSkillsNecklace, gamesNecklace, antipoison, radasBlessingOrSkillsNecklace);
 	}
 
 	@Override
@@ -936,8 +940,9 @@ public class AKingdomDivided extends BasicQuestHelper
 			speakWithJoraAndFightAssassin, talkToJoraAgain, talkToMori, enterChasmOfFire, inspectWineBarrel,
 			talkToAllMembersInXericsLookoutSidebarTaskFinish, talkToFulloreAfterHelpingAll, watchCutsceneAfterHelpingAll,
 			talkToFulloreAfterHelpingAllAgain, talkToHosidiusXericsLookoutFinal, talkToFulloreFinalCutscene, lastCutscene, talkToFulloreToFinishQuest),
-			kharedstsMemoirs, defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, gamesNecklace,
-			combatGear, food, fairyRingStaff)
+			Arrays.asList(kharedstsMemoirs, defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, gamesNecklace,
+			combatGear, food, fairyRingStaff),
+			Arrays.asList(radasBlessingOrSkillsNecklace))
 		);
 
 		return allSteps;

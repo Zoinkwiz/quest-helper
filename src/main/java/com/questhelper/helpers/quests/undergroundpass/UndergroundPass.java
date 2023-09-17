@@ -47,6 +47,7 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -100,8 +101,8 @@ public class UndergroundPass extends BasicQuestHelper
 		walkToKnights, killJerro, killCarl, killHarry, useBadgeJerroOnWell, useBadgeHarryOnWell, useBadgeCarlOnWell,
 		useUnicornHornOnWell, openIbansDoor, descendCave, talkToNiloof, talkToKlank, goBackUpToIbansCavern,
 		pickUpWitchsCat, useCatOnDoor, searchWitchsChest, killHolthion, killDoomion, killOthanian,
-		searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag,
-		ascendToHalfSouless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
+		searchDoomionsChest, returnToDwarfs, pickUpBucket, pickUpTinderbox, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb,
+		killKalrag,	ascendToHalfSouless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
 		talkToKingLathasAfterTemple, leaveFallArea, useAshOnDoll, useShadowOnDoll, useDoveOnDoll, goUpToLathasToFinish;
 
 	//Zones
@@ -126,13 +127,16 @@ public class UndergroundPass extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		spadeHighlight = spade.highlighted();
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
+		plank.canBeObtainedDuringQuest();
 		plankHighlight = new ItemRequirement("Plank", ItemID.PLANK);
 		plankHighlight.setHighlightInInventory(true);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket.canBeObtainedDuringQuest();
 		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlight.setHighlightInInventory(true);
 		bucketHighlight.setTooltip("You can grab a bucket from the southwest corner of the large dwarf encampment building.");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderbox.canBeObtainedDuringQuest();
 		tinderboxHighlight = tinderbox.highlighted();
 		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1).isNotConsumed();
 		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -506,6 +510,8 @@ public class UndergroundPass extends BasicQuestHelper
 		useAshOnDoll = new DetailedQuestStep(this, "Use the ashes on the doll.", ibansAshes, dollOfIbanHighlighted);
 		useDoveOnDoll = new DetailedQuestStep(this, "Use the dove on the doll.", ibansDove, dollOfIbanHighlighted);
 		returnToDwarfs = new ObjectStep(this, ObjectID.CAVE_3222, new WorldPoint(2150, 4545, 1), "Return to the dwarf encampment on the lower level.");
+		pickUpBucket = new ItemStep(this, new WorldPoint(2309, 9798, 0), "Pick up a bucket in the large dwarf encampment building.", bucket);
+		pickUpTinderbox = new ItemStep(this, new WorldPoint(2324, 9800, 0), "Pick up a tinderbpx in the small dwarf encampment building.", tinderbox);
 		useBucketOnBrew = new ObjectStep(this, ObjectID.BREW_BARREL, new WorldPoint(2327, 9799, 0), "Use a bucket on the brew barrel in the dwarf encampment on the south west.", bucketHighlight);
 		useBucketOnBrew.addIcon(ItemID.BUCKET);
 		useBrewOnTomb = new ObjectStep(this, ObjectID.TOMB, new WorldPoint(2357, 9802, 0), "Use the bucket of brew on the tomb in the south east corner of the area.", brew);
@@ -686,9 +692,11 @@ public class UndergroundPass extends BasicQuestHelper
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled), ascendToHalfSouless);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed), killKalrag);
 		imbuingTheDoll.addStep(new Conditions(dollImbued, pouredBrew, ibansAshes), useAshOnDoll);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, pouredBrew), useTinderboxOnTomb);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, brew), useBrewOnTomb);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued), useBucketOnBrew);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, pouredBrew, tinderbox), useTinderboxOnTomb);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, brew, tinderbox), useBrewOnTomb);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, bucket, tinderbox), useBucketOnBrew);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, bucket), pickUpTinderbox);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued), pickUpBucket);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued), returnToDwarfs);
 		imbuingTheDoll.addStep(new Conditions(ibansShadow), useShadowOnDoll);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, amuletHolthion, amuletDoomion, amuletOthanian), searchDoomionsChest);

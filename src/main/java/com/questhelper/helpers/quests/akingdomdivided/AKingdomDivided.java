@@ -804,7 +804,8 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		talkToMori.addSubSteps(climbUpStairsArceuusChurchF0toF1, climbUpStairsArceuusChurchF1toF2);
 
-		enterChasmOfFire = new ObjectStep(this, ObjectID.CHASM_30236, new WorldPoint(1436, 3671, 0), "Enter the Chasm of Fire. Use fairy code DJR to get there quickly.", darkNullifier);
+		enterChasmOfFire = new ObjectStep(this, ObjectID.CHASM_30236, new WorldPoint(1436, 3671, 0), "Enter the Chasm of Fire.", darkNullifier);
+		((ObjectStep) enterChasmOfFire).addTeleport(fairyRingStaff.named("Fairy ring to DJR"));
 
 		inspectWineBarrel = new ObjectStep(this, ObjectID.WINE_BARREL_41928, new WorldPoint(1809, 3544, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.");
 		inspectWineBarrel.addDialogSteps("Climb through it.");

@@ -117,7 +117,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		barbarianWarlordNearby, phileasRimorNearby, lovaAssassinNearby, inArceuusChurchF1, inArceuusChurchF2,
 		inWineBarrel;
 
-	ItemRequirement combatGearForJudgeOfYama, food, bluishKey, rosesDiary, rosesNote, receipt,
+	ItemRequirement combatGearForJudgeOfYama, food, bluishKey, rosesDiary, rosesNote, receipt, antipoison,
 		kharedstsMemoirs, anyAxe, rosesNote2, combatGear, fireSpellGear, coldKey, rosesNote3, gamesNecklace, rosesNote4,
 		fairyRingStaffOrSkillsNecklace, combatGearForXamphur, kahtEgg, dampKey, defencePotion, volcanicSulphur, moltenGlass,
 		darkEssenceBlock, brokenRedirector, sulphurPotion, shieldingPotion, lovaDeclaration, fairyRingStaff, darkNullifier,
@@ -450,6 +450,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		combatGearForXamphur = new ItemRequirement("Melee or range gear to fight Xamphur.", -1, -1).isNotConsumed();
 		combatGearForXamphur.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		combatGearForXamphur.setTooltip("Xamphur is immune to magic attacks.");
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, 1);
 
 		kahtEgg = new ItemRequirement("Lizardman Egg", ItemID.LIZARDMAN_EGG);
 		kahtEgg.setTooltip("Received during quest.");
@@ -824,7 +825,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS),
-			fairyRingStaffOrSkillsNecklace, gamesNecklace);
+			fairyRingStaffOrSkillsNecklace, gamesNecklace, antipoison);
 	}
 
 	@Override
@@ -908,8 +909,8 @@ public class AKingdomDivided extends BasicQuestHelper
 			collectEgg, returntoKahtBalam, openDoorNearKaht, fightXamphurSidebar, xamphurCutscene, xamphurTableSearch,
 			returnToFulloreAgainSidebar, watchCutsceneAfterTalkingToFulloreInBasement,
 			talkToLordArceuusSidebar, talkToLordHosidius, talkToLadyLova, talkToLadyPiscSidebar, talkToLordShayzienSidebar,
-			talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar), fairyRingStaffOrSkillsNecklace, kharedstsMemoirs,
-			combatGearForXamphur, food)
+			talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar), Arrays.asList(fairyRingStaffOrSkillsNecklace, kharedstsMemoirs,
+			combatGearForXamphur, food), Arrays.asList(antipoison))
 		);
 
 		allSteps.add(new PanelDetails("The Council's End", Arrays.asList(talkToFulloreAboutLovaXericsLookout,

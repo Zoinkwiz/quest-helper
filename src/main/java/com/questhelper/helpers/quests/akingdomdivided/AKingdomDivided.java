@@ -785,6 +785,8 @@ public class AKingdomDivided extends BasicQuestHelper
 
 
 		climbDownStairsShayzienPrison = new ObjectStep(this, ObjectID.STAIRCASE_41922, new WorldPoint(1464, 3568, 0), "Talk to Martin Holt in the Shayzien Prison west of the Graveyard of Heroes.");
+		climbDownStairsShayzienPrison.addDialogStep("'History and Hearsay' - Shayzien");
+		((ObjectStep) climbDownStairsShayzienPrison).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [3]"));
 		talkToMartinHoltHelpingLadyLova = new NpcStep(this, NpcID.MARTIN_HOLT_10892, new WorldPoint(1437, 9946, 0), "Talk to Martin Holt in the Shayzien Prison west of the Graveyard of Heroes.");
 		talkToMartinHoltHelpingLadyLova.addSubSteps(climbDownStairsShayzienPrison);
 		speakWithJoraAndFightAssassin = new NpcStep(this, NpcID.JORRA, new WorldPoint(1496, 3557, 0), "Speak with Jorra south of the Graveyard of Heroes in Shayzien then fight the Assassin (level 132).", combatGear, food);

@@ -809,6 +809,8 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		inspectWineBarrel = new ObjectStep(this, ObjectID.WINE_BARREL_41928, new WorldPoint(1809, 3544, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.");
 		inspectWineBarrel.addDialogSteps("Climb through it.");
+		inspectWineBarrel.addDialogStep("'Lunch by the Lancalliums' - Hosidius");
+		((ObjectStep) inspectWineBarrel).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [1] and run east (or Xeric's amulet [2])"));
 		picklockChestInWineBarrel = new ObjectStep(this, ObjectID.CHEST_41931, new WorldPoint(1898, 9957, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.");
 
 		inspectWineBarrel.addSubSteps(picklockChestInWineBarrel);

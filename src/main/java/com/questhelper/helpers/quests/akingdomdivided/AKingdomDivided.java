@@ -854,6 +854,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
+		// TODO: Look into other teleport alternative requirement, like bringing a Xeric's Talisman
 		return Arrays.asList(new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS),
 			fairyRingStaffOrSkillsNecklace, gamesNecklace, antipoison, radasBlessingOrSkillsNecklace);
 	}

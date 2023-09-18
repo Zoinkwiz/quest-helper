@@ -127,7 +127,7 @@ public class AKingdomDivided extends BasicQuestHelper
 
 	Zone arceuusLibraryHistoricalArchive, councillorsHouseF1, councillorsHouseF2, councillorsHouseF3, panelArea1, panelArea2,
 		prisonRoom, leglessFaunF1, lizardTemple, eggArea, xamphurRoom, towerOfMagic, warrens, shayzienRoom, lookoutBasement,
-		lookoutF0,lookoutF1, lookoutF2, lookoutF3, shayzienPrison, mountKaruulm, arceuusChurchF1, arceuusChurchF2, wineBarrel;
+		lookoutF0, lookoutF1, lookoutF2, lookoutF3, shayzienPrison, mountKaruulm, arceuusChurchF1, arceuusChurchF2, wineBarrel;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -296,7 +296,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		ConditionalStep talkToAllLeadersLookout = new ConditionalStep(this, arceuusLookoutStepper);
 		talkToAllLeadersLookout.addStep(helpingArceuus0, arceuusLookoutStepper);
 		talkToAllLeadersLookout.addStep(helpingHosidius0, new XericsLookoutStepper(this, talkToHosidiusLookout, -1, talkToAllMembersInXericsLookoutSidebar));
-		talkToAllLeadersLookout.addStep(helpingShayzien0,  new XericsLookoutStepper(this, talkToShayzienLookout, 1, talkToAllMembersInXericsLookoutSidebar));
+		talkToAllLeadersLookout.addStep(helpingShayzien0, new XericsLookoutStepper(this, talkToShayzienLookout, 1, talkToAllMembersInXericsLookoutSidebar));
 		talkToAllLeadersLookout.addStep(helpingLova0, new XericsLookoutStepper(this, talkToLovaLookout, 2, talkToAllMembersInXericsLookoutSidebar));
 		talkToAllLeadersLookout.addStep(helpingPisc0, new XericsLookoutStepper(this, talkToPiscLookout, 3, talkToAllMembersInXericsLookoutSidebar));
 
@@ -349,7 +349,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		ConditionalStep talkToAllLeadersLookoutFinish = new ConditionalStep(this, arceuusLookoutStepperFinish);
 		talkToAllLeadersLookoutFinish.addStep(helpingArceuus10, arceuusLookoutStepperFinish);
 		talkToAllLeadersLookoutFinish.addStep(helpingHosidius8, new XericsLookoutStepper(this, talkToHosidiusLookoutTaskFinish, -1, talkToAllMembersInXericsLookoutSidebarTaskFinish));
-		talkToAllLeadersLookoutFinish.addStep(helpingShayzien6,  new XericsLookoutStepper(this, talkToShayzienLookoutTaskFinish, 1, talkToAllMembersInXericsLookoutSidebarTaskFinish));
+		talkToAllLeadersLookoutFinish.addStep(helpingShayzien6, new XericsLookoutStepper(this, talkToShayzienLookoutTaskFinish, 1, talkToAllMembersInXericsLookoutSidebarTaskFinish));
 		talkToAllLeadersLookoutFinish.addStep(helpingLova14, new XericsLookoutStepper(this, talkToLovaLookoutTaskFinish, 2, talkToAllMembersInXericsLookoutSidebarTaskFinish));
 		talkToAllLeadersLookoutFinish.addStep(helpingPisc10, new XericsLookoutStepper(this, talkToPiscLookoutTaskFinish, 3, talkToAllMembersInXericsLookoutSidebarTaskFinish));
 
@@ -563,7 +563,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		goUpCouncillorsHomeF2toF3 = new ObjectStep(this, ObjectID.STAIRCASE_41806, new WorldPoint(1676, 3679, 1), "Climb up the stairs of the Councillor's home.");
 		goDownCouncillorsHomeF2toF1 = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(1671, 3681, 1), "Climb down the stairs of the Councillor's home.");
 		goDownCouncillorsHomeF3toF2 = new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(1676, 3679, 2), "Climb down the stairs of the Councillor's home.");
-		goDownCouncillorsHomeF3toF2WithReceipt =  new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(1676, 3679, 2), "Climb down the stairs of the Councillor's home.");
+		goDownCouncillorsHomeF3toF2WithReceipt = new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(1676, 3679, 2), "Climb down the stairs of the Councillor's home.");
 
 		getReceipt = new ObjectStep(this, ObjectID.DRAWERS_41795, new WorldPoint(1679, 3680, 1),
 			"Search the drawers in the east room for the receipt.");
@@ -638,7 +638,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToMartinHoltForthosRuins2.addSubSteps(squeezeThroughVines);
 		talkToMartinHoltSettlementRuins = new NpcStep(this, NpcID.MARTIN_HOLT_10891, new WorldPoint(1545, 3895, 0),
 			"Talk to Martin Holt again in the Settlement Ruins south west of the Wintertodt camp. " +
-			"Be prepared to fight a level 132 assassin who uses a dragon dagger and dragon darts.", combatGear, food);
+				"Be prepared to fight a level 132 assassin who uses a dragon dagger and dragon darts.", combatGear, food);
 		((NpcStep) talkToMartinHoltSettlementRuins).addTeleport(gamesNecklace.named("Games necklace (Wintertodt Camp [5])"));
 		talkToMartinHoltSettlementRuins.addDialogStep("Wintertodt Camp.");
 		killAssassin = new NpcStep(this, NpcID.ASSASSIN_10940, "Kill the Assassin.", combatGear, food);
@@ -880,16 +880,16 @@ public class AKingdomDivided extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("The book of the dead", ItemID.BOOK_OF_THE_DEAD, 1),
-				new ItemReward("Antique Lamp (10,000 Exp. Any Skill level 40 or above.", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("The book of the dead", ItemID.BOOK_OF_THE_DEAD, 1),
+			new ItemReward("Antique Lamp (10,000 Exp. Any Skill level 40 or above.", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("New respawn point in Kourend Castle."),
-				new UnlockReward("Expanded access to the Arceuus spellbook."));
+			new UnlockReward("New respawn point in Kourend Castle."),
+			new UnlockReward("Expanded access to the Arceuus spellbook."));
 	}
 
 	@Override
@@ -950,7 +950,7 @@ public class AKingdomDivided extends BasicQuestHelper
 			talkToAllMembersInXericsLookoutSidebarTaskFinish, talkToFulloreAfterHelpingAll, watchCutsceneAfterHelpingAll,
 			talkToFulloreAfterHelpingAllAgain, talkToHosidiusXericsLookoutFinal, talkToFulloreFinalCutscene, lastCutscene, talkToFulloreToFinishQuest),
 			Arrays.asList(kharedstsMemoirs, defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, gamesNecklace,
-			combatGear, food, fairyRingStaff),
+				combatGear, food, fairyRingStaff),
 			Arrays.asList(radasBlessingOrSkillsNecklace))
 		);
 

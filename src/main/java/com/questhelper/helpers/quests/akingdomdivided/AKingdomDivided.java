@@ -760,8 +760,10 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToFulloreAboutLovaXericsLookout = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore in Xeric's Lookout about Lady Lovakengj.");
 		talkToFulloreAboutLovaXericsLookout.addDialogSteps("I need some help with Lady Lovakengj.");
 
-		talkToKaalMejSanGoDownElevator = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0), "Go to Mount Karuulm, go down the elevator, and speak with Kaal-Mej-San. Use fairy code CIR to get there quickly.", brokenRedirector);
-		talkToKaalMejSan = new NpcStep(this, NpcID.KAALMEJSAN, new WorldPoint(1306, 10205, 0), "Go to Mount Karuulm, go down the elevator, and speak with Kaal-Mej-San. Use fairy code CIR to get there quickly.", brokenRedirector);
+		talkToKaalMejSanGoDownElevator = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0), "Go to Mount Karuulm, go down the elevator, and speak with Kaal-Mej-San.", brokenRedirector);
+		// TODO: Add Rada's blessing 3/4 as alternatives? Not sure if they are reasonable to get before the player does this quest
+		((ObjectStep) talkToKaalMejSanGoDownElevator).addTeleport(fairyRingStaff.named("Fairy ring to CIR"));
+		talkToKaalMejSan = new NpcStep(this, NpcID.KAALMEJSAN, new WorldPoint(1306, 10205, 0), "Go to Mount Karuulm, go down the elevator, and speak with Kaal-Mej-San.", brokenRedirector);
 		talkToKaalMejSan.addSubSteps(talkToKaalMejSanGoDownElevator);
 
 		mixDefencePotionWithSulphur = new DetailedQuestStep(this, "Mix the Defence potion with the Volcanic sulphur.", defencePotion.highlighted(), volcanicSulphur.highlighted());

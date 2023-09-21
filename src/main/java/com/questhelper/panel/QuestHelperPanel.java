@@ -32,6 +32,7 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -58,6 +59,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -78,6 +81,7 @@ public class QuestHelperPanel extends PluginPanel
 
 	private final JPanel allDropdownSections = new JPanel();
 	private final JComboBox<Enum> filterDropdown, difficultyDropdown, orderDropdown;
+	private final JComboBox<Enum> skillSelectionPanel;
 
 	private final IconTextField searchBar = new IconTextField();
 	private final FixedWidthPanel questListPanel = new FixedWidthPanel();
@@ -104,7 +108,7 @@ public class QuestHelperPanel extends PluginPanel
 		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 	}
 
-	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin)
+	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, SkillIconManager skillIconManager)
 	{
 		super(false);
 
@@ -297,11 +301,16 @@ public class QuestHelperPanel extends PluginPanel
 		JPanel orderPanel = makeDropdownPanel(orderDropdown, "Ordering");
 		orderPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 
+		skillSelectionPanel = makeNewDropdown(QuestHelperConfig.SkillFilter.values(), "skillReward");
+		JPanel skillSortPanel = makeDropdownPanel(skillSelectionPanel, "Skill Sorting");
+		skillSortPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
+
 		allDropdownSections.setBorder(new EmptyBorder(0, 0, 10, 0));
-		allDropdownSections.setLayout(new BorderLayout(0, BORDER_OFFSET));
-		allDropdownSections.add(filtersPanel, BorderLayout.NORTH);
-		allDropdownSections.add(difficultyPanel, BorderLayout.CENTER);
-		allDropdownSections.add(orderPanel, BorderLayout.SOUTH);
+		allDropdownSections.setLayout(new GridLayout(4, 1, 0, 5));
+		allDropdownSections.add(filtersPanel);
+		allDropdownSections.add(difficultyPanel);
+		allDropdownSections.add(orderPanel);
+		allDropdownSections.add(skillSortPanel);
 
 		searchQuestsPanel.add(allDropdownSections, BorderLayout.NORTH);
 
@@ -325,6 +334,7 @@ public class QuestHelperPanel extends PluginPanel
 
 		questOverviewWrapper.setLayout(new BorderLayout());
 		questOverviewWrapper.add(questOverviewPanel, BorderLayout.NORTH);
+
 	}
 
 	private void onSearchBarChanged()
@@ -398,7 +408,8 @@ public class QuestHelperPanel extends PluginPanel
 	}
 
 	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut,
-						Map<QuestHelperQuest, QuestState> completedQuests, QuestHelperConfig.QuestFilter... questFilters)
+						Map<QuestHelperQuest, QuestState> completedQuests,
+						QuestHelperConfig.QuestFilter... questFilters)
 	{
 		questSelectPanels.forEach(questListPanel::remove);
 		questSelectPanels.clear();

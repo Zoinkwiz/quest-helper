@@ -27,6 +27,7 @@ package com.questhelper;
 import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.rewards.ExperienceReward;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import net.runelite.api.Skill;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -203,6 +205,72 @@ public interface QuestHelperConfig extends Config
 		public static QuestFilter[] displayFilters()
 		{
 			return Arrays.stream(QuestFilter.values()).filter((questFilter -> questFilter.shouldDisplay)).toArray(QuestFilter[]::new);
+		}
+	}
+
+	enum SkillFilter implements Predicate<QuestHelper>
+	{
+		ANY(true),
+		ATTACK,
+		DEFENCE,
+		STRENGTH,
+		HITPOINTS,
+		RANGED,
+		PRAYER,
+		MAGIC,
+		COOKING,
+		WOODCUTTING,
+		FLETCHING,
+		FISHING,
+		FIREMAKING,
+		CRAFTING,
+		SMITHING,
+		MINING,
+		HERBLORE,
+		AGILITY,
+		THIEVING,
+		SLAYER,
+		FARMING,
+		RUNECRAFT,
+		HUNTER,
+		CONSTRUCTION
+
+		;
+
+		private final Predicate<QuestHelper> predicate;
+
+		@Getter
+		private final String displayName;
+
+		SkillFilter()
+		{
+			this(false);
+		}
+
+		SkillFilter(boolean noPredicate) {
+			if(!noPredicate)
+			{
+				this.predicate = q -> {
+					List<ExperienceReward> experienceRewards = q.getQuest().getQuestHelper().getExperienceRewards();
+					if(experienceRewards != null) {
+						return experienceRewards.stream().anyMatch(reward -> reward.getSkill() == Skill.valueOf(this.toString()));
+					} else return false;
+				};
+			} else {
+				this.predicate = q -> true;
+			}
+			this.displayName = Text.titleCase(this);
+		}
+
+		@Override
+		public boolean test(QuestHelper quest)
+		{
+			return predicate.test(quest);
+		}
+
+		public List<QuestHelper> test(Collection<QuestHelper> helpers)
+		{
+			return helpers.stream().filter(this).collect(Collectors.toList());
 		}
 	}
 
@@ -615,5 +683,17 @@ public interface QuestHelperConfig extends Config
 	default boolean showCompletedQuests()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "skillReward",
+		name = "Skill Reward",
+		description = "Configures what quests to show based on the experience reward selected",
+		position = 5,
+		section = filterSection
+	)
+	default SkillFilter filterBySkillReward()
+	{
+		return SkillFilter.ANY;
 	}
 }

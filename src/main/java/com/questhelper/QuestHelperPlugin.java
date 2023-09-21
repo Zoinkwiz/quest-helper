@@ -101,6 +101,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.bank.BankSearch;
@@ -251,6 +252,10 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	GameStateManager gameStateManager;
 
+	@Getter
+	@Inject
+	private SkillIconManager skillIconManager;
+
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
@@ -307,7 +312,7 @@ public class QuestHelperPlugin extends Plugin
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
-		panel = new QuestHelperPanel(this);
+		panel = new QuestHelperPanel(this, skillIconManager);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
 			.icon(icon)
@@ -478,7 +483,7 @@ public class QuestHelperPlugin extends Plugin
 		});
 	}
 
-	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "");
+	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "skillReward", "");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Subscribe
@@ -596,6 +601,7 @@ public class QuestHelperPlugin extends Plugin
 				.stream()
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
+				.filter(config.filterBySkillReward())
 				.filter(QuestDetails::showCompletedQuests)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());

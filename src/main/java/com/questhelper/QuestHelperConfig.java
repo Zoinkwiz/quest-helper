@@ -233,9 +233,7 @@ public interface QuestHelperConfig extends Config
 		FARMING,
 		RUNECRAFT,
 		HUNTER,
-		CONSTRUCTION
-
-		;
+		CONSTRUCTION;
 
 		private final Predicate<QuestHelper> predicate;
 
@@ -247,16 +245,24 @@ public interface QuestHelperConfig extends Config
 			this(false);
 		}
 
-		SkillFilter(boolean noPredicate) {
-			if(!noPredicate)
+		SkillFilter(boolean noPredicate)
+		{
+			if (!noPredicate)
 			{
 				this.predicate = q -> {
 					List<ExperienceReward> experienceRewards = q.getQuest().getQuestHelper().getExperienceRewards();
-					if(experienceRewards != null) {
+					if (experienceRewards != null)
+					{
 						return experienceRewards.stream().anyMatch(reward -> reward.getSkill() == Skill.valueOf(this.toString()));
-					} else return false;
+					}
+					else
+					{
+						return false;
+					}
 				};
-			} else {
+			}
+			else
+			{
 				this.predicate = q -> true;
 			}
 			this.displayName = Text.titleCase(this);

@@ -302,7 +302,7 @@ public class QuestHelperPanel extends PluginPanel
 		orderPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 
 		skillSelectionPanel = makeNewDropdown(QuestHelperConfig.SkillFilter.values(), "skillReward");
-		JPanel skillSortPanel = makeDropdownPanel(skillSelectionPanel, "Skill Sorting");
+		JPanel skillSortPanel = makeDropdownPanel(skillSelectionPanel, "Skill Filtering");
 		skillSortPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 
 		allDropdownSections.setBorder(new EmptyBorder(0, 0, 10, 0));

@@ -33,6 +33,8 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -306,20 +308,20 @@ public class DesertTreasure extends BasicQuestHelper
 		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS);
 
 		// Teleports
-		canifisTeleport = new ItemRequirement("Teleport to Canifis. Fairy Ring (CKS), Fenkenstrain's teleport", ItemCollections.FAIRY_STAFF);
+		canifisTeleport = new TeleportItemRequirement("Teleport to Canifis. Fairy Ring (CKS), Fenkenstrain's teleport", ItemCollections.FAIRY_STAFF);
 		canifisTeleport.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
-		bedabinTeleport = new ItemRequirement("Teleport to Bedabin Camp. Fairy Ring (BIQ), Camulet", ItemCollections.FAIRY_STAFF);
+		bedabinTeleport = new TeleportItemRequirement("Teleport to Bedabin Camp. Fairy Ring (BIQ), Camulet", ItemCollections.FAIRY_STAFF);
 		bedabinTeleport.addAlternates(ItemID.CAMULET);
-		pollnivneachTeleport = new ItemRequirement("Teleport to Pollnivneach. Pollnivneach house teleport", ItemID.POLLNIVNEACH_TELEPORT);
-		waterfallTeleport = new ItemRequirement("Teleport to the Waterfall. Skills necklace (Fishing Guild [1]), Games necklace (Barbarian Outpost [2])", ItemCollections.SKILLS_NECKLACES);
+		pollnivneachTeleport = new TeleportItemRequirement("Teleport to Pollnivneach. Pollnivneach house teleport", ItemID.POLLNIVNEACH_TELEPORT);
+		waterfallTeleport = new TeleportItemRequirement("Teleport to the Waterfall. Skills necklace (Fishing Guild [1]), Games necklace (Barbarian Outpost [2])", ItemCollections.SKILLS_NECKLACES);
 		waterfallTeleport.addAlternates(ItemCollections.GAMES_NECKLACES);
-		banditCampTeleport = new ItemRequirement("Teleport to Bandit Camp (desert). Fairy Ring (BIQ), Camulet", ItemCollections.FAIRY_STAFF);
+		banditCampTeleport = new TeleportItemRequirement("Teleport to Bandit Camp (desert). Fairy Ring (BIQ), Camulet", ItemCollections.FAIRY_STAFF);
 		banditCampTeleport.addAlternates(ItemID.CAMULET);
-		draynorTeleport = new ItemRequirement("Teleport to Draynor Village. Amulet of Glory (Draynor Village [3]), Draynor Manor Teleport", ItemCollections.AMULET_OF_GLORIES);
+		draynorTeleport = new TeleportItemRequirement("Teleport to Draynor Village. Amulet of Glory (Draynor Village [3]), Draynor Manor Teleport", ItemCollections.AMULET_OF_GLORIES);
 		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
-		trollheimTeleport = new ItemRequirement("Teleport to Trollheim. Trollheim teleport, Ghommal's hilt (any tier)", ItemID.TROLLHEIM_TELEPORT);
+		trollheimTeleport = new TeleportItemRequirement("Teleport to Trollheim. Trollheim teleport, Ghommal's hilt (any tier)", ItemID.TROLLHEIM_TELEPORT);
 		trollheimTeleport.addAlternates(ItemCollections.GHOMMALS_HILT);
-		pyramidTeleport = new ItemRequirement("Teleport to Jaldraocht Pyramid. Camulet, Pollnivneach house teleport", ItemID.CAMULET);
+		pyramidTeleport = new TeleportItemRequirement("Teleport to Jaldraocht Pyramid. Camulet, Pollnivneach house teleport", ItemID.CAMULET);
 		pyramidTeleport.addAlternates(ItemID.POLLNIVNEACH_TELEPORT);
 	}
 
@@ -364,8 +366,9 @@ public class DesertTreasure extends BasicQuestHelper
 
 		inShadowDungeon = new ZoneRequirement(shadowDungeon);
 
-		damis1Nearby = new NpcCondition(NpcID.DAMIS);
-		damis2Nearby = new NpcCondition(NpcID.DAMIS_683);
+		damis1Nearby = new NpcInteractingRequirement(NpcID.DAMIS);
+		damis2Nearby = new NpcInteractingRequirement(NpcID.DAMIS_683);
+		// 385 0->1, in Damis spawn area?
 
 		talkedToMalak = new VarbitRequirement(373, 1);
 		askedAboutKillingDessous = new VarbitRequirement(373, 2);
@@ -473,8 +476,8 @@ public class DesertTreasure extends BasicQuestHelper
 		killFareed = new NpcStep(this, NpcID.FAREED, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells.", iceGloves, waterSpellOrMelee);
 
 		talkToRasolo = new NpcStep(this, NpcID.RASOLO, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
-		talkToRasolo.addDialogStep("Ask about the Diamonds of Azzanadra");
 		talkToRasolo.addDialogStepWithExclusion("Yes", "Ask about the Diamonds of Azzanadra");
+		talkToRasolo.addDialogStep("Ask about the Diamonds of Azzanadra");
 		talkToRasolo.addTeleport(waterfallTeleport);
 
 		getCross = new ObjectStep(this, ObjectID.SECURE_CHEST, new WorldPoint(3169, 2967, 0), "Bring antipoison, food, and as many lockpicks as you can to the Bandit Camp, and try opening the chest in the south of the Bandit Camp. Keep trying until you succeed.", manyLockpicks, antipoison);

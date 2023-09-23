@@ -25,19 +25,19 @@
  */
 package com.questhelper;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import lombok.AllArgsConstructor;
+import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 
 /**
  * Based off of RuneLite's <a href="https://github.com/runelite/runelite/blob/4700013ffbd089899df9cb675ff53b00d381cae5/runelite-client/src/main/java/net/runelite/client/plugins/itemcharges/ItemWithCharge.java">ItemWithCharge</a> enum
  */
-@AllArgsConstructor
 @Getter
 public enum ItemWithCharge
 {
@@ -129,16 +129,38 @@ public enum ItemWithCharge
 	TCRYSTAL3(TELEPORT_CRYSTAL_3, 3),
 	TCRYSTAL4(TELEPORT_CRYSTAL_4, 4),
 	TCRYSTAL5(TELEPORT_CRYSTAL_5, 5),
+
+	// Infinite charges
+	FAIRY_RING_STAFF(ItemCollections.FAIRY_STAFF, 10000000)
 	;
 
-	private final int id;
+	private final List<Integer> ids;
 	private final int charges;
+
+	ItemWithCharge(int ids, int charges)
+	{
+		this.ids = ImmutableList.of(ids);
+		this.charges = charges;
+	}
+
+	ItemWithCharge(List<Integer> ids, int charges)
+	{
+		this.ids = ids;
+		this.charges = charges;
+	}
+
+	ItemWithCharge(ItemCollections ids, int charges)
+	{
+		this.ids = ids.getItems();
+		this.charges = charges;
+	}
 
 	private static final Map<Integer, ItemWithCharge> ID_MAP;
 
-	static
-	{
-		ID_MAP = Arrays.stream(values()).collect(Collectors.toMap(ItemWithCharge::getId, Function.identity()));
+	static {
+		ID_MAP = Arrays.stream(values())
+			.flatMap(item -> item.ids.stream().map(id -> new AbstractMap.SimpleEntry<>(id, item)))
+			.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue, (e1, e2) -> e1));
 	}
 
 	@Nullable

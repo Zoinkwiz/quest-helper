@@ -59,7 +59,7 @@ public class DialogChoiceSteps
 
 	public void checkChoices(Client client, String lastDialog)
 	{
-		if (choices.size() == 0)
+		if (choices.isEmpty())
 		{
 			return;
 		}

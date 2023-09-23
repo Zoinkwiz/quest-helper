@@ -152,9 +152,12 @@ public class WidgetChoiceStep
 			{
 				for (Widget currentExclusionChoice : exclusionChoices)
 				{
-					if (excludedStrings.contains(currentExclusionChoice.getText()))
+					for (String excludedString : excludedStrings)
 					{
-						return;
+						if (currentExclusionChoice.getText().contains(excludedString))
+						{
+							return;
+						}
 					}
 				}
 			}

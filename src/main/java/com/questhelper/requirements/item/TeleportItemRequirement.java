@@ -35,9 +35,21 @@ public class TeleportItemRequirement extends ItemRequirement
 		setChargedItem(true);
 	}
 
+	public TeleportItemRequirement(String name, int id, int quantity)
+	{
+		super(name, id, quantity);
+		setChargedItem(true);
+	}
+
 	public TeleportItemRequirement(String name, ItemCollections itemCollection)
 	{
 		super(name, itemCollection);
+		setChargedItem(true);
+	}
+
+	public TeleportItemRequirement(String name, ItemCollections itemCollection, int quantity)
+	{
+		super(name, itemCollection, quantity);
 		setChargedItem(true);
 	}
 }

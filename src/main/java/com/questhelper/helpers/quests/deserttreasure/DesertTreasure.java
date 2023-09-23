@@ -69,7 +69,9 @@ import net.runelite.api.coords.WorldPoint;
 public class DesertTreasure extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement combatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele;
+	ItemRequirement combatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele,
+		canifisTeleport, bedabinTeleport, pollnivneachTeleport, waterfallTeleport, banditCampTeleport,
+		draynorTeleport, trollheimTeleport, pyramidTeleport;
 
 	//Items Required
 	ItemRequirement coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal, bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots,
@@ -83,7 +85,7 @@ public class DesertTreasure extends BasicQuestHelper
 		askedAboutKillingDessous, dessousNearby, killedDessous, gaveCake, talkedToTrollChild, killedTrolls, inTrollArea, inPath, killedKamil, onIcePath,
 		onIceBridge, smashedIce1, freedTrolls, placedBlood, placedIce, placedSmoke, placedShadow, inFloor1, inFloor2, inFloor3, inFloor4, inAzzRoom;
 
-	QuestStep talkToArchaeologist, talkToExpert, talkToExpertAgain, bringTranslationToArchaeologist, talkToArchaeologistAgainAfterTranslation,
+	DetailedQuestStep talkToArchaeologist, talkToExpert, talkToExpertAgain, bringTranslationToArchaeologist, talkToArchaeologistAgainAfterTranslation,
 		buyDrink, talkToBartender, talkToEblis, bringItemsToEblis, talkToEblisAtMirrors, enterSmokeDungeon, lightTorch1, lightTorch2, lightTorch3,
 		lightTorch4, openChest, useWarmKey, enterFareedRoom, killFareed, talkToRasolo, giveCakeToTroll, talkToMalak, askAboutKillingDessous,
 		talkToRuantun, blessPot, talkToMalakWithPot, addSpice, addPowder, addPowderToFinish, usePotOnGrave, killDessous, talkToMalakForDiamond,
@@ -302,6 +304,23 @@ public class DesertTreasure extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 		restorePotions = new ItemRequirement("Restore potions", ItemCollections.RESTORE_POTIONS);
 		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS);
+
+		// Teleports
+		canifisTeleport = new ItemRequirement("Teleport to Canifis. Fairy Ring (CKS), Fenkenstrain's teleport", ItemCollections.FAIRY_STAFF);
+		canifisTeleport.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
+		bedabinTeleport = new ItemRequirement("Teleport to Bedabin Camp. Fairy Ring (BIQ), Camulet", ItemCollections.FAIRY_STAFF);
+		bedabinTeleport.addAlternates(ItemID.CAMULET);
+		pollnivneachTeleport = new ItemRequirement("Teleport to Pollnivneach. Pollnivneach house teleport", ItemID.POLLNIVNEACH_TELEPORT);
+		waterfallTeleport = new ItemRequirement("Teleport to the Waterfall. Skills necklace (Fishing Guild [1]), Games necklace (Barbarian Outpost [2])", ItemCollections.SKILLS_NECKLACES);
+		waterfallTeleport.addAlternates(ItemCollections.GAMES_NECKLACES);
+		banditCampTeleport = new ItemRequirement("Teleport to Bandit Camp (desert). Fairy Ring (BIQ), Camulet", ItemCollections.FAIRY_STAFF);
+		banditCampTeleport.addAlternates(ItemID.CAMULET);
+		draynorTeleport = new ItemRequirement("Teleport to Draynor Village. Amulet of Glory (Draynor Village [3]), Draynor Manor Teleport", ItemCollections.AMULET_OF_GLORIES);
+		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
+		trollheimTeleport = new ItemRequirement("Teleport to Trollheim. Trollheim teleport, Ghommal's hilt (any tier)", ItemID.TROLLHEIM_TELEPORT);
+		trollheimTeleport.addAlternates(ItemCollections.GHOMMALS_HILT);
+		pyramidTeleport = new ItemRequirement("Teleport to Jaldraocht Pyramid. Camulet, Pollnivneach house teleport", ItemID.CAMULET);
+		pyramidTeleport.addAlternates(ItemID.POLLNIVNEACH_TELEPORT);
 	}
 
 	public void loadZones()
@@ -392,10 +411,12 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
 		talkToArchaeologist.addDialogStep("Yes.");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
+		talkToArchaeologist.addTeleport(bedabinTeleport);
 
 		talkToExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3359, 3334, 0),
 			"Talk to the Terry Balando in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
 		talkToExpert.addDialogStep("Ask about the Desert Treasure quest.");
+		talkToExpert.addTeleport(digTele);
 
 		talkToExpertAgain = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3359, 3334, 0),
 			"Talk to the Terry Balando again.");
@@ -405,6 +426,7 @@ public class DesertTreasure extends BasicQuestHelper
 			"Bring the translation to the Archaeologist in the Bedabin Camp.", translation);
 		talkToArchaeologistAgainAfterTranslation = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist again.");
 		talkToArchaeologistAgainAfterTranslation.addDialogStep("Help him");
+		talkToArchaeologistAgainAfterTranslation.addTeleport(bedabinTeleport);
 		buyDrink = new NpcStep(this, NpcID.BARTENDER, new WorldPoint(3159, 2978, 0), "Buy a drink from the pub in the Bandit Camp, then talk to the Bartender again.", coins650);
 		buyDrink.addDialogStep("Buy a drink");
 		buyDrink.addDialogStep("Buy a beer");
@@ -423,17 +445,18 @@ public class DesertTreasure extends BasicQuestHelper
 
 		enterSmokeDungeon = new ObjectStep(this, ObjectID.SMOKEY_WELL, new WorldPoint(3310, 2962, 0),
 			"Enter the smokey well west of Pollnivneach. You'll need to run a lot, so bring energy/stamina potions if you can.", tinderbox, faceMask, iceGloves, waterSpellOrMelee);
+		enterSmokeDungeon.addTeleport(pollnivneachTeleport);
 		lightTorch1 = new ObjectStep(this, NullObjectID.NULL_6405, new WorldPoint(3323, 9398, 0),
-			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox);
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch1.addIcon(ItemID.TINDERBOX);
 
-		lightTorch2 = new ObjectStep(this, NullObjectID.NULL_6407, new WorldPoint(3321, 9355, 0), "Light all the torches in the corners of the dungeon.", tinderbox);
+		lightTorch2 = new ObjectStep(this, NullObjectID.NULL_6407, new WorldPoint(3321, 9355, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
 		lightTorch2.addIcon(ItemID.TINDERBOX);
 
-		lightTorch3 = new ObjectStep(this, NullObjectID.NULL_6411, new WorldPoint(3207, 9395, 0), "Light all the torches in the corners of the dungeon.", tinderbox);
+		lightTorch3 = new ObjectStep(this, NullObjectID.NULL_6411, new WorldPoint(3207, 9395, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
 		lightTorch3.addIcon(ItemID.TINDERBOX);
 
-		lightTorch4 = new ObjectStep(this, NullObjectID.NULL_6409, new WorldPoint(3204, 9350, 0), "Light all the torches in the corners of the dungeon.", tinderbox);
+		lightTorch4 = new ObjectStep(this, NullObjectID.NULL_6409, new WorldPoint(3204, 9350, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
 		lightTorch4.addIcon(ItemID.TINDERBOX);
 
 		lightTorch1.addSubSteps(lightTorch2, lightTorch3, lightTorch4);
@@ -452,21 +475,24 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToRasolo = new NpcStep(this, NpcID.RASOLO, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
 		talkToRasolo.addDialogStep("Ask about the Diamonds of Azzanadra");
 		talkToRasolo.addDialogStepWithExclusion("Yes", "Ask about the Diamonds of Azzanadra");
+		talkToRasolo.addTeleport(waterfallTeleport);
 
 		getCross = new ObjectStep(this, ObjectID.SECURE_CHEST, new WorldPoint(3169, 2967, 0), "Bring antipoison, food, and as many lockpicks as you can to the Bandit Camp, and try opening the chest in the south of the Bandit Camp. Keep trying until you succeed.", manyLockpicks, antipoison);
+		getCross.addTeleport(banditCampTeleport);
 
 		talkToMalak = new NpcStep(this, NpcID.MALAK, new WorldPoint(3496, 3479, 0), "Talk to Malak in the pub in Canifis.");
 		talkToMalak.addDialogStep("I am looking for a special Diamond...");
 		talkToMalak.addDialogStep("Yes");
+		talkToMalak.addTeleport(canifisTeleport);
 
 		askAboutKillingDessous = new NpcStep(this, NpcID.MALAK, new WorldPoint(3496, 3479, 0), "Ask Malek in the pub in Canifis how to kill Dessous.");
 		askAboutKillingDessous.addDialogStep("How can I kill Dessous?");
 
 		returnCross = new NpcStep(this, NpcID.RASOLO, new WorldPoint(2531, 3420, 0), "Return the cross to Rasolo south of Baxtorian Falls.", cross);
-
+		returnCross.addTeleport(waterfallTeleport);
 		enterShadowDungeon = new ObjectStep(this, NullObjectID.NULL_6560, new WorldPoint(2547, 3421, 0),
 			"Equip the Ring of Visibility, then go down the ladder in the area east of Rasolo. It's recommended you bring combat gear to safe spot Damis.", ringOfVisibility);
-
+		enterShadowDungeon.addTeleport(waterfallTeleport);
 		waitForDamis = new DetailedQuestStep(this, new WorldPoint(2745, 5115, 0), "Go to the far eastern room of the dungeon, and wait for Damis to spawn.");
 
 		killDamis1 = new NpcStep(this, NpcID.DAMIS, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
@@ -476,12 +502,13 @@ public class DesertTreasure extends BasicQuestHelper
 		enterSewer = new ObjectStep(this, ObjectID.TRAPDOOR_6434, new WorldPoint(3084, 3272, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
 		enterSewer.addAlternateObjects(ObjectID.TRAPDOOR_6435);
 		enterSewer.addDialogStep("Actually, I don't need to know anything.");
+		enterSewer.addTeleport(draynorTeleport);
 		talkToRuantun = new NpcStep(this, NpcID.RUANTUN, new WorldPoint(3112, 9690, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
 		talkToRuantun.addSubSteps(enterSewer);
 
 		blessPot = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3350, 0), "Travel to Entrana with the silver pot and have the High Priest enchant it.", silverPot);
 		talkToMalakWithPot = new NpcStep(this, NpcID.MALAK, new WorldPoint(3496, 3479, 0), "Bring the blessed pot to Malak in the pub in Canifis. He'll bite you for a small bit of damage.", silverPot2);
-
+		talkToMalakWithPot.addTeleport(canifisTeleport);
 		addSpice = new DetailedQuestStep(this, "Use the spice on the blessed pot.", potWithGarlic, spice);
 		addPowder = new DetailedQuestStep(this, "Add the garlic powder to the blessed pot.", potOfBlood, garlicPowder);
 		addPowderToFinish = new DetailedQuestStep(this, "Add the garlic powder to the blessed pot.", potWithSpice, garlicPowder);
@@ -493,9 +520,10 @@ public class DesertTreasure extends BasicQuestHelper
 		killDessous = new NpcStep(this, NpcID.DESSOUS, new WorldPoint(3570, 3403, 0), "Kill Dessous.");
 
 		talkToMalakForDiamond = new NpcStep(this, NpcID.MALAK, new WorldPoint(3496, 3479, 0), "Return to Malak in Canifis to get the Blood Diamond.");
-
+		talkToMalakForDiamond.addTeleport(canifisTeleport);
 		giveCakeToTroll = new NpcStep(this, NpcID.TROLL_CHILD_697, new WorldPoint(2835, 3740, 0), "Use a cake on the Troll Child north of Trollheim.", cake, spikedBoots);
 		giveCakeToTroll.addIcon(ItemID.CAKE);
+		giveCakeToTroll.addTeleport(trollheimTeleport);
 		talkToChildTroll = new NpcStep(this, NpcID.TROLL_CHILD, new WorldPoint(2835, 3740, 0), "Talk to the Troll Child north of Trollheim.");
 		talkToChildTroll.addDialogStep("Yes");
 
@@ -526,6 +554,7 @@ public class DesertTreasure extends BasicQuestHelper
 			bloodDiamondHighlighted,	smokeDiamond,
 			iceDiamond,	shadowDiamond);
 		placeBlood.addIcon(ItemID.BLOOD_DIAMOND);
+		placeBlood.addTeleport(pyramidTeleport);
 
 		placeSmoke = new ObjectStep(this, NullObjectID.NULL_6485, new WorldPoint(3245, 2910, 0),
 			"Place all the diamonds in the obelisks around the pyramid south east of the Bandit Camp. Note a " +
@@ -571,7 +600,10 @@ public class DesertTreasure extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, food, prayerPotions, energyOrStaminas, restorePotions, digTele);
+		return Arrays.asList(combatGear, food, prayerPotions, energyOrStaminas, restorePotions, digTele,
+			bedabinTeleport.quantity(2), pollnivneachTeleport, waterfallTeleport.quantity(2),
+			banditCampTeleport.quantity(2), canifisTeleport.quantity(3), draynorTeleport,
+			trollheimTeleport, pyramidTeleport);
 	}
 
 
@@ -620,29 +652,39 @@ public class DesertTreasure extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
 			Arrays.asList(talkToArchaeologist, talkToExpert, talkToExpertAgain,
-				bringTranslationToArchaeologist, talkToArchaeologistAgainAfterTranslation, buyDrink, talkToBartender, talkToEblis, bringItemsToEblis), coins650, ashes, bloodRune, bones, charcoal, moltenGlass6,
-				magicLogs12, steelBars6));
+				bringTranslationToArchaeologist, talkToArchaeologistAgainAfterTranslation, buyDrink, talkToBartender, talkToEblis, bringItemsToEblis),
+			Arrays.asList(coins650, ashes, bloodRune, bones, charcoal, moltenGlass6, magicLogs12, steelBars6),
+			Arrays.asList(digTele, bedabinTeleport)));
 
 		PanelDetails smokeDiamondPanel = new PanelDetails("Smoke diamond",
-			Arrays.asList(enterSmokeDungeon, lightTorch1, openChest, useWarmKey, killFareed), faceMask, tinderbox, iceGloves, waterSpellOrMelee, energyOrStaminas);
+			Arrays.asList(enterSmokeDungeon, lightTorch1, openChest, useWarmKey, killFareed),
+			Arrays.asList(faceMask, tinderbox, iceGloves, waterSpellOrMelee, energyOrStaminas),
+			Collections.singletonList(pollnivneachTeleport));
 		smokeDiamondPanel.setLockingStep(getSmokeDiamond);
 
 		PanelDetails shadowDiamondPanel = new PanelDetails("Shadow diamond",
-			Arrays.asList(talkToRasolo, getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1), manyLockpicks, antipoison, combatGear, food);
+			Arrays.asList(talkToRasolo, getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1),
+			Arrays.asList(manyLockpicks, antipoison, combatGear, food),
+			Arrays.asList(waterfallTeleport.quantity(2), banditCampTeleport));
 		shadowDiamondPanel.setLockingStep(getShadowDiamond);
 
 		PanelDetails bloodDiamondPanel = new PanelDetails("Blood diamond",
-			Arrays.asList(talkToMalak, askAboutKillingDessous, talkToRuantun, blessPot, talkToMalakWithPot, addPowder, addSpice, usePotOnGrave, killDessous, talkToMalakForDiamond), silverBar, spice, garlicPowder, combatGear, food);
+			Arrays.asList(talkToMalak, askAboutKillingDessous, talkToRuantun, blessPot, talkToMalakWithPot,
+				addPowder, addSpice, usePotOnGrave, killDessous, talkToMalakForDiamond),
+			Arrays.asList(silverBar, spice, garlicPowder, combatGear, food),
+			Arrays.asList(canifisTeleport.quantity(3), draynorTeleport));
 		bloodDiamondPanel.setLockingStep(getBloodDiamond);
 
 		PanelDetails iceDiamondPanel = new PanelDetails("Ice diamond",
 			Arrays.asList(giveCakeToTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1,
 				breakIce2, talkToTrolls, talkToChildTrollAfterFreeing),
-			cake, spikedBoots, combatGear, food, restorePotions, prayerPotions, energyOrStaminas, fireSpells);
+			Arrays.asList(cake, spikedBoots, combatGear, food, restorePotions, prayerPotions, energyOrStaminas, fireSpells),
+                Collections.singletonList(trollheimTeleport));
 		iceDiamondPanel.setLockingStep(getIceDiamond);
 
 		PanelDetails finishingPanel = new PanelDetails("Freeing Azzanadra",
-			Arrays.asList(placeBlood, enterPyramid, goDownFromFirstFloor, enterMiddleOfPyramid, talkToAzz), energyOrStaminas, food, prayerPotions, antipoison);
+			Arrays.asList(placeBlood, enterPyramid, goDownFromFirstFloor, enterMiddleOfPyramid, talkToAzz),
+			null, Arrays.asList(pyramidTeleport, energyOrStaminas, food, prayerPotions, antipoison));
 
 		allSteps.add(smokeDiamondPanel);
 		allSteps.add(shadowDiamondPanel);

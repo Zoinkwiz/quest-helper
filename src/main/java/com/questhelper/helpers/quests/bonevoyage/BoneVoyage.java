@@ -29,6 +29,7 @@ import com.questhelper.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.Favour;
 import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -156,14 +157,14 @@ public class BoneVoyage extends BasicQuestHelper
 		vodka2 = new ItemRequirement("Vodka", ItemID.VODKA, 2);
 		marrentillPotionUnf = new ItemRequirement("Marrentill potion (unf)", ItemID.MARRENTILL_POTION_UNF);
 
-		digsiteTeleport = new ItemRequirement("Teleports to the Digsite", ItemID.DIGSITE_PENDANT_4);
+		digsiteTeleport = new TeleportItemRequirement("Teleports to the Digsite", ItemID.DIGSITE_PENDANT_4);
 		digsiteTeleport.addAlternates(ItemID.DIGSITE_PENDANT_5, ItemID.DIGSITE_TELEPORT);
-		woodcuttingGuildTeleport = new ItemRequirement("Teleport to the Woodcutting Guild", ItemCollections.SKILLS_NECKLACES);
+		woodcuttingGuildTeleport = new TeleportItemRequirement("Teleport to the Woodcutting Guild", ItemCollections.SKILLS_NECKLACES);
 		woodcuttingGuildTeleport.addAlternates(ItemID.XERICS_TALISMAN, ItemID.KHAREDSTS_MEMOIRS);
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		sarimTeleport = new ItemRequirement("Port Sarim teleport", ItemCollections.AMULET_OF_GLORIES);
+		varrockTeleport = new TeleportItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		sarimTeleport = new TeleportItemRequirement("Port Sarim teleport", ItemCollections.AMULET_OF_GLORIES);
 		sarimTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
-		lumberyardTeleport = new ItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
+		lumberyardTeleport = new TeleportItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
 		
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);

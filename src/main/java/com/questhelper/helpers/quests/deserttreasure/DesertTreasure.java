@@ -258,14 +258,14 @@ public class DesertTreasure extends BasicQuestHelper
 		bloodDiamond = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
 		bloodDiamond.setTooltip("You can get another from Malak in Canifis");
 
-		smokeDiamondHighlighted = new ItemRequirement("Smoke diamond", ItemID.SMOKE_DIAMOND);
+		smokeDiamondHighlighted = new ItemRequirement("Smoke diamond", ItemID.SMOKE_DIAMOND).highlighted();
 		smokeDiamondHighlighted.setTooltip("You can get another from the room you killed Fareed in inside the Smoke Dungeon");
-		shadowDiamondHighlighted = new ItemRequirement("Shadow diamond", ItemID.SHADOW_DIAMOND);
+		shadowDiamondHighlighted = new ItemRequirement("Shadow diamond", ItemID.SHADOW_DIAMOND).highlighted();
 		shadowDiamondHighlighted.setTooltip("You can get another from the east room of the Shadow Dungeon");
 
-		iceDiamondHighlighted = new ItemRequirement("Ice diamond", ItemID.ICE_DIAMOND);
+		iceDiamondHighlighted = new ItemRequirement("Ice diamond", ItemID.ICE_DIAMOND).highlighted();
 		iceDiamondHighlighted.setTooltip("You can get another from the Troll Child north of Trollheim");
-		bloodDiamondHighlighted = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND);
+		bloodDiamondHighlighted = new ItemRequirement("Blood diamond", ItemID.BLOOD_DIAMOND).highlighted();
 		bloodDiamondHighlighted.setTooltip("You can get another from Malak in Canifis");
 
 		iceGloves = new ItemRequirement("Ice gloves/smiths gloves(i)", ItemID.ICE_GLOVES).equipped().isNotConsumed();
@@ -427,6 +427,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		bringTranslationToArchaeologist = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0),
 			"Bring the translation to the Archaeologist in the Bedabin Camp.", translation);
+		bringTranslationToArchaeologist.addDialogStep("Don't read book");
 		talkToArchaeologistAgainAfterTranslation = new NpcStep(this, NpcID.ASGARNIA_SMITH, new WorldPoint(3177, 3043, 0), "Talk to the Archaeologist again.");
 		talkToArchaeologistAgainAfterTranslation.addDialogStep("Help him");
 		talkToArchaeologistAgainAfterTranslation.addTeleport(bedabinTeleport);
@@ -554,7 +555,7 @@ public class DesertTreasure extends BasicQuestHelper
 		placeBlood = new ObjectStep(this, NullObjectID.NULL_6482, new WorldPoint(3221, 2910, 0),
 			"Place all the diamonds in the obelisks around the pyramid south east of the Bandit Camp. Note a " +
 				"mysterious stranger can appear and attack you whilst you're holding the diamonds.",
-			bloodDiamondHighlighted,	smokeDiamond,
+			bloodDiamondHighlighted, smokeDiamond,
 			iceDiamond,	shadowDiamond);
 		placeBlood.addIcon(ItemID.BLOOD_DIAMOND);
 		placeBlood.addTeleport(pyramidTeleport);
@@ -679,7 +680,7 @@ public class DesertTreasure extends BasicQuestHelper
 		bloodDiamondPanel.setLockingStep(getBloodDiamond);
 
 		PanelDetails iceDiamondPanel = new PanelDetails("Ice diamond",
-			Arrays.asList(giveCakeToTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1,
+			Arrays.asList(giveCakeToTroll, talkToChildTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1,
 				breakIce2, talkToTrolls, talkToChildTrollAfterFreeing),
 			Arrays.asList(cake, spikedBoots, combatGear, food, restorePotions, prayerPotions, energyOrStaminas, fireSpells),
                 Collections.singletonList(trollheimTeleport));
@@ -687,7 +688,8 @@ public class DesertTreasure extends BasicQuestHelper
 
 		PanelDetails finishingPanel = new PanelDetails("Freeing Azzanadra",
 			Arrays.asList(placeBlood, enterPyramid, goDownFromFirstFloor, enterMiddleOfPyramid, talkToAzz),
-			null, Arrays.asList(pyramidTeleport, energyOrStaminas, food, prayerPotions, antipoison));
+			Arrays.asList(smokeDiamond, shadowDiamond, bloodDiamond, iceDiamond),
+			Arrays.asList(pyramidTeleport, energyOrStaminas, food, prayerPotions, antipoison));
 
 		allSteps.add(smokeDiamondPanel);
 		allSteps.add(shadowDiamondPanel);

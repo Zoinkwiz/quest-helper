@@ -26,6 +26,7 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.ItemCollections;
+import java.util.List;
 
 public class TeleportItemRequirement extends ItemRequirement
 {
@@ -44,6 +45,18 @@ public class TeleportItemRequirement extends ItemRequirement
 	public TeleportItemRequirement(String name, ItemCollections itemCollection)
 	{
 		super(name, itemCollection);
+		setChargedItem(true);
+	}
+
+	public TeleportItemRequirement(String name, List<Integer> items)
+	{
+		super(name, items);
+		setChargedItem(true);
+	}
+
+	public TeleportItemRequirement(String name, List<Integer> items, int quantity)
+	{
+		super(name, items, quantity);
 		setChargedItem(true);
 	}
 

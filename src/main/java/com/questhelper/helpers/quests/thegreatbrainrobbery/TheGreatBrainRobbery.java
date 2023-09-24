@@ -450,8 +450,10 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			0), "Talk to Brother Tranquility again.");
 		talkToTranquilityAfterPrayer.addSubSteps(returnToHarmonyAfterPrayer);
 
+		/// Finding a Doctor
 		goToF1Fenk = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
 			"Go up to the second floor of Fenkenstrain's Castle and talk to Dr. Fenkenstrain.");
+		((ObjectStep) goToF1Fenk).addTeleport(fenkenstrainTeleport);
 		goToF1Fenk.addDialogStep("Yes, please.");
 		goToF2Fenk = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1),
 			"Go up to the second floor of Fenkenstrain's Castle and talk to Dr. Fenkenstrain.");

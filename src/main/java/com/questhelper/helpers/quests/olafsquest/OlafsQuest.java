@@ -76,7 +76,7 @@ public class OlafsQuest extends BasicQuestHelper
 		triangleKey, circleKey, starKey;
 
 	//Items Recommended
-	ItemRequirement  prayerPotions, food, combatGear;
+	ItemRequirement prayerPotions, food, combatGear;
 
 	Requirement givenIngridCarving, inFirstArea, inSecondArea, inThirdArea, keyNearby, puzzleOpen, has2Barrels6Ropes, hasBarrel3Ropes, placedBarrel1, placedBarrel2,
 		keyInterfaceOpen, ulfricNearby, killedUlfric, tenFreeSlots;
@@ -148,10 +148,10 @@ public class OlafsQuest extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		
+
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		food.setUrlSuffix("Food");
-		
+
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
@@ -232,11 +232,12 @@ public class OlafsQuest extends BasicQuestHelper
 		talkToOlafAfterPlanks.addDialogStep("Alright, here, have some food. Now give me the map.");
 		digHole = new DigStep(this, new WorldPoint(2748, 3732, 0), "Dig next to the Windswept Tree.");
 
+		pickUpKey = new ItemStep(this, "Pick up the dropped key.", key);
+
 		killSkeleton = new NpcStep(this, NpcID.SKELETON_FREMENNIK, new WorldPoint(2727, 10141, 0), "Go deeper into the caverns and kill a Skeleton Fremennik for a key.", true);
 		killSkeleton.addAlternateNpcs(NpcID.SKELETON_FREMENNIK_4492, NpcID.SKELETON_FREMENNIK_4493, NpcID.SKELETON_FREMENNIK_4494, NpcID.SKELETON_FREMENNIK_4495,
 			NpcID.SKELETON_FREMENNIK_4496, NpcID.SKELETON_FREMENNIK_4497, NpcID.SKELETON_FREMENNIK_4498, NpcID.SKELETON_FREMENNIK_4499);
-
-		pickUpKey = new ItemStep(this, "Pick up the dropped key.", key);
+		killSkeleton.addSubSteps(pickUpKey);
 
 		searchPainting = new ObjectStep(this, ObjectID.PICTURE_WALL, new WorldPoint(2707, 10147, 0), "Search the picture wall in the north room.");
 
@@ -246,9 +247,9 @@ public class OlafsQuest extends BasicQuestHelper
 		pickUpItems2 = new DetailedQuestStep(this, "Pick up 1 rotten barrels and 3 ropes from around the room.", rottenBarrel, ropes3);
 		pickUpItems.addSubSteps(pickUpItems2);
 
-		useBarrel = new ObjectStep(this, ObjectID.WALKWAY, new WorldPoint(2722, 10168, 0), "WALK onto the walkway to the east, and use a barrel on it to repair it.", rottenBarrel, ropes3);
+		useBarrel = new ObjectStep(this, ObjectID.WALKWAY, new WorldPoint(2722, 10168, 0), "WALK onto the walkway to the east, and use a barrel on it to repair it.", rottenBarrel.highlighted(), ropes3);
 		useBarrel.addIcon(ItemID.ROTTEN_BARREL_11045);
-		useBarrel2 = new ObjectStep(this, ObjectID.WALKWAY_23214, new WorldPoint(2724, 10168, 0), "WALK on the walkway and repair the next hole in it.", rottenBarrel, ropes3);
+		useBarrel2 = new ObjectStep(this, ObjectID.WALKWAY_23214, new WorldPoint(2724, 10168, 0), "WALK on the walkway and repair the next hole in it.", rottenBarrel.highlighted(), ropes3);
 		useBarrel2.addIcon(ItemID.ROTTEN_BARREL_11045);
 
 		openGate = new ObjectStep(this, ObjectID.GATE_23216, new WorldPoint(2725, 10168, 0), "Open the gate on the walkway, clicking the key hole which matches your key.", key);

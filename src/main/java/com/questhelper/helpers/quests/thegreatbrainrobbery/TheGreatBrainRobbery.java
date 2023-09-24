@@ -416,6 +416,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_380, new WorldPoint(3049, 3484, 0),
 			"Search the south west bookcase in the Edgeville Monastery.");
+		((ObjectStep) searchBookcase).addTeleport(edgevilleTeleport);
 		readBook = new DetailedQuestStep(this, "Read the prayer book.", prayerBook.highlighted());
 		returnToTranquility = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
 			"Return to Harmony.", prayerBook, holySymbol.equipped());

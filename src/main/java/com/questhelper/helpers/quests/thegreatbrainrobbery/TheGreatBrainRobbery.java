@@ -382,7 +382,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		ItemRequirement conditionalPlanks = plank.quantity(4).hideConditioned(repairedStairs);
 		ItemRequirement conditionalNails = nails.quantity(60).hideConditioned(repairedStairs);
 		ItemRequirement conditionalHammer = hammer.hideConditioned(repairedStairs);
-		pullStatue = new ObjectStep(this, NullObjectID.NULL_22355, new WorldPoint(3794, 2844, 0),
+		pullStatue = new ObjectStep(this, NullObjectID.NULL_22355, new WorldPoint(3795, 2844, 0),
 			"Pull the saradomin statue on Harmony, then enter it.\nPlant the watermelon seeds in the patch first if you brought them for the Hard Morytania Diary.", fishbowlHelmet.equipped(),
 			divingApparatus.equipped(), conditionalHammer, conditionalPlanks, conditionalNails);
 		enterWater = new ObjectStep(this, ObjectID.STAIRS_22365, new WorldPoint(3788, 9254, 0),

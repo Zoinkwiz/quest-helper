@@ -138,4 +138,10 @@ public class KeyringRequirement extends ItemRequirement
 		}
 		return color;
 	}
+
+	@Override
+	protected KeyringRequirement copyOfClass()
+	{
+		return new KeyringRequirement(getName(), configManager, keyringCollection);
+	}
 }

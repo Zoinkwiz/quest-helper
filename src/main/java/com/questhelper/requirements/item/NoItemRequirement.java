@@ -39,7 +39,6 @@ import net.runelite.api.Client;
 public class NoItemRequirement extends ItemRequirement
 {
 	private final ItemSlots slot;
-	private final int matchingItemID;
 
 	/**
 	 * Checks if a player has no items in a given {@link ItemSlots}
@@ -51,7 +50,6 @@ public class NoItemRequirement extends ItemRequirement
 	{
 		super(text, -1, -1);
 		this.slot = slot;
-		matchingItemID = -1;
 	}
 
 	@Override
@@ -70,5 +68,11 @@ public class NoItemRequirement extends ItemRequirement
 	public String getDisplayText()
 	{
 		return "Nothing in your " + slot.getName();
+	}
+
+	@Override
+	protected NoItemRequirement copyOfClass()
+	{
+		return new NoItemRequirement(getName(), slot);
 	}
 }

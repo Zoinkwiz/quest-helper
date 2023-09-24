@@ -259,9 +259,22 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	protected ItemRequirement copyOfClass()
+	{
+		if (this.getClass() != ItemRequirement.class)
+		{
+			throw new UnsupportedOperationException("Subclasses must override copy()");
+		}
+		return new ItemRequirement(name, id, quantity, equip);
+	}
+
 	public ItemRequirement copy()
 	{
-		ItemRequirement newItem = new ItemRequirement(name, id, quantity, equip);
+		ItemRequirement newItem = copyOfClass();
+		newItem.setName(name);
+		newItem.setId(id);
+		newItem.setEquip(equip);
+		newItem.setQuantity(quantity);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(displayItemId);
 		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);

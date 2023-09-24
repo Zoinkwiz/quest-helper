@@ -65,4 +65,10 @@ public class TeleportItemRequirement extends ItemRequirement
 		super(name, itemCollection, quantity);
 		setChargedItem(true);
 	}
+
+	@Override
+	protected TeleportItemRequirement copyOfClass()
+	{
+		return new TeleportItemRequirement(getName(), getId());
+	}
 }

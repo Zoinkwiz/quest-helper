@@ -373,6 +373,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			"Talk to Brother Tranquility on Mos Le'Harmless.");
 		talkToTranquility.addDialogSteps("Yes.");
 		talkToTranquility.addSubSteps(moveToCapt);
+		talkToTranquility.addSubSteps(moveToMos);
 
 		talkToTranquilityOnIsland = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3787, 2825,
 			0), "Talk to Brother Tranquility on Harmony.");

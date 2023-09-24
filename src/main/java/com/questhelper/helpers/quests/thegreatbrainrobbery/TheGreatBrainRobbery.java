@@ -659,7 +659,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			ringOfCharos, catsOrResources, plank.quantity(4), nails.quantity(100), hammer));
 
 		allSteps.add(new PanelDetails("Saving the Monks",
-			Arrays.asList(talkToFenkOnHarmony, getFuse, climbShipLadder, getTinderbox, climbDownFromShip,
+			Arrays.asList(talkToFenkOnHarmony, getFuse, climbShipLadder, getTinderbox, getKeg, climbDownFromShip,
 				useKegOnDoor, useFuseOnDoor, lightFuse, killSorebones, talkToFenkWithItems, talkToTranquilityAfterHelping),
 			hammer, fishbowlHelmet, divingApparatus, combatGearForSafespotting));
 

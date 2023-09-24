@@ -32,6 +32,7 @@ import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
@@ -41,7 +42,6 @@ import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.IntUnaryOperator;
-
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -92,7 +91,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	Zone harmony, waterEntrance, water, waterExit, peepRoom, fenkF2, fenkF1, harmonyBasement, boat, boatToMos, mos;
 
 	Requirement inHarmony, inWaterEntrance, inWater, inWaterExit, inPeepRoom, inFenkF2, inFenkF1, inHarmonyBasement,
-		onBoat, repairedStairs,	hasReadPrayerBook, talkedToFenk, talkedToRufus, madeCrateWalls, madeCrateBottom,
+		onBoat, repairedStairs, hasReadPrayerBook, talkedToFenk, talkedToRufus, madeCrateWalls, madeCrateBottom,
 		addedCats, addedCatsOrHas10, fenkInCrate, placedKeg, addedFuse, litFuse, churchDoorGone, hasKeg, hasFuse,
 		hasTinderbox, givenClamp, givenStaples, givenBells, givenTongs, hadClamp, hadStaples, hadBells, hadTongs,
 		givenHammer, barrelchestAppeared, inBoatToMos, inMos;
@@ -112,7 +111,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 	QuestStep goToHarmonyAfterFenk, goDownToFenk, talkToFenkOnHarmony, leaveWindmillBasement, goToHarmonyForBrainItems,
 		getFuse, climbShipLadder, getTinderbox, getKeg, climbDownFromShip, useKegOnDoor, useFuseOnDoor, lightFuse,
-		killSorebones,  goBackDownToFenk, talkToFenkWithItems, goUpFromFenkAfterItems, talkToTranquilityAfterHelping;
+		killSorebones, goBackDownToFenk, talkToFenkWithItems, goUpFromFenkAfterItems, talkToTranquilityAfterHelping;
 
 	QuestStep enterChurchForFight, confrontMigor, defeatBarrelchest, pickupAnchor, talkToTranquilityToFinish;
 
@@ -336,7 +335,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		placedKeg = new VarbitRequirement(3393, 2, Operation.GREATER_EQUAL);
 		addedFuse = new VarbitRequirement(3393, 3, Operation.GREATER_EQUAL);
 		litFuse = new VarbitRequirement(3393, 4, Operation.GREATER_EQUAL);
-		churchDoorGone  = new VarbitRequirement(3393, 5, Operation.GREATER_EQUAL);
+		churchDoorGone = new VarbitRequirement(3393, 5, Operation.GREATER_EQUAL);
 
 		hasKeg = new Conditions(LogicType.OR, keg, placedKeg);
 		hasFuse = new Conditions(LogicType.OR, fuse, addedFuse);
@@ -477,15 +476,15 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			plank.quantity(4).hideConditioned(madeCrateBottom), nails.quantity(100).hideConditioned(madeCrateBottom),
 			hammer.hideConditioned(madeCrateBottom), woodenCats.quantity(10).hideConditioned(addedCats),
 			cratePart.quantity(6).hideConditioned(madeCrateWalls), wolfWhistle);
-		buildCrate = new ObjectStep(this, NullObjectID.NULL_22489,  new WorldPoint(3550, 3554, 2),
+		buildCrate = new ObjectStep(this, NullObjectID.NULL_22489, new WorldPoint(3550, 3554, 2),
 			"Return to Dr. Fenkenstrain and build the crate next to him.", ringOfCharos.equipped(), plank.quantity(4), nails.quantity(100),
 			hammer, woodenCats.quantity(10), cratePart.quantity(6), wolfWhistle);
 		buildCrate.addSubSteps(goToF1FenkForCrate, goToF2FenkForCrate);
 
-		addBottomToCrate = new ObjectStep(this, NullObjectID.NULL_22489,  new WorldPoint(3550, 3554, 2),
+		addBottomToCrate = new ObjectStep(this, NullObjectID.NULL_22489, new WorldPoint(3550, 3554, 2),
 			"Add a bottom to the crate.", plank.quantity(4), nails.quantity(100), hammer);
 
-		fillCrate = new ObjectStep(this, NullObjectID.NULL_22489,  new WorldPoint(3550, 3554, 2),
+		fillCrate = new ObjectStep(this, NullObjectID.NULL_22489, new WorldPoint(3550, 3554, 2),
 			"Fill the crate next to Fenkenstrain with wooden cats.", woodenCats.quantity(10).highlighted());
 		fillCrate.addIcon(ItemID.WOODEN_CAT);
 
@@ -495,7 +494,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			"Return to Dr. Fenkenstrain and place the shipping order on the crate.", shippingOrder);
 		goF2WithOrder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1),
 			"Return to Dr. Fenkenstrain and place the shipping order on the crate.", shippingOrder);
-		putOrderOnCrate = new ObjectStep(this, NullObjectID.NULL_22489,  new WorldPoint(3550, 3554, 2),
+		putOrderOnCrate = new ObjectStep(this, NullObjectID.NULL_22489, new WorldPoint(3550, 3554, 2),
 			"Return to Dr. Fenkenstrain and place the shipping order on the crate..", shippingOrder.highlighted());
 		putOrderOnCrate.addIcon(ItemID.SHIPPING_ORDER);
 		putOrderOnCrate.addSubSteps(goF1WithOrder, goF2WithOrder);
@@ -623,18 +622,18 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.PRAYER, 6000),
-				new ExperienceReward(Skill.CRAFTING, 2000),
-				new ExperienceReward(Skill.CONSTRUCTION, 2000));
+			new ExperienceReward(Skill.PRAYER, 6000),
+			new ExperienceReward(Skill.CRAFTING, 2000),
+			new ExperienceReward(Skill.CONSTRUCTION, 2000));
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Barrelchest Anchor", ItemID.BARRELCHEST_ANCHOR, 1),
-				new ItemReward("5,000 Exp Reward Lamp (Any skill above 30)", ItemID.ANTIQUE_LAMP, 1),
-				new ItemReward("Prayer Book", ItemID.PRAYER_BOOK, 1));
+			new ItemReward("Barrelchest Anchor", ItemID.BARRELCHEST_ANCHOR, 1),
+			new ItemReward("5,000 Exp Reward Lamp (Any skill above 30)", ItemID.ANTIQUE_LAMP, 1),
+			new ItemReward("Prayer Book", ItemID.PRAYER_BOOK, 1));
 	}
 
 	@Override

@@ -283,7 +283,7 @@ public class SwanSong extends BasicQuestHelper
 		talkToCrafter = new NpcStep(this, NpcID.MASTER_CRAFTER_5812, new WorldPoint(2937, 3290, 0), "Talk to a Master Crafter with dreadlocks in the Crafting Guild.", brownApron);
 		talkToCrafter.addDialogStep("Swan Song.");
 		makeAirtightPot = new DetailedQuestStep(this, "Add a pot lid to a pot.", potHiglight, potLidHiglight);
-		talkToMaligniusWithPot = new NpcStep(this, NpcID.MALIGNIUS_MORTIFER, new WorldPoint(2993, 3269, 0), "Bring the airtight pot and 7 bones to Malignius Mortifer near Port Sarim.", airtightPot);
+		talkToMaligniusWithPot = new NpcStep(this, NpcID.MALIGNIUS_MORTIFER, new WorldPoint(2993, 3269, 0), "Bring the airtight pot and 7 bones to Malignius Mortifer near Port Sarim. Make sure you're equipped for the fight before speaking to Malignus.", airtightPot);
 		talkToMaligniusWithPot.addDialogStep("I've spoken to the master crafter...");
 		talkToHermanWithPot = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0),
 			"Be prepared to fight, and talk to Herman in the colony.", combatGearRanged, boneSeeds);

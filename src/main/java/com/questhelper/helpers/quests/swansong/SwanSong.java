@@ -278,6 +278,7 @@ public class SwanSong extends BasicQuestHelper
 		talkToFruscone.addSubSteps(enterWizardsBasement);
 		talkToMalignius = new NpcStep(this, NpcID.MALIGNIUS_MORTIFER, new WorldPoint(2993, 3269, 0), "Talk to Malignius Mortifer near Port Sarim.", bones7);
 		talkToMalignius.addDialogStep("I need help with saving a fishing colony.");
+		talkToMalignius.addTeleport(craftingGuildTeleport);
 		talkToCrafter = new NpcStep(this, NpcID.MASTER_CRAFTER_5812, new WorldPoint(2937, 3290, 0), "Talk to a Master Crafter with dreadlocks in the Crafting Guild.", brownApron);
 		talkToCrafter.addDialogStep("Swan Song.");
 		makeAirtightPot = new DetailedQuestStep(this, "Add a pot lid to a pot.", potHiglight, potLidHiglight);

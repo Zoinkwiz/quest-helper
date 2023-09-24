@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
 
 /**
@@ -132,7 +131,7 @@ public enum ItemWithCharge
 	TCRYSTAL5(TELEPORT_CRYSTAL_5, 5),
 
 	// Infinite charges
-	ECTOPHIAL(ItemID.ECTOPHIAL, 10000000),
+	TP_ECTOPHIAL(ECTOPHIAL, 10000000),
 	FAIRY_RING_STAFF(ItemCollections.FAIRY_STAFF, 10000000)
 	;
 

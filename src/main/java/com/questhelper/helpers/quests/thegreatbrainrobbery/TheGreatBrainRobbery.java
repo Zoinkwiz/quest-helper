@@ -245,7 +245,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		noPet = new ItemRequirement("No pet following you or in your inventory", -1, -1);
 
 		// Item recommended
-		ectophial = new TeleportItemRequirement("Ectophial or Mos le'harmless teleport", ItemID.ECTOPHIAL, 2);
+		ectophial = new TeleportItemRequirement("Ectophial or Mos le'harmless teleport", ItemID.ECTOPHIAL, 3);
 		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.COMBAT_BRACELETS);
 		edgevilleTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 
@@ -500,8 +500,16 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		putOrderOnCrate.addIcon(ItemID.SHIPPING_ORDER);
 		putOrderOnCrate.addSubSteps(goF1WithOrder, goF2WithOrder);
 
-		goToHarmonyAfterFenk = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
-			"Return to Harmony and talk to Fenkenstrain in the windmill's basement.");
+		/// Saving the Monks
+		ObjectStep moveToCapt3 = moveToCapt2.copy();
+		NpcStep moveToMos3 = moveToMos2.copy();
+		NpcStep tranqTpToHarmony3 = speakToTranquilityToTeleportBack.copy();
+		NpcStep savingTheMonksTalkToFenk = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
+			"Talk to Fenkenstrain in the windmill's basement.");
+		goToHarmonyAfterFenk = new ConditionalStep(this, moveToCapt3, "Talk to Dr. Fenkenstrain in the Harmony Windmill basement.");
+		((ConditionalStep) goToHarmonyAfterFenk).addStep(inMos, tranqTpToHarmony3);
+		((ConditionalStep) goToHarmonyAfterFenk).addStep(inBoatToMos, moveToMos3);
+		((ConditionalStep) goToHarmonyAfterFenk).addStep(inHarmony, savingTheMonksTalkToFenk);
 		goDownToFenk = new ObjectStep(this, ObjectID.LADDER_22173, new WorldPoint(3789, 2826, 0),
 			"Talk to Dr. Fenkenstrain in the Harmony Windmill basement.");
 		talkToFenkOnHarmony = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3785, 9225, 0),

@@ -245,8 +245,8 @@ public class SwanSong extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToHerman = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2345, 3651, 0), "Talk to Herman Carnos outside the Fishing Colony.");
-		talkToHerman.addDialogSteps("What's the rush?", "Do you need any help?", "I'm a brave adventurer! Can I try?");
 		talkToHerman.addTeleport(piscTeleport);
+		talkToHerman.addDialogSteps("What's the rush?", "Do you need any help?", "I'm a brave adventurer! Can I try?", "Yes.");
 		talkToWom = new NpcStep(this, NpcID.WISE_OLD_MAN, new WorldPoint(3089, 3253, 0), "Talk to the Wise Old Man in Draynor Village.", blood5, lava10, mist10);
 		talkToWomAtColony = new NpcStep(this, NpcID.WISE_OLD_MAN_2112, new WorldPoint(2345, 3651, 0), "Talk to the Wise Old Man outside the Fishing Colony. Be prepared to fight sea trolls.", combatGear);
 		talkToWomAtColony.addDialogStep("I'm ready to fight.");

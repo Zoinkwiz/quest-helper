@@ -78,7 +78,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 {
 	// Required
 	ItemRequirement fishbowlHelmet, divingApparatus, woodenCats, oakPlank, saw, plank, fur, hammer, nails,
-		holySymbol, ringOfCharos, catsOrResources, tinderbox;
+		holySymbol, ringOfCharos, catsOrResources, tinderbox, noPet;
 
 	// Recommended
 	ItemRequirement ectophial, edgevilleTeleport, fenkenstrainTeleport, watermelonSeeds, combatGearForSafespotting,
@@ -240,6 +240,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			woodenCats.quantity(10), new ItemRequirements(plank.quantity(10), fur.quantity(10)));
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.addAlternates(ItemID.TINDERBOX_7156);
+		noPet = new ItemRequirement("No pet following you or in your inventory", -1, -1);
 
 		// Item recommended
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).isNotConsumed();
@@ -549,7 +550,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(fishbowlHelmet, divingApparatus, catsOrResources, plank.quantity(8), hammer,
-			nails.quantity(100), holySymbol, ringOfCharos);
+			nails.quantity(100), holySymbol, ringOfCharos, noPet);
 	}
 
 	@Override
@@ -613,7 +614,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off",
 			Arrays.asList(talkToTranquility, pullStatue, enterWater, repairWaterStairs, climbFromWater,
 				climbFromWaterCaveToPeep, peerThroughHole, talkToTranquilityAfterPeeping),
-			plank.quantity(4), nails.quantity(60), hammer, fishbowlHelmet, divingApparatus));
+			plank.quantity(4), nails.quantity(60), hammer, fishbowlHelmet, divingApparatus, noPet));
 
 		allSteps.add(new PanelDetails("Protecting the windmill",
 			Arrays.asList(searchBookcase, readBook, returnToTranquility, recitePrayer, talkToTranquilityAfterPrayer),

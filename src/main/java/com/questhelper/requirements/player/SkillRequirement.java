@@ -133,12 +133,12 @@ public class SkillRequirement extends AbstractRequirement
 		{
 			highestBoost = 5;
 		}
-		else if (skill == THIEVING && client.getRealSkillLevel(skill) < 65){ //player only has access to Summer sq'irk juice at level 65 thieving which is the default boost value for thieving, currently that's blind to player current skill level
-			if(client.getRealSkillLevel(skill) >= 45){
-				highestBoost = 2;
+		else if (skill == THIEVING){ //player only has access to Summer sq'irk juice at level 65 thieving which is the default boost value for thieving, currently that's blind to player current skill level
+			if(client.getRealSkillLevel(skill) < 65){
+				highestBoost = 2; //autumn sq'irk
 			}
-			else{
-				highestBoost = 1;
+			else if(client.getRealSkillLevel(skill) < 45){
+				highestBoost = 1;  //spring sq'irk
 			}
 		}
 

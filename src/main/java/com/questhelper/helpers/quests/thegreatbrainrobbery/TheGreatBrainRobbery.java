@@ -616,7 +616,9 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off",
 			Arrays.asList(talkToTranquility, pullStatue, enterWater, repairWaterStairs, climbFromWater,
 				climbFromWaterCaveToPeep, peerThroughHole, talkToTranquilityAfterPeeping),
-			plank.quantity(4), nails.quantity(60), hammer, fishbowlHelmet, divingApparatus, noPet));
+			Arrays.asList(plank.quantity(4), nails.quantity(60), hammer, fishbowlHelmet, divingApparatus,
+				holySymbol, // For the next step, saves some time & the inventory slot is not really needed
+				noPet)));
 
 		allSteps.add(new PanelDetails("Protecting the windmill",
 			Arrays.asList(searchBookcase, readBook, returnToTranquility, recitePrayer, talkToTranquilityAfterPrayer),

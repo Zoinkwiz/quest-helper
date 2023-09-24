@@ -420,7 +420,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		((ObjectStep) searchBookcase).addTeleport(edgevilleTeleport);
 		readBook = new DetailedQuestStep(this, "Read the prayer book.", prayerBook.highlighted());
 		returnToTranquility = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
-			"Return to Harmony.", prayerBook, holySymbol.equipped());
+			"Return to Harmony.", prayerBook, holySymbol.equipped().highlighted());
 		recitePrayer = new DetailedQuestStep(this, new WorldPoint(3787, 2825,
 			0), "Right-click recite the prayer book on Harmony.", prayerBook.highlighted(), holySymbol.equipped());
 

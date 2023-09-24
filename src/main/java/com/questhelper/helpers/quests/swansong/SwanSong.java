@@ -373,6 +373,7 @@ public class SwanSong extends BasicQuestHelper
 			Collections.singletonList(piscTeleport)));
 		List<QuestStep> helpingSteps = QuestUtil.toArrayList(talkToFranklin, useLog, useTinderbox);
 		helpingSteps.addAll(repairWall.getDisplaySteps());
+		helpingSteps.add(talkToFranklinAgain);
 		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, Arrays.asList(combatGear, log, tinderbox, ironBar5, hammerPanel)));
 
 		List<QuestStep> helpingArnoldSteps = QuestUtil.toArrayList(talkToArnold);

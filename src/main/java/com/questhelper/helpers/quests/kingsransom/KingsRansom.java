@@ -71,7 +71,7 @@ public class KingsRansom extends BasicQuestHelper
 		hairclipOrLockpick, holyGrail, granite, telegrab;
 
 	//Items Recommended
-	ItemRequirement ardougneTeleport, camelotTeleport, monestaryOrEdgevilleTeleport;
+	ItemRequirement ardougneTeleport, camelotTeleport, monasteryOrEdgevilleTeleport;
 
 	Requirement hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, inTrialRoom, handlerInRoom, butlerInRoom,
 		maidInRoom, askedAboutThread, askedAboutDagger, askedAboutNight, askedAboutPoison, inPrison, inBasement, inPuzzle, hasTelegrabItems,
@@ -239,8 +239,8 @@ public class KingsRansom extends BasicQuestHelper
 
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT, 3);
-		monestaryOrEdgevilleTeleport = new ItemRequirement("Monestary with Combat Bracelet or Edgeville glory teleport", ItemCollections.AMULET_OF_GLORIES);
-		monestaryOrEdgevilleTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
+		monasteryOrEdgevilleTeleport = new ItemRequirement("Monastery with Combat Bracelet or Edgeville glory teleport", ItemCollections.AMULET_OF_GLORIES);
+		monasteryOrEdgevilleTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
 	}
 
 	public void loadZones()
@@ -423,7 +423,7 @@ public class KingsRansom extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(ardougneTeleport, camelotTeleport, monestaryOrEdgevilleTeleport);
+		return Arrays.asList(ardougneTeleport, camelotTeleport, monasteryOrEdgevilleTeleport);
 	}
 
 	@Override

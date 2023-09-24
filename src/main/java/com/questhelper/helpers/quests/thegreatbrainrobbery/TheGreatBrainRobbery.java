@@ -371,7 +371,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			"Talk to Bill Teach to travel to Mos Le'Harmless.");
 		talkToTranquility = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
 			"Talk to Brother Tranquility on Mos Le'Harmless.");
-		talkToTranquility.addDialogSteps("Yes.", "Undead pirates? Let me at 'em!");
+		talkToTranquility.addDialogSteps("Yes.");
 		talkToTranquility.addSubSteps(moveToCapt);
 
 		talkToTranquilityOnIsland = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3787, 2825,

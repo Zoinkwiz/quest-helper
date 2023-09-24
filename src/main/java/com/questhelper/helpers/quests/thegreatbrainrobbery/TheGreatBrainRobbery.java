@@ -521,7 +521,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		goToHarmonyForBrainItems = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
 			"Return to Harmony.");
 		getFuse = new ObjectStep(this, ObjectID.LOCKER_22298, new WorldPoint(3791, 2873, 0),
-			"Search the locker on the ship on the north of Harmony.", fishbowlHelmet.equipped(), divingApparatus.equipped());
+			"Search the locker on the ship on the north of Harmony.",
+			fishbowlHelmet.highlighted().equipped(), divingApparatus.highlighted().equipped());
 		((ObjectStep) getFuse).addAlternateObjects(ObjectID.LOCKER_22299);
 		getFuse.addSubSteps(goToHarmonyForBrainItems, leaveWindmillBasement);
 		climbShipLadder = new ObjectStep(this, ObjectID.LADDER_22274, new WorldPoint(3802, 2873, 0),

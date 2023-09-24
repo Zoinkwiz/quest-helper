@@ -37,6 +37,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -101,8 +102,9 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		enterWaterReturn, leaveWaterEntranceReturn, talkToTranquilityAfterPeeping, talkToTranquilityMosAfterPeeping,
 		moveToMos, moveToCapt;
 
-	QuestStep searchBookcase, readBook, returnToTranquility, recitePrayer, returnToHarmonyAfterPrayer,
-		talkToTranquilityAfterPrayer;
+	QuestStep searchBookcase, readBook;
+	ConditionalStep returnToTranquility;
+	QuestStep recitePrayer, returnToHarmonyAfterPrayer, talkToTranquilityAfterPrayer;
 
 	QuestStep goToF1Fenk, goToF2Fenk, talkToFenk, talkToRufus, makeOrGetWoodenCats, goToF1FenkForCrate,
 		goToF2FenkForCrate, buildCrate, addBottomToCrate, fillCrate, blowWhistle, goF1WithOrder, goF2WithOrder,
@@ -243,7 +245,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		noPet = new ItemRequirement("No pet following you or in your inventory", -1, -1);
 
 		// Item recommended
-		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).isNotConsumed();
+		ectophial = new TeleportItemRequirement("Ectophial or Mos le'harmless teleport", ItemID.ECTOPHIAL, 2);
 		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.COMBAT_BRACELETS);
 		edgevilleTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 
@@ -414,17 +416,33 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		talkToTranquilityAfterPeeping.addSubSteps(goFromHoleToWater, enterWaterReturn, leaveWaterEntranceReturn,
 			leaveWaterBack, talkToTranquilityMosAfterPeeping);
 
+		/// Protecting the windmill
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_380, new WorldPoint(3049, 3484, 0),
 			"Search the south west bookcase in the Edgeville Monastery.", holySymbol);
 		searchBookcase.addDialogStep("Monastery");
 		((ObjectStep) searchBookcase).addTeleport(edgevilleTeleport);
+
 		readBook = new DetailedQuestStep(this, "Read the prayer book.", prayerBook.highlighted());
-		returnToTranquility = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
-			"Return to Harmony.", prayerBook, holySymbol.equipped().highlighted());
+
+		// Return to Harmony
+		ObjectStep moveToCapt2 = ((ObjectStep) moveToCapt).copy();
+		moveToCapt2.addTeleport(ectophial.quantity(1));
+		NpcStep moveToMos2 = ((NpcStep) moveToMos).copy();
+		NpcStep speakToTranquilityToTeleportBack = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
+			"Speak to Brother Tranquility to transport to Harmony.");
+		returnToTranquility = new ConditionalStep(this, moveToCapt2, "Return to Harmony");
+		returnToTranquility.addStep(inMos, speakToTranquilityToTeleportBack);
+		returnToTranquility.addStep(inBoatToMos, moveToMos2);
+		returnToTranquility.addRequirement(prayerBook);
+		returnToTranquility.addRequirement(holySymbol.equipped().highlighted());
+
+		// Recite prayer
 		recitePrayer = new DetailedQuestStep(this, new WorldPoint(3787, 2825,
-			0), "Right-click recite the prayer book on Harmony.", prayerBook.highlighted(), holySymbol.equipped());
+			0), "Right-click recite the prayer book on Harmony.",
+			prayerBook.highlighted(), holySymbol.equipped().highlighted());
 
 
+		// Talk to Brother Tranquility again
 		returnToHarmonyAfterPrayer = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
 			"Return to Brother Tranquility on Harmony.");
 		returnToHarmonyAfterPrayer.addDialogStep("Yes, please.");

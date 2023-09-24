@@ -71,7 +71,7 @@ public class EaglesPeak extends BasicQuestHelper
 		birdFeed6, ferret, metalFeatherHighlighted, birdFeed, bronzeFeatherHighlighted, silverFeatherHighlighted, goldFeatherHighlighted;
 
 	//Items Reecommended
-	ItemRequirement dramenStaffOrNecklaceOfPassage, varrockTeleport, ardougneTeleport;
+	ItemRequirement eaglesPeakTeleport, varrockTeleport, ardougneTeleport;
 
 	Requirement inMainCavern, spokenToNickolaus, spokenOnceToAsyff, spokenTwiceToAsyff, inBronzeRoom, bronzeRoomPedestalUp, bronzeRoomPedestalLowered,
 		winch1NotDone, winch2NotDone, winch3NotDone, winch4NotDone, hasInspectedSilverPedestal, inSilverRoom, hasInspectedRocks1, hasInspectedRocks2,
@@ -79,7 +79,7 @@ public class EaglesPeak extends BasicQuestHelper
 		bird2Moved, bird3Moved, bird4Moved, bird5Moved, hasInsertedBronzeFeather, hasInsertedSilverFeather, hasInsertedGoldFeather, silverFeatherNearby,
 		hasSolvedBronze;
 
-	QuestStep speakToCharlie, inspectBooks, clickBook, inspectBooksForFeather, useFeatherOnDoor, enterPeak, shoutAtNickolaus, pickupFeathers, enterEastCave,
+	DetailedQuestStep speakToCharlie, inspectBooks, clickBook, inspectBooksForFeather, useFeatherOnDoor, enterPeak, shoutAtNickolaus, pickupFeathers, enterEastCave,
 		goToFancyStore, speakAsyffAgain, returnToEaglesPeak, enterBronzeRoom, attemptToTakeBronzeFeather, winch1, winch2, winch3, winch4, grabBronzeFeather,
 		enterMainCavernFromBronze, enterSilverRoom, inspectSilverPedestal, enterMainCavernFromSilver, enterGoldRoom, inspectRocks1, inspectRocks2, inspectOpening,
 		threatenKebbit, pickupSilverFeather, collectFeed, pullLever1Down, pushLever1Up, pullLever2Down, pullLever3Down, pullLever4Down, fillFeeder1, fillFeeder2,
@@ -106,7 +106,6 @@ public class EaglesPeak extends BasicQuestHelper
 
 		steps.put(5, getFeatherKey);
 
-		// TODO: Need a missing step for entering the
 		ConditionalStep enterEaglesPeak = new ConditionalStep(this, inspectBooksForFeather);
 		enterEaglesPeak.addStep(metalFeather, useFeatherOnDoor);
 
@@ -206,10 +205,9 @@ public class EaglesPeak extends BasicQuestHelper
 		goldFeather = new ItemRequirement("Golden feather", ItemID.GOLDEN_FEATHER_10175);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
-		dramenStaffOrNecklaceOfPassage = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
-		dramenStaffOrNecklaceOfPassage.addAlternates(ItemCollections.NECKLACE_OF_PASSAGES);
-		dramenStaffOrNecklaceOfPassage.setDisplayMatchedItemName(true);
-		dramenStaffOrNecklaceOfPassage.setTooltip("Necklace of Passage can also be used.");
+		eaglesPeakTeleport = new ItemRequirement("Teleport to Eagle's Peak. Fairy ring (AKQ), Necklace of passage (The Outpost [2])",
+			ItemCollections.FAIRY_STAFF).isNotConsumed();
+		eaglesPeakTeleport.addAlternates(ItemCollections.NECKLACE_OF_PASSAGES);
 
 		bronzeFeatherHighlighted = new ItemRequirement("Bronze feather", ItemID.BRONZE_FEATHER);
 		bronzeFeatherHighlighted.setHighlightInInventory(true);
@@ -276,12 +274,13 @@ public class EaglesPeak extends BasicQuestHelper
 	{
 		speakToCharlie = new NpcStep(this, NpcID.CHARLIE_1495, new WorldPoint(2607, 3264, 0),
 			"Speak to Charlie in the Ardougne Zoo.");
-		speakToCharlie.addDialogStep("Ah, you sound like someone who needs a quest doing!");
-		speakToCharlie.addDialogStep("Sure.  Any idea where I should start looking?");
+		speakToCharlie.addTeleport(ardougneTeleport);
+		speakToCharlie.addDialogSteps("Ah, you sound like someone who needs a quest doing!",
+			"Sure.  Any idea where I should start looking?", "Yes.");
 
 		inspectBooks = new ObjectStep(this, NullObjectID.NULL_19787, new WorldPoint(2319, 3506, 0),
 			"Go to the camp north of Eagles' Peak and search the pile of books for a Bird Book. The closest fairy ring is AKQ or teleport to The Outpost using the Necklace of Passage.");
-
+		inspectBooks.addTeleport(eaglesPeakTeleport);
 		clickBook = new DetailedQuestStep(this, "Click the Bird Book for a Metal Feather.", birdBook);
 
 		inspectBooksForFeather = new ObjectStep(this, ObjectID.BOOKS_19886, new WorldPoint(2319, 3506, 0),
@@ -305,7 +304,7 @@ public class EaglesPeak extends BasicQuestHelper
 		goToFancyStore = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398, 0), "Go speak to Asyff in south-east Varrock to have a disguise made.",
 			yellowDye, coins, tar, tenEagleFeathers);
 		goToFancyStore.addDialogStep("Well, specifically I'm after a couple of bird costumes.");
-
+		goToFancyStore.addTeleport(varrockTeleport);
 		speakAsyffAgain = new NpcStep(this, NpcID.ASYFF, new WorldPoint(3281, 3398, 0), "Speak to Asyff again.",
 			yellowDye, coins, tar, tenEagleFeathers);
 		speakAsyffAgain.addDialogStep("I've got the feathers and materials you requested.");
@@ -313,7 +312,7 @@ public class EaglesPeak extends BasicQuestHelper
 
 		returnToEaglesPeak = new ObjectStep(this, NullObjectID.NULL_19790, new WorldPoint(2329, 3495, 0),
 			"Enter Eagles' Peak through the Rocky Outcrop.", fakeBeak, eagleCape);
-
+		returnToEaglesPeak.addTeleport(eaglesPeakTeleport);
 		enterEastCave = new ObjectStep(this, ObjectID.TUNNEL_19897, new WorldPoint(2023, 4982, 3), "Enter the eastern cavern of Eagles' Peak.");
 
 		enterBronzeRoom = new ObjectStep(this, ObjectID.TUNNEL_19909, new WorldPoint(1986, 4949, 3), "Enter the south-western cavern of Eagles' Peak.");
@@ -440,6 +439,7 @@ public class EaglesPeak extends BasicQuestHelper
 
 		speakToCharlieAgain = new NpcStep(this, NpcID.CHARLIE_1495, new WorldPoint(2607, 3264, 0),
 			"Bring the ferret back to Charlie in Ardougne Zoo.", ferret);
+		speakToCharlieAgain.addTeleport(ardougneTeleport);
 
 		leavePeak = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_19891, new WorldPoint(1993, 4983, 3), "Speak to Nickolaus in his camp north of Eagles' Peak.");
 		speakToNickolausInTheCamp.addSubSteps(leavePeak);
@@ -459,9 +459,9 @@ public class EaglesPeak extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(dramenStaffOrNecklaceOfPassage);
+		reqs.add(eaglesPeakTeleport.quantity(2));
 		reqs.add(varrockTeleport);
-		reqs.add(ardougneTeleport);
+		reqs.add(ardougneTeleport.quantity(2));
 		return reqs;
 	}
 
@@ -490,17 +490,17 @@ public class EaglesPeak extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest", Collections.singletonList(speakToCharlie)));
-		allSteps.add(new PanelDetails("Go to Eagles' Peak", Arrays.asList(inspectBooks, clickBook, useFeatherOnDoor)));
+		allSteps.add(new PanelDetails("Start the quest", Collections.singletonList(speakToCharlie), null, Collections.singletonList(ardougneTeleport)));
+		allSteps.add(new PanelDetails("Go to Eagles' Peak", Arrays.asList(inspectBooks, clickBook, useFeatherOnDoor), null, Collections.singletonList(eaglesPeakTeleport)));
 		allSteps.add(new PanelDetails("In Eagles' Peak", Arrays.asList(enterPeak, shoutAtNickolaus, pickupFeathers)));
-		allSteps.add(new PanelDetails("Make a disguise", Arrays.asList(goToFancyStore, speakAsyffAgain), yellowDye, coins, tar, tenEagleFeathers));
-		allSteps.add(new PanelDetails("Return to Eagles' Peak", Collections.singletonList(returnToEaglesPeak), fakeBeak, eagleCape));
+		allSteps.add(new PanelDetails("Make a disguise", Arrays.asList(goToFancyStore, speakAsyffAgain), Arrays.asList(yellowDye, coins, tar, tenEagleFeathers), Arrays.asList(varrockTeleport, eaglesPeakTeleport)));
+		allSteps.add(new PanelDetails("Return to Eagles' Peak", Collections.singletonList(returnToEaglesPeak), Arrays.asList(fakeBeak, eagleCape), Collections.singletonList(eaglesPeakTeleport)));
 		allSteps.add(new PanelDetails("Get the bronze feather", Arrays.asList(enterBronzeRoom, attemptToTakeBronzeFeather, winch1, grabBronzeFeather)));
 		allSteps.add(new PanelDetails("Get the silver feather", Arrays.asList(enterSilverRoom, inspectSilverPedestal, inspectRocks1, inspectRocks2, inspectOpening, threatenKebbit, pickupSilverFeather)));
 		allSteps.add(new PanelDetails("Get the golden feather", Arrays.asList(enterGoldRoom, collectFeed, pullLever1Down, fillFeeder1, fillFeeder2, pullLever2Down, pushLever1Up, fillFeeder4, pullLever3Down, fillFeeder5,
 			pullLever4Down, fillFeeder6, fillFeeder4Again, grabGoldFeather)));
 		allSteps.add(new PanelDetails("Free Nickolaus", Arrays.asList(useFeathersOnStoneDoor, sneakPastEagle, speakToNickolaus)));
-		allSteps.add(new PanelDetails("Learn how to catch ferrets", Arrays.asList(speakToNickolausInTheCamp, speakToCharlieAgain)));
+		allSteps.add(new PanelDetails("Learn how to catch ferrets", Arrays.asList(speakToNickolausInTheCamp, speakToCharlieAgain), null, Collections.singletonList(ardougneTeleport)));
 		return allSteps;
 	}
 

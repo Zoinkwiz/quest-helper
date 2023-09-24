@@ -251,6 +251,7 @@ public class SwanSong extends BasicQuestHelper
 		talkToWom.addTeleport(draynorTeleport);
 		talkToWom.addDialogSteps("Draynor Village", "You used to be a famous adventurer, didn't you?");
 		talkToWomAtColony = new NpcStep(this, NpcID.WISE_OLD_MAN_2112, new WorldPoint(2345, 3651, 0), "Talk to the Wise Old Man outside the Fishing Colony. Be prepared to fight sea trolls.", combatGear);
+		talkToWomAtColony.addTeleport(piscTeleport);
 		talkToWomAtColony.addDialogStep("I'm ready to fight.");
 		enterColony = new ObjectStep(this, ObjectID.HOLE_12656, new WorldPoint(2344, 3651, 0), "Enter the Fishing Colony, prepared to fight trolls.", combatGear, log, tinderbox, ironBar5, hammer);
 		talkToWomAtColony.addSubSteps(enterColony);

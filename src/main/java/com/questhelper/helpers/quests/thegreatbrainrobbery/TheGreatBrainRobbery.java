@@ -461,7 +461,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 			"Go up to the second floor of Fenkenstrain's Castle and talk to Dr. Fenkenstrain.");
 		talkToFenk.addSubSteps(goToF1Fenk, goToF2Fenk);
 		talkToRufus = new NpcStep(this, NpcID.RUFUS_6478, new WorldPoint(3507, 3494, 0),
-			"Talk to Rufus in Canifis' food store.", ringOfCharos.equipped());
+			"Talk to Rufus in Canifis' food store.", ringOfCharos.equipped().highlighted());
 		talkToRufus.addDialogStep("Talk about the meat shipment");
 		makeOrGetWoodenCats = new DetailedQuestStep(this,
 			"Either buy 10 wooden cats from the G.E., or make them on a clockmaker's bench in your POH.",

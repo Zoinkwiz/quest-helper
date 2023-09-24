@@ -197,6 +197,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		goBlowTheDoor.addStep(new Conditions(onBoat, hasFuse), getTinderbox);
 		goBlowTheDoor.addStep(new Conditions(inHarmony, hasFuse), climbShipLadder);
 		goBlowTheDoor.addStep(onBoat, climbDownFromShip);
+		goBlowTheDoor.addStep(inHarmonyBasement, leaveWindmillBasement);
 		goBlowTheDoor.addStep(inHarmony, getFuse);
 		steps.put(80, goBlowTheDoor);
 		steps.put(90, goBlowTheDoor);
@@ -522,7 +523,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		getFuse = new ObjectStep(this, ObjectID.LOCKER_22298, new WorldPoint(3791, 2873, 0),
 			"Search the locker on the ship on the north of Harmony.", fishbowlHelmet.equipped(), divingApparatus.equipped());
 		((ObjectStep) getFuse).addAlternateObjects(ObjectID.LOCKER_22299);
-		getFuse.addSubSteps(goToHarmonyForBrainItems);
+		getFuse.addSubSteps(goToHarmonyForBrainItems, leaveWindmillBasement);
 		climbShipLadder = new ObjectStep(this, ObjectID.LADDER_22274, new WorldPoint(3802, 2873, 0),
 			"Climb the ship's ladder.");
 		getTinderbox = new ItemStep(this, "Take a tinderbox.", tinderbox);

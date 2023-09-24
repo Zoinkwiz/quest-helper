@@ -59,7 +59,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.QuestState;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
@@ -280,7 +279,7 @@ public class QuestHelperPanel extends PluginPanel
 		searchQuestsPanel.add(allQuestsCompletedPanel, BorderLayout.SOUTH);
 
 		questListPanel.setBorder(new EmptyBorder(8, 10, 0, 10));
-		questListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+		questListPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 5));
 		questListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		showMatchingQuests("");
 

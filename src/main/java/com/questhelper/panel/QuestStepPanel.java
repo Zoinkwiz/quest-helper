@@ -39,7 +39,6 @@ import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.SwingUtil;
 
@@ -181,7 +180,7 @@ public class QuestStepPanel extends JPanel
 		questRequirementsHeader.add(questReqsTitle, BorderLayout.NORTH);
 
 		JPanel questRequirementsListPanel = new JPanel();
-		questRequirementsListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
+		questRequirementsListPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 1));
 		questRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 

@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
 import net.runelite.client.util.LinkBrowser;
@@ -264,7 +263,7 @@ public class QuestOverviewPanel extends JPanel
 		questItemReqs.setMinimumSize(new Dimension(1, headerPanel.getPreferredSize().height));
 		headerPanel.add(questItemReqs, BorderLayout.NORTH);
 
-		listPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
+		listPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 1));
 		listPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		requirementPanel.add(headerPanel, BorderLayout.NORTH);

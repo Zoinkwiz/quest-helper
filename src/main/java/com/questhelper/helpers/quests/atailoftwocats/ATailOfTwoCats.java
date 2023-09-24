@@ -28,6 +28,7 @@ import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
+import com.questhelper.TeleportCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.FollowerItemRequirement;
@@ -66,9 +67,11 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	ItemRequirement catspeak, catspeakE, deathRune5, chocolateCake, logs, tinderbox, milk, shears,
 		potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom, hat, catspeakEWorn, cat;
 
+	ItemRequirement burthorpeTeleport, varrockTeleport, sophanemTeleport, staminaPotion;
+
 	Requirement bobNearby, rakedPatch, madeBed, plantedSeed, placedLogs, litLogs, placedCake, placedMilk, usedShears, grownPotatoes;
 
-	QuestStep talkToUnferth, talkToHild, findBob, talkToBob, talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx, useRake, plantSeeds, makeBed, useLogsOnFireplace, lightLogs,
+	DetailedQuestStep talkToUnferth, talkToHild, findBob, talkToBob, talkToGertrude, talkToReldo, findBobAgain, talkToBobAgain, talkToSphinx, useRake, plantSeeds, makeBed, useLogsOnFireplace, lightLogs,
 		useChocolateCakeOnTable, useMilkOnTable, useShearsOnUnferth, reportToUnferth, talkToApoth, talkToUnferthAsDoctor, findBobToFinish, talkToBobToFinish, talkToUnferthToFinish, waitForPotatoesToGrow;
 
 	@Override
@@ -164,6 +167,11 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		hat = new ItemRequirement("Doctor's or Nurse hat", ItemID.DOCTORS_HAT, 1, true).isNotConsumed();
 		hat.addAlternates(ItemID.NURSE_HAT);
 		hat.setDisplayMatchedItemName(true);
+
+		burthorpeTeleport = TeleportCollections.BURTHORPE_TELEPORT.getItemRequirement();
+		varrockTeleport = TeleportCollections.VARROCK_TELEPORT.getItemRequirement();
+		sophanemTeleport = TeleportCollections.SOPHANEM_TELEPORT.getItemRequirement();
+		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
 	}
 
 	public void setupConditions()
@@ -184,12 +192,15 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToUnferth = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0), "Talk to Unferth in north east Burthorpe.", cat, catspeak);
-		talkToUnferth.addDialogStep("I'll help you.");
+		talkToUnferth.addDialogSteps("I'll help you.", "Yes.");
+		talkToUnferth.addTeleport(burthorpeTeleport);
 		talkToHild = new NpcStep(this, NpcID.HILD_4112, new WorldPoint(2930, 3568, 0), "Talk to Hild in the house north east of Unferth.", deathRune5, catspeak);
 		findBob = new DetailedQuestStep(this, "Operate the catspeak amulet (e) to locate Bob the Cat. He's often in Catherby Archery Shop or at the Varrock Anvil.", catspeakE);
+		findBob.addTeleport(varrockTeleport);
 		talkToBob = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat.", cat, catspeakEWorn);
 		talkToGertrude = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3413, 0), "Talk to Gertrude west of Varrock.", cat, catspeakEWorn);
 		talkToGertrude.addDialogStep("Ask about Bob's parents.");
+		talkToGertrude.addTeleport(varrockTeleport);
 
 		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0), "Talk to Reldo in the Varrock Castle's library.", cat, catspeakEWorn);
 		talkToReldo.addDialogStep("Ask about Robert the Strong.");
@@ -197,8 +208,10 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		talkToBobAgain = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat again.", cat, catspeakEWorn);
 		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3302, 2784, 0), "Talk to the Sphinx in Sophanem.", cat, catspeakEWorn);
 		talkToSphinx.addDialogStep("Ask the Sphinx for help for Bob.");
+		talkToSphinx.addTeleport(sophanemTeleport);
 		useRake = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Rake Unferth's patch", rake);
 		useRake.addIcon(ItemID.RAKE);
+		useRake.addTeleport(burthorpeTeleport);
 		plantSeeds = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Plant 4 potato seeds in Unferth's patch. These can take 15-35 minutes to grow.", dibber, potatoSeed4);
 		plantSeeds.addIcon(ItemID.POTATO_SEED);
 		makeBed = new ObjectStep(this, NullObjectID.NULL_9438, new WorldPoint(2917, 3557, 0), "Make Unferth's bed.");
@@ -219,18 +232,28 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		reportToUnferth = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0), "Talk to Unferth in north east Burthorpe again.", cat, catspeakEWorn);
 		talkToApoth = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3405, 0), "Talk to the Apothecary in south west Varrock.", cat, catspeakEWorn);
 		talkToApoth.addDialogStep("Talk about A Tail of Two Cats.");
+		talkToApoth.addTeleport(varrockTeleport);
 
 		talkToUnferthAsDoctor = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0),
 			"Talk to Unferth whilst wearing the doctor/nurse hat, a desert shirt and a desert robe, and no weapon/shield.", cat, catspeakEWorn, hat, desertTop, desertBottom, vialOfWater);
+		talkToUnferth.addTeleport(burthorpeTeleport);
 		findBobToFinish = new DetailedQuestStep(this, "Use the catspeak amulet (e) to locate Bob once more.", catspeakE);
+		findBobToFinish.addTeleport(varrockTeleport);
 		talkToBobToFinish = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat again.", cat, catspeakEWorn);
 		talkToUnferthToFinish = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0), "Talk to Unferth to complete the quest.");
+		talkToUnferthToFinish.addTeleport(burthorpeTeleport);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(cat, catspeak, deathRune5, chocolateCake, logs, tinderbox, milk, shears, potatoSeed4, rake, dibber, vialOfWater, desertTop, desertBottom);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(burthorpeTeleport.quantity(4), varrockTeleport.quantity(4), sophanemTeleport);
 	}
 
 	@Override

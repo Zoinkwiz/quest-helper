@@ -130,7 +130,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		goStart.addStep(inHarmony, talkToTranquilityOnIsland);
 		steps.put(0, goStart);
 
-		ConditionalStep goPeep = new ConditionalStep(this, talkToTranquility);
+		ConditionalStep goPeep = new ConditionalStep(this, goStart);
 		goPeep.addStep(inPeepRoom, peerThroughHole);
 		goPeep.addStep(inWaterExit, climbFromWaterCaveToPeep);
 		goPeep.addStep(new Conditions(inWater, repairedStairs), climbFromWater);

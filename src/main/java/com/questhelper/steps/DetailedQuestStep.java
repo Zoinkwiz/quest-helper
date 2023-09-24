@@ -136,7 +136,7 @@ public class DetailedQuestStep extends QuestStep
 		this.requirements.addAll(Arrays.asList(requirements));
 	}
 
-	public DetailedQuestStep(QuestHelper questHelper, String text, List<ItemRequirement> requirements)
+	public DetailedQuestStep(QuestHelper questHelper, String text, List<Requirement> requirements)
 	{
 		super(questHelper, text);
 		this.requirements.addAll(requirements);
@@ -234,7 +234,7 @@ public class DetailedQuestStep extends QuestStep
 
 	public void addTeleport(Requirement newTeleport)
 	{
-	teleport.add(newTeleport);
+		teleport.add(newTeleport);
 	}
 
 	@Subscribe
@@ -497,12 +497,12 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (!requirements.isEmpty() || additionalRequirements.size() > 0)
+		if (!requirements.isEmpty() || !additionalRequirements.isEmpty())
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Requirements:").build());
 		}
 		Stream<Requirement> stream = requirements.stream();
-		if (additionalRequirements.size() > 0)
+		if (!additionalRequirements.isEmpty())
 		{
 			stream = Stream.concat(stream, additionalRequirements.stream());
 		}
@@ -550,7 +550,7 @@ public class DetailedQuestStep extends QuestStep
 
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 		WorldPoint goalWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
-		if (goalWp == null || playerLocation.distanceTo(goalWp) > 30)
+		if (goalWp == null || playerLocation.distanceTo(goalWp) > 100)
 		{
 			for (Requirement requirement : teleport)
 			{

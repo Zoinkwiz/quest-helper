@@ -271,6 +271,7 @@ public class SwanSong extends BasicQuestHelper
 		talkToHermanAfterTasks = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0), "Talk to Herman in the east of the colony again.");
 
 		enterWizardsBasement = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2594, 3085, 0), "Talk to Wizard Frumscone in the Wizards' Guild basement.");
+		enterWizardsBasement.addTeleport(yanilleTeleport);
 
 		talkToFruscone = new NpcStep(this, NpcID.WIZARD_FRUMSCONE, new WorldPoint(2587, 9488, 0), "Talk to Wizard Frumscone in the Wizards' Guild basement.");
 		talkToFruscone.addDialogStep("I'll see what the necromancer needs me to do.");

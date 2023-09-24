@@ -369,7 +369,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	{
 		moveToCapt = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
 			"Cross the gangplank to Bill Teach's ship.");
-		((ObjectStep) moveToCapt).addTeleport(ectophial);
+		((ObjectStep) moveToCapt).addTeleport(ectophial.quantity(1));
 		moveToMos = new NpcStep(this, NpcID.BILL_TEACH_4016, new WorldPoint(3714, 3497, 1),
 			"Talk to Bill Teach to travel to Mos Le'Harmless.");
 		talkToTranquility = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
@@ -426,7 +426,6 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 		// Return to Harmony
 		ObjectStep moveToCapt2 = ((ObjectStep) moveToCapt).copy();
-		moveToCapt2.addTeleport(ectophial.quantity(1));
 		NpcStep moveToMos2 = ((NpcStep) moveToMos).copy();
 		NpcStep speakToTranquilityToTeleportBack = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
 			"Speak to Brother Tranquility to transport to Harmony.");

@@ -120,9 +120,12 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("Big scary monster (level 200)"));
+		return Arrays.asList(
+			"3 Warped Terrorbirds (level 138)",
+			"Evil Creature (level 1)"
+		);
 	}
 
 	@Override

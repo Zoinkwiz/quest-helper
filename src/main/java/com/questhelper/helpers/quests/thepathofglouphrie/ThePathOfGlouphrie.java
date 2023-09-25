@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -65,6 +66,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private ItemRequirement treeGnomeVillageDungeonKey;
 	private ItemRequirement combatGear;
 	private ItemRequirement food;
+
+	/// Recommended items
+	private ItemRequirement earmuffsOrSlayerHelmet;
+	private TeleportItemRequirement royalSeedPod;
+	private TeleportItemRequirement tpToSpiritTree;
+	private TeleportItemRequirement fairyRing;
+	private ItemRequirement runRestoreItems;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -98,6 +106,18 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+
+		// Recommended items
+		var lumbridgeEliteComplete = new QuestRequirement(QuestHelperQuest.LUMBRIDGE_ELITE, QuestState.FINISHED);
+		earmuffsOrSlayerHelmet = new ItemRequirement("Earmuffs or a Slayer helmet", ItemCollections.EAR_PROTECTION, 1, true).highlighted();
+		// TODO: Change this to a "TP to the grand tree"
+		royalSeedPod = new TeleportItemRequirement("Royal seed pod", ItemID.ROYAL_SEED_POD, 1);
+		// TODO: Fix quantity
+		tpToSpiritTree = new TeleportItemRequirement("Teleport to nearby Spirit Tree", ItemID.VARROCK_TELEPORT, -1);
+		fairyRing = new TeleportItemRequirement("Dramen staff", ItemCollections.FAIRY_STAFF, 1);
+		fairyRing.setConditionToHide(lumbridgeEliteComplete);
+		runRestoreItems = new ItemRequirement("Several run restore items", ItemCollections.RUN_RESTORE_ITEMS, -1);
+		// TODO: recommend the toad legs to get a mint cake?
 	}
 
 	public void setupZones()
@@ -134,9 +154,15 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList());
+		return Arrays.asList(
+			earmuffsOrSlayerHelmet,
+			royalSeedPod,
+			tpToSpiritTree,
+			fairyRing,
+			runRestoreItems
+		);
 	}
 
 	@Override

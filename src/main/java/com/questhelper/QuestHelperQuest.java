@@ -245,6 +245,7 @@ import com.questhelper.helpers.quests.thelosttribe.TheLostTribe;
 import com.questhelper.helpers.miniquests.themagearenai.TheMageArenaI;
 import com.questhelper.helpers.miniquests.themagearenaii.MA2Locator;
 import com.questhelper.helpers.miniquests.themagearenaii.TheMageArenaII;
+import com.questhelper.helpers.quests.thepathofglouphrie.ThePathOfGlouphrie;
 import com.questhelper.helpers.quests.thequeenofthieves.TheQueenOfThieves;
 import com.questhelper.helpers.quests.therestlessghost.TheRestlessGhost;
 import com.questhelper.helpers.quests.theslugmenace.TheSlugMenace;
@@ -343,6 +344,7 @@ public enum QuestHelperQuest
 	ENAKHRAS_LAMENT(new EnakhrasLament(), Quest.ENAKHRAS_LAMENT, QuestVarbits.QUEST_ENAKHRAS_LAMENT, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	ENLIGHTENED_JOURNEY(new EnlightenedJourney(), Quest.ENLIGHTENED_JOURNEY, QuestVarbits.QUEST_ENLIGHTENED_JOURNEY, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	THE_EYES_OF_GLOUPHRIE(new TheEyesOfGlouphrie(), Quest.THE_EYES_OF_GLOUPHRIE, QuestVarbits.QUEST_THE_EYES_OF_GLOUPHRIE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	THE_PATH_OF_GLOUPHRIE(new ThePathOfGlouphrie(), Quest.THE_PATH_OF_GLOUPHRIE, QuestVarbits.QUEST_THE_PATH_OF_GLOUPHRIE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	FAIRYTALE_I__GROWING_PAINS(new FairytaleI(), Quest.FAIRYTALE_I__GROWING_PAINS, QuestVarbits.QUEST_FAIRYTALE_I_GROWING_PAINS, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	FAIRYTALE_II__CURE_A_QUEEN(new FairytaleII(), Quest.FAIRYTALE_II__CURE_A_QUEEN, QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	FAMILY_CREST(new FamilyCrest(), Quest.FAMILY_CREST, QuestVarPlayer.QUEST_FAMILY_CREST, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),

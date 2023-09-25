@@ -46,6 +46,7 @@ import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,6 +61,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
 import com.questhelper.tools.Icon;
+import com.questhelper.tools.VarSaver;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -76,6 +78,8 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.VarClientIntChanged;
+import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
@@ -93,6 +97,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.util.Text;
+import org.jetbrains.annotations.Nullable;
 
 @PluginDescriptor(
 	name = "Quest Helper",
@@ -168,6 +173,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	GameStateManager gameStateManager;
 
+	@Nullable
+	private VarSaver varSaver = null;
+
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
@@ -197,6 +205,20 @@ public class QuestHelperPlugin extends Plugin
 	protected void startUp() throws IOException
 	{
 		questBankManager.startUp(injector, eventBus);
+		if (developerMode)
+		{
+			try
+			{
+				varSaver = new VarSaver();
+				injector.injectMembers(varSaver);
+				varSaver.startUp();
+			}
+			catch (FileNotFoundException e)
+			{
+				log.warn("Failed to start up var saver");
+				varSaver = null;
+			}
+		}
 
 		injector.injectMembers(gameStateManager);
 		eventBus.register(gameStateManager);
@@ -239,6 +261,9 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		if (varSaver != null) {
+			varSaver.shutDown();
+		}
 		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(gameStateManager);
@@ -298,8 +323,31 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onVarClientIntChanged(VarClientIntChanged event)
+	{
+		if (varSaver != null)
+		{
+			varSaver.onVarClientIntChanged(event);
+		}
+	}
+
+	@Subscribe
+	public void onVarClientStrChanged(VarClientStrChanged event)
+	{
+		if (varSaver != null)
+		{
+			varSaver.onVarClientStrChanged(event);
+		}
+	}
+
+	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
+		if (varSaver != null)
+		{
+			varSaver.onVarChanged(event);
+		}
+
 		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
 			return;

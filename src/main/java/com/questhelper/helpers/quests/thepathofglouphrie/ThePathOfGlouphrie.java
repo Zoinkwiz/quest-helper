@@ -24,9 +24,11 @@
  */
 package com.questhelper.helpers.quests.thepathofglouphrie;
 
+import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
+import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -39,7 +41,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	Zone sampleZone;
 	ZoneRequirement sampleCondition;
 	QuestStep sampleStep;
+
+	/// Required items
+	private ItemRequirement crossbow;
+	private ItemRequirement mithGrapple;
+	private ItemRequirement treeGnomeVillageDungeonKey;
+	private ItemRequirement combatGear;
+	private ItemRequirement food;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -77,7 +85,19 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 	public void setupItemRequirements()
 	{
+		// Required items
+		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
 		sampleRequirement = new ItemRequirement("Bucket", ItemID.BUCKET);
+		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).isNotConsumed();
+		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
+			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
+			ItemID.BLURITE_CROSSBOW, ItemID.DORGESHUUN_CROSSBOW, ItemID.ARMADYL_CROSSBOW, ItemID.ZARYTE_CROSSBOW);
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
+		treeGnomeVillageDungeonKey = new ItemRequirement("Tree Gnome Village dungeon key", ItemID.KEY_293).showConditioned(rovingElvesNotStarted);
+		treeGnomeVillageDungeonKey.canBeObtainedDuringQuest();
+		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
 	public void setupZones()
@@ -102,9 +122,15 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return new ArrayList<>(Arrays.asList(sampleRequirement));
+		return Arrays.asList(
+			crossbow,
+			mithGrapple,
+			treeGnomeVillageDungeonKey,
+			combatGear,
+			food
+		);
 	}
 
 	@Override

@@ -65,6 +65,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.OLAFS_QUEST
@@ -127,15 +128,15 @@ public class OlafsQuest extends BasicQuestHelper
 		solvePuzzleSteps.addStep(new Conditions(triangleKey, keyInterfaceOpen), chooseTriangle);
 		solvePuzzleSteps.addStep(new Conditions(squareKey, keyInterfaceOpen), chooseSquare);
 		solvePuzzleSteps.addStep(new Conditions(crossKey, keyInterfaceOpen), chooseCross);
-		solvePuzzleSteps.addStep(new Conditions(key, placedBarrel2), openGate);
-		solvePuzzleSteps.addStep(new Conditions(key, placedBarrel1, hasBarrel3Ropes), useBarrel2);
+		solvePuzzleSteps.addStep(new Conditions(key, inSecondArea, placedBarrel2), openGate);
+		solvePuzzleSteps.addStep(new Conditions(key, placedBarrel1, inSecondArea, hasBarrel3Ropes), useBarrel2);
 		solvePuzzleSteps.addStep(new Conditions(placedBarrel1, inSecondArea, key), pickUpItems2);
-		solvePuzzleSteps.addStep(new Conditions(has2Barrels6Ropes, key), useBarrel);
+		solvePuzzleSteps.addStep(new Conditions(has2Barrels6Ropes, inSecondArea, key), useBarrel);
 		solvePuzzleSteps.addStep(new Conditions(inSecondArea, key), pickUpItems);
 		solvePuzzleSteps.addStep(puzzleOpen, doPuzzle);
-		solvePuzzleSteps.addStep(key, searchPainting);
-		solvePuzzleSteps.addStep(keyNearby, pickUpKey);
-		solvePuzzleSteps.addStep(inFirstArea, killSkeleton);
+		solvePuzzleSteps.addStep(and(inFirstArea, key), searchPainting);
+		solvePuzzleSteps.addStep(and(inFirstArea, keyNearby), pickUpKey);
+		solvePuzzleSteps.addStep(new Conditions(inFirstArea), killSkeleton);
 
 		steps.put(60, solvePuzzleSteps);
 		steps.put(70, solvePuzzleSteps);

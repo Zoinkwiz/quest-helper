@@ -25,15 +25,15 @@
  */
 package com.questhelper.helpers.quests.clocktower;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarPlayer;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -54,7 +54,7 @@ import java.util.Map;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;

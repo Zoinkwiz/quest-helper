@@ -24,13 +24,13 @@
  */
 package com.questhelper.helpers.quests.recruitmentdrive;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;

@@ -24,15 +24,14 @@
  */
 package com.questhelper.helpers.quests.enlightenedjourney;
 
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.QuestStep;

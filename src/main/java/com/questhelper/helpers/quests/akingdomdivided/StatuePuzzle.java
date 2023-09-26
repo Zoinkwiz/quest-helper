@@ -24,10 +24,10 @@
  */
 package com.questhelper.helpers.quests.akingdomdivided;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;

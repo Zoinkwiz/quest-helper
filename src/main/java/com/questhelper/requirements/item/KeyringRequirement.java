@@ -24,7 +24,7 @@
  */
 package com.questhelper.requirements.item;
 
-import com.questhelper.KeyringCollection;
+import com.questhelper.collections.KeyringCollection;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import java.awt.Color;

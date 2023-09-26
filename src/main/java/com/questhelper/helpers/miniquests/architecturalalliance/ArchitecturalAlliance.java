@@ -24,9 +24,9 @@
  */
 package com.questhelper.helpers.miniquests.architecturalalliance;
 
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarbits;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;

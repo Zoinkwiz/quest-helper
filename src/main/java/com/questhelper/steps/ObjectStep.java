@@ -27,7 +27,7 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperConfig;
 import static com.questhelper.QuestHelperConfig.ObjectHighlightStyle.OUTLINE;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;

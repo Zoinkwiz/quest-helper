@@ -24,7 +24,7 @@
  */
 package com.questhelper.steps.overlay;
 
-import com.questhelper.Icon;
+import com.questhelper.tools.Icon;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 

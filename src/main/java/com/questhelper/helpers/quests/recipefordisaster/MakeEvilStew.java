@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.quests.recipefordisaster;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.NpcCollections;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.collections.NpcCollections;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.item.FollowerItemRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;

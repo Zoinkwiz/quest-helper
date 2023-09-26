@@ -24,8 +24,8 @@
  */
 package com.questhelper.helpers.quests.xmarksthespot;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,7 +44,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.X_MARKS_THE_SPOT

@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.monkeymadnessii;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -32,7 +32,7 @@ import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;

@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.quests.contact;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -48,7 +48,7 @@ import com.questhelper.requirements.item.ItemOnTileRequirement;
 import java.util.*;
 
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;

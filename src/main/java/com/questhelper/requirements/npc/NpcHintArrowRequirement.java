@@ -24,10 +24,9 @@
  */
 package com.questhelper.requirements.npc;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.SimpleRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.Client;

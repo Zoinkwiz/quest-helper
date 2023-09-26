@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.achievementdiaries.karamja;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -54,7 +54,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;

@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.quests.deserttreasureii;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestBank;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.bank.QuestBank;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;

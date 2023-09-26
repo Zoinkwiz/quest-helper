@@ -25,15 +25,15 @@
 
 package com.questhelper.helpers.achievementdiaries.falador;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;

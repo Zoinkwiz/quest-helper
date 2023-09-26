@@ -26,7 +26,7 @@
 
 package com.questhelper.questhelpers;
 
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import java.util.function.Predicate;
 
 public interface QuestDetails

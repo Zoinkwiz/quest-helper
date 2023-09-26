@@ -24,8 +24,8 @@
  */
 package com.questhelper.helpers.skills.woodcutting;
 
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.conditional.Conditions;

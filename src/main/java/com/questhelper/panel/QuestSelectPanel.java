@@ -24,14 +24,13 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.Icon;
+import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

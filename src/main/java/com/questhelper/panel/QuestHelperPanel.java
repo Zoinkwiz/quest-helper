@@ -24,10 +24,10 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.Icon;
+import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;

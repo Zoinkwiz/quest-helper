@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.insearchofknowledge;
 
-import com.questhelper.ItemCollections;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.NpcStep;

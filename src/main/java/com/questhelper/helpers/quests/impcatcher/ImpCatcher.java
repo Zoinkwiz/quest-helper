@@ -24,9 +24,9 @@
  */
 package com.questhelper.helpers.quests.impcatcher;
 
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -51,7 +51,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.IMP_CATCHER

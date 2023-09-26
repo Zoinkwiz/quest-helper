@@ -24,7 +24,7 @@
  */
 package com.questhelper.steps.overlay;
 
-import com.questhelper.QuestHelperWorldMapPoint;
+import com.questhelper.tools.QuestHelperWorldMapPoint;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.BasicStroke;
 import java.awt.Color;

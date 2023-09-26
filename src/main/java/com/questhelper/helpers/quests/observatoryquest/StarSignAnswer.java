@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.observatoryquest;
 
-import com.questhelper.QuestVarPlayer;
+import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.NpcStep;
 import java.util.HashMap;

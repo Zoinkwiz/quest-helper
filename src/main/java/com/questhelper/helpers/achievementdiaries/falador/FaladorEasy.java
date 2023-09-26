@@ -25,13 +25,13 @@
 
 package com.questhelper.helpers.achievementdiaries.falador;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -44,7 +44,7 @@ import java.util.*;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(

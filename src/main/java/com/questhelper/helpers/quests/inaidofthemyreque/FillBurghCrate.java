@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.inaidofthemyreque;
 
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;

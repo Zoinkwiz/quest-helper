@@ -24,9 +24,9 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.ExternalQuestResources;
-import com.questhelper.HelperConfig;
-import com.questhelper.Icon;
+import com.questhelper.questinfo.ExternalQuestResources;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
@@ -37,13 +37,9 @@ import com.questhelper.rewards.Reward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.event.ItemEvent;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.PluginPanel;
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;

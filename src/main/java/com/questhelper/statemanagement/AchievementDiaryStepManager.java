@@ -24,9 +24,9 @@
  */
 package com.questhelper.statemanagement;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import javax.inject.Singleton;
 import lombok.Getter;

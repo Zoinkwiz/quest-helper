@@ -27,7 +27,7 @@
 
 package com.questhelper.requirements.quest;
 
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.AbstractRequirement;
 import java.util.Locale;
 import lombok.Getter;

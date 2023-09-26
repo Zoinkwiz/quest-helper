@@ -26,11 +26,9 @@
  */
 package com.questhelper.requirements.npc;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.AbstractRequirement;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Setter;
 import net.runelite.api.Client;

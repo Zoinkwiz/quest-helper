@@ -32,13 +32,7 @@ import com.google.inject.Provides;
 import com.questhelper.bank.QuestBank;
 import com.questhelper.bank.banktab.QuestBankTab;
 import com.questhelper.bank.banktab.QuestHelperBankTagService;
-import com.questhelper.overlays.QuestHelperDebugOverlay;
-import com.questhelper.overlays.QuestHelperMinimapOverlay;
-import com.questhelper.overlays.QuestHelperOverlay;
-import com.questhelper.overlays.QuestHelperWidgetOverlay;
-import com.questhelper.overlays.QuestHelperWorldArrowOverlay;
-import com.questhelper.overlays.QuestHelperWorldLineOverlay;
-import com.questhelper.overlays.QuestHelperWorldOverlay;
+import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -114,7 +108,6 @@ import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
-import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -189,27 +182,6 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private QuestHelperOverlay questHelperOverlay;
-
-	@Inject
-	private QuestHelperWidgetOverlay questHelperWidgetOverlay;
-
-	@Inject
-	private QuestHelperMinimapOverlay questHelperMinimapOverlay;
-
-	@Inject
-	private QuestHelperWorldOverlay questHelperWorldOverlay;
-
-	@Inject
-	private QuestHelperWorldArrowOverlay questHelperWorldArrowOverlay;
-
-	@Inject
-	private QuestHelperWorldLineOverlay questHelperWorldLineOverlay;
-
 	@Getter
 	@Inject
 	private BankSearch bankSearch;
@@ -221,9 +193,6 @@ public class QuestHelperPlugin extends Plugin
 	@Getter
 	@Inject
 	ChatMessageManager chatMessageManager;
-
-	@Inject
-	private QuestHelperDebugOverlay questHelperDebugOverlay;
 
 	@Getter
 	@Inject
@@ -282,6 +251,9 @@ public class QuestHelperPlugin extends Plugin
 	@Getter
 	private int lastTickBankUpdated = -1;
 
+	@Inject
+	private QuestOverlayManager questOverlayManager;
+
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -305,12 +277,8 @@ public class QuestHelperPlugin extends Plugin
 		runeliteObjectManager.startUp();
 
 		scanAndInstantiate();
-		overlayManager.add(questHelperOverlay);
-		overlayManager.add(questHelperWorldOverlay);
-		overlayManager.add(questHelperWorldArrowOverlay);
-		overlayManager.add(questHelperWorldLineOverlay);
-		overlayManager.add(questHelperWidgetOverlay);
-		overlayManager.add(questHelperMinimapOverlay);
+
+		questOverlayManager.startUp();
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
@@ -351,13 +319,7 @@ public class QuestHelperPlugin extends Plugin
 		eventBus.unregister(gameStateManager);
 		eventBus.unregister(runeliteObjectManager);
 
-		overlayManager.remove(questHelperOverlay);
-		overlayManager.remove(questHelperWorldOverlay);
-		overlayManager.remove(questHelperWorldArrowOverlay);
-		overlayManager.remove(questHelperWorldLineOverlay);
-		overlayManager.remove(questHelperWidgetOverlay);
-		overlayManager.remove(questHelperDebugOverlay);
-		overlayManager.remove(questHelperMinimapOverlay);
+		questOverlayManager.shutDown();
 
 		clientToolbar.removeNavigation(navButton);
 		shutDownQuest(false);
@@ -559,10 +521,12 @@ public class QuestHelperPlugin extends Plugin
 			if (commandExecuted.getArguments().length == 0 ||
 				(Arrays.stream(commandExecuted.getArguments()).toArray()[0]).equals("disable"))
 			{
-				overlayManager.remove(questHelperDebugOverlay);
+				questOverlayManager.removeDebugOverlay();
 			}
 			else if ((Arrays.stream(commandExecuted.getArguments()).toArray()[0]).equals("enable"))
-				overlayManager.add(questHelperDebugOverlay);
+			{
+				questOverlayManager.addDebugOverlay();
+			}
 		}
 		else if (developerMode && commandExecuted.getCommand().equals("reset-cooks-helper"))
 		{

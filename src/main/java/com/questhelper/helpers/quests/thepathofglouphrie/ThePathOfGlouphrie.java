@@ -166,12 +166,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<String> getNotes()
-	{
-		return new ArrayList<>(Arrays.asList("This is a note to appear in the sidebar"));
-	}
-
-	@Override
 	public List<String> getCombatRequirements()
 	{
 		return Arrays.asList(

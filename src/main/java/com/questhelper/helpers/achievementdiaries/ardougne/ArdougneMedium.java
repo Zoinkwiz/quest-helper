@@ -288,8 +288,10 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		moveToSkavid = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2806, new WorldPoint(2524, 3069, 0),
 			"Enter the Cave.", lightSource, skavMap);
 		caveNightshade = new ItemStep(this, "Pickup the Cave nightshade.", nightshade);
-
-		moveToPlatform = new NpcStep(this, NpcID.JEB, new WorldPoint(2719, 3305, 0),
+		// Need step at top of wall for grapple
+		// Need to highlight chicksword to kill
+		// Need to point to Jeb if Jeb is deliverer, otherwise Holgart
+		moveToPlatform = new NpcStep(this, NpcID.JEB_4803, new WorldPoint(2719, 3305, 0),
 			"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
 		((NpcStep) (moveToPlatform)).addAlternateNpcs(NpcID.HOLGART_7789);
 		fishOnPlatform = new NpcStep(this, FishingSpot.SHRIMP.getIds(), new WorldPoint(2790, 3276, 0),

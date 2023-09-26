@@ -37,6 +37,9 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
@@ -171,6 +174,33 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		return Arrays.asList(
 			"3 Warped Terrorbirds (level 138)",
 			"Evil Creature (level 1)"
+		);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(2);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.STRENGTH, 30000, true),
+			new ExperienceReward(Skill.SLAYER, 20000, true),
+			new ExperienceReward(Skill.THIEVING, 5000, true),
+			new ExperienceReward(Skill.MAGIC, 5000, true)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return Arrays.asList(
+			new UnlockReward("Access to the Poison Waste Dungeon"),
+			new UnlockReward("Ability to unlock warped creatures as a Slayer task"),
+			new UnlockReward("Access to a new spirit tree destination in the Poison Waste")
 		);
 	}
 

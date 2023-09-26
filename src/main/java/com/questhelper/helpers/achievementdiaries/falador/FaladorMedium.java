@@ -115,8 +115,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		doMed.addStep(notUnlockedCrystalChest, unlockedCrystalChestTask);
 
 		chopBurnWillowTavTask = new ConditionalStep(this, goToTav);
-		chopBurnWillowTavTask.addStep(inTav, chopWillowLog);
 		chopBurnWillowTavTask.addStep(new Conditions(inTav, willowLog, choppedLogs), burnWillowLog);
+		chopBurnWillowTavTask.addStep(inTav, chopWillowLog);
 		doMed.addStep(notChopBurnWillowTav, chopBurnWillowTavTask);
 
 		mineGoldTask = new ConditionalStep(this, goToCraftingGuild);
@@ -138,8 +138,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		placedScarecrowTask = new ConditionalStep(this, fillSack);
 		placedScarecrowTask.addStep(haySack, useSackOnSpear);
-		placedScarecrowTask.addStep(scarecrowStep2, placeScarecrow);
-		placedScarecrowTask.addStep(scarecrow, useWatermelonOnSack);
+		placedScarecrowTask.addStep(scarecrow, placeScarecrow);
+		placedScarecrowTask.addStep(scarecrowStep2, useWatermelonOnSack);
 		doMed.addStep(notPlacedScarecrow, placedScarecrowTask);
 
 		grappleNorthWallTask = new ConditionalStep(this, grappleNorthWallStart);
@@ -296,7 +296,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Use the Hay sack on the Bronze Spear.", haySack.highlighted(), bronzeSpear.highlighted());
 		useWatermelonOnSack = new DetailedQuestStep(this,
 			"Use the watermelon on the Hay Sack to make the Scarecrow.", scarecrowStep2.highlighted(), watermelon.highlighted());
-		placeScarecrow = new ObjectStep(this, ObjectID.FLOWER_PATCH, new WorldPoint(3054, 3307, 0),
+		placeScarecrow = new ObjectStep(this, NullObjectID.NULL_7847, new WorldPoint(3054, 3307, 0),
 			"Rake any weeds in the flower patch, then plant your scarecrow.", rake, scarecrow.highlighted());
 		placeScarecrow.addIcon(ItemID.SCARECROW);
 
@@ -337,7 +337,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//Mine Gold in Crafting Guild
 		goToCraftingGuild = new ObjectStep(this, ObjectID.GUILD_DOOR_14910, new WorldPoint(2933, 3289, 0),
-			"Go to the Crafting Guild west of Falador. You will need to equip a brown apron to enter.", brownApron, pickaxe);
+			"Go to the Crafting Guild west of Falador. You will need to equip a brown apron to enter.", brownApron.equipped(), pickaxe);
 		mineGold = new ObjectStep(this, ObjectID.GOLD_ROCKS, new WorldPoint(2938, 3280, 0),
 			"Mine a gold ore.", pickaxe);
 

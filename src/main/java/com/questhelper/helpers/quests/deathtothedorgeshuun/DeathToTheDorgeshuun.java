@@ -403,7 +403,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		goTalkToMistag.addStep(inMines, talkToMistag);
 		goTalkToMistag.addStep(inTunnels, talkToKazgar);
 		goTalkToMistag.addStep(inBasement, climbThroughHole);
-		goTalkToMistag.addDialogSteps("What is this favour?", "I'll act as a guide.");
+		goTalkToMistag.addDialogSteps("What is this favour?", "I'll act as a guide.", "Can you show me the way out of the mines?");
 
 		goTalkToZanik = new ConditionalStep(this, goDownToBasement, "Talk to Zanik in Lumbridge Castle's basement.", hamHood2, hamShirt2, hamRobe2, hamBoot2, hamGloves2, hamCloak2, hamLogo2);
 		goTalkToZanik.addStep(inMines, talkToMistagToTravel);
@@ -412,6 +412,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		if (client.getLocalPlayer() != null)
 		{
 			goTalkToZanik.addDialogStep("Yes, I'm " + client.getLocalPlayer().getName() + "!");
+			goTalkToZanik.addDialogStep("Yes, I have two sets of robes!");
 		}
 
 		goHaveZanikFollow = new ConditionalStep(this, goDownToBasement, "Talk to Zanik in Lumbridge Castle's basement.");

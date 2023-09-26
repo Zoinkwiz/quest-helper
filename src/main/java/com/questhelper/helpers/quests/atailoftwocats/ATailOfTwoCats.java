@@ -33,11 +33,11 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.FollowerItemRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -176,7 +176,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		bobNearby = new NpcCondition(NpcID.BOB_8034);
+		bobNearby = new NpcRequirement("Bob nearby", NpcID.BOB_8034);
 
 		rakedPatch = new VarbitRequirement(1033, 3);
 		plantedSeed = new VarbitRequirement(1033, 4, Operation.GREATER_EQUAL);
@@ -217,7 +217,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		makeBed = new ObjectStep(this, NullObjectID.NULL_9438, new WorldPoint(2917, 3557, 0), "Make Unferth's bed.");
 		useLogsOnFireplace = new ObjectStep(this, NullObjectID.NULL_9442, new WorldPoint(2919, 3557, 0), "Use logs on Unferth's fireplace", logs);
 		useLogsOnFireplace.addIcon(ItemID.LOGS);
-		lightLogs = new ObjectStep(this, NullObjectID.NULL_9442, new WorldPoint(2919, 3557, 0), "Use a tinderbox on Unferth's fireplace.");
+		lightLogs = new ObjectStep(this, NullObjectID.NULL_9442, new WorldPoint(2919, 3557, 0), "Use a tinderbox on Unferth's fireplace.", tinderbox.highlighted());
 		lightLogs.addIcon(ItemID.TINDERBOX);
 		useChocolateCakeOnTable = new ObjectStep(this, NullObjectID.NULL_9435, new WorldPoint(2921, 3556, 0), "Use a chocolate cake on Unferth's table.", chocolateCake);
 		useChocolateCakeOnTable.addIcon(ItemID.CHOCOLATE_CAKE);
@@ -236,7 +236,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 
 		talkToUnferthAsDoctor = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0),
 			"Talk to Unferth whilst wearing the doctor/nurse hat, a desert shirt and a desert robe, and no weapon/shield.", cat, catspeakEWorn, hat, desertTop, desertBottom, vialOfWater);
-		talkToUnferth.addTeleport(burthorpeTeleport);
+		talkToUnferthAsDoctor.addTeleport(burthorpeTeleport);
 		findBobToFinish = new DetailedQuestStep(this, "Use the catspeak amulet (e) to locate Bob once more.", catspeakE);
 		findBobToFinish.addTeleport(varrockTeleport);
 		talkToBobToFinish = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat again.", cat, catspeakEWorn);

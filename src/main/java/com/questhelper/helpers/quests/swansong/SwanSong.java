@@ -32,16 +32,16 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestPointRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestPointRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -51,9 +51,12 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -197,6 +200,7 @@ public class SwanSong extends BasicQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.setTooltip("Franklin will give you one");
 		brownApron = new ItemRequirement("Brown apron", ItemID.BROWN_APRON, 1, true).isNotConsumed();
+		brownApron.setHighlightInInventory(true);
 		brownApron.setTooltip("Malignius will give you one");
 		monkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH_7943, 5);
 		rawMonkfish5 = new ItemRequirement("Fresh monkfish", ItemID.FRESH_MONKFISH, 5);
@@ -242,9 +246,13 @@ public class SwanSong extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToHerman = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2345, 3651, 0), "Talk to Herman Carnos outside the Fishing Colony.");
-		talkToHerman.addDialogSteps("What's the rush?", "Do you need any help?", "I'm a brave adventurer! Can I try?");
+		talkToHerman.addTeleport(piscTeleport);
+		talkToHerman.addDialogSteps("What's the rush?", "Do you need any help?", "I'm a brave adventurer! Can I try?", "Yes.");
 		talkToWom = new NpcStep(this, NpcID.WISE_OLD_MAN, new WorldPoint(3089, 3253, 0), "Talk to the Wise Old Man in Draynor Village.", blood5, lava10, mist10);
+		talkToWom.addTeleport(draynorTeleport);
+		talkToWom.addDialogSteps("Draynor Village", "You used to be a famous adventurer, didn't you?");
 		talkToWomAtColony = new NpcStep(this, NpcID.WISE_OLD_MAN_2112, new WorldPoint(2345, 3651, 0), "Talk to the Wise Old Man outside the Fishing Colony. Be prepared to fight sea trolls.", combatGear);
+		talkToWomAtColony.addTeleport(piscTeleport);
 		talkToWomAtColony.addDialogStep("I'm ready to fight.");
 		enterColony = new ObjectStep(this, ObjectID.HOLE_12656, new WorldPoint(2344, 3651, 0), "Enter the Fishing Colony, prepared to fight trolls.", combatGear, log, tinderbox, ironBar5, hammer);
 		talkToWomAtColony.addSubSteps(enterColony);
@@ -264,16 +272,18 @@ public class SwanSong extends BasicQuestHelper
 		talkToHermanAfterTasks = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0), "Talk to Herman in the east of the colony again.");
 
 		enterWizardsBasement = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2594, 3085, 0), "Talk to Wizard Frumscone in the Wizards' Guild basement.");
+		enterWizardsBasement.addTeleport(yanilleTeleport);
 
 		talkToFruscone = new NpcStep(this, NpcID.WIZARD_FRUMSCONE, new WorldPoint(2587, 9488, 0), "Talk to Wizard Frumscone in the Wizards' Guild basement.");
 		talkToFruscone.addDialogStep("I'll see what the necromancer needs me to do.");
 		talkToFruscone.addSubSteps(enterWizardsBasement);
 		talkToMalignius = new NpcStep(this, NpcID.MALIGNIUS_MORTIFER, new WorldPoint(2993, 3269, 0), "Talk to Malignius Mortifer near Port Sarim.", bones7);
 		talkToMalignius.addDialogStep("I need help with saving a fishing colony.");
+		talkToMalignius.addTeleport(craftingGuildTeleport);
 		talkToCrafter = new NpcStep(this, NpcID.MASTER_CRAFTER_5812, new WorldPoint(2937, 3290, 0), "Talk to a Master Crafter with dreadlocks in the Crafting Guild.", brownApron);
 		talkToCrafter.addDialogStep("Swan Song.");
 		makeAirtightPot = new DetailedQuestStep(this, "Add a pot lid to a pot.", potHiglight, potLidHiglight);
-		talkToMaligniusWithPot = new NpcStep(this, NpcID.MALIGNIUS_MORTIFER, new WorldPoint(2993, 3269, 0), "Bring the airtight pot and 7 bones to Malignius Mortifer near Port Sarim.", airtightPot);
+		talkToMaligniusWithPot = new NpcStep(this, NpcID.MALIGNIUS_MORTIFER, new WorldPoint(2993, 3269, 0), "Bring the airtight pot and 7 bones to Malignius Mortifer near Port Sarim. Make sure you're equipped for the fight before speaking to Malignus.", airtightPot);
 		talkToMaligniusWithPot.addDialogStep("I've spoken to the master crafter...");
 		talkToHermanWithPot = new NpcStep(this, NpcID.HERMAN_CARANOS, new WorldPoint(2354, 3683, 0),
 			"Be prepared to fight, and talk to Herman in the colony.", combatGearRanged, boneSeeds);
@@ -337,9 +347,9 @@ public class SwanSong extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.MAGIC, 15000),
-				new ExperienceReward(Skill.PRAYER, 10000),
-				new ExperienceReward(Skill.FISHING, 50000)
+			new ExperienceReward(Skill.MAGIC, 15000),
+			new ExperienceReward(Skill.PRAYER, 10000),
+			new ExperienceReward(Skill.FISHING, 50000)
 		);
 	}
 
@@ -353,8 +363,8 @@ public class SwanSong extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Access to the Piscatoris Fishing Colony"),
-				new UnlockReward("The ability to fish Monkfish"));
+			new UnlockReward("Access to the Piscatoris Fishing Colony"),
+			new UnlockReward("The ability to fish Monkfish"));
 	}
 
 	@Override
@@ -366,6 +376,7 @@ public class SwanSong extends BasicQuestHelper
 			Collections.singletonList(piscTeleport)));
 		List<QuestStep> helpingSteps = QuestUtil.toArrayList(talkToFranklin, useLog, useTinderbox);
 		helpingSteps.addAll(repairWall.getDisplaySteps());
+		helpingSteps.add(talkToFranklinAgain);
 		allSteps.add(new PanelDetails("Helping Franklin", helpingSteps, Arrays.asList(combatGear, log, tinderbox, ironBar5, hammerPanel)));
 
 		List<QuestStep> helpingArnoldSteps = QuestUtil.toArrayList(talkToArnold);

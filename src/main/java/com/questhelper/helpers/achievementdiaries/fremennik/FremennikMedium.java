@@ -144,8 +144,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		lighthouseTask.addStep(inWaterbirthIsland, moveToDagCave);
 		lighthouseTask.addStep(inDagCave, dropPetRock);
 		lighthouseTask.addStep(inDagCave_2, moveToAxeSpot);
-		lighthouseTask.addStep(inDagCave_3, activateSpecial);
 		lighthouseTask.addStep(new Conditions(inDagCave_3, specialAttackEnabled), throwAxe);
+		lighthouseTask.addStep(inDagCave_3, activateSpecial);
 		lighthouseTask.addStep(inDagCave_4, moveToDagCave1);
 		lighthouseTask.addStep(inDagCave1, moveToDagCave2);
 		lighthouseTask.addStep(inDagCave2, moveToDagCave3);

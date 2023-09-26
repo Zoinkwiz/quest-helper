@@ -124,7 +124,7 @@ public class NpcRequirement extends AbstractRequirement
 		{
 			if (zone != null)
 			{
-				for(NPC npc : found)
+				for (NPC npc : found)
 				{
 					WorldPoint npcLocation = WorldPoint.fromLocalInstance(client,  npc.getLocalLocation(), 2);
 					if (npcLocation != null)

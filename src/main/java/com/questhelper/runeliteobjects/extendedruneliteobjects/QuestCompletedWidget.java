@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
 import java.util.List;
 import net.runelite.api.Client;

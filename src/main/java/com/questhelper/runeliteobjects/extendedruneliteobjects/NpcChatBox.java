@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2023, Zoinkwiz
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +23,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-import lombok.Getter;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.Client;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 
-public class LoopedAction extends Action
+public class NpcChatBox extends ChatBox
 {
-	@Getter
-	AtomicInteger ticksBetweenActions;
-
-
-	public LoopedAction(Consumer<MenuEntry> action, AtomicInteger ticksBetweenActions)
+	protected NpcChatBox(Client client, ChatboxPanelManager chatboxPanelManager)
 	{
-		super(action);
-		this.ticksBetweenActions = ticksBetweenActions;
-	}
-
-	@Override
-	protected Consumer<MenuEntry> createEndAction()
-	{
-		return (menuEntry -> {
-		});
+		super(client, chatboxPanelManager);
 	}
 }

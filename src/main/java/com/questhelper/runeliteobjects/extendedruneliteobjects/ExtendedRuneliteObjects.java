@@ -1,4 +1,4 @@
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
 import java.util.ArrayList;
 import java.util.List;

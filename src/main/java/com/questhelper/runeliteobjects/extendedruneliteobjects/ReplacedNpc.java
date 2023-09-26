@@ -22,20 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import com.questhelper.steps.WidgetDetails;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
 
@@ -78,7 +75,7 @@ public class ReplacedNpc extends FakeNpc
 		}
 		getRuneliteObject().setLocation(npc.getLocalLocation(), client.getPlane());
 		setOrientationGoal(npc.getOrientation());
-		if (!isActive())
+		if (!isRuneliteObjectActive())
 		{
 			activate();
 		}
@@ -100,5 +97,12 @@ public class ReplacedNpc extends FakeNpc
 		if (npc == null) return null;
 		return Perspective.getClickbox(client, npc.getModel(), npc.getOrientation(), npc.getLocalLocation().getX(), npc.getLocalLocation().getY(),
 			Perspective.getTileHeight(client, npc.getLocalLocation(), getWorldPoint().getPlane()));
+	}
+
+
+	@Override
+	public void updateLocation(LocalPoint lp)
+	{
+
 	}
 }

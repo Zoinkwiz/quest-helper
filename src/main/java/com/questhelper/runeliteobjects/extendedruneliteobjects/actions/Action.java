@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects.actions;
 
-import lombok.AllArgsConstructor;
+import java.util.function.Consumer;
 import lombok.Getter;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.MenuEntry;
 
-@AllArgsConstructor
-public class ReplacedObject
+public class Action
 {
-	@Getter
-	private int objectID;
+	protected Consumer<MenuEntry> action;
+
+	protected boolean isActive = false;
 
 	@Getter
-	private WorldPoint wp;
+	MenuEntry menuEntry;
+
+	public Action(Consumer<MenuEntry> action)
+	{
+		this.action = action.andThen(createEndAction());
+	}
+
+	protected Consumer<MenuEntry> createEndAction()
+	{
+		return (menuEntry -> {
+			isActive = false;
+		});
+	}
+
+	public void activate(MenuEntry menuEntry)
+	{
+		isActive = true;
+		this.menuEntry = menuEntry;
+		action.accept(menuEntry);
+	}
+
+	public void activate()
+	{
+		isActive = true;
+		this.menuEntry = null;
+		action.accept(null);
+	}
+
+	public void deactivate()
+	{
+		this.menuEntry = null;
+		isActive = false;
+	}
 }

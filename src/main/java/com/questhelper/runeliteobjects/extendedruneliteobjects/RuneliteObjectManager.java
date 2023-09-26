@@ -22,15 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.questhelper.steps.WidgetDetails;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,8 +44,10 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Model;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.SpriteID;
@@ -72,6 +73,8 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 // This will hold all RuneliteObjects
@@ -161,6 +164,18 @@ public class RuneliteObjectManager
 	public FakeNpc createFakeNpc(String groupID, int[] model, WorldPoint wp, int animation)
 	{
 		FakeNpc extendedRuneliteObject = new FakeNpc(client, clientThread, wp, model, animation, animation);
+		// Should this be here or a separate 'activate' step?
+		extendedRuneliteObject.activate();
+
+		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
+
+		return extendedRuneliteObject;
+	}
+
+	public FakeNpc createFakeNpc(String groupID, Model model, WorldPoint wp, int animation)
+	{
+		FakeNpc extendedRuneliteObject = new FakeNpc(client, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -391,8 +406,8 @@ public class RuneliteObjectManager
 
 	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
 	{
-		if (!extendedRuneliteObject.isActive()) return;
-		if (extendedRuneliteObject.getActions().size() == 0 && !(extendedRuneliteObject instanceof ReplacedNpc))
+		if (!extendedRuneliteObject.isRuneliteObjectActive()) return;
+		if (extendedRuneliteObject.getMenuActions().isEmpty() && !(extendedRuneliteObject instanceof ReplacedNpc))
 		{
 			return;
 		}
@@ -414,11 +429,11 @@ public class RuneliteObjectManager
 					addReplacedNpcOptions(extendedRuneliteObject, event);
 				}
 
-				extendedRuneliteObject.getActions().forEach((name, action) -> {
+				extendedRuneliteObject.getMenuActions().forEach((name, action) -> {
 					addAction(extendedRuneliteObject, widgetIndex, widgetID, name);
 				});
 
-				extendedRuneliteObject.getPriorityActions().forEach((name, action) -> {
+				extendedRuneliteObject.getPriorityMenuActions().forEach((name, action) -> {
 					addPriorityAction(extendedRuneliteObject, widgetIndex, widgetID, name);
 				});
 
@@ -481,13 +496,9 @@ public class RuneliteObjectManager
 		}
 	}
 
-	public void setActive(ExtendedRuneliteObject extendedRuneliteObject)
+	private void setVisible(ExtendedRuneliteObject extendedRuneliteObject, boolean visible)
 	{
-		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, extendedRuneliteObject.getWorldPoint());
-		if (lp == null) return;
-
-		extendedRuneliteObject.getRuneliteObject().setLocation(lp, client.getPlane());
-		extendedRuneliteObject.activate();
+		extendedRuneliteObject.setVisible(visible);
 	}
 
 	public void disableObject(ExtendedRuneliteObject extendedRuneliteObject)
@@ -649,6 +660,51 @@ public class RuneliteObjectManager
 		}
 	}
 
+	public void makeWorldOverlayHint(Graphics2D graphics)
+	{
+		runeliteObjectGroups.forEach((groupID, group) -> {
+			for (ExtendedRuneliteObject extendedRuneliteObject : group.extendedRuneliteObjects)
+			{
+				if (!extendedRuneliteObject.isRuneliteObjectActive()) continue;
+				if (extendedRuneliteObject.getOverheadText() != null)
+				{
+					checkToAddOverheadText(extendedRuneliteObject, graphics);
+				}
+			}
+		});
+	}
+
+	private void checkToAddOverheadText(ExtendedRuneliteObject extendedRuneliteObject, Graphics2D graphics)
+	{
+		if (extendedRuneliteObject.getTickToRemoveOverheadText() <= client.getTickCount())
+		{
+			extendedRuneliteObject.clearOverheadText();
+			return;
+		}
+
+		addOverheadText(extendedRuneliteObject, graphics);
+	}
+
+	private void addOverheadText(ExtendedRuneliteObject rlObj, Graphics2D graphics)
+	{
+		LocalPoint lp = LocalPoint.fromWorld(client, rlObj.getWorldPoint());
+		if (lp != null)
+		{
+			Point p = Perspective.localToCanvas(client, lp, client.getPlane(),
+				rlObj.getRuneliteObject().getModelHeight());
+			if (p != null)
+			{
+				Font overheadFont = FontManager.getRunescapeBoldFont();
+				FontMetrics metrics = graphics.getFontMetrics(overheadFont);
+				Point shiftedP = new Point(p.getX() - (metrics.stringWidth(rlObj.getOverheadText()) / 2), p.getY());
+
+				graphics.setFont(overheadFont);
+				OverlayUtil.renderTextLocation(graphics, shiftedP, rlObj.getOverheadText(),
+					JagexColors.YELLOW_INTERFACE_TEXT);
+			}
+		}
+	}
+
 	private void renderRedClick(Graphics2D graphics)
 	{
 		if (clickPos != null && redClickAnimationFrame < 4)
@@ -734,14 +790,19 @@ public class RuneliteObjectManager
 	{
 		List<ExtendedRuneliteObjects> groups = new ArrayList<>();
 		// To avoid edit whilst looping error, we get groups first
-		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectsGroup) -> {
-			groups.add(extendedRuneliteObjectsGroup);
-		});
+		runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectsGroup) -> groups.add(extendedRuneliteObjectsGroup));
 		for (ExtendedRuneliteObjects group : groups)
 		{
 			for (ExtendedRuneliteObject extendedRuneliteObject : group.extendedRuneliteObjects)
 			{
-				if (extendedRuneliteObject.isActive())
+				if (extendedRuneliteObject.getDisableAfterTick() != -1 &&
+					extendedRuneliteObject.getDisableAfterTick() <= client.getTickCount())
+				{
+					disableObject(extendedRuneliteObject);
+					extendedRuneliteObject.setDisableAfterTick(-1);
+				}
+
+				if (extendedRuneliteObject.isRuneliteObjectActive())
 				{
 					extendedRuneliteObject.actionOnGameTick();
 					if (client.getPlane() != extendedRuneliteObject.getWorldPoint().getPlane())
@@ -760,8 +821,8 @@ public class RuneliteObjectManager
 		if (lastInteractedWithRuneliteObject != null)
 		{
 			lastInteractedWithRuneliteObject.checkPendingAction();
-			if (lastInteractedWithRuneliteObject.getActions().get("Talk-to") != null ||
-				lastInteractedWithRuneliteObject.getPriorityActions().get("Talk-to") != null)
+			if (lastInteractedWithRuneliteObject.getMenuActions().get("Talk-to") != null ||
+				lastInteractedWithRuneliteObject.getPriorityMenuActions().get("Talk-to") != null)
 			{
 				lastInteractedWithRuneliteObject.progressDialog();
 			}
@@ -792,20 +853,23 @@ public class RuneliteObjectManager
 						replacedNpc.updateNpcSync(client);
 					}
 				}
+
 				if (extendedRuneliteObject.getOrientationGoal() != extendedRuneliteObject.getRuneliteObject().getOrientation())
 				{
 					extendedRuneliteObject.partiallyRotateToGoal();
 				}
-				boolean isVisible = extendedRuneliteObject.isActive();
-				boolean shouldDisplayReqPassed =  extendedRuneliteObject.getDisplayReq() == null || extendedRuneliteObject.getDisplayReq().check(client);
+
+				boolean isVisible = extendedRuneliteObject.isVisible();
+				boolean shouldDisplayReqPassed = extendedRuneliteObject.getDisplayReq() == null || extendedRuneliteObject.getDisplayReq().check(client);
+
 				if (extendedRuneliteObject.objectType == RuneliteObjectTypes.NPC &&
 					(!shouldDisplayReqPassed || isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition)))
 				{
-					if (isVisible) disableObject(extendedRuneliteObject);
+					if (isVisible) setVisible(extendedRuneliteObject, false);
 				}
-				else if (!isVisible)
+				else
 				{
-					setActive(extendedRuneliteObject);
+					setVisible(extendedRuneliteObject, true);
 				}
 			}
 		});
@@ -883,9 +947,7 @@ public class RuneliteObjectManager
 			runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
 				for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectGroup.extendedRuneliteObjects)
 				{
-					LocalPoint lp = LocalPoint.fromWorld(client, extendedRuneliteObject.getWorldPoint());
-					if (lp == null) return;
-					setActive(extendedRuneliteObject);
+					extendedRuneliteObject.render();
 				}
 			});
 		}
@@ -894,7 +956,7 @@ public class RuneliteObjectManager
 			runeliteObjectGroups.forEach((groupID, extendedRuneliteObjectGroup) -> {
 				for (ExtendedRuneliteObject extendedRuneliteObject : extendedRuneliteObjectGroup.extendedRuneliteObjects)
 				{
-					disableObject(extendedRuneliteObject);
+					extendedRuneliteObject.render();
 				}
 			});
 		}

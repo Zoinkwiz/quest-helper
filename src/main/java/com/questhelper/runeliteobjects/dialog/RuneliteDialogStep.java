@@ -22,41 +22,85 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps;
+package com.questhelper.runeliteobjects.dialog;
 
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FaceAnimationIDs;
 import java.util.ArrayList;
+import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import lombok.Getter;
-import net.runelite.api.Client;
 
-public class RuneliteObjectDialogStep extends RuneliteDialogStep
+public class RuneliteDialogStep
 {
+	@Getter
+	protected final String name;
+
+	@Getter
+	protected final String text;
+
+	// Only used for NPCs
+	@Getter
+	protected final int faceID;
+
+	@Getter
+	protected final int animation;
+
+	@Getter
+	private RuneliteDialogStep continueDialog;
+
+	@Getter
+	private RuneliteConfigSetter stateProgression;
+
 	@Getter
 	private final ArrayList<RuneliteDialogStep> dialogChoices = new ArrayList<>();
 
-	public RuneliteObjectDialogStep(Client client, String text, FaceAnimationIDs animation)
+	public RuneliteDialogStep(String name, String text, int faceID, int animation)
 	{
-		super(client.getLocalPlayer().getName(), text, -1, animation.getAnimationID());
-		client.getLocalPlayer().getName();
+		this.name = name;
+		this.text = text;
+		this.animation = animation;
+		this.faceID = faceID;
 	}
 
-	public RuneliteObjectDialogStep(String name, String text, int faceID, int animation)
+	public RuneliteDialogStep(String name, String text, int faceID, int animation, RuneliteConfigSetter setter)
 	{
-		super(name, text, faceID, animation);
+		this.name = name;
+		this.text = text;
+		this.animation = animation;
+		this.faceID = faceID;
+		this.setStateProgression(setter);
 	}
 
-	public RuneliteObjectDialogStep(String name, String text, int faceID, int animation, RuneliteConfigSetter setter)
+	public RuneliteDialogStep setStateProgression(RuneliteConfigSetter stateProgression)
 	{
-		super(name, text, faceID, animation, setter);
+		this.stateProgression = stateProgression;
+		return this;
 	}
 
-	public RuneliteObjectDialogStep(String name, String text, int faceID, RuneliteConfigSetter setter)
+	public void addNewDialogChoice(RuneliteDialogStep step)
 	{
-		super(name, text, faceID, 570, setter);
+		dialogChoices.add(step);
 	}
 
-	public RuneliteObjectDialogStep(String name, String text, int faceID)
+	public boolean isPlayer()
 	{
-		this(name, text, faceID, 570);
+		return false;
+	}
+
+	public boolean isStateChanger()
+	{
+		return stateProgression != null;
+	}
+
+	public void progressState()
+	{
+		if (isStateChanger())
+		{
+			stateProgression.setConfigValue();
+		}
+	}
+
+	public RuneliteDialogStep addContinueDialog(RuneliteDialogStep continueDialog)
+	{
+		this.continueDialog = continueDialog;
+		return continueDialog;
 	}
 }

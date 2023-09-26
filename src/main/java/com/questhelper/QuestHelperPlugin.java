@@ -30,6 +30,7 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
+import com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan;
 import com.questhelper.managers.QuestBankManager;
 import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.panel.QuestHelperPanel;
@@ -42,8 +43,8 @@ import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
 import com.questhelper.statemanagement.GameStateManager;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.runeliteobjects.RuneliteConfigSetter;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -74,11 +75,8 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Perspective;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.QuestState;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
@@ -91,10 +89,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -230,10 +225,6 @@ public class QuestHelperPlugin extends Plugin
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
 
-	@Getter
-	private Cheerer cheerer;
-
-	private int tickAddedCheerer = -1;
 
 	// TODO: Use this for item checks
 	@Getter
@@ -306,7 +297,6 @@ public class QuestHelperPlugin extends Plugin
 
 		eventBus.unregister(gameStateManager);
 		eventBus.unregister(runeliteObjectManager);
-
 		questOverlayManager.shutDown();
 
 		clientToolbar.removeNavigation(navButton);
@@ -319,12 +309,6 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (tickAddedCheerer != -1 && tickAddedCheerer < client.getTickCount() - 20)
-		{
-			tickAddedCheerer = -1;
-			removeCheerer();
-		}
-
 		if (!displayNameKnown)
 		{
 			Player localPlayer = client.getLocalPlayer();
@@ -620,63 +604,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private void addCheerer()
 	{
-		WorldPoint worldPoint = client.getLocalPlayer().getWorldLocation();
-		WorldPoint wpUp = new WorldPoint(worldPoint.getX(), worldPoint.getY() + 1, worldPoint.getPlane());
-		if (cheerer == null)
-		{
-			cheerer = new Cheerer(client, clientThread, wpUp, Cheerer.Style.randomCheerer(), chatMessageManager,
-				"Congratz on completing the quest!");
-		}
-
-		tickAddedCheerer = client.getTickCount();
-	}
-
-	private void removeCheerer()
-	{
-		if (cheerer != null)
-		{
-			cheerer.remove();
-			cheerer = null;
-		}
-	}
-
-	public MenuEntry[] addCheererExamine(MenuEntry[] menuEntries, int widgetIndex, int widgetID)
-	{
-		LocalPoint lp = LocalPoint.fromWorld(client, cheerer.worldPoint);
-
-		if (lp == null) return menuEntries;
-
-		Point p = Perspective.localToCanvas(client, lp, client.getPlane(),
-			cheerer.runeLiteObject.getModelHeight() / 2);
-		if (p == null) return menuEntries;
-
-
-		if (p.distanceTo(client.getMouseCanvasPosition()) > 100) return menuEntries;
-
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-		client.createMenuEntry(menuEntries.length - 1)
-			.setOption("Examine")
-			.setTarget("<col=ffff00>" + cheerer.getStyle().getDisplayName() + "</col>")
-			.setType(MenuAction.RUNELITE)
-			.onClick(menuEntry -> {
-				if (cheerer == null) return;
-
-				String chatMessage = new ChatMessageBuilder()
-					.append(ChatColorType.NORMAL)
-					.append(cheerer.getStyle().getExamine())
-					.build();
-
-				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.NPC_EXAMINE)
-					.runeLiteFormattedMessage(chatMessage)
-					.timestamp((int) (System.currentTimeMillis() / 1000))
-					.build());
-			})
-			.setParam0(widgetIndex)
-			.setParam1(widgetID);
-
-		return menuEntries;
+		Cheerer.activateCheerer(client, chatMessageManager);
 	}
 
 	@Subscribe
@@ -685,12 +613,6 @@ public class QuestHelperPlugin extends Plugin
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
-
-		if (cheerer != null && cheerer.runeLiteObject != null && cheerer.runeLiteObject.getModel() != null &&
-			event.getOption().equals("Walk here"))
-		{
-			menuEntries = addCheererExamine(menuEntries, widgetIndex, widgetID);
-		}
 
 		String target = Text.removeTags(event.getTarget());
 

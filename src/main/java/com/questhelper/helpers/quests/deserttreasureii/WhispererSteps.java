@@ -54,7 +54,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ItemID;

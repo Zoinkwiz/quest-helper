@@ -29,8 +29,8 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.overlay.DirectionArrow;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ExtendedRuneliteObject;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.ExtendedRuneliteObject;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -85,7 +85,7 @@ public class RuneliteObjectStep extends DetailedQuestStep
 		if (!extendedRuneliteObject.getWorldPoint().isInScene(client)) return;
 		if (questHelper.getConfig().showMiniMapArrow())
 		{
-			if (!extendedRuneliteObject.isActive())
+			if (!extendedRuneliteObject.isRuneliteObjectActive())
 			{
 				super.renderArrow(graphics);
 			}

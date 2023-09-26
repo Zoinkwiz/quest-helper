@@ -22,49 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.dialog;
 
-import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
-import java.awt.Color;
-import net.runelite.api.AnimationID;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.FaceAnimationIDs;
+import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import net.runelite.api.Client;
-import net.runelite.api.Player;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.callback.ClientThread;
 
-public class FakeItem extends ExtendedRuneliteObject
+public class RunelitePlayerDialogStep extends RuneliteDialogStep
 {
-	protected FakeItem(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	public RunelitePlayerDialogStep(Client client, String text, FaceAnimationIDs animation)
 	{
-		super(client, clientThread, worldPoint, model, animation);
-		objectType = RuneliteObjectTypes.ITEM;
-		nameColor = "FFA07A";
+		super(client.getLocalPlayer().getName(), text, -1, animation.getAnimationID());
+		client.getLocalPlayer().getName();
 	}
 
-	public void addTakeAction(RuneliteObjectManager runeliteObjectManager, RuneliteConfigSetter stateChange, String actionText)
+	public RunelitePlayerDialogStep(Client client, String text, int animation)
 	{
-		setReplaceWalkActionText("Pick");
-		setReplaceWalkAction(menuEntry -> {
-			// Bend down and pick up the item
-			setPendingAction(() -> {
-				// Kinda needs to be a 'last interacted object'
-				Player player = client.getLocalPlayer();
-				// TODO: Won't work in instances?
-				if (player.getWorldLocation().distanceTo(getWorldPoint()) <= 1)
-				{
-					runeliteObjectManager.createChatboxMessage(actionText);
-					player.setAnimation(AnimationID.BURYING_BONES);
-					player.setAnimationFrame(0);
+		super(client.getLocalPlayer().getName(), text, -1, animation);
+		client.getLocalPlayer().getName();
+	}
 
-					// Set variable
-					stateChange.setConfigValue();
-					this.activate();
+	public RunelitePlayerDialogStep(Client client, String text)
+	{
+		this(client, text, 570);
+	}
 
-					return true;
-				}
-				return false;
-			});
-		});
+	public RunelitePlayerDialogStep(Client client, String text, RuneliteConfigSetter setter)
+	{
+		this(client, text, 570);
+		this.setStateProgression(setter);
+	}
 
+	@Override
+	public boolean isPlayer()
+	{
+		return true;
 	}
 }
+

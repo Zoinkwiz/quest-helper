@@ -22,40 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FaceAnimationIDs;
 import net.runelite.api.Client;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.callback.ClientThread;
 
-public class RunelitePlayerDialogStep extends RuneliteDialogStep
+public class FakeObject extends ExtendedRuneliteObject
 {
-	public RunelitePlayerDialogStep(Client client, String text, FaceAnimationIDs animation)
+	protected FakeObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
-		super(client.getLocalPlayer().getName(), text, -1, animation.getAnimationID());
-		client.getLocalPlayer().getName();
-	}
-
-	public RunelitePlayerDialogStep(Client client, String text, int animation)
-	{
-		super(client.getLocalPlayer().getName(), text, -1, animation);
-		client.getLocalPlayer().getName();
-	}
-
-	public RunelitePlayerDialogStep(Client client, String text)
-	{
-		this(client, text, 570);
-	}
-
-	public RunelitePlayerDialogStep(Client client, String text, RuneliteConfigSetter setter)
-	{
-		this(client, text, 570);
-		this.setStateProgression(setter);
-	}
-
-	@Override
-	public boolean isPlayer()
-	{
-		return true;
+		super(client, clientThread, worldPoint, model, animation);
+		objectType = RuneliteObjectTypes.OBJECT;
+		nameColor = "00FFFF";
 	}
 }
-

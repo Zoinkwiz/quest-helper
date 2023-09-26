@@ -22,34 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import com.questhelper.steps.WidgetDetails;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.coords.WorldPoint;
 
-public class WidgetReplacement
+@AllArgsConstructor
+public class ReplacedObject
 {
 	@Getter
-	private final WidgetDetails widgetDetails;
+	private int objectID;
+
 	@Getter
-	private final String textToReplace;
-	@Getter
-	private final String replacementText;
-
-//	Requirement requirement;
-
-	public WidgetReplacement(WidgetDetails widgetDetails, String textToReplace, String replacementText)
-	{
-		this.widgetDetails = widgetDetails;
-		this.textToReplace = textToReplace;
-		this.replacementText = replacementText;
-	}
-
-	public WidgetReplacement(WidgetInfo widgetInfo, String textToReplace, String replacementText)
-	{
-		this.widgetDetails = new WidgetDetails(widgetInfo);
-		this.textToReplace = textToReplace;
-		this.replacementText = replacementText;
-	}
+	private WorldPoint wp;
 }

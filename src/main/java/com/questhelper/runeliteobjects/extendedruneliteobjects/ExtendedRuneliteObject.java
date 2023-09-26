@@ -23,14 +23,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
 import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.playermadesteps.RuneliteConfigSetter;
-import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
-import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions.Action;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions.LoopedAction;
+import com.questhelper.runeliteobjects.RuneliteConfigSetter;
+import com.questhelper.runeliteobjects.dialog.RuneliteDialogStep;
+import com.questhelper.runeliteobjects.dialog.RuneliteObjectDialogStep;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.actions.Action;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.actions.LoopedAction;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.Shape;
 import java.util.ArrayList;
@@ -43,6 +43,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.MenuEntry;
@@ -55,6 +56,10 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 
 public class ExtendedRuneliteObject
@@ -72,7 +77,7 @@ public class ExtendedRuneliteObject
 	protected int animation;
 
 	@Getter
-	private final WorldPoint worldPoint;
+	private WorldPoint worldPoint;
 
 	@Setter
 	@Getter
@@ -89,6 +94,12 @@ public class ExtendedRuneliteObject
 	@Getter
 	private Requirement displayReq;
 
+	@Getter
+	private String overheadText;
+
+	@Getter
+	private int tickToRemoveOverheadText;
+
 	ChatBox currentChatBox;
 
 	@Getter
@@ -103,10 +114,10 @@ public class ExtendedRuneliteObject
 	private String replaceWalkActionText;
 
 	@Getter
-	private final Map<String, Action> actions = new HashMap<>();
+	private final Map<String, Action> menuActions = new HashMap<>();
 
 	@Getter
-	private final Map<String, Action> priorityActions = new HashMap<>();
+	private final Map<String, Action> priorityMenuActions = new HashMap<>();
 
 	@Setter
 	private LoopedAction activeLoopedAction;
@@ -128,9 +139,8 @@ public class ExtendedRuneliteObject
 
 	public static final int MAX_TALK_DISTANCE = 3;
 
-	@Setter
-	private boolean enabled = true;
-
+	@Getter
+	private boolean visible = true;
 
 	int lastActionPerformedAt;
 	boolean wasActiveLastTick = false;
@@ -139,17 +149,19 @@ public class ExtendedRuneliteObject
 	@Getter
 	private boolean needToBeCloseToTalk = true;
 
-	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	@Getter
+	@Setter
+	private int disableAfterTick = -1;
+
+	@Getter
+	private boolean active = true;
+
+	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, Model model, int animation)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		runeliteObject = client.createRuneLiteObject();
-
-		ModelData mdf = createModel(client, model);
-
-		this.model = mdf.cloneColors()
-			.light();
-
+		this.model = model;
 		this.animation = animation;
 		update();
 		runeliteObject.setShouldLoop(true);
@@ -160,6 +172,11 @@ public class ExtendedRuneliteObject
 		if (lp == null) return;
 		runeliteObject.setLocation(lp, client.getPlane());
 		activate();
+	}
+
+	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	{
+		this(client, clientThread, worldPoint, createModel(client, model).cloneColors().light(), animation);
 	}
 
 	private static ModelData createModel(Client client, int[] data)
@@ -208,6 +225,14 @@ public class ExtendedRuneliteObject
 		update();
 	}
 
+	public void setWorldPoint(WorldPoint worldPoint)
+	{
+		this.worldPoint = worldPoint;
+		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+		if (lp == null) return;
+		this.runeliteObject.setLocation(lp, client.getPlane());
+	}
+
 	public void setScaledModel(int[] model, int xScale, int yScale, int zScale)
 	{
 		this.model = createModel(client, model)
@@ -228,15 +253,32 @@ public class ExtendedRuneliteObject
 		});
 	}
 
-	public boolean isActive()
+	public boolean isRuneliteObjectActive()
 	{
 		return runeliteObject.isActive();
 	}
 
-	public void activate()
+	public void setVisible(boolean visible)
 	{
-		if (!enabled) return;
-		if (displayReq == null || displayReq.check(client))
+		this.visible = visible;
+		render();
+	}
+
+	public void render()
+	{
+
+		LocalPoint lp = LocalPoint.fromWorld(client, getWorldPoint());
+		if (lp == null || !active)
+		{
+			isHiddenNoOptions = true;
+			runeliteObject.setActive(false);
+			return;
+		}
+
+		updateLocation(lp);
+
+		if ((displayReq == null || displayReq.check(client))
+			&& visible)
 		{
 			if (objectToRemove != null)
 			{
@@ -249,33 +291,46 @@ public class ExtendedRuneliteObject
 		else
 		{
 			isHiddenNoOptions = true;
+			// TODO: Should this clear the queue of delayedActions? For now I'm saying yes
+			delayedActions.clear();
 			runeliteObject.setActive(false);
 		}
 	}
 
+	public void updateLocation(LocalPoint lp)
+	{
+		runeliteObject.setLocation(lp, getWorldPoint().getPlane());
+	}
+
+	public void activate()
+	{
+		active = true;
+		visible = true;
+		render();
+	}
+
 	public void disable()
 	{
+		active = false;
+		visible = false;
 		if (objectToRemove != null)
 		{
 			// Add item
 			// TODO: Can't recreate object, but could create a fake RuneliteObject to represent it
 		}
-		runeliteObject.setActive(false);
+		render();
 	}
 
 	public void setObjectToRemove(ReplacedObject replacedObject)
 	{
 		this.objectToRemove = replacedObject;
-		if (isActive())
+		if (isRuneliteObjectActive())
 		{
 			removeOtherObjects();
 		}
 	}
 
-	protected void actionOnClientTick()
-	{
-
-	}
+	protected void actionOnClientTick() {}
 
 	protected void actionOnGameTick()
 	{
@@ -323,9 +378,8 @@ public class ExtendedRuneliteObject
 		wasActiveLastTick = false;
 	}
 
-	public void activateAction(String actionID, MenuEntry menuEntry)
+	public void activateAction(Action action, MenuEntry menuEntry)
 	{
-		Action action = actions.get(actionID);
 		if (action instanceof LoopedAction)
 		{
 			if (activeLoopedAction != null)
@@ -341,9 +395,20 @@ public class ExtendedRuneliteObject
 		}
 	}
 
+	public void activateAction(String actionID, MenuEntry menuEntry)
+	{
+		Action action = menuActions.get(actionID);
+		activateAction(action, menuEntry);
+	}
+
+	public void activateAction(Action action)
+	{
+		activateAction(action, null);
+	}
+
 	public void activatePriorityAction(String actionID, MenuEntry menuEntry)
 	{
-		priorityActions.get(actionID).activate(menuEntry);
+		priorityMenuActions.get(actionID).activate(menuEntry);
 	}
 
 	public void setDisplayRequirement(Requirement req)
@@ -382,12 +447,35 @@ public class ExtendedRuneliteObject
 
 	public void addTalkAction(RuneliteObjectManager runeliteObjectManager)
 	{
-		priorityActions.put("Talk-to", new Action(runeliteObjectManager.getTalkAction(this)));
+		priorityMenuActions.put("Talk-to", new Action(runeliteObjectManager.getTalkAction(this)));
 	}
 
 	public void addExamineAction(RuneliteObjectManager runeliteObjectManager)
 	{
-		actions.put("Examine", new Action(runeliteObjectManager.getExamineAction(this)));
+		menuActions.put("Examine", new Action(runeliteObjectManager.getExamineAction(this)));
+	}
+
+	public void addOverheadText(String overheadText, int tickToRemoveOverheadText, ChatMessageManager chatMessageManager)
+	{
+		this.overheadText = overheadText;
+		this.tickToRemoveOverheadText = tickToRemoveOverheadText;
+
+		String chatMessage = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append(overheadText)
+			.build();
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.PUBLICCHAT)
+			.name(name)
+			.runeLiteFormattedMessage(chatMessage)
+			.timestamp((int) (System.currentTimeMillis() / 1000))
+			.build());
+	}
+
+	public void clearOverheadText()
+	{
+		this.overheadText = null;
+		this.tickToRemoveOverheadText = 0;
 	}
 
 	@Setter
@@ -404,12 +492,12 @@ public class ExtendedRuneliteObject
 
 	public void addAction(String name, Consumer<MenuEntry> action)
 	{
-		actions.put(name, new Action(action));
+		menuActions.put(name, new Action(action));
 	}
 
 	public void addLoopedAction(String name, Consumer<MenuEntry> action, AtomicInteger ticksBetweenActions)
 	{
-		actions.put(name, new LoopedAction(action, ticksBetweenActions));
+		menuActions.put(name, new LoopedAction(action, ticksBetweenActions));
 	}
 
 	public RuneliteObjectDialogStep createDialogStepForNpc(String text, FaceAnimationIDs faceAnimation)

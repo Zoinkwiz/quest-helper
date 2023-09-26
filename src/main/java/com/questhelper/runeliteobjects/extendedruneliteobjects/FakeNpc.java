@@ -22,10 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Model;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
 
@@ -43,6 +44,14 @@ public class FakeNpc extends ExtendedRuneliteObject
 		super(client, clientThread, worldPoint, model, animation);
 		objectType = RuneliteObjectTypes.NPC;
 	}
+
+	protected FakeNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, Model model, int animation)
+	{
+		super(client, clientThread, worldPoint, model, animation);
+		this.idleAnimation = animation;
+		objectType = RuneliteObjectTypes.NPC;
+	}
+
 
 	protected FakeNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation, int idleAnimation)
 	{

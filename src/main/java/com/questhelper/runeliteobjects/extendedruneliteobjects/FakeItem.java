@@ -22,29 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.questhelper.runeliteobjects.RuneliteConfigSetter;
+import net.runelite.api.AnimationID;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.callback.ClientThread;
 
-@AllArgsConstructor
-public enum FaceAnimationIDs
+public class FakeItem extends ExtendedRuneliteObject
 {
-	NORMAL(554),
-	FRIENDLY(567),
-	YES(568),
-	QUIZZICAL(569),
-	CHATTY(570),
-	QUESTIONING(575),
-	FRIENDLY_QUESTIONING(588),
-	FRIENDLY_2(589),
-	SHORT_LAUGH(605),
-	LAUGHING(606),
-	BIG_LAUGH(607),
-	SAD(610),
-	WORRIED_SAD(612),
-	ANNOYED(614),
-	ANNOYED_2(615);
-	@Getter
-	private final int animationID;
+	protected FakeItem(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	{
+		super(client, clientThread, worldPoint, model, animation);
+		objectType = RuneliteObjectTypes.ITEM;
+		nameColor = "FFA07A";
+	}
+
+	public void addTakeAction(RuneliteObjectManager runeliteObjectManager, RuneliteConfigSetter stateChange, String actionText)
+	{
+		setReplaceWalkActionText("Pick");
+		setReplaceWalkAction(menuEntry -> {
+			// Bend down and pick up the item
+			setPendingAction(() -> {
+				// Kinda needs to be a 'last interacted object'
+				Player player = client.getLocalPlayer();
+				// TODO: Won't work in instances?
+				if (player.getWorldLocation().distanceTo(getWorldPoint()) <= 1)
+				{
+					runeliteObjectManager.createChatboxMessage(actionText);
+					player.setAnimation(AnimationID.BURYING_BONES);
+					player.setAnimationFrame(0);
+
+					// Set variable
+					stateChange.setConfigValue();
+					this.activate();
+
+					return true;
+				}
+				return false;
+			});
+		});
+
+	}
 }

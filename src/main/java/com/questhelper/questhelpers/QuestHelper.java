@@ -37,7 +37,7 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;

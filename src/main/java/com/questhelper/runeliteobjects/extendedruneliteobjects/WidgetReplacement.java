@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
- * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,45 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
+import com.questhelper.steps.WidgetDetails;
+import lombok.Getter;
+import net.runelite.api.widgets.WidgetInfo;
 
-import net.runelite.api.Client;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetModelType;
-import net.runelite.api.widgets.WidgetPositionMode;
-import net.runelite.api.widgets.WidgetType;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
-
-public class PlayerChatBox extends ChatBox
+public class WidgetReplacement
 {
-	protected PlayerChatBox(Client client, ChatboxPanelManager chatboxPanelManager)
+	@Getter
+	private final WidgetDetails widgetDetails;
+	@Getter
+	private final String textToReplace;
+	@Getter
+	private final String replacementText;
+
+//	Requirement requirement;
+
+	public WidgetReplacement(WidgetDetails widgetDetails, String textToReplace, String replacementText)
 	{
-		super(client, chatboxPanelManager);
+		this.widgetDetails = widgetDetails;
+		this.textToReplace = textToReplace;
+		this.replacementText = replacementText;
 	}
 
-	@Override
-	protected void open()
+	public WidgetReplacement(WidgetInfo widgetInfo, String textToReplace, String replacementText)
 	{
-		Widget container = chatboxPanelManager.getContainerWidget();
-
-		Widget npcFaceWidget = container.createChild(0, WidgetType.RECTANGLE);
-		npcFaceWidget.setType(WidgetType.MODEL);
-		npcFaceWidget.setModelId(dialog.getFaceID());
-		npcFaceWidget.setAnimationId(dialog.getAnimation());
-		npcFaceWidget.setRotationX(40);
-		npcFaceWidget.setRotationZ(166);
-		npcFaceWidget.setModelZoom(796);
-		npcFaceWidget.setOriginalX(420);
-		npcFaceWidget.setOriginalY(50);
-		npcFaceWidget.setOriginalWidth(32);
-		npcFaceWidget.setOriginalHeight(32);
-		npcFaceWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		npcFaceWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
-		npcFaceWidget.setModelType(WidgetModelType.LOCAL_PLAYER_CHATHEAD);
-		npcFaceWidget.revalidate();
-
-		setupDialog(container, 5);
+		this.widgetDetails = new WidgetDetails(widgetInfo);
+		this.textToReplace = textToReplace;
+		this.replacementText = replacementText;
 	}
 }
-

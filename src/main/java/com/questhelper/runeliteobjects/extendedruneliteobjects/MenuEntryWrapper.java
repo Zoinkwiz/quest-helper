@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import java.util.function.Consumer;
 import lombok.Getter;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuAction;
 
-public class Action
+@Getter
+public class MenuEntryWrapper
 {
-	protected Consumer<MenuEntry> action;
+	String option;
+	MenuAction type;
+	String target;
+	int identifier;
+	int param0;
+	int param1;
 
-	protected boolean isActive = false;
-
-	@Getter
-	MenuEntry menuEntry;
-
-	public Action(Consumer<MenuEntry> action)
+	public MenuEntryWrapper(String option, MenuAction type, String target, int identifier, int param0, int param1)
 	{
-		this.action = action.andThen(createEndAction());
-	}
-
-	protected Consumer<MenuEntry> createEndAction()
-	{
-		return (menuEntry -> {
-			isActive = false;
-		});
-	}
-
-	public void activate(MenuEntry menuEntry)
-	{
-		isActive = true;
-		this.menuEntry = menuEntry;
-		action.accept(menuEntry);
-	}
-
-	public void deactivate()
-	{
-		this.menuEntry = null;
-		isActive = false;
+		this.option = option;
+		this.type = type;
+		this.target = target;
+		this.identifier = identifier;
+		this.param0 = param0;
+		this.param1 = param1;
 	}
 }

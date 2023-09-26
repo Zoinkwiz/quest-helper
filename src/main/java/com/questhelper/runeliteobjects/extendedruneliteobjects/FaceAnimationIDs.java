@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps;
+package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import com.questhelper.QuestHelperConfig;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.client.config.ConfigManager;
 
-public class RuneliteConfigSetter
+@AllArgsConstructor
+public enum FaceAnimationIDs
 {
+	NORMAL(554),
+	FRIENDLY(567),
+	YES(568),
+	QUIZZICAL(569),
+	CHATTY(570),
+	QUESTIONING(575),
+	FRIENDLY_QUESTIONING(588),
+	FRIENDLY_2(589),
+	SHORT_LAUGH(605),
+	LAUGHING(606),
+	BIG_LAUGH(607),
+	SAD(610),
+	WORRIED_SAD(612),
+	ANNOYED(614),
+	ANNOYED_2(615);
 	@Getter
-	protected final String CONFIG_GROUP = QuestHelperConfig.QUEST_BACKGROUND_GROUP;
-
-	protected final String runeliteIdentifier;
-
-	@Getter
-	protected final String setValue;
-	protected final ConfigManager configManager;
-
-
-	public RuneliteConfigSetter(ConfigManager configManager, String id, String setValue)
-	{
-		this.configManager = configManager;
-		this.runeliteIdentifier = id;
-		this.setValue = setValue;
-	}
-
-	public String getConfigValue()
-	{
-		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier);
-	}
-
-	public void setConfigValue()
-	{
-		configManager.setRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier, setValue);
-	}
-
-	public boolean configExists()
-	{
-		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier) != null;
-	}
+	private final int animationID;
 }
-
-

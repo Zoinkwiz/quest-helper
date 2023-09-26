@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,28 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.playermadesteps.extendedruneliteobjects;
+package com.questhelper.runeliteobjects;
 
+import com.questhelper.QuestHelperConfig;
 import lombok.Getter;
-import net.runelite.api.MenuAction;
+import net.runelite.client.config.ConfigManager;
 
-@Getter
-public class MenuEntryWrapper
+public class RuneliteConfigSetter
 {
-	String option;
-	MenuAction type;
-	String target;
-	int identifier;
-	int param0;
-	int param1;
+	@Getter
+	protected final String CONFIG_GROUP = QuestHelperConfig.QUEST_BACKGROUND_GROUP;
 
-	public MenuEntryWrapper(String option, MenuAction type, String target, int identifier, int param0, int param1)
+	protected final String runeliteIdentifier;
+
+	@Getter
+	protected final String setValue;
+	protected final ConfigManager configManager;
+
+
+	public RuneliteConfigSetter(ConfigManager configManager, String id, String setValue)
 	{
-		this.option = option;
-		this.type = type;
-		this.target = target;
-		this.identifier = identifier;
-		this.param0 = param0;
-		this.param1 = param1;
+		this.configManager = configManager;
+		this.runeliteIdentifier = id;
+		this.setValue = setValue;
+	}
+
+	public String getConfigValue()
+	{
+		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier);
+	}
+
+	public void setConfigValue()
+	{
+		configManager.setRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier, setValue);
+	}
+
+	public boolean configExists()
+	{
+		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier) != null;
 	}
 }
+
+

@@ -130,8 +130,8 @@ public class DesertMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notVisitGenie, visitGenieTask);
 
 		agiPyramidTask = new ConditionalStep(this, moveToPyramid);
-		agiPyramidTask.addStep(inPyramid, talkToSimon);
 		agiPyramidTask.addStep(new Conditions(inPyramid, talkedToSimon), agiPyramid);
+		agiPyramidTask.addStep(inPyramid, talkToSimon);
 		doMedium.addStep(notAgiPyramid, agiPyramidTask);
 
 		tpEnakhraTask = new ConditionalStep(this, tpEnakhra);
@@ -163,6 +163,8 @@ public class DesertMedium extends ComplexStateQuestHelper
 		notTPPollnivneach = new VarplayerRequirement(1198, false, 22);// iron varb different
 		notChopTeak = new VarplayerRequirement(1198, false, 23);
 		notIronman = new IronmanRequirement(false);
+
+		// Eagle boulder moved: 3088 0->1
 
 		// 1557 0->1 talking to simon
 		// 1558 0->1 talking to simon

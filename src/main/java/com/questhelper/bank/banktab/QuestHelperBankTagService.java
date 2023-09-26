@@ -36,20 +36,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 
+@Singleton
 public class QuestHelperBankTagService
 {
-	private final QuestHelperPlugin plugin;
-	private final QuestBank questBank;
+	@Inject
+	private QuestHelperPlugin plugin;
 
 	@Inject
-	public QuestHelperBankTagService(QuestHelperPlugin plugin, QuestBank questBank)
-	{
-		this.plugin = plugin;
-		this.questBank = questBank;
-	}
+	private QuestBank questBank;
 
 	public ArrayList<Integer> itemsToTag()
 	{

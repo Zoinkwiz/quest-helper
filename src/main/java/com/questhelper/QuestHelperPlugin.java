@@ -29,9 +29,8 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
-import com.questhelper.bank.QuestBank;
-import com.questhelper.bank.banktab.QuestBankTab;
-import com.questhelper.bank.banktab.QuestHelperBankTagService;
+import com.questhelper.bank.banktab.BankTabItems;
+import com.questhelper.managers.QuestBankManager;
 import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
@@ -160,14 +159,6 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
-	@Inject
-	private QuestBank questBank;
-
-	@Getter
-	private QuestHelperBankTagService bankTagService;
-
-	private QuestBankTab bankTagsMain;
-
 	@Getter
 	@Inject
 	private Client client;
@@ -254,6 +245,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private QuestOverlayManager questOverlayManager;
 
+	@Inject
+	private QuestBankManager questBankManager;
+
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -263,11 +257,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
-		bankTagService = new QuestHelperBankTagService(this, questBank);
-		bankTagsMain = new QuestBankTab(this);
-		bankTagsMain.startUp();
-		injector.injectMembers(bankTagsMain);
-		eventBus.register(bankTagsMain);
+		questBankManager.startUp(injector, eventBus);
 
 		injector.injectMembers(gameStateManager);
 		eventBus.register(gameStateManager);
@@ -312,8 +302,6 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		eventBus.unregister(bankTagsMain);
-		bankTagsMain.shutDown();
 		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(gameStateManager);
@@ -323,8 +311,7 @@ public class QuestHelperPlugin extends Plugin
 
 		clientToolbar.removeNavigation(navButton);
 		shutDownQuest(false);
-		bankTagService = null;
-		bankTagsMain = null;
+		questBankManager.shutDown(eventBus);
 
 		GlobalFakeObjects.setInitialized(false);
 	}
@@ -344,7 +331,7 @@ public class QuestHelperPlugin extends Plugin
 			if (localPlayer != null && localPlayer.getName() != null)
 			{
 				displayNameKnown = true;
-				questBank.loadState();
+				questBankManager.loadState();
 			}
 		}
 		if (sidebarSelectedQuest != null)
@@ -365,7 +352,7 @@ public class QuestHelperPlugin extends Plugin
 				}
 				if (panel.questActive)
 				{
-					clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBank.getBankItems()));
+					clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBankManager.getBankItems()));
 				}
 				panel.updateLocks();
 			}
@@ -384,7 +371,7 @@ public class QuestHelperPlugin extends Plugin
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
 		{
 			lastTickBankUpdated = client.getTickCount();
-			questBank.updateLocalBank(event.getItemContainer().getItems());
+			questBankManager.updateLocalBank(event.getItemContainer());
 		}
 
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
@@ -400,9 +387,9 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
-			questBank.saveBankToConfig();
+			questBankManager.saveBankToConfig();
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
-			questBank.emptyState();
+			questBankManager.emptyState();
 			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
 			{
 				shutDownQuest(true);
@@ -551,12 +538,17 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe(priority = 100)
 	private void onClientShutdown(ClientShutdown e)
 	{
-		questBank.saveBankToConfig();
+		questBankManager.saveBankToConfig();
 	}
 
 	public void refreshBank()
 	{
-		clientThread.invokeLater(() -> bankTagsMain.refreshBankTab());
+		clientThread.invokeLater(() -> questBankManager.refreshBankTab());
+	}
+
+	public List<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems)
+	{
+		return questBankManager.getBankTagService().getPluginBankTagItemsForSections(false);
 	}
 
 	public void updateQuestList()
@@ -575,6 +567,11 @@ public class QuestHelperPlugin extends Plugin
 				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
 			SwingUtilities.invokeLater(() -> panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections()));
 		}
+	}
+
+	public List<Integer> itemsToTag()
+	{
+		return questBankManager.getBankTagService().itemsToTag();
 	}
 
 	@Subscribe
@@ -885,7 +882,7 @@ public class QuestHelperPlugin extends Plugin
 				shutDownQuest(false);
 				return;
 			}
-			bankTagsMain.startUp();
+			questBankManager.startUpQuest();
 			SwingUtilities.invokeLater(() -> {
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
@@ -903,7 +900,7 @@ public class QuestHelperPlugin extends Plugin
 		if (selectedQuest != null)
 		{
 			selectedQuest.shutDown();
-			bankTagsMain.shutDown();
+			questBankManager.shutDownQuest();
 			SwingUtilities.invokeLater(() -> panel.removeQuest());
 			eventBus.unregister(selectedQuest);
 
@@ -930,10 +927,7 @@ public class QuestHelperPlugin extends Plugin
 				updateQuestList();
 				getAllItemRequirements();
 			}
-			if (bankTagsMain != null)
-			{
-				bankTagsMain.shutDown();
-			}
+			questBankManager.shutDownQuest();
 			SwingUtilities.invokeLater(() -> panel.removeQuest());
 			eventBus.unregister(selectedQuest);
 			selectedQuest = null;

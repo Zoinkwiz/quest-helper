@@ -41,6 +41,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.FontID;
@@ -71,6 +72,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
+@Singleton
 public class QuestBankTab
 {
 	private static final int ITEMS_PER_ROW = 8;
@@ -114,16 +116,12 @@ public class QuestBankTab
 	@Inject
 	private QuestGrandExchangeInterface geButtonWidget;
 
-	private final QuestHelperPlugin questHelper;
+	@Inject
+	private QuestHelperPlugin questHelper;
 
 	private final HashMap<Widget, BankTabItem> widgetItems = new HashMap<>();
 
 	private final HashMap<BankWidget, BankWidget> fakeToRealItem = new HashMap<>();
-
-	public QuestBankTab(QuestHelperPlugin questHelperPlugin)
-	{
-		questHelper = questHelperPlugin;
-	}
 
 	public void startUp()
 	{
@@ -169,7 +167,7 @@ public class QuestBankTab
 
 	public void updateGrandExchangeResults()
 	{
-		final List<Integer> idsList = questHelper.getBankTagService().itemsToTag();
+		final List<Integer> idsList = questHelper.itemsToTag();
 
 		final Set<Integer> ids = idsList.stream()
 			.distinct()
@@ -334,7 +332,7 @@ public class QuestBankTab
 			// Desired extra functionality:
 			// X - Recommended items also included in section
 			// X - Expand option to see alternative items for a recommended item
-			ArrayList<BankTabItems> tabLayout = questHelper.getBankTagService().getPluginBankTagItemsForSections(false);
+			List<BankTabItems> tabLayout = questHelper.getPluginBankTagItemsForSections(false);
 
 			if (tabLayout != null)
 			{

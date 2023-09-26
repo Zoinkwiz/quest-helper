@@ -33,12 +33,22 @@ public class ExperienceReward implements Reward
 {
     private final Skill skill;
     private final int experience;
+	/**
+	 * Set to true if this experience reward is provided in the form of a single-skill XP lamp
+	 */
+	private final boolean lamp;
 
     public ExperienceReward(Skill skill, int experience)
     {
-        this.skill = skill;
-        this.experience = experience;
+		this(skill, experience, false);
     }
+
+	public ExperienceReward(Skill skill, int experience, boolean lamp)
+	{
+		this.skill = skill;
+		this.experience = experience;
+		this.lamp = lamp;
+	}
 
     @Nonnull
     @Override
@@ -51,6 +61,10 @@ public class ExperienceReward implements Reward
     @Override
     public String getDisplayText()
     {
-        return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience";
+		if (lamp) {
+			return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience Lamp";
+		} else {
+			return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience";
+		}
     }
 }

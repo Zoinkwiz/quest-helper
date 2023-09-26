@@ -30,8 +30,10 @@ import com.questhelper.bank.QuestBank;
 import com.questhelper.bank.banktab.QuestBankTab;
 import com.questhelper.bank.banktab.QuestHelperBankTagService;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.Player;
 import net.runelite.client.eventbus.EventBus;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -50,6 +52,8 @@ public class QuestBankManager
 	@Inject
 	private QuestBankTab questBankTab;
 
+	private boolean loggedInStateKnown;
+
 	public void startUp(Injector injector, EventBus eventBus)
 	{
 		questBankTab.startUp();
@@ -61,6 +65,24 @@ public class QuestBankManager
 	{
 		eventBus.unregister(questBankTab);
 		questBankTab.shutDown();
+	}
+
+	public void loadInitialStateFromConfig(Client client)
+	{
+		if (!loggedInStateKnown)
+		{
+			Player localPlayer = client.getLocalPlayer();
+			if (localPlayer != null && localPlayer.getName() != null)
+			{
+				loggedInStateKnown = true;
+				loadState();
+			}
+		}
+	}
+
+	public void setUnknownInitialState()
+	{
+		loggedInStateKnown = false;
 	}
 
 	public void loadState()

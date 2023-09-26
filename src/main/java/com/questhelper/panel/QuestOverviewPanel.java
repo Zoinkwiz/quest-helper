@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.managers.QuestManager;
 import com.questhelper.questinfo.ExternalQuestResources;
 import com.questhelper.questinfo.HelperConfig;
 import com.questhelper.tools.Icon;
@@ -57,6 +58,7 @@ import java.util.List;
 public class QuestOverviewPanel extends JPanel
 {
 	private final QuestHelperPlugin questHelperPlugin;
+	private final QuestManager questManager;
 	public QuestHelper currentQuest;
 
 	private final JPanel questStepsContainer = new JPanel();
@@ -100,9 +102,10 @@ public class QuestOverviewPanel extends JPanel
 
 	private final List<QuestRequirementPanel> requirementPanels = new ArrayList<>();
 
-	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin)
+	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
 		super();
+		this.questManager = questManager;
 		this.questHelperPlugin = questHelperPlugin;
 
 		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -413,7 +416,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private void closeHelper()
 	{
-		questHelperPlugin.shutDownQuestFromSidebar();
+		questManager.shutDownQuestFromSidebar();
 	}
 
 	void updateCollapseText()

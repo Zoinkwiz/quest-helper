@@ -25,20 +25,19 @@
  */
 package com.questhelper;
 
-import com.google.common.primitives.Ints;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
-import com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan;
 import com.questhelper.managers.QuestBankManager;
+import com.questhelper.managers.QuestManager;
+import com.questhelper.managers.QuestNameToHelper;
 import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
 import com.questhelper.statemanagement.GameStateManager;
@@ -112,47 +111,12 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class QuestHelperPlugin extends Plugin
 {
-	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
-		{
-			QuestWidgets.QUEST_CONTAINER.getId()
-		};
-
-	private static final String[] RFD_NAMES = new String[]
-		{
-			QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_EVIL_DAVE.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_PIRATE_PETE.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE.getName(),
-			QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()
-		};
-
-	private static final int[] ACHIEVEMENTLIST_WIDGET_IDS = new int[]
-		{
-			WidgetInfo.ACHIEVEMENT_DIARY_CONTAINER.getId()
-		};
-
-	private static final String[] achievementTiers = new String[]
-		{
-			"Elite",
-			"Hard",
-			"Medium",
-			"Easy"
-		};
-
 	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
 	private static final String MENUOP_QUESTHELPER = "Quest Helper";
 
 	private static final String MENUOP_STARTGENERICHELPER = "Start Helper";
 	private static final String MENUOP_STOPGENERICHELPER = "Stop Helper";
-	private static final String MENUOP_GENERICHELPER = "Helper";
-
-	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
 
 	@Getter
 	@Inject
@@ -184,17 +148,6 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private QuestHelperConfig config;
 
-	@Getter
-	private QuestHelper selectedQuest = null;
-
-	@Getter
-	@Inject
-	@Named("developerMode")
-	private boolean developerMode;
-
-	@Setter
-	private QuestHelper sidebarSelectedQuest = null;
-
 	private QuestStep lastStep = null;
 
 	@Getter
@@ -219,8 +172,6 @@ public class QuestHelperPlugin extends Plugin
 
 	private boolean loadQuestList;
 
-	private boolean displayNameKnown;
-
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
@@ -233,11 +184,22 @@ public class QuestHelperPlugin extends Plugin
 	@Getter
 	private int lastTickBankUpdated = -1;
 
+	@Getter
+	@Inject
+	@Named("developerMode")
+	private boolean developerMode;
+
 	@Inject
 	private QuestOverlayManager questOverlayManager;
 
 	@Inject
 	private QuestBankManager questBankManager;
+
+	@Inject
+	private QuestManager questManager;
+
+	@Inject
+	private QuestNameToHelper questNameToHelper;
 
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
@@ -263,7 +225,8 @@ public class QuestHelperPlugin extends Plugin
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
-		panel = new QuestHelperPanel(this);
+		panel = new QuestHelperPanel(this, questManager);
+		questManager.startUp(panel);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
 			.icon(icon)
@@ -281,9 +244,8 @@ public class QuestHelperPlugin extends Plugin
 
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
+				questManager.setupOnLogin();
 				// Update with new items
-				QuestHelperQuest.CHECK_ITEMS.getQuestHelper().init();
-				getAllItemRequirements();
 				loadQuestList = true;
 				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			}
@@ -300,7 +262,7 @@ public class QuestHelperPlugin extends Plugin
 		questOverlayManager.shutDown();
 
 		clientToolbar.removeNavigation(navButton);
-		shutDownQuest(false);
+		questManager.shutDown();
 		questBankManager.shutDown(eventBus);
 
 		GlobalFakeObjects.setInitialized(false);
@@ -309,44 +271,8 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!displayNameKnown)
-		{
-			Player localPlayer = client.getLocalPlayer();
-			if (localPlayer != null && localPlayer.getName() != null)
-			{
-				displayNameKnown = true;
-				questBankManager.loadState();
-			}
-		}
-		if (sidebarSelectedQuest != null)
-		{
-			startUpQuest(sidebarSelectedQuest);
-			sidebarSelectedQuest = null;
-		}
-		else if (selectedQuest != null)
-		{
-			if (selectedQuest.getCurrentStep() != null)
-			{
-				panel.updateSteps();
-				QuestStep currentStep = selectedQuest.getCurrentStep().getSidePanelStep();
-				if (currentStep != null && currentStep != lastStep)
-				{
-					lastStep = currentStep;
-					panel.updateHighlight(client, currentStep);
-				}
-				if (panel.questActive)
-				{
-					clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBankManager.getBankItems()));
-				}
-				panel.updateLocks();
-			}
-		}
-		if (loadQuestList)
-		{
-			loadQuestList = false;
-			updateQuestList();
-			getAllItemRequirements();
-		}
+		questBankManager.loadInitialStateFromConfig(client);
+		questManager.updateQuestState();
 	}
 
 	@Subscribe
@@ -374,20 +300,17 @@ public class QuestHelperPlugin extends Plugin
 			questBankManager.saveBankToConfig();
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBankManager.emptyState();
-			if (selectedQuest != null && selectedQuest.getCurrentStep() != null)
-			{
-				shutDownQuest(true);
-			}
+			questManager.shutDownQuest(true);
 		}
 
 		if (state == GameState.LOGGED_IN)
 		{
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			loadQuestList = true;
-			displayNameKnown = false;
+			questBankManager.setUnknownInitialState();
 			clientThread.invokeLater(() -> {
-				QuestHelperQuest.CHECK_ITEMS.getQuestHelper().init();
-				getAllItemRequirements();
+				// TODO: Need to set up sidebar
+				questManager.setupOnLogin();
 			});
 		}
 	}
@@ -400,22 +323,7 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		if (selectedQuest == null)
-		{
-			return;
-		}
-
-		if (selectedQuest.updateQuest() && selectedQuest.getCurrentStep() == null)
-		{
-			shutDownQuest(true);
-		}
-
-		clientThread.invokeLater(() -> {
-			if ((selectedQuest != null) && selectedQuest.isCompleted())
-			{
-				shutDownQuest(true);
-			}
-		});
+		questManager.handleVarbitChanged();
 	}
 
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "");
@@ -424,13 +332,7 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		// Catches Player Made Quests
-		clientThread.invokeLater(() -> {
-			if ((selectedQuest != null) && selectedQuest.isCompleted())
-			{
-				shutDownQuest(true);
-			}
-		});
+		questManager.handleConfigChanged();
 
 		if (event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
 		{
@@ -463,24 +365,12 @@ public class QuestHelperPlugin extends Plugin
 
 		if (configItemEvents.contains(event.getKey()))
 		{
-			getAllItemRequirements();
-			if (selectedQuest != null && selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS)
-			{
-				clientThread.invokeLater(() -> startUpQuest(QuestHelperQuest.CHECK_ITEMS.getQuestHelper(), false));
-			}
+			questManager.updateAllItemsHelper();
 		}
 
 		if ("highlightItemsBackground".equals(event.getKey()))
 		{
-			// If shouldn't highlight, shut down highlights
-			if (Objects.equals(event.getNewValue(), "false"))
-			{
-				shutDownBackgroundQuest(backgroundHelpers.get(QuestHelperQuest.CHECK_ITEMS.getName()));
-			}
-			else
-			{
-				startUpBackgroundQuest(QuestHelperQuest.CHECK_ITEMS.getName());
-			}
+			questManager.updateAllItemsBackgroundHelper(event.getNewValue());
 		}
 	}
 
@@ -553,6 +443,11 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
+	public QuestHelper getSelectedQuest()
+	{
+		return questManager.getSelectedQuest();
+	}
+
 	public List<Integer> itemsToTag()
 	{
 		return questBankManager.getBankTagService().itemsToTag();
@@ -572,34 +467,14 @@ public class QuestHelperPlugin extends Plugin
 			case MENUOP_STARTGENERICHELPER:
 				event.consume();
 				String quest = Text.removeTags(event.getMenuTarget());
-				startUpQuest(QuestHelperQuest.getByName(quest));
+				questManager.startUpQuest(QuestHelperQuest.getByName(quest));
 				break;
 			case MENUOP_STOPHELPER:
 			case MENUOP_STOPGENERICHELPER:
 				event.consume();
-				shutDownQuest(true);
+				questManager.shutDownQuest(true);
 				break;
 		}
-	}
-
-	private MenuEntry[] addRightClickMenuOptions(String helperName, String entryName, String target,
-												 MenuEntry[] menuEntries,
-												 int widgetIndex, int widgetID)
-	{
-		QuestHelper questHelper = QuestHelperQuest.getByName(helperName);
-		if (questHelper != null && !questHelper.isCompleted())
-		{
-			if (selectedQuest != null && selectedQuest.getQuest().getName().equals(helperName))
-			{
-				return addNewEntry(menuEntries, "Stop " + entryName, target, widgetIndex, widgetID);
-			}
-			else
-			{
-				return addNewEntry(menuEntries, "Start " + entryName, target, widgetIndex, widgetID);
-			}
-		}
-
-		return menuEntries;
 	}
 
 	private void addCheerer()
@@ -613,81 +488,11 @@ public class QuestHelperPlugin extends Plugin
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
+		String option = event.getOption();
 
 		String target = Text.removeTags(event.getTarget());
 
-		if (Ints.contains(ACHIEVEMENTLIST_WIDGET_IDS, widgetID) && event.getOption().contains("Open "))
-		{
-			String diary = event.getOption().replace("Journal", "");
-			diary = diary.replace("Open ", "");
-			diary = Text.removeTags(diary);
-			for (String achievementTier : achievementTiers)
-			{
-				menuEntries = addRightClickMenuOptions(diary + achievementTier + " Diary", MENUOP_GENERICHELPER,
-					"<col=ff9040>" + diary + achievementTier + " Diary</col>", menuEntries, widgetIndex, widgetID);
-			}
-		}
-
-		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read journal:".equals(event.getOption()))
-		{
-			if (target.equals("Shield of Arrav"))
-			{
-				if (selectedQuest != null &&
-					(selectedQuest.getQuest().getId() == QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getId()))
-				{
-					addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
-				}
-				else
-				{
-					String phoenixName = QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName();
-					String blackArmName = QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName();
-					QuestHelper questHelperPhoenix = QuestHelperQuest.getByName(phoenixName);
-					QuestHelper questHelperBlackArm = QuestHelperQuest.getByName(blackArmName);
-					if (questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
-					{
-						menuEntries = addRightClickMenuOptions(phoenixName, MENUOP_QUESTHELPER,
-							"<col=ff9040>" + phoenixName + "</col>", menuEntries, widgetIndex, widgetID);
-					}
-					if (questHelperBlackArm != null &&  !questHelperBlackArm.isCompleted())
-					{
-						addRightClickMenuOptions(blackArmName, MENUOP_QUESTHELPER,
-							"<col=ff9040>" + blackArmName + "</col>", menuEntries, widgetIndex, widgetID);
-					}
-				}
-			}
-			else if (target.equals("Recipe for Disaster"))
-			{
-				if (selectedQuest != null &&
-					(selectedQuest.getQuest().getId() == QuestHelperQuest.RECIPE_FOR_DISASTER.getId()))
-				{
-					addRightClickMenuOptions(QuestHelperQuest.RECIPE_FOR_DISASTER.getName(), MENUOP_QUESTHELPER,
-						event.getTarget(), menuEntries, widgetIndex, widgetID);
-				}
-				else
-				{
-					for (String rfdName : RFD_NAMES)
-					{
-						menuEntries = addRightClickMenuOptions(rfdName, MENUOP_QUESTHELPER,
-							"<col=ff9040>" + rfdName + "</col>", menuEntries, widgetIndex, widgetID);
-					}
-				}
-			}
-			else
-			{
-				QuestHelper questHelper = QuestHelperQuest.getByName(target);
-				if (questHelper != null && !questHelper.isCompleted())
-				{
-					if (selectedQuest != null && selectedQuest.getQuest().getName().equals(target))
-					{
-						addNewEntry(menuEntries, MENUOP_STOPHELPER, event.getTarget(), widgetIndex, widgetID);
-					}
-					else
-					{
-						addNewEntry(menuEntries, MENUOP_STARTHELPER, event.getTarget(), widgetIndex, widgetID);
-					}
-				}
-			}
-		}
+		questNameToHelper.setupQuestMenuOptions(menuEntries, widgetIndex, widgetID, target, option);
 	}
 
 	@Subscribe
@@ -702,277 +507,22 @@ public class QuestHelperPlugin extends Plugin
 		}
 		if (config.autoStartQuests() && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			if (selectedQuest == null && chatMessage.getMessage().contains("You've started a new quest"))
+			if (questManager.getSelectedQuest() == null && chatMessage.getMessage().contains("You've started a new quest"))
 			{
 				String questName = chatMessage.getMessage().substring(chatMessage.getMessage().indexOf(">") + 1);
 				questName = questName.substring(0, questName.indexOf("<"));
-
-				// Prompt for starting Shield of Arrav is the same for both routes. Display actual route started
-				if (questName.equals("Shield of Arrav"))
-				{
-					Player player = client.getLocalPlayer();
-					if (player == null)
-					{
-						return;
-					}
-					WorldPoint location = player.getWorldLocation();
-
-					if (PHOENIX_START_ZONE.contains(location))
-					{
-						startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getName()));
-					}
-					else
-					{
-						startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG.getName()));
-					}
-				}
-				else if (questName.equals("Recipe for Disaster"))
-				{
-					startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
-				}
-				else
-				{
-					QuestHelper questHelper = QuestHelperQuest.getByName(questName);
-					if (questHelper != null)
-					{
-						startUpQuest(questHelper);
-					}
-				}
+				questNameToHelper.startUpQuest(questName, questManager);
 			}
 		}
 	}
 
-	private void displayPanel()
+	public void displayPanel()
 	{
 		SwingUtilities.invokeLater(() -> {
 			if (!navButton.isSelected())
 			{
 				navButton.getOnSelect().run();
 			}
-		});
-	}
-
-	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID)
-	{
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-		client.createMenuEntry(menuEntries.length - 1)
-			.setOption(newEntry)
-			.setTarget(target)
-			.setType(MenuAction.RUNELITE)
-			.setParam0(widgetIndex)
-			.setParam1(widgetID);
-
-		return menuEntries;
-	}
-
-	public void startUpQuest(QuestHelper questHelper)
-	{
-		startUpQuest(questHelper, true);
-	}
-
-	public void startUpQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
-	{
-		if (!(client.getGameState() == GameState.LOGGED_IN))
-		{
-			return;
-		}
-
-		shutDownQuest(true);
-
-		if (!questHelper.isCompleted())
-		{
-			// If running in background, close it
-			if (backgroundHelpers.containsValue(questHelper))
-			{
-				shutDownBackgroundQuest(questHelper);
-			}
-
-			if (shouldOpenSidebarIfConfig && config.autoOpenSidebar())
-			{
-				displayPanel();
-			}
-			selectedQuest = questHelper;
-			eventBus.register(selectedQuest);
-			if (isDeveloperMode())
-			{
-				selectedQuest.debugStartup(config);
-			}
-			selectedQuest.startUp(config);
-			if (selectedQuest.getCurrentStep() == null)
-			{
-				shutDownQuest(false);
-				return;
-			}
-			questBankManager.startUpQuest();
-			SwingUtilities.invokeLater(() -> {
-				panel.removeQuest();
-				panel.addQuest(questHelper, true);
-			});
-		}
-		else
-		{
-			panel.removeQuest();
-			selectedQuest = null;
-		}
-	}
-
-	public void shutDownQuestFromSidebar()
-	{
-		if (selectedQuest != null)
-		{
-			selectedQuest.shutDown();
-			questBankManager.shutDownQuest();
-			SwingUtilities.invokeLater(() -> panel.removeQuest());
-			eventBus.unregister(selectedQuest);
-
-			// If closing the item checking helper and should still check in background, start it back up in background
-			if (selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS && config.highlightItemsBackground())
-			{
-				selectedQuest = null;
-				startUpBackgroundQuest(QuestHelperQuest.CHECK_ITEMS.getName());
-			}
-			else
-			{
-				selectedQuest = null;
-			}
-		}
-	}
-
-	private void shutDownQuest(boolean shouldUpdateList)
-	{
-		if (selectedQuest != null)
-		{
-			selectedQuest.shutDown();
-			if (shouldUpdateList)
-			{
-				updateQuestList();
-				getAllItemRequirements();
-			}
-			questBankManager.shutDownQuest();
-			SwingUtilities.invokeLater(() -> panel.removeQuest());
-			eventBus.unregister(selectedQuest);
-			selectedQuest = null;
-		}
-	}
-
-	// Helpers to run in the background without UI
-	public void startUpBackgroundQuest(String questHelperName)
-	{
-		if (!config.highlightItemsBackground())
-		{
-			return;
-		}
-
-		if (!(client.getGameState() == GameState.LOGGED_IN))
-		{
-			return;
-		}
-
-		if (backgroundHelpers.containsKey(questHelperName))
-		{
-			return;
-		}
-
-		if (selectedQuest != null && selectedQuest.getQuest().getName().equals(questHelperName))
-		{
-			return;
-		}
-
-		QuestHelper questHelper = QuestHelperQuest.getByName(questHelperName);
-
-		if (questHelper == null)
-		{
-			return;
-		}
-		clientThread.invokeLater(() -> {
-			if (!questHelper.isCompleted())
-			{
-				eventBus.register(questHelper);
-				questHelper.startUp(config);
-				backgroundHelpers.put(questHelperName, questHelper);
-				if (questHelper.getCurrentStep() == null)
-				{
-					questHelper.shutDown();
-					eventBus.unregister(questHelper);
-					backgroundHelpers.remove(questHelperName);
-				}
-
-			}
-		});
-	}
-
-	private void shutDownBackgroundQuest(QuestHelper questHelper)
-	{
-		if (questHelper == null)
-		{
-			return;
-		}
-
-		if (!backgroundHelpers.containsKey(questHelper.getQuest().getName()))
-		{
-			return;
-		}
-
-		if (questHelper == selectedQuest)
-		{
-			// Is active quest, so don't close it
-			return;
-		}
-
-		questHelper.shutDown();
-		eventBus.unregister(questHelper);
-		backgroundHelpers.remove(questHelper.getQuest().getName());
-
-	}
-
-	private void getAllItemRequirements()
-	{
-		clientThread.invokeLater(() -> {
-			Predicate<QuestHelper> pred = (questHelper) -> false;
-			if (config.highlightNeededQuestItems())
-			{
-				pred = pred.or(QuestHelperConfig.QuestFilter.QUEST);
-			}
-			if (config.highlightNeededMiniquestItems())
-			{
-				pred = pred.or(QuestHelperConfig.QuestFilter.MINIQUEST);
-			}
-			if (config.highlightNeededAchievementDiaryItems())
-			{
-				pred = pred.or(QuestHelperConfig.QuestFilter.ACHIEVEMENT_DIARY);
-			}
-
-			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers()
-				.stream()
-				.filter(pred)
-				.filter(QuestDetails::isNotCompleted)
-				.sorted(config.orderListBy())
-				.collect(Collectors.toList());
-
-			clientThread.invokeLater(() -> {
-				SortedMap<QuestHelperQuest, List<ItemRequirement>> newReqs = new TreeMap<>();
-				SortedMap<QuestHelperQuest, List<ItemRequirement>> newRecommended = new TreeMap<>();
-				filteredQuests.forEach((QuestHelper questHelper) -> {
-					if (questHelper.getItemRequirements() != null)
-					{
-						newReqs.put(questHelper.getQuest(), questHelper.getItemRequirements());
-					}
-					if (questHelper.getItemRecommended() != null)
-					{
-						newRecommended.put(questHelper.getQuest(), questHelper.getItemRecommended());
-					}
-				});
-				itemRequirements = newReqs;
-				itemRecommended = newRecommended;
-
-				String checkItemsName = QuestHelperQuest.CHECK_ITEMS.getName();
-				if (config.highlightItemsBackground())
-				{
-					shutDownBackgroundQuest(backgroundHelpers.get(checkItemsName));
-					startUpBackgroundQuest(checkItemsName);
-				}
-			});
 		});
 	}
 

@@ -24,6 +24,7 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.managers.QuestManager;
 import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
@@ -90,6 +91,8 @@ public class QuestHelperPanel extends PluginPanel
 
 	QuestHelperPlugin questHelperPlugin;
 
+	QuestManager questManager;
+
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon GITHUB_ICON;
 	private static final ImageIcon PATREON_ICON;
@@ -103,11 +106,12 @@ public class QuestHelperPanel extends PluginPanel
 		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 	}
 
-	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin)
+	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
 		super(false);
 
 		this.questHelperPlugin = questHelperPlugin;
+		this.questManager = questManager;
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
@@ -320,7 +324,7 @@ public class QuestHelperPanel extends PluginPanel
 		add(scrollableContainer, BorderLayout.CENTER);
 
 		/* Layout */
-		questOverviewPanel = new QuestOverviewPanel(questHelperPlugin);
+		questOverviewPanel = new QuestOverviewPanel(questHelperPlugin, questManager);
 
 		questOverviewWrapper.setLayout(new BorderLayout());
 		questOverviewWrapper.add(questOverviewPanel, BorderLayout.NORTH);
@@ -414,14 +418,14 @@ public class QuestHelperPanel extends PluginPanel
 					.filter(questFilter)
 					.collect(Collectors.toList());
 
-				if (filterList.size() != 0)
+				if (!filterList.isEmpty())
 				{
 					questSelectPanels.add(new QuestSelectPanel(questFilter.getDisplayName()));
 				}
 				for (QuestHelper questHelper : filterList)
 				{
 					QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
-					questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
+					questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, questManager, this, questHelper, questState));
 				}
 			}
 		}
@@ -430,7 +434,7 @@ public class QuestHelperPanel extends PluginPanel
 			for (QuestHelper questHelper : questHelpers)
 			{
 				QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
-				questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
+				questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, questManager, this, questHelper, questState));
 			}
 		}
 

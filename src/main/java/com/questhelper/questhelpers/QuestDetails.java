@@ -23,7 +23,6 @@
  *  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
 package com.questhelper.questhelpers;
 
 import com.questhelper.questinfo.QuestHelperQuest;

@@ -40,13 +40,12 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 public class QuestHelperDebugOverlay extends OverlayPanel implements QuestDebugRenderer
 {
 	private final QuestHelperPlugin plugin;
-	private QuestHelper quest;
+	private QuestHelper lastSeenQuest;
 
 	@Inject
 	public QuestHelperDebugOverlay(QuestHelperPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.quest = plugin.getSelectedQuest();
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 	}
 
@@ -66,14 +65,14 @@ public class QuestHelperDebugOverlay extends OverlayPanel implements QuestDebugR
 	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent)
 	{
 		QuestHelper currentQuest = plugin.getSelectedQuest();
-		if ((quest == null || (currentQuest != quest)) && currentQuest != null)
+		if ((lastSeenQuest == null || (currentQuest != lastSeenQuest)) && currentQuest != null)
 		{
-			quest = currentQuest;
+			lastSeenQuest = currentQuest;
 		}
 
-		if (plugin.isDeveloperMode() && quest != null)
+		if (plugin.isDeveloperMode() && lastSeenQuest != null)
 		{
-			quest.renderDebugOverlay(graphics, plugin, panelComponent);
+			lastSeenQuest.renderDebugOverlay(graphics, plugin, panelComponent);
 		}
 	}
 }

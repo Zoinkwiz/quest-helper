@@ -53,8 +53,9 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/*
-** This class is intended to maintain the creation of Helpers, deletion, and other assets involved in this process
+/**
+ * Manages the lifecycle and state of quests.
+ * Responsible for initializing, updating, and shutting down quests.
  */
 @Singleton
 public class QuestManager
@@ -87,17 +88,20 @@ public class QuestManager
 
 	@Getter
 	private QuestHelper selectedQuest;
-
+	private boolean loadQuestList = false;
+	private QuestHelperPanel panel;
 	private QuestStep lastStep = null;
 
-	private boolean loadQuestList = false;
 
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
 
-	private QuestHelperPanel panel;
-
+	/**
+	 * Initializes the QuestManager with the given QuestHelperPanel.
+	 *
+	 * @param panel The QuestHelperPanel to be used.
+	 */
 	public void startUp(QuestHelperPanel panel)
 	{
 		this.panel = panel;
@@ -116,14 +120,37 @@ public class QuestManager
 		loadQuestList = true;
 	}
 
+	/**
+	 * Updates the state of the active and sidebar quests.
+	 * Delegates the tasks to handleSidebarQuest, handleSelectedQuest, and handleQuestListUpdate.
+	 */
 	public void updateQuestState()
+	{
+		handleSidebarQuest();
+		handleSelectedQuest();
+		handleQuestListUpdate();
+	}
+
+	/**
+	 * Handles the quest selected in the sidebar.
+	 * Starts up the sidebar quest and resets it to null.
+	 */
+	private void handleSidebarQuest()
 	{
 		if (sidebarSelectedQuest != null)
 		{
 			startUpQuest(sidebarSelectedQuest);
 			sidebarSelectedQuest = null;
 		}
-		else if (selectedQuest != null)
+	}
+
+	/**
+	 * Handles the currently selected quest.
+	 * Updates steps, highlights, and item requirements.
+	 */
+	private void handleSelectedQuest()
+	{
+		if (selectedQuest != null)
 		{
 			if (selectedQuest.getCurrentStep() != null)
 			{
@@ -141,6 +168,14 @@ public class QuestManager
 				panel.updateLocks();
 			}
 		}
+	}
+
+	/**
+	 * Updates the list of available quests.
+	 * Resets the flag to avoid redundant updates.
+	 */
+	private void handleQuestListUpdate()
+	{
 		if (loadQuestList)
 		{
 			loadQuestList = false;
@@ -149,6 +184,10 @@ public class QuestManager
 		}
 	}
 
+	/**
+	 * Handles changes in game varbits.
+	 * Checks for quest completion and shuts down the quest if completed.
+	 */
 	public void handleVarbitChanged()
 	{
 		if (selectedQuest == null)
@@ -169,9 +208,12 @@ public class QuestManager
 		});
 	}
 
+	/**
+	 * Handles configuration changes.
+	 * Specifically, it checks if a player-made quest has been completed.
+	 */
 	public void handleConfigChanged()
 	{
-		// Catches Player Made Quests
 		clientThread.invokeLater(() -> {
 			if ((selectedQuest != null) && selectedQuest.isCompleted())
 			{
@@ -180,11 +222,14 @@ public class QuestManager
 		});
 	}
 
+	/**
+	 * Updates the list of quests displayed in the panel.
+	 * This is based on the current game state and user configurations.
+	 */
 	public void updateQuestList()
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			System.out.println(config.showCompletedQuests());
 			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers()
 				.stream()
 				.filter(config.filterListBy())
@@ -199,12 +244,24 @@ public class QuestManager
 		}
 	}
 
-	/* Startup quests */
+	/**
+	 * Starts up a quest.
+	 * Shuts down any active quest and initializes the new quest.
+	 *
+	 * @param questHelper The quest to be started.
+	 */
 	public void startUpQuest(QuestHelper questHelper)
 	{
 		startUpQuest(questHelper, true);
 	}
 
+	/**
+	 * Starts up a quest.
+	 * Shuts down any active quest and initializes the new quest.
+	 *
+	 * @param questHelper The quest to be started.
+	 * @param shouldOpenSidebarIfConfig Flag to open the sidebar if configured.
+	 */
 	public void startUpQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
 	{
 		if (!(client.getGameState() == GameState.LOGGED_IN))
@@ -212,11 +269,14 @@ public class QuestManager
 			return;
 		}
 
-		shutDownQuest(true);
+		shutDownPreviousQuest();
+		initializeNewQuest(questHelper, shouldOpenSidebarIfConfig);
+	}
 
+	private void initializeNewQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
+	{
 		if (!questHelper.isCompleted())
 		{
-			// If running in background, close it
 			if (backgroundHelpers.containsValue(questHelper))
 			{
 				shutDownBackgroundQuest(questHelper);
@@ -232,7 +292,6 @@ public class QuestManager
 			{
 				selectedQuest.debugStartup(config);
 			}
-
 			selectedQuest.startUp(config);
 			if (selectedQuest.getCurrentStep() == null)
 			{
@@ -244,7 +303,6 @@ public class QuestManager
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
 			});
-			System.out.println(selectedQuest);
 		}
 		else
 		{
@@ -253,7 +311,10 @@ public class QuestManager
 		}
 	}
 
-	/* Shutdown quests */
+	/**
+	 * Shuts down the quest from the sidebar.
+	 * Unregisters the quest and removes it from the panel.
+	 */
 	public void shutDownQuestFromSidebar()
 	{
 		if (selectedQuest != null)
@@ -276,6 +337,17 @@ public class QuestManager
 		}
 	}
 
+	private void shutDownPreviousQuest()
+	{
+		shutDownQuest(true);
+	}
+
+	/**
+	 * Shuts down the currently active quest.
+	 * Also updates the quest list.
+	 *
+	 * @param shouldUpdateList Flag to update the quest list.
+	 */
 	public void shutDownQuest(boolean shouldUpdateList)
 	{
 		if (selectedQuest != null)
@@ -294,8 +366,11 @@ public class QuestManager
 	}
 
 
-	/* Background Helpers Functions */
-	// Helpers to run in the background without UI
+	/**
+	 * Starts up a background quest based on the quest name.
+	 *
+	 * @param questHelperName The name of the quest to be started in the background.
+	 */
 	public void startUpBackgroundQuest(String questHelperName)
 	{
 		if (!config.highlightItemsBackground())
@@ -341,6 +416,11 @@ public class QuestManager
 		});
 	}
 
+	/**
+	 * Shuts down a background quest.
+	 *
+	 * @param questHelper The background quest to be shut down.
+	 */
 	private void shutDownBackgroundQuest(QuestHelper questHelper)
 	{
 		if (questHelper == null)
@@ -365,6 +445,9 @@ public class QuestManager
 
 	}
 
+	/**
+	 * Fetches all item requirements for quests based on the current configuration.
+	 */
 	private void getAllItemRequirements()
 	{
 		clientThread.invokeLater(() -> {
@@ -415,6 +498,9 @@ public class QuestManager
 		});
 	}
 
+	/**
+	 * Updates all items for the All Items helper.
+	 */
 	public void updateAllItemsHelper()
 	{
 		getAllItemRequirements();
@@ -424,9 +510,13 @@ public class QuestManager
 		}
 	}
 
+	/**
+	 * Updates the background helper based on the shouldRun flag.
+	 *
+	 * @param shouldRun The flag indicating whether the background helper should run.
+	 */
 	public void updateAllItemsBackgroundHelper(String shouldRun)
 	{
-		// If shouldn't highlight, shut down highlights
 		if (Objects.equals(shouldRun, "false"))
 		{
 			shutDownBackgroundQuest(backgroundHelpers.get(QuestHelperQuest.CHECK_ITEMS.getName()));

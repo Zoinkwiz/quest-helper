@@ -94,10 +94,6 @@ public class QuestBankTab
 
 	private final ArrayList<Widget> addedWidgets = new ArrayList<>();
 
-	private ArrayList<Integer> priorEvents = new ArrayList<>();
-
-	boolean isSwappingDuplicates = false;
-
 	@Inject
 	private ItemManager itemManager;
 
@@ -332,7 +328,7 @@ public class QuestBankTab
 			// Desired extra functionality:
 			// X - Recommended items also included in section
 			// X - Expand option to see alternative items for a recommended item
-			List<BankTabItems> tabLayout = questHelper.getPluginBankTagItemsForSections(false);
+			List<BankTabItems> tabLayout = questHelper.getPluginBankTagItemsForSections();
 
 			if (tabLayout != null)
 			{
@@ -400,6 +396,7 @@ public class QuestBankTab
 		totalSectionsHeight = addGeneralSection(itemContainer, itemList, totalSectionsHeight);
 
 		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankItemContainer == null) return;
 		int itemContainerHeight = bankItemContainer.getHeight();
 
 		bankItemContainer.setScrollHeight(Math.max(totalSectionsHeight, itemContainerHeight));

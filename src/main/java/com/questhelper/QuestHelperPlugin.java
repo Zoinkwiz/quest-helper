@@ -41,7 +41,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
 import com.questhelper.statemanagement.GameStateManager;
-import com.questhelper.steps.QuestStep;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
@@ -53,18 +52,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
 import com.questhelper.tools.Icon;
-import com.questhelper.tools.QuestWidgets;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -72,20 +67,15 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Player;
 import net.runelite.api.QuestState;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -111,12 +101,10 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class QuestHelperPlugin extends Plugin
 {
-	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
-	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
-	private static final String MENUOP_QUESTHELPER = "Quest Helper";
-
-	private static final String MENUOP_STARTGENERICHELPER = "Start Helper";
-	private static final String MENUOP_STOPGENERICHELPER = "Stop Helper";
+	@Getter
+	@Inject
+	@Named("developerMode")
+	private boolean developerMode;
 
 	@Getter
 	@Inject
@@ -148,11 +136,21 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private QuestHelperConfig config;
 
-	private QuestStep lastStep = null;
-
 	@Getter
 	@Inject
 	RuneliteObjectManager runeliteObjectManager;
+
+	@Inject
+	private QuestOverlayManager questOverlayManager;
+
+	@Inject
+	private QuestBankManager questBankManager;
+
+	@Inject
+	private QuestManager questManager;
+
+	@Inject
+	private QuestNameToHelper questNameToHelper;
 
 	@Getter
 	@Inject
@@ -170,8 +168,6 @@ public class QuestHelperPlugin extends Plugin
 
 	private NavigationButton navButton;
 
-	private boolean loadQuestList;
-
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
@@ -184,22 +180,8 @@ public class QuestHelperPlugin extends Plugin
 	@Getter
 	private int lastTickBankUpdated = -1;
 
-	@Getter
-	@Inject
-	@Named("developerMode")
-	private boolean developerMode;
-
-	@Inject
-	private QuestOverlayManager questOverlayManager;
-
-	@Inject
-	private QuestBankManager questBankManager;
-
-	@Inject
-	private QuestManager questManager;
-
-	@Inject
-	private QuestNameToHelper questNameToHelper;
+	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "");
+	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
@@ -245,8 +227,6 @@ public class QuestHelperPlugin extends Plugin
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				questManager.setupOnLogin();
-				// Update with new items
-				loadQuestList = true;
 				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			}
 		});
@@ -306,12 +286,8 @@ public class QuestHelperPlugin extends Plugin
 		if (state == GameState.LOGGED_IN)
 		{
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
-			loadQuestList = true;
 			questBankManager.setUnknownInitialState();
-			clientThread.invokeLater(() -> {
-				// TODO: Need to set up sidebar
-				questManager.setupOnLogin();
-			});
+			clientThread.invokeLater(() -> questManager.setupOnLogin());
 		}
 	}
 
@@ -325,9 +301,6 @@ public class QuestHelperPlugin extends Plugin
 
 		questManager.handleVarbitChanged();
 	}
-
-	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "");
-	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
@@ -420,7 +393,7 @@ public class QuestHelperPlugin extends Plugin
 		clientThread.invokeLater(() -> questBankManager.refreshBankTab());
 	}
 
-	public List<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems)
+	public List<BankTabItems> getPluginBankTagItemsForSections()
 	{
 		return questBankManager.getBankTagService().getPluginBankTagItemsForSections(false);
 	}
@@ -451,30 +424,6 @@ public class QuestHelperPlugin extends Plugin
 	public List<Integer> itemsToTag()
 	{
 		return questBankManager.getBankTagService().itemsToTag();
-	}
-
-	@Subscribe
-	private void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (event.getMenuAction() != MenuAction.RUNELITE)
-		{
-			return;
-		}
-
-		switch (event.getMenuOption())
-		{
-			case MENUOP_STARTHELPER:
-			case MENUOP_STARTGENERICHELPER:
-				event.consume();
-				String quest = Text.removeTags(event.getMenuTarget());
-				questManager.startUpQuest(QuestHelperQuest.getByName(quest));
-				break;
-			case MENUOP_STOPHELPER:
-			case MENUOP_STOPGENERICHELPER:
-				event.consume();
-				questManager.shutDownQuest(true);
-				break;
-		}
 	}
 
 	private void addCheerer()

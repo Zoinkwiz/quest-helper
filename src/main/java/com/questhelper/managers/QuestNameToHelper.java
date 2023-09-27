@@ -134,7 +134,7 @@ public class QuestNameToHelper
 			for (String achievementTier : achievementTiers)
 			{
 				menuEntries = addRightClickMenuOptions(diary + achievementTier + " Diary", MENUOP_GENERICHELPER,
-					"<col=ff9040>" + diary + achievementTier + " Diary</col>", menuEntries, widgetIndex, widgetID);
+					 diary + achievementTier + " Diary", menuEntries, widgetIndex, widgetID);
 			}
 		}
 
@@ -145,7 +145,7 @@ public class QuestNameToHelper
 				if (questManager.getSelectedQuest() != null &&
 					(questManager.getSelectedQuest().getQuest().getId() == QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG.getId()))
 				{
-					addNewEntry(menuEntries, MENUOP_STOPHELPER, target, widgetIndex, widgetID);
+					addNewEntry(menuEntries, MENUOP_STOPHELPER, target, widgetIndex, widgetID, false);
 				}
 				else
 				{
@@ -156,12 +156,12 @@ public class QuestNameToHelper
 					if (questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
 					{
 						menuEntries = addRightClickMenuOptions(phoenixName, MENUOP_QUESTHELPER,
-							"<col=ff9040>" + phoenixName + "</col>", menuEntries, widgetIndex, widgetID);
+							phoenixName, menuEntries, widgetIndex, widgetID);
 					}
 					if (questHelperBlackArm != null &&  !questHelperBlackArm.isCompleted())
 					{
 						addRightClickMenuOptions(blackArmName, MENUOP_QUESTHELPER,
-							"<col=ff9040>" + blackArmName + "</col>", menuEntries, widgetIndex, widgetID);
+							blackArmName, menuEntries, widgetIndex, widgetID);
 					}
 				}
 			}
@@ -178,7 +178,7 @@ public class QuestNameToHelper
 					for (String rfdName : RFD_NAMES)
 					{
 						menuEntries = addRightClickMenuOptions(rfdName, MENUOP_QUESTHELPER,
-							"<col=ff9040>" + rfdName + "</col>", menuEntries, widgetIndex, widgetID);
+							rfdName, menuEntries, widgetIndex, widgetID);
 					}
 				}
 			}
@@ -189,11 +189,11 @@ public class QuestNameToHelper
 				{
 					if (questManager.getSelectedQuest() != null && questManager.getSelectedQuest().getQuest().getName().equals(target))
 					{
-						addNewEntry(menuEntries, MENUOP_STOPHELPER, target, widgetIndex, widgetID);
+						addNewEntry(menuEntries, MENUOP_STOPHELPER, target, widgetIndex, widgetID, false);
 					}
 					else
 					{
-						addNewEntry(menuEntries, MENUOP_STARTHELPER, target, widgetIndex, widgetID);
+						addNewEntry(menuEntries, MENUOP_STARTHELPER, target, widgetIndex, widgetID, true);
 					}
 				}
 			}
@@ -209,24 +209,35 @@ public class QuestNameToHelper
 		{
 			if (questManager.getSelectedQuest() != null && questManager.getSelectedQuest().getQuest().getName().equals(helperName))
 			{
-				return addNewEntry(menuEntries, "Stop " + entryName, target, widgetIndex, widgetID);
+				return addNewEntry(menuEntries, "Stop " + entryName, target, widgetIndex, widgetID, false);
 			}
 			else
 			{
-				return addNewEntry(menuEntries, "Start " + entryName, target, widgetIndex, widgetID);
+				return addNewEntry(menuEntries, "Start " + entryName, target, widgetIndex, widgetID, true);
 			}
 		}
 
 		return menuEntries;
 	}
 
-	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID)
+	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target, int widgetIndex, int widgetID, boolean startUp)
 	{
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 		client.createMenuEntry(menuEntries.length - 1)
 			.setOption(newEntry)
-			.setTarget(target)
+			.setTarget("<col=ff9040>" + target + "</col>")
+			.onClick((menuEntry -> {
+				if (startUp)
+				{
+					String quest = Text.removeTags(target);
+					questManager.startUpQuest(QuestHelperQuest.getByName(quest));
+				}
+				else
+				{
+					questManager.shutDownQuest(true);
+				}
+			}))
 			.setType(MenuAction.RUNELITE)
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);

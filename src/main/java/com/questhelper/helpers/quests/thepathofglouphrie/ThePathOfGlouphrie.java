@@ -34,25 +34,25 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
+import com.questhelper.steps.*;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_PATH_OF_GLOUPHRIE
@@ -92,7 +92,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private ObjectStep enterStoreroom;
 	// Solve the puzzle
 	private MonolithPuzzle solveMonolithPuzzle;
-	private MonolithPuzzle solveYewnocksMachinePuzzle;
+	private YewnocksPuzzle solveYewnocksMachinePuzzle;
 	private NpcStep talkToGianneJnr;
 	private NpcStep talkToLongramble;
 	private Zone treeGnomeVillageMiddle1;
@@ -102,6 +102,16 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private ZoneRequirement inTreeGnomeVillageDungeon;
 	private ZoneRequirement inStoreroom;
 	private Zone storeroomZone;
+	private ObjectStep clickLectern;
+	private WidgetTextRequirement lecternWidgetActive;
+	private WidgetStep clickChapter1;
+	private ConditionalStep learnLore;
+	private DetailedQuestStep watchLoreCutscene;
+	private Conditions inCutscene;
+	private VarbitRequirement learnedAboutChapter1;
+	private WidgetStep clickChapter2;
+	private WidgetStep clickChapter3;
+	private VarbitRequirement learnedAboutChapter2;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -126,6 +136,10 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		var solveMonolithPuzzleStep = new ConditionalStep(this, enterStoreroom);
 		solveMonolithPuzzleStep.addStep(inStoreroom, solveMonolithPuzzle);
 
+		var learnLoreStep = new ConditionalStep(this, enterStoreroom);
+		learnLoreStep.addStep(inCutscene, watchLoreCutscene);
+		learnLoreStep.addStep(inStoreroom, learnLore);
+
 		var solveYewnocksMachinePuzzleStep = new ConditionalStep(this, enterStoreroom);
 		solveYewnocksMachinePuzzleStep.addStep(inStoreroom, solveYewnocksMachinePuzzle);
 
@@ -137,7 +151,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			.put(8, solveMonolithPuzzleStep)
 			.put(10, solveMonolithPuzzleStep)
 			.put(12, solveMonolithPuzzleStep)
-			.put(14, solveYewnocksMachinePuzzleStep)
+			.put(14, learnLoreStep)
+			.put(16, solveYewnocksMachinePuzzleStep)
 			.build();
 	}
 
@@ -184,6 +199,15 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		inTreeGnomeVillageMiddle = new ZoneRequirement(treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3);
 		inTreeGnomeVillageDungeon = new ZoneRequirement(treeGnomeVillageDungeon);
 		inStoreroom = new ZoneRequirement(storeroomZone);
+
+		inCutscene = new Conditions(LogicType.OR,
+			new VarbitRequirement(4606, 3),
+			new VarbitRequirement(12139, 1)
+		);
+
+		learnedAboutChapter1 = new VarbitRequirement(15291, 1);
+		learnedAboutChapter2 = new VarbitRequirement(15292, 1);
+		// learnedAboutChapter3 = new VarbitRequirement(15293, 1);
 	}
 
 	public void setupSteps()
@@ -203,7 +227,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		// Talk to Golrie
 		enterTreeGnomeVillageMazeFromMiddle = new ObjectStep(this, ObjectID.LOOSE_RAILING_2186, new WorldPoint(2515, 3161, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
 		climbDownIntoTreeGnomeVillageDungeon = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
-		talkToGolrie = new NpcStep(this, NpcID.GOLRIE, new WorldPoint(2580,  4450, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
+		talkToGolrie = new NpcStep(this, NpcID.GOLRIE, new WorldPoint(2580, 4450, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
 		talkToGolrie.addDialogSteps("I need your help with a device.");
 		talkToGolrie.addSubSteps(enterTreeGnomeVillageMazeFromMiddle, climbDownIntoTreeGnomeVillageDungeon);
 		// TODO: Substep to squeeze through the loose railing if you're inside the village
@@ -214,13 +238,25 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		enterStoreroom = new ObjectStep(this, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0), "Enter the storeroom to the east in the Tree Gnome Village dungeon");
 		enterStoreroomEnterTreeGnomeVillageMazeFromMiddle.setText(enterStoreroom.getText());
 		enterStoreroomClimbDownIntoTreeGnomeVillageDungeon.setText(enterStoreroom.getText());
+		enterStoreroom.addSubSteps(enterStoreroomEnterTreeGnomeVillageMazeFromMiddle, enterStoreroomClimbDownIntoTreeGnomeVillageDungeon);
 
 		/// Storeroom monolith puzzle
 		solveMonolithPuzzle = new MonolithPuzzle(this);
 
-		solveYewnocksMachinePuzzle = new MonolithPuzzle(this);
+		clickLectern = new ObjectStep(this, ObjectID.LECTERN_49673, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern and learn about the lore");
+		lecternWidgetActive = new WidgetTextRequirement(854, 5, "Chapter 1. Bad advice");
+		clickChapter1 = new WidgetStep(this, "Click Chapter 1 to learn about the mysterious stranger", 854, 5);
+		clickChapter2 = new WidgetStep(this, "Click Chapter 2 to learn about the great king's death", 854, 9);
+		clickChapter3 = new WidgetStep(this, "Click Chapter 3 to learn about the old foe", 854, 13);
 
-		enterStoreroom.addSubSteps(enterStoreroomEnterTreeGnomeVillageMazeFromMiddle, enterStoreroomClimbDownIntoTreeGnomeVillageDungeon);
+		watchLoreCutscene = new DetailedQuestStep(this, "Watch the cutscene");
+		learnLore = new ConditionalStep(this, clickLectern, "Learn about the lore");
+		learnLore.addStep(new Conditions(lecternWidgetActive, learnedAboutChapter1, learnedAboutChapter2), clickChapter3);
+		learnLore.addStep(new Conditions(lecternWidgetActive, learnedAboutChapter1), clickChapter2);
+		learnLore.addStep(lecternWidgetActive, clickChapter1);
+		learnLore.addSubSteps(watchLoreCutscene);
+
+		solveYewnocksMachinePuzzle = new YewnocksPuzzle(this);
 
 		// Push first monolith once
 		// Search chest, drop items, search chest, drop items, search chest, pick up discs from the ground
@@ -357,7 +393,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		var puzzleSteps = new ArrayList<QuestStep>();
 		puzzleSteps.add(enterStoreroom);
 		puzzleSteps.add(solveMonolithPuzzle);
-		puzzleSteps.add(solveMonolithPuzzle);
+		puzzleSteps.add(learnLore);
+		puzzleSteps.add(solveYewnocksMachinePuzzle);
 		// puzzleSteps.addAll(solvePuzzle.getSteps());
 		var craftCrystalChime = new PanelDetails(
 			"Crafting the Crystal chime",

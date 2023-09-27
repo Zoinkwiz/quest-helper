@@ -34,6 +34,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 import java.util.HashMap;
@@ -179,7 +180,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 	}
 
 	@Subscribe
-	public void onGameTick()
+	public void onGameTick(final GameTick event)
 	{
 		// TODO: optimize
 		updateSteps();

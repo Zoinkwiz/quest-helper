@@ -538,9 +538,13 @@ public class DetailedQuestStep extends QuestStep
 			.forEach(line -> panelComponent.getChildren().add(line));
 	}
 
+	protected Widget getInventoryWidget() {
+		return client.getWidget(WidgetInfo.INVENTORY);
+	}
+
 	private void renderInventory(Graphics2D graphics)
 	{
-		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+		Widget inventoryWidget = getInventoryWidget();
 		if (inventoryWidget == null || inventoryWidget.isHidden())
 		{
 			return;

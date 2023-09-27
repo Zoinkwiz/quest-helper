@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.thepathofglouphrie;
 
+import com.google.common.collect.ImmutableMap;
 import com.questhelper.ItemCollections;
 import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
@@ -41,27 +42,25 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
+import net.runelite.api.World;
 import net.runelite.api.coords.WorldPoint;
+import java.util.*;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_PATH_OF_GLOUPHRIE
 )
 public class ThePathOfGlouphrie extends BasicQuestHelper
 {
-	ItemRequirement sampleRequirement;
-	Zone sampleZone;
-	ZoneRequirement sampleCondition;
-	QuestStep sampleStep;
+	ZoneRequirement inTreeGnomeVillageMiddle;
+
 
 	/// Required items
 	private ItemRequirement crossbow;
@@ -76,6 +75,22 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private TeleportItemRequirement tpToSpiritTree;
 	private TeleportItemRequirement fairyRing;
 	private ItemRequirement runRestoreItems;
+	private ItemRequirement freeInventorySlots;
+
+	/// Starting off
+	private NpcStep talkToKingBolren;
+	private NpcStep talkToKingBolrenAgain;
+	private ObjectStep enterTreeGnomeVillageMazeFromMiddle;
+	private ObjectStep climbDownIntoTreeGnomeVillageDungeon;
+	private NpcStep talkToGolrie;
+	private ObjectStep enterTunnel;
+	private NpcStep talkToGianneJnr;
+	private NpcStep talkToLongramble;
+	private Zone treeGnomeVillageMiddle1;
+	private Zone treeGnomeVillageMiddle2;
+	private Zone treeGnomeVillageMiddle3;
+	private Zone treeGnomeVillageDungeon;
+	private ZoneRequirement inTreeGnomeVillageDungeon;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -85,20 +100,34 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		setupConditions();
 		setupSteps();
 
-		Map<Integer, QuestStep> steps = new HashMap<>();
+		ConditionalStep startQuest = new ConditionalStep(this, talkToKingBolren);
 
-		ConditionalStep startQuest = new ConditionalStep(this, sampleStep);
+		ConditionalStep convinceBolren = new ConditionalStep(this, talkToKingBolrenAgain);
 
-		steps.put(0, startQuest);
+		ConditionalStep golrie = new ConditionalStep(this, climbDownIntoTreeGnomeVillageDungeon);
+		golrie.addStep(inTreeGnomeVillageDungeon, talkToGolrie);
+		golrie.addStep(inTreeGnomeVillageMiddle, enterTreeGnomeVillageMazeFromMiddle);
 
-		return steps;
+		ConditionalStep storeroom = new ConditionalStep(this, climbDownIntoTreeGnomeVillageDungeon);
+		golrie.addStep(inTreeGnomeVillageDungeon, enterTunnel);
+
+		ConditionalStep solvePuzzle = new ConditionalStep(this, climbDownIntoTreeGnomeVillageDungeon);
+		// solvePuzzle.addStep(inStoreroom, xD);
+		solvePuzzle.addStep(inTreeGnomeVillageDungeon, enterTunnel);
+
+		return new ImmutableMap.Builder<Integer, QuestStep>()
+			.put(0, startQuest)
+			.put(2, convinceBolren)
+			.put(4, golrie)
+			.put(6, storeroom)
+			.put(8, solvePuzzle) // and backup to enter storeroom
+			.build();
 	}
 
 	public void setupItemRequirements()
 	{
 		// Required items
 		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
-		sampleRequirement = new ItemRequirement("Bucket", ItemID.BUCKET);
 		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).isNotConsumed();
 		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
 			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
@@ -120,22 +149,104 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		fairyRing = new TeleportItemRequirement("Dramen staff", ItemCollections.FAIRY_STAFF, 1);
 		fairyRing.setConditionToHide(lumbridgeEliteComplete);
 		runRestoreItems = new ItemRequirement("Several run restore items", ItemCollections.RUN_RESTORE_ITEMS, -1);
+		freeInventorySlots = new ItemRequirement("12 free inventory slots", -1, -1);
 		// TODO: recommend the toad legs to get a mint cake?
 	}
 
 	public void setupZones()
 	{
-		sampleZone = new Zone(new WorldPoint(10, 10, 0), new WorldPoint(20, 20, 0));
+		treeGnomeVillageMiddle1 = new Zone(new WorldPoint(2514, 3161, 0), new WorldPoint(2542, 3175, 0));
+		treeGnomeVillageMiddle2 = new Zone(new WorldPoint(2543, 3167, 0), new WorldPoint(2547, 3172, 0));
+		treeGnomeVillageMiddle3 = new Zone(new WorldPoint(2522, 3158, 0), new WorldPoint(2542, 3160, 0));
+		treeGnomeVillageDungeon = new Zone(new WorldPoint(2560, 4426, 0), new WorldPoint(2627, 4477, 0));
 	}
 
 	public void setupConditions()
 	{
-		sampleCondition = new ZoneRequirement(sampleZone);
+		inTreeGnomeVillageMiddle = new ZoneRequirement(treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3);
+		inTreeGnomeVillageDungeon = new ZoneRequirement(treeGnomeVillageDungeon);
 	}
 
 	public void setupSteps()
 	{
-		sampleStep = new DetailedQuestStep(this, "Talk to Hans in Lumbridge", sampleRequirement);
+		/// Starting off
+		// Talk to King Bolren
+		var teleToBolren = new TeleportItemRequirement("Spirit tree to Tree Gnome Village [1]", -1, -1);
+		talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren in the Tree Gnome Village");
+		talkToKingBolren.addDialogSteps("Yes.");
+		talkToKingBolren.addTeleport(teleToBolren);
+
+		// Talk to King Bolren again
+		talkToKingBolrenAgain = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren again");
+
+		// TODO: Add step for freeing Golrie if the user hasn't started Roving Elves
+
+		// Talk to Golrie
+		enterTreeGnomeVillageMazeFromMiddle = new ObjectStep(this, ObjectID.LOOSE_RAILING_2186, new WorldPoint(2515, 3161, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
+		climbDownIntoTreeGnomeVillageDungeon = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
+		talkToGolrie = new NpcStep(this, NpcID.GOLRIE, new WorldPoint(2580,  4450, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
+		talkToGolrie.addDialogSteps("I need your help with a device.");
+		talkToGolrie.addSubSteps(enterTreeGnomeVillageMazeFromMiddle, climbDownIntoTreeGnomeVillageDungeon);
+		// TODO: Substep to squeeze through the loose railing if you're inside the village
+		// TODO: Substep to climb down the dungeon
+
+		enterTunnel = new ObjectStep(this, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0), "Enter the storeroom to the east");
+		enterTunnel.addSubSteps(climbDownIntoTreeGnomeVillageDungeon.copy());
+
+		/// Tunnel puzzle thing
+
+		// Push first monolith once
+		// Search chest, drop items, search chest, drop items, search chest, pick up discs from the ground
+		// Push west monolith north once
+		// Push the northern one east once
+		// Search the white chest for key & book
+		// Push small monolith
+		// Push northern monolith west
+		// Open golden chest
+		// Inspect then click the singing bowl to create a crystal chime (dialog step "Yes.")
+		// Push final monolith west
+		// Open the gate
+		// Click the lectern
+		// View chapter one (need to inspect widget)
+		// Wait for cutscene to finish
+		// View chapter two (need to inspect widget)
+		// Wait for cutscene to finish
+		// View chapter three (need to inspect widget)
+		// Wait for cutscene to finish
+
+		// Click Yewnock's Machine to unlock it
+
+		/// Move back to King Bolren
+		// Add guide for walking back, but mention that you can also teleport there with a spirit tree
+		// Attack the Evil Creature
+		// Talk to KingBolren again
+		// Gear up for combat
+
+		// Talk to Gianne Junior in Tree Gnome Stronghold
+		// TODO: Add WorldPoint
+		talkToGianneJnr = new NpcStep(this, NpcID.GIANNE_JNR, "Talk to Gianne jnr. in Tree Gnome Stronghold to ask for Longramble's whereabouts.");
+		// TODO: Add dialog step
+
+		talkToLongramble = new NpcStep(this, NpcID.LONGRAMBLE, "Talk to Longramble");
+		// TODO: Add substep to grapple over the river
+		// TODO: Add teleport step (castle wars teleport or fairy ring to BKP
+
+		// Talk to the spirit tree
+		// Watch cutscene
+		// Use the Crystal chime on the spirit tree
+		// Watch cutscene
+		// Equip combat gear, head west and enter the dungeon (activate Protect from Missiles)
+		// Open gate, keep heading east
+		// Climb down ladder
+		// Climb up ladder xd
+		// Walk west / north-west (don't step in the tar)
+		// Open metal gates
+		// Climb down ladder
+		// Climb up ladder
+		// Go north, west, north
+		// At crossroads, go east
+		// They attack with both ranged & melee, you can safespot them
+		// Once they're dead, enter the eastern room
 	}
 
 	@Override
@@ -207,9 +318,26 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("The section's header!", new ArrayList<>(Arrays.asList(sampleStep)), sampleRequirement));
-		return allSteps;
+		var panels = new ArrayList<PanelDetails>();
+
+		var startingOff = new PanelDetails(
+			"Starting off",
+			List.of(talkToKingBolren, talkToKingBolrenAgain, talkToGolrie),
+			List.of(freeInventorySlots),
+			List.of()
+		);
+
+		var craftCrystalChime = new PanelDetails(
+			"Crafting the Crystal chime",
+			List.of(enterTunnel),
+			List.of(),
+			List.of(freeInventorySlots)
+		);
+
+		panels.add(startingOff);
+		panels.add(craftCrystalChime);
+
+		return panels;
 	}
 
 	@Override

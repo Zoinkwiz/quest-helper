@@ -36,6 +36,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -50,7 +51,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.World;
 import net.runelite.api.coords.WorldPoint;
 import java.util.*;
 
@@ -75,15 +75,24 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private TeleportItemRequirement tpToSpiritTree;
 	private TeleportItemRequirement fairyRing;
 	private ItemRequirement runRestoreItems;
-	private ItemRequirement freeInventorySlots;
+	private FreeInventorySlotRequirement freeInventorySlots;
 
 	/// Starting off
+	// Talk to King Bolren
 	private NpcStep talkToKingBolren;
+	// Talk to King Bolren again
 	private NpcStep talkToKingBolrenAgain;
+	// Talk to Golrie in the dungeon
 	private ObjectStep enterTreeGnomeVillageMazeFromMiddle;
 	private ObjectStep climbDownIntoTreeGnomeVillageDungeon;
 	private NpcStep talkToGolrie;
-	private ObjectStep enterTunnel;
+	// Enter the storeroom to the east
+	private ObjectStep enterStoreroomEnterTreeGnomeVillageMazeFromMiddle;
+	private ObjectStep enterStoreroomClimbDownIntoTreeGnomeVillageDungeon;
+	private ObjectStep enterStoreroom;
+	// Solve the puzzle
+	private MonolithPuzzle solveMonolithPuzzle;
+	private MonolithPuzzle solveYewnocksMachinePuzzle;
 	private NpcStep talkToGianneJnr;
 	private NpcStep talkToLongramble;
 	private Zone treeGnomeVillageMiddle1;
@@ -91,6 +100,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private Zone treeGnomeVillageMiddle3;
 	private Zone treeGnomeVillageDungeon;
 	private ZoneRequirement inTreeGnomeVillageDungeon;
+	private ZoneRequirement inStoreroom;
+	private Zone storeroomZone;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -100,27 +111,33 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		setupConditions();
 		setupSteps();
 
-		ConditionalStep startQuest = new ConditionalStep(this, talkToKingBolren);
+		var startQuest = new ConditionalStep(this, talkToKingBolren);
 
-		ConditionalStep convinceBolren = new ConditionalStep(this, talkToKingBolrenAgain);
+		var convinceBolren = new ConditionalStep(this, talkToKingBolrenAgain);
 
-		ConditionalStep golrie = new ConditionalStep(this, climbDownIntoTreeGnomeVillageDungeon);
+		var golrie = new ConditionalStep(this, climbDownIntoTreeGnomeVillageDungeon);
 		golrie.addStep(inTreeGnomeVillageDungeon, talkToGolrie);
 		golrie.addStep(inTreeGnomeVillageMiddle, enterTreeGnomeVillageMazeFromMiddle);
 
-		ConditionalStep storeroom = new ConditionalStep(this, climbDownIntoTreeGnomeVillageDungeon);
-		golrie.addStep(inTreeGnomeVillageDungeon, enterTunnel);
+		var storeroom = new ConditionalStep(this, enterStoreroomClimbDownIntoTreeGnomeVillageDungeon);
+		storeroom.addStep(inTreeGnomeVillageDungeon, enterStoreroom);
+		storeroom.addStep(inTreeGnomeVillageMiddle, enterStoreroomEnterTreeGnomeVillageMazeFromMiddle);
 
-		ConditionalStep solvePuzzle = new ConditionalStep(this, climbDownIntoTreeGnomeVillageDungeon);
-		// solvePuzzle.addStep(inStoreroom, xD);
-		solvePuzzle.addStep(inTreeGnomeVillageDungeon, enterTunnel);
+		var solveMonolithPuzzleStep = new ConditionalStep(this, enterStoreroom);
+		solveMonolithPuzzleStep.addStep(inStoreroom, solveMonolithPuzzle);
+
+		var solveYewnocksMachinePuzzleStep = new ConditionalStep(this, enterStoreroom);
+		solveYewnocksMachinePuzzleStep.addStep(inStoreroom, solveYewnocksMachinePuzzle);
 
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(0, startQuest)
 			.put(2, convinceBolren)
 			.put(4, golrie)
 			.put(6, storeroom)
-			.put(8, solvePuzzle) // and backup to enter storeroom
+			.put(8, solveMonolithPuzzleStep)
+			.put(10, solveMonolithPuzzleStep)
+			.put(12, solveMonolithPuzzleStep)
+			.put(14, solveYewnocksMachinePuzzleStep)
 			.build();
 	}
 
@@ -149,7 +166,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		fairyRing = new TeleportItemRequirement("Dramen staff", ItemCollections.FAIRY_STAFF, 1);
 		fairyRing.setConditionToHide(lumbridgeEliteComplete);
 		runRestoreItems = new ItemRequirement("Several run restore items", ItemCollections.RUN_RESTORE_ITEMS, -1);
-		freeInventorySlots = new ItemRequirement("12 free inventory slots", -1, -1);
+		freeInventorySlots = new FreeInventorySlotRequirement(11);
 		// TODO: recommend the toad legs to get a mint cake?
 	}
 
@@ -159,12 +176,14 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		treeGnomeVillageMiddle2 = new Zone(new WorldPoint(2543, 3167, 0), new WorldPoint(2547, 3172, 0));
 		treeGnomeVillageMiddle3 = new Zone(new WorldPoint(2522, 3158, 0), new WorldPoint(2542, 3160, 0));
 		treeGnomeVillageDungeon = new Zone(new WorldPoint(2560, 4426, 0), new WorldPoint(2627, 4477, 0));
+		storeroomZone = new Zone(11074);
 	}
 
 	public void setupConditions()
 	{
 		inTreeGnomeVillageMiddle = new ZoneRequirement(treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3);
 		inTreeGnomeVillageDungeon = new ZoneRequirement(treeGnomeVillageDungeon);
+		inStoreroom = new ZoneRequirement(storeroomZone);
 	}
 
 	public void setupSteps()
@@ -190,10 +209,18 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		// TODO: Substep to squeeze through the loose railing if you're inside the village
 		// TODO: Substep to climb down the dungeon
 
-		enterTunnel = new ObjectStep(this, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0), "Enter the storeroom to the east");
-		enterTunnel.addSubSteps(climbDownIntoTreeGnomeVillageDungeon.copy());
+		enterStoreroomEnterTreeGnomeVillageMazeFromMiddle = enterTreeGnomeVillageMazeFromMiddle.copy();
+		enterStoreroomClimbDownIntoTreeGnomeVillageDungeon = climbDownIntoTreeGnomeVillageDungeon.copy();
+		enterStoreroom = new ObjectStep(this, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0), "Enter the storeroom to the east in the Tree Gnome Village dungeon");
+		enterStoreroomEnterTreeGnomeVillageMazeFromMiddle.setText(enterStoreroom.getText());
+		enterStoreroomClimbDownIntoTreeGnomeVillageDungeon.setText(enterStoreroom.getText());
 
-		/// Tunnel puzzle thing
+		/// Storeroom monolith puzzle
+		solveMonolithPuzzle = new MonolithPuzzle(this);
+
+		solveYewnocksMachinePuzzle = new MonolithPuzzle(this);
+
+		enterStoreroom.addSubSteps(enterStoreroomEnterTreeGnomeVillageMazeFromMiddle, enterStoreroomClimbDownIntoTreeGnomeVillageDungeon);
 
 		// Push first monolith once
 		// Search chest, drop items, search chest, drop items, search chest, pick up discs from the ground
@@ -327,9 +354,14 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			List.of()
 		);
 
+		var puzzleSteps = new ArrayList<QuestStep>();
+		puzzleSteps.add(enterStoreroom);
+		puzzleSteps.add(solveMonolithPuzzle);
+		puzzleSteps.add(solveMonolithPuzzle);
+		// puzzleSteps.addAll(solvePuzzle.getSteps());
 		var craftCrystalChime = new PanelDetails(
 			"Crafting the Crystal chime",
-			List.of(enterTunnel),
+			puzzleSteps,
 			List.of(),
 			List.of(freeInventorySlots)
 		);

@@ -31,7 +31,7 @@ import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.managers.QuestBankManager;
 import com.questhelper.managers.QuestManager;
-import com.questhelper.managers.QuestNameToHelper;
+import com.questhelper.managers.QuestMenuHandler;
 import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
@@ -150,7 +150,7 @@ public class QuestHelperPlugin extends Plugin
 	private QuestManager questManager;
 
 	@Inject
-	private QuestNameToHelper questNameToHelper;
+	private QuestMenuHandler questMenuHandler;
 
 	@Getter
 	@Inject
@@ -441,7 +441,7 @@ public class QuestHelperPlugin extends Plugin
 
 		String target = Text.removeTags(event.getTarget());
 
-		questNameToHelper.setupQuestMenuOptions(menuEntries, widgetIndex, widgetID, target, option);
+		questMenuHandler.setupQuestMenuOptions(menuEntries, widgetIndex, widgetID, target, option);
 	}
 
 	@Subscribe
@@ -460,7 +460,7 @@ public class QuestHelperPlugin extends Plugin
 			{
 				String questName = chatMessage.getMessage().substring(chatMessage.getMessage().indexOf(">") + 1);
 				questName = questName.substring(0, questName.indexOf("<"));
-				questNameToHelper.startUpQuest(questName, questManager);
+				questMenuHandler.startUpQuest(questName);
 			}
 		}
 	}

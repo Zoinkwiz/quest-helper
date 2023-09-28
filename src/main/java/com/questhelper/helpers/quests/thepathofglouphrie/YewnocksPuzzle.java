@@ -34,9 +34,13 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 import java.util.ArrayList;
@@ -71,19 +75,53 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	 * Value to list of possible requirements using exactly 2 different
 	 */
 	private final HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement = new HashMap<>();
+	private final Solution solution = new Solution();
 	private ObjectStep clickMachine;
 	private int puzzle1LeftItemID = -1;
 	private int puzzle1RightItemID = -1;
 	private int puzzle2ItemID = -1;
 	private WidgetPresenceRequirement widgetOpen;
 	private ItemStep selectDisc;
-	private Solution solution;
 	private ObjectStep getMoreDiscs;
 
 	public YewnocksPuzzle(QuestHelper questHelper)
 	{
 		super(questHelper, "Operate Yewnock's machine & solve the puzzle");
 
+		loadDiscs(discs);
+		loadValueToRequirement(discs, valueToRequirement);
+		loadDiscToValue(discToValue);
+		loadValueToDoubleDiscRequirement(valueToRequirement, valueToDoubleDiscRequirement);
+	}
+
+	static public void loadValueToDoubleDiscRequirement(final HashMap<Integer, ItemRequirement> valueToRequirement, HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement)
+	{
+		for (int i = 0; i < 35; i++)
+		{
+			var shape1 = valueToRequirement.get(i);
+			for (int j = 0; j < 35; j++)
+			{
+				var shape2 = valueToRequirement.get(j);
+
+				if (shape1 == null || shape2 == null)
+				{
+					continue;
+				}
+				valueToDoubleDiscRequirement.computeIfAbsent(i + j, sv2 -> new ArrayList<>());
+				if (shape1.getId() == shape2.getId())
+				{
+					valueToDoubleDiscRequirement.get(i + j).add(new ItemRequirements(shape1.quantity(2)));
+				}
+				else
+				{
+					valueToDoubleDiscRequirement.get(i + j).add(new ItemRequirements(LogicType.AND, shape1, shape2));
+				}
+			}
+		}
+	}
+
+	public static void loadDiscs(HashMap<Integer, ItemRequirement> discs)
+	{
 		discs.put(ItemID.RED_CIRCLE, new ItemRequirement("Red circle", ItemID.RED_CIRCLE).highlighted());
 		discs.put(ItemID.ORANGE_CIRCLE, new ItemRequirement("Orange circle", ItemID.ORANGE_CIRCLE).highlighted());
 		discs.put(ItemID.YELLOW_CIRCLE, new ItemRequirement("Yellow circle", ItemID.YELLOW_CIRCLE).highlighted());
@@ -112,7 +150,10 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		discs.put(ItemID.BLUE_PENTAGON, new ItemRequirement("Blue pentagon", ItemID.BLUE_PENTAGON).highlighted());
 		discs.put(ItemID.INDIGO_PENTAGON, new ItemRequirement("Indigo pentagon", ItemID.INDIGO_PENTAGON).highlighted());
 		discs.put(ItemID.VIOLET_PENTAGON, new ItemRequirement("Violet pentagon", ItemID.VIOLET_PENTAGON).highlighted());
+	}
 
+	public static void loadValueToRequirement(final HashMap<Integer, ItemRequirement> discs, HashMap<Integer, ItemRequirement> valueToRequirement)
+	{
 		var yellowCircleRedTri = new ItemRequirement("Yellow circle/red triangle", ItemID.RED_TRIANGLE).highlighted();
 		yellowCircleRedTri.addAlternates(ItemID.YELLOW_CIRCLE);
 		var greenCircleRedSquare = new ItemRequirement("Green circle/red square", ItemID.GREEN_CIRCLE).highlighted();
@@ -149,30 +190,10 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		valueToRequirement.put(28, discs.get(ItemID.VIOLET_SQUARE));
 		valueToRequirement.put(30, discs.get(ItemID.INDIGO_PENTAGON));
 		valueToRequirement.put(35, discs.get(ItemID.VIOLET_PENTAGON));
+	}
 
-		for (int i = 0; i < 35; i++)
-		{
-			var shape1 = valueToRequirement.get(i);
-			for (int j = 0; j < 35; j++)
-			{
-				var shape2 = valueToRequirement.get(j);
-
-				if (shape1 == null || shape2 == null)
-				{
-					continue;
-				}
-				valueToDoubleDiscRequirement.computeIfAbsent(i + j, sv2 -> new ArrayList<>());
-				if (shape1.getId() == shape2.getId())
-				{
-					valueToDoubleDiscRequirement.get(i + j).add(new ItemRequirements(shape1.quantity(2)));
-				}
-				else
-				{
-					valueToDoubleDiscRequirement.get(i + j).add(new ItemRequirements(LogicType.AND, shape1, shape2));
-				}
-			}
-		}
-
+	public static void loadDiscToValue(HashMap<Integer, Integer> discToValue)
+	{
 		discToValue.put(ItemID.RED_CIRCLE, 1);
 		discToValue.put(ItemID.RED_TRIANGLE, 3);
 		discToValue.put(ItemID.RED_SQUARE, 4);
@@ -206,111 +227,6 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	public static WorldPoint regionPoint(int regionX, int regionY)
 	{
 		return WorldPoint.fromRegion(STOREROOM_REGION, regionX, regionY, 0);
-	}
-
-	public static Solution makeSolution(List<Item> items)
-	{
-		Solution solution;
-		if (puzzle1LeftItemID > 0 && puzzle1RightItemID > 0 && puzzle2ItemID > 0)
-		{
-			log.info("try to calculate shit");
-			var puzzle1SlotState = client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID);
-			if (puzzle1SlotState > 0)
-			{
-				if (puzzle2UpperRequirement == null || puzzle2LowerRequirement == null)
-				{
-					// solve puzzle 2
-					var puzzle2SolutionValue = discToValue.get(puzzle2ItemID);
-					var possiblePuzzle2Solutions = valueToDoubleDiscRequirement.get(puzzle2SolutionValue);
-					var discContainer = client.getItemContainer(440);
-					if (discContainer == null)
-					{
-						// No disc container found, can't try to auto solve things
-						return;
-					}
-					var items = discContainer.getItems();
-					for (var possiblePuzzle2Solution : possiblePuzzle2Solutions)
-					{
-						if (possiblePuzzle2Solution.check(client, false, List.of(items)))
-						{
-							// Found a valid puzzle2 solution
-							puzzle2UpperRequirement = possiblePuzzle2Solution.getItemRequirements().get(0);
-							puzzle2LowerRequirement = possiblePuzzle2Solution.getItemRequirements().get(1);
-							break;
-						}
-					}
-				}
-
-				var puzzle2UpperSlotState = client.getVarpValue(PUZZLE2_UPPER_INSERTED_DISC_VARP_ID);
-				var puzzle2LowerSlotState = client.getVarpValue(PUZZLE2_LOWER_INSERTED_DISC_VARP_ID);
-				if (puzzle2UpperSlotState <= 0)
-				{
-					// Requirement: Any of the options in the upper slot
-					selectDisc.setText("Insert the highlighted disc into the highlighted slot");
-					selectDisc.setRequirements(List.of(puzzle2UpperRequirement.highlighted()));
-					selectDisc.clearWidgetHighlights();
-					// FOR PUZZLE 2 UPPER SOLUTION
-					selectDisc.addWidgetHighlight(848, 20);
-				}
-				else if (puzzle2LowerSlotState <= 0)
-				{
-					selectDisc.setText("Insert the highlighted disc into the highlighted slot");
-					selectDisc.setRequirements(List.of(puzzle2LowerRequirement.highlighted()));
-					selectDisc.clearWidgetHighlights();
-					// FOR PUZZLE 2 LOWER SOLUTION
-					selectDisc.addWidgetHighlight(848, 21);
-				}
-				else
-				{
-					// CLICK CONFIRM
-					selectDisc.setText("Click the submit button");
-					selectDisc.setRequirements(List.of());
-					selectDisc.clearWidgetHighlights();
-					selectDisc.addWidgetHighlight(848, 12);
-				}
-			}
-			else
-			{
-				if (puzzle1Requirement == null)
-				{
-					var discContainer = client.getItemContainer(440);
-					if (discContainer == null)
-					{
-						// No disc container found, can't try to auto solve things
-						return;
-					}
-					var items = discContainer.getItems();
-					// solve puzzle 1
-					var puzzle1SolutionValue = discToValue.get(puzzle1LeftItemID) + discToValue.get(puzzle1RightItemID);
-					log.info("Puzzle 1 solution: {}", puzzle1SolutionValue);
-					puzzle1Requirement = valueToRequirement.get(puzzle1SolutionValue);
-					if (puzzle1Requirement != null)
-					{
-						if (puzzle1Requirement.check(client, false, List.of(items)))
-						{
-							selectDisc.setText("Insert the highlighted disc into the highlighted slot");
-							selectDisc.setRequirements(List.of(puzzle1Requirement));
-							selectDisc.clearWidgetHighlights();
-							// FOR PUZZLE 1 SOLUTION
-							selectDisc.addWidgetHighlight(848, 19);
-						}
-					}
-				}
-
-			}
-			// FOR PUZZLE 2 UPPER SOLUTION
-			// selectDisc.addWidgetHighlight(848, 20);
-			// FOR PUZZLE 2 LOWER SOLUTION
-			// selectDisc.addWidgetHighlight(848, 21);
-			startUpStep(selectDisc);
-		}
-		else
-		{
-			puzzle1Requirement = null;
-			puzzle2UpperRequirement = null;
-			puzzle2LowerRequirement = null;
-		}
-		return solution;
 	}
 
 	@Override
@@ -362,32 +278,17 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	}
 
 	@Subscribe
-	public void onGameTick(final GameTick event)
-	{
+	public void onItemContainerChanged(final ItemContainerChanged event) {
+		// TODO: don't update steps, just re-do the calculation & if its state has changed, then update steps
 		// TODO: optimize
 		updateSteps();
 	}
 
-	private int countShapes()
+	@Subscribe
+	public void onGameTick(final GameTick event)
 	{
-		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
-		if (itemContainer == null)
-		{
-			return 0;
-		}
-
-		int count = 0;
-
-		for (var item : itemContainer.getItems())
-		{
-			var shape = discs.get(item.getId());
-			if (shape != null)
-			{
-				count += item.getQuantity();
-			}
-		}
-
-		return count;
+		// TODO: optimize
+		updateSteps();
 	}
 
 	@Override
@@ -397,19 +298,19 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		puzzle1LeftItemID = -1;
 		puzzle1RightItemID = -1;
 		puzzle2ItemID = -1;
-		solution = null;
+		solution.reset();
 	}
 
 	protected void updateSteps()
 	{
 		if (!widgetOpen.check(client))
 		{
-			solution = null;
+			solution.reset();
 			startUpStep(clickMachine);
 			return;
 		}
 
-		if (solution == null)
+		if (!solution.isGood())
 		{
 			var discContainer = client.getItemContainer(440);
 			if (discContainer == null)
@@ -417,44 +318,81 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				// No disc container found, can't try to auto solve things
 				return;
 			}
-			var items = discContainer.getItems();
-			solution = makeSolution(List.of(items));
+			var items = List.of(discContainer.getItems());
 
-			if (!solution.isGood())
+			if (puzzle1LeftItemID <= 0 || puzzle1RightItemID <= 0 || puzzle2ItemID <= 0)
 			{
-				startUpStep(clickMachine);
+				// Couldn't find the solution required, this shouldn't be the case when the widget is open
 				return;
-				// FOUND SOLUTION
 			}
+
+			var puzzle2SolutionValue = discToValue.get(puzzle2ItemID);
+			if (puzzle2SolutionValue == null)
+			{
+				// The item ID found in the puzzle2 box was invalid, not sure how to recover
+				return;
+			}
+
+			var puzzle1SolutionValue1 = discToValue.get(puzzle1LeftItemID);
+			var puzzle1SolutionValue2 = discToValue.get(puzzle1RightItemID);
+			if (puzzle1SolutionValue1 == null || puzzle1SolutionValue2 == null)
+			{
+				// One of the item IDs found in the puzzle1 boxes were invalid, not sure how to recover
+				return;
+			}
+
+			var puzzle1SolutionValue = puzzle1SolutionValue1 + puzzle1SolutionValue2;
+			// Try to figure out a solution
+			solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, valueToRequirement, valueToDoubleDiscRequirement);
+		}
+
+		if (!solution.isGood())
+		{
+			startUpStep(clickMachine);
 		}
 		else
 		{
-			if (!solution.isGood())
+			if (client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID) <= 0)
 			{
-				startUpStep(clickMachine);
-				return;
-				// FOUND SOLUTION
+				// Solve puzzle 1 first
+				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
+				selectDisc.setRequirements(List.of(solution.puzzle1Requirement));
+				selectDisc.clearWidgetHighlights();
+				// FOR PUZZLE 1 SOLUTION
+				selectDisc.addWidgetHighlight(848, 19);
 			}
+			else if (client.getVarpValue(PUZZLE2_UPPER_INSERTED_DISC_VARP_ID) <= 0)
+			{
+				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
+				selectDisc.setRequirements(List.of(solution.puzzle2UpperRequirement));
+				selectDisc.clearWidgetHighlights();
+				// FOR PUZZLE 2 UPPER SOLUTION
+				selectDisc.addWidgetHighlight(848, 20);
+				// Solve puzzle 2 upper
+			}
+			else if (client.getVarpValue(PUZZLE2_LOWER_INSERTED_DISC_VARP_ID) <= 0)
+			{
+				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
+				selectDisc.setRequirements(List.of(solution.puzzle2LowerRequirement));
+				selectDisc.clearWidgetHighlights();
+				// FOR PUZZLE 2 LOWER SOLUTION
+				selectDisc.addWidgetHighlight(848, 21);
+			}
+			else
+			{
+				// CLICK CONFIRM
+				selectDisc.setText("Click the submit button");
+				selectDisc.setRequirements(List.of());
+				selectDisc.clearWidgetHighlights();
+				selectDisc.addWidgetHighlight(848, 12);
+			}
+			startUpStep(selectDisc);
 		}
-
-		// Widget is open
 	}
 
 	@Override
 	public List<QuestStep> getSteps()
 	{
 		return List.of(clickMachine, selectDisc);
-	}
-
-	public class Solution
-	{
-		public ItemRequirement puzzle1Requirement;
-		public ItemRequirement puzzle2UpperRequirement;
-		public ItemRequirement puzzle2LowerRequirement;
-
-		public boolean isGood()
-		{
-			return (puzzle1Requirement != null & puzzle2UpperRequirement != null & puzzle2LowerRequirement != null);
-		}
 	}
 }

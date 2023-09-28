@@ -18,10 +18,18 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.4'
 	annotationProcessor 'org.projectlombok:lombok:1.18.4'
 
-	testImplementation 'junit:junit:4.12'
 	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
     testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
 
+	def junitVersion = "5.5.2" // max version before junit-bom was added to pom files, due to runelite restrictions
+	testImplementation group: "org.junit.jupiter", name: "junit-jupiter-api", version: junitVersion
+	testImplementation group: "org.junit.jupiter", name: "junit-jupiter-params", version: junitVersion
+	testImplementation group: "org.junit.jupiter", name: "junit-jupiter-engine", version: junitVersion
+
+	testImplementation group: 'org.mockito', name:'mockito-core', version: "4.11.0" // runelite uses 3.1.0
+	testImplementation(group: 'com.google.inject.extensions', name:'guice-testlib', version: "4.1.0") {
+		exclude group: 'com.google.inject', module: 'guice' // already provided by runelite
+	}
 }
 
 group = 'com.questhelper'
@@ -30,4 +38,8 @@ sourceCompatibility = '1.8'
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
+}
+
+tasks.test {
+	useJUnitPlatform()
 }

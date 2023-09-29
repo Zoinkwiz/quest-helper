@@ -432,7 +432,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 			"Go to the upper floor of the market.");
 
 		talkToSecretary = new NpcStep(this, NpcID.BLUE_OPAL_SECRETARY, new WorldPoint(2869, 10205, 1),
-			"Keep talking to the same secretary and complete the tasks given. If you don't want to do one of the task, " +
+			"Keep talking to the same secretary and complete the tasks given. If you don't want to do one of the tasks, " +
 				"just talk to them again for a different one.");
 		//TODO: Add a way to check which company is chosen
 		//((NpcStep) talkToSecretary).addAlternateNpcs(NpcID.PURPLE_PEWTER_SECRETARY, NpcID.GREEN_GEMSTONE_SECRETARY,

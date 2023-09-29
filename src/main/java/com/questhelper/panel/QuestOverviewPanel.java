@@ -301,7 +301,12 @@ public class QuestOverviewPanel extends JPanel
 
 			for (PanelDetails panelDetail : steps)
 			{
-				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep);
+				if (panelDetail.getHideCondition() != null && panelDetail.getHideCondition().check(questHelperPlugin.getClient()))
+				{
+					continue;
+				}
+
+				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep, quest, questHelperPlugin.getClient());
 				if (panelDetail.getLockingQuestSteps() != null &&
 					(panelDetail.getVars() == null
 						|| panelDetail.getVars().contains(currentQuest.getVar())))
@@ -356,31 +361,7 @@ public class QuestOverviewPanel extends JPanel
 	public void updateHighlight(Client client, QuestStep newStep)
 	{
 		questStepPanelList.forEach(panel -> {
-			if (panel.panelDetails.getHideCondition() == null || !panel.panelDetails.getHideCondition().check(client))
-			{
-				panel.setVisible(true);
-				boolean highlighted = false;
-				panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
-					(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
-				
-				for (QuestStep step : panel.getSteps())
-				{
-					if (step == newStep || step.getSubsteps().contains(newStep))
-					{
-						highlighted = true;
-						panel.updateHighlight(step);
-						break;
-					}
-				}
-				if (!highlighted)
-				{
-					panel.removeHighlight();
-				}
-			}
-			else
-			{
-				panel.setVisible(false);
-			}
+			panel.updateHighlightCheck(client, newStep, currentQuest);
 		});
 
 		repaint();

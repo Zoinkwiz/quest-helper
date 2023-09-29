@@ -24,6 +24,8 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -62,7 +64,7 @@ public class QuestStepPanel extends JPanel
 
 	private final ArrayList<QuestRequirementPanel> requirementPanels = new ArrayList<>();
 
-	public QuestStepPanel(PanelDetails panelDetails, QuestStep currentStep)
+	public QuestStepPanel(PanelDetails panelDetails, QuestStep currentStep, QuestHelper quest, Client client)
 	{
 		this.panelDetails = panelDetails;
 
@@ -159,6 +161,8 @@ public class QuestStepPanel extends JPanel
 		{
 			collapse();
 		}
+
+		updateHighlightCheck(client, currentStep, quest);
 	}
 
 	public void addRequirements(String text, List<Requirement> reqs, String borderLayout)
@@ -221,6 +225,37 @@ public class QuestStepPanel extends JPanel
 	{
 		lockStep.setVisible(canLock);
 	}
+
+	public void updateHighlightCheck(Client client, QuestStep newStep, QuestHelper currentQuest)
+	{
+		if (panelDetails.getHideCondition() == null || !panelDetails.getHideCondition().check(client))
+		{
+			setVisible(true);
+			boolean highlighted = false;
+			setLockable(panelDetails.getLockingQuestSteps() != null &&
+				(panelDetails.getVars() == null || panelDetails.getVars().contains(currentQuest.getVar())));
+
+			for (QuestStep step : getSteps())
+			{
+				if (step == newStep || step.getSubsteps().contains(newStep))
+				{
+					highlighted = true;
+					updateHighlight(step);
+					break;
+				}
+			}
+
+			if (!highlighted)
+			{
+				removeHighlight();
+			}
+		}
+		else
+		{
+			setVisible(false);
+		}
+	}
+
 
 	public void updateHighlight(QuestStep currentStep)
 	{
@@ -342,7 +377,6 @@ public class QuestStepPanel extends JPanel
 		for (Component component : panel.getComponents())
 		{
 			Color color = component.getForeground();
-
 			component.setForeground(brighten ? color.brighter() : color.darker());
 		}
 	}

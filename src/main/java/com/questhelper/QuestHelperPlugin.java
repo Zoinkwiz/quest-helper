@@ -447,9 +447,10 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (config.showFan() && chatMessage.getType() == ChatMessageType.GAMEMESSAGE) {
+		if (config.showFan() && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
+		{
 			if (chatMessage.getMessage().contains("Congratulations! Quest complete!") ||
-			chatMessage.getMessage().contains("you've completed a quest"))
+				chatMessage.getMessage().contains("you've completed a quest"))
 			{
 				addCheerer();
 			}
@@ -487,11 +488,11 @@ public class QuestHelperPlugin extends Plugin
 	{
 		QuestHelper questHelper = quest.getQuestHelper();
 
-			Module questModule = (Binder binder) ->
-			{
-				binder.bind(QuestHelper.class).toInstance(questHelper);
-				binder.install(questHelper);
-			};
+		Module questModule = (Binder binder) ->
+		{
+			binder.bind(QuestHelper.class).toInstance(questHelper);
+			binder.install(questHelper);
+		};
 		Injector questInjector = RuneLite.getInjector().createChildInjector(questModule);
 		injector.injectMembers(questHelper);
 		questHelper.setInjector(questInjector);

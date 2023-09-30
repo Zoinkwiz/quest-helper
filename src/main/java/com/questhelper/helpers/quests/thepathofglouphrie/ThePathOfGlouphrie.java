@@ -302,7 +302,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		/// Starting off
 		// Talk to King Bolren
 		var teleToBolren = new TeleportItemRequirement("Spirit tree to Tree Gnome Village [1]", -1, -1);
-		talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren in the Tree Gnome Village");
+		talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren in the Tree Gnome Village to start the quest");
 		talkToKingBolren.addDialogSteps("Yes.");
 		talkToKingBolren.addTeleport(teleToBolren);
 

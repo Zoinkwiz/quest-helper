@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.thepathofglouphrie;
 
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
@@ -32,6 +33,10 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -43,9 +48,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 @Slf4j
@@ -83,6 +85,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	private int puzzle1RightItemID = -1;
 	private int puzzle2ItemID = -1;
 	private WidgetPresenceRequirement widgetOpen;
+	private WidgetPresenceRequirement exchangerWidgetOpen;
 	private ItemStep selectDisc;
 	private ObjectStep getMoreDiscs;
 
@@ -246,10 +249,11 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(34, 31), "Get more discs from the chests outside. You can drop discs before you get more.", true);
+		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(34, 31), "Get more discs from the chests outside. You can drop discs before you get more. You can also use the exchanger next to Yewnock's machine.", true);
 		clickMachine = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine. If you run out of discs you can get new ones from the regular chests in the previous room.");
 		clickMachineOnce = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine to calculate a solution.");
 		widgetOpen = new WidgetPresenceRequirement(848, 0);
+		exchangerWidgetOpen = new WidgetPresenceRequirement(849, 0);
 
 		selectDisc = new DiscInsertionStep(getQuestHelper(), "Select the highlighted disc in your inventory");
 	}
@@ -305,6 +309,23 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		puzzle1RightItemID = -1;
 		puzzle2ItemID = -1;
 		solution.reset();
+	}
+
+	@Nullable
+	private Integer getWidgetItemId(int groupId, int childId)
+	{
+		var widget = client.getWidget(groupId, childId);
+		if (widget == null)
+		{
+			return null;
+		}
+
+		var itemId = widget.getItemId();
+		if (itemId == -1)
+		{
+			return null;
+		}
+		return itemId;
 	}
 
 	protected void updateSteps()
@@ -390,7 +411,49 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		if (!solution.isGood())
 		{
 			startUpStep(getMoreDiscs);
-			getMoreDiscs.setRequirements(solution.puzzleNeeds);
+			List<? extends Requirement> a = solution.puzzleNeeds;
+			// getMoreDiscs.setRequirements(solution.puzzleNeeds.stream().map(Requirement::from).collect(Collectors.toList()));
+			getMoreDiscs.setRequirements((List<Requirement>) a);
+
+			if (exchangerWidgetOpen.check(client))
+			{
+				getMoreDiscs.clearWidgetHighlights();
+				// Exchanger widget is open
+				var exchangeResultTL = getWidgetItemId(849, 21);
+				var exchangeResultTR = getWidgetItemId(849, 24);
+				var exchangeResultBL = getWidgetItemId(849, 27);
+				var exchangeResultBR = getWidgetItemId(849, 30);
+				boolean foundGoodExchange = false;
+				for (var puzzleNeed : solution.puzzleNeeds)
+				{
+					if (exchangeResultTL != null && puzzleNeed.getId() == exchangeResultTL)
+					{
+						getMoreDiscs.addWidgetHighlight(849, 21);
+						foundGoodExchange = true;
+					}
+					if (exchangeResultTR != null && puzzleNeed.getId() == exchangeResultTR)
+					{
+						getMoreDiscs.addWidgetHighlight(849, 24);
+						foundGoodExchange = true;
+					}
+					if (exchangeResultBL != null && puzzleNeed.getId() == exchangeResultBL)
+					{
+						getMoreDiscs.addWidgetHighlight(849, 27);
+						foundGoodExchange = true;
+					}
+					if (exchangeResultBR != null && puzzleNeed.getId() == exchangeResultBR)
+					{
+						getMoreDiscs.addWidgetHighlight(849, 30);
+						foundGoodExchange = true;
+					}
+				}
+
+				if (foundGoodExchange)
+				{
+					// highlight confirm button
+					getMoreDiscs.addWidgetHighlight(849, 36);
+				}
+			}
 		}
 		else
 		{

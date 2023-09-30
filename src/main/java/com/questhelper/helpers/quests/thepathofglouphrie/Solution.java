@@ -1,19 +1,18 @@
 package com.questhelper.helpers.quests.thepathofglouphrie;
 
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import lombok.NonNull;
+import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
 public class Solution
 {
-	@NonNull
-	public ArrayList<Requirement> puzzleNeeds = new ArrayList<>();
+	@Nonnull
+	public ArrayList<ItemRequirement> puzzleNeeds = new ArrayList<>();
 	public ItemRequirement puzzle1Requirement;
 	public ItemRequirement puzzle2UpperRequirement;
 	public ItemRequirement puzzle2LowerRequirement;
@@ -70,7 +69,7 @@ public class Solution
 				puzzle2LowerRequirement = possiblePuzzle2Solution.getItemRequirements().get(1);
 				return;
 			}
-			puzzleNeeds.add(possiblePuzzle2Solution);
+			puzzleNeeds.addAll(possiblePuzzle2Solution.getItemRequirements());
 		}
 	}
 

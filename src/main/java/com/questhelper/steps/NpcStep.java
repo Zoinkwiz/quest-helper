@@ -65,6 +65,7 @@ public class NpcStep extends DetailedQuestStep
 	private final int npcID;
 	private final List<Integer> alternateNpcIDs = new ArrayList<>();
 
+	@Setter
 	private boolean allowMultipleHighlights;
 
 	private final ArrayList<NPC> npcs = new ArrayList<>();

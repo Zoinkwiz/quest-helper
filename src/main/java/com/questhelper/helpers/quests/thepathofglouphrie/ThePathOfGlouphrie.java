@@ -479,8 +479,10 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			new WorldPoint(1498, 4319, 1),
 			new WorldPoint(1506, 4319, 1)
 		));
+		// NOTE: If the user logs out, they will be in a non-instanced area of the boss are with the wrong terrorbirds
 		bossStep = new NpcStep(this, new int[]{NpcID.WARPED_TERRORBIRD_12499, NpcID.WARPED_TERRORBIRD_12500, NpcID.WARPED_TERRORBIRD_12501},
 			"Kill the Terrorbirds. You can use the pillars around the room to only fight one at a time. They fight with both Melee and Ranged.");
+		bossStep.setAllowMultipleHighlights(true);
 
 		watchFinalCutsceneStep = new DetailedQuestStep(this, "Watch the final cutscene");
 

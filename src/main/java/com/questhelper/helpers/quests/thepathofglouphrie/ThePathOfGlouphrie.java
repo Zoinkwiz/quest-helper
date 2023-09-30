@@ -38,6 +38,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -46,13 +47,24 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.WidgetStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Prayer;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_PATH_OF_GLOUPHRIE
@@ -72,8 +84,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	/// Recommended items
 	private ItemRequirement earmuffsOrSlayerHelmet;
 	private TeleportItemRequirement royalSeedPod;
-	private TeleportItemRequirement tpToSpiritTree;
-	private TeleportItemRequirement fairyRing;
+	private TeleportItemRequirement fairyRingOrCastleWars;
 	private ItemRequirement runRestoreItems;
 	private FreeInventorySlotRequirement freeInventorySlots;
 
@@ -94,7 +105,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private MonolithPuzzle solveMonolithPuzzle;
 	private YewnocksPuzzle solveYewnocksMachinePuzzle;
 	private NpcStep talkToGianneJnr;
-	private NpcStep talkToLongramble;
+	private ConditionalStep talkToLongramble;
 	private Zone treeGnomeVillageMiddle1;
 	private Zone treeGnomeVillageMiddle2;
 	private Zone treeGnomeVillageMiddle3;
@@ -112,12 +123,46 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private WidgetStep clickChapter2;
 	private WidgetStep clickChapter3;
 	private VarbitRequirement learnedAboutChapter2;
+	private ConditionalStep enterStoreroomPuzzle;
+	private DetailedQuestStep watchCutscene;
+	private ConditionalStep killEvilCreature;
+	private NpcStep informKingBolren;
+	private Zone gnomeStrongholdFloor1;
+	private ZoneRequirement inGnomeStrongholdFloor1;
+	private ObjectStep climbUpToGianneJnr;
+	private Zone longrambleZone;
+	private ZoneRequirement nearLongramble;
+	private ConditionalStep talkToSpiritTree;
+	private ConditionalStep talkToSpiritTreeAgain;
+	private ItemRequirement crystalChime;
+	private ObjectStep useCrystalChime;
+	private ObjectStep enterSewer;
+	private Zone sewer1;
+	private Zone sewer2;
+	private Zone sewer3;
+	private Zone sewer4Section1;
+	private Zone sewer4Section2;
+	private Zone sewer5;
+	private Zone sewer6Section1;
+	private Zone sewer6Section2;
+	private Zone bossRoom;
+	private Requirement inSewer1, inSewer2, inSewer3, inSewer4, inSewer5, inSewer6, inBossRoom;
+	private ObjectStep sewer1Ladder;
+	private ObjectStep sewer5Ladder;
+	private ObjectStep sewer2Ladder;
+	private ObjectStep sewer3Ladder;
+	private ObjectStep sewer4Ladder;
+	private ObjectStep bossDoor;
+	private NpcStep bossStep;
+	private DetailedQuestStep watchFinalCutsceneStep;
+	private NpcStep talkToHazelmere;
+	private PrayerRequirement protectMissiles;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupItemRequirements();
 		setupZones();
+		setupRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -140,8 +185,36 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		learnLoreStep.addStep(inCutscene, watchLoreCutscene);
 		learnLoreStep.addStep(inStoreroom, learnLore);
 
-		var solveYewnocksMachinePuzzleStep = new ConditionalStep(this, enterStoreroom);
+		var solveYewnocksMachinePuzzleStep = new ConditionalStep(this, enterStoreroomPuzzle);
 		solveYewnocksMachinePuzzleStep.addStep(inStoreroom, solveYewnocksMachinePuzzle);
+
+		var informKingBolrenStep = new ConditionalStep(this, informKingBolren);
+
+		var talkToGianneJnrStep = new ConditionalStep(this, climbUpToGianneJnr);
+		talkToGianneJnrStep.addStep(inGnomeStrongholdFloor1, talkToGianneJnr);
+
+		var talkToLongrambleStep = new ConditionalStep(this, talkToLongramble);
+
+		var talkToSpiritTreeStep = new ConditionalStep(this, talkToSpiritTree);
+
+		var useCrystalChimeStep = new ConditionalStep(this, useCrystalChime);
+
+		var talkToSpiritTreeAgainStep = new ConditionalStep(this, talkToSpiritTreeAgain);
+
+		var enterSewerStep = new ConditionalStep(this, enterSewer);
+
+		{
+			// Temporary shit
+
+			enterSewerStep.addStep(inBossRoom, bossStep);
+			enterSewerStep.addStep(inSewer6, bossDoor);
+			enterSewerStep.addStep(inSewer5, sewer5Ladder);
+			enterSewerStep.addStep(inSewer4, sewer4Ladder);
+			enterSewerStep.addStep(inSewer3, sewer3Ladder);
+			enterSewerStep.addStep(inSewer2, sewer2Ladder);
+			enterSewerStep.addStep(inSewer1, sewer1Ladder);
+		}
+
 
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(0, startQuest)
@@ -153,36 +226,28 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			.put(12, solveMonolithPuzzleStep)
 			.put(14, learnLoreStep)
 			.put(16, solveYewnocksMachinePuzzleStep)
+			.put(18, watchCutscene)
+			.put(20, killEvilCreature)
+			.put(22, informKingBolrenStep)
+			.put(24, talkToGianneJnrStep)
+			.put(26, talkToLongrambleStep)
+			.put(28, talkToLongrambleStep)
+			.put(30, talkToSpiritTreeStep)
+			.put(32, talkToSpiritTreeStep)
+			.put(34, talkToSpiritTreeStep)
+			.put(36, useCrystalChimeStep)
+			.put(38, talkToSpiritTreeAgainStep)
+			.put(40, enterSewerStep)
+			.put(42, enterSewerStep)
+			.put(44, enterSewerStep)
+			.put(46, watchFinalCutsceneStep)
+			.put(48, talkToHazelmere)
 			.build();
 	}
 
 	public void setupItemRequirements()
 	{
-		// Required items
-		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
-		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).isNotConsumed();
-		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
-			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
-			ItemID.BLURITE_CROSSBOW, ItemID.DORGESHUUN_CROSSBOW, ItemID.ARMADYL_CROSSBOW, ItemID.ZARYTE_CROSSBOW);
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
-		treeGnomeVillageDungeonKey = new ItemRequirement("Tree Gnome Village dungeon key", ItemID.KEY_293).showConditioned(rovingElvesNotStarted);
-		treeGnomeVillageDungeonKey.canBeObtainedDuringQuest();
-		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
-		// Recommended items
-		var lumbridgeEliteComplete = new QuestRequirement(QuestHelperQuest.LUMBRIDGE_ELITE, QuestState.FINISHED);
-		earmuffsOrSlayerHelmet = new ItemRequirement("Earmuffs or a Slayer helmet", ItemCollections.EAR_PROTECTION, 1, true).highlighted();
-		// TODO: Change this to a "TP to the grand tree"
-		royalSeedPod = new TeleportItemRequirement("Royal seed pod", ItemID.ROYAL_SEED_POD, 1);
-		// TODO: Fix quantity
-		tpToSpiritTree = new TeleportItemRequirement("Teleport to nearby Spirit Tree", ItemID.VARROCK_TELEPORT, -1);
-		fairyRing = new TeleportItemRequirement("Dramen staff", ItemCollections.FAIRY_STAFF, 1);
-		fairyRing.setConditionToHide(lumbridgeEliteComplete);
-		runRestoreItems = new ItemRequirement("Several run restore items", ItemCollections.RUN_RESTORE_ITEMS, -1);
-		freeInventorySlots = new FreeInventorySlotRequirement(11);
-		// TODO: recommend the toad legs to get a mint cake?
 	}
 
 	public void setupZones()
@@ -192,6 +257,18 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		treeGnomeVillageMiddle3 = new Zone(new WorldPoint(2522, 3158, 0), new WorldPoint(2542, 3160, 0));
 		treeGnomeVillageDungeon = new Zone(new WorldPoint(2560, 4426, 0), new WorldPoint(2627, 4477, 0));
 		storeroomZone = new Zone(11074);
+		gnomeStrongholdFloor1 = new Zone(new WorldPoint(2437, 3474, 1), new WorldPoint(2493, 3511, 1));
+		longrambleZone = new Zone(new WorldPoint(2328, 3082, 0), new WorldPoint(2346, 3103, 0));
+		sewer1 = new Zone(new WorldPoint(1472, 4236, 0), new WorldPoint(1480, 4239, 0));
+		sewer2 = new Zone(new WorldPoint(1472, 4226, 1), new WorldPoint(1534, 4247, 1));
+		sewer3 = new Zone(new WorldPoint(1526, 4235, 0), new WorldPoint(1529, 4254, 0));
+		sewer4Section1 = new Zone(new WorldPoint(1472, 4245, 1), new WorldPoint(1534, 4273, 1));
+		sewer4Section2 = new Zone(new WorldPoint(1479, 4273, 1), new WorldPoint(1489, 4285, 1));
+		sewer5 = new Zone(new WorldPoint(1484, 4279, 0), new WorldPoint(1501, 4282, 0));
+		sewer6Section1 = new Zone(new WorldPoint(1496, 4276, 1), new WorldPoint(1513, 4288, 1));
+		sewer6Section2 = new Zone(5955, 1);
+
+		bossRoom = new Zone(WorldPoint.fromRegion(5955, 35, 24, 1), WorldPoint.fromRegion(5955, 48, 44, 1));
 	}
 
 	public void setupConditions()
@@ -199,6 +276,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		inTreeGnomeVillageMiddle = new ZoneRequirement(treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3);
 		inTreeGnomeVillageDungeon = new ZoneRequirement(treeGnomeVillageDungeon);
 		inStoreroom = new ZoneRequirement(storeroomZone);
+		inGnomeStrongholdFloor1 = new ZoneRequirement(gnomeStrongholdFloor1);
+		nearLongramble = new ZoneRequirement(longrambleZone);
 
 		inCutscene = new Conditions(LogicType.OR,
 			new VarbitRequirement(4606, 3),
@@ -208,6 +287,14 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		learnedAboutChapter1 = new VarbitRequirement(15291, 1);
 		learnedAboutChapter2 = new VarbitRequirement(15292, 1);
 		// learnedAboutChapter3 = new VarbitRequirement(15293, 1);
+
+		inSewer1 = new ZoneRequirement(sewer1);
+		inSewer2 = new ZoneRequirement(sewer2);
+		inSewer3 = new ZoneRequirement(sewer3);
+		inSewer4 = new Conditions(LogicType.OR, new ZoneRequirement(sewer4Section1), new ZoneRequirement(sewer4Section2));
+		inSewer5 = new ZoneRequirement(sewer5);
+		inSewer6 = new Conditions(LogicType.OR, new ZoneRequirement(sewer6Section1), new ZoneRequirement(sewer6Section2));
+		inBossRoom = new ZoneRequirement(bossRoom);
 	}
 
 	public void setupSteps()
@@ -240,6 +327,20 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		enterStoreroomClimbDownIntoTreeGnomeVillageDungeon.setText(enterStoreroom.getText());
 		enterStoreroom.addSubSteps(enterStoreroomEnterTreeGnomeVillageMazeFromMiddle, enterStoreroomClimbDownIntoTreeGnomeVillageDungeon);
 
+		{
+			var squeezeThroughRailing = enterTreeGnomeVillageMazeFromMiddle.copy();
+			squeezeThroughRailing.setText("Squeeze through the loose railing");
+			var climbIntoDungeon = climbDownIntoTreeGnomeVillageDungeon.copy();
+			climbIntoDungeon.setText("Climb down the ladder to the Tree Gnome Village dungeon");
+			var enterStoreroom = new ObjectStep(this, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0),
+				"Enter the storeroom to the east in the Tree Gnome Village dungeon");
+
+			enterStoreroomPuzzle = new ConditionalStep(this, climbIntoDungeon, "Get to Yewnock's storeroom");
+			enterStoreroomPuzzle.addStep(inTreeGnomeVillageDungeon, enterStoreroom);
+			enterStoreroomPuzzle.addStep(inTreeGnomeVillageMiddle, squeezeThroughRailing);
+		}
+
+
 		/// Storeroom monolith puzzle
 		solveMonolithPuzzle = new MonolithPuzzle(this);
 
@@ -257,65 +358,168 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		learnLore.addSubSteps(watchLoreCutscene);
 
 		solveYewnocksMachinePuzzle = new YewnocksPuzzle(this);
+		solveYewnocksMachinePuzzle.addSubSteps(enterStoreroomPuzzle);
+		solveYewnocksMachinePuzzle.addSubSteps(enterStoreroomPuzzle.getSteps());
 
-		// Push first monolith once
-		// Search chest, drop items, search chest, drop items, search chest, pick up discs from the ground
-		// Push west monolith north once
-		// Push the northern one east once
-		// Search the white chest for key & book
-		// Push small monolith
-		// Push northern monolith west
-		// Open golden chest
-		// Inspect then click the singing bowl to create a crystal chime (dialog step "Yes.")
-		// Push final monolith west
-		// Open the gate
-		// Click the lectern
-		// View chapter one (need to inspect widget)
-		// Wait for cutscene to finish
-		// View chapter two (need to inspect widget)
-		// Wait for cutscene to finish
-		// View chapter three (need to inspect widget)
-		// Wait for cutscene to finish
+		watchCutscene = new DetailedQuestStep(this, "Watch the cutscene");
 
-		// Click Yewnock's Machine to unlock it
+		/// Inform King Bolren
+		{
+			// Kill the Evil Creature
+			var kill = new NpcStep(this, NpcID.EVIL_CREATURE_12477, new WorldPoint(2542, 3169, 0), "Kill the Evil Creature");
+			var exitStoreroom = new ObjectStep(this, ObjectID.TUNNEL_49623, YewnocksPuzzle.regionPoint(37, 17), "Exit the storeroom");
+			exitStoreroom.addTeleport(teleToBolren);
+			var exitDungeon = new ObjectStep(this, ObjectID.LADDER_5251, new WorldPoint(2597, 4435, 0), "Exit the dungeon");
+			var squeezeThroughRailing = enterTreeGnomeVillageMazeFromMiddle.copy();
+			squeezeThroughRailing.setText("Kill the Evil Creature next to King Bolren");
+			killEvilCreature = new ConditionalStep(this, kill, "Kill the Evil Creature next to King Bolren");
+			killEvilCreature.addStep(inTreeGnomeVillageDungeon, exitDungeon);
+			killEvilCreature.addStep(inStoreroom, exitStoreroom);
+			killEvilCreature.addStep(new Conditions(LogicType.NOR, inTreeGnomeVillageMiddle), squeezeThroughRailing);
+		}
 
-		/// Move back to King Bolren
-		// Add guide for walking back, but mention that you can also teleport there with a spirit tree
-		// Attack the Evil Creature
-		// Talk to KingBolren again
-		// Gear up for combat
+		// Talk to King Bolren
+		informKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren about your next step");
+		informKingBolren.addTeleport(teleToBolren);
+
+		var teleToStronghold = new TeleportItemRequirement("Spirit tree to Gnome Stronghold [2]", -1, -1);
 
 		// Talk to Gianne Junior in Tree Gnome Stronghold
-		// TODO: Add WorldPoint
-		talkToGianneJnr = new NpcStep(this, NpcID.GIANNE_JNR, "Talk to Gianne jnr. in Tree Gnome Stronghold to ask for Longramble's whereabouts.");
-		// TODO: Add dialog step
+		talkToGianneJnr = new NpcStep(this, NpcID.GIANNE_JNR, new WorldPoint(2439, 3502, 1), "Talk to Gianne jnr. in Tree Gnome Stronghold to ask for Longramble's whereabouts.");
+		climbUpToGianneJnr = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "");
+		climbUpToGianneJnr.setText(talkToGianneJnr.getText());
+		climbUpToGianneJnr.addTeleport(teleToStronghold);
+		talkToGianneJnr.addSubSteps(climbUpToGianneJnr);
+		talkToGianneJnr.addDialogSteps("I need your help finding a certain gnome.");
 
-		talkToLongramble = new NpcStep(this, NpcID.LONGRAMBLE, "Talk to Longramble");
-		// TODO: Add substep to grapple over the river
-		// TODO: Add teleport step (castle wars teleport or fairy ring to BKP
+		/// Find Longramble
+		var teleToLongramble = new TeleportItemRequirement("Fairy Ring BKP or Ring of Dueling to Castle Wars", ItemCollections.RING_OF_DUELINGS, 1);
+		teleToLongramble.addAlternates(ItemCollections.FAIRY_STAFF);
 
-		// Talk to the spirit tree
-		// Watch cutscene
-		// Use the Crystal chime on the spirit tree
-		// Watch cutscene
-		// Equip combat gear, head west and enter the dungeon (activate Protect from Missiles)
-		// Open gate, keep heading east
-		// Climb down ladder
-		// Climb up ladder xd
-		// Walk west / north-west (don't step in the tar)
-		// Open metal gates
-		// Climb down ladder
-		// Climb up ladder
-		// Go north, west, north
-		// At crossroads, go east
-		// They attack with both ranged & melee, you can safespot them
-		// Once they're dead, enter the eastern room
+
+		var goToLongramble = new ObjectStep(this, ObjectID.TREE_49590, new WorldPoint(2333, 3081, 0), "");
+		goToLongramble.addRecommended(earmuffsOrSlayerHelmet);
+		goToLongramble.addDialogStep("Castle Wars Arena.");
+		goToLongramble.addTeleport(teleToLongramble);
+		var actuallyTalkToLongramble = new NpcStep(this, NpcID.LONGRAMBLE, new WorldPoint(2340, 3094, 0), "");
+		actuallyTalkToLongramble.addRecommended(earmuffsOrSlayerHelmet);
+
+
+		talkToLongramble = new ConditionalStep(this, goToLongramble, "Go to Longramble, make sure to head to a bank & gear up first.", combatGear, crossbow, mithGrapple, food, crystalChime);
+		talkToLongramble.addStep(nearLongramble, actuallyTalkToLongramble);
+
+		{
+			var talk = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
+			talkToSpiritTree = new ConditionalStep(this, talk, "Talk to the Spirit Tree", combatGear, food, crystalChime);
+		}
+
+		useCrystalChime = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "Use the Crystal Chime on the Spirit Tree", crystalChime.highlighted());
+		useCrystalChime.addIcon(ItemID.CRYSTAL_CHIME);
+
+		{
+			var talk = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
+			talkToSpiritTreeAgain = new ConditionalStep(this, talk, "Talk to the Spirit Tree again", combatGear, food, crystalChime);
+		}
+
+		/// The Warped Depths
+		enterSewer = new ObjectStep(this, ObjectID.SEWER_ENTRANCE, new WorldPoint(2322, 3101, 0),
+			"Enter the sewer to the west of the Spirit tree");
+		enterSewer.addRequirement(combatGear, food, crystalChime);
+
+		sewer1Ladder = new ObjectStep(this, ObjectID.LADDER_49700, "Climb up the ladder");
+		sewer2Ladder = new ObjectStep(this, ObjectID.LADDER_49701, new WorldPoint(1529, 4236, 1),
+			"Climb down the ladder.");
+		sewer2Ladder.addRecommended(protectMissiles);
+		sewer3Ladder = new ObjectStep(this, ObjectID.LADDER_49700, new WorldPoint(1529, 4253, 0),
+			"Climb up the ladder.");
+		sewer3Ladder.addRecommended(protectMissiles);
+		sewer4Ladder = new ObjectStep(this, ObjectID.LADDER_49701, new WorldPoint(1486, 4283, 1),
+			"Climb down the ladder. Re-activate your run if you step in any puddles.");
+		sewer4Ladder.addRecommended(protectMissiles);
+		sewer4Ladder.setLinePoints(List.of(
+			new WorldPoint(1530, 4253, 1),
+			new WorldPoint(1530, 4256, 1),
+			new WorldPoint(1512, 4256, 1),
+			new WorldPoint(1512, 4256, 1),
+			new WorldPoint(1512, 4260, 1),
+			new WorldPoint(1512, 4260, 1),
+			new WorldPoint(1510, 4260, 1),
+			new WorldPoint(1510, 4264, 1),
+			new WorldPoint(1503, 4264, 1),
+			new WorldPoint(1503, 4262, 1),
+			new WorldPoint(1496, 4262, 1),
+			new WorldPoint(1496, 4264, 1),
+			new WorldPoint(1484, 4264, 1),
+			new WorldPoint(1484, 4277, 1),
+			new WorldPoint(1482, 4277, 1),
+			new WorldPoint(1482, 4284, 1),
+			new WorldPoint(1486, 4284, 1)
+		));
+		sewer5Ladder = new ObjectStep(this, ObjectID.LADDER_49700, new WorldPoint(1499, 4282, 0),
+			"Climb up the ladder");
+		sewer5Ladder.addRecommended(protectMissiles);
+		bossDoor = new ObjectStep(this, ObjectID.METAL_GATE_49889, new WorldPoint(1506, 4319, 1),
+			"Go to the boss room. Re-activate your run if you step in any puddles.");
+		bossDoor.addRecommended(protectMissiles);
+		bossDoor.setLinePoints(List.of(
+			new WorldPoint(1499, 4283, 1),
+			new WorldPoint(1506, 4283, 1),
+			new WorldPoint(1506, 4291, 1),
+			new WorldPoint(1503, 4291, 1),
+			new WorldPoint(1503, 4292, 1),
+			new WorldPoint(1497, 4292, 1),
+			new WorldPoint(1497, 4291, 1),
+			new WorldPoint(1487, 4291, 1),
+			new WorldPoint(1487, 4302, 1),
+			new WorldPoint(1492, 4302, 1),
+			new WorldPoint(1492, 4304, 1),
+			new WorldPoint(1495, 4304, 1),
+			new WorldPoint(1495, 4316, 1),
+			new WorldPoint(1498, 4316, 1),
+			new WorldPoint(1498, 4319, 1),
+			new WorldPoint(1506, 4319, 1)
+		));
+		bossStep = new NpcStep(this, new int[]{NpcID.WARPED_TERRORBIRD_12499, NpcID.WARPED_TERRORBIRD_12500, NpcID.WARPED_TERRORBIRD_12501},
+			"Kill the Terrorbirds. You can use the pillars around the room to only fight one at a time. They fight with both Melee and Ranged.");
+
+		watchFinalCutsceneStep = new DetailedQuestStep(this, "Watch the final cutscene");
+
+		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, new WorldPoint(2678, 3086, 1),
+			"Talk to Hazelmere. Any lamps that don't fit in your inventory will land on the ground. You can speak to Hazelmere after the quest to recover any lost lamps.");
 	}
 
 	@Override
 	public void setupRequirements()
 	{
+		// Required items
+		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
+		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).isNotConsumed();
+		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
+			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
+			ItemID.BLURITE_CROSSBOW, ItemID.DORGESHUUN_CROSSBOW, ItemID.ARMADYL_CROSSBOW, ItemID.ZARYTE_CROSSBOW);
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
+		treeGnomeVillageDungeonKey = new ItemRequirement("Tree Gnome Village dungeon key", ItemID.KEY_293).showConditioned(rovingElvesNotStarted);
+		treeGnomeVillageDungeonKey.canBeObtainedDuringQuest();
+		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
+		// Recommended items
+		var lumbridgeEliteComplete = new QuestRequirement(QuestHelperQuest.LUMBRIDGE_ELITE, QuestState.FINISHED);
+		earmuffsOrSlayerHelmet = new ItemRequirement("Earmuffs or a Slayer helmet", ItemCollections.EAR_PROTECTION, 1, true).highlighted();
+		earmuffsOrSlayerHelmet.setTooltip("You will take a lot more damage without these");
+		fairyRingOrCastleWars = new TeleportItemRequirement("Teleport to Castle Wars (Fairy Ring BKP or Ring of Dueling [2])", ItemCollections.FAIRY_STAFF, 1);
+		fairyRingOrCastleWars.addAlternates(ItemCollections.RING_OF_DUELINGS);
+		fairyRingOrCastleWars.setConditionToHide(lumbridgeEliteComplete);
+		runRestoreItems = new ItemRequirement("Several run restore items", ItemCollections.RUN_RESTORE_ITEMS, -1);
+		freeInventorySlots = new FreeInventorySlotRequirement(11);
+		// TODO: recommend the toad legs to get a mint cake?
+
+		// Items that are made during the quest
+		crystalChime = new ItemRequirement("Crystal chime", ItemID.CRYSTAL_CHIME, 1);
+
+		// Non-item requirements
+		protectMissiles = new PrayerRequirement("Protect from Missiles to reduce damage taken by the Terrorbirds", Prayer.PROTECT_FROM_MISSILES);
 	}
 
 	@Override
@@ -335,9 +539,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	{
 		return Arrays.asList(
 			earmuffsOrSlayerHelmet,
-			royalSeedPod,
-			tpToSpiritTree,
-			fairyRing,
+			fairyRingOrCastleWars,
 			runRestoreItems
 		);
 	}
@@ -390,21 +592,39 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			List.of()
 		);
 
-		var puzzleSteps = new ArrayList<QuestStep>();
-		puzzleSteps.add(enterStoreroom);
-		puzzleSteps.add(solveMonolithPuzzle);
-		puzzleSteps.add(learnLore);
-		puzzleSteps.add(solveYewnocksMachinePuzzle);
-		// puzzleSteps.addAll(solvePuzzle.getSteps());
-		var craftCrystalChime = new PanelDetails(
-			"Crafting the Crystal chime",
-			puzzleSteps,
+		var unveilTheEvilCreature = new PanelDetails(
+			"Unveil the Evil creature",
+			List.of(enterStoreroom, solveMonolithPuzzle, learnLore, solveYewnocksMachinePuzzle, watchCutscene),
 			List.of(),
 			List.of(freeInventorySlots)
 		);
 
+		var informKingBolrenPanel = new PanelDetails(
+			"Inform King Bolren",
+			List.of(killEvilCreature, informKingBolren, talkToGianneJnr),
+			List.of(),
+			List.of()
+		);
+
+		var findLongramble = new PanelDetails(
+			"Find Longramble",
+			List.of(talkToLongramble, talkToSpiritTree, useCrystalChime, talkToSpiritTreeAgain),
+			List.of(crossbow, mithGrapple, combatGear, food, crystalChime),
+			List.of(earmuffsOrSlayerHelmet, runRestoreItems)
+		);
+
+		var theWarpedDepths = new PanelDetails(
+			"The Warped Depths",
+			List.of(enterSewer, sewer1Ladder, sewer2Ladder, sewer3Ladder, sewer4Ladder, sewer5Ladder, bossDoor, bossStep, watchFinalCutsceneStep, talkToHazelmere),
+			List.of(crossbow, mithGrapple, combatGear, food, crystalChime),
+			List.of(earmuffsOrSlayerHelmet, runRestoreItems)
+		);
+
 		panels.add(startingOff);
-		panels.add(craftCrystalChime);
+		panels.add(unveilTheEvilCreature);
+		panels.add(informKingBolrenPanel);
+		panels.add(findLongramble);
+		panels.add(theWarpedDepths);
 
 		return panels;
 	}

@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.thepathofglouphrie;
 
-import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
@@ -35,6 +34,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
@@ -76,7 +76,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	 */
 	private final HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement = new HashMap<>();
 	private final Solution solution = new Solution();
+	private final ThePathOfGlouphrie pog;
 	private ObjectStep clickMachine;
+	private ObjectStep clickMachineOnce;
 	private int puzzle1LeftItemID = -1;
 	private int puzzle1RightItemID = -1;
 	private int puzzle2ItemID = -1;
@@ -84,9 +86,11 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	private ItemStep selectDisc;
 	private ObjectStep getMoreDiscs;
 
-	public YewnocksPuzzle(QuestHelper questHelper)
+	public YewnocksPuzzle(ThePathOfGlouphrie pog)
 	{
-		super(questHelper, "Operate Yewnock's machine & solve the puzzle");
+		super(pog, "Operate Yewnock's machine & solve the puzzle");
+
+		this.pog = pog;
 
 		loadDiscs(discs);
 		loadValueToRequirement(discs, valueToRequirement);
@@ -242,8 +246,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, "Get more discs from the chests outside. You can drop discs before you get more.", true);
+		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(34, 31), "Get more discs from the chests outside. You can drop discs before you get more.", true);
 		clickMachine = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine. If you run out of discs you can get new ones from the regular chests in the previous room.");
+		clickMachineOnce = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine to calculate a solution.");
 		widgetOpen = new WidgetPresenceRequirement(848, 0);
 
 		selectDisc = new DiscInsertionStep(getQuestHelper(), "Select the highlighted disc in your inventory");
@@ -278,7 +283,8 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(final ItemContainerChanged event) {
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
 		// TODO: don't update steps, just re-do the calculation & if its state has changed, then update steps
 		// TODO: optimize
 		updateSteps();
@@ -306,19 +312,54 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		if (!widgetOpen.check(client))
 		{
 			solution.reset();
-			startUpStep(clickMachine);
-			return;
+
+			ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+			if (itemContainer != null)
+			{
+				int count = 0;
+
+				for (var item : itemContainer.getItems())
+				{
+					var shape = discs.get(item.getId());
+					if (shape != null)
+					{
+						count += item.getQuantity();
+					}
+				}
+
+				if (count < 3)
+				{
+					startUpStep(getMoreDiscs);
+					return;
+				}
+			}
+
+			if (puzzle1LeftItemID <= 0 || puzzle1RightItemID <= 0 || puzzle2ItemID <= 0)
+			{
+				startUpStep(clickMachineOnce);
+				return;
+			}
+
+			// startUpStep(clickMachine);
+
+			// return;
 		}
 
 		if (!solution.isGood())
 		{
-			var discContainer = client.getItemContainer(440);
-			if (discContainer == null)
+			ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+			var items = new ArrayList<Item>();
+			if (itemContainer != null)
 			{
-				// No disc container found, can't try to auto solve things
-				return;
+				for (var item : itemContainer.getItems())
+				{
+					var shape = discs.get(item.getId());
+					if (shape != null)
+					{
+						items.add(item);
+					}
+				}
 			}
-			var items = List.of(discContainer.getItems());
 
 			if (puzzle1LeftItemID <= 0 || puzzle1RightItemID <= 0 || puzzle2ItemID <= 0)
 			{
@@ -348,10 +389,16 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 		if (!solution.isGood())
 		{
-			startUpStep(clickMachine);
+			startUpStep(getMoreDiscs);
+			getMoreDiscs.setRequirements(solution.puzzleNeeds);
 		}
 		else
 		{
+			if (!widgetOpen.check(client))
+			{
+				startUpStep(clickMachine);
+				return;
+			}
 			if (client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID) <= 0)
 			{
 				// Solve puzzle 1 first
@@ -393,6 +440,6 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	@Override
 	public List<QuestStep> getSteps()
 	{
-		return List.of(clickMachine, selectDisc);
+		return List.of(clickMachine, clickMachineOnce, selectDisc, getMoreDiscs);
 	}
 }

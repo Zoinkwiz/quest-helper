@@ -1334,8 +1334,8 @@ public enum ItemCollections
 	)),
 
 	WALL_BEAST(new ImmutableList.Builder<Integer>()
-		.add(ItemID.SPINY_HELMET)
 		.addAll(SharedCollections.slayer_helmets)
+		.add(ItemID.SPINY_HELMET)
 		.build()),
 
 	WATER_ALTAR(ImmutableList.of(
@@ -1590,13 +1590,13 @@ public enum ItemCollections
 	)),
 
 	EAR_PROTECTION(new ImmutableList.Builder<Integer>()
-		.add(ItemID.EARMUFFS)
 		.addAll(SharedCollections.slayer_helmets)
+		.add(ItemID.EARMUFFS)
 		.build()),
 
 	NOSE_PROTECTION(new ImmutableList.Builder<Integer>()
-		.add(ItemID.NOSE_PEG)
 		.addAll(SharedCollections.slayer_helmets)
+		.add(ItemID.NOSE_PEG)
 		.build()),
 
 	ELITE_PYRE_LOGS(ImmutableList.of(
@@ -2001,8 +2001,8 @@ public enum ItemCollections
 	)),
 
 	MOUTH_PROTECTION(new ImmutableList.Builder<Integer>()
-		.add(ItemID.FACEMASK)
 		.addAll(SharedCollections.slayer_helmets)
+		.add(ItemID.FACEMASK)
 		.build()),
 
 	VOID_HELM(ImmutableList.of(

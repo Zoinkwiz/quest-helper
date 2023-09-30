@@ -365,12 +365,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		/// Inform King Bolren
 		{
 			// Kill the Evil Creature
-			var kill = new NpcStep(this, NpcID.EVIL_CREATURE_12477, new WorldPoint(2542, 3169, 0), "Kill the Evil Creature");
+			var kill = new NpcStep(this, NpcID.EVIL_CREATURE_12477, new WorldPoint(2542, 3169, 0), "");
 			var exitStoreroom = new ObjectStep(this, ObjectID.TUNNEL_49623, YewnocksPuzzle.regionPoint(37, 17), "Exit the storeroom");
 			exitStoreroom.addTeleport(teleToBolren);
 			var exitDungeon = new ObjectStep(this, ObjectID.LADDER_5251, new WorldPoint(2597, 4435, 0), "Exit the dungeon");
 			var squeezeThroughRailing = enterTreeGnomeVillageMazeFromMiddle.copy();
-			squeezeThroughRailing.setText("Kill the Evil Creature next to King Bolren");
+			squeezeThroughRailing.setText("");
+			squeezeThroughRailing.addTeleport(teleToBolren);
 			killEvilCreature = new ConditionalStep(this, kill, "Kill the Evil Creature next to King Bolren");
 			killEvilCreature.addStep(inTreeGnomeVillageDungeon, exitDungeon);
 			killEvilCreature.addStep(inStoreroom, exitStoreroom);

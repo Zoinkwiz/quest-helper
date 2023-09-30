@@ -154,9 +154,10 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private ObjectStep sewer4Ladder;
 	private ObjectStep bossDoor;
 	private NpcStep bossStep;
-	private DetailedQuestStep watchFinalCutsceneStep;
+	private DetailedQuestStep watchFinalCutscene;
 	private NpcStep talkToHazelmere;
 	private PrayerRequirement protectMissiles;
+	private ObjectStep peekHeavyDoor;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -203,18 +204,16 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 		var enterSewerStep = new ConditionalStep(this, enterSewer);
 
-		{
-			// Temporary shit
+		enterSewerStep.addStep(inBossRoom, bossStep);
+		enterSewerStep.addStep(inSewer6, bossDoor);
+		enterSewerStep.addStep(inSewer5, sewer5Ladder);
+		enterSewerStep.addStep(inSewer4, sewer4Ladder);
+		enterSewerStep.addStep(inSewer3, sewer3Ladder);
+		enterSewerStep.addStep(inSewer2, sewer2Ladder);
+		enterSewerStep.addStep(inSewer1, sewer1Ladder);
 
-			enterSewerStep.addStep(inBossRoom, bossStep);
-			enterSewerStep.addStep(inSewer6, bossDoor);
-			enterSewerStep.addStep(inSewer5, sewer5Ladder);
-			enterSewerStep.addStep(inSewer4, sewer4Ladder);
-			enterSewerStep.addStep(inSewer3, sewer3Ladder);
-			enterSewerStep.addStep(inSewer2, sewer2Ladder);
-			enterSewerStep.addStep(inSewer1, sewer1Ladder);
-		}
-
+		var watchFinalCutsceneStep = new ConditionalStep(this, peekHeavyDoor);
+		watchFinalCutsceneStep.addStep(inCutscene, watchFinalCutscene);
 
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(0, startQuest)
@@ -484,7 +483,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			"Kill the Terrorbirds. You can use the pillars around the room to only fight one at a time. They fight with both Melee and Ranged.");
 		bossStep.setAllowMultipleHighlights(true);
 
-		watchFinalCutsceneStep = new DetailedQuestStep(this, "Watch the final cutscene");
+		peekHeavyDoor = new ObjectStep(this, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1), "Peek the heavy door");
+		watchFinalCutscene = new DetailedQuestStep(this, "Watch the final cutscene");
 
 		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, new WorldPoint(2678, 3086, 1),
 			"Talk to Hazelmere. Any lamps that don't fit in your inventory will land on the ground. You can speak to Hazelmere after the quest to recover any lost lamps.");
@@ -617,7 +617,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 		var theWarpedDepths = new PanelDetails(
 			"The Warped Depths",
-			List.of(enterSewer, sewer1Ladder, sewer2Ladder, sewer3Ladder, sewer4Ladder, sewer5Ladder, bossDoor, bossStep, watchFinalCutsceneStep, talkToHazelmere),
+			List.of(enterSewer, sewer1Ladder, sewer2Ladder, sewer3Ladder, sewer4Ladder, sewer5Ladder, bossDoor, bossStep, peekHeavyDoor, watchFinalCutscene, talkToHazelmere),
 			List.of(crossbow, mithGrapple, combatGear, food, crystalChime),
 			List.of(earmuffsOrSlayerHelmet, runRestoreItems)
 		);

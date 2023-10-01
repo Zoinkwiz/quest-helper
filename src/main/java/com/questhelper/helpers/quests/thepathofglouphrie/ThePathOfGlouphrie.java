@@ -343,14 +343,14 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		/// Storeroom monolith puzzle
 		solveMonolithPuzzle = new MonolithPuzzle(this);
 
-		clickLectern = new ObjectStep(this, ObjectID.LECTERN_49673, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern and learn about the lore");
+		clickLectern = new ObjectStep(this, ObjectID.LECTERN_49673, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern and learn about the lore.");
 		lecternWidgetActive = new WidgetTextRequirement(854, 5, "Chapter 1. Bad advice");
 		clickChapter1 = new WidgetStep(this, "Click Chapter 1 to learn about the mysterious stranger", 854, 5);
 		clickChapter2 = new WidgetStep(this, "Click Chapter 2 to learn about the great king's death", 854, 9);
 		clickChapter3 = new WidgetStep(this, "Click Chapter 3 to learn about the old foe", 854, 13);
 
 		watchLoreCutscene = new DetailedQuestStep(this, "Watch the cutscene");
-		learnLore = new ConditionalStep(this, clickLectern, "Learn about the lore");
+		learnLore = new ConditionalStep(this, clickLectern, "Learn about the lore. All items left on the ground are lost.");
 		learnLore.addStep(new Conditions(lecternWidgetActive, learnedAboutChapter1, learnedAboutChapter2), clickChapter3);
 		learnLore.addStep(new Conditions(lecternWidgetActive, learnedAboutChapter1), clickChapter2);
 		learnLore.addStep(lecternWidgetActive, clickChapter1);

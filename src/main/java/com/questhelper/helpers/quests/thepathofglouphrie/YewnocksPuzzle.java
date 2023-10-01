@@ -100,7 +100,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 	public YewnocksPuzzle(ThePathOfGlouphrie pog)
 	{
-		super(pog, "Operate Yewnock's machine & solve the puzzle");
+		super(pog, "Operate Yewnock's machine & solve the puzzle. All items left on the ground are lost.");
 
 		this.pog = pog;
 

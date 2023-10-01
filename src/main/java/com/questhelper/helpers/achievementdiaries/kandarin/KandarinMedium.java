@@ -122,9 +122,9 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notStringMaple, stringMapleTask);
 
 		superAntiTask = new ConditionalStep(this, moveToSeersCath);
-		superAntiTask.addStep(inSeersCath, mixUnf);
-		superAntiTask.addStep(new Conditions(inSeersCath, unfIrit), crushHorn);
 		superAntiTask.addStep(new Conditions(inSeersCath, unfIrit, hornDust), superAnti);
+		superAntiTask.addStep(new Conditions(inSeersCath, unfIrit), crushHorn);
+		superAntiTask.addStep(inSeersCath, mixUnf);
 		doMedium.addStep(notSuperAnti, superAntiTask);
 
 		mindHelmTask = new ConditionalStep(this, makeMindHelmet);
@@ -181,7 +181,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapOb).isNotConsumed();
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapOb).isNotConsumed();
-		unfIrit = new ItemRequirement("Unfinished Irit potion", ItemID.IRIT_POTION_UNF, 1).showConditioned(notSuperAnti);
+		unfIrit = new ItemRequirement("Unfinished irit potion", ItemID.IRIT_POTION_UNF, 1).showConditioned(notSuperAnti);
 		unicornHorn = new ItemRequirement("Unicorn horn", ItemID.UNICORN_HORN, 1).showConditioned(notSuperAnti);
 		mortarPest = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).showConditioned(notSuperAnti).isNotConsumed();
 		hornDust = new ItemRequirement("Horn Dust", ItemID.UNICORN_HORN_DUST, 1).showConditioned(notSuperAnti);
@@ -289,7 +289,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			rake, limpSeed, seedDib);
 		catchBass = new NpcStep(this, NpcID.FISHING_SPOT_1520, new WorldPoint(2837, 3431, 0),
-			"Catch a bass.", bigFishingNet);
+			"Catch a bass on Catherby Beach.", bigFishingNet);
 		cookBass = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2818, 3444, 0),
 			"Cook the bass on the range in Catherby.", rawBass);
 		travelMcGrubor = new DetailedQuestStep(this, "Take a fairy ring to McGrubor's Woods (ALS)", staff.equipped());

@@ -117,7 +117,8 @@ public class TheWarpedDepths
 			"Kill the Terrorbirds. You can use the pillars around the room to only fight one at a time. They fight with both Melee and Ranged.");
 		bossStep.setAllowMultipleHighlights(true);
 
-		peekHeavyDoor = new ObjectStep(quest, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1), "Peek the heavy door.");
+		peekHeavyDoor = new ObjectStep(quest, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1),
+			"Peek through the heavy door.");
 		watchFinalCutscene = new DetailedQuestStep(quest, "Watch the final cutscene.");
 
 		talkToHazelmere = new NpcStep(quest, NpcID.HAZELMERE, new WorldPoint(2678, 3086, 1),

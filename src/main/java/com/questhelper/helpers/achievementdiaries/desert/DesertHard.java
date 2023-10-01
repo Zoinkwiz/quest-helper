@@ -252,9 +252,8 @@ public class DesertHard extends ComplexStateQuestHelper
 		moveToSoph2 = new ObjectStep(this, ObjectID.LADDER_20278, new WorldPoint(2800, 5159, 0),
 			"Climb down the ladder again.", combatGear, lightsource);
 		killLocustRider = new NpcStep(this, NpcID.LOCUST_RIDER_796, new WorldPoint(3296, 9267, 2),
-			"Kill a Scarab mage or Locust rider with keris.", true, combatGear, keris.equipped());
-		killLocustRider.addAlternateNpcs(NpcID.SCARAB_MAGE, NpcID.SCARAB_MAGE_799, NpcID.LOCUST_RIDER,
-			NpcID.LOCUST_RIDER_800, NpcID.LOCUST_RIDER_801);
+			"Kill a Locust rider with keris.", true, combatGear, keris.equipped());
+		killLocustRider.addAlternateNpcs(NpcID.LOCUST_RIDER, NpcID.LOCUST_RIDER_800, NpcID.LOCUST_RIDER_801);
 
 		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");

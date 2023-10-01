@@ -33,6 +33,7 @@ import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.FindLongramble;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.InformKingBolren;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.StartingOff;
+import com.questhelper.helpers.quests.thepathofglouphrie.sections.TheWarpedDepths;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.UnveilEvil;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -51,9 +52,6 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
@@ -61,8 +59,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
@@ -78,6 +74,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private final UnveilEvil unveilEvil = new UnveilEvil();
 	private final InformKingBolren informKingBolren = new InformKingBolren();
 	private final FindLongramble findLongramble = new FindLongramble();
+	private final TheWarpedDepths theWarpedDepths = new TheWarpedDepths();
 	public ZoneRequirement inTreeGnomeVillageMiddle;
 	public ZoneRequirement inTreeGnomeVillageDungeon;
 	public TeleportItemRequirement teleToBolren;
@@ -100,6 +97,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	public ItemRequirement food;
 	public ZoneRequirement nearLongramble;
 	public ItemRequirement crystalChime;
+	public Requirement inSewer1, inSewer2, inSewer3, inSewer4, inSewer5, inSewer6, inBossRoom;
+	public PrayerRequirement protectMissiles;
 	private TeleportItemRequirement fairyRingOrCastleWars;
 	private ItemRequirement runRestoreItems;
 	private FreeInventorySlotRequirement freeInventorySlots;
@@ -110,7 +109,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private Zone storeroomZone;
 	private Zone gnomeStrongholdFloor1;
 	private Zone longrambleZone;
-	private ObjectStep enterSewer;
 	private Zone sewer1;
 	private Zone sewer2;
 	private Zone sewer3;
@@ -120,18 +118,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private Zone sewer6Section1;
 	private Zone sewer6Section2;
 	private Zone bossRoom;
-	private Requirement inSewer1, inSewer2, inSewer3, inSewer4, inSewer5, inSewer6, inBossRoom;
-	private ObjectStep sewer1Ladder;
-	private ObjectStep sewer5Ladder;
-	private ObjectStep sewer2Ladder;
-	private ObjectStep sewer3Ladder;
-	private ObjectStep sewer4Ladder;
-	private ObjectStep bossDoor;
-	private NpcStep bossStep;
-	private DetailedQuestStep watchFinalCutscene;
-	private NpcStep talkToHazelmere;
-	private PrayerRequirement protectMissiles;
-	private ObjectStep peekHeavyDoor;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -140,19 +126,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		setupRequirements();
 		setupConditions();
 		setupSteps();
-
-		var enterSewerStep = new ConditionalStep(this, enterSewer);
-
-		enterSewerStep.addStep(inBossRoom, bossStep);
-		enterSewerStep.addStep(inSewer6, bossDoor);
-		enterSewerStep.addStep(inSewer5, sewer5Ladder);
-		enterSewerStep.addStep(inSewer4, sewer4Ladder);
-		enterSewerStep.addStep(inSewer3, sewer3Ladder);
-		enterSewerStep.addStep(inSewer2, sewer2Ladder);
-		enterSewerStep.addStep(inSewer1, sewer1Ladder);
-
-		var watchFinalCutsceneStep = new ConditionalStep(this, peekHeavyDoor);
-		watchFinalCutsceneStep.addStep(inCutscene, watchFinalCutscene);
 
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(0, startingOff.talkToKingBolren)
@@ -175,11 +148,11 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			.put(34, findLongramble.talkToSpiritTree)
 			.put(36, findLongramble.useCrystalChime)
 			.put(38, findLongramble.talkToSpiritTreeAgain)
-			.put(40, enterSewerStep)
-			.put(42, enterSewerStep)
-			.put(44, enterSewerStep)
-			.put(46, watchFinalCutsceneStep)
-			.put(48, talkToHazelmere)
+			.put(40, theWarpedDepths.enterSewerStep)
+			.put(42, theWarpedDepths.enterSewerStep)
+			.put(44, theWarpedDepths.enterSewerStep)
+			.put(46, theWarpedDepths.watchFinalCutsceneStep)
+			.put(48, theWarpedDepths.talkToHazelmere)
 			.build();
 	}
 
@@ -272,7 +245,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private void setupSteps()
 	{
 		// Shared base steps
-
 		enterTreeGnomeVillageMazeFromMiddle = new ObjectStep(this, ObjectID.LOOSE_RAILING_2186, new WorldPoint(2515, 3161, 0), "");
 		climbDownIntoTreeGnomeVillageDungeon = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0), "");
 
@@ -284,75 +256,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 		findLongramble.setup(this);
 
-
-		/// The Warped Depths
-		enterSewer = new ObjectStep(this, ObjectID.SEWER_ENTRANCE, new WorldPoint(2322, 3101, 0),
-			"Enter the sewer to the west of the Spirit tree");
-		enterSewer.addRequirement(combatGear, prayerPotions, food, crystalChime);
-
-		sewer1Ladder = new ObjectStep(this, ObjectID.LADDER_49700, "Climb up the ladder");
-		sewer2Ladder = new ObjectStep(this, ObjectID.LADDER_49701, new WorldPoint(1529, 4236, 1),
-			"Climb down the ladder.");
-		sewer2Ladder.addRecommended(protectMissiles);
-		sewer3Ladder = new ObjectStep(this, ObjectID.LADDER_49700, new WorldPoint(1529, 4253, 0),
-			"Climb up the ladder.");
-		sewer3Ladder.addRecommended(protectMissiles);
-		sewer4Ladder = new ObjectStep(this, ObjectID.LADDER_49701, new WorldPoint(1486, 4283, 1),
-			"Climb down the ladder. Re-activate your run if you step in any puddles.");
-		sewer4Ladder.addRecommended(protectMissiles);
-		sewer4Ladder.setLinePoints(List.of(
-			new WorldPoint(1530, 4253, 1),
-			new WorldPoint(1530, 4256, 1),
-			new WorldPoint(1512, 4256, 1),
-			new WorldPoint(1512, 4256, 1),
-			new WorldPoint(1512, 4260, 1),
-			new WorldPoint(1512, 4260, 1),
-			new WorldPoint(1510, 4260, 1),
-			new WorldPoint(1510, 4264, 1),
-			new WorldPoint(1503, 4264, 1),
-			new WorldPoint(1503, 4262, 1),
-			new WorldPoint(1496, 4262, 1),
-			new WorldPoint(1496, 4264, 1),
-			new WorldPoint(1484, 4264, 1),
-			new WorldPoint(1484, 4277, 1),
-			new WorldPoint(1482, 4277, 1),
-			new WorldPoint(1482, 4284, 1),
-			new WorldPoint(1486, 4284, 1)
-		));
-		sewer5Ladder = new ObjectStep(this, ObjectID.LADDER_49700, new WorldPoint(1499, 4282, 0),
-			"Climb up the ladder");
-		sewer5Ladder.addRecommended(protectMissiles);
-		bossDoor = new ObjectStep(this, ObjectID.METAL_GATE_49889, new WorldPoint(1506, 4319, 1),
-			"Go to the boss room. Re-activate your run if you step in any puddles.");
-		bossDoor.addRecommended(protectMissiles);
-		bossDoor.setLinePoints(List.of(
-			new WorldPoint(1499, 4283, 1),
-			new WorldPoint(1506, 4283, 1),
-			new WorldPoint(1506, 4291, 1),
-			new WorldPoint(1503, 4291, 1),
-			new WorldPoint(1503, 4292, 1),
-			new WorldPoint(1497, 4292, 1),
-			new WorldPoint(1497, 4291, 1),
-			new WorldPoint(1487, 4291, 1),
-			new WorldPoint(1487, 4302, 1),
-			new WorldPoint(1492, 4302, 1),
-			new WorldPoint(1492, 4304, 1),
-			new WorldPoint(1495, 4304, 1),
-			new WorldPoint(1495, 4316, 1),
-			new WorldPoint(1498, 4316, 1),
-			new WorldPoint(1498, 4319, 1),
-			new WorldPoint(1506, 4319, 1)
-		));
-		// NOTE: If the user logs out, they will be in a non-instanced area of the boss are with the wrong terrorbirds
-		bossStep = new NpcStep(this, new int[]{NpcID.WARPED_TERRORBIRD_12499, NpcID.WARPED_TERRORBIRD_12500, NpcID.WARPED_TERRORBIRD_12501},
-			"Kill the Terrorbirds. You can use the pillars around the room to only fight one at a time. They fight with both Melee and Ranged.");
-		bossStep.setAllowMultipleHighlights(true);
-
-		peekHeavyDoor = new ObjectStep(this, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1), "Peek the heavy door");
-		watchFinalCutscene = new DetailedQuestStep(this, "Watch the final cutscene");
-
-		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, new WorldPoint(2678, 3086, 1),
-			"Talk to Hazelmere. Any lamps that don't fit in your inventory will land on the ground. You can speak to Hazelmere after the quest to recover any lost lamps.");
+		theWarpedDepths.setup(this);
 	}
 
 
@@ -461,9 +365,9 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			List.of(earmuffsOrSlayerHelmet, runRestoreItems)
 		);
 
-		var theWarpedDepths = new PanelDetails(
+		var theWarpedDepthsPanel = new PanelDetails(
 			"The Warped Depths",
-			List.of(enterSewer, sewer1Ladder, sewer2Ladder, sewer3Ladder, sewer4Ladder, sewer5Ladder, bossDoor, bossStep, peekHeavyDoor, watchFinalCutscene, talkToHazelmere),
+			theWarpedDepths.getSteps(),
 			List.of(crossbow, mithGrapple, combatGear, food, crystalChime),
 			List.of(earmuffsOrSlayerHelmet, runRestoreItems)
 		);
@@ -472,7 +376,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		panels.add(unveilTheEvilCreature);
 		panels.add(informKingBolrenPanel);
 		panels.add(findLongramblePanel);
-		panels.add(theWarpedDepths);
+		panels.add(theWarpedDepthsPanel);
 
 		return panels;
 	}

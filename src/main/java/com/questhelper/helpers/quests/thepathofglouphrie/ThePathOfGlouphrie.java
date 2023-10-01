@@ -343,7 +343,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		var startingOffPanel = new PanelDetails(
 			"Starting off",
 			startingOff.getSteps(),
-			List.of(freeInventorySlots)
+			List.of(freeInventorySlots, treeGnomeVillageDungeonKey)
 		);
 
 		var unveilTheEvilCreature = new PanelDetails(

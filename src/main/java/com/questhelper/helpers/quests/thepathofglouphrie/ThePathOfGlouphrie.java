@@ -30,6 +30,8 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.helpers.quests.thepathofglouphrie.sections.StartingOff;
+import com.questhelper.helpers.quests.thepathofglouphrie.sections.UnveilEvil;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -52,7 +54,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,9 +72,18 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class ThePathOfGlouphrie extends BasicQuestHelper
 {
-	ZoneRequirement inTreeGnomeVillageMiddle;
-
-
+	private final StartingOff startingOff = new StartingOff();
+	private final UnveilEvil unveilEvil = new UnveilEvil();
+	public ZoneRequirement inTreeGnomeVillageMiddle;
+	public ZoneRequirement inTreeGnomeVillageDungeon;
+	public TeleportItemRequirement teleToBolren;
+	public ZoneRequirement inStoreroom;
+	public Conditions inCutscene;
+	public WidgetTextRequirement lecternWidgetActive;
+	public VarbitRequirement learnedAboutChapter1;
+	public VarbitRequirement learnedAboutChapter2;
+	public ObjectStep enterTreeGnomeVillageMazeFromMiddle;
+	public ObjectStep climbDownIntoTreeGnomeVillageDungeon;
 	/// Required items
 	private ItemRequirement crossbow;
 	private ItemRequirement mithGrapple;
@@ -81,51 +91,18 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private ItemRequirement combatGear;
 	private ItemRequirement prayerPotions;
 	private ItemRequirement food;
-
 	/// Recommended items
 	private ItemRequirement earmuffsOrSlayerHelmet;
-	private TeleportItemRequirement royalSeedPod;
 	private TeleportItemRequirement fairyRingOrCastleWars;
 	private ItemRequirement runRestoreItems;
 	private FreeInventorySlotRequirement freeInventorySlots;
-
-	/// Starting off
-	// Talk to King Bolren
-	private NpcStep talkToKingBolren;
-	// Talk to King Bolren again
-	private NpcStep talkToKingBolrenAgain;
-	// Talk to Golrie in the dungeon
-	private ObjectStep enterTreeGnomeVillageMazeFromMiddle;
-	private ObjectStep climbDownIntoTreeGnomeVillageDungeon;
-	private NpcStep talkToGolrie;
-	// Enter the storeroom to the east
-	private ObjectStep enterStoreroomEnterTreeGnomeVillageMazeFromMiddle;
-	private ObjectStep enterStoreroomClimbDownIntoTreeGnomeVillageDungeon;
-	private ObjectStep enterStoreroom;
-	// Solve the puzzle
-	private MonolithPuzzle solveMonolithPuzzle;
-	private YewnocksPuzzle solveYewnocksMachinePuzzle;
 	private NpcStep talkToGianneJnr;
 	private ConditionalStep talkToLongramble;
 	private Zone treeGnomeVillageMiddle1;
 	private Zone treeGnomeVillageMiddle2;
 	private Zone treeGnomeVillageMiddle3;
 	private Zone treeGnomeVillageDungeon;
-	private ZoneRequirement inTreeGnomeVillageDungeon;
-	private ZoneRequirement inStoreroom;
 	private Zone storeroomZone;
-	private ObjectStep clickLectern;
-	private WidgetTextRequirement lecternWidgetActive;
-	private WidgetStep clickChapter1;
-	private ConditionalStep learnLore;
-	private DetailedQuestStep watchLoreCutscene;
-	private Conditions inCutscene;
-	private VarbitRequirement learnedAboutChapter1;
-	private WidgetStep clickChapter2;
-	private WidgetStep clickChapter3;
-	private VarbitRequirement learnedAboutChapter2;
-	private ConditionalStep enterStoreroomPuzzle;
-	private DetailedQuestStep watchCutscene;
 	private ConditionalStep killEvilCreature;
 	private NpcStep informKingBolren;
 	private Zone gnomeStrongholdFloor1;
@@ -168,28 +145,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		setupConditions();
 		setupSteps();
 
-		var startQuest = new ConditionalStep(this, talkToKingBolren);
-
-		var convinceBolren = new ConditionalStep(this, talkToKingBolrenAgain);
-
-		var golrie = new ConditionalStep(this, climbDownIntoTreeGnomeVillageDungeon);
-		golrie.addStep(inTreeGnomeVillageDungeon, talkToGolrie);
-		golrie.addStep(inTreeGnomeVillageMiddle, enterTreeGnomeVillageMazeFromMiddle);
-
-		var storeroom = new ConditionalStep(this, enterStoreroomClimbDownIntoTreeGnomeVillageDungeon);
-		storeroom.addStep(inTreeGnomeVillageDungeon, enterStoreroom);
-		storeroom.addStep(inTreeGnomeVillageMiddle, enterStoreroomEnterTreeGnomeVillageMazeFromMiddle);
-
-		var solveMonolithPuzzleStep = new ConditionalStep(this, enterStoreroom);
-		solveMonolithPuzzleStep.addStep(inStoreroom, solveMonolithPuzzle);
-
-		var learnLoreStep = new ConditionalStep(this, enterStoreroom);
-		learnLoreStep.addStep(inCutscene, watchLoreCutscene);
-		learnLoreStep.addStep(inStoreroom, learnLore);
-
-		var solveYewnocksMachinePuzzleStep = new ConditionalStep(this, enterStoreroomPuzzle);
-		solveYewnocksMachinePuzzleStep.addStep(inStoreroom, solveYewnocksMachinePuzzle);
-
 		var informKingBolrenStep = new ConditionalStep(this, informKingBolren);
 
 		var talkToGianneJnrStep = new ConditionalStep(this, climbUpToGianneJnr);
@@ -217,16 +172,16 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		watchFinalCutsceneStep.addStep(inCutscene, watchFinalCutscene);
 
 		return new ImmutableMap.Builder<Integer, QuestStep>()
-			.put(0, startQuest)
-			.put(2, convinceBolren)
-			.put(4, golrie)
-			.put(6, storeroom)
-			.put(8, solveMonolithPuzzleStep)
-			.put(10, solveMonolithPuzzleStep)
-			.put(12, solveMonolithPuzzleStep)
-			.put(14, learnLoreStep)
-			.put(16, solveYewnocksMachinePuzzleStep)
-			.put(18, watchCutscene)
+			.put(0, startingOff.talkToKingBolren)
+			.put(2, startingOff.talkToKingBolrenAgain)
+			.put(4, startingOff.golrie)
+			.put(6, unveilEvil.enterStoreroom)
+			.put(8, unveilEvil.solveMonolithPuzzleStep)
+			.put(10, unveilEvil.solveMonolithPuzzleStep)
+			.put(12, unveilEvil.solveMonolithPuzzleStep)
+			.put(14, unveilEvil.learnLoreStep)
+			.put(16, unveilEvil.solveYewnocksMachinePuzzleStep)
+			.put(18, unveilEvil.watchCutscene)
 			.put(20, killEvilCreature)
 			.put(22, informKingBolrenStep)
 			.put(24, talkToGianneJnrStep)
@@ -243,11 +198,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			.put(46, watchFinalCutsceneStep)
 			.put(48, talkToHazelmere)
 			.build();
-	}
-
-	public void setupItemRequirements()
-	{
-
 	}
 
 	public void setupZones()
@@ -271,7 +221,46 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		bossRoom = new Zone(WorldPoint.fromRegion(5955, 35, 24, 1), WorldPoint.fromRegion(5955, 48, 44, 1));
 	}
 
-	public void setupConditions()
+	@Override
+	public void setupRequirements()
+	{
+		// Required items
+		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
+		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).isNotConsumed();
+		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
+			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
+			ItemID.BLURITE_CROSSBOW, ItemID.DORGESHUUN_CROSSBOW, ItemID.ARMADYL_CROSSBOW, ItemID.ZARYTE_CROSSBOW);
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
+		treeGnomeVillageDungeonKey = new ItemRequirement("Tree Gnome Village dungeon key", ItemID.KEY_293).showConditioned(rovingElvesNotStarted);
+		treeGnomeVillageDungeonKey.canBeObtainedDuringQuest();
+		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+
+		// Recommended items
+		var lumbridgeEliteComplete = new QuestRequirement(QuestHelperQuest.LUMBRIDGE_ELITE, QuestState.FINISHED);
+		earmuffsOrSlayerHelmet = new ItemRequirement("Earmuffs or a Slayer helmet", ItemCollections.EAR_PROTECTION, 1, true).highlighted();
+		earmuffsOrSlayerHelmet.setTooltip("You will take a lot more damage without these");
+		fairyRingOrCastleWars = new TeleportItemRequirement("Teleport to Castle Wars (Fairy Ring BKP or Ring of Dueling [2])", ItemCollections.FAIRY_STAFF, 1);
+		fairyRingOrCastleWars.addAlternates(ItemCollections.RING_OF_DUELINGS);
+		fairyRingOrCastleWars.setConditionToHide(lumbridgeEliteComplete);
+		runRestoreItems = new ItemRequirement("Several run restore items", ItemCollections.RUN_RESTORE_ITEMS, -1);
+		freeInventorySlots = new FreeInventorySlotRequirement(11);
+		// TODO: recommend the toad legs to get a mint cake?
+
+		// Teleports
+		teleToBolren = new TeleportItemRequirement("Spirit tree to Tree Gnome Village [1]", -1, -1);
+
+		// Items that are made during the quest
+		crystalChime = new ItemRequirement("Crystal chime", ItemID.CRYSTAL_CHIME, 1);
+
+		// Non-item requirements
+		lecternWidgetActive = new WidgetTextRequirement(854, 5, "Chapter 1. Bad advice");
+		protectMissiles = new PrayerRequirement("Protect from Missiles to reduce damage taken by the Terrorbirds", Prayer.PROTECT_FROM_MISSILES);
+	}
+
+	private void setupConditions()
 	{
 		inTreeGnomeVillageMiddle = new ZoneRequirement(treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3);
 		inTreeGnomeVillageDungeon = new ZoneRequirement(treeGnomeVillageDungeon);
@@ -297,71 +286,17 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		inBossRoom = new ZoneRequirement(bossRoom);
 	}
 
-	public void setupSteps()
+	private void setupSteps()
 	{
-		/// Starting off
-		// Talk to King Bolren
-		var teleToBolren = new TeleportItemRequirement("Spirit tree to Tree Gnome Village [1]", -1, -1);
-		talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren in the Tree Gnome Village to start the quest");
-		talkToKingBolren.addDialogSteps("Yes.");
-		talkToKingBolren.addTeleport(teleToBolren);
+		// Shared base steps
 
-		// Talk to King Bolren again
-		talkToKingBolrenAgain = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren again");
+		enterTreeGnomeVillageMazeFromMiddle = new ObjectStep(this, ObjectID.LOOSE_RAILING_2186, new WorldPoint(2515, 3161, 0), "");
+		climbDownIntoTreeGnomeVillageDungeon = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0), "");
 
-		// TODO: Add step for freeing Golrie if the user hasn't started Roving Elves
+		startingOff.setup(this);
 
-		// Talk to Golrie
-		enterTreeGnomeVillageMazeFromMiddle = new ObjectStep(this, ObjectID.LOOSE_RAILING_2186, new WorldPoint(2515, 3161, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
-		climbDownIntoTreeGnomeVillageDungeon = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
-		talkToGolrie = new NpcStep(this, NpcID.GOLRIE, new WorldPoint(2580, 4450, 0), "Talk to Golrie in the Tree Gnome Village dungeon");
-		talkToGolrie.addDialogSteps("I need your help with a device.");
-		talkToGolrie.addSubSteps(enterTreeGnomeVillageMazeFromMiddle, climbDownIntoTreeGnomeVillageDungeon);
-		// TODO: Substep to squeeze through the loose railing if you're inside the village
-		// TODO: Substep to climb down the dungeon
+		unveilEvil.setup(this);
 
-		enterStoreroomEnterTreeGnomeVillageMazeFromMiddle = enterTreeGnomeVillageMazeFromMiddle.copy();
-		enterStoreroomClimbDownIntoTreeGnomeVillageDungeon = climbDownIntoTreeGnomeVillageDungeon.copy();
-		enterStoreroom = new ObjectStep(this, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0), "Enter the storeroom to the east in the Tree Gnome Village dungeon");
-		enterStoreroomEnterTreeGnomeVillageMazeFromMiddle.setText(enterStoreroom.getText());
-		enterStoreroomClimbDownIntoTreeGnomeVillageDungeon.setText(enterStoreroom.getText());
-		enterStoreroom.addSubSteps(enterStoreroomEnterTreeGnomeVillageMazeFromMiddle, enterStoreroomClimbDownIntoTreeGnomeVillageDungeon);
-
-		{
-			var squeezeThroughRailing = enterTreeGnomeVillageMazeFromMiddle.copy();
-			squeezeThroughRailing.setText("Squeeze through the loose railing");
-			var climbIntoDungeon = climbDownIntoTreeGnomeVillageDungeon.copy();
-			climbIntoDungeon.setText("Climb down the ladder to the Tree Gnome Village dungeon");
-			var enterStoreroom = new ObjectStep(this, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0),
-				"Enter the storeroom to the east in the Tree Gnome Village dungeon");
-
-			enterStoreroomPuzzle = new ConditionalStep(this, climbIntoDungeon, "Get to Yewnock's storeroom");
-			enterStoreroomPuzzle.addStep(inTreeGnomeVillageDungeon, enterStoreroom);
-			enterStoreroomPuzzle.addStep(inTreeGnomeVillageMiddle, squeezeThroughRailing);
-		}
-
-
-		/// Storeroom monolith puzzle
-		solveMonolithPuzzle = new MonolithPuzzle(this);
-
-		clickLectern = new ObjectStep(this, ObjectID.LECTERN_49673, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern and learn about the lore.");
-		lecternWidgetActive = new WidgetTextRequirement(854, 5, "Chapter 1. Bad advice");
-		clickChapter1 = new WidgetStep(this, "Click Chapter 1 to learn about the mysterious stranger", 854, 5);
-		clickChapter2 = new WidgetStep(this, "Click Chapter 2 to learn about the great king's death", 854, 9);
-		clickChapter3 = new WidgetStep(this, "Click Chapter 3 to learn about the old foe", 854, 13);
-
-		watchLoreCutscene = new DetailedQuestStep(this, "Watch the cutscene");
-		learnLore = new ConditionalStep(this, clickLectern, "Learn about the lore. All items left on the ground are lost.");
-		learnLore.addStep(new Conditions(lecternWidgetActive, learnedAboutChapter1, learnedAboutChapter2), clickChapter3);
-		learnLore.addStep(new Conditions(lecternWidgetActive, learnedAboutChapter1), clickChapter2);
-		learnLore.addStep(lecternWidgetActive, clickChapter1);
-		learnLore.addSubSteps(watchLoreCutscene);
-
-		solveYewnocksMachinePuzzle = new YewnocksPuzzle(this);
-		solveYewnocksMachinePuzzle.addSubSteps(enterStoreroomPuzzle);
-		solveYewnocksMachinePuzzle.addSubSteps(enterStoreroomPuzzle.getSteps());
-
-		watchCutscene = new DetailedQuestStep(this, "Watch the cutscene");
 
 		/// Inform King Bolren
 		{
@@ -492,40 +427,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			"Talk to Hazelmere. Any lamps that don't fit in your inventory will land on the ground. You can speak to Hazelmere after the quest to recover any lost lamps.");
 	}
 
-	@Override
-	public void setupRequirements()
-	{
-		// Required items
-		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
-		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).isNotConsumed();
-		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
-			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
-			ItemID.BLURITE_CROSSBOW, ItemID.DORGESHUUN_CROSSBOW, ItemID.ARMADYL_CROSSBOW, ItemID.ZARYTE_CROSSBOW);
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
-		treeGnomeVillageDungeonKey = new ItemRequirement("Tree Gnome Village dungeon key", ItemID.KEY_293).showConditioned(rovingElvesNotStarted);
-		treeGnomeVillageDungeonKey.canBeObtainedDuringQuest();
-		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
-		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-
-		// Recommended items
-		var lumbridgeEliteComplete = new QuestRequirement(QuestHelperQuest.LUMBRIDGE_ELITE, QuestState.FINISHED);
-		earmuffsOrSlayerHelmet = new ItemRequirement("Earmuffs or a Slayer helmet", ItemCollections.EAR_PROTECTION, 1, true).highlighted();
-		earmuffsOrSlayerHelmet.setTooltip("You will take a lot more damage without these");
-		fairyRingOrCastleWars = new TeleportItemRequirement("Teleport to Castle Wars (Fairy Ring BKP or Ring of Dueling [2])", ItemCollections.FAIRY_STAFF, 1);
-		fairyRingOrCastleWars.addAlternates(ItemCollections.RING_OF_DUELINGS);
-		fairyRingOrCastleWars.setConditionToHide(lumbridgeEliteComplete);
-		runRestoreItems = new ItemRequirement("Several run restore items", ItemCollections.RUN_RESTORE_ITEMS, -1);
-		freeInventorySlots = new FreeInventorySlotRequirement(11);
-		// TODO: recommend the toad legs to get a mint cake?
-
-		// Items that are made during the quest
-		crystalChime = new ItemRequirement("Crystal chime", ItemID.CRYSTAL_CHIME, 1);
-
-		// Non-item requirements
-		protectMissiles = new PrayerRequirement("Protect from Missiles to reduce damage taken by the Terrorbirds", Prayer.PROTECT_FROM_MISSILES);
-	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
@@ -608,17 +509,15 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	{
 		var panels = new ArrayList<PanelDetails>();
 
-		var startingOff = new PanelDetails(
+		var startingOffPanel = new PanelDetails(
 			"Starting off",
-			List.of(talkToKingBolren, talkToKingBolrenAgain, talkToGolrie),
-			List.of(freeInventorySlots),
-			List.of()
+			startingOff.getSteps(),
+			List.of(freeInventorySlots)
 		);
 
 		var unveilTheEvilCreature = new PanelDetails(
 			"Unveil the Evil creature",
-			List.of(enterStoreroom, solveMonolithPuzzle, learnLore, solveYewnocksMachinePuzzle, watchCutscene),
-			List.of(),
+			unveilEvil.getSteps(),
 			List.of(freeInventorySlots)
 		);
 
@@ -643,7 +542,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			List.of(earmuffsOrSlayerHelmet, runRestoreItems)
 		);
 
-		panels.add(startingOff);
+		panels.add(startingOffPanel);
 		panels.add(unveilTheEvilCreature);
 		panels.add(informKingBolrenPanel);
 		panels.add(findLongramble);

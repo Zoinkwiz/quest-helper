@@ -138,9 +138,6 @@ public class SolutionTest extends MockedTest
 		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 
 		assertFalse(solution.isGood());
-		var one = new ItemRequirement("asd", 15, 1);
-		var two = new ItemRequirement("asd", 15, 1);
-		assertEquals(one.getAllIds(), two.getAllIds());
 		var actualIds = new ArrayList<Integer>();
 		for (var toExchangeRequirement : solution.toExchange)
 		{
@@ -298,23 +295,24 @@ public class SolutionTest extends MockedTest
 					28,
 					List.of(ItemID.INDIGO_PENTAGON)
 				),
-				// TOP PUZZLE: YELLOW SQUARE + GREEN SQUARE (13)
-				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
+				// TOP PUZZLE: YELLOW TRIANGLE (9) + GREEN TRIANGLE (12)
+				// BOTTOM PUZZLE: BLUE TRIANGLE (15)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.ORANGE_PENTAGON, 1),
-						new Item(ItemID.GREEN_TRIANGLE, 1),
-						new Item(ItemID.YELLOW_PENTAGON, 1),
-						new Item(ItemID.BLUE_SQUARE, 2),
-						new Item(ItemID.VIOLET_TRIANGLE, 1),
-						new Item(ItemID.INDIGO_SQUARE, 1),
-						new Item(ItemID.BLUE_PENTAGON, 2),
-						new Item(ItemID.VIOLET_SQUARE, 1),
-						new Item(ItemID.INDIGO_PENTAGON, 2)
+						new Item(ItemID.YELLOW_TRIANGLE, 5),
+						new Item(ItemID.ORANGE_PENTAGON, 6),
+						new Item(ItemID.YELLOW_SQUARE, 7),
+						new Item(ItemID.GREEN_TRIANGLE, 5),
+						new Item(ItemID.YELLOW_PENTAGON, 2),
+						new Item(ItemID.GREEN_SQUARE, 1),
+						new Item(ItemID.GREEN_PENTAGON, 1),
+						new Item(ItemID.BLUE_SQUARE, 1),
+						new Item(ItemID.VIOLET_TRIANGLE, 6),
+						new Item(ItemID.INDIGO_SQUARE, 2)
 					),
-					12,
-					7,
-					List.of()
+					21,
+					15,
+					List.of(ItemID.YELLOW_TRIANGLE)
 				)
 			);
 		}

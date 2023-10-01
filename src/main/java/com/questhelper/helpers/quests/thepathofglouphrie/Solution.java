@@ -140,8 +140,9 @@ public class Solution
 					// The user needs to exchange something that can give a disc of requiredValue
 					// Search for single-disc exchanges first
 					var singleDiscExchange = valuePossibleSingleDiscExchangesRequirements.get(requiredValue).stream().filter(requirement -> requirement.getId() != finalFindExchangeFor.getId()).filter(requirement -> itemsAfterPuzzle2.contains(new Item(requirement.getId(), 1))).collect(Collectors.toUnmodifiableList());
-					toExchange.addAll(singleDiscExchange);
-					// var asd = 5;
+					if (!singleDiscExchange.isEmpty()) {
+						toExchange.add(singleDiscExchange.get(0));
+					}
 				}
 			}
 		}
@@ -152,6 +153,8 @@ public class Solution
 		puzzle1Requirement = null;
 		puzzle2UpperRequirement = null;
 		puzzle2LowerRequirement = null;
+		puzzleNeeds.clear();
+		toExchange.clear();
 	}
 
 	public boolean isGood()

@@ -295,14 +295,14 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	protected void setupSteps()
 	{
 		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(34, 31), "Get more discs from the chests outside. You can drop discs before you get more. You can also use the exchanger next to Yewnock's machine.", true);
-		useExchanger = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_EXCHANGER, regionPoint(22, 30), "Use the exchanger to get the right discs");
+		useExchanger = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_EXCHANGER, regionPoint(22, 31), "Use the exchanger to get the right discs");
 		clickMachine = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine. If you run out of discs you can get new ones from the regular chests in the previous room.");
 		clickMachineOnce = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine to calculate a solution.");
-		widgetOpen = new WidgetPresenceRequirement(848, 0);
-		exchangerWidgetOpen = new WidgetPresenceRequirement(849, 0);
-
 		selectDisc = new DiscInsertionStep(getQuestHelper(), "Select the highlighted disc in your inventory");
 		exchangeDisc = new DiscInsertionStep(getQuestHelper(), "Select one of the highlighted discs in your inventory");
+
+		widgetOpen = new WidgetPresenceRequirement(848, 0);
+		exchangerWidgetOpen = new WidgetPresenceRequirement(849, 0);
 	}
 
 	@Subscribe
@@ -464,7 +464,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 			if (exchangerWidgetOpen.check(client))
 			{
-				getMoreDiscs.clearWidgetHighlights();
+				exchangeDisc.clearWidgetHighlights();
 				// Exchanger widget is open
 				var exchangeResultTL = getWidgetItemId(849, 21);
 				var exchangeResultTR = getWidgetItemId(849, 24);
@@ -475,22 +475,22 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				{
 					if (exchangeResultTL != null && puzzleNeed.getId() == exchangeResultTL)
 					{
-						getMoreDiscs.addWidgetHighlight(849, 21);
+						exchangeDisc.addWidgetHighlight(849, 21);
 						foundGoodExchange = true;
 					}
 					if (exchangeResultTR != null && puzzleNeed.getId() == exchangeResultTR)
 					{
-						getMoreDiscs.addWidgetHighlight(849, 24);
+						exchangeDisc.addWidgetHighlight(849, 24);
 						foundGoodExchange = true;
 					}
 					if (exchangeResultBL != null && puzzleNeed.getId() == exchangeResultBL)
 					{
-						getMoreDiscs.addWidgetHighlight(849, 27);
+						exchangeDisc.addWidgetHighlight(849, 27);
 						foundGoodExchange = true;
 					}
 					if (exchangeResultBR != null && puzzleNeed.getId() == exchangeResultBR)
 					{
-						getMoreDiscs.addWidgetHighlight(849, 30);
+						exchangeDisc.addWidgetHighlight(849, 30);
 						foundGoodExchange = true;
 					}
 				}
@@ -498,7 +498,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				if (foundGoodExchange)
 				{
 					// highlight confirm button
-					getMoreDiscs.addWidgetHighlight(849, 36);
+					exchangeDisc.addWidgetHighlight(849, 36);
 				}
 				exchangeDisc.setRequirements(solution.toExchange);
 				startUpStep(exchangeDisc);
@@ -559,7 +559,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	@Override
 	public List<QuestStep> getSteps()
 	{
-		return List.of(clickMachine, clickMachineOnce, selectDisc, getMoreDiscs);
+		return List.of(clickMachine, clickMachineOnce, selectDisc, useExchanger, exchangeDisc, getMoreDiscs);
 	}
 
 	public static class SubsetSum

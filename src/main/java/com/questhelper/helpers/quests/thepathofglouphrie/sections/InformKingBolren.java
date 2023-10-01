@@ -51,9 +51,9 @@ public class InformKingBolren
 		{
 			// Kill the Evil Creature
 			var kill = new NpcStep(quest, NpcID.EVIL_CREATURE_12477, new WorldPoint(2542, 3169, 0), "");
-			var exitStoreroom = new ObjectStep(quest, ObjectID.TUNNEL_49623, YewnocksPuzzle.regionPoint(37, 17), "Exit the storeroom");
+			var exitStoreroom = new ObjectStep(quest, ObjectID.TUNNEL_49623, YewnocksPuzzle.regionPoint(37, 17), "Exit the storeroom.");
 			exitStoreroom.addTeleport(quest.teleToBolren);
-			var exitDungeon = new ObjectStep(quest, ObjectID.LADDER_5251, new WorldPoint(2597, 4435, 0), "Exit the dungeon");
+			var exitDungeon = new ObjectStep(quest, ObjectID.LADDER_5251, new WorldPoint(2597, 4435, 0), "Exit the dungeon.");
 			var squeezeThroughRailing = quest.enterTreeGnomeVillageMazeFromMiddle.copy();
 			squeezeThroughRailing.addTeleport(quest.teleToBolren);
 			killEvilCreature = new ConditionalStep(quest, kill, "Kill the Evil Creature next to King Bolren.");

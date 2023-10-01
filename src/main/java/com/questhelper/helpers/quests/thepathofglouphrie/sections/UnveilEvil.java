@@ -68,11 +68,11 @@ public class UnveilEvil
 		solveMonolithPuzzleStep.addStep(quest.inStoreroom, solveMonolithPuzzle);
 
 		var clickLectern = new ObjectStep(quest, ObjectID.LECTERN_49673, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern.");
-		var clickChapter1 = new WidgetStep(quest, "Click Chapter 1 to learn about the mysterious stranger", 854, 5);
-		var clickChapter2 = new WidgetStep(quest, "Click Chapter 2 to learn about the great king's death", 854, 9);
-		var clickChapter3 = new WidgetStep(quest, "Click Chapter 3 to learn about the old foe", 854, 13);
+		var clickChapter1 = new WidgetStep(quest, "Click Chapter 1 to learn about the mysterious stranger.", 854, 5);
+		var clickChapter2 = new WidgetStep(quest, "Click Chapter 2 to learn about the great king's death.", 854, 9);
+		var clickChapter3 = new WidgetStep(quest, "Click Chapter 3 to learn about the old foe.", 854, 13);
 
-		DetailedQuestStep watchLoreCutscene = new DetailedQuestStep(quest, "Watch the cutscene");
+		DetailedQuestStep watchLoreCutscene = new DetailedQuestStep(quest, "Watch the cutscene.");
 		learnLore = new ConditionalStep(quest, clickLectern, "Learn about the lore. All items left on the ground are lost.");
 		learnLore.addStep(new Conditions(quest.lecternWidgetActive, quest.learnedAboutChapter1, quest.learnedAboutChapter2), clickChapter3);
 		learnLore.addStep(new Conditions(quest.lecternWidgetActive, quest.learnedAboutChapter1), clickChapter2);
@@ -85,13 +85,13 @@ public class UnveilEvil
 
 		{
 			var squeezeThroughRailing = quest.enterTreeGnomeVillageMazeFromMiddle.copy();
-			squeezeThroughRailing.setText("Squeeze through the loose railing");
+			squeezeThroughRailing.setText("Squeeze through the loose railing.");
 			var climbIntoDungeon = quest.climbDownIntoTreeGnomeVillageDungeon.copy();
-			climbIntoDungeon.setText("Climb down the ladder to the Tree Gnome Village dungeon");
+			climbIntoDungeon.setText("Climb down the ladder to the Tree Gnome Village dungeon.");
 			var enterStoreroom = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0),
-				"Enter the storeroom to the east in the Tree Gnome Village dungeon");
+				"Enter the storeroom to the east in the Tree Gnome Village dungeon.");
 
-			var enterStoreroomPuzzle = new ConditionalStep(quest, climbIntoDungeon, "Get to Yewnock's storeroom");
+			var enterStoreroomPuzzle = new ConditionalStep(quest, climbIntoDungeon, "Get to Yewnock's storeroom.");
 			enterStoreroomPuzzle.addStep(quest.inTreeGnomeVillageDungeon, enterStoreroom);
 			enterStoreroomPuzzle.addStep(quest.inTreeGnomeVillageMiddle, squeezeThroughRailing);
 			solveYewnocksMachinePuzzle = new YewnocksPuzzle(quest);

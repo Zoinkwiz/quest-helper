@@ -30,6 +30,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.helpers.quests.thepathofglouphrie.sections.FindLongramble;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.InformKingBolren;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.StartingOff;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.UnveilEvil;
@@ -76,6 +77,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private final StartingOff startingOff = new StartingOff();
 	private final UnveilEvil unveilEvil = new UnveilEvil();
 	private final InformKingBolren informKingBolren = new InformKingBolren();
+	private final FindLongramble findLongramble = new FindLongramble();
 	public ZoneRequirement inTreeGnomeVillageMiddle;
 	public ZoneRequirement inTreeGnomeVillageDungeon;
 	public TeleportItemRequirement teleToBolren;
@@ -87,19 +89,20 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	public ObjectStep enterTreeGnomeVillageMazeFromMiddle;
 	public ObjectStep climbDownIntoTreeGnomeVillageDungeon;
 	public ZoneRequirement inGnomeStrongholdFloor1;
-	/// Required items
-	private ItemRequirement crossbow;
-	private ItemRequirement mithGrapple;
-	private ItemRequirement treeGnomeVillageDungeonKey;
-	private ItemRequirement combatGear;
-	private ItemRequirement prayerPotions;
-	private ItemRequirement food;
 	/// Recommended items
-	private ItemRequirement earmuffsOrSlayerHelmet;
+	public ItemRequirement earmuffsOrSlayerHelmet;
+	/// Required items
+	public ItemRequirement crossbow;
+	public ItemRequirement mithGrapple;
+	public ItemRequirement treeGnomeVillageDungeonKey;
+	public ItemRequirement combatGear;
+	public ItemRequirement prayerPotions;
+	public ItemRequirement food;
+	public ZoneRequirement nearLongramble;
+	public ItemRequirement crystalChime;
 	private TeleportItemRequirement fairyRingOrCastleWars;
 	private ItemRequirement runRestoreItems;
 	private FreeInventorySlotRequirement freeInventorySlots;
-	private ConditionalStep talkToLongramble;
 	private Zone treeGnomeVillageMiddle1;
 	private Zone treeGnomeVillageMiddle2;
 	private Zone treeGnomeVillageMiddle3;
@@ -107,11 +110,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private Zone storeroomZone;
 	private Zone gnomeStrongholdFloor1;
 	private Zone longrambleZone;
-	private ZoneRequirement nearLongramble;
-	private ConditionalStep talkToSpiritTree;
-	private ConditionalStep talkToSpiritTreeAgain;
-	private ItemRequirement crystalChime;
-	private ObjectStep useCrystalChime;
 	private ObjectStep enterSewer;
 	private Zone sewer1;
 	private Zone sewer2;
@@ -143,15 +141,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		setupConditions();
 		setupSteps();
 
-
-		var talkToLongrambleStep = new ConditionalStep(this, talkToLongramble);
-
-		var talkToSpiritTreeStep = new ConditionalStep(this, talkToSpiritTree);
-
-		var useCrystalChimeStep = new ConditionalStep(this, useCrystalChime);
-
-		var talkToSpiritTreeAgainStep = new ConditionalStep(this, talkToSpiritTreeAgain);
-
 		var enterSewerStep = new ConditionalStep(this, enterSewer);
 
 		enterSewerStep.addStep(inBossRoom, bossStep);
@@ -179,13 +168,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			.put(20, informKingBolren.killEvilCreature)
 			.put(22, informKingBolren.informKingBolren)
 			.put(24, informKingBolren.talkToGianneJnrStep)
-			.put(26, talkToLongrambleStep)
-			.put(28, talkToLongrambleStep)
-			.put(30, talkToSpiritTreeStep)
-			.put(32, talkToSpiritTreeStep)
-			.put(34, talkToSpiritTreeStep)
-			.put(36, useCrystalChimeStep)
-			.put(38, talkToSpiritTreeAgainStep)
+			.put(26, findLongramble.talkToLongramble)
+			.put(28, findLongramble.talkToLongramble)
+			.put(30, findLongramble.talkToSpiritTree)
+			.put(32, findLongramble.talkToSpiritTree)
+			.put(34, findLongramble.talkToSpiritTree)
+			.put(36, findLongramble.useCrystalChime)
+			.put(38, findLongramble.talkToSpiritTreeAgain)
 			.put(40, enterSewerStep)
 			.put(42, enterSewerStep)
 			.put(44, enterSewerStep)
@@ -293,35 +282,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 		informKingBolren.setup(this);
 
+		findLongramble.setup(this);
 
-		/// Find Longramble
-		var teleToLongramble = new TeleportItemRequirement("Fairy Ring BKP or Ring of Dueling to Castle Wars", ItemCollections.RING_OF_DUELINGS, 1);
-		teleToLongramble.addAlternates(ItemCollections.FAIRY_STAFF);
-
-
-		var goToLongramble = new ObjectStep(this, ObjectID.TREE_49590, new WorldPoint(2333, 3081, 0), "");
-		goToLongramble.addRecommended(earmuffsOrSlayerHelmet);
-		goToLongramble.addDialogStep("Castle Wars Arena.");
-		goToLongramble.addTeleport(teleToLongramble);
-		var actuallyTalkToLongramble = new NpcStep(this, NpcID.LONGRAMBLE, new WorldPoint(2340, 3094, 0), "");
-		actuallyTalkToLongramble.addRecommended(earmuffsOrSlayerHelmet);
-
-
-		talkToLongramble = new ConditionalStep(this, goToLongramble, "Go to Longramble, make sure to head to a bank & gear up first. You can drop all leftover discs.", combatGear, crossbow.equipped().highlighted(), mithGrapple.equipped().highlighted(), prayerPotions, food, crystalChime);
-		talkToLongramble.addStep(nearLongramble, actuallyTalkToLongramble);
-
-		{
-			var talk = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
-			talkToSpiritTree = new ConditionalStep(this, talk, "Talk to the Spirit Tree", combatGear, prayerPotions, food, crystalChime);
-		}
-
-		useCrystalChime = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "Use the Crystal Chime on the Spirit Tree", crystalChime.highlighted());
-		useCrystalChime.addIcon(ItemID.CRYSTAL_CHIME);
-
-		{
-			var talk = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
-			talkToSpiritTreeAgain = new ConditionalStep(this, talk, "Talk to the Spirit Tree again", combatGear, prayerPotions, food, crystalChime);
-		}
 
 		/// The Warped Depths
 		enterSewer = new ObjectStep(this, ObjectID.SEWER_ENTRANCE, new WorldPoint(2322, 3101, 0),
@@ -492,9 +454,9 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			informKingBolren.getSteps()
 		);
 
-		var findLongramble = new PanelDetails(
+		var findLongramblePanel = new PanelDetails(
 			"Find Longramble",
-			List.of(talkToLongramble, talkToSpiritTree, useCrystalChime, talkToSpiritTreeAgain),
+			findLongramble.getSteps(),
 			List.of(crossbow, mithGrapple, combatGear, food, crystalChime),
 			List.of(earmuffsOrSlayerHelmet, runRestoreItems)
 		);
@@ -509,7 +471,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		panels.add(startingOffPanel);
 		panels.add(unveilTheEvilCreature);
 		panels.add(informKingBolrenPanel);
-		panels.add(findLongramble);
+		panels.add(findLongramblePanel);
 		panels.add(theWarpedDepths);
 
 		return panels;

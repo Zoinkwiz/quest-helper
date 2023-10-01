@@ -155,6 +155,9 @@ public class MonolithPuzzle extends DetailedOwnerStep
 			"Push the small monolith south once.");
 		pushSmallMonolithSouth.setMaxRoamRange(2);
 
+		// TODO: For this step, make sure it's actually possible to push the monolith west.
+		// If the user has messed up, they might need to push the SW monolith south first.
+		// The user might also need to push the monolith west twice in case they've pushed it too far - we don't handle that case.
 		pushNWMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(36, 33),
 			"Push the north-west monolith west once.");
 		pushNWMonolithWest.setMaxRoamRange(2);

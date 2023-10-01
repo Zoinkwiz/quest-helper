@@ -79,6 +79,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private ItemRequirement mithGrapple;
 	private ItemRequirement treeGnomeVillageDungeonKey;
 	private ItemRequirement combatGear;
+	private ItemRequirement prayerPotions;
 	private ItemRequirement food;
 
 	/// Recommended items
@@ -405,12 +406,12 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		actuallyTalkToLongramble.addRecommended(earmuffsOrSlayerHelmet);
 
 
-		talkToLongramble = new ConditionalStep(this, goToLongramble, "Go to Longramble, make sure to head to a bank & gear up first. You can drop all leftover discs.", combatGear, crossbow.equipped().highlighted(), mithGrapple.equipped().highlighted(), food, crystalChime);
+		talkToLongramble = new ConditionalStep(this, goToLongramble, "Go to Longramble, make sure to head to a bank & gear up first. You can drop all leftover discs.", combatGear, crossbow.equipped().highlighted(), mithGrapple.equipped().highlighted(), prayerPotions, food, crystalChime);
 		talkToLongramble.addStep(nearLongramble, actuallyTalkToLongramble);
 
 		{
 			var talk = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
-			talkToSpiritTree = new ConditionalStep(this, talk, "Talk to the Spirit Tree", combatGear, food, crystalChime);
+			talkToSpiritTree = new ConditionalStep(this, talk, "Talk to the Spirit Tree", combatGear, prayerPotions, food, crystalChime);
 		}
 
 		useCrystalChime = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "Use the Crystal Chime on the Spirit Tree", crystalChime.highlighted());
@@ -418,13 +419,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 		{
 			var talk = new ObjectStep(this, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
-			talkToSpiritTreeAgain = new ConditionalStep(this, talk, "Talk to the Spirit Tree again", combatGear, food, crystalChime);
+			talkToSpiritTreeAgain = new ConditionalStep(this, talk, "Talk to the Spirit Tree again", combatGear, prayerPotions, food, crystalChime);
 		}
 
 		/// The Warped Depths
 		enterSewer = new ObjectStep(this, ObjectID.SEWER_ENTRANCE, new WorldPoint(2322, 3101, 0),
 			"Enter the sewer to the west of the Spirit tree");
-		enterSewer.addRequirement(combatGear, food, crystalChime);
+		enterSewer.addRequirement(combatGear, prayerPotions, food, crystalChime);
 
 		sewer1Ladder = new ObjectStep(this, ObjectID.LADDER_49700, "Climb up the ladder");
 		sewer2Ladder = new ObjectStep(this, ObjectID.LADDER_49701, new WorldPoint(1529, 4236, 1),
@@ -505,6 +506,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		treeGnomeVillageDungeonKey.canBeObtainedDuringQuest();
 		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		// Recommended items
@@ -533,6 +535,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			mithGrapple,
 			treeGnomeVillageDungeonKey,
 			combatGear,
+			prayerPotions,
 			food
 		);
 	}

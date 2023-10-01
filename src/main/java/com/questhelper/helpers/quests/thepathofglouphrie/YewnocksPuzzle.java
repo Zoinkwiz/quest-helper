@@ -298,11 +298,11 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	protected void setupSteps()
 	{
 		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(34, 31), "Get more discs from the chests outside. You can drop discs before you get more. You can also use the exchanger next to Yewnock's machine.", true);
-		useExchanger = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_EXCHANGER, regionPoint(22, 31), "Use the exchanger to get the right discs");
+		useExchanger = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_EXCHANGER, regionPoint(22, 31), "Use the exchanger to get the right discs.");
 		clickMachine = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine. If you run out of discs you can get new ones from the regular chests in the previous room.");
 		clickMachineOnce = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine to calculate a solution.");
-		selectDisc = new DiscInsertionStep(getQuestHelper(), "Select the highlighted disc in your inventory");
-		exchangeDisc = new DiscInsertionStep(getQuestHelper(), "Select one of the highlighted discs in your inventory");
+		selectDisc = new DiscInsertionStep(getQuestHelper(), "Select the highlighted disc in your inventory.");
+		exchangeDisc = new DiscInsertionStep(getQuestHelper(), "Select one of the highlighted discs in your inventory.");
 
 		widgetOpen = new WidgetPresenceRequirement(848, 0);
 		exchangerWidgetOpen = new WidgetPresenceRequirement(849, 0);

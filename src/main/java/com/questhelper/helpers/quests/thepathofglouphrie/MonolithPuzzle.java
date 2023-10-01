@@ -127,19 +127,19 @@ public class MonolithPuzzle extends DetailedOwnerStep
 		));
 
 		pushSouthernMonolithUp = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(37, 21),
-			"Push the monolith north once");
+			"Push the monolith north once.");
 		pushSouthernMonolithUp.setMaxRoamRange(3);
 
 		getFirstShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(39, 25),
-			"Open the chest for some shapes");
+			"Open the chest for some shapes.");
 		getFirstShapes.addSubSteps(pushSouthernMonolithUp);
 
 		pushSWMonolithNorth = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(35, 29),
-			"Push the south-west monolith north once");
+			"Push the south-west monolith north once.");
 		pushSWMonolithNorth.setMaxRoamRange(2);
 
 		pushNWMonolithEast = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(35, 33),
-			"Push the north-west monolith east once");
+			"Push the north-west monolith east once.");
 		pushNWMonolithEast.setMaxRoamRange(2);
 
 		getSecondShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(36, 38),
@@ -147,20 +147,20 @@ public class MonolithPuzzle extends DetailedOwnerStep
 		getSecondShapes.addSubSteps(pushSWMonolithNorth, pushNWMonolithEast);
 
 		picklockChestForFirstKey = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49614, regionPoint(33, 37),
-			"Picklock the chest for a key");
+			"Picklock the chest for a key.");
 		picklockChestForFirstKey.addAlternateObjects(ObjectID.CHEST_49615);
 		picklockChestForFirstKey.addSubSteps(pushSWMonolithNorth, pushNWMonolithEast);
 
 		pushSmallMonolithSouth = new NpcStep(getQuestHelper(), NpcID.SMALL_MONOLITH, regionPoint(39, 33),
-			"Push the small monolith south once");
+			"Push the small monolith south once.");
 		pushSmallMonolithSouth.setMaxRoamRange(2);
 
 		pushNWMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(36, 33),
-			"Push the north-west monolith west once");
+			"Push the north-west monolith west once.");
 		pushNWMonolithWest.setMaxRoamRange(2);
 
 		openChestForCrystalChimeSeed = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49612, regionPoint(37, 34),
-			"Search the chest for the strongroom key and crystal chime seed");
+			"Search the chest for the strongroom key and crystal chime seed.");
 		openChestForCrystalChimeSeed.addSubSteps(pushSmallMonolithSouth, pushNWMonolithWest);
 
 		getThirdShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(41, 29),
@@ -175,16 +175,16 @@ public class MonolithPuzzle extends DetailedOwnerStep
 		var machineRoomKey = new ItemRequirement("Strongroom key", ItemID.STRONGROOM_KEY, 1);
 
 		inspectSingingBowl = new ObjectStep(getQuestHelper(), ObjectID.SINGING_BOWL_49610, regionPoint(41, 32),
-			"Inspect the Singing bowl, then click it again to create the Crystal chime", crystalChimeSeed);
+			"Inspect the Singing bowl, then click it again to create the Crystal chime.", crystalChimeSeed);
 		inspectSingingBowl.addAlternateObjects(ObjectID.SINGING_BOWL_49611);
 		inspectSingingBowl.addDialogStep("Yes.");
 
 		pushSEMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(39, 29),
-			"Push the south-east monolith west once");
+			"Push the south-east monolith west once.");
 		pushSEMonolithWest.setMaxRoamRange(2);
 
 		unlockTheGate = new ObjectStep(getQuestHelper(), ObjectID.GATE_49657, regionPoint(30, 31),
-			"Unlock the gate to Yewnock's machine room", crystalChime, machineRoomKey);
+			"Unlock the gate to Yewnock's machine room.", crystalChime, machineRoomKey);
 	}
 
 	@Subscribe

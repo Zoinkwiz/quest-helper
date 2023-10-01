@@ -405,7 +405,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		actuallyTalkToLongramble.addRecommended(earmuffsOrSlayerHelmet);
 
 
-		talkToLongramble = new ConditionalStep(this, goToLongramble, "Go to Longramble, make sure to head to a bank & gear up first.", combatGear, crossbow.equipped().highlighted(), mithGrapple.equipped().highlighted(), food, crystalChime);
+		talkToLongramble = new ConditionalStep(this, goToLongramble, "Go to Longramble, make sure to head to a bank & gear up first. You can drop all leftover discs.", combatGear, crossbow.equipped().highlighted(), mithGrapple.equipped().highlighted(), food, crystalChime);
 		talkToLongramble.addStep(nearLongramble, actuallyTalkToLongramble);
 
 		{

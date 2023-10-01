@@ -30,6 +30,7 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.helpers.quests.thepathofglouphrie.sections.InformKingBolren;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.StartingOff;
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.UnveilEvil;
 import com.questhelper.panel.PanelDetails;
@@ -74,6 +75,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 {
 	private final StartingOff startingOff = new StartingOff();
 	private final UnveilEvil unveilEvil = new UnveilEvil();
+	private final InformKingBolren informKingBolren = new InformKingBolren();
 	public ZoneRequirement inTreeGnomeVillageMiddle;
 	public ZoneRequirement inTreeGnomeVillageDungeon;
 	public TeleportItemRequirement teleToBolren;
@@ -84,6 +86,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	public VarbitRequirement learnedAboutChapter2;
 	public ObjectStep enterTreeGnomeVillageMazeFromMiddle;
 	public ObjectStep climbDownIntoTreeGnomeVillageDungeon;
+	public ZoneRequirement inGnomeStrongholdFloor1;
 	/// Required items
 	private ItemRequirement crossbow;
 	private ItemRequirement mithGrapple;
@@ -96,18 +99,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private TeleportItemRequirement fairyRingOrCastleWars;
 	private ItemRequirement runRestoreItems;
 	private FreeInventorySlotRequirement freeInventorySlots;
-	private NpcStep talkToGianneJnr;
 	private ConditionalStep talkToLongramble;
 	private Zone treeGnomeVillageMiddle1;
 	private Zone treeGnomeVillageMiddle2;
 	private Zone treeGnomeVillageMiddle3;
 	private Zone treeGnomeVillageDungeon;
 	private Zone storeroomZone;
-	private ConditionalStep killEvilCreature;
-	private NpcStep informKingBolren;
 	private Zone gnomeStrongholdFloor1;
-	private ZoneRequirement inGnomeStrongholdFloor1;
-	private ObjectStep climbUpToGianneJnr;
 	private Zone longrambleZone;
 	private ZoneRequirement nearLongramble;
 	private ConditionalStep talkToSpiritTree;
@@ -145,10 +143,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		setupConditions();
 		setupSteps();
 
-		var informKingBolrenStep = new ConditionalStep(this, informKingBolren);
-
-		var talkToGianneJnrStep = new ConditionalStep(this, climbUpToGianneJnr);
-		talkToGianneJnrStep.addStep(inGnomeStrongholdFloor1, talkToGianneJnr);
 
 		var talkToLongrambleStep = new ConditionalStep(this, talkToLongramble);
 
@@ -182,9 +176,9 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			.put(14, unveilEvil.learnLoreStep)
 			.put(16, unveilEvil.solveYewnocksMachinePuzzleStep)
 			.put(18, unveilEvil.watchCutscene)
-			.put(20, killEvilCreature)
-			.put(22, informKingBolrenStep)
-			.put(24, talkToGianneJnrStep)
+			.put(20, informKingBolren.killEvilCreature)
+			.put(22, informKingBolren.informKingBolren)
+			.put(24, informKingBolren.talkToGianneJnrStep)
 			.put(26, talkToLongrambleStep)
 			.put(28, talkToLongrambleStep)
 			.put(30, talkToSpiritTreeStep)
@@ -297,36 +291,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 		unveilEvil.setup(this);
 
+		informKingBolren.setup(this);
 
-		/// Inform King Bolren
-		{
-			// Kill the Evil Creature
-			var kill = new NpcStep(this, NpcID.EVIL_CREATURE_12477, new WorldPoint(2542, 3169, 0), "");
-			var exitStoreroom = new ObjectStep(this, ObjectID.TUNNEL_49623, YewnocksPuzzle.regionPoint(37, 17), "Exit the storeroom");
-			exitStoreroom.addTeleport(teleToBolren);
-			var exitDungeon = new ObjectStep(this, ObjectID.LADDER_5251, new WorldPoint(2597, 4435, 0), "Exit the dungeon");
-			var squeezeThroughRailing = enterTreeGnomeVillageMazeFromMiddle.copy();
-			squeezeThroughRailing.setText("");
-			squeezeThroughRailing.addTeleport(teleToBolren);
-			killEvilCreature = new ConditionalStep(this, kill, "Kill the Evil Creature next to King Bolren");
-			killEvilCreature.addStep(inTreeGnomeVillageDungeon, exitDungeon);
-			killEvilCreature.addStep(inStoreroom, exitStoreroom);
-			killEvilCreature.addStep(new Conditions(LogicType.NOR, inTreeGnomeVillageMiddle), squeezeThroughRailing);
-		}
-
-		// Talk to King Bolren
-		informKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren about your next step");
-		informKingBolren.addTeleport(teleToBolren);
-
-		var teleToStronghold = new TeleportItemRequirement("Spirit tree to Gnome Stronghold [2]", -1, -1);
-
-		// Talk to Gianne Junior in Tree Gnome Stronghold
-		talkToGianneJnr = new NpcStep(this, NpcID.GIANNE_JNR, new WorldPoint(2439, 3502, 1), "Talk to Gianne jnr. in Tree Gnome Stronghold to ask for Longramble's whereabouts.");
-		climbUpToGianneJnr = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "");
-		climbUpToGianneJnr.setText(talkToGianneJnr.getText());
-		climbUpToGianneJnr.addTeleport(teleToStronghold);
-		talkToGianneJnr.addSubSteps(climbUpToGianneJnr);
-		talkToGianneJnr.addDialogSteps("I need your help finding a certain gnome.");
 
 		/// Find Longramble
 		var teleToLongramble = new TeleportItemRequirement("Fairy Ring BKP or Ring of Dueling to Castle Wars", ItemCollections.RING_OF_DUELINGS, 1);
@@ -523,9 +489,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 		var informKingBolrenPanel = new PanelDetails(
 			"Inform King Bolren",
-			List.of(killEvilCreature, informKingBolren, talkToGianneJnr),
-			List.of(),
-			List.of()
+			informKingBolren.getSteps()
 		);
 
 		var findLongramble = new PanelDetails(

@@ -587,6 +587,23 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+
+		req.add(new QuestRequirement(QuestHelperQuest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED));
+		req.add(new SkillRequirement(Skill.STRENGTH, 60));
+		req.add(new SkillRequirement(Skill.SLAYER, 56));
+		req.add(new SkillRequirement(Skill.THIEVING, 56));
+		req.add(new SkillRequirement(Skill.RANGED, 47));
+		req.add(new SkillRequirement(Skill.AGILITY, 45));
+
+		return req;
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		var panels = new ArrayList<PanelDetails>();
@@ -633,22 +650,5 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		panels.add(theWarpedDepths);
 
 		return panels;
-	}
-
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-
-		req.add(new QuestRequirement(QuestHelperQuest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.WATERFALL_QUEST, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.STRENGTH, 60));
-		req.add(new SkillRequirement(Skill.SLAYER, 56));
-		req.add(new SkillRequirement(Skill.THIEVING, 56));
-		req.add(new SkillRequirement(Skill.RANGED, 47));
-		req.add(new SkillRequirement(Skill.AGILITY, 45));
-
-		return req;
 	}
 }

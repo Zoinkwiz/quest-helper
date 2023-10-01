@@ -127,9 +127,12 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			}
 		}
 
-		for (var entry : valuePossibleExchanges.entrySet()) {
-			for (var subset : entry.getValue()) {
-				for (var subsetNumber : subset) {
+		for (var entry : valuePossibleExchanges.entrySet())
+		{
+			for (var subset : entry.getValue())
+			{
+				for (var subsetNumber : subset)
+				{
 					valuePossibleSingleDiscExchanges.computeIfAbsent(subsetNumber, sv2 -> new HashSet<>());
 					valuePossibleSingleDiscExchanges.get(subsetNumber).add(entry.getKey());
 				}
@@ -502,11 +505,16 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				}
 				exchangeDisc.setRequirements(solution.toExchange);
 				startUpStep(exchangeDisc);
-			} else {
-				if (solution.toExchange.isEmpty()) {
+			}
+			else
+			{
+				if (solution.toExchange.isEmpty())
+				{
 					// getMoreDiscs.setText("Get more discs at the marked chests. You need to drop all your discs first before opening the chest.");
 					startUpStep(getMoreDiscs);
-				} else {
+				}
+				else
+				{
 					startUpStep(useExchanger);
 				}
 			}

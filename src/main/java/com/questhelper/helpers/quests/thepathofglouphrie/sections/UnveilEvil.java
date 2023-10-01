@@ -67,10 +67,10 @@ public class UnveilEvil
 		solveMonolithPuzzleStep = new ConditionalStep(quest, enterStoreroom);
 		solveMonolithPuzzleStep.addStep(quest.inStoreroom, solveMonolithPuzzle);
 
-		ObjectStep clickLectern = new ObjectStep(quest, ObjectID.LECTERN_49673, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern and learn about the lore.");
-		WidgetStep clickChapter1 = new WidgetStep(quest, "Click Chapter 1 to learn about the mysterious stranger", 854, 5);
-		WidgetStep clickChapter2 = new WidgetStep(quest, "Click Chapter 2 to learn about the great king's death", 854, 9);
-		WidgetStep clickChapter3 = new WidgetStep(quest, "Click Chapter 3 to learn about the old foe", 854, 13);
+		var clickLectern = new ObjectStep(quest, ObjectID.LECTERN_49673, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern.");
+		var clickChapter1 = new WidgetStep(quest, "Click Chapter 1 to learn about the mysterious stranger", 854, 5);
+		var clickChapter2 = new WidgetStep(quest, "Click Chapter 2 to learn about the great king's death", 854, 9);
+		var clickChapter3 = new WidgetStep(quest, "Click Chapter 3 to learn about the old foe", 854, 13);
 
 		DetailedQuestStep watchLoreCutscene = new DetailedQuestStep(quest, "Watch the cutscene");
 		learnLore = new ConditionalStep(quest, clickLectern, "Learn about the lore. All items left on the ground are lost.");

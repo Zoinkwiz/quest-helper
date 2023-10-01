@@ -131,6 +131,7 @@ public enum ItemWithCharge
 	TCRYSTAL5(TELEPORT_CRYSTAL_5, 5),
 
 	// Infinite charges
+	TP_ECTOPHIAL(ECTOPHIAL, 10000000),
 	FAIRY_RING_STAFF(ItemCollections.FAIRY_STAFF, 10000000)
 	;
 

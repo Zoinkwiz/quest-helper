@@ -148,6 +148,23 @@ public class NpcStep extends DetailedQuestStep
 		this(questHelper, npcID, null, text, allowMultipleHighlights, requirements);
 	}
 
+	public NpcStep copy()
+	{
+		NpcStep newStep = new NpcStep(getQuestHelper(), npcID, worldPoint, null, requirements, recommended);
+		if (text != null)
+		{
+			newStep.setText(text);
+		}
+		newStep.allowMultipleHighlights = allowMultipleHighlights;
+		newStep.addAlternateNpcs(alternateNpcIDs);
+		if (mustBeFocused) {
+			newStep.setMustBeFocused(true);
+		}
+		newStep.setMaxRoamRange(maxRoamRange);
+
+		return newStep;
+	}
+
 	private boolean npcPassesChecks(NPC npc)
 	{
 		if (npcName != null && (npc.getName() == null || !npc.getName().equals(npcName))) return false;

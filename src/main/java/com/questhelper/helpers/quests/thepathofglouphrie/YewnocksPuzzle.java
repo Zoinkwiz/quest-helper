@@ -35,6 +35,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +78,12 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	 * Value to list of possible requirements using exactly 2 different
 	 */
 	private final HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement = new HashMap<>();
+	/**
+	 * Given a Value, what single disc can be used to exchange for it
+	 */
+	private final HashMap<Integer, List<List<Integer>>> valuePossibleExchanges = new HashMap<>();
+	private final HashMap<Integer, HashSet<Integer>> valuePossibleSingleDiscExchanges = new HashMap<>();
+	private final HashMap<Integer, List<ItemRequirement>> valuePossibleSingleDiscExchangesRequirements = new HashMap<>();
 	private final Solution solution = new Solution();
 	private final ThePathOfGlouphrie pog;
 	private ObjectStep clickMachine;
@@ -87,7 +94,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	private WidgetPresenceRequirement widgetOpen;
 	private WidgetPresenceRequirement exchangerWidgetOpen;
 	private ItemStep selectDisc;
+	private ItemStep exchangeDisc;
 	private ObjectStep getMoreDiscs;
+	private ObjectStep useExchanger;
 
 	public YewnocksPuzzle(ThePathOfGlouphrie pog)
 	{
@@ -99,6 +108,42 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		loadValueToRequirement(discs, valueToRequirement);
 		loadDiscToValue(discToValue);
 		loadValueToDoubleDiscRequirement(valueToRequirement, valueToDoubleDiscRequirement);
+		loadValuePossibleExchanges(discToValue, valueToRequirement, valuePossibleExchanges, valuePossibleSingleDiscExchanges, valuePossibleSingleDiscExchangesRequirements);
+	}
+
+	static public void loadValuePossibleExchanges(final HashMap<Integer, Integer> discToValue, final HashMap<Integer, ItemRequirement> valueToRequirement,
+												  HashMap<Integer, List<List<Integer>>> valuePossibleExchanges, HashMap<Integer, HashSet<Integer>> valuePossibleSingleDiscExchanges, HashMap<Integer, List<ItemRequirement>> valuePossibleSingleDiscExchangesRequirements)
+	{
+		var possibleNumbers = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 16, 18, 20, 21, 24, 25, 28, 30, 35};
+
+		for (var valueEntry : valueToRequirement.entrySet())
+		{
+			var value = valueEntry.getKey();
+			var subsetSums = SubsetSum.findSubsetsWithSum(possibleNumbers, value);
+			for (var subsetSum : subsetSums)
+			{
+				valuePossibleExchanges.computeIfAbsent(value, sv2 -> new ArrayList<>());
+				valuePossibleExchanges.get(value).add(subsetSum);
+			}
+		}
+
+		for (var entry : valuePossibleExchanges.entrySet()) {
+			for (var subset : entry.getValue()) {
+				for (var subsetNumber : subset) {
+					valuePossibleSingleDiscExchanges.computeIfAbsent(subsetNumber, sv2 -> new HashSet<>());
+					valuePossibleSingleDiscExchanges.get(subsetNumber).add(entry.getKey());
+				}
+			}
+		}
+
+		for (var entry : valuePossibleSingleDiscExchanges.entrySet())
+		{
+			for (var itemID : entry.getValue())
+			{
+				valuePossibleSingleDiscExchangesRequirements.computeIfAbsent(entry.getKey(), sv2 -> new ArrayList<>());
+				valuePossibleSingleDiscExchangesRequirements.get(entry.getKey()).add(valueToRequirement.get(itemID));
+			}
+		}
 	}
 
 	static public void loadValueToDoubleDiscRequirement(final HashMap<Integer, ItemRequirement> valueToRequirement, HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement)
@@ -250,12 +295,14 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	protected void setupSteps()
 	{
 		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(34, 31), "Get more discs from the chests outside. You can drop discs before you get more. You can also use the exchanger next to Yewnock's machine.", true);
+		useExchanger = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_EXCHANGER, regionPoint(22, 30), "Use the exchanger to get the right discs");
 		clickMachine = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine. If you run out of discs you can get new ones from the regular chests in the previous room.");
 		clickMachineOnce = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine to calculate a solution.");
 		widgetOpen = new WidgetPresenceRequirement(848, 0);
 		exchangerWidgetOpen = new WidgetPresenceRequirement(849, 0);
 
 		selectDisc = new DiscInsertionStep(getQuestHelper(), "Select the highlighted disc in your inventory");
+		exchangeDisc = new DiscInsertionStep(getQuestHelper(), "Select one of the highlighted discs in your inventory");
 	}
 
 	@Subscribe
@@ -405,15 +452,15 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 			var puzzle1SolutionValue = puzzle1SolutionValue1 + puzzle1SolutionValue2;
 			// Try to figure out a solution
-			solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, valueToRequirement, valueToDoubleDiscRequirement);
+			solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue,
+				valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 		}
 
 		if (!solution.isGood())
 		{
-			startUpStep(getMoreDiscs);
 			List<? extends Requirement> a = solution.puzzleNeeds;
 			// getMoreDiscs.setRequirements(solution.puzzleNeeds.stream().map(Requirement::from).collect(Collectors.toList()));
-			getMoreDiscs.setRequirements((List<Requirement>) a);
+			getMoreDiscs.setRequirements(solution.puzzleNeeds);
 
 			if (exchangerWidgetOpen.check(client))
 			{
@@ -452,6 +499,15 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				{
 					// highlight confirm button
 					getMoreDiscs.addWidgetHighlight(849, 36);
+				}
+				exchangeDisc.setRequirements(solution.toExchange);
+				startUpStep(exchangeDisc);
+			} else {
+				if (solution.toExchange.isEmpty()) {
+					// getMoreDiscs.setText("Get more discs at the marked chests. You need to drop all your discs first before opening the chest.");
+					startUpStep(getMoreDiscs);
+				} else {
+					startUpStep(useExchanger);
 				}
 			}
 		}
@@ -504,5 +560,43 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	public List<QuestStep> getSteps()
 	{
 		return List.of(clickMachine, clickMachineOnce, selectDisc, getMoreDiscs);
+	}
+
+	public static class SubsetSum
+	{
+		public static List<List<Integer>> findSubsetsWithSum(int[] numbers, int targetSum)
+		{
+			List<List<Integer>> allSubsets = new ArrayList<>();
+			List<Integer> currentSubset = new ArrayList<>();
+			boolean[] used = new boolean[numbers.length]; // Keep track of used numbers
+			findSubsets(numbers, targetSum, 0, currentSubset, allSubsets, 3, used);
+			return allSubsets;
+		}
+
+		private static void findSubsets(int[] numbers, int targetSum, int currentIndex, List<Integer> currentSubset, List<List<Integer>> allSubsets, int maxValues, boolean[] used)
+		{
+			if (targetSum == 0 && currentSubset.size() <= maxValues)
+			{
+				allSubsets.add(new ArrayList<>(currentSubset));
+				return;
+			}
+			if (currentIndex >= numbers.length || targetSum < 0 || currentSubset.size() >= maxValues)
+			{
+				return;
+			}
+
+			// Include the current number in the subset if it's not already used
+			if (!used[currentIndex])
+			{
+				currentSubset.add(numbers[currentIndex]);
+				used[currentIndex] = true; // Mark the number as used
+				findSubsets(numbers, targetSum - numbers[currentIndex], currentIndex, currentSubset, allSubsets, maxValues, used);
+				used[currentIndex] = false; // Unmark the number to backtrack
+				currentSubset.remove(currentSubset.size() - 1);
+			}
+
+			// Exclude the current number from the subset
+			findSubsets(numbers, targetSum, currentIndex + 1, currentSubset, allSubsets, maxValues, used);
+		}
 	}
 }

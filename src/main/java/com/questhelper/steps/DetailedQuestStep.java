@@ -215,7 +215,7 @@ public class DetailedQuestStep extends QuestStep
 		requirements.clear();
 	}
 
-	public void setRequirements(List<Requirement> newRequirements)
+	public void setRequirements(List<? extends Requirement> newRequirements)
 	{
 		requirements.clear();
 		requirements.addAll(newRequirements);

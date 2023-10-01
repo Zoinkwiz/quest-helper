@@ -134,7 +134,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 		pushNWMonolithEast.setMaxRoamRange(2);
 
 		getSecondShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(36, 38),
-			"Open the chest for some more shapes");
+			"Open the chest for some more shapes. If the chest doesn't give you any shapes, drop the shapes in your inventory first, then click the chest, then pick up the shapes from the ground.");
 		getSecondShapes.addSubSteps(pushSWMonolithNorth, pushNWMonolithEast);
 
 		picklockChestForFirstKey = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49614, regionPoint(33, 37), "Picklock the chest for a key");
@@ -151,7 +151,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 		openChestForCrystalChimeSeed.addSubSteps(pushSmallMonolithSouth, pushNWMonolithWest);
 
 		getThirdShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(41, 29),
-			"Open the chest for some more shapes");
+			"Open the chest for some more shapes. If the chest doesn't give you any shapes, drop the shapes in your inventory first, then click the chest, then pick up the shapes from the ground.");
 		// getThirdShapes.addSubSteps(pushSmallMonolithSouth);
 
 		var crystalChimeSeed = new ItemRequirement("Crystal chime seed", ItemID.CRYSTAL_CHIME_SEED, 1);

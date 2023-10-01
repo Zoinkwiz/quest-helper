@@ -75,19 +75,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private final InformKingBolren informKingBolren = new InformKingBolren();
 	private final FindLongramble findLongramble = new FindLongramble();
 	private final TheWarpedDepths theWarpedDepths = new TheWarpedDepths();
-	public ZoneRequirement inTreeGnomeVillageMiddle;
-	public ZoneRequirement inTreeGnomeVillageDungeon;
-	public TeleportItemRequirement teleToBolren;
-	public ZoneRequirement inStoreroom;
-	public Conditions inCutscene;
-	public WidgetTextRequirement lecternWidgetActive;
-	public VarbitRequirement learnedAboutChapter1;
-	public VarbitRequirement learnedAboutChapter2;
-	public ObjectStep enterTreeGnomeVillageMazeFromMiddle;
-	public ObjectStep climbDownIntoTreeGnomeVillageDungeon;
-	public ZoneRequirement inGnomeStrongholdFloor1;
-	/// Recommended items
-	public ItemRequirement earmuffsOrSlayerHelmet;
+
+	/// Zones
+	public Zone treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3;
+	public Zone treeGnomeVillageDungeon, storeroomZone, gnomeStrongholdFloor1, longrambleZone;
+	public Zone sewer1, sewer2, sewer3, sewer4Section1, sewer4Section2;
+	public Zone sewer5, sewer6Section1, sewer6Section2, bossRoom;
+
 	/// Required items
 	public ItemRequirement crossbow;
 	public ItemRequirement mithGrapple;
@@ -95,29 +89,34 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	public ItemRequirement combatGear;
 	public ItemRequirement prayerPotions;
 	public ItemRequirement food;
-	public ZoneRequirement nearLongramble;
+	public FreeInventorySlotRequirement freeInventorySlots;
+
+	/// Recommended items
+	public TeleportItemRequirement fairyRingOrCastleWars;
+	public ItemRequirement runRestoreItems;
+	public ItemRequirement earmuffsOrSlayerHelmet;
+
+	/// Teleports
+	public TeleportItemRequirement teleToBolren;
+
+	/// Quest items
 	public ItemRequirement crystalChime;
+
+	/// Conditions
+	public ZoneRequirement inTreeGnomeVillageMiddle;
+	public ZoneRequirement inTreeGnomeVillageDungeon;
+	public ZoneRequirement inStoreroom;
+	public ZoneRequirement nearLongramble;
 	public Requirement inSewer1, inSewer2, inSewer3, inSewer4, inSewer5, inSewer6, inBossRoom;
+	public Conditions inCutscene;
+	public VarbitRequirement learnedAboutChapter1;
+	public VarbitRequirement learnedAboutChapter2;
+	public ObjectStep enterTreeGnomeVillageMazeFromMiddle;
+	public ObjectStep climbDownIntoTreeGnomeVillageDungeon;
+	public ZoneRequirement inGnomeStrongholdFloor1;
+
+	public WidgetTextRequirement lecternWidgetActive;
 	public PrayerRequirement protectMissiles;
-	private TeleportItemRequirement fairyRingOrCastleWars;
-	private ItemRequirement runRestoreItems;
-	private FreeInventorySlotRequirement freeInventorySlots;
-	private Zone treeGnomeVillageMiddle1;
-	private Zone treeGnomeVillageMiddle2;
-	private Zone treeGnomeVillageMiddle3;
-	private Zone treeGnomeVillageDungeon;
-	private Zone storeroomZone;
-	private Zone gnomeStrongholdFloor1;
-	private Zone longrambleZone;
-	private Zone sewer1;
-	private Zone sewer2;
-	private Zone sewer3;
-	private Zone sewer4Section1;
-	private Zone sewer4Section2;
-	private Zone sewer5;
-	private Zone sewer6Section1;
-	private Zone sewer6Section2;
-	private Zone bossRoom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -173,28 +172,30 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		sewer5 = new Zone(new WorldPoint(1484, 4279, 0), new WorldPoint(1501, 4282, 0));
 		sewer6Section1 = new Zone(new WorldPoint(1496, 4276, 1), new WorldPoint(1513, 4288, 1));
 		sewer6Section2 = new Zone(5955, 1);
-
 		bossRoom = new Zone(WorldPoint.fromRegion(5955, 35, 24, 1), WorldPoint.fromRegion(5955, 48, 44, 1));
 	}
 
 	@Override
 	public void setupRequirements()
 	{
-		// Required items
+		/// Required items
 		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
 		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).isNotConsumed();
 		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
 			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
 			ItemID.BLURITE_CROSSBOW, ItemID.DORGESHUUN_CROSSBOW, ItemID.ARMADYL_CROSSBOW, ItemID.ZARYTE_CROSSBOW);
 		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
+		// NOTE: This does NOT have a step attached
+		// I didn't have any character available that hadn't started the Roving Elves quest
 		treeGnomeVillageDungeonKey = new ItemRequirement("Tree Gnome Village dungeon key", ItemID.KEY_293).showConditioned(rovingElvesNotStarted);
 		treeGnomeVillageDungeonKey.canBeObtainedDuringQuest();
 		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		freeInventorySlots = new FreeInventorySlotRequirement(11);
 
-		// Recommended items
+		/// Recommended items
 		var lumbridgeEliteComplete = new QuestRequirement(QuestHelperQuest.LUMBRIDGE_ELITE, QuestState.FINISHED);
 		earmuffsOrSlayerHelmet = new ItemRequirement("Earmuffs or a Slayer helmet", ItemCollections.EAR_PROTECTION, 1, true).highlighted();
 		earmuffsOrSlayerHelmet.setTooltip("You will take a lot more damage without these");
@@ -202,18 +203,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		fairyRingOrCastleWars.addAlternates(ItemCollections.RING_OF_DUELINGS);
 		fairyRingOrCastleWars.setConditionToHide(lumbridgeEliteComplete);
 		runRestoreItems = new ItemRequirement("Several run restore items", ItemCollections.RUN_RESTORE_ITEMS, -1);
-		freeInventorySlots = new FreeInventorySlotRequirement(11);
 		// TODO: recommend the toad legs to get a mint cake?
 
-		// Teleports
+		/// Teleports
 		teleToBolren = new TeleportItemRequirement("Spirit tree to Tree Gnome Village [1]", -1, -1);
 
-		// Items that are made during the quest
+		/// Quest items
 		crystalChime = new ItemRequirement("Crystal chime", ItemID.CRYSTAL_CHIME, 1);
-
-		// Non-item requirements
-		lecternWidgetActive = new WidgetTextRequirement(854, 5, "Chapter 1. Bad advice");
-		protectMissiles = new PrayerRequirement("Protect from Missiles to reduce damage taken by the Terrorbirds", Prayer.PROTECT_FROM_MISSILES);
 	}
 
 	private void setupConditions()
@@ -240,6 +236,9 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		inSewer5 = new ZoneRequirement(sewer5);
 		inSewer6 = new Conditions(LogicType.OR, new ZoneRequirement(sewer6Section1), new ZoneRequirement(sewer6Section2));
 		inBossRoom = new ZoneRequirement(bossRoom);
+
+		lecternWidgetActive = new WidgetTextRequirement(854, 5, "Chapter 1. Bad advice");
+		protectMissiles = new PrayerRequirement("Protect from Missiles to reduce damage taken by the Terrorbirds", Prayer.PROTECT_FROM_MISSILES);
 	}
 
 	private void setupSteps()

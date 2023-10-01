@@ -65,7 +65,7 @@ public class TheWarpedDepths
 		sewer3Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, new WorldPoint(1529, 4253, 0),
 			"Climb up the ladder.");
 		sewer3Ladder.addRecommended(quest.protectMissiles);
-		sewer4Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1486, 4283, 1),
+		sewer4Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1486, 4282, 1),
 			"Climb down the ladder. Re-activate your run if you step in any puddles.");
 		sewer4Ladder.addRecommended(quest.protectMissiles);
 		sewer4Ladder.setLinePoints(List.of(

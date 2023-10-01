@@ -97,10 +97,7 @@ public class QuestBankManager
 
 	public void shutDownQuest()
 	{
-		if (questBankTab != null)
-		{
-			questBankTab.shutDown();
-		}
+		questBankTab.shutDown();
 	}
 
 	public List<Item> getBankItems()

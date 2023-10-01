@@ -69,6 +69,11 @@ public class MemoryChallenge extends DetailedQuestStep
 			return;
 		}
 
+		if (lastPos + 1 == wps.size())
+		{
+			return;
+		}
+
 		// If start of path, check first point in legit path
 		if (currentPath.size() == 0)
 		{
@@ -79,7 +84,7 @@ public class MemoryChallenge extends DetailedQuestStep
 		// If started path, check furthest we've reached in path
 		WorldPoint lastPoint = currentPath.get(currentPath.size() - 1);
 
-		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPointFromReal(client, wps.get(lastPos));
+		WorldPoint instanceWp = wps.get(lastPos);
 		if (instanceWp == null)
 		{
 			return;
@@ -94,11 +99,12 @@ public class MemoryChallenge extends DetailedQuestStep
 	public void checkNextTile(int wpsPos)
 	{
 		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPointFromReal(client, wps.get(wpsPos));
+		System.out.println(instanceWp);
 		if (instanceWp == null)
 		{
 			return;
 		}
-
+		System.out.println(client.getLocalPlayer().getWorldLocation());
 		// If on same tiles as wpsPos
 		if (client.getLocalPlayer() != null &&
 			client.getLocalPlayer().getWorldLocation().distanceTo(instanceWp) == 0)
@@ -124,6 +130,7 @@ public class MemoryChallenge extends DetailedQuestStep
 			current4 == column4
 		)
 		{
+			System.out.println("COLUMN RIP");
 			return;
 		}
 
@@ -135,11 +142,109 @@ public class MemoryChallenge extends DetailedQuestStep
 		setLinePoints(new ArrayList<>());
 		currentPath = new ArrayList<>();
 
+		// Facing south to north
+		// Go from lowest to highest
+		// west to east is 2412->2415
 
-		// Path 1
-		if (client.getVarbitValue(2414) == 83)
+		// TODO: Maybe make this dynamic?
+		// Convert to an array of tiles. Find start tile, find neighbour
+		// Go to neighbour, discount previous tile
+		// Move to next neighbour, etc
+
+		// Path 1 (confirmed)
+		if (client.getVarbitValue(2415) == 123)
 		{
 			wps = Arrays.asList(
+				new WorldPoint(1734, 5108, 2),
+				new WorldPoint(1734, 5106, 2),
+				new WorldPoint(1734, 5103, 2),
+				new WorldPoint(1737, 5103, 2),
+				new WorldPoint(1740, 5103, 2),
+				new WorldPoint(1740, 5100, 2),
+				new WorldPoint(1740, 5097, 2),
+				new WorldPoint(1740, 5094, 2),
+				new WorldPoint(1737, 5094, 2),
+				new WorldPoint(1734, 5094, 2),
+				new WorldPoint(1731, 5094, 2),
+				new WorldPoint(1731, 5091, 2),
+				new WorldPoint(1731, 5088, 2),
+				new WorldPoint(1734, 5088, 2),
+				new WorldPoint(1737, 5088, 2),
+				new WorldPoint(1740, 5088, 2),
+				new WorldPoint(1740, 5085, 2),
+				new WorldPoint(1740, 5083, 2)
+			);
+			setWorldPoint(1740, 5083, 2);
+		}
+		// Path 2 (updated)
+		else if (client.getVarbitValue(2413) == 3)
+		{
+			wps = Arrays.asList(
+				new WorldPoint(1740, 5108, 2),
+				new WorldPoint(1740, 5106, 2),
+				new WorldPoint(1740, 5103, 2),
+				new WorldPoint(1740, 5100, 2),
+				new WorldPoint(1737, 5100, 2),
+				new WorldPoint(1737, 5097, 2),
+				new WorldPoint(1737, 5094, 2),
+				new WorldPoint(1740, 5094, 2),
+				new WorldPoint(1740, 5091, 2),
+				new WorldPoint(1740, 5088, 2),
+				new WorldPoint(1737, 5088, 2),
+				new WorldPoint(1734, 5088, 2),
+				new WorldPoint(1734, 5085, 2),
+				new WorldPoint(1734, 5083, 2)
+			);
+			setWorldPoint(1734, 5083, 2);
+		}
+		// Path 3
+		else if (client.getVarbitValue(2414) == 192)
+		{
+			wps = Arrays.asList(
+				new WorldPoint(1737, 5108, 2),
+				new WorldPoint(1737, 5106, 2),
+				new WorldPoint(1737, 5103, 2),
+				new WorldPoint(1734, 5103, 2),
+				new WorldPoint(1731, 5103, 2),
+				new WorldPoint(1731, 5100, 2),
+				new WorldPoint(1731, 5097, 2),
+				new WorldPoint(1734, 5097, 2),
+				new WorldPoint(1734, 5094, 2),
+				new WorldPoint(1734, 5091, 2),
+				new WorldPoint(1731, 5091, 2),
+				new WorldPoint(1731, 5088, 2),
+				new WorldPoint(1731, 5085, 2),
+				new WorldPoint(1731, 5083, 2)
+			);
+			setWorldPoint(1731, 5083, 2);
+		}
+		// Path 4, shared varbit with 3 but will 3 has already passed
+		else if (client.getVarbitValue(2412) == 28)
+		{
+			wps = Arrays.asList(
+				new WorldPoint(1734, 5108, 2),
+				new WorldPoint(1734, 5106, 2),
+				new WorldPoint(1734, 5103, 2),
+				new WorldPoint(1737, 5103, 2),
+				new WorldPoint(1737, 5100, 2),
+				new WorldPoint(1737, 5097, 2),
+				new WorldPoint(1734, 5097, 2),
+				new WorldPoint(1731, 5097, 2),
+				new WorldPoint(1731, 5094, 2),
+				new WorldPoint(1731, 5091, 2),
+				new WorldPoint(1734, 5091, 2),
+				new WorldPoint(1734, 5088, 2),
+				new WorldPoint(1737, 5088, 2),
+				new WorldPoint(1737, 5085, 2),
+				new WorldPoint(1737, 5083, 2)
+			);
+			setWorldPoint(1731, 5083, 2);
+		}
+		// Path 5
+		else if (client.getVarbitValue(2414) == 83)
+		{
+			wps = Arrays.asList(
+				new WorldPoint(1731, 5108, 2),
 				new WorldPoint(1731, 5106, 2),
 				new WorldPoint(1731, 5103, 2),
 				new WorldPoint(1734, 5103, 2),
@@ -160,30 +265,11 @@ public class MemoryChallenge extends DetailedQuestStep
 			);
 			setWorldPoint(1737, 5083, 2);
 		}
-		// Path 2
-		else if (client.getVarbitValue(2414) == 192)
-		{
-			wps = Arrays.asList(
-				new WorldPoint(1737, 5106, 2),
-				new WorldPoint(1737, 5103, 2),
-				new WorldPoint(1734, 5103, 2),
-				new WorldPoint(1731, 5103, 2),
-				new WorldPoint(1731, 5100, 2),
-				new WorldPoint(1731, 5097, 2),
-				new WorldPoint(1734, 5097, 2),
-				new WorldPoint(1734, 5094, 2),
-				new WorldPoint(1734, 5091, 2),
-				new WorldPoint(1731, 5091, 2),
-				new WorldPoint(1731, 5088, 2),
-				new WorldPoint(1731, 5085, 2),
-				new WorldPoint(1731, 5083, 2)
-			);
-			setWorldPoint(1731, 5083, 2);
-		}
-		// Path 3
+		// Path 6 (confirmed)
 		else if (client.getVarbitValue(2415) == 7)
 		{
 			wps = Arrays.asList(
+				new WorldPoint(1731, 5108, 2),
 				new WorldPoint(1731, 5106, 2),
 				new WorldPoint(1731, 5103, 2),
 				new WorldPoint(1734, 5103, 2),
@@ -203,55 +289,11 @@ public class MemoryChallenge extends DetailedQuestStep
 			);
 			setWorldPoint(1740, 5083, 2);
 		}
-		// Path 4, shared varbit with 3 but will 3 has already passed
-		else if (client.getVarbitValue(2412) == 28)
-		{
-			wps = Arrays.asList(
-				new WorldPoint(1734, 5106, 2),
-				new WorldPoint(1734, 5103, 2),
-				new WorldPoint(1737, 5103, 2),
-				new WorldPoint(1737, 5100, 2),
-				new WorldPoint(1737, 5097, 2),
-				new WorldPoint(1734, 5097, 2),
-				new WorldPoint(1731, 5097, 2),
-				new WorldPoint(1731, 5094, 2),
-				new WorldPoint(1731, 5091, 2),
-				new WorldPoint(1734, 5091, 2),
-				new WorldPoint(1734, 5088, 2),
-				new WorldPoint(1737, 5088, 2),
-				new WorldPoint(1737, 5085, 2),
-				new WorldPoint(1737, 5083, 2)
-			);
-			setWorldPoint(1731, 5083, 2);
-		}
-		// Path 5
-		else if (client.getVarbitValue(2415) == 123)
-		{
-			wps = Arrays.asList(
-				new WorldPoint(1734, 5106, 2),
-				new WorldPoint(1734, 5103, 2),
-				new WorldPoint(1737, 5103, 2),
-				new WorldPoint(1740, 5103, 2),
-				new WorldPoint(1740, 5100, 2),
-				new WorldPoint(1740, 5097, 2),
-				new WorldPoint(1740, 5094, 2),
-				new WorldPoint(1737, 5094, 2),
-				new WorldPoint(1734, 5094, 2),
-				new WorldPoint(1731, 5094, 2),
-				new WorldPoint(1731, 5091, 2),
-				new WorldPoint(1731, 5088, 2),
-				new WorldPoint(1734, 5088, 2),
-				new WorldPoint(1737, 5088, 2),
-				new WorldPoint(1740, 5088, 2),
-				new WorldPoint(1740, 5085, 2),
-				new WorldPoint(1740, 5083, 2)
-			);
-			setWorldPoint(1740, 5083, 2);
-		}
-		// Path 6
+		// Path 7
 		else if (client.getVarbitValue(2414) == 42)
 		{
 			wps = Arrays.asList(
+				new WorldPoint(1731, 5108, 2),
 				new WorldPoint(1731, 5106, 2),
 				new WorldPoint(1731, 5103, 2),
 				new WorldPoint(1731, 5100, 2),
@@ -271,31 +313,11 @@ public class MemoryChallenge extends DetailedQuestStep
 			);
 			setWorldPoint(1740, 5083, 2);
 		}
-		// Path 7
-		else if (client.getVarbitValue(2413) == 218)
-		{
-			wps = Arrays.asList(
-				new WorldPoint(1734, 5106, 2),
-				new WorldPoint(1734, 5103, 2),
-				new WorldPoint(1737, 5103, 2),
-				new WorldPoint(1737, 5100, 2),
-				new WorldPoint(1737, 5097, 2),
-				new WorldPoint(1734, 5097, 2),
-				new WorldPoint(1734, 5094, 2),
-				new WorldPoint(1731, 5094, 2),
-				new WorldPoint(1731, 5091, 2),
-				new WorldPoint(1731, 5088, 2),
-				new WorldPoint(1734, 5088, 2),
-				new WorldPoint(1737, 5088, 2),
-				new WorldPoint(1737, 5085, 2),
-				new WorldPoint(1737, 5083, 2)
-			);
-			setWorldPoint(1737, 5083, 2);
-		}
 		// Path 8
 		else if (client.getVarbitValue(2414) == 91)
 		{
 			wps = Arrays.asList(
+				new WorldPoint(1734, 5108, 2),
 				new WorldPoint(1734, 5106, 2),
 				new WorldPoint(1734, 5103, 2),
 				new WorldPoint(1737, 5103, 2),
@@ -313,30 +335,33 @@ public class MemoryChallenge extends DetailedQuestStep
 			);
 			setWorldPoint(1737, 5083, 2);
 		}
-		// Path 9
-		else if (client.getVarbitValue(2413) == 3)
+		// Path 9 (confirmed)
+		else if (client.getVarbitValue(2413) == 218)
 		{
 			wps = Arrays.asList(
-				new WorldPoint(1740, 5106, 2),
-				new WorldPoint(1740, 5103, 2),
-				new WorldPoint(1740, 5100, 2),
+				new WorldPoint(1734, 5108, 2),
+				new WorldPoint(1734, 5106, 2),
+				new WorldPoint(1734, 5103, 2),
+				new WorldPoint(1737, 5103, 2),
 				new WorldPoint(1737, 5100, 2),
 				new WorldPoint(1737, 5097, 2),
-				new WorldPoint(1737, 5094, 2),
-				new WorldPoint(1740, 5094, 2),
-				new WorldPoint(1740, 5091, 2),
-				new WorldPoint(1740, 5088, 2),
-				new WorldPoint(1737, 5088, 2),
+				new WorldPoint(1734, 5097, 2),
+				new WorldPoint(1734, 5094, 2),
+				new WorldPoint(1731, 5094, 2),
+				new WorldPoint(1731, 5091, 2),
+				new WorldPoint(1731, 5088, 2),
 				new WorldPoint(1734, 5088, 2),
-				new WorldPoint(1734, 5085, 2),
-				new WorldPoint(1734, 5083, 2)
+				new WorldPoint(1737, 5088, 2),
+				new WorldPoint(1737, 5085, 2),
+				new WorldPoint(1737, 5083, 2)
 			);
-			setWorldPoint(1734, 5083, 2);
+			setWorldPoint(1737, 5083, 2);
 		}
 		// Path 10
-		else if (client.getVarbitValue(2412) == 30)
+		else if (client.getVarbitValue(2415) == 120)
 		{
 			wps = Arrays.asList(
+				new WorldPoint(1734, 5108, 2),
 				new WorldPoint(1734, 5106, 2),
 				new WorldPoint(1734, 5103, 2),
 				new WorldPoint(1737, 5103, 2),

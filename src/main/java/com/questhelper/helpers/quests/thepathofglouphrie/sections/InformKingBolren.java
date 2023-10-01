@@ -56,13 +56,13 @@ public class InformKingBolren
 			var exitDungeon = new ObjectStep(quest, ObjectID.LADDER_5251, new WorldPoint(2597, 4435, 0), "Exit the dungeon");
 			var squeezeThroughRailing = quest.enterTreeGnomeVillageMazeFromMiddle.copy();
 			squeezeThroughRailing.addTeleport(quest.teleToBolren);
-			killEvilCreature = new ConditionalStep(quest, kill, "Kill the Evil Creature next to King Bolren");
+			killEvilCreature = new ConditionalStep(quest, kill, "Kill the Evil Creature next to King Bolren.");
 			killEvilCreature.addStep(quest.inTreeGnomeVillageDungeon, exitDungeon);
 			killEvilCreature.addStep(quest.inStoreroom, exitStoreroom);
 			killEvilCreature.addStep(new Conditions(LogicType.NOR, quest.inTreeGnomeVillageMiddle), squeezeThroughRailing);
 		}
 		// Talk to King Bolren
-		informKingBolren = new NpcStep(quest, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren about your next step");
+		informKingBolren = new NpcStep(quest, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren about your next step.");
 		informKingBolren.addTeleport(quest.teleToBolren);
 
 		var teleToStronghold = new TeleportItemRequirement("Spirit tree to Gnome Stronghold [2]", -1, -1);

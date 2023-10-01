@@ -71,7 +71,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 
 	public MonolithPuzzle(QuestHelper questHelper)
 	{
-		super(questHelper, "Unlock Yewnock's machine room in the Tree Gnome Village dungeon");
+		super(questHelper, "Unlock Yewnock's machine room in the Tree Gnome Village dungeon.");
 	}
 
 	@Override

@@ -67,17 +67,17 @@ public class FindLongramble
 
 		{
 			var talk = new ObjectStep(quest, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
-			talkToSpiritTree = new ConditionalStep(quest, talk, "Talk to the Spirit Tree",
+			talkToSpiritTree = new ConditionalStep(quest, talk, "Talk to the Spirit Tree.",
 				quest.combatGear, quest.prayerPotions, quest.food, quest.crystalChime);
 		}
 
 		useCrystalChime = new ObjectStep(quest, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0),
-			"Use the Crystal Chime on the Spirit Tree", quest.crystalChime.highlighted());
+			"Use the Crystal Chime on the Spirit Tree.", quest.crystalChime.highlighted());
 		useCrystalChime.addIcon(ItemID.CRYSTAL_CHIME);
 
 		{
 			var talk = new ObjectStep(quest, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
-			talkToSpiritTreeAgain = new ConditionalStep(quest, talk, "Talk to the Spirit Tree again",
+			talkToSpiritTreeAgain = new ConditionalStep(quest, talk, "Talk to the Spirit Tree again.",
 				quest.combatGear, quest.prayerPotions, quest.food, quest.crystalChime);
 		}
 	}

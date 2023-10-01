@@ -56,7 +56,7 @@ public class UnveilEvil
 			var enter = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0), "");
 			enter.addSubSteps(squeezeThroughRailing, climbIntoDungeon);
 
-			enterStoreroom = new ConditionalStep(quest, climbIntoDungeon, "Enter the storeroom to the east in the Tree Gnome Village dungeon");
+			enterStoreroom = new ConditionalStep(quest, climbIntoDungeon, "Enter the storeroom to the east in the Tree Gnome Village dungeon.");
 			enterStoreroom.addStep(quest.inTreeGnomeVillageDungeon, enter);
 			enterStoreroom.addStep(quest.inTreeGnomeVillageMiddle, squeezeThroughRailing);
 		}
@@ -102,8 +102,7 @@ public class UnveilEvil
 			solveYewnocksMachinePuzzleStep.addStep(quest.inStoreroom, solveYewnocksMachinePuzzle);
 		}
 
-
-		watchCutscene = new DetailedQuestStep(quest, "Watch the cutscene");
+		watchCutscene = new DetailedQuestStep(quest, "Watch the cutscene.");
 	}
 
 	public List<QuestStep> getSteps()

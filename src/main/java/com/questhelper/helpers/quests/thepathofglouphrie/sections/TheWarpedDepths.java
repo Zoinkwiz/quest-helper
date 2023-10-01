@@ -55,10 +55,10 @@ public class TheWarpedDepths
 	public void setup(ThePathOfGlouphrie quest)
 	{
 		enterSewer = new ObjectStep(quest, ObjectID.SEWER_ENTRANCE, new WorldPoint(2322, 3101, 0),
-			"Enter the sewer to the west of the Spirit tree");
+			"Enter the sewer to the west of the Spirit tree.");
 		enterSewer.addRequirement(quest.combatGear, quest.prayerPotions, quest.food, quest.crystalChime);
 
-		sewer1Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, "Climb up the ladder");
+		sewer1Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, "Climb up the ladder.");
 		sewer2Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1529, 4236, 1),
 			"Climb down the ladder.");
 		sewer2Ladder.addRecommended(quest.protectMissiles);
@@ -88,7 +88,7 @@ public class TheWarpedDepths
 			new WorldPoint(1486, 4284, 1)
 		));
 		sewer5Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, new WorldPoint(1499, 4282, 0),
-			"Climb up the ladder");
+			"Climb up the ladder.");
 		sewer5Ladder.addRecommended(quest.protectMissiles);
 		bossDoor = new ObjectStep(quest, ObjectID.METAL_GATE_49889, new WorldPoint(1506, 4319, 1),
 			"Go to the boss room. Re-activate your run if you step in any puddles.");
@@ -117,8 +117,8 @@ public class TheWarpedDepths
 			"Kill the Terrorbirds. You can use the pillars around the room to only fight one at a time. They fight with both Melee and Ranged.");
 		bossStep.setAllowMultipleHighlights(true);
 
-		peekHeavyDoor = new ObjectStep(quest, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1), "Peek the heavy door");
-		watchFinalCutscene = new DetailedQuestStep(quest, "Watch the final cutscene");
+		peekHeavyDoor = new ObjectStep(quest, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1), "Peek the heavy door.");
+		watchFinalCutscene = new DetailedQuestStep(quest, "Watch the final cutscene.");
 
 		talkToHazelmere = new NpcStep(quest, NpcID.HAZELMERE, new WorldPoint(2678, 3086, 1),
 			"Talk to Hazelmere. Any lamps that don't fit in your inventory will land on the ground. You can speak to Hazelmere after the quest to recover any lost lamps.");

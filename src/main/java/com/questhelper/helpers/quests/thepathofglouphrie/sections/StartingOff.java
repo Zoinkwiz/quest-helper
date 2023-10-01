@@ -42,12 +42,12 @@ public class StartingOff
 	{
 		/// Starting off
 		// Talk to King Bolren
-		talkToKingBolren = new NpcStep(quest, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren in the Tree Gnome Village to start the quest");
+		talkToKingBolren = new NpcStep(quest, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren in the Tree Gnome Village to start the quest.");
 		talkToKingBolren.addDialogSteps("Yes.");
 		talkToKingBolren.addTeleport(quest.teleToBolren);
 
 		// Talk to King Bolren again
-		talkToKingBolrenAgain = new NpcStep(quest, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren again");
+		talkToKingBolrenAgain = new NpcStep(quest, NpcID.KING_BOLREN, new WorldPoint(2542, 3169, 0), "Talk to King Bolren again.");
 
 		// TODO: Add step for freeing Golrie if the user hasn't started Roving Elves
 
@@ -58,7 +58,7 @@ public class StartingOff
 			var talk = new NpcStep(quest, NpcID.GOLRIE, new WorldPoint(2580, 4450, 0), "");
 			talk.addDialogSteps("I need your help with a device.");
 			talk.addSubSteps(enterTreeGnomeVillageMazeFromMiddle, climbDownIntoTreeGnomeVillageDungeon);
-			golrie = new ConditionalStep(quest, climbDownIntoTreeGnomeVillageDungeon, "Talk to Golrie in the Tree Gnome Village dungeon");
+			golrie = new ConditionalStep(quest, climbDownIntoTreeGnomeVillageDungeon, "Talk to Golrie in the Tree Gnome Village dungeon.");
 			golrie.addStep(quest.inTreeGnomeVillageDungeon, talk);
 			golrie.addStep(quest.inTreeGnomeVillageMiddle, enterTreeGnomeVillageMazeFromMiddle);
 		}

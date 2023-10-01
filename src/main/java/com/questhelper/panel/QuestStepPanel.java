@@ -131,7 +131,6 @@ public class QuestStepPanel extends JPanel
 		questStepsPanel.setLayout(new BoxLayout(questStepsPanel, BoxLayout.Y_AXIS));
 		questStepsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-
 		for (QuestStep step : panelDetails.getSteps())
 		{
 			JLabel questStepLabel = new JLabel();
@@ -186,7 +185,6 @@ public class QuestStepPanel extends JPanel
 		JPanel questRequirementsListPanel = new JPanel();
 		questRequirementsListPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 1));
 		questRequirementsListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 
 		for (Requirement req : reqs)
 		{

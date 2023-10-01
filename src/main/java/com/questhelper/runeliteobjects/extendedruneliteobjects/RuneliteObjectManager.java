@@ -28,7 +28,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.questhelper.steps.WidgetDetails;
-import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -277,7 +276,6 @@ public class RuneliteObjectManager
 		if (renderable instanceof NPC)
 		{
 			NPC npc = (NPC) renderable;
-			String name = npc.getName();
 			for (String groupID : runeliteObjectGroups.keySet())
 			{
 				ExtendedRuneliteObjects group = runeliteObjectGroups.get(groupID);
@@ -494,11 +492,6 @@ public class RuneliteObjectManager
 					.setParent(event.getMenuEntry().getParent());
 			}
 		}
-	}
-
-	private void setVisible(ExtendedRuneliteObject extendedRuneliteObject, boolean visible)
-	{
-		extendedRuneliteObject.setVisible(visible);
 	}
 
 	public void disableObject(ExtendedRuneliteObject extendedRuneliteObject)
@@ -865,11 +858,11 @@ public class RuneliteObjectManager
 				if (extendedRuneliteObject.objectType == RuneliteObjectTypes.NPC &&
 					(!shouldDisplayReqPassed || isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition)))
 				{
-					if (isVisible) setVisible(extendedRuneliteObject, false);
+					if (isVisible) extendedRuneliteObject.setVisible(false);
 				}
 				else
 				{
-					setVisible(extendedRuneliteObject, true);
+					extendedRuneliteObject.setVisible(true);
 				}
 			}
 		});

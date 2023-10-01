@@ -126,34 +126,41 @@ public class MonolithPuzzle extends DetailedOwnerStep
 			regionPoint(39, 25)
 		));
 
-		pushSouthernMonolithUp = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(37, 21), "Push the monolith north once");
+		pushSouthernMonolithUp = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(37, 21),
+			"Push the monolith north once");
 		pushSouthernMonolithUp.setMaxRoamRange(3);
 
 		getFirstShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(39, 25),
 			"Open the chest for some shapes");
 		getFirstShapes.addSubSteps(pushSouthernMonolithUp);
 
-		pushSWMonolithNorth = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(35, 29), "Push the south-west monolith north once");
+		pushSWMonolithNorth = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(35, 29),
+			"Push the south-west monolith north once");
 		pushSWMonolithNorth.setMaxRoamRange(2);
 
-		pushNWMonolithEast = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(35, 33), "Push the north-west monolith east once");
+		pushNWMonolithEast = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(35, 33),
+			"Push the north-west monolith east once");
 		pushNWMonolithEast.setMaxRoamRange(2);
 
 		getSecondShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(36, 38),
 			"Open the chest for some more shapes. If the chest doesn't give you any shapes, drop the shapes in your inventory first, then click the chest, then pick up the shapes from the ground.");
 		getSecondShapes.addSubSteps(pushSWMonolithNorth, pushNWMonolithEast);
 
-		picklockChestForFirstKey = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49614, regionPoint(33, 37), "Picklock the chest for a key");
+		picklockChestForFirstKey = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49614, regionPoint(33, 37),
+			"Picklock the chest for a key");
 		picklockChestForFirstKey.addAlternateObjects(ObjectID.CHEST_49615);
 		picklockChestForFirstKey.addSubSteps(pushSWMonolithNorth, pushNWMonolithEast);
 
-		pushSmallMonolithSouth = new NpcStep(getQuestHelper(), NpcID.SMALL_MONOLITH, regionPoint(39, 33), "Push the small monolith south once");
+		pushSmallMonolithSouth = new NpcStep(getQuestHelper(), NpcID.SMALL_MONOLITH, regionPoint(39, 33),
+			"Push the small monolith south once");
 		pushSmallMonolithSouth.setMaxRoamRange(2);
 
-		pushNWMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(36, 33), "Push the north-west monolith west once");
+		pushNWMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(36, 33),
+			"Push the north-west monolith west once");
 		pushNWMonolithWest.setMaxRoamRange(2);
 
-		openChestForCrystalChimeSeed = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49612, regionPoint(37, 34), "Search the chest for the strongroom key and crystal chime seed");
+		openChestForCrystalChimeSeed = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49612, regionPoint(37, 34),
+			"Search the chest for the strongroom key and crystal chime seed");
 		openChestForCrystalChimeSeed.addSubSteps(pushSmallMonolithSouth, pushNWMonolithWest);
 
 		getThirdShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(41, 29),
@@ -172,10 +179,12 @@ public class MonolithPuzzle extends DetailedOwnerStep
 		inspectSingingBowl.addAlternateObjects(ObjectID.SINGING_BOWL_49611);
 		inspectSingingBowl.addDialogStep("Yes.");
 
-		pushSEMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(39, 29), "Push the south-east monolith west once");
+		pushSEMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(39, 29),
+			"Push the south-east monolith west once");
 		pushSEMonolithWest.setMaxRoamRange(2);
 
-		unlockTheGate = new ObjectStep(getQuestHelper(), ObjectID.GATE_49657, regionPoint(30, 31), "Unlock the gate to Yewnock's machine room", crystalChime, machineRoomKey);
+		unlockTheGate = new ObjectStep(getQuestHelper(), ObjectID.GATE_49657, regionPoint(30, 31),
+			"Unlock the gate to Yewnock's machine room", crystalChime, machineRoomKey);
 	}
 
 	@Subscribe

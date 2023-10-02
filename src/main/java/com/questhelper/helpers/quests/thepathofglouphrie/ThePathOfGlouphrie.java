@@ -216,6 +216,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 		/// Quest items
 		crystalChime = new ItemRequirement("Crystal chime", ItemID.CRYSTAL_CHIME, 1);
+		crystalChime.setTooltip("You can get a new one by going back to the storeroom in the Tree Gnome Village dungeon");
 	}
 
 	private void setupConditions()

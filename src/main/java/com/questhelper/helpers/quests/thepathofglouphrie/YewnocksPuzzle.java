@@ -526,7 +526,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				startUpStep(clickMachine);
 				return;
 			}
-			if (client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID) <= 0)
+			if (!solution.puzzle1Requirement.getAllIds().contains(client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID)))
 			{
 				// Solve puzzle 1 first
 				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
@@ -535,7 +535,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				// FOR PUZZLE 1 SOLUTION
 				selectDisc.addWidgetHighlight(848, 19);
 			}
-			else if (client.getVarpValue(PUZZLE2_UPPER_INSERTED_DISC_VARP_ID) <= 0)
+			else if (!solution.puzzle2UpperRequirement.getAllIds().contains(client.getVarpValue(PUZZLE2_UPPER_INSERTED_DISC_VARP_ID)))
 			{
 				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
 				selectDisc.setRequirements(List.of(solution.puzzle2UpperRequirement));
@@ -544,7 +544,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				selectDisc.addWidgetHighlight(848, 20);
 				// Solve puzzle 2 upper
 			}
-			else if (client.getVarpValue(PUZZLE2_LOWER_INSERTED_DISC_VARP_ID) <= 0)
+			else if (!solution.puzzle2LowerRequirement.getAllIds().contains(client.getVarpValue(PUZZLE2_LOWER_INSERTED_DISC_VARP_ID)))
 			{
 				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
 				selectDisc.setRequirements(List.of(solution.puzzle2LowerRequirement));

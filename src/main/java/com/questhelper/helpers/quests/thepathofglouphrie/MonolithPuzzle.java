@@ -300,8 +300,19 @@ public class MonolithPuzzle extends DetailedOwnerStep
 
 		if (hasFirstChestKey())
 		{
+			if (tileHasBigMonolith(tiles, 51, 61))
+			{
+				startUpStep(pushSWMonolithNorth);
+				return;
+			}
+
 			if (tileHasSmallMonolith(tiles, 55, 65))
 			{
+				if (tileHasBigMonolith(tiles, 51, 64))
+				{
+					startUpStep(pushNWMonolithEast);
+					return;
+				}
 				startUpStep(pushSmallMonolithSouth);
 				return;
 			}

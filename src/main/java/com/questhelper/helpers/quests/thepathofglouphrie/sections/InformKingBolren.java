@@ -69,14 +69,20 @@ public class InformKingBolren
 
 		// Talk to Gianne Junior in Tree Gnome Stronghold
 		talkToGianneJnr = new NpcStep(quest, NpcID.GIANNE_JNR, new WorldPoint(2439, 3502, 1), "Talk to Gianne jnr. in Tree Gnome Stronghold to ask for Longramble's whereabouts.");
-		ObjectStep climbUpToGianneJnr = new ObjectStep(quest, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "");
+		// Floor 0 to Floor 1
+		var climbUpToGianneJnr = new ObjectStep(quest, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "");
+		var climbGrandTreeF3ToF2 = new ObjectStep(quest, ObjectID.LADDER_16679, new WorldPoint(2466, 3495, 3), "");
+		var climbGrandTreeF2ToF1 = new ObjectStep(quest, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "");
+		climbGrandTreeF2ToF1.addDialogStep("Climb Down.");
 		climbUpToGianneJnr.setText(talkToGianneJnr.getText());
 		climbUpToGianneJnr.addTeleport(teleToStronghold);
-		talkToGianneJnr.addSubSteps(climbUpToGianneJnr);
+		talkToGianneJnr.addSubSteps(climbUpToGianneJnr, climbGrandTreeF3ToF2, climbGrandTreeF2ToF1);
 		talkToGianneJnr.addDialogSteps("I need your help finding a certain gnome.");
 
 		talkToGianneJnrStep = new ConditionalStep(quest, climbUpToGianneJnr);
 		talkToGianneJnrStep.addStep(quest.inGnomeStrongholdFloor1, talkToGianneJnr);
+		talkToGianneJnrStep.addStep(quest.inGnomeStrongholdFloor2, climbGrandTreeF2ToF1);
+		talkToGianneJnrStep.addStep(quest.inGnomeStrongholdFloor3, climbGrandTreeF3ToF2);
 	}
 
 	public List<QuestStep> getSteps()

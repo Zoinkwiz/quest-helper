@@ -78,7 +78,9 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 	/// Zones
 	public Zone treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3;
-	public Zone treeGnomeVillageDungeon, storeroomZone, gnomeStrongholdFloor1, longrambleZone;
+	public Zone treeGnomeVillageDungeon, storeroomZone;
+	public Zone gnomeStrongholdFloor1, gnomeStrongholdFloor2, gnomeStrongholdFloor3;
+	public Zone longrambleZone;
 	public Zone sewer1, sewer2, sewer3, sewer4Section1, sewer4Section2;
 	public Zone sewer5, sewer6Section1, sewer6Section2, bossRoom;
 
@@ -114,7 +116,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	public VarbitRequirement learnedAboutChapter2;
 	public ObjectStep enterTreeGnomeVillageMazeFromMiddle;
 	public ObjectStep climbDownIntoTreeGnomeVillageDungeon;
-	public ZoneRequirement inGnomeStrongholdFloor1;
+	public ZoneRequirement inGnomeStrongholdFloor1, inGnomeStrongholdFloor2, inGnomeStrongholdFloor3;
 
 	public WidgetTextRequirement lecternWidgetActive;
 	public PrayerRequirement protectMissiles;
@@ -164,6 +166,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		treeGnomeVillageDungeon = new Zone(new WorldPoint(2560, 4426, 0), new WorldPoint(2627, 4477, 0));
 		storeroomZone = new Zone(11074);
 		gnomeStrongholdFloor1 = new Zone(new WorldPoint(2437, 3474, 1), new WorldPoint(2493, 3511, 1));
+		gnomeStrongholdFloor2 = new Zone(new WorldPoint(2437, 3474, 2), new WorldPoint(2493, 3511, 2));
+		gnomeStrongholdFloor3 = new Zone(new WorldPoint(2437, 3474, 3), new WorldPoint(2493, 3511, 3));
 		longrambleZone = new Zone(new WorldPoint(2328, 3082, 0), new WorldPoint(2346, 3103, 0));
 		sewer1 = new Zone(new WorldPoint(1472, 4236, 0), new WorldPoint(1480, 4239, 0));
 		sewer2 = new Zone(new WorldPoint(1472, 4226, 1), new WorldPoint(1534, 4247, 1));
@@ -220,6 +224,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		inTreeGnomeVillageDungeon = new ZoneRequirement(treeGnomeVillageDungeon);
 		inStoreroom = new ZoneRequirement(storeroomZone);
 		inGnomeStrongholdFloor1 = new ZoneRequirement(gnomeStrongholdFloor1);
+		inGnomeStrongholdFloor2 = new ZoneRequirement(gnomeStrongholdFloor2);
+		inGnomeStrongholdFloor3 = new ZoneRequirement(gnomeStrongholdFloor3);
 		nearLongramble = new ZoneRequirement(longrambleZone);
 
 		inCutscene = new Conditions(LogicType.OR,

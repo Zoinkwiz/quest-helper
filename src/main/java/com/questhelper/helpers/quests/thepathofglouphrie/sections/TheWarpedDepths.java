@@ -62,12 +62,15 @@ public class TheWarpedDepths
 		sewer2Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1529, 4236, 1),
 			"Climb down the ladder to the east.");
 		sewer2Ladder.addRecommended(quest.protectMissiles);
+		sewer2Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 		sewer3Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, new WorldPoint(1529, 4253, 0),
 			"Climb up the ladder.");
 		sewer3Ladder.addRecommended(quest.protectMissiles);
+		sewer3Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 		sewer4Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1486, 4282, 1),
 			"Climb down the ladder to the north-west. Re-activate your run if you step in any puddles.");
 		sewer4Ladder.addRecommended(quest.protectMissiles);
+		sewer4Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 		sewer4Ladder.setLinePoints(List.of(
 			new WorldPoint(1530, 4253, 1),
 			new WorldPoint(1530, 4256, 1),
@@ -90,9 +93,11 @@ public class TheWarpedDepths
 		sewer5Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, new WorldPoint(1499, 4282, 0),
 			"Climb up the ladder.");
 		sewer5Ladder.addRecommended(quest.protectMissiles);
+		sewer5Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 		bossDoor = new ObjectStep(quest, ObjectID.METAL_GATE_49889, new WorldPoint(1506, 4319, 1),
 			"Go to the boss room to the north. Re-activate your run if you step in any puddles.");
 		bossDoor.addRecommended(quest.protectMissiles);
+		bossDoor.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 		bossDoor.setLinePoints(List.of(
 			new WorldPoint(1499, 4283, 1),
 			new WorldPoint(1506, 4283, 1),
@@ -116,6 +121,7 @@ public class TheWarpedDepths
 		bossStep = new NpcStep(quest, new int[]{NpcID.WARPED_TERRORBIRD_12499, NpcID.WARPED_TERRORBIRD_12500, NpcID.WARPED_TERRORBIRD_12501},
 			"Kill the Terrorbirds. You can use the pillars around the room to only fight one at a time. They fight with both Melee and Ranged.");
 		bossStep.setAllowMultipleHighlights(true);
+		bossStep.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 
 		peekHeavyDoor = new ObjectStep(quest, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1),
 			"Peek through the heavy door.");

@@ -95,6 +95,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	public TeleportItemRequirement fairyRingOrCastleWars;
 	public ItemRequirement runRestoreItems;
 	public ItemRequirement earmuffsOrSlayerHelmet;
+	public ItemRequirement earmuffsOrSlayerHelmetEquipped;
 
 	/// Teleports
 	public TeleportItemRequirement teleToBolren;
@@ -199,6 +200,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		var lumbridgeEliteComplete = new QuestRequirement(QuestHelperQuest.LUMBRIDGE_ELITE, QuestState.FINISHED);
 		earmuffsOrSlayerHelmet = new ItemRequirement("Earmuffs or a Slayer helmet", ItemCollections.EAR_PROTECTION, 1, true).highlighted();
 		earmuffsOrSlayerHelmet.setTooltip("You will take a lot more damage without these");
+		earmuffsOrSlayerHelmetEquipped = earmuffsOrSlayerHelmet.equipped();
 		fairyRingOrCastleWars = new TeleportItemRequirement("Teleport to Castle Wars (Fairy Ring BKP or Ring of Dueling [2])", ItemCollections.FAIRY_STAFF, 1);
 		fairyRingOrCastleWars.addAlternates(ItemCollections.RING_OF_DUELINGS);
 		fairyRingOrCastleWars.setConditionToHide(lumbridgeEliteComplete);

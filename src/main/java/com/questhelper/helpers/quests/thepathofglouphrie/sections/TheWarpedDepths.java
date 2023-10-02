@@ -60,13 +60,13 @@ public class TheWarpedDepths
 
 		sewer1Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, "Climb up the ladder.");
 		sewer2Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1529, 4236, 1),
-			"Climb down the ladder.");
+			"Climb down the ladder to the east.");
 		sewer2Ladder.addRecommended(quest.protectMissiles);
 		sewer3Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, new WorldPoint(1529, 4253, 0),
 			"Climb up the ladder.");
 		sewer3Ladder.addRecommended(quest.protectMissiles);
 		sewer4Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1486, 4282, 1),
-			"Climb down the ladder. Re-activate your run if you step in any puddles.");
+			"Climb down the ladder to the north-west. Re-activate your run if you step in any puddles.");
 		sewer4Ladder.addRecommended(quest.protectMissiles);
 		sewer4Ladder.setLinePoints(List.of(
 			new WorldPoint(1530, 4253, 1),
@@ -91,7 +91,7 @@ public class TheWarpedDepths
 			"Climb up the ladder.");
 		sewer5Ladder.addRecommended(quest.protectMissiles);
 		bossDoor = new ObjectStep(quest, ObjectID.METAL_GATE_49889, new WorldPoint(1506, 4319, 1),
-			"Go to the boss room. Re-activate your run if you step in any puddles.");
+			"Go to the boss room to the north. Re-activate your run if you step in any puddles.");
 		bossDoor.addRecommended(quest.protectMissiles);
 		bossDoor.setLinePoints(List.of(
 			new WorldPoint(1499, 4283, 1),

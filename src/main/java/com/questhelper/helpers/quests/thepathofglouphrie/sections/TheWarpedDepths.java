@@ -57,8 +57,10 @@ public class TheWarpedDepths
 		enterSewer = new ObjectStep(quest, ObjectID.SEWER_ENTRANCE, new WorldPoint(2322, 3101, 0),
 			"Enter the sewer to the west of the Spirit tree.");
 		enterSewer.addRequirement(quest.combatGear, quest.prayerPotions, quest.food, quest.crystalChime);
+		enterSewer.addRecommended(quest.earmuffsOrSlayerHelmet);
 
 		sewer1Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, "Climb up the ladder.");
+		sewer1Ladder.addRecommended(quest.earmuffsOrSlayerHelmet);
 		sewer2Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1529, 4236, 1),
 			"Climb down the ladder to the east.");
 		sewer2Ladder.addRecommended(quest.protectMissiles);

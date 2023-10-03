@@ -130,7 +130,7 @@ public class TheWarpedDepths
 		watchFinalCutscene = new DetailedQuestStep(quest, "Watch the final cutscene.");
 
 		talkToHazelmere = new NpcStep(quest, NpcID.HAZELMERE, new WorldPoint(2678, 3086, 1),
-			"Talk to Hazelmere. Any lamps that don't fit in your inventory will land on the ground. You can speak to Hazelmere after the quest to recover any lost lamps.");
+			"Talk to Hazelmere. If you didn't have room for all 4 lamps, you can speak to Hazelmere after the quest to recover any lost lamps.");
 
 		enterSewerStep = new ConditionalStep(quest, enterSewer);
 

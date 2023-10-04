@@ -64,11 +64,11 @@ public class Solution
 			return;
 		}
 
-		puzzleNeeds.add(puzzle1Requirement);
+		puzzleNeeds.clear();
 
 		if (!puzzle1Requirement.check(client, false, items))
 		{
-			puzzleNeeds.clear();
+			puzzleNeeds.add(puzzle1Requirement);
 			return;
 		}
 

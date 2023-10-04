@@ -548,6 +548,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		var puzzle1SolutionValue = puzzle1SolutionValue1 + puzzle1SolutionValue2;
 		// Try to figure out a solution
 		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue,
+			discs,
 			valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 	}
 
@@ -708,17 +709,21 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				return;
 			}
 
-			if (exchangeInputs.size() == 1 && firstExchangeIds.contains(exchangeInputs.get(0)))
+			if (exchangeInputs.size() == 1)
 			{
-				// There's one disc in the exchanger & it's the correct one
+				var idInExchanger = exchangeInputs.get(0);
+				if (exchangeInputs.contains(idInExchanger))
+				{
+					// There's one disc in the exchanger & it's the correct one
 
-				var discWeAreLookingFor = solution.puzzleNeeds
-					.stream()
-					.map(ItemRequirement::getName)
-					.collect(Collectors.joining(" or "));
-				exchangerExchange.setText(String.format("Click the exchange button until a %s appears.", discWeAreLookingFor));
-				startUpStep(exchangerExchange);
-				return;
+					var discWeAreLookingFor = solution.puzzleNeeds
+						.stream()
+						.map(ItemRequirement::getName)
+						.collect(Collectors.joining(" or "));
+					exchangerExchange.setText(String.format("Click the exchange button until a %s appears.", discWeAreLookingFor));
+					startUpStep(exchangerExchange);
+					return;
+				}
 			}
 
 			// Too many
@@ -739,14 +744,23 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		{
 			// A partial solution is found, and it can be completed by using the exchanger
 			// The machine is open, prompt the user to close it then click the exchanger
-			useExchanger.setText("A solution has been calculated, exit the machine interface & click Yewnock's exchanger.");
+			if (solution.puzzle1Requirement == null)
+			{
+				useExchanger.setText("A partial solution has been calculated, exit the machine interface & click Yewnock's exchanger.");
+			} else {
+				useExchanger.setText("A solution has been calculated, exit the machine interface & click Yewnock's exchanger.");
+			}
 			startUpStep(useExchanger);
 			return;
 		}
 
 		// A partial solution is found, and it can be completed by using the exchanger
 		// The machine is not open, just prompt the user to click the exchanger
-		useExchanger.setText("A solution has been calculated, click Yewnock's exchanger to start exchanging discs.");
+		if (solution.puzzle1Requirement == null) {
+			useExchanger.setText("A partial solution has been calculated, click Yewnock's exchanger to start exchanging discs.");
+		} else {
+			useExchanger.setText("A solution has been calculated, click Yewnock's exchanger to start exchanging discs.");
+		}
 		startUpStep(useExchanger);
 	}
 

@@ -41,8 +41,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -117,7 +119,7 @@ public class SolutionTest extends MockedTest
 	@ArgumentsSource(Solvable.class)
 	public void testSolvable(List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue)
 	{
-		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
+		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 
 		assertTrue(solution.isGood());
 	}
@@ -126,24 +128,35 @@ public class SolutionTest extends MockedTest
 	@ArgumentsSource(NotSolvable.class)
 	public void testNotSolvable(List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue)
 	{
-		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
+		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 
 		assertFalse(solution.isGood());
 	}
 
 	@ParameterizedTest(name = "This should not be solvable, but it should be exchangable {0} (P1 {1}, P2 {2})")
 	@ArgumentsSource(Exchangable.class)
-	public void testExchangable(List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue, List<Integer> expectedExchanges)
+	public void testExchangable(final List<Item> items,
+								int puzzle1SolutionValue, int puzzle2SolutionValue,
+								final List<Integer> expectedExchanges,
+								final List<Integer> expectedExchangesFor)
 	{
-		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
+		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 
 		assertFalse(solution.isGood());
-		var actualIds = new ArrayList<Integer>();
+
+		var actualExchangesIds = new ArrayList<Integer>();
 		for (var toExchangeRequirement : solution.toExchange)
 		{
-			actualIds.addAll(toExchangeRequirement.getAllIds());
+			actualExchangesIds.addAll(toExchangeRequirement.getAllIds());
 		}
-		assertEquals(expectedExchanges, actualIds);
+		assertEquals(expectedExchanges, actualExchangesIds);
+
+		var actualExchangesForIds = new ArrayList<Integer>();
+		for (var toExchangeRequirement : solution.puzzleNeeds)
+		{
+			actualExchangesForIds.addAll(toExchangeRequirement.getAllIds());
+		}
+		assertEquals(expectedExchangesFor.stream().sorted().collect(Collectors.toUnmodifiableList()), actualExchangesForIds.stream().sorted().collect(Collectors.toUnmodifiableList()));
 	}
 
 	/**
@@ -270,6 +283,19 @@ public class SolutionTest extends MockedTest
 					),
 					12,
 					7
+				),
+				// TOP PUZZLE: BLUE CIRCLE + YELLOW PENTAGON (20)
+				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.ORANGE_PENTAGON, 3),
+						new Item(ItemID.GREEN_SQUARE, 3),
+						new Item(ItemID.INDIGO_TRIANGLE, 1),
+						new Item(ItemID.GREEN_PENTAGON, 1),
+						new Item(ItemID.INDIGO_SQUARE, 1)
+					),
+					20,
+					7
 				)
 			);
 		}
@@ -293,7 +319,8 @@ public class SolutionTest extends MockedTest
 					),
 					20, // blue square gets consumed here
 					28,
-					List.of(ItemID.INDIGO_PENTAGON)
+					List.of(ItemID.INDIGO_PENTAGON),
+					List.of(ItemID.YELLOW_SQUARE, ItemID.GREEN_TRIANGLE, ItemID.GREEN_SQUARE)
 				),
 				// TOP PUZZLE: YELLOW TRIANGLE (9) + GREEN TRIANGLE (12)
 				// BOTTOM PUZZLE: BLUE TRIANGLE (15)
@@ -312,7 +339,47 @@ public class SolutionTest extends MockedTest
 					),
 					21,
 					15,
-					List.of(ItemID.YELLOW_TRIANGLE)
+					List.of(ItemID.YELLOW_TRIANGLE),
+					List.of(ItemID.RED_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.YELLOW_SQUARE, ItemID.GREEN_TRIANGLE)
+				),
+				// TOP PUZZLE: BLUE CIRCLE + YELLOW PENTAGON (20)
+				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.ORANGE_PENTAGON, 3),
+						new Item(ItemID.GREEN_SQUARE, 3),
+						new Item(ItemID.INDIGO_TRIANGLE, 1),
+						new Item(ItemID.GREEN_PENTAGON, 1),
+						new Item(ItemID.INDIGO_SQUARE, 1)
+					),
+					20,
+					7,
+					List.of(ItemID.INDIGO_TRIANGLE, ItemID.INDIGO_SQUARE),
+					List.of(ItemID.RED_CIRCLE, ItemID.RED_TRIANGLE, ItemID.RED_SQUARE, ItemID.RED_PENTAGON, ItemID.ORANGE_CIRCLE, ItemID.ORANGE_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.GREEN_CIRCLE, ItemID.BLUE_CIRCLE, ItemID.INDIGO_CIRCLE)
+				),
+				// TOP PUZZLE: BLUE CIRCLE + YELLOW PENTAGON (20)
+				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.YELLOW_TRIANGLE, 3),
+						new Item(ItemID.ORANGE_PENTAGON, 5),
+						new Item(ItemID.YELLOW_SQUARE, 6),
+						new Item(ItemID.GREEN_TRIANGLE, 6),
+						new Item(ItemID.YELLOW_PENTAGON, 2),
+						new Item(ItemID.GREEN_SQUARE, 8),
+						new Item(ItemID.INDIGO_TRIANGLE, 4),
+						new Item(ItemID.GREEN_PENTAGON, 5),
+						new Item(ItemID.BLUE_SQUARE, 4),
+						new Item(ItemID.VIOLET_TRIANGLE, 2),
+						new Item(ItemID.INDIGO_SQUARE, 4),
+						new Item(ItemID.BLUE_PENTAGON, 1),
+						new Item(ItemID.VIOLET_SQUARE, 1),
+						new Item(ItemID.INDIGO_PENTAGON, 3)
+					),
+					20,
+					7,
+					List.of(ItemID.INDIGO_TRIANGLE, ItemID.INDIGO_SQUARE),
+					List.of(ItemID.RED_CIRCLE, ItemID.RED_TRIANGLE, ItemID.RED_SQUARE, ItemID.RED_PENTAGON, ItemID.ORANGE_CIRCLE, ItemID.ORANGE_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.GREEN_CIRCLE, ItemID.BLUE_CIRCLE, ItemID.INDIGO_CIRCLE)
 				)
 			);
 		}

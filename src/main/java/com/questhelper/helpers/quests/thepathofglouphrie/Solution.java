@@ -28,6 +28,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -48,7 +49,17 @@ public class Solution
 	public ItemRequirement puzzle2UpperRequirement;
 	public ItemRequirement puzzle2LowerRequirement;
 
+	public static boolean inventoryHas(final List<Item> haystack, int needle) {
+		for (var item : haystack) {
+			if (item.getId() == needle) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void load(Client client, List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue,
+					 final HashMap<Integer, ItemRequirement> discs,
 					 final HashMap<Integer, ItemRequirement> valueToRequirement,
 					 final HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement,
 					 final HashMap<Integer, Integer> discToValue,
@@ -65,10 +76,17 @@ public class Solution
 		}
 
 		puzzleNeeds.clear();
+		toExchange.clear();
 
 		if (!puzzle1Requirement.check(client, false, items))
 		{
 			puzzleNeeds.add(puzzle1Requirement);
+			var singleDiscExchange = valuePossibleSingleDiscExchangesRequirements.get(puzzle1SolutionValue).stream().filter(requirement -> inventoryHas(items, requirement.getId())).collect(Collectors.toUnmodifiableList());
+			if (!singleDiscExchange.isEmpty())
+			{
+				// There's a possible exchange to get a partial solution
+				toExchange.add(singleDiscExchange.get(0));
+			}
 			return;
 		}
 
@@ -130,14 +148,14 @@ public class Solution
 			}
 		}
 
-
 		if (partialPuzzle2Solution != null)
 		{
+			// Found a decent exchanger solution
 			var itemsAfterPuzzle2 = new ArrayList<Item>();
 
 			for (var item : itemsAfterPuzzle1)
 			{
-				if (consumed.getAllIds().contains(item.getId()))
+				if (consumed != null && consumed.getAllIds().contains(item.getId()))
 				{
 					if (item.getQuantity() > 1)
 					{
@@ -167,6 +185,64 @@ public class Solution
 					if (!singleDiscExchange.isEmpty())
 					{
 						toExchange.add(singleDiscExchange.get(0));
+						return;
+					}
+				}
+			}
+		}
+
+		if (partialPuzzle2Solution == null)
+		{
+			// Second pass, try to find a shit exchanger solution
+
+			var looseNeeds = new HashSet<Integer>();
+			var looseExchanges = new HashSet<Integer>();
+			for (var possiblePuzzle2Solution : possiblePuzzle2Solutions)
+			{
+				var req1 = possiblePuzzle2Solution.getItemRequirements().get(0);
+				var req2 = possiblePuzzle2Solution.getItemRequirements().get(1);
+				var req1Value = discToValue.get(req1.getId());
+
+				var singleDiscExchange = valuePossibleSingleDiscExchangesRequirements.get(req1Value)
+					.stream().filter(requirement -> !req2.getAllIds().contains(requirement.getId()))
+					.filter(requirement -> inventoryHas(items, requirement.getId())).collect(Collectors.toUnmodifiableList());
+				if (!singleDiscExchange.isEmpty())
+				{
+					looseNeeds.addAll(req1.getAllIds());
+					for (var ex : singleDiscExchange) {
+						looseExchanges.addAll(ex.getAllIds());
+					}
+				}
+
+				var req2Value = discToValue.get(req2.getId());
+
+				singleDiscExchange = valuePossibleSingleDiscExchangesRequirements.get(req2Value)
+					.stream().filter(requirement -> !req1.getAllIds().contains(requirement.getId()))
+					.filter(requirement -> inventoryHas(items, requirement.getId())).collect(Collectors.toUnmodifiableList());
+				if (!singleDiscExchange.isEmpty())
+				{
+					looseNeeds.addAll(req2.getAllIds());
+					for (var ex : singleDiscExchange) {
+						looseExchanges.addAll(ex.getAllIds());
+					}
+				}
+			}
+
+			if (!looseNeeds.isEmpty() && !looseExchanges.isEmpty())
+			{
+				toExchange.clear();
+				for (var id : looseExchanges) {
+					var itemReq = discs.get(id);
+					if (itemReq != null) {
+						toExchange.add(itemReq);
+					}
+				}
+
+				puzzleNeeds.clear();
+				for (var id : looseNeeds) {
+					var itemReq = discs.get(id);
+					if (itemReq != null) {
+						puzzleNeeds.add(itemReq);
 					}
 				}
 			}

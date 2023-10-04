@@ -469,19 +469,19 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 		for (var puzzleNeed : solution.puzzleNeeds)
 		{
-			if (puzzleNeed.getId() == exchangeResultTL)
+			if (puzzleNeed.getAllIds().contains(exchangeResultTL))
 			{
 				return Optional.of(Pair.of(849, 21));
 			}
-			if (puzzleNeed.getId() == exchangeResultTR)
+			if (puzzleNeed.getAllIds().contains(exchangeResultTR))
 			{
 				return Optional.of(Pair.of(849, 24));
 			}
-			if (puzzleNeed.getId() == exchangeResultBL)
+			if (puzzleNeed.getAllIds().contains(exchangeResultBL))
 			{
 				return Optional.of(Pair.of(849, 27));
 			}
-			if (puzzleNeed.getId() == exchangeResultBR)
+			if (puzzleNeed.getAllIds().contains(exchangeResultBR))
 			{
 				return Optional.of(Pair.of(849, 30));
 			}

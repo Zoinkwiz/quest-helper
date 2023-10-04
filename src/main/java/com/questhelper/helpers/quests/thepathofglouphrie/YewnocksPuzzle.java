@@ -692,7 +692,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			// Exchanger widget is open
 			var exchangeInput1 = getWidgetItemId(849, 8);
 			var exchangeInput2 = getWidgetItemId(849, 13);
-			var exchangeInput3 = getWidgetItemId(849, 14);
+			var exchangeInput3 = getWidgetItemId(849, 18);
 			List<Integer> exchangeInputs = Stream.of(exchangeInput1, exchangeInput2, exchangeInput3).filter(itemId -> itemId > 0).collect(Collectors.toUnmodifiableList());
 
 			// TODO: Validate that the correct disc is in one of the 3 exchange slots (need their widget IDs or varbits)

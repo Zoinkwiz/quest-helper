@@ -80,10 +80,10 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	 * Value to list of possible requirements using exactly 2 different
 	 */
 	private final HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement = new HashMap<>();
+	private final HashMap<Integer, List<List<Integer>>> valuePossibleExchanges = new HashMap<>();
 	/**
 	 * Given a Value, what single disc can be used to exchange for it
 	 */
-	private final HashMap<Integer, List<List<Integer>>> valuePossibleExchanges = new HashMap<>();
 	private final HashMap<Integer, HashSet<Integer>> valuePossibleSingleDiscExchanges = new HashMap<>();
 	private final HashMap<Integer, List<ItemRequirement>> valuePossibleSingleDiscExchangesRequirements = new HashMap<>();
 	private final Solution solution = new Solution();
@@ -110,10 +110,10 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		loadValueToRequirement(discs, valueToRequirement);
 		loadDiscToValue(discToValue);
 		loadValueToDoubleDiscRequirement(valueToRequirement, valueToDoubleDiscRequirement);
-		loadValuePossibleExchanges(discToValue, valueToRequirement, valuePossibleExchanges, valuePossibleSingleDiscExchanges, valuePossibleSingleDiscExchangesRequirements);
+		loadValuePossibleExchanges(valueToRequirement, valuePossibleExchanges, valuePossibleSingleDiscExchanges, valuePossibleSingleDiscExchangesRequirements);
 	}
 
-	static public void loadValuePossibleExchanges(final HashMap<Integer, Integer> discToValue, final HashMap<Integer, ItemRequirement> valueToRequirement,
+	static public void loadValuePossibleExchanges(final HashMap<Integer, ItemRequirement> valueToRequirement,
 												  HashMap<Integer, List<List<Integer>>> valuePossibleExchanges, HashMap<Integer, HashSet<Integer>> valuePossibleSingleDiscExchanges, HashMap<Integer, List<ItemRequirement>> valuePossibleSingleDiscExchangesRequirements)
 	{
 		var possibleNumbers = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 16, 18, 20, 21, 24, 25, 28, 30, 35};

@@ -91,7 +91,7 @@ public class SolutionTest extends MockedTest
 		loadValueToRequirement(discs, valueToRequirement);
 		loadDiscToValue(discToValue);
 		loadValueToDoubleDiscRequirement(valueToRequirement, valueToDoubleDiscRequirement);
-		loadValuePossibleExchanges(discToValue, valueToRequirement, valuePossibleExchanges, valuePossibleSingleDiscExchanges, valuePossibleSingleDiscExchangesRequirements);
+		loadValuePossibleExchanges(valueToRequirement, valuePossibleExchanges, valuePossibleSingleDiscExchanges, valuePossibleSingleDiscExchangesRequirements);
 
 		solution.reset();
 	}

@@ -712,7 +712,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			if (exchangeInputs.size() == 1)
 			{
 				var idInExchanger = exchangeInputs.get(0);
-				if (exchangeInputs.contains(idInExchanger))
+				if (firstExchangeIds.contains(idInExchanger))
 				{
 					// There's one disc in the exchanger & it's the correct one
 

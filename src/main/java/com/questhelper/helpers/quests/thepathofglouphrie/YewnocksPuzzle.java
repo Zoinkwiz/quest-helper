@@ -362,7 +362,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(final ItemContainerChanged event)
+	public void onItemContainerChanged(final ItemContainerChanged ignoredEvent)
 	{
 		// TODO: don't update steps, just re-do the calculation & if its state has changed, then update steps
 		// TODO: optimize
@@ -370,7 +370,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	}
 
 	@Subscribe
-	public void onGameTick(final GameTick event)
+	public void onGameTick(final GameTick ignoredEvent)
 	{
 		// TODO: optimize
 		updateSteps();

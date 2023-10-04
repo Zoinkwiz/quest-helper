@@ -54,14 +54,16 @@ import net.runelite.client.eventbus.Subscribe;
 @Slf4j
 public class YewnocksPuzzle extends DetailedOwnerStep
 {
+	/**
+	 * Region ID of the storeroom this puzzle takes place in
+	 */
 	private static final int STOREROOM_REGION = 11074;
-	private final int PUZZLE_SELECTED_DISC_VARP_ID = 856;
-	private final int PUZZLE1_INSERTED_DISC_VARP_ID = 3994;
-	private final int PUZZLE2_UPPER_INSERTED_DISC_VARP_ID = 3995;
-	private final int PUZZLE2_LOWER_INSERTED_DISC_VARP_ID = 3996;
-	private final int PUZZLE1_LEFT_VARP_ID = 3997;
-	private final int PUZZLE1_RIGHT_VARP_ID = 3998;
-	private final int PUZZLE2_VARP_ID = 3999;
+	private static final int PUZZLE1_INSERTED_DISC_VARP_ID = 3994;
+	private static final int PUZZLE2_UPPER_INSERTED_DISC_VARP_ID = 3995;
+	private static final int PUZZLE2_LOWER_INSERTED_DISC_VARP_ID = 3996;
+	private static final int PUZZLE1_LEFT_VARP_ID = 3997;
+	private static final int PUZZLE1_RIGHT_VARP_ID = 3998;
+	private static final int PUZZLE2_VARP_ID = 3999;
 	/**
 	 * ItemID to ItemRequirement map
 	 */

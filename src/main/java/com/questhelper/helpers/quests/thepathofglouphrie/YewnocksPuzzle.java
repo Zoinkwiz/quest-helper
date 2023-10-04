@@ -24,24 +24,27 @@
  */
 package com.questhelper.helpers.quests.thepathofglouphrie;
 
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.WidgetStep;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import javax.annotation.Nullable;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
@@ -49,6 +52,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
+import org.apache.commons.lang3.tuple.Pair;
 
 
 @Slf4j
@@ -87,17 +91,22 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	private final HashMap<Integer, HashSet<Integer>> valuePossibleSingleDiscExchanges = new HashMap<>();
 	private final HashMap<Integer, List<ItemRequirement>> valuePossibleSingleDiscExchangesRequirements = new HashMap<>();
 	private final Solution solution = new Solution();
-	private ObjectStep clickMachine;
-	private ObjectStep clickMachineOnce;
 	private int puzzle1LeftItemID = -1;
 	private int puzzle1RightItemID = -1;
 	private int puzzle2ItemID = -1;
-	private WidgetPresenceRequirement widgetOpen;
-	private WidgetPresenceRequirement exchangerWidgetOpen;
-	private ItemStep selectDisc;
-	private ItemStep exchangeDisc;
 	private ObjectStep getMoreDiscs;
+	private ObjectStep clickMachine;
+	private ObjectStep clickMachineOnce;
 	private ObjectStep useExchanger;
+	private ItemStep machineInsertDisc;
+	private WidgetStep machineReset;
+	private WidgetStep machineSubmit;
+	private ItemStep exchangerInsertDisc;
+	private WidgetStep exchangerExchange;
+	private DetailedQuestStep exchangerConfirm;
+
+	private WidgetPresenceRequirement machineOpen;
+	private WidgetPresenceRequirement exchangerOpen;
 
 	public YewnocksPuzzle(ThePathOfGlouphrie pog)
 	{
@@ -297,14 +306,31 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	protected void setupSteps()
 	{
 		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(34, 31), "Get more discs from the chests outside. You can drop discs before you get more. You can also use the exchanger next to Yewnock's machine.", true);
-		useExchanger = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_EXCHANGER, regionPoint(22, 33), "A solution has been calculated, exit the machine interface & click Yewnock's exchanger.");
-		clickMachine = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine. If you run out of discs you can get new ones from the regular chests in the previous room.");
-		clickMachineOnce = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine to calculate a solution.");
-		selectDisc = new DiscInsertionStep(getQuestHelper(), "Select the highlighted disc in your inventory.");
-		exchangeDisc = new DiscInsertionStep(getQuestHelper(), "Select one of the highlighted discs in your inventory.");
 
-		widgetOpen = new WidgetPresenceRequirement(848, 0);
-		exchangerWidgetOpen = new WidgetPresenceRequirement(849, 0);
+		useExchanger = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_EXCHANGER, regionPoint(22, 33), "A solution has been calculated, exit the machine interface & click Yewnock's exchanger.");
+		useExchanger.addWidgetHighlight(848, 27); // TODO: Verify that this is the "exit" button in the Machine widget
+
+		clickMachine = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32),
+			"A solution has been found, click Yewnock's machine and insert the discs as prompted.");
+		clickMachine.addWidgetHighlight(849, 41);
+
+		clickMachineOnce = new ObjectStep(getQuestHelper(), ObjectID.YEWNOCKS_MACHINE_49662, regionPoint(22, 32), "Operate Yewnock's machine to calculate a solution.");
+
+		machineInsertDisc = new DiscInsertionStep(getQuestHelper(), "Insert the highlighted disc into the highlighted slot.");
+		machineReset = new WidgetStep(getQuestHelper(),
+			"An incorrect disc has been inserted into the machine, click the reset button & follow the instructions.",
+			848, 25);
+		machineSubmit = new WidgetStep(getQuestHelper(),
+			"Click the submit button.",
+			848, 26);
+
+		exchangerInsertDisc = new DiscInsertionStep(getQuestHelper(), "");
+		exchangerExchange = new WidgetStep(getQuestHelper(), "", 849, 40);
+		exchangerConfirm = new DetailedQuestStep(getQuestHelper(), "Click the confirm button.");
+		exchangerConfirm.addWidgetHighlight(849, 36);
+
+		machineOpen = new WidgetPresenceRequirement(848, 0);
+		exchangerOpen = new WidgetPresenceRequirement(849, 0);
 	}
 
 	@Subscribe
@@ -360,213 +386,330 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		solution.reset();
 	}
 
-	@Nullable
-	private Integer getWidgetItemId(int groupId, int childId)
+	private int getWidgetItemId(int groupId, int childId)
 	{
 		var widget = client.getWidget(groupId, childId);
 		if (widget == null)
 		{
-			return null;
+			return -1;
 		}
 
-		var itemId = widget.getItemId();
-		if (itemId == -1)
+		return widget.getItemId();
+	}
+
+	/**
+	 * This function will add a widget highlight to the slot where it finds a good exchange, if any
+	 *
+	 * @return a pair of widget group + child IDs if there is an exchange we're looking for in one of the slots
+	 */
+	private Optional<Pair<Integer, Integer>> findGoodExchange()
+	{
+		var exchangeResultTL = getWidgetItemId(849, 21);
+		var exchangeResultTR = getWidgetItemId(849, 24);
+		var exchangeResultBL = getWidgetItemId(849, 27);
+		var exchangeResultBR = getWidgetItemId(849, 30);
+
+		for (var puzzleNeed : solution.puzzleNeeds)
 		{
-			return null;
+			if (puzzleNeed.getId() == exchangeResultTL)
+			{
+				return Optional.of(Pair.of(849, 21));
+			}
+			if (puzzleNeed.getId() == exchangeResultTR)
+			{
+				return Optional.of(Pair.of(849, 24));
+			}
+			if (puzzleNeed.getId() == exchangeResultBL)
+			{
+				return Optional.of(Pair.of(849, 27));
+			}
+			if (puzzleNeed.getId() == exchangeResultBR)
+			{
+				return Optional.of(Pair.of(849, 30));
+			}
 		}
-		return itemId;
+
+		return Optional.empty();
+	}
+
+	/**
+	 * @return true if the user has opened Yewnock's machine
+	 */
+	private boolean hasOpenedMachine()
+	{
+		return puzzle1LeftItemID > 0 && puzzle1RightItemID > 0 && puzzle2ItemID > 0;
+	}
+
+	/**
+	 * @param inventoryId ID of the inventory to try to get discs from
+	 * @return a list of discs as Items, or an empty list if inventory wasn't found
+	 */
+	@Nonnull
+	private List<Item> getDiscs(InventoryID inventoryId)
+	{
+		var itemContainer = client.getItemContainer(inventoryId);
+		if (itemContainer == null)
+		{
+			// Inventory not loaded
+			return List.of();
+		}
+
+		return Stream.of(itemContainer.getItems()).filter(i -> discs.containsKey(i.getId())).collect(Collectors.toUnmodifiableList());
+	}
+
+	/**
+	 * Get all discs in the player's inventory & try to make a solution for the puzzle from it
+	 * Will early out if the puzzle values are not known (i.e. if the player has not clicked the machine yet)
+	 */
+	private void refreshSolution()
+	{
+		if (puzzle1LeftItemID <= 0 || puzzle1RightItemID <= 0 || puzzle2ItemID <= 0)
+		{
+			// Couldn't find the solution required, this shouldn't be the case when the widget is open
+			return;
+		}
+
+
+		var puzzle2SolutionValue = discToValue.get(puzzle2ItemID);
+		if (puzzle2SolutionValue == null)
+		{
+			// The item ID found in the puzzle2 box was invalid, not sure how to recover
+			return;
+		}
+
+		var puzzle1SolutionValue1 = discToValue.get(puzzle1LeftItemID);
+		var puzzle1SolutionValue2 = discToValue.get(puzzle1RightItemID);
+		if (puzzle1SolutionValue1 == null || puzzle1SolutionValue2 == null)
+		{
+			// One of the item IDs found in the puzzle1 boxes were invalid, not sure how to recover
+			return;
+		}
+
+		var items = getDiscs(InventoryID.INVENTORY);
+
+		var puzzle1SolutionValue = puzzle1SolutionValue1 + puzzle1SolutionValue2;
+		// Try to figure out a solution
+		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue,
+			valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 	}
 
 	protected void updateSteps()
 	{
-		if (!widgetOpen.check(client))
+		var numDiscs = getDiscs(InventoryID.INVENTORY).stream().mapToInt(Item::getQuantity).sum();
+		if (numDiscs < 3)
+		{
+			// Player has fewer than 3 discs, no solution is possible
+			// Ask the player to get discs at the chests
+			startUpStep(getMoreDiscs);
+			return;
+		}
+
+		if (!hasOpenedMachine())
+		{
+			// Player hasn't clicked the machine yet, so we haven't tried calculating a solution
+			// Ask the player to click the machine
+			startUpStep(clickMachineOnce);
+			return;
+		}
+
+		if (!solution.isGood())
 		{
 			solution.reset();
-
-			ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
-			if (itemContainer != null)
-			{
-				int count = 0;
-
-				for (var item : itemContainer.getItems())
-				{
-					var shape = discs.get(item.getId());
-					if (shape != null)
-					{
-						count += item.getQuantity();
-					}
-				}
-
-				if (count < 3)
-				{
-					startUpStep(getMoreDiscs);
-					return;
-				}
-			}
-
-			if (puzzle1LeftItemID <= 0 || puzzle1RightItemID <= 0 || puzzle2ItemID <= 0)
-			{
-				startUpStep(clickMachineOnce);
-				return;
-			}
-
-			// startUpStep(clickMachine);
-
-			// return;
+			refreshSolution();
 		}
 
-		if (!solution.isGood())
+		if (solution.isGood())
 		{
-			ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
-			var items = new ArrayList<Item>();
-			if (itemContainer != null)
+			// A good solution has been calculated with the discs the player has in their inventory
+			if (!machineOpen.check(client))
 			{
-				for (var item : itemContainer.getItems())
-				{
-					var shape = discs.get(item.getId());
-					if (shape != null)
-					{
-						items.add(item);
-					}
-				}
-			}
-
-			if (puzzle1LeftItemID <= 0 || puzzle1RightItemID <= 0 || puzzle2ItemID <= 0)
-			{
-				// Couldn't find the solution required, this shouldn't be the case when the widget is open
-				return;
-			}
-
-			var puzzle2SolutionValue = discToValue.get(puzzle2ItemID);
-			if (puzzle2SolutionValue == null)
-			{
-				// The item ID found in the puzzle2 box was invalid, not sure how to recover
-				return;
-			}
-
-			var puzzle1SolutionValue1 = discToValue.get(puzzle1LeftItemID);
-			var puzzle1SolutionValue2 = discToValue.get(puzzle1RightItemID);
-			if (puzzle1SolutionValue1 == null || puzzle1SolutionValue2 == null)
-			{
-				// One of the item IDs found in the puzzle1 boxes were invalid, not sure how to recover
-				return;
-			}
-
-			var puzzle1SolutionValue = puzzle1SolutionValue1 + puzzle1SolutionValue2;
-			// Try to figure out a solution
-			solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue,
-				valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
-		}
-
-		if (!solution.isGood())
-		{
-			List<? extends Requirement> a = solution.puzzleNeeds;
-			// getMoreDiscs.setRequirements(solution.puzzleNeeds.stream().map(Requirement::from).collect(Collectors.toList()));
-			getMoreDiscs.setRequirements(solution.puzzleNeeds);
-
-			if (exchangerWidgetOpen.check(client))
-			{
-				exchangeDisc.clearWidgetHighlights();
-				// Exchanger widget is open
-				var exchangeResultTL = getWidgetItemId(849, 21);
-				var exchangeResultTR = getWidgetItemId(849, 24);
-				var exchangeResultBL = getWidgetItemId(849, 27);
-				var exchangeResultBR = getWidgetItemId(849, 30);
-				boolean foundGoodExchange = false;
-				for (var puzzleNeed : solution.puzzleNeeds)
-				{
-					if (exchangeResultTL != null && puzzleNeed.getId() == exchangeResultTL)
-					{
-						exchangeDisc.addWidgetHighlight(849, 21);
-						foundGoodExchange = true;
-					}
-					if (exchangeResultTR != null && puzzleNeed.getId() == exchangeResultTR)
-					{
-						exchangeDisc.addWidgetHighlight(849, 24);
-						foundGoodExchange = true;
-					}
-					if (exchangeResultBL != null && puzzleNeed.getId() == exchangeResultBL)
-					{
-						exchangeDisc.addWidgetHighlight(849, 27);
-						foundGoodExchange = true;
-					}
-					if (exchangeResultBR != null && puzzleNeed.getId() == exchangeResultBR)
-					{
-						exchangeDisc.addWidgetHighlight(849, 30);
-						foundGoodExchange = true;
-					}
-				}
-
-				if (foundGoodExchange)
-				{
-					// highlight confirm button
-					exchangeDisc.addWidgetHighlight(849, 36);
-				}
-				exchangeDisc.setRequirements(solution.toExchange);
-				startUpStep(exchangeDisc);
-			}
-			else
-			{
-				if (solution.toExchange.isEmpty())
-				{
-					// getMoreDiscs.setText("Get more discs at the marked chests. You need to drop all your discs first before opening the chest.");
-					startUpStep(getMoreDiscs);
-				}
-				else
-				{
-					startUpStep(useExchanger);
-				}
-			}
-		}
-		else
-		{
-			if (!widgetOpen.check(client))
-			{
+				// Prompt the player to open the machine
 				startUpStep(clickMachine);
 				return;
 			}
-			if (!solution.puzzle1Requirement.getAllIds().contains(client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID)))
+
+			var puzzle1InsertedDisc = client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID);
+			var puzzle2UpperInsertedDisc = client.getVarpValue(PUZZLE2_UPPER_INSERTED_DISC_VARP_ID);
+			var puzzle2LowerInsertedDisc = client.getVarpValue(PUZZLE2_LOWER_INSERTED_DISC_VARP_ID);
+
+			if (!solution.puzzle1Requirement.getAllIds().contains(puzzle1InsertedDisc))
 			{
-				// Solve puzzle 1 first
-				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
-				selectDisc.setRequirements(List.of(solution.puzzle1Requirement));
-				selectDisc.clearWidgetHighlights();
-				// FOR PUZZLE 1 SOLUTION
-				selectDisc.addWidgetHighlight(848, 19);
+				if (puzzle1InsertedDisc > 0)
+				{
+					// A disc has been inserted in the puzzle 1 slot, but it's not the correct one
+					// Prompt the player to reset the machine
+					startUpStep(machineReset);
+					return;
+				}
+
+				// Puzzle 1 slot is empty
+				// Prompt the player to insert the disc into the puzzle 1 slot
+				machineInsertDisc.setRequirements(List.of(solution.puzzle1Requirement));
+				machineInsertDisc.clearWidgetHighlights();
+				machineInsertDisc.addWidgetHighlight(848, 19);
+				startUpStep(machineInsertDisc);
+				return;
 			}
-			else if (!solution.puzzle2UpperRequirement.getAllIds().contains(client.getVarpValue(PUZZLE2_UPPER_INSERTED_DISC_VARP_ID)))
+
+			if (!solution.puzzle2UpperRequirement.getAllIds().contains(puzzle2UpperInsertedDisc))
 			{
-				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
-				selectDisc.setRequirements(List.of(solution.puzzle2UpperRequirement));
-				selectDisc.clearWidgetHighlights();
-				// FOR PUZZLE 2 UPPER SOLUTION
-				selectDisc.addWidgetHighlight(848, 20);
-				// Solve puzzle 2 upper
+				if (puzzle2UpperInsertedDisc > 0)
+				{
+					// A disc has been inserted in the puzzle 2 upper slot, but it's not the correct one
+					// Prompt the player to reset the machine
+					// NOTE: Technically we could allow all the puzzle 2 requirements in this slot, but I prefer
+					// to keep things simple for now
+					startUpStep(machineReset);
+					return;
+				}
+
+				// Puzzle 2 upper slot is empty
+				// Prompt the player to insert the disc into the puzzle 2 upper slot
+				machineInsertDisc.setRequirements(List.of(solution.puzzle2UpperRequirement));
+				machineInsertDisc.clearWidgetHighlights();
+				machineInsertDisc.addWidgetHighlight(848, 20);
+				startUpStep(machineInsertDisc);
+				return;
 			}
-			else if (!solution.puzzle2LowerRequirement.getAllIds().contains(client.getVarpValue(PUZZLE2_LOWER_INSERTED_DISC_VARP_ID)))
+
+			if (!solution.puzzle2LowerRequirement.getAllIds().contains(puzzle2LowerInsertedDisc))
 			{
-				selectDisc.setText("Insert the highlighted disc into the highlighted slot");
-				selectDisc.setRequirements(List.of(solution.puzzle2LowerRequirement));
-				selectDisc.clearWidgetHighlights();
-				// FOR PUZZLE 2 LOWER SOLUTION
-				selectDisc.addWidgetHighlight(848, 21);
+				if (puzzle2LowerInsertedDisc > 0)
+				{
+					// A disc has been inserted in the puzzle 2 lower slot, but it's not the correct one
+					// Prompt the player to reset the machine
+					// NOTE: Technically we could allow all the puzzle 2 requirements in this slot, but I prefer
+					// to keep things simple for now
+					startUpStep(machineReset);
+					return;
+				}
+
+				// Puzzle 2 lower slot is empty
+				// Prompt the player to insert the disc into the puzzle 2 lower slot
+				machineInsertDisc.setRequirements(List.of(solution.puzzle2LowerRequirement));
+				machineInsertDisc.clearWidgetHighlights();
+				machineInsertDisc.addWidgetHighlight(848, 21);
+				startUpStep(machineInsertDisc);
+				return;
 			}
-			else
-			{
-				// CLICK CONFIRM
-				selectDisc.setText("Click the submit button");
-				selectDisc.setRequirements(List.of());
-				selectDisc.clearWidgetHighlights();
-				selectDisc.addWidgetHighlight(848, 12);
-			}
-			startUpStep(selectDisc);
+
+			// All the puzzle slots contain the correct discs
+			// Prompt the player to click the submit button
+			startUpStep(machineSubmit);
+			return;
 		}
+
+		getMoreDiscs.setRequirements(solution.puzzleNeeds);
+
+		if (solution.puzzleNeeds.isEmpty())
+		{
+			// Something is wrong - if the solution is bad, there should be some sort of requirement
+			log.warn("No solution found for this puzzle at all, no clue how to proceed.");
+			startUpStep(getMoreDiscs);
+			return;
+		}
+
+		if (exchangerOpen.check(client))
+		{
+			// Exchanger widget is open
+
+			var goodExchange = findGoodExchange();
+			if (goodExchange.isPresent())
+			{
+				// There's a good exchange right now, highlight the confirm button
+				var goodExchangeWidget = goodExchange.get();
+
+				exchangerConfirm.clearWidgetHighlights();
+				// Highlight the confirm button
+				exchangerConfirm.addWidgetHighlight(849, 36);
+				// Highlight the widget with the good exchange
+				exchangerConfirm.addWidgetHighlight(goodExchangeWidget.getLeft(), goodExchangeWidget.getRight());
+				startUpStep(exchangerConfirm);
+				return;
+			}
+
+			exchangerInsertDisc.setRequirements(solution.toExchange);
+
+			// Exchanger widget is open
+			var exchangeInput1 = getWidgetItemId(849, 8);
+			var exchangeInput2 = getWidgetItemId(849, 13);
+			var exchangeInput3 = getWidgetItemId(849, 14);
+			List<Integer> exchangeInputs = Stream.of(exchangeInput1, exchangeInput2, exchangeInput3).filter(itemId -> itemId > 0).collect(Collectors.toUnmodifiableList());
+
+			// TODO: Validate that the correct disc is in one of the 3 exchange slots (need their widget IDs or varbits)
+			var firstExchange = solution.toExchange.get(0);
+			var firstExchangeIds = firstExchange.getAllIds();
+			if (exchangeInputs.isEmpty())
+			{
+				// There's no disc in the exchanger
+
+				// Highlight the first exchanger input
+				exchangerInsertDisc.clearWidgetHighlights();
+				exchangerInsertDisc.addWidgetHighlight(849, 8);
+				exchangerInsertDisc.setText("Insert the highlighted disc into the highlighted slot.");
+				startUpStep(exchangerInsertDisc);
+				return;
+			}
+
+			if (exchangeInputs.size() == 1 && firstExchangeIds.contains(exchangeInputs.get(0)))
+			{
+				// There's one disc in the exchanger & it's the correct one
+
+				var discWeAreLookingFor = solution.puzzleNeeds
+					.stream()
+					.map(ItemRequirement::getName)
+					.collect(Collectors.joining(" or "));
+				exchangerExchange.setText(String.format("Click the exchange button until a %s appears.", discWeAreLookingFor));
+				startUpStep(exchangerExchange);
+				return;
+			}
+
+			// Too many
+			// Highlight the reset button
+			exchangerInsertDisc.addWidgetHighlight(849, 34);
+			exchangerInsertDisc.setText("Found unexpected disc(s) in the exchange input, reset & follow the instructions.");
+			startUpStep(exchangerInsertDisc);
+			return;
+		}
+
+		if (solution.toExchange.isEmpty())
+		{
+			// No solution found, but no exchange figured out.
+			// Prompt the user to get more discs
+			startUpStep(getMoreDiscs);
+			return;
+		}
+
+		if (machineOpen.check(client))
+		{
+			// A partial solution is found, and it can be completed by using the exchanger
+			// The machine is open, prompt the user to close it then click the exchanger
+			useExchanger.setText("A solution has been calculated, exit the machine interface & click Yewnock's exchanger.");
+			startUpStep(useExchanger);
+			return;
+		}
+
+		// A partial solution is found, and it can be completed by using the exchanger
+		// The machine is not open, just prompt the user to click the exchanger
+		useExchanger.setText("A solution has been calculated, click Yewnock's exchanger to start exchanging discs.");
+		startUpStep(useExchanger);
 	}
 
 	@Override
 	public List<QuestStep> getSteps()
 	{
-		return List.of(clickMachine, clickMachineOnce, selectDisc, useExchanger, exchangeDisc, getMoreDiscs);
+		return List.of(
+			getMoreDiscs,
+			clickMachine,
+			clickMachineOnce,
+			useExchanger,
+			machineInsertDisc,
+			machineReset,
+			machineSubmit,
+			exchangerInsertDisc,
+			exchangerExchange,
+			exchangerConfirm
+		);
 	}
 
 	public static class SubsetSum

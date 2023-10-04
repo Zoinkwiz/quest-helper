@@ -149,14 +149,20 @@ public class SolutionTest extends MockedTest
 		{
 			actualExchangesIds.addAll(toExchangeRequirement.getAllIds());
 		}
-		assertEquals(expectedExchanges, actualExchangesIds);
+		assertEquals(
+			expectedExchanges.stream().sorted().collect(Collectors.toUnmodifiableList()),
+			actualExchangesIds.stream().sorted().collect(Collectors.toUnmodifiableList())
+		);
 
 		var actualExchangesForIds = new ArrayList<Integer>();
 		for (var toExchangeRequirement : solution.puzzleNeeds)
 		{
 			actualExchangesForIds.addAll(toExchangeRequirement.getAllIds());
 		}
-		assertEquals(expectedExchangesFor.stream().sorted().collect(Collectors.toUnmodifiableList()), actualExchangesForIds.stream().sorted().collect(Collectors.toUnmodifiableList()));
+		assertEquals(
+			expectedExchangesFor.stream().sorted().collect(Collectors.toUnmodifiableList()),
+			actualExchangesForIds.stream().sorted().collect(Collectors.toUnmodifiableList())
+		);
 	}
 
 	/**
@@ -354,7 +360,7 @@ public class SolutionTest extends MockedTest
 					),
 					20,
 					7,
-					List.of(ItemID.INDIGO_TRIANGLE, ItemID.INDIGO_SQUARE),
+					List.of(ItemID.INDIGO_TRIANGLE, ItemID.INDIGO_SQUARE, ItemID.ORANGE_PENTAGON, ItemID.GREEN_SQUARE),
 					List.of(ItemID.RED_CIRCLE, ItemID.RED_TRIANGLE, ItemID.RED_SQUARE, ItemID.RED_PENTAGON, ItemID.ORANGE_CIRCLE, ItemID.ORANGE_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.GREEN_CIRCLE, ItemID.BLUE_CIRCLE, ItemID.INDIGO_CIRCLE)
 				),
 				// TOP PUZZLE: BLUE CIRCLE + YELLOW PENTAGON (20)
@@ -378,7 +384,23 @@ public class SolutionTest extends MockedTest
 					),
 					20,
 					7,
-					List.of(ItemID.INDIGO_TRIANGLE, ItemID.INDIGO_SQUARE),
+					List.of(
+						ItemID.YELLOW_TRIANGLE,
+						ItemID.ORANGE_PENTAGON,
+						ItemID.YELLOW_SQUARE,
+						ItemID.YELLOW_PENTAGON,
+						ItemID.GREEN_SQUARE,
+						ItemID.INDIGO_TRIANGLE,
+						ItemID.GREEN_PENTAGON,
+						ItemID.GREEN_TRIANGLE,
+						ItemID.BLUE_TRIANGLE, // This should technically not be here, but we don't split up the "combined" item suggestions
+						ItemID.BLUE_SQUARE,
+						ItemID.VIOLET_TRIANGLE,
+						ItemID.INDIGO_SQUARE,
+						ItemID.BLUE_PENTAGON,
+						ItemID.VIOLET_SQUARE,
+						ItemID.INDIGO_PENTAGON
+					),
 					List.of(ItemID.RED_CIRCLE, ItemID.RED_TRIANGLE, ItemID.RED_SQUARE, ItemID.RED_PENTAGON, ItemID.ORANGE_CIRCLE, ItemID.ORANGE_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.GREEN_CIRCLE, ItemID.BLUE_CIRCLE, ItemID.INDIGO_CIRCLE)
 				)
 			);

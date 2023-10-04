@@ -104,6 +104,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	private ItemStep exchangerInsertDisc;
 	private WidgetStep exchangerExchange;
 	private DetailedQuestStep exchangerConfirm;
+	private WidgetStep exchangerReset;
 
 	private WidgetPresenceRequirement machineOpen;
 	private WidgetPresenceRequirement exchangerOpen;
@@ -324,10 +325,12 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			"Click the submit button.",
 			848, 26);
 
-		exchangerInsertDisc = new DiscInsertionStep(getQuestHelper(), "");
+		exchangerInsertDisc = new DiscInsertionStep(getQuestHelper(), "Insert the highlighted disc into the highlighted slot.");
 		exchangerExchange = new WidgetStep(getQuestHelper(), "", 849, 40);
 		exchangerConfirm = new DetailedQuestStep(getQuestHelper(), "Click the confirm button.");
 		exchangerConfirm.addWidgetHighlight(849, 36);
+		exchangerReset = new WidgetStep(getQuestHelper(), "Found unexpected disc(s) in the exchange input, reset & follow the instructions.");
+		exchangerReset.addWidgetHighlight(849, 34);
 
 		machineOpen = new WidgetPresenceRequirement(848, 0);
 		exchangerOpen = new WidgetPresenceRequirement(849, 0);
@@ -646,7 +649,6 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				// Highlight the first exchanger input
 				exchangerInsertDisc.clearWidgetHighlights();
 				exchangerInsertDisc.addWidgetHighlight(849, 8);
-				exchangerInsertDisc.setText("Insert the highlighted disc into the highlighted slot.");
 				startUpStep(exchangerInsertDisc);
 				return;
 			}
@@ -666,9 +668,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 			// Too many
 			// Highlight the reset button
-			exchangerInsertDisc.addWidgetHighlight(849, 34);
-			exchangerInsertDisc.setText("Found unexpected disc(s) in the exchange input, reset & follow the instructions.");
-			startUpStep(exchangerInsertDisc);
+			startUpStep(exchangerReset);
 			return;
 		}
 
@@ -708,7 +708,8 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			machineSubmit,
 			exchangerInsertDisc,
 			exchangerExchange,
-			exchangerConfirm
+			exchangerConfirm,
+			exchangerReset
 		);
 	}
 

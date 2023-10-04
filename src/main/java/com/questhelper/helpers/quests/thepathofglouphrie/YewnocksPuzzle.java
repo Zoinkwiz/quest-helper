@@ -186,33 +186,88 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 	public static void loadDiscs(HashMap<Integer, ItemRequirement> discs)
 	{
+		// 9597
 		discs.put(ItemID.RED_CIRCLE, new ItemRequirement("Red circle", ItemID.RED_CIRCLE).highlighted());
+
+		// 9601
 		discs.put(ItemID.ORANGE_CIRCLE, new ItemRequirement("Orange circle", ItemID.ORANGE_CIRCLE).highlighted());
+
+		// 9605
 		discs.put(ItemID.YELLOW_CIRCLE, new ItemRequirement("Yellow circle", ItemID.YELLOW_CIRCLE).highlighted());
+
+		// 9609
 		discs.put(ItemID.GREEN_CIRCLE, new ItemRequirement("Green circle", ItemID.GREEN_CIRCLE).highlighted());
+
+		// 9613
 		discs.put(ItemID.BLUE_CIRCLE, new ItemRequirement("Blue circle", ItemID.BLUE_CIRCLE).highlighted());
+
+		// 9617
 		discs.put(ItemID.INDIGO_CIRCLE, new ItemRequirement("Indigo circle", ItemID.INDIGO_CIRCLE).highlighted());
+
+		// 9621
 		discs.put(ItemID.VIOLET_CIRCLE, new ItemRequirement("Violet circle", ItemID.VIOLET_CIRCLE).highlighted());
+
+		// 9598
 		discs.put(ItemID.RED_TRIANGLE, new ItemRequirement("Red triangle", ItemID.RED_TRIANGLE).highlighted());
+
+		// 9602
 		discs.put(ItemID.ORANGE_TRIANGLE, new ItemRequirement("Orange triangle", ItemID.ORANGE_TRIANGLE).highlighted());
+
+		// 9606
 		discs.put(ItemID.YELLOW_TRIANGLE, new ItemRequirement("Yellow triangle", ItemID.YELLOW_TRIANGLE).highlighted());
+
+		// 9610
 		discs.put(ItemID.GREEN_TRIANGLE, new ItemRequirement("Green triangle", ItemID.GREEN_TRIANGLE).highlighted());
+
+		// 9614
 		discs.put(ItemID.BLUE_TRIANGLE, new ItemRequirement("Blue triangle", ItemID.BLUE_TRIANGLE).highlighted());
+
+		// 9618
 		discs.put(ItemID.INDIGO_TRIANGLE, new ItemRequirement("Indigo triangle", ItemID.INDIGO_TRIANGLE).highlighted());
+
+		// 9622
 		discs.put(ItemID.VIOLET_TRIANGLE, new ItemRequirement("Violet triangle", ItemID.VIOLET_TRIANGLE).highlighted());
+
+		// 9599
 		discs.put(ItemID.RED_SQUARE, new ItemRequirement("Red square", ItemID.RED_SQUARE).highlighted());
+
+		// 9603
 		discs.put(ItemID.ORANGE_SQUARE, new ItemRequirement("Orange square", ItemID.ORANGE_SQUARE).highlighted());
+
+		// 9607
 		discs.put(ItemID.YELLOW_SQUARE, new ItemRequirement("Yellow square", ItemID.YELLOW_SQUARE).highlighted());
+
+		// 9611
 		discs.put(ItemID.GREEN_SQUARE, new ItemRequirement("Green square", ItemID.GREEN_SQUARE).highlighted());
+
+		// 9615
 		discs.put(ItemID.BLUE_SQUARE, new ItemRequirement("Blue square", ItemID.BLUE_SQUARE).highlighted());
+
+		// 9619
 		discs.put(ItemID.INDIGO_SQUARE, new ItemRequirement("Indigo square", ItemID.INDIGO_SQUARE).highlighted());
+
+		// 9623
 		discs.put(ItemID.VIOLET_SQUARE, new ItemRequirement("Violet square", ItemID.VIOLET_SQUARE).highlighted());
+
+		// 9600
 		discs.put(ItemID.RED_PENTAGON, new ItemRequirement("Red pentagon", ItemID.RED_PENTAGON).highlighted());
+
+		// 9604
 		discs.put(ItemID.ORANGE_PENTAGON, new ItemRequirement("Orange pentagon", ItemID.ORANGE_PENTAGON).highlighted());
+
+		// 9608
 		discs.put(ItemID.YELLOW_PENTAGON, new ItemRequirement("Yellow pentagon", ItemID.YELLOW_PENTAGON).highlighted());
+
+		// 9612
 		discs.put(ItemID.GREEN_PENTAGON, new ItemRequirement("Green pentagon", ItemID.GREEN_PENTAGON).highlighted());
+
+		// 9616
 		discs.put(ItemID.BLUE_PENTAGON, new ItemRequirement("Blue pentagon", ItemID.BLUE_PENTAGON).highlighted());
+
+		// 9620
 		discs.put(ItemID.INDIGO_PENTAGON, new ItemRequirement("Indigo pentagon", ItemID.INDIGO_PENTAGON).highlighted());
+
+		// 9624
 		discs.put(ItemID.VIOLET_PENTAGON, new ItemRequirement("Violet pentagon", ItemID.VIOLET_PENTAGON).highlighted());
 	}
 

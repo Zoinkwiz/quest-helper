@@ -87,7 +87,6 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	private final HashMap<Integer, HashSet<Integer>> valuePossibleSingleDiscExchanges = new HashMap<>();
 	private final HashMap<Integer, List<ItemRequirement>> valuePossibleSingleDiscExchangesRequirements = new HashMap<>();
 	private final Solution solution = new Solution();
-	private final ThePathOfGlouphrie pog;
 	private ObjectStep clickMachine;
 	private ObjectStep clickMachineOnce;
 	private int puzzle1LeftItemID = -1;
@@ -103,8 +102,6 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	public YewnocksPuzzle(ThePathOfGlouphrie pog)
 	{
 		super(pog, "Operate Yewnock's machine & solve the puzzle. All items left on the ground are lost.");
-
-		this.pog = pog;
 
 		loadDiscs(discs);
 		loadValueToRequirement(discs, valueToRequirement);

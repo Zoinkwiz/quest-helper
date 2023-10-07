@@ -215,7 +215,7 @@ public class DetailedQuestStep extends QuestStep
 		requirements.clear();
 	}
 
-	public void setRequirements(List<Requirement> newRequirements)
+	public void setRequirements(List<? extends Requirement> newRequirements)
 	{
 		requirements.clear();
 		requirements.addAll(newRequirements);
@@ -538,9 +538,13 @@ public class DetailedQuestStep extends QuestStep
 			.forEach(line -> panelComponent.getChildren().add(line));
 	}
 
+	protected Widget getInventoryWidget() {
+		return client.getWidget(WidgetInfo.INVENTORY);
+	}
+
 	private void renderInventory(Graphics2D graphics)
 	{
-		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+		Widget inventoryWidget = getInventoryWidget();
 		if (inventoryWidget == null || inventoryWidget.isHidden())
 		{
 			return;

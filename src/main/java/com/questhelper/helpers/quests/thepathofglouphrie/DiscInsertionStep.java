@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2023, pajlada <https://github.com/pajlada>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.rewards;
+package com.questhelper.helpers.quests.thepathofglouphrie;
 
-import java.util.Locale;
-import javax.annotation.Nonnull;
-import net.runelite.api.Skill;
-import net.runelite.client.util.QuantityFormatter;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.ItemStep;
+import net.runelite.api.widgets.Widget;
 
-public class ExperienceReward implements Reward
+/**
+ * DiscInsertionStep is a custom ItemStep that allows highlighting items in the disc insertion widget that overlays the inventory
+ */
+public class DiscInsertionStep extends ItemStep
 {
-    private final Skill skill;
-    private final int experience;
-	/**
-	 * Set to true if this experience reward is provided in the form of a single-skill XP lamp
-	 */
-	private final boolean lamp;
-
-    public ExperienceReward(Skill skill, int experience)
-    {
-		this(skill, experience, false);
-    }
-
-	public ExperienceReward(Skill skill, int experience, boolean lamp)
+	public DiscInsertionStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
-		this.skill = skill;
-		this.experience = experience;
-		this.lamp = lamp;
+		super(questHelper, text, requirements);
 	}
 
-    @Nonnull
-    @Override
-    public RewardType rewardType()
-    {
-        return RewardType.EXPERIENCE;
-    }
-
-    @Nonnull
-    @Override
-    public String getDisplayText()
-    {
-		if (lamp) {
-			return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience Lamp";
-		} else {
-			return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience";
-		}
-    }
+	@Override
+	protected Widget getInventoryWidget()
+	{
+		return client.getWidget(852, 0);
+	}
 }

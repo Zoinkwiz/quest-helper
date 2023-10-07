@@ -222,6 +222,7 @@ public class QuestOrders
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE,
+		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 		QuestHelperQuest.LUNAR_DIPLOMACY,
 		QuestHelperQuest.KINGS_RANSOM,
 		QuestHelperQuest.KNIGHT_WAVES_TRAINING_GROUNDS,
@@ -494,6 +495,7 @@ public class QuestOrders
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition. (Miniquest)
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
+		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.BEAR_YOUR_SOUL,
@@ -699,6 +701,7 @@ public class QuestOrders
 		QuestHelperQuest.SLEEPING_GIANTS,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for future addition
+		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

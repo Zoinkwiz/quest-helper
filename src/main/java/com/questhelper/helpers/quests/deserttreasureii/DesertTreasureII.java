@@ -245,6 +245,11 @@ public class DesertTreasureII extends BasicQuestHelper
 		steps.put(38, goOperateGolemLastTime);
 		steps.put(40, goOperateGolemLastTime);
 
+		vardorvisSteps.setLockingCondition(finishedVardorvis);
+		whispererSteps.setLockingCondition(finishedWhisperer);
+		sucellusSteps.setLockingCondition(finishedSucellus);
+		perseriyaSteps.setLockingCondition(finishedPerseriya);
+
 		ConditionalStep findingTheFour = new ConditionalStep(this, vardorvisSteps);
 		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya, finishedSucellus), whispererSteps);
 		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya), sucellusSteps);
@@ -879,14 +884,20 @@ public class DesertTreasureII extends BasicQuestHelper
 				operateGolemFrostenhorn),
 			Arrays.asList(combatGear, allBursts),
 			Arrays.asList(senntistenTeleport)));
-		allSteps.add(new PanelDetails("Vardorvis",
+
+		PanelDetails vardorvisPanel = new PanelDetails("Vardorvis",
 			vardorvisSteps.getDisplaySteps(),
 			Arrays.asList(combatGear),
-			Arrays.asList(xericTalisman, freezes)));
-		allSteps.add(new PanelDetails("Perseriya",
+			Arrays.asList(xericTalisman, freezes));
+		vardorvisPanel.setLockingStep(vardorvisSteps);
+		allSteps.add(vardorvisPanel);
+
+		PanelDetails perseriyaPanel = new PanelDetails("Perseriya",
 			perseriyaSteps.getStartSteps(),
 			Arrays.asList(combatGear, facemask),
-			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
+			Arrays.asList(eyeTeleport, staminaPotions, arclight));
+		perseriyaPanel.setLockingStep(perseriyaSteps);
+		allSteps.add(perseriyaPanel);
 		allSteps.add(new PanelDetails("Perseriya - Room 1",
 			perseriyaSteps.getRoom1Steps(),
 			Arrays.asList(facemask),
@@ -903,18 +914,25 @@ public class DesertTreasureII extends BasicQuestHelper
 			perseriyaSteps.getBattleSteps(),
 			Arrays.asList(rangedCombatGear, shadowBurstRunes),
 			Arrays.asList(eyeTeleport, staminaPotions, food, prayerPotions)));
-		allSteps.add(new PanelDetails("Sucellus",
+
+		PanelDetails sucellusPanel = new PanelDetails("Sucellus",
 			sucellusSteps.getDisplaySteps(),
 			Arrays.asList(meleeCombatGear, food),
-			Arrays.asList(prayerPotions, staminaPotions, icyBasalt)));
-		allSteps.add(new PanelDetails("The Whisperer",
+			Arrays.asList(prayerPotions, staminaPotions, icyBasalt));
+		sucellusPanel.setLockingStep(sucellusSteps);
+		allSteps.add(sucellusPanel);
+
+		PanelDetails whispererPanel = new PanelDetails("The Whisperer",
 			whispererSteps.getDisplaySteps(),
 			Arrays.asList(magicCombatGear, ringOfVisibility, food),
-			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport)));
+			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport));
+		whispererPanel.setLockingStep(whispererSteps);
+		allSteps.add(whispererPanel);
 		allSteps.add(new PanelDetails("The Whisperer - Choir",
 			whispererSteps.getDisplayStepsSilentChoir(),
 			Arrays.asList(magicCombatGear, ringOfVisibility, food),
 			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport)));
+
 		allSteps.add(new PanelDetails("Secrets",
 			Arrays.asList(returnToDesertWithFinalMedallion, searchBedForHairClip, unlockCell,
 				getItemsFromCell, investigateAltar, fightMysteriousFigure, pickUpMedallion, enterAncientVault,

@@ -563,7 +563,7 @@ public class SucellusSteps extends ConditionalStep
 		defeatDukeSidebar = new DetailedQuestStep(getQuestHelper(), "Defeat the Duke. You must first wake him with two 'Arder-musca poison'.");
 		defeatDukeSidebar.addText("Make sure to avoid any of the enviromental effects, such as gas, lightning, and the Extremitys' vision.");
 		defeatDukeSidebar.addText("To make the poison, get 3 Arder mushrooms from the north-eastern corner, and 3 Musca from the north-western corner.");
-		defeatDukeSidebar.addText("Grab the pestle and mortar from the shelves east of the entrance, and a pickaxe from the west of it.");
+		defeatDukeSidebar.addText("Grab the pestle and mortar from the shelves west of the entrance, and a pickaxe from the east of it.");
 		defeatDukeSidebar.addText("Use the pestle and mortar on the mushrooms, and then mine 12 salt from the salt deposits in the middle of the room.");
 		defeatDukeSidebar.addText("With the ground mushrooms and salts, add them to the fermentation vats near the entrance. Empty them for 2 poisons.");
 		defeatDukeSidebar.addText("Use both poisons on the boss to start the fight. Stay close to him where possible, and Protect from Melee. He will use the following attacks:");

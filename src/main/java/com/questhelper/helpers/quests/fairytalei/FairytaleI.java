@@ -228,7 +228,7 @@ public class FairytaleI extends BasicQuestHelper
 		talkToFarmers.addText("Dreven south of Varrock, next to the Champions' Guild.");
 		talkToFarmers.addDialogStep("Are you a member of the Group of Advanced Gardeners?");
 		((NpcStep) (talkToFarmers)).addAlternateNpcs(NpcID.FRIZZY_SKERNIP, NpcID.HESKEL, NpcID.DREVEN, NpcID.FAYETH,
-			NpcID.TREZNOR);
+			NpcID.TREZNOR_11957);
 
 		talkToMartinAgain = new NpcStep(this, NpcID.MARTIN_THE_MASTER_GARDENER, new WorldPoint(3078, 3256, 0),
 			"Return to Martin in the Draynor Market.");

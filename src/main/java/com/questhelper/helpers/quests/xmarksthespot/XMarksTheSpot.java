@@ -115,9 +115,11 @@ public class XMarksTheSpot extends BasicQuestHelper
 		speakVeosSarim = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.",
 			ancientCasket);
+		((NpcStep) speakVeosSarim).addAlternateNpcs(NpcID.VEOS_8630);
 
 		speakVeosSarimWithoutCasket = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.");
+		((NpcStep) speakVeosSarimWithoutCasket).addAlternateNpcs(NpcID.VEOS_8630);
 
 		speakVeosSarim.addSubSteps(speakVeosSarimWithoutCasket);
 	}

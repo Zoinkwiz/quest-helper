@@ -515,6 +515,7 @@ public class GhostsAhoy extends BasicQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.THE_RESTLESS_GHOST, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 25, true));
 		req.add(new SkillRequirement(Skill.COOKING, 20, true));
 		return req;

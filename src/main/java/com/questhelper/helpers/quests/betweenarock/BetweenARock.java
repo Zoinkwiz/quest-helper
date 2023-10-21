@@ -72,6 +72,9 @@ public class BetweenARock extends BasicQuestHelper
 		baseSchematic, schematicEngineer, khorvakSchematic, goldHelmet, hammer, goldBars3, schematicHighlight, solvedSchematic, combatGear,
 		goldOre6, goldBars4, coins1000, goldHelmetEquipped, food;
 
+	// Items Recommended
+	ItemRequirement faladorTeleport;
+
 	Requirement inTrollRoom, inDwarfEntrance, inDwarfMine, inKeldagrim, inDwarvenMine, hasUsedGoldBar, hasCannonball, shotGoldCannonball,
 		inKhorvakRoom, inRealm, avatarNearby, hasSolvedSchematic;
 

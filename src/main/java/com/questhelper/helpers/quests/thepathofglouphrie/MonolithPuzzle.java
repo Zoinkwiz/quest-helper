@@ -24,10 +24,10 @@
  */
 package com.questhelper.helpers.quests.thepathofglouphrie;
 
-import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;

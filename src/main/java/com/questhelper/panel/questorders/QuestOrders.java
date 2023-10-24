@@ -25,7 +25,7 @@
 package com.questhelper.panel.questorders;
 
 import com.google.common.collect.ImmutableList;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
 import java.util.Comparator;
 import java.util.List;

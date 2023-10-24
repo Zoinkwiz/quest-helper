@@ -26,9 +26,9 @@
  */
 package com.questhelper.requirements.item;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestBank;
-import com.questhelper.ItemWithCharge;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.bank.QuestBank;
+import com.questhelper.collections.ItemWithCharge;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;

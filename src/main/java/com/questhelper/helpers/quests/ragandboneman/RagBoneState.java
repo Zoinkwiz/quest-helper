@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.ragandboneman;
 
-import com.questhelper.QuestBank;
+import com.questhelper.bank.QuestBank;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.conditional.Conditions;

@@ -24,9 +24,9 @@
  */
 package com.questhelper.helpers.quests.monkeymadnessii;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;

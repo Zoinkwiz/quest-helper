@@ -25,8 +25,8 @@
 package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestWidgets;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.tools.QuestWidgets;
 import com.questhelper.questhelpers.QuestHelper;
 import java.awt.Color;
 import java.awt.Graphics2D;

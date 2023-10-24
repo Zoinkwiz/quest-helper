@@ -1,10 +1,8 @@
 package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.QuestHelperWorldMapPoint;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.overlay.WorldLines;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import net.runelite.api.Perspective;

@@ -26,7 +26,7 @@
  */
 package com.questhelper.requirements.item;
 
-import com.questhelper.ItemCollections;
+import com.questhelper.collections.ItemCollections;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;

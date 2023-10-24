@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.miniquests.hisfaithfulservants;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -24,7 +24,7 @@
  */
 package com.questhelper.requirements.conditional;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;

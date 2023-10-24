@@ -24,9 +24,7 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.Icon;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.Requirement;
+import com.questhelper.tools.Icon;
 import com.questhelper.rewards.Reward;
 import java.awt.BorderLayout;
 import java.awt.Color;

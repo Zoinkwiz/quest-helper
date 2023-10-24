@@ -28,16 +28,16 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.steps.playermadesteps.RuneliteDialogStep;
-import com.questhelper.steps.playermadesteps.RuneliteObjectDialogStep;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ExtendedRuneliteObject;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.ExtendedRuneliteObjects;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FaceAnimationIDs;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeGraphicsObject;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeNpc;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.FakeObject;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.actions.Action;
+import com.questhelper.runeliteobjects.dialog.RuneliteDialogStep;
+import com.questhelper.runeliteobjects.dialog.RuneliteObjectDialogStep;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.ExtendedRuneliteObject;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.ExtendedRuneliteObjects;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.FaceAnimationIDs;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.FakeGraphicsObject;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.FakeNpc;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.FakeObject;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.actions.Action;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -87,7 +87,6 @@ public class FakeLeviathan
 			{
 				currentRocks.set(currentRocks.get() + 1);
 				rock = runeliteObjectManager.createFakeObject(BOULDERS_SUBGROUP, new int[]{49266}, pPoint, -1);
-				rock.setEnabled(false);
 				rock.disable();
 			}
 			FakeGraphicsObject fallingRock = runeliteObjectManager.createGraphicsFakeObject(BOULDERS_SUBGROUP, new int[]{49264},

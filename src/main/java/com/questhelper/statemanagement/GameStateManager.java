@@ -24,9 +24,9 @@
  */
 package com.questhelper.statemanagement;
 
-import com.questhelper.KeyringCollection;
+import com.questhelper.collections.KeyringCollection;
 import com.questhelper.requirements.item.KeyringRequirement;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.QuestCompletedWidget;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.QuestCompletedWidget;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;

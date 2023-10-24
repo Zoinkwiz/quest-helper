@@ -28,20 +28,12 @@ package com.questhelper.overlays;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class QuestHelperWorldOverlay extends Overlay
 {
@@ -69,26 +61,6 @@ public class QuestHelperWorldOverlay extends Overlay
 			return null;
 		}
 
-		if (plugin.getCheerer() != null)
-		{
-			LocalPoint lp = LocalPoint.fromWorld(plugin.getClient(), plugin.getCheerer().worldPoint);
-			if (lp != null)
-			{
-				Point p = Perspective.localToCanvas(plugin.getClient(), lp, plugin.getClient().getPlane(),
-					plugin.getCheerer().runeLiteObject.getModelHeight());
-				if (p != null)
-				{
-					Font overheadFont = FontManager.getRunescapeBoldFont();
-					FontMetrics metrics = graphics.getFontMetrics(overheadFont);
-					Point shiftedP = new Point(p.getX() - (metrics.stringWidth(plugin.getCheerer().getMessage()) / 2), p.getY());
-
-					graphics.setFont(overheadFont);
-					OverlayUtil.renderTextLocation(graphics, shiftedP, plugin.getCheerer().getMessage(),
-						JagexColors.YELLOW_INTERFACE_TEXT);
-				}
-			}
-		}
-
 		QuestHelper quest = plugin.getSelectedQuest();
 
 		if (quest != null && quest.getCurrentStep() != null)
@@ -99,7 +71,7 @@ public class QuestHelperWorldOverlay extends Overlay
 
 		plugin.backgroundHelpers.forEach((name, questHelper) -> questHelper.getCurrentStep().makeWorldOverlayHint(graphics, plugin));
 
-		plugin.getRuneliteObjectManager().makeWidgetOverlayHint(graphics);
+		plugin.getRuneliteObjectManager().makeWorldOverlayHint(graphics);
 
 		return null;
 	}

@@ -24,9 +24,10 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.ExternalQuestResources;
-import com.questhelper.HelperConfig;
-import com.questhelper.Icon;
+import com.questhelper.managers.QuestManager;
+import com.questhelper.questinfo.ExternalQuestResources;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
@@ -37,13 +38,9 @@ import com.questhelper.rewards.Reward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.event.ItemEvent;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.PluginPanel;
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
@@ -61,6 +58,7 @@ import java.util.List;
 public class QuestOverviewPanel extends JPanel
 {
 	private final QuestHelperPlugin questHelperPlugin;
+	private final QuestManager questManager;
 	public QuestHelper currentQuest;
 
 	private final JPanel questStepsContainer = new JPanel();
@@ -104,9 +102,10 @@ public class QuestOverviewPanel extends JPanel
 
 	private final List<QuestRequirementPanel> requirementPanels = new ArrayList<>();
 
-	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin)
+	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
 		super();
+		this.questManager = questManager;
 		this.questHelperPlugin = questHelperPlugin;
 
 		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -302,7 +301,12 @@ public class QuestOverviewPanel extends JPanel
 
 			for (PanelDetails panelDetail : steps)
 			{
-				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep);
+				if (panelDetail.getHideCondition() != null && panelDetail.getHideCondition().check(questHelperPlugin.getClient()))
+				{
+					continue;
+				}
+
+				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep, quest, questHelperPlugin.getClient());
 				if (panelDetail.getLockingQuestSteps() != null &&
 					(panelDetail.getVars() == null
 						|| panelDetail.getVars().contains(currentQuest.getVar())))
@@ -357,31 +361,7 @@ public class QuestOverviewPanel extends JPanel
 	public void updateHighlight(Client client, QuestStep newStep)
 	{
 		questStepPanelList.forEach(panel -> {
-			if (panel.panelDetails.getHideCondition() == null || !panel.panelDetails.getHideCondition().check(client))
-			{
-				panel.setVisible(true);
-				boolean highlighted = false;
-				panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
-					(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
-				
-				for (QuestStep step : panel.getSteps())
-				{
-					if (step == newStep || step.getSubsteps().contains(newStep))
-					{
-						highlighted = true;
-						panel.updateHighlight(step);
-						break;
-					}
-				}
-				if (!highlighted)
-				{
-					panel.removeHighlight();
-				}
-			}
-			else
-			{
-				panel.setVisible(false);
-			}
+			panel.updateHighlightCheck(client, newStep, currentQuest);
 		});
 
 		repaint();
@@ -417,7 +397,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private void closeHelper()
 	{
-		questHelperPlugin.shutDownQuestFromSidebar();
+		questManager.shutDownQuestFromSidebar();
 	}
 
 	void updateCollapseText()

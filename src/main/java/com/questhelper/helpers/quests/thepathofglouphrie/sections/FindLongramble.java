@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.thepathofglouphrie.sections;
 
-import com.questhelper.ItemCollections;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.quests.thepathofglouphrie.ThePathOfGlouphrie;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.steps.ConditionalStep;

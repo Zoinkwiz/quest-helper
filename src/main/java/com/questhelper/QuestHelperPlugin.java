@@ -29,6 +29,7 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
+import com.questhelper.managers.NewVersionManager;
 import com.questhelper.managers.QuestBankManager;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.managers.QuestMenuHandler;
@@ -151,6 +152,9 @@ public class QuestHelperPlugin extends Plugin
 
 	@Inject
 	private QuestMenuHandler questMenuHandler;
+
+	@Inject
+	private NewVersionManager newVersionManager;
 
 	@Getter
 	@Inject
@@ -285,6 +289,8 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGGED_IN)
 		{
+			newVersionManager.updateChatWithNotificationIfNewVersion();
+
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			questBankManager.setUnknownInitialState();
 			clientThread.invokeLater(() -> questManager.setupOnLogin());

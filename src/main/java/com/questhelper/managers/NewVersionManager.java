@@ -44,13 +44,12 @@ public class NewVersionManager
 	private final String LAST_VERSION_SEEN_CONFIG_KEY = "lastversionchecked";
 
 	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.1.4! This adds The Path of Glouphrie.";
-	private final String CURRENT_VERSION = "4.1.4";
 
 	public void updateChatWithNotificationIfNewVersion()
 	{
 		if (hasLoggedInThisVersion()) return;
 
-		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, LAST_VERSION_SEEN_CONFIG_KEY, CURRENT_VERSION);
+		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, LAST_VERSION_SEEN_CONFIG_KEY, UPDATE_CHAT_TEXT);
 
 		chatMessageManager.queue(QueuedMessage.builder()
 			.type(ChatMessageType.GAMEMESSAGE)
@@ -61,6 +60,6 @@ public class NewVersionManager
 	private boolean hasLoggedInThisVersion()
 	{
 		String lastVersionChecked = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, LAST_VERSION_SEEN_CONFIG_KEY);
-		return lastVersionChecked != null && lastVersionChecked.equals(CURRENT_VERSION);
+		return lastVersionChecked != null && lastVersionChecked.equals(UPDATE_CHAT_TEXT);
 	}
 }

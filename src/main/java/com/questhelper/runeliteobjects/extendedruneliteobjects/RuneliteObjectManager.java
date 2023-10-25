@@ -407,7 +407,7 @@ public class RuneliteObjectManager
 
 	private void setupMenuOptions(ExtendedRuneliteObject extendedRuneliteObject, MenuEntryAdded event)
 	{
-		if (!extendedRuneliteObject.isRuneliteObjectActive()) return;
+		if (!extendedRuneliteObject.isRuneliteObjectActive() && !extendedRuneliteObject.isHiddenByEntity()) return;
 		if (extendedRuneliteObject.getMenuActions().isEmpty() && !(extendedRuneliteObject instanceof ReplacedNpc))
 		{
 			return;
@@ -418,7 +418,7 @@ public class RuneliteObjectManager
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		if (!extendedRuneliteObject.isHiddenNoOptions()
+		if ((!extendedRuneliteObject.isHiddenNoOptions() || extendedRuneliteObject.isHiddenByEntity())
 			&& extendedRuneliteObject.getRuneliteObject() != null
 			&& extendedRuneliteObject.getRuneliteObject().getModel() != null)
 		{
@@ -874,14 +874,24 @@ public class RuneliteObjectManager
 				boolean isVisible = extendedRuneliteObject.isVisible();
 				boolean shouldDisplayReqPassed = extendedRuneliteObject.getDisplayReq() == null || extendedRuneliteObject.getDisplayReq().check(client);
 
-				if (extendedRuneliteObject.objectType == RuneliteObjectTypes.NPC &&
-					(!shouldDisplayReqPassed || isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition)))
+
+				if (extendedRuneliteObject.objectType == RuneliteObjectTypes.NPC)
 				{
-					if (isVisible) extendedRuneliteObject.setVisible(false);
-				}
-				else
-				{
-					extendedRuneliteObject.setVisible(true);
+					if (!shouldDisplayReqPassed)
+					{
+						if (isVisible) extendedRuneliteObject.setVisible(false);
+						extendedRuneliteObject.setHiddenByEntity(false);
+					}
+					else if (isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition))
+					{
+						if (isVisible) extendedRuneliteObject.setVisible(false);
+						extendedRuneliteObject.setHiddenByEntity(true);
+					}
+					else
+					{
+						if (!isVisible) extendedRuneliteObject.setVisible(true);
+						extendedRuneliteObject.setHiddenByEntity(false);
+					}
 				}
 			}
 		});

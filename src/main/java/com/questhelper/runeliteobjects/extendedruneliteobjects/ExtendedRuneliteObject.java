@@ -142,6 +142,10 @@ public class ExtendedRuneliteObject
 	@Getter
 	private boolean visible = true;
 
+	@Getter
+	@Setter
+	private boolean hiddenByEntity;
+
 	int lastActionPerformedAt;
 	boolean wasActiveLastTick = false;
 

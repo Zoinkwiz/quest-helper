@@ -452,7 +452,8 @@ public class RuneliteObjectManager
 			boolean isHighPriorityOnTile = false;
 			for (MenuEntry menuEntry : menuEntries)
 			{
-				if (menuEntry.getType() == MenuAction.RUNELITE_HIGH_PRIORITY)
+				if (menuEntry.getType() == MenuAction.RUNELITE_HIGH_PRIORITY ||
+					(menuEntry.getType() == MenuAction.WALK && !menuEntry.getTarget().equals("")))
 				{
 					isHighPriorityOnTile = true;
 				}
@@ -529,7 +530,8 @@ public class RuneliteObjectManager
 			event.getMenuEntry().setDeprioritized(true);
 			for (MenuEntry menuEntry : menuEntries)
 			{
-				if (menuEntry.getType() == MenuAction.RUNELITE_HIGH_PRIORITY)
+				if (menuEntry.getType() == MenuAction.RUNELITE_HIGH_PRIORITY ||
+					(menuEntry.getType() == MenuAction.WALK && !menuEntry.getTarget().equals("")))
 				{
 					menuEntry.setDeprioritized(false);
 				}

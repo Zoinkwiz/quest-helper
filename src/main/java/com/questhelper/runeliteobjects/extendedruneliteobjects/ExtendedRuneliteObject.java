@@ -197,6 +197,7 @@ public class ExtendedRuneliteObject
 
 	public Shape getClickbox()
 	{
+		// TODO: Currently won't work if hidden due to NPC on top. Want options non-priotitised to appear
 		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint) == null) return null;
 
 		return Perspective.getClickbox(client,

@@ -45,20 +45,19 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
-import net.runelite.api.ModelData;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.SpriteID;
-import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WidgetLoaded;
@@ -107,6 +106,10 @@ public class RuneliteObjectManager
 	final int ANIMATION_PERIOD = 5;
 
 	ExtendedRuneliteObject lastInteractedWithRuneliteObject;
+	/* TODO: This is messy, somehow the action being a chat one should be baked in to the interaction
+	* As should any interaction with a requirement
+	* */
+	ExtendedRuneliteObject waitingChatOption;
 
 	private static final List<MenuAction> OBJECT_MENU_TYPES = ImmutableList.of(
 		MenuAction.GAME_OBJECT_FIRST_OPTION,
@@ -564,11 +567,13 @@ public class RuneliteObjectManager
 	{
 		return menuEntry -> {
 			// TODO: Need a way to cancel this if action is cancelled by interacting with something else
+
+			// TODO: Need to handle proximity issue for walking under
+			// TODO: Need to handle issue with entities you can talk to not next to
+			// TODO: Need to handle shortest routing
 			waitingChatOption = extendedRuneliteObject;
 		};
 	}
-
-	ExtendedRuneliteObject waitingChatOption;
 
 	private void addReplaceWalkAction(MenuEntry menuEntry, ExtendedRuneliteObject extendedRuneliteObject)
 	{
@@ -579,6 +584,27 @@ public class RuneliteObjectManager
 			lastInteractedWithRuneliteObject = extendedRuneliteObject;
 			extendedRuneliteObject.getReplaceWalkAction().accept(menuEnt);
 		});
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	{
+		if (lastInteractedWithRuneliteObject != null)
+		{
+			if (!menuOptionClicked.getMenuTarget().equals(lastInteractedWithRuneliteObject.getName()))
+			{
+				// TODO: This isn't a robust means of detecting to cancel dialog
+				if (menuOptionClicked.getWidget() == null || !menuOptionClicked.getMenuTarget().equals(""))
+				{
+					waitingChatOption = null;
+					lastInteractedWithRuneliteObject = null;
+					if (chatboxPanelManager.getCurrentInput() instanceof ChatBox)
+					{
+						chatboxPanelManager.close();
+					}
+				}
+			}
+		}
 	}
 
 	private void addPriorityAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, String actionWord)
@@ -662,13 +688,6 @@ public class RuneliteObjectManager
 				waitingChatOption.setupChatBox(chatboxPanelManager);
 				waitingChatOption = null;
 			}
-		}
-		else if (lastInteractedWithRuneliteObject != null
-
-			&& client.getLocalPlayer().getLocalLocation().distanceTo(lastInteractedWithRuneliteObject.getRuneliteObject().getLocation()) > TILE_WIDTH
-			&& chatboxPanelManager.getCurrentInput() instanceof ChatBox)
-		{
-			chatboxPanelManager.close();
 		}
 	}
 

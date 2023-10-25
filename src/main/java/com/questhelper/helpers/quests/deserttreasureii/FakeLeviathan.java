@@ -197,8 +197,6 @@ public class FakeLeviathan
 		leviathan.setOrientationGoalAsPlayer(client);
 		leviathan.setAlwaysFacePlayer(true);
 
-
-
 		RuneliteDialogStep leviathanDialog = new RuneliteObjectDialogStep("Zoinkwiz", "Hi, this Leviathan is part of the Quest Helper plugin. You can use this Leviathan to see what its attacks look like, and practice reacting to them.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID());
 		leviathanDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Leviathan to see the various attacks and phases you can test.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
 			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You'll see a hitsplat on your character the moment the attack counts as hitting.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))

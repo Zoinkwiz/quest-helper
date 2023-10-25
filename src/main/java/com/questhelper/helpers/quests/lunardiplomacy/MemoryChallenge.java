@@ -99,12 +99,11 @@ public class MemoryChallenge extends DetailedQuestStep
 	public void checkNextTile(int wpsPos)
 	{
 		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPointFromReal(client, wps.get(wpsPos));
-		System.out.println(instanceWp);
 		if (instanceWp == null)
 		{
 			return;
 		}
-		System.out.println(client.getLocalPlayer().getWorldLocation());
+
 		// If on same tiles as wpsPos
 		if (client.getLocalPlayer() != null &&
 			client.getLocalPlayer().getWorldLocation().distanceTo(instanceWp) == 0)
@@ -130,7 +129,6 @@ public class MemoryChallenge extends DetailedQuestStep
 			current4 == column4
 		)
 		{
-			System.out.println("COLUMN RIP");
 			return;
 		}
 

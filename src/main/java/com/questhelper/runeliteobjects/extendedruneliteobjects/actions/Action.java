@@ -26,6 +26,7 @@ package com.questhelper.runeliteobjects.extendedruneliteobjects.actions;
 
 import java.util.function.Consumer;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.MenuEntry;
 
 public class Action
@@ -33,6 +34,10 @@ public class Action
 	protected Consumer<MenuEntry> action;
 
 	protected boolean isActive = false;
+
+	@Setter
+	@Getter
+	protected boolean shouldMoveToObject;
 
 	@Getter
 	MenuEntry menuEntry;

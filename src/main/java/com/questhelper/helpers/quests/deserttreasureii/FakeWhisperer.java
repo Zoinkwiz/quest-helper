@@ -308,7 +308,7 @@ public class FakeWhisperer
 		whispererDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Whisperer to see the various attacks you can test.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
 			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to stop any actions.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()));
 		whisperer.addDialogTree(null, whispererDialog);
-		whisperer.addTalkAction(runeliteObjectManager);
+		whisperer.addTalkFromDistanceAction(runeliteObjectManager);
 		whisperer.setOrientationGoalAsPlayer(client);
 		whisperer.setAlwaysFacePlayer(true);
 		whisperer.setDisplayRequirement(new Conditions(

@@ -203,7 +203,7 @@ public class FakeLeviathan
 			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "If you've reacted accordingly, by praying correctly or moving, the hitsplat will be blue. Otherwise, it'll be red.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
 			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to delete boulders and stop the Leviathan from attacking.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()));
 		leviathan.addDialogTree(null, leviathanDialog);
-		leviathan.addTalkAction(runeliteObjectManager);
+		leviathan.addTalkFromDistanceAction(runeliteObjectManager);
 		leviathan.setDisplayRequirement(new Conditions(new VarbitRequirement(15128, 38, Operation.GREATER_EQUAL),
 		new VarbitRequirement(15128, 40, Operation.LESS_EQUAL)));
 	}

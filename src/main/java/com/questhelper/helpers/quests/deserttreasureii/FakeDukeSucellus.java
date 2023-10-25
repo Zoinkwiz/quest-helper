@@ -141,7 +141,7 @@ public class FakeDukeSucellus
 		dukeDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Duke to see the various attacks you can test.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
 			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to stop any actions.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()));
 		duke.addDialogTree(null, dukeDialog);
-		duke.addTalkAction(runeliteObjectManager);
+		duke.addTalkFromDistanceAction(runeliteObjectManager);
 		duke.getRuneliteObject().setDrawFrontTilesFirst(true);
 		duke.setDisplayRequirement(new Conditions(
 			nor(new InInstanceRequirement()),

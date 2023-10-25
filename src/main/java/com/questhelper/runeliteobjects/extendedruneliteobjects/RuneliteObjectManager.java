@@ -566,10 +566,6 @@ public class RuneliteObjectManager
 	public Consumer<MenuEntry> getTalkAction(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		return menuEntry -> {
-			// TODO: Need a way to cancel this if action is cancelled by interacting with something else
-
-			// TODO: Need to handle proximity issue for walking under
-			// TODO: Need to handle issue with entities you can talk to not next to
 			// TODO: Need to handle shortest routing
 			waitingChatOption = extendedRuneliteObject;
 		};
@@ -607,11 +603,8 @@ public class RuneliteObjectManager
 		}
 	}
 
-	private void addPriorityAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, String actionWord)
+	private Point getCanvasFromRlObject(ExtendedRuneliteObject extendedRuneliteObject)
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
 		WorldPoint objWP = extendedRuneliteObject.getWorldPoint();
 		// TODO: Detect what tile to move to based on shortest path
 		WorldPoint tmpWp = new WorldPoint(objWP.getX() + 1, objWP.getY(), objWP.getPlane());
@@ -620,22 +613,47 @@ public class RuneliteObjectManager
 		int rndX = rand.nextInt(128) - 64;
 		int rndY = rand.nextInt(128) - 64;
 		lpW = new LocalPoint(lpW.getX() + rndX, lpW.getY() + rndY);
-		Point p = Perspective.localToCanvas(client, lpW, objWP.getPlane());
 
+		return Perspective.localToCanvas(client, lpW, objWP.getPlane());
+	}
 
-		client.createMenuEntry(-2)
-			.setIdentifier(0)
-			.setParam0(p.getX())
-			.setParam1(p.getY())
-			.setType(MenuAction.WALK)
-			.setOption(actionWord)
-			.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
-			.setDeprioritized(false)
-			.onClick(menuEntry -> {
-				resetRedClick();
-				lastInteractedWithRuneliteObject = extendedRuneliteObject;
-				extendedRuneliteObject.activatePriorityAction(actionWord, menuEntry);
-			});
+	private void addPriorityAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, String actionWord)
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+		Point p = getCanvasFromRlObject(extendedRuneliteObject);
+		if (extendedRuneliteObject.getPriorityMenuActions().get(actionWord).isShouldMoveToObject())
+		{
+			client.createMenuEntry(-2)
+				.setIdentifier(0)
+				.setParam0(p.getX())
+				.setParam1(p.getY())
+				.setType(MenuAction.WALK)
+				.setOption(actionWord)
+				.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
+				.setDeprioritized(false)
+				.onClick(menuEntry -> {
+					resetRedClick();
+					lastInteractedWithRuneliteObject = extendedRuneliteObject;
+					extendedRuneliteObject.activatePriorityAction(actionWord, menuEntry);
+				});
+		}
+		else
+		{
+			client.createMenuEntry(-2)
+				.setOption(actionWord)
+				.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
+				.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
+				.setDeprioritized(false)
+				.onClick(menuEntry -> {
+					resetRedClick();
+					lastInteractedWithRuneliteObject = extendedRuneliteObject;
+					extendedRuneliteObject.activatePriorityAction(actionWord, menuEntry);
+				})
+				.setParam0(widgetIndex)
+				.setParam1(widgetID);
+		}
 	}
 
 	private void addAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, String actionWord)
@@ -643,16 +661,35 @@ public class RuneliteObjectManager
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		client.createMenuEntry(menuEntries.length - 1)
-			.setOption(actionWord)
-			.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
-			.setType(MenuAction.RUNELITE)
-			.onClick(menuEntry -> {
-				resetRedClick();
-				extendedRuneliteObject.activateAction(actionWord, menuEntry);
-			})
-			.setParam0(widgetIndex)
-			.setParam1(widgetID);
+		if (extendedRuneliteObject.getMenuActions().get(actionWord).isShouldMoveToObject())
+		{
+			Point p = getCanvasFromRlObject(extendedRuneliteObject);
+
+			client.createMenuEntry(menuEntries.length - 1)
+				.setIdentifier(0)
+				.setType(MenuAction.WALK)
+				.setOption(actionWord)
+				.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
+				.onClick(menuEntry -> {
+					resetRedClick();
+					extendedRuneliteObject.activateAction(actionWord, menuEntry);
+				})
+				.setParam0(p.getX())
+				.setParam1(p.getY());
+		}
+		else
+		{
+			client.createMenuEntry(menuEntries.length - 1)
+				.setOption(actionWord)
+				.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
+				.setType(MenuAction.RUNELITE)
+				.onClick(menuEntry -> {
+					resetRedClick();
+					extendedRuneliteObject.activateAction(actionWord, menuEntry);
+				})
+				.setParam0(widgetIndex)
+				.setParam1(widgetID);
+		}
 	}
 
 	private void resetRedClick()
@@ -678,11 +715,11 @@ public class RuneliteObjectManager
 	{
 		renderRedClick(graphics);
 
-		// TODO: Need to clear waitingChatOption if click is cancelled by some other action
 		if (waitingChatOption != null)
 		{
-			if (client.getLocalPlayer().getLocalLocation()
-				.distanceTo(waitingChatOption.getRuneliteObject().getLocation()) <= TILE_WIDTH)
+			if (client.getLocalPlayer().getLocalLocation().distanceTo(
+				waitingChatOption.getRuneliteObject().getLocation()) <= TILE_WIDTH
+				|| !waitingChatOption.isNeedToBeCloseToTalk())
 			{
 				waitingChatOption.setOrientationGoalAsPlayer(client);
 				waitingChatOption.setupChatBox(chatboxPanelManager);

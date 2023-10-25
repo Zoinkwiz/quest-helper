@@ -25,6 +25,7 @@
 package com.questhelper.runeliteobjects;
 
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan;
 import com.questhelper.questinfo.PlayerQuests;
 import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
 import com.questhelper.requirements.util.Operation;

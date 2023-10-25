@@ -452,7 +452,19 @@ public class ExtendedRuneliteObject
 
 	public void addTalkAction(RuneliteObjectManager runeliteObjectManager)
 	{
-		priorityMenuActions.put("Talk-to", new Action(runeliteObjectManager.getTalkAction(this)));
+		Action talkAction =  new Action(runeliteObjectManager.getTalkAction(this));
+		talkAction.setShouldMoveToObject(true);
+
+		setNeedToBeCloseToTalk(true);
+		priorityMenuActions.put("Talk-to", talkAction);
+	}
+
+	public void addTalkFromDistanceAction(RuneliteObjectManager runeliteObjectManager)
+	{
+		Action talkAction =  new Action(runeliteObjectManager.getTalkAction(this));
+
+		setNeedToBeCloseToTalk(false);
+		priorityMenuActions.put("Talk-to", talkAction);
 	}
 
 	public void addExamineAction(RuneliteObjectManager runeliteObjectManager)

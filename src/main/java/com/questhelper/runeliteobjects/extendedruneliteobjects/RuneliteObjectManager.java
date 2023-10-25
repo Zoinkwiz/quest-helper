@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -44,12 +45,14 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
+import net.runelite.api.ModelData;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
@@ -554,25 +557,16 @@ public class RuneliteObjectManager
 			createChatboxMessage(extendedRuneliteObject.getExamine());
 		};
 	}
-	
+
 	public Consumer<MenuEntry> getTalkAction(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		return menuEntry -> {
-			WorldPoint wp = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-
-			if (extendedRuneliteObject.isNeedToBeCloseToTalk() && wp.distanceTo(extendedRuneliteObject.getWorldPoint()) > ExtendedRuneliteObject.MAX_TALK_DISTANCE)
-			{
-				createChatboxMessage("You'll need to move closer to them to talk!");
-				return;
-			}
-
-			locationOfPlayerInteraction = client.getLocalPlayer().getLocalLocation();
-
-			// Set to rotate towards player
-			extendedRuneliteObject.setOrientationGoalAsPlayer(client);
-			extendedRuneliteObject.setupChatBox(chatboxPanelManager);
+			// TODO: Need a way to cancel this if action is cancelled by interacting with something else
+			waitingChatOption = extendedRuneliteObject;
 		};
 	}
+
+	ExtendedRuneliteObject waitingChatOption;
 
 	private void addReplaceWalkAction(MenuEntry menuEntry, ExtendedRuneliteObject extendedRuneliteObject)
 	{
@@ -590,18 +584,30 @@ public class RuneliteObjectManager
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
+		WorldPoint objWP = extendedRuneliteObject.getWorldPoint();
+		// TODO: Detect what tile to move to based on shortest path
+		WorldPoint tmpWp = new WorldPoint(objWP.getX() + 1, objWP.getY(), objWP.getPlane());
+		LocalPoint lpW = LocalPoint.fromWorld(client, tmpWp);
+		Random rand = new Random();
+		int rndX = rand.nextInt(128) - 64;
+		int rndY = rand.nextInt(128) - 64;
+		lpW = new LocalPoint(lpW.getX() + rndX, lpW.getY() + rndY);
+		Point p = Perspective.localToCanvas(client, lpW, objWP.getPlane());
+
+
 		client.createMenuEntry(-2)
+			.setIdentifier(0)
+			.setParam0(p.getX())
+			.setParam1(p.getY())
+			.setType(MenuAction.WALK)
 			.setOption(actionWord)
 			.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
-			.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
 			.setDeprioritized(false)
-			.onClick(menuEntry -> {;
+			.onClick(menuEntry -> {
 				resetRedClick();
 				lastInteractedWithRuneliteObject = extendedRuneliteObject;
 				extendedRuneliteObject.activatePriorityAction(actionWord, menuEntry);
-			})
-			.setParam0(widgetIndex)
-			.setParam1(widgetID);
+			});
 	}
 
 	private void addAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, String actionWord)
@@ -638,15 +644,26 @@ public class RuneliteObjectManager
 		return clickbox.contains(p.getX(), p.getY());
 	}
 
-	private LocalPoint locationOfPlayerInteraction;
+	int TILE_WIDTH = 128;
 
 	public void makeWidgetOverlayHint(Graphics2D graphics)
 	{
 		renderRedClick(graphics);
 
-		if (lastInteractedWithRuneliteObject != null
-			&& locationOfPlayerInteraction != null
-			&& client.getLocalPlayer().getLocalLocation().distanceTo(locationOfPlayerInteraction) > 0
+		// TODO: Need to clear waitingChatOption if click is cancelled by some other action
+		if (waitingChatOption != null)
+		{
+			if (client.getLocalPlayer().getLocalLocation()
+				.distanceTo(waitingChatOption.getRuneliteObject().getLocation()) <= TILE_WIDTH)
+			{
+				waitingChatOption.setOrientationGoalAsPlayer(client);
+				waitingChatOption.setupChatBox(chatboxPanelManager);
+				waitingChatOption = null;
+			}
+		}
+		else if (lastInteractedWithRuneliteObject != null
+
+			&& client.getLocalPlayer().getLocalLocation().distanceTo(lastInteractedWithRuneliteObject.getRuneliteObject().getLocation()) > TILE_WIDTH
 			&& chatboxPanelManager.getCurrentInput() instanceof ChatBox)
 		{
 			chatboxPanelManager.close();

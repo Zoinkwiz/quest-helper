@@ -35,12 +35,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.CollisionData;
+import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -127,6 +128,8 @@ public class RuneliteObjectManager
 		MenuAction.GROUND_ITEM_FOURTH_OPTION,
 		MenuAction.GROUND_ITEM_FIFTH_OPTION
 	);
+
+	WorldPoint lastPlayerPosition;
 
 	@Inject
 	public RuneliteObjectManager(Client client, EventBus eventBus, ChatboxPanelManager chatboxPanelManager, ClientThread clientThread, ChatMessageManager chatMessageManager, SpriteManager spriteManager)
@@ -356,6 +359,7 @@ public class RuneliteObjectManager
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		// TODO: Look to make use of onMenuOpened instead?
 		NPC npc = event.getMenuEntry().getNpc();
 		if (npc != null)
 		{
@@ -542,6 +546,66 @@ public class RuneliteObjectManager
 		}
 	}
 
+	private WorldPoint workOutInteractWorldPoint(WorldPoint wp)
+	{
+		LocalPoint lp = LocalPoint.fromWorld(client, wp);
+		LocalPoint playerPoint = client.getLocalPlayer().getLocalLocation();
+
+		lastPlayerPosition = client.getLocalPlayer().getWorldLocation();
+		int x = lp.getSceneX();
+		int y = lp.getSceneY();
+		int plane = wp.getPlane();
+
+		int pX = playerPoint.getSceneX();
+		int pY = playerPoint.getSceneY();
+
+		CollisionData[] collisionData = client.getCollisionMaps();
+		if (collisionData == null) return wp;
+
+		CollisionData planeCollisionData = collisionData[plane];
+		int[][] flags = planeCollisionData.getFlags();
+
+		int xDiff = x - pX;
+		int yDiff = y - pY;
+
+		// Calculate the direction along each axis to move closer to the goal
+		int xDirection = xDiff < 0 ? 1 : -1;
+		int yDirection = yDiff < 0 ? 1 : -1;
+
+		// Corresponding collision flags for each direction
+		int xSideFlag = xDirection == 1 ? CollisionDataFlag.BLOCK_MOVEMENT_WEST : CollisionDataFlag.BLOCK_MOVEMENT_EAST;
+		int ySideFlag = yDirection == 1 ? CollisionDataFlag.BLOCK_MOVEMENT_SOUTH : CollisionDataFlag.BLOCK_MOVEMENT_NORTH;
+
+		// Calculate the absolute differences to decide which axis to prioritise
+		int absXDiff = Math.abs(xDiff);
+		int absYDiff = Math.abs(yDiff);
+
+		// Check if movement is possible along each axis
+		boolean canMoveX = isTileFree(x + xDirection, y, CollisionDataFlag.BLOCK_MOVEMENT_FULL | xSideFlag, flags) &&
+			isTileFree(x, y, xSideFlag, flags);
+		boolean canMoveY = isTileFree(x, y + yDirection, CollisionDataFlag.BLOCK_MOVEMENT_FULL | ySideFlag, flags) &&
+			isTileFree(x, y, ySideFlag, flags);
+
+		// Decide which axis to move in based on the possibility and the distance
+		if (canMoveX && (absXDiff >= absYDiff || !canMoveY))
+		{
+			return new WorldPoint(wp.getX() + xDirection, wp.getY(), wp.getPlane());
+		}
+		else if (canMoveY)
+		{
+			return new WorldPoint(wp.getX(), wp.getY() + yDirection, wp.getPlane());
+		}
+
+		// No suitable tile found
+		return wp;
+	}
+
+	boolean isTileFree(int tileX, int tileY, int blockingFlag, int[][] flags)
+	{
+		return tileX >= 0 && tileX < flags.length && tileY >= 0 && tileY < flags[0].length &&
+			(flags[tileX][tileY] & blockingFlag) == 0;
+	}
+
 	public void createChatboxMessage(String text)
 	{
 		String chatMessage = new ChatMessageBuilder()
@@ -566,7 +630,6 @@ public class RuneliteObjectManager
 	public Consumer<MenuEntry> getTalkAction(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		return menuEntry -> {
-			// TODO: Need to handle shortest routing
 			waitingChatOption = extendedRuneliteObject;
 		};
 	}
@@ -585,6 +648,7 @@ public class RuneliteObjectManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
+		System.out.println(menuOptionClicked);
 		if (lastInteractedWithRuneliteObject != null)
 		{
 			if (!menuOptionClicked.getMenuTarget().equals(lastInteractedWithRuneliteObject.getName()))
@@ -606,14 +670,11 @@ public class RuneliteObjectManager
 	private Point getCanvasFromRlObject(ExtendedRuneliteObject extendedRuneliteObject)
 	{
 		WorldPoint objWP = extendedRuneliteObject.getWorldPoint();
-		// TODO: Detect what tile to move to based on shortest path
-		WorldPoint tmpWp = new WorldPoint(objWP.getX() + 1, objWP.getY(), objWP.getPlane());
-		LocalPoint lpW = LocalPoint.fromWorld(client, tmpWp);
-		Random rand = new Random();
-		int rndX = rand.nextInt(128) - 64;
-		int rndY = rand.nextInt(128) - 64;
-		lpW = new LocalPoint(lpW.getX() + rndX, lpW.getY() + rndY);
+		WorldPoint goalWP = workOutInteractWorldPoint(objWP);
 
+		// TODO: Issue for right-click where it seems to default to tile clicked through menu initially
+		// I assume this is some stored value somewhere for the point upon right-click to default walk to
+		LocalPoint lpW = LocalPoint.fromWorld(client, goalWP);
 		return Perspective.localToCanvas(client, lpW, objWP.getPlane());
 	}
 

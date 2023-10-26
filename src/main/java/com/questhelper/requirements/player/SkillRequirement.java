@@ -35,6 +35,7 @@ import java.awt.Color;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import static net.runelite.api.Skill.THIEVING;
 
 /**
  * Requirement that checks if a player meets a certain skill level.
@@ -131,6 +132,18 @@ public class SkillRequirement extends AbstractRequirement
 		if (config.stewBoosts() && highestBoost < 5)
 		{
 			highestBoost = 5;
+		}
+		else if (skill == THIEVING)
+		{
+			//player only has access to Summer sq'irk juice at level 65 thieving which is the default boost value for thieving, currently that's blind to player current skill level
+			if (client.getRealSkillLevel(skill) < 65)
+			{
+				highestBoost = 2; //autumn sq'irk
+			}
+			else if (client.getRealSkillLevel(skill) < 45)
+			{
+				highestBoost = 1;  //spring sq'irk
+			}
 		}
 
 		return requiredLevel - highestBoost <= currentSkill;

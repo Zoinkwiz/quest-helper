@@ -304,9 +304,9 @@ public class FakeWhisperer
 		// Set display requirement
 
 		RuneliteDialogStep whispererDialog = new RuneliteObjectDialogStep("Zoinkwiz",
-			"Hi, this Whisperer is part of the Quest Helper plugin. You can use this Whisperer to see what its attacks look like.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID());
-		whispererDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Whisperer to see the various attacks you can test.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
-			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to stop any actions.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()));
+			"Hi, this Whisperer is part of the Quest Helper plugin. You can use this Whisperer to see what its attacks look like.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID());
+		whispererDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Whisperer to see the various attacks you can test.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID()))
+			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to stop any actions.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID()));
 		whisperer.addDialogTree(null, whispererDialog);
 		whisperer.addTalkFromDistanceAction(runeliteObjectManager);
 		whisperer.setOrientationGoalAsPlayer(client);

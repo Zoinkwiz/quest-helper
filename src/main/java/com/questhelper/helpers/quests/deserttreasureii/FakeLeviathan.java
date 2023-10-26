@@ -197,11 +197,11 @@ public class FakeLeviathan
 		leviathan.setOrientationGoalAsPlayer(client);
 		leviathan.setAlwaysFacePlayer(true);
 
-		RuneliteDialogStep leviathanDialog = new RuneliteObjectDialogStep("Zoinkwiz", "Hi, this Leviathan is part of the Quest Helper plugin. You can use this Leviathan to see what its attacks look like, and practice reacting to them.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID());
-		leviathanDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Leviathan to see the various attacks and phases you can test.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
-			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You'll see a hitsplat on your character the moment the attack counts as hitting.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
-			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "If you've reacted accordingly, by praying correctly or moving, the hitsplat will be blue. Otherwise, it'll be red.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
-			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to delete boulders and stop the Leviathan from attacking.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()));
+		RuneliteDialogStep leviathanDialog = new RuneliteObjectDialogStep("Zoinkwiz", "Hi, this Leviathan is part of the Quest Helper plugin. You can use this Leviathan to see what its attacks look like, and practice reacting to them.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID());
+		leviathanDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Leviathan to see the various attacks and phases you can test.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID()))
+			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You'll see a hitsplat on your character the moment the attack counts as hitting.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID()))
+			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "If you've reacted accordingly, by praying correctly or moving, the hitsplat will be blue. Otherwise, it'll be red.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID()))
+			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to delete boulders and stop the Leviathan from attacking.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID()));
 		leviathan.addDialogTree(null, leviathanDialog);
 		leviathan.addTalkFromDistanceAction(runeliteObjectManager);
 		leviathan.setDisplayRequirement(new Conditions(new VarbitRequirement(15128, 38, Operation.GREATER_EQUAL),

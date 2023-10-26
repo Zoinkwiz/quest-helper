@@ -160,8 +160,8 @@ public class CooksHelper extends PlayerMadeQuestHelper
 
 		RuneliteDialogStep dialog = cooksCousin.createDialogStepForNpc("Hey, you there! You helped out my cousin before right?");
 		dialog.addContinueDialog(new RunelitePlayerDialogStep(client, "I have yeah, what's wrong? Does he need some more eggs? Maybe I can just get him a chicken instead?"))
-			.addContinueDialog(cooksCousin.createDialogStepForNpc("No no, nothing like that. Have you seen that terribly dressed person outside the courtyard?", FaceAnimationIDs.FRIENDLY_QUESTIONING))
-			.addContinueDialog(cooksCousin.createDialogStepForNpc("I don't know who they are, but can you please get them to move along please?", FaceAnimationIDs.FRIENDLY_QUESTIONING))
+			.addContinueDialog(cooksCousin.createDialogStepForNpc("No no, nothing like that. Have you seen that terribly dressed person outside the courtyard?", FaceAnimationIDs.HAPPY_2))
+			.addContinueDialog(cooksCousin.createDialogStepForNpc("I don't know who they are, but can you please get them to move along please?", FaceAnimationIDs.HAPPY_2))
 			.addContinueDialog(cooksCousin.createDialogStepForNpc("They seem to be attracting more troublemakers...."))
 			.addContinueDialog(new RunelitePlayerDialogStep(client, "You mean Hatius? If so it'd be my pleasure.").setStateProgression(talkedToCooksCousin.getSetter()));
 		cooksCousin.addDialogTree(hasDoneCooksAssistant, dialog);
@@ -191,7 +191,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 			.addContinueDialog(hopleez.createDialogStepForNpc("One moment I was relaxing in Zeah killing some crabs. I closed my eyes for a second, and suddenly I'm here."))
 			.addContinueDialog(hopleez.createDialogStepForNpc("People would always try to steal my spot in Zeah, and it seems it's no different here!", FaceAnimationIDs.ANNOYED))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Not only is this guy crashing me, but he's trying to outdress me too!", FaceAnimationIDs.ANNOYED_2))
-			.addContinueDialog(new RunelitePlayerDialogStep(client, "Hatius? I'm pretty sure he's been here much longer than you....", FaceAnimationIDs.QUESTIONING))
+			.addContinueDialog(new RunelitePlayerDialogStep(client, "Hatius? I'm pretty sure he's been here much longer than you....", FaceAnimationIDs.SUSPICIOUS))
 			.addContinueDialog(hopleez.createDialogStepForNpc("I swear he wasn't here when I first arrived, I went away for a second and suddenly he's here!", FaceAnimationIDs.ANNOYED_2))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Help me teach him a lesson, get me that old cabbage from outside the The Sheared Ram."))
 			.addContinueDialog(new RunelitePlayerDialogStep(client, "Umm, sure....", talkedToHopleez.getSetter()));

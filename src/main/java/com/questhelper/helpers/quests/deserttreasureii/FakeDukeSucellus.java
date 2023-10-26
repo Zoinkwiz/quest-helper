@@ -137,9 +137,9 @@ public class FakeDukeSucellus
 		// Set display requirement
 
 		RuneliteDialogStep dukeDialog = new RuneliteObjectDialogStep("Zoinkwiz",
-			"Hi, this Duke is part of the Quest Helper plugin. You can use this Duke to see what its attacks look like.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID());
-		dukeDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Duke to see the various attacks you can test.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
-			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to stop any actions.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()));
+			"Hi, this Duke is part of the Quest Helper plugin. You can use this Duke to see what its attacks look like.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID());
+		dukeDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Duke to see the various attacks you can test.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID()))
+			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to stop any actions.", NpcID.ELIZA, FaceAnimationIDs.HAPPY_3.getAnimationID()));
 		duke.addDialogTree(null, dukeDialog);
 		duke.addTalkFromDistanceAction(runeliteObjectManager);
 		duke.getRuneliteObject().setDrawFrontTilesFirst(true);

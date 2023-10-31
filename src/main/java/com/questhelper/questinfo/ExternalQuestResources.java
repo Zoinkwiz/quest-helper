@@ -276,6 +276,7 @@ public enum ExternalQuestResources {
     // Generic helpers
 	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
 	DAG_ROUTE("https://oldschool.runescape.wiki/w/Waterbirth_Island"),
+	STRONGHOLD_OF_SECURITY("https://oldschool.runescape.wiki/w/Stronghold_of_Security"),
 
 	// Skills
 	AGILITY("https://oldschool.runescape.wiki/w/Agility_training"),

@@ -87,7 +87,6 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		"Read the text and follow the advice given.",
 		"Virus scan my device then change my password.",
 		"Report the incident and do not click any links.",
-		"Use the account management section on the website.",
 		"Don't share your information and report the player.",
 		"Set up 2 step authentication with my email provider.",
 		"No, you should never allow anyone to level your account.",
@@ -95,6 +94,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		"No way! You'll just take my gold for your own! Reported!",
 		"Don't type in my password backwards and report the player.",
 		"Don't give them the information and send an 'Abuse report'.",
+		"Don't tell them anything and click the 'Report Abuse' button.",
 		"Politely tell them no and then use the 'Report Abuse' button.",
 		"Don't give out your password to anyone. Not even close friends.",
 		"Do not visit the website and report the player who messaged you.",
@@ -179,10 +179,13 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			"Climb down the entrance to the Stronghold of Security");
 		enterFloorFamine = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
 			"Go to the 2nd floor of the stronghold.");
+		enterFloorFamine.addDialogSteps(answers);
 		enterFloorPestilence = new ObjectStep(this, ObjectID.LADDER_19004, new WorldPoint(2026, 5218, 0),
 			"Go to the 3rd floor of the stronghold.");
+		enterFloorPestilence.addDialogSteps(answers);
 		enterFloorDeath = new ObjectStep(this, ObjectID.DRIPPING_VINE_23706, new WorldPoint(2148, 5284, 0),
 			"Go to the 4th floor of the stronghold.");
+		enterFloorDeath.addDialogSteps(answers);
 
 		usePortalWar = new ObjectStep(this, ObjectID.PORTAL_20786,
 			new WorldPoint(1863, 5238, 0), "Enter the portal.");

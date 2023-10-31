@@ -254,14 +254,20 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		enterFloorFamine = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
 			"Go to the 2nd floor of the stronghold.");
 		enterFloorFamine.setLinePoints(pathFromStartToChest1);
+		enterFloorFamine.setHideMinimapLines(true);
+		enterFloorFamine.setHideWorldArrow(true);
 		enterFloorFamine.addDialogSteps(answers);
 		enterFloorPestilence = new ObjectStep(this, ObjectID.LADDER_19004, new WorldPoint(2026, 5218, 0),
 			"Go to the 3rd floor of the stronghold.");
 		enterFloorPestilence.setLinePoints(pathFromStartToChest2);
+		enterFloorPestilence.setHideMinimapLines(true);
+		enterFloorPestilence.setHideWorldArrow(true);
 		enterFloorPestilence.addDialogSteps(answers);
 		enterFloorDeath = new ObjectStep(this, ObjectID.DRIPPING_VINE_23706, new WorldPoint(2148, 5284, 0),
 			"Go to the 4th floor of the stronghold.");
 		enterFloorDeath.setLinePoints(pathFromStartToChest3);
+		enterFloorDeath.setHideMinimapLines(true);
+		enterFloorDeath.setHideWorldArrow(true);
 		enterFloorDeath.addDialogSteps(answers);
 
 		usePortalWar = new ObjectStep(this, ObjectID.PORTAL_20786,

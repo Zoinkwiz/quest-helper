@@ -65,10 +65,10 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	ItemRequirement food;
 	Zone countCheck, floorWar, floorFamine, floorPestilence, floorDeath, startRoomWar, startRoomFamine, startRoomPestilence;
 
-	QuestStep talkToCountCheck, enterStronghold, enterFloorFamine, enterFloorPestilence, enterFloorDeath,
-		usePortalWar, usePortalFamine, usePortalPestilence;
+	QuestStep talkToCountCheck, enterStronghold, usePortalWar, usePortalFamine, usePortalPestilence;
 
-	DetailedQuestStep openChestWar, openChestFamine, openChestPestilence, openChestDeath;
+	DetailedQuestStep openChestWar, openChestFamine, openChestPestilence, openChestDeath,
+		enterFloorFamine, enterFloorPestilence, enterFloorDeath;
 
 	String[] answers = {
 		"No.",
@@ -128,7 +128,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 
 		goEnterStronghold.addStep(new Conditions(notStamp, inFloorDeath), openChestDeath);
 
-		//TODO: Highlight confirmation when climbing down -> varb 3854, N579.17 (id: 37945361, parentid: 10551312)
+		//TODO: Highlight warning confirmation when climbing down ladder
 		//TODO: Auto start when entering or when teleporting with Count Check?
 
 		steps.put(0, goEnterStronghold);
@@ -174,34 +174,11 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		startRoomWar = new Zone(new WorldPoint(1855, 5246, 0), new WorldPoint(1866, 5239, 0));
 		startRoomFamine = new Zone(new WorldPoint(2040, 5245, 0), new WorldPoint(2046, 5240, 0));
 		startRoomPestilence = new Zone(new WorldPoint(2117, 5258, 0), new WorldPoint(2133, 5251, 0));
+
 	}
 
 	public void setupSteps()
 	{
-		talkToCountCheck = new NpcStep(this, NpcID.COUNT_CHECK, new WorldPoint(3238, 3199, 0),
-			"Have Count Check teleport you to the Stronghold (one-time only)");
-		talkToCountCheck.addDialogStep("Where can I learn more?");
-		talkToCountCheck.addDialogStep("Yes please, teleport me to the Stronghold of Security.");
-
-		enterStronghold = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
-			"Climb down the entrance to the Stronghold of Security");
-		enterFloorFamine = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
-			"Go to the 2nd floor of the stronghold.");
-		enterFloorFamine.addDialogSteps(answers);
-		enterFloorPestilence = new ObjectStep(this, ObjectID.LADDER_19004, new WorldPoint(2026, 5218, 0),
-			"Go to the 3rd floor of the stronghold.");
-		enterFloorPestilence.addDialogSteps(answers);
-		enterFloorDeath = new ObjectStep(this, ObjectID.DRIPPING_VINE_23706, new WorldPoint(2148, 5284, 0),
-			"Go to the 4th floor of the stronghold.");
-		enterFloorDeath.addDialogSteps(answers);
-
-		usePortalWar = new ObjectStep(this, ObjectID.PORTAL_20786,
-			new WorldPoint(1863, 5238, 0), "Enter the portal.");
-		usePortalFamine = new ObjectStep(this, ObjectID.PORTAL_19005,
-			new WorldPoint(2039, 5240, 0), "Enter the portal.");
-		usePortalPestilence = new ObjectStep(this, ObjectID.PORTAL_23707,
-			new WorldPoint(2120, 5258, 0), "Enter the portal.");
-
 		List<WorldPoint> pathFromStartToChest1 = Arrays.asList(
 			new WorldPoint(1859, 5243, 0),
 			new WorldPoint(1859, 5232, 0),
@@ -213,15 +190,15 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(1912, 5242, 0),
 			new WorldPoint(1912, 5237, 0),
 			new WorldPoint(1905, 5234, 0),
-			new WorldPoint(1905, 5228, 0),
-			new WorldPoint(1907, 5223, 0)
+			new WorldPoint(1905, 5228, 0)
 		);
 
 		List<WorldPoint> pathFromStartToChest2 = Arrays.asList(
 			new WorldPoint(2042, 5245, 0),
 			new WorldPoint(2034, 5244, 0),
 			new WorldPoint(2033, 5239, 0),
-			new WorldPoint(2028, 5236, 0),
+			new WorldPoint(2030, 5236, 0),
+			new WorldPoint(2027, 5236, 0),
 			new WorldPoint(2025, 5245, 0),
 			new WorldPoint(2020, 5244, 0),
 			new WorldPoint(2019, 5237, 0),
@@ -234,8 +211,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(2011, 5231, 0),
 			new WorldPoint(2014, 5231, 0),
 			new WorldPoint(2014, 5228, 0),
-			new WorldPoint(2020, 5227, 0),
-			new WorldPoint(2022, 5217, 0)
+			new WorldPoint(2020, 5227, 0)
 		);
 
 		List<WorldPoint> pathFromStartToChest3 = Arrays.asList(
@@ -244,12 +220,12 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(2132, 5261, 0),
 			new WorldPoint(2135, 5263, 0),
 			new WorldPoint(2159, 5263, 0),
+			new WorldPoint(2163, 5267, 0),
 			new WorldPoint(2164, 5271, 0),
 			new WorldPoint(2164, 5279, 0),
 			new WorldPoint(2156, 5284, 0),
 			new WorldPoint(2155, 5291, 0),
-			new WorldPoint(2147, 5291, 0),
-			new WorldPoint(2144, 5281, 0)
+			new WorldPoint(2147, 5291, 0)
 		);
 
 		List<WorldPoint> pathFromStartToChest4 = Arrays.asList(
@@ -265,9 +241,35 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(2323, 5231, 0),
 			new WorldPoint(2332, 5227, 0),
 			new WorldPoint(2340, 5226, 0),
-			new WorldPoint(2341, 5219, 0),
-			new WorldPoint(2344, 5215, 0)
+			new WorldPoint(2341, 5219, 0)
 		);
+
+		talkToCountCheck = new NpcStep(this, NpcID.COUNT_CHECK, new WorldPoint(3238, 3199, 0),
+			"Have Count Check teleport you to the Stronghold. (one-time only)");
+		talkToCountCheck.addDialogStep("Where can I learn more?");
+		talkToCountCheck.addDialogStep("Yes please, teleport me to the Stronghold of Security.");
+
+		enterStronghold = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
+			"Climb down the entrance to the Stronghold of Security.");
+		enterFloorFamine = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
+			"Go to the 2nd floor of the stronghold.");
+		enterFloorFamine.setLinePoints(pathFromStartToChest1);
+		enterFloorFamine.addDialogSteps(answers);
+		enterFloorPestilence = new ObjectStep(this, ObjectID.LADDER_19004, new WorldPoint(2026, 5218, 0),
+			"Go to the 3rd floor of the stronghold.");
+		enterFloorPestilence.setLinePoints(pathFromStartToChest2);
+		enterFloorPestilence.addDialogSteps(answers);
+		enterFloorDeath = new ObjectStep(this, ObjectID.DRIPPING_VINE_23706, new WorldPoint(2148, 5284, 0),
+			"Go to the 4th floor of the stronghold.");
+		enterFloorDeath.setLinePoints(pathFromStartToChest3);
+		enterFloorDeath.addDialogSteps(answers);
+
+		usePortalWar = new ObjectStep(this, ObjectID.PORTAL_20786,
+			new WorldPoint(1863, 5238, 0), "Enter the portal.");
+		usePortalFamine = new ObjectStep(this, ObjectID.PORTAL_19005,
+			new WorldPoint(2039, 5240, 0), "Enter the portal.");
+		usePortalPestilence = new ObjectStep(this, ObjectID.PORTAL_23707,
+			new WorldPoint(2120, 5258, 0), "Enter the portal.");
 
 		openChestWar = new ObjectStep(this, ObjectID.GIFT_OF_PEACE,
 			new WorldPoint(1907, 5222, 0), "Claim 2k coins and the Flap emote.");
@@ -317,6 +319,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new ItemReward("Fancy or Fighting boots", ItemID.FANCY_BOOTS, 1));
 	}
 
+	// Maybe a little unnecessary...
 	@Override
 	public List<PanelDetails> getPanels()
 	{

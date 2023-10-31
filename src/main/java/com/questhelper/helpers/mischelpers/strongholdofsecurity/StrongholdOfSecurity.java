@@ -39,6 +39,7 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
@@ -56,14 +58,14 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class StrongholdOfSecurity extends BasicQuestHelper
 {
-	Requirement inFloorWar, inFloorFamine, inFloorPestilence, inFloorDeath,
+	Requirement notUsedCountCheck, nearCountCheck, inFloorWar, inFloorFamine, inFloorPestilence, inFloorDeath,
 		inStartRoomWar, inStartRoomFamine, inStartRoomPestilence,
 		notFlap, notSlap, notIdea, notStamp, hasFlap, hasSlap, hasIdea, hasStamp;
 
 	ItemRequirement food;
-	Zone floorWar, floorFamine, floorPestilence, floorDeath, startRoomWar, startRoomFamine, startRoomPestilence;
+	Zone countCheck, floorWar, floorFamine, floorPestilence, floorDeath, startRoomWar, startRoomFamine, startRoomPestilence;
 
-	QuestStep enterStronghold, enterFloorFamine, enterFloorPestilence, enterFloorDeath,
+	QuestStep talkToCountCheck, enterStronghold, enterFloorFamine, enterFloorPestilence, enterFloorDeath,
 		usePortalWar, usePortalFamine, usePortalPestilence;
 
 	DetailedQuestStep openChestWar, openChestFamine, openChestPestilence, openChestDeath;
@@ -111,6 +113,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep goEnterStronghold = new ConditionalStep(this, enterStronghold);
+		goEnterStronghold.addStep(new Conditions(nearCountCheck, notUsedCountCheck), talkToCountCheck);
 		goEnterStronghold.addStep(new Conditions(notFlap, inFloorWar), openChestWar);
 		goEnterStronghold.addStep(new Conditions(hasFlap, inFloorWar, inStartRoomWar), usePortalWar);
 		goEnterStronghold.addStep(new Conditions(notStamp, inFloorWar), enterFloorFamine);
@@ -136,38 +139,38 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		notFlap = new VarbitRequirement(2309, 0);
-		notSlap = new VarbitRequirement(2310, 0);
-		notIdea = new VarbitRequirement(2311, 0);
-		notStamp = new VarbitRequirement(2312, 0);
-
-		hasFlap = new VarbitRequirement(2309, 1);
-		hasSlap = new VarbitRequirement(2310, 1);
-		hasIdea = new VarbitRequirement(2311, 1);
-		hasStamp = new VarbitRequirement(2312, 1);
-
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
 	public void setupConditions()
 	{
+		nearCountCheck = new ZoneRequirement(countCheck);
 		inFloorWar = new ZoneRequirement(floorWar);
 		inFloorFamine = new ZoneRequirement(floorFamine);
 		inFloorPestilence = new ZoneRequirement(floorPestilence);
 		inFloorDeath = new ZoneRequirement(floorDeath);
-
 		inStartRoomWar = new ZoneRequirement(startRoomWar);
 		inStartRoomFamine = new ZoneRequirement(startRoomFamine);
 		inStartRoomPestilence = new ZoneRequirement(startRoomPestilence);
+
+		notUsedCountCheck = new VarbitRequirement(5371, 0);
+		notFlap = new VarbitRequirement(2309, 0);
+		notSlap = new VarbitRequirement(2310, 0);
+		notIdea = new VarbitRequirement(2311, 0);
+		notStamp = new VarbitRequirement(2312, 0);
+		hasFlap = new VarbitRequirement(2309, 1);
+		hasSlap = new VarbitRequirement(2310, 1);
+		hasIdea = new VarbitRequirement(2311, 1);
+		hasStamp = new VarbitRequirement(2312, 1);
 	}
 
 	public void setupZones()
 	{
+		countCheck = new Zone(new WorldPoint(3120, 3275, 0), new WorldPoint(3267, 3135, 0));
 		floorWar = new Zone(new WorldPoint(1855, 5248, 0), new WorldPoint(1920, 5184, 0));
 		floorFamine = new Zone(new WorldPoint(1983, 5248, 0), new WorldPoint(2048, 5184, 0));
 		floorPestilence = new Zone(new WorldPoint(2111, 5310, 0), new WorldPoint(2176, 5248, 0));
 		floorDeath = new Zone(new WorldPoint(2304, 5248, 0), new WorldPoint(2367, 5184, 0));
-
 		startRoomWar = new Zone(new WorldPoint(1855, 5246, 0), new WorldPoint(1866, 5239, 0));
 		startRoomFamine = new Zone(new WorldPoint(2040, 5245, 0), new WorldPoint(2046, 5240, 0));
 		startRoomPestilence = new Zone(new WorldPoint(2117, 5258, 0), new WorldPoint(2133, 5251, 0));
@@ -175,6 +178,11 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		talkToCountCheck = new NpcStep(this, NpcID.COUNT_CHECK, new WorldPoint(3238, 3199, 0),
+			"Have Count Check teleport you to the Stronghold (one-time only)");
+		talkToCountCheck.addDialogStep("Where can I learn more?");
+		talkToCountCheck.addDialogStep("Yes please, teleport me to the Stronghold of Security.");
+
 		enterStronghold = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
 			"Climb down the entrance to the Stronghold of Security");
 		enterFloorFamine = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
@@ -314,7 +322,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Entering the stronghold", Collections.singletonList(enterStronghold)));
+		allSteps.add(new PanelDetails("Entering the stronghold", Arrays.asList(talkToCountCheck, enterStronghold)));
 		allSteps.add(new PanelDetails("Claiming coins", Arrays.asList(openChestWar, openChestFamine, openChestPestilence)));
 		allSteps.add(new PanelDetails("Claiming boots", Collections.singletonList(openChestDeath)));
 		return allSteps;

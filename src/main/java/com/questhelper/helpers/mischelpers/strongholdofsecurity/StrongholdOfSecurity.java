@@ -267,19 +267,16 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			"Go to the 2nd floor of the stronghold.");
 		enterFloorFamine.setLinePoints(pathFromStartToChest1);
 		enterFloorFamine.setHideMinimapLines(true);
-		enterFloorFamine.setHideWorldArrow(true);
 		enterFloorFamine.addDialogSteps(answers);
 		enterFloorPestilence = new ObjectStep(this, ObjectID.LADDER_19004, new WorldPoint(2026, 5218, 0),
 			"Go to the 3rd floor of the stronghold.");
 		enterFloorPestilence.setLinePoints(pathFromStartToChest2);
 		enterFloorPestilence.setHideMinimapLines(true);
-		enterFloorPestilence.setHideWorldArrow(true);
 		enterFloorPestilence.addDialogSteps(answers);
 		enterFloorDeath = new ObjectStep(this, ObjectID.DRIPPING_VINE_23706, new WorldPoint(2148, 5284, 0),
 			"Go to the 4th floor of the stronghold.");
 		enterFloorDeath.setLinePoints(pathFromStartToChest3);
 		enterFloorDeath.setHideMinimapLines(true);
-		enterFloorDeath.setHideWorldArrow(true);
 		enterFloorDeath.addDialogSteps(answers);
 
 		usePortalWar = new ObjectStep(this, ObjectID.PORTAL_20786,
@@ -293,28 +290,24 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(1907, 5222, 0), "Claim 2k coins and the Flap emote.");
 		openChestWar.setLinePoints(pathFromStartToChest1);
 		openChestWar.setHideMinimapLines(true);
-		openChestWar.setHideWorldArrow(true);
 		openChestWar.addDialogSteps(answers);
 
 		openChestFamine = new ObjectStep(this, ObjectID.GRAIN_OF_PLENTY,
 			new WorldPoint(2021, 5216, 0), "Claim 3k coins and the Slap Head emote.");
 		openChestFamine.setLinePoints(pathFromStartToChest2);
 		openChestFamine.setHideMinimapLines(true);
-		openChestFamine.setHideWorldArrow(true);
 		openChestFamine.addDialogSteps(answers);
 
 		openChestPestilence = new ObjectStep(this, ObjectID.BOX_OF_HEALTH,
 			new WorldPoint(2144, 5280, 0), "Claim 5k coins and the Idea emote.");
 		openChestPestilence.setLinePoints(pathFromStartToChest3);
 		openChestPestilence.setHideMinimapLines(true);
-		openChestPestilence.setHideWorldArrow(true);
 		openChestPestilence.addDialogSteps(answers);
 
 		openChestDeath = new ObjectStep(this, ObjectID.CRADLE_OF_LIFE,
 			new WorldPoint(2344, 5214, 0), "Claim Fancy boots or Fighting boots, and the Stamp emote.");
 		openChestDeath.setLinePoints(pathFromStartToChest4);
 		openChestDeath.setHideMinimapLines(true);
-		openChestDeath.setHideWorldArrow(true);
 		openChestDeath.addDialogSteps(answers);
 	}
 

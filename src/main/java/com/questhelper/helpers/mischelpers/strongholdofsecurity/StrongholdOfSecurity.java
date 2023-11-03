@@ -246,8 +246,8 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 
 		talkToCountCheck = new NpcStep(this, NpcID.COUNT_CHECK, new WorldPoint(3238, 3199, 0),
 			"Have Count Check teleport you to the Stronghold. (one-time only)");
-		talkToCountCheck.addDialogStep("Where can I learn more?");
-		talkToCountCheck.addDialogStep("Yes please, teleport me to the Stronghold of Security.");
+		talkToCountCheck.addDialogStep("Where can I learn more about security?");
+		talkToCountCheck.addDialogStep("Yes");
 
 		enterStronghold = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
 			"Climb down the entrance to the Stronghold of Security.");

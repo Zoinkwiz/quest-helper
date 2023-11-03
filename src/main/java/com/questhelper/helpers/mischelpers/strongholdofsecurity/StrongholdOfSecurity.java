@@ -32,6 +32,8 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.CombatLevelRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -58,7 +60,8 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class StrongholdOfSecurity extends BasicQuestHelper
 {
-	Requirement notUsedCountCheck, nearCountCheck, inFloorWar, inFloorFamine, inFloorPestilence, inFloorDeath,
+	Requirement canSkipWar, canSkipFamine, canSkipPestilence,
+		notUsedCountCheck, nearCountCheck, inFloorWar, inFloorFamine, inFloorPestilence, inFloorDeath,
 		inStartRoomWar, inStartRoomFamine, inStartRoomPestilence,
 		notFlap, notSlap, notIdea, notStamp, hasFlap, hasSlap, hasIdea, hasStamp;
 
@@ -103,6 +106,8 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		"Report the stream as a scam. Real Jagex streams have a 'verified' mark."
 	};
 
+	int[] cbLevels = {26, 51, 76};
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -114,16 +119,19 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 
 		ConditionalStep goEnterStronghold = new ConditionalStep(this, enterStronghold);
 		goEnterStronghold.addStep(new Conditions(nearCountCheck, notUsedCountCheck), talkToCountCheck);
+		goEnterStronghold.addStep(new Conditions(new Conditions(LogicType.OR, canSkipWar, hasFlap),
+			inFloorWar, inStartRoomWar), usePortalWar);
 		goEnterStronghold.addStep(new Conditions(notFlap, inFloorWar), openChestWar);
-		goEnterStronghold.addStep(new Conditions(hasFlap, inFloorWar, inStartRoomWar), usePortalWar);
 		goEnterStronghold.addStep(new Conditions(notStamp, inFloorWar), enterFloorFamine);
 
+		goEnterStronghold.addStep(new Conditions(new Conditions(LogicType.OR, canSkipFamine, hasSlap),
+			inFloorFamine, inStartRoomFamine), usePortalFamine);
 		goEnterStronghold.addStep(new Conditions(notSlap, inFloorFamine), openChestFamine);
-		goEnterStronghold.addStep(new Conditions(hasSlap, inFloorFamine, inStartRoomFamine), usePortalFamine);
 		goEnterStronghold.addStep(new Conditions(notStamp, inFloorFamine), enterFloorPestilence);
 
+		goEnterStronghold.addStep(new Conditions(new Conditions(LogicType.OR, canSkipPestilence, hasIdea),
+			inFloorPestilence, inStartRoomPestilence), usePortalPestilence);
 		goEnterStronghold.addStep(new Conditions(notIdea, inFloorPestilence), openChestPestilence);
-		goEnterStronghold.addStep(new Conditions(hasIdea, inFloorPestilence, inStartRoomPestilence), usePortalPestilence);
 		goEnterStronghold.addStep(new Conditions(notStamp, inFloorPestilence), enterFloorDeath);
 
 		goEnterStronghold.addStep(new Conditions(notStamp, inFloorDeath), openChestDeath);
@@ -144,6 +152,10 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 
 	public void setupConditions()
 	{
+		canSkipWar = new CombatLevelRequirement(cbLevels[0]);
+		canSkipFamine = new CombatLevelRequirement(cbLevels[1]);
+		canSkipPestilence = new CombatLevelRequirement(cbLevels[2]);
+
 		nearCountCheck = new ZoneRequirement(countCheck);
 		inFloorWar = new ZoneRequirement(floorWar);
 		inFloorFamine = new ZoneRequirement(floorFamine);

@@ -357,6 +357,24 @@ public interface QuestHelperConfig extends Config
 
 	@ConfigSection(
 		position = 1,
+		name = "Sidebar details",
+		description = "Determines sidebar rendering"
+	)
+	String sidebarDetailsSection = "sidebarDetailsSection";
+
+	@ConfigItem(
+		keyName = "showFullRequirements",
+		name = "Show full quest requirements",
+		description = "Show all quest requirements, including requirements for sub-quests",
+		section = sidebarDetailsSection
+	)
+	default boolean showFullRequirements()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		position = 2,
 		name = "Quest Hints",
 		description = "Determines what hints should be shown"
 	)
@@ -511,7 +529,7 @@ public interface QuestHelperConfig extends Config
 	default boolean solvePuzzles() { return true; }
 
 	@ConfigSection(
-		position = 1,
+		position = 3,
 		name = "Colours",
 		description = "What colour each option can be"
 	)
@@ -585,7 +603,7 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigSection(
-		position = 2,
+		position = 4,
 		name = "Quest Filters",
 		description = "Determines which quests should be shown via the selected filter(s)"
 	)

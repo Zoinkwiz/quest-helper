@@ -35,16 +35,13 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -76,9 +73,6 @@ public class SolutionTest extends MockedTest
 	@Bind
 	private final HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement = new HashMap<>();
 
-	@Bind
-	private final HashMap<Integer, List<List<Integer>>> valuePossibleExchanges = new HashMap<>();
-	private final HashMap<Integer, HashSet<Integer>> valuePossibleSingleDiscExchanges = new HashMap<>();
 	private final HashMap<Integer, List<ItemRequirement>> valuePossibleSingleDiscExchangesRequirements = new HashMap<>();
 
 	private final Solution solution = new Solution();

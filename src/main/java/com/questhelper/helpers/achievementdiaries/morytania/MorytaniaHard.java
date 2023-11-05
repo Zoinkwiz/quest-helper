@@ -25,7 +25,6 @@
 package com.questhelper.helpers.achievementdiaries.morytania;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.collections.KeyringCollection;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -34,7 +33,6 @@ import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -70,7 +68,7 @@ import com.questhelper.steps.QuestStep;
 public class MorytaniaHard extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear, crystalMineKey, pickaxe, coins, limestoneBrick, hammer, saw, teakPlank, lawRune,
+	ItemRequirement combatGear, pickaxe, coins, limestoneBrick, hammer, saw, teakPlank, lawRune,
 		bloodRune, noseProtection, watermelonSeeds, seedDibber, rake, axe, tinderbox, witchwoodIcon, lightSource,
 		mushroomSpore, spade, mahoLogs;
 
@@ -170,8 +168,6 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		notMithOre = new VarplayerRequirement(1181, false, 2);
 
 		piety = new PrayerRequirement("Piety activated", Prayer.PIETY);
-
-		crystalMineKey = new KeyringRequirement(configManager, KeyringCollection.CRYSTAL_MINE_KEY).showConditioned(notMithOre).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMithOre).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKharyrll);
 		limestoneBrick = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK).showConditioned(notKharyrll);
@@ -254,11 +250,10 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	{
 		moveToMine = new ObjectStep(this, ObjectID.CART_TUNNEL, new WorldPoint(3440, 3232, 0),
 			"Enter the haunted mine.");
-		mithOre = new ObjectStep(this, ObjectID.MITHRIL_ORE_VEIN_20419, new WorldPoint(2786, 4599, 0),
-			"Mine the mithril ore. You may need to kill or juke the possessed pickaxes in the area.", pickaxe,
-			crystalMineKey);
-		moveToLevelTwo = new ObjectStep(this, ObjectID.LADDER_4965, new WorldPoint(3413, 9633, 0),
-			"Climb down the ladder that leads to the lower level.");
+		mithOre = new ObjectStep(this, ObjectID.MITHRIL_ORE_VEIN_20419, new WorldPoint(2806, 4439, 0),
+			"Mine the mithril ore in the north-east of the area.", pickaxe);
+		moveToLevelTwo = new ObjectStep(this, ObjectID.CART_TUNNEL_4920, new WorldPoint(3437, 9637, 0),
+			"Enter the mine cart shaft by the entrance, directly south of you.");
 
 		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3337, 0),
 			"Enter the grotto tree in Mort Myre Swamp.");
@@ -331,7 +326,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(combatGear, coins.quantity(100000), limestoneBrick.quantity(2), hammer, saw,
 			teakPlank.quantity(3), lawRune.quantity(200), bloodRune.quantity(100), watermelonSeeds.quantity(3), seedDibber, spade, rake, axe,
-			tinderbox, witchwoodIcon, lightSource, mushroomSpore, pickaxe, crystalMineKey);
+			tinderbox, witchwoodIcon, lightSource, mushroomSpore, pickaxe);
 	}
 
 	@Override
@@ -416,7 +411,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		allSteps.add(watermelonsSteps);
 
 		PanelDetails mithSteps = new PanelDetails("Haunted Mithril Ore", Arrays.asList(moveToMine, moveToLevelTwo,
-			mithOre), new SkillRequirement(Skill.MINING, 55, true), hauntedMine, pickaxe, crystalMineKey);
+			mithOre), new SkillRequirement(Skill.MINING, 55, true), hauntedMine, pickaxe);
 		mithSteps.setDisplayCondition(notMithOre);
 		mithSteps.setLockingStep(mithOreTask);
 		allSteps.add(mithSteps);

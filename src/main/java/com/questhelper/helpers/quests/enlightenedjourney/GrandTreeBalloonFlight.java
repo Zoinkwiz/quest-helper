@@ -73,7 +73,7 @@ public class GrandTreeBalloonFlight extends ComplexStateQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 10);
+		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 3);
 	}
 
 	@Override

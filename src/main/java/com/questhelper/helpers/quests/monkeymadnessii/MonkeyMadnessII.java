@@ -227,9 +227,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		steps.put(130, talkToNieve);
 
-		ConditionalStep defendingTheTree = new ConditionalStep(this, killGorillasInStronghold);
-		defendingTheTree.addStep(killedGorillas, enterNorthOfTree);
-		steps.put(140, defendingTheTree);
+		steps.put(140, killGorillasInStronghold);
 
 		ConditionalStep goDefeatDemonicAndTorturedGorillas = new ConditionalStep(this, enterNorthOfTree);
 		goDefeatDemonicAndTorturedGorillas.addStep(inCrashSiteCavern, killTorturedAndDemonic);
@@ -682,30 +680,30 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.SLAYER, 80000),
-				new ExperienceReward(Skill.AGILITY, 60000),
-				new ExperienceReward(Skill.THIEVING, 50000),
-				new ExperienceReward(Skill.HUNTER, 50000));
+			new ExperienceReward(Skill.SLAYER, 80000),
+			new ExperienceReward(Skill.AGILITY, 60000),
+			new ExperienceReward(Skill.THIEVING, 50000),
+			new ExperienceReward(Skill.HUNTER, 50000));
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
-				new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
-				new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
+			new ItemReward("50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+			new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
+			new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Access to Demonic Gorillas"),
-				new UnlockReward("A new Gnome Glider location"),
-				new UnlockReward("Access to a bank on Ape Atoll"),
-				new UnlockReward("Ability to wield the Heavy Ballista"),
-				new UnlockReward("Access to Maniacal Monkey hunting area"));
+			new UnlockReward("Access to Demonic Gorillas"),
+			new UnlockReward("A new Gnome Glider location"),
+			new UnlockReward("Access to a bank on Ape Atoll"),
+			new UnlockReward("Ability to wield the Heavy Ballista"),
+			new UnlockReward("Access to Maniacal Monkey hunting area"));
 	}
 
 	@Override

@@ -244,12 +244,11 @@ public class QuestOrders
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
-		// TODO: Verify position of DT2
-		QuestHelperQuest.SONG_OF_THE_ELVES,
+		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 		QuestHelperQuest.DESERT_TREASURE_II,
+		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
-		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide
 		QuestHelperQuest.BEAR_YOUR_SOUL,

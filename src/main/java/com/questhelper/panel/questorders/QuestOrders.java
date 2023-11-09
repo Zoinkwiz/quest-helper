@@ -238,11 +238,11 @@ public class QuestOrders
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
-		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.MONKEY_MADNESS_II,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
+		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		// TODO: Verify position of DT2
 		QuestHelperQuest.SONG_OF_THE_ELVES,

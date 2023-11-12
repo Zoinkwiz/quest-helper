@@ -31,11 +31,11 @@ import java.util.Collections;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 
 import java.util.HashMap;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -88,7 +88,17 @@ public class IncantationStep extends DetailedQuestStep
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if(event.getWidgetId() == WidgetInfo.INVENTORY.getId() && event.getMenuOption().equals("Chant"))
+		var widget = event.getWidget();
+
+		if (widget == null) {
+			return;
+		}
+
+		if (widget.getId() != ComponentID.INVENTORY_CONTAINER) {
+			return;
+		}
+
+		if (event.getMenuOption().equals("Chant"))
 		{
 			incantationPosition = 0;
 		}

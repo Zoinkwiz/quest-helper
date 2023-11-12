@@ -787,7 +787,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		goToChance = new ObjectStep(this, ObjectID.PLATFORM_16637, new WorldPoint(1751, 5080, 2), "Go on the platform to the chance challenge.");
 
 		doMemoryChallenge = new MemoryChallenge(this);
-		startTreeChallenge = new NpcStep(this, NpcID.ETHEREAL_PERCEPTIVE, new WorldPoint(1765, 5112, 2), "Talk to Ethereal perspective to begin. Cut 20 logs and deposit them on the log piles faster than the NPC.");
+		startTreeChallenge = new NpcStep(this, NpcID.ETHEREAL_PERCEPTIVE, new WorldPoint(1765, 5112, 2), "Talk to Ethereal Perceptive to begin. Cut 20 logs and deposit them on the log piles faster than the NPC.");
 		startTreeChallenge.addDialogStep("Ok, let's go!");
 		doRaceChallenge = new DetailedQuestStep(this, "Race to the end of the course to win!");
 		doChanceChallenge = new ChanceChallenge(this);

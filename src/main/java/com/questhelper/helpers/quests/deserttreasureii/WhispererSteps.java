@@ -1160,8 +1160,6 @@ public class WhispererSteps extends ConditionalStep
 		fightWhispererSidebar.addText("When she hits 0 health, she will heal back to 140, and start attacking rapidly with random ranged and magic attacks. Finish her off.");
 		fightWhispererSidebar.addSubSteps(enterTheCathedral);
 
-		FakeWhisperer.createWhisperer(getQuestHelper().getQuestHelperPlugin().getClient(), getQuestHelper(), getQuestHelper().getQuestHelperPlugin().getRuneliteObjectManager());
-
 		searchEntrails = new ObjectStep(getQuestHelper(), NullObjectID.NULL_47578, new WorldPoint(2656, 6370, 0),
 			"Search the entrails dropped by the Whisperer.", true);
 		searchEntrails.addDialogStep("The Cathedral.");

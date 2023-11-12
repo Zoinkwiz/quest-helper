@@ -27,7 +27,6 @@ package com.questhelper.helpers.quests.deserttreasureii;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.createLeviathan;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
@@ -916,8 +915,6 @@ public class PerseriyaSteps extends ConditionalStep
 		killLeviathanSidebar.addText("Run away from electricity attacks. When boulders start falling, walk them in a line to create a wall which you can hide behind from the Leviathan, as after 10 rocks you will need to use them to avoid a blast attack.");
 		killLeviathanSidebar.addText("At 20% health, the leviathan will become enraged, constantly dropping rocks. You need to locate an abyssal pathfinder and stay near it until you kill the Leviathan.");
 		killLeviathanSidebar.addSubSteps(goKillLeviathan);
-
-		createLeviathan(getQuestHelper().getQuestHelperPlugin().getClient(), getQuestHelper(), runeliteObjectManager);
 
 		climbDownFromLeviathan = new ObjectStep(getQuestHelper(), ObjectID.HANDHOLDS_47594, new WorldPoint(2091, 6380, 0),
 			"Climb down the handholds in the north-eastern corner of the Leviathan area.");

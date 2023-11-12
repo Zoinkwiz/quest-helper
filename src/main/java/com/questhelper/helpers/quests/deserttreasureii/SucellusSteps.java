@@ -573,8 +573,6 @@ public class SucellusSteps extends ConditionalStep
 		defeatDukeSidebar.addText("Duke's gaze: the duke opens his eye to deal massive damage. Hide behind a pillar to avoid this.");
 		defeatDukeSidebar.addSubSteps(defeatDuke);
 
-		FakeDukeSucellus.createDuke(getQuestHelper().getQuestHelperPlugin().getClient(), getQuestHelper(), getQuestHelper().getQuestHelperPlugin().getRuneliteObjectManager());
-
 		pickUpOddKey = new ItemStep(getQuestHelper(), "Pick up the odd key.", oddKey);
 
 		enterRoomWestOfDuke = new ObjectStep(getQuestHelper(), ObjectID.GATE_49140, new WorldPoint(3023, 6425, 0),

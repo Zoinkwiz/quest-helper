@@ -27,7 +27,6 @@ package com.questhelper.helpers.quests.deserttreasureii;
 import com.questhelper.tools.Icon;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -61,7 +60,6 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
@@ -69,11 +67,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Point;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.DESERT_TREASURE_II

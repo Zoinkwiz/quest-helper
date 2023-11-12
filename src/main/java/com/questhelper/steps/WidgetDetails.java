@@ -28,7 +28,6 @@ import com.questhelper.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.WidgetInfo;
 
 @Value
 @AllArgsConstructor
@@ -37,13 +36,6 @@ public class WidgetDetails
 	public int groupID;
 	public int childID;
 	public int childChildID;
-
-	public WidgetDetails(WidgetInfo widgetInfo)
-	{
-		groupID = widgetInfo.getGroupId();
-		childID = widgetInfo.getChildId();
-		childChildID = -1;
-	}
 
 	public WidgetDetails(@Component int componentId)
 	{

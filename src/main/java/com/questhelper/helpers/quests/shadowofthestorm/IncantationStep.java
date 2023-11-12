@@ -32,8 +32,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 
 import java.util.HashMap;
 import net.runelite.client.eventbus.Subscribe;
@@ -74,7 +74,7 @@ public class IncantationStep extends DetailedQuestStep
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		int groupId = event.getGroupId();
-		if (groupId == WidgetID.DIALOG_OPTION_GROUP_ID)
+		if (groupId == InterfaceID.DIALOG_OPTION)
 		{
 			clientThread.invokeLater(this::updateChoiceIfRequired);
 		}
@@ -123,7 +123,7 @@ public class IncantationStep extends DetailedQuestStep
 
 	private boolean shouldUpdateChoice()
 	{
-		Widget widget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
+		Widget widget = client.getWidget(InterfaceID.DIALOG_OPTION, 1);
 		if (widget == null)
 		{
 			return false;

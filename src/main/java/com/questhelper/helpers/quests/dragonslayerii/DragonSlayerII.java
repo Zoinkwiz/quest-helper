@@ -938,6 +938,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		useKeyOnGrandioseDoors = new ObjectStep(this, NullObjectID.NULL_29872, new WorldPoint(3550, 10425, 0), "Unlock the grandiose door.");
 
 		talkToDallasAfterDoors = new NpcStep(this, NpcID.DALLAS_JONES_8102, new WorldPoint(1566, 5099, 0), "Talk to Dallas Jones to the north.");
+		((NpcStep) talkToDallasAfterDoors).addAlternateNpcs(NpcID.DALLAS_JONES_8103);
 
 		talkToBobAfterRelease = new NpcStep(this, NpcID.BOB_8111, new WorldPoint(3548, 10480, 0), "");
 
@@ -1024,7 +1025,8 @@ public class DragonSlayerII extends BasicQuestHelper
 			new WorldPoint(1698, 5712, 0),
 			new WorldPoint(1698, 5715, 0),
 			new WorldPoint(1702, 5719, 0),
-			new WorldPoint(1702, 5723, 0),
+			new WorldPoint(1702, 5722, 0),
+			new WorldPoint(1705, 5722, 0),
 			new WorldPoint(1708, 5723, 1),
 			new WorldPoint(1708, 5728, 1),
 			new WorldPoint(1708, 5729, 0),
@@ -1177,6 +1179,7 @@ public class DragonSlayerII extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new UnlockReward("Access to the Myths Guild."),
+				// 6140 0->1 means talked to Primula
 				new UnlockReward("Ability to make Super Antifire Potions"),
 				new UnlockReward("Access to the Fountain of Uhld."),
 				new UnlockReward("Access to the Wrath Altar."),

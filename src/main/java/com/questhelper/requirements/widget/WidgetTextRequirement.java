@@ -29,9 +29,11 @@ package com.questhelper.requirements.widget;
 import com.questhelper.requirements.SimpleRequirement;
 import java.util.Arrays;
 import java.util.List;
+import com.questhelper.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -58,6 +60,23 @@ public class WidgetTextRequirement extends SimpleRequirement
 
 		this.groupId = widgetInfo.getGroupId();
 		this.childId = widgetInfo.getChildId();
+		this.text = Arrays.asList(text);
+	}
+
+	public WidgetTextRequirement(@Component int componentId, String... text)
+	{
+		var pair = Utils.unpackWidget(componentId);
+		this.groupId = pair.getLeft();
+		this.childId = pair.getRight();
+		this.text = Arrays.asList(text);
+	}
+
+	public WidgetTextRequirement(@Component int componentId, boolean checkChildren, String... text)
+	{
+		var pair = Utils.unpackWidget(componentId);
+		this.groupId = pair.getLeft();
+		this.childId = pair.getRight();
+		this.checkChildren = checkChildren;
 		this.text = Arrays.asList(text);
 	}
 

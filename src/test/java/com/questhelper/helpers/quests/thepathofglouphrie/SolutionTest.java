@@ -171,6 +171,24 @@ public class SolutionTest extends MockedTest
 		public Stream<? extends Arguments> provideArguments(ExtensionContext context)
 		{
 			return Stream.of(
+				// TOP PUZZLE: YELLOW CIRCLE (3) + GREEN TRIANGLE (12) = 15
+				// BOTTOM PUZZLE: INDIGO TRIANGLE (18)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.RED_CIRCLE, 1),
+						new Item(ItemID.RED_TRIANGLE, 1),
+						new Item(ItemID.RED_SQUARE, 1),
+						new Item(ItemID.YELLOW_SQUARE, 1),
+						new Item(ItemID.YELLOW_PENTAGON, 1),
+						new Item(ItemID.YELLOW_TRIANGLE, 1),
+						new Item(ItemID.BLUE_TRIANGLE, 1),
+						new Item(ItemID.BLUE_SQUARE, 1),
+						new Item(ItemID.BLUE_PENTAGON, 2),
+						new Item(ItemID.VIOLET_SQUARE, 3)
+					),
+					15,
+					18
+				),
 				// TOP PUZZLE: GREEN CIRCLE + GREEN SQUARE (20)
 				// BOTTOM PUZZLE: VIOLET SQUARE (28)
 				Arguments.of(
@@ -336,6 +354,30 @@ public class SolutionTest extends MockedTest
 		public Stream<? extends Arguments> provideArguments(ExtensionContext context)
 		{
 			return Stream.of(
+				// TOP PUZZLE: YELLOW CIRCLE (3) + GREEN TRIANGLE (12) = 15
+				// BOTTOM PUZZLE: INDIGO TRIANGLE (18)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.RED_CIRCLE, 1),			// 1
+						new Item(ItemID.RED_TRIANGLE, 1),		// 3
+						new Item(ItemID.RED_SQUARE, 1),			// 4
+						new Item(ItemID.YELLOW_SQUARE, 1),		// 12
+						new Item(ItemID.YELLOW_PENTAGON, 1),	// 15
+						new Item(ItemID.YELLOW_TRIANGLE, 1),	// 9
+						new Item(ItemID.BLUE_SQUARE, 1),		// 20
+						new Item(ItemID.BLUE_PENTAGON, 2),		// 25
+						new Item(ItemID.VIOLET_SQUARE, 3)		// 28
+					),
+					15,
+					18,
+					List.of(ItemID.BLUE_SQUARE),
+					List.of(
+						ItemID.YELLOW_PENTAGON, // Would make a valid solution
+						ItemID.BLUE_TRIANGLE, // Would make a valid solution
+						ItemID.YELLOW_CIRCLE, // Would NOT make a fully valid solution
+						ItemID.RED_TRIANGLE // Would NOT make a fully valid solution
+					)
+				),
 				Arguments.of(
 					List.of(
 						new Item(ItemID.BLUE_SQUARE, 1),

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, pajlada <https://github.com/pajlada>
+ * Copyright (c) 2023, pajlads <https://github.com/pajlads>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -18,42 +19,31 @@
  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABI`LITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements.player;
+package com.questhelper.util;
 
-import com.questhelper.requirements.AbstractRequirement;
-import com.questhelper.util.Utils;
+import com.questhelper.domain.AccountType;
+import lombok.experimental.UtilityClass;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
+import org.jetbrains.annotations.NotNull;
 
-public class IronmanRequirement extends AbstractRequirement
+@UtilityClass
+public class Utils
 {
-	final boolean shouldBeIronman;
-
-	public IronmanRequirement(boolean shouldBeIronman)
+	/**
+	 * Transforms the value from {@link Varbits#ACCOUNT_TYPE} to a convenient enum.
+	 *
+	 * @param client {@link Client}
+	 * @return {@link AccountType}
+	 * @apiNote This function should only be called from the client thread.
+	 */
+	public AccountType getAccountType(@NotNull Client client)
 	{
-		this.shouldBeIronman = shouldBeIronman;
+		return AccountType.get(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
 	}
 
-	@Override
-	public boolean check(Client client)
-	{
-		return client.getLocalPlayer() != null &&
-			Utils.getAccountType(client).isAnyIronman() == shouldBeIronman;
-	}
-
-	@Override
-	public String getDisplayText()
-	{
-		if (shouldBeIronman)
-		{
-			return "You need to be an ironman";
-		}
-		else
-		{
-			return "You need to not be an ironman";
-		}
-	}
 }

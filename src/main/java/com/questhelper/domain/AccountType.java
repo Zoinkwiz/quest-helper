@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2022, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2023, pajlada <https://github.com/pajlada>
+ * Copyright (c) 2023, pajlads <https://github.com/pajlads>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -18,42 +19,42 @@
  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABI`LITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements.player;
+package com.questhelper.domain;
 
-import com.questhelper.requirements.AbstractRequirement;
-import com.questhelper.util.Utils;
-import net.runelite.api.Client;
-
-public class IronmanRequirement extends AbstractRequirement
+public enum AccountType
 {
-	final boolean shouldBeIronman;
+	NORMAL,
+	IRONMAN,
+	ULTIMATE_IRONMAN,
+	HARDCORE_IRONMAN,
+	GROUP_IRONMAN,
+	HARDCORE_GROUP_IRONMAN,
+	UNRANKED_GROUP_IRONMAN;
 
-	public IronmanRequirement(boolean shouldBeIronman)
+	private static final AccountType[] TYPES = values();
+
+	/**
+	 * @param varbitValue the value associated with {@link net.runelite.api.Varbits#ACCOUNT_TYPE}
+	 * @return the equivalent enum value
+	 */
+	public static AccountType get(int varbitValue)
 	{
-		this.shouldBeIronman = shouldBeIronman;
+		if (varbitValue < 0 || varbitValue >= TYPES.length)
+		{
+			return null;
+		}
+		return TYPES[varbitValue];
 	}
 
-	@Override
-	public boolean check(Client client)
+	/**
+	 * Checks whether this account type is any of the ironman types, solo or group.
+	 */
+	public boolean isAnyIronman()
 	{
-		return client.getLocalPlayer() != null &&
-			Utils.getAccountType(client).isAnyIronman() == shouldBeIronman;
-	}
-
-	@Override
-	public String getDisplayText()
-	{
-		if (shouldBeIronman)
-		{
-			return "You need to be an ironman";
-		}
-		else
-		{
-			return "You need to not be an ironman";
-		}
+		return this == IRONMAN || this == ULTIMATE_IRONMAN || this == HARDCORE_IRONMAN || this == GROUP_IRONMAN || this == HARDCORE_GROUP_IRONMAN || this == UNRANKED_GROUP_IRONMAN;
 	}
 }

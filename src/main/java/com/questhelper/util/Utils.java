@@ -29,7 +29,10 @@ import com.questhelper.domain.AccountType;
 import lombok.experimental.UtilityClass;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.annotations.Interface;
 
 @UtilityClass
 public class Utils
@@ -44,6 +47,28 @@ public class Utils
 	public AccountType getAccountType(@NotNull Client client)
 	{
 		return AccountType.get(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
+	}
+
+	/**
+	 * Pack a widget group ID (Interface) and widget child ID into a widget ID (Component)
+	 * @param groupId the {@link Interface}
+	 * @param childId the child id
+	 * @return the corresponding {@link Component}
+	 */
+	@Component
+	@SuppressWarnings("MagicConstant")
+	public int packWidget(@Interface int groupId, int childId) {
+		return groupId << 16 | childId;
+	}
+
+	/**
+	 * Unpack a widget ID (Component) into a widget group ID (Interface) and widget child ID
+	 * @param componentId the {@link Component}
+	 * @return the corresponding Interface & Child ID
+	 */
+	@Component
+	public Pair<Integer, Integer> unpackWidget(@Component int componentId) {
+		return Pair.of(componentId >> 16, componentId & 0xFFFF);
 	}
 
 }

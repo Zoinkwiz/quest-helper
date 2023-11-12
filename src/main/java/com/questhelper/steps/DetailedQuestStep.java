@@ -66,8 +66,8 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -539,7 +539,7 @@ public class DetailedQuestStep extends QuestStep
 	}
 
 	protected Widget getInventoryWidget() {
-		return client.getWidget(WidgetInfo.INVENTORY);
+		return client.getWidget(ComponentID.INVENTORY_CONTAINER);
 	}
 
 	private void renderInventory(Graphics2D graphics)

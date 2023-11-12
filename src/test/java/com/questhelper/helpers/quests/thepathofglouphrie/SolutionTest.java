@@ -35,16 +35,13 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -76,9 +73,6 @@ public class SolutionTest extends MockedTest
 	@Bind
 	private final HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement = new HashMap<>();
 
-	@Bind
-	private final HashMap<Integer, List<List<Integer>>> valuePossibleExchanges = new HashMap<>();
-	private final HashMap<Integer, HashSet<Integer>> valuePossibleSingleDiscExchanges = new HashMap<>();
 	private final HashMap<Integer, List<ItemRequirement>> valuePossibleSingleDiscExchangesRequirements = new HashMap<>();
 
 	private final Solution solution = new Solution();
@@ -93,7 +87,7 @@ public class SolutionTest extends MockedTest
 		loadValueToRequirement(discs, valueToRequirement);
 		loadDiscToValue(discToValue);
 		loadValueToDoubleDiscRequirement(valueToRequirement, valueToDoubleDiscRequirement);
-		loadValuePossibleExchanges(valueToRequirement, valuePossibleExchanges, valuePossibleSingleDiscExchanges, valuePossibleSingleDiscExchangesRequirements);
+		loadValuePossibleExchanges(discs, discToValue, valueToRequirement, valuePossibleSingleDiscExchangesRequirements);
 
 		solution.reset();
 	}
@@ -112,7 +106,10 @@ public class SolutionTest extends MockedTest
 	public void testSubsetRequirements(int sum, List<Integer> expected)
 	{
 		var actualPossibleExchanges = valuePossibleSingleDiscExchangesRequirements.get(sum).stream().map(ItemRequirement::getId).collect(Collectors.toList());
-		assertEquals(expected, actualPossibleExchanges);
+		assertEquals(
+			expected.stream().sorted().collect(Collectors.toList()),
+			actualPossibleExchanges.stream().sorted().collect(Collectors.toList())
+		);
 	}
 
 	@ParameterizedTest(name = "This should be solvable {0} (P1 {1}, P2 {2})")
@@ -174,6 +171,24 @@ public class SolutionTest extends MockedTest
 		public Stream<? extends Arguments> provideArguments(ExtensionContext context)
 		{
 			return Stream.of(
+				// TOP PUZZLE: YELLOW CIRCLE (3) + GREEN TRIANGLE (12) = 15
+				// BOTTOM PUZZLE: INDIGO TRIANGLE (18)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.RED_CIRCLE, 1),
+						new Item(ItemID.RED_TRIANGLE, 1),
+						new Item(ItemID.RED_SQUARE, 1),
+						new Item(ItemID.YELLOW_SQUARE, 1),
+						new Item(ItemID.YELLOW_PENTAGON, 1),
+						new Item(ItemID.YELLOW_TRIANGLE, 1),
+						new Item(ItemID.BLUE_TRIANGLE, 1),
+						new Item(ItemID.BLUE_SQUARE, 1),
+						new Item(ItemID.BLUE_PENTAGON, 2),
+						new Item(ItemID.VIOLET_SQUARE, 3)
+					),
+					15,
+					18
+				),
 				// TOP PUZZLE: GREEN CIRCLE + GREEN SQUARE (20)
 				// BOTTOM PUZZLE: VIOLET SQUARE (28)
 				Arguments.of(
@@ -236,20 +251,43 @@ public class SolutionTest extends MockedTest
 		{
 			return Stream.of(
 				Arguments.of(
-					35,
-					List.of(ItemID.VIOLET_PENTAGON)
+					1,
+					List.of(
+						ItemID.RED_PENTAGON,
+						ItemID.ORANGE_TRIANGLE,
+						ItemID.ORANGE_SQUARE,
+						ItemID.ORANGE_PENTAGON,
+						ItemID.YELLOW_TRIANGLE,
+						ItemID.YELLOW_SQUARE,
+						ItemID.YELLOW_PENTAGON,
+						ItemID.GREEN_TRIANGLE,
+						ItemID.GREEN_SQUARE,
+						ItemID.GREEN_PENTAGON,
+						ItemID.BLUE_CIRCLE,
+						ItemID.BLUE_TRIANGLE,
+						ItemID.BLUE_SQUARE,
+						ItemID.BLUE_PENTAGON,
+						ItemID.INDIGO_CIRCLE,
+						ItemID.INDIGO_TRIANGLE,
+						ItemID.INDIGO_SQUARE,
+						ItemID.INDIGO_PENTAGON,
+						ItemID.VIOLET_CIRCLE,
+						ItemID.VIOLET_TRIANGLE,
+						ItemID.VIOLET_SQUARE,
+						ItemID.VIOLET_PENTAGON
+					)
 				),
 				Arguments.of(
 					30,
-					List.of(ItemID.VIOLET_PENTAGON, ItemID.INDIGO_PENTAGON)
+					List.of(ItemID.VIOLET_PENTAGON)
 				),
 				Arguments.of(
 					28,
-					List.of(ItemID.VIOLET_PENTAGON, ItemID.VIOLET_SQUARE, ItemID.INDIGO_PENTAGON)
+					List.of(ItemID.VIOLET_PENTAGON, ItemID.INDIGO_PENTAGON)
 				),
 				Arguments.of(
 					25,
-					List.of(ItemID.VIOLET_PENTAGON, ItemID.BLUE_PENTAGON, ItemID.VIOLET_SQUARE, ItemID.INDIGO_PENTAGON)
+					List.of(ItemID.VIOLET_PENTAGON, ItemID.VIOLET_SQUARE, ItemID.INDIGO_PENTAGON)
 				)
 			);
 		}
@@ -316,6 +354,30 @@ public class SolutionTest extends MockedTest
 		public Stream<? extends Arguments> provideArguments(ExtensionContext context)
 		{
 			return Stream.of(
+				// TOP PUZZLE: YELLOW CIRCLE (3) + GREEN TRIANGLE (12) = 15
+				// BOTTOM PUZZLE: INDIGO TRIANGLE (18)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.RED_CIRCLE, 1),			// 1
+						new Item(ItemID.RED_TRIANGLE, 1),		// 3
+						new Item(ItemID.RED_SQUARE, 1),			// 4
+						new Item(ItemID.YELLOW_SQUARE, 1),		// 12
+						new Item(ItemID.YELLOW_PENTAGON, 1),	// 15
+						new Item(ItemID.YELLOW_TRIANGLE, 1),	// 9
+						new Item(ItemID.BLUE_SQUARE, 1),		// 20
+						new Item(ItemID.BLUE_PENTAGON, 2),		// 25
+						new Item(ItemID.VIOLET_SQUARE, 3)		// 28
+					),
+					15,
+					18,
+					List.of(ItemID.BLUE_SQUARE),
+					List.of(
+						ItemID.YELLOW_PENTAGON, // Would make a valid solution
+						ItemID.BLUE_TRIANGLE, // Would make a valid solution
+						ItemID.YELLOW_CIRCLE, // Would NOT make a fully valid solution
+						ItemID.RED_TRIANGLE // Would NOT make a fully valid solution
+					)
+				),
 				Arguments.of(
 					List.of(
 						new Item(ItemID.BLUE_SQUARE, 1),
@@ -345,7 +407,7 @@ public class SolutionTest extends MockedTest
 					),
 					21,
 					15,
-					List.of(ItemID.YELLOW_TRIANGLE),
+					List.of(ItemID.ORANGE_PENTAGON),
 					List.of(ItemID.RED_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.YELLOW_SQUARE, ItemID.GREEN_TRIANGLE)
 				),
 				// TOP PUZZLE: BLUE CIRCLE + YELLOW PENTAGON (20)
@@ -360,7 +422,7 @@ public class SolutionTest extends MockedTest
 					),
 					20,
 					7,
-					List.of(ItemID.INDIGO_TRIANGLE, ItemID.INDIGO_SQUARE, ItemID.ORANGE_PENTAGON, ItemID.GREEN_SQUARE),
+					List.of(ItemID.INDIGO_TRIANGLE, ItemID.INDIGO_SQUARE, ItemID.ORANGE_PENTAGON, ItemID.GREEN_SQUARE, ItemID.GREEN_PENTAGON),
 					List.of(ItemID.RED_CIRCLE, ItemID.RED_TRIANGLE, ItemID.RED_SQUARE, ItemID.RED_PENTAGON, ItemID.ORANGE_CIRCLE, ItemID.ORANGE_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.GREEN_CIRCLE, ItemID.BLUE_CIRCLE, ItemID.INDIGO_CIRCLE)
 				),
 				// TOP PUZZLE: BLUE CIRCLE + YELLOW PENTAGON (20)
@@ -393,7 +455,6 @@ public class SolutionTest extends MockedTest
 						ItemID.INDIGO_TRIANGLE,
 						ItemID.GREEN_PENTAGON,
 						ItemID.GREEN_TRIANGLE,
-						ItemID.BLUE_TRIANGLE, // This should technically not be here, but we don't split up the "combined" item suggestions
 						ItemID.BLUE_SQUARE,
 						ItemID.VIOLET_TRIANGLE,
 						ItemID.INDIGO_SQUARE,

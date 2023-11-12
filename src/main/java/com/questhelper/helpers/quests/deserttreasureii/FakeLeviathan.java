@@ -53,8 +53,6 @@ import net.runelite.api.coords.WorldPoint;
 
 public class FakeLeviathan
 {
-	public static int showRedHitsplatFromLeviathanUntilTick = 0;
-	public static int showBlueHitsplatFromLeviathanUntilTick = 0;
 	public static void createLeviathan(Client client, QuestHelper qh, RuneliteObjectManager runeliteObjectManager)
 	{
 		FakeNpc leviathan = runeliteObjectManager.createFakeNpc(qh.toString(),
@@ -93,64 +91,24 @@ public class FakeLeviathan
 				pPoint, 10318, rock);
 			fallingRock.setOrientationGoal(512);
 			fallingRock.getRuneliteObject().setOrientation(512);
-			leviathan.addDelayedAction(4, new Action(menuEntryA -> {
-				if (client.getLocalPlayer().getWorldLocation().distanceTo(pPoint) == 0)
-				{
-					showRedHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
-				}
-				else
-				{
-					showBlueHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
-				}
-			}));
 		};
 
 		Consumer<MenuEntry> rangedAttack = (menuEntry) -> {
 			leviathan.setAnimation(10278, 10281);
 			client.playSoundEffect(7023);
 			createProjectile(client, 2487, leviathan);
-			leviathan.addDelayedAction(4, new Action(menuEntryA -> {
-				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.RANGED)
-				{
-					showRedHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
-				}
-				else
-				{
-					showBlueHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
-				}
-			}));
 		};
 
 		Consumer<MenuEntry> meleeAttack = (menuEntry) -> {
 			leviathan.setAnimation(10278, 10281);
 			client.playSoundEffect(7023);
 			createProjectile(client, 2488, leviathan);
-			leviathan.addDelayedAction(4, new Action(menuEntryA -> {
-				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.MELEE)
-				{
-					showRedHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
-				}
-				else
-				{
-					showBlueHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
-				}
-			}));
 		};
 
 		Consumer<MenuEntry> magicAttack = (menuEntry) -> {
 			leviathan.setAnimation(10278, 10281);
 			client.playSoundEffect(7030);
 			createProjectile(client, 2489, leviathan);
-			leviathan.addDelayedAction(4, new Action(menuEntryA -> {
-				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.MAGIC)
-				{
-					showRedHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
-				}
-				else
-				{
-					showBlueHitsplatFromLeviathanUntilTick = client.getTickCount() + 1;
-				}
-			}));
 		};
 
 		List<Consumer<MenuEntry>> p1Attacks = Arrays.asList(
@@ -201,8 +159,6 @@ public class FakeLeviathan
 
 		RuneliteDialogStep leviathanDialog = new RuneliteObjectDialogStep("Zoinkwiz", "Hi, this Leviathan is part of the Quest Helper plugin. You can use this Leviathan to see what its attacks look like, and practice reacting to them.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID());
 		leviathanDialog.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "Right-click the Leviathan to see the various attacks and phases you can test.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
-			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You'll see a hitsplat on your character the moment the attack counts as hitting.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
-			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "If you've reacted accordingly, by praying correctly or moving, the hitsplat will be blue. Otherwise, it'll be red.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()))
 			.addContinueDialog(new RuneliteObjectDialogStep("Zoinkwiz", "You can press the 'Stop' option to delete boulders and stop the Leviathan from attacking.", NpcID.ELIZA, FaceAnimationIDs.CHATTY.getAnimationID()));
 		leviathan.addDialogTree(null, leviathanDialog);
 		leviathan.addTalkAction(runeliteObjectManager);

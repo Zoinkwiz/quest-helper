@@ -32,12 +32,6 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeDukeSucellus.showBlueHitsplatFromDukeUntilTick;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeDukeSucellus.showRedHitsplatFromDukeUntilTick;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showBlueHitsplatFromLeviathanUntilTick;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeLeviathan.showRedHitsplatFromLeviathanUntilTick;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeWhisperer.showBlueHitsplatWhispererUntilTick;
-import static com.questhelper.helpers.quests.deserttreasureii.FakeWhisperer.showRedHitsplatWhispererUntilTick;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -795,30 +789,6 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		talkToAzzanandra = new NpcStep(this, NpcID.AZZANADRA_12305, new WorldPoint(3298, 6441, 0),
 			"Talk to Azzanadra.");
-	}
-
-	final BufferedImage missIcon = Icon.BLUE_HITSPLAT.getImage();
-	final BufferedImage hitIcon = Icon.MAX_HITSPLAT.getImage();
-
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		Point imageLocation = client.getLocalPlayer().getCanvasImageLocation(missIcon, client.getLocalPlayer().getLogicalHeight() / 2);
-		if (imageLocation != null)
-		{
-			if (showBlueHitsplatFromLeviathanUntilTick >= client.getTickCount()
-				|| showBlueHitsplatFromDukeUntilTick >= client.getTickCount()
-				|| showBlueHitsplatWhispererUntilTick >= client.getTickCount())
-			{
-				OverlayUtil.renderImageLocation(graphics, imageLocation, missIcon);
-			}
-			if (showRedHitsplatFromLeviathanUntilTick >= client.getTickCount()
-				|| showRedHitsplatFromDukeUntilTick >= client.getTickCount()
-				|| showRedHitsplatWhispererUntilTick >= client.getTickCount())
-			{
-				OverlayUtil.renderImageLocation(graphics, imageLocation, hitIcon);
-			}
-		}
 	}
 
 	@Override

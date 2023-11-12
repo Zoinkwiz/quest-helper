@@ -41,7 +41,6 @@ import com.questhelper.steps.tools.QuestPerspective;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import net.runelite.api.Client;
-import net.runelite.api.HeadIcon;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -51,9 +50,6 @@ import net.runelite.api.coords.WorldPoint;
 
 public class FakeWhisperer
 {
-	public static int showRedHitsplatWhispererUntilTick;
-	public static int showBlueHitsplatWhispererUntilTick;
-
 	public static void createWhisperer(Client client, QuestHelper qh, RuneliteObjectManager runeliteObjectManager)
 	{
 		FakeNpc whisperer = runeliteObjectManager.createFakeNpc(qh.toString(),
@@ -196,22 +192,6 @@ public class FakeWhisperer
 					WATER_SUBGROUP, new int[] { 49225 },
 					splash2Middle, 10221);
 				waterMiddle.setScaledModel(new int[] { 49225 }, 220, 220, 220);
-
-				whisperer.addDelayedAction(1, new Action((menuEntry3) -> {
-					WorldPoint playerP2 = WorldPoint.fromLocalInstance(
-						client, client.getLocalPlayer().getLocalLocation());
-					WorldPoint[] splashPoints = new WorldPoint[] { splash1NW, splash2NW, splash1NE, splash2NE,
-						splash1SE, splash2SE, splash1SW, splash2SW };
-					for (WorldPoint splashPoint : splashPoints)
-					{
-						if (splashPoint.equals(playerP2))
-						{
-							showRedHitsplatWhispererUntilTick = client.getTickCount() + 1;
-							return;
-						}
-						showBlueHitsplatWhispererUntilTick = client.getTickCount() + 1;
-					}
-				}));
 			}));
 		};
 
@@ -222,16 +202,6 @@ public class FakeWhisperer
 			client.playSoundEffect(7418);
 
 			createProjectile(client, 2444, whisperer);
-			whisperer.addDelayedAction(3, new Action(menuEntryA -> {
-				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.RANGED)
-				{
-					showRedHitsplatWhispererUntilTick = client.getTickCount() + 1;
-				}
-				else
-				{
-					showBlueHitsplatWhispererUntilTick = client.getTickCount() + 1;
-				}
-			}));
 
 			if (actionsPerformed.get() == 2)
 			{
@@ -255,16 +225,6 @@ public class FakeWhisperer
 			client.playSoundEffect(7354);
 
 			createProjectile(client, 2445, whisperer);
-			whisperer.addDelayedAction(3, new Action(menuEntryA -> {
-				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.MAGIC)
-				{
-					showRedHitsplatWhispererUntilTick = client.getTickCount() + 1;
-				}
-				else
-				{
-					showBlueHitsplatWhispererUntilTick = client.getTickCount() + 1;
-				}
-			}));
 
 			if (actionsPerformed.get() == 2)
 			{

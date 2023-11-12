@@ -48,8 +48,6 @@ import net.runelite.api.coords.WorldPoint;
 
 public class FakeDukeSucellus
 {
-	public static int showRedHitsplatFromDukeUntilTick = 0;
-	public static int showBlueHitsplatFromDukeUntilTick = 0;
 	public static void createDuke(Client client, QuestHelper qh, RuneliteObjectManager runeliteObjectManager)
 	{
 		FakeNpc duke = runeliteObjectManager.createFakeNpc(qh.toString(),
@@ -88,16 +86,6 @@ public class FakeDukeSucellus
 			// 7161?
 			client.playSoundEffect(7214);
 			createProjectile(client, 2434, duke);
-			duke.addDelayedAction(3, new Action(menuEntryA -> {
-				if (client.getLocalPlayer().getOverheadIcon() != HeadIcon.MAGIC)
-				{
-					showRedHitsplatFromDukeUntilTick = client.getTickCount() + 1;
-				}
-				else
-				{
-					showBlueHitsplatFromDukeUntilTick = client.getTickCount() + 1;
-				}
-			}));
 		};
 
 		Consumer<MenuEntry> stareAttack = (menuEntry) -> {

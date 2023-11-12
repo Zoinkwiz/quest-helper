@@ -153,7 +153,7 @@ public class Cheerer
 		FakeNpc cheerer = cheerers.get(generator.nextInt(cheerers.size()));
 		WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
 
-		int tickToRemoveOn = client.getTickCount() + 200;
+		int tickToRemoveOn = client.getTickCount() + 20;
 
 		WorldPoint pointAbovePlayer = new WorldPoint(playerPos.getX(), playerPos.getY() + 1, playerPos.getPlane());
 		cheerer.setWorldPoint(pointAbovePlayer);

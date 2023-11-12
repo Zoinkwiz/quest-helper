@@ -69,7 +69,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TAI_BWO_WANNAI_TRIO
@@ -361,7 +361,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		givenVessel = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "<str>He has successfully caught a Karambwan."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the Karambwan vessel to Tiadeche."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the Karambwan vessel to Tiadeche."),
 			new DialogRequirement("What is it?")
 		);
 
@@ -399,13 +399,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		);
 
 		givenPotion = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the agility potion to Tamayu."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the agility potion to Tamayu."),
 			new DialogRequirement("Thank you Bwana. Now I must prepare for my next"),
 			new WidgetTextRequirement(119, 3, true, "<str>I have increased his agility to match the Shaikahan's.")
 		);
 		givenSpear = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Tamayu, try using this weapon."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have give him a stronger and Karambwan poisoned spear.")
 		);
 
@@ -421,20 +421,20 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 
 		givenBones = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the burnt Jogre bones marinated"),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the burnt Jogre bones marinated"),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him a burnt Jogre bones marinated in"),
 			new DialogRequirement("Finally! A near lifetime of craving satisfied!")
 		);
 
 		givenSandwich = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the seaweed in monkey skin sandwich."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the seaweed in monkey skin sandwich."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him a seaweed in monkey skin sandwich."),
 			new DialogRequirement("Yes ... perfect! You really do not understand how necessary that was."),
 			givenBones
 		);
 
 		givenRum = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the sliced bananas in Karamjan " +
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the sliced bananas in Karamjan " +
 				"rum."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him sliced banana in Karamja rum."),
 			new DialogRequirement("Yes ... that's it! Hits just the spot!"),
@@ -456,7 +456,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		hadManual = new Conditions(true, LogicType.OR,
 			craftingManual,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the crafting manual to Tiadeche."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the crafting manual to Tiadeche."),
 			new WidgetTextRequirement(119, 3, true, "<str>retrieved crafting instructions for Tiadeche.")
 		);
 	}

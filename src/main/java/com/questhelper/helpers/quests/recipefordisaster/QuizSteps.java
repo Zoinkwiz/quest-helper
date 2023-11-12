@@ -38,8 +38,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 
 public class QuizSteps extends DetailedOwnerStep
@@ -87,7 +87,7 @@ public class QuizSteps extends DetailedOwnerStep
 			items.add(flour);
 		}
 
-		Widget currentDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		Widget currentDialog = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
 
 		if (currentDialog != null)
 		{

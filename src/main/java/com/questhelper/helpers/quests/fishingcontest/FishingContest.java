@@ -63,7 +63,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.FISHING_CONTEST
@@ -221,7 +221,7 @@ public class FishingContest extends BasicQuestHelper
 
 		garlicInPipeVarbit = new VarbitRequirement(2054, 1);
 		enteredContest = new Conditions(true, LogicType.AND, hasEverything, onContestGrounds);
-		garlicInPipeScreen = new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You stash the garlic in the pipe.");
+		garlicInPipeScreen = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You stash the garlic in the pipe.");
 		confirmGarlicInPipe = new DialogRequirement(client.getLocalPlayer().getName(), "I shoved some garlic up here.");
 		hasPutGarlicInPipe = new Conditions(true, LogicType.OR, garlicInPipeVarbit, garlicInPipeScreen, confirmGarlicInPipe);
 	}

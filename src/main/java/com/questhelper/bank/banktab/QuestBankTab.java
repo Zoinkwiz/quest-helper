@@ -57,10 +57,10 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -189,7 +189,7 @@ public class QuestBankTab
 			// own title.
 			if (questBankTabInterface.isQuestTabActive())
 			{
-				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
 				if (bankTitle != null)
 				{
 					if (questHelper.getSelectedQuest() != null)
@@ -305,7 +305,7 @@ public class QuestBankTab
 			return;
 		}
 
-		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 		if (itemContainer == null)
 		{
 			return;
@@ -395,7 +395,7 @@ public class QuestBankTab
 
 		totalSectionsHeight = addGeneralSection(itemContainer, itemList, totalSectionsHeight);
 
-		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		final Widget bankItemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 		if (bankItemContainer == null) return;
 		int itemContainerHeight = bankItemContainer.getHeight();
 
@@ -404,8 +404,8 @@ public class QuestBankTab
 		final int itemContainerScroll = bankItemContainer.getScrollY();
 		clientThread.invokeLater(() ->
 			client.runScript(ScriptID.UPDATE_SCROLLBAR,
-				WidgetInfo.BANK_SCROLLBAR.getId(),
-				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
+				ComponentID.BANK_SCROLLBAR,
+				ComponentID.BANK_ITEM_CONTAINER,
 				itemContainerScroll));
 	}
 

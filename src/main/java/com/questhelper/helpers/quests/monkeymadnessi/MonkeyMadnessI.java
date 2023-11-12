@@ -68,7 +68,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.MONKEY_MADNESS_I
@@ -458,13 +458,13 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkedToZooknock = new VarbitRequirement(127, 5, Operation.GREATER_EQUAL);
 
 		givenDentures = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the magical monkey dentures."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the magical monkey dentures."),
 			new WidgetTextRequirement(119, 3, true, "<str> - Something to do with monkey speech."));
 		givenBar = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the gold bar."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the gold bar."),
 			new WidgetTextRequirement(119, 3, true, "<str> - A gold bar."));
 		givenMould = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey amulet mould."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey amulet mould."),
 			new WidgetTextRequirement(119, 3, true, "<str> - A monkey amulet mould."));
 
 		hasTalisman = new Conditions(LogicType.OR, karamjanGreegree, talisman);
@@ -473,11 +473,11 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		hadDenturesAndMould = new Conditions(LogicType.OR, hadEnchantedBar, new Conditions(monkeyDentures, mould));
 
 		givenTalisman = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey talisman."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey talisman."),
 			new WidgetTextRequirement(119, 3, true, "<str> - An authentic magical monkey talisman.")
 		);
 		givenBones = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey remains."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey remains."),
 			new WidgetTextRequirement(119, 3, true, "<str> - Some kind of monkey remains.")
 		);
 

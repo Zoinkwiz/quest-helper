@@ -59,9 +59,9 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatColorType;
@@ -906,8 +906,8 @@ public class RuneliteObjectManager
 
 		if (event.getGroupId() == WidgetID.DIALOG_NPC_GROUP_ID)
 		{
-			Widget npcChatName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME);
-			Widget npcChatHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
+			Widget npcChatName = client.getWidget(ComponentID.DIALOG_NPC_NAME);
+			Widget npcChatHead = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
 
 			clientThread.invokeLater(() -> {
 				if (npcChatHead == null || npcChatName == null)

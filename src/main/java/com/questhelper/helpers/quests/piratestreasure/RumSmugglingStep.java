@@ -37,7 +37,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -142,7 +142,7 @@ public class RumSmugglingStep extends ConditionalStep
 	{
 		onKaramja = new ZoneRequirement(karamjaZone1, karamjaZone2, karamjaBoat);
 		Requirement offKaramja = new ZoneRequirement(false, karamjaZone1, karamjaZone2, karamjaBoat);
-		Requirement inPirateTreasureMenu = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, getQuestHelper().getQuest().getName());
+		Requirement inPirateTreasureMenu = new WidgetTextRequirement(ComponentID.DIARY_TITLE, getQuestHelper().getQuest().getName());
 
 		hasRumOffKaramja = new Conditions(LogicType.AND, karamjanRum, offKaramja);
 		hadRumOffKaramja = new Conditions(true, karamjanRum, offKaramja);

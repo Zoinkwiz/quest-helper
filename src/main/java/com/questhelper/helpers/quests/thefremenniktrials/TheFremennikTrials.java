@@ -65,7 +65,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_FREMENNIK_TRIALS
@@ -397,7 +397,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inQuestJournal = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, "The Fremennik Trials");
+		inQuestJournal = new WidgetTextRequirement(ComponentID.DIARY_TITLE, "The Fremennik Trials");
 
 		Requirement syncedReqs = new Conditions(true, LogicType.OR, inQuestJournal,
 			new DialogRequirement("I think I would enjoy the challenge"));
@@ -458,7 +458,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		hasPlacedStrangeObject = new RuneliteRequirement(configManager, "fremmytrialsplacedstrangeobject",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT,
+			new WidgetTextRequirement(ComponentID.DIALOG_PLAYER_TEXT,
 				"That is going to make a really loud bang when it goes off!"),
 			new ChatMessageRequirement("You put the lit strange object into the pipe."))
 		);

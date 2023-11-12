@@ -691,6 +691,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkedToAvaAgain = new VarbitRequirement(6107, 50, Operation.GREATER_EQUAL);
 
 		// 6141, presumbly represents location of treasure
+		// 0:  3565, 3445, 0
 		// 10: 3487, 3409, 0
 		// 11: 3442, 3421, 0
 
@@ -734,7 +735,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		enterHouseOnTheHill = new ObjectStep(this, ObjectID.STAIRS_30681, new WorldPoint(3755, 3869, 0), "Travel to the House on the Hill on Fossil Island. The fastest way here is with the digsite pendant.");
 		enterHouseBasement = new ObjectStep(this, ObjectID.TRAPDOOR_30725, new WorldPoint(3768, 3867, 1), "Go down the trapdoor to the basement.");
 		talkToDallasInHouse = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(3762, 3868, 0), "Talk to Dallas.");
-		talkToDallasInHouse.addDialogStep("Ask about the island.");
+		talkToDallasInHouse.addDialogSteps("Ask about the island.", "So how do we know which island to go to?");
 		talkToDallasInHouse.addSubSteps(enterHouseBasement);
 		searchNorthChest = new ObjectStep(this, NullObjectID.NULL_29911, new WorldPoint(3765, 3873, 0), "Search the stone chest in the north of the room. Whilst finding map pieces you can talk to Dallas to give him your current pieces.");
 		searchNorthChest.addDialogStep("Let's talk about the investigation.");

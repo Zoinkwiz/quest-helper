@@ -136,8 +136,8 @@ public class KaramjaMedium extends BasicQuestHelper
 		usedGliderTask = new ConditionalStep(this, flyToKaramja);
 		doMedium.addStep(notUsedGlider, usedGliderTask);
 
-		caughtKarambwanTask = new ConditionalStep(this, catchKarambwan);
-		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(questBank), catchKarambwanji);
+		caughtKarambwanTask = new ConditionalStep(this, catchKarambwanji);
+		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(questBank), catchKarambwan);
 		doMedium.addStep(notCaughtKarambwan, caughtKarambwanTask);
 
 		charteredFromShipyardTask = new ConditionalStep(this, charterFromShipyard);
@@ -311,6 +311,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		getMachete = new NpcStep(this, NpcID.SAFTA_DOC_6423, new WorldPoint(2790, 3100, 0),
 			"Get a gem machete from Safta Doc. If you want to make a red topaz one, you'll need 1200 trading sticks.",
 			goutTuber, opal.quantity(3), tradingSticks.quantity(300));
+		((NpcStep) getMachete).addAlternateNpcs(NpcID.SAFTA_DOC);
 		getMachete.addDialogSteps("What do you do here?", "Yes, I'd like to get a machete.");
 		flyToKaramja = new NpcStep(this, NpcID.CAPTAIN_DALBUR, new WorldPoint(3284, 3213, 0),
 			"Fly on a Gnome Glider to Karamja.");

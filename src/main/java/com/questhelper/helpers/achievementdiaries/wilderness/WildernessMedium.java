@@ -133,6 +133,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		wildyAgiTask = new ConditionalStep(this, wildyAgi);
 		doMedium.addStep(notWildyAgi, wildyAgiTask);
 
+		// TODO: IF in bank, step to drop
 		goldHelmTask = new ConditionalStep(this, moveToResource);
 		goldHelmTask.addStep(inResource, mineGoldOre);
 		goldHelmTask.addStep(new Conditions(inResource, goldOre.quantity(3)), smeltGoldOre);

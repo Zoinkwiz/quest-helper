@@ -63,7 +63,7 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_TOURIST_TRAP
@@ -287,7 +287,7 @@ public class TheTouristTrap extends BasicQuestHelper
 
 		hasSlaveClothes = new ItemRequirements(slaveTop, slaveBoot, slaveRobe);
 
-		searchedBookcase = new Conditions(true, new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You notice several books on the subject of sailing."));
+		searchedBookcase = new Conditions(true, new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You notice several books on the subject of sailing."));
 		distractedSiad = new Conditions(true, new WidgetTextRequirement(229, 1, "The captain starts rambling on about his days as a salty sea dog. He<br>looks quite distracted..."));
 
 		anaPlacedOnCartOfLift = new VarbitRequirement(2805, 1);

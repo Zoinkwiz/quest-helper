@@ -65,7 +65,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @SuppressWarnings("CheckStyle")
 @QuestDescriptor(
@@ -216,7 +216,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new WidgetTextRequirement(219, 1, 2, "Yes, about those special clothes again..."));
 
 		talkedToLibrarian = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT,
+			new WidgetTextRequirement(ComponentID.DIALOG_NPC_TEXT,
 				"Let me think... I believe it is on the top shelf of one of<br>the bookcases in the library, because it is such an old<br>book.",
 				"Well, thanks, I'll have a look."
 			),

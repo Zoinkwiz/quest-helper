@@ -35,7 +35,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.util.Text;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -82,7 +82,7 @@ public class QuestMenuHandler
 
 	private static final int[] ACHIEVEMENTLIST_WIDGET_IDS = new int[]
 		{
-			WidgetInfo.ACHIEVEMENT_DIARY_CONTAINER.getId()
+			ComponentID.ACHIEVEMENT_DIARY_CONTAINER
 		};
 
 	private static final String[] ACHIEVEMENT_TIERS = new String[]

@@ -26,7 +26,6 @@ package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
 import com.questhelper.steps.WidgetDetails;
 import lombok.Getter;
-import net.runelite.api.widgets.WidgetInfo;
 
 public class WidgetReplacement
 {
@@ -42,13 +41,6 @@ public class WidgetReplacement
 	public WidgetReplacement(WidgetDetails widgetDetails, String textToReplace, String replacementText)
 	{
 		this.widgetDetails = widgetDetails;
-		this.textToReplace = textToReplace;
-		this.replacementText = replacementText;
-	}
-
-	public WidgetReplacement(WidgetInfo widgetInfo, String textToReplace, String replacementText)
-	{
-		this.widgetDetails = new WidgetDetails(widgetInfo);
 		this.textToReplace = textToReplace;
 		this.replacementText = replacementText;
 	}

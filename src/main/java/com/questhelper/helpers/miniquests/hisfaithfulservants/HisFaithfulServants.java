@@ -55,12 +55,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.runelite.api.*;
+import net.runelite.api.annotations.Interface;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 
 @QuestDescriptor(
@@ -68,6 +68,11 @@ import net.runelite.client.eventbus.Subscribe;
 )
 public class HisFaithfulServants extends BasicQuestHelper
 {
+	/**
+	 * The interface that contains a list of messages in a dialog
+	 */
+	static final @Interface int CHATBOX_MESSAGES_MESSAGE_LIST = 229;
+
 	// Required
 	ItemRequirement combatGear, spade;
 
@@ -283,14 +288,12 @@ public class HisFaithfulServants extends BasicQuestHelper
 			}
 		}
 
-		Widget textBox = client.getWidget(WidgetInfo.DIALOG_OPTION_OPTIONS);
-		if (textBox == null)
+		Widget textOption = client.getWidget(CHATBOX_MESSAGES_MESSAGE_LIST, 1);
+		if (textOption == null)
 		{
 			return;
 		}
-		Widget text = textBox.getChild(0);
-		if (text == null) return;
-		if (text.getText().equals("You've found a hidden tunnel, do you want to enter?"))
+		if (textOption.getText().equals("You've found a hidden tunnel, do you want to enter?"))
 		{
 			updateTunnel();
 		}

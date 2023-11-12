@@ -29,8 +29,8 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 
 import java.util.HashMap;
 import net.runelite.client.eventbus.Subscribe;
@@ -65,11 +65,11 @@ public class IncantationStep extends ConditionalStep
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		int groupId = event.getGroupId();
-		if (groupId == WidgetID.DIALOG_PLAYER_GROUP_ID)
+		if (groupId == InterfaceID.DIALOG_PLAYER)
 		{
 			clientThread.invokeLater(this::resetIncarnationIfRequired);
 		}
-		else if (groupId == WidgetID.DIALOG_OPTION_GROUP_ID)
+		else if (groupId == InterfaceID.DIALOG_OPTION)
 		{
 			clientThread.invokeLater(this::updateChoiceIfRequired);
 		}
@@ -83,7 +83,7 @@ public class IncantationStep extends ConditionalStep
 	 */
 	private void resetIncarnationIfRequired()
 	{
-		Widget widget = client.getWidget(WidgetID.DIALOG_PLAYER_GROUP_ID, 4);
+		Widget widget = client.getWidget(InterfaceID.DIALOG_PLAYER, 4);
 		if (widget == null)
 		{
 			return;
@@ -114,7 +114,7 @@ public class IncantationStep extends ConditionalStep
 
 	private boolean shouldUpdateChoice()
 	{
-		Widget widget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
+		Widget widget = client.getWidget(InterfaceID.DIALOG_OPTION, 1);
 		if (widget == null)
 		{
 			return false;

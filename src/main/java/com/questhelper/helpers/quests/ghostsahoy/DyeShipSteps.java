@@ -43,8 +43,8 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 
 public class DyeShipSteps extends DetailedOwnerStep
@@ -88,7 +88,7 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	private void updateCurrentColours()
 	{
-		Widget dyed = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		Widget dyed = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT);
 		if (dyed == null)
 		{
 			return;

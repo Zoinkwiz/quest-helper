@@ -74,7 +74,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.LEGENDS_QUEST
@@ -675,7 +675,7 @@ public class LegendsQuest extends BasicQuestHelper
 		inFire = new ZoneRequirement(fire1, fire2, fire3);
 		inChallengeCave = new ZoneRequirement(challengeCave);
 
-		completeTextAppeared = new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT,
+		completeTextAppeared = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT,
 			"You have already completed this part of the map.");
 
 		completeEast = new Conditions(true, LogicType.OR,

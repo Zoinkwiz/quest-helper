@@ -38,9 +38,9 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.plugins.bank.BankSearch;
 
@@ -78,7 +78,7 @@ public class QuestBankTabInterface
 			return;
 		}
 
-		parent = client.getWidget(WidgetInfo.BANK_CONTAINER);
+		parent = client.getWidget(ComponentID.BANK_CONTAINER);
 
 		int QUEST_BUTTON_SIZE = 25;
 		int QUEST_BUTTON_X = 408;
@@ -153,7 +153,7 @@ public class QuestBankTabInterface
 
 	public boolean isHidden()
 	{
-		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
+		Widget widget = client.getWidget(ComponentID.BANK_CONTAINER);
 		return widget == null || widget.isHidden();
 	}
 
@@ -203,7 +203,7 @@ public class QuestBankTabInterface
 		// and remove the timer. However since we are going from a bank search to our fake search this will not remove
 		// the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
 		// same as bankmain_search_setbutton.
-		Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+		Widget searchButtonBackground = client.getWidget(ComponentID.BANK_SEARCH_BUTTON_BACKGROUND);
 		if (searchButtonBackground != null)
 		{
 			searchButtonBackground.setOnTimerListener((Object[]) null);
@@ -228,7 +228,7 @@ public class QuestBankTabInterface
 		// and remove the timer. However since we are going from a bank search to our fake search this will not remove
 		// the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
 		// same as bankmain_search_setbutton.
-		Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+		Widget searchButtonBackground = client.getWidget(ComponentID.BANK_SEARCH_BUTTON_BACKGROUND);
 		if (searchButtonBackground != null)
 		{
 			searchButtonBackground.setOnTimerListener((Object[]) null);

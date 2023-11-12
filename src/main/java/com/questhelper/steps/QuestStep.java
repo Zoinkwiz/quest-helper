@@ -59,7 +59,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -223,7 +223,7 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.DIALOG_OPTION_GROUP_ID) // 219
+		if (event.getGroupId() == InterfaceID.DIALOG_OPTION)
 		{
 			clientThread.invokeLater(this::highlightChoice);
 		}

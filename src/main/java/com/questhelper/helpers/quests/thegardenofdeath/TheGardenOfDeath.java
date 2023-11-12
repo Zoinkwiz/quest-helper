@@ -56,7 +56,7 @@ import java.util.Map;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_GARDEN_OF_DEATH
@@ -224,7 +224,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 
 		translationOpen = new WidgetTextRequirement(804, 4, "Translations");
 		chatInputOpen = new Conditions(LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.CHATBOX_TITLE, "Enter a possible translation for a word you've found:"),
+			new WidgetTextRequirement(ComponentID.CHATBOX_TITLE, "Enter a possible translation for a word you've found:"),
 			new WidgetTextRequirement(229, 1, "You've discovered a new translation",
 				"You've already discovered this translation", "You can't think of any suitable translations"),
 			new WidgetTextRequirement(219, 1, 0, "Attempt another translation?")

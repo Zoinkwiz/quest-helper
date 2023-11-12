@@ -24,9 +24,10 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Value;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.annotations.Component;
 
 @Value
 @AllArgsConstructor
@@ -36,10 +37,11 @@ public class WidgetDetails
 	public int childID;
 	public int childChildID;
 
-	public WidgetDetails(WidgetInfo widgetInfo)
+	public WidgetDetails(@Component int componentId)
 	{
-		groupID = widgetInfo.getGroupId();
-		childID = widgetInfo.getChildId();
+		var pair = Utils.unpackWidget(componentId);
+		groupID = pair.getLeft();
+		childID = pair.getRight();
 		childChildID = -1;
 	}
 }

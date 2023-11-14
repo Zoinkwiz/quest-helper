@@ -86,15 +86,11 @@ public class TheMageArenaI extends BasicQuestHelper
 		steps.put(4, fightKolodion);
 		steps.put(5, fightKolodion);
 
-		ConditionalStep goClaimCape = new ConditionalStep(this, enterCavernForPool);
-		goClaimCape.addStep(inStatuesRoom, prayStatue);
-		goClaimCape.addStep(inCavern, enterPool);
-		steps.put(6, goClaimCape);
-
 		ConditionalStep goGetStaff = new ConditionalStep(this, enterCavernForPool);
 		goGetStaff.addStep(new Conditions(inStatuesRoom, hasCape), talkToGuardian);
 		goGetStaff.addStep(new Conditions(inStatuesRoom), prayStatue);
 		goGetStaff.addStep(inCavern, enterPool);
+		steps.put(6, goGetStaff);
 		steps.put(7, goGetStaff);
 
 		return steps;

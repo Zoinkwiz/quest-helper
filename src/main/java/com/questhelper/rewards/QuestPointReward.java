@@ -49,6 +49,13 @@ public class QuestPointReward implements Reward
     @Override
     public String getDisplayText()
     {
+		if (points == 1)
+		{
+			return points + " Quest Point";
+		}
+		else
+		{
         return points + " Quest Points";
+		}
     }
 }

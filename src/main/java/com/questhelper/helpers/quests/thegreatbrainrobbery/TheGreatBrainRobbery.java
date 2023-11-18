@@ -391,7 +391,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		enterWater = new ObjectStep(this, ObjectID.STAIRS_22365, new WorldPoint(3788, 9254, 0),
 			"Enter the water.");
 		repairWaterStairs = new ObjectStep(this, NullObjectID.NULL_22370, new WorldPoint(3829, 9254, 1),
-			"Repair the stairs to the east.", hammer, plank.quantity(4), nails.quantity(100));
+			"Repair the stairs to the east.", hammer, plank.quantity(4), nails.quantity(60));
 		climbFromWater = new ObjectStep(this, NullObjectID.NULL_22370, new WorldPoint(3829, 9254, 1),
 			"Climb up the stairs to the east.");
 		climbFromWaterCaveToPeep = new ObjectStep(this, ObjectID.LADDER_22372, new WorldPoint(3831, 9254, 0),

@@ -271,7 +271,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		searchGlarialChest = new ObjectStep(this, ObjectID.CHEST_1994, new WorldPoint(2530, 9844, 0), "Search the chest in the western room.");
 		searchGlarialChest.addAlternateObjects(ObjectID.CHEST_1995);
 		searchGlarialCoffin = new ObjectStep(this, ObjectID.GLARIALS_TOMB, new WorldPoint(2542, 9812, 0), "Search Glarial's Tomb in the south room.");
-		getFinalItems = new DetailedQuestStep(this, "Leave Glarial's Tomb and get 6 air, water and earth runes, a rope, glarial's amulet, glarial's urn, a rope, and some food.", airRunes, earthRunes, waterRunes, glarialsAmulet, glarialsUrn, rope);
+		getFinalItems = new DetailedQuestStep(this, "Leave Glarial's Tomb and get 6 air, water, and earth runes, a rope, glarial's amulet, glarial's urn, and some food.", airRunes, earthRunes, waterRunes, glarialsAmulet, glarialsUrn, rope);
 
 		boardRaftFinal = new ObjectStep(this, ObjectID.LOG_RAFT, new WorldPoint(2509, 3494, 0), "Board the log raft west of Almera.");
 		useRopeOnRockFinal = new ObjectStep(this, ObjectID.ROCK, new WorldPoint(2512, 3468, 0), "Use a rope on the " +

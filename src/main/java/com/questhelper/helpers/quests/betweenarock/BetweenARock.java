@@ -202,7 +202,7 @@ public class BetweenARock extends BasicQuestHelper
 		goldCannonballHighlight = new ItemRequirement("Cannon ball", ItemID.CANNON_BALL);
 		goldCannonballHighlight.setHighlightInInventory(true);
 
-		cannonMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD);
+		cannonMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD, ItemID.DOUBLE_AMMO_MOULD);
 		cannonMould.setTooltip("You can buy one from Nulodion above the Dwarven Mine for 5 coins");
 
 		schematic = new ItemRequirement("Schematic", ItemID.SCHEMATIC);

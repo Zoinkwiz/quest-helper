@@ -288,7 +288,7 @@ public class TheGolem extends BasicQuestHelper
 
 		useImplementOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlight);
 		useImplementOnGolem.addIcon(ItemID.STRANGE_IMPLEMENT);
-		useProgramOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", programHighlight);
+		useProgramOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the golem program on the Golem in Uzer.", programHighlight);
 		useProgramOnGolem.addIcon(ItemID.GOLEM_PROGRAM);
 
 		useStatuette = new ObjectStep(this, NullObjectID.NULL_6306, new WorldPoint(2725, 4896, 0), "Use the statue on the empty alcove.", statuetteHighlight);

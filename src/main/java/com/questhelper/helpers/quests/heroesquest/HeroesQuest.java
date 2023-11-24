@@ -574,7 +574,7 @@ public class HeroesQuest extends BasicQuestHelper
 		else
 		{
 			thirdPanel = new PanelDetails("Get thieves' armband", 
-				Arrays.asList(talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, pushWall, useKeyOnDoor,
+				Arrays.asList(enterPhoenixBase, talkToStraven, talkToAlfonse, getKeyFromPartner, talkToCharlie, pushWall, useKeyOnDoor,
 					killGrip, bringCandlestickToStraven), Collections.singletonList(rangedMage),
 				Arrays.asList(varrockTeleport.quantity(2), brimhavenTeleport));
 		}

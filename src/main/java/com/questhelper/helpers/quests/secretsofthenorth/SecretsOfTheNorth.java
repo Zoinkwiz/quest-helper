@@ -512,7 +512,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 			"Talk to General Khazard.");
 		talkToHazeelWeiss = new NpcStep(this, NpcID.HAZEEL_12051, new WorldPoint(2903, 10335, 0), "Talk to Hazeel to the west and tell him about what happened.");
 		searchBarrel = new ObjectStep(this, ObjectID.BARREL_46609, new WorldPoint(2923, 10322, 0),
-			"Search the barrel south of the room you fought the assasin.");
+			"Search the barrel south of the room you fought the assassin.");
 		openCentreGate = new ObjectStep(this, ObjectID.GATE_46602, new WorldPoint(2924, 10329, 0),
 			"Enter the centre room. Use the code \"BLOOD\" to unlock the gate.");
 		solveCenterGate = new SolveDoorCode(this);

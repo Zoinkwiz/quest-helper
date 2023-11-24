@@ -371,7 +371,7 @@ public class TheGolem extends BasicQuestHelper
 			talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet)));
 		allSteps.add(new PanelDetails("Opening the portal", Arrays.asList(enterRuin, useStatuette, turnStatue1,
 			enterThroneRoom, leaveThroneRoom, talkToGolemAfterPortal, pickBlackMushroom, grindMushroom,
-			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useProgramOnGolem), vial, pestleAndMortar, papyrus));
+			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useImplementOnGolem, useProgramOnGolem), vial, pestleAndMortar, papyrus));
 
 		return allSteps;
 	}

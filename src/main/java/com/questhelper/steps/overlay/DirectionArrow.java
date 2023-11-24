@@ -42,9 +42,23 @@ import net.runelite.api.coords.WorldPoint;
 
 public class DirectionArrow
 {
+	/**
+	 * @param client the {@link Client}
+	 * @return the rough number of tiles distance the minimap can draw
+	 */
+	public static int getMaxMinimapDrawDistance(Client client)
+	{
+		var minimapZoom = client.getMinimapZoom();
+		if (minimapZoom > 0.0)
+		{
+			return (int) (64.0 / client.getMinimapZoom());
+		}
+		return 16;
+	}
+
 	public static void renderMinimapArrow(Graphics2D graphics, Client client, WorldPoint worldPoint, Color color)
 	{
-		final int MAX_DRAW_DISTANCE = 16;
+		var maxMinimapDrawDistance = getMaxMinimapDrawDistance(client);
 		Player player = client.getLocalPlayer();
 		if (player == null)
 		{
@@ -59,7 +73,7 @@ public class DirectionArrow
 			return;
 		}
 
-		if (worldPoint.distanceTo(playerRealLocation) >= MAX_DRAW_DISTANCE)
+		if (worldPoint.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
 		{
 			createMinimapDirectionArrow(graphics, client, playerRealLocation, worldPoint, color);
 			return;

@@ -219,7 +219,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		pollRooftop = new ObjectStep(this, ObjectID.BASKET_14935, new WorldPoint(3351, 2962, 0),
 			"Climb on the basket and complete a lap of the Pollnivneach Rooftop course.");
 
-		menaThug = new NpcStep(this, NpcID.MENAPHITE_THUG, new WorldPoint(3347, 2959, 0),
+		menaThug = new NpcStep(this, new int[]{NpcID.MENAPHITE_THUG, NpcID.MENAPHITE_THUG_3550}, new WorldPoint(3347, 2959, 0),
 			"Knockout and pickpocket a Menaphite thug.", blackjack);
 
 		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify in the Desert " +

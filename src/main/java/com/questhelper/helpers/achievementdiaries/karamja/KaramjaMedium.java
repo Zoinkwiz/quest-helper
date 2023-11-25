@@ -245,7 +245,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, -1);
 
-		spiderOnAStick = new ItemRequirement("Spider on stick", ItemID.SPIDER_ON_STICK);
+		spiderOnAStick = new ItemRequirement("Spider on stick", List.of(ItemID.SPIDER_ON_STICK, ItemID.SPIDER_ON_SHAFT));
 		spiderOnAStick.setTooltip("You can get one by using a spider carcass on an arrow shaft");
 
 		agility12 = new SkillRequirement(Skill.AGILITY, 12);

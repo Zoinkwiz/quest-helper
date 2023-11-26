@@ -343,7 +343,7 @@ public class Contact extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Help Osman",
 			Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
-				goDownToChasmAgain, killGiantScarab, talkToOsmanChasm, returnToHighPriest), combatGear, food, prayerPotions,
+				goDownToChasmAgain, killGiantScarab, talkToOsmanChasm, pickUpKeris, returnToHighPriest), combatGear, food, prayerPotions,
 			lightSource, tinderbox));
 
 		return allSteps;

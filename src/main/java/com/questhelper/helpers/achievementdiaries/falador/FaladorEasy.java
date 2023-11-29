@@ -251,6 +251,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 			"Climb in the Port Sarim Jail to speak to the Security Guard.");
 		getSecurityBook = new NpcStep(this, NpcID.SECURITY_GUARD, new WorldPoint(3013, 3192, 1),
 			"Speak to the Security Guard in the Port Sarim Jail to get a Security Book.");
+		getSecurityBook.addDialogStep("If you're a security guard, let's talk about security.");
 
 		//Smith some Blurite Limbs on Doric's Anvil
 		getPickaxe = new DetailedQuestStep(this, new WorldPoint(2963, 3216, 0),

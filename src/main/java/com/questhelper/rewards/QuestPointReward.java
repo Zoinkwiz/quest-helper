@@ -55,7 +55,7 @@ public class QuestPointReward implements Reward
 		}
 		else
 		{
-        return points + " Quest Points";
+        	return points + " Quest Points";
 		}
     }
 }

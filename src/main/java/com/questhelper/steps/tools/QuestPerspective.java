@@ -33,7 +33,6 @@ import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.RenderOverview;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -148,14 +147,14 @@ public class QuestPerspective
 
 	public static Point mapWorldPointToGraphicsPoint(Client client, WorldPoint worldPoint)
 	{
-		RenderOverview ro = client.getRenderOverview();
+		var worldMap = client.getWorldMap();
 		if (worldPoint == null) return null;
-		if (!ro.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
+		if (!worldMap.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
 		{
 			return null;
 		}
 
-		float pixelsPerTile = ro.getWorldMapZoom();
+		float pixelsPerTile = worldMap.getWorldMapZoom();
 
 		Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
 		if (map != null)
@@ -165,7 +164,7 @@ public class QuestPerspective
 			int widthInTiles = (int) Math.ceil(worldMapRect.getWidth() / pixelsPerTile);
 			int heightInTiles = (int) Math.ceil(worldMapRect.getHeight() / pixelsPerTile);
 
-			Point worldMapPosition = ro.getWorldMapPosition();
+			var worldMapPosition = worldMap.getWorldMapPosition();
 
 			//Offset in tiles from anchor sides
 			int yTileMax = worldMapPosition.getY() - heightInTiles / 2;
@@ -190,9 +189,9 @@ public class QuestPerspective
 
 	public static Point getMinimapPoint(Client client, WorldPoint start, WorldPoint destination)
 	{
-		RenderOverview ro = client.getRenderOverview();
-		if (ro.getWorldMapData().surfaceContainsPosition(start.getX(), start.getY()) !=
-			ro.getWorldMapData().surfaceContainsPosition(destination.getX(), destination.getY()))
+		var worldMapData = client.getWorldMap().getWorldMapData();
+		if (worldMapData.surfaceContainsPosition(start.getX(), start.getY()) !=
+			worldMapData.surfaceContainsPosition(destination.getX(), destination.getY()))
 		{
 			return null;
 		}
@@ -228,7 +227,7 @@ public class QuestPerspective
 			return null;
 		}
 
-		final int angle = client.getMapAngle() & 0x7FF;
+		final int angle = client.getCameraYawTarget() & 0x7FF;
 
 		final int sin = Perspective.SINE[angle];
 		final int cos = Perspective.COSINE[angle];

@@ -117,8 +117,8 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		doEasy.addStep(notEnterHAM, enterHAMTask);
 
 		killCaveBugTask = new ConditionalStep(this, addRopeToHole);
-		killCaveBugTask.addStep(addedRopeToHole, moveToDarkHole);
 		killCaveBugTask.addStep(inCave, killCaveBug);
+		killCaveBugTask.addStep(addedRopeToHole, moveToDarkHole);
 		doEasy.addStep(notKillCaveBug, killCaveBugTask);
 
 		waterRuneTask = new ConditionalStep(this, moveToWaterAltar);
@@ -208,7 +208,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	public void loadZones()
 	{
 		lumby = new Zone(new WorldPoint(3212, 3213, 0), new WorldPoint(3227, 3201, 0));
-		cave = new Zone(new WorldPoint(3140, 9602, 0), new WorldPoint(3261, 9537, 0));
+		cave = new Zone(new WorldPoint(3140, 9537, 0), new WorldPoint(3261, 9602, 0));
 		sewer = new Zone(new WorldPoint(3077, 9699, 0), new WorldPoint(3132, 9641, 0));
 		mageTower = new Zone(new WorldPoint(3095, 9578, 0), new WorldPoint(3122, 9554, 0));
 		water = new Zone(new WorldPoint(2688, 4863, 0), new WorldPoint(2751, 4800, 0));
@@ -244,7 +244,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		addRopeToHole.addSubSteps(moveToDarkHole);
 		addRopeToHole.addIcon(ItemID.ROPE);
 		killCaveBug = new NpcStep(this, NpcID.CAVE_BUG, new WorldPoint(3151, 9574, 0),
-			"Kill a Cave Bug.", combatGear, lightSource);
+			"Kill a Cave Bug.", true, combatGear, lightSource);
 
 		moveToWaterAltar = new ObjectStep(this, 34815, new WorldPoint(3185, 3165, 0),
 			"Enter the water altar in Lumbridge Swamp.", waterAccessOrAbyss.highlighted(), runeEss);

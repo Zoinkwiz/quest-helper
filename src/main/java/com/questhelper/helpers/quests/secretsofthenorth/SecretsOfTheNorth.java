@@ -86,11 +86,11 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		combineShards, openIcyChest, openSouthGate, enterCrevice, defeatMuspah,
 		moveToWeissCaveEnd, enterCreviceEnd, enterWeissCaveEnd, talkToJhallan, continueCutscene;
 
-	NpcStep talkToAlmoneOrClivet, talkToHazeel, finishQuest;
+	NpcStep talkToAlomoneOrClivet, talkToHazeel, finishQuest;
 
 	Requirement notTalkedToGuard, notGoneUpstairs, notInspectCeril, notInspectWall, notInspectWindow, notInspectChest,
 		inspectedCrimeScene, toldWindow, toldCeril, toldWall, checkedBarrel, checkedBoulder, checkedBush, checkedStump,
-		checkedBoulder2, checkedBush2, evelotDefeated, talkedToAlmoneOrClivet, talkedToHazeel, talkedToGuard, talkedToClaus, buttonPressed,
+		checkedBoulder2, checkedBush2, evelotDefeated, talkedToAlomoneOrClivet, talkedToHazeel, talkedToGuard, talkedToClaus, buttonPressed,
 		chestPicked, scrollInspected, handedInScroll, hadDustyScroll, talkedNorth, talkedToSnowflake, questioned1, questioned2, assassinFight,
 		assassinDefeated, talkedToKhazard, puzzleStart, centreGateUnlocked, nwBrazier, seBrazier, neBrazier, swBrazier, brazierFin,
 		northGateUnlocked, fixedLever, leverPulled, southGateOpened, jhallanTalkedTo, returnToGuard, gottenIcyKey;
@@ -177,8 +177,8 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		questionsForHazeel.addStep(new Conditions(inRaftZone, talkedToHazeel), returnStairs);
 		questionsForHazeel.addStep(new Conditions(inHazeelZone, talkedToHazeel), returnRaft);
 		questionsForHazeel.addStep(talkedToHazeel, returnGuard);
-		questionsForHazeel.addStep(new Conditions(talkedToAlmoneOrClivet, inHazeelZone), talkToHazeel);
-		questionsForHazeel.addStep(inHazeelZone, talkToAlmoneOrClivet);
+		questionsForHazeel.addStep(new Conditions(talkedToAlomoneOrClivet, inHazeelZone), talkToHazeel);
+		questionsForHazeel.addStep(inHazeelZone, talkToAlomoneOrClivet);
 		questionsForHazeel.addStep(inRaftZone, boardRaft);
 
 		steps.put(30, questionsForHazeel);
@@ -311,7 +311,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		checkedBush2 = new VarbitRequirement(14738, 1);
 
 		evelotDefeated = new VarbitRequirement(14722, 28, Operation.GREATER_EQUAL);
-		talkedToAlmoneOrClivet = new VarbitRequirement(14722, 32, Operation.GREATER_EQUAL);
+		talkedToAlomoneOrClivet = new VarbitRequirement(14722, 32, Operation.GREATER_EQUAL);
 		talkedToHazeel = new VarbitRequirement(14722, 36, Operation.GREATER_EQUAL);
 
 		talkedToGuard = new VarbitRequirement(14722, 38, Operation.GREATER_EQUAL);
@@ -450,8 +450,8 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		boardRaft = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2567, 9679, 0),
 			"Board the raft.");
 		// TODO check if player killed Alomone and direct accordingly
-		talkToAlmoneOrClivet = new NpcStep(this, NpcID.ALOMONE, new WorldPoint(2607, 9671, 0), "Talk to Almone or Clivet inside the cult area.");
-		talkToAlmoneOrClivet.addAlternateNpcs(NpcID.ALOMONE_12093, NpcID.ALOMONE_12094, NpcID.CLIVET, NpcID.CLIVET_12095);
+		talkToAlomoneOrClivet = new NpcStep(this, NpcID.ALOMONE, new WorldPoint(2607, 9671, 0), "Talk to Alomone or Clivet inside the cult area.");
+		talkToAlomoneOrClivet.addAlternateNpcs(NpcID.ALOMONE_12093, NpcID.ALOMONE_12094, NpcID.CLIVET, NpcID.CLIVET_12095);
 		talkToHazeel = new NpcStep(this, NpcID.HAZEEL_12050, new WorldPoint(2607, 9672, 0),
 			"Talk to Hazeel.");
 		returnRaft = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2606, 9693, 0),
@@ -512,7 +512,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 			"Talk to General Khazard.");
 		talkToHazeelWeiss = new NpcStep(this, NpcID.HAZEEL_12051, new WorldPoint(2903, 10335, 0), "Talk to Hazeel to the west and tell him about what happened.");
 		searchBarrel = new ObjectStep(this, ObjectID.BARREL_46609, new WorldPoint(2923, 10322, 0),
-			"Search the barrel south of the room you fought the assasin.");
+			"Search the barrel south of the room you fought the assassin.");
 		openCentreGate = new ObjectStep(this, ObjectID.GATE_46602, new WorldPoint(2924, 10329, 0),
 			"Enter the centre room. Use the code \"BLOOD\" to unlock the gate.");
 		solveCenterGate = new SolveDoorCode(this);
@@ -648,7 +648,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 				speakToEvelot), coins, combatGear));
 
 		allSteps.add(new PanelDetails("The Mysterious Benefactor",
-			Arrays.asList(enterCave, boardRaft, talkToAlmoneOrClivet, talkToHazeel, returnGuard, ladderToClaus, talkToClaus,
+			Arrays.asList(enterCave, boardRaft, talkToAlomoneOrClivet, talkToHazeel, returnGuard, ladderToClaus, talkToClaus,
 				examineShelves, examineWall, lockpickChest, inspectScroll, returnToHazeel), lockpick));
 
 		allSteps.add(new PanelDetails("In The North",

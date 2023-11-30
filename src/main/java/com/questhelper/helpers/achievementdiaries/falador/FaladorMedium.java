@@ -27,6 +27,7 @@ package com.questhelper.helpers.achievementdiaries.falador;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -93,6 +94,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	Zone chemist, chaosTemple, craftingGuild, dwarvenMine, tav, falNorthWall;
 
 	ZoneRequirement inChemist, inChaosTemple, inCraftingGuild, inDwarvenMine, inTav, inFalNorthWall;
+	Conditions atMudskipperPointWithMogre;
 
 	ConditionalStep litLanternTask, telegrabbedWineTask, unlockedCrystalChestTask, placedScarecrowTask, killedMogreTask,
 		visitRatPitsTask, grappleNorthWallTask, pickpocketGuardTask, prayAtAltarTask, mineGoldTask, dwarfShortcutTask,
@@ -128,6 +130,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		doMed.addStep(notLitLantern, litLanternTask);
 
 		killedMogreTask = new ConditionalStep(this, spawnMogre);
+		killedMogreTask.addStep(atMudskipperPointWithMogre, killMogre);
 		doMed.addStep(notKilledMogre, killedMogreTask);
 
 		visitRatPitsTask = new ConditionalStep(this, visitRatPits);
@@ -242,6 +245,10 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		inTav = new ZoneRequirement(tav);
 		inFalNorthWall = new ZoneRequirement(falNorthWall);
 
+		var atMudskipperPoint = new ZoneRequirement(new Zone(new WorldPoint(2977, 3141, 0), new WorldPoint(3012, 3103, 0)));
+		var mogreNearby = new NpcCondition(NpcID.MOGRE);
+		atMudskipperPointWithMogre = new Conditions(LogicType.AND, atMudskipperPoint, mogreNearby);
+
 		choppedLogs = new ChatMessageRequirement(
 			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
 		);
@@ -301,13 +308,12 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		placeScarecrow.addIcon(ItemID.SCARECROW);
 
 		//Mogre
-		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT,
-			"Go to Mudskipper Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", fishingExplosive.highlighted());
+		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT, new WorldPoint(3005, 3117, 0),
+			"Go to Mudskipper Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", true, fishingExplosive.highlighted());
 		spawnMogre.addAlternateObjects(ObjectID.OMINOUS_FISHING_SPOT_10088, ObjectID.OMINOUS_FISHING_SPOT_10089);
 		spawnMogre.addIcon(ItemID.FISHING_EXPLOSIVE);
 		killMogre = new NpcStep(this, NpcID.MOGRE,
 			"Kill the Mogre", combatGear);
-		spawnMogre.addSubSteps(killMogre);
 
 		//Ratpits
 		visitRatPits = new ObjectStep(this, ObjectID.MANHOLE_10321, new WorldPoint(3018, 3232, 0),

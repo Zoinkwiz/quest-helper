@@ -323,7 +323,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		grappleNorthWallStart = new ObjectStep(this, ObjectID.WALL_17050, new WorldPoint(3032, 3389, 0),
 			"Equip your crossbow and grapple then climb the agility shortcut near the Falador Party Room.",
 			anyCrossbow.highlighted(), mithGrapple.highlighted());
-		grappleNorthWallEnd = new ObjectStep(this, ObjectID.WALL_17051, new WorldPoint(3033, 3390, 0),
+		grappleNorthWallEnd = new ObjectStep(this, ObjectID.WALL_17051, new WorldPoint(3033, 3390, 1),
 			"Climb down the wall to finish the task.");
 		grappleNorthWallEnd.addSubSteps(grappleNorthWallStart);
 

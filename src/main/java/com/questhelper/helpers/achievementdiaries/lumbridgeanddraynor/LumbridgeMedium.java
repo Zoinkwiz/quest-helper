@@ -374,7 +374,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		catchSalmonSteps.setLockingStep(catchSalmonTask);
 		allSteps.add(catchSalmonSteps);
 
-		PanelDetails craftACoifSteps = new PanelDetails("Craft a coif", Arrays.asList(moveToCowPen, craftCoif),
+		PanelDetails craftACoifSteps = new PanelDetails("Craft a coif in the cow pen", Arrays.asList(moveToCowPen, craftCoif),
 			new SkillRequirement(Skill.CRAFTING, 38), leather, needle, thread);
 		craftACoifSteps.setDisplayCondition(notCraftCoif);
 		craftACoifSteps.setLockingStep(craftCoifTask);

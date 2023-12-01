@@ -125,10 +125,10 @@ public class VarrockHard extends ComplexStateQuestHelper
 		doHard.addStep(not153Kudos, kudosTask);
 
 		yewChurchTask = new ConditionalStep(this, cutYew);
-		yewChurchTask.addStep(new Conditions(notYewChurch, cutYewTree), goUp1);
-		yewChurchTask.addStep(new Conditions(notYewChurch, inChurch2, cutYewTree), goUp2);
-		yewChurchTask.addStep(new Conditions(notYewChurch, inChurch3, cutYewTree), goUp3);
 		yewChurchTask.addStep(new Conditions(notYewChurch, inChurch4, cutYewTree), burnLogs);
+		yewChurchTask.addStep(new Conditions(notYewChurch, inChurch3, cutYewTree), goUp3);
+		yewChurchTask.addStep(new Conditions(notYewChurch, inChurch2, cutYewTree), goUp2);
+		yewChurchTask.addStep(new Conditions(notYewChurch, cutYewTree), goUp1);
 		doHard.addStep(notYewChurch, yewChurchTask);
 
 		fancyStoneTask = new ConditionalStep(this, fancyStone);
@@ -346,8 +346,10 @@ public class VarrockHard extends ComplexStateQuestHelper
 			"Climb to the top of the Varrock Church.", yewLog, tinderBox);
 		goUp2 = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3259, 3488, 1),
 			"Climb the stairs.", yewLog, tinderBox);
+		goUp2.addDialogStep("Climb up");
 		goUp3 = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3259, 3488, 2),
 			"Climb the stairs.", yewLog, tinderBox);
+		goUp3.addDialogStep("Climb up");
 		goUp1.addSubSteps(goUp2, goUp3);
 		burnLogs = new ItemStep(this, "Burn the yew logs on top of the church.", tinderBox.highlighted(),
 			yewLog.highlighted());

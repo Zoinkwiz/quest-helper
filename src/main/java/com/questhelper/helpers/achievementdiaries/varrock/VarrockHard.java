@@ -355,8 +355,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 			yewLog.highlighted());
 
 		fancyStone = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(3240, 3475, 0),
-			"TALK to the estate agent to redecorate your house to fancy stone. Must be done through dialog, NOT " +
-				"right-click.", coins.quantity(25000));
+			"Talk to the estate agent to redecorate your house to fancy stone.", coins.quantity(25000));
 		fancyStone.addDialogStep("Can you redecorate my house please?");
 		growYew = new ObjectStep(this, 8513, new WorldPoint(3229, 3459, 0),
 			"Grow and check the health of a yew tree in front of Varrock palace. " +

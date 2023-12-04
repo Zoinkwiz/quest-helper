@@ -194,6 +194,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMisc).isNotConsumed();
 		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight).isNotConsumed();
 		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight).isNotConsumed();
+		butterFlyNet.addAlternates(ItemID.MAGIC_BUTTERFLY_NET);
+		butterFlyNet.setTooltip("Alternatively, use Magic Butterfly Net");
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).showConditioned(new Conditions(LogicType.OR,
 			notPetRockPOH, notLighthouse)).isNotConsumed();
 		petRock.setTooltip("Obtained from Askeladden in Rellekka");

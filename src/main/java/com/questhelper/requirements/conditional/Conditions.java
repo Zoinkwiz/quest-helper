@@ -42,6 +42,9 @@ public class Conditions extends ConditionForStep
 	@Setter
 	protected String text;
 
+	/**
+	 * @param conditions list of requirements that must all be met
+	 */
 	public Conditions(Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();
@@ -49,12 +52,19 @@ public class Conditions extends ConditionForStep
 		logicType = LogicType.AND;
 	}
 
+	/**
+	 * @param conditions list of requirements that must all be met
+	 */
 	public Conditions(List<Requirement> conditions)
 	{
 		this.conditions = new ArrayList<>(conditions);
 		logicType = LogicType.AND;
 	}
 
+	/**
+	 * @param logicType type of logic to apply to the list of requirements for this Condition to be met
+	 * @param conditions list of requirements that will be evaluated based on the logicType
+	 */
 	public Conditions(LogicType logicType, Requirement... conditions)
 	{
 		this.conditions = new ArrayList<>();

@@ -106,15 +106,15 @@ public class KourendElite extends ComplexStateQuestHelper
 		doElite.addStep(notFletchBattlestaff, fletchBattlestaffTask);
 
 		craftBloodRuneTask = new ConditionalStep(this, bloodMineDenseEssence);
-		craftBloodRuneTask.addStep(denseEssenceBlock, bloodVenerateEssenceBlock);
-		craftBloodRuneTask.addStep(darkEssenceBlock, chiselEssenceBlock);
 		craftBloodRuneTask.addStep(darkEssenceFragment, craftBloodRune);
+		craftBloodRuneTask.addStep(darkEssenceBlock, chiselEssenceBlock);
+		craftBloodRuneTask.addStep(denseEssenceBlock, bloodVenerateEssenceBlock);
 		doElite.addStep(notCraftBloodRune, craftBloodRuneTask);
 
 		createTeleportTask = new ConditionalStep(this, apeMineDenseEssence);
-		createTeleportTask.addStep(denseEssenceBlock, apeVenerateEssenceBlock);
+		createTeleportTask.addStep(new Conditions(darkEssenceBlock, onArceuusSpellbook), createTeleportTab);
 		createTeleportTask.addStep(darkEssenceBlock, switchSpellbook);
-		createTeleportTask.addStep(onArceuusSpellbook, createTeleportTab);
+		createTeleportTask.addStep(denseEssenceBlock, apeVenerateEssenceBlock);
 		doElite.addStep(notCreateTeleport, createTeleportTask);
 
 		killHydraTask = new ConditionalStep(this, enterMountKaruulmDungeon);

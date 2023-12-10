@@ -128,7 +128,7 @@ public class RuneMysteries extends BasicQuestHelper
 		goUpToHoracio = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(3205, 3208, 0), "Talk to Duke Horacio on the first floor of Lumbridge castle.");
 		talkToHoracio = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3220, 1), "Talk to Duke Horacio on the first floor of Lumbridge castle.");
 		talkToHoracio.addDialogStep("Have you any quests for me?");
-		talkToHoracio.addDialogStep("Sure, no problem.");
+		talkToHoracio.addDialogStep("Yes.");
 		talkToHoracio.addSubSteps(goUpToHoracio);
 
 		goDownToSedridor = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);

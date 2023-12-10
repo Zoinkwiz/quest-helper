@@ -356,7 +356,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		draynorVillageTeleports = new ItemRequirement("Draynor Teleport with glory, 2 or more charges", ItemCollections.AMULET_OF_GLORIES);
 		lumbridgeTeleports = new ItemRequirement("Teleports to Lumbridge", ItemID.LUMBRIDGE_TELEPORT, 4);
 		varrockTeleports = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, 2);
-		taverleyOrFaladorTeleports = new ItemRequirement("Teleports to Tavelery or Falador", ItemID.TAVERLEY_TELEPORT, 2);
+		taverleyOrFaladorTeleports = new ItemRequirement("Teleports to Taverley or Falador", ItemID.TAVERLEY_TELEPORT, 2);
 		camelotTeleports = new ItemRequirement("Teleports to Camelot or Catherby", ItemID.CAMELOT_TELEPORT, 2);
 		camelotTeleports.addAlternates(ItemID.CATHERBY_TELEPORT);
 		fishingGuildAndDwarvenMineTeleports = new ItemRequirement("Fishing and Mining Guild Teleport for Dwarven Mine with skills necklace, 4 or more charges", ItemID.SKILLS_NECKLACE4);

@@ -222,8 +222,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 			"Enter the Dwarven Mines, you can get there quickly by going down the stairs near the Party Room.", pickaxe);
 		enterCaveToMotherlodeMine = new ObjectStep(this, ObjectID.CAVE_26654, new WorldPoint(3059, 9764, 0),
 			"Go through the Cave entrance to the Motherlode Mines.", pickaxe);
-		fixMotherloadMine = new ObjectStep(this, ObjectID.BROKEN_STRUT, new WorldPoint(3743, 5662, 0),
-			"Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minutes for it to break.", hammer.highlighted());
+		fixMotherloadMine = new ObjectStep(this, ObjectID.BROKEN_STRUT, new WorldPoint(3742, 5669, 0),
+			"Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minutes for it to break.", true, hammer.highlighted());
 		fixMotherloadMine.addIcon(ItemID.HAMMER);
 
 		//Find out what your family crest is from Sir Renitee

@@ -205,7 +205,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		//Get a Haircut from the Falador hairdresser
 		getHaircut = new NpcStep(this, NpcID.HAIRDRESSER, new WorldPoint(2945, 3380, 0),
 			"Visit the hairdresser in west Falador for a well deserved shave.");
-		getHaircut.addDialogStep("Go Ahead.");
+		getHaircut.addDialogStep("I'd like a haircut please.");
+		getHaircut.addDialogStep("I'd like a shave please.");
 
 		//Climb over the Western Falador Wall
 		climbWall = new ObjectStep(this, ObjectID.CRUMBLING_WALL_24222, new WorldPoint(2935, 3355, 0),

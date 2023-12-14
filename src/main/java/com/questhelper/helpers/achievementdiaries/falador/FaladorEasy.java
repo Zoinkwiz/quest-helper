@@ -54,7 +54,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 {
 
 	//Items Required
-	ItemRequirement coins2000, bucket, tiara, mindTalisman, hammer, pickaxe, combatGear;
+	ItemRequirement bucket, tiara, mindTalisman, hammer, pickaxe, combatGear;
 
 	//Items Recommended
 	ItemRequirement teleportFalador, teleportMindAltar, explorersRing;
@@ -153,7 +153,6 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		notBluriteLimbs = new VarplayerRequirement(1186, false, 10);
 
 		//Required
-		coins2000 = new ItemRequirement("Coins", ItemCollections.COINS, 2000).showConditioned(notGotHaircut);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFilledWater).isNotConsumed();
 		tiara = new ItemRequirement("Silver Tiara", ItemID.TIARA).showConditioned(notMindTiara);
 		mindTalisman = new ItemRequirement("Mind Talisman", ItemID.MIND_TALISMAN).showConditioned(notMindTiara);
@@ -205,7 +204,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
 		//Get a Haircut from the Falador hairdresser
 		getHaircut = new NpcStep(this, NpcID.HAIRDRESSER, new WorldPoint(2945, 3380, 0),
-			"Visit the hairdresser in west Falador for a well deserved shave.", coins2000);
+			"Visit the hairdresser in west Falador for a well deserved shave.");
 		getHaircut.addDialogStep("Go Ahead.");
 
 		//Climb over the Western Falador Wall
@@ -286,7 +285,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins2000, pickaxe, hammer, bucket, tiara, mindTalisman, combatGear);
+		return Arrays.asList(pickaxe, hammer, bucket, tiara, mindTalisman, combatGear);
 	}
 
 	@Override
@@ -336,8 +335,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		fillBucketSteps.setLockingStep(filledWaterTask);
 		allSteps.add(fillBucketSteps);
 
-		PanelDetails haircutSteps = new PanelDetails("Get A Haircut", Collections.singletonList(getHaircut),
-			coins2000);
+		PanelDetails haircutSteps = new PanelDetails("Get A Haircut", Collections.singletonList(getHaircut));
 		haircutSteps.setDisplayCondition(notGotHaircut);
 		haircutSteps.setLockingStep(gotHaircutTask);
 		allSteps.add(haircutSteps);

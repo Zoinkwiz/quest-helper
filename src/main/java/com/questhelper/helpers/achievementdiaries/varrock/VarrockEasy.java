@@ -251,7 +251,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft an earth rune.", essence);
 		trout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1526, new WorldPoint(3106, 3428, 0),
-			"Fish a trout in the River Lum.", flyRod, feathers);
+			"Fish a trout in the River Lum at Barbarian Village.", flyRod, feathers);
 		teaStall = new ObjectStep(this, ObjectID.TEA_STALL, new WorldPoint(3270, 3411, 0),
 			"Steal from the tea stall in Varrock.");
 

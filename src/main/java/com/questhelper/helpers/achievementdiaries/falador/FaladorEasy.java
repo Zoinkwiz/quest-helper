@@ -238,6 +238,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		//Browse Sarah's Farm Shop
 		browseSarahFarmingShop = new NpcStep(this, NpcID.SARAH, new WorldPoint(3039, 3292, 0),
 			"Trade Sarah in the Farming Shop south of Falador and browse her goods.");
+		browseSarahFarmingShop.addDialogStep("What are you selling?");
 
 		//Take the boat to Entrana
 		goEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3046, 3235, 0),

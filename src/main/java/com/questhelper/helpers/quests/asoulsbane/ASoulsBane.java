@@ -197,6 +197,7 @@ public class ASoulsBane extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToLauna = new NpcStep(this, NpcID.LAUNA, new WorldPoint(3307, 3454, 0), "Talk to Launa east of Varrock.");
+		talkToLauna.addDialogStep("Yes.");
 		talkToLauna.addDialogStep("Would you like me to go down to look for your husband and son?");
 
 		useRopeOnRift = new ObjectStep(this, NullObjectID.NULL_13968, new WorldPoint(3310, 3452, 0), "Use a rope on the rift.", rope);

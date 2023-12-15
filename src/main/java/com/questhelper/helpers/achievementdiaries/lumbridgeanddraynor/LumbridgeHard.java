@@ -119,9 +119,9 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		doHard.addStep(notWakaToEdge, wakaToEdgeTask);
 
 		powerAmmyTask = new ConditionalStep(this, moveToLumby);
-		powerAmmyTask.addStep(inLumby, smeltAmmy);
-		powerAmmyTask.addStep(new Conditions(inLumby, madeAmuletU, diamondAmuletU), stringAmmy);
 		powerAmmyTask.addStep(new Conditions(inLumby, madeAmuletU, diamondAmulet), powerAmmy);
+		powerAmmyTask.addStep(new Conditions(inLumby, madeAmuletU, diamondAmuletU), stringAmmy);
+		powerAmmyTask.addStep(inLumby, smeltAmmy);
 		doHard.addStep(notPowerAmmy, powerAmmyTask);
 
 		lightMiningHelmTask = new ConditionalStep(this, moveToBasementForHelm);
@@ -276,8 +276,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		stringAmmy = new ItemStep(this, "String the diamond amulet.", ballOfWool.highlighted(), diamondAmuletU.highlighted());
 		powerAmmy = new ItemStep(this, "Enchant the strung diamond amulet.", diamondAmulet, cosmicRune.quantity(1),
 			earthRune10);
-		moveToLumby = new TileStep(this, new WorldPoint(3228, 3238, 0),
-			"Move to the Lumbridge smithy.", ballOfWool, cutDiamond, goldBar);
+		moveToLumby = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(3227, 3257, 0),
+			"Move to the Lumbridge furnace.", ballOfWool, cutDiamond, goldBar);
 
 		moveToBasementForHelm = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
 			"Climb down the trapdoor in the Lumbridge Castle.", miningHelm, tinderbox);

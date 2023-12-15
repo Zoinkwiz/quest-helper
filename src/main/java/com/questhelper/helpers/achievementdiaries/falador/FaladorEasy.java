@@ -54,7 +54,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 {
 
 	//Items Required
-	ItemRequirement coins2000, bucket, tiara, mindTalisman, hammer, pickaxe, combatGear;
+	ItemRequirement bucket, tiara, mindTalisman, hammer, pickaxe, combatGear;
 
 	//Items Recommended
 	ItemRequirement teleportFalador, teleportMindAltar, explorersRing;
@@ -153,7 +153,6 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		notBluriteLimbs = new VarplayerRequirement(1186, false, 10);
 
 		//Required
-		coins2000 = new ItemRequirement("Coins", ItemCollections.COINS, 2000).showConditioned(notGotHaircut);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFilledWater).isNotConsumed();
 		tiara = new ItemRequirement("Silver Tiara", ItemID.TIARA).showConditioned(notMindTiara);
 		mindTalisman = new ItemRequirement("Mind Talisman", ItemID.MIND_TALISMAN).showConditioned(notMindTiara);
@@ -205,8 +204,9 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
 		//Get a Haircut from the Falador hairdresser
 		getHaircut = new NpcStep(this, NpcID.HAIRDRESSER, new WorldPoint(2945, 3380, 0),
-			"Visit the hairdresser in west Falador for a well deserved shave.", coins2000);
-		getHaircut.addDialogStep("Go Ahead.");
+			"Visit the hairdresser in west Falador for a well deserved shave.");
+		getHaircut.addDialogStep("I'd like a haircut please.");
+		getHaircut.addDialogStep("I'd like a shave please.");
 
 		//Climb over the Western Falador Wall
 		climbWall = new ObjectStep(this, ObjectID.CRUMBLING_WALL_24222, new WorldPoint(2935, 3355, 0),
@@ -220,12 +220,10 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		//Repair a broken strut in the Motherlode Mine
 		enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3058, 3376, 0),
 			"Enter the Dwarven Mines, you can get there quickly by going down the stairs near the Party Room.", pickaxe);
-		enterDwarvenMines.addIcon(ItemID.RUNE_PICKAXE);
 		enterCaveToMotherlodeMine = new ObjectStep(this, ObjectID.CAVE_26654, new WorldPoint(3059, 9764, 0),
 			"Go through the Cave entrance to the Motherlode Mines.", pickaxe);
-		enterCaveToMotherlodeMine.addIcon(ItemID.RUNE_PICKAXE);
-		fixMotherloadMine = new ObjectStep(this, ObjectID.BROKEN_STRUT, new WorldPoint(3743, 5662, 0),
-			"Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minutes for it to break.", hammer.highlighted());
+		fixMotherloadMine = new ObjectStep(this, ObjectID.BROKEN_STRUT, new WorldPoint(3742, 5669, 0),
+			"Repair a broken strut on the Waterwheel in the Motherlode mine. It may take a few minutes for it to break.", true, hammer.highlighted());
 		fixMotherloadMine.addIcon(ItemID.HAMMER);
 
 		//Find out what your family crest is from Sir Renitee
@@ -240,6 +238,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		//Browse Sarah's Farm Shop
 		browseSarahFarmingShop = new NpcStep(this, NpcID.SARAH, new WorldPoint(3039, 3292, 0),
 			"Trade Sarah in the Farming Shop south of Falador and browse her goods.");
+		browseSarahFarmingShop.addDialogStep("What are you selling?");
 
 		//Take the boat to Entrana
 		goEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3046, 3235, 0),
@@ -251,6 +250,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 			"Climb in the Port Sarim Jail to speak to the Security Guard.");
 		getSecurityBook = new NpcStep(this, NpcID.SECURITY_GUARD, new WorldPoint(3013, 3192, 1),
 			"Speak to the Security Guard in the Port Sarim Jail to get a Security Book.");
+		getSecurityBook.addDialogStep("If you're a security guard, let's talk about security.");
 
 		//Smith some Blurite Limbs on Doric's Anvil
 		getPickaxe = new DetailedQuestStep(this, new WorldPoint(2963, 3216, 0),
@@ -285,7 +285,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins2000, pickaxe, hammer, bucket, tiara, mindTalisman, combatGear);
+		return Arrays.asList(pickaxe, hammer, bucket, tiara, mindTalisman, combatGear);
 	}
 
 	@Override
@@ -335,8 +335,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		fillBucketSteps.setLockingStep(filledWaterTask);
 		allSteps.add(fillBucketSteps);
 
-		PanelDetails haircutSteps = new PanelDetails("Get A Haircut", Collections.singletonList(getHaircut),
-			coins2000);
+		PanelDetails haircutSteps = new PanelDetails("Get A Haircut", Collections.singletonList(getHaircut));
 		haircutSteps.setDisplayCondition(notGotHaircut);
 		haircutSteps.setLockingStep(gotHaircutTask);
 		allSteps.add(haircutSteps);

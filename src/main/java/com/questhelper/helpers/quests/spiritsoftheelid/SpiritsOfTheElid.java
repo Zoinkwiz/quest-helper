@@ -152,7 +152,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		stabWep.setDisplayItemId(ItemID.RUNE_SWORD);
 		slashWep = new ItemRequirement("Slash Weapon Style", -1, 1).isNotConsumed();
 		slashWep.setDisplayItemId(ItemID.RUNE_SCIMITAR);
-		lightSource = new ItemRequirement("Lightsource", ItemCollections.LIGHT_SOURCES, 1).isNotConsumed();
+		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES, 1).isNotConsumed();
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).highlighted().isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).highlighted();
 		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES, 1).isNotConsumed();

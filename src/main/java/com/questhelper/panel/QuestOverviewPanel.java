@@ -587,7 +587,7 @@ public class QuestOverviewPanel extends JPanel
 		wikiBtn.setToolTipText("Open the official wiki in your browser.");
 
 		//Button variable properties
-		wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
+		wikiBtn.setText("<html><body>Open RuneScape Wiki </body></html>");
 
 		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {

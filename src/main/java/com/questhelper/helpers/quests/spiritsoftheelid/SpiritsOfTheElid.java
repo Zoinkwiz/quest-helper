@@ -72,7 +72,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	ItemRequirement combatGear, waterskins, shantaypass, coins, spear, food, necklaceOfPassage;
 
 	//Quest Steps -- Broken down for part
-	QuestStep speakToAwusah, speakToGhaslor, openCuboard, useNeedleTornRobes, useNeedleTornRobesTop, telegrabKey;
+	QuestStep speakToAwusah, speakToGhaslor, openCupboard, useNeedleTornRobes, useNeedleTornRobesTop, telegrabKey;
 	QuestStep enterCave, useAncestralKey, openStabDoor, openStabDoorAfterGolem, clearChannel, openSlashDoor, openSlashDoorAfterGolem, clearChannel2, openCrushDoor, openCrushDoorAfterGolem, clearChannel3, openFarNorthDoor, speakToSpirits;
 	QuestStep speakToAwusah2, takeShoes, leaveAwusah, cutShoes, enterCrevice, talkToGenie, talkToGenieAgain, useStatuette;
 
@@ -96,7 +96,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 
 		steps.put(0, speakToAwusah);
 		steps.put(10, speakToGhaslor);
-		ConditionalStep getRobesAndKey = new ConditionalStep(this, openCuboard);
+		ConditionalStep getRobesAndKey = new ConditionalStep(this, openCupboard);
 		getRobesAndKey.addStep(new Conditions(robeOfElidinisTop, robeOfElidinisBottom, ancestralKey), enterCave);
 		getRobesAndKey.addStep(new Conditions(robeOfElidinisTop, robeOfElidinisBottom), telegrabKey);
 		getRobesAndKey.addStep(new Conditions(hasTornRobeTop, robeOfElidinisBottom), useNeedleTornRobesTop);
@@ -233,8 +233,8 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		speakToAwusah.addDialogSteps("I am an adventurer in search of quests.", "Any idea how you got this curse?", "Yes.", "Ok I will have a look around and see what I can do.");
 		speakToGhaslor = new NpcStep(this, NpcID.GHASLOR_THE_ELDER, new WorldPoint(3441, 2932, 0), "Speak to Ghaslor the Elder, just north of Awusah.");
 		speakToGhaslor.addDialogSteps("I am trying to find out the cause of this town's curse.", "River spirits, what are they?");
-		openCuboard = new ObjectStep(this, ObjectID.CUPBOARD_10384, new WorldPoint(3420, 2930, 0), "Open and search the cupboard in the north-west corner of the house that is north of the fountain.");
-		((ObjectStep) (openCuboard)).addAlternateObjects(ObjectID.CUPBOARD_10385);
+		openCupboard = new ObjectStep(this, ObjectID.CUPBOARD_10384, new WorldPoint(3420, 2930, 0), "Open and search the cupboard in the north-west corner of the house that is north of the fountain.");
+		((ObjectStep) (openCupboard)).addAlternateObjects(ObjectID.CUPBOARD_10385);
 		useNeedleTornRobes = new DetailedQuestStep(this, "Use the needle and thread on the torn robes (both top and bottom).", needle, tornRobeBottom);
 		useNeedleTornRobesTop = new DetailedQuestStep(this, "Use the needle and thread on the torn robes (both top and bottom).", needle, tornRobeTop);
 		useNeedleTornRobes.addSubSteps(useNeedleTornRobesTop);
@@ -352,7 +352,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting Off", Arrays.asList(speakToAwusah, speakToGhaslor, openCuboard, useNeedleTornRobes, telegrabKey), airRune, lawRune, needle, thread));
+		allSteps.add(new PanelDetails("Starting Off", Arrays.asList(speakToAwusah, speakToGhaslor, openCupboard, useNeedleTornRobes, telegrabKey), airRune, lawRune, needle, thread));
 		allSteps.add(new PanelDetails("The Golems", Arrays.asList(enterCave, useAncestralKey, openStabDoor, clearChannel, openSlashDoor, clearChannel2, openCrushDoor, clearChannel3, openFarNorthDoor, speakToSpirits), ancestralKey, robeOfElidinisTop, robeOfElidinisBottom, rope, pickaxe, bow, arrows, crushWep, stabWep, slashWep));
 		allSteps.add(new PanelDetails("The Genie", Arrays.asList(speakToAwusah2, takeShoes, cutShoes, enterCrevice, talkToGenie, talkToGenieAgain, useStatuette), knife, rope, lightSource));
 		return allSteps;

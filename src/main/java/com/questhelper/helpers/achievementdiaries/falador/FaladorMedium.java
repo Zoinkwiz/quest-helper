@@ -75,7 +75,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 	Requirement ratCatchers, skippyAndMogres, recDrive, normalBook, bothRunes;
 
-	ItemRequirements initiateSet, scarecrowItems;
+	ItemRequirements initiateSet;
 
 	Requirement notLitLantern, notTelegrabbedWine, notUnlockedCrystalChest, notPlacedScarecrow,
 		notKilledMogre, notVisitRatPits, notGrappleNorthWall, notPickpocketGuard, notPrayAtAltar,
@@ -204,15 +204,13 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		waterRune1 = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 1).showConditioned(notTeleportFalador);
 		crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY).showConditioned(notUnlockedCrystalChest);
 		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
-		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR);
-		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON);
-		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK);
+		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR).showConditioned(notPlacedScarecrow);
+		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
+		watermelon.canBeObtainedDuringQuest();
+		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
+		emptySack.canBeObtainedDuringQuest();
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
 		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlacedScarecrow);
-		scarecrowItems = new ItemRequirements(LogicType.OR, "1 x Scarecrow", scarecrow, new ItemRequirements(sack,
-			watermelon, bronzeSpear));
-		scarecrowItems.setTooltip("Created by combining a bronze spear, watermelon, and hay sack " +
-			"(empty sack filled at a hay bale, nearest is North-West of Lumbridge)");
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow).isNotConsumed();
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
@@ -381,7 +379,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(bullseyeLantern, tinderbox, airRune4, airRune3, airRune1, lawRune2, lawRune1, waterRune1,
-			crystalKey, scarecrowItems, rake, fishingExplosive, mithGrapple, anyCrossbow, initiateHelm, initiateChest,
+			crystalKey, bronzeSpear, emptySack, watermelon, rake, fishingExplosive, mithGrapple, anyCrossbow, initiateHelm, initiateChest,
 			initiateLegs, pickaxe, axe, brownApron, willowBranch6);
 	}
 
@@ -492,7 +490,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		PanelDetails scarecrowSteps = new PanelDetails("Brain not included", Arrays.asList(fillSack, useSackOnSpear,
 			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23, true),
-			scarecrowItems, rake);
+			bronzeSpear, emptySack, watermelon, rake);
 		scarecrowSteps.setDisplayCondition(notPlacedScarecrow);
 		scarecrowSteps.setLockingStep(placedScarecrowTask);
 		allSteps.add(scarecrowSteps);

@@ -330,7 +330,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		catchChinchompa.addIcon(ItemID.BOX_TRAP);
 
 		// Chop some mahogany logs
-		chopMahoganyTree = new ObjectStep(this, ObjectID.MAHOGANY, new WorldPoint(1238, 3771, 0),
+		chopMahoganyTree = new ObjectStep(this, ObjectID.MAHOGANY_TREE, new WorldPoint(1238, 3771, 0),
 			"Chop some logs from a mahogany tree North of the Farming Guild.", true, axe);
 
 		// Claim reward

@@ -511,7 +511,7 @@ public class UndergroundPass extends BasicQuestHelper
 		useDoveOnDoll = new DetailedQuestStep(this, "Use the dove on the doll.", ibansDove, dollOfIbanHighlighted);
 		returnToDwarfs = new ObjectStep(this, ObjectID.CAVE_3222, new WorldPoint(2150, 4545, 1), "Return to the dwarf encampment on the lower level.");
 		pickUpBucket = new ItemStep(this, new WorldPoint(2309, 9798, 0), "Pick up a bucket in the large dwarf encampment building.", bucket);
-		pickUpTinderbox = new ItemStep(this, new WorldPoint(2324, 9800, 0), "Pick up a tinderbpx in the small dwarf encampment building.", tinderbox);
+		pickUpTinderbox = new ItemStep(this, new WorldPoint(2324, 9800, 0), "Pick up a tinderbox in the small dwarf encampment building.", tinderbox);
 		useBucketOnBrew = new ObjectStep(this, ObjectID.BREW_BARREL, new WorldPoint(2327, 9799, 0), "Use a bucket on the brew barrel in the dwarf encampment on the south west.", bucketHighlight);
 		useBucketOnBrew.addIcon(ItemID.BUCKET);
 		useBrewOnTomb = new ObjectStep(this, ObjectID.TOMB, new WorldPoint(2357, 9802, 0), "Use the bucket of brew on the tomb in the south east corner of the area.", brew);

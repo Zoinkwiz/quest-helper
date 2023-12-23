@@ -68,6 +68,10 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class UndergroundPass extends BasicQuestHelper
 {
+	private static final int ORB_OF_LIGHT1 = NullObjectID.NULL_37326;
+	private static final int ORB_OF_LIGHT2 = NullObjectID.NULL_37325;
+	private static final int ORB_OF_LIGHT3 = NullObjectID.NULL_37324;
+
 	//Items Required
 	ItemRequirement rope1, rope2, ropeHighlight, bow, arrows, arrowsHighlight, spade, spadeHighlight, plank,
 		plankHighlight, bucket, tinderbox, tinderboxHighlight, combatEquipment, robeTopEquipped, robeBottomEquipped,
@@ -399,11 +403,7 @@ public class UndergroundPass extends BasicQuestHelper
 		passTrap5 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2430, 9676, 0), "Either disable or walk past the traps.");
 		passTrap1.addSubSteps(passTrap2, passTrap3, passTrap4, passTrap5);
 
-		final int OBJECTID_ORB_OF_LIGHT1 = NullObjectID.NULL_37326;
-		final int OBJECTID_ORB_OF_LIGHT2 = NullObjectID.NULL_37325;
-		final int OBJECTID_ORB_OF_LIGHT3 = NullObjectID.NULL_37324;
-
-		collectOrb1 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT1, "Take the first orb of light.");
+		collectOrb1 = new ObjectStep(this, ORB_OF_LIGHT1, "Take the first orb of light.");
 		plankRock1 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2418, 9681, 0), "Use a plank on the flat rock to cross it.", plankHighlight);
 		plankRock1.addIcon(ItemID.PLANK);
 		plankRock2 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2418, 9685, 0), "Use a plank on the flat rock to cross it.", plankHighlight);
@@ -412,8 +412,8 @@ public class UndergroundPass extends BasicQuestHelper
 		plankRock3.addIcon(ItemID.PLANK);
 		collectOrb1.addSubSteps(plankRock1, plankRock2, plankRock3);
 
-		collectOrb2 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT2, new WorldPoint(2385, 9685, 0), "Take the second orb of light north west of the well.");
-		collectOrb3 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT3, new WorldPoint(2386, 9677, 0), "Take the third orb of light west of the well. Remember to use a plank on the flat rocks to cross them.");
+		collectOrb2 = new ObjectStep(this, ORB_OF_LIGHT2, new WorldPoint(2385, 9685, 0), "Take the second orb of light north west of the well.");
+		collectOrb3 = new ObjectStep(this, ORB_OF_LIGHT3, new WorldPoint(2386, 9677, 0), "Take the third orb of light west of the well. Remember to use a plank on the flat rocks to cross them.");
 		collectOrb4 = new ObjectStep(this, ObjectID.FLAT_ROCK_3339, new WorldPoint(2382, 9668, 0), "Search the flat rock to remove the trap and take the fourth orb to the south west of the well.");
 		collectOrb4.addDialogStep("Yes, I'll give it a go.");
 		orbsToFurnace = new ObjectStep(this, ObjectID.FURNACE_3294, new WorldPoint(2455, 9683, 0), "Return to the furnace to the east, and use the orbs on it.");

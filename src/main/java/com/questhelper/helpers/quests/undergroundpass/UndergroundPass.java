@@ -102,7 +102,7 @@ public class UndergroundPass extends BasicQuestHelper
 		useUnicornHornOnWell, openIbansDoor, descendCave, talkToNiloof, talkToKlank, goBackUpToIbansCavern,
 		pickUpWitchsCat, useCatOnDoor, searchWitchsChest, killHolthion, killDoomion, killOthainian,
 		searchDoomionsChest, returnToDwarfs, pickUpBucket, pickUpTinderbox, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb,
-		killKalrag,	ascendToHalfSouless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
+		killKalrag, ascendToHalfSoulless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
 		talkToKingLathasAfterTemple, leaveFallArea, useAshOnDoll, useShadowOnDoll, useDoveOnDoll, goUpToLathasToFinish;
 
 	//Zones
@@ -520,7 +520,7 @@ public class UndergroundPass extends BasicQuestHelper
 		useTinderboxOnTomb.addSubSteps(useAshOnDoll);
 		useTinderboxOnTomb.addIcon(ItemID.TINDERBOX);
 		killKalrag = new NpcStep(this, NpcID.KALRAG, new WorldPoint(2356, 9913, 0), "Kill Kalrag the spider. Protect From Melee can keep you safe in this fight.", dollOfIban);
-		ascendToHalfSouless = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2304, 9915, 0), "Ascend to the upper level of the cave again via the north west exit.");
+		ascendToHalfSoulless = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2304, 9915, 0), "Ascend to the upper level of the cave again via the north west exit.");
 		searchCage = new ObjectStep(this, ObjectID.CAGE_3351, new WorldPoint(2135, 4703, 1), "Search the marked cage in the north west of the area while wearing Klank's gauntlets.", klanksGauntletsEquipped);
 		searchCage.setLinePoints(Arrays.asList(
 			new WorldPoint(2116, 4729, 1),
@@ -535,7 +535,7 @@ public class UndergroundPass extends BasicQuestHelper
 			new WorldPoint(2140, 4702, 1),
 			new WorldPoint(2136, 4702, 1)
 		));
-		searchCage.addSubSteps(ascendToHalfSouless, useDoveOnDoll);
+		searchCage.addSubSteps(ascendToHalfSoulless, useDoveOnDoll);
 
 		killDisciple = new NpcStep(this, NpcID.DISCIPLE_OF_IBAN, new WorldPoint(2163, 4648, 1), "Travel along the pathways from the north west corner of the area to the middle. Kill a disciple of Iban and take their robes.", true, dollOfIban);
 		killDisciple.setLinePoints(Arrays.asList(
@@ -689,7 +689,7 @@ public class UndergroundPass extends BasicQuestHelper
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared), killDisciple);
 		imbuingTheDoll.addStep(new Conditions(dollImbued, dollAshed, kalragKilled, ibansDove), useDoveOnDoll);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled), searchCage);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled), ascendToHalfSouless);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled), ascendToHalfSoulless);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed), killKalrag);
 		imbuingTheDoll.addStep(new Conditions(dollImbued, pouredBrew, ibansAshes), useAshOnDoll);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, pouredBrew, tinderbox), useTinderboxOnTomb);
@@ -709,7 +709,7 @@ public class UndergroundPass extends BasicQuestHelper
 		goDestroyDoll.addStep(new Conditions(isInTemple), useDollOnWell);
 		goDestroyDoll.addStep(new Conditions(isInFinalArea, robeBottom, robeTop), enterTemple);
 		goDestroyDoll.addStep(isInFinalArea, killDisciple);
-		goDestroyDoll.addStep(isInDwarfCavern, ascendToHalfSouless);
+		goDestroyDoll.addStep(isInDwarfCavern, ascendToHalfSoulless);
 
 		ConditionalStep wrappingUp = new ConditionalStep(this, talkToKingLathasAfterTemple);
 		wrappingUp.addStep(isInPostIbanArea, talkToKoftikAfterTemple);

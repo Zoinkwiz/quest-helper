@@ -487,10 +487,7 @@ public class QuestHelperPlugin extends Plugin
 	public void displayPanel()
 	{
 		SwingUtilities.invokeLater(() -> {
-			if (!navButton.isSelected())
-			{
-				navButton.getOnSelect().run();
-			}
+			clientToolbar.openPanel(navButton);
 		});
 	}
 

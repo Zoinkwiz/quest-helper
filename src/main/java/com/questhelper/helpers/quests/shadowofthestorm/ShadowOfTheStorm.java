@@ -251,7 +251,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		talkToReen.addDialogStep("That's me!");
 		talkToReen.addDialogStep("Yes.");
 		talkToBadden = new NpcStep(this, NpcID.FATHER_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", silverlight, darkItems);
-		talkToBadden.addDialogSteps("Reen sent me.", "So what do you want me to do?", "How can I do that?");
+		talkToBadden.addDialogSteps("Uzer", "Reen sent me.", "So what do you want me to do?", "How can I do that?");
 		pickMushroom = new ObjectStep(this, ObjectID.BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");
 		dyeSilverlight = new DetailedQuestStep(this, "Use the black mushrooms on Silverlight.", silverlightHighlighted, blackMushroomHighlighted);
 		goIntoRuin = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyedEquipped, darkItems);
@@ -270,6 +270,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		talkToMatthew.addDialogStep("Do you know what happened to Josef?");
 		smeltSigil = new DetailedQuestStep(this, "Travel to any furnace with the sigil mould and silver bar and smelt a sigil.", silverBar, sigilMould);
 		talkToGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.", silverlightDyed, sigil, combatGear);
+		talkToGolem.addDialogStep("Uzer");
 		talkToGolem.addDialogStep("Did you see anything happen last night?");
 		searchKiln = new SearchKilns(this);
 		readBook = new DetailedQuestStep(this, "Read the book.", bookHighlighted);

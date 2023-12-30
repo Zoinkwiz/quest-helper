@@ -249,6 +249,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	{
 		talkToReen = new NpcStep(this, NpcID.FATHER_REEN, new WorldPoint(3270, 3159, 0), "Talk to Father Reen outside Al Kharid bank.");
 		talkToReen.addDialogStep("That's me!");
+		talkToReen.addDialogStep("Yes.");
 		talkToBadden = new NpcStep(this, NpcID.FATHER_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", silverlight, darkItems);
 		talkToBadden.addDialogSteps("Reen sent me.", "So what do you want me to do?", "How can I do that?");
 		pickMushroom = new ObjectStep(this, ObjectID.BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");

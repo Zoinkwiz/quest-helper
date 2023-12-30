@@ -29,26 +29,59 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import java.util.Collections;
 import net.runelite.api.ItemID;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
 
-import java.util.HashMap;
 import net.runelite.client.eventbus.Subscribe;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class IncantationStep extends DetailedQuestStep
 {
-	private final HashMap<Integer, String> words = new HashMap<Integer, String>()
-	{{
-		put(0, "Caldar");
-		put(1, "Nahudu");
-		put(2, "Agrith-Naar");
-		put(3, "Camerinthum");
-		put(4, "Tarren");
-	}};
+	/**
+	 * The index of the first word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
+	 * The order of the words received by Denath is reverse.
+	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
+	 */
+	private static final @Varbit int INCANTATION_WORD_1 = 1373;
+	/**
+	 * The index of the second word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
+	 * The order of the words received by Denath is reverse.
+	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
+	 */
+	private static final @Varbit int INCANTATION_WORD_2 = 1374;
+	/**
+	 * The index of the third word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
+	 * The order of the words received by Denath is reverse.
+	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
+	 */
+	private static final @Varbit int INCANTATION_WORD_3 = 1375;
+	/**
+	 * The index of the fourth word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
+	 * The order of the words received by Denath is reverse.
+	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
+	 */
+	private static final @Varbit int INCANTATION_WORD_4 = 1376;
+	/**
+	 * The index of the fifth word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
+	 * The order of the words received by Denath is reverse.
+	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
+	 */
+	private static final @Varbit int INCANTATION_WORD_5 = 1377;
+
+	/**
+	 * The possible words that that can be used the incantation
+	 * The index correlates to the value of the varbit
+	 */
+	private static final String[] WORDS = {
+		"Caldar",
+		"Nahudu",
+		"Agrith-Naar",
+		"Camerinthum",
+		"Tarren",
+	};
 
 	private final boolean reverse;
 	private String[] incantationOrder;
@@ -144,20 +177,34 @@ public class IncantationStep extends DetailedQuestStep
 	 */
 	protected void updateHints()
 	{
-		if (incantationOrder != null || (client.getVarbitValue(1374) == 0 && client.getVarbitValue(1375) == 0))
+		if (incantationOrder != null)
 		{
+			// The order has already been calculated
 			return;
 		}
-		incantationOrder = new String[]{
-			words.get(client.getVarbitValue(1373)),
-			words.get(client.getVarbitValue(1374)),
-			words.get(client.getVarbitValue(1375)),
-			words.get(client.getVarbitValue(1376)),
-			words.get(client.getVarbitValue(1377))
-		};
-		if (reverse)
+
+		if (client.getVarbitValue(INCANTATION_WORD_2) == 0 && client.getVarbitValue(INCANTATION_WORD_3) == 0)
 		{
-			ArrayUtils.reverse(incantationOrder);
+			// The word order hasn't been received yet (two incantations can't point to the same word)
+			return;
+		}
+
+		if (reverse) {
+			incantationOrder = new String[]{
+				WORDS[client.getVarbitValue(INCANTATION_WORD_5)],
+				WORDS[client.getVarbitValue(INCANTATION_WORD_4)],
+				WORDS[client.getVarbitValue(INCANTATION_WORD_3)],
+				WORDS[client.getVarbitValue(INCANTATION_WORD_2)],
+				WORDS[client.getVarbitValue(INCANTATION_WORD_1)],
+			};
+		} else {
+			incantationOrder = new String[]{
+				WORDS[client.getVarbitValue(INCANTATION_WORD_1)],
+				WORDS[client.getVarbitValue(INCANTATION_WORD_2)],
+				WORDS[client.getVarbitValue(INCANTATION_WORD_3)],
+				WORDS[client.getVarbitValue(INCANTATION_WORD_4)],
+				WORDS[client.getVarbitValue(INCANTATION_WORD_5)],
+			};
 		}
 		String incantString = "Say the following in order: " + String.join(", ", incantationOrder);
 

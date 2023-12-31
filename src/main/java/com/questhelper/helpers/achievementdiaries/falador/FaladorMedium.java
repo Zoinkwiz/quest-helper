@@ -206,7 +206,6 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
 		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR).showConditioned(notPlacedScarecrow);
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
-		watermelon.canBeObtainedDuringQuest();
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
 		emptySack.canBeObtainedDuringQuest();
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);

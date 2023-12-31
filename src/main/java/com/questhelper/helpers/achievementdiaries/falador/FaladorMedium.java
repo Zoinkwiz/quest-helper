@@ -271,6 +271,10 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		if (Utils.getAccountType(client).isAnyIronman()) {
 			// 47 Farming is required to get a Watermelon for the "Brain not included" step
 			generalRequirements.add(new SkillRequirement(Skill.FARMING, 47, true));
+
+			// 59 Fletching & 59 Smithing is required to craft a Mithril Grapple
+			generalRequirements.add(new SkillRequirement(Skill.FLETCHING, 59, true));
+			generalRequirements.add(new SkillRequirement(Skill.SMITHING, 59, true));
 		} else {
 			generalRequirements.add(new SkillRequirement(Skill.FARMING, 23, true));
 		}

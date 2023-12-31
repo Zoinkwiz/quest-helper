@@ -300,7 +300,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		craftingGuild = new Zone(new WorldPoint(2929, 3288, 0), new WorldPoint(2943, 3276, 0));
 		dwarvenMine = new Zone(new WorldPoint(2979, 9855, 0), new WorldPoint(3069, 9698, 0));
 		tav = new Zone(new WorldPoint(2939, 3398, 0), new WorldPoint(2878, 3489, 0));
-		falNorthWall = new Zone(new WorldPoint(3022, 3089, 0), new WorldPoint(3039, 3089, 1));
+		falNorthWall = new Zone(new WorldPoint(3022, 3389, 0), new WorldPoint(3039, 3389, 1));
 	}
 
 	public void setupSteps()
@@ -353,7 +353,6 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			anyCrossbow.highlighted(), mithGrapple.highlighted());
 		grappleNorthWallEnd = new ObjectStep(this, ObjectID.WALL_17051, new WorldPoint(3033, 3390, 1),
 			"Climb down the wall to finish the task.");
-		grappleNorthWallEnd.addSubSteps(grappleNorthWallStart);
 
 		//PickPocket
 		pickpocketGuard = new NpcStep(this, NpcID.GUARD_3269, new WorldPoint(2961, 3381, 0),

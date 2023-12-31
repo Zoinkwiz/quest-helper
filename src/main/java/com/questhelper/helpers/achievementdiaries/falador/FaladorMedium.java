@@ -51,6 +51,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.util.Utils;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -99,6 +100,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	ConditionalStep litLanternTask, telegrabbedWineTask, unlockedCrystalChestTask, placedScarecrowTask, killedMogreTask,
 		visitRatPitsTask, grappleNorthWallTask, pickpocketGuardTask, prayAtAltarTask, mineGoldTask, dwarfShortcutTask,
 		chopBurnWillowTavTask, basketFalLoomTask, teleportFaladorTask;
+
+	List<Requirement> generalRequirements;
 
 	@Override
 	public QuestStep loadStep()
@@ -260,6 +263,30 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		skippyAndMogres = new QuestRequirement(QuestHelperQuest.SKIPPY_AND_THE_MOGRES, QuestState.FINISHED);
 		recDrive = new QuestRequirement(QuestHelperQuest.RECRUITMENT_DRIVE, QuestState.FINISHED);
 
+		generalRequirements = new ArrayList<>();
+
+		generalRequirements.add(new SkillRequirement(Skill.AGILITY, 42, true));
+		generalRequirements.add(new SkillRequirement(Skill.CRAFTING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.DEFENCE, 20));
+		if (Utils.getAccountType(client).isAnyIronman()) {
+			// 47 Farming is required to get a Watermelon for the "Brain not included" step
+			generalRequirements.add(new SkillRequirement(Skill.FARMING, 47, true));
+		} else {
+			generalRequirements.add(new SkillRequirement(Skill.FARMING, 23, true));
+		}
+		generalRequirements.add(new SkillRequirement(Skill.FIREMAKING, 49, true));
+		generalRequirements.add(new SkillRequirement(Skill.MAGIC, 37, true));
+		generalRequirements.add(new SkillRequirement(Skill.MINING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.PRAYER, 10));
+		generalRequirements.add(new SkillRequirement(Skill.RANGED, 19));
+		generalRequirements.add(new SkillRequirement(Skill.SLAYER, 32));
+		generalRequirements.add(new SkillRequirement(Skill.STRENGTH, 37));
+		generalRequirements.add(new SkillRequirement(Skill.THIEVING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.WOODCUTTING, 30, true));
+
+		generalRequirements.add(ratCatchers);
+		generalRequirements.add(recDrive);
+		generalRequirements.add(skippyAndMogres);
 	}
 
 	public void loadZones()
@@ -391,27 +418,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
-
-		req.add(new SkillRequirement(Skill.AGILITY, 42, true));
-		req.add(new SkillRequirement(Skill.CRAFTING, 40, true));
-		req.add(new SkillRequirement(Skill.DEFENCE, 20));
-		req.add(new SkillRequirement(Skill.FARMING, 23, true));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 49, true));
-		req.add(new SkillRequirement(Skill.MAGIC, 37, true));
-		req.add(new SkillRequirement(Skill.MINING, 40, true));
-		req.add(new SkillRequirement(Skill.PRAYER, 10));
-		req.add(new SkillRequirement(Skill.RANGED, 19));
-		req.add(new SkillRequirement(Skill.SLAYER, 32));
-		req.add(new SkillRequirement(Skill.STRENGTH, 37));
-		req.add(new SkillRequirement(Skill.THIEVING, 40, true));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 30, true));
-
-		req.add(ratCatchers);
-		req.add(recDrive);
-		req.add(skippyAndMogres);
-
-		return req;
+		return generalRequirements;
 	}
 
 	@Override

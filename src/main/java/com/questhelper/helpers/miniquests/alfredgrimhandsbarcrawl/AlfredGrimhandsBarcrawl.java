@@ -43,7 +43,6 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -134,16 +133,16 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 		inGrandTreeF1 = new ZoneRequirement(grandTreeF1);
 
 		notTalkedToGuard = new VarplayerRequirement(77, false, 0);
-		notTalkedToBlueMoon = new VarplayerRequirement(77, false,3);
-		notTalkedToJollyBoar = new VarplayerRequirement(77, false,9);
+		notTalkedToBlueMoon = new VarplayerRequirement(77, false, 3);
+		notTalkedToJollyBoar = new VarplayerRequirement(77, false, 9);
 		notTalkedToRisingSun = new VarplayerRequirement(77, false, 11);
-		notTalkedToRustyAnchor = new VarplayerRequirement(77, false,12);
-		notTalkedToZambo = new VarplayerRequirement(77, false,10);
-		notTalkedToDeadMansChest = new VarplayerRequirement(77, false,5);
-		notTalkedToFlyingHorseInn = new VarplayerRequirement(77, false,7);
-		notTalkedToForestersArms = new VarplayerRequirement(77, false,8);
-		notTalkedToBlurberry = new VarplayerRequirement(77, false,4);
-		notTalkedToDragonInn = new VarplayerRequirement(77, false,6);
+		notTalkedToRustyAnchor = new VarplayerRequirement(77, false, 12);
+		notTalkedToZambo = new VarplayerRequirement(77, false, 10);
+		notTalkedToDeadMansChest = new VarplayerRequirement(77, false, 5);
+		notTalkedToFlyingHorseInn = new VarplayerRequirement(77, false, 7);
+		notTalkedToForestersArms = new VarplayerRequirement(77, false, 8);
+		notTalkedToBlurberry = new VarplayerRequirement(77, false, 4);
+		notTalkedToDragonInn = new VarplayerRequirement(77, false, 6);
 	}
 
 	public void setupSteps()
@@ -199,28 +198,29 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Collections.singletonList(coins208);
+		return List.of(coins208);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(gamesNecklace, varrockTeleport, faladorTeleport, glory, ardougneTeleport,
+		return List.of(gamesNecklace, varrockTeleport, faladorTeleport, glory, ardougneTeleport,
 			camelotTeleport, duelingRing);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
-				new UnlockReward("Access to Barbarian Outpost Agility Course"),
-				new UnlockReward("Speak to the Barbarian Guard to learn how to smash empty vials automatically."));
+		return List.of(
+			new UnlockReward("Access to Barbarian Outpost Agility Course"),
+			new UnlockReward("Speak to the Barbarian Guard to learn how to smash empty vials automatically.")
+		);
 	}
 
 	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		var allSteps = new ArrayList<PanelDetails>();
 
 		allSteps.add(new PanelDetails("Getting started", List.of(talkToGuardToGetCard)));
 

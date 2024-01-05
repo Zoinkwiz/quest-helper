@@ -67,7 +67,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 		notTalkedToZambo, notTalkedToDeadMansChest, notTalkedToFlyingHorseInn, notTalkedToForestersArms, notTalkedToBlurberry,
 		notTalkedToDragonInn, inGrandTreeF1;
 
-	QuestStep talkToGuard, talkToBlueMoon, talkToJollyBoar, talkToRisingSun, talkToRustyAnchor, talkToZambo,
+	QuestStep talkToGuardToGetCard, talkToBlueMoon, talkToJollyBoar, talkToRisingSun, talkToRustyAnchor, talkToZambo,
 		talkToDeadMansChest, talkToFlyingHorseInn, talkToForestersArms, goUpToBlurberry, talkToBlurberry,
 		talkToDragonInn, talkToGuardAgain;
 
@@ -83,7 +83,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 		setupSteps();
 
 		ConditionalStep barcrawl = new ConditionalStep(this, talkToGuardAgain);
-		barcrawl.addStep(notTalkedToGuard, talkToGuard);
+		barcrawl.addStep(notTalkedToGuard, talkToGuardToGetCard);
 		barcrawl.addStep(notTalkedToBlueMoon, talkToBlueMoon);
 		barcrawl.addStep(notTalkedToJollyBoar, talkToJollyBoar);
 		barcrawl.addStep(notTalkedToRisingSun, talkToRisingSun);
@@ -148,9 +148,9 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		talkToGuard = new NpcStep(this, NpcID.BARBARIAN_GUARD_7285, new WorldPoint(2544, 3568, 0),
+		talkToGuardToGetCard = new NpcStep(this, NpcID.BARBARIAN_GUARD_7285, new WorldPoint(2544, 3568, 0),
 			"Talk to a barbarian guard outside the Barbarian Agility Course.");
-		talkToGuard.addDialogSteps("I want to come through this gate.",
+		talkToGuardToGetCard.addDialogSteps("I want to come through this gate.",
 			"Looks can be deceiving, I am in fact a barbarian.");
 
 
@@ -222,7 +222,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Getting started", List.of(talkToGuard)));
+		allSteps.add(new PanelDetails("Getting started", List.of(talkToGuardToGetCard)));
 
 		allSteps.add(new PanelDetails("Drinking", Arrays.asList(talkToBlueMoon, talkToJollyBoar, talkToRisingSun,
 			talkToRustyAnchor, talkToZambo, talkToDeadMansChest, talkToFlyingHorseInn, talkToForestersArms, talkToBlurberry,

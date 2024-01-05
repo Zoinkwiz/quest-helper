@@ -222,9 +222,11 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Drinking", Arrays.asList(talkToGuard, talkToBlueMoon, talkToJollyBoar, talkToRisingSun,
+		allSteps.add(new PanelDetails("Getting started", List.of(talkToGuard)));
+
+		allSteps.add(new PanelDetails("Drinking", Arrays.asList(talkToBlueMoon, talkToJollyBoar, talkToRisingSun,
 			talkToRustyAnchor, talkToZambo, talkToDeadMansChest, talkToFlyingHorseInn, talkToForestersArms, talkToBlurberry,
-			talkToDragonInn, talkToGuardAgain), coins208));
+			talkToDragonInn, talkToGuardAgain), barcrawlCard, coins208));
 
 		return allSteps;
 	}

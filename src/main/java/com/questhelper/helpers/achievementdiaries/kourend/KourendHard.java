@@ -68,7 +68,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		shayzienHelmet, shayzienBody, shayzienGreaves, shayzienBoots, shayzienGloves;
 
 	// Quests required
-	Requirement architecturalAlliance, dreamMentor, theForsakenTower, shayzienFavour, hosidiusFavour75,
+	Requirement dreamMentor, theForsakenTower, shayzienFavour, hosidiusFavour75,
 		hosidiusFavour100, lovakengjFavour, piscariliusFavour, lunarBook;
 
 	// Requirements
@@ -202,7 +202,6 @@ public class KourendHard extends ComplexStateQuestHelper
 			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 
 		// Quests required
-		architecturalAlliance = new QuestRequirement(QuestHelperQuest.ARCHITECTURAL_ALLIANCE, QuestState.FINISHED);
 		dreamMentor = new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED);
 		theForsakenTower = new QuestRequirement(QuestHelperQuest.THE_FORSAKEN_TOWER, QuestState.FINISHED);
 
@@ -350,7 +349,6 @@ public class KourendHard extends ComplexStateQuestHelper
 		req.add(lovakengjFavour);
 		req.add(piscariliusFavour);
 
-		req.add(architecturalAlliance);
 		req.add(dreamMentor);
 		req.add(theForsakenTower);
 
@@ -440,7 +438,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		allSteps.add(examineMonsterStep);
 
 		PanelDetails teleportHeartStep = new PanelDetails("Teleport to Xeric's Heart", Collections.singletonList(
-			teleportToHeart), architecturalAlliance, xericsTalisman);
+			teleportToHeart), xericsTalisman);
 		teleportHeartStep.setDisplayCondition(notTeleportHeart);
 		teleportHeartStep.setLockingStep(teleportHeartTask);
 		allSteps.add(teleportHeartStep);

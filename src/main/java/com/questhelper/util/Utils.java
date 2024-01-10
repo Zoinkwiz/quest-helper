@@ -28,6 +28,7 @@ package com.questhelper.util;
 import com.questhelper.domain.AccountType;
 import lombok.experimental.UtilityClass;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,7 @@ public class Utils
 	 */
 	public AccountType getAccountType(@NotNull Client client)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN) return AccountType.NORMAL;
 		return AccountType.get(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
 	}
 

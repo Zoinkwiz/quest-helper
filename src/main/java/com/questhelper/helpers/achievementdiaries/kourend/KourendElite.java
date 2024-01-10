@@ -36,8 +36,6 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -67,9 +65,6 @@ public class KourendElite extends ComplexStateQuestHelper
 	// Items recommended
 	ItemRequirement arclight, kharedstsMemoirs, dramenStaff, skillsNecklace, radasBlessing, xericsTalisman,
 		potatoCactus, ultraCompost;
-
-	// Quests required
-	Requirement hosidiusFavour60, hosidiusFavour75, arceuusFavour, piscariliusFavour;
 
 	// Requirements
 	Requirement notCraftBloodRune, notChopRedwood, notDefeatSkotizo, notCatchAngler, notKillHydra, notCreateTeleport,
@@ -203,11 +198,6 @@ public class KourendElite extends ComplexStateQuestHelper
 		potatoCactus = new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS, 8);
 		ultraCompost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 
-		arceuusFavour = new FavourRequirement(Favour.ARCEUUS, 100);
-		hosidiusFavour60 = new FavourRequirement(Favour.HOSIDIUS, 60);
-		hosidiusFavour75 = new FavourRequirement(Favour.HOSIDIUS, 75);
-		piscariliusFavour = new FavourRequirement(Favour.PISCARILIUS, 100);
-
 		// Zone requirements
 		inRedwoodTree = new ZoneRequirement(redwoodTree);
 		inCatacombs = new ZoneRequirement(catacombs);
@@ -308,7 +298,7 @@ public class KourendElite extends ComplexStateQuestHelper
 			"Switch to the Arceuus spellbook via Tyss.");
 		switchSpellbook.addDialogStep("Can I try the magicks myself?");
 		createTeleportTab = new ObjectStep(this, ObjectID.LECTERN_28802, new WorldPoint(1679, 3765, 0),
-			"Create an Ape Atoll teleport tablet.", arceuusFavour, bloodRune.quantity(2), lawRune.quantity(2),
+			"Create an Ape Atoll teleport tablet.", bloodRune.quantity(2), lawRune.quantity(2),
 			soulRune.quantity(2));
 
 		// Complete a raid
@@ -368,10 +358,6 @@ public class KourendElite extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.SLAYER, 95, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 90, true));
 
-		req.add(arceuusFavour);
-		req.add(hosidiusFavour75);
-		req.add(piscariliusFavour);
-
 		return req;
 	}
 
@@ -404,7 +390,7 @@ public class KourendElite extends ComplexStateQuestHelper
 
 		PanelDetails battlestaffStep = new PanelDetails("Battlestaff From Scratch", Arrays.asList(plantCelastrusTree,
 			fletchBattlestaff), new SkillRequirement(Skill.FARMING, 85),
-			new SkillRequirement(Skill.FLETCHING, 40), hosidiusFavour60, spade, celastrusSapling, knife, axe);
+			new SkillRequirement(Skill.FLETCHING, 40), spade, celastrusSapling, knife, axe);
 		battlestaffStep.setDisplayCondition(notFletchBattlestaff);
 		battlestaffStep.setLockingStep(fletchBattlestaffTask);
 		allSteps.add(battlestaffStep);
@@ -412,14 +398,14 @@ public class KourendElite extends ComplexStateQuestHelper
 		PanelDetails craftBloodRuneStep = new PanelDetails("Craft Blood Rune",
 			Arrays.asList(bloodMineDenseEssence, bloodVenerateEssenceBlock, chiselEssenceBlock, craftBloodRune),
 			new SkillRequirement(Skill.RUNECRAFT, 77, true), new SkillRequirement(Skill.MINING, 38),
-			new SkillRequirement(Skill.CRAFTING, 38), arceuusFavour, chisel, pickaxe);
+			new SkillRequirement(Skill.CRAFTING, 38), chisel, pickaxe);
 		craftBloodRuneStep.setDisplayCondition(notCraftBloodRune);
 		craftBloodRuneStep.setLockingStep(craftBloodRuneTask);
 		allSteps.add(craftBloodRuneStep);
 
 		PanelDetails createTabStep = new PanelDetails("Ape Atoll Teleport Tablet", Arrays.asList(
 			apeMineDenseEssence, apeVenerateEssenceBlock, switchSpellbook, createTeleportTab),
-			new SkillRequirement(Skill.MAGIC, 90, true), arceuusFavour, chisel, pickaxe,
+			new SkillRequirement(Skill.MAGIC, 90, true), chisel, pickaxe,
 			soulRune.quantity(2), lawRune.quantity(2), bloodRune.quantity(2));
 		createTabStep.setDisplayCondition(notCreateTeleport);
 		createTabStep.setLockingStep(createTeleportTask);
@@ -433,15 +419,14 @@ public class KourendElite extends ComplexStateQuestHelper
 		allSteps.add(killHydraStep);
 
 		PanelDetails chopRedwoodStep = new PanelDetails("Chop Redwood Logs", Arrays.asList(enterWoodcuttingGuild,
-			climbRedwoodTree, chopRedwood), new SkillRequirement(Skill.WOODCUTTING, 90, true),
-			hosidiusFavour75, axe);
+			climbRedwoodTree, chopRedwood), new SkillRequirement(Skill.WOODCUTTING, 90, true), axe);
 		chopRedwoodStep.setDisplayCondition(notChopRedwood);
 		chopRedwoodStep.setLockingStep(chopRedwoodTask);
 		allSteps.add(chopRedwoodStep);
 
 		PanelDetails catchAnglerStep = new PanelDetails("Catch And Cook Anglerfish", Arrays.asList(catchAngler,
 			cookAnglerfish), new SkillRequirement(Skill.COOKING, 84, true),
-			new SkillRequirement(Skill.FISHING, 82, true), piscariliusFavour, fishingRod,
+			new SkillRequirement(Skill.FISHING, 82, true), fishingRod,
 			sandworm);
 		catchAnglerStep.setDisplayCondition(notCatchAngler);
 		catchAnglerStep.setLockingStep(catchAnglerTask);

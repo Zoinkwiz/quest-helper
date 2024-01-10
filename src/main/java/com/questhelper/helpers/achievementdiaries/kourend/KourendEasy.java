@@ -34,8 +34,6 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -189,7 +187,6 @@ public class KourendEasy extends ComplexStateQuestHelper
 		hasMedpack = medpack.alsoCheckBank(questBank);
 
 		houseInKourend = new VarbitRequirement(2187, 8);
-		hosidiusFavour = new FavourRequirement(Favour.HOSIDIUS, 15);
 	}
 
 	public void loadZones()
@@ -308,7 +305,6 @@ public class KourendEasy extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 15));
 		req.add(new SkillRequirement(Skill.THIEVING, 25));
 
-		req.add(hosidiusFavour);
 		req.add(druidicRitual);
 
 		return req;
@@ -372,7 +368,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		allSteps.add(takeBoatStep);
 
 		PanelDetails stealStallStep = new PanelDetails("Steal Some Fruit", Collections.singletonList(stealFruit),
-			new SkillRequirement(Skill.THIEVING, 25, true), hosidiusFavour);
+			new SkillRequirement(Skill.THIEVING, 25, true));
 		stealStallStep.setDisplayCondition(notStealFruit);
 		stealStallStep.setLockingStep(stealFruitTask);
 		allSteps.add(stealStallStep);

@@ -36,8 +36,6 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -68,8 +66,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		shayzienHelmet, shayzienBody, shayzienGreaves, shayzienBoots, shayzienGloves;
 
 	// Quests required
-	Requirement dreamMentor, theForsakenTower, shayzienFavour, hosidiusFavour75,
-		hosidiusFavour100, lovakengjFavour, piscariliusFavour, lunarBook;
+	Requirement dreamMentor, theForsakenTower, lunarBook;
 
 	// Requirements
 	Requirement notWoodcuttingGuild, notSmeltAddyBar, notKillLizardmanShaman, notMineLovakite, notPlantLogavano,
@@ -205,11 +202,6 @@ public class KourendHard extends ComplexStateQuestHelper
 		dreamMentor = new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED);
 		theForsakenTower = new QuestRequirement(QuestHelperQuest.THE_FORSAKEN_TOWER, QuestState.FINISHED);
 
-		shayzienFavour = new FavourRequirement(Favour.SHAYZIEN, 100);
-		hosidiusFavour75 = new FavourRequirement(Favour.HOSIDIUS, 100);
-		hosidiusFavour100 = new FavourRequirement(Favour.HOSIDIUS, 100);
-		lovakengjFavour = new FavourRequirement(Favour.LOVAKENGJ, 30);
-		piscariliusFavour = new FavourRequirement(Favour.PISCARILIUS, 75);
 
 		// Zone requirements
 		inForsakenTower = new ZoneRequirement(forsakenTower);
@@ -249,7 +241,7 @@ public class KourendHard extends ComplexStateQuestHelper
 			"Enter the lizardman temple.", shayzienHelmet.equipped(), shayzienBody.equipped(), shayzienGreaves.equipped(),
 			shayzienBoots.equipped(), shayzienGloves.equipped(), antipoison, combatGear);
 		killLizardmanShaman = new NpcStep(this, NpcID.LIZARDMAN_SHAMAN_8565, new WorldPoint(1292, 10096, 0),
-			"Kill a Lizardman Shaman.", shayzienFavour, shayzienHelmet.equipped(), shayzienBody.equipped(),
+			"Kill a Lizardman Shaman.", shayzienHelmet.equipped(), shayzienBody.equipped(),
 			shayzienGreaves.equipped(), shayzienBoots.equipped(), shayzienGloves.equipped(), antipoison, combatGear);
 
 		// Mine some lovakite ore
@@ -280,7 +272,7 @@ public class KourendHard extends ComplexStateQuestHelper
 
 		// Deliver an artifact
 		talkToCaptainKhaled = new NpcStep(this, NpcID.CAPTAIN_KHALED, new WorldPoint(1845, 3753, 0),
-			"Talk to Captain Khaled to receive a job.", piscariliusFavour);
+			"Talk to Captain Khaled to receive a job.");
 		talkToCaptainKhaled.addAlternateNpcs(NpcID.CAPTAIN_KHALED_6972);
 		talkToCaptainKhaled.addDialogStep("Looking for any help?");
 		talkToCaptainKhaled.addDialogStep("I have what it takes.");
@@ -344,11 +336,6 @@ public class KourendHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.THIEVING, 49));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 60));
 
-		req.add(shayzienFavour);
-		req.add(hosidiusFavour100);
-		req.add(lovakengjFavour);
-		req.add(piscariliusFavour);
-
 		req.add(dreamMentor);
 		req.add(theForsakenTower);
 
@@ -380,21 +367,20 @@ public class KourendHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails deliverArtifactStep = new PanelDetails("Deliver an artifact", Arrays.asList(talkToCaptainKhaled,
-			deliverArtifact), new SkillRequirement(Skill.THIEVING, 49), piscariliusFavour, lockpick);
+			deliverArtifact), new SkillRequirement(Skill.THIEVING, 49), lockpick);
 		deliverArtifactStep.setDisplayCondition(notDeliverArtifact);
 		deliverArtifactStep.setLockingStep(deliverArtifactTask);
 		allSteps.add(deliverArtifactStep);
 
 		PanelDetails plantLogavanoStep = new PanelDetails("Plant some logavano seeds", Arrays.asList(searchSeedTable,
-			enterTitheFarm, plantLogavanoSeed), new SkillRequirement(Skill.FARMING, 74), hosidiusFavour100,
-			seedDibber, spade, wateringCan, logavanoSeeds);
+			enterTitheFarm, plantLogavanoSeed), new SkillRequirement(Skill.FARMING, 74), seedDibber, spade,
+			wateringCan, logavanoSeeds);
 		plantLogavanoStep.setDisplayCondition(notPlantLogavano);
 		plantLogavanoStep.setLockingStep(plantLogavanoTask);
 		allSteps.add(plantLogavanoStep);
 
 		PanelDetails woodcuttingGuildStep = new PanelDetails("Enter the woodcutting guild",
-			Collections.singletonList(enterWoodcuttingGuild), new SkillRequirement(Skill.WOODCUTTING, 60),
-			hosidiusFavour75);
+			Collections.singletonList(enterWoodcuttingGuild), new SkillRequirement(Skill.WOODCUTTING, 60));
 		woodcuttingGuildStep.setDisplayCondition(notWoodcuttingGuild);
 		woodcuttingGuildStep.setLockingStep(woodcuttingGuildTask);
 		allSteps.add(woodcuttingGuildStep);
@@ -406,7 +392,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		allSteps.add(killZombieStep);
 
 		PanelDetails mineLovakiteStep = new PanelDetails("Mine some lovakite", Collections.singletonList(mineLovakiteOre),
-			lovakengjFavour, pickaxe);
+			pickaxe);
 		mineLovakiteStep.setDisplayCondition(notMineLovakite);
 		mineLovakiteStep.setLockingStep(mineLovakiteTask);
 		allSteps.add(mineLovakiteStep);
@@ -424,7 +410,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		allSteps.add(killWyrmStep);
 
 		PanelDetails killShamanStep = new PanelDetails("Kill a lizardman shaman", Arrays.asList(enterLizardmanTemple,
-			killLizardmanShaman), shayzienFavour, shayzienHelmet, shayzienBody, shayzienGreaves, shayzienBoots, shayzienGloves,
+			killLizardmanShaman), shayzienHelmet, shayzienBody, shayzienGreaves, shayzienBoots, shayzienGloves,
 			antipoison, combatGear);
 		killShamanStep.setDisplayCondition(notKillLizardmanShaman);
 		killShamanStep.setLockingStep(killLizardmanShamanTask);

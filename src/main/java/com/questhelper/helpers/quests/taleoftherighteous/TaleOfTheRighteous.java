@@ -28,8 +28,6 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -317,7 +315,6 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
-		req.add(new FavourRequirement(Favour.SHAYZIEN, 20));
 		req.add(new SkillRequirement(Skill.STRENGTH, 16));
 		req.add(new SkillRequirement(Skill.MINING, 10));
 		return req;

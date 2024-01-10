@@ -30,8 +30,6 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
@@ -141,8 +139,7 @@ public class BoneVoyage extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		canEnterGuild = new Conditions(
-			new SkillRequirement(Skill.WOODCUTTING, 60, true),
-			new FavourRequirement(Favour.HOSIDIUS, 75)
+			new SkillRequirement(Skill.WOODCUTTING, 60, true)
 		);
 
 		onBoat = new ZoneRequirement(boat, boatSailing);

@@ -173,8 +173,6 @@ public class QuestHelperPlugin extends Plugin
 	private NavigationButton navButton;
 
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
-	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
-	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
 
 
 	// TODO: Use this for item checks
@@ -223,13 +221,9 @@ public class QuestHelperPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		clientThread.invokeLater(() -> {
-			for (QuestHelperQuest questHelperQuest : QuestHelperQuest.values())
-			{
-				questHelperQuest.getQuestHelper().setupRequirements();
-			}
-
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
+				setupRequirements();
 				questManager.setupOnLogin();
 				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			}
@@ -289,11 +283,19 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGGED_IN)
 		{
+			setupRequirements();
 			newVersionManager.updateChatWithNotificationIfNewVersion();
-
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			questBankManager.setUnknownInitialState();
 			clientThread.invokeLater(() -> questManager.setupOnLogin());
+		}
+	}
+
+	private void setupRequirements()
+	{
+		for (QuestHelperQuest questHelperQuest : QuestHelperQuest.values())
+		{
+			questHelperQuest.getQuestHelper().setupRequirements();
 		}
 	}
 
@@ -425,6 +427,16 @@ public class QuestHelperPlugin extends Plugin
 	public QuestHelper getSelectedQuest()
 	{
 		return questManager.getSelectedQuest();
+	}
+
+	public Map<QuestHelperQuest, List<ItemRequirement>> getItemRequirements()
+	{
+		return questManager.itemRequirements;
+	}
+
+	public Map<QuestHelperQuest, List<ItemRequirement>> getItemRecommended()
+	{
+		return questManager.itemRecommended;
 	}
 
 	public List<Integer> itemsToTag()

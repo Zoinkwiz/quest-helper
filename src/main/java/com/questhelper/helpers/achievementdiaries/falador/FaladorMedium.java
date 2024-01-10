@@ -27,6 +27,7 @@ package com.questhelper.helpers.achievementdiaries.falador;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -50,6 +51,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.util.Utils;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -74,7 +76,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 	Requirement ratCatchers, skippyAndMogres, recDrive, normalBook, bothRunes;
 
-	ItemRequirements initiateSet, scarecrowItems;
+	ItemRequirements initiateSet;
 
 	Requirement notLitLantern, notTelegrabbedWine, notUnlockedCrystalChest, notPlacedScarecrow,
 		notKilledMogre, notVisitRatPits, notGrappleNorthWall, notPickpocketGuard, notPrayAtAltar,
@@ -93,10 +95,13 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	Zone chemist, chaosTemple, craftingGuild, dwarvenMine, tav, falNorthWall;
 
 	ZoneRequirement inChemist, inChaosTemple, inCraftingGuild, inDwarvenMine, inTav, inFalNorthWall;
+	Conditions atMudskipperPointWithMogre;
 
 	ConditionalStep litLanternTask, telegrabbedWineTask, unlockedCrystalChestTask, placedScarecrowTask, killedMogreTask,
 		visitRatPitsTask, grappleNorthWallTask, pickpocketGuardTask, prayAtAltarTask, mineGoldTask, dwarfShortcutTask,
 		chopBurnWillowTavTask, basketFalLoomTask, teleportFaladorTask;
+
+	List<Requirement> generalRequirements;
 
 	@Override
 	public QuestStep loadStep()
@@ -128,6 +133,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		doMed.addStep(notLitLantern, litLanternTask);
 
 		killedMogreTask = new ConditionalStep(this, spawnMogre);
+		killedMogreTask.addStep(atMudskipperPointWithMogre, killMogre);
 		doMed.addStep(notKilledMogre, killedMogreTask);
 
 		visitRatPitsTask = new ConditionalStep(this, visitRatPits);
@@ -201,15 +207,12 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		waterRune1 = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 1).showConditioned(notTeleportFalador);
 		crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY).showConditioned(notUnlockedCrystalChest);
 		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
-		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR);
-		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON);
-		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK);
+		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR).showConditioned(notPlacedScarecrow);
+		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
+		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
+		emptySack.canBeObtainedDuringQuest();
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
 		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlacedScarecrow);
-		scarecrowItems = new ItemRequirements(LogicType.OR, "1 x Scarecrow", scarecrow, new ItemRequirements(sack,
-			watermelon, bronzeSpear));
-		scarecrowItems.setTooltip("Created by combining a bronze spear, watermelon, and hay sack " +
-			"(empty sack filled at a hay bale, nearest is North-West of Lumbridge)");
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow).isNotConsumed();
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
@@ -242,6 +245,10 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		inTav = new ZoneRequirement(tav);
 		inFalNorthWall = new ZoneRequirement(falNorthWall);
 
+		var atMudskipperPoint = new ZoneRequirement(new Zone(new WorldPoint(2977, 3141, 0), new WorldPoint(3012, 3103, 0)));
+		var mogreNearby = new NpcCondition(NpcID.MOGRE);
+		atMudskipperPointWithMogre = new Conditions(LogicType.AND, atMudskipperPoint, mogreNearby);
+
 		choppedLogs = new ChatMessageRequirement(
 			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
 		);
@@ -256,6 +263,34 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		skippyAndMogres = new QuestRequirement(QuestHelperQuest.SKIPPY_AND_THE_MOGRES, QuestState.FINISHED);
 		recDrive = new QuestRequirement(QuestHelperQuest.RECRUITMENT_DRIVE, QuestState.FINISHED);
 
+		generalRequirements = new ArrayList<>();
+
+		generalRequirements.add(new SkillRequirement(Skill.AGILITY, 42, true));
+		generalRequirements.add(new SkillRequirement(Skill.CRAFTING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.DEFENCE, 20));
+		if (Utils.getAccountType(client).isAnyIronman()) {
+			// 47 Farming is required to get a Watermelon for the "Brain not included" step
+			generalRequirements.add(new SkillRequirement(Skill.FARMING, 47, true));
+
+			// 59 Fletching & 59 Smithing is required to craft a Mithril Grapple
+			generalRequirements.add(new SkillRequirement(Skill.FLETCHING, 59, true));
+			generalRequirements.add(new SkillRequirement(Skill.SMITHING, 59, true));
+		} else {
+			generalRequirements.add(new SkillRequirement(Skill.FARMING, 23, true));
+		}
+		generalRequirements.add(new SkillRequirement(Skill.FIREMAKING, 49, true));
+		generalRequirements.add(new SkillRequirement(Skill.MAGIC, 37, true));
+		generalRequirements.add(new SkillRequirement(Skill.MINING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.PRAYER, 10));
+		generalRequirements.add(new SkillRequirement(Skill.RANGED, 19));
+		generalRequirements.add(new SkillRequirement(Skill.SLAYER, 32));
+		generalRequirements.add(new SkillRequirement(Skill.STRENGTH, 37));
+		generalRequirements.add(new SkillRequirement(Skill.THIEVING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.WOODCUTTING, 30, true));
+
+		generalRequirements.add(ratCatchers);
+		generalRequirements.add(recDrive);
+		generalRequirements.add(skippyAndMogres);
 	}
 
 	public void loadZones()
@@ -265,7 +300,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		craftingGuild = new Zone(new WorldPoint(2929, 3288, 0), new WorldPoint(2943, 3276, 0));
 		dwarvenMine = new Zone(new WorldPoint(2979, 9855, 0), new WorldPoint(3069, 9698, 0));
 		tav = new Zone(new WorldPoint(2939, 3398, 0), new WorldPoint(2878, 3489, 0));
-		falNorthWall = new Zone(new WorldPoint(3022, 3089, 0), new WorldPoint(3039, 3089, 1));
+		falNorthWall = new Zone(new WorldPoint(3022, 3389, 0), new WorldPoint(3039, 3389, 1));
 	}
 
 	public void setupSteps()
@@ -301,13 +336,12 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		placeScarecrow.addIcon(ItemID.SCARECROW);
 
 		//Mogre
-		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT,
-			"Go to Mudskipper Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", fishingExplosive.highlighted());
+		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT, new WorldPoint(3005, 3117, 0),
+			"Go to Mudskipper Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", true, fishingExplosive.highlighted());
 		spawnMogre.addAlternateObjects(ObjectID.OMINOUS_FISHING_SPOT_10088, ObjectID.OMINOUS_FISHING_SPOT_10089);
 		spawnMogre.addIcon(ItemID.FISHING_EXPLOSIVE);
 		killMogre = new NpcStep(this, NpcID.MOGRE,
 			"Kill the Mogre", combatGear);
-		spawnMogre.addSubSteps(killMogre);
 
 		//Ratpits
 		visitRatPits = new ObjectStep(this, ObjectID.MANHOLE_10321, new WorldPoint(3018, 3232, 0),
@@ -317,9 +351,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		grappleNorthWallStart = new ObjectStep(this, ObjectID.WALL_17050, new WorldPoint(3032, 3389, 0),
 			"Equip your crossbow and grapple then climb the agility shortcut near the Falador Party Room.",
 			anyCrossbow.highlighted(), mithGrapple.highlighted());
-		grappleNorthWallEnd = new ObjectStep(this, ObjectID.WALL_17051, new WorldPoint(3033, 3390, 0),
+		grappleNorthWallEnd = new ObjectStep(this, ObjectID.WALL_17051, new WorldPoint(3033, 3390, 1),
 			"Climb down the wall to finish the task.");
-		grappleNorthWallEnd.addSubSteps(grappleNorthWallStart);
 
 		//PickPocket
 		pickpocketGuard = new NpcStep(this, NpcID.GUARD_3269, new WorldPoint(2961, 3381, 0),
@@ -375,7 +408,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(bullseyeLantern, tinderbox, airRune4, airRune3, airRune1, lawRune2, lawRune1, waterRune1,
-			crystalKey, scarecrowItems, rake, fishingExplosive, mithGrapple, anyCrossbow, initiateHelm, initiateChest,
+			crystalKey, bronzeSpear, emptySack, watermelon, rake, fishingExplosive, mithGrapple, anyCrossbow, initiateHelm, initiateChest,
 			initiateLegs, pickaxe, axe, brownApron, willowBranch6);
 	}
 
@@ -388,27 +421,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
-
-		req.add(new SkillRequirement(Skill.AGILITY, 42, true));
-		req.add(new SkillRequirement(Skill.CRAFTING, 40, true));
-		req.add(new SkillRequirement(Skill.DEFENCE, 20));
-		req.add(new SkillRequirement(Skill.FARMING, 23, true));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 49, true));
-		req.add(new SkillRequirement(Skill.MAGIC, 37, true));
-		req.add(new SkillRequirement(Skill.MINING, 40, true));
-		req.add(new SkillRequirement(Skill.PRAYER, 10));
-		req.add(new SkillRequirement(Skill.RANGED, 19));
-		req.add(new SkillRequirement(Skill.SLAYER, 32));
-		req.add(new SkillRequirement(Skill.STRENGTH, 37));
-		req.add(new SkillRequirement(Skill.THIEVING, 40, true));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 30, true));
-
-		req.add(ratCatchers);
-		req.add(recDrive);
-		req.add(skippyAndMogres);
-
-		return req;
+		return generalRequirements;
 	}
 
 	@Override
@@ -486,7 +499,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		PanelDetails scarecrowSteps = new PanelDetails("Brain not included", Arrays.asList(fillSack, useSackOnSpear,
 			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23, true),
-			scarecrowItems, rake);
+			bronzeSpear, emptySack, watermelon, rake);
 		scarecrowSteps.setDisplayCondition(notPlacedScarecrow);
 		scarecrowSteps.setLockingStep(placedScarecrowTask);
 		allSteps.add(scarecrowSteps);

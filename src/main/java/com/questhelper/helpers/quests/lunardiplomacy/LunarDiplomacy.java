@@ -780,7 +780,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		talkWithEtherealToFight.addDialogStep("Of course. I'm ready.");
 
 		goToNumbers = new ObjectStep(this, ObjectID.PLATFORM_16633, new WorldPoint(1768, 5080, 2), "Go on the platform to the number challenge.");
-		goToMimic = new ObjectStep(this, ObjectID.PLATFORM_16632, new WorldPoint(1765, 5079, 2), "Go on the platform to the music challenge.");
+		goToMimic = new ObjectStep(this, ObjectID.PLATFORM_16632, new WorldPoint(1765, 5079, 2), "Go on the platform to the mimic challenge.");
 		goToRace = new ObjectStep(this, ObjectID.PLATFORM_16634, new WorldPoint(1770, 5088, 2), "Go on the platform to the race challenge.");
 		goToMemory = new ObjectStep(this, ObjectID.PLATFORM_16636, new WorldPoint(1751, 5095, 2), "Go on the platform to the memory challenge.");
 		goToTrees = new ObjectStep(this, ObjectID.PLATFORM_16635, new WorldPoint(1764, 5098, 2), "Go on the platform to the trees challenge.");

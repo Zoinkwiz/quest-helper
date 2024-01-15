@@ -38,6 +38,9 @@ import com.questhelper.rewards.Reward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.event.ItemEvent;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
@@ -54,6 +57,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class QuestOverviewPanel extends JPanel
 {
@@ -567,13 +571,13 @@ public class QuestOverviewPanel extends JPanel
 
 	private void updateExternalResourcesPanel(QuestHelper quest)
 	{
-		List<ExternalQuestResources> externalResourcesList;
+		List<String> externalResourcesList;
 		try
 		{
-			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
+			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()).getWikiURL());
 		} catch (Exception e)
 		{
-			return;
+			externalResourcesList = Collections.singletonList("https://oldschool.runescape.wiki/w/" + StringUtils.lowerCase(URLEncoder.encode(quest.getQuest().name(), StandardCharsets.UTF_8)));
 		}
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);
@@ -587,25 +591,27 @@ public class QuestOverviewPanel extends JPanel
 		wikiBtn.setToolTipText("Open the official wiki in your browser.");
 
 		//Button variable properties
-		wikiBtn.setText("<html><body>Open RuneScape Wiki </body></html>");
+		wikiBtn.setText("<html><body>Open RuneScape Wiki</body></html>");
 
-		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
+		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
 				wikiBtn.setForeground(Color.blue.brighter().brighter().brighter());
-				wikiBtn.setText("<html><body style = 'text-decoration:underline'>" + quest.getQuest().getName() + " Wiki </body></html>");
+				wikiBtn.setText("<html><body style = 'text-decoration:underline'>Open RuneScape Wiki</body></html>");
 			}
 
-			public void mouseExited(java.awt.event.MouseEvent evt) {
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
 				wikiBtn.setForeground(Color.white);
-				wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
+				wikiBtn.setText("<html><body>Open RuneScape Wiki</body></html>");
 			}
 		});
 
 		//Access URL values from ExternalQuestResources enum class
-		for (ExternalQuestResources externalResource : externalResourcesList) {
-			if (externalResource.getWikiURL().length() > 0) {
-				wikiBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource.getWikiURL()));
-			}
+		for (String externalResource : externalResourcesList)
+		{
+			wikiBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource));
 		}
 
 		externalQuestResourcesPanel.removeAll();

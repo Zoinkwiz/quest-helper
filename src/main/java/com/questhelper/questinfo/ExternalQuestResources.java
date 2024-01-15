@@ -5,31 +5,32 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ExternalQuestResources {
-    //Free Quests
-    BELOW_ICE_MOUNTAIN("https://oldschool.runescape.wiki/w/Below_Ice_Mountain"),
-    BLACK_KNIGHTS_FORTRESS("https://oldschool.runescape.wiki/w/Black_Knights%27_Fortress"),
-    COOKS_ASSISTANT("https://oldschool.runescape.wiki/w/Cook%27s_Assistant"),
-    THE_CORSAIR_CURSE("https://oldschool.runescape.wiki/w/The_Corsair_Curse"),
-    DEMON_SLAYER("https://oldschool.runescape.wiki/w/Demon_Slayer"),
-    DORICS_QUEST("https://oldschool.runescape.wiki/w/Doric%27s_Quest"),
-    DRAGON_SLAYER_I("https://oldschool.runescape.wiki/w/Dragon_Slayer_I"),
-    ERNEST_THE_CHICKEN("https://oldschool.runescape.wiki/w/Ernest_the_Chicken"),
-    GOBLIN_DIPLOMACY("https://oldschool.runescape.wiki/w/Goblin_Diplomacy"),
-    IMP_CATCHER("https://oldschool.runescape.wiki/w/Imp_Catcher"),
-    THE_KNIGHTS_SWORD("https://oldschool.runescape.wiki/w/The_Knight%27s_Sword"),
-    MISTHALIN_MYSTERY("https://oldschool.runescape.wiki/w/Misthalin_Mystery"),
-    PIRATES_TREASURE("https://oldschool.runescape.wiki/w/Pirate%27s_Treasure"),
-    PRINCE_ALI_RESCUE("https://oldschool.runescape.wiki/w/Prince_Ali_Rescue"),
-    THE_RESTLESS_GHOST("https://oldschool.runescape.wiki/w/The_Restless_Ghost"),
-    ROMEO__JULIET("https://oldschool.runescape.wiki/w/Romeo_%26_Juliet"),
-    RUNE_MYSTERIES("https://oldschool.runescape.wiki/w/Rune_Mysteries"),
-    SHEEP_SHEARER("https://oldschool.runescape.wiki/w/Sheep_Shearer"),
-    SHIELD_OF_ARRAV_PHOENIX_GANG("https://oldschool.runescape.wiki/w/Shield_of_Arrav"),
-    SHIELD_OF_ARRAV_BLACK_ARM_GANG("https://oldschool.runescape.wiki/w/Shield_of_Arrav"),
-    VAMPYRE_SLAYER("https://oldschool.runescape.wiki/w/Vampyre_Slayer"),
-    WITCHS_POTION("https://oldschool.runescape.wiki/w/Witch%27s_Potion"),
-    X_MARKS_THE_SPOT("https://oldschool.runescape.wiki/w/X_Marks_the_Spot"),
+public enum ExternalQuestResources
+{
+	//Free Quests
+	BELOW_ICE_MOUNTAIN("https://oldschool.runescape.wiki/w/Below_Ice_Mountain"),
+	BLACK_KNIGHTS_FORTRESS("https://oldschool.runescape.wiki/w/Black_Knights%27_Fortress"),
+	COOKS_ASSISTANT("https://oldschool.runescape.wiki/w/Cook%27s_Assistant"),
+	THE_CORSAIR_CURSE("https://oldschool.runescape.wiki/w/The_Corsair_Curse"),
+	DEMON_SLAYER("https://oldschool.runescape.wiki/w/Demon_Slayer"),
+	DORICS_QUEST("https://oldschool.runescape.wiki/w/Doric%27s_Quest"),
+	DRAGON_SLAYER_I("https://oldschool.runescape.wiki/w/Dragon_Slayer_I"),
+	ERNEST_THE_CHICKEN("https://oldschool.runescape.wiki/w/Ernest_the_Chicken"),
+	GOBLIN_DIPLOMACY("https://oldschool.runescape.wiki/w/Goblin_Diplomacy"),
+	IMP_CATCHER("https://oldschool.runescape.wiki/w/Imp_Catcher"),
+	THE_KNIGHTS_SWORD("https://oldschool.runescape.wiki/w/The_Knight%27s_Sword"),
+	MISTHALIN_MYSTERY("https://oldschool.runescape.wiki/w/Misthalin_Mystery"),
+	PIRATES_TREASURE("https://oldschool.runescape.wiki/w/Pirate%27s_Treasure"),
+	PRINCE_ALI_RESCUE("https://oldschool.runescape.wiki/w/Prince_Ali_Rescue"),
+	THE_RESTLESS_GHOST("https://oldschool.runescape.wiki/w/The_Restless_Ghost"),
+	ROMEO__JULIET("https://oldschool.runescape.wiki/w/Romeo_%26_Juliet"),
+	RUNE_MYSTERIES("https://oldschool.runescape.wiki/w/Rune_Mysteries"),
+	SHEEP_SHEARER("https://oldschool.runescape.wiki/w/Sheep_Shearer"),
+	SHIELD_OF_ARRAV_PHOENIX_GANG("https://oldschool.runescape.wiki/w/Shield_of_Arrav"),
+	SHIELD_OF_ARRAV_BLACK_ARM_GANG("https://oldschool.runescape.wiki/w/Shield_of_Arrav"),
+	VAMPYRE_SLAYER("https://oldschool.runescape.wiki/w/Vampyre_Slayer"),
+	WITCHS_POTION("https://oldschool.runescape.wiki/w/Witch%27s_Potion"),
+	X_MARKS_THE_SPOT("https://oldschool.runescape.wiki/w/X_Marks_the_Spot"),
 
 	//Members' Quests
 	A_KINGDOM_DIVIDED("https://oldschool.runescape.wiki/w/A_Kingdom_Divided"),
@@ -187,6 +188,7 @@ public enum ExternalQuestResources {
 	CURSE_OF_THE_EMPTY_LORD("https://oldschool.runescape.wiki/w/Curse_of_the_Empty_Lord"),
 	ENCHANTED_KEY("https://oldschool.runescape.wiki/w/Enchanted_Key"),
 	THE_GENERALS_SHADOW("https://oldschool.runescape.wiki/w/The_General%27s_Shadow"),
+//	HIS_FAITHFUL_SERVANTS("https://oldschool.runescape.wiki/w/His_Faithful_Servants"),
 	SKIPPY_AND_THE_MOGRES("https://oldschool.runescape.wiki/w/Skippy_and_the_Mogres"),
 	THE_MAGE_ARENA("https://oldschool.runescape.wiki/w/The_Mage_Arena"),
 	LAIR_OF_TARN_RAZORLOR("https://oldschool.runescape.wiki/w/Lair_of_Tarn_Razorlor"),
@@ -273,7 +275,7 @@ public enum ExternalQuestResources {
 	WILDERNESS_HARD("https://oldschool.runescape.wiki/w/Wilderness_Diary#Hard"),
 	WILDERNESS_ELITE("https://oldschool.runescape.wiki/w/Wilderness_Diary#Elite"),
 
-    // Generic helpers
+	// Generic helpers
 	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
 	DAG_ROUTE("https://oldschool.runescape.wiki/w/Waterbirth_Island"),
 

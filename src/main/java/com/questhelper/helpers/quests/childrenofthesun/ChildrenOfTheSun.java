@@ -1,0 +1,249 @@
+/*
+ * Copyright (c) 2024, Zoinkwiz <https://github.com/Zoinkwiz>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package com.questhelper.helpers.quests.childrenofthesun;
+
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.NpcRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.coords.WorldPoint;
+
+@QuestDescriptor(
+	quest = QuestHelperQuest.CHILDREN_OF_THE_SUN
+)
+public class ChildrenOfTheSun extends BasicQuestHelper
+{
+
+	DetailedQuestStep talkToAlina, followGuard, attemptToEnterHouse, talkToTobyn,
+		markGuard1, markGuard2, markGuard3, markGuard4, reportBackToTobyn, goUpVarrockF0ToF1, goUpVarrockF1toF2, finishQuest;
+
+	DetailedQuestStep unmarkWrongGuard1, unmarkWrongGuard2, unmarkWrongGuard3, unmarkWrongGuard4,
+		unmarkWrongGuard5, unmarkWrongGuard6;
+
+	Zone castleF1, castleF2;
+
+	Requirement isFollowing, markedGuard1, markedGuard2, markedGuard3, markedGuard4, markedWrongGuard1,
+		markedWrongGuard2, markedWrongGuard3, markedWrongGuard4, markedWrongGuard5, markedWrongGuard6, inCastleF1, inCastleF2;
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		setupRequirements();
+		setupConditions();
+		setupSteps();
+		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		// Before start, 9646 0->1, talked a bit to Alina
+		steps.put(0, talkToAlina);
+		steps.put(2, talkToAlina);
+		steps.put(4, talkToAlina);
+		ConditionalStep goFollowGuard = new ConditionalStep(this, talkToAlina);
+		goFollowGuard.addStep(isFollowing, followGuard);
+		steps.put(6, goFollowGuard);
+		steps.put(8, attemptToEnterHouse);
+		steps.put(10, talkToTobyn);
+		ConditionalStep markGuards = new ConditionalStep(this, markGuard1);
+		markGuards.addStep(markedWrongGuard1, unmarkWrongGuard1);
+		markGuards.addStep(markedWrongGuard2, unmarkWrongGuard2);
+		markGuards.addStep(markedWrongGuard3, unmarkWrongGuard3);
+		markGuards.addStep(markedWrongGuard4, unmarkWrongGuard4);
+		markGuards.addStep(markedWrongGuard5, unmarkWrongGuard5);
+		markGuards.addStep(markedWrongGuard6, unmarkWrongGuard6);
+		markGuards.addStep(and(markedGuard1, markedGuard2, markedGuard3, markedGuard4), reportBackToTobyn);
+		markGuards.addStep(and(markedGuard1, markedGuard2, markedGuard4), markGuard3);
+		markGuards.addStep(and(markedGuard1, markedGuard2), markGuard4);
+		markGuards.addStep(markedGuard1, markGuard2);
+		steps.put(12, markGuards);
+		steps.put(14, reportBackToTobyn);
+		ConditionalStep goFinishQuest = new ConditionalStep(this, goUpVarrockF0ToF1);
+		goFinishQuest.addStep(inCastleF2, finishQuest);
+		goFinishQuest.addStep(inCastleF1, goUpVarrockF1toF2);
+		steps.put(16, goFinishQuest);
+		steps.put(18, goFinishQuest);
+		steps.put(20, goFinishQuest);
+		steps.put(22, goFinishQuest);
+		return steps;
+	}
+
+	@Override
+	public void setupRequirements()
+	{
+
+	}
+
+	public void setupConditions()
+	{
+		isFollowing = new NpcRequirement("Guard", NpcID.GUARD_12661);
+		markedGuard1 = new VarbitRequirement(9633, 2);
+		markedGuard2 = new VarbitRequirement(9634, 2);
+		markedGuard3 = new VarbitRequirement(9635, 2);
+		markedGuard4 = new VarbitRequirement(9636, 2);
+
+		markedWrongGuard1 = new VarbitRequirement(9637, 2);
+		markedWrongGuard2 = new VarbitRequirement(9640, 2);
+		markedWrongGuard3 = new VarbitRequirement(9641, 2);
+		markedWrongGuard4 = new VarbitRequirement(9642, 2);
+		markedWrongGuard5 = new VarbitRequirement(9643, 2);
+		markedWrongGuard6 = new VarbitRequirement(9644, 2);
+
+		castleF1 = new Zone(new WorldPoint(3199, 3465, 1), new WorldPoint(3227, 3500, 1));
+		castleF2 = new Zone(new WorldPoint(3199, 3465, 2), new WorldPoint(3227, 3500, 2));
+		inCastleF1 = new ZoneRequirement(castleF1);
+		inCastleF2 = new ZoneRequirement(castleF2);
+	}
+
+	public void setupSteps()
+	{
+		talkToAlina = new NpcStep(this, NpcID.ALINA, new WorldPoint(3225, 3426, 0), "Talk to Alina east of Varrock Square.");
+		talkToAlina.addDialogStep("When will this delegation arrive?");
+		followGuard = new NpcStep(this, NpcID.GUARD_12661,
+			"Follow the guard, hiding in the marked locations to avoid him spotting you. Do not let him get too far from you or you'll fail.");
+		followGuard.setLinePoints(Arrays.asList(
+			new WorldPoint(3225, 3429, 0),
+			new WorldPoint(3233, 3429, 0),
+			new WorldPoint(3233, 3427, 0),
+			null,
+			new WorldPoint(3235, 3429, 0),
+			new WorldPoint(3240, 3429, 0),
+			new WorldPoint(3240, 3417, 0),
+			null,
+			new WorldPoint(3242, 3417, 0),
+			new WorldPoint(3242, 3403, 0),
+			new WorldPoint(3241, 3403, 0),
+			null,
+			new WorldPoint(3239, 3401, 0),
+			new WorldPoint(3236, 3397, 0),
+			new WorldPoint(3236, 3392, 0),
+			null,
+			new WorldPoint(3238, 3390, 0),
+			new WorldPoint(3248, 3390, 0),
+			new WorldPoint(3248, 3396, 0),
+			new WorldPoint(3247, 3396, 0),
+			new WorldPoint(3247, 3397, 0)
+		));
+		followGuard.addTileMarkers(
+			new WorldPoint(3233, 3427, 0),
+			new WorldPoint(3240, 3417, 0),
+			new WorldPoint(3241, 3403, 0),
+			new WorldPoint(3236, 3392, 0),
+			new WorldPoint(3247, 3397, 0)
+		);
+
+		attemptToEnterHouse = new ObjectStep(this, ObjectID.DOOR_50048, new WorldPoint(3259, 3400, 0),
+			"Attempt to enter the house in the south-east of Varrock, north of the Zamorak Temple, and watch the cutscene.");
+		talkToTobyn = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3211, 3437, 0), "Talk to Sergeant Tobyn in Varrock Square.");
+		markGuard1 = new NpcStep(this, NpcID.GUARD_12668, new WorldPoint(3208, 3422, 0),
+			"Mark the guard outside Aris's tent.");
+		markGuard2 = new NpcStep(this, NpcID.GUARD_12671, new WorldPoint(3221, 3430, 0),
+			"Mark the guard south east of Benny's newstand, who isn't wearing a helmet and has long hair.");
+		markGuard3 = new NpcStep(this, NpcID.GUARD_12674, new WorldPoint(3246, 3429, 0), "Mark the guard with a mace north-west of the Varrock East Bank.");
+		markGuard4 = new NpcStep(this, NpcID.GUARD_12677, new WorldPoint(3237, 3427, 0), "Mark the guard leaning on the north wall of Lowe's Archery Emporium, east of the square.");
+		//9637, GUARD_12680, east of Eliza
+		//9640, GUARD_12683, next to Eliza
+		//9641, GUARD_12686, guard at anvils
+
+		//9642, GUARD_12689, outside Zaff's door
+		//9643, GUARD_12692, at small fountain to east
+		//9644, GUARD_12695, near Baraek
+		unmarkWrongGuard1 = new NpcStep(this, NpcID.GUARD_12681, new WorldPoint(3227, 3424, 0),
+			"Unmark the guard east of ELiza.");
+		unmarkWrongGuard2 = new NpcStep(this, NpcID.GUARD_12684, new WorldPoint(3218, 3424, 0),
+			"Unmark the guard next to ELiza.");
+		unmarkWrongGuard3 = new NpcStep(this, NpcID.GUARD_12687, new WorldPoint(3230, 3430, 0),
+			"Unmark the guard roaming south of Horvik.");
+		unmarkWrongGuard4 = new NpcStep(this, NpcID.GUARD_12690, new WorldPoint(3206, 3431, 0),
+			"Unmark the guard outside Zaff's Superior Staffs.");
+		unmarkWrongGuard5 = new NpcStep(this, NpcID.GUARD_12693, new WorldPoint(3239, 3433, 0),
+			"Unmark the guard next to the small fountain east of Horvik.");
+		unmarkWrongGuard6 = new NpcStep(this, NpcID.GUARD_12696, new WorldPoint(3218, 3433, 0),
+			"Unmark the guard next to Baraek.");
+
+		reportBackToTobyn = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3211, 3437, 0),
+			"Report back to Sergeant Tobyn.");
+		goUpVarrockF0ToF1 = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(3212, 3474, 0),
+			"Climb up to the roof of Varrock Castle and talk to Tobyn there.");
+		goUpVarrockF1toF2 = new ObjectStep(this, ObjectID.LADDER_11801, new WorldPoint(3224, 3472, 1),
+			"Climb up to the roof of Varrock Castle and talk to Tobyn there.");
+		finishQuest = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3202, 3473, 2),
+			"Talk to Tobyn on the Varrock Castle's roof to finish the quest.");
+		finishQuest.addSubSteps(goUpVarrockF1toF2, goUpVarrockF0ToF1);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return null;
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return null;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return List.of(
+			new UnlockReward("Access to Varlamore (when it's released)")
+		);
+	}
+
+	@Override
+	public List<PanelDetails> getPanels()
+	{
+		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.add(new PanelDetails("Intrigue", Arrays.asList(talkToAlina, followGuard,
+			attemptToEnterHouse, talkToTobyn, markGuard1, markGuard2, markGuard4, markGuard3, reportBackToTobyn, finishQuest)));
+		return allSteps;
+	}
+}

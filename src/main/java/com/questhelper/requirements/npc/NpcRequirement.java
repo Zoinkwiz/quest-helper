@@ -49,6 +49,17 @@ public class NpcRequirement extends AbstractRequirement
 	/**
 	 * Check for the existence of an NPC within your canvas.
 	 *
+	 * @param npcID the NPC to check for
+	 */
+	public NpcRequirement(int npcID)
+	{
+		this(String.valueOf(npcID), npcID, false, null);
+	}
+
+
+	/**
+	 * Check for the existence of an NPC within your canvas.
+	 *
 	 * @param displayText the display text
 	 * @param npcID the NPC to check for
 	 */

@@ -31,7 +31,6 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -39,6 +38,7 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.MultiNpcStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -68,6 +68,17 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 	Requirement isFollowing, markedGuard1, markedGuard2, markedGuard3, markedGuard4, markedWrongGuard1,
 		markedWrongGuard2, markedWrongGuard3, markedWrongGuard4, markedWrongGuard5, markedWrongGuard6, inCastleF1, inCastleF2;
 
+	final int GUARD_1_CHANGE_VARBIT = 9633;
+	final int GUARD_2_CHANGE_VARBIT = 9634;
+	final int GUARD_3_CHANGE_VARBIT = 9635;
+	final int GUARD_4_CHANGE_VARBIT = 9636;
+	final int WRONG_GUARD_1_CHANGE_VARBIT = 9637;
+	final int WRONG_GUARD_2_CHANGE_VARBIT = 9640;
+	final int WRONG_GUARD_3_CHANGE_VARBIT = 9641;
+	final int WRONG_GUARD_4_CHANGE_VARBIT = 9642;
+	final int WRONG_GUARD_5_CHANGE_VARBIT = 9643;
+	final int WRONG_GUARD_6_CHANGE_VARBIT = 9644;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -86,16 +97,16 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 		steps.put(8, attemptToEnterHouse);
 		steps.put(10, talkToTobyn);
 		ConditionalStep markGuards = new ConditionalStep(this, markGuard1);
-		markGuards.addStep(markedWrongGuard1, unmarkWrongGuard1);
-		markGuards.addStep(markedWrongGuard2, unmarkWrongGuard2);
-		markGuards.addStep(markedWrongGuard3, unmarkWrongGuard3);
-		markGuards.addStep(markedWrongGuard4, unmarkWrongGuard4);
-		markGuards.addStep(markedWrongGuard5, unmarkWrongGuard5);
-		markGuards.addStep(markedWrongGuard6, unmarkWrongGuard6);
-		markGuards.addStep(and(markedGuard1, markedGuard2, markedGuard3, markedGuard4), reportBackToTobyn);
-		markGuards.addStep(and(markedGuard1, markedGuard2, markedGuard4), markGuard3);
-		markGuards.addStep(and(markedGuard1, markedGuard2), markGuard4);
-		markGuards.addStep(markedGuard1, markGuard2);
+//		markGuards.addStep(markedWrongGuard1, unmarkWrongGuard1);
+//		markGuards.addStep(markedWrongGuard2, unmarkWrongGuard2);
+//		markGuards.addStep(markedWrongGuard3, unmarkWrongGuard3);
+//		markGuards.addStep(markedWrongGuard4, unmarkWrongGuard4);
+//		markGuards.addStep(markedWrongGuard5, unmarkWrongGuard5);
+//		markGuards.addStep(markedWrongGuard6, unmarkWrongGuard6);
+//		markGuards.addStep(and(markedGuard1, markedGuard2, markedGuard3, markedGuard4), reportBackToTobyn);
+//		markGuards.addStep(and(markedGuard1, markedGuard2, markedGuard4), markGuard3);
+//		markGuards.addStep(and(markedGuard1, markedGuard2), markGuard4);
+//		markGuards.addStep(markedGuard1, markGuard2);
 		steps.put(12, markGuards);
 		steps.put(14, reportBackToTobyn);
 		ConditionalStep goFinishQuest = new ConditionalStep(this, goUpVarrockF0ToF1);
@@ -117,17 +128,17 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 	public void setupConditions()
 	{
 		isFollowing = new NpcRequirement("Guard", NpcID.GUARD_12661);
-		markedGuard1 = new VarbitRequirement(9633, 2);
-		markedGuard2 = new VarbitRequirement(9634, 2);
-		markedGuard3 = new VarbitRequirement(9635, 2);
-		markedGuard4 = new VarbitRequirement(9636, 2);
+		markedGuard1 = new VarbitRequirement(GUARD_1_CHANGE_VARBIT, 2);
+		markedGuard2 = new VarbitRequirement(GUARD_2_CHANGE_VARBIT, 2);
+		markedGuard3 = new VarbitRequirement(GUARD_3_CHANGE_VARBIT, 2);
+		markedGuard4 = new VarbitRequirement(GUARD_4_CHANGE_VARBIT, 2);
 
-		markedWrongGuard1 = new VarbitRequirement(9637, 2);
-		markedWrongGuard2 = new VarbitRequirement(9640, 2);
-		markedWrongGuard3 = new VarbitRequirement(9641, 2);
-		markedWrongGuard4 = new VarbitRequirement(9642, 2);
-		markedWrongGuard5 = new VarbitRequirement(9643, 2);
-		markedWrongGuard6 = new VarbitRequirement(9644, 2);
+		markedWrongGuard1 = new VarbitRequirement(WRONG_GUARD_1_CHANGE_VARBIT, 2);
+		markedWrongGuard2 = new VarbitRequirement(WRONG_GUARD_2_CHANGE_VARBIT, 2);
+		markedWrongGuard3 = new VarbitRequirement(WRONG_GUARD_3_CHANGE_VARBIT, 2);
+		markedWrongGuard4 = new VarbitRequirement(WRONG_GUARD_4_CHANGE_VARBIT, 2);
+		markedWrongGuard5 = new VarbitRequirement(WRONG_GUARD_5_CHANGE_VARBIT, 2);
+		markedWrongGuard6 = new VarbitRequirement(WRONG_GUARD_6_CHANGE_VARBIT, 2);
 
 		castleF1 = new Zone(new WorldPoint(3199, 3465, 1), new WorldPoint(3227, 3500, 1));
 		castleF2 = new Zone(new WorldPoint(3199, 3465, 2), new WorldPoint(3227, 3500, 2));
@@ -138,9 +149,9 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToAlina = new NpcStep(this, NpcID.ALINA, new WorldPoint(3225, 3426, 0), "Talk to Alina east of Varrock Square.");
-		talkToAlina.addDialogStep("When will this delegation arrive?");
+		talkToAlina.addDialogSteps("When will this delegation arrive?", "Yes.");
 		followGuard = new NpcStep(this, NpcID.GUARD_12661,
-			"Follow the guard, hiding in the marked locations to avoid him spotting you. Do not let him get too far from you or you'll fail.");
+			"Follow the guard slowly behind them, hiding in the marked locations to avoid him spotting you. Do not let him get too far from you or you'll fail.");
 		followGuard.setLinePoints(Arrays.asList(
 			new WorldPoint(3225, 3429, 0),
 			new WorldPoint(3233, 3429, 0),
@@ -172,34 +183,29 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 			new WorldPoint(3247, 3397, 0)
 		);
 
+		final int BASE_GUARD_ID = 6923;
 		attemptToEnterHouse = new ObjectStep(this, ObjectID.DOOR_50048, new WorldPoint(3259, 3400, 0),
 			"Attempt to enter the house in the south-east of Varrock, north of the Zamorak Temple, and watch the cutscene.");
 		talkToTobyn = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3211, 3437, 0), "Talk to Sergeant Tobyn in Varrock Square.");
-		markGuard1 = new NpcStep(this, NpcID.GUARD_12668, new WorldPoint(3208, 3422, 0),
-			"Mark the guard outside Aris's tent.");
-		markGuard2 = new NpcStep(this, NpcID.GUARD_12671, new WorldPoint(3221, 3430, 0),
-			"Mark the guard south east of Benny's newstand, who isn't wearing a helmet and has long hair.");
-		markGuard3 = new NpcStep(this, NpcID.GUARD_12674, new WorldPoint(3246, 3429, 0), "Mark the guard with a mace north-west of the Varrock East Bank.");
-		markGuard4 = new NpcStep(this, NpcID.GUARD_12677, new WorldPoint(3237, 3427, 0), "Mark the guard leaning on the north wall of Lowe's Archery Emporium, east of the square.");
-		//9637, GUARD_12680, east of Eliza
-		//9640, GUARD_12683, next to Eliza
-		//9641, GUARD_12686, guard at anvils
+		markGuard1 = new MultiNpcStep(this, NpcID.GUARD_12668, new WorldPoint(3208, 3422, 0),
+			"Mark the guard outside Aris's tent.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		markGuard2 = new MultiNpcStep(this, NpcID.GUARD_12671, new WorldPoint(3221, 3430, 0),
+			"Mark the guard south east of Benny's news stand, who isn't wearing a helmet and has long hair.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		markGuard3 = new MultiNpcStep(this, NpcID.GUARD_12674, new WorldPoint(3246, 3429, 0), "Mark the guard with a mace north-west of the Varrock East Bank.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		markGuard4 = new MultiNpcStep(this, NpcID.GUARD_12677, new WorldPoint(3237, 3427, 0), "Mark the guard leaning on the north wall of Lowe's Archery Emporium, east of the square.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
 
-		//9642, GUARD_12689, outside Zaff's door
-		//9643, GUARD_12692, at small fountain to east
-		//9644, GUARD_12695, near Baraek
-		unmarkWrongGuard1 = new NpcStep(this, NpcID.GUARD_12681, new WorldPoint(3227, 3424, 0),
-			"Unmark the guard east of ELiza.");
-		unmarkWrongGuard2 = new NpcStep(this, NpcID.GUARD_12684, new WorldPoint(3218, 3424, 0),
-			"Unmark the guard next to ELiza.");
-		unmarkWrongGuard3 = new NpcStep(this, NpcID.GUARD_12687, new WorldPoint(3230, 3430, 0),
-			"Unmark the guard roaming south of Horvik.");
-		unmarkWrongGuard4 = new NpcStep(this, NpcID.GUARD_12690, new WorldPoint(3206, 3431, 0),
-			"Unmark the guard outside Zaff's Superior Staffs.");
-		unmarkWrongGuard5 = new NpcStep(this, NpcID.GUARD_12693, new WorldPoint(3239, 3433, 0),
-			"Unmark the guard next to the small fountain east of Horvik.");
-		unmarkWrongGuard6 = new NpcStep(this, NpcID.GUARD_12696, new WorldPoint(3218, 3433, 0),
-			"Unmark the guard next to Baraek.");
+		unmarkWrongGuard1 = new MultiNpcStep(this, NpcID.GUARD_12681, new WorldPoint(3227, 3424, 0),
+			"Unmark the guard east of ELiza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		unmarkWrongGuard2 = new MultiNpcStep(this, NpcID.GUARD_12684, new WorldPoint(3218, 3424, 0),
+			"Unmark the guard next to Eliza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		unmarkWrongGuard3 = new MultiNpcStep(this, NpcID.GUARD_12687, new WorldPoint(3230, 3430, 0),
+			"Unmark the guard roaming south of Horvik.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		unmarkWrongGuard4 = new MultiNpcStep(this, NpcID.GUARD_12690, new WorldPoint(3206, 3431, 0),
+			"Unmark the guard outside Zaff's Superior Staffs.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		unmarkWrongGuard5 = new MultiNpcStep(this, NpcID.GUARD_12693, new WorldPoint(3239, 3433, 0),
+			"Unmark the guard next to the small fountain east of Horvik.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		unmarkWrongGuard6 = new MultiNpcStep(this, NpcID.GUARD_12696, new WorldPoint(3218, 3433, 0),
+			"Unmark the guard next to Baraek.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
 
 		reportBackToTobyn = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3211, 3437, 0),
 			"Report back to Sergeant Tobyn.");

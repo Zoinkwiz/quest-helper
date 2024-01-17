@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -62,21 +64,21 @@ public class NpcStep extends DetailedQuestStep
 	@Inject
 	protected Client client;
 
-	private final int npcID;
-	private final List<Integer> alternateNpcIDs = new ArrayList<>();
+	protected final int npcID;
+	protected final List<Integer> alternateNpcIDs = new ArrayList<>();
 
 	@Setter
-	private boolean allowMultipleHighlights;
+	protected boolean allowMultipleHighlights;
 
-	private final ArrayList<NPC> npcs = new ArrayList<>();
-
-	@Setter
-	private int maxRoamRange = 48;
-
-	private boolean mustBeFocused = false;
+	protected final ArrayList<NPC> npcs = new ArrayList<>();
 
 	@Setter
-	private String npcName;
+	protected int maxRoamRange = 48;
+
+	protected boolean mustBeFocused = false;
+
+	@Setter
+	protected String npcName;
 
 	public NpcStep(QuestHelper questHelper, int npcID, String text, Requirement... requirements)
 	{
@@ -166,7 +168,7 @@ public class NpcStep extends DetailedQuestStep
 		return newStep;
 	}
 
-	private boolean npcPassesChecks(NPC npc)
+	protected boolean npcPassesChecks(NPC npc)
 	{
 		if (npcName != null && (npc.getName() == null || !npc.getName().equals(npcName))) return false;
 		return npcID == npc.getId() || alternateNpcIDs.contains(npc.getId());
@@ -184,18 +186,7 @@ public class NpcStep extends DetailedQuestStep
 	{
 		for (NPC npc : client.getNpcs())
 		{
-			if (npcPassesChecks(npc))
-			{
-				WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-				if (this.npcs.size() == 0 && (worldPoint == null || npcPoint.distanceTo(worldPoint) < maxRoamRange))
-				{
-					this.npcs.add(npc);
-				}
-				else if (allowMultipleHighlights)
-				{
-					this.npcs.add(npc);
-				}
-			}
+			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
 		}
 	}
 
@@ -248,29 +239,34 @@ public class NpcStep extends DetailedQuestStep
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (npcPassesChecks(event.getNpc()))
+		addNpcToListGivenMatchingID(event.getNpc(), this::npcPassesChecks, npcs);
+	}
+
+	public void addNpcToListGivenMatchingID(NPC npc, Function<NPC, Boolean> condition, List<NPC> list)
+	{
+		if (condition.apply(npc))
 		{
-			WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, event.getNpc().getLocalLocation());
+			WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
 			if (npcs.size() == 0)
 			{
 				if (worldPoint == null)
 				{
-					npcs.add(event.getNpc());
+					list.add(npc);
 				}
 				else if (npcPoint.distanceTo(worldPoint) < maxRoamRange)
 				{
-					npcs.add(event.getNpc());
+					list.add(npc);
 				}
 			}
 			else if (allowMultipleHighlights)
 			{
 				if (worldPoint == null || npcPoint.distanceTo(worldPoint) < maxRoamRange)
 				{
-					npcs.add(event.getNpc());
+					list.add(npc);
 				}
 			}
 		}
-	}
+	};
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)

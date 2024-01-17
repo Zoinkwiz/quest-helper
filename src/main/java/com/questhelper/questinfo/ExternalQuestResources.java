@@ -178,6 +178,7 @@ public enum ExternalQuestResources {
 	THE_GARDEN_OF_DEATH("https://oldschool.runescape.wiki/w/The_Garden_of_Death"),
 	SECRETS_OF_THE_NORTH("https://oldschool.runescape.wiki/w/Secrets_of_the_North"),
 	THE_PATH_OF_GLOUPHRIE("https://oldschool.runescape.wiki/w/The_Path_of_Glouphrie"),
+	CHILDREN_OF_THE_SUN("https://oldschool.runescape.wiki/w/Children_of_the_Sun"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

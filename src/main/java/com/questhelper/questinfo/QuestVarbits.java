@@ -108,7 +108,7 @@ public enum QuestVarbits
 	QUEST_SLEEPING_GIANTS(13902),
 	QUEST_THE_GARDEN_OF_DEATH(14609),
 	QUEST_SECRETS_OF_THE_NORTH(14722),
-
+	QUEST_CHILDREN_OF_THE_SUN(9632),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

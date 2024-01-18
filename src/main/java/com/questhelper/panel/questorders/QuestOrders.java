@@ -50,6 +50,7 @@ public class QuestOrders
 		QuestHelperQuest.GERTRUDES_CAT,
 		// https://oldschool.runescape.wiki/w/Natural_history_quiz
 		QuestHelperQuest.DADDYS_HOME,
+		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.DWARF_CANNON,
 		QuestHelperQuest.WATERFALL_QUEST,
 		QuestHelperQuest.TREE_GNOME_VILLAGE,
@@ -294,6 +295,7 @@ public class QuestOrders
 		QuestHelperQuest.ROMEO__JULIET,
 		QuestHelperQuest.GERTRUDES_CAT,
 		QuestHelperQuest.DADDYS_HOME,
+		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.RUNE_MYSTERIES,
 		QuestHelperQuest.TREE_GNOME_VILLAGE,
 		QuestHelperQuest.MONKS_FRIEND,
@@ -718,7 +720,8 @@ public class QuestOrders
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
-		QuestHelperQuest.DESERT_TREASURE_II
+		QuestHelperQuest.DESERT_TREASURE_II,
+		QuestHelperQuest.CHILDREN_OF_THE_SUN
 	);
 
 	public static String normalizeQuestName(String questName)

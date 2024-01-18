@@ -38,6 +38,10 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 
 
+/**
+ * MultiNpcStep should be used over NpcStep when the NPC you're trying to track is a "MultiNPC"
+ * TODO: Add some documentation for how you can know an NPC is a MultiNPC, and what resources to use to debug it (e.g. how to find out which varbit controls it, what its base ID is etc)
+ */
 public class MultiNpcStep extends NpcStep
 {
 	private final List<NPC> baseNPCs = new ArrayList<>();

@@ -49,6 +49,9 @@ public class MultiNpcStep extends NpcStep
 	 */
 	private final List<NPC> baseNPCs = new ArrayList<>();
 
+	/**
+	 * Varbit that signals a change in the NPC ID, meaning we want to re-checked all suspected NPCs we've found.
+	 */
 	private final int multinpcVarbit;
 	private final int npcCompositionID;
 

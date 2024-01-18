@@ -36,8 +36,6 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
@@ -175,8 +173,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		accessToHarmony = new QuestRequirement(QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY, QuestState.FINISHED);
 		accessToWeiss = new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED);
 		accessToTrollStronghold = new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED);
-		accessToFarmingGuildPatch = new Conditions(new FavourRequirement(Favour.HOSIDIUS, 60),
-			new SkillRequirement(Skill.FARMING, 65));
+		accessToFarmingGuildPatch = new SkillRequirement(Skill.FARMING, 65);
 	}
 
 	@Override

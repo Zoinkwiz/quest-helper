@@ -36,8 +36,6 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -71,7 +69,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 
 	// Quests required
 	Requirement fairytaleII, depthsOfDespair, queenOfThieves, taleOfTheRighteous, forsakenTower, ascentOfArceuus,
-		eaglesPeak, arceuusFavour, hosidiusFavour, shayzienFavour, memoirHos, memoirShay, memoirPis, memoirLova,
+		eaglesPeak, memoirHos, memoirShay, memoirPis, memoirLova,
 		memoirArc;
 
 	// Requirements
@@ -215,10 +213,6 @@ public class KourendMedium extends ComplexStateQuestHelper
 		ascentOfArceuus = new QuestRequirement(QuestHelperQuest.THE_ASCENT_OF_ARCEUUS, QuestState.FINISHED);
 		eaglesPeak = new QuestRequirement(QuestHelperQuest.EAGLES_PEAK, QuestState.FINISHED);
 
-		arceuusFavour = new FavourRequirement(Favour.ARCEUUS, 60);
-		hosidiusFavour = new FavourRequirement(Favour.HOSIDIUS, 60);
-		shayzienFavour = new FavourRequirement(Favour.SHAYZIEN, 40);
-
 		// Zone requirements
 		inMolchIsland = new ZoneRequirement(molchIsland);
 
@@ -284,12 +278,12 @@ public class KourendMedium extends ComplexStateQuestHelper
 
 		// Enter the farming guild
 		enterFarmingGuild = new ObjectStep(this, ObjectID.DOOR_34463, new WorldPoint(1249, 3725, 0),
-			"Enter the Farming Guild.", true, hosidiusFavour);
+			"Enter the Farming Guild.", true);
 		enterFarmingGuild.addAlternateObjects(ObjectID.DOOR_34464);
 
 		// Switch to the Arceuus spellbook via Tyss
 		switchSpellbooks = new NpcStep(this, NpcID.TYSS, new WorldPoint(1712, 3882, 0),
-			"Switch to the Arceuus spellbook via Tyss.", arceuusFavour);
+			"Switch to the Arceuus spellbook via Tyss.");
 		switchSpellbooks.addDialogStep("Can I try the magicks myself?");
 
 		// Repair a crane
@@ -298,7 +292,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 
 		// Deliver some intelligence
 		killGangBoss = new DetailedQuestStep(this,
-			"Kill a gang boss or gang members for intelligence.", combatGear, food, shayzienFavour);
+			"Kill a gang boss or gang members for intelligence.", combatGear, food);
 		deliverIntelligence = new NpcStep(this, NpcID.CAPTAIN_GINEA, new WorldPoint(1504, 3632, 0),
 			"Turn in the intelligence to Captain Ginea.", intelligence);
 		deliverIntelligence.addAlternateNpcs(NpcID.CAPTAIN_GINEA_10931);
@@ -372,9 +366,6 @@ public class KourendMedium extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 42));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
 
-		req.add(arceuusFavour);
-		req.add(hosidiusFavour);
-		req.add(shayzienFavour);
 		req.add(fairytaleII);
 		req.add(depthsOfDespair);
 		req.add(queenOfThieves);
@@ -422,7 +413,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		allSteps.add(chopMahoganyStep);
 
 		PanelDetails enterFarmingGuildStep = new PanelDetails("Enter The Farming Guild",
-			Collections.singletonList(enterFarmingGuild), new SkillRequirement(Skill.FARMING, 45), hosidiusFavour);
+			Collections.singletonList(enterFarmingGuild), new SkillRequirement(Skill.FARMING, 45));
 		enterFarmingGuildStep.setDisplayCondition(notEnterFarmingGuild);
 		enterFarmingGuildStep.setLockingStep(enterFarmingGuildTask);
 		allSteps.add(enterFarmingGuildStep);
@@ -458,8 +449,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		repairCraneStep.setLockingStep(repairCraneTask);
 		allSteps.add(repairCraneStep);
 
-		PanelDetails switchSpellbookStep = new PanelDetails("Arceuus Spellbook", Collections.singletonList(switchSpellbooks),
-			arceuusFavour);
+		PanelDetails switchSpellbookStep = new PanelDetails("Arceuus Spellbook", Collections.singletonList(switchSpellbooks));
 		switchSpellbookStep.setDisplayCondition(notSwitchSpellbooks);
 		switchSpellbookStep.setLockingStep(switchSpellbooksTask);
 		allSteps.add(switchSpellbookStep);
@@ -478,7 +468,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		allSteps.add(subdueWintertodtStep);
 
 		PanelDetails deliverIntelligenceStep = new PanelDetails("Deliver intelligence", Arrays.asList(killGangBoss,
-			deliverIntelligence), combatGear, food, shayzienFavour);
+			deliverIntelligence), combatGear, food);
 		deliverIntelligenceStep.setDisplayCondition(notDeliverIntelligence);
 		deliverIntelligenceStep.setLockingStep(deliverIntelligenceTask);
 		allSteps.add(deliverIntelligenceStep);

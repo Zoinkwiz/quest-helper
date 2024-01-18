@@ -12,3 +12,4 @@ bin/main
 bin/test
 out
 .DS_Store
+*.iml

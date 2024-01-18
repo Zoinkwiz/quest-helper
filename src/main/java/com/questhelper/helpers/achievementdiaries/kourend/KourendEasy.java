@@ -34,8 +34,6 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -57,21 +55,21 @@ import java.util.List;
 public class KourendEasy extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement pickaxe, spade, coins, medpack, tarrominPotU, limpwurtRoot,
+	ItemRequirement pickaxe, spade, coins, tarrominPotU, limpwurtRoot,
 		flyFishingRod, feathers, libraryBook;
 
 	// Items recommended
 	ItemRequirement combatGear, food;
 
 	// Quests required
-	Requirement druidicRitual, hosidiusFavour;
+	Requirement druidicRitual;
 
 	// Requirements
 	Requirement notMineIron, notSandCrab, notArceuusBook, notStealFruit, notWarrensStore, notBoatLandsEnd, notPrayCastle,
-		notDigSaltpetre, houseInKourend, notEnterPoh, hasMedpack, notHealSoldier, notStrengthPotion, notFishTrout;
+		notDigSaltpetre, houseInKourend, notEnterPoh, notDoneAgilityCourse, notStrengthPotion, notFishTrout;
 
 	QuestStep sandCrab, stealFruit, warrensStore, enterCastleF1, enterCastleF2, prayCastle, digSaltpetre, enterPoh,
-		collectMedpack, healSoldier, enterPub, strengthPotion, fishTrout, claimReward;
+		runAgilityCourse, enterPub, strengthPotion, fishTrout, claimReward;
 
 	ObjectStep enterWarrens, mineIron;
 
@@ -82,7 +80,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 	Zone deeperLodePub, warrens, castleF1, castleF2;
 
 	ConditionalStep mineIronTask, sandCrabTask, arceuusBookTask, stealFruitTask, warrensStoreTask, boatLandsEndTask,
-		prayCastleTask, digSaltpetreTask, enterPohTask, healSoldierTask, strengthPotionTask, fishTroutTask;
+		prayCastleTask, digSaltpetreTask, enterPohTask, agilityCourseTask, strengthPotionTask, fishTroutTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -131,9 +129,8 @@ public class KourendEasy extends ComplexStateQuestHelper
 		prayCastleTask.addStep(inCastleF2, prayCastle);
 		doEasy.addStep(notPrayCastle, prayCastleTask);
 
-		healSoldierTask = new ConditionalStep(this, collectMedpack);
-		healSoldierTask.addStep(hasMedpack, healSoldier);
-		doEasy.addStep(notHealSoldier, healSoldierTask);
+		agilityCourseTask = new ConditionalStep(this, runAgilityCourse);
+		doEasy.addStep(notDoneAgilityCourse, agilityCourseTask);
 
 
 		return doEasy;
@@ -151,7 +148,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		notPrayCastle = new VarplayerRequirement(2085, false, 7);
 		notDigSaltpetre = new VarplayerRequirement(2085, false, 8);
 		notEnterPoh = new VarplayerRequirement(2085, false, 9);
-		notHealSoldier = new VarplayerRequirement(2085, false, 10);
+		notDoneAgilityCourse = new VarplayerRequirement(2085, false, 10);
 		notStrengthPotion = new VarplayerRequirement(2085, false, 11);
 		notFishTrout = new VarplayerRequirement(2085, false, 12);
 
@@ -161,7 +158,6 @@ public class KourendEasy extends ComplexStateQuestHelper
 		libraryBook = new ItemRequirement("Arceuus library book", ItemCollections.ARCEUUS_BOOKS).showConditioned(notArceuusBook);
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 8075).showConditioned(notEnterPoh);
-		medpack = new ItemRequirement("Medpacks", ItemID.SHAYZIEN_MEDPACK).showConditioned(notHealSoldier);
 		tarrominPotU = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF).showConditioned(notStrengthPotion);
 		limpwurtRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notStrengthPotion);
 		flyFishingRod = new ItemRequirement("Fly fishing rod", Arrays.asList(ItemID.FLY_FISHING_ROD, ItemID.PEARL_FLY_FISHING_ROD))
@@ -186,10 +182,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		inCastleF1 = new ZoneRequirement(castleF1);
 		inCastleF2 = new ZoneRequirement(castleF2);
 
-		hasMedpack = medpack.alsoCheckBank(questBank);
-
 		houseInKourend = new VarbitRequirement(2187, 8);
-		hosidiusFavour = new FavourRequirement(Favour.HOSIDIUS, 15);
 	}
 
 	public void loadZones()
@@ -257,12 +250,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 			"Enter your player-owned house from Hosidius.");
 		enterPoh.addSubSteps(relocateHouse);
 
-		// Heal a wounded shayzien soldier
-		collectMedpack = new ObjectStep(this, ObjectID.MEDPACK_BOX, new WorldPoint(1522, 3615, 0),
-			"Collect a medpack in Shayzien.", true);
-		healSoldier = new NpcStep(this, NpcID.WOUNDED_SOLDIER, new WorldPoint(1516, 3621, 0),
-			"Heal a wounded shayzien soldier.", true, medpack);
-		healSoldier.addSubSteps(collectMedpack);
+		// Run the Shayzien Agility Course
+		runAgilityCourse = new ObjectStep(this, ObjectID.LADDER_42209, new WorldPoint(1554, 3631, 0),
+			"Complete the Shayzien Agility Course.");
 
 		// Create a strength potion in the Lovakenji pub
 		enterPub = new DetailedQuestStep(this, new WorldPoint(1564, 3759, 0), "Enter The Deeper Lode pub in Lovakengj.");
@@ -308,7 +298,6 @@ public class KourendEasy extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 15));
 		req.add(new SkillRequirement(Skill.THIEVING, 25));
 
-		req.add(hosidiusFavour);
 		req.add(druidicRitual);
 
 		return req;
@@ -372,7 +361,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		allSteps.add(takeBoatStep);
 
 		PanelDetails stealStallStep = new PanelDetails("Steal Some Fruit", Collections.singletonList(stealFruit),
-			new SkillRequirement(Skill.THIEVING, 25, true), hosidiusFavour);
+			new SkillRequirement(Skill.THIEVING, 25, true));
 		stealStallStep.setDisplayCondition(notStealFruit);
 		stealStallStep.setLockingStep(stealFruitTask);
 		allSteps.add(stealStallStep);
@@ -401,10 +390,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 		prayStep.setLockingStep(prayCastleTask);
 		allSteps.add(prayStep);
 
-		PanelDetails healSoldierStep = new PanelDetails("Heal A Soldier", Arrays.asList(collectMedpack, healSoldier),
-			medpack);
-		healSoldierStep.setDisplayCondition(notHealSoldier);
-		healSoldierStep.setLockingStep(healSoldierTask);
+		PanelDetails healSoldierStep = new PanelDetails("Heal A Soldier", Collections.singletonList(runAgilityCourse));
+		healSoldierStep.setDisplayCondition(notDoneAgilityCourse);
+		healSoldierStep.setLockingStep(agilityCourseTask);
 		allSteps.add(healSoldierStep);
 
 		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));

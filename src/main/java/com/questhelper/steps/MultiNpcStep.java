@@ -53,6 +53,10 @@ public class MultiNpcStep extends NpcStep
 	 * Varbit that signals a change in the NPC ID, meaning we want to re-checked all suspected NPCs we've found.
 	 */
 	private final int multinpcVarbit;
+	/**
+	 * The base composition ID of the NPC we're looking for.
+	 * @see <a href="https://static.runelite.net/api/runelite-api/net/runelite/api/NPCComposition.html#getId()">NPCComposition#getId()</a>
+	 */
 	private final int npcCompositionID;
 
 	public MultiNpcStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, int multinpcVarbit, int npcCompositionID, Requirement... requirements)

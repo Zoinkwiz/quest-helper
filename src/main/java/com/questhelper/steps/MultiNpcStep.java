@@ -44,6 +44,9 @@ import net.runelite.client.eventbus.Subscribe;
  */
 public class MultiNpcStep extends NpcStep
 {
+	/**
+	 * List of NPCs matching the base composition ID, but not necessarily the exact NPC ID we're looking for
+	 */
 	private final List<NPC> baseNPCs = new ArrayList<>();
 
 	private final int multinpcVarbit;

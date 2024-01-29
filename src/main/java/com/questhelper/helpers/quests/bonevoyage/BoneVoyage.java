@@ -241,10 +241,10 @@ public class BoneVoyage extends BasicQuestHelper
 			"Talk to the Odd Old Man north of the Dig Site.");
 		talkToOddOldMan.addDialogSteps("Talk about lucky charms.", "I'm making a cursed voyage.");
 		talkToApoth = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3405, 0),
-			"Talk the Apothecary in south west Varrock.", marrentillPotionUnf, vodka2);
+			"Talk to the Apothecary in south west Varrock.", marrentillPotionUnf, vodka2);
 		talkToApoth.addDialogSteps("Talk about something else.", "Talk about Bone Voyage.");
 		talkToApothAgain = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3405, 0),
-			"Talk the Apothecary again.", marrentillPotionUnf, vodka2);
+			"Talk to the Apothecary again.", marrentillPotionUnf, vodka2);
 		talkToApothAgain.addDialogSteps("Talk about something else.", "Talk about Bone Voyage.");
 		boardBargeWithPotionAndCharm = new NpcStep(this, NpcID.BARGE_GUARD_8013, new WorldPoint(3362, 3446, 0),
 			"Board the barge.", boneCharm, potionOfSealegs);

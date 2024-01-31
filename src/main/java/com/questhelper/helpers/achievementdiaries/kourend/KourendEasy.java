@@ -390,7 +390,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		prayStep.setLockingStep(prayCastleTask);
 		allSteps.add(prayStep);
 
-		PanelDetails healSoldierStep = new PanelDetails("Heal A Soldier", Collections.singletonList(runAgilityCourse));
+		PanelDetails healSoldierStep = new PanelDetails("Run the Agility Course", Collections.singletonList(runAgilityCourse));
 		healSoldierStep.setDisplayCondition(notDoneAgilityCourse);
 		healSoldierStep.setLockingStep(agilityCourseTask);
 		allSteps.add(healSoldierStep);

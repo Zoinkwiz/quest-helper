@@ -68,7 +68,7 @@ import com.questhelper.steps.QuestStep;
 public class HolyGrail extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement antipoison, combatGear, food, threeCamelotTele, ardyTele, faladorTele, sixtyCoins;
+	ItemRequirement antipoison, combatGear, food, threeCamelotTele, ardyTele, faladorTele, sixtyCoins, DraynorTele;
 
 	//Items Required
 	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
@@ -261,7 +261,7 @@ public class HolyGrail extends BasicQuestHelper
 		talkToGalahad = new NpcStep(this, NpcID.GALAHAD, new WorldPoint(2612, 3475, 0), "Talk to Galahad.");
 		talkToGalahad.addDialogStep("I seek an item from the realm of the Fisher King.");
 
-		goToDraynorManor = new DetailedQuestStep(this, new WorldPoint(3108, 3350, 0), "Travel to Draynor Manor.", holyTableNapkin);
+		goToDraynorManor = new DetailedQuestStep(this, new WorldPoint(3108, 3350, 0), "Travel to Draynor Manor. Use Draynor teleport tablet if you have", holyTableNapkin);
 		enterDraynorManor = new ObjectStep(this, ObjectID.LARGE_DOOR_135, "Enter Draynor Manor.", holyTableNapkin);
 		goUpStairsDraynor1 = new ObjectStep(this, ObjectID.STAIRCASE_11498, new WorldPoint(3109, 3364, 0), "Go up the stairs in Draynor Manor.", holyTableNapkin);
 		goUpStairsDraynor2 = new ObjectStep(this, ObjectID.STAIRCASE_11511, new WorldPoint(3105, 3363, 1), "Go up the second set of stairs in Draynor Manor.", holyTableNapkin);

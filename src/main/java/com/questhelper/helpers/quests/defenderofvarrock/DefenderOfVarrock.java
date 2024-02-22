@@ -34,6 +34,7 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -86,8 +87,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 	Requirement talkedToRoald, talkedToAeonisig, talkedToPrysin, talkedToRomeo, talkedToHorvik, talkedToHalen, givenShield;
 
-	ItemRequirement combatGear, bottle, bottleOfMist, varrockTeleport, barroniteDeposit, chaosCore, imbuedBarronite, pickaxe, listOfElders, shieldOfArrav;
-
+	ItemRequirement combatGear, bottle, bottleOfMist, varrockTeleport, mindAltarOrLassarTeleport, barroniteDeposit, chaosCore, imbuedBarronite, pickaxe, listOfElders, shieldOfArrav;
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -221,7 +221,9 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		bottle.addAlternates(ItemID.BOTTLE_OF_MIST);
 		bottleOfMist = new ItemRequirement("Bottle of mist", ItemID.BOTTLE_OF_MIST);
 
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		varrockTeleport = new TeleportItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		mindAltarOrLassarTeleport = new TeleportItemRequirement("Mind Altar or Lassar teleport tablet or spell", ItemID.MIND_ALTAR_TELEPORT);
+		mindAltarOrLassarTeleport.addAlternates(ItemID.LASSAR_TELEPORT);
 
 		barroniteDeposit = new ItemRequirement("Barronite deposit", ItemID.BARRONITE_DEPOSIT);
 		chaosCore = new ItemRequirement("Chaos core", ItemID.CHAOS_CORE);
@@ -315,6 +317,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		talkToEliasInPalace.addTeleport(varrockTeleport);
 
 		goUpToRovin = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goUpToRovin.addTeleport(varrockTeleport);
 		goUpToRovin2 = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3203, 3498, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovin = new NpcStep(this, NpcID.CAPTAIN_ROVIN, new WorldPoint(3205, 3498, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovin.addSubSteps(goUpToRovin, goUpToRovin2);
@@ -322,6 +325,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		// Forge
 		enterCamdozaal = new ObjectStep(this, NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0),
 			"Enter Camdozaal, west of Ice Mountain.", pickaxe, combatGear);
+		enterCamdozaal.addTeleport(mindAltarOrLassarTeleport);
 		talkToRamarno = new NpcStep(this, NpcID.RAMARNO_10685, new WorldPoint(2959, 5809, 0),
 			"Talk to Ramarno to the north by the sacred forge.");
 		talkToRamarno.addDialogStep("I need your help with a shield.");
@@ -342,8 +346,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 
 		// FUTURE
-		talkToReldo = new NpcStep(this, NpcID.RELDO_12626, new WorldPoint(3914, 4966, 0),
-		"Talk to Reldo in the Varrock Castle library.");
+		talkToReldo = new NpcStep(this, NpcID.RELDO_12626, new WorldPoint(3914, 4966, 0), "Talk to Reldo in the Varrock Castle library.");
 		searchScrolls = new ObjectStep(this, ObjectID.SCROLLS_50118, new WorldPoint(3920, 4968, 0), "Search the scrolls in the north-east of the library.");
 		readList = new ItemStep(this, "Read the list of elders.",listOfElders.highlighted());
 		readCensus = new ObjectStep(this, ObjectID.VARROCK_CENSUS, new WorldPoint(3918, 4969, 0), "Read the Varrock Census.");
@@ -403,7 +406,10 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return null;
+		return Arrays.asList(
+			varrockTeleport.quantity(2),
+			mindAltarOrLassarTeleport
+		);
 	}
 
 	@Override

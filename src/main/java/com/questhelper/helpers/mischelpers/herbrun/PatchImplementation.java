@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.mischelpers.herbrun;
 
-
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -202,7 +202,7 @@ public class HerbRun extends ComplexStateQuestHelper
 			questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
 		}
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST);
-
+		compost.setDisplayMatchedItemName(true);
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.FINISHED));
 		ectophial.addAlternates(ItemID.ECTOPHIAL_4252);
 		magicSec = new ItemRequirement("Magic secateurs", ItemID.MAGIC_SECATEURS).showConditioned(new QuestRequirement(QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS, QuestState.FINISHED));
@@ -363,7 +363,8 @@ public class HerbRun extends ComplexStateQuestHelper
 				seed.setId(selectedSeed.seedID);
 				seed.setName(Text.titleCase(selectedSeed) + " seed");
 				questHelperPlugin.refreshBank();
-			} catch (IllegalArgumentException err)
+			}
+			catch (IllegalArgumentException err)
 			{
 				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
 			}
@@ -422,6 +423,13 @@ public class HerbRun extends ComplexStateQuestHelper
 					break;
 			}
 		}
+		Boolean[] seedsNeeded = new Boolean[] {ardougneReady.check(client), catherbyReady.check(client), faladorReady.check(client), farmingGuildReady.check(client), harmonyReady.check(client),
+			morytaniaReady.check(client), hosidiusReady.check(client), trollStrongholdReady.check(client), weissReady.check(client)};
+		int totalSeedsNeeded = (int) Arrays.stream(seedsNeeded)
+			.filter(b -> b)
+			.count();
+		seed.setQuantity(totalSeedsNeeded);
+		compost.quantity(totalSeedsNeeded);
 	}
 
 	@Override
@@ -433,7 +441,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, hosidiusHouseTeleport, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit, farmersOutfit);
+		return Arrays.asList(compost, ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, hosidiusHouseTeleport, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit, farmersOutfit);
 	}
 
 	@Override
@@ -450,7 +458,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Farm run", Arrays.asList(faladorPatch, ardougnePatch, catherbyPatch, morytaniaPatch, hosidiusPatch,
 			trollStrongholdPatch, weissPatch, farmingGuildPatch, harmonyPatch), Arrays.asList(spade, dibber, rake, seed, magicSec),
-			Arrays.asList(ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit, farmersOutfit)));
+			Arrays.asList(compost, ectophial, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport, trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, gracefulOutfit, farmersOutfit)));
 
 		return allSteps;
 	}

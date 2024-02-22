@@ -2,6 +2,7 @@ package com.questhelper.util;
 
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,24 +10,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UtilsTest
 {
 	@Test
-	void pack()
-	{
-		assertEquals(
-			Utils.packWidget(InterfaceID.FAIRY_RING_PANEL, 8),
-			ComponentID.FAIRY_RING_PANEL_FAVORITES
-		);
-	}
-
-	@Test
 	void unpack()
 	{
+		var interfaceID = InterfaceID.CHATBOX;
+		var childID = 1;
+		var componentID = WidgetUtil.packComponentId(interfaceID, childID);
 		assertEquals(
-			Utils.unpackWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER),
-			Pair.of(164, 69)
-		);
-		assertEquals(
-			Utils.unpackWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP),
-			Pair.of(164, 90)
+			Utils.unpackWidget(componentID),
+			Pair.of(interfaceID, childID)
 		);
 	}
 }

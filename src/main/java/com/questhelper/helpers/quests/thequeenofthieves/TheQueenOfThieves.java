@@ -239,7 +239,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 1000));
+		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 2000));
 	}
 
 	@Override

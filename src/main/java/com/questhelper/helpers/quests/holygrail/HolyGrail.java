@@ -68,7 +68,7 @@ import com.questhelper.steps.QuestStep;
 public class HolyGrail extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement antipoison, combatGear, food, threeCamelotTele, ardyTele, faladorTele, sixtyCoins;
+	ItemRequirement antipoison, combatGear, food, threeCamelotTele, ardyTele, faladorTele, sixtyCoins, draynorTele;
 
 	//Items Required
 	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
@@ -78,7 +78,7 @@ public class HolyGrail extends BasicQuestHelper
 		inGrailBellRingLocation, inFisherKingCastle1BottomFloor, inFisherKingCastle1SecondFloor, inFisherKingRealm, inFisherKingCastle2BottomFloor,
 		inFisherKingCastle2SecondFloor, inFisherKingCastle2ThirdFloor;
 
-	QuestStep talkToKingArthur1, talkToMerlin, goUpStairsCamelot, openMerlinDoor, goToEntrana, talkToHighPriest, goToGalahad, talkToGalahad, goToDraynorManor, enterDraynorManor, goUpStairsDraynor1,
+	DetailedQuestStep talkToKingArthur1, talkToMerlin, goUpStairsCamelot, openMerlinDoor, goToEntrana, talkToHighPriest, goToGalahad, talkToGalahad, goToDraynorManor, enterDraynorManor, goUpStairsDraynor1,
 		goUpStairsDraynor2, openWhistleDoor, takeWhistles, goGetExcalibur, goToTeleportLocation1, blowWhistle1, attackTitan, talkToFisherman, pickupBell, ringBell, goUpStairsBrokenCastle, talkToFisherKing, goToCamelot,
 		talkToKingArthur2, openSack, goToTeleportLocation2, blowWhistle2, openFisherKingCastleDoor, goUpNewCastleStairs, goUpNewCastleLadder, takeGrail, talkToKingArthur3;
 
@@ -158,6 +158,7 @@ public class HolyGrail extends BasicQuestHelper
 		holyTableNapkin = new ItemRequirement("Holy Table Napkin", ItemID.HOLY_TABLE_NAPKIN);
 		twoMagicWhistles = new ItemRequirement("Magic Whistles", ItemID.MAGIC_WHISTLE, 2);
 		threeCamelotTele = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, 3);
+		draynorTele = new ItemRequirement("Draynor Teleport Tablet", ItemID.CAMELOT_TELEPORT, 1);
 		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.ARDOUGNE_TELEPORT);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
@@ -262,6 +263,7 @@ public class HolyGrail extends BasicQuestHelper
 		talkToGalahad.addDialogStep("I seek an item from the realm of the Fisher King.");
 
 		goToDraynorManor = new DetailedQuestStep(this, new WorldPoint(3108, 3350, 0), "Travel to Draynor Manor.", holyTableNapkin);
+		goToDraynorManor.addTeleport(draynorTele);
 		enterDraynorManor = new ObjectStep(this, ObjectID.LARGE_DOOR_135, "Enter Draynor Manor.", holyTableNapkin);
 		goUpStairsDraynor1 = new ObjectStep(this, ObjectID.STAIRCASE_11498, new WorldPoint(3109, 3364, 0), "Go up the stairs in Draynor Manor.", holyTableNapkin);
 		goUpStairsDraynor2 = new ObjectStep(this, ObjectID.STAIRCASE_11511, new WorldPoint(3105, 3363, 1), "Go up the second set of stairs in Draynor Manor.", holyTableNapkin);
@@ -322,6 +324,7 @@ public class HolyGrail extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(threeCamelotTele);
 		reqs.add(ardyTele.quantity(2));
+		reqs.add(draynorTele);
 		reqs.add(faladorTele);
 		reqs.add(sixtyCoins);
 		reqs.add(antipoison);
@@ -358,7 +361,7 @@ public class HolyGrail extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting Off", Arrays.asList(talkToKingArthur1, goUpStairsCamelot, openMerlinDoor, talkToMerlin)));
 		allSteps.add(new PanelDetails("Getting the Napkin", Arrays.asList(goToEntrana, talkToHighPriest, goToGalahad, talkToGalahad)));
-		allSteps.add(new PanelDetails("Getting the Magic Whistles", Arrays.asList(goToDraynorManor, enterDraynorManor, goUpStairsDraynor1, goUpStairsDraynor2, openWhistleDoor, takeWhistles), holyTableNapkin));
+		allSteps.add(new PanelDetails("Getting the Magic Whistles", Arrays.asList(goToDraynorManor, enterDraynorManor, goUpStairsDraynor1, goUpStairsDraynor2, openWhistleDoor, takeWhistles), Collections.singletonList(holyTableNapkin), Collections.singletonList(draynorTele)));
 		allSteps.add(new PanelDetails("Fisher King Realm Pt.1", Arrays.asList(goToTeleportLocation1, blowWhistle1, attackTitan, talkToFisherman, pickupBell, ringBell, goUpStairsBrokenCastle, talkToFisherKing), twoMagicWhistles, excalibur));
 		allSteps.add(new PanelDetails("Finding Percival", Arrays.asList(talkToKingArthur2, openSack), emptyInvSpot, twoMagicWhistles));
 		allSteps.add(new PanelDetails("Fisher King Realm Pt.2", Arrays.asList(goToTeleportLocation2, blowWhistle2, openFisherKingCastleDoor, goUpNewCastleStairs, goUpNewCastleLadder, takeGrail), oneMagicWhistle, goldFeather));

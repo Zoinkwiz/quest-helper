@@ -52,18 +52,6 @@ public class Utils
 	}
 
 	/**
-	 * Pack a widget group ID (Interface) and widget child ID into a widget ID (Component)
-	 * @param groupId the {@link Interface}
-	 * @param childId the child id
-	 * @return the corresponding {@link Component}
-	 */
-	@Component
-	@SuppressWarnings("MagicConstant")
-	public int packWidget(@Interface int groupId, int childId) {
-		return groupId << 16 | childId;
-	}
-
-	/**
 	 * Unpack a widget ID (Component) into a widget group ID (Interface) and widget child ID
 	 * @param componentId the {@link Component}
 	 * @return the corresponding Interface & Child ID

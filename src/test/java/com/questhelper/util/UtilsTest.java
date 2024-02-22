@@ -9,15 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UtilsTest
 {
 	@Test
-	void pack()
-	{
-		assertEquals(
-			Utils.packWidget(InterfaceID.FAIRY_RING_PANEL, 8),
-			ComponentID.FAIRY_RING_PANEL_FAVORITES
-		);
-	}
-
-	@Test
 	void unpack()
 	{
 		assertEquals(

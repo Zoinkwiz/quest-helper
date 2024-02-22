@@ -344,7 +344,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.MAGIC, 66));
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 65, true));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 68, true));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 72));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 72, true));
 
 		reqs.add(monkeyMadness);
 		reqs.add(legendsQuest);

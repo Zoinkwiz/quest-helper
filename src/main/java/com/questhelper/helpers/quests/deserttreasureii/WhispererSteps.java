@@ -1099,7 +1099,7 @@ public class WhispererSteps extends ConditionalStep
 			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
 
 		enterSciencePuddle3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
-			"Go to the Southern Science Distrct and enter the puddle there.");
+			"Go to the Southern Science District and enter the puddle there.");
 		enterSciencePuddle.addDialogStep("Southern Science District.");
 		openGreenChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2354, 6339, 0),
 			"Open the chest in the small house to the south. Destroy the tentacle to access the house.", superiorTorch, greenShadowKey);

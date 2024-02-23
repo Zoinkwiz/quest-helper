@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.defenderofvarrock;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -68,7 +69,8 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	DetailedQuestStep talkToElias, inspectPlant, inspectRock, inspectPlant2, inspectBush1, inspectBush2, inspectBush3, inspectTrapdoor,
 		listenToElias, lookOverBalcony;
 
-	DetailedQuestStep pickupBottles, killZombies, collectRedMist, openDoorToArrav, refillBottles, lookOverSecondBalcony;
+	DetailedQuestStep pickupBottles, killZombies, collectRedMist, openDoorToArrav, pickupBottlesAgain, killZombiesAgain,
+		collectRedMistAgain, goThroughSecondGate, lookOverSecondBalcony;
 
 	DetailedQuestStep talkToEliasInPalace, goUpToRovin, goUpToRovin2, talkToRovin, enterCamdozaal, talkToRamarno, mineBarronite, killChaosGolems, useCoreOnDeposit, useBarroniteOnForge;
 
@@ -117,6 +119,8 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		steps.put(8, findBase);
 		steps.put(10, findBase);
 		steps.put(12, findBase);
+		// Searched last plant, next stop trapdoor
+		// 9664 0->1
 
 		// Entered dungeon
 		// 9658 1->0->2
@@ -137,10 +141,16 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		goSeeArrav.addStep(inDungeon, pickupBottles);
 		steps.put(18, goSeeArrav);
 		steps.put(20, goSeeArrav);
-		steps.put(22, goSeeArrav);
+
+		ConditionalStep talkToArrav = new ConditionalStep(this, inspectTrapdoor);
+		talkToArrav.addStep(inDungeon, openDoorToArrav);
+		steps.put(22, talkToArrav);
 
 		ConditionalStep goToNextSection = new ConditionalStep(this, inspectTrapdoor);
-		goToNextSection.addStep(inDungeon, refillBottles);
+		goToNextSection.addStep(and(inDungeon, bottleOfMist.quantity(3)), goThroughSecondGate);
+		goToNextSection.addStep(and(inDungeon, bottle, redMistNearby), collectRedMistAgain);
+		goToNextSection.addStep(and(inDungeon, bottle.quantity(3)), killZombiesAgain);
+		goToNextSection.addStep(inDungeon, pickupBottlesAgain);
 		steps.put(24, goToNextSection);
 
 		ConditionalStep goLookOverSecondBalcony = new ConditionalStep(this, inspectTrapdoor);
@@ -217,6 +227,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		bottle = new ItemRequirement("Bottle", ItemID.BOTTLE);
 		bottle.addAlternates(ItemID.BOTTLE_OF_MIST);
 		bottleOfMist = new ItemRequirement("Bottle of mist", ItemID.BOTTLE_OF_MIST);
@@ -233,7 +244,20 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		listOfElders = new ItemRequirement("List of elders", ItemID.LIST_OF_ELDERS);
 		shieldOfArrav = new ItemRequirement("Shield of arrav", ItemID.SHIELD_OF_ARRAV);
 		shieldOfArrav.setTooltip("You can get another from Rovin upstairs in Varrock Castle");
+	}
 
+	public void setupZones()
+	{
+		castleF1 = new Zone(new WorldPoint(3200, 3490, 1), new WorldPoint(3206, 3500, 1));
+		castleF2 = new Zone(new WorldPoint(3200, 3494, 2), new WorldPoint(3206, 3500, 2));
+		camdozaal = new Zone(new WorldPoint(2897, 5757, 0), new WorldPoint(3047, 5869, 0));
+
+		castleF1Invasion = new Zone(new WorldPoint(2899, 4934, 1), new WorldPoint(3934, 4975, 1));
+		castleF2Invasion = new Zone(new WorldPoint(2899, 4934, 2), new WorldPoint(3934, 4975, 2));
+	}
+
+	public void setupConditions()
+	{
 		eliasFollowing = new VarbitRequirement(9658, 1);
 
 		// 9655 4->6
@@ -267,21 +291,6 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		givenShield = new VarbitRequirement(9655, 50, Operation.GREATER_EQUAL);
 	}
 
-	public void setupZones()
-	{
-		castleF1 = new Zone(new WorldPoint(3200, 3490, 1), new WorldPoint(3206, 3500, 1));
-		castleF2 = new Zone(new WorldPoint(3200, 3494, 2), new WorldPoint(3206, 3500, 2));
-		camdozaal = new Zone(new WorldPoint(2897, 5757, 0), new WorldPoint(3047, 5869, 0));
-
-		castleF1Invasion = new Zone(new WorldPoint(2899, 4934, 1), new WorldPoint(3934, 4975, 1));
-		castleF2Invasion = new Zone(new WorldPoint(2899, 4934, 2), new WorldPoint(3934, 4975, 2));
-	}
-
-	public void setupConditions()
-	{
-
-	}
-
 	public void setupSteps()
 	{
 		talkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3283, 3501, 0),
@@ -301,15 +310,24 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		listenToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3560, 4551, 0), "Talk to Elias in the dungeon.");
 		lookOverBalcony = new ObjectStep(this, ObjectID.BALCONY, new WorldPoint(3564, 4569, 0), "Look over the balcony to the north.");
 		pickupBottles = new ItemStep(this, new WorldPoint(3537, 4572, 0), "Pick up 3 bottles nearby.", bottle.quantity(3));
-		killZombies = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill the bottles with the clouds they leave behind.", true);
+		killZombies = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill the 3 bottles with the clouds they leave behind.", true);
 		((NpcStep) killZombies).addAlternateNpcs(NpcID.ARMOURED_ZOMBIE_12721, NpcID.ARMOURED_ZOMBIE_12722, NpcID.ARMOURED_ZOMBIE_12723, NpcID.ARMOURED_ZOMBIE_12724, NpcID.ARMOURED_ZOMBIE_12725,
 			NpcID.ARMOURED_ZOMBIE_12726, NpcID.ARMOURED_ZOMBIE_12727, NpcID.ARMOURED_ZOMBIE_12728, NpcID.ARMOURED_ZOMBIE_12729, NpcID.ARMOURED_ZOMBIE_12730, NpcID.ARMOURED_ZOMBIE_12731);
-
 		collectRedMist = new ObjectStep(this, NullObjectID.NULL_50690, "Collect the red mist in a bottle.");
+		killZombies.addSubSteps(collectRedMist);
 
-		openDoorToArrav = new ObjectStep(this, ObjectID.GATE_50149, new WorldPoint(3536, 4571, 0), "Go through the gate, and finish the cutscene with Arrav. If you skip it, try re-entering the gate.");
+		openDoorToArrav = new ObjectStep(this, ObjectID.GATE_50149, new WorldPoint(3536, 4571, 0),
+			"Go through the gate, and finish the cutscene with Arrav. If you skip it, try re-entering the gate.");
 
-		refillBottles = new ObjectStep(this, ObjectID.GATE_50150, new WorldPoint(3540, 4597, 0), "Kill zombies to fill 3 bottles with mist again, and continue deeper into the dungeon.", bottleOfMist.quantity(3));
+		pickupBottlesAgain = new ItemStep(this, new WorldPoint(3537, 4572, 0), "Pick up 3 bottles nearby.", bottle.quantity(3));
+		killZombiesAgain = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill 3 the bottles with the clouds they leave behind.", true);
+		((NpcStep) killZombiesAgain).addAlternateNpcs(NpcID.ARMOURED_ZOMBIE_12721, NpcID.ARMOURED_ZOMBIE_12722, NpcID.ARMOURED_ZOMBIE_12723, NpcID.ARMOURED_ZOMBIE_12724, NpcID.ARMOURED_ZOMBIE_12725,
+			NpcID.ARMOURED_ZOMBIE_12726, NpcID.ARMOURED_ZOMBIE_12727, NpcID.ARMOURED_ZOMBIE_12728, NpcID.ARMOURED_ZOMBIE_12729, NpcID.ARMOURED_ZOMBIE_12730, NpcID.ARMOURED_ZOMBIE_12731);
+		collectRedMistAgain = new ObjectStep(this, NullObjectID.NULL_50690, "Collect the red mist in a bottle.");
+		goThroughSecondGate = new ObjectStep(this, ObjectID.GATE_50150, new WorldPoint(3540, 4597, 0),
+			"Kill zombies to fill 3 bottles with mist again, and continue deeper into the dungeon.",
+			bottleOfMist.quantity(3));
+		goThroughSecondGate.addSubSteps(pickupBottlesAgain, killZombiesAgain, collectRedMistAgain);
 
 		lookOverSecondBalcony = new ObjectStep(this, ObjectID.BALCONY_50159, new WorldPoint(3562, 4591, 0), "Look over the balcony facing over the zombie army.");
 
@@ -448,7 +466,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Intrigue", Arrays.asList(talkToElias, inspectPlant, inspectRock, inspectPlant2, inspectBush1,
 			inspectBush2, inspectBush3, inspectTrapdoor, listenToElias, lookOverBalcony, pickupBottles, killZombies, collectRedMist, openDoorToArrav,
-			refillBottles, lookOverSecondBalcony), combatGear));
+			goThroughSecondGate, lookOverSecondBalcony), combatGear));
 		allSteps.add(new PanelDetails("Crisis", Arrays.asList(talkToEliasInPalace, talkToRovin, enterCamdozaal, talkToRamarno, mineBarronite, killChaosGolems,
 			useCoreOnDeposit, useBarroniteOnForge), combatGear, pickaxe));
 

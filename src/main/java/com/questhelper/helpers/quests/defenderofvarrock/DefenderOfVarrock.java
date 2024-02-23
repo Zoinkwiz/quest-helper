@@ -65,7 +65,6 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class DefenderOfVarrock extends BasicQuestHelper
 {
-
 	DetailedQuestStep talkToElias, inspectPlant, inspectRock, inspectPlant2, inspectBush1, inspectBush2, inspectBush3, inspectTrapdoor,
 		listenToElias, lookOverBalcony;
 
@@ -88,6 +87,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	Requirement talkedToRoald, talkedToAeonisig, talkedToPrysin, talkedToRomeo, talkedToHorvik, talkedToHalen, givenShield;
 
 	ItemRequirement combatGear, bottle, bottleOfMist, varrockTeleport, mindAltarOrLassarTeleport, barroniteDeposit, chaosCore, imbuedBarronite, pickaxe, listOfElders, shieldOfArrav;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -286,7 +286,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	{
 		talkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3283, 3501, 0),
 			"Talk to Elias White in the Jolly Boar Inn north-east of Varrock.", combatGear);
-		talkToElias.addDialogSteps( "Yes.", "Ready when you are.");
+		talkToElias.addDialogSteps("Yes.", "Ready when you are.");
 
 		inspectPlant = new ObjectStep(this, NullObjectID.NULL_50662, new WorldPoint(3280, 3516, 0), "Inspect the plant north of the pub.");
 		inspectRock = new ObjectStep(this, NullObjectID.NULL_50664, new WorldPoint(3260, 3514, 0), "Inspect the small rocks to the west.");
@@ -348,7 +348,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		// FUTURE
 		talkToReldo = new NpcStep(this, NpcID.RELDO_12626, new WorldPoint(3914, 4966, 0), "Talk to Reldo in the Varrock Castle library.");
 		searchScrolls = new ObjectStep(this, ObjectID.SCROLLS_50118, new WorldPoint(3920, 4968, 0), "Search the scrolls in the north-east of the library.");
-		readList = new ItemStep(this, "Read the list of elders.",listOfElders.highlighted());
+		readList = new ItemStep(this, "Read the list of elders.", listOfElders.highlighted());
 		readCensus = new ObjectStep(this, ObjectID.VARROCK_CENSUS, new WorldPoint(3918, 4969, 0), "Read the Varrock Census.");
 
 		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_12621, new WorldPoint(3926, 4945, 0),
@@ -410,6 +410,12 @@ public class DefenderOfVarrock extends BasicQuestHelper
 			varrockTeleport.quantity(2),
 			mindAltarOrLassarTeleport
 		);
+	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("At least six armoured zombies (level 85)", "Multiple Chaos Golems (level 70)");
 	}
 
 	@Override

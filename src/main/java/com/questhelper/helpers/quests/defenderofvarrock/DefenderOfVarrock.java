@@ -74,7 +74,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 	DetailedQuestStep talkToEliasInPalace, goUpToRovin, goUpToRovin2, talkToRovin, enterCamdozaal, talkToRamarno, mineBarronite, killChaosGolems, useCoreOnDeposit, useBarroniteOnForge;
 
-	DetailedQuestStep goToF1ForRovinNonInstance, goToF1ForRovin, goToF2ForRovin, talkToRovinAfterForge, talkToReldo, searchScrolls, readList, readCensus, talkToRoald,
+	DetailedQuestStep goToF1ForRovinNonInstance, goToF1ForRovin, goToF2ForRovin, talkToRovinAfterForge, goToF1ForReldo, goToF0ForReldo, talkToReldo, searchScrolls, readList, readCensus, talkToRoald,
 		talkToAeonisig, talkToPrysin, talkToRomeo, talkToHorvik, talkToHalen, talkToDimintheis, goToF1ToFinish, goToF2ToFinish, finishQuest;
 
 	DetailedQuestStep talkToRoaldOutsideInstance, talkToAeonisigOutsideInstance, talkToPrysinOutsideInstance, talkToRomeoFromInstance, talkToHorvikFromInstance,
@@ -182,7 +182,11 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		steps.put(36, goReturnToRovin);
 		steps.put(38, goReturnToRovin);
 
-		steps.put(40, talkToReldo);
+		ConditionalStep goTalkToReldo = new ConditionalStep(this, talkToReldo);
+		goTalkToReldo.addStep(inCastleF2, goToF1ForReldo);
+		goTalkToReldo.addStep(inCastleF1, goToF0ForReldo);
+		steps.put(40, goTalkToReldo);
+
 		ConditionalStep goReadList = new ConditionalStep(this, searchScrolls);
 		goReadList.addStep(listOfElders, readList);
 		steps.put(42, goReadList);
@@ -337,6 +341,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		goUpToRovin = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		goUpToRovin.addTeleport(varrockTeleport);
 		goUpToRovin2 = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3203, 3498, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goUpToRovin2.addDialogStep("Climb up");
 		talkToRovin = new NpcStep(this, NpcID.CAPTAIN_ROVIN, new WorldPoint(3205, 3498, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovin.addSubSteps(goUpToRovin, goUpToRovin2);
 
@@ -362,9 +367,15 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		talkToRovinAfterForge = new NpcStep(this, NpcID.CAPTAIN_ROVIN_12627, new WorldPoint(3906, 4969, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovinAfterForge.addSubSteps(goToF1ForRovinNonInstance, goToF1ForRovin, goToF2ForRovin);
 
-
 		// FUTURE
 		talkToReldo = new NpcStep(this, NpcID.RELDO_12626, new WorldPoint(3914, 4966, 0), "Talk to Reldo in the Varrock Castle library.");
+		goToF1ForReldo = new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(3202, 3497, 2),
+			"Go to the bottom floor and talk to Reldo in the castle library.");
+		goToF0ForReldo = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3202, 3497, 1),
+			"Go to the bottom floor and talk to Reldo in the castle library.");
+		goToF0ForReldo.addDialogStep("Climb down");
+		talkToReldo.addSubSteps(goToF1ForReldo, goToF0ForReldo);
+
 		searchScrolls = new ObjectStep(this, ObjectID.SCROLLS_50118, new WorldPoint(3920, 4968, 0), "Search the scrolls in the north-east of the library.");
 		readList = new ItemStep(this, "Read the list of elders.", listOfElders.highlighted());
 		readCensus = new ObjectStep(this, ObjectID.VARROCK_CENSUS, new WorldPoint(3918, 4969, 0), "Read the Varrock Census.");

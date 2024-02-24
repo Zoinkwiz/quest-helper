@@ -268,8 +268,19 @@ public class KandarinMedium extends ComplexStateQuestHelper
 			"Go to Seers' Village bank to string a maple shortbow.");
 		stringMaple = new DetailedQuestStep(this, "String a maple shortbow.", mapleUnstrung.highlighted(),
 			bowString.highlighted());
-		moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
-			"Enter the Taverly Dungeon.", dustyKey, mithGrap, crossbow);
+
+		int agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
+		if (agilityLevel >= 65 && agilityLevel < 70)
+		{
+			moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+				"Enter the Taverley Dungeon. Bring a summer pie to boost for the 70 Agility shortcut if you'd like to save time.", dustyKey, mithGrap, crossbow);
+		}
+		else
+		{
+			moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+				"Enter the Taverley Dungeon.", dustyKey, mithGrap, crossbow);
+		}
+
 		moveToOb = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2842, 9824, 0),
 			"Make your way through Taverley Dungeon to the end, and climb the ladder there. If you're 70+ " +
 				"Agility, use one of the shortcuts near the entrance to get there quickly.",

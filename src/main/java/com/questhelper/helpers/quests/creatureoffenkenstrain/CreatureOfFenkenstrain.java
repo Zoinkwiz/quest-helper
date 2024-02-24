@@ -163,9 +163,9 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK).isNotConsumed();
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
-		bronzeWire = new ItemRequirement("Bronze wires", ItemID.BRONZE_WIRE, 3);
+		bronzeWire = new ItemRequirement("Bronze wire", ItemID.BRONZE_WIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
-		thread = new ItemRequirement("Threads", ItemID.THREAD, 5);
+		thread = new ItemRequirement("Thread", ItemID.THREAD, 5);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		coins = new ItemRequirement("Coins at least", ItemCollections.COINS, 100);
 		pickledBrain = new ItemRequirement("Pickled Brain", ItemID.PICKLED_BRAIN);

@@ -31,11 +31,15 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.item.TeleportItemRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -58,6 +62,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -460,6 +465,30 @@ public class DefenderOfVarrock extends BasicQuestHelper
 			new ExperienceReward(Skill.SMITHING, 15000),
 			new ExperienceReward(Skill.HUNTER, 15000)
 		);
+	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		ArrayList<Requirement> req = new ArrayList<>();
+
+		//Skill Requirements
+		req.add(new SkillRequirement(Skill.SMITHING, 55, true));
+		req.add(new SkillRequirement(Skill.HUNTER, 52));
+
+		Conditions shieldOfArrav = new Conditions(LogicType.OR, new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED), new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG, QuestState.FINISHED));
+		shieldOfArrav.setText("Completed Shield of Arrav");
+		//Quest Requirements
+		req.add(shieldOfArrav);
+		req.add(new QuestRequirement(QuestHelperQuest.TEMPLE_OF_IKOV, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.BELOW_ICE_MOUNTAIN, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.GARDEN_OF_TRANQUILLITY, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.WHAT_LIES_BELOW, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.ROMEO__JULIET, QuestState.FINISHED));
+		req.add(new QuestRequirement(QuestHelperQuest.DEMON_SLAYER, QuestState.FINISHED));
+
+		return req;
 	}
 
 	@Override

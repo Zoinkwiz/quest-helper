@@ -27,6 +27,8 @@ package com.questhelper.helpers.achievementdiaries.kandarin;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.KeyringCollection;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -69,7 +71,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	// unlisted item reqs
 	ItemRequirement unstrungYewLong;
 
-	Requirement piety, choppedLogs;
+	Requirement piety, choppedLogs, normalSpellbook;
 
 	Requirement notCatchStur, notSeersRooftop, notYewLong, notPietyCourt, notWaterOrb, notBurnMaple,
 		notShadowHound, notMithrilDrag, notBuyGranite, notFancyStone, notAddySpear;
@@ -212,6 +214,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 			)
 		);
 
+		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 	}
 
 	public void loadZones()
@@ -228,14 +231,15 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
-			"Enter the Taverley Dungeon.", dustyKey, waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
+			"Enter the Taverley Dungeon to charge a water orb. Make sure you're on the normal spellbook.", normalSpellbook,
+			dustyKey, waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
 		moveToOb = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2842, 9824, 0),
 			"Make your way through Taverley Dungeon to the end, and climb the ladder there. If you're 70+ " +
 				"Agility, use on of the shortcuts near the entrance to get there quickly.",
 			dustyKey, waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
 		waterOrb = new ObjectStep(this, ObjectID.OBELISK_OF_WATER, new WorldPoint(2844, 3422, 0),
 			"Use the charge water orb spell on the obelisk.", waterRune.quantity(30), cosmicRune.quantity(3),
-			unpoweredOrb);
+			unpoweredOrb, normalSpellbook);
 		waterOrb.addIcon(ItemID.WATER_ORB);
 		seersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
 			"Complete a lap of the Seers' village Rooftop course.");
@@ -366,7 +370,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails chargeOrbSteps = new PanelDetails("Charge Water Orb", Arrays.asList(moveToTavDungeon, moveToOb,
-			waterOrb), waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey);
+			waterOrb), normalSpellbook, waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb, dustyKey);
 		chargeOrbSteps.setDisplayCondition(notWaterOrb);
 		chargeOrbSteps.setLockingStep(waterOrbTask);
 		allSteps.add(chargeOrbSteps);

@@ -65,12 +65,14 @@ import net.runelite.api.coords.WorldPoint;
 public class RFDDwarf extends BasicQuestHelper
 {
 	ItemRequirement coins320, milk, flour, egg, bowlOfWater, asgarniaAle4, iceGloves, rockCake, rockCakeHot,
-		teleportFalador2, teleportLumbridge, coin, asgarnianAle, asgoldianAle, asgoldianAle4, coins100,
+		coin, asgarnianAle, asgoldianAle, asgoldianAle4, coins100,
 		rockCakeHighlighted;
+
+	ItemRequirement taverleyTeleport, teleportFalador, teleportLumbridge;
 
 	Requirement inDiningRoom, inTunnel, learnedHowToMakeAle, givenAle, has4AleOrGivenAle;
 
-	QuestStep enterDiningRoom, inspectDwarf, talkToKaylee, makeAle, enterTunnels, talkToOldDwarf, talkToOldDwarfMore,
+	DetailedQuestStep enterDiningRoom, inspectDwarf, talkToKaylee, makeAle, enterTunnels, talkToOldDwarf, talkToOldDwarfMore,
 		talkToOldDwarfWithIngredients, pickUpRockCake, coolRockCake, coolRockCakeSidebar, enterDiningRoomAgain,
 		useRockCakeOnDwarf;
 
@@ -138,8 +140,6 @@ public class RFDDwarf extends BasicQuestHelper
 		rockCakeHighlighted = new ItemRequirement("Dwarven rock cake", ItemID.DWARVEN_ROCK_CAKE_7510);
 		rockCakeHighlighted.setHighlightInInventory(true);
 		rockCakeHot = new ItemRequirement("Dwarven rock cake", ItemID.DWARVEN_ROCK_CAKE);
-		teleportFalador2 = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT, 2);
-		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
 
 		coin = new ItemRequirement("Coin", ItemCollections.COINS);
 		coin.setHighlightInInventory(true);
@@ -151,6 +151,12 @@ public class RFDDwarf extends BasicQuestHelper
 		asgoldianAle.setHighlightInInventory(true);
 
 		asgoldianAle4 = new ItemRequirement("Asgoldian ale", ItemID.ASGOLDIAN_ALE, 4);
+
+		// Recommended
+		taverleyTeleport = new ItemRequirement("Teleport to taverley", ItemID.TAVERLEY_TELEPORT);
+		taverleyTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
+		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT);
+		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
 	}
 
 	public void loadZones()
@@ -180,13 +186,13 @@ public class RFDDwarf extends BasicQuestHelper
 			"Falador.", coins320);
 		talkToKaylee.addDialogSteps("What can you tell me about dwarves and ale?", "I could offer you some in return," +
 			" how about 200 gold?");
+		talkToKaylee.addTeleport(teleportFalador);
 
 		makeAle = new DetailedQuestStep(this, "Add coins to asgarnian ale to make 4 asgoldian ale. You can buy ale " +
-			"from Kaylee for 3gp " +
-			"each."
-			, coin, asgarnianAle);
+			"from Kaylee for 3gp each.", coin, asgarnianAle);
 		enterTunnels = new ObjectStep(this, ObjectID.STAIRS_57, new WorldPoint(2877, 3481, 0), "Enter the tunnel " +
 			"under White Wolf Mountain.", asgoldianAle4, milk, flour, egg, bowlOfWater, iceGloves);
+		enterTunnels.addTeleport(taverleyTeleport);
 		talkToOldDwarf = new GetRohakDrunk(this, asgoldianAle4);
 		talkToOldDwarfMore = new NpcStep(this, NpcID.ROHAK_4812, new WorldPoint(2865, 9876, 0),
 			"Talk to Rohak more.", coins100, milk, flour, egg, bowlOfWater);
@@ -206,6 +212,7 @@ public class RFDDwarf extends BasicQuestHelper
 		coolRockCakeSidebar.addSubSteps(coolRockCake);
 		enterDiningRoomAgain = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
 			"Go use the dwarven rock cake on the dwarf.");
+		enterDiningRoomAgain.addTeleport(teleportLumbridge);
 		useRockCakeOnDwarf = new ObjectStep(this, ObjectID.DWARF_12330, new WorldPoint(1862, 5321, 0),
 			"Use the dwarven rock cake on the dwarf.", rockCakeHighlighted);
 		useRockCakeOnDwarf.addIcon(ItemID.DWARVEN_ROCK_CAKE_7510);
@@ -222,7 +229,7 @@ public class RFDDwarf extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(teleportFalador2, teleportLumbridge);
+		return Arrays.asList(teleportFalador.quantity(2), teleportLumbridge, taverleyTeleport);
 	}
 
 	@Override

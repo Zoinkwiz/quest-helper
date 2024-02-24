@@ -299,10 +299,8 @@ public class QuestManager
 				return;
 			}
 			questBankManager.startUpQuest();
-			SwingUtilities.invokeLater(() -> {
-				panel.removeQuest();
-				panel.addQuest(questHelper, true);
-			});
+			panel.removeQuest();
+			panel.addQuest(questHelper, true);
 		}
 		else
 		{

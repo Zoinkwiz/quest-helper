@@ -281,6 +281,7 @@ public class EaglesPeak extends BasicQuestHelper
 		inspectBooks = new ObjectStep(this, NullObjectID.NULL_19787, new WorldPoint(2319, 3506, 0),
 			"Go to the camp north of Eagles' Peak and search the pile of books for a Bird Book. The closest fairy ring is AKQ or teleport to The Outpost using the Necklace of Passage.");
 		inspectBooks.addTeleport(eaglesPeakTeleport);
+		inspectBooks.addDialogStep("The Outpost");
 		clickBook = new DetailedQuestStep(this, "Click the Bird Book for a Metal Feather.", birdBook);
 
 		inspectBooksForFeather = new ObjectStep(this, ObjectID.BOOKS_19886, new WorldPoint(2319, 3506, 0),

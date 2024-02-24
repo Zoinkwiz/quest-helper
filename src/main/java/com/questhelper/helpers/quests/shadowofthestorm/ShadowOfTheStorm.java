@@ -74,7 +74,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		sigilHighlighted, sigil2;
 
 	//Items Recommended
-	ItemRequirement combatGear, coinsForCarpet;
+	ItemRequirement combatGear, coinsForCarpet, alKharidTeleport;
 
 	Requirement inRuin, inThroneRoom,talkedToGolem, talkedToMatthew, inCircleSpot, sigilNearby, evilDaveMoved, baddenMoved,
 		reenMoved, golemMoved, golemRejected, golemReprogrammed,
@@ -225,6 +225,10 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		book = new ItemRequirement("Demonic tome", ItemID.DEMONIC_TOME);
 		bookHighlighted = new ItemRequirement("Demonic tome", ItemID.DEMONIC_TOME);
 		bookHighlighted.setHighlightInInventory(true);
+
+		// Recommended
+		alKharidTeleport = new ItemRequirement("Al Kharid Teleport", ItemCollections.AMULET_OF_GLORIES);
+		alKharidTeleport.addAlternates(ItemCollections.RING_OF_DUELINGS);
 	}
 
 	private void setupConditions()
@@ -269,6 +273,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		talkToMatthew = new NpcStep(this, NpcID.MATTHEW, new WorldPoint(2727, 4897, 2), "Talk to Matthew.");
 		talkToMatthew.addDialogStep("Do you know what happened to Josef?");
 		smeltSigil = new DetailedQuestStep(this, "Travel to any furnace with the sigil mould and silver bar and smelt a sigil.", silverBar, sigilMould);
+		smeltSigil.addTeleport(alKharidTeleport);
 		talkToGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.", silverlightDyed, sigil, combatGear);
 		talkToGolem.addDialogStep("Uzer");
 		talkToGolem.addDialogStep("Did you see anything happen last night?");
@@ -345,7 +350,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, coinsForCarpet);
+		return Arrays.asList(combatGear, coinsForCarpet, alKharidTeleport);
 	}
 
 	@Override

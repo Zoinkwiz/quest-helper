@@ -425,7 +425,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 		talkToDimintheis = new NpcStep(this, NpcID.DIMINTHEIS, new WorldPoint(3280, 3404, 0),
 			"Talk to Dimintheis in the south-east of Varrock.", shieldOfArrav.hideConditioned(givenShield));
-		talkToDimintheis.addDialogStep("I need your help with the zombie invasion.");
+		talkToDimintheis.addDialogSteps("Other", "I need your help with the zombie invasion.");
 		talkToDimintheisFromInstance = new NpcStep(this, NpcID.DIMINTHEIS, new WorldPoint(3952, 4897, 0),
 			"Talk to Dimintheis in the south-east of Varrock.", shieldOfArrav.hideConditioned(givenShield));
 		talkToDimintheis.addSubSteps(talkToDimintheisFromInstance);

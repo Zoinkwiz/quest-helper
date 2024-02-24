@@ -108,7 +108,6 @@ public class CraftingGuildBalloonFlight extends ComplexStateQuestHelper
 		);
 	}
 
-
 	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{

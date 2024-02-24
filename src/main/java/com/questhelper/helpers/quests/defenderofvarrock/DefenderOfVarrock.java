@@ -373,14 +373,15 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		goToF1ForRovinNonInstance.addTeleport(varrockTeleport);
 		goToF1ForRovin = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3906, 4969, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		goToF2ForRovin = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3906, 4969, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goToF2ForRovin.addDialogStep("Climb up");
 		talkToRovinAfterForge = new NpcStep(this, NpcID.CAPTAIN_ROVIN_12627, new WorldPoint(3906, 4969, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovinAfterForge.addSubSteps(goToF1ForRovinNonInstance, goToF1ForRovin, goToF2ForRovin);
 
 		// FUTURE
 		talkToReldo = new NpcStep(this, NpcID.RELDO_12626, new WorldPoint(3914, 4966, 0), "Talk to Reldo in the Varrock Castle library.");
-		goToF1ForReldo = new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(3202, 3497, 2),
+		goToF1ForReldo = new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(3906, 4969, 2),
 			"Go to the bottom floor and talk to Reldo in the castle library.");
-		goToF0ForReldo = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3202, 3497, 1),
+		goToF0ForReldo = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3906, 4969, 1),
 			"Go to the bottom floor and talk to Reldo in the castle library.");
 		goToF0ForReldo.addDialogStep("Climb down");
 		talkToReldo.addSubSteps(goToF1ForReldo, goToF0ForReldo);

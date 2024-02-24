@@ -360,7 +360,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		talkToRamarno = new NpcStep(this, NpcID.RAMARNO_10685, new WorldPoint(2959, 5809, 0),
 			"Talk to Ramarno to the north by the sacred forge.");
 		talkToRamarno.addDialogStep("I need your help with a shield.");
-		mineBarronite = new ObjectStep(this, ObjectID.BARRONITE_ROCKS, new WorldPoint(2941, 5810, 0), "Mine a barronite deposit.", pickaxe);
+		mineBarronite = new ObjectStep(this, ObjectID.BARRONITE_ROCKS, new WorldPoint(2941, 5810, 0), "Mine a barronite deposit.", true, pickaxe);
 		killChaosGolems = new NpcStep(this, NpcID.CHAOS_GOLEM, new WorldPoint(3022, 5782, 0),
 			"Kill chaos golems in the eastern cavern for a chaos core.", true, chaosCore);
 		((NpcStep) killChaosGolems).addAlternateNpcs(NpcID.RUBBLE_10690);
@@ -370,6 +370,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 		// Invasion
 		goToF1ForRovinNonInstance = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goToF1ForRovinNonInstance.addTeleport(varrockTeleport);
 		goToF1ForRovin = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3906, 4969, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		goToF2ForRovin = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3906, 4969, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovinAfterForge = new NpcStep(this, NpcID.CAPTAIN_ROVIN_12627, new WorldPoint(3906, 4969, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");

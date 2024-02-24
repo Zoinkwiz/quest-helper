@@ -252,7 +252,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			"Enter the haunted mine.");
 		mithOre = new ObjectStep(this, ObjectID.MITHRIL_ORE_VEIN_20419, new WorldPoint(2806, 4439, 0),
 			"Mine the mithril ore in the north-east of the area.", pickaxe);
-		moveToLevelTwo = new ObjectStep(this, ObjectID.CART_TUNNEL_4920, new WorldPoint(3437, 9637, 0),
+		moveToLevelTwo = new ObjectStep(this, ObjectID.CART_TUNNEL_29332, new WorldPoint(3435, 9634, 0),
 			"Enter the mine cart shaft by the entrance, directly south of you.");
 
 		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3337, 0),

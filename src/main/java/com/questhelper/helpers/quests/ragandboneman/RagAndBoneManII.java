@@ -267,6 +267,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		rellekkaNETeleport = new ItemRequirement("Fairy Ring (DKS)", ItemCollections.FAIRY_STAFF).isNotConsumed();
 
 		rangedWeapon = new ItemRequirement("Ranged weapon for killing vultures", ItemCollections.CROSSBOWS);
+		rangedWeapon.setTooltip("Vultures can fly, making them unable to be attacked with melee");
 		rangedWeapon.addAlternates(ItemCollections.BOWS);
 
 		// Quest items
@@ -881,7 +882,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(coins.quantity(902), pots.quantity(27), logs.quantity(27), tinderbox,
-			lightSource, rope.hideConditioned(addedRope),
+			lightSource, rope.hideConditioned(addedRope), rangedWeapon,
 			dustyKey.hideConditioned(new SkillRequirement(Skill.AGILITY, 70, true)), iceCooler, fishingExplosive,
 			mirrorShield, axe);
 	}

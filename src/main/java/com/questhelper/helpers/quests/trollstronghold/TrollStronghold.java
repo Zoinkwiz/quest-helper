@@ -135,7 +135,7 @@ public class TrollStronghold extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS).isNotConsumed();
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 		climbingBootsEquipped = climbingBoots.equipped();
 		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
 		climbingBootsOr12Coins = new ItemRequirements(LogicType.OR, "Climbing boots or 12 coins", climbingBoots, coins12).isNotConsumed();

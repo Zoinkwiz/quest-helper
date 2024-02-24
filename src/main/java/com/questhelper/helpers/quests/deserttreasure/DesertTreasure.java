@@ -232,7 +232,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		spikedBootsEquipped = spikedBoots.equipped();
 
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.CLIMBING_BOOTS).isNotConsumed();
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 		faceMask = new ItemRequirement("Facemask (or other face covering)", ItemID.FACEMASK).equipped().isNotConsumed();
 		faceMask.setTooltip("Slayer mask and gas mask can also be used.");
 		faceMask.addAlternates(ItemID.FACEMASK, ItemID.SLAYER_HELMET, ItemID.SLAYER_HELMET_I, ItemID.SLAYER_HELMET_I_25177, ItemID.GAS_MASK);

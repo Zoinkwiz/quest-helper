@@ -89,7 +89,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 	ItemRequirement antifireShield, inoculationBracelet, digsitePendant, ectophial, ringOfDueling,
 		gamesNecklace, varrockTeleport, lumbridgeTeleport, nardahTeleport, draynorTeleport,
 		karamjaTeleport, taverleyTeleport, rellekkaTeleport, gnomeTeleport, feldipTeleport, dramenStaff,
-		rellekkaNETeleport;
+		rellekkaNETeleport, rangedWeapon;
 
 	ItemRequirement jugOfVinegar, jugOfVinegarNeeded, potOfVinegar, potOfVinegarNeeded, potNeeded, axe, jailKey,
 		boneInVinegar;
@@ -237,7 +237,6 @@ public class RagAndBoneManII extends BasicQuestHelper
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 
-
 		// Optional items
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
@@ -266,6 +265,9 @@ public class RagAndBoneManII extends BasicQuestHelper
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
 		rellekkaNETeleport = new ItemRequirement("Fairy Ring (DKS)", ItemCollections.FAIRY_STAFF).isNotConsumed();
+
+		rangedWeapon = new ItemRequirement("Ranged weapon for killing vultures", ItemCollections.CROSSBOWS);
+		rangedWeapon.addAlternates(ItemCollections.BOWS);
 
 		// Quest items
 		jugOfVinegar = new ItemRequirement("Jar of vinegar", ItemID.JUG_OF_VINEGAR);
@@ -450,7 +452,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		killLizard = new NpcStep(this, NpcID.LIZARD, new WorldPoint(3439, 3036, 0),
 			"Kill the giant lizards north of Nardah.", true, iceCooler);
 		killVulture = new NpcStep(this, NpcID.VULTURE, new WorldPoint(3348, 2875, 0),
-			"Kill vultures south west of Nardah.", true);
+			"Kill vultures south west of Nardah.", true, rangedWeapon);
 		((NpcStep) killVulture).addAlternateNpcs(NpcID.VULTURE_1268);
 		killSeagull = new NpcStep(this, NpcID.SEAGULL, new WorldPoint(3033, 3235, 0),
 			"Kill seagulls on the Port Sarim docks.", true);
@@ -940,7 +942,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		allSteps.add(collectingLumbridgePanel);
 
 		PanelDetails collectingDesertPanel = new PanelDetails("Desert bones",
-			Arrays.asList(killJackal, killSnake, killLizard, killVulture), iceCooler);
+			Arrays.asList(killJackal, killSnake, killLizard, killVulture), iceCooler, rangedWeapon);
 		collectingDesertPanel.setLockingStep(desertSteps);
 		allSteps.add(collectingDesertPanel);
 

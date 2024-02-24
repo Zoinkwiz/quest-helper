@@ -245,7 +245,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		readJournal = new DetailedQuestStep(this, "Read the journal", kasondesJournal.highlighted());
 		getSecateurs = new ObjectStep(this, ObjectID.CAMPING_EQUIPMENT_46325, new WorldPoint(1312, 3470, 0), "Search the camping equipment for some secateurs.");
 		enterHole = new ObjectStep(this, ObjectID.HOLE_46326, new WorldPoint(1308, 3467, 0), "Enter the nearby hole.", secateurs);
-		searchForTablet = new ObjectStep(this, ObjectID.STONE_TABLE_46376, new WorldPoint(1306, 9885, 0), "Search the south east table.");
+		searchForTablet = new ObjectStep(this, ObjectID.STONE_TABLE_46376, new WorldPoint(1306, 9885, 0), "Search the north-west table.");
 		readTablet1 = new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet1.highlighted());
 		readTablet1.addDialogStep("Yes.");
 		readTranslations = new DetailedQuestStep(this, "Read the word translations.", wordTranslations.highlighted());

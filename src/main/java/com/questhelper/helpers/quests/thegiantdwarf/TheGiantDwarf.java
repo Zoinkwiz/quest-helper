@@ -233,8 +233,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		askedToStartMachine = new Conditions(true, LogicType.OR,
 			new DialogRequirement(client.getLocalPlayer().getName(),
 				"Don't worry, I'll get them for you. Let's see... some coal and some logs. Shouldn't be too hard."),
-			new DialogRequirement("Well, like I said, I can't do anything really " +
-				"without my spinning machine."),
+			new DialogRequirement("Well, like I said, I can't do anything really without my spinning machine."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I must get <col=800000>coal<col=000080> and <col=800000>logs<col=000080>.")
 		);
 
@@ -359,11 +358,11 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToVermundiWithBook.addSubSteps(talkToVermundiAfterBook);
 
 		useCoalOnMachine = new ObjectStep(this, ObjectID.SPINNING_MACHINE, new WorldPoint(2885, 10189, 0),
-			"Use your coal on the spinning machine light it with a tinder box.", coal, logs);
+			"Use your coal on the spinning machine light it with a tinderbox.", coal, logs);
 		useCoalOnMachine.addIcon(ItemID.COAL);
 
 		startMachine = new ObjectStep(this, ObjectID.SPINNING_MACHINE, new WorldPoint(2885, 10189, 0),
-			"Start the spinning machine with a tinder box.", tinderbox);
+			"Start the spinning machine with a tinderbox.", tinderbox);
 		startMachine.addIcon(ItemID.TINDERBOX);
 
 		talkToVermundiWithMachine = new NpcStep(this, NpcID.VERMUNDI, new WorldPoint(2887, 10188, 0),

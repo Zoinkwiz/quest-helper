@@ -280,6 +280,12 @@ public enum ExternalQuestResources
 	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
 	DAG_ROUTE("https://oldschool.runescape.wiki/w/Waterbirth_Island"),
 
+	// Balloon Transport
+	BALLOON_TRANSPORT_CRAFTING_GUILD("https://oldschool.runescape.wiki/w/Balloon_transport_system#Crafting_Guild"),
+	BALLOON_TRANSPORT_VARROCK("https://oldschool.runescape.wiki/w/Balloon_transport_system#Varrock"),
+	BALLOON_TRANSPORT_CASTLE_WARS("https://oldschool.runescape.wiki/w/Balloon_transport_system#Castle_Wars"),
+	BALLOON_TRANSPORT_GRAND_TREE("https://oldschool.runescape.wiki/w/Balloon_transport_system#Grand_Tree"),
+
 	// Skills
 	AGILITY("https://oldschool.runescape.wiki/w/Agility_training"),
 	WOODCUTTING_MEMBER("https://oldschool.runescape.wiki/w/Pay-to-play_Woodcutting_training"),

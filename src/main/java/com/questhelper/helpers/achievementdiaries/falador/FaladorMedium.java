@@ -428,6 +428,14 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<String> getCombatRequirements()
+	{
+		ArrayList<String> reqs = new ArrayList<>();
+		reqs.add("Mogre (level 60)");
+		return reqs;
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(

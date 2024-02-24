@@ -383,7 +383,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		talkToTranquility.addSubSteps(talkToTranquilityOnIsland);
 
 		ItemRequirement conditionalPlanks = plank.quantity(4).hideConditioned(repairedStairs);
-		ItemRequirement conditionalNails = nails.quantity(60).hideConditioned(repairedStairs);
+		ItemRequirement conditionalNails = nails.quantity(100).hideConditioned(repairedStairs);
 		ItemRequirement conditionalHammer = hammer.hideConditioned(repairedStairs);
 		pullStatue = new ObjectStep(this, NullObjectID.NULL_22355, new WorldPoint(3795, 2844, 0),
 			"Pull the saradomin statue on Harmony, then enter it.\nPlant the watermelon seeds in the patch first if you brought them for the Hard Morytania Diary.",
@@ -580,7 +580,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(fishbowlHelmet, divingApparatus, catsOrResources, plank.quantity(8), hammer,
-			nails.quantity(100), holySymbol, ringOfCharos, noPet);
+			nails.quantity(200), holySymbol, ringOfCharos, noPet);
 	}
 
 	@Override
@@ -644,7 +644,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off",
 			Arrays.asList(talkToTranquility, pullStatue, enterWater, repairWaterStairs, climbFromWater,
 				climbFromWaterCaveToPeep, peerThroughHole, talkToTranquilityAfterPeeping),
-			Arrays.asList(plank.quantity(4), nails.quantity(60), hammer, fishbowlHelmet, divingApparatus,
+			Arrays.asList(plank.quantity(4), nails.quantity(100), hammer, fishbowlHelmet, divingApparatus,
 				holySymbol, // For the next step, saves some time & the inventory slot is not really needed
 				noPet)));
 

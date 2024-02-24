@@ -45,6 +45,7 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -78,7 +79,7 @@ public class MountainDaughter extends BasicQuestHelper
 		gottenGuarantee, givenGuaranteeToSvidi, finishedDiplomacy, finishedFood, finishedFoodAndDiplomacy, inKendalCave,
 		fightableKendalNearby, hasBuried, rubbedMudIntoTree;
 
-	private QuestStep enterCamp, enterCampOverRocks, talkToHamal, digUpMud, rubMudIntoTree, climbTree, poleVaultRocks, plankRocks, listenToSpirit,
+	private QuestStep enterCamp, enterCampOverRocks, talkToHamal, digUpMud, pickupPole, rubMudIntoTree, climbTree, poleVaultRocks, plankRocks, listenToSpirit,
 		plankRocksReturn, talkToHamalAfterSpirit, talkToJokul, talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi, getFruit,
 		eatFruit, returnToSpirit, returnToHamalAboutFood, returnToHamalAboutDiplomacy, talkToKendal, killKendal, noPlankRocksReturn, enterCave,
 		grabCorpse, bringCorpseToHamal, collectRocks, createCairn, buryCorpseOnIsland, speakRagnar;
@@ -106,7 +107,8 @@ public class MountainDaughter extends BasicQuestHelper
 		speakToSpirit.addStep(onIsland2, plankRocks);
 		speakToSpirit.addStep(onIsland1, poleVaultRocks);
 		speakToSpirit.addStep(new Conditions(inTheCamp, rubbedMudIntoTree), climbTree);
-		speakToSpirit.addStep(new Conditions(inTheCamp, mud), rubMudIntoTree);
+		speakToSpirit.addStep(new Conditions(inTheCamp, mud, pole), rubMudIntoTree);
+		speakToSpirit.addStep(new Conditions(inTheCamp, mud), pickupPole);
 		speakToSpirit.addStep(inTheCamp, digUpMud);
 
 		steps.put(10, speakToSpirit);
@@ -190,7 +192,7 @@ public class MountainDaughter extends BasicQuestHelper
 		pole.addAlternates(ItemCollections.WATER_STAFF);
 		pole.addAlternates(ItemCollections.EARTH_STAFF);
 		pole.addAlternates(ItemCollections.FIRE_STAFF);
-		pole.setTooltip("A Dramen Staff will NOT work. A pole can be obtained from the goat pen north of Hamal's house.");
+		pole.setTooltip("A Dramen Staff will NOT work. A pole can be obtained from the goat pen north of Hamal's tent.");
 		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES).isNotConsumed();
 		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
 			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
@@ -261,7 +263,8 @@ public class MountainDaughter extends BasicQuestHelper
 		talkToHamal.addDialogStep("I will search for her!");
 
 		digUpMud = new ObjectStep(this, ObjectID.ROOTS_5885, new WorldPoint(2805, 3661, 0),
-			"If you did not bring a staff grab a pole from the goat pen north of Hamal's house. Head south of Hamal's house and dig some mud from the mud pond.");
+			"Head south of Hamal's tent and dig some mud from the mud pond.");
+		pickupPole = new ItemStep(this, new WorldPoint(2813, 3685, 0), "Pick up the pole north of Hamal's tent.", pole);
 
 		rubMudIntoTree = new ObjectStep(this, ObjectID.TALL_TREE, new WorldPoint(2772, 3681, 0),
 			"Use mud on the Tall Tree on the lake north of the camp, and then climb it.",
@@ -453,7 +456,7 @@ public class MountainDaughter extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Speak to Hamal", Arrays.asList(enterCamp, talkToHamal), rope, plank, pickaxe));
-		allSteps.add(new PanelDetails("Go to the centre of the lake", Arrays.asList(digUpMud, rubMudIntoTree, climbTree,
+		allSteps.add(new PanelDetails("Go to the centre of the lake", Arrays.asList(digUpMud, pickupPole, rubMudIntoTree, climbTree,
 			poleVaultRocks, plankRocks, listenToSpirit)));
 		allSteps.add(new PanelDetails("Find out how to help", Arrays.asList(talkToHamalAfterSpirit, talkToJokul)));
 		allSteps.add(new PanelDetails("Making peace with Rellekka", Arrays.asList(talkToSvidi, speakToBrundt, getRockFragment, returnToBrundt, returnToSvidi)));

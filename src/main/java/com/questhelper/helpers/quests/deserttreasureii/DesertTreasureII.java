@@ -806,6 +806,18 @@ public class DesertTreasureII extends BasicQuestHelper
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Ancient Guardian (level 153)");
+		reqs.add("Vardorvis (level 553)");
+		reqs.add("Kasonde (level 193)");
+		reqs.add("A number of lesser demons, black demons, and abyssal creatures");
+		reqs.add("The Leviathan (level 577)");
+		reqs.add("Jhallan (level 491)");
+		reqs.add("Duke Sucellus (level 519)");
+		reqs.add("The Whisperer (level 568)");
+		reqs.add("Mysterious Figure (level 271)");
+		reqs.add("The Forsaken Assassin (level 252)");
+		reqs.add("Ketla the Unworthy (level 236)");
+		reqs.add("Kasonde the Craven (level 221)");
+		reqs.add("Persten the Deceitful (level 264)");
 		return reqs;
 	}
 

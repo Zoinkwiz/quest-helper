@@ -42,6 +42,7 @@ import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -136,7 +137,8 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		steps.put(14, exploreBase);
 
 		ConditionalStep goLookOverBalcony = new ConditionalStep(this, inspectTrapdoor);
-		goLookOverBalcony.addStep(inDungeon, lookOverBalcony);
+		goLookOverBalcony.addStep(and(inDungeon, eliasFollowing), lookOverBalcony);
+		goLookOverBalcony.addStep(inDungeon, listenToElias);
 		steps.put(16, goLookOverBalcony);
 
 		ConditionalStep goSeeArrav = new ConditionalStep(this, inspectTrapdoor);
@@ -267,7 +269,8 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		eliasFollowing = new VarbitRequirement(9658, 1);
+		// TODO: Reported value is 12754, but uncertain why this'd be the case. Perhaps to do with different version of him?
+		eliasFollowing = new VarplayerRequirement(447, List.of(NpcID.ELIAS_WHITE, NpcID.ELIAS_WHITE_12611, 12754), 16);
 
 		// 9655 4->6
 		// 9659 0->1
@@ -329,7 +332,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 			"Go through the gate, and finish the cutscene with Arrav. If you skip it, try re-entering the gate.");
 
 		pickupBottlesAgain = new ItemStep(this, new WorldPoint(3537, 4572, 0), "Pick up 3 bottles nearby.", bottle.quantity(3));
-		killZombiesAgain = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill 3 the bottles with the clouds they leave behind.", true);
+		killZombiesAgain = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill 3 the bottles with the clouds they leave behind.", true, eliasFollowing);
 		((NpcStep) killZombiesAgain).addAlternateNpcs(NpcID.ARMOURED_ZOMBIE_12721, NpcID.ARMOURED_ZOMBIE_12722, NpcID.ARMOURED_ZOMBIE_12723, NpcID.ARMOURED_ZOMBIE_12724, NpcID.ARMOURED_ZOMBIE_12725,
 			NpcID.ARMOURED_ZOMBIE_12726, NpcID.ARMOURED_ZOMBIE_12727, NpcID.ARMOURED_ZOMBIE_12728, NpcID.ARMOURED_ZOMBIE_12729, NpcID.ARMOURED_ZOMBIE_12730, NpcID.ARMOURED_ZOMBIE_12731);
 		collectRedMistAgain = new ObjectStep(this, NullObjectID.NULL_50690, "Collect the red mist in a bottle.");

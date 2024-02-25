@@ -78,6 +78,7 @@ import com.questhelper.helpers.miniquests.hisfaithfulservants.BarrowsHelper;
 import com.questhelper.helpers.miniquests.hisfaithfulservants.HisFaithfulServants;
 import com.questhelper.helpers.mischelpers.allneededitems.AllNeededItems;
 import com.questhelper.helpers.mischelpers.herbrun.HerbRun;
+import com.questhelper.helpers.mischelpers.strongholdofsecurity.StrongholdOfSecurity;
 import com.questhelper.helpers.quests.akingdomdivided.AKingdomDivided;
 import com.questhelper.helpers.miniquests.alfredgrimhandsbarcrawl.AlfredGrimhandsBarcrawl;
 import com.questhelper.helpers.quests.anightatthetheatre.ANightAtTheTheatre;
@@ -629,6 +630,8 @@ public enum QuestHelperQuest
 		QuestDetails.Difficulty.GENERIC),
 	HERB_RUN(new HerbRun(), "Herb run", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	BARROWS_HELPER(new BarrowsHelper(), "Barrows helper", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
+	STRONGHOLD_OF_SECURITY(new StrongholdOfSecurity(), "Stronghold of Security", QuestVarbits.STRONGHOLD_OF_SECURITY, 1,
+		QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	// Skill
 	AGILITY(new Agility(), "Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 	WOODCUTTING_MEMBER(new WoodcuttingMember(), "Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),

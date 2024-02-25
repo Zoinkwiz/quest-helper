@@ -44,11 +44,11 @@ public class QuestOrders
 		QuestHelperQuest.PRINCE_ALI_RESCUE,
 		QuestHelperQuest.THE_RESTLESS_GHOST,
 		QuestHelperQuest.RUNE_MYSTERIES,
-		//QuestHelperQuest.STRONGHOLD_OF_SECURITY - Placeholder for future addition.
+		QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 		QuestHelperQuest.IMP_CATCHER,
 		QuestHelperQuest.WITCHS_POTION,
 		QuestHelperQuest.GERTRUDES_CAT,
-		// https://oldschool.runescape.wiki/w/Natural_history_quiz
+		// QuestHelperQuest.NATURAL_HITORY_QUIZ - Placeholder for future addition.
 		QuestHelperQuest.DADDYS_HOME,
 		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.DWARF_CANNON,
@@ -110,6 +110,7 @@ public class QuestOrders
 		QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF,
 		QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG,
 		QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG,
+		// QuestHelperQuest.VARROCK_MUSEUM_KUDOS, - Placeholder for future addition.
 		QuestHelperQuest.BONE_VOYAGE,
 		QuestHelperQuest.WATCHTOWER,
 		QuestHelperQuest.THE_GIANT_DWARF,
@@ -173,6 +174,7 @@ public class QuestOrders
 		QuestHelperQuest.THE_FORSAKEN_TOWER,
 		QuestHelperQuest.THE_SLUG_MENACE,
 		QuestHelperQuest.GETTING_AHEAD,
+		// QuestHelperQuest.MUSEUM_CAMP, - Placeholder for future addition.
 		QuestHelperQuest.COLD_WAR,
 		QuestHelperQuest.THE_HAND_IN_THE_SAND,
 		QuestHelperQuest.ENAKHRAS_LAMENT,
@@ -295,6 +297,7 @@ public class QuestOrders
 		QuestHelperQuest.ROMEO__JULIET,
 		QuestHelperQuest.GERTRUDES_CAT,
 		QuestHelperQuest.DADDYS_HOME,
+		// QuestHelperQuest.NATURAL_HITORY_QUIZ - Placeholder for future addition.
 		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.RUNE_MYSTERIES,
 		QuestHelperQuest.TREE_GNOME_VILLAGE,
@@ -486,7 +489,7 @@ public class QuestOrders
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
 
-		//QuestHelperQuest.STRONGHOLD_OF_SECURITY - Placeholder for future addition.
+		QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 		QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD,
 		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,
 		QuestHelperQuest.BALLOON_TRANSPORT_VARROCK,
@@ -494,6 +497,9 @@ public class QuestOrders
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for later addition. (Miniquest)
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition. (Miniquest)
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
+		//QuestHelperQuest.VARROCK_MUSEUM_KUDOS, - Placeholder for future addition.
+		//QuestHelperQuest.MUSEUM_CAMP, - Placeholder for future addition.
+		//QuestHelperQuest.VARROCK_MUSEUM_KUDOS_II - Placeholder for future addition.
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,

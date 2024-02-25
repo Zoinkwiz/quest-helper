@@ -25,6 +25,8 @@
 package com.questhelper.collections;
 
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -2182,5 +2184,12 @@ public enum ItemCollections
 	{
 		this.wikiTerm = null;
 		this.items = items;
+	}
+
+	public List<Integer> reverseOrder()
+	{
+		List<Integer> reversedArray = new ArrayList<>(getItems());
+		Collections.reverse(reversedArray);
+		return reversedArray;
 	}
 }

@@ -78,7 +78,7 @@ public class BetweenARock extends BasicQuestHelper
 	Requirement inTrollRoom, inDwarfEntrance, inDwarfMine, inKeldagrim, inDwarvenMine, hasUsedGoldBar, hasCannonball, shotGoldCannonball,
 		inKhorvakRoom, inRealm, avatarNearby, hasSolvedSchematic;
 
-	QuestStep enterDwarfCave, enterDwarfCave2, talkToFerryman, talkToDondakan, travelBackWithFerryman, talkToBoatman, talkToEngineer, talkToRolad, enterDwarvenMine, killScorpion,
+	DetailedQuestStep enterDwarfCave, enterDwarfCave2, talkToFerryman, talkToDondakan, travelBackWithFerryman, talkToBoatman, talkToEngineer, talkToRolad, enterDwarvenMine, killScorpion,
 		searchCart;
 	ObjectStep mineRock;
 	QuestStep goBackUpToRolad, returnToRolad, readEntireBook, travelToKeldagrim, enterDwarfCaveWithBook, enterDwarfCave2WithBook, talkToFerrymanWithBook, talkToDondakanWithBook,
@@ -232,6 +232,12 @@ public class BetweenARock extends BasicQuestHelper
 
 		goldBars4 = new ItemRequirement("Gold bars", ItemID.GOLD_BAR, 4);
 		coins1000 = new ItemRequirement("Coins for travelling", ItemCollections.COINS, 1000);
+
+		// Recommended
+		faladorTeleport = new ItemRequirement("Teleport to Ice Mountain", ItemCollections.COMBAT_BRACELETS);
+		faladorTeleport.addAlternates(ItemID.LASSAR_TELEPORT, ItemID.MIND_ALTAR_TELEPORT);
+		faladorTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
+		faladorTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
 	}
 
 	public void loadZones()
@@ -287,6 +293,7 @@ public class BetweenARock extends BasicQuestHelper
 
 		talkToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0),
 			"Talk to Rolad at the Ice Mountain entrance to the Dwarven Mine. If you don't have an ammo mould, buy one from Nulodion whilst you're here.", pickaxe);
+		talkToRolad.addTeleport(faladorTeleport);
 		talkToRolad.addDialogStep("I'll be back later.");
 
 		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0), "Enter the Dwarven Mine.", pickaxe);
@@ -408,6 +415,14 @@ public class BetweenARock extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		List<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(faladorTeleport);
+		return reqs;
+	}
+
+	@Override
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
@@ -453,7 +468,7 @@ public class BetweenARock extends BasicQuestHelper
 			Collections.singletonList(talkToDondakan)));
 		allSteps.add(new PanelDetails("Research",
 			Arrays.asList(talkToEngineer, talkToRolad, enterDwarvenMine, searchCart, killScorpion, mineRock,
-				returnToRolad, readEntireBook), coins5, pickaxe));
+				returnToRolad, readEntireBook), Arrays.asList(coins5, pickaxe), List.of(faladorTeleport)));
 		allSteps.add(new PanelDetails("Experiment",
 			Arrays.asList(talkToDondakanWithBook, useGoldBarOnDondakan, makeGoldCannonball, useGoldCannonballOnDondakan),
 			cannonMould, goldBar));

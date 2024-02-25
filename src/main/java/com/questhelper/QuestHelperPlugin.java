@@ -38,7 +38,9 @@ import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
 import com.questhelper.statemanagement.GameStateManager;
@@ -47,6 +49,7 @@ import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectMan
 import com.google.inject.Module;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -68,6 +71,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
@@ -84,6 +88,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.bank.BankSearch;
@@ -166,6 +171,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	GameStateManager gameStateManager;
 
+	@Inject
+	public SkillIconManager skillIconManager;
+
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
@@ -180,7 +188,7 @@ public class QuestHelperPlugin extends Plugin
 	@Getter
 	private int lastTickBankUpdated = -1;
 
-	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "");
+	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Provides
@@ -315,7 +323,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
 		{
-			clientThread.invokeLater(this::updateQuestList);
+			clientThread.invokeLater(questManager::updateQuestList);
 		}
 
 		if (!event.getGroup().equals(QuestHelperConfig.QUEST_HELPER_GROUP))
@@ -337,9 +345,9 @@ public class QuestHelperPlugin extends Plugin
 			});
 		}
 
-		if (configEvents.contains(event.getKey()))
+		if (configEvents.contains(event.getKey()) || event.getKey().contains("skillfilter"))
 		{
-			clientThread.invokeLater(this::updateQuestList);
+			clientThread.invokeLater(questManager::updateQuestList);
 		}
 
 		if (configItemEvents.contains(event.getKey()))
@@ -402,24 +410,6 @@ public class QuestHelperPlugin extends Plugin
 	public List<BankTabItems> getPluginBankTagItemsForSections()
 	{
 		return questBankManager.getBankTagService().getPluginBankTagItemsForSections(false);
-	}
-
-	public void updateQuestList()
-	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers()
-				.stream()
-				.filter(config.filterListBy())
-				.filter(config.difficulty())
-				.filter(QuestDetails::showCompletedQuests)
-				.sorted(config.orderListBy())
-				.collect(Collectors.toList());
-			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers()
-				.stream()
-				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
-			SwingUtilities.invokeLater(() -> panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections()));
-		}
 	}
 
 	public QuestHelper getSelectedQuest()

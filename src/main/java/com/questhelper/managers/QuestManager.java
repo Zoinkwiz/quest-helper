@@ -235,6 +235,7 @@ public class QuestManager
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
 				.filter(QuestDetails::showCompletedQuests)
+				.filter(config.filterOutSkillsNeeded)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers()

@@ -108,6 +108,7 @@ import com.questhelper.helpers.miniquests.daddyshome.DaddysHome;
 import com.questhelper.helpers.quests.darknessofhallowvale.DarknessOfHallowvale;
 import com.questhelper.helpers.quests.deathplateau.DeathPlateau;
 import com.questhelper.helpers.quests.deathtothedorgeshuun.DeathToTheDorgeshuun;
+import com.questhelper.helpers.quests.defenderofvarrock.DefenderOfVarrock;
 import com.questhelper.helpers.quests.demonslayer.DemonSlayer;
 import com.questhelper.helpers.quests.deserttreasure.DesertTreasure;
 import com.questhelper.helpers.quests.deserttreasureii.DesertTreasureII;
@@ -463,6 +464,7 @@ public enum QuestHelperQuest
 	THE_GARDEN_OF_DEATH(new TheGardenOfDeath(), Quest.THE_GARDEN_OF_DEATH, QuestVarbits.QUEST_THE_GARDEN_OF_DEATH, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	SECRETS_OF_THE_NORTH(new SecretsOfTheNorth(), Quest.SECRETS_OF_THE_NORTH, QuestVarbits.QUEST_SECRETS_OF_THE_NORTH, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	CHILDREN_OF_THE_SUN(new ChildrenOfTheSun(), Quest.CHILDREN_OF_THE_SUN, QuestVarbits.QUEST_CHILDREN_OF_THE_SUN, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	DEFENDER_OF_VARROCK(new DefenderOfVarrock(), Quest.DEFENDER_OF_VARROCK, QuestVarbits.QUEST_DEFENDER_OF_VARROCK, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

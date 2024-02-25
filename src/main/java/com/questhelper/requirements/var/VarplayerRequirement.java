@@ -29,6 +29,8 @@ package com.questhelper.requirements.var;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import net.runelite.api.Client;
 
@@ -36,94 +38,132 @@ public class VarplayerRequirement extends AbstractRequirement
 {
 
 	private final int varplayerId;
-	private final int value;
+	private final List<Integer> values;
 	private final Operation operation;
 	private final String displayText;
 
 	private final int bitPosition;
 	private final boolean bitIsSet;
 
+	private final int bitShiftRight;
+
 	public VarplayerRequirement(int varplayerId, int value)
 	{
 		this.varplayerId = varplayerId;
-		this.value = value;
+		this.values = List.of(value);
 		this.operation = Operation.EQUAL;
 		this.displayText = null;
 
 		this.bitPosition = -1;
 		this.bitIsSet = false;
+		this.bitShiftRight = -1;
 		shouldCountForFilter = true;
 	}
 
 	public VarplayerRequirement(int varplayerId, int value, String displayText)
 	{
 		this.varplayerId = varplayerId;
-		this.value = value;
+		this.values = List.of(value);
 		this.operation = Operation.EQUAL;
 		this.displayText = displayText;
 
 		this.bitPosition = -1;
 		this.bitIsSet = false;
+		this.bitShiftRight = -1;
 		shouldCountForFilter = true;
 	}
 
 	public VarplayerRequirement(int varplayerId, int value, Operation operation)
 	{
 		this.varplayerId = varplayerId;
-		this.value = value;
+		this.values = List.of(value);
 		this.operation = operation;
 		this.displayText = null;
 
 		this.bitPosition = -1;
 		this.bitIsSet = false;
+		this.bitShiftRight = -1;
 		shouldCountForFilter = true;
 	}
 
 	public VarplayerRequirement(int varplayerId, int value, Operation operation, String displayText)
 	{
 		this.varplayerId = varplayerId;
-		this.value = value;
+		this.values = List.of(value);
 		this.operation = operation;
 		this.displayText = displayText;
 
 		this.bitPosition = -1;
 		this.bitIsSet = false;
+		this.bitShiftRight = -1;
 		shouldCountForFilter = true;
 	}
 
 	public VarplayerRequirement(int varplayerId, boolean bitIsSet, int bitPosition)
 	{
 		this.varplayerId = varplayerId;
-		this.value = -1;
+		this.values = List.of(-1);
 		this.operation = Operation.EQUAL;
 		this.displayText = null;
 
 		this.bitPosition = bitPosition;
 		this.bitIsSet = bitIsSet;
+		this.bitShiftRight = -1;
 		shouldCountForFilter = true;
 	}
 
 	public VarplayerRequirement(int varplayerId, boolean bitIsSet, int bitPosition, String displayText)
 	{
 		this.varplayerId = varplayerId;
-		this.value = -1;
+		this.values = List.of(-1);
 		this.operation = Operation.EQUAL;
 		this.displayText = displayText;
 
 		this.bitPosition = bitPosition;
 		this.bitIsSet = bitIsSet;
+		this.bitShiftRight = -1;
 		shouldCountForFilter = true;
 	}
 
+	public VarplayerRequirement(int varplayerId, int value, int bitShiftRight)
+	{
+		this.varplayerId = varplayerId;
+		this.values = List.of(value);
+		this.operation = Operation.EQUAL;
+		this.displayText = null;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
+		this.bitShiftRight = bitShiftRight;
+		shouldCountForFilter = true;
+	}
+
+	public VarplayerRequirement(int varplayerId, List<Integer> values, int bitShiftRight)
+	{
+		this.varplayerId = varplayerId;
+		this.values = values;
+		this.operation = Operation.EQUAL;
+		this.displayText = null;
+
+		this.bitPosition = -1;
+		this.bitIsSet = false;
+		this.bitShiftRight = bitShiftRight;
+		shouldCountForFilter = true;
+	}
 
 	@Override
 	public boolean check(Client client)
 	{
+		int varpValue = client.getVarpValue(varplayerId);
 		if (bitPosition >= 0)
 		{
-			return bitIsSet == BigInteger.valueOf(client.getVarpValue(varplayerId)).testBit(bitPosition);
+			return bitIsSet == BigInteger.valueOf(varpValue).testBit(bitPosition);
 		}
-		return operation.check(client.getVarpValue(varplayerId), value);
+		else if (bitShiftRight >= 0)
+		{
+			return values.stream().anyMatch(value -> operation.check(varpValue >> bitShiftRight, value));
+		}
+		return values.stream().anyMatch(value -> operation.check(varpValue, value));
 	}
 
 	@Override
@@ -137,6 +177,6 @@ public class VarplayerRequirement extends AbstractRequirement
 		{
 			return varplayerId + " must have the " + bitPosition + " bit set.";
 		}
-		return varplayerId + " must be + " + operation.name().toLowerCase(Locale.ROOT) + " " + value;
+		return varplayerId + " must be + " + operation.name().toLowerCase(Locale.ROOT) + " " + values;
 	}
 }

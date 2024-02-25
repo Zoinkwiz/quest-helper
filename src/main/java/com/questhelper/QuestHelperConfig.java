@@ -167,7 +167,7 @@ public interface QuestHelperConfig extends Config
 		@Getter
 		private final String displayName;
 
-		protected final boolean shouldDisplay;
+		private final boolean shouldDisplay;
 
 		QuestFilter(Predicate<QuestHelper> predicate)
 		{

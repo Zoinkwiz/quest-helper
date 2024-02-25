@@ -99,8 +99,6 @@ public class WitchsHouse extends BasicQuestHelper
 
 		steps.put(1, getTheMagnet);
 		steps.put(2, getTheMagnet);
-		// TODO: Verify this is correct (I believe reading the diary adds 2 to var values)
-		steps.put(4, getTheMagnet);
 
 		ConditionalStep killExperiment = new ConditionalStep(this, getKey);
 		killExperiment.addStep(new Conditions(inShed, experimentNearby), killWitchsExperiment);
@@ -118,6 +116,7 @@ public class WitchsHouse extends BasicQuestHelper
 		killExperiment.addStep(houseKey.alsoCheckBank(questBank), enterHouse);
 
 		steps.put(3, killExperiment);
+		// TODO: Add 'pick up diary', 'read diary' after step 3
 		steps.put(5, killExperiment);
 
 		ConditionalStep returnBall = new ConditionalStep(this, getKey);

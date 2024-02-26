@@ -91,6 +91,7 @@ public class HauntedMine extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
+		// TODO: Should the lever room implement PuzzleWrapper?
 		loadZones();
 		setupRequirements();
 		setupConditions();

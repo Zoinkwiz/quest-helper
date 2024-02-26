@@ -99,6 +99,7 @@ public class HazeelCult extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
+		// TODO: Should the valves section implement the PuzzleWrapper?
 		loadZones();
 		setupRequirements();
 		setupSteps();

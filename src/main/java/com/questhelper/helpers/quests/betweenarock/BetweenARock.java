@@ -48,6 +48,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -368,7 +369,7 @@ public class BetweenARock extends BasicQuestHelper
 		talkToKhorvak.addDialogStep("No, I've had enough of buying drinks for people!");
 		talkToKhorvak.addSubSteps(enterKhorvakRoom);
 
-		assembleSchematic = new PuzzleStep(this, schematicHighlight);
+		assembleSchematic = new PuzzleWrapperStep(this, new PuzzleStep(this, schematicHighlight), "Assemble the schematics.");
 
 		enterDwarfCaveWithHelmet = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0), "Prepare" +
 			" to for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,

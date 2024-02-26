@@ -121,7 +121,8 @@ public class ObjectStep extends DetailedQuestStep
 		newStep.addAlternateObjects(alternateObjectIDs);
 		newStep.setMaxObjectDistance(maxObjectDistance);
 		newStep.setMaxRenderDistance(maxRenderDistance);
-		for (Requirement tp : teleport) {
+		for (Requirement tp : teleport)
+		{
 			newStep.addTeleport(tp);
 		}
 

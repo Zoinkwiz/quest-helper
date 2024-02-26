@@ -36,6 +36,7 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.OwnerStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -86,7 +87,11 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 
 	Requirement[] hasFluids;
 
-	DetailedQuestStep goUpLadder, goUpStairs, goDownToFirstFloor, searchPotionCupboard, inspectRefinery, readNote, getFluid, useFluidOnRefinery, activateRefinery;
+	DetailedQuestStep goUpLadder, goUpStairs, goDownToFirstFloor, searchPotionCupboard, inspectRefinery, readNote, activateRefinery;
+
+	ObjectStep useFluidOnRefineryRealStep, getFluidRealStep;
+
+	QuestStep getFluid, useFluidOnRefinery;
 
 	Zone firstFloor, basement, secondFloor;
 
@@ -142,11 +147,11 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 			{
 				if (!fluidFound)
 				{
-					getFluid.addWidgetChoice(correctFluid-1, 187, 3);
-					getFluid.setText("Take Fluid " + correctFluid + " from the table.");
+					getFluidRealStep.addWidgetChoice(correctFluid-1, 187, 3);
+					getFluidRealStep.setText("Take Fluid " + correctFluid + " from the table.");
 
-					useFluidOnRefinery.addRequirement(fluids[correctFluid]);
-					useFluidOnRefinery.addIcon(fluids[correctFluid].getId());
+					useFluidOnRefineryRealStep.addRequirement(fluids[correctFluid]);
+					useFluidOnRefineryRealStep.addIcon(fluids[correctFluid].getId());
 
 					fluidFound = true;
 				}
@@ -171,7 +176,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 		}
 		else
 		{
-			startUpStep(goUpStairs);
+			startUpStep(getFluid);
 		}
 	}
 
@@ -298,9 +303,11 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 		searchPotionCupboard = new ObjectStep(getQuestHelper(), ObjectID.CUPBOARD_33522, new WorldPoint(1387, 3820, 1), "Search the cupboard on the east wall.");
 		inspectRefinery = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Inspect the refinery.");
 		inspectRefinery.addDialogStep("Yes.");
-		readNote = new DetailedQuestStep(getQuestHelper(), "Read the old notes", oldNotes);
-		getFluid = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34596, new WorldPoint(1382, 3826, 1), "Attempt to take the correct fluid from the table.");
-		useFluidOnRefinery = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Use the fluid on the refinery.");
+		readNote = new DetailedQuestStep(getQuestHelper(), "Read the old notes.", oldNotes);
+		getFluidRealStep = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34596, new WorldPoint(1382, 3826, 1), "Attempt to take the correct fluid from the table.");
+		getFluid = new PuzzleWrapperStep(getQuestHelper(), getFluidRealStep, getFluidRealStep.copy());
+		useFluidOnRefineryRealStep = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Use the fluid on the refinery.");
+		useFluidOnRefinery = new PuzzleWrapperStep(getQuestHelper(), useFluidOnRefineryRealStep, useFluidOnRefineryRealStep.copy());
 		useFluidOnRefinery.addDialogStep("Yes.");
 
 		activateRefinery = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Activate the refinery.");

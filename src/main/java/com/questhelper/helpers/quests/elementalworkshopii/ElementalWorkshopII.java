@@ -126,6 +126,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
+		// TODO: To what degree should this quest make use of PuzzleWrapper?
 		setupRequirements();
 		setupZones();
 		setupConditions();

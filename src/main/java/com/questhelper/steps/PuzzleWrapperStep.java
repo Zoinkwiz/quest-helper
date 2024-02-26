@@ -27,6 +27,7 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import java.util.List;
 
 public class PuzzleWrapperStep extends ConditionalStep
 {
@@ -34,7 +35,14 @@ public class PuzzleWrapperStep extends ConditionalStep
 	final DetailedQuestStep noSolvingStep;
 	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
-		super(questHelper, step, requirements);
+		super(questHelper, step, "Solve the puzzle.", requirements);
+		this.noSolvingStep = new DetailedQuestStep(questHelper, "If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.");
+		this.questHelperConfig = questHelper.getConfig();
+	}
+
+	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, String text, Requirement... requirements)
+	{
+		super(questHelper, step, text, requirements);
 		this.noSolvingStep = new DetailedQuestStep(questHelper, "Solve the puzzle. If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.");
 		this.questHelperConfig = questHelper.getConfig();
 	}
@@ -49,5 +57,19 @@ public class PuzzleWrapperStep extends ConditionalStep
 		}
 
 		super.updateSteps();
+	}
+
+	@Override
+	public List<String> getText()
+	{
+		if (questHelperConfig.solvePuzzles())
+		{
+			if (currentStep == null)
+			{
+				return steps.get(null).getText();
+			}
+			return currentStep.getText();
+		}
+		return super.getText();
 	}
 }

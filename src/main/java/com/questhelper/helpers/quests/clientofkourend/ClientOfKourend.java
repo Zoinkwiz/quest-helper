@@ -130,14 +130,15 @@ public class ClientOfKourend extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToVeos = new NpcStep(this, NpcID.VEOS_10727, new WorldPoint(1824, 3690, 0), "Talk to Veos on the Port Piscarilius docks. You can travel to him by talking to Veos in Port Sarim.");
+		talkToVeos = new NpcStep(this, NpcID.VEOS_10727, new WorldPoint(1824, 3690, 0),
+			"Talk to Veos on the Port Piscarilius docks. You can travel to him by talking to Veos in Port Sarim.");
 		talkToVeos.addDialogStep("Sounds interesting! How can I help?");
 		talkToVeos.addDialogStep("Can you take me to Great Kourend?");
 		talkToVeos.addDialogStep("Have you got any quests for me?");
 		talkToVeos.addDialogStep("Let's talk about your client...");
 		talkToVeos.addDialogStep("I've lost something you've given me.");
 
-		useFeatherOnScroll = new DetailedQuestStep(this, "Use a feather on the Enchanted Scroll", feather, enchantedScroll);
+		useFeatherOnScroll = new DetailedQuestStep(this, "Use a feather on the Enchanted Scroll.", feather, enchantedScroll);
 
 		talkToLeenz = new NpcStep(this, NpcID.LEENZ, new WorldPoint(1807, 3726, 0), "Talk to Leenz in Port Piscarilius general store.", enchantedQuill);
 		talkToLeenz.addDialogStep("Can I ask you about Port Piscarilius?");

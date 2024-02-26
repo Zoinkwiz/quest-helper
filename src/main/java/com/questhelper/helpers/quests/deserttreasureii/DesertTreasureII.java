@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.deserttreasureii;
 
-import com.questhelper.tools.Icon;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -60,7 +59,6 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 
-import java.awt.image.BufferedImage;
 import java.util.*;
 
 import net.runelite.api.ItemID;
@@ -715,9 +713,9 @@ public class DesertTreasureII extends BasicQuestHelper
 		talkToElissa.addTeleport(senntistenTeleport);
 
 		vardorvisSteps = new VardorvisSteps(this, talkToElissa, questBank);
-		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "Do Perseriya steps."), runeliteObjectManager);
+		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "Do Perseriya steps."));
 		sucellusSteps = new SucellusSteps(this, new DetailedQuestStep(this, "Do Sucellus steps."));
-		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."), questBank, runeliteObjectManager);
+		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."), questBank);
 
 		returnToDesertWithFinalMedallion = new ObjectStep(this, ObjectID.VAULT_DOOR_46743,
 			new WorldPoint(3511, 2971, 0),
@@ -851,7 +849,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("The Vault",
 			Arrays.asList(attemptToEnterVaultDoor, talkToAsgarnia, inspectPlaque, inspectStatueNE,
 				inspectStatueNW, inspectStatueSW, inspectStatueSE, talkToAsgarniaAgain),
-			Arrays.asList(ancientMagicksActive),
+			List.of(ancientMagicksActive),
 			Arrays.asList(nardahTeleport, waterSource, senntistenTeleport)));
 
 		allSteps.add(new PanelDetails("Learning of the Ancients",
@@ -861,11 +859,11 @@ public class DesertTreasureII extends BasicQuestHelper
 				searchCrateForCharges, imbueAtAltar, chargeGolem, solveGolemPuzzle, operateGolem, talkToBanikanAfterGolem,
 				operateGolemFrostenhorn),
 			Arrays.asList(combatGear, allBursts),
-			Arrays.asList(senntistenTeleport)));
+			List.of(senntistenTeleport)));
 
 		PanelDetails vardorvisPanel = new PanelDetails("Vardorvis",
 			vardorvisSteps.getDisplaySteps(),
-			Arrays.asList(combatGear),
+			Collections.singletonList(combatGear),
 			Arrays.asList(xericTalisman, freezes));
 		vardorvisPanel.setLockingStep(vardorvisSteps);
 		allSteps.add(vardorvisPanel);
@@ -878,15 +876,15 @@ public class DesertTreasureII extends BasicQuestHelper
 		allSteps.add(perseriyaPanel);
 		allSteps.add(new PanelDetails("Perseriya - Room 1",
 			perseriyaSteps.getRoom1Steps(),
-			Arrays.asList(facemask),
+			Collections.singletonList(facemask),
 			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
 		allSteps.add(new PanelDetails("Perseriya - Room 2",
 			perseriyaSteps.getRoom2Steps(),
-			Arrays.asList(facemask),
+			List.of(facemask),
 			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
 		allSteps.add(new PanelDetails("Perseriya - Room 3",
 			perseriyaSteps.getRoom3Steps(),
-			Arrays.asList(facemask),
+			List.of(facemask),
 			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
 		allSteps.add(new PanelDetails("Perseriya - The battle",
 			perseriyaSteps.getBattleSteps(),

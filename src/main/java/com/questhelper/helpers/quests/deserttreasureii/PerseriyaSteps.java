@@ -50,7 +50,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ItemID;
@@ -133,12 +132,9 @@ public class PerseriyaSteps extends ConditionalStep
 
 	SpellbookRequirement ancientMagicksActive;
 
-	RuneliteObjectManager runeliteObjectManager;
-
-	public PerseriyaSteps(QuestHelper questHelper, QuestStep defaultStep, RuneliteObjectManager runeliteObjectManager) // goTalkToCatalyticGuardian
+	public PerseriyaSteps(QuestHelper questHelper, QuestStep defaultStep) // goTalkToCatalyticGuardian
 	{
 		super(questHelper, defaultStep);
-		this.runeliteObjectManager = runeliteObjectManager;
 		setupItemRequirements();
 		setupZones();
 		setupConditions();

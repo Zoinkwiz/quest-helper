@@ -277,6 +277,7 @@ public class MisthalinMystery extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		// TODO: Should this implement PuzzleWrapper?
 		talkToAbigale = new NpcStep(this, NpcID.ABIGALE, new WorldPoint(3237, 3155, 0), "Talk to Abigale in the south east corner of Lumbridge Swamp.");
 		talkToAbigale.addDialogStep("What has happened here?");
 		talkToAbigale.addDialogStep("What do you want me to do?");

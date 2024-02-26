@@ -49,6 +49,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -513,13 +514,15 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		talkToHazeelWeiss = new NpcStep(this, NpcID.HAZEEL_12051, new WorldPoint(2903, 10335, 0), "Talk to Hazeel to the west and tell him about what happened.");
 		searchBarrel = new ObjectStep(this, ObjectID.BARREL_46609, new WorldPoint(2923, 10322, 0),
 			"Search the barrel south of the room you fought the assassin.");
-		openCentreGate = new ObjectStep(this, ObjectID.GATE_46602, new WorldPoint(2924, 10329, 0),
-			"Enter the centre room. Use the code \"BLOOD\" to unlock the gate.");
-		solveCenterGate = new SolveDoorCode(this);
+		openCentreGate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.GATE_46602, new WorldPoint(2924, 10329, 0),
+			"Enter the centre room. Use the code \"BLOOD\" to unlock the gate."), new ObjectStep(this, ObjectID.GATE_46602, new WorldPoint(2924, 10329, 0),
+			"Unlock the gate to the centre room by working out the correct code."));
+		solveCenterGate =  new PuzzleWrapperStep(this, new SolveDoorCode(this), "Work out and enter the code to the central room's gate.");
 		openCentreGate.addSubSteps(solveCenterGate);
-		openNorthChest = new ObjectStep(this, ObjectID.CHEST_46619,
-			new WorldPoint(2919, 10331, 0), "Open the north chest using the code \"7402\".");
-		solveChestPuzzle = new SolveChestCode(this);
+		openNorthChest =  new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CHEST_46619,
+			new WorldPoint(2919, 10331, 0), "Open the north chest using the code \"7402\"."),  new ObjectStep(this, ObjectID.CHEST_46619,
+			new WorldPoint(2919, 10331, 0), "Open the north chest after working out the code for it."));
+		solveChestPuzzle = new PuzzleWrapperStep(this, new SolveChestCode(this), "Open the north chest after working out its code.");
 		openNorthChest.addSubSteps(solveChestPuzzle);
 		getTinderbox = new ObjectStep(this, ObjectID.CRATE_46608, new WorldPoint(2916, 10329, 0),
 			"Get a tinderbox from the crate in the west of the central room.");
@@ -527,9 +530,10 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		lightSE = new ObjectStep(this, ObjectID.BRAZIER_46614, new WorldPoint(2922, 10325, 0), "Light the South East Brazier.");
 		lightNE = new ObjectStep(this, ObjectID.BRAZIER_46614, new WorldPoint(2922, 10331, 0), "Light the North East Brazier.");
 		lightSW = new ObjectStep(this, ObjectID.BRAZIER_46614, new WorldPoint(2916, 10325, 0), "Light the South West Brazier.");
-		openWestChest = new ObjectStep(this, ObjectID.CHEST_46618, new WorldPoint(2916, 10327, 0), "Open the western Chest.");
-		openNorthGate = new ObjectStep(this, ObjectID.GATE_46601, new WorldPoint(2916, 10338, 0),
-			"Open the north gate using the code LEFT - UP - LEFT - DOWN.");
+		openWestChest = new ObjectStep(this, ObjectID.CHEST_46618, new WorldPoint(2916, 10327, 0), "Open the western chest.");
+		openNorthGate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.GATE_46601, new WorldPoint(2916, 10338, 0),
+		"Open the north gate using the code LEFT - UP - LEFT - DOWN."), new ObjectStep(this, ObjectID.GATE_46601, new WorldPoint(2916, 10338, 0),
+			"Open the north gate using a code you can work out."));
 		// VarClientInt 1120 represents number of arrows
 		// Left 1119 3->15
 		// Right 1119 1->5
@@ -542,7 +546,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		// Down 810.7
 		// Left 810.8
 		// Right 810.9
-		useLeverOnMechanism = new ObjectStep(this, NullObjectID.NULL_46900, new WorldPoint(2917, 10342, 0), "Use the handle on the Lever mechanism",
+		useLeverOnMechanism = new ObjectStep(this, NullObjectID.NULL_46900, new WorldPoint(2917, 10342, 0), "Use the handle on the lever mechanism",
 			leverHandle.highlighted());
 		useLeverOnMechanism.addIcon(leverHandle.getId());
 		useLeverOnMechanism.addDialogStep("Yes.");

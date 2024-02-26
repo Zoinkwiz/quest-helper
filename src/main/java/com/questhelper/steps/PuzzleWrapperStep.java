@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class PuzzleWrapperStep extends ConditionalStep
 {
@@ -71,5 +72,114 @@ public class PuzzleWrapperStep extends ConditionalStep
 			return currentStep.getText();
 		}
 		return super.getText();
+	}
+
+	@Override
+	public void addDialogStep(String choice)
+	{
+		steps.get(null).addDialogStep(choice);
+	}
+
+	@Override
+	public void addDialogStep(Pattern pattern)
+	{
+		steps.get(null).addDialogStep(pattern);
+	}
+
+	@Override
+	public void resetDialogSteps()
+	{
+		steps.get(null).resetDialogSteps();
+	}
+
+	@Override
+	public void addDialogStepWithExclusion(String choice, String exclusionString)
+	{
+		steps.get(null).addDialogStepWithExclusion(choice, exclusionString);
+	}
+
+	@Override
+	public void addDialogStepWithExclusions(String choice, String... exclusionString)
+	{
+		steps.get(null).addDialogStepWithExclusions(choice, exclusionString);
+	}
+
+	@Override
+	public void addDialogStep(int id, String choice)
+	{
+		steps.get(null).addDialogStep(id, choice);
+	}
+
+	@Override
+	public void addDialogStep(int id, Pattern pattern)
+	{
+		steps.get(null).addDialogStep(id, pattern);
+	}
+
+	@Override
+	public void addDialogSteps(String... newChoices)
+	{
+		steps.get(null).addDialogSteps(newChoices);
+	}
+
+	@Override
+	public void addDialogConsideringLastLineCondition(String dialogString, String choiceValue)
+	{
+		steps.get(null).addDialogConsideringLastLineCondition(dialogString, choiceValue);
+	}
+
+	@Override
+	public void addDialogChange(String choice, String newText)
+	{
+		steps.get(null).addDialogChange(choice, newText);
+	}
+
+	@Override
+	public void addWidgetChoice(String text, int groupID, int childID)
+	{
+		steps.get(null).addWidgetChoice(text, groupID, childID);
+	}
+
+	@Override
+	public void addWidgetChoice(String text, int groupID, int childID, int groupIDForChecking)
+	{
+		steps.get(null).addWidgetChoice(text, groupID, childID, groupIDForChecking);
+
+	}
+
+	@Override
+	public void addWidgetChoice(int id, int groupID, int childID)
+	{
+		steps.get(null).addWidgetChoice(id, groupID, childID);
+	}
+
+	@Override
+	public void addWidgetChange(String choice, int groupID, int childID, String newText)
+	{
+		steps.get(null).addWidgetChange(choice, groupID, childID, newText);
+	}
+
+	@Override
+	public void clearWidgetHighlights() {
+		steps.get(null).clearWidgetHighlights();
+	}
+
+	@Override
+	public void addWidgetHighlight(int groupID, int childID)
+	{
+		steps.get(null).addWidgetHighlight(groupID, childID);
+	}
+
+
+	@Override
+	protected void setupIcon()
+	{
+		steps.get(null).setupIcon();
+	}
+
+	@Override
+	public void addIcon(int iconItemID)
+	{
+		steps.get(null).addIcon(iconItemID);
 	}
 }

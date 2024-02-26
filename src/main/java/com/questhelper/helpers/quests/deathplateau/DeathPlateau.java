@@ -47,6 +47,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -260,11 +261,21 @@ public class DeathPlateau extends BasicQuestHelper
 
 		readIou = new DetailedQuestStep(this, "Read the IOU, and then keep the Combination for the end of the quest.", iouHighlight);
 
-		placeRedStone = new ObjectStep(this, ObjectID.STONE_MECHANISM_3677, new WorldPoint(2894, 3563, 0), "Use the red stone on the mechanism.", redStone);
-		placeBlueStone = new ObjectStep(this, ObjectID.STONE_MECHANISM, new WorldPoint(2894, 3562, 0), "Use the blue stone on the mechanism.", blueStone);
-		placeYellowStone = new ObjectStep(this, ObjectID.STONE_MECHANISM, new WorldPoint(2895, 3562, 0), "Use the yellow stone on the mechanism.", yellowStone);
-		placePinkStone = new ObjectStep(this, ObjectID.STONE_MECHANISM_3677, new WorldPoint(2895, 3563, 0), "Use the pink stone on the mechanism.", pinkStone);
-		placeGreenStone = new ObjectStep(this, ObjectID.STONE_MECHANISM, new WorldPoint(2895, 3564, 0), "Use the green stone on the mechanism.", greenStone);
+		placeRedStone = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.STONE_MECHANISM_3677, new WorldPoint(2894, 3563, 0), "Use the red stone on the mechanism.", redStone),
+			"Work out where to place the red stone on the mechanism.");
+		placeBlueStone = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.STONE_MECHANISM, new WorldPoint(2894, 3562, 0), "Use the blue stone on the mechanism.", blueStone),
+			"Work out where to place the red stone on the mechanism.");
+		placeYellowStone = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.STONE_MECHANISM, new WorldPoint(2895, 3562, 0), "Use the yellow stone on the mechanism.", yellowStone),
+			"Work out where to place the red stone on the mechanism.");
+		placePinkStone = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.STONE_MECHANISM_3677, new WorldPoint(2895, 3563, 0), "Use the pink stone on the mechanism.", pinkStone),
+			"Work out where to place the red stone on the mechanism.");
+		placeGreenStone = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.STONE_MECHANISM, new WorldPoint(2895, 3564, 0), "Use the green stone on the mechanism.", greenStone),
+			"Work out where to place the red stone on the mechanism.");
 		placeStones = new DetailedQuestStep(this, new WorldPoint(2896, 3563, 0), "Go back to Burthorpe castle, and place the coloured stone balls in the correct spots on the mechanism.");
 		placeStones.addSubSteps(placeRedStone, placeBlueStone, placeYellowStone, placePinkStone, placeGreenStone);
 

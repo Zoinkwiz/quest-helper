@@ -47,6 +47,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
@@ -811,9 +812,9 @@ public class SinsOfTheFather extends BasicQuestHelper
 		templeTrek = new NpcStep(this, NpcID.IVAN_STROM_9530, new WorldPoint(3444, 3485, 0),
 			"Speak to Ivan Strom outside the east entrance of Paterdomus to go temple treking with him.");
 		talkToTeamSteps = new DetailedQuestStep(this, "Convince the Myreque to take on Drakan.");
-		valveStep = new ValveStep(this);
+		valveStep = new PuzzleWrapperStep(this, new ValveStep(this), "Set the valves in the rooms to the values calculated from the note.");
 		createFlailSteps = new DetailedQuestStep(this, "Create the blisterwood flail.", blisterwoodFlail);
-		doDoorPuzzle = new DoorPuzzleStep(this);
+		doDoorPuzzle = new PuzzleWrapperStep(this, new DoorPuzzleStep(this), "Open the mausoleum's door.");
 	}
 
 	@Override

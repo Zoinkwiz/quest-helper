@@ -45,6 +45,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.PuzzleStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -253,10 +254,8 @@ public class AnimalMagnetism extends BasicQuestHelper
 
 		getNotesFromAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Talk to Ava to receive the research notes.");
-		if (config.showPuzzles()) translateNotes = new PuzzleStep(this, "Translate research notes by clicking on all the highlighted switches.",
-			new PuzzleSolver()::solver,
-			researchNotes);
-		else translateNotes = new PuzzleStep(this, "Solve the puzzle, If you'd like the solution enable puzzle solutions in the plugin settings.", null, researchNotes);
+		translateNotes = new PuzzleWrapperStep(this, new PuzzleStep(this, "Translate research notes by clicking on all the highlighted switches.",
+			new PuzzleSolver()::solver, researchNotes), "Translate the research notes.");
 		giveNotesToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Give Ava the translated research notes.",
 			translatedNotes);

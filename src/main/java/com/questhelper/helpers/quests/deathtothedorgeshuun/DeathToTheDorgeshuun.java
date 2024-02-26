@@ -49,6 +49,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,7 +83,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		zanikWaitingFor5, isDisguisedZanikFollowing, zanikPickedUp, ropeAddedToHole, minedRocks, inSwamp, inJunaRoom, inMill, killedGuards,
 		talkedToJohn;
 
-	DetailedQuestStep goDownFromF2, talkToMistag, talkToZanik, talkToMistagToTravel, talkToCook, talkToDuke, talkToHans,
+	QuestStep goDownFromF2, talkToMistag, talkToZanik, talkToMistagToTravel, talkToCook, talkToDuke, talkToHans,
 		talkToWoman, talkToBob, talkToAereck, talkToGuide, approachGoblins, talkToShopkeeper, goOutside, talkToZanikAboutOrigin,
 		listenToSpeaker, standNearTrapdoor, goDownTrapdoor, standBehindGuard1, talkToGuard1, talkToGuard2, tellZanikToKillGuard3, talkToJohanhus,
 		standNearGuard4, tellZanikToWaitForGuard4, runSouthToLureGuard4, standNearGuard5, tellZanikToWaitForGuard5, lureGuard5, listenToDoor,
@@ -338,34 +339,63 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		goDownTrapdoor = new ObjectStep(this, NullObjectID.NULL_15766, new WorldPoint(3166, 9622, 0), "Picklock the trapdoor south of the stage and go down it.");
 
-		standBehindGuard1 = new DetailedQuestStep(this, new WorldPoint(2569, 5189, 0), "Stand behind the guard and talk to them so they turn their back to Zanik.");
-		talkToGuard1 = new NpcStep(this, NpcID.GUARD_4516, new WorldPoint(2570, 5189, 0), "Talk to them so they turn their back to Zanik.");
+		standBehindGuard1 = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, new WorldPoint(2569, 5189, 0), "Stand behind the guard and talk to them so they turn their back to Zanik."),
+			"Sneak your way to the end of the secret area.");
+		talkToGuard1 = new PuzzleWrapperStep(this,
+			new NpcStep(this, NpcID.GUARD_4516, new WorldPoint(2570, 5189, 0), "Talk to them so they turn their back to Zanik."),
+				"Sneak your way to the end of the secret area.");
 		standBehindGuard1.addSubSteps(talkToGuard1);
 
-		talkToGuard2 = new NpcStep(this, NpcID.GUARD_4517, new WorldPoint(2566, 5192, 0), "Go through the nearby crack, then out the other side. Talk to the second guard to turn them around so Zanik can kill them.");
-		talkToGuard2.setLinePoints(Arrays.asList(
+		NpcStep talkToGuard2RealStep = new NpcStep(this, NpcID.GUARD_4517, new WorldPoint(2566, 5192, 0),
+			"Go through the nearby crack, then out the other side. Talk to the second guard to turn them around so Zanik can kill them.");
+		talkToGuard2RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2569, 5189, 0),
 			new WorldPoint(2569, 5195, 0),
 			new WorldPoint(2566, 5195, 0),
 			new WorldPoint(2566, 5193, 0)
 		));
+		talkToGuard2 = new PuzzleWrapperStep(this,
+			talkToGuard2RealStep,
+			"Sneak your way to the end of the secret area.");
 
-		tellZanikToKillGuard3 = new NpcStep(this, NpcID.ZANIK_4509, "Wait for the third guard to be walking away, then tell Zanik to kill them.");
-		tellZanikToKillGuard3.addDialogStep("Now!");
-		standNearGuard4 = new DetailedQuestStep(this, new WorldPoint(2576, 5195, 0), "Stand near to the next guard, then tell Zanik to wait there.");
-		tellZanikToWaitForGuard4 = new NpcStep(this, NpcID.ZANIK_4509, "Tell Zanik to wait.");
-		tellZanikToWaitForGuard4.addDialogStep("Wait here.");
-		runSouthToLureGuard4 = new DetailedQuestStep(this, new WorldPoint(2577, 5191, 0), "Run east then south to lure the guard past Zanik.");
-		standNearGuard5 = new DetailedQuestStep(this, new WorldPoint(2577, 5200, 0), "Stand in the north east, just out of sight of the last guard, and tell Zanik to wait there.");
-		tellZanikToWaitForGuard5 = new NpcStep(this, NpcID.ZANIK_4509, "Tell Zanik to wait.");
-		tellZanikToWaitForGuard5.addDialogStep("Wait here.");
-		lureGuard5 = new DetailedQuestStep(this, new WorldPoint(2566, 5201, 0), "Approach the final guard from the west so Zanik can kill them.");
-		lureGuard5.setLinePoints(Arrays.asList(
+		NpcStep tellZanikToKillGuard3RealStep = new NpcStep(this, NpcID.ZANIK_4509, "Wait for the third guard to be walking away, then tell Zanik to kill them.");
+		tellZanikToKillGuard3RealStep.addDialogStep("Now!");
+		tellZanikToKillGuard3 = new PuzzleWrapperStep(this,
+			tellZanikToKillGuard3RealStep,
+			"Sneak your way to the end of the secret area.");
+		standNearGuard4 = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, new WorldPoint(2576, 5195, 0), "Stand near to the next guard, then tell Zanik to wait there."),
+			"Sneak your way to the end of the secret area.");
+
+		NpcStep tellZanikToWaitForGuard4RealStep = new NpcStep(this, NpcID.ZANIK_4509, "Tell Zanik to wait.");
+		tellZanikToWaitForGuard4RealStep.addDialogStep("Wait here.");
+		tellZanikToWaitForGuard4 = new PuzzleWrapperStep(this,
+			tellZanikToWaitForGuard4RealStep, "Sneak your way to the end of the secret area.");
+
+		runSouthToLureGuard4 = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, new WorldPoint(2577, 5191, 0), "Run east then south to lure the guard past Zanik."),
+			"Sneak your way to the end of the secret area.");
+		standNearGuard5 = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, new WorldPoint(2577, 5200, 0), "Stand in the north east, just out of sight of the last guard, and tell Zanik to wait there."),
+			"Sneak your way to the end of the secret area.");
+
+		NpcStep tellZanikToWaitForGuard5RealStep = new NpcStep(this, NpcID.ZANIK_4509, "Tell Zanik to wait.");
+		tellZanikToWaitForGuard5RealStep.addDialogStep("Wait here.");
+		tellZanikToWaitForGuard5 = new PuzzleWrapperStep(this,
+			tellZanikToWaitForGuard5RealStep,
+			"Sneak your way to the end of the secret area.");
+
+		DetailedQuestStep lureGuard5RealStep = new DetailedQuestStep(this, new WorldPoint(2566, 5201, 0), "Approach the final guard from the west so Zanik can kill them.");
+		lureGuard5RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2577, 5199, 0),
 			new WorldPoint(2577, 5195, 0),
 			new WorldPoint(2566, 5195, 0),
 			new WorldPoint(2566, 5201, 0)
 		));
+		lureGuard5 = new PuzzleWrapperStep(this,
+			lureGuard5RealStep,
+			"Sneak your way to the end of the secret area.");
 
 		checkZanikCorpse = new ObjectStep(this, NullObjectID.NULL_15712, new WorldPoint(3161, 3246, 0), "Inspect Zanik outside the H.A.M base.");
 		listenToDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_15757, new WorldPoint(2571, 5204, 0), "Listen to the large door.");

@@ -52,6 +52,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,7 +116,8 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	ConditionalStep gettingTheKaramjaKey, gettingTheKourendKey, gettingTheVarrockKey, gettingTheFremennikKey;
 
-	DetailedQuestStep enterKharaziMaze, getToCentreOfMaze;
+	DetailedQuestStep enterKharaziMaze;
+	PuzzleWrapperStep getToCentreOfMaze;
 
 	DetailedQuestStep talkToReldo, searchBookcase, talkToReldoAgain, talkToReldoAgainNoBook, talkToSarah, talkToAva, usePipeOnDragonstone, talkToAvaAgain,
 		talkToAvaAgainNoOrb, useLocatorInSwamp;
@@ -753,7 +755,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		enterHouseWithMapPieces.addSubSteps(goDownWithMapPieces, talkToDallasWithMapPieces);
 
 		startMapPuzzle = new ObjectStep(this, NullObjectID.NULL_29910, new WorldPoint(3764, 3869, 0), "Click on the incomplete map for a puzzle to solve.");
-		solveMap = new MapPuzzle(this);
+		solveMap = new PuzzleWrapperStep(this, new MapPuzzle(this), "Solve the map tile puzzle.");
 		startMapPuzzle.addSubSteps(solveMap);
 		talkToDallasAfterSolvingMap = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(3762, 3868, 0), "Talk to Dallas after solving the map.");
 
@@ -818,7 +820,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		goDownInCryptF1ToF0 = new ObjectStep(this, ObjectID.STAIRCASE_32394, new WorldPoint(1511, 9979, 2), "Climb down to the bottom of the crypts.");
 		goDownInCryptF2ToF1.addSubSteps(goDownInCryptF1ToF0);
 		searchTombInCrypt = new ObjectStep(this, NullObjectID.NULL_29901, new WorldPoint(1504, 9939, 1), "Inspect the tomb in the south room.");
-		solveCryptPuzzle = new CryptPuzzle(this);
+		solveCryptPuzzle = new PuzzleWrapperStep(this, new CryptPuzzle(this), "Solve the crypt puzzle.");
 		searchTombForCryptKey = new ObjectStep(this, NullObjectID.NULL_29901, new WorldPoint(1504, 9939, 1), "Inspect the tomb for the key.");
 
 		// Varrock key piece
@@ -855,13 +857,11 @@ public class DragonSlayerII extends BasicQuestHelper
 		killVorkathSidebar = new NpcStep(this, NpcID.VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
 			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video on it first.", rangedCombatGear);
 		killVorkathSidebar.addSubSteps(killVorkath);
-
-			killVorkathSidebar.addText("Protect from Magic, and drink an antifire and antivenom potion.");
+		killVorkathSidebar.addText("Protect from Magic, and drink an antifire and antivenom potion.");
 		killVorkathSidebar.addText("When Vorkath fires a pink fireball it'll turn your prayer off.");
 		killVorkathSidebar.addText("When Vorkath shoots an orange fireball into the air, move away from the spot you're on.");
 		killVorkathSidebar.addText("When Vorkath spits acid everywhere, WALK around to avoid the fireballs he will shoot.");
 		killVorkathSidebar.addText("When Vorkath freezes you, kill the zombified spawn that appears before it reaches you.");
-
 
 		enterVorkathCave = new ObjectStep(this, ObjectID.CAVE_31999, new WorldPoint(2249, 4078, 0), "Enter the cave on the north west of Ungael.");
 		enterVorkathCave.addDialogStep("I'm sure.");
@@ -872,8 +872,9 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		// Karamja key piece
 		enterKharaziMaze = new ObjectStep(this, ObjectID.CAVE_32479, new WorldPoint(2944, 2895, 0), "Go down the staircase in the south east of the Kharazi Jungle. MAKE SURE TO HAVE AUTO-RETALIATE OFF BEFORE ENTERING.");
-		getToCentreOfMaze = new ObjectStep(this, NullObjectID.NULL_30730, new WorldPoint(2848, 9248, 0), "Navigate to the middle of the maze, disarming any traps in the way.");
-		getToCentreOfMaze.setLinePoints(Arrays.asList(
+		ObjectStep getToCentreOfMazeRealStep = new ObjectStep(this, NullObjectID.NULL_30730, new WorldPoint(2848, 9248, 0),
+			"Navigate to the middle of the maze, disarming any traps in the way.");
+		getToCentreOfMazeRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2847, 9284, 0),
 			new WorldPoint(2847, 9276, 0),
 			new WorldPoint(2843, 9274, 0),
@@ -917,6 +918,8 @@ public class DragonSlayerII extends BasicQuestHelper
 			new WorldPoint(2848, 9256, 0),
 			new WorldPoint(2848, 9249, 0)
 		));
+		getToCentreOfMaze = new PuzzleWrapperStep(this,
+			getToCentreOfMazeRealStep, "Get to the centre of the maze.");
 
 		boardBoat = new ObjectStep(this, NullObjectID.NULL_29916, new WorldPoint(3659, 3849, 0), "Board the boat.");
 		talkToDallasAfterBoatRepair.addSubSteps(boardBoat);

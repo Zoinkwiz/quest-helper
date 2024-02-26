@@ -41,10 +41,24 @@ public class PuzzleWrapperStep extends ConditionalStep
 		this.questHelperConfig = questHelper.getConfig();
 	}
 
+	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, Requirement... requirements)
+	{
+		super(questHelper, step, requirements);
+		this.noSolvingStep = hiddenStep;
+		this.questHelperConfig = questHelper.getConfig();
+	}
+
 	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, String text, Requirement... requirements)
 	{
 		super(questHelper, step, text, requirements);
-		this.noSolvingStep = new DetailedQuestStep(questHelper, "Solve the puzzle. If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.");
+		this.noSolvingStep = new DetailedQuestStep(questHelper, "If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.");
+		this.questHelperConfig = questHelper.getConfig();
+	}
+
+	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, String text, Requirement... requirements)
+	{
+		super(questHelper, step, requirements);
+		this.noSolvingStep = hiddenStep;
 		this.questHelperConfig = questHelper.getConfig();
 	}
 

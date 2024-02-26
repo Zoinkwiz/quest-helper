@@ -44,6 +44,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,10 +72,8 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		killedCreature6, inFloor1, inFloor2, inFloor3;
 
 	QuestStep enterCave, talkToBrimstail, inspectBowl, inspectMachine, talkToBrimstailAgain, goUpToHazelmere, talkToHazelmere, enterCaveAgain, talkToBrimstailAfterHazelmere, grindMudRunes,
-		useMudOnSap, repairMachine, talkToBrimstailAfterRepairing, talkToBrimstailForMoreDisks, operateMachine, killCreature1, talkToBrimstailAfterIllusion, killCreature2, killCreature3,
+		useMudOnSap, repairMachine, talkToBrimstailAfterRepairing, talkToBrimstailForMoreDisks, unlockMachine, operateMachine, killCreature1, talkToBrimstailAfterIllusion, killCreature2, killCreature3,
 		killCreature4, killCreature5, killCreature6, climbUpToF1Tree, climbUpToF2Tree, climbUpToF3Tree, talkToNarnode;
-
-	PuzzleStep unlockMachine;
 
 	//Zones
 	Zone cave, hazelmereHut, floor1, floor2, floor3;
@@ -263,11 +262,13 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		talkToBrimstailAfterRepairing.addDialogStep("I think I've fixed the machine now!");
 		talkToBrimstailForMoreDisks = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail for more disks.");
 		talkToBrimstailForMoreDisks.addDialogStep("I can't work out what to do with these discs!");
-		unlockMachine = new PuzzleStep(this);
-		unlockMachine.addSubSteps(unlockMachine.getSteps());
+
+		PuzzleStep unlockMachineTrueStep = new PuzzleStep(this);
+		unlockMachineTrueStep.addSubSteps(unlockMachineTrueStep.getSteps());
+		unlockMachine = new PuzzleWrapperStep(this, unlockMachineTrueStep, "Unlock the machine.");
 
 		operateMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Operate the machine.");
-		unlockMachine.addSubSteps(operateMachine);
+		unlockMachineTrueStep.addSubSteps(operateMachine);
 
 		killCreature1 = new NpcStep(this, NpcID.EVIL_CREATURE, new WorldPoint(2408, 9819, 0), "Kill the evil creature next to Brimstail.");
 		killCreature2 = new NpcStep(this, NpcID.EVIL_CREATURE_1244, new WorldPoint(2465, 3494, 0), "Kill the evil creature next to Narnode.");

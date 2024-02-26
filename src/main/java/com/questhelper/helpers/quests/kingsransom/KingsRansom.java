@@ -47,6 +47,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 
@@ -377,7 +378,7 @@ public class KingsRansom extends BasicQuestHelper
 
 		goDownToArthur = new ObjectStep(this, ObjectID.LADDER_25843, new WorldPoint(3016, 3519, 0), "Enter the Black Knight Fortress basement.");
 
-		solvePuzzle = new LockpickPuzzle(this);
+		solvePuzzle = new PuzzleWrapperStep(this, new LockpickPuzzle(this), "Pick the door's lock.");
 
 		enterStatueForGrail = new ObjectStep(this, ObjectID.STATUE_26073, new WorldPoint(2780, 3508, 0), "Search the statue east of Camelot.");
 

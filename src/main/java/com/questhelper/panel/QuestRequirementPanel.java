@@ -69,7 +69,6 @@ public class QuestRequirementPanel extends JPanel
 		}
 
 		text.append(requirement.getDisplayText());
-
 		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
 		String html2 = "</body></html>";
 

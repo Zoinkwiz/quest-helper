@@ -43,8 +43,10 @@ public class PuzzleWrapperStep extends ConditionalStep
 
 	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, Requirement... requirements)
 	{
-		super(questHelper, step, requirements);
+		super(questHelper, step, "", requirements);
 		this.noSolvingStep = hiddenStep;
+		noSolvingStep.setText("");
+		this.setText(hiddenStep.text);
 		this.questHelperConfig = questHelper.getConfig();
 	}
 
@@ -57,7 +59,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 
 	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, String text, Requirement... requirements)
 	{
-		super(questHelper, step, requirements);
+		super(questHelper, step, text, requirements);
 		this.noSolvingStep = hiddenStep;
 		this.questHelperConfig = questHelper.getConfig();
 	}
@@ -65,7 +67,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 	@Override
 	protected void updateSteps()
 	{
-		if (!questHelperConfig.solvePuzzles())
+		if (!questHelperConfig.solvePuzzles() && currentStep != noSolvingStep)
 		{
 			startUpStep(noSolvingStep);
 			return;

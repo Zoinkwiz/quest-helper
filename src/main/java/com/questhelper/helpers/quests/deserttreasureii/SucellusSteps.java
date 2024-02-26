@@ -359,7 +359,6 @@ public class SucellusSteps extends ConditionalStep
 
 		talkToAssassin = new NpcStep(getQuestHelper(), NpcID.ASSASSIN_12348, new WorldPoint(2920, 6375, 2),
 			"Talk to the Assassin outside the cell.");
-
 		lockpickGate = new ObjectStep(getQuestHelper(), ObjectID.GATE_49120, new WorldPoint(2945, 6389, 2),
 			"Head north from the assassin to the junction, and then east. Lockpick the gate you end up at.", lockpick);
 		((ObjectStep) lockpickGate).setLinePoints(Arrays.asList(

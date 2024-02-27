@@ -27,10 +27,10 @@ package com.questhelper.helpers.quests.deathtothedorgeshuun;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
@@ -74,8 +74,6 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		hamShirt2, hamRobe2, hamHood2, hamBoot2, hamGloves2, hamLogo2, hamCloak2, hamSet2, hamShirt, hamRobe, hamHood, hamBoot, hamGloves,
 		hamLogo, hamCloak, hamSet, zanik, pickaxeHighlighted, tinderbox, crate, combatGear, gamesNecklace;
 
-	FollowerRequirement zanikFollower;
-
 	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, inMines, inHamBase, zanikIsFollowing,
 		talkedToShopkeeper, talkedToWoman, talkedToDuke, talkedToAereck, talkedToGoblins, goneOutside, heardSpeaker, isBehindGuard1,
 		killedGuard1, isNearGuard4, isNearGuard5, inStoreroom, killedGuard2, killedGuard3, killedGuard4, killedGuard5, zanikWaitingFor4,
@@ -86,7 +84,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkToWoman, talkToBob, talkToAereck, talkToGuide, approachGoblins, talkToShopkeeper, goOutside, talkToZanikAboutOrigin,
 		listenToSpeaker, standNearTrapdoor, goDownTrapdoor, standBehindGuard1, talkToGuard1, talkToGuard2, tellZanikToKillGuard3, talkToJohanhus,
 		standNearGuard4, tellZanikToWaitForGuard4, runSouthToLureGuard4, standNearGuard5, tellZanikToWaitForGuard5, lureGuard5, listenToDoor,
-		checkZanikCorpse, mineRocks, climbIntoSwamp, enterJunaArea, talkToJuna, talkToJunaMore, searchCrate, enterMill, killGuards, killSigmund,
+		leaveHamBase, checkZanikCorpse, mineRocks, climbIntoSwamp, enterJunaArea, talkToJuna, talkToJunaMore, searchCrate, enterMill, killGuards, killSigmund,
 		smashDrill, enterExit, goDownFromF1, goUpToF1, goDownIntoBasement, climbThroughHole, goUpFromBasement, enterHamLair, talkToKazgar;
 
 	ConditionalStep goTalkToMistag, goTalkToZanik, goHaveZanikFollow, goTalkToCook, goTalkToDuke, goTalkToHans, goTalkToWoman, goTalkToBob,
@@ -150,6 +148,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		savingZanik.addStep(new Conditions(zanikPickedUp, minedRocks), goToJunaSteps);
 		savingZanik.addStep(new Conditions(zanikPickedUp, inTunnels), mineRocks);
 		savingZanik.addStep(zanikPickedUp, goClearRocks);
+		savingZanik.addStep(inHamBase, leaveHamBase);
 		steps.put(6, savingZanik);
 
 		steps.put(7, talkToJunaMore);
@@ -219,7 +218,6 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		hamSet2.setTooltip("The chance of thieving a ham clothing piece increases massively AFTER starting the quest");
 
 		zanik = new ItemRequirement("Zanik", ItemID.ZANIK);
-		zanikFollower = new FollowerRequirement("Zanik following you. If she's not, retrieve her from Lumbridge Basement", NpcID.ZANIK_4508);
 
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
@@ -271,7 +269,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkedToGoblins = new VarbitRequirement(2261, 1);
 		talkedToWoman = new VarbitRequirement(2262, 1);
 		goneOutside = new VarbitRequirement(2263, 1);
-		zanikIsFollowing = new Conditions(LogicType.OR, new VarbitRequirement(2264, 0));
+		zanikIsFollowing =  new VarplayerRequirement(447, List.of(NpcID.ZANIK_4508, NpcID.ZANIK_4509), 16);
 		talkedToShopkeeper = new VarbitRequirement(2265, 1);
 		heardSpeaker = new VarbitRequirement(2268, 1);
 		talkedToJohn = new VarbitRequirement(2269, 1);
@@ -307,6 +305,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkToKazgar = new NpcStep(this, NpcID.KAZGAR, new WorldPoint(3230, 9610, 0), "Travel with Kazgar to shortcut to Mistag.");
 		talkToMistag = new NpcStep(this, NpcID.MISTAG_7298, new WorldPoint(3319, 9615, 0), "");
 		talkToMistagToTravel = new NpcStep(this, NpcID.MISTAG_7298, new WorldPoint(3319, 9615, 0), "Travel with Mistag back to Lumbridge.");
+		talkToMistagToTravel.addDialogStep("Can you show me the way out of the mines?");
 		talkToZanik = new NpcStep(this, NpcID.ZANIK_4506, new WorldPoint(3212, 9620, 0), "");
 
 		talkToCook = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0), "");
@@ -367,7 +366,9 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 			new WorldPoint(2566, 5201, 0)
 		));
 
+		leaveHamBase = new ObjectStep(this, ObjectID.LADDER_5493, new WorldPoint(3149, 9653, 0), "Leave the H.A.M base and inspect Zanik just outside it.");
 		checkZanikCorpse = new ObjectStep(this, NullObjectID.NULL_15712, new WorldPoint(3161, 3246, 0), "Inspect Zanik outside the H.A.M base.");
+		checkZanikCorpse.addSubSteps(leaveHamBase);
 		listenToDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_15757, new WorldPoint(2571, 5204, 0), "Listen to the large door.");
 
 		mineRocks = new ObjectStep(this, ObjectID.HOLE_6912, new WorldPoint(3224, 9602, 0), "Use a pickaxe on the rocks to the south.", pickaxeHighlighted, lightSource);
@@ -380,7 +381,8 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkToJunaMore = new ObjectStep(this, NullObjectID.NULL_3193, new WorldPoint(3252, 9517, 2), "Talk to Juna with both hands free. Collect 20 tears of Guthix.", lightSource);
 		talkToJunaMore.addDialogStep("Yes.");
 
-		searchCrate = new ObjectStep(this, ObjectID.CRATE_15704, new WorldPoint(3228, 3280, 0), "Search a crate south of the farm east of the Lumbridge.", zanikFollower, combatGear, hamSet);
+		searchCrate = new ObjectStep(this, ObjectID.CRATE_15704, new WorldPoint(3228, 3280, 0),
+			"Search a crate south of the farm east of the Lumbridge. If Zanik isn't appearing when doing so, call her in the 'Worn equipment' tab with the 'Call follower' button with a whistle icon.", combatGear, hamSet);
 		searchCrate.addDialogSteps("I don't know, what are you thinking?", "Good idea.");
 		enterMill = new ObjectStep(this, NullObjectID.NULL_15765, new WorldPoint(3230, 3286, 0), "Enter the trapdoor outside the farm.", combatGear, hamSet);
 		killGuards = new NpcStep(this, NpcID.GUARD, new WorldPoint(2000, 5087, 0), "Kill the guards to the west.", true);
@@ -403,7 +405,8 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		goTalkToMistag.addStep(inMines, talkToMistag);
 		goTalkToMistag.addStep(inTunnels, talkToKazgar);
 		goTalkToMistag.addStep(inBasement, climbThroughHole);
-		goTalkToMistag.addDialogSteps("What is this favour?", "I'll act as a guide.", "Can you show me the way out of the mines?");
+		goTalkToMistag.addDialogSteps("What is this favour?", "I'll act as a guide.", "Yes.");
+		// 0001000110011100 1011100011111101
 
 		goTalkToZanik = new ConditionalStep(this, goDownToBasement, "Talk to Zanik in Lumbridge Castle's basement.", hamHood2, hamShirt2, hamRobe2, hamBoot2, hamGloves2, hamCloak2, hamLogo2);
 		goTalkToZanik.addStep(inMines, talkToMistagToTravel);
@@ -419,54 +422,55 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		goHaveZanikFollow.addStep(inBasement, talkToZanik);
 		goHaveZanikFollow.addDialogSteps("Yes.", "Yes please!");
 
-		goTalkToCook = new ConditionalStep(this, talkToCook, "Talk to the Lumbridge Cook.", zanikFollower);
+		goTalkToCook = new ConditionalStep(this, talkToCook, "Talk to the Lumbridge Cook.");
 		goTalkToCook.addStep(inLumbridgeF2, goDownFromF2);
 		goTalkToCook.addStep(inLumbridgeF1, goDownFromF1);
 		goTalkToCook.addStep(inBasement, goUpFromBasement);
 
-		goTalkToDuke = new ConditionalStep(this, goUpToF1, "Talk to the Duke.", zanikFollower);
+		goTalkToDuke = new ConditionalStep(this, goUpToF1, "Talk to the Duke.");
 		goTalkToDuke.addStep(inLumbridgeF1, talkToDuke);
 
-		goOutsideSteps = new ConditionalStep(this, goOutside, "Leave the castle, and go through the entire leaving cutscene. If you cut it short, enter/leave again.", zanikFollower);
+		goOutsideSteps = new ConditionalStep(this, goOutside, "Leave the castle, and go through the entire leaving cutscene. If you cut it short, enter/leave again.");
 		goOutsideSteps.addStep(inLumbridgeF2, goDownFromF2);
 		goOutsideSteps.addStep(inLumbridgeF1, goDownFromF1);
 		goOutsideSteps.addStep(inBasement, goUpFromBasement);
 
-		goTalkToHans = new ConditionalStep(this, talkToHans, "Talk to Hans.", zanikFollower);
+		goTalkToHans = new ConditionalStep(this, talkToHans, "Talk to Hans.");
 		goTalkToHans.addStep(inLumbridgeF2, goDownFromF2);
 		goTalkToHans.addStep(inLumbridgeF1, goDownFromF1);
 		goTalkToHans.addStep(inBasement, goUpFromBasement);
 
-		goTalkToWoman = new ConditionalStep(this, talkToWoman, "Talk to any man or woman around Lumbridge.", zanikFollower);
+		goTalkToWoman = new ConditionalStep(this, talkToWoman, "Talk to any man or woman around Lumbridge.");
 		goTalkToWoman.addStep(inLumbridgeF2, goDownFromF2);
 		goTalkToWoman.addStep(inLumbridgeF1, goDownFromF1);
 		goTalkToWoman.addStep(inBasement, goUpFromBasement);
 
-		goTalkToGuide = new ConditionalStep(this, talkToGuide, "Talk to the Lumbridge Guide.", zanikFollower);
+		goTalkToGuide = new ConditionalStep(this, talkToGuide, "Talk to the Lumbridge Guide.");
 		goTalkToGuide.addStep(inLumbridgeF2, goDownFromF2);
 		goTalkToGuide.addStep(inLumbridgeF1, goDownFromF1);
 		goTalkToGuide.addStep(inBasement, goUpFromBasement);
 
-		goTalkToBob = new ConditionalStep(this, talkToBob, "Talk to Bob in south Lumbridge.", zanikFollower);
+		goTalkToBob = new ConditionalStep(this, talkToBob, "Talk to Bob in south Lumbridge.");
 		goTalkToBob.addStep(inLumbridgeF2, goDownFromF2);
 		goTalkToBob.addStep(inLumbridgeF1, goDownFromF1);
 		goTalkToBob.addStep(inBasement, goUpFromBasement);
 
-		goTalkToAereck = new ConditionalStep(this, talkToAereck, "Talk to Father Aereck.", zanikFollower);
+		goTalkToAereck = new ConditionalStep(this, talkToAereck, "Talk to Father Aereck.");
 		goTalkToAereck.addStep(inLumbridgeF2, goDownFromF2);
 		goTalkToAereck.addStep(inLumbridgeF1, goDownFromF1);
 		goTalkToAereck.addStep(inBasement, goUpFromBasement);
 
-		goNearGoblins = new ConditionalStep(this, approachGoblins, "Approach the goblins east of the River Lum.", zanikFollower);
+		goNearGoblins = new ConditionalStep(this, approachGoblins, "Approach the goblins east of the River Lum.");
 		goNearGoblins.addStep(inLumbridgeF2, goDownFromF2);
 		goNearGoblins.addStep(inLumbridgeF1, goDownFromF1);
 		goNearGoblins.addStep(inBasement, goUpFromBasement);
 
-		goTalkToShopkeeper = new ConditionalStep(this, talkToShopkeeper, "Talk to the Lumbridge General Store shopkeeper.", zanikFollower);
+		goTalkToShopkeeper = new ConditionalStep(this, talkToShopkeeper, "Talk to the Lumbridge General Store shopkeeper.");
 		goTalkToShopkeeper.addStep(inLumbridgeF2, goDownFromF2);
 		goTalkToShopkeeper.addStep(inLumbridgeF1, goDownFromF1);
 		goTalkToShopkeeper.addStep(inBasement, goUpFromBasement);
 
+		// 0001000110011101 1110110010110110
 		goIntoHamLair = new ConditionalStep(this, enterHamLair, "Enter the H.A.M lair west of Lumbridge.", hamHood, hamShirt, hamRobe, hamBoot, hamGloves, hamCloak, hamLogo);
 		goIntoHamLair.addStep(inLumbridgeF2, goDownFromF2);
 		goIntoHamLair.addStep(inLumbridgeF1, goDownFromF1);
@@ -485,6 +489,11 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 
 		goGetZanikForMill = new ConditionalStep(this, goHaveZanikFollow, "Talk to Zanik under the Lumbridge Castle.");
 		goGetZanikForMill.addDialogStep("Let's go!");
+
+		// Left mill right after entering:
+		//
+
+		// Weird teleporting occurs when talking to H.A.M member who's moving boxes, 4513 version (not 4514)
 	}
 
 	@Override

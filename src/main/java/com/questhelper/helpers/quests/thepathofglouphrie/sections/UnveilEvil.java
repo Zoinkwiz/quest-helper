@@ -31,6 +31,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 import java.util.List;
@@ -46,7 +47,7 @@ public class UnveilEvil
 	public DetailedQuestStep watchCutscene;
 	private MonolithPuzzle solveMonolithPuzzle;
 	private ConditionalStep learnLore;
-	private YewnocksPuzzle solveYewnocksMachinePuzzle;
+	private PuzzleWrapperStep solveYewnocksMachinePuzzle;
 
 	public void setup(ThePathOfGlouphrie quest)
 	{
@@ -94,7 +95,7 @@ public class UnveilEvil
 			var enterStoreroomPuzzle = new ConditionalStep(quest, climbIntoDungeon, "Get to Yewnock's storeroom.");
 			enterStoreroomPuzzle.addStep(quest.inTreeGnomeVillageDungeon, enterStoreroom);
 			enterStoreroomPuzzle.addStep(quest.inTreeGnomeVillageMiddle, squeezeThroughRailing);
-			solveYewnocksMachinePuzzle = new YewnocksPuzzle(quest);
+			solveYewnocksMachinePuzzle = new PuzzleWrapperStep(quest, new YewnocksPuzzle(quest), "Solve the disc puzzle.");
 			solveYewnocksMachinePuzzle.addSubSteps(enterStoreroomPuzzle);
 			solveYewnocksMachinePuzzle.addSubSteps(enterStoreroomPuzzle.getSteps());
 

@@ -327,6 +327,7 @@ public class ObjectStep extends DetailedQuestStep
 				}
 
 				Color configColor = getQuestHelper().getConfig().targetOverlayColor();
+				int configOpacity = getQuestHelper().getConfig().highlightOpacity();
 
 				QuestHelperConfig.ObjectHighlightStyle highlightStyle = visibilityHelper.isObjectVisible(tileObject)
 					? questHelper.getConfig().highlightStyleObjects()
@@ -335,7 +336,7 @@ public class ObjectStep extends DetailedQuestStep
 				switch (highlightStyle)
 				{
 					case CLICK_BOX:
-						Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 20);
+						Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), configOpacity);
 						OverlayUtil.renderHoverableArea(
 							graphics,
 							tileObject.getClickbox(),
@@ -358,8 +359,7 @@ public class ObjectStep extends DetailedQuestStep
 				}
 			}
 		}
-
-		if (iconItemID != -1 && closestObject != null)
+		if (iconItemID != -1 && closestObject != null && questHelper.getConfig().showSymbolOverlay())
 		{
 			Shape clickbox = closestObject.getClickbox();
 			if (clickbox != null && !inCutscene)

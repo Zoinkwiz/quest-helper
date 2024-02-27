@@ -562,7 +562,6 @@ public class DetailedQuestStep extends QuestStep
 				{
 					if (requirement instanceof ItemRequirement && ((ItemRequirement) requirement).getAllIds().contains(item.getItemId()))
 					{
-						;
 						highlightInventoryItem(item, baseColor, graphics);
 					}
 					// TODO: If teleport, highlight teleport in spellbook
@@ -598,19 +597,19 @@ public class DetailedQuestStep extends QuestStep
 		switch (questHelper.getConfig().highlightStyleInventoryItems())
 		{
 			case SQUARE:
-				graphics.setColor(ColorUtil.colorWithAlpha(color, 65));
+				graphics.setColor(ColorUtil.colorWithAlpha(color, getQuestHelper().getConfig().highlightOpacity()));
 				graphics.fill(slotBounds);
 				graphics.setColor(color);
 				graphics.draw(slotBounds);
 				break;
 			case OUTLINE:
-				BufferedImage outlined = itemManager.getItemOutline(item.getItemId(), 1, color);
+				BufferedImage outlined = itemManager.getItemOutline(item.getItemId(), item.getItemQuantity(), color);
 				graphics.drawImage(outlined, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
 				break;
 			case FILLED_OUTLINE:
-				BufferedImage outline = itemManager.getItemOutline(item.getItemId(), 1, color);
+				BufferedImage outline = itemManager.getItemOutline(item.getItemId(),  item.getItemQuantity(), color);
 				graphics.drawImage(outline, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
-				Image image = ImageUtil.fillImage(itemManager.getImage(item.getItemId(), 1, false), ColorUtil.colorWithAlpha(color, 65));
+				Image image = ImageUtil.fillImage(itemManager.getImage(item.getItemId(),  item.getItemQuantity(), false), ColorUtil.colorWithAlpha(color, 65));
 				graphics.drawImage(image, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
 				break;
 			default:

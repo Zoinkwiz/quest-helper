@@ -43,7 +43,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -306,11 +305,12 @@ public class NpcStep extends DetailedQuestStep
 		}
 
 		Color configColor = getQuestHelper().getConfig().targetOverlayColor();
+		int configOpacity = getQuestHelper().getConfig().highlightOpacity();
 
 		for (NPC npc : npcs)
 		{
 			if (mustBeFocused && npc.getInteracting() != client.getLocalPlayer()) continue;
-			highlightNpc(npc, configColor, graphics);
+			highlightNpc(npc, configColor, configOpacity, graphics);
 
 			if (questHelper.getConfig().showSymbolOverlay())
 			{
@@ -332,7 +332,7 @@ public class NpcStep extends DetailedQuestStep
 	{
 	}
 
-	private void highlightNpc(NPC npc, Color color, Graphics2D graphics)
+	private void highlightNpc(NPC npc, Color color, int opacity, Graphics2D graphics)
 	{
 		switch (questHelper.getConfig().highlightStyleNpcs())
 		{
@@ -341,7 +341,7 @@ public class NpcStep extends DetailedQuestStep
 					graphics,
 					npc.getConvexHull(),
 					client.getMouseCanvasPosition(),
-					ColorUtil.colorWithAlpha(color, 20),
+					ColorUtil.colorWithAlpha(color, opacity),
 					questHelper.getConfig().targetOverlayColor().darker(),
 					questHelper.getConfig().targetOverlayColor());
 				break;

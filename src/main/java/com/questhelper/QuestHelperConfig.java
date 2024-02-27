@@ -551,6 +551,17 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightOpacity",
+		name = "Colour opacity",
+		description = "Change the opacity of colours on NPCs, objects, and items",
+		section = colorSection
+	)
+	default int highlightOpacity()
+	{
+		return 20;
+	}
+
+	@ConfigItem(
 		keyName = "debugColor",
 		name = "Debug Colour",
 		description = "debug",

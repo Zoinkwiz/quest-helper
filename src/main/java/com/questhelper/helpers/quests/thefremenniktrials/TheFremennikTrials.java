@@ -848,6 +848,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		enterCode = new DetailedQuestStep(this, "Enter the solution to Peer's door.");
 
+		// TODO: IDEA: Somehow have a parent challenge/puzzle step, so they all highlight the same text.
 		inputMind = new PuzzleWrapperStep(this, new CombinationPuzzle(this, "MIND"), "Solve Peer's challenge.");
 		inputTree = new PuzzleWrapperStep(this, new CombinationPuzzle(this, "TREE"), "Solve Peer's challenge.");
 		inputLife = new PuzzleWrapperStep(this, new CombinationPuzzle(this, "LIFE"), "Solve Peer's challenge.");
@@ -856,80 +857,110 @@ public class TheFremennikTrials extends BasicQuestHelper
 		inputWind = new PuzzleWrapperStep(this, new CombinationPuzzle(this, "WIND"), "Solve Peer's challenge.");
 		enterCode.addSubSteps(inputMind, inputTree, inputLife, inputFire, inputTime, inputWind);
 
-		goUpEntranceLadderPeer = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.LADDER_4163, new WorldPoint(2631, 3663, 0), "Go up the ladder."), "Solve Peer's challenge.");
-		searchBookcase = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.BOOKCASE_4171, new WorldPoint(2634, 3665, 2), "Search the bookcase for a red herring. If you've already unlocked the mural, go search it instead."), "Solve Peer's challenge.");
+		goUpEntranceLadderPeer = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.LADDER_4163, new WorldPoint(2631, 3663, 0), "Go up the ladder."),
+			"Solve Peer's challenge.");
+		searchBookcase = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.BOOKCASE_4171, new WorldPoint(2634, 3665, 2), "Search the bookcase for a red herring. If you've already unlocked the mural, go search it instead."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		ObjectStep cookHerringRealStep = new ObjectStep(this, ObjectID.COOKING_RANGE_4172, new WorldPoint(2629, 3664, 2), "Use the red herring on the cooking range.", redHerring);
 		cookHerringRealStep.addIcon(ItemID.RED_HERRING);
-		cookHerring = new PuzzleWrapperStep(this, cookHerringRealStep, "Solve Peer's challenge.");
+		cookHerring = new PuzzleWrapperStep(this, cookHerringRealStep,
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
-		searchUnicorn = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.UNICORNS_HEAD_4181, new WorldPoint(2632, 3660, 2), "Study the unicorn's head."), "Solve Peer's challenge.");
-		searchBull = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.BULLS_HEAD_4182, new WorldPoint(2634, 3660, 2), "Study the bull's head."), "Solve Peer's challenge.");
-		searchChest1 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CHEST_4167, new WorldPoint(2635, 3660, 2), "Search the chest in the south of the room."), "Solve Peer's challenge.");
-		searchChest2 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CHEST_4168, new WorldPoint(2635, 3660, 2), "Search the chest in the south of the room."), "Solve Peer's challenge.");
+		searchUnicorn = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.UNICORNS_HEAD_4181, new WorldPoint(2632, 3660, 2), "Study the unicorn's head."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		searchBull = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.BULLS_HEAD_4182, new WorldPoint(2634, 3660, 2), "Study the bull's head."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		searchChest1 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CHEST_4167, new WorldPoint(2635, 3660, 2), "Search the chest in the south of the room."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		searchChest2 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CHEST_4168, new WorldPoint(2635, 3660, 2), "Search the chest in the south of the room."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		searchChest1.addSubSteps(searchChest2);
-		searchCupboard1 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CUPBOARD_4177, new WorldPoint(2630, 3660, 2), "Search the cupboard in the south west of the room."), "Solve Peer's challenge.");
-		searchCupboard2 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CUPBOARD_4178, new WorldPoint(2630, 3660, 2), "Search the cupboard in the south west of the room."), "Solve Peer's challenge.");
+		searchCupboard1 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CUPBOARD_4177, new WorldPoint(2630, 3660, 2), "Search the cupboard in the south west of the room."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		searchCupboard2 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CUPBOARD_4178, new WorldPoint(2630, 3660, 2), "Search the cupboard in the south west of the room."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		searchCupboard1.addSubSteps(searchCupboard2);
 
-		useGoopOnDisk = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the sticky red goop on the wooden disk.", stickyRedGoop, woodenDisk), "Solve Peer's challenge.");
+		useGoopOnDisk = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the sticky red goop on the wooden disk.", stickyRedGoop, woodenDisk),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
-		openTrapDoorAndGoDown1 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TRAPDOOR_4174, new WorldPoint(2636, 3663, 2), "Open and go down the trapdoor."), "Solve Peer's challenge.");
-		goDown1 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TRAPDOOR_4173, new WorldPoint(2636, 3663, 2), "Go down the trapdoor."), "Solve Peer's challenge.");
+		openTrapDoorAndGoDown1 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TRAPDOOR_4174, new WorldPoint(2636, 3663, 2), "Open and go down the trapdoor."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		goDown1 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TRAPDOOR_4173, new WorldPoint(2636, 3663, 2), "Go down the trapdoor."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		openTrapDoorAndGoDown1.addSubSteps(goDown1);
 
 		ObjectStep useDiskAnyOnMuralRealStep = new ObjectStep(this, ObjectID.ABSTRACT_MURAL, new WorldPoint(2634, 3663, 0), "Use the red disks on the abstract mural.", redDiskOld, redDiskNew);
 		useDiskAnyOnMuralRealStep.addIcon(ItemID.OLD_RED_DISK);
-		useDiskAnyOnMural = new PuzzleWrapperStep(this, useDiskAnyOnMuralRealStep, "Solve Peer's challenge.");
+		useDiskAnyOnMural = new PuzzleWrapperStep(this, useDiskAnyOnMuralRealStep, "Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
 		ObjectStep useDiskOldOnMuralRealStep = new ObjectStep(this, ObjectID.ABSTRACT_MURAL, new WorldPoint(2634, 3663, 0), "Use the old red disk on the abstract mural.", redDiskOld);
 		useDiskOldOnMuralRealStep.addIcon(ItemID.OLD_RED_DISK);
-		useDiskOldOnMural = new PuzzleWrapperStep(this, useDiskOldOnMuralRealStep, "Solve Peer's challenge.");
+		useDiskOldOnMural = new PuzzleWrapperStep(this, useDiskOldOnMuralRealStep, "Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
 		ObjectStep useDiskNewOnMuralRealStep = new ObjectStep(this, ObjectID.ABSTRACT_MURAL, new WorldPoint(2634, 3663, 0), "Use the other red disk on the abstract mural.", redDiskNew);
-		useDiskNewOnMural = new PuzzleWrapperStep(this, useDiskNewOnMuralRealStep, "Solve Peer's challenge.");
+		useDiskNewOnMural = new PuzzleWrapperStep(this, useDiskNewOnMuralRealStep, "Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		useDiskNewOnMuralRealStep.addIcon(ItemID.RED_DISK_3743);
 
 		useDiskAnyOnMural.addSubSteps(useDiskOldOnMural, useDiskNewOnMural);
 
-		goBackUpstairs = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.LADDER_4164, new WorldPoint(2636, 3663, 0), "Go back upstairs."), "Solve Peer's challenge.");
-		goUpstairsWithVaseLid = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.LADDER_4164, new WorldPoint(2636, 3663, 0), "Go back upstairs."), "Solve Peer's challenge.");
+		goBackUpstairs = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.LADDER_4164, new WorldPoint(2636, 3663, 0), "Go back upstairs."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		goUpstairsWithVaseLid = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.LADDER_4164, new WorldPoint(2636, 3663, 0), "Go back upstairs."),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
 		ObjectStep useBucketOnTap1RealStep = new ObjectStep(this, ObjectID.TAP, new WorldPoint(2629, 3661, 2), "Use the empty bucket on the tap.", emptyBucket);
 		useBucketOnTap1RealStep.addIcon(ItemID.EMPTY_BUCKET);
-		useBucketOnTap1 = new PuzzleWrapperStep(this, useBucketOnTap1RealStep, "Solve Peer's challenge.");
+		useBucketOnTap1 = new PuzzleWrapperStep(this, useBucketOnTap1RealStep,
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
-		useBucketOnJug1 = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the full bucket on the empty jug.", fullBucket, emptyJug), "Solve Peer's challenge.");
+		useBucketOnJug1 = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the full bucket on the empty jug.", fullBucket, emptyJug),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
 		ObjectStep useJugOnDrain1RealStep = new ObjectStep(this, ObjectID.DRAIN, new WorldPoint(2629, 3662, 2), "Empty the full jug into the drain.", fullJug);
 		useJugOnDrain1RealStep.addIcon(ItemID.FULL_JUG);
-		useJugOnDrain1 = new PuzzleWrapperStep(this, useJugOnDrain1RealStep, "Solve Peer's challenge.");
+		useJugOnDrain1 = new PuzzleWrapperStep(this, useJugOnDrain1RealStep,
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
-		useBucketOnJug2 = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the 2/5ths full bucket on the empty jug.", bucket25, emptyJug), "Solve Peer's challenge.");
-		useBucketOnTap2 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TAP, new WorldPoint(2629, 3661, 2), "Use the empty bucket on the tap.", emptyBucket), "Solve Peer's challenge.");
+		useBucketOnJug2 = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the 2/5ths full bucket on the empty jug.", bucket25, emptyJug),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		useBucketOnTap2 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TAP, new WorldPoint(2629, 3661, 2), "Use the empty bucket on the tap.", emptyBucket),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		useBucketOnTap2.addIcon(ItemID.EMPTY_BUCKET);
-		useBucketOnJug3 = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the full bucket on the 2/3rds full jug.", fullBucket, jug23), "Solve Peer's challenge.");
-		useBucketOnScale = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CHEST_4170, new WorldPoint(2632, 3665, 2), "Use the 4/5ths full bucket on the chest with a scale on it.", bucket45), "Solve Peer's challenge.");
+		useBucketOnJug3 = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the full bucket on the 2/3rds full jug.", fullBucket, jug23),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		useBucketOnScale = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CHEST_4170, new WorldPoint(2632, 3665, 2), "Use the 4/5ths full bucket on the chest with a scale on it.", bucket45),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		useBucketOnScale.addIcon(ItemID._45THS_FULL_BUCKET);
 
-		fillVase = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TAP, new WorldPoint(2629, 3661, 2), "Use the empty vase on the tap.", vase), "Solve Peer's challenge.");
+		fillVase = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TAP, new WorldPoint(2629, 3661, 2), "Use the empty vase on the tap.", vase),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		fillVase.addIcon(ItemID.VASE_3734);
 
-		useLidOnVase = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the vase lid on the filled vase", filledVase, vaseLid), "Solve Peer's challenge.");
+		useLidOnVase = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Use the vase lid on the filled vase", filledVase, vaseLid),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
-		useVaseOnTable = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.FROZEN_TABLE, new WorldPoint(2638, 3665, 2), "Use the filled, sealed vase on the frozen table.", filledVaseWithLid), "Solve Peer's challenge.");
+		useVaseOnTable = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.FROZEN_TABLE, new WorldPoint(2638, 3665, 2), "Use the filled, sealed vase on the frozen table.", filledVaseWithLid),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		useVaseOnTable.addIcon(ItemID.SEALED_VASE_3739);
 
-		takeLidOff = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Take the lid off the vase and fill the vase.", vaseWithLidWrong), "Solve Peer's challenge.");
-		warmFrozenVase = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.COOKING_RANGE_4172, new WorldPoint(2629, 3664, 2), "Use the frozen vase on the cooking range.", frozenVase), "Solve Peer's challenge.");
+		takeLidOff = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Take the lid off the vase and fill the vase.", vaseWithLidWrong),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		warmFrozenVase = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.COOKING_RANGE_4172, new WorldPoint(2629, 3664, 2), "Use the frozen vase on the cooking range.", frozenVase),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		warmFrozenVase.addIcon(ItemID.FROZEN_VASE);
-		emptyJugAndBucket = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Empty jug and bucket to restart."), "Solve Peer's challenge.");
+		emptyJugAndBucket = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Empty jug and bucket to restart."), "Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
-		useFrozenKeyOnRange = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.COOKING_RANGE_4172, new WorldPoint(2629, 3664, 2), "Use the frozen key on the cooking range.", frozenKey), "Solve Peer's challenge.");
+		useFrozenKeyOnRange = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.COOKING_RANGE_4172, new WorldPoint(2629, 3664, 2), "Use the frozen key on the cooking range.", frozenKey),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		useFrozenKeyOnRange.addIcon(ItemID.FROZEN_KEY);
-		goDownstairsWithKey = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TRAPDOOR_4174, new WorldPoint(2636, 3663, 2), "Open and go down the trapdoor.", seersKey), "Solve Peer's challenge.");
-		goDownstairsWithKey2 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TRAPDOOR_4173, new WorldPoint(2636, 3663, 2), "Go down the trapdoor.", seersKey), "Solve Peer's challenge.");
+		goDownstairsWithKey = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TRAPDOOR_4174, new WorldPoint(2636, 3663, 2), "Open and go down the trapdoor.", seersKey),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
+		goDownstairsWithKey2 = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.TRAPDOOR_4173, new WorldPoint(2636, 3663, 2), "Go down the trapdoor.", seersKey),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 		goDownstairsWithKey.addSubSteps(goDownstairsWithKey2);
-		leaveSeersHouse = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.DOOR_4166, new WorldPoint(2636, 3667, 0), "Leave the Seer's house.", seersKey), "Solve Peer's challenge.");
+		leaveSeersHouse = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.DOOR_4166, new WorldPoint(2636, 3667, 0), "Leave the Seer's house.", seersKey),
+			"Solve Peer's challenge.").withNoHelpHiddenInSidebar(true);
 
 		finishQuest = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0), "Talk to Brundt in Rellekka's longhall to finish the quest.");
 		finishQuest.addDialogStep("Ask about anything else.");

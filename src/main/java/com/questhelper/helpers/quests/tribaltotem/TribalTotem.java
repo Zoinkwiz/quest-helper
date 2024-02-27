@@ -46,6 +46,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,8 +159,10 @@ public class TribalTotem extends BasicQuestHelper
         talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2683, 3326, 0), "Talk to Wizard Cromperty in north east Ardougne.");
         talkToCromperty.addDialogSteps("Chat.", "So what have you invented?", "Can I be teleported please?", "Yes, that sounds good. Teleport me!");
 
-        enterPassword = new ObjectStep(this, ObjectID.DOOR_2705, new WorldPoint(2634, 3323, 0), "Try and open the door to the west. The password is 'KURT', (K=10 right, U=6 left, R=9 left, T=7 left)");
-        solvePassword = new PuzzleStep(this);
+        enterPassword = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.DOOR_2705, new WorldPoint(2634, 3323, 0), "Try and open the door to the west. The password is 'KURT', (K=10 right, U=6 left, R=9 left, T=7 left)"),
+			"Work out and enter the password for the door to the west.");
+        solvePassword = new PuzzleWrapperStep(this, new PuzzleStep(this)).withNoHelpHiddenInSidebar(true);
         climbStairs = new ObjectStep(this, ObjectID.STAIRS_2711, new WorldPoint(2632, 3323, 0), "FIRST Right-click 'Investigate' the stairs to disable a trap, then climb the stairs.");
 
         searchChest = new ObjectStep(this, ObjectID.CHEST_2709, new WorldPoint(2638, 3324, 1), "Open the chest on the top floor and search it for the totem.");

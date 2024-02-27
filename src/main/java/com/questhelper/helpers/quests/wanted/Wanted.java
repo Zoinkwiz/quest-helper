@@ -454,7 +454,7 @@ public class Wanted extends BasicQuestHelper
 		moveOutOfCanifisAgain = new DetailedQuestStep(this, new WorldPoint(3450, 3488, 0), "Finish the conversation with Savant. Move out of Canifis again first to trigger it again if needed.");
 
 		chaseToCanifis = new DetailedQuestStep(this, new WorldPoint(3485, 3481, 0), "Go to Canifis. Finish the conversation when Savant calls you. If you accidentally exit this conversation, move away and enter Canifis again.", commorb);
-		enterCanifis = new DetailedQuestStep(this, new WorldPoint(3485, 3481, 0), "Go to Canifis.", commorb);
+		enterCanifis = new DetailedQuestStep(this, new WorldPoint(3485, 3481, 0), "Go to Canifis, and scan with your Commorb there until you find Solus.", commorb);
 		enterCanifis.addSubSteps(chaseToCanifis, moveOutOfCanifisAgain);
 
 		goToChampionsGuild = new DetailedQuestStep(this, new WorldPoint(3190, 3359, 0), "Go to the Champions' Guild.",

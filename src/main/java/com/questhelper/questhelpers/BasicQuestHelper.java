@@ -68,7 +68,7 @@ public abstract class BasicQuestHelper extends QuestHelper
 	@Override
 	public boolean updateQuest()
 	{
-		if (var < getVar())
+		if (var != getVar())
 		{
 			var = getVar();
 			shutDownStep();

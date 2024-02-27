@@ -49,6 +49,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -356,7 +357,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		talkToBailey = new NpcStep(this, NpcID.BAILEY, new WorldPoint(2764, 3275, 0), "Talk to Bailey on the Fishing Platform.", deadSeaSlug);
 		useGlueOnFragment = new DetailedQuestStep(this, "Use the slug glue on one of the fragments.", glue, pageFragment1);
 
-		solvePuzzle = new PuzzleStep(this);
+		solvePuzzle = new PuzzleWrapperStep(this, new PuzzleStep(this), "Combine the fragments.");
 
 		// TODO: Expand out this section to be more descriptive and guiding
 		useEmptyRunes = new DetailedQuestStep(this, "Right-click each page to turn rune/pure essence into empty runes. Take each empty rune and use it on its respective Runecrafting Altar. Bring extra essence (~10 extra) as it is possible to accidentally destroy the essence upon creation.", page1, page2, page3, essence, chisel);

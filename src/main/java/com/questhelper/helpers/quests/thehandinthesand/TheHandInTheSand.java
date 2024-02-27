@@ -67,7 +67,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		beerOr2Coins, earthRunes5, coins, bucketOfSand, truthSerumHighlight, activatedOrb;
 
 	//Items Recommended
-	ItemRequirement teleportsToYanille, teleportsToBrimhaven;
+	ItemRequirement teleportsToYanille, teleportsToBrimhaven, teleportToPortSarim;
 
 	Requirement notTeleportedToSarim, inYanille, inLightSpot, receivedBottledWater, vialPlaced, madeTruthSerum;
 
@@ -188,6 +188,8 @@ public class TheHandInTheSand extends BasicQuestHelper
 			ItemID.BRIMHAVEN_TELEPORT, 2);
 		teleportsToYanille = new ItemRequirement("Teleports to Yanille, such as dueling ring or minigame teleport",
 			ItemID.YANILLE_TELEPORT, 3);
+		teleportToPortSarim = new ItemRequirement("Teleport to Port Sarim", ItemCollections.EXPLORERS_RINGS);
+		teleportToPortSarim.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 	}
 
 	public void loadZones()
@@ -254,6 +256,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		ringBellWithItems = new ObjectStep(this, ObjectID.BELL_6847, new WorldPoint(2598, 3085, 0), "Give Zavistic Rarve 5 earth runes and a bucket of sand.", earthRunes5, bucketOfSand);
 		ringBellWithItems.addDialogStep("I have a rather sandy problem that I'd like to palm off on you.");
 		talkToMazion = new NpcStep(this, NpcID.MAZION, new WorldPoint(2815, 3340, 0), "Travel to Entrana (bank all combat gear), and talk to Mazion at the sand pit.");
+		talkToMazion.addTeleport(teleportToPortSarim);
 		ringBellEnd = new ObjectStep(this, ObjectID.BELL_6847, new WorldPoint(2598, 3085, 0), "Return to the Wizards' Guild in Yanille and ring the bell outside. Talk to Zavistic Rarve when he appears to finish the quest.", wizardsHead);
 		ringBellEnd.addDialogStep("I have a rather sandy problem that I'd like to palm off on you.");
 	}
@@ -279,6 +282,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(teleportsToYanille);
 		reqs.add(teleportsToBrimhaven);
+		reqs.add(teleportToPortSarim);
 
 		return reqs;
 	}
@@ -320,7 +324,8 @@ public class TheHandInTheSand extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Making a truth serum", Arrays.asList(talkToBertAboutScroll, ringBellAgain, talkToRarveAgain, talkToBetty, addRedberries, addWhiteberries, useDyeOnLanternLens,
 			talkToBettyAgain, useLensOnCounter, talkToBettyOnceMore), vial2, lanternLens, redberries, whiteberries));
 		allSteps.add(new PanelDetails("Uncover the truth", Arrays.asList(talkToSandyWithPotion, useSerumOnCoffee, activateMagicalOrb, interrogateSandy), truthSerum, magicalOrb));
-		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(ringBellAfterInterrogation, ringBellWithItems, talkToMazion, ringBellEnd), earthRunes5, bucketOfSand));
+		allSteps.add(new PanelDetails("Finishing off", Arrays.asList(ringBellAfterInterrogation, ringBellWithItems, talkToMazion, ringBellEnd),
+			List.of(earthRunes5, bucketOfSand), List.of(teleportToPortSarim)));
 		return allSteps;
 	}
 }

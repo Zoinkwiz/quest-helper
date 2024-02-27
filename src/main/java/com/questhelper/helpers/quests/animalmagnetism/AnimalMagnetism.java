@@ -246,11 +246,9 @@ public class AnimalMagnetism extends BasicQuestHelper
 			"I'd love one, thanks.");
 		cutTree = new NpcStep(this, NpcID.UNDEAD_TREE,
 			"Try to chop an undead tree outside Draynor manor with the Blessed axe until you receive undead twigs.",
-			true,
-			blessedAxe);
+			true, blessedAxe);
 		giveTwigsToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-			"Give the Undead twigs to Ava.",
-			twigs);
+			"Give the Undead twigs to Ava.", twigs);
 
 		getNotesFromAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Talk to Ava to receive the research notes.");

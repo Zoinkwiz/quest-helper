@@ -197,15 +197,15 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 		markGuard2 = new PuzzleWrapperStep(this,
 			new MultiNpcStep(this, NpcID.GUARD_12671, new WorldPoint(3221, 3430, 0),
 			"Mark the guard south east of Benny's news stand, who isn't wearing a helmet and has long hair.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
-			"Mark the suspect guards.");
+			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
 		markGuard3 = new PuzzleWrapperStep(this,
 			new MultiNpcStep(this, NpcID.GUARD_12674, new WorldPoint(3246, 3429, 0),
 				"Mark the guard with a mace north-west of the Varrock East Bank.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
-			"Mark the suspect guards.");
+			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
 		markGuard4 = new PuzzleWrapperStep(this,
 			new MultiNpcStep(this, NpcID.GUARD_12677, new WorldPoint(3237, 3427, 0),
 				"Mark the guard leaning on the north wall of Lowe's Archery Emporium, east of the square.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
-			"Mark the suspect guards.");
+			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
 
 		unmarkWrongGuard1 = new PuzzleWrapperStep(this,
 			new MultiNpcStep(this, NpcID.GUARD_12681, new WorldPoint(3227, 3424, 0),

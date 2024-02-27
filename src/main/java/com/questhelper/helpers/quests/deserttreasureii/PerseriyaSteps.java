@@ -664,7 +664,7 @@ public class PerseriyaSteps extends ConditionalStep
 			new WorldPoint(2202, 6442, 0)
 		));
 
-		doPath2 = new PuzzleWrapperStep(getQuestHelper(), doPath2RealStep, "Navigate the pathfinder to the abyssal tether at the end.");
+		doPath2 = new PuzzleWrapperStep(getQuestHelper(), doPath2RealStep, "Navigate the pathfinder to the abyssal tether at the end.").withNoHelpHiddenInSidebar(true);
 
 		DetailedQuestStep doPath3RealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2198, 6438, 0),
 			"Move the next pathbreaker from the north, and step off when safe to the west pathbreaker.");
@@ -675,7 +675,7 @@ public class PerseriyaSteps extends ConditionalStep
 			new WorldPoint(2198, 6438, 0)
 		));
 
-		doPath3 = new PuzzleWrapperStep(getQuestHelper(), doPath3RealStep, "Navigate the pathfinder to the abyssal tether at the end.");
+		doPath3 = new PuzzleWrapperStep(getQuestHelper(), doPath3RealStep, "Navigate the pathfinder to the abyssal tether at the end.").withNoHelpHiddenInSidebar(true);
 
 		DetailedQuestStep doPath4RealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2196, 6435, 0),
 			"Move the next pathbreaker from the west, and step off when safe to the south-west pathbreaker.");
@@ -684,7 +684,7 @@ public class PerseriyaSteps extends ConditionalStep
 			new WorldPoint(2197, 6438, 0),
 			new WorldPoint(2196, 6435, 0)
 		));
-		doPath4 = new PuzzleWrapperStep(getQuestHelper(), doPath4RealStep, "Navigate the pathfinder to the abyssal tether at the end.");
+		doPath4 = new PuzzleWrapperStep(getQuestHelper(), doPath4RealStep, "Navigate the pathfinder to the abyssal tether at the end.").withNoHelpHiddenInSidebar(true);
 
 		DetailedQuestStep doPath5RealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2207, 6436, 0),
 			"Move the next pathbreaker from the east, and step off when safe to the east pathbreaker.");
@@ -693,7 +693,7 @@ public class PerseriyaSteps extends ConditionalStep
 			new WorldPoint(2196, 6435, 0),
 			new WorldPoint(2207, 6436, 0)
 		));
-		doPath5 = new PuzzleWrapperStep(getQuestHelper(), doPath5RealStep, "Navigate the pathfinder to the abyssal tether at the end.");
+		doPath5 = new PuzzleWrapperStep(getQuestHelper(), doPath5RealStep, "Navigate the pathfinder to the abyssal tether at the end.").withNoHelpHiddenInSidebar(true);
 
 		DetailedQuestStep doPath6RealStep = new ObjectStep(getQuestHelper(), ObjectID.ABYSSAL_TETHER, new WorldPoint(2210, 6433, 0),
 			"Move the next pathbreaker from the south, and step off to destroy the abyssal tether.");
@@ -703,7 +703,7 @@ public class PerseriyaSteps extends ConditionalStep
 			new WorldPoint(2207, 6433, 0),
 			new WorldPoint(2209, 6433, 0)
 		));
-		doPath6 = new PuzzleWrapperStep(getQuestHelper(), doPath6RealStep, "Navigate the pathfinder to the abyssal tether at the end.");
+		doPath6 = new PuzzleWrapperStep(getQuestHelper(), doPath6RealStep, "Navigate the pathfinder to the abyssal tether at the end.").withNoHelpHiddenInSidebar(true);
 
 		enterGreenTeleporter1 = new ObjectStep(getQuestHelper(), ObjectID.NEURAL_TELEPORTER_49415, new WorldPoint(2234, 6461, 0),
 			"Enter the neural teleporter in the north-east corner.");
@@ -733,10 +733,10 @@ public class PerseriyaSteps extends ConditionalStep
 			"Take lures from the light leeches to repair the growths. Protect from Melee to not take damage from them.", true));
 		getLureBonus = new PuzzleWrapperStep(getQuestHelper(),
 			new NpcStep(getQuestHelper(), NpcID.LIGHT_LEECH,
-			"Get a lure from a light lure. Protect from Melee to avoid damage.", true));
+			"Get a lure from a light lure. Protect from Melee to avoid damage.", true)).withNoHelpHiddenInSidebar(true);
 		repairGrowths.addSubSteps(getLureBonus);
 		growthPuzzle = new PuzzleWrapperStep(getQuestHelper(),
-			new GrowthPuzzleStep(getQuestHelper()));
+			new GrowthPuzzleStep(getQuestHelper())).withNoHelpHiddenInSidebar(true);
 
 		returnThroughBlueNeuralTeleporter = new ObjectStep(getQuestHelper(), ObjectID.NEURAL_TELEPORTER,
 			new WorldPoint(2237, 6444, 0), "Head to the south-east room via the blue neural transmitter.");
@@ -783,7 +783,7 @@ public class PerseriyaSteps extends ConditionalStep
 			new WorldPoint(1740, 6427, 0),
 			new WorldPoint(1747, 6427, 0)
 		));
-		hitFireAxon = new PuzzleWrapperStep(getQuestHelper(), hitFireAxonRealStep, "Solve the axon puzzle.");
+		hitFireAxon = new PuzzleWrapperStep(getQuestHelper(), hitFireAxonRealStep, "Solve the axon puzzle.").withNoHelpHiddenInSidebar(true);
 
 		// [20013, 19904, 20126]
 		NpcStep hitNatureAxonRealStep = new NpcStep(getQuestHelper(), NpcID.ABYSSAL_AXON, "Abyssal Axon (Nature)", new WorldPoint(1743, 6421, 0),
@@ -796,7 +796,7 @@ public class PerseriyaSteps extends ConditionalStep
 			new WorldPoint(1734, 6422, 0),
 			new WorldPoint(1734, 6425, 0)
 		));
-		hitNatureAxon = new PuzzleWrapperStep(getQuestHelper(), hitNatureAxonRealStep, "Solve the axon puzzle.");
+		hitNatureAxon = new PuzzleWrapperStep(getQuestHelper(), hitNatureAxonRealStep, "Solve the axon puzzle.").withNoHelpHiddenInSidebar(true);
 
 		// [-25047, -25024, -25058]
 		NpcStep hitWaterAxonRealStep = new NpcStep(getQuestHelper(), NpcID.ABYSSAL_AXON, "Abyssal Axon (Water)", new WorldPoint(1743, 6421, 0),
@@ -809,7 +809,7 @@ public class PerseriyaSteps extends ConditionalStep
 			new WorldPoint(1736, 6417, 0),
 			new WorldPoint(1736, 6414, 0)
 		));
-		hitWaterAxon = new PuzzleWrapperStep(getQuestHelper(), hitWaterAxonRealStep, "Solve the axon puzzle.");
+		hitWaterAxon = new PuzzleWrapperStep(getQuestHelper(), hitWaterAxonRealStep, "Solve the axon puzzle.").withNoHelpHiddenInSidebar(true);
 
 		enterBlueTeleporter2 = new ObjectStep(getQuestHelper(), ObjectID.NEURAL_TELEPORTER_49414,
 			new WorldPoint(1730, 6435, 0), "Enter the blue neural teleporter to the west of the area to reach the nerve endings room.");
@@ -820,20 +820,32 @@ public class PerseriyaSteps extends ConditionalStep
 		// Repaired any, 15221, 0->1->2->3->4
 		// 15211 represent air, 100->0
 
-		getEarthNerve = new ObjectStep(getQuestHelper(), ObjectID.NERVE_ENDING_EARTH, new WorldPoint(1784, 6423, 0), "Break off an earth nerve. Enter the air bubbles when your air's low.");
-		getWaterNerve = new ObjectStep(getQuestHelper(), ObjectID.NERVE_ENDING_WATER, new WorldPoint(1775, 6426, 0), "Break off a water nerve. Enter the air bubbles when your air's low.");
-		getFireNerve = new ObjectStep(getQuestHelper(), ObjectID.NERVE_ENDING_FIRE, new WorldPoint(1777, 6422, 0), "Break off a fire nerve. Enter the air bubbles when your air's low.");
-		getAirNerve = new ObjectStep(getQuestHelper(), ObjectID.NERVE_ENDING_AIR, new WorldPoint(1789, 6429, 0), "Break off an air nerve. Enter the air bubbles when your air's low.");
+		getEarthNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.NERVE_ENDING_EARTH, new WorldPoint(1784, 6423, 0), "Break off an earth nerve. Enter the air bubbles when your air's low."));
+		getWaterNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.NERVE_ENDING_WATER, new WorldPoint(1775, 6426, 0), "Break off a water nerve. Enter the air bubbles when your air's low."));
+		getFireNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.NERVE_ENDING_FIRE, new WorldPoint(1777, 6422, 0), "Break off a fire nerve. Enter the air bubbles when your air's low."));
+		getAirNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.NERVE_ENDING_AIR, new WorldPoint(1789, 6429, 0), "Break off an air nerve. Enter the air bubbles when your air's low."));
 
-		makeDustNerve = new DetailedQuestStep(getQuestHelper(), "Make a dust nerve by combining an air and earth nerve.", airNerve.highlighted(), earthNerve.highlighted());
-		makeLavaNerve = new DetailedQuestStep(getQuestHelper(), "Make a lava nerve by combining an earth and fire nerve.", earthNerve.highlighted(), fireNerve.highlighted());
-		makeSmokeNerve = new DetailedQuestStep(getQuestHelper(), "Make a smoke nerve by combining an air and fire nerve.", airNerve.highlighted(), fireNerve.highlighted());
-		makeSteamNerve = new DetailedQuestStep(getQuestHelper(), "Make a steam nerve by combining an water and fire nerve.", waterNerve.highlighted(), fireNerve.highlighted());
+		makeDustNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Make a dust nerve by combining an air and earth nerve.", airNerve.highlighted(), earthNerve.highlighted()));
+		makeLavaNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Make a lava nerve by combining an earth and fire nerve.", earthNerve.highlighted(), fireNerve.highlighted()));
+		makeSmokeNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Make a smoke nerve by combining an air and fire nerve.", airNerve.highlighted(), fireNerve.highlighted()));
+		makeSteamNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Make a steam nerve by combining an water and fire nerve.", waterNerve.highlighted(), fireNerve.highlighted()));
 
-		repairLavaNerve = new ObjectStep(getQuestHelper(), ObjectID.LAVA_NERVE_ENDING_BROKEN, new WorldPoint(1779, 6435, 0), "Repair the lava nerve ending.", lavaNerve);
-		repairSmokeNerve = new ObjectStep(getQuestHelper(), ObjectID.SMOKE_NERVE_ENDING_BROKEN, new WorldPoint(1778, 6431, 0), "Repair the smoke nerve ending.", smokeNerve);
-		repairDustNerve = new ObjectStep(getQuestHelper(), ObjectID.DUST_NERVE_ENDING_BROKEN, new WorldPoint(1784, 6433, 0), "Repair the dust nerve ending.", dustNerve);
-		repairSteamNerve = new ObjectStep(getQuestHelper(), ObjectID.STEAM_NERVE_ENDING_BROKEN, new WorldPoint(1783, 6430, 0), "Repair the steam nerve ending.", steamNerve);
+		repairLavaNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.LAVA_NERVE_ENDING_BROKEN, new WorldPoint(1779, 6435, 0), "Repair the lava nerve ending.", lavaNerve));
+		repairSmokeNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.SMOKE_NERVE_ENDING_BROKEN, new WorldPoint(1778, 6431, 0), "Repair the smoke nerve ending.", smokeNerve));
+		repairDustNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.DUST_NERVE_ENDING_BROKEN, new WorldPoint(1784, 6433, 0), "Repair the dust nerve ending.", dustNerve));
+		repairSteamNerve = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.STEAM_NERVE_ENDING_BROKEN, new WorldPoint(1783, 6430, 0), "Repair the steam nerve ending.", steamNerve));
 
 		makeMatchingNerves = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(), "Collect nerves and combine them together to make nerves which match the broken nerve endings. " +
@@ -845,8 +857,8 @@ public class PerseriyaSteps extends ConditionalStep
 		enterSummoningRoom = new ObjectStep(getQuestHelper(), ObjectID.PASSAGE_49412, new WorldPoint(1744, 6457, 0), "Enter the room with a summoning circle in it.");
 
 		killImps = new PuzzleWrapperStep(getQuestHelper(), new NpcStep(getQuestHelper(), NpcID.SCARRED_IMP, new WorldPoint(1744, 6448, 0),
-			"Kill the scarred imps to remove the lessers' prayers. Ignore the other scarred monsters which appear.", true), "" +
-			"Work out how to close the summoning circle.");
+			"Kill the scarred imps to remove the lessers' prayers. Ignore the other scarred monsters which appear.", true),
+			"Work out how to close the summoning circle.").withNoHelpHiddenInSidebar(true);
 		killLesserDemons = new PuzzleWrapperStep(getQuestHelper(),
 			new NpcStep(getQuestHelper(), NpcID.LESSER_DEMON, new WorldPoint(1744, 6448, 0), "Kill the lesser demons.", true),
 			"Work out how to close the summoning circle.");
@@ -873,7 +885,7 @@ public class PerseriyaSteps extends ConditionalStep
 				"Protect from Melee to not take damage from them.", true), "Work out how to repair the growths.");
 		getLure = new PuzzleWrapperStep(getQuestHelper(),
 			new NpcStep(getQuestHelper(), NpcID.LIGHT_LEECH, "Light leech", new WorldPoint(1868, 6430, 0),
-				"Get a lure from a light lure.", true), "Work out how to repair the growths.");
+				"Get a lure from a light lure.", true), "Work out how to repair the growths.").withNoHelpHiddenInSidebar(true);
 		repairGrowthsRoom3.addSubSteps(getLure);
 
 		returnThroughGreenPortal = new ObjectStep(getQuestHelper(), ObjectID.NEURAL_TELEPORTER_49415,
@@ -910,16 +922,16 @@ public class PerseriyaSteps extends ConditionalStep
 			"Work out how to repair the veins in the room.");
 		repairRadiantVeins = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), NullObjectID.NULL_49536,
 			"Kill radiant sanguisphera for radiant fibre to repair all 3 of the radiant veins.", true),
-			"Work out how to repair the veins in the room.");
+			"Work out how to repair the veins in the room.").withNoHelpHiddenInSidebar(true);
 
 		killRadiant = new PuzzleWrapperStep(getQuestHelper(),
 			new NpcStep(getQuestHelper(), NpcID.RADIANT_SANGUISPHERA, new WorldPoint(1868, 6430, 0),
 			"Kill radiant sanguisphera with Protect from Magic on for a radiant fibre.", true, protectFromMagic, radiantFibre),
-			"Work out how to repair the veins in the room.");
+			"Work out how to repair the veins in the room.").withNoHelpHiddenInSidebar(true);
 		killCrimson = new PuzzleWrapperStep(getQuestHelper(),
 			new NpcStep(getQuestHelper(), NpcID.CRIMSON_SANGUISPHERA, new WorldPoint(1868, 6430, 0),
 			"Kill crimson sanguisphera with Protect from Magic on for a crimson fibre.", true, protectFromMagic, crimsonFibre),
-			"Work out how to repair the veins in the room.");
+			"Work out how to repair the veins in the room.").withNoHelpHiddenInSidebar(true);
 
 		repairCrimsonVeins.addSubSteps(killCrimson);
 		repairRadiantVeins.addSubSteps(killRadiant);

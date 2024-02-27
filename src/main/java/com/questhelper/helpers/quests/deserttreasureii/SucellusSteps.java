@@ -335,27 +335,27 @@ public class SucellusSteps extends ConditionalStep
 		searchSkeleton = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.SKELETON_49094, new WorldPoint(3042, 6369, 0),
 			"Search the skeleton in the cell."),
-			"Work out how to escape the cell.");
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 
 		readPrisonersLetter = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(), "Read the prisoner's letter.", prisonersLetter.highlighted()),
-				"Work out how to escape the cell.");
+				"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		searchBucket = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.BUCKET_49095, new WorldPoint(3039, 6367, 0),
 			"Search the bucket for a knife."),
-			"Work out how to escape the cell.");
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		giveKnifeToSoldier = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
 			"Give the knife to the soldier."),
-			"Work out how to escape the cell.");
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		searchBed = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49514, new WorldPoint(3041, 6367, 0),
 			"Search the bed."),
-			"Work out how to escape the cell.");
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		giveSoldierLockpick = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
 		"Give the lockpick to the soldier."),
-			"Work out how to escape the cell.");
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 
 		talkToAssassin = new NpcStep(getQuestHelper(), NpcID.ASSASSIN_12348, new WorldPoint(2920, 6375, 2),
 			"Talk to the Assassin outside the cell.");
@@ -442,7 +442,7 @@ public class SucellusSteps extends ConditionalStep
 		unlockChestStep = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "214013", 5, 2, 1, 4, 0, 1, 3),
 			"Enter the correct code for the chest.");
 
-		unlockChest = new PuzzleWrapperStep(getQuestHelper(), unlockChestRealStep, unlockChestFakeStep);
+		unlockChest = new PuzzleWrapperStep(getQuestHelper(), unlockChestRealStep, unlockChestFakeStep).withNoHelpHiddenInSidebar(true);
 		unlockChest.addSubSteps(unlockChestStep);
 
 		ObjectStep goToAdminRoomRealStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49112, new WorldPoint(2902, 6445, 2),
@@ -506,7 +506,7 @@ public class SucellusSteps extends ConditionalStep
 		));
 		goToAdminRoom = new PuzzleWrapperStep(getQuestHelper(), goToAdminRoomRealStep, goToAdminRoomHiddenStep);
 		unlockChest2 = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "LIES", 10, 0, 4, 1, 5),
-			"Enter the correct code for the chest.");
+			"Enter the correct code for the chest.").withNoHelpHiddenInSidebar(true);
 		goToAdminRoom.addSubSteps(unlockChest2);
 
 		enterCrevice = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49517, new WorldPoint(2960, 6428, 2),
@@ -524,7 +524,7 @@ public class SucellusSteps extends ConditionalStep
 		));
 		enterCrevice.addDialogStep("Yes.");
 
-		openArrowChestStep = new PuzzleWrapperStep(getQuestHelper(), new ArrowChestPuzzleStep(getQuestHelper()), "Work out how to open the nearby locked chest.");
+		openArrowChestStep = new PuzzleWrapperStep(getQuestHelper(), new ArrowChestPuzzleStep(getQuestHelper()), "Work out how to open the nearby locked chest.").withNoHelpHiddenInSidebar(true);
 		openArrowChest = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), ObjectID.CHEST_49113, new WorldPoint(2968, 6414, 2),
 			"Enter the room with beds in it, south of the crevice. " +
 				"Open the south-eastern chest, next to the crates. The code is 'UP RIGHT LEFT DOWN RIGHT UP'."),
@@ -563,7 +563,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2889, 6375, 2)
 		));
 		openDiamondChestStep = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "WRATH", 10, 2, 3, 5, 9, 5),
-			"Enter the correct code for the chest.");
+			"Enter the correct code for the chest.").withNoHelpHiddenInSidebar(true);
 
 		openDiamondChest = new PuzzleWrapperStep(getQuestHelper(), openDiamondChestRealStep, openDiamondChestFakeStep);
 		openDiamondChest.addSubSteps(openDiamondChestStep);

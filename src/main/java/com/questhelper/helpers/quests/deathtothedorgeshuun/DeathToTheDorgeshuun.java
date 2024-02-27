@@ -344,7 +344,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 			"Sneak your way to the end of the secret area.");
 		talkToGuard1 = new PuzzleWrapperStep(this,
 			new NpcStep(this, NpcID.GUARD_4516, new WorldPoint(2570, 5189, 0), "Talk to them so they turn their back to Zanik."),
-				"Sneak your way to the end of the secret area.");
+				"Sneak your way to the end of the secret area.").withNoHelpHiddenInSidebar(true);
 		standBehindGuard1.addSubSteps(talkToGuard1);
 
 		NpcStep talkToGuard2RealStep = new NpcStep(this, NpcID.GUARD_4517, new WorldPoint(2566, 5192, 0),
@@ -357,13 +357,12 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		));
 		talkToGuard2 = new PuzzleWrapperStep(this,
 			talkToGuard2RealStep,
-			"Sneak your way to the end of the secret area.");
+			"Sneak your way to the end of the secret area.").withNoHelpHiddenInSidebar(true);
 
 		NpcStep tellZanikToKillGuard3RealStep = new NpcStep(this, NpcID.ZANIK_4509, "Wait for the third guard to be walking away, then tell Zanik to kill them.");
 		tellZanikToKillGuard3RealStep.addDialogStep("Now!");
 		tellZanikToKillGuard3 = new PuzzleWrapperStep(this,
-			tellZanikToKillGuard3RealStep,
-			"Sneak your way to the end of the secret area.");
+			tellZanikToKillGuard3RealStep, "Sneak your way to the end of the secret area.").withNoHelpHiddenInSidebar(true);
 		standNearGuard4 = new PuzzleWrapperStep(this,
 			new DetailedQuestStep(this, new WorldPoint(2576, 5195, 0), "Stand near to the next guard, then tell Zanik to wait there."),
 			"Sneak your way to the end of the secret area.");
@@ -371,20 +370,20 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		NpcStep tellZanikToWaitForGuard4RealStep = new NpcStep(this, NpcID.ZANIK_4509, "Tell Zanik to wait.");
 		tellZanikToWaitForGuard4RealStep.addDialogStep("Wait here.");
 		tellZanikToWaitForGuard4 = new PuzzleWrapperStep(this,
-			tellZanikToWaitForGuard4RealStep, "Sneak your way to the end of the secret area.");
+			tellZanikToWaitForGuard4RealStep, "Sneak your way to the end of the secret area.").withNoHelpHiddenInSidebar(true);
 
 		runSouthToLureGuard4 = new PuzzleWrapperStep(this,
 			new DetailedQuestStep(this, new WorldPoint(2577, 5191, 0), "Run east then south to lure the guard past Zanik."),
-			"Sneak your way to the end of the secret area.");
+			"Sneak your way to the end of the secret area.").withNoHelpHiddenInSidebar(true);
 		standNearGuard5 = new PuzzleWrapperStep(this,
 			new DetailedQuestStep(this, new WorldPoint(2577, 5200, 0), "Stand in the north east, just out of sight of the last guard, and tell Zanik to wait there."),
-			"Sneak your way to the end of the secret area.");
+			"Sneak your way to the end of the secret area.").withNoHelpHiddenInSidebar(true);
 
 		NpcStep tellZanikToWaitForGuard5RealStep = new NpcStep(this, NpcID.ZANIK_4509, "Tell Zanik to wait.");
 		tellZanikToWaitForGuard5RealStep.addDialogStep("Wait here.");
 		tellZanikToWaitForGuard5 = new PuzzleWrapperStep(this,
 			tellZanikToWaitForGuard5RealStep,
-			"Sneak your way to the end of the secret area.");
+			"Sneak your way to the end of the secret area.").withNoHelpHiddenInSidebar(true);
 
 		DetailedQuestStep lureGuard5RealStep = new DetailedQuestStep(this, new WorldPoint(2566, 5201, 0), "Approach the final guard from the west so Zanik can kill them.");
 		lureGuard5RealStep.setLinePoints(Arrays.asList(
@@ -395,7 +394,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		));
 		lureGuard5 = new PuzzleWrapperStep(this,
 			lureGuard5RealStep,
-			"Sneak your way to the end of the secret area.");
+			"Sneak your way to the end of the secret area.").withNoHelpHiddenInSidebar(true);
 
 		checkZanikCorpse = new ObjectStep(this, NullObjectID.NULL_15712, new WorldPoint(3161, 3246, 0), "Inspect Zanik outside the H.A.M base.");
 		listenToDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_15757, new WorldPoint(2571, 5204, 0), "Listen to the large door.");

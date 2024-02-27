@@ -227,16 +227,16 @@ public class ErnestTheChicken extends BasicQuestHelper
 		goDownLadder = new ObjectStep(this, ObjectID.LADDER_133, new WorldPoint(3092, 3362, 0), "Climb down the ladder into the basement.");
 
 		pullDownLeverA = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_146, new WorldPoint(3108, 9745, 0), "Pull down lever A."));
-		pullDownLeverB = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_147, new WorldPoint(3118, 9752, 0), "Pull down lever B."));
-		pullDownLeverC = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_148, new WorldPoint(3112, 9760, 0), "Pull down lever C."));
-		pullDownLeverD = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_149, new WorldPoint(3108, 9767, 0), "Pull down lever D."));
-		pullDownLeverE = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_150, new WorldPoint(3097, 9767, 0), "Pull down lever E."));
-		pullDownLeverF = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_151, new WorldPoint(3096, 9765, 0), "Pull down lever F."));
-		pullUpLeverA = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_146, new WorldPoint(3108, 9745, 0), "Pull up lever A."));
-		pullUpLeverB = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_147, new WorldPoint(3118, 9752, 0), "Pull up lever B."));
-		pullUpLeverC = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_148, new WorldPoint(3112, 9760, 0), "Pull up lever C."));
-		pullUpLeverD = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_149, new WorldPoint(3108, 9767, 0), "Pull up lever D."));
-		pullUpLeverE = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_150, new WorldPoint(3097, 9767, 0), "Pull up lever E."));
+		pullDownLeverB = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_147, new WorldPoint(3118, 9752, 0), "Pull down lever B.")).withNoHelpHiddenInSidebar(true);
+		pullDownLeverC = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_148, new WorldPoint(3112, 9760, 0), "Pull down lever C.")).withNoHelpHiddenInSidebar(true);
+		pullDownLeverD = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_149, new WorldPoint(3108, 9767, 0), "Pull down lever D.")).withNoHelpHiddenInSidebar(true);
+		pullDownLeverE = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_150, new WorldPoint(3097, 9767, 0), "Pull down lever E.")).withNoHelpHiddenInSidebar(true);
+		pullDownLeverF = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_151, new WorldPoint(3096, 9765, 0), "Pull down lever F.")).withNoHelpHiddenInSidebar(true);
+		pullUpLeverA = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_146, new WorldPoint(3108, 9745, 0), "Pull up lever A.")).withNoHelpHiddenInSidebar(true);
+		pullUpLeverB = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_147, new WorldPoint(3118, 9752, 0), "Pull up lever B.")).withNoHelpHiddenInSidebar(true);
+		pullUpLeverC = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_148, new WorldPoint(3112, 9760, 0), "Pull up lever C.")).withNoHelpHiddenInSidebar(true);
+		pullUpLeverD = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_149, new WorldPoint(3108, 9767, 0), "Pull up lever D.")).withNoHelpHiddenInSidebar(true);
+		pullUpLeverE = new PuzzleWrapperStep(this, new ObjectStep(this, NullObjectID.NULL_150, new WorldPoint(3097, 9767, 0), "Pull up lever E.")).withNoHelpHiddenInSidebar(true);
 		pickupOilCan = new DetailedQuestStep(this, new WorldPoint(3092, 9755, 0), "Pick up the oil can in the west room.", oilCan);
 
 		goUpFromBasement = new ObjectStep(this, ObjectID.LADDER_132, new WorldPoint(3117, 9754, 0), "Climb out of the basement.");

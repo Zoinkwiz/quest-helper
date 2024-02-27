@@ -483,7 +483,6 @@ public class BeneathCursedSands extends BasicQuestHelper
 		enterRiddleDoor = new ObjectStep(this, ObjectID.DOOR_43961, new WorldPoint(3405, 9248, 0), "With the traps disabled, go through the door west of the juncture.");
 
 		// Riddle of the Tomb
-		// TODO: This step needs to be tested.
 		solveTombRiddle = new PuzzleWrapperStep(this, new TombRiddle(this), "Solve the tomb riddle.");
 
 		enterTombDoor = new ObjectStep(this, ObjectID.DOOR_43962, new WorldPoint(3389, 9248, 0), "Enter the tomb.");

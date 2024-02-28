@@ -71,7 +71,7 @@ public class DesertHard extends ComplexStateQuestHelper
 	ItemRequirement food, waterskin, desertBoots, desertRobe, desertShirt, rope, nardahTP;
 
 	// Quests required
-	Requirement theFued, dreamMentor, desertTreasure, contact, lunarBook;
+	Requirement theFeud, dreamMentor, desertTreasure, contact, lunarBook;
 
 	Requirement notMenaThug, notGranite, notRefillWaterskin, notKalphQueen, notPollRooftop, notKillDust,
 		notAncientMagicks, notKillLocustRider, notBurnYew, notMithPlatebody;
@@ -189,7 +189,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		inSoph2 = new ZoneRequirement(soph2);
 		inMayor = new ZoneRequirement(mayor);
 
-		theFued = new QuestRequirement(QuestHelperQuest.THE_FEUD, QuestState.FINISHED);
+		theFeud = new QuestRequirement(QuestHelperQuest.THE_FEUD, QuestState.FINISHED);
 		dreamMentor = new QuestRequirement(QuestHelperQuest.DREAM_MENTOR, QuestState.FINISHED);
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 		contact = new QuestRequirement(QuestHelperQuest.CONTACT, QuestState.FINISHED);
@@ -291,7 +291,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		reqs.add(contact);
 		reqs.add(dreamMentor);
 		reqs.add(desertTreasure);
-		reqs.add(theFued);
+		reqs.add(theFeud);
 
 		return reqs;
 	}
@@ -344,7 +344,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		allSteps.add(pollRooftopSteps);
 
 		PanelDetails menaphiteThugSteps = new PanelDetails("Menaphite Thug", Collections.singletonList(menaThug),
-			new SkillRequirement(Skill.THIEVING, 65), theFued, blackjack);
+			new SkillRequirement(Skill.THIEVING, 65), theFeud, blackjack);
 		menaphiteThugSteps.setDisplayCondition(notMenaThug);
 		menaphiteThugSteps.setLockingStep(menaThugTask);
 		allSteps.add(menaphiteThugSteps);

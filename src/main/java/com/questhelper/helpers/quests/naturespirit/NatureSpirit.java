@@ -26,6 +26,7 @@ package com.questhelper.helpers.quests.naturespirit;
 
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.player.PrayerPointRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -71,7 +72,7 @@ public class NatureSpirit extends BasicQuestHelper
 	ItemRequirement combatGear, salveTele;
 
 	Requirement inUnderground, fillimanNearby, mirrorNearby, usedMushroom, onOrange,
-		usedCard, inGrotto, natureSpiritNearby, ghastNearby;
+		usedCard, inGrotto, natureSpiritNearby, ghastNearby, prayerPoints;
 
 	QuestStep goDownToDrezel, talkToDrezel, leaveDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
 		takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman, goBackDownToDrezel, talkToDrezelForBlessing,
@@ -223,6 +224,8 @@ public class NatureSpirit extends BasicQuestHelper
 			new WidgetTextRequirement(119, 3, true, "spell scroll was absorbed"));
 
 		ghastNearby = new NpcCondition(NpcID.GHAST_946);
+
+		prayerPoints = new PrayerPointRequirement(1);
 	}
 
 	public void setupSteps()
@@ -268,7 +271,8 @@ public class NatureSpirit extends BasicQuestHelper
 		searchAltar = new ObjectStep(this, ObjectID.GROTTO_3520, new WorldPoint(3442, 9741, 0), "Search the grotto inside.", ghostspeak);
 		talkToFillimanInGrotto = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3441, 9738, 0), "Talk to Filliman in the grotto to bless your sickle.", ghostspeak, silverSickle);
 		blessSickle = new NpcStep(this, NpcID.NATURE_SPIRIT, new WorldPoint(3441, 9738, 0), "Talk to the Nature Spirit in the grotto to bless your sickle.", ghostspeak, silverSickle);
-		fillPouches = new DetailedQuestStep(this, "Right-click 'bloom' the blessed sickle next to rotten logs for mort myre fungi. Use these to fill the druid pouch.", blessedSickle);
+		fillPouches = new DetailedQuestStep(this,
+			"Right-click 'bloom' the blessed sickle next to rotten logs for mort myre fungi. Use these to fill the druid pouch.", blessedSickle, prayerPoints);
 		killGhasts = new NpcStep(this, NpcID.GHAST, "Use the filled druid pouch on a ghast to make it attackable and kill it. You'll need to kill 3.", druidPouchFull);
 		killGhast = new NpcStep(this, NpcID.GHAST_946, "Kill the ghast.", druidPouchFull);
 		killGhasts.addSubSteps(killGhast);
@@ -340,12 +344,12 @@ public class NatureSpirit extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Start the quest",
 			Arrays.asList(talkToDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
-				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman), ghostspeak, silverSickle));
+				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman), ghostspeak, silverSickle, prayerPoints));
 		allSteps.add(new PanelDetails("Helping Filliman",
 			Arrays.asList(talkToDrezelForBlessing, castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange,
 				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto, blessSickle), ghostspeak, silverSickle));
 		allSteps.add(new PanelDetails("Killing Ghasts",
-			Arrays.asList(fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, blessedSickle));
+			Arrays.asList(fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, blessedSickle, prayerPoints));
 
 		return allSteps;
 	}

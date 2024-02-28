@@ -545,11 +545,11 @@ public class MourningsEndPartI extends BasicQuestHelper
 		allSteps.add(pickItemsPanel);
 
 		PanelDetails cleanPanel = new PanelDetails("Clean Mourner top",
-			Arrays.asList(searchLaundry, useSoapOnTop), Arrays.asList(waterBucket), Arrays.asList(taverleyTeleport, lletyaTeleport));
+			Arrays.asList(searchLaundry, useSoapOnTop), Arrays.asList(waterBucket, bloodyMournerBody), Arrays.asList(taverleyTeleport, lletyaTeleport));
 		cleanPanel.setLockingStep(cleanTopSteps);
 
 		PanelDetails repairPanel = new PanelDetails("Repair Mourner trousers",
-			Collections.singletonList(talkToOronwen), Arrays.asList(bearFur, silk2), Arrays.asList(lletyaTeleport));
+			Collections.singletonList(talkToOronwen), Arrays.asList(bearFur, silk2, mournerLegsBroken), Arrays.asList(lletyaTeleport));
 		repairPanel.setLockingStep(repairTrousersSteps);
 
 		allSteps.add(cleanPanel);
@@ -562,7 +562,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		allSteps.add(enterWestArdougnePanel);
 
 		allSteps.add(new PanelDetails("Dye the sheep", Arrays.asList(getToads, dyeSheep, enterBaseAfterSheep,
-			enterBasementAfterSheep, talkToEssylltAfterSheep), fixedDevice, ogreBellows, redDye, yellowDye, greenDye, blueDye));
+			enterBasementAfterSheep, talkToEssylltAfterSheep), fullMourners, fixedDevice, ogreBellows, redDye, yellowDye, greenDye, blueDye));
 
 
 		allSteps.add(new PanelDetails("Poison the citizens",

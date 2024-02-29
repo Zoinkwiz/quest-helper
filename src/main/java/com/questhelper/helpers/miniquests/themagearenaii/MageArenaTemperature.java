@@ -36,7 +36,8 @@ public enum MageArenaTemperature
 {
 	VERY_COLD("is very cold", 200, 5000),
 	COLD("is cold",  150, 199),
-	HOT("is hot", 70, 149),
+	WARM("is warm", 100, 149),
+	HOT("is hot", 70, 99),
 	VERY_HOT("is very hot", 30, 69),
 	INCREDIBLY_HOT("is incredibly hot", 15, 29),
 	SHAKING("is visibly shaking", 0, 14);
@@ -44,6 +45,7 @@ public enum MageArenaTemperature
 	public static final Set<MageArenaTemperature> temperatureSet = Sets.immutableEnumSet(
 		VERY_COLD,
 		COLD,
+		WARM,
 		HOT,
 		VERY_HOT,
 		INCREDIBLY_HOT,

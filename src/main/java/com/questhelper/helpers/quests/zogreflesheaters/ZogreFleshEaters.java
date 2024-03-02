@@ -272,7 +272,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		talkToZavistic.addDialogStep("I'm here about the sicks...err Zogres");
 
 		goUpToSith = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0),
-			"Go upstairs to Sithik in a house north or the Wizards' Guild.");
+			"Go upstairs and talk to Sithik in the house north of the Wizards' Guild.");
 		talkToSith = new ObjectStep(this, NullObjectID.NULL_6887, new WorldPoint(2591, 3104, 1), "Talk to Sithik Ints in the bed to the west.");
 		talkToSith.addDialogStep("Do you mind if I look around?");
 		goUpToSith.addSubSteps(talkToSith);

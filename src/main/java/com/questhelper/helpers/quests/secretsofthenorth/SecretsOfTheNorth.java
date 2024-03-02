@@ -504,8 +504,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		moveToWeissCave = new ObjectStep(this, ObjectID.STAIRS_33234, new WorldPoint(2867, 3940, 0),
 			"Prepare for a fight and climb down the stairs in the middle of Weiss.", combatGear, antipoison);
 		enterWeissCave = new ObjectStep(this, 46905, new WorldPoint(2846, 10332, 0),
-			"Prepare for a fight and enter the cave to the south.", combatGear, antipoison);
-		enterWeissCave.addText("Put the Assassin in the smoke bombs so you can hit him and dodge the poison vials he throws out.");
+			"Enter the cave to the south.", combatGear, antipoison);
 		enterWeissCave.addDialogStep("Yes.");
 		fightAssassin = new NpcStep(this, NpcID.ASSASSIN_10940, new WorldPoint(2927, 10348, 0), "Defeat the assassin.");
 		fightAssassin.addText("Put the Assassin in the smoke bombs so you can hit him and dodge the poison vials he throws out.");

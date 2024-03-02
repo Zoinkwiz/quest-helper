@@ -187,6 +187,7 @@ public class TempleOfIkov extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		pendantOfLucien = new ItemRequirement("Pendant of lucien", ItemID.PENDANT_OF_LUCIEN).isNotConsumed();
+		pendantOfLucien.setTooltip("You can get another from Lucien in East Ardougne, near the wall of West Ardougne in the Flying Horse Inn");
 		pendantOfLucien.canBeObtainedDuringQuest();
 		pendantOfLucienEquipped = pendantOfLucien.equipped();
 		bootsOfLightness = new ItemRequirement("Boots of lightness", ItemID.BOOTS_OF_LIGHTNESS).isNotConsumed();

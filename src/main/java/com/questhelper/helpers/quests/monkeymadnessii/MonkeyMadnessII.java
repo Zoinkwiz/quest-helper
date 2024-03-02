@@ -82,7 +82,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	ItemRequirement lemon, grape, pestle, pickaxe, logs, lightSource, hammerSidebar, hammer, chisel, chiselSidebar, mspeakAmulet, talisman, ninjaGreegree, translationBook,
 		pestleHighlighted, lemonHighlighted, grapesHighlighted, handkerchief, mysteriousNote, mysteriousNoteLemon, mysteriousNoteLemonCandle, brush, scrawledNote, grapeBrush,
 		translatedNote, noCombatItems, talismanOr1000Coins, ninjaGreegreeEquipped, mspeakAmuletEquipped, greegree, kruksPaw, greegreeEquipped, krukGreegree, coins20,
-		chiselHighlighted, deconstructedOnyx, chargedOnyx;
+		chiselHighlighted, deconstructedOnyx, chargedOnyx, climbingBoots;
 
 	//Items Recommended
 	ItemRequirement combatGear, combatGear2, magicLog, food, staminaPotions, prayerPotions, antidote;
@@ -294,6 +294,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		antidote = new ItemRequirement("Antidote", ItemCollections.ANTIPOISONS, -1);
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
 
 		handkerchief = new ItemRequirement("Handkerchief", ItemID.HANDKERCHIEF);
 		mysteriousNote = new ItemRequirement("Mysterious note", ItemID.MYSTERIOUS_NOTE);
@@ -533,7 +534,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		talkToGarkorAfterKruk = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.");
 
-		enterTrollStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold, ready to fight Kob.");
+		enterTrollStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0),
+			"Enter the Troll Stronghold, ready to fight Kob.", climbingBoots, combatGear);
 
 		talkToKob = new NpcStep(this, NpcID.KOB, new WorldPoint(2831, 10060, 2), "Talk to Kob with Protect from Melee on, ready to fight.");
 		talkToKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
@@ -722,7 +724,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Going undercover", chapter2Steps, ninjaGreegree, mspeakAmulet, talismanOr1000Coins, lightSource, combatGear, food, prayerPotions, staminaPotions));
 
 		allSteps.add(new PanelDetails("Defeating trolls and ogres",
-			Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef), combatGear,
+			Arrays.asList(enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef), combatGear, climbingBoots,
 			coins20.hideConditioned(new SkillRequirement(Skill.AGILITY, 71, true))));
 
 		List<QuestStep> sabotageSteps = QuestUtil.toArrayList(talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,

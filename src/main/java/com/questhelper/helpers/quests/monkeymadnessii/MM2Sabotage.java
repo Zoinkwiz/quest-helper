@@ -233,7 +233,7 @@ public class MM2Sabotage extends ConditionalStep
 		goDownFromSatchel1.setLinePoints(pathAboveGunpowder);
 
 		placeSatchel2 = new ObjectStep(getQuestHelper(), ObjectID.COMPROMISED_SUPPORT_28622, new WorldPoint(2090, 5418, 1), "Place a satchel on the support to the south.", filledSatchel1Highlighted);
-		placeSatchel2.addTileMarkers(new WorldPoint(2083, 5430, 1));
+		placeSatchel2.addTileMarkers(new WorldPoint(2085, 5430, 1));
 		placeSatchel2.setHideMinimapLines(true);
 		placeSatchel2.addIcon(ItemID.SATCHEL_19528);
 		placeSatchel2.setLinePoints(pathToSatchel2);

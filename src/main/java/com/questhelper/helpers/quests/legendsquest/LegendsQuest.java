@@ -975,10 +975,10 @@ public class LegendsQuest extends BasicQuestHelper
 		drinkBraveryPotionAndClimbDown.addDialogSteps("Yes, I'll bravely drink the Bravery Potion.", "Yes, I'll shimmy down the rope into possible doom.", "I'm not scared. Let's go!");
 		// MesBox: You bravely swig down the entire contents of the vial and then wait for some sort of internal explosion. After a few seconds, you realise that you actually feel alright.
 
-
 		climbDownWinch = new ObjectStep(this, ObjectID.WINCH_2934, new WorldPoint(2761, 9331, 0), "Climb down the winch.");
 		climbDownWinch.addAlternateObjects(ObjectID.WINCH_2935);
 		climbDownWinch.addDialogSteps("I'm not scared. Let's go!", "Yes, I'll shimmy down the rope into possible doom.");
+		drinkBraveryPotionAndClimbDown.addSubSteps(climbDownWinch);
 
 		enterMossyRockForViyeldi = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0),
 			"Search and then enter the Mossy Rocks in the north west of the Kharazi.",
@@ -1203,7 +1203,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("To the source", Arrays.asList(
 			addArdrigal, enterJungleToGoToSource, enterMossyRockToSource, enterBookcaseToSource, enterGate1ToSource,
-			enterGate2ToSource, searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, climbDownWinch),
+			enterGate2ToSource, searchMarkedWallToSource, useSpellOnDoor, useRopeOnWinch, drinkBraveryPotionAndClimbDown),
 			completeNotes, ardrigal, snakeWeed, vialOfWater, machete, runeOrDragonAxe, lockpick, pickaxe, chargeOrbRunes, unpoweredOrb, rope, goldBowlBlessed, germinatedSeeds, combatGear));
 
 		allSteps.add(new PanelDetails("Unlocking the source", Arrays.asList(

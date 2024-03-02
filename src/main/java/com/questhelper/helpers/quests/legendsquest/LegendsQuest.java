@@ -977,7 +977,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		climbDownWinch = new ObjectStep(this, ObjectID.WINCH_2934, new WorldPoint(2761, 9331, 0), "Climb down the winch.");
 		climbDownWinch.addAlternateObjects(ObjectID.WINCH_2935);
-		climbDownWinch.addDialogSteps("I'm not scared. Let's go!", "Yes, I'll shimmy down the rope into possible doom.", "I'm not scared. Let's go!");
+		climbDownWinch.addDialogSteps("I'm not scared. Let's go!", "Yes, I'll shimmy down the rope into possible doom.");
 		drinkBraveryPotionAndClimbDown.addSubSteps(climbDownWinch);
 
 		enterMossyRockForViyeldi = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0),

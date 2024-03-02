@@ -68,7 +68,7 @@ public class TheGolem extends BasicQuestHelper
 		papyrusHighlight;
 
 	//Items Recommended
-	ItemRequirement varrockTeleport, digsiteTeleport, waterskins;
+	ItemRequirement varrockTeleport, digsiteTeleport, waterskins, necklaceOfPassage;
 
 	Requirement inRuin, turnedStatue1, turnedStatue2, turnedStatue3, turnedStatue4,hasReadLetter, added1Clay, added2Clay, added3Clay, talkedToElissa,
 		hasReadNotes, talkedToCurator, inUpstairsMuseum, stolenStatuette, inThroneRoom, openedHead, enteredRuins;
@@ -218,9 +218,11 @@ public class TheGolem extends BasicQuestHelper
 		statuetteHighlight.setHighlightInInventory(true);
 		statuetteHighlight.setTooltip("If you've lost it, talk to the Curator in the Varrock museum again");
 
+		// Recommended items
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		digsiteTeleport = new ItemRequirement("Digsite teleport", ItemCollections.DIGSITE_PENDANTS);
 		digsiteTeleport.addAlternates(ItemID.DIGSITE_TELEPORT);
+		necklaceOfPassage = new ItemRequirement("Necklace of passage to Eagle's Eyrie", ItemCollections.NECKLACE_OF_PASSAGES);
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
 	}
 
@@ -253,7 +255,10 @@ public class TheGolem extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		pickUpLetter = new DetailedQuestStep(this, new WorldPoint(3479, 3092, 0), "Pick up the letter on the floor in Uzer and read it.", letter);
+		pickUpLetter = new DetailedQuestStep(this, new WorldPoint(3479, 3092, 0),
+			"Pick up the letter on the floor in Uzer and read it.", letter);
+		((DetailedQuestStep) pickUpLetter).addTeleport(necklaceOfPassage);
+		pickUpLetter.addDialogSteps("Eagle's Eyrie");
 		readLetter = new DetailedQuestStep(this, "Read the letter.", letter);
 		pickUpLetter.addSubSteps(readLetter);
 
@@ -281,7 +286,8 @@ public class TheGolem extends BasicQuestHelper
 		openCabinet = new ObjectStep(this, NullObjectID.NULL_24626, new WorldPoint(3257, 3453, 1), "Right-click open the golem statue's display case.", key);
 
 		stealFeather = new NpcStep(this, NpcID.DESERT_PHOENIX, new WorldPoint(3414, 3154, 0), "Steal a feather from the desert phoenix north of Uzer.");
-
+		((NpcStep) stealFeather).addTeleport(necklaceOfPassage);
+		stealFeather.addDialogSteps("Eagle's Eyrie");
 		enterRuin = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", statuette, pestleAndMortar, vial, papyrus);
 		enterRuinWithoutStatuette = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
 		enterRuin.addSubSteps(enterRuinWithoutStatuette);

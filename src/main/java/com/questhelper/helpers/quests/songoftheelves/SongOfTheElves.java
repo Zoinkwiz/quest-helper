@@ -477,11 +477,11 @@ public class SongOfTheElves extends BasicQuestHelper
 		findingIthellAndMeilyr.addStep(new Conditions(builtStatue, askedAboutMeilyr), talkToIthell);
 		findingIthellAndMeilyr.addStep(new Conditions(learnedHowToMakeStatue, askedAboutMeilyr), buildStatue);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1, checkedSymbol2,
-				checkedSymbol3, checkedSymbol4, inLletyaF1Damaged), checkSymbol5);
+			checkedSymbol3, checkedSymbol4, inLletyaF1Damaged), checkSymbol5);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1, checkedSymbol2,
-				checkedSymbol3, inLletyaF1Damaged), checkSymbol4);
+			checkedSymbol3, inLletyaF1Damaged), checkSymbol4);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1, checkedSymbol2,
-				checkedSymbol3), goToSecondFloorSymbols);
+			checkedSymbol3), goToSecondFloorSymbols);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1, checkedSymbol2), checkSymbol3);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr, checkedSymbol1), checkSymbol2);
 		findingIthellAndMeilyr.addStep(new Conditions(askedAboutIthell, askedAboutMeilyr), checkSymbol1);
@@ -865,31 +865,31 @@ public class SongOfTheElves extends BasicQuestHelper
 		goUpFromCastleBasementAgain = new ObjectStep(this, ObjectID.STAIRCASE_35792, new WorldPoint(2565, 9711, 0),
 			"Return to Edmond in East Ardougne.");
 		talkToEdmondAfterFreeingElena = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2566, 3337, 0),
-				"Return to Edmond in East Ardougne.");
+			"Return to Edmond in East Ardougne.");
 		talkToEdmondAfterFreeingElena.addSubSteps(goUpFromCastleBasementAgain);
 
 		searchBed = new ObjectStep(this, NullObjectID.NULL_37265, new WorldPoint(2533, 3333, 0),
 			"Search the bed in the house west of the Mourner base.");
 		searchBed.addDialogStep("Climb through it.");
 		talkToElenaInHideout = new NpcStep(this, NpcID.ELENA_8798, new WorldPoint(2545, 9746, 0), "Talk to Elena in the hideout.");
-		talkToElenaInHideout.addDialogSteps("It's not good, but it might be our only option.","It's all in a day's work.", "I am.");
+		talkToElenaInHideout.addDialogSteps("It's not good, but it might be our only option.", "It's all in a day's work.", "I am.");
 		leaveHideout = new ObjectStep(this, ObjectID.LADDER_35799, new WorldPoint(2546, 9744, 0), "Leave the hideout.");
 
 		useTinderboxOnGrain = new ObjectStep(this, NullObjectID.NULL_37330, new WorldPoint(2517, 3315, 0),
 			"Use a tinderbox on the grain in the West Ardougne council building.", tinderboxHighlighted, gasMask, mournerTop,
-				mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
+			mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
 		useTinderboxOnGrain.addIcon(ItemID.TINDERBOX);
 		talkToPriest = new NpcStep(this, NpcID.PRIEST, new WorldPoint(2527, 3287, 0),
 			"Talk to the priest in West Ardougne.", gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
 		useTinderboxOnChurchGrain = new ObjectStep(this, NullObjectID.NULL_37331, new WorldPoint(2524, 3285, 0),
-				"Use a tinderbox on the grain in the West Ardougne church.",
-				tinderboxHighlighted, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
+			"Use a tinderbox on the grain in the West Ardougne church.",
+			tinderboxHighlighted, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
 		useTinderboxOnChurchGrain.addIcon(ItemID.TINDERBOX);
 		talkToSarah = new NpcStep(this, NpcID.NURSE_SARAH, new WorldPoint(2517, 3274, 0),
 			"Talk to Nurse Sarah in West Ardougne.", gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
 		useTinderboxOnSWGrain = new ObjectStep(this, NullObjectID.NULL_37332, new WorldPoint(2469, 3287, 0),
-				"Use a tinderbox on the grain outside the West Ardougne general store.",
-				tinderboxHighlighted, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
+			"Use a tinderbox on the grain outside the West Ardougne general store.",
+			tinderboxHighlighted, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
 		useTinderboxOnSWGrain.addIcon(ItemID.TINDERBOX);
 		talkToChadwell = new NpcStep(this, NpcID.CHADWELL, new WorldPoint(2466, 3286, 0),
 			"Talk to Chadwell in the West Ardougne general store.", gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
@@ -975,7 +975,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		goDownToElena = new ObjectStep(this, ObjectID.LADDER_8746, new WorldPoint(2352, 3180, 1), "Talk to Elena in the south west of Lletya.");
 		talkToElenaInLletya = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0), "Talk to Elena in the south west of Lletya.");
 		talkToElenaInLletya.addDialogSteps("It is. I'm here for you if you need me though.", "Go ahead.",
-				"I don't know.");
+			"I don't know.");
 		talkToElenaInLletya.addSubSteps(goDownToElena);
 		talkToArianwynAfterElena = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn again.");
 		talkToArianwynAfterMeeting = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn after the meeting.");
@@ -1003,7 +1003,9 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		talkToBax = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2605, 9915, 0), "Talk to Baxtorian.");
 
-		talkToArianwynAfterBax = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
+		talkToArianwynAfterBax = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0),
+			"Talk to Arianwyn in Lletya.");
+		talkToArianwynAfterBax.addTeleport(teleCrystal);
 		talkToElenaAfterBax = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0),
 			"Talk to Elena in the south west of Lletya.", seedDibber, cadantineSeed);
 		talkToElenaAfterBax.addDialogStep("Now's not the time for stories, Elena.");
@@ -1019,10 +1021,10 @@ public class SongOfTheElves extends BasicQuestHelper
 			" Lletya.");
 		talkToElunedWithSeed.addDialogStep("I have a seed from Baxtorian that I think needs enchanting.");
 		rubCrystal = new DetailedQuestStep(this, "Rub the teleport crystal to teleport.", crystalSeed);
-		talkToFigure = new NpcStep(this, NpcID.MYSTERIOUS_FIGURE, new WorldPoint(3051, 4486, 0), 
-				"Talk to the Mysterious Figure.");
+		talkToFigure = new NpcStep(this, NpcID.MYSTERIOUS_FIGURE, new WorldPoint(3051, 4486, 0),
+			"Talk to the Mysterious Figure.");
 		talkToBaxAfterValley = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0),
-				"Talk to Baxtorian in Lletya about Trahaearn.");
+			"Talk to Baxtorian in Lletya about Trahaearn.");
 		talkToBaxAfterValley.addDialogStep("How do I find Lady Trahaearn?");
 
 		enterCaveToWell = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_4006, new WorldPoint(2314, 3217, 0),
@@ -1146,7 +1148,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		leaveLibrary = new ObjectStep(this, ObjectID.PORTAL_35075, new WorldPoint(2623, 6088, 1),
 			"Leave the library. A quick way to do this is hopping worlds.");
-		((DetailedQuestStep)(leaveLibrary)).setWorldMapPoint(new WorldPoint(2815, 6088, 1));
+		((DetailedQuestStep) (leaveLibrary)).setWorldMapPoint(new WorldPoint(2815, 6088, 1));
 
 		talkToArianwynAfterLightPuzzle = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		askBaxtorianHowToFindCrwys = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0),
@@ -1159,7 +1161,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		crossSteppingStones = new NpcStep(this, NpcID.ELF_HERMIT, new WorldPoint(2276, 3094, 0),
 			"Hop across the stepping stones in the swamp south of the magic trees near Lletya. Talk to the Elf Hermit" +
 				" on the island you reach.");
-		((NpcStep)crossSteppingStones).addAlternateNpcs(NpcID.LADY_CARYS_HEFIN);
+		((NpcStep) crossSteppingStones).addAlternateNpcs(NpcID.LADY_CARYS_HEFIN);
 		((DetailedQuestStep) crossSteppingStones).setLinePoints(Arrays.asList(
 			new WorldPoint(2299, 3114, 0),
 			new WorldPoint(2299, 3110, 0),
@@ -1201,14 +1203,14 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToBaxWithOrb = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0), "Return to Baxtorian in Lletya.");
 
 		talkToElenaAfterOrb = new NpcStep(this, NpcID.ELENA_8791, new WorldPoint(2324, 3152, 0),
-				"Talk to Elena in the south west of Lletya.");
+			"Talk to Elena in the south west of Lletya.");
 		talkToElenaAfterOrb.addDialogSteps("That's fair. Anyway, I wanted to ask you about Ysgawyn.");
 		inspectMushrooms = new ObjectStep(this, NullObjectID.NULL_37292, new WorldPoint(2302, 3195, 0),
 			"Inspect the mushrooms just outside Lletya.");
 
 		track1 = new ObjectStep(this, NullObjectID.NULL_37297, new WorldPoint(2291, 3187, 0), "Inspect the rocks to the west.");
 		track2 = new ObjectStep(this, NullObjectID.NULL_37296, new WorldPoint(2277, 3184, 0),
-				"Inspect the rocks to the west over the tripwire.");
+			"Inspect the rocks to the west over the tripwire.");
 		track3 = new ObjectStep(this, NullObjectID.NULL_37301, new WorldPoint(2269, 3164, 0),
 			"Inspect the elven lamp to the south over the leaf trap.");
 		track4 = new ObjectStep(this, NullObjectID.NULL_37299, new WorldPoint(2259, 3158, 0), "Inspect the mushrooms to the west.");
@@ -1225,7 +1227,7 @@ public class SongOfTheElves extends BasicQuestHelper
 			"Search the table to the south for Eoin.");
 		goUpLletyaLadder = new ObjectStep(this, ObjectID.LADDER_8744, new WorldPoint(2911, 6168, 0), "Go upstairs.");
 		searchCookingPots = new ObjectStep(this, ObjectID.COOKING_POTS_35875, new WorldPoint(2915, 6164, 1),
-				"Search the nearby cooking pots.");
+			"Search the nearby cooking pots.");
 		fightArianwyn = new NpcStep(this, NpcID.ARIANWYN_8865, new WorldPoint(2906, 6179, 0),
 			"Defeat Arianwyn. Protect from Ranged. Move when he shoots orange arrows.");
 
@@ -1301,12 +1303,12 @@ public class SongOfTheElves extends BasicQuestHelper
 		fillHole1.addSubSteps(fillHole2, fillHole3, fillHole4, fillHole5, fillHole6, fillHole7);
 
 		talkToBaxAfterFillingHoles = new NpcStep(this, NpcID.BAXTORIAN_8809, new WorldPoint(2444, 6092, 0),
-				"Talk to Baxtorian in the dwarven camp.");
+			"Talk to Baxtorian in the dwarven camp.");
 		talkToBaxAfterFillingHoles.addDialogStep("I'm ready.");
 		defendDwarfCamp = new NpcStep(this, NpcID.IORWERTH_ARCHER_8953, "Defend the camp.", true);
 		((NpcStep) defendDwarfCamp).addAlternateNpcs(NpcID.IORWERTH_ARCHER_8954, NpcID.IORWERTH_WARRIOR_8955, NpcID.IORWERTH_WARRIOR_8956);
 		defeatEssyllt = new NpcStep(this, NpcID.ESSYLLT_8950, new WorldPoint(2442, 6094, 0),
-				"Defeat Essyllt. Protect from melee. He can drain your stats, so drink super restores when needed.");
+			"Defeat Essyllt. Protect from melee. He can drain your stats, so drink super restores when needed.");
 		defeatEssyllt.addText("When he shoves you, flick to Protect from Ranged then back to Protect from Melee.");
 		enterWellCaveForFragmentFight = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_4006, new WorldPoint(2314, 3217, 0),
 			"Enter the Underground Pass from the Elven Lands entrance, and make your way to the dwarven camp. Make sure you're prepared for battle with magic gear.");
@@ -1430,14 +1432,14 @@ public class SongOfTheElves extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.AGILITY, 40000),
-				new ExperienceReward(Skill.CONSTRUCTION, 40000),
-				new ExperienceReward(Skill.FARMING, 40000),
-				new ExperienceReward(Skill.HERBLORE, 40000),
-				new ExperienceReward(Skill.HUNTER, 40000),
-				new ExperienceReward(Skill.MINING, 40000),
-				new ExperienceReward(Skill.SMITHING, 40000),
-				new ExperienceReward(Skill.WOODCUTTING, 40000)
+			new ExperienceReward(Skill.AGILITY, 40000),
+			new ExperienceReward(Skill.CONSTRUCTION, 40000),
+			new ExperienceReward(Skill.FARMING, 40000),
+			new ExperienceReward(Skill.HERBLORE, 40000),
+			new ExperienceReward(Skill.HUNTER, 40000),
+			new ExperienceReward(Skill.MINING, 40000),
+			new ExperienceReward(Skill.SMITHING, 40000),
+			new ExperienceReward(Skill.WOODCUTTING, 40000)
 		);
 	}
 
@@ -1445,50 +1447,52 @@ public class SongOfTheElves extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Access to Prifddinas"),
-				new UnlockReward("Ability to fight Zalcano"),
-				new UnlockReward("Access to The Gauntlet"),
-				new UnlockReward("Access to Trahaearn Mine"),
-				new UnlockReward("Access to Iorwerth Dungeon"),
-				new UnlockReward("Ability to respawn at Prifddinas"),
-				new UnlockReward("Ability to move POH to Prifddinas"),
-				new UnlockReward("Prifddinas Teleport added to Crystal Teleport Seed"),
-				new UnlockReward("Ability to make Divine Potions"),
-				new UnlockReward("Ability to make Crystal Tools, Weapons and Armor")
+			new UnlockReward("Access to Prifddinas"),
+			new UnlockReward("Ability to fight Zalcano"),
+			new UnlockReward("Access to The Gauntlet"),
+			new UnlockReward("Access to Trahaearn Mine"),
+			new UnlockReward("Access to Iorwerth Dungeon"),
+			new UnlockReward("Ability to respawn at Prifddinas"),
+			new UnlockReward("Ability to move POH to Prifddinas"),
+			new UnlockReward("Prifddinas Teleport added to Crystal Teleport Seed"),
+			new UnlockReward("Ability to make Divine Potions"),
+			new UnlockReward("Ability to make Crystal Tools, Weapons and Armor")
 		);
 	}
 
 	@Override
-	public List<PanelDetails> getPanels() {
+	public List<PanelDetails> getPanels()
+	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEdmond, talkToLathas, talkToEdmondAgain, talkToAlrena,
-				useRedDyeOnSteelFullHelm, useTabardOnPlatebody, talkToEdmondWithOutfit, goDownstairsCastle, talkToElenaInCell, goUpFromCastleBasement,
-				searchElenaCabinet, talkToElenaInCellAgain, talkToEdmondAfterFreeingElena), steelFullHelm, steelPlatebody, steelPlatelegs, redDye, purpleDye,
-				silk, mournersOutfit, tinderbox));
+			useRedDyeOnSteelFullHelm, useTabardOnPlatebody, talkToEdmondWithOutfit, goDownstairsCastle, talkToElenaInCell, goUpFromCastleBasement,
+			searchElenaCabinet, talkToElenaInCellAgain, talkToEdmondAfterFreeingElena), steelFullHelm, steelPlatebody, steelPlatelegs, redDye, purpleDye,
+			silk, mournersOutfit, tinderbox));
 
 		allSteps.add(new PanelDetails("Inciting the citizens", Arrays.asList(searchBed, talkToElenaInHideout, leaveHideout, useTinderboxOnGrain,
-				talkToPriest, useTinderboxOnChurchGrain, talkToSarah, useTinderboxOnSWGrain, talkToChadwell, talkToSilverMerchant, talkToBaker1, talkToGemMerchant,
-				talkToFurTrader, talkToSpiceSeller, talkToSilkMerchant, talkToTownCrier, talkToZenesha, talkToEstateAgent, talkToProbita, talkToAemad, talkToPriest2,
-				talkToOrbon), tinderbox, mournersOutfit, ardyFullHelm, ardyPlatebody, steelPlatelegs));
+			talkToPriest, useTinderboxOnChurchGrain, talkToSarah, useTinderboxOnSWGrain, talkToChadwell, talkToSilverMerchant, talkToBaker1, talkToGemMerchant,
+			talkToFurTrader, talkToSpiceSeller, talkToSilkMerchant, talkToTownCrier, talkToZenesha, talkToEstateAgent, talkToProbita, talkToAemad, talkToPriest2,
+			talkToOrbon), tinderbox, mournersOutfit, ardyFullHelm, ardyPlatebody, steelPlatelegs));
 
 		allSteps.add(new PanelDetails("Overthrowing the King", Arrays.asList(talkToElenaForFight, defeat10Mourners, mournerBattleGoDownTrapdoor,
-				defeat11Mourners, talkToElenaForEastArdyFight, defeat15Knights, talkToLathasAfterFight, watchArdyFightCutscene), combatGear));
+			defeat11Mourners, talkToElenaForEastArdyFight, defeat15Knights, talkToLathasAfterFight, watchArdyFightCutscene), combatGear));
 
 		allSteps.add(new PanelDetails("Helping Arianwyn", Arrays.asList(talkToArianwyn, talkToYsgawyn, talkToElenaInLletya, talkToArianwynAfterElena,
-				talkToArianwynAfterMeeting)));
+			talkToArianwynAfterMeeting)));
 
 		allSteps.add(new PanelDetails("Freeing Baxtorian", Arrays.asList(boardRaft, useRopeOnRock, useRopeOnTree, enterFalls, searchCrateForKey,
-				enterBaxThroneRoom, talkToArianwynInBax, pillarPuzzle, talkToBax),
-				rope, iritLeafOrFlowers, cabbage, wineOfZamorakOrZamorakBrew, natureRune, adamantChainbody, blackKnifeOrBlackDagger));
+			enterBaxThroneRoom, talkToArianwynInBax, pillarPuzzle, talkToBax),
+			Arrays.asList(rope, iritLeafOrFlowers, cabbage, wineOfZamorakOrZamorakBrew, natureRune, adamantChainbody, blackKnifeOrBlackDagger),
+			List.of(teleCrystal)));
 
 		allSteps.add(new PanelDetails("Finding Amlodd", Arrays.asList(talkToArianwynAfterBax, talkToElenaAfterBax, plantCadantine, talkToBaxInLletya,
-				talkToElunedWithSeed, rubCrystal, talkToFigure), seedDibber, cadantineSeed));
+			talkToElunedWithSeed, rubCrystal, talkToFigure), seedDibber, cadantineSeed));
 
 		allSteps.add(new PanelDetails("Finding Trahaearn", Arrays.asList(talkToBaxAfterValley, enterCaveToWell, usePickaxeOnWall, enterCrevice,
-				useHammerOnExoskeleton, talkToTrahaearn), pickaxe, hammer, runiteBar));
+			useHammerOnExoskeleton, talkToTrahaearn), pickaxe, hammer, runiteBar));
 
 		allSteps.add(new PanelDetails("Making the potion", Arrays.asList(talkToElenaAfterTra, talkToArianwynAfterTra, usePestleOnCrystal,
-				useCadantineOnVial, useDustOnVial, talkToArianwynAfterPotion), pestleAndMortar, vialOfWater));
+			useCadantineOnVial, useDustOnVial, talkToArianwynAfterPotion), pestleAndMortar, vialOfWater));
 
 		allSteps.add(new PanelDetails("Entering the Crystal", Arrays.asList(talkToAmlodd, goTouchFirstSeal), new ArrayList<>(), Collections.singletonList(staminaPotions)));
 
@@ -1523,28 +1527,28 @@ public class SongOfTheElves extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Iorwerth Seal", iorwerthSteps));
 
 		allSteps.add(new PanelDetails("Finding Crwys and Hefin", Arrays.asList(leaveLibrary, talkToArianwynAfterLightPuzzle,
-				askBaxtorianHowToFindCrwys,
-				crossSteppingStones, chopTrees, talkToCrwys), axe));
+			askBaxtorianHowToFindCrwys,
+			crossSteppingStones, chopTrees, talkToCrwys), axe));
 
 		allSteps.add(new PanelDetails("Retrieving the orb", Arrays.asList(talkToBaxAfterHefinAndCrwys, enterIorwerthCave, kill2IorwerthCaves,
-				searchChestForOrb,
-				talkToBaxWithOrb), combatGear));
+			searchChestForOrb,
+			talkToBaxWithOrb), combatGear));
 
 		allSteps.add(new PanelDetails("Locating Ysgawyn", Arrays.asList(talkToElenaAfterOrb, inspectMushrooms, track1, track2, track3, track4,
-				track5, track6, talkToYsgawynInClearing), combatGear));
+			track5, track6, talkToYsgawynInClearing), combatGear));
 
 		allSteps.add(new PanelDetails("Defending Lletya", Arrays.asList(enterLletyaForFighting, searchTableForEoin, goUpLletyaLadder,
-				searchCookingPots, fightArianwyn), combatGear));
+			searchCookingPots, fightArianwyn), combatGear));
 
 		allSteps.add(new PanelDetails("Finding Ithell and Meilyr", Arrays.asList(talkToBaxAfterLletyaFightForIthellClue, checkSymbol1,
-				checkSymbol2, checkSymbol3, goToSecondFloorSymbols, checkSymbol4, checkSymbol5, buildStatue, talkToIthell, digNearSwamp, digNearSTASH,
-				digOutsidePrif, spinOutsidePass, talkToMeilyr), limestoneBricks8, saw, hammer, spade, combatGear));
+			checkSymbol2, checkSymbol3, goToSecondFloorSymbols, checkSymbol4, checkSymbol5, buildStatue, talkToIthell, digNearSwamp, digNearSTASH,
+			digOutsidePrif, spinOutsidePass, talkToMeilyr), limestoneBricks8, saw, hammer, spade, combatGear));
 
 		allSteps.add(new PanelDetails("Defending the Temple", Arrays.asList(enterWellCaveForFight, talkToBaxAtDwarves, talkToElenaAtDwarves,
-				fillHole1, talkToBaxAfterFillingHoles, defendDwarfCamp, defeatEssyllt), combatGear));
+			fillHole1, talkToBaxAfterFillingHoles, defendDwarfCamp, defeatEssyllt), combatGear));
 
 		allSteps.add(new PanelDetails("Defeat the Fragment", Arrays.asList(defeatFragmentSidebar, talkToBaxToFinish),
-				magicCombatGear, saradominBrews, superRestorePotions));
+			magicCombatGear, saradominBrews, superRestorePotions));
 
 		return allSteps;
 	}

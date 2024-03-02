@@ -271,7 +271,8 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		talkToZavistic = new NpcStep(this, NpcID.ZAVISTIC_RARVE, new WorldPoint(2598, 3087, 0), "Talk to Zavistic Rarve at the Yanille Wizards' Guild. If you don't have 66 Magic, ring the bell outside the guild.");
 		talkToZavistic.addDialogStep("I'm here about the sicks...err Zogres");
 
-		goUpToSith = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0), "Go upstairs to Sithik upstairs in north Yanille.");
+		goUpToSith = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0),
+			"Go upstairs and talk to Sithik in the house north of the Wizards' Guild.");
 		talkToSith = new ObjectStep(this, NullObjectID.NULL_6887, new WorldPoint(2591, 3104, 1), "Talk to Sithik Ints in the bed to the west.");
 		talkToSith.addDialogStep("Do you mind if I look around?");
 		goUpToSith.addSubSteps(talkToSith);
@@ -279,7 +280,8 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		searchWardrobe = new ObjectStep(this, ObjectID.WARDROBE_6877, new WorldPoint(2590, 3103, 1), "Search Sithik's wardrobe.");
 		searchCupboard = new ObjectStep(this, ObjectID.CUPBOARD_6876, new WorldPoint(2593, 3105, 1), "Search Sithik's cupboard.");
 
-		goUpToOgreSith = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0), "Go talk to Sithik upstairs in north Yanille.");
+		goUpToOgreSith = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0),
+			"Go upstairs and talk to Sithik in the house north of the Wizards' Guild.");
 
 		searchDrawers = new ObjectStep(this, ObjectID.DRAWERS_6875, new WorldPoint(2593, 3103, 1), "Search Sithik's drawers for more papyrus.");
 		dropPortraitAndSearchDrawers = new ObjectStep(this, ObjectID.DRAWERS_6875, new WorldPoint(2593, 3103, 1), "The portrait drawn is wrong. Drop it and try drawing him again.");
@@ -299,7 +301,8 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		bringSignedPortraitToZavistic.addDialogStep("I'm here about the sicks...err Zogres");
 		bringSignedPortraitToZavistic.addDialogStep("I have some items that I'd like you to look at.");
 
-		goUpToSithAgain = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0), "Go upstairs to Sithik upstairs in north Yanille.", strangePotion);
+		goUpToSithAgain = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0),
+			"Go upstairs and talk to Sithik in the house north of the Wizards' Guild.", strangePotion);
 		usePotionOnTea = new DetailedQuestStep(this, new WorldPoint(2593, 3103, 1), "Use the strange potion on the cup of tea next to Sithik.", strangePotionHighlighted);
 		usePotionOnTea.addIcon(ItemID.STRANGE_POTION);
 

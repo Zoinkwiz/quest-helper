@@ -71,7 +71,7 @@ public class TheLostTribe extends BasicQuestHelper
 	ItemRequirement varrockTeleport, faladorTeleport, lumbridgeTeleports;
 
 	Requirement inBasement, inLumbridgeF0, inLumbridgeF1, inLumbridgeF2, inTunnels, inMines,
-		foundRobes, inHamBase, foundSilverware, bobKnows, hansKnows;
+		foundRobes, inHamBase, foundSilverwareOrToldOnSigmund, bobKnows, hansKnows;
 
 	DetailedQuestStep goDownFromF2, talkToSigmund, talkToDuke, goDownFromF1, talkToHans, goUpToF1,
 		goDownIntoBasement, usePickaxeOnRubble, climbThroughHole, grabBrooch, climbOutThroughHole, goUpFromBasement,
@@ -119,7 +119,7 @@ public class TheLostTribe extends BasicQuestHelper
 		steps.put(8, goTalkToDukeAfterEmote);
 
 		ConditionalStep revealSigmund = new ConditionalStep(this, goGetKey);
-		revealSigmund.addStep(foundSilverware, goToDukeWithSilverware);
+		revealSigmund.addStep(silverware.alsoCheckBank(questBank), goToDukeWithSilverware);
 		revealSigmund.addStep(foundRobes, goIntoHamLair);
 		revealSigmund.addStep(key, goOpenRobeChest);
 		steps.put(9, revealSigmund);
@@ -171,7 +171,7 @@ public class TheLostTribe extends BasicQuestHelper
 		inHamBase = new ZoneRequirement(hamBase);
 
 		foundRobes = new VarbitRequirement(534, 1, Operation.GREATER_EQUAL);
-		foundSilverware = new VarbitRequirement(534, 3, Operation.GREATER_EQUAL);
+		foundSilverwareOrToldOnSigmund = new VarbitRequirement(534, 3, Operation.GREATER_EQUAL);
 
 		hansKnows = new VarbitRequirement(537, 0);
 		bobKnows = new VarbitRequirement(537, 1);
@@ -218,9 +218,12 @@ public class TheLostTribe extends BasicQuestHelper
 		showBroochToDuke.addDialogStep("I dug through the rubble...");
 
 		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_6916, new WorldPoint(3207, 3496, 0), "Search the north west bookcase in the Varrock Castle Library.");
+		searchBookcase.addTeleport(varrockTeleport);
 		readBook = new DetailedQuestStep(this, "Read the entire goblin symbol book.", book);
+		readBook.addWidgetHighlight(183, 16);
 
 		talkToGenerals = new NpcStep(this, NpcID.GENERAL_WARTFACE, new WorldPoint(2957, 3512, 0), "Talk to the Goblin Generals in the Goblin Village.");
+		talkToGenerals.addTeleport(faladorTeleport);
 		talkToGenerals.addDialogSteps("Have you ever heard of the Dorgeshuun?", "It doesn't really matter",
 			"Well either way they refused to fight", "Well I found a brooch underground...", "Well why not show me both greetings?");
 
@@ -305,7 +308,7 @@ public class TheLostTribe extends BasicQuestHelper
 			"Father Aereck says he saw something in the cellar", "The cook says he saw something in the cellar");
 		goTalkToDukeAfterHans.addStep(inLumbridgeF1, talkToDuke);
 
-		goMineRubble = new ConditionalStep(this, goDownToBasement, "Go use a pickaxe on the rubble in the Lumbridge Castle basement.", pickaxe, lightSource);
+		goMineRubble = new ConditionalStep(this, goDownToBasement, "Go use a pickaxe on the rubble in the Lumbridge Castle basement.", pickaxe.highlighted(), lightSource);
 		goMineRubble.addStep(inBasement, usePickaxeOnRubble);
 
 		enterTunnels = new ConditionalStep(this, goDownToBasement, "Enter the hole in Lumbridge Castle's basement.", lightSource);

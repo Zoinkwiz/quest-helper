@@ -407,8 +407,8 @@ public class EnakhrasLament extends BasicQuestHelper
 
 		goUpToPuzzles = new ObjectStep(this, ObjectID.LADDER_11041, new WorldPoint(3104, 9309, 0), "Open the central room's doors using the metal letters. Go up the ladder in the central room.");
 
-			useSoftClayOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1),
-				"Use soft clay on the pedestal.", softClay.highlighted());
+		useSoftClayOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1),
+			"Use soft clay on the pedestal.", softClay.highlighted());
 		useChiselOnGranite = new DetailedQuestStep(this, "Use a chisel on granite (5kg).", granite, chiselHighlighted);
 		useStoneHeadOnPedestal = new ObjectStep(this, NullObjectID.NULL_10987, new WorldPoint(3104, 9312, 1), "Use the camel stone head on the pedestal.", camelHead);
 		useStoneHeadOnPedestal.addIcon(ItemID.STONE_HEAD_7002);

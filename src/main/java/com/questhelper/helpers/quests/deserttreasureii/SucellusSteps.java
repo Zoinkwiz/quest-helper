@@ -44,6 +44,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +56,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public class SucellusSteps extends ConditionalStep
 {
-	DetailedQuestStep moveToWeissCave, enterWeissCave, enterPrison, getKnockedOut, inspectWall,
+	QuestStep moveToWeissCave, enterWeissCave, enterPrison, getKnockedOut, inspectWall,
 		searchSkeleton, readPrisonersLetter, searchBucket, giveKnifeToSoldier, searchBed,
 		giveSoldierLockpick, talkToAssassin, lockpickGate, searchAltar, readWarningLetter, unlockChest,
 		goToAdminRoom, enterCrevice, openArrowChest, enterCreviceToStart, openDiamondChest, getGear,
@@ -317,8 +318,8 @@ public class SucellusSteps extends ConditionalStep
 	{
 		moveToWeissCave = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_33234, new WorldPoint(2867, 3940, 0),
 			"Enter the basalt cave in Weiss.", meleeCombatGear, food, prayerPotions);
-		moveToWeissCave.addRecommended(staminaPotions);
-		moveToWeissCave.addTeleport(icyBasalt);
+		((ObjectStep) moveToWeissCave).addRecommended(staminaPotions);
+		((ObjectStep) moveToWeissCave).addTeleport(icyBasalt);
 		enterWeissCave = new ObjectStep(getQuestHelper(), NullObjectID.NULL_46905, new WorldPoint(2846, 10332, 0),
 			"Enter the cave to the south.");
 		enterWeissCave.addDialogStep("Yes.");
@@ -327,27 +328,40 @@ public class SucellusSteps extends ConditionalStep
 			"Enter the heavy door in the north-eastern room.");
 
 		getKnockedOut = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2912, 6348, 2), "Move deeper into the prison.");
-		inspectWall = new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
-			"Inspect the wall to the north in the prison cell.");
-		searchSkeleton = new ObjectStep(getQuestHelper(), ObjectID.SKELETON_49094, new WorldPoint(3042, 6369, 0),
-			"Search the skeleton in the cell.");
+		inspectWall = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
+			"Inspect the wall to the north in the prison cell."),
+			"Work out how to escape the cell.");
+		searchSkeleton = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.SKELETON_49094, new WorldPoint(3042, 6369, 0),
+			"Search the skeleton in the cell."),
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 
-		readPrisonersLetter = new DetailedQuestStep(getQuestHelper(), "Read the prisoner's letter.", prisonersLetter.highlighted());
-		searchBucket = new ObjectStep(getQuestHelper(), ObjectID.BUCKET_49095, new WorldPoint(3039, 6367, 0),
-			"Search the bucket for a knife.");
-		giveKnifeToSoldier = new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
-			"Give the knife to the soldier.");
-		searchBed = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49514, new WorldPoint(3041, 6367, 0),
-			"Search the bed.");
-		giveSoldierLockpick = new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
-		"Give the lockpick to the soldier.");
+		readPrisonersLetter = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Read the prisoner's letter.", prisonersLetter.highlighted()),
+				"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
+		searchBucket = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.BUCKET_49095, new WorldPoint(3039, 6367, 0),
+			"Search the bucket for a knife."),
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
+		giveKnifeToSoldier = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
+			"Give the knife to the soldier."),
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
+		searchBed = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49514, new WorldPoint(3041, 6367, 0),
+			"Search the bed."),
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
+		giveSoldierLockpick = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
+		"Give the lockpick to the soldier."),
+			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 
 		talkToAssassin = new NpcStep(getQuestHelper(), NpcID.ASSASSIN_12348, new WorldPoint(2920, 6375, 2),
 			"Talk to the Assassin outside the cell.");
-
 		lockpickGate = new ObjectStep(getQuestHelper(), ObjectID.GATE_49120, new WorldPoint(2945, 6389, 2),
 			"Head north from the assassin to the junction, and then east. Lockpick the gate you end up at.", lockpick);
-		lockpickGate.setLinePoints(Arrays.asList(
+		((ObjectStep) lockpickGate).setLinePoints(Arrays.asList(
 			new WorldPoint(2919, 6362, 2),
 			new WorldPoint(2919, 6388, 2),
 			new WorldPoint(2913, 6388, 2),
@@ -359,7 +373,7 @@ public class SucellusSteps extends ConditionalStep
 
 		searchAltar = new ObjectStep(getQuestHelper(), ObjectID.ALTAR_49150, new WorldPoint(2975, 6347, 2),
 			"Head south from the gate, and all the way around until you enter the large area. Search the altar in the south room.");
-		searchAltar.setLinePoints(Arrays.asList(
+		((ObjectStep) searchAltar).setLinePoints(Arrays.asList(
 			new WorldPoint(2919, 6362, 2),
 			new WorldPoint(2919, 6388, 2),
 			new WorldPoint(2913, 6388, 2),
@@ -381,9 +395,9 @@ public class SucellusSteps extends ConditionalStep
 		));
 
 		readWarningLetter = new DetailedQuestStep(getQuestHelper(), "Read the warning letter.", warningLetter.highlighted());
-		unlockChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49111, new WorldPoint(2980, 6346, 2),
+		ObjectStep unlockChestRealStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49111, new WorldPoint(2980, 6346, 2),
 			"Head south from the gate, and all the way around until you enter the large area. Unlock the chest east of the altar in the south room. The code is '214013'.");
-		unlockChest.setLinePoints(Arrays.asList(
+		unlockChestRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2919, 6362, 2),
 			new WorldPoint(2919, 6388, 2),
 			new WorldPoint(2913, 6388, 2),
@@ -403,13 +417,38 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2975, 6360, 2),
 			new WorldPoint(2975, 6348, 2)
 		));
-		unlockChestStep = new ChestCodeStep(getQuestHelper(), "214013", 5, 2, 1, 4, 0, 1, 3);
+		ObjectStep unlockChestFakeStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49111, new WorldPoint(2980, 6346, 2),
+			"Head south from the gate, and all the way around until you enter the large area. Work out how to unlock the chest east of the altar in the south room.");
+		unlockChestFakeStep.setLinePoints(Arrays.asList(
+			new WorldPoint(2919, 6362, 2),
+			new WorldPoint(2919, 6388, 2),
+			new WorldPoint(2913, 6388, 2),
+			new WorldPoint(2913, 6395, 2),
+			new WorldPoint(2932, 6395, 2),
+			new WorldPoint(2932, 6389, 2),
+			new WorldPoint(2945, 6389, 2),
+
+			new WorldPoint(2950, 6389, 2),
+			new WorldPoint(2950, 6382, 2),
+			new WorldPoint(3001, 6382, 2),
+			new WorldPoint(3001, 6356, 2),
+			new WorldPoint(2993, 6356, 2),
+			new WorldPoint(2993, 6365, 2),
+			new WorldPoint(2979, 6365, 2),
+			new WorldPoint(2979, 6360, 2),
+			new WorldPoint(2975, 6360, 2),
+			new WorldPoint(2975, 6348, 2)
+		));
+		unlockChestStep = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "214013", 5, 2, 1, 4, 0, 1, 3),
+			"Enter the correct code for the chest.");
+
+		unlockChest = new PuzzleWrapperStep(getQuestHelper(), unlockChestRealStep, unlockChestFakeStep).withNoHelpHiddenInSidebar(true);
 		unlockChest.addSubSteps(unlockChestStep);
 
-		goToAdminRoom = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49112, new WorldPoint(2902, 6445, 2),
+		ObjectStep goToAdminRoomRealStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49112, new WorldPoint(2902, 6445, 2),
 			"Go to the most north-western room. Open the chest closest to the room's west door. The code for it is 'LIES'.");
-		goToAdminRoom.addDialogStep("Attempt to open the chest.");
-		goToAdminRoom.setLinePoints(Arrays.asList(
+		goToAdminRoomRealStep.addDialogStep("Attempt to open the chest.");
+		goToAdminRoomRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2975, 6531, 2),
 			new WorldPoint(2975, 6361, 2),
 			new WorldPoint(2971, 6361, 2),
@@ -436,14 +475,44 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2912, 6388, 2),
 			new WorldPoint(2912, 6395, 2)
 		));
-		unlockChest2 = new ChestCodeStep(getQuestHelper(), "LIES", 10, 0, 4, 1, 5);
+		DetailedQuestStep goToAdminRoomHiddenStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49112, new WorldPoint(2910, 6445, 2),
+			"Go to the most north-western room. Solve the chest puzzle in there. If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.");
+		goToAdminRoomHiddenStep.setLinePoints(Arrays.asList(
+			new WorldPoint(2975, 6531, 2),
+			new WorldPoint(2975, 6361, 2),
+			new WorldPoint(2971, 6361, 2),
+			new WorldPoint(2971, 6369, 2),
+			new WorldPoint(2975, 6369, 2),
+			new WorldPoint(2975, 6382, 2),
+			new WorldPoint(2950, 6382, 2),
+			new WorldPoint(2950, 6389, 2),
+			new WorldPoint(2932, 6389, 2),
+			new WorldPoint(2932, 6395, 2),
+			new WorldPoint(2912, 6395, 2),
+			new WorldPoint(2912, 6423, 2),
+			new WorldPoint(2923, 6423, 2),
+			new WorldPoint(2923, 6454, 2),
+			new WorldPoint(2916, 6454, 2),
+			new WorldPoint(2916, 6444, 2),
+			new WorldPoint(2907, 6444, 2),
 
+			// From main area
+			new WorldPoint(0, 0, 0),
+			new WorldPoint(2914, 6348, 2),
+			new WorldPoint(2919, 6348, 2),
+			new WorldPoint(2919, 6388, 2),
+			new WorldPoint(2912, 6388, 2),
+			new WorldPoint(2912, 6395, 2)
+		));
+		goToAdminRoom = new PuzzleWrapperStep(getQuestHelper(), goToAdminRoomRealStep, goToAdminRoomHiddenStep);
+		unlockChest2 = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "LIES", 10, 0, 4, 1, 5),
+			"Enter the correct code for the chest.").withNoHelpHiddenInSidebar(true);
 		goToAdminRoom.addSubSteps(unlockChest2);
 
 		enterCrevice = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49517, new WorldPoint(2960, 6428, 2),
 			"When you're not in a room, Jhallan will now chase you down. Use Protect from Magic to reduce his damage.");
 		enterCrevice.addText("Run east into the room with a crevice. Clear it, and go through it.");
-		enterCrevice.setLinePoints(Arrays.asList(
+		((ObjectStep) enterCrevice).setLinePoints(Arrays.asList(
 			new WorldPoint(2907, 6444, 2),
 			new WorldPoint(2916, 6444, 2),
 			new WorldPoint(2916, 6454, 2),
@@ -455,22 +524,23 @@ public class SucellusSteps extends ConditionalStep
 		));
 		enterCrevice.addDialogStep("Yes.");
 
-		openArrowChestStep = new ArrowChestPuzzleStep(getQuestHelper());
-		openArrowChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49113, new WorldPoint(2968, 6414, 2),
+		openArrowChestStep = new PuzzleWrapperStep(getQuestHelper(), new ArrowChestPuzzleStep(getQuestHelper()), "Work out how to open the nearby locked chest.").withNoHelpHiddenInSidebar(true);
+		openArrowChest = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), ObjectID.CHEST_49113, new WorldPoint(2968, 6414, 2),
 			"Enter the room with beds in it, south of the crevice. " +
-				"Open the south-eastern chest, next to the crates. The code is 'UP RIGHT LEFT DOWN RIGHT UP'.");
+				"Open the south-eastern chest, next to the crates. The code is 'UP RIGHT LEFT DOWN RIGHT UP'."),
+			"Enter the room with beds in it, south of the crevice. Work out how to open the south-eastern chest, next to the crates.");
 		openArrowChest.addSubSteps(openArrowChestStep);
 
 		enterCreviceToStart = new ObjectStep(getQuestHelper(), ObjectID.CREVICE_49108, new WorldPoint(2984, 6399, 2),
 			"Enter the crevice to the south to shortcut back to the main room.");
-		enterCreviceToStart.setLinePoints(Arrays.asList(
+		((ObjectStep) enterCreviceToStart).setLinePoints(Arrays.asList(
 			new WorldPoint(2974, 6418, 2),
 			new WorldPoint(2984, 6418, 2),
 			new WorldPoint(2984, 6400, 2)
 		));
-		openDiamondChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49114, new WorldPoint(2890, 6375, 2),
+		ObjectStep openDiamondChestRealStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49114, new WorldPoint(2890, 6375, 2),
 			"Open the chest in the cell to the west of the main room, through the Ruby Gate. The code for it is 'WRATH'.");
-		openDiamondChest.setLinePoints(Arrays.asList(
+		openDiamondChestRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2901, 6361, 2),
 			new WorldPoint(2905, 6361, 2),
 			new WorldPoint(2905, 6354, 2),
@@ -480,7 +550,22 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2884, 6374, 2),
 			new WorldPoint(2889, 6375, 2)
 		));
-		openDiamondChestStep = new ChestCodeStep(getQuestHelper(), "WRATH", 10, 2, 3, 5, 9, 5);
+		ObjectStep openDiamondChestFakeStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49114, new WorldPoint(2890, 6375, 2),
+			"Work out how to open the chest in the cell to the west of the main room, through the Ruby Gate.");
+		openDiamondChestFakeStep.setLinePoints(Arrays.asList(
+			new WorldPoint(2901, 6361, 2),
+			new WorldPoint(2905, 6361, 2),
+			new WorldPoint(2905, 6354, 2),
+			new WorldPoint(2891, 6354, 2),
+			new WorldPoint(2891, 6366, 2),
+			new WorldPoint(2884, 6366, 2),
+			new WorldPoint(2884, 6374, 2),
+			new WorldPoint(2889, 6375, 2)
+		));
+		openDiamondChestStep = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "WRATH", 10, 2, 3, 5, 9, 5),
+			"Enter the correct code for the chest.").withNoHelpHiddenInSidebar(true);
+
+		openDiamondChest = new PuzzleWrapperStep(getQuestHelper(), openDiamondChestRealStep, openDiamondChestFakeStep);
 		openDiamondChest.addSubSteps(openDiamondChestStep);
 
 		// Door to gear: ObjectID.DIAMOND_GATE, 2903, 6375, 2
@@ -491,7 +576,7 @@ public class SucellusSteps extends ConditionalStep
 		goLightFirecrackers = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49515, new WorldPoint(2972, 6367, 2),
 			"Get a full inventory of food, and return to the refugee camp in the south-eastern room. " +
 				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 3 minutes.");
-		goLightFirecrackers.setLinePoints(Arrays.asList(
+		((ObjectStep) goLightFirecrackers).setLinePoints(Arrays.asList(
 			new WorldPoint(2905, 6375, 2),
 			new WorldPoint(2905, 6348, 2),
 			new WorldPoint(2919, 6348, 2),
@@ -510,7 +595,7 @@ public class SucellusSteps extends ConditionalStep
 		goLightFirecrackersThroughCrevice = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49515, new WorldPoint(2972, 6367, 2),
 			"Get a full inventory of food, and return to the refugee camp in the south-eastern room. " +
 				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 3 minutes.");
-		goLightFirecrackersThroughCrevice.setLinePoints(Arrays.asList(
+		((ObjectStep) goLightFirecrackersThroughCrevice).setLinePoints(Arrays.asList(
 			new WorldPoint(2905, 6375, 2),
 			new WorldPoint(2905, 6348, 2),
 			new WorldPoint(2919, 6348, 2),
@@ -533,7 +618,7 @@ public class SucellusSteps extends ConditionalStep
 		enterDukeArena = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_49100, new WorldPoint(2974, 6440, 2),
 			"Go down the stairs in the far north-east of the prison. Be prepared for fighting the boss of the area.",
 			meleeCombatGear, food, prayerPotions);
-		enterDukeArena.setLinePoints(Arrays.asList(
+		((ObjectStep) enterDukeArena).setLinePoints(Arrays.asList(
 			new WorldPoint(2975, 6372, 2),
 			new WorldPoint(2975, 6382, 2),
 			new WorldPoint(2950, 6382, 2),
@@ -591,7 +676,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(3511, 2971, 0),
 			"Return to the Vault door north-east of Nardah. Be wary of an assassin coming to kill you! They can run, freeze, and teleblock you.",
 			sucellusMedallion);
-		returnToDesertWithSucellusMedallion.addTeleport(nardahTeleport);
+		((ObjectStep) returnToDesertWithSucellusMedallion).addTeleport(nardahTeleport);
 
 		useSucellusMedallionOnStatue = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49503, new WorldPoint(3932, 9626, 1),
 			"Use the medallion on the south-west statue.", sucellusMedallion.highlighted());

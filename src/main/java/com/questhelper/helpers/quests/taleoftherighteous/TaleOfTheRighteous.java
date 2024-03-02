@@ -37,6 +37,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.steps.PuzzleWrapperStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -221,19 +222,26 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 			"Talk to Pagida in the Library Historical Archive.");
 		talkToPagida.addDialogStep("I have a question about King Shayzien VII.");
 		talkToPagida.addDialogStep("Yes please.");
-		pushStrangeDeviceWest = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
-			"Push the Strange Device all the way to the west.");
-		pushStrangeDeviceEast = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
-			"Push the Strange Device all the way to the east.");
-		attackWithMagic = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+		pushStrangeDeviceWest = new PuzzleWrapperStep(this, new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+			"Push the Strange Device all the way to the west."), "Solve the crystal puzzle.");
+		pushStrangeDeviceEast = new PuzzleWrapperStep(this, new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+			"Push the Strange Device all the way to the east."), "Solve the crystal puzzle.");
+
+		NpcStep attackWithMagicTrueStep = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
 			"Attack the Strange Device with magic from the north side.", runesForCombat);
-		attackWithMagic.addIcon(ItemID.MIND_RUNE);
-		attackWithRanged = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
-			"Attack the Strange Device with ranged from the south side.", rangedWeapon);
-		attackWithRanged.addIcon(ItemID.BRONZE_ARROW);
-		attackWithMelee = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+		attackWithMagicTrueStep.addIcon(ItemID.MIND_RUNE);
+		attackWithMagic = new PuzzleWrapperStep(this, attackWithMagicTrueStep, "Solve the crystal puzzle.");
+
+		NpcStep attackWithRangedTrueStep = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+		"Attack the Strange Device with ranged from the south side.", rangedWeapon);
+		attackWithRangedTrueStep.addIcon(ItemID.BRONZE_ARROW);
+		attackWithRanged = new PuzzleWrapperStep(this, attackWithRangedTrueStep, "Solve the crystal puzzle.");
+
+		NpcStep attackWithMeleeTrueStep = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
 			"Attack the Strange Device with melee from the south side.", meleeWeapon);
-		attackWithMelee.addIcon(ItemID.BRONZE_SWORD);
+		attackWithMeleeTrueStep.addIcon(ItemID.BRONZE_SWORD);
+		attackWithMelee = new PuzzleWrapperStep(this, attackWithMeleeTrueStep, "Solve the crystal puzzle.");
+
 		investigateSkeleton = new ObjectStep(this, ObjectID.SKELETON_31962, new WorldPoint(1577, 10213, 0),
 			"Investigate the skeleton in the north cell.");
 

@@ -44,6 +44,7 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -194,7 +195,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		inspectGenerator = new ObjectStep(this, NullObjectID.NULL_34589, new WorldPoint(1382, 10219, 0), "Inspect the steam generator in the south of the room", crank);
 		inspectGenerator.addDialogStep("Start the generator.");
 
-		doPowerPuzzle = new PowerPuzzle(this);
+		doPowerPuzzle = new PuzzleWrapperStep(this, new PowerPuzzle(this), "Solve the power puzzle.");
 
 		potionPuzzle = new PotionPuzzle(this);
 		potionPuzzle.setLockingCondition(finishedPotionPuzzle);

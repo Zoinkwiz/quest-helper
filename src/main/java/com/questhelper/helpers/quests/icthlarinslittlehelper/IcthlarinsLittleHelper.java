@@ -53,6 +53,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -321,7 +322,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 		openWestDoor = new ObjectStep(this, ObjectID.DOOR_44059, new WorldPoint(3280, 9199, 0), "Attempt to open the western door.");
 
-		solveDoorPuzzle = new DoorPuzzleStep(this);
+		solveDoorPuzzle = new PuzzleWrapperStep(this, new DoorPuzzleStep(this), "Solve the door puzzle.");
 
 		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3301, 2785, 0), "Talk to the Sphinx in Sophanem with your cat, and answer its riddle with '9.'.", catFollower);
 		talkToSphinx.addDialogStep("I need help.");
@@ -347,7 +348,6 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		pickUpAnyJar.addAlternateObjects(NullObjectID.NULL_6636, NullObjectID.NULL_6638, NullObjectID.NULL_6640);
 		pickUpAnyJar.addSubSteps(pickUpCrondisJar, pickUpScarabasJar, pickUpApmekenJar, pickUpHetJar);
 
-
 		pickUpCrondisJarAgain = new ObjectStep(this, NullObjectID.NULL_6636, new WorldPoint(3286, 9195, 0), "Pick up the Crondis Canopic Jar.");
 		pickUpScarabasJarAgain = new ObjectStep(this, NullObjectID.NULL_6638, new WorldPoint(3286, 9196, 0), "Pick up the Scarabas Canopic Jar.");
 		pickUpApmekenJarAgain = new ObjectStep(this, NullObjectID.NULL_6640, new WorldPoint(3286, 9193, 0), "Pick up the Apmeken Canopic Jar.");
@@ -368,7 +368,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		dropJar = new DetailedQuestStep(this, "Drop the canopic jar in the spot you took it from.", jar);
 		dropJar.addSubSteps(dropCrondisJar, dropApmekenJar, dropHetJar, dropScarabasJar);
 
-		solvePuzzleAgain = new DoorPuzzleStep(this);
+		solvePuzzleAgain = new PuzzleWrapperStep(this, new DoorPuzzleStep(this), "Solve the door puzzle again.");
 
 		leavePyramid = new ObjectStep(this, ObjectID.LADDER_6645, new WorldPoint(3277, 9172, 0), "Leave the pyramid and return to the High Priest.");
 		returnToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Return to the High Priest in the south west of Sophanem.");

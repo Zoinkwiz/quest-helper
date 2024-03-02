@@ -52,6 +52,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,7 +103,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 
 	DetailedQuestStep talkToSergeant, enterSwamp, climbEnterHamBase;
 
-	DetailedQuestStep goToCrate, waitAtCrate, lureHamMember, enterFinalFight, useSpecial, defeatSigmund, untieZanik;
+	QuestStep goToCrate, waitAtCrate, lureHamMember, enterFinalFight, useSpecial, defeatSigmund, untieZanik;
 
 	ConditionalStep goTalkToUrtag, goTalkToTegdak, goGetArtefacts, goTalkToScribe, goTalkToOldak;
 
@@ -351,13 +352,12 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		climbEnterHamBase = new ObjectStep(this, NullObjectID.NULL_23282, new WorldPoint(3171, 9568, 0),
 			"Climb down the ladder to the secret H.A.M. base.");
 
-		goToCrate = new ObjectStep(this, ObjectID.CRATE_23283, new WorldPoint(2408, 5538, 0), "Hide behind the marked" +
-			" crate, and " +
-			"wait for the guards to walk past and around the corner.");
-		waitAtCrate = new DetailedQuestStep(this, "Wait for the guards to go around the corner.");
+		goToCrate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CRATE_23283, new WorldPoint(2408, 5538, 0), "Hide behind the marked" +
+			" crate, and wait for the guards to walk past and around the corner."), "Work out how to avoid all the H.A.M guards.");
+		waitAtCrate = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Wait for the guards to go around the corner."), "Work out how to avoid all the H.A.M guards.");
 		goToCrate.addSubSteps(waitAtCrate);
-		lureHamMember = new DetailedQuestStep(this, new WorldPoint(2412, 5537, 0), "Run out infront of the final " +
-			"guard, and wait for one of the sergeants to attack them.");
+		lureHamMember = new PuzzleWrapperStep(this, new DetailedQuestStep(this, new WorldPoint(2412, 5537, 0), "Run out in front of the final " +
+			"guard, and wait for one of the sergeants to attack them."), "Work out how to avoid all the H.A.M guards.");
 		enterFinalFight = new ObjectStep(this, ObjectID.LADDER_23376, new WorldPoint(2413, 5526, 0), "Climb down the " +
 			"ladder.");
 

@@ -22,6 +22,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
@@ -328,7 +329,7 @@ public class ColdWar extends BasicQuestHelper
 
 		talkToZooPenguin = new NpcStep(this, NpcID.PENGUIN_845, new WorldPoint(2596, 3270, 0), "Talk to the zoo penguin.");
 
-		emoteAtPenguin = new PenguinEmote(this);
+		emoteAtPenguin = new PuzzleWrapperStep(this, new PenguinEmote(this), "Perform the correct series of emotes to the penguin.");
 
 		exitSuit = new NpcStep(this, NpcID.LARRY, new WorldPoint(2597, 3266, 0), "Talk to Larry to exit the penguin suit.");
 		talkToLarryMissionReport = new NpcStep(this, NpcID.LARRY, new WorldPoint(2597, 3266, 0), "Talk to Larry about the mission report, then travel to the sheep farm in Lumbridge.");
@@ -338,7 +339,7 @@ public class ColdWar extends BasicQuestHelper
 
 		talkToThing = new NpcStep(this, NpcID.SHEEP,new WorldPoint(3201, 3266, 0), "Talk to the penguins disguised as a sheep in the Lumbridge sheep farm. You will need to use the same 3 emotes as the penguin from the bird hide cutscene.");
 
-		emoteAtPenguinInLumbridge = new PenguinEmote(this);
+		emoteAtPenguinInLumbridge = new PuzzleWrapperStep(this, new PenguinEmote(this), "Perform the correct series of emotes to the penguin.");
 
 		returnToZooPenguin = new NpcStep(this, NpcID.PENGUIN_845, new WorldPoint(2596, 3270, 0), "Return to the Ardougne Zoo penguin with either a raw cod, or wearing the ring of charos.", rawCodOrCharos);
 		returnToZooPenguin.addDialogSteps(

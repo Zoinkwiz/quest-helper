@@ -52,9 +52,9 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
-import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ItemID;
@@ -65,14 +65,11 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 
-
 public class WhispererSteps extends ConditionalStep
 {
 	QuestBank questBank;
 
-	RuneliteObjectManager runeliteObjectManager;
-
-	DetailedQuestStep enterRuinsOfCamdozaal, talkToRamarno, talkToPrescott, attachRope, descendDownRope,
+	QuestStep enterRuinsOfCamdozaal, talkToRamarno, talkToPrescott, attachRope, descendDownRope,
 		activateTeleporter1, activateTeleporter2, activateTeleporter3, activateTeleporter4, activateTeleporter5,
 		activateTeleporter6, activateTeleporter7, recallShadowBlocker, useTeleporterToKetla, useTeleporterToScienceDistrict,
 		useTeleporterToKetlaFromScienceDistrict,
@@ -86,14 +83,14 @@ public class WhispererSteps extends ConditionalStep
 		activateBlackstoneFragment4, takeSuperiorTorchSchematicRealWorld, claimSuperiorShadowTorch, enterSciencePuddle2,
 		getAnimaPortalSchematic, getAnimaPortalSchematicRealWorld, activateBlackstoneFragment5, bringKetlaTheAnimaPortalSchematic;
 
-	DetailedQuestStep pickUpIdol, enterPubRealWorld;
+	QuestStep pickUpIdol, enterPubRealWorld;
 
-	DetailedQuestStep claimAnimaPortal, enterPlazaPuddle, destroyTentacles4, activateBlackstoneFragment6, takeWhiteShadowKey,
+	QuestStep claimAnimaPortal, enterPlazaPuddle, destroyTentacles4, activateBlackstoneFragment6, takeWhiteShadowKey,
 		placeBlockerWhiteChest, placeAnimaWhiteChest, placeIdolWhiteChest, enterPlazaPuddle2, lightBraziers, openFinalChest,
 		activateBlackstoneFragment7, openFinalChestRealWorld, bringKetlaThePerfectSchematic, talkToKetlaAfterPerfectGiven;
 
 	// Silent choir
-	DetailedQuestStep enterPuddleNearPub, goUpstairsPub, touchPubRemnant, activateBlackstoneFragment8, enterPuddleNearPub2, destroyTentacles5,
+	QuestStep enterPuddleNearPub, goUpstairsPub, touchPubRemnant, activateBlackstoneFragment8, enterPuddleNearPub2, destroyTentacles5,
 		destroyTentacles6, activateBlackstoneFragment9, getRedShadowKey, placeBlockerInRedRoom, enterPuddleNearPub3, openRedChest, activateBlackstoneFragment10,
 		openRedChestRealWorld, openGreenChest, openGreenChestRealWorld, enterSciencePuddle3, activateBlackstoneFragment11, makeIcon,
 		enterDrain, useIconInDrain, goDownDrainLadder, inspectPillar, talkToMe, talkToKetlaAfterVision, claimPerfectShadowTorch, enterPuddleNearPub4,
@@ -130,11 +127,10 @@ public class WhispererSteps extends ConditionalStep
 		lassarShadowRealmSW, drainF0, drainF1, visionRegion, startingRoom, scienceDistrict, residentialDistrict,
 		eastShadowRealm, realPub;
 
-	public WhispererSteps(QuestHelper questHelper, QuestStep defaultStep, QuestBank questBank, RuneliteObjectManager runeliteObjectManager)
+	public WhispererSteps(QuestHelper questHelper, QuestStep defaultStep, QuestBank questBank)
 	{
 		super(questHelper, defaultStep);
 		this.questBank = questBank;
-		this.runeliteObjectManager = runeliteObjectManager;
 		setupItemRequirements();
 		setupZones();
 		setupConditions();
@@ -779,7 +775,7 @@ public class WhispererSteps extends ConditionalStep
 	{
 		enterRuinsOfCamdozaal = new ObjectStep(getQuestHelper(), NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0),
 			"Enter Camdozaal, west of Ice Mountain.", ringOfVisibility.hideConditioned(finishedTalkingToKetla));
-		enterRuinsOfCamdozaal.addTeleport(lassarTeleport);
+		((ObjectStep) enterRuinsOfCamdozaal).addTeleport(lassarTeleport);
 		talkToRamarno = new NpcStep(getQuestHelper(), NpcID.RAMARNO_10685, new WorldPoint(2959, 5809, 0),
 			"Talk to Ramarno to the north by the sacred forge.");
 		talkToRamarno.addDialogStep("Have you seen any archeologists around here?");
@@ -794,134 +790,204 @@ public class WhispererSteps extends ConditionalStep
 			"Descend into the sinkhole.");
 		descendDownRope.addDialogStep("Yes.");
 
-		activateTeleporter1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
-			"Activate the teleporter to the south-east of the rope. You can use teleporters you've activated to go to other activated teleporters.");
-		activateTeleporter2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49480, new WorldPoint(2617, 6417, 0),
-			"Activate the teleporter further south-east.");
-		activateTeleporter3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49482, new WorldPoint(2611, 6379, 0),
-			"Activate the teleporter to the south in the Science District.");
-		activateTeleporter4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49483, new WorldPoint(2599, 6341, 0),
-			"Activate the teleporter in the far south of the Science District.");
-		activateTeleporter5 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49484, new WorldPoint(2643, 6434, 0),
-			"Teleport back to the Plaza, then run east. Activate the teleporter in the north-west of the resedential area.");
+		activateTeleporter1 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
+			"Activate the teleporter to the south-east of the rope. You can use teleporters you've activated to go to other activated teleporters."),
+			"Delve into the shadows.");
+		activateTeleporter2 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49480, new WorldPoint(2617, 6417, 0),
+			"Activate the teleporter further south-east."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		activateTeleporter3 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49482, new WorldPoint(2611, 6379, 0),
+			"Activate the teleporter to the south in the Science District."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		activateTeleporter4 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49483, new WorldPoint(2599, 6341, 0),
+			"Activate the teleporter in the far south of the Science District."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		activateTeleporter5 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49484, new WorldPoint(2643, 6434, 0),
+			"Teleport back to the Plaza, then run east. Activate the teleporter in the north-west of the resedential area."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter5.addDialogStep("The Plaza.");
-		activateTeleporter6 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49481, new WorldPoint(2652, 6405, 0),
-			"Activate the teleporter in the south of the resedential area.");
-		activateTeleporter7 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49485, new WorldPoint(2691, 6415, 0),
-			"Activate the teleporter in the far east of the resedential area, through the building you unlocked for the idol.");
+		activateTeleporter6 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49481, new WorldPoint(2652, 6405, 0),
+			"Activate the teleporter in the south of the resedential area."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		activateTeleporter7 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49485, new WorldPoint(2691, 6415, 0),
+			"Activate the teleporter in the far east of the resedential area, through the building you unlocked for the idol."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		useTeleporterToKetla = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
-			"Use the teleporter to the Western Residential District.");
+		useTeleporterToKetla = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
+			"Use the teleporter to the Western Residential District."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		useTeleporterToKetla.addDialogSteps("Western Residential District.", "More options...", "Take the Shadow Torch.");
-		takeShadowBlockerSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2590, 6380, 0),
+		takeShadowBlockerSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2590, 6380, 0),
 			"Enter the north-western building in the Science District, and take the Shadow Schematic which is on top of a barrel in there.",
-			shadowBlockerSchematic);
+			shadowBlockerSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		takeShadowBlockerSchematic.addDialogSteps("More options...", "Northern Science District.");
 		takeShadowBlockerSchematic.addSubSteps(useTeleporterToKetla);
-		takeGreenShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2581, 6387, 0),
-			"Take the shadow key from the north-western room of the Science District.", greenShadowKey);
+		takeGreenShadowKey = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2581, 6387, 0),
+			"Take the shadow key from the north-western room of the Science District.", greenShadowKey),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		takeGreenShadowKey.addDialogStep("Northern Science District.");
-		takePurpleShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2593, 6352, 0),
+		takePurpleShadowKey = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2593, 6352, 0),
 			"Take the shadow key from the building to the south.",
-			purpleShadowKey);
+			purpleShadowKey),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		takePurpleShadowKey.addDialogStep("Northern Science District.");
 
-		tryToEnterSunkenCathedral = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2656, 6386, 0),
-			"Run south-east to try and enter the Sunken Cathedral.");
+		tryToEnterSunkenCathedral = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2656, 6386, 0),
+			"Run south-east to try and enter the Sunken Cathedral."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		tryToEnterSunkenCathedral.addDialogStep("Western Residential District.");
 
-		talkToKetla = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
-			"Talk to Ketla, next to the Western Residential District teleport.", ringOfVisibility, freeSlot);
+		talkToKetla = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			"Talk to Ketla, next to the Western Residential District teleport.", ringOfVisibility, freeSlot),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		talkToKetla.addDialogStep("Western Residential District.");
 
-		giveKetlaBlockerSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
-			"Give the blocker schematic to Ketla, next to the Western Residential District teleport.", shadowBlockerSchematic);
+		giveKetlaBlockerSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			"Give the blocker schematic to Ketla, next to the Western Residential District teleport.", shadowBlockerSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		giveKetlaBlockerSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 
-		claimShadowBlocker = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
-			"Get the Shadow Blocker from the workbench next to Ketla, or use 'Recall' on your Blackstone fragment to retrieve it.", freeSlot);
+		claimShadowBlocker = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			"Get the Shadow Blocker from the workbench next to Ketla, or use 'Recall' on your Blackstone fragment to retrieve it.", freeSlot),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimShadowBlocker.addDialogSteps("Take it.", "Western Residential District.");
 
-		placeBlockerInFurnaceBuilding = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2606, 6359, 0),
+		placeBlockerInFurnaceBuilding = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2606, 6359, 0),
 			"Return to the Science District, and enter the building with furnaces in it. Place the Shadow Blocker next to the locked doors inside.",
-			shadowBlocker.highlighted());
+			shadowBlocker.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeBlockerInFurnaceBuilding.addDialogStep("Southern Science District.");
 		placeBlockerInFurnaceBuilding.addIcon(ItemID.SHADOW_BLOCKER);
 
-		useTeleporterToScienceDistrict = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
-		"Teleport to the Southern Science District.");
+		useTeleporterToScienceDistrict = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
+		"Teleport to the Southern Science District."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		useTeleporterToScienceDistrict.addDialogStep("Southern Science District.");
 		placeBlockerInFurnaceBuilding.addSubSteps(useTeleporterToScienceDistrict);
 
-		retrieveShadowBlocker = new ObjectStep(getQuestHelper(), ObjectID.SHADOW_BLOCKER, "Pick up the shadow blocker.");
-		recallShadowBlocker = new DetailedQuestStep(getQuestHelper(), "Use the blackstone to recall everything.", blackstoneFragment.highlighted());
+		retrieveShadowBlocker = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.SHADOW_BLOCKER, "Pick up the shadow blocker."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		recallShadowBlocker = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Use the blackstone to recall everything.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		recallShadowBlocker.addDialogStep("Yes.");
 		retrieveShadowBlocker.addSubSteps(recallShadowBlocker);
 		placeBlockerInFurnaceBuilding.addSubSteps(retrieveShadowBlocker);
 
-		enterSciencePuddle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
+		enterSciencePuddle = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
 			"Enter the puddle outside of the building with furnaces in it. When you're in the Shadow Realm, you will slowly lose sanity. " +
-				"If you're low on Sanity, you can escape using the Blackstone fragment.");
+				"If you're low on Sanity, you can escape using the Blackstone fragment."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterSciencePuddle.addDialogStep("Southern Science District.");
 
 		// Unlocking door uses up purple key
-		unlockDoor = new ObjectStep(getQuestHelper(), ObjectID.DOORS_48258, new WorldPoint(2350, 6360, 0),
+		unlockDoor = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.DOORS_48258, new WorldPoint(2350, 6360, 0),
 			"Unlock the door inside the furnace building. " +
-			"As long as you're directly next to the Shadow Blocker you placed you will be safe from lost souls.");
+			"As long as you're directly next to the Shadow Blocker you placed you will be safe from lost souls."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		takeShadowTorchSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2353, 6367, 0),
+		takeShadowTorchSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2353, 6367, 0),
 			"Take the basic shadow torch schematic.",
-			basicShadowTorchSchematic);
+			basicShadowTorchSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		activateBlackstoneFragment = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave.",
-			blackstoneFragment.highlighted());
+		activateBlackstoneFragment = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave.",
+			blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		bringKetlaTheBasicTorchSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+		bringKetlaTheBasicTorchSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
 			"Bring the basic shadow torch schematic to Ketla, next to the Western Residential District teleport.",
-			basicShadowTorchSchematic);
+			basicShadowTorchSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaTheBasicTorchSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 
-//		useTeleporterToKetlaFromScienceDistrict = new ObjectStep(getQuestHelper());
-		claimShadowTorch = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
-			"Get the Shadow Torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot);
+//		useTeleporterToKetlaFromScienceDistrict = new ObjectStep(getQuestHelper()),
+
+		claimShadowTorch = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			"Get the Shadow Torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimShadowTorch.addDialogSteps("Take it.", "Western Residential District.", "Take the Shadow Torch.", "Take everything.");
-		enterResedentialPuddle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
-			"Enter the puddle south-east of Ketla.");
-		destroyTentacles = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2417, 6413, 0),
-			"Destroy the tentacles outside the building to the east.");
-		activateBlackstoneFragment2 = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
-			blackstoneFragment.highlighted());
+		enterResedentialPuddle = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			"Enter the puddle south-east of Ketla."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		destroyTentacles = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2417, 6413, 0),
+			"Destroy the tentacles outside the building to the east."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		activateBlackstoneFragment2 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
+			blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		takeRevitalisingIdolSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2677, 6422, 0),
-			"Take the revitalising idol schematic from inside the house.", revitalisingIdolSchematic);
+		takeRevitalisingIdolSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2677, 6422, 0),
+			"Take the revitalising idol schematic from inside the house.", revitalisingIdolSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		bringKetlaTheIdolSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+		bringKetlaTheIdolSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
 			"Bring the basic revitalising idol schematic to Ketla, next to the Western Residential District teleport.",
-			revitalisingIdolSchematic);
+			revitalisingIdolSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaTheIdolSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
-		claimRevitalisingIdol = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
-			"Get the revitalising idol from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot);
+		claimRevitalisingIdol = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			"Get the revitalising idol from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimRevitalisingIdol.addDialogSteps("Take it.", "Western Residential District.", "Take the Revitalising Idol.", "Take everything.");
-		placeIdol = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2689, 6415, 0), "Place the idol by the teleporter.",
+		DetailedQuestStep placeIdolRealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2689, 6415, 0), "Place the idol by the teleporter.",
 			revitalisingIdol.highlighted());
-		placeIdol.setLinePoints(Arrays.asList(
+		placeIdolRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2668, 6414, 0),
 			new WorldPoint(2682, 6414, 0),
 			new WorldPoint(2682, 6407, 0),
 			new WorldPoint(2688, 6407, 0),
 			new WorldPoint(2688, 6419, 0)
 		));
+		placeIdol = new PuzzleWrapperStep(getQuestHelper(),
+			new PuzzleWrapperStep(getQuestHelper(), placeIdolRealStep, "Delve into the shadows."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		pickUpIdol = new ObjectStep(getQuestHelper(), ObjectID.REVITALISING_IDOL, "Pick up the revitalising idol.");
+		pickUpIdol = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.REVITALISING_IDOL, "Pick up the revitalising idol."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeIdol.addSubSteps(pickUpIdol);
 
-		enterResedentialPuddleAgain = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
-			"Enter the puddle south-east of Ketla.");
+		enterResedentialPuddleAgain = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			"Enter the puddle south-east of Ketla."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		destroyTentacles2 = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2424, 6439, 0),
+		ObjectStep destroyTentacles2RealStep = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2424, 6439, 0),
 			"Run around through the building and up north, making sure to RESTORE SANITY AT THE IDOL." +
-			" Destroy the tentacles blocking the door at the end of the path.", basicShadowTorch);
-		destroyTentacles2.setLinePoints(Arrays.asList(
+				" Destroy the tentacles blocking the door at the end of the path.", basicShadowTorch);
+		destroyTentacles2RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2412, 6414, 0),
 			new WorldPoint(2412, 6414, 0),
 			new WorldPoint(2426, 6407, 0),
@@ -934,58 +1000,92 @@ public class WhispererSteps extends ConditionalStep
 			new WorldPoint(2424, 6431, 0),
 			new WorldPoint(2424, 6437, 0)
 		));
+		destroyTentacles2 = new PuzzleWrapperStep(getQuestHelper(),
+			new PuzzleWrapperStep(getQuestHelper(), destroyTentacles2RealStep, "Delve into the shadows."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		getBlueShadowKeyRealRealm = new ItemStep(getQuestHelper(), new WorldPoint(2672, 6443, 0), "Grab the shadow key in the room you've just unlocked.", blueShadowKey);
-		getBlueShadowKeyShadowRealm = new ItemStep(getQuestHelper(), new WorldPoint(2416, 6443, 0), "Grab the shadow key in the room you've just unlocked.", blueShadowKey);
+
+		getBlueShadowKeyRealRealm = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2672, 6443, 0), "Grab the shadow key in the room you've just unlocked.", blueShadowKey),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		getBlueShadowKeyShadowRealm = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2416, 6443, 0), "Grab the shadow key in the room you've just unlocked.", blueShadowKey),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		getBlueShadowKeyRealRealm.addSubSteps(getBlueShadowKeyShadowRealm);
 
-		activateBlackstoneFragment3 = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
-			blackstoneFragment.highlighted());
-		recallDevices = new DetailedQuestStep(getQuestHelper(), "Use the blackstone fragment to recall all your devices.", blackstoneFragment.highlighted());
+		activateBlackstoneFragment3 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
+			blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		recallDevices = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Use the blackstone fragment to recall all your devices.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		recallDevices.addDialogStep("Yes.");
 
-		placeShadowBlockerWestResidential = new TileStep(getQuestHelper(), new WorldPoint(2641, 6428, 0),
-			"Return to the west residential area, and place the shadow blocker at the pub's entrance.", shadowBlocker.highlighted());
+		placeShadowBlockerWestResidential = new PuzzleWrapperStep(getQuestHelper(),
+			new TileStep(getQuestHelper(), new WorldPoint(2641, 6428, 0),
+			"Return to the west residential area, and place the shadow blocker at the pub's entrance.", shadowBlocker.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeShadowBlockerWestResidential.addIcon(ItemID.SHADOW_BLOCKER);
 		placeShadowBlockerWestResidential.addDialogSteps("More options...", "Western Residential District.");
-		enterResedentialWestPuddle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
-			"Enter the puddle south-east of Ketla.");
+		enterResedentialWestPuddle = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			"Enter the puddle south-east of Ketla."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterResedentialWestPuddle.addDialogSteps("More options...", "Western Residential District.");
 
 		// Can't open, DOORS_48255
-		openPubDoor = new ObjectStep(getQuestHelper(), ObjectID.DOORS_48258, new WorldPoint(2385, 6427, 0),
-			"Open the pub's doors.");
+		openPubDoor = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.DOORS_48258, new WorldPoint(2385, 6427, 0),
+			"Open the pub's doors."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		// 'You unlock the doors.', DIALOG_SPRITE_TEXT
 		// DIALOG_SPRITE_SPRITE, itemID 28371
-		takeSuperiorTorchSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2381, 6423, 0),
-			"Take the superior torch schematic.", superiorTorchSchematic);
-		takeSuperiorTorchSchematicRealWorld = new ItemStep(getQuestHelper(), new WorldPoint(2637, 6423, 0),
-			"Take the superior torch schematic.", superiorTorchSchematic);
-		enterPubRealWorld = new ObjectStep(getQuestHelper(), ObjectID.DOORS_48254, new WorldPoint(2641, 6427, 0),
-			"Enter the pub and claim the superior torch schematic.");
+		takeSuperiorTorchSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2381, 6423, 0),
+			"Take the superior torch schematic.", superiorTorchSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		takeSuperiorTorchSchematicRealWorld = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2637, 6423, 0),
+			"Take the superior torch schematic.", superiorTorchSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		enterPubRealWorld = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.DOORS_48254, new WorldPoint(2641, 6427, 0),
+			"Enter the pub and claim the superior torch schematic."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		takeSuperiorTorchSchematic.addSubSteps(takeSuperiorTorchSchematicRealWorld, enterPubRealWorld);
-		activateBlackstoneFragment4 = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
-			blackstoneFragment.highlighted());
-		bringKetlaTheSuperiorTorchSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+		activateBlackstoneFragment4 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
+			blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		bringKetlaTheSuperiorTorchSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
 			"Bring the superior shadow torch schematic to Ketla, next to the Western Residential District teleport.",
-			superiorTorchSchematic);
+			superiorTorchSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaTheSuperiorTorchSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 
-		claimSuperiorShadowTorch = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
-			"Get the superior shadow torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot);
+		claimSuperiorShadowTorch = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			"Get the superior shadow torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimSuperiorShadowTorch.addDialogSteps("Take it.", "Western Residential District.", "Take the Superior Shadow Torch.", "Take everything.");
 
-		enterSciencePuddle2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
-		"Enter the puddle outside of the building with furnaces in it in the Science District.");
+		enterSciencePuddle2 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
+		"Enter the puddle outside of the building with furnaces in it in the Science District."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterSciencePuddle2.addDialogStep("Northern Science District.");
-		getAnimaPortalSchematicRealWorld = new ItemStep(getQuestHelper(), new WorldPoint(2580, 6402, 0), "Go to the north-west of the science district," +
+		getAnimaPortalSchematicRealWorld = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2580, 6402, 0), "Go to the north-west of the science district," +
+			" and burn the tentacles there to grab the Anima portal schematic.", animaPortalSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+
+		ItemStep getAnimaPortalSchematicRealStep = new ItemStep(getQuestHelper(), new WorldPoint(2324, 6402, 0), "Go to the north-west of the science district," +
 			" and burn the tentacles there to grab the Anima portal schematic.", animaPortalSchematic);
-		getAnimaPortalSchematic = new ItemStep(getQuestHelper(), new WorldPoint(2324, 6402, 0), "Go to the north-west of the science district," +
-			" and burn the tentacles there to grab the Anima portal schematic.", animaPortalSchematic);
-		WorldPoint animaPoint = getAnimaPortalSchematic.getWorldPoint();
-		getAnimaPortalSchematic.setWorldMapPoint(new WorldPoint(animaPoint.getX() + 256, animaPoint.getY(), animaPoint.getPlane()));
-		getAnimaPortalSchematic.addSubSteps(getAnimaPortalSchematicRealWorld);
-		getAnimaPortalSchematic.setLinePoints(Arrays.asList(
+		WorldPoint animaPoint = getAnimaPortalSchematicRealStep.getWorldPoint();
+		getAnimaPortalSchematicRealStep.setWorldMapPoint(new WorldPoint(animaPoint.getX() + 256, animaPoint.getY(), animaPoint.getPlane()));
+		getAnimaPortalSchematicRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2338, 6368, 0),
 			new WorldPoint(2323, 6368, 0),
 			new WorldPoint(2323, 6376, 0),
@@ -994,154 +1094,250 @@ public class WhispererSteps extends ConditionalStep
 			new WorldPoint(2322, 6393, 0),
 			new WorldPoint(2322, 6399, 0)
 		));
+		getAnimaPortalSchematic = new PuzzleWrapperStep(getQuestHelper(), getAnimaPortalSchematicRealStep, "Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		getAnimaPortalSchematic.addSubSteps(getAnimaPortalSchematicRealWorld);
 
-		activateBlackstoneFragment5 = new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
-			blackstoneFragment.highlighted());
+		activateBlackstoneFragment5 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Activate the blackstone fragment to leave the Shadow Realm.",
+			blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		bringKetlaTheAnimaPortalSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+		bringKetlaTheAnimaPortalSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
 			"Bring the anima portal schematic to Ketla, next to the Western Residential District teleport.",
-			animaPortalSchematic);
+			animaPortalSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaTheAnimaPortalSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 		bringKetlaTheAnimaPortalSchematic.addDialogStepWithExclusion("More options...", "How did you end up down here?");
-		claimAnimaPortal = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
-			"Get the anima portal from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot);
+		claimAnimaPortal = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			"Get the anima portal from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimAnimaPortal.addDialogSteps("Take it.", "Western Residential District.", "Take the Anima Portal.", "Take everything.");
 
-		enterPlazaPuddle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2618, 6404, 0),
-			"Enter the puddle on the Plaza.", superiorTorch);
+		enterPlazaPuddle = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2618, 6404, 0),
+			"Enter the puddle on the Plaza.", superiorTorch),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPlazaPuddle.addDialogSteps("Plaza.");
 
-		destroyTentacles4 = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48208, new WorldPoint(2351, 6386, 0),
-			"Destroy the tentacles in front of the building to the south of the Plaza.", superiorTorch);
-		activateBlackstoneFragment6 = new DetailedQuestStep(getQuestHelper(),
-			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
-		takeWhiteShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2597, 6392, 0),
+		destroyTentacles4 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48208, new WorldPoint(2351, 6386, 0),
+			"Destroy the tentacles in front of the building to the south of the Plaza.", superiorTorch),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		activateBlackstoneFragment6 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(),
+			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		takeWhiteShadowKey = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2597, 6392, 0),
 			"Get the shadow key from the house.",
-			whiteShadowKey);
+			whiteShadowKey),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		placeBlockerWhiteChest = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2574, 6449, 0),
+		placeBlockerWhiteChest = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2574, 6449, 0),
 			"Return to the palace in the north-west, and place the shadow blocker near to the chest there. " +
-				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", shadowBlocker.highlighted());
+				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", shadowBlocker.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeBlockerWhiteChest.addDialogSteps("Palace.");
 		placeBlockerWhiteChest.addIcon(ItemID.SHADOW_BLOCKER);
 
-		placeAnimaWhiteChest = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2576, 6447, 0),
+		placeAnimaWhiteChest = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2576, 6447, 0),
 			"Place the anima portal between the two braziers near the chest. " +
-				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", animaPortal.highlighted());
+				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", animaPortal.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeAnimaWhiteChest.addIcon(ItemID.ANIMA_PORTAL);
 
-		placeIdolWhiteChest = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2578, 6445, 0),
+		placeIdolWhiteChest = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2578, 6445, 0),
 			"Place the idol near to the chest. " +
-				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", revitalisingIdol.highlighted());
+				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", revitalisingIdol.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeIdolWhiteChest.addIcon(ItemID.REVITALISING_IDOL);
 
-		enterPlazaPuddle2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2618, 6404, 0),
-			"Enter the puddle on the Plaza.");
+		enterPlazaPuddle2 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2618, 6404, 0),
+			"Enter the puddle on the Plaza."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPlazaPuddle2.addDialogSteps("Plaza.");
-		lightBraziers = new ObjectStep(getQuestHelper(), ObjectID.BRAZIER_48253, new WorldPoint(2319, 6448, 0),
+		lightBraziers = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.BRAZIER_48253, new WorldPoint(2319, 6448, 0),
 			"Run to the chest in the shadow realm, and use the revitalising idol to increase your Sanity. Light the 4 braziers near the chest.",
-			true);
-		restoreSanity = new ObjectStep(getQuestHelper(), ObjectID.REVITALISING_IDOL_48216, "Restore sanity with the revitalizing idol.");
+			true),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		restoreSanity = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.REVITALISING_IDOL_48216, "Restore sanity with the revitalizing idol."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		lightBraziers.addSubSteps(restoreSanity);
-		openFinalChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48235, new WorldPoint(2316, 6450, 0), "Open the chest in the palace.");
-		openFinalChestRealWorld = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48231, new WorldPoint(2572, 6450, 0), "Open the chest in the palace.");
+		openFinalChest = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48235, new WorldPoint(2316, 6450, 0), "Open the chest in the palace."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		openFinalChestRealWorld = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48231, new WorldPoint(2572, 6450, 0), "Open the chest in the palace."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openFinalChest.addSubSteps(openFinalChestRealWorld);
 
-		activateBlackstoneFragment7 = new DetailedQuestStep(getQuestHelper(),
-			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
-		bringKetlaThePerfectSchematic = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+		activateBlackstoneFragment7 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(),
+			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		bringKetlaThePerfectSchematic = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
 			"Bring the perfected shadow torch schematic to Ketla, next to the Western Residential District teleport.",
-			perfectShadowTorchSchematic);
+			perfectShadowTorchSchematic),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaThePerfectSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 		bringKetlaThePerfectSchematic.addDialogStepWithExclusion("More options...", "How did you end up down here?");
-		talkToKetlaAfterPerfectGiven = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
-			"Talk to Ketla, next to the Western Residential District teleport.");
+		talkToKetlaAfterPerfectGiven = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			"Talk to Ketla, next to the Western Residential District teleport."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		talkToKetlaAfterPerfectGiven.addDialogSteps("More options...", "Western Residential District.", "I have a schematic here.");
 		bringKetlaThePerfectSchematic.addSubSteps(talkToKetlaAfterPerfectGiven);
 
-		enterPuddleNearPub = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
-			"Enter the puddle south-east of Ketla.");
+		enterPuddleNearPub = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			"Enter the puddle south-east of Ketla."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPuddleNearPub.addDialogStep("The Cathedral.");
-		goUpstairsPub = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_47817, new WorldPoint(2372, 6430, 0),
-			"Go upstairs in the pub.");
-		touchPubRemnant = new ObjectStep(getQuestHelper(), ObjectID.REMNANT_48245, new WorldPoint(2380, 6430, 1), "Touch the remnant in the north-east room.");
-		activateBlackstoneFragment8 = new DetailedQuestStep(getQuestHelper(),
-			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
+		goUpstairsPub = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.STAIRS_47817, new WorldPoint(2372, 6430, 0),
+			"Go upstairs in the pub."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		touchPubRemnant = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.REMNANT_48245, new WorldPoint(2380, 6430, 1), "Touch the remnant in the north-east room."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		activateBlackstoneFragment8 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(),
+			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		enterPuddleNearPub2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
-			"Enter the puddle south-east of Ketla again once your Sanity has returned.", superiorTorch);
+		enterPuddleNearPub2 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			"Enter the puddle south-east of Ketla again once your Sanity has returned.", superiorTorch),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPuddleNearPub2.addDialogStep("The Cathedral.");
-		destroyTentacles5 = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48208, new WorldPoint(2392, 6411, 0),
-			"Burn the tentacles outside the house to the south-west.", superiorTorch);
+		destroyTentacles5 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48208, new WorldPoint(2392, 6411, 0),
+			"Burn the tentacles outside the house to the south-west.", superiorTorch),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		destroyTentacles6 = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2383, 6408, 0),
-			"Burn the tentacles outside the house to just to the west.", superiorTorch);
+		destroyTentacles6 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2383, 6408, 0),
+			"Burn the tentacles outside the house to just to the west.", superiorTorch),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		activateBlackstoneFragment9 = new DetailedQuestStep(getQuestHelper(),
-			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
+		activateBlackstoneFragment9 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(),
+			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		getRedShadowKey = new ItemStep(getQuestHelper(), new WorldPoint(2638, 6405, 0),
-			"Get the shadow key from the south-west house you can now enter.", redShadowKey);
+		getRedShadowKey = new PuzzleWrapperStep(getQuestHelper(),
+			new ItemStep(getQuestHelper(), new WorldPoint(2638, 6405, 0),
+			"Get the shadow key from the south-west house you can now enter.", redShadowKey),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		placeBlockerInRedRoom = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2649, 6406, 0),
-			"Place the shadow blocker in the square building you made accessible, next to the chest.", shadowBlocker.highlighted());
+		placeBlockerInRedRoom = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2649, 6406, 0),
+			"Place the shadow blocker in the square building you made accessible, next to the chest.", shadowBlocker.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeBlockerInRedRoom.addIcon(ItemID.SHADOW_BLOCKER);
-		enterPuddleNearPub3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
-			"Enter the puddle south-east of Ketla again.", superiorTorch);
+		enterPuddleNearPub3 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			"Enter the puddle south-east of Ketla again.", superiorTorch),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPuddleNearPub3.addDialogStep("The Cathedral.");
-		openRedChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2392, 6405, 0),
-			"Open the chest in the square building.");
-		openRedChestRealWorld = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48228, new WorldPoint(2648, 6405, 0),
-			"Open the chest in the square building.");
+		openRedChest = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2392, 6405, 0),
+			"Open the chest in the square building."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		openRedChestRealWorld = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48228, new WorldPoint(2648, 6405, 0),
+			"Open the chest in the square building."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openRedChest.addSubSteps(openRedChestRealWorld);
 
-		activateBlackstoneFragment10 = new DetailedQuestStep(getQuestHelper(),
-			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
+		activateBlackstoneFragment10 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(),
+			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		enterSciencePuddle3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
-			"Go to the Southern Science District and enter the puddle there.");
+		enterSciencePuddle3 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
+			"Go to the Southern Science District and enter the puddle there."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterSciencePuddle.addDialogStep("Southern Science District.");
-		openGreenChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2354, 6339, 0),
-			"Open the chest in the small house to the south. Destroy the tentacle to access the house.", superiorTorch, greenShadowKey);
-		openGreenChestRealWorld = new ObjectStep(getQuestHelper(), ObjectID.CHEST_48228, new WorldPoint(2610, 6339, 0),
-			"Open the chest in the small house to the south.");
+		openGreenChest = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2354, 6339, 0),
+			"Open the chest in the small house to the south. Destroy the tentacle to access the house.", superiorTorch, greenShadowKey),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		openGreenChestRealWorld = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48228, new WorldPoint(2610, 6339, 0),
+			"Open the chest in the small house to the south."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openGreenChest.addSubSteps(openGreenChestRealWorld);
 
-		activateBlackstoneFragment11 = new DetailedQuestStep(getQuestHelper(),
-			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
-		makeIcon = new DetailedQuestStep(getQuestHelper(), "Combine the icon halves.", iconSegment1.highlighted(), iconSegment2.highlighted());
-		enterDrain = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49488, new WorldPoint(2656, 6424, 0),
-			"Enter the drain in the middle of the Residential District.", strangeIcon.hideConditioned(iconUsed));
+		activateBlackstoneFragment11 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(),
+			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		makeIcon = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(), "Combine the icon halves.", iconSegment1.highlighted(), iconSegment2.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		enterDrain = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49488, new WorldPoint(2656, 6424, 0),
+			"Enter the drain in the middle of the Residential District.", strangeIcon.hideConditioned(iconUsed)),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterDrain.addDialogStep("The Cathedral.");
 
-		useIconInDrain = new ObjectStep(getQuestHelper(), ObjectID.GATE_48301, new WorldPoint(2784, 6287, 1),
-			"Go through the gate.", strangeIcon.hideConditioned(iconUsed));
-		goDownDrainLadder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_48304, new WorldPoint(2806, 6303, 1),
-			"Go down the ladder to the east.");
+		useIconInDrain = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.GATE_48301, new WorldPoint(2784, 6287, 1),
+			"Go through the gate.", strangeIcon.hideConditioned(iconUsed)),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		goDownDrainLadder = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.LADDER_48304, new WorldPoint(2806, 6303, 1),
+			"Go down the ladder to the east."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		inspectPillar = new ObjectStep(getQuestHelper(), ObjectID.ANCIENT_PILLAR_48305, new WorldPoint(2784, 6304, 0),
-			"Inspect the Ancient Pillar.");
+		inspectPillar = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.ANCIENT_PILLAR_48305, new WorldPoint(2784, 6304, 0),
+			"Inspect the Ancient Pillar."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		talkToMe = new NpcStep(getQuestHelper(), NpcID.ME_12236, new WorldPoint(3232, 6308, 0), "Talk to yourself.");
-		talkToKetlaAfterVision = new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
-			"Talk to Ketla, next to the Western Residential District teleport.");
+		talkToMe = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.ME_12236, new WorldPoint(3232, 6308, 0), "Talk to yourself."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		talkToKetlaAfterVision = new PuzzleWrapperStep(getQuestHelper(),
+			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			"Talk to Ketla, next to the Western Residential District teleport."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		talkToKetlaAfterVision.addDialogSteps("More options...", "Western Residential District.");
 		// Varp 3679 -1>2343 ???
 
-		claimPerfectShadowTorch = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
-			"Get the perfect shadow torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot);
+		claimPerfectShadowTorch = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			"Get the perfect shadow torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimPerfectShadowTorch.addDialogSteps("More options...", "Take it.", "Western Residential District.",
 			"Take the Shadow Torch.");
 
-		enterPuddleNearPub4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
-		"Enter the puddle south-east of Ketla for the final time.", perfectShadowTorch);
+		enterPuddleNearPub4 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+		"Enter the puddle south-east of Ketla for the final time.", perfectShadowTorch),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPuddleNearPub4.addDialogStep("The Cathedral.");
 
-		destroyCathedralTentacles = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48211, new WorldPoint(2400, 6393, 0),
-			"Destroy the tentacles at the Cathedral to the south.");
+		destroyCathedralTentacles = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48211, new WorldPoint(2400, 6393, 0),
+			"Destroy the tentacles at the Cathedral to the south."),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		activateBlackstoneFragment12 = new DetailedQuestStep(getQuestHelper(),
-			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted());
+		activateBlackstoneFragment12 = new PuzzleWrapperStep(getQuestHelper(),
+			new DetailedQuestStep(getQuestHelper(),
+			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		enterTheCathedral = new NpcStep(getQuestHelper(), NpcID.ODD_FIGURE, new WorldPoint(2656, 6370, 0),
 			"Gear up for the boss fight, and then enter the Cathedral. Disturb the Odd Figure to start the fight. " +
@@ -1168,10 +1364,10 @@ public class WhispererSteps extends ConditionalStep
 			new WorldPoint(3511, 2971, 0),
 			"Return to the Vault door north-east of Nardah. Be wary of an assassin coming to kill you! They can run, freeze, and teleblock you.",
 			whisperersMedallion);
-		returnToDesertWithWhisperersMedallion.addTeleport(nardahTeleport);
+		((ObjectStep) returnToDesertWithWhisperersMedallion).addTeleport(nardahTeleport);
 		returnToDesertWithWhisperersMedallion.conditionToHideInSidebar(completedOtherMedallions);
 
-		useWhisperersMedallionOnStatue =new ObjectStep(getQuestHelper(), NullObjectID.NULL_49501, new WorldPoint(3932, 9636, 1),
+		useWhisperersMedallionOnStatue = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49501, new WorldPoint(3932, 9636, 1),
 			"Use the medallion on the north-west statue.", whisperersMedallion.highlighted());
 		useWhisperersMedallionOnStatue.addIcon(ItemID.WHISPERERS_MEDALLION);
 		useWhisperersMedallionOnStatue.conditionToHideInSidebar(completedOtherMedallions);

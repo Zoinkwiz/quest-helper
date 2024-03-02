@@ -41,6 +41,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.steps.PuzzleWrapperStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -81,14 +82,16 @@ public class ATasteOfHope extends BasicQuestHelper
 		climbDownFromRoof, lookThroughWindow, returnToBase, talkToSafalaanAfterSpying,
 		pressDecoratedWallReturn, pressDecoratedWallAfterSerafina, talkToFlaygian,
 		talkToSafalaanAfterFlaygian, goUpToSerafinaHouse, enterSerafinaHouse, talkToSafalaanInSerafinaHouse,
-		searchForMeat, searchForHerb, searchForVial, searchForPestle, useHerbOnVial, usePestleOnMeat,
-		useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain,
-		useMeatOnBlood, useBloodOnDoor, getOldNotes, talkToSafalaanWithNotes, enterBaseAfterSerafina,
+		getOldNotes, talkToSafalaanWithNotes, enterBaseAfterSerafina,
 		killAbomination, enterOldManRalBasement, talkToSafalaanInRalBasement, talkToVertidaInRalBasement,
 		readFlaygianNotes, getSickle, getChain, useEmeraldOnSickle, enchantSickle, addSickleToRod,
 		talkToSafalaanAfterFlail, talkToKael, killRanis, talkToKaelAgain, enterRalForEnd, talkToSafalaanForEnd,
 		talkToSafalaanForAbominationFight, talkToSafalaanAfterAbominationFight, enterRalWithFlail, talkToKaelSidebar,
 		killRanisSidebar, pressDecoratedWall;
+
+	PuzzleWrapperStep searchForMeat, searchForHerb, searchForVial, searchForPestle, useHerbOnVial, usePestleOnMeat,
+		useMeatOnPotion, usePotionOnDoor, talkToSafalaanAfterPotion, useHerbOnBlood, usePestleOnMeatAgain,
+		useMeatOnBlood, useBloodOnDoor;
 
 	//Zones
 	Zone myrequeBase, theatreP1, theatreP2, theatreP3, theatreP4, theatreP5, theatreP6, serafinaHouse, newBase, ranisFight;
@@ -452,24 +455,49 @@ public class ATasteOfHope extends BasicQuestHelper
 		talkToSafalaanInSerafinaHouse = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3596, 9675, 0), "Talk to Safalaan.");
 		// Talked to Safalaan, 2592 2->0
 
-		searchForHerb = new ObjectStep(this, ObjectID.BARREL_32564, new WorldPoint(3599, 9678, 0), "Search the barrel in the north east corner.");
-		searchForMeat = new ObjectStep(this, ObjectID.CRATE_32567, new WorldPoint(3593, 9677, 0), "Search the crate in the west of the room for mysterious meat.");
-		searchForVial = new ObjectStep(this, ObjectID.CRATE_32566, new WorldPoint(3598, 9671, 0), "Search a crate in the south east corner for a vial.");
-		searchForPestle = new ObjectStep(this, ObjectID.CRATE_32568, new WorldPoint(3594, 9671, 0), "Search the crate near the staircase for a pestle and mortar.");
+		searchForHerb = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.BARREL_32564, new WorldPoint(3599, 9678, 0), "Search the barrel in the north east corner."), "Work out how to open the door in the room.");
+		searchForMeat = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.CRATE_32567, new WorldPoint(3593, 9677, 0), "Search the crate in the west of the room for mysterious meat."),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
+		searchForVial = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.CRATE_32566, new WorldPoint(3598, 9671, 0), "Search a crate in the south east corner for a vial."),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
+		searchForPestle = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.CRATE_32568, new WorldPoint(3594, 9671, 0), "Search the crate near the staircase for a pestle and mortar."),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 
-		useHerbOnVial = new DetailedQuestStep(this, "Add the herb to a vial of water.", herb, vialOfWater);
-		usePestleOnMeat = new DetailedQuestStep(this, "Use the pestle and mortar on the meat.", pestleAndMortarHighlighted, meatHighlighted);
-		useMeatOnPotion = new DetailedQuestStep(this, "Add the crushed meat to the potion.", crushedMeat, unfinishedPotion);
-		usePotionOnDoor = new ObjectStep(this, ObjectID.DOOR_32562, new WorldPoint(3596, 9680, 0), "Use the potion on the door.", potion);
+		useHerbOnVial = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, "Add the herb to a vial of water.", herb, vialOfWater),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
+		usePestleOnMeat = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, "Use the pestle and mortar on the meat.", pestleAndMortarHighlighted, meatHighlighted),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
+		useMeatOnPotion = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, "Add the crushed meat to the potion.", crushedMeat, unfinishedPotion),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
+		usePotionOnDoor = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.DOOR_32562, new WorldPoint(3596, 9680, 0), "Use the potion on the door.", potion),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		usePotionOnDoor.addDialogStep("Yes.");
 		usePotionOnDoor.addIcon(ItemID.POTION_22409);
-		talkToSafalaanAfterPotion = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3596, 9675, 0), "Talk to Safalaan for his blood.", vial);
+		talkToSafalaanAfterPotion = new PuzzleWrapperStep(this,
+			new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3596, 9675, 0), "Talk to Safalaan for his blood.", vial),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		talkToSafalaanAfterPotion.addDialogStep("Yes.");
 
-		useHerbOnBlood = new DetailedQuestStep(this, "Add the herb to a vial of blood.", herb, bloodVial);
-		usePestleOnMeatAgain = new DetailedQuestStep(this, "Use the pestle and mortar on the meat.", pestleAndMortarHighlighted, meatHighlighted);
-		useMeatOnBlood = new DetailedQuestStep(this, "Add the crushed meat to the unfinished potion.", crushedMeat, unfinishedBloodPotion);
-		useBloodOnDoor = new ObjectStep(this, ObjectID.DOOR_32562, new WorldPoint(3596, 9680, 0), "Use the blood potion on the door.", bloodPotion);
+		useHerbOnBlood = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, "Add the herb to a vial of blood.", herb, bloodVial),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
+		usePestleOnMeatAgain = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, "Use the pestle and mortar on the meat.", pestleAndMortarHighlighted, meatHighlighted),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
+		useMeatOnBlood = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, "Add the crushed meat to the unfinished potion.", crushedMeat, unfinishedBloodPotion),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
+		useBloodOnDoor = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.DOOR_32562, new WorldPoint(3596, 9680, 0), "Use the blood potion on the door.", bloodPotion),
+			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		useBloodOnDoor.addDialogStep("Yes.");
 		useBloodOnDoor.addIcon(ItemID.BLOOD_POTION);
 		getOldNotes = new ObjectStep(this, ObjectID.CHEST_32572, new WorldPoint(3596, 9683, 0), "Search the chest for some notes.");

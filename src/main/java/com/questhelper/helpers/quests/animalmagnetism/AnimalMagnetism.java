@@ -45,6 +45,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.PuzzleStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -245,17 +246,14 @@ public class AnimalMagnetism extends BasicQuestHelper
 			"I'd love one, thanks.");
 		cutTree = new NpcStep(this, NpcID.UNDEAD_TREE,
 			"Try to chop an undead tree outside Draynor manor with the Blessed axe until you receive undead twigs.",
-			true,
-			blessedAxe);
+			true, blessedAxe);
 		giveTwigsToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
-			"Give the Undead twigs to Ava.",
-			twigs);
+			"Give the Undead twigs to Ava.", twigs);
 
 		getNotesFromAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Talk to Ava to receive the research notes.");
-		translateNotes = new PuzzleStep(this, "Translate research notes by clicking on all the highlighted switches.",
-			new PuzzleSolver()::solver,
-			researchNotes);
+		translateNotes = new PuzzleWrapperStep(this, new PuzzleStep(this, "Translate research notes by clicking on all the highlighted switches.",
+			new PuzzleSolver()::solver, researchNotes), "Translate the research notes.");
 		giveNotesToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Give Ava the translated research notes.",
 			translatedNotes);

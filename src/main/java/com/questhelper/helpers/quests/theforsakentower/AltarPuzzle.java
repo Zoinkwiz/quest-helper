@@ -35,6 +35,7 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.OwnerStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -68,12 +69,13 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 
 	Requirement inSecondFloor, inFloor1, inBasement;
 
-	DetailedQuestStep goUpLadder, goUpStairs, goUpToSecondFloor, restartStep, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15;
+	QuestStep goUpLadder, goUpStairs, goUpToSecondFloor, restartStep, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15;
 
-	ArrayList<DetailedQuestStep> rebalanceW = new ArrayList<>();
-	ArrayList<DetailedQuestStep> rebalanceE = new ArrayList<>();
-	ArrayList<DetailedQuestStep> rebalanceC = new ArrayList<>();
+	ArrayList<QuestStep> rebalanceW = new ArrayList<>();
+	ArrayList<QuestStep> rebalanceE = new ArrayList<>();
+	ArrayList<QuestStep> rebalanceC = new ArrayList<>();
 
+	List<QuestStep> moves = new ArrayList<>();
 
 	public AltarPuzzle(QuestHelper questHelper)
 	{
@@ -423,14 +425,21 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 		m15 = new DetailedQuestStep(getQuestHelper(), "Move a disc from the east pylon to the centre pylon.");
 		m15.addSubSteps(rebalanceE.get(9), rebalanceC.get(9));
 
-		restartStep = new DetailedQuestStep(getQuestHelper(), "Unknown state. Restart the puzzle to start again.");
+		moves = new ArrayList<>(Arrays.asList(m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15));
+		moves.replaceAll(step -> new PuzzleWrapperStep(getQuestHelper(), step, "Solve the altar puzzle."));
+		rebalanceC.replaceAll(step -> new PuzzleWrapperStep(getQuestHelper(), step, "Solve the altar puzzle."));
+		rebalanceW.replaceAll(step -> new PuzzleWrapperStep(getQuestHelper(), step, "Solve the altar puzzle."));
+		rebalanceE.replaceAll(step -> new PuzzleWrapperStep(getQuestHelper(), step, "Solve the altar puzzle."));
+
+		restartStep = new PuzzleWrapperStep(getQuestHelper(), new DetailedQuestStep(getQuestHelper(), "Unknown state. Restart the puzzle to start again."));
 	}
 
 	public List<PanelDetails> panelDetails()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails potionPanel = new PanelDetails("Altar puzzle",
-			Arrays.asList(goUpToSecondFloor, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15));
+			new ArrayList<>(List.of(goUpToSecondFloor)));
+		moves.forEach((potionPanel::addSteps));
 		potionPanel.setLockingStep(this);
 		allSteps.add(potionPanel);
 		return allSteps;

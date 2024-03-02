@@ -89,6 +89,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
+		// TODO: To what degree should this quest make use of PuzzleWrapper?
 		loadZones();
 		setupRequirements();
 		setupConditions();

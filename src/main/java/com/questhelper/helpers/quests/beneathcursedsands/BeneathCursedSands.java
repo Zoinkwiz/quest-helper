@@ -28,6 +28,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 import java.util.ArrayList;
@@ -63,14 +64,16 @@ public class BeneathCursedSands extends BasicQuestHelper
 	// Primary Quest Line Steps
 	QuestStep talkToJamilaToStart, receiveSpecialItemFromJamila, readMessage, talkToMaisaStartInvestigation,
 		inspectBlockedPyramidEntry, talkToCitizenOrGuard, fightHeadMenaphiteGuard, talkToMaisaExploreCliffs,
-		goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell,
-		readStoneTablet, leaveRuinsOfUllek, digForChest, openChest, craftEmblem, useEmblemOnPillar, rotateScarabLeft,
-		rotateScarabRight, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages,
+		goFromCampsiteToRuinsOfUllek, enterDungeonToFightScarabMages, fightScarabMages,
 		climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor, solveTombRiddle, enterTombDoor,
 		talkToSpirit, takeRustyKey, unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest,
 		talkToMaisaInNardah, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur,
 		warmUpChemistryEquipment, bringCureToPriest, prepareFightMenaphiteAkh, talkToSophanemHighPriest,
 		defeatMenaphiteAkh, defeatMenaphiteShadow, finishQuest;
+
+	PuzzleWrapperStep inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell,
+		readStoneTablet, leaveRuinsOfUllek, digForChest, openChest, craftEmblem, useEmblemOnPillar, rotateScarabLeft,
+		rotateScarabRight, confirmScarabRotation, chemistryPuzzleWrapped;
 
 	// Optional & Supportive Quest Steps
 	QuestStep talkToMaisaPostFightCutsceneInterruption, obtainTinderbox, obtainSpade, goToRuinsOfUllek, enterDungeon,
@@ -246,7 +249,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepTwo, chemistryValveMiddleNearMax, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepThree, chemistryValveMiddleNearMax, chemistryValveRightNearMax), chemistryValveDecreaseMiddle);
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle), chemistryValveDecreaseLeft);
-		steps.put(82, chemistryPuzzle);
+		chemistryPuzzleWrapped = new PuzzleWrapperStep(this, chemistryPuzzle, "Warm up Zahur's Chemistry Equipment.");
+		steps.put(82, chemistryPuzzleWrapped);
 		steps.put(84, talkToZahur);
 		steps.put(86, talkToZahur);
 
@@ -400,7 +404,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		// The Ruins of Ullek
 		talkToMaisaExploreCliffs = new NpcStep(this, NpcID.MAISA_11474, new WorldPoint(3378, 2792, 0), "Go back to Maisa's camp and talk to her.");
 
-		inspectFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Inspect the furnace.");
+		inspectFurnace = new PuzzleWrapperStep(this,
+			new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Inspect the furnace."), "Work out how to unlock the underground entrance west of the obelisk in Ullek.");
 		obtainTinderbox = new ObjectStep(this, ObjectID.CAMPING_EQUIPMENT_43889, new WorldPoint(3379, 2791, 0), "Search the camping equipment by the tent for a tinderbox.");
 		obtainTinderbox.addIcon(ItemID.TINDERBOX);
 		obtainSpade = new DetailedQuestStep(this, new WorldPoint(3355, 2758, 0), "Pick up a spade south of the campsite.");
@@ -409,33 +414,57 @@ public class BeneathCursedSands extends BasicQuestHelper
 		goFromCampsiteToRuinsOfUllek = new ObjectStep(this, ObjectID.STEPS_44113, new WorldPoint(3419, 2803, 0), "From the campsite, head south and then to the east, around the cliffs, where you will find a set of stairs to the Ruins of Ullek.");
 		((DetailedQuestStep) goFromCampsiteToRuinsOfUllek).setLinePoints(Arrays.asList(new WorldPoint(3370, 2795, 0), new WorldPoint(3370, 2773, 0), new WorldPoint(3387, 2758, 0), new WorldPoint(3402, 2758, 0), new WorldPoint(3402, 2758, 0), new WorldPoint(3419, 2778, 0), new WorldPoint(3419, 2802, 0)));
 
-		useCoalOnFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Use coal on the furnace to refuel it.", tinderbox, coal.highlighted());
+		useCoalOnFurnace = new PuzzleWrapperStep(this,
+			new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Use coal on the furnace to refuel it.", tinderbox, coal.highlighted()),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
 		useCoalOnFurnace.addDialogStep("Yes.");
 		useCoalOnFurnace.addIcon(ItemID.COAL);
 
-		useTinderboxOnFurnace = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Use your tinderbox on the furnace to light it.", tinderbox.highlighted());
+		useTinderboxOnFurnace = new PuzzleWrapperStep(this,
+			new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Use your tinderbox on the furnace to light it.", tinderbox.highlighted()),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
 		useTinderboxOnFurnace.addDialogStep("Yes.");
 		useTinderboxOnFurnace.addIcon(ItemID.TINDERBOX);
 
-		searchWell = new ObjectStep(this, NullObjectID.NULL_6630, new WorldPoint(3400, 2828, 0), "Search the well to receive a stone tablet.");
-		readStoneTablet = new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet);
-		leaveRuinsOfUllek = new ObjectStep(this, ObjectID.STEPS_44111, new WorldPoint(3417, 2805, 0), "Leave the Ruins of Ullek using the steps in the south-east.");
-		digForChest = new DigStep(this, new WorldPoint(3411, 2786, 0), "Dig in front of the southernmost ritual pillar");
-		openChest = new DetailedQuestStep(this, "Open the chest and input the passcode \"1118513\".", chest);
+		searchWell = new PuzzleWrapperStep(this,
+			new ObjectStep(this, NullObjectID.NULL_6630, new WorldPoint(3400, 2828, 0), "Search the well to receive a stone tablet."),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
+		readStoneTablet = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
+		leaveRuinsOfUllek = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.STEPS_44111, new WorldPoint(3417, 2805, 0), "Leave the Ruins of Ullek using the steps in the south-east."),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
+		digForChest = new PuzzleWrapperStep(this,
+			new DigStep(this, new WorldPoint(3411, 2786, 0), "Dig in front of the southernmost ritual pillar"),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
+		openChest = new PuzzleWrapperStep(this,
+			new DetailedQuestStep(this, "Open the chest and input the passcode \"1118513\".", chest),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
 		goToRuinsOfUllek = new ObjectStep(this, ObjectID.STEPS_44113, new WorldPoint(3419, 2803, 0), "Return to the Ruins of Ullek.");
 
-		craftEmblem = new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Craft a scarab emblem using the furnace.", scarabMould, ironBar.highlighted());
+		craftEmblem = new PuzzleWrapperStep(this,
+			new ObjectStep(this, NullObjectID.NULL_2883, new WorldPoint(3404, 2824, 0), "Craft a scarab emblem using the furnace.", scarabMould, ironBar.highlighted()),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
 		craftEmblem.addDialogStep("Yes.");
 		craftEmblem.addIcon(ItemID.IRON_BAR);
 
-		useEmblemOnPillar = new ObjectStep(this, NullObjectID.NULL_6579, new WorldPoint(3418, 2848, 0), "Inspect the " +
-			"pillar to the north to insert the emblem.", scarabEmblem);
+		useEmblemOnPillar = new PuzzleWrapperStep(this,
+			new ObjectStep(this, NullObjectID.NULL_6579, new WorldPoint(3418, 2848, 0), "Inspect the " +
+			"pillar to the north to insert the emblem.", scarabEmblem),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
 		useEmblemOnPillar.addIcon(ItemID.SCARAB_EMBLEM);
 		useEmblemOnPillar.addDialogStep("Yes.");
 
-		rotateScarabLeft = new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 7);
-		rotateScarabRight = new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 8);
-		confirmScarabRotation = new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 9);
+		rotateScarabLeft = new PuzzleWrapperStep(this,
+			new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 7),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
+		rotateScarabRight = new PuzzleWrapperStep(this,
+			new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 8),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
+		confirmScarabRotation = new PuzzleWrapperStep(this,
+			new WidgetStep(this, "Rotate the scarab on the emblem so it faces downwards.", 750, 9),
+			"Work out how to unlock the underground entrance west of the obelisk in Ullek.");
 
 		enterDungeonToFightScarabMages = new ObjectStep(this, NullObjectID.NULL_6643, new WorldPoint(3409, 2848, 0),
 			"Enter the dungeon.", meleeCombatGear, food);
@@ -454,8 +483,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		enterRiddleDoor = new ObjectStep(this, ObjectID.DOOR_43961, new WorldPoint(3405, 9248, 0), "With the traps disabled, go through the door west of the juncture.");
 
 		// Riddle of the Tomb
-		// TODO: This step needs to be tested.
-		solveTombRiddle = new TombRiddle(this);
+		solveTombRiddle = new PuzzleWrapperStep(this, new TombRiddle(this), "Solve the tomb riddle.");
 
 		enterTombDoor = new ObjectStep(this, ObjectID.DOOR_43962, new WorldPoint(3389, 9248, 0), "Enter the tomb.");
 
@@ -508,7 +536,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		takeLilyToZahur = new NpcStep(this, NpcID.ZAHUR, new WorldPoint(3425, 2909, 0), "Go back to Zahur in Nardah.", lilyOfTheElid);
 		talkToZahur = new NpcStep(this, NpcID.ZAHUR, new WorldPoint(3425, 2909, 0), "Talk to Zahur in Nardah.");
 
-		warmUpChemistryEquipment = new ObjectStep(this, NullObjectID.NULL_44594, new WorldPoint(3424, 2905, 0), "Warm up Zahur's Chemistry Equipment.");
+		warmUpChemistryEquipment = new ObjectStep(this, NullObjectID.NULL_44594, new WorldPoint(3424, 2905, 0), "");
 		chemistryValveDecreaseLeft = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the first valve.", 751, 24);
 		chemistryValveIncreaseMiddle = new WidgetStep(this, "Warm up the Chemistry Equipment. Increase the temperature of the second valve.", 751, 25);
 		chemistryValveDecreaseMiddle = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the second valve.", 751, 26);
@@ -586,7 +614,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		allSteps.add(new PanelDetails("The Ruins of Ullek", Arrays.asList(talkToMaisaExploreCliffs, goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell, readStoneTablet, digForChest, openChest, craftEmblem, useEmblemOnPillar, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages, climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor), Arrays.asList(meleeCombatGear, coal, tinderbox, spade, ironBar), Arrays.asList(food, antipoison, waterskins)));
 		allSteps.add(new PanelDetails("Riddle of the Tomb", Arrays.asList(solveTombRiddle, enterTombDoor, talkToSpirit, takeRustyKey)));
 		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(rangedCombatGear, food, rustyKey)));
-		allSteps.add(new PanelDetails("Cure for the Pox", Arrays.asList(talkToMaisaInNardah, purchaseBeef, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, warmUpChemistryEquipment, bringCureToPriest), Arrays.asList(meat, waterskins)));
+		allSteps.add(new PanelDetails("Cure for the Pox", Arrays.asList(talkToMaisaInNardah, purchaseBeef, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, chemistryPuzzleWrapped, bringCureToPriest), Arrays.asList(meat, waterskins)));
 		allSteps.add(new PanelDetails("Fight with the Menaphite Akh", Arrays.asList(prepareFightMenaphiteAkh, defeatMenaphiteAkh, finishQuest), Arrays.asList(meleeCombatGear, waterskins)));
 
 		return allSteps;

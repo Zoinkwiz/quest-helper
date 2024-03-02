@@ -260,11 +260,12 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			"Head to the Canifis bar and either buy the pickled brain for 50 coins, or telegrab it.", telegrabOrCoins);
 		getPickledBrain.addDialogStep("I'll buy one.");
 		talkToFrenkenstrain = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Talk to Dr.Fenkenstrain to start the quest");
+			"Talk to Dr. Fenkenstrain to start the quest.");
 		talkToFrenkenstrain.addDialogStep("Yes.");
 		talkToFrenkenstrain.addDialogStep("Braindead");
 		talkToFrenkenstrain.addDialogStep("Grave-digging");
 
+		// TODO: Should the accessing the grave be considered as a puzzle for a PuzzleWrapperStep
 		goUpstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3560, 3552, 0),
 			"Go up the staircase to grab the items you will need.");
 
@@ -281,7 +282,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			obsidianAmulet.highlighted());
 
 		goDownstairsForStar = new ObjectStep(this, ObjectID.STAIRCASE_5207, new WorldPoint(3573, 3553, 1),
-			"Go back to the ground floor");
+			"Go back to the ground floor.");
 
 		talkToGardenerForHead = new NpcStep(this, NpcID.GARDENER_GHOST, new WorldPoint(3548, 3562, 0),
 			"Talk to the Gardener Ghost.", ghostSpeakAmulet.equipped());
@@ -316,12 +317,12 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		getLeg = new DigStep(this, new WorldPoint(3505, 3576, 0), "Use your spade on this tile to get legs.");
 
 		deliverBodyParts = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Deliver the body parts to Dr.Fenkenstrain, use a teleport to Fenkenstrain's castle or run back through " +
+			"Deliver the body parts to Dr. Fenkenstrain, use a teleport to Fenkenstrain's castle or run back through " +
 				"the caves.");
 		deliverBodyParts.addDialogStep("I have some body parts for you.");
 
 		gatherNeedleAndThread = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Get a needle and 5 threads and deliver them to Dr.Fenkenstrain.", needle, thread);
+			"Get a needle and 5 threads and deliver them to Dr. Fenkenstrain.", needle, thread);
 
 		talkToGardenerForKey = new NpcStep(this, NpcID.GARDENER_GHOST, new WorldPoint(3548, 3562, 0),
 			"Talk to the Gardener Ghost and ask for the shed key.", ghostSpeakAmulet.equipped(), bronzeWire, silverBar);
@@ -349,22 +350,22 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		repairConductor = new ObjectStep(this, ObjectID.LIGHTNING_CONDUCTOR, new WorldPoint(3549, 3537, 2),
 			"Repair the lightning Conductor.");
 
-		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the first floor of the castle and talk to Dr" +
-			".Fenkenstrain.");
+		goBackToFirstFloor = new DetailedQuestStep(this, "Go back to the first floor of the castle and talk to Dr." +
+			" Fenkenstrain.");
 		talkToFenkenstrainAfterFixingRod = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Go back to the first floor of the castle and talk to Dr.Fenkenstrain.");
+			"Go back to the first floor of the castle and talk to Dr. Fenkenstrain.");
 
 		goToMonsterFloor1 = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
 			"Go up to the second floor to confront Fenkenstrain's monster.");
 		openLockedDoor = new ObjectStep(this, ObjectID.DOOR_5172, new WorldPoint(3548, 3551, 1),
 			"Use the Tower Key on the door.");
 		goToMonsterFloor2 = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1),
-			"Go up the ladder");
+			"Go up the ladder.");
 		talkToMonster = new NpcStep(this, NpcID.FENKENSTRAINS_MONSTER, new WorldPoint(3548, 3555, 2),
 			"Talk to Fenkenstrain's monster.");
 
 		pickPocketFenkenstrain = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3551, 3548, 0),
-			"Go back to Dr.Fenkenstrain, instead of talking to him right click and pickpocket him.");
+			"Go back to Dr. Fenkenstrain, instead of talking to him right click and pickpocket him.");
 	}
 
 	@Override

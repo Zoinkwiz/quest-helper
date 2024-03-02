@@ -46,6 +46,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.PuzzleStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -323,7 +324,8 @@ public class TowerOfLife extends BasicQuestHelper
 		);
 		calibratePressureMachine = new ObjectStep(this, ObjectID.PRESSURE_MACHINE, new WorldPoint(2649, 3223, 1),
 			"Calibrate the Pressure Machine.");
-		solvePressureMachinePuzzle = new PuzzleStep(this, "Click the wheels to calibrate the machine", new PuzzleSolver(client)::pressureSolver);
+		solvePressureMachinePuzzle = new PuzzleWrapperStep(this,
+			new PuzzleStep(this, "Click the wheels to calibrate the machine", new PuzzleSolver(client)::pressureSolver));
 
 		fixPressureMachine = new ConditionalStep(this, fixPressureMachineGetSheets);
 		fixPressureMachine.addStep(isPressureMachineBuilt, solvePressureMachinePuzzle);
@@ -349,9 +351,10 @@ public class TowerOfLife extends BasicQuestHelper
 		buildPipeMachine.addDialogStep("Yes");
 		buildPipeMachine.addSubSteps(fixPipeMachineGetPipes, fixPipeMachineGetRings, fixPipeMachineGetRivets,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2);
-		solvePipeMachinePuzzle = new PuzzleStep(this,
+
+		solvePipeMachinePuzzle = new PuzzleWrapperStep(this, new PuzzleStep(this,
 			"Calibrate the pipe machine. Select pipe pieces on the right side of the UI to see where to put them.",
-			new PuzzleSolver(client)::pipeSolver);
+			new PuzzleSolver(client)::pipeSolver));
 
 		fixPipeMachine = new ConditionalStep(this, fixPipeMachineGetPipes);
 		fixPipeMachine.addStep(isPipeMachineBuilt, solvePipeMachinePuzzle);
@@ -375,7 +378,7 @@ public class TowerOfLife extends BasicQuestHelper
 		buildCage.addDialogStep("Yes");
 		buildCage.addSubSteps(fixCageGetBars, fixCageGetFluid,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2);
-		solveCagePuzzle = new PuzzleStep(this, "Assemble the cage.", new PuzzleSolver(client)::cageSolver);
+		solveCagePuzzle = new PuzzleWrapperStep(this, new PuzzleStep(this, "Assemble the cage.", new PuzzleSolver(client)::cageSolver));
 
 		fixCage = new ConditionalStep(this, fixCageGetBars);
 		fixCage.addStep(isCageBuilt, solveCagePuzzle);

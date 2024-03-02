@@ -42,6 +42,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.MultiNpcStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,9 +60,9 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 {
 
 	DetailedQuestStep talkToAlina, followGuard, attemptToEnterHouse, talkToTobyn,
-		markGuard1, markGuard2, markGuard3, markGuard4, reportBackToTobyn, goUpVarrockF0ToF1, goUpVarrockF1toF2, finishQuest;
+		reportBackToTobyn, goUpVarrockF0ToF1, goUpVarrockF1toF2, finishQuest;
 
-	DetailedQuestStep unmarkWrongGuard1, unmarkWrongGuard2, unmarkWrongGuard3, unmarkWrongGuard4,
+	PuzzleWrapperStep followGuardPuzzleWrapper, markGuard1, markGuard2, markGuard3, markGuard4, unmarkWrongGuard1, unmarkWrongGuard2, unmarkWrongGuard3, unmarkWrongGuard4,
 		unmarkWrongGuard5, unmarkWrongGuard6;
 
 	Zone castleF1, castleF2;
@@ -93,7 +94,7 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 		steps.put(2, talkToAlina);
 		steps.put(4, talkToAlina);
 		ConditionalStep goFollowGuard = new ConditionalStep(this, talkToAlina);
-		goFollowGuard.addStep(isFollowing, followGuard);
+		goFollowGuard.addStep(isFollowing, followGuardPuzzleWrapper);
 		steps.put(6, goFollowGuard);
 		steps.put(8, attemptToEnterHouse);
 		steps.put(10, talkToTobyn);
@@ -183,30 +184,53 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 			new WorldPoint(3236, 3392, 0),
 			new WorldPoint(3247, 3397, 0)
 		);
+		followGuardPuzzleWrapper = new PuzzleWrapperStep(this, followGuard, "Follow the guard, keeping out of sight whilst also not letting them get too far away.");
 
 		final int BASE_GUARD_ID = 6923;
 		attemptToEnterHouse = new ObjectStep(this, ObjectID.DOOR_50048, new WorldPoint(3259, 3400, 0),
 			"Attempt to enter the house in the south-east of Varrock, north of the Zamorak Temple, and watch the cutscene.");
 		talkToTobyn = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3211, 3437, 0), "Talk to Sergeant Tobyn in Varrock Square.");
-		markGuard1 = new MultiNpcStep(this, NpcID.GUARD_12668, new WorldPoint(3208, 3422, 0),
-			"Mark the guard outside Aris's tent.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
-		markGuard2 = new MultiNpcStep(this, NpcID.GUARD_12671, new WorldPoint(3221, 3430, 0),
-			"Mark the guard south east of Benny's news stand, who isn't wearing a helmet and has long hair.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
-		markGuard3 = new MultiNpcStep(this, NpcID.GUARD_12674, new WorldPoint(3246, 3429, 0), "Mark the guard with a mace north-west of the Varrock East Bank.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
-		markGuard4 = new MultiNpcStep(this, NpcID.GUARD_12677, new WorldPoint(3237, 3427, 0), "Mark the guard leaning on the north wall of Lowe's Archery Emporium, east of the square.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		markGuard1 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12668, new WorldPoint(3208, 3422, 0),
+			"Mark the guard outside Aris's tent.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.");
+		markGuard2 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12671, new WorldPoint(3221, 3430, 0),
+			"Mark the guard south east of Benny's news stand, who isn't wearing a helmet and has long hair.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
+		markGuard3 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12674, new WorldPoint(3246, 3429, 0),
+				"Mark the guard with a mace north-west of the Varrock East Bank.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
+		markGuard4 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12677, new WorldPoint(3237, 3427, 0),
+				"Mark the guard leaning on the north wall of Lowe's Archery Emporium, east of the square.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
 
-		unmarkWrongGuard1 = new MultiNpcStep(this, NpcID.GUARD_12681, new WorldPoint(3227, 3424, 0),
-			"Unmark the guard east of ELiza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
-		unmarkWrongGuard2 = new MultiNpcStep(this, NpcID.GUARD_12684, new WorldPoint(3218, 3424, 0),
-			"Unmark the guard next to Eliza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
-		unmarkWrongGuard3 = new MultiNpcStep(this, NpcID.GUARD_12687, new WorldPoint(3230, 3430, 0),
-			"Unmark the guard roaming south of Horvik.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
-		unmarkWrongGuard4 = new MultiNpcStep(this, NpcID.GUARD_12690, new WorldPoint(3206, 3431, 0),
-			"Unmark the guard outside Zaff's Superior Staffs.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
-		unmarkWrongGuard5 = new MultiNpcStep(this, NpcID.GUARD_12693, new WorldPoint(3239, 3433, 0),
-			"Unmark the guard next to the small fountain east of Horvik.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
-		unmarkWrongGuard6 = new MultiNpcStep(this, NpcID.GUARD_12696, new WorldPoint(3218, 3433, 0),
-			"Unmark the guard next to Baraek.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID);
+		unmarkWrongGuard1 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12681, new WorldPoint(3227, 3424, 0),
+			"Unmark the guard east of ELiza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.");
+		unmarkWrongGuard2 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12684, new WorldPoint(3218, 3424, 0),
+			"Unmark the guard next to Eliza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.");
+		unmarkWrongGuard3 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12687, new WorldPoint(3230, 3430, 0),
+			"Unmark the guard roaming south of Horvik.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.");
+		unmarkWrongGuard4 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12690, new WorldPoint(3206, 3431, 0),
+			"Unmark the guard outside Zaff's Superior Staffs.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.");
+		unmarkWrongGuard5 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12693, new WorldPoint(3239, 3433, 0),
+			"Unmark the guard next to the small fountain east of Horvik.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.");
+		unmarkWrongGuard6 = new PuzzleWrapperStep(this,
+			new MultiNpcStep(this, NpcID.GUARD_12696, new WorldPoint(3218, 3433, 0),
+			"Unmark the guard next to Baraek.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+			"Mark the suspect guards.");
 
 		reportBackToTobyn = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3211, 3437, 0),
 			"Report back to Sergeant Tobyn.");
@@ -249,7 +273,7 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Intrigue", Arrays.asList(talkToAlina, followGuard,
+		allSteps.add(new PanelDetails("Intrigue", Arrays.asList(talkToAlina, followGuardPuzzleWrapper,
 			attemptToEnterHouse, talkToTobyn, markGuard1, markGuard2, markGuard4, markGuard3, reportBackToTobyn, finishQuest)));
 		return allSteps;
 	}

@@ -221,6 +221,7 @@ public class ClockTower extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		// TODO: Need to determine to what degree PuzzleWrapperStep should be used in this quest
 		talkToKojo = new NpcStep(this, NpcID.BROTHER_KOJO, new WorldPoint(2570, 3245, 0), "Talk to Brother Kojo at the clock tower.");
 		talkToKojo.addDialogStep("OK old monk, what can I do?");
 

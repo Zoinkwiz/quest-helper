@@ -52,6 +52,7 @@ import com.questhelper.steps.DigStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,14 +107,13 @@ public class LunarDiplomacy extends BasicQuestHelper
 		addToothToPotion, bringPotionToOneiromancer, enterFireAltar, enterWaterAltar, enterAirAltar, enterEarthAltar, useOnEarth, useOnFire,
 		useOnAir, useOnWater, talkToOneiromancerWithStaff, enterMine, smeltBar, makeHelmet, talkToPauline, talkToMeteora, talkToSelene,
 		returnTiaraToMeteora, digForRing, makeClothes, bringItemsToOneiromancer, talkToRimae, pickUpTiara, useVialOnKindling, lightBrazier,
-		useKindlingOnBrazier, talkToEthereal, goToChance, goToMimic, goToRace, goToTrees, goToMemory, goToNumbers, doMemoryChallenge,
-		startTreeChallenge, doRaceChallenge, startNumber, startRace, doTreeChallenge, talkWithEtherealToFight, leaveLecturn, finishQuest;
+		useKindlingOnBrazier, talkToEthereal, goToChance, goToMimic, goToRace, goToTrees, goToMemory, goToNumbers, talkWithEtherealToFight, leaveLecturn, finishQuest;
+
+	QuestStep doMemoryChallenge, startTreeChallenge, doRaceChallenge, startNumber, startRace, doTreeChallenge, doNumberChallenge, doMimicChallenge, doChanceChallenge;;
 
 	NpcStep talkToBentleyToSail, killSuqahForTooth, killSuqahForTiara, fightMe;
 
 	ObjectStep mineOre;
-
-	DetailedOwnerStep doNumberChallenge, doMimicChallenge, doChanceChallenge;
 
 	ConditionalStep returnToMakePotion, returnToTalkToYaga, enteringTheIsland, boardingTheBoat, setSail, returnToOneWithPotion, returnWithStaff, makingHelm,
 		gettingRing, gettingCape, gettingAmulet, gettingClothes;
@@ -786,13 +786,13 @@ public class LunarDiplomacy extends BasicQuestHelper
 		goToTrees = new ObjectStep(this, ObjectID.PLATFORM_16635, new WorldPoint(1764, 5098, 2), "Go on the platform to the trees challenge.");
 		goToChance = new ObjectStep(this, ObjectID.PLATFORM_16637, new WorldPoint(1751, 5080, 2), "Go on the platform to the chance challenge.");
 
-		doMemoryChallenge = new MemoryChallenge(this);
+		doMemoryChallenge = new PuzzleWrapperStep(this, new MemoryChallenge(this), "Solve the memory puzzle.");
 		startTreeChallenge = new NpcStep(this, NpcID.ETHEREAL_PERCEPTIVE, new WorldPoint(1765, 5112, 2), "Talk to Ethereal Perceptive to begin. Cut 20 logs and deposit them on the log piles faster than the NPC.");
 		startTreeChallenge.addDialogStep("Ok, let's go!");
 		doRaceChallenge = new DetailedQuestStep(this, "Race to the end of the course to win!");
-		doChanceChallenge = new ChanceChallenge(this);
-		doNumberChallenge = new NumberChallenge(this);
-		doMimicChallenge = new MimicChallenge(this);
+		doChanceChallenge = new PuzzleWrapperStep(this, new ChanceChallenge(this), "Solve the dice challenge.");
+		doNumberChallenge = new PuzzleWrapperStep(this, new NumberChallenge(this), "Complete the numbers challenge.");
+		doMimicChallenge = new PuzzleWrapperStep(this, new MimicChallenge(this), "Complete the mimic challenge.");
 
 		startNumber = new NpcStep(this, NpcID.ETHEREAL_NUMERATOR, new WorldPoint(1786, 5066, 2),
 			"Talk to the Ethereal Numerator to begin the challenge.");

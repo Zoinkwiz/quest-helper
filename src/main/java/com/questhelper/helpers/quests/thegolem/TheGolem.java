@@ -258,6 +258,7 @@ public class TheGolem extends BasicQuestHelper
 		pickUpLetter = new DetailedQuestStep(this, new WorldPoint(3479, 3092, 0),
 			"Pick up the letter on the floor in Uzer and read it.", letter);
 		((DetailedQuestStep) pickUpLetter).addTeleport(necklaceOfPassage);
+		pickUpLetter.addDialogSteps("Eagle's Eyrie");
 		readLetter = new DetailedQuestStep(this, "Read the letter.", letter);
 		pickUpLetter.addSubSteps(readLetter);
 

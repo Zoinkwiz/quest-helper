@@ -302,7 +302,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		bringSignedPortraitToZavistic.addDialogStep("I have some items that I'd like you to look at.");
 
 		goUpToSithAgain = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2597, 3107, 0),
-			"Go upstairs to Sithik in a house north or the Wizards' Guild.", strangePotion);
+			"Go upstairs and talk to Sithik in the house north of the Wizards' Guild.", strangePotion);
 		usePotionOnTea = new DetailedQuestStep(this, new WorldPoint(2593, 3103, 1), "Use the strange potion on the cup of tea next to Sithik.", strangePotionHighlighted);
 		usePotionOnTea.addIcon(ItemID.STRANGE_POTION);
 

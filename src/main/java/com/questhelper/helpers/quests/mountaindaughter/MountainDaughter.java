@@ -68,8 +68,8 @@ import net.runelite.api.coords.WorldPoint;
 public class MountainDaughter extends BasicQuestHelper
 {
 	//Items Required
-	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks, safetyGuarantee,
-		halfRock, gloves, corpse, pole, rope, rocks, necklace;
+	private ItemRequirement axe, pickaxe, whitePearl, whitePearlSeed, mud, plank, muddyRocks5, safetyGuarantee,
+		halfRock, gloves, corpse, pole, rope, necklace;
 
 	//Items Recommended
 	private ItemRequirement slayerRing, combatGear;
@@ -155,7 +155,7 @@ public class MountainDaughter extends BasicQuestHelper
 		ConditionalStep buryCorpse = new ConditionalStep(this, enterCampOverRocks);
 		buryCorpse.addStep(hasBuried, createCairn);
 		buryCorpse.addStep(necklace.alsoCheckBank(questBank), buryCorpseOnIsland);
-		buryCorpse.addStep(rocks.alsoCheckBank(questBank), speakRagnar);
+		buryCorpse.addStep(muddyRocks5.alsoCheckBank(questBank), speakRagnar);
 		buryCorpse.addStep(inTheCamp, collectRocks);
 
 		steps.put(60, buryCorpse);
@@ -212,12 +212,11 @@ public class MountainDaughter extends BasicQuestHelper
 		whitePearlSeed = new ItemRequirement("White pearl seed", ItemID.WHITE_PEARL_SEED);
 		corpse = new ItemRequirement("Corpse of woman", ItemID.CORPSE_OF_WOMAN);
 		corpse.setTooltip("You can find this corpse again in the Kendal's cave.");
-		muddyRocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5);
+		muddyRocks5 = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5);
 		slayerRing = new ItemRequirement("Slayer ring for teleports", ItemCollections.SLAYER_RINGS);
 		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		rocks = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK);
 		necklace = new ItemRequirement("Asleif's necklace", ItemID.ASLEIFS_NECKLACE);
 	}
 
@@ -372,16 +371,14 @@ public class MountainDaughter extends BasicQuestHelper
 
 		grabCorpse = new TileStep(this, new WorldPoint(2784, 10078, 0), "Pick up the Corpse of Woman.");
 		bringCorpseToHamal = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
-			"Bring the corpse to Hamal.",
-			corpse);
+			"Bring the corpse to Hamal.", corpse);
 		bringCorpseToHamal.addDialogStep("But he's not a god!");
 		bringCorpseToHamal.addDialogStep("I will.");
 
-		collectRocks = new DetailedQuestStep(this, "Collect 5 Muddy Rocks from around the camp.", muddyRocks);
+		collectRocks = new DetailedQuestStep(this, "Collect 5 Muddy Rocks from around the camp.", muddyRocks5);
 
 		speakRagnar = new NpcStep(this, NpcID.RAGNAR, new WorldPoint(2766, 3676, 0),
-			"Speak to Ragnar.",
-			corpse, muddyRocks);
+			"Speak to Ragnar.", corpse, muddyRocks5);
 		speakRagnar.addDialogStep("Thank you. I will make sure she's given a proper burial now.");
 
 		buryCorpseOnIsland = new TileStep(this, new WorldPoint(2782, 3694, 0), "Return to the centre of the lake and bury the corpse.",
@@ -389,7 +386,7 @@ public class MountainDaughter extends BasicQuestHelper
 
 		createCairn = new ObjectStep(this, ObjectID.BURIAL_MOUND, new WorldPoint(2783, 3694, 0),
 			"Use the Muddy rocks on the Burial Mound at the centre of the Mountain Camp's lake.",
-			muddyRocks);
+			muddyRocks5);
 		createCairn.addIcon(ItemID.MUDDY_ROCK);
 	}
 

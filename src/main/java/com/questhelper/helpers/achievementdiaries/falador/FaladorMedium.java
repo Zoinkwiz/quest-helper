@@ -262,38 +262,6 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		ratCatchers = new QuestRequirement(QuestHelperQuest.RATCATCHERS, QuestState.IN_PROGRESS);
 		skippyAndMogres = new QuestRequirement(QuestHelperQuest.SKIPPY_AND_THE_MOGRES, QuestState.FINISHED);
 		recDrive = new QuestRequirement(QuestHelperQuest.RECRUITMENT_DRIVE, QuestState.FINISHED);
-
-		generalRequirements = new ArrayList<>();
-
-		generalRequirements.add(new SkillRequirement(Skill.AGILITY, 42, true));
-		generalRequirements.add(new SkillRequirement(Skill.CRAFTING, 40, true));
-		generalRequirements.add(new SkillRequirement(Skill.DEFENCE, 20));
-		if (Utils.getAccountType(client).isAnyIronman())
-		{
-			// 47 Farming is required to get a Watermelon for the "Brain not included" step
-			generalRequirements.add(new SkillRequirement(Skill.FARMING, 47, true));
-
-			// 59 Fletching & 59 Smithing is required to craft a Mithril Grapple
-			generalRequirements.add(new SkillRequirement(Skill.FLETCHING, 59, true));
-			generalRequirements.add(new SkillRequirement(Skill.SMITHING, 59, true));
-		}
-		else
-		{
-			generalRequirements.add(new SkillRequirement(Skill.FARMING, 23, true));
-		}
-		generalRequirements.add(new SkillRequirement(Skill.FIREMAKING, 49, true));
-		generalRequirements.add(new SkillRequirement(Skill.MAGIC, 37, true));
-		generalRequirements.add(new SkillRequirement(Skill.MINING, 40, true));
-		generalRequirements.add(new SkillRequirement(Skill.PRAYER, 10));
-		generalRequirements.add(new SkillRequirement(Skill.RANGED, 19));
-		generalRequirements.add(new SkillRequirement(Skill.SLAYER, 32));
-		generalRequirements.add(new SkillRequirement(Skill.STRENGTH, 37));
-		generalRequirements.add(new SkillRequirement(Skill.THIEVING, 40, true));
-		generalRequirements.add(new SkillRequirement(Skill.WOODCUTTING, 30, true));
-
-		generalRequirements.add(ratCatchers);
-		generalRequirements.add(recDrive);
-		generalRequirements.add(skippyAndMogres);
 	}
 
 	public void loadZones()
@@ -421,9 +389,45 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		return Arrays.asList(faladorTeleport, explorersRing, combatBracelet);
 	}
 
+	public void setupGeneralRequirements()
+	{
+		generalRequirements = new ArrayList<>();
+
+		generalRequirements.add(new SkillRequirement(Skill.AGILITY, 42, true));
+		generalRequirements.add(new SkillRequirement(Skill.CRAFTING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.DEFENCE, 20));
+		if (Utils.getAccountType(client).isAnyIronman())
+		{
+			// 47 Farming is required to get a Watermelon for the "Brain not included" step
+			generalRequirements.add(new SkillRequirement(Skill.FARMING, 47, true));
+
+			// 59 Fletching & 59 Smithing is required to craft a Mithril Grapple
+			generalRequirements.add(new SkillRequirement(Skill.FLETCHING, 59, true));
+			generalRequirements.add(new SkillRequirement(Skill.SMITHING, 59, true));
+		}
+		else
+		{
+			generalRequirements.add(new SkillRequirement(Skill.FARMING, 23, true));
+		}
+		generalRequirements.add(new SkillRequirement(Skill.FIREMAKING, 49, true));
+		generalRequirements.add(new SkillRequirement(Skill.MAGIC, 37, true));
+		generalRequirements.add(new SkillRequirement(Skill.MINING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.PRAYER, 10));
+		generalRequirements.add(new SkillRequirement(Skill.RANGED, 19));
+		generalRequirements.add(new SkillRequirement(Skill.SLAYER, 32));
+		generalRequirements.add(new SkillRequirement(Skill.STRENGTH, 37));
+		generalRequirements.add(new SkillRequirement(Skill.THIEVING, 40, true));
+		generalRequirements.add(new SkillRequirement(Skill.WOODCUTTING, 30, true));
+
+		generalRequirements.add(ratCatchers);
+		generalRequirements.add(recDrive);
+		generalRequirements.add(skippyAndMogres);
+	}
+
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
+		setupGeneralRequirements();
 		return generalRequirements;
 	}
 

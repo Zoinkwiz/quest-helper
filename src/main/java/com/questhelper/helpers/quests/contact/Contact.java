@@ -136,8 +136,8 @@ public class Contact extends BasicQuestHelper
 		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
 		parchment.setHighlightInInventory(true);
 
-		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		combatGear = new ItemRequirement("Combat gear, preferably magic/ranged", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 

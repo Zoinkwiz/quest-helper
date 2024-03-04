@@ -360,10 +360,10 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(124, megaStep);
 
 		// then jagex decides to split speaking to each person as one step
-		steps.put(126, talkToAllLeadersLookoutFinish);
-		steps.put(128, talkToAllLeadersLookoutFinish);
-		steps.put(130, talkToAllLeadersLookoutFinish);
-		steps.put(132, talkToAllLeadersLookoutFinish);
+		steps.put(126, megaStep);
+		steps.put(128, megaStep);
+		steps.put(130, megaStep);
+		steps.put(132, megaStep);
 
 		steps.put(134, new XericsLookoutStepper(this, talkToFulloreAfterHelpingAll, 0));
 		steps.put(136, watchCutsceneAfterHelpingAll);

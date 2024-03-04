@@ -172,6 +172,8 @@ public class QuestHelperPlugin extends Plugin
 
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 
+	boolean lastStateWasLoggedOutOrHopping = true;
+
 
 	// TODO: Use this for item checks
 	@Getter
@@ -221,6 +223,7 @@ public class QuestHelperPlugin extends Plugin
 		clientThread.invokeLater(() -> {
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
+				lastStateWasLoggedOutOrHopping = false;
 				setupRequirements();
 				questManager.setupOnLogin();
 				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
@@ -273,14 +276,19 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
+			lastStateWasLoggedOutOrHopping = true;
 			questBankManager.saveBankToConfig();
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBankManager.emptyState();
 			questManager.shutDownQuest(true);
 		}
-
-		if (state == GameState.LOGGED_IN)
+		else if (state == GameState.HOPPING)
 		{
+			lastStateWasLoggedOutOrHopping = true;
+		}
+		else if (state == GameState.LOGGED_IN && lastStateWasLoggedOutOrHopping)
+		{
+			lastStateWasLoggedOutOrHopping = false;
 			setupRequirements();
 			newVersionManager.updateChatWithNotificationIfNewVersion();
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);

@@ -144,7 +144,7 @@ public class SheepShearer extends BasicQuestHelper
 	public void setupSteps()
 	{
 		startStep = new NpcStep(this, NpcID.FRED_THE_FARMER, new WorldPoint(3190, 3273, 0),
-			"Talk Fred the Farmer north of Lumbridge to start the quest. Bring 20 balls of wool to autocomplete the quest.");
+			"Talk to Fred the Farmer north of Lumbridge to start the quest. Bring 20 balls of wool to autocomplete the quest.");
 		startStep.addDialogSteps("I'm looking for a quest.", "Yes, okay. I can do that.", "Yes.");
 		getSheers = new ItemStep(this, new WorldPoint(3190, 3273, 0),
 			"Pickup the shears in Fred's house.", shears);

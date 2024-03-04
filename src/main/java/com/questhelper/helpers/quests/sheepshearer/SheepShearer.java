@@ -114,7 +114,7 @@ public class SheepShearer extends BasicQuestHelper
 	{
 		ballOfWool = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL);
 		shears = new ItemRequirement("Shears", ItemID.SHEARS).isNotConsumed();
-		shears.setTooltip("if you plan on collecting wool yourself");
+		shears.setTooltip("If you plan on collecting wool yourself");
 		woolOrBalls = new ItemRequirement("Wool", ItemID.WOOL);
 		woolOrBalls.addAlternates(ItemID.BALL_OF_WOOL);
 		onlyWool = new ItemRequirement("Wool", ItemID.WOOL);

@@ -60,6 +60,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
@@ -357,6 +358,8 @@ public class MountainDaughter extends BasicQuestHelper
 		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5857, new WorldPoint(2809, 3703, 0),
 			"Cut through the trees north east of the lake and enter the cave there. Bring combat gear.",
 			axe);
+		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2802, 3703, 0), SpriteID.COMBAT_STYLE_AXE_CHOP);
+		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2807, 3703, 0), SpriteID.COMBAT_STYLE_AXE_CHOP);
 
 		talkToKendal = new NpcStep(this, NpcID.THE_KENDAL, new WorldPoint(2788, 10081, 0),
 			"Speak to the Kendal, then kill him.");

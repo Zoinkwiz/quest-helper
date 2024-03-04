@@ -616,14 +616,9 @@ public class HeroesQuest extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.FISHING, 53, true));
 		req.add(new SkillRequirement(Skill.HERBLORE, 25, true));
 		req.add(new SkillRequirement(Skill.MINING, 50, true));
-		if (isInBlackArmGang)
-		{
-			req.add(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED));
-		}
-		else
-		{
-			req.add(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG, QuestState.FINISHED));
-		}
+		Conditions shieldOfArravRequirement = new Conditions(new Conditions(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED)));
+		shieldOfArravRequirement.setText("Finished Shield of Arrav");
+		req.add(shieldOfArravRequirement);
 		req.add(new QuestRequirement(QuestHelperQuest.LOST_CITY, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.MERLINS_CRYSTAL, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.DRAGON_SLAYER_I, QuestState.FINISHED));

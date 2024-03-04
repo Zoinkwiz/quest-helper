@@ -481,10 +481,10 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.SMITHING, 55, true));
 		req.add(new SkillRequirement(Skill.HUNTER, 52));
 
-		Conditions shieldOfArrav = new Conditions(LogicType.OR, new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED), new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG, QuestState.FINISHED));
-		shieldOfArrav.setText("Completed Shield of Arrav");
 		//Quest Requirements
-		req.add(shieldOfArrav);
+		Conditions shieldOfArravRequirement = new Conditions(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED));
+		shieldOfArravRequirement.setText("Finished Shield of Arrav");
+		req.add(shieldOfArravRequirement);
 		req.add(new QuestRequirement(QuestHelperQuest.TEMPLE_OF_IKOV, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.BELOW_ICE_MOUNTAIN, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));

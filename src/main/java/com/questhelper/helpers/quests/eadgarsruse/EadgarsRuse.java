@@ -69,7 +69,7 @@ public class EadgarsRuse extends BasicQuestHelper
 {
 	//Items Required
 	ItemRequirement climbingBoots, climbingBootsOr12Coins, vodka, vodkaHighlight, pineappleChunks, pineappleChunksHighlight, logs2, grain10, rawChicken5, tinderbox, pestleAndMortar, ranarrPotionUnf,
-		coins12, cellKey2, alcoChunks, parrot, parrotHighlighted, robe, logs1, thistle, logHighlight, tinderboxHighlight, driedThistle, groundThistle, ranarrUnfHighlight, trollPotion, trainedParrot,
+		coins12, cellKey2, alcoChunks, parrot, parrotAfterEadgar, robe, logs1, thistle, logHighlight, tinderboxHighlight, driedThistle, groundThistle, ranarrUnfHighlight, trollPotion, trainedParrot,
 		fakeMan, storeroomKey, goutweed, climbingBootsEquipped;
 
 	//Items Recommended
@@ -282,10 +282,8 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		parrot = new ItemRequirement("Drunk parrot", ItemID.DRUNK_PARROT);
 		parrot.setTooltip("You can get another by using alco-chunks on the aviary hatch of the parrot cage in Ardougne Zoo");
-
-		parrotHighlighted = new ItemRequirement("Parrot", ItemID.DRUNK_PARROT);
-		parrotHighlighted.setHighlightInInventory(true);
-		parrotHighlighted.setTooltip("You can get another by using alco-chunks on the aviary hatch of the parrot cage in Ardougne Zoo");
+		parrotAfterEadgar = new ItemRequirement("Drunk parrot", ItemID.DRUNK_PARROT);
+		parrotAfterEadgar.setTooltip("You can get another by talking to Eadgar");
 
 		robe = new ItemRequirement("Robe", ItemID.DIRTY_ROBE);
 
@@ -452,18 +450,18 @@ public class EadgarsRuse extends BasicQuestHelper
 		talkToEadgarWithParrot = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Return the parrot to Eadgar on top of Trollheim.");
 		talkToEadgarWithParrot.addSubSteps(enterEadgarsCaveWithParrot);
 
-		leaveEadgarsCaveWithParrot = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Take the parrot to the Troll Stronghold prison.", parrot);
+		leaveEadgarsCaveWithParrot = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Take the parrot to the Troll Stronghold prison.", parrotAfterEadgar);
 		leaveEadgarsCaveWithParrot.addDialogStep("No thanks, Eadgar.");
 
-		enterStrongholdWithParrot = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrot);
-		goDownNorthStairsWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrot);
+		enterStrongholdWithParrot = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
+		goDownNorthStairsWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
 		goDownNorthStairsWithParrot.setWorldMapPoint(new WorldPoint(2971, 10172, 1));
-		goDownToPrisonWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10108, 1), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrot);
+		goDownToPrisonWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10108, 1), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
 		goDownToPrisonWithParrot.setWorldMapPoint(new WorldPoint(2917, 10140, 1));
 
-		enterPrisonWithParrot = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrot, climbingBoots);
+		enterPrisonWithParrot = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar, climbingBoots);
 
-		parrotOnRack = new ObjectStep(this, ObjectID.RACK_3821, new WorldPoint(2829, 10097, 0), "Use the parrot on a rack in the prison.", parrotHighlighted);
+		parrotOnRack = new ObjectStep(this, ObjectID.RACK_3821, new WorldPoint(2829, 10097, 0), "Use the parrot on a rack in the prison.", parrotAfterEadgar.highlighted());
 		parrotOnRack.setWorldMapPoint(new WorldPoint(2830, 10098, 1));
 		parrotOnRack.addIcon(ItemID.DRUNK_PARROT);
 

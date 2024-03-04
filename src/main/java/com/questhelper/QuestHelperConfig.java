@@ -35,11 +35,13 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @ConfigGroup("questhelper")
@@ -506,6 +508,8 @@ public interface QuestHelperConfig extends Config
 		return Color.BLUE;
 	}
 
+	@Alpha(
+	)
 	@ConfigItem(
 		keyName = "targetOverlayColor",
 		name = "Color of target overlay",
@@ -514,7 +518,7 @@ public interface QuestHelperConfig extends Config
 	)
 	default Color targetOverlayColor()
 	{
-		return Color.CYAN;
+		return ColorUtil.colorWithAlpha(Color.CYAN, 20);
 	}
 
 	@ConfigItem(
@@ -548,21 +552,6 @@ public interface QuestHelperConfig extends Config
 	default Color boostColour()
 	{
 		return Color.ORANGE;
-	}
-
-	@Range(
-		min = 0,
-		max = 255
-	)
-	@ConfigItem(
-		keyName = "highlightOpacity",
-		name = "Colour opacity",
-		description = "Change the opacity of colours on NPCs, objects, and items",
-		section = colorSection
-	)
-	default int highlightOpacity()
-	{
-		return 20;
 	}
 
 	@ConfigItem(

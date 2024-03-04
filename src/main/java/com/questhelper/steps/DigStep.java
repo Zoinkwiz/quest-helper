@@ -45,7 +45,7 @@ public class DigStep extends DetailedQuestStep
 {
 	private final ItemRequirement SPADE = new ItemRequirement("Spade", ItemID.SPADE);
 	private Predicate<Item> expectedItemPredicate = i -> i.getId() == -1;
-	private boolean hasExpectedItem = false;
+
 	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
@@ -66,7 +66,7 @@ public class DigStep extends DetailedQuestStep
 	public void onGameTick(GameTick event)
 	{
 		super.onGameTick(event);
-		hasExpectedItem = InventorySlots.INVENTORY_SLOTS.contains(client, expectedItemPredicate);
+		boolean hasExpectedItem = InventorySlots.INVENTORY_SLOTS.contains(client, expectedItemPredicate);
 		if (!hasExpectedItem)
 		{
 			Player player = client.getLocalPlayer();
@@ -96,7 +96,7 @@ public class DigStep extends DetailedQuestStep
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), questHelper.getConfig().targetOverlayColor());
+		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 	}
 
 	private BufferedImage getSpadeImage()

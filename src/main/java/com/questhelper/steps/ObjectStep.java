@@ -326,9 +326,8 @@ public class ObjectStep extends DetailedQuestStep
 					closestObject = tileObject;
 				}
 
-				Color configColor = getQuestHelper().getConfig().targetOverlayColor();
-				int configOpacity = getQuestHelper().getConfig().highlightOpacity();
-
+				Color fillColor = getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithTransparency();
+				Color lineColor = getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency();
 				QuestHelperConfig.ObjectHighlightStyle highlightStyle = visibilityHelper.isObjectVisible(tileObject)
 					? questHelper.getConfig().highlightStyleObjects()
 					: OUTLINE;
@@ -336,21 +335,20 @@ public class ObjectStep extends DetailedQuestStep
 				switch (highlightStyle)
 				{
 					case CLICK_BOX:
-						Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), configOpacity);
 						OverlayUtil.renderHoverableArea(
 							graphics,
 							tileObject.getClickbox(),
 							mousePosition,
 							fillColor,
-							questHelper.getConfig().targetOverlayColor().darker(),
-							questHelper.getConfig().targetOverlayColor()
+							lineColor.darker(),
+							lineColor
 						);
 						break;
 					case OUTLINE:
 						modelOutlineRenderer.drawOutline(
 							tileObject,
 							questHelper.getConfig().outlineThickness(),
-							configColor,
+							fillColor,
 							questHelper.getConfig().
 								outlineFeathering()
 						);
@@ -392,7 +390,7 @@ public class ObjectStep extends DetailedQuestStep
 				int x = (int) boundingBox.getCenterX();
 				int y = (int) boundingBox.getMinY() - 20;
 
-				DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
+				DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency(), x, y);
 			}
 		}
 	}

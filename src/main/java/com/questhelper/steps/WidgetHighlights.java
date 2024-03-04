@@ -98,11 +98,9 @@ public class WidgetHighlights
 	{
 		if (widgetToHighlight == null || (itemIdRequirement != null && widgetToHighlight.getItemId() != itemIdRequirement)) return;
 
-		graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-			questHelper.getConfig().targetOverlayColor().getGreen(),
-			questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+		graphics.setColor(questHelper.targetOverlayColorForWidgetFill());
 		graphics.fill(widgetToHighlight.getBounds());
-		graphics.setColor(questHelper.getConfig().targetOverlayColor());
+		graphics.setColor(questHelper.targetOverlayColorWithoutTransparency());
 		graphics.draw(widgetToHighlight.getBounds());
 	}
 }

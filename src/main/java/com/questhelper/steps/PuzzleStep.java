@@ -3,7 +3,6 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.HashSet;
 import net.runelite.api.events.GameTick;
@@ -53,11 +52,9 @@ public class PuzzleStep extends DetailedQuestStep
 			Widget widget = client.getWidget(button.getGroupID(), button.getChildID());
 			if (widget != null)
 			{
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(widget.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(widget.getBounds());
 			}
 

@@ -304,13 +304,10 @@ public class NpcStep extends DetailedQuestStep
 			}
 		}
 
-		Color configColor = getQuestHelper().getConfig().targetOverlayColor();
-		int configOpacity = getQuestHelper().getConfig().highlightOpacity();
-
 		for (NPC npc : npcs)
 		{
 			if (mustBeFocused && npc.getInteracting() != client.getLocalPlayer()) continue;
-			highlightNpc(npc, configColor, configOpacity, graphics);
+			highlightNpc(npc, graphics);
 
 			if (questHelper.getConfig().showSymbolOverlay())
 			{
@@ -332,8 +329,10 @@ public class NpcStep extends DetailedQuestStep
 	{
 	}
 
-	private void highlightNpc(NPC npc, Color color, int opacity, Graphics2D graphics)
+	private void highlightNpc(NPC npc, Graphics2D graphics)
 	{
+		Color fillColor = getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithTransparency();
+		Color borderColor = getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency();
 		switch (questHelper.getConfig().highlightStyleNpcs())
 		{
 			case CONVEX_HULL:
@@ -341,15 +340,15 @@ public class NpcStep extends DetailedQuestStep
 					graphics,
 					npc.getConvexHull(),
 					client.getMouseCanvasPosition(),
-					ColorUtil.colorWithAlpha(color, opacity),
-					questHelper.getConfig().targetOverlayColor().darker(),
-					questHelper.getConfig().targetOverlayColor());
+					fillColor,
+					borderColor.darker(),
+					borderColor);
 				break;
 			case OUTLINE:
 				modelOutlineRenderer.drawOutline(
 					npc,
 					questHelper.getConfig().outlineThickness(),
-					color,
+					borderColor,
 					questHelper.getConfig().outlineFeathering()
 				);
 				break;
@@ -357,7 +356,7 @@ public class NpcStep extends DetailedQuestStep
 				Polygon poly = npc.getCanvasTilePoly();
 				if (poly != null)
 				{
-					OverlayUtil.renderPolygon(graphics, poly, color);
+					OverlayUtil.renderPolygon(graphics, poly, borderColor);
 				}
 				break;
 			default:
@@ -382,7 +381,7 @@ public class NpcStep extends DetailedQuestStep
 					int x = (int) rect.getCenterX();
 					int y = (int) rect.getMinY() - ARROW_SHIFT_Y;
 
-					DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
+					DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency(), x, y);
 				}
 			}
 		}
@@ -404,7 +403,7 @@ public class NpcStep extends DetailedQuestStep
 				int y = npcs.get(0).getMinimapLocation().getY();
 				Line2D.Double line = new Line2D.Double(x, y - 18, x, y - 8);
 
-				DirectionArrow.drawMinimapArrow(graphics, line, getQuestHelper().getConfig().targetOverlayColor());
+				DirectionArrow.drawMinimapArrow(graphics, line, getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				return;
 			}
 

@@ -117,11 +117,9 @@ public class ChestCodeStep extends QuestStep
 			Widget widget = client.getWidget(809, 5);
 			if (widget != null)
 			{
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(widget.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(widget.getBounds());
 			}
 		}
@@ -134,11 +132,9 @@ public class ChestCodeStep extends QuestStep
 			{
 				Widget arrow = widget.getChild(button);
 				if (arrow == null) break;
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(arrow.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(arrow.getBounds());
 
 				int widgetX = arrow.getCanvasLocation().getX() + (arrow.getWidth() / 2) - 30;

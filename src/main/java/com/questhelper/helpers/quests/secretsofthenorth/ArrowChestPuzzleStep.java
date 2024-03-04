@@ -89,11 +89,9 @@ public class ArrowChestPuzzleStep extends QuestStep
 		Widget widget = client.getWidget(GROUP_ID, widgetToPress);
 		if (widget != null)
 		{
-			graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-				questHelper.getConfig().targetOverlayColor().getGreen(),
-				questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+			graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 			graphics.fill(widget.getBounds());
-			graphics.setColor(questHelper.getConfig().targetOverlayColor());
+			graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 			graphics.draw(widget.getBounds());
 		}
 	}

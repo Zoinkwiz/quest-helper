@@ -45,6 +45,7 @@ import com.questhelper.statemanagement.GameStateManager;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -90,6 +91,7 @@ import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -484,9 +486,7 @@ public class QuestHelperPlugin extends Plugin
 
 	public void displayPanel()
 	{
-		SwingUtilities.invokeLater(() -> {
-			clientToolbar.openPanel(navButton);
-		});
+		SwingUtilities.invokeLater(() -> clientToolbar.openPanel(navButton));
 	}
 
 	private void scanAndInstantiate()
@@ -514,5 +514,30 @@ public class QuestHelperPlugin extends Plugin
 		questHelper.setQuestHelperPlugin(this);
 
 		log.debug("Loaded quest helper {}", quest.name());
+	}
+
+	public Color targetOverlayColorWithTransparency()
+	{
+		return config.targetOverlayColor();
+	}
+
+	/**
+	 * Returns the preferred highlighting color with an alpha value of 255 (opaque).
+	 *
+	 * @return The Color of choice with alpha (opacity) 255.
+	 */
+	public Color targetOverlayColorWithoutTransparency()
+	{
+		return ColorUtil.colorWithAlpha(targetOverlayColorWithTransparency(), 255);
+	}
+
+	/**
+	 * Returns the preferred highlighting color with an alpha value of 65.
+	 *
+	 * @return The Color of choice with alpha (opacity) 65.
+	 */
+	public Color targetOverlayColorForWidgetFill()
+	{
+		return ColorUtil.colorWithAlpha(targetOverlayColorWithTransparency(), 65);
 	}
 }

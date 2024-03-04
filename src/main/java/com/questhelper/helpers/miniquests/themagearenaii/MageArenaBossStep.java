@@ -199,7 +199,7 @@ public class MageArenaBossStep extends DetailedQuestStep
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSymbolLocation(), questHelper.getConfig().targetOverlayColor());
+		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSymbolLocation(), questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 	}
 
 	@Subscribe

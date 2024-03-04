@@ -213,7 +213,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 
 	public void loadZones()
 	{
-		bridge = new Zone(new WorldPoint(3503, 3426, 0), new WorldPoint(3503, 3429, 0));
+		bridge = new Zone(new WorldPoint(3502, 3426, 0), new WorldPoint(3502, 3430, 0));
 		entranceIsland = new Zone(new WorldPoint(3480, 3430, 0), new WorldPoint(3513, 3464, 0));
 		caves = new Zone(new WorldPoint(3450, 9792, 0), new WorldPoint(3504, 9847, 2));
 		myrequeCave = new Zone(new WorldPoint(3502, 9829, 0), new WorldPoint(3515, 9846, 0));

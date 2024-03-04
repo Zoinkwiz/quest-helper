@@ -116,14 +116,12 @@ public class Agility extends ComplexStateQuestHelper
 		ag20 = new SkillRequirement(AGILITY, 20);
 		ag30 = new SkillRequirement(AGILITY, 30);
 		ag40 = new SkillRequirement(AGILITY, 40);
+		ag45 = new SkillRequirement(AGILITY, 45);
 		ag50 = new SkillRequirement(AGILITY, 50);
 		ag60 = new SkillRequirement(AGILITY, 60);
 		ag70 = new SkillRequirement(AGILITY, 70);
 		ag80 = new SkillRequirement(AGILITY, 80);
 		ag90 = new SkillRequirement(AGILITY, 90);
-
-		ag45 = new SkillRequirement(AGILITY, 45);
-
 
 		//Setup item requirements
 		bootsOfLightness = new ItemRequirement(
@@ -183,8 +181,10 @@ public class Agility extends ComplexStateQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(
-			new UnlockReward("Ability to purchase agility Cape for 99k")
+		return List.of(
+			new UnlockReward("Ability to purchase the Agility Cape for 99k"),
+			new UnlockReward("Ability to traverse various shortcuts throughout Gielinor"),
+			new UnlockReward("Increased run energy restoration")
 		);
 	}
 

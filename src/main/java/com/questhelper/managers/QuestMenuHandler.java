@@ -276,9 +276,9 @@ public class QuestMenuHandler
 	private void handleRecipeForDisasterInMenu(MenuEntry[] menuEntries, int widgetIndex, int widgetID)
 	{
 		if (questManager.getSelectedQuest() != null &&
-			(questManager.getSelectedQuest().getQuest().getId() == QuestHelperQuest.RECIPE_FOR_DISASTER.getId()))
+			(questManager.getSelectedQuest().getQuest().getId() == QuestHelperQuest.RECIPE_FOR_DISASTER_START.getId()))
 		{
-			addRightClickMenuOptions(QuestHelperQuest.RECIPE_FOR_DISASTER.getName(), MENUOP_QUESTHELPER,
+			addRightClickMenuOptions(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName(), MENUOP_QUESTHELPER,
 				"Recipe for Disaster", menuEntries, widgetIndex, widgetID);
 		}
 		else

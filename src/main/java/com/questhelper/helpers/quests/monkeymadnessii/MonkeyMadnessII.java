@@ -669,7 +669,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Arrays.asList("Kruk (level 149, flinchable)", "Keef (level 178, safespottable)", "Kob (level 185, safespottable)", "9 Tortured gorillas (level 141)", "2 Demonic Gorillas (level 275)", "Glough (level 378)");
+		return Arrays.asList("Kruk (level 149, flinchable)", "Keef (level 178, safespottable)", "Kob (level 185, safespottable)", "9 Tortured gorillas (level 141)", "2 Demonic Gorillas (level 275)", "Glough (level 431)");
 	}
 
 	@Override
@@ -760,7 +760,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		req.add(strongholdBalloon);
 		req.add(new QuestRequirement(QuestHelperQuest.THE_EYES_OF_GLOUPHRIE, QuestState.FINISHED));
 		req.add(new VarbitRequirement(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR.getId(),
-			Operation.GREATER_EQUAL,  50, "Finished the 'Freeing King Awowogei' subquest of RFD"));
+			Operation.GREATER_EQUAL, 50, "Finished the 'Freeing King Awowogei' subquest of RFD"));
 		req.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.WATCHTOWER, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.SLAYER, 69));

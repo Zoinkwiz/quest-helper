@@ -635,7 +635,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			"Speak to Vanescula in the Icyene Graveyard.");
 		talkToVanesculaAfterTeam.addDialogStep("Icyene Graveyard.");
 
-		goToLab = new ObjectStep(this, ObjectID.STAIRCASE_18049, new WorldPoint(3643, 3305, 0), "Enter the Meiyerditch lab. The fastest way here is to have a Vyrewatch take you to the mines, mine 15 Daeylt Ore, then leave.");
+		goToLab = new ObjectStep(this, ObjectID.STAIRCASE_18049, new WorldPoint(3643, 3305, 0), "Enter the Meiyerditch lab. The fastest way here is to have a Vyrewatch take you to the mines, mine 15 Daeyalt Ore, then leave.");
 		goToLab.addDialogStep("Meiyerditch.");
 		talkToSafalaanInLab = new NpcStep(this, NpcID.SAFALAAN_HALLOW_9537, new WorldPoint(3635, 9689, 0),
 			"Speak to Safalaan at the Lab.");
@@ -703,22 +703,22 @@ public class SinsOfTheFather extends BasicQuestHelper
 		enterDarkmeyer.addDialogSteps("Meiyerditch.", "Send me to the mines.");
 
 		talkToDesmodus = new NpcStep(this, NpcID.DESMODUS_LASIURUS, new WorldPoint(3612, 3362, 0),
-			"Speak to Desmodus Lasiurus outside the Aboretum in Darkmeyer.",
+			"Speak to Desmodus Lasiurus outside the Arboretum in Darkmeyer.",
 			scentedTop, scentedLegs, scentedShoes);
 
 		talkToMordan = new NpcStep(this, NpcID.MORDAN_NIKAZSI, new WorldPoint(3662, 3347, 0),
 			"Speak to Mordan Mikazsi in lower Darkmeyer.", scentedTop, scentedLegs, scentedShoes);
 
 		talkToMaria = new NpcStep(this, NpcID.MARIA_GADDERANKS, new WorldPoint(3618, 3378, 0),
-			"Speak to Maria Gadderanks in the jail north of the Aboretum in Darkmeyer.",
+			"Speak to Maria Gadderanks in the jail north of the Arboretum in Darkmeyer.",
 			scentedTop, scentedLegs, scentedShoes);
 
 		talkToDesmodusAgain = new NpcStep(this, NpcID.DESMODUS_LASIURUS, new WorldPoint(3612, 3362, 0),
-			"Speak to Desmodus Lasiurus outside the Aboretum in Darkmeyer.",
+			"Speak to Desmodus Lasiurus outside the Arboretum in Darkmeyer.",
 			scentedTop, scentedLegs, scentedShoes);
 
 		getNote = new ObjectStep(this, ObjectID.SHELVES_37999, new WorldPoint(3625, 3358, 0),
-			"Search the shelves in the Aboretum in Darkmeyer. Read the Old Note you get.",
+			"Search the shelves in the Arboretum in Darkmeyer. Read the Old Note you get.",
 			scentedTop, scentedLegs, scentedShoes);
 
 		readNote = new DetailedQuestStep(this, "Read the note.", oldNote);

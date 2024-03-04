@@ -136,8 +136,10 @@ public class Woodcutting extends ComplexStateQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(
-			new UnlockReward("Ability to purchase Woodcutting Cape for 99k")
+		return Arrays.asList(
+			new UnlockReward("Ability to purchase Woodcutting Cape for 99k (requires membership)"),
+			new UnlockReward("Ability to travel the river lum with canoes (requires membership)"),
+			new UnlockReward("Access to the woodcutting guild at lvl 60 (requires membership)")
 		);
 	}
 

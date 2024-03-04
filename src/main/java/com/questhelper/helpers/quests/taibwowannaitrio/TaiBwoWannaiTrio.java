@@ -476,7 +476,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		banana = new ItemRequirement("Banana", ItemID.BANANA);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setTooltip("There's one on the counter in the Musa Point general store");
-		slicedBananaOrKnife = new ItemRequirements(LogicType.OR, slicedBanana, knife);
+		slicedBananaOrKnife = new ItemRequirements(LogicType.OR, "Sliced banana or a knife", slicedBanana, knife);
 
 		smallFishingNet = new ItemRequirement("Small Fishing Net", ItemID.SMALL_FISHING_NET).isNotConsumed();
 		pestleAndMortar = new ItemRequirement("Pestle And Mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();

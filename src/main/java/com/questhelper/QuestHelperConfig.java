@@ -550,6 +550,10 @@ public interface QuestHelperConfig extends Config
 		return Color.ORANGE;
 	}
 
+	@Range(
+		min = 0,
+		max = 255
+	)
 	@ConfigItem(
 		keyName = "highlightOpacity",
 		name = "Colour opacity",

@@ -522,7 +522,7 @@ public class HeroesQuest extends BasicQuestHelper
 				new ExperienceReward(Skill.COOKING, 2825),
 				new ExperienceReward(Skill.WOODCUTTING, 1575),
 				new ExperienceReward(Skill.FIREMAKING, 1575),
-				new ExperienceReward(Skill.SMITHING, 2257),
+				new ExperienceReward(Skill.SMITHING, 2275),
 				new ExperienceReward(Skill.MINING, 2275),
 				new ExperienceReward(Skill.HERBLORE, 1325));
 	}

@@ -358,6 +358,13 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	}
 
 	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("Multiple enemies in the Fight Caves up to a Ket-Zek (level 360)",
+			"Death wing (level 83)", "Bronze (level 131), iron (level 189) or steel dragon (level 246)");
+	}
+	
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();

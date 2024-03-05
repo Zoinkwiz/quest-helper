@@ -85,8 +85,6 @@ public class RFDPiratePete extends BasicQuestHelper
 	//Zones
 	Zone diningRoom, underwater;
 
-	ArrayList<Requirement> generalReqs;
-
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -225,15 +223,6 @@ public class RFDPiratePete extends BasicQuestHelper
 		hasCrabMeat = new Conditions(LogicType.OR, crabMeat, groundCrabMeatHighlighted);
 		hasKelp = new Conditions(LogicType.OR, kelp, groundKelpHighlighted);
 
-		generalReqs = new ArrayList<>();
-		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
-		if (Utils.getAccountType(client).isAnyIronman())
-		{
-			generalReqs.add(new ComplexRequirement(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
-				new SkillRequirement(Skill.CRAFTING, 42, true),
-				new QuestRequirement(QuestHelperQuest.RUM_DEAL, QuestState.IN_PROGRESS)));
-		}
-
 		// 1852 = number of people saved
 		// Talked to cook through base dialog: 1854 0->1
 
@@ -315,6 +304,14 @@ public class RFDPiratePete extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
+		ArrayList<Requirement> generalReqs = new ArrayList<>();
+		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
+		if (Utils.getAccountType(client).isAnyIronman())
+		{
+			generalReqs.add(new ComplexRequirement(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
+				new SkillRequirement(Skill.CRAFTING, 42, true),
+				new QuestRequirement(QuestHelperQuest.RUM_DEAL, QuestState.IN_PROGRESS)));
+		}
 		return generalReqs;
 	}
 

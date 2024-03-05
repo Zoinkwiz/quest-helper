@@ -216,8 +216,8 @@ public class HazeelCult extends BasicQuestHelper
 		// Talking to Ceril
 		// 3679 -1 -> 71
 		armourNearby = new ItemOnTileRequirement(carnilleanArmour);
-		hasHazeelItem = new Conditions(true, LogicType.OR, poison.alsoCheckBank(questBank),
-			hazeelScroll.alsoCheckBank(questBank), hazeelMark.alsoCheckBank(questBank), key.alsoCheckBank(questBank));
+		hasHazeelItem = new Conditions(true, LogicType.OR, hazeelScroll.alsoCheckBank(questBank),
+			hazeelMark.alsoCheckBank(questBank), key.alsoCheckBank(questBank));
 		// Mark also could be 14776
 		receivedMark = new VarbitRequirement(14777, 1);
 		// 14779 1->2, asked to go talk to the butler

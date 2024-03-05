@@ -27,6 +27,7 @@ package com.questhelper.helpers.quests.mourningsendparti;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -78,6 +79,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 
 	ItemRequirement outpostTeleport, taverleyTeleport, lletyaTeleport, westArdougneTeleport;
+
+	FreeInventorySlotRequirement twoInventoryFree;
 
 	Requirement hasAllMournerItems, mournerItemsNearby, inMournerHQ, inMournerBasement, knowWeaknesses, torturedGnome, talkedWithItem, releasedGnome, repairedDevice,
 		learntAboutToads, hasAllToads, blueToadLoaded, redToadLoaded, yellowToadLoaded, greenToadLoaded, redToadGot, yellowToadGot, greenToadGot, blueToadGot, greenDyed, yellowDyed, redDyed, blueDyed,
@@ -210,6 +213,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		ogreBellows.addAlternates(ItemID.OGRE_BELLOWS_1, ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);
 		coalTar = new ItemRequirement("Barrel of coal tar", ItemID.BARREL_OF_COAL_TAR);
 		coal20AndTar = new ItemRequirements(coalTar, new ItemRequirement("Barrel of coal tar + 10-20 coal", ItemID.COAL, 10));
+		twoInventoryFree = new FreeInventorySlotRequirement(2);
 
 		// Recommended
 		outpostTeleport = new ItemRequirement("Teleport to the Outpost. Necklace of passage (The Outpost [2])", ItemCollections.NECKLACE_OF_PASSAGES);
@@ -455,7 +459,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		useSieveOnBarrel = new DetailedQuestStep(this, "Use the sieve on the naphtha apple mix", sieve, naphthaAppleMix);
 
 		cookNaphtha = new ObjectStep(this, ObjectID.RANGE, new WorldPoint(2970, 3210, 0), "Cook the toxic naphtha on " +
-			"a range. DO NOT USE IT ON A FIRE.", toxicNaphtha);
+			"a range. DO NOT USE IT ON A FIRE, and MAKE SURE TO HAVE TWO FREE INVENTORY SPACES.", toxicNaphtha, twoInventoryFree);
 
 		usePowderOnFood1 = new ObjectStep(this, NullObjectID.NULL_37330, new WorldPoint(2517, 3315, 0), "Use the toxic powder on the food store in the room north west of West Ardougne's town centre.", toxicPowder);
 		usePowderOnFood1.addIcon(ItemID.TOXIC_POWDER);

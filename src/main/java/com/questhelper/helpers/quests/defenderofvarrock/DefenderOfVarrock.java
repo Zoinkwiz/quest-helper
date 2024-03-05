@@ -39,7 +39,6 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -482,9 +481,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.HUNTER, 52));
 
 		//Quest Requirements
-		Conditions shieldOfArravRequirement = new Conditions(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED));
-		shieldOfArravRequirement.setText("Finished Shield of Arrav");
-		req.add(shieldOfArravRequirement);
+		req.add(new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED, "Finished Shield of Arrav"));
 		req.add(new QuestRequirement(QuestHelperQuest.TEMPLE_OF_IKOV, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.BELOW_ICE_MOUNTAIN, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.FAMILY_CREST, QuestState.FINISHED));

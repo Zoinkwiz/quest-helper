@@ -30,19 +30,19 @@ package com.questhelper.helpers.quests.fishingcontest;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -63,7 +63,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.FISHING_CONTEST
@@ -83,11 +82,8 @@ public class FishingContest extends BasicQuestHelper
 
 	ConditionalStep goToHemensterStep, getWorms, fishNearPipes;
 
-	ItemRequirement noCombatBracelet, noFishingRod, noGarlic, noWorms;
-	Requirement hasEverything, notNearWorms, inWoods, notInWoods, enteredContest, hasPutGarlicInPipe;
-	VarbitRequirement garlicInPipeVarbit;
-	WidgetTextRequirement garlicInPipeScreen;
-	DialogRequirement confirmGarlicInPipe;
+	ItemRequirement noCombatBracelet, noFishingRod, noWorms;
+	Requirement hasEverything, notNearWorms, inWoods, notInWoods, enteredContestArea, hasPutGarlicInPipe, needsGarlic;
 
 	// Zones
 	Zone mcGruborWoodEntrance, cmbBraceletTeleportZone, nearRedVineWorms, contestGroundsEntrance;
@@ -116,12 +112,12 @@ public class FishingContest extends BasicQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		coins.setTooltip("10 if you buy a fishing rod from Jack");
 		fishingPass = new ItemRequirement("Fishing Pass", ItemID.FISHING_PASS);
-		fishingPass.setTooltip("<html>This can be obtained during the quest.<br>If you lose this you can get another from Vestri.</html>");
+		fishingPass.setTooltip("<html>This can be obtained during the quest<br>If you lose this you can get another from Vestri.</html>");
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		garlic.setTooltip("This can be obtained during the quest.");
 		garlic.setHighlightInInventory(true);
 		fishingRod = new ItemRequirement("Fishing Rod", ItemID.FISHING_ROD).isNotConsumed();
-		fishingRod.setTooltip("This can be obtained during the quest.");
+		fishingRod.setTooltip("This can be obtained during the quest for 5gp.");
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		redVineWorm = new ItemRequirement("Red Vine Worm", ItemID.RED_VINE_WORM, 1);
 		redVineWorm.setTooltip("This can be obtained during the quest.");
@@ -150,12 +146,15 @@ public class FishingContest extends BasicQuestHelper
 		talkToVestriStep.addDialogStep("If you were my friend I wouldn't mind it.");
 		talkToVestriStep.addDialogStep("Well, let's be friends!");
 		talkToVestriStep.addDialogStep("And how am I meant to do that?");
+		talkToVestriStep.addDialogStep("Yes.");
 
 		getGarlic = new ObjectStep(this, ObjectID.TABLE_25930, new WorldPoint(2714, 3478, 0), "");
-		getGarlic.setText("Pick the garlic up on the table in Seers' Village.\nIf it is not there it spawns about every 30 seconds.");
+		getGarlic.setText("Pick the garlic up on the table in Seers' Village.");
+		getGarlic.addText("If it is not there it spawns about every 30 seconds.");
 
 		goToMcGruborWood = new ObjectStep(this, ObjectID.LOOSE_RAILING, new WorldPoint(2662, 3500, 0), "", spade);
-		goToMcGruborWood.setText("Enter McGrubor's Woods via the northern entrance.\nBe careful of the Guard Dogs (level 44). They are aggressive!");
+		goToMcGruborWood.setText("Enter McGrubor's Woods via the northern entrance.");
+		goToMcGruborWood.addDialogStep("Be careful of the Guard Dogs (level 44). They are aggressive!");
 
 		goToRedVine = new ObjectStep(this, ObjectID.VINE_2990, new WorldPoint(2631, 3496, 0), "", spade);
 		goToRedVine.setText("Use your spade on the red vines to gather 1 Red Vine Worm.");
@@ -210,20 +209,18 @@ public class FishingContest extends BasicQuestHelper
 		noCombatBracelet = new ItemRequirements(LogicType.NOR, "", combatBracelet);
 		noFishingRod = new ItemRequirements(LogicType.NOR, "", fishingRod);
 
-		noGarlic = new ItemRequirements(LogicType.NOR, "", garlic);
 		noWorms = new ItemRequirements(LogicType.NOR, "", redVineWorm);
 
 		// Conditions
-		hasEverything = new Conditions(garlic, redVineWorm, fishingRod, fishingPass);
 		notNearWorms = new Conditions(LogicType.NOR, new ZoneRequirement(nearRedVineWorms));
 		inWoods = new Conditions(true, passedThroughMcGruborEntrance); // passed through northern entrance
 		notInWoods = new Conditions(LogicType.NOR, inWoods);
 
-		garlicInPipeVarbit = new VarbitRequirement(2054, 1);
-		enteredContest = new Conditions(true, LogicType.AND, hasEverything, onContestGrounds);
-		garlicInPipeScreen = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You stash the garlic in the pipe.");
-		confirmGarlicInPipe = new DialogRequirement(client.getLocalPlayer().getName(), "I shoved some garlic up here.");
-		hasPutGarlicInPipe = new Conditions(true, LogicType.OR, garlicInPipeVarbit, garlicInPipeScreen, confirmGarlicInPipe);
+		// 2051 0->1 also set for garlic in pipe
+		hasPutGarlicInPipe = new VarbitRequirement(2054, 1);
+		needsGarlic = and(nor(hasPutGarlicInPipe), new ItemRequirements(LogicType.NOR, "", garlic));
+		hasEverything = new Conditions(nor(needsGarlic), redVineWorm, fishingRod);
+		enteredContestArea = new Conditions(hasEverything, onContestGrounds);
 	}
 
 	@Override
@@ -236,9 +233,8 @@ public class FishingContest extends BasicQuestHelper
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		goToHemensterStep.addStep(hasPutGarlicInPipe, speakToBonzo); // var changes to 3
-		goToHemensterStep.addStep(enteredContest, putGarlicInPipe); // enteredContest already checks for if the player has garlic
-		goToHemensterStep.addStep(noGarlic, getGarlic);
+		goToHemensterStep.addStep(enteredContestArea, speakToBonzo);
+		goToHemensterStep.addStep(needsGarlic, getGarlic);
 		goToHemensterStep.addStep(noWorms, getWorms);
 		goToHemensterStep.addStep(fishingRod, goToHemenster);
 		goToHemensterStep.addStep(new Conditions(noCombatBracelet, redVineWorm, noFishingRod), runToJack);
@@ -247,7 +243,7 @@ public class FishingContest extends BasicQuestHelper
 
 		steps.put(0, talkToVestriStep);
 		steps.put(1, goToHemensterStep);
-		steps.put(2, goToHemensterStep);
+		steps.put(2, putGarlicInPipe);
 		steps.put(3, fishNearPipes);
 		steps.put(4, speaktoVestri);
 		return steps;

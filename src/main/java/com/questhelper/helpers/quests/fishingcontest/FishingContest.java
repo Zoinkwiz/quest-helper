@@ -78,7 +78,7 @@ public class FishingContest extends BasicQuestHelper
 
 	// Steps
 	QuestStep talkToVestriStep, getGarlic, goToMcGruborWood, goToRedVine, grandpaJack, runToJack, goToHemenster, teleToHemenster;
-	QuestStep putGarlicInPipe, speakToBonzo, speakToBonzoWithFish, speaktoVestri;
+	QuestStep putGarlicInPipe, speakToBonzo, fishForFish, speakToBonzoWithFish, speaktoVestri;
 
 	ConditionalStep goToHemensterStep, getWorms, fishNearPipes;
 
@@ -178,9 +178,9 @@ public class FishingContest extends BasicQuestHelper
 		speakToBonzoWithFish.setText("Speak to Bonzo again after you have caught the winning fish.");
 		speakToBonzoWithFish.addDialogStep("I have this big fish. Is it enough to win?");
 
-		NpcStep fishingSpot = new NpcStep(this, NpcID.FISHING_SPOT_4080, new WorldPoint(2637, 3444, 0), "");
-		fishingSpot.setText("Fish near the pipes after the Sinister Stranger leaves.");
-		fishNearPipes = new ConditionalStep(this, fishingSpot, "Catch the winning fish at the fishing spot near the pipes.", fishingRod, redVineWorm);
+		fishForFish = new NpcStep(this, NpcID.FISHING_SPOT_4080, new WorldPoint(2637, 3444, 0),
+			"Catch the winning fish at the fishing spot near the pipes.", fishingRod, redVineWorm);
+		fishNearPipes = new ConditionalStep(this, fishForFish);
 		fishNearPipes.addStep(winningFish, speakToBonzoWithFish);
 
 		teleToHemenster = new NpcStep(this, NpcID.GRANDPA_JACK, "", coins);
@@ -194,7 +194,8 @@ public class FishingContest extends BasicQuestHelper
 		runToJack.addDialogStep("Can I buy one of your fishing rods?");
 		runToJack.addDialogStep("Very fair, I'll buy that rod!");
 
-		speaktoVestri = new NpcStep(this, NpcID.VESTRI, new WorldPoint(2821, 3486, 0), "Talk to Vestri just north of Catherby.", trophy);
+		speaktoVestri = new NpcStep(this, NpcID.VESTRI, new WorldPoint(2821, 3486, 0),
+			"Bring Vestri just north of Catherby the trophy.", trophy);
 
 		goToHemensterStep = new ConditionalStep(this, goToHemenster, "Enter Hemenster with your fishing pass.");
 		goToHemensterStep.addDialogStep("Ranging Guild");
@@ -233,7 +234,6 @@ public class FishingContest extends BasicQuestHelper
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		goToHemensterStep.addStep(enteredContestArea, speakToBonzo);
 		goToHemensterStep.addStep(needsGarlic, getGarlic);
 		goToHemensterStep.addStep(noWorms, getWorms);
 		goToHemensterStep.addStep(fishingRod, goToHemenster);
@@ -241,8 +241,10 @@ public class FishingContest extends BasicQuestHelper
 		goToHemensterStep.addStep(new Conditions(combatBracelet, redVineWorm, noFishingRod), teleToHemenster);
 		goToHemensterStep.addStep(new Conditions(noFishingRod, redVineWorm), grandpaJack);
 
+		ConditionalStep goEnterCompetition = new ConditionalStep(this, goToHemensterStep);
+		goEnterCompetition.addStep(enteredContestArea, speakToBonzo);
 		steps.put(0, talkToVestriStep);
-		steps.put(1, goToHemensterStep);
+		steps.put(1, goEnterCompetition);
 		steps.put(2, putGarlicInPipe);
 		steps.put(3, fishNearPipes);
 		steps.put(4, speaktoVestri);
@@ -273,7 +275,8 @@ public class FishingContest extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> panels = new ArrayList<>();
-		List<QuestStep> steps = Arrays.asList(talkToVestriStep, goToHemensterStep, fishNearPipes, speaktoVestri);
+		List<QuestStep> steps = Arrays.asList(talkToVestriStep, goToHemensterStep, speakToBonzo, putGarlicInPipe, fishForFish,
+			speakToBonzoWithFish, speaktoVestri);
 		PanelDetails fisingContest = new PanelDetails("Fishing Contest", steps, fishingRod, garlic, coins, redVineWorm, spade);
 		panels.add(fisingContest);
 		return panels;

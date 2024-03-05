@@ -332,7 +332,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 			"Go through the gate, and finish the cutscene with Arrav. If you skip it, try re-entering the gate.");
 
 		pickupBottlesAgain = new ItemStep(this, new WorldPoint(3537, 4572, 0), "Pick up 3 bottles nearby.", bottle.quantity(3));
-		killZombiesAgain = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill 3 the bottles with the clouds they leave behind.", true, eliasFollowing);
+		killZombiesAgain = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill 3 the bottles with the clouds they leave behind.", true);
 		((NpcStep) killZombiesAgain).addAlternateNpcs(NpcID.ARMOURED_ZOMBIE_12721, NpcID.ARMOURED_ZOMBIE_12722, NpcID.ARMOURED_ZOMBIE_12723, NpcID.ARMOURED_ZOMBIE_12724, NpcID.ARMOURED_ZOMBIE_12725,
 			NpcID.ARMOURED_ZOMBIE_12726, NpcID.ARMOURED_ZOMBIE_12727, NpcID.ARMOURED_ZOMBIE_12728, NpcID.ARMOURED_ZOMBIE_12729, NpcID.ARMOURED_ZOMBIE_12730, NpcID.ARMOURED_ZOMBIE_12731);
 		collectRedMistAgain = new ObjectStep(this, NullObjectID.NULL_50690, "Collect the red mist in a bottle.");
@@ -359,6 +359,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		enterCamdozaal.addTeleport(mindAltarOrLassarTeleport);
 		talkToRamarno = new NpcStep(this, NpcID.RAMARNO_10685, new WorldPoint(2959, 5809, 0),
 			"Talk to Ramarno to the north by the sacred forge.");
+		((NpcStep) talkToRamarno).addAlternateNpcs(NpcID.RAMARNO, NpcID.RAMARNO_10684);
 		talkToRamarno.addDialogStep("I need your help with a shield.");
 		mineBarronite = new ObjectStep(this, ObjectID.BARRONITE_ROCKS, new WorldPoint(2941, 5810, 0), "Mine a barronite deposit.", true, pickaxe);
 		killChaosGolems = new NpcStep(this, NpcID.CHAOS_GOLEM, new WorldPoint(3022, 5782, 0),

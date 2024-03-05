@@ -27,6 +27,7 @@ package com.questhelper.helpers.quests.entertheabyss;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -65,7 +66,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 	ItemRequirement scryingOrb, scryingOrbCharged;
 
 	Requirement inWizardBasement, teleportedFromVarrock, teleportedFromArdougne, teleportedFromWizardsTower,
-		teleportedFromGnome, teleportedFromDistentor;
+		teleportedFromGnome, teleportedFromDistentor, freeInventorySpace;
 
 	QuestStep talkToMageInWildy, talkToMageInVarrock, talkToAubury, goDownInWizardsTower, talkToSedridor,
 		talkToCromperty, talkToMageAfterTeleports, talkToMageToFinish;
@@ -109,6 +110,8 @@ public class EnterTheAbyss extends BasicQuestHelper
 
 		scryingOrbCharged = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB);
 		scryingOrbCharged.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
+
+		freeInventorySpace = new FreeInventorySlotRequirement(1);
 	}
 
 	public void loadZones()
@@ -133,7 +136,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 			" of Zamorak in the Wilderness north of Edgeville. BRING NOTHING AS YOU CAN BE KILLED BY OTHER PLAYERS HERE.");
 
 		talkToMageInVarrock = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3383, 0),
-			"Talk to the Mage of Zamorak in south east Varrock.");
+			"Talk to the Mage of Zamorak in south east Varrock.", freeInventorySpace);
 		talkToMageInVarrock.addDialogSteps("Where do you get your runes from?", "Maybe I could make it worth your while?", "Yes, but I can still help you as well.",
 			"I did it so that I could then steal their secrets.", "Deal.",
 			"But I'm a loyal servant of Zamorak as well!", "Okay, fine. I don't really serve Zamorak.", "Because I can still help you.");

@@ -89,14 +89,11 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		ConditionalStep goTalkToLordKandur = new ConditionalStep(this, talkToLordKandur, inVineryHouse);
-		steps.put(0, goTalkToLordKandur);
+		steps.put(0, talkToLordKandur);
 
-		ConditionalStep goTalkToChefOlivia = new ConditionalStep(this, talkToChefOlivia, inVineryHouse);
-		steps.put(1, goTalkToChefOlivia);
+		steps.put(1, talkToChefOlivia);
 
-		ConditionalStep goTalkToGalana = new ConditionalStep(this, talkToGalana, inArceuusLibrary);
-		steps.put(2, goTalkToGalana);
+		steps.put(2, talkToGalana);
 
 		ConditionalStep findAndReadTheVarlamoreEnvoy = new ConditionalStep(this, findTheVarlamoreEnvoy);
 		findAndReadTheVarlamoreEnvoy.addStep(varlamoreEnvoy.alsoCheckBank(questBank), readTheVarlamoreEnvoy);

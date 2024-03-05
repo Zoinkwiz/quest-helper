@@ -201,7 +201,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 		clearedHive = new ObjectCondition(ObjectID.BEEHIVE_305);
 		hasAnyBlackCandle = new Conditions(LogicType.OR, blackCandle, litBlackCandle);
 		beggarNearby = new NpcCondition(NpcID.BEGGAR);
-		talkedToLady = new Conditions(true, new DialogRequirement(client.getLocalPlayer().getName(), "Ok. That seems easy enough."));
+		talkedToLady = new Conditions(true, new DialogRequirement(client.getLocalPlayer().getName(), "Ok. That seems easy enough.", false));
 		hasReadSpell = new Conditions(true, LogicType.AND, new WidgetTextRequirement(229, 1, "You find a small inscription"));
 		inStar = new ZoneRequirement(star);
 		thrantaxNearby = new NpcCondition(NpcID.THRANTAX_THE_MIGHTY);

@@ -83,6 +83,8 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ProfileChanged;
+import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -172,7 +174,7 @@ public class QuestHelperPlugin extends Plugin
 
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 
-	boolean lastStateWasLoggedOutOrHopping = true;
+	boolean profileChanged;
 
 
 	// TODO: Use this for item checks
@@ -223,7 +225,6 @@ public class QuestHelperPlugin extends Plugin
 		clientThread.invokeLater(() -> {
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				lastStateWasLoggedOutOrHopping = false;
 				setupRequirements();
 				questManager.setupOnLogin();
 				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
@@ -276,25 +277,28 @@ public class QuestHelperPlugin extends Plugin
 
 		if (state == GameState.LOGIN_SCREEN)
 		{
-			lastStateWasLoggedOutOrHopping = true;
 			questBankManager.saveBankToConfig();
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBankManager.emptyState();
 			questManager.shutDownQuest(true);
 		}
-		else if (state == GameState.HOPPING)
+
+		if (state == GameState.LOGGED_IN && profileChanged)
 		{
-			lastStateWasLoggedOutOrHopping = true;
-		}
-		else if (state == GameState.LOGGED_IN && lastStateWasLoggedOutOrHopping)
-		{
-			lastStateWasLoggedOutOrHopping = false;
+			profileChanged = false;
+			questManager.shutDownQuest(true);
 			setupRequirements();
 			newVersionManager.updateChatWithNotificationIfNewVersion();
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			questBankManager.setUnknownInitialState();
 			clientThread.invokeLater(() -> questManager.setupOnLogin());
 		}
+	}
+
+	@Subscribe
+	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
+	{
+		profileChanged = true;
 	}
 
 	private void setupRequirements()

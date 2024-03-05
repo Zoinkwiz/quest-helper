@@ -120,8 +120,8 @@ public class VarrockHard extends ComplexStateQuestHelper
 		doHard.addStep(notSpottyCape, spottyCapeTask);
 
 		kudosTask = new ConditionalStep(this, getKudos);
-		kudosTask.addStep(new Conditions(not153Kudos, atleast153Kudos), moveToBasement);
 		kudosTask.addStep(new Conditions(not153Kudos, inBasement, atleast153Kudos), kudos);
+		kudosTask.addStep(new Conditions(not153Kudos, atleast153Kudos), moveToBasement);
 		doHard.addStep(not153Kudos, kudosTask);
 
 		yewChurchTask = new ConditionalStep(this, cutYew);

@@ -587,7 +587,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			new WorldPoint(3631, 3261, 0),
 			new WorldPoint(3624, 3261, 0),
 			new WorldPoint(3624, 3252, 0),
-			new WorldPoint(2627, 3252, 0)
+			new WorldPoint(3627, 3252, 0)
 		);
 
 		useKnifeOnFireplace = new ObjectStep(this, ObjectID.FIREPLACE_18039, new WorldPoint(3627, 3253, 0), "");

@@ -291,8 +291,6 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(120, talkToFulloreXericsLookout);
 		steps.put(122, talkToFulloreXericsLookout);
 
-		ConditionalStep megaStep = new ConditionalStep(this, new DetailedQuestStep(this, "You should not see this!"));
-
 		XericsLookoutStepper arceuusLookoutStepper = new XericsLookoutStepper(this, talkToArceuusLookout, 0, talkToAllMembersInXericsLookoutSidebar);
 		ConditionalStep talkToAllLeadersLookout = new ConditionalStep(this, arceuusLookoutStepper);
 		talkToAllLeadersLookout.addStep(helpingArceuus0, arceuusLookoutStepper);
@@ -300,6 +298,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToAllLeadersLookout.addStep(helpingShayzien0, new XericsLookoutStepper(this, talkToShayzienLookout, 1, talkToAllMembersInXericsLookoutSidebar));
 		talkToAllLeadersLookout.addStep(helpingLova0, new XericsLookoutStepper(this, talkToLovaLookout, 2, talkToAllMembersInXericsLookoutSidebar));
 		talkToAllLeadersLookout.addStep(helpingPisc0, new XericsLookoutStepper(this, talkToPiscLookout, 3, talkToAllMembersInXericsLookoutSidebar));
+
+
+		ConditionalStep megaStep = new ConditionalStep(this, talkToAllLeadersLookout);
 
 		megaStep.addStep(new Conditions(LogicType.OR, helpingHosidius0, helpingArceuus0, helpingShayzien0, helpingLova0, helpingPisc0), talkToAllLeadersLookout);
 		megaStep.addStep(helpingLova2, new XericsLookoutStepper(this, talkToFulloreAboutLovaXericsLookout, 0));
@@ -360,10 +361,10 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(124, megaStep);
 
 		// then jagex decides to split speaking to each person as one step
-		steps.put(126, talkToAllLeadersLookoutFinish);
-		steps.put(128, talkToAllLeadersLookoutFinish);
-		steps.put(130, talkToAllLeadersLookoutFinish);
-		steps.put(132, talkToAllLeadersLookoutFinish);
+		steps.put(126, megaStep);
+		steps.put(128, megaStep);
+		steps.put(130, megaStep);
+		steps.put(132, megaStep);
 
 		steps.put(134, new XericsLookoutStepper(this, talkToFulloreAfterHelpingAll, 0));
 		steps.put(136, watchCutsceneAfterHelpingAll);

@@ -5,7 +5,6 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Arrays;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
@@ -89,11 +88,9 @@ public class PaintingWall extends QuestStep
 			Widget widget = client.getWidget(253, highlightWidget);
 			if (widget != null)
 			{
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(widget.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(widget.getBounds());
 			}
 		}

@@ -161,14 +161,14 @@ public class MapPuzzle extends QuestStep
 						widget2.getCanvasLocation().getX() + (widget2.getWidth() / 2.0f),
 						widget2.getCanvasLocation().getY() + (widget2.getHeight() / 2.0f));
 
-					graphics.setColor(new Color(0, 255, 255, 65));
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 					graphics.fill(widget1.getBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 					graphics.draw(widget1.getBounds());
 
-					graphics.setColor(new Color(0, 255, 255, 65));
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 					graphics.fill(widget2.getBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 					graphics.draw(widget2.getBounds());
 
 					graphics.setStroke(new BasicStroke(3));
@@ -183,11 +183,9 @@ public class MapPuzzle extends QuestStep
 				Widget widget = widgetWrapper.getChild(i);
 				if (widget != null && currentRotationValue[i] != 0)
 				{
-					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-						questHelper.getConfig().targetOverlayColor().getGreen(),
-						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 					graphics.fill(widget.getBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 					graphics.draw(widget.getBounds());
 
 					int widgetX = widget.getCanvasLocation().getX() + (widget.getWidth() / 2) - 4;

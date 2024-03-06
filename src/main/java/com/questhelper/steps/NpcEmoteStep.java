@@ -89,11 +89,9 @@ public class NpcEmoteStep extends NpcStep
 			{
 				finalEmoteWidget = emoteWidget;
 
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(emoteWidget.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(emoteWidget.getBounds());
 			}
 		}

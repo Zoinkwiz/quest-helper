@@ -95,7 +95,7 @@ public class RuneliteObjectStep extends DetailedQuestStep
 					extendedRuneliteObject.getRuneliteObject().getModelHeight());
 				if (p != null)
 				{
-					DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), p.getX(), p.getY() - ARROW_SHIFT_Y);
+					DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency(), p.getX(), p.getY() - ARROW_SHIFT_Y);
 				}
 			}
 		}
@@ -106,12 +106,13 @@ public class RuneliteObjectStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		Color configColor = getQuestHelper().getConfig().targetOverlayColor();
-		highlightNpc(configColor, graphics);
+		highlightNpc(graphics);
 	}
 
-	private void highlightNpc(Color color, Graphics2D graphics)
+	private void highlightNpc(Graphics2D graphics)
 	{
+		Color borderColor = getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency();
+
 		if (!extendedRuneliteObject.getWorldPoint().isInScene(client)) return;
 		switch (questHelper.getConfig().highlightStyleNpcs())
 		{
@@ -121,7 +122,7 @@ public class RuneliteObjectStep extends DetailedQuestStep
 				modelOutlineRenderer.drawOutline(
 					extendedRuneliteObject.getRuneliteObject(),
 					questHelper.getConfig().outlineThickness(),
-					color,
+					borderColor,
 					questHelper.getConfig().outlineFeathering()
 				);
 				break;
@@ -129,7 +130,7 @@ public class RuneliteObjectStep extends DetailedQuestStep
 				Polygon poly = Perspective.getCanvasTilePoly(client, extendedRuneliteObject.getRuneliteObject().getLocation());
 				if (poly != null)
 				{
-					OverlayUtil.renderPolygon(graphics, poly, color);
+					OverlayUtil.renderPolygon(graphics, poly, borderColor);
 				}
 				break;
 			default:

@@ -29,7 +29,6 @@ package com.questhelper.helpers.quests.thefremenniktrials;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
@@ -149,11 +148,9 @@ public class CombinationPuzzle extends ObjectStep
 			Widget widget = client.getWidget(298, entry.getValue());
 			if (widget != null)
 			{
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(widget.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(widget.getBounds());
 
 				if (distance.get(entry.getKey()) != null)

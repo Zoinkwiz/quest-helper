@@ -136,11 +136,9 @@ public class SolveChestCode extends QuestStep
 				Widget widget = client.getWidget(809, 5);
 				if (widget != null)
 				{
-					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-						questHelper.getConfig().targetOverlayColor().getGreen(),
-						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 					graphics.fill(widget.getBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
+					graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 					graphics.draw(widget.getBounds());
 				}
 				continue;
@@ -151,11 +149,9 @@ public class SolveChestCode extends QuestStep
 			{
 				Widget arrow = widget.getChild(entry.getValue());
 				if (arrow == null) break;
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(arrow.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(arrow.getBounds());
 
 				if (distance.get(entry.getKey()) != null)

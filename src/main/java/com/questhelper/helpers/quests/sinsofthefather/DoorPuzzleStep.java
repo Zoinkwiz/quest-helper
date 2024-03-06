@@ -350,11 +350,9 @@ public class DoorPuzzleStep extends DetailedQuestStep
 					if (result[i].cells[j] == 2)
 					{
 						Widget panel = panels.getChild(i * 5 + j);
-						graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-							questHelper.getConfig().targetOverlayColor().getGreen(),
-							questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+						graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 						graphics.fill(panel.getBounds());
-						graphics.setColor(questHelper.getConfig().targetOverlayColor());
+						graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 						graphics.draw(panel.getBounds());
 					}
 				}

@@ -30,7 +30,6 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.emote.QuestEmote;
 import com.questhelper.steps.overlay.IconOverlay;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ScriptID;
@@ -81,11 +80,9 @@ public class EmoteStep extends DetailedQuestStep
 			if (emoteWidget.getSpriteId() == emote.getSpriteId())
 			{
 				finalEmoteWidget = emoteWidget;
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(emoteWidget.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(emoteWidget.getBounds());
 			}
 		}

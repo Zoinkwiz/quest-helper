@@ -1,6 +1,5 @@
 package com.questhelper.steps;
 
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
@@ -9,7 +8,6 @@ import java.awt.Polygon;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
 public class ItemStep extends DetailedQuestStep
 {
@@ -40,7 +38,7 @@ public class ItemStep extends DetailedQuestStep
 			int startX = poly.getBounds().x + (poly.getBounds().width / 2);
 			int startY =  poly.getBounds().y + (poly.getBounds().height / 2);
 
-			DirectionArrow.drawWorldArrow(graphics, questHelper.getConfig().targetOverlayColor(), startX, startY);
+			DirectionArrow.drawWorldArrow(graphics, questHelper.getQuestHelperPlugin().targetOverlayColorWithoutTransparency(), startX, startY);
 		});
 	}
 }

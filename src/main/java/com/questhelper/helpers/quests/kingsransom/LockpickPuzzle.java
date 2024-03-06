@@ -126,11 +126,9 @@ public class LockpickPuzzle extends QuestStep
 		Widget widgetWrapper = client.getWidget(588, highlightChildID);
 		if (widgetWrapper != null)
 		{
-			graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-				questHelper.getConfig().targetOverlayColor().getGreen(),
-				questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+			graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 			graphics.fill(widgetWrapper.getBounds());
-			graphics.setColor(questHelper.getConfig().targetOverlayColor());
+			graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 			graphics.draw(widgetWrapper.getBounds());
 		}
 	}

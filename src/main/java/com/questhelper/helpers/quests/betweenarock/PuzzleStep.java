@@ -4,7 +4,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedQuestStep;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
@@ -210,11 +209,9 @@ public class PuzzleStep extends DetailedQuestStep
 			Widget widget = client.getWidget(114, entry.getKey());
 			if (widget != null)
 			{
-				graphics.setColor(new Color(getQuestHelper().getConfig().targetOverlayColor().getRed(),
-					getQuestHelper().getConfig().targetOverlayColor().getGreen(),
-					getQuestHelper().getConfig().targetOverlayColor().getBlue(), 65));
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 				graphics.fill(widget.getBounds());
-				graphics.setColor(questHelper.getConfig().targetOverlayColor());
+				graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 				graphics.draw(widget.getBounds());
 			}
 		}

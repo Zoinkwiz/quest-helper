@@ -29,17 +29,13 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.FontManager;
 
 public class GolemPuzzleStep extends QuestStep
 {
@@ -99,9 +95,9 @@ public class GolemPuzzleStep extends QuestStep
 		{
 			Widget powerOnButton = client.getWidget(838, 4);
 			if (powerOnButton == null) return;
-			graphics.setColor(new Color(0, 255, 255, 65));
+			graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 			graphics.fill(powerOnButton.getBounds());
-			graphics.setColor(questHelper.getConfig().targetOverlayColor());
+			graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 			graphics.draw(powerOnButton.getBounds());
 			return;
 		}
@@ -119,14 +115,14 @@ public class GolemPuzzleStep extends QuestStep
 						widget2.getCanvasLocation().getX() + (widget2.getWidth() / 2.0f),
 						widget2.getCanvasLocation().getY() + (widget2.getHeight() / 2.0f));
 
-					graphics.setColor(new Color(0, 255, 255, 65));
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 					graphics.fill(widget1.getBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 					graphics.draw(widget1.getBounds());
 
-					graphics.setColor(new Color(0, 255, 255, 65));
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorForWidgetFill());
 					graphics.fill(widget2.getBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
+					graphics.setColor(getQuestHelper().getQuestHelperPlugin().targetOverlayColorWithoutTransparency());
 					graphics.draw(widget2.getBounds());
 
 					graphics.setStroke(new BasicStroke(3));

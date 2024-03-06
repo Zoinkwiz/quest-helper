@@ -291,8 +291,6 @@ public class AKingdomDivided extends BasicQuestHelper
 		steps.put(120, talkToFulloreXericsLookout);
 		steps.put(122, talkToFulloreXericsLookout);
 
-		ConditionalStep megaStep = new ConditionalStep(this, new DetailedQuestStep(this, "You should not see this!"));
-
 		XericsLookoutStepper arceuusLookoutStepper = new XericsLookoutStepper(this, talkToArceuusLookout, 0, talkToAllMembersInXericsLookoutSidebar);
 		ConditionalStep talkToAllLeadersLookout = new ConditionalStep(this, arceuusLookoutStepper);
 		talkToAllLeadersLookout.addStep(helpingArceuus0, arceuusLookoutStepper);
@@ -300,6 +298,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToAllLeadersLookout.addStep(helpingShayzien0, new XericsLookoutStepper(this, talkToShayzienLookout, 1, talkToAllMembersInXericsLookoutSidebar));
 		talkToAllLeadersLookout.addStep(helpingLova0, new XericsLookoutStepper(this, talkToLovaLookout, 2, talkToAllMembersInXericsLookoutSidebar));
 		talkToAllLeadersLookout.addStep(helpingPisc0, new XericsLookoutStepper(this, talkToPiscLookout, 3, talkToAllMembersInXericsLookoutSidebar));
+
+
+		ConditionalStep megaStep = new ConditionalStep(this, talkToAllLeadersLookout);
 
 		megaStep.addStep(new Conditions(LogicType.OR, helpingHosidius0, helpingArceuus0, helpingShayzien0, helpingLova0, helpingPisc0), talkToAllLeadersLookout);
 		megaStep.addStep(helpingLova2, new XericsLookoutStepper(this, talkToFulloreAboutLovaXericsLookout, 0));

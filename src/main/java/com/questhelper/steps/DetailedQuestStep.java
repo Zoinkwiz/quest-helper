@@ -452,7 +452,7 @@ public class DetailedQuestStep extends QuestStep
 
 			WorldPoint point = mapPoint.getWorldPoint();
 
-			if (currentRender < MAX_RENDER_SIZE / 2)
+			if (currentRender < MAX_RENDER_SIZE / 2 || !getQuestHelper().getConfig().haveMinimapArrowFlash())
 			{
 				renderMinimapArrow(graphics);
 			}

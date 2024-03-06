@@ -467,6 +467,17 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "haveMinimapArrowFlash",
+		name = "Have the minimap arrow flash",
+		description = "Choose whether the minimap direction arrow flashes",
+		section = hintsSection
+	)
+	default boolean haveMinimapArrowFlash()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showWorldLines",
 		name = "Display navigation paths",
 		description = "Choose whether navigation paths are drawn to the next objective",

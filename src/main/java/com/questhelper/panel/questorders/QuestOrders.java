@@ -726,7 +726,8 @@ public class QuestOrders
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
 		QuestHelperQuest.DESERT_TREASURE_II,
-		QuestHelperQuest.CHILDREN_OF_THE_SUN
+		QuestHelperQuest.CHILDREN_OF_THE_SUN,
+		QuestHelperQuest.DEFENDER_OF_VARROCK
 	);
 
 	public static String normalizeQuestName(String questName)

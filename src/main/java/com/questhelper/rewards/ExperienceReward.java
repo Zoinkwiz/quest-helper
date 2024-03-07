@@ -26,11 +26,13 @@ package com.questhelper.rewards;
 
 import java.util.Locale;
 import javax.annotation.Nonnull;
+import lombok.Getter;
 import net.runelite.api.Skill;
 import net.runelite.client.util.QuantityFormatter;
 
 public class ExperienceReward implements Reward
 {
+	@Getter
     private final Skill skill;
     private final int experience;
 	/**

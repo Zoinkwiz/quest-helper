@@ -24,6 +24,7 @@
  */
 package com.questhelper;
 
+import com.questhelper.helpers.pures.OneDefPure;
 import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -157,7 +158,9 @@ public interface QuestHelperConfig extends Config
 		 */
 		SKILL_MEMBERS(QuestDetails.Type.SKILL_P2P),
 
-		PLAYER_MADE_QUESTS("Player-made quests", q -> q.getQuest().getQuestType() == QuestDetails.Type.PLAYER_QUEST);
+		PLAYER_MADE_QUESTS("Player-made quests", q -> q.getQuest().getQuestType() == QuestDetails.Type.PLAYER_QUEST),
+
+		SAFE_FOR_PURES(new OneDefPure()::isSafeForPure);
 
 
 		private final Predicate<QuestHelper> predicate;

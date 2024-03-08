@@ -28,6 +28,7 @@ import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
@@ -207,27 +208,6 @@ public interface QuestHelperConfig extends Config
 			return Arrays.stream(QuestFilter.values()).filter((questFilter -> questFilter.shouldDisplay)).toArray(QuestFilter[]::new);
 		}
 	}
-
-	Predicate<QuestHelper> filterOutSkillsNeeded = (questHelper -> {
-		List<Skill> skillsToFilterOut = Arrays.stream(Skill.values())
-			.filter(skill -> "true".equals(questHelper.getConfigManager().getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skill.getName())))
-			.collect(Collectors.toList());
-
-		boolean passesAll = true;
-		if (questHelper.getGeneralRequirements() != null)
-		{
-			passesAll = questHelper.getGeneralRequirements().stream()
-				.filter(SkillRequirement.class::isInstance)
-				.map(SkillRequirement.class::cast)
-				.noneMatch(req -> skillsToFilterOut.contains(req.getSkill()));
-		}
-		if (questHelper.getExperienceRewards() != null)
-		{
-			passesAll = passesAll && questHelper.getExperienceRewards().stream()
-				.noneMatch(req -> skillsToFilterOut.contains(req.getSkill()));
-		}
-		return passesAll;
-	});
 
 	enum NpcHighlightStyle
 	{

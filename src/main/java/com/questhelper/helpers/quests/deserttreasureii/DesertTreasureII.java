@@ -779,7 +779,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		defeatKetla = new NpcStep(this, NpcID.KETLA_THE_UNWORTHY, new WorldPoint(3296, 6444, 0),
 			"Defeat Ketla the Unworthy. Protect from ranged. She will spawn shadow clones, which you should hide behind whenever she has a skull above her.");
 		((NpcStep) defeatKetla).addAlternateNpcs(NpcID.KETLA_THE_UNWORTHY_12330);
-		defeatKasonde = new NpcStep(this, NpcID.THE_FORSAKEN_ASSASSIN, new WorldPoint(3296, 6444, 0),
+		defeatKasonde = new NpcStep(this, NpcID.KASONDE_THE_CRAVEN, new WorldPoint(3296, 6444, 0),
 			"Defeat Kasonde the Craven. Protect from ranged if at a distance or melee if up close. The fight is similar to earlier in the quest.");
 		((NpcStep) defeatKasonde).addAlternateNpcs(NpcID.KASONDE_THE_CRAVEN_12332);
 		defeatPersten = new NpcStep(this, NpcID.PERSTEN_THE_DECEITFUL, new WorldPoint(3296, 6444, 0),

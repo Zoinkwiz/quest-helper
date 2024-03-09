@@ -871,14 +871,13 @@ public class WhispererSteps extends ConditionalStep
 			"Return to the Science District, and enter the building with furnaces in it. Place the Shadow Blocker next to the locked doors inside.",
 			shadowBlocker.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		placeBlockerInFurnaceBuilding.addDialogStep("Southern Science District.");
+		placeBlockerInFurnaceBuilding.addDialogSteps("More options...", "Southern Science District.");
 		placeBlockerInFurnaceBuilding.addIcon(ItemID.SHADOW_BLOCKER);
 
 		useTeleporterToScienceDistrict = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
-		"Teleport to the Southern Science District."),
-			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		useTeleporterToScienceDistrict.addDialogStep("Southern Science District.");
+		"Teleport to the Southern Science District."), "Delve into the shadows.").withNoHelpHiddenInSidebar(true);
+		useTeleporterToScienceDistrict.addDialogSteps("More options...", "Southern Science District.");
 		placeBlockerInFurnaceBuilding.addSubSteps(useTeleporterToScienceDistrict);
 
 		retrieveShadowBlocker = new PuzzleWrapperStep(getQuestHelper(),
@@ -921,7 +920,7 @@ public class WhispererSteps extends ConditionalStep
 			"Bring the basic shadow torch schematic to Ketla, next to the Western Residential District teleport.",
 			basicShadowTorchSchematic),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		bringKetlaTheBasicTorchSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
+		bringKetlaTheBasicTorchSchematic.addDialogSteps("More options...", "Western Residential District.", "I have a schematic here.");
 
 //		useTeleporterToKetlaFromScienceDistrict = new ObjectStep(getQuestHelper()),
 
@@ -1266,7 +1265,7 @@ public class WhispererSteps extends ConditionalStep
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
 			"Go to the Southern Science District and enter the puddle there."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		enterSciencePuddle.addDialogStep("Southern Science District.");
+		enterSciencePuddle3.addDialogStep("Southern Science District.");
 		openGreenChest = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2354, 6339, 0),
 			"Open the chest in the small house to the south. Destroy the tentacle to access the house.", superiorTorch, greenShadowKey),
@@ -1379,7 +1378,7 @@ public class WhispererSteps extends ConditionalStep
 			giveKetlaBlockerSchematic, claimShadowBlocker, placeBlockerInFurnaceBuilding, enterSciencePuddle, unlockDoor,
 			takeShadowTorchSchematic, activateBlackstoneFragment, bringKetlaTheBasicTorchSchematic, claimShadowTorch,
 			enterResedentialPuddle, destroyTentacles, activateBlackstoneFragment2, takeRevitalisingIdolSchematic,
-			bringKetlaTheIdolSchematic, takeRevitalisingIdolSchematic, bringKetlaTheIdolSchematic, claimRevitalisingIdol, claimShadowTorch,
+			bringKetlaTheIdolSchematic, takeRevitalisingIdolSchematic, bringKetlaTheIdolSchematic, claimRevitalisingIdol,
 			placeIdol, enterResedentialPuddleAgain, destroyTentacles2, getBlueShadowKeyRealRealm, recallDevices,
 			placeShadowBlockerWestResidential, enterResedentialWestPuddle, openPubDoor, takeSuperiorTorchSchematic,
 			activateBlackstoneFragment4, bringKetlaTheSuperiorTorchSchematic, claimSuperiorShadowTorch, enterSciencePuddle2,

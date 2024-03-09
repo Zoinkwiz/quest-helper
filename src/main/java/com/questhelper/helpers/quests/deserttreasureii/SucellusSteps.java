@@ -639,7 +639,7 @@ public class SucellusSteps extends ConditionalStep
 		));
 
 		enterDukeBossArea = new ObjectStep(getQuestHelper(), ObjectID.GATE_49138, new WorldPoint(3039, 6433, 0),
-			"Enter the boss arena. Before entering you can also preview the boss's attacks by right-clicking it from outside.");
+			"Enter the boss arena.");
 
 		defeatDuke = new NpcStep(getQuestHelper(), NpcID.DUKE_SUCELLUS_12194, new WorldPoint(3039, 6454, 0),
 			"Defeat the Duke. Check the sidebar for more details.");

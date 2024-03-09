@@ -476,7 +476,8 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2912, 6395, 2)
 		));
 		DetailedQuestStep goToAdminRoomHiddenStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49112, new WorldPoint(2910, 6445, 2),
-			"Go to the most north-western room. Solve the chest puzzle in there. If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.");
+			"Go to the most north-western room. Solve the chest puzzle in there. " +
+				"If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.", true);
 		goToAdminRoomHiddenStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2975, 6531, 2),
 			new WorldPoint(2975, 6361, 2),

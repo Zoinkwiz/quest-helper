@@ -309,7 +309,6 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 	}
 
-	// This should only have been called from a parent ConditionalStep, so default the additional text to the passed in text
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{

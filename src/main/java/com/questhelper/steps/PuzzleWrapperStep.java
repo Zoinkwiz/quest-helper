@@ -25,6 +25,7 @@
 package com.questhelper.steps;
 
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ConfigRequirement;
 import com.questhelper.requirements.ManualRequirement;
@@ -32,8 +33,11 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.LogicType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import lombok.NonNull;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class PuzzleWrapperStep extends ConditionalStep
 {
@@ -96,6 +100,19 @@ public class PuzzleWrapperStep extends ConditionalStep
 	{
 		shouldHideHiddenPuzzleHintInSidebar.setShouldPass(isHidden);
 		return this;
+	}
+
+	@Override
+	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
+	{
+		if (questHelperConfig.solvePuzzles())
+		{
+			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, additionalRequirements);
+		}
+		else
+		{
+			super.makeOverlayHint(panelComponent, plugin, additionalText, additionalRequirements);
+		}
 	}
 
 	@Override

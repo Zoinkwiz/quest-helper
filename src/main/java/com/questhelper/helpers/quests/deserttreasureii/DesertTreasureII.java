@@ -28,6 +28,7 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -65,6 +66,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -93,6 +95,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		shadowBurstRunes, smokeBurstRunes, allBursts, uncharedCells, chargedCells, xericTalisman,
 		facemask, staminaPotions, eyeTeleport, rangedCombatGear, food, prayerPotions, nardahTeleport,
 		arclight, freezes, icyBasalt, meleeCombatGear, ringOfVisibility, lassarTeleport, magicCombatGear;
+
+	PrayerRequirement protectFromMagic;
 
 	ItemRequirement whisperersMedallion, vardorvisMedallion, sucellusMedallion, perseriyaMedallion, hairClip, medallion;
 
@@ -398,6 +402,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		lassarTeleport.addAlternates(ItemID.LASSAR_TELEPORT);
 
 		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY);
+
+		protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
 		/* Quest Items */
 		uncharedCells = new ItemRequirement("Uncharged cells", ItemID.UNCHARGED_CELL_28402);
@@ -736,7 +742,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		investigateAltar = new ObjectStep(this, ObjectID.ALTAR_48779, new WorldPoint(3086, 9260, 0),
 			"Inspect the altar in the north-west room.");
 		fightMysteriousFigure = new NpcStep(this, NpcID.MYSTERIOUS_FIGURE_12301, "Fight the Mysterious Figure. " +
-			"When frozen, spam-click to move away to avoid taking damage.");
+			"When frozen, spam-click to move away to avoid taking damage. Use Protect from Magic for the entire fight.", protectFromMagic);
 		enterAncientVault = new ObjectStep(this, ObjectID.VAULT_DOOR_46743, new WorldPoint(3511, 2971, 0),
 			"Enter to the Vault door north-east of Nardah with the final medallion, ready to fight.",
 			whisperersMedallion.hideConditioned(finishedWhisperer),

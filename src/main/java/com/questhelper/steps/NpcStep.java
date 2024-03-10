@@ -43,7 +43,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -280,7 +279,9 @@ public class NpcStep extends DetailedQuestStep
 		int newNpcId = npcChanged.getNpc().getId();
 		npcs.remove(npcChanged.getNpc());
 
-		if (allIds().contains(newNpcId) && npcChanged.getNpc().getComposition().isVisible())
+		// This used to contain isVisible check as well, but it doesn't seem to be accurate for a lot
+		// This MAY for some NPCs which have alternate version (The Kendal) require re-consideration
+		if (allIds().contains(newNpcId))
 		{
 			if (npcs.size() == 0 || allowMultipleHighlights)
 			{

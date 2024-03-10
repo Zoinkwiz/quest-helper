@@ -83,6 +83,8 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ProfileChanged;
+import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -171,6 +173,8 @@ public class QuestHelperPlugin extends Plugin
 	private NavigationButton navButton;
 
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
+
+	boolean profileChanged;
 
 
 	// TODO: Use this for item checks
@@ -279,14 +283,22 @@ public class QuestHelperPlugin extends Plugin
 			questManager.shutDownQuest(true);
 		}
 
-		if (state == GameState.LOGGED_IN)
+		if (state == GameState.LOGGED_IN && profileChanged)
 		{
+			profileChanged = false;
+			questManager.shutDownQuest(true);
 			setupRequirements();
 			newVersionManager.updateChatWithNotificationIfNewVersion();
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			questBankManager.setUnknownInitialState();
 			clientThread.invokeLater(() -> questManager.setupOnLogin());
 		}
+	}
+
+	@Subscribe
+	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
+	{
+		profileChanged = true;
 	}
 
 	private void setupRequirements()

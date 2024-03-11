@@ -439,7 +439,6 @@ public class RatCatchers extends BasicQuestHelper
 			"Go down the manhole near The Face.");
 		talkToFelkrash = new NpcStep(this, NpcID.FELKRASH, new WorldPoint(2978, 9640, 0),
 			"Talk to Felkrash in the Port Sarim Rat Pits.");
-		((NpcStep) talkToFelkrash).setWorldMapPoint(new WorldPoint(3044, 9645, 0));
 		leaveSarimRatPits = new ObjectStep(this, ObjectID.LADDER_10309, new WorldPoint(2962, 9651, 0),
 			"Leave the rat pits.");
 		talkToTheFaceAgain = new NpcStep(this, NpcID.THE_FACE, new WorldPoint(3019, 3232, 0),
@@ -460,7 +459,6 @@ public class RatCatchers extends BasicQuestHelper
 			"Return to Felkrash to finish.");
 		talkToFelkrashForEnd = new NpcStep(this, NpcID.FELKRASH, new WorldPoint(2978, 9640, 0),
 			"Return to Felkrash to finish.");
-		((NpcStep) talkToFelkrashForEnd).setWorldMapPoint(new WorldPoint(3044, 9645, 0));
 		talkToFelkrashForEnd.addSubSteps(enterPitsForEnd);
 	}
 

@@ -25,6 +25,7 @@
  */
 package com.questhelper.tools;
 
+import com.questhelper.util.worldmap.WorldPointMapper;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class QuestHelperWorldMapPoint extends WorldMapPoint
 	private BufferedImage activeQuestArrow;
 	public QuestHelperWorldMapPoint(final WorldPoint worldPoint, BufferedImage image)
 	{
-		super(worldPoint, null);
+		super(WorldPointMapper.getMapWorldPointFromRealWorldPoint(worldPoint).getWorldPoint(), null);
 
 		BufferedImage iconBackground = ImageUtil.loadImageResource(getClass(), "/util/clue_arrow.png");
 		questWorldImage = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);

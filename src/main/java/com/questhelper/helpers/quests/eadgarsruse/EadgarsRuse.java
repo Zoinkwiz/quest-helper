@@ -396,13 +396,10 @@ public class EadgarsRuse extends BasicQuestHelper
 		freeEadgar = new ObjectStep(this, ObjectID.CELL_DOOR_3765, new WorldPoint(2832, 10082, 0), "Unlock Eadgar's cell.");
 
 		goUpStairsPrison = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
-		goUpStairsPrison.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		goUpToTopFloorStronghold = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10109, 1), "Go up to the next floor of the Stronghold.");
-		goUpToTopFloorStronghold.setWorldMapPoint(new WorldPoint(2906, 10140, 1));
 
 		exitStronghold = new ObjectStep(this, ObjectID.EXIT_3772, new WorldPoint(2838, 10091, 2), "Leave the Stronghold.");
-		exitStronghold.setWorldMapPoint(new WorldPoint(2965, 10155, 1));
 
 		enterEadgarsCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Climb to the top of Trollheim and enter Eadgar's cave.");
 
@@ -412,15 +409,11 @@ public class EadgarsRuse extends BasicQuestHelper
 		leaveEadgarsCave = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Leave Eadgar's cave.");
 		enterStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
 		goDownSouthStairs = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Go down the south staircase.");
-		goDownSouthStairs.setWorldMapPoint(new WorldPoint(2971, 10115, 1));
 		talkToCook = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat.");
-		talkToCook.setWorldMapPoint(new WorldPoint(2911, 10087, 1));
 
 		goUpToTopFloorStrongholdFromCook = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Go up to the next floor of the Stronghold.");
-		goUpToTopFloorStrongholdFromCook.setWorldMapPoint(new WorldPoint(2907, 10083, 1));
 
 		exitStrongholdFromCook = new ObjectStep(this, ObjectID.EXIT_3772, new WorldPoint(2838, 10091, 2), "Leave the Stronghold.");
-		exitStrongholdFromCook.setWorldMapPoint(new WorldPoint(2965, 10155, 1));
 
 		enterEadgarsCaveFromCook = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Climb to the top of Trollheim and enter Eadgar's cave.");
 
@@ -455,14 +448,11 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		enterStrongholdWithParrot = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
 		goDownNorthStairsWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
-		goDownNorthStairsWithParrot.setWorldMapPoint(new WorldPoint(2971, 10172, 1));
 		goDownToPrisonWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10108, 1), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
-		goDownToPrisonWithParrot.setWorldMapPoint(new WorldPoint(2917, 10140, 1));
 
 		enterPrisonWithParrot = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar, climbingBoots);
 
 		parrotOnRack = new ObjectStep(this, ObjectID.RACK_3821, new WorldPoint(2829, 10097, 0), "Use the parrot on a rack in the prison.", parrotAfterEadgar.highlighted());
-		parrotOnRack.setWorldMapPoint(new WorldPoint(2830, 10098, 1));
 		parrotOnRack.addIcon(ItemID.DRUNK_PARROT);
 
 		enterStrongholdWithParrot.addSubSteps(leaveEadgarsCaveWithParrot, goDownNorthStairsWithParrot, goDownToPrisonWithParrot, parrotOnRack, enterPrisonWithParrot);
@@ -502,26 +492,20 @@ public class EadgarsRuse extends BasicQuestHelper
 		enterStrongholdForParrot = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Get the parrot from the Troll Stronghold prison.");
 
 		goDownNorthStairsForParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Get the parrot from the Troll Stronghold prison.");
-		goDownNorthStairsForParrot.setWorldMapPoint(new WorldPoint(2971, 10172, 1));
 
 		goDownToPrisonForParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10108, 1), "Get the parrot from the Troll Stronghold prison.");
-		goDownToPrisonForParrot.setWorldMapPoint(new WorldPoint(2917, 10140, 1));
 
 		enterPrisonForParrot = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0), "Get the parrot from the Troll Stronghold prison.", climbingBoots);
 
 		getParrotFromRack = new ObjectStep(this, ObjectID.RACK_3821, new WorldPoint(2829, 10097, 0), "Get the parrot from the rack in the prison.");
-		getParrotFromRack.setWorldMapPoint(new WorldPoint(2830, 10098, 1));
 
 		enterStrongholdForParrot.addSubSteps(leaveEadgarsCaveForParrot, goDownNorthStairsForParrot, goDownToPrisonForParrot, enterPrisonForParrot, getParrotFromRack);
 
 		leavePrisonWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to Eadgar with the parrot.", trainedParrot);
-		leavePrisonWithParrot.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		goUpToTopFloorWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10109, 1), "Return to Eadgar with the parrot.", trainedParrot);
-		goUpToTopFloorWithParrot.setWorldMapPoint(new WorldPoint(2906, 10140, 1));
 
 		leaveStrongholdWithParrot = new ObjectStep(this, ObjectID.EXIT_3772, new WorldPoint(2838, 10091, 2), "Return to Eadgar with the parrot.", trainedParrot);
-		leaveStrongholdWithParrot.setWorldMapPoint(new WorldPoint(2965, 10155, 1));
 
 		enterEadgarCaveWithTrainedParrot = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Return to Eadgar with the parrot.", trainedParrot);
 
@@ -532,12 +516,9 @@ public class EadgarsRuse extends BasicQuestHelper
 		leaveEadgarsCaveWithScarecrow.addDialogStep("No thanks, Eadgar.");
 		enterStrongholdWithScarecrow = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Take the fake man to Burntmeat.", fakeMan);
 		goDownSouthStairsWithScarecrow = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Take the fake man to Burntmeat.", fakeMan);
-		goDownSouthStairsWithScarecrow.setWorldMapPoint(new WorldPoint(2971, 10115, 1));
 		talkToCookWithScarecrow = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Take the fake man to Burntmeat.", fakeMan);
-		talkToCookWithScarecrow.setWorldMapPoint(new WorldPoint(2911, 10087, 1));
 
 		talkToBurntmeat = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat in the Troll Stronghold kitchen.");
-		talkToBurntmeat.setWorldMapPoint(new WorldPoint(2911, 10087, 1));
 		talkToBurntmeat.addDialogStep("So, where can I get some goutweed?");
 
 		enterStrongholdWithScarecrow.addSubSteps(leaveEadgarsCaveWithScarecrow, goDownSouthStairsWithScarecrow, talkToCookWithScarecrow, talkToBurntmeat);

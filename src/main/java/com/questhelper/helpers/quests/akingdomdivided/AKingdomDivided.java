@@ -678,32 +678,26 @@ public class AKingdomDivided extends BasicQuestHelper
 		enterLizardTempleWithEgg = new ObjectStep(this, ObjectID.LIZARD_DWELLING, new WorldPoint(1292, 3657, 0), "Enter the Lizard Dwelling south east of the Farming guild.");
 		enterLizardTempleToFightXamphur = new ObjectStep(this, ObjectID.LIZARD_DWELLING, new WorldPoint(1292, 3657, 0), "Enter the Lizard Dwelling south east of the Farming guild.");
 		talkToKahtbalam = new NpcStep(this, NpcID.KAHT_BALAM, new WorldPoint(1330, 10084, 0), "Talk to Kaht B'alam located on the east side of the middle tunnel.");
-		((NpcStep) talkToKahtbalam).setWorldMapPoint(new WorldPoint(1331, 10037, 0));
 		talkToKahtbalam.addDialogSteps("Do you think you could help me find a mage?");
 		exitLizardTemple = new ObjectStep(this, ObjectID.STRANGE_HOLE, new WorldPoint(1292, 10077, 0), "Exit the Lizard Temple by jumping down the hole to the west.");
-		((ObjectStep) exitLizardTemple).setWorldMapPoint(new WorldPoint(1292, 10029, 0));
 
 		goToEggArea = new DetailedQuestStep(this, new WorldPoint(1238, 3618, 0), "Search the Lizardman eggs found in the Kebos Lowlands until you find a Lizardman egg. You will be attacked by a level 75 lizardman but you do not need to kill it.", freeInventorySlots);
 		collectEgg = new ObjectStep(this, ObjectID.LIZARDMAN_EGGS_41874, "Search the Lizardman eggs found in the Kebos Lowlands until you find a Lizardman egg. You will be attacked by a level 75 lizardman but you do not need to kill it.", freeInventorySlots);
 		((ObjectStep) collectEgg).setHideWorldArrow(true);
 		((ObjectStep) collectEgg).addAlternateObjects(ObjectID.LIZARDMAN_EGGS_41876);
-		((ObjectStep) collectEgg).setWorldMapPoint(new WorldPoint(1238, 3618, 0));
 
 		collectEgg.addSubSteps(exitLizardTemple);
 		collectEgg.addSubSteps(goToEggArea);
 
 		returntoKahtBalam = new DetailedQuestStep(this, "Return to Kaht B'alam with the Lizardman egg.");
 		talkToKahtbalamAgain = new NpcStep(this, NpcID.KAHT_BALAM, new WorldPoint(1330, 10084, 0), "Talk to Kaht B'alam located on the east side of the middle tunnel.");
-		((NpcStep) talkToKahtbalamAgain).setWorldMapPoint(new WorldPoint(1331, 10037, 0));
 		talkToKahtbalamAgain.addDialogSteps("So, about the key to that door...", "So about the door over there...");
 
 		returntoKahtBalam.addSubSteps(collectEgg, talkToKahtbalamAgain, enterLizardTempleWithEgg);
 		openDoorNearKaht = new ObjectStep(this, ObjectID.DOOR_41870, new WorldPoint(1323, 10080, 0), "Open and enter the door near Kaht B'alam with the damp key.", dampKey);
-		((ObjectStep) openDoorNearKaht).setWorldMapPoint(new WorldPoint(1292, 10031, 0));
 		openDoorNearKaht.addDialogSteps("Yes.", "So about the door over there...");
 
 		openDoorNearKahtNoKey = new ObjectStep(this, ObjectID.DOORWAY_41871, new WorldPoint(1323, 10080, 0), "Enter the door near Kaht B'alam.");
-		((ObjectStep) openDoorNearKahtNoKey).setWorldMapPoint(new WorldPoint(1292, 10031, 0));
 		openDoorNearKahtNoKey.addDialogSteps("Yes.");
 		openXamphurGate = new ObjectStep(this, ObjectID.GATE_41877, "Open the gate once you are ready to fight.", combatGearForXamphur);
 

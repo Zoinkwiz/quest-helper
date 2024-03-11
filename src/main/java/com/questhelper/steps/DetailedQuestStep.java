@@ -88,9 +88,6 @@ public class DetailedQuestStep extends QuestStep
 	protected WorldPoint worldPoint;
 
 	@Setter
-	protected WorldPoint worldMapPoint;
-
-	@Setter
 	protected List<WorldPoint> linePoints;
 
 	@Setter
@@ -172,12 +169,7 @@ public class DetailedQuestStep extends QuestStep
 	public void startUp()
 	{
 		super.startUp();
-		if (worldMapPoint != null)
-		{
-			mapPoint = new QuestHelperWorldMapPoint(worldMapPoint, getQuestImage());
-			worldMapPointManager.add(mapPoint);
-		}
-		else if (worldPoint != null)
+		if (worldPoint != null)
 		{
 			mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
 			worldMapPointManager.add(mapPoint);
@@ -249,7 +241,7 @@ public class DetailedQuestStep extends QuestStep
 	public void setWorldPoint(WorldPoint worldPoint)
 	{
 		this.worldPoint = worldPoint;
-		if (worldMapPoint == null && started)
+		if (started)
 		{
 			if (mapPoint != null)
 			{

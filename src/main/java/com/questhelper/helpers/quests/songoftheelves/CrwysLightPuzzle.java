@@ -104,46 +104,37 @@ public class CrwysLightPuzzle extends ConditionalStep
 		talkToAmlodd.addDialogStep("Yes.");
 
 		collectMirrors = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Collect all the items from the dispenser in the central room.");
-		collectMirrors.setWorldMapPoint(new WorldPoint(2815, 6118, 1));
 		collectMirrors.addDialogStep("Take everything.");
 
 		resetPuzzle = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Pull the lever in the dispenser in the central room.");
-		resetPuzzle.setWorldMapPoint(new WorldPoint(2815, 6118, 1));
 		resetPuzzle.addDialogSteps("Pull the lever.", "Pull it.");
 
 		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35286, new WorldPoint(2609, 6144, 1),
 			"Add a mirror to a pillar to the north. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar1.setWorldMapPoint(new WorldPoint(2801, 6144, 1));
 		p1Pillar1.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35276, new WorldPoint(2595, 6144, 1),
 			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar2.setWorldMapPoint(new WorldPoint(2787, 6144, 1));
 		p1Pillar2.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar3 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35277, new WorldPoint(2595, 6158, 1),
 			"Add a mirror to the pillar to the north. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar3.setWorldMapPoint(new WorldPoint(2787, 6158, 1));
 		p1Pillar3.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar4 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35266, new WorldPoint(2581, 6158, 1),
 			"Add a fractured crystal to the pillar to the west.", fracturedCrystalHighlighted);
-		p1Pillar4.setWorldMapPoint(new WorldPoint(2773, 6158, 1));
 		p1Pillar4.addIcon(ItemID.FRACTURED_CRYSTAL_23784);
 
 		p1Pillar5 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35257, new WorldPoint(2567, 6158, 1),
 			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar5.setWorldMapPoint(new WorldPoint(2759, 6158, 1));
 		p1Pillar5.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar6 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35258, new WorldPoint(2567, 6172, 1),
 			"Add a green crystal to the pillar to the north.", greenCrystalHighlighted);
-		p1Pillar6.setWorldMapPoint(new WorldPoint(2759, 6172, 1));
 		p1Pillar6.addIcon(ItemID.GREEN_CRYSTAL_23778);
 
 		p1Pillar7 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35259, new WorldPoint(2567, 6200, 1),
 			"Run around to the north and add a mirror to the pillar there. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar7.setWorldMapPoint(new WorldPoint(2759, 6200, 1));
 		p1Pillar7.addIcon(ItemID.HAND_MIRROR_23775);
 
 		// Go downstairs
@@ -160,40 +151,33 @@ public class CrwysLightPuzzle extends ConditionalStep
 
 		p1Pillar10 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35270, new WorldPoint(2581, 6200, 1),
 			"Add the cyan crystal to the pillar next to the stairs.", cyanCrystalHighlighted);
-		p1Pillar10.setWorldMapPoint(new WorldPoint(2773, 6200, 1));
 		p1Pillar10.addIcon(ItemID.CYAN_CRYSTAL_23779);
 
 		// Go upstairs f2
 
 		p1Pillar11 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35092, new WorldPoint(2581, 6200, 2),
 			"Add a mirror to the pillar next to the stairs. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar11.setWorldMapPoint(new WorldPoint(2965, 6200, 2));
 		p1Pillar11.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar12 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35091, new WorldPoint(2581, 6186, 2),
 			"Add a mirror to the pillar to the south. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar12.setWorldMapPoint(new WorldPoint(2965, 6186, 2));
 		p1Pillar12.addIcon(ItemID.HAND_MIRROR_23775);
 
 		// Go downstairs
 
 		p1Pillar13 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35268, new WorldPoint(2581, 6186, 1),
 			"Add a mirror to the pillar to the south. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar13.setWorldMapPoint(new WorldPoint(2773, 6186, 1));
 		p1Pillar13.addIcon(ItemID.HAND_MIRROR_23775);
 
 		goF0ToF1 = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2581, 6203, 0), "");
 
 		goF1ToF0 = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2581, 6203, 1), "");
 		goF1ToF0.addDialogStep("Climb down.");
-		goF1ToF0.setWorldMapPoint(new WorldPoint(2773, 6203, 1));
 
 		goF2ToF1 = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2581, 6203, 2), "");
-		goF2ToF1.setWorldMapPoint(new WorldPoint(2965, 6203, 2));
 
 		goF1ToF2 = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2581, 6203, 1), "");
 		goF1ToF2.addDialogStep("Climb up.");
-		goF1ToF2.setWorldMapPoint(new WorldPoint(2773, 6203, 1));
 	}
 
 	protected void setupItemRequirements()

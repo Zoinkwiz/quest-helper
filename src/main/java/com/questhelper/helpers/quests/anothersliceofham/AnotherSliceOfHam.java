@@ -276,10 +276,8 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 			"Climb up to the next floor.");
 		talkToUrtag = new NpcStep(this, NpcID.URTAG, new WorldPoint(2733, 5366, 1),
 			"Talk to Ur-tag in the north east building.");
-		talkToUrtag.setWorldMapPoint(new WorldPoint(2797, 5429, 1));
 		enterRailway = new ObjectStep(this, ObjectID.DOORWAY_23052, new WorldPoint(2695, 5277, 1),
 			"Enter the railway entrance in the south west of Dorgesh-Kaan.");
-		enterRailway.setWorldMapPoint(new WorldPoint(2760, 5341, 1));
 
 		talkToTegdak = new NpcStep(this, NpcID.TEGDAK, new WorldPoint(2512, 5564, 0), "");
 
@@ -320,10 +318,8 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 			"Leave the railway.");
 		talkToScribe = new NpcStep(this, NpcID.GOBLIN_SCRIBE, new WorldPoint(2716, 5369, 1),
 			"");
-		talkToScribe.setWorldMapPoint(new WorldPoint(2778, 5432, 1));
 		goDownToF0City = new ObjectStep(this, ObjectID.STAIRS_22940, new WorldPoint(2721, 5360, 1),
 			"Go downstairs.");
-		goDownToF0City.setWorldMapPoint(new WorldPoint(2784, 5425, 1));
 		talkToOldak = new NpcStep(this, NpcID.OLDAK, new WorldPoint(2704, 5365, 0), "");
 
 		talkToGenerals = new NpcStep(this, NpcID.GENERAL_WARTFACE, new WorldPoint(2957, 3512, 0),

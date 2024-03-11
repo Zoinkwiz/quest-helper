@@ -150,46 +150,37 @@ public class AmloddLightPuzzle extends ConditionalStep
 		talkToAmlodd.addDialogStep("Yes.");
 
 		collectMirrors = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Collect all the items from the dispenser in the central room.");
-		collectMirrors.setWorldMapPoint(new WorldPoint(2815, 6118, 1));
 		collectMirrors.addDialogStep("Take everything.");
 
 		resetPuzzle = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Pull the lever in the dispenser in the central room.");
-		resetPuzzle.setWorldMapPoint(new WorldPoint(2815, 6118, 1));
 		resetPuzzle.addDialogSteps("Pull the lever.", "Pull it.");
 
 		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35286, new WorldPoint(2609, 6144, 1),
 			"Add a fractured crystal to the pillar to the north.", fracturedCrystalHighlighted);
-		p1Pillar1.setWorldMapPoint(new WorldPoint(2801, 6144, 1));
 		p1Pillar1.addIcon(ItemID.FRACTURED_CRYSTAL_23784);
 
 		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35276, new WorldPoint(2595, 6144, 1),
 			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar2.setWorldMapPoint(new WorldPoint(2787, 6144, 1));
 		p1Pillar2.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar3 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35277, new WorldPoint(2595, 6158, 1),
 			"Add a red crystal to the pillar to the north.", redCrystalHighlighted);
-		p1Pillar3.setWorldMapPoint(new WorldPoint(2787, 6158, 1));
 		p1Pillar3.addIcon(ItemID.RED_CRYSTAL_23776);
 
 		p1Pillar4 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35278, new WorldPoint(2595, 6172, 1),
 			"Add a mirror to the pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
-		p1Pillar4.setWorldMapPoint(new WorldPoint(2787, 6172, 1));
 		p1Pillar4.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar5 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35288, new WorldPoint(2609, 6172, 1),
 			"Add a mirror to the pillar to the east. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar5.setWorldMapPoint(new WorldPoint(2801, 6172, 1));
 		p1Pillar5.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar6 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35289, new WorldPoint(2609, 6186, 1),
 			"Add a mirror to the pillar to the north. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar6.setWorldMapPoint(new WorldPoint(2801, 6186, 1));
 		p1Pillar6.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar7 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35279, new WorldPoint(2595, 6186, 1),
 			"Add a mirror to the pillar to the west. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar7.setWorldMapPoint(new WorldPoint(2787, 6186, 1));
 		p1Pillar7.addIcon(ItemID.HAND_MIRROR_23775);
 
 		// Go to F0
@@ -202,12 +193,10 @@ public class AmloddLightPuzzle extends ConditionalStep
 
 		p1Pillar9 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35287, new WorldPoint(2609, 6158, 1),
 			"Add a mirror to a pillar to the north of where you placed the fractured crystal. Rotate it to point the light east.", handMirrorHighlighted);
-		p1Pillar9.setWorldMapPoint(new WorldPoint(2801, 6158, 1));
 		p1Pillar9.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar10 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35293, new WorldPoint(2623, 6158, 1),
 			"Add a mirror to a pillar to the east. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar10.setWorldMapPoint(new WorldPoint(2815, 6158, 1));
 		p1Pillar10.addIcon(ItemID.HAND_MIRROR_23775);
 
 		// Go to F0 from middle
@@ -256,10 +245,8 @@ public class AmloddLightPuzzle extends ConditionalStep
 
 		goF1ToF0NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2581, 6203, 1), "");
 		goF1ToF0NW.addDialogStep("Climb down.");
-		goF1ToF0NW.setWorldMapPoint(new WorldPoint(2773, 6203, 1));
 
 		goF2ToF1NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2581, 6203, 2), "");
-		goF2ToF1NW.setWorldMapPoint(new WorldPoint(2965, 6203, 2));
 	}
 
 	protected void setupConditions()

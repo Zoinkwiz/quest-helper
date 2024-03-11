@@ -1101,54 +1101,40 @@ public class SongOfTheElves extends BasicQuestHelper
 		goF0ToF1 = new ObjectStep(this, ObjectID.STAIRS_35387, new WorldPoint(2626, 6153, 0), "");
 
 		goF1ToF0 = new ObjectStep(this, ObjectID.STAIRS_35388, new WorldPoint(2626, 6153, 1), "");
-		((DetailedQuestStep) goF1ToF0).setWorldMapPoint(new WorldPoint(2818, 6154, 1));
 
 		goF2ToF1 = new ObjectStep(this, ObjectID.STAIRS_35388, new WorldPoint(2634, 6166, 2), "");
-		((DetailedQuestStep) goF2ToF1).setWorldMapPoint(new WorldPoint(3017, 6154, 2));
 		goF1ToF2 = new ObjectStep(this, ObjectID.STAIRS_35387, new WorldPoint(2634, 6166, 1), "");
-		((DetailedQuestStep) goF1ToF2).setWorldMapPoint(new WorldPoint(2826, 6154, 1));
 		goF1ToF2NW = new ObjectStep(this, ObjectID.STAIRS_35389, new WorldPoint(2581, 6203, 1), "");
 		goF1ToF2NW.addDialogStep("Climb up.");
-		((DetailedQuestStep) goF1ToF2NW).setWorldMapPoint(new WorldPoint(2773, 6203, 1));
 
 		goF1ToF2SW = new ObjectStep(this, ObjectID.STAIRS_35389, new WorldPoint(2584, 6137, 1), "");
 		goF1ToF2SW.addDialogStep("Climb up.");
-		((DetailedQuestStep) goF1ToF2SW).setWorldMapPoint(new WorldPoint(2776, 6137, 1));
 
 		goF1ToF2E = new ObjectStep(this, ObjectID.STAIRS_35387, new WorldPoint(2682, 6144, 1), "");
-		((DetailedQuestStep) goF1ToF2E).setWorldMapPoint(new WorldPoint(2874, 6144, 1));
 
 		openSealOfIthell = new ObjectStep(this, NullObjectID.NULL_36730, new WorldPoint(2676, 6102, 1), "");
-		((DetailedQuestStep) openSealOfIthell).setWorldMapPoint(new WorldPoint(2866, 6102, 1));
 		((DetailedQuestStep) openSealOfIthell).setLinePoints(pathToIthell);
 		((DetailedQuestStep) openSealOfIthell).setWorldLinePoints(mapPathToIthell);
 
 		touchIthellSeal = new ObjectStep(this, NullObjectID.NULL_36730, new WorldPoint(2676, 6102, 1), "");
-		((DetailedQuestStep) openSealOfIthell).setWorldMapPoint(new WorldPoint(2866, 6102, 1));
 
 		touchCadarnSeal = new ObjectStep(this, NullObjectID.NULL_36725, new WorldPoint(2623, 6097, 0), "");
 
 		touchCrwysSeal = new ObjectStep(this, NullObjectID.NULL_36726, new WorldPoint(2576, 6172, 1), "");
-		((DetailedQuestStep) touchCrwysSeal).setWorldMapPoint(new WorldPoint(2768, 6172, 1));
 
 		touchAmloddSeal = new ObjectStep(this, NullObjectID.NULL_36727, new WorldPoint(2614, 6158, 0), "");
 
 		touchMeilyrSeal = new ObjectStep(this, NullObjectID.NULL_36731, new WorldPoint(2581, 6163, 2), "");
-		((DetailedQuestStep) touchMeilyrSeal).setWorldMapPoint(new WorldPoint(2965, 6163, 2));
 
 		touchHefinSeal = new ObjectStep(this, NullObjectID.NULL_36728, new WorldPoint(2562, 6130, 2), "");
-		((DetailedQuestStep) touchHefinSeal).setWorldMapPoint(new WorldPoint(2946, 6130, 2));
 
 		touchTrahaearnSeal = new ObjectStep(this, NullObjectID.NULL_36732, new WorldPoint(2646, 6144, 2), "");
-		((DetailedQuestStep) touchTrahaearnSeal).setWorldMapPoint(new WorldPoint(3030, 2646, 2));
 
 		touchIorwerthSeal = new ObjectStep(this, NullObjectID.NULL_36729, new WorldPoint(2651, 6167, 1), "");
-		((DetailedQuestStep) touchIorwerthSeal).setWorldMapPoint(new WorldPoint(3843, 6167, 1));
 
 
 		leaveLibrary = new ObjectStep(this, ObjectID.PORTAL_35075, new WorldPoint(2623, 6088, 1),
 			"Leave the library. A quick way to do this is hopping worlds.");
-		((DetailedQuestStep) (leaveLibrary)).setWorldMapPoint(new WorldPoint(2815, 6088, 1));
 
 		talkToArianwynAfterLightPuzzle = new NpcStep(this, NpcID.ARIANWYN_9014, new WorldPoint(2354, 3170, 0), "Talk to Arianwyn in Lletya.");
 		askBaxtorianHowToFindCrwys = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2352, 3170, 0),
@@ -1234,36 +1220,26 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToBaxAfterLletyaFightForIthellClue = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2801, 6116, 0),
 			"Talk to Baxtorian in Lletya about Ithell and Meilyr.");
 		talkToBaxAfterLletyaFightForIthellClue.addDialogStep("What's Lady Ithell's clue?");
-		talkToBaxAfterLletyaFightForIthellClue.setWorldMapPoint(new WorldPoint(2354, 3171, 0));
 
 		talkToBaxAfterLletyaFightForMeilyrClue = new NpcStep(this, NpcID.BAXTORIAN, new WorldPoint(2801, 6116, 0),
 			"Talk to Baxtorian in Lletya about Ithell and Meilyr.");
 		talkToBaxAfterLletyaFightForMeilyrClue.addDialogStep("What's Lady Meilyr's clue?");
-		talkToBaxAfterLletyaFightForMeilyrClue.setWorldMapPoint(new WorldPoint(2354, 3171, 0));
 
 		talkToBaxAfterLletyaFightForIthellClue.addSubSteps(talkToBaxAfterLletyaFightForMeilyrClue);
 
 		checkSymbol1 = new ObjectStep(this, NullObjectID.NULL_37307, new WorldPoint(2798, 6107, 0), "Touch the symbol on the bank's wall.");
-		checkSymbol1.setWorldMapPoint(new WorldPoint(2350, 3163, 0));
 		checkSymbol2 = new ObjectStep(this, NullObjectID.NULL_37305, new WorldPoint(2771, 6109, 0),
 			"Touch the symbol in the building north of Elena.");
-		checkSymbol2.setWorldMapPoint(new WorldPoint(2323, 3165, 0));
 		checkSymbol3 = new ObjectStep(this, NullObjectID.NULL_37306, new WorldPoint(2789, 6127, 0), "Touch the symbol in the General Store.");
-		checkSymbol3.setWorldMapPoint(new WorldPoint(2341, 3183, 0));
 
 		goToSecondFloorSymbols = new ObjectStep(this, ObjectID.LADDER_8744, new WorldPoint(2783, 6127, 0), "Go up to the top floor of Lletya.");
-		goToSecondFloorSymbols.setWorldMapPoint(new WorldPoint(2335, 3183, 0));
 		checkSymbol4 = new ObjectStep(this, NullObjectID.NULL_37304, new WorldPoint(2783, 6129, 1), "Touch the symbol above the General Store.");
-		checkSymbol4.setWorldMapPoint(new WorldPoint(2335, 3185, 1));
 		checkSymbol5 = new ObjectStep(this, NullObjectID.NULL_37303, new WorldPoint(2800, 6118, 1), "Touch the symbol at the altar.");
-		checkSymbol5.setWorldMapPoint(new WorldPoint(2352, 3174, 1));
 
 		buildStatue = new ObjectStep(this, NullObjectID.NULL_37309, new WorldPoint(2786, 6116, 0),
 			"Make a statue in the middle of Lletya.", saw, hammer, limestoneBricks8);
-		buildStatue.setWorldMapPoint(new WorldPoint(2338, 3172, 0));
 
 		talkToIthell = new NpcStep(this, NpcID.LADY_KELYN_ITHELL, new WorldPoint(2783, 6115, 0), "Talk to Lady Kelyn Ithell in Lletya.");
-		talkToIthell.setWorldMapPoint(new WorldPoint(2334, 3172, 0));
 
 		digNearSwamp = new DigStep(this, new WorldPoint(2225, 3133, 0), "Dig at the marked spot near Port Tyras.");
 		digNearSTASH = new DigStep(this, new WorldPoint(2203, 3061, 0), "Dig at the marked spot in Zul-Andra.");

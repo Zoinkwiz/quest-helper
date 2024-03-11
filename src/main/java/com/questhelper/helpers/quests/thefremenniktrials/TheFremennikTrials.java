@@ -742,7 +742,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		talkToSigli = new NpcStep(this, NpcID.SIGLI_THE_HUNTSMAN, new WorldPoint(2658, 3650, 0), "Talk to Sigli south of the longhall for a hunters' talisman.");
 		talkToSigli.addDialogSteps("Ask about becoming a Fremennik", "What's a Draugen?", "Yes");
 
-		huntDraugen = new DetailedQuestStep(this, "Use the hunter's talisman to hunt down the Draugen.");
+		huntDraugen = new NpcStep(this, NpcID.BUTTERFLY_3923, "Use the hunter's talisman to hunt down the Draugen. It'll appear near one of the butterflies in the area.", true);
 
 		returnToSigli = new NpcStep(this, NpcID.SIGLI_THE_HUNTSMAN, new WorldPoint(2658, 3650, 0), "Return the charged hunters' talisman to Sigli.", chargedHuntersTalisman);
 

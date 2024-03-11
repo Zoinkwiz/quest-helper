@@ -497,45 +497,27 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (!requirements.isEmpty() || !additionalRequirements.isEmpty())
-		{
-			panelComponent.getChildren().add(LineComponent.builder().left("Requirements:").build());
-		}
-		Stream<Requirement> stream = requirements.stream();
-		if (!additionalRequirements.isEmpty())
-		{
-			stream = Stream.concat(stream, additionalRequirements.stream());
-		}
-		stream
+		processRequirements(Stream.concat(requirements.stream(), additionalRequirements.stream()), panelComponent, "Requirements:");
+		processRequirements(recommended.stream(), panelComponent, "Recommended:");
+		processRequirements(teleport.stream(), panelComponent, "Teleports:");
+	}
+
+	private void processRequirements(Stream<Requirement> requirementsStream, PanelComponent panelComponent, String title)
+	{
+		PanelComponent tmpComponent = new PanelComponent();
+
+		requirementsStream
 			.distinct()
 			.filter(Objects::nonNull)
 			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
 			.flatMap(Collection::stream)
-			.forEach(line -> panelComponent.getChildren().add(line));
+			.forEach(line -> tmpComponent.getChildren().add(line));
 
-		if (!recommended.isEmpty())
+		if (tmpComponent.getChildren().size() > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder().left("Recommended:").build());
+			panelComponent.getChildren().add(LineComponent.builder().left(title).build());
+			panelComponent.getChildren().addAll(tmpComponent.getChildren());
 		}
-		Stream<Requirement> streamRecommended = recommended.stream();
-		streamRecommended
-			.distinct()
-			.filter(Objects::nonNull)
-			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
-			.flatMap(Collection::stream)
-			.forEach(line -> panelComponent.getChildren().add(line));
-
-		/* Teleports */
-		if (!teleport.isEmpty())
-		{
-			panelComponent.getChildren().add(LineComponent.builder().left("Teleport:").build());
-		}
-		Stream<Requirement> streamTeleport = teleport.stream();
-		streamTeleport
-			.distinct()
-			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
-			.flatMap(Collection::stream)
-			.forEach(line -> panelComponent.getChildren().add(line));
 	}
 
 	protected Widget getInventoryWidget()

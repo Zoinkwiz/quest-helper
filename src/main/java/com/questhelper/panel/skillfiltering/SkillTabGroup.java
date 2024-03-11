@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.rewards;
+package com.questhelper.panel.skillfiltering;
 
-import java.util.Locale;
-import javax.annotation.Nonnull;
-import lombok.Getter;
-import net.runelite.api.Skill;
-import net.runelite.client.util.QuantityFormatter;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JPanel;
 
-public class ExperienceReward implements Reward
+public class SkillTabGroup extends JPanel
 {
-	@Getter
-    private final Skill skill;
-    private final int experience;
-	/**
-	 * Set to true if this experience reward is provided in the form of a single-skill XP lamp
-	 */
-	private final boolean lamp;
+	/* The panel on which the content tab's content will be displayed on. */
+	private final JPanel display;
+	/* A list of all the tabs contained in this group. */
+	private final List<SkillIconLabel> tabs = new ArrayList<>();
 
-    public ExperienceReward(Skill skill, int experience)
-    {
-		this(skill, experience, false);
-    }
-
-	public ExperienceReward(Skill skill, int experience, boolean lamp)
+	public SkillTabGroup(JPanel display)
 	{
-		this.skill = skill;
-		this.experience = experience;
-		this.lamp = lamp;
+		this.display = display;
+		if (display != null)
+		{
+			this.display.setLayout(new BorderLayout());
+		}
+		setLayout(new FlowLayout(FlowLayout.CENTER, 8, 0));
+		setOpaque(false);
 	}
 
-    @Nonnull
-    @Override
-    public RewardType rewardType()
-    {
-        return RewardType.EXPERIENCE;
-    }
+	public SkillTabGroup()
+	{
+		this(null);
+	}
 
-    @Nonnull
-    @Override
-    public String getDisplayText()
-    {
-		if (lamp) {
-			return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience Lamp";
-		} else {
-			return  QuantityFormatter.formatNumber(experience) + " " + Character.toUpperCase(skill.name().charAt(0)) + skill.name().toLowerCase(Locale.ROOT).substring(1) + " Experience";
-		}
-    }
+	public void addTab(SkillIconLabel tab)
+	{
+		tabs.add(tab);
+		add(tab, BorderLayout.NORTH);
+	}
 }

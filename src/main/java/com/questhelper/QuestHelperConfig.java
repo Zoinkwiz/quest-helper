@@ -27,6 +27,8 @@ package com.questhelper;
 import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,6 +37,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import net.runelite.api.Skill;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -165,7 +168,7 @@ public interface QuestHelperConfig extends Config
 		@Getter
 		private final String displayName;
 
-		protected final boolean shouldDisplay;
+		private final boolean shouldDisplay;
 
 		QuestFilter(Predicate<QuestHelper> predicate)
 		{

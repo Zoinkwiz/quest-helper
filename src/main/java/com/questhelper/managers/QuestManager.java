@@ -27,6 +27,7 @@ package com.questhelper.managers;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.config.SkillFiltering;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -235,6 +236,7 @@ public class QuestManager
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
 				.filter(QuestDetails::showCompletedQuests)
+				.filter(SkillFiltering::passesSkillFilter)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers()

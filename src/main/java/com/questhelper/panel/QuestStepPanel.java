@@ -188,7 +188,7 @@ public class QuestStepPanel extends JPanel
 
 		for (Requirement req : reqs)
 		{
-			QuestRequirementPanel reqPanel = new QuestRequirementPanel(req);
+			QuestRequirementPanel reqPanel = new QuestRequirementPanel(req, null);
 			requirementPanels.add(reqPanel);
 			questRequirementsListPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 		}

@@ -24,6 +24,9 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.managers.QuestManager;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.tools.Icon;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
@@ -50,7 +53,7 @@ public class QuestRequirementPanel extends JPanel
 	@Getter
 	private final Requirement requirement;
 
-	public QuestRequirementPanel(Requirement requirement)
+	public QuestRequirementPanel(Requirement requirement, QuestManager questManager)
 	{
 		this.requirement = requirement;
 
@@ -71,6 +74,7 @@ public class QuestRequirementPanel extends JPanel
 		text.append(requirement.getDisplayText());
 		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
 		String html2 = "</body></html>";
+		String html1Underline = "<html><body style='padding: 0px; margin: 0px; width: 140px; text-decoration:underline'>";
 
 		label = new JLabel(html1 + text + html2);
 		label.setForeground(Color.GRAY);
@@ -120,6 +124,28 @@ public class QuestRequirementPanel extends JPanel
 							menu.show(label, e.getX(), e.getY());
 						}
 					}
+				}
+			});
+		}
+		else if (questManager != null && requirement instanceof QuestRequirement)
+		{
+			QuestHelper quest = ((QuestRequirement) requirement).getQuest().getQuestHelper();
+			if (quest.isCompleted()) return;
+			label.addMouseListener(new MouseAdapter()
+			{
+				public void mouseClicked(MouseEvent event)
+				{
+					questManager.setSidebarSelectedQuest(((QuestRequirement) requirement).getQuest().getQuestHelper());
+				}
+
+				public void mouseEntered(MouseEvent evt)
+				{
+					label.setText(html1Underline + text + html2);
+				}
+
+				public void mouseExited(MouseEvent evt)
+				{
+					label.setText(html1 + text + html2);
 				}
 			});
 		}

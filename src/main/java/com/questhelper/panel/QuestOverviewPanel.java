@@ -481,7 +481,7 @@ public class QuestOverviewPanel extends JPanel
 		{
 			for (Requirement generalRecommend : requirements)
 			{
-				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend);
+				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend, questManager);
 				panels.add(reqPanel);
 				listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 
@@ -503,7 +503,7 @@ public class QuestOverviewPanel extends JPanel
 		{
 			for (Requirement generalRecommend : requirements)
 			{
-				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend);
+				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend, questManager);
 				panels.add(reqPanel);
 				listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
 
@@ -598,7 +598,7 @@ public class QuestOverviewPanel extends JPanel
 			public void mouseEntered(java.awt.event.MouseEvent evt)
 			{
 				wikiBtn.setForeground(Color.blue.brighter().brighter().brighter());
-				wikiBtn.setText("<html><body style = 'text-decoration:underline'>Open RuneScape Wiki</body></html>");
+				wikiBtn.setText("<html><body style='text-decoration:underline'>Open RuneScape Wiki</body></html>");
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt)

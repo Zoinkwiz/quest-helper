@@ -103,11 +103,13 @@ public class UndergroundPass extends BasicQuestHelper
 		collectOrb3, collectOrb4, orbsToFurnace, climbDownWell, pickCellLock, digMud, crossLedge, navigateMaze,
 		goThroughPipe, searchUnicornCage, useRailingOnBoulder, searchUnicornCageAgain, leaveUnicornArea,
 		walkToKnights, killJerro, killCarl, killHarry, useBadgeJerroOnWell, useBadgeHarryOnWell, useBadgeCarlOnWell,
-		useUnicornHornOnWell, openIbansDoor, descendCave, talkToNiloof, talkToKlank, goBackUpToIbansCavern,
+		useUnicornHornOnWell, openIbansDoor, descendCave, talkToNiloof, talkToKlankForGauntlets, goBackUpToIbansCavern,
 		pickUpWitchsCat, useCatOnDoor, searchWitchsChest, killHolthion, killDoomion, killOthainian,
 		searchDoomionsChest, returnToDwarfs, pickUpBucket, pickUpTinderbox, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb,
 		killKalrag, ascendToHalfSoulless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
 		talkToKingLathasAfterTemple, leaveFallArea, useAshOnDoll, useShadowOnDoll, useDoveOnDoll, goUpToLathasToFinish;
+
+	ConditionalStep goTalkToKlankForGauntlets;
 
 	//Zones
 	Zone castleFloor2, westArdougne, beforeRockslide1, beforeRockslide2, beforeRockslide3, beforeBridge,
@@ -455,8 +457,8 @@ public class UndergroundPass extends BasicQuestHelper
 		talkToNiloof = new NpcStep(this, NpcID.NILOOF, new WorldPoint(2313, 9806, 0), "Talk to Niloof.");
 		talkToNiloof.addSubSteps(descendCave);
 
-		talkToKlank = new NpcStep(this, NpcID.KLANK, "Talk to Klank.");
-		talkToKlank.addDialogStep("What happened to them?");
+		talkToKlankForGauntlets = new NpcStep(this, NpcID.KLANK, "");
+		talkToKlankForGauntlets.addDialogStep("What happened to them?");
 
 		goBackUpToIbansCavern = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2336, 9793, 0), "Return up to Iban's Cavern.");
 
@@ -667,19 +669,24 @@ public class UndergroundPass extends BasicQuestHelper
 		talkingToNiloof.addStep(isInDwarfCavern, talkToNiloof);
 		talkingToNiloof.addStep(isInFinalArea, descendCave);
 
+		goTalkToKlankForGauntlets = new ConditionalStep(this, gettingToFinalSection, "Talk to Klank to obtain his gauntlets. If you've done so before, you may need to pay 5,000gp for them.");
+		goTalkToKlankForGauntlets.addStep(isInDwarfCavern, talkToKlankForGauntlets);
+		goTalkToKlankForGauntlets.addStep(isInFinalArea, descendCave);
+
 		ConditionalStep theWitch = new ConditionalStep(this, gettingToFinalSection);
 		theWitch.addStep(new Conditions(isInFinalArea, givenWitchCat), searchWitchsChest);
 		theWitch.addStep(new Conditions(isInFinalArea, witchsCat), useCatOnDoor);
 		theWitch.addStep(isInFinalArea, pickUpWitchsCat);
 		theWitch.addStep(new Conditions(isInDwarfCavern, haveKlanksGauntlets), goBackUpToIbansCavern);
-		theWitch.addStep(new Conditions(isInDwarfCavern), talkToKlank);
+		theWitch.addStep(new Conditions(isInDwarfCavern), goTalkToKlankForGauntlets);
 
 		ConditionalStep imbuingTheDoll = new ConditionalStep(this, gettingToFinalSection);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared, robeBottom, robeTop), enterTemple);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared), killDisciple);
 		imbuingTheDoll.addStep(new Conditions(dollImbued, dollAshed, kalragKilled, ibansDove), useDoveOnDoll);
-		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled), searchCage);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled), ascendToHalfSoulless);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, klanksGauntlets), searchCage);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled, klanksGauntlets), ascendToHalfSoulless);
+		imbuingTheDoll.addStep(new Conditions(dollImbued, dollAshed, kalragKilled), goTalkToKlankForGauntlets);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed), killKalrag);
 		imbuingTheDoll.addStep(new Conditions(dollImbued, pouredBrew, ibansAshes), useAshOnDoll);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, pouredBrew, tinderbox), useTinderboxOnTomb);
@@ -807,7 +814,7 @@ public class UndergroundPass extends BasicQuestHelper
 			climbDownWell), rope2, bow, arrows, spade, plank, bucket, tinderbox, combatEquipment));
 		allSteps.add(new PanelDetails("Descending Deeper", Arrays.asList(navigateMaze, searchUnicornCage, useRailingOnBoulder)));
 		allSteps.add(new PanelDetails("Cold-blooded Killing", Arrays.asList(searchUnicornCageAgain, walkToKnights, killJerro, killHarry, killCarl, useBadgeJerroOnWell, openIbansDoor)));
-		allSteps.add(new PanelDetails("The Witch Kardia", Arrays.asList(talkToNiloof, pickUpWitchsCat, useCatOnDoor, searchWitchsChest)));
+		allSteps.add(new PanelDetails("The Witch Kardia", Arrays.asList(talkToNiloof, goTalkToKlankForGauntlets, pickUpWitchsCat, useCatOnDoor, searchWitchsChest)));
 		allSteps.add(new PanelDetails("Imbuing the Doll", Arrays.asList(killHolthion, killDoomion, killOthainian, searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag, searchCage)));
 		allSteps.add(new PanelDetails("Entering the Temple", Arrays.asList(killDisciple, enterTemple, useDollOnWell)));
 		allSteps.add(new PanelDetails("Foggy Memories", Arrays.asList(talkToKoftikAfterTemple, talkToKingLathasAfterTemple)));

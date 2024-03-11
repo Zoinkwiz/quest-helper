@@ -75,7 +75,7 @@ public class DragonSlayer extends BasicQuestHelper
 	Requirement askedAboutShip, askedAboutShield, askedAboutMelzar, askedAboutThalzar, askedAboutLozar, askedAllQuestions, askedOracleAboutMap,
 		inDwarvenMines, silkUsed, lobsterPotUsed, mindBombUsed, unfiredBowlUsed, thalzarDoorOpened, thalzarChest2Nearby, hasMapPart1, hasMapPart2,
 		hasMapPart3, inMelzarsMaze, inRatRoom, inPostRatRoom, inGhostRoom, inPostGhostRoom, inSkeletonRoom, inPostSkeletonRoom, inLadderRoom,
-		inRoomToBasement, inZombieRoom, inMelzarRoom, inDemonRoom, inLastMelzarRoom, hasShield, inShipHull, onShipDeck, hasBoughtBoat,
+		inRoomToBasement, inZombieRoom, inMelzarRoom, inDemonRoom, inLastMelzarRoom, inCastleF1, hasShield, inShipHull, onShipDeck, hasBoughtBoat,
 		hasRepairedHullOnce, hasRepairedHullTwice, fullyRepairedHull, onCrandorSurface, inCrandorUnderground, inElvargArea, inKaramjaVolcano, unlockedShortcut;
 
 	ConditionalStep getLozarPiece, getThalzarPiece, getMelzarPiece, getShieldSteps;
@@ -84,7 +84,7 @@ public class DragonSlayer extends BasicQuestHelper
 		goIntoDwarvenMine, useSilkOnDoor, usePotOnDoor, useUnfiredBowlOnDoor, useMindBombOnDoor, searchThalzarChest, searchThalzarChest2,
 		optionsForLozarPiece, enterMelzarsMaze, killRat, openRedDoor, goUpRatLadder, killGhost, openOrangeDoor, goUpGhostLadder,
 		killSkeleton, openYellowDoor, goDownSkeletonLadder, goDownLadderRoomLadder, goDownBasementEntryLadder, openBlueDoor, killZombie,
-		killMelzar, openMagntaDoor, killLesserDemon, openGreenDoor, openMelzarChest, getShield, talkToKlarense, boardShip1, boardShip2, boardShip3,
+		killMelzar, openMagntaDoor, killLesserDemon, openGreenDoor, openMelzarChest, goUpToDukeHoracio, getShield, talkToKlarense, boardShip1, boardShip2, boardShip3,
 		goDownShipLadder, repairShip, repairShip2, repairShip3, repairMap, talkToNed, boardShipToGo, talkToNedOnShip, enterCrandorHole, unlockShortcut,
 		returnThroughShortcut, enterElvargArea, goDownIntoKaramjaVolcano, repairShipAgainAndSail, killElvarg, finishQuest;
 
@@ -92,7 +92,7 @@ public class DragonSlayer extends BasicQuestHelper
 	Zone dwarvenMines, melzarsMaze, melzarsBasement, ratRoom1, ratRoom2, ratRoom3, postRatRoom1, postRatRoom2, ghostRoom1, ghostRoom2,
 		postGhostRoom1, postGhostRoom2, skeletonRoom1, skeletonRoom2, postSkeletonRoom1, postSkeletonRoom2, postSkeletonRoom3, ladderRoom,
 		roomToBasement1, roomToBasement2, zombieRoom, melzarRoom1, melzarRoom2, demonRoom1, demonRoom2, lastMelzarRoom1, lastMelzarRoom2,
-		shipHull, shipDeck, crandorSurface, crandorUnderground, elvargArea, karamjaVolcano;
+		shipHull, shipDeck, crandorSurface, crandorUnderground, elvargArea, karamjaVolcano, castleF1;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -148,7 +148,8 @@ public class DragonSlayer extends BasicQuestHelper
 		getMelzarPiece.addStep(inRatRoom, killRat);
 		getMelzarPiece.setLockingCondition(hasMapPart3);
 
-		getShieldSteps = new ConditionalStep(this, getShield);
+		getShieldSteps = new ConditionalStep(this, goUpToDukeHoracio);
+		getShieldSteps.addStep(inCastleF1, getShield);
 		getShieldSteps.setLockingCondition(hasShield);
 
 		ConditionalStep getBoat = new ConditionalStep(this, talkToKlarense);
@@ -275,6 +276,8 @@ public class DragonSlayer extends BasicQuestHelper
 		lastMelzarRoom1 = new Zone(new WorldPoint(2924, 9656, 0), new WorldPoint(2942, 9656, 0));
 		lastMelzarRoom2 = new Zone(new WorldPoint(2926, 9657, 0), new WorldPoint(2942, 9657, 0));
 
+		castleF1 = new Zone(new WorldPoint(3203, 3206, 1), new WorldPoint(3217, 3231, 1));
+
 		shipDeck = new Zone(new WorldPoint(3041, 3207, 1), new WorldPoint(3050, 3209, 2));
 		shipHull = new Zone(new WorldPoint(3041, 9639, 1), new WorldPoint(3050, 9641, 1));
 
@@ -321,6 +324,7 @@ public class DragonSlayer extends BasicQuestHelper
 		inDemonRoom = new ZoneRequirement(demonRoom1, demonRoom2);
 		inLastMelzarRoom = new ZoneRequirement(lastMelzarRoom1, lastMelzarRoom2);
 
+		inCastleF1 = new ZoneRequirement(castleF1);
 		hasShield = antidragonShield;
 
 		onShipDeck = new ZoneRequirement(shipDeck);
@@ -419,11 +423,14 @@ public class DragonSlayer extends BasicQuestHelper
 
 		openMelzarChest = new ObjectStep(this, ObjectID.CHEST_2603, new WorldPoint(2935, 9657, 0), "Open the chest and get Melzar's map part.");
 
+		goUpToDukeHoracio = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(3205, 3208, 0), "Talk to Duke Horacio on the first floor of Lumbridge castle for the anti-dragon shield if you don't have one.");
+
 		getShield = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3220, 1), "Talk to Duke Horacio on the first floor of Lumbridge castle for the anti-dragon shield if you don't have one.");
 		getShield.addDialogStep("I seek a shield that will protect me from dragonbreath.");
 		getShield.addDialogStep("Elvarg, the dragon of Crandor island!");
 		getShield.addDialogStep("Yes");
 		getShield.addDialogStep("So, are you going to give me the shield or not?");
+		getShield.addSubSteps(goUpToDukeHoracio);
 
 		talkToKlarense = new NpcStep(this, NpcID.KLARENSE, new WorldPoint(3044, 3203, 0), "Talk to Klarense on the south Port Sarim docks and buy his boat.", planks3, nails90, hammer, twoThousandCoins);
 		talkToKlarense.addDialogStep("I'd like to buy her.");

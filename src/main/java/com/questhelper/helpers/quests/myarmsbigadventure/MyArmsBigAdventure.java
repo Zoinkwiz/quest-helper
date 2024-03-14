@@ -310,17 +310,13 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		enterStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
 
 		goDownToChef = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Go down the south staircase.");
-		goDownToChef.setWorldMapPoint(new WorldPoint(2971, 10115, 1));
 
 		goUpToChef = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
-		goUpToChef.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		talkToBurntmeat = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat in the Troll Stronghold.");
-		talkToBurntmeat.setWorldMapPoint(new WorldPoint(2911, 10087, 1));
 		talkToBurntmeat.addSubSteps(enterStronghold, goDownToChef, goUpToChef);
 		talkToBurntmeat.addDialogStep("What do you want now?");
 		talkToMyArm = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2855, 10053, 1), "Talk to My Arm near Burntmeat.");
-		talkToMyArm.setWorldMapPoint(new WorldPoint(2919, 10084, 1));
 		talkToMyArm.addDialogStep("Alright, I'll lend him a hand.");
 
 		useBucketOnPot = new ObjectStep(this, ObjectID.COOKING_POT, new WorldPoint(2864, 3591, 0),
@@ -331,32 +327,24 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		enterStrongholdWithLump = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to My Arm with the goutweedy lump.", goutLump);
 
 		goDownToArmWithLump = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Return to My Arm with the goutweedy lump.", goutLump);
-		goDownToArmWithLump.setWorldMapPoint(new WorldPoint(2971, 10115, 1));
 
 		goUpToArmWithLump = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to My Arm with the goutweedy lump.", goutLump);
-		goUpToArmWithLump.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		talkToArmWithLump = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2855, 10053, 1), "Return to My Arm with the goutweedy lump.", goutLump);
-		talkToArmWithLump.setWorldMapPoint(new WorldPoint(2919, 10084, 1));
 		talkToArmWithLump.addSubSteps(goUpToArmWithLump, goDownToArmWithLump, enterStrongholdWithLump);
 
 		enterStrongholdAfterLump = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to My Arm.");
 
 		goDownAfterLump = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Return to My Arm.");
-		goDownAfterLump.setWorldMapPoint(new WorldPoint(2971, 10115, 1));
 
 		goUpAfterLump = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to My Arm.");
-		goUpAfterLump.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		talkToArmAfterLump = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2855, 10053, 1), "Return to My Arm.");
-		talkToArmAfterLump.setWorldMapPoint(new WorldPoint(2919, 10084, 1));
 
 		talkToArmWithLump.addSubSteps(goUpToArmWithLump, goDownToArmWithLump, enterStrongholdWithLump, goUpAfterLump, goDownAfterLump, enterStrongholdAfterLump, talkToArmAfterLump);
 
 		goUpFromF1ToMyArm = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
-		goUpFromF1ToMyArm.setWorldMapPoint(new WorldPoint(2907, 10083, 1));
 		goUpToMyArm = new ObjectStep(this, ObjectID.TROLL_LADDER_18834, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
-		goUpToMyArm.setWorldMapPoint(new WorldPoint(2959, 10140, 0));
 		talkToMyArmUpstairs = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2835, 3694, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
 		talkToMyArmUpstairs.addSubSteps(goUpFromF1ToMyArm, goUpToMyArm);
 
@@ -381,11 +369,8 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		enterStrongholdForFight = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0),
 			"Return to My Arm on the roof. Be prepared to fight a baby and giant Roc.", combatGear, rake, superCompost, hardyGout, dibber, spade);
 		goUpToRoofForFight = new ObjectStep(this, ObjectID.TROLL_LADDER_18834, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
-		goUpToRoofForFight.setWorldMapPoint(new WorldPoint(2959, 10140, 0));
 		goUpFromF1ForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
-		goUpFromF1ForFight.setWorldMapPoint(new WorldPoint(2907, 10083, 1));
 		goUpFromPrisonForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to My Arm, ready to fight.");
-		goUpFromPrisonForFight.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 		talkToMyArmForFight = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
 		talkToMyArmForFight.addSubSteps(enterStrongholdForFight, goUpToRoofForFight, goUpFromF1ForFight, goUpFromPrisonForFight);
 
@@ -416,19 +401,15 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		goDownFromMyArmToBurntmeat = new ObjectStep(this, ObjectID.TROLL_LADDER, new WorldPoint(2831, 3677, 0), "Go talk to Burntmeat.");
 
 		goDownToBurntmeat = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Go talk to Burntmeat.");
-		goDownToBurntmeat.setWorldMapPoint(new WorldPoint(2971, 10115, 1));
 
 		talkToBurntmeatAgain = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1),
 			"Talk to Burntmeat in the Troll Stronghold.");
-		talkToBurntmeatAgain.setWorldMapPoint(new WorldPoint(2911, 10087, 1));
 		talkToBurntmeatAgain.addSubSteps(goDownFromMyArmToBurntmeat, goDownToBurntmeat);
 
 		enterStrongholdFinish = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0),
 			"Talk to My Arm to finish the quest.");
 		goUpToMyArmFinish = new ObjectStep(this, ObjectID.TROLL_LADDER_18834, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
-		goUpToMyArmFinish.setWorldMapPoint(new WorldPoint(2959, 10140, 0));
 		goUpFromBurntmeatFinish = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
-		goUpFromBurntmeatFinish.setWorldMapPoint(new WorldPoint(2907, 10083, 1));
 
 		talkToMyArmFinish = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Talk to My Arm to finish the quest.");
 		talkToMyArmFinish.addSubSteps(goUpToMyArmFinish, goUpFromBurntmeatFinish, enterStrongholdFinish);

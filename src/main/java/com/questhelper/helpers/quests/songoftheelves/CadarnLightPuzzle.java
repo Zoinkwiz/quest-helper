@@ -84,17 +84,14 @@ public class CadarnLightPuzzle extends ConditionalStep
 		setupConditions();
 
 		collectMirrors = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Collect 7 mirrors and a red crystal from the dispenser in the central room.");
-		collectMirrors.setWorldMapPoint(new WorldPoint(2815, 6118, 1));
 		collectMirrors.addDialogStep("Take everything.");
 
 		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35287, new WorldPoint(2609, 6158, 1),
 			"Add a mirror to a pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
-		p1Pillar1.setWorldMapPoint(new WorldPoint(2801, 6158, 1));
 		p1Pillar1.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35293, new WorldPoint(2623, 6158, 1),
 			"Add a mirror to a pillar to the east. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar2.setWorldMapPoint(new WorldPoint(2815, 6158, 1));
 		p1Pillar2.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36705, new WorldPoint(2623, 6158, 0),

@@ -195,21 +195,17 @@ public class HefinLightPuzzle extends ConditionalStep
 		talkToAmlodd.addDialogStep("Yes.");
 
 		collectMirrors = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Collect all the items from the dispenser in the central room.");
-		collectMirrors.setWorldMapPoint(new WorldPoint(2815, 6118, 1));
 		collectMirrors.addDialogStep("Take everything.");
 
 		resetPuzzle = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Pull the lever in the dispenser in the central room.");
-		resetPuzzle.setWorldMapPoint(new WorldPoint(2815, 6118, 1));
 		resetPuzzle.addDialogSteps("Pull the lever.", "Pull it.");
 
 		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35287, new WorldPoint(2609, 6158, 1),
 			"Add a mirror to a pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
-		p1Pillar1.setWorldMapPoint(new WorldPoint(2801, 6158, 1));
 		p1Pillar1.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35293, new WorldPoint(2623, 6158, 1),
 			"Add a mirror to a pillar to the east. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar2.setWorldMapPoint(new WorldPoint(2815, 6158, 1));
 		p1Pillar2.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36705, new WorldPoint(2623, 6158, 0),
@@ -238,22 +234,18 @@ public class HefinLightPuzzle extends ConditionalStep
 
 		p1Pillar9 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35273, new WorldPoint(2595, 6102, 1),
 			"Add a mirror to a pillar to the south west. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar9.setWorldMapPoint(new WorldPoint(2787, 6102, 1));
 		p1Pillar9.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar10 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35272, new WorldPoint(2595, 6088, 1),
 			"Add a mirror to the pillar to the south. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar10.setWorldMapPoint(new WorldPoint(2787, 6088, 1));
 		p1Pillar10.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar11 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35251, new WorldPoint(2567, 6088, 1),
 			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar11.setWorldMapPoint(new WorldPoint(2759, 6088, 1));
 		p1Pillar11.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar12 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35253, new WorldPoint(2567, 6116, 1),
 			"Run around to the north pillar and add a mirror. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar12.setWorldMapPoint(new WorldPoint(2759, 6116, 1));
 		p1Pillar12.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar13 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_2067, new WorldPoint(2567, 6116, 0),
@@ -278,56 +270,44 @@ public class HefinLightPuzzle extends ConditionalStep
 
 		p1Pillar18 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35087, new WorldPoint(2581, 6116,2),
 			"Add a mirror to the pillar to the south. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar18.setWorldMapPoint(new WorldPoint(2965, 6116, 2));
 		p1Pillar18.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar19 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35088, new WorldPoint(2581, 6130,2),
 			"Add a mirror to the pillar to the north. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar19.setWorldMapPoint(new WorldPoint(2965, 6130, 2));
 		p1Pillar19.addIcon(ItemID.HAND_MIRROR_23775);
 
 		p1Pillar20 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35084, new WorldPoint(2567, 6144,2),
 			"Add a mirror to the pillar to the north west. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar20.setWorldMapPoint(new WorldPoint(2951, 6130, 2));
 		p1Pillar20.addIcon(ItemID.HAND_MIRROR_23775);
 
 		f0ToF1NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2581, 6203, 0), "");
 
 		f1ToF0NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2581, 6203, 1), "");
 		f1ToF0NW.addDialogStep("Climb down.");
-		f1ToF0NW.setWorldMapPoint(new WorldPoint(2773, 6203, 1));
 
 		f2ToF1NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2581, 6203, 2), "");
-		f2ToF1NW.setWorldMapPoint(new WorldPoint(2965, 6203, 2));
 
 		f1ToF2NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2581, 6203, 1), "");
 		f1ToF2NW.addDialogStep("Climb up.");
-		f1ToF2NW.setWorldMapPoint(new WorldPoint(2773, 6203, 1));
 
 		f0ToF1Middle = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2626, 6153, 0), "");
 
 		f1ToF0SW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2584, 6123, 1), "");
 		f1ToF0SW.addDialogStep("Climb down.");
-		f1ToF0SW.setWorldMapPoint(new WorldPoint(2776, 6123, 1));
 
 		f0ToF1SW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2584, 6137, 0), "");
 
 		f1ToF2SW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2584, 6137, 1), "");
 		f1ToF2SW.addDialogStep("Climb up.");
-		f1ToF2SW.setWorldMapPoint(new WorldPoint(2776, 6137, 1));
 
 		f2ToF1SW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2584, 6137, 2), "");
 		f2ToF1SW.addDialogStep("Climb up.");
-		f2ToF1SW.setWorldMapPoint(new WorldPoint(2776, 6137, 1));
 
 		f2ToF1 = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2634, 6166, 2), "");
-		f2ToF1.setWorldMapPoint(new WorldPoint(3017, 6154, 2));
 
 		f1ToF2E = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2682, 6144, 1), "");
-		f1ToF2E.setWorldMapPoint(new WorldPoint(2874, 6154, 1));
 
 		f2ToF1E = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2682, 6144, 2), "");
-		f2ToF1E.setWorldMapPoint(new WorldPoint(3066, 6154, 2));
 	}
 
 	protected void setupConditions()

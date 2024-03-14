@@ -538,11 +538,9 @@ public class MonkeyMadnessII extends BasicQuestHelper
 			"Enter the Troll Stronghold, ready to fight Kob.", climbingBoots, combatGear);
 
 		talkToKob = new NpcStep(this, NpcID.KOB, new WorldPoint(2831, 10060, 2), "Talk to Kob with Protect from Melee on, ready to fight.");
-		talkToKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
 		talkToKob.addDialogSteps("I know about your deal with the monkeys.", "You won't be around to crush anyone when I'm done with you.", "I accept your challenge.");
 
 		fightKob = new NpcStep(this, NpcID.KOB_7107, new WorldPoint(2831, 10060, 2), "Fight Kob. He can be safespotted from the doorway.");
-		fightKob.setWorldMapPoint(new WorldPoint(2962, 10120, 0));
 
 		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 71)
 		{

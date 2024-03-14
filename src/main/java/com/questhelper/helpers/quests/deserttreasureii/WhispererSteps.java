@@ -1080,8 +1080,6 @@ public class WhispererSteps extends ConditionalStep
 
 		ItemStep getAnimaPortalSchematicRealStep = new ItemStep(getQuestHelper(), new WorldPoint(2324, 6402, 0), "Go to the north-west of the science district," +
 			" and burn the tentacles there to grab the Anima portal schematic.", animaPortalSchematic);
-		WorldPoint animaPoint = getAnimaPortalSchematicRealStep.getWorldPoint();
-		getAnimaPortalSchematicRealStep.setWorldMapPoint(new WorldPoint(animaPoint.getX() + 256, animaPoint.getY(), animaPoint.getPlane()));
 		getAnimaPortalSchematicRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2338, 6368, 0),
 			new WorldPoint(2323, 6368, 0),

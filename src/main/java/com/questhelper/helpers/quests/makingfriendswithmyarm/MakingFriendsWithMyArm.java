@@ -426,25 +426,19 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		enterStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Talk to Burntmeat in the Troll Stronghold's kitchen.");
 
 		goDownToBurntmeat = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Go down the south staircase.");
-		goDownToBurntmeat.setWorldMapPoint(new WorldPoint(2971, 10115, 1));
 
 		goUpToBurntmeat = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
-		goUpToBurntmeat.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		talkToBurntmeat = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat in the Troll Stronghold's kitchen.");
-		talkToBurntmeat.setWorldMapPoint(new WorldPoint(2911, 10087, 1));
 		talkToBurntmeat.addSubSteps(enterStronghold, goDownToBurntmeat, goUpToBurntmeat);
 		talkToBurntmeat.addDialogSteps("Yes, I'll take your quest.", "Why in the heck would you choose My Arm?");
 
 		enterStrongholdAfterStart = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
 
 		goUpAfterStart = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
-		goUpAfterStart.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		goUpFromF1ToMyArm = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Talk to My Arm on the roof of the Troll Stronghold.");
-		goUpFromF1ToMyArm.setWorldMapPoint(new WorldPoint(2907, 10083, 1));
 		goUpToMyArmAfterStart = new ObjectStep(this, ObjectID.TROLL_LADDER_18834, new WorldPoint(2831, 10077, 2), "Talk to My Arm on the roof of the Troll Stronghold.");
-		goUpToMyArmAfterStart.setWorldMapPoint(new WorldPoint(2959, 10140, 0));
 		talkToMyArmUpstairs = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2830, 3698, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
 		talkToMyArmUpstairs.addDialogSteps("I'm doing another quest for Burntmeat.", "Wolfbone said we should go by sea.");
 		talkToMyArmUpstairs.addSubSteps(enterStrongholdAfterStart, goUpAfterStart, goUpFromF1ToMyArm, goUpToMyArmAfterStart);

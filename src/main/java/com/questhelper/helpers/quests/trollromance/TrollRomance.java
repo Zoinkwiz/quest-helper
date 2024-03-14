@@ -192,19 +192,15 @@ public class TrollRomance extends BasicQuestHelper
 		enterStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
 
 		goDownToUg = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Climb down the north staircase.");
-		goDownToUg.setWorldMapPoint(new WorldPoint(2971, 10172, 1));
 
 		goUpToUg = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
-		goUpToUg.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		talkToUg = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room of the Troll Stronghold's first floor.");
 		talkToUg.addDialogSteps("Awww, you poor troll. What seems to be the problem?", "Don't worry now, I'll see what I can do.");
-		talkToUg.setWorldMapPoint(new WorldPoint(2891, 10097, 0));
 		talkToUg.addSubSteps(enterStronghold, goDownToUg, goUpToUg);
 
 		talkToAga = new NpcStep(this, NpcID.AGA, new WorldPoint(2828, 10104, 1), "Talk to Aga north of Ug.");
 		talkToAga.addDialogStep("So... how's your... um... love life?");
-		talkToAga.setWorldMapPoint(new WorldPoint(2892, 10136, 0));
 
 		talkToTenzing = new NpcStep(this, NpcID.TENZING, new WorldPoint(2820, 3555, 0), "Talk to Tenzing west of Burthorpe.");
 		talkToTenzing.addDialogSteps("Do you know where I can find Trollweiss?", "What would I need to make such a sled?");
@@ -226,40 +222,31 @@ public class TrollRomance extends BasicQuestHelper
 		enterStrongholdAgain = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to Ug with the trollweiss flowers.", trollweissFlowers, combatGear);
 
 		goDownToUgAgain = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Return to Ug with the trollweiss flowers.");
-		goDownToUgAgain.setWorldMapPoint(new WorldPoint(2971, 10172, 1));
 
 		goUpToUgAgain = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to Ug with the trollweiss flowers.");
-		goUpToUgAgain.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		talkToUgWithFlowers = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Return to Ug with the trollweiss flowers.", trollweissFlowers);
-		talkToUgWithFlowers.setWorldMapPoint(new WorldPoint(2891, 10097, 0));
 		talkToUgWithFlowers.addSubSteps(enterStrongholdAgain, goDownToUgAgain, goUpToUgAgain);
 
 		enterStrongholdForEnd = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to Ug to finish.");
 
 		goDownToUgForEnd = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Return to Ug to finish.");
-		goDownToUgForEnd.setWorldMapPoint(new WorldPoint(2971, 10172, 1));
 
 		goUpToUgForEnd = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to Ug to finish.");
-		goUpToUgForEnd.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 		enterStrongholdForFight = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Challenge Arrg to a fight.", combatGear);
 
 		goDownToUgForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Challenge Arrg to a fight.", combatGear);
-		goDownToUgForFight.setWorldMapPoint(new WorldPoint(2971, 10172, 1));
 
 		goUpToUgForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Challenge Arrg to a fight.", combatGear);
-		goUpToUgForFight.setWorldMapPoint(new WorldPoint(2853, 10106, 1));
 
 
 		challengeArrg = new NpcStep(this, NpcID.ARRG, new WorldPoint(2829, 10095, 1), "Challenge Arrg to a fight.", combatGear);
 		challengeArrg.addDialogStep("I am here to kill you!");
-		challengeArrg.setWorldMapPoint(new WorldPoint(2892, 10127, 0));
 		challengeArrg.addSubSteps(enterStrongholdForFight, goUpToUgForFight, goDownToUgForFight);
 
 		killArrg = new NpcStep(this, NpcID.ARRG_643, "Kill Arrg.");
 		returnToUg = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room to finish the quest.");
-		returnToUg.setWorldMapPoint(new WorldPoint(2891, 10097, 0));
 		returnToUg.addSubSteps(goDownToUgForEnd, goUpToUgForEnd, enterStrongholdForEnd);
 	}
 

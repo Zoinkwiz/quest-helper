@@ -289,6 +289,7 @@ public class QuestHelperPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBankManager.emptyState();
 			questManager.shutDownQuest(true);
+			profileChanged = true;
 		}
 
 		if (state == GameState.LOGGED_IN && profileChanged)

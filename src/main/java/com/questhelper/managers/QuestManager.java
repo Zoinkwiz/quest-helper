@@ -110,8 +110,8 @@ public class QuestManager
 
 	public void shutDown()
 	{
-		this.panel = null;
 		shutDownQuest(false);
+		this.panel = null;
 	}
 
 	public void setupOnLogin()

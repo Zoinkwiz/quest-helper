@@ -478,7 +478,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 
 		//Skill Requirements
-		req.add(new SkillRequirement(Skill.SMITHING, 55, true));
+		req.add(new SkillRequirement(Skill.SMITHING, 55));
 		req.add(new SkillRequirement(Skill.HUNTER, 52));
 
 		//Quest Requirements

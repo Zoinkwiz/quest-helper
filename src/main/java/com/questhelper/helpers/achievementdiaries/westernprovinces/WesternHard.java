@@ -279,7 +279,7 @@ public class WesternHard extends ComplexStateQuestHelper
 			waterRunes2, banana);
 
 		moveToApeMahogany = new DetailedQuestStep(this, "Travel to Ape Atoll.", axe, tinderbox);
-		mahoganyChopped = new ObjectStep(this, ObjectID.MAHOGANY, new WorldPoint(2718, 2710, 0),
+		mahoganyChopped = new ObjectStep(this, ObjectID.MAHOGANY_TREE, new WorldPoint(2718, 2710, 0),
 			"Chop some mahogany logs on Ape Atoll.", axe, tinderbox);
 		mahoganyBurned = new ItemStep(this, "Burn some mahogany logs on Ape Atoll.",
 			mahoganyLogs.highlighted(), tinderbox.highlighted());

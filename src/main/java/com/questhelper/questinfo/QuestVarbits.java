@@ -114,7 +114,7 @@ public enum QuestVarbits
 	QUEST_AT_FIRST_LIGHT(1),
 	QUEST_PERILOUS_MOONS(1),
 	QUEST_THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE(1),
-	QUEST_TWILIGHTS_PROMISE(1),
+	QUEST_TWILIGHTS_PROMISE(9649),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

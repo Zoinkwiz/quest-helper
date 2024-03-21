@@ -56,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 
-
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE
 )
@@ -72,12 +71,10 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 		enterCode, openChest, plantPlushy, inspectDung, defeatCuthbert, talkToMarcellusEnd,
 		talkToGaryEnd, pickUpAxe;
 
-
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-
 
 		setupRequirements();
 		setupConditions();
@@ -109,7 +106,6 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 		steps.put(30, talkToGaryEnd);
 
 		return steps;
-
 	}
 
 	@Override
@@ -124,7 +120,6 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 		inChestInterface = new WidgetTextRequirement(809, 5, 9, "Confirm");
 		cuthbertNearby = new NpcRequirement(NpcID.CUTHBERT_LORD_OF_DREAD);
 		// 12401 0->1 for Cuthbert about
-
 	}
 
 	private void setupSteps()
@@ -174,7 +169,6 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 			"Tell Marcellus about the plushy.");
 		talkToGaryEnd = new NpcStep(this, SUE_AND_GARY, new WorldPoint(1694, 2996, 0),
 			"Talk to Sue and Gary to resolve the dispute!", true);
-
 	}
 
 	@Override
@@ -232,7 +226,6 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 			talkToMarcellus3, talkToGaryToBlame,
 			openChest, plantPlushy, defeatCuthbert, talkToMarcellusEnd, talkToGaryEnd
 		)));
-
 
 		return allSteps;
 	}

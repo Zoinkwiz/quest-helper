@@ -38,6 +38,8 @@ public class WidgetHighlights
 
 	protected final int childId;
 
+	protected final int childChildId;
+
 	@Getter
 	protected Integer itemIdRequirement;
 
@@ -47,18 +49,23 @@ public class WidgetHighlights
 	{
 		this.groupId = groupId;
 		this.childId = childId;
+		this.childChildId = -1;
 		this.checkChildren = false;
 	}
 
-	public WidgetHighlights(int groupId, int childId, int itemIdRequirement)
+	public WidgetHighlights(int groupId, int childId, int childChildId)
 	{
-		this(groupId, childId, itemIdRequirement, false);
+		this.groupId = groupId;
+		this.childId = childId;
+		this.childChildId = childChildId;
+		this.checkChildren = false;
 	}
 
 	public WidgetHighlights(int groupId, int childId, int itemIdRequirement, boolean checkChildren)
 	{
 		this.groupId = groupId;
 		this.childId = childId;
+		this.childChildId = -1;
 		this.itemIdRequirement = itemIdRequirement;
 		this.checkChildren = checkChildren;
 	}
@@ -77,7 +84,13 @@ public class WidgetHighlights
 		if (parentWidget == null) return;
 
 		Widget[] widgets = parentWidget.getChildren();
-		Widget[] wow = parentWidget.getStaticChildren();
+		Widget[] staticWidgets = parentWidget.getStaticChildren();
+
+		if (childChildId != -1 && widgets != null)
+		{
+			highlightChoices(widgets[childChildId], graphics, questHelper);
+			return;
+		}
 
 		if (checkChildren && widgets != null)
 		{
@@ -85,7 +98,7 @@ public class WidgetHighlights
 			{
 				highlightChoices(widget, graphics, questHelper);
 			}
-			for (Widget widget : wow)
+			for (Widget widget : staticWidgets)
 			{
 				highlightChoices(widget, graphics, questHelper);
 			}

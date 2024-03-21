@@ -211,6 +211,11 @@ public class PuzzleWrapperStep extends ConditionalStep
 		steps.get(null).addWidgetHighlight(groupID, childID);
 	}
 
+	@Override
+	public void addWidgetHighlight(int groupID, int childID, int childChildID)
+	{
+		steps.get(null).addWidgetHighlight(groupID, childID, childChildID);
+	}
 
 	@Override
 	protected void setupIcon()

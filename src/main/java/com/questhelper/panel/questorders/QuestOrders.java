@@ -252,6 +252,12 @@ public class QuestOrders
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
+		// TODO: Varlamore quests need better sorting
+		QuestHelperQuest.TWILIGHTS_PROMISE,
+		QuestHelperQuest.AT_FIRST_LIGHT,
+		QuestHelperQuest.PERILOUS_MOON,
+		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
+
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide
 		QuestHelperQuest.BEAR_YOUR_SOUL,
@@ -490,6 +496,11 @@ public class QuestOrders
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.DESERT_TREASURE_II,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
+		// TODO: Varlamore quests need better sorting
+		QuestHelperQuest.TWILIGHTS_PROMISE,
+		QuestHelperQuest.AT_FIRST_LIGHT,
+		QuestHelperQuest.PERILOUS_MOON,
+		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
 
@@ -727,7 +738,11 @@ public class QuestOrders
 		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
 		QuestHelperQuest.DESERT_TREASURE_II,
 		QuestHelperQuest.CHILDREN_OF_THE_SUN,
-		QuestHelperQuest.DEFENDER_OF_VARROCK
+		QuestHelperQuest.DEFENDER_OF_VARROCK,
+		QuestHelperQuest.TWILIGHTS_PROMISE,
+		QuestHelperQuest.AT_FIRST_LIGHT,
+		QuestHelperQuest.PERILOUS_MOON,
+		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE
 	);
 
 	public static String normalizeQuestName(String questName)

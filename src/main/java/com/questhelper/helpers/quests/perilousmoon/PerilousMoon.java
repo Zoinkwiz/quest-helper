@@ -182,7 +182,7 @@ public class PerilousMoon extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-//		return Collections.singletonList(new UnlockReward());
+		return List.of(new UnlockReward("Access to Neypotzli and the Moons of Peril"));
 	}
 
 	@Override

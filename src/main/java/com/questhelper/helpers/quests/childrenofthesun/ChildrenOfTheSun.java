@@ -265,7 +265,7 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(
-			new UnlockReward("Access to Varlamore (when it's released)")
+			new UnlockReward("Access to Varlamore to the east of Varrock with a bird.")
 		);
 	}
 

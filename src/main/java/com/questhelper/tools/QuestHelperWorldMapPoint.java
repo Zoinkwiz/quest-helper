@@ -25,6 +25,8 @@
  */
 package com.questhelper.tools;
 
+import com.questhelper.util.worldmap.WorldMapArea;
+import com.questhelper.util.worldmap.WorldMapAreaChanged;
 import com.questhelper.util.worldmap.WorldPointMapper;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -40,9 +42,11 @@ public class QuestHelperWorldMapPoint extends WorldMapPoint
 	private final Point questWorldImagePoint;
 	private final HashMap<Integer, BufferedImage> arrows = new HashMap<>();
 	private BufferedImage activeQuestArrow;
+	private final WorldMapArea worldMapArea;
 	public QuestHelperWorldMapPoint(final WorldPoint worldPoint, BufferedImage image)
 	{
 		super(WorldPointMapper.getMapWorldPointFromRealWorldPoint(worldPoint).getWorldPoint(), null);
+		worldMapArea = WorldPointMapper.getMapWorldPointFromRealWorldPoint(worldPoint).getWorldMapArea();
 
 		BufferedImage iconBackground = ImageUtil.loadImageResource(getClass(), "/util/clue_arrow.png");
 		questWorldImage = new BufferedImage(iconBackground.getWidth(), iconBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -72,6 +76,28 @@ public class QuestHelperWorldMapPoint extends WorldMapPoint
 		this.setJumpOnClick(true);
 		this.setImage(questWorldImage);
 		this.setImagePoint(questWorldImagePoint);
+	}
+
+	public void onWorldMapAreaChanged(WorldMapAreaChanged worldMapAreaChanged)
+	{
+		System.out.println(worldMapArea);
+		if (worldMapArea != null &&
+			worldMapArea != WorldMapArea.ANY &&
+			worldMapArea != worldMapAreaChanged.getWorldMapArea())
+		{
+			this.setImage(null);
+		}
+		else
+		{
+			if (isCurrentlyEdgeSnapped())
+			{
+				onEdgeSnap();
+			}
+			else
+			{
+				onEdgeUnsnap();
+			}
+		}
 	}
 
 	@Override

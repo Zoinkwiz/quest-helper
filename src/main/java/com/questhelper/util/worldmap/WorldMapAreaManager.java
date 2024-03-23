@@ -43,14 +43,11 @@ public class WorldMapAreaManager
 	@Getter
 	private WorldMapArea worldMapArea = WorldMapArea.ANY;
 
-	private final Client client;
+	@Inject
+	private Client client;
 
 	@Inject
-	private WorldMapAreaManager(Client client, EventBus eventBus)
-	{
-		this.client = client;
-		eventBus.register(this);
-	}
+	private EventBus eventBus;
 
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired scriptPostFired)
@@ -69,6 +66,7 @@ public class WorldMapAreaManager
 			}
 
 			worldMapArea = WorldMapArea.fromName(currentMapWidget.getText());
+			eventBus.post(new WorldMapAreaChanged(worldMapArea));
 		}
 	}
 
@@ -79,6 +77,7 @@ public class WorldMapAreaManager
 		if (event.getScriptId() == WORLD_MAP_NEW_MAP_SELECTED)
 		{
 			worldMapArea = WorldMapArea.fromId(event.getScriptEvent().getSource().getIndex());
+			eventBus.post(new WorldMapAreaChanged(worldMapArea));
 		}
 	}
 }

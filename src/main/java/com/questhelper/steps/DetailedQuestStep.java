@@ -37,6 +37,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.overlay.WorldLines;
 import com.questhelper.steps.tools.QuestPerspective;
+import com.questhelper.util.worldmap.WorldMapAreaChanged;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -476,6 +477,15 @@ public class DetailedQuestStep extends QuestStep
 		if (questHelper.getConfig().showMiniMapArrow())
 		{
 			DirectionArrow.renderMinimapArrow(graphics, client, worldPoint, getQuestHelper().getConfig().targetOverlayColor());
+		}
+	}
+
+	@Subscribe
+	public void onWorldMapAreaChanged(WorldMapAreaChanged worldMapAreaChanged)
+	{
+		if (mapPoint != null)
+		{
+			mapPoint.onWorldMapAreaChanged(worldMapAreaChanged);
 		}
 	}
 

@@ -261,7 +261,7 @@ public class TwilightsPromise extends BasicQuestHelper
 	private void setupSteps()
 	{
 		talkToRegulusStart = new NpcStep(this, NpcID.REGULUS_CENTO, new WorldPoint(3281, 3413, 0),
-			"Travel with Regulus Cento, who is just outside of Varrock's East Gate, to Varlamore.");
+			"Talk to Regulus Cento outside Varrock's East Gate to travel to Varlamore.");
 		talkToRegulusStart.addDialogStep("Let's do it!");
 
 		talkToEnnius = new NpcStep(this, NpcID.ENNIUS_TULLUS_12892, new WorldPoint(1687, 3141, 0),
@@ -415,22 +415,22 @@ public class TwilightsPromise extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Cryptic",
 			List.of(talkToRegulusStart, talkToEnnius, talkToMetzli, enterCrypt, talkToPrince,
 				leaveCrypt, talkToEnnius2)));
+		allSteps.add(new PanelDetails("Knights - Bazaar", List.of(
+			talkToBazaarKnight, pickpocketCitizen, returnAmulet
+		), varlamoreCrest));
 		allSteps.add(new PanelDetails("Knights - Cothon", List.of(
 			talkToCothonKnight, searchCrate, returnToCothonKnight
+		), varlamoreCrest));
+		allSteps.add(new PanelDetails("Knights - Pub", List.of(
+			talkToPubKnights, takePubKnightsToFountain, talkToPubKnightAtFountain
 		), varlamoreCrest));
 		allSteps.add(new PanelDetails("Knights - Colosseum", List.of(
 			enterColosseum, talkToColosseumKnight, defeatColosseumKnight, talkToColosseumKnight2
 		), varlamoreCrest, twoCombatStyles));
-		allSteps.add(new PanelDetails("Knights - Pub", List.of(
-			talkToPubKnights, takePubKnightsToFountain, talkToPubKnightAtFountain
-		), varlamoreCrest));
-		allSteps.add(new PanelDetails("Knights - Bazaar", List.of(
-			talkToBazaarKnight, pickpocketCitizen, returnAmulet
-		), varlamoreCrest));
 		allSteps.add(new PanelDetails("Cost of Betrayal", List.of(
 			talkToEnniusAfterKnights, goUpHQ, searchHQChest, readLetter, returnToEnniusAfterLetter
 		)));
-		allSteps.add(new PanelDetails("Cult", List.of(
+		allSteps.add(new PanelDetails("The Twilight Emissaries", List.of(
 			talkToRegulusForTransport, feedRenu, travelToTeomat, talkToPrinceInTemple, talkToMetzliNearTemple,
 			defeat8Cultists, finishQuest
 		)));

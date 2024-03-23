@@ -67,7 +67,7 @@ public class WorldPointMapper
 	public static WorldPointWithWorldMapArea getMapWorldPointFromRealWorldPoint(WorldPoint realWorldPoint)
 	{
 		return Arrays.stream(WorldMapPointMapping.values())
-			.filter(mapping -> mapping.getWorldChunkID() == realWorldPoint.getRegionID())
+			.filter(mapping -> mapping.getWorldRegionID() == realWorldPoint.getRegionID())
 			.filter(mapping -> isRealWorldPointInMappingArea(mapping, realWorldPoint))
 			.findFirst()
 			.map(mapping -> convertToMapWorldPointWithWorldMapArea(mapping, realWorldPoint))
@@ -164,7 +164,7 @@ public class WorldPointMapper
 		int shiftedWorldX = mapWorldPoint.getX() - mapping.getShiftX();
 		int shiftedWorldY = mapWorldPoint.getY() - mapping.getShiftY();
 		WorldPoint shiftedWorldPoint = new WorldPoint(shiftedWorldX, shiftedWorldY, mapWorldPoint.getPlane());
-		WorldPoint realWorldPoint = WorldPoint.fromRegion(mapping.getWorldChunkID(), shiftedWorldPoint.getRegionX(), shiftedWorldPoint.getRegionY(), mapping.getPlane());
+		WorldPoint realWorldPoint = WorldPoint.fromRegion(mapping.getWorldRegionID(), shiftedWorldPoint.getRegionX(), shiftedWorldPoint.getRegionY(), mapping.getPlane());
 
 		return new WorldPointWithWorldMapArea(realWorldPoint, mapping.getArea());
 	}

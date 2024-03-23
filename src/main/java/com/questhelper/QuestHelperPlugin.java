@@ -47,6 +47,7 @@ import com.questhelper.statemanagement.GameStateManager;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
+import com.questhelper.util.worldmap.WorldMapAreaManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -156,6 +157,9 @@ public class QuestHelperPlugin extends Plugin
 	private QuestManager questManager;
 
 	@Inject
+	private WorldMapAreaManager worldMapAreaManager;
+
+	@Inject
 	private QuestMenuHandler questMenuHandler;
 
 	@Inject
@@ -205,6 +209,7 @@ public class QuestHelperPlugin extends Plugin
 	protected void startUp() throws IOException
 	{
 		questBankManager.startUp(injector, eventBus);
+		eventBus.register(worldMapAreaManager);
 
 		injector.injectMembers(gameStateManager);
 		eventBus.register(gameStateManager);
@@ -247,6 +252,7 @@ public class QuestHelperPlugin extends Plugin
 
 		eventBus.unregister(gameStateManager);
 		eventBus.unregister(runeliteObjectManager);
+		eventBus.unregister(worldMapAreaManager);
 		questOverlayManager.shutDown();
 
 		clientToolbar.removeNavigation(navButton);

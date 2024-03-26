@@ -98,7 +98,7 @@ public class TwilightsPromise extends BasicQuestHelper
 	QuestStep talkToPubKnights, takePubKnightsToFountain, talkToPubKnightAtFountain;
 	Requirement talkedToPubKnights, pubKnightFollowing, pubKnightSobered, finishedPubKnights;
 
-	QuestStep talkToEnniusAfterKnights, goUpHQ, goUpHQ2, searchHQChest, readLetter,
+	QuestStep talkToEnniusAfterKnights, climbStairs, goUpHQ, goUpHQ2, searchHQChest, readLetter,
 		goDownHQ2To1, goDownHQ1To0, returnToEnniusAfterLetter;
 
 	QuestStep talkToRegulusForTransport, feedRenu, travelToTeomat, talkToPrinceInTemple,
@@ -166,7 +166,10 @@ public class TwilightsPromise extends BasicQuestHelper
 		steps.put(18, findKnights);
 		steps.put(20, findKnights);
 
-		steps.put(22, talkToEnniusAfterKnights);
+		ConditionalStep enniusAfterKnights = new ConditionalStep(this, talkToEnniusAfterKnights);
+		enniusAfterKnights.addStep(inColosseumUnderground, climbStairs);
+		steps.put(22, enniusAfterKnights);
+
 
 		ConditionalStep goReadLetter = new ConditionalStep(this, goUpHQ);
 		goReadLetter.addStep(incriminatingLetter.alsoCheckBank(questBank), readLetter);
@@ -218,7 +221,7 @@ public class TwilightsPromise extends BasicQuestHelper
 	{
 		twoCombatStyles = new ItemRequirement("Two combat styles", -1, -1).isNotConsumed();
 		twoCombatStyles.setDisplayItemId(BankSlotIcons.getCombatGear());
-		staminatPotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS);
+		staminatPotion = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, 3);
 
 		varlamoreCrest = new ItemRequirement("Varlamore crest", ItemID.VARLAMORE_CREST);
 		varlamoreCrest.setTooltip("You can get another from Ennius in the palace.");
@@ -284,7 +287,7 @@ public class TwilightsPromise extends BasicQuestHelper
 		// 9834 0->1
 		// 9833 0->1
 		talkToCothonKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12906, new WorldPoint(1746, 3120, 0),
-			"Talk to the Knight of Varlamore on the south part of the Fortis Cothon (docks) in the east of the city.", varlamoreCrest);
+			"Talk to the Knight of Varlamore on the south western part of the Fortis Cothon (docks) in the east of the city.", varlamoreCrest);
 		searchCrate = new ObjectStep(this, ObjectID.CRATE_50870, new WorldPoint(1778, 3149, 0),
 			"Search the crate in the north-east of the Cothon, next to two barrels of fish.");
 		returnToCothonKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12906, new WorldPoint(1746, 3120, 0),
@@ -299,12 +302,12 @@ public class TwilightsPromise extends BasicQuestHelper
 		defeatColosseumKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12916, new WorldPoint(1824, 3105, 0),
 			"Defeat the knight, swapping combat styles to bypass his prayers.", twoCombatStyles);
 		talkToColosseumKnight2 = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12914, new WorldPoint(1805, 9522, 0),
-			"Talk to the Knight of Varlamore in the north training room once more.");
+			"Talk to the Knight of Varlamore in the northern training room once more.");
 
 		talkToPubKnights = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12912, new WorldPoint(1721, 3075, 0),
 			"Talk to the Knights of Varlamore in the pub OUTSIDE the walls of the city to the south.", varlamoreCrest);
 		takePubKnightsToFountain = new DetailedQuestStep(this, new WorldPoint(1757, 3069, 0),
-			"Lead the knight to fountain to their east. Whenever they stop following you, talk to them again.");
+			"Lead the knight to the fountain to the east. Whenever they stop following you, talk to them again.");
 		// 9834 1->2 when following you
 		talkToPubKnightAtFountain = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12910, new WorldPoint(1756, 3069, 0),
 			"Talk to the sobered knight at the fountain.");
@@ -316,12 +319,14 @@ public class TwilightsPromise extends BasicQuestHelper
 		returnAmulet = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12902, new WorldPoint(1682, 3104, 0),
 		"Return the amulet to the knight in the bazaar.", stolenAmulet);
 
-		talkToEnniusAfterKnights = new NpcStep(this, NpcID.ENNIUS_TULLUS_12892, new WorldPoint(1684, 3156, 0),
-			"Return to Ennius Tullus in the palace.");
+		talkToEnniusAfterKnights = new NpcStep(this, NpcID.ENNIUS_TULLUS_12892, new WorldPoint(1684, 3156, 0), "Return to Ennius Tullus in the palace.");
+		climbStairs = new ObjectStep(this, ObjectID.STAIRS_50750, new WorldPoint(1796, 9506, 0), "Return to Ennius Tullus in the palace.");
+		talkToEnniusAfterKnights.addSubSteps(climbStairs);
+
 		goUpHQ = new ObjectStep(this, ObjectID.STAIRCASE_52628, new WorldPoint(1638, 3155, 0),
-			"Go to the top floor of the Kualti Headquaters, just west of the palace.");
+			"Go to the top floor of the Kualti Headquarters, just west of the palace.");
 		goUpHQ2 = new ObjectStep(this, ObjectID.STAIRCASE_52628, new WorldPoint(1650, 3155, 1),
-			"Go to the top floor of the Kualti Headquaters, just west of the palace.");
+			"Go to the top floor of the Kualti Headquarters, just west of the palace.");
 		goUpHQ.addSubSteps(goUpHQ2);
 		searchHQChest = new ObjectStep(this, ObjectID.CHEST_50866, new WorldPoint(1648, 3142, 2),
 			"Search the chest in the south-east room on the south wall.");

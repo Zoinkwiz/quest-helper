@@ -88,6 +88,7 @@ import com.questhelper.helpers.quests.aporcineofinterest.APorcineOfInterest;
 import com.questhelper.helpers.quests.asoulsbane.ASoulsBane;
 import com.questhelper.helpers.quests.atailoftwocats.ATailOfTwoCats;
 import com.questhelper.helpers.quests.atasteofhope.ATasteOfHope;
+import com.questhelper.helpers.quests.atfirstlight.AtFirstLight;
 import com.questhelper.helpers.quests.bearyoursoul.BearYourSoul;
 import com.questhelper.helpers.quests.belowicemountain.BelowIceMountain;
 import com.questhelper.helpers.quests.beneathcursedsands.BeneathCursedSands;
@@ -181,6 +182,7 @@ import com.questhelper.helpers.quests.naturespirit.NatureSpirit;
 import com.questhelper.helpers.quests.observatoryquest.ObservatoryQuest;
 import com.questhelper.helpers.quests.olafsquest.OlafsQuest;
 import com.questhelper.helpers.quests.onesmallfavour.OneSmallFavour;
+import com.questhelper.helpers.quests.perilousmoon.PerilousMoon;
 import com.questhelper.helpers.quests.piratestreasure.PiratesTreasure;
 import com.questhelper.helpers.quests.plaguecity.PlagueCity;
 import com.questhelper.helpers.quests.priestinperil.PriestInPeril;
@@ -251,6 +253,7 @@ import com.questhelper.helpers.miniquests.themagearenaii.TheMageArenaII;
 import com.questhelper.helpers.quests.thepathofglouphrie.ThePathOfGlouphrie;
 import com.questhelper.helpers.quests.thequeenofthieves.TheQueenOfThieves;
 import com.questhelper.helpers.quests.therestlessghost.TheRestlessGhost;
+import com.questhelper.helpers.quests.theribbitingtaleofalilypadlabourdispute.TheRibbitingTaleOfALilyPadLabourDispute;
 import com.questhelper.helpers.quests.theslugmenace.TheSlugMenace;
 import com.questhelper.helpers.quests.thetouristtrap.TheTouristTrap;
 import com.questhelper.helpers.quests.throneofmiscellania.ThroneOfMiscellania;
@@ -259,6 +262,7 @@ import com.questhelper.helpers.quests.treegnomevillage.TreeGnomeVillage;
 import com.questhelper.helpers.quests.tribaltotem.TribalTotem;
 import com.questhelper.helpers.quests.trollromance.TrollRomance;
 import com.questhelper.helpers.quests.trollstronghold.TrollStronghold;
+import com.questhelper.helpers.quests.twilightspromise.TwilightsPromise;
 import com.questhelper.helpers.quests.undergroundpass.UndergroundPass;
 import com.questhelper.helpers.quests.vampyreslayer.VampyreSlayer;
 import com.questhelper.helpers.quests.wanted.Wanted;
@@ -465,7 +469,10 @@ public enum QuestHelperQuest
 	SECRETS_OF_THE_NORTH(new SecretsOfTheNorth(), Quest.SECRETS_OF_THE_NORTH, QuestVarbits.QUEST_SECRETS_OF_THE_NORTH, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	CHILDREN_OF_THE_SUN(new ChildrenOfTheSun(), Quest.CHILDREN_OF_THE_SUN, QuestVarbits.QUEST_CHILDREN_OF_THE_SUN, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	DEFENDER_OF_VARROCK(new DefenderOfVarrock(), Quest.DEFENDER_OF_VARROCK, QuestVarbits.QUEST_DEFENDER_OF_VARROCK, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
-
+	AT_FIRST_LIGHT(new AtFirstLight(), Quest.AT_FIRST_LIGHT, QuestVarbits.QUEST_AT_FIRST_LIGHT, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	PERILOUS_MOON(new PerilousMoon(), Quest.PERILOUS_MOONS, QuestVarbits.QUEST_PERILOUS_MOONS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE(new TheRibbitingTaleOfALilyPadLabourDispute(), Quest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestVarbits.QUEST_THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	TWILIGHTS_PROMISE(new TwilightsPromise(), Quest.TWILIGHTS_PROMISE, QuestVarbits.QUEST_TWILIGHTS_PROMISE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

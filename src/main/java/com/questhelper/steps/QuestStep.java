@@ -373,6 +373,11 @@ public abstract class QuestStep implements Module
 		widgetsToHighlight.add(new WidgetHighlights(groupID, childID));
 	}
 
+	public void addWidgetHighlight(int groupID, int childID, int childChildID)
+	{
+		widgetsToHighlight.add(new WidgetHighlights(groupID, childID, childChildID));
+	}
+
 	public void addWidgetHighlightWithItemIdRequirement(int groupID, int childID, int itemID, boolean checkChildren)
 	{
 		widgetsToHighlight.add(new WidgetHighlights(groupID, childID, itemID, checkChildren));

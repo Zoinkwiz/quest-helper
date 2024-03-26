@@ -199,9 +199,13 @@ public class MourningsEndPartI extends BasicQuestHelper
 		bearFur = new ItemRequirement("Bear fur", ItemID.BEAR_FUR);
 		silk2 = new ItemRequirement("Silk", ItemID.SILK, 2);
 		redDye = new ItemRequirement("Red dye", ItemID.RED_DYE);
+		redDye.setTooltip("Can be bought during quest for 6gp");
 		yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE);
+		yellowDye.setTooltip("Can be bought during quest for 6gp");
 		greenDye = new ItemRequirement("Green dye", ItemID.GREEN_DYE);
+		greenDye.setTooltip("Can be bought during quest for 6gp");
 		blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE);
+		blueDye.setTooltip("Can be bought during quest for 6gp");
 		waterBucket = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
 		rottenApple = new ItemRequirement("Rotten apple", ItemID.ROTTEN_APPLE);
 		rottenApple.setTooltip("Obtained during quest.");

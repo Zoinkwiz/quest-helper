@@ -263,7 +263,7 @@ public class AtFirstLight extends BasicQuestHelper
 		talkToAtzaForTrim = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
 			"Talk to Atza again for some trimmed fur.");
 		returnToFoxAfterTrim = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
-			"Return back to Fox to get his report.", trimmedFur);
+			"Return to Guild Hunter Fox near the crevice south-east of the Hunter Guild to get his report.", trimmedFur);
 		getReportFromFox = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Return back to Fox to get his report.");
 		returnToFoxAfterTrim.addSubSteps(getReportFromFox);

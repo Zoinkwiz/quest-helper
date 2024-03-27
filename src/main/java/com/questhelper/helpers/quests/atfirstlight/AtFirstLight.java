@@ -253,10 +253,10 @@ public class AtFirstLight extends BasicQuestHelper
 		talkToFoxAfterPoultice = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Talk to Guild Hunter Fox.");
 		talkToAtza = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
-			"Talk to Atza in one of the buildings outside Civitas illa Fortis's south wall, west of the general store.",
+			"Talk to Atza in one of the buildings outside Civitas illa Fortis' south wall, west of the general store.",
 			furSample);
 		talkToAtzaAfterHandingFur = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
-			"Talk to Atza in one of the buildings outside Civitas illa Fortis's south wall, west of the general store.");
+			"Talk to Atza in one of the buildings outside Civitas illa Fortis' south wall, west of the general store.");
 		talkToAtza.addSubSteps(talkToAtzaAfterHandingFur);
 		makeEquipmentPile = new ObjectStep(this, NullObjectID.NULL_52976, new WorldPoint(1697, 3063, 0),
 			"Set-up the pile of equipment next to Atza.", hammer);

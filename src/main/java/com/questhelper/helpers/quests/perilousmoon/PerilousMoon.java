@@ -283,13 +283,13 @@ public class PerilousMoon extends BasicQuestHelper
 	public void setupRequirements()
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
-		knife.canBeObtainedDuringQuest();
+		knife.setTooltip("Can be obtained during the quest from the Supply crates (fishing supplies).");
 		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).isNotConsumed();
-		bigFishingNet.canBeObtainedDuringQuest();
+		bigFishingNet.setTooltip("Can be obtained during the quest from the Supply crates (fishing supplies).");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		rope.canBeObtainedDuringQuest();
+		rope.setTooltip("Can be obtained during the quest from the Supply crates (hunting supplies).");
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
-		pestleAndMortar.canBeObtainedDuringQuest();
+		pestleAndMortar.setTooltip("Can be obtained during the quest from the Supply crates (herblore supplies).");
 		saw = new ItemRequirement("Saw", ItemID.SAW);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		combatGear = new ItemRequirement("Combat armour with high defensive bonuses", -1, -1).isNotConsumed();

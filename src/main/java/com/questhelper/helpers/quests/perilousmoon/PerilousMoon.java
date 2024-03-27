@@ -675,7 +675,7 @@ public class PerilousMoon extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Camping up", List.of(
 			takeBuildingSupplies, enterPrison, buildPrisonCamp, leavePrison,
 			enterEarthbound, buildEarthCamp, leaveEarth, enterStreambound, buildStreamCamp, leaveStream
-		)));
+		), emptyInventory5));
 		allSteps.add(new PanelDetails("Enchanting", List.of(
 			talkToJessamineForTalismans, leaveNeypotzli, talkToNahta, talkToBlacksmith, enterNeypotzliAfterBlacksmith,
 			useTalismansSidebar, talkToEyatlalli, talkToJessamineAfterEyatlalli

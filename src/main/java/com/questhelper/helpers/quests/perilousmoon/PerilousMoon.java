@@ -131,7 +131,7 @@ public class PerilousMoon extends BasicQuestHelper
 		steps.put(4, returnToAttala);
 
 		ConditionalStep goTalkToJess = new ConditionalStep(this, enterCamTorum);
-		goTalkToJess.addStep(and(inCamTorum, talkedToBuilders), talkToJessamine);
+		goTalkToJess.addStep(and(inCamTorum), talkToJessamine);
 		steps.put(5, goTalkToJess);
 		// 5->6 when entered cam torum
 		// 9826 0->1, probably builders going

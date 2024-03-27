@@ -544,7 +544,7 @@ public class PerilousMoon extends BasicQuestHelper
 		talkToEyatlalliWithItems.addSubSteps(talkToEyatlalliAfterItems);
 
 		enterCamTorumForFights = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1436, 3129, 0),
-			"Enter the entrance to Cam Torum, ready to fight. Don't bring any food or potions.", crushWeapon, slashWeapon, stabWeapon, combatGear);
+			"Enter the entrance to Cam Torum, ready to fight. You can make good food and potions inside Neypotzli.", crushWeapon, slashWeapon, stabWeapon, combatGear);
 
 		enterNeypotzliForFights = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1439, 9600, 1),
 		"Enter the Neypotzli entrance in the far north of Cam Torum, ready to fight.", crushWeapon, slashWeapon, stabWeapon, combatGear);
@@ -559,7 +559,6 @@ public class PerilousMoon extends BasicQuestHelper
 		fightBlueMoonSidebar = new DetailedQuestStep(this,
 			"Defeat the blue moon. Use a crush weapon. Protection prayers have no effect.");
 		fightBlueMoonSidebar.addText("Remain inside of the highlighted circle on the floor to remain safe. It will move periodically.");
-		fightBlueMoonSidebar.addText("Only use food and potions made inside of Neypotzli.");
 		fightBlueMoonSidebar.addText("When the highlighted circle is the full or new moon, they will use a special attack:");
 		fightBlueMoonSidebar.addText("Weapon freeze - Your weapon is unequipped and put into ice. Attack the ice to get it back.");
 		fightBlueMoonSidebar.addText("Brazier - two braziers will extinguish. Re-ignite them whilst avoiding the tornadoes.");
@@ -575,11 +574,9 @@ public class PerilousMoon extends BasicQuestHelper
 		fightBloodMoonSidebar = new DetailedQuestStep(this,
 			"Defeat the blood moon. Use a slash weapon. Protection prayers have no effect.");
 		fightBloodMoonSidebar.addText("Remain inside of the highlighted circle on the floor to remain safe. It will move periodically.");
-		fightBloodMoonSidebar.addText("Only use food and potions made inside of Neypotzli.");
 		fightBloodMoonSidebar.addText("When the highlighted circle is the full or new moon, they will use a special attack:");
 		fightBloodMoonSidebar.addText("Raining blood - Blood falls from the ceiling. Avoid the blood puddles.");
 		fightBloodMoonSidebar.addText("Blood jaguar - Jaguars appear. Attack the highlighted jaguar, avoiding the blood square. Step away from the jaguar just before each of its attacks.");
-		fightBloodMoonSidebar.addText("You should ONLY eat during their special attacks, as you will heal it and take damage instead otherwise.");
 		fightBloodMoonSidebar.addSubSteps(fightBloodMoon);
 
 		enterStreamboundForFight = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1458, 9650, 1),

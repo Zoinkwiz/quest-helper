@@ -206,6 +206,7 @@ public class QuestOrders
 		QuestHelperQuest.OLAFS_QUEST,
 		QuestHelperQuest.A_KINGDOM_DIVIDED,
 		QuestHelperQuest.A_TASTE_OF_HOPE,
+		QuestHelperQuest.AT_FIRST_LIGHT,
 		QuestHelperQuest.BALLOON_TRANSPORT_CASTLE_WARS,
 		QuestHelperQuest.ARDOUGNE_MEDIUM,
 		QuestHelperQuest.DESERT_MEDIUM,
@@ -224,6 +225,9 @@ public class QuestOrders
 		QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE,
+		QuestHelperQuest.TWILIGHTS_PROMISE,
+		QuestHelperQuest.PERILOUS_MOON,
+		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 		QuestHelperQuest.LUNAR_DIPLOMACY,
 		QuestHelperQuest.KINGS_RANSOM,
@@ -252,11 +256,7 @@ public class QuestOrders
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
-		// TODO: Varlamore quests need better sorting
-		QuestHelperQuest.TWILIGHTS_PROMISE,
 		QuestHelperQuest.AT_FIRST_LIGHT,
-		QuestHelperQuest.PERILOUS_MOON,
-		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide
@@ -475,6 +475,9 @@ public class QuestOrders
 		QuestHelperQuest.SWAN_SONG,
 		QuestHelperQuest.DEFENDER_OF_VARROCK,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE,
+		QuestHelperQuest.TWILIGHTS_PROMISE,
+		QuestHelperQuest.PERILOUS_MOON,
+		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 		QuestHelperQuest.GRIM_TALES,
 		QuestHelperQuest.DREAM_MENTOR,
 		QuestHelperQuest.WILDERNESS_MEDIUM,
@@ -496,11 +499,6 @@ public class QuestOrders
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.DESERT_TREASURE_II,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
-		// TODO: Varlamore quests need better sorting
-		QuestHelperQuest.TWILIGHTS_PROMISE,
-		QuestHelperQuest.AT_FIRST_LIGHT,
-		QuestHelperQuest.PERILOUS_MOON,
-		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
 
@@ -698,6 +696,7 @@ public class QuestOrders
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.TALE_OF_THE_RIGHTEOUS,
 		QuestHelperQuest.A_TASTE_OF_HOPE,
+		QuestHelperQuest.AT_FIRST_LIGHT,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.THE_FORSAKEN_TOWER,
 		QuestHelperQuest.THE_ASCENT_OF_ARCEUUS,

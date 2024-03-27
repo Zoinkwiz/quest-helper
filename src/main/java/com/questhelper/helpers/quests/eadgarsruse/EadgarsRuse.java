@@ -152,6 +152,9 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		steps.put(15, talkToCooksAboutGoutweed);
 
+		// This is presumed based on 20 being a missing varp state, and players reporting talking to the cooks first result in a broken state where you need to go talk to Eadgar after
+		steps.put(20, enterTheStronghold);
+
 		ConditionalStep returnToEadgar = new ConditionalStep(this, getCoinsOrBoots);
 		returnToEadgar.addStep(inEadgarsCave, talkToEadgarFromCook);
 		returnToEadgar.addStep(inTrollheimArea, enterEadgarsCaveFromCook);

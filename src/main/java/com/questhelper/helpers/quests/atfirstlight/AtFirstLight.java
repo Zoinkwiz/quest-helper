@@ -232,7 +232,7 @@ public class AtFirstLight extends BasicQuestHelper
 		useToyOnKiko = new NpcStep(this, NpcID.GUILD_HUNTER_KIKO, new WorldPoint(1552, 9460, 0),
 			"Use the wound up toy mouse on Guild Hunter Kiko near the bar.", toyMouseWound.highlighted());
 		checkBed = new ObjectStep(this, ObjectID.CAT_BED, new WorldPoint(1552, 9460, 0),
-			"Search the cat's bed.");
+			"Check the cat's bed.");
 		returnToWolf = new NpcStep(this, NpcID.GUILD_HUNTER_WOLF_MASTER, new WorldPoint(1555, 9462, 0),
 			"Return to Guild Hunter Wolf (Master), next to the bar.");
 		goUpTree = new ObjectStep(this, ObjectID.STAIRS_51642, new WorldPoint(1557, 9449, 0),

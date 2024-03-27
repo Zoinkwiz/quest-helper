@@ -129,8 +129,8 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		int[] SUE_AND_GARY = new int[] { NpcID.SUE, NpcID.GARY };
-		int[] DAVE_AND_JANE = new int[] { NpcID.JANE, NpcID.DAVE_12943 };
+		int[] SUE_AND_GARY = new int[]{NpcID.SUE, NpcID.GARY};
+		int[] DAVE_AND_JANE = new int[]{NpcID.JANE, NpcID.DAVE_12943};
 		talkToMarcellus = new NpcStep(this, NpcID.MARCELLUS, new WorldPoint(1683, 2973, 0),
 			"Talk to Marcellus near the Locus Oasis south of Civitas illa Fortis.");
 		talkToMarcellus.addDialogStep("Yes.");
@@ -160,7 +160,7 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 			"Search the chest in the building next to Marcellus. The code is 'NALIA'.");
 		chestStep.addAlternateObjects(ObjectID.CHEST_50896);
 		openChest = new PuzzleWrapperStep(this, chestStep, "Work out how to open the chest in Marcellus' house.");
-		enterCode = new PuzzleWrapperStep(this, new ChestCodeStep(this,"NALIA", 10,
+		enterCode = new PuzzleWrapperStep(this, new ChestCodeStep(this, "NALIA", 10,
 			3, 3, 4, 4, 9), "Work out how to open the chest in Marcellus' house.");
 		openChest.addSubSteps(enterCode);
 		plantPlushy = new ObjectStep(this, NullObjectID.NULL_52979, new WorldPoint(1694, 2976, 0),

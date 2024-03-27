@@ -121,8 +121,8 @@ public class AtFirstLight extends BasicQuestHelper
 		steps.put(3, goDistractCat);
 
 		ConditionalStep goFindFox = new ConditionalStep(this, buyBoxTrap);
-		goFindFox.addStep(boxTrap, talkToFox);
 		goFindFox.addStep(inGuild, goUpTree);
+		goFindFox.addStep(boxTrap, talkToFox);
 		steps.put(4, goFindFox);
 
 		ConditionalStep goMakePoultice = new ConditionalStep(this, takeLeaf);

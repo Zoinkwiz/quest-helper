@@ -249,7 +249,7 @@ public class AtFirstLight extends BasicQuestHelper
 		useTailOnLeaves = new DetailedQuestStep(this, "Use the tails on the leaves.",
 			jerboaTail.highlighted(), smoothLeaf.highlighted());
 		returnToFox = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
-			"Bring the poultice back to Fox.", makeshiftPoultice);
+			"Bring the poultice back to Guild Hunter Fox near the crevice.", makeshiftPoultice);
 		talkToFoxAfterPoultice = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Talk to Fox.");
 		talkToAtza = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),

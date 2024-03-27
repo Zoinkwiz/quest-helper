@@ -207,7 +207,7 @@ public class PerilousMoon extends BasicQuestHelper
 		ConditionalStep getItemsWhenInStream = new ConditionalStep(this, getHerbloreSupplies);
 		getItemsWhenInStream.addStep(and(hadPaste, hadScales, rope), enterSmallEntrance);
 		getItemsWhenInStream.addStep(and(hadPaste, hadScales), getHunterSupplies);
-		getItemsWhenInStream.addStep(and(hadPaste, bream, knife), useKnifeOnBream);
+		getItemsWhenInStream.addStep(and(hadPaste, bream), useKnifeOnBream);
 		getItemsWhenInStream.addStep(and(hadPaste, bigFishingNet), fishBream);
 		getItemsWhenInStream.addStep(and(hadPaste), getFishingSupplies);
 		getItemsWhenInStream.addStep(and(pestleAndMortar, moonlightGrub), useGrubOnPestle);
@@ -437,7 +437,7 @@ public class PerilousMoon extends BasicQuestHelper
 			"Make your way to the camp spot, marked on the minimap with a cooking range icon.", buildingSupplies, hammer, saw);
 		((ObjectStep) buildPrisonCamp).setLinePoints(prisonPath);
 		leavePrison = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1388, 9576, 0),
-			"Leave the area back to the antechamber.");
+			"Return to the antechamber.");
 		((ObjectStep) leavePrison).setLinePoints(Lists.reverse(prisonPath));
 
 		enterEarthbound = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1421, 9650, 1),
@@ -459,7 +459,7 @@ public class PerilousMoon extends BasicQuestHelper
 			"Make your way to the camp spot, marked on the minimap with a cooking range icon.", buildingSupplies, hammer, saw);
 		((ObjectStep) buildEarthCamp).setLinePoints(earthPath);
 		leaveEarth = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1404, 9716, 0),
-			"Leave the area back to the antechamber.");
+			"Return to the antechamber.");
 		((ObjectStep) leaveEarth).setLinePoints(Lists.reverse(earthPath));
 
 		enterStreambound = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1458, 9650, 1),
@@ -519,23 +519,23 @@ public class PerilousMoon extends BasicQuestHelper
 		getHerbloreSupplies.addDialogStep("Take herblore supplies.");
 		useGrubOnPestle = new DetailedQuestStep(this, "Use a pestle and mortar on the moonlight grub.", pestleAndMortar.highlighted(), moonlightGrub.highlighted());
 		getFishingSupplies = new ObjectStep(this, ObjectID.SUPPLY_CRATES, new WorldPoint(1511, 9695, 0),
-			"Take fishing supplies from the supply crates in the camp. You only need the big fishing net and knife.");
+			"Take fishing supplies from the supply crates in the camp.");
 		getFishingSupplies.addDialogStep("Take fishing supplies.");
 		fishBream = new ObjectStep(this, NullObjectID.NULL_51367, new WorldPoint(1521, 9689, 0),
-			"Fish a bream from the stream east of the camp.", bigFishingNet);
+			"Fish a bream from the stream east of the camp.", bigFishingNet, knife);
 		useKnifeOnBream = new DetailedQuestStep(this, "Use a knife on the raw bream.", knife.highlighted(), bream.highlighted());
 		getHunterSupplies = new ObjectStep(this, ObjectID.SUPPLY_CRATES, new WorldPoint(1511, 9695, 0),
 			"Take hunter supplies from the supply crates in the camp. You only need the rope, and the knife from the fishing supplies.");
 		getHunterSupplies.addDialogStep("Take hunting supplies.");
 		enterSmallEntrance = new ObjectStep(this, ObjectID.ENTRANCE_51378, new WorldPoint(1522, 9720, 0),
-			"Enter the entrance north of the camp.", rope);
+			"Enter the entrance north of the camp.", rope, knife);
 		setTrap = new ObjectStep(this, ObjectID.ROCK_51359, new WorldPoint(1377, 9682, 0),
 			"Set up a trap by clicking two rocks near one another.", true, rope);
 		rustleBush = new ObjectStep(this, ObjectID.BUSH_51358, new WorldPoint(1380, 9684, 0), "Rustle the nearby bush to trap a lizard.");
 		pickUpMossLizard = new ItemStep(this, "Pick up the raw moss lizard.", rawMossLizard);
 		useKnifeOnLizard = new DetailedQuestStep(this, "Use a knife on the raw moss lizard.", knife.highlighted(), rawMossLizard.highlighted());
-		leaveEarthboundWithLizard = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1404, 9716, 0),
-		"Leave the area back to the antechamber via the north-east entrance.");
+		leaveEarthboundWithLizard = new ObjectStep(this, ObjectID.ENTRANCE_51378, new WorldPoint(1389, 9674, 0),
+		"Leave the area back to the antechamber via the south-east entrance.");
 		talkToEyatlalliWithItems = new NpcStep(this, NpcID.EYATLALLI, new WorldPoint(1445, 9639, 1),
 			"Talk to Eyatlalli with the items.", moonlightGrubPaste.hideConditioned(usedPaste),
 			breamScales.hideConditioned(usedScales), mossLizardTail.hideConditioned(usedTail));

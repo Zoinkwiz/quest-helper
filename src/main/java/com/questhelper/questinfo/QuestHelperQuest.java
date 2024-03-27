@@ -74,6 +74,7 @@ import com.questhelper.helpers.achievementdiaries.wilderness.WildernessEasy;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessElite;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessHard;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessMedium;
+import com.questhelper.helpers.miniquests.barbariantraining.BarbarianTraining;
 import com.questhelper.helpers.miniquests.hisfaithfulservants.BarrowsHelper;
 import com.questhelper.helpers.miniquests.hisfaithfulservants.HisFaithfulServants;
 import com.questhelper.helpers.mischelpers.allneededitems.AllNeededItems;
@@ -489,6 +490,7 @@ public enum QuestHelperQuest
 	DADDYS_HOME(new DaddysHome(), Quest.DADDYS_HOME, QuestVarbits.QUEST_DADDYS_HOME, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	HOPESPEARS_WILL(new HopespearsWill(), Quest.HOPESPEARS_WILL, QuestVarbits.QUEST_HOPESPEARS_WILL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	HIS_FAITHFUL_SERVANTS(new HisFaithfulServants(), Quest.HIS_FAITHFUL_SERVANTS, QuestVarbits.HIS_FAITHFUL_SERVANTS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	BARBARIAN_TRAINING(new BarbarianTraining(), Quest.BARBARIAN_TRAINING, QuestVarbits.BARBARIAN_TRAINING, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS(new KnightWaves(), "Knight Waves Training Grounds", QuestVarbits.KNIGHT_WAVES_TRAINING_GROUNDS, 8,

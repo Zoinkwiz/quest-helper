@@ -25,6 +25,7 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
+import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
@@ -36,8 +37,9 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import lombok.NonNull;
-import net.runelite.api.ChatMessageType;
+import lombok.Setter;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -60,6 +62,9 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	protected EventBus eventBus;
 
 	protected boolean started = false;
+
+	@Setter
+	protected boolean checkAllChildStepsOnListenerCall = false;
 
 	protected final LinkedHashMap<Requirement, QuestStep> steps;
 	protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();
@@ -125,6 +130,11 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 
 		InitializableRequirement condition = (InitializableRequirement) requirement;
+
+		if (condition instanceof MultiChatMessageRequirement && !chatConditions.contains(condition))
+		{
+			chatConditions.add((MultiChatMessageRequirement) condition);
+		}
 
 		if (condition instanceof ChatMessageRequirement && !chatConditions.contains(condition))
 		{
@@ -193,12 +203,19 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		if (started)
 		{
-			for (RuneliteRequirement runeliteCondition : runeliteConditions)
-			{
-				runeliteCondition.validateCondition(client);
-			}
+			checkRuneliteConditions(checkAllChildStepsOnListenerCall);
 			updateSteps();
 		}
+	}
+
+	public void checkRuneliteConditions(boolean parentDefinedRecursion)
+	{
+		for (RuneliteRequirement runeliteCondition : runeliteConditions)
+		{
+			runeliteCondition.validateCondition(client);
+		}
+
+		handleChildRequirementValidation(step -> step.checkRuneliteConditions(parentDefinedRecursion), parentDefinedRecursion);
 	}
 
 	@Subscribe
@@ -210,6 +227,8 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 				.filter(Objects::nonNull)
 				.filter(InitializableRequirement.class::isInstance)
 				.forEach(req -> ((InitializableRequirement) req).updateHandler());
+
+			// TODO: Work out if this needs to account for checkAllChildStepsOnListenerCall
 		}
 	}
 
@@ -221,30 +240,62 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		chatConditions.forEach(step -> step.validateCondition(client, chatMessage));
+		handleChatMessage(chatMessage, checkAllChildStepsOnListenerCall);
+	}
 
-		if (chatMessage.getType() == ChatMessageType.DIALOG)
-		{
-			dialogConditions.forEach(step -> step.validateCondition(chatMessage.getMessage()));
-		}
+	public void handleChatMessage(ChatMessage chatMessage, boolean parentDefinedRecursion)
+	{
+		chatConditions.forEach(requirement -> requirement.validateCondition(client, chatMessage));
+		dialogConditions.forEach(requirement -> requirement.validateCondition(chatMessage));
+
+		handleChildRequirementValidation(step -> step.handleChatMessage(chatMessage, parentDefinedRecursion), parentDefinedRecursion);
 	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		npcConditions.forEach(npc -> npc.checkNpcSpawned(event.getNpc()));
+		handleNpcSpawned(event, checkAllChildStepsOnListenerCall);
+	}
+
+	public void handleNpcSpawned(NpcSpawned npcSpawned, boolean parentDefinedRecursion)
+	{
+		npcConditions.forEach(npc -> npc.checkNpcDespawned(npcSpawned.getNpc()));
+		handleChildRequirementValidation(step -> step.handleNpcSpawned(npcSpawned, parentDefinedRecursion), parentDefinedRecursion);
 	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		npcConditions.forEach(npc -> npc.checkNpcDespawned(event.getNpc()));
+		handleNpcDespawned(event, checkAllChildStepsOnListenerCall);
+	}
+
+	public void handleNpcDespawned(NpcDespawned npcDespawned, boolean parentDefinedRecursion)
+	{
+		npcConditions.forEach(npc -> npc.checkNpcDespawned(npcDespawned.getNpc()));
+		handleChildRequirementValidation(step -> step.handleNpcDespawned(npcDespawned, parentDefinedRecursion), parentDefinedRecursion);
 	}
 
 	@Subscribe
 	public void onNpcChanged(NpcChanged npcCompositionChanged)
 	{
-		npcConditions.forEach(npc -> npc.checkNpcChanged(npcCompositionChanged));
+		handleNpcChanged(npcCompositionChanged, checkAllChildStepsOnListenerCall);
+	}
+
+	public void handleNpcChanged(NpcChanged npcChanged, boolean parentDefinedRecursion)
+	{
+		npcConditions.forEach(npc -> npc.checkNpcChanged(npcChanged));
+		handleChildRequirementValidation(step -> step.handleNpcChanged(npcChanged, parentDefinedRecursion), parentDefinedRecursion);
+	}
+
+	private void handleChildRequirementValidation(Consumer<ConditionalStep> stepAction, boolean parentDefinedRecursion)
+	{
+		if (checkAllChildStepsOnListenerCall || parentDefinedRecursion)
+		{
+			steps.values().stream()
+				.filter(ConditionalStep.class::isInstance)
+				.map(ConditionalStep.class::cast)
+				.forEach(stepAction);
+		}
 	}
 
 	protected void updateSteps()

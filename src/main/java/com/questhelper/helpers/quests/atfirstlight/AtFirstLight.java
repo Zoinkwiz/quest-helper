@@ -251,7 +251,7 @@ public class AtFirstLight extends BasicQuestHelper
 		returnToFox = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Bring the poultice back to Guild Hunter Fox near the crevice.", makeshiftPoultice);
 		talkToFoxAfterPoultice = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
-			"Talk to Fox.");
+			"Talk to Guild Hunter Fox.");
 		talkToAtza = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
 			"Talk to Atza in one of the buildings outside Civitas illa Fortis's south wall, west of the general store.",
 			furSample);

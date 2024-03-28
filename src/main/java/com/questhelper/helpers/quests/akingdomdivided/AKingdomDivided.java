@@ -947,7 +947,7 @@ public class AKingdomDivided extends BasicQuestHelper
 			returnToFulloreAgainSidebar, watchCutsceneAfterTalkingToFulloreInBasement,
 			talkToLordArceuusSidebar, talkToLordHosidius, talkToLadyLova, talkToLadyPiscSidebar, talkToLordShayzienSidebar,
 			talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar), Arrays.asList(fairyRingStaffOrSkillsNecklace, kharedstsMemoirs,
-			combatGearForXamphur, food), Arrays.asList(antipoison))
+			combatGearForXamphur, food), Arrays.asList(xericsTalisman, antipoison))
 		);
 
 		allSteps.add(new PanelDetails("The Council's End", Arrays.asList(talkToFulloreAboutLovaXericsLookout,
@@ -958,7 +958,7 @@ public class AKingdomDivided extends BasicQuestHelper
 			talkToFulloreAfterHelpingAllAgain, talkToHosidiusXericsLookoutFinal, talkToFulloreFinalCutscene, lastCutscene, talkToFulloreToFinishQuest),
 			Arrays.asList(kharedstsMemoirs, defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, gamesNecklace,
 				combatGear, food, fairyRingStaff),
-			Arrays.asList(radasBlessingOrSkillsNecklace))
+			Arrays.asList(xericsTalisman, radasBlessingOrSkillsNecklace))
 		);
 
 		return allSteps;

@@ -547,7 +547,6 @@ public class DetailedQuestStep extends QuestStep
 				{
 					if (requirement instanceof ItemRequirement && ((ItemRequirement) requirement).getAllIds().contains(item.getItemId()))
 					{
-						;
 						highlightInventoryItem(item, baseColor, graphics);
 					}
 					// TODO: If teleport, highlight teleport in spellbook

@@ -122,7 +122,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		kharedstsMemoirs, anyAxe, rosesNote2, combatGear, fireSpellGear, coldKey, rosesNote3, gamesNecklace, rosesNote4,
 		fairyRingStaffOrSkillsNecklace, combatGearForXamphur, kahtEgg, dampKey, defencePotion, volcanicSulphur, moltenGlass,
 		darkEssenceBlock, brokenRedirector, sulphurPotion, shieldingPotion, lovaDeclaration, fairyRingStaff, darkNullifier,
-		shayzienJournal, radasBlessingOrSkillsNecklace;
+		shayzienJournal, radasBlessingOrSkillsNecklace, xericsTalisman;
 
 	Requirement freeInventorySlots;
 
@@ -478,6 +478,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		radasBlessingOrSkillsNecklace = new ItemRequirement("Rada's blessing or Skills necklace", ItemCollections.SKILLS_NECKLACES);
 		radasBlessingOrSkillsNecklace.addAlternates(ItemID.RADAS_BLESSING, ItemID.RADAS_BLESSING_1, ItemID.RADAS_BLESSING_2,
 			ItemID.RADAS_BLESSING_3, ItemID.RADAS_BLESSING_4);
+		xericsTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERICS_TALISMAN);
 	}
 
 	public void setupConditions()
@@ -728,10 +729,13 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		talkToLordHosidius = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0), "Speak to Lord Hosidius in his home on the south east side of Hosidius.");
 		talkToLordHosidius.addDialogStep("'Lunch by the Lancalliums' - Hosidius");
-		((NpcStep) talkToLordHosidius).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [1] (or Xeric's amulet [2])"));
+		((NpcStep) talkToLordHosidius).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [1]"));
+		((NpcStep) talkToLordHosidius).addTeleport(xericsTalisman.named("Xeric's talisman [2]"));
+
 		talkToLadyLova = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ_11035, new WorldPoint(1484, 3748, 0), "Speak to Lady Lovakengj in the Lovakengj Assembly.");
 		talkToLadyLova.addDialogSteps("'Jewellery of Jubilation' - Lovakengj");
 		((NpcStep) talkToLadyLova).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [4]"));
+		((NpcStep) talkToLadyLova).addTeleport(xericsTalisman.named("Xeric's talisman [3]"));
 
 		talkToLadyPiscSidebar = new NpcStep(this, NpcID.LADY_SHAUNA_PISCARILIUS, "Speak to Lady Piscarilius in the sewers under Port Piscarilius.");
 		talkToLadyPisc = new NpcStep(this, NpcID.LADY_SHAUNA_PISCARILIUS, new WorldPoint(1764, 10158, 0), "Speak to Lady Piscarilius in the sewers under Port Piscarilius.");
@@ -750,7 +754,8 @@ public class AKingdomDivided extends BasicQuestHelper
 
 		talkToFulloreXericsLookout = new NpcStep(this, NpcID.COMMANDER_FULLORE, new WorldPoint(1591, 3528, 0), "Speak to Commander Fullore at Xeric's Lookout located south east of Shayzien.");
 		talkToFulloreXericsLookout.addDialogStep("'History and Hearsay' - Shayzien");
-		((NpcStep) talkToFulloreXericsLookout).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [3] and run east (or Xeric's Talisman [1])"));
+		((NpcStep) talkToFulloreXericsLookout).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [3] and run east"));
+		((NpcStep) talkToFulloreXericsLookout).addTeleport(xericsTalisman.named("Xeric's talisman [1]"));
 
 		talkToAllMembersInXericsLookoutSidebar = new DetailedQuestStep(this, "Speak with all the leaders again on each floor of Xeric's Lookout. Lord Hosidius can be found in the basement and Lord Arceeus just outside the door of the Lookout.");
 		talkToArceuusLookout = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_10962, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceeus in Xeric's Lookout.");
@@ -811,7 +816,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		inspectWineBarrel = new ObjectStep(this, ObjectID.WINE_BARREL_41928, new WorldPoint(1809, 3544, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.");
 		inspectWineBarrel.addDialogSteps("Climb through it.");
 		inspectWineBarrel.addDialogStep("'Lunch by the Lancalliums' - Hosidius");
-		((ObjectStep) inspectWineBarrel).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [1] and run east (or Xeric's amulet [2])"));
+		((ObjectStep) inspectWineBarrel).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [1] and run east"));
+		((ObjectStep) inspectWineBarrel).addTeleport(xericsTalisman.named("Xeric's talisman [2]"));
 		picklockChestInWineBarrel = new ObjectStep(this, ObjectID.CHEST_41931, new WorldPoint(1898, 9957, 0), "Inspect the eastern wine barrel in the Hosidius vinery then enter it. Once inside, picklock the chest to receive a Shayzien journal.");
 
 		inspectWineBarrel.addSubSteps(picklockChestInWineBarrel);
@@ -819,7 +825,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToAllMembersInXericsLookoutSidebarTaskFinish = new DetailedQuestStep(this, "Speak with all the leaders again on each floor of Xeric's Lookout.");
 		talkToArceuusLookoutTaskFinish = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_10962, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceeus in Xeric's Lookout.");
 		talkToArceuusLookoutTaskFinish.addDialogStep("'History and Hearsay' - Shayzien");
-		((NpcStep) talkToArceuusLookoutTaskFinish).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [3] and run east (or Xeric's Talisman [1])"));
+		((NpcStep) talkToArceuusLookoutTaskFinish).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [3] and run east"));
+		((NpcStep) talkToArceuusLookoutTaskFinish).addTeleport(xericsTalisman.named("Xeric's talisman [1]"));
 		talkToHosidiusLookoutTaskFinish = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_10971, new WorldPoint(1568, 9955, 0), "Talk to Lord Hosidius in Xeric's Lookout.");
 		talkToShayzienLookoutTaskFinish = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_10965, new WorldPoint(1591, 3530, 1), "Talk to Lord Shayzien in Xeric's Lookout.", shayzienJournal);
 		talkToLovaLookoutTaskFinish = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ_10973, new WorldPoint(1592, 3531, 2), "Talk to Lady Lovakengj in Xeric's Lookout.", lovaDeclaration);
@@ -855,9 +862,8 @@ public class AKingdomDivided extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		// TODO: Look into other teleport alternative requirement, like bringing a Xeric's Talisman
-		return Arrays.asList(new ItemRequirement("Kharedst's Memoirs for teleports", ItemID.KHAREDSTS_MEMOIRS),
-			fairyRingStaffOrSkillsNecklace, gamesNecklace, antipoison, radasBlessingOrSkillsNecklace);
+		return Arrays.asList(kharedstsMemoirs, fairyRingStaffOrSkillsNecklace, gamesNecklace, antipoison,
+			radasBlessingOrSkillsNecklace, xericsTalisman);
 	}
 
 	@Override
@@ -941,7 +947,7 @@ public class AKingdomDivided extends BasicQuestHelper
 			returnToFulloreAgainSidebar, watchCutsceneAfterTalkingToFulloreInBasement,
 			talkToLordArceuusSidebar, talkToLordHosidius, talkToLadyLova, talkToLadyPiscSidebar, talkToLordShayzienSidebar,
 			talkToFulloreXericsLookout, talkToAllMembersInXericsLookoutSidebar), Arrays.asList(fairyRingStaffOrSkillsNecklace, kharedstsMemoirs,
-			combatGearForXamphur, food), Arrays.asList(antipoison))
+			combatGearForXamphur, food), Arrays.asList(xericsTalisman, antipoison))
 		);
 
 		allSteps.add(new PanelDetails("The Council's End", Arrays.asList(talkToFulloreAboutLovaXericsLookout,
@@ -952,7 +958,7 @@ public class AKingdomDivided extends BasicQuestHelper
 			talkToFulloreAfterHelpingAllAgain, talkToHosidiusXericsLookoutFinal, talkToFulloreFinalCutscene, lastCutscene, talkToFulloreToFinishQuest),
 			Arrays.asList(kharedstsMemoirs, defencePotion, darkEssenceBlock, volcanicSulphur, brokenRedirector, moltenGlass, gamesNecklace,
 				combatGear, food, fairyRingStaff),
-			Arrays.asList(radasBlessingOrSkillsNecklace))
+			Arrays.asList(xericsTalisman, radasBlessingOrSkillsNecklace))
 		);
 
 		return allSteps;

@@ -172,6 +172,10 @@ public class FairytaleII extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
+		thievingReq = new SkillRequirement(Skill.THIEVING, 40);
+		farmReq = new SkillRequirement(Skill.FARMING, 49, true);
+		herbReq = new SkillRequirement(Skill.HERBLORE, 57, true);
+
 		dramenOrLunarStaff = new ItemRequirement("Dramen or lunar staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenOrLunarStaff.addAlternates(ItemID.LUNAR_STAFF);
 		dramenOrLunarStaff.setDisplayMatchedItemName(true);
@@ -208,9 +212,6 @@ public class FairytaleII extends BasicQuestHelper
 		inStarPlane = new ZoneRequirement(starPlane);
 		inGorakPlane = new ZoneRequirement(gorakPlane);
 
-		thievingReq = new SkillRequirement(Skill.THIEVING, 40);
-		farmReq = new SkillRequirement(Skill.FARMING, 49, true);
-		herbReq = new SkillRequirement(Skill.HERBLORE, 57, true);
 
 		// Started, 2333 0->1
 

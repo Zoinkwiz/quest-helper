@@ -26,8 +26,22 @@
 package com.questhelper;
 
 import com.google.inject.testing.fieldbinder.Bind;
+import com.questhelper.managers.QuestOverlayManager;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.callback.Hooks;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.overlay.OverlayManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
+import javax.inject.Named;
+import java.util.concurrent.ScheduledExecutorService;
+
 
 /**
  * Based on <a href="https://github.com/pajlads/DinkPlugin/blob/d7c0d4d3f044c25bcff256efc5217955ec1c1494/src/test/java/dinkplugin/notifiers/MockedNotifierTest.java">Dink's MockedNotifierTest</a>
@@ -37,7 +51,51 @@ public abstract class MockedTest extends MockedTestBase
 	@Bind
 	protected Client client = Mockito.mock(Client.class);
 
+	@Bind
+	protected ConfigManager configManager = Mockito.mock(ConfigManager.class);
+
+	@Bind
+	protected ChatMessageManager chatMessageManager = Mockito.mock(ChatMessageManager.class);
+
+	@Bind
+	protected ItemManager itemManager = Mockito.mock(ItemManager.class);
+
+	@Bind
+	protected OverlayManager overlayManager = Mockito.mock(OverlayManager.class);
+
+	@Bind
+	protected QuestHelperConfig questHelperConfig = Mockito.mock(QuestHelperConfig.class);
+
+	@Bind
+	protected QuestOverlayManager questOverlayManager = Mockito.mock(QuestOverlayManager.class);
+
+	@Bind
+	protected RuneliteObjectManager runeliteObjectManager = Mockito.mock(RuneliteObjectManager.class);
+
+	@Bind
+	protected Hooks hooks = Mockito.mock(Hooks.class);
+
+	@Bind
+	protected QuestHelperPlugin questHelperPlugin = Mockito.mock(QuestHelperPlugin.class);
+
+	@Bind
+	protected ClientToolbar clientToolbar = Mockito.mock(ClientToolbar.class);
+
+	@Bind
+	protected ClientThread clientThread = Mockito.mock(ClientThread.class);
+
+	@Bind
+	protected EventBus eventBus = Mockito.mock(EventBus.class);
+
+	@Bind
+	protected ScheduledExecutorService scheduledExecutorService = Mockito.mock(ScheduledExecutorService.class);
+
+	@Bind
+	@Named("developerMode")
+	private boolean developerMode;
+
 	@Override
+	@BeforeEach
 	protected void setUp()
 	{
 		super.setUp();

@@ -307,6 +307,7 @@ public class AtFirstLight extends BasicQuestHelper
 			new SkillRequirement(Skill.HUNTER, 46),
 			new SkillRequirement(Skill.HERBLORE, 30),
 			new SkillRequirement(Skill.CONSTRUCTION, 27),
+			new QuestRequirement(QuestHelperQuest.EAGLES_PEAK, QuestState.FINISHED),
 			new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED)
 		);
 	}

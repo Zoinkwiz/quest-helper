@@ -130,12 +130,11 @@ public class QuestRequirementPanel extends JPanel
 		else if (questManager != null && requirement instanceof QuestRequirement)
 		{
 			QuestHelper quest = ((QuestRequirement) requirement).getQuest().getQuestHelper();
-			if (quest.isCompleted()) return;
 			label.addMouseListener(new MouseAdapter()
 			{
 				public void mouseClicked(MouseEvent event)
 				{
-					questManager.setSidebarSelectedQuest(((QuestRequirement) requirement).getQuest().getQuestHelper());
+					questManager.setSidebarSelectedQuest(quest);
 				}
 
 				public void mouseEntered(MouseEvent evt)

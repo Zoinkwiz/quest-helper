@@ -312,11 +312,6 @@ public class QuestOverviewPanel extends JPanel
 
 			for (PanelDetails panelDetail : steps)
 			{
-				if (panelDetail.getHideCondition() != null && panelDetail.getHideCondition().check(questHelperPlugin.getClient()))
-				{
-					continue;
-				}
-
 				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep, quest, questHelperPlugin.getClient());
 				if (panelDetail.getLockingQuestSteps() != null &&
 					(panelDetail.getVars() == null
@@ -371,6 +366,7 @@ public class QuestOverviewPanel extends JPanel
 
 	public void updateHighlight(Client client, QuestStep newStep)
 	{
+		if (currentQuest == null) return;
 		questStepPanelList.forEach(panel -> {
 			panel.updateHighlightCheck(client, newStep, currentQuest);
 		});

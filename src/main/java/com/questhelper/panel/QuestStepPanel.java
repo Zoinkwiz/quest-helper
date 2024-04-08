@@ -160,8 +160,6 @@ public class QuestStepPanel extends JPanel
 		{
 			collapse();
 		}
-
-		updateHighlightCheck(client, currentStep, quest);
 	}
 
 	public void addRequirements(String text, List<Requirement> reqs, String borderLayout)

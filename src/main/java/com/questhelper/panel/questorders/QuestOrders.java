@@ -256,9 +256,6 @@ public class QuestOrders
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
-		QuestHelperQuest.AT_FIRST_LIGHT,
-
-
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,
@@ -439,6 +436,7 @@ public class QuestOrders
 		QuestHelperQuest.THE_GENERALS_SHADOW,
 		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
 		QuestHelperQuest.A_TASTE_OF_HOPE,
+		QuestHelperQuest.AT_FIRST_LIGHT,
 		QuestHelperQuest.FAMILY_CREST,
 		QuestHelperQuest.LEGENDS_QUEST,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE,
@@ -714,7 +712,7 @@ public class QuestOrders
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.SLEEPING_GIANTS,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
-		//QuestHelperQuest.SECRETS_OF_THE_NORTH, - Placeholder for future addition
+		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,

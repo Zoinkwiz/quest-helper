@@ -4,7 +4,6 @@ import com.questhelper.MockedTest;
 import com.questhelper.questinfo.QuestHelperQuest;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
 
 public class QuestHelperTest extends MockedTest
 {
@@ -17,6 +16,7 @@ public class QuestHelperTest extends MockedTest
 			var helper = quest.getQuestHelper();
 			helper.setQuest(quest);
 			this.injector.injectMembers(helper);
+			helper.setQuestHelperPlugin(questHelperPlugin);
 			helper.setupRequirements();
 
 			var itemRecommended = helper.getItemRecommended();

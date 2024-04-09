@@ -351,7 +351,7 @@ public class Biohazard extends BasicQuestHelper
 		List<QuestStep> testingSteps = QuestUtil.toArrayList(talkToTheChemist);
 		testingSteps.addAll(giveChemicals.getDisplaySteps());
 		testingSteps.addAll(Arrays.asList(goToVarrock, talkToAsyff, talkToGuidor));
-		allSteps.add(new PanelDetails("Testing the plague sample", testingSteps, plagueSample, liquidHoney, ethenea, sulphuricBroline));
+		allSteps.add(new PanelDetails("Testing the plague sample", testingSteps, plagueSample, liquidHoney, ethenea, sulphuricBroline, touchPaper));
 
 		allSteps.add(new PanelDetails("Revealing the truth", returnToElenaAfterSampling, informTheKing));
 		return allSteps;

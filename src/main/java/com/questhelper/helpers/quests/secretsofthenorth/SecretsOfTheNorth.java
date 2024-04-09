@@ -265,6 +265,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		// Required
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).isNotConsumed();
+		lockpick.addAlternates(ItemID.HAIR_CLIP);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.canBeObtainedDuringQuest();
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).isNotConsumed();

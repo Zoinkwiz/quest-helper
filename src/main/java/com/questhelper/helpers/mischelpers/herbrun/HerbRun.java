@@ -194,12 +194,12 @@ public class HerbRun extends ComplexStateQuestHelper
 				seed.setId(Seed.valueOf(seedName).seedID);
 			} catch (IllegalArgumentException err)
 			{
-				questHelperPlugin.getConfigManager().setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
+				configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
 			}
 			seed.setName(Text.titleCase(Seed.valueOf(seedName)) + " seed");
 		} else
 		{
-			questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, HERB_SEEDS, Seed.GUAM);
 		}
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 		compost.setDisplayMatchedItemName(true);

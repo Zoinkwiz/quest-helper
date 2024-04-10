@@ -25,7 +25,7 @@
  */
 package com.questhelper.helpers.quests.pures;
 
-import com.questhelper.MockedTestBase;
+import com.questhelper.MockedTest;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.config.SkillFiltering;
 import com.questhelper.helpers.quests.childrenofthesun.ChildrenOfTheSun;
@@ -35,24 +35,19 @@ import com.questhelper.helpers.quests.legendsquest.LegendsQuest;
 import com.questhelper.helpers.quests.naturespirit.NatureSpirit;
 import com.questhelper.helpers.quests.waterfallquest.WaterfallQuest;
 import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.client.config.ConfigManager;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class OneDefPureTest extends MockedTestBase
+public class OneDefPureTest extends MockedTest
 {
-	private ConfigManager configManager;
-
 	@BeforeEach
 	public void setup()
 	{
-		configManager = mock(ConfigManager.class);
 		when(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilterDefence")).thenReturn("true");
 		when(configManager.getConfiguration(anyString(), anyString())).thenReturn("false");
 	}

@@ -26,6 +26,7 @@
 package com.questhelper;
 
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,13 +37,15 @@ import org.mockito.MockitoAnnotations;
  */
 public abstract class MockedTestBase
 {
+	protected Injector injector;
 	private AutoCloseable mocks;
 
 	@BeforeEach
 	protected void setUp()
 	{
 		this.mocks = MockitoAnnotations.openMocks(this);
-		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		this.injector = Guice.createInjector(BoundFieldModule.of(this));
+		this.injector.injectMembers(this);
 	}
 
 	@AfterEach
@@ -50,5 +53,4 @@ public abstract class MockedTestBase
 	{
 		mocks.close();
 	}
-
 }

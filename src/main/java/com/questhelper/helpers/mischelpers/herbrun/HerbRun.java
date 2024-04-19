@@ -170,7 +170,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		weissEmpty = new ManualRequirement();
 		hosidiusEmpty = new ManualRequirement();
 
-		accessToHarmony = new QuestRequirement(QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY, QuestState.FINISHED);
+		accessToHarmony = new QuestRequirement(QuestHelperQuest.MORYTANIA_ELITE, QuestState.FINISHED);
 		accessToWeiss = new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED);
 		accessToTrollStronghold = new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED);
 		accessToFarmingGuildPatch = new SkillRequirement(Skill.FARMING, 65);

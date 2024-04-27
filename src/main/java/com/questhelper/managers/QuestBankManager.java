@@ -115,6 +115,11 @@ public class QuestBankManager
 		questBank.updateLocalBank(itemContainer.getItems());
 	}
 
+	public void updateBankForQuestSpeedrunningWorld()
+	{
+		questBank.updateLocalBank(new Item[]{ });
+	}
+
 	public void saveBankToConfig()
 	{
 		questBank.saveBankToConfig();

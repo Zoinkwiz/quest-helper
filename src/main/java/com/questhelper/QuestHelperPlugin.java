@@ -73,6 +73,8 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
@@ -330,6 +332,14 @@ public class QuestHelperPlugin extends Plugin
 		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
 			return;
+		}
+
+		if (client.getWorldType().contains(WorldType.QUEST_SPEEDRUNNING)
+			&& event.getVarpId() == VarPlayer.IN_RAID_PARTY
+			&& event.getValue() == 0
+			&& client.getGameState() == GameState.LOGGED_IN)
+		{
+			questBankManager.updateBankForQuestSpeedrunningWorld();
 		}
 
 		questManager.handleVarbitChanged();

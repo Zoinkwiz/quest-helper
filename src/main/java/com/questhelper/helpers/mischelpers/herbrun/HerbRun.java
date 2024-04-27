@@ -315,6 +315,9 @@ public class HerbRun extends ComplexStateQuestHelper
 		weissPatch = new ObjectStep(this, NullObjectID.NULL_33176, new WorldPoint(2848, 3934, 0), "Harvest your herbs from the Weiss patch.", icyBasalt);
 		weissPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToWeiss));
 
+		varlamorePatch = new ObjectStep(this, NullObjectID.NULL_50697, new WorldPoint(1582, 3094, 0), "Harvest your herbs from the Varlamore patch.", hunterWhistle);
+		varlamorePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+
 		ardougnePlant = new ObjectStep(this, NullObjectID.NULL_8152, new WorldPoint(2670, 3374, 0), "Plant your seeds into the Ardougne patch.", ardyCloak2);
 		ardougnePlant.addIcon(ItemID.RANARR_SEED);
 		ardougnePatch.addSubSteps(ardougnePlant);
@@ -356,7 +359,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		weissPlant.addIcon(ItemID.RANARR_SEED);
 		weissPatch.addSubSteps(weissPlant);
 
-		varlamorePlant = new ObjectStep(this, NullObjectID.NULL_8150, new WorldPoint(3058, 3311, 0), "Plant your seeds into the Varlamore patch.", hunterWhistle);
+		varlamorePlant = new ObjectStep(this, NullObjectID.NULL_50697, new WorldPoint(1582, 3094, 0), "Plant your seeds into the Varlamore patch.", hunterWhistle);
 		varlamorePlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
 		varlamorePlant.addIcon(ItemID.RANARR_SEED);
 		varlamorePatch.addSubSteps(varlamorePlant);

@@ -27,15 +27,19 @@ package com.questhelper.util;
 
 import com.questhelper.domain.AccountType;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
+import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.annotations.Interface;
+import java.awt.*;
 
 @UtilityClass
+@Slf4j
 public class Utils
 {
 	/**
@@ -47,18 +51,35 @@ public class Utils
 	 */
 	public AccountType getAccountType(@NotNull Client client)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN) return AccountType.NORMAL;
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return AccountType.NORMAL;
+		}
 		return AccountType.get(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
 	}
 
 	/**
 	 * Unpack a widget ID (Component) into a widget group ID (Interface) and widget child ID
+	 *
 	 * @param componentId the {@link Component}
 	 * @return the corresponding Interface & Child ID
 	 */
 	@Component
-	public Pair<Integer, Integer> unpackWidget(@Component int componentId) {
+	public Pair<Integer, Integer> unpackWidget(@Component int componentId)
+	{
 		return Pair.of(componentId >> 16, componentId & 0xFFFF);
+	}
+
+	public void addChatMessage(Client client, String message)
+	{
+		if (!client.isClientThread()) {
+			log.warn("Chat message tried to be added from outside of GUI thread. The message was: {}", message);
+			return;
+		}
+
+		var formatted = String.format("[%s] %s", ColorUtil.wrapWithColorTag("Quest Helper", Color.CYAN), message);
+
+		client.addChatMessage(ChatMessageType.CONSOLE, "", formatted, "");
 	}
 
 }

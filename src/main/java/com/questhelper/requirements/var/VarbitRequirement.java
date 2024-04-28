@@ -31,7 +31,9 @@ import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import java.math.BigInteger;
 import java.util.Locale;
+import com.questhelper.util.Utils;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 
@@ -40,6 +42,7 @@ import net.runelite.api.Varbits;
  * {@link Operation}
  */
 @Getter
+@Slf4j
 public class VarbitRequirement extends AbstractRequirement
 {
 	private final int varbitID;
@@ -50,6 +53,8 @@ public class VarbitRequirement extends AbstractRequirement
 	// bit positions
 	private boolean bitIsSet = false;
 	private int bitPosition = -1;
+
+	private boolean hasFiredWarning = false;
 
 	/**
 	 * Check if the player's varbit value meets the required level using the given
@@ -145,12 +150,23 @@ public class VarbitRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		if (bitPosition >= 0)
-		{
-			return bitIsSet == BigInteger.valueOf(client.getVarbitValue(varbitID)).testBit(bitPosition);
-		}
+		try {
+			var varbitValue = client.getVarbitValue(varbitID);
+			if (bitPosition >= 0)
+			{
+				return bitIsSet == BigInteger.valueOf(varbitValue).testBit(bitPosition);
+			}
 
-		return operation.check(client.getVarbitValue(varbitID), requiredValue);
+			return operation.check(varbitValue, requiredValue);
+		} catch (IndexOutOfBoundsException e) {
+			if (!hasFiredWarning) {
+				var message = String.format("Error reading varbit %d, please report this in the Quest Helper discord.", varbitID);
+				log.warn(message);
+				Utils.addChatMessage(client, message);
+				hasFiredWarning = true;
+			}
+			return false;
+		}
 	}
 
 	@Override

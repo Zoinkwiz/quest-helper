@@ -32,6 +32,7 @@ import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class ObjectCondition extends ConditionForStep
 {
@@ -62,7 +63,7 @@ public class ObjectCondition extends ConditionForStep
 		this.zone = zone;
 	}
 
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		Tile[][] tiles;
 		tiles = client.getScene().getTiles()[client.getPlane()];

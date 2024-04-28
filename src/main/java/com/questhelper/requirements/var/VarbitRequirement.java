@@ -34,6 +34,7 @@ import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Checks if a player's varbit value is meets the required value as determined by the
@@ -143,7 +144,7 @@ public class VarbitRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		if (bitPosition >= 0)
 		{
@@ -166,4 +167,5 @@ public class VarbitRequirement extends AbstractRequirement
 		}
 		return varbitID + " must be + " + operation.name().toLowerCase(Locale.ROOT) + " " + requiredValue;
 	}
+
 }

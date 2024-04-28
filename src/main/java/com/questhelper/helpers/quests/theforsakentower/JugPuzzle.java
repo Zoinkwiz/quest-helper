@@ -173,38 +173,38 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 			}
 		}
 
-		if (!fiveGallon.check(client))
+		if (!fiveGallon.check(client, chatMessageManager))
 		{
 			jugs.put("5", 0);
 		}
 
-		if (!eightGallon.check(client))
+		if (!eightGallon.check(client, chatMessageManager))
 		{
 			jugs.put("8", 0);
 		}
 
 
-		if (inBasement.check(client))
+		if (inBasement.check(client, chatMessageManager))
 		{
 			startUpStep(goUpToGroundFloor);
 		}
-		else if (inFirstFloor.check(client))
+		else if (inFirstFloor.check(client, chatMessageManager))
 		{
 			startUpStep(goDownToGroundFloor);
 		}
-		else if (inSecondFloor.check(client))
+		else if (inSecondFloor.check(client, chatMessageManager))
 		{
 			startUpStep(goDownToFirstFloor);
 		}
-		else if (missingTinderbox.check(client))
+		else if (missingTinderbox.check(client, chatMessageManager))
 		{
 			startUpStep(searchCupboardTinderbox);
 		}
-		else if (hasFilledWithFuel.check(client))
+		else if (hasFilledWithFuel.check(client, chatMessageManager))
 		{
 			startUpStep(lightFurnace);
 		}
-		else if (!fiveGallon.check(client) || !eightGallon.check(client))
+		else if (!fiveGallon.check(client, chatMessageManager) || !eightGallon.check(client, chatMessageManager))
 		{
 			startUpStep(searchCupboardJug);
 		}

@@ -30,6 +30,7 @@ import com.questhelper.collections.ItemCollections;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class FollowerItemRequirement extends ItemRequirement
 {
@@ -57,8 +58,7 @@ public class FollowerItemRequirement extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
-	{
+	public boolean check(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions, List<Item> items) {
 		boolean match = client.getNpcs().stream()
 			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
 			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
@@ -69,6 +69,6 @@ public class FollowerItemRequirement extends ItemRequirement
 			return true;
 		}
 
-		return super.check(client, checkConsideringSlotRestrictions, items);
+		return super.check(client, chatMessageManager, checkConsideringSlotRestrictions, items);
 	}
 }

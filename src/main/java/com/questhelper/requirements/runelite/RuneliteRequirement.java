@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 
 public class RuneliteRequirement extends AbstractRequirement
@@ -101,16 +102,16 @@ public class RuneliteRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		String value = getConfigValue();
 		return expectedValue.equals(value);
 	}
 
-	public void validateCondition(Client client)
+	public void validateCondition(Client client, ChatMessageManager chatMessageManager)
 	{
 		requirements.forEach((value, req) -> {
-			if (req.check(client)) setConfigValue(value);
+			if (req.check(client, chatMessageManager)) setConfigValue(value);
 		});
 	}
 

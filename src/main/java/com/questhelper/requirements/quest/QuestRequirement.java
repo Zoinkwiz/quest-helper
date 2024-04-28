@@ -33,6 +33,7 @@ import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Requirement that checks if a {@link net.runelite.api.Quest} has a certain state.
@@ -101,7 +102,7 @@ public class QuestRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		if (minimumVarValue != null)
 		{

@@ -102,7 +102,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		setupRequirements();
 		setupConditions();
 		setupSteps();
-		if (freedEadgar.check(client))
+		if (freedEadgar.check(client, chatMessageManager))
 		{
 			travelToEadgarPanel = new PanelDetails("Travel to Eadgar",
 				Arrays.asList(travelToTenzing, climbOverStile, climbOverRocks, enterSecretEntrance, goUpStairsPrison,

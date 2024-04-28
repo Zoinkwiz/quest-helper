@@ -27,10 +27,8 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.AbstractRequirement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class NoFollowerRequirement extends AbstractRequirement
 {
@@ -42,7 +40,7 @@ public class NoFollowerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return client.getVarpValue(447) == -1;
 	}

@@ -31,6 +31,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public abstract class ConditionForStep implements InitializableRequirement
 {
@@ -44,7 +45,7 @@ public abstract class ConditionForStep implements InitializableRequirement
 	protected List<Requirement> conditions = new ArrayList<>();
 
 	@Override
-	abstract public boolean check(Client client);
+	abstract public boolean check(Client client, ChatMessageManager chatMessageManager);
 
 	@Override
 	public void initialize(Client client)

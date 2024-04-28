@@ -54,6 +54,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import com.questhelper.steps.OwnerStep;
@@ -66,6 +67,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 {
 	@Inject
 	protected Client client;
+
+	@Inject
+	protected ChatMessageManager chatMessageManager;
 
 	@Inject
 	@Getter
@@ -192,7 +196,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		}
 
 		return getGeneralRequirements().stream().filter(Objects::nonNull).allMatch(r ->
-			!r.shouldConsiderForFilter() || r.check(client));
+			!r.shouldConsiderForFilter() || r.check(client, chatMessageManager));
 	}
 
 	@Override

@@ -37,9 +37,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class ItemRequirements extends ItemRequirement
 {
@@ -87,37 +87,37 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
-		return check(client, false);
+		return check(client, chatMessageManager, false);
 	}
 
 	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
+	public boolean check(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions)
 	{
-		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
+		Predicate<ItemRequirement> predicate = r -> r.check(client, chatMessageManager, checkConsideringSlotRestrictions);
 		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
 		hadItemLastCheck = logicType.compare(successes, itemRequirements.size());
 		return hadItemLastCheck;
 	}
 
 	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	public boolean check(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
-		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
+		Predicate<ItemRequirement> predicate = r -> r.check(client, chatMessageManager, checkConsideringSlotRestrictions, items);
 		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
 		hadItemLastCheck = logicType.compare(successes, itemRequirements.size());
 		return hadItemLastCheck;
 	}
 
 	@Override
-	public Color getColor(Client client, QuestHelperConfig config)
+	public Color getColor(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
-		return this.check(client, true) ? config.passColour() : config.failColour();
+		return this.check(client, chatMessageManager, true) ? config.passColour() : config.failColour();
 	}
 
 	@Override
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
+	public Color getColorConsideringBank(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions,
 										 List<Item> bankItems, QuestHelperConfig config)
 	{
 		Color color = config.failColour();
@@ -125,14 +125,14 @@ public class ItemRequirements extends ItemRequirement
 		{
 			color = Color.GRAY;
 		}
-		else if (this.check(client, checkConsideringSlotRestrictions))
+		else if (this.check(client, chatMessageManager, checkConsideringSlotRestrictions))
 		{
 			color = config.passColour();
 		}
 
 		if (color == config.failColour() && bankItems != null)
 		{
-			if (check(client, false, bankItems))
+			if (check(client, chatMessageManager, false, bankItems))
 			{
 				color = Color.WHITE;
 			}
@@ -169,8 +169,8 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public boolean checkBank(Client client)
+	public boolean checkBank(Client client, ChatMessageManager chatMessageManager)
 	{
-		return logicType.test(getItemRequirements().stream(), item -> item.checkBank(client) || item.check(client, false));
+		return logicType.test(getItemRequirements().stream(), item -> item.checkBank(client, chatMessageManager) || item.check(client, chatMessageManager, false));
 	}
 }

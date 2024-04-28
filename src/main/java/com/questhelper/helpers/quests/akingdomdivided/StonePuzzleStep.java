@@ -100,7 +100,7 @@ public class StonePuzzleStep extends DetailedOwnerStep
 		}
 		else
 		{
-			if (inPanelZone.check(client))
+			if (inPanelZone.check(client, chatMessageManager))
 			{
 
 				startUpStep(checkPanel);

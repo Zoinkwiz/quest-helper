@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class FollowerRequirement extends AbstractRequirement
 {
@@ -51,7 +52,7 @@ public class FollowerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return client.getNpcs()
 			.stream()

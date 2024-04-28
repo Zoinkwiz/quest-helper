@@ -402,7 +402,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		talkToGhrim.addDialogStep("Very well, I'll sort it out.");
 		talkToGhrim.addSubSteps(goUpToGhrim);
 
-		if (astridIsHeir.check(client))
+		if (astridIsHeir.check(client, chatMessageManager))
 		{
 			talkToPartner = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Talk to Princess Astrid  in Miscellania castle.");
 			goUpToPartner = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3872, 0), "Talk to Princess Astrid in Miscellania castle.");

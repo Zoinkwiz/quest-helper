@@ -29,6 +29,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Requirement that checks if a specified {@link Prayer} is active
@@ -51,7 +52,7 @@ public class PrayerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		int currentPrayer = client.getVarbitValue(prayer.getVarbit());
 		return currentPrayer == 1;

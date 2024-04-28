@@ -34,6 +34,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class NpcRequirement extends AbstractRequirement
 {
@@ -122,7 +123,7 @@ public class NpcRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		List<NPC> found = client.getNpcs().stream()
 			.filter(npc -> npc.getId() == npcID)

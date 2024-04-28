@@ -72,35 +72,35 @@ public class BringLunarItems extends NpcStep
 		emptyRequirements();
 		addRequirement(sealOfPassage);
 
-		if (!handedInAmulet.check(client))
+		if (!handedInAmulet.check(client, chatMessageManager))
 		{
 			addRequirement(amulet);
 		}
-		if (!handedInBoots.check(client))
+		if (!handedInBoots.check(client, chatMessageManager))
 		{
 			addRequirement(boots);
 		}
-		if (!handedInCape.check(client))
+		if (!handedInCape.check(client, chatMessageManager))
 		{
 			addRequirement(cape);
 		}
-		if (!handedInGloves.check(client))
+		if (!handedInGloves.check(client, chatMessageManager))
 		{
 			addRequirement(gloves);
 		}
-		if (!handedInHelm.check(client))
+		if (!handedInHelm.check(client, chatMessageManager))
 		{
 			addRequirement(helm);
 		}
-		if (!handedInLegs.check(client))
+		if (!handedInLegs.check(client, chatMessageManager))
 		{
 			addRequirement(legs);
 		}
-		if (!handedInRing.check(client))
+		if (!handedInRing.check(client, chatMessageManager))
 		{
 			addRequirement(ring);
 		}
-		if (!handedInTorso.check(client))
+		if (!handedInTorso.check(client, chatMessageManager))
 		{
 			addRequirement(torso);
 		}

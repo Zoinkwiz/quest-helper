@@ -33,6 +33,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class Conditions extends ConditionForStep
 {
@@ -121,7 +122,7 @@ public class Conditions extends ConditionForStep
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		if (onlyNeedToPassOnce && hasPassed)
 		{
@@ -133,7 +134,7 @@ public class Conditions extends ConditionForStep
 			{
 				return true;
 			}
-			return c.check(client);
+			return c.check(client, chatMessageManager);
 		}).count();
 
 		if (operation != null)

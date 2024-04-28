@@ -33,6 +33,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
@@ -45,14 +46,16 @@ public interface Requirement
 {
 	/**
 	 * Check the {@link Client} that it meets this requirement.
-	 * @param client client to check
+	 *
+	 * @param client             client to check
+	 * @param chatMessageManager chat message manager to use for posting warning messages
 	 * @return true if the client meets this requirement
 	 */
-	boolean check(Client client);
+	boolean check(Client client, ChatMessageManager chatMessageManager);
 
-	default boolean checkWithConfigChange(Client client, ConfigManager configManager, String configName, String value)
+	default boolean checkWithConfigChange(Client client, ChatMessageManager chatMessageManager, String configName, String value, ConfigManager configManager)
 	{
-		if (check(client))
+		if (check(client, chatMessageManager))
 		{
 			configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, configName, value);
 			return true;
@@ -75,16 +78,17 @@ public interface Requirement
 	String getDisplayText();
 
 	/**
-	 * The {@link Color} used to render the {@link #getDisplayText()} depending on what {@link #check(Client)}
+	 * The {@link Color} used to render the {@link #getDisplayText()} depending on what {@link #check(Client, ChatMessageManager)}
 	 * returns.<br>
-	 * By default, if {@link #check(Client)} returns true, {@link Color#GREEN} is used, otherwise {@link Color#RED}.
+	 * By default, if {@link #check(Client, ChatMessageManager)} returns true, {@link Color#GREEN} is used, otherwise {@link Color#RED}.
 	 *
-	 * @param client client to check
+	 * @param client             client to check
+	 * @param chatMessageManager
 	 * @return the {@link Color} to use
 	 */
-	default Color getColor(Client client, QuestHelperConfig config)
+	default Color getColor(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
-		return check(client) ? config.passColour() : config.failColour();
+		return check(client, chatMessageManager) ? config.passColour() : config.failColour();
 	}
 
 	/**
@@ -127,14 +131,14 @@ public interface Requirement
 	default void setUrlSuffix(@Nullable String urlSuffix) {}
 	
 
-	default List<LineComponent> getDisplayTextWithChecks(Client client, QuestHelperConfig config)
+	default List<LineComponent> getDisplayTextWithChecks(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
-		if (!shouldDisplayText(client)) return lines;
+		if (!shouldDisplayText(client, chatMessageManager)) return lines;
 
 		String text = getDisplayText();
-		Color color = getColor(client, config);
+		Color color = getColor(client, chatMessageManager, config);
 
 		lines.add(LineComponent.builder()
 			.left(text)
@@ -155,7 +159,7 @@ public interface Requirement
 	/**
 	 * @return If requirements pass, returns true
 	 */
-	default boolean shouldDisplayText(Client client)
+	default boolean shouldDisplayText(Client client, ChatMessageManager chatMessageManager)
 	{
 		return true;
 	}

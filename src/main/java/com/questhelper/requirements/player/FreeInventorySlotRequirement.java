@@ -28,14 +28,13 @@
 package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
-import java.util.Arrays;
 import java.util.Locale;
-import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Requirement that checks if a player has a required number of slots free in a given
@@ -62,7 +61,7 @@ public class FreeInventorySlotRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		ItemContainer container = client.getItemContainer(getInventoryID());
 

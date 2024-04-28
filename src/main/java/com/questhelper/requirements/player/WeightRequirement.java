@@ -29,6 +29,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Checks if the player meets a weight check
@@ -64,7 +65,7 @@ public class WeightRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return operation.check(client.getWeight(), weight);
 	}

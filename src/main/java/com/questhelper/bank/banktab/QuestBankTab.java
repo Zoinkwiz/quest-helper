@@ -539,7 +539,7 @@ public class QuestBankTab
 			yPos = baseY + 9;
 		}
 
-		boolean hasItem = item.check(client);
+		boolean hasItem = item.check(client, chatMessageManager);
 		int spritePosX = xPos + requirementLength + 10;
 		int spritePosY = yPos;
 		// If required quantity moved down a line, put tick/cross after current quantity

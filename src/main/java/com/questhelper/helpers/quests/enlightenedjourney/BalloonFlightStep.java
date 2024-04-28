@@ -86,7 +86,7 @@ public class BalloonFlightStep extends DetailedOwnerStep
 
 	protected void updateSteps()
 	{
-		if (!flying.check(client))
+		if (!flying.check(client, chatMessageManager))
 		{
 			startUpStep(startFlight);
 			return;

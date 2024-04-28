@@ -36,6 +36,7 @@ import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class ZoneRequirement extends AbstractRequirement
 {
@@ -93,7 +94,7 @@ public class ZoneRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		Player player = client.getLocalPlayer();
 		if (player != null && zones != null)

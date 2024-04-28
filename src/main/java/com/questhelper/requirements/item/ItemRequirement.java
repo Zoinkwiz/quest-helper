@@ -48,6 +48,7 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ItemRequirement extends AbstractRequirement
@@ -317,11 +318,11 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	@Override
-	protected List<LineComponent> getOverlayDisplayText(Client client, QuestHelperConfig config)
+	protected List<LineComponent> getOverlayDisplayText(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
 		List<LineComponent> lines = new ArrayList<>();
 
-		if (!shouldDisplayText(client))
+		if (!shouldDisplayText(client, chatMessageManager))
 		{
 			return lines;
 		}
@@ -342,12 +343,12 @@ public class ItemRequirement extends AbstractRequirement
 			text.append(this.getName());
 		}
 
-		Color color = getColor(client, config);
+		Color color = getColor(client, chatMessageManager, config);
 		lines.add(LineComponent.builder()
 			.left(text.toString())
 			.leftColor(color)
 			.build());
-		lines.addAll(getAdditionalText(client, true, config));
+		lines.addAll(getAdditionalText(client, chatMessageManager, true, config));
 		return lines;
 	}
 
@@ -375,20 +376,20 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean shouldDisplayText(Client client)
+	public boolean shouldDisplayText(Client client, ChatMessageManager chatMessageManager)
 	{
-		return conditionToHide == null || !conditionToHide.check(client);
+		return conditionToHide == null || !conditionToHide.check(client, chatMessageManager);
 	}
 
 	@Override
-	public Color getColor(Client client, QuestHelperConfig config)
+	public Color getColor(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
 		Color color = config.failColour();
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
 		}
-		else if (this.check(client))
+		else if (this.check(client, chatMessageManager))
 		{
 			color = config.passColour();
 		}
@@ -419,7 +420,7 @@ public class ItemRequirement extends AbstractRequirement
 		return -1;
 	}
 
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
+	public Color getColorConsideringBank(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions,
 										 List<Item> bankItems, QuestHelperConfig config)
 	{
 		Color color = config.failColour();
@@ -427,14 +428,14 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = Color.GRAY;
 		}
-		else if (this.check(client, checkConsideringSlotRestrictions))
+		else if (this.check(client, chatMessageManager, checkConsideringSlotRestrictions))
 		{
 			color = config.passColour();
 		}
 
 		if (color == config.failColour() && bankItems != null)
 		{
-			if (check(client, false, bankItems))
+			if (check(client, chatMessageManager, false, bankItems))
 			{
 				color = Color.WHITE;
 			}
@@ -443,7 +444,7 @@ public class ItemRequirement extends AbstractRequirement
 		return color;
 	}
 
-	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip,
+	protected ArrayList<LineComponent> getAdditionalText(Client client, ChatMessageManager chatMessageManager, boolean includeTooltip,
 														 QuestHelperConfig config)
 	{
 		Color equipColor = config.passColour();
@@ -453,7 +454,7 @@ public class ItemRequirement extends AbstractRequirement
 		if (this.isEquip())
 		{
 			String equipText = "(equipped)";
-			if (!this.check(client, true))
+			if (!this.check(client, chatMessageManager, true))
 			{
 				equipColor = config.failColour();
 			}
@@ -463,7 +464,7 @@ public class ItemRequirement extends AbstractRequirement
 				.build());
 		}
 
-		if (includeTooltip && this.getTooltip() != null && !check(client))
+		if (includeTooltip && this.getTooltip() != null && !check(client, chatMessageManager))
 		{
 			lines.add(LineComponent.builder()
 				.left("- " + this.getTooltip())
@@ -502,10 +503,10 @@ public class ItemRequirement extends AbstractRequirement
 		return remainder;
 	}
 
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	public boolean check(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
-		if (!shouldDisplayText(client)) return false;
-		if (additionalOptions != null && additionalOptions.check(client))
+		if (!shouldDisplayText(client, chatMessageManager)) return false;
+		if (additionalOptions != null && additionalOptions.check(client, chatMessageManager))
 		{
 			return true;
 		}
@@ -601,17 +602,17 @@ public class ItemRequirement extends AbstractRequirement
 			.sum();
 	}
 
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
-		return check(client, false);
+		return check(client, chatMessageManager, false);
 	}
 
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
+	public boolean check(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions)
 	{
-		return check(client, checkConsideringSlotRestrictions, new ArrayList<>());
+		return check(client, chatMessageManager, checkConsideringSlotRestrictions, new ArrayList<>());
 	}
 
-	public boolean checkBank(Client client)
+	public boolean checkBank(Client client, ChatMessageManager chatMessageManager)
 	{
 		return InventorySlots.BANK.contains(client, item -> getDisplayItemIds().contains(item.getId()));
 	}
@@ -626,13 +627,13 @@ public class ItemRequirement extends AbstractRequirement
 		return Collections.singletonList(displayItemId);
 	}
 
-	public boolean shouldRenderItemHighlights(Client client)
+	public boolean shouldRenderItemHighlights(Client client, ChatMessageManager chatMessageManager)
 	{
-		return conditionToHide == null || !conditionToHide.check(client);
+		return conditionToHide == null || !conditionToHide.check(client, chatMessageManager);
 	}
 
-	public boolean shouldHighlightInInventory(Client client)
+	public boolean shouldHighlightInInventory(Client client, ChatMessageManager chatMessageManager)
 	{
-		return highlightInInventory && shouldRenderItemHighlights(client);
+		return highlightInInventory && shouldRenderItemHighlights(client, chatMessageManager);
 	}
 }

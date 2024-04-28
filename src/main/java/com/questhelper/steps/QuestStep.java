@@ -61,6 +61,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -72,6 +73,9 @@ public abstract class QuestStep implements Module
 {
 	@Inject
 	protected Client client;
+
+	@Inject
+	protected ChatMessageManager chatMessageManager;
 
 	@Inject
 	protected ClientThread clientThread;
@@ -457,7 +461,7 @@ public abstract class QuestStep implements Module
 
 	public boolean isLocked()
 	{
-		boolean autoLocked = lockingCondition != null && lockingCondition.check(client);
+		boolean autoLocked = lockingCondition != null && lockingCondition.check(client, chatMessageManager);
 		unlockable = !autoLocked;
 		if (autoLocked)
 		{

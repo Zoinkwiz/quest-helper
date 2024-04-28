@@ -120,7 +120,7 @@ public class LadyTableStep extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (finishedRoom.check(client))
+		if (finishedRoom.check(client, chatMessageManager))
 		{
 			startUpStep(leaveRoom);
 		}

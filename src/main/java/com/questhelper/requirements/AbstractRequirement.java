@@ -28,8 +28,8 @@ import com.questhelper.QuestHelperConfig;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
-import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public abstract class AbstractRequirement implements Requirement
@@ -42,7 +42,7 @@ public abstract class AbstractRequirement implements Requirement
 
 	protected boolean shouldCountForFilter = false;
 
-	abstract public boolean check(Client client);
+	abstract public boolean check(Client client, ChatMessageManager chatMessageManager);
 
 	@Override
 	public boolean shouldConsiderForFilter()
@@ -79,23 +79,23 @@ public abstract class AbstractRequirement implements Requirement
 	}
 
 	@Override
-	public List<LineComponent> getDisplayTextWithChecks(Client client, QuestHelperConfig config)
+	public List<LineComponent> getDisplayTextWithChecks(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
-		if (getOverlayReplacement() != null && !this.check(client))
+		if (getOverlayReplacement() != null && !this.check(client, chatMessageManager))
 		{
-			return getOverlayReplacement().getDisplayTextWithChecks(client, config);
+			return getOverlayReplacement().getDisplayTextWithChecks(client, chatMessageManager, config);
 		}
-		return getOverlayDisplayText(client, config);
+		return getOverlayDisplayText(client, chatMessageManager, config);
 	}
 
-	protected List<LineComponent> getOverlayDisplayText(Client client, QuestHelperConfig config)
+	protected List<LineComponent> getOverlayDisplayText(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
-		if (!shouldDisplayText(client))
+		if (!shouldDisplayText(client, chatMessageManager))
 		{
 			return new ArrayList<>();
 		}
 
-		return Requirement.super.getDisplayTextWithChecks(client, config);
+		return Requirement.super.getDisplayTextWithChecks(client, chatMessageManager, config);
 	}
 
 	public void appendToTooltip(String text)

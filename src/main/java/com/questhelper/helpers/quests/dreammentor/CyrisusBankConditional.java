@@ -26,11 +26,12 @@ package com.questhelper.helpers.quests.dreammentor;
 
 import com.questhelper.requirements.SimpleRequirement;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class CyrisusBankConditional extends SimpleRequirement
 {
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 
 		return CyrisusArmourSet.isReady(client);

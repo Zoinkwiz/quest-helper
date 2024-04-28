@@ -67,6 +67,7 @@ public class ExtendedRuneliteObject
 	@Getter
 	protected final RuneLiteObject runeliteObject;
 	protected final Client client;
+	protected final ChatMessageManager chatMessageManager;
 	protected final ClientThread clientThread;
 
 	// TODO: Some requirements kinda require an external tracking element, so may need to shove into a ConditionalStep or some weirdness?
@@ -156,9 +157,10 @@ public class ExtendedRuneliteObject
 	@Getter
 	private boolean active = true;
 
-	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, Model model, int animation)
+	protected ExtendedRuneliteObject(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint, Model model, int animation)
 	{
 		this.client = client;
+		this.chatMessageManager = chatMessageManager;
 		this.clientThread = clientThread;
 		runeliteObject = client.createRuneLiteObject();
 		this.model = model;
@@ -174,9 +176,9 @@ public class ExtendedRuneliteObject
 		activate();
 	}
 
-	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	protected ExtendedRuneliteObject(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
-		this(client, clientThread, worldPoint, createModel(client, model).cloneColors().light(), animation);
+		this(client, chatMessageManager, clientThread, worldPoint, createModel(client, model).cloneColors().light(), animation);
 	}
 
 	private static ModelData createModel(Client client, int[] data)
@@ -277,7 +279,7 @@ public class ExtendedRuneliteObject
 
 		updateLocation(lp);
 
-		if ((displayReq == null || displayReq.check(client))
+		if ((displayReq == null || displayReq.check(client, chatMessageManager))
 			&& visible)
 		{
 			if (objectToRemove != null)
@@ -563,7 +565,7 @@ public class ExtendedRuneliteObject
 		{
 			Requirement requirement = dialogTree.getKey();
 			RuneliteDialogStep runeliteDialogStep = dialogTree.getValue();
-			if (requirement == null || requirement.check(client))
+			if (requirement == null || requirement.check(client, chatMessageManager))
 			{
 				if (runeliteDialogStep.isPlayer())
 				{

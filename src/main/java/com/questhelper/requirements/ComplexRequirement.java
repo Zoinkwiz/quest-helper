@@ -28,6 +28,7 @@ import com.questhelper.requirements.util.LogicType;
 import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Requirement that combines multiple other {@link Requirement}s using
@@ -77,13 +78,13 @@ public class ComplexRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		if (logicType == null)
 		{
 			return false;
 		}
-		return logicType.test(Stream.of(requirements), r -> r.check(client));
+		return logicType.test(Stream.of(requirements), r -> r.check(client, chatMessageManager));
 	}
 
 	@Override

@@ -177,7 +177,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		AtomicInteger winesNeededQuantity = new AtomicInteger(8);
 
 		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> {
-			if (state.hadBoneInVinegarItem(questBank).check(client))
+			if (state.hadBoneInVinegarItem(questBank).check(client, chatMessageManager))
 			{
 				winesNeededQuantity.getAndDecrement();
 			}

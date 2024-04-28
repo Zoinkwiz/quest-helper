@@ -35,6 +35,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class ReplacedNpc extends FakeNpc
 {
@@ -52,9 +53,9 @@ public class ReplacedNpc extends FakeNpc
 	@Getter
 	private final List<WidgetReplacement> widgetReplacements = new ArrayList<>();
 
-	protected ReplacedNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int npcIDToReplace)
+	protected ReplacedNpc(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint, int[] model, int npcIDToReplace)
 	{
-		super(client, clientThread, worldPoint, model, 808);
+		super(client, chatMessageManager, clientThread, worldPoint, model, 808);
 		this.npcIDToReplace = npcIDToReplace;
 //		disable();
 	}

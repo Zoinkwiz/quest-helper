@@ -162,7 +162,7 @@ public class RuneliteObjectManager
 
 	public FakeNpc createFakeNpc(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		FakeNpc extendedRuneliteObject = new FakeNpc(client, clientThread, wp, model, animation, animation);
+		FakeNpc extendedRuneliteObject = new FakeNpc(client, chatMessageManager, clientThread, wp, model, animation, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -174,7 +174,7 @@ public class RuneliteObjectManager
 
 	public FakeNpc createFakeNpc(String groupID, Model model, WorldPoint wp, int animation)
 	{
-		FakeNpc extendedRuneliteObject = new FakeNpc(client, clientThread, wp, model, animation);
+		FakeNpc extendedRuneliteObject = new FakeNpc(client, chatMessageManager, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -187,7 +187,7 @@ public class RuneliteObjectManager
 	public ReplacedNpc createReplacedNpc(int[] model, WorldPoint wp, int npcIDToReplace)
 	{
 		String groupID = "global";
-		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, npcIDToReplace);
+		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, chatMessageManager, clientThread, wp, model, npcIDToReplace);
 		// Should this be here or a separate 'activate' step?
 		for (NPC clientNpc : client.getNpcs())
 		{
@@ -206,7 +206,7 @@ public class RuneliteObjectManager
 
 	public ReplacedNpc createReplacedNpc(String groupID, int[] model, WorldPoint wp, int npcIDToReplace)
 	{
-		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, npcIDToReplace);
+		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, chatMessageManager, clientThread, wp, model, npcIDToReplace);
 		// Should this be here or a separate 'activate' step?
 		for (NPC clientNpc : client.getNpcs())
 		{
@@ -225,7 +225,7 @@ public class RuneliteObjectManager
 
 	public FakeItem createFakeItem(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		FakeItem extendedRuneliteObject = new FakeItem(client, clientThread, wp, model, animation);
+		FakeItem extendedRuneliteObject = new FakeItem(client, chatMessageManager, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -237,7 +237,7 @@ public class RuneliteObjectManager
 
 	public FakeGraphicsObject createGraphicsFakeObject(String groupID, int[] model, WorldPoint wp, int animation, ExtendedRuneliteObject obj)
 	{
-		FakeGraphicsObject extendedRuneliteObject = new FakeGraphicsObject(client, clientThread, wp, model, animation, obj);
+		FakeGraphicsObject extendedRuneliteObject = new FakeGraphicsObject(client, chatMessageManager, clientThread, wp, model, animation, obj);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -249,7 +249,7 @@ public class RuneliteObjectManager
 
 	public FakeGraphicsObject createGraphicsFakeObject(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		FakeGraphicsObject extendedRuneliteObject = new FakeGraphicsObject(client, clientThread, wp, model, animation);
+		FakeGraphicsObject extendedRuneliteObject = new FakeGraphicsObject(client, chatMessageManager, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -261,7 +261,7 @@ public class RuneliteObjectManager
 
 	public FakeObject createFakeObject(String groupID, int[] model, WorldPoint wp, int animation)
 	{
-		FakeObject extendedRuneliteObject = new FakeObject(client, clientThread, wp, model, animation);
+		FakeObject extendedRuneliteObject = new FakeObject(client, chatMessageManager, clientThread, wp, model, animation);
 		// Should this be here or a separate 'activate' step?
 		extendedRuneliteObject.activate();
 
@@ -287,7 +287,7 @@ public class RuneliteObjectManager
 						if (replacedNpc.getNpc() == npc)
 						{
 							Point p = client.getMouseCanvasPosition();
-							boolean passesRequirementToShowReplacement = replacedNpc.getDisplayReq() == null || replacedNpc.getDisplayReq().check(client);
+							boolean passesRequirementToShowReplacement = replacedNpc.getDisplayReq() == null || replacedNpc.getDisplayReq().check(client, chatMessageManager);
 							// is hovered
 							if (!passesRequirementToShowReplacement) return true;
 							if (!replacedNpc.getEntries().isEmpty())
@@ -853,7 +853,7 @@ public class RuneliteObjectManager
 				}
 
 				boolean isVisible = extendedRuneliteObject.isVisible();
-				boolean shouldDisplayReqPassed = extendedRuneliteObject.getDisplayReq() == null || extendedRuneliteObject.getDisplayReq().check(client);
+				boolean shouldDisplayReqPassed = extendedRuneliteObject.getDisplayReq() == null || extendedRuneliteObject.getDisplayReq().check(client, chatMessageManager);
 
 				if (extendedRuneliteObject.objectType == RuneliteObjectTypes.NPC &&
 					(!shouldDisplayReqPassed || isNpcOnTile(extendedRuneliteObject) || isPlayerOnTile(extendedRuneliteObject, playerPosition)))
@@ -884,7 +884,7 @@ public class RuneliteObjectManager
 
 	public void replaceWidgetsForReplacedNpcs(ReplacedNpc object, WidgetLoaded event)
 	{
-		if (object.getDisplayReq() != null && !object.getDisplayReq().check(client)) return;
+		if (object.getDisplayReq() != null && !object.getDisplayReq().check(client, chatMessageManager)) return;
 
 		for (WidgetReplacement widgetReplacement : object.getWidgetReplacements())
 		{

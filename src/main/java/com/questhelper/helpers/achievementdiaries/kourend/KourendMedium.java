@@ -233,23 +233,23 @@ public class KourendMedium extends ComplexStateQuestHelper
 		}
 
 		travelWithMemoirs.resetDialogSteps();
-		if (memoirArc.check(client))
+		if (memoirArc.check(client, chatMessageManager))
 		{
 			travelWithMemoirs.addDialogStep("'A Dark Disposition' - Arceuus");
 		}
-		if (memoirHos.check(client))
+		if (memoirHos.check(client, chatMessageManager))
 		{
 			travelWithMemoirs.addDialogStep("'Lunch by the Lancalliums' - Hosidius");
 		}
-		if (memoirLova.check(client))
+		if (memoirLova.check(client, chatMessageManager))
 		{
 			travelWithMemoirs.addDialogStep("'Jewellery of Jubilation' - Lovakengj");
 		}
-		if (memoirShay.check(client))
+		if (memoirShay.check(client, chatMessageManager))
 		{
 			travelWithMemoirs.addDialogStep("'History and Hearsay' - Shayzien");
 		}
-		if (memoirPis.check(client))
+		if (memoirPis.check(client, chatMessageManager))
 		{
 			travelWithMemoirs.addDialogStep("'The Fisher's Flute' - Piscarilius");
 		}

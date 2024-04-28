@@ -340,27 +340,27 @@ public class MM2Sabotage extends ConditionalStep
 	{
 		super.onGameTick(event);
 		int currentlyNeededExplosives = 6;
-		if (placedSatchel1.check(client))
+		if (placedSatchel1.check(client, chatMessageManager))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel2.check(client))
+		if (placedSatchel2.check(client, chatMessageManager))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel3.check(client))
+		if (placedSatchel3.check(client, chatMessageManager))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel4.check(client))
+		if (placedSatchel4.check(client, chatMessageManager))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel5.check(client))
+		if (placedSatchel5.check(client, chatMessageManager))
 		{
 			currentlyNeededExplosives--;
 		}
-		if (placedSatchel6.check(client))
+		if (placedSatchel6.check(client, chatMessageManager))
 		{
 			currentlyNeededExplosives--;
 		}

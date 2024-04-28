@@ -3,6 +3,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class PrayerPointRequirement extends AbstractRequirement
 {
@@ -14,7 +15,7 @@ public class PrayerPointRequirement extends AbstractRequirement
 
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return client.getBoostedSkillLevel(Skill.PRAYER) >= level;
 	}

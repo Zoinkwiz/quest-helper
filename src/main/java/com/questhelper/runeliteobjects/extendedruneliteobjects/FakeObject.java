@@ -27,12 +27,13 @@ package com.questhelper.runeliteobjects.extendedruneliteobjects;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class FakeObject extends ExtendedRuneliteObject
 {
-	protected FakeObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	protected FakeObject(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
-		super(client, clientThread, worldPoint, model, animation);
+		super(client, chatMessageManager, clientThread, worldPoint, model, animation);
 		objectType = RuneliteObjectTypes.OBJECT;
 		nameColor = "00FFFF";
 	}

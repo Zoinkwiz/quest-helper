@@ -71,27 +71,27 @@ public class GiveAugusteItems extends NpcStep
 	{
 		emptyRequirements();
 
-		if (!givenRedDye.check(client))
+		if (!givenRedDye.check(client, chatMessageManager))
 		{
 			requirements.add(redDye);
 		}
 
-		if (!givenYellowDye.check(client))
+		if (!givenYellowDye.check(client, chatMessageManager))
 		{
 			requirements.add(yellowDye);
 		}
 
-		if (!givenBowl.check(client))
+		if (!givenBowl.check(client, chatMessageManager))
 		{
 			requirements.add(bowl);
 		}
 
-		if (!givenSandbags.check(client))
+		if (!givenSandbags.check(client, chatMessageManager))
 		{
 			requirements.add(sandbag8);
 		}
 
-		if (!givenSilk.check(client))
+		if (!givenSilk.check(client, chatMessageManager))
 		{
 			requirements.add(silk10);
 		}

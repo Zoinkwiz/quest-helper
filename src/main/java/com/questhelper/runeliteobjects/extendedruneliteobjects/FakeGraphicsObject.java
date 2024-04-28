@@ -27,24 +27,25 @@ package com.questhelper.runeliteobjects.extendedruneliteobjects;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class FakeGraphicsObject extends ExtendedRuneliteObject
 {
 	ExtendedRuneliteObject objectToSpawnAfter;
-	protected FakeGraphicsObject(Client client, ClientThread clientThread, WorldPoint worldPoint,
+	protected FakeGraphicsObject(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint,
 								 int[] model, int animation, ExtendedRuneliteObject objectToSpawnAfter)
 	{
-		super(client, clientThread, worldPoint, model, animation);
+		super(client, chatMessageManager, clientThread, worldPoint, model, animation);
 		objectType = RuneliteObjectTypes.GRAPHICS_OBJECT;
 		this.objectToSpawnAfter = objectToSpawnAfter;
 		runeliteObject.setShouldLoop(false);
 		runeliteObject.setActive(false);
 	}
 
-	protected FakeGraphicsObject(Client client, ClientThread clientThread, WorldPoint worldPoint,
+	protected FakeGraphicsObject(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint,
 								 int[] model, int animation)
 	{
-		super(client, clientThread, worldPoint, model, animation);
+		super(client, chatMessageManager, clientThread, worldPoint, model, animation);
 		objectType = RuneliteObjectTypes.GRAPHICS_OBJECT;
 		this.objectToSpawnAfter = null;
 		runeliteObject.setShouldLoop(false);

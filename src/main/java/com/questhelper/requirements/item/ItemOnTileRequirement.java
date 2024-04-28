@@ -29,7 +29,6 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import net.runelite.api.Client;
@@ -37,6 +36,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class ItemOnTileRequirement extends ConditionForStep
 {
@@ -66,7 +66,7 @@ public class ItemOnTileRequirement extends ConditionForStep
 	}
 
 
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return checkAllTiles(client);
 	}

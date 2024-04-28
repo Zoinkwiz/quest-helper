@@ -30,12 +30,13 @@ import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class FakeItem extends ExtendedRuneliteObject
 {
-	protected FakeItem(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	protected FakeItem(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
-		super(client, clientThread, worldPoint, model, animation);
+		super(client, chatMessageManager, clientThread, worldPoint, model, animation);
 		objectType = RuneliteObjectTypes.ITEM;
 		nameColor = "FFA07A";
 	}

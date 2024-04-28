@@ -116,7 +116,7 @@ public class SolutionTest extends MockedTest
 	@ArgumentsSource(Solvable.class)
 	public void testSolvable(List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue)
 	{
-		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
+		solution.load(client, chatMessageManager, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 
 		assertTrue(solution.isGood());
 	}
@@ -125,7 +125,7 @@ public class SolutionTest extends MockedTest
 	@ArgumentsSource(NotSolvable.class)
 	public void testNotSolvable(List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue)
 	{
-		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
+		solution.load(client, chatMessageManager, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 
 		assertFalse(solution.isGood());
 	}
@@ -137,7 +137,7 @@ public class SolutionTest extends MockedTest
 								final List<Integer> expectedExchanges,
 								final List<Integer> expectedExchangesFor)
 	{
-		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
+		solution.load(client, chatMessageManager, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 
 		assertFalse(solution.isGood());
 

@@ -278,7 +278,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (inCrypt.check(client))
+		if (inCrypt.check(client, chatMessageManager))
 		{
 			List<WorldPoint> barrowsRoute = BarrowsRouteCalculator.startDelving(client);
 			if (barrowsRoute != null)
@@ -316,12 +316,12 @@ public class HisFaithfulServants extends BasicQuestHelper
 
 	private void updateTunnel()
 	{
-		if (inAhrim.check(client)) isAhrimTunnel.setShouldPass(true);
-		if (inDharok.check(client)) isDharokTunnel.setShouldPass(true);
-		if (inVerac.check(client)) isVeracTunnel.setShouldPass(true);
-		if (inGuthan.check(client)) isGuthanTunnel.setShouldPass(true);
-		if (inKaril.check(client)) isKarilTunnel.setShouldPass(true);
-		if (inTorag.check(client)) isToragTunnel.setShouldPass(true);
+		if (inAhrim.check(client, chatMessageManager)) isAhrimTunnel.setShouldPass(true);
+		if (inDharok.check(client, chatMessageManager)) isDharokTunnel.setShouldPass(true);
+		if (inVerac.check(client, chatMessageManager)) isVeracTunnel.setShouldPass(true);
+		if (inGuthan.check(client, chatMessageManager)) isGuthanTunnel.setShouldPass(true);
+		if (inKaril.check(client, chatMessageManager)) isKarilTunnel.setShouldPass(true);
+		if (inTorag.check(client, chatMessageManager)) isToragTunnel.setShouldPass(true);
 	}
 
 	public void setupSteps()

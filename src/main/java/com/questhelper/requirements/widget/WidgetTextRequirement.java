@@ -35,6 +35,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class WidgetTextRequirement extends SimpleRequirement
 {
@@ -101,7 +102,7 @@ public class WidgetTextRequirement extends SimpleRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return checkWidget(client);
 	}

@@ -282,7 +282,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 
 		if (tileHasBigMonolith(tiles, 53, 53))
 		{
-			if (inStartZone.check(client))
+			if (inStartZone.check(client, chatMessageManager))
 			{
 				startUpStep(pushSouthernMonolithUp);
 				return;
@@ -335,7 +335,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 				return;
 			}
 
-			if (!crystalChime.check(client))
+			if (!crystalChime.check(client, chatMessageManager))
 			{
 				startUpStep(inspectSingingBowl);
 				return;
@@ -347,7 +347,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 				return;
 			}
 
-			if (crystalChime.check(client))
+			if (crystalChime.check(client, chatMessageManager))
 			{
 				startUpStep(unlockTheGate);
 				return;

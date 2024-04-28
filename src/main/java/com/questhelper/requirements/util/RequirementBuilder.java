@@ -30,6 +30,7 @@ import com.questhelper.requirements.Requirement;
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Builder for building non-standard simple {@link Requirement}s.<br>
@@ -78,7 +79,7 @@ public final class RequirementBuilder
 	}
 
 	/**
-	 * Define a new check predicate that is used in {@link Requirement#check(Client)}
+	 * Define a new check predicate that is used in {@link Requirement#check(Client, ChatMessageManager)}
 	 *
 	 * @param requirementPredicate predicate to use
 	 * @return this
@@ -97,7 +98,7 @@ public final class RequirementBuilder
 		return new Requirement()
 		{
 			@Override
-			public boolean check(Client client)
+			public boolean check(Client client, ChatMessageManager chatMessageManager)
 			{
 				return requirementPredicate.test(client);
 			}

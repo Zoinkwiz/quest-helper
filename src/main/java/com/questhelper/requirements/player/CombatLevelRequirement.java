@@ -31,6 +31,7 @@ import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Checks if the player's combat level meets the required level
@@ -65,7 +66,7 @@ public class CombatLevelRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		Player player = client.getLocalPlayer();
 		return player != null && operation.check(player.getCombatLevel(), requiredLevel);

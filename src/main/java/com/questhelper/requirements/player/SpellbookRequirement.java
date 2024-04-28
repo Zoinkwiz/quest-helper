@@ -29,6 +29,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class SpellbookRequirement extends AbstractRequirement
 {
@@ -41,7 +42,7 @@ public class SpellbookRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return spellBook.check(client, SPELLBOOK_VARBIT);
 	}

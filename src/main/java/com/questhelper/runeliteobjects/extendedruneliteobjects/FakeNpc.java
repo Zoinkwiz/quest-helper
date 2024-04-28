@@ -29,6 +29,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Model;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class FakeNpc extends ExtendedRuneliteObject
 {
@@ -39,23 +40,23 @@ public class FakeNpc extends ExtendedRuneliteObject
 
 	@Setter
 	boolean alwaysFacePlayer;
-	protected FakeNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
+	protected FakeNpc(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation)
 	{
-		super(client, clientThread, worldPoint, model, animation);
+		super(client, chatMessageManager, clientThread, worldPoint, model, animation);
 		objectType = RuneliteObjectTypes.NPC;
 	}
 
-	protected FakeNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, Model model, int animation)
+	protected FakeNpc(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint, Model model, int animation)
 	{
-		super(client, clientThread, worldPoint, model, animation);
+		super(client, chatMessageManager, clientThread, worldPoint, model, animation);
 		this.idleAnimation = animation;
 		objectType = RuneliteObjectTypes.NPC;
 	}
 
 
-	protected FakeNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation, int idleAnimation)
+	protected FakeNpc(Client client, ChatMessageManager chatMessageManager, ClientThread clientThread, WorldPoint worldPoint, int[] model, int animation, int idleAnimation)
 	{
-		super(client, clientThread, worldPoint, model, animation);
+		super(client, chatMessageManager, clientThread, worldPoint, model, animation);
 		objectType = RuneliteObjectTypes.NPC;
 		this.idleAnimation = idleAnimation;
 	}

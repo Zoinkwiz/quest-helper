@@ -33,6 +33,7 @@ import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 
 public class KeyringRequirement extends ItemRequirement
@@ -93,20 +94,20 @@ public class KeyringRequirement extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	public boolean check(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions, List<Item> items)
 	{
-		boolean match = runeliteRequirement.check(client);
+		boolean match = runeliteRequirement.check(client, chatMessageManager);
 
-		if (match && keyring.check(client))
+		if (match && keyring.check(client, chatMessageManager))
 		{
 			return true;
 		}
 
-		return super.check(client, checkConsideringSlotRestrictions, items);
+		return super.check(client, chatMessageManager, checkConsideringSlotRestrictions, items);
 	}
 
 	@Override
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
+	public Color getColorConsideringBank(Client client, ChatMessageManager chatMessageManager, boolean checkConsideringSlotRestrictions,
 										 List<Item> bankItems, QuestHelperConfig config)
 	{
 		Color color = config.failColour();
@@ -114,14 +115,14 @@ public class KeyringRequirement extends ItemRequirement
 		{
 			color = Color.GRAY;
 		}
-		else if (super.check(client, checkConsideringSlotRestrictions, new ArrayList<>()))
+		else if (super.check(client, chatMessageManager, checkConsideringSlotRestrictions, new ArrayList<>()))
 		{
 			color = config.passColour();
 		}
 
 		if (color == config.failColour() && bankItems != null)
 		{
-			if (super.check(client, false, bankItems))
+			if (super.check(client, chatMessageManager, false, bankItems))
 			{
 				color = Color.WHITE;
 			}
@@ -129,7 +130,7 @@ public class KeyringRequirement extends ItemRequirement
 
 		if (color == config.failColour())
 		{
-			boolean match = runeliteRequirement.check(client);
+			boolean match = runeliteRequirement.check(client, chatMessageManager);
 
 			if (match)
 			{

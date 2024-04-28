@@ -107,15 +107,15 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 
 	protected void updateSteps()
 	{
-		if (inBasement.check(client))
+		if (inBasement.check(client, chatMessageManager))
 		{
 			startUpStep(goUpLadder);
 		}
-		else if (inFloor1.check(client))
+		else if (inFloor1.check(client, chatMessageManager))
 		{
 			startUpStep(goUpToSecondFloor);
 		}
-		else if (inSecondFloor.check(client))
+		else if (inSecondFloor.check(client, chatMessageManager))
 		{
 			int currentW = client.getVarbitValue(7847);
 			int currentC = client.getVarbitValue(7848);

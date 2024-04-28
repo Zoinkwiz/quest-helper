@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class Solution
 {
@@ -49,16 +50,19 @@ public class Solution
 	public ItemRequirement puzzle2UpperRequirement;
 	public ItemRequirement puzzle2LowerRequirement;
 
-	public static boolean inventoryHas(final List<Item> haystack, int needle) {
-		for (var item : haystack) {
-			if (item.getId() == needle) {
+	public static boolean inventoryHas(final List<Item> haystack, int needle)
+	{
+		for (var item : haystack)
+		{
+			if (item.getId() == needle)
+			{
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void load(Client client, List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue,
+	public void load(Client client, ChatMessageManager chatMessageManager, List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue,
 					 final HashMap<Integer, ItemRequirement> discs,
 					 final HashMap<Integer, ItemRequirement> valueToRequirement,
 					 final HashMap<Integer, List<ItemRequirements>> valueToDoubleDiscRequirement,
@@ -78,7 +82,7 @@ public class Solution
 		puzzleNeeds.clear();
 		toExchange.clear();
 
-		if (!puzzle1Requirement.check(client, false, items))
+		if (!puzzle1Requirement.check(client, chatMessageManager, false, items))
 		{
 			puzzleNeeds.add(puzzle1Requirement);
 			var singleDiscExchange = valuePossibleSingleDiscExchangesRequirements.get(puzzle1SolutionValue).stream().filter(requirement -> inventoryHas(items, requirement.getId())).collect(Collectors.toUnmodifiableList());
@@ -120,7 +124,7 @@ public class Solution
 		ItemRequirement consumed = null;
 		for (var possiblePuzzle2Solution : possiblePuzzle2Solutions)
 		{
-			if (possiblePuzzle2Solution.check(client, false, itemsAfterPuzzle1))
+			if (possiblePuzzle2Solution.check(client, chatMessageManager, false, itemsAfterPuzzle1))
 			{
 				// Found a valid puzzle2 solution
 				puzzle2UpperRequirement = possiblePuzzle2Solution.getItemRequirements().get(0);
@@ -129,7 +133,7 @@ public class Solution
 			}
 
 			// Let's check if we have one of these
-			if (possiblePuzzle2Solution.getItemRequirements().get(0).check(client, false, itemsAfterPuzzle1))
+			if (possiblePuzzle2Solution.getItemRequirements().get(0).check(client, chatMessageManager, false, itemsAfterPuzzle1))
 			{
 				// Found a partial solution
 				partialPuzzle2Solution = possiblePuzzle2Solution;
@@ -138,7 +142,7 @@ public class Solution
 				break;
 			}
 
-			if (possiblePuzzle2Solution.getItemRequirements().get(1).check(client, false, itemsAfterPuzzle1))
+			if (possiblePuzzle2Solution.getItemRequirements().get(1).check(client, chatMessageManager, false, itemsAfterPuzzle1))
 			{
 				// Found a partial solution
 				partialPuzzle2Solution = possiblePuzzle2Solution;
@@ -209,7 +213,8 @@ public class Solution
 				if (!singleDiscExchange.isEmpty())
 				{
 					looseNeeds.addAll(req1.getAllIds());
-					for (var ex : singleDiscExchange) {
+					for (var ex : singleDiscExchange)
+					{
 						looseExchanges.addAll(ex.getAllIds());
 					}
 				}
@@ -222,7 +227,8 @@ public class Solution
 				if (!singleDiscExchange.isEmpty())
 				{
 					looseNeeds.addAll(req2.getAllIds());
-					for (var ex : singleDiscExchange) {
+					for (var ex : singleDiscExchange)
+					{
 						looseExchanges.addAll(ex.getAllIds());
 					}
 				}
@@ -231,17 +237,21 @@ public class Solution
 			if (!looseNeeds.isEmpty() && !looseExchanges.isEmpty())
 			{
 				toExchange.clear();
-				for (var id : looseExchanges) {
+				for (var id : looseExchanges)
+				{
 					var itemReq = discs.get(id);
-					if (itemReq != null) {
+					if (itemReq != null)
+					{
 						toExchange.add(itemReq);
 					}
 				}
 
 				puzzleNeeds.clear();
-				for (var id : looseNeeds) {
+				for (var id : looseNeeds)
+				{
 					var itemReq = discs.get(id);
-					if (itemReq != null) {
+					if (itemReq != null)
+					{
 						puzzleNeeds.add(itemReq);
 					}
 				}

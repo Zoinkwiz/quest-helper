@@ -32,6 +32,7 @@ import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class NpcHintArrowRequirement extends SimpleRequirement
 {
@@ -54,7 +55,7 @@ public class NpcHintArrowRequirement extends SimpleRequirement
 		this.zone = zone;
 	}
 
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		NPC currentNPC = client.getHintArrowNpc();
 		if (currentNPC == null)

@@ -28,6 +28,7 @@ import com.questhelper.questinfo.PlayerQuests;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 
 public class PlayerQuestStateRequirement extends RuneliteRequirement
@@ -58,7 +59,7 @@ public class PlayerQuestStateRequirement extends RuneliteRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		String value = getConfigValue();
 		if (operation == null) return expectedValue.equals(value);

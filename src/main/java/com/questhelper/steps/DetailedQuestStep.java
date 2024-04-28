@@ -511,7 +511,7 @@ public class DetailedQuestStep extends QuestStep
 		requirementsStream
 			.distinct()
 			.filter(Objects::nonNull)
-			.map(req -> req.getDisplayTextWithChecks(client, questHelper.getConfig()))
+			.map(req -> req.getDisplayTextWithChecks(client, chatMessageManager, questHelper.getConfig()))
 			.flatMap(Collection::stream)
 			.forEach(line -> tmpComponent.getChildren().add(line));
 
@@ -608,7 +608,7 @@ public class DetailedQuestStep extends QuestStep
 
 	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
 	{
-		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getItemId());
+		return requirement.shouldHighlightInInventory(client, chatMessageManager) && requirement.getAllIds().contains(item.getItemId());
 	}
 
 	@Subscribe
@@ -792,9 +792,9 @@ public class DetailedQuestStep extends QuestStep
 		return isItemRequirement(requirement)
 			&& requirementIsItem((ItemRequirement) requirement)
 			&& requirementContainsID((ItemRequirement) requirement, ids)
-			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
-			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
+			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client, chatMessageManager)
+			&& ((!considerBankForItemHighlight && !requirement.check(client, chatMessageManager)) ||
 			(considerBankForItemHighlight &&
-				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
+				!((ItemRequirement) requirement).check(client, chatMessageManager, false, questBank.getBankItems())));
 	}
 }

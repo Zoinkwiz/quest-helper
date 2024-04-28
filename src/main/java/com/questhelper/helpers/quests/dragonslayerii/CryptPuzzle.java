@@ -154,7 +154,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 		if (currentNorthBust != northBust)
 		{
-			if (!bustsConditions.get(northBust).check(client))
+			if (!bustsConditions.get(northBust).check(client, chatMessageManager))
 			{
 				startUpStep(getBustSteps.get(northBust));
 			}
@@ -165,7 +165,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 		}
 		else if (currentEastBust != eastBust)
 		{
-			if (!bustsConditions.get(eastBust).check(client))
+			if (!bustsConditions.get(eastBust).check(client, chatMessageManager))
 			{
 				startUpStep(getBustSteps.get(eastBust));
 			}
@@ -176,7 +176,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 		}
 		else if (currentSouthBust != southBust)
 		{
-			if (!bustsConditions.get(southBust).check(client))
+			if (!bustsConditions.get(southBust).check(client, chatMessageManager))
 			{
 				startUpStep(getBustSteps.get(southBust));
 			}
@@ -187,7 +187,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 		}
 		else if (currentWestBust != westBust)
 		{
-			if (!bustsConditions.get(westBust).check(client))
+			if (!bustsConditions.get(westBust).check(client, chatMessageManager))
 			{
 				startUpStep(getBustSteps.get(westBust));
 			}

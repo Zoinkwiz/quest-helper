@@ -88,8 +88,8 @@ public class QuestHelperBankTagService
 			recommendedItems = recommendedItems.stream()
 				.filter(Objects::nonNull)
 				.filter(i -> (!onlyGetMissingItems
-					|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
-					&& i.shouldDisplayText(plugin.getClient()))
+					|| !i.check(plugin.getClient(), plugin.getChatMessageManager(), false, questBank.getBankItems()))
+					&& i.shouldDisplayText(plugin.getClient(), plugin.getChatMessageManager()))
 				.collect(Collectors.toList());
 		}
 
@@ -103,7 +103,7 @@ public class QuestHelperBankTagService
 
 		List<PanelDetails> shouldShowSections = questSections.stream()
 			.filter(panelDetail -> panelDetail.getHideCondition() == null ||
-				!panelDetail.getHideCondition().check(plugin.getClient()))
+				!panelDetail.getHideCondition().check(plugin.getClient(), plugin.getChatMessageManager()))
 			.collect(Collectors.toList());
 
 		for (PanelDetails questSection : shouldShowSections)
@@ -116,8 +116,8 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
-						&& i.shouldDisplayText(plugin.getClient()))
+						|| !i.check(plugin.getClient(), plugin.getChatMessageManager(), false, questBank.getBankItems()))
+						&& i.shouldDisplayText(plugin.getClient(), plugin.getChatMessageManager()))
 					.collect(Collectors.toList());
 			}
 			List<ItemRequirement> recommendedItemsForSection = new ArrayList<>();
@@ -128,8 +128,8 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
-						&& i.shouldDisplayText(plugin.getClient()))
+						|| !i.check(plugin.getClient(), plugin.getChatMessageManager(), false, questBank.getBankItems()))
+						&& i.shouldDisplayText(plugin.getClient(), plugin.getChatMessageManager()))
 					.collect(Collectors.toList());
 			}
 
@@ -157,7 +157,7 @@ public class QuestHelperBankTagService
 			if (logicType == LogicType.OR)
 			{
 				List<ItemRequirement> itemsWhichPassReq = requirements.stream()
-					.filter(r -> r.shouldDisplayText(plugin.getClient()))
+					.filter(r -> r.shouldDisplayText(plugin.getClient(), plugin.getChatMessageManager()))
 					.collect(Collectors.toList());
 
 				if (itemsWhichPassReq.isEmpty())
@@ -167,7 +167,7 @@ public class QuestHelperBankTagService
 				else
 				{
 					ItemRequirement match = itemsWhichPassReq.stream()
-						.filter(r -> r.checkBank(plugin.getClient()))
+						.filter(r -> r.checkBank(plugin.getClient(), plugin.getChatMessageManager()))
 						.findFirst()
 						.orElse(itemsWhichPassReq.get(0).named(itemRequirements.getName()));
 

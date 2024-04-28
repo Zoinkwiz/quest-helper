@@ -25,7 +25,6 @@
 package com.questhelper.panel;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,6 +37,7 @@ import com.questhelper.steps.QuestStep;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -225,9 +225,9 @@ public class QuestStepPanel extends JPanel
 		lockStep.setVisible(canLock);
 	}
 
-	public void updateHighlightCheck(Client client, QuestStep newStep, QuestHelper currentQuest)
+	public void updateHighlightCheck(Client client, ChatMessageManager chatMessageManager, QuestStep newStep, QuestHelper currentQuest)
 	{
-		if (panelDetails.getHideCondition() == null || !panelDetails.getHideCondition().check(client))
+		if (panelDetails.getHideCondition() == null || !panelDetails.getHideCondition().check(client, chatMessageManager))
 		{
 			setVisible(true);
 			boolean highlighted = false;
@@ -380,17 +380,17 @@ public class QuestStepPanel extends JPanel
 		}
 	}
 
-	public void updateRequirements(Client client, List<Item> bankItems, QuestOverviewPanel questOverviewPanel)
+	public void updateRequirements(Client client, ChatMessageManager chatMessageManager, List<Item> bankItems, QuestOverviewPanel questOverviewPanel)
 	{
 		questOverviewPanel.updateRequirementPanels(client, requirementPanels, bankItems);
-		updateStepVisibility(client);
+		updateStepVisibility(client, chatMessageManager);
 	}
 
-	public void updateStepVisibility(Client client)
+	public void updateStepVisibility(Client client, ChatMessageManager chatMessageManager)
 	{
 		for (QuestStep step : steps.keySet())
 		{
-			step.setShowInSidebar(step.getConditionToHide() == null || !step.getConditionToHide().check(client));
+			step.setShowInSidebar(step.getConditionToHide() == null || !step.getConditionToHide().check(client, chatMessageManager));
 			steps.get(step).setVisible(step.isShowInSidebar());
 		}
 	}

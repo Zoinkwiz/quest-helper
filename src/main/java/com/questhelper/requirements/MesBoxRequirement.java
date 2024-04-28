@@ -27,6 +27,7 @@ package com.questhelper.requirements;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class MesBoxRequirement extends ChatMessageRequirement
 {
@@ -36,7 +37,7 @@ public class MesBoxRequirement extends ChatMessageRequirement
 		super(text);
 	}
 
-	public void validateCondition(Client client, ChatMessage chatMessage)
+	public void validateCondition(Client client, ChatMessageManager chatMessageManager, ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.MESBOX)
 		{
@@ -51,7 +52,7 @@ public class MesBoxRequirement extends ChatMessageRequirement
 		{
 			if (messages.contains(chatMessage.getMessage()))
 			{
-				if (condition == null || condition.check(client))
+				if (condition == null || condition.check(client, chatMessageManager))
 				{
 					hasReceivedChatMessage = true;
 				}
@@ -59,8 +60,8 @@ public class MesBoxRequirement extends ChatMessageRequirement
 		}
 		else if (invalidateRequirement != null)
 		{
-			invalidateRequirement.validateCondition(client, chatMessage);
-			if (invalidateRequirement.check(client))
+			invalidateRequirement.validateCondition(client, chatMessageManager, chatMessage);
+			if (invalidateRequirement.check(client, chatMessageManager))
 			{
 				invalidateRequirement.setHasReceivedChatMessage(false);
 				setHasReceivedChatMessage(false);

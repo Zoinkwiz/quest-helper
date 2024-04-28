@@ -34,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
@@ -65,9 +66,9 @@ public class AchievementDiaryStepManager
 		killedWater = new RuneliteRequirement(configManager, "kandarin-easy-killed-water", "true");
 	}
 
-	public static void check(Client client)
+	public static void check(Client client, ChatMessageManager chatMessageManager)
 	{
-		if (!inWorkshop.check(client))
+		if (!inWorkshop.check(client, chatMessageManager))
 		{
 			killedFire.setConfigValue("false");
 			killedEarth.setConfigValue("false");

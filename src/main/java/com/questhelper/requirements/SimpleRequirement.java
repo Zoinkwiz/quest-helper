@@ -30,11 +30,12 @@ import com.questhelper.QuestHelperConfig;
 import java.awt.Color;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public abstract class SimpleRequirement extends AbstractRequirement
 {
 	@Override
-	public abstract boolean check(Client client);
+	public abstract boolean check(Client client, ChatMessageManager chatMessageManager);
 
 	@Nonnull
 	@Override
@@ -44,8 +45,8 @@ public abstract class SimpleRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public Color getColor(Client client, QuestHelperConfig config)
+	public Color getColor(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
-		return check(client) ? config.passColour() : config.failColour();
+		return check(client, chatMessageManager) ? config.passColour() : config.failColour();
 	}
 }

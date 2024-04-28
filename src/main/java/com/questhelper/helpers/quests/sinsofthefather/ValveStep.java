@@ -86,7 +86,7 @@ public class ValveStep extends DetailedOwnerStep
 		{
 			if (!southDone)
 			{
-				if (atSouthValve.check(client))
+				if (atSouthValve.check(client, chatMessageManager))
 				{
 					startUpStep(setSouthValve);
 				}
@@ -97,7 +97,7 @@ public class ValveStep extends DetailedOwnerStep
 			}
 			else if (!northDone)
 			{
-				if (atNorthValve.check(client))
+				if (atNorthValve.check(client, chatMessageManager))
 				{
 					startUpStep(setNorthValve);
 				}
@@ -135,7 +135,7 @@ public class ValveStep extends DetailedOwnerStep
 			Widget widgetNumberOptions = client.getWidget(187, 3);
 			Widget widgetValveChoice = client.getWidget(229, 1);
 
-			if (atSouthValve.check(client))
+			if (atSouthValve.check(client, chatMessageManager))
 			{
 				if (widgetNumberOptions != null)
 				{
@@ -153,7 +153,7 @@ public class ValveStep extends DetailedOwnerStep
 					}
 				}
 			}
-			else if (atNorthValve.check(client))
+			else if (atNorthValve.check(client, chatMessageManager))
 			{
 				if (widgetNumberOptions != null)
 				{

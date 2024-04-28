@@ -102,7 +102,7 @@ public class TombRiddle extends DetailedOwnerStep
 
 		if (currentNorthernEmblem != northernEmblem)
 		{
-			if (!emblems.get(northernEmblem).check(client)) {
+			if (!emblems.get(northernEmblem).check(client, chatMessageManager)) {
 				startUpStep(obtainEmblems);
 			}
 			else
@@ -112,7 +112,7 @@ public class TombRiddle extends DetailedOwnerStep
 		}
 		else if (currentCentreNorthEmblem != centreNorthEmblem)
 		{
-			if (!emblems.get(centreNorthEmblem).check(client))
+			if (!emblems.get(centreNorthEmblem).check(client, chatMessageManager))
 			{
 				startUpStep(obtainEmblems);
 			}
@@ -123,7 +123,7 @@ public class TombRiddle extends DetailedOwnerStep
 		}
 		else if (currentCentreSouthEmblem != centreSouthEmblem)
 		{
-			if (!emblems.get(centreSouthEmblem).check(client))
+			if (!emblems.get(centreSouthEmblem).check(client, chatMessageManager))
 			{
 				startUpStep(obtainEmblems);
 			}
@@ -134,7 +134,7 @@ public class TombRiddle extends DetailedOwnerStep
 		}
 		else if (currentSouthernEmblem != southernEmblem)
 		{
-			if (!emblems.get(southernEmblem).check(client))
+			if (!emblems.get(southernEmblem).check(client, chatMessageManager))
 			{
 				startUpStep(obtainEmblems);
 			}

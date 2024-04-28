@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 /**
  * Requirement that checks if a player has no item in a specified {@link ItemSlots}.
@@ -53,15 +54,15 @@ public class NoItemRequirement extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return slot.checkInventory(client, Objects::isNull);
 	}
 
 	@Override
-	public Color getColor(Client client, QuestHelperConfig config)
+	public Color getColor(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
-		return check(client) ? config.passColour() : config.failColour();
+		return check(client, chatMessageManager) ? config.passColour() : config.failColour();
 	}
 
 	@Override

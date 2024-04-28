@@ -99,8 +99,8 @@ public class RumSmugglingStep extends ConditionalStep
 	@Override
 	protected void updateSteps()
 	{
-		if ((hadRumOffKaramja.check(client) && !hasRumOffKaramja.check(client))
-			|| lostRum.check(client))
+		if ((hadRumOffKaramja.check(client, chatMessageManager) && !hasRumOffKaramja.check(client, chatMessageManager))
+			|| lostRum.check(client, chatMessageManager))
 		{
 			haveShippedRum.setHasPassed(false);
 			stashedRum.setHasPassed(false);
@@ -109,9 +109,9 @@ public class RumSmugglingStep extends ConditionalStep
 			lostRum.setHasPassed(false);
 		}
 
-		if (crateSent.check(client))
+		if (crateSent.check(client, chatMessageManager))
 		{
-			haveShippedRum.check(client);
+			haveShippedRum.check(client, chatMessageManager);
 			employed.setHasPassed(false);
 			fillCrateWithBananasChat.setHasReceivedChatMessage(false);
 			filledCrateWithBananasAndRum.setHasPassed(false);

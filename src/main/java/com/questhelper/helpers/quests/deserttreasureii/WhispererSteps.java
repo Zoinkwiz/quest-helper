@@ -759,11 +759,11 @@ public class WhispererSteps extends ConditionalStep
 		super.onGameTick(event);
 		WidgetTextRequirement benchEmpty = new WidgetTextRequirement(229, 1,
 			"You search the workbench, but find nothing of interest.");
-		if (benchEmpty.check(client) && !shadowBlocker.check(client))
+		if (benchEmpty.check(client, chatMessageManager) && !shadowBlocker.check(client, chatMessageManager))
 		{
 			blockerNotInBenchOrInventory.setConfigValue("true");
 		}
-		else if (shadowBlocker.check(client))
+		else if (shadowBlocker.check(client, chatMessageManager))
 		{
 			blockerNotInBenchOrInventory.setConfigValue("false");
 		}

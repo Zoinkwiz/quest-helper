@@ -29,10 +29,10 @@ package com.questhelper.requirements.var;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class VarplayerRequirement extends AbstractRequirement
 {
@@ -152,7 +152,7 @@ public class VarplayerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		int varpValue = client.getVarpValue(varplayerId);
 		if (bitPosition >= 0)

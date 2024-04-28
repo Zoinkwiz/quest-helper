@@ -27,7 +27,6 @@ package com.questhelper.helpers.quests.biohazard;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
@@ -57,15 +56,15 @@ public class GiveIngredientsToHelpersStep extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (sulphuricBroline.check(client))
+		if (sulphuricBroline.check(client, chatMessageManager))
 		{
 			startUpStep(giveHopsBroline);
 		}
-		else if (liquidHoney.check(client))
+		else if (liquidHoney.check(client, chatMessageManager))
 		{
 			startUpStep(giveChancyHoney);
 		}
-		else if (ethenea.check(client))
+		else if (ethenea.check(client, chatMessageManager))
 		{
 			startUpStep(giveVinciEthenea);
 		}
@@ -74,9 +73,9 @@ public class GiveIngredientsToHelpersStep extends DetailedOwnerStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if ((currentStep == giveHopsBroline && !sulphuricBroline.check(client))
-			|| (currentStep == giveChancyHoney && !liquidHoney.check(client))
-		    || (currentStep == giveVinciEthenea && !ethenea.check(client)))
+		if ((currentStep == giveHopsBroline && !sulphuricBroline.check(client, chatMessageManager))
+			|| (currentStep == giveChancyHoney && !liquidHoney.check(client, chatMessageManager))
+		    || (currentStep == giveVinciEthenea && !ethenea.check(client, chatMessageManager)))
 		{
 			updateSteps();
 		}
@@ -90,17 +89,17 @@ public class GiveIngredientsToHelpersStep extends DetailedOwnerStep
 		{
 			int npcID = ((NPC) event.getTarget()).getId();
 
-			if (npcID == NpcID.HOPS && sulphuricBroline.check(client))
+			if (npcID == NpcID.HOPS && sulphuricBroline.check(client, chatMessageManager))
 			{
 				lastNpcInteractedWith = npcID;
 				startUpStep(giveHopsBroline);
 			}
-			else if (npcID == NpcID.CHANCY && liquidHoney.check(client))
+			else if (npcID == NpcID.CHANCY && liquidHoney.check(client, chatMessageManager))
 			{
 				lastNpcInteractedWith = npcID;
 				startUpStep(giveChancyHoney);
 			}
-			else if (npcID == NpcID.DA_VINCI && ethenea.check(client))
+			else if (npcID == NpcID.DA_VINCI && ethenea.check(client, chatMessageManager))
 			{
 				lastNpcInteractedWith = npcID;
 				startUpStep(giveVinciEthenea);

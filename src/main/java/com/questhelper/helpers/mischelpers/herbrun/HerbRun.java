@@ -423,8 +423,8 @@ public class HerbRun extends ComplexStateQuestHelper
 					break;
 			}
 		}
-		Boolean[] seedsNeeded = new Boolean[] {ardougneReady.check(client), catherbyReady.check(client), faladorReady.check(client), farmingGuildReady.check(client), harmonyReady.check(client),
-			morytaniaReady.check(client), hosidiusReady.check(client), trollStrongholdReady.check(client), weissReady.check(client)};
+		Boolean[] seedsNeeded = new Boolean[] {ardougneReady.check(client, chatMessageManager), catherbyReady.check(client, chatMessageManager), faladorReady.check(client, chatMessageManager), farmingGuildReady.check(client, chatMessageManager), harmonyReady.check(client, chatMessageManager),
+			morytaniaReady.check(client, chatMessageManager), hosidiusReady.check(client, chatMessageManager), trollStrongholdReady.check(client, chatMessageManager), weissReady.check(client, chatMessageManager)};
 		int totalSeedsNeeded = (int) Arrays.stream(seedsNeeded)
 			.filter(b -> b)
 			.count();

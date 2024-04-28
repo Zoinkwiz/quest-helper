@@ -26,6 +26,7 @@ package com.questhelper.requirements;
 
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class ManualRequirement extends SimpleRequirement
 {
@@ -33,7 +34,7 @@ public class ManualRequirement extends SimpleRequirement
 	boolean shouldPass;
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return shouldPass;
 	}

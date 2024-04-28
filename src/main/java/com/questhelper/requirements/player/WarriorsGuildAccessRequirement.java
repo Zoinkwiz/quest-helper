@@ -27,6 +27,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class WarriorsGuildAccessRequirement extends AbstractRequirement
 {
@@ -36,7 +37,7 @@ public class WarriorsGuildAccessRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		int attLevel = client.getRealSkillLevel(Skill.ATTACK);
 		int strLevel = client.getRealSkillLevel(Skill.STRENGTH);

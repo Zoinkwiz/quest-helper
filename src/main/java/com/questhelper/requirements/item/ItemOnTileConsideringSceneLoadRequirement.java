@@ -13,6 +13,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class ItemOnTileConsideringSceneLoadRequirement implements InitializableRequirement
 {
@@ -43,7 +44,7 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 	}
 
 
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		// Scenario 1:
 		// Player has entered region, key hasn't loaded in but tile has
@@ -61,7 +62,7 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 
 		// If scene has reloaded, do something
 
-		if (playerInRegion(client) || playerHasBeenInRegionThisLoad)
+		if (playerInRegion(client, chatMessageManager) || playerHasBeenInRegionThisLoad)
 		{
 			hasFoundItemThisLoad = checkAllTiles(client);
 		}
@@ -77,11 +78,11 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 	}
 
 	// TODO: Consider some implementation which allows for true/false/unknown
-	private boolean playerInRegion(Client client)
+	private boolean playerInRegion(Client client, ChatMessageManager chatMessageManager)
 	{
 		// Return true for unknown
 		if (worldPoint == null) return true;
-		if (!tileLoadedReq.check(client)) return true;
+		if (!tileLoadedReq.check(client, chatMessageManager)) return true;
 
 		WorldPoint playerPoint = QuestPerspective.getRealWorldPointFromLocal(client, client.getLocalPlayer().getWorldLocation());
 		if (playerPoint == null) return false;

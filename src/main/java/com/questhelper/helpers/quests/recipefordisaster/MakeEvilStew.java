@@ -91,7 +91,7 @@ public class MakeEvilStew extends DetailedOwnerStep
 		int numBrownStillNeeded = brownNeeded - brownInStew;
 		int numYellowStillNeeded = yellowNeeded - yellowInStew;
 
-		if (!inEvilDaveRoom.check(client))
+		if (!inEvilDaveRoom.check(client, chatMessageManager))
 		{
 			startUpStep(enterBasement);
 		}

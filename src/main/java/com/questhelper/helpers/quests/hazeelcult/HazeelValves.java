@@ -65,9 +65,9 @@ public class HazeelValves extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (!solved1.check(client))
+		if (!solved1.check(client, chatMessageManager))
 		{
-			if (atValve1.check(client))
+			if (atValve1.check(client, chatMessageManager))
 			{
 				startUpStep(turnValve1);
 			}
@@ -76,9 +76,9 @@ public class HazeelValves extends DetailedOwnerStep
 				startUpStep(turnValve1NoDialog);
 			}
 		}
-		else if (!solved2.check(client))
+		else if (!solved2.check(client, chatMessageManager))
 		{
-			if (atValve2.check(client))
+			if (atValve2.check(client, chatMessageManager))
 			{
 				startUpStep(turnValve2);
 			}
@@ -87,9 +87,9 @@ public class HazeelValves extends DetailedOwnerStep
 				startUpStep(turnValve2NoDialog);
 			}
 		}
-		else if (!solved3.check(client))
+		else if (!solved3.check(client, chatMessageManager))
 		{
-			if (atValve3.check(client))
+			if (atValve3.check(client, chatMessageManager))
 			{
 				startUpStep(turnValve3);
 			}
@@ -98,9 +98,9 @@ public class HazeelValves extends DetailedOwnerStep
 				startUpStep(turnValve3NoDialog);
 			}
 		}
-		else if (!solved4.check(client))
+		else if (!solved4.check(client, chatMessageManager))
 		{
-			if (atValve4.check(client))
+			if (atValve4.check(client, chatMessageManager))
 			{
 				startUpStep(turnValve4);
 			}
@@ -109,9 +109,9 @@ public class HazeelValves extends DetailedOwnerStep
 				startUpStep(turnValve4NoDialog);
 			}
 		}
-		else if (!solved5.check(client))
+		else if (!solved5.check(client, chatMessageManager))
 		{
-			if (atValve5.check(client))
+			if (atValve5.check(client, chatMessageManager))
 			{
 				startUpStep(turnValve5);
 			}
@@ -159,29 +159,29 @@ public class HazeelValves extends DetailedOwnerStep
 			return;
 		}
 
-		if (atValve1.check(client))
+		if (atValve1.check(client, chatMessageManager))
 		{
 			updateState(!turnedLeft, solved1);
 		}
-		else if (atValve2.check(client))
+		else if (atValve2.check(client, chatMessageManager))
 		{
 			updateState(!turnedLeft, solved2);
 		}
-		else if (atValve3.check(client))
+		else if (atValve3.check(client, chatMessageManager))
 		{
 			updateState(turnedLeft, solved3);
 		}
-		else if (atValve4.check(client))
+		else if (atValve4.check(client, chatMessageManager))
 		{
 			updateState(!turnedLeft, solved4);
 		}
-		else if (atValve5.check(client))
+		else if (atValve5.check(client, chatMessageManager))
 		{
 			updateState(!turnedLeft, solved5);
 		}
 
-		solved.setShouldPass(solved1.check(client) && solved2.check(client) && solved3.check(client)
-			&& solved4.check(client) && solved5.check(client));
+		solved.setShouldPass(solved1.check(client, chatMessageManager) && solved2.check(client, chatMessageManager) && solved3.check(client, chatMessageManager)
+			&& solved4.check(client, chatMessageManager) && solved5.check(client, chatMessageManager));
 
 		updateSteps();
 	}

@@ -28,6 +28,7 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class RegionHintArrowRequirement extends SimpleRequirement
 {
@@ -43,7 +44,7 @@ public class RegionHintArrowRequirement extends SimpleRequirement
 		this.zone = zone;
 	}
 
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		WorldPoint hintArrowPoint = client.getHintArrowPoint();
 		if (hintArrowPoint == null)

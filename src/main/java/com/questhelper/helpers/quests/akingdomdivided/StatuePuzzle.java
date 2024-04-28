@@ -95,7 +95,7 @@ public class StatuePuzzle extends DetailedOwnerStep
 	{
 		if (!readOnce)
 		{
-			if (inLeglessFaunF1.check(client))
+			if (inLeglessFaunF1.check(client, chatMessageManager))
 			{
 				startUpStep(checkPanel);
 			}
@@ -106,30 +106,30 @@ public class StatuePuzzle extends DetailedOwnerStep
 		}
 		else
 		{
-			if (statuesAllValid != null && !statuesAllValid.check(client))
+			if (statuesAllValid != null && !statuesAllValid.check(client, chatMessageManager))
 			{
 				startUpStep(invalidState);
 			}
-			else if (inLeglessFaunF1.check(client))
+			else if (inLeglessFaunF1.check(client, chatMessageManager))
 			{
 				startUpStep(climbDownLeglessFaun);
 			}
 			else
 			{
 				// If conditional exists and
-				if (statueStates[0].check(client))
+				if (statueStates[0].check(client, chatMessageManager))
 				{
 					startUpStep(statueMap.get(cityOrder.get(0)));
 				}
-				else if (statueStates[1].check(client))
+				else if (statueStates[1].check(client, chatMessageManager))
 				{
 					startUpStep(statueMap.get(cityOrder.get(1)));
 				}
-				else if (statueStates[2].check(client))
+				else if (statueStates[2].check(client, chatMessageManager))
 				{
 					startUpStep(statueMap.get(cityOrder.get(2)));
 				}
-				else if (statueStates[3].check(client))
+				else if (statueStates[3].check(client, chatMessageManager))
 				{
 					startUpStep(statueMap.get(cityOrder.get(3)));
 				}

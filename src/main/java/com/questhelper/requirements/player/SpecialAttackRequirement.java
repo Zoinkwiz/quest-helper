@@ -29,26 +29,27 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.SpecialAttack;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class SpecialAttackRequirement extends AbstractRequirement
 {
-    private static final int SPECIALATTACK_VARP = 301;
-    private final SpecialAttack specialAttack;
+	private static final int SPECIALATTACK_VARP = 301;
+	private final SpecialAttack specialAttack;
 
-    public SpecialAttackRequirement(SpecialAttack specialAttack)
-    {
-        this.specialAttack = specialAttack;
-    }
+	public SpecialAttackRequirement(SpecialAttack specialAttack)
+	{
+		this.specialAttack = specialAttack;
+	}
 
-    @Override
-    public boolean check(Client client)
-    {
-        return specialAttack.check(client, SPECIALATTACK_VARP);
-    }
+	@Override
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
+	{
+		return specialAttack.check(client, SPECIALATTACK_VARP);
+	}
 
-    @Override
-    public String getDisplayText()
-    {
-        return "You must turn " + specialAttack.getName() + " special attack.";
-    }
+	@Override
+	public String getDisplayText()
+	{
+		return "You must turn " + specialAttack.getName() + " special attack.";
+	}
 }

@@ -423,7 +423,7 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		boolean hasAllDiscs = true;
 		for (ItemRequirement requirement : allRequirements)
 		{
-			if (!requirement.check(client))
+			if (!requirement.check(client, chatMessageManager))
 			{
 				hasAllDiscs = false;
 				break;

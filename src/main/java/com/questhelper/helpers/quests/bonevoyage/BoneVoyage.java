@@ -171,7 +171,7 @@ public class BoneVoyage extends BasicQuestHelper
 		sawmillProposal = new ItemRequirement("Sawmill proposal", ItemID.SAWMILL_PROPOSAL);
 		sawmillProposal.setTooltip("You can get another from the sawmill operator near Varrock");
 		sawmillAgreement = new ItemRequirement("Sawmill agreement", ItemID.SAWMILL_AGREEMENT);
-		if (client.getGameState() == GameState.LOGGED_IN && canEnterGuild.check(client))
+		if (client.getGameState() == GameState.LOGGED_IN && canEnterGuild.check(client, chatMessageManager))
 		{
 			sawmillAgreement.setTooltip("You can get another from the sawmill operator in the Woodcutting Guild");
 		}
@@ -211,7 +211,7 @@ public class BoneVoyage extends BasicQuestHelper
 			"Attempt to enter the Woodcutting Guild on Zeah to talk to the guild's sawmill operator.", sawmillProposal);
 
 		talkToOperatorInGuildGeneric = talkToOperatorInGuildFromGate;
-		if (canEnterGuild.check(client))
+		if (canEnterGuild.check(client, chatMessageManager))
 		{
 			talkToOperatorInGuildGeneric = talkToOperatorInGuild;
 		}

@@ -159,11 +159,11 @@ public class DyeShipSteps extends DetailedOwnerStep
 		}
 		if (!coloursKnown)
 		{
-			if (onDeck.check(client))
+			if (onDeck.check(client, chatMessageManager))
 			{
 				startUpStep(goUpToMast);
 			}
-			else if (onTopOfShip.check(client))
+			else if (onTopOfShip.check(client, chatMessageManager))
 			{
 				startUpStep(searchMast);
 			}
@@ -186,11 +186,11 @@ public class DyeShipSteps extends DetailedOwnerStep
 		{
 			startUpStep(dyeSkull);
 		}
-		else if (onTopOfShip.check(client))
+		else if (onTopOfShip.check(client, chatMessageManager))
 		{
 			startUpStep(goDownToMan);
 		}
-		else if (onDeck.check(client))
+		else if (onDeck.check(client, chatMessageManager))
 		{
 			startUpStep(talkToMan);
 		}

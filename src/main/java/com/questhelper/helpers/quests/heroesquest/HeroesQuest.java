@@ -109,7 +109,7 @@ public class HeroesQuest extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		if (inBlackArmGang.check(client))
+		if (inBlackArmGang.check(client, chatMessageManager))
 		{
 			isInBlackArmGang = true;
 		}
@@ -128,7 +128,7 @@ public class HeroesQuest extends BasicQuestHelper
 		getLavaEel.addStep(blamishSlime, makeBlamishOil);
 		getLavaEel.setLockingCondition(lavaEel);
 
-		if (inBlackArmGang.check(client))
+		if (inBlackArmGang.check(client, chatMessageManager))
 		{
 			thievesArmband.setTooltip("You can get another from Katrine in the Black Arm Gang base.");
 			getThievesArmband = new ConditionalStep(this, talkToKatrine);
@@ -454,7 +454,7 @@ public class HeroesQuest extends BasicQuestHelper
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Ice Queen (level 111) for ice gloves");
-		if (!inBlackArmGang.check(client))
+		if (!inBlackArmGang.check(client, chatMessageManager))
 		{
 			reqs.add("Grip (level 26)");
 		}
@@ -470,7 +470,7 @@ public class HeroesQuest extends BasicQuestHelper
 		reqs.add(harralanderUnf);
 		reqs.add(pickaxe);
 		reqs.add(iceGloves);
-		if (inBlackArmGang.check(client))
+		if (inBlackArmGang.check(client, chatMessageManager))
 		{
 			reqs.add(blackFullHelm);
 			reqs.add(blackPlatebody);
@@ -540,7 +540,7 @@ public class HeroesQuest extends BasicQuestHelper
 	public List<String> getNotes()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		if (inBlackArmGang.check(client))
+		if (inBlackArmGang.check(client, chatMessageManager))
 		{
 			reqs.add("You will need to find another player who joined the Phoenix Gang during the Shield of Arrav quest to assist you. If one of you is an Ironman, you can use the necessary items on one another to trade them.");
 		}
@@ -564,7 +564,7 @@ public class HeroesQuest extends BasicQuestHelper
 		secondPanel.setLockingStep(getLavaEel);
 		PanelDetails thirdPanel;
 
-		if (inBlackArmGang.check(client))
+		if (inBlackArmGang.check(client, chatMessageManager))
 		{
 			thirdPanel = new PanelDetails("Get thieves' armband",
 				Arrays.asList(talkToKatrine, tryToEnterTrobertHouse, talkToTrobert, enterMansion, talkToGrip, getKeyFromGrip, pickupKey, enterTreasureRoom, searchChest, returnToKatrine),

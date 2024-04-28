@@ -70,7 +70,7 @@ public class FixWall extends DetailedOwnerStep
 		ironBars.setQuantity(wallsToRepair);
 		ironSheets.setQuantity(wallsToRepair);
 
-		if (ironSheets.check(client))
+		if (ironSheets.check(client, chatMessageManager))
 		{
 			if (wall1Fixed == 0)
 			{

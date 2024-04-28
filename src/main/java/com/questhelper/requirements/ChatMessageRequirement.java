@@ -33,6 +33,7 @@ import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class ChatMessageRequirement extends ConditionForStep
 {
@@ -58,12 +59,12 @@ public class ChatMessageRequirement extends ConditionForStep
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return hasReceivedChatMessage;
 	}
 
-	public void validateCondition(Client client, ChatMessage chatMessage)
+	public void validateCondition(Client client, ChatMessageManager chatMessageManager, ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE && chatMessage.getType() == ChatMessageType.ENGINE)
 		{
@@ -74,7 +75,7 @@ public class ChatMessageRequirement extends ConditionForStep
 		{
 			if (messages.contains(chatMessage.getMessage()))
 			{
-				if (condition == null || condition.check(client))
+				if (condition == null || condition.check(client, chatMessageManager))
 				{
 					hasReceivedChatMessage = true;
 				}
@@ -82,8 +83,8 @@ public class ChatMessageRequirement extends ConditionForStep
 		}
 		else if (invalidateRequirement != null)
 		{
-			invalidateRequirement.validateCondition(client, chatMessage);
-			if (invalidateRequirement.check(client))
+			invalidateRequirement.validateCondition(client, chatMessageManager, chatMessage);
+			if (invalidateRequirement.check(client, chatMessageManager))
 			{
 				invalidateRequirement.setHasReceivedChatMessage(false);
 				setHasReceivedChatMessage(false);

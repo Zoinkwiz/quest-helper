@@ -59,7 +59,7 @@ public class RatCharming extends DetailedOwnerStep
 		for (int i = 0; i < noteSteps.length; i++)
 		{
 			// If not done, let's do it.
-			if (!noteRequirements[i].check(client))
+			if (!noteRequirements[i].check(client, chatMessageManager))
 			{
 				if (currentPage < i)
 				{

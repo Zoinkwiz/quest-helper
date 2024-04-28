@@ -368,7 +368,7 @@ public class QuestOverviewPanel extends JPanel
 	{
 		if (currentQuest == null) return;
 		questStepPanelList.forEach(panel -> {
-			panel.updateHighlightCheck(client, newStep, currentQuest);
+			panel.updateHighlightCheck(client, questHelperPlugin.getChatMessageManager(), newStep, currentQuest);
 		});
 
 		repaint();
@@ -751,7 +751,7 @@ public class QuestOverviewPanel extends JPanel
 		if (questStepPanelList != null)
 		{
 			questStepPanelList.forEach((questStepPanel) -> {
-				questStepPanel.updateRequirements(client, bankItems, this);
+				questStepPanel.updateRequirements(client, questHelperPlugin.getChatMessageManager(), bankItems, this);
 			});
 		}
 		revalidate();
@@ -774,21 +774,21 @@ public class QuestOverviewPanel extends JPanel
 
 				requirementPanel.getLabel().setText(itemRequirement.getSidebarText());
 
-				requirementPanel.setVisible(itemRequirement.getConditionToHide() == null || !itemRequirement.getConditionToHide().check(client));
+				requirementPanel.setVisible(itemRequirement.getConditionToHide() == null || !itemRequirement.getConditionToHide().check(client, questHelperPlugin.getChatMessageManager()));
 
 				if (itemRequirement instanceof NoItemRequirement)
 				{
-					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
+					newColor = itemRequirement.getColor(client, questHelperPlugin.getChatMessageManager(), questHelperPlugin.getConfig()); // explicitly call this because
 					// NoItemRequirement overrides it
 				}
 				else
 				{
-					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems, questHelperPlugin.getConfig());
+					newColor = itemRequirement.getColorConsideringBank(client, questHelperPlugin.getChatMessageManager(), false, bankItems, questHelperPlugin.getConfig());
 				}
 			}
 			else
 			{
-				newColor = requirementPanel.getRequirement().getColor(client, questHelperPlugin.getConfig());
+				newColor = requirementPanel.getRequirement().getColor(client, questHelperPlugin.getChatMessageManager(), questHelperPlugin.getConfig());
 			}
 
 			if (newColor == Color.WHITE)

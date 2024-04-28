@@ -27,6 +27,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.util.Utils;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class IronmanRequirement extends AbstractRequirement
 {
@@ -38,7 +39,7 @@ public class IronmanRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return client.getLocalPlayer() != null &&
 			Utils.getAccountType(client).isAnyIronman() == shouldBeIronman;

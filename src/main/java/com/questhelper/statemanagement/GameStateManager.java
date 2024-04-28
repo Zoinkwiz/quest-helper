@@ -36,6 +36,7 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -44,6 +45,9 @@ public class GameStateManager
 {
 	@Inject
 	Client client;
+
+	@Inject
+	ChatMessageManager chatMessageManager;
 
 	@Inject
 	ConfigManager configManager;
@@ -88,7 +92,7 @@ public class GameStateManager
 
 		if (chatMessage.getMessage().contains("Achievement Diary Stage Task - "))
 		{
-			AchievementDiaryStepManager.check(client);
+			AchievementDiaryStepManager.check(client, chatMessageManager);
 		}
 	}
 

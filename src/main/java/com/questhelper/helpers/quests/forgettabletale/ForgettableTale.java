@@ -636,37 +636,37 @@ public class ForgettableTale extends BasicQuestHelper
 		goUpToDirector = new ObjectStep(this, ObjectID.STAIRS_6087, new WorldPoint(2895, 10210, 0),
 			"Go up to the Consortium.");
 
-		if (inPurple.check(client))
+		if (inPurple.check(client, chatMessageManager))
 		{
 			talkToDirector = new NpcStep(this, NpcID.PURPLE_PEWTER_DIRECTOR_5998, new WorldPoint(2869, 10195, 1),
 				"Talk to the Purple Pewter Director.");
 		}
-		else if (inYellow.check(client))
+		else if (inYellow.check(client, chatMessageManager))
 		{
 			talkToDirector = new NpcStep(this, NpcID.YELLOW_FORTUNE_DIRECTOR_6000, new WorldPoint(2869, 10208, 1),
 				"Talk to the Yellow Fortune Director.");
 		}
-		else if (inBlue.check(client))
+		else if (inBlue.check(client, chatMessageManager))
 		{
 			talkToDirector = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2869, 10203, 1),
 				"Talk to the Blue Opal Director.");
 		}
-		else if (inGreen.check(client))
+		else if (inGreen.check(client, chatMessageManager))
 		{
 			talkToDirector = new NpcStep(this, NpcID.GREEN_GEMSTONE_DIRECTOR_6021, new WorldPoint(2890, 10209, 1),
 				"Talk to the Green Gemstone Director.");
 		}
-		else if (inWhite.check(client))
+		else if (inWhite.check(client, chatMessageManager))
 		{
 			talkToDirector = new NpcStep(this, NpcID.WHITE_CHISEL_DIRECTOR_6022, new WorldPoint(2890, 10204, 1),
 				"Talk to the White Chisel Director.");
 		}
-		else if (inSilver.check(client))
+		else if (inSilver.check(client, chatMessageManager))
 		{
 			talkToDirector = new NpcStep(this, NpcID.SILVER_COG_DIRECTOR_6023, new WorldPoint(2890, 10194, 1),
 				"Talk to the Silver Cog Director.");
 		}
-		else if (inBrown.check(client))
+		else if (inBrown.check(client, chatMessageManager))
 		{
 			talkToDirector = new NpcStep(this, NpcID.BROWN_ENGINE_DIRECTOR_6024, new WorldPoint(2890, 10189, 1),
 				"Talk to the Brown Engine Director.");

@@ -61,6 +61,8 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
+import net.runelite.client.chat.ChatMessageManager;
+
 import javax.annotation.Nonnull;
 
 @QuestDescriptor(
@@ -142,7 +144,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		allQuests = new Requirement()
 		{
 			@Override
-			public boolean check(Client client)
+			public boolean check(Client client, ChatMessageManager chatMessageManager)
 			{
 				boolean allQuestsCompleted = true;
 				for (QuestHelperQuest quest : QuestHelperQuest.values())

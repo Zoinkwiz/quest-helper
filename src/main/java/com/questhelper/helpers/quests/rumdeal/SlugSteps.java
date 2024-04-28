@@ -82,7 +82,7 @@ public class SlugSteps extends DetailedOwnerStep
 		{
 			startUpStep(pullPressureLever);
 		}
-		else if (sluglings.check(client))
+		else if (sluglings.check(client, chatMessageManager))
 		{
 			startUpStep(pressureSluglings);
 		}

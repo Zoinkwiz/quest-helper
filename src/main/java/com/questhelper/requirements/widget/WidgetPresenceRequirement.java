@@ -32,6 +32,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class WidgetPresenceRequirement extends SimpleRequirement
 {
@@ -60,7 +61,7 @@ public class WidgetPresenceRequirement extends SimpleRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		if (onlyNeedToPassOnce && hasPassed)
 		{

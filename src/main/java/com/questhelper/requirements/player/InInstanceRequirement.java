@@ -29,11 +29,12 @@ package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.SimpleRequirement;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class InInstanceRequirement extends SimpleRequirement
 {
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		return client.isInInstancedRegion();
 	}

@@ -35,6 +35,8 @@ import java.awt.Color;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.client.chat.ChatMessageManager;
+
 import static net.runelite.api.Skill.THIEVING;
 
 /**
@@ -109,7 +111,7 @@ public class SkillRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		int skillLevel = canBeBoosted ? Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill)) :
 			client.getRealSkillLevel(skill);
@@ -187,7 +189,7 @@ public class SkillRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public Color getColor(Client client, QuestHelperConfig config)
+	public Color getColor(Client client, ChatMessageManager chatMessageManager, QuestHelperConfig config)
 	{
 		switch (checkBoosted(client, config)){
 			case 1:

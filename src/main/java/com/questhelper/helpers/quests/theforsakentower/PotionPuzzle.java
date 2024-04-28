@@ -125,21 +125,21 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 
 	protected void updateSteps()
 	{
-		if (inBasement.check(client))
+		if (inBasement.check(client, chatMessageManager))
 		{
 			startUpStep(goUpLadder);
 		}
-		else if (inSecondFloor.check(client))
+		else if (inSecondFloor.check(client, chatMessageManager))
 		{
 			startUpStep(goDownToFirstFloor);
 		}
-		else if (inFirstFloor.check(client))
+		else if (inFirstFloor.check(client, chatMessageManager))
 		{
-			if (cleanedRefinery.check(client))
+			if (cleanedRefinery.check(client, chatMessageManager))
 			{
 				startUpStep(activateRefinery);
 			}
-			else if (!triedToActivate.check(client))
+			else if (!triedToActivate.check(client, chatMessageManager))
 			{
 				startUpStep(inspectRefinery);
 			}
@@ -156,7 +156,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					fluidFound = true;
 				}
 
-				if (hasFluids[correctFluid].check(client))
+				if (hasFluids[correctFluid].check(client, chatMessageManager))
 				{
 					startUpStep(useFluidOnRefinery);
 				}
@@ -165,7 +165,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 					startUpStep(getFluid);
 				}
 			}
-			else if (oldNotes.check(client))
+			else if (oldNotes.check(client, chatMessageManager))
 			{
 				startUpStep(readNote);
 			}

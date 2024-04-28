@@ -30,6 +30,7 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.NpcChanged;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class NpcCondition extends ConditionForStep
 {
@@ -69,7 +70,7 @@ public class NpcCondition extends ConditionForStep
 		}
 	}
 
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		if (zone != null)
 		{

@@ -567,7 +567,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 		var puzzle1SolutionValue = puzzle1SolutionValue1 + puzzle1SolutionValue2;
 		// Try to figure out a solution
-		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue,
+		solution.load(client, chatMessageManager, items, puzzle1SolutionValue, puzzle2SolutionValue,
 			discs,
 			valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
 	}
@@ -600,7 +600,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		if (solution.isGood())
 		{
 			// A good solution has been calculated with the discs the player has in their inventory
-			if (!machineOpen.check(client))
+			if (!machineOpen.check(client, chatMessageManager))
 			{
 				// Prompt the player to open the machine
 				startUpStep(clickMachine);
@@ -688,7 +688,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			return;
 		}
 
-		if (exchangerOpen.check(client))
+		if (exchangerOpen.check(client, chatMessageManager))
 		{
 			// Exchanger widget is open
 
@@ -760,7 +760,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			return;
 		}
 
-		if (machineOpen.check(client))
+		if (machineOpen.check(client, chatMessageManager))
 		{
 			// A partial solution is found, and it can be completed by using the exchanger
 			// The machine is open, prompt the user to close it then click the exchanger

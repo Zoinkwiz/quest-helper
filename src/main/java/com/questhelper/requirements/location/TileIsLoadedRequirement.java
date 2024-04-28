@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.chat.ChatMessageManager;
 
 public class TileIsLoadedRequirement extends AbstractRequirement
 {
@@ -51,7 +52,7 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean check(Client client, ChatMessageManager chatMessageManager)
 	{
 		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 		if (lp == null) return false;

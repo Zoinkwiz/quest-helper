@@ -288,7 +288,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	private void updateSection1Route()
 	{
 		ArrayList<WorldPoint> newRoute = new ArrayList<>();
-		if(shouldUsePath1V2.check(client))
+		if(shouldUsePath1V2.check(client, chatMessageManager))
 		{
 			newRoute.addAll(path1V2);
 		}
@@ -297,9 +297,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			newRoute.addAll(path1V1);
 		}
 
-		if(shouldUsePath2V2.check(client))
+		if(shouldUsePath2V2.check(client, chatMessageManager))
 		{
-			if (shouldUsePath1V2.check(client))
+			if (shouldUsePath1V2.check(client, chatMessageManager))
 			{
 				newRoute.addAll(pathConnectingPath1V1ToV2);
 			}
@@ -307,7 +307,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 		else
 		{
-			if (!shouldUsePath1V2.check(client))
+			if (!shouldUsePath1V2.check(client, chatMessageManager))
 			{
 				newRoute.addAll(pathConnectingPath1V2ToV1);
 			}
@@ -315,7 +315,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 		newRoute.addAll(pathMaze);
 
-		if(shouldUsePath3V2.check(client))
+		if(shouldUsePath3V2.check(client, chatMessageManager))
 		{
 			newRoute.addAll(path3V2);
 		}
@@ -330,7 +330,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	private void updateSection2Route()
 	{
 		ArrayList<WorldPoint> newRoute = new ArrayList<>();
-		if(shouldUsePath4V2.check(client))
+		if(shouldUsePath4V2.check(client, chatMessageManager))
 		{
 			newRoute.addAll(path4V2);
 			newRoute.addAll(workOutFifthSection(0, new ArrayList<>(), 0));
@@ -345,7 +345,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 	private void updateSection3Route()
 	{
-		if(shouldUsePath6V2.check(client))
+		if(shouldUsePath6V2.check(client, chatMessageManager))
 		{
 			goToKruk.setLinePoints(pathToKrukV2);
 			goToKruk.setWorldPoint(new WorldPoint(2548, 9225, 1));
@@ -406,8 +406,8 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		{
 			if (currentNode.getPaths()[i] != null)
 			{
-				if (currentNode.getPaths()[i].getWrongWay().check(client)) routeSavedValues.get(currentNode.getPaths()[i]).setConfigValue("true");
-				if (routeSavedValues.get(currentNode.getPaths()[i]).check(client) && !previousIds.contains(currentNode.getPaths()[i].getIdEnd()))
+				if (currentNode.getPaths()[i].getWrongWay().check(client, chatMessageManager)) routeSavedValues.get(currentNode.getPaths()[i]).setConfigValue("true");
+				if (routeSavedValues.get(currentNode.getPaths()[i]).check(client, chatMessageManager) && !previousIds.contains(currentNode.getPaths()[i].getIdEnd()))
 				{
 					nextNodeId = currentNode.getPaths()[i].getIdEnd();
 					newPoints.addAll(currentNode.getPaths()[i].getPath());
@@ -453,71 +453,71 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	@Subscribe
 	public void onGameTick(GameTick ignoredEvent)
 	{
-		if (!shouldUsePath1V2.check(client))
+		if (!shouldUsePath1V2.check(client, chatMessageManager))
 		{
-			if (path1SouthIsWrong.check(client)) shouldUsePath1V2.setConfigValue("true");
-			if (shouldUsePath1V2.check(client))
+			if (path1SouthIsWrong.check(client, chatMessageManager)) shouldUsePath1V2.setConfigValue("true");
+			if (shouldUsePath1V2.check(client, chatMessageManager))
 			{
 				updateSection1Route();
 			}
 		}
-		if (!shouldUsePath2V2.check(client))
+		if (!shouldUsePath2V2.check(client, chatMessageManager))
 		{
-			if (path2NorthIsWrong.check(client)) shouldUsePath2V2.setConfigValue("true");
-			if (shouldUsePath2V2.check(client))
+			if (path2NorthIsWrong.check(client, chatMessageManager)) shouldUsePath2V2.setConfigValue("true");
+			if (shouldUsePath2V2.check(client, chatMessageManager))
 			{
 				updateSection1Route();
 			}
 		}
-		if (!shouldUsePath3V2.check(client))
+		if (!shouldUsePath3V2.check(client, chatMessageManager))
 		{
-			if (path3SouthIsWrong.check(client)) shouldUsePath3V2.setConfigValue("true");
-			if (shouldUsePath3V2.check(client))
+			if (path3SouthIsWrong.check(client, chatMessageManager)) shouldUsePath3V2.setConfigValue("true");
+			if (shouldUsePath3V2.check(client, chatMessageManager))
 			{
 				updateSection1Route();
 			}
 		}
 
-		if (!shouldUsePath4V2.check(client))
+		if (!shouldUsePath4V2.check(client, chatMessageManager))
 		{
-			if (path4NorthIsWrong.check(client)) shouldUsePath4V2.setConfigValue("true");
-			if (shouldUsePath4V2.check(client))
+			if (path4NorthIsWrong.check(client, chatMessageManager)) shouldUsePath4V2.setConfigValue("true");
+			if (shouldUsePath4V2.check(client, chatMessageManager))
 			{
 				updateSection2Route();
 			}
 		}
 
-		if (!shouldntUsePath5V1.check(client))
+		if (!shouldntUsePath5V1.check(client, chatMessageManager))
 		{
-			if (path5EastIsWrong.check(client)) shouldntUsePath5V1.setConfigValue("true");
-			if (shouldntUsePath5V1.check(client))
+			if (path5EastIsWrong.check(client, chatMessageManager)) shouldntUsePath5V1.setConfigValue("true");
+			if (shouldntUsePath5V1.check(client, chatMessageManager))
 			{
 				updateSection2Route();
 			}
 		}
 
-		if (!shouldntUsePath5V2.check(client))
+		if (!shouldntUsePath5V2.check(client, chatMessageManager))
 		{
-			if (path5MiddleIsWrong.check(client)) shouldntUsePath5V2.setConfigValue("true");
-			if (shouldntUsePath5V2.check(client))
+			if (path5MiddleIsWrong.check(client, chatMessageManager)) shouldntUsePath5V2.setConfigValue("true");
+			if (shouldntUsePath5V2.check(client, chatMessageManager))
 			{
 				updateSection2Route();
 			}
 		}
 
-		if (!shouldntUsePath5V3.check(client))
+		if (!shouldntUsePath5V3.check(client, chatMessageManager))
 		{
-			if (path5WestIsWrong.check(client)) shouldntUsePath5V3.setConfigValue("true");
-			if (shouldntUsePath5V1.check(client))
+			if (path5WestIsWrong.check(client, chatMessageManager)) shouldntUsePath5V3.setConfigValue("true");
+			if (shouldntUsePath5V1.check(client, chatMessageManager))
 			{
 				updateSection2Route();
 			}
 		}
 
-		if (!shouldUsePath6V2.check(client))
+		if (!shouldUsePath6V2.check(client, chatMessageManager))
 		{
-			if (path6WestIsWrong.check(client)) shouldUsePath6V2.setConfigValue("true");
-			if (shouldUsePath6V2.check(client))
+			if (path6WestIsWrong.check(client, chatMessageManager)) shouldUsePath6V2.setConfigValue("true");
+			if (shouldUsePath6V2.check(client, chatMessageManager))
 			{
 				updateSection3Route();
 			}
@@ -530,9 +530,9 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (inCavesSection4.check(client))
+		if (inCavesSection4.check(client, chatMessageManager))
 		{
-			if (openedShortcut.check(client))
+			if (openedShortcut.check(client, chatMessageManager))
 			{
 				startUpStep(goToKruk);
 			}
@@ -541,21 +541,21 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 				startUpStep(openShortcut);
 			}
 		}
-		else if (inKrukRoom.check(client))
+		else if (inKrukRoom.check(client,chatMessageManager ))
 		{
 			startUpStep(fightKruk);
 		}
-		else if (openedShortcut.check(client))
+		else if (openedShortcut.check(client,chatMessageManager ))
 		{
 			startUpStep(enterShortcut);
 		}
-		else if (inCavesSection3.check(client))
+		else if (inCavesSection3.check(client, chatMessageManager))
 		{
 			startUpStep(traverseDungeonThirdSection);
 		}
-		else if (inCavesSection2.check(client))
+		else if (inCavesSection2.check(client, chatMessageManager))
 		{
-			if (hasBronzeKey.check(client))
+			if (hasBronzeKey.check(client, chatMessageManager))
 			{
 				startUpStep(openBronzeDoor);
 			}
@@ -564,19 +564,19 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 				startUpStep(getKey);
 			}
 		}
-		else if (inFallArea1.check(client))
+		else if (inFallArea1.check(client, chatMessageManager))
 		{
 			startUpStep(leaveFallArea1);
 		}
-		else if (inFallArea2.check(client))
+		else if (inFallArea2.check(client, chatMessageManager))
 		{
 			startUpStep(leaveFallArea2);
 		}
-		else if (inFallArea3.check(client))
+		else if (inFallArea3.check(client, chatMessageManager))
 		{
 			startUpStep(leaveFallArea3);
 		}
-		else if (inFallArea4.check(client))
+		else if (inFallArea4.check(client, chatMessageManager))
 		{
 			startUpStep(leaveFallArea4);
 		}
@@ -591,26 +591,26 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	{
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			path1SouthIsWrongChat.validateCondition(client, chatMessage);
-			path2NorthIsWrongChat.validateCondition(client, chatMessage);
-			path2NorthIsWrongChat2.validateCondition(client, chatMessage);
-			path3SouthIsWrongChat.validateCondition(client, chatMessage);
-			path4NorthIsWrongChat.validateCondition(client, chatMessage);
-			path5WestIsWrongChat.validateCondition(client, chatMessage);
-			path5MiddleIsWrongChat.validateCondition(client, chatMessage);
-			path5EastIsWrongChat.validateCondition(client, chatMessage);
-			path5MiddleToEastWrongChat.validateCondition(client, chatMessage);
-			path5MiddleToWestWrongChat.validateCondition(client, chatMessage);
-			path5EastToMiddleWrongChat.validateCondition(client, chatMessage);
-			path5WestToMiddleWrongChat.validateCondition(client, chatMessage);
-			path6WestIsWrongChat.validateCondition(client, chatMessage);
+			path1SouthIsWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path2NorthIsWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path2NorthIsWrongChat2.validateCondition(client, chatMessageManager, chatMessage);
+			path3SouthIsWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path4NorthIsWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path5WestIsWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path5MiddleIsWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path5EastIsWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path5MiddleToEastWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path5MiddleToWestWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path5EastToMiddleWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path5WestToMiddleWrongChat.validateCondition(client, chatMessageManager, chatMessage);
+			path6WestIsWrongChat.validateCondition(client, chatMessageManager, chatMessage);
 			for (MM2AgilityNodes mm2AgilityNode : fifthSectionMap)
 			{
 				for (int i = 0; i < mm2AgilityNode.getPaths().length; i++)
 				{
 					if (mm2AgilityNode.getPaths()[i] != null)
 					{
-						mm2AgilityNode.getPaths()[i].getWrongWay().validateCondition(client, chatMessage);
+						mm2AgilityNode.getPaths()[i].getWrongWay().validateCondition(client, chatMessageManager, chatMessage);
 					}
 				}
 			}

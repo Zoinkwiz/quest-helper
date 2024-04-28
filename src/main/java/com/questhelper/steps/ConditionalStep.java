@@ -195,7 +195,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		{
 			for (RuneliteRequirement runeliteCondition : runeliteConditions)
 			{
-				runeliteCondition.validateCondition(client);
+				runeliteCondition.validateCondition(client, chatMessageManager);
 			}
 			updateSteps();
 		}
@@ -221,7 +221,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		chatConditions.forEach(step -> step.validateCondition(client, chatMessage));
+		chatConditions.forEach(step -> step.validateCondition(client, chatMessageManager, chatMessage));
 
 		if (chatMessage.getType() == ChatMessageType.DIALOG)
 		{
@@ -254,7 +254,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		for (Requirement conditions : steps.keySet())
 		{
 			boolean stepIsLocked = steps.get(conditions).isLocked();
-			if (conditions != null && conditions.check(client) && !stepIsLocked)
+			if (conditions != null && conditions.check(client, chatMessageManager) && !stepIsLocked)
 			{
 				startUpStep(steps.get(conditions));
 				return;

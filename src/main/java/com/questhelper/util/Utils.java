@@ -47,17 +47,22 @@ public class Utils
 	 */
 	public AccountType getAccountType(@NotNull Client client)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN) return AccountType.NORMAL;
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return AccountType.NORMAL;
+		}
 		return AccountType.get(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
 	}
 
 	/**
 	 * Unpack a widget ID (Component) into a widget group ID (Interface) and widget child ID
+	 *
 	 * @param componentId the {@link Component}
 	 * @return the corresponding Interface & Child ID
 	 */
 	@Component
-	public Pair<Integer, Integer> unpackWidget(@Component int componentId) {
+	public Pair<Integer, Integer> unpackWidget(@Component int componentId)
+	{
 		return Pair.of(componentId >> 16, componentId & 0xFFFF);
 	}
 

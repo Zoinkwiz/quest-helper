@@ -27,13 +27,17 @@ package com.questhelper.util;
 
 import com.questhelper.domain.AccountType;
 import lombok.experimental.UtilityClass;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.annotations.Interface;
+import java.awt.*;
 
 @UtilityClass
 public class Utils
@@ -64,6 +68,18 @@ public class Utils
 	public Pair<Integer, Integer> unpackWidget(@Component int componentId)
 	{
 		return Pair.of(componentId >> 16, componentId & 0xFFFF);
+	}
+
+	public void addChatMessage(ChatMessageManager chatMessageManager, String message)
+	{
+		var formatted = String.format("[%s] %s", ColorUtil.wrapWithColorTag("Quest Helper", Color.CYAN), message);
+
+		chatMessageManager.queue(
+			QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(formatted)
+				.build()
+		);
 	}
 
 }

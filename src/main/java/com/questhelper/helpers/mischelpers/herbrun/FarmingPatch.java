@@ -31,9 +31,6 @@ import lombok.Setter;
 import lombok.ToString;
 import net.runelite.api.annotations.Varbit;
 
-@RequiredArgsConstructor(
-	access = AccessLevel.PACKAGE
-)
 @Getter
 @ToString(onlyExplicitlyIncluded = true)
 class FarmingPatch
@@ -48,11 +45,27 @@ class FarmingPatch
 	@ToString.Include
 	private final PatchImplementation implementation;
 	private int farmer = -1;
+	private final int patchNumber;
+
+	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation)
+	{
+		this(name, varbit, implementation, -1);
+	}
+
 
 	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int farmer)
 	{
-		this(name, varbit, implementation);
+		this(name, varbit, implementation, farmer, -1);
+	}
+
+
+	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int farmer, int patchNumber)
+	{
+		this.name = name;
+		this.varbit = varbit;
+		this.implementation = implementation;
 		this.farmer = farmer;
+		this.patchNumber = patchNumber;
 	}
 
 	String configKey()

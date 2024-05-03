@@ -2679,7 +2679,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	GIANT_COMPOST(Tab.SPECIAL, "Giant Compost Bin", true)
+	BIG_COMPOST(Tab.SPECIAL, "Big Compost Bin", true)
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2777,7 +2777,7 @@ public enum PatchImplementation
 				if (value >= 223 && value <= 237)
 				{
 					// Giant compost bin[Close,Examine,Dump] 33902..33916
-					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.FILLING, 15 + value - 223);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.FILLING, 15 + value  - 223);
 				}
 				return null;
 			}

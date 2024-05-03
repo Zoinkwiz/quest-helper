@@ -158,7 +158,8 @@ public class HolyGrail extends BasicQuestHelper
 		holyTableNapkin = new ItemRequirement("Holy Table Napkin", ItemID.HOLY_TABLE_NAPKIN);
 		twoMagicWhistles = new ItemRequirement("Magic Whistles", ItemID.MAGIC_WHISTLE, 2);
 		threeCamelotTele = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, 3);
-		draynorTele = new ItemRequirement("Draynor Teleport Tablet", ItemID.CAMELOT_TELEPORT, 1);
+		draynorTele = new ItemRequirement("Draynor Teleport Tablet", ItemID.DRAYNOR_MANOR_TELEPORT, 1);
+		draynorTele.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.ARDOUGNE_TELEPORT);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);

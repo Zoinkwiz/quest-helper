@@ -241,7 +241,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		farmingGuildTeleport.addAlternates(ItemCollections.SKILLS_NECKLACES);
 		farmingGuildTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
-		hunterWhistle = new ItemRequirement("Quetzal whistle", ItemID.PERFECTED_QUETZAL_WHISTLE);
+		hunterWhistle = new ItemRequirement("Quetzal whistle", ItemID.PERFECTED_QUETZAL_WHISTLE).showConditioned(accessToVarlamore);
 		hunterWhistle.addAlternates(ItemID.BASIC_QUETZAL_WHISTLE);
 		hunterWhistle.addAlternates(ItemID.ENHANCED_QUETZAL_WHISTLE);
 
@@ -396,11 +396,18 @@ public class HerbRun extends ComplexStateQuestHelper
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		int seedsNeeded = 0;
 		for (FarmingPatch patch : farmingWorld.getTabs().get(Tab.HERB))
 		{
 			CropState state = farmingHandler.predictPatch(patch);
 			boolean isHarvestable = state == CropState.HARVESTABLE;
-			boolean isPlantable = state == CropState.EMPTY || state == CropState.DEAD;
+			boolean isPlantable = state == CropState.EMPTY || state == CropState.DEAD || state == null;
+
+			if (isHarvestable || isPlantable)
+			{
+				seedsNeeded++;
+			}
+
 			switch (patch.getRegion().getName())
 			{
 				case "Ardougne":
@@ -418,10 +425,18 @@ public class HerbRun extends ComplexStateQuestHelper
 				case "Farming Guild":
 					farmingGuildReady.setShouldPass(isHarvestable);
 					farmingGuildEmpty.setShouldPass(isPlantable);
+					if(!accessToFarmingGuildPatch.check(client))
+					{
+						seedsNeeded--;
+					}
 					break;
 				case "Harmony":
 					harmonyReady.setShouldPass(isHarvestable);
 					harmonyEmpty.setShouldPass(isPlantable);
+					if (!accessToHarmony.check(client))
+					{
+						seedsNeeded--;
+					}
 					break;
 				case "Morytania":
 					morytaniaReady.setShouldPass(isHarvestable);
@@ -434,24 +449,31 @@ public class HerbRun extends ComplexStateQuestHelper
 				case "Troll Stronghold":
 					trollStrongholdReady.setShouldPass(isHarvestable);
 					trollStrongholdEmpty.setShouldPass(isPlantable);
+					if(!accessToTrollStronghold.check(client))
+					{
+						seedsNeeded--;
+					}
 					break;
 				case "Weiss":
 					weissReady.setShouldPass(isHarvestable);
 					weissEmpty.setShouldPass(isPlantable);
+					if(!accessToWeiss.check(client))
+					{
+						seedsNeeded--;
+					}
 					break;
-				case "Varlamore":
+				case "Civitas illa Fortis":
 					varlamoreReady.setShouldPass(isHarvestable);
 					varlamoreEmpty.setShouldPass(isPlantable);
+					if(!accessToVarlamore.check(client))
+					{
+						seedsNeeded--;
+					}
 					break;
 			}
 		}
-		Boolean[] seedsNeeded = new Boolean[] {ardougneReady.check(client), catherbyReady.check(client), faladorReady.check(client), farmingGuildReady.check(client), harmonyReady.check(client),
-			morytaniaReady.check(client), hosidiusReady.check(client), trollStrongholdReady.check(client), weissReady.check(client), varlamoreReady.check(client)};
-		int totalSeedsNeeded = (int) Arrays.stream(seedsNeeded)
-			.filter(b -> b)
-			.count();
-		seed.setQuantity(totalSeedsNeeded);
-		compost.quantity(totalSeedsNeeded);
+		seed.setQuantity(seedsNeeded);
+		compost.quantity(seedsNeeded);
 	}
 
 	@Override

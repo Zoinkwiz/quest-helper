@@ -497,7 +497,7 @@ public class QuestOverviewPanel extends JPanel
 				String questId = subQuest.getQuest().getName();
 				if (processedQuestIds.contains(questId))
 				{
-					return;  // Skip processing if this quest has already been processed
+					continue;  // Skip processing if this quest has already been processed
 				}
 				processedQuestIds.add(questId);  // Mark this quest as processed
 

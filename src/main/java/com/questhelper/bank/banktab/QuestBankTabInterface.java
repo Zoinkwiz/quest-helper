@@ -42,6 +42,7 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.bank.BankSearch;
 
 public class QuestBankTabInterface
@@ -62,13 +63,15 @@ public class QuestBankTabInterface
 	private Widget questBackgroundWidget;
 
 	private final Client client;
+	private final ClientThread clientThread;
 	private final BankSearch bankSearch;
 
 	@Inject
-	public QuestBankTabInterface(Client client, BankSearch bankSearch)
+	public QuestBankTabInterface(Client client, ClientThread clientThread, BankSearch bankSearch)
 	{
 		this.client = client;
 		this.bankSearch = bankSearch;
+		this.clientThread = clientThread;
 	}
 
 	public void init()
@@ -96,7 +99,7 @@ public class QuestBankTabInterface
 		if (questTabActive)
 		{
 			questTabActive = false;
-			activateTab();
+			clientThread.invokeLater(this::activateTab);
 		}
 	}
 

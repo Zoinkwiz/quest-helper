@@ -25,17 +25,22 @@
 package com.questhelper.statemanagement;
 
 import com.questhelper.collections.KeyringCollection;
+import com.questhelper.domain.AccountType;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.QuestCompletedWidget;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
+import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -54,6 +59,13 @@ public class GameStateManager
 	List<KeyringRequirement> keyringKeys;
 
 	WorldPoint lastPlayerPos = null;
+
+	/**
+	 * The type of the logged in account (e.g. ironman, hardcore ironman)
+	 * Quest helpers should use this value when building their requirements instead of fetching the value themselves.
+	 */
+	@Getter
+	private @NonNull AccountType accountType = AccountType.NORMAL;
 
 	public void startUp()
 	{
@@ -107,6 +119,25 @@ public class GameStateManager
 				}
 			}
 			lastPlayerPos = newPos;
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarbitId() == Varbits.ACCOUNT_TYPE) {
+			var newAccountType = AccountType.get(event.getValue());
+			if (newAccountType == null) {
+				// The account type value is invalid, leave previous account type as is
+				return;
+			}
+
+			if (newAccountType != accountType) {
+				accountType = newAccountType;
+
+				// NOTE: This currently means that any non-ironman account has all quest requirements setup twice
+				questManager.setupRequirements();
+			}
 		}
 	}
 }

@@ -262,7 +262,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 		tpEnakhra = new DetailedQuestStep(this, "Teleport to Enakhra's Temple with the Camulet.", camulet);
 
-		if (questHelperPlugin.getGameStateManager().getAccountType().isAnyIronman())
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			tpPollnivneach = new DetailedQuestStep(this, "Move your house to Pollnivneach, then enter your house " +
 				"there.", coins.quantity(7500));

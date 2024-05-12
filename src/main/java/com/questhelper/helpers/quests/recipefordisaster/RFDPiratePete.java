@@ -305,7 +305,7 @@ public class RFDPiratePete extends BasicQuestHelper
 	{
 		ArrayList<Requirement> generalReqs = new ArrayList<>();
 		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
-		if (questHelperPlugin.getGameStateManager().getAccountType().isAnyIronman())
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			generalReqs.add(new ComplexRequirement(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
 				new SkillRequirement(Skill.CRAFTING, 42, true),

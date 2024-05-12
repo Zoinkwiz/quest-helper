@@ -395,7 +395,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		generalRequirements.add(new SkillRequirement(Skill.AGILITY, 42, true));
 		generalRequirements.add(new SkillRequirement(Skill.CRAFTING, 40, true));
 		generalRequirements.add(new SkillRequirement(Skill.DEFENCE, 20));
-		if (questHelperPlugin.getGameStateManager().getAccountType().isAnyIronman())
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			// 47 Farming is required to get a Watermelon for the "Brain not included" step
 			generalRequirements.add(new SkillRequirement(Skill.FARMING, 47, true));

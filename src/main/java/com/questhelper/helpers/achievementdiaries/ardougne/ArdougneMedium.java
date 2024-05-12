@@ -258,7 +258,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		grapYan2 = new ObjectStep(this, ObjectID.WALL_17048, new WorldPoint(2556, 3075, 1),
 			"Jump off the opposite side!");
 
-		if (questHelperPlugin.getGameStateManager().getAccountType() == AccountType.ULTIMATE_IRONMAN)
+		if (questHelperPlugin.getPlayerStateManager().getAccountType() == AccountType.ULTIMATE_IRONMAN)
 		{
 			claimSand = new ObjectStep(this, ObjectID.SANDPIT, new WorldPoint(2543, 3104, 0),
 				"Fill a bucket with sand using Bert's sand pit.", bucket);

@@ -40,7 +40,7 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
-import com.questhelper.statemanagement.GameStateManager;
+import com.questhelper.statemanagement.PlayerStateManager;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
@@ -169,7 +169,7 @@ public class QuestHelperPlugin extends Plugin
 
 	@Getter
 	@Inject
-	GameStateManager gameStateManager;
+	PlayerStateManager playerStateManager;
 
 	@Inject
 	public SkillIconManager skillIconManager;
@@ -205,9 +205,9 @@ public class QuestHelperPlugin extends Plugin
 		questBankManager.startUp(injector, eventBus);
 		eventBus.register(worldMapAreaManager);
 
-		injector.injectMembers(gameStateManager);
-		eventBus.register(gameStateManager);
-		gameStateManager.startUp();
+		injector.injectMembers(playerStateManager);
+		eventBus.register(playerStateManager);
+		playerStateManager.startUp();
 
 		eventBus.register(runeliteObjectManager);
 		runeliteObjectManager.startUp();
@@ -244,7 +244,7 @@ public class QuestHelperPlugin extends Plugin
 	{
 		runeliteObjectManager.shutDown();
 
-		eventBus.unregister(gameStateManager);
+		eventBus.unregister(playerStateManager);
 		eventBus.unregister(runeliteObjectManager);
 		eventBus.unregister(worldMapAreaManager);
 		questOverlayManager.shutDown();

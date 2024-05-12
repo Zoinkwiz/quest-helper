@@ -45,7 +45,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
-public class GameStateManager
+public class PlayerStateManager
 {
 	@Inject
 	Client client;

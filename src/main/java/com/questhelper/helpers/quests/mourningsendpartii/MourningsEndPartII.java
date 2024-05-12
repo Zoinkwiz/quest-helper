@@ -57,7 +57,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.util.Utils;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -938,7 +937,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		enterDeathAltarBarrier = new ObjectStep(this, NullObjectID.NULL_9788, new WorldPoint(1865, 4639, 0), "Enter the barrier to the death altar to the west.");
 
-		if (Utils.getAccountType(client).isAnyIronman())
+		if (questHelperPlugin.getGameStateManager().getAccountType().isAnyIronman())
 		{
 			if (client.getRealSkillLevel(Skill.SLAYER) > 85)
 			{

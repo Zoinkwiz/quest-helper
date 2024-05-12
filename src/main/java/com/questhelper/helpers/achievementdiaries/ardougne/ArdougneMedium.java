@@ -55,7 +55,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import com.questhelper.util.Utils;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -259,7 +258,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		grapYan2 = new ObjectStep(this, ObjectID.WALL_17048, new WorldPoint(2556, 3075, 1),
 			"Jump off the opposite side!");
 
-		if (Utils.getAccountType(client) == AccountType.ULTIMATE_IRONMAN)
+		if (questHelperPlugin.getGameStateManager().getAccountType() == AccountType.ULTIMATE_IRONMAN)
 		{
 			claimSand = new ObjectStep(this, ObjectID.SANDPIT, new WorldPoint(2543, 3104, 0),
 				"Fill a bucket with sand using Bert's sand pit.", bucket);

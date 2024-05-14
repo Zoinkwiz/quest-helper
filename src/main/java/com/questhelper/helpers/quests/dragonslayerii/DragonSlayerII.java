@@ -833,6 +833,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToReldoAgainNoBook.addDialogStep("Ask about Tristan.");
 		talkToReldoAgain.addSubSteps(talkToReldoAgainNoBook);
 		talkToSarah = new NpcStep(this, NpcID.SARAH_8134, new WorldPoint(3674, 3469, 0), "Talk to Sarah in Port Phasmatys.", ghostspeakOrMory2);
+		talkToSarah.addTeleport(morytaniaTeleport);
 		talkToAva = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0), "Talk to Ava in Draynor Manor.", dragonstone, moltenGlass2, glassblowingPipe);
 		talkToAva.addDialogStep("I need your help with a key piece.");
 		usePipeOnDragonstone = new DetailedQuestStep(this, "Use the glassblowing pipe on a dragonstone.", glassblowingPipeHighlighted, dragonstoneHighlighted, moltenGlass2);
@@ -1216,7 +1217,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		karamjaKeyPanel.setLockingStep(gettingTheKaramjaKey);
 
 		PanelDetails varrockKeyPanel = new PanelDetails("Varrock key piece", Arrays.asList(talkToReldo, searchBookcase, talkToReldoAgain, talkToSarah,
-			talkToAva, usePipeOnDragonstone, talkToAvaAgain, useLocatorInSwamp), ghostspeakOrMory2, dragonstone, moltenGlass2, glassblowingPipe, spade);
+			talkToAva, usePipeOnDragonstone, talkToAvaAgain, useLocatorInSwamp), List.of(ghostspeakOrMory2, dragonstone, moltenGlass2, glassblowingPipe, spade), List.of(morytaniaTeleport));
 		varrockKeyPanel.setLockingStep(gettingTheVarrockKey);
 
 		PanelDetails kourendKeyPanel = new PanelDetails("Kourend key piece", Arrays.asList(talkToAmelia, enterCrypt, goDownInCryptF2ToF1, searchTombInCrypt, solveCryptPuzzle, searchTombForCryptKey), combatGear, lightSource);

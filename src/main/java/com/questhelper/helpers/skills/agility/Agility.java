@@ -33,17 +33,14 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ItemID;
-import net.runelite.api.QuestState;
 import static net.runelite.api.Skill.AGILITY;
 
 @QuestDescriptor(
@@ -59,9 +56,9 @@ public class Agility extends ComplexStateQuestHelper
 
 	SkillRequirement ag45;
 
-	AgilityCourse gnomeStronghold, draynorVillage, alKharid, varrock, canifis,
+	AgilityCourse draynorVillage, alKharid, varrock, canifis,
 		falador, seersVillage, pollnivneach, rellekka, ardougne;
-	ConditionalStep gnomeStep, draynorStep, alKharidStep, varrockStep, canifisStep,
+	ConditionalStep draynorStep, alKharidStep, varrockStep, canifisStep,
 		faladorStep, seersStep, pollnivneachStep, rellekkaStep, ardougneStep;
 
 	@Override
@@ -69,7 +66,6 @@ public class Agility extends ComplexStateQuestHelper
 	{
 		setupRequirements();
 
-		gnomeStep = gnomeStronghold.loadStep();
 		draynorStep = draynorVillage.loadStep();
 		alKharidStep = alKharid.loadStep();
 		varrockStep = varrock.loadStep();
@@ -81,17 +77,15 @@ public class Agility extends ComplexStateQuestHelper
 		ardougneStep = ardougne.loadStep();
 
 
-		ConditionalStep superStep = new ConditionalStep(this, gnomeStep);
+		ConditionalStep superStep = new ConditionalStep(this, draynorStep);
 		superStep.addStep(ag90, ardougneStep);
 		superStep.addStep(ag80, rellekkaStep);
-		superStep.addStep(new Conditions(LogicType.NAND, ag70,
-			new QuestRequirement(QuestHelperQuest.KANDARIN_HARD, QuestState.FINISHED)), pollnivneachStep);
+		superStep.addStep(ag70, pollnivneachStep);
 		superStep.addStep(ag60, seersStep);
 		superStep.addStep(ag40, canifisStep);
 		superStep.addStep(ag50, faladorStep);
 		superStep.addStep(ag30, varrockStep);
 		superStep.addStep(ag20, alKharidStep);
-		superStep.addStep(ag10, draynorStep);
 
 		return superStep;
 	}
@@ -100,7 +94,6 @@ public class Agility extends ComplexStateQuestHelper
 	public void setupRequirements()
 	{
 		//Setup courses
-		gnomeStronghold = new GnomeStronghold(this);
 		draynorVillage = new DraynorVillage(this);
 		alKharid = new AlKharid(this);
 		varrock = new Varrock(this);
@@ -166,7 +159,6 @@ public class Agility extends ComplexStateQuestHelper
 		).isNotConsumed();
 
 
-		gnomeStronghold.setRecommended(bootsOfLightness);
 		draynorVillage.setRecommended(bootsOfLightness);
 		alKharid.setRecommended(bootsOfLightness);
 		varrock.setRecommended(bootsOfLightness);
@@ -201,7 +193,6 @@ public class Agility extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(gnomeStronghold.getPanelDetails());
 		allSteps.add(draynorVillage.getPanelDetails());
 		allSteps.add(alKharid.getPanelDetails());
 		allSteps.add(varrock.getPanelDetails());
@@ -221,8 +212,6 @@ public class Agility extends ComplexStateQuestHelper
 	{
 		return Arrays.asList("40-60 Agility: Stay on Canifis Rooftop Course for best spawn of Mark of Grace" +
 				" until 60 Agility, then go directly to Seer's Village\n\n",
-			"60-80 Agility: If completed Kandarin Hard Diary, configure the Camelot Teleport Spell" +
-				" to Seer's and stay on Seer's rooftop course until 80 Agility." +
-				" After each completed lap, use the teleport spell to get close to the course starting point");
+			"70-90 Agility: If you haven't done the Fremennik Hard Diary, the Pollnivneach course is better exp/hour than the Rellekka one.");
 	}
 }

@@ -93,7 +93,6 @@ public class QuestManager
 	private QuestHelperPanel panel;
 	private QuestStep lastStep = null;
 
-
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
@@ -527,6 +526,14 @@ public class QuestManager
 		else
 		{
 			startUpBackgroundQuest(QuestHelperQuest.CHECK_ITEMS.getName());
+		}
+	}
+
+	public void setupRequirements()
+	{
+		for (QuestHelperQuest questHelperQuest : QuestHelperQuest.values())
+		{
+			questHelperQuest.getQuestHelper().setupRequirements();
 		}
 	}
 }

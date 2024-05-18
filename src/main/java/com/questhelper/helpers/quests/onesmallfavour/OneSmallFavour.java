@@ -646,22 +646,22 @@ public class OneSmallFavour extends BasicQuestHelper
 		take7 = new ObjectStep(this, NullObjectID.NULL_5821, new WorldPoint(2548, 2969, 0), "Take an opal from the landing light.");
 		take8 = new ObjectStep(this, NullObjectID.NULL_5823, new WorldPoint(2545, 2969, 0), "Take a sapphire from the landing light.");
 
-		put1 = new ObjectStep(this, NullObjectID.NULL_5820, new WorldPoint(2554, 2974, 0), "Put a jade from the north east landing light.", jade);
+		put1 = new ObjectStep(this, NullObjectID.NULL_5820, new WorldPoint(2554, 2974, 0), "Put a jade into the north east landing light.", jade);
 		put1.addIcon(ItemID.JADE);
-		put2 = new ObjectStep(this, NullObjectID.NULL_5822, new WorldPoint(2551, 2974, 0), "Put a red topaz from the landing light.", redTopaz);
+		put2 = new ObjectStep(this, NullObjectID.NULL_5822, new WorldPoint(2551, 2974, 0), "Put a red topaz into the landing light.", redTopaz);
 		put2.addIcon(ItemID.RED_TOPAZ);
-		put3 = new ObjectStep(this, NullObjectID.NULL_5821, new WorldPoint(2548, 2974, 0), "Put an opal from the landing light.", opal);
+		put3 = new ObjectStep(this, NullObjectID.NULL_5821, new WorldPoint(2548, 2974, 0), "Put an opal into the landing light.", opal);
 		put3.addIcon(ItemID.OPAL);
-		put4 = new ObjectStep(this, NullObjectID.NULL_5823, new WorldPoint(2545, 2974, 0), "Put a sapphire from the landing light.", sapphire);
+		put4 = new ObjectStep(this, NullObjectID.NULL_5823, new WorldPoint(2545, 2974, 0), "Put a sapphire into the landing light.", sapphire);
 		put4.addIcon(ItemID.SAPPHIRE);
 
-		put5 = new ObjectStep(this, NullObjectID.NULL_5820, new WorldPoint(2554, 2969, 0), "Put a jade from the landing light.", jade);
+		put5 = new ObjectStep(this, NullObjectID.NULL_5820, new WorldPoint(2554, 2969, 0), "Put a jade into the landing light.", jade);
 		put5.addIcon(ItemID.JADE);
-		put6 = new ObjectStep(this, NullObjectID.NULL_5822, new WorldPoint(2551, 2969, 0), "Put a red topaz from the landing light.", redTopaz);
+		put6 = new ObjectStep(this, NullObjectID.NULL_5822, new WorldPoint(2551, 2969, 0), "Put a red topaz into the landing light.", redTopaz);
 		put6.addIcon(ItemID.RED_TOPAZ);
-		put7 = new ObjectStep(this, NullObjectID.NULL_5821, new WorldPoint(2548, 2969, 0), "Put an opal from the landing light.", opal);
+		put7 = new ObjectStep(this, NullObjectID.NULL_5821, new WorldPoint(2548, 2969, 0), "Put an opal into the landing light.", opal);
 		put7.addIcon(ItemID.OPAL);
-		put8 = new ObjectStep(this, NullObjectID.NULL_5823, new WorldPoint(2545, 2969, 0), "Put a sapphire from the landing light.", sapphire);
+		put8 = new ObjectStep(this, NullObjectID.NULL_5823, new WorldPoint(2545, 2969, 0), "Put a sapphire into the landing light.", sapphire);
 		put8.addIcon(ItemID.SAPPHIRE);
 
 		cutJade = new DetailedQuestStep(this, "Cut the uncut jade.", chisel, uncutJade);

@@ -35,12 +35,9 @@ import com.questhelper.managers.QuestManager;
 import com.questhelper.managers.QuestMenuHandler;
 import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.panel.QuestHelperPanel;
-import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
 import com.questhelper.statemanagement.GameStateManager;
@@ -50,14 +47,12 @@ import com.google.inject.Module;
 import com.questhelper.util.worldmap.WorldMapAreaManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
@@ -71,8 +66,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
@@ -90,7 +83,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
@@ -185,8 +177,6 @@ public class QuestHelperPlugin extends Plugin
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
-
-	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 
 	boolean profileChanged;
 
@@ -360,7 +350,7 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("showRuneliteObjects"))
+		if (event.getKey().equals("showRuneliteObjects") && client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invokeLater(() -> {
 				if (config.showRuneliteObjects())
@@ -444,6 +434,11 @@ public class QuestHelperPlugin extends Plugin
 	public QuestHelper getSelectedQuest()
 	{
 		return questManager.getSelectedQuest();
+	}
+
+	public Map<String, QuestHelper> getBackgroundHelpers()
+	{
+		return questManager.backgroundHelpers;
 	}
 
 	public Map<QuestHelperQuest, List<ItemRequirement>> getItemRequirements()

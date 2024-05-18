@@ -53,7 +53,6 @@ public class AllNeededItems extends ComplexStateQuestHelper
 		questHelperPlugin.getItemRequirements().forEach((qhQuest, questReqs) -> refinedList(qhQuest.getName(), reqs, questReqs));
 		questHelperPlugin.getItemRecommended().forEach((qhQuest, questRecommended) -> refinedList(qhQuest.getName(), reqs, questRecommended));
 
-		System.out.println(reqs);
 		step1 = new DetailedQuestStep(this, "Get all items you need. You can have items being highlighted that you" +
 			" need without running this helper if you activate it in the Quest Helper settings.", new ArrayList<>(reqs.values()));
 		step1.hideRequirements = true;

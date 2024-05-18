@@ -242,7 +242,11 @@ public class QuestManager
 			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers()
 				.stream()
 				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
-			SwingUtilities.invokeLater(() -> panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections()));
+			SwingUtilities.invokeLater(() -> {
+				if (panel != null) {
+					panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections());
+				}
+			});
 		}
 	}
 

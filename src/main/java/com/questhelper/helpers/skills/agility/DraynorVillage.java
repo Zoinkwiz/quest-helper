@@ -131,7 +131,7 @@ public class DraynorVillage extends AgilityCourse
 	@Override
 	protected PanelDetails getPanelDetails()
 	{
-		draynorPanels = new PanelDetails("10 - 20: Draynor Village", Collections.singletonList(draynorSidebar)
+		draynorPanels = new PanelDetails("1 - 20: Draynor Village", Collections.singletonList(draynorSidebar)
 		);
 		return draynorPanels;
 	}

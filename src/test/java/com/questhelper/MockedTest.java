@@ -26,8 +26,10 @@
 package com.questhelper;
 
 import com.google.inject.testing.fieldbinder.Bind;
+import com.questhelper.domain.AccountType;
 import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
@@ -41,6 +43,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import javax.inject.Named;
 import java.util.concurrent.ScheduledExecutorService;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -76,6 +79,9 @@ public abstract class MockedTest extends MockedTestBase
 	protected Hooks hooks = Mockito.mock(Hooks.class);
 
 	@Bind
+	protected PlayerStateManager playerStateManager = Mockito.mock(PlayerStateManager.class);
+
+	@Bind
 	protected QuestHelperPlugin questHelperPlugin = Mockito.mock(QuestHelperPlugin.class);
 
 	@Bind
@@ -99,6 +105,9 @@ public abstract class MockedTest extends MockedTestBase
 	protected void setUp()
 	{
 		super.setUp();
+
+		when(questHelperPlugin.getPlayerStateManager()).thenReturn(playerStateManager);
+		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
 
 		// init client mocks
 		// when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));

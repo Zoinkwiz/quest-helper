@@ -51,7 +51,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.util.Utils;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -396,7 +395,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		generalRequirements.add(new SkillRequirement(Skill.AGILITY, 42, true));
 		generalRequirements.add(new SkillRequirement(Skill.CRAFTING, 40, true));
 		generalRequirements.add(new SkillRequirement(Skill.DEFENCE, 20));
-		if (Utils.getAccountType(client).isAnyIronman())
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			// 47 Farming is required to get a Watermelon for the "Brain not included" step
 			generalRequirements.add(new SkillRequirement(Skill.FARMING, 47, true));

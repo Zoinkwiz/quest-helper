@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import com.questhelper.util.Utils;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -263,7 +262,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 		tpEnakhra = new DetailedQuestStep(this, "Teleport to Enakhra's Temple with the Camulet.", camulet);
 
-		if (Utils.getAccountType(client).isAnyIronman())
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			tpPollnivneach = new DetailedQuestStep(this, "Move your house to Pollnivneach, then enter your house " +
 				"there.", coins.quantity(7500));

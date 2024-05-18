@@ -46,7 +46,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 
-import com.questhelper.util.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -403,7 +402,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
 		reqs.add(new SkillRequirement(Skill.FARMING, 68, true));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60));
-		if (Utils.getAccountType(client).isAnyIronman())
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			reqs.add(new SkillRequirement(Skill.HUNTER, 69, true));
 		}

@@ -54,7 +54,6 @@ import com.questhelper.steps.QuestStep;
 
 import java.util.*;
 
-import com.questhelper.util.Utils;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -306,7 +305,7 @@ public class RFDPiratePete extends BasicQuestHelper
 	{
 		ArrayList<Requirement> generalReqs = new ArrayList<>();
 		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
-		if (Utils.getAccountType(client).isAnyIronman())
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			generalReqs.add(new ComplexRequirement(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
 				new SkillRequirement(Skill.CRAFTING, 42, true),

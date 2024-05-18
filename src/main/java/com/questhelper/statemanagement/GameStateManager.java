@@ -132,12 +132,7 @@ public class GameStateManager
 				return;
 			}
 
-			if (newAccountType != accountType) {
-				accountType = newAccountType;
-
-				// NOTE: This currently means that any non-ironman account has all quest requirements setup twice
-				questManager.setupRequirements();
-			}
+			accountType = newAccountType;
 		}
 	}
 }

@@ -296,11 +296,13 @@ public class QuestHelperPlugin extends Plugin
 		{
 			profileChanged = false;
 			questManager.shutDownQuest(true);
-			questManager.setupRequirements();
-			newVersionManager.updateChatWithNotificationIfNewVersion();
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
+			newVersionManager.updateChatWithNotificationIfNewVersion();
 			questBankManager.setUnknownInitialState();
-			clientThread.invokeLater(() -> questManager.setupOnLogin());
+			clientThread.invokeAtTickEnd(() -> {
+				questManager.setupRequirements();
+				questManager.setupOnLogin();
+			});
 		}
 	}
 

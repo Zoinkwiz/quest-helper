@@ -62,12 +62,12 @@ public class FaladorHard extends ComplexStateQuestHelper
 
 	//Items Required
 	ItemRequirement pureEss28, mindTiara, coins10000, combatGear, food, lightSource, spade, wyvernProtection, prospectorHelm,
-		prospectorChest, prospectorLegs, prospectorBoots, prosyHelm, prosyChest, prosyLegs, dwarvenHelmet, dragonfireProtection;
+		prosyHelm, prosyChest, prosyLegs, dwarvenHelmet, dragonfireProtection;
 
 	//Items Recommended
 	ItemRequirement faladorTeleport, combatBracelet;
 
-	ItemRequirements prosySet, prospectorSet;
+	ItemRequirements prosySet;
 
 	Requirement herosQuest, slugMenace, grimTales;
 
@@ -174,12 +174,6 @@ public class FaladorHard extends ComplexStateQuestHelper
 			.showConditioned(notKilledWyvern).isNotConsumed();
 		prospectorHelm = new ItemRequirement("Prospector Helm", ItemID.PROSPECTOR_HELMET, 1, true)
 			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
-		prospectorChest = new ItemRequirement("Prospector Chest", ItemID.PROSPECTOR_JACKET, 1, true)
-			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
-		prospectorLegs = new ItemRequirement("Prospector Legs", ItemID.PROSPECTOR_LEGS, 1, true)
-			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
-		prospectorBoots = new ItemRequirement("Prospector Boots", ItemID.PROSPECTOR_BOOTS, 1, true)
-			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
 		dragonfireProtection = new ItemRequirement("Protection from Dragonfire", ItemCollections.ANTIFIRE_SHIELDS)
 			.showConditioned(notKilledBlueDragon).isNotConsumed();
 		prosyHelm = new ItemRequirement("Proselyte Helmet", ItemID.PROSELYTE_SALLET).showConditioned(notPraySarimAltarProsy).isNotConsumed();
@@ -194,7 +188,6 @@ public class FaladorHard extends ComplexStateQuestHelper
 		combatBracelet.addAlternates(ItemCollections.GAMES_NECKLACES);
 
 		prosySet = new ItemRequirements(prosyHelm, prosyLegs, prosyChest);
-		prospectorSet = new ItemRequirements(prospectorBoots, prospectorChest, prospectorHelm, prospectorLegs);
 
 		inMindAltar = new ZoneRequirement(mindAltar);
 		inWyvernCavern = new ZoneRequirement(wyvernCavern);
@@ -271,9 +264,9 @@ public class FaladorHard extends ComplexStateQuestHelper
 
 		//Prospectors in Mining Guild
 		enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3059, 3376, 0),
-			"Go to the Dwarven Mines.", prospectorBoots, prospectorChest, prospectorLegs, prospectorHelm);
+			"Go to the Dwarven Mines.", prospectorHelm);
 		enterMiningGuild = new ObjectStep(this, ObjectID.DOOR_30364, new WorldPoint(3046, 9756, 0),
-			"Equip your prospector set and then enter the Mining Guild", prospectorBoots, prospectorChest, prospectorLegs, prospectorHelm);
+			"Equip your prospector helmet and then enter the Mining Guild", prospectorHelm);
 
 		//Blue Dragon
 		enterHerosGuild = new ObjectStep(this, ObjectID.DOOR_2624, new WorldPoint(2902, 3501, 0),
@@ -324,7 +317,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(pureEss28, mindTiara, coins10000, combatGear, lightSource, spade, wyvernProtection, prospectorHelm,
-			prospectorBoots, prospectorChest, prospectorLegs, prosyHelm, prosyChest, prosyLegs, dwarvenHelmet);
+			prosyHelm, prosyChest, prosyLegs, dwarvenHelmet);
 	}
 
 	@Override
@@ -408,8 +401,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(dwarvenHelmSteps);
 
 		PanelDetails miningGuildSteps = new PanelDetails("Gold Rush!", Arrays.asList(enterDwarvenMines,
-			enterMiningGuild), new SkillRequirement(Skill.MINING, 60, true), prospectorHelm, prospectorBoots,
-			prospectorChest, prospectorLegs);
+			enterMiningGuild), new SkillRequirement(Skill.MINING, 60, true), prospectorHelm);
 		miningGuildSteps.setDisplayCondition(notEnterMiningGuildWithProspector);
 		miningGuildSteps.setLockingStep(enterMiningGuildWithProspectorTask);
 		allSteps.add(miningGuildSteps);

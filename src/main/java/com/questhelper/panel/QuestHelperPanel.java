@@ -47,14 +47,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import javax.inject.Inject;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -63,6 +57,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
@@ -74,6 +70,8 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class QuestHelperPanel extends PluginPanel
 {
+	private final ConfigManager configManager;
+
 	private final QuestOverviewPanel questOverviewPanel;
 	private final FixedWidthPanel questOverviewWrapper = new FixedWidthPanel();
 
@@ -82,6 +80,8 @@ public class QuestHelperPanel extends PluginPanel
 
 	private final JPanel allDropdownSections = new JPanel();
 	private final JComboBox<Enum> filterDropdown, difficultyDropdown, orderDropdown;
+
+	private final JLabel skillExpandButton = new JLabel();
 
 	private final IconTextField searchBar = new IconTextField();
 	private final FixedWidthPanel questListPanel = new FixedWidthPanel();
@@ -114,12 +114,13 @@ public class QuestHelperPanel extends PluginPanel
 		EXPANDED_ICON = Icon.EXPANDED.getIcon();
 	}
 
-	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
+	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager, ConfigManager configManager)
 	{
 		super(false);
 
 		this.questHelperPlugin = questHelperPlugin;
 		this.questManager = questManager;
+		this.configManager = configManager;
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
@@ -314,8 +315,10 @@ public class QuestHelperPanel extends PluginPanel
 
 		JLabel filterName = new JLabel("Skill filtering");
 		filterName.setForeground(Color.WHITE);
-		JLabel skillExpandButton = new JLabel();
+		skillExpandButton.setForeground(Color.GRAY);
 		skillExpandButton.setIcon(COLLAPSED_ICON);
+		skillExpandButton.setHorizontalTextPosition(SwingConstants.LEFT);
+		skillExpandButton.setIconTextGap(10);
 
 		JPanel skillExpandBar = new JPanel();
 		skillExpandBar.setLayout(new BorderLayout());
@@ -377,6 +380,8 @@ public class QuestHelperPanel extends PluginPanel
 
 		questOverviewWrapper.setLayout(new BorderLayout());
 		questOverviewWrapper.add(questOverviewPanel, BorderLayout.NORTH);
+
+		refreshSkillFiltering();
 	}
 
 	private void onSearchBarChanged()
@@ -592,5 +597,24 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateItemRequirements(Client client, List<Item> bankItems)
 	{
 		questOverviewPanel.updateRequirements(client, bankItems);
+	}
+
+	/**
+	 * Refreshes the label showing the active skill filters
+	 */
+	public void refreshSkillFiltering() {
+		var numFilteredSkills = 0;
+		for (var skill : Skill.values()) {
+			var isFiltered = "true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skill.getName()));
+			if (isFiltered) {
+				numFilteredSkills += 1;
+			}
+		}
+
+		if (numFilteredSkills == 0) {
+			skillExpandButton.setText("");
+		} else {
+			skillExpandButton.setText(String.format("%d active", numFilteredSkills));
+		}
 	}
 }

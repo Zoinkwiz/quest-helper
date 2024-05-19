@@ -478,29 +478,28 @@ public class QuestManager
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 
-			clientThread.invokeLater(() -> {
-				SortedMap<QuestHelperQuest, List<ItemRequirement>> newReqs = new TreeMap<>();
-				SortedMap<QuestHelperQuest, List<ItemRequirement>> newRecommended = new TreeMap<>();
-				filteredQuests.forEach((QuestHelper questHelper) -> {
-					if (questHelper.getItemRequirements() != null)
-					{
-						newReqs.put(questHelper.getQuest(), questHelper.getItemRequirements());
-					}
-					if (questHelper.getItemRecommended() != null)
-					{
-						newRecommended.put(questHelper.getQuest(), questHelper.getItemRecommended());
-					}
-				});
-				itemRequirements = newReqs;
-				itemRecommended = newRecommended;
-
-				String checkItemsName = QuestHelperQuest.CHECK_ITEMS.getName();
-				if (config.highlightItemsBackground())
+			SortedMap<QuestHelperQuest, List<ItemRequirement>> newReqs = new TreeMap<>();
+			SortedMap<QuestHelperQuest, List<ItemRequirement>> newRecommended = new TreeMap<>();
+			filteredQuests.forEach((QuestHelper questHelper) -> {
+				if (questHelper.getItemRequirements() != null)
 				{
-					shutDownBackgroundQuest(backgroundHelpers.get(checkItemsName));
-					startUpBackgroundQuest(checkItemsName);
+					newReqs.put(questHelper.getQuest(), questHelper.getItemRequirements());
+				}
+				if (questHelper.getItemRecommended() != null)
+				{
+					newRecommended.put(questHelper.getQuest(), questHelper.getItemRecommended());
 				}
 			});
+			itemRequirements = newReqs;
+			itemRecommended = newRecommended;
+
+			String checkItemsName = QuestHelperQuest.CHECK_ITEMS.getName();
+			if (config.highlightItemsBackground()
+				&& !(selectedQuest != null && selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS))
+			{
+				shutDownBackgroundQuest(backgroundHelpers.get(checkItemsName));
+				startUpBackgroundQuest(checkItemsName);
+			}
 		});
 	}
 
@@ -509,6 +508,11 @@ public class QuestManager
 	 */
 	public void updateAllItemsHelper()
 	{
+		if (!(client.getGameState() == GameState.LOGGED_IN))
+		{
+			return;
+		}
+
 		getAllItemRequirements();
 		if (selectedQuest != null && selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS)
 		{
@@ -523,6 +527,11 @@ public class QuestManager
 	 */
 	public void updateAllItemsBackgroundHelper(String shouldRun)
 	{
+		if (!(client.getGameState() == GameState.LOGGED_IN))
+		{
+			return;
+		}
+
 		if (Objects.equals(shouldRun, "false"))
 		{
 			shutDownBackgroundQuest(backgroundHelpers.get(QuestHelperQuest.CHECK_ITEMS.getName()));

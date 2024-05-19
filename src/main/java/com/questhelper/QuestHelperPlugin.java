@@ -178,8 +178,6 @@ public class QuestHelperPlugin extends Plugin
 
 	private NavigationButton navButton;
 
-	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
-
 	boolean profileChanged;
 
 
@@ -346,7 +344,7 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("showRuneliteObjects"))
+		if (event.getKey().equals("showRuneliteObjects") && client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invokeLater(() -> {
 				if (config.showRuneliteObjects())
@@ -430,6 +428,11 @@ public class QuestHelperPlugin extends Plugin
 	public QuestHelper getSelectedQuest()
 	{
 		return questManager.getSelectedQuest();
+	}
+
+	public Map<String, QuestHelper> getBackgroundHelpers()
+	{
+		return questManager.backgroundHelpers;
 	}
 
 	public Map<QuestHelperQuest, List<ItemRequirement>> getItemRequirements()

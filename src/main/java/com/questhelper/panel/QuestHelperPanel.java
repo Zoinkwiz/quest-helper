@@ -88,7 +88,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
 	private final JScrollPane scrollableContainer;
 	public static final int DROPDOWN_HEIGHT = 26;
-//	private boolean settingsPanelActive = false;
+	//	private boolean settingsPanelActive = false;
 	public boolean questActive = false;
 
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
@@ -602,18 +602,24 @@ public class QuestHelperPanel extends PluginPanel
 	/**
 	 * Refreshes the label showing the active skill filters
 	 */
-	public void refreshSkillFiltering() {
+	public void refreshSkillFiltering()
+	{
 		var numFilteredSkills = 0;
-		for (var skill : Skill.values()) {
+		for (var skill : Skill.values())
+		{
 			var isFiltered = "true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skill.getName()));
-			if (isFiltered) {
+			if (isFiltered)
+			{
 				numFilteredSkills += 1;
 			}
 		}
 
-		if (numFilteredSkills == 0) {
+		if (numFilteredSkills == 0)
+		{
 			skillExpandButton.setText("");
-		} else {
+		}
+		else
+		{
 			skillExpandButton.setText(String.format("%d active", numFilteredSkills));
 		}
 	}

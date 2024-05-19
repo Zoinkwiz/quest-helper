@@ -92,7 +92,7 @@ public class MemoryChallengeTest
 		return MemoryChallenge.findPath(grid);
 	}
 
-	private int[][] createGrid(int west, int middleWest, int middleEast, int east)
+	int[][] createGrid(int west, int middleWest, int middleEast, int east)
 	{
 		int[][] grid = new int[8][4];
 

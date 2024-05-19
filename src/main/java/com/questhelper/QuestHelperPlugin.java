@@ -216,7 +216,7 @@ public class QuestHelperPlugin extends Plugin
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
-		panel = new QuestHelperPanel(this, questManager);
+		panel = new QuestHelperPanel(this, questManager, configManager);
 		questManager.startUp(panel);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
@@ -337,6 +337,7 @@ public class QuestHelperPlugin extends Plugin
 		if (event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
 		{
 			clientThread.invokeLater(questManager::updateQuestList);
+			SwingUtilities.invokeLater(panel::refreshSkillFiltering);
 		}
 
 		if (!event.getGroup().equals(QuestHelperConfig.QUEST_HELPER_GROUP))

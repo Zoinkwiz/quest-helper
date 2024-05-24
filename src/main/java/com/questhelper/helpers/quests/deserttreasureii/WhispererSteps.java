@@ -752,7 +752,6 @@ public class WhispererSteps extends ConditionalStep
 		lowSanity = new VarbitRequirement(15064, 20, Operation.LESS_EQUAL);
 	}
 
-	@Subscribe
 	@Override
 	public void onGameTick(GameTick event)
 	{

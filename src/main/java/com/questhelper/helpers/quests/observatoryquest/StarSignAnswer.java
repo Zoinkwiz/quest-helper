@@ -63,7 +63,6 @@ public class StarSignAnswer extends NpcStep
 		updateCorrectChoice();
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

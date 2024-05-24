@@ -59,7 +59,6 @@ public class MemoryChallenge extends DetailedQuestStep
 		setupPaths();
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

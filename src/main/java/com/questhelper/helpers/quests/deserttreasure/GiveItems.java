@@ -44,7 +44,6 @@ public class GiveItems extends NpcStep
 		itemQuantitiesLeft();
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

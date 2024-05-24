@@ -68,7 +68,6 @@ public class LadyTableStep extends DetailedOwnerStep
 		clickMissingStatue.setWorldPoint(answerStatue.point);
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

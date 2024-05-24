@@ -190,7 +190,6 @@ public class MonolithPuzzle extends DetailedOwnerStep
 			"Unlock the gate to Yewnock's machine room.", crystalChime, machineRoomKey);
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

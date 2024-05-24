@@ -88,7 +88,6 @@ public class MemoryPuzzle extends DetailedOwnerStep
 		steps[3] = seStep;
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

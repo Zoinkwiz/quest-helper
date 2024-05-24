@@ -144,7 +144,6 @@ public class TaverleyBalloonFlight extends DetailedOwnerStep
 		sections = new ArrayList<>(Arrays.asList(section1, section2, section3));
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

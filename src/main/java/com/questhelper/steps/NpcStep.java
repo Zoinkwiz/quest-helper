@@ -226,7 +226,6 @@ public class NpcStep extends DetailedQuestStep
 		npcs.clear();
 	}
 
-	@Subscribe
 	@Override
 	public void onGameStateChanged(GameStateChanged event)
 	{

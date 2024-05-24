@@ -106,7 +106,6 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 		}
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

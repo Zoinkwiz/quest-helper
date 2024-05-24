@@ -70,7 +70,6 @@ public class GrowthPuzzleStep extends ObjectStep
 		setupHighlights();
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

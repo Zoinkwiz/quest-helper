@@ -46,7 +46,6 @@ public class PenguinEmote extends WidgetStep
 		updateWidgets();
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

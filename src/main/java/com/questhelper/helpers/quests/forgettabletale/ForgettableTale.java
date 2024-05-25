@@ -72,7 +72,7 @@ import net.runelite.api.coords.WorldPoint;
 public class ForgettableTale extends BasicQuestHelper
 {
 	// Required
-	ItemRequirement coins500, barleyMalt2, bucketOfWater2, spade, dibber, rake, yeast, kebab, beer, dwarvenStout,
+	ItemRequirement coins500, barleyMalt2, bucketOfWater2, dibber, rake, yeast, kebab, beer, dwarvenStout,
 		beerGlass, randomItem, coins, pot;
 
 	// Recommended
@@ -363,7 +363,6 @@ public class ForgettableTale extends BasicQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		barleyMalt2 = new ItemRequirement("Barley malt", ItemID.BARLEY_MALT, 2);
 		bucketOfWater2 = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER, 2);
-		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		yeast = new ItemRequirement("Ale yeast", ItemID.ALE_YEAST);
@@ -888,7 +887,7 @@ public class ForgettableTale extends BasicQuestHelper
 		goPlantKelda.addStep(inKelgdagrim, rakeKelda);
 
 		goHarvestKelda = new ConditionalStep(this, travelToKeldagrim,
-			"Harvest the kelda hops.", spade);
+			"Harvest the kelda hops.");
 		goHarvestKelda.addStep(inKelgdagrim, harvestHops);
 
 		goBrew = new ConditionalStep(this, travelToKeldagrim,
@@ -945,7 +944,7 @@ public class ForgettableTale extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins500, barleyMalt2, bucketOfWater2, spade, dibber, rake, kebab, beer.quantity(3),
+		return Arrays.asList(coins500, barleyMalt2, bucketOfWater2, dibber, rake, kebab, beer.quantity(3),
 			dwarvenStout, beerGlass, randomItem);
 	}
 
@@ -995,7 +994,7 @@ public class ForgettableTale extends BasicQuestHelper
 				goTalkRowdyDwarf, goTalkToKhorvak, goGiveKhorvakBeer, goTalkToGuass, goTalkToRind,
 				goPlantKelda, waitForKelda, goHarvestKelda, goBrew, pickupPot, buyYeast, addWater, addMalts, addKelda, addYeast,
 				waitBrewing, goTurnValve, goUseGlass, goGiveDrunkenDwarfKelda), coins500, barleyMalt2, bucketOfWater2,
-			spade,	dibber, rake, beer.quantity(2), dwarvenStout, beerGlass, randomItem));
+			dibber, rake, beer.quantity(2), dwarvenStout, beerGlass, randomItem));
 		allSteps.add(new PanelDetails("Unlocking the tunnels", Arrays.asList(goTalkToConductor, goTalkToDirector,
 			goTakeSecretCart)));
 		allSteps.add(new PanelDetails("Puzzle 1", Arrays.asList(searchBox1, startPuzzle1, puzzle1P1, puzzle1P2,

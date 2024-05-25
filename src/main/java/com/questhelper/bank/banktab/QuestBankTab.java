@@ -220,12 +220,6 @@ public class QuestBankTab
 		if ("getSearchingTagTab".equals(eventName))
 		{
 			intStack[intStackSize - 1] = questBankTabInterface.isQuestTabActive() ? 1 : 0;
-			if (questBankTabInterface.isQuestTabActive())
-			{
-				// As we're on the quest helper tab, we don't need to check again for tab tags
-				// Change the name of the event so as to not proc another check
-				event.setEventName("getSearchingQuestHelperTab");
-			}
 		}
 	}
 

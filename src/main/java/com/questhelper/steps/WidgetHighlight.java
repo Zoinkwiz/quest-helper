@@ -25,13 +25,12 @@
 package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+import java.awt.*;
 
-public class WidgetHighlights
+public class WidgetHighlight extends AbstractWidgetHighlight
 {
 	@Getter
 	protected final int groupId;
@@ -45,7 +44,7 @@ public class WidgetHighlights
 
 	protected final boolean checkChildren;
 
-	public WidgetHighlights(int groupId, int childId)
+	public WidgetHighlight(int groupId, int childId)
 	{
 		this.groupId = groupId;
 		this.childId = childId;
@@ -53,7 +52,7 @@ public class WidgetHighlights
 		this.checkChildren = false;
 	}
 
-	public WidgetHighlights(int groupId, int childId, int childChildId)
+	public WidgetHighlight(int groupId, int childId, int childChildId)
 	{
 		this.groupId = groupId;
 		this.childId = childId;
@@ -61,7 +60,7 @@ public class WidgetHighlights
 		this.checkChildren = false;
 	}
 
-	public WidgetHighlights(int groupId, int childId, int itemIdRequirement, boolean checkChildren)
+	public WidgetHighlight(int groupId, int childId, int itemIdRequirement, boolean checkChildren)
 	{
 		this.groupId = groupId;
 		this.childId = childId;
@@ -70,6 +69,7 @@ public class WidgetHighlights
 		this.checkChildren = checkChildren;
 	}
 
+	@Override
 	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{
 		Widget widgetToHighlight = client.getWidget(groupId, childId);
@@ -79,7 +79,7 @@ public class WidgetHighlights
 		highlightChoices(widgetToHighlight, graphics, questHelper);
 	}
 
-	public void highlightChoices(Widget parentWidget, Graphics2D graphics, QuestHelperPlugin questHelper)
+	private void highlightChoices(Widget parentWidget, Graphics2D graphics, QuestHelperPlugin questHelper)
 	{
 		if (parentWidget == null) return;
 
@@ -104,18 +104,14 @@ public class WidgetHighlights
 			}
 		}
 
-		highlightChoice(graphics, questHelper, parentWidget);
+		highlightWidget(graphics, questHelper, parentWidget);
 	}
 
-	private void highlightChoice(Graphics2D graphics, QuestHelperPlugin questHelper, Widget widgetToHighlight)
+	@Override
+	protected void highlightWidget(Graphics2D graphics, QuestHelperPlugin questHelper, Widget widgetToHighlight)
 	{
 		if (widgetToHighlight == null || (itemIdRequirement != null && widgetToHighlight.getItemId() != itemIdRequirement)) return;
 
-		graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-			questHelper.getConfig().targetOverlayColor().getGreen(),
-			questHelper.getConfig().targetOverlayColor().getBlue(), 65));
-		graphics.fill(widgetToHighlight.getBounds());
-		graphics.setColor(questHelper.getConfig().targetOverlayColor());
-		graphics.draw(widgetToHighlight.getBounds());
+		super.highlightWidget(graphics, questHelper, widgetToHighlight);
 	}
 }

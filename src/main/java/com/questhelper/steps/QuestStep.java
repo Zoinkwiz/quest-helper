@@ -368,6 +368,11 @@ public abstract class QuestStep implements Module
 		widgetsToHighlight.clear();
 	}
 
+	public void addSpellHighlight(String spellName)
+	{
+		widgetsToHighlight.add(new SpellWidgetHighlight(spellName));
+	}
+
 	public void addWidgetHighlight(int groupID, int childID)
 	{
 		widgetsToHighlight.add(new WidgetHighlight(groupID, childID));

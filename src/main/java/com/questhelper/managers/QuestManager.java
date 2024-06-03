@@ -230,7 +230,7 @@ public class QuestManager
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers()
+			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers(isDeveloperMode())
 				.stream()
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
@@ -238,7 +238,7 @@ public class QuestManager
 				.filter(SkillFiltering::passesSkillFilter)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
-			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers()
+			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers(isDeveloperMode())
 				.stream()
 				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
 			SwingUtilities.invokeLater(() -> {
@@ -471,7 +471,7 @@ public class QuestManager
 				pred = pred.or(QuestHelperConfig.QuestFilter.ACHIEVEMENT_DIARY);
 			}
 
-			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers()
+			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers(isDeveloperMode())
 				.stream()
 				.filter(pred)
 				.filter(QuestDetails::isNotCompleted)

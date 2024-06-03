@@ -647,7 +647,7 @@ public enum QuestHelperQuest
 	MINING(new Mining(), "Mining", Skill.MINING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
 
 	// Player Quests
-	COOKS_HELPER(new CooksHelper(), "Cook's Helper", PlayerQuests.COOKS_HELPER, 4);
+	COOKS_HELPER(new CooksHelper(), "Cook's Helper", PlayerQuests.COOKS_HELPER, 4, false),
 
 	@Getter
 	private final int id;
@@ -675,6 +675,12 @@ public enum QuestHelperQuest
 
 	private final int completeValue;
 
+	/**
+	 * developerQuest implies the quest should only be visible to developers (i.e. users running RuneLite with the --developer flag)
+	 */
+	@Getter
+	private final boolean developerQuest;
+
 	@Getter
 	private final QuestHelper questHelper;
 
@@ -689,6 +695,7 @@ public enum QuestHelperQuest
 		this.questType = questType;
 		this.difficulty = difficulty;
 		this.completeValue = -1;
+		this.developerQuest = false;
 	}
 
 	QuestHelperQuest(QuestHelper questHelper, Quest quest, QuestVarbits varbit, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
@@ -702,6 +709,7 @@ public enum QuestHelperQuest
 		this.questType = questType;
 		this.difficulty = difficulty;
 		this.completeValue = -1;
+		this.developerQuest = false;
 	}
 
 	QuestHelperQuest(QuestHelper questHelper, Quest quest, QuestVarPlayer varPlayer, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
@@ -715,6 +723,7 @@ public enum QuestHelperQuest
 		this.questType = questType;
 		this.difficulty = difficulty;
 		this.completeValue = -1;
+		this.developerQuest = false;
 	}
 
 	QuestHelperQuest(QuestHelper questHelper, int id, String name, QuestVarPlayer varPlayer, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
@@ -728,6 +737,7 @@ public enum QuestHelperQuest
 		this.questType = questType;
 		this.difficulty = difficulty;
 		this.completeValue = -1;
+		this.developerQuest = false;
 	}
 
 	QuestHelperQuest(QuestHelper questHelper, int id, String name, List<String> keywords, QuestVarbits varbit, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
@@ -741,6 +751,7 @@ public enum QuestHelperQuest
 		this.questType = questType;
 		this.difficulty = difficulty;
 		this.completeValue = -1;
+		this.developerQuest = false;
 	}
 
 	QuestHelperQuest(QuestHelper questHelper, String name, QuestVarbits varbit, int completeValue, QuestDetails.Type questType, QuestDetails.Difficulty difficulty)
@@ -754,6 +765,7 @@ public enum QuestHelperQuest
 		this.questType = questType;
 		this.difficulty = difficulty;
 		this.completeValue = completeValue;
+		this.developerQuest = false;
 	}
 
 	// Used where no Quest exists yet
@@ -768,6 +780,7 @@ public enum QuestHelperQuest
 		this.questType = questType;
 		this.difficulty = difficulty;
 		this.completeValue = -1;
+		this.developerQuest = false;
 	}
 
 	// Can be used for skill based helpers
@@ -783,10 +796,11 @@ public enum QuestHelperQuest
 		this.questType = questType;
 		this.difficulty = difficulty;
 		this.completeValue = completeValue;
+		this.developerQuest = false;
 	}
 
 	// User for Player Quests
-	QuestHelperQuest(QuestHelper questHelper, String name, PlayerQuests playerQuests, int completeValue)
+	QuestHelperQuest(QuestHelper questHelper, String name, PlayerQuests playerQuests, int completeValue, boolean developerQuest)
 	{
 		this.questHelper = questHelper;
 		this.id = -1;
@@ -799,6 +813,7 @@ public enum QuestHelperQuest
 		this.questType = QuestDetails.Type.PLAYER_QUEST;
 		this.difficulty = QuestDetails.Difficulty.PLAYER_QUEST;
 		this.completeValue = completeValue;
+		this.developerQuest = developerQuest;
 	}
 
 	private List<String> titleToKeywords(String title)
@@ -904,11 +919,15 @@ public enum QuestHelperQuest
 		return null;
 	}
 
-	public static List<QuestHelper> getQuestHelpers()
+	public static List<QuestHelper> getQuestHelpers(boolean includeDeveloperQuests)
 	{
 		List<QuestHelper> helpers = new ArrayList<>();
 		for (QuestHelperQuest questHelperQuest : QuestHelperQuest.values())
 		{
+			if (questHelperQuest.isDeveloperQuest() && !includeDeveloperQuests) {
+				continue;
+			}
+
 			helpers.add(questHelperQuest.questHelper);
 		}
 		return helpers;

@@ -24,7 +24,7 @@
  */
 package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.widget.WidgetDetails;
 import lombok.Getter;
 
 public class WidgetReplacement

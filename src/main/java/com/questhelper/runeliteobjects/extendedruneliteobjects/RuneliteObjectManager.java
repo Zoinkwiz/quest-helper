@@ -27,7 +27,7 @@ package com.questhelper.runeliteobjects.extendedruneliteobjects;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.widget.WidgetDetails;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

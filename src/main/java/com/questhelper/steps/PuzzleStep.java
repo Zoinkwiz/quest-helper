@@ -3,6 +3,7 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.widget.WidgetDetails;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.HashSet;

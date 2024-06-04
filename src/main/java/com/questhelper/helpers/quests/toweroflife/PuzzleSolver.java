@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.toweroflife;
 
-import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.widget.WidgetDetails;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;

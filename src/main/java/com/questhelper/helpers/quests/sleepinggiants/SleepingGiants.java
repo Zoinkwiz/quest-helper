@@ -51,7 +51,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 
-import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.widget.WidgetDetails;
 import com.questhelper.steps.WidgetStep;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -29,6 +29,7 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import com.questhelper.tools.QuestHelperWorldMapPoint;
 import com.questhelper.tools.QuestTile;
 import com.questhelper.questhelpers.QuestHelper;

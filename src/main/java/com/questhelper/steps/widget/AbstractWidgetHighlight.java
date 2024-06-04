@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2020, Zoinkwiz
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps;
+package com.questhelper.steps.widget;
 
-import com.questhelper.util.Utils;
-import lombok.AllArgsConstructor;
-import lombok.Value;
-import net.runelite.api.annotations.Component;
+import com.questhelper.QuestHelperPlugin;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
 
-@Value
-@AllArgsConstructor
-public class WidgetDetails
+public abstract class AbstractWidgetHighlight
 {
-	public int groupID;
-	public int childID;
-	public int childChildID;
+	public abstract void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper);
 
-	public WidgetDetails(@Component int componentId)
+	protected void highlightWidget(Graphics2D graphics, QuestHelperPlugin questHelper, Widget widgetToHighlight)
 	{
-		var pair = Utils.unpackWidget(componentId);
-		groupID = pair.getLeft();
-		childID = pair.getRight();
-		childChildID = -1;
+		if (widgetToHighlight == null) {
+			return;
+		}
+
+		graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+			questHelper.getConfig().targetOverlayColor().getGreen(),
+			questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+		graphics.fill(widgetToHighlight.getBounds());
+		graphics.setColor(questHelper.getConfig().targetOverlayColor());
+		graphics.draw(widgetToHighlight.getBounds());
 	}
 }

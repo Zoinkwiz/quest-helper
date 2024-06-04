@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps;
+package com.questhelper.steps.widget;
 
 import com.questhelper.QuestHelperPlugin;
 import net.runelite.api.Client;
@@ -61,6 +61,11 @@ public class SpellWidgetHighlight extends AbstractWidgetHighlight
 	public SpellWidgetHighlight(String spellName)
 	{
 		this.spellName = spellName;
+	}
+
+	public SpellWidgetHighlight(Spell spell)
+	{
+		this.spellName = spell.getSpellName();
 	}
 
 	@Override

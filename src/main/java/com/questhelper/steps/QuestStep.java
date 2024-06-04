@@ -27,6 +27,10 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.questhelper.steps.widget.AbstractWidgetHighlight;
+import com.questhelper.steps.widget.Spell;
+import com.questhelper.steps.widget.SpellWidgetHighlight;
+import com.questhelper.steps.widget.WidgetHighlight;
 import com.questhelper.tools.VisibilityHelper;
 import static com.questhelper.overlays.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestHelperPlugin;
@@ -371,6 +375,11 @@ public abstract class QuestStep implements Module
 	public void addSpellHighlight(String spellName)
 	{
 		widgetsToHighlight.add(new SpellWidgetHighlight(spellName));
+	}
+
+	public void addSpellHighlight(Spell spell)
+	{
+		widgetsToHighlight.add(new SpellWidgetHighlight(spell));
 	}
 
 	public void addWidgetHighlight(int groupID, int childID)

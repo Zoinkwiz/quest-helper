@@ -412,7 +412,7 @@ public class DetailedQuestStep extends QuestStep
 		}
 
 		renderInventory(graphics);
-		for (WidgetHighlights widgetHighlights : widgetsToHighlight)
+		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
 		{
 			widgetHighlights.highlightChoices(graphics, client, plugin);
 		}

@@ -133,7 +133,7 @@ public abstract class QuestStep implements Module
 	protected WidgetChoiceSteps widgetChoices = new WidgetChoiceSteps();
 
 	@Getter
-	protected List<WidgetHighlights> widgetsToHighlight = new ArrayList<>();
+	protected List<AbstractWidgetHighlight> widgetsToHighlight = new ArrayList<>();
 
 	@Getter
 	private final List<QuestStep> substeps = new ArrayList<>();
@@ -368,19 +368,24 @@ public abstract class QuestStep implements Module
 		widgetsToHighlight.clear();
 	}
 
+	public void addSpellHighlight(String spellName)
+	{
+		widgetsToHighlight.add(new SpellWidgetHighlight(spellName));
+	}
+
 	public void addWidgetHighlight(int groupID, int childID)
 	{
-		widgetsToHighlight.add(new WidgetHighlights(groupID, childID));
+		widgetsToHighlight.add(new WidgetHighlight(groupID, childID));
 	}
 
 	public void addWidgetHighlight(int groupID, int childID, int childChildID)
 	{
-		widgetsToHighlight.add(new WidgetHighlights(groupID, childID, childChildID));
+		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, childChildID));
 	}
 
 	public void addWidgetHighlightWithItemIdRequirement(int groupID, int childID, int itemID, boolean checkChildren)
 	{
-		widgetsToHighlight.add(new WidgetHighlights(groupID, childID, itemID, checkChildren));
+		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, itemID, checkChildren));
 	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)

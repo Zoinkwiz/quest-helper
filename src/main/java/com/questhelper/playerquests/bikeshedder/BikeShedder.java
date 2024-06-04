@@ -27,8 +27,6 @@ package com.questhelper.playerquests.bikeshedder;
 import com.google.common.collect.ImmutableMap;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.util.Spellbook;
@@ -45,9 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.BIKE_SHEDDER
-)
 public class BikeShedder extends BasicQuestHelper
 {
 	private DetailedQuestStep moveToLumbridge;

@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.quests.misthalinmystery;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -55,9 +53,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MISTHALIN_MYSTERY
-)
 public class MisthalinMystery extends BasicQuestHelper
 {
 	//Requirements

@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.miniquests.hisfaithfulservants;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -63,9 +62,6 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.HIS_FAITHFUL_SERVANTS
-)
 public class HisFaithfulServants extends BasicQuestHelper
 {
 	/**

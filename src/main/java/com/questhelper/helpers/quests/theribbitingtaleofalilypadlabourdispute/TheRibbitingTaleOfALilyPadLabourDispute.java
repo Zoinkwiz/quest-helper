@@ -28,7 +28,6 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.quests.deserttreasureii.ChestCodeStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -56,9 +55,6 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE
-)
 public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 {
 	//Items Required

@@ -26,7 +26,6 @@
 package com.questhelper.helpers.achievementdiaries.kourend;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -53,10 +52,6 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.KOUREND_MEDIUM
-)
 
 public class KourendMedium extends ComplexStateQuestHelper
 {

@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.miniquests.themagearenai;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -54,9 +52,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_MAGE_ARENA
-)
 public class TheMageArenaI extends BasicQuestHelper
 {
 	ItemRequirement runesForCasts, knife, godCape;

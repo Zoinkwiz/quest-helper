@@ -26,7 +26,6 @@ package com.questhelper.helpers.quests.makinghistory;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.KeyringCollection;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -61,9 +60,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MAKING_HISTORY
-)
 public class MakingHistory extends BasicQuestHelper
 {
 	//Items Required

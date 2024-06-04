@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.miniquests.lairoftarnrazorlor;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -59,9 +58,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.LAIR_OF_TARN_RAZORLOR
-)
 public class LairOfTarnRazorlor extends BasicQuestHelper
 {
 	//Requirements

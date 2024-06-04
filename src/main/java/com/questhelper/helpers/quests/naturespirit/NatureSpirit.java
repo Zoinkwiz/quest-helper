@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.naturespirit;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.player.PrayerPointRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -59,9 +58,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.NATURE_SPIRIT
-)
 public class NatureSpirit extends BasicQuestHelper
 {
 	//Items Required

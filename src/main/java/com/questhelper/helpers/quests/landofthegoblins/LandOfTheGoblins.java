@@ -26,7 +26,6 @@ package com.questhelper.helpers.quests.landofthegoblins;
 
 import com.google.common.collect.ImmutableList;
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -63,9 +62,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.LAND_OF_THE_GOBLINS
-)
 public class LandOfTheGoblins extends BasicQuestHelper
 {
 	Requirement noPet;

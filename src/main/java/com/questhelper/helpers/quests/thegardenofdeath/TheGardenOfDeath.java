@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.thegardenofdeath;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -59,9 +57,6 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_GARDEN_OF_DEATH
-)
 public class TheGardenOfDeath extends BasicQuestHelper
 {
 	// Required

@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.murdermystery;
 
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.npc.DialogRequirement;
@@ -45,7 +44,6 @@ import com.questhelper.rewards.QuestPointReward;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
@@ -58,9 +56,6 @@ import com.questhelper.requirements.util.LogicType;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MURDER_MYSTERY
-)
 public class MurderMystery extends BasicQuestHelper
 {
 	//Items Required

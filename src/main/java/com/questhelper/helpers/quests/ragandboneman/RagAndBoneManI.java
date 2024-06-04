@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.ragandboneman;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.tools.QuestTile;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -61,9 +59,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RAG_AND_BONE_MAN_I
-)
 public class RagAndBoneManI extends BasicQuestHelper
 {
 	//Items Required

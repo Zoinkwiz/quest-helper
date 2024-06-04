@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.gardenoftranquility;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -62,9 +61,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.GARDEN_OF_TRANQUILLITY
-)
 public class GardenOfTranquillity extends BasicQuestHelper
 {
 	ItemRequirement ringOfCharos, rake, dibber, spade, secateurs, wateringCan, trowel, plantCure2, marigoldSeed,

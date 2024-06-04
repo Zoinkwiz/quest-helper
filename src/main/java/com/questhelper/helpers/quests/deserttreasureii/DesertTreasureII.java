@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.deserttreasureii;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.player.PrayerRequirement;
@@ -70,10 +69,6 @@ import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.DESERT_TREASURE_II
-)
 
 public class DesertTreasureII extends BasicQuestHelper
 {

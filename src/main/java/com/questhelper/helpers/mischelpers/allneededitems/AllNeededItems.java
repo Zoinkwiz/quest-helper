@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.mischelpers.allneededitems;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questhelpers.QuestDetails;
@@ -39,9 +37,6 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.SpriteID;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.CHECK_ITEMS
-)
 public class AllNeededItems extends ComplexStateQuestHelper
 {
 	DetailedQuestStep step1;

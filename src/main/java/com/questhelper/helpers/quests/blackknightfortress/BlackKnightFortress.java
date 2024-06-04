@@ -1,8 +1,6 @@
 package com.questhelper.helpers.quests.blackknightfortress;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -30,9 +28,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.BLACK_KNIGHTS_FORTRESS
-)
 public class BlackKnightFortress extends BasicQuestHelper
 {
 	//Items Required

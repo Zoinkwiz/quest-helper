@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.creatureoffenkenstrain;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -65,9 +64,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-        quest = QuestHelperQuest.CREATURE_OF_FENKENSTRAIN
-)
 public class CreatureOfFenkenstrain extends BasicQuestHelper
 {
 	ItemRequirement armor, hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrabOrCoins, pickledBrain,

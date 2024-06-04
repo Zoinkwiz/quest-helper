@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.recipefordisaster;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.questinfo.QuestVarbits;
@@ -63,9 +62,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_SIR_AMIK_VARZE
-)
 public class RFDSirAmikVarze extends BasicQuestHelper
 {
 	ItemRequirement combatGear, bucketOfMilk, potOfCream, cornflour, pot, sweetcorn, axe, macheteAndRadimus, machete,

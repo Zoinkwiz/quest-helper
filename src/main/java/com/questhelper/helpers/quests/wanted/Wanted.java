@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.wanted;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -60,9 +59,6 @@ import java.util.*;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.WANTED
-)
 public class Wanted extends BasicQuestHelper
 {
 	private static final String TEXT_ASK_ABOUT_WANTED_QUEST = "Ask about the Wanted! Quest";

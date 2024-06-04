@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.impcatcher;
 
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -51,11 +50,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.questinfo.QuestDescriptor;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.IMP_CATCHER
-)
 public class ImpCatcher extends BasicQuestHelper
 {
 	//Items Required

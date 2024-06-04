@@ -26,7 +26,6 @@
 package com.questhelper.helpers.quests.clocktower;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -54,14 +53,10 @@ import java.util.Map;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.CLOCK_TOWER
-)
 public class ClockTower extends BasicQuestHelper
 {
 	ItemRequirement bucketOfWater, noteAboutWater, staminaPotions, ardougneCloak, redCog, blueCog, blackCog, whiteCog, ratPoison;

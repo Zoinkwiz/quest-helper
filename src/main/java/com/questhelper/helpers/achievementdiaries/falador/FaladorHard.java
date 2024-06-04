@@ -26,7 +26,6 @@
 package com.questhelper.helpers.achievementdiaries.falador;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -52,10 +51,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import java.util.*;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.FALADOR_HARD
-)
 
 public class FaladorHard extends ComplexStateQuestHelper
 {

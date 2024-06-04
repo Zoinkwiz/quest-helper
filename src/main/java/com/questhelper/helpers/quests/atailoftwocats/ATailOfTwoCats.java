@@ -26,7 +26,6 @@ package com.questhelper.helpers.quests.atailoftwocats;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.NpcCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.collections.TeleportCollections;
 import com.questhelper.panel.PanelDetails;
@@ -58,9 +57,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.A_TAIL_OF_TWO_CATS
-)
 public class ATailOfTwoCats extends BasicQuestHelper
 {
 	//Items Required

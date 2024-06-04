@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.theeyesofglouphrie;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -60,9 +59,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_EYES_OF_GLOUPHRIE
-)
 public class TheEyesOfGlouphrie extends BasicQuestHelper
 {
 	//Items Required

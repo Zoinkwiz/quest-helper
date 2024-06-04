@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.quests.therestlessghost;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -53,9 +51,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_RESTLESS_GHOST
-)
 public class TheRestlessGhost extends BasicQuestHelper
 {
 	//Items Required

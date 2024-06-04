@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.observatoryquest;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -55,9 +53,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.OBSERVATORY_QUEST
-)
 public class ObservatoryQuest extends BasicQuestHelper
 {
 	//Items Required

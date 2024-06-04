@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.quests.druidicritual;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -49,9 +47,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.DRUIDIC_RITUAL
-)
 public class DruidicRitual extends BasicQuestHelper
 {
 	//Items Required

@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.ghostsahoy;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -68,9 +67,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.GHOSTS_AHOY
-)
 public class GhostsAhoy extends BasicQuestHelper
 {
 	//Required Items

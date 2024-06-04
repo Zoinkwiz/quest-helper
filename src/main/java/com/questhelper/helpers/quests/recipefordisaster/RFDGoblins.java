@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.recipefordisaster;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -51,9 +50,6 @@ import java.util.*;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE
-)
 public class RFDGoblins extends BasicQuestHelper
 {
 	ItemRequirement bread, orange, knife, blueGreenPurpledye, spice, fishingBait, bucketOfWater,

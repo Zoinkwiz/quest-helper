@@ -50,11 +50,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.questinfo.QuestDescriptor;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.KNIGHT_WAVES_TRAINING_GROUNDS
-)
 public class KnightWaves extends BasicQuestHelper
 {
 	//Items Required

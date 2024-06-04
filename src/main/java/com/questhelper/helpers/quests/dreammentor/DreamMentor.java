@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.dreammentor;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -61,9 +60,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.DREAM_MENTOR
-)
 public class DreamMentor extends BasicQuestHelper
 {
 	//Items Required

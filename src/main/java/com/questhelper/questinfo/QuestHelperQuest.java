@@ -277,6 +277,7 @@ import com.questhelper.helpers.skills.agility.Agility;
 import com.questhelper.helpers.skills.mining.Mining;
 import com.questhelper.helpers.skills.woodcutting.Woodcutting;
 import com.questhelper.helpers.skills.woodcutting.WoodcuttingMember;
+import com.questhelper.playerquests.bikeshedder.BikeShedder;
 import com.questhelper.playerquests.cookshelper.CooksHelper;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -648,6 +649,7 @@ public enum QuestHelperQuest
 
 	// Player Quests
 	COOKS_HELPER(new CooksHelper(), "Cook's Helper", PlayerQuests.COOKS_HELPER, 4, false),
+	BIKE_SHEDDER(new BikeShedder(), "Bike Shedder", PlayerQuests.BIKE_SHEDDER, 4, true);
 
 	@Getter
 	private final int id;

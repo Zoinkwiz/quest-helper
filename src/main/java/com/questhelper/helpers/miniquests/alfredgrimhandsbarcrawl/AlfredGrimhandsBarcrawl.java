@@ -26,8 +26,6 @@ package com.questhelper.helpers.miniquests.alfredgrimhandsbarcrawl;
 
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -49,9 +47,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL
-)
 public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 {
 	//Items Required

@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.quests.priestinperil;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -57,9 +55,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.PRIEST_IN_PERIL
-)
 public class PriestInPeril extends BasicQuestHelper
 {
 	//Items Required

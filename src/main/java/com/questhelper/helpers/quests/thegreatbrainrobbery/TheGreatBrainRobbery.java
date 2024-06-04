@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.thegreatbrainrobbery;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -71,9 +70,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY
-)
 public class TheGreatBrainRobbery extends BasicQuestHelper
 {
 	// Required

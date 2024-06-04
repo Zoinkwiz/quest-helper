@@ -26,7 +26,6 @@ package com.questhelper.helpers.quests.ratcatchers;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.NpcCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -57,9 +56,6 @@ import java.util.*;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RATCATCHERS
-)
 public class RatCatchers extends BasicQuestHelper
 {
 	// Required

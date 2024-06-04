@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.thegiantdwarf;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -68,9 +66,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 
 @SuppressWarnings("CheckStyle")
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_GIANT_DWARF
-)
 public class TheGiantDwarf extends BasicQuestHelper
 {
 	//Items Required

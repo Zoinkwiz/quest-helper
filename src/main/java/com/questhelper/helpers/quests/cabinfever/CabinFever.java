@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.cabinfever;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -62,9 +61,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.CABIN_FEVER
-)
 public class CabinFever extends BasicQuestHelper
 {
 	//Items Required

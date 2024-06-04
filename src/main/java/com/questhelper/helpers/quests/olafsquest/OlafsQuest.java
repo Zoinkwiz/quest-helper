@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.olafsquest;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -67,9 +66,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import static com.questhelper.requirements.util.LogicHelper.and;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.OLAFS_QUEST
-)
 public class OlafsQuest extends BasicQuestHelper
 {
 	//Items Required

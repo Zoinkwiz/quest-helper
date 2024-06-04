@@ -25,7 +25,6 @@
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -44,9 +43,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.DAG_ROUTE
-)
 public class DagRouteHelper extends ComplexStateQuestHelper
 {
 	ItemRequirement combatGear, food, prayerPot, petRock, thrownaxe, stamPot;

@@ -48,16 +48,12 @@ import com.questhelper.requirements.item.ItemOnTileRequirement;
 import java.util.*;
 
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.CONTACT
-)
 public class Contact extends BasicQuestHelper
 {
 	//Items Required

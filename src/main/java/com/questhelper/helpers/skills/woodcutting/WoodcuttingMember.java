@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.skills.woodcutting;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
@@ -45,9 +43,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.WOODCUTTING_MEMBER
-)
 public class WoodcuttingMember extends ComplexStateQuestHelper
 {
 	//Items Required

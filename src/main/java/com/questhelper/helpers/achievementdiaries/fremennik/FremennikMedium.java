@@ -52,12 +52,7 @@ import java.util.List;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.FREMENNIK_MEDIUM
-)
 
 public class FremennikMedium extends ComplexStateQuestHelper
 {

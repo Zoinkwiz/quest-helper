@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.whatliesbelow;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -57,9 +56,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.WHAT_LIES_BELOW
-)
 public class WhatLiesBelow extends BasicQuestHelper
 {
 	//Items Required

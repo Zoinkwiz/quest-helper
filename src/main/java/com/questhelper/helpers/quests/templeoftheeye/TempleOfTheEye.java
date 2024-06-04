@@ -28,7 +28,6 @@
 package com.questhelper.helpers.quests.templeoftheeye;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -80,9 +79,6 @@ VARBITS
 13759: Guardians of the Rift Tutorial progress
  */
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.TEMPLE_OF_THE_EYE
-)
 public class TempleOfTheEye extends BasicQuestHelper
 {
 	//Items Required

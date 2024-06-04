@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.enlightenedjourney;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -44,9 +43,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.BALLOON_TRANSPORT_VARROCK
-)
 public class VarrockBalloonFlight extends ComplexStateQuestHelper
 {
 	BalloonFlightStep fly;

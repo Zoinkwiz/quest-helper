@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.sheepshearer;
 
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
@@ -53,7 +52,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 
@@ -62,9 +60,6 @@ import java.util.Map;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.eventbus.Subscribe;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.SHEEP_SHEARER
-)
 public class SheepShearer extends BasicQuestHelper
 {
 	//Items Required

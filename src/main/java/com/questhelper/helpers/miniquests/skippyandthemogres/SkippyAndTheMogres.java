@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.miniquests.skippyandthemogres;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -46,9 +44,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.SKIPPY_AND_THE_MOGRES
-)
 public class SkippyAndTheMogres extends BasicQuestHelper
 {
 	//Items Required

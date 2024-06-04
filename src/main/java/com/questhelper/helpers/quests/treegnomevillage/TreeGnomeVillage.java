@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.treegnomevillage;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -63,9 +61,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.TREE_GNOME_VILLAGE
-)
 public class TreeGnomeVillage extends BasicQuestHelper
 {
 	//Items Required

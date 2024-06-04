@@ -34,7 +34,6 @@ import com.questhelper.helpers.quests.thepathofglouphrie.sections.TheWarpedDepth
 import com.questhelper.helpers.quests.thepathofglouphrie.sections.UnveilEvil;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -65,9 +64,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_PATH_OF_GLOUPHRIE
-)
 public class ThePathOfGlouphrie extends BasicQuestHelper
 {
 	private final StartingOff startingOff = new StartingOff();

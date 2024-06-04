@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.monkeymadnessi;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -70,9 +69,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MONKEY_MADNESS_I
-)
 public class MonkeyMadnessI extends BasicQuestHelper
 {
 	//Items Required

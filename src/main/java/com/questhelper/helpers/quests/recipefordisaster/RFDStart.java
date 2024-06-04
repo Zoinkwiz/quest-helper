@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.recipefordisaster;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.panel.PanelDetails;
@@ -51,9 +50,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_START
-)
 public class RFDStart extends BasicQuestHelper
 {
 	//Items Required

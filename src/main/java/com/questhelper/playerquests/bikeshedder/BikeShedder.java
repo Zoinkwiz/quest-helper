@@ -36,6 +36,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.widget.NormalSpells;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -71,7 +72,7 @@ public class BikeShedder extends BasicQuestHelper
 		var normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		confuseHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3221, 3218, 0), "Cast Confuse on Hans", normalSpellbook);
-		confuseHans.addSpellHighlight("Confuse");
+		confuseHans.addSpellHighlight(NormalSpells.CONFUSE);
 
 		var lightbearer = new ItemRequirement("Lightbearer", ItemID.LIGHTBEARER).highlighted();
 		equipLightbearer = new DetailedQuestStep(this, "Equip a Lightbearer", lightbearer.equipped());

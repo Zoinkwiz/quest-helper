@@ -58,11 +58,6 @@ public class SpellWidgetHighlight extends AbstractWidgetHighlight
 	 */
 	private Integer spellComponentId = null;
 
-	public SpellWidgetHighlight(String spellName)
-	{
-		this.spellName = spellName;
-	}
-
 	public SpellWidgetHighlight(Spell spell)
 	{
 		this.spellName = spell.getSpellName();

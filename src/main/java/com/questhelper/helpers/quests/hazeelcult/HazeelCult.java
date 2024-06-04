@@ -25,8 +25,6 @@
  */
 package com.questhelper.helpers.quests.hazeelcult;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarPlayer;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.zone.Zone;
@@ -61,9 +59,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.HAZEEL_CULT
-)
 public class HazeelCult extends BasicQuestHelper
 {
 	//Items Recommended

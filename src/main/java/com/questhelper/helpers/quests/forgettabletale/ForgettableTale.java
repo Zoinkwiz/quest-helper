@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.forgettabletale;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -66,9 +65,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.FORGETTABLE_TALE
-)
 public class ForgettableTale extends BasicQuestHelper
 {
 	// Required

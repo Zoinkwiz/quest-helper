@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.belowicemountain;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -51,9 +49,6 @@ import net.runelite.api.coords.WorldPoint;
 import java.util.*;
 import java.util.List;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.BELOW_ICE_MOUNTAIN
-)
 public class BelowIceMountain extends BasicQuestHelper
 {
 	// varbit 12065 tracks checkal line?

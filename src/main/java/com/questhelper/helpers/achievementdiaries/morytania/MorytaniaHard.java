@@ -58,13 +58,9 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MORYTANIA_HARD
-)
 public class MorytaniaHard extends ComplexStateQuestHelper
 {
 	// Items required

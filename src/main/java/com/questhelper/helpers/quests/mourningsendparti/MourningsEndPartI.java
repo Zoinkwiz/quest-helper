@@ -58,16 +58,12 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MOURNINGS_END_PART_I
-)
 public class MourningsEndPartI extends BasicQuestHelper
 {
 	//Items Required

@@ -27,8 +27,6 @@
 package com.questhelper.helpers.quests.thefeud;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -63,9 +61,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-		quest = QuestHelperQuest.THE_FEUD
-)
 public class TheFeud extends BasicQuestHelper
 {
 

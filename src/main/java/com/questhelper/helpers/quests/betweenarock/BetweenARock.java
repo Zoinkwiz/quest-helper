@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.betweenarock;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -63,9 +62,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.BETWEEN_A_ROCK
-)
 public class BetweenARock extends BasicQuestHelper
 {
 	//Items Required

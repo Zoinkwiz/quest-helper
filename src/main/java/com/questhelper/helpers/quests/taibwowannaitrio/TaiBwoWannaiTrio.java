@@ -26,7 +26,6 @@
 package com.questhelper.helpers.quests.taibwowannaitrio;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.requirements.zone.Zone;
@@ -71,9 +70,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.TAI_BWO_WANNAI_TRIO
-)
 public class TaiBwoWannaiTrio extends BasicQuestHelper
 {
 	ItemRequirement hammer, slicedBanana, banana, knife, slicedBananaOrKnife, smallFishingNet, pestleAndMortar, spear,

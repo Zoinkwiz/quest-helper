@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.thefremenniktrials;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -68,9 +66,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_FREMENNIK_TRIALS
-)
 public class TheFremennikTrials extends BasicQuestHelper
 {
 	//Items Required

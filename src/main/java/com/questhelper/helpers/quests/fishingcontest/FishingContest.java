@@ -28,7 +28,6 @@
 package com.questhelper.helpers.quests.fishingcontest;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
@@ -64,9 +63,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.FISHING_CONTEST
-)
 public class FishingContest extends BasicQuestHelper
 {
 	// Required

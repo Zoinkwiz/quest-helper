@@ -56,13 +56,9 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MORYTANIA_ELITE
-)
 public class MorytaniaElite extends ComplexStateQuestHelper
 {
 	// Items required

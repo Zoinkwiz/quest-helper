@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.entertheabyss;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -54,9 +53,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.ENTER_THE_ABYSS
-)
 public class EnterTheAbyss extends BasicQuestHelper
 {
 	// Recommended

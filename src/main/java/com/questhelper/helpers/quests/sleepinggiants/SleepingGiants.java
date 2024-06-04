@@ -26,8 +26,6 @@
 package com.questhelper.helpers.quests.sleepinggiants;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -63,7 +61,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(quest = QuestHelperQuest.SLEEPING_GIANTS)
 @Slf4j
 public class SleepingGiants extends BasicQuestHelper
 {

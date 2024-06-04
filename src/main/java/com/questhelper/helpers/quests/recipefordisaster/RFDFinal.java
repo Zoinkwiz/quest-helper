@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.recipefordisaster;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -56,9 +55,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE
-)
 public class RFDFinal extends BasicQuestHelper
 {
 	ItemRequirement iceGloves, restorePotions, combatGear;

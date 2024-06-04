@@ -25,7 +25,6 @@
 package com.questhelper.helpers.achievementdiaries.falador;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.zone.Zone;
@@ -56,10 +55,6 @@ import net.runelite.api.coords.WorldPoint;
 
 import java.util.*;
 import java.util.List;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.FALADOR_MEDIUM
-)
 
 public class FaladorMedium extends ComplexStateQuestHelper
 {

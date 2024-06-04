@@ -29,7 +29,6 @@ import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
@@ -66,9 +65,6 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.PERILOUS_MOON
-)
 public class PerilousMoon extends BasicQuestHelper
 {
 	//Items Required

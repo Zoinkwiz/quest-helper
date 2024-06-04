@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.sheepherder;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.tools.QuestTile;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -57,9 +55,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.SHEEP_HERDER
-)
 public class SheepHerder extends BasicQuestHelper
 {
 	//Items Required

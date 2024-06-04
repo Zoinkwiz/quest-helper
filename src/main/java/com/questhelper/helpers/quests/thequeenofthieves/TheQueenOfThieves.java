@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.thequeenofthieves;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -56,9 +55,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_QUEEN_OF_THIEVES
-)
 public class TheQueenOfThieves extends BasicQuestHelper
 {
 	//Items Required

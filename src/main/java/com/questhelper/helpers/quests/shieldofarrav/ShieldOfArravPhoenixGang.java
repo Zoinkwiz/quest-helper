@@ -48,15 +48,11 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG
-)
 public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 {
 	//Items Required

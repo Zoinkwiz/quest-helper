@@ -27,7 +27,6 @@ package com.questhelper.helpers.achievementdiaries.falador;
 
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -53,10 +52,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.FALADOR_ELITE
-)
 
 public class FaladorElite extends ComplexStateQuestHelper
 {

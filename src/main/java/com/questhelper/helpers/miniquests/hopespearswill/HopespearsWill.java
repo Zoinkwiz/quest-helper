@@ -26,7 +26,6 @@ package com.questhelper.helpers.miniquests.hopespearswill;
 
 import com.google.common.collect.ImmutableList;
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -56,9 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-@QuestDescriptor(
-		quest = QuestHelperQuest.HOPESPEARS_WILL
-)
 public class HopespearsWill extends BasicQuestHelper
 {
 	ItemRequirement ghostspeakAmulet, ringOfVisibility, goblinPotion, dramenStaff;

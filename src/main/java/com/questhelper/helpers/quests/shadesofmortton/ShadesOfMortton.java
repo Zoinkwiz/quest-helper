@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.shadesofmortton;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -60,9 +59,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.SHADES_OF_MORTTON
-)
 public class ShadesOfMortton extends BasicQuestHelper
 {
 	//Items Required

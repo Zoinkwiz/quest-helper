@@ -43,12 +43,8 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.questinfo.QuestDescriptor;
 import net.runelite.api.QuestState;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.ENCHANTED_KEY
-)
 public class EnchantedKey extends BasicQuestHelper
 {
 	//Items Required

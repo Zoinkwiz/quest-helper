@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.enlightenedjourney;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -62,9 +60,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.ENLIGHTENED_JOURNEY
-)
 public class EnlightenedJourney extends BasicQuestHelper
 {
 	ItemRequirement papyrus3, ballOfWool, sackOfPotatoes, emptySack8, unlitCandle, yellowDye, redDye, silk10, bowl,

@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.recipefordisaster;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -59,9 +58,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF
-)
 public class RFDDwarf extends BasicQuestHelper
 {
 	ItemRequirement coins320, milk, flour, egg, bowlOfWater, asgarniaAle4, iceGloves, rockCake, rockCakeHot,

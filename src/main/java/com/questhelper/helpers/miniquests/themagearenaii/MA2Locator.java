@@ -25,7 +25,6 @@
 package com.questhelper.helpers.miniquests.themagearenaii;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -44,9 +43,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MA2_LOCATOR
-)
 public class MA2Locator extends ComplexStateQuestHelper
 {
 	ItemRequirement zamorakStaff, guthixStaff, saradominStaff, runesForCasts, magicCombatGear, knife, brews, restores

@@ -66,15 +66,11 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.THE_FREMENNIK_EXILES
-)
 public class TheFremennikExiles extends BasicQuestHelper
 {
 	//Items Required

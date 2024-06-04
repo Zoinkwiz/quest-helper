@@ -52,13 +52,9 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.DESERT_EASY
-)
 public class DesertEasy extends ComplexStateQuestHelper
 {
 	// Items required

@@ -26,7 +26,6 @@ package com.questhelper.helpers.mischelpers.herbrun;
 
 import com.questhelper.questinfo.HelperConfig;
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
@@ -62,9 +61,6 @@ import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.util.Text;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.HERB_RUN
-)
 public class HerbRun extends ComplexStateQuestHelper
 {
 	// TODO: Updating setId and setName in ItemRequirement

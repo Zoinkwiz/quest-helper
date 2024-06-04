@@ -25,8 +25,6 @@
 package com.questhelper.helpers.quests.mountaindaughter;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -63,9 +61,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.MOUNTAIN_DAUGHTER
-)
 public class MountainDaughter extends BasicQuestHelper
 {
 	//Items Required

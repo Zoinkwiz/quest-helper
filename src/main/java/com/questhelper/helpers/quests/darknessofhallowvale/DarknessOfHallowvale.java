@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.darknessofhallowvale;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -66,9 +65,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.DARKNESS_OF_HALLOWVALE
-)
 public class DarknessOfHallowvale extends BasicQuestHelper
 {
 	//Items Recommended

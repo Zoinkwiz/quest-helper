@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.recruitmentdrive;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -58,9 +57,6 @@ import java.util.Map;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RECRUITMENT_DRIVE
-)
 public class RecruitmentDrive extends BasicQuestHelper
 {
 	private NoItemRequirement noItemRequirement;

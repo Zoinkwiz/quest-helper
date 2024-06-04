@@ -26,8 +26,6 @@ package com.questhelper.helpers.quests.childrenofthesun;
 
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
@@ -53,9 +51,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.CHILDREN_OF_THE_SUN
-)
 public class ChildrenOfTheSun extends BasicQuestHelper
 {
 

@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.shieldofarrav;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -53,9 +52,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG
-)
 public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 {
 	//Items Required

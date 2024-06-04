@@ -50,14 +50,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.KANDARIN_HARD
-)
 
 public class KandarinHard extends ComplexStateQuestHelper
 {

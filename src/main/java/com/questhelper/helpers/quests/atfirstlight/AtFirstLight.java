@@ -27,7 +27,6 @@ package com.questhelper.helpers.quests.atfirstlight;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -63,9 +62,6 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.AT_FIRST_LIGHT
-)
 public class AtFirstLight extends BasicQuestHelper
 {
 	//Items Required

@@ -58,12 +58,8 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.VARROCK_HARD
-)
 public class VarrockHard extends ComplexStateQuestHelper
 {
 	// Items required

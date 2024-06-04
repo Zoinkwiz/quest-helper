@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.legendsquest;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -76,9 +75,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.LEGENDS_QUEST
-)
 public class LegendsQuest extends BasicQuestHelper
 {
 	//Items Required

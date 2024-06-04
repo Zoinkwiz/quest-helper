@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.quests.witchspotion;
 
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -47,9 +45,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.WITCHS_POTION
-)
 public class WitchsPotion extends BasicQuestHelper
 {
 	//Items Required

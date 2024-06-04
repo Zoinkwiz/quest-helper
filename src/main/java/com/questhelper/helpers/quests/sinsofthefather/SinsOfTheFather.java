@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.sinsofthefather;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -68,9 +67,6 @@ import net.runelite.api.coords.WorldPoint;
 
 import java.util.HashMap;
 
-@QuestDescriptor(
-        quest = QuestHelperQuest.SINS_OF_THE_FATHER
-)
 public class SinsOfTheFather extends BasicQuestHelper
 {
 	//Items Required

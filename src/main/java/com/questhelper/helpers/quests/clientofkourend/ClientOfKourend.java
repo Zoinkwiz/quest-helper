@@ -41,7 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
@@ -50,9 +49,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.CLIENT_OF_KOUREND
-)
 public class ClientOfKourend extends BasicQuestHelper
 {
 	//Items Required

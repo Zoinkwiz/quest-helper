@@ -25,7 +25,6 @@
 package com.questhelper.helpers.achievementdiaries.kourend;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
@@ -47,10 +46,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.KOUREND_EASY
-)
 
 public class KourendEasy extends ComplexStateQuestHelper
 {

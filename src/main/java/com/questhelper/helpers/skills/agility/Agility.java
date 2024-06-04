@@ -25,8 +25,6 @@
 package com.questhelper.helpers.skills.agility;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
@@ -43,9 +41,6 @@ import java.util.List;
 import net.runelite.api.ItemID;
 import static net.runelite.api.Skill.AGILITY;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.AGILITY
-)
 public class Agility extends ComplexStateQuestHelper
 {
 	// Items recommended

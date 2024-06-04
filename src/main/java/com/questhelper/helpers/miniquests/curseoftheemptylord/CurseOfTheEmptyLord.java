@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.miniquests.curseoftheemptylord;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -56,9 +55,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.CURSE_OF_THE_EMPTY_LORD
-)
 public class CurseOfTheEmptyLord extends BasicQuestHelper
 {
 	private final int PATH_VARBIT = 815;

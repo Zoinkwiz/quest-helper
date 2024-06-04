@@ -26,7 +26,6 @@ package com.questhelper.helpers.quests.recipefordisaster;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.NpcCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.zone.Zone;
@@ -53,9 +52,6 @@ import java.util.*;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_EVIL_DAVE
-)
 public class RFDEvilDave extends BasicQuestHelper
 {
 	ItemRequirement cat, stews, stew, teleportLumbridge, teleportEdgeville, evilStew, evilStewHighlighted;

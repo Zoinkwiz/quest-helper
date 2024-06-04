@@ -24,7 +24,6 @@
  */
 package com.questhelper.playerquests.cookshelper;
 
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -59,9 +58,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.COOKS_HELPER
-)
 public class CooksHelper extends PlayerMadeQuestHelper
 {
 	private RuneliteObjectStep talkToCook, talkToHopleez, grabCabbage, returnToHopleez;

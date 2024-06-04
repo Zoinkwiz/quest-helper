@@ -31,7 +31,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.widget.WidgetDetails;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.OwnerStep;
 import java.awt.Graphics2D;

@@ -24,6 +24,7 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.steps.widget.WidgetDetails;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;

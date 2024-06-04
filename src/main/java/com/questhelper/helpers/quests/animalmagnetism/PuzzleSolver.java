@@ -1,6 +1,6 @@
 package com.questhelper.helpers.quests.animalmagnetism;
 
-import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.widget.WidgetDetails;
 
 import java.util.HashSet;
 

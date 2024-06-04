@@ -156,7 +156,7 @@ public class QuestManager
 			{
 				panel.updateSteps();
 				QuestStep currentStep = selectedQuest.getCurrentStep().getSidePanelStep();
-				if (currentStep != null && currentStep != lastStep)
+				if (currentStep != null && currentStep != lastStep && panel.questActive)
 				{
 					lastStep = currentStep;
 					panel.updateHighlight(client, currentStep);

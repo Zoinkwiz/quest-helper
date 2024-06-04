@@ -30,7 +30,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.steps.WidgetDetails;
+import com.questhelper.steps.widget.WidgetDetails;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.ReplacedNpc;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.WidgetReplacement;

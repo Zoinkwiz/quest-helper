@@ -411,7 +411,6 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		exchangerOpen = new WidgetPresenceRequirement(849, 0);
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

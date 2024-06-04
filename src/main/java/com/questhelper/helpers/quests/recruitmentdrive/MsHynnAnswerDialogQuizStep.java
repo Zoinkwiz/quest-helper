@@ -80,7 +80,6 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 		talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

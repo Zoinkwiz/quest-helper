@@ -59,7 +59,6 @@ public class BringLunarItems extends NpcStep
 		updateStep();
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

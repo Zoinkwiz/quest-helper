@@ -59,7 +59,6 @@ public class MimicChallenge extends DetailedOwnerStep
 		talk.addDialogStep("Suppose I may as well have a go.");
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

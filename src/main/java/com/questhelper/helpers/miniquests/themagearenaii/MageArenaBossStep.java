@@ -147,7 +147,6 @@ public class MageArenaBossStep extends DetailedQuestStep
 			.build())));
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

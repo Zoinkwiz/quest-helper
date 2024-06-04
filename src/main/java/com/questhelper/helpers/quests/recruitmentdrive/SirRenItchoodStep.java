@@ -75,7 +75,6 @@ public class SirRenItchoodStep extends ConditionalStep
 		enterDoorcode.updateWord(answer);
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

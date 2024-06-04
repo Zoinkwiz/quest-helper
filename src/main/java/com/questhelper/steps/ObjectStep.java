@@ -220,7 +220,6 @@ public class ObjectStep extends DetailedQuestStep
 		objects.clear();
 	}
 
-	@Subscribe
 	@Override
 	public void onGameStateChanged(GameStateChanged event)
 	{

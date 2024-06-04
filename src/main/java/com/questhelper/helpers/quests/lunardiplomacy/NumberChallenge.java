@@ -50,7 +50,6 @@ public class NumberChallenge extends DetailedOwnerStep
 		catchStep = new DetailedQuestStep(getQuestHelper(), "Press the numbers to finish the pattern.");
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

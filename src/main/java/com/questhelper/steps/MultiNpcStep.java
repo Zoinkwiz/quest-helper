@@ -80,7 +80,6 @@ public class MultiNpcStep extends NpcStep
 		baseNPCs.clear();
 	}
 
-	@Subscribe
 	@Override
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -91,7 +90,6 @@ public class MultiNpcStep extends NpcStep
 		}
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
@@ -123,7 +121,6 @@ public class MultiNpcStep extends NpcStep
 		}
 	}
 
-	@Subscribe
 	@Override
 	public void onNpcSpawned(NpcSpawned event)
 	{
@@ -131,7 +128,6 @@ public class MultiNpcStep extends NpcStep
 		addNpcToListGivenMatchingID(event.getNpc(), this::npcIsCompositionMatch, baseNPCs);
 	}
 
-	@Subscribe
 	@Override
 	public void onNpcDespawned(NpcDespawned event)
 	{

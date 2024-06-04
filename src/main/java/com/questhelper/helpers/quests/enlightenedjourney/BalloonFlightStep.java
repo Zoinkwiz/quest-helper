@@ -70,7 +70,6 @@ public class BalloonFlightStep extends DetailedOwnerStep
 		goStraight = new WidgetStep(getQuestHelper(),  "Press relax.", 471, 4);
 	}
 
-	@Subscribe
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{

@@ -470,7 +470,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("Access to the city of Sophanem."),
-			new UnlockReward("Ability to take carpet rides from Pollnivneah to Sophanem and Menaphos."));
+			new UnlockReward("Ability to take carpet rides from Pollnivneach to Sophanem and Menaphos."));
 	}
 
 	@Override

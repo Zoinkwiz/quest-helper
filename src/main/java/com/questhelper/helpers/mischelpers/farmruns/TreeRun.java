@@ -1,24 +1,21 @@
 package com.questhelper.helpers.mischelpers.farmruns;
 
 import com.google.inject.Inject;
-import com.questhelper.HelperConfig;
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.FruitTreeSapling;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.GracefulOrFarming;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.HardwoodTreeSapling;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.TreeSapling;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
@@ -29,7 +26,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.sun.source.doctree.ValueTree;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -46,10 +42,6 @@ import net.runelite.client.util.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-@QuestDescriptor(
-	quest = QuestHelperQuest.TREE_RUN
-)
 
 /*
 *
@@ -263,11 +255,9 @@ public class TreeRun extends ComplexStateQuestHelper
 		accessToLletya = new QuestRequirement(QuestHelperQuest.MOURNINGS_END_PART_I, QuestState.FINISHED);
 		accessToFossilIsland = new QuestRequirement(QuestHelperQuest.BONE_VOYAGE, QuestState.FINISHED);
 		accessToFarmingGuildTreePatch = new Conditions(
-			new FavourRequirement(Favour.HOSIDIUS, 60),
 			new SkillRequirement(Skill.FARMING, 65)
 		);
 		accessToFarmingGuildFruitTreePatch = new Conditions(
-			new FavourRequirement(Favour.HOSIDIUS, 60),
 			new SkillRequirement(Skill.FARMING, 85)
 		);
 

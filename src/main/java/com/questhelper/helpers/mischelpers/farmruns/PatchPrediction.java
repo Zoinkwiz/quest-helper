@@ -26,7 +26,6 @@ package com.questhelper.helpers.mischelpers.farmruns;
 
 
 import lombok.Value;
-import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.plugins.timetracking.farming.Produce;
 
 @Value

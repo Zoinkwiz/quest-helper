@@ -54,7 +54,6 @@ import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.timetracking.Tab;
-import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
@@ -471,7 +470,7 @@ public class HerbRun extends ComplexStateQuestHelper
 			}
 		}
 		seed.setQuantity(seedsNeeded);
-		compost.quantity(seedsNeeded);
+		compost.setQuantity(seedsNeeded);
 	}
 
 	@Override

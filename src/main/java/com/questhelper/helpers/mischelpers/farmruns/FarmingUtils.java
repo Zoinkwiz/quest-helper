@@ -88,7 +88,6 @@ public class FarmingUtils
 		{
 			if (client.getVarbitValue(varbit) == stateVarb)
 			{
-				System.out.println("Found patch state: " + client.getVarbitValue(varbit) + " " + stateVarb);
 				return true;
 			}
 		}

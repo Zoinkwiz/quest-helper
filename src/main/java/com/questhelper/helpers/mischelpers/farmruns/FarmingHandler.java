@@ -28,7 +28,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
-import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.plugins.timetracking.farming.Produce;
 
 import javax.annotation.Nullable;
@@ -109,7 +108,14 @@ public class FarmingHandler
 			doneEstimate = getTickTime(tickrate, stages - 1 - stage, tickTime, profile);
 		}
 
-		if (unixNow >= doneEstimate) return CropState.HARVESTABLE;
+		if (unixNow >= doneEstimate)
+		{
+			if (state.getCropState() == CropState.GROWING)
+			{
+
+			}
+			return CropState.HARVESTABLE;
+		}
 
 		return CropState.GROWING;
 	}

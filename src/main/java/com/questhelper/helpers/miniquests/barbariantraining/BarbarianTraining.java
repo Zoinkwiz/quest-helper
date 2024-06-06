@@ -72,7 +72,6 @@ public class BarbarianTraining extends BasicQuestHelper
 
 	QuestRequirement druidicRitual, taiBwoWannaiTrio;
 
-	// TODO: Finish off requirements
 	Requirement taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
 		taskedWithSpears, taskedWithHastae, taskedWithHerblore;
 
@@ -88,7 +87,7 @@ public class BarbarianTraining extends BasicQuestHelper
 	DetailedQuestStep talkToOttoAboutBow, lightLogWithBow, talkToOttoAfterBow;
 
 	DetailedQuestStep talkToOttoAboutPyre, enterWhirlpool, goDownToBrutalGreen, goUpToMithrilDragons, killMithrilDragons,
-		pickupChewedBones, useLogOnPyre, useBonesOnPyre, lightPyre, talkToOttoAfterPyre;
+		pickupChewedBones, useLogOnPyre, talkToOttoAfterPyre;
 
 	DetailedQuestStep talkToOttoAboutFarming, plantSeed, talkToOttoAfterPlantingSeed;
 
@@ -159,8 +158,6 @@ public class BarbarianTraining extends BasicQuestHelper
 
 		pyreSteps = new ConditionalStep(this, talkToOttoAboutPyre);
 		pyreSteps.addStep(and(sacrificedRemains), talkToOttoAfterPyre);
-//		pyreSteps.addStep(and(taskedWithPyre, chewedBones.alsoCheckBank(questBank), pyreReady), lightPyre);
-//		pyreSteps.addStep(and(taskedWithPyre, chewedBones.alsoCheckBank(questBank), logPlaced), useBonesOnPyre);
 		pyreSteps.addStep(and(taskedWithPyre, chewedBones.alsoCheckBank(questBank)), useLogOnPyre);
 		pyreSteps.addStep(and(taskedWithPyre, chewedBonesNearby), pickupChewedBones);
 		pyreSteps.addStep(and(taskedWithPyre, inAncientCavernArrivalRoom), enterWhirlpool);
@@ -370,23 +367,24 @@ public class BarbarianTraining extends BasicQuestHelper
 			),
 			"Finished Barbarian Firemaking"
 		);
-		// TODO: See what pyre widget + dialog finished is
 		finishedPyre = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedpyremaking",
 			new Conditions(true, LogicType.OR,
-				new WidgetTextRequirement(119, 3, true, "TODO")
+				new DialogRequirement("On this great day you have my eternal thanks. May you find riches while rescuing my spiritual ancestors in the caverns for many moons to come."),
+				new WidgetTextRequirement(119, 3, true, "I managed to create a pyre ship!")
 			),
 			"Finished Barbarian Pyremaking"
 		);
-		finishedSpear = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedspearp",
+		finishedSpear = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedspear",
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("The manufacture of spears is now yours as a speciality. Use your skill well."),
 				new WidgetTextRequirement(119, 3, true, "I managed to smith a spear!")
 			),
 			"Finished Barbarian Spear Smithing"
 		);
-		// TODO: Work out finished hasta dialog
-		finishedHasta = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedhastap",
+
+		finishedHasta = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedhasta",
 			new Conditions(true, LogicType.OR,
+				new DialogRequirement("To live life to it's fullest of course - that you may be a peaceful spirit when your time ends."),
 				new WidgetTextRequirement(119, 3, true, "I managed to create a hasta!")
 			),
 			"Finished Barbarian Hasta Smithing"
@@ -433,19 +431,17 @@ public class BarbarianTraining extends BasicQuestHelper
 			)
 		);
 
-		// TODO: Confirm Quest Log text
-		sacrificedRemains = new RuneliteRequirement(getConfigManager(), "barbariantrainingpyremadep",
+		sacrificedRemains = new RuneliteRequirement(getConfigManager(), "barbariantrainingpyremade",
 			new Conditions(true, LogicType.OR,
 				new MultiChatMessageRequirement(
 					new ChatMessageRequirement("The ancient barbarian is laid to rest."),
-					// TODO: Confirm this is a ChatMessageRequirement, not MesBox
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
 				new WidgetTextRequirement(119, 3, true,
-					"TODO NEED TO FIND OUT")
+					"I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
 			)
 		);
-		// 13093 0->100 when barb fished??
+
 		caughtBarbarianFish = new RuneliteRequirement(getConfigManager(), "barbariantrainingbarbfished",
 			new Conditions(true, LogicType.OR,
 				new MultiChatMessageRequirement(
@@ -456,7 +452,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					"I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
 			)
 		);
-		// 13093 0->100 when harpooned fish?
+
 		caughtFishWithoutHarpoon = new RuneliteRequirement(getConfigManager(), "barbariantrainingharpoonedfish",
 			new Conditions(true, LogicType.OR,
 				new MultiChatMessageRequirement(
@@ -488,6 +484,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					"I've managed to <col=800000>smith a spear<col=000080>!")
 			)
 		);
+
 		madeHasta = new RuneliteRequirement(getConfigManager(), "barbariantrainingmadehasta",
 			new Conditions(true, LogicType.OR,
 				new MultiChatMessageRequirement(
@@ -560,13 +557,9 @@ public class BarbarianTraining extends BasicQuestHelper
 		killMithrilDragons = new NpcStep(this, NpcID.MITHRIL_DRAGON, new WorldPoint(1773, 5348, 1),
 			"Kill mithril dragons until you get some chewed bones.");
 		pickupChewedBones = new ItemStep(this, "Pick up the chewed bones.", chewedBones);
-		useLogOnPyre = new ObjectStep(this, ObjectID.BOAT_STATION, new WorldPoint(2506, 3517, 0),
-			"Construct a pyre on the lake near Otto.", logs, chewedBones, tinderbox);
-		useBonesOnPyre = new ObjectStep(this, ObjectID.BOAT_STATION, new WorldPoint(2506, 3517, 0),
-			"Add the chewed bones to the pyre on the lake near Otto.", chewedBones, tinderbox);
-		lightPyre = new ObjectStep(this, ObjectID.BOAT_STATION, new WorldPoint(2506, 3517, 0),
-			"Light the pyre on the lake near Otto.", tinderbox);
-		// TODO: Need dialog highlight
+		useLogOnPyre = new ObjectStep(this, ObjectID.PYRE_SITE, new WorldPoint(2506, 3518, 0),
+			"Construct a pyre on the lake near Otto.", logs, chewedBones, tinderbox, axe);
+		useLogOnPyre.addDialogStep("I've created a pyre ship!");
 		talkToOttoAfterPyre = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
 			"Return to Otto and tell him about the succesful pyre-making.");
 
@@ -584,7 +577,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		talkToOttoAboutPots = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about advanced farming.");
 		talkToOttoAboutPots.addDialogStep("Are there any other fist related farming activities I can learn?");
-		// TODO: Add dialog
 		plantSapling = new DetailedQuestStep(this, "Plant a sapling in a tree or fruit tree patch.", sapling, spade);
 		talkToOttoAfterSmashingPot = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
 			"Return to Otto in his hut north-west of Baxtorian Falls.");
@@ -605,8 +597,10 @@ public class BarbarianTraining extends BasicQuestHelper
 		talkToOttoAboutHastae.addDialogStep("Tell me more about the use of spears.");
 		makeBronzeHasta = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Make a bronze hasta on the anvil south of Otto.", bronzeBar, logs, hammer);
+		makeBronzeHasta.addWidgetHighlightWithItemIdRequirement(270, 15, 11421, true);
 		talkToOttoAfterMakingHasta = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls.");
+		talkToOttoAfterMakingHasta.addDialogStep("I've created a hasta!");
 
 		// Barbarian Herblore, REQUIRES Barbarian Fishing
 		talkToOttoAboutHerblore = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
@@ -698,7 +692,7 @@ public class BarbarianTraining extends BasicQuestHelper
 
 		PanelDetails barbPyremaking = new PanelDetails("Barbarian Pyremaking",
 			Arrays.asList(talkToOttoAboutPyre, enterWhirlpool, goDownToBrutalGreen, goUpToMithrilDragons, killMithrilDragons,
-				pickupChewedBones, useLogOnPyre, useBonesOnPyre, lightPyre, talkToOttoAfterPyre),
+				pickupChewedBones, useLogOnPyre, talkToOttoAfterPyre),
 			finishedFiremaking, logs, tinderbox, axe, combatGear, antifireShield);
 		barbPyremaking.setLockingStep(pyreSteps);
 		allSteps.add(barbPyremaking);

@@ -35,7 +35,7 @@ public class MultiChatMessageRequirement extends ChatMessageRequirement
 {
 	Map<ChatMessageRequirement, Integer> requiredMessages;
 
-	int maxTicksDiff = 1;
+	int maxTicksDiff = 2;
 
 	public MultiChatMessageRequirement(ChatMessageRequirement... requiredMessages)
 	{

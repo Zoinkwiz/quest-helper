@@ -1,3 +1,28 @@
+/*
+ * Copyright (c) 2024, Zoinkwiz <https://github.com/Zoinkwiz/>
+ * Copyright (c) 2024, Kerpackie <https://github.com/Kerpackie/>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.helpers.mischelpers.farmruns;
 
 import com.google.inject.Inject;
@@ -42,7 +67,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.Tab;
-import net.runelite.client.util.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -97,7 +121,8 @@ public class TreeRun extends ComplexStateQuestHelper
 	DetailedQuestStep eastHardwoodTreePatchClear, westHardwoodTreePatchClear, middleHardwoodTreePatchClear;
 
 	// Farming Items
-	ItemRequirement coins, spade, rake, allTreeSaplings, treeSapling, allFruitSaplings, fruitTreeSapling, allHardwoodSaplings, hardwoodSapling, compost, axe, protectionItemTree, protectionItemFruitTree, protectionItemHardwood;
+	ItemRequirement coins, spade, rake, allTreeSaplings, treeSapling, allFruitSaplings, fruitTreeSapling, allHardwoodSaplings, hardwoodSapling, compost, axe,
+		protectionItemTree, allProtectionItemTree, protectionItemFruitTree, allProtectionItemFruitTree, protectionItemHardwood, allProtectionItemHardwood;
 
 	// Teleport Items
 	// TODO: Add these...
@@ -112,6 +137,8 @@ public class TreeRun extends ComplexStateQuestHelper
 	// Access Requirements
 	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToLletya, accessToFossilIsland;
 
+	Requirement payingForRemoval, payingForProtection, usingCompost;
+
 	PatchStates faladorStates, lumbridgeStates, farmingGuildTreeStates, taverleyStates, varrockStates, gnomeStrongholdTreeStates;
 
 	PatchStates gnomeStrongholdFruitStates, gnomeVillageStates, brimhavenStates, catherbyStates, lletyaStates, farmingGuildFruitStates;
@@ -125,13 +152,11 @@ public class TreeRun extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		farmingHandler = new FarmingHandler(client, configManager);
-		setupRequirements();
-		setupConditions();
 		setupSteps();
+		farmingHandler = new FarmingHandler(client, configManager);
 
 		ConditionalStep steps = new ConditionalStep(this, waitForTree, spade, coins, rake, compost, treeSapling,
-			fruitTreeSapling, hardwoodSapling, farmersOutfit, gracefulOutfit);
+			fruitTreeSapling, hardwoodSapling, farmersOutfit, gracefulOutfit, protectionItemTree, protectionItemFruitTree, protectionItemHardwood);
 
 		// Farming Guild Tree -> Farming Guild Fruit Tree -> Lumbridge -> Falador -> Taverley
 		// Varrock -> Gnome Stronghold Fruit -> Gnome Stronghold Tree -> Gnome Village -> Brimhaven
@@ -250,41 +275,49 @@ public class TreeRun extends ComplexStateQuestHelper
 		westHardwoodStates = new PatchStates("Fossil Island", "West");
 		middleHardwoodStates = new PatchStates("Fossil Island", "Middle");
 		eastHardwoodStates = new PatchStates("Fossil Island", "East");
+
+		payingForRemoval = new RuneliteRequirement(configManager, PAY_OR_CUT, PayOrCut.PAY.name());
+		payingForProtection = new RuneliteRequirement(configManager, PAY_OR_COMPOST, PayOrCompost.PAY.name());
+		usingCompost = new RuneliteRequirement(configManager, PAY_OR_COMPOST, PayOrCompost.COMPOST.name());
 	}
 
 	@Override
 	public void setupRequirements()
 	{
+		setupConditions();
 		// Farming Item Requirements
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		rake = new ItemRequirement("Rake", ItemID.RAKE)
 			.hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));
 		coins = new ItemRequirement("Coins to quickly remove trees.", ItemID.COINS_995)
-			.showConditioned(new RuneliteRequirement(configManager, PAY_OR_CUT, PayOrCut.PAY.name()));
+			.showConditioned(payingForRemoval);
 		axe = new ItemRequirement("Any axe you can use", ItemCollections.AXES);
 
-		TreeSapling treeSaplingEnum = TreeSapling.valueOf(FarmingUtils.getEnumFromConfig(configManager, TreeSapling.MAGIC));
+		TreeSapling treeSaplingEnum = (TreeSapling) FarmingUtils.getEnumFromConfig(configManager, TreeSapling.MAGIC);
 		treeSapling = treeSaplingEnum.getPlantableItemRequirement(itemManager);
 		treeSapling.setHighlightInInventory(true);
 		allTreeSaplings = treeSapling.copy();
 
-		protectionItemTree = treeSaplingEnum.getProtectionItemRequirement(itemManager);
+		protectionItemTree = treeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(payingForProtection);
+		allProtectionItemTree = protectionItemTree.copy();
 
-		FruitTreeSapling fruitTreeSaplingEnum = FruitTreeSapling.valueOf(FarmingUtils.getEnumFromConfig(configManager, FruitTreeSapling.APPLE));
+		FruitTreeSapling fruitTreeSaplingEnum = (FruitTreeSapling) FarmingUtils.getEnumFromConfig(configManager, FruitTreeSapling.APPLE);
 		fruitTreeSapling = fruitTreeSaplingEnum.getPlantableItemRequirement(itemManager);
 		fruitTreeSapling.setHighlightInInventory(true);
 		allFruitSaplings = fruitTreeSapling.copy();
 
-		protectionItemFruitTree = fruitTreeSaplingEnum.getProtectionItemRequirement(itemManager);
+		protectionItemFruitTree = fruitTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(payingForProtection);
+		allProtectionItemFruitTree = protectionItemFruitTree.copy();
 
-		HardwoodTreeSapling hardwoodTreeSaplingEnum = HardwoodTreeSapling.valueOf(FarmingUtils.getEnumFromConfig(configManager, HardwoodTreeSapling.TEAK));
+		HardwoodTreeSapling hardwoodTreeSaplingEnum = (HardwoodTreeSapling) FarmingUtils.getEnumFromConfig(configManager, HardwoodTreeSapling.TEAK);
 		hardwoodSapling = hardwoodTreeSaplingEnum.getPlantableItemRequirement(itemManager);
 		hardwoodSapling.setHighlightInInventory(true);
 		allHardwoodSaplings = hardwoodSapling.copy();
 
-		protectionItemHardwood = hardwoodTreeSaplingEnum.getProtectionItemRequirement(itemManager);
+		protectionItemHardwood = hardwoodTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(payingForProtection);
+		allProtectionItemHardwood = protectionItemHardwood.copy();
 
-		compost	= new ItemRequirement("Compost", ItemCollections.COMPOST);
+		compost	= new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(usingCompost);
 		compost.setDisplayMatchedItemName(true);
 
 		// Teleport Items
@@ -593,17 +626,24 @@ public class TreeRun extends ComplexStateQuestHelper
 		eastHardwoodTreePatchClear.addSubSteps(eastHardwoodTreePatchDig);
 	}
 
-
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		coins.setQuantity(0);
-		handleTreePatches(PatchImplementation.TREE, List.of(farmingGuildTreeStates), farmingWorld.getTabs().get(Tab.TREE), allTreeSaplings);
-		handleTreePatches(PatchImplementation.FRUIT_TREE, List.of(farmingGuildTreeStates), farmingWorld.getTabs().get(Tab.FRUIT_TREE), allFruitSaplings);
-		handleTreePatches(PatchImplementation.HARDWOOD_TREE, List.of(farmingGuildTreeStates), farmingWorld.getTabs().get(Tab.TREE), allHardwoodSaplings);
+		allProtectionItemTree.setQuantity(protectionItemTree.getQuantity());
+		allProtectionItemFruitTree.setQuantity(protectionItemFruitTree.getQuantity());
+		allProtectionItemHardwood.setQuantity(protectionItemHardwood.getQuantity());
+		handleTreePatches(PatchImplementation.TREE,
+			List.of(farmingGuildTreeStates, varrockStates, faladorStates, taverleyStates, lumbridgeStates, gnomeStrongholdTreeStates),
+			farmingWorld.getTabs().get(Tab.TREE), allTreeSaplings, allProtectionItemTree);
+		handleTreePatches(PatchImplementation.FRUIT_TREE,
+			List.of(farmingGuildTreeStates, brimhavenStates, catherbyStates, gnomeStrongholdFruitStates, gnomeVillageStates, lletyaStates),
+			farmingWorld.getTabs().get(Tab.FRUIT_TREE), allFruitSaplings, allProtectionItemFruitTree);
+		handleTreePatches(PatchImplementation.HARDWOOD_TREE, List.of(westHardwoodStates, middleHardwoodStates, eastHardwoodStates),
+			farmingWorld.getTabs().get(Tab.TREE), allHardwoodSaplings, allProtectionItemHardwood);
 	}
 
-	public void handleTreePatches(PatchImplementation implementation, List<PatchStates> regions, Set<FarmingPatch> patches, ItemRequirement allSaplings)
+	public void handleTreePatches(PatchImplementation implementation, List<PatchStates> regions, Set<FarmingPatch> patches, ItemRequirement allSaplings, ItemRequirement allPayment)
 	{
 		int numberOfSaplings = 0;
 		for (FarmingPatch patch : patches)
@@ -639,6 +679,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		}
 		allSaplings.setQuantity(numberOfSaplings);
 		coins.setQuantity(coins.getQuantity() + (200 * numberOfSaplings));
+		allPayment.setQuantity(allPayment.getQuantity() * numberOfSaplings);
 	}
 
 	@Subscribe
@@ -648,17 +689,20 @@ public class TreeRun extends ComplexStateQuestHelper
 		{
 			return;
 		}
-		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, TREE_SAPLING, TreeSapling.class,
-			this::updateTreeSapling, TreeSapling.OAK, configManager, questHelperPlugin);
-		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, FRUIT_TREE_SAPLING, FruitTreeSapling.class,
-			this::updateFruitTreeSapling, FruitTreeSapling.APPLE, configManager, questHelperPlugin);
-		FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.class,
-			this::updateHardwoodTreeSapling, HardwoodTreeSapling.TEAK, configManager, questHelperPlugin);
-
-		if (event.getKey().equals(GRACEFUL_OR_FARMING) || event.getKey().equals(PAY_OR_CUT) || event.getKey().equals(PAY_OR_COMPOST))
+		questHelperPlugin.getClientThread().invokeLater(() ->
 		{
-			questHelperPlugin.refreshBank();
-		}
+			FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, TREE_SAPLING, TreeSapling.class,
+				this::updateTreeSapling, TreeSapling.OAK, configManager, questHelperPlugin);
+			FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, FRUIT_TREE_SAPLING, FruitTreeSapling.class,
+				this::updateFruitTreeSapling, FruitTreeSapling.APPLE, configManager, questHelperPlugin);
+			FarmingConfigChangeHandler.handleFarmingEnumConfigChange(event, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.class,
+				this::updateHardwoodTreeSapling, HardwoodTreeSapling.TEAK, configManager, questHelperPlugin);
+
+			if (event.getKey().equals(GRACEFUL_OR_FARMING) || event.getKey().equals(PAY_OR_CUT) || event.getKey().equals(PAY_OR_COMPOST))
+			{
+				questHelperPlugin.refreshBank();
+			}
+		});
 	}
 	private final String TREE_SAPLING = "treeSaplings";
 	private final String FRUIT_TREE_SAPLING = "fruitTreeSaplings";
@@ -679,7 +723,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(spade, rake, compost, coins, allTreeSaplings, allFruitSaplings, allHardwoodSaplings);
+		return Arrays.asList(spade, rake, compost, coins, allTreeSaplings, allFruitSaplings, allHardwoodSaplings, allProtectionItemTree, allProtectionItemFruitTree, allProtectionItemHardwood);
 	}
 
 	@Override
@@ -712,18 +756,63 @@ public class TreeRun extends ComplexStateQuestHelper
 	private void updateTreeSapling(TreeSapling selectedTreeSapling)
 	{
 		treeSapling.setId(selectedTreeSapling.treeSaplingID);
-		treeSapling.setName(Text.titleCase(selectedTreeSapling) + " sapling");
+		treeSapling.setName(itemManager.getItemComposition(selectedTreeSapling.getPlantableItemId()).getName());
+
+		allTreeSaplings.setId(selectedTreeSapling.treeSaplingID);
+		allTreeSaplings.setName(itemManager.getItemComposition(selectedTreeSapling.getPlantableItemId()).getName());
+		updateTreePaymentItem(selectedTreeSapling);
 	}
 
 	private void updateFruitTreeSapling(FruitTreeSapling selectedFruitTreeSapling)
 	{
 		fruitTreeSapling.setId(selectedFruitTreeSapling.fruitTreeSaplingId);
-		fruitTreeSapling.setName(Text.titleCase(selectedFruitTreeSapling) + " sapling");
+		fruitTreeSapling.setName(itemManager.getItemComposition(selectedFruitTreeSapling.getPlantableItemId()).getName());
+
+		allFruitSaplings.setId(selectedFruitTreeSapling.fruitTreeSaplingId);
+		allFruitSaplings.setName(itemManager.getItemComposition(selectedFruitTreeSapling.getPlantableItemId()).getName());
+		updateFruitTreePaymentItem(selectedFruitTreeSapling);
 	}
 
 	private void updateHardwoodTreeSapling(HardwoodTreeSapling selectedHardwoodTreeSapling)
 	{
 		hardwoodSapling.setId(selectedHardwoodTreeSapling.hardwoodTreeSaplingId);
-		hardwoodSapling.setName(Text.titleCase(selectedHardwoodTreeSapling) + " sapling");
+		hardwoodSapling.setName(itemManager.getItemComposition(selectedHardwoodTreeSapling.getPlantableItemId()).getName());
+
+		allHardwoodSaplings.setId(selectedHardwoodTreeSapling.hardwoodTreeSaplingId);
+		allHardwoodSaplings.setName(itemManager.getItemComposition(selectedHardwoodTreeSapling.getPlantableItemId()).getName());
+		updateHardwoodTreePaymentItem(selectedHardwoodTreeSapling);
+	}
+
+	private void updateTreePaymentItem(TreeSapling treeSapling)
+	{
+		protectionItemTree.setId(treeSapling.protectionItemId);
+		protectionItemTree.setName(itemManager.getItemComposition(treeSapling.protectionItemId).getName());
+		protectionItemTree.setQuantity(treeSapling.protectionItemQuantity);
+
+		allProtectionItemTree.setId(treeSapling.protectionItemId);
+		allProtectionItemTree.setName(itemManager.getItemComposition(treeSapling.protectionItemId).getName());
+		allProtectionItemTree.setQuantity(treeSapling.protectionItemQuantity);
+	}
+
+	private void updateFruitTreePaymentItem(FruitTreeSapling treeSapling)
+	{
+		protectionItemFruitTree.setId(treeSapling.protectionItemId);
+		protectionItemFruitTree.setName(itemManager.getItemComposition(treeSapling.protectionItemId).getName());
+		protectionItemFruitTree.setQuantity(treeSapling.protectionItemQuantity);
+
+		allProtectionItemFruitTree.setId(treeSapling.protectionItemId);
+		allProtectionItemFruitTree.setName(itemManager.getItemComposition(treeSapling.protectionItemId).getName());
+		allProtectionItemFruitTree.setQuantity(treeSapling.protectionItemQuantity);
+	}
+
+	private void updateHardwoodTreePaymentItem(HardwoodTreeSapling treeSapling)
+	{
+		protectionItemHardwood.setId(treeSapling.protectionItemId);
+		protectionItemHardwood.setName(itemManager.getItemComposition(treeSapling.protectionItemId).getName());
+		protectionItemHardwood.setQuantity(treeSapling.protectionItemQuantity);
+
+		allProtectionItemHardwood.setId(treeSapling.protectionItemId);
+		allProtectionItemHardwood.setName(itemManager.getItemComposition(treeSapling.protectionItemId).getName());
+		allProtectionItemHardwood.setQuantity(treeSapling.protectionItemQuantity);
 	}
 }

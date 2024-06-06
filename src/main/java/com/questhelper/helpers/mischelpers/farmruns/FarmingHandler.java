@@ -87,8 +87,6 @@ public class FarmingHandler
 		if (state.getCropState() == CropState.STUMP) return CropState.STUMP;
 		if (state.getCropState() == CropState.HARVESTABLE)
 		{
-			System.out.println(patch.getRegion().getName());
-			System.out.println("HARVESTABLE");
 			return CropState.HARVESTABLE;
 		}
 

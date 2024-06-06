@@ -54,6 +54,8 @@ public class QuestHelperBankTagService
 
 	int lastTickUpdated = 0;
 
+	private final String RECOMMENDED_TAB_NAME = "Recommended items";
+
 	public ArrayList<Integer> itemsToTag()
 	{
 		if (client.getTickCount() <= lastTickUpdated)
@@ -110,8 +112,8 @@ public class QuestHelperBankTagService
 
 		if (recommendedItems != null && !recommendedItems.isEmpty())
 		{
-			BankTabItems pluginItems = new BankTabItems("Recommended items");
-			// Here we specify getItems so as to avoid a double 'Recommended' title
+			BankTabItems pluginItems = new BankTabItems(RECOMMENDED_TAB_NAME);
+			// Here we specify getItems to avoid a double 'Recommended' title
 			recommendedItems.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item, item));
 			newList.add(pluginItems);
 		}
@@ -152,7 +154,22 @@ public class QuestHelperBankTagService
 			items.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item, item));
 			recommendedItemsForSection.forEach(item -> getItemsFromRequirement(pluginItems.getRecommendedItems(), item, item));
 			// We don't add the recommended items as they're already used
-			newList.add(pluginItems);
+			if (items.size() > 0)
+			{
+				newList.add(pluginItems);
+			}
+		}
+
+		// If none of the sections have anything in it, create a generic require items section
+		if (newList.size() == 0 || (newList.size() == 1 && newList.get(0).getName().equals(RECOMMENDED_TAB_NAME)))
+		{
+			BankTabItems allRequiredItems = new BankTabItems("Required items");
+			List<ItemRequirement> allRequired = plugin.getSelectedQuest().getItemRequirements();
+			if (allRequired != null && allRequired.size() > 0)
+			{
+				allRequired.forEach(item -> getItemsFromRequirement(allRequiredItems.getItems(), item, item));
+			}
+			newList.add(allRequiredItems);
 		}
 
 		return newList;

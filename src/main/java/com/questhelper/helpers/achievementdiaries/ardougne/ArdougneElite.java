@@ -152,9 +152,9 @@ public class ArdougneElite extends ComplexStateQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		bloodRune = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE).showConditioned(notIceBarrage);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notIceBarrage);
-		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE).showConditioned(notIceBarrage);
+		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE).showConditioned(notIceBarrage);
+		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notIceBarrage);
+		deathRune = new ItemRequirement("Death runes", ItemID.DEATH_RUNE).showConditioned(notIceBarrage);
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notYanAgi).isNotConsumed();
 		salveAmmy = new ItemRequirement("Salve amulet", ItemCollections.IMBUABLE_SALVE_AMULET)
 			.showConditioned(notImbueSalve).isNotConsumed();

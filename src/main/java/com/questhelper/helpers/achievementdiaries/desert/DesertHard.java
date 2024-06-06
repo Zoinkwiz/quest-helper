@@ -26,6 +26,7 @@ package com.questhelper.helpers.achievementdiaries.desert;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -153,7 +154,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		blackjack = new ItemRequirement("Blackjack", ItemCollections.BLACKJACKS).showConditioned(notMenaThug).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notGranite).isNotConsumed();
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notRefillWaterskin);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notRefillWaterskin);
+		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notRefillWaterskin);
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notRefillWaterskin);
 		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATERSKIN0).showConditioned(notRefillWaterskin).isNotConsumed();
 		slayerHelm = new ItemRequirement("Slayer Helmet", ItemCollections.SLAYER_HELMETS)
@@ -163,11 +164,11 @@ public class DesertHard extends ComplexStateQuestHelper
 			.showConditioned(notKillLocustRider).isNotConsumed();
 		yewLog = new ItemRequirement("Yew log", ItemID.YEW_LOGS).showConditioned(notBurnYew);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notBurnYew).isNotConsumed();
-		mithBar = new ItemRequirement("Mithril bar", ItemID.MITHRIL_BAR).showConditioned(notMithPlatebody);
+		mithBar = new ItemRequirement("Mithril bars", ItemID.MITHRIL_BAR).showConditioned(notMithPlatebody);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMithPlatebody).isNotConsumed();
-		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKalphQueen);
+		rope = new ItemRequirement("Ropes", ItemID.ROPE).showConditioned(notKalphQueen);
 
-		nardahTP = new ItemRequirement("Nardah teleport", ItemID.NARDAH_TELEPORT);
+		nardahTP = new TeleportItemRequirement("Nardah teleport", ItemID.NARDAH_TELEPORT);
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS).isNotConsumed();
 		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE).isNotConsumed();
 		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT).isNotConsumed();

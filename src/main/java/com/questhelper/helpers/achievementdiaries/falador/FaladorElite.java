@@ -28,6 +28,7 @@ package com.questhelper.helpers.achievementdiaries.falador;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -133,14 +134,14 @@ public class FaladorElite extends ComplexStateQuestHelper
 		airTiara = new ItemRequirement("Air Tiara", ItemID.AIR_TIARA, 1, true).showConditioned(notCraftedAirRunes).isNotConsumed();
 		coins1920 = new ItemRequirement("Coins", ItemCollections.COINS, 1920).showConditioned(notPurchasedWhite2hSword);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots).isNotConsumed();
-		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots).isNotConsumed();
+		axe = new ItemRequirement("Any Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGotMagicRoots).isNotConsumed();
 		magicTreeSapling = new ItemRequirement("Magic Sapling", ItemID.MAGIC_SAPLING).showConditioned(notGotMagicRoots);
 		skillCape = new ItemRequirement("Any Skill Cape or Quest Cape", ItemCollections.SKILLCAPE).showConditioned(notPerformedSkillCapeEmote);
 		toadflaxPotionUnf = new ItemRequirement("Toadflax Potion (unf)", ItemID.TOADFLAX_POTION_UNF).showConditioned(notMadeSaraBrew);
 		crushedNest = new ItemRequirement("Crushed Nest", ItemID.CRUSHED_NEST).showConditioned(notMadeSaraBrew);
 
-		faladorTeleport = new ItemRequirement("Multiple Teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
+		faladorTeleport = new TeleportItemRequirement("Multiple Teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
 
 		magicTreeNearbyNotCheckedVar = new VarbitRequirement(4471, 60);
 		magicTreeNearbyCheckedVar = new VarbitRequirement(4471, 61);

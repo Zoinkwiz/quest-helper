@@ -170,10 +170,10 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		redAtAltar = new VarbitRequirement(1250, 1);
 
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notTPWatchtower);
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPWatchtower);
+		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notTPWatchtower);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS)
 			.showConditioned(new Conditions(notYanHouse, notYanPOH));
-		mithBar = new ItemRequirement("Mithril bar", ItemID.MITHRIL_BAR).showConditioned(notMithPlate);
+		mithBar = new ItemRequirement("Mithril bars", ItemID.MITHRIL_BAR).showConditioned(notMithPlate);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER)
 			.showConditioned(new Conditions(LogicType.OR, notMithPlate, notDragSquare)).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notRedSally).isNotConsumed();

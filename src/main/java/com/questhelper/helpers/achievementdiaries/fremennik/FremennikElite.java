@@ -169,7 +169,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE).showConditioned(notDagKings);
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS)
 		.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
-		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
+		rope = new ItemRequirement("Ropes", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS)
 			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419)

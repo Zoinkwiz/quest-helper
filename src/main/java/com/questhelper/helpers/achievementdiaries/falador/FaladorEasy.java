@@ -27,6 +27,7 @@ package com.questhelper.helpers.achievementdiaries.falador;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -159,9 +160,9 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 
 		//Recommended
-		teleportFalador = new ItemRequirement("Multiple teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
-		teleportMindAltar = new ItemRequirement("A Teleport to the Mind Altar", ItemID.MIND_ALTAR_TELEPORT);
-		explorersRing = new ItemRequirement("Explorers Ring (2) or above.", ItemID.EXPLORERS_RING_2).isNotConsumed();
+		teleportFalador = new TeleportItemRequirement("Multiple teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
+		teleportMindAltar = new TeleportItemRequirement("A Teleport to the Mind Altar", ItemID.MIND_ALTAR_TELEPORT);
+		explorersRing = new TeleportItemRequirement("Explorers Ring (2) or above.", ItemID.EXPLORERS_RING_2).isNotConsumed();
 		explorersRing.addAlternates(ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4);
 
 		bluriteOre = new ItemRequirement("Blurite Ore", ItemID.BLURITE_ORE);

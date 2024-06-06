@@ -184,8 +184,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapYan).isNotConsumed();
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET)
 			.showConditioned(new Conditions(notClaimSand)).isNotConsumed();
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPArdy);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notTPArdy);
+		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notTPArdy);
+		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notTPArdy);
 		rawChick = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN).showConditioned(notKillSwordchick);
 		rawSword = new ItemRequirement("Raw swordfish", ItemID.RAW_SWORDFISH).showConditioned(notKillSwordchick);
 		ibanStaff = new ItemRequirement("Iban staff", ItemID.IBANS_STAFF).showConditioned(notIbanUpgrade).isNotConsumed();

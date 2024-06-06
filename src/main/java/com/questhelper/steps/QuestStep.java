@@ -392,6 +392,11 @@ public abstract class QuestStep implements Module
 		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, itemID, checkChildren));
 	}
 
+	public void addWidgetHighlightWithTextRequirement(int groupID, int childID, String requiredText, boolean checkChildren)
+	{
+		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, requiredText, checkChildren));
+	}
+
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
 		addTitleToPanel(panelComponent);

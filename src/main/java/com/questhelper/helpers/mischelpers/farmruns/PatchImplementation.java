@@ -42,7 +42,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Belladonna patch[Rake,Inspect,Guide] 7560,7559,7558,7557
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
@@ -67,7 +67,7 @@ public enum PatchImplementation
 				if (value >= 15 && value <= 255)
 				{
 					// Belladonna patch[Rake,Inspect,Guide] 7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -80,7 +80,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Mushroom patch[Rake,Inspect,Guide] 8314,8313,8312,8311
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 9)
 				{
@@ -105,7 +105,7 @@ public enum PatchImplementation
 				if (value >= 26 && value <= 255)
 				{
 					// Mushroom patch[Rake,Inspect,Guide] 8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314,8314
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -118,7 +118,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Hespori patch[Rake,Inspect,Guide] 33722,33723,33724,33725
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 6)
 				{
@@ -133,7 +133,7 @@ public enum PatchImplementation
 				if (value == 9)
 				{
 					// Hespori patch[Rake,Inspect,Guide] 33722
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -146,12 +146,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8575,8574,8573
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 5)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 6 && value <= 9)
 				{
@@ -236,7 +236,7 @@ public enum PatchImplementation
 				if (value >= 74 && value <= 76)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 77 && value <= 80)
 				{
@@ -246,7 +246,7 @@ public enum PatchImplementation
 				if (value >= 81 && value <= 83)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 84 && value <= 87)
 				{
@@ -256,7 +256,7 @@ public enum PatchImplementation
 				if (value >= 88 && value <= 90)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 91 && value <= 94)
 				{
@@ -266,7 +266,7 @@ public enum PatchImplementation
 				if (value >= 95 && value <= 97)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 98 && value <= 103)
 				{
@@ -276,7 +276,7 @@ public enum PatchImplementation
 				if (value >= 104 && value <= 106)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 107 && value <= 112)
 				{
@@ -286,7 +286,7 @@ public enum PatchImplementation
 				if (value >= 113 && value <= 115)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 116 && value <= 123)
 				{
@@ -296,7 +296,7 @@ public enum PatchImplementation
 				if (value >= 124 && value <= 127)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 128 && value <= 134)
 				{
@@ -316,7 +316,7 @@ public enum PatchImplementation
 				if (value == 141)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 142 && value <= 144)
 				{
@@ -326,7 +326,7 @@ public enum PatchImplementation
 				if (value >= 145 && value <= 148)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 149 && value <= 151)
 				{
@@ -336,7 +336,7 @@ public enum PatchImplementation
 				if (value >= 152 && value <= 155)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 156 && value <= 158)
 				{
@@ -346,7 +346,7 @@ public enum PatchImplementation
 				if (value >= 159 && value <= 162)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 163 && value <= 167)
 				{
@@ -356,7 +356,7 @@ public enum PatchImplementation
 				if (value >= 168 && value <= 171)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 172 && value <= 176)
 				{
@@ -366,7 +366,7 @@ public enum PatchImplementation
 				if (value >= 177 && value <= 180)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 181 && value <= 187)
 				{
@@ -376,7 +376,7 @@ public enum PatchImplementation
 				if (value >= 188 && value <= 192)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 193 && value <= 195)
 				{
@@ -401,7 +401,7 @@ public enum PatchImplementation
 				if (value == 205)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 206 && value <= 208)
 				{
@@ -416,7 +416,7 @@ public enum PatchImplementation
 				if (value == 212)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 213 && value <= 215)
 				{
@@ -426,7 +426,7 @@ public enum PatchImplementation
 				if (value >= 216 && value <= 219)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 220 && value <= 222)
 				{
@@ -436,7 +436,7 @@ public enum PatchImplementation
 				if (value >= 223 && value <= 226)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 227 && value <= 231)
 				{
@@ -446,7 +446,7 @@ public enum PatchImplementation
 				if (value >= 232 && value <= 235)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 236 && value <= 240)
 				{
@@ -456,7 +456,7 @@ public enum PatchImplementation
 				if (value >= 241 && value <= 244)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 245 && value <= 251)
 				{
@@ -466,7 +466,7 @@ public enum PatchImplementation
 				if (value >= 252 && value <= 255)
 				{
 					// Allotment[Rake,Inspect,Guide] 8576,8576,8576,8576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -479,7 +479,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Herb patch[Rake,Inspect,Guide] 8135,8134,8133,8132
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
@@ -564,7 +564,7 @@ public enum PatchImplementation
 				if (value >= 60 && value <= 67)
 				{
 					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 68 && value <= 71)
 				{
@@ -704,7 +704,7 @@ public enum PatchImplementation
 				if (value >= 173 && value <= 191)
 				{
 					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 192 && value <= 195)
 				{
@@ -729,12 +729,12 @@ public enum PatchImplementation
 				if (value >= 204 && value <= 219)
 				{
 					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 221 && value <= 255)
 				{
 					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -747,12 +747,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7842,7841,7840
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843,7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 11)
 				{
@@ -827,7 +827,7 @@ public enum PatchImplementation
 				if (value >= 42 && value <= 71)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 72 && value <= 75)
 				{
@@ -837,7 +837,7 @@ public enum PatchImplementation
 				if (value == 76)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 77 && value <= 80)
 				{
@@ -847,7 +847,7 @@ public enum PatchImplementation
 				if (value == 81)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 82 && value <= 85)
 				{
@@ -857,7 +857,7 @@ public enum PatchImplementation
 				if (value == 86)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 87 && value <= 90)
 				{
@@ -867,7 +867,7 @@ public enum PatchImplementation
 				if (value == 91)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 92 && value <= 95)
 				{
@@ -877,7 +877,7 @@ public enum PatchImplementation
 				if (value >= 96 && value <= 100)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843,7843,7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 101 && value <= 104)
 				{
@@ -887,7 +887,7 @@ public enum PatchImplementation
 				if (value >= 105 && value <= 136)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 137 && value <= 139)
 				{
@@ -897,7 +897,7 @@ public enum PatchImplementation
 				if (value >= 140 && value <= 141)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 142 && value <= 144)
 				{
@@ -907,7 +907,7 @@ public enum PatchImplementation
 				if (value >= 145 && value <= 146)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 147 && value <= 149)
 				{
@@ -917,7 +917,7 @@ public enum PatchImplementation
 				if (value >= 150 && value <= 151)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 152 && value <= 154)
 				{
@@ -927,7 +927,7 @@ public enum PatchImplementation
 				if (value >= 155 && value <= 156)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 157 && value <= 159)
 				{
@@ -937,7 +937,7 @@ public enum PatchImplementation
 				if (value >= 160 && value <= 165)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843,7843,7843,7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 166 && value <= 168)
 				{
@@ -947,7 +947,7 @@ public enum PatchImplementation
 				if (value >= 169 && value <= 200)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 201 && value <= 204)
 				{
@@ -957,7 +957,7 @@ public enum PatchImplementation
 				if (value == 205)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 206 && value <= 209)
 				{
@@ -967,7 +967,7 @@ public enum PatchImplementation
 				if (value == 210)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 211 && value <= 214)
 				{
@@ -977,7 +977,7 @@ public enum PatchImplementation
 				if (value == 215)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 216 && value <= 219)
 				{
@@ -987,7 +987,7 @@ public enum PatchImplementation
 				if (value == 220)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 221 && value <= 224)
 				{
@@ -997,7 +997,7 @@ public enum PatchImplementation
 				if (value >= 225 && value <= 229)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843,7843,7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 230 && value <= 233)
 				{
@@ -1007,7 +1007,7 @@ public enum PatchImplementation
 				if (value >= 234 && value <= 255)
 				{
 					// Flower Patch[Rake,Inspect,Guide] 7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843,7843
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -1020,12 +1020,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7575,7574,7573
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value == 4)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 5 && value <= 9)
 				{
@@ -1080,7 +1080,7 @@ public enum PatchImplementation
 				if (value >= 64 && value <= 69)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 70 && value <= 74)
 				{
@@ -1090,7 +1090,7 @@ public enum PatchImplementation
 				if (value >= 75 && value <= 79)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 80 && value <= 85)
 				{
@@ -1100,7 +1100,7 @@ public enum PatchImplementation
 				if (value >= 86 && value <= 90)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 91 && value <= 97)
 				{
@@ -1110,7 +1110,7 @@ public enum PatchImplementation
 				if (value >= 98 && value <= 102)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 103 && value <= 110)
 				{
@@ -1120,7 +1120,7 @@ public enum PatchImplementation
 				if (value >= 111 && value <= 115)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 116 && value <= 123)
 				{
@@ -1130,7 +1130,7 @@ public enum PatchImplementation
 				if (value >= 124 && value <= 133)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576,7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 134 && value <= 138)
 				{
@@ -1140,7 +1140,7 @@ public enum PatchImplementation
 				if (value >= 139 && value <= 143)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 144 && value <= 149)
 				{
@@ -1150,7 +1150,7 @@ public enum PatchImplementation
 				if (value >= 150 && value <= 154)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 155 && value <= 161)
 				{
@@ -1160,7 +1160,7 @@ public enum PatchImplementation
 				if (value >= 162 && value <= 166)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 167 && value <= 174)
 				{
@@ -1170,7 +1170,7 @@ public enum PatchImplementation
 				if (value >= 175 && value <= 179)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 180 && value <= 187)
 				{
@@ -1180,7 +1180,7 @@ public enum PatchImplementation
 				if (value >= 188 && value <= 196)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 197 && value <= 204)
 				{
@@ -1210,7 +1210,7 @@ public enum PatchImplementation
 				if (value >= 226 && value <= 249)
 				{
 					// Bush Patch[Rake,Inspect,Guide] 7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576,7576
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value == 250)
 				{
@@ -1253,12 +1253,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Fruit Tree Patch[Rake,Inspect,Guide] 8050,8049,8048,8047
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Fruit Tree Patch[Rake,Inspect,Guide] 8050,8050,8050,8050
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 13)
 				{
@@ -1323,7 +1323,7 @@ public enum PatchImplementation
 				if (value >= 62 && value <= 71)
 				{
 					// Fruit Tree Patch[Rake,Inspect,Guide] 8050,8050,8050,8050,8050,8050,8050,8050,8050,8050
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 72 && value <= 77)
 				{
@@ -1393,7 +1393,7 @@ public enum PatchImplementation
 				if (value >= 126 && value <= 135)
 				{
 					// Fruit Tree Patch[Rake,Inspect,Guide] 8050,8050,8050,8050,8050,8050,8050,8050,8050,8050
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 136 && value <= 141)
 				{
@@ -1458,7 +1458,7 @@ public enum PatchImplementation
 				if (value >= 190 && value <= 199)
 				{
 					// Fruit Tree Patch[Rake,Inspect,Guide] 8050,8050,8050,8050,8050,8050,8050,8050,8050,8050
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 200 && value <= 205)
 				{
@@ -1523,7 +1523,7 @@ public enum PatchImplementation
 				if (value >= 254 && value <= 255)
 				{
 					// Fruit Tree Patch[Rake,Inspect,Guide] 8050,8050
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -1536,7 +1536,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8209,8208,8207
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
@@ -1611,7 +1611,7 @@ public enum PatchImplementation
 				if (value >= 64 && value <= 67)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 68 && value <= 71)
 				{
@@ -1621,7 +1621,7 @@ public enum PatchImplementation
 				if (value >= 72 && value <= 74)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 75 && value <= 79)
 				{
@@ -1631,7 +1631,7 @@ public enum PatchImplementation
 				if (value >= 80 && value <= 82)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 83 && value <= 88)
 				{
@@ -1641,7 +1641,7 @@ public enum PatchImplementation
 				if (value >= 89 && value <= 91)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 92 && value <= 98)
 				{
@@ -1651,7 +1651,7 @@ public enum PatchImplementation
 				if (value >= 99 && value <= 101)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 102 && value <= 109)
 				{
@@ -1661,7 +1661,7 @@ public enum PatchImplementation
 				if (value >= 110 && value <= 112)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 113 && value <= 116)
 				{
@@ -1671,7 +1671,7 @@ public enum PatchImplementation
 				if (value >= 117 && value <= 119)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 120 && value <= 124)
 				{
@@ -1681,7 +1681,7 @@ public enum PatchImplementation
 				if (value >= 125 && value <= 132)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210,8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 133 && value <= 135)
 				{
@@ -1691,7 +1691,7 @@ public enum PatchImplementation
 				if (value >= 136 && value <= 139)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 140 && value <= 143)
 				{
@@ -1701,7 +1701,7 @@ public enum PatchImplementation
 				if (value >= 144 && value <= 147)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 148 && value <= 152)
 				{
@@ -1711,7 +1711,7 @@ public enum PatchImplementation
 				if (value >= 153 && value <= 156)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 157 && value <= 162)
 				{
@@ -1721,7 +1721,7 @@ public enum PatchImplementation
 				if (value >= 163 && value <= 166)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 167 && value <= 173)
 				{
@@ -1731,7 +1731,7 @@ public enum PatchImplementation
 				if (value >= 174 && value <= 177)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 178 && value <= 180)
 				{
@@ -1741,12 +1741,12 @@ public enum PatchImplementation
 				if (value == 181)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 183 && value <= 184)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 185 && value <= 188)
 				{
@@ -1756,7 +1756,7 @@ public enum PatchImplementation
 				if (value >= 189 && value <= 196)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210,8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 197 && value <= 199)
 				{
@@ -1766,7 +1766,7 @@ public enum PatchImplementation
 				if (value >= 200 && value <= 203)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 204 && value <= 207)
 				{
@@ -1776,7 +1776,7 @@ public enum PatchImplementation
 				if (value >= 208 && value <= 211)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 212 && value <= 216)
 				{
@@ -1786,7 +1786,7 @@ public enum PatchImplementation
 				if (value >= 217 && value <= 220)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 221 && value <= 226)
 				{
@@ -1796,7 +1796,7 @@ public enum PatchImplementation
 				if (value >= 227 && value <= 230)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 231 && value <= 237)
 				{
@@ -1806,7 +1806,7 @@ public enum PatchImplementation
 				if (value >= 238 && value <= 241)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 242 && value <= 244)
 				{
@@ -1816,7 +1816,7 @@ public enum PatchImplementation
 				if (value >= 245 && value <= 248)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 249 && value <= 252)
 				{
@@ -1826,7 +1826,7 @@ public enum PatchImplementation
 				if (value >= 253 && value <= 255)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -1839,12 +1839,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8394,8393,8392
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395,8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 11)
 				{
@@ -1949,7 +1949,7 @@ public enum PatchImplementation
 				if (value >= 63 && value <= 72)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395,8395,8395,8395,8395,8395,8395,8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 73 && value <= 75)
 				{
@@ -1964,7 +1964,7 @@ public enum PatchImplementation
 				if (value >= 78 && value <= 79)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 80 && value <= 84)
 				{
@@ -1979,7 +1979,7 @@ public enum PatchImplementation
 				if (value >= 87 && value <= 88)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 89 && value <= 95)
 				{
@@ -1994,7 +1994,7 @@ public enum PatchImplementation
 				if (value >= 98 && value <= 99)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 100 && value <= 108)
 				{
@@ -2009,7 +2009,7 @@ public enum PatchImplementation
 				if (value >= 111 && value <= 112)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 113 && value <= 123)
 				{
@@ -2024,7 +2024,7 @@ public enum PatchImplementation
 				if (value >= 126 && value <= 136)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 137 && value <= 139)
 				{
@@ -2039,7 +2039,7 @@ public enum PatchImplementation
 				if (value >= 142 && value <= 143)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 144 && value <= 148)
 				{
@@ -2054,7 +2054,7 @@ public enum PatchImplementation
 				if (value >= 151 && value <= 152)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 153 && value <= 159)
 				{
@@ -2069,7 +2069,7 @@ public enum PatchImplementation
 				if (value >= 162 && value <= 163)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 164 && value <= 172)
 				{
@@ -2084,7 +2084,7 @@ public enum PatchImplementation
 				if (value >= 175 && value <= 176)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 177 && value <= 187)
 				{
@@ -2099,7 +2099,7 @@ public enum PatchImplementation
 				if (value >= 190 && value <= 191)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 192 && value <= 197)
 				{
@@ -2109,7 +2109,7 @@ public enum PatchImplementation
 				if (value >= 198 && value <= 255)
 				{
 					// Tree patch[Rake,Inspect,Guide] 8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395,8395
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -2122,12 +2122,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Tree patch[Rake,Inspect,Guide] 30479,30478,30477,30476
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Tree patch[Rake,Inspect,Guide] 30479,30479,30479,30479
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 14)
 				{
@@ -2192,7 +2192,7 @@ public enum PatchImplementation
 				if (value >= 55 && value <= 255)
 				{
 					// Tree patch[Rake,Inspect,Guide] 30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -2205,12 +2205,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Redwood tree patch[Rake,Inspect,Guide] 34050,34049,34048,34047
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Redwood tree patch[Rake,Inspect,Guide] 34050,34050,34050,34050
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 17)
 				{
@@ -2253,12 +2253,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Spirit Tree Patch[Rake,Inspect,Guide] 8342,8341,8340,8339
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Spirit Tree Patch[Rake,Inspect,Guide] 8342,8342,8342,8342
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 19)
 				{
@@ -2288,7 +2288,7 @@ public enum PatchImplementation
 				if (value >= 45 && value <= 63)
 				{
 					// Spirit Tree Patch[Rake,Inspect,Guide] 8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342,8342
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -2301,12 +2301,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Anima patch[Rake,Inspect,Guide] 33983,33982,33981,33980
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Anima patch[Rake,Inspect,Guide] 33983,33983,33983,33983
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 16)
 				{
@@ -2335,7 +2335,7 @@ public enum PatchImplementation
 				if (value >= 35 && value <= 255)
 				{
 					// Anima patch[Rake,Inspect,Guide] 33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983,33983
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -2348,12 +2348,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Cactus patch[Rake,Inspect,Guide] 7746,7745,7744,7743
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Cactus patch[Rake,Inspect,Guide] 7746,7746,7746,7746
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 14)
 				{
@@ -2408,7 +2408,7 @@ public enum PatchImplementation
 				if (value >= 59 && value <= 255)
 				{
 					// Cactus patch[Rake,Inspect,Guide] 7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -2421,7 +2421,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Seaweed patch[Rake,Inspect,Guide] 30486,30485,30484,30483
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
@@ -2446,7 +2446,7 @@ public enum PatchImplementation
 				if (value >= 17 && value <= 255)
 				{
 					// Seaweed patch[Rake,Inspect,Guide] 30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486,30486
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -2459,7 +2459,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Calquat patch[Rake,Inspect,Guide] 7775,7774,7773,7772
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 11)
 				{
@@ -2489,7 +2489,7 @@ public enum PatchImplementation
 				if (value >= 35 && value <= 255)
 				{
 					// Calquat patch[Rake,Inspect,Guide] 7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775,7775
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -2502,12 +2502,12 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Celastrus patch[Rake,Inspect,Guide] 33698,33697,33696,33695
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 4 && value <= 7)
 				{
 					// Celastrus patch[Rake,Inspect,Guide] 33698,33698,33698,33698
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 8 && value <= 12)
 				{
@@ -2547,7 +2547,7 @@ public enum PatchImplementation
 				if (value >= 29 && value <= 255)
 				{
 					// Celastrus patch[Rake,Inspect,Guide] 33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698,33698
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				return null;
 			}
@@ -2560,7 +2560,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 1)
 				{
 					// Empty, empty+fertilizer
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3);
 				}
 				if (value >= 2 && value <= 9)
 				{
@@ -2585,7 +2585,7 @@ public enum PatchImplementation
 				if (value >= 0 && value <= 3)
 				{
 					// Crystal tree patch[Rake,Inspect,Guide] 34910,34909,34908,34907
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+					return new PatchState(Produce.WEEDS, CropState.EMPTY, 3 - value);
 				}
 				if (value >= 8 && value <= 13)
 				{

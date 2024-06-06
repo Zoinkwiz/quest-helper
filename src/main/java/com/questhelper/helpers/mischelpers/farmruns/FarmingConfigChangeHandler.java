@@ -32,7 +32,6 @@ import java.util.function.Consumer;
 
 public class FarmingConfigChangeHandler
 {
-
 	public static <T extends Enum<T>> void handleFarmingEnumConfigChange(ConfigChanged event, String configKey,
 		Class<T> enumClass, Consumer<T> updateAction, T defaultValue, ConfigManager configManager, QuestHelperPlugin questHelperPlugin)
 	{

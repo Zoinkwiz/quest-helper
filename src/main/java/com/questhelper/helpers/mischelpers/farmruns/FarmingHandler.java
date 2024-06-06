@@ -82,7 +82,14 @@ public class FarmingHandler
 		if (state == null) return null;
 		if (state.getCropState() == CropState.EMPTY) return CropState.EMPTY;
 		if (state.getProduce() == Produce.WEEDS) return CropState.EMPTY;
-		if (state.getCropState() == CropState.DEAD) return CropState.DEAD;
+		if (state.getCropState() == CropState.UNCHECKED) return CropState.UNCHECKED;
+		if (state.getCropState() == CropState.STUMP) return CropState.STUMP;
+		if (state.getCropState() == CropState.HARVESTABLE)
+		{
+			System.out.println(patch.getRegion().getName());
+			System.out.println("HARVESTABLE");
+			return CropState.HARVESTABLE;
+		}
 
 		if (unixTime <= 0)
 		{
@@ -109,11 +116,7 @@ public class FarmingHandler
 
 		if (unixNow >= doneEstimate)
 		{
-			if (state.getCropState() == CropState.GROWING)
-			{
-
-			}
-			return CropState.HARVESTABLE;
+			return CropState.UNCHECKED;
 		}
 
 		return CropState.GROWING;

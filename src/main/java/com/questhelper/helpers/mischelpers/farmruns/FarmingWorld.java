@@ -29,6 +29,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.inject.Singleton;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.NpcID;
 import net.runelite.api.Varbits;
@@ -351,5 +353,12 @@ class FarmingWorld
 				.computeIfAbsent(p.getImplementation().getTab(), k -> new TreeSet<>(tabSorter))
 				.add(p);
 		}
+	}
+
+	Collection<FarmingRegion> getRegionsForLocation(WorldPoint location)
+	{
+		return this.regions.get(location.getRegionID()).stream()
+			.filter(region -> region.isInBounds(location))
+			.collect(Collectors.toSet());
 	}
 }

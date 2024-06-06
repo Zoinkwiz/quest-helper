@@ -26,7 +26,6 @@ package com.questhelper.helpers.miniquests.barbariantraining;
 
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -59,9 +58,6 @@ import java.util.*;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
-@QuestDescriptor(
-	quest = QuestHelperQuest.BARBARIAN_TRAINING
-)
 public class BarbarianTraining extends BasicQuestHelper
 {
 	// Items Required
@@ -101,8 +97,8 @@ public class BarbarianTraining extends BasicQuestHelper
 
 	DetailedQuestStep talkToOttoAboutHerblore, getBarbRodForHerblore, fishForHerblore, dissectFish, useRoeOnAttackPotion, talkToOttoAfterPotion;
 
-	ConditionalStep fishingSteps, harpoonSteps, farmingSteps, potSmashingSteps, firemakingSteps, pyreSteps, spearSteps,
-		hastaSteps, herbloreSteps;
+	ConditionalStep fishingSteps, harpoonSteps, seedSteps, potSmashingSteps, firemakingSteps, pyreSteps, spearSteps,
+		spearAndHastaeSteps, herbloreSteps;
 
 	Requirement finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing, finishedFiremaking, finishedPyre, finishedSpear, finishedHasta, finishedHerblore;
 
@@ -145,14 +141,13 @@ public class BarbarianTraining extends BasicQuestHelper
 		potSmashingSteps = new ConditionalStep(this, talkToOttoAboutPots);
 		potSmashingSteps.addStep(smashedPot, talkToOttoAfterSmashingPot);
 		potSmashingSteps.addStep(taskedWithPotSmashing, plantSapling);
-		potSmashingSteps.setLockingCondition(finishedPotSmashing);
 		// Completed pot smashing, 9610 2->3
 
-		farmingSteps = new ConditionalStep(this, talkToOttoAboutFarming);
-		farmingSteps.addStep(finishedSeedPlanting, potSmashingSteps);
-		farmingSteps.addStep(plantedSeed, talkToOttoAfterPlantingSeed);
-		farmingSteps.addStep(taskedWithFarming, plantSeed);
-		farmingSteps.setLockingCondition(finishedSeedPlanting);
+
+		seedSteps = new ConditionalStep(this, talkToOttoAboutFarming);
+		seedSteps.addStep(plantedSeed, talkToOttoAfterPlantingSeed);
+		seedSteps.addStep(taskedWithFarming, plantSeed);
+		seedSteps.setLockingCondition(finishedSeedPlanting);
 
 		// Firemaking
 		firemakingSteps = new ConditionalStep(this, talkToOttoAboutBow);
@@ -174,19 +169,22 @@ public class BarbarianTraining extends BasicQuestHelper
 
 		// Smithing
 		spearSteps = new ConditionalStep(this, talkToOttoAboutSpears);
+		spearSteps.addStep(madeSpear, talkToOttoAfterBronzeSpear);
+		spearSteps.addStep(taskedWithSpears, makeBronzeSpear);
 		spearSteps.setLockingCondition(finishedSpear);
 
-		hastaSteps = new ConditionalStep(this, talkToOttoAboutHastae);
-		hastaSteps.setLockingCondition(finishedHasta);
+		spearAndHastaeSteps = new ConditionalStep(this, spearSteps);
+		spearAndHastaeSteps.addStep(finishedSpear, talkToOttoAboutHastae);
+		spearAndHastaeSteps.setLockingCondition(finishedHasta);
 
 		ConditionalStep allSteps = new ConditionalStep(this, fishingSteps);
 		allSteps.addStep(nor(finishedFishing), fishingSteps);
 		allSteps.addStep(nor(finishedHerblore), herbloreSteps);
 		allSteps.addStep(nor(finishedHarpoon), harpoonSteps);
-		allSteps.addStep(nor(finishedPotSmashing), farmingSteps);
+		allSteps.addStep(nor(finishedSeedPlanting), seedSteps);
+		allSteps.addStep(nor(finishedPotSmashing), potSmashingSteps);
 		allSteps.addStep(nor(finishedFiremaking), firemakingSteps);
-		allSteps.addStep(nor(finishedSpear), spearSteps);
-		allSteps.addStep(nor(finishedHasta), hastaSteps);
+		allSteps.addStep(nor(finishedSpear, finishedHasta), spearAndHastaeSteps);
 		allSteps.addStep(nor(finishedPyre), pyreSteps);
 		allSteps.addDialogSteps("Let's talk about my training.", "I seek more knowledge.");
 		allSteps.setCheckAllChildStepsOnListenerCall(true);
@@ -400,7 +398,6 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You plant "),
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				// <col=000080>I've managed to <col=800000>plant a seed with my fists<col=000080>! I should let
 				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
 			)
 		);
@@ -461,18 +458,38 @@ public class BarbarianTraining extends BasicQuestHelper
 					"I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
 			)
 		);
-		 madePotion = new RuneliteRequirement(getConfigManager(), "barbariantrainingmadepotion",
-			 new Conditions(true, LogicType.OR,
-				 new MultiChatMessageRequirement(
-					 new ChatMessageRequirement("You combine your potion with the fish eggs."),
-					 new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				 ),
-				 new WidgetTextRequirement(119, 3, true,
-					 "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
-			 )
-		 );
-		// madeSpear =
-		// madeHasta =
+		madePotion = new RuneliteRequirement(getConfigManager(), "barbariantrainingmadepotion",
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You combine your potion with the fish eggs."),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true,
+					"I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
+			)
+		);
+		madeSpear = new RuneliteRequirement(getConfigManager(), "barbariantrainingmadespear",
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You make a "),
+					new ChatMessageRequirement(" spear."),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true,
+					"I've managed to <col=800000>smith a spear<col=000080>!")
+			)
+		);
+		madeHasta = new RuneliteRequirement(getConfigManager(), "barbariantrainingmadehasta",
+		new Conditions(true, LogicType.OR,
+			new MultiChatMessageRequirement(
+				new ChatMessageRequirement("You make a "),
+				new ChatMessageRequirement(" hasta."),
+				new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+			),
+			new WidgetTextRequirement(119, 3, true,
+				"I've managed to <col=800000>smith a hasta<col=000080>!")
+		)
+	);
 
 		// For harpooning,
 		// You catch a tuna.
@@ -495,7 +512,8 @@ public class BarbarianTraining extends BasicQuestHelper
 		talkToOttoAboutFishing.addDialogSteps("You think so?", "What can I learn about the use of a fishing rod?");
 
 		searchBed = new ObjectStep(this, ObjectID.BARBARIAN_BED, new WorldPoint(2500, 3490, 0), "Search the bed in Otto's hut.");
-		catchFish = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2500, 3510, 0), "Fish from one of the fishing spots near Otto's hut.", true, barbFishingRod);
+		catchFish = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2500, 3510, 0),
+			"Fish from one of the fishing spots near Otto's hut.", true, barbFishingRod, feathers);
 
 		talkToOttoAfterFish = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
 			"Return to Otto and tell him about your success.");
@@ -637,7 +655,7 @@ public class BarbarianTraining extends BasicQuestHelper
 
 		PanelDetails barbHerblore = new PanelDetails("Barbarian Herblore", Arrays.asList(talkToOttoAboutHerblore,
 			fishForHerblore, dissectFish, useRoeOnAttackPotion, talkToOttoAfterPotion),
-			druidicRitual, finishedFishing, attackPotion, knife);
+			druidicRitual, finishedFishing, attackPotion, knife, barbFishingRod, feathers);
 		barbHerblore.setLockingStep(herbloreSteps);
 		allSteps.add(barbHerblore);
 
@@ -647,7 +665,7 @@ public class BarbarianTraining extends BasicQuestHelper
 
 		PanelDetails barbFarming = new PanelDetails("Barbarian Planting",
 			Arrays.asList(talkToOttoAboutFarming, plantSeed, talkToOttoAfterPlantingSeed), seed);
-		barbFarming.setLockingStep(farmingSteps);
+		barbFarming.setLockingStep(seedSteps);
 		allSteps.add(barbFarming);
 
 		PanelDetails barbSmashing = new PanelDetails("Barb Plant Pot Smashing",
@@ -657,9 +675,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		allSteps.add(barbSmashing);
 
 		PanelDetails barbFiremaking = new PanelDetails("Barbarian Firemaking",
-			Arrays.asList(talkToOttoAboutBow, lightLogWithBow, talkToOttoAfterBow,
-				talkToOttoAboutPyre, enterWhirlpool, goDownToBrutalGreen, goUpToMithrilDragons, killMithrilDragons,
-				pickupChewedBones, useLogOnPyre, useBonesOnPyre, lightPyre, talkToOttoAfterPyre),
+			Arrays.asList(talkToOttoAboutBow, lightLogWithBow, talkToOttoAfterBow),
 			firemaking35, crafting11, bow, oakLogs);
 		barbFiremaking.setLockingStep(firemakingSteps);
 		allSteps.add(barbFiremaking);
@@ -667,7 +683,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		PanelDetails barbSmithing = new PanelDetails("Barbarian Smithing", Arrays.asList(talkToOttoAboutSpears, makeBronzeSpear, talkToOttoAfterBronzeSpear,
 			talkToOttoAboutHastae, makeBronzeHasta, talkToOttoAfterMakingHasta), taiBwoWannaiTrio,
 			finishedHarpoon, smithing5, hammer, bronzeBar.quantity(2), logs.quantity(2));
-		barbSmithing.setLockingStep(hastaSteps);
+		barbSmithing.setLockingStep(spearAndHastaeSteps);
 		allSteps.add(barbSmithing);
 
 		PanelDetails barbPyremaking = new PanelDetails("Barbarian Pyremaking",

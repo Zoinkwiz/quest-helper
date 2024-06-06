@@ -2117,7 +2117,7 @@ public enum ItemCollections
 		ItemID.NASTURTIUM_SEED,
 		ItemID.WOAD_SEED,
 		ItemID.LIMPWURT_SEED,
-		ItemID.WHITE_LILY
+		ItemID.WHITE_LILY_SEED
 	)),
 
 	HOPS_SEEDS(ImmutableList.of(

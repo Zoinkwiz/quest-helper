@@ -41,6 +41,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nand;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
@@ -141,6 +142,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		potSmashingSteps = new ConditionalStep(this, talkToOttoAboutPots);
 		potSmashingSteps.addStep(smashedPot, talkToOttoAfterSmashingPot);
 		potSmashingSteps.addStep(taskedWithPotSmashing, plantSapling);
+		potSmashingSteps.setLockingCondition(finishedPotSmashing);
 		// Completed pot smashing, 9610 2->3
 
 
@@ -174,6 +176,8 @@ public class BarbarianTraining extends BasicQuestHelper
 		spearSteps.setLockingCondition(finishedSpear);
 
 		spearAndHastaeSteps = new ConditionalStep(this, spearSteps);
+		spearAndHastaeSteps.addStep(madeHasta, talkToOttoAfterMakingHasta);
+		spearAndHastaeSteps.addStep(taskedWithHastae, makeBronzeHasta);
 		spearAndHastaeSteps.addStep(finishedSpear, talkToOttoAboutHastae);
 		spearAndHastaeSteps.setLockingCondition(finishedHasta);
 
@@ -184,7 +188,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		allSteps.addStep(nor(finishedSeedPlanting), seedSteps);
 		allSteps.addStep(nor(finishedPotSmashing), potSmashingSteps);
 		allSteps.addStep(nor(finishedFiremaking), firemakingSteps);
-		allSteps.addStep(nor(finishedSpear, finishedHasta), spearAndHastaeSteps);
+		allSteps.addStep(nand(finishedSpear, finishedHasta), spearAndHastaeSteps);
 		allSteps.addStep(nor(finishedPyre), pyreSteps);
 		allSteps.addDialogSteps("Let's talk about my training.", "I seek more knowledge.");
 		allSteps.setCheckAllChildStepsOnListenerCall(true);
@@ -318,12 +322,17 @@ public class BarbarianTraining extends BasicQuestHelper
 			)
 		);
 
-		// TODO: Get details for starting smithing tasks
-		// taskedWithSpears =
-		// taskedWithHastae =
+		// TODO: Get details for starting spear tasks
+//		 taskedWithSpears =
+		taskedWithHastae = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedhasta",
+			new Conditions(true, LogicType.OR,
+				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),
+				new DialogRequirement("What of the one handed spears of which you spoke?"),
+				new WidgetTextRequirement(119, 3, true, " has tasked me with learning how to <col=800000>smith a hasta")
+			)
+		);
 
 		// Finished tasks
-
 		finishedFishing = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedfishing",
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Patience young one. These are fish which are fat with eggs rather than fat of flesh. It is these eggs that are the thing to make use of."),
@@ -368,15 +377,15 @@ public class BarbarianTraining extends BasicQuestHelper
 			),
 			"Finished Barbarian Pyremaking"
 		);
-		// TODO: Work out finished spear dialog
-		finishedSpear = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedspear",
+		finishedSpear = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedspearp",
 			new Conditions(true, LogicType.OR,
+				new DialogRequirement("The manufacture of spears is now yours as a speciality. Use your skill well."),
 				new WidgetTextRequirement(119, 3, true, "I managed to smith a spear!")
 			),
 			"Finished Barbarian Spear Smithing"
 		);
 		// TODO: Work out finished hasta dialog
-		finishedHasta = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedhasta",
+		finishedHasta = new RuneliteRequirement(getConfigManager(), "barbariantrainingfinishedhastap",
 			new Conditions(true, LogicType.OR,
 				new WidgetTextRequirement(119, 3, true, "I managed to create a hasta!")
 			),
@@ -425,7 +434,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// TODO: Confirm Quest Log text
-		sacrificedRemains = new RuneliteRequirement(getConfigManager(), "barbariantrainingpyremade",
+		sacrificedRemains = new RuneliteRequirement(getConfigManager(), "barbariantrainingpyremadep",
 			new Conditions(true, LogicType.OR,
 				new MultiChatMessageRequirement(
 					new ChatMessageRequirement("The ancient barbarian is laid to rest."),
@@ -480,16 +489,16 @@ public class BarbarianTraining extends BasicQuestHelper
 			)
 		);
 		madeHasta = new RuneliteRequirement(getConfigManager(), "barbariantrainingmadehasta",
-		new Conditions(true, LogicType.OR,
-			new MultiChatMessageRequirement(
-				new ChatMessageRequirement("You make a "),
-				new ChatMessageRequirement(" hasta."),
-				new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-			),
-			new WidgetTextRequirement(119, 3, true,
-				"I've managed to <col=800000>smith a hasta<col=000080>!")
-		)
-	);
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You make a "),
+					new ChatMessageRequirement(" hasta."),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true,
+					"I've managed to <col=800000>smith a hasta<col=000080>!")
+			)
+		);
 
 		// For harpooning,
 		// You catch a tuna.
@@ -589,10 +598,11 @@ public class BarbarianTraining extends BasicQuestHelper
 			"Make a bronze spear on the anvil south of Otto.", bronzeBar, logs, hammer);
 		talkToOttoAfterBronzeSpear = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls.");
+		talkToOttoAfterBronzeSpear.addDialogStep("I've created a spear!");
 
 		talkToOttoAboutHastae = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about hastae.");
-		// TODO: Add dialog
+		talkToOttoAboutHastae.addDialogStep("Tell me more about the use of spears.");
 		makeBronzeHasta = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Make a bronze hasta on the anvil south of Otto.", bronzeBar, logs, hammer);
 		talkToOttoAfterMakingHasta = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),

@@ -67,13 +67,11 @@ public class MultiChatMessageRequirement extends ChatMessageRequirement
 			{
 				maxTime.set(requiredMessages.get(requirement));
 			}
-
-			if (minTime.get() != -1 && maxTime.get() != -1 && maxTime.get() - minTime.get() < maxTicksDiff * 600)
-			{
-				hasReceivedChatMessage = true;
-			}
 		});
-
+		if (minTime.get() != -1 && maxTime.get() != -1 && maxTime.get() - minTime.get() < maxTicksDiff * 600)
+		{
+			hasReceivedChatMessage = true;
+		}
 		return hasReceivedChatMessage;
 	}
 

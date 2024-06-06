@@ -36,6 +36,7 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.client.plugins.timetracking.Tab;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Singleton
 class FarmingWorld
@@ -346,5 +347,12 @@ class FarmingWorld
 				.computeIfAbsent(p.getImplementation().getTab(), k -> new TreeSet<>(tabSorter))
 				.add(p);
 		}
+	}
+
+	Collection<FarmingRegion> getRegionsForLocation(WorldPoint location)
+	{
+		return this.regions.get(location.getRegionID()).stream()
+			.filter(region -> region.isInBounds(location))
+			.collect(Collectors.toSet());
 	}
 }

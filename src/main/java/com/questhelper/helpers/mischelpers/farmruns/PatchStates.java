@@ -38,6 +38,7 @@ public class PatchStates
 	private final ManualRequirement isEmpty = new ManualRequirement();
 	private final ManualRequirement isUnchecked = new ManualRequirement();
 	private final ManualRequirement isStump = new ManualRequirement();
+	private final ManualRequirement isProtected = new ManualRequirement();
 	private final Requirement requirement;
 
 	public PatchStates(String regionName)

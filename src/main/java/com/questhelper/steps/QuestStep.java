@@ -428,11 +428,10 @@ public abstract class QuestStep implements Module
 		return this;
 	}
 
-	// TODO: Add generic requirement for highlighting
-//	public void addWidgetHighlightWithRequirementRequirement(int groupID, int childID, Requirement requirement, boolean checkChildren)
-//	{
-//		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, requirement, checkChildren));
-//	}
+	public void addWidgetHighlightWithTextRequirement(int groupID, int childID, String requiredText, boolean checkChildren)
+	{
+		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, requiredText, checkChildren));
+	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{

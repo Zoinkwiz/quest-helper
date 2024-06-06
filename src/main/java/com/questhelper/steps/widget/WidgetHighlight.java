@@ -45,8 +45,13 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 	protected Integer itemIdRequirement;
 
 	@Getter
+
 	@Setter
 	protected Integer modelIdRequirement;
+
+	@Getter
+	protected String requiredText;
+
 
 	protected final boolean checkChildren;
 
@@ -80,6 +85,15 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		this.childId = childId;
 		this.childChildId = -1;
 		this.itemIdRequirement = itemIdRequirement;
+		this.checkChildren = checkChildren;
+	}
+
+	public WidgetHighlight(int groupId, int childId, String requiredText, boolean checkChildren)
+	{
+		this.groupId = groupId;
+		this.childId = childId;
+		this.childChildId = -1;
+		this.requiredText = requiredText;
 		this.checkChildren = checkChildren;
 	}
 
@@ -124,7 +138,9 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 	@Override
 	protected void highlightWidget(Graphics2D graphics, QuestHelperPlugin questHelper, Widget widgetToHighlight)
 	{
-		if (widgetToHighlight == null || !itemCheckPasses(widgetToHighlight) || !modelCheckPasses(widgetToHighlight)) return;
+		if (widgetToHighlight == null || !itemCheckPasses(widgetToHighlight) || !modelCheckPasses(widgetToHighlight) ||
+			(requiredText != null && (widgetToHighlight.getText() == null || !widgetToHighlight.getText().contains(requiredText)))
+		) return;
 
 		super.highlightWidget(graphics, questHelper, widgetToHighlight);
 	}

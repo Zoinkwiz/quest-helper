@@ -57,7 +57,6 @@ class FarmingPatch
 		this(name, varbit, implementation, farmer, -1);
 	}
 
-
 	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int farmer, int patchNumber)
 	{
 		this.name = name;

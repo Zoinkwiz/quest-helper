@@ -76,7 +76,6 @@ import java.util.List;
 /*
 *
 * TODO LIST:
-*  Add last hardwood patch
 *  Add better direction for using spirit trees and such
 * */
 public class TreeRun extends ComplexStateQuestHelper
@@ -122,13 +121,13 @@ public class TreeRun extends ComplexStateQuestHelper
 		lletyaFruitProtect, catherbyFruitProtect;
 
 	// Hardwood Trees
-	DetailedQuestStep eastHardwoodTreePatchCheckHealth, westHardwoodTreePatchCheckHealth, middleHardwoodTreePatchCheckHealth;
-	DetailedQuestStep eastHardwoodTreePatchPlant, westHardwoodTreePatchPlant, middleHardwoodTreePatchPlant;
-	DetailedQuestStep eastHardwoodTreePatchDig, westHardwoodTreePatchDig, middleHardwoodTreePatchDig;
+	DetailedQuestStep eastHardwoodTreePatchCheckHealth, westHardwoodTreePatchCheckHealth, middleHardwoodTreePatchCheckHealth, savannahCheckHealth;
+	DetailedQuestStep eastHardwoodTreePatchPlant, westHardwoodTreePatchPlant, middleHardwoodTreePatchPlant, savannahPlant;
+	DetailedQuestStep eastHardwoodTreePatchDig, westHardwoodTreePatchDig, middleHardwoodTreePatchDig, savannahDig;
 
-	DetailedQuestStep eastHardwoodTreePatchClear, westHardwoodTreePatchClear, middleHardwoodTreePatchClear;
+	DetailedQuestStep eastHardwoodTreePatchClear, westHardwoodTreePatchClear, middleHardwoodTreePatchClear, savannahClear;
 
-	DetailedQuestStep eastHardwoodProtect, westHardwoodProtect, middleHardwoodProtect;
+	DetailedQuestStep eastHardwoodProtect, westHardwoodProtect, middleHardwoodProtect, savannahProtect;
 
 	// Farming Items
 	ItemRequirement coins, spade, rake, allTreeSaplings, treeSapling, allFruitSaplings, fruitTreeSapling, allHardwoodSaplings, hardwoodSapling, compost, axe,
@@ -145,7 +144,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	ItemRequirement farmingHat, farmingTop, farmingLegs, farmingBoots, farmersOutfit;
 
 	// Access Requirements
-	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToLletya, accessToFossilIsland;
+	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToLletya, accessToFossilIsland, accessToSavannah;
 
 	Requirement payingForRemoval, payingForProtection, usingCompostorNothing;
 
@@ -153,7 +152,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 	PatchStates gnomeStrongholdFruitStates, gnomeVillageStates, brimhavenStates, catherbyStates, lletyaStates, farmingGuildFruitStates;
 
-	PatchStates eastHardwoodStates, middleHardwoodStates, westHardwoodStates;
+	PatchStates eastHardwoodStates, middleHardwoodStates, westHardwoodStates, savannahStates;
 
 	private final String PAY_OR_CUT = "payOrCutTree";
 	private final String PAY_OR_COMPOST = "payOrCompostTree";
@@ -165,8 +164,8 @@ public class TreeRun extends ComplexStateQuestHelper
 		setupSteps();
 		farmingHandler = new FarmingHandler(client, configManager);
 
-		ConditionalStep steps = new ConditionalStep(this, waitForTree, spade, coins, rake, compost, treeSapling,
-			fruitTreeSapling, hardwoodSapling, farmersOutfit, gracefulOutfit, protectionItemTree, protectionItemFruitTree, protectionItemHardwood);
+		ConditionalStep steps = new ConditionalStep(this, waitForTree, spade, coins, rake, compost
+			, farmersOutfit, gracefulOutfit);
 
 		// Farming Guild Tree -> Farming Guild Fruit Tree -> Lumbridge -> Falador -> Taverley
 		// Varrock -> Gnome Stronghold Fruit -> Gnome Stronghold Tree -> Gnome Village -> Brimhaven
@@ -263,6 +262,12 @@ public class TreeRun extends ComplexStateQuestHelper
 		steps.addStep(new Conditions(accessToFossilIsland, westHardwoodStates.getIsStump()), westHardwoodTreePatchDig);
 		steps.addStep(new Conditions(accessToFossilIsland, nor(usingCompostorNothing, westHardwoodStates.getIsProtected())), westHardwoodProtect);
 
+		steps.addStep(new Conditions(accessToSavannah, savannahStates.getIsUnchecked()), savannahCheckHealth);
+		steps.addStep(new Conditions(accessToSavannah, savannahStates.getIsEmpty()), savannahPlant);
+		steps.addStep(new Conditions(accessToSavannah, savannahStates.getIsHarvestable()), savannahClear);
+		steps.addStep(new Conditions(accessToSavannah, savannahStates.getIsStump()), savannahDig);
+		steps.addStep(new Conditions(accessToSavannah, nor(usingCompostorNothing, savannahStates.getIsProtected())), savannahProtect);
+
 		return steps;
 	}
 
@@ -280,6 +285,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		accessToFarmingGuildFruitTreePatch = new Conditions(
 			new SkillRequirement(Skill.FARMING, 85)
 		);
+		accessToSavannah = new QuestRequirement(QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestState.FINISHED);
 
 		// Trees
 		lumbridgeStates = new PatchStates("Lumbridge");
@@ -300,6 +306,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		westHardwoodStates = new PatchStates("Fossil Island", "West");
 		middleHardwoodStates = new PatchStates("Fossil Island", "Middle");
 		eastHardwoodStates = new PatchStates("Fossil Island", "East");
+		savannahStates = new PatchStates("Avium Savannah", accessToSavannah);
 
 		payingForRemoval = new RuneliteRequirement(configManager, PAY_OR_CUT, PayOrCut.PAY.name());
 		payingForProtection = new RuneliteRequirement(configManager, PAY_OR_COMPOST, PayOrCompost.PAY.name());
@@ -667,22 +674,27 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Check the health of the centre hardwood tree on Fossil Island.");
 		eastHardwoodTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
 			"Check the health of the eastern hardwood tree on Fossil Island.");
+		savannahCheckHealth  = new ObjectStep(this, NullObjectID.NULL_50692, new WorldPoint(1687, 2972, 0),
+			"Check the health of the hardwood tree in the Avium Savannah.");
 
 		// Hardwood Tree Plant Steps
 		westHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
-			"Plant your sapling on the western hardwood tree on Fossil Island.", hardwoodSapling);
+			"Plant your sapling on the western hardwood tree patch on Fossil Island.", hardwoodSapling);
 		westHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		westHardwoodTreePatchCheckHealth.addSubSteps(westHardwoodTreePatchPlant);
 
 		middleHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3708, 3833, 0),
-			"Plant your sapling on the centre hardwood tree on Fossil Island.", hardwoodSapling);
+			"Plant your sapling on the centre hardwood tree patch on Fossil Island.", hardwoodSapling);
 		middleHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		middleHardwoodTreePatchCheckHealth.addSubSteps(middleHardwoodTreePatchPlant);
 
 		eastHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
-			"Plant your sapling on the eastern hardwood tree on Fossil Island.", hardwoodSapling);
+			"Plant your sapling on the eastern hardwood tree patch on Fossil Island.", hardwoodSapling);
 		eastHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		eastHardwoodTreePatchCheckHealth.addSubSteps(eastHardwoodTreePatchPlant);
+
+		savannahPlant = new ObjectStep(this, NullObjectID.NULL_50692, new WorldPoint(1687, 2972, 0),
+			"Plant your sapling into the hardwood tree in the hardwood tree patch in the Avium Savannah.", hardwoodSapling);
 
 		westHardwoodTreePatchClear = new NpcStep(this, NpcID.SQUIRREL_7756, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to remove the west tree.");
@@ -691,12 +703,17 @@ public class TreeRun extends ComplexStateQuestHelper
 		eastHardwoodTreePatchClear = new NpcStep(this, NpcID.SQUIRREL_7754, new WorldPoint(3702, 3837, 0),
 			"Pay the grey squirrel to remove the east tree.");
 
+		savannahClear = new NpcStep(this, NpcID.MARCELLUS_12936, new WorldPoint(1687, 2972, 0),
+			"Pay Marcellus to clear the tree.");
+
 		westHardwoodTreePatchDig = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
 			"Dig up the western hardwood tree's stump on Fossil Island.");
 		middleHardwoodTreePatchDig = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3708, 3833, 0),
 			"Dig up the centre hardwood tree's stump on Fossil Island.");
 		eastHardwoodTreePatchDig = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
 			"Dig up the eastern hardwood tree's stump on Fossil Island.");
+		savannahDig = new ObjectStep(this, NullObjectID.NULL_50692, new WorldPoint(1687, 2972, 0),
+			"Dig up the Savannah hardwood tree's stump.");
 
 		westHardwoodProtect = new NpcStep(this, NpcID.SQUIRREL_7756, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to protect the west tree.");
@@ -704,10 +721,13 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Pay the black squirrel to protect the middle tree.");
 		eastHardwoodProtect = new NpcStep(this, NpcID.SQUIRREL_7754, new WorldPoint(3702, 3837, 0),
 			"Pay the grey squirrel to protect the east tree.");
+		savannahProtect = new NpcStep(this, NpcID.MARCELLUS_12936, new WorldPoint(1687, 2972, 0),
+			"Pay Marcellus to protect the hardwood tree.");
 
 		westHardwoodTreePatchClear.addSubSteps(westHardwoodTreePatchDig, westHardwoodProtect);
 		middleHardwoodTreePatchClear.addSubSteps(middleHardwoodTreePatchDig, middleHardwoodProtect);
 		eastHardwoodTreePatchClear.addSubSteps(eastHardwoodTreePatchDig, eastHardwoodProtect);
+		savannahClear.addSubSteps(savannahDig, savannahProtect);
 	}
 
 	@Subscribe
@@ -723,7 +743,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		handleTreePatches(PatchImplementation.FRUIT_TREE,
 			List.of(farmingGuildFruitStates, brimhavenStates, catherbyStates, gnomeStrongholdFruitStates, gnomeVillageStates, lletyaStates),
 			farmingWorld.getTabs().get(Tab.FRUIT_TREE), allFruitSaplings, allProtectionItemFruitTree);
-		handleTreePatches(PatchImplementation.HARDWOOD_TREE, List.of(westHardwoodStates, middleHardwoodStates, eastHardwoodStates),
+		handleTreePatches(PatchImplementation.HARDWOOD_TREE, List.of(westHardwoodStates, middleHardwoodStates, eastHardwoodStates, savannahStates),
 			farmingWorld.getTabs().get(Tab.TREE), allHardwoodSaplings, allProtectionItemHardwood);
 	}
 
@@ -840,7 +860,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Fossil Island", Arrays.asList(eastHardwoodTreePatchCheckHealth, eastHardwoodTreePatchClear,
 			middleHardwoodTreePatchCheckHealth, middleHardwoodTreePatchClear,
 			westHardwoodTreePatchCheckHealth, westHardwoodTreePatchClear)));
-
+		allSteps.add(new PanelDetails("Avium Savannah", Arrays.asList(savannahCheckHealth, savannahClear)));
 		return allSteps;
 	}
 

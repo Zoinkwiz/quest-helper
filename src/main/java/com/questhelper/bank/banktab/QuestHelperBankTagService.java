@@ -165,9 +165,18 @@ public class QuestHelperBankTagService
 		{
 			BankTabItems allRequiredItems = new BankTabItems("Required items");
 			List<ItemRequirement> allRequired = plugin.getSelectedQuest().getItemRequirements();
+			List<ItemRequirement> items;
 			if (allRequired != null && allRequired.size() > 0)
 			{
-				allRequired.forEach(item -> getItemsFromRequirement(allRequiredItems.getItems(), item, item));
+				items = allRequired.stream()
+					.filter(Objects::nonNull)
+					.map(ItemRequirement.class::cast)
+					.filter(i -> (!onlyGetMissingItems
+				   || !i.check(plugin.getClient(), false, questBank.getBankItems()))
+				   && i.shouldDisplayText(plugin.getClient()))
+					.collect(Collectors.toList());
+
+				items.forEach(item -> getItemsFromRequirement(allRequiredItems.getItems(), item, item));
 			}
 			newList.add(allRequiredItems);
 		}

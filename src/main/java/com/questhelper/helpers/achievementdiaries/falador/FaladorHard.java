@@ -27,6 +27,7 @@ package com.questhelper.helpers.achievementdiaries.falador;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -64,7 +65,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 
 	ItemRequirements prosySet;
 
-	Requirement herosQuest, slugMenace, grimTales;
+	Requirement heroesQuest, slugMenace, grimTales;
 
 	Requirement notCraftedMindRunes, notChangedFamilyCrest, notKilledMole, notKilledWyvern, notCompleteAgiCourse,
 		notEnterMiningGuildWithProspector, notKilledBlueDragon, notCrackedWallSafe, notPraySarimAltarProsy, notEnterWarriorsGuild,
@@ -178,8 +179,8 @@ public class FaladorHard extends ComplexStateQuestHelper
 		dwarvenHelmet = new ItemRequirement("Dwarven Helmet", ItemID.DWARVEN_HELMET, 1)
 			.showConditioned(notDwarvenHelmetDwarvenMines).isNotConsumed();
 
-		faladorTeleport = new ItemRequirement("Multiple teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
-		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS);
+		faladorTeleport = new TeleportItemRequirement("Multiple teleports to Falador", ItemID.FALADOR_TELEPORT, -1);
+		combatBracelet = new TeleportItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS);
 		combatBracelet.addAlternates(ItemCollections.GAMES_NECKLACES);
 
 		prosySet = new ItemRequirements(prosyHelm, prosyLegs, prosyChest);
@@ -199,7 +200,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		inMoleDen = new ZoneRequirement(moleDen);
 
 		slugMenace = new QuestRequirement(QuestHelperQuest.THE_SLUG_MENACE, QuestState.FINISHED);
-		herosQuest = new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED);
+		heroesQuest = new QuestRequirement(QuestHelperQuest.HEROES_QUEST, QuestState.FINISHED);
 		grimTales = new QuestRequirement(QuestHelperQuest.GRIM_TALES, QuestState.FINISHED);
 	}
 
@@ -343,7 +344,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 
 
 		req.add(grimTales);
-		req.add(herosQuest);
+		req.add(heroesQuest);
 		req.add(slugMenace);
 
 		return req;
@@ -408,7 +409,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(warriorsGuildSteps);
 
 		PanelDetails blueDragonSteps = new PanelDetails("The Dragon Slayer", Arrays.asList(enterHerosGuild,
-			enterHerosGuildBasement, killBlueDragon), herosQuest, combatGear, food, dragonfireProtection);
+			enterHerosGuildBasement, killBlueDragon), heroesQuest, combatGear, food, dragonfireProtection);
 		blueDragonSteps.setDisplayCondition(notKilledBlueDragon);
 		blueDragonSteps.setLockingStep(killedBlueDragonTask);
 		allSteps.add(blueDragonSteps);

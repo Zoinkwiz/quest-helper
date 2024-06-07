@@ -27,6 +27,7 @@ package com.questhelper.helpers.achievementdiaries.fremennik;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -186,7 +187,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notSlayBrineRat).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(
 			new Conditions(LogicType.OR, notMineGold, notMineCoal)).isNotConsumed();
-		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMisc).isNotConsumed();
+		staff = new TeleportItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMisc).isNotConsumed();
 		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight).isNotConsumed();
 		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight).isNotConsumed();
 		butterFlyNet.addAlternates(ItemID.MAGIC_BUTTERFLY_NET);

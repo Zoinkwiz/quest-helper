@@ -26,6 +26,7 @@ package com.questhelper.helpers.achievementdiaries.desert;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -175,12 +176,12 @@ public class DesertMedium extends ComplexStateQuestHelper
 			.showConditioned(notVisitGenie).isNotConsumed();
 		scrollOfRedir = new ItemRequirement("Scroll of redirection", ItemID.SCROLL_OF_REDIRECTION)
 			.showConditioned(new Conditions(notTPPollnivneach, notIronman));
-		teleToHouse = new ItemRequirement("Teleport to house", ItemID.TELEPORT_TO_HOUSE)
+		teleToHouse = new TeleportItemRequirement("Teleport to house", ItemID.TELEPORT_TO_HOUSE)
 			.showConditioned(new Conditions(notTPPollnivneach, notIronman));
 		harraPot = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDER_POTION_UNF)
 			.showConditioned(notCombatPot);
 		goatHornDust = new ItemRequirement("Goat horn dust", ItemID.GOAT_HORN_DUST).showConditioned(notCombatPot);
-		camulet = new ItemRequirement("Camulet", ItemID.CAMULET).showConditioned(notTPEnakhra);
+		camulet = new TeleportItemRequirement("Camulet", ItemID.CAMULET).showConditioned(notTPEnakhra);
 		iceCooler = new ItemRequirement("Ice cooler (bring multiple just in case)", ItemID.ICE_COOLER).showConditioned(notDesertLizard);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);

@@ -26,6 +26,7 @@ package com.questhelper.helpers.achievementdiaries.desert;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -154,7 +155,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notEnterKalph, notCollectCacti));
 		shantayPass = new ItemRequirement("Shantay pass", ItemID.SHANTAY_PASS).showConditioned(notEnterDesert);
 		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notGoldWarbler).isNotConsumed();
-		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES).showConditioned(notFiveClay).isNotConsumed();
+		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES).showConditioned(notFiveClay).isNotConsumed();
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notCutCactus).isNotConsumed();
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS).showConditioned(notEnterDesert).isNotConsumed();
 		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE).showConditioned(notEnterDesert).isNotConsumed();
@@ -166,8 +167,8 @@ public class DesertEasy extends ComplexStateQuestHelper
 
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		waterskin = new ItemRequirement("Waterskin", ItemCollections.WATERSKIN).isNotConsumed();
-		pharaohSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
-		necklaceOfPassage = new ItemRequirement("Necklace of passage", ItemCollections.NECKLACE_OF_PASSAGES);
+		pharaohSceptre = new TeleportItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
+		necklaceOfPassage = new TeleportItemRequirement("Necklace of passage", ItemCollections.NECKLACE_OF_PASSAGES);
 
 		combatGear = new ItemRequirement("Combat gear and ranged weapon or runes for multiple spell casts", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

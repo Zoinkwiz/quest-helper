@@ -27,6 +27,7 @@ package com.questhelper.helpers.achievementdiaries.falador;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -189,15 +190,15 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav)).isNotConsumed();
 		airRune1 = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 1)
 			.showConditioned(new Conditions(notTelegrabbedWine, new Conditions(LogicType.NOR, bothRunes)));
-		airRune3 = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 3)
+		airRune3 = new ItemRequirement("Air runes", ItemID.AIR_RUNE, 3)
 			.showConditioned(new Conditions(notTeleportFalador, new Conditions(LogicType.NOR, bothRunes)));
-		airRune4 = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 4).showConditioned(bothRunes);
-		lawRune2 = new ItemRequirement("Law rune", ItemID.LAW_RUNE, 2).showConditioned(bothRunes);
+		airRune4 = new ItemRequirement("Air runes", ItemID.AIR_RUNE, 4).showConditioned(bothRunes);
+		lawRune2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2).showConditioned(bothRunes);
 		lawRune1 = new ItemRequirement("Law rune", ItemID.LAW_RUNE, 1)
 			.showConditioned(new Conditions(new Conditions(LogicType.OR, notTelegrabbedWine, notTeleportFalador),
 				new Conditions(LogicType.NOR, bothRunes)));
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
+		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE);
+		airRune = new ItemRequirement("Air runes", ItemID.AIR_RUNE);
 		waterRune1 = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 1).showConditioned(notTeleportFalador);
 		crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY).showConditioned(notUnlockedCrystalChest);
 		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
@@ -226,10 +227,10 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		initiateSet = new ItemRequirements(initiateChest, initiateLegs, initiateHelm);
 
-		faladorTeleport = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
-		explorersRing = new ItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2).isNotConsumed();
+		faladorTeleport = new TeleportItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
+		explorersRing = new TeleportItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2).isNotConsumed();
 		explorersRing.addAlternates(ItemID.EXPLORERS_RING_4, ItemID.EXPLORERS_RING_3);
-		combatBracelet = new ItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS).isNotConsumed();
+		combatBracelet = new TeleportItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS).isNotConsumed();
 		combatBracelet.addAlternates(ItemCollections.GAMES_NECKLACES);
 
 		inChemist = new ZoneRequirement(chemist);

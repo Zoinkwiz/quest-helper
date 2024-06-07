@@ -157,7 +157,6 @@ public class SongOfTheElves extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -782,7 +781,8 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		ardougneCastleF1 = new Zone(new WorldPoint(2570, 3283, 1), new WorldPoint(2590, 3310, 1));
 		ardyPrison = new Zone(new WorldPoint(2564, 9703, 0), new WorldPoint(2576, 9715, 0));

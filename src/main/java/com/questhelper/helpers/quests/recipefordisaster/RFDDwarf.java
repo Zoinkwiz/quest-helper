@@ -78,7 +78,6 @@ public class RFDDwarf extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -155,7 +154,8 @@ public class RFDDwarf extends BasicQuestHelper
 		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
 		tunnel = new Zone(new WorldPoint(2815, 9859, 0), new WorldPoint(2879, 9885, 0));

@@ -74,7 +74,6 @@ public class JunglePotion extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		return getSteps();
 	}
 
@@ -102,7 +101,8 @@ public class JunglePotion extends BasicQuestHelper
 		roguesPurse = new ItemRequirement("Rogues Purse", ItemID.ROGUES_PURSE);
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		//2824,9462,0
 		//2883, 9533, 0

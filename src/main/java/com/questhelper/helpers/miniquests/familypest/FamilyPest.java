@@ -72,7 +72,6 @@ public class FamilyPest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -133,7 +132,8 @@ public class FamilyPest extends BasicQuestHelper
 		talkedToJohnathon = new VarbitRequirement(5350, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		upstairsJollyBoar = new Zone(new WorldPoint(3273, 3485, 1), new WorldPoint(3287, 3509, 1));
 	}

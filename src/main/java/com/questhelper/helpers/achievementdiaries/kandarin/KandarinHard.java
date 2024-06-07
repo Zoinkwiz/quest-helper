@@ -87,7 +87,6 @@ public class KandarinHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -212,7 +211,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		tavDungeon = new Zone(new WorldPoint(2813, 9857, 0), new WorldPoint(2972, 9669, 0));
 		obIsland = new Zone(new WorldPoint(2833, 3427, 0), new WorldPoint(2849, 3415, 0));

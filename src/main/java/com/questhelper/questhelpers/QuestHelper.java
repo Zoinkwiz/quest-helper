@@ -230,6 +230,11 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	}
 
+	protected void setupZones()
+	{
+
+	}
+
 	/**
 	 * This method should not be called directly.
 	 * It is used internally by {@link #initializeRequirements()}.
@@ -246,6 +251,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		{
 			return;
 		}
+		setupZones();
 		setupRequirements();
 		hasInitialized = true;
 	}

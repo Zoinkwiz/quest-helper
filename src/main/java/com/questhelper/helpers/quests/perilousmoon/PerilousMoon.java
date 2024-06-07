@@ -115,7 +115,6 @@ public class PerilousMoon extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -261,7 +260,8 @@ public class PerilousMoon extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		camTorum = new Zone(new WorldPoint(1378, 9502, 1), new WorldPoint(1524, 9600, 3));
 		antechamber = new Zone(5782, 1);

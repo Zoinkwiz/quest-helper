@@ -67,7 +67,6 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -137,7 +136,8 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		hasNorthArmour = new VarbitRequirement(2379, 1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		upstairs = new Zone(new WorldPoint(2952, 3495, 2), new WorldPoint(2959, 3498, 2));
 	}

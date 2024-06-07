@@ -127,7 +127,6 @@ public class DesertTreasureII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -414,7 +413,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		medallion.addAlternates(ItemID.SUCELLUS_MEDALLION, ItemID.PERSERIYAS_MEDALLION, ItemID.VARDORVIS_MEDALLION);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		vault = new Zone(new WorldPoint(3925, 9620, 1), new WorldPoint(3949, 9643, 1));
 		vault2 = new Zone(new WorldPoint(3159, 6421, 1), new WorldPoint(3181, 6442, 1));

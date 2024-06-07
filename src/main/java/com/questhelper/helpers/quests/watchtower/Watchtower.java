@@ -90,7 +90,6 @@ public class Watchtower extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -310,7 +309,8 @@ public class Watchtower extends BasicQuestHelper
 		fireRes.addAlternates(ItemCollections.ANTIFIRE_POTIONS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		watchtowerFloor1 = new Zone(new WorldPoint(2543, 3111, 1), new WorldPoint(2550, 3118, 1));
 		watchtowerFloor2 = new Zone(new WorldPoint(2543, 3111, 2), new WorldPoint(2550, 3118, 2));

@@ -87,7 +87,6 @@ public class BoneVoyage extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -181,7 +180,8 @@ public class BoneVoyage extends BasicQuestHelper
 		potionOfSealegs.setTooltip("You can get another from the Apothecary in Varrock");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		boat = new Zone(new WorldPoint(3355, 3451, 1), new WorldPoint(3366, 3455, 1));
 		boatSailing = new Zone(new WorldPoint(1812, 4750, 0), new WorldPoint(1840, 4774, 2));

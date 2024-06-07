@@ -87,7 +87,6 @@ public class WesternEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -172,7 +171,8 @@ public class WesternEasy extends ComplexStateQuestHelper
 		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		stronghold = new Zone(new WorldPoint(2376, 3523, 0), new WorldPoint(2498, 3391, 0));
 		pest = new Zone(new WorldPoint(2631, 2681, 0), new WorldPoint(2683, 2626, 0));

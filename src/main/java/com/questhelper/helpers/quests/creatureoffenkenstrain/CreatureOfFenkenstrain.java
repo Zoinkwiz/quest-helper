@@ -85,7 +85,6 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -192,7 +191,8 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, -1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		barZone = new Zone(new WorldPoint(3488, 3477, 0), new WorldPoint(3504, 3471, 0));
 		castleZoneFloor0 = new Zone(new WorldPoint(3526, 3574, 0), new WorldPoint(3566, 3531, 0));

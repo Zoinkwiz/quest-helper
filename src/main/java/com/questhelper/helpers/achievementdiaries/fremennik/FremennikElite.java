@@ -92,7 +92,6 @@ public class FremennikElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -219,7 +218,8 @@ public class FremennikElite extends ComplexStateQuestHelper
 		inPirates3 = new ZoneRequirement(pirates3);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		godWars = new Zone(new WorldPoint(2819, 5375, 2), new WorldPoint(2943, 5252, 2));
 		godWars2 = new Zone(new WorldPoint(2819, 5375, 1), new WorldPoint(2943, 5252, 1));

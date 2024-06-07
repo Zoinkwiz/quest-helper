@@ -78,7 +78,6 @@ public class ErnestTheChicken extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -186,7 +185,8 @@ public class ErnestTheChicken extends BasicQuestHelper
 		inEmptyRoom = new ZoneRequirement(emptyRoom);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		manorGround1 = new Zone(new WorldPoint(3097, 3354, 0), new WorldPoint(3119, 3373, 0));
 		secretRoom = new Zone(new WorldPoint(3090, 3354, 0), new WorldPoint(3096, 3363, 0));

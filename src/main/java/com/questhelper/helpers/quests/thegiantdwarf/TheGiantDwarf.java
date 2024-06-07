@@ -178,7 +178,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 		dwarvenBattleaxeSapphires = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE_5058);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		trollRoom = new Zone(new WorldPoint(2762, 10123, 0), new WorldPoint(2804, 10164, 0));
 		dwarfEntrance = new Zone(new WorldPoint(2814, 10121, 0), new WorldPoint(2884, 10139, 0));
@@ -532,7 +533,6 @@ public class TheGiantDwarf extends BasicQuestHelper
 	{
 		// Varbit 571
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 

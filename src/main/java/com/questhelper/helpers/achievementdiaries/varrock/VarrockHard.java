@@ -99,7 +99,6 @@ public class VarrockHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -275,7 +274,8 @@ public class VarrockHard extends ComplexStateQuestHelper
 		);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		stronghold1 = new Zone(new WorldPoint(1854, 5248, 0), new WorldPoint(1918, 5183, 0));
 		stronghold2 = new Zone(new WorldPoint(1983, 5248, 0), new WorldPoint(2049, 5183, 0));

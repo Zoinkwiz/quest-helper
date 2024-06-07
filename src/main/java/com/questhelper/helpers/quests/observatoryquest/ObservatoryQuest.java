@@ -77,7 +77,6 @@ public class ObservatoryQuest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -149,7 +148,8 @@ public class ObservatoryQuest extends BasicQuestHelper
 		lookedThroughTelescope = new VarbitRequirement(3836, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		observatoryDungeon = new Zone(new WorldPoint(2295, 9340, 0), new WorldPoint(2370, 9410, 0));
 		observatoryF1 = new Zone(new WorldPoint(2433, 3154, 0), new WorldPoint(2448, 3169, 0));

@@ -76,7 +76,6 @@ public class TheHandInTheSand extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -187,7 +186,8 @@ public class TheHandInTheSand extends BasicQuestHelper
 		teleportToPortSarim.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		yanille = new Zone(new WorldPoint(2528, 3063, 0), new WorldPoint(2628, 3122, 0));
 		lightSpot = new Zone(new WorldPoint(3016, 3259, 0), new WorldPoint(3016, 3259, 0));

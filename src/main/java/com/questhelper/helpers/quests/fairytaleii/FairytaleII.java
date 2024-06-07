@@ -100,7 +100,6 @@ public class FairytaleII extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -193,7 +192,8 @@ public class FairytaleII extends BasicQuestHelper
 		queensSecateurs = new ItemRequirement("Queen's secateurs", ItemID.QUEENS_SECATEURS_9020);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		zanaris = new Zone(new WorldPoint(2368, 4353, 0), new WorldPoint(2495, 4479, 0));
 		hideout = new Zone(new WorldPoint(2324, 4420, 0), new WorldPoint(2367, 4468, 0));

@@ -83,7 +83,6 @@ public class DreamMentor extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -215,7 +214,8 @@ public class DreamMentor extends BasicQuestHelper
 		stamina = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		lunarMine = new Zone(new WorldPoint(2300, 10313, 2), new WorldPoint(2370, 10354, 2));
 		cyrisusRoom = new Zone(new WorldPoint(2337, 10356, 2), new WorldPoint(2350, 10363, 2));

@@ -98,7 +98,6 @@ public class SleepingGiants extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -223,7 +222,8 @@ public class SleepingGiants extends BasicQuestHelper
 		preform = new ItemRequirement("Preform", ItemID.PREFORM).equipped();
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		Zone desertPlateau = new Zone(new WorldPoint(3375, 3169, 0), new WorldPoint(3349, 3143, 0));
 		onDesertPlateau = new ZoneRequirement(desertPlateau);

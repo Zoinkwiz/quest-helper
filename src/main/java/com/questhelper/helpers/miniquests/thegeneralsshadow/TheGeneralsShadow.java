@@ -78,7 +78,6 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -148,7 +147,8 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		sinSeersNote = new ItemRequirement("Sin seer's note", ItemID.SIN_SEERS_NOTE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		sinRoom = new Zone(new WorldPoint(2680, 3460, 1), new WorldPoint(2740, 3490, 1));
 		goblinCave = new Zone(new WorldPoint(2560, 9792, 0), new WorldPoint(2623, 9855, 0));

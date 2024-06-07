@@ -86,7 +86,6 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -207,7 +206,8 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		morttonTeleport.addAlternates(ItemID.BARROWS_TELEPORT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		bridge = new Zone(new WorldPoint(3502, 3426, 0), new WorldPoint(3502, 3430, 0));
 		entranceIsland = new Zone(new WorldPoint(3480, 3430, 0), new WorldPoint(3513, 3464, 0));

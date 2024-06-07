@@ -97,7 +97,6 @@ public class RagAndBoneManI extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -188,7 +187,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 		// Need to know how many pots of vinegar needed, and if missing some
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		swamp = new Zone(new WorldPoint(3138, 9536, 0), new WorldPoint(3261, 9601, 0));
 		junaRoom = new Zone(new WorldPoint(3205, 9484, 0), new WorldPoint(3263, 9537, 2));

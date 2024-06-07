@@ -87,7 +87,6 @@ public class TheGardenOfDeath extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -202,7 +201,8 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		warningNote = new ItemRequirement("Warning note", ItemID.WARNING_NOTE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		hole = new Zone(new WorldPoint(1290, 9860, 0), new WorldPoint(1325, 9895, 0));
 		molchIsland = new Zone(new WorldPoint(1358, 3623, 0), new WorldPoint(1379, 3643, 0));

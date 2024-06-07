@@ -72,7 +72,6 @@ public class RFDGoblins extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -142,7 +141,8 @@ public class RFDGoblins extends BasicQuestHelper
 		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
 		cookRoom = new Zone(new WorldPoint(2974, 9906, 0), new WorldPoint(2990, 9917, 0));

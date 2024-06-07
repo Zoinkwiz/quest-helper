@@ -94,7 +94,6 @@ public class EadgarsRuse extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -314,7 +313,8 @@ public class EadgarsRuse extends BasicQuestHelper
 		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		sanfewRoom = new Zone(new WorldPoint(2893, 3423, 1), new WorldPoint(2903, 3433, 1));
 		tenzingHut = new Zone(new WorldPoint(2814, 3553, 0), new WorldPoint(2822, 3562, 0));

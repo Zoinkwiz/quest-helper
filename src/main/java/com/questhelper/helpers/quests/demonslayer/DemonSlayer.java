@@ -82,7 +82,6 @@ public class DemonSlayer extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -165,7 +164,8 @@ public class DemonSlayer extends BasicQuestHelper
 		inInstance = new VarbitRequirement(2569, 1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		varrockSewer = new Zone(new WorldPoint(3151, 9855, 0), new WorldPoint(3290, 9919, 0));
 		castleNWFloor1 = new Zone(new WorldPoint(3200, 3490, 1), new WorldPoint(3206, 3500, 1));

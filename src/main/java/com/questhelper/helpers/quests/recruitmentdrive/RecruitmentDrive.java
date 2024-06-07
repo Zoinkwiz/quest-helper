@@ -95,7 +95,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		SetupZones();
 
 		return getSteps();
 	}
@@ -116,7 +115,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 		noItemRequirement = new NoItemRequirement("No items or equipment carried", ItemSlots.ANY_EQUIPPED_AND_INVENTORY);
 	}
 
-	public void SetupZones()
+	@Override
+	protected void setupZones()
 	{
 		Zone firstFloorZone = new Zone(new WorldPoint(2954, 3335, 1),
 			new WorldPoint(2966, 3343, 1));

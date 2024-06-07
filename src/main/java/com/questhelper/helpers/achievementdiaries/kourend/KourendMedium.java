@@ -90,7 +90,6 @@ public class KourendMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -214,7 +213,8 @@ public class KourendMedium extends ComplexStateQuestHelper
 		hasBird = new VarbitRequirement(5983, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		molchIsland = new Zone(new WorldPoint(1360, 3640, 0), new WorldPoint(1376, 3625, 0));
 	}

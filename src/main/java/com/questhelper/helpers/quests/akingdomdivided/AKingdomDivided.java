@@ -128,7 +128,6 @@ public class AKingdomDivided extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -380,7 +379,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		return steps;
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		arceuusLibraryHistoricalArchive = new Zone(new WorldPoint(1535, 10236, 0), new WorldPoint(1571, 10213, 0));
 		councillorsHouseF1 = new Zone(new WorldPoint(1670, 3684, 0), new WorldPoint(1683, 3677, 0));

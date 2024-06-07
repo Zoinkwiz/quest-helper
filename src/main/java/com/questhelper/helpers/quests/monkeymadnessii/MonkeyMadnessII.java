@@ -123,7 +123,6 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -409,7 +408,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		nieveFollowing = new NpcInteractingRequirement(NpcID.NIEVE_7109);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		gloughHouseF1 = new Zone(new WorldPoint(2475, 3461, 1), new WorldPoint(2484, 3465, 1));
 		gloughHouseF2 = new Zone(new WorldPoint(2484, 3462, 2), new WorldPoint(2489, 3467, 2));

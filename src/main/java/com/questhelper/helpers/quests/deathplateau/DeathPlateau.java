@@ -86,7 +86,6 @@ public class DeathPlateau extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -184,7 +183,8 @@ public class DeathPlateau extends BasicQuestHelper
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		castleDownstairs = new Zone(new WorldPoint(2893, 3558, 0), new WorldPoint(2904, 3569, 0));
 		castleUpstairs = new Zone(new WorldPoint(2891, 3556, 1), new WorldPoint(2906, 3571, 1));

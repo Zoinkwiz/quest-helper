@@ -92,7 +92,6 @@ public class ClockTower extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -160,7 +159,8 @@ public class ClockTower extends BasicQuestHelper
 		ratPoison = new ItemRequirement("Rat Poison", ItemID.RAT_POISON);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		groundFloor = new Zone(new WorldPoint(2563, 3239, 0), new WorldPoint(2573, 3245, 0));
 		secondFloor = new Zone(new WorldPoint(2563, 3239, 2), new WorldPoint(2573, 3245, 2));

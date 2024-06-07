@@ -86,7 +86,6 @@ public class EnlightenedJourney extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -153,7 +152,8 @@ public class EnlightenedJourney extends BasicQuestHelper
 		sandbag8 = new ItemRequirement("Sandbag", ItemID.SANDBAG, 8);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		entrana = new Zone(new WorldPoint(2798, 3327,0), new WorldPoint(2878, 3394,1));
 	}

@@ -72,7 +72,6 @@ public class TheCorsairCurse extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -185,7 +184,8 @@ public class TheCorsairCurse extends BasicQuestHelper
 		ogreArtfact = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT_21837);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cove = new Zone(new WorldPoint(2308, 2806, 0), new WorldPoint(2705, 3136, 2));
 		ithoiHut = new Zone(new WorldPoint(2527, 2835, 1), new WorldPoint(2532, 2841, 1));

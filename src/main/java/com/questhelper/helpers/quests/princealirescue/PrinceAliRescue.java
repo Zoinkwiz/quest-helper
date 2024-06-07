@@ -79,7 +79,6 @@ public class PrinceAliRescue extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -185,7 +184,8 @@ public class PrinceAliRescue extends BasicQuestHelper
 		hasOrGivenKeyMould = new Conditions(LogicType.OR, keyMould, givenKeyMould, key.alsoCheckBank(questBank));
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		cell = new Zone(new WorldPoint(3121, 3240, 0), new WorldPoint(3125, 3243, 0));
 	}

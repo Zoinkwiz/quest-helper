@@ -98,7 +98,6 @@ public class HazeelCult extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		// TODO: Should the valves section implement the PuzzleWrapper?
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -238,7 +237,8 @@ public class HazeelCult extends BasicQuestHelper
 		// 14770 1->2
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cultEntrance = new Zone(new WorldPoint(2565, 9679, 0), new WorldPoint(2571, 9685, 0));
 		cultRoom = new Zone(new WorldPoint(2600, 9666, 0), new WorldPoint(2615, 9693, 0));

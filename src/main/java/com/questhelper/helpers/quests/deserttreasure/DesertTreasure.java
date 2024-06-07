@@ -103,7 +103,6 @@ public class DesertTreasure extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -321,7 +320,8 @@ public class DesertTreasure extends BasicQuestHelper
 		pyramidTeleport.addAlternates(ItemID.POLLNIVNEACH_TELEPORT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		smokeDungeon = new Zone(new WorldPoint(3199, 9345, 0), new WorldPoint(3328, 9412, 0));
 		fareedRoom = new Zone(new WorldPoint(3305, 9360, 0), new WorldPoint(3326, 9393, 0));

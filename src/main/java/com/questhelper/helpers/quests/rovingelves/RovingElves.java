@@ -77,7 +77,6 @@ public class RovingElves extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -158,7 +157,8 @@ public class RovingElves extends BasicQuestHelper
 		// 8374 0->1 when leaving?
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		glarialTomb = new Zone(new WorldPoint(2524, 9801, 0), new WorldPoint(2557, 9849, 0));
 		hudonIsland = new Zone(new WorldPoint(2510, 3476, 0), new WorldPoint(2515, 3482, 0));

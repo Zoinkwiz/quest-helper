@@ -80,7 +80,6 @@ public class MerlinsCrystal extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -168,7 +167,8 @@ public class MerlinsCrystal extends BasicQuestHelper
 		equippedExcalibur = excalibur.equipped();
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		fayeGround = new Zone(new WorldPoint(2764, 3395, 0), new WorldPoint(2781, 3410, 0));
 		faye1 = new Zone(new WorldPoint(2764, 3395, 1), new WorldPoint(2781, 3410, 1));

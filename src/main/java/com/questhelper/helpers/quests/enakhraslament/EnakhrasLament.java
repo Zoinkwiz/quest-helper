@@ -91,7 +91,6 @@ public class EnakhrasLament extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -271,7 +270,8 @@ public class EnakhrasLament extends BasicQuestHelper
 		onNormals = new SpellbookRequirement(Spellbook.NORMAL);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		templeEntranceRoom = new Zone(new WorldPoint(3124, 9328, 1), new WorldPoint(3128, 9330, 1));
 		templeGroundFloor = new Zone(new WorldPoint(3074, 9282, 0), new WorldPoint(3133, 9341, 0));

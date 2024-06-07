@@ -109,7 +109,6 @@ public class TwilightsPromise extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -202,7 +201,8 @@ public class TwilightsPromise extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		crypt = new Zone(6804);
 		colosseumUnderground = new Zone(7316);

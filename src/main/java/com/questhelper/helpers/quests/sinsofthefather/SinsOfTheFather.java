@@ -107,7 +107,6 @@ public class SinsOfTheFather extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -311,7 +310,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		followingCarlArea = new Zone(new WorldPoint(3676, 3264, 0), new WorldPoint(3782, 3399, 0));
 		kroyArea = new Zone(new WorldPoint(3724, 9664, 1), new WorldPoint(3903, 9855, 1));

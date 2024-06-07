@@ -120,7 +120,6 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -154,7 +153,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 			.build();
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		treeGnomeVillageMiddle1 = new Zone(new WorldPoint(2514, 3161, 0), new WorldPoint(2542, 3175, 0));
 		treeGnomeVillageMiddle2 = new Zone(new WorldPoint(2543, 3167, 0), new WorldPoint(2547, 3172, 0));

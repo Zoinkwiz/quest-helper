@@ -82,7 +82,6 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -211,7 +210,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		seasonedChompyHighlighted.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cave = new Zone(new WorldPoint(2627, 9377, 0), new WorldPoint(2663, 9406, 0));
 	}

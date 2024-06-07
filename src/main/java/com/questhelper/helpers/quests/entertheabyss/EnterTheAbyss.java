@@ -72,7 +72,6 @@ public class EnterTheAbyss extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -110,7 +109,8 @@ public class EnterTheAbyss extends BasicQuestHelper
 		freeInventorySpace = new FreeInventorySlotRequirement(1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
 	}

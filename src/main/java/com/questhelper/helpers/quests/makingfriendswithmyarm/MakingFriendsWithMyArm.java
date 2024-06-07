@@ -99,7 +99,6 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -296,7 +295,8 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		goatDung = new ItemRequirement("Goat dung", ItemID.GOAT_DUNG);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		strongholdFloor1 = new Zone(new WorldPoint(2820, 10048, 1), new WorldPoint(2862, 10110, 1));
 		strongholdFloor2 = new Zone(new WorldPoint(2820, 10048, 2), new WorldPoint(2862, 10110, 2));

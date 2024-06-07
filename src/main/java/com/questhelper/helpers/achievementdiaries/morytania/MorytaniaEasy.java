@@ -93,7 +93,6 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -200,7 +199,8 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		ghostsAhoy = new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.IN_PROGRESS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		grotto = new Zone(new WorldPoint(3434, 9746, 0), new WorldPoint(3449, 9731, 1));
 		bonezone = new Zone(new WorldPoint(3650, 3528, 1), new WorldPoint(3669, 3511, 1));

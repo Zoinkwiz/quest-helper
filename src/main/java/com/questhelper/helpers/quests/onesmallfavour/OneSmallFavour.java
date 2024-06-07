@@ -99,7 +99,6 @@ public class OneSmallFavour extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -459,7 +458,8 @@ public class OneSmallFavour extends BasicQuestHelper
 		redMahog.setTooltip("You can get another from a jungle forester for 200 gp");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		sanfewRoom = new Zone(new WorldPoint(2893, 3423, 1), new WorldPoint(2903, 3433, 1));
 		hamBase = new Zone(new WorldPoint(3140, 9600, 0), new WorldPoint(3190, 9655, 0));

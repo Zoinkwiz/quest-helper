@@ -88,7 +88,6 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -196,7 +195,8 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		surface = new Zone(new WorldPoint(2456, 3037, 0), new WorldPoint(2491, 3058, 0));
 		tombF2 = new Zone(new WorldPoint(2434, 9400, 2), new WorldPoint(2494, 9474, 2));

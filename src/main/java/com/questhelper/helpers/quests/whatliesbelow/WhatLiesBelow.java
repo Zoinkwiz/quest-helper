@@ -78,7 +78,6 @@ public class WhatLiesBelow extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -166,7 +165,8 @@ public class WhatLiesBelow extends BasicQuestHelper
 		chronicle = new ItemRequirement("Chronicle for teleports to south of Varrock", ItemID.CHRONICLE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		chaosAltar = new Zone(new WorldPoint(2245, 4823, 0), new WorldPoint(2299, 4860, 2));
 	}

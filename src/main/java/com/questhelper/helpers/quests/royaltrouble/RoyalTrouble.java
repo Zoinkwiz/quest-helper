@@ -93,7 +93,6 @@ public class RoyalTrouble extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -286,7 +285,8 @@ public class RoyalTrouble extends BasicQuestHelper
 		letter.setTooltip("You can get another from Queen Sigrid");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		islands = new Zone(new WorldPoint(2491, 3835, 0), new WorldPoint(2627, 3904, 3));
 		miscFloor1 = new Zone(new WorldPoint(2497, 3845, 1), new WorldPoint(2511, 3875, 1));

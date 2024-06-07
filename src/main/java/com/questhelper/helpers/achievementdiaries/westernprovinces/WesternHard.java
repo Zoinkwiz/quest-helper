@@ -97,7 +97,6 @@ public class WesternHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -244,7 +243,8 @@ public class WesternHard extends ComplexStateQuestHelper
 		treeGnomeVillage = new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		pest = new Zone(new WorldPoint(2631, 2681, 0), new WorldPoint(2683, 2626, 0));
 		apeAtoll = new Zone(new WorldPoint(2687, 2814, 0), new WorldPoint(2817, 2686, 0));

@@ -84,7 +84,6 @@ public class KourendElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -226,7 +225,8 @@ public class KourendElite extends ComplexStateQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		redwoodTree = new Zone(new WorldPoint(1567, 3496, 1), new WorldPoint(1574, 3479, 1));
 		catacombs = new Zone(new WorldPoint(1659, 10052, 0), new WorldPoint(1668, 10043, 0));

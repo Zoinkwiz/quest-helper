@@ -115,7 +115,6 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -276,7 +275,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		neededStaples = skullStaples.quantity(30 - varbit.applyAsInt(3400));
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		harmony = new Zone(new WorldPoint(3771, 2813, 0), new WorldPoint(3840, 2881, 3));
 		waterEntrance = new Zone(new WorldPoint(3782, 9250, 0), new WorldPoint(3795, 9259, 0));

@@ -102,7 +102,6 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -371,7 +370,8 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		// 14745 0->1 when teleport used from Hazeel
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		mansionFirst = new Zone(new WorldPoint(2562, 3276, 1), new WorldPoint(2577, 3266, 1));
 		mansionSecond = new Zone(new WorldPoint(2562, 3276, 2), new WorldPoint(2577, 3266, 2));

@@ -87,7 +87,6 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -264,7 +263,8 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		reputationItems.addAlternates(ItemID.HARPOON, ItemID.LOBSTER_POT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		islands = new Zone(new WorldPoint(2491, 3835, 0), new WorldPoint(2627, 3904, 3));
 		miscCastleFirstFloor = new Zone(new WorldPoint(2497, 3845, 1), new WorldPoint(2511, 3875, 1));

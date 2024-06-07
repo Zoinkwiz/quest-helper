@@ -65,7 +65,6 @@ public class ImpCatcher extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -109,7 +108,8 @@ public class ImpCatcher extends BasicQuestHelper
 		turnInQuest.addDialogSteps("Give me a quest please.", "Yes.");
 	}
 
-	public void loadZones(){
+	@Override
+	protected void setupZones(){
 		towerSecond = new Zone(new WorldPoint(3089, 3176, 1), new WorldPoint(3126, 3146, 1));
 		towerThird = new Zone(new WorldPoint(3089, 3176, 2), new WorldPoint(3126, 3146, 2));
 	}

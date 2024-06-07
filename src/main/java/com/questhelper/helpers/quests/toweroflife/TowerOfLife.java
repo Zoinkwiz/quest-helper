@@ -106,7 +106,6 @@ public class TowerOfLife extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -158,7 +157,8 @@ public class TowerOfLife extends BasicQuestHelper
 		cageBindingFluid = new ItemRequirement("Binding fluid", ItemID.BINDING_FLUID, 4);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		WorldPoint z1a = new WorldPoint(2652, 3224, 0);
 		WorldPoint z1b = new WorldPoint(2646, 3212, 0);

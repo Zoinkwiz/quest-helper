@@ -78,7 +78,6 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -143,7 +142,8 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		royalAccordOfTwill = new ItemRequirement("Royal Accord of Twill", ItemID.ROYAL_ACCORD_OF_TWILL);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		houseWestOfVinery = new Zone(new WorldPoint(1810, 3550, 0), new WorldPoint(1820, 3560, 0));
 		arceuusLibraryF1 = new Zone(new WorldPoint(1607, 3831, 0), new WorldPoint(1658, 3784, 0));

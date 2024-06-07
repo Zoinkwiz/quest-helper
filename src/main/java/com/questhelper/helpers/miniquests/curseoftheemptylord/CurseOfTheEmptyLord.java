@@ -77,7 +77,6 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -153,7 +152,8 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		onPath3 = new VarbitRequirement(PATH_VARBIT, 3);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		edgevilleDungeon = new Zone(new WorldPoint(3086, 9821, 0), new WorldPoint(3829, 10001, 0));
 		roguesCastleFirstFloor = new Zone(new WorldPoint(3274, 3924, 1), new WorldPoint(3297, 3942, 1));

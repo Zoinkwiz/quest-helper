@@ -76,7 +76,6 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -138,7 +137,8 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 		templeTome.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		dungeon = new Zone(new WorldPoint(1792, 9880, 0), new WorldPoint(1856, 9983, 0));
 	}

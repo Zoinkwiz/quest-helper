@@ -86,7 +86,6 @@ public class RumDeal extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -290,7 +289,8 @@ public class RumDeal extends BasicQuestHelper
 		prayerPoints47 = new PrayerPointRequirement(47);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		island = new Zone(new WorldPoint(2110, 5054, 0), new WorldPoint(2178, 5185, 2));
 		islandF0 = new Zone(new WorldPoint(2110, 5054, 0), new WorldPoint(2178, 5185, 0));

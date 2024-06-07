@@ -88,7 +88,6 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -194,7 +193,8 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		templeOfIkov = new QuestRequirement(QuestHelperQuest.TEMPLE_OF_IKOV, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		waterAltar = new Zone(new WorldPoint(2688, 4863, 0), new WorldPoint(2751, 4800, 0));
 		underground = new Zone(new WorldPoint(3137, 9706, 0), new WorldPoint(3332, 9465, 2));

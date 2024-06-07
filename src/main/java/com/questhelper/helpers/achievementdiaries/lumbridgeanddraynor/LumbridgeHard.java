@@ -94,7 +94,6 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -239,7 +238,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		lostCity = new QuestRequirement(QuestHelperQuest.LOST_CITY, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		zanaris = new Zone(new WorldPoint(2369, 4481, 0), new WorldPoint(2497, 4352, 0));
 		basement = new Zone(new WorldPoint(3206, 9626, 0), new WorldPoint(3221, 9613, 0));

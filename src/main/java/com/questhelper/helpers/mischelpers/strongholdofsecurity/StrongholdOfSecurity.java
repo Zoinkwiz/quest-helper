@@ -109,7 +109,6 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -173,7 +172,8 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		hasStamp = new VarbitRequirement(2312, 1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		countCheck = new Zone(new WorldPoint(3120, 3275, 0), new WorldPoint(3267, 3135, 0));
 		floorWar = new Zone(new WorldPoint(1855, 5248, 0), new WorldPoint(1920, 5184, 0));

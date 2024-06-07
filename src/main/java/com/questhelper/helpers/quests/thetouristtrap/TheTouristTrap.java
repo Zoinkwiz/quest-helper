@@ -90,7 +90,6 @@ public class TheTouristTrap extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -248,7 +247,8 @@ public class TheTouristTrap extends BasicQuestHelper
 		coins100 = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		jail = new Zone(new WorldPoint(3284, 3031, 0), new WorldPoint(3287, 3037, 0));
 		camp = new Zone(new WorldPoint(3274, 3014, 0), new WorldPoint(3305, 3037, 1));

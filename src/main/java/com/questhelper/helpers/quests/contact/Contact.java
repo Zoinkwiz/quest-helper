@@ -74,7 +74,6 @@ public class Contact extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -147,7 +146,8 @@ public class Contact extends BasicQuestHelper
 		glory = new ItemRequirement("Amulet of glory for getting to Osman", ItemCollections.AMULET_OF_GLORIES);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		bank = new Zone(new WorldPoint(2772, 5129, 0), new WorldPoint(2758, 5145, 0));
 		dungeon = new Zone(8516);

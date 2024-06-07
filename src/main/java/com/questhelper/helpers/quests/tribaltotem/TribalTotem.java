@@ -75,7 +75,6 @@ public class TribalTotem extends BasicQuestHelper
     @Override
     public Map<Integer, QuestStep> loadSteps()
     {
-        loadZones();
         initializeRequirements();
         setupConditions();
         setupSteps();
@@ -121,7 +120,8 @@ public class TribalTotem extends BasicQuestHelper
         return reqs;
     }
 
-    public void loadZones()
+    @Override
+	protected void setupZones()
     {
         houseGroundFloorEntrance = new Zone(new WorldPoint(2637, 3320, 0), new WorldPoint(2639, 3325, 0));
         houseGroundFloorMiddleRoom = new Zone(new WorldPoint(2634, 3322, 0), new WorldPoint(2636, 3324, 0));

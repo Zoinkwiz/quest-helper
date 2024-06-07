@@ -76,7 +76,6 @@ public class GertrudesCat extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 
 		return getSteps();
@@ -227,7 +226,8 @@ public class GertrudesCat extends BasicQuestHelper
 		varrockTeleport = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		Zone zone = new Zone(new WorldPoint(3306, 3507, 12), new WorldPoint(3312, 3513, 1));
 

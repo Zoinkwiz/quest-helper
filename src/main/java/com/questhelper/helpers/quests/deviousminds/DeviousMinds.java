@@ -74,7 +74,6 @@ public class DeviousMinds extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -143,7 +142,8 @@ public class DeviousMinds extends BasicQuestHelper
 		onEntranaBoat = new ZoneRequirement(entranaBoat);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		abyss = new Zone(new WorldPoint(3005, 4800, 0), new WorldPoint(3070, 4860, 0));
 		lawAltar = new Zone(new WorldPoint(2429, 4801, 0), new WorldPoint(2480, 4850, 0));

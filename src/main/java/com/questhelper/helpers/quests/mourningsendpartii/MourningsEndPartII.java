@@ -144,7 +144,6 @@ public class MourningsEndPartII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -609,7 +608,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		cyanDoorOpen = new VarbitRequirement(1176, RED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		mournerHQ = new Zone(new WorldPoint(2547, 3321, 0), new WorldPoint(2555, 3327, 0));
 		mournerHQ2 = new Zone(new WorldPoint(2542, 3324, 0), new WorldPoint(2546, 3327, 0));

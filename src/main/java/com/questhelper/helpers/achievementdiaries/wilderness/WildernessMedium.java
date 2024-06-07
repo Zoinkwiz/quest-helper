@@ -90,7 +90,6 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -198,7 +197,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			"Schematic to make gold helmet in Between a Rock");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		resource = new Zone(new WorldPoint(3174, 3944, 0), new WorldPoint(3196, 3924, 0));
 		godWars1 = new Zone(new WorldPoint(3046, 10177, 3), new WorldPoint(3076, 10138, 3));

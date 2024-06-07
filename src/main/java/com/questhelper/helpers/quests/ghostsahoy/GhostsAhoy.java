@@ -99,7 +99,6 @@ public class GhostsAhoy extends BasicQuestHelper
 	{
 		// TODO: Verify specific step which unlocks the ring of charos
 		canUseCharos = client.getVarbitValue(QuestVarbits.QUEST_GARDEN_OF_TRANQUILLITY.getId()) > 2;
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -266,7 +265,8 @@ public class GhostsAhoy extends BasicQuestHelper
 		signedOakBow = new ItemRequirement("Signed oak bow", ItemID.SIGNED_OAK_BOW);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		phas1 = new Zone(new WorldPoint(3653, 3457, 0), new WorldPoint(3710, 3507, 0));
 		phas2 = new Zone(new WorldPoint(3669, 3508, 0), new WorldPoint(3710, 3510, 0));

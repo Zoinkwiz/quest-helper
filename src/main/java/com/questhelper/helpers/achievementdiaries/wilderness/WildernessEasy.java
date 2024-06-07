@@ -88,7 +88,6 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -182,7 +181,8 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		enterTheAbyss = new QuestRequirement(QuestHelperQuest.ENTER_THE_ABYSS, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		wildy = new Zone(new WorldPoint(2943, 3978, 0), new WorldPoint(3393, 3522, 0));
 		edge = new Zone(new WorldPoint(3067, 10000, 0), new WorldPoint(3288, 9821, 0));

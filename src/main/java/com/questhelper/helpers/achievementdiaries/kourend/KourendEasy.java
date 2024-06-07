@@ -80,7 +80,6 @@ public class KourendEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -180,7 +179,8 @@ public class KourendEasy extends ComplexStateQuestHelper
 		houseInKourend = new VarbitRequirement(2187, 8);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		deeperLodePub = new Zone(new WorldPoint(1562, 3765, 0), new WorldPoint(1569, 3752, 0));
 		warrens = new Zone(new WorldPoint(1728, 10176, 0), new WorldPoint(1816, 10109, 0));

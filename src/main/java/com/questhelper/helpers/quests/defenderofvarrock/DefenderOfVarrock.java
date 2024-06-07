@@ -93,7 +93,6 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -251,7 +250,8 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		shieldOfArrav.setTooltip("You can get another from Rovin upstairs in Varrock Castle");
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		castleF1 = new Zone(new WorldPoint(3200, 3490, 1), new WorldPoint(3206, 3500, 1));
 		castleF2 = new Zone(new WorldPoint(3200, 3494, 2), new WorldPoint(3206, 3500, 2));

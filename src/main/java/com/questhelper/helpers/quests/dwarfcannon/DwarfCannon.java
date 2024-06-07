@@ -48,7 +48,6 @@ public class DwarfCannon extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -143,7 +142,8 @@ public class DwarfCannon extends BasicQuestHelper
 
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		cave = new Zone(new WorldPoint(2557, 9790, 0), new WorldPoint(2624, 9859, 0));
 		tower1 = new Zone(new WorldPoint(2568, 3439, 1), new WorldPoint(2572, 3445, 1));

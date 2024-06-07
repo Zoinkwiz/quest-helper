@@ -91,7 +91,6 @@ public class OlafsQuest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -205,7 +204,8 @@ public class OlafsQuest extends BasicQuestHelper
 		killedUlfric = new VarbitRequirement(3539, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		firstArea = new Zone(new WorldPoint(2689, 10116, 0), new WorldPoint(2707, 10141, 0));
 		firstArea2 = new Zone(new WorldPoint(2707, 10118, 0), new WorldPoint(2739, 10148, 0));

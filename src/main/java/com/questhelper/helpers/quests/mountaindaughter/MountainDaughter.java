@@ -86,7 +86,6 @@ public class MountainDaughter extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		loadConditions();
 		loadQuestSteps();
@@ -159,7 +158,8 @@ public class MountainDaughter extends BasicQuestHelper
 		return steps;
 	}
 
-	private void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		CAMP_ZONE_1 = new Zone(new WorldPoint(2758, 3660, 0), new WorldPoint(2821, 3664, 0));
 		CAMP_ZONE_2 = new Zone(new WorldPoint(2767, 3653, 0), new WorldPoint(2821, 3712, 0));

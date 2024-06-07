@@ -86,7 +86,6 @@ public class FamilyCrest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -195,7 +194,8 @@ public class FamilyCrest extends BasicQuestHelper
 		crestPiece3 = new ItemRequirement("Crest part", ItemID.CREST_PART_781);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		dwarvenMines = new Zone(new WorldPoint(2960, 9696, 0), new WorldPoint(3062, 9854, 0));
 		hobgoblinDungeon = new Zone(new WorldPoint(2691, 9665, 0), new WorldPoint(2749, 9720, 0));

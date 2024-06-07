@@ -85,7 +85,6 @@ public class FairytaleI extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -165,7 +164,8 @@ public class FairytaleI extends BasicQuestHelper
 		items3 = new ItemRequirement("3 items Mortifer told you to get", -1, -1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		zanaris = new Zone(new WorldPoint(2368, 4353, 0), new WorldPoint(2495, 4479, 0));
 		towerF1 = new Zone(new WorldPoint(2900, 3324, 1), new WorldPoint(2914, 3341, 1));

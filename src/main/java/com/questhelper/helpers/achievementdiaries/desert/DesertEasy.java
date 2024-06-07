@@ -88,7 +88,6 @@ public class DesertEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -183,7 +182,8 @@ public class DesertEasy extends ComplexStateQuestHelper
 			2, "Icthlarin's Little Helper Started");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		pyramidPlunderLobby = new Zone(new WorldPoint(1926, 4465, 2), new WorldPoint(1976, 4419, 3));
 		firstRoom = new Zone(new WorldPoint(1920, 4478, 0), new WorldPoint(1934, 4462, 0));

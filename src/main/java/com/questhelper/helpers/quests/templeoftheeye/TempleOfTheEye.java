@@ -108,7 +108,6 @@ public class TempleOfTheEye extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -264,7 +263,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 		mysteriousVisionSeen = new VarbitRequirement(12139, 1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		abyss = new Zone(new WorldPoint(3010, 4803, 0), new WorldPoint(3070, 4862, 0));
 		wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));

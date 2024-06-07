@@ -89,7 +89,6 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -361,7 +360,8 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		sisterhoodSanctuaryF0 = new Zone(new WorldPoint(3702, 9834, 1), new WorldPoint(3899, 9600, 1));
 		sisterhoodSanctuaryF1 = new Zone(new WorldPoint(3785, 9805, 2), new WorldPoint(3840, 9765, 2));

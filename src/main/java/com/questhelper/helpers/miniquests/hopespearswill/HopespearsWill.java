@@ -77,7 +77,6 @@ public class HopespearsWill extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -132,7 +131,8 @@ public class HopespearsWill extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		goblinCave = new Zone(10393);
 		goblinTemple = new Zone(14915);

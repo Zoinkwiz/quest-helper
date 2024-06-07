@@ -85,7 +85,8 @@ public class FishingContest extends BasicQuestHelper
 	Zone mcGruborWoodEntrance, cmbBraceletTeleportZone, nearRedVineWorms, contestGroundsEntrance;
 	ZoneRequirement passedThroughMcGruborEntrance, atCmbBraceletTeleportZone, onContestGrounds;
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		mcGruborWoodEntrance = new Zone(new WorldPoint(2662, 3500, 0));
 		passedThroughMcGruborEntrance = new ZoneRequirement(mcGruborWoodEntrance);
@@ -223,7 +224,6 @@ public class FishingContest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();

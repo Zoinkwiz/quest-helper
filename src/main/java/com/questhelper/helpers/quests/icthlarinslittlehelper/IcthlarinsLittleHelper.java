@@ -94,7 +94,6 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		setupConditions();
 		initializeRequirements();
 		setupSteps();
@@ -291,7 +290,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		possessedPriestNearby = new NpcCondition(NpcID.POSSESSED_PRIEST);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		soph = new Zone(new WorldPoint(3262, 2751, 0), new WorldPoint(3322, 2809, 0));
 		pyramid = new Zone(new WorldPoint(3273, 9170, 0), new WorldPoint(3311, 9204, 0));

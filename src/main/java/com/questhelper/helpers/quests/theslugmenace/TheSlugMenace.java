@@ -87,7 +87,6 @@ public class TheSlugMenace extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -274,7 +273,8 @@ public class TheSlugMenace extends BasicQuestHelper
 		mindAltarTeleport.appendToTooltip("Taverley Teleport");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		hobgoblinDungeon = new Zone(new WorldPoint(2691, 9665, 0), new WorldPoint(2749, 9720, 0));
 		seaSlugDungeon = new Zone(new WorldPoint(2304, 5059, 0), new WorldPoint(2377, 5124, 0));

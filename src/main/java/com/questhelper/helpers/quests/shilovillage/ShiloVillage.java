@@ -100,7 +100,6 @@ public class ShiloVillage extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -208,7 +207,8 @@ public class ShiloVillage extends BasicQuestHelper
 		rashCorpse = new ItemRequirement("Rashiliya corpse", ItemID.RASHILIYIA_CORPSE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cavern1 = new Zone(new WorldPoint(2870, 9330, 0), new WorldPoint(2950, 9407, 0));
 		cavern2 = new Zone(new WorldPoint(2878, 9282, 0), new WorldPoint(2942, 9333, 0));

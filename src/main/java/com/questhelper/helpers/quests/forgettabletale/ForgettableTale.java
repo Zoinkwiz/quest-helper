@@ -154,7 +154,6 @@ public class ForgettableTale extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -386,7 +385,8 @@ public class ForgettableTale extends BasicQuestHelper
 		ticketToWWM = new ItemRequirement("Minecart ticket", ItemID.MINECART_TICKET_5022);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		keldagrim = new Zone(new WorldPoint(2816, 10112, 0), new WorldPoint(2950, 10239, 3));
 		pubUpstairs = new Zone(new WorldPoint(2907, 10187, 1), new WorldPoint(2919, 10197, 1));

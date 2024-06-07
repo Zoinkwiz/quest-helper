@@ -78,7 +78,6 @@ public class ASoulsBane extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -179,7 +178,8 @@ public class ASoulsBane extends BasicQuestHelper
 		reaperNearby = new VarbitRequirement(2035, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		rageRoom = new Zone(new WorldPoint(3010, 5217, 0), new WorldPoint(3038, 5246, 0));
 		fearRoom = new Zone(new WorldPoint(3044, 5218, 0), new WorldPoint(3071, 5247, 0));

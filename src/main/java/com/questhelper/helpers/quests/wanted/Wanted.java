@@ -105,7 +105,6 @@ public class Wanted extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupOtherRequirements();
 		setupSteps();
 
@@ -280,7 +279,8 @@ public class Wanted extends BasicQuestHelper
 		highlightedCommorb.setHighlightInInventory(true);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		taverleyDungeonP1 = new Zone(new WorldPoint(2814, 9854, 0), new WorldPoint(2944, 9670, 0));
 		taverleyDungeonP2 = new Zone(new WorldPoint(2944, 9803, 0), new WorldPoint(2971, 9769, 0));

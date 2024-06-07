@@ -106,7 +106,6 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -321,7 +320,8 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		entranceIsland = new Zone(new WorldPoint(3426, 3430, 0), new WorldPoint(3513, 3464, 0));
 		boatArea = new Zone(new WorldPoint(3480, 3373, 0), new WorldPoint(3530, 3429, 0));

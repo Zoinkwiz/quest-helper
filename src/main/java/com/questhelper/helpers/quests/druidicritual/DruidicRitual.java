@@ -64,7 +64,6 @@ public class DruidicRitual extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -117,7 +116,8 @@ public class DruidicRitual extends BasicQuestHelper
 		enchantedRat = new ItemRequirement("Enchanted rat", ItemID.ENCHANTED_RAT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		sanfewRoom = new Zone(new WorldPoint(2893, 3423, 1), new WorldPoint(2903, 3433, 1));
 		dungeon = new Zone(new WorldPoint(2816, 9668, 0), new WorldPoint(2973, 9855, 0));

@@ -66,7 +66,6 @@ public class RuneMysteries extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -114,7 +113,8 @@ public class RuneMysteries extends BasicQuestHelper
 		inWizardBasement = new ZoneRequirement(wizardBasement);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		upstairsLumbridge = new Zone(new WorldPoint(3203, 3206, 1), new WorldPoint(3218, 3231, 1));
 		wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));

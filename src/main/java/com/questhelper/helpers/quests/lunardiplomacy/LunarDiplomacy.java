@@ -121,7 +121,6 @@ public class LunarDiplomacy extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -450,7 +449,8 @@ public class LunarDiplomacy extends BasicQuestHelper
 		suqahHide4.addAlternates(ItemID.SUQAH_LEATHER, ItemID.LUNAR_BOOTS, ItemID.LUNAR_LEGS, ItemID.LUNAR_GLOVES, ItemID.LUNAR_TORSO);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		baseOfStairs = new Zone(new WorldPoint(2212, 3794, 0), new WorldPoint(2214, 3795, 0));
 		coveF1 = new Zone(new WorldPoint(2212, 3796, 1), new WorldPoint(2215, 3810, 1));

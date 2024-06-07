@@ -88,7 +88,6 @@ public class HauntedMine extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		// TODO: Should the lever room implement PuzzleWrapper?
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -185,7 +184,8 @@ public class HauntedMine extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		entryRoom1 = new Zone(new WorldPoint(2647, 9803, 0), new WorldPoint(2680, 9814, 0));
 

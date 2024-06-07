@@ -62,7 +62,6 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupZones();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -102,7 +101,8 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		inJulietRoom = new ZoneRequirement(julietRoom);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		julietRoom = new Zone(new WorldPoint(3147, 3425, 1), new WorldPoint(3166, 3443, 1));
 	}

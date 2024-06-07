@@ -103,7 +103,6 @@ public class RatCatchers extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -257,7 +256,8 @@ public class RatCatchers extends BasicQuestHelper
 		musicScroll.setTooltip("You can get another from the snake charmer");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		varrockSewer = new Zone(new WorldPoint(3151, 9855, 0), new WorldPoint(3290, 9919, 0));
 		mansionGrounds = new Zone(new WorldPoint(2821, 5061, 0), new WorldPoint(2874, 5120, 0));

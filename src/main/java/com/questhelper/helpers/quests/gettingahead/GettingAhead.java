@@ -90,7 +90,6 @@ public class GettingAhead extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -233,7 +232,8 @@ public class GettingAhead extends BasicQuestHelper
 		inUpstairsHouse = new ZoneRequirement(upstairsHouse);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		kebosMine = new Zone(new WorldPoint(1174, 10000, 0), new WorldPoint(1215, 10035, 0));
 		upstairsHouse = new Zone(new WorldPoint(1238, 3677, 1), new WorldPoint(1244, 3687, 1));

@@ -93,7 +93,6 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
 		initializeRequirements();
 		setupSteps();
 
@@ -233,7 +232,8 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		hauntedMine = new QuestRequirement(QuestHelperQuest.HAUNTED_MINE, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		yanille = new Zone(new WorldPoint(2540, 3109, 0), new WorldPoint(2619, 3075, 0));
 		yanAgilityCave = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));

@@ -83,7 +83,6 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -180,7 +179,8 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		antiPoison = new ItemRequirement("Antipoison for lizardmen", ItemCollections.ANTIPOISONS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		archive = new Zone(new WorldPoint(1538, 10210, 0), new WorldPoint(1565, 10237, 0));
 		puzzleRoom = new Zone(new WorldPoint(1563, 10186, 0), new WorldPoint(1591, 10213, 0));

@@ -92,7 +92,6 @@ public class DragonSlayer extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
@@ -236,7 +235,8 @@ public class DragonSlayer extends BasicQuestHelper
 		fullMap = new ItemRequirement("Crandor map", ItemID.CRANDOR_MAP);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		dwarvenMines = new Zone(new WorldPoint(2960, 9696, 0), new WorldPoint(3062, 9854, 0));
 		ratRoom1 = new Zone(new WorldPoint(2926, 3243, 0), new WorldPoint(2937, 3254, 0));

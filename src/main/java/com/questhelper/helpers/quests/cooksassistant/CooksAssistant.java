@@ -73,7 +73,6 @@ public class CooksAssistant extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		setupConditions();
 		initializeRequirements();
 		setupSteps();
@@ -117,7 +116,8 @@ public class CooksAssistant extends BasicQuestHelper
 		controlsUsed = new VarbitRequirement(4920, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		millSecond = new Zone(new WorldPoint(3162, 3311, 1), new WorldPoint(3171, 3302, 1));
 		millThird = new Zone(new WorldPoint(3162, 3311, 2), new WorldPoint(3171, 3302, 2));

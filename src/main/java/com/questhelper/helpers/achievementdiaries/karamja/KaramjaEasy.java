@@ -81,7 +81,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -123,7 +123,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED);
 

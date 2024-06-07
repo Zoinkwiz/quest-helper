@@ -117,7 +117,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -256,7 +256,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		royalSeal = new ItemRequirement("Gnome royal seal", ItemID.GNOME_ROYAL_SEAL);
 		royalSeal.setTooltip("You can get another from King Narnode");

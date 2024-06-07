@@ -77,7 +77,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -118,7 +118,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		beer = new ItemRequirement("Beer", ItemID.BEER);
 		bottledWater = new ItemRequirement("Bottled water", ItemID.BOTTLED_WATER);

@@ -155,7 +155,7 @@ public class ForgettableTale extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -353,7 +353,7 @@ public class ForgettableTale extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins500 = new ItemRequirement("Coins", ItemCollections.COINS, 500);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);

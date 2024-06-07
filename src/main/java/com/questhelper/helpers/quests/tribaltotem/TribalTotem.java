@@ -76,7 +76,7 @@ public class TribalTotem extends BasicQuestHelper
     public Map<Integer, QuestStep> loadSteps()
     {
         loadZones();
-        setupRequirements();
+        initializeRequirements();
         setupConditions();
         setupSteps();
 
@@ -101,7 +101,7 @@ public class TribalTotem extends BasicQuestHelper
     }
 
  @Override
- public void setupRequirements()
+ protected void setupRequirements()
     {
         coins = new ItemRequirement("Coins or more for boat trips", ItemCollections.COINS, 90);
         amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();

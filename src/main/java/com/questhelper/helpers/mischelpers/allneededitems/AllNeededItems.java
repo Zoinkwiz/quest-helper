@@ -91,7 +91,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 
 	}

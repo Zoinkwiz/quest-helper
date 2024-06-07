@@ -79,7 +79,7 @@ public class RFDDwarf extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -113,7 +113,7 @@ public class RFDDwarf extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins320 = new ItemRequirement("Coins", ItemCollections.COINS, 320);
 		coins320.setTooltip("You only need 120 if you wear a Ring of Charos(a)");

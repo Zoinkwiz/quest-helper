@@ -100,7 +100,7 @@ public class GhostsAhoy extends BasicQuestHelper
 		// TODO: Verify specific step which unlocks the ring of charos
 		canUseCharos = client.getVarbitValue(QuestVarbits.QUEST_GARDEN_OF_TRANQUILLITY.getId()) > 2;
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -183,7 +183,7 @@ public class GhostsAhoy extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ectoToken2 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 2);
 		charos = new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA).isNotConsumed();

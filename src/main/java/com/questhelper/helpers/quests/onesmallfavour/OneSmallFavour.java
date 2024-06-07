@@ -100,7 +100,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -322,7 +322,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		steelBars4 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 4);
 		steelBars3 = new ItemRequirement("Steel bar", ItemID.STEEL_BAR, 3);

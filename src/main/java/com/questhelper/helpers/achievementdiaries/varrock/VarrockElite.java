@@ -85,7 +85,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -115,7 +115,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notSuperCombat = new VarplayerRequirement(1177, false, 7);
 		notPlankMake = new VarplayerRequirement(1177, false, 8);

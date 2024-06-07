@@ -101,7 +101,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -151,7 +151,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notBecomeChampion = new VarbitRequirement(3600, 0);
 		notKilledZek = new VarbitRequirement(3601, 0);

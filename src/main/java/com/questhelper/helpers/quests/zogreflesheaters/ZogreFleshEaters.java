@@ -89,7 +89,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -154,7 +154,7 @@ public class ZogreFleshEaters extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		backpack = new ItemRequirement("Ruined backpack", ItemID.RUINED_BACKPACK);
 		backpack.setHighlightInInventory(true);

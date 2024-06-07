@@ -72,7 +72,7 @@ public class SeaSlug extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -143,7 +143,7 @@ public class SeaSlug extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
 		dampSticks = new ItemRequirement("Damp sticks", ItemID.DAMP_STICKS);

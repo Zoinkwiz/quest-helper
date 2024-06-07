@@ -95,7 +95,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -145,7 +145,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notAgiPyramid = new VarplayerRequirement(1198, false, 12);
 		notDesertLizard = new VarplayerRequirement(1198, false, 13);

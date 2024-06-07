@@ -77,7 +77,7 @@ public class SheepHerder extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -104,7 +104,7 @@ public class SheepHerder extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 

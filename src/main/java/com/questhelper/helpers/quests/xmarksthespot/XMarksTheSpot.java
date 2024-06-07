@@ -57,7 +57,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -75,7 +75,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		glory = new ItemRequirement("Amulet of Glory for faster teleport to Draynor Village.", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();

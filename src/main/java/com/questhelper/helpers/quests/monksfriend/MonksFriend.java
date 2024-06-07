@@ -71,7 +71,7 @@ public class MonksFriend extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -96,7 +96,7 @@ public class MonksFriend extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		jugOfWater = new ItemRequirement("Jug of Water", ItemID.JUG_OF_WATER);

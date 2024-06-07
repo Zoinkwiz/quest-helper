@@ -99,7 +99,7 @@ public class FairytaleII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -166,7 +166,7 @@ public class FairytaleII extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		thievingReq = new SkillRequirement(Skill.THIEVING, 40);
 		farmReq = new SkillRequirement(Skill.FARMING, 49, true);

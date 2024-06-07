@@ -79,7 +79,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -130,7 +130,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		intel5 = new ItemRequirement("Rat's paper", ItemID.RATS_PAPER, 5);
 		intel5.setHighlightInInventory(true);

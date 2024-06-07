@@ -93,7 +93,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -147,7 +147,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notDagKings = new VarplayerRequirement(1184, false, 31);
 		notAstralRunes = new VarplayerRequirement(1185, false, 0);

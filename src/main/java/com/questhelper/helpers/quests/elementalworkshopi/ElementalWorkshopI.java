@@ -86,7 +86,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	{
 		// TODO: To what degree should this quest make use of PuzzleWrapper?
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -136,7 +136,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setHighlightInInventory(true);

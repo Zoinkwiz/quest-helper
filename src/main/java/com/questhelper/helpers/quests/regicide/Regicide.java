@@ -129,7 +129,7 @@ public class Regicide extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -207,7 +207,7 @@ public class Regicide extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
 		rope1.setTooltip("Bring extras as you can fail");

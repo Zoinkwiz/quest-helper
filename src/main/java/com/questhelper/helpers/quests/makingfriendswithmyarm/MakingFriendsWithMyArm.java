@@ -100,7 +100,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -261,7 +261,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
 		boltOfCloth = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH);

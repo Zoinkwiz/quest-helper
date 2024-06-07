@@ -104,7 +104,7 @@ public class RatCatchers extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -203,7 +203,7 @@ public class RatCatchers extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		cat = new FollowerItemRequirement("A non-overgrown cat",
 			ItemCollections.HUNTING_CATS,

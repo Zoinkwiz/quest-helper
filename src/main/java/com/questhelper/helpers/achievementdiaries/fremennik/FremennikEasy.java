@@ -83,7 +83,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -135,7 +135,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCatchCerulean = new VarplayerRequirement(1184, false, 1);
 		notChangeBoots = new VarplayerRequirement(1184, false, 2);

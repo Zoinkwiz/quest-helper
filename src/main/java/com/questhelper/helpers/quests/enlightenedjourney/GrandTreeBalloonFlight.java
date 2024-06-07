@@ -52,7 +52,7 @@ public class GrandTreeBalloonFlight extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 
 		HashMap<Integer, List<Integer>> sections = new HashMap<>();
 		List<Integer> section1 = Arrays.asList(8, 8, 8,  8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
@@ -67,7 +67,7 @@ public class GrandTreeBalloonFlight extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 3);
 	}

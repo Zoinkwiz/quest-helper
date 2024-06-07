@@ -66,7 +66,7 @@ public class TheMageArenaI extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -92,7 +92,7 @@ public class TheMageArenaI extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		runesForCasts = new ItemRequirement("Runes for fighting Kolodion", -1, -1);
 		runesForCasts.setDisplayItemId(ItemID.DEATH_RUNE);

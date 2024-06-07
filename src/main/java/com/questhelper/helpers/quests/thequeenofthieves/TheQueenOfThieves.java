@@ -76,7 +76,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -131,7 +131,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		stew = new ItemRequirement("Stew", ItemID.STEW);
 		hughesLetter = new ItemRequirement("Letter", ItemID.LETTER_21774);

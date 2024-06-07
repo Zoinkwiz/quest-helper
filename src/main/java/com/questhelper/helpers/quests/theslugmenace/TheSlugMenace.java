@@ -88,7 +88,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -149,7 +149,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		commorb = new ItemRequirement("Commorb (can get another from Sir Tiffy)", ItemID.COMMORB).isNotConsumed();
 		commorb.addAlternates(ItemID.COMMORB_V2);

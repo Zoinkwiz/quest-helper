@@ -96,7 +96,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	{
 		loadZones();
 		setupConditions();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -209,7 +209,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		cat = new FollowerItemRequirement("A cat",
 			ItemCollections.CATS,

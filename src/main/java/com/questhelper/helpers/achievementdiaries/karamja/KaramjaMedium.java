@@ -99,7 +99,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -176,7 +176,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notClaimedTicket = new VarbitRequirement(3579, 0);
 		notEnteredWall = new VarbitRequirement(3580, 0);

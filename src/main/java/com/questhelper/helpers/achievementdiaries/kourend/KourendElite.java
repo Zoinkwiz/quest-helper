@@ -85,7 +85,7 @@ public class KourendElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -133,7 +133,7 @@ public class KourendElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCraftBloodRune = new VarplayerRequirement(2086, false, 4);
 		notChopRedwood = new VarplayerRequirement(2086, false, 5);

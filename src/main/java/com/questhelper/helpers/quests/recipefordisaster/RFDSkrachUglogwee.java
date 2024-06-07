@@ -85,7 +85,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -137,7 +137,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rawJubbly = new ItemRequirement("Raw jubbly", ItemID.RAW_JUBBLY).highlighted();
 		cookedJubbly = new ItemRequirement("Cooked jubbly", ItemID.COOKED_JUBBLY);

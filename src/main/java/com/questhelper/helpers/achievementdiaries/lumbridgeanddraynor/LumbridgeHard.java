@@ -95,7 +95,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -152,7 +152,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notBonesToPeachesPalace = new VarplayerRequirement(1194, false, 25);
 		notJuttingWall = new VarplayerRequirement(1194, false, 26);

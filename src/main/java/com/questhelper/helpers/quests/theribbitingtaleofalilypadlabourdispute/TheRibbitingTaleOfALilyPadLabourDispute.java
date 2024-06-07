@@ -72,7 +72,7 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -105,7 +105,7 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES);
 		axe.canBeObtainedDuringQuest();

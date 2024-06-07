@@ -107,7 +107,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -220,7 +220,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		food = new ItemRequirement("Any food", ItemCollections.GOOD_EATING_FOOD);
 		foodForChest = new ItemRequirement("Food to put in a chest, multiple pieces in case a Ghast eats some",

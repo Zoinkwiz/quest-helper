@@ -120,7 +120,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -285,7 +285,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5250);
 		coins250 = new ItemRequirement("Coins", ItemCollections.COINS, 250);

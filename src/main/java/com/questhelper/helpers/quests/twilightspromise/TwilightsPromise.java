@@ -110,7 +110,7 @@ public class TwilightsPromise extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -213,7 +213,7 @@ public class TwilightsPromise extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		twoCombatStyles = new ItemRequirement("Two combat styles", -1, -1).isNotConsumed();
 		twoCombatStyles.setDisplayItemId(BankSlotIcons.getCombatGear());

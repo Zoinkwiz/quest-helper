@@ -79,7 +79,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -111,7 +111,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ghostlyHood = new ItemRequirement("Ghostly hood", ItemID.GHOSTLY_HOOD, 1, true).isNotConsumed();
 		ghostlyBody = new ItemRequirement("Ghostly robe (top)", ItemID.GHOSTLY_ROBE, 1, true).isNotConsumed();

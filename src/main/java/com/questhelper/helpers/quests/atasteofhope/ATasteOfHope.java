@@ -96,7 +96,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -241,7 +241,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins1000 = new ItemRequirement("Coins", ItemCollections.COINS, 1000);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();

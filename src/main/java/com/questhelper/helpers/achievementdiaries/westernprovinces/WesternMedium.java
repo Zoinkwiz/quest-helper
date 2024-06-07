@@ -97,7 +97,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -157,7 +157,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notAgiShortcut = new VarplayerRequirement(1182, false, 12);
 		notSpiritToStronghold = new VarplayerRequirement(1182, false, 13);

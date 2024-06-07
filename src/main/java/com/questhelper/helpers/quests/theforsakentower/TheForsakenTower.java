@@ -85,7 +85,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -130,7 +130,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		crank = new ItemRequirement("Generator crank", ItemID.GENERATOR_CRANK);
 		oldNotes = new ItemRequirement("Old notes", ItemID.OLD_NOTES_22774);

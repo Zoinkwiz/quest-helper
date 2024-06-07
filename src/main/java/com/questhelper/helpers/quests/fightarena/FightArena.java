@@ -73,7 +73,7 @@ public class FightArena extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -126,7 +126,7 @@ public class FightArena extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		khazardHelmet = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET);

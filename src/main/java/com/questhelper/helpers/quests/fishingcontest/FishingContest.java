@@ -103,7 +103,7 @@ public class FishingContest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		coins.setTooltip("10 if you buy a fishing rod from Jack");
@@ -224,7 +224,7 @@ public class FishingContest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 

@@ -91,7 +91,7 @@ public class Watchtower extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -215,7 +215,7 @@ public class Watchtower extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		guamUnf = new ItemRequirement("Guam potion (unf)", ItemID.GUAM_POTION_UNF);
 		guamUnf.setHighlightInInventory(true);

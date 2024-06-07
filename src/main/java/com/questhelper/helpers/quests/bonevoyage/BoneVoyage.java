@@ -88,7 +88,7 @@ public class BoneVoyage extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -132,7 +132,7 @@ public class BoneVoyage extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		canEnterGuild = new Conditions(
 			new SkillRequirement(Skill.WOODCUTTING, 60, true)

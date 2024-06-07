@@ -94,7 +94,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -135,7 +135,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notTrawlerRay = new VarplayerRequirement(1197, false, 6);
 		notYanAgi = new VarplayerRequirement(1197, false, 7);

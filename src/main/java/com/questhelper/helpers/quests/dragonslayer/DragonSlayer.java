@@ -93,7 +93,7 @@ public class DragonSlayer extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -192,7 +192,7 @@ public class DragonSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
 		unfiredBowl.setTooltip("You can make one with soft clay at a Potter's Wheel with 8 Crafting.");

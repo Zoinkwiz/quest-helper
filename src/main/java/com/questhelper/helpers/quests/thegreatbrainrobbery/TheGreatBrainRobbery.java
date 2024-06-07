@@ -114,7 +114,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -214,7 +214,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Item reqs
 		fishbowlHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET).isNotConsumed();

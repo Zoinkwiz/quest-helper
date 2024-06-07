@@ -89,7 +89,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -134,7 +134,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notGoldWarbler = new VarplayerRequirement(1198, false, 1);
 		notFiveClay = new VarplayerRequirement(1198, false, 2);

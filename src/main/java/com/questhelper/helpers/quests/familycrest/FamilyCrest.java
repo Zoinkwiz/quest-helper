@@ -87,7 +87,7 @@ public class FamilyCrest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -143,7 +143,7 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Recommended
 		varrockTele = new ItemRequirement("Varrock Teleports", ItemID.VARROCK_TELEPORT, 2);

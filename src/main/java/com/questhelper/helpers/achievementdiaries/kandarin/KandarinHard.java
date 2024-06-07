@@ -88,7 +88,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -139,7 +139,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCatchStur = new VarplayerRequirement(1178, false, 26);
 		notSeersRooftop = new VarplayerRequirement(1178, false, 27);

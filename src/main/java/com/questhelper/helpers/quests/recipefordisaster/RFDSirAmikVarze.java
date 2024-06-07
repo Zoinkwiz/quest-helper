@@ -87,7 +87,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		calculateEvilChickenLevel();
@@ -130,7 +130,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
 		bucketOfMilk.setHighlightInInventory(true);

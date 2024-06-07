@@ -101,7 +101,7 @@ public class HeroesQuest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -196,7 +196,7 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		iceGloves = new ItemRequirement("Ice gloves/Smiths gloves (i)", ItemID.ICE_GLOVES).isNotConsumed();
 		iceGloves.canBeObtainedDuringQuest();

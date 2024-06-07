@@ -90,7 +90,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -181,7 +181,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		givenWood = new VarplayerRequirement(QuestVarPlayer.QUEST_TREE_GNOME_VILLAGE.getId(), 3, Operation.GREATER_EQUAL);
 		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6).hideConditioned(givenWood);

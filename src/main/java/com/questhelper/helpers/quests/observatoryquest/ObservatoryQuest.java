@@ -78,7 +78,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -117,7 +117,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);

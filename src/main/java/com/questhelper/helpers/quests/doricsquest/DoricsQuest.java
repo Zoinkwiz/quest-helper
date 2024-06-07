@@ -56,7 +56,7 @@ public class DoricsQuest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -67,7 +67,7 @@ public class DoricsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		clay = new ItemRequirement("Clay (UNNOTED)", ItemID.CLAY, 6);
 		copper = new ItemRequirement("Copper ore (UNNOTED)", ItemID.COPPER_ORE, 4);

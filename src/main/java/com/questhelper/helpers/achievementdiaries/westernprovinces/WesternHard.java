@@ -98,7 +98,7 @@ public class WesternHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -152,7 +152,7 @@ public class WesternHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notElfCystalBow = new VarplayerRequirement(1182, false, 25);
 		notMonkfishPisc = new VarplayerRequirement(1182, false, 26);

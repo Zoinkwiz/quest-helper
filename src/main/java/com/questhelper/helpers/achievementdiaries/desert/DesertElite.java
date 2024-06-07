@@ -89,7 +89,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -120,7 +120,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notWildPie = new VarplayerRequirement(1199, false, 2);
 		notIceBarrage = new VarplayerRequirement(1199, false, 4);

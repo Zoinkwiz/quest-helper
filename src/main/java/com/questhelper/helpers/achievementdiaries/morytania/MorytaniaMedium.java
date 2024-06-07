@@ -101,7 +101,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -149,7 +149,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notSwampLizard = new VarplayerRequirement(1180, false, 12);
 		notCanifisAgi = new VarplayerRequirement(1180, false, 13);

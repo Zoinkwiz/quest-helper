@@ -66,7 +66,7 @@ public class BearYourSoul extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -85,7 +85,7 @@ public class BearYourSoul extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		dustyKeyOr70AgilOrKeyMasterTeleport =
 		new KeyringRequirement("Dusty key, or another way to get into the deep Taverley Dungeon",

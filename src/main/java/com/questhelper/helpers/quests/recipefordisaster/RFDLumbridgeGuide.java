@@ -74,7 +74,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -98,7 +98,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
 		flour = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);

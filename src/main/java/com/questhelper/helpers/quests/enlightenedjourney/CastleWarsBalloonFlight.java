@@ -52,7 +52,7 @@ public class CastleWarsBalloonFlight extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 
 		HashMap<Integer, List<Integer>> sections = new HashMap<>();
 		List<Integer> section1 = Arrays.asList(5, 7, 9, 10, 10, 10, 10, 10, 10, 8, 9, 9, 9, 7, 7, 7, 8, 9, 9, 9, 9);
@@ -67,7 +67,7 @@ public class CastleWarsBalloonFlight extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		yewLogs = new ItemRequirement("Yew logs", ItemID.YEW_LOGS, 10);
 	}

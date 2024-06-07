@@ -85,7 +85,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -123,7 +123,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		papyrus3 = new ItemRequirement("Papyrus", ItemID.PAPYRUS, 3);
 		papyrus2 = new ItemRequirement("Papyrus", ItemID.PAPYRUS, 2);

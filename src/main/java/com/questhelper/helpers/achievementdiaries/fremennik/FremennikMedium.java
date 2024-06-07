@@ -102,7 +102,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -167,7 +167,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notSlayBrineRat = new VarplayerRequirement(1184, false, 11);
 		notSnowyHunter = new VarplayerRequirement(1184, false, 12);

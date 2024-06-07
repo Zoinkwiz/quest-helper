@@ -88,7 +88,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -133,7 +133,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCopperLongtail = new VarplayerRequirement(1182, false, 1);
 		notNovicePest = new VarplayerRequirement(1182, false, 2);

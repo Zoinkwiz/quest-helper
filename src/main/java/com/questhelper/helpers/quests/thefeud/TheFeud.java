@@ -101,7 +101,7 @@ public class TheFeud extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupVarBits();
@@ -234,7 +234,7 @@ public class TheFeud extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 800);
 		unspecifiedCoins = new ItemRequirement("Coins", ItemCollections.COINS, -1);

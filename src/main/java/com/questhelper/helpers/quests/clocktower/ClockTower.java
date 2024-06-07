@@ -91,7 +91,7 @@ public class ClockTower extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -143,7 +143,7 @@ public class ClockTower extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bucketOfWater = new ItemRequirement("Bucket of Water or a pair of ice gloves or smiths gloves(i)", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.addAlternates(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I);

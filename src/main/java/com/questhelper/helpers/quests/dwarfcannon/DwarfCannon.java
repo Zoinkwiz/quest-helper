@@ -47,7 +47,7 @@ public class DwarfCannon extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -98,7 +98,7 @@ public class DwarfCannon extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		staminas = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
 		teleToAsg = new ItemRequirement("Teleport to Falador, Amulet of Glory, or Combat Bracelet",

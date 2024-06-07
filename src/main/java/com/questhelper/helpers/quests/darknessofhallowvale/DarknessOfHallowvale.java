@@ -109,7 +109,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -194,7 +194,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		planks2 = new ItemRequirement("Plank", ItemID.PLANK, 2);

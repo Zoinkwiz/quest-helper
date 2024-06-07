@@ -75,7 +75,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -101,7 +101,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCraftedRunes = new VarplayerRequirement(1200, false, 1);
 		notEquippedCape = new VarplayerRequirement(1200, false, 2);

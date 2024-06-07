@@ -98,7 +98,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -270,7 +270,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coal = new ItemRequirement("Coal", ItemID.COAL);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();

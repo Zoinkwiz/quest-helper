@@ -96,7 +96,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -135,7 +135,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Required items
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);

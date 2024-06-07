@@ -99,7 +99,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 	Zone keldagrim, keldagrim2, trollRoom, dwarfEntrance, consortium;
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Required
 		coins2500 = new ItemRequirement("coins", ItemCollections.COINS, 2500);
@@ -531,7 +531,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		// Varbit 571
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();

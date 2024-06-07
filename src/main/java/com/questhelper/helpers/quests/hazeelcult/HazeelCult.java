@@ -99,7 +99,7 @@ public class HazeelCult extends BasicQuestHelper
 	{
 		// TODO: Should the valves section implement the PuzzleWrapper?
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -180,7 +180,7 @@ public class HazeelCult extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		givenAlomoneScroll = new VarbitRequirement(14780, 1);
 		givenArmour = new VarbitRequirement(14772, 1);

@@ -55,7 +55,7 @@ public class WitchsPotion extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -72,7 +72,7 @@ public class WitchsPotion extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ratTail = new ItemRequirement("Rat's tail", ItemID.RATS_TAIL);
 		onion = new ItemRequirement("Onion", ItemID.ONION);

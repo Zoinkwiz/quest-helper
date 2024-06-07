@@ -95,7 +95,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -154,7 +154,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notApothStr = new VarplayerRequirement(1176, false, 15);
 		notChamps = new VarplayerRequirement(1176, false, 16);

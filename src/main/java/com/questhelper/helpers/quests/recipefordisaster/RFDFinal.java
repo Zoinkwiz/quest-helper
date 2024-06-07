@@ -71,7 +71,7 @@ public class RFDFinal extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -100,7 +100,7 @@ public class RFDFinal extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES).isNotConsumed();
 		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);

@@ -84,7 +84,7 @@ public class RFDPiratePete extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -149,7 +149,7 @@ public class RFDPiratePete extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		canSwim = new WeightRequirement("Weight less than 27kg", 26, Operation.LESS_EQUAL);
 

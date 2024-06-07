@@ -92,7 +92,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -143,7 +143,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);

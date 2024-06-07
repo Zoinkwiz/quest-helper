@@ -96,7 +96,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -150,7 +150,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notKharyrll = new VarplayerRequirement(1180, false, 23);
 		notAdvancedSpikes = new VarplayerRequirement(1180, false, 24);

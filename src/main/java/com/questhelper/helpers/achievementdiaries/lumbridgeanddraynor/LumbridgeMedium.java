@@ -94,7 +94,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -144,7 +144,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notAlKharidRooftop = new VarplayerRequirement(1194, false, 13);
 		notGrappleLum = new VarplayerRequirement(1194, false, 14);

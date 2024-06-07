@@ -100,7 +100,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupWorldPoints();
 		setupZones();
 		setupConditions();
@@ -464,7 +464,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 

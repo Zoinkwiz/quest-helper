@@ -101,7 +101,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -153,7 +153,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notUniPen = new VarplayerRequirement(1196, false, 13);
 		notGrapYan = new VarplayerRequirement(1196, false, 14);

@@ -65,7 +65,7 @@ public class DruidicRitual extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -91,7 +91,7 @@ public class DruidicRitual extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rawRat = new ItemRequirement("Raw rat meat", ItemID.RAW_RAT_MEAT);
 		rawRat.addAlternates(ItemID.ENCHANTED_RAT);

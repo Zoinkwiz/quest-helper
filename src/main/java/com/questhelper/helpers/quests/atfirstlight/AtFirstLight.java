@@ -91,7 +91,7 @@ public class AtFirstLight extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -166,7 +166,7 @@ public class AtFirstLight extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Required
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();

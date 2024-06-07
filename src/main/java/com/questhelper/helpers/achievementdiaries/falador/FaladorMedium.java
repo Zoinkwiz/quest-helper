@@ -102,7 +102,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMed = new ConditionalStep(this, claimReward);
@@ -165,7 +165,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notLitLantern = new VarplayerRequirement(1186, false, 11);
 		notTelegrabbedWine = new VarplayerRequirement(1186, false, 12);

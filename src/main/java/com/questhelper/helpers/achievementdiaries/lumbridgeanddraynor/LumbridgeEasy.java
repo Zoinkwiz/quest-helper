@@ -93,7 +93,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -144,7 +144,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notDrayAgi = new VarplayerRequirement(1194, false, 1);
 		notKillCaveBug = new VarplayerRequirement(1194, false, 2);

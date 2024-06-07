@@ -59,7 +59,7 @@ public class Agility extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 
 		draynorStep = draynorVillage.loadStep();
 		alKharidStep = alKharid.loadStep();
@@ -86,7 +86,7 @@ public class Agility extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		//Setup courses
 		draynorVillage = new DraynorVillage(this);

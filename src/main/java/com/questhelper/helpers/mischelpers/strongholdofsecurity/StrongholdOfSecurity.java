@@ -108,7 +108,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -142,7 +142,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}

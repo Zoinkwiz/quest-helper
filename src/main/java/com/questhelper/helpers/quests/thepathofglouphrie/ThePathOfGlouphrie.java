@@ -121,7 +121,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -177,7 +177,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		/// Required items
 		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);

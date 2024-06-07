@@ -80,7 +80,7 @@ public class TheGolem extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -160,7 +160,7 @@ public class TheGolem extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		letter = new ItemRequirement("Letter", ItemID.LETTER_4615);
 		letter.setHighlightInInventory(true);

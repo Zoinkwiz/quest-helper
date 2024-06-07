@@ -92,7 +92,7 @@ public class TheGrandTree extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -207,7 +207,7 @@ public class TheGrandTree extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		oneThousandCoins = new ItemRequirement("Coins to enter the Stronghold if you didn't help Femi previously", ItemCollections.COINS, 1000)
 			.hideConditioned(new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED));

@@ -71,7 +71,7 @@ public class Mining extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupZones();
 		setupSteps();
@@ -96,7 +96,7 @@ public class Mining extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		mi6 = new SkillRequirement(Skill.MINING, 6);
 		mi11 = new SkillRequirement(Skill.MINING, 11);

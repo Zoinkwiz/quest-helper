@@ -87,7 +87,7 @@ public class MountainDaughter extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		loadConditions();
 		loadQuestSteps();
 
@@ -173,7 +173,7 @@ public class MountainDaughter extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE).isNotConsumed();

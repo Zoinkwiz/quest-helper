@@ -67,7 +67,7 @@ public class ClientOfKourend extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -99,7 +99,7 @@ public class ClientOfKourend extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		feather = new ItemRequirement("Feather", ItemID.FEATHER);
 		feather.setTooltip("Can be purchased from Gerrant's Fishy Business in Port Sarim.");

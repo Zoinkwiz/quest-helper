@@ -88,7 +88,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -208,7 +208,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);

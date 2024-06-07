@@ -75,7 +75,7 @@ public class WitchsHouse extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -127,7 +127,7 @@ public class WitchsHouse extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		cheese = new ItemRequirement("Cheese (multiple if you mess up)", ItemID.CHEESE);
 		leatherGloves = new ItemRequirement("Leather gloves", ItemID.LEATHER_GLOVES, 1, true).isNotConsumed();

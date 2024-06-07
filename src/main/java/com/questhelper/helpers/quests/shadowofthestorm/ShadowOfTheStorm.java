@@ -96,7 +96,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -183,7 +183,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		darkItems = new ItemRequirement("pieces of black clothing", ItemID.BLACK_DESERT_SHIRT, 3, true).isNotConsumed().doNotAggregate();
 		darkItems.addAlternates(ItemID.BLACK_DESERT_ROBE, ItemID.BLACK_CHAINBODY, ItemID.BLACK_PLATEBODY, ItemID.BLACK_PLATELEGS, ItemID.BLACK_FULL_HELM, ItemID.BLACK_MED_HELM, ItemID.BLACK_GLOVES, ItemID.PRIEST_GOWN, ItemID.PRIEST_GOWN_428, ItemID.MYSTIC_HAT_DARK,

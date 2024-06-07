@@ -87,7 +87,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -124,7 +124,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notbarb5 = new VarplayerRequirement(1179, false, 5);
 		notPickDwarf = new VarplayerRequirement(1179, false, 6);

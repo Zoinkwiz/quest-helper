@@ -96,7 +96,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -175,7 +175,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		pickaxeHighlighted = pickaxe.highlighted().isNotConsumed();

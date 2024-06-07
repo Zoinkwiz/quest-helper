@@ -75,7 +75,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -124,7 +124,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		cookedMeat = new ItemRequirement("Cooked Meat", ItemID.COOKED_MEAT);
 		cookedMeat.canBeObtainedDuringQuest();

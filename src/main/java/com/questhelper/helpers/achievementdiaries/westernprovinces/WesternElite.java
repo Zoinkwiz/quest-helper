@@ -86,7 +86,7 @@ public class WesternElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -119,7 +119,7 @@ public class WesternElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notMagicLong = new VarplayerRequirement(1183, false, 6);
 		notKillThermy = new VarplayerRequirement(1183, false, 7);

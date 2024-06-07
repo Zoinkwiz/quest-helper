@@ -91,7 +91,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -143,7 +143,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notMineMith = new VarplayerRequirement(1192, false, 13);
 		notEntYew = new VarplayerRequirement(1192, false, 14);

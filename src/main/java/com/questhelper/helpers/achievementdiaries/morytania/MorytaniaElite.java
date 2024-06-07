@@ -90,7 +90,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -121,7 +121,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notBareHandShark = new VarplayerRequirement(1181, false, 3);
 		notCremateShade = new VarplayerRequirement(1181, false, 4);

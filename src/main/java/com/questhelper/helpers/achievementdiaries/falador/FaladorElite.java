@@ -82,8 +82,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -121,7 +120,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCraftedAirRunes = new VarplayerRequirement(1187, false, 5);
 		notPurchasedWhite2hSword = new VarplayerRequirement(1187, false, 6);

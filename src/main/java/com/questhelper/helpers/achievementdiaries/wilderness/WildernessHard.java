@@ -91,7 +91,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -136,7 +136,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notGodSpells = new VarplayerRequirement(1192, false, 25);
 		notAirOrb = new VarplayerRequirement(1192, false, 26);

@@ -117,7 +117,7 @@ public class UndergroundPass extends BasicQuestHelper
 		inUndergroundSection3, inMaze1, inMaze2, inPostIbanArea;
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
 		rope2 = new ItemRequirement("Rope, multiple in case you fail an agility check", ItemID.ROPE);
@@ -582,7 +582,7 @@ public class UndergroundPass extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();

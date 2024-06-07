@@ -94,7 +94,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -144,7 +144,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCraftSnelm = new VarplayerRequirement(1180, false, 1);
 		notCookSnail = new VarplayerRequirement(1180, false, 2);

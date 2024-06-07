@@ -89,7 +89,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -128,7 +128,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notThreeBosses = new VarplayerRequirement(1193, false, 3);
 		notTPGhorrock = new VarplayerRequirement(1193, false, 5);

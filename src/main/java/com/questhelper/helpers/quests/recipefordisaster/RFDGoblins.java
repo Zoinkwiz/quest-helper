@@ -73,7 +73,7 @@ public class RFDGoblins extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -102,7 +102,7 @@ public class RFDGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bread = new ItemRequirement("Bread", ItemID.BREAD);
 		orange = new ItemRequirement("Orange", ItemID.ORANGE);

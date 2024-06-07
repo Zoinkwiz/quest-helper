@@ -104,7 +104,7 @@ public class DesertTreasure extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -198,7 +198,7 @@ public class DesertTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins650 = new ItemRequirement("Coins", ItemCollections.COINS, 650);
 		magicLogs12 = new ItemRequirement("Magic logs (can be noted)", ItemID.MAGIC_LOGS, 12);

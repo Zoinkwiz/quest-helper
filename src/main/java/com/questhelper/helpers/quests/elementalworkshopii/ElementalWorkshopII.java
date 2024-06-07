@@ -123,7 +123,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		// TODO: To what degree should this quest make use of PuzzleWrapper?
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -261,7 +261,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();

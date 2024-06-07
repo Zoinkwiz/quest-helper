@@ -78,7 +78,7 @@ public class RovingElves extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -110,7 +110,7 @@ public class RovingElves extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		seed = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED);
 		seed.addAlternates(ItemID.CONSECRATION_SEED_4206);

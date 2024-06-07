@@ -84,7 +84,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -164,7 +164,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		rangedWeapon = new ItemRequirement("Any ranged weapon + ammo", -1, -1).isNotConsumed();

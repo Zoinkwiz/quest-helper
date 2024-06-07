@@ -84,7 +84,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -135,7 +135,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notFamilyCrest = new VarplayerRequirement(1186, false, 0);
 		notClimbedWall = new VarplayerRequirement(1186, false, 1);

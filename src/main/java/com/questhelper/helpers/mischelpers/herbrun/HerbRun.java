@@ -109,7 +109,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		farmingHandler = new FarmingHandler(client, configManager);
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -179,7 +179,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);

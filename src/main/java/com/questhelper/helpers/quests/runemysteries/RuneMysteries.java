@@ -65,7 +65,7 @@ public class RuneMysteries extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -96,7 +96,7 @@ public class RuneMysteries extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN).isNotConsumed();
 		airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");

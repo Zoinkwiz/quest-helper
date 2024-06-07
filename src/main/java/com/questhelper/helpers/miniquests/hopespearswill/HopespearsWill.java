@@ -78,7 +78,7 @@ public class HopespearsWill extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -141,7 +141,7 @@ public class HopespearsWill extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK);
 		ghostspeakAmulet.setTooltip("or Morytania legs 2 or greater");

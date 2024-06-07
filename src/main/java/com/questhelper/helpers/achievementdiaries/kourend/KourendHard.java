@@ -87,7 +87,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -134,7 +134,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notWoodcuttingGuild = new VarplayerRequirement(2085, false, 26);
 		notSmeltAddyBar = new VarplayerRequirement(2085, false, 27);

@@ -68,7 +68,7 @@ public class ColdWar extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -178,7 +178,7 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		oakPlanks = new ItemRequirement("Oak Planks (unnoted)", ItemID.OAK_PLANK, 10);
 		oakPlankHighlight = new ItemRequirement("Oak Plank", ItemID.OAK_PLANK, 1);

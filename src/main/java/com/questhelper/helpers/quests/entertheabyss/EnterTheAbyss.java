@@ -73,7 +73,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -94,7 +94,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		varrockTeleport = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, 2);
 		ardougneTeleport = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT);

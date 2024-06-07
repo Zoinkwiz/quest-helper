@@ -89,7 +89,7 @@ public class HauntedMine extends BasicQuestHelper
 	{
 		// TODO: Should the lever room implement PuzzleWrapper?
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -163,7 +163,7 @@ public class HauntedMine extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		zealotsKey = new ItemRequirement("Zealot's key", ItemID.ZEALOTS_KEY);
 

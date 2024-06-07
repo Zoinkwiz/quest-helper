@@ -94,7 +94,7 @@ public class CabinFever extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -339,7 +339,7 @@ public class CabinFever extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		fuse1 = new ItemRequirement("Fuse", ItemID.FUSE);

@@ -91,7 +91,7 @@ public class MurderMystery extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZone();
 		setupConditions();
 		setupSteps();
@@ -340,7 +340,7 @@ public class MurderMystery extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		pungentPot = new ItemRequirement("Pungent pot", ItemID.PUNGENT_POT);

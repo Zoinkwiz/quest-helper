@@ -73,13 +73,13 @@ public class JunglePotion extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		return getSteps();
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		grimySnakeWeed = new ItemRequirement("Grimy Snake Weed", ItemID.GRIMY_SNAKE_WEED);
 		grimySnakeWeed.setHighlightInInventory(true);

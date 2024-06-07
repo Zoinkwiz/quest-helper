@@ -68,7 +68,7 @@ public class RFDEvilDave extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -95,7 +95,7 @@ public class RFDEvilDave extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
 		teleportEdgeville = new ItemRequirement("Teleport to Edgeville", ItemCollections.AMULET_OF_GLORIES);

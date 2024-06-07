@@ -104,7 +104,7 @@ public class Wanted extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupOtherRequirements();
 		setupSteps();
@@ -246,7 +246,7 @@ public class Wanted extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ItemRequirement lawRune = new ItemRequirement("A law rune", ItemID.LAW_RUNE, 1);
 		ItemRequirement enchantedGem = new ItemRequirement("Enchanted gem", ItemID.ENCHANTED_GEM, 1);

@@ -89,7 +89,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -126,7 +126,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notRichChest = new VarplayerRequirement(1195, false, 4);
 		notMovario = new VarplayerRequirement(1195, false, 5);

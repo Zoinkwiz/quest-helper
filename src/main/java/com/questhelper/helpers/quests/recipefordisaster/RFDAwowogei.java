@@ -88,7 +88,7 @@ public class RFDAwowogei extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -128,7 +128,7 @@ public class RFDAwowogei extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		cookedSnake = new ItemRequirement("Stuffed snake", ItemID.STUFFED_SNAKE);
 		cookedSnakeHighlighted = new ItemRequirement("Stuffed snake", ItemID.STUFFED_SNAKE);

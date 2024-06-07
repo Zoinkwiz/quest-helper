@@ -89,7 +89,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -140,7 +140,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notLowAlch = new VarplayerRequirement(1192, false, 1);
 		notWildyLever = new VarplayerRequirement(1192, false, 2);

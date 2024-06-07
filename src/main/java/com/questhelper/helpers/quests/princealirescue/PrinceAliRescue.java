@@ -78,7 +78,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -135,7 +135,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
 		ballsOfWool3 = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL, 3);

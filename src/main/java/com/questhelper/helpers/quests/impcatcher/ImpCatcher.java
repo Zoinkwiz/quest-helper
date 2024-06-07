@@ -66,7 +66,7 @@ public class ImpCatcher extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -86,7 +86,7 @@ public class ImpCatcher extends BasicQuestHelper
 
 
 	@Override
-	public void setupRequirements() {
+	protected void setupRequirements() {
 		blackBead = new ItemRequirement("Black bead", ItemID.BLACK_BEAD);
 		whiteBead = new ItemRequirement("White bead", ItemID.WHITE_BEAD);
 		redBead = new ItemRequirement("Red bead", ItemID.RED_BEAD);

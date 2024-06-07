@@ -75,7 +75,7 @@ public class CooksAssistant extends BasicQuestHelper
 	{
 		loadZones();
 		setupConditions();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -100,7 +100,7 @@ public class CooksAssistant extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		egg = new ItemRequirement("Egg", ItemID.EGG);
 		egg.canBeObtainedDuringQuest();

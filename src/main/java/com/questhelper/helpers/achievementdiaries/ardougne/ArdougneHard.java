@@ -95,7 +95,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -149,7 +149,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notRecharge = new VarplayerRequirement(1196, false, 26);
 		notMagicGuild = new VarplayerRequirement(1196, false, 27);

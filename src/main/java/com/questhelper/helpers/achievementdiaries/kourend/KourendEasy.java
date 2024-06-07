@@ -81,7 +81,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -132,7 +132,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notMineIron = new VarplayerRequirement(2085, false, 1);
 		notSandCrab = new VarplayerRequirement(2085, false, 2);

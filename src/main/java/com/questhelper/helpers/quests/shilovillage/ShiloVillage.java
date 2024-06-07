@@ -101,7 +101,7 @@ public class ShiloVillage extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -168,7 +168,7 @@ public class ShiloVillage extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		torchOrCandle = new ItemRequirement("Lit torch or candle", ItemID.LIT_TORCH);

@@ -82,7 +82,7 @@ public class SheepShearer extends BasicQuestHelper
 	{
 		loadZones();
 		setupConditions();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -105,7 +105,7 @@ public class SheepShearer extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ballOfWool = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL);
 		shears = new ItemRequirement("Shears", ItemID.SHEARS).isNotConsumed();

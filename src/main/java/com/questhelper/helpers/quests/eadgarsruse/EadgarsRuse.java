@@ -95,7 +95,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		if (freedEadgar.check(client))
@@ -245,7 +245,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 		climbingBootsEquipped = climbingBoots.equipped();

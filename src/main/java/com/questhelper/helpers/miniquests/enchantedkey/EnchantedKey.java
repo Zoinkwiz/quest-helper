@@ -58,7 +58,7 @@ public class EnchantedKey extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -72,7 +72,7 @@ public class EnchantedKey extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		key = new KeyringRequirement("Enchanted key", configManager, KeyringCollection.ENCHANTED_KEY);

@@ -91,7 +91,7 @@ public class KingsRansom extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -186,7 +186,7 @@ public class KingsRansom extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		scrapPaper = new ItemRequirement("Scrap paper", ItemID.SCRAP_PAPER);
 		addressForm = new ItemRequirement("Address form", ItemID.ADDRESS_FORM);

@@ -72,7 +72,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -112,7 +112,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();

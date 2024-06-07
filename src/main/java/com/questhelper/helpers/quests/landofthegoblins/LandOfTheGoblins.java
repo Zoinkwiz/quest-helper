@@ -106,7 +106,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -322,7 +322,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		inBasement = new ZoneRequirement(basement);
 		inTunnels = new ZoneRequirement(tunnels);

@@ -103,7 +103,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -257,7 +257,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Required
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 100);

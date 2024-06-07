@@ -91,7 +91,7 @@ public class DesertHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -136,7 +136,7 @@ public class DesertHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notMenaThug = new VarplayerRequirement(1198, false, 24);
 		notGranite = new VarplayerRequirement(1198, false, 25);

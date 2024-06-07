@@ -77,7 +77,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -164,7 +164,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
 		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +

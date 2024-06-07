@@ -153,7 +153,7 @@ public class LegendsQuest extends BasicQuestHelper
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -438,7 +438,7 @@ public class LegendsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 		machete = new ItemRequirement("A machete", ItemCollections.MACHETE).isNotConsumed();

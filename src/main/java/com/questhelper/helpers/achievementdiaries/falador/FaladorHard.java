@@ -90,7 +90,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -145,7 +145,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCraftedMindRunes = new VarplayerRequirement(1186, false, 26);
 		notChangedFamilyCrest = new VarplayerRequirement(1186, false, 27);

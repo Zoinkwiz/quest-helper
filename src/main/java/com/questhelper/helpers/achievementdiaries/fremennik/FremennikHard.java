@@ -82,7 +82,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -132,7 +132,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notTPTroll = new VarplayerRequirement(1184, false, 21);
 		notCatchKyatt = new VarplayerRequirement(1184, false, 23);

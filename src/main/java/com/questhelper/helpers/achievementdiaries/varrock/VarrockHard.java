@@ -100,7 +100,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -184,7 +184,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notSpottyCape = new VarplayerRequirement(1176, false, 29);
 		not153Kudos = new VarplayerRequirement(1176, false, 30);

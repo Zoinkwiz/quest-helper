@@ -91,7 +91,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -143,7 +143,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notFairyRing = new VarplayerRequirement(2085, false, 25);
 		notKillLizardman = new VarplayerRequirement(2085, false, 13);

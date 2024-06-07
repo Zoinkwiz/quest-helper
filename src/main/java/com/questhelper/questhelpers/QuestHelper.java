@@ -98,6 +98,8 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Getter
 	protected QuestHelperPlugin questHelperPlugin;
 
+	private boolean hasInitialized;
+
 	@Override
 	public void configure(Binder binder)
 	{
@@ -228,7 +230,25 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	}
 
-	public abstract void setupRequirements();
+	/**
+	 * This method should not be called directly.
+	 * It is used internally by {@link #initializeRequirements()}.
+	 */
+	protected abstract void setupRequirements();
+
+	/**
+	 * The expected interface to be used to initialize Quest Helper's Requirements
+	 *
+	 */
+	public void initializeRequirements()
+	{
+		if (hasInitialized)
+		{
+			return;
+		}
+		setupRequirements();
+		hasInitialized = true;
+	}
 
 	public List<ItemRequirement> getItemRequirements()
 	{

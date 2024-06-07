@@ -88,7 +88,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -172,7 +172,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Required
 		secateurs = new ItemRequirement("Secateurs (Obtainable in quest)", ItemID.SECATEURS);

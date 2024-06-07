@@ -70,7 +70,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -109,7 +109,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notEssMine = new VarplayerRequirement(1196, false, 0);
 		notStealCake = new VarplayerRequirement(1196, false, 1);

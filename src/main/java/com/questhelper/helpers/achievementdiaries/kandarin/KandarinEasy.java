@@ -88,7 +88,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -139,7 +139,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCatchMackerel = new VarplayerRequirement(1178, false, 1);
 		notBuyCandle = new VarplayerRequirement(1178, false, 2);

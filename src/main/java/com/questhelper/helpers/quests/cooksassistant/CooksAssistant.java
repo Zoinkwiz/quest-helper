@@ -73,8 +73,8 @@ public class CooksAssistant extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupConditions();
 		initializeRequirements();
+		setupConditions();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();

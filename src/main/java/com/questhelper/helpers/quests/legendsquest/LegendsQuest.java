@@ -88,7 +88,7 @@ public class LegendsQuest extends BasicQuestHelper
 		force, forceHighlighted, yommiTotem, yommiTotemHighlighted, gildedTotem, completeNotes, anyNotes, anyNotesHighlighted;
 
 
-	ItemRequirement prayerPotions, restorePotions;
+	ItemRequirement prayerPotions;
 
 	Requirement prayer42;
 

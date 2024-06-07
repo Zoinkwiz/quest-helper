@@ -65,6 +65,8 @@ public class ObjectCondition extends ConditionForStep
 	public boolean check(Client client)
 	{
 		Tile[][] tiles;
+		if (client.getScene() == null) return false;
+
 		tiles = client.getScene().getTiles()[client.getPlane()];
 
 		for (int x = 0; x < SCENE_SIZE; x++)

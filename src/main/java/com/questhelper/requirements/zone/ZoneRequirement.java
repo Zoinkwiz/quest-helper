@@ -33,12 +33,14 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 import com.questhelper.requirements.AbstractRequirement;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 
 public class ZoneRequirement extends AbstractRequirement
 {
+	@Getter
 	private final List<Zone> zones;
 	private final boolean checkInZone;
 	private String displayText;

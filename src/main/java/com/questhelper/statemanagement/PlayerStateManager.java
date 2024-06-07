@@ -135,4 +135,13 @@ public class PlayerStateManager
 			accountType = newAccountType;
 		}
 	}
+
+	public String getPlayerName()
+	{
+		if (client.getLocalPlayer() == null)
+		{
+			return null;
+		}
+		return client.getLocalPlayer().getName();
+	}
 }

@@ -95,8 +95,8 @@ public class PiratesTreasure extends BasicQuestHelper
 		openChest.addDialogStep("Ok thanks, I'll go and get it.");
 		openChest.addIcon(ItemID.CHEST_KEY);
 
-		inBlueMoonFirst = new ZoneRequirement(blueMoonFirst);
 		blueMoonFirst = new Zone(new WorldPoint(3213, 3405, 1), new WorldPoint(3234, 3391, 1));
+		inBlueMoonFirst = new ZoneRequirement(blueMoonFirst);
 
 		ConditionalStep getTreasureMap = new ConditionalStep(this, climbStairs);
 		getTreasureMap.addStep(new Conditions(chestKey, inBlueMoonFirst), openChest);

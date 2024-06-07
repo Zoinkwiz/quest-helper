@@ -183,6 +183,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 
 		inYanAgilityCave = new ZoneRequirement(yanAgilityCave);
 		inYanille = new ZoneRequirement(yanille);
+		inWitchaven = new ZoneRequirement(witchaven);
 
 		madeString = new ChatMessageRequirement(
 			inWitchaven,

@@ -259,11 +259,6 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inSoph = new ZoneRequirement(soph);
-		inPyramid = new ZoneRequirement(pyramid);
-		inNorthPyramid = new ZoneRequirement(northPyramid, northPyramid2, eastRoom);
-		inEastRoom = new ZoneRequirement(eastRoom);
-
 		puzzleOpen = new WidgetModelRequirement(147, 3, 6474);
 		givenToken = new VarbitRequirement(450, 1);
 
@@ -298,6 +293,11 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		northPyramid = new Zone(new WorldPoint(3276, 9194, 0), new WorldPoint(3311, 9204, 0));
 		northPyramid2 = new Zone(new WorldPoint(3276, 9192, 0), new WorldPoint(3287, 9193, 0));
 		eastRoom = new Zone(new WorldPoint(3300, 9192, 0), new WorldPoint(3311, 9199, 0));
+
+		inSoph = new ZoneRequirement(soph);
+		inPyramid = new ZoneRequirement(pyramid);
+		inNorthPyramid = new ZoneRequirement(northPyramid, northPyramid2, eastRoom);
+		inEastRoom = new ZoneRequirement(eastRoom);
 	}
 
 	public void setupSteps()

@@ -439,7 +439,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		goTalkToZanik.addStep(inBasement, talkToZanik);
 		if (client.getLocalPlayer() != null)
 		{
-			goTalkToZanik.addDialogStep("Yes, I'm " + client.getLocalPlayer().getName() + "!");
+			goTalkToZanik.addDialogStep("Yes, I'm " + questHelperPlugin.getPlayerStateManager().getPlayerName() + "!");
 			goTalkToZanik.addDialogStep("Yes, I have two sets of robes!");
 		}
 

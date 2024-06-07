@@ -134,7 +134,8 @@ public class AnimalMagnetism extends BasicQuestHelper
 		return steps;
 	}
 
-	private void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		ironMine = new Zone(new WorldPoint(2971, 3248, 0), new WorldPoint(2987, 3234, 0));
 	}

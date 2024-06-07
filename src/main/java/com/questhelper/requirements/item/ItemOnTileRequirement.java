@@ -73,6 +73,8 @@ public class ItemOnTileRequirement extends ConditionForStep
 
 	private boolean checkAllTiles(Client client)
 	{
+		if (client.getScene() == null) return false;
+
 		if (worldPoint != null)
 		{
 			LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);

@@ -76,10 +76,10 @@ public class FaladorHard extends ComplexStateQuestHelper
 		enterDwarvenMinesHelmet, enterMiningGuild, enterHerosGuild, enterHerosGuildBasement, killBlueDragon, enterRoguesDen,
 		crackWallSafe, getProsySet, prayAtAltarSarim, enterWarriorsGuild, equipDwarvenHelmet;
 
-	Zone mindAltar, iceDungeon, wyvernCavern, faladorCastle1, herosGuild, herosGuildBasement, portSarimChurch, dwarvenMine,
+	Zone mindAltar, iceDungeon, wyvernCavern, faladorCastle1, herosGuild, herosGuildBasement, dwarvenMine,
 		miningGuild, herosGuildEntranceway, herosGuildMainHall, roguesDen, moleDen;
 
-	ZoneRequirement inMindAltar, inWyvernCavern, inIceDungeon, inFaladorCastle1, inHerosGuild, inHerosGuildBasement, inPortSarimChurch,
+	ZoneRequirement inMindAltar, inWyvernCavern, inIceDungeon, inFaladorCastle1, inHerosGuild, inHerosGuildBasement,
 		inDwarvenMine, inMiningGuild, inRoguesDen, inMoleDen;
 
 	ConditionalStep craftedMindRunesTask, changedFamilyCrestTask, killedMoleTask, killedWyvernTask, completeAgiCourseTask,
@@ -190,7 +190,6 @@ public class FaladorHard extends ComplexStateQuestHelper
 		inFaladorCastle1 = new ZoneRequirement(faladorCastle1);
 		inHerosGuild = new ZoneRequirement(herosGuild);
 		inHerosGuildBasement = new ZoneRequirement(herosGuildBasement);
-		inPortSarimChurch = new ZoneRequirement(portSarimChurch);
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inMiningGuild = new ZoneRequirement(miningGuild);
 		inHerosGuildBasement = new ZoneRequirement(herosGuildBasement);

@@ -140,6 +140,7 @@ public class HopespearsWill extends BasicQuestHelper
 		yubiusk = new Zone(14148);
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK);

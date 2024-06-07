@@ -60,6 +60,7 @@ public class DagRouteHelper extends ComplexStateQuestHelper
 		return new ConditionalStep(this, dagRoute);
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE);

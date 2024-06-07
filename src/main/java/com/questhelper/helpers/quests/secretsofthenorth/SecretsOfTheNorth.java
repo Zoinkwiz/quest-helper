@@ -256,6 +256,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		// Required

@@ -215,6 +215,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);

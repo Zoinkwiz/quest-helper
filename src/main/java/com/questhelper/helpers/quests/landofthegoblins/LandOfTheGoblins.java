@@ -321,6 +321,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		inBasement = new ZoneRequirement(basement);

@@ -171,6 +171,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		// Required

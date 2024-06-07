@@ -175,6 +175,7 @@ public class SleepingGiants extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
 	public void setupRequirements()
 	{
 		oakLogs = new ItemRequirement("Oak Logs", ItemID.OAK_LOGS);

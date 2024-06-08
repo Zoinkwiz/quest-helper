@@ -31,6 +31,7 @@ import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
@@ -40,9 +41,10 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mockito;
+import static org.mockito.ArgumentMatchers.anyInt;
 import javax.inject.Named;
 import java.util.concurrent.ScheduledExecutorService;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
@@ -52,49 +54,49 @@ import static org.mockito.Mockito.when;
 public abstract class MockedTest extends MockedTestBase
 {
 	@Bind
-	protected Client client = Mockito.mock(Client.class);
+	protected Client client = mock(Client.class);
 
 	@Bind
-	protected ConfigManager configManager = Mockito.mock(ConfigManager.class);
+	protected ConfigManager configManager = mock(ConfigManager.class);
 
 	@Bind
-	protected ChatMessageManager chatMessageManager = Mockito.mock(ChatMessageManager.class);
+	protected ChatMessageManager chatMessageManager = mock(ChatMessageManager.class);
 
 	@Bind
-	protected ItemManager itemManager = Mockito.mock(ItemManager.class);
+	protected ItemManager itemManager = mock(ItemManager.class);
 
 	@Bind
-	protected OverlayManager overlayManager = Mockito.mock(OverlayManager.class);
+	protected OverlayManager overlayManager = mock(OverlayManager.class);
 
 	@Bind
-	protected QuestHelperConfig questHelperConfig = Mockito.mock(QuestHelperConfig.class);
+	protected QuestHelperConfig questHelperConfig = mock(QuestHelperConfig.class);
 
 	@Bind
-	protected QuestOverlayManager questOverlayManager = Mockito.mock(QuestOverlayManager.class);
+	protected QuestOverlayManager questOverlayManager = mock(QuestOverlayManager.class);
 
 	@Bind
-	protected RuneliteObjectManager runeliteObjectManager = Mockito.mock(RuneliteObjectManager.class);
+	protected RuneliteObjectManager runeliteObjectManager = mock(RuneliteObjectManager.class);
 
 	@Bind
-	protected Hooks hooks = Mockito.mock(Hooks.class);
+	protected Hooks hooks = mock(Hooks.class);
 
 	@Bind
-	protected PlayerStateManager playerStateManager = Mockito.mock(PlayerStateManager.class);
+	protected PlayerStateManager playerStateManager = mock(PlayerStateManager.class);
 
 	@Bind
-	protected QuestHelperPlugin questHelperPlugin = Mockito.mock(QuestHelperPlugin.class);
+	protected QuestHelperPlugin questHelperPlugin = mock(QuestHelperPlugin.class);
 
 	@Bind
-	protected ClientToolbar clientToolbar = Mockito.mock(ClientToolbar.class);
+	protected ClientToolbar clientToolbar = mock(ClientToolbar.class);
 
 	@Bind
-	protected ClientThread clientThread = Mockito.mock(ClientThread.class);
+	protected ClientThread clientThread = mock(ClientThread.class);
 
 	@Bind
-	protected EventBus eventBus = Mockito.mock(EventBus.class);
+	protected EventBus eventBus = mock(EventBus.class);
 
 	@Bind
-	protected ScheduledExecutorService scheduledExecutorService = Mockito.mock(ScheduledExecutorService.class);
+	protected ScheduledExecutorService scheduledExecutorService = mock(ScheduledExecutorService.class);
 
 	@Bind
 	@Named("developerMode")
@@ -108,6 +110,10 @@ public abstract class MockedTest extends MockedTestBase
 
 		when(questHelperPlugin.getPlayerStateManager()).thenReturn(playerStateManager);
 		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
+
+		ItemComposition item = mock(ItemComposition.class);
+		when(item.getName()).thenReturn("TestName");
+		when(itemManager.getItemComposition(anyInt())).thenReturn(item);
 
 		// init client mocks
 		// when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));

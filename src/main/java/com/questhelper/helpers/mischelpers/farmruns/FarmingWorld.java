@@ -23,7 +23,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.mischelpers.herbrun;
+package com.questhelper.helpers.mischelpers.farmruns;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -353,5 +353,12 @@ class FarmingWorld
 				.computeIfAbsent(p.getImplementation().getTab(), k -> new TreeSet<>(tabSorter))
 				.add(p);
 		}
+	}
+
+	Collection<FarmingRegion> getRegionsForLocation(WorldPoint location)
+	{
+		return this.regions.get(location.getRegionID()).stream()
+			.filter(region -> region.isInBounds(location))
+			.collect(Collectors.toSet());
 	}
 }

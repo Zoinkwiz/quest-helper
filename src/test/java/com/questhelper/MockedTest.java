@@ -44,14 +44,12 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
-
 import javax.inject.Named;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Based on <a href="https://github.com/pajlads/DinkPlugin/blob/d7c0d4d3f044c25bcff256efc5217955ec1c1494/src/test/java/dinkplugin/notifiers/MockedNotifierTest.java">Dink's MockedNotifierTest</a>
@@ -59,55 +57,55 @@ import static org.mockito.Mockito.when;
 public abstract class MockedTest extends MockedTestBase
 {
 	@Bind
-	protected Client client = Mockito.mock(Client.class);
+	protected Client client = mock(Client.class);
 
 	@Bind
-	protected ConfigManager configManager = Mockito.mock(ConfigManager.class);
+	protected ConfigManager configManager = mock(ConfigManager.class);
 
 	@Bind
-	protected ChatMessageManager chatMessageManager = Mockito.mock(ChatMessageManager.class);
+	protected ChatMessageManager chatMessageManager = mock(ChatMessageManager.class);
 
 	@Bind
-	protected ItemManager itemManager = Mockito.mock(ItemManager.class);
+	protected ItemManager itemManager = mock(ItemManager.class);
 
 	@Bind
-	protected OverlayManager overlayManager = Mockito.mock(OverlayManager.class);
+	protected OverlayManager overlayManager = mock(OverlayManager.class);
 
 	@Bind
-	protected QuestHelperConfig questHelperConfig = Mockito.mock(QuestHelperConfig.class);
+	protected QuestHelperConfig questHelperConfig = mock(QuestHelperConfig.class);
 
 	@Bind
-	protected RuneLiteConfig runeLiteConfig = Mockito.mock(RuneLiteConfig.class);
+	protected RuneLiteConfig runeLiteConfig = mock(RuneLiteConfig.class);
 
 	@Bind
-	protected QuestOverlayManager questOverlayManager = Mockito.mock(QuestOverlayManager.class);
+	protected QuestOverlayManager questOverlayManager = mock(QuestOverlayManager.class);
 
 	@Bind
-	protected SpriteManager spriteManager = Mockito.mock(SpriteManager.class);
+	protected SpriteManager spriteManager = mock(SpriteManager.class);
 
 	@Bind
-	protected RuneliteObjectManager runeliteObjectManager = Mockito.mock(RuneliteObjectManager.class);
+	protected RuneliteObjectManager runeliteObjectManager = mock(RuneliteObjectManager.class);
 
 	@Bind
-	protected Hooks hooks = Mockito.mock(Hooks.class);
+	protected Hooks hooks = mock(Hooks.class);
 
 	@Bind
-	protected PlayerStateManager playerStateManager = Mockito.mock(PlayerStateManager.class);
+	protected PlayerStateManager playerStateManager = mock(PlayerStateManager.class);
 
 	@Bind
 	protected QuestHelperPlugin questHelperPlugin = Mockito.spy(QuestHelperPlugin.class);
 
 	@Bind
-	protected ClientToolbar clientToolbar = Mockito.mock(ClientToolbar.class);
+	protected ClientToolbar clientToolbar = mock(ClientToolbar.class);
 
 	@Bind
-	protected ClientThread clientThread = Mockito.mock(ClientThread.class);
+	protected ClientThread clientThread = mock(ClientThread.class);
 
 	@Bind
-	protected EventBus eventBus = Mockito.mock(EventBus.class);
+	protected EventBus eventBus = mock(EventBus.class);
 
 	@Bind
-	protected ScheduledExecutorService scheduledExecutorService = Mockito.mock(ScheduledExecutorService.class);
+	protected ScheduledExecutorService scheduledExecutorService = mock(ScheduledExecutorService.class);
 
 	@Bind
 	@Named("developerMode")
@@ -128,10 +126,10 @@ public abstract class MockedTest extends MockedTestBase
 
 		AchievementDiaryStepManager.setup(configManager);
 
-		WorldView mockedWorldView = Mockito.mock(WorldView.class);
+		WorldView mockedWorldView = mock(WorldView.class);
 
 		@SuppressWarnings("unchecked")
-		IndexedObjectSet<? extends NPC> npcSetMock = (IndexedObjectSet<? extends NPC>) Mockito.mock(IndexedObjectSet.class);
+		IndexedObjectSet<? extends NPC> npcSetMock = (IndexedObjectSet<? extends NPC>) mock(IndexedObjectSet.class);
 		when(npcSetMock.iterator()).thenReturn(Collections.emptyIterator());
 		doReturn(npcSetMock).when(mockedWorldView).npcs();
 		when(client.getTopLevelWorldView()).thenReturn(mockedWorldView);

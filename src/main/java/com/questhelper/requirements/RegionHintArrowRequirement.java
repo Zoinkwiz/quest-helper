@@ -35,11 +35,13 @@ public class RegionHintArrowRequirement extends SimpleRequirement
 
 	public RegionHintArrowRequirement(WorldPoint worldPoint)
 	{
+		assert(worldPoint != null);
 		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
 	public RegionHintArrowRequirement(Zone zone)
 	{
+		assert(zone != null);
 		this.zone = zone;
 	}
 

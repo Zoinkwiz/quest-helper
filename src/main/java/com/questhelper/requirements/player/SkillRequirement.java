@@ -63,6 +63,7 @@ public class SkillRequirement extends AbstractRequirement
 	 */
 	public SkillRequirement(Skill skill, int requiredLevel, Operation operation)
 	{
+		assert(skill != null);
 		this.skill = skill;
 		this.requiredLevel = requiredLevel;
 		this.displayText = getDisplayText();

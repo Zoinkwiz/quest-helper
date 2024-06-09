@@ -54,6 +54,8 @@ public class QuestRequirement extends AbstractRequirement
 	 */
 	public QuestRequirement(QuestHelperQuest quest, QuestState requiredState)
 	{
+		assert(quest != null);
+		assert(requiredState != null);
 		this.quest = quest;
 		this.requiredState = requiredState;
 		this.minimumVarValue = null;
@@ -81,6 +83,7 @@ public class QuestRequirement extends AbstractRequirement
 	 */
 	public QuestRequirement(QuestHelperQuest quest, int minimumVarValue)
 	{
+		assert(quest != null);
 		this.quest = quest;
 		this.requiredState = null;
 		this.minimumVarValue = minimumVarValue;

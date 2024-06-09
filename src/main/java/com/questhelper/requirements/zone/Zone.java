@@ -54,6 +54,8 @@ public class Zone
 
 	public Zone(WorldPoint p1, WorldPoint p2)
 	{
+		assert(p1 != null);
+		assert(p2 != null);
 		minX = Math.min(p1.getX(), p2.getX());
 		maxX = Math.max(p1.getX(), p2.getX());
 		minY = Math.min(p1.getY(), p2.getY());
@@ -64,6 +66,7 @@ public class Zone
 
 	public Zone(WorldPoint p)
 	{
+		assert(p != null);
 		minX = p.getX();
 		maxX = p.getX();
 		minY = p.getY();

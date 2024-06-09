@@ -31,6 +31,7 @@ import com.questhelper.requirements.SimpleRequirement;
 import com.questhelper.requirements.conditional.ConditionForStep;
 import java.util.Arrays;
 import java.util.List;
+import com.questhelper.util.Utils;
 import net.runelite.api.Client;
 
 public class NpcInteractingRequirement extends SimpleRequirement
@@ -39,6 +40,7 @@ public class NpcInteractingRequirement extends SimpleRequirement
 
 	public NpcInteractingRequirement(Integer... npcID)
 	{
+		assert(Utils.varargsNotNull(npcID));
 		this.npcIDs = Arrays.asList(npcID);
 	}
 

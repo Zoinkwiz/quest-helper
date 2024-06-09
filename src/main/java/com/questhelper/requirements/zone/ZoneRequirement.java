@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
@@ -65,6 +66,7 @@ public class ZoneRequirement extends AbstractRequirement
 	 */
 	public ZoneRequirement(String displayText, boolean checkNotInZone, Zone zone)
 	{
+		assert(zone != null);
 		this.displayText = displayText;
 		this.checkInZone = !checkNotInZone; // This was originally 'checkNotInZone' so we have to maintain that behavior
 		this.zones = QuestUtil.toArrayList(zone);
@@ -72,24 +74,28 @@ public class ZoneRequirement extends AbstractRequirement
 
 	public ZoneRequirement(WorldPoint... worldPoints)
 	{
+		assert(Utils.varargsNotNull(worldPoints));
 		this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
 		this.checkInZone = true;
 	}
 
 	public ZoneRequirement(Zone... zone)
 	{
+		assert(Utils.varargsNotNull(zone));
 		this.zones = QuestUtil.toArrayList(zone);
 		this.checkInZone = true;
 	}
 
 	public ZoneRequirement(boolean checkInZone, Zone... zone)
 	{
+		assert(Utils.varargsNotNull(zone));
 		this.zones = QuestUtil.toArrayList(zone);
 		this.checkInZone = checkInZone;
 	}
 
 	public ZoneRequirement(boolean checkInZone, WorldPoint... worldPoints)
 	{
+		assert(Utils.varargsNotNull(worldPoints));
 		this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
 		this.checkInZone = checkInZone;
 	}

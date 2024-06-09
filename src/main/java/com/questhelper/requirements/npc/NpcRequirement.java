@@ -34,6 +34,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import javax.annotation.Nullable;
 
 public class NpcRequirement extends AbstractRequirement
 {
@@ -42,7 +43,11 @@ public class NpcRequirement extends AbstractRequirement
 
 	@Setter
 	short[] npcColorOverrides;
-	private final Zone zone;
+
+	/**
+	 * If zone is null, the check won't take any zone into account
+	 */
+	private final @Nullable Zone zone;
 	private final String displayText;
 	private final boolean checkNotInZone;
 

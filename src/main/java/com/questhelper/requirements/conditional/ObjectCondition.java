@@ -52,12 +52,16 @@ public class ObjectCondition extends ConditionForStep
 
 	public ObjectCondition(int objectID, WorldPoint worldPoint)
 	{
+		assert(worldPoint != null);
+
 		this.objectID = objectID;
 		this.zone = new Zone(worldPoint);
 	}
 
 	public ObjectCondition(int objectID, Zone zone)
 	{
+		assert(zone != null);
+
 		this.objectID = objectID;
 		this.zone = zone;
 	}

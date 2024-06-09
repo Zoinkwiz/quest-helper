@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import java.util.Objects;
 
 public class TileIsLoadedRequirement extends AbstractRequirement
 {
@@ -46,6 +47,7 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	 */
 	public TileIsLoadedRequirement(WorldPoint worldPoint)
 	{
+		assert(worldPoint != null);
 		this.worldPoint = worldPoint;
 		this.displayText = "WorldPoint " + worldPoint.toString() + "is loaded locally.";
 	}

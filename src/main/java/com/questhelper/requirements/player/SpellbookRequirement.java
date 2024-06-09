@@ -37,6 +37,7 @@ public class SpellbookRequirement extends AbstractRequirement
 
 	public SpellbookRequirement(Spellbook spellBook)
 	{
+		assert(spellBook != null);
 		this.spellBook = spellBook;
 	}
 

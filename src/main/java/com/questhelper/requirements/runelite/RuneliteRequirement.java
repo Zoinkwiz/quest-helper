@@ -107,6 +107,14 @@ public class RuneliteRequirement extends AbstractRequirement
 		return expectedValue.equals(value);
 	}
 
+	// This is a bit undefined in terms of expected behaviour for multiple requirements.
+	// Currently the last requirement to pass should effectively determine the configValue.
+	// This is an OR, if we assume that all the passes are the same output.
+	// It'd be possible to put in some which force a "false" and some which have a "true" as their value.
+
+	/* TODO: Needs to be adjusted to at least make sense. Possibly just remove the Hash and only allow one Requirement,
+	** seeing as requirements can be nested anyways.
+	 */
 	public void validateCondition(Client client)
 	{
 		requirements.forEach((value, req) -> {

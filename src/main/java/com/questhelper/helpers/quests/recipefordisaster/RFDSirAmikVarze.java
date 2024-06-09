@@ -208,6 +208,10 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 
 		tokenHighlighted = new ItemRequirement("Dragon token", ItemID.DRAGON_TOKEN);
 		tokenHighlighted.setHighlightInInventory(true);
+
+		hasEggAndToken = new Conditions(evilEgg, token);
+		tokenNearby = new ItemOnTileRequirement(token);
+		eggNearby = new ItemOnTileRequirement(evilEgg);
 	}
 
 	@Override
@@ -217,23 +221,20 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		zanaris = new Zone(new WorldPoint(2368, 4353, 0), new WorldPoint(2495, 4479, 0));
 		evilChickenLair = new Zone(new WorldPoint(2430, 4355, 0), new WorldPoint(2492, 4407, 0));
 		draynorVillage = new Zone(new WorldPoint(3060, 3221, 0), new WorldPoint(3121, 3283, 0));
+
+		inDiningRoom = new ZoneRequirement(diningRoom);
+		inEvilChickenLair = new ZoneRequirement(evilChickenLair);
+		inDraynorVillage = new ZoneRequirement(draynorVillage);
+		inZanaris = new ZoneRequirement(zanaris);
 	}
 
 	public void setupConditions()
 	{
-		inDiningRoom = new ZoneRequirement(diningRoom);
 		// 1911 0->1->2->3->4->5->6 status of brulee
 		// 1912 0->1 picked up token
 		// 1913 0->1 evil chicken killed
 		talkedToWom = new VarbitRequirement(1919, 1, Operation.GREATER_EQUAL);
 		// 1919 = 2 when entered black dragon lair once
-
-		inEvilChickenLair = new ZoneRequirement(evilChickenLair);
-		inDraynorVillage = new ZoneRequirement(draynorVillage);
-		inZanaris = new ZoneRequirement(zanaris);
-		hasEggAndToken = new Conditions(evilEgg, token);
-		tokenNearby = new ItemOnTileRequirement(token);
-		eggNearby = new ItemOnTileRequirement(evilEgg);
 	}
 
 	public void setupSteps()

@@ -170,17 +170,18 @@ public class HerbRun extends ComplexStateQuestHelper
 		weissEmpty = new ManualRequirement();
 		hosidiusEmpty = new ManualRequirement();
 		varlamoreEmpty = new ManualRequirement();
-
-		accessToHarmony = new QuestRequirement(QuestHelperQuest.MORYTANIA_ELITE, QuestState.FINISHED);
-		accessToWeiss = new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED);
-		accessToTrollStronghold = new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED);
-		accessToFarmingGuildPatch = new SkillRequirement(Skill.FARMING, 65);
-		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
 	}
 
 	@Override
 	protected void setupRequirements()
 	{
+		accessToFarmingGuildPatch = new SkillRequirement(Skill.FARMING, 65);
+
+		accessToHarmony = new QuestRequirement(QuestHelperQuest.MORYTANIA_ELITE, QuestState.FINISHED);
+		accessToWeiss = new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED);
+		accessToTrollStronghold = new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED);
+		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
+
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));

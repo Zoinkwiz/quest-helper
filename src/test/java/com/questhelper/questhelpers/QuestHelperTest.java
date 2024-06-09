@@ -24,7 +24,7 @@ public class QuestHelperTest extends MockedTest
 			helper.setQuest(quest);
 			this.injector.injectMembers(helper);
 			helper.setQuestHelperPlugin(questHelperPlugin);
-			helper.setupRequirements();
+			helper.initializeRequirements();
 
 			var itemRecommended = helper.getItemRecommended();
 			if (itemRecommended != null)

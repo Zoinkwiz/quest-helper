@@ -36,6 +36,7 @@ import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import net.runelite.api.annotations.Component;
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 @UtilityClass
@@ -82,4 +83,17 @@ public class Utils
 		client.addChatMessage(ChatMessageType.CONSOLE, "", formatted, "");
 	}
 
+	/**
+	 * @return true if none of the elements are null
+	 */
+	@SafeVarargs
+	public static <T> boolean varargsNotNull(@Nonnull T... elements)
+	{
+		for (var el : elements) {
+			if (el == null) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -93,8 +93,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -215,7 +214,7 @@ public class RoyalTrouble extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coal5 = new ItemRequirement("Coal", ItemID.COAL, 5);
 		coal5.setHighlightInInventory(true);
@@ -286,7 +285,8 @@ public class RoyalTrouble extends BasicQuestHelper
 		letter.setTooltip("You can get another from Queen Sigrid");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		islands = new Zone(new WorldPoint(2491, 3835, 0), new WorldPoint(2627, 3904, 3));
 		miscFloor1 = new Zone(new WorldPoint(2497, 3845, 1), new WorldPoint(2511, 3875, 1));

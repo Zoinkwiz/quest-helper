@@ -73,8 +73,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -98,7 +97,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
 		flour = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
@@ -125,7 +124,8 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 		wizardsTowerTeleport = new ItemRequirement("Necklace of Passage for Wizards' Tower teleport", ItemCollections.NECKLACE_OF_PASSAGES);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
 		upstairsTrailborn = new Zone(new WorldPoint(3100, 3152, 1), new WorldPoint(3117, 3168, 1));

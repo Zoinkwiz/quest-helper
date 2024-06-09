@@ -100,9 +100,8 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupWorldPoints();
-		setupZones();
 		setupConditions();
 		setupSteps();
 
@@ -457,14 +456,15 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		);
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		timfrakusHut = new Zone(new WorldPoint(2778,3084,1), new WorldPoint(2786, 3090,1));
 		lubufuZone = new Zone(new WorldPoint(2759,3173,0), new WorldPoint(2780,3162,0));
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 

@@ -96,8 +96,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -190,7 +189,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bearFur = new ItemRequirement("Bear fur", ItemID.BEAR_FUR);
 		silk2 = new ItemRequirement("Silk", ItemID.SILK, 2);
@@ -331,7 +330,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 		twoPoisoned = new Conditions(LogicType.OR, new Conditions(poisoned1, poisoned2), new Conditions(poisoned1, poisoned3), new Conditions(poisoned2, poisoned3));
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		mournerHQ = new Zone(new WorldPoint(2547, 3321, 0), new WorldPoint(2555, 3327, 0));
 		mournerHQ2 = new Zone(new WorldPoint(2542, 3324, 0), new WorldPoint(2546, 3327, 0));

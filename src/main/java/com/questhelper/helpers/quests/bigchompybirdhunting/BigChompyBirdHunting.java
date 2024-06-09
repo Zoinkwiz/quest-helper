@@ -82,8 +82,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -153,7 +152,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER, 100);
@@ -211,7 +210,8 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		seasonedChompyHighlighted.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cave = new Zone(new WorldPoint(2627, 9377, 0), new WorldPoint(2663, 9406, 0));
 	}

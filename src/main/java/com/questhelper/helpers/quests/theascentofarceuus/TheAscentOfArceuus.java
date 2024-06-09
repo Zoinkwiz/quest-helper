@@ -77,8 +77,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -135,7 +134,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
@@ -147,7 +146,8 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		towerF0 = new Zone(new WorldPoint(1563, 3802, 0), new WorldPoint(1595, 3836, 0));
 		towerF1 = new Zone(new WorldPoint(1563, 3802, 1), new WorldPoint(1595, 3836, 1));

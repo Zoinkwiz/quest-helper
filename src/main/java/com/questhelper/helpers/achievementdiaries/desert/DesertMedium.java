@@ -94,8 +94,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -145,7 +144,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notAgiPyramid = new VarplayerRequirement(1198, false, 12);
 		notDesertLizard = new VarplayerRequirement(1198, false, 13);
@@ -205,7 +204,8 @@ public class DesertMedium extends ComplexStateQuestHelper
 		enakhrasLament = new QuestRequirement(QuestHelperQuest.ENAKHRAS_LAMENT, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		desert = new Zone(new WorldPoint(3127, 3115, 0), new WorldPoint(3519, 2749, 0));
 		eagleArea = new Zone(new WorldPoint(1986, 4985, 3), new WorldPoint(2030, 4944, 3));

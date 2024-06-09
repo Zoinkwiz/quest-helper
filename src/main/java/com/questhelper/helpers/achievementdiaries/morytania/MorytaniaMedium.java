@@ -100,8 +100,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -149,7 +148,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notSwampLizard = new VarplayerRequirement(1180, false, 12);
 		notCanifisAgi = new VarplayerRequirement(1180, false, 13);
@@ -233,7 +232,8 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		hauntedMineZone = new Zone(new WorldPoint(3390, 9600, 0), new WorldPoint(3452, 9668, 0));
 		room1 = new Zone(new WorldPoint(3136, 4544, 0), new WorldPoint(3199, 4570, 0));

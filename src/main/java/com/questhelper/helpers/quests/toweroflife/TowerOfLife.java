@@ -105,8 +105,7 @@ public class TowerOfLife extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -127,7 +126,7 @@ public class TowerOfLife extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rawSwordfish = new ItemRequirement("Raw swordfish (for diary task)", ItemID.RAW_SWORDFISH);
 		rawChicken = new ItemRequirement("Raw chicken (for diary task)", ItemID.RAW_CHICKEN);
@@ -158,7 +157,8 @@ public class TowerOfLife extends BasicQuestHelper
 		cageBindingFluid = new ItemRequirement("Binding fluid", ItemID.BINDING_FLUID, 4);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		WorldPoint z1a = new WorldPoint(2652, 3224, 0);
 		WorldPoint z1b = new WorldPoint(2646, 3212, 0);

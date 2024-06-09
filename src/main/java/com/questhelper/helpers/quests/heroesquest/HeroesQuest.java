@@ -100,8 +100,7 @@ public class HeroesQuest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -196,7 +195,7 @@ public class HeroesQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		iceGloves = new ItemRequirement("Ice gloves/Smiths gloves (i)", ItemID.ICE_GLOVES).isNotConsumed();
 		iceGloves.canBeObtainedDuringQuest();
@@ -251,7 +250,8 @@ public class HeroesQuest extends BasicQuestHelper
 		setupConditions();
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		taverleyDungeon = new Zone(new WorldPoint(2816, 9668, 0), new WorldPoint(2973, 9855, 0));
 		deepTaverleyDungeon1 = new Zone(new WorldPoint(2816, 9856, 0), new WorldPoint(2880, 9760, 0));

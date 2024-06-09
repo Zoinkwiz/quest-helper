@@ -80,8 +80,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -123,7 +122,7 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED);
 
@@ -153,7 +152,8 @@ public class KaramjaEasy extends ComplexStateQuestHelper
 		inPothole = new ZoneRequirement(pothole);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cave = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
 		tzhaar = new Zone(new WorldPoint(2360, 5056, 0), new WorldPoint(2560, 5185, 0));

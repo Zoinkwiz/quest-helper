@@ -92,8 +92,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -147,7 +146,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notDagKings = new VarplayerRequirement(1184, false, 31);
 		notAstralRunes = new VarplayerRequirement(1185, false, 0);
@@ -219,7 +218,8 @@ public class FremennikElite extends ComplexStateQuestHelper
 		inPirates3 = new ZoneRequirement(pirates3);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		godWars = new Zone(new WorldPoint(2819, 5375, 2), new WorldPoint(2943, 5252, 2));
 		godWars2 = new Zone(new WorldPoint(2819, 5375, 1), new WorldPoint(2943, 5252, 1));

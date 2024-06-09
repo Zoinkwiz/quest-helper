@@ -83,8 +83,7 @@ public class MakingHistory extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -124,7 +123,7 @@ public class MakingHistory extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		saphAmulet = new ItemRequirement("Sapphire amulet", ItemID.SAPPHIRE_AMULET);
@@ -180,7 +179,8 @@ public class MakingHistory extends BasicQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		castle = new Zone(new WorldPoint(2570, 3283, 1), new WorldPoint(2590, 3310, 1));
 	}

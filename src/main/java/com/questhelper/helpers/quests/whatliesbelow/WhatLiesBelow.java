@@ -78,8 +78,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -130,7 +129,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		intel5 = new ItemRequirement("Rat's paper", ItemID.RATS_PAPER, 5);
 		intel5.setHighlightInInventory(true);
@@ -166,7 +165,8 @@ public class WhatLiesBelow extends BasicQuestHelper
 		chronicle = new ItemRequirement("Chronicle for teleports to south of Varrock", ItemID.CHRONICLE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		chaosAltar = new Zone(new WorldPoint(2245, 4823, 0), new WorldPoint(2299, 4860, 2));
 	}

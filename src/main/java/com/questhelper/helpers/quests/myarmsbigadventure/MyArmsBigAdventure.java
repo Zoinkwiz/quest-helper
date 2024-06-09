@@ -85,8 +85,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -219,7 +218,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		goutLump = new ItemRequirement("Goutweedy lump", ItemID.GOUTWEEDY_LUMP);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
@@ -269,7 +268,8 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 			ItemCollections.GAMES_NECKLACES);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		strongholdFloor1 = new Zone(new WorldPoint(2820, 10048, 1), new WorldPoint(2862, 10110, 1));
 		strongholdFloor2 = new Zone(new WorldPoint(2820, 10048, 2), new WorldPoint(2862, 10110, 2));

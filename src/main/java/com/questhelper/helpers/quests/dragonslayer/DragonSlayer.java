@@ -92,8 +92,7 @@ public class DragonSlayer extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -192,7 +191,7 @@ public class DragonSlayer extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
 		unfiredBowl.setTooltip("You can make one with soft clay at a Potter's Wheel with 8 Crafting.");
@@ -236,7 +235,8 @@ public class DragonSlayer extends BasicQuestHelper
 		fullMap = new ItemRequirement("Crandor map", ItemID.CRANDOR_MAP);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		dwarvenMines = new Zone(new WorldPoint(2960, 9696, 0), new WorldPoint(3062, 9854, 0));
 		ratRoom1 = new Zone(new WorldPoint(2926, 3243, 0), new WorldPoint(2937, 3254, 0));

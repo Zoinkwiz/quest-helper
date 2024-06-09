@@ -45,7 +45,6 @@ import javax.inject.Named;
 import java.util.concurrent.ScheduledExecutorService;
 import static org.mockito.Mockito.when;
 
-
 /**
  * Based on <a href="https://github.com/pajlads/DinkPlugin/blob/d7c0d4d3f044c25bcff256efc5217955ec1c1494/src/test/java/dinkplugin/notifiers/MockedNotifierTest.java">Dink's MockedNotifierTest</a>
  */
@@ -108,9 +107,8 @@ public abstract class MockedTest extends MockedTestBase
 
 		when(questHelperPlugin.getPlayerStateManager()).thenReturn(playerStateManager);
 		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
-
-		// init client mocks
-		// when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
+		when(client.getIntStack()).thenReturn(new int[] { 1, 1, 1, 1 });
+		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 	}
 
 }

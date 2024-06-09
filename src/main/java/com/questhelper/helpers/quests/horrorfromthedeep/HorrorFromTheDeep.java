@@ -92,8 +92,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -143,7 +142,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE);
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
@@ -174,7 +173,8 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		lighthouseKey.setTooltip("You can get another from Gunnjorn in the Barbarian Agility Course");
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		lighthouseF0 = new Zone(new WorldPoint(2440, 4596, 0), new WorldPoint(2449, 4605, 0));
 		lighthouseF1 = new Zone(new WorldPoint(2440, 4596, 1), new WorldPoint(2449, 4605, 1));

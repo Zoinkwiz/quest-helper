@@ -85,8 +85,7 @@ public class GrimTales extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -171,7 +170,7 @@ public class GrimTales extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		tarrominUnf2 = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF, 2);
 		tarrominUnf = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
@@ -208,7 +207,8 @@ public class GrimTales extends BasicQuestHelper
 		canHighlight = new ItemRequirement("Watering can with at least 1 use", ItemCollections.WATERING_CANS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		house = new Zone(new WorldPoint(2901, 3466, 0), new WorldPoint(2907, 3476, 0));
 		basement = new Zone(new WorldPoint(2897, 9870, 0), new WorldPoint(2909, 9878, 0));

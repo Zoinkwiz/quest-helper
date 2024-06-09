@@ -144,8 +144,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -407,7 +406,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		deathTalisman = new ItemRequirement("Death talisman", ItemID.DEATH_TALISMAN).isNotConsumed();
 		deathTalisman.addAlternates(ItemID.DEATH_TIARA, ItemID.RUNECRAFT_CAPE, ItemID.CATALYTIC_TALISMAN, ItemID.CATALYTIC_TIARA);
@@ -609,7 +608,8 @@ public class MourningsEndPartII extends BasicQuestHelper
 		cyanDoorOpen = new VarbitRequirement(1176, RED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		mournerHQ = new Zone(new WorldPoint(2547, 3321, 0), new WorldPoint(2555, 3327, 0));
 		mournerHQ2 = new Zone(new WorldPoint(2542, 3324, 0), new WorldPoint(2546, 3327, 0));

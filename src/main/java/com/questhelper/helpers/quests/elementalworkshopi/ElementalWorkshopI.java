@@ -85,8 +85,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	public QuestStep loadStep()
 	{
 		// TODO: To what degree should this quest make use of PuzzleWrapper?
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -136,7 +135,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setHighlightInInventory(true);
@@ -288,7 +287,8 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		// 1000110000000110 (35846)
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		stairwell = new Zone(new WorldPoint(2709, 3496, 0), new WorldPoint(2711, 3498, 0));
 		workshop = new Zone(new WorldPoint(2682, 9862, 0), new WorldPoint(2747, 9927, 0));

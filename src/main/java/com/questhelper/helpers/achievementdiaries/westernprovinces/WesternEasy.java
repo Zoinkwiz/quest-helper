@@ -87,8 +87,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -133,7 +132,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCopperLongtail = new VarplayerRequirement(1182, false, 1);
 		notNovicePest = new VarplayerRequirement(1182, false, 2);
@@ -172,7 +171,8 @@ public class WesternEasy extends ComplexStateQuestHelper
 		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		stronghold = new Zone(new WorldPoint(2376, 3523, 0), new WorldPoint(2498, 3391, 0));
 		pest = new Zone(new WorldPoint(2631, 2681, 0), new WorldPoint(2683, 2626, 0));

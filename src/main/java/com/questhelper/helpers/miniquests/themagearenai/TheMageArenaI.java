@@ -65,8 +65,7 @@ public class TheMageArenaI extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -92,7 +91,7 @@ public class TheMageArenaI extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		runesForCasts = new ItemRequirement("Runes for fighting Kolodion", -1, -1);
 		runesForCasts.setDisplayItemId(ItemID.DEATH_RUNE);
@@ -101,7 +100,8 @@ public class TheMageArenaI extends BasicQuestHelper
 		godCape.addAlternates(ItemID.GUTHIX_CAPE, ItemID.SARADOMIN_CAPE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cavern = new Zone(new WorldPoint(2529, 4709, 0), new WorldPoint(2550, 4725, 0));
 		statuesRoom = new Zone(new WorldPoint(2486, 4683, 0), new WorldPoint(2526, 4736, 0));

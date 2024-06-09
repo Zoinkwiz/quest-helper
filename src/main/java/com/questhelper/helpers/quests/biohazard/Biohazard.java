@@ -82,8 +82,7 @@ public class Biohazard extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -158,7 +157,7 @@ public class Biohazard extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
 		gasMask.setTooltip("You can get another from the cupboard in Edmond's house west of Elena's house.");
@@ -192,7 +191,8 @@ public class Biohazard extends BasicQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 30);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		mournerBackyard = new Zone(new WorldPoint(2542, 3328, 0), new WorldPoint(2555, 3333, 0));
 		westArdougne1 = new Zone(new WorldPoint(2460, 3279, 0), new WorldPoint(2556, 3334, 2));

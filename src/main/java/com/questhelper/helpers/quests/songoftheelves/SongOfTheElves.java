@@ -157,8 +157,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -543,7 +542,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNER_BOOTS, 1, true).isNotConsumed();
 		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
@@ -782,7 +781,8 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		ardougneCastleF1 = new Zone(new WorldPoint(2570, 3283, 1), new WorldPoint(2590, 3310, 1));
 		ardyPrison = new Zone(new WorldPoint(2564, 9703, 0), new WorldPoint(2576, 9715, 0));

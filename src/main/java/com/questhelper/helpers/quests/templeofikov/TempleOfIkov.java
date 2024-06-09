@@ -88,8 +88,7 @@ public class TempleOfIkov extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -179,7 +178,7 @@ public class TempleOfIkov extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pendantOfLucien = new ItemRequirement("Pendant of lucien", ItemID.PENDANT_OF_LUCIEN).isNotConsumed();
 		pendantOfLucien.setTooltip("You can get another from Lucien in East Ardougne, near the wall of West Ardougne in the Flying Horse Inn");
@@ -211,7 +210,8 @@ public class TempleOfIkov extends BasicQuestHelper
 		emptyInventorySpot = new FreeInventorySlotRequirement(1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		entryRoom1 = new Zone(new WorldPoint(2647, 9803, 0), new WorldPoint(2680, 9814, 0));
 		entryRoom2 = new Zone(new WorldPoint(2670, 9801, 0), new WorldPoint(2680, 9804, 0));

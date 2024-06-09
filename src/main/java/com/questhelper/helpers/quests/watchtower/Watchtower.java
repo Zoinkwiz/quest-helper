@@ -90,8 +90,7 @@ public class Watchtower extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -215,7 +214,7 @@ public class Watchtower extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		guamUnf = new ItemRequirement("Guam potion (unf)", ItemID.GUAM_POTION_UNF);
 		guamUnf.setHighlightInInventory(true);
@@ -310,7 +309,8 @@ public class Watchtower extends BasicQuestHelper
 		fireRes.addAlternates(ItemCollections.ANTIFIRE_POTIONS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		watchtowerFloor1 = new Zone(new WorldPoint(2543, 3111, 1), new WorldPoint(2550, 3118, 1));
 		watchtowerFloor2 = new Zone(new WorldPoint(2543, 3111, 2), new WorldPoint(2550, 3118, 2));

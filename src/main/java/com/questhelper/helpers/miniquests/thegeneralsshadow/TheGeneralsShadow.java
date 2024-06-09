@@ -78,8 +78,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -111,7 +110,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ghostlyHood = new ItemRequirement("Ghostly hood", ItemID.GHOSTLY_HOOD, 1, true).isNotConsumed();
 		ghostlyBody = new ItemRequirement("Ghostly robe (top)", ItemID.GHOSTLY_ROBE, 1, true).isNotConsumed();
@@ -148,7 +147,8 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		sinSeersNote = new ItemRequirement("Sin seer's note", ItemID.SIN_SEERS_NOTE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		sinRoom = new Zone(new WorldPoint(2680, 3460, 1), new WorldPoint(2740, 3490, 1));
 		goblinCave = new Zone(new WorldPoint(2560, 9792, 0), new WorldPoint(2623, 9855, 0));

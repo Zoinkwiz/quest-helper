@@ -90,8 +90,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -136,7 +135,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notGodSpells = new VarplayerRequirement(1192, false, 25);
 		notAirOrb = new VarplayerRequirement(1192, false, 26);
@@ -191,7 +190,8 @@ public class WildernessHard extends ComplexStateQuestHelper
 		deathPlateau = new QuestRequirement(QuestHelperQuest.DEATH_PLATEAU, QuestState.IN_PROGRESS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		edge = new Zone(new WorldPoint(3067, 10000, 0), new WorldPoint(3288, 9821, 0));
 		air = new Zone(new WorldPoint(3081, 3576, 0), new WorldPoint(3094, 3564, 0));

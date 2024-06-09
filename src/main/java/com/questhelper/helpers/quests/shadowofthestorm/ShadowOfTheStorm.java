@@ -95,8 +95,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -174,7 +173,8 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		ruin = new Zone(new WorldPoint(2706, 4881, 0), new WorldPoint(2738, 4918, 0));
 		throneRoom = new Zone(new WorldPoint(2709, 4879, 2), new WorldPoint(2731, 4919, 2));
@@ -183,7 +183,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		darkItems = new ItemRequirement("pieces of black clothing", ItemID.BLACK_DESERT_SHIRT, 3, true).isNotConsumed().doNotAggregate();
 		darkItems.addAlternates(ItemID.BLACK_DESERT_ROBE, ItemID.BLACK_CHAINBODY, ItemID.BLACK_PLATEBODY, ItemID.BLACK_PLATELEGS, ItemID.BLACK_FULL_HELM, ItemID.BLACK_MED_HELM, ItemID.BLACK_GLOVES, ItemID.PRIEST_GOWN, ItemID.PRIEST_GOWN_428, ItemID.MYSTIC_HAT_DARK,

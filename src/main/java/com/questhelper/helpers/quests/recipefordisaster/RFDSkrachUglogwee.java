@@ -84,8 +84,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -137,7 +136,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rawJubbly = new ItemRequirement("Raw jubbly", ItemID.RAW_JUBBLY).highlighted();
 		cookedJubbly = new ItemRequirement("Cooked jubbly", ItemID.COOKED_JUBBLY);
@@ -178,7 +177,8 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		karamjaTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
 	}

@@ -90,8 +90,7 @@ public class AtFirstLight extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -160,13 +159,14 @@ public class AtFirstLight extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		guild = new Zone(new WorldPoint(1540, 9409, 0), new WorldPoint(1580, 9470, 0));
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Required
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();

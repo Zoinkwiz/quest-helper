@@ -75,8 +75,7 @@ public class PlagueCity extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -189,7 +188,7 @@ public class PlagueCity extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		dwellberries = new ItemRequirement("Dwellberries", ItemID.DWELLBERRIES);
 		dwellberries.setTooltip("You can get these from McGrubor's Wood west of Seers' Village");
@@ -227,7 +226,8 @@ public class PlagueCity extends BasicQuestHelper
 		key = new ItemRequirement("A small key", ItemID.A_SMALL_KEY);
 	}
 
-	public void loadZones() {
+	@Override
+	protected void setupZones() {
 		underground = new Zone(new WorldPoint(2506,9737,0), new WorldPoint(2532,9781,0));
 		westArdougne1 = new Zone(new WorldPoint(2460,3279,0), new WorldPoint(2556, 3334,2));
 		westArdougne2 = new Zone(new WorldPoint(2434,3305,0), new WorldPoint(2464, 3323,2));

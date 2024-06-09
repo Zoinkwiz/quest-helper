@@ -84,8 +84,7 @@ public class TheLostTribe extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -126,7 +125,7 @@ public class TheLostTribe extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
@@ -145,7 +144,8 @@ public class TheLostTribe extends BasicQuestHelper
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		basement = new Zone(new WorldPoint(3208, 9614, 0), new WorldPoint(3219, 9625, 0));
 		lumbridgeF0 = new Zone(new WorldPoint(3136, 3136, 0), new WorldPoint(3328, 3328, 0));

@@ -71,8 +71,7 @@ public class SeaSlug extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -143,7 +142,7 @@ public class SeaSlug extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
 		dampSticks = new ItemRequirement("Damp sticks", ItemID.DAMP_STICKS);
@@ -157,7 +156,8 @@ public class SeaSlug extends BasicQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		platformGroundFloor = new Zone(new WorldPoint(2760, 3271, 0), new WorldPoint(2795, 3293, 0));
 		platformFirstFloor = new Zone(new WorldPoint(2760, 3271, 1), new WorldPoint(2795, 3293, 1));

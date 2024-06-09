@@ -80,9 +80,8 @@ public class SheepShearer extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
+		initializeRequirements();
 		setupConditions();
-		setupRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -105,7 +104,7 @@ public class SheepShearer extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ballOfWool = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL);
 		shears = new ItemRequirement("Shears", ItemID.SHEARS).isNotConsumed();
@@ -119,7 +118,8 @@ public class SheepShearer extends BasicQuestHelper
 		totalBallsNeeded = ballOfWool.quantity(woolNeeded);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		castleSecond = new Zone(new WorldPoint(3200, 3232, 1), new WorldPoint(3220, 3205, 1));
 	}

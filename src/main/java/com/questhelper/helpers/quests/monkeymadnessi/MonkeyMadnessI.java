@@ -116,8 +116,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -256,7 +255,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		royalSeal = new ItemRequirement("Gnome royal seal", ItemID.GNOME_ROYAL_SEAL);
 		royalSeal.setTooltip("You can get another from King Narnode");
@@ -364,7 +363,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		ninjaBones.addAlternates(ItemID.MEDIUM_NINJA_MONKEY_BONES);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		karamja = new Zone(new WorldPoint(2688, 2881, 0), new WorldPoint(3008, 3252, 2));
 		floor1 = new Zone(new WorldPoint(2437, 3474, 1), new WorldPoint(2493, 3511, 1));

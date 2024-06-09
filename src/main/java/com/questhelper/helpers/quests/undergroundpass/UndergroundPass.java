@@ -117,7 +117,7 @@ public class UndergroundPass extends BasicQuestHelper
 		inUndergroundSection3, inMaze1, inMaze2, inPostIbanArea;
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
 		rope2 = new ItemRequirement("Rope, multiple in case you fail an agility check", ItemID.ROPE);
@@ -203,7 +203,8 @@ public class UndergroundPass extends BasicQuestHelper
 		ibansShadow.setHighlightInInventory(true);
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		castleFloor2 = new Zone(new WorldPoint(2568, 3283, 1), new WorldPoint(2591, 3310, 1));
 		westArdougne = new Zone(new WorldPoint(2433, 3264, 0), new WorldPoint(2557, 3337, 2));
@@ -582,8 +583,7 @@ public class UndergroundPass extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 

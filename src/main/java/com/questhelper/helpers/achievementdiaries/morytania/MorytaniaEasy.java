@@ -93,8 +93,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -144,7 +143,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCraftSnelm = new VarplayerRequirement(1180, false, 1);
 		notCookSnail = new VarplayerRequirement(1180, false, 2);
@@ -200,7 +199,8 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		ghostsAhoy = new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.IN_PROGRESS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		grotto = new Zone(new WorldPoint(3434, 9746, 0), new WorldPoint(3449, 9731, 1));
 		bonezone = new Zone(new WorldPoint(3650, 3528, 1), new WorldPoint(3669, 3511, 1));

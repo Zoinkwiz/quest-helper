@@ -98,8 +98,7 @@ public class SleepingGiants extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -175,7 +174,8 @@ public class SleepingGiants extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupRequirements()
+	@Override
+	protected void setupRequirements()
 	{
 		oakLogs = new ItemRequirement("Oak Logs", ItemID.OAK_LOGS);
 		oakLogs.setQuantity(3);
@@ -222,7 +222,8 @@ public class SleepingGiants extends BasicQuestHelper
 		preform = new ItemRequirement("Preform", ItemID.PREFORM).equipped();
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		Zone desertPlateau = new Zone(new WorldPoint(3375, 3169, 0), new WorldPoint(3349, 3143, 0));
 		onDesertPlateau = new ZoneRequirement(desertPlateau);

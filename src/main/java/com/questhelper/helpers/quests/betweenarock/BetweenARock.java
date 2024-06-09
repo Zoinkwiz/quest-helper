@@ -91,8 +91,7 @@ public class BetweenARock extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -177,7 +176,7 @@ public class BetweenARock extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
@@ -238,7 +237,8 @@ public class BetweenARock extends BasicQuestHelper
 		faladorTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		trollRoom = new Zone(new WorldPoint(2762, 10123, 0), new WorldPoint(2804, 10164, 0));
 		dwarfEntrance = new Zone(new WorldPoint(2814, 10121, 0), new WorldPoint(2884, 10139, 0));

@@ -100,8 +100,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -153,7 +152,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notUniPen = new VarplayerRequirement(1196, false, 13);
 		notGrapYan = new VarplayerRequirement(1196, false, 14);
@@ -235,7 +234,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		plagueCity = new QuestRequirement(QuestHelperQuest.PLAGUE_CITY, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		skavidCaves = new Zone(new WorldPoint(2527, 9470, 0), new WorldPoint(2536, 9460, 0));
 		platform = new Zone(new WorldPoint(2760, 3293, 0), new WorldPoint(2795, 3271, 0));

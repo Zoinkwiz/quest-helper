@@ -87,8 +87,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -143,7 +142,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notThessalia = new VarplayerRequirement(1176, false, 1);
 		notAubury = new VarplayerRequirement(1176, false, 2);
@@ -197,7 +196,8 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		stronghold1 = new Zone(new WorldPoint(1854, 5248, 0), new WorldPoint(1918, 5183, 0));
 		earth = new Zone(new WorldPoint(2624, 4863, 0), new WorldPoint(2687, 4800, 0));

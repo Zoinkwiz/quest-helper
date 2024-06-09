@@ -88,8 +88,7 @@ public class HauntedMine extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		// TODO: Should the lever room implement PuzzleWrapper?
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -163,7 +162,7 @@ public class HauntedMine extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		zealotsKey = new ItemRequirement("Zealot's key", ItemID.ZEALOTS_KEY);
 
@@ -185,7 +184,8 @@ public class HauntedMine extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		entryRoom1 = new Zone(new WorldPoint(2647, 9803, 0), new WorldPoint(2680, 9814, 0));
 

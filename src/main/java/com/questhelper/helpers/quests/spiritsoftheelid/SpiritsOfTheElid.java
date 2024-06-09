@@ -83,8 +83,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -133,7 +132,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		//Requirements
 		airRune = new ItemRequirement("Air Rune", ItemID.AIR_RUNE, 1);
@@ -189,7 +188,8 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.NECKLACE_OF_PASSAGES, 1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		sourceCave = new Zone(new WorldPoint(3336, 9532, 0), new WorldPoint(3384, 9600, 0));
 		riverElidCaveEntrance = new Zone(new WorldPoint(3343, 9532, 0), new WorldPoint(3356, 9544, 0));

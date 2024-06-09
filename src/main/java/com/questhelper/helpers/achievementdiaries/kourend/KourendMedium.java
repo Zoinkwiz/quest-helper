@@ -90,8 +90,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -143,7 +142,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notFairyRing = new VarplayerRequirement(2085, false, 25);
 		notKillLizardman = new VarplayerRequirement(2085, false, 13);
@@ -214,7 +213,8 @@ public class KourendMedium extends ComplexStateQuestHelper
 		hasBird = new VarbitRequirement(5983, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		molchIsland = new Zone(new WorldPoint(1360, 3640, 0), new WorldPoint(1376, 3625, 0));
 	}

@@ -84,8 +84,7 @@ public class KourendElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -133,7 +132,7 @@ public class KourendElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCraftBloodRune = new VarplayerRequirement(2086, false, 4);
 		notChopRedwood = new VarplayerRequirement(2086, false, 5);
@@ -226,7 +225,8 @@ public class KourendElite extends ComplexStateQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		redwoodTree = new Zone(new WorldPoint(1567, 3496, 1), new WorldPoint(1574, 3479, 1));
 		catacombs = new Zone(new WorldPoint(1659, 10052, 0), new WorldPoint(1668, 10043, 0));

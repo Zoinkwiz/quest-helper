@@ -101,8 +101,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -167,7 +166,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notSlayBrineRat = new VarplayerRequirement(1184, false, 11);
 		notSnowyHunter = new VarplayerRequirement(1184, false, 12);
@@ -260,7 +259,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		inDagCave15 = new ZoneRequirement(dagCave15);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		eagleArea = new Zone(new WorldPoint(1986, 4985, 3), new WorldPoint(2030, 4944, 3));
 		iceCave = new Zone(new WorldPoint(2706, 10228, 0), new WorldPoint(2741, 10193, 0));

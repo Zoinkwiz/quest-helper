@@ -80,8 +80,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -139,7 +138,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		highlightRope = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
 		highlightRope.setHighlightInInventory(true);
@@ -169,7 +168,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		gnomeBasement = new Zone(new WorldPoint(2497, 9552, 0), new WorldPoint(2559, 9593, 0));
 		glarialTomb = new Zone(new WorldPoint(2524, 9801, 0), new WorldPoint(2557, 9849, 0));

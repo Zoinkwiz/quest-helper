@@ -66,8 +66,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -108,7 +107,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE);
 		blueDye.setTooltip("You can have Aggie in Draynor Village make you some for 2 woad leaves (bought from Wyson in Falador Park for 20 coins) and 5 coins.");
@@ -137,7 +136,8 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		hasNorthArmour = new VarbitRequirement(2379, 1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		upstairs = new Zone(new WorldPoint(2952, 3495, 2), new WorldPoint(2959, 3498, 2));
 	}

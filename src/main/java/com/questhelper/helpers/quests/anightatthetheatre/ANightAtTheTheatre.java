@@ -89,8 +89,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -361,7 +360,8 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		sisterhoodSanctuaryF0 = new Zone(new WorldPoint(3702, 9834, 1), new WorldPoint(3899, 9600, 1));
 		sisterhoodSanctuaryF1 = new Zone(new WorldPoint(3785, 9805, 2), new WorldPoint(3840, 9765, 2));
@@ -370,7 +370,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());

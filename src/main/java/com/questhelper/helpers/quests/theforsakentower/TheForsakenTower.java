@@ -85,8 +85,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -130,7 +129,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		crank = new ItemRequirement("Generator crank", ItemID.GENERATOR_CRANK);
 		oldNotes = new ItemRequirement("Old notes", ItemID.OLD_NOTES_22774);
@@ -153,7 +152,8 @@ public class TheForsakenTower extends BasicQuestHelper
 		powerPuzzleVisible = new WidgetModelRequirement(624, 2, 0, 36246);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		basement = new Zone(new WorldPoint(1374, 10217, 0), new WorldPoint(1389, 10231, 0));
 		firstFloor = new Zone(new WorldPoint(1376, 3817, 1), new WorldPoint(1388, 3829, 1));

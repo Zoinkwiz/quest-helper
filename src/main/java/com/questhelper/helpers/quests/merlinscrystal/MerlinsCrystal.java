@@ -80,8 +80,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -145,7 +144,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bread = new ItemRequirement("Bread", ItemID.BREAD);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
@@ -168,7 +167,8 @@ public class MerlinsCrystal extends BasicQuestHelper
 		equippedExcalibur = excalibur.equipped();
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		fayeGround = new Zone(new WorldPoint(2764, 3395, 0), new WorldPoint(2781, 3410, 0));
 		faye1 = new Zone(new WorldPoint(2764, 3395, 1), new WorldPoint(2781, 3410, 1));
@@ -196,7 +196,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 		clearedHive = new ObjectCondition(ObjectID.BEEHIVE_305);
 		hasAnyBlackCandle = new Conditions(LogicType.OR, blackCandle, litBlackCandle);
 		beggarNearby = new NpcCondition(NpcID.BEGGAR);
-		talkedToLady = new Conditions(true, new DialogRequirement(client.getLocalPlayer().getName(), "Ok. That seems easy enough.", false));
+		talkedToLady = new Conditions(true, new DialogRequirement(questHelperPlugin.getPlayerStateManager().getPlayerName(), "Ok. That seems easy enough.", false));
 		hasReadSpell = new Conditions(true, LogicType.AND, new WidgetTextRequirement(229, 1, "You find a small inscription"));
 		inStar = new ZoneRequirement(star);
 		thrantaxNearby = new NpcCondition(NpcID.THRANTAX_THE_MIGHTY);

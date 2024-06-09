@@ -93,8 +93,7 @@ public class CabinFever extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -339,7 +338,7 @@ public class CabinFever extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		fuse1 = new ItemRequirement("Fuse", ItemID.FUSE);
@@ -393,7 +392,8 @@ public class CabinFever extends BasicQuestHelper
 		cannonballHighlight.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		boatAtDock = new Zone(new WorldPoint(3712, 3488, 0), new WorldPoint(3716, 3507, 2));
 		boatF0 = new Zone(new WorldPoint(1817, 4839, 0), new WorldPoint(1813, 4821, 0));

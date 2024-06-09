@@ -91,7 +91,7 @@ public class MurderMystery extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZone();
 		setupConditions();
 		setupSteps();
@@ -217,7 +217,7 @@ public class MurderMystery extends BasicQuestHelper
 		);
 		talkedToPoisonSalesman = new RuneliteRequirement(getConfigManager(), "murdermysterytalkedtopoisonsalesman",
 			new Conditions(true, LogicType.OR,
-		    	new DialogRequirement(client.getLocalPlayer().getName(),  "Uh... no, it's ok.", false),
+		    	new DialogRequirement(questHelperPlugin.getPlayerStateManager().getPlayerName(),  "Uh... no, it's ok.", false),
 				new DialogRequirement("Anna, Bob, Carol, David, Elizabeth and Frank all bought a bottle! " +
 				"In fact they bought the last of my supplies!")
 		));
@@ -340,7 +340,7 @@ public class MurderMystery extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pot = new ItemRequirement("Pot", ItemID.POT);
 		pungentPot = new ItemRequirement("Pungent pot", ItemID.PUNGENT_POT);

@@ -99,7 +99,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 	Zone keldagrim, keldagrim2, trollRoom, dwarfEntrance, consortium;
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Required
 		coins2500 = new ItemRequirement("coins", ItemCollections.COINS, 2500);
@@ -178,7 +178,8 @@ public class TheGiantDwarf extends BasicQuestHelper
 		dwarvenBattleaxeSapphires = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE_5058);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		trollRoom = new Zone(new WorldPoint(2762, 10123, 0), new WorldPoint(2804, 10164, 0));
 		dwarfEntrance = new Zone(new WorldPoint(2814, 10121, 0), new WorldPoint(2884, 10139, 0));
@@ -226,7 +227,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkedToVermundiWithBook = new VarbitRequirement(584, 1);
 
 		askedToStartMachine = new Conditions(true, LogicType.OR,
-			new DialogRequirement(client.getLocalPlayer().getName(),
+			new DialogRequirement(questHelperPlugin.getPlayerStateManager().getPlayerName(),
 				"Don't worry, I'll get them for you. Let's see... some coal and some logs. Shouldn't be too hard.", false),
 			new DialogRequirement("Well, like I said, I can't do anything really without my spinning machine."),
 			new WidgetTextRequirement(119, 3, true, "<col=000080>I must get <col=800000>coal<col=000080> and <col=800000>logs<col=000080>.")
@@ -531,8 +532,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		// Varbit 571
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 

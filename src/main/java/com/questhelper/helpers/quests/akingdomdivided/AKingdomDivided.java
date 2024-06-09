@@ -128,8 +128,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -380,7 +379,8 @@ public class AKingdomDivided extends BasicQuestHelper
 		return steps;
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		arceuusLibraryHistoricalArchive = new Zone(new WorldPoint(1535, 10236, 0), new WorldPoint(1571, 10213, 0));
 		councillorsHouseF1 = new Zone(new WorldPoint(1670, 3684, 0), new WorldPoint(1683, 3677, 0));
@@ -409,7 +409,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		combatGearForJudgeOfYama = new ItemRequirement("Melee combat gear to fight Judge of Yama", -1, -1).isNotConsumed();
 		combatGearForJudgeOfYama.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());

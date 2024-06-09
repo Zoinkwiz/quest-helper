@@ -88,8 +88,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -120,7 +119,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notWildPie = new VarplayerRequirement(1199, false, 2);
 		notIceBarrage = new VarplayerRequirement(1199, false, 4);
@@ -166,7 +165,8 @@ public class DesertElite extends ComplexStateQuestHelper
 		priestInPeril = new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		bed = new Zone(new WorldPoint(3163, 3049, 0), new WorldPoint(3181, 3024, 0));
 		pyramidPlunderLobby = new Zone(new WorldPoint(1926, 4465, 2), new WorldPoint(1976, 4419, 3));

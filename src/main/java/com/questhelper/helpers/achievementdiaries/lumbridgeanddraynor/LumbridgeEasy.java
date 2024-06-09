@@ -92,8 +92,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -144,7 +143,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notDrayAgi = new VarplayerRequirement(1194, false, 1);
 		notKillCaveBug = new VarplayerRequirement(1194, false, 2);
@@ -201,7 +200,8 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		cooksAssistant = new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		lumby = new Zone(new WorldPoint(3212, 3213, 0), new WorldPoint(3227, 3201, 0));
 		cave = new Zone(new WorldPoint(3140, 9537, 0), new WorldPoint(3261, 9602, 0));

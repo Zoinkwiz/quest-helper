@@ -114,8 +114,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -214,7 +213,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Item reqs
 		fishbowlHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET).isNotConsumed();
@@ -276,7 +275,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		neededStaples = skullStaples.quantity(30 - varbit.applyAsInt(3400));
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		harmony = new Zone(new WorldPoint(3771, 2813, 0), new WorldPoint(3840, 2881, 3));
 		waterEntrance = new Zone(new WorldPoint(3782, 9250, 0), new WorldPoint(3795, 9259, 0));

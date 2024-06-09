@@ -83,8 +83,7 @@ public class RFDPiratePete extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -149,7 +148,7 @@ public class RFDPiratePete extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		canSwim = new WeightRequirement("Weight less than 27kg", 26, Operation.LESS_EQUAL);
 
@@ -195,7 +194,8 @@ public class RFDPiratePete extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
 		underwater = new Zone(new WorldPoint(2944, 9472, 1), new WorldPoint(3007, 9534, 1));

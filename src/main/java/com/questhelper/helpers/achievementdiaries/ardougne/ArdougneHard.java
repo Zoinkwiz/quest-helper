@@ -94,8 +94,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -149,7 +148,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notRecharge = new VarplayerRequirement(1196, false, 26);
 		notMagicGuild = new VarplayerRequirement(1196, false, 27);
@@ -229,7 +228,8 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		watchtower = new QuestRequirement(QuestHelperQuest.WATCHTOWER, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		castle = new Zone(new WorldPoint(2568, 3310, 1), new WorldPoint(2591, 3282, 1));
 		death0 = new Zone(new WorldPoint(1855, 4681, 0), new WorldPoint(2047, 4602, 0));

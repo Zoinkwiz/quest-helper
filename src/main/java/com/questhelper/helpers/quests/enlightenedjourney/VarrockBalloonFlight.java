@@ -53,7 +53,7 @@ public class VarrockBalloonFlight extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 
 		HashMap<Integer, List<Integer>> sections = new HashMap<>();
 		List<Integer> section1 = Arrays.asList(6, 7, 8, 9, 10, 10, 10, 9, 8,  7,  7, 7, 6, 7, 7, 7, 6, 7, 8, 8, 8);
@@ -69,7 +69,7 @@ public class VarrockBalloonFlight extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		willowLogs = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS, 10);
 	}

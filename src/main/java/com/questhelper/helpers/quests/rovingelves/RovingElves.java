@@ -77,8 +77,7 @@ public class RovingElves extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -110,7 +109,7 @@ public class RovingElves extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		seed = new ItemRequirement("Consecration seed", ItemID.CONSECRATION_SEED);
 		seed.addAlternates(ItemID.CONSECRATION_SEED_4206);
@@ -158,7 +157,8 @@ public class RovingElves extends BasicQuestHelper
 		// 8374 0->1 when leaving?
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		glarialTomb = new Zone(new WorldPoint(2524, 9801, 0), new WorldPoint(2557, 9849, 0));
 		hudonIsland = new Zone(new WorldPoint(2510, 3476, 0), new WorldPoint(2515, 3482, 0));

@@ -86,8 +86,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -134,7 +133,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notWoodcuttingGuild = new VarplayerRequirement(2085, false, 26);
 		notSmeltAddyBar = new VarplayerRequirement(2085, false, 27);
@@ -207,7 +206,8 @@ public class KourendHard extends ComplexStateQuestHelper
 		inWyrmArea = new ZoneRequirement(wyrmArea);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		forsakenTower = new Zone(new WorldPoint(1377, 3829, 0), new WorldPoint(1388, 3817, 0));
 		lizardmanTemple = new Zone(new WorldPoint(1289, 10100, 0), new WorldPoint(1333, 10067, 0));

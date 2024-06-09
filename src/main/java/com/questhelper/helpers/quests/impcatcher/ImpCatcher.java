@@ -65,8 +65,7 @@ public class ImpCatcher extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -86,7 +85,7 @@ public class ImpCatcher extends BasicQuestHelper
 
 
 	@Override
-	public void setupRequirements() {
+	protected void setupRequirements() {
 		blackBead = new ItemRequirement("Black bead", ItemID.BLACK_BEAD);
 		whiteBead = new ItemRequirement("White bead", ItemID.WHITE_BEAD);
 		redBead = new ItemRequirement("Red bead", ItemID.RED_BEAD);
@@ -109,7 +108,8 @@ public class ImpCatcher extends BasicQuestHelper
 		turnInQuest.addDialogSteps("Give me a quest please.", "Yes.");
 	}
 
-	public void loadZones(){
+	@Override
+	protected void setupZones(){
 		towerSecond = new Zone(new WorldPoint(3089, 3176, 1), new WorldPoint(3126, 3146, 1));
 		towerThird = new Zone(new WorldPoint(3089, 3176, 2), new WorldPoint(3126, 3146, 2));
 	}

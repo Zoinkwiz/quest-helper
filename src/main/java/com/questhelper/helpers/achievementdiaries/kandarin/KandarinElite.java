@@ -86,8 +86,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -124,7 +123,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notbarb5 = new VarplayerRequirement(1179, false, 5);
 		notPickDwarf = new VarplayerRequirement(1179, false, 6);
@@ -199,7 +198,8 @@ public class KandarinElite extends ComplexStateQuestHelper
 		lunarDip = new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		bankRoof = new Zone(new WorldPoint(2721, 3495, 3), new WorldPoint(2730, 3490, 3));
 		barbUnder = new Zone(new WorldPoint(2572, 53202, 0), new WorldPoint(2614, 5258, 0));

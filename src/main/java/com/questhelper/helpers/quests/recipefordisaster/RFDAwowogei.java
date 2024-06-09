@@ -87,8 +87,7 @@ public class RFDAwowogei extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -128,7 +127,7 @@ public class RFDAwowogei extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		cookedSnake = new ItemRequirement("Stuffed snake", ItemID.STUFFED_SNAKE);
 		cookedSnakeHighlighted = new ItemRequirement("Stuffed snake", ItemID.STUFFED_SNAKE);
@@ -181,7 +180,8 @@ public class RFDAwowogei extends BasicQuestHelper
 		protectMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
 		crashIsland = new Zone(new WorldPoint(2883, 2693, 0), new WorldPoint(2941, 2747, 0));

@@ -86,8 +86,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -182,7 +181,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		steelLong = new ItemRequirement("Steel longsword", ItemID.STEEL_LONGSWORD);
 		steelSword2 = new ItemRequirement("Steel sword", ItemID.STEEL_SWORD, 2);
@@ -207,7 +206,8 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		morttonTeleport.addAlternates(ItemID.BARROWS_TELEPORT);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		bridge = new Zone(new WorldPoint(3502, 3426, 0), new WorldPoint(3502, 3430, 0));
 		entranceIsland = new Zone(new WorldPoint(3480, 3430, 0), new WorldPoint(3513, 3464, 0));

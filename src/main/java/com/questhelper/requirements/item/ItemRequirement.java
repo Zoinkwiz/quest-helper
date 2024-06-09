@@ -31,6 +31,7 @@ import com.questhelper.bank.QuestBank;
 import com.questhelper.collections.ItemWithCharge;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.InventorySlots;
@@ -83,9 +84,10 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	private boolean displayMatchedItemName;
 
+	// This is defaulted to a ManualRequirement so that we can use a null state to better detect issues
 	@Setter
 	@Getter
-	protected Requirement conditionToHide;
+	protected Requirement conditionToHide = new ManualRequirement();
 
 	@Getter
 	@Setter

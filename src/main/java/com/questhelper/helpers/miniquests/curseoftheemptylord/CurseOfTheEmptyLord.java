@@ -77,8 +77,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -124,7 +123,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ringOfVis = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true).isNotConsumed();
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
@@ -153,7 +152,8 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		onPath3 = new VarbitRequirement(PATH_VARBIT, 3);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		edgevilleDungeon = new Zone(new WorldPoint(3086, 9821, 0), new WorldPoint(3829, 10001, 0));
 		roguesCastleFirstFloor = new Zone(new WorldPoint(3274, 3924, 1), new WorldPoint(3297, 3942, 1));

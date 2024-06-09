@@ -88,8 +88,7 @@ public class TrollStronghold extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -129,7 +128,7 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 		climbingBootsEquipped = climbingBoots.equipped();
@@ -144,7 +143,8 @@ public class TrollStronghold extends BasicQuestHelper
 		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		tenzingHut = new Zone(new WorldPoint(2814, 3553, 0), new WorldPoint(2822, 3562, 0));
 		mountainPath1 = new Zone(new WorldPoint(2814, 3563, 0), new WorldPoint(2823, 3593, 0));

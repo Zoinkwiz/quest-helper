@@ -78,8 +78,7 @@ public class ASoulsBane extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -132,7 +131,7 @@ public class ASoulsBane extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
@@ -179,7 +178,8 @@ public class ASoulsBane extends BasicQuestHelper
 		reaperNearby = new VarbitRequirement(2035, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		rageRoom = new Zone(new WorldPoint(3010, 5217, 0), new WorldPoint(3038, 5246, 0));
 		fearRoom = new Zone(new WorldPoint(3044, 5218, 0), new WorldPoint(3071, 5247, 0));

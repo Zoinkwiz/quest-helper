@@ -94,8 +94,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -155,7 +154,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notBarbAgi = new VarplayerRequirement(1178, false, 12);
 		notSuperAnti = new VarplayerRequirement(1178, false, 13);
@@ -226,7 +225,8 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		setupGeneralRequirements();
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		bank = new Zone(new WorldPoint(2721, 3495, 0), new WorldPoint(2730, 3490, 0));
 		seersCath = new Zone(new WorldPoint(2687, 3510, 0), new WorldPoint(2839, 3430, 0));

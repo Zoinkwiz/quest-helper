@@ -77,8 +77,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -95,7 +94,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -103,7 +102,8 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		diary.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		bossRoom = new Zone(new WorldPoint(3176, 4611, 0), new WorldPoint(3196, 4626, 0));
 		finalRoom = new Zone(new WorldPoint(3181, 4632, 0), new WorldPoint(3191, 4637, 0));

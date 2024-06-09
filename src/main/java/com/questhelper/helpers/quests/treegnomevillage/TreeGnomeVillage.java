@@ -89,8 +89,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -181,7 +180,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		givenWood = new VarplayerRequirement(QuestVarPlayer.QUEST_TREE_GNOME_VILLAGE.getId(), 3, Operation.GREATER_EQUAL);
 		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6).hideConditioned(givenWood);
@@ -189,7 +188,8 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		orbsOfProtection.setTooltip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		upstairsTower = new Zone(new WorldPoint(2500, 3251, 1), new WorldPoint(2506, 3259, 1));
 		zoneVillage = new Zone(new WorldPoint(2514, 3158, 0), new WorldPoint(2542, 3175, 0));

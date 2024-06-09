@@ -70,7 +70,7 @@ public class HolyGrail extends BasicQuestHelper
 	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
 
 	Requirement inCamelot, inCamelotUpstairs, inMerlinRoom, merlinNearby, onEntrana, inGalahadHouse, inDraynorFrontManor, inDraynorManorBottomFloor, inDraynorManorSecondFloor,
-		inDraynorManorTopFloor, inMagicWhistleRoom, inTeleportLocation, inFisherKingRealmEntrance, titanNearby, inFisherKingRealmAfterTitan, talkedToFisherman,
+		inDraynorManorTopFloor, inMagicWhistleRoom, inTeleportLocation, titanNearby, inFisherKingRealmAfterTitan, talkedToFisherman,
 		inGrailBellRingLocation, inFisherKingCastle1BottomFloor, inFisherKingCastle1SecondFloor, inFisherKingRealm, inFisherKingCastle2BottomFloor,
 		inFisherKingCastle2SecondFloor, inFisherKingCastle2ThirdFloor;
 
@@ -82,14 +82,13 @@ public class HolyGrail extends BasicQuestHelper
 
 	//Zones
 	Zone camelotGround, camelotUpstairsZone1, camelotUpstairsZone2, merlinRoom, entranaBoat, entranaIsland, galahadHouse, draynorManorFront, draynorManorBottomFloor, draynorManorSecondFloor,
-		draynorManorTopFloor, magicWhistleRoom, teleportLocation, fisherKingRealmEntrance, fisherKingRealmAfterTitan1, fisherKingRealmAfterTitan2, fisherKingRealmAfterTitan3, grailBellRingLocation,
+		draynorManorTopFloor, magicWhistleRoom, teleportLocation, fisherKingRealmAfterTitan1, fisherKingRealmAfterTitan2, fisherKingRealmAfterTitan3, grailBellRingLocation,
 		fisherKingRealmCastle1BottomFloor, fisherKingRealmCastle1SecondFloor, fisherKingRealm, fisherKingRealmCastle2BottomFloor, fisherKingRealmCastle2SecondFloor, fisherKingRealmCastle2ThirdFloor;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -148,7 +147,7 @@ public class HolyGrail extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		excalibur = new ItemRequirement("Excalibur", ItemID.EXCALIBUR).isNotConsumed();
 		holyTableNapkin = new ItemRequirement("Holy Table Napkin", ItemID.HOLY_TABLE_NAPKIN);
@@ -179,7 +178,8 @@ public class HolyGrail extends BasicQuestHelper
 		highlightGrailBell.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		camelotGround = new Zone(new WorldPoint(2744, 3517, 0), new WorldPoint(2733, 3483, 0));
 		camelotUpstairsZone1 = new Zone(new WorldPoint(2768, 3517, 1), new WorldPoint(2757, 3506, 1));
@@ -224,7 +224,6 @@ public class HolyGrail extends BasicQuestHelper
 		inDraynorManorTopFloor = new ZoneRequirement(draynorManorTopFloor);
 		inMagicWhistleRoom = new ZoneRequirement(magicWhistleRoom);
 		inTeleportLocation = new ZoneRequirement(teleportLocation);
-		inFisherKingRealmEntrance = new ZoneRequirement(fisherKingRealmEntrance);
 		titanNearby = new NpcCondition(NpcID.BLACK_KNIGHT_TITAN);
 		inFisherKingRealmAfterTitan = new Conditions(LogicType.OR,
 			new ZoneRequirement(fisherKingRealmAfterTitan1),

@@ -74,8 +74,7 @@ public class TheMageArenaII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -109,7 +108,7 @@ public class TheMageArenaII extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		zamorakStaff = new ItemRequirement("Zamorak staff", ItemID.ZAMORAK_STAFF).isNotConsumed();
 		zamorakStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
@@ -140,7 +139,8 @@ public class TheMageArenaII extends BasicQuestHelper
 		godCape.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cavern = new Zone(new WorldPoint(2529, 4709, 0), new WorldPoint(2550, 4725, 0));
 	}

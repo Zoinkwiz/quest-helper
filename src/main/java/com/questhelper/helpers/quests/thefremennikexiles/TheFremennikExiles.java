@@ -117,8 +117,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -220,7 +219,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -320,7 +319,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		// 9485 0->2->1 bottom right
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		yagaHouse = new Zone(new WorldPoint(2449, 4645, 0), new WorldPoint(2453, 4649, 0));
 		lunarMine = new Zone(new WorldPoint(2300, 10313, 2), new WorldPoint(2370, 10354, 2));

@@ -79,8 +79,7 @@ public class TheGolem extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -152,7 +151,8 @@ public class TheGolem extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		ruin = new Zone(new WorldPoint(2706, 4881, 0), new WorldPoint(2738, 4918, 0));
 		upstairsMuseum = new Zone(new WorldPoint(3249, 3440, 1), new WorldPoint(3269, 3457, 1));
@@ -160,7 +160,7 @@ public class TheGolem extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		letter = new ItemRequirement("Letter", ItemID.LETTER_4615);
 		letter.setHighlightInInventory(true);

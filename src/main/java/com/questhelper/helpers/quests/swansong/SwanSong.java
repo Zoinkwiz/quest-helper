@@ -90,8 +90,7 @@ public class SwanSong extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -154,7 +153,7 @@ public class SwanSong extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		mist10 = new ItemRequirement("Mist rune", ItemID.MIST_RUNE, 10);
 		lava10 = new ItemRequirement("Lava rune", ItemID.LAVA_RUNE, 10);
@@ -210,7 +209,8 @@ public class SwanSong extends BasicQuestHelper
 		boneSeeds.setTooltip("You can get more by bringing Malignius another airtight pot");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		colonyEntrance = new Zone(new WorldPoint(2338, 3653, 0), new WorldPoint(2349, 3662, 0));
 		basement = new Zone(new WorldPoint(2582, 9484, 0), new WorldPoint(2594, 9489, 0));

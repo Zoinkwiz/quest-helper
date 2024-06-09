@@ -70,8 +70,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -98,7 +97,8 @@ public class TheRestlessGhost extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		basement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
 	}
@@ -112,7 +112,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 2);
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();

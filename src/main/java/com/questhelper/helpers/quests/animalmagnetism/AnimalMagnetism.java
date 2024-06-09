@@ -83,8 +83,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -135,13 +134,14 @@ public class AnimalMagnetism extends BasicQuestHelper
 		return steps;
 	}
 
-	private void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		ironMine = new Zone(new WorldPoint(2971, 3248, 0), new WorldPoint(2987, 3234, 0));
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET).isNotConsumed();
 		ghostspeakEquip = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true);

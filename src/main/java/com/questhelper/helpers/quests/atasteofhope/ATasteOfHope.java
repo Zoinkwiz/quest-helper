@@ -95,8 +95,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -241,7 +240,7 @@ public class ATasteOfHope extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins1000 = new ItemRequirement("Coins", ItemCollections.COINS, 1000);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
@@ -313,7 +312,8 @@ public class ATasteOfHope extends BasicQuestHelper
 		ivandisFlailEquipped = new ItemRequirement("Ivandis flail", ItemID.IVANDIS_FLAIL, 1, true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		myrequeBase = new Zone(new WorldPoint(3616, 9616, 0), new WorldPoint(3640, 9647, 0));
 		theatreP1 = new Zone(new WorldPoint(3638, 3202, 1), new WorldPoint(3646, 3214, 1));

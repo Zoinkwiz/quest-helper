@@ -81,8 +81,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -132,7 +131,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notTPTroll = new VarplayerRequirement(1184, false, 21);
 		notCatchKyatt = new VarplayerRequirement(1184, false, 23);
@@ -184,7 +183,8 @@ public class FremennikHard extends ComplexStateQuestHelper
 		inBlastArea = new ZoneRequirement(blastArea);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		misc = new Zone(new WorldPoint(2492, 3922, 0), new WorldPoint(2629, 3814, 0));
 		neitiznot = new Zone(new WorldPoint(2306, 3825, 0), new WorldPoint(2367, 3779, 0));

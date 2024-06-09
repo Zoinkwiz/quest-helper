@@ -82,8 +82,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -135,7 +134,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCatchCerulean = new VarplayerRequirement(1184, false, 1);
 		notChangeBoots = new VarplayerRequirement(1184, false, 2);
@@ -193,7 +192,8 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		inVarrockArea = new ZoneRequirement(varrockArea);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		keldagrim = new Zone(new WorldPoint(2816, 10238, 0), new WorldPoint(2943, 10158, 0));
 		mine = new Zone(new WorldPoint(2675, 3712, 0), new WorldPoint(2690, 3697, 0));

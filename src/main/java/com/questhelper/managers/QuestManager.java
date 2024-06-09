@@ -546,7 +546,7 @@ public class QuestManager
 	{
 		for (QuestHelperQuest questHelperQuest : QuestHelperQuest.values())
 		{
-			questHelperQuest.getQuestHelper().setupRequirements();
+			questHelperQuest.getQuestHelper().initializeRequirements();
 		}
 	}
 }

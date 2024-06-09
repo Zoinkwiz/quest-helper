@@ -82,8 +82,7 @@ public class NatureSpirit extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -167,7 +166,7 @@ public class NatureSpirit extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
 		silverSickle = new ItemRequirement("Silver sickle", ItemID.SILVER_SICKLE);
@@ -196,7 +195,8 @@ public class NatureSpirit extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		underground = new Zone(new WorldPoint(3402, 9880, 0), new WorldPoint(3443, 9907, 0));
 		orangeStone = new Zone(new WorldPoint(3440, 3335, 0), new WorldPoint(3440, 3335, 0));

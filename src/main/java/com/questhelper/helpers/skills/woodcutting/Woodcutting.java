@@ -59,7 +59,7 @@ public class Woodcutting extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep fullTraining = new ConditionalStep(this, chopNormalTree);
@@ -70,7 +70,7 @@ public class Woodcutting extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		wc6 = new SkillRequirement(Skill.WOODCUTTING, 6);
 		wc11 = new SkillRequirement(Skill.WOODCUTTING, 11);

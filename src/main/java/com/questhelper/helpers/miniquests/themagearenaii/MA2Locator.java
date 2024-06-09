@@ -55,15 +55,14 @@ public class MA2Locator extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		return locateFollowerSara;
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		zamorakStaff = new ItemRequirement("Zamorak staff", ItemID.ZAMORAK_STAFF);
 		zamorakStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
@@ -94,7 +93,8 @@ public class MA2Locator extends ComplexStateQuestHelper
 		godCape.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cavern = new Zone(new WorldPoint(2529, 4709, 0), new WorldPoint(2550, 4725, 0));
 	}

@@ -88,8 +88,7 @@ public class EaglesPeak extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -178,7 +177,7 @@ public class EaglesPeak extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 50);
@@ -218,7 +217,8 @@ public class EaglesPeak extends BasicQuestHelper
 		ferret.setTooltip("If you lose your ferret you'll need to catch a new one with a box trap north of Eagles' Peak.");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		inMainCave = new Zone(new WorldPoint(1983, 4940, 3), new WorldPoint(2035, 4987, 3));
 		inSilverRoomZone = new Zone(new WorldPoint(1925, 4863, 2), new WorldPoint(1976, 4884, 2));

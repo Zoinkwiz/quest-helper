@@ -96,8 +96,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -157,7 +156,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notAgiShortcut = new VarplayerRequirement(1182, false, 12);
 		notSpiritToStronghold = new VarplayerRequirement(1182, false, 13);
@@ -237,7 +236,8 @@ public class WesternMedium extends ComplexStateQuestHelper
 		oneSmallFavour = new QuestRequirement(QuestHelperQuest.ONE_SMALL_FAVOUR, QuestState.IN_PROGRESS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		brimstailCave = new Zone(new WorldPoint(2376, 9835, 0), new WorldPoint(2416, 9802, 0));
 		pest = new Zone(new WorldPoint(2631, 2681, 0), new WorldPoint(2683, 2626, 0));

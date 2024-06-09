@@ -139,8 +139,7 @@ public class DragonSlayerII extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -411,7 +410,7 @@ public class DragonSlayerII extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		pickaxeHighlighted = pickaxe.highlighted();
@@ -563,7 +562,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		rellekkaTeleport = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		crandorUnderground = new Zone(new WorldPoint(2821, 9600, 0), new WorldPoint(2872, 9663, 0));
 		elvargArea = new Zone(new WorldPoint(2846, 9625, 0), new WorldPoint(2867, 9651, 0));

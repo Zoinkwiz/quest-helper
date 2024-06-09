@@ -70,8 +70,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -102,7 +101,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
@@ -125,7 +124,8 @@ public class APorcineOfInterest extends BasicQuestHelper
 		faladorFarmTeleport = new ItemRequirement("Teleport to Falador Farm", ItemCollections.EXPLORERS_RINGS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cave = new Zone(new WorldPoint(3152, 9669, 0), new WorldPoint(3181, 9720, 0));
 	}

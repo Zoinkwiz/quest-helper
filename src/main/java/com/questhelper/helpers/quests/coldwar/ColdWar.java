@@ -68,8 +68,7 @@ public class ColdWar extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -178,7 +177,7 @@ public class ColdWar extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		oakPlanks = new ItemRequirement("Oak Planks (unnoted)", ItemID.OAK_PLANK, 10);
 		oakPlankHighlight = new ItemRequirement("Oak Plank", ItemID.OAK_PLANK, 1);
@@ -226,7 +225,8 @@ public class ColdWar extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1).isNotConsumed();
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		onIceberg = new Zone(new WorldPoint(2641, 3978, 1), new WorldPoint(2681, 4011, 1));
 		inPenguinPen = new Zone(new WorldPoint(2592, 3267, 0), new WorldPoint(2597, 3271, 0));

@@ -77,8 +77,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -164,7 +163,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
 		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
@@ -189,7 +188,8 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		magicGlue.setHighlightInInventory(true);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		cave = new Zone(new WorldPoint(2379, 9806, 0), new WorldPoint(2415, 9832, 0));
 		hazelmereHut = new Zone(new WorldPoint(2673, 3085, 1), new WorldPoint(2681, 3089, 1));

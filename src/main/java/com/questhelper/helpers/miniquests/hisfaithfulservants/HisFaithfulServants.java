@@ -104,8 +104,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -185,7 +184,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear to kill all 6 Barrows Brothers", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -201,7 +200,8 @@ public class HisFaithfulServants extends BasicQuestHelper
 		strangeIcon = new ItemRequirement("Strange icon", ItemID.STRANGE_ICON);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		ahrimRoom = new Zone(new WorldPoint(3549, 9693, 3), new WorldPoint(3562, 9705, 3));
 		dharokRoom = new Zone(new WorldPoint(3547, 9709, 3), new WorldPoint(3560, 9719, 3));

@@ -84,8 +84,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -115,7 +114,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notSuperCombat = new VarplayerRequirement(1177, false, 7);
 		notPlankMake = new VarplayerRequirement(1177, false, 8);
@@ -168,7 +167,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 		touristTrap = new QuestRequirement(QuestHelperQuest.THE_TOURIST_TRAP, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		bank = new Zone(new WorldPoint(3179, 3448, 0), new WorldPoint(3191, 3432, 0));
 		lumb = new Zone(new WorldPoint(3300, 3501, 0), new WorldPoint(3313, 3493, 0));

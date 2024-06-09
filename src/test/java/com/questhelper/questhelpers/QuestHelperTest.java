@@ -2,8 +2,15 @@ package com.questhelper.questhelpers;
 
 import com.questhelper.MockedTest;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.statemanagement.AchievementDiaryStepManager;
+import java.lang.reflect.Field;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 public class QuestHelperTest extends MockedTest
 {
@@ -52,6 +59,60 @@ public class QuestHelperTest extends MockedTest
 				for (var requirement : generalRequirements)
 				{
 					assertNotNull(requirement, String.format("Requirement for quest %s must not be null", quest.getName()));
+					requirement.check(client);
+				}
+			}
+		}
+	}
+
+	@Test
+	void ensureAllVariablesCorrectlySet()
+	{
+		when(client.getIntStack()).thenReturn(new int[] { 1, 1, 1, 1 });
+		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+
+		AchievementDiaryStepManager.setup(configManager);
+
+		for (var quest : QuestHelperQuest.values())
+		{
+			var helper = quest.getQuestHelper();
+			if (quest.getPlayerQuests() != null) continue;
+
+			helper.setQuest(quest);
+			this.injector.injectMembers(helper);
+			helper.setQuestHelperPlugin(questHelperPlugin);
+			helper.setConfig(questHelperConfig);
+			helper.init();
+
+			Field[] fields = helper.getClass().getDeclaredFields();
+			for (Field field : fields)
+			{
+				// Make private fields accessible
+				field.setAccessible(true);
+
+				if (Requirement.class.isAssignableFrom(field.getType()))
+				{
+					// Get the value of the field for the current quest instance
+					try
+					{
+						Object value = field.get(helper);
+
+						assertNotNull(value, String.format("Field %s in %s must not be null", field.getName(), quest.getClass().getSimpleName()));
+
+						((Requirement) value).check(client);
+						if (value instanceof ItemRequirement)
+						{
+							assertNotNull(((ItemRequirement) value).getConditionToHide(), String.format("conditionToHide for quest %s must not be null", quest.getName()));
+						}
+						if (value instanceof ZoneRequirement)
+						{
+							assertFalse(((ZoneRequirement) value).getZones().contains(null), String.format("Zones for ZoneRequirements in quest %s must not be null", quest.getName()));
+						}
+					}
+					catch (IllegalAccessException err)
+					{
+						assertNotNull(null);
+					}
 				}
 			}
 		}

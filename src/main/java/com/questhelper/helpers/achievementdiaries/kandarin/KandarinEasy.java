@@ -87,8 +87,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -138,7 +137,8 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		return doEasy;
 	}
 
-	public void setupRequirements()
+	@Override
+	protected void setupRequirements()
 	{
 		notCatchMackerel = new VarplayerRequirement(1178, false, 1);
 		notBuyCandle = new VarplayerRequirement(1178, false, 2);
@@ -193,7 +193,8 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		((Conditions) eleWorkI).setText("Partial completion of Elemental Workshop I");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		workshop = new Zone(new WorldPoint(2682, 9862, 0), new WorldPoint(2747, 9927, 0));
 	}

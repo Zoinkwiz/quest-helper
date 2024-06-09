@@ -71,7 +71,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupZones();
 		setupConditions();
 		setupSteps();
@@ -94,7 +94,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins208 = new ItemRequirement("Coins", ItemCollections.COINS, 208);
 		coins50 = new ItemRequirement("Coins", ItemCollections.COINS, 50);

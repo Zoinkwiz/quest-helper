@@ -54,7 +54,7 @@ public class CraftingGuildBalloonFlight extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 
 		HashMap<Integer, List<Integer>> sections = new HashMap<>();
 		List<Integer> section1 = Arrays.asList(8, 8, 8, 8, 9, 10, 10, 10, 8, 8, 8, 8, 8, 9, 7, 7, 7, 6, 6, 7, 7);
@@ -69,7 +69,7 @@ public class CraftingGuildBalloonFlight extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS, 10);
 	}

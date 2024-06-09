@@ -95,8 +95,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -150,7 +149,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notKharyrll = new VarplayerRequirement(1180, false, 23);
 		notAdvancedSpikes = new VarplayerRequirement(1180, false, 24);
@@ -229,7 +228,8 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		desertTreasure = new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		hauntedMine1 = new Zone(new WorldPoint(3400, 9662, 0), new WorldPoint(3439, 9614, 0));
 		hauntedMine2 = new Zone(new WorldPoint(2767, 4605, 0), new WorldPoint(2817, 4556, 0));

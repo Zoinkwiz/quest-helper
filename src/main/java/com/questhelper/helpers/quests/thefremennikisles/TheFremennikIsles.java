@@ -96,8 +96,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupPanels();
@@ -287,7 +286,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
@@ -381,7 +380,8 @@ public class TheFremennikIsles extends BasicQuestHelper
 		protectRanged = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		islands = new Zone(new WorldPoint(2298, 3771, 0), new WorldPoint(2432, 3913, 3));
 		neitiznot1 = new Zone(new WorldPoint(2304, 3775, 0), new WorldPoint(2368, 3842, 3));

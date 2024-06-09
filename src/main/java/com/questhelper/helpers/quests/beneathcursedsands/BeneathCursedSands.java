@@ -97,8 +97,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -270,7 +269,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coal = new ItemRequirement("Coal", ItemID.COAL);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
@@ -318,7 +317,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		cureCrate = new ItemRequirement("Cure crate", ItemID.CURE_CRATE);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		Zone ruinsOfUllekArea1 = new Zone(new WorldPoint(3388, 2821, 0), new WorldPoint(3416, 2803, 0));
 		Zone ruinsOfUllekArea2 = new Zone(new WorldPoint(3388, 2821, 0), new WorldPoint(3445, 2858, 0));

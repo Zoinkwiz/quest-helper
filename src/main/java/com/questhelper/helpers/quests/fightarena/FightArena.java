@@ -73,8 +73,7 @@ public class FightArena extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -126,7 +125,7 @@ public class FightArena extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		khazardHelmet = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET);
@@ -140,7 +139,8 @@ public class FightArena extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		arena1 = new Zone(new WorldPoint(2583, 3152, 0), new WorldPoint(2606, 3170, 0));
 		cell = new Zone(new WorldPoint(2597, 3142, 0), new WorldPoint(2601, 3144, 0));

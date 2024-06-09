@@ -75,8 +75,7 @@ public class TribalTotem extends BasicQuestHelper
     @Override
     public Map<Integer, QuestStep> loadSteps()
     {
-        loadZones();
-        setupRequirements();
+        initializeRequirements();
         setupConditions();
         setupSteps();
 
@@ -101,7 +100,7 @@ public class TribalTotem extends BasicQuestHelper
     }
 
  @Override
- public void setupRequirements()
+ protected void setupRequirements()
     {
         coins = new ItemRequirement("Coins or more for boat trips", ItemCollections.COINS, 90);
         amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
@@ -121,7 +120,8 @@ public class TribalTotem extends BasicQuestHelper
         return reqs;
     }
 
-    public void loadZones()
+    @Override
+	protected void setupZones()
     {
         houseGroundFloorEntrance = new Zone(new WorldPoint(2637, 3320, 0), new WorldPoint(2639, 3325, 0));
         houseGroundFloorMiddleRoom = new Zone(new WorldPoint(2634, 3322, 0), new WorldPoint(2636, 3324, 0));

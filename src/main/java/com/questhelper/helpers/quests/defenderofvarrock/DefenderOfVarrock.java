@@ -93,8 +93,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -229,7 +228,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -251,7 +250,8 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		shieldOfArrav.setTooltip("You can get another from Rovin upstairs in Varrock Castle");
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		castleF1 = new Zone(new WorldPoint(3200, 3490, 1), new WorldPoint(3206, 3500, 1));
 		castleF2 = new Zone(new WorldPoint(3200, 3494, 2), new WorldPoint(3206, 3500, 2));

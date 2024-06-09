@@ -115,8 +115,7 @@ public class PerilousMoon extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -261,7 +260,8 @@ public class PerilousMoon extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		camTorum = new Zone(new WorldPoint(1378, 9502, 1), new WorldPoint(1524, 9600, 3));
 		antechamber = new Zone(5782, 1);
@@ -276,7 +276,7 @@ public class PerilousMoon extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setTooltip("Can be obtained during the quest from the Supply crates (fishing supplies).");

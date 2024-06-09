@@ -114,7 +114,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -216,7 +216,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();

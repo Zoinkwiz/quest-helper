@@ -75,8 +75,7 @@ public class MisthalinMystery extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -220,7 +219,8 @@ public class MisthalinMystery extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		island = new Zone(new WorldPoint(1600, 4800, 0), new WorldPoint(1679, 4845, 0));
 		outside1 = new Zone(new WorldPoint(1648, 4825, 0), new WorldPoint(1654, 4852, 0));
@@ -254,7 +254,7 @@ public class MisthalinMystery extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
 		manorKey = new ItemRequirement("Manor key", ItemID.MANOR_KEY_21052);

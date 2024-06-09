@@ -109,8 +109,7 @@ public class TwilightsPromise extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -202,7 +201,8 @@ public class TwilightsPromise extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		crypt = new Zone(6804);
 		colosseumUnderground = new Zone(7316);
@@ -213,7 +213,7 @@ public class TwilightsPromise extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		twoCombatStyles = new ItemRequirement("Two combat styles", -1, -1).isNotConsumed();
 		twoCombatStyles.setDisplayItemId(BankSlotIcons.getCombatGear());

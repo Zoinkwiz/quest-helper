@@ -93,8 +93,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doMedium = new ConditionalStep(this, claimReward);
@@ -144,7 +143,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notAlKharidRooftop = new VarplayerRequirement(1194, false, 13);
 		notGrappleLum = new VarplayerRequirement(1194, false, 14);
@@ -197,7 +196,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		lostCity = new QuestRequirement(QuestHelperQuest.LOST_CITY, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		lavaAltar = new Zone(new WorldPoint(2553, 4863, 0), new WorldPoint(2623, 4802, 0));
 		puroPuro = new Zone(new WorldPoint(2561, 4350, 0), new WorldPoint(2623, 4289, 0));

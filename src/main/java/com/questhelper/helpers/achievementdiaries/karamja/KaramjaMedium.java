@@ -98,8 +98,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -176,7 +175,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notClaimedTicket = new VarbitRequirement(3579, 0);
 		notEnteredWall = new VarbitRequirement(3580, 0);
@@ -265,7 +264,8 @@ public class KaramjaMedium extends BasicQuestHelper
 		inBrimhavenDungeon = new ZoneRequirement(brimhavenDungeon);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		cave = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));
 		agilityArena = new Zone(new WorldPoint(2747, 9531, 0), new WorldPoint(2813, 9601, 3));

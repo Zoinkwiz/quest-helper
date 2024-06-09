@@ -70,8 +70,7 @@ public class MonksFriend extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -96,7 +95,7 @@ public class MonksFriend extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		jugOfWater = new ItemRequirement("Jug of Water", ItemID.JUG_OF_WATER);
@@ -104,7 +103,8 @@ public class MonksFriend extends BasicQuestHelper
 		ardougneCloak = new ItemRequirement("Ardougne cloak 1 or higher for teleports to the monastery", ItemID.ARDOUGNE_CLOAK).isNotConsumed();
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		dungeon = new Zone(new WorldPoint(2559, 9597, 0), new WorldPoint(2582, 9623, 0));
 	}

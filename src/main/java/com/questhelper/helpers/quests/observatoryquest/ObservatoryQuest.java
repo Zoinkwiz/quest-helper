@@ -77,8 +77,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -117,7 +116,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
@@ -149,7 +148,8 @@ public class ObservatoryQuest extends BasicQuestHelper
 		lookedThroughTelescope = new VarbitRequirement(3836, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		observatoryDungeon = new Zone(new WorldPoint(2295, 9340, 0), new WorldPoint(2370, 9410, 0));
 		observatoryF1 = new Zone(new WorldPoint(2433, 3154, 0), new WorldPoint(2448, 3169, 0));

@@ -77,8 +77,7 @@ public class HopespearsWill extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -132,7 +131,8 @@ public class HopespearsWill extends BasicQuestHelper
 		return steps;
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		goblinCave = new Zone(10393);
 		goblinTemple = new Zone(14915);
@@ -140,7 +140,8 @@ public class HopespearsWill extends BasicQuestHelper
 		yubiusk = new Zone(14148);
 	}
 
-	public void setupRequirements()
+	@Override
+	protected void setupRequirements()
 	{
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK);
 		ghostspeakAmulet.setTooltip("or Morytania legs 2 or greater");

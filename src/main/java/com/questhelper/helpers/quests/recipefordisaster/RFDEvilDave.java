@@ -67,8 +67,7 @@ public class RFDEvilDave extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -95,7 +94,7 @@ public class RFDEvilDave extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
 		teleportEdgeville = new ItemRequirement("Teleport to Edgeville", ItemCollections.AMULET_OF_GLORIES);
@@ -110,7 +109,8 @@ public class RFDEvilDave extends BasicQuestHelper
 		evilStewHighlighted.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		diningRoom = new Zone(new WorldPoint(1856, 5313, 0), new WorldPoint(1870, 5333, 0));
 		evilDaveRoom = new Zone(new WorldPoint(3068, 9874, 0), new WorldPoint(3086, 9904, 0));

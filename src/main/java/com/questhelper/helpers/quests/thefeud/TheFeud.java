@@ -100,8 +100,7 @@ public class TheFeud extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupVarBits();
@@ -234,7 +233,7 @@ public class TheFeud extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 800);
 		unspecifiedCoins = new ItemRequirement("Coins", ItemCollections.COINS, -1);
@@ -273,7 +272,8 @@ public class TheFeud extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		Zone pollnivneachZone = new Zone(new WorldPoint(3320, 2926, 0), new WorldPoint(3381, 3006, 0));
 		Zone secondFloor = new Zone(new WorldPoint(3366, 2965, 1), new WorldPoint(3375, 2979, 1));

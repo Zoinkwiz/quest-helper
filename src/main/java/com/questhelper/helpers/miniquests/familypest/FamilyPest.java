@@ -72,8 +72,7 @@ public class FamilyPest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -92,7 +91,7 @@ public class FamilyPest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		//Recommended
 		dueling = new ItemRequirement("Ring of Dueling", -1, -1);
@@ -133,7 +132,8 @@ public class FamilyPest extends BasicQuestHelper
 		talkedToJohnathon = new VarbitRequirement(5350, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		upstairsJollyBoar = new Zone(new WorldPoint(3273, 3485, 1), new WorldPoint(3287, 3509, 1));
 	}

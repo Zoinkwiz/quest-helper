@@ -56,7 +56,6 @@ public class Mining extends ComplexStateQuestHelper
 
 	// Levels for pickaxes
 	SkillRequirement mi6, mi11, mi21, mi31, mi41;
-	SkillRequirement at5, at10, at20, at30, at40;
 
 	SkillRequirement mi15;
 
@@ -71,7 +70,7 @@ public class Mining extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupZones();
 		setupSteps();
@@ -96,7 +95,7 @@ public class Mining extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		mi6 = new SkillRequirement(Skill.MINING, 6);
 		mi11 = new SkillRequirement(Skill.MINING, 11);
@@ -106,7 +105,6 @@ public class Mining extends ComplexStateQuestHelper
 
 		mi15 = new SkillRequirement(Skill.MINING, 15);
 
-
 		ironPickaxe = new ItemRequirement("Iron pickaxe", ItemID.IRON_PICKAXE);
 		steelPickaxe = new ItemRequirement("Steel pickaxe", ItemID.STEEL_PICKAXE);
 		blackPickaxe = new ItemRequirement("Black pickaxe", ItemID.BLACK_PICKAXE);
@@ -114,21 +112,21 @@ public class Mining extends ComplexStateQuestHelper
 		adamantPickaxe = new ItemRequirement("Adamant pickaxe", ItemID.ADAMANT_PICKAXE);
 		runePickaxe = new ItemRequirement("Rune pickaxe", ItemID.RUNE_PICKAXE);
 
-		ironPickaxe = ironPickaxe.showConditioned(new Conditions(LogicType.NOR, at5, mi6)
+		ironPickaxe = ironPickaxe.showConditioned(new Conditions(LogicType.NOR, mi6)
 		).isNotConsumed();
 		steelPickaxe = steelPickaxe.showConditioned(
-			new Conditions(at5, mi6, new Conditions(LogicType.NOR, at10, mi11))
+			new Conditions(mi6, new Conditions(LogicType.NOR, mi11))
 		).isNotConsumed();
 		blackPickaxe = blackPickaxe.showConditioned(
-			new Conditions(at10, mi11, new Conditions(LogicType.NOR, at20, mi21))
+			new Conditions(mi11, new Conditions(LogicType.NOR, mi21))
 		).isNotConsumed();
 		mithrilPickaxe = mithrilPickaxe.showConditioned(
-			new Conditions(at20, mi21, new Conditions(LogicType.NOR, at30, mi31))
+			new Conditions(mi21, new Conditions(LogicType.NOR, mi31))
 		).isNotConsumed();
 		adamantPickaxe = adamantPickaxe.showConditioned(
-			new Conditions(at30, mi31, new Conditions(LogicType.NOR, at40, mi41))
+			new Conditions(mi31, new Conditions(LogicType.NOR, mi41))
 		).isNotConsumed();
-		runePickaxe = runePickaxe.showConditioned(new Conditions(mi41, at40)
+		runePickaxe = runePickaxe.showConditioned(new Conditions(mi41)
 		).isNotConsumed();
 	}
 

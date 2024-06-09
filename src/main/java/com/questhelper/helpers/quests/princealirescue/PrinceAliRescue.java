@@ -78,8 +78,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -135,7 +134,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
 		ballsOfWool3 = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL, 3);
@@ -185,7 +184,8 @@ public class PrinceAliRescue extends BasicQuestHelper
 		hasOrGivenKeyMould = new Conditions(LogicType.OR, keyMould, givenKeyMould, key.alsoCheckBank(questBank));
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		cell = new Zone(new WorldPoint(3121, 3240, 0), new WorldPoint(3125, 3243, 0));
 	}

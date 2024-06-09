@@ -104,8 +104,7 @@ public class Wanted extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupOtherRequirements();
 		setupSteps();
 
@@ -246,7 +245,7 @@ public class Wanted extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ItemRequirement lawRune = new ItemRequirement("A law rune", ItemID.LAW_RUNE, 1);
 		ItemRequirement enchantedGem = new ItemRequirement("Enchanted gem", ItemID.ENCHANTED_GEM, 1);
@@ -280,7 +279,8 @@ public class Wanted extends BasicQuestHelper
 		highlightedCommorb.setHighlightInInventory(true);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		taverleyDungeonP1 = new Zone(new WorldPoint(2814, 9854, 0), new WorldPoint(2944, 9670, 0));
 		taverleyDungeonP2 = new Zone(new WorldPoint(2944, 9803, 0), new WorldPoint(2971, 9769, 0));

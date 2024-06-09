@@ -85,7 +85,8 @@ public class FishingContest extends BasicQuestHelper
 	Zone mcGruborWoodEntrance, cmbBraceletTeleportZone, nearRedVineWorms, contestGroundsEntrance;
 	ZoneRequirement passedThroughMcGruborEntrance, atCmbBraceletTeleportZone, onContestGrounds;
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		mcGruborWoodEntrance = new Zone(new WorldPoint(2662, 3500, 0));
 		passedThroughMcGruborEntrance = new ZoneRequirement(mcGruborWoodEntrance);
@@ -103,7 +104,7 @@ public class FishingContest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		coins.setTooltip("10 if you buy a fishing rod from Jack");
@@ -223,8 +224,7 @@ public class FishingContest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 

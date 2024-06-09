@@ -76,10 +76,10 @@ public class FaladorHard extends ComplexStateQuestHelper
 		enterDwarvenMinesHelmet, enterMiningGuild, enterHerosGuild, enterHerosGuildBasement, killBlueDragon, enterRoguesDen,
 		crackWallSafe, getProsySet, prayAtAltarSarim, enterWarriorsGuild, equipDwarvenHelmet;
 
-	Zone mindAltar, iceDungeon, wyvernCavern, faladorCastle1, herosGuild, herosGuildBasement, portSarimChurch, dwarvenMine,
+	Zone mindAltar, iceDungeon, wyvernCavern, faladorCastle1, herosGuild, herosGuildBasement, dwarvenMine,
 		miningGuild, herosGuildEntranceway, herosGuildMainHall, roguesDen, moleDen;
 
-	ZoneRequirement inMindAltar, inWyvernCavern, inIceDungeon, inFaladorCastle1, inHerosGuild, inHerosGuildBasement, inPortSarimChurch,
+	ZoneRequirement inMindAltar, inWyvernCavern, inIceDungeon, inFaladorCastle1, inHerosGuild, inHerosGuildBasement,
 		inDwarvenMine, inMiningGuild, inRoguesDen, inMoleDen;
 
 	ConditionalStep craftedMindRunesTask, changedFamilyCrestTask, killedMoleTask, killedWyvernTask, completeAgiCourseTask,
@@ -89,8 +89,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -145,7 +144,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notCraftedMindRunes = new VarplayerRequirement(1186, false, 26);
 		notChangedFamilyCrest = new VarplayerRequirement(1186, false, 27);
@@ -191,7 +190,6 @@ public class FaladorHard extends ComplexStateQuestHelper
 		inFaladorCastle1 = new ZoneRequirement(faladorCastle1);
 		inHerosGuild = new ZoneRequirement(herosGuild);
 		inHerosGuildBasement = new ZoneRequirement(herosGuildBasement);
-		inPortSarimChurch = new ZoneRequirement(portSarimChurch);
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inMiningGuild = new ZoneRequirement(miningGuild);
 		inHerosGuildBasement = new ZoneRequirement(herosGuildBasement);
@@ -204,7 +202,8 @@ public class FaladorHard extends ComplexStateQuestHelper
 		grimTales = new QuestRequirement(QuestHelperQuest.GRIM_TALES, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		mindAltar = new Zone(new WorldPoint(2805, 4819, 0), new WorldPoint(2760, 4855, 0));
 		iceDungeon = new Zone(new WorldPoint(2979, 9538, 0), new WorldPoint(3029, 9602, 0));

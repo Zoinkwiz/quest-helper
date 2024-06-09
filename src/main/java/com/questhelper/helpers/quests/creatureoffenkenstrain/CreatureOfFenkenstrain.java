@@ -84,8 +84,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -146,7 +145,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		ItemRequirement telegrab = new ItemRequirements("Telegrab runes", new ItemRequirement("Law rune",
 			ItemID.LAW_RUNE), new ItemRequirement("Air rune", ItemID.AIR_RUNE));
@@ -192,7 +191,8 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, -1);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		barZone = new Zone(new WorldPoint(3488, 3477, 0), new WorldPoint(3504, 3471, 0));
 		castleZoneFloor0 = new Zone(new WorldPoint(3526, 3574, 0), new WorldPoint(3566, 3531, 0));

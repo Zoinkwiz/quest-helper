@@ -75,8 +75,7 @@ public class GertrudesCat extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 
 		return getSteps();
@@ -202,7 +201,7 @@ public class GertrudesCat extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
 		milkHighlighted = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
@@ -227,7 +226,8 @@ public class GertrudesCat extends BasicQuestHelper
 		varrockTeleport = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		Zone zone = new Zone(new WorldPoint(3306, 3507, 12), new WorldPoint(3312, 3513, 1));
 

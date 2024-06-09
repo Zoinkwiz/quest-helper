@@ -52,8 +52,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -97,7 +96,8 @@ public class ScorpionCatcher extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		sorcerersTower3 = new Zone(new WorldPoint(2699, 3408, 3), new WorldPoint(2705, 3402, 3));
 		sorcerersTower2 = new Zone(new WorldPoint(2699, 3408, 2), new WorldPoint(2705, 3402, 2));
@@ -117,7 +117,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");

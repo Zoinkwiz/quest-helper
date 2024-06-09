@@ -93,8 +93,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -135,7 +134,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notTrawlerRay = new VarplayerRequirement(1197, false, 6);
 		notYanAgi = new VarplayerRequirement(1197, false, 7);
@@ -184,6 +183,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 
 		inYanAgilityCave = new ZoneRequirement(yanAgilityCave);
 		inYanille = new ZoneRequirement(yanille);
+		inWitchaven = new ZoneRequirement(witchaven);
 
 		madeString = new ChatMessageRequirement(
 			inWitchaven,
@@ -233,7 +233,8 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		hauntedMine = new QuestRequirement(QuestHelperQuest.HAUNTED_MINE, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		yanille = new Zone(new WorldPoint(2540, 3109, 0), new WorldPoint(2619, 3075, 0));
 		yanAgilityCave = new Zone(new WorldPoint(2821, 9545, 0), new WorldPoint(2879, 9663, 0));

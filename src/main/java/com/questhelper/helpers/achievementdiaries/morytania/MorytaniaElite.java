@@ -89,8 +89,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -121,7 +120,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notBareHandShark = new VarplayerRequirement(1181, false, 3);
 		notCremateShade = new VarplayerRequirement(1181, false, 4);
@@ -195,7 +194,8 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		bareHandBarb = new ItemRequirement("Completed the Barbarian bare-handed fishing", 1, -1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		canifisBank = new Zone(new WorldPoint(3509, 3483, 0), new WorldPoint(3514, 3476, 0));
 		slayer2 = new Zone(new WorldPoint(3404, 3580, 1), new WorldPoint(3453, 3530, 1));

@@ -60,7 +60,7 @@ public class RFDStart extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -77,7 +77,7 @@ public class RFDStart extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
 		greenmansAle = new ItemRequirement("Greenman's ale", ItemID.GREENMANS_ALE);

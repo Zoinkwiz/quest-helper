@@ -119,8 +119,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -285,7 +284,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5250);
 		coins250 = new ItemRequirement("Coins", ItemCollections.COINS, 250);
@@ -371,7 +370,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 		frozenVase = new ItemRequirement(true, "Frozen vase", ItemID.FROZEN_VASE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		nearPipe = new Zone(new WorldPoint(2663, 3671, 0), new WorldPoint(2667, 3676, 0));
 		koscheiRoom = new Zone(new WorldPoint(2641, 10064, 2), new WorldPoint(2672, 10099, 2));

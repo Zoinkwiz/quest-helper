@@ -87,8 +87,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -149,7 +148,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		commorb = new ItemRequirement("Commorb (can get another from Sir Tiffy)", ItemID.COMMORB).isNotConsumed();
 		commorb.addAlternates(ItemID.COMMORB_V2);
@@ -274,7 +273,8 @@ public class TheSlugMenace extends BasicQuestHelper
 		mindAltarTeleport.appendToTooltip("Taverley Teleport");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		hobgoblinDungeon = new Zone(new WorldPoint(2691, 9665, 0), new WorldPoint(2749, 9720, 0));
 		seaSlugDungeon = new Zone(new WorldPoint(2304, 5059, 0), new WorldPoint(2377, 5124, 0));

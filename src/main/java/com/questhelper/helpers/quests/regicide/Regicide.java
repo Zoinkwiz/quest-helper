@@ -129,8 +129,7 @@ public class Regicide extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -207,7 +206,7 @@ public class Regicide extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		rope1 = new ItemRequirement("Rope", ItemID.ROPE);
 		rope1.setTooltip("Bring extras as you can fail");
@@ -300,7 +299,8 @@ public class Regicide extends BasicQuestHelper
 			"through Arandar now");
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		castleFloor2 = new Zone(new WorldPoint(2568, 3283, 1), new WorldPoint(2591, 3310, 1));
 		westArdougne = new Zone(new WorldPoint(2433, 3264, 0), new WorldPoint(2557, 3337, 2));

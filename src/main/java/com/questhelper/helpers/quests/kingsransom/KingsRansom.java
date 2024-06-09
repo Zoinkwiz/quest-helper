@@ -90,8 +90,7 @@ public class KingsRansom extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -186,7 +185,7 @@ public class KingsRansom extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		scrapPaper = new ItemRequirement("Scrap paper", ItemID.SCRAP_PAPER);
 		addressForm = new ItemRequirement("Address form", ItemID.ADDRESS_FORM);
@@ -240,7 +239,8 @@ public class KingsRansom extends BasicQuestHelper
 		monasteryOrEdgevilleTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		upstairsManor = new Zone(new WorldPoint(2729, 3572, 1), new WorldPoint(2749, 3584, 1));
 		downstairsManor = new Zone(new WorldPoint(2733, 3574, 0), new WorldPoint(2747, 3582, 0));

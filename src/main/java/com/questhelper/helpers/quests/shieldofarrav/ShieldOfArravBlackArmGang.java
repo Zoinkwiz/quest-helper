@@ -68,8 +68,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -100,7 +99,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		storeRoomKey = new ItemRequirement("Weapon store key", ItemID.WEAPON_STORE_KEY);
 		twoPhoenixCrossbow = new ItemRequirement("Phoenix crossbow", ItemID.PHOENIX_CROSSBOW, 2);
@@ -110,7 +109,8 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 		certificate = new ItemRequirement("Certificate", ItemID.CERTIFICATE);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		storeRoom = new Zone(new WorldPoint(3242, 3380, 1), new WorldPoint(3252, 3386, 1));
 		upstairsInBase = new Zone(new WorldPoint(3182, 3382, 1), new WorldPoint(3201, 3398, 1));

@@ -85,8 +85,7 @@ public class WesternElite extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doElite = new ConditionalStep(this, claimReward);
@@ -119,7 +118,7 @@ public class WesternElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notMagicLong = new VarplayerRequirement(1183, false, 6);
 		notKillThermy = new VarplayerRequirement(1183, false, 7);
@@ -167,7 +166,8 @@ public class WesternElite extends ComplexStateQuestHelper
 		undergroundPass = new QuestRequirement(QuestHelperQuest.UNDERGROUND_PASS, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		tirannwn = new Zone(new WorldPoint(2142, 3272, 0), new WorldPoint(2317, 3032, 0));
 		smokeDungeon = new Zone(new WorldPoint(2378, 9473, 0), new WorldPoint(2432, 9408, 0));

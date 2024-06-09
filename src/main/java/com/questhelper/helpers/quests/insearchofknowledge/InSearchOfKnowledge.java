@@ -76,8 +76,7 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -109,7 +108,7 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -138,7 +137,8 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 		templeTome.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		dungeon = new Zone(new WorldPoint(1792, 9880, 0), new WorldPoint(1856, 9983, 0));
 	}

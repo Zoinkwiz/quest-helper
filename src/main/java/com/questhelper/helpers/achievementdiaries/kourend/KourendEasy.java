@@ -80,8 +80,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
@@ -132,7 +131,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notMineIron = new VarplayerRequirement(2085, false, 1);
 		notSandCrab = new VarplayerRequirement(2085, false, 2);
@@ -180,7 +179,8 @@ public class KourendEasy extends ComplexStateQuestHelper
 		houseInKourend = new VarbitRequirement(2187, 8);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		deeperLodePub = new Zone(new WorldPoint(1562, 3765, 0), new WorldPoint(1569, 3752, 0));
 		warrens = new Zone(new WorldPoint(1728, 10176, 0), new WorldPoint(1816, 10109, 0));

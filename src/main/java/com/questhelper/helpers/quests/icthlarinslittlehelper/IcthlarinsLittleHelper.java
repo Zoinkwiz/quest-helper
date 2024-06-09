@@ -94,9 +94,8 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
 		setupConditions();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -209,7 +208,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		cat = new FollowerItemRequirement("A cat",
 			ItemCollections.CATS,
@@ -260,11 +259,6 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inSoph = new ZoneRequirement(soph);
-		inPyramid = new ZoneRequirement(pyramid);
-		inNorthPyramid = new ZoneRequirement(northPyramid, northPyramid2, eastRoom);
-		inEastRoom = new ZoneRequirement(eastRoom);
-
 		puzzleOpen = new WidgetModelRequirement(147, 3, 6474);
 		givenToken = new VarbitRequirement(450, 1);
 
@@ -291,13 +285,19 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		possessedPriestNearby = new NpcCondition(NpcID.POSSESSED_PRIEST);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		soph = new Zone(new WorldPoint(3262, 2751, 0), new WorldPoint(3322, 2809, 0));
 		pyramid = new Zone(new WorldPoint(3273, 9170, 0), new WorldPoint(3311, 9204, 0));
 		northPyramid = new Zone(new WorldPoint(3276, 9194, 0), new WorldPoint(3311, 9204, 0));
 		northPyramid2 = new Zone(new WorldPoint(3276, 9192, 0), new WorldPoint(3287, 9193, 0));
 		eastRoom = new Zone(new WorldPoint(3300, 9192, 0), new WorldPoint(3311, 9199, 0));
+
+		inSoph = new ZoneRequirement(soph);
+		inPyramid = new ZoneRequirement(pyramid);
+		inNorthPyramid = new ZoneRequirement(northPyramid, northPyramid2, eastRoom);
+		inEastRoom = new ZoneRequirement(eastRoom);
 	}
 
 	public void setupSteps()

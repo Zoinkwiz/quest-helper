@@ -90,8 +90,7 @@ public class DesertHard extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		ConditionalStep doHard = new ConditionalStep(this, claimReward);
@@ -136,7 +135,7 @@ public class DesertHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		notMenaThug = new VarplayerRequirement(1198, false, 24);
 		notGranite = new VarplayerRequirement(1198, false, 25);
@@ -192,7 +191,8 @@ public class DesertHard extends ComplexStateQuestHelper
 		contact = new QuestRequirement(QuestHelperQuest.CONTACT, QuestState.FINISHED);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		kalph = new Zone(new WorldPoint(3454, 9531, 0), new WorldPoint(3520, 9473, 2));
 		smoke = new Zone(new WorldPoint(3166, 9408, 0), new WorldPoint(3332, 9344, 0));

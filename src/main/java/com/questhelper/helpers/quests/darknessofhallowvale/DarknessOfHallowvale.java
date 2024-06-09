@@ -108,8 +108,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		setupConditionalSteps();
@@ -194,7 +193,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		planks2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
@@ -231,7 +230,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		newBase = new Zone(new WorldPoint(3489, 9622, 0), new WorldPoint(3500, 9632, 1));
 		temple = new Zone(new WorldPoint(3402, 9880, 0), new WorldPoint(3443, 9907, 0));

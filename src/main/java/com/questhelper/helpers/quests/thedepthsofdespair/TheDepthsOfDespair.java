@@ -78,8 +78,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -122,7 +121,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
 		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES).isNotConsumed();
@@ -143,7 +142,8 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		royalAccordOfTwill = new ItemRequirement("Royal Accord of Twill", ItemID.ROYAL_ACCORD_OF_TWILL);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		houseWestOfVinery = new Zone(new WorldPoint(1810, 3550, 0), new WorldPoint(1820, 3560, 0));
 		arceuusLibraryF1 = new Zone(new WorldPoint(1607, 3831, 0), new WorldPoint(1658, 3784, 0));

@@ -77,8 +77,7 @@ public class PriestInPeril extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -194,7 +193,7 @@ public class PriestInPeril extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		runeEssence = new ItemRequirement("Rune or Pure Essence", ItemID.RUNE_ESSENCE, 50);
 		runeEssence.addAlternates(ItemID.PURE_ESSENCE);
@@ -222,7 +221,8 @@ public class PriestInPeril extends BasicQuestHelper
 		blessedWaterHighlighted.setHighlightInInventory(true);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		underground = new Zone(new WorldPoint(3402, 9880, 0), new WorldPoint(3443, 9907, 0));
 		temple1 = new Zone(new WorldPoint(3409, 3483, 0), new WorldPoint(3411, 3494, 0));

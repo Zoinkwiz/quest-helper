@@ -91,8 +91,7 @@ public class ClockTower extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
-		setupZones();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -143,7 +142,7 @@ public class ClockTower extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		bucketOfWater = new ItemRequirement("Bucket of Water or a pair of ice gloves or smiths gloves(i)", ItemID.BUCKET_OF_WATER);
 		bucketOfWater.addAlternates(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I);
@@ -160,7 +159,8 @@ public class ClockTower extends BasicQuestHelper
 		ratPoison = new ItemRequirement("Rat Poison", ItemID.RAT_POISON);
 	}
 
-	public void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		groundFloor = new Zone(new WorldPoint(2563, 3239, 0), new WorldPoint(2573, 3245, 0));
 		secondFloor = new Zone(new WorldPoint(2563, 3239, 2), new WorldPoint(2573, 3245, 2));

@@ -102,7 +102,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// NPCs should persist through quest steps unless actively removed? Dialog should be conditional on step (sometimes)
 		// Hide/show NPCs/the runelite character when NPCs go on it/you go over it

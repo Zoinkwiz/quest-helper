@@ -54,13 +54,14 @@ public class DagRouteHelper extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		return new ConditionalStep(this, dagRoute);
 	}
 
-	public void setupRequirements()
+	@Override
+	protected void setupRequirements()
 	{
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE);
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK);

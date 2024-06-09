@@ -72,7 +72,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		setupRequirements();
+		initializeRequirements();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -95,8 +95,8 @@ public class PiratesTreasure extends BasicQuestHelper
 		openChest.addDialogStep("Ok thanks, I'll go and get it.");
 		openChest.addIcon(ItemID.CHEST_KEY);
 
-		inBlueMoonFirst = new ZoneRequirement(blueMoonFirst);
 		blueMoonFirst = new Zone(new WorldPoint(3213, 3405, 1), new WorldPoint(3234, 3391, 1));
+		inBlueMoonFirst = new ZoneRequirement(blueMoonFirst);
 
 		ConditionalStep getTreasureMap = new ConditionalStep(this, climbStairs);
 		getTreasureMap.addStep(new Conditions(chestKey, inBlueMoonFirst), openChest);
@@ -112,7 +112,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();

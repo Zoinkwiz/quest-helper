@@ -91,8 +91,7 @@ public class OlafsQuest extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -141,7 +140,7 @@ public class OlafsQuest extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -205,7 +204,8 @@ public class OlafsQuest extends BasicQuestHelper
 		killedUlfric = new VarbitRequirement(3539, 1);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		firstArea = new Zone(new WorldPoint(2689, 10116, 0), new WorldPoint(2707, 10141, 0));
 		firstArea2 = new Zone(new WorldPoint(2707, 10118, 0), new WorldPoint(2739, 10148, 0));

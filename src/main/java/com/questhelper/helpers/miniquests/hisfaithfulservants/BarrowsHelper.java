@@ -100,8 +100,7 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -174,7 +173,7 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		// Varp 1502 increases is KC. On KC increase, suggest leaving and entering
 		combatGear = new ItemRequirement("Combat gear to kill all 6 Barrows Brothers", -1, -1).isNotConsumed();
@@ -189,7 +188,8 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 			ItemID.GHOMMALS_AVERNIC_DEFENDER_5, ItemID.GHOMMALS_AVERNIC_DEFENDER_5_L, ItemID.GHOMMALS_AVERNIC_DEFENDER_6, ItemID.GHOMMALS_AVERNIC_DEFENDER_6_L);
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		ahrimRoom = new Zone(new WorldPoint(3549, 9693, 3), new WorldPoint(3562, 9705, 3));
 		dharokRoom = new Zone(new WorldPoint(3547, 9709, 3), new WorldPoint(3560, 9719, 3));

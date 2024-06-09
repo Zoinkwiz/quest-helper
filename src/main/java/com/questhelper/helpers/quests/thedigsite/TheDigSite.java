@@ -88,8 +88,7 @@ public class TheDigSite extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		loadZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
@@ -198,7 +197,7 @@ public class TheDigSite extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortar.setHighlightInInventory(true);
@@ -266,7 +265,8 @@ public class TheDigSite extends BasicQuestHelper
 		unstampedLetter.setTooltip("You can get another from the Exam Centre's examiners");
 	}
 
-	public void loadZones()
+	@Override
+	protected void setupZones()
 	{
 		undergroundTemple1 = new Zone(new WorldPoint(3359, 9800, 0), new WorldPoint(3393, 9855, 0));
 		undergroundTemple2 = new Zone(new WorldPoint(3360, 9734, 0), new WorldPoint(3392, 9790, 0));

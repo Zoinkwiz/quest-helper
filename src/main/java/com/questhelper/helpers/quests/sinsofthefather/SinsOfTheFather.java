@@ -107,8 +107,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupConditions();
 		setupSteps();
 
@@ -311,7 +310,8 @@ public class SinsOfTheFather extends BasicQuestHelper
 		return steps;
 	}
 
-	private void setupZones()
+	@Override
+	protected void setupZones()
 	{
 		followingCarlArea = new Zone(new WorldPoint(3676, 3264, 0), new WorldPoint(3782, 3399, 0));
 		kroyArea = new Zone(new WorldPoint(3724, 9664, 1), new WorldPoint(3903, 9855, 1));
@@ -364,7 +364,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
-	public void setupRequirements()
+	protected void setupRequirements()
 	{
 		haemBook = new ItemRequirement("Haemalchemy volume 2", ItemID.HAEMALCHEMY_VOLUME_2);
 		haemBook.setTooltip("If you lost the book, search the bookshelf in the room west of Safalaan to get it back");

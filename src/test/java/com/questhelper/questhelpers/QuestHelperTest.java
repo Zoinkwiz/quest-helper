@@ -17,6 +17,8 @@ public class QuestHelperTest extends MockedTest
 	@Test
 	void ensureRequirementsSetUpBySetupRequirements()
 	{
+		AchievementDiaryStepManager.setup(configManager);
+
 		for (var quest : QuestHelperQuest.values())
 		{
 			// Instantiate helper

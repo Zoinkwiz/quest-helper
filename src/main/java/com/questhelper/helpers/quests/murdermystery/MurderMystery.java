@@ -222,6 +222,13 @@ public class MurderMystery extends BasicQuestHelper
 				"In fact they bought the last of my supplies!")
 		));
 
+		annaGuilty = new VarplayerRequirement(195, 1);
+		bobGuilty = new VarplayerRequirement(195, 2);
+		carolGuilty = new VarplayerRequirement(195, 3);
+		davidGuilty = new VarplayerRequirement(195, 4);
+		elizabethGuilty = new VarplayerRequirement(195, 5);
+		frankGuilty = new VarplayerRequirement(195, 6);
+
 		hasCriminalSilverItem = new Conditions(
 			LogicType.OR,
 			new Conditions(annaGuilty, silverNecklace),
@@ -231,13 +238,6 @@ public class MurderMystery extends BasicQuestHelper
 			new Conditions(elizabethGuilty, silverNeedle),
 			new Conditions(frankGuilty, silverPot)
 		);
-
-		annaGuilty = new VarplayerRequirement(195, 1);
-		bobGuilty = new VarplayerRequirement(195, 2);
-		carolGuilty = new VarplayerRequirement(195, 3);
-		davidGuilty = new VarplayerRequirement(195, 4);
-		elizabethGuilty = new VarplayerRequirement(195, 5);
-		frankGuilty = new VarplayerRequirement(195, 6);
 
 		hasSuspectPrint = new Conditions(
 			LogicType.OR,

@@ -216,10 +216,6 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 	private void setupConditions()
 	{
-		inFirstFloor = new ZoneRequirement(firstFloor);
-		inSecondFloor = new ZoneRequirement(secondFloor);
-		inBasement = new ZoneRequirement(basement);
-
 		hasAivasBust = aivasBust;
 		hasRobertBust = robertBust;
 		hasCamorraBust = camorraBust;
@@ -230,7 +226,6 @@ public class CryptPuzzle extends DetailedOwnerStep
 	protected void setupSteps()
 	{
 		inspectTomb = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29901, new WorldPoint(1504, 9939, 1), "Inspect the tomb in the south room.");
-
 
 		takeTristanBust = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29904, new WorldPoint(1507, 9941, 1), "Take Tristan's Bust.");
 		takeAivasBust = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29905, new WorldPoint(1500, 9941, 1), "Take Aivas' Bust.");

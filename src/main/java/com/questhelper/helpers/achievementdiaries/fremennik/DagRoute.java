@@ -25,6 +25,8 @@
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.requirements.player.SpecialAttackRequirement;
+import com.questhelper.requirements.util.SpecialAttack;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.QuestHelper;
@@ -155,6 +157,8 @@ public class DagRoute extends ConditionalStep
 		inDagCave10 = new ZoneRequirement(dagCave10);
 		inDagCave11 = new ZoneRequirement(dagCave11);
 		inDagCave12 = new ZoneRequirement(dagCave12);
+
+		specialAttackEnabled = new SpecialAttackRequirement(SpecialAttack.ON);
 	}
 
 	public void setupSteps()

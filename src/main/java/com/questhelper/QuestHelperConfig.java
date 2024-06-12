@@ -311,7 +311,7 @@ public interface QuestHelperConfig extends Config
 		position = 0,
 		keyName = "highlightItemsBackground",
 		name = "Always highlight needed items",
-		description = "Highlight items you need for marked content type at all times",
+		description = "Highlight items you need for marked content types at all times",
 		section = itemSection
 	)
 	default boolean highlightItemsBackground()
@@ -323,7 +323,7 @@ public interface QuestHelperConfig extends Config
 		position = 1,
 		keyName = "highlightNeededQuestItems",
 		name = "Highlight active quest items",
-		description = "Highlight all the active quest's items you're missing on the floor",
+		description = "Highlight every uncompleted quest's items you're missing on the floor",
 		section = itemSection
 	)
 	default boolean highlightNeededQuestItems()
@@ -335,7 +335,7 @@ public interface QuestHelperConfig extends Config
 		position = 2,
 		keyName = "highlightNeededMiniquestItems",
 		name = "Highlight miniquest items",
-		description = "Highlight all miniquest items you're missing on the floor",
+		description = "Highlight every uncompleted miniquest's items you're missing on the floor",
 		section = itemSection
 	)
 	default boolean highlightNeededMiniquestItems()
@@ -347,7 +347,7 @@ public interface QuestHelperConfig extends Config
 		position = 3,
 		keyName = "highlightNeededAchievementDiaryItems",
 		name = "Highlight achievement diary items",
-		description = "Highlight all achievement diary items you're missing on the floor",
+		description = "Highlight every uncompleted achievement diary's items you're missing on the floor",
 		section = itemSection
 	)
 	default boolean highlightNeededAchievementDiaryItems()

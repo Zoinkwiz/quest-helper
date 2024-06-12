@@ -59,6 +59,8 @@ import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
@@ -71,6 +73,8 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public abstract class QuestStep implements Module
 {
@@ -91,6 +95,9 @@ public abstract class QuestStep implements Module
 
 	@Inject
 	VisibilityHelper visibilityHelper;
+
+	@Inject
+	TooltipManager tooltipManager;
 
 	@Getter
 	protected List<String> text;
@@ -505,5 +512,92 @@ public abstract class QuestStep implements Module
 	public BufferedImage getQuestImage()
 	{
 		return spriteManager.getSprite(SpriteID.TAB_QUESTS, 0);
+	}
+
+
+	public void showWorldTooltips(PanelComponent panelComponent, boolean showHovered)
+	{
+		if (showHovered)
+		{
+			showHoveredItem(panelComponent);
+		}
+		else
+		{
+			showMenuItem(panelComponent);
+		}
+	}
+
+	private void showHoveredItem(PanelComponent panelComponent)
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		int last = menuEntries.length - 1;
+
+		if (last < 0)
+		{
+			return;
+		}
+
+		MenuEntry menuEntry = menuEntries[last];
+
+		if (!isTakeNeededItem(menuEntry))
+		{
+			return;
+		}
+
+		tooltipManager.add(new Tooltip(getWorldTooltipText()));
+	}
+
+	protected void showMenuItem(PanelComponent panelComponent)
+	{
+		MenuEntry[] currentMenuEntries = client.getMenuEntries();
+
+		if (currentMenuEntries != null)
+		{
+			net.runelite.api.Point mousePosition = client.getMouseCanvasPosition();
+			int menuX = client.getMenuX();
+			int menuY = client.getMenuY();
+			int menuWidth = client.getMenuWidth();
+
+			int menuEntryHeight = 15;
+			int headerHeight = menuEntryHeight + 3;
+
+			int numberNotInMainMenu = 0;
+
+			for (int i = currentMenuEntries.length - 1; i >= 0; i--)
+			{
+				MenuEntry hoveredEntry = currentMenuEntries[i];
+
+				int realPos = currentMenuEntries.length - (i + numberNotInMainMenu) - 1;
+
+				if (hoveredEntry.getParent() != null)
+				{
+					numberNotInMainMenu++;
+					continue;
+				}
+
+				if (!isTakeNeededItem(hoveredEntry)) continue;
+
+				int entryTopY = menuY + headerHeight + realPos * menuEntryHeight;
+				int entryBottomY = entryTopY + menuEntryHeight;
+
+				if (mousePosition.getX() > menuX && mousePosition.getX() < menuX + menuWidth &&
+					mousePosition.getY() > entryTopY && mousePosition.getY() <= entryBottomY)
+				{
+					panelComponent.setPreferredLocation(new java.awt.Point(menuX + menuWidth, entryTopY - menuEntryHeight));
+					panelComponent.getChildren().add(LineComponent.builder().left(getWorldTooltipText()).build());
+					break;
+				}
+			}
+		}
+	}
+
+	protected boolean isTakeNeededItem(MenuEntry entry)
+	{
+		return false;
+	}
+
+	protected String getWorldTooltipText()
+	{
+		return "Needed for helper " + getQuestHelper().getQuest().getName() + ". Can disable in Quest Helper settings.";
 	}
 }

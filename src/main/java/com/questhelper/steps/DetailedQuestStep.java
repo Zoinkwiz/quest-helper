@@ -56,6 +56,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -797,5 +799,17 @@ public class DetailedQuestStep extends QuestStep
 			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
 			(considerBankForItemHighlight &&
 				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
+	}
+
+	@Override
+	protected boolean isTakeNeededItem(MenuEntry entry)
+	{
+		int itemID = entry.getIdentifier();
+		String option = entry.getOption();
+		MenuAction type = entry.getType();
+		return requirements.stream().anyMatch((item) ->  item instanceof ItemRequirement &&
+			type == MenuAction.GROUND_ITEM_THIRD_OPTION &&
+			((ItemRequirement) item).getAllIds().contains(itemID) &&
+			option.equals("Take"));
 	}
 }

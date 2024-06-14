@@ -46,12 +46,16 @@ public class NpcCondition extends ConditionForStep
 
 	public NpcCondition(int npcID, WorldPoint worldPoint)
 	{
+		assert(worldPoint != null);
+
 		this.npcID = npcID;
 		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
 	public NpcCondition(int npcID, Zone zone)
 	{
+		assert(zone != null);
+
 		this.npcID = npcID;
 		this.zone = zone;
 	}

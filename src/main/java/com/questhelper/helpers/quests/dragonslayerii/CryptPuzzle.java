@@ -79,7 +79,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 	ItemRequirement aivasBust, camorraBust, robertBust, tristanBust;
 
-	Requirement inFirstFloor, inBasement, inSecondFloor, hasAivasBust, hasRobertBust, hasCamorraBust, hasTristanBust;
+	Requirement hasAivasBust, hasRobertBust, hasCamorraBust, hasTristanBust;
 
 	DetailedQuestStep takeCamorraBust, takeAivasBust, takeRobertBust, takeTristanBust, placeBustNorth, placeBustSouth, placeBustEast, placeBustWest, inspectTomb;
 
@@ -216,10 +216,6 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 	private void setupConditions()
 	{
-		inFirstFloor = new ZoneRequirement(firstFloor);
-		inSecondFloor = new ZoneRequirement(secondFloor);
-		inBasement = new ZoneRequirement(basement);
-
 		hasAivasBust = aivasBust;
 		hasRobertBust = robertBust;
 		hasCamorraBust = camorraBust;

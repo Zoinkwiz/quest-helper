@@ -28,6 +28,7 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.collections.ItemCollections;
 import java.util.List;
+import java.util.Objects;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
@@ -39,6 +40,10 @@ public class FollowerItemRequirement extends ItemRequirement
 	public FollowerItemRequirement(String name, List<Integer> itemIDs, List<Integer> followerIDs)
 	{
 		super(name, itemIDs);
+
+		assert(itemIDs.stream().noneMatch(Objects::isNull));
+		assert(followerIDs.stream().noneMatch(Objects::isNull));
+
 		this.itemIDs = itemIDs;
 		this.followerIDs = followerIDs;
 	}
@@ -46,6 +51,9 @@ public class FollowerItemRequirement extends ItemRequirement
 	public FollowerItemRequirement(String name, ItemCollections itemIDs, List<Integer> followerIDs)
 	{
 		super(name, itemIDs);
+
+		assert(followerIDs.stream().noneMatch(Objects::isNull));
+
 		this.itemIDs = itemIDs.getItems();
 		this.followerIDs = followerIDs;
 	}

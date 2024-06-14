@@ -53,6 +53,7 @@ public class ChatMessageRequirement extends ConditionForStep
 
 	public ChatMessageRequirement(Requirement condition, String... message)
 	{
+		assert(condition != null);
 		this.condition = condition;
 		this.messages = Arrays.asList(message);
 	}

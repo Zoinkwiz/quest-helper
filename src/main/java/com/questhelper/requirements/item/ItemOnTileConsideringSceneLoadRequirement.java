@@ -30,6 +30,9 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 
 	public ItemOnTileConsideringSceneLoadRequirement(ItemRequirement item, WorldPoint worldPoint)
 	{
+		assert(item != null);
+		assert(worldPoint != null);
+
 		this.itemID = item.getAllIds();
 		this.worldPoint = worldPoint;
 		tileLoadedReq = new TileIsLoadedRequirement(worldPoint);
@@ -37,6 +40,8 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 
 	public ItemOnTileConsideringSceneLoadRequirement(int itemID, WorldPoint worldPoint)
 	{
+		assert(worldPoint != null);
+
 		this.itemID = Collections.singletonList(itemID);
 		this.worldPoint = worldPoint;
 		tileLoadedReq = new TileIsLoadedRequirement(worldPoint);

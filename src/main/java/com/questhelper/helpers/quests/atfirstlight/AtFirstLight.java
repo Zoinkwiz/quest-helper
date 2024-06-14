@@ -205,9 +205,9 @@ public class AtFirstLight extends BasicQuestHelper
 		equipmentUsable = new VarbitRequirement(9840, 1);
 		repairedEquipment = new VarbitRequirement(9840, 2);
 		handedInReport = new VarbitRequirement(9836, 1);
-		hadReport = or(foxsReport, handedInReport);
 
 		foxsReport = new ItemRequirement("Fox's report", ItemID.FOXS_REPORT).hideConditioned(handedInReport);
+		hadReport = or(foxsReport, handedInReport);
 
 		// Bed repaired, 9838 0->1
 	}

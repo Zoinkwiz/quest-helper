@@ -40,6 +40,7 @@ public class NpcInteractingWithNpcRequirement extends SimpleRequirement
 
 	public NpcInteractingWithNpcRequirement(Integer npcID, String npcName2)
 	{
+		assert(npcID != null);
 		this.npcID = npcID;
 		this.npcName2 = npcName2;
 	}

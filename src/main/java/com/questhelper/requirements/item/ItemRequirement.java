@@ -140,18 +140,27 @@ public class ItemRequirement extends AbstractRequirement
 	public ItemRequirement(String name, List<Integer> items)
 	{
 		this(name, items.get(0), 1);
+
+		assert(items.stream().noneMatch(Objects::isNull));
+
 		this.addAlternates(items.subList(1, items.size()));
 	}
 
 	public ItemRequirement(String name, List<Integer> items, int quantity)
 	{
 		this(name, items.get(0), quantity);
+
+		assert(items.stream().noneMatch(Objects::isNull));
+
 		this.addAlternates(items.subList(1, items.size()));
 	}
 
 	public ItemRequirement(String name, List<Integer> items, int quantity, boolean equip)
 	{
 		this(name, items.get(0), quantity);
+
+		assert(items.stream().noneMatch(Objects::isNull));
+
 		this.equip = equip;
 		this.addAlternates(items.subList(1, items.size()));
 	}

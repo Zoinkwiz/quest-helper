@@ -45,11 +45,13 @@ public class NpcHintArrowRequirement extends SimpleRequirement
 	}
 
 	public NpcHintArrowRequirement(WorldPoint worldPoint, int... npcIDs) {
+		assert(worldPoint != null);
 		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
 		this.zone = new Zone(worldPoint, worldPoint);
 	}
 
 	public NpcHintArrowRequirement(Zone zone, int... npcIDs) {
+		assert(zone != null);
 		this.npcIDs = Arrays.stream(npcIDs).boxed().collect(QuestUtil.collectToArrayList());
 		this.zone = zone;
 	}

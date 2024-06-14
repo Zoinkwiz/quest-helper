@@ -46,6 +46,7 @@ public class PrayerRequirement extends AbstractRequirement
 	 */
 	public PrayerRequirement(String text, Prayer prayer)
 	{
+		assert(prayer != null);
 		this.prayer = prayer;
 		this.text = text;
 	}

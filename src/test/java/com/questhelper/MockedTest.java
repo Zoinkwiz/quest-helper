@@ -29,6 +29,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.questhelper.domain.AccountType;
 import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
@@ -109,6 +110,8 @@ public abstract class MockedTest extends MockedTestBase
 		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
 		when(client.getIntStack()).thenReturn(new int[] { 1, 1, 1, 1 });
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+
+		AchievementDiaryStepManager.setup(configManager);
 	}
 
 }

@@ -336,84 +336,13 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		inGoblinCaveWithZanik = new Conditions(LogicType.AND, inGoblinCave, zanikFollowing);
 		unlockedDoor = new VarbitRequirement(QuestHelperQuest.LAND_OF_THE_GOBLINS.getId(), 36, Operation.GREATER_EQUAL);
 
-		pharmakosBerryHighlight = new ItemRequirement("Pharmakos berries", ItemID.PHARMAKOS_BERRIES);
-		pharmakosBerryHighlight.setHighlightInInventory(true);
-		toadflaxUnfHighlight = new ItemRequirement("Toadflax potion (unf)", ItemID.TOADFLAX_POTION_UNF);
-		toadflaxUnfHighlight.setHighlightInInventory(true);
-		goblinPotion = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.GOBLIN_POTION1, ItemID.GOBLIN_POTION2, ItemID.GOBLIN_POTION3));
-		goblinPotion.setTooltip("You can make another with a toadflax potion (unf) and some pharmakos berries from the bush outside the Makeover Mage's house");
-		inGoblinCaveWithGoblinPotion = new Conditions(LogicType.AND, inGoblinCave, goblinPotion);
-		inFrontOfGuardsWithGoblinPotion = new Conditions(LogicType.AND, new ZoneRequirement(guardArea), goblinPotion);
-		goblinPotionHighlight = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.GOBLIN_POTION1, ItemID.GOBLIN_POTION2, ItemID.GOBLIN_POTION3));
-		goblinPotionHighlight.setHighlightInInventory(true);
-		goblinSelectionActive = new WidgetPresenceRequirement(739, 31);
-		hasBlackMushroomsOrDye = new Conditions(LogicType.OR, blackMushroom, blackDye);
-		isAGoblin = new VarbitRequirement(13612, 1);
-
-		inGoblinTemple = new ZoneRequirement(goblinTemple);
-		blackGoblinMail = new ItemRequirement("Black goblin mail", ItemID.BLACK_GOBLIN_MAIL);
-		blackGoblinMailEquipped = new ItemRequirement("Black goblin mail", ItemID.BLACK_GOBLIN_MAIL, 1, true);
-		inNorthEastRoom = new Conditions(LogicType.OR, new ZoneRequirement(northEastRoomSouth), new ZoneRequirement(northEastRoomNorth));
-		dorgeshKaanSphere = new ItemRequirement("Dorgesh-Kaan sphere", ItemID.DORGESHKAAN_SPHERE);
-		blackDyeOrBlackGoblinMail = new Conditions(LogicType.OR, blackDye, blackGoblinMail);
-
-		huzamogaarbKey = new ItemRequirement("Huzamogaarb key", ItemID.HUZAMOGAARB_KEY).alsoCheckBank(questBank);
-		knowsAboutWhitefish = new VarbitRequirement(13602, 1);
-		inHemenster = new ZoneRequirement(hemenster);
-		hemensterWhitefish = new ItemRequirement("Whitefish", ItemID.WHITEFISH);
-
-		whiteGoblinMail = new ItemRequirement("White goblin mail", ItemID.WHITE_GOBLIN_MAIL);
-		yellowGoblinMail = new ItemRequirement("Yellow goblin mail", ItemID.YELLOW_GOBLIN_MAIL);
-		blueGoblinMail = new ItemRequirement("Blue goblin mail", ItemID.BLUE_GOBLIN_MAIL);
-		orangeGoblinMail = new ItemRequirement("Orange goblin mail", ItemID.ORANGE_GOBLIN_MAIL);
-		purpleGoblinMail = new ItemRequirement("Purple goblin mail", ItemID.PURPLE_GOBLIN_MAIL);
-
-		anyGoblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL);
-		anyGoblinMail.addAlternates(ItemID.BLACK_GOBLIN_MAIL, ItemID.WHITE_GOBLIN_MAIL, ItemID.YELLOW_GOBLIN_MAIL, ItemID.BLUE_GOBLIN_MAIL,
-			ItemID.ORANGE_GOBLIN_MAIL, ItemID.PURPLE_GOBLIN_MAIL);
-
 		saragorgakKey = new ItemRequirement("Saragorgak key", ItemID.SARAGORGAK_KEY).alsoCheckBank(questBank);
 		yurkolgokhKey = new ItemRequirement("Yurkolgokh key", ItemID.YURKOLGOKH_KEY).alsoCheckBank(questBank);
 		ekeleshuunKey = new ItemRequirement("Ekeleshuun key", ItemID.EKELESHUUN_KEY).alsoCheckBank(questBank);
 		nargoshuunKey = new ItemRequirement("Narogoshuun key", ItemID.NAROGOSHUUN_KEY).alsoCheckBank(questBank);
 		horogothgarKey = new ItemRequirement("Horogothgar key", ItemID.HOROGOTHGAR_KEY).alsoCheckBank(questBank);
-		hasAllGoblinKeys = new Conditions(huzamogaarbKey, saragorgakKey, yurkolgokhKey, ekeleshuunKey, nargoshuunKey, horogothgarKey);
 
-		inWhitePriestRoom = new ZoneRequirement(whitePriestRoom);
-		inYellowPriestRoom = new ZoneRequirement(yellowPriestRoom);
-		inBluePriestRoom = new ZoneRequirement(bluePriestRoom);
-		inOrangePriestRoom = new ZoneRequirement(orangePriestRoom);
-		inPurplePriestRoom = new ZoneRequirement(purplePriestRoom);
-
-		inCrypt = new ZoneRequirement(crypt);
-
-		snotheadAlive = new NpcRequirement("Snothead", NpcID.SNOTHEAD);
-		snailfeetAlive = new NpcRequirement("Snailfeet", NpcID.SNAILFEET);
-		mosschinAlive = new NpcRequirement("Mosschin", NpcID.MOSSCHIN);
-		redeyesAlive = new NpcRequirement("Redeyes", NpcID.REDEYES);
-		strongbonesAlive = new NpcRequirement("Strongbones", NpcID.STRONGBONES);
-
-		snotheadDead = new NpcRequirement("Snothead", NpcID.SNOTHEAD_11274);
-		snailfeetDead = new NpcRequirement("Snailfeet", NpcID.SNAILFEET_11275);
-		mosschinDead = new NpcRequirement("Mosschin", NpcID.MOSSCHIN_11298);
-		redeyesDead = new NpcRequirement("Redeyes", NpcID.REDEYES_11299);
-		strongbonesDead = new NpcRequirement("Strongbones", NpcID.STRONGBONES_11300);
-
-		inDorgeshKaanF1 = new ZoneRequirement(dorgeshKaanF1);
-		inDorgeshKaanCaveUpper = new ZoneRequirement(dorgeshKaanCaveUpper);
-		inDorgeshKaanCaveLower = new ZoneRequirement(dorgeshKaanCaveLower);
-		learnedAboutMachine = new VarbitRequirement(13618, 1);
-
-		firstGreater = new VarbitRequirement(13603, 9, Operation.GREATER);
-		firstLess = new VarbitRequirement(13603, 9, Operation.LESS);
-		secondGreater = new VarbitRequirement(13604, 4, Operation.GREATER);
-		secondLess = new VarbitRequirement(13604, 4, Operation.LESS);
-		thirdGreater = new VarbitRequirement(13605, 1, Operation.GREATER);
-		thirdLess = new VarbitRequirement(13605, 1, Operation.LESS);
-		fairyRingMachineWidgetPresent = new WidgetTextRequirement(738, 2, 1, "Fairy Ring Power Relay");
-		fairyRingMachineFixed = new VarbitRequirement(13611, 0, Operation.GREATER);
-
-		inYubiusk = new InInstanceRequirement();
+		huzamogaarbKey = new ItemRequirement("Huzamogaarb key", ItemID.HUZAMOGAARB_KEY).alsoCheckBank(questBank);
 
 		// ItemRequirements
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES);
@@ -453,6 +382,79 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		draynorTeleport.setChargedItem(true);
 		explorersRing = new ItemRequirement("Explorer's ring 3 or 4", Arrays.asList(ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4));
 		salveAmulet = new ItemRequirement("Salve amulet or Salve amulet (e)", ItemCollections.SALVE_AMULET);
+
+		pharmakosBerryHighlight = new ItemRequirement("Pharmakos berries", ItemID.PHARMAKOS_BERRIES);
+		pharmakosBerryHighlight.setHighlightInInventory(true);
+		toadflaxUnfHighlight = new ItemRequirement("Toadflax potion (unf)", ItemID.TOADFLAX_POTION_UNF);
+		toadflaxUnfHighlight.setHighlightInInventory(true);
+		goblinPotion = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.GOBLIN_POTION1, ItemID.GOBLIN_POTION2, ItemID.GOBLIN_POTION3));
+		goblinPotion.setTooltip("You can make another with a toadflax potion (unf) and some pharmakos berries from the bush outside the Makeover Mage's house");
+		inGoblinCaveWithGoblinPotion = new Conditions(LogicType.AND, inGoblinCave, goblinPotion);
+		inFrontOfGuardsWithGoblinPotion = new Conditions(LogicType.AND, new ZoneRequirement(guardArea), goblinPotion);
+		goblinPotionHighlight = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.GOBLIN_POTION1, ItemID.GOBLIN_POTION2, ItemID.GOBLIN_POTION3));
+		goblinPotionHighlight.setHighlightInInventory(true);
+		goblinSelectionActive = new WidgetPresenceRequirement(739, 31);
+		hasBlackMushroomsOrDye = new Conditions(LogicType.OR, blackMushroom, blackDye);
+		isAGoblin = new VarbitRequirement(13612, 1);
+
+		inGoblinTemple = new ZoneRequirement(goblinTemple);
+		blackGoblinMail = new ItemRequirement("Black goblin mail", ItemID.BLACK_GOBLIN_MAIL);
+		blackGoblinMailEquipped = new ItemRequirement("Black goblin mail", ItemID.BLACK_GOBLIN_MAIL, 1, true);
+		inNorthEastRoom = new Conditions(LogicType.OR, new ZoneRequirement(northEastRoomSouth), new ZoneRequirement(northEastRoomNorth));
+		dorgeshKaanSphere = new ItemRequirement("Dorgesh-Kaan sphere", ItemID.DORGESHKAAN_SPHERE);
+		blackDyeOrBlackGoblinMail = new Conditions(LogicType.OR, blackDye, blackGoblinMail);
+
+		knowsAboutWhitefish = new VarbitRequirement(13602, 1);
+		inHemenster = new ZoneRequirement(hemenster);
+		hemensterWhitefish = new ItemRequirement("Whitefish", ItemID.WHITEFISH);
+
+		whiteGoblinMail = new ItemRequirement("White goblin mail", ItemID.WHITE_GOBLIN_MAIL);
+		yellowGoblinMail = new ItemRequirement("Yellow goblin mail", ItemID.YELLOW_GOBLIN_MAIL);
+		blueGoblinMail = new ItemRequirement("Blue goblin mail", ItemID.BLUE_GOBLIN_MAIL);
+		orangeGoblinMail = new ItemRequirement("Orange goblin mail", ItemID.ORANGE_GOBLIN_MAIL);
+		purpleGoblinMail = new ItemRequirement("Purple goblin mail", ItemID.PURPLE_GOBLIN_MAIL);
+
+		anyGoblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL);
+		anyGoblinMail.addAlternates(ItemID.BLACK_GOBLIN_MAIL, ItemID.WHITE_GOBLIN_MAIL, ItemID.YELLOW_GOBLIN_MAIL, ItemID.BLUE_GOBLIN_MAIL,
+			ItemID.ORANGE_GOBLIN_MAIL, ItemID.PURPLE_GOBLIN_MAIL);
+
+		hasAllGoblinKeys = new Conditions(huzamogaarbKey, saragorgakKey, yurkolgokhKey, ekeleshuunKey, nargoshuunKey, horogothgarKey);
+
+		inWhitePriestRoom = new ZoneRequirement(whitePriestRoom);
+		inYellowPriestRoom = new ZoneRequirement(yellowPriestRoom);
+		inBluePriestRoom = new ZoneRequirement(bluePriestRoom);
+		inOrangePriestRoom = new ZoneRequirement(orangePriestRoom);
+		inPurplePriestRoom = new ZoneRequirement(purplePriestRoom);
+
+		inCrypt = new ZoneRequirement(crypt);
+
+		snotheadAlive = new NpcRequirement("Snothead", NpcID.SNOTHEAD);
+		snailfeetAlive = new NpcRequirement("Snailfeet", NpcID.SNAILFEET);
+		mosschinAlive = new NpcRequirement("Mosschin", NpcID.MOSSCHIN);
+		redeyesAlive = new NpcRequirement("Redeyes", NpcID.REDEYES);
+		strongbonesAlive = new NpcRequirement("Strongbones", NpcID.STRONGBONES);
+
+		snotheadDead = new NpcRequirement("Snothead", NpcID.SNOTHEAD_11274);
+		snailfeetDead = new NpcRequirement("Snailfeet", NpcID.SNAILFEET_11275);
+		mosschinDead = new NpcRequirement("Mosschin", NpcID.MOSSCHIN_11298);
+		redeyesDead = new NpcRequirement("Redeyes", NpcID.REDEYES_11299);
+		strongbonesDead = new NpcRequirement("Strongbones", NpcID.STRONGBONES_11300);
+
+		inDorgeshKaanF1 = new ZoneRequirement(dorgeshKaanF1);
+		inDorgeshKaanCaveUpper = new ZoneRequirement(dorgeshKaanCaveUpper);
+		inDorgeshKaanCaveLower = new ZoneRequirement(dorgeshKaanCaveLower);
+		learnedAboutMachine = new VarbitRequirement(13618, 1);
+
+		firstGreater = new VarbitRequirement(13603, 9, Operation.GREATER);
+		firstLess = new VarbitRequirement(13603, 9, Operation.LESS);
+		secondGreater = new VarbitRequirement(13604, 4, Operation.GREATER);
+		secondLess = new VarbitRequirement(13604, 4, Operation.LESS);
+		thirdGreater = new VarbitRequirement(13605, 1, Operation.GREATER);
+		thirdLess = new VarbitRequirement(13605, 1, Operation.LESS);
+		fairyRingMachineWidgetPresent = new WidgetTextRequirement(738, 2, 1, "Fairy Ring Power Relay");
+		fairyRingMachineFixed = new VarbitRequirement(13611, 0, Operation.GREATER);
+
+		inYubiusk = new InInstanceRequirement();
 	}
 
 	public void setupSteps()

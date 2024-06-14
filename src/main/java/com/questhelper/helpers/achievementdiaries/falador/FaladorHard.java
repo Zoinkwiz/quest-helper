@@ -76,7 +76,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		enterDwarvenMinesHelmet, enterMiningGuild, enterHerosGuild, enterHerosGuildBasement, killBlueDragon, enterRoguesDen,
 		crackWallSafe, getProsySet, prayAtAltarSarim, enterWarriorsGuild, equipDwarvenHelmet;
 
-	Zone mindAltar, iceDungeon, wyvernCavern, faladorCastle1, herosGuild, herosGuildBasement, dwarvenMine,
+	Zone mindAltar, iceDungeon, wyvernCavern, faladorCastle1, herosGuildBasement, dwarvenMine,
 		miningGuild, herosGuildEntranceway, herosGuildMainHall, roguesDen, moleDen;
 
 	ZoneRequirement inMindAltar, inWyvernCavern, inIceDungeon, inFaladorCastle1, inHerosGuild, inHerosGuildBasement,
@@ -188,8 +188,6 @@ public class FaladorHard extends ComplexStateQuestHelper
 		inWyvernCavern = new ZoneRequirement(wyvernCavern);
 		inIceDungeon = new ZoneRequirement(iceDungeon);
 		inFaladorCastle1 = new ZoneRequirement(faladorCastle1);
-		inHerosGuild = new ZoneRequirement(herosGuild);
-		inHerosGuildBasement = new ZoneRequirement(herosGuildBasement);
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inMiningGuild = new ZoneRequirement(miningGuild);
 		inHerosGuildBasement = new ZoneRequirement(herosGuildBasement);

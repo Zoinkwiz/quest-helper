@@ -182,14 +182,6 @@ public class FremennikEasy extends ComplexStateQuestHelper
 				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
 			)
 		);
-
-		inMine = new ZoneRequirement(mine);
-		inKeldagrim = new ZoneRequirement(keldagrim);
-		inWaterbirth = new ZoneRequirement(waterbirth);
-		inHunterArea = new ZoneRequirement(hunterArea);
-		inCaveArea = new ZoneRequirement(caveArea);
-		inRiverArea = new ZoneRequirement(riverArea);
-		inVarrockArea = new ZoneRequirement(varrockArea);
 	}
 
 	@Override
@@ -202,6 +194,14 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		caveArea = new Zone(new WorldPoint(2767, 10165, 0), new WorldPoint(2802, 10127, 0));
 		riverArea = new Zone(new WorldPoint(2816, 10148, 0), new WorldPoint(2893, 10114, 0));
 		varrockArea = new Zone(new WorldPoint(3076, 3617, 0), new WorldPoint(3290, 3374, 0));
+
+		inMine = new ZoneRequirement(mine);
+		inKeldagrim = new ZoneRequirement(keldagrim);
+		inWaterbirth = new ZoneRequirement(waterbirth);
+		inHunterArea = new ZoneRequirement(hunterArea);
+		inCaveArea = new ZoneRequirement(caveArea);
+		inRiverArea = new ZoneRequirement(riverArea);
+		inVarrockArea = new ZoneRequirement(varrockArea);
 	}
 
 	public void setupSteps()

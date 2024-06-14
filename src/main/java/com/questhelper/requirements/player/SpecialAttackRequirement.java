@@ -37,6 +37,7 @@ public class SpecialAttackRequirement extends AbstractRequirement
 
     public SpecialAttackRequirement(SpecialAttack specialAttack)
     {
+		assert(specialAttack != null);
         this.specialAttack = specialAttack;
     }
 

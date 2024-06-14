@@ -32,6 +32,7 @@ import com.questhelper.steps.tools.QuestPerspective;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import com.questhelper.util.Utils;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
@@ -50,17 +51,24 @@ public class ItemOnTileRequirement extends ConditionForStep
 
 	public ItemOnTileRequirement(ItemRequirement item)
 	{
+		assert(item != null);
+
 		this.itemID = item.getAllIds();
 	}
 
 	public ItemOnTileRequirement(int itemID, WorldPoint worldPoint)
 	{
+		assert(worldPoint != null);
+
 		this.itemID = Collections.singletonList(itemID);
 		this.worldPoint = worldPoint;
 	}
 
 	public ItemOnTileRequirement(ItemRequirement item, WorldPoint worldPoint)
 	{
+		assert(item != null);
+		assert(worldPoint != null);
+
 		this.itemID = item.getAllIds();
 		this.worldPoint = worldPoint;
 	}

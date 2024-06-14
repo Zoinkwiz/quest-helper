@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
+import com.questhelper.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -57,6 +58,9 @@ public class ItemRequirements extends ItemRequirement
 	public ItemRequirements(String name, ItemRequirement... itemRequirements)
 	{
 		super(name, itemRequirements[0].getId(), -1);
+
+		assert(Utils.varargsNotNull(itemRequirements));
+
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = LogicType.AND;
 	}
@@ -64,6 +68,9 @@ public class ItemRequirements extends ItemRequirement
 	public ItemRequirements(LogicType logicType, String name, ItemRequirement... itemRequirements)
 	{
 		super(name, itemRequirements[0].getId(), -1);
+
+		assert(Utils.varargsNotNull(itemRequirements));
+
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = logicType;
 	}
@@ -71,6 +78,9 @@ public class ItemRequirements extends ItemRequirement
 	public ItemRequirements(LogicType logicType, String name, List<ItemRequirement> itemRequirements)
 	{
 		super(name, itemRequirements.get(0).getId(), -1);
+
+		assert(itemRequirements.stream().noneMatch(Objects::isNull));
+
 		this.itemRequirements.addAll(itemRequirements);
 		this.logicType = logicType;
 	}

@@ -30,6 +30,8 @@ import com.questhelper.requirements.AbstractRequirement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import com.questhelper.util.Utils;
 import net.runelite.api.Client;
 
 public class FollowerRequirement extends AbstractRequirement
@@ -39,6 +41,7 @@ public class FollowerRequirement extends AbstractRequirement
 
 	public FollowerRequirement(String text, Integer... followers)
 	{
+		assert(Utils.varargsNotNull(followers));
 		this.text = text;
 		this.followers = new ArrayList<>();
 		Collections.addAll(this.followers, followers);
@@ -46,6 +49,7 @@ public class FollowerRequirement extends AbstractRequirement
 
 	public FollowerRequirement(String text, List<Integer> followers)
 	{
+		assert(followers.stream().noneMatch(Objects::isNull));
 		this.text = text;
 		this.followers = followers;
 	}

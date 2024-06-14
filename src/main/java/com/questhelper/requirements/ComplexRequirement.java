@@ -26,6 +26,7 @@ package com.questhelper.requirements;
 
 import com.questhelper.requirements.util.LogicType;
 import java.util.stream.Stream;
+import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
 
@@ -48,6 +49,7 @@ public class ComplexRequirement extends AbstractRequirement
 	 */
 	public ComplexRequirement(String name, AbstractRequirement... requirements)
 	{
+		assert(Utils.varargsNotNull(requirements));
 		this.name = name;
 		this.requirements = requirements;
 		this.logicType = LogicType.AND;
@@ -71,6 +73,7 @@ public class ComplexRequirement extends AbstractRequirement
 	 */
 	public ComplexRequirement(LogicType logicType, String name, Requirement... requirements)
 	{
+		assert(Utils.varargsNotNull(requirements));
 		this.name = name;
 		this.requirements = requirements;
 		this.logicType = logicType;

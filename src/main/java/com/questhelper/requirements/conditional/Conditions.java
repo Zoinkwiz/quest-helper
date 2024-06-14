@@ -30,7 +30,9 @@ import com.questhelper.requirements.util.Operation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nonnull;
+import com.questhelper.util.Utils;
 import lombok.Setter;
 import net.runelite.api.Client;
 
@@ -47,6 +49,8 @@ public class Conditions extends ConditionForStep
 	 */
 	public Conditions(Requirement... conditions)
 	{
+		assert(Utils.varargsNotNull(conditions));
+
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		logicType = LogicType.AND;
@@ -57,6 +61,8 @@ public class Conditions extends ConditionForStep
 	 */
 	public Conditions(List<Requirement> conditions)
 	{
+		assert(conditions.stream().noneMatch(Objects::isNull));
+
 		this.conditions = new ArrayList<>(conditions);
 		logicType = LogicType.AND;
 	}
@@ -67,6 +73,8 @@ public class Conditions extends ConditionForStep
 	 */
 	public Conditions(LogicType logicType, Requirement... conditions)
 	{
+		assert(Utils.varargsNotNull(conditions));
+
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.logicType = logicType;
@@ -74,6 +82,8 @@ public class Conditions extends ConditionForStep
 
 	public Conditions(Operation operation, int quantity, Requirement... conditions)
 	{
+		assert(Utils.varargsNotNull(conditions));
+
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.logicType = LogicType.AND;
@@ -83,12 +93,16 @@ public class Conditions extends ConditionForStep
 
 	public Conditions(LogicType logicType, List<Requirement> conditions)
 	{
+		assert(conditions.stream().noneMatch(Objects::isNull));
+
 		this.conditions = new ArrayList<>(conditions);
 		this.logicType = logicType;
 	}
 
 	public Conditions(boolean onlyNeedToPassOnce, Operation operation, int quantity, Requirement... conditions)
 	{
+		assert(Utils.varargsNotNull(conditions));
+
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
@@ -99,6 +113,8 @@ public class Conditions extends ConditionForStep
 
 	public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, Requirement... conditions)
 	{
+		assert(Utils.varargsNotNull(conditions));
+
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
@@ -107,6 +123,8 @@ public class Conditions extends ConditionForStep
 
 	public Conditions(boolean onlyNeedToPassOnce, Requirement... conditions)
 	{
+		assert(Utils.varargsNotNull(conditions));
+
 		this.conditions = new ArrayList<>();
 		Collections.addAll(this.conditions, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;

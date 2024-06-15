@@ -25,6 +25,7 @@
 package com.questhelper.playerquests.bikeshedder;
 
 import com.google.common.collect.ImmutableMap;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -35,10 +36,12 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.widget.NormalSpells;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,9 @@ public class BikeShedder extends BasicQuestHelper
 	private DetailedQuestStep confuseHans;
 	private DetailedQuestStep equipLightbearer;
 
+	private ItemRequirement anyLog;
+	private ObjectStep useLogOnBush;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -59,6 +65,7 @@ public class BikeShedder extends BasicQuestHelper
 		var steps = new ConditionalStep(this, confuseHans);
 		steps.addStep(outsideLumbridge, moveToLumbridge);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3218, 0)), equipLightbearer);
+		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3218, 0)), useLogOnBush);
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(-1, steps)
 			.build();
@@ -76,6 +83,10 @@ public class BikeShedder extends BasicQuestHelper
 
 		var lightbearer = new ItemRequirement("Lightbearer", ItemID.LIGHTBEARER).highlighted();
 		equipLightbearer = new DetailedQuestStep(this, "Equip a Lightbearer", lightbearer.equipped());
+
+		anyLog = new ItemRequirement("Any log", ItemCollections.LOGS_FOR_FIRE).highlighted();
+		useLogOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use log on bush", anyLog);
+		useLogOnBush.addIcon(ItemID.LOGS);
 	}
 
 	@Override
@@ -86,6 +97,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Move to Lumbridge", List.of(moveToLumbridge)));
 		panels.add(new PanelDetails("Normal Spellbook", List.of(confuseHans)));
 		panels.add(new PanelDetails("Equip Lightbearer", List.of(equipLightbearer)));
+		panels.add(new PanelDetails("Use log on mysterious bush", List.of(useLogOnBush), List.of(anyLog)));
 
 		return panels;
 	}

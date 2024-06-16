@@ -334,7 +334,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Talk to Brundt in Rellekka's longhall.");
 		talkToBrundt.addDialogSteps("Ask for a quest.", "Yes.");
 		buyKegs = new NpcStep(this, NpcID.THORA_THE_BARKEEP, new WorldPoint(2662, 3673, 0),
-			"Buy 2 kegs of beer from Thora in Rellekka.", coins650);
+			"Buy 2 kegs of beer from Thora in Rellekka.  She will be unavailable to trade later in the quest.", coins650);
 		talkToFreygerd = new NpcStep(this, NpcID.FREYGERD_3942, new WorldPoint(2668, 3703, 0),
 			"Talk to Freygerd in north Rellekka.", combatGear, mirrorShield.equipped());
 		searchSandpit = new ObjectStep(this, NullObjectID.NULL_4373, new WorldPoint(2668, 3708, 0),

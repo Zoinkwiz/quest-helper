@@ -964,7 +964,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToBobAfterDiningRoom = new NpcStep(this, NpcID.BOB_8111, new WorldPoint(3222, 3476, 0), "Talk to Bob in Varrock Castle.");
 
 		// Final battle
-		takeBoatToUngael = new NpcStep(this, NpcID.TORFINN_10405, new WorldPoint(2640, 3696, 0), "Talk to Torfinn on the Rellekka docks to go to Ungael. Be prepared for a lot of fighting.", combatGear, antifireShield);
+		takeBoatToUngael = new NpcStep(this, NpcID.TORFINN_10405, new WorldPoint(2640, 3696, 0), "Talk to Torfinn on the Rellekka docks to go to Ungael. Be prepared for a lot of fighting.", combatGear, antifireShield,  new ItemRequirement("Empty inventory spaces for tools to repair the ship", -1, 4).isNotConsumed());
 		takeBoatToUngael.addDialogSteps("Yes please.", "Yes.");
 		keepShipAfloat = new ObjectStep(this, ObjectID.FIRE_32297, "Keep the boat afloat by filling leaks, putting out fires, healing warriors and repairing the masts.");
 		((ObjectStep) (keepShipAfloat)).addAlternateObjects(ObjectID.LEAK, ObjectID.FREMENNIK_WARRIOR_32302, ObjectID.FREMENNIK_WARRIOR_32300, ObjectID.DAMAGED_MAST);

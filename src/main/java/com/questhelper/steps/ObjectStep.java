@@ -359,7 +359,7 @@ public class ObjectStep extends DetailedQuestStep
 			}
 		}
 
-		if (iconItemID != -1 && closestObject != null)
+		if (iconItemID != -1 && closestObject != null && questHelper.getConfig().showSymbolOverlay())
 		{
 			Shape clickbox = closestObject.getClickbox();
 			if (clickbox != null && !inCutscene)

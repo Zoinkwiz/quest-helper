@@ -35,6 +35,7 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
@@ -964,9 +965,9 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToBobAfterDiningRoom = new NpcStep(this, NpcID.BOB_8111, new WorldPoint(3222, 3476, 0), "Talk to Bob in Varrock Castle.");
 
 		// Final battle
-		takeBoatToUngael = new NpcStep(this, NpcID.TORFINN_10405, new WorldPoint(2640, 3696, 0), "Talk to Torfinn on the Rellekka docks to go to Ungael. Be prepared for a lot of fighting.", combatGear, antifireShield);
+		takeBoatToUngael = new NpcStep(this, NpcID.TORFINN_10405, new WorldPoint(2640, 3696, 0), "Talk to Torfinn on the Rellekka docks to go to Ungael. Be prepared for a lot of fighting.", combatGear, antifireShield, new FreeInventorySlotRequirement(4));
 		takeBoatToUngael.addDialogSteps("Yes please.", "Yes.");
-		keepShipAfloat = new ObjectStep(this, ObjectID.FIRE_32297, "Keep the boat afloat by filling leaks, putting out fires, healing warriors and repairing the masts.");
+		keepShipAfloat = new ObjectStep(this, ObjectID.FIRE_32297, "Keep the boat afloat by filling leaks, putting out fires, healing warriors and repairing the masts. This is where the four inventory slots are needed.");
 		((ObjectStep) (keepShipAfloat)).addAlternateObjects(ObjectID.LEAK, ObjectID.FREMENNIK_WARRIOR_32302, ObjectID.FREMENNIK_WARRIOR_32300, ObjectID.DAMAGED_MAST);
 
 		getToMainShip = new NpcStep(this, NpcID.RED_DRAGON_8079, "Travel to the main ship, killing dragons along the way.", true);

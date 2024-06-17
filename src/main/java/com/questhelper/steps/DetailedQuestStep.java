@@ -802,7 +802,7 @@ public class DetailedQuestStep extends QuestStep
 	}
 
 	@Override
-	protected boolean isTakeNeededItem(MenuEntry entry)
+	protected boolean isActionForRequiredItem(MenuEntry entry)
 	{
 		int itemID = entry.getIdentifier();
 		String option = entry.getOption();

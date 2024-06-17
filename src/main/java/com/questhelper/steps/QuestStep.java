@@ -59,7 +59,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
@@ -157,6 +156,10 @@ public abstract class QuestStep implements Module
 	private boolean showInSidebar = true;
 
 	protected String lastDialogSeen = "";
+
+	@Setter
+	@Getter
+	protected String worldTooltipText = "Needed for helper " + getQuestHelper().getQuest().getName();
 
 	public QuestStep(QuestHelper questHelper)
 	{
@@ -515,19 +518,19 @@ public abstract class QuestStep implements Module
 	}
 
 
-	public void showWorldTooltips(PanelComponent panelComponent, boolean showHovered)
+	public void renderBackgroundQuestSourceTooltip(PanelComponent panelComponent, boolean isMenuOpen)
 	{
-		if (showHovered)
+		if (isMenuOpen)
 		{
-			showHoveredItem(panelComponent);
+			renderHoveredItemTooltip(panelComponent);
 		}
 		else
 		{
-			showMenuItem(panelComponent);
+			renderHoveredMenuEntryPanel(panelComponent);
 		}
 	}
 
-	private void showHoveredItem(PanelComponent panelComponent)
+	private void renderHoveredItemTooltip(PanelComponent panelComponent)
 	{
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		int last = menuEntries.length - 1;
@@ -539,7 +542,7 @@ public abstract class QuestStep implements Module
 
 		MenuEntry menuEntry = menuEntries[last];
 
-		if (!isTakeNeededItem(menuEntry))
+		if (!isActionForRequiredItem(menuEntry))
 		{
 			return;
 		}
@@ -547,7 +550,7 @@ public abstract class QuestStep implements Module
 		tooltipManager.add(new Tooltip(getWorldTooltipText()));
 	}
 
-	protected void showMenuItem(PanelComponent panelComponent)
+	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent)
 	{
 		MenuEntry[] currentMenuEntries = client.getMenuEntries();
 
@@ -575,7 +578,7 @@ public abstract class QuestStep implements Module
 					continue;
 				}
 
-				if (!isTakeNeededItem(hoveredEntry)) continue;
+				if (!isActionForRequiredItem(hoveredEntry)) continue;
 
 				int entryTopY = menuY + headerHeight + realPos * menuEntryHeight;
 				int entryBottomY = entryTopY + menuEntryHeight;
@@ -591,13 +594,8 @@ public abstract class QuestStep implements Module
 		}
 	}
 
-	protected boolean isTakeNeededItem(MenuEntry entry)
+	protected boolean isActionForRequiredItem(MenuEntry entry)
 	{
 		return false;
-	}
-
-	protected String getWorldTooltipText()
-	{
-		return "Needed for helper " + getQuestHelper().getQuest().getName() + ". Can disable in Quest Helper settings.";
 	}
 }

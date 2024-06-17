@@ -59,7 +59,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
@@ -72,7 +71,6 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public abstract class QuestStep implements Module
@@ -159,7 +157,11 @@ public abstract class QuestStep implements Module
 
 	@Setter
 	@Getter
-	protected String worldTooltipText = "Needed for helper " + getQuestHelper().getQuest().getName();
+	protected String worldTooltipText;
+
+	@Setter
+	@Getter
+	protected String backgroundWorldTooltipText;
 
 	public QuestStep(QuestHelper questHelper)
 	{
@@ -518,84 +520,26 @@ public abstract class QuestStep implements Module
 	}
 
 
-	public void renderBackgroundQuestSourceTooltip(PanelComponent panelComponent, boolean isMenuOpen)
+	public void renderQuestStepTooltip(PanelComponent panelComponent, boolean isMenuOpen, boolean isBackgroundHelper)
 	{
+		String tooltipText = isBackgroundHelper ? getBackgroundWorldTooltipText() : getWorldTooltipText();
+		if (tooltipText == null) return;
+
 		if (isMenuOpen)
 		{
-			renderHoveredItemTooltip(panelComponent);
+			renderHoveredItemTooltip(tooltipText);
 		}
 		else
 		{
-			renderHoveredMenuEntryPanel(panelComponent);
+			renderHoveredMenuEntryPanel(panelComponent, tooltipText);
 		}
 	}
 
-	private void renderHoveredItemTooltip(PanelComponent panelComponent)
+	protected void renderHoveredItemTooltip(String tooltipText)
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		int last = menuEntries.length - 1;
-
-		if (last < 0)
-		{
-			return;
-		}
-
-		MenuEntry menuEntry = menuEntries[last];
-
-		if (!isActionForRequiredItem(menuEntry))
-		{
-			return;
-		}
-
-		tooltipManager.add(new Tooltip(getWorldTooltipText()));
 	}
 
-	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent)
+	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent, String tooltipText)
 	{
-		MenuEntry[] currentMenuEntries = client.getMenuEntries();
-
-		if (currentMenuEntries != null)
-		{
-			net.runelite.api.Point mousePosition = client.getMouseCanvasPosition();
-			int menuX = client.getMenuX();
-			int menuY = client.getMenuY();
-			int menuWidth = client.getMenuWidth();
-
-			int menuEntryHeight = 15;
-			int headerHeight = menuEntryHeight + 3;
-
-			int numberNotInMainMenu = 0;
-
-			for (int i = currentMenuEntries.length - 1; i >= 0; i--)
-			{
-				MenuEntry hoveredEntry = currentMenuEntries[i];
-
-				int realPos = currentMenuEntries.length - (i + numberNotInMainMenu) - 1;
-
-				if (hoveredEntry.getParent() != null)
-				{
-					numberNotInMainMenu++;
-					continue;
-				}
-
-				if (!isActionForRequiredItem(hoveredEntry)) continue;
-
-				int entryTopY = menuY + headerHeight + realPos * menuEntryHeight;
-				int entryBottomY = entryTopY + menuEntryHeight;
-
-				if (mousePosition.getX() > menuX && mousePosition.getX() < menuX + menuWidth &&
-					mousePosition.getY() > entryTopY && mousePosition.getY() <= entryBottomY)
-				{
-					panelComponent.setPreferredLocation(new java.awt.Point(menuX + menuWidth, entryTopY - menuEntryHeight));
-					panelComponent.getChildren().add(LineComponent.builder().left(getWorldTooltipText()).build());
-					break;
-				}
-			}
-		}
-	}
-
-	protected boolean isActionForRequiredItem(MenuEntry entry)
-	{
-		return false;
 	}
 }

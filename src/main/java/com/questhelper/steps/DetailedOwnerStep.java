@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.NonNull;
 import net.runelite.api.Client;
+import net.runelite.api.MenuEntry;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import org.apache.commons.lang3.ArrayUtils;
@@ -156,6 +157,14 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 		}
 	}
 
+	@Override
+	public void renderQuestStepTooltip(PanelComponent panelComponent, boolean isMenuOpen, boolean isBackgroundHelper)
+	{
+		if (currentStep != null)
+		{
+			currentStep.renderQuestStepTooltip(panelComponent, isMenuOpen, isBackgroundHelper);
+		}
+	}
 	@Override
 	public QuestStep getActiveStep()
 	{

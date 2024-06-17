@@ -24,24 +24,20 @@
  */
 package com.questhelper.overlays;
 
-import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import net.runelite.api.Client;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPanel;
-import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
-import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import javax.inject.Inject;
 import java.awt.*;
 
-public class BackgroundQuestHelperTooltipOverlay extends OverlayPanel
+public class QuestHelperTooltipOverlay extends OverlayPanel
 {
 	private final QuestHelperPlugin questHelperPlugin;
 	private final Client client;
 
 	@Inject
-	public BackgroundQuestHelperTooltipOverlay(QuestHelperPlugin questHelperPlugin, Client client)
+	public QuestHelperTooltipOverlay(QuestHelperPlugin questHelperPlugin, Client client)
 	{
 		setPriority(PRIORITY_HIGHEST);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -53,8 +49,13 @@ public class BackgroundQuestHelperTooltipOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (questHelperPlugin.getSelectedQuest() != null && questHelperPlugin.getSelectedQuest().getCurrentStep() != null)
+		{
+			questHelperPlugin.getSelectedQuest().getCurrentStep().renderQuestStepTooltip(panelComponent, !client.isMenuOpen(), false);
+		}
+
 		questHelperPlugin.getBackgroundHelpers().forEach(((s, questHelper) -> {
-			questHelper.getCurrentStep().renderBackgroundQuestSourceTooltip(panelComponent, !client.isMenuOpen());
+			questHelper.getCurrentStep().renderQuestStepTooltip(panelComponent, !client.isMenuOpen(), true);
 		}));
 
 		return super.render(graphics);

@@ -29,6 +29,7 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import com.questhelper.tools.QuestHelperWorldMapPoint;
 import com.questhelper.tools.QuestTile;
@@ -88,6 +89,9 @@ public class DetailedQuestStep extends QuestStep
 
 	@Getter
 	protected WorldPoint worldPoint;
+
+	@Setter
+	protected Zone highlightZone;
 
 	@Setter
 	protected List<WorldPoint> linePoints;
@@ -290,6 +294,12 @@ public class DetailedQuestStep extends QuestStep
 					OverlayUtil.renderTileOverlay(client, graphics, localPoint, combatIcon, questHelper.getConfig().targetOverlayColor());
 				}
 			}
+		}
+
+		if (highlightZone != null)
+		{
+			Polygon zonePoly = QuestPerspective.getZonePoly(client, highlightZone);
+			OverlayUtil.renderPolygon(graphics, zonePoly, questHelper.getConfig().targetOverlayColor());
 		}
 
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForHighlighting(tile, tileHighlights.get(tile), graphics));

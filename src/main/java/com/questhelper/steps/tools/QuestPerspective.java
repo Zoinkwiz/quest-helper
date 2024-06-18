@@ -24,6 +24,10 @@
  */
 package com.questhelper.steps.tools;
 
+import com.questhelper.requirements.zone.Zone;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,9 +42,16 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class QuestPerspective
 {
+	// Order of poly corners from getCanvasTilePoly
+	private final static int SW = 0;
+	private final static int NW = 3;
+	private final static int NE = 2;
+	private final static int SE = 1;
+
 	public static Collection<WorldPoint> toLocalInstanceFromReal(Client client, WorldPoint worldPoint)
 	{
 		if (!client.isInInstancedRegion())
@@ -85,8 +96,8 @@ public class QuestPerspective
 
 	private static WorldPoint rotate(WorldPoint point, int rotation)
 	{
-		int chunkX = point.getX() & ~(CHUNK_SIZE - 1);
-		int chunkY = point.getY() & ~(CHUNK_SIZE - 1);
+		int chunkX = point.getX() & -CHUNK_SIZE;
+		int chunkY = point.getY() & -CHUNK_SIZE;
 		int x = point.getX() & (CHUNK_SIZE - 1);
 		int y = point.getY() & (CHUNK_SIZE - 1);
 		switch (rotation)
@@ -109,7 +120,7 @@ public class QuestPerspective
 			return null;
 		}
 
-		return LocalPoint.fromWorld(client, instanceWorldPoint);
+		return LocalPoint.fromWorld(client.getTopLevelWorldView(), instanceWorldPoint);
 	}
 
 	public static WorldPoint getInstanceWorldPointFromReal(Client client, WorldPoint wp)
@@ -128,7 +139,7 @@ public class QuestPerspective
 
 	public static WorldPoint getRealWorldPointFromLocal(Client client, WorldPoint wp)
 	{
-		LocalPoint lp = LocalPoint.fromWorld(client, wp);
+		LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp);
 		if (lp == null) return null;
 
 		return WorldPoint.fromLocalInstance(client, lp);
@@ -239,5 +250,60 @@ public class QuestPerspective
 		int miniMapX = loc.getX() + xx + minimapDrawWidget.getWidth() / 2;
 		int miniMapY = minimapDrawWidget.getHeight() / 2 + loc.getY() + yy;
 		return new Point(miniMapX, miniMapY);
+	}
+
+	public static Polygon getZonePoly(Client client, Zone zone)
+	{
+		Polygon areaPoly = new Polygon();
+		if (zone == null) return areaPoly;
+
+		for (int x = zone.getMinX(); x < zone.getMaxX(); x++)
+		{
+			addToPoly(client, areaPoly, new WorldPoint(x, zone.getMaxY(), zone.getMinWorldPoint().getPlane()), NW);
+		}
+
+		// NE corner
+		addToPoly(client, areaPoly, new WorldPoint(zone.getMaxX(), zone.getMaxY(), zone.getMinWorldPoint().getPlane()), NW, NE, SE);
+
+		// West side
+		for (int y = zone.getMaxY() - 1; y > zone.getMinY(); y--)
+		{
+			addToPoly(client, areaPoly, new WorldPoint(zone.getMaxX(), y, zone.getMinWorldPoint().getPlane()), SE);
+		}
+
+		// SE corner
+		addToPoly(client, areaPoly, new WorldPoint(zone.getMaxX(), zone.getMinY(), zone.getMinWorldPoint().getPlane()), SE, SW);
+
+		// South side
+		for (int x = zone.getMaxX() - 1; x > zone.getMinX(); x--)
+		{
+			addToPoly(client, areaPoly, new WorldPoint(x, zone.getMinY(), zone.getMinWorldPoint().getPlane()), SW);
+		}
+
+		// SW corner
+		addToPoly(client, areaPoly, new WorldPoint(zone.getMinX(), zone.getMinY(), zone.getMinWorldPoint().getPlane()), SW, NW);
+
+		for (int y = zone.getMinY() + 1; y < zone.getMaxY(); y++)
+		{
+			addToPoly(client, areaPoly, new WorldPoint(zone.getMinX(), y, zone.getMinWorldPoint().getPlane()), NW);
+		}
+
+
+		return areaPoly;
+	}
+
+	private static void addToPoly(Client client, Polygon areaPoly, WorldPoint wp, int... points)
+	{
+		LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp);
+		if (localPoint == null) return;
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
+		if (poly != null)
+		{
+			for (int point : points)
+			{
+				areaPoly.addPoint(poly.xpoints[point], poly.ypoints[point]);
+			}
+		}
 	}
 }

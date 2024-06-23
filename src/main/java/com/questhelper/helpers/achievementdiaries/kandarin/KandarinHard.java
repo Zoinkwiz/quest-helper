@@ -58,7 +58,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement barbRod, feather, axe, bowString, knife, cosmicRune, waterRune, unpoweredOrb, dustyKey,
-		mapleLogs, bow, ringOfVis, coins, addyBar, hammer, yewLogs, combatGear, antidragonfire;
+		mapleLogs, bow, ringOfVis, addyBar, hammer, yewLogs, combatGear, antidragonfire;
+	ItemRequirement coins, coinsAll, coinsHouseOnly, coinsGraniteOnly;
 
 	// Items recommended
 	ItemRequirement food;
@@ -172,8 +173,13 @@ public class KandarinHard extends ComplexStateQuestHelper
 		mapleLogs = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS).showConditioned(notBurnMaple);
 		bow = new ItemRequirement("Any bow", ItemCollections.BOWS).showConditioned(notBurnMaple).isNotConsumed();
 		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound).isNotConsumed();
-		coins = new ItemRequirement("Coins", ItemCollections.COINS)
-			.showConditioned(new Conditions(LogicType.OR, notFancyStone, notBuyGranite));
+		coins = new ItemRequirement("Coins", ItemCollections.COINS);
+		coinsAll = new ItemRequirement("Coins", ItemCollections.COINS, 95000+25000)
+			.showConditioned(new Conditions(LogicType.AND, notFancyStone, notBuyGranite));
+		coinsHouseOnly = new ItemRequirement("Coins", ItemCollections.COINS, 25000)
+			.showConditioned(new Conditions(LogicType.AND, notFancyStone, new Conditions(LogicType.NOR, notBuyGranite)));
+		coinsGraniteOnly = new ItemRequirement("Coins", ItemCollections.COINS, 95000)
+			.showConditioned(new Conditions(LogicType.AND, notBuyGranite, new Conditions(LogicType.NOR, notFancyStone)));
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddySpear);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddySpear).isNotConsumed();
 		yewLogs = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notAddySpear);
@@ -282,7 +288,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(barbRod, feather, axe, bowString, knife, cosmicRune.quantity(3),
 			waterRune.quantity(30), unpoweredOrb, dustyKey, mapleLogs, bow, ringOfVis,
-			coins, addyBar, hammer, yewLogs, combatGear);
+			coinsAll, coinsHouseOnly, coinsGraniteOnly, addyBar, hammer, yewLogs, combatGear);
 	}
 
 	@Override

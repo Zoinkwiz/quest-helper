@@ -25,8 +25,6 @@
 package com.questhelper.steps.tools;
 
 import com.questhelper.requirements.zone.Zone;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;

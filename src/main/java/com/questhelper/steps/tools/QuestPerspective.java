@@ -40,7 +40,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class QuestPerspective
 {

@@ -61,7 +61,7 @@ public class BikeShedder extends BasicQuestHelper
 	{
 		var lumbridge = new Zone(new WorldPoint(3217, 3210, 0), new WorldPoint(3226, 3228, 0));
 		var outsideLumbridge = new ZoneRequirement(false, lumbridge);
-
+		moveToLumbridge.setHighlightZone(lumbridge);
 		var steps = new ConditionalStep(this, confuseHans);
 		steps.addStep(outsideLumbridge, moveToLumbridge);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3218, 0)), equipLightbearer);

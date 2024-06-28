@@ -78,6 +78,11 @@ public class RuneliteRequirement extends AbstractRequirement
 		this(configManager, id, "true", Collections.singletonMap("true", requirement));
 	}
 
+	public RuneliteRequirement(ConfigManager configManager, String id, Requirement requirement, String displayText)
+	{
+		this(configManager, id, "true", displayText, Collections.singletonMap("true", requirement));
+	}
+
 	public RuneliteRequirement(ConfigManager configManager, String id, String initValue, String expectedValue,
 							   String text, Map<String, Requirement> requirements)
 	{

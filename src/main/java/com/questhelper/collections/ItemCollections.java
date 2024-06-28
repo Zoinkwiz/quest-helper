@@ -25,6 +25,8 @@
 package com.questhelper.collections;
 
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -2082,7 +2084,17 @@ public enum ItemCollections
 		ItemID.CLIMBING_BOOTS_G
 	)),
 
-	SEEDS(ImmutableList.of(
+	ALLOTMENT_SEEDS(ImmutableList.of(
+		ItemID.POTATO_SEED,
+		ItemID.ONION_SEED,
+		ItemID.CABBAGE_SEED,
+		ItemID.TOMATO_SEED,
+		ItemID.SWEETCORN_SEED,
+		ItemID.WATERMELON_SEED,
+		ItemID.SNAPE_GRASS_SEED
+	)),
+
+	HERB_SEEDS(ImmutableList.of(
 		ItemID.GUAM_SEED,
 		ItemID.MARRENTILL_SEED,
 		ItemID.TARROMIN_SEED,
@@ -2097,6 +2109,53 @@ public enum ItemCollections
 		ItemID.LANTADYME_SEED,
 		ItemID.DWARF_WEED_SEED,
 		ItemID.TORSTOL_SEED
+	)),
+
+	FLOWER_SEEDS(ImmutableList.of(
+		ItemID.MARIGOLD_SEED,
+		ItemID.ROSEMARY_SEED,
+		ItemID.NASTURTIUM_SEED,
+		ItemID.WOAD_SEED,
+		ItemID.LIMPWURT_SEED,
+		ItemID.WHITE_LILY_SEED
+	)),
+
+	HOPS_SEEDS(ImmutableList.of(
+		ItemID.BARLEY_SEED,
+		ItemID.HAMMERSTONE_SEED,
+		ItemID.ASGARNIAN_SEED,
+		ItemID.JUTE_SEED,
+		ItemID.YANILLIAN_SEED,
+		ItemID.KRANDORIAN_SEED,
+		ItemID.WILDBLOOD_SEED
+	)),
+
+	BUSH_SEEDS(ImmutableList.of(
+		ItemID.REDBERRY_SEED,
+		ItemID.CADAVABERRY_SEED,
+		ItemID.DWELLBERRY_SEED,
+		ItemID.JANGERBERRY_SEED,
+		ItemID.WHITEBERRY_SEED,
+		ItemID.POISON_IVY_SEED
+	)),
+
+	TREE_SAPLINGS(ImmutableList.of(
+		ItemID.OAK_SAPLING,
+		ItemID.WILLOW_SAPLING,
+		ItemID.MAPLE_SAPLING,
+		ItemID.YEW_SAPLING,
+		ItemID.MAGIC_SAPLING
+	)),
+
+	FRUIT_TREE_SAPLINGS(ImmutableList.of(
+		ItemID.APPLE_SAPLING,
+		ItemID.BANANA_SAPLING,
+		ItemID.ORANGE_SAPLING,
+		ItemID.CURRY_SAPLING,
+		ItemID.PINEAPPLE_SAPLING,
+		ItemID.PAPAYA_SAPLING,
+		ItemID.PALM_SAPLING,
+		ItemID.DRAGONFRUIT_SAPLING
 	)),
 
 	GHOMMALS_HILT(ImmutableList.of(
@@ -2125,5 +2184,12 @@ public enum ItemCollections
 	{
 		this.wikiTerm = null;
 		this.items = items;
+	}
+
+	public List<Integer> reverseOrder()
+	{
+		List<Integer> reversedArray = new ArrayList<>(getItems());
+		Collections.reverse(reversedArray);
+		return reversedArray;
 	}
 }

@@ -71,6 +71,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public abstract class QuestStep implements Module
 {
@@ -91,6 +92,9 @@ public abstract class QuestStep implements Module
 
 	@Inject
 	VisibilityHelper visibilityHelper;
+
+	@Inject
+	TooltipManager tooltipManager;
 
 	@Getter
 	protected List<String> text;
@@ -150,6 +154,14 @@ public abstract class QuestStep implements Module
 	private boolean showInSidebar = true;
 
 	protected String lastDialogSeen = "";
+
+	@Setter
+	@Getter
+	protected String worldTooltipText;
+
+	@Setter
+	@Getter
+	protected String backgroundWorldTooltipText;
 
 	public QuestStep(QuestHelper questHelper)
 	{
@@ -505,5 +517,29 @@ public abstract class QuestStep implements Module
 	public BufferedImage getQuestImage()
 	{
 		return spriteManager.getSprite(SpriteID.TAB_QUESTS, 0);
+	}
+
+
+	public void renderQuestStepTooltip(PanelComponent panelComponent, boolean isMenuOpen, boolean isBackgroundHelper)
+	{
+		String tooltipText = isBackgroundHelper ? getBackgroundWorldTooltipText() : getWorldTooltipText();
+		if (tooltipText == null) return;
+
+		if (isMenuOpen)
+		{
+			renderHoveredItemTooltip(tooltipText);
+		}
+		else
+		{
+			renderHoveredMenuEntryPanel(panelComponent, tooltipText);
+		}
+	}
+
+	protected void renderHoveredItemTooltip(String tooltipText)
+	{
+	}
+
+	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent, String tooltipText)
+	{
 	}
 }

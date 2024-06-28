@@ -27,6 +27,7 @@ package com.questhelper.managers;
 import com.questhelper.overlays.QuestHelperDebugOverlay;
 import com.questhelper.overlays.QuestHelperMinimapOverlay;
 import com.questhelper.overlays.QuestHelperOverlay;
+import com.questhelper.overlays.QuestHelperTooltipOverlay;
 import com.questhelper.overlays.QuestHelperWidgetOverlay;
 import com.questhelper.overlays.QuestHelperWorldArrowOverlay;
 import com.questhelper.overlays.QuestHelperWorldLineOverlay;
@@ -60,6 +61,9 @@ public class QuestOverlayManager
 	private QuestHelperWorldLineOverlay questHelperWorldLineOverlay;
 
 	@Inject
+	private QuestHelperTooltipOverlay questHelperTooltipOverlay;
+
+	@Inject
 	private QuestHelperDebugOverlay questHelperDebugOverlay;
 
 	public void startUp()
@@ -70,6 +74,7 @@ public class QuestOverlayManager
 		overlayManager.add(questHelperWorldLineOverlay);
 		overlayManager.add(questHelperWidgetOverlay);
 		overlayManager.add(questHelperMinimapOverlay);
+		overlayManager.add(questHelperTooltipOverlay);
 	}
 
 	public void shutDown()
@@ -81,6 +86,7 @@ public class QuestOverlayManager
 		overlayManager.remove(questHelperWidgetOverlay);
 		overlayManager.remove(questHelperDebugOverlay);
 		overlayManager.remove(questHelperMinimapOverlay);
+		overlayManager.remove(questHelperTooltipOverlay);
 	}
 
 	public void addDebugOverlay()

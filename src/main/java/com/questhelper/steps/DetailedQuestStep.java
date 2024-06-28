@@ -57,6 +57,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -73,8 +75,10 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
@@ -807,5 +811,82 @@ public class DetailedQuestStep extends QuestStep
 			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
 			(considerBankForItemHighlight &&
 				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
+	}
+
+	@Override
+	protected void renderHoveredItemTooltip(String tooltipText)
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		int last = menuEntries.length - 1;
+
+		if (last < 0)
+		{
+			return;
+		}
+
+		MenuEntry menuEntry = menuEntries[last];
+
+		if (!isActionForRequiredItem(menuEntry))
+		{
+			return;
+		}
+
+		tooltipManager.add(new Tooltip(tooltipText));
+	}
+
+	@Override
+	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent, String tooltipText)
+	{
+		MenuEntry[] currentMenuEntries = client.getMenuEntries();
+
+		if (currentMenuEntries != null)
+		{
+			net.runelite.api.Point mousePosition = client.getMouseCanvasPosition();
+			int menuX = client.getMenuX();
+			int menuY = client.getMenuY();
+			int menuWidth = client.getMenuWidth();
+
+			int menuEntryHeight = 15;
+			int headerHeight = menuEntryHeight + 3;
+
+			int numberNotInMainMenu = 0;
+
+			for (int i = currentMenuEntries.length - 1; i >= 0; i--)
+			{
+				MenuEntry hoveredEntry = currentMenuEntries[i];
+
+				int realPos = currentMenuEntries.length - (i + numberNotInMainMenu) - 1;
+
+				if (hoveredEntry.getParent() != null)
+				{
+					numberNotInMainMenu++;
+					continue;
+				}
+
+				if (!isActionForRequiredItem(hoveredEntry)) continue;
+
+				int entryTopY = menuY + headerHeight + realPos * menuEntryHeight;
+				int entryBottomY = entryTopY + menuEntryHeight;
+
+				if (mousePosition.getX() > menuX && mousePosition.getX() < menuX + menuWidth &&
+					mousePosition.getY() > entryTopY && mousePosition.getY() <= entryBottomY)
+				{
+					panelComponent.setPreferredLocation(new java.awt.Point(menuX + menuWidth, entryTopY - menuEntryHeight - ComponentConstants.STANDARD_BORDER));
+					panelComponent.getChildren().add(LineComponent.builder().left(tooltipText).build());
+					break;
+				}
+			}
+		}
+	}
+
+	protected boolean isActionForRequiredItem(MenuEntry entry)
+	{
+		int itemID = entry.getIdentifier();
+		String option = entry.getOption();
+		MenuAction type = entry.getType();
+		return requirements.stream().anyMatch((item) ->  item instanceof ItemRequirement &&
+			type == MenuAction.GROUND_ITEM_THIRD_OPTION &&
+			((ItemRequirement) item).getAllIds().contains(itemID) &&
+			option.equals("Take"));
 	}
 }

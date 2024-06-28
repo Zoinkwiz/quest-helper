@@ -39,6 +39,7 @@ import java.util.Objects;
 import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -348,6 +349,15 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		if (currentStep != null)
 		{
 			currentStep.makeWorldLineOverlayHint(graphics, plugin);
+		}
+	}
+
+	@Override
+	public void renderQuestStepTooltip(PanelComponent panelComponent, boolean isMenuOpen, boolean isBackgroundHelper)
+	{
+		if (currentStep != null)
+		{
+			currentStep.renderQuestStepTooltip(panelComponent, isMenuOpen, isBackgroundHelper);
 		}
 	}
 

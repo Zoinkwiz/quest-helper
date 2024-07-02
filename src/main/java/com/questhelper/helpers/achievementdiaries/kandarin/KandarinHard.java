@@ -305,7 +305,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		setupGeneralRequirements();
+		initializeRequirements();
 		ArrayList<Requirement> req = new ArrayList<>();
 
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));

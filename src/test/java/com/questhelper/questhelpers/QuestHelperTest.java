@@ -117,7 +117,7 @@ public class QuestHelperTest extends MockedTest
 	@Test
 	void ensureAllVariablesCorrectlySet()
 	{
-		when(client.getIntStack()).thenReturn(new int[] { 1, 1, 1, 1 });
+		when(client.getIntStack()).thenReturn(new int[]{1, 1, 1, 1});
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 
 		AchievementDiaryStepManager.setup(configManager);
@@ -125,7 +125,10 @@ public class QuestHelperTest extends MockedTest
 		for (var quest : QuestHelperQuest.values())
 		{
 			var helper = quest.getQuestHelper();
-			if (quest.getPlayerQuests() != null) continue;
+			if (quest.getPlayerQuests() != null)
+			{
+				continue;
+			}
 
 			helper.setQuest(quest);
 			this.injector.injectMembers(helper);

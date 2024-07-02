@@ -227,6 +227,8 @@ public class RoyalTrouble extends BasicQuestHelper
 		coal1 = new ItemRequirement("Coal", ItemID.COAL, 1);
 		coal1.setHighlightInInventory(true);
 
+		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES).isNotConsumed();
+
 		if (client.getRealSkillLevel(Skill.MINING) >= 30)
 		{
 			coalOrPickaxe = new ItemRequirements(LogicType.OR, "Either 5 coal or a pickaxe", coal5, pickaxe);
@@ -241,7 +243,6 @@ public class RoyalTrouble extends BasicQuestHelper
 			coalOrPickaxe = coal5;
 		}
 
-		pickaxe = new ItemRequirement("A pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);

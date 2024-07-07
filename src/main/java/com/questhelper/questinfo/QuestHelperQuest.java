@@ -269,6 +269,7 @@ import com.questhelper.helpers.quests.wanted.Wanted;
 import com.questhelper.helpers.quests.watchtower.Watchtower;
 import com.questhelper.helpers.quests.waterfallquest.WaterfallQuest;
 import com.questhelper.helpers.quests.whatliesbelow.WhatLiesBelow;
+import com.questhelper.helpers.quests.whileguthixsleeps.WhileGuthixSleeps;
 import com.questhelper.helpers.quests.witchshouse.WitchsHouse;
 import com.questhelper.helpers.quests.witchspotion.WitchsPotion;
 import com.questhelper.helpers.quests.xmarksthespot.XMarksTheSpot;
@@ -474,6 +475,8 @@ public enum QuestHelperQuest
 	PERILOUS_MOON(new PerilousMoon(), Quest.PERILOUS_MOONS, QuestVarbits.QUEST_PERILOUS_MOONS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE(new TheRibbitingTaleOfALilyPadLabourDispute(), Quest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestVarbits.QUEST_THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	TWILIGHTS_PROMISE(new TwilightsPromise(), Quest.TWILIGHTS_PROMISE, QuestVarbits.QUEST_TWILIGHTS_PROMISE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	WHILE_GUTHIX_SLEEPS(new WhileGuthixSleeps(), Quest.WHILE_GUTHIX_SLEEPS, QuestVarbits.QUEST_WHILE_GUTHIX_SLEEPS, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

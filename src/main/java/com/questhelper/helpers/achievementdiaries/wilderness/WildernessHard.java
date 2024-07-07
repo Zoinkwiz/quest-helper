@@ -361,7 +361,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		allSteps.add(trollSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Adamant Scimitar in Resource Area", Arrays.asList(moveToResource,
-			addyScim), new SkillRequirement(Skill.SMITHING, 75), barsOrPick);
+			addyScim), new SkillRequirement(Skill.SMITHING, 75), barsOrPick, hammer);
 		scimSteps.setDisplayCondition(notAddyScim);
 		scimSteps.setLockingStep(addyScimTask);
 		allSteps.add(scimSteps);

@@ -138,19 +138,19 @@ public class ClientOfKourend extends BasicQuestHelper
 
 		talkToLeenz = new NpcStep(this, NpcID.LEENZ, new WorldPoint(1807, 3726, 0), "Talk to Leenz in Port Piscarilius general store.", enchantedQuill);
 		talkToLeenz.addDialogStep("Can I ask you about Port Piscarilius?");
-		talkToLeenz.addDialogStep("Why should I gain favour with Port Piscarilius?");
+		talkToLeenz.addDialogStep("What is there to do in Port Piscarilius?");
 		talkToHorace = new NpcStep(this, NpcID.HORACE, new WorldPoint(1774, 3589, 0), "Talk to Horace in the Hosidius general store.", enchantedQuill);
 		talkToHorace.addDialogStep("Can I ask you about Hosidius?");
-		talkToHorace.addDialogStep("Why should I gain favour with Hosidius?");
+		talkToHorace.addDialogStep("What is there to do in Hosidius?");
 		talkToJennifer = new NpcStep(this, NpcID.JENNIFER, new WorldPoint(1518, 3586, 0), "Talk to Jennifer in Shayzien general store.", enchantedQuill);
 		talkToJennifer.addDialogStep("Can I ask you about Shayzien?");
-		talkToJennifer.addDialogStep("Why should I gain favour with Shayzien?");
+		talkToJennifer.addDialogStep("What is there to do in Shayzien?");
 		talkToMunty = new NpcStep(this, NpcID.MUNTY, new WorldPoint(1551, 3752, 0), "Talk to Munty in Lovakengj general store.", enchantedQuill);
 		talkToMunty.addDialogStep("Can I ask you about Lovakengj?");
 		talkToMunty.addDialogStep("Why should I gain favour with Lovakengj?");
 		talkToRegath = new NpcStep(this, NpcID.REGATH, new WorldPoint(1720, 3724, 0), "Talk to Regath in Arceuus general store.", enchantedQuill);
 		talkToRegath.addDialogStep("Can I ask you about Arceuus?");
-		talkToRegath.addDialogStep("Why should I gain favour with Arceuus?");
+		talkToRegath.addDialogStep("What is there to do in Arceuus?");
 
 		returnToVeos = new NpcStep(this, NpcID.VEOS_10727, new WorldPoint(1824, 3690, 0), "Return to Veos on Piscarilius docks.");
 		returnToVeos.addDialogStep("Let's talk about your client...");

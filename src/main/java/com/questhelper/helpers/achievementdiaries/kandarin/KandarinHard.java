@@ -58,7 +58,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement barbRod, feather, axe, bowString, knife, cosmicRune, waterRune, unpoweredOrb, dustyKey,
-		mapleLogs, bow, ringOfVis, coins, addyBar, hammer, yewLogs, combatGear, antidragonfire;
+		mapleLogs, bow, ringOfVis, addyBar, hammer, yewLogs, combatGear, antidragonfire;
+	ItemRequirement coins, coinsAll, coinsHouseOnly, coinsGraniteOnly;
 
 	// Items recommended
 	ItemRequirement food;
@@ -68,20 +69,20 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 	Requirement piety, choppedLogs, normalSpellbook;
 
-	Requirement notCatchStur, notSeersRooftop, notYewLong, notPietyCourt, notWaterOrb, notBurnMaple,
+	Requirement notCatchSturgeon, notSeersRooftop, notYewLong, notPietyCourt, notWaterOrb, notBurnMaple,
 		notShadowHound, notMithrilDrag, notBuyGranite, notFancyStone, notAddySpear;
 
 	//Quest steps
 	Requirement barbFishing, barbFiremaking, barbSmithing, taiBwoWannai, knightWaves, desertTreasure;
 
 	QuestStep claimReward, moveToTavDungeon, moveToOb, waterOrb, seersRooftop, yewLong, cutLongbow, stringBow,
-		pietyCourt, burnMaple, moveToSeers, fancyStone, moveToShadow, shadowHound, catchStur, addySpear, moveToWhirl, moveToAncient2, moveToAncient3, mithrilDrag, buyGranite;
+		pietyCourt, burnMaple, moveToSeers, fancyStone, moveToShadow, shadowHound, catchSturgeon, addySpear, moveToWhirl, moveToAncient2, moveToAncient3, mithrilDrag, buyGranite;
 
 	Zone tavDungeon, obIsland, seers, shadow, ancient1, ancient2, ancient3;
 
 	ZoneRequirement inTavDungeon, inObIsland, inSeers, inShadow, inAncient1, inAncient2, inAncient3;
 
-	ConditionalStep catchSturTask, seersRooftopTask, yewLongTask, pietyCourtTask, waterOrbTask, burnMapleTask, shadowHoundTask,
+	ConditionalStep catchSturgeonTask, seersRooftopTask, yewLongTask, pietyCourtTask, waterOrbTask, burnMapleTask, shadowHoundTask,
 		mithrilDragTask, buyGraniteTask, fancyStoneTask, addySpearTask;
 
 	@Override
@@ -119,8 +120,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 		shadowHoundTask.addStep(inShadow, shadowHound);
 		doHard.addStep(notShadowHound, shadowHoundTask);
 
-		catchSturTask = new ConditionalStep(this, catchStur);
-		doHard.addStep(notCatchStur, catchSturTask);
+		catchSturgeonTask = new ConditionalStep(this, catchSturgeon);
+		doHard.addStep(notCatchSturgeon, catchSturgeonTask);
 
 		addySpearTask = new ConditionalStep(this, addySpear);
 		doHard.addStep(notAddySpear, addySpearTask);
@@ -140,7 +141,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCatchStur = new VarplayerRequirement(1178, false, 26);
+		notCatchSturgeon = new VarplayerRequirement(1178, false, 26);
 		notSeersRooftop = new VarplayerRequirement(1178, false, 27);
 		notYewLong = new VarplayerRequirement(1178, false, 28);
 		notPietyCourt = new VarplayerRequirement(1178, false, 29);
@@ -154,8 +155,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 		piety = new PrayerRequirement("Piety", Prayer.PIETY);
 
-		barbRod = new ItemRequirement("Barbarian fishing rod", ItemID.BARBARIAN_ROD).showConditioned(notCatchStur).isNotConsumed();
-		feather = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchStur);
+		barbRod = new ItemRequirement("Barbarian fishing rod", ItemID.BARBARIAN_ROD).showConditioned(notCatchSturgeon).isNotConsumed();
+		feather = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSturgeon);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notYewLong).isNotConsumed();
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notYewLong);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notYewLong).isNotConsumed();
@@ -167,13 +168,18 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
 			notWaterOrb)).isNotConsumed();
-		dustyKey.setTooltip("You can get this by killing the Jailor in the Black Knights Base in Taverley Dungeon and" +
+		dustyKey.setTooltip("You can get this by killing the Jailer in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
 		mapleLogs = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS).showConditioned(notBurnMaple);
 		bow = new ItemRequirement("Any bow", ItemCollections.BOWS).showConditioned(notBurnMaple).isNotConsumed();
 		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound).isNotConsumed();
-		coins = new ItemRequirement("Coins", ItemCollections.COINS)
-			.showConditioned(new Conditions(LogicType.OR, notFancyStone, notBuyGranite));
+		coins = new ItemRequirement("Coins", ItemCollections.COINS);
+		coinsAll = new ItemRequirement("Coins", ItemCollections.COINS, 95000+25000)
+			.showConditioned(new Conditions(LogicType.AND, notFancyStone, notBuyGranite));
+		coinsHouseOnly = new ItemRequirement("Coins", ItemCollections.COINS, 25000)
+			.showConditioned(new Conditions(LogicType.AND, notFancyStone, new Conditions(LogicType.NOR, notBuyGranite)));
+		coinsGraniteOnly = new ItemRequirement("Coins", ItemCollections.COINS, 95000)
+			.showConditioned(new Conditions(LogicType.AND, notBuyGranite, new Conditions(LogicType.NOR, notFancyStone)));
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddySpear);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddySpear).isNotConsumed();
 		yewLogs = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notAddySpear);
@@ -255,7 +261,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 			"Climb down the shadow ladder south of Glarial's Tomb.", ringOfVis.equipped(), combatGear);
 		shadowHound = new NpcStep(this, NpcID.SHADOW_HOUND, new WorldPoint(2699, 5095, 0),
 			"Kill a shadow hound.", true);
-		catchStur = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2501, 3504, 0),
+		catchSturgeon = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2501, 3504, 0),
 			"Catch a leaping Sturgeon south of Barbarian Assault.", true, barbRod, feather.quantity(20));
 		addySpear = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Smith an adamant spear on the barbarian anvil south of Barbarian Assault.", addyBar, yewLogs);
@@ -282,7 +288,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(barbRod, feather, axe, bowString, knife, cosmicRune.quantity(3),
 			waterRune.quantity(30), unpoweredOrb, dustyKey, mapleLogs, bow, ringOfVis,
-			coins, addyBar, hammer, yewLogs, combatGear);
+			coinsAll, coinsHouseOnly, coinsGraniteOnly, addyBar, hammer, yewLogs, combatGear);
 	}
 
 	@Override
@@ -408,11 +414,11 @@ public class KandarinHard extends ComplexStateQuestHelper
 		killHoundSteps.setLockingStep(shadowHoundTask);
 		allSteps.add(killHoundSteps);
 
-		PanelDetails fishSturgeonSteps = new PanelDetails("Fish a Leaping Sturgeon", Collections.singletonList(catchStur),
+		PanelDetails fishSturgeonSteps = new PanelDetails("Fish a Leaping Sturgeon", Collections.singletonList(catchSturgeon),
 			new SkillRequirement(Skill.FISHING, 70, true), new SkillRequirement(Skill.AGILITY, 45),
 			new SkillRequirement(Skill.STRENGTH, 45), barbFishing, barbRod, feather.quantity(20));
-		fishSturgeonSteps.setDisplayCondition(notCatchStur);
-		fishSturgeonSteps.setLockingStep(catchSturTask);
+		fishSturgeonSteps.setDisplayCondition(notCatchSturgeon);
+		fishSturgeonSteps.setLockingStep(catchSturgeonTask);
 		allSteps.add(fishSturgeonSteps);
 
 		PanelDetails smithSpearSteps = new PanelDetails("Smith an Adamant Spear", Collections.singletonList(addySpear),

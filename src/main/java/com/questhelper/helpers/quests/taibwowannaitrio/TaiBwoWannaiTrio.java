@@ -231,8 +231,8 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		fillVessel = new DetailedQuestStep(this, "Use a karambwanji on a karambwan Vessel to fill it.", karambwanji, karambwanVessel);
 
-		getRum = new NpcStep(this, NpcID.ZAMBO, new WorldPoint(2925, 3143, 0),
-			"Go east to Musa point to buy some Karamjan rum from Zambo.", coins.quantity(30));
+		getRum = new NpcStep(this, NpcID.ZEMBO, new WorldPoint(2925, 3143, 0),
+			"Go east to Musa point to buy some Karamjan rum from Zembo.", coins.quantity(30));
 
 		sliceBanana = new DetailedQuestStep(this, "Slice a banana with a knife. You can get a banana from one of the " +
 			"trees in the plantation.", knife.highlighted(), banana.highlighted());

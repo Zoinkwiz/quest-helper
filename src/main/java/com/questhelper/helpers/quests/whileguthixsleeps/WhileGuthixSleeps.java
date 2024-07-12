@@ -51,32 +51,42 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 
 public class WhileGuthixSleeps extends BasicQuestHelper
 {
+	@Inject
+	ItemManager itemManager;
+
 	//Items Required
 	ItemRequirement sapphireLantern, litSapphireLantern, airRunes, earthRunes, fireRunes, waterRunes, mindRunes, lawRunes,
-		deathRunes, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
-		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife;
+		deathRunes, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
+		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife, coinsForSnapdragon, snapdragonSeed;
 
 
 	// Items Recommended
 	ItemRequirement antipoison;
 
 	// Quest items
-	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank;
+	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
+		roseTintedLens, enrichedSnapdragonSeed;
 
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
-		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom;
+		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim,
+		talkedToThaeriskWithSeed, inWhiteKnightsCastleF1, inWhiteKnightsCastleF2, inWhiteKnightsCastleF3;
 
-	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom;
+	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
+		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3;
 
 	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
@@ -84,10 +94,18 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	DetailedQuestStep enterMovarioBase, climbDownMovarioFirstRoom, inspectDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, enterElectricDoor,
 		searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, goDownToF1MovarioBase,
-		useKeyOnChest,
-		searchChestForTraps, getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall;
+		useKeyOnChest, searchChestForTraps, getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall;
 
 	DetailedQuestStep goUpToThaeriskWithNotes, talkToThaeriskWithNotes, goUpToThaeriskWithoutNotes, talkToThaeriskWithoutNotes;
+
+	DetailedQuestStep killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport, useOrbOnShadyStranger, talkToAkrisaeAfterOrb, buySnapdragonSeed, getSarimTeleport,
+		talkToBetty, talkToBettyForDye, usePinkDyeOnLanternLens, standInDoorway, useLensOnCounter, searchCounterForSeed, talkToThaeriskWithSeed;
+
+	DetailedQuestStep goFromF0ToF1WhiteKnight, goFromF1ToF2WhiteKnight, goFromF2ToF3WhiteKnight, plantSnapdragon, goFromF3ToF2WhiteKnight, goFromF2ToF1WhiteKnight, goFromF1ToF0WhiteKnight,
+		talkToIdriaAfterPlanting, activeLunars, contactTurael, contactMazchna, contactCyrisus, contactDuradel, harvestSnapdragon, talkToThaeriskWithSnapdragon, useSnapdragonOnSerum,
+		searchDrawersForCharcoalAndPapyrus, enterJailCell, useSerumOnSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, goToF1WarriorsGuild, talkToSloane;
+
+	ConditionalStep goPlantSnapdragon, goHarvestSnapdragon;
 
 	WeightStep solveWeightPuzzle;
 
@@ -205,6 +223,39 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goContinueThaeriskAfterNotes.addStep(isUpstairsNearThaerisk, talkToThaeriskWithoutNotes);
 		steps.put(22, goContinueThaeriskAfterNotes);
 
+		steps.put(23, killMercenaries);
+		steps.put(24, killMercenaries);
+		steps.put(25, talkToIdria);
+		steps.put(26, talkToAkrisae);
+		steps.put(27, talkToAkrisae);
+		// Talking to Akrisae, quest varb jumps 27->28->30 after being given orb
+		steps.put(28, talkToAkrisae);
+		steps.put(29, talkToAkrisae);
+		ConditionalStep goPlantOrbOnStranger = new ConditionalStep(this, talkToAkrisaeForTeleport);
+		goPlantOrbOnStranger.addStep(teleportedToDraynor, useOrbOnShadyStranger);
+		steps.put(30, goPlantOrbOnStranger);
+		steps.put(31, talkToAkrisaeAfterOrb);
+		steps.put(32, talkToAkrisaeAfterOrb);
+		steps.put(33, talkToAkrisaeAfterOrb);
+		steps.put(34, talkToAkrisaeAfterOrb);
+		ConditionalStep goToBetty = new ConditionalStep(this, buySnapdragonSeed);
+		goToBetty.addStep(or(inPortSarim, and(purchasedSnapdragon, teleportedToPortSarim)), talkToBetty);
+		goToBetty.addStep(purchasedSnapdragon, getSarimTeleport);
+		steps.put(35, goToBetty);
+
+		ConditionalStep goDyeLens = new ConditionalStep(this, talkToBettyForDye);
+		goDyeLens.addStep(and(roseTintedLens, inDoorway), useLensOnCounter);
+		goDyeLens.addStep(roseTintedLens, standInDoorway);
+		goDyeLens.addStep(pinkDye, usePinkDyeOnLanternLens);
+		steps.put(36, goDyeLens);
+
+		steps.put(37, searchCounterForSeed);
+
+		ConditionalStep goPlantSeed = new ConditionalStep(this, talkToThaeriskWithSeed);
+		goPlantSeed.addStep(and(talkedToThaeriskWithSeed, inWhiteKnightsCastleF3), plantSnapdragon);
+		goPlantSeed.addStep(talkedToThaeriskWithSeed, goPlantSnapdragon);
+		steps.put(38, goPlantSeed);
+
 		return steps;
 	}
 
@@ -236,8 +287,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB);
 		ringOfCharosA = new ItemRequirement("Ring of charos (a)", ItemID.RING_OF_CHAROSA);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
+		coinsForSnapdragon = new ItemRequirement("Coins", ItemCollections.COINS);
+		coinsForSnapdragon.setQuantity(getSnapdragonCost());
 		bronzeMedHelm = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM);
 		ironChainbody = new ItemRequirement("Iron chainbody", ItemID.IRON_CHAINBODY);
+		snapdragonSeed = new ItemRequirement("Snapdragon seed", ItemID.SNAPDRAGON_SEED);
+		dibber = new ItemRequirement("Seed dibber (only if not done barb training)", ItemID.SEED_DIBBER);
 
 		ItemRequirement cosmic3 = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE, 3);
 		ItemRequirement fire30 = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 30)
@@ -273,6 +328,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		movariosNotesV2InBank = new ItemRequirement("Movario's notes (volume 2)", ItemID.MOVARIOS_NOTES_VOLUME_2).alsoCheckBank(questBank);
 		wastePaperBasket = new ItemRequirement("Waste-paper basket", ItemID.WASTEPAPER_BASKET);
 		rubyKey = new ItemRequirement("Ruby key", ItemID.RUBY_KEY_29523);
+		teleorb = new ItemRequirement("Teleorb", ItemID.TELEORB);
+		teleorb.setTooltip("You can get another one from Akrisae in the White Knights' Castle");
+		pinkDye = new ItemRequirement("Pink dye", ItemID.PINK_DYE);
+		roseTintedLens = new ItemRequirement("Rose-tinted lens", ItemID.ROSE_TINTED_LENS);
+		enrichedSnapdragonSeed = new ItemRequirement("Enriched snapdragon seed", ItemID.ENRICHED_SNAPDRAGON_SEED);
+		enrichedSnapdragonSeed.setTooltip("You can get another from Betty in Port Sarim");
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
@@ -317,6 +378,37 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		weightRoom = new Zone(new WorldPoint(4177, 4944, 1), new WorldPoint(4181, 4947, 1));
 		inWeightRoom = new ZoneRequirement(weightRoom);
+
+		teleportedToDraynor = new VarbitRequirement(10841, 1);
+
+		portSarim = new Zone(new WorldPoint(2911, 3188, 0), new WorldPoint(3137, 3308, 3));
+		inPortSarim = new ZoneRequirement(portSarim);
+
+		doorway = new Zone(new WorldPoint(3016, 3259, 0), new WorldPoint(3016, 3259, 0));
+		inDoorway = new ZoneRequirement(doorway);
+
+		purchasedSnapdragon = new VarbitRequirement(10853, 1);
+		teleportedToPortSarim = new VarbitRequirement(10842, 1);
+
+		talkedToThaeriskWithSeed = new VarbitRequirement(10847, 1);
+
+		whiteKnightsCastleF1 = new Zone(new WorldPoint(2954, 3353, 1), new WorldPoint(2998, 3327, 1));
+		whiteKnightsCastleF2 = new Zone(new WorldPoint(2954, 3353, 2), new WorldPoint(2998, 3327, 2));
+		whiteKnightsCastleF3 = new Zone(new WorldPoint(2954, 3353, 3), new WorldPoint(2998, 3327, 3));
+		inWhiteKnightsCastleF1 = new ZoneRequirement(whiteKnightsCastleF1);
+		inWhiteKnightsCastleF2 = new ZoneRequirement(whiteKnightsCastleF2);
+		inWhiteKnightsCastleF3 = new ZoneRequirement(whiteKnightsCastleF3);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		coinsForSnapdragon.quantity(getSnapdragonCost());
+	}
+
+	private int getSnapdragonCost()
+	{
+		return (itemManager.getItemPriceWithSource(ItemID.SNAPDRAGON_SEED, false) / 2) / 100 * 100;
 	}
 
 	public void setupSteps()
@@ -360,7 +452,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		retrieveBroav = new ObjectStep(this, ObjectID.COLLAPSED_TRAP_53269, new WorldPoint(2499, 2910, 0), "Dismantle the trap to retrieve the broav.");
 
 		returnBroavToHuntingExpert = new NpcStep(this, NpcID.HUNTING_EXPERT_1504, new WorldPoint(2525, 2916, 0),
-		"Bring the unconscious broav to the Feldip Hills hunting expert.", unconsciousBroav);
+			"Bring the unconscious broav to the Feldip Hills hunting expert.", unconsciousBroav);
 		returnBroavToHuntingExpert.addDialogStep("Do you think you could train this broav for me?");
 
 		goToBrokenTable = new DetailedQuestStep(this, new WorldPoint(2519, 3248, 0), "Go to the broken table in the middle of the khazard side of the gnome/khazard battlefield.", broav);
@@ -497,6 +589,80 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10773 0->1
 		// 10775 0->1
 		// Now go to Idria near Seers' Village
+
+		// Entered merc area
+		// 9653 23->24
+		// 4066 Varp: 385022 -> 33939454
+		killMercenaries = new NpcStep(this, NpcID.MERCENARY_MAGE, new WorldPoint(2657, 3501, 0), "Kill the mercenaries just north of McGrubor's Wood.", true);
+		((NpcStep) killMercenaries).addAlternateNpcs(NpcID.MERCENARY_AXEMAN, NpcID.MERCENARY_AXEMAN_13536);
+		talkToIdria = new NpcStep(this, NpcID.IDRIA_13542, new WorldPoint(2657, 3501, 0), "Talk to Idria just north of McGrubor's Wood.");
+		// Killed mercenaries
+		// quest 24->25
+		// 10839 0->1
+		// 10846 0->1
+		// 10780 0->1
+		// 10775 1->0
+
+		// Idria moved to castle
+		// 10773 1->2
+
+		talkToAkrisae = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Talk to Akrisae in the White Knights' Castle, on the ground floor on the east side.");
+		talkToAkrisaeForTeleport = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Talk to Akrisae again to teleport to Draynor Village.");
+		talkToAkrisaeForTeleport.addDialogStep("Yes.");
+		useOrbOnShadyStranger = new NpcStep(this, NpcID.SHADY_STRANGER, new WorldPoint(3085, 3243, 0), "Use the orb on the shady stranger near Draynor Village bank.", teleorb.highlighted());
+		useOrbOnShadyStranger.addIcon(ItemID.TELEORB);
+		talkToAkrisaeAfterOrb = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Return to Akrisae in the White Knights' Castle.",
+			coinsForSnapdragon.quantity(coinsForSnapdragon.getQuantity() + 20), lanternLens);
+		// Stranger teleported
+		// 32->33 quest state
+		// 10778 0->1
+		// 10800 1->0
+		buySnapdragonSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Optionally buy a snapdragon seed from Thaerisk for half the GE price. Otherwise, head to Betty in Port Sarim.",
+			coinsForSnapdragon);
+		buySnapdragonSeed.addDialogSteps("Could I buy that seed off you?", "Sounds good to me.");
+		getSarimTeleport = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Talk to Thaerisk to teleport to Port Sarim.", snapdragonSeed, lanternLens, coins.quantity(20));
+		getSarimTeleport.addDialogSteps("Could you teleport me to Port Sarim?", "Yes.");
+		talkToBetty = new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3014, 3258, 0), "Talk to Betty in Port Sarim's magic shop with a snapdragon seed and lantern lens.",
+			snapdragonSeed, lanternLens, coins.quantity(20));
+		talkToBetty.addDialogStep("Could you help me make some enriched snapdragon?");
+		// Given snapdragon seed
+		// 1537 0->2
+		// quest state 35->36
+		talkToBettyForDye = new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3014, 3258, 0), "Talk to Betty in Port Sarim's magic shop for some pink dye.", lanternLens, coins.quantity(20));
+		talkToBettyForDye.addDialogSteps("About that enriched snapdragon...", "Sounds good.");
+		usePinkDyeOnLanternLens = new DetailedQuestStep(this, "Use the pink dye on a lantern lens.", pinkDye.highlighted(), lanternLens.highlighted());
+		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3016, 3259, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.");
+		useLensOnCounter = new ObjectStep(this, NullObjectID.NULL_10812, new WorldPoint(3013, 3258, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.", roseTintedLens.highlighted());
+		useLensOnCounter.addIcon(ItemID.ROSE_TINTED_LENS);
+		useLensOnCounter.addSubSteps(standInDoorway);
+		// 1532 6->4
+
+		// Used lens on desk
+		// 1537 2->3, big seed on desk
+
+		searchCounterForSeed = new ObjectStep(this, NullObjectID.NULL_10812, new WorldPoint(3013, 3258, 0), "Take the seed from Betty's counter.");
+		talkToThaeriskWithSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Return to Thaerisk with the enhanced snapdragon seed.",
+			enrichedSnapdragonSeed, dibber);
+
+		goFromF0ToF1WhiteKnight = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2955, 3339, 0),
+			"");
+		goFromF1ToF2WhiteKnight = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2961, 3339, 1),
+			"");
+		goFromF2ToF3WhiteKnight = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2957, 3338, 2),
+			"");
+		plantSnapdragon = new ObjectStep(this, ObjectID.HERB_PATCH_53290, new WorldPoint(2962, 3338, 3),
+			"Plant the enriched snapdragon seed in the herb patch on the top floor of the west side of the White Knights' Castle.", enrichedSnapdragonSeed.highlighted(), dibber);
+		plantSnapdragon.addIcon(ItemID.ENRICHED_SNAPDRAGON_SEED);
+
+		ConditionalStep goToF3WhiteKnight = new ConditionalStep(this, goFromF0ToF1WhiteKnight);
+		goToF3WhiteKnight.addStep(inWhiteKnightsCastleF2, goFromF2ToF3WhiteKnight);
+		goToF3WhiteKnight.addStep(inWhiteKnightsCastleF1, goFromF1ToF2WhiteKnight);
+
+		goPlantSnapdragon = new ConditionalStep(this, goToF3WhiteKnight, "Plant the enriched snapdragon seed in the herb patch on the top floor of the west side of the White Knights' Castle.", enrichedSnapdragonSeed, dibber);
+		goPlantSnapdragon.addSubSteps(plantSnapdragon);
+		// Seed planted
+		// quest state 38 -> 39
+		// 10781 0->1
 	}
 
 	@Override
@@ -514,7 +680,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall),
 			airRunes, waterRunes, earthRunes, fireRunes, mindRunes));
 		allSteps.add(new PanelDetails("Weight puzzle", solveWeightPuzzle.getDisplaySteps()));
-		allSteps.add(new PanelDetails("???", List.of(goUpToThaeriskWithNotes)));
+		allSteps.add(new PanelDetails("United Front", List.of(goUpToThaeriskWithNotes, killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport,
+			useOrbOnShadyStranger, talkToAkrisaeAfterOrb, buySnapdragonSeed, getSarimTeleport, talkToBetty, talkToBettyForDye, usePinkDyeOnLanternLens, useLensOnCounter, searchCounterForSeed,
+			talkToThaeriskWithSeed, goPlantSnapdragon),
+			List.of(meleeGear, lanternLens, dibber), List.of(coinsForSnapdragon)));
 		return allSteps;
 	}
 }

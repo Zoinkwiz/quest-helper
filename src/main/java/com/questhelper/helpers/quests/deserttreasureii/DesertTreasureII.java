@@ -61,6 +61,7 @@ import com.questhelper.steps.QuestStep;
 
 import java.util.*;
 
+import com.questhelper.steps.widget.AncientSpells;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -641,22 +642,30 @@ public class DesertTreasureII extends BasicQuestHelper
 		castOnBloodStatue = new NpcStep(this, NpcID.BLOOD_TOTEM, new WorldPoint(2775, 6445, 0),
 			"Cast blood burst or higher on the blood totem.", bloodBurstRunes);
 		castOnBloodStatue.addIcon(ItemID.BLOOD_DIAMOND);
-		castOnBloodStatue.addWidgetHighlight(218, 82);
+		castOnBloodStatue.addSpellHighlight(AncientSpells.BLOOD_BURST);
+		castOnBloodStatue.addSpellHighlight(AncientSpells.BLOOD_BLITZ);
+		castOnBloodStatue.addSpellHighlight(AncientSpells.BLOOD_BARRAGE);
 
 		castOnShadowStatue = new NpcStep(this, NpcID.SHADOW_TOTEM, new WorldPoint(2771, 6445, 0),
 			"Cast shadow burst or higher on the shadow totem.", shadowBurstRunes);
 		castOnShadowStatue.addIcon(ItemID.SHADOW_DIAMOND);
-		castOnShadowStatue.addWidgetHighlight(218, 90);
+		castOnShadowStatue.addSpellHighlight(AncientSpells.SHADOW_BURST);
+		castOnShadowStatue.addSpellHighlight(AncientSpells.SHADOW_BLITZ);
+		castOnShadowStatue.addSpellHighlight(AncientSpells.SHADOW_BARRAGE);
 
 		castOnSmokeStatue = new NpcStep(this, NpcID.SMOKE_TOTEM, new WorldPoint(2771, 6439, 0),
 			"Cast smoke burst or higher on the smoke totem.", smokeBurstRunes);
 		castOnSmokeStatue.addIcon(ItemID.SMOKE_DIAMOND);
-		castOnSmokeStatue.addWidgetHighlight(218, 86);
+		castOnSmokeStatue.addSpellHighlight(AncientSpells.SMOKE_BURST);
+		castOnSmokeStatue.addSpellHighlight(AncientSpells.SMOKE_BLITZ);
+		castOnSmokeStatue.addSpellHighlight(AncientSpells.SMOKE_BARRAGE);
 
 		castOnIceStatue = new NpcStep(this, NpcID.ICE_TOTEM, new WorldPoint(2775, 6439, 0),
 			"Cast ice burst or higher on the smoke totem.", iceBurstRunes);
 		castOnIceStatue.addIcon(ItemID.ICE_DIAMOND);
-		castOnIceStatue.addWidgetHighlight(218, 78);
+		castOnIceStatue.addSpellHighlight(AncientSpells.ICE_BURST);
+		castOnIceStatue.addSpellHighlight(AncientSpells.ICE_BLITZ);
+		castOnIceStatue.addSpellHighlight(AncientSpells.ICE_BARRAGE);
 
 		searchCrateForCharges = new ObjectStep(this, ObjectID.CRATE_48931,
 			new WorldPoint(2780, 6440, 0), "Search the crate in the room with the golem.");

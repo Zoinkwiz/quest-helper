@@ -449,7 +449,6 @@ public class SucellusSteps extends ConditionalStep
 			"Go to the most north-western room. Open the chest closest to the room's west door. The code for it is 'LIES'.");
 		goToAdminRoomRealStep.addDialogStep("Attempt to open the chest.");
 		goToAdminRoomRealStep.setLinePoints(Arrays.asList(
-			new WorldPoint(2975, 6331, 2),
 			new WorldPoint(2975, 6361, 2),
 			new WorldPoint(2971, 6361, 2),
 			new WorldPoint(2971, 6369, 2),

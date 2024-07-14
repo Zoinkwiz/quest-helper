@@ -227,7 +227,7 @@ public class QuestHelperPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		clientThread.invokeLater(() -> {
+		clientThread.invokeAtTickEnd(() -> {
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				questManager.setupRequirements();

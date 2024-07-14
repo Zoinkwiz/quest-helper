@@ -41,6 +41,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.PolyZone;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -50,6 +51,7 @@ import com.questhelper.steps.NpcFollowerStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.widget.LunarSpells;
+import com.questhelper.steps.widget.NormalSpells;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,16 +83,19 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
-		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch;
+		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs;
 
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
 		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
 		inWhiteKnightsCastleF1, inWhiteKnightsCastleF2, inWhiteKnightsCastleF3, onLunarSpellbook, notContactedCyrisus, notContactedTurael, notContactedMazchna, notContactedDuradel,
-		notRecruitedHarrallak, notRecruitedSloane, notRecruitedGhommal, onF1WarriorsGuild;
+		notRecruitedHarrallak, notRecruitedSloane, notRecruitedGhommal, onF1WarriorsGuild, inBlackKnightFortress, inHiddenRoom, inBlackKnightFortressBasement;
+
+	Requirement inCatacombSouth, inCatacombNorth, inCatacombF2, openedCatacombShortcut, inCatacombHQ, notSearchedWardrobeForEliteArmour, notSearchedWardrobeForSquallOutfit;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
-		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild;
+		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild, blackKnightFortress1, blackKnightFortress2, blackKnightFortress3, hiddenRoom,
+		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ;
 
 	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
@@ -112,6 +117,11 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	DetailedQuestStep goFromF3ToF2WhiteKnightThaerisk, goFromF2ToF1WhiteKnightThaerisk, goFromF1ToF0WhiteKnightThaerisk;
 
 	ConditionalStep goPlantSnapdragon, goHarvestSnapdragon;
+
+	DetailedQuestStep talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile, castChargedOrbOnTile, enterCatacombs, jumpBridge,
+		climbWallInCatacombs, useWesternSolidDoor, enterCatacombShortcut, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLobster,
+		searchDeskForLawAndDeathRune, searchKeyRack, leaveSolidDoor, openSilifsCell, useLobsterOnSilif, useRestoreOnSilif, giveSilifEliteArmour, enterNorthernSolidDoorAgain, goNearMap,
+		climbUpCatacombLadder, defeatSurok, plantOrbOnSurok, talkToAkrisaeAfterSurok, enterCellWithRobesOn, activatedStrangeTeleorb, climbIceWall, jumpToLedge, goToEastOfChapel, talkToIdriaAfterChapel;
 
 	WeightStep solveWeightPuzzle;
 
@@ -303,6 +313,38 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goRecruitWarriorsGuild.addStep(and(notRecruitedSloane, onF1WarriorsGuild), talkToSloane);
 		steps.put(440, goRecruitWarriorsGuild);
 
+		steps.put(450, talkToAkrisaeAfterRecruitment);
+		steps.put(460, talkToAkrisaeAfterRecruitment);
+
+		ConditionalStep goToBKF = new ConditionalStep(this, enterBlackKnightFortress);
+		goToBKF.addStep(inBlackKnightFortressBasement, inspectCarvedTile);
+		goToBKF.addStep(inHiddenRoom, climbDownBlackKnightBasement);
+		goToBKF.addStep(inBlackKnightFortress, pushHiddenWall);
+		steps.put(465, goToBKF);
+
+		ConditionalStep goCastChargeOrb = new ConditionalStep(this, enterBlackKnightFortress);
+		goCastChargeOrb.addStep(inBlackKnightFortressBasement, castChargedOrbOnTile);
+		goCastChargeOrb.addStep(inHiddenRoom, climbDownBlackKnightBasement);
+		goCastChargeOrb.addStep(inBlackKnightFortress, pushHiddenWall);
+		steps.put(470, goCastChargeOrb);
+
+		ConditionalStep goEnterCatacombs = new ConditionalStep(this, enterBlackKnightFortress);
+		goEnterCatacombs.addStep(and(inCatacombHQ, eliteHelm, eliteBody, eliteLegs, notSearchedWardrobeForEliteArmour), searchWardrobeForEliteArmour);
+		goEnterCatacombs.addStep(and(inCatacombHQ, eliteHelm, eliteBody, eliteLegs, notSearchedWardrobeForSquallOutfit), searchWardrobeForSquallRobes);
+//		goEnterCatacombs.addStep(and(inCatacombHQ, eliteHelm, eliteBody, eliteLegs, notSearchedTableForTeleorb), searchDeskForTeleorb);
+		goEnterCatacombs.addStep(inCatacombHQ, killKnightsForEliteArmour);
+		goEnterCatacombs.addStep(and(inCatacombF2, openedCatacombShortcut), enterNorthernSolidDoor);
+		goEnterCatacombs.addStep(and(inCatacombSouth, openedCatacombShortcut), enterCatacombShortcut);
+		goEnterCatacombs.addStep(inCatacombF2, useWesternSolidDoor);
+		goEnterCatacombs.addStep(inCatacombNorth, climbWallInCatacombs);
+		goEnterCatacombs.addStep(inCatacombSouth, jumpBridge);
+		goEnterCatacombs.addStep(inBlackKnightFortressBasement, enterCatacombs);
+		goEnterCatacombs.addStep(inHiddenRoom, climbDownBlackKnightBasement);
+		goEnterCatacombs.addStep(inBlackKnightFortress, pushHiddenWall);
+		steps.put(480, goEnterCatacombs);
+		steps.put(490, goEnterCatacombs);
+		steps.put(500, goEnterCatacombs);
+
 		return steps;
 	}
 
@@ -394,6 +436,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		superTruthSerum = new ItemRequirement("Super truth serum", ItemID.SUPER_TRUTH_SERUM);
 		sketch = new ItemRequirement("Suspect sketch", ItemID.SUSPECT_SKETCH);
 
+		eliteHelm = new ItemRequirement("Elite black full helm", ItemID.ELITE_BLACK_FULL_HELM);
+		eliteBody = new ItemRequirement("Elite black platebody", ItemID.ELITE_BLACK_PLATEBODY);
+		eliteLegs = new ItemRequirement("Elite black platelegs", ItemID.ELITE_BLACK_PLATELEGS);
+
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
 		isUpstairsNearThaerisk = new ZoneRequirement(upstairsNearThaeriskZone);
@@ -470,6 +516,36 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		f1WarriorsGuild = new Zone(new WorldPoint(2835, 3531, 1), new WorldPoint(3878, 3558, 1));
 		onF1WarriorsGuild = new ZoneRequirement(f1WarriorsGuild);
+
+		blackKnightFortress1 = new Zone(new WorldPoint(3008, 3513, 0), new WorldPoint(3012, 3518, 0));
+		blackKnightFortress2 = new Zone(new WorldPoint(3013, 3515, 0), new WorldPoint(3019, 3516, 0));
+		blackKnightFortress3 = new Zone(new WorldPoint(3019, 3513, 0), new WorldPoint(3019, 3518, 0));
+		inBlackKnightFortress = new ZoneRequirement(blackKnightFortress1, blackKnightFortress2, blackKnightFortress3);
+
+		hiddenRoom = new Zone(new WorldPoint(3015, 3517, 0), new WorldPoint(3016, 3519, 0));
+		inHiddenRoom = new ZoneRequirement(hiddenRoom);
+
+		blackKnightFortressBasement = new Zone(new WorldPoint(1862, 4230, 0), new WorldPoint(1873, 4247, 0));
+		inBlackKnightFortressBasement = new ZoneRequirement(blackKnightFortressBasement);
+
+		catacombSouth1 = new PolyZone(List.of(new WorldPoint(4100, 4670, 1), new WorldPoint(4101, 4698, 1), new WorldPoint(4114, 4698, 1),
+			new WorldPoint(4115, 4705, 1), new WorldPoint(4119, 4711, 1), new WorldPoint(4162, 4715, 1), new WorldPoint(4161, 4663, 1)));
+		inCatacombSouth = new ZoneRequirement(catacombSouth1);
+
+		catacombNorth1 = new Zone(new WorldPoint(4090, 4699, 1), new WorldPoint(4119, 4752, 1));
+		catacombNorth2 = new Zone(new WorldPoint(4118, 4712, 1), new WorldPoint(4140, 4727, 1));
+		inCatacombNorth = new ZoneRequirement(catacombNorth1, catacombNorth2);
+
+		openedCatacombShortcut = new VarbitRequirement(10857, 1);
+
+		catacombF2 = new Zone(new WorldPoint(4090, 4730, 2), new WorldPoint(4160, 4810, 2));
+		inCatacombF2 = new ZoneRequirement(catacombF2);
+
+		catacombHQ = new Zone(new WorldPoint(4108, 4839, 1), new WorldPoint(4148, 4859, 1));
+		inCatacombHQ = new ZoneRequirement(catacombHQ);
+
+		notSearchedWardrobeForEliteArmour = new VarbitRequirement(10806, 0);
+		notSearchedWardrobeForSquallOutfit = new VarbitRequirement(10779, 0);
 	}
 
 	@Subscribe
@@ -817,6 +893,68 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10780 1->2
 		// 10801 0->1
 		// 10778 1->0
+
+		talkToAkrisaeAfterRecruitment = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0),
+			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.");
+		// 10838 0->1
+		// 10826 0->1
+		enterBlackKnightFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress.",
+			ironChainbody.equipped(), bronzeMedHelm.equipped());
+		pushHiddenWall = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
+		climbDownBlackKnightBasement = new ObjectStep(this, ObjectID.LADDER_25843, new WorldPoint(3016, 3519, 0), "Go down the ladder.");
+		inspectCarvedTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Inspect the tile on the floor on the east side of the room.");
+		castChargedOrbOnTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Cast one of the charge orb spells on the tile.", unpoweredOrb, chargeOrbSpell);
+		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_WATER_ORB);
+		// 10803 0->2
+		enterCatacombs = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Enter the tile trapdoor.");
+		// 15064 0->100
+		// Quest progresses to 490
+		jumpBridge = new ObjectStep(this, ObjectID.BRIDGE_53512, new WorldPoint(4112, 4697, 1), "Jump over the west bridge.");
+		climbWallInCatacombs = new ObjectStep(this, ObjectID.WALL_53513, new WorldPoint(4134, 4725, 1), "Climb up the northern wall in the north-east area.");
+		useWesternSolidDoor = new ObjectStep(this, ObjectID.SOLID_DOOR_53478, new WorldPoint(4096, 4791, 2), "Continue through the catacomb until you reach some solid doors in the north-west. " +
+			"Enter the west door.");
+		enterCatacombShortcut = new ObjectStep(this, ObjectID.SOLID_DOOR_53479, new WorldPoint(4117, 4689, 1), "Enter the solid door shortcut just to the north-east.");
+		useWesternSolidDoor.addSubSteps(enterCatacombShortcut);
+		enterNorthernSolidDoor = new ObjectStep(this, ObjectID.SOLID_DOOR, new WorldPoint(4104, 4799, 2), "Enter the most northern solid door.");
+		searchWardrobeForEliteArmour = new ObjectStep(this, ObjectID.WARDROBE_53361, new WorldPoint(4119, 4857, 1), "Search the wardrobe to the north.",
+			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
+		((ObjectStep) searchWardrobeForEliteArmour).addAlternateObjects(ObjectID.WARDROBE_53362);
+		searchWardrobeForSquallRobes = new ObjectStep(this, ObjectID.WARDROBE_53372, new WorldPoint(4123, 4841, 1), "Search the wardrobe to the south.",
+			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
+		((ObjectStep) searchWardrobeForSquallRobes).addAlternateObjects(ObjectID.WARDROBE_53373);
+		// GUESS: Killed black knight for elite legs, 10932 0->1
+		// Killed black knight for elite body, 10931 0->1
+		// Killed black knight for elite helm, 10930 0->1
+		killKnightsForEliteArmour = new NpcStep(this, NpcID.ELITE_BLACK_KNIGHT, new WorldPoint(4122, 4849, 1), "Kill elite black knights for their full armour set.",
+			true, eliteHelm, eliteBody, eliteLegs);
+		((NpcStep) killKnightsForEliteArmour).addAlternateNpcs(NpcID.ELITE_BLACK_KNIGHT_13464, NpcID.ELITE_BLACK_KNIGHT_13480, NpcID.ELITE_BLACK_KNIGHT_13481, NpcID.ELITE_BLACK_KNIGHT_13566);
+		searchDeskForTeleorb = new ObjectStep(this, NullObjectID.NULL_54077, new WorldPoint(4119, 4844, 1), "Search the south table for a strange teleorb.",
+			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
+		searchDeskForLobster = new ObjectStep(this, NullObjectID.NULL_54079, new WorldPoint(4124, 4851, 1), "Search the north-east table for some lobster and a restore potion." +
+			" DON'T EAT OR DRINK EITHER.",
+			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
+		searchDeskForLawAndDeathRune = new ObjectStep(this, NullObjectID.NULL_54080, new WorldPoint(4113, 4849, 1), "Search the west desk for a law and death rune.",
+			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
+		searchKeyRack = new ObjectStep(this, NullObjectID.NULL_53430, new WorldPoint(4123, 4857, 1), "Search the key rack just east of the northern wardrobe.",
+			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
+		leaveSolidDoor = new ObjectStep(this, ObjectID.SOLID_DOOR_53366, new WorldPoint(4113, 4841, 1), "Leave the room back to the catacombs.",
+			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
+//		openSilifsCell = new Step();
+//		useLobsterOnSilif = new Step();
+//		useRestoreOnSilif = new Step();
+//		giveSilifEliteArmour = new Step();
+//		enterNorthernSolidDoorAgain = new Step();
+//		goNearMap,
+//			climbUpCatacombLadder = new Step();
+//		defeatSurok = new Step();
+//		plantOrbOnSurok = new Step();
+//		talkToAkrisaeAfterSurok = new Step();
+//		enterCellWithRobesOn = new Step();
+//		activatedStrangeTeleorb = new Step();
+//		climbIceWall = new Step();
+//		jumpToLedge = new Step();
+//		goToEastOfChapel = new Step();
+//		talkToIdriaAfterChapel
 	}
 
 	@Override
@@ -839,7 +977,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			talkToThaeriskWithSeed, goPlantSnapdragon, talkToIdriaAfterPlanting, activeLunars, contactCyrisus, contactTurael, contactMazchna, contactDuradel, goHarvestSnapdragon, talkToThaeriskWithSnapdragon,
 			useSnapdragonOnSerum, searchDrawersForCharcoalAndPapyrus, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, talkToSloane),
 			List.of(meleeGear, lanternLens, dibber, astralRune, cosmicRune, airRune.quantity(2)), List.of(coinsForSnapdragon, burthorpeTeleport)));
-
+		allSteps.add(new PanelDetails("Infiltration", List.of(talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile,
+			castChargedOrbOnTile, enterCatacombs, jumpBridge, climbWallInCatacombs, useWesternSolidDoor, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour,
+			searchWardrobeForSquallRobes),
+			List.of(bronzeMedHelm, ironChainbody)));
 		return allSteps;
 	}
 }

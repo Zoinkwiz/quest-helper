@@ -860,7 +860,7 @@ public class PerseriyaSteps extends ConditionalStep
 			"Kill the scarred imps to remove the lessers' prayers. Ignore the other scarred monsters which appear.", true),
 			"Work out how to close the summoning circle.").withNoHelpHiddenInSidebar(true);
 		killLesserDemons = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.LESSER_DEMON, new WorldPoint(1744, 6448, 0), "Kill the lesser demons.", true),
+			new NpcStep(getQuestHelper(), NpcID.LESSER_DEMON_12376, new WorldPoint(1744, 6448, 0), "Kill the lesser demons.", true),
 			"Work out how to close the summoning circle.");
 
 		enterBoatRoom2 = new ObjectStep(getQuestHelper(), ObjectID.PASSAGE_49418, new WorldPoint(1771, 6459, 0), "Enter the boat room to the north-east.");

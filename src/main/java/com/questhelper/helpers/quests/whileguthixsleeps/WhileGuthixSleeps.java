@@ -33,10 +33,12 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -47,6 +49,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.NpcFollowerStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.widget.LunarSpells;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,25 +71,26 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	ItemManager itemManager;
 
 	//Items Required
-	ItemRequirement sapphireLantern, litSapphireLantern, airRunes, earthRunes, fireRunes, waterRunes, mindRunes, lawRunes,
-		deathRunes, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
-		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife, coinsForSnapdragon, snapdragonSeed;
+	ItemRequirement sapphireLantern, litSapphireLantern, airRune, earthRune, fireRune, waterRune, mindRune, lawRune,
+		deathRune, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
+		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife, coinsForSnapdragon, snapdragonSeed, astralRune, cosmicRune;
 
 
 	// Items Recommended
-	ItemRequirement antipoison;
+	ItemRequirement antipoison, burthorpeTeleport;
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
-		roseTintedLens, enrichedSnapdragonSeed;
+		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch;
 
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
-		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim,
-		talkedToThaeriskWithSeed, inWhiteKnightsCastleF1, inWhiteKnightsCastleF2, inWhiteKnightsCastleF3;
+		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
+		inWhiteKnightsCastleF1, inWhiteKnightsCastleF2, inWhiteKnightsCastleF3, onLunarSpellbook, notContactedCyrisus, notContactedTurael, notContactedMazchna, notContactedDuradel,
+		notRecruitedHarrallak, notRecruitedSloane, notRecruitedGhommal, onF1WarriorsGuild;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
-		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3;
+		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild;
 
 	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
@@ -103,7 +107,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	DetailedQuestStep goFromF0ToF1WhiteKnight, goFromF1ToF2WhiteKnight, goFromF2ToF3WhiteKnight, plantSnapdragon, goFromF3ToF2WhiteKnight, goFromF2ToF1WhiteKnight, goFromF1ToF0WhiteKnight,
 		talkToIdriaAfterPlanting, activeLunars, contactTurael, contactMazchna, contactCyrisus, contactDuradel, harvestSnapdragon, talkToThaeriskWithSnapdragon, useSnapdragonOnSerum,
-		searchDrawersForCharcoalAndPapyrus, enterJailCell, useSerumOnSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, goToF1WarriorsGuild, talkToSloane;
+		searchDrawersForCharcoalAndPapyrus, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToIdriaAfterSketch, talkToGhommal, talkToHarrallak, goToF1WarriorsGuild, talkToSloane;
+
+	DetailedQuestStep goFromF3ToF2WhiteKnightThaerisk, goFromF2ToF1WhiteKnightThaerisk, goFromF1ToF0WhiteKnightThaerisk;
 
 	ConditionalStep goPlantSnapdragon, goHarvestSnapdragon;
 
@@ -256,6 +262,47 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goPlantSeed.addStep(talkedToThaeriskWithSeed, goPlantSnapdragon);
 		steps.put(38, goPlantSeed);
 
+		ConditionalStep goTalkToIdriaAfterPlanting = new ConditionalStep(this, talkToIdriaAfterPlanting);
+		goTalkToIdriaAfterPlanting.addStep(inWhiteKnightsCastleF3, goFromF3ToF2WhiteKnight);
+		goTalkToIdriaAfterPlanting.addStep(inWhiteKnightsCastleF2, goFromF2ToF1WhiteKnight);
+		goTalkToIdriaAfterPlanting.addStep(inWhiteKnightsCastleF1, goFromF1ToF0WhiteKnight);
+		steps.put(39, goTalkToIdriaAfterPlanting);
+
+		ConditionalStep goContactNpcs = new ConditionalStep(this, activeLunars);
+		goContactNpcs.addStep(and(onLunarSpellbook, notContactedCyrisus), contactCyrisus);
+		goContactNpcs.addStep(and(onLunarSpellbook, notContactedTurael), contactTurael);
+		goContactNpcs.addStep(and(onLunarSpellbook, notContactedMazchna), contactMazchna);
+		goContactNpcs.addStep(and(onLunarSpellbook, notContactedDuradel), contactDuradel);
+		steps.put(40, goContactNpcs);
+
+		steps.put(41, goHarvestSnapdragon);
+
+		ConditionalStep bringSnapdragonToIdria = new ConditionalStep(this, talkToThaeriskWithSnapdragon);
+		bringSnapdragonToIdria.addStep(and(superTruthSerum, charcoal, papyrus), useSerumOnSpy);
+		bringSnapdragonToIdria.addStep(superTruthSerum, searchDrawersForCharcoalAndPapyrus);
+		bringSnapdragonToIdria.addStep(truthSerum, useSnapdragonOnSerum);
+		bringSnapdragonToIdria.addStep(inWhiteKnightsCastleF3, goFromF3ToF2WhiteKnightThaerisk);
+		bringSnapdragonToIdria.addStep(inWhiteKnightsCastleF2, goFromF2ToF1WhiteKnightThaerisk);
+		bringSnapdragonToIdria.addStep(inWhiteKnightsCastleF1, goFromF1ToF0WhiteKnightThaerisk);
+		steps.put(42, bringSnapdragonToIdria);
+		steps.put(43, bringSnapdragonToIdria);
+
+		ConditionalStep getSketch = new ConditionalStep(this, searchDrawersForCharcoalAndPapyrus);
+		getSketch.addStep(sketch, giveSketchToIdria);
+		getSketch.addStep(and(papyrus, charcoal), talkToSpy);
+		steps.put(44, getSketch);
+		// ????
+		steps.put(410, getSketch);
+		steps.put(420, getSketch);
+
+		steps.put(430, talkToIdriaAfterSketch);
+
+		ConditionalStep goRecruitWarriorsGuild = new ConditionalStep(this, goToF1WarriorsGuild);
+		goRecruitWarriorsGuild.addStep(notRecruitedGhommal, talkToGhommal);
+		goRecruitWarriorsGuild.addStep(notRecruitedHarrallak, talkToHarrallak);
+		goRecruitWarriorsGuild.addStep(and(notRecruitedSloane, onF1WarriorsGuild), talkToSloane);
+		steps.put(440, goRecruitWarriorsGuild);
+
 		return steps;
 	}
 
@@ -272,13 +319,17 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		litSapphireLantern = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702).isNotConsumed();
 		litSapphireLantern.setTooltip("You can make this by using a cut sapphire on a bullseye lantern");
 
-		airRunes = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
-		earthRunes = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE);
-		fireRunes = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE);
-		waterRunes = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
-		mindRunes = new ItemRequirement("Mind rune", ItemID.MIND_RUNE);
-		lawRunes = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
-		deathRunes = new ItemRequirement("Death rune", ItemID.DEATH_RUNE);
+		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
+		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE);
+		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE);
+		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
+		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE);
+		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
+		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE);
+
+		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE);
+		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
+
 		log = new ItemRequirement("Logs", ItemID.LOGS);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
@@ -315,6 +366,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		// Recommended items
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
+		burthorpeTeleport = new ItemRequirement("Teleport to Burthorpe", ItemCollections.COMBAT_BRACELETS);
+		burthorpeTeleport.addAlternates(ItemCollections.GAMES_NECKLACES);
 
 		// Quest items
 		dirtyShirt = new ItemRequirement("Dirty shirt", ItemID.DIRTY_SHIRT);
@@ -334,6 +387,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		roseTintedLens = new ItemRequirement("Rose-tinted lens", ItemID.ROSE_TINTED_LENS);
 		enrichedSnapdragonSeed = new ItemRequirement("Enriched snapdragon seed", ItemID.ENRICHED_SNAPDRAGON_SEED);
 		enrichedSnapdragonSeed.setTooltip("You can get another from Betty in Port Sarim");
+
+		enrichedSnapdragon = new ItemRequirement("Enriched snapdragon", ItemID.ENRICHED_SNAPDRAGON);
+		enrichedSnapdragon.setTooltip("You can get another from the druid next to the patch on top of White Knights' Castle.");
+		truthSerum = new ItemRequirement("Truth serum", ItemID.TRUTH_SERUM_29532);
+		superTruthSerum = new ItemRequirement("Super truth serum", ItemID.SUPER_TRUTH_SERUM);
+		sketch = new ItemRequirement("Suspect sketch", ItemID.SUSPECT_SKETCH);
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
@@ -398,6 +457,19 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		inWhiteKnightsCastleF1 = new ZoneRequirement(whiteKnightsCastleF1);
 		inWhiteKnightsCastleF2 = new ZoneRequirement(whiteKnightsCastleF2);
 		inWhiteKnightsCastleF3 = new ZoneRequirement(whiteKnightsCastleF3);
+
+		onLunarSpellbook = new SpellbookRequirement(Spellbook.LUNAR);
+
+		notContactedTurael = new VarbitRequirement(10785, 0);
+		notContactedDuradel = new VarbitRequirement(10786, 0);
+		notContactedMazchna = new VarbitRequirement(10787, 0);
+		notRecruitedGhommal = new VarbitRequirement(10788, 0);
+		notRecruitedHarrallak = new VarbitRequirement(10789, 0);
+		notRecruitedSloane = new VarbitRequirement(10790, 0);
+		notContactedCyrisus = new VarbitRequirement(10791, 0);
+
+		f1WarriorsGuild = new Zone(new WorldPoint(2835, 3531, 1), new WorldPoint(3878, 3558, 1));
+		onF1WarriorsGuild = new ZoneRequirement(f1WarriorsGuild);
 	}
 
 	@Subscribe
@@ -662,7 +734,89 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goPlantSnapdragon.addSubSteps(plantSnapdragon);
 		// Seed planted
 		// quest state 38 -> 39
-		// 10781 0->1
+		// 10781 0->1 Snapdragon state?
+
+		goFromF3ToF2WhiteKnight = new ObjectStep(this, ObjectID.STAIRCASE_24074, new WorldPoint(2958, 3338, 3),
+			"Return to Idria downstairs near Thaerisk.");
+		goFromF2ToF1WhiteKnight = new ObjectStep(this, ObjectID.STAIRCASE_24074, new WorldPoint(2960, 3339, 2),
+			"Return to Idria downstairs near Thaerisk.");
+		goFromF1ToF0WhiteKnight = new ObjectStep(this, ObjectID.STAIRCASE_24074, new WorldPoint(2955, 3338, 1),
+			"Return to Idria downstairs near Thaerisk.");
+		talkToIdriaAfterPlanting = new NpcStep(this, NpcID.IDRIA, new WorldPoint(2989, 3342, 0), "Return to Idria downstairs near Thaerisk.");
+		talkToIdriaAfterPlanting.addSubSteps(goFromF3ToF2WhiteKnight, goFromF2ToF1WhiteKnight, goFromF1ToF0WhiteKnight);
+
+		activeLunars = new ObjectStep(this, ObjectID.ALTAR_34771, new WorldPoint(2158, 3864, 0),
+			"Activate the lunar spellbook for NPC Contact. Either use the altar on Lunar Isle, your POH altar, or your Magic Cape.", astralRune.quantity(4), cosmicRune.quantity(4), airRune.quantity(8));
+
+		contactCyrisus = new DetailedQuestStep(this, "Use NPC Contact to talk to Cyrisus.", astralRune, cosmicRune, airRune.quantity(2));
+		contactCyrisus.addSpellHighlight(LunarSpells.NPC_CONTACT);
+		contactCyrisus.addWidgetHighlight(75, 47);
+		contactTurael = new DetailedQuestStep(this, "Use NPC Contact to talk to Turael, or go talk to him in Burthorpe.", astralRune, cosmicRune, airRune.quantity(2));
+		contactTurael.addSpellHighlight(LunarSpells.NPC_CONTACT);
+		contactTurael.addWidgetHighlight(75, 22);
+		contactTurael.addDialogStep("I need to talk to you about Lucien.");
+		contactMazchna = new DetailedQuestStep(this, "Use NPC Contact to talk to Mazchna, or go talk to him in Canifis.", astralRune, cosmicRune, airRune.quantity(2));
+		contactMazchna.addSpellHighlight(LunarSpells.NPC_CONTACT);
+		contactMazchna.addWidgetHighlight(75, 25);
+		contactMazchna.addDialogStep("I need to talk to you about Lucien.");
+		contactDuradel = new DetailedQuestStep(this, "Use NPC Contact to talk to Duradel, or go talk to him in Shilo Village.", astralRune, cosmicRune, airRune.quantity(2));
+		contactDuradel.addSpellHighlight(LunarSpells.NPC_CONTACT);
+		contactDuradel.addWidgetHighlight(75, 37);
+		contactDuradel.addDialogStep("I need to talk to you about Lucien.");
+		// 5006 5->13
+		// 3622 100->0
+		// 10670 0->1
+
+		// Contacted everyone
+		// Quest from 40->41
+		// 10781 1->2 Snapdragon state?
+		harvestSnapdragon = new ObjectStep(this, ObjectID.HERBS_53292, new WorldPoint(2962, 3338, 3),
+			"");
+		goHarvestSnapdragon = new ConditionalStep(this, goToF3WhiteKnight, "Harvest the enriched snapdragon in the herb patch on the top floor of the west side of the White Knights' Castle.");
+		goHarvestSnapdragon.addStep(inWhiteKnightsCastleF3, harvestSnapdragon);
+
+		// quest 41->42
+		// 10782 0->1
+		// 10783 0->1
+		// 10781 2->0 // Platch from snapdragon to empty
+
+		goFromF3ToF2WhiteKnightThaerisk = new ObjectStep(this, ObjectID.STAIRCASE_24074, new WorldPoint(2958, 3338, 3),
+			"Return to Thaerisk downstairs.");
+		goFromF2ToF1WhiteKnightThaerisk = new ObjectStep(this, ObjectID.STAIRCASE_24074, new WorldPoint(2960, 3339, 2),
+			"Return to Thaerisk downstairs.");
+		goFromF1ToF0WhiteKnightThaerisk = new ObjectStep(this, ObjectID.STAIRCASE_24074, new WorldPoint(2955, 3338, 1),
+			"Return to Thaerisk downstairs.");
+		talkToThaeriskWithSnapdragon = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Return to Thaerisk with the enriched snapdragon.",
+			enrichedSnapdragon);
+		talkToThaeriskWithSnapdragon.addSubSteps(goFromF3ToF2WhiteKnightThaerisk, goFromF2ToF1WhiteKnightThaerisk, goFromF1ToF0WhiteKnightThaerisk);
+		// Told Thaerisk patch grown and have herb, 10843 0->1
+		useSnapdragonOnSerum = new DetailedQuestStep(this, "Use the enriched snapdragon on the serum.", enrichedSnapdragon.highlighted(), truthSerum.highlighted());
+		searchDrawersForCharcoalAndPapyrus = new ObjectStep(this, ObjectID.DRAWERS_53307, new WorldPoint(2990, 3335, 0), "Search the drawers in the south-east of the room.");
+		((ObjectStep) searchDrawersForCharcoalAndPapyrus).addAlternateObjects(ObjectID.DRAWERS_53306);
+		useSerumOnSpy = new NpcStep(this, NpcID.SHADY_STRANGER_13546, new WorldPoint(2989, 3344, 0), "Use the super truth serum on the shady stranger in the cell near Thaerisk.",
+			superTruthSerum.highlighted(), charcoal, papyrus);
+		talkToSpy = new NpcStep(this, NpcID.SHADY_STRANGER_13546, new WorldPoint(2989, 3344, 0), "Talk to the shady stranger.", charcoal, papyrus);
+		giveSketchToIdria = new NpcStep(this, NpcID.IDRIA, new WorldPoint(2989, 3342, 0), "Use the sketch on Idria.", sketch.highlighted());
+		talkToIdriaAfterSketch = new NpcStep(this, NpcID.IDRIA, new WorldPoint(2989, 3342, 0), "Use the sketch on Idria.");
+		giveSketchToIdria.addSubSteps(talkToIdriaAfterSketch);
+		// Given sketch
+		// quest 420 -> 430
+		// 10774 0->1
+		talkToGhommal = new NpcStep(this, NpcID.GHOMMAL_13613, new WorldPoint(2878, 3546, 0), "Talk to Ghommal outside of the entrance to the Warriors' Guild.");
+		talkToGhommal.addDialogStep("I need to talk to you about Lucien.");
+		talkToHarrallak = new NpcStep(this, NpcID.HARRALLAK_MENAROUS_13615, new WorldPoint(2868, 3546, 0), "Talk to Harrallak Menarous in the entrance to the Warriors' Guild.");
+		talkToHarrallak.addDialogStep("I need to talk to you about Lucien.");
+		goToF1WarriorsGuild = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2839, 3537, 0), "Talk to Sloane in the middle of the first floor of the Warriors' Guild.");
+		talkToSloane = new NpcStep(this, NpcID.SLOANE_13616, new WorldPoint(2856, 3552, 1), "Talk to Sloane in the middle of the first floor of the Warriors' Guild.");
+		talkToSloane.addDialogStep("I need to talk to you about Lucien.");
+		talkToSloane.addSubSteps(goToF1WarriorsGuild);
+
+		// Recruited all Warriors' Guild:
+		// 10790 0->1
+		// Quest state 440->450
+		// 10780 1->2
+		// 10801 0->1
+		// 10778 1->0
 	}
 
 	@Override
@@ -678,12 +832,14 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Movario's Base", List.of(enterMovarioBase, climbDownMovarioFirstRoom, inspectDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, enterElectricDoor,
 			searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, useKeyOnChest, searchChestForTraps,
 			getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall),
-			airRunes, waterRunes, earthRunes, fireRunes, mindRunes));
+			airRune, waterRune, earthRune, fireRune, mindRune));
 		allSteps.add(new PanelDetails("Weight puzzle", solveWeightPuzzle.getDisplaySteps()));
 		allSteps.add(new PanelDetails("United Front", List.of(goUpToThaeriskWithNotes, killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport,
 			useOrbOnShadyStranger, talkToAkrisaeAfterOrb, buySnapdragonSeed, getSarimTeleport, talkToBetty, talkToBettyForDye, usePinkDyeOnLanternLens, useLensOnCounter, searchCounterForSeed,
-			talkToThaeriskWithSeed, goPlantSnapdragon),
-			List.of(meleeGear, lanternLens, dibber), List.of(coinsForSnapdragon)));
+			talkToThaeriskWithSeed, goPlantSnapdragon, talkToIdriaAfterPlanting, activeLunars, contactCyrisus, contactTurael, contactMazchna, contactDuradel, goHarvestSnapdragon, talkToThaeriskWithSnapdragon,
+			useSnapdragonOnSerum, searchDrawersForCharcoalAndPapyrus, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, talkToSloane),
+			List.of(meleeGear, lanternLens, dibber, astralRune, cosmicRune, airRune.quantity(2)), List.of(coinsForSnapdragon, burthorpeTeleport)));
+
 		return allSteps;
 	}
 }

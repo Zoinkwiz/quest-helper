@@ -328,7 +328,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	{
 		return Arrays.asList("You will need 3 black items for a part of the quest. Potential items would be:",
 			"- Desert shirt/robe dyed with black mushroom ink", "- Black armour", "- Priest gown top/bottom", "- Black wizard hat",
-			"- Dark mystic", "- Ghostly robes", "- Shade robes", "- Black dragonhide", "- Black cape", "- One of the various black holiday event items");
+			"- Dark mystic", "- Ghostly robes", "- Shade robes", "- Black dragonhide", "- Black cape", "- One of the various black holiday event items", "- Black Graceful");
 	}
 
 	@Override

@@ -35,6 +35,7 @@ import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -75,23 +76,26 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	//Items Required
 	ItemRequirement sapphireLantern, litSapphireLantern, airRune, earthRune, fireRune, waterRune, mindRune, lawRune,
 		deathRune, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
-		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife, coinsForSnapdragon, snapdragonSeed, astralRune, cosmicRune;
+		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife, coinsForSnapdragon, snapdragonSeed, astralRune, cosmicRune,
+		bindRunes, weakenRunes, magicGear, squallOutfit, eliteBlackKnightOutfit, telegrabRunes, alchRunes;
 
 
 	// Items Recommended
-	ItemRequirement antipoison, burthorpeTeleport;
+	ItemRequirement antipoison, burthorpeTeleport, lobster, restorePotion;
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
-		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs;
+		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey;
 
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
 		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
 		inWhiteKnightsCastleF1, inWhiteKnightsCastleF2, inWhiteKnightsCastleF3, onLunarSpellbook, notContactedCyrisus, notContactedTurael, notContactedMazchna, notContactedDuradel,
-		notRecruitedHarrallak, notRecruitedSloane, notRecruitedGhommal, onF1WarriorsGuild, inBlackKnightFortress, inHiddenRoom, inBlackKnightFortressBasement;
+		notRecruitedHarrallak, notRecruitedSloane, notRecruitedGhommal, onF1WarriorsGuild, inBlackKnightFortress, inHiddenRoom, inBlackKnightFortressBasement, notSearchedTableForTeleorb;
 
-	Requirement inCatacombSouth, inCatacombNorth, inCatacombF2, openedCatacombShortcut, inCatacombHQ, notSearchedWardrobeForEliteArmour, notSearchedWardrobeForSquallOutfit;
+	Requirement inCatacombSouth, inCatacombNorth, inCatacombF2, openedCatacombShortcut, inCatacombHQ, notSearchedWardrobeForEliteArmour,
+		notSearchedWardrobeForSquallOutfit, isSafeInCatacombs, notSearchedTableForRunes, notSearchedTableForLobsterAndRestore, notSearchedKeyRack, openedSilifCell,
+		talkedToSilif, usedFoodOnSilif, usedRestoreOnSilif;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
 		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild, blackKnightFortress1, blackKnightFortress2, blackKnightFortress3, hiddenRoom,
@@ -119,9 +123,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	ConditionalStep goPlantSnapdragon, goHarvestSnapdragon;
 
 	DetailedQuestStep talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile, castChargedOrbOnTile, enterCatacombs, jumpBridge,
-		climbWallInCatacombs, useWesternSolidDoor, enterCatacombShortcut, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLobster,
-		searchDeskForLawAndDeathRune, searchKeyRack, leaveSolidDoor, openSilifsCell, useLobsterOnSilif, useRestoreOnSilif, giveSilifEliteArmour, enterNorthernSolidDoorAgain, goNearMap,
-		climbUpCatacombLadder, defeatSurok, plantOrbOnSurok, talkToAkrisaeAfterSurok, enterCellWithRobesOn, activatedStrangeTeleorb, climbIceWall, jumpToLedge, goToEastOfChapel, talkToIdriaAfterChapel;
+		climbWallInCatacombs, useWesternSolidDoor, enterCatacombShortcut, enterNorthernSolidDoor, killKnightsForEliteArmour, equipSquallOrEliteArmour, searchWardrobeForEliteArmour, searchWardrobeForSquallRobes,
+		searchDeskForTeleorb, searchDeskForLobster, searchDeskForLawAndDeathRune, searchKeyRack, leaveSolidDoor, openSilifsCell, useLobsterOnSilif, useRestoreOnSilif, giveSilifEliteArmour,
+		enterNorthernSolidDoorAgain, goNearMap, climbUpCatacombLadder, defeatSurok, plantOrbOnSurok, talkToAkrisaeAfterSurok, enterCellWithRobesOn, activatedStrangeTeleorb, climbIceWall, jumpToLedge,
+		goToEastOfChapel, talkToIdriaAfterChapel;
 
 	WeightStep solveWeightPuzzle;
 
@@ -329,10 +334,22 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(470, goCastChargeOrb);
 
 		ConditionalStep goEnterCatacombs = new ConditionalStep(this, enterBlackKnightFortress);
+		// If collected everything, leave room
 		goEnterCatacombs.addStep(and(inCatacombHQ, eliteHelm, eliteBody, eliteLegs, notSearchedWardrobeForEliteArmour), searchWardrobeForEliteArmour);
-		goEnterCatacombs.addStep(and(inCatacombHQ, eliteHelm, eliteBody, eliteLegs, notSearchedWardrobeForSquallOutfit), searchWardrobeForSquallRobes);
-//		goEnterCatacombs.addStep(and(inCatacombHQ, eliteHelm, eliteBody, eliteLegs, notSearchedTableForTeleorb), searchDeskForTeleorb);
+		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedWardrobeForSquallOutfit), searchWardrobeForSquallRobes);
+		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedTableForTeleorb), searchDeskForTeleorb);
+		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedKeyRack), searchKeyRack);
+		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedTableForRunes), searchDeskForLawAndDeathRune);
+		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedTableForLobsterAndRestore), searchDeskForLobster);
+		goEnterCatacombs.addStep(and(inCatacombHQ, eliteBlackKnightOrSquallOutfit.equipped()), leaveSolidDoor);
+		goEnterCatacombs.addStep(and(inCatacombHQ, eliteBlackKnightOrSquallOutfit), equipSquallOrEliteArmour);
 		goEnterCatacombs.addStep(inCatacombHQ, killKnightsForEliteArmour);
+		// in CatacombsF2, AND have key, AND searched everything
+		goEnterCatacombs.addStep(and(inCatacombF2, openedSilifCell, not(notSearchedWardrobeForSquallOutfit), eliteBlackKnightOutfit,
+			usedFoodOnSilif, usedRestoreOnSilif), giveSilifEliteArmour);
+		goEnterCatacombs.addStep(and(inCatacombF2, openedSilifCell, not(notSearchedWardrobeForSquallOutfit), eliteBlackKnightOutfit, usedFoodOnSilif, not(notSearchedTableForLobsterAndRestore)), useRestoreOnSilif);
+		goEnterCatacombs.addStep(and(inCatacombF2, openedSilifCell, not(notSearchedWardrobeForSquallOutfit), eliteBlackKnightOutfit, not(notSearchedTableForLobsterAndRestore)), useLobsterOnSilif);
+		goEnterCatacombs.addStep(and(inCatacombF2, cellKey, not(notSearchedWardrobeForSquallOutfit), eliteBlackKnightOutfit), openSilifsCell);
 		goEnterCatacombs.addStep(and(inCatacombF2, openedCatacombShortcut), enterNorthernSolidDoor);
 		goEnterCatacombs.addStep(and(inCatacombSouth, openedCatacombShortcut), enterCatacombShortcut);
 		goEnterCatacombs.addStep(inCatacombF2, useWesternSolidDoor);
@@ -344,7 +361,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(480, goEnterCatacombs);
 		steps.put(490, goEnterCatacombs);
 		steps.put(500, goEnterCatacombs);
-
+		steps.put(510, goEnterCatacombs);
+		steps.put(520, goEnterCatacombs);
+		steps.put(530, goEnterCatacombs);
+		steps.put(540, goEnterCatacombs);
 		return steps;
 	}
 
@@ -411,6 +431,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		burthorpeTeleport = new ItemRequirement("Teleport to Burthorpe", ItemCollections.COMBAT_BRACELETS);
 		burthorpeTeleport.addAlternates(ItemCollections.GAMES_NECKLACES);
 
+		lobster = new ItemRequirement("Lobster, or some other food", ItemID.LOBSTER);
+		restorePotion = new ItemRequirement("Restore potion", ItemID.RESTORE_POTION4);
+		restorePotion.addAlternates(ItemID.RESTORE_POTION3, ItemID.RESTORE_POTION2, ItemID.RESTORE_POTION1);
+
 		// Quest items
 		dirtyShirt = new ItemRequirement("Dirty shirt", ItemID.DIRTY_SHIRT);
 		dirtyShirt.setTooltip("You can get another from the Khazard Launderer west of the Fight Arena");
@@ -439,6 +463,17 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		eliteHelm = new ItemRequirement("Elite black full helm", ItemID.ELITE_BLACK_FULL_HELM);
 		eliteBody = new ItemRequirement("Elite black platebody", ItemID.ELITE_BLACK_PLATEBODY);
 		eliteLegs = new ItemRequirement("Elite black platelegs", ItemID.ELITE_BLACK_PLATELEGS);
+
+		eliteBlackKnightOutfit = new ItemRequirements("Full elite black knight", eliteHelm, eliteBody, eliteLegs);
+
+		ItemRequirement darkSquallHood = new ItemRequirement("Dark squall hood", ItemID.DARK_SQUALL_HOOD);
+		ItemRequirement darkSquallBody = new ItemRequirement("Dark squall robe top", ItemID.DARK_SQUALL_ROBE_TOP);
+		ItemRequirement darkSquallLegs = new ItemRequirement("Dark squall robe bottom", ItemID.DARK_SQUALL_ROBE_BOTTOM);
+		squallOutfit = new ItemRequirements("Full dark squall outfit", darkSquallHood, darkSquallBody, darkSquallLegs);
+
+		eliteBlackKnightOrSquallOutfit = new ItemRequirements(LogicType.OR, "Full elite black knight or dark squall outfit", eliteBlackKnightOutfit, squallOutfit);
+
+		cellKey = new ItemRequirement("Cell key", ItemID.CELL_KEY);
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
@@ -546,6 +581,27 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		notSearchedWardrobeForEliteArmour = new VarbitRequirement(10806, 0);
 		notSearchedWardrobeForSquallOutfit = new VarbitRequirement(10779, 0);
+
+		notSearchedTableForTeleorb = new VarbitRequirement(10855, 0);
+		notSearchedTableForRunes = new VarbitRequirement(10854, 0);
+		notSearchedTableForLobsterAndRestore = new VarbitRequirement(10805, 0);
+		notSearchedKeyRack = new VarbitRequirement(10804, 0);
+		openedSilifCell = new VarbitRequirement(9653, 520, Operation.GREATER_EQUAL);
+
+		isSafeInCatacombs = new VarbitRequirement(10802, 1);
+		// TODO: Check if these are needed to actually feed and restore Silif
+		talkedToSilif = new VarbitRequirement(10848, 1);
+		// 10849 been told Silif needs food and restore potion
+
+		// TODO: Try using restore potion first
+		// Fed him, 9653 -> 530
+		usedFoodOnSilif = new VarbitRequirement(10850, 1);
+		usedRestoreOnSilif = new VarbitRequirement(10851, 1);
+		// 10852 0->1 represents ready to recieve armour
+
+		// Equipped armour:
+		// 9653 540->550
+		// 10780 2->3
 	}
 
 	@Subscribe
@@ -928,21 +984,22 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		killKnightsForEliteArmour = new NpcStep(this, NpcID.ELITE_BLACK_KNIGHT, new WorldPoint(4122, 4849, 1), "Kill elite black knights for their full armour set.",
 			true, eliteHelm, eliteBody, eliteLegs);
 		((NpcStep) killKnightsForEliteArmour).addAlternateNpcs(NpcID.ELITE_BLACK_KNIGHT_13464, NpcID.ELITE_BLACK_KNIGHT_13480, NpcID.ELITE_BLACK_KNIGHT_13481, NpcID.ELITE_BLACK_KNIGHT_13566);
-		searchDeskForTeleorb = new ObjectStep(this, NullObjectID.NULL_54077, new WorldPoint(4119, 4844, 1), "Search the south table for a strange teleorb.",
-			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
+		searchDeskForTeleorb = new ObjectStep(this, NullObjectID.NULL_54077, new WorldPoint(4119, 4844, 1), "Search the south table for a strange teleorb.");
 		searchDeskForLobster = new ObjectStep(this, NullObjectID.NULL_54079, new WorldPoint(4124, 4851, 1), "Search the north-east table for some lobster and a restore potion." +
-			" DON'T EAT OR DRINK EITHER.",
-			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
-		searchDeskForLawAndDeathRune = new ObjectStep(this, NullObjectID.NULL_54080, new WorldPoint(4113, 4849, 1), "Search the west desk for a law and death rune.",
-			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
-		searchKeyRack = new ObjectStep(this, NullObjectID.NULL_53430, new WorldPoint(4123, 4857, 1), "Search the key rack just east of the northern wardrobe.",
-			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
-		leaveSolidDoor = new ObjectStep(this, ObjectID.SOLID_DOOR_53366, new WorldPoint(4113, 4841, 1), "Leave the room back to the catacombs.",
-			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
-//		openSilifsCell = new Step();
-//		useLobsterOnSilif = new Step();
-//		useRestoreOnSilif = new Step();
-//		giveSilifEliteArmour = new Step();
+			" DON'T EAT OR DRINK EITHER.");
+		searchDeskForLawAndDeathRune = new ObjectStep(this, NullObjectID.NULL_54080, new WorldPoint(4113, 4849, 1), "Search the west desk for a law and death rune.");
+		searchKeyRack = new ObjectStep(this, NullObjectID.NULL_53430, new WorldPoint(4123, 4857, 1), "Search the key rack just east of the northern wardrobe.");
+		leaveSolidDoor = new ObjectStep(this, ObjectID.SOLID_DOOR_53366, new WorldPoint(4113, 4841, 1), "Leave the room back to the catacombs.");
+
+		equipSquallOrEliteArmour = new DetailedQuestStep(this, "Equip either a full set of elite black knight or the squall outfit.", eliteBlackKnightOrSquallOutfit.equipped());
+		leaveSolidDoor = new ObjectStep(this, ObjectID.SOLID_DOOR_53366, new WorldPoint(4113, 4841, 1), "Return back through the solid door to the south.");
+		openSilifsCell = new ObjectStep(this, ObjectID.GATE_53443, new WorldPoint(4132, 4791, 2), "Open Silif's cell door in the north-east of the area.", cellKey.highlighted());
+		useLobsterOnSilif = new NpcStep(this, NpcID.SILIF_13524, new WorldPoint(4134, 4790, 2), "Use a lobster or other food on Silif.", lobster.highlighted());
+		useLobsterOnSilif.addIcon(ItemID.LOBSTER);
+		useRestoreOnSilif = new NpcStep(this, NpcID.SILIF_13524, new WorldPoint(4134, 4790, 2), "Use a restore potion on Silif.", restorePotion.highlighted());
+		useRestoreOnSilif.addIcon(ItemID.RESTORE_POTION4);
+		giveSilifEliteArmour = new NpcStep(this, NpcID.SILIF_13524, new WorldPoint(4134, 4790, 2), "Use the elite black armour on Silif.", eliteBlackKnightOutfit.highlighted());
+		giveSilifEliteArmour.addIcon(ItemID.ELITE_BLACK_FULL_HELM);
 //		enterNorthernSolidDoorAgain = new Step();
 //		goNearMap,
 //			climbUpCatacombLadder = new Step();
@@ -979,7 +1036,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			List.of(meleeGear, lanternLens, dibber, astralRune, cosmicRune, airRune.quantity(2)), List.of(coinsForSnapdragon, burthorpeTeleport)));
 		allSteps.add(new PanelDetails("Infiltration", List.of(talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile,
 			castChargedOrbOnTile, enterCatacombs, jumpBridge, climbWallInCatacombs, useWesternSolidDoor, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour,
-			searchWardrobeForSquallRobes),
+			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif, useRestoreOnSilif),
 			List.of(bronzeMedHelm, ironChainbody)));
 		return allSteps;
 	}

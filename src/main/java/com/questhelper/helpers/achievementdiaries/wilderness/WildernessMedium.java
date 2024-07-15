@@ -321,8 +321,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			new UnlockReward("Increases the chance of a successful yield from ents by 15%"),
 			new UnlockReward("20% off entry to Resource Area (6000gp)"),
 			new UnlockReward("Can have 4 ecumenical keys at a time"),
-			new UnlockReward("20 random free runes from Lundail once per day"),
-			new UnlockReward("Access to the shortcut in the Deep Wilderness Dungeon (requires Agility 46 )")
+			new UnlockReward("20 random free runes from Lundail once per day")
 		);
 	}
 

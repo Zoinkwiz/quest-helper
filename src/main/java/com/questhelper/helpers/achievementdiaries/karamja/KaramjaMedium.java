@@ -393,8 +393,7 @@ public class KaramjaMedium extends BasicQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("Increased Agility Experience when redeeming Agility tickets"),
-			new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena"),
-			new UnlockReward("Access to the stepping stone shortcut across the river of Shilo Village"));
+			new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena")
 	}
 
 	@Override

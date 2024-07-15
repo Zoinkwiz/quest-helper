@@ -378,7 +378,6 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		return Arrays.asList(
 			new UnlockReward("50% run energy replenish 4 times a day from Explorer's ring"),
 			new UnlockReward("Unlimited teleports to cabbage patch near Falador farm for Explorer's ring"),
-			new UnlockReward("Access to a shortcut from Lumbridge Swamp to the desert"),
 			new UnlockReward("10% increased experience from Tears of Guthix")
 		);
 	}

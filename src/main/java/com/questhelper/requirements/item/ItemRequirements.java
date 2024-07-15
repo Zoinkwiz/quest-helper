@@ -41,6 +41,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ItemRequirements extends ItemRequirement
 {
@@ -176,6 +177,24 @@ public class ItemRequirements extends ItemRequirement
 			.map(ItemRequirement::getAllIds)
 			.flatMap(Collection::stream)
 			.collect(QuestUtil.collectToArrayList());
+	}
+
+	@Override
+	public ItemRequirement equipped()
+	{
+		ItemRequirements newItem = (ItemRequirements) copy();
+
+		newItem.itemRequirements.forEach((itemRequirement -> itemRequirement.setEquip(true)));
+		equip = true;
+		return newItem;
+	}
+
+
+	@Override
+	public void setEquip(boolean shouldEquip)
+	{
+		itemRequirements.forEach((itemRequirement -> itemRequirement.setEquip(true)));
+		equip = shouldEquip;
 	}
 
 	@Override

@@ -70,7 +70,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	@Getter
 	@Setter
-	private boolean equip;
+	protected boolean equip;
 
 	@Setter
 	protected boolean highlightInInventory;

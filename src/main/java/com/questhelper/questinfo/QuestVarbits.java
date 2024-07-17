@@ -114,6 +114,8 @@ public enum QuestVarbits
 	QUEST_PERILOUS_MOONS(9819),
 	QUEST_THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE(9844),
 	QUEST_TWILIGHTS_PROMISE(9649),
+	// TODO: UPDATE THIS VALUE WGS
+	QUEST_WHILE_GUTHIX_SLEEPS(1),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

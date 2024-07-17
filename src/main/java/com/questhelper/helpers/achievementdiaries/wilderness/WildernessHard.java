@@ -314,7 +314,10 @@ public class WildernessHard extends ComplexStateQuestHelper
 			new UnlockReward("30 random free runes from Lundail once per day"),
 			new UnlockReward("Able to choose your destination when teleporting through the Ancient Obelisks"),
 			new UnlockReward("50% off entry to Resource Area (3,750gp)"),
-			new UnlockReward("Wine of zamorak found in the Chaos Temple (hut) and Deep Wilderness Dungeon will be received in noted form")
+			new UnlockReward("Wine of zamorak found in the Chaos Temple (hut) and Deep Wilderness Dungeon will be received in noted form"),
+			new UnlockReward("The teleport delay in both the Revenant Caves and the Wilderness boss caves will no longer apply to you"),
+			new UnlockReward("25% more loot when opening rogues' chests"),
+			new UnlockReward("Ecumenical keys may be sold to the Lesser Fanatic in Edgeville for 61,500 coins per key")
 		);
 	}
 
@@ -361,7 +364,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		allSteps.add(trollSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Adamant Scimitar in Resource Area", Arrays.asList(moveToResource,
-			addyScim), new SkillRequirement(Skill.SMITHING, 75), barsOrPick);
+			addyScim), new SkillRequirement(Skill.SMITHING, 75), barsOrPick, hammer);
 		scimSteps.setDisplayCondition(notAddyScim);
 		scimSteps.setLockingStep(addyScimTask);
 		allSteps.add(scimSteps);

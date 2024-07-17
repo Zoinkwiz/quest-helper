@@ -80,7 +80,6 @@ public class QuestHelperWorldMapPoint extends WorldMapPoint
 
 	public void onWorldMapAreaChanged(WorldMapAreaChanged worldMapAreaChanged)
 	{
-		System.out.println(worldMapArea);
 		if (worldMapArea != null &&
 			worldMapArea != WorldMapArea.ANY &&
 			worldMapArea != worldMapAreaChanged.getWorldMapArea())

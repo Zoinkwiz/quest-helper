@@ -1,6 +1,7 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.MockedTest;
+import com.questhelper.domain.AccountType;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -10,14 +11,14 @@ import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class QuestHelperTest extends MockedTest
 {
-	@Test
-	void ensureRequirementsSetUpBySetupRequirements()
+	private void testRequirements(QuestHelperQuest[] quests)
 	{
-		for (var quest : QuestHelperQuest.values())
+		for (var quest : quests)
 		{
 			// Instantiate helper
 			var helper = quest.getQuestHelper();
@@ -66,9 +67,57 @@ public class QuestHelperTest extends MockedTest
 	}
 
 	@Test
+	void ensureRequirementsSetUpBySetupRequirementsStandard()
+	{
+		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
+		when(client.getRealSkillLevel(any())).thenReturn(1);
+		testRequirements(QuestHelperQuest.values());
+	}
+
+	@Test
+	void ensureRequirementsSetUpBySetupRequirementsMaxed()
+	{
+		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
+		when(client.getRealSkillLevel(any())).thenReturn(99);
+		testRequirements(QuestHelperQuest.values());
+	}
+
+	@Test
+	void ensureRequirementsSetUpBySetupRequirementsIronStandard()
+	{
+		when(client.getRealSkillLevel(any())).thenReturn(1);
+		when(playerStateManager.getAccountType()).thenReturn(AccountType.IRONMAN);
+		testRequirements(QuestHelperQuest.values());
+	}
+
+	@Test
+	void ensureRequirementsSetUpBySetupRequirementsIronMaxed()
+	{
+		when(client.getRealSkillLevel(any())).thenReturn(99);
+		when(playerStateManager.getAccountType()).thenReturn(AccountType.IRONMAN);
+		testRequirements(QuestHelperQuest.values());
+	}
+
+	@Test
+	void ensureRequirementsSetUpBySetupRequirementsUIMStandard()
+	{
+		when(client.getRealSkillLevel(any())).thenReturn(1);
+		when(playerStateManager.getAccountType()).thenReturn(AccountType.ULTIMATE_IRONMAN);
+		testRequirements(QuestHelperQuest.values());
+	}
+
+	@Test
+	void ensureRequirementsSetUpBySetupRequirementsUIMMaxed()
+	{
+		when(client.getRealSkillLevel(any())).thenReturn(99);
+		when(playerStateManager.getAccountType()).thenReturn(AccountType.ULTIMATE_IRONMAN);
+		testRequirements(QuestHelperQuest.values());
+	}
+
+	@Test
 	void ensureAllVariablesCorrectlySet()
 	{
-		when(client.getIntStack()).thenReturn(new int[] { 1, 1, 1, 1 });
+		when(client.getIntStack()).thenReturn(new int[]{1, 1, 1, 1});
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 
 		AchievementDiaryStepManager.setup(configManager);
@@ -76,7 +125,10 @@ public class QuestHelperTest extends MockedTest
 		for (var quest : QuestHelperQuest.values())
 		{
 			var helper = quest.getQuestHelper();
-			if (quest.getPlayerQuests() != null) continue;
+			if (quest.getPlayerQuests() != null)
+			{
+				continue;
+			}
 
 			helper.setQuest(quest);
 			this.injector.injectMembers(helper);

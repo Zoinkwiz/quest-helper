@@ -85,7 +85,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
-		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey;
+		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey,
+		silifTeleorb, strangeTeleorb;
 
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
@@ -95,11 +96,11 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	Requirement inCatacombSouth, inCatacombNorth, inCatacombF2, openedCatacombShortcut, inCatacombHQ, notSearchedWardrobeForEliteArmour,
 		notSearchedWardrobeForSquallOutfit, isSafeInCatacombs, notSearchedTableForRunes, notSearchedTableForLobsterAndRestore, notSearchedKeyRack, openedSilifCell,
-		talkedToSilif, usedFoodOnSilif, usedRestoreOnSilif;
+		talkedToSilif, usedFoodOnSilif, usedRestoreOnSilif, givenArmourToSilif, silifIsFollowing, seenMap, inSquallFightRoom, defeatedSurok;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
 		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild, blackKnightFortress1, blackKnightFortress2, blackKnightFortress3, hiddenRoom,
-		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ;
+		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ, squallFightRoom;
 
 	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
@@ -125,8 +126,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	DetailedQuestStep talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile, castChargedOrbOnTile, enterCatacombs, jumpBridge,
 		climbWallInCatacombs, useWesternSolidDoor, enterCatacombShortcut, enterNorthernSolidDoor, killKnightsForEliteArmour, equipSquallOrEliteArmour, searchWardrobeForEliteArmour, searchWardrobeForSquallRobes,
 		searchDeskForTeleorb, searchDeskForLobster, searchDeskForLawAndDeathRune, searchKeyRack, leaveSolidDoor, openSilifsCell, useLobsterOnSilif, useRestoreOnSilif, giveSilifEliteArmour,
-		enterNorthernSolidDoorAgain, goNearMap, climbUpCatacombLadder, defeatSurok, plantOrbOnSurok, talkToAkrisaeAfterSurok, enterCellWithRobesOn, activatedStrangeTeleorb, climbIceWall, jumpToLedge,
-		goToEastOfChapel, talkToIdriaAfterChapel;
+		talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurok, defeatSurokSidebar, plantOrbOnSurok, talkToAkrisaeAfterSurok, enterCellWithRobesOn,
+		activateStrangeTeleorb, climbIceWall, jumpToLedge, goToEastOfChapel, talkToIdriaAfterChapel;
 
 	WeightStep solveWeightPuzzle;
 
@@ -334,6 +335,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(470, goCastChargeOrb);
 
 		ConditionalStep goEnterCatacombs = new ConditionalStep(this, enterBlackKnightFortress);
+		goEnterCatacombs.addStep(and(inSquallFightRoom, defeatedSurok), plantOrbOnSurok);
+		goEnterCatacombs.addStep(inSquallFightRoom, defeatSurok);
 		// If collected everything, leave room
 		goEnterCatacombs.addStep(and(inCatacombHQ, eliteHelm, eliteBody, eliteLegs, notSearchedWardrobeForEliteArmour), searchWardrobeForEliteArmour);
 		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedWardrobeForSquallOutfit), searchWardrobeForSquallRobes);
@@ -341,10 +344,15 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedKeyRack), searchKeyRack);
 		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedTableForRunes), searchDeskForLawAndDeathRune);
 		goEnterCatacombs.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedTableForLobsterAndRestore), searchDeskForLobster);
+		goEnterCatacombs.addStep(and(inCatacombHQ, eliteBlackKnightOrSquallOutfit.equipped(), silifTeleorb), climbUpCatacombLadder);
+		goEnterCatacombs.addStep(and(inCatacombHQ, eliteBlackKnightOrSquallOutfit.equipped(), seenMap), talkToSilifAtMap);
+		goEnterCatacombs.addStep(and(inCatacombHQ, eliteBlackKnightOrSquallOutfit.equipped(), silifIsFollowing), goNearMap);
 		goEnterCatacombs.addStep(and(inCatacombHQ, eliteBlackKnightOrSquallOutfit.equipped()), leaveSolidDoor);
 		goEnterCatacombs.addStep(and(inCatacombHQ, eliteBlackKnightOrSquallOutfit), equipSquallOrEliteArmour);
 		goEnterCatacombs.addStep(inCatacombHQ, killKnightsForEliteArmour);
 		// in CatacombsF2, AND have key, AND searched everything
+		goEnterCatacombs.addStep(and(inCatacombF2, or(silifIsFollowing, seenMap)), enterNorthernSolidDoorAgain);
+		goEnterCatacombs.addStep(and(inCatacombF2, givenArmourToSilif), talkToSilifToFollow);
 		goEnterCatacombs.addStep(and(inCatacombF2, openedSilifCell, not(notSearchedWardrobeForSquallOutfit), eliteBlackKnightOutfit,
 			usedFoodOnSilif, usedRestoreOnSilif), giveSilifEliteArmour);
 		goEnterCatacombs.addStep(and(inCatacombF2, openedSilifCell, not(notSearchedWardrobeForSquallOutfit), eliteBlackKnightOutfit, usedFoodOnSilif, not(notSearchedTableForLobsterAndRestore)), useRestoreOnSilif);
@@ -365,7 +373,23 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(520, goEnterCatacombs);
 		steps.put(530, goEnterCatacombs);
 		steps.put(540, goEnterCatacombs);
+		steps.put(550, goEnterCatacombs);
+		// 560 was a skipped potential state. Went from 550-570 when entering HQ with Silif
+		steps.put(560, goEnterCatacombs);
+		steps.put(570, goEnterCatacombs);
+		steps.put(580, goEnterCatacombs);
+		steps.put(590, goEnterCatacombs);
+		// Entered Surok fight
+		steps.put(595, goEnterCatacombs);
+		steps.put(597, goEnterCatacombs);
+
+		steps.put(600, talkToAkrisaeAfterSurok);
+		steps.put(610, talkToAkrisaeAfterSurok);
+
+		// Ready for cell
+//		steps.put(620, enterCellWithRobesOn);
 		return steps;
+
 	}
 
 	@Override
@@ -425,6 +449,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		meleeGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		rangedGear = new ItemRequirement("Ranged weapon", -1, -1).isNotConsumed();
 		rangedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
+		magicGear = new ItemRequirement("Magic weapon", -1, -1).isNotConsumed();
+		magicGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 
 		// Recommended items
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
@@ -434,6 +460,19 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		lobster = new ItemRequirement("Lobster, or some other food", ItemID.LOBSTER);
 		restorePotion = new ItemRequirement("Restore potion", ItemID.RESTORE_POTION4);
 		restorePotion.addAlternates(ItemID.RESTORE_POTION3, ItemID.RESTORE_POTION2, ItemID.RESTORE_POTION1);
+
+		ItemRequirement natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE);
+		ItemRequirement waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
+		ItemRequirement fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE);
+		ItemRequirement earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE);
+		ItemRequirement bodyRune = new ItemRequirement("Body rune", ItemID.BODY_RUNE);
+		ItemRequirement lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
+
+		bindRunes = new ItemRequirements("Bind spell", natureRune.quantity(2), waterRune.quantity(3), earthRune.quantity(3));
+		weakenRunes = new ItemRequirements("Weaken spell", bodyRune, waterRune.quantity(3), earthRune.quantity(2));
+		alchRunes = new ItemRequirements("Low level alchemy spell", natureRune, fireRune.quantity(3));
+		telegrabRunes = new ItemRequirements("Telekinetic grab", lawRune, airRune);
+
 
 		// Quest items
 		dirtyShirt = new ItemRequirement("Dirty shirt", ItemID.DIRTY_SHIRT);
@@ -474,6 +513,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		eliteBlackKnightOrSquallOutfit = new ItemRequirements(LogicType.OR, "Full elite black knight or dark squall outfit", eliteBlackKnightOutfit, squallOutfit);
 
 		cellKey = new ItemRequirement("Cell key", ItemID.CELL_KEY);
+
+		silifTeleorb = new ItemRequirement("Teleorb", ItemID.TELEORB_29537);
+
+		strangeTeleorb = new ItemRequirement("Strange teleorb", ItemID.STRANGE_TELEORB);
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
@@ -601,7 +644,15 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		// Equipped armour:
 		// 9653 540->550
-		// 10780 2->3
+		// 10780 2->3 represents state of Silif
+		givenArmourToSilif = new VarbitRequirement(9653, 550, Operation.GREATER_EQUAL);
+
+		silifIsFollowing = new VarplayerRequirement(447, 13522, 16);
+		seenMap = new VarbitRequirement(9653, 580, Operation.GREATER_EQUAL);
+
+		squallFightRoom = new Zone(new WorldPoint(4126, 4840, 2), new WorldPoint(4151, 4861, 2));
+		inSquallFightRoom = new ZoneRequirement(squallFightRoom);
+		defeatedSurok = new VarbitRequirement(9653, 597, Operation.GREATER_EQUAL);
 	}
 
 	@Subscribe
@@ -1000,12 +1051,38 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		useRestoreOnSilif.addIcon(ItemID.RESTORE_POTION4);
 		giveSilifEliteArmour = new NpcStep(this, NpcID.SILIF_13524, new WorldPoint(4134, 4790, 2), "Use the elite black armour on Silif.", eliteBlackKnightOutfit.highlighted());
 		giveSilifEliteArmour.addIcon(ItemID.ELITE_BLACK_FULL_HELM);
-//		enterNorthernSolidDoorAgain = new Step();
-//		goNearMap,
-//			climbUpCatacombLadder = new Step();
-//		defeatSurok = new Step();
-//		plantOrbOnSurok = new Step();
-//		talkToAkrisaeAfterSurok = new Step();
+		talkToSilifToFollow = new NpcStep(this, NpcID.SILIF_13521, new WorldPoint(4134, 4790, 2), "Talk to Silif until he follows you.");
+		talkToSilifToFollow.addDialogStep("Let's go.");
+		enterNorthernSolidDoorAgain = new ObjectStep(this, ObjectID.SOLID_DOOR, new WorldPoint(4104, 4799, 2), "Enter the most northern solid door again.");
+		goNearMap = new DetailedQuestStep(this, new WorldPoint(4120, 4840, 1), "Stand near the map just west of the door until Silif talks about it.");
+		climbUpCatacombLadder = new ObjectStep(this, ObjectID.LADDER_53370, new WorldPoint(4142, 4855, 1), "Climb up the ladder to the east, ready to fight Surok.");
+		talkToSilifAtMap = new NpcStep(this, NpcID.SILIF_13521, new WorldPoint(4142, 4855, 1), "Talk to Silif near the map until he gives you a teleorb.");
+		defeatSurok = new NpcStep(this, NpcID.SUROK_MAGIS_13482, new WorldPoint(4145, 4850, 2), "Defeat Surok. Read the sidebar for more details.");
+
+
+		defeatSurokSidebar = new NpcStep(this, NpcID.SUROK_MAGIS_13482, new WorldPoint(4145, 4850, 2), "Defeat Surok. You must use magic to hurt him. You cannot use powered staves.");
+		defeatSurokSidebar.addText("He has three special attacks:");
+		defeatSurokSidebar.addText("1. A henchman appears. Cast 'Weaken' on a 'Strong' one, or 'Bind' on a 'Agile' one. If they reach you you will take 40+ damage.");
+		defeatSurokSidebar.addText("2. Surok throws an explosive orb. You must telegrab it, and then alch it, or you will take 45+ damage.");
+		defeatSurokSidebar.addText("3. Surok casts a surge attack. Case the opposite elemental spell back. Cast Air for Earth, Water for Fire, Earth for Air, Fire for Water.");
+		defeatSurokSidebar.addSubSteps(defeatSurok);
+
+		plantOrbOnSurok = new NpcStep(this, NpcID.SUROK_MAGIS_13551, new WorldPoint(4145, 4850, 2), "Use the teleorb on Surok Magis.", silifTeleorb.highlighted());
+		plantOrbOnSurok.addIcon(ItemID.TELEORB_29537);
+
+		// Planted orb:
+		// 8653 597 -> 600
+		// 10780 0->4
+		// 10783 1->0
+		// 10801 1->0
+		// 10826 1->0
+		// 10670 1->0
+
+		talkToAkrisaeAfterSurok = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0),
+			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.", strangeTeleorb);
+		// Ready for cell. Will be swapped. Can grab the strange teleorb once teleported in.
+		// 610->620
+
 //		enterCellWithRobesOn = new Step();
 //		activatedStrangeTeleorb = new Step();
 //		climbIceWall = new Step();
@@ -1036,8 +1113,11 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			List.of(meleeGear, lanternLens, dibber, astralRune, cosmicRune, airRune.quantity(2)), List.of(coinsForSnapdragon, burthorpeTeleport)));
 		allSteps.add(new PanelDetails("Infiltration", List.of(talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile,
 			castChargedOrbOnTile, enterCatacombs, jumpBridge, climbWallInCatacombs, useWesternSolidDoor, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour,
-			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif, useRestoreOnSilif),
-			List.of(bronzeMedHelm, ironChainbody)));
+			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif,
+			useRestoreOnSilif, giveSilifEliteArmour, talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurokSidebar, plantOrbOnSurok,
+			talkToAkrisaeAfterSurok),
+			List.of(bronzeMedHelm, ironChainbody, magicGear), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes)));
+//		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, activateStrangeTeleorb)));
 		return allSteps;
 	}
 }

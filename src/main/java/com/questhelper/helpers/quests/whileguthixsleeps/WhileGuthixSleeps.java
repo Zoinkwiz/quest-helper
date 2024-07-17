@@ -81,12 +81,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 
 	// Items Recommended
-	ItemRequirement antipoison, burthorpeTeleport, lobster, restorePotion;
+	ItemRequirement antipoison, burthorpeTeleport, lobster, restorePotion, gamesNecklace, spade, hammer, chisel;
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
 		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey,
-		silifTeleorb, strangeTeleorb;
+		silifTeleorb, strangeTeleorb, darkSquallHood, darkSquallBody, darkSquallLegs;
 
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
@@ -96,11 +96,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	Requirement inCatacombSouth, inCatacombNorth, inCatacombF2, openedCatacombShortcut, inCatacombHQ, notSearchedWardrobeForEliteArmour,
 		notSearchedWardrobeForSquallOutfit, isSafeInCatacombs, notSearchedTableForRunes, notSearchedTableForLobsterAndRestore, notSearchedKeyRack, openedSilifCell,
-		talkedToSilif, usedFoodOnSilif, usedRestoreOnSilif, givenArmourToSilif, silifIsFollowing, seenMap, inSquallFightRoom, defeatedSurok;
+		talkedToSilif, usedFoodOnSilif, usedRestoreOnSilif, givenArmourToSilif, silifIsFollowing, seenMap, inSquallFightRoom, defeatedSurok, inTeleportSpot, inLucienCamp,
+		onChaosTempleF1, inJunaRoom, inAbyssEntry, notUsedSpadeOnEarthRocks;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
 		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild, blackKnightFortress1, blackKnightFortress2, blackKnightFortress3, hiddenRoom,
-		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ, squallFightRoom;
+		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ, squallFightRoom, teleportSpot, lucienCamp, chaosTempleF1,
+		junaRoom, abyssEntry;
 
 	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
@@ -127,7 +129,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		climbWallInCatacombs, useWesternSolidDoor, enterCatacombShortcut, enterNorthernSolidDoor, killKnightsForEliteArmour, equipSquallOrEliteArmour, searchWardrobeForEliteArmour, searchWardrobeForSquallRobes,
 		searchDeskForTeleorb, searchDeskForLobster, searchDeskForLawAndDeathRune, searchKeyRack, leaveSolidDoor, openSilifsCell, useLobsterOnSilif, useRestoreOnSilif, giveSilifEliteArmour,
 		talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurok, defeatSurokSidebar, plantOrbOnSurok, talkToAkrisaeAfterSurok, enterCellWithRobesOn,
-		activateStrangeTeleorb, climbIceWall, jumpToLedge, goToEastOfChapel, talkToIdriaAfterChapel;
+		talkToSilifForRobes, activateStrangeTeleorb, climbIceWall, jumpToLedge, talkToIdriaAfterChapel;
+
+	DetailedQuestStep goDownForOrbAndRunes, takeStrangeTeleorb, takeRunes, goUpToUseTeleorb, getRunes, standAtTeleportSpot;
+
+	DetailedQuestStep teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade, searchRemainsForHammerAndChisel, searchRemainsForChisel, useSpadeOnRocks,
+		useChiselOnBrazier, useSpadeOnEarthRocks, useChiselOnEarthBrazier, useSpadeOnAirRocks, useChiselOnAirBrazier, useSpadeOnWaterRocks, useChiselOnWaterBrazier, examineRecessedBlock1,
+		examineRecessedBlock2, examineRecessedBlock3, climbWallNextToSkull, examineRecessedBlock4, climbDownFromSkull, enterSkull, useKeyOnDoor;
 
 	WeightStep solveWeightPuzzle;
 
@@ -387,9 +395,55 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(610, talkToAkrisaeAfterSurok);
 
 		// Ready for cell
-//		steps.put(620, enterCellWithRobesOn);
-		return steps;
+		ConditionalStep goEnterCellWithRobesOn = new ConditionalStep(this, talkToSilifForRobes);
+		goEnterCellWithRobesOn.addStep(squallOutfit, enterCellWithRobesOn);
 
+		steps.put(620, goEnterCellWithRobesOn);
+
+		ConditionalStep goWitnessTrueTerror = new ConditionalStep(this, enterBlackKnightFortress);
+		goWitnessTrueTerror.addStep(and(onChaosTempleF1), jumpToLedge);
+		goWitnessTrueTerror.addStep(and(inLucienCamp), climbIceWall);
+		goWitnessTrueTerror.addStep(and(inTeleportSpot, strangeTeleorb, deathRune, lawRune), activateStrangeTeleorb);
+		goWitnessTrueTerror.addStep(and(inSquallFightRoom, strangeTeleorb, deathRune, lawRune), standAtTeleportSpot);
+		goWitnessTrueTerror.addStep(and(inSquallFightRoom, strangeTeleorb, not(notSearchedTableForRunes)), getRunes);
+		goWitnessTrueTerror.addStep(and(inSquallFightRoom), goDownForOrbAndRunes);
+		goWitnessTrueTerror.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedTableForTeleorb), takeStrangeTeleorb);
+		goWitnessTrueTerror.addStep(and(inCatacombHQ, isSafeInCatacombs, notSearchedTableForRunes), takeRunes);
+		goWitnessTrueTerror.addStep(and(inCatacombHQ), goUpToUseTeleorb);
+		goWitnessTrueTerror.addStep(and(inCatacombF2, openedCatacombShortcut), enterNorthernSolidDoor);
+		goWitnessTrueTerror.addStep(and(inCatacombSouth, openedCatacombShortcut), enterCatacombShortcut);
+		goWitnessTrueTerror.addStep(inCatacombF2, useWesternSolidDoor);
+		goWitnessTrueTerror.addStep(inCatacombNorth, climbWallInCatacombs);
+		goWitnessTrueTerror.addStep(inCatacombSouth, jumpBridge);
+		goWitnessTrueTerror.addStep(inBlackKnightFortressBasement, enterCatacombs);
+		goWitnessTrueTerror.addStep(inHiddenRoom, climbDownBlackKnightBasement);
+		goWitnessTrueTerror.addStep(inBlackKnightFortress, pushHiddenWall);
+		steps.put(630, goWitnessTrueTerror);
+		steps.put(640, goWitnessTrueTerror);
+		steps.put(650, goWitnessTrueTerror);
+		steps.put(660, goWitnessTrueTerror);
+
+		steps.put(670, talkToIdriaAfterChapel);
+		steps.put(680, talkToIdriaAfterChapel);
+
+		ConditionalStep goTalkToMovario = new ConditionalStep(this, teleportToJuna);
+		goTalkToMovario.addStep(inJunaRoom, talkToMovario);
+		steps.put(690, goTalkToMovario);
+		steps.put(700, goTalkToMovario);
+
+		ConditionalStep goIntoAbyss = new ConditionalStep(this, teleportToJuna);
+		goIntoAbyss.addStep(inJunaRoom, useLitSapphireLanternOnLightCreature);
+		steps.put(710, goIntoAbyss);
+
+		ConditionalStep goDoSkullPuzzle = new ConditionalStep(this, goIntoAbyss);
+//		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedSpadeOnNERocks), useSpadeOnRocks);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel), useChiselOnBrazier);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedSpadeOnEarthRocks), useSpadeOnEarthRocks);
+//		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notGotEarthOrb), useChiselOnEarthBrazier);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade), searchRemainsForHammerAndChisel);
+		goDoSkullPuzzle.addStep(inAbyssEntry, searchRemainsForSpade);
+		steps.put(740, goDoSkullPuzzle);
+		return steps;
 	}
 
 	@Override
@@ -401,8 +455,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		knife.setTooltip("There is a knife spawn next to the Hunting Expert");
 
-		sapphireLantern = new ItemRequirement("Emerald lantern", ItemID.SAPPHIRE_LANTERN_4701).isNotConsumed();
-		litSapphireLantern = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702).isNotConsumed();
+		sapphireLantern = new ItemRequirement("Sapphire lantern", ItemID.SAPPHIRE_LANTERN_4701).isNotConsumed();
+		litSapphireLantern = new ItemRequirement("Lit sapphire lantern", ItemID.SAPPHIRE_LANTERN_4702).isNotConsumed();
 		litSapphireLantern.setTooltip("You can make this by using a cut sapphire on a bullseye lantern");
 
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
@@ -430,6 +484,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		ironChainbody = new ItemRequirement("Iron chainbody", ItemID.IRON_CHAINBODY);
 		snapdragonSeed = new ItemRequirement("Snapdragon seed", ItemID.SNAPDRAGON_SEED);
 		dibber = new ItemRequirement("Seed dibber (only if not done barb training)", ItemID.SEED_DIBBER);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 
 		ItemRequirement cosmic3 = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE, 3);
 		ItemRequirement fire30 = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 30)
@@ -473,6 +528,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		alchRunes = new ItemRequirements("Low level alchemy spell", natureRune, fireRune.quantity(3));
 		telegrabRunes = new ItemRequirements("Telekinetic grab", lawRune, airRune);
 
+		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 
 		// Quest items
 		dirtyShirt = new ItemRequirement("Dirty shirt", ItemID.DIRTY_SHIRT);
@@ -505,9 +563,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		eliteBlackKnightOutfit = new ItemRequirements("Full elite black knight", eliteHelm, eliteBody, eliteLegs);
 
-		ItemRequirement darkSquallHood = new ItemRequirement("Dark squall hood", ItemID.DARK_SQUALL_HOOD);
-		ItemRequirement darkSquallBody = new ItemRequirement("Dark squall robe top", ItemID.DARK_SQUALL_ROBE_TOP);
-		ItemRequirement darkSquallLegs = new ItemRequirement("Dark squall robe bottom", ItemID.DARK_SQUALL_ROBE_BOTTOM);
+		darkSquallHood = new ItemRequirement("Dark squall hood", ItemID.DARK_SQUALL_HOOD);
+		darkSquallBody = new ItemRequirement("Dark squall robe top", ItemID.DARK_SQUALL_ROBE_TOP);
+		darkSquallLegs = new ItemRequirement("Dark squall robe bottom", ItemID.DARK_SQUALL_ROBE_BOTTOM);
 		squallOutfit = new ItemRequirements("Full dark squall outfit", darkSquallHood, darkSquallBody, darkSquallLegs);
 
 		eliteBlackKnightOrSquallOutfit = new ItemRequirements(LogicType.OR, "Full elite black knight or dark squall outfit", eliteBlackKnightOutfit, squallOutfit);
@@ -653,6 +711,23 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		squallFightRoom = new Zone(new WorldPoint(4126, 4840, 2), new WorldPoint(4151, 4861, 2));
 		inSquallFightRoom = new ZoneRequirement(squallFightRoom);
 		defeatedSurok = new VarbitRequirement(9653, 597, Operation.GREATER_EQUAL);
+
+		teleportSpot = new Zone(new WorldPoint(4135, 4848, 2), new WorldPoint(4138, 4851, 2));
+		inTeleportSpot = new ZoneRequirement(teleportSpot);
+
+		lucienCamp = new Zone(new WorldPoint(2893, 3777, 0), new WorldPoint(2943, 3854, 0));
+		inLucienCamp = new ZoneRequirement(lucienCamp);
+
+		chaosTempleF1 = new Zone(new WorldPoint(2942, 3815, 1), new WorldPoint(2958, 3829, 1));
+		onChaosTempleF1 = new ZoneRequirement(chaosTempleF1);
+
+		junaRoom = new Zone(new WorldPoint(3205, 9484, 0), new WorldPoint(3263, 9537, 2));
+		inJunaRoom = new ZoneRequirement(junaRoom);
+
+		abyssEntry = new Zone(new WorldPoint(4040, 4550, 0), new WorldPoint(4078, 4613, 0));
+		inAbyssEntry = new ZoneRequirement(abyssEntry);
+
+		notUsedSpadeOnEarthRocks = new VarbitRequirement(10812, 0);
 	}
 
 	@Subscribe
@@ -1059,7 +1134,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToSilifAtMap = new NpcStep(this, NpcID.SILIF_13521, new WorldPoint(4142, 4855, 1), "Talk to Silif near the map until he gives you a teleorb.");
 		defeatSurok = new NpcStep(this, NpcID.SUROK_MAGIS_13482, new WorldPoint(4145, 4850, 2), "Defeat Surok. Read the sidebar for more details.");
 
-
 		defeatSurokSidebar = new NpcStep(this, NpcID.SUROK_MAGIS_13482, new WorldPoint(4145, 4850, 2), "Defeat Surok. You must use magic to hurt him. You cannot use powered staves.");
 		defeatSurokSidebar.addText("He has three special attacks:");
 		defeatSurokSidebar.addText("1. A henchman appears. Cast 'Weaken' on a 'Strong' one, or 'Bind' on a 'Agile' one. If they reach you you will take 40+ damage.");
@@ -1082,13 +1156,73 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.", strangeTeleorb);
 		// Ready for cell. Will be swapped. Can grab the strange teleorb once teleported in.
 		// 610->620
+		talkToSilifForRobes = new NpcStep(this, NpcID.SILIF_13520, new WorldPoint(2989, 3338, 0), "Talk to Silif near Akrisae for the dark squall robes.");
+		enterCellWithRobesOn = new ObjectStep(this, ObjectID.CELL_GATE_53281, new WorldPoint(2988, 3343, 0), "Enter the cell near Akrisae.", darkSquallHood.equipped(),
+			darkSquallBody.equipped(), darkSquallLegs.equipped());
+		enterCellWithRobesOn.addDialogStep("I'm ready.");
+		enterCellWithRobesOn.addSubSteps(talkToSilifForRobes);
+		// Quest state 620->630
+		// 10778 0->2
+		// 10774 1->0
+		goDownForOrbAndRunes = new ObjectStep(this, ObjectID.LADDER_53371, new WorldPoint(4142, 4855, 2),
+			"Climb down the ladder to retrieve a strange teleorb and runes.", squallOutfit.equipped());
+		takeStrangeTeleorb = new ObjectStep(this, NullObjectID.NULL_54077, new WorldPoint(4119, 4844, 1), "Search the south table for a strange teleorb.", squallOutfit.equipped());
+		takeRunes = new ObjectStep(this, NullObjectID.NULL_54080, new WorldPoint(4113, 4849, 1), "Search the west desk for a law and death rune.", squallOutfit.equipped());
+		// If not got runes, and no runes on table, then tell player to get runes
+		goUpToUseTeleorb = new ObjectStep(this, ObjectID.LADDER_53370, new WorldPoint(4142, 4855, 1), "Climb back up the ladder to the east.",
+			strangeTeleorb, lawRune, deathRune, squallOutfit);
+		activateStrangeTeleorb = new DetailedQuestStep(this, "Activate the strange teleorb. Make sure your law and death rune are not in a rune pouch.", strangeTeleorb.highlighted());
+		getRunes = new DetailedQuestStep(this, "Get a death rune and a law rune.", lawRune, deathRune);
+		standAtTeleportSpot = new DetailedQuestStep(this, new WorldPoint(4136, 4849, 2), "Stand in the middle of the room.");
+		standAtTeleportSpot.setHighlightZone(teleportSpot);
+		climbIceWall = new ObjectStep(this, ObjectID.ICE_WALL, new WorldPoint(2942, 3822, 0), "Climb the ice wall in the north-east, next to the chaos temple.");
+		jumpToLedge = new ObjectStep(this, ObjectID.LEDGE_53288, new WorldPoint(2943, 3822, 1), "Jump across the ledge, and watch the following cutscene.");
+		talkToIdriaAfterChapel = new NpcStep(this, NpcID.IDRIA, new WorldPoint(2989, 3342, 0), "Return to Idria in Falador Castle.");
+		// Talked to Idria
+		// 10809 0->2
+		// Quest 680->690
 
-//		enterCellWithRobesOn = new Step();
-//		activatedStrangeTeleorb = new Step();
-//		climbIceWall = new Step();
-//		jumpToLedge = new Step();
-//		goToEastOfChapel = new Step();
-//		talkToIdriaAfterChapel
+		teleportToJuna = new DetailedQuestStep(this, "Teleport to the Tears of Guthix using a games necklace, or travel there through the Lumbridge Swamp.",
+			squallOutfit, litSapphireLantern, meleeGear, rangedGear, magicGear);
+		teleportToJuna.addTeleport(gamesNecklace);
+		teleportToJuna.addDialogStep("Tears of Guthix.");
+		talkToMovario = new NpcStep(this, NpcID.MOVARIO_13567, new WorldPoint(3229, 9528, 2),
+			"Talk to Movario in the north-west of the area.", darkSquallHood.equipped(), darkSquallBody.equipped(), darkSquallLegs.equipped());
+		useLitSapphireLanternOnLightCreature = new NpcStep(this, NpcID.LIGHT_CREATURE_5435, new WorldPoint(3228, 9525, 2),
+			"Use a lit sapphire lantern on one of the light creatures to descend into the abyss.", true, litSapphireLantern.highlighted());
+		useLitSapphireLanternOnLightCreature.addIcon(ItemID.SAPPHIRE_LANTERN_4702);
+		// Started going down:
+		// 10820 0->2
+		// Once down:
+		// 9653 710->740
+		// 10827 0->1
+		// 4066 VARP 56090622->64479230
+
+		searchRemainsForSpade = new ObjectStep(this, ObjectID.SKELETAL_REMAINS_53810, new WorldPoint(4070, 4605, 0), "Search the remains to the north-east for a spade.");
+		searchRemainsForHammerAndChisel = new ObjectStep(this, ObjectID.SKELETAL_REMAINS, new WorldPoint(4067, 4600, 0), "Search the remains in the middle of the area for a hammer and chisel.");
+		useSpadeOnRocks = new ObjectStep(this, ObjectID.ROCKS_53727, new WorldPoint(4072, 4604, 0), "Use a spade on the rocks in the north-east of the area.", spade.highlighted());
+		useSpadeOnRocks.addIcon(ItemID.SPADE);
+		useSpadeOnRocks.addDialogStep("Yes.");
+
+//		useChiselOnBrazier = new Step();
+
+		useSpadeOnEarthRocks = new ObjectStep(this, ObjectID.ROCKS_53731, new WorldPoint(4056, 4602, 0), "Use a spade on the rocks in the north-west of the area.", spade.highlighted());
+		useSpadeOnEarthRocks.addIcon(ItemID.SPADE);
+		useSpadeOnEarthRocks.addDialogStep("Yes.");
+		useChiselOnEarthBrazier = new ObjectStep(this, ObjectID.BRAZIER_53732, new WorldPoint(4056, 4602, 0), "Use a chisel on the north-west brazier.", chisel.highlighted(), hammer);
+		useChiselOnEarthBrazier.addIcon(ItemID.CHISEL);
+//		useSpadeOnAirRocks = new Step();
+//		useChiselOnAirBrazier = new Step();
+//		useSpadeOnWaterRocks = new Step();
+//		useChiselOnWaterBrazier = new Step();
+//		examineRecessedBlock1 = new ObjectStep();
+//		examineRecessedBlock2 = new Step();
+//		examineRecessedBlock3 = new Step();
+//		climbWallNextToSkull = new Step();
+//		examineRecessedBlock4 = new Step();
+//		climbDownFromSkull = new Step();
+//		enterSkull = new Step();
+//		useKeyOnDoor = new ObjectStep();
 	}
 
 	@Override
@@ -1117,7 +1251,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			useRestoreOnSilif, giveSilifEliteArmour, talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurokSidebar, plantOrbOnSurok,
 			talkToAkrisaeAfterSurok),
 			List.of(bronzeMedHelm, ironChainbody, magicGear), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes)));
-//		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, activateStrangeTeleorb)));
+		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, goDownForOrbAndRunes, takeRunes, takeStrangeTeleorb, goUpToUseTeleorb,
+			standAtTeleportSpot, activateStrangeTeleorb, climbIceWall, jumpToLedge)));
+		allSteps.add(new PanelDetails("???", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,
+			searchRemainsForHammerAndChisel, useSpadeOnRocks, useSpadeOnEarthRocks, useChiselOnEarthBrazier),
+			List.of(squallOutfit, litSapphireLantern, meleeGear, rangedGear, magicGear),
+			List.of(gamesNecklace)));
 		return allSteps;
 	}
 }

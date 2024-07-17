@@ -433,7 +433,6 @@ public class TheFremennikIsles extends BasicQuestHelper
 		talkToGjukiAfterOre = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.");
 		bringOreToGjuki.addSubSteps(talkToGjukiAfterOre);
 
-		client.getRealSkillLevel()
 		returnToRellekkaFromJatizso = new NpcStep(this, NpcID.MORD_GUNNARS_1940, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
 		returnToRellekkaFromJatizso.addDialogStep("Can you ferry me to Rellekka?");
 

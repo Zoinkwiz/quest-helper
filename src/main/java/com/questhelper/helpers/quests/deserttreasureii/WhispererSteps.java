@@ -882,7 +882,7 @@ public class WhispererSteps extends ConditionalStep
 			new ObjectStep(getQuestHelper(), ObjectID.SHADOW_BLOCKER, "Pick up the shadow blocker."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		recallShadowBlocker = new PuzzleWrapperStep(getQuestHelper(),
-			new DetailedQuestStep(getQuestHelper(), "Use the blackstone to recall everything.", blackstoneFragment.highlighted()),
+			new DetailedQuestStep(getQuestHelper(), "Right-click and select 'Recall' on the blackstone fragment to recall everything.", blackstoneFragment.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		recallShadowBlocker.addDialogStep("Yes.");
 		retrieveShadowBlocker.addSubSteps(recallShadowBlocker);
@@ -1013,7 +1013,7 @@ public class WhispererSteps extends ConditionalStep
 			blackstoneFragment.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		recallDevices = new PuzzleWrapperStep(getQuestHelper(),
-			new DetailedQuestStep(getQuestHelper(), "Use the blackstone fragment to recall all your devices.", blackstoneFragment.highlighted()),
+			new DetailedQuestStep(getQuestHelper(), "Right-click and select 'Recall' on the blackstone fragment to recall all your devices.", blackstoneFragment.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		recallDevices.addDialogStep("Yes.");
 

@@ -173,7 +173,7 @@ public class WhispererSteps extends ConditionalStep
 		pubSteps.addStep(blockerPlacedAtPub, enterResedentialWestPuddle);
 		pubSteps.addStep(shadowBlocker, placeShadowBlockerWestResidential);
 
-		ConditionalStep getAnimaPortalSteps = new ConditionalStep(getQuestHelper(), claimSuperiorShadowTorch);
+		ConditionalStep getAnimaPortalSteps = new ConditionalStep(getQuestHelper(), claimAnimaPortal);
 		getAnimaPortalSteps.addStep(and(animaPortalSchematic, inLassar), bringKetlaTheAnimaPortalSchematic);
 		getAnimaPortalSteps.addStep(and(animaPortalSchematic, inLassarShadowRealm), activateBlackstoneFragment5);
 //		getAnimaPortalSteps.addStep(and(superiorTorch, inLassar, destroyedTentacles3), getAnimaPortalSchematicRealWorld);
@@ -1378,7 +1378,7 @@ public class WhispererSteps extends ConditionalStep
 			placeIdol, enterResedentialPuddleAgain, destroyTentacles2, activateBlackstoneFragment3, getBlueShadowKeyRealRealm, recallDevices,
 			placeShadowBlockerWestResidential, enterResedentialWestPuddle, openPubDoor, takeSuperiorTorchSchematic,
 			activateBlackstoneFragment4, bringKetlaTheSuperiorTorchSchematic, claimSuperiorShadowTorch, enterSciencePuddle2,
-			getAnimaPortalSchematic, activateBlackstoneFragment5, bringKetlaTheAnimaPortalSchematic, enterPlazaPuddle,
+			getAnimaPortalSchematic, activateBlackstoneFragment5, bringKetlaTheAnimaPortalSchematic, claimAnimaPortal, enterPlazaPuddle,
 			destroyTentacles4, activateBlackstoneFragment6, takeWhiteShadowKey, placeBlockerWhiteChest, placeAnimaWhiteChest,
 			placeIdolWhiteChest, enterPlazaPuddle2, lightBraziers, openFinalChest, activateBlackstoneFragment7,
 			bringKetlaThePerfectSchematic);

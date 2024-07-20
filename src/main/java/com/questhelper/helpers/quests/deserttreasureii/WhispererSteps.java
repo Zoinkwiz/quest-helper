@@ -1152,23 +1152,23 @@ public class WhispererSteps extends ConditionalStep
 
 		placeBlockerWhiteChest = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2574, 6449, 0),
-			"Return to the palace in the north-west, and place the shadow blocker near to the chest there. " +
-				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", shadowBlocker.highlighted()),
+			"Return to the palace in the north-west. Face the marked tile and place the shadow blocker to place it onto the marked tile.",
+				shadowBlocker.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeBlockerWhiteChest.addDialogSteps("Palace.");
 		placeBlockerWhiteChest.addIcon(ItemID.SHADOW_BLOCKER);
 
 		placeAnimaWhiteChest = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2576, 6447, 0),
-			"Place the anima portal between the two braziers near the chest. " +
-				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", animaPortal.highlighted()),
+			"Face the marked tile and place the anima portal to place it onto the marked tile.",
+				animaPortal.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeAnimaWhiteChest.addIcon(ItemID.ANIMA_PORTAL);
 
 		placeIdolWhiteChest = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2578, 6445, 0),
-			"Place the idol near to the chest. " +
-				"Make sure you are facing the marked tile and not diagonally to it to place it correctly.", revitalisingIdol.highlighted()),
+			"Face the marked tile and place the idol to place it into the marked tile.",
+				revitalisingIdol.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeIdolWhiteChest.addIcon(ItemID.REVITALISING_IDOL);
 

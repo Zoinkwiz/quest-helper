@@ -155,8 +155,7 @@ public class WhispererSteps extends ConditionalStep
 		lockedDoorSteps.addStep(and(hadPurpleKey), claimShadowBlocker);
 
 		ConditionalStep blueKeySteps = new ConditionalStep(getQuestHelper(), claimRevitalisingIdol);
-		blueKeySteps.addStep(and(inLassarShadowRealm, blueShadowKey), activateBlackstoneFragment3);
-		blueKeySteps.addStep(and(inLassarShadowRealm, destroyedTentacles2), getBlueShadowKeyShadowRealm);
+		blueKeySteps.addStep(and(inLassarShadowRealm, destroyedTentacles2), activateBlackstoneFragment3);
 		blueKeySteps.addStep(and(inLassar, destroyedTentacles2), getBlueShadowKeyRealRealm);
 		blueKeySteps.addStep(and(inLassarShadowRealm), destroyTentacles2);
 		blueKeySteps.addStep(and(idolPlaced, basicShadowTorch), enterResedentialPuddleAgain);
@@ -1376,7 +1375,7 @@ public class WhispererSteps extends ConditionalStep
 			takeShadowTorchSchematic, activateBlackstoneFragment, bringKetlaTheBasicTorchSchematic, claimShadowTorch,
 			enterResedentialPuddle, destroyTentacles, activateBlackstoneFragment2, takeRevitalisingIdolSchematic,
 			bringKetlaTheIdolSchematic, takeRevitalisingIdolSchematic, bringKetlaTheIdolSchematic, claimRevitalisingIdol,
-			placeIdol, enterResedentialPuddleAgain, destroyTentacles2, getBlueShadowKeyRealRealm, recallDevices,
+			placeIdol, enterResedentialPuddleAgain, destroyTentacles2, activateBlackstoneFragment3, getBlueShadowKeyRealRealm, recallDevices,
 			placeShadowBlockerWestResidential, enterResedentialWestPuddle, openPubDoor, takeSuperiorTorchSchematic,
 			activateBlackstoneFragment4, bringKetlaTheSuperiorTorchSchematic, claimSuperiorShadowTorch, enterSciencePuddle2,
 			getAnimaPortalSchematic, activateBlackstoneFragment5, bringKetlaTheAnimaPortalSchematic, enterPlazaPuddle,

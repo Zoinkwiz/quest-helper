@@ -239,7 +239,7 @@ public class WhispererSteps extends ConditionalStep
 		addStep(and(or(inLassar, inLassarShadowRealm), whiteShadowKey), getPerfectedSchematicSteps);
 		addStep(and(or(inLassar, inLassarShadowRealm), givenAnimaPortalSchematic), getWhiteKeySteps);
 		addStep(and(or(inLassar, inLassarShadowRealm), givenSuperiorTorchSchematic), getAnimaPortalSteps);
-		addStep(and(or(inLassar, inLassarShadowRealm), givenIdolSchematic, or(blueShadowKey, usedBlueKey)), pubSteps);
+		addStep(and(or(inLassar, inLassarShadowRealm), givenIdolSchematic, or(blueShadowKey, usedBlueKey, superiorTorchSchematic)), pubSteps);
 		addStep(and(or(inLassar, inLassarShadowRealm), givenIdolSchematic), blueKeySteps);
 
 		addStep(and(inLassar, revitalisingIdolSchematic), bringKetlaTheIdolSchematic);

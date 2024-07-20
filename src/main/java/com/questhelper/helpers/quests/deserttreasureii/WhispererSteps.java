@@ -1241,7 +1241,7 @@ public class WhispererSteps extends ConditionalStep
 
 		destroyTentacles6 = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2383, 6408, 0),
-			"Burn the tentacles outside the house to just to the west.", superiorTorch),
+			"Burn the tentacles outside the house to the west.", superiorTorch),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		activateBlackstoneFragment9 = new PuzzleWrapperStep(getQuestHelper(),

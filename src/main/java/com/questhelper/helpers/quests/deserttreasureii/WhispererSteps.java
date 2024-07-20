@@ -204,7 +204,7 @@ public class WhispererSteps extends ConditionalStep
 		silentChoirSteps.addStep(and(inDrainF1, strangeIcon), useIconInDrain);
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, or(strangeIcon, iconUsed)), enterDrain);
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, iconSegment2), makeIcon);
-		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, usedGreenKey), openGreenChestRealWorld);
+		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, usedGreenKey), openGreenChestRealWorld); // when is this ever used?
 		silentChoirSteps.addStep(and(inLassarShadowRealm, touchedPubRemnant, iconSegment1, iconSegment2), activateBlackstoneFragment11);
 		silentChoirSteps.addStep(and(inLassarShadowRealmSW, touchedPubRemnant, iconSegment1, greenShadowKey, destroyedTentacles7), openGreenChest);
 		silentChoirSteps.addStep(and(inLassarShadowRealmSW, touchedPubRemnant, iconSegment1, greenShadowKey), destroyTentacles7);
@@ -230,7 +230,7 @@ public class WhispererSteps extends ConditionalStep
 		addStep(and(inLassarShadowRealm, unlockedPerfectShadowTorch, destroyedCathedralTentacles), activateBlackstoneFragment12);
 		addStep(and(inLassarShadowRealm, unlockedPerfectShadowTorch, perfectShadowTorch), destroyCathedralTentacles);
 		addStep(and(inLassar, unlockedPerfectShadowTorch, perfectShadowTorch), enterPuddleNearPub4);
-		addStep(and(inLassar, unlockedPerfectShadowTorch), claimPerfectShadowTorch);
+		addStep(and(inLassar, unlockedPerfectShadowTorch), claimPerfectShadowTorch); // NOTE: I was not told to do this
 		addStep(and(inLassar, escapedVision), talkToKetlaAfterVision);
 		addStep(inVision, talkToMe);
 		addStep(and(or(inLassar, inLassarShadowRealm, inDrainF0, inDrainF1), learntAboutSilentChoir), silentChoirSteps);
@@ -980,6 +980,7 @@ public class WhispererSteps extends ConditionalStep
 		claimRevitalisingIdol.addDialogSteps("Take it.", "Western Residential District.", "Take the Revitalising Idol.", "Take everything.");
 		DetailedQuestStep placeIdolRealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2689, 6415, 0), "Place the idol by the teleporter.",
 			revitalisingIdol.highlighted());
+		// NOTE: These line points showed up too late
 		placeIdolRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2668, 6414, 0),
 			new WorldPoint(2682, 6414, 0),

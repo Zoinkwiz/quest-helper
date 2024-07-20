@@ -92,7 +92,7 @@ public class WhispererSteps extends ConditionalStep
 	// Silent choir
 	QuestStep enterPuddleNearPub, goUpstairsPub, touchPubRemnant, activateBlackstoneFragment8, enterPuddleNearPub2, destroyTentacles5,
 		destroyTentacles6, activateBlackstoneFragment9, getRedShadowKey, placeBlockerInRedRoom, enterPuddleNearPub3, openRedChest, activateBlackstoneFragment10,
-		openRedChestRealWorld, openGreenChest, openGreenChestRealWorld, enterSciencePuddle3, activateBlackstoneFragment11, makeIcon,
+		openRedChestRealWorld, openGreenChest, openGreenChestRealWorld, enterSciencePuddle3, destroyTentacles7, activateBlackstoneFragment11, makeIcon,
 		enterDrain, useIconInDrain, goDownDrainLadder, inspectPillar, talkToMe, talkToKetlaAfterVision, claimPerfectShadowTorch, enterPuddleNearPub4,
 		destroyCathedralTentacles, activateBlackstoneFragment12, enterTheCathedral, fightWhispererSidebar, searchEntrails, returnToDesertWithWhisperersMedallion,
 		useWhisperersMedallionOnStatue, restoreSanity;
@@ -120,6 +120,7 @@ public class WhispererSteps extends ConditionalStep
 		blockerPlacedInRedRoom, hadRedShadowKey, redKeyUsed, inLassarShadowRealmSW, usedGreenKey, iconUsed, inDrainF0,
 		inDrainF1, inVision, escapedVision, unlockedPerfectShadowTorch, destroyedCathedralTentacles, enteredCathedral,
 		completedOtherMedallions, inStartingRoom, inScienceDistrict, inResidentialDistrict, inEastShadowRealm, inRealPub;
+	Requirement destroyedTentacles7;
 
 	RuneliteRequirement blockerNotInBenchOrInventory;
 
@@ -205,7 +206,8 @@ public class WhispererSteps extends ConditionalStep
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, iconSegment2), makeIcon);
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, usedGreenKey), openGreenChestRealWorld);
 		silentChoirSteps.addStep(and(inLassarShadowRealm, touchedPubRemnant, iconSegment1, iconSegment2), activateBlackstoneFragment11);
-		silentChoirSteps.addStep(and(inLassarShadowRealmSW, touchedPubRemnant, iconSegment1, greenShadowKey), openGreenChest);
+		silentChoirSteps.addStep(and(inLassarShadowRealmSW, touchedPubRemnant, iconSegment1, greenShadowKey, destroyedTentacles7), openGreenChest);
+		silentChoirSteps.addStep(and(inLassarShadowRealmSW, touchedPubRemnant, iconSegment1, greenShadowKey), destroyTentacles7);
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1, greenShadowKey), enterSciencePuddle3);
 		silentChoirSteps.addStep(and(inLassar, touchedPubRemnant, iconSegment1), takeGreenShadowKey);
 		silentChoirSteps.addStep(and(inLassarShadowRealm, touchedPubRemnant, iconSegment1), activateBlackstoneFragment10);
@@ -651,6 +653,26 @@ public class WhispererSteps extends ConditionalStep
 					new Zone(new WorldPoint(2383, 6407, 0), new WorldPoint(2383, 6408, 0))
 				),
 				realWorldTentacle6Exists
+			)
+		);
+
+		var withinRangeOfTentacle7 =
+			or(
+				new TileIsLoadedRequirement(new WorldPoint(2349, 6343, 0)),
+				new TileIsLoadedRequirement(new WorldPoint(2605, 6343, 0))
+			);
+
+		ObjectCondition realWorldTentacle7Exists = new ObjectCondition(NullObjectID.NULL_48204,
+			new Zone(new WorldPoint(2605, 6343, 0), new WorldPoint(2605, 6344, 0))
+		);
+
+		destroyedTentacles7 = new Conditions(
+			withinRangeOfTentacle7,
+			nor(
+				new ObjectCondition(ObjectID.TENTACLE_48205,
+					new Zone(new WorldPoint(2349, 6343, 0), new WorldPoint(2349, 6344, 0))
+				),
+				realWorldTentacle7Exists
 			)
 		);
 
@@ -1262,9 +1284,13 @@ public class WhispererSteps extends ConditionalStep
 			"Go to the Southern Science District and enter the puddle there."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterSciencePuddle3.addDialogStep("Southern Science District.");
+		destroyTentacles7 = new PuzzleWrapperStep(getQuestHelper(),
+			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2349, 6343, 0),
+				"Destroy the tentacles outside the small house to the south.", superiorTorch, greenShadowKey),
+			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openGreenChest = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2354, 6339, 0),
-			"Open the chest in the small house to the south. Destroy the tentacle to access the house.", superiorTorch, greenShadowKey),
+			"Open the chest in the small house to the south.", superiorTorch, greenShadowKey),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openGreenChestRealWorld = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48228, new WorldPoint(2610, 6339, 0),
@@ -1388,7 +1414,7 @@ public class WhispererSteps extends ConditionalStep
 	{
 		return QuestUtil.toArrayList(enterPuddleNearPub, goUpstairsPub, touchPubRemnant, activateBlackstoneFragment8, enterPuddleNearPub2,
 			destroyTentacles5, destroyTentacles6, activateBlackstoneFragment9, getRedShadowKey, placeBlockerInRedRoom, enterPuddleNearPub3, openRedChest,
-			activateBlackstoneFragment10, enterSciencePuddle3, openGreenChest, activateBlackstoneFragment11, makeIcon, enterDrain, useIconInDrain,
+			activateBlackstoneFragment10, enterSciencePuddle3, destroyTentacles7, openGreenChest, activateBlackstoneFragment11, makeIcon, enterDrain, useIconInDrain,
 			goDownDrainLadder, inspectPillar, talkToMe, talkToKetlaAfterVision, claimPerfectShadowTorch, enterPuddleNearPub4, destroyCathedralTentacles,
 			activateBlackstoneFragment12, fightWhispererSidebar, searchEntrails, returnToDesertWithWhisperersMedallion, useWhisperersMedallionOnStatue);
 	}

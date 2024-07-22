@@ -313,7 +313,6 @@ public class DesertHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("Pharaoh's sceptre can hold up to 50 charges"),
-			new UnlockReward("Access to the shortcut just north of the Shantay Pass, requiring 70 Agility"),
 			new UnlockReward("Unlocked the ability to toggle the Camulet teleport location between the inside and outside of Enakhra's Temple"),
 			new UnlockReward("All carpet rides are free"),
 			new UnlockReward("Zahur will create unfinished potions for 200 coins per potion from a vial of water and a clean herb. Items can be noted or unnoted"),

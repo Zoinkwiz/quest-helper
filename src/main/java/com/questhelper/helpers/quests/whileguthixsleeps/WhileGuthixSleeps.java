@@ -28,12 +28,15 @@ import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.util.ItemSlots;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
@@ -86,7 +89,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
 		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey,
-		silifTeleorb, strangeTeleorb, darkSquallHood, darkSquallBody, darkSquallLegs;
+		silifTeleorb, strangeTeleorb, darkSquallHood, darkSquallBody, darkSquallLegs, fireOrb, waterOrb, airOrb, earthOrb, airBlock, waterBlock, earthBlock, fireBlock;
 
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
@@ -97,12 +100,16 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	Requirement inCatacombSouth, inCatacombNorth, inCatacombF2, openedCatacombShortcut, inCatacombHQ, notSearchedWardrobeForEliteArmour,
 		notSearchedWardrobeForSquallOutfit, isSafeInCatacombs, notSearchedTableForRunes, notSearchedTableForLobsterAndRestore, notSearchedKeyRack, openedSilifCell,
 		talkedToSilif, usedFoodOnSilif, usedRestoreOnSilif, givenArmourToSilif, silifIsFollowing, seenMap, inSquallFightRoom, defeatedSurok, inTeleportSpot, inLucienCamp,
-		onChaosTempleF1, inJunaRoom, inAbyssEntry, notUsedSpadeOnEarthRocks;
+		onChaosTempleF1, inJunaRoom, inAbyssEntry, notUsedSpadeOnEarthRocks, notUsedChiselOnEarthBrazier, notUsedSpadeOnFireRocks, notUsedChiselOnFireBrazier,
+		notUsedChiselOnWaterBrazier, notUsedChiselOnAirBrazier, usedChiselOnAllBraziers, notPlacedAirOrb, notPlacedWaterOrb, notPlacedEarthOrb, notPlacedFireOrb, inAbyssEntryF1,
+		inAbyssEntryF2, placedAllOrbs, notPlacedFireBlock, placedAirBlock, placedWaterBlock, placedEarthBlock, placedAllBlocks;
+
+	Requirement noWeaponOrShieldEquipped, inAirCavity, inWaterCavity, inEarthCavity;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
 		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild, blackKnightFortress1, blackKnightFortress2, blackKnightFortress3, hiddenRoom,
 		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ, squallFightRoom, teleportSpot, lucienCamp, chaosTempleF1,
-		junaRoom, abyssEntry;
+		junaRoom, abyssEntry, abyssEntryF1, abyssEntryF2, airCavity, waterCavity, earthCavity;
 
 	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
@@ -133,9 +140,15 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	DetailedQuestStep goDownForOrbAndRunes, takeStrangeTeleorb, takeRunes, goUpToUseTeleorb, getRunes, standAtTeleportSpot;
 
-	DetailedQuestStep teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade, searchRemainsForHammerAndChisel, searchRemainsForChisel, useSpadeOnRocks,
-		useChiselOnBrazier, useSpadeOnEarthRocks, useChiselOnEarthBrazier, useSpadeOnAirRocks, useChiselOnAirBrazier, useSpadeOnWaterRocks, useChiselOnWaterBrazier, examineRecessedBlock1,
-		examineRecessedBlock2, examineRecessedBlock3, climbWallNextToSkull, examineRecessedBlock4, climbDownFromSkull, enterSkull, useKeyOnDoor;
+	DetailedQuestStep teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade, searchRemainsForHammerAndChisel, useSpadeOnFireRocks,
+		useChiselOnFireBrazier, useSpadeOnEarthRocks, useChiselOnEarthBrazier, useChiselOnAirBrazier, useChiselOnWaterBrazier, useOrbOnFireRecessedBlock,
+		useOrbOnWaterRecessedBlock, useOrbOnAirRecessedBlock, climbWallNextToSkullF0ToF1, climbWallNextToSkullF1ToF2, useOrbOnEarthRecessedBlock, climbDownFromSkullF2ToF1,
+		climbDownFromSkullF1ToF0;
+
+	DetailedQuestStep useFireBlockOnRecess, enterWestCavity, useEarthBlockOnRecess, leaveWaterRecess, enterMiddleCavity, useAirBlockOnRecess, leaveEarthRecess,
+		enterEastCavity, useWaterBlockOnRecess, leaveAirRecess, climbUpToCubeF0ToF1, climbUpToCubeF1ToF2, touchCube, enterSkull;
+
+	DetailedQuestStep getPouch, getSickle, usePouchOnDruid;
 
 	WeightStep solveWeightPuzzle;
 
@@ -436,13 +449,65 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(710, goIntoAbyss);
 
 		ConditionalStep goDoSkullPuzzle = new ConditionalStep(this, goIntoAbyss);
-//		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedSpadeOnNERocks), useSpadeOnRocks);
-		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel), useChiselOnBrazier);
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF2, placedAllBlocks), touchCube);
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF1, placedAllBlocks), climbUpToCubeF1ToF2);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, placedAllBlocks), climbUpToCubeF0ToF1);
+
+		// TODO: Add in check for what leads where by checking WP of last tile, and use that to determine which cavity went where once detected player has entered at reccess zone
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF2, placedAllOrbs, notPlacedFireBlock), useFireBlockOnRecess);
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF1, placedAllOrbs, notPlacedFireBlock), climbWallNextToSkullF1ToF2);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, placedAllOrbs, notPlacedFireBlock), climbWallNextToSkullF0ToF1);
+
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF2, placedAllOrbs), climbDownFromSkullF2ToF1);
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF1, placedAllOrbs), climbDownFromSkullF1ToF0);
+
+		goDoSkullPuzzle.addStep(and(inAirCavity, placedAllOrbs, placedAirBlock), leaveAirRecess);
+		goDoSkullPuzzle.addStep(and(inAirCavity, placedAllOrbs), useAirBlockOnRecess);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, placedAllOrbs, not(placedAirBlock)), enterWestCavity);
+
+		goDoSkullPuzzle.addStep(and(inEarthCavity, placedAllOrbs, placedEarthBlock), leaveEarthRecess);
+		goDoSkullPuzzle.addStep(and(inEarthCavity, placedAllOrbs), useEarthBlockOnRecess);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, placedAllOrbs, not(placedEarthBlock)), enterMiddleCavity);
+
+		goDoSkullPuzzle.addStep(and(inWaterCavity, placedAllOrbs, placedWaterBlock), leaveWaterRecess);
+		goDoSkullPuzzle.addStep(and(inWaterCavity, placedAllOrbs), useWaterBlockOnRecess);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, placedAllOrbs, not(placedWaterBlock)), enterEastCavity);
+
+		goDoSkullPuzzle.addStep(and(inAirCavity), leaveAirRecess);
+		goDoSkullPuzzle.addStep(and(inEarthCavity), leaveEarthRecess);
+		goDoSkullPuzzle.addStep(and(inWaterCavity), leaveWaterRecess);
+
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF2, usedChiselOnAllBraziers, or(notPlacedAirOrb, notPlacedFireOrb, notPlacedEarthOrb)), climbDownFromSkullF2ToF1);
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF1, usedChiselOnAllBraziers, or(notPlacedAirOrb, notPlacedFireOrb, notPlacedEarthOrb)), climbDownFromSkullF1ToF0);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, usedChiselOnAllBraziers, notPlacedAirOrb), useOrbOnAirRecessedBlock);
+
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, usedChiselOnAllBraziers, notPlacedFireOrb), useOrbOnFireRecessedBlock);
+
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, usedChiselOnAllBraziers, notPlacedEarthOrb), useOrbOnEarthRecessedBlock);
+
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF2, usedChiselOnAllBraziers, notPlacedWaterOrb), useOrbOnWaterRecessedBlock);
+		goDoSkullPuzzle.addStep(and(inAbyssEntryF1, usedChiselOnAllBraziers, notPlacedWaterOrb), climbWallNextToSkullF1ToF2);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, usedChiselOnAllBraziers, notPlacedWaterOrb), climbWallNextToSkullF0ToF1);
+
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedSpadeOnFireRocks), useSpadeOnFireRocks);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedChiselOnFireBrazier), useChiselOnFireBrazier);
 		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedSpadeOnEarthRocks), useSpadeOnEarthRocks);
-//		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notGotEarthOrb), useChiselOnEarthBrazier);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedChiselOnEarthBrazier), useChiselOnEarthBrazier);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedChiselOnAirBrazier), useChiselOnAirBrazier);
+		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade, hammer, chisel, notUsedChiselOnWaterBrazier), useChiselOnWaterBrazier);
 		goDoSkullPuzzle.addStep(and(inAbyssEntry, spade), searchRemainsForHammerAndChisel);
 		goDoSkullPuzzle.addStep(inAbyssEntry, searchRemainsForSpade);
 		steps.put(740, goDoSkullPuzzle);
+
+		ConditionalStep goIntoMainTemple = new ConditionalStep(this, goIntoAbyss);
+		goIntoMainTemple.addStep(inAbyssEntry, climbUpToCubeF0ToF1);
+		goIntoMainTemple.addStep(inAbyssEntryF1, climbUpToCubeF1ToF2);
+		goIntoMainTemple.addStep(inAbyssEntryF2, enterSkull);
+		goIntoMainTemple.addStep(inEarthCavity, leaveEarthRecess);
+		goIntoMainTemple.addStep(inWaterCavity, leaveWaterRecess);
+		goIntoMainTemple.addStep(inAirCavity, leaveAirRecess);
+		steps.put(760, goIntoMainTemple);
+
 		return steps;
 	}
 
@@ -575,6 +640,20 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		silifTeleorb = new ItemRequirement("Teleorb", ItemID.TELEORB_29537);
 
 		strangeTeleorb = new ItemRequirement("Strange teleorb", ItemID.STRANGE_TELEORB);
+
+		airOrb = new ItemRequirement("Air orb", ItemID.AIR_ORB);
+		waterOrb = new ItemRequirement("Water orb", ItemID.WATER_ORB);
+		earthOrb = new ItemRequirement("Earth orb", ItemID.EARTH_ORB);
+		fireOrb = new ItemRequirement("Fire orb", ItemID.FIRE_ORB);
+
+		airBlock = new ItemRequirement("Air block", ItemID.AIR_BLOCK);
+		airBlock.setTooltip("You can get another by searching the recess near the eastern cavity");
+		waterBlock = new ItemRequirement("Water block", ItemID.WATER_BLOCK);
+		waterBlock.setTooltip("You can get another by searching the recess near the upstairs middle cavity");
+		earthBlock = new ItemRequirement("Earth block", ItemID.EARTH_BLOCK);
+		earthBlock.setTooltip("You can get another by searching the recess near the western cavity");
+		fireBlock = new ItemRequirement("Fire block", ItemID.FIRE_BLOCK);
+		fireBlock.setTooltip("You can get another by searching the recess near the middle cavity");
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
@@ -727,7 +806,59 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		abyssEntry = new Zone(new WorldPoint(4040, 4550, 0), new WorldPoint(4078, 4613, 0));
 		inAbyssEntry = new ZoneRequirement(abyssEntry);
 
+		notUsedSpadeOnFireRocks = new VarbitRequirement(10811, 0);
+		notUsedChiselOnFireBrazier = new VarbitRequirement(10811, 1);
+
 		notUsedSpadeOnEarthRocks = new VarbitRequirement(10812, 0);
+		notUsedChiselOnEarthBrazier = new VarbitRequirement(10812, 1);
+
+		notUsedChiselOnAirBrazier = new VarbitRequirement(10813, 0);
+		notUsedChiselOnWaterBrazier = new VarbitRequirement(10814, 0);
+
+		usedChiselOnAllBraziers = and(
+			new VarbitRequirement(10811, 2),
+			new VarbitRequirement(10812, 2),
+			new VarbitRequirement(10813, 1),
+			new VarbitRequirement(10814, 1)
+		);
+
+		abyssEntryF1 = new Zone(new WorldPoint(4058, 4552, 1), new WorldPoint(4070, 4558, 1));
+		inAbyssEntryF1 = new ZoneRequirement(abyssEntryF1);
+
+		abyssEntryF2 = new Zone(new WorldPoint(4055, 4546, 2), new WorldPoint(4072, 4556, 2));
+		inAbyssEntryF2 = new ZoneRequirement(abyssEntryF2);
+
+		notPlacedAirOrb = new VarbitRequirement(10816, 0);
+		notPlacedWaterOrb = new VarbitRequirement(10817, 0);
+		notPlacedEarthOrb = new VarbitRequirement(10818, 0);
+		notPlacedFireOrb = new VarbitRequirement(10819, 0);
+
+		placedAllOrbs = and(
+			new VarbitRequirement(10816, 1),
+			new VarbitRequirement(10817, 1),
+			new VarbitRequirement(10818, 1),
+			new VarbitRequirement(10819, 1)
+		);
+
+		// TODO: Make sure this is the right thing to check
+		// 10824 0->1
+		// 10825 0->8
+		// 10820 4->3
+		placedAirBlock = new VarbitRequirement(10821, 1);
+		placedWaterBlock = new VarbitRequirement(10822, 1);
+		placedEarthBlock = new VarbitRequirement(10823, 1);
+		notPlacedFireBlock = new VarbitRequirement(10824, 0);
+
+		noWeaponOrShieldEquipped = new ComplexRequirement("No weapon or shield equipped", new NoItemRequirement("", ItemSlots.WEAPON), new NoItemRequirement("", ItemSlots.SHIELD));
+
+		airCavity = new Zone(new WorldPoint(4107, 5095, 0), new WorldPoint(4119, 5116, 0));
+		inAirCavity = new ZoneRequirement(airCavity);
+		earthCavity = new Zone(new WorldPoint(4142, 5090, 0), new WorldPoint(4152, 5105, 0));
+		inEarthCavity = new ZoneRequirement(earthCavity);
+		waterCavity = new Zone(new WorldPoint(4119, 5065, 0), new WorldPoint(4145, 5080, 0));
+		inWaterCavity = new ZoneRequirement(waterCavity);
+
+		placedAllBlocks = new VarbitRequirement(10825, 15);
 	}
 
 	@Subscribe
@@ -1200,29 +1331,109 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		searchRemainsForSpade = new ObjectStep(this, ObjectID.SKELETAL_REMAINS_53810, new WorldPoint(4070, 4605, 0), "Search the remains to the north-east for a spade.");
 		searchRemainsForHammerAndChisel = new ObjectStep(this, ObjectID.SKELETAL_REMAINS, new WorldPoint(4067, 4600, 0), "Search the remains in the middle of the area for a hammer and chisel.");
-		useSpadeOnRocks = new ObjectStep(this, ObjectID.ROCKS_53727, new WorldPoint(4072, 4604, 0), "Use a spade on the rocks in the north-east of the area.", spade.highlighted());
-		useSpadeOnRocks.addIcon(ItemID.SPADE);
-		useSpadeOnRocks.addDialogStep("Yes.");
 
-//		useChiselOnBrazier = new Step();
+		useSpadeOnFireRocks = new ObjectStep(this, ObjectID.ROCKS_53727, new WorldPoint(4072, 4604, 0), "Use a spade on the rocks in the north-east of the area.", spade.highlighted());
+		useSpadeOnFireRocks.addIcon(ItemID.SPADE);
+		useSpadeOnFireRocks.addDialogStep("Yes.");
+
+		useChiselOnFireBrazier = new ObjectStep(this, ObjectID.BRAZIER_53728, new WorldPoint(4072, 4604, 0), "Use a chisel on the brazier in the north-east of the area.", chisel.highlighted());
+		useChiselOnFireBrazier.addIcon(ItemID.CHISEL);
+		useChiselOnFireBrazier.addDialogStep("Yes.");
 
 		useSpadeOnEarthRocks = new ObjectStep(this, ObjectID.ROCKS_53731, new WorldPoint(4056, 4602, 0), "Use a spade on the rocks in the north-west of the area.", spade.highlighted());
 		useSpadeOnEarthRocks.addIcon(ItemID.SPADE);
 		useSpadeOnEarthRocks.addDialogStep("Yes.");
 		useChiselOnEarthBrazier = new ObjectStep(this, ObjectID.BRAZIER_53732, new WorldPoint(4056, 4602, 0), "Use a chisel on the north-west brazier.", chisel.highlighted(), hammer);
 		useChiselOnEarthBrazier.addIcon(ItemID.CHISEL);
-//		useSpadeOnAirRocks = new Step();
-//		useChiselOnAirBrazier = new Step();
-//		useSpadeOnWaterRocks = new Step();
-//		useChiselOnWaterBrazier = new Step();
-//		examineRecessedBlock1 = new ObjectStep();
-//		examineRecessedBlock2 = new Step();
-//		examineRecessedBlock3 = new Step();
-//		climbWallNextToSkull = new Step();
-//		examineRecessedBlock4 = new Step();
-//		climbDownFromSkull = new Step();
-//		enterSkull = new Step();
-//		useKeyOnDoor = new ObjectStep();
+		useChiselOnEarthBrazier.addDialogStep("Yes.");
+		useChiselOnAirBrazier = new ObjectStep(this, ObjectID.BRAZIER_53819, new WorldPoint(4053, 4589, 0), "Use a chisel on the south-west brazier.", chisel.highlighted(), hammer);
+		useChiselOnAirBrazier.addIcon(ItemID.CHISEL);
+		useChiselOnAirBrazier.addDialogStep("Yes.");
+		useChiselOnWaterBrazier = new ObjectStep(this, ObjectID.BRAZIER_53820, new WorldPoint(4073, 4588, 0), "Use a chisel on the south-east brazier.", chisel.highlighted(), hammer);
+		useChiselOnWaterBrazier.addIcon(ItemID.CHISEL);
+		useChiselOnWaterBrazier.addDialogStep("Yes.");
+		useOrbOnFireRecessedBlock = new ObjectStep(this, ObjectID.RECESSED_BLOCK, new WorldPoint(4062, 4554, 0),
+			"Use the fire orb on the recessed block just next to the middle cavity to the far south, with the fire symbol next to it.", fireOrb.highlighted());
+		useOrbOnFireRecessedBlock.addIcon(ItemID.FIRE_ORB);
+
+		useOrbOnWaterRecessedBlock = new ObjectStep(this, ObjectID.RECESSED_BLOCK_53618, new WorldPoint(4063, 4548, 2),
+			"Use the water orb on the recessed block just to the south, in the skeleton's mouth.", waterOrb.highlighted());
+		useOrbOnWaterRecessedBlock.addIcon(ItemID.WATER_ORB);
+
+		useOrbOnAirRecessedBlock = new ObjectStep(this, ObjectID.RECESSED_BLOCK_53617, new WorldPoint(4068, 4557, 0),
+			"Use the air orb on the recessed block just next to the east cavity to the far south, with the air symbol next to it.", airOrb.highlighted());
+		useOrbOnAirRecessedBlock.addIcon(ItemID.AIR_ORB);
+
+		climbWallNextToSkullF0ToF1 = new ObjectStep(this, ObjectID.WALL_53623, new WorldPoint(4061, 4554, 0), "Climb up the walls to the south.");
+		climbWallNextToSkullF1ToF2 = new ObjectStep(this, ObjectID.WALL_53624, new WorldPoint(4060, 4552, 1), "Climb up the walls to the south.");
+
+		climbWallNextToSkullF0ToF1.addSubSteps(climbWallNextToSkullF1ToF2);
+
+		useOrbOnEarthRecessedBlock = new ObjectStep(this, ObjectID.RECESSED_BLOCK_53616, new WorldPoint(4056, 4557, 0),
+			"Use the earth orb on the recessed block just next to the west cavity to the far south, with the earth symbol next to it.", earthOrb.highlighted());
+		useOrbOnEarthRecessedBlock.addIcon(ItemID.EARTH_ORB);
+		climbDownFromSkullF2ToF1 = new ObjectStep(this, ObjectID.WALL_53676, new WorldPoint(4060, 4553, 2), "Climb back down.");
+		climbDownFromSkullF1ToF0 = new ObjectStep(this, ObjectID.WALL_53676, new WorldPoint(4061, 4555, 1), "Climb back down.");
+		climbDownFromSkullF2ToF1.addSubSteps(climbDownFromSkullF1ToF0);
+		// Placed water orb, 10820 2->4
+		// 10820 is the top recessed state
+		// 0 is can climb through
+		// 1 is both water block and fire block
+		// 2 is just water block in
+		// 3 is just fire block in
+		// 4 is neither block in
+
+		useFireBlockOnRecess = new ObjectStep(this, NullObjectID.NULL_54082, new WorldPoint(4063, 4548, 2),
+			"Use the fire block on the recessed block just to the south, in the skeleton's mouth.", fireBlock.highlighted());
+		useFireBlockOnRecess.addIcon(ItemID.FIRE_BLOCK);
+		// Placed fire block in recess
+		// 10824 0->1
+		// 10825 0->8
+		// 10820 4->3
+
+		// null 54082
+		// real 53619
+
+		enterWestCavity = new ObjectStep(this, NullObjectID.NULL_53634, new WorldPoint(4057, 4557, 0), "Enter the western cavity.", noWeaponOrShieldEquipped);
+		enterMiddleCavity = new ObjectStep(this, NullObjectID.NULL_53634, new WorldPoint(4063, 4554, 0), "Enter the middle cavity.", noWeaponOrShieldEquipped);
+		enterEastCavity = new ObjectStep(this, NullObjectID.NULL_53634, new WorldPoint(4069, 4557, 0), "Enter the eastern cavity.", noWeaponOrShieldEquipped);
+
+		useEarthBlockOnRecess = new ObjectStep(this, ObjectID.MECHANISM, new WorldPoint(4147, 5094, 0), "Use the earth block on the recess.", earthBlock.highlighted());
+		useEarthBlockOnRecess.addIcon(ItemID.EARTH_BLOCK);
+
+		leaveEarthRecess = new ObjectStep(this, ObjectID.HOLE_53831, new WorldPoint(4143, 5103, 0), "Return back to the main area.");
+
+		useAirBlockOnRecess = new ObjectStep(this, ObjectID.MECHANISM_53629, new WorldPoint(4113, 5098, 0), "Use the air block on the recess.", airBlock.highlighted());
+		useAirBlockOnRecess.addIcon(ItemID.AIR_BLOCK);
+
+		leaveAirRecess = new ObjectStep(this, ObjectID.HOLE_53832, new WorldPoint(4109, 5113, 0), "Return back to the main area.");
+
+		useWaterBlockOnRecess = new ObjectStep(this, ObjectID.MECHANISM_53627, new WorldPoint(4137, 5071, 0), "Use the water block on the recess.", waterBlock.highlighted());
+		useWaterBlockOnRecess.addIcon(ItemID.WATER_BLOCK);
+
+		leaveWaterRecess = new ObjectStep(this, ObjectID.HOLE_53830, new WorldPoint(4126, 5081, 0), "Return back to the main area.");
+
+		climbUpToCubeF0ToF1 = new ObjectStep(this, ObjectID.WALL_53623, new WorldPoint(4061, 4554, 0), "Climb up the walls to the south.");
+		climbUpToCubeF1ToF2 = new ObjectStep(this, ObjectID.WALL_53624, new WorldPoint(4060, 4552, 1), "Climb up the walls to the south.");
+		climbUpToCubeF0ToF1.addSubSteps(climbUpToCubeF1ToF2);
+
+		touchCube = new ObjectStep(this, ObjectID.STONE_CUBE_53693, new WorldPoint(4063, 4552, 2), "Inspect the stone cube.");
+		enterSkull = new ObjectStep(this, NullObjectID.NULL_54082, new WorldPoint(4063, 4548, 2),
+			"Enter the skull's mouth to the south.");
+
+		// Entered herblore space:
+		// 10860 0->4
+		// 10861 0->2
+		// 10862 0->6
+		// 10863 0->10
+		// 10864 0->7
+		// 10865 0->9
+		// 10866 0->1
+		// 10867 0->13
+		// 10868 0->1
+
+		// Tick later
+		// 10827 1->2
 	}
 
 	@Override
@@ -1254,7 +1465,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, goDownForOrbAndRunes, takeRunes, takeStrangeTeleorb, goUpToUseTeleorb,
 			standAtTeleportSpot, activateStrangeTeleorb, climbIceWall, jumpToLedge)));
 		allSteps.add(new PanelDetails("???", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,
-			searchRemainsForHammerAndChisel, useSpadeOnRocks, useSpadeOnEarthRocks, useChiselOnEarthBrazier),
+			searchRemainsForHammerAndChisel, useSpadeOnFireRocks, useChiselOnFireBrazier, useSpadeOnEarthRocks, useChiselOnEarthBrazier, useChiselOnAirBrazier, useChiselOnWaterBrazier,
+			useOrbOnAirRecessedBlock, useOrbOnFireRecessedBlock, useOrbOnEarthRecessedBlock, climbWallNextToSkullF0ToF1, useOrbOnWaterRecessedBlock, useFireBlockOnRecess,
+			 climbDownFromSkullF2ToF1, enterWestCavity, useAirBlockOnRecess, leaveAirRecess, enterMiddleCavity, useEarthBlockOnRecess, leaveEarthRecess, enterEastCavity, useWaterBlockOnRecess,
+				leaveWaterRecess, climbUpToCubeF0ToF1, touchCube, enterSkull),
 			List.of(squallOutfit, litSapphireLantern, meleeGear, rangedGear, magicGear),
 			List.of(gamesNecklace)));
 		return allSteps;

@@ -210,7 +210,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails getArmours = new PanelDetails("Prepare goblin mail",
-			Arrays.asList(goUpLadder, getCrate2, getCrate3, dyeBlue, dyeOrange), blueDye, orangeDye);
+			Arrays.asList(goUpLadder, getCrate2, getCrate3, dyeBlue, dyeOrange), blueDye, orangeDye, goblinMailThree);
 		allSteps.add(getArmours);
 
 		allSteps.add(new PanelDetails("Present the armours", Arrays.asList(talkToGeneral1, talkToGeneral2, talkToGeneral3)));

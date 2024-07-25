@@ -213,8 +213,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre).isNotConsumed();
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall).isNotConsumed();
-		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleNorthWall).isNotConsumed();
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();
+		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();
 		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar).isNotConsumed();
 		initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar).isNotConsumed();
 		initiateLegs = new ItemRequirement("Initiate Legs", ItemID.INITIATE_CUISSE).showConditioned(notPrayAtAltar).isNotConsumed();

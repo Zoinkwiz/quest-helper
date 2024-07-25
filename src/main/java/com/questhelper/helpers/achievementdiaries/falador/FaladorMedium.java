@@ -51,6 +51,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.widget.NormalSpells;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -286,6 +287,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		telegrabWine = new DetailedQuestStep(this,
 			"Use the Telekinetic Grab Spell on the Wine of Zamorak.");
 		telegrabWine.addIcon(ItemID.TELEKINETIC_GRAB);
+		telegrabWine.addSpellHighlight(NormalSpells.TELEKINETIC_GRAB);
 
 		//Crystal Chest
 		unlockCrystalChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_172, new WorldPoint(2914, 3452, 0),

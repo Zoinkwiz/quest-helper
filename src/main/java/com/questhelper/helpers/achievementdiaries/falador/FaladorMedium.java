@@ -293,7 +293,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//Scarecrow
 		fillSack = new ObjectStep(this, ObjectID.HAY_BALE_8713, new WorldPoint(3019, 3297, 0),
-			"Use the empty sack on the hay bale to fill it, you can buy an empty sack from Sarah for 5gp.");
+			"Use the empty sack on the hay bale to fill it. You can buy an empty sack from Sarah for 5gp.");
 		fillSack.addIcon(ItemID.EMPTY_SACK);
 		useSackOnSpear = new DetailedQuestStep(this,
 			"Use the Hay sack on the Bronze Spear.", haySack.highlighted(), bronzeSpear.highlighted());

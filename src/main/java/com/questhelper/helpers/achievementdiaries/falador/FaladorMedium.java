@@ -244,6 +244,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		var mogreNearby = new NpcCondition(NpcID.MOGRE);
 		atMudskipperPointWithMogre = new Conditions(LogicType.AND, atMudskipperPoint, mogreNearby);
 
+		// varbit 15347 0 -> 1?
 		choppedLogs = new ChatMessageRequirement(
 			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
 		);

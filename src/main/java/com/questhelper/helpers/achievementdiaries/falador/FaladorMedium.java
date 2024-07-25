@@ -287,7 +287,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//Crystal Chest
 		unlockCrystalChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_172, new WorldPoint(2914, 3452, 0),
-			"Use the crystal key to unlock the chest in Taverley");
+			"Use the crystal key to unlock the chest in Taverley", crystalKey);
 		unlockCrystalChest.addIcon(ItemID.CRYSTAL_KEY);
 
 		//Scarecrow

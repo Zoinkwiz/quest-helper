@@ -325,7 +325,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//PickPocket
 		pickpocketGuard = new NpcStep(this, NpcID.GUARD_3269, new WorldPoint(2961, 3381, 0),
-			"Pickpocket a guard.", true);
+			"Pickpocket a guard inside of Falador. If this doesn't complete, pickpocket a guard closer to the plinth.", true);
 		pickpocketGuard.setHideWorldArrow(true);
 		pickpocketGuard.addAlternateNpcs(NpcID.GUARD_3271, NpcID.GUARD_3272);
 

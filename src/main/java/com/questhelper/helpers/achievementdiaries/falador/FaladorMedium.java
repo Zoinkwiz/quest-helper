@@ -88,7 +88,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 	ObjectStep spawnMogre;
 
-	Zone chemist, chaosTemple, craftingGuild, dwarvenMine, tav, falNorthWall;
+	Zone chemist, chaosTemple1, chaosTemple2, craftingGuild, dwarvenMine, tav, falNorthWall;
 
 	ZoneRequirement inChemist, inChaosTemple, inCraftingGuild, inDwarvenMine, inTav, inFalNorthWall;
 	Conditions atMudskipperPointWithMogre;
@@ -236,7 +236,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		combatBracelet.addAlternates(ItemCollections.GAMES_NECKLACES);
 
 		inChemist = new ZoneRequirement(chemist);
-		inChaosTemple = new ZoneRequirement(chaosTemple);
+		inChaosTemple = new ZoneRequirement(chaosTemple1, chaosTemple2);
 		inCraftingGuild = new ZoneRequirement(craftingGuild);
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inTav = new ZoneRequirement(tav);
@@ -266,7 +266,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	protected void setupZones()
 	{
 		chemist = new Zone(new WorldPoint(2929, 3213, 0), new WorldPoint(2936, 3207, 0));
-		chaosTemple = new Zone(new WorldPoint(2935, 3513, 0), new WorldPoint(2929, 3518, 0));
+		chaosTemple1 = new Zone(new WorldPoint(2930, 3513, 0), new WorldPoint(2936, 3517, 0));
+		chaosTemple2 = new Zone(new WorldPoint(2937, 3516, 0), new WorldPoint(2940, 3518, 0));
 		craftingGuild = new Zone(new WorldPoint(2929, 3288, 0), new WorldPoint(2943, 3276, 0));
 		dwarvenMine = new Zone(new WorldPoint(2979, 9855, 0), new WorldPoint(3069, 9698, 0));
 		tav = new Zone(new WorldPoint(2939, 3398, 0), new WorldPoint(2878, 3489, 0));

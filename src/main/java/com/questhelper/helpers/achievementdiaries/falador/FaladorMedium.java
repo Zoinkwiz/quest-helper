@@ -206,6 +206,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
 		emptySack.canBeObtainedDuringQuest();
+		emptySack.setHighlightInInventory(true);
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
 		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlacedScarecrow);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow).isNotConsumed();

@@ -307,7 +307,9 @@ public class FremennikHard extends ComplexStateQuestHelper
 			new UnlockReward("Ability to change enchanted lyre teleport destination to Waterbirth Island."),
 			new UnlockReward("Aviansies in the God Wars Dungeon will drop noted adamantite bars."),
 			new UnlockReward("Stony Basalt teleport destination can be changed to the roof of Troll Stronghold"),
-			new UnlockReward("Access to 2 new Lunar Spells, Charge Dragonstone and Tan Leather"));
+			new UnlockReward("Access to 2 new Lunar Spells, Charge Dragonstone and Tan Leather"),
+			new UnlockReward("The Rellekka Rooftop Course will give additional experience upon completion")
+		);
 	}
 
 	@Override

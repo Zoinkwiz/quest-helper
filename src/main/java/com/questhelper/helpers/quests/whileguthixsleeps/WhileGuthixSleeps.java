@@ -67,8 +67,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 
 public class WhileGuthixSleeps extends BasicQuestHelper
@@ -79,7 +77,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	//Items Required
 	ItemRequirement sapphireLantern, litSapphireLantern, airRune, earthRune, fireRune, waterRune, mindRune, lawRune,
 		deathRune, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
-		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife, coinsForSnapdragon, snapdragonSeed, astralRune, cosmicRune,
+		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife, snapdragonSeed, astralRune, cosmicRune,
 		bindRunes, weakenRunes, magicGear, squallOutfit, eliteBlackKnightOutfit, telegrabRunes, alchRunes;
 
 
@@ -91,6 +89,11 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey,
 		silifTeleorb, strangeTeleorb, darkSquallHood, darkSquallBody, darkSquallLegs, fireOrb, waterOrb, airOrb, earthOrb, airBlock, waterBlock, earthBlock, fireBlock;
 
+	ItemRequirement toadflax, toadsLegs, guamLeaf, eyeOfNewt, iritLeaf, harralander, redSpidersEggs, garlic, silverDust, goatHorn, ranarrWeed, whiteBerries, cadantine, avantoe, moryMyreFungus,
+		chocolateDust, snapeGrass, kebbitTeethdust, lantadyme, potatoCactus, dwarfWeed, wineOfZamorak, snapdragon, tarromin, limpwurt, kwuarm, emptyDruidPouch, fullDruidPouch, silverSickleB;
+
+	Requirement hadToadflax, hadToadsLegs, hadGuamLeaf, hadEyeOfNewt, hadIritLeaf, hadHarralander, hadRedSpidersEggs, hadGarlic, hadSilverDust, hadGoatHorn, hadRanarrWeed, hadWhiteBerries, hadCadantine, hadAvantoeForHunterPotion, hadMortMyreFungus,
+		hadChocolateDust, hadSnapeGrass, hadKebbitTeethdustForHunterPotion, hadLantadyme, hadPotatoCactus, hadDwarfWeed, hadWineOfZamorak, hadSnapdragon, hadTarromin, hadLimpwurt, hadKwuarm, hadEmptyDruidPouch, hadFullDruidPouch, hadSilverSickleB;
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
 		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
@@ -104,12 +107,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		notUsedChiselOnWaterBrazier, notUsedChiselOnAirBrazier, usedChiselOnAllBraziers, notPlacedAirOrb, notPlacedWaterOrb, notPlacedEarthOrb, notPlacedFireOrb, inAbyssEntryF1,
 		inAbyssEntryF2, placedAllOrbs, notPlacedFireBlock, placedAirBlock, placedWaterBlock, placedEarthBlock, placedAllBlocks;
 
-	Requirement noWeaponOrShieldEquipped, inAirCavity, inWaterCavity, inEarthCavity;
+	Requirement noWeaponOrShieldEquipped, inAirCavity, inWaterCavity, inEarthCavity, inGuthixianTemple;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
 		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild, blackKnightFortress1, blackKnightFortress2, blackKnightFortress3, hiddenRoom,
 		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ, squallFightRoom, teleportSpot, lucienCamp, chaosTempleF1,
-		junaRoom, abyssEntry, abyssEntryF1, abyssEntryF2, airCavity, waterCavity, earthCavity;
+		junaRoom, abyssEntry, abyssEntryF1, abyssEntryF2, airCavity, waterCavity, earthCavity, guthixianTemple;
 
 	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
@@ -148,7 +151,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	DetailedQuestStep useFireBlockOnRecess, enterWestCavity, useEarthBlockOnRecess, leaveWaterRecess, enterMiddleCavity, useAirBlockOnRecess, leaveEarthRecess,
 		enterEastCavity, useWaterBlockOnRecess, leaveAirRecess, climbUpToCubeF0ToF1, climbUpToCubeF1ToF2, touchCube, enterSkull;
 
-	DetailedQuestStep getPouch, getSickle, usePouchOnDruid;
+	DetailedQuestStep getPouch, castBloomToFillPouch, usePouchOnDruid, solveAltar1, solveAltar2, solveAltar3, solveAltar4, solveAltar5, solveAltar6, solveAltar7, solveAltar8;
 
 	WeightStep solveWeightPuzzle;
 
@@ -499,7 +502,39 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goDoSkullPuzzle.addStep(inAbyssEntry, searchRemainsForSpade);
 		steps.put(740, goDoSkullPuzzle);
 
+
+		solveAltar1 = new ObjectStep(this, ObjectID.STATUE_53654, new WorldPoint(4101, 4468, 0), "Use the combat potion ingredients on the altar up the north-east path.", harralander.highlighted(), goatHorn.highlighted());
+		solveAltar2 = new ObjectStep(this, ObjectID.STATUE_53658, new WorldPoint(4142, 4469, 0), "Use the prayer potion ingredients on the altar up the north-east path.", ranarrWeed.highlighted(), snapeGrass.highlighted());
+		solveAltar3 = new ObjectStep(this, ObjectID.STATUE_53640, new WorldPoint(4153, 4450, 0), "Use the agility potion ingredients on the altar up the south-east path, up the north branch.", toadflax.highlighted(), toadsLegs.highlighted());
+		solveAltar4 = new ObjectStep(this, ObjectID.STATUE_53642, new WorldPoint(4101, 4468, 0), "Use the guthix balance potion ingredients on the altar up the south-east path, down the south branch.",
+			harralander.highlighted(), redSpidersEggs.highlighted(), garlic.highlighted(), silverDust.highlighted());
+		solveAltar5 = new ObjectStep(this, ObjectID.STATUE_53661, new WorldPoint(4091, 4374, 0), "Use the hunter potion ingredients on the altar down the south-east path.",
+			avantoe.highlighted(), kebbitTeethdust.highlighted());
+		solveAltar6 = new ObjectStep(this, ObjectID.STATUE_53652, new WorldPoint(4040, 3375, 0), "Use the defence potion ingredients on the altar up the southern west path.",
+			ranarrWeed.highlighted(), whiteBerries.highlighted());
+		solveAltar7 = new ObjectStep(this, ObjectID.STATUE_53644, new WorldPoint(4037, 4419, 0), "Use the energy potion ingredients on the altar up the northern west path.",
+			avantoe.highlighted(), moryMyreFungus.highlighted()); // harralander + chocolate dust
+		solveAltar8 = new ObjectStep(this, ObjectID.STATUE_53648, new WorldPoint(4041, 4454, 0), "Use the attack potion ingredients on the altar up the north-west path.",
+			guamLeaf.highlighted(), eyeOfNewt.highlighted());
+
 		ConditionalStep goIntoMainTemple = new ConditionalStep(this, goIntoAbyss);
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, harralander, goatHorn), solveAltar1);
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, ranarrWeed, snapeGrass), solveAltar2);
+
+		// TODO: Do rest of these
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, toadflax, toadsLegs), solveAltar3);
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, harralander, redSpidersEggs, garlic, silverDust, snapeGrass), solveAltar4);
+
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, hadAvantoeForHunterPotion, hadKebbitTeethdustForHunterPotion), solveAltar5);
+
+		// TODO: Rest of these
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, ranarrWeed, snapeGrass), solveAltar6);
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, ranarrWeed, snapeGrass), solveAltar7);
+
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, guamLeaf, eyeOfNewt), solveAltar8);
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch), usePouchOnDruid);
+		goIntoMainTemple.addStep(and(inGuthixianTemple, emptyDruidPouch), castBloomToFillPouch);
+		goIntoMainTemple.addStep(inGuthixianTemple, getPouch);
 		goIntoMainTemple.addStep(inAbyssEntry, climbUpToCubeF0ToF1);
 		goIntoMainTemple.addStep(inAbyssEntryF1, climbUpToCubeF1ToF2);
 		goIntoMainTemple.addStep(inAbyssEntryF2, enterSkull);
@@ -507,6 +542,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goIntoMainTemple.addStep(inWaterCavity, leaveWaterRecess);
 		goIntoMainTemple.addStep(inAirCavity, leaveAirRecess);
 		steps.put(760, goIntoMainTemple);
+		steps.put(770, solveAltar1);
+
 
 		return steps;
 	}
@@ -543,8 +580,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB);
 		ringOfCharosA = new ItemRequirement("Ring of charos (a)", ItemID.RING_OF_CHAROSA);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
-		coinsForSnapdragon = new ItemRequirement("Coins", ItemCollections.COINS);
-		coinsForSnapdragon.setQuantity(getSnapdragonCost());
 		bronzeMedHelm = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM);
 		ironChainbody = new ItemRequirement("Iron chainbody", ItemID.IRON_CHAINBODY);
 		snapdragonSeed = new ItemRequirement("Snapdragon seed", ItemID.SNAPDRAGON_SEED);
@@ -596,6 +631,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+
+		emptyDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH);
+		fullDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH_2958);
+		silverSickleB = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_B);
 
 		// Quest items
 		dirtyShirt = new ItemRequirement("Dirty shirt", ItemID.DIRTY_SHIRT);
@@ -654,6 +693,63 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		earthBlock.setTooltip("You can get another by searching the recess near the western cavity");
 		fireBlock = new ItemRequirement("Fire block", ItemID.FIRE_BLOCK);
 		fireBlock.setTooltip("You can get another by searching the recess near the middle cavity");
+
+		toadflax = new ItemRequirement("Toadflax", ItemID.TOADFLAX);
+		toadsLegs = new ItemRequirement("Toad's legs", ItemID.TOADS_LEGS);
+		guamLeaf = new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF);
+		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
+		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
+		harralander = new ItemRequirement("Harralander", ItemID.HARRALANDER);
+		redSpidersEggs = new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS);
+		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
+		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST);
+		goatHorn = new ItemRequirement("Goat horn dust", ItemID.GOAT_HORN_DUST);
+		ranarrWeed = new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED);
+		whiteBerries = new ItemRequirement("White berries", ItemID.WHITE_BERRIES);
+		cadantine = new ItemRequirement("Cadantine", ItemID.CADANTINE);
+		avantoe = new ItemRequirement("Avantoe", ItemID.AVANTOE);
+		moryMyreFungus = new ItemRequirement("Mory myre fungus", ItemID.MORT_MYRE_FUNGUS);
+		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
+		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
+		kebbitTeethdust = new ItemRequirement("Kebbit teeth dust", ItemID.KEBBIT_TEETH_DUST);
+		lantadyme = new ItemRequirement("Lantadyme", ItemID.LANTADYME);
+		potatoCactus = new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS);
+		dwarfWeed = new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED);
+		wineOfZamorak = new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK);
+		snapdragon = new ItemRequirement("Snapdragon", ItemID.SNAPDRAGON);
+		tarromin = new ItemRequirement("Tarromin", ItemID.TARROMIN);
+		limpwurt = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT);
+		kwuarm = new ItemRequirement("Kwuarm", ItemID.KWUARM);
+
+		hadToadflax = or(toadflax, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadToadsLegs = or(toadsLegs, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadGuamLeaf = or(guamLeaf, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadEyeOfNewt = or(eyeOfNewt, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadIritLeaf = or(iritLeaf, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadHarralander = or(harralander, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadRedSpidersEggs = or(redSpidersEggs, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadGarlic = or(garlic, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadSilverDust = or(silverDust, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadGoatHorn = or(goatHorn, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadRanarrWeed = or(ranarrWeed, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadWhiteBerries = or(whiteBerries, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadCadantine = or(cadantine, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadAvantoeForHunterPotion = or(avantoe, new VarbitRequirement(10924, 1), new VarbitRequirement(10924, 3));
+		hadMortMyreFungus = or(mortMyreFungus, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadChocolateDust = or(chocolateDust, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadSnapeGrass = or(snapeGrass, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadKebbitTeethdustForHunterPotion = or(kebbitTeethdust, new VarbitRequirement(10924, 2), new VarbitRequirement(10924, 3));
+		hadLantadyme = or(lantadyme, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadPotatoCactus = or(potatoCactus, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadDwarfWeed = or(dwarfWeed, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadWineOfZamorak = or(wineOfZamorak, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadSnapdragon = or(snapdragon, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadTarromin = or(tarromin, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadLimpwurt = or(limpwurt, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadKwuarm = or(kwuarm, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadEmptyDruidPouch = or(emptyDruidPouch, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadFullDruidPouch = or(fullDruidPouch, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadSilverSickleB = or(hadSilverSickleB, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
@@ -859,17 +955,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		inWaterCavity = new ZoneRequirement(waterCavity);
 
 		placedAllBlocks = new VarbitRequirement(10825, 15);
-	}
 
-	@Subscribe
-	public void onGameTick(GameTick tick)
-	{
-		coinsForSnapdragon.quantity(getSnapdragonCost());
-	}
-
-	private int getSnapdragonCost()
-	{
-		return (itemManager.getItemPriceWithSource(ItemID.SNAPDRAGON_SEED, false) / 2) / 100 * 100;
+		guthixianTemple = new Zone(new WorldPoint(4025, 4350, 0), new WorldPoint(4160, 4480, 0));
+		inGuthixianTemple = new ZoneRequirement(guthixianTemple);
 	}
 
 	public void setupSteps()
@@ -1073,13 +1161,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		useOrbOnShadyStranger = new NpcStep(this, NpcID.SHADY_STRANGER, new WorldPoint(3085, 3243, 0), "Use the orb on the shady stranger near Draynor Village bank.", teleorb.highlighted());
 		useOrbOnShadyStranger.addIcon(ItemID.TELEORB);
 		talkToAkrisaeAfterOrb = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Return to Akrisae in the White Knights' Castle.",
-			coinsForSnapdragon.quantity(coinsForSnapdragon.getQuantity() + 20), lanternLens);
+			 lanternLens);
 		// Stranger teleported
 		// 32->33 quest state
 		// 10778 0->1
 		// 10800 1->0
-		buySnapdragonSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Optionally buy a snapdragon seed from Thaerisk for half the GE price. Otherwise, head to Betty in Port Sarim.",
-			coinsForSnapdragon);
+		buySnapdragonSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Optionally get a snapdragon seed from Thaerisk for half the GE price. Otherwise, head to Betty in Port Sarim.");
 		buySnapdragonSeed.addDialogSteps("Could I buy that seed off you?", "Sounds good to me.");
 		getSarimTeleport = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Talk to Thaerisk to teleport to Port Sarim.", snapdragonSeed, lanternLens, coins.quantity(20));
 		getSarimTeleport.addDialogSteps("Could you teleport me to Port Sarim?", "Yes.");
@@ -1430,10 +1517,54 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10865 0->9
 		// 10866 0->1
 		// 10867 0->13
+
+		// Combat : 36 lvl
+		// Prayer : 38 lvl
+		// Agility : 34 lvl
+		// Balance : 22 lvl
+
+		// Hunting : 53 lvl
+		// Defence : 30/66
+		// Energy : 26 lvl
+		// Attacking : 3
+
 		// 10868 0->1
 
 		// Tick later
 		// 10827 1->2
+
+		// 54, 58, 40, 42, 51, 52, 44, 48
+
+		//         1, 3, 12, 13
+
+		getPouch = new ObjectStep(this, NullObjectID.NULL_54088, new WorldPoint(4078, 4441, 0),"Search the skeleton north of the stone table.");
+		castBloomToFillPouch = new DetailedQuestStep(this, new WorldPoint(4091, 4439, 0), "Cast bloom near any of the roots for items to fill your druid pouch with.", silverSickleB.highlighted());
+		usePouchOnDruid = new NpcStep(this, NpcID.DRUID_SPIRIT, new WorldPoint(4078, 4439, 0), "Use the druid pouch on nearby druid spirits for herblore ingredients.", true);
+		((NpcStep) usePouchOnDruid).addAlternateNpcs(NpcID.DRUID_SPIRIT_13576);
+		((NpcStep) usePouchOnDruid).setMaxRoamRange(200);
+		// 10933 increments with each druid step
+		// 0->1, kebbit tooth + avantor
+		// 1->2 guam + eye of newt
+
+		solveAltar1 = new ObjectStep(this, ObjectID.STATUE_53654, new WorldPoint(4101, 4468, 0), "Use the combat potion ingredients on the altar up the north-east path.", harralander.highlighted(), goatHorn.highlighted());
+		solveAltar2 = new ObjectStep(this, ObjectID.STATUE_53658, new WorldPoint(4142, 4469, 0), "Use the prayer potion ingredients on the altar up the north-east path.", ranarrWeed.highlighted(), snapeGrass.highlighted());
+		solveAltar3 = new ObjectStep(this, ObjectID.STATUE_53640, new WorldPoint(4153, 4450, 0), "Use the agility potion ingredients on the altar up the south-east path, up the north branch.", toadflax.highlighted(), toadsLegs.highlighted());
+		solveAltar4 = new ObjectStep(this, ObjectID.STATUE_53642, new WorldPoint(4101, 4468, 0), "Use the guthix balance potion ingredients on the altar up the south-east path, down the south branch.",
+			harralander.highlighted(), redSpidersEggs.highlighted(), garlic.highlighted(), silverDust.highlighted());
+		solveAltar5 = new ObjectStep(this, ObjectID.STATUE_53661, new WorldPoint(4091, 4374, 0), "Use the hunter potion ingredients on the altar down the south-east path.",
+			avantoe.highlighted(), kebbitTeethdust.highlighted());
+		solveAltar6 = new ObjectStep(this, ObjectID.STATUE_53652, new WorldPoint(4040, 3375, 0), "Use the defence potion ingredients on the altar up the southern west path.",
+			ranarrWeed.highlighted(), whiteBerries.highlighted());
+		solveAltar7 = new ObjectStep(this, ObjectID.STATUE_53644, new WorldPoint(4037, 4419, 0), "Use the energy potion ingredients on the altar up the northern west path.",
+			avantoe.highlighted(), moryMyreFungus.highlighted()); // harralander + chocolate dust
+		solveAltar8 = new ObjectStep(this, ObjectID.STATUE_53648, new WorldPoint(4041, 4454, 0), "Use the attack potion ingredients on the altar up the north-west path.",
+			guamLeaf.highlighted(), eyeOfNewt.highlighted());
+		// Hunter altar avantoe on,
+		// 10924 0->1
+		// used the tooth, 10924 1->3
+		// Check variables for each altar
+		// Update text for altar + item requirements
+		//
 	}
 
 	@Override
@@ -1455,7 +1586,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			useOrbOnShadyStranger, talkToAkrisaeAfterOrb, buySnapdragonSeed, getSarimTeleport, talkToBetty, talkToBettyForDye, usePinkDyeOnLanternLens, useLensOnCounter, searchCounterForSeed,
 			talkToThaeriskWithSeed, goPlantSnapdragon, talkToIdriaAfterPlanting, activeLunars, contactCyrisus, contactTurael, contactMazchna, contactDuradel, goHarvestSnapdragon, talkToThaeriskWithSnapdragon,
 			useSnapdragonOnSerum, searchDrawersForCharcoalAndPapyrus, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, talkToSloane),
-			List.of(meleeGear, lanternLens, dibber, astralRune, cosmicRune, airRune.quantity(2)), List.of(coinsForSnapdragon, burthorpeTeleport)));
+			List.of(meleeGear, lanternLens, dibber, astralRune, cosmicRune, airRune.quantity(2)), List.of(burthorpeTeleport)));
 		allSteps.add(new PanelDetails("Infiltration", List.of(talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile,
 			castChargedOrbOnTile, enterCatacombs, jumpBridge, climbWallInCatacombs, useWesternSolidDoor, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour,
 			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif,
@@ -1470,6 +1601,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			 climbDownFromSkullF2ToF1, enterWestCavity, useAirBlockOnRecess, leaveAirRecess, enterMiddleCavity, useEarthBlockOnRecess, leaveEarthRecess, enterEastCavity, useWaterBlockOnRecess,
 				leaveWaterRecess, climbUpToCubeF0ToF1, touchCube, enterSkull),
 			List.of(squallOutfit, litSapphireLantern, meleeGear, rangedGear, magicGear),
+			List.of(gamesNecklace)));
+		allSteps.add(new PanelDetails("The Temple", List.of(getPouch, usePouchOnDruid, solveAltar1, solveAltar2, solveAltar3, solveAltar4, solveAltar5, solveAltar6, solveAltar7, solveAltar8),
+			List.of(litSapphireLantern, meleeGear, rangedGear, magicGear),
 			List.of(gamesNecklace)));
 		return allSteps;
 	}

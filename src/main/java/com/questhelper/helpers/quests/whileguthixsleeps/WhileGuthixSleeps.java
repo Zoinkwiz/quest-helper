@@ -60,20 +60,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.game.ItemManager;
 
 public class WhileGuthixSleeps extends BasicQuestHelper
 {
-	@Inject
-	ItemManager itemManager;
-
 	//Items Required
 	ItemRequirement sapphireLantern, litSapphireLantern, airRune, earthRune, fireRune, waterRune, mindRune, lawRune,
 		deathRune, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
@@ -151,9 +146,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	DetailedQuestStep useFireBlockOnRecess, enterWestCavity, useEarthBlockOnRecess, leaveWaterRecess, enterMiddleCavity, useAirBlockOnRecess, leaveEarthRecess,
 		enterEastCavity, useWaterBlockOnRecess, leaveAirRecess, climbUpToCubeF0ToF1, climbUpToCubeF1ToF2, touchCube, enterSkull;
 
-	DetailedQuestStep getPouch, castBloomToFillPouch, usePouchOnDruid, solveAltar1, solveAltar2, solveAltar3, solveAltar4, solveAltar5, solveAltar6, solveAltar7, solveAltar8;
+	DetailedQuestStep getPouch, castBloomToFillPouch, usePouchOnDruid, approachStoneOfJas, fightBalanceElemental, touchStone, talkToMovarioAtStone, fightTormentedDemons, teleportWithIdria, finishQuest;
+
 
 	WeightStep solveWeightPuzzle;
+
+	HerblorePuzzle herblorePuzzle;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -502,37 +500,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goDoSkullPuzzle.addStep(inAbyssEntry, searchRemainsForSpade);
 		steps.put(740, goDoSkullPuzzle);
 
-
-		solveAltar1 = new ObjectStep(this, ObjectID.STATUE_53654, new WorldPoint(4101, 4468, 0), "Use the combat potion ingredients on the altar up the north-east path.", harralander.highlighted(), goatHorn.highlighted());
-		solveAltar2 = new ObjectStep(this, ObjectID.STATUE_53658, new WorldPoint(4142, 4469, 0), "Use the prayer potion ingredients on the altar up the north-east path.", ranarrWeed.highlighted(), snapeGrass.highlighted());
-		solveAltar3 = new ObjectStep(this, ObjectID.STATUE_53640, new WorldPoint(4153, 4450, 0), "Use the agility potion ingredients on the altar up the south-east path, up the north branch.", toadflax.highlighted(), toadsLegs.highlighted());
-		solveAltar4 = new ObjectStep(this, ObjectID.STATUE_53642, new WorldPoint(4101, 4468, 0), "Use the guthix balance potion ingredients on the altar up the south-east path, down the south branch.",
-			harralander.highlighted(), redSpidersEggs.highlighted(), garlic.highlighted(), silverDust.highlighted());
-		solveAltar5 = new ObjectStep(this, ObjectID.STATUE_53661, new WorldPoint(4091, 4374, 0), "Use the hunter potion ingredients on the altar down the south-east path.",
-			avantoe.highlighted(), kebbitTeethdust.highlighted());
-		solveAltar6 = new ObjectStep(this, ObjectID.STATUE_53652, new WorldPoint(4040, 3375, 0), "Use the defence potion ingredients on the altar up the southern west path.",
-			ranarrWeed.highlighted(), whiteBerries.highlighted());
-		solveAltar7 = new ObjectStep(this, ObjectID.STATUE_53644, new WorldPoint(4037, 4419, 0), "Use the energy potion ingredients on the altar up the northern west path.",
-			avantoe.highlighted(), moryMyreFungus.highlighted()); // harralander + chocolate dust
-		solveAltar8 = new ObjectStep(this, ObjectID.STATUE_53648, new WorldPoint(4041, 4454, 0), "Use the attack potion ingredients on the altar up the north-west path.",
-			guamLeaf.highlighted(), eyeOfNewt.highlighted());
-
 		ConditionalStep goIntoMainTemple = new ConditionalStep(this, goIntoAbyss);
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, harralander, goatHorn), solveAltar1);
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, ranarrWeed, snapeGrass), solveAltar2);
-
-		// TODO: Do rest of these
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, toadflax, toadsLegs), solveAltar3);
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, harralander, redSpidersEggs, garlic, silverDust, snapeGrass), solveAltar4);
-
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, hadAvantoeForHunterPotion, hadKebbitTeethdustForHunterPotion), solveAltar5);
-
-		// TODO: Rest of these
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, ranarrWeed, snapeGrass), solveAltar6);
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, ranarrWeed, snapeGrass), solveAltar7);
-
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch, guamLeaf, eyeOfNewt), solveAltar8);
-		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch), usePouchOnDruid);
+		goIntoMainTemple.addStep(and(inGuthixianTemple, fullDruidPouch), herblorePuzzle);
 		goIntoMainTemple.addStep(and(inGuthixianTemple, emptyDruidPouch), castBloomToFillPouch);
 		goIntoMainTemple.addStep(inGuthixianTemple, getPouch);
 		goIntoMainTemple.addStep(inAbyssEntry, climbUpToCubeF0ToF1);
@@ -542,8 +511,62 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goIntoMainTemple.addStep(inWaterCavity, leaveWaterRecess);
 		goIntoMainTemple.addStep(inAirCavity, leaveAirRecess);
 		steps.put(760, goIntoMainTemple);
-		steps.put(770, solveAltar1);
+		steps.put(770, goIntoMainTemple);
 
+		ConditionalStep goConfrontBalanceElemental = new ConditionalStep(this, goIntoAbyss);
+		goConfrontBalanceElemental.addStep(inGuthixianTemple, approachStoneOfJas);
+		goConfrontBalanceElemental.addStep(inAbyssEntry, climbUpToCubeF0ToF1);
+		goConfrontBalanceElemental.addStep(inAbyssEntryF1, climbUpToCubeF1ToF2);
+		goConfrontBalanceElemental.addStep(inAbyssEntryF2, enterSkull);
+		goConfrontBalanceElemental.addStep(inEarthCavity, leaveEarthRecess);
+		goConfrontBalanceElemental.addStep(inWaterCavity, leaveWaterRecess);
+		goConfrontBalanceElemental.addStep(inAirCavity, leaveAirRecess);
+		steps.put(780, goConfrontBalanceElemental);
+
+		ConditionalStep goFightBalanceElemental = new ConditionalStep(this, goIntoAbyss);
+		goFightBalanceElemental.addStep(inGuthixianTemple, fightBalanceElemental);
+		goFightBalanceElemental.addStep(inAbyssEntry, climbUpToCubeF0ToF1);
+		goFightBalanceElemental.addStep(inAbyssEntryF1, climbUpToCubeF1ToF2);
+		goFightBalanceElemental.addStep(inAbyssEntryF2, enterSkull);
+		goFightBalanceElemental.addStep(inEarthCavity, leaveEarthRecess);
+		goFightBalanceElemental.addStep(inWaterCavity, leaveWaterRecess);
+		goFightBalanceElemental.addStep(inAirCavity, leaveAirRecess);
+		steps.put(800, goFightBalanceElemental);
+
+		ConditionalStep goTouchStone = new ConditionalStep(this, goIntoAbyss);
+		goTouchStone.addStep(inGuthixianTemple, touchStone);
+		goTouchStone.addStep(inAbyssEntry, climbUpToCubeF0ToF1);
+		goTouchStone.addStep(inAbyssEntryF1, climbUpToCubeF1ToF2);
+		goTouchStone.addStep(inAbyssEntryF2, enterSkull);
+		goTouchStone.addStep(inEarthCavity, leaveEarthRecess);
+		goTouchStone.addStep(inWaterCavity, leaveWaterRecess);
+		goTouchStone.addStep(inAirCavity, leaveAirRecess);
+		steps.put(840, goTouchStone);
+
+		ConditionalStep goTalkToMovarioAtStone = new ConditionalStep(this, goIntoAbyss);
+		goTalkToMovarioAtStone.addStep(inGuthixianTemple, talkToMovarioAtStone);
+		goTalkToMovarioAtStone.addStep(inAbyssEntry, climbUpToCubeF0ToF1);
+		goTalkToMovarioAtStone.addStep(inAbyssEntryF1, climbUpToCubeF1ToF2);
+		goTalkToMovarioAtStone.addStep(inAbyssEntryF2, enterSkull);
+		goTalkToMovarioAtStone.addStep(inEarthCavity, leaveEarthRecess);
+		goTalkToMovarioAtStone.addStep(inWaterCavity, leaveWaterRecess);
+		goTalkToMovarioAtStone.addStep(inAirCavity, leaveAirRecess);
+		steps.put(860, goTalkToMovarioAtStone);
+		steps.put(870, goTalkToMovarioAtStone);
+
+		ConditionalStep goFightTormentedDemons = new ConditionalStep(this, goIntoAbyss);
+		goFightTormentedDemons.addStep(inGuthixianTemple, fightTormentedDemons);
+		goFightTormentedDemons.addStep(inAbyssEntry, climbUpToCubeF0ToF1);
+		goFightTormentedDemons.addStep(inAbyssEntryF1, climbUpToCubeF1ToF2);
+		goFightTormentedDemons.addStep(inAbyssEntryF2, enterSkull);
+		goFightTormentedDemons.addStep(inEarthCavity, leaveEarthRecess);
+		goFightTormentedDemons.addStep(inWaterCavity, leaveWaterRecess);
+		goFightTormentedDemons.addStep(inAirCavity, leaveAirRecess);
+		steps.put(880, goFightTormentedDemons);
+
+		ConditionalStep goFinishQuest = new ConditionalStep(this, finishQuest);
+		goFinishQuest.addStep(inGuthixianTemple, teleportWithIdria);
+		steps.put(890, goFinishQuest);
 
 		return steps;
 	}
@@ -749,7 +772,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		hadKwuarm = or(kwuarm, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
 		hadEmptyDruidPouch = or(emptyDruidPouch, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
 		hadFullDruidPouch = or(fullDruidPouch, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSilverSickleB = or(hadSilverSickleB, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
+		hadSilverSickleB = or(silverSickleB, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
@@ -1408,6 +1431,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			"Talk to Movario in the north-west of the area.", darkSquallHood.equipped(), darkSquallBody.equipped(), darkSquallLegs.equipped());
 		useLitSapphireLanternOnLightCreature = new NpcStep(this, NpcID.LIGHT_CREATURE_5435, new WorldPoint(3228, 9525, 2),
 			"Use a lit sapphire lantern on one of the light creatures to descend into the abyss.", true, litSapphireLantern.highlighted());
+		useLitSapphireLanternOnLightCreature.addDialogStep("Travel into the chasm.");
 		useLitSapphireLanternOnLightCreature.addIcon(ItemID.SAPPHIRE_LANTERN_4702);
 		// Started going down:
 		// 10820 0->2
@@ -1509,30 +1533,39 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			"Enter the skull's mouth to the south.");
 
 		// Entered herblore space:
-		// 10860 0->4
-		// 10861 0->2
-		// 10862 0->6
-		// 10863 0->10
-		// 10864 0->7
-		// 10865 0->9
-		// 10866 0->1
-		// 10867 0->13
+		// 10860 0->4 ATTACK, NW
+		// 10861 0->2 ENERGY, W
+		// 10862 0->6 DEFENCE, SW
+		// 10863 0->10 HUNTER, SSW
 
-		// Combat : 36 lvl
-		// Prayer : 38 lvl
-		// Agility : 34 lvl
-		// Balance : 22 lvl
+		// 10864 0->7 COMBAT NE
+		// 10865 0->9 PRAYER, E
+		// 10866 0->1 AGILITY, SE
+		// 10867 0->13 BALANCE, SEE
 
-		// Hunting : 53 lvl
-		// Defence : 30/66
-		// Energy : 26 lvl
-		// Attacking : 3
+		// loot order
+		// HUNTER, ATTACK, AGILITY, ENERGY
+
+//		AGILITY_DOLMEN = 29539;
+//		ENERGY_DOLMEN = 29540;
+//		RESTORATION_DOLMEN = 29541;
+//		ATTACK_DOLMEN = 29542;
+//		STRENGTH_DOLMEN = 29543;
+//		DEFENCE_DOLMEN = 29544;
+//		COMBAT_DOLMEN = 29545;
+//		RANGED_DOLMEN = 29546;
+//		PRAYER_DOLMEN = 29547;
+//		HUNTER_DOLMEN = 29548;
+//		FISHING_DOLMEN = 29549;
+//		MAGIC_DOLMEN = 29550;
+//		BALANCE_DOLMEN = 29551;
 
 		// 10868 0->1
 
 		// Tick later
 		// 10827 1->2
 
+		//     +4,-18
 		// 54, 58, 40, 42, 51, 52, 44, 48
 
 		//         1, 3, 12, 13
@@ -1543,28 +1576,86 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		((NpcStep) usePouchOnDruid).addAlternateNpcs(NpcID.DRUID_SPIRIT_13576);
 		((NpcStep) usePouchOnDruid).setMaxRoamRange(200);
 		// 10933 increments with each druid step
-		// 0->1, kebbit tooth + avantor
-		// 1->2 guam + eye of newt
+		// 0->1, kebbit tooth + avantoe (hunter)
+		// 1->2 guam + eye of newt (attack)
+		// 2->3 toadflax/toads legs (agility)
+		// 3->4 harralander/choc dust (energy potion)
+		// 4->5 balance potion gredients
+		// 5->6 harrlander/goat horn (combat potion)
+		// 6->7 whiteberries/ranarr (defence potion)
+		// 7->8 ranarr/snape grass (prayer potion)
 
-		solveAltar1 = new ObjectStep(this, ObjectID.STATUE_53654, new WorldPoint(4101, 4468, 0), "Use the combat potion ingredients on the altar up the north-east path.", harralander.highlighted(), goatHorn.highlighted());
-		solveAltar2 = new ObjectStep(this, ObjectID.STATUE_53658, new WorldPoint(4142, 4469, 0), "Use the prayer potion ingredients on the altar up the north-east path.", ranarrWeed.highlighted(), snapeGrass.highlighted());
-		solveAltar3 = new ObjectStep(this, ObjectID.STATUE_53640, new WorldPoint(4153, 4450, 0), "Use the agility potion ingredients on the altar up the south-east path, up the north branch.", toadflax.highlighted(), toadsLegs.highlighted());
-		solveAltar4 = new ObjectStep(this, ObjectID.STATUE_53642, new WorldPoint(4101, 4468, 0), "Use the guthix balance potion ingredients on the altar up the south-east path, down the south branch.",
-			harralander.highlighted(), redSpidersEggs.highlighted(), garlic.highlighted(), silverDust.highlighted());
-		solveAltar5 = new ObjectStep(this, ObjectID.STATUE_53661, new WorldPoint(4091, 4374, 0), "Use the hunter potion ingredients on the altar down the south-east path.",
-			avantoe.highlighted(), kebbitTeethdust.highlighted());
-		solveAltar6 = new ObjectStep(this, ObjectID.STATUE_53652, new WorldPoint(4040, 3375, 0), "Use the defence potion ingredients on the altar up the southern west path.",
-			ranarrWeed.highlighted(), whiteBerries.highlighted());
-		solveAltar7 = new ObjectStep(this, ObjectID.STATUE_53644, new WorldPoint(4037, 4419, 0), "Use the energy potion ingredients on the altar up the northern west path.",
-			avantoe.highlighted(), moryMyreFungus.highlighted()); // harralander + chocolate dust
-		solveAltar8 = new ObjectStep(this, ObjectID.STATUE_53648, new WorldPoint(4041, 4454, 0), "Use the attack potion ingredients on the altar up the north-west path.",
-			guamLeaf.highlighted(), eyeOfNewt.highlighted());
 		// Hunter altar avantoe on,
 		// 10924 0->1
 		// used the tooth, 10924 1->3
 		// Check variables for each altar
 		// Update text for altar + item requirements
 		//
+		// Placed
+
+		// Energy went 1->3
+		// Defence went 1->35
+		// Hunter went 1->3
+		// Combat went 1->3
+
+		// Balance potion: 10928
+		// harralander 0->1
+		// Silver dust 1->5
+		// Spiders eggs 5->7
+		// Garlic 7->15
+
+		// Attack dolmen placed:
+		// 10829 0->1
+		// 10828 0->1
+
+		// Agility domen placed:
+		// 10835 0->1
+		// 10828 1->2
+
+		// Balance dolmen placed:
+		// 10836 0->1
+
+		// Combat dolmen:
+		// 10833 0->1
+
+		// Energy dolmen:
+		// 10830 0->1
+
+		// Defence:
+		// 10831 0->1
+
+		// Prayer:
+		// 10834 0->1
+
+		// Hunter:
+		// 10832 0->1
+
+		// TODO: Highlight each specific dolmen needed, and direct player to correct statue if missing a dolmen
+		herblorePuzzle = new HerblorePuzzle(this, new DetailedQuestStep(this, "Broken step state."));
+
+		// Placed all dolmens:
+		// 10815 1->0 // TODO: Make note if appears in future run-throughs
+		// 9653 770->780
+
+		approachStoneOfJas = new ObjectStep(this, ObjectID.STONE_OF_JAS_53824, new WorldPoint(4139, 4383, 0), "Head through the now open entrance to the south and approach the Stone of Jas, ready to fight.");
+		fightBalanceElemental = new NpcStep(this, NpcID.BALANCE_ELEMENTAL, new WorldPoint(4139, 4383, 0), "Fight the Balance Elemental. You need all 3 combat styles to defeat it.");
+		fightBalanceElemental.addText("If you pray incorrectly against the first new style of attack, your stats will be majorly drained.");
+		fightBalanceElemental.addText("As its health gets lower, it starts to attack faster.");
+		fightBalanceElemental.addText(" When it has a fire head, it attacks with ranged.");
+		fightBalanceElemental.addText("When it has an air head, it attacks with melee.");
+		fightBalanceElemental.addText("When it has a water head, it attacks with magic.");
+		((NpcStep) fightBalanceElemental).addAlternateNpcs(NpcID.BALANCE_ELEMENTAL_13529, NpcID.BALANCE_ELEMENTAL_13530);
+
+		touchStone = new ObjectStep(this, ObjectID.STONE_OF_JAS, new WorldPoint(4139, 4383, 0), "Touch the Stone of Jas.");
+		talkToMovarioAtStone = new NpcStep(this, NpcID.MOVARIO_13568, new WorldPoint(4133, 4384, 0), "Talk to Movario.");
+		// 10773 2->0
+		fightTormentedDemons = new NpcStep(this, NpcID.TORMENTED_DEMON, new WorldPoint(4139, 4383, 0), "Defeat the Tormented Demons. Your stats are 255 each.", true);
+		((NpcStep) fightTormentedDemons).addAlternateNpcs(NpcID.TORMENTED_DEMON_13600, NpcID.TORMENTED_DEMON_13601, NpcID.TORMENTED_DEMON_13602, NpcID.TORMENTED_DEMON_13603,
+			NpcID.TORMENTED_DEMON_13604, NpcID.TORMENTED_DEMON_13605, NpcID.TORMENTED_DEMON_13606);
+
+		teleportWithIdria = new NpcStep(this, NpcID.IDRIA_13582, new WorldPoint(4133, 4381, 0), "Talk to Idria to teleport back to Falador Castle.");
+		finishQuest = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0),
+			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side, to finish the quest!");
 	}
 
 	@Override
@@ -1602,7 +1693,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 				leaveWaterRecess, climbUpToCubeF0ToF1, touchCube, enterSkull),
 			List.of(squallOutfit, litSapphireLantern, meleeGear, rangedGear, magicGear),
 			List.of(gamesNecklace)));
-		allSteps.add(new PanelDetails("The Temple", List.of(getPouch, usePouchOnDruid, solveAltar1, solveAltar2, solveAltar3, solveAltar4, solveAltar5, solveAltar6, solveAltar7, solveAltar8),
+
+		List<QuestStep> templeSteps = new ArrayList<>(List.of(getPouch, usePouchOnDruid));
+		templeSteps.addAll(List.of(herblorePuzzle.getSidebarSteps()));
+		templeSteps.addAll(List.of(approachStoneOfJas, fightBalanceElemental, touchStone, talkToMovarioAtStone, fightTormentedDemons, teleportWithIdria, finishQuest));
+
+		allSteps.add(new PanelDetails("The Temple", templeSteps,
 			List.of(litSapphireLantern, meleeGear, rangedGear, magicGear),
 			List.of(gamesNecklace)));
 		return allSteps;

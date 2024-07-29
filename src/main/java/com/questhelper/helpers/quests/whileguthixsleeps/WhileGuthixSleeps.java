@@ -85,8 +85,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 
 	// Items Recommended
-	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport,
-		lobster, restorePotion, gamesNecklace, spade, hammer, chisel, food;
+	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport, faladorTeleport,
+		camelotTeleport, lobster, restorePotion, gamesNecklace, spade, hammer, chisel, food;
+
+	Requirement lunarSpellbook;
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
@@ -114,12 +116,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		notUsedChiselOnWaterBrazier, notUsedChiselOnAirBrazier, usedChiselOnAllBraziers, notPlacedAirOrb, notPlacedWaterOrb, notPlacedEarthOrb, notPlacedFireOrb, inAbyssEntryF1,
 		inAbyssEntryF2, placedAllOrbs, notPlacedFireBlock, placedAirBlock, placedWaterBlock, placedEarthBlock, placedAllBlocks;
 
-	Requirement noWeaponOrShieldEquipped, inAirCavity, inWaterCavity, inEarthCavity, inGuthixianTemple;
+	Requirement noWeaponOrShieldEquipped, inAirCavity, inWaterCavity, inEarthCavity, inGuthixianTemple, inJailCell;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
 		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild, blackKnightFortress1, blackKnightFortress2, blackKnightFortress3, hiddenRoom,
 		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ, squallFightRoom, teleportSpot, lucienCamp, chaosTempleF1,
-		junaRoom, abyssEntry, abyssEntryF1, abyssEntryF2, airCavity, waterCavity, earthCavity, guthixianTemple;
+		junaRoom, abyssEntry, abyssEntryF1, abyssEntryF2, airCavity, waterCavity, earthCavity, guthixianTemple, jailCell;
 
 	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
@@ -137,7 +139,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	DetailedQuestStep goFromF0ToF1WhiteKnight, goFromF1ToF2WhiteKnight, goFromF2ToF3WhiteKnight, plantSnapdragon, goFromF3ToF2WhiteKnight, goFromF2ToF1WhiteKnight, goFromF1ToF0WhiteKnight,
 		talkToIdriaAfterPlanting, activeLunars, contactTurael, contactMazchna, contactCyrisus, contactDuradel, harvestSnapdragon, talkToThaeriskWithSnapdragon, useSnapdragonOnSerum,
-		searchDrawersForCharcoalAndPapyrus, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToIdriaAfterSketch, talkToGhommal, talkToHarrallak, goToF1WarriorsGuild, talkToSloane;
+		searchDrawersForCharcoalAndPapyrus, enterJailCell, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToIdriaAfterSketch, talkToGhommal, talkToHarrallak, goToF1WarriorsGuild, talkToSloane;
 
 	DetailedQuestStep goFromF3ToF2WhiteKnightThaerisk, goFromF2ToF1WhiteKnightThaerisk, goFromF1ToF0WhiteKnightThaerisk;
 
@@ -342,7 +344,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(41, goHarvestSnapdragon);
 
 		ConditionalStep bringSnapdragonToIdria = new ConditionalStep(this, talkToThaeriskWithSnapdragon);
-		bringSnapdragonToIdria.addStep(and(superTruthSerum, charcoal, papyrus), useSerumOnSpy);
+		bringSnapdragonToIdria.addStep(and(inJailCell, superTruthSerum, charcoal, papyrus), useSerumOnSpy);
+		bringSnapdragonToIdria.addStep(and(superTruthSerum, charcoal, papyrus), enterJailCell);
 		bringSnapdragonToIdria.addStep(superTruthSerum, searchDrawersForCharcoalAndPapyrus);
 		bringSnapdragonToIdria.addStep(truthSerum, useSnapdragonOnSerum);
 		bringSnapdragonToIdria.addStep(inWhiteKnightsCastleF3, goFromF3ToF2WhiteKnightThaerisk);
@@ -664,6 +667,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		feldipHillsTeleport = new ItemRequirement("Feldip hills teleport", ItemID.FELDIP_HILLS_TELEPORT);
 		feldipHillsTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
+		camelotTeleport = new ItemRequirement("Seers' Village teleport", ItemID.CAMELOT_TELEPORT);
+		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
+		lunarSpellbook = new SpellbookRequirement(Spellbook.LUNAR);
 
 		lobster = new ItemRequirement("Lobster, or some other food", ItemID.LOBSTER);
 		restorePotion = new ItemRequirement("Restore potion", ItemID.RESTORE_POTION4);
@@ -1029,6 +1035,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		guthixianTemple = new Zone(new WorldPoint(4025, 4350, 0), new WorldPoint(4160, 4480, 0));
 		inGuthixianTemple = new ZoneRequirement(guthixianTemple);
+
+
+		jailCell = new Zone(new WorldPoint(2988, 3344, 0), new WorldPoint(2990, 3346, 0));
+		inJailCell = new ZoneRequirement(jailCell);
 	}
 
 	public void setupSteps()
@@ -1231,6 +1241,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 4066 Varp: 385022 -> 33939454
 		killMercenaries = new NpcStep(this, NpcID.MERCENARY_MAGE, new WorldPoint(2657, 3501, 0), "Kill the mercenaries just north of McGrubor's Wood.", true);
 		((NpcStep) killMercenaries).addAlternateNpcs(NpcID.MERCENARY_AXEMAN, NpcID.MERCENARY_AXEMAN_13536);
+		killMercenaries.addTeleport(camelotTeleport);
 		talkToIdria = new NpcStep(this, NpcID.IDRIA_13542, new WorldPoint(2657, 3501, 0), "Talk to Idria just north of McGrubor's Wood.");
 		// Killed mercenaries
 		// quest 24->25
@@ -1243,18 +1254,20 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10773 1->2
 
 		talkToAkrisae = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Talk to Akrisae in the White Knights' Castle, on the ground floor on the east side.");
+		talkToAkrisae.addTeleport(faladorTeleport);
 		talkToAkrisaeForTeleport = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Talk to Akrisae again to teleport to Draynor Village.");
 		talkToAkrisaeForTeleport.addDialogStep("Yes.");
 		useOrbOnShadyStranger = new NpcStep(this, NpcID.SHADY_STRANGER, new WorldPoint(3085, 3243, 0), "Use the orb on the shady stranger near Draynor Village bank.", teleorb.highlighted());
 		useOrbOnShadyStranger.addIcon(ItemID.TELEORB);
 		talkToAkrisaeAfterOrb = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Return to Akrisae in the White Knights' Castle.",
 			 lanternLens);
+		talkToAkrisaeAfterOrb.addTeleport(faladorTeleport);
 		// Stranger teleported
 		// 32->33 quest state
 		// 10778 0->1
 		// 10800 1->0
-		buySnapdragonSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Optionally get a snapdragon seed from Thaerisk for half the GE price. Otherwise, head to Betty in Port Sarim.");
-		buySnapdragonSeed.addDialogSteps("Could I buy that seed off you?", "Sounds good to me.");
+		buySnapdragonSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Get a snapdragon seed from Thaerisk for free.");
+		buySnapdragonSeed.addDialogSteps("Could I have that seed?", "Sounds good to me.");
 		getSarimTeleport = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Talk to Thaerisk to teleport to Port Sarim.", snapdragonSeed, lanternLens, coins.quantity(20));
 		getSarimTeleport.addDialogSteps("Could you teleport me to Port Sarim?", "Yes.");
 		talkToBetty = new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3014, 3258, 0), "Talk to Betty in Port Sarim's magic shop with a snapdragon seed and lantern lens.",
@@ -1278,6 +1291,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		searchCounterForSeed = new ObjectStep(this, NullObjectID.NULL_10812, new WorldPoint(3013, 3258, 0), "Take the seed from Betty's counter.");
 		talkToThaeriskWithSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Return to Thaerisk with the enhanced snapdragon seed.",
 			enrichedSnapdragonSeed, dibber);
+		talkToThaeriskWithSeed.addTeleport(faladorTeleport);
 
 		goFromF0ToF1WhiteKnight = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2955, 3339, 0),
 			"");
@@ -1356,6 +1370,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		useSnapdragonOnSerum = new DetailedQuestStep(this, "Use the enriched snapdragon on the serum.", enrichedSnapdragon.highlighted(), truthSerum.highlighted());
 		searchDrawersForCharcoalAndPapyrus = new ObjectStep(this, ObjectID.DRAWERS_53307, new WorldPoint(2990, 3335, 0), "Search the drawers in the south-east of the room.");
 		((ObjectStep) searchDrawersForCharcoalAndPapyrus).addAlternateObjects(ObjectID.DRAWERS_53306);
+		enterJailCell = new ObjectStep(this, ObjectID.CELL_GATE_53281, new WorldPoint(2988, 3343, 0), "Enter the cell just north of Thaerisk.");
 		useSerumOnSpy = new NpcStep(this, NpcID.SHADY_STRANGER_13546, new WorldPoint(2989, 3344, 0), "Use the super truth serum on the shady stranger in the cell near Thaerisk.",
 			superTruthSerum.highlighted(), charcoal, papyrus);
 		talkToSpy = new NpcStep(this, NpcID.SHADY_STRANGER_13546, new WorldPoint(2989, 3344, 0), "Talk to the shady stranger.", charcoal, papyrus);
@@ -1385,8 +1400,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.");
 		// 10838 0->1
 		// 10826 0->1
-		enterBlackKnightFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress.",
-			ironChainbody.equipped(), bronzeMedHelm.equipped());
+		enterBlackKnightFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Akrisae will give you a one-off teleport there.",
+			ironChainbody.equipped(), bronzeMedHelm.equipped(), unpoweredOrb, chargeOrbSpell);
+		// 10962 0->1 when teleported
+		enterBlackKnightFortress.addDialogStep("Yes.");
 		pushHiddenWall = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
 		climbDownBlackKnightBasement = new ObjectStep(this, ObjectID.LADDER_25843, new WorldPoint(3016, 3519, 0), "Go down the ladder.");
 		inspectCarvedTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Inspect the tile on the floor on the east side of the room.");
@@ -1812,14 +1829,14 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		allSteps.add(new PanelDetails("United Front", List.of(goUpToThaeriskWithNotes, killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport,
 			useOrbOnShadyStranger, talkToAkrisaeAfterOrb, buySnapdragonSeed, getSarimTeleport, talkToBetty, talkToBettyForDye, usePinkDyeOnLanternLens, useLensOnCounter, searchCounterForSeed,
 			talkToThaeriskWithSeed, goPlantSnapdragon, talkToIdriaAfterPlanting, activeLunars, contactCyrisus, contactTurael, contactMazchna, contactDuradel, goHarvestSnapdragon, talkToThaeriskWithSnapdragon,
-			useSnapdragonOnSerum, searchDrawersForCharcoalAndPapyrus, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, talkToSloane),
-			List.of(meleeGear, lanternLens, dibber, astralRune, cosmicRune, airRune.quantity(2)), List.of(burthorpeTeleport)));
+			useSnapdragonOnSerum, searchDrawersForCharcoalAndPapyrus, enterJailCell, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, talkToSloane),
+			List.of(lunarSpellbook, lanternLens, dibber, astralRune.quantity(4), cosmicRune.quantity(4), airRune.quantity(8)), List.of(burthorpeTeleport)));
 		allSteps.add(new PanelDetails("Infiltration", List.of(talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile,
 			castChargedOrbOnTile, enterCatacombs, jumpBridge, climbWallInCatacombs, useWesternSolidDoor, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour,
 			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif,
 			useRestoreOnSilif, giveSilifEliteArmour, talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurokSidebar, plantOrbOnSurok,
 			talkToAkrisaeAfterSurok),
-			List.of(bronzeMedHelm, ironChainbody, magicGear), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes)));
+			List.of(bronzeMedHelm, ironChainbody, magicGear, unpoweredOrb, chargeOrbSpell), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes)));
 		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, goDownForOrbAndRunes, takeRunes, takeStrangeTeleorb, goUpToUseTeleorb,
 			standAtTeleportSpot, activateStrangeTeleorb, climbIceWall, jumpToLedge)));
 		allSteps.add(new PanelDetails("???", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,

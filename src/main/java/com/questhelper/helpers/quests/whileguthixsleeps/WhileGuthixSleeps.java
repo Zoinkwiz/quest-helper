@@ -30,6 +30,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.NoItemRequirement;
@@ -45,18 +46,25 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.PolyZone;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.NpcFollowerStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.widget.LunarSpells;
 import com.questhelper.steps.widget.NormalSpells;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +85,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 
 	// Items Recommended
-	ItemRequirement antipoison, burthorpeTeleport, lobster, restorePotion, gamesNecklace, spade, hammer, chisel;
+	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport,
+		lobster, restorePotion, gamesNecklace, spade, hammer, chisel, food;
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
@@ -87,9 +96,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	ItemRequirement toadflax, toadsLegs, guamLeaf, eyeOfNewt, iritLeaf, harralander, redSpidersEggs, garlic, silverDust, goatHorn, ranarrWeed, whiteBerries, cadantine, avantoe, moryMyreFungus,
 		chocolateDust, snapeGrass, kebbitTeethdust, lantadyme, potatoCactus, dwarfWeed, wineOfZamorak, snapdragon, tarromin, limpwurt, kwuarm, emptyDruidPouch, fullDruidPouch, silverSickleB;
 
+	Requirement doorNeedsEarthRune, doorNeedsMindRune, doorNeedsAirRune, doorNeedsFireRune, doorNeedsWaterRune, isElectricBookcase1, isElectricBookcase2, isElectricBookcase3, isElectricBookcase4,
+		isElectricBookcase5, isElectricBookcase6, isElectricBookcase7;
+
 	Requirement hadToadflax, hadToadsLegs, hadGuamLeaf, hadEyeOfNewt, hadIritLeaf, hadHarralander, hadRedSpidersEggs, hadGarlic, hadSilverDust, hadGoatHorn, hadRanarrWeed, hadWhiteBerries, hadCadantine, hadAvantoeForHunterPotion, hadMortMyreFungus,
 		hadChocolateDust, hadSnapeGrass, hadKebbitTeethdustForHunterPotion, hadLantadyme, hadPotatoCactus, hadDwarfWeed, hadWineOfZamorak, hadSnapdragon, hadTarromin, hadLimpwurt, hadKwuarm, hadEmptyDruidPouch, hadFullDruidPouch, hadSilverSickleB;
-	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable,
+	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable, claimedRunes,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
 		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
 		inWhiteKnightsCastleF1, inWhiteKnightsCastleF2, inWhiteKnightsCastleF3, onLunarSpellbook, notContactedCyrisus, notContactedTurael, notContactedMazchna, notContactedDuradel,
@@ -113,8 +125,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
 		returnBroavToHuntingExpert, useDirtyShirtOnBroav, dropBroav, goToBrokenTable, searchBrokenTable;
 
-	DetailedQuestStep enterMovarioBase, climbDownMovarioFirstRoom, inspectDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, enterElectricDoor,
-		searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, goDownToF1MovarioBase,
+	QuestStep enterMovarioBase, claimRunes, climbDownMovarioFirstRoom, inspectDoor, useFireRuneOnDoor, useAirRuneOnDoor, useEarthRuneOnDoor, useWaterRuneOnDoor,
+		useMindRuneOnDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, searchBookcase1, searchBookcase2, searchBookcase3, searchBookcase4, searchBookcase5, searchBookcase6, searchBookcase7,
+		enterElectricDoor, searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, goDownToF1MovarioBase,
 		useKeyOnChest, searchChestForTraps, getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall;
 
 	DetailedQuestStep goUpToThaeriskWithNotes, talkToThaeriskWithNotes, goUpToThaeriskWithoutNotes, talkToThaeriskWithoutNotes;
@@ -196,11 +209,17 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		ConditionalStep goDoDoorPuzzle = new ConditionalStep(this, enterMovarioBase);
 		goDoDoorPuzzle.addStep(inMovarioDoorRoom, inspectDoor);
-		goDoDoorPuzzle.addStep(inMovarioFirstRoom, climbDownMovarioFirstRoom);
+		goDoDoorPuzzle.addStep(and(inMovarioFirstRoom, claimedRunes), climbDownMovarioFirstRoom);
+		goDoDoorPuzzle.addStep(inMovarioFirstRoom, claimRunes);
 		steps.put(10, goDoDoorPuzzle);
 
 		ConditionalStep solveDoor = new ConditionalStep(this, goDoDoorPuzzle);
-		solveDoor.addStep(inMovarioDoorRoom, useRuneOnDoor);
+		solveDoor.addStep(and(inMovarioDoorRoom, doorNeedsAirRune), useAirRuneOnDoor);
+		solveDoor.addStep(and(inMovarioDoorRoom, doorNeedsWaterRune), useWaterRuneOnDoor);
+		solveDoor.addStep(and(inMovarioDoorRoom, doorNeedsEarthRune), useEarthRuneOnDoor);
+		solveDoor.addStep(and(inMovarioDoorRoom, doorNeedsFireRune), useFireRuneOnDoor);
+		solveDoor.addStep(and(inMovarioDoorRoom, doorNeedsMindRune), useMindRuneOnDoor);
+		solveDoor.addStep(inMovarioDoorRoom, inspectDoor);
 		steps.put(11, solveDoor);
 
 		ConditionalStep enterLibrary = new ConditionalStep(this, goDoDoorPuzzle);
@@ -208,7 +227,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(12, enterLibrary);
 
 		ConditionalStep doLibraryStuff = new ConditionalStep(this, enterLibrary);
-		doLibraryStuff.addStep(inLibrary, solveElectricityPuzzle);
+		doLibraryStuff.addStep(and(inLibrary, isElectricBookcase1), searchBookcase1);
+		doLibraryStuff.addStep(and(inLibrary, isElectricBookcase2), searchBookcase2);
+		doLibraryStuff.addStep(and(inLibrary, isElectricBookcase3), searchBookcase3);
+		doLibraryStuff.addStep(and(inLibrary, isElectricBookcase4), searchBookcase4);
+		doLibraryStuff.addStep(and(inLibrary, isElectricBookcase5), searchBookcase5);
+		doLibraryStuff.addStep(and(inLibrary, isElectricBookcase6), searchBookcase6);
+		doLibraryStuff.addStep(and(inLibrary, isElectricBookcase7), searchBookcase7);
 		steps.put(13, doLibraryStuff);
 
 		ConditionalStep goUpToF1Movario = new ConditionalStep(this, enterLibrary);
@@ -254,13 +279,14 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		ConditionalStep goToPainting = new ConditionalStep(this, goUpFromLibrary);
 		goToPainting.addStep(and(isUpstairsNearThaerisk, movariosNotesV1InBank, movariosNotesV2InBank), talkToThaeriskWithNotes);
-		goToPainting.addStep(and(inMovarioBaseF1, movariosNotesV1InBank, movariosNotesV2InBank), solveWeightPuzzle);
-		goToPainting.addStep(and(movariosNotesV1InBank, movariosNotesV2InBank), goUpToThaeriskWithNotes);
+		goToPainting.addStep(and(inMovarioBaseF1, movariosNotesV1InBank, movariosNotesV2InBank, pulledPaintingLever), solveWeightPuzzle);
+		goToPainting.addStep(and(inMovarioBaseF2, movariosNotesV2InBank), goDownToF1MovarioBase);
 		goToPainting.addStep(and(inMovarioBaseF1, movariosNotesV1InBank, movariosNotesV2InBank), inspectPainting);
 		goToPainting.addStep(and(inMovarioBaseF1, movariosNotesV2InBank), searchDesk);
 		goToPainting.addStep(and(inMovarioBaseF2, movariosNotesV2InBank), goDownToF1MovarioBase);
 		goToPainting.addStep(and(inMovarioBaseF2), getNotesFromChest);
 		goToPainting.addStep(and(inMovarioBaseF1), climbUpHiddenStaircase);
+		goToPainting.addStep(and(movariosNotesV1InBank, movariosNotesV2InBank), goUpToThaeriskWithNotes);
 		steps.put(21, goToPainting);
 
 		ConditionalStep goContinueThaeriskAfterNotes = new ConditionalStep(this, goUpToThaeriskWithoutNotes);
@@ -634,6 +660,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		burthorpeTeleport = new ItemRequirement("Teleport to Burthorpe", ItemCollections.COMBAT_BRACELETS);
 		burthorpeTeleport.addAlternates(ItemCollections.GAMES_NECKLACES);
+		khazardTeleport = new ItemRequirement("Khazard teleport", ItemCollections.ARDY_CLOAKS);
+		feldipHillsTeleport = new ItemRequirement("Feldip hills teleport", ItemID.FELDIP_HILLS_TELEPORT);
+		feldipHillsTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
+
 
 		lobster = new ItemRequirement("Lobster, or some other food", ItemID.LOBSTER);
 		restorePotion = new ItemRequirement("Restore potion", ItemID.RESTORE_POTION4);
@@ -658,6 +688,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		emptyDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH);
 		fullDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH_2958);
 		silverSickleB = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_B);
+
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD);
 
 		// Quest items
 		dirtyShirt = new ItemRequirement("Dirty shirt", ItemID.DIRTY_SHIRT);
@@ -793,11 +825,27 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		movarioFirstRoom = new Zone(new WorldPoint(4097, 4931, 0), new WorldPoint(4156, 4988, 0));
 		inMovarioFirstRoom = new ZoneRequirement(movarioFirstRoom);
 
+		claimedRunes = new VarbitRequirement(10961, 1);
+
+		doorNeedsFireRune = new Conditions(true, new WidgetTextRequirement(877, 6, "0"));
+		doorNeedsAirRune = new Conditions(true, new WidgetTextRequirement(877, 6, "1"));
+		doorNeedsEarthRune = new Conditions(true, new WidgetTextRequirement(877, 6, "2"));
+		doorNeedsWaterRune = new Conditions(true, new WidgetTextRequirement(877, 6, "3"));
+		doorNeedsMindRune = new Conditions(true, new WidgetTextRequirement(877, 6, "4"));
+
 		movarioDoorRoom = new Zone(new WorldPoint(4207, 4973, 0), new WorldPoint(4214, 4986, 0));
 		inMovarioDoorRoom = new ZoneRequirement(movarioDoorRoom);
 
 		library = new Zone(new WorldPoint(4166, 4946, 0), new WorldPoint(4190, 4968, 0));
 		inLibrary = new ZoneRequirement(library);
+
+		isElectricBookcase1 = new VarbitRequirement(10763, 1);
+		isElectricBookcase2 = new VarbitRequirement(10764, 1);
+		isElectricBookcase3 = new VarbitRequirement(10765, 1);
+		isElectricBookcase4 = new VarbitRequirement(10766, 1);
+		isElectricBookcase5 = new VarbitRequirement(10767, 1);
+		isElectricBookcase6 = new VarbitRequirement(10768, 1);
+		isElectricBookcase7 = new VarbitRequirement(10769, 1);
 
 		nextToSpiralStaircase = new Zone(new WorldPoint(4180, 4949, 0), new WorldPoint(4183, 4952, 0));
 		isNextToSpiralStaircase = new ZoneRequirement(nextToSpiralStaircase);
@@ -997,7 +1045,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10670 0->1
 
 		// 10754 0->1 when someone walking downstairs
-		killAssassins = new NpcStep(this, NpcID.ASSASSIN_13514, new WorldPoint(2909, 3449, 1), "Kill the assassins.", true);
+		killAssassins = new NpcStep(this, NpcID.ASSASSIN_13514, new WorldPoint(2909, 3449, 1), "Kill the assassins. " +
+			"If one says 'Now!' they will fire a hard-hitting ranged attack if not prayed against. If one says 'Nothing personal, adventurer', " +
+			"they will teleport to you and dragon claw spec you. Protect from Melee to be safe.", true);
 		((NpcStep) killAssassins).addAlternateNpcs(NpcID.ASSASSIN_13515);
 
 		talkToThaeriskAgain = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2909, 3449, 1), "Talk to Thaerisk again.");
@@ -1007,6 +1057,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		talkToLaunderer = new NpcStep(this, NpcID.KHAZARD_LAUNDERER, new WorldPoint(2564, 3172, 0), "Talk to the Khazard Launderer west of the Khazard Fight Arena.",
 			coins.quantity(500).hideConditioned(paidLaunderer));
+		talkToLaunderer.addTeleport(khazardTeleport);
 		talkToLaunderer.addDialogStep("Would 500 coins change your mind?");
 
 		// 10756 0->1 Launderer dialog checkpoint
@@ -1016,6 +1067,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		talkToHuntingExpert = new NpcStep(this, NpcID.HUNTING_EXPERT_1504, new WorldPoint(2525, 2916, 0),
 			"Talk to the Hunting Expert in his hut in the middle of the Feldip Hills hunting area.", knife, logs);
+		talkToHuntingExpert.addTeleport(feldipHillsTeleport);
 		talkToHuntingExpert.addDialogStep("Do you think you could help me with broavs?");
 
 		setupTrap = new ObjectStep(this, ObjectID.PIT_53273, new WorldPoint(2499, 2910, 0), "Set up the trap west of the Hunting Expert.", knife, logs, mortMyreFungus);
@@ -1028,6 +1080,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		returnBroavToHuntingExpert.addDialogStep("Do you think you could train this broav for me?");
 
 		goToBrokenTable = new DetailedQuestStep(this, new WorldPoint(2519, 3248, 0), "Go to the broken table in the middle of the khazard side of the gnome/khazard battlefield.", broav);
+		goToBrokenTable.addTeleport(khazardTeleport);
 		goToBrokenTable.setHighlightZone(nearTable);
 
 		dropBroav = new DetailedQuestStep(this, "Drop your broav.", broav.highlighted());
@@ -1039,6 +1092,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		enterMovarioBase = new ObjectStep(this, ObjectID.TRAPDOOR_53279, new WorldPoint(2519, 3249, 0), "Enter movario's base under the broken table in the Khazard Battlefield.");
 
+		// TODO: Update hardcoded 54117 to CHEST_54117
+		claimRunes = new ObjectStep(this, 54117, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
+
 		// 4066 122878 -> 385022
 		// 15064 0->100
 
@@ -1047,57 +1103,65 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		inspectDoor = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0), "Inspect the old battered door.");
 		// 10757 0->1
 
-		// TODO: Solve what rune to use
-		useRuneOnDoor = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
-			"Use the rune (either mind, earth, air, fire, or water) which is stylistically used in the 'Restricted access' warning on the door.");
-		useRuneOnDoor.addIcon(ItemID.PURE_ESSENCE);
+		ObjectStep useFireRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+			"Use a fire rune on the old battered door.", fireRune.highlighted());
+		useFireRuneDoorInnerStep.addIcon(ItemID.FIRE_RUNE);
+			useFireRuneOnDoor = new PuzzleWrapperStep(this,
+				useFireRuneDoorInnerStep,
+			"Solve the electric door puzzle.");
 
-		// When used mind rune:
-		// 10761 0->2
-		// 10856 0->4
-		// 9653 11->12
-		// 10670 1->0
+		ObjectStep useAirRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+			"Use a air rune on the old battered door.", airRune.highlighted());
+		useAirRuneDoorInnerStep.addIcon(ItemID.AIR_RUNE);
+		useAirRuneOnDoor = new PuzzleWrapperStep(this, useAirRuneDoorInnerStep, "Solve the electric door puzzle.");
+
+		ObjectStep useEarthRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+			"Use a earth rune on the old battered door.", earthRune.highlighted());
+		useEarthRuneDoorInnerStep.addIcon(ItemID.EARTH_RUNE);
+		useEarthRuneOnDoor = new PuzzleWrapperStep(this, useEarthRuneDoorInnerStep, "Solve the electric door puzzle.");
+
+		ObjectStep useWaterRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+			"Use a water rune on the old battered door.", waterRune.highlighted());
+		useWaterRuneDoorInnerStep.addIcon(ItemID.WATER_RUNE);
+		useWaterRuneOnDoor = new PuzzleWrapperStep(this, useWaterRuneDoorInnerStep, "Solve the electric door puzzle.");
+
+		ObjectStep useMindRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+			"Use a mind rune on the old battered door.", mindRune.highlighted());
+		useMindRuneDoorInnerStep.addIcon(ItemID.MIND_RUNE);
+		useMindRuneOnDoor = new PuzzleWrapperStep(this, useMindRuneDoorInnerStep, "Solve the electric door puzzle.");
+
+		useRuneOnDoor = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+			"Inspect the old battered door, and then use the rune that stylistically appears in the 'Restricted access' warning on the door.");
+		useRuneOnDoor.addSubSteps(useFireRuneOnDoor, useAirRuneOnDoor, useEarthRuneOnDoor, useWaterRuneOnDoor, useMindRuneOnDoor);
+
+		// Search
+		searchBookcase1 = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.BOOKCASE_53914, new WorldPoint(4181, 4959, 0), "Search the east-facing bookcase in the east of the room."),
+		"Solve the electric door puzzle.");
+		searchBookcase2 = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.BOOKCASE_53915, new WorldPoint(4174, 4957, 0), "Search the west-facing bookcase in the west of the room."),
+			"Solve the electric door puzzle.");
+		searchBookcase3 = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.BOOKCASE_53916, new WorldPoint(4172, 4950, 0), "Search the southern bookcase in the west of the room."),
+			"Solve the electric door puzzle.");
+		searchBookcase4 = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.BOOKCASE_53917, new WorldPoint(4169, 4953, 0), "Search the most western bookcase on the north end of the west wall of the room."),
+			"Solve the electric door puzzle.");
+		searchBookcase5 = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.BOOKCASE_53918, new WorldPoint(4169, 4961, 0), "Search the most western bookcase on the south end of the west wall of the room."),
+			"Solve the electric door puzzle.");
+		searchBookcase6 = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.BOOKCASE_53919, new WorldPoint(4175, 4964, 0), "Search the northern bookcase in the room."),
+			"Solve the electric door puzzle.");
+		searchBookcase7 = new PuzzleWrapperStep(this,
+			new ObjectStep(this, ObjectID.BOOKCASE_53920, new WorldPoint(4187, 4962, 0), "Search the eastern bookcase in the room."),
+			"Solve the electric door puzzle.");
+
 
 		enterDoorToLibrary = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0), "Enter the old battered door.");
-		// Entered library:
-		// 12->13
-
-		// ---
-		// Flipping on entering
-		// 10743 1->0->1
-		// 10764 0->1->0
-		// ---
-
-		// 10936 0->23 weight on entering room
-		// 10771 0->3
-
-		// Pulled 4181, 4959, 0
-		// 10762 0->1
-		// 10763 1->0
-		// 10769 0->1
-
-		// Pulled 4187, 4962, 0
-		// 10762 1->2
-		// 10769 1->0
-		// 10763 0->1
-
-		// Pulled 4181, 4959, 0
-		// 10762 2->3
-		// 10763 1->0
-		// 10768 0->1
-
-		// Pulled 4175, 4964, 0
-		// 10762 3->4
-		// 10769 1->0
-		// 10763 0->1
-
-		// Pulled 4187, 4962, 0
-		// 10762 5->6
-		// 10769 1->0
-		// 10797 0->1
-		// 9653 13->14
 
 		solveElectricityPuzzle = new DetailedQuestStep(this, "Solve the electricity puzzle.");
+		solveElectricityPuzzle.addSubSteps(searchBookcase1, searchBookcase2, searchBookcase3, searchBookcase4, searchBookcase5, searchBookcase6, searchBookcase7);
 
 		enterElectricDoor = new ObjectStep(this, NullObjectID.NULL_54108, new WorldPoint(4181, 4953, 0), "Enter the gate to the staircase.");
 		searchStaircaseInLibrary = new ObjectStep(this, ObjectID.SPIRAL_STAIRCASE, new WorldPoint(4182, 4951, 0), "Right-click SEARCH the spiral staircase.");
@@ -1659,15 +1723,87 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return List.of(
+			knife, coins.quantity(500), dibber, lanternLens, unpoweredOrb, bronzeMedHelm, ironChainbody, sapphireLantern,
+			astralRune.quantity(4), cosmicRune.quantity(4), airRune.quantity(8), chargeOrbSpell, meleeGear, magicGear,
+			rangedGear
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return List.of(
+			khazardTeleport.quantity(2),
+			feldipHillsTeleport,
+			burthorpeTeleport,
+			food
+		);
+	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("2 Assassins (level 167)",
+			"2 Mercenary axemen (level 131)",
+			"Mercenary mage (level 112)",
+			"3 Elite Black Knights (level 138)",
+			"Surok Magis (level 265)",
+			"Balance Elemental (level 524)",
+			"2 Tormented Demons (level 450)");
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(5);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+			new ExperienceReward(Skill.THIEVING, 80000),
+			new ExperienceReward(Skill.FARMING, 75000),
+			new ExperienceReward(Skill.HERBLORE, 75000),
+			new ExperienceReward(Skill.HUNTER, 50000));
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("Elite black knight armour", ItemID.ELITE_BLACK_PLATEBODY),
+			new ItemReward("Dark squall robes", ItemID.DARK_SQUALL_ROBE_TOP),
+			new ItemReward("death runes from Movario's base", ItemID.DEATH_RUNE, 100),
+			new ItemReward("dire runes from Movario's base", ItemID.FIRE_RUNE, 100),
+			new ItemReward("coal from Movario's base", ItemID.COAL, 100),
+			new ItemReward("magic logs from Movario's base", ItemID.MAGIC_LOGS, 100),
+			new ItemReward("Duradel's notes, obtainable from Kuradel", ItemID.DURADELS_NOTES)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return List.of(
+			new UnlockReward("Access to Tormented Demons in the Ancient Guthixian Temple"),
+			new UnlockReward("Access to Black Knight Catacombs")
+		);
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", List.of(talkToIvy, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain), List.of(meleeGear), List.of(antipoison)));
+		allSteps.add(new PanelDetails("Starting off", List.of(talkToIvy, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain), List.of(meleeGear), List.of(antipoison, food)));
 		allSteps.add(new PanelDetails("Investigating", List.of(talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav, returnBroavToHuntingExpert,
 			goToBrokenTable, dropBroav, useDirtyShirtOnBroav, searchBrokenTable),
 			List.of(coins.quantity(500).hideConditioned(paidLaunderer), knife, logs),
-			List.of()));
+			List.of(khazardTeleport.quantity(2), feldipHillsTeleport)));
 		allSteps.add(new PanelDetails("Movario's Base", List.of(enterMovarioBase, climbDownMovarioFirstRoom, inspectDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, enterElectricDoor,
 			searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, useKeyOnChest, searchChestForTraps,
 			getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall),

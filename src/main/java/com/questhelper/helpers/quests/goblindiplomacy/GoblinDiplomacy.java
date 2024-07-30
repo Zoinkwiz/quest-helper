@@ -121,6 +121,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		goblinMailTwo = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 2);
 
 		goblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL);
+		goblinMail.canBeObtainedDuringQuest();
 		goblinMail.setTooltip("You can get goblin mail by killing goblins around goblin village.");
 		goblinMail.setHighlightInInventory(true);
 

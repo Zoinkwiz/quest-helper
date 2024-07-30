@@ -86,7 +86,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	// Items Recommended
 	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport, faladorTeleport,
-		camelotTeleport, lobster, restorePotion, gamesNecklace, spade, hammer, chisel, food;
+		camelotTeleport, lobster, restorePotion, gamesNecklace, spade, hammer, chisel, food, prayerPotions;
 
 	Requirement lunarSpellbook;
 
@@ -107,7 +107,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
 		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
 		inWhiteKnightsCastleF1, inWhiteKnightsCastleF2, inWhiteKnightsCastleF3, onLunarSpellbook, notContactedCyrisus, notContactedTurael, notContactedMazchna, notContactedDuradel,
-		notRecruitedHarrallak, notRecruitedSloane, notRecruitedGhommal, onF1WarriorsGuild, inBlackKnightFortress, inHiddenRoom, inBlackKnightFortressBasement, notSearchedTableForTeleorb;
+		notRecruitedHarrallak, notRecruitedSloane, notRecruitedGhommal, onF1WarriorsGuild, inBlackKnightFortress, inHiddenRoom, inBlackKnightFortressBasement, notSearchedTableForTeleorb,
+		hasCastChargeOrb;
 
 	Requirement inCatacombSouth, inCatacombNorth, inCatacombF2, openedCatacombShortcut, inCatacombHQ, notSearchedWardrobeForEliteArmour,
 		notSearchedWardrobeForSquallOutfit, isSafeInCatacombs, notSearchedTableForRunes, notSearchedTableForLobsterAndRestore, notSearchedKeyRack, openedSilifCell,
@@ -116,7 +117,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		notUsedChiselOnWaterBrazier, notUsedChiselOnAirBrazier, usedChiselOnAllBraziers, notPlacedAirOrb, notPlacedWaterOrb, notPlacedEarthOrb, notPlacedFireOrb, inAbyssEntryF1,
 		inAbyssEntryF2, placedAllOrbs, notPlacedFireBlock, placedAirBlock, placedWaterBlock, placedEarthBlock, placedAllBlocks;
 
-	Requirement noWeaponOrShieldEquipped, inAirCavity, inWaterCavity, inEarthCavity, inGuthixianTemple, inJailCell;
+	Requirement noWeaponOrShieldEquipped, inAirCavity, inWaterCavity, inEarthCavity, inGuthixianTemple, inJailCell, talkedToMovario;
 
 	Zone upstairsNearThaeriskZone, nearTable, movarioFirstRoom, movarioDoorRoom, library, nextToSpiralStaircase, movarioBaseF1, movarioBaseF2, weightRoom, portSarim, doorway,
 		whiteKnightsCastleF1, whiteKnightsCastleF2, whiteKnightsCastleF3, f1WarriorsGuild, blackKnightFortress1, blackKnightFortress2, blackKnightFortress3, hiddenRoom,
@@ -696,6 +697,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		silverSickleB = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_B);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 
 		// Quest items
 		dirtyShirt = new ItemRequirement("Dirty shirt", ItemID.DIRTY_SHIRT);
@@ -731,7 +733,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		darkSquallHood = new ItemRequirement("Dark squall hood", ItemID.DARK_SQUALL_HOOD);
 		darkSquallBody = new ItemRequirement("Dark squall robe top", ItemID.DARK_SQUALL_ROBE_TOP);
 		darkSquallLegs = new ItemRequirement("Dark squall robe bottom", ItemID.DARK_SQUALL_ROBE_BOTTOM);
-		squallOutfit = new ItemRequirements("Full dark squall outfit", darkSquallHood, darkSquallBody, darkSquallLegs);
+		squallOutfit = new ItemRequirements("Full dark squall outfit", darkSquallHood, darkSquallBody, darkSquallLegs).hideConditioned(talkedToMovario);
 
 		eliteBlackKnightOrSquallOutfit = new ItemRequirements(LogicType.OR, "Full elite black knight or dark squall outfit", eliteBlackKnightOutfit, squallOutfit);
 
@@ -916,6 +918,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		blackKnightFortressBasement = new Zone(new WorldPoint(1862, 4230, 0), new WorldPoint(1873, 4247, 0));
 		inBlackKnightFortressBasement = new ZoneRequirement(blackKnightFortressBasement);
 
+		hasCastChargeOrb = new VarbitRequirement(9653, 480, Operation.GREATER_EQUAL);
+
 		catacombSouth1 = new PolyZone(List.of(new WorldPoint(4100, 4670, 1), new WorldPoint(4101, 4698, 1), new WorldPoint(4114, 4698, 1),
 			new WorldPoint(4115, 4705, 1), new WorldPoint(4119, 4711, 1), new WorldPoint(4162, 4715, 1), new WorldPoint(4161, 4663, 1)));
 		inCatacombSouth = new ZoneRequirement(catacombSouth1);
@@ -978,6 +982,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		abyssEntry = new Zone(new WorldPoint(4040, 4550, 0), new WorldPoint(4078, 4613, 0));
 		inAbyssEntry = new ZoneRequirement(abyssEntry);
+
+		talkedToMovario = new VarbitRequirement(9653, 710, Operation.GREATER_EQUAL);
 
 		notUsedSpadeOnFireRocks = new VarbitRequirement(10811, 0);
 		notUsedChiselOnFireBrazier = new VarbitRequirement(10811, 1);
@@ -1401,7 +1407,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10838 0->1
 		// 10826 0->1
 		enterBlackKnightFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Akrisae will give you a one-off teleport there.",
-			ironChainbody.equipped(), bronzeMedHelm.equipped(), unpoweredOrb, chargeOrbSpell);
+			ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)),
+			squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank(questBank)), unpoweredOrb.hideConditioned(hasCastChargeOrb), chargeOrbSpell.hideConditioned(hasCastChargeOrb));
 		// 10962 0->1 when teleported
 		enterBlackKnightFortress.addDialogStep("Yes.");
 		pushHiddenWall = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
@@ -1409,6 +1416,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		inspectCarvedTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Inspect the tile on the floor on the east side of the room.");
 		castChargedOrbOnTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Cast one of the charge orb spells on the tile.", unpoweredOrb, chargeOrbSpell);
 		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_WATER_ORB);
+		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_AIR_ORB);
+		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_EARTH_ORB);
+		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_FIRE_ORB);
 		// 10803 0->2
 		enterCatacombs = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Enter the tile trapdoor.");
 		// 15064 0->100
@@ -1425,7 +1435,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		((ObjectStep) searchWardrobeForEliteArmour).addAlternateObjects(ObjectID.WARDROBE_53362);
 		searchWardrobeForSquallRobes = new ObjectStep(this, ObjectID.WARDROBE_53372, new WorldPoint(4123, 4841, 1), "Search the wardrobe to the south.",
 			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
-		((ObjectStep) searchWardrobeForSquallRobes).addAlternateObjects(ObjectID.WARDROBE_53373);
+		((ObjectStep) searchWardrobeForSquallRobes).addAlternateObjects(ObjectID.WARDROBE_53374);
 		// GUESS: Killed black knight for elite legs, 10932 0->1
 		// Killed black knight for elite body, 10931 0->1
 		// Killed black knight for elite helm, 10930 0->1
@@ -1452,7 +1462,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToSilifToFollow.addDialogStep("Let's go.");
 		enterNorthernSolidDoorAgain = new ObjectStep(this, ObjectID.SOLID_DOOR, new WorldPoint(4104, 4799, 2), "Enter the most northern solid door again.");
 		goNearMap = new DetailedQuestStep(this, new WorldPoint(4120, 4840, 1), "Stand near the map just west of the door until Silif talks about it.");
-		climbUpCatacombLadder = new ObjectStep(this, ObjectID.LADDER_53370, new WorldPoint(4142, 4855, 1), "Climb up the ladder to the east, ready to fight Surok.");
+		climbUpCatacombLadder = new ObjectStep(this, ObjectID.LADDER_53370, new WorldPoint(4142, 4855, 1), "Climb up the ladder to the east, ready to fight Surok.",
+			darkSquallHood.equipped(), darkSquallBody.equipped(), darkSquallLegs.equipped());
 		talkToSilifAtMap = new NpcStep(this, NpcID.SILIF_13521, new WorldPoint(4142, 4855, 1), "Talk to Silif near the map until he gives you a teleorb.");
 		defeatSurok = new NpcStep(this, NpcID.SUROK_MAGIS_13482, new WorldPoint(4145, 4850, 2), "Defeat Surok. Read the sidebar for more details.");
 
@@ -1657,14 +1668,52 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		((NpcStep) usePouchOnDruid).addAlternateNpcs(NpcID.DRUID_SPIRIT_13576);
 		((NpcStep) usePouchOnDruid).setMaxRoamRange(200);
 		// 10933 increments with each druid step
-		// 0->1, kebbit tooth + avantoe (hunter)
-		// 1->2 guam + eye of newt (attack)
+		// ATTACK DOLMEN 0->1, kebbit tooth + avantoe (hunter)
+		// ENERGY DOLMEN 1->2 guam + eye of newt (attack)
 		// 2->3 toadflax/toads legs (agility)
 		// 3->4 harralander/choc dust (energy potion)
 		// 4->5 balance potion gredients
 		// 5->6 harrlander/goat horn (combat potion)
 		// 6->7 whiteberries/ranarr (defence potion)
 		// 7->8 ranarr/snape grass (prayer potion)
+
+		// 2nd run through
+		// 0->1 tarromin/limpwurt (strength)
+		// 1->2 harralander/choc dust (Energy potion)
+		// 2->3 lant/potato cactus (magic potion)
+		// 3->4 guam/newt (att potion)
+		// 4->5 balance potion stuff
+		// 5->6 ranarr weed/white berries (defence)
+		// 6->7 ranarr/snape (prayer)
+		// 7->8 avantoe/snape grass (fishing potion)
+
+		// Altars:
+		// Energy
+		// Attack
+		// Prayer
+		// Strength
+		// Defence
+		// Magic
+		// Balance
+
+		// attack potion eye of newt used
+		// 0->34
+		// guam used, 34->35
+
+		/////////////////////////
+
+		// 1st run
+		// DOLMEN: ATTACK, ENERGY, DEFENCE, HUNTER, COMBAT,  PRAYER, AGILITY, BALANCE
+		// POTION: HUNTER, ATTACK, AGILITY, ENERGY, BALANCE, COMBAT, DEFENCE, PRAYER
+
+		// 2nd run
+		// DOLMEN: ENERGY, ATTACK, PRAYER, STRENGTH, DEFENCE, FISHING, MAGIC, BALANCE
+		// POTION: STRENGTH, ENERGY, MAGIC, ATTACK, BALANCE, DEFENCE, PRAYER, FISHING
+
+		// 4th, 1st, 7th, 2nd, 8th, 5th, 3rd, 6th
+
+
+		////////////////////////
 
 		// Hunter altar avantoe on,
 		// 10924 0->1
@@ -1836,7 +1885,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif,
 			useRestoreOnSilif, giveSilifEliteArmour, talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurokSidebar, plantOrbOnSurok,
 			talkToAkrisaeAfterSurok),
-			List.of(bronzeMedHelm, ironChainbody, magicGear, unpoweredOrb, chargeOrbSpell), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes)));
+			List.of(bronzeMedHelm, ironChainbody, magicGear, meleeGear, unpoweredOrb, chargeOrbSpell), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes, food, prayerPotions)));
 		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, goDownForOrbAndRunes, takeRunes, takeStrangeTeleorb, goUpToUseTeleorb,
 			standAtTeleportSpot, activateStrangeTeleorb, climbIceWall, jumpToLedge)));
 		allSteps.add(new PanelDetails("???", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,
@@ -1845,7 +1894,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			 climbDownFromSkullF2ToF1, enterWestCavity, useAirBlockOnRecess, leaveAirRecess, enterMiddleCavity, useEarthBlockOnRecess, leaveEarthRecess, enterEastCavity, useWaterBlockOnRecess,
 				leaveWaterRecess, climbUpToCubeF0ToF1, touchCube, enterSkull),
 			List.of(squallOutfit, litSapphireLantern, meleeGear, rangedGear, magicGear),
-			List.of(gamesNecklace)));
+			List.of(gamesNecklace, food, prayerPotions)));
 
 		List<QuestStep> templeSteps = new ArrayList<>(List.of(getPouch, usePouchOnDruid));
 		templeSteps.addAll(List.of(herblorePuzzle.getSidebarSteps()));

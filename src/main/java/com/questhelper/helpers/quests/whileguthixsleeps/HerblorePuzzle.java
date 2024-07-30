@@ -29,6 +29,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -77,22 +78,24 @@ public class HerblorePuzzle extends ConditionalStep
 		placeDolmens = new ObjectStep(questHelper, NullObjectID.NULL_54083, new WorldPoint(4076, 4437, 0), "Use all the dolmens on the stone table in the middle of the area.", dolmens.highlighted());
 		steps[8] = placeDolmens;
 		Requirement placedAllIngredients = and(
-			new VarbitRequirement(StatueLocation.values()[0].getVarbitID(), 3, Operation.GREATER_EQUAL),
-			new VarbitRequirement(StatueLocation.values()[1].getVarbitID(), 3, Operation.GREATER_EQUAL),
-			new VarbitRequirement(StatueLocation.values()[2].getVarbitID(), 3, Operation.GREATER_EQUAL),
-			new VarbitRequirement(StatueLocation.values()[3].getVarbitID(), 3, Operation.GREATER_EQUAL),
-			new VarbitRequirement(StatueLocation.values()[4].getVarbitID(), 3, Operation.GREATER_EQUAL),
-			new VarbitRequirement(StatueLocation.values()[5].getVarbitID(), 3, Operation.GREATER_EQUAL),
-			new VarbitRequirement(StatueLocation.values()[6].getVarbitID(), 3, Operation.GREATER_EQUAL),
-			new VarbitRequirement(StatueLocation.values()[7].getVarbitID(), 3, Operation.GREATER_EQUAL)
+			// is 3 or 35
+			or(new VarbitRequirement(StatueLocation.values()[0].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[0].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[0].getVarbitID(), 35)),
+			or(new VarbitRequirement(StatueLocation.values()[1].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[1].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[1].getVarbitID(), 35)),
+			or(new VarbitRequirement(StatueLocation.values()[2].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[2].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[2].getVarbitID(), 35)),
+			or(new VarbitRequirement(StatueLocation.values()[3].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[3].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[3].getVarbitID(), 35)),
+			or(new VarbitRequirement(StatueLocation.values()[4].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[4].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[4].getVarbitID(), 35)),
+			or(new VarbitRequirement(StatueLocation.values()[5].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[5].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[5].getVarbitID(), 35)),
+			or(new VarbitRequirement(StatueLocation.values()[6].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[6].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[6].getVarbitID(), 35)),
+			or(new VarbitRequirement(StatueLocation.values()[7].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[7].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[7].getVarbitID(), 35))
 		);
 
 		this.addStep(placedAllIngredients, placeDolmens);
-		for (int i = 0; i < 8; i++)
+
+		int[] HERB_ORDER = new int[] { 3, 0, 6, 1, 7, 4, 2, 5 };
+		for (int i : HERB_ORDER)
 		{
 			steps[i] = new ObjectStep(questHelper, 0, "Unknown state.");
-			this.addStep(not(new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 3, Operation.GREATER_EQUAL)), steps[i]);
-			// 100011
+			this.addStep(not(or(new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 35))), steps[i]);
 		}
 
 

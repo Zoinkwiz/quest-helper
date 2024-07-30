@@ -887,6 +887,7 @@ public class DetailedQuestStep extends QuestStep
 		return requirements.stream().anyMatch((item) ->  item instanceof ItemRequirement &&
 			type == MenuAction.GROUND_ITEM_THIRD_OPTION &&
 			((ItemRequirement) item).getAllIds().contains(itemID) &&
+			!((ItemRequirement) item).check(client, false, questBank.getBankItems()) &&
 			option.equals("Take"));
 	}
 }

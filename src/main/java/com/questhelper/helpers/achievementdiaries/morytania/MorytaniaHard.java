@@ -382,7 +382,6 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			new UnlockReward("Robin offers 26 free buckets of slime and 26 pots of bonemeal in exchange for bones each day"),
 			new UnlockReward("Double Mort myre fungi when casting Bloom"),
 			new UnlockReward("50% more Prayer experience from burning shade remains"),
-			new UnlockReward("Access to a shortcut across the estuary on Mos Le'Harmless"),
 			new UnlockReward("50% more runes from the Barrows chest"),
 			new UnlockReward("7.5% more Slayer experience in the Slayer Tower while on a Slayer task")
 		);

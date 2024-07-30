@@ -438,9 +438,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
-			new UnlockReward("Shortcut jump between Miscellania dock and Etceteria."),
-			new UnlockReward("Improved rate of gaining approval on Miscellania."));
+		return Arrays.asList(new UnlockReward("Improved rate of gaining approval on Miscellania."));
 	}
 
 	@Override

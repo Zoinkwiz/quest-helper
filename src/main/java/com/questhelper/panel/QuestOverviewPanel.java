@@ -32,12 +32,9 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.rewards.Reward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.event.ItemEvent;
@@ -47,6 +44,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import com.questhelper.util.Fonts;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.Skill;
@@ -68,50 +67,35 @@ import org.apache.commons.lang3.StringUtils;
 
 public class QuestOverviewPanel extends JPanel
 {
+	@Getter
 	private final QuestHelperPlugin questHelperPlugin;
 	private final QuestManager questManager;
+
 	public QuestHelper currentQuest;
+
+	private final QuestRequirementsPanel questGeneralRequirementsPanel;
+	private final QuestRequirementsPanel questGeneralRecommendedPanel;
+	private final QuestRequirementsPanel questItemRequirementsPanel;
+	private final QuestRequirementsPanel questItemRecommendedPanel;
+	private final JPanel questCombatRequirementsListPanel;
+	private final JPanel questNotesPanel;
+	private final JPanel questNotesList;
+	private final QuestRewardsPanel questRewardsPanel;
+	private final JPanel questExternalResourcesList;
 
 	private final JPanel questStepsContainer = new JPanel();
 	private final JPanel actionsContainer = new JPanel();
 	private final JPanel configContainer = new JPanel();
 
 	private final JPanel introPanel = new JPanel();
-	private final JLabel questOverviewNotes = new JLabel();
-
-	private final JPanel questGeneralRequirementsListPanel = new JPanel();
-	private final JPanel questGeneralRecommendedListPanel = new JPanel();
-
-	private final JPanel questItemRequirementsListPanel = new JPanel();
-	private final JPanel questItemRecommendedListPanel = new JPanel();
-	private final JPanel questCombatRequirementsListPanel = new JPanel();
-	private final JPanel questOverviewNotesPanel = new JPanel();
-
-	private final JPanel questRewardPanel = new JPanel();
-
-	private final JPanel externalQuestResourcesPanel = new JPanel();
-
-	private final JPanel questGeneralRequirementsHeader = new JPanel();
-	private final JPanel questGeneralRecommendedHeader = new JPanel();
-	private final JPanel questItemRequirementsHeader = new JPanel();
-	private final JPanel questCombatRequirementHeader = new JPanel();
-	private final JPanel questItemRecommendedHeader = new JPanel();
-	private final JPanel questNoteHeader = new JPanel();
-
-	private final JPanel questRewardHeader = new JPanel();
-
-	private final JPanel externalQuestResourcesHeader = new JPanel();
 
 	private final JLabel questNameLabel = new JLabel();
 
 	private static final ImageIcon CLOSE_ICON = Icon.CLOSE.getIcon();
-	private static final ImageIcon INFO_ICON = Icon.INFO_ICON.getIcon();
 
 	private final JButton collapseBtn = new JButton();
 
 	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
-
-	private final List<QuestRequirementPanel> requirementPanels = new ArrayList<>();
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
@@ -188,20 +172,33 @@ public class QuestOverviewPanel extends JPanel
 		BoxLayout boxLayoutOverview = new BoxLayout(overviewPanel, BoxLayout.Y_AXIS);
 		overviewPanel.setLayout(boxLayoutOverview);
 
-		overviewPanel.add(generateRequirementPanel(questGeneralRequirementsListPanel,
-			questGeneralRequirementsHeader, "General requirements:"));
-		overviewPanel.add(generateRequirementPanel(questGeneralRecommendedListPanel,
-			questGeneralRecommendedHeader, "Recommended:"));
-		overviewPanel.add(generateRequirementPanel(questItemRequirementsListPanel,
-			questItemRequirementsHeader, "Item requirements:"));
-		overviewPanel.add(generateRequirementPanel(questItemRecommendedListPanel, questItemRecommendedHeader,
-			"Recommended items:"));
-		overviewPanel.add(generateRequirementPanel(questCombatRequirementsListPanel, questCombatRequirementHeader,
-			"Enemies to defeat:"));
-		overviewPanel.add(generateRequirementPanel(questOverviewNotesPanel, questNoteHeader, "Notes:"));
-		overviewPanel.add(generateRequirementPanel(questRewardPanel, questRewardHeader,
-			"Rewards:"));
-		overviewPanel.add(generateRequirementPanel(externalQuestResourcesPanel, externalQuestResourcesHeader, "External Resources:"));
+		questGeneralRequirementsPanel = new QuestRequirementsPanel("General requirements:", null, questManager, false);
+		overviewPanel.add(questGeneralRequirementsPanel);
+
+		questGeneralRecommendedPanel = new QuestRequirementsPanel("Recommended:", null, questManager, false);
+		overviewPanel.add(questGeneralRecommendedPanel);
+
+		questItemRequirementsPanel = new QuestRequirementsPanel("Item requirements:", null, questManager, true);
+		overviewPanel.add(questItemRequirementsPanel);
+
+		questItemRecommendedPanel = new QuestRequirementsPanel("Recommended items:", null, questManager, true);
+		overviewPanel.add(questItemRecommendedPanel);
+
+		var combatRequirements = QuestRequirementsPanel.createGenericGroup("Enemies to defeat:");
+		questCombatRequirementsListPanel = combatRequirements.getRight();
+		overviewPanel.add(combatRequirements.getLeft());
+
+		var notes = QuestRequirementsPanel.createGenericGroup("Notes:");
+		questNotesPanel = notes.getLeft();
+		questNotesList = notes.getRight();
+		overviewPanel.add(questNotesPanel);
+
+		questRewardsPanel = new QuestRewardsPanel();
+		overviewPanel.add(questRewardsPanel);
+
+		var externalResources = QuestRequirementsPanel.createGenericGroup("External Resources:");
+		questExternalResourcesList = externalResources.getRight();
+		overviewPanel.add(externalResources.getLeft());
 
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
 
@@ -256,32 +253,6 @@ public class QuestOverviewPanel extends JPanel
 		return filtersPanel;
 	}
 
-	private JPanel generateRequirementPanel(JPanel listPanel, JPanel headerPanel, String header)
-	{
-		JPanel requirementPanel = new JPanel();
-		requirementPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		requirementPanel.setLayout(new BorderLayout());
-		requirementPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-
-		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		headerPanel.setLayout(new BorderLayout());
-		headerPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
-
-		JLabel questItemReqs = new JLabel();
-		questItemReqs.setForeground(Color.WHITE);
-		questItemReqs.setText(header);
-		questItemReqs.setMinimumSize(new Dimension(1, headerPanel.getPreferredSize().height));
-		headerPanel.add(questItemReqs, BorderLayout.NORTH);
-
-		listPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 1));
-		listPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
-
-		requirementPanel.add(headerPanel, BorderLayout.NORTH);
-		requirementPanel.add(listPanel, BorderLayout.CENTER);
-
-		return requirementPanel;
-	}
-
 	public void addQuest(QuestHelper quest, boolean isActive)
 	{
 		currentQuest = quest;
@@ -312,7 +283,7 @@ public class QuestOverviewPanel extends JPanel
 
 			for (PanelDetails panelDetail : steps)
 			{
-				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep, quest, questHelperPlugin.getClient());
+				var newStep = new QuestStepPanel(panelDetail, currentStep, questManager, questHelperPlugin);
 				if (panelDetail.getLockingQuestSteps() != null &&
 					(panelDetail.getVars() == null
 						|| panelDetail.getVars().contains(currentQuest.getVar())))
@@ -390,14 +361,14 @@ public class QuestOverviewPanel extends JPanel
 		configContainer.setVisible(false);
 		configContainer.removeAll();
 		questStepsContainer.removeAll();
-		questGeneralRequirementsListPanel.removeAll();
-		questGeneralRecommendedListPanel.removeAll();
-		questItemRequirementsListPanel.removeAll();
-		questItemRecommendedListPanel.removeAll();
+		questGeneralRequirementsPanel.setRequirements(null);
+		questGeneralRecommendedPanel.setRequirements(null);
+		questItemRequirementsPanel.setRequirements(null);
+		questItemRecommendedPanel.setRequirements(null);
 		questCombatRequirementsListPanel.removeAll();
 		currentQuest = null;
-		questOverviewNotesPanel.removeAll();
-		questRewardPanel.removeAll();
+		questNotesList.removeAll();
+		questRewardsPanel.setRewards(null);
 		repaint();
 		revalidate();
 	}
@@ -438,7 +409,7 @@ public class QuestOverviewPanel extends JPanel
 			List<HelperConfig> configs = quest.getConfigs();
 			for (HelperConfig config : configs)
 			{
-				JComboBox dropdown = makeNewDropdown(config.getEnums(), config.getKey());
+				var dropdown = makeNewDropdown(config.getEnums(), config.getKey());
 				JPanel dropdownPanel = makeDropdownPanel(dropdown, config.getName());
 				dropdownPanel.setPreferredSize(new Dimension(PANEL_WIDTH, QuestHelperPanel.DROPDOWN_HEIGHT));
 
@@ -449,21 +420,21 @@ public class QuestOverviewPanel extends JPanel
 		if (questHelperPlugin.getConfig().showFullRequirements())
 		{
 			/* Non-item requirements */
-			updateRequirementsPanels(questGeneralRequirementsHeader, questGeneralRequirementsListPanel, requirementPanels, getAggregatedRequirements(quest));
+			questGeneralRequirementsPanel.setRequirements(getAggregatedRequirements(quest));
 		}
 		else
 		{
-			updateRequirementsPanels(questGeneralRequirementsHeader, questGeneralRequirementsListPanel, requirementPanels, quest.getGeneralRequirements());
+			questGeneralRequirementsPanel.setRequirements(quest.getGeneralRequirements());
 		}
 
 		/* Non-item recommended */
-		updateRequirementsPanels(questGeneralRecommendedHeader, questGeneralRecommendedListPanel, requirementPanels, quest.getGeneralRecommended());
+		questGeneralRecommendedPanel.setRequirements(quest.getGeneralRecommended());
 
 		/* Required items */
-		updateItemRequirementsPanels(questItemRequirementsListPanel, requirementPanels, quest.getItemRequirements());
+		questItemRequirementsPanel.setRequirements(quest.getItemRequirements());
 
 		/* Recommended items */
-		updateItemRequirementsPanels(questItemRecommendedListPanel, requirementPanels, quest.getItemRecommended());
+		questItemRecommendedPanel.setRequirements(quest.getItemRecommended());
 
 		/* Combat requirements */
 		updateCombatRequirementsPanels(quest.getCombatRequirements());
@@ -472,16 +443,10 @@ public class QuestOverviewPanel extends JPanel
 		updateExternalResourcesPanel(quest);
 
 		/* Quest overview */
-		updateQuestOverview(quest.getNotes());
+		updateQuestNotes(quest.getNotes());
 
 		/* Rewards */
-		List<Reward> rewards = new ArrayList<>();
-		if (quest.getQuestPointReward() != null) rewards.add(quest.getQuestPointReward());
-		if (quest.getExperienceRewards() != null) rewards.addAll(quest.getExperienceRewards());
-		if (quest.getItemRewards() != null) rewards.addAll(quest.getItemRewards());
-		if (quest.getUnlockRewards() != null) rewards.addAll(quest.getUnlockRewards());
-
-		updateRewardsPanels(rewards);
+		questRewardsPanel.setRewards(quest.getQuestRewards());
 	}
 
 	private static void collectRequirements(QuestHelper quest, List<Requirement> allRequirements, Set<String> processedQuestIds)
@@ -565,79 +530,6 @@ public class QuestOverviewPanel extends JPanel
 		return aggregatedRequirements;
 	}
 
-	private void updateRequirementsPanels(JPanel header, JPanel listPanel, List<QuestRequirementPanel> panels,
-										  List<Requirement> requirements)
-	{
-		if (requirements != null)
-		{
-			for (Requirement generalRecommend : requirements)
-			{
-				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend, questManager);
-				panels.add(reqPanel);
-				listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
-
-				listPanel.setVisible(true);
-				header.setVisible(true);
-			}
-		}
-		else
-		{
-			listPanel.setVisible(false);
-			header.setVisible(false);
-		}
-	}
-
-	private void updateItemRequirementsPanels(JPanel listPanel, List<QuestRequirementPanel> panels,
-											  List<ItemRequirement> requirements)
-	{
-		if (requirements != null)
-		{
-			for (Requirement generalRecommend : requirements)
-			{
-				QuestRequirementPanel reqPanel = new QuestRequirementPanel(generalRecommend, questManager);
-				panels.add(reqPanel);
-				listPanel.add(new QuestRequirementWrapperPanel(reqPanel));
-
-				listPanel.setVisible(true);
-			}
-		}
-		else
-		{
-			JLabel itemRequiredLabel = new JLabel();
-			itemRequiredLabel.setForeground(Color.GRAY);
-			itemRequiredLabel.setText("None");
-			listPanel.add(itemRequiredLabel);
-		}
-	}
-
-	private void updateRewardsPanels(List<Reward> rewards)
-	{
-		Reward lastReward = null;
-		if (!rewards.isEmpty())
-		{
-			for (Reward reward : rewards)
-			{
-				if (lastReward != null && lastReward.rewardType() != reward.rewardType())
-				{
-					questRewardPanel.add(new JLabel(" "));
-				}
-				lastReward = reward;
-
-				QuestRewardPanel rewardPanel = new QuestRewardPanel(reward);
-				questRewardPanel.add(new QuestRewardWrapperPanel(rewardPanel));
-
-				questRewardPanel.setVisible(true);
-			}
-		}
-		else
-		{
-			JLabel itemRequiredLabel = new JLabel();
-			itemRequiredLabel.setForeground(Color.GRAY);
-			itemRequiredLabel.setText("None");
-			questRewardPanel.add(itemRequiredLabel);
-		}
-	}
-
 	private void updateCombatRequirementsPanels(List<String> combatRequirementList)
 	{
 		JLabel combatLabel = new JLabel();
@@ -676,26 +568,27 @@ public class QuestOverviewPanel extends JPanel
 
 		//Button constant properties
 		wikiBtn.setUI(new BasicButtonUI());
+		wikiBtn.setBorder(new EmptyBorder(0, 0, 0, 0));
 		SwingUtil.removeButtonDecorations(wikiBtn);
 		wikiBtn.setHorizontalAlignment(SwingConstants.LEFT);
 		wikiBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		wikiBtn.setToolTipText("Open the official wiki in your browser.");
 
 		//Button variable properties
-		wikiBtn.setText("<html><body>Open RuneScape Wiki</body></html>");
+		wikiBtn.setText("Open RuneScape Wiki");
 
 		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter()
 		{
 			public void mouseEntered(java.awt.event.MouseEvent evt)
 			{
-				wikiBtn.setForeground(Color.blue.brighter().brighter().brighter());
-				wikiBtn.setText("<html><body style='text-decoration:underline'>Open RuneScape Wiki</body></html>");
+				wikiBtn.setForeground(Color.cyan.darker());
+				wikiBtn.setFont(Fonts.getUnderlinedFont());
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt)
 			{
 				wikiBtn.setForeground(Color.white);
-				wikiBtn.setText("<html><body>Open RuneScape Wiki</body></html>");
+				wikiBtn.setFont(Fonts.getOriginalFont());
 			}
 		});
 
@@ -705,35 +598,31 @@ public class QuestOverviewPanel extends JPanel
 			wikiBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource));
 		}
 
-		externalQuestResourcesPanel.removeAll();
-		externalQuestResourcesPanel.add(externalResources);
-		externalQuestResourcesPanel.add(wikiBtn, BorderLayout.EAST);
+		questExternalResourcesList.removeAll();
+		questExternalResourcesList.add(externalResources);
+		questExternalResourcesList.add(wikiBtn, BorderLayout.EAST);
 	}
 
-	private void updateQuestOverview(List<String> notes)
+	private void updateQuestNotes(List<String> notes)
 	{
-		JLabel overviewLabel = new JLabel();
-		overviewLabel.setForeground(Color.GRAY);
-		StringBuilder textNote = new StringBuilder();
 		if (notes != null)
 		{
+			var textNote = new StringBuilder();
 			for (String note : notes)
 			{
 				textNote.append(note);
 				textNote.append("<br><br>");
 			}
+			var overviewLabel = new JLabel();
+			overviewLabel.setForeground(Color.GRAY);
 			overviewLabel.setText("<html><body style = 'text-align:left'>" + textNote + "</body></html>");
 
-			questOverviewNotesPanel.add(overviewLabel);
-			questOverviewNotesPanel.setVisible(true);
-			questNoteHeader.setVisible(true);
-			questOverviewNotes.setVisible(true);
+			questNotesList.add(overviewLabel);
+			questNotesPanel.setVisible(true);
 		}
 		else
 		{
-			questOverviewNotes.setVisible(false);
-			questNoteHeader.setVisible(false);
-			questOverviewNotesPanel.setVisible(false);
+			questNotesPanel.setVisible(false);
 		}
 	}
 
@@ -745,66 +634,17 @@ public class QuestOverviewPanel extends JPanel
 
 	public void updateRequirements(Client client, List<Item> bankItems)
 	{
-
-		updateRequirementPanels(client, requirementPanels, bankItems);
+		questGeneralRequirementsPanel.update(client, questHelperPlugin, bankItems);
+		questGeneralRecommendedPanel.update(client, questHelperPlugin, bankItems);
+		questItemRequirementsPanel.update(client, questHelperPlugin, bankItems);
+		questItemRecommendedPanel.update(client, questHelperPlugin, bankItems);
 
 		if (questStepPanelList != null)
 		{
 			questStepPanelList.forEach((questStepPanel) -> {
-				questStepPanel.updateRequirements(client, bankItems, this);
+				questStepPanel.updateRequirements(client, bankItems);
 			});
 		}
 		revalidate();
-	}
-
-	public void updateRequirementPanels(Client client, List<QuestRequirementPanel> reqPanels, List<Item> bankItems)
-	{
-		if (reqPanels == null)
-		{
-			return;
-		}
-		for (QuestRequirementPanel requirementPanel : reqPanels)
-		{
-			Color newColor;
-
-			ItemRequirement itemRequirement;
-			if (requirementPanel.getRequirement() instanceof ItemRequirement)
-			{
-				itemRequirement = (ItemRequirement) requirementPanel.getRequirement();
-
-				requirementPanel.getLabel().setText(itemRequirement.getSidebarText());
-
-				requirementPanel.setVisible(itemRequirement.getConditionToHide() == null || !itemRequirement.getConditionToHide().check(client));
-
-				if (itemRequirement instanceof NoItemRequirement)
-				{
-					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
-					// NoItemRequirement overrides it
-				}
-				else
-				{
-					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems, questHelperPlugin.getConfig());
-				}
-			}
-			else
-			{
-				newColor = requirementPanel.getRequirement().getColor(client, questHelperPlugin.getConfig());
-			}
-
-			if (newColor == Color.WHITE)
-			{
-				requirementPanel.getLabel().setToolTipText("In bank");
-			}
-			else if (newColor == Color.ORANGE)
-			{
-				requirementPanel.getLabel().setToolTipText("On steel key ring");
-			}
-			else
-			{
-				requirementPanel.getLabel().setToolTipText("");
-			}
-
-			requirementPanel.getLabel().setForeground(newColor);
-		}
 	}
 }

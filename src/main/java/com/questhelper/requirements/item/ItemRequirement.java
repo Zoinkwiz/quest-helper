@@ -383,6 +383,21 @@ public class ItemRequirement extends AbstractRequirement
 		return text.toString();
 	}
 
+	@Nullable
+	@Override
+	public String getWikiUrl()
+	{
+		if (getUrlSuffix() != null) {
+			return "https://oldschool.runescape.wiki/w/" + getUrlSuffix();
+		}
+
+		if (getId() != -1) {
+			return "https://oldschool.runescape.wiki/w/Special:Lookup?type=item&id=" + getId();
+		}
+
+		return null;
+	}
+
 	@Override
 	public boolean shouldDisplayText(Client client)
 	{

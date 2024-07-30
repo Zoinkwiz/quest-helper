@@ -603,13 +603,13 @@ public class DetailedQuestStep extends QuestStep
 				graphics.draw(slotBounds);
 				break;
 			case OUTLINE:
-				BufferedImage outlined = itemManager.getItemOutline(item.getItemId(), 1, color);
+				BufferedImage outlined = itemManager.getItemOutline(item.getItemId(), item.getItemQuantity(), color);
 				graphics.drawImage(outlined, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
 				break;
 			case FILLED_OUTLINE:
-				BufferedImage outline = itemManager.getItemOutline(item.getItemId(), 1, color);
+				BufferedImage outline = itemManager.getItemOutline(item.getItemId(), item.getItemQuantity(), color);
 				graphics.drawImage(outline, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
-				Image image = ImageUtil.fillImage(itemManager.getImage(item.getItemId(), 1, false), ColorUtil.colorWithAlpha(color, 65));
+				Image image = ImageUtil.fillImage(itemManager.getImage(item.getItemId(), item.getItemQuantity(), false), ColorUtil.colorWithAlpha(color, 65));
 				graphics.drawImage(image, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
 				break;
 			default:

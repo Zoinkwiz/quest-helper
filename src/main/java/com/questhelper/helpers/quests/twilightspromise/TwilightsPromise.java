@@ -311,7 +311,7 @@ public class TwilightsPromise extends BasicQuestHelper
 		talkToBazaarKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12902, new WorldPoint(1682, 3104, 0),
 			"Talk to the Knight of Varlamore in the bazaar south of the palace.", varlamoreCrest);
 		pickpocketCitizen = new NpcStep(this, NpcID.CITIZEN_12929, new WorldPoint(1686, 3109, 0),
-			"Pickpocket the citizen in turquise robes in the bazaar.");
+			"Pickpocket the citizen in turquoise robes in the bazaar.");
 		returnAmulet = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12902, new WorldPoint(1682, 3104, 0),
 		"Return the amulet to the knight in the bazaar.", stolenAmulet);
 

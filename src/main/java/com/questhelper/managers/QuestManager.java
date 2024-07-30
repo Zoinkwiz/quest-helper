@@ -308,6 +308,9 @@ public class QuestManager
 			{
 				panel.removeQuest();
 				panel.addQuest(questHelper, true);
+
+				// Force an extra update immediately after starting a quest
+				clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBankManager.getBankItems()));
 			});
 		}
 		else

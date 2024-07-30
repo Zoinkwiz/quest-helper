@@ -29,6 +29,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.SpecialAttack;
 import net.runelite.api.Client;
+import javax.annotation.Nonnull;
 
 public class SpecialAttackRequirement extends AbstractRequirement
 {
@@ -47,9 +48,10 @@ public class SpecialAttackRequirement extends AbstractRequirement
         return specialAttack.check(client, SPECIALATTACK_VARP);
     }
 
-    @Override
-    public String getDisplayText()
-    {
-        return "You must turn " + specialAttack.getName() + " special attack.";
+	@Nonnull
+	@Override
+	public String getDisplayText()
+	{
+		return "You must turn " + specialAttack.getName() + " special attack.";
     }
 }

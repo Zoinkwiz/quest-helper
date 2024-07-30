@@ -50,6 +50,8 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
+import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
 
 public class ItemRequirement extends AbstractRequirement
 {
@@ -362,13 +364,9 @@ public class ItemRequirement extends AbstractRequirement
 		return lines;
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
-	{
-		return getName();
-	}
-
-	public String getSidebarText()
 	{
 		StringBuilder text = new StringBuilder();
 
@@ -377,12 +375,12 @@ public class ItemRequirement extends AbstractRequirement
 			text.append(getQuantity()).append(" x ");
 		}
 
-		text.append(getDisplayText());
+		text.append(getName());
 
 		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
 		String html2 = "</body></html>";
 
-		return html1 + text + html2;
+		return text.toString();
 	}
 
 	@Override

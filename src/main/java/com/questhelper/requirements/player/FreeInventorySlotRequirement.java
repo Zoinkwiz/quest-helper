@@ -36,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import javax.annotation.Nonnull;
 
 /**
  * Requirement that checks if a player has a required number of slots free in a given
@@ -78,6 +79,7 @@ public class FreeInventorySlotRequirement extends AbstractRequirement
 		return item == null || item.getId() == -1;
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

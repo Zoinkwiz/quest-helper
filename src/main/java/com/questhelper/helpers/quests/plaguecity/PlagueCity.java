@@ -195,7 +195,7 @@ public class PlagueCity extends BasicQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
-		spade.canBeObtainedDuringQuest()
+		spade.canBeObtainedDuringQuest();
 		spade.setTooltip("A spawn is found in Edmond's garden at the start of the quest");
 		spade.setHighlightInInventory(true);
 		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 4);

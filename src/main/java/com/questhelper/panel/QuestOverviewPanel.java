@@ -319,10 +319,6 @@ public class QuestOverviewPanel extends JPanel
 
 	public void updateSteps()
 	{
-		if (questStepPanelList == null)
-		{
-			return;
-		}
 		questStepPanelList.forEach(panel -> {
 			for (QuestStep step : panel.getSteps())
 			{
@@ -639,12 +635,9 @@ public class QuestOverviewPanel extends JPanel
 		questItemRequirementsPanel.update(client, questHelperPlugin, bankItems);
 		questItemRecommendedPanel.update(client, questHelperPlugin, bankItems);
 
-		if (questStepPanelList != null)
-		{
-			questStepPanelList.forEach((questStepPanel) -> {
-				questStepPanel.updateRequirements(client, bankItems);
-			});
-		}
+		questStepPanelList.forEach((questStepPanel) -> {
+			questStepPanel.updateRequirements(client, bankItems);
+		});
 		revalidate();
 	}
 }

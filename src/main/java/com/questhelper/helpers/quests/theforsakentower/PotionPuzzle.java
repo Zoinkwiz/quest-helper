@@ -176,7 +176,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 		}
 		else
 		{
-			startUpStep(getFluid);
+			startUpStep(goUpStairs);
 		}
 	}
 

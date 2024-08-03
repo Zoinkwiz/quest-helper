@@ -730,6 +730,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		eliteBlackKnightOutfit = new ItemRequirements("Full elite black knight", eliteHelm, eliteBody, eliteLegs);
 
+		talkedToMovario = new VarbitRequirement(9653, 710, Operation.GREATER_EQUAL);
+
 		darkSquallHood = new ItemRequirement("Dark squall hood", ItemID.DARK_SQUALL_HOOD);
 		darkSquallBody = new ItemRequirement("Dark squall robe top", ItemID.DARK_SQUALL_ROBE_TOP);
 		darkSquallLegs = new ItemRequirement("Dark squall robe bottom", ItemID.DARK_SQUALL_ROBE_BOTTOM);
@@ -982,8 +984,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		abyssEntry = new Zone(new WorldPoint(4040, 4550, 0), new WorldPoint(4078, 4613, 0));
 		inAbyssEntry = new ZoneRequirement(abyssEntry);
-
-		talkedToMovario = new VarbitRequirement(9653, 710, Operation.GREATER_EQUAL);
 
 		notUsedSpadeOnFireRocks = new VarbitRequirement(10811, 0);
 		notUsedChiselOnFireBrazier = new VarbitRequirement(10811, 1);

@@ -131,7 +131,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	QuestStep enterMovarioBase, claimRunes, climbDownMovarioFirstRoom, inspectDoor, useFireRuneOnDoor, useAirRuneOnDoor, useEarthRuneOnDoor, useWaterRuneOnDoor,
 		useMindRuneOnDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, searchBookcase1, searchBookcase2, searchBookcase3, searchBookcase4, searchBookcase5, searchBookcase6, searchBookcase7,
 		enterElectricDoor, searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, goDownToF1MovarioBase,
-		useKeyOnChest, searchChestForTraps, getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall;
+		useKeyOnChest, searchChestForTraps, getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting;
 
 	DetailedQuestStep goUpToThaeriskWithNotes, talkToThaeriskWithNotes, goUpToThaeriskWithoutNotes, talkToThaeriskWithoutNotes;
 
@@ -1214,8 +1214,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// Pulled lever in painting
 		// 10670 1->0
 		// 10758 0->1
-		crossOverBrokenWall = new ObjectStep(this, ObjectID.BROKEN_WALL_53884, new WorldPoint(4179, 4947, 1),
-			"Cross over the broken wall into the south room.");
 		solveWeightPuzzle = new WeightStep(this);
 
 		// Taken fire runes
@@ -1872,7 +1870,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			List.of(khazardTeleport.quantity(2), feldipHillsTeleport)));
 		allSteps.add(new PanelDetails("Movario's Base", List.of(enterMovarioBase, climbDownMovarioFirstRoom, inspectDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, enterElectricDoor,
 			searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, useKeyOnChest, searchChestForTraps,
-			getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall),
+			getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting),
 			airRune, waterRune, earthRune, fireRune, mindRune));
 		allSteps.add(new PanelDetails("Weight puzzle", solveWeightPuzzle.getDisplaySteps()));
 		allSteps.add(new PanelDetails("United Front", List.of(goUpToThaeriskWithNotes, killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport,

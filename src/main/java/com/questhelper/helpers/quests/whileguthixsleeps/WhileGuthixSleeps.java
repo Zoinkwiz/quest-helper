@@ -35,6 +35,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.util.ItemSlots;
@@ -80,15 +81,15 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	//Items Required
 	ItemRequirement sapphireLantern, litSapphireLantern, airRune, earthRune, fireRune, waterRune, mindRune, lawRune,
 		deathRune, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
-		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, logs, knife, snapdragonSeed, astralRune, cosmicRune,
+		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, combatGear, logs, knife, snapdragonSeed, astralRune, cosmicRune,
 		bindRunes, weakenRunes, magicGear, squallOutfit, eliteBlackKnightOutfit, telegrabRunes, alchRunes;
 
 
 	// Items Recommended
-	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport, faladorTeleport,
-		camelotTeleport, lobster, restorePotion, gamesNecklace, spade, hammer, chisel, food, prayerPotions;
+	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport, faladorTeleport, staminaPotion, superRestore,
+		camelotTeleport, lobster, restorePotion, gamesNecklace, spade, hammer, chisel, food, prayerPotions, taverleyTeleport;
 
-	Requirement lunarSpellbook;
+	Requirement lunarSpellbook, normalSpellbook;
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
@@ -97,6 +98,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	ItemRequirement toadflax, toadsLegs, guamLeaf, eyeOfNewt, iritLeaf, harralander, redSpidersEggs, garlic, silverDust, goatHorn, ranarrWeed, whiteBerries, cadantine, avantoe, moryMyreFungus,
 		chocolateDust, snapeGrass, kebbitTeethdust, lantadyme, potatoCactus, dwarfWeed, wineOfZamorak, snapdragon, tarromin, limpwurt, kwuarm, emptyDruidPouch, fullDruidPouch, silverSickleB;
+
+	FreeInventorySlotRequirement emptySlots9;
 
 	Requirement doorNeedsEarthRune, doorNeedsMindRune, doorNeedsAirRune, doorNeedsFireRune, doorNeedsWaterRune, isElectricBookcase1, isElectricBookcase2, isElectricBookcase3, isElectricBookcase4,
 		isElectricBookcase5, isElectricBookcase6, isElectricBookcase7;
@@ -124,7 +127,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		blackKnightFortressBasement, catacombSouth1, catacombNorth1, catacombNorth2, catacombF2, catacombHQ, squallFightRoom, teleportSpot, lucienCamp, chaosTempleF1,
 		junaRoom, abyssEntry, abyssEntryF1, abyssEntryF2, airCavity, waterCavity, earthCavity, guthixianTemple, jailCell;
 
-	DetailedQuestStep talkToIvy, questPlaceholder, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
+	DetailedQuestStep talkToIvy, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain,
 		talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav,
 		returnBroavToHuntingExpert, useDirtyShirtOnBroav, dropBroav, goToBrokenTable, searchBrokenTable;
 
@@ -283,10 +286,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		ConditionalStep goToPainting = new ConditionalStep(this, goUpFromLibrary);
 		goToPainting.addStep(and(isUpstairsNearThaerisk, movariosNotesV1InBank, movariosNotesV2InBank), talkToThaeriskWithNotes);
 		goToPainting.addStep(and(inMovarioBaseF1, movariosNotesV1InBank, movariosNotesV2InBank, pulledPaintingLever), solveWeightPuzzle);
-		goToPainting.addStep(and(inMovarioBaseF2, movariosNotesV2InBank), goDownToF1MovarioBase);
+		goToPainting.addStep(and(inMovarioBaseF2, movariosNotesV2InBank), climbDownMovarioFirstRoom);
 		goToPainting.addStep(and(inMovarioBaseF1, movariosNotesV1InBank, movariosNotesV2InBank), inspectPainting);
 		goToPainting.addStep(and(inMovarioBaseF1, movariosNotesV2InBank), searchDesk);
-		goToPainting.addStep(and(inMovarioBaseF2, movariosNotesV2InBank), goDownToF1MovarioBase);
 		goToPainting.addStep(and(inMovarioBaseF2), getNotesFromChest);
 		goToPainting.addStep(and(inMovarioBaseF1), climbUpHiddenStaircase);
 		goToPainting.addStep(and(movariosNotesV1InBank, movariosNotesV2InBank), goUpToThaeriskWithNotes);
@@ -615,10 +617,16 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		litSapphireLantern.setTooltip("You can make this by using a cut sapphire on a bullseye lantern");
 
 		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
+		airRune.canBeObtainedDuringQuest();
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE);
+		earthRune.canBeObtainedDuringQuest();
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE);
+		fireRune.canBeObtainedDuringQuest();
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
+		waterRune.canBeObtainedDuringQuest();
 		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE);
+		mindRune.canBeObtainedDuringQuest();
+
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
 		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE);
 
@@ -653,6 +661,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		elemental30.setExclusiveToOneItemType(true);
 
 		chargeOrbSpell = new ItemRequirements(LogicType.AND, "Runes for any charge orb spell you have the level to cast", cosmic3, elemental30);
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		meleeGear = new ItemRequirement("Melee weapon", -1, -1).isNotConsumed();
 		meleeGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		rangedGear = new ItemRequirement("Ranged weapon", -1, -1).isNotConsumed();
@@ -671,6 +681,16 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		camelotTeleport = new ItemRequirement("Seers' Village teleport", ItemID.CAMELOT_TELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
 		lunarSpellbook = new SpellbookRequirement(Spellbook.LUNAR);
+		normalSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
+
+		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
+		superRestore = new ItemRequirement("Super restore potions", ItemCollections.SUPER_RESTORE_POTIONS);
+
+
+		emptySlots9 = new FreeInventorySlotRequirement(9);
+
+		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.TAVERLEY_TELEPORT);
+		taverleyTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
 
 		lobster = new ItemRequirement("Lobster, or some other food", ItemID.LOBSTER);
 		restorePotion = new ItemRequirement("Restore potion", ItemID.RESTORE_POTION4);
@@ -1049,8 +1069,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		questPlaceholder = new DetailedQuestStep(this, "This is a very large quest, so it will be a while before a Quest Helper is made for it. Enjoy the quest if you do it yourself, it's one of the best ever made!");
 		talkToIvy = new NpcStep(this, NpcID.IVY_SOPHISTA, new WorldPoint(2907, 3450, 0), "Talk to Ivy Sophista in Taverley south of the witch's house.");
+		talkToIvy.addTeleport(taverleyTeleport);
 		talkToIvy.addDialogStep("Yes.");
 
 		goUpLadderNextToIvy = new ObjectStep(this, ObjectID.LADDER_53347, new WorldPoint(2915, 3450, 0), "Go up the ladder next to Ivy.");
@@ -1061,9 +1081,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10670 0->1
 
 		// 10754 0->1 when someone walking downstairs
-		killAssassins = new NpcStep(this, NpcID.ASSASSIN_13514, new WorldPoint(2909, 3449, 1), "Kill the assassins. " +
-			"If one says 'Now!' they will fire a hard-hitting ranged attack if not prayed against. If one says 'Nothing personal, adventurer', " +
-			"they will teleport to you and dragon claw spec you. Protect from Melee to be safe.", true);
+		killAssassins = new NpcStep(this, NpcID.ASSASSIN_13514, new WorldPoint(2909, 3449, 1), "Kill the assassins. Use Protected from Ranged." +
+			"If one says 'Now!' they will fire a hard-hitting ranged attack if not prayed against. Straight after, the other will say 'Nothing personal, adventurer', " +
+			"they will teleport to you and dragon dagger spec you. Protect from Melee straight after the strong ranged attack hits to be safe.", true);
 		((NpcStep) killAssassins).addAlternateNpcs(NpcID.ASSASSIN_13515);
 
 		talkToThaeriskAgain = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2909, 3449, 1), "Talk to Thaerisk again.");
@@ -1084,7 +1104,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToHuntingExpert = new NpcStep(this, NpcID.HUNTING_EXPERT_1504, new WorldPoint(2525, 2916, 0),
 			"Talk to the Hunting Expert in his hut in the middle of the Feldip Hills hunting area.", knife, logs);
 		talkToHuntingExpert.addTeleport(feldipHillsTeleport);
-		talkToHuntingExpert.addDialogStep("Do you think you could help me with broavs?");
+		talkToHuntingExpert.addDialogSteps("Do you think you could help me with broavs?", "A creature to help track down a person.");
 
 		setupTrap = new ObjectStep(this, ObjectID.PIT_53273, new WorldPoint(2499, 2910, 0), "Set up the trap west of the Hunting Expert.", knife, logs, mortMyreFungus);
 		useFungusOnTrap = new ObjectStep(this, ObjectID.PIT_TRAP, new WorldPoint(2499, 2910, 0), "Use the mort myre fungus on the trap west of the Hunting Expert.", mortMyreFungus);
@@ -1093,7 +1113,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		returnBroavToHuntingExpert = new NpcStep(this, NpcID.HUNTING_EXPERT_1504, new WorldPoint(2525, 2916, 0),
 			"Bring the unconscious broav to the Feldip Hills hunting expert.", unconsciousBroav);
-		returnBroavToHuntingExpert.addDialogStep("Do you think you could train this broav for me?");
+		returnBroavToHuntingExpert.addDialogSteps("Do you think you could train this broav for me?", "A creature to help track down a person.");
 
 		goToBrokenTable = new DetailedQuestStep(this, new WorldPoint(2519, 3248, 0), "Go to the broken table in the middle of the khazard side of the gnome/khazard battlefield.", broav);
 		goToBrokenTable.addTeleport(khazardTeleport);
@@ -1193,7 +1213,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		searchWasteBasket = new DetailedQuestStep(this, "Search the waste-paper basket.", wastePaperBasket.highlighted());
 		useKeyOnBookcase = new ObjectStep(this, ObjectID.BOOKCASE_53939, new WorldPoint(4172, 4954, 1), "Use the ruby key on the most north-west bookcase.", rubyKey.highlighted());
 		useKeyOnBookcase.addIcon(ItemID.RUBY_KEY_29523);
-		climbUpHiddenStaircase = new ObjectStep(this, ObjectID.STAIRS_53947, new WorldPoint(4173, 4956, 1), "Go up the stairs that've appeared.");
+		climbUpHiddenStaircase = new ObjectStep(this, ObjectID.STAIRS_53947, new WorldPoint(4173, 4956, 1), "Go up the stairs that appeared.");
 		searchBed = new ObjectStep(this, ObjectID.BED_53949, new WorldPoint(4179, 4954, 2), "Search the bed.");
 		goDownToF1MovarioBase = new ObjectStep(this, ObjectID.STAIRS_53948, new WorldPoint(4173, 4956, 2), "Go back downstairs.");
 		searchDesk.addSubSteps(goDownToF1MovarioBase);
@@ -1230,6 +1250,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 107096
 
 		goUpToThaeriskWithNotes = new ObjectStep(this, ObjectID.LADDER_53347, new WorldPoint(2915, 3450, 0), "Return to Thaerisk upstairs in Taverley with the notes.", movariosNotesV1, movariosNotesV2);
+		goUpToThaeriskWithNotes.addTeleport(taverleyTeleport);
 		talkToThaeriskWithNotes = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2909, 3449, 1), "Talk to Thaerisk.", movariosNotesV1, movariosNotesV2);
 
 		goUpToThaeriskWithoutNotes = new ObjectStep(this, ObjectID.LADDER_53347, new WorldPoint(2915, 3450, 0), "Return to Thaerisk upstairs in Taverley");
@@ -1244,7 +1265,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// Entered merc area
 		// 9653 23->24
 		// 4066 Varp: 385022 -> 33939454
-		killMercenaries = new NpcStep(this, NpcID.MERCENARY_MAGE, new WorldPoint(2657, 3501, 0), "Kill the mercenaries just north of McGrubor's Wood.", true);
+		killMercenaries = new NpcStep(this, NpcID.MERCENARY_MAGE, new WorldPoint(2657, 3501, 0), "Kill the mercenaries just north of McGrubor's Wood. You can also destroy Movario's notes now.", true);
 		((NpcStep) killMercenaries).addAlternateNpcs(NpcID.MERCENARY_AXEMAN, NpcID.MERCENARY_AXEMAN_13536);
 		killMercenaries.addTeleport(camelotTeleport);
 		talkToIdria = new NpcStep(this, NpcID.IDRIA_13542, new WorldPoint(2657, 3501, 0), "Talk to Idria just north of McGrubor's Wood.");
@@ -1306,6 +1327,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			"");
 		plantSnapdragon = new ObjectStep(this, ObjectID.HERB_PATCH_53290, new WorldPoint(2962, 3338, 3),
 			"Plant the enriched snapdragon seed in the herb patch on the top floor of the west side of the White Knights' Castle.", enrichedSnapdragonSeed.highlighted(), dibber);
+		plantSnapdragon.addDialogStep("Yes.");
 		plantSnapdragon.addIcon(ItemID.ENRICHED_SNAPDRAGON_SEED);
 
 		ConditionalStep goToF3WhiteKnight = new ConditionalStep(this, goFromF0ToF1WhiteKnight);
@@ -1387,6 +1409,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10774 0->1
 		talkToGhommal = new NpcStep(this, NpcID.GHOMMAL_13613, new WorldPoint(2878, 3546, 0), "Talk to Ghommal outside of the entrance to the Warriors' Guild.");
 		talkToGhommal.addDialogStep("I need to talk to you about Lucien.");
+		talkToGhommal.addTeleport(burthorpeTeleport);
 		talkToHarrallak = new NpcStep(this, NpcID.HARRALLAK_MENAROUS_13615, new WorldPoint(2868, 3546, 0), "Talk to Harrallak Menarous in the entrance to the Warriors' Guild.");
 		talkToHarrallak.addDialogStep("I need to talk to you about Lucien.");
 		goToF1WarriorsGuild = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2839, 3537, 0), "Talk to Sloane in the middle of the first floor of the Warriors' Guild.");
@@ -1406,14 +1429,14 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10838 0->1
 		// 10826 0->1
 		enterBlackKnightFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Akrisae will give you a one-off teleport there.",
-			ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)),
+			normalSpellbook, emptySlots9, ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)),
 			squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank(questBank)), unpoweredOrb.hideConditioned(hasCastChargeOrb), chargeOrbSpell.hideConditioned(hasCastChargeOrb));
 		// 10962 0->1 when teleported
 		enterBlackKnightFortress.addDialogStep("Yes.");
 		pushHiddenWall = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
 		climbDownBlackKnightBasement = new ObjectStep(this, ObjectID.LADDER_25843, new WorldPoint(3016, 3519, 0), "Go down the ladder.");
 		inspectCarvedTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Inspect the tile on the floor on the east side of the room.");
-		castChargedOrbOnTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Cast one of the charge orb spells on the tile.", unpoweredOrb, chargeOrbSpell);
+		castChargedOrbOnTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Cast one of the charge orb spells on the tile.", normalSpellbook, unpoweredOrb, chargeOrbSpell);
 		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_WATER_ORB);
 		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_AIR_ORB);
 		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_EARTH_ORB);
@@ -1555,7 +1578,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		useChiselOnWaterBrazier.addIcon(ItemID.CHISEL);
 		useChiselOnWaterBrazier.addDialogStep("Yes.");
 		useOrbOnFireRecessedBlock = new ObjectStep(this, ObjectID.RECESSED_BLOCK, new WorldPoint(4062, 4554, 0),
-			"Use the fire orb on the recessed block just next to the middle cavity to the far south, with the fire symbol next to it.", fireOrb.highlighted());
+			"You can drop the spade, chisel and hammer now. Use the fire orb on the recessed block just next to the middle cavity to the far south, with the fire symbol next to it.", fireOrb.highlighted());
 		useOrbOnFireRecessedBlock.addIcon(ItemID.FIRE_ORB);
 
 		useOrbOnWaterRecessedBlock = new ObjectStep(this, ObjectID.RECESSED_BLOCK_53618, new WorldPoint(4063, 4548, 2),
@@ -1783,6 +1806,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			NpcID.TORMENTED_DEMON_13604, NpcID.TORMENTED_DEMON_13605, NpcID.TORMENTED_DEMON_13606);
 
 		teleportWithIdria = new NpcStep(this, NpcID.IDRIA_13582, new WorldPoint(4133, 4381, 0), "Talk to Idria to teleport back to Falador Castle.");
+		teleportWithIdria.addDialogStep("Yes.");
 		finishQuest = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0),
 			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side, to finish the quest!");
 	}
@@ -1791,7 +1815,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
-			knife, coins.quantity(500), dibber, lanternLens, unpoweredOrb, bronzeMedHelm, ironChainbody, sapphireLantern,
+			knife, coins.quantity(520), dibber, lanternLens, unpoweredOrb, bronzeMedHelm, ironChainbody, sapphireLantern,
 			astralRune.quantity(4), cosmicRune.quantity(4), airRune.quantity(8), chargeOrbSpell, meleeGear, magicGear,
 			rangedGear
 		);
@@ -1801,7 +1825,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
+			taverleyTeleport.quantity(2),
 			khazardTeleport.quantity(2),
+			faladorTeleport.quantity(4),
 			feldipHillsTeleport,
 			burthorpeTeleport,
 			food
@@ -1864,44 +1890,47 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", List.of(talkToIvy, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain), List.of(meleeGear), List.of(antipoison, food)));
+		allSteps.add(new PanelDetails("Starting off", List.of(talkToIvy, goUpLadderNextToIvy, talkToThaerisk, killAssassins, talkToThaeriskAgain), List.of(combatGear), List.of(antipoison, food.quantity(15), taverleyTeleport)));
 		allSteps.add(new PanelDetails("Investigating", List.of(talkToLaunderer, talkToHuntingExpert, setupTrap, useFungusOnTrap, waitForBroavToGetTrapped, retrieveBroav, returnBroavToHuntingExpert,
 			goToBrokenTable, dropBroav, useDirtyShirtOnBroav, searchBrokenTable),
 			List.of(coins.quantity(500).hideConditioned(paidLaunderer), knife, logs),
 			List.of(khazardTeleport.quantity(2), feldipHillsTeleport)));
-		allSteps.add(new PanelDetails("Movario's Base", List.of(enterMovarioBase, climbDownMovarioFirstRoom, inspectDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, enterElectricDoor,
+		allSteps.add(new PanelDetails("Movario's Base", List.of(enterMovarioBase, claimRunes, climbDownMovarioFirstRoom, inspectDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, enterElectricDoor,
 			searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, useKeyOnChest, searchChestForTraps,
 			getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting),
 			airRune, waterRune, earthRune, fireRune, mindRune));
 		allSteps.add(new PanelDetails("Weight puzzle", solveWeightPuzzle.getDisplaySteps()));
-		allSteps.add(new PanelDetails("United Front", List.of(goUpToThaeriskWithNotes, killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport,
+
+		allSteps.add(new PanelDetails("Gathering", List.of(goUpToThaeriskWithNotes, killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport,
 			useOrbOnShadyStranger, talkToAkrisaeAfterOrb, buySnapdragonSeed, getSarimTeleport, talkToBetty, talkToBettyForDye, usePinkDyeOnLanternLens, useLensOnCounter, searchCounterForSeed,
-			talkToThaeriskWithSeed, goPlantSnapdragon, talkToIdriaAfterPlanting, activeLunars, contactCyrisus, contactTurael, contactMazchna, contactDuradel, goHarvestSnapdragon, talkToThaeriskWithSnapdragon,
+			talkToThaeriskWithSeed, goPlantSnapdragon, talkToIdriaAfterPlanting), List.of(lanternLens, dibber, coins.quantity(20)), List.of(taverleyTeleport, faladorTeleport.quantity(2))));
+		allSteps.add(new PanelDetails("United Front", List.of(activeLunars, contactCyrisus, contactTurael, contactMazchna, contactDuradel, goHarvestSnapdragon, talkToThaeriskWithSnapdragon,
 			useSnapdragonOnSerum, searchDrawersForCharcoalAndPapyrus, enterJailCell, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, talkToSloane),
-			List.of(lunarSpellbook, lanternLens, dibber, astralRune.quantity(4), cosmicRune.quantity(4), airRune.quantity(8)), List.of(burthorpeTeleport)));
+			List.of(lunarSpellbook, astralRune.quantity(4), cosmicRune.quantity(4), airRune.quantity(8)), List.of(taverleyTeleport, faladorTeleport, burthorpeTeleport)));
 		allSteps.add(new PanelDetails("Infiltration", List.of(talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile,
 			castChargedOrbOnTile, enterCatacombs, jumpBridge, climbWallInCatacombs, useWesternSolidDoor, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour,
 			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif,
 			useRestoreOnSilif, giveSilifEliteArmour, talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurokSidebar, plantOrbOnSurok,
 			talkToAkrisaeAfterSurok),
-			List.of(bronzeMedHelm, ironChainbody, magicGear, meleeGear, unpoweredOrb, chargeOrbSpell), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes, food, prayerPotions)));
+			List.of(normalSpellbook, emptySlots9, bronzeMedHelm, ironChainbody, magicGear, meleeGear, unpoweredOrb, chargeOrbSpell), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes, food, prayerPotions, faladorTeleport, staminaPotion)));
 		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, goDownForOrbAndRunes, takeRunes, takeStrangeTeleorb, goUpToUseTeleorb,
 			standAtTeleportSpot, activateStrangeTeleorb, climbIceWall, jumpToLedge)));
-		allSteps.add(new PanelDetails("???", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,
+		allSteps.add(new PanelDetails("Delving Deeper", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,
 			searchRemainsForHammerAndChisel, useSpadeOnFireRocks, useChiselOnFireBrazier, useSpadeOnEarthRocks, useChiselOnEarthBrazier, useChiselOnAirBrazier, useChiselOnWaterBrazier,
 			useOrbOnAirRecessedBlock, useOrbOnFireRecessedBlock, useOrbOnEarthRecessedBlock, climbWallNextToSkullF0ToF1, useOrbOnWaterRecessedBlock, useFireBlockOnRecess,
 			 climbDownFromSkullF2ToF1, enterWestCavity, useAirBlockOnRecess, leaveAirRecess, enterMiddleCavity, useEarthBlockOnRecess, leaveEarthRecess, enterEastCavity, useWaterBlockOnRecess,
 				leaveWaterRecess, climbUpToCubeF0ToF1, touchCube, enterSkull),
-			List.of(squallOutfit, litSapphireLantern, meleeGear, rangedGear, magicGear),
+			List.of(squallOutfit, litSapphireLantern),
 			List.of(gamesNecklace, food, prayerPotions)));
 
-		List<QuestStep> templeSteps = new ArrayList<>(List.of(getPouch, usePouchOnDruid));
+		List<QuestStep> templeSteps = new ArrayList<>(List.of(getPouch, castBloomToFillPouch, usePouchOnDruid));
 		templeSteps.addAll(List.of(herblorePuzzle.getSidebarSteps()));
-		templeSteps.addAll(List.of(approachStoneOfJas, fightBalanceElemental, touchStone, talkToMovarioAtStone, fightTormentedDemons, teleportWithIdria, finishQuest));
-
 		allSteps.add(new PanelDetails("The Temple", templeSteps,
-			List.of(litSapphireLantern, meleeGear, rangedGear, magicGear),
+			List.of(litSapphireLantern),
 			List.of(gamesNecklace)));
+
+		allSteps.add(new PanelDetails("The Stone", List.of(approachStoneOfJas, fightBalanceElemental, touchStone, talkToMovarioAtStone, fightTormentedDemons, teleportWithIdria, finishQuest),
+			List.of(meleeGear, rangedGear, magicGear), List.of(gamesNecklace, food, superRestore.quantity(4))));
 		return allSteps;
 	}
 }

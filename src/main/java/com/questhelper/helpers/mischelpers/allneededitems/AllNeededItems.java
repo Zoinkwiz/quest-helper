@@ -53,7 +53,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 		step1.hideRequirements = true;
 		step1.considerBankForItemHighlight = true;
 		step1.iconToUseForNeededItems = SpriteID.TAB_QUESTS;
-		step1.setBackgroundWorldTooltipText("Highlighted due to the config setting 'Highlight missing items' in Quest Helper.");
+		step1.setBackgroundWorldTooltipText("Highlighted due to the Quest Helper config setting 'Highlight missing items' in Quest Helper.");
 
 		return step1;
 	}

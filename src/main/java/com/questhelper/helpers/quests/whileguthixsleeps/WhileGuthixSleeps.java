@@ -131,7 +131,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	QuestStep enterMovarioBase, claimRunes, climbDownMovarioFirstRoom, inspectDoor, useFireRuneOnDoor, useAirRuneOnDoor, useEarthRuneOnDoor, useWaterRuneOnDoor,
 		useMindRuneOnDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, searchBookcase1, searchBookcase2, searchBookcase3, searchBookcase4, searchBookcase5, searchBookcase6, searchBookcase7,
 		enterElectricDoor, searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, goDownToF1MovarioBase,
-		useKeyOnChest, searchChestForTraps, getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall;
+		useKeyOnChest, searchChestForTraps, getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting;
 
 	DetailedQuestStep goUpToThaeriskWithNotes, talkToThaeriskWithNotes, goUpToThaeriskWithoutNotes, talkToThaeriskWithoutNotes;
 
@@ -730,6 +730,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		eliteBlackKnightOutfit = new ItemRequirements("Full elite black knight", eliteHelm, eliteBody, eliteLegs);
 
+		talkedToMovario = new VarbitRequirement(9653, 710, Operation.GREATER_EQUAL);
+
 		darkSquallHood = new ItemRequirement("Dark squall hood", ItemID.DARK_SQUALL_HOOD);
 		darkSquallBody = new ItemRequirement("Dark squall robe top", ItemID.DARK_SQUALL_ROBE_TOP);
 		darkSquallLegs = new ItemRequirement("Dark squall robe bottom", ItemID.DARK_SQUALL_ROBE_BOTTOM);
@@ -983,8 +985,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		abyssEntry = new Zone(new WorldPoint(4040, 4550, 0), new WorldPoint(4078, 4613, 0));
 		inAbyssEntry = new ZoneRequirement(abyssEntry);
 
-		talkedToMovario = new VarbitRequirement(9653, 710, Operation.GREATER_EQUAL);
-
 		notUsedSpadeOnFireRocks = new VarbitRequirement(10811, 0);
 		notUsedChiselOnFireBrazier = new VarbitRequirement(10811, 1);
 
@@ -1203,6 +1203,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		useKeyOnChest.addIcon(ItemID.RUBY_KEY_29523);
 		searchChestForTraps = new ObjectStep(this, ObjectID.BED_CHEST_53951, new WorldPoint(4179, 4954, 2), "RIGHT-CLICK search the bed chest for traps.");
 		getNotesFromChest = new ObjectStep(this, ObjectID.BED_CHEST_53952, new WorldPoint(4179, 4954, 2), "Take the second pair of notes from the bed chest.");
+		((ObjectStep) getNotesFromChest).addAlternateObjects(ObjectID.BED_CHEST_53951);
 		readNotes1 = new DetailedQuestStep(this, "Read the movario notes 1.", movariosNotesV1.highlighted());
 		readNotes2 = new DetailedQuestStep(this, "Read the movario notes 2.", movariosNotesV2.highlighted());
 		goDownFromHiddenRoom = new ObjectStep(this, ObjectID.STAIRS_53948, new WorldPoint(4173, 4956, 2), "Go back downstairs.");
@@ -1214,8 +1215,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// Pulled lever in painting
 		// 10670 1->0
 		// 10758 0->1
-		crossOverBrokenWall = new ObjectStep(this, ObjectID.BROKEN_WALL_53884, new WorldPoint(4179, 4947, 1),
-			"Cross over the broken wall into the south room.");
 		solveWeightPuzzle = new WeightStep(this);
 
 		// Taken fire runes
@@ -1872,7 +1871,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			List.of(khazardTeleport.quantity(2), feldipHillsTeleport)));
 		allSteps.add(new PanelDetails("Movario's Base", List.of(enterMovarioBase, climbDownMovarioFirstRoom, inspectDoor, useRuneOnDoor, enterDoorToLibrary, solveElectricityPuzzle, enterElectricDoor,
 			searchStaircaseInLibrary, climbStaircaseInLibrary, searchDesk, pickupWasteBasket, searchWasteBasket, useKeyOnBookcase, climbUpHiddenStaircase, searchBed, useKeyOnChest, searchChestForTraps,
-			getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting, crossOverBrokenWall),
+			getNotesFromChest, readNotes1, readNotes2, goDownFromHiddenRoom, inspectPainting),
 			airRune, waterRune, earthRune, fireRune, mindRune));
 		allSteps.add(new PanelDetails("Weight puzzle", solveWeightPuzzle.getDisplaySteps()));
 		allSteps.add(new PanelDetails("United Front", List.of(goUpToThaeriskWithNotes, killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport,

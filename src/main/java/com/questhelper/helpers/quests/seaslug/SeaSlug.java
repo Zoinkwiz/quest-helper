@@ -189,7 +189,7 @@ public class SeaSlug extends BasicQuestHelper
 		goToIsland.addSubSteps(goToIsland);
 
 		talkToKent = new NpcStep(this, NpcID.KENT, new WorldPoint(2794, 3322, 0), "Talk to Kent on the island.");
-		returnFromIsland = new NpcStep(this, NpcID.HOLGART_5072, new WorldPoint(2801, 3320, 0), "Return to the platform with Holgart.");
+		returnFromIsland = new NpcStep(this, NpcID.HOLGART_5069, new WorldPoint(2801, 3320, 0), "Return to the platform with Holgart.");
 		travelWithHolgartFreeingKennith = new NpcStep(this, NpcID.HOLGART_5069, new WorldPoint(2717, 3303, 0),
 			"Travel with Holgart to the fishing platform.");
 		returnFromIsland.addSubSteps(travelWithHolgartFreeingKennith);

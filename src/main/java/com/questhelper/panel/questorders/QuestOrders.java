@@ -48,9 +48,9 @@ public class QuestOrders
 		QuestHelperQuest.IMP_CATCHER,
 		QuestHelperQuest.WITCHS_POTION,
 		QuestHelperQuest.GERTRUDES_CAT,
+		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		// QuestHelperQuest.NATURAL_HITORY_QUIZ - Placeholder for future addition.
 		QuestHelperQuest.DADDYS_HOME,
-		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.DWARF_CANNON,
 		QuestHelperQuest.WATERFALL_QUEST,
 		QuestHelperQuest.TREE_GNOME_VILLAGE,
@@ -301,9 +301,9 @@ public class QuestOrders
 		QuestHelperQuest.ROMEO__JULIET,
 		QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 		QuestHelperQuest.GERTRUDES_CAT,
+		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.DADDYS_HOME,
 		// QuestHelperQuest.NATURAL_HITORY_QUIZ - Placeholder for future addition.
-		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.RUNE_MYSTERIES,
 		QuestHelperQuest.TREE_GNOME_VILLAGE,
 		QuestHelperQuest.MONKS_FRIEND,
@@ -312,6 +312,7 @@ public class QuestOrders
 		QuestHelperQuest.BIOHAZARD,
 		QuestHelperQuest.FIGHT_ARENA,
 		QuestHelperQuest.CLOCK_TOWER,
+		QuestHelperQuest.THE_CORSAIR_CURSE,
 		QuestHelperQuest.SHEEP_HERDER,
 		QuestHelperQuest.DWARF_CANNON,
 		QuestHelperQuest.WATERFALL_QUEST,
@@ -496,7 +497,7 @@ public class QuestOrders
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.DESERT_TREASURE_II,
-		QuestHelperQuest.THE_CORSAIR_CURSE,
+		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
 
@@ -714,6 +715,12 @@ public class QuestOrders
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
+		QuestHelperQuest.CHILDREN_OF_THE_SUN,
+		QuestHelperQuest.DEFENDER_OF_VARROCK,
+		QuestHelperQuest.TWILIGHTS_PROMISE,
+		QuestHelperQuest.PERILOUS_MOON,
+		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
+		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

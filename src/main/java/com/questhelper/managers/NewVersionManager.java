@@ -43,7 +43,7 @@ public class NewVersionManager
 
 	private final String LAST_VERSION_SEEN_CONFIG_KEY = "lastversionchecked";
 
-	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.3.0! This adds Defender of Varrock.";
+	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.5.0! This adds While Guthix Sleeps.";
 
 	public void updateChatWithNotificationIfNewVersion()
 	{

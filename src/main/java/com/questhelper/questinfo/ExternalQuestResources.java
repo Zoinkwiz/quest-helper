@@ -180,6 +180,7 @@ public enum ExternalQuestResources
 	SECRETS_OF_THE_NORTH("https://oldschool.runescape.wiki/w/Secrets_of_the_North"),
 	THE_PATH_OF_GLOUPHRIE("https://oldschool.runescape.wiki/w/The_Path_of_Glouphrie"),
 	CHILDREN_OF_THE_SUN("https://oldschool.runescape.wiki/w/Children_of_the_Sun"),
+	WHILE_GUTHIX_SLEEPS("https://oldschool.runescape.wiki/w/While_Guthix_Sleeps"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

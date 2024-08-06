@@ -312,8 +312,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("50% run energy replenish 3 times a day from Explorer's ring"),
-			new UnlockReward("Three daily teleports to cabbage patch near Falador farm for Explorer's ring"),
-			new UnlockReward("Access to Draynor Village wall shortcut")
+			new UnlockReward("Three daily teleports to cabbage patch near Falador farm for Explorer's ring")
 		);
 	}
 

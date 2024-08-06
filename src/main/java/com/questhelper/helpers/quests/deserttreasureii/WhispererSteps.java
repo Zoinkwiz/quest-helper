@@ -76,10 +76,10 @@ public class WhispererSteps extends ConditionalStep
 		takeShadowBlockerSchematic, takeGreenShadowKey, takePurpleShadowKey, tryToEnterSunkenCathedral, talkToKetla,
 		giveKetlaBlockerSchematic, claimShadowBlocker, enterSciencePuddle, retrieveShadowBlocker, placeBlockerInFurnaceBuilding,
 		unlockDoor, takeShadowTorchSchematic, activateBlackstoneFragment, bringKetlaTheBasicTorchSchematic, claimShadowTorch,
-		enterResedentialPuddle, destroyTentacles, activateBlackstoneFragment2, takeRevitalisingIdolSchematic, bringKetlaTheIdolSchematic,
-		claimRevitalisingIdol, placeIdol, enterResedentialPuddleAgain, destroyTentacles2, getBlueShadowKeyShadowRealm,
+		enterResidentialPuddle, destroyTentacles, activateBlackstoneFragment2, takeRevitalisingIdolSchematic, bringKetlaTheIdolSchematic,
+		claimRevitalisingIdol, placeIdol, enterResidentialPuddleAgain, destroyTentacles2, getBlueShadowKeyShadowRealm,
 		getBlueShadowKeyRealRealm, activateBlackstoneFragment3, recallDevices, placeShadowBlockerWestResidential,
-		enterResedentialWestPuddle, openPubDoor, takeSuperiorTorchSchematic, bringKetlaTheSuperiorTorchSchematic,
+		enterResidentialWestPuddle, openPubDoor, takeSuperiorTorchSchematic, bringKetlaTheSuperiorTorchSchematic,
 		activateBlackstoneFragment4, takeSuperiorTorchSchematicRealWorld, claimSuperiorShadowTorch, enterSciencePuddle2,
 		getAnimaPortalSchematic, getAnimaPortalSchematicRealWorld, activateBlackstoneFragment5, bringKetlaTheAnimaPortalSchematic;
 
@@ -159,7 +159,7 @@ public class WhispererSteps extends ConditionalStep
 		blueKeySteps.addStep(and(inLassarShadowRealm, destroyedTentacles2), activateBlackstoneFragment3);
 		blueKeySteps.addStep(and(inLassar, destroyedTentacles2), getBlueShadowKeyRealRealm);
 		blueKeySteps.addStep(and(inLassarShadowRealm), destroyTentacles2);
-		blueKeySteps.addStep(and(idolPlaced, basicShadowTorch), enterResedentialPuddleAgain);
+		blueKeySteps.addStep(and(idolPlaced, basicShadowTorch), enterResidentialPuddleAgain);
 		blueKeySteps.addStep(and(idolNearby, basicShadowTorch, activatedTeleporter7), pickUpIdol);
 		blueKeySteps.addStep(and(revitalisingIdol, basicShadowTorch, activatedTeleporter7), placeIdol);
 		blueKeySteps.addStep(and(revitalisingIdol, basicShadowTorch), activateTeleporter7);
@@ -171,7 +171,7 @@ public class WhispererSteps extends ConditionalStep
 		pubSteps.addStep(new Conditions(inLassar, usedBlueKey), enterPubRealWorld);
 		pubSteps.addStep(new Conditions(inLassarShadowRealm, usedBlueKey), takeSuperiorTorchSchematic);
 		pubSteps.addStep(new Conditions(inLassarShadowRealm, blockerPlacedAtPub), openPubDoor);
-		pubSteps.addStep(blockerPlacedAtPub, enterResedentialWestPuddle);
+		pubSteps.addStep(blockerPlacedAtPub, enterResidentialWestPuddle);
 		pubSteps.addStep(shadowBlocker, placeShadowBlockerWestResidential);
 
 		ConditionalStep getAnimaPortalSteps = new ConditionalStep(getQuestHelper(), claimAnimaPortal);
@@ -248,7 +248,7 @@ public class WhispererSteps extends ConditionalStep
 		addStep(and(inLassar, basicShadowTorch, destroyedTentacles), takeRevitalisingIdolSchematic);
 		addStep(and(inLassarShadowRealm, basicShadowTorch, destroyedTentacles), activateBlackstoneFragment2);
 		addStep(and(inLassarShadowRealm, basicShadowTorch), destroyTentacles);
-		addStep(and(inLassar, basicShadowTorch), enterResedentialPuddle);
+		addStep(and(inLassar, basicShadowTorch), enterResidentialPuddle);
 		addStep(and(inLassar, givenTorchSchematic), claimShadowTorch);
 
 		addStep(and(or(inLassar, inLassarShadowRealm), activatedFirst6Teles, givenShadowBlockerSchematic), lockedDoorSteps);
@@ -826,16 +826,16 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter5 = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49484, new WorldPoint(2643, 6434, 0),
-			"Teleport back to the Plaza, then run east. Activate the teleporter in the north-west of the resedential area."),
+			"Teleport back to the Plaza, then run east. Activate the teleporter in the north-west of the residential area."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter5.addDialogStep("The Plaza.");
 		activateTeleporter6 = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49481, new WorldPoint(2652, 6405, 0),
-			"Activate the teleporter in the south of the resedential area."),
+			"Activate the teleporter in the south of the residential area."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter7 = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49485, new WorldPoint(2691, 6415, 0),
-			"Activate the teleporter in the far east of the resedential area, through the building you unlocked for the idol."),
+			"Activate the teleporter in the far east of the residential area, through the building you unlocked for the idol."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		useTeleporterToKetla = new PuzzleWrapperStep(getQuestHelper(),
@@ -949,7 +949,7 @@ public class WhispererSteps extends ConditionalStep
 			"Get the Shadow Torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimShadowTorch.addDialogSteps("Take it.", "Western Residential District.", "Take the Shadow Torch.", "Take everything.");
-		enterResedentialPuddle = new PuzzleWrapperStep(getQuestHelper(),
+		enterResidentialPuddle = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
@@ -997,7 +997,7 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeIdol.addSubSteps(pickUpIdol);
 
-		enterResedentialPuddleAgain = new PuzzleWrapperStep(getQuestHelper(),
+		enterResidentialPuddleAgain = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
@@ -1046,11 +1046,11 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeShadowBlockerWestResidential.addIcon(ItemID.SHADOW_BLOCKER);
 		placeShadowBlockerWestResidential.addDialogSteps("More options...", "Western Residential District.");
-		enterResedentialWestPuddle = new PuzzleWrapperStep(getQuestHelper(),
+		enterResidentialWestPuddle = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		enterResedentialWestPuddle.addDialogSteps("More options...", "Western Residential District.");
+		enterResidentialWestPuddle.addDialogSteps("More options...", "Western Residential District.");
 
 		// Can't open, DOORS_48255
 		openPubDoor = new PuzzleWrapperStep(getQuestHelper(),
@@ -1400,7 +1400,7 @@ public class WhispererSteps extends ConditionalStep
 			takePurpleShadowKey, activateTeleporter4, activateTeleporter5, activateTeleporter6, tryToEnterSunkenCathedral, talkToKetla,
 			giveKetlaBlockerSchematic, claimShadowBlocker, placeBlockerInFurnaceBuilding, enterSciencePuddle, unlockDoor,
 			takeShadowTorchSchematic, activateBlackstoneFragment, bringKetlaTheBasicTorchSchematic, claimShadowTorch,
-			enterResedentialPuddle, destroyTentacles, activateBlackstoneFragment2, takeRevitalisingIdolSchematic,
+			enterResidentialPuddle, destroyTentacles, activateBlackstoneFragment2, takeRevitalisingIdolSchematic,
 			bringKetlaTheIdolSchematic, takeRevitalisingIdolSchematic, bringKetlaTheIdolSchematic, claimRevitalisingIdol,
 			placeIdol, enterResedentialPuddleAgain, destroyTentacles2, activateBlackstoneFragment3, getBlueShadowKeyRealRealm, recallDevices,
 			placeShadowBlockerWestResidential, enterResedentialWestPuddle, openPubDoor, takeSuperiorTorchSchematic,

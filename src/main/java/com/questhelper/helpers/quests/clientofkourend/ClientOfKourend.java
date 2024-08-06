@@ -147,7 +147,7 @@ public class ClientOfKourend extends BasicQuestHelper
 		talkToJennifer.addDialogStep("What is there to do in Shayzien?");
 		talkToMunty = new NpcStep(this, NpcID.MUNTY, new WorldPoint(1551, 3752, 0), "Talk to Munty in Lovakengj general store.", enchantedQuill);
 		talkToMunty.addDialogStep("Can I ask you about Lovakengj?");
-		talkToMunty.addDialogStep("Why should I gain favour with Lovakengj?");
+		talkToMunty.addDialogStep("What is there to do in Lovakengj?");
 		talkToRegath = new NpcStep(this, NpcID.REGATH, new WorldPoint(1720, 3724, 0), "Talk to Regath in Arceuus general store.", enchantedQuill);
 		talkToRegath.addDialogStep("Can I ask you about Arceuus?");
 		talkToRegath.addDialogStep("What is there to do in Arceuus?");

@@ -121,6 +121,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		goblinMailTwo = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 2);
 
 		goblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL);
+		goblinMail.canBeObtainedDuringQuest();
 		goblinMail.setTooltip("You can get goblin mail by killing goblins around goblin village.");
 		goblinMail.setHighlightInInventory(true);
 
@@ -210,7 +211,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails getArmours = new PanelDetails("Prepare goblin mail",
-			Arrays.asList(goUpLadder, getCrate2, getCrate3, dyeBlue, dyeOrange), blueDye, orangeDye);
+			Arrays.asList(goUpLadder, getCrate2, getCrate3, dyeBlue, dyeOrange), blueDye, orangeDye, goblinMailThree);
 		allSteps.add(getArmours);
 
 		allSteps.add(new PanelDetails("Present the armours", Arrays.asList(talkToGeneral1, talkToGeneral2, talkToGeneral3)));

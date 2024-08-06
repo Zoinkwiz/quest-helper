@@ -496,6 +496,7 @@ public class QuestOrders
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.DESERT_TREASURE_II,
+		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman
@@ -714,6 +715,7 @@ public class QuestOrders
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
+		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

@@ -34,6 +34,8 @@ import com.questhelper.requirements.player.IronmanRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -67,7 +69,7 @@ import net.runelite.api.coords.WorldPoint;
 public class TheFremennikIsles extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement tuna, ores, jesterHat, jesterTights, jesterTop, jesterBoots, arcticLogs8, splitLogs8,
+	ItemRequirement tuna, mithrilOre, coal, tinOre, jesterHat, jesterTights, jesterTop, jesterBoots, arcticLogs8, splitLogs8,
 		knife, rope8, rope4, splitLogs4, yakTop, yakBottom, royalDecree, roundShield, yakTopWorn, yakBottomWorn,
 		shieldWorn, meleeWeapon, food, head, needle, thread, coins15, bronzeNail, hammer, rope, axe, rope9;
 
@@ -305,19 +307,16 @@ public class TheFremennikIsles extends BasicQuestHelper
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 
 		tuna.setTooltip("You can buy some from Flosi in east Jatizso, or fish some from the pier.");
-		if (client.getRealSkillLevel(Skill.MINING) >= 55)
-		{
-			ores = new ItemRequirement("Mithril ore", ItemID.MITHRIL_ORE, 6);
-		}
-		else if (client.getRealSkillLevel(Skill.MINING) >= 10)
-		{
-			ores = new ItemRequirement("Coal", ItemID.COAL, 7);
-		}
-		else
-		{
-			ores = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 8);
-		}
-		ores.setTooltip("You can mine some in the underground mine north west of Jatizso.");
+
+		Requirement useMithrilOre = new SkillRequirement(Skill.MINING, 55);
+		Requirement useCoal = and(new SkillRequirement(Skill.MINING,  10), not(useMithrilOre));
+		Requirement useTin = not(new SkillRequirement(Skill.MINING,  10));
+		mithrilOre = new ItemRequirement("Mithril ore", ItemID.MITHRIL_ORE, 6).showConditioned(useMithrilOre);
+		mithrilOre.setTooltip("You can mine some in the underground mine north west of Jatizso.");
+		coal = new ItemRequirement("Coal", ItemID.COAL, 7).showConditioned(useCoal);
+		coal.setTooltip("You can mine some in the underground mine north west of Jatizso.");
+		tinOre = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 8).showConditioned(useTin);
+		tinOre.setTooltip("You can mine some in the underground mine north west of Jatizso.");
 
 		jesterHat = new ItemRequirement("Silly jester hat", ItemID.SILLY_JESTER_HAT, 1, true);
 		jesterTop = new ItemRequirement("Silly jester body", ItemID.SILLY_JESTER_TOP, 1, true);
@@ -329,6 +328,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		yakTop = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR).isNotConsumed();
 		yakBottom = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824).isNotConsumed();
 		roundShield = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD).isNotConsumed();
+
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -429,7 +429,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		continueTalkingToGjuki = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.");
 		talkToGjuki.addSubSteps(continueTalkingToGjuki);
 
-		bringOreToGjuki = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.", ores);
+		bringOreToGjuki = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.", mithrilOre, coal, tinOre);
 		talkToGjukiAfterOre = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.");
 		bringOreToGjuki.addSubSteps(talkToGjukiAfterOre);
 
@@ -556,14 +556,14 @@ public class TheFremennikIsles extends BasicQuestHelper
 		{
 			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, axe, knife);
 			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), needle, thread, coins15, bronzeNail, hammer, rope);
-			items = Arrays.asList(tuna, ores, rope9, knife, axe, hammer, bronzeNail, needle, thread, meleeWeapon, food);
+			items = Arrays.asList(tuna, coal, tinOre, mithrilOre, rope9, knife, axe, hammer, bronzeNail, needle, thread, meleeWeapon, food);
 		}
 		else
 		{
-			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), yakBottom, yakTop, roundShield);
 			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis,
 				talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, splitLogs8, knife);
-			items = Arrays.asList(tuna, ores, rope9, knife, splitLogs8, roundShield, yakTop, yakBottom, meleeWeapon, food);
+			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), yakBottom, yakTop, roundShield);
+			items = Arrays.asList(tuna, tinOre, coal, mithrilOre, rope9, knife, splitLogs8, roundShield, yakTop, yakBottom, meleeWeapon, food);
 		}
 	}
 
@@ -624,7 +624,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Travel to Jatizso", Arrays.asList(talkToMord, travelToJatizso), tuna, ores));
+		allSteps.add(new PanelDetails("Travel to Jatizso", Arrays.asList(talkToMord, travelToJatizso), tuna, mithrilOre, coal, tinOre));
 		allSteps.add(new PanelDetails("Helping Gjuki", Arrays.asList(talkToGjuki, bringOreToGjuki, getJesterOutfit)));
 		allSteps.add(new PanelDetails("Spy on Mawnis", Arrays.asList(talkToSlug, goSpyOnMawnis, tellSlugReport1)));
 		allSteps.add(prepareForRepairPanel);

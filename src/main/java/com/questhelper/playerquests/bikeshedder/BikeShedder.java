@@ -56,6 +56,11 @@ public class BikeShedder extends BasicQuestHelper
 	private ItemRequirement anyLog;
 	private ObjectStep useLogOnBush;
 
+	private ItemRequirement oneCoin;
+	private ItemRequirement manyCoins;
+	private ObjectStep useCoinOnBush;
+	private ObjectStep useManyCoinsOnBush;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -66,6 +71,8 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(outsideLumbridge, moveToLumbridge);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3218, 0)), equipLightbearer);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3218, 0)), useLogOnBush);
+		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3217, 0)), useCoinOnBush);
+		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3216, 0)), useManyCoinsOnBush);
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(-1, steps)
 			.build();
@@ -87,6 +94,16 @@ public class BikeShedder extends BasicQuestHelper
 		anyLog = new ItemRequirement("Any log", ItemCollections.LOGS_FOR_FIRE).highlighted();
 		useLogOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use log on bush", anyLog);
 		useLogOnBush.addIcon(ItemID.LOGS);
+
+		oneCoin = new ItemRequirement("Coins", ItemCollections.COINS, 1);
+		oneCoin.setHighlightInInventory(true);
+		useCoinOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use coins on the bush.", oneCoin);
+		useCoinOnBush.addIcon(ItemID.COINS);
+
+		manyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 100);
+		manyCoins.setHighlightInInventory(true);
+		useManyCoinsOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use many coins on the bush.", manyCoins);
+		useManyCoinsOnBush.addIcon(ItemID.COINS);
 	}
 
 	@Override
@@ -98,6 +115,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Normal Spellbook", List.of(confuseHans)));
 		panels.add(new PanelDetails("Equip Lightbearer", List.of(equipLightbearer)));
 		panels.add(new PanelDetails("Use log on mysterious bush", List.of(useLogOnBush), List.of(anyLog)));
+		panels.add(new PanelDetails("Use coins on mysterious bush", List.of(useCoinOnBush, useManyCoinsOnBush), List.of(oneCoin, manyCoins)));
 
 		return panels;
 	}

@@ -313,13 +313,12 @@ public class DesertHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("Pharaoh's sceptre can hold up to 50 charges"),
-			new UnlockReward("Access to the big window shortcut in Al Kharid Palace that takes you to the south of the palace, " +
-				"just north of the Shantay Pass, requiring 70 Agility"),
 			new UnlockReward("Unlocked the ability to toggle the Camulet teleport location between the inside and outside of Enakhra's Temple"),
 			new UnlockReward("All carpet rides are free"),
 			new UnlockReward("Zahur will create unfinished potions for 200 coins per potion from a vial of water and a clean herb. Items can be noted or unnoted"),
 			new UnlockReward("Zahur will now clean noted grimy herbs for 200 coins each"),
-			new UnlockReward("Ropes placed at both the Kalphite Lair entrance and the Kalphite Queen tunnel entrance become permanent")
+			new UnlockReward("Ropes placed at both the Kalphite Lair entrance and the Kalphite Queen tunnel entrance become permanent"),
+			new UnlockReward("The Rellekka Rooftop Course will give additional experience upon completion")
 		);
 	}
 

@@ -51,6 +51,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.widget.NormalSpells;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
@@ -87,7 +88,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 	ObjectStep spawnMogre;
 
-	Zone chemist, chaosTemple, craftingGuild, dwarvenMine, tav, falNorthWall;
+	Zone chemist, chaosTemple1, chaosTemple2, craftingGuild, dwarvenMine, tav, falNorthWall;
 
 	ZoneRequirement inChemist, inChaosTemple, inCraftingGuild, inDwarvenMine, inTav, inFalNorthWall;
 	Conditions atMudskipperPointWithMogre;
@@ -200,19 +201,21 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		airRune = new ItemRequirement("Air runes", ItemID.AIR_RUNE);
 		waterRune1 = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 1).showConditioned(notTeleportFalador);
 		crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY).showConditioned(notUnlockedCrystalChest);
+		crystalKey.setHighlightInInventory(true);
 		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
 		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR).showConditioned(notPlacedScarecrow);
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
 		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
 		emptySack.canBeObtainedDuringQuest();
+		emptySack.setHighlightInInventory(true);
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
 		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlacedScarecrow);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow).isNotConsumed();
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre).isNotConsumed();
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleNorthWall).isNotConsumed();
-		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleNorthWall).isNotConsumed();
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();
+		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();
 		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar).isNotConsumed();
 		initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar).isNotConsumed();
 		initiateLegs = new ItemRequirement("Initiate Legs", ItemID.INITIATE_CUISSE).showConditioned(notPrayAtAltar).isNotConsumed();
@@ -233,7 +236,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		combatBracelet.addAlternates(ItemCollections.GAMES_NECKLACES);
 
 		inChemist = new ZoneRequirement(chemist);
-		inChaosTemple = new ZoneRequirement(chaosTemple);
+		inChaosTemple = new ZoneRequirement(chaosTemple1, chaosTemple2);
 		inCraftingGuild = new ZoneRequirement(craftingGuild);
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inTav = new ZoneRequirement(tav);
@@ -243,6 +246,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		var mogreNearby = new NpcCondition(NpcID.MOGRE);
 		atMudskipperPointWithMogre = new Conditions(LogicType.AND, atMudskipperPoint, mogreNearby);
 
+		// varbit 15347 0 -> 1?
 		choppedLogs = new ChatMessageRequirement(
 			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
 		);
@@ -262,7 +266,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	protected void setupZones()
 	{
 		chemist = new Zone(new WorldPoint(2929, 3213, 0), new WorldPoint(2936, 3207, 0));
-		chaosTemple = new Zone(new WorldPoint(2935, 3513, 0), new WorldPoint(2929, 3518, 0));
+		chaosTemple1 = new Zone(new WorldPoint(2930, 3513, 0), new WorldPoint(2936, 3517, 0));
+		chaosTemple2 = new Zone(new WorldPoint(2937, 3516, 0), new WorldPoint(2940, 3518, 0));
 		craftingGuild = new Zone(new WorldPoint(2929, 3288, 0), new WorldPoint(2943, 3276, 0));
 		dwarvenMine = new Zone(new WorldPoint(2979, 9855, 0), new WorldPoint(3069, 9698, 0));
 		tav = new Zone(new WorldPoint(2939, 3398, 0), new WorldPoint(2878, 3489, 0));
@@ -283,15 +288,16 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		telegrabWine = new DetailedQuestStep(this,
 			"Use the Telekinetic Grab Spell on the Wine of Zamorak.");
 		telegrabWine.addIcon(ItemID.TELEKINETIC_GRAB);
+		telegrabWine.addSpellHighlight(NormalSpells.TELEKINETIC_GRAB);
 
 		//Crystal Chest
 		unlockCrystalChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_172, new WorldPoint(2914, 3452, 0),
-			"Use the crystal key to unlock the chest in Taverley");
+			"Use the crystal key to unlock the chest in Taverley", crystalKey);
 		unlockCrystalChest.addIcon(ItemID.CRYSTAL_KEY);
 
 		//Scarecrow
 		fillSack = new ObjectStep(this, ObjectID.HAY_BALE_8713, new WorldPoint(3019, 3297, 0),
-			"Use the empty sack on the hay bale to fill it, you can buy an empty sack from Sarah for 5gp.");
+			"Use the empty sack on the hay bale to fill it. You can buy an empty sack from Sarah for 5gp.", emptySack);
 		fillSack.addIcon(ItemID.EMPTY_SACK);
 		useSackOnSpear = new DetailedQuestStep(this,
 			"Use the Hay sack on the Bronze Spear.", haySack.highlighted(), bronzeSpear.highlighted());
@@ -322,9 +328,9 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		//PickPocket
 		pickpocketGuard = new NpcStep(this, NpcID.GUARD_3269, new WorldPoint(2961, 3381, 0),
-			"Pickpocket a guard.", true);
+			"Pickpocket a guard inside of Falador. If this doesn't complete, pickpocket a guard closer to the plinth.", true);
 		pickpocketGuard.setHideWorldArrow(true);
-		pickpocketGuard.addAlternateNpcs(NpcID.GUARD_3271, NpcID.GUARD_3272);
+		pickpocketGuard.addAlternateNpcs(NpcID.GUARD_3271, NpcID.GUARD_3272, NpcID.GUARD_3274, NpcID.GUARD_11946, NpcID.GUARD_11943, NpcID.GUARD_11944);
 
 		//Pray with Initiate Set
 		getInitiateSet = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0),

@@ -1858,6 +1858,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			new SkillRequirement(Skill.THIEVING, 72),
 			new SkillRequirement(Skill.MAGIC, 67),
 			new SkillRequirement(Skill.AGILITY, 66),
+			new SkillRequirement(Skill.HERBLORE, 65),
 			new SkillRequirement(Skill.FARMING, 65),
 			new SkillRequirement(Skill.HUNTER, 62),
 			new WarriorsGuildAccessRequirement()

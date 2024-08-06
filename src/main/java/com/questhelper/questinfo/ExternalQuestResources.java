@@ -189,7 +189,7 @@ public enum ExternalQuestResources
 	CURSE_OF_THE_EMPTY_LORD("https://oldschool.runescape.wiki/w/Curse_of_the_Empty_Lord"),
 	ENCHANTED_KEY("https://oldschool.runescape.wiki/w/Enchanted_Key"),
 	THE_GENERALS_SHADOW("https://oldschool.runescape.wiki/w/The_General%27s_Shadow"),
-//	HIS_FAITHFUL_SERVANTS("https://oldschool.runescape.wiki/w/His_Faithful_Servants"),
+	HIS_FAITHFUL_SERVANTS("https://oldschool.runescape.wiki/w/His_Faithful_Servants"),
 	SKIPPY_AND_THE_MOGRES("https://oldschool.runescape.wiki/w/Skippy_and_the_Mogres"),
 	THE_MAGE_ARENA("https://oldschool.runescape.wiki/w/The_Mage_Arena"),
 	LAIR_OF_TARN_RAZORLOR("https://oldschool.runescape.wiki/w/Lair_of_Tarn_Razorlor"),

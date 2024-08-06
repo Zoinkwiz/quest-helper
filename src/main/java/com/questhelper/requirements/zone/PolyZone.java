@@ -1,10 +1,11 @@
 package com.questhelper.requirements.zone;
 
+import net.runelite.api.coords.WorldPoint;
+
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.coords.WorldPoint;
 
 public class PolyZone extends Zone
 {

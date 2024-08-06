@@ -61,8 +61,8 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.NpcFollowerStep;
+import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
@@ -88,7 +88,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		deathRune, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
 		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, combatGear, logs, knife, snapdragonSeed, astralRune, cosmicRune,
 		bindRunes, weakenRunes, magicGear, squallOutfit, eliteBlackKnightOutfit, telegrabRunes, alchRunes;
-
 
 	// Items Recommended
 	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport, faladorTeleport, staminaPotion, superRestore,
@@ -171,7 +170,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		enterEastCavity, useWaterBlockOnRecess, leaveAirRecess, climbUpToCubeF0ToF1, climbUpToCubeF1ToF2, touchCube, enterSkull;
 
 	DetailedQuestStep getPouch, castBloomToFillPouch, usePouchOnDruid, approachStoneOfJas, fightBalanceElemental, touchStone, talkToMovarioAtStone, fightTormentedDemons, teleportWithIdria, finishQuest;
-
 
 	WeightStep solveWeightPuzzle;
 
@@ -692,7 +690,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
 		superRestore = new ItemRequirement("Super restore potions", ItemCollections.SUPER_RESTORE_POTIONS);
 
-
 		emptySlots9 = new FreeInventorySlotRequirement(9);
 		emptySlots16 = new FreeInventorySlotRequirement(16);
 
@@ -1069,7 +1066,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		guthixianTemple = new Zone(new WorldPoint(4025, 4350, 0), new WorldPoint(4160, 4480, 0));
 		inGuthixianTemple = new ZoneRequirement(guthixianTemple);
 
-
 		jailCell = new Zone(new WorldPoint(2988, 3344, 0), new WorldPoint(2990, 3346, 0));
 		inJailCell = new ZoneRequirement(jailCell);
 	}
@@ -1136,7 +1132,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		enterMovarioBase = new ObjectStep(this, ObjectID.TRAPDOOR_53279, new WorldPoint(2519, 3249, 0), "Enter movario's base under the broken table in the Khazard Battlefield.");
 
 		// TODO: Update hardcoded 54117 to CHEST_54117
-		claimRunes = new ObjectStep(this, 54117, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
+		claimRunes = new ObjectStep(this, ObjectID.CHEST, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
 
 		// 4066 122878 -> 385022
 		// 15064 0->100
@@ -1200,7 +1196,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			new ObjectStep(this, ObjectID.BOOKCASE_53920, new WorldPoint(4187, 4962, 0), "Search the eastern bookcase in the room."),
 			"Solve the electric door puzzle.");
 
-
 		enterDoorToLibrary = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0), "Enter the old battered door.");
 
 		solveElectricityPuzzle = new DetailedQuestStep(this, "Solve the electricity puzzle.");
@@ -1209,10 +1204,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		enterElectricDoor = new ObjectStep(this, NullObjectID.NULL_54108, new WorldPoint(4181, 4953, 0), "Enter the gate to the staircase.");
 		searchStaircaseInLibrary = new ObjectStep(this, ObjectID.SPIRAL_STAIRCASE, new WorldPoint(4182, 4951, 0), "Right-click SEARCH the spiral staircase.");
 		climbStaircaseInLibrary = new ObjectStep(this, ObjectID.SPIRAL_STAIRCASE, new WorldPoint(4182, 4951, 0), "Climb up the spiral staircase.");
-
-		// Gone up staircase
-		// 9653 14->15
-		// 10793-10796 0->100
 
 		searchDesk = new ObjectStep(this, ObjectID.DESK_53940, new WorldPoint(4178, 4955, 1), "Search the desk north-west of the staircase.");
 
@@ -1237,24 +1228,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		inspectPainting = new ObjectStep(this, ObjectID.PAINTING_53885, new WorldPoint(4179, 4948, 1), "Inspect the painting in the south of the room.");
 		inspectPainting.addDialogStep("Pull the lever.");
 
-		// 10670 0->1 when inspected painting
-
-		// Pulled lever in painting
-		// 10670 1->0
-		// 10758 0->1
 		solveWeightPuzzle = new WeightStep(this);
-
-		// Taken fire runes
-		// 10794 100->0
-
-		// Death runes
-		// 10795 100->0
-
-		// Coal
-		// 10793
-
-		// Magic log
-		// 107096
 
 		goUpToThaeriskWithNotes = new ObjectStep(this, ObjectID.LADDER_53347, new WorldPoint(2915, 3450, 0), "Return to Thaerisk upstairs in Taverley with the notes.", movariosNotesV1, movariosNotesV2);
 		goUpToThaeriskWithNotes.addTeleport(taverleyTeleport);
@@ -1264,27 +1238,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToThaeriskWithoutNotes = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2909, 3449, 1), "Talk to Thaerisk.");
 		goUpToThaeriskWithNotes.addSubSteps(talkToThaeriskWithNotes, goUpToThaeriskWithoutNotes, talkToThaeriskWithoutNotes);
 
-		// 9653 22->23
-		// 10773 0->1
-		// 10775 0->1
-		// Now go to Idria near Seers' Village
-
-		// Entered merc area
-		// 9653 23->24
-		// 4066 Varp: 385022 -> 33939454
 		killMercenaries = new NpcStep(this, NpcID.MERCENARY_MAGE, new WorldPoint(2657, 3501, 0), "Kill the mercenaries just north of McGrubor's Wood. You can also destroy Movario's notes now.", true);
 		((NpcStep) killMercenaries).addAlternateNpcs(NpcID.MERCENARY_AXEMAN, NpcID.MERCENARY_AXEMAN_13536);
 		killMercenaries.addTeleport(camelotTeleport);
 		talkToIdria = new NpcStep(this, NpcID.IDRIA_13542, new WorldPoint(2657, 3501, 0), "Talk to Idria just north of McGrubor's Wood.");
-		// Killed mercenaries
-		// quest 24->25
-		// 10839 0->1
-		// 10846 0->1
-		// 10780 0->1
-		// 10775 1->0
-
-		// Idria moved to castle
-		// 10773 1->2
 
 		talkToAkrisae = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Talk to Akrisae in the White Knights' Castle, on the ground floor on the east side.");
 		talkToAkrisae.addTeleport(faladorTeleport);
@@ -1343,9 +1300,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		goPlantSnapdragon = new ConditionalStep(this, goToF3WhiteKnight, "Plant the enriched snapdragon seed in the herb patch on the top floor of the west side of the White Knights' Castle.", enrichedSnapdragonSeed, dibber);
 		goPlantSnapdragon.addSubSteps(plantSnapdragon);
-		// Seed planted
-		// quest state 38 -> 39
-		// 10781 0->1 Snapdragon state?
 
 		goFromF3ToF2WhiteKnight = new ObjectStep(this, ObjectID.STAIRCASE_24074, new WorldPoint(2958, 3338, 3),
 			"Return to Idria downstairs near Thaerisk.");
@@ -1374,13 +1328,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		contactDuradel.addSpellHighlight(LunarSpells.NPC_CONTACT);
 		contactDuradel.addWidgetHighlight(75, 37);
 		contactDuradel.addDialogStep("I need to talk to you about Lucien.");
-		// 5006 5->13
-		// 3622 100->0
-		// 10670 0->1
 
-		// Contacted everyone
-		// Quest from 40->41
-		// 10781 1->2 Snapdragon state?
 		harvestSnapdragon = new ObjectStep(this, ObjectID.HERBS_53292, new WorldPoint(2962, 3338, 3),
 			"");
 		goHarvestSnapdragon = new ConditionalStep(this, goToF3WhiteKnight, "Harvest the enriched snapdragon in the herb patch on the top floor of the west side of the White Knights' Castle.");
@@ -1424,13 +1372,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToSloane.addDialogStep("I need to talk to you about Lucien.");
 		talkToSloane.addSubSteps(goToF1WarriorsGuild);
 
-		// Recruited all Warriors' Guild:
-		// 10790 0->1
-		// Quest state 440->450
-		// 10780 1->2
-		// 10801 0->1
-		// 10778 1->0
-
 		talkToAkrisaeAfterRecruitment = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0),
 			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.");
 		// 10838 0->1
@@ -1465,7 +1406,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		searchWardrobeForSquallRobes = new ObjectStep(this, ObjectID.WARDROBE_53372, new WorldPoint(4123, 4841, 1), "Search the wardrobe to the south.",
 			eliteHelm.equipped(), eliteBody.equipped(), eliteLegs.equipped());
 		((ObjectStep) searchWardrobeForSquallRobes).addAlternateObjects(ObjectID.WARDROBE_53374);
-		// GUESS: Killed black knight for elite legs, 10932 0->1
+		// Killed black knight for elite legs, 10932 0->1
 		// Killed black knight for elite body, 10931 0->1
 		// Killed black knight for elite helm, 10930 0->1
 		killKnightsForEliteArmour = new NpcStep(this, NpcID.ELITE_BLACK_KNIGHT, new WorldPoint(4122, 4849, 1), "Kill elite black knights for their full armour set.",
@@ -1505,14 +1446,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		plantOrbOnSurok = new NpcStep(this, NpcID.SUROK_MAGIS_13551, new WorldPoint(4145, 4850, 2), "Use the teleorb on Surok Magis.", silifTeleorb.highlighted());
 		plantOrbOnSurok.addIcon(ItemID.TELEORB_29537);
-
-		// Planted orb:
-		// 8653 597 -> 600
-		// 10780 0->4
-		// 10783 1->0
-		// 10801 1->0
-		// 10826 1->0
-		// 10670 1->0
 
 		talkToAkrisaeAfterSurok = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0),
 			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.", strangeTeleorb);
@@ -1554,12 +1487,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			"Use a lit sapphire lantern on one of the light creatures to descend into the abyss.", true, litSapphireLantern.highlighted());
 		useLitSapphireLanternOnLightCreature.addDialogStep("Travel into the chasm.");
 		useLitSapphireLanternOnLightCreature.addIcon(ItemID.SAPPHIRE_LANTERN_4702);
-		// Started going down:
-		// 10820 0->2
-		// Once down:
-		// 9653 710->740
-		// 10827 0->1
-		// 4066 VARP 56090622->64479230
 
 		searchRemainsForSpade = new ObjectStep(this, ObjectID.SKELETAL_REMAINS_53810, new WorldPoint(4070, 4605, 0), "Search the remains to the north-east for a spade.");
 		searchRemainsForHammerAndChisel = new ObjectStep(this, ObjectID.SKELETAL_REMAINS, new WorldPoint(4067, 4600, 0), "Search the remains in the middle of the area for a hammer and chisel.");
@@ -1607,24 +1534,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		climbDownFromSkullF2ToF1 = new ObjectStep(this, ObjectID.WALL_53676, new WorldPoint(4060, 4553, 2), "Climb back down.");
 		climbDownFromSkullF1ToF0 = new ObjectStep(this, ObjectID.WALL_53676, new WorldPoint(4061, 4555, 1), "Climb back down.");
 		climbDownFromSkullF2ToF1.addSubSteps(climbDownFromSkullF1ToF0);
-		// Placed water orb, 10820 2->4
-		// 10820 is the top recessed state
-		// 0 is can climb through
-		// 1 is both water block and fire block
-		// 2 is just water block in
-		// 3 is just fire block in
-		// 4 is neither block in
 
 		useFireBlockOnRecess = new ObjectStep(this, NullObjectID.NULL_54082, new WorldPoint(4063, 4548, 2),
 			"Use the fire block on the recessed block just to the south, in the skeleton's mouth.", fireBlock.highlighted());
 		useFireBlockOnRecess.addIcon(ItemID.FIRE_BLOCK);
-		// Placed fire block in recess
-		// 10824 0->1
-		// 10825 0->8
-		// 10820 4->3
-
-		// null 54082
-		// real 53619
 
 		enterWestCavity = new ObjectStep(this, NullObjectID.NULL_53634, new WorldPoint(4057, 4557, 0), "Enter the western cavity.", noWeaponOrShieldEquipped);
 		enterMiddleCavity = new ObjectStep(this, NullObjectID.NULL_53634, new WorldPoint(4063, 4554, 0), "Enter the middle cavity.", noWeaponOrShieldEquipped);
@@ -1653,143 +1566,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		enterSkull = new ObjectStep(this, NullObjectID.NULL_54082, new WorldPoint(4063, 4548, 2),
 			"Enter the skull's mouth to the south.");
 
-		// Entered herblore space:
-		// 10860 0->4 ATTACK, NW
-		// 10861 0->2 ENERGY, W
-		// 10862 0->6 DEFENCE, SW
-		// 10863 0->10 HUNTER, SSW
-
-		// 10864 0->7 COMBAT NE
-		// 10865 0->9 PRAYER, E
-		// 10866 0->1 AGILITY, SE
-		// 10867 0->13 BALANCE, SEE
-
-		// loot order
-		// HUNTER, ATTACK, AGILITY, ENERGY
-
-//		AGILITY_DOLMEN = 29539;
-//		ENERGY_DOLMEN = 29540;
-//		RESTORATION_DOLMEN = 29541;
-//		ATTACK_DOLMEN = 29542;
-//		STRENGTH_DOLMEN = 29543;
-//		DEFENCE_DOLMEN = 29544;
-//		COMBAT_DOLMEN = 29545;
-//		RANGED_DOLMEN = 29546;
-//		PRAYER_DOLMEN = 29547;
-//		HUNTER_DOLMEN = 29548;
-//		FISHING_DOLMEN = 29549;
-//		MAGIC_DOLMEN = 29550;
-//		BALANCE_DOLMEN = 29551;
-
-		// 10868 0->1
-
-		// Tick later
-		// 10827 1->2
-
-		//     +4,-18
-		// 54, 58, 40, 42, 51, 52, 44, 48
-
-		//         1, 3, 12, 13
-
 		getPouch = new ObjectStep(this, NullObjectID.NULL_54088, new WorldPoint(4078, 4441, 0), "Search the skeleton north of the stone table.");
 		castBloomToFillPouch = new DetailedQuestStep(this, new WorldPoint(4091, 4439, 0), "Cast bloom near any of the roots for items to fill your druid pouch with.", silverSickleB.highlighted());
 		usePouchOnDruid = new NpcStep(this, NpcID.DRUID_SPIRIT, new WorldPoint(4078, 4439, 0), "Use the druid pouch on nearby druid spirits for herblore ingredients.", true);
 		((NpcStep) usePouchOnDruid).addAlternateNpcs(NpcID.DRUID_SPIRIT_13576);
 		((NpcStep) usePouchOnDruid).setMaxRoamRange(200);
-		// 10933 increments with each druid step
-		// ATTACK DOLMEN 0->1, kebbit tooth + avantoe (hunter)
-		// ENERGY DOLMEN 1->2 guam + eye of newt (attack)
-		// 2->3 toadflax/toads legs (agility)
-		// 3->4 harralander/choc dust (energy potion)
-		// 4->5 balance potion gredients
-		// 5->6 harrlander/goat horn (combat potion)
-		// 6->7 whiteberries/ranarr (defence potion)
-		// 7->8 ranarr/snape grass (prayer potion)
 
-		// 2nd run through
-		// 0->1 tarromin/limpwurt (strength)
-		// 1->2 harralander/choc dust (Energy potion)
-		// 2->3 lant/potato cactus (magic potion)
-		// 3->4 guam/newt (att potion)
-		// 4->5 balance potion stuff
-		// 5->6 ranarr weed/white berries (defence)
-		// 6->7 ranarr/snape (prayer)
-		// 7->8 avantoe/snape grass (fishing potion)
-
-		// Altars:
-		// Energy
-		// Attack
-		// Prayer
-		// Strength
-		// Defence
-		// Magic
-		// Balance
-
-		// attack potion eye of newt used
-		// 0->34
-		// guam used, 34->35
-
-		/////////////////////////
-
-		// 1st run
-		// DOLMEN: ATTACK, ENERGY, DEFENCE, HUNTER, COMBAT,  PRAYER, AGILITY, BALANCE
-		// POTION: HUNTER, ATTACK, AGILITY, ENERGY, BALANCE, COMBAT, DEFENCE, PRAYER
-
-		// 2nd run
-		// DOLMEN: ENERGY, ATTACK, PRAYER, STRENGTH, DEFENCE, FISHING, MAGIC, BALANCE
-		// POTION: STRENGTH, ENERGY, MAGIC, ATTACK, BALANCE, DEFENCE, PRAYER, FISHING
-
-		// 4th, 1st, 7th, 2nd, 8th, 5th, 3rd, 6th
-
-
-		////////////////////////
-
-		// Hunter altar avantoe on,
-		// 10924 0->1
-		// used the tooth, 10924 1->3
-		// Check variables for each altar
-		// Update text for altar + item requirements
-		//
-		// Placed
-
-		// Energy went 1->3
-		// Defence went 1->35
-		// Hunter went 1->3
-		// Combat went 1->3
-
-		// Balance potion: 10928
-		// harralander 0->1
-		// Silver dust 1->5
-		// Spiders eggs 5->7
-		// Garlic 7->15
-
-		// Attack dolmen placed:
-		// 10829 0->1
-		// 10828 0->1
-
-		// Agility domen placed:
-		// 10835 0->1
-		// 10828 1->2
-
-		// Balance dolmen placed:
-		// 10836 0->1
-
-		// Combat dolmen:
-		// 10833 0->1
-
-		// Energy dolmen:
-		// 10830 0->1
-
-		// Defence:
-		// 10831 0->1
-
-		// Prayer:
-		// 10834 0->1
-
-		// Hunter:
-		// 10832 0->1
-
-		// TODO: Highlight each specific dolmen needed, and direct player to correct statue if missing a dolmen
 		herblorePuzzle = new HerblorePuzzle(this, new DetailedQuestStep(this, "Broken step state."));
 
 		// Placed all dolmens:

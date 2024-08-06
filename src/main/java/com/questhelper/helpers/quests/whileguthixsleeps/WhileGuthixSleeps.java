@@ -1899,7 +1899,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			new ItemReward("Elite black knight armour", ItemID.ELITE_BLACK_PLATEBODY),
 			new ItemReward("Dark squall robes", ItemID.DARK_SQUALL_ROBE_TOP),
 			new ItemReward("Death runes from Movario's base", ItemID.DEATH_RUNE, 100),
-			new ItemReward("Dire runes from Movario's base", ItemID.FIRE_RUNE, 100),
+			new ItemReward("Fire runes from Movario's base", ItemID.FIRE_RUNE, 100),
 			new ItemReward("Coal from Movario's base", ItemID.COAL, 100),
 			new ItemReward("Magic logs from Movario's base", ItemID.MAGIC_LOGS, 100),
 			new ItemReward("Duradel's notes, obtainable from Kuradel", ItemID.DURADELS_NOTES)

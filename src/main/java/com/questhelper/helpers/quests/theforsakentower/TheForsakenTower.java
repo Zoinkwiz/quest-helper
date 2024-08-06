@@ -162,7 +162,7 @@ public class TheForsakenTower extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToVulcana = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ, new WorldPoint(1483, 3747, 0), "Talk to Lady Vulcana Lovakengj in the south of Lovakengj.");
+		talkToVulcana = new NpcStep(this, 11145, new WorldPoint(1483, 3747, 0), "Talk to Lady Vulcana Lovakengj in the south of Lovakengj.");
 		talkToVulcana.addDialogStep("I'm looking for a quest.");
 		talkToVulcana.addDialogStep("I'll get going.");
 		talkToUndor = new NpcStep(this, NpcID.UNDOR, new WorldPoint(1624, 3942, 0),

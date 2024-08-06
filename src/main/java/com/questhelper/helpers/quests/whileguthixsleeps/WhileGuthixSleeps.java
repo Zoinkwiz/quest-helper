@@ -1149,8 +1149,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		ObjectStep useFireRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
 			"Use a fire rune on the old battered door.", fireRune.highlighted());
 		useFireRuneDoorInnerStep.addIcon(ItemID.FIRE_RUNE);
-			useFireRuneOnDoor = new PuzzleWrapperStep(this,
-				useFireRuneDoorInnerStep,
+		useFireRuneOnDoor = new PuzzleWrapperStep(this,
+			useFireRuneDoorInnerStep,
 			"Solve the electric door puzzle.");
 
 		ObjectStep useAirRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
@@ -1180,7 +1180,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// Search
 		searchBookcase1 = new PuzzleWrapperStep(this,
 			new ObjectStep(this, ObjectID.BOOKCASE_53914, new WorldPoint(4181, 4959, 0), "Search the east-facing bookcase in the east of the room."),
-		"Solve the electric door puzzle.");
+			"Solve the electric door puzzle.");
 		searchBookcase2 = new PuzzleWrapperStep(this,
 			new ObjectStep(this, ObjectID.BOOKCASE_53915, new WorldPoint(4174, 4957, 0), "Search the west-facing bookcase in the west of the room."),
 			"Solve the electric door puzzle.");
@@ -1293,7 +1293,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		useOrbOnShadyStranger = new NpcStep(this, NpcID.SHADY_STRANGER, new WorldPoint(3085, 3243, 0), "Use the orb on the shady stranger near Draynor Village bank.", teleorb.highlighted());
 		useOrbOnShadyStranger.addIcon(ItemID.TELEORB);
 		talkToAkrisaeAfterOrb = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0), "Return to Akrisae in the White Knights' Castle.",
-			 lanternLens);
+			lanternLens);
 		talkToAkrisaeAfterOrb.addTeleport(faladorTeleport);
 		// Stranger teleported
 		// 32->33 quest state
@@ -1691,7 +1691,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		//         1, 3, 12, 13
 
-		getPouch = new ObjectStep(this, NullObjectID.NULL_54088, new WorldPoint(4078, 4441, 0),"Search the skeleton north of the stone table.");
+		getPouch = new ObjectStep(this, NullObjectID.NULL_54088, new WorldPoint(4078, 4441, 0), "Search the skeleton north of the stone table.");
 		castBloomToFillPouch = new DetailedQuestStep(this, new WorldPoint(4091, 4439, 0), "Cast bloom near any of the roots for items to fill your druid pouch with.", silverSickleB.highlighted());
 		usePouchOnDruid = new NpcStep(this, NpcID.DRUID_SPIRIT, new WorldPoint(4078, 4439, 0), "Use the druid pouch on nearby druid spirits for herblore ingredients.", true);
 		((NpcStep) usePouchOnDruid).addAlternateNpcs(NpcID.DRUID_SPIRIT_13576);
@@ -1857,7 +1857,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			new QuestRequirement(QuestHelperQuest.NATURE_SPIRIT, QuestState.FINISHED),
 			new SkillRequirement(Skill.THIEVING, 72),
 			new SkillRequirement(Skill.MAGIC, 67),
-			new SkillRequirement(Skill.AGILITY,  66),
+			new SkillRequirement(Skill.AGILITY, 66),
 			new SkillRequirement(Skill.FARMING, 65),
 			new SkillRequirement(Skill.HUNTER, 62),
 			new WarriorsGuildAccessRequirement()
@@ -1948,8 +1948,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Delving Deeper", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,
 			searchRemainsForHammerAndChisel, useSpadeOnFireRocks, useChiselOnFireBrazier, useSpadeOnEarthRocks, useChiselOnEarthBrazier, useChiselOnAirBrazier, useChiselOnWaterBrazier,
 			useOrbOnAirRecessedBlock, useOrbOnFireRecessedBlock, useOrbOnEarthRecessedBlock, climbWallNextToSkullF0ToF1, useOrbOnWaterRecessedBlock, useFireBlockOnRecess,
-			 climbDownFromSkullF2ToF1, enterWestCavity, useAirBlockOnRecess, leaveAirRecess, enterMiddleCavity, useEarthBlockOnRecess, leaveEarthRecess, enterEastCavity, useWaterBlockOnRecess,
-				leaveWaterRecess, climbUpToCubeF0ToF1, touchCube, enterSkull),
+			climbDownFromSkullF2ToF1, enterWestCavity, useAirBlockOnRecess, leaveAirRecess, enterMiddleCavity, useEarthBlockOnRecess, leaveEarthRecess, enterEastCavity, useWaterBlockOnRecess,
+			leaveWaterRecess, climbUpToCubeF0ToF1, touchCube, enterSkull),
 			List.of(squallOutfit, litSapphireLantern, emptySlots16, staminaPotion.quantity(2)),
 			List.of(gamesNecklace, food, prayerPotions)));
 

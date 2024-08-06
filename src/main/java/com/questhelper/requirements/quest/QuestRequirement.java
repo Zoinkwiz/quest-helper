@@ -33,6 +33,7 @@ import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import javax.annotation.Nonnull;
 
 /**
  * Requirement that checks if a {@link net.runelite.api.Quest} has a certain state.
@@ -119,6 +120,7 @@ public class QuestRequirement extends AbstractRequirement
 		return state == requiredState;
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

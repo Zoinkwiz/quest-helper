@@ -29,6 +29,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
+import javax.annotation.Nonnull;
 
 /**
  * Checks if the player meets a weight check
@@ -69,6 +70,7 @@ public class WeightRequirement extends AbstractRequirement
 		return operation.check(client.getWeight(), weight);
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

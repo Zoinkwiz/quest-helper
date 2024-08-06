@@ -29,6 +29,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
+import javax.annotation.Nonnull;
 
 /**
  * Requirement that checks if a specified {@link Prayer} is active
@@ -58,6 +59,7 @@ public class PrayerRequirement extends AbstractRequirement
 		return currentPrayer == 1;
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

@@ -75,6 +75,15 @@ public interface Requirement
 	String getDisplayText();
 
 	/**
+	 * @return the wiki URL leading to information about this requirement, if any
+	 */
+	@Nullable
+	default String getWikiUrl()
+	{
+		return null;
+	}
+
+	/**
 	 * The {@link Color} used to render the {@link #getDisplayText()} depending on what {@link #check(Client)}
 	 * returns.<br>
 	 * By default, if {@link #check(Client)} returns true, {@link Color#GREEN} is used, otherwise {@link Color#RED}.

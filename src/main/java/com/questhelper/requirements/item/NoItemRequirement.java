@@ -64,6 +64,7 @@ public class NoItemRequirement extends ItemRequirement
 		return check(client) ? config.passColour() : config.failColour();
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

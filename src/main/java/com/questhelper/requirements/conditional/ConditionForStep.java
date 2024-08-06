@@ -31,6 +31,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import javax.annotation.Nonnull;
 
 public abstract class ConditionForStep implements InitializableRequirement
 {
@@ -62,9 +63,10 @@ public abstract class ConditionForStep implements InitializableRequirement
 			.forEach(req -> ((InitializableRequirement) req).updateHandler());
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText() // conditions don't need display text (yet?)
 	{
-		return null;
+		return "";
 	}
 }

@@ -31,6 +31,7 @@ import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import javax.annotation.Nonnull;
 
 /**
  * Checks if the player's combat level meets the required level
@@ -71,6 +72,7 @@ public class CombatLevelRequirement extends AbstractRequirement
 		return player != null && operation.check(player.getCombatLevel(), requiredLevel);
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

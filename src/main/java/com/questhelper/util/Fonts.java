@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2024, pajlada <https://github.com/pajlada>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.panel;
+package com.questhelper.util;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
 
-public class QuestRewardWrapperPanel extends JPanel
+public class Fonts
 {
 	@Getter
-	private final QuestRewardPanel questRewardPanel;
+	private static final Font originalFont;
+	@Getter
+	private static final Font underlinedFont;
 
-	public QuestRewardWrapperPanel(QuestRewardPanel questRewardPanel)
+	static
 	{
-		setLayout(new BorderLayout());
-		setBorder(new EmptyBorder(0, 0, 0, 0));
-		add(questRewardPanel, BorderLayout.CENTER);
-		this.questRewardPanel = questRewardPanel;
+		var label = new JLabel();
+		originalFont = label.getFont();
+		var attributes = new HashMap<TextAttribute, Object>(originalFont.getAttributes());
+		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+		underlinedFont = originalFont.deriveFont(attributes);
 	}
 }

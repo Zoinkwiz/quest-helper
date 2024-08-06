@@ -37,6 +37,7 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.rewards.Reward;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -306,7 +307,37 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return null;
 	}
 
-	public List<String> getQuestRewards()
+	/**
+	 * @return a list of all the quest's rewards
+	 */
+	public List<Reward> getQuestRewards()
+	{
+		var rewards = new ArrayList<Reward>();
+
+		if (getQuestPointReward() != null)
+		{
+			rewards.add(getQuestPointReward());
+		}
+
+		if (getExperienceRewards() != null)
+		{
+			rewards.addAll(getExperienceRewards());
+		}
+
+		if (getItemRewards() != null)
+		{
+			rewards.addAll(getItemRewards());
+		}
+
+		if (getUnlockRewards() != null)
+		{
+			rewards.addAll(getUnlockRewards());
+		}
+
+		return rewards;
+	}
+
+	public List<String> getQuestRewardsText()
 	{
 		List<String> rewards = new ArrayList<>();
 

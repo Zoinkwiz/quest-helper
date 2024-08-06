@@ -27,8 +27,8 @@ package com.questhelper.requirements;
 import com.questhelper.QuestHelperConfig;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
@@ -50,6 +50,7 @@ public abstract class AbstractRequirement implements Requirement
 		return shouldCountForFilter;
 	}
 
+	@Nonnull
 	abstract public String getDisplayText();
 
 	@Nullable

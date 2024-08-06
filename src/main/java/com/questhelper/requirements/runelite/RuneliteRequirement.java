@@ -33,6 +33,7 @@ import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
+import javax.annotation.Nonnull;
 
 public class RuneliteRequirement extends AbstractRequirement
 {
@@ -122,6 +123,7 @@ public class RuneliteRequirement extends AbstractRequirement
 		});
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

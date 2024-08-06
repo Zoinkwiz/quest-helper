@@ -32,6 +32,7 @@ import com.questhelper.requirements.util.Operation;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
+import javax.annotation.Nonnull;
 
 /**
  * Requirement that checks if a player has a required number of quest points.
@@ -73,6 +74,7 @@ public class QuestPointRequirement extends AbstractRequirement
 		return operation.check(client.getVarpValue(VarPlayer.QUEST_POINTS), requiredQuestPoints);
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

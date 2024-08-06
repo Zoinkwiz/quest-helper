@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import net.runelite.api.Client;
+import javax.annotation.Nonnull;
 
 public class VarplayerRequirement extends AbstractRequirement
 {
@@ -166,6 +167,7 @@ public class VarplayerRequirement extends AbstractRequirement
 		return values.stream().anyMatch(value -> operation.check(varpValue, value));
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

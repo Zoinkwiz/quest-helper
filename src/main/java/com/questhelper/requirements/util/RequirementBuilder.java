@@ -102,6 +102,7 @@ public final class RequirementBuilder
 				return requirementPredicate.test(client);
 			}
 
+			@Nonnull
 			@Override
 			public String getDisplayText()
 			{

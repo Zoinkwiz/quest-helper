@@ -61,6 +61,12 @@ public class BikeShedder extends BasicQuestHelper
 	private ObjectStep useCoinOnBush;
 	private ObjectStep useManyCoinsOnBush;
 
+	private Zone conditionalRequirementZone;
+	private ZoneRequirement conditionalRequirementZoneRequirement;
+	private ZoneRequirement conditionalRequirementZoneSouthRequirement;
+	private ItemRequirement conditionalRequirementCoins;
+	private DetailedQuestStep conditionalRequirementLookAtCoins;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -73,6 +79,7 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3218, 0)), useLogOnBush);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3217, 0)), useCoinOnBush);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3216, 0)), useManyCoinsOnBush);
+		steps.addStep(conditionalRequirementZoneRequirement, conditionalRequirementLookAtCoins);
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(-1, steps)
 			.build();
@@ -104,6 +111,16 @@ public class BikeShedder extends BasicQuestHelper
 		manyCoins.setHighlightInInventory(true);
 		useManyCoinsOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use many coins on the bush.", manyCoins);
 		useManyCoinsOnBush.addIcon(ItemID.COINS);
+
+		conditionalRequirementZone = new Zone(new WorldPoint(3223, 3221, 0), new WorldPoint(3223, 3222, 0));
+		conditionalRequirementZoneRequirement = new ZoneRequirement(conditionalRequirementZone);
+		conditionalRequirementZoneSouthRequirement = new ZoneRequirement(new WorldPoint(3223, 3221, 0));
+
+		conditionalRequirementCoins = new ItemRequirement("Coins", ItemCollections.COINS, 50);
+		conditionalRequirementCoins.setHighlightInInventory(true);
+		conditionalRequirementCoins.setConditionToHide(conditionalRequirementZoneSouthRequirement);
+
+		conditionalRequirementLookAtCoins = new DetailedQuestStep(this, "Admire the coins in your inventory.", conditionalRequirementCoins);
 	}
 
 	@Override
@@ -116,6 +133,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Equip Lightbearer", List.of(equipLightbearer)));
 		panels.add(new PanelDetails("Use log on mysterious bush", List.of(useLogOnBush), List.of(anyLog)));
 		panels.add(new PanelDetails("Use coins on mysterious bush", List.of(useCoinOnBush, useManyCoinsOnBush), List.of(oneCoin, manyCoins)));
+		panels.add(new PanelDetails("Conditional requirement", List.of(conditionalRequirementLookAtCoins), List.of(conditionalRequirementCoins)));
 
 		return panels;
 	}

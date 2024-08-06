@@ -106,18 +106,24 @@ public class WeightStep extends QuestStep implements OwnerStep
 		}
 		else if (playerWeightWithoutWeights == totalWeightGoal + weightInInventoryFromWeights)
 		{
-			if (inWeightRoom.check(client)) {
+			if (inWeightRoom.check(client))
+			{
 				startUpStep(crossOverBrokenWallNorth);
-			} else {
+			}
+			else
+			{
 				startUpStep(useWeights);
 				// go use weights on statue
 			}
 		}
 		else if (playerWeight < totalWeightGoal)
 		{
-			if (!inWeightRoom.check(client)) {
+			if (!inWeightRoom.check(client))
+			{
 				startUpStep(crossOverBrokenWall);
-			} else {
+			}
+			else
+			{
 				int diffPlayerWeightToGoal = totalWeightGoal - playerWeight;
 				if (diffPlayerWeightToGoal / 5 >= 1)
 				{
@@ -151,7 +157,9 @@ public class WeightStep extends QuestStep implements OwnerStep
 			if (!inWeightRoom.check(client))
 			{
 				startUpStep(crossOverBrokenWall);
-			} else {
+			}
+			else
+			{
 				int diff = playerWeightWithoutWeights - (totalWeightGoal + weightInInventoryFromWeights);
 				if (diff / 5 >= 1)
 				{

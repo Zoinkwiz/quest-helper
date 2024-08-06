@@ -91,7 +91,7 @@ public class HerblorePuzzle extends ConditionalStep
 
 		this.addStep(placedAllIngredients, placeDolmens);
 
-		int[] HERB_ORDER = new int[] { 3, 0, 6, 1, 7, 4, 2, 5 };
+		int[] HERB_ORDER = new int[]{3, 0, 6, 1, 7, 4, 2, 5};
 		for (int i : HERB_ORDER)
 		{
 			steps[i] = new ObjectStep(questHelper, 0, "Unknown state.");

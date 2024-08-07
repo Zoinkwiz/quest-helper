@@ -121,10 +121,10 @@ public class MemoryChallenge extends DetailedQuestStep
 
 	private void setupPaths()
 	{
-		int current1 = client.getVarbitValue(2412);
-		int current2 = client.getVarbitValue(2413);
-		int current3 = client.getVarbitValue(2414);
-		int current4 = client.getVarbitValue(2415);
+		int current1 = client.getVarbitValue(2415);
+		int current2 = client.getVarbitValue(2414);
+		int current3 = client.getVarbitValue(2413);
+		int current4 = client.getVarbitValue(2412);
 
 		if (current1 == column1 &&
 			current2 == column2 &&

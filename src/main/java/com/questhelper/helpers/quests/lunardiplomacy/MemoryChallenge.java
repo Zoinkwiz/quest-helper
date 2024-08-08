@@ -150,10 +150,10 @@ public class MemoryChallenge extends DetailedQuestStep
 
 		for (int row = 0; row < ROWS; row++)
 		{
-			grid[row][0] = (west >> (ROWS - 1 - row)) & 1;
-			grid[row][1] = (middleWest >> (ROWS - 1 - row)) & 1;
-			grid[row][2] = (middleEast >> (ROWS - 1 - row)) & 1;
-			grid[row][3] = (east >> (ROWS - 1 - row)) & 1;
+			grid[ROWS - 1 - row][0] = (west >> (ROWS - 1 - row)) & 1;
+			grid[ROWS - 1 - row][1] = (middleWest >> (ROWS - 1 - row)) & 1;
+			grid[ROWS - 1 - row][2] = (middleEast >> (ROWS - 1 - row)) & 1;
+			grid[ROWS - 1 - row][3] = (east >> (ROWS - 1 - row)) & 1;
 		}
 
 		return grid;

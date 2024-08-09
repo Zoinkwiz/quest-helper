@@ -45,6 +45,12 @@ public class FakeNpc extends ExtendedRuneliteObject
 		objectType = RuneliteObjectTypes.NPC;
 	}
 
+	protected FakeNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int npcID, int animation)
+	{
+		super(client, clientThread, worldPoint, npcID, animation);
+		objectType = RuneliteObjectTypes.NPC;
+	}
+
 	protected FakeNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, Model model, int animation)
 	{
 		super(client, clientThread, worldPoint, model, animation);

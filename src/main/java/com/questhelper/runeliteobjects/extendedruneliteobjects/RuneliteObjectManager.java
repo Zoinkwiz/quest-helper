@@ -204,6 +204,26 @@ public class RuneliteObjectManager
 		return extendedRuneliteObject;
 	}
 
+	public ReplacedNpc createReplacedNpc(int npcReplacementID, WorldPoint wp, int npcIDToReplace)
+	{
+		String groupID = "global";
+		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, npcReplacementID, npcIDToReplace);
+		// Should this be here or a separate 'activate' step?
+		for (NPC clientNpc : client.getNpcs())
+		{
+			if (clientNpc.getId() == npcIDToReplace)
+			{
+				extendedRuneliteObject.setNpc(clientNpc);
+				break;
+			}
+		}
+
+		runeliteObjectGroups.computeIfAbsent(groupID, (existingVal) -> new ExtendedRuneliteObjects(groupID));
+		runeliteObjectGroups.get(groupID).addExtendedRuneliteObject(extendedRuneliteObject);
+
+		return extendedRuneliteObject;
+	}
+
 	public ReplacedNpc createReplacedNpc(String groupID, int[] model, WorldPoint wp, int npcIDToReplace)
 	{
 		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, npcIDToReplace);

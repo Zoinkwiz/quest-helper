@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -49,6 +50,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
 import net.runelite.api.ModelData;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.Scene;
@@ -179,12 +181,39 @@ public class ExtendedRuneliteObject
 		this(client, clientThread, worldPoint, createModel(client, model).cloneColors().light(), animation);
 	}
 
+	protected ExtendedRuneliteObject(Client client, ClientThread clientThread, WorldPoint worldPoint, int npcID, int animation)
+	{
+		this(client, clientThread, worldPoint, createModel(client, npcID).cloneColors().light(), animation);
+	}
+
 	private static ModelData createModel(Client client, int[] data)
 	{
 		ModelData[] modelData = new ModelData[data.length];
 		for (int i = 0; i < data.length; i++)
 		{
 			modelData[i] = client.loadModelData(data[i]);
+		}
+
+		return client.mergeModels(modelData);
+	}
+
+	private static ModelData createModel(Client client, int npcID)
+	{
+		NPCComposition npcComposition = client.getNpcDefinition(npcID);
+		int[] data = npcComposition.getModels();
+		ModelData[] modelData = new ModelData[data.length];
+		short[] toReplace = npcComposition.getColorToReplace();
+		short[] toReplaceWith = npcComposition.getColorToReplaceWith();
+
+		for (int i = 0; i < data.length; i++)
+		{
+			modelData[i] = client.loadModelData(data[i]);
+			for (int j = 0; j < Objects.requireNonNull(toReplace).length; j++)
+			{
+				assert toReplaceWith != null;
+				assert modelData[i] != null;
+				modelData[i].recolor(toReplace[j], toReplaceWith[j]);
+			}
 		}
 
 		return client.mergeModels(modelData);

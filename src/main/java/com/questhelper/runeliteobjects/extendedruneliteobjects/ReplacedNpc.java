@@ -30,7 +30,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.ModelData;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -52,26 +54,61 @@ public class ReplacedNpc extends FakeNpc
 	@Getter
 	private final List<WidgetReplacement> widgetReplacements = new ArrayList<>();
 
+	@Setter
+	private int newAnimation = -1;
+
+	@Setter
+	private int newIdleAnimation = -1;
+
+	@Setter
+	private int newWalkingAnimation = -1;
+
 	protected ReplacedNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int[] model, int npcIDToReplace)
 	{
 		super(client, clientThread, worldPoint, model, 808);
 		this.npcIDToReplace = npcIDToReplace;
-//		disable();
+	}
+
+	protected ReplacedNpc(Client client, ClientThread clientThread, WorldPoint worldPoint, int npcID, int npcIDToReplace)
+	{
+		super(client, clientThread, worldPoint, npcID, 808);
+		this.npcIDToReplace = npcIDToReplace;
 	}
 
 	public void updateNpcSync(Client client)
 	{
 		if (npc.getAnimation() != -1)
 		{
-			setAnimation(npc.getAnimation());
+			if (newAnimation != -1)
+			{
+				setAnimation(newAnimation);
+			}
+			else
+			{
+				setAnimation(npc.getAnimation());
+			}
 		}
 		else if (npc.getLocalLocation().distanceTo(getRuneliteObject().getLocation()) == 0)
 		{
+			if (newIdleAnimation != -1)
+			{
+				setAnimation(newIdleAnimation);
+			}
+			else
+			{
 				setAnimation(npc.getIdlePoseAnimation());
+			}
 		}
 		else
 		{
-			setAnimation(npc.getWalkAnimation());
+			if (newWalkingAnimation != -1)
+			{
+				setAnimation(newWalkingAnimation);
+			}
+			else
+			{
+				setAnimation(npc.getWalkAnimation());
+			}
 		}
 		getRuneliteObject().setLocation(npc.getLocalLocation(), client.getPlane());
 		setOrientationGoal(npc.getOrientation());

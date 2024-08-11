@@ -33,7 +33,7 @@ public enum DolmenType
 {
 	AGILITY(ObjectID.STATUE_53640, new ItemRequirement("Toadflax", ItemID.TOADFLAX).highlighted(), new ItemRequirement("Toad's legs", ItemID.TOADS_LEGS).highlighted()),
 	ENERGY(ObjectID.STATUE_53644, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST).highlighted()),
-	RESTORATION(ObjectID.STATUE_53646, new ItemRequirement("Snapdragon", ItemID.SNAPDRAGON).highlighted(), new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS).highlighted()),
+	RESTORATION(ObjectID.STATUE_53646, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS).highlighted()),
 	ATTACK(ObjectID.STATUE_53648, new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF).highlighted(), new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT).highlighted()),
 	STRENGTH(ObjectID.STATUE_53650, new ItemRequirement("Tarromin", ItemID.TARROMIN).highlighted(), new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).highlighted()),
 	DEFENCE(ObjectID.STATUE_53652, new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED).highlighted(), new ItemRequirement("White berries", ItemID.WHITE_BERRIES).highlighted()),

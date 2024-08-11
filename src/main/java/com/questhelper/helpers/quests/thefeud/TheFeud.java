@@ -71,7 +71,7 @@ public class TheFeud extends BasicQuestHelper
 			redHotSauce, bucket, dung, poisonHighlighted, oakBlackjackEquipped;
 
 	//Items Recommended
-	ItemRequirement combatGear;
+	ItemRequirement combatGear, ringOfDueling, pollnivneachTeleport;
 
 	Requirement doesNotHaveBucket;
 
@@ -270,6 +270,10 @@ public class TheFeud extends BasicQuestHelper
 		//Combat Gear
 		combatGear = new ItemRequirement("Combat Gear bring Range or Mage Gear if safe spotting.", -1, -1 );
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		//Recommended Teleports
+		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS);
+		pollnivneachTeleport = new ItemRequirement("Pollnivneach teleport", ItemID.POLLNIVNEACH_TELEPORT);
 	}
 
 	@Override
@@ -483,6 +487,12 @@ public class TheFeud extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(coins, gloves, combatGear);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(ringOfDueling, pollnivneachTeleport);
 	}
 
 	@Override

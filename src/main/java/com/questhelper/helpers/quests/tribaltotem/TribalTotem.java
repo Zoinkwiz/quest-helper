@@ -63,7 +63,7 @@ public class TribalTotem extends BasicQuestHelper
     ItemRequirement addressLabel, totem;
 
     //Items Recommended
-    ItemRequirement coins, amuletOfGlory, ardougneTeleports;
+    ItemRequirement coins, amuletOfGlory, ardougneTeleport, brimhavenTeleports;
 
     QuestStep talkToKangaiMau, investigateCrate, useLabel, talkToEmployee, talkToCromperty, enterPassword, solvePassword, climbStairs, searchChest, leaveHouse, talkToKangaiMauAgain;
 
@@ -104,7 +104,8 @@ public class TribalTotem extends BasicQuestHelper
     {
         coins = new ItemRequirement("Coins or more for boat trips", ItemCollections.COINS, 90);
         amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
-        ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
+        ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
+		brimhavenTeleports = new ItemRequirement("Brimhaven teleports", ItemID.BRIMHAVEN_TELEPORT, 2);
         addressLabel = new ItemRequirement("Address label", ItemID.ADDRESS_LABEL);
         addressLabel.setHighlightInInventory(true);
         totem = new ItemRequirement("Totem", ItemID.TOTEM);
@@ -116,7 +117,8 @@ public class TribalTotem extends BasicQuestHelper
         ArrayList<ItemRequirement> reqs = new ArrayList<>();
         reqs.add(coins);
         reqs.add(amuletOfGlory);
-        reqs.add(ardougneTeleports);
+        reqs.add(ardougneTeleport);
+		reqs.add(brimhavenTeleports);
         return reqs;
     }
 

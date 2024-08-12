@@ -40,11 +40,7 @@ import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.overlay.WorldLines;
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.util.worldmap.WorldMapAreaChanged;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Polygon;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -816,7 +812,8 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	protected void renderHoveredItemTooltip(String tooltipText)
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		Menu menu = client.getMenu();
+		MenuEntry[] menuEntries = menu.getMenuEntries();
 		int last = menuEntries.length - 1;
 
 		if (last < 0)
@@ -837,14 +834,15 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent, String tooltipText)
 	{
-		MenuEntry[] currentMenuEntries = client.getMenuEntries();
+		Menu menu = client.getMenu();
+		MenuEntry[] currentMenuEntries = menu.getMenuEntries();
 
 		if (currentMenuEntries != null)
 		{
 			net.runelite.api.Point mousePosition = client.getMouseCanvasPosition();
-			int menuX = client.getMenuX();
-			int menuY = client.getMenuY();
-			int menuWidth = client.getMenuWidth();
+			int menuX = menu.getMenuX();
+			int menuY = menu.getMenuY();
+			int menuWidth = menu.getMenuWidth();
 
 			int menuEntryHeight = 15;
 			int headerHeight = menuEntryHeight + 3;

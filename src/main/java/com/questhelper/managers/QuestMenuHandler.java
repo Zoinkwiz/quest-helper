@@ -39,6 +39,7 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.util.Text;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.awt.*;
 import java.util.Arrays;
 
 /**
@@ -358,7 +359,8 @@ public class QuestMenuHandler
 	{
 		MenuEntry[] newMenuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		client.createMenuEntry(menuEntries.length - 1)
+		Menu menu = client.getMenu();
+		menu.createMenuEntry(menuEntries.length - 1)
 			.setOption(newEntry)
 			.setTarget("<col=ff9040>" + target + "</col>")
 			.onClick((menuEntry -> handleMenuEntryClick(newEntry, target)))

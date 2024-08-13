@@ -318,7 +318,7 @@ public class DesertHard extends ComplexStateQuestHelper
 			new UnlockReward("Zahur will create unfinished potions for 200 coins per potion from a vial of water and a clean herb. Items can be noted or unnoted"),
 			new UnlockReward("Zahur will now clean noted grimy herbs for 200 coins each"),
 			new UnlockReward("Ropes placed at both the Kalphite Lair entrance and the Kalphite Queen tunnel entrance become permanent"),
-			new UnlockReward("The Rellekka Rooftop Course will give additional experience upon completion")
+			new UnlockReward("Increased experience on the Pollnivneach Rooftop Course")
 		);
 	}
 

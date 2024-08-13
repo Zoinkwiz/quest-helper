@@ -287,7 +287,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 
 		moveToEagle = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
 			"Enter the cave at the top of Eagles' Peak. " +
-				"You can use a fairy ring to (AKQ), then head south to get there easily.");
+				"You can use a fairy ring to (AKQ), then head south to get there easily.", rope);
 		eagleFeldip = new NpcStep(this, NpcID.JUNGLE_EAGLE, new WorldPoint(2027, 4964, 3),
 			"Use a rope on the Jungle Eagle to travel to the Feldip Hills area.", rope.highlighted());
 		eagleFeldip.addIcon(ItemID.ROPE);

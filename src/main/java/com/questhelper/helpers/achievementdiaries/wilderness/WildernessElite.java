@@ -97,19 +97,19 @@ public class WildernessElite extends ComplexStateQuestHelper
 		doElite.addStep(notTPGhorrock, tpGhorrockTask);
 
 		magicLogsTask = new ConditionalStep(this, moveToResource1);
-		magicLogsTask.addStep(inResource, magicLogs);
 		magicLogsTask.addStep(new Conditions(inResource, gatheredLogs, magicLog), burnLogs);
+		magicLogsTask.addStep(inResource, magicLogs);
 		doElite.addStep(notMagicLogs, magicLogsTask);
 
 		runeScimTask = new ConditionalStep(this, moveToResource2);
-		runeScimTask.addStep(inResource, runiteGolem);
-		runeScimTask.addStep(new Conditions(inResource, runeOre.quantity(2), coal.quantity(16), runiteFromGolems), smeltBar);
 		runeScimTask.addStep(new Conditions(inResource, runeBar.quantity(2), barsSmelted), runeScim);
+		runeScimTask.addStep(new Conditions(inResource, runeOre.quantity(2), coal.quantity(16), runiteFromGolems), smeltBar);
+		runeScimTask.addStep(inResource, runiteGolem);
 		doElite.addStep(notRuneScim, runeScimTask);
 
 		darkCrabTask = new ConditionalStep(this, moveToResource3);
-		darkCrabTask.addStep(inResource, darkCrab);
 		darkCrabTask.addStep(new Conditions(inResource, caughtCrab, rawDarkCrab), cookDarkCrab);
+		darkCrabTask.addStep(inResource, darkCrab);
 		doElite.addStep(notDarkCrab, darkCrabTask);
 
 		roguesChestTask = new ConditionalStep(this, roguesChest);

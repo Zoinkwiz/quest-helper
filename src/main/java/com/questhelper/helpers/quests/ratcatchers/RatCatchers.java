@@ -308,6 +308,7 @@ public class RatCatchers extends BasicQuestHelper
 	{
 		talkToGertrude = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3413, 0),
 			"Talk to Gertrude west of Varrock.", catspeakAmuletOrDS2.equipped());
+		talkToGertrude.addDialogStep("Yes.");
 
 		enterSewer = new ObjectStep(this, ObjectID.MANHOLE_882, new WorldPoint(3237, 3458, 0),
 			"Go down into Varrock Sewer via the Manhole south east of Varrock Castle.", cat);
@@ -388,7 +389,6 @@ public class RatCatchers extends BasicQuestHelper
 			"Return to Jack.");
 		talkToJackAfterCheese = new NpcStep(this, NpcID.HOOKNOSED_JACK, new WorldPoint(3268, 3401, 0),
 			"Return to Jack.", cat);
-		talkToJackAfterCheese.addDialogSteps("Can I help?");
 		talkToJackAfterCheese.addSubSteps(goDownToJack);
 
 		talkToApoth = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3196, 3404, 0),
@@ -405,7 +405,7 @@ public class RatCatchers extends BasicQuestHelper
 		useCatOnHole = new ObjectStep(this, ObjectID.HOLE_IN_WALL_10320, new WorldPoint(3270, 3379, 1),
 			"Use your cat on the hole in the wall. You'll need to feed it by using fish ON THE WALL whenever its " +
 				"health gets low.", cat.highlighted(), fish8);
-		useCatOnHole.addDialogStep("Yes");
+		useCatOnHole.addDialogSteps("Yes", "Be careful in there, cat!");
 		feedCatAsItFights = new ObjectStep(this, ObjectID.HOLE_IN_WALL_10320, new WorldPoint(3270, 3379, 1),
 			"Use fish on the wall whenever your cat's health gets low.", fish8.highlighted());
 		goDownToJackAfterFight = new ObjectStep(this, ObjectID.LADDER_11795, new WorldPoint(3268, 3379, 1),
@@ -418,7 +418,6 @@ public class RatCatchers extends BasicQuestHelper
 			"Travel to Keldagrim.", cat, potOfWeeds, tinderbox);
 		talkToSmokinJoe = new NpcStep(this, NpcID.SMOKIN_JOE, new WorldPoint(2929, 10213, 0),
 			"Talk to Smokin' Joe in the north east of Keldagrim.", cat, potOfWeeds, tinderbox);
-		talkToSmokinJoe.addDialogStep("I could help you.");
 		lightWeeds = new DetailedQuestStep(this, "Use a tinderbox on the pot of weeds.", potOfWeeds.highlighted(),
 			tinderbox.highlighted());
 		usePotOnHole = new ObjectStep(this, ObjectID.RAT_HOLE_10350, new WorldPoint(2933, 10212, 0),
@@ -439,11 +438,12 @@ public class RatCatchers extends BasicQuestHelper
 			"Leave the rat pits.");
 		talkToTheFaceAgain = new NpcStep(this, NpcID.THE_FACE, new WorldPoint(3019, 3232, 0),
 			"Talk to The Face in Port Sarim again.", cat, catspeakAmuletOrDS2);
+		talkToTheFaceAgain.addDialogStep(3, "I just don't think Felkrash was that impressive.");
 
 		useCoinOnPot = new ObjectStep(this, ObjectID.MONEY_POT, new WorldPoint(3355, 2953, 0),
 		"Use a coin on the pot next to the Snake Charmer in Pollnivneach.", coin.quantity(101).highlighted());
-		useCoinOnPot.addDialogSteps("I want to talk to you about animal charming.", "Forget about it. I don't care.",
-			"What if I offered you some money?", "Walk away slowly", "Stop");
+		useCoinOnPot.addDialogSteps("I want to talk to you about animal charming.", "What if I offered you some money?",
+			"Forget about it. I don't care that much.", "Walk away slowly", "Stop");
 		useCoinOnPot.addIcon(ItemID.COINS);
 		returnToSarim = new DetailedQuestStep(this, new WorldPoint(3019, 3232, 0), "Return to just outside the Port " +
 			"Sarim Rat Pits.", snakeCharm, musicScroll);

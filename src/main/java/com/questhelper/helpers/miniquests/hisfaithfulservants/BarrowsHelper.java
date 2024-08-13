@@ -277,6 +277,7 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 			// Got chest
 			else if (lastKc != currentKc)
 			{
+				lastKc = currentKc;
 				escapeCrypt.setShouldPass(true);
 				// set leave to true
 			}

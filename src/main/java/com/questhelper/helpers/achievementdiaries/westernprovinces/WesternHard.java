@@ -363,7 +363,7 @@ public class WesternHard extends ComplexStateQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Kill Zulrah (lvl 725) and an elf (lvl 108)");
+		return Collections.singletonList("Kill Zulrah (lvl 725) and an elf (lvl 90 or 108)");
 	}
 
 	@Override

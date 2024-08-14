@@ -71,7 +71,7 @@ public class TheFeud extends BasicQuestHelper
 			redHotSauce, bucket, dung, poisonHighlighted, oakBlackjackEquipped;
 
 	//Items Recommended
-	ItemRequirement combatGear;
+	ItemRequirement combatGear, ringOfDueling, pollnivneachTeleport;
 
 	Requirement doesNotHaveBucket;
 
@@ -270,6 +270,10 @@ public class TheFeud extends BasicQuestHelper
 		//Combat Gear
 		combatGear = new ItemRequirement("Combat Gear bring Range or Mage Gear if safe spotting.", -1, -1 );
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		//Recommended Teleports
+		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS);
+		pollnivneachTeleport = new ItemRequirement("Pollnivneach teleport", ItemID.POLLNIVNEACH_TELEPORT);
 	}
 
 	@Override
@@ -307,7 +311,7 @@ public class TheFeud extends BasicQuestHelper
 	{
 		//Step 0-1
 		//Start Quest & Purchase Disguise
-		startQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to  Ali Morrisane in Al Kharid to start the quest.");
+		startQuest = new NpcStep(this, NpcID.ALI_MORRISANE, new WorldPoint(3304, 3211, 0), "Talk to Ali Morrisane in Al Kharid to start the quest.");
 		startQuest.addDialogStep("If you are, then why are you still selling goods from a stall?");
 		startQuest.addDialogStep("I'd like to help you but.....");
 		startQuest.addDialogStep("I'll find you your help.");
@@ -483,6 +487,12 @@ public class TheFeud extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(coins, gloves, combatGear);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(ringOfDueling, pollnivneachTeleport);
 	}
 
 	@Override

@@ -835,47 +835,47 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent, String tooltipText)
 	{
-		Menu menu = client.getMenu();
-		MenuEntry[] currentMenuEntries = menu.getMenuEntries();
+//		Menu menu = client.getMenu();
+//		MenuEntry[] currentMenuEntries = menu.getMenuEntries();
+//
+//		if (currentMenuEntries != null)
+//		{
+//			net.runelite.api.Point mousePosition = client.getMouseCanvasPosition();
+//			int menuX = menu.getMenuX();
+//			int menuY = menu.getMenuY();
+//			int menuWidth = menu.getMenuWidth();
+//
+//			int menuEntryHeight = 15;
+//			int headerHeight = menuEntryHeight + 3;
+//
+//			int numberNotInMainMenu = 0;
+//
+//			for (int i = currentMenuEntries.length - 1; i >= 0; i--)
+//			{
+//				MenuEntry hoveredEntry = currentMenuEntries[i];
+//
+//				int realPos = currentMenuEntries.length - (i + numberNotInMainMenu) - 1;
 
-		if (currentMenuEntries != null)
-		{
-			net.runelite.api.Point mousePosition = client.getMouseCanvasPosition();
-			int menuX = menu.getMenuX();
-			int menuY = menu.getMenuY();
-			int menuWidth = menu.getMenuWidth();
+//				if (hoveredEntry.getParent() != null)
+//				{
+//					numberNotInMainMenu++;
+//					continue;
+//				}
 
-			int menuEntryHeight = 15;
-			int headerHeight = menuEntryHeight + 3;
-
-			int numberNotInMainMenu = 0;
-
-			for (int i = currentMenuEntries.length - 1; i >= 0; i--)
-			{
-				MenuEntry hoveredEntry = currentMenuEntries[i];
-
-				int realPos = currentMenuEntries.length - (i + numberNotInMainMenu) - 1;
-
-				if (hoveredEntry.getParent() != null)
-				{
-					numberNotInMainMenu++;
-					continue;
-				}
-
-				if (!isActionForRequiredItem(hoveredEntry)) continue;
-
-				int entryTopY = menuY + headerHeight + realPos * menuEntryHeight;
-				int entryBottomY = entryTopY + menuEntryHeight;
-
-				if (mousePosition.getX() > menuX && mousePosition.getX() < menuX + menuWidth &&
-					mousePosition.getY() > entryTopY && mousePosition.getY() <= entryBottomY)
-				{
-					panelComponent.setPreferredLocation(new java.awt.Point(menuX + menuWidth, entryTopY - menuEntryHeight - ComponentConstants.STANDARD_BORDER));
-					panelComponent.getChildren().add(LineComponent.builder().left(tooltipText).build());
-					break;
-				}
-			}
-		}
+//				if (!isActionForRequiredItem(hoveredEntry)) continue;
+//
+//				int entryTopY = menuY + headerHeight + realPos * menuEntryHeight;
+//				int entryBottomY = entryTopY + menuEntryHeight;
+//
+//				if (mousePosition.getX() > menuX && mousePosition.getX() < menuX + menuWidth &&
+//					mousePosition.getY() > entryTopY && mousePosition.getY() <= entryBottomY)
+//				{
+//					panelComponent.setPreferredLocation(new java.awt.Point(menuX + menuWidth, entryTopY - menuEntryHeight - ComponentConstants.STANDARD_BORDER));
+//					panelComponent.getChildren().add(LineComponent.builder().left(tooltipText).build());
+//					break;
+//				}
+//			}
+//		}
 	}
 
 	protected boolean isActionForRequiredItem(MenuEntry entry)

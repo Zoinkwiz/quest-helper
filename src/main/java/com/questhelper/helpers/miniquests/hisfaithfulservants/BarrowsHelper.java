@@ -457,15 +457,9 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ExperienceReward> getExperienceRewards()
-	{
-		return Collections.singletonList(new ExperienceReward(Skill.PRAYER, 20000));
-	}
-
-	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Crypt map, used to dispell minimap hiding in Barrows", ItemID.CRYPT_MAP, 1));
+		return Collections.singletonList(new ItemReward("Chance at getting barrows equipment", ItemID.CRYPT_MAP, 1));
 	}
 
 	@Override

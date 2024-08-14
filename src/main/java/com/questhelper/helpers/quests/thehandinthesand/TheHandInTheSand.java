@@ -142,7 +142,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 
 		lanternLens = new ItemRequirement("Lantern lens", ItemID.LANTERN_LENS);
 		lanternLens.setHighlightInInventory(true);
-		roseLens = new ItemRequirement("Rose-tinted lens", ItemID.ROSE_TINTED_LENS);
+		roseLens = new ItemRequirement("Rose-tinted lens", ItemID.ROSETINTED_LENS);
 		roseLens.setHighlightInInventory(true);
 		hand = new ItemRequirement("Sandy hand", ItemID.SANDY_HAND);
 		hand.setTooltip("You can get another from Bert");
@@ -233,7 +233,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 
 		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3016, 3259, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.");
 		useLensOnCounter = new ObjectStep(this, NullObjectID.NULL_10812, new WorldPoint(3013, 3258, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.", roseLens);
-		useLensOnCounter.addIcon(ItemID.ROSE_TINTED_LENS);
+		useLensOnCounter.addIcon(ItemID.ROSETINTED_LENS);
 		useLensOnCounter.addSubSteps(standInDoorway);
 		talkToBettyOnceMore =  new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3014, 3258, 0), "Talk to Betty again.", truthSerum, sand);
 		talkToBettyOnceMore.addDialogStep("Talk to Betty about the Hand in the Sand.");

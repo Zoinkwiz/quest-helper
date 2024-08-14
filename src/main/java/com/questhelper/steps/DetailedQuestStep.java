@@ -53,6 +53,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.GameState;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Perspective;

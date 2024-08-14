@@ -41,6 +41,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
@@ -490,8 +491,7 @@ public class RuneliteObjectManager
 					.setTarget("<col=" + replacedNpc.getNameColor() + ">" + replacedNpc.getName() + "</col>")
 					.setIdentifier(entry.getIdentifier())
 					.setParam0(0)
-					.setParam1(0)
-					.setParent(event.getMenuEntry().getParent());
+					.setParam1(0);
 			}
 		}
 	}
@@ -593,7 +593,6 @@ public class RuneliteObjectManager
 		MenuEntry[] menuEntries = menu.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		Menu menu = client.getMenu();
 		menu.createMenuEntry(-2)
 			.setOption(actionWord)
 			.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")

@@ -66,6 +66,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.WorldType;

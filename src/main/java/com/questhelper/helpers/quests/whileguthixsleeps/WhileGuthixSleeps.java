@@ -738,7 +738,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		teleorb = new ItemRequirement("Teleorb", ItemID.TELEORB);
 		teleorb.setTooltip("You can get another one from Akrisae in the White Knights' Castle");
 		pinkDye = new ItemRequirement("Pink dye", ItemID.PINK_DYE);
-		roseTintedLens = new ItemRequirement("Rose-tinted lens", ItemID.ROSE_TINTED_LENS);
+		roseTintedLens = new ItemRequirement("Rose-tinted lens", ItemID.ROSETINTED_LENS);
 		enrichedSnapdragonSeed = new ItemRequirement("Enriched snapdragon seed", ItemID.ENRICHED_SNAPDRAGON_SEED);
 		enrichedSnapdragonSeed.setTooltip("You can get another from Betty in Port Sarim");
 
@@ -1271,7 +1271,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		usePinkDyeOnLanternLens = new DetailedQuestStep(this, "Use the pink dye on a lantern lens.", pinkDye.highlighted(), lanternLens.highlighted());
 		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3016, 3259, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.");
 		useLensOnCounter = new ObjectStep(this, NullObjectID.NULL_10812, new WorldPoint(3013, 3258, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.", roseTintedLens.highlighted());
-		useLensOnCounter.addIcon(ItemID.ROSE_TINTED_LENS);
+		useLensOnCounter.addIcon(ItemID.ROSETINTED_LENS);
 		useLensOnCounter.addSubSteps(standInDoorway);
 		// 1532 6->4
 

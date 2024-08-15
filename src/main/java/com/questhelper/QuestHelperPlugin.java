@@ -45,6 +45,7 @@ import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import com.questhelper.util.worldmap.WorldMapAreaManager;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -65,6 +66,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.WorldType;
@@ -461,7 +463,9 @@ public class QuestHelperPlugin extends Plugin
 	{
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
-		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		Menu menu = client.getMenu();
+		MenuEntry[] menuEntries = menu.getMenuEntries();
 		String option = event.getOption();
 
 		String target = Text.removeTags(event.getTarget());

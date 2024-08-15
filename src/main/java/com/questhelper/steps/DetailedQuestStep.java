@@ -40,11 +40,7 @@ import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.overlay.WorldLines;
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.util.worldmap.WorldMapAreaChanged;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Polygon;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +53,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.GameState;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Perspective;
@@ -816,7 +813,8 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	protected void renderHoveredItemTooltip(String tooltipText)
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		Menu menu = client.getMenu();
+		MenuEntry[] menuEntries = menu.getMenuEntries();
 		int last = menuEntries.length - 1;
 
 		if (last < 0)
@@ -837,31 +835,24 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent, String tooltipText)
 	{
-		MenuEntry[] currentMenuEntries = client.getMenuEntries();
+		Menu menu = client.getMenu();
+		MenuEntry[] currentMenuEntries = menu.getMenuEntries();
 
 		if (currentMenuEntries != null)
 		{
 			net.runelite.api.Point mousePosition = client.getMouseCanvasPosition();
-			int menuX = client.getMenuX();
-			int menuY = client.getMenuY();
-			int menuWidth = client.getMenuWidth();
+			int menuX = menu.getMenuX();
+			int menuY = menu.getMenuY();
+			int menuWidth = menu.getMenuWidth();
 
 			int menuEntryHeight = 15;
 			int headerHeight = menuEntryHeight + 3;
 
-			int numberNotInMainMenu = 0;
-
-			for (int i = currentMenuEntries.length - 1; i >= 0; i--)
+			for (int i = 0; i < currentMenuEntries.length; i++)
 			{
 				MenuEntry hoveredEntry = currentMenuEntries[i];
 
-				int realPos = currentMenuEntries.length - (i + numberNotInMainMenu) - 1;
-
-				if (hoveredEntry.getParent() != null)
-				{
-					numberNotInMainMenu++;
-					continue;
-				}
+				int realPos = currentMenuEntries.length - i - 1;
 
 				if (!isActionForRequiredItem(hoveredEntry)) continue;
 

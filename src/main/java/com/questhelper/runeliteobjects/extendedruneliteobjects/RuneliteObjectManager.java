@@ -41,6 +41,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
@@ -413,7 +414,8 @@ public class RuneliteObjectManager
 
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		Menu menu = client.getMenu();
+		MenuEntry[] menuEntries = menu.getMenuEntries();
 
 		if (!extendedRuneliteObject.isHiddenNoOptions()
 			&& extendedRuneliteObject.getRuneliteObject() != null
@@ -482,14 +484,14 @@ public class RuneliteObjectManager
 		{
 			for (MenuEntryWrapper entry : replacedNpc.getEntries())
 			{
-				client.createMenuEntry(-1)
+				Menu menu = client.getMenu();
+				menu.createMenuEntry(-1)
 					.setOption(entry.getOption())
 					.setType(entry.getType())
 					.setTarget("<col=" + replacedNpc.getNameColor() + ">" + replacedNpc.getName() + "</col>")
 					.setIdentifier(entry.getIdentifier())
 					.setParam0(0)
-					.setParam1(0)
-					.setParent(event.getMenuEntry().getParent());
+					.setParam1(0);
 			}
 		}
 	}
@@ -587,10 +589,11 @@ public class RuneliteObjectManager
 
 	private void addPriorityAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, String actionWord)
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		Menu menu = client.getMenu();
+		MenuEntry[] menuEntries = menu.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		client.createMenuEntry(-2)
+		menu.createMenuEntry(-2)
 			.setOption(actionWord)
 			.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
 			.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
@@ -606,10 +609,11 @@ public class RuneliteObjectManager
 
 	private void addAction(ExtendedRuneliteObject extendedRuneliteObject, int widgetIndex, int widgetID, String actionWord)
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		Menu menu = client.getMenu();
+		MenuEntry[] menuEntries = menu.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		client.createMenuEntry(menuEntries.length - 1)
+		menu.createMenuEntry(menuEntries.length - 1)
 			.setOption(actionWord)
 			.setTarget("<col=" + extendedRuneliteObject.getNameColor() + ">" + extendedRuneliteObject.getName() + "</col>")
 			.setType(MenuAction.RUNELITE)

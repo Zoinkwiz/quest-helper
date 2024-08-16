@@ -210,6 +210,12 @@ public class PuzzleStep extends DetailedQuestStep
 			Widget widget = client.getWidget(114, entry.getKey());
 			if (widget != null)
 			{
+				if (widget.getId() == 7471130)
+				{
+					widget.setOriginalWidth(15);
+					widget.setOriginalHeight(15);
+					widget.revalidate();
+				}
 				graphics.setColor(new Color(getQuestHelper().getConfig().targetOverlayColor().getRed(),
 					getQuestHelper().getConfig().targetOverlayColor().getGreen(),
 					getQuestHelper().getConfig().targetOverlayColor().getBlue(), 65));

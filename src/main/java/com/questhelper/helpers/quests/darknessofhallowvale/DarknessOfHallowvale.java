@@ -76,11 +76,11 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	Requirement normalSpellbook;
 
-	Requirement inNewBase, inTemple, inMeiyditch, inMyrequeBase, inMine, inNorthMeiy, inRandomRoom, atBarricade, pushedBoat, onEntryWall, onSecondWall, onThirdWall,
+	Requirement inTrapdoorRoom, inNewBase, inTemple, inMeiyditch, inMyrequeBase, inMine, inNorthMeiy, inRandomRoom, atBarricade, pushedBoat, onEntryWall, onSecondWall, onThirdWall,
 		onFourthWall, onDrakanWalls, inVanstromFight, knockedDownBoard, pathDoorOpen, fixedLadder, wallPressed, searchedRockySurface, hasSketches,
 		cutPortrait, handedInSketches, tapestryCut, keyPlaced, hasTeleGrabRunesOrSearchedCase, searchedRuneCase, inLab;
 
-	DetailedQuestStep enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat;
+	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat;
 
 	DetailedQuestStep kickBoard, climbDownBoard, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug;
 
@@ -102,7 +102,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		goOpenFireplace, returnToSafalaanInBase, returnToSafalaanInBaseNoSketches, goUnlockLab, getHaemBook, bringSafalaanBook, bringMessageToVeliafToFinish;
 
 	//Zones
-	Zone newBase, temple, entryWall, entryWall2, meiyerditch, myrequeBase, mine, northMeiy, randomRoom, barricade1, barricade2, barricade3, secondWall, secondWall2, thirdWall,
+	Zone trapdoorRoom, newBase, temple, entryWall, entryWall2, meiyerditch, myrequeBase, mine, northMeiy, randomRoom, barricade1, barricade2, barricade3, secondWall, secondWall2, thirdWall,
 		fourthWall, fourthWall2, drakanWalls, drakanWalls2, lab;
 
 	@Override
@@ -119,6 +119,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		ConditionalStep goRepairBoat = new ConditionalStep(this, usePlankOnBoat);
 		goRepairBoat.addStep(inNewBase, leavePubBasement);
+		goRepairBoat.addStep(inTrapdoorRoom, climbOverBrokenWall);
 		steps.put(10, goRepairBoat);
 		steps.put(20, usePlankOnChute);
 
@@ -234,6 +235,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	protected void setupZones()
 	{
 		newBase = new Zone(new WorldPoint(3489, 9622, 0), new WorldPoint(3500, 9632, 1));
+		trapdoorRoom = new Zone(new WorldPoint(3489, 3231, 0), new WorldPoint(3491, 3232, 0));
 		temple = new Zone(new WorldPoint(3402, 9880, 0), new WorldPoint(3443, 9907, 0));
 		entryWall = new Zone(new WorldPoint(3586, 3160, 1), new WorldPoint(3611, 3192, 1));
 		entryWall2 = new Zone(new WorldPoint(3587, 3193, 1), new WorldPoint(3592, 3212, 1));
@@ -257,6 +259,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	public void setupConditions()
 	{
+		inTrapdoorRoom = new ZoneRequirement(trapdoorRoom);
 		inNewBase = new ZoneRequirement(newBase);
 		inTemple = new ZoneRequirement(temple);
 		onEntryWall = new ZoneRequirement(entryWall, entryWall2);
@@ -315,6 +318,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		climbOverBrokenWall = new ObjectStep(this, ObjectID.BROKEN_WALL_12737, "");
 		enterBurghPubBasement = new ObjectStep(this, NullObjectID.NULL_12743, new WorldPoint(3490, 3232, 0), "");
 		talkToVeliaf = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3494, 9628, 0), "");
 		talkToVeliaf.addDialogSteps("Is there something I can do to help out?", "Yes.");
@@ -633,7 +637,10 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	public void setupConditionalSteps()
 	{
-		startQuest = new ConditionalStep(this, enterBurghPubBasement, "Talk to Veliaf in the Myreque base under Burgh de Rott.");
+		ConditionalStep goToBurghPubBasement = new ConditionalStep(this, climbOverBrokenWall);
+		goToBurghPubBasement.addStep(inTrapdoorRoom, enterBurghPubBasement);
+
+		startQuest = new ConditionalStep(this, goToBurghPubBasement, "Talk to Veliaf in the Myreque base under Burgh de Rott.");
 		startQuest.addStep(inNewBase, talkToVeliaf);
 
 		goTravelToMyrequeBase = new ConditionalStep(this, travelToPots, "Follow the path to the Meiyerditch Myreque base.", knife);
@@ -641,7 +648,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		goTravelToMyrequeBase.addStep(ladderPiece, travelToFixLadder);
 		goTravelToMyrequeBase.addStep(new Conditions(LogicType.OR, doorKey, pathDoorOpen), travelToLadderPart);
 
-		talkToVeliafAfterContact = new ConditionalStep(this, enterBurghPubBasement, "Bring the message to Veliaf in the Myreque base under Burgh de Rott.", message);
+		talkToVeliafAfterContact = new ConditionalStep(this, goToBurghPubBasement, "Bring the message to Veliaf in the Myreque base under Burgh de Rott.", message);
 		talkToVeliafAfterContact.addStep(inNewBase, talkToVeliaf);
 		talkToVeliafAfterContact.addDialogStep("What should I do now?");
 
@@ -655,10 +662,11 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToDrezelAfterBushes = new ConditionalStep(this, returnFromBushesToDrezel, "Return to Drezel.");
 		talkToDrezelAfterBushes.addStep(inTemple, talkToDrezel);
 
-		talkToVeliafAfterDrezel = new ConditionalStep(this, enterBurghPubBasement, "Return to Veliaf in the Myreque base under Burgh de Rott.");
+		talkToVeliafAfterDrezel = new ConditionalStep(this, goToBurghPubBasement, "Return to Veliaf in the Myreque base under Burgh de Rott.");
 		talkToVeliafAfterDrezel.addStep(inNewBase, talkToVeliaf);
 
 		ConditionalStep getToNorthMeiy = new ConditionalStep(this, boardBoat);
+		getToNorthMeiy.addStep(inTrapdoorRoom, climbOverBrokenWall);
 		getToNorthMeiy.addStep(inMine, mineDaeyaltThenLeave);
 		getToNorthMeiy.addStep(inMeiyditch, goToMines);
 
@@ -729,7 +737,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		getHaemBook.addStep(inLab, getRunes);
 		getHaemBook.addStep(inNorthMeiy, goDownToLab);
 
-		bringMessageToVeliafToFinish = new ConditionalStep(this, enterBurghPubBasement, "Bring the letter to Veliaf in the Myreque base under Burgh de Rott to complete the quest.", sealedMessage);
+		bringMessageToVeliafToFinish = new ConditionalStep(this, goToBurghPubBasement, "Bring the letter to Veliaf in the Myreque base under Burgh de Rott to complete the quest.", sealedMessage);
 		bringMessageToVeliafToFinish.addStep(inNewBase, talkToVeliaf);
 	}
 

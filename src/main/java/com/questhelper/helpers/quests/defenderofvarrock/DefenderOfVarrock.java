@@ -305,7 +305,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 		inspectPlant = new ObjectStep(this, NullObjectID.NULL_50662, new WorldPoint(3280, 3516, 0), "Inspect the plant north of the pub.");
 		inspectRock = new ObjectStep(this, NullObjectID.NULL_50664, new WorldPoint(3260, 3514, 0), "Inspect the small rocks to the west.");
-		inspectPlant2 = new ObjectStep(this, NullObjectID.NULL_50669, new WorldPoint(3269, 3480, 0), "Follow the path to the south and inspect the plant south east of the Jolly Boar Inn.");
+		inspectPlant2 = new ObjectStep(this, NullObjectID.NULL_50669, new WorldPoint(3269, 3480, 0), "Follow the path to the south and inspect the plant south west of the Jolly Boar Inn.");
 		inspectBush1 = new ObjectStep(this, NullObjectID.NULL_50670, new WorldPoint(3293, 3463, 0), "Continue south-east of the Saradomin statue, and inspect the bush there.");
 		inspectBush2 = new ObjectStep(this, NullObjectID.NULL_50667, new WorldPoint(3325, 3470, 0), "Search the bush next to the gate to the east, by the gate to Silvarea.");
 		inspectBush3 = new ObjectStep(this, NullObjectID.NULL_50668, new WorldPoint(3349, 3495, 0), "Inspect the small bush further to the east.");

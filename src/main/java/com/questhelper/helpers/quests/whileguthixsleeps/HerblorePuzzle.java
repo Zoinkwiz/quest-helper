@@ -26,11 +26,12 @@ package com.questhelper.helpers.quests.whileguthixsleeps;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
@@ -42,6 +43,7 @@ import net.runelite.api.coords.WorldPoint;
 public class HerblorePuzzle extends ConditionalStep
 {
 	private final ObjectStep[] steps = new ObjectStep[9];
+	private final Conditions[] conditions = new Conditions[9];
 
 	private ObjectStep placeDolmens;
 
@@ -79,14 +81,14 @@ public class HerblorePuzzle extends ConditionalStep
 		steps[8] = placeDolmens;
 		Requirement placedAllIngredients = and(
 			// is 3 or 35
-			or(new VarbitRequirement(StatueLocation.values()[0].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[0].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[0].getVarbitID(), 35)),
-			or(new VarbitRequirement(StatueLocation.values()[1].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[1].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[1].getVarbitID(), 35)),
-			or(new VarbitRequirement(StatueLocation.values()[2].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[2].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[2].getVarbitID(), 35)),
-			or(new VarbitRequirement(StatueLocation.values()[3].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[3].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[3].getVarbitID(), 35)),
-			or(new VarbitRequirement(StatueLocation.values()[4].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[4].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[4].getVarbitID(), 35)),
-			or(new VarbitRequirement(StatueLocation.values()[5].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[5].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[5].getVarbitID(), 35)),
-			or(new VarbitRequirement(StatueLocation.values()[6].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[6].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[6].getVarbitID(), 35)),
-			or(new VarbitRequirement(StatueLocation.values()[7].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[7].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[7].getVarbitID(), 35))
+			createBaseRequirement(0),
+			createBaseRequirement(1),
+			createBaseRequirement(2),
+			createBaseRequirement(3),
+			createBaseRequirement(4),
+			createBaseRequirement(5),
+			createBaseRequirement(6),
+			createBaseRequirement(7)
 		);
 
 		this.addStep(placedAllIngredients, placeDolmens);
@@ -94,24 +96,16 @@ public class HerblorePuzzle extends ConditionalStep
 		int[] HERB_ORDER = new int[]{3, 0, 6, 1, 7, 4, 2, 5};
 		for (int i : HERB_ORDER)
 		{
+			conditions[i] = not(createBaseRequirement(i));
 			steps[i] = new ObjectStep(questHelper, 0, "Unknown state.");
-			this.addStep(not(or(new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 3), new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 15), new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 35))), steps[i]);
+			this.addStep(conditions[i], steps[i]);
 		}
+	}
 
-
-//		AGILITY_DOLMEN = 29539;
-//		ENERGY_DOLMEN = 29540;
-//		RESTORATION_DOLMEN = 29541;
-//		ATTACK_DOLMEN = 29542;
-//		STRENGTH_DOLMEN = 29543;
-//		DEFENCE_DOLMEN = 29544;
-//		COMBAT_DOLMEN = 29545;
-//		RANGED_DOLMEN = 29546;
-//		PRAYER_DOLMEN = 29547;
-//		HUNTER_DOLMEN = 29548;
-//		FISHING_DOLMEN = 29549;
-//		MAGIC_DOLMEN = 29550;
-//		BALANCE_DOLMEN = 29551;
+	private Conditions createBaseRequirement(int i)
+	{
+		return or(new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 3),
+			new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), 35));
 	}
 
 	@Override
@@ -134,6 +128,12 @@ public class HerblorePuzzle extends ConditionalStep
 
 			String text = START_TEXT + dolmenType.name().toLowerCase() + MIDDLE_TEXT + statueLocation.getDirectionText() + END_TEXT;
 
+			if (dolmenType.getCompleteState() != -1)
+			{
+				conditions[i].getConditions().clear();
+				conditions[i].getConditions().add(nor(
+					new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), dolmenType.getCompleteState())));
+			}
 			steps[i].setWorldPoint(statueLocation.getLocation());
 			steps[i].addAlternateObjects(dolmenType.getObjectID(), dolmenType.getObjectID() + 1);
 			steps[i].addRequirement(dolmenType.getItemRequirements());

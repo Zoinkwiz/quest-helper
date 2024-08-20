@@ -40,14 +40,17 @@ public enum DolmenType
 	COMBAT(ObjectID.STATUE_53654, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Goat horn dust", ItemID.GOAT_HORN_DUST).highlighted()),
 	RANGED(ObjectID.STATUE_53656, new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED).highlighted(), new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK).highlighted()),
 	PRAYER(ObjectID.STATUE_53658, new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED).highlighted(), new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS).highlighted()),
-	HUNTER(ObjectID.STATUE_53660, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Kebbit teeth dust", ItemID.KEBBIT_TEETH_DUST).highlighted()),
+	HUNTER(ObjectID.STATUE_53660, 3, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Kebbit teeth dust", ItemID.KEBBIT_TEETH_DUST).highlighted()),
 	FISHING(ObjectID.STATUE_53662, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS).highlighted()),
 	MAGIC(ObjectID.STATUE_53664, new ItemRequirement("Lantadyme", ItemID.LANTADYME).highlighted(), new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS).highlighted()),
-	BALANCE(ObjectID.STATUE_53642, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS).highlighted(),
+	BALANCE(ObjectID.STATUE_53642, 15, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS).highlighted(),
 		new ItemRequirement("Garlic", ItemID.GARLIC).highlighted(), new ItemRequirement("Silver dust", ItemID.SILVER_DUST).highlighted());
 
 	@Getter
 	private final int objectID;
+
+	@Getter
+	private final int completeState;
 
 	@Getter
 	private final ItemRequirement[] itemRequirements;
@@ -55,6 +58,14 @@ public enum DolmenType
 	DolmenType(int objectID, ItemRequirement... itemRequirements)
 	{
 		this.objectID = objectID;
+		this.completeState = -1;
+		this.itemRequirements = itemRequirements;
+	}
+
+	DolmenType(int objectID, int completeState, ItemRequirement... itemRequirements)
+	{
+		this.objectID = objectID;
+		this.completeState = completeState;
 		this.itemRequirements = itemRequirements;
 	}
 }

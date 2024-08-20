@@ -328,7 +328,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		useVesselOnTinsay.addIcon(ItemID.KARAMBWAN_VESSEL);
 
 		goToTiadecheFinal = new NpcStep(this, NpcID.TIADECHE, new WorldPoint(2912, 3116, 0),
-			"Go to back to Tiadeche located north of fairy ring DKP and use the crafting manual on him.");
+			"Go back to Tiadeche located north of fairy ring DKP and use the crafting manual on him.");
 
 		goToTimfrakuLadderEnd = new ObjectStep(this, ObjectID.LADDER_16683, timfrakuHutWorldPoint,
 			"Go to Timfraku's house to finish the quest.");

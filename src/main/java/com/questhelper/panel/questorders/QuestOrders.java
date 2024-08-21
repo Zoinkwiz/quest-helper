@@ -252,6 +252,7 @@ public class QuestOrders
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
+		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
 		QuestHelperQuest.DESERT_TREASURE_II,
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,

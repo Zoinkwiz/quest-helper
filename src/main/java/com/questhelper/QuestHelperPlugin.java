@@ -306,7 +306,7 @@ public class QuestHelperPlugin extends Plugin
 				questManager.setupOnLogin();
 				if (!profileChanged && lastSelectedQuestHelper != null)
 				{
-					questManager.startUpQuest(lastSelectedQuestHelper);
+					questManager.startUpQuest(lastSelectedQuestHelper, false);
 				}
 				lastSelectedQuestHelper = null;
 				profileChanged = false;

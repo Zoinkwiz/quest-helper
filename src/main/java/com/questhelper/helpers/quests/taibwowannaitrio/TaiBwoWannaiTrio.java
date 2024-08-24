@@ -585,7 +585,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Ability to catch and cook Karambwans"),
+				new UnlockReward("Ability to catch and cook Karambwans (after talking to Tinsay after the quest)"),
 				new UnlockReward("Ability to use Tai Bwo Wannai teleport scrolls"),
 				new UnlockReward("Ability to complete the smithing section of Barbarian Training"));
 	}

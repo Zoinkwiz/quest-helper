@@ -109,6 +109,12 @@ public class WitchsPotion extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("Rat (level 1)");
+	}
+
+	@Override
 	public QuestPointReward getQuestPointReward()
 	{
 		return new QuestPointReward(1);
@@ -126,7 +132,8 @@ public class WitchsPotion extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToWitch)));
-		allSteps.add(new PanelDetails("Make the potion", Arrays.asList(killRat, returnToWitch)));
+		allSteps.add(new PanelDetails("Getting a rat's tail", Collections.singletonList(killRat)));
+		allSteps.add(new PanelDetails("Make the potion", Collections.singletonList(returnToWitch), ratTail, onion, burntMeat, eyeOfNewt));
 		return allSteps;
 	}
 }

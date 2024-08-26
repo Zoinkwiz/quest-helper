@@ -392,8 +392,9 @@ public class KaramjaMedium extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-			new UnlockReward("Increased Agility Experience when redeeming Agility tickets"),
-			new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena when wearing Karamja gloves"));
+			new UnlockReward("Increased Agility Experience when redeeming Agility tickets when wearing Karamja gloves"),
+			new UnlockReward("10% increased Agility experience earned from Brimhaven Agility Arena when wearing Karamja gloves"), 
+			new UnlockReward("Access to the underground portion of the Shilo Village mine"));
 	}
 
 	@Override

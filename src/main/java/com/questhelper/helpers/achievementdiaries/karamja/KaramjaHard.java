@@ -349,8 +349,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-			new UnlockReward("Unlimited Teleports to the underground Shilo Village mine"),
-			new UnlockReward("Access to the underground Shilo Village mine"));
+			new UnlockReward("Unlimited Teleports to the underground Shilo Village mine"));
 	}
 
 	@Override

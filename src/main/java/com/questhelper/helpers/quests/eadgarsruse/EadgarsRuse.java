@@ -422,10 +422,10 @@ public class EadgarsRuse extends BasicQuestHelper
 		talkToPete.addDialogStep("What do you feed them?");
 		talkToPete.addDialogStep("When did you add it?");
 
-		talkToPeteAboutAlcohol = new NpcStep(this, NpcID.PARROTY_PETE, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him question 3 then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
+		talkToPeteAboutAlcohol = new NpcStep(this, NpcID.PARROTY_PETE, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him question 2 then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
 		talkToPeteAboutAlcohol.addDialogStep("When did you add it?");
 
-		talkToPeteAboutPineapple = new NpcStep(this, NpcID.PARROTY_PETE, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask question 2 then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
+		talkToPeteAboutPineapple = new NpcStep(this, NpcID.PARROTY_PETE, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him question 3 then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
 		talkToPeteAboutPineapple.addDialogStep("What do you feed them?");
 
 		useVodkaOnChunks = new DetailedQuestStep(this, "Use vodka on your pineapple chunks", pineappleChunksHighlight, vodkaHighlight);

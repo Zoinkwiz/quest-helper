@@ -69,7 +69,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		fakeMan, storeroomKey, goutweed, climbingBootsEquipped;
 
 	//Items Recommended
-	ItemRequirement ardougneTeleport, burthorpeTeleport;
+	ItemRequirement taverleyTeleport, ardougneTeleport, burthorpeTeleport;
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom;
@@ -258,6 +258,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		pestleAndMortar = new ItemRequirement("Pestle and Mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		ranarrPotionUnf = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARR_POTION_UNF);
+		taverleyTeleport = new ItemRequirement("Taverley teleports", ItemID.TAVERLEY_TELEPORT, 3);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
 		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.GAMES_NECKLACES);
 		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
@@ -554,6 +555,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(taverleyTeleport);
 		reqs.add(ardougneTeleport);
 		reqs.add(burthorpeTeleport);
 		return reqs;

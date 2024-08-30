@@ -249,6 +249,8 @@ public class QuestHelperPanel extends PluginPanel
 
 		titlePanel.add(viewControls, BorderLayout.EAST);
 
+		JPanel assistPanel = setupAssistPanel();
+
 		JLabel questsCompletedLabel = new JLabel();
 		questsCompletedLabel.setForeground(Color.GRAY);
 		questsCompletedLabel.setText("<html><body style='text-align:left'>Please log in to see available quests" +
@@ -308,6 +310,9 @@ public class QuestHelperPanel extends PluginPanel
 		orderDropdown = makeNewDropdown(QuestHelperConfig.QuestOrdering.values(), "orderListBy");
 		JPanel orderPanel = makeDropdownPanel(orderDropdown, "Ordering");
 		orderPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
+
+		JPanel assistanceToggles = new JPanel();
+
 
 		// Skill filtering
 		SkillFilterPanel skillFilterPanel = new SkillFilterPanel(questHelperPlugin.skillIconManager, questHelperPlugin.getConfigManager());
@@ -370,7 +375,8 @@ public class QuestHelperPanel extends PluginPanel
 		JPanel introDetailsPanel = new JPanel();
 		introDetailsPanel.setLayout(new BorderLayout());
 		introDetailsPanel.add(titlePanel, BorderLayout.NORTH);
-		introDetailsPanel.add(searchQuestsPanel, BorderLayout.CENTER);
+		introDetailsPanel.add(assistPanel, BorderLayout.CENTER);
+		introDetailsPanel.add(searchQuestsPanel, BorderLayout.SOUTH);
 
 		add(introDetailsPanel, BorderLayout.NORTH);
 		add(scrollableContainer, BorderLayout.CENTER);
@@ -453,6 +459,117 @@ public class QuestHelperPanel extends PluginPanel
 				questListPanel.add(listItem);
 			}
 		});
+	}
+
+	JButton activeDifficulty = null;
+
+	private JButton makeButton(String text)
+	{
+		JButton minimalAssist = new JButton();
+		SwingUtil.removeButtonDecorations(minimalAssist);
+		minimalAssist.setText(text.substring(0, 3));
+//		minimalAssist.setIcon(PATREON_ICON);
+		minimalAssist.setToolTipText(text);
+		minimalAssist.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		minimalAssist.setUI(new BasicButtonUI());
+		minimalAssist.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
+				if (activeDifficulty != minimalAssist)
+				{
+					minimalAssist.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+				}
+			}
+
+			public void mouseClicked(java.awt.event.MouseEvent evt)
+			{
+				minimalAssist.setBackground(ColorScheme.BRAND_ORANGE);
+				if (activeDifficulty != null) activeDifficulty.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				activeDifficulty = minimalAssist;
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
+				if (activeDifficulty != minimalAssist)
+				{
+					minimalAssist.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				}
+			}
+		});
+
+		return minimalAssist;
+	}
+
+	public JPanel setupAssistPanel()
+	{
+		final JPanel assistLevelPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+		assistLevelPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		// Min assist button
+		JButton minimalAssist = makeButton("Minimum Assistance");
+		minimalAssist.addActionListener((ev) -> {
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "autoStartQuests", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "autoOpenSidebar", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showOverlayPanel", false);
+
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showTextHighlight", false);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showSymbolOverlay", false);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleNpcs", QuestHelperConfig.NpcHighlightStyle.NONE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleObjects", QuestHelperConfig.ObjectHighlightStyle.NONE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleGroundItems", QuestHelperConfig.GroundItemHighlightStyle.NONE);
+
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleInventoryItems", QuestHelperConfig.InventoryItemHighlightStyle.NONE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showMiniMapArrow", false);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWorldLines", false);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWidgetHints", false);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "solvePuzzles", false);
+		});
+		assistLevelPanel.add(minimalAssist);
+
+		// Min assist button
+		JButton midAssist = makeButton("Medium Assistance");
+		midAssist.addActionListener((ev) -> {
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "autoStartQuests", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "autoOpenSidebar", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showOverlayPanel", true);
+
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showTextHighlight", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showSymbolOverlay", false);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleNpcs", QuestHelperConfig.NpcHighlightStyle.NONE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleObjects", QuestHelperConfig.ObjectHighlightStyle.NONE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleGroundItems", QuestHelperConfig.GroundItemHighlightStyle.NONE);
+
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleInventoryItems", QuestHelperConfig.InventoryItemHighlightStyle.NONE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showMiniMapArrow", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWorldLines", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWidgetHints", false);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "solvePuzzles", false);
+		});
+		assistLevelPanel.add(midAssist);
+
+		// Min assist button
+		JButton maxAssist = makeButton("Max Assistance");
+		maxAssist.addActionListener((ev) -> {
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "autoStartQuests", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "autoOpenSidebar", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showOverlayPanel", true);
+
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showTextHighlight", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showSymbolOverlay", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleNpcs", QuestHelperConfig.NpcHighlightStyle.OUTLINE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleObjects", QuestHelperConfig.ObjectHighlightStyle.OUTLINE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleGroundItems", QuestHelperConfig.GroundItemHighlightStyle.OUTLINE);
+
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "highlightStyleInventoryItems", QuestHelperConfig.InventoryItemHighlightStyle.OUTLINE);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showMiniMapArrow", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWorldLines", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWidgetHints", true);
+			configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "solvePuzzles", true);
+		});
+		assistLevelPanel.add(maxAssist);
+
+		return assistLevelPanel;
 	}
 
 	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut,

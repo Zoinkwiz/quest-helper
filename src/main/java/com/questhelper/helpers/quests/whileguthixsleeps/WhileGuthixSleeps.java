@@ -1441,7 +1441,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		defeatSurokSidebar.addText("He has three special attacks:");
 		defeatSurokSidebar.addText("1. A henchman appears. Cast 'Weaken' on a 'Strong' one, or 'Bind' on a 'Agile' one. If they reach you you will take 40+ damage.");
 		defeatSurokSidebar.addText("2. Surok throws an explosive orb. You must telegrab it, and then alch it, or you will take 45+ damage.");
-		defeatSurokSidebar.addText("3. Surok casts a surge attack. Case the opposite elemental spell back. Cast Air for Earth, Water for Fire, Earth for Air, Fire for Water.");
+		defeatSurokSidebar.addText("3. Surok casts a surge attack. Cast the opposite elemental spell back. Cast Air for Earth, Water for Fire, Earth for Air, Fire for Water.");
 		defeatSurokSidebar.addSubSteps(defeatSurok);
 
 		plantOrbOnSurok = new NpcStep(this, NpcID.SUROK_MAGIS_13551, new WorldPoint(4145, 4850, 2), "Use the teleorb on Surok Magis.", silifTeleorb.highlighted());

@@ -26,28 +26,95 @@ package com.questhelper.helpers.quests.whileguthixsleeps;
 
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+import java.util.List;
 
 public enum StatueLocation
 {
-	NW(10868, new WorldPoint(4041, 4454, 0), "north-west path."),
-	W(10869, new WorldPoint(4037, 4419, 0), "west path."),
-	SW_N(10913, new WorldPoint(4040, 4375, 0), "south-west path, up the north branch."),
-	SW_S(10924, new WorldPoint(4091, 4374, 0), "south-west path, down the south branch."),
-	NE(10925, new WorldPoint(4101, 4468, 0), "north-east path."),
-	E(10926, new WorldPoint(4142, 4469, 0), "east path."),
-	SE_N(10927, new WorldPoint(4153, 4450, 0), "south-east path, up the north branch."),
-	SE_S(10928, new WorldPoint(4151, 4421, 0), "south-east path, down the south branch.");
+	NW(10868, new WorldPoint(4041, 4454, 0), "north-west path.", List.of(
+		new WorldPoint(4076, 4431, 0),
+		new WorldPoint(4068, 4437, 0),
+		new WorldPoint(4049, 4437, 0),
+		new WorldPoint(4045, 4450, 0)
+	)),
+	W(10869, new WorldPoint(4037, 4419, 0), "west path.", List.of(
+		new WorldPoint(4076, 4431, 0),
+		new WorldPoint(4063, 4431, 0),
+		new WorldPoint(4056, 4426, 0),
+		new WorldPoint(4050, 4428, 0),
+		new WorldPoint(4039, 4420, 0)
+	)),
+	SW_N(10913, new WorldPoint(4040, 4375, 0), "south-west path, up the north branch.", List.of(
+		new WorldPoint(4076, 4431, 0),
+		new WorldPoint(4060, 4419, 0),
+		new WorldPoint(4057, 4411, 0),
+		new WorldPoint(4048, 4410, 0),
+		new WorldPoint(4046, 4392, 0),
+		new WorldPoint(4040, 4387, 0),
+		new WorldPoint(4040, 4377, 0)
+	)),
+	SW_S(10924, new WorldPoint(4091, 4374, 0), "south-west path, down the south branch.", List.of(
+		new WorldPoint(4076, 4431, 0),
+		new WorldPoint(4060, 4419, 0),
+		new WorldPoint(4057, 4411, 0),
+		new WorldPoint(4063, 4399, 0),
+		new WorldPoint(4056, 4376, 0),
+		new WorldPoint(4089, 4372, 0)
+	)),
+	NE(10925, new WorldPoint(4101, 4468, 0), "north-east path.", List.of(
+		new WorldPoint(4076, 4431, 0),
+		new WorldPoint(4083, 4437, 0),
+		new WorldPoint(4086, 4451, 0),
+		new WorldPoint(4100, 4458, 0),
+		new WorldPoint(4111, 4450, 0),
+		new WorldPoint(4117, 4456, 0),
+		new WorldPoint(4116, 4467, 0),
+		new WorldPoint(4103, 4468, 0)
+	)),
+	E(10926, new WorldPoint(4142, 4469, 0), "east path.", List.of(
+		new WorldPoint(4076, 4431, 0),
+		new WorldPoint(4095, 4442, 0),
+		new WorldPoint(4108, 4439, 0),
+		new WorldPoint(4128, 4446, 0),
+		new WorldPoint(4130, 4464, 0),
+		new WorldPoint(4140, 4467, 0)
+	)),
+	SE_N(10927, new WorldPoint(4153, 4450, 0), "south-east path, up the north branch.", List.of(
+		new WorldPoint(4076, 4431, 0),
+		new WorldPoint(4102, 4430, 0),
+		new WorldPoint(4107, 4428, 0),
+		new WorldPoint(4112, 4428, 0),
+		new WorldPoint(4117, 4431, 0),
+		new WorldPoint(4133, 4433, 0),
+		new WorldPoint(4138, 4435, 0),
+		new WorldPoint(4139, 4451, 0),
+		new WorldPoint(4150, 4451, 0)
+	)),
+	SE_S(10928, new WorldPoint(4151, 4421, 0), "south-east path, down the south branch.", List.of(
+		new WorldPoint(4076, 4431, 0),
+		new WorldPoint(4102, 4430, 0),
+		new WorldPoint(4107, 4428, 0),
+		new WorldPoint(4112, 4428, 0),
+		new WorldPoint(4115, 4420, 0),
+		new WorldPoint(4140, 4421, 0),
+		new WorldPoint(4146, 4430, 0),
+		new WorldPoint(4152, 4430, 0),
+		new WorldPoint(4153, 4424, 0)
+	));
 
 	@Getter
 	private final int varbitID;
 	private final WorldPoint location;
 	private final String directionText;
 
-	StatueLocation(int varbitID, WorldPoint location, String directionText)
+	@Getter
+	private final List<WorldPoint> path;
+
+	StatueLocation(int varbitID, WorldPoint location, String directionText, List<WorldPoint> path)
 	{
 		this.varbitID = varbitID;
 		this.location = location;
 		this.directionText = directionText;
+		this.path = path;
 	}
 
 	public WorldPoint getLocation()

@@ -1373,7 +1373,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToSloane.addSubSteps(goToF1WarriorsGuild);
 
 		talkToAkrisaeAfterRecruitment = new NpcStep(this, NpcID.AKRISAE, new WorldPoint(2989, 3342, 0),
-			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.");
+			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.", normalSpellbook, emptySlots9,
+			ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)),
+			squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank(questBank)), unpoweredOrb.hideConditioned(hasCastChargeOrb), chargeOrbSpell.hideConditioned(hasCastChargeOrb));
 		// 10838 0->1
 		// 10826 0->1
 		enterBlackKnightFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Akrisae will give you a one-off teleport there.",
@@ -1616,6 +1618,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		return List.of(
 			taverleyTeleport.quantity(2),
 			khazardTeleport.quantity(2),
+			camelotTeleport,
 			faladorTeleport.quantity(4),
 			feldipHillsTeleport,
 			burthorpeTeleport
@@ -1716,7 +1719,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Gathering", List.of(goUpToThaeriskWithNotes, killMercenaries, talkToIdria, talkToAkrisae, talkToAkrisaeForTeleport,
 			useOrbOnShadyStranger, talkToAkrisaeAfterOrb, buySnapdragonSeed, getSarimTeleport, talkToBetty, talkToBettyForDye, usePinkDyeOnLanternLens, useLensOnCounter, searchCounterForSeed,
-			talkToThaeriskWithSeed, goPlantSnapdragon, talkToIdriaAfterPlanting), List.of(lanternLens, dibber, coins.quantity(20)), List.of(taverleyTeleport, faladorTeleport.quantity(2))));
+			talkToThaeriskWithSeed, goPlantSnapdragon, talkToIdriaAfterPlanting), List.of(lanternLens, dibber, coins.quantity(20)), List.of(taverleyTeleport, camelotTeleport, faladorTeleport.quantity(2))));
 		allSteps.add(new PanelDetails("United Front", List.of(activeLunars, contactCyrisus, contactTurael, contactMazchna, contactDuradel, goHarvestSnapdragon, talkToThaeriskWithSnapdragon,
 			useSnapdragonOnSerum, searchDrawersForCharcoalAndPapyrus, enterJailCell, useSerumOnSpy, talkToSpy, giveSketchToIdria, talkToGhommal, talkToHarrallak, talkToSloane),
 			List.of(lunarSpellbook, astralRune.quantity(4), cosmicRune.quantity(4), airRune.quantity(8)), List.of(taverleyTeleport, faladorTeleport, burthorpeTeleport)));

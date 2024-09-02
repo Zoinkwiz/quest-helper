@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.runelite.api.Client;
+import javax.annotation.Nonnull;
 
 public class NoFollowerRequirement extends AbstractRequirement
 {
@@ -47,6 +48,7 @@ public class NoFollowerRequirement extends AbstractRequirement
 		return client.getVarpValue(447) == -1;
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Objects;
 import com.questhelper.util.Utils;
 import net.runelite.api.Client;
+import javax.annotation.Nonnull;
 
 public class FollowerRequirement extends AbstractRequirement
 {
@@ -64,6 +65,7 @@ public class FollowerRequirement extends AbstractRequirement
 			.anyMatch(npc -> followers.contains(npc.getId()));
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

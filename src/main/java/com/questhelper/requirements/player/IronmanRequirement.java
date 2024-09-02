@@ -27,6 +27,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.util.Utils;
 import net.runelite.api.Client;
+import javax.annotation.Nonnull;
 
 public class IronmanRequirement extends AbstractRequirement
 {
@@ -44,6 +45,7 @@ public class IronmanRequirement extends AbstractRequirement
 			Utils.getAccountType(client).isAnyIronman() == shouldBeIronman;
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

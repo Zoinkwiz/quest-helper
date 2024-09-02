@@ -35,6 +35,7 @@ import java.awt.Color;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import javax.annotation.Nonnull;
 import static net.runelite.api.Skill.THIEVING;
 
 /**
@@ -166,6 +167,7 @@ public class SkillRequirement extends AbstractRequirement
 		}
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
+import javax.annotation.Nonnull;
 
 /**
  * Requirement that combines multiple other {@link Requirement}s using
@@ -89,6 +90,7 @@ public class ComplexRequirement extends AbstractRequirement
 		return logicType.test(Stream.of(requirements), r -> r.check(client));
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

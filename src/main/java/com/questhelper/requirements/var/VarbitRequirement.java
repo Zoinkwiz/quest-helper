@@ -36,6 +36,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+import javax.annotation.Nonnull;
 
 /**
  * Checks if a player's varbit value is meets the required value as determined by the
@@ -169,6 +170,7 @@ public class VarbitRequirement extends AbstractRequirement
 		}
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

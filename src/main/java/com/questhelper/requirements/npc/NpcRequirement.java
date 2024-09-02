@@ -34,6 +34,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class NpcRequirement extends AbstractRequirement
@@ -154,6 +155,7 @@ public class NpcRequirement extends AbstractRequirement
 		return false; // npc not in scene
 	}
 
+	@Nonnull
 	@Override
 	public String getDisplayText()
 	{

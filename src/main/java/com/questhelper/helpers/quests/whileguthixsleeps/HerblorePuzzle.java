@@ -134,6 +134,7 @@ public class HerblorePuzzle extends ConditionalStep
 				conditions[i].getConditions().add(nor(
 					new VarbitRequirement(StatueLocation.values()[i].getVarbitID(), dolmenType.getCompleteState())));
 			}
+			steps[i].setLinePoints(statueLocation.getPath());
 			steps[i].setWorldPoint(statueLocation.getLocation());
 			steps[i].addAlternateObjects(dolmenType.getObjectID(), dolmenType.getObjectID() + 1);
 			steps[i].addRequirement(dolmenType.getItemRequirements());

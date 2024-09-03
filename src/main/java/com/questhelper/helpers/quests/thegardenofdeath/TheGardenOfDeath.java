@@ -63,7 +63,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 	ItemRequirement secateurs;
 
 	// Recommended
-	ItemRequirement antipoison, khardestMemoir, fairyRingAccess, xericsTalisman;
+	ItemRequirement antipoison, kharedstMemoir, fairyRingAccess, xericsTalisman;
 
 	// Quest items
 	ItemRequirement stoneTablet1, stoneTablet2, stoneTablet3, stoneTablet4, kasondesJournal, wordTranslations, dirtyNote1, dirtyNote2, dirtyNote3, compass, warningNote;
@@ -180,8 +180,8 @@ public class TheGardenOfDeath extends BasicQuestHelper
 
 		// Recommended
 		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS);
-		khardestMemoir = new ItemRequirement("Khardest's memoirs or book of the dead for teleports", ItemID.KHAREDSTS_MEMOIRS);
-		khardestMemoir.addAlternates(ItemID.BOOK_OF_THE_DEAD);
+		kharedstMemoir = new ItemRequirement("Kharedst's memoirs or book of the dead for teleports", ItemID.KHAREDSTS_MEMOIRS);
+		kharedstMemoir.addAlternates(ItemID.BOOK_OF_THE_DEAD);
 		fairyRingAccess = new ItemRequirement("Fairy ring access for quick access to Molch Island (DJR)", ItemCollections.FAIRY_STAFF);
 		xericsTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERICS_TALISMAN);
 
@@ -308,7 +308,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(xericsTalisman, khardestMemoir, fairyRingAccess, antipoison);
+		return Arrays.asList(xericsTalisman, kharedstMemoir, fairyRingAccess, antipoison);
 	}
 
 	@Override

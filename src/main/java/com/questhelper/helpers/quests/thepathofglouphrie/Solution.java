@@ -114,36 +114,48 @@ public class Solution
 		puzzleNeeds.clear();
 
 		// solve puzzle 2
-		var possiblePuzzle2Solutions = valueToDoubleDiscRequirement.get(puzzle2SolutionValue);
+		List<ItemRequirements> possiblePuzzle2Solutions = valueToDoubleDiscRequirement.get(puzzle2SolutionValue);
 		ItemRequirements partialPuzzle2Solution = null;
 		ItemRequirement findExchangeFor = null;
 		ItemRequirement consumed = null;
-		for (var possiblePuzzle2Solution : possiblePuzzle2Solutions)
+		for (ItemRequirements possiblePuzzle2Solution : possiblePuzzle2Solutions)
 		{
+			ItemRequirement item1 = possiblePuzzle2Solution.getItemRequirements().get(0);
+			ItemRequirement item2;
+			if (item1.getQuantity() == 2)
+			{
+				item2 = possiblePuzzle2Solution.getItemRequirements().get(0);
+			}
+			else
+			{
+				item2 = possiblePuzzle2Solution.getItemRequirements().get(1);
+			}
+
 			if (possiblePuzzle2Solution.check(client, false, itemsAfterPuzzle1))
 			{
 				// Found a valid puzzle2 solution
-				puzzle2UpperRequirement = possiblePuzzle2Solution.getItemRequirements().get(0);
-				puzzle2LowerRequirement = possiblePuzzle2Solution.getItemRequirements().get(1);
+				puzzle2UpperRequirement = item1;
+				puzzle2LowerRequirement = item2;
 				return;
 			}
 
+			// Some goal values only have one possible solution
 			// Let's check if we have one of these
-			if (possiblePuzzle2Solution.getItemRequirements().get(0).check(client, false, itemsAfterPuzzle1))
+			if (item1.check(client, false, itemsAfterPuzzle1))
 			{
 				// Found a partial solution
 				partialPuzzle2Solution = possiblePuzzle2Solution;
-				consumed = possiblePuzzle2Solution.getItemRequirements().get(0);
-				findExchangeFor = possiblePuzzle2Solution.getItemRequirements().get(1);
+				consumed = item1;
+				findExchangeFor = item2;
 				break;
 			}
 
-			if (possiblePuzzle2Solution.getItemRequirements().get(1).check(client, false, itemsAfterPuzzle1))
+			if (item2.check(client, false, itemsAfterPuzzle1))
 			{
 				// Found a partial solution
 				partialPuzzle2Solution = possiblePuzzle2Solution;
-				consumed = possiblePuzzle2Solution.getItemRequirements().get(1);
-				findExchangeFor = possiblePuzzle2Solution.getItemRequirements().get(0);
+				consumed = item2;
+				findExchangeFor = item1;
 				break;
 			}
 		}
@@ -199,8 +211,16 @@ public class Solution
 			var looseExchanges = new HashSet<Integer>();
 			for (var possiblePuzzle2Solution : possiblePuzzle2Solutions)
 			{
-				var req1 = possiblePuzzle2Solution.getItemRequirements().get(0);
-				var req2 = possiblePuzzle2Solution.getItemRequirements().get(1);
+				ItemRequirement req1 = possiblePuzzle2Solution.getItemRequirements().get(0);
+				ItemRequirement req2;
+				if (req1.getQuantity() == 2)
+				{
+					req2 = possiblePuzzle2Solution.getItemRequirements().get(0);
+				}
+				else
+				{
+					req2 = possiblePuzzle2Solution.getItemRequirements().get(1);
+				}
 				var req1Value = discToValue.get(req1.getId());
 
 				var singleDiscExchange = valuePossibleSingleDiscExchangesRequirements.get(req1Value)

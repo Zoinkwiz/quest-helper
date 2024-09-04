@@ -91,7 +91,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		inWizardFloorOne, felixPuzzleNotSeen, tamaraPuzzleNotSeen, cordeliaPuzzleNotSeen, inTempleOfTheEye,
 		felixRiftTalk, tamaraRiftTalk, cordeliaRiftTalk, mysteriousVisionSeen, inTempleOfTheEyeTutorial;
 
-	QuestStep talkToPersten1, finishTalkToPersten1, talkToMage1, getTeaForMage, talkToMage2, finishTalkToMage2,
+	DetailedQuestStep talkToPersten1, finishTalkToPersten1, talkToMage1, getTeaForMage, talkToMage2, finishTalkToMage2,
 		teleportViaHerbert, talkToDarkMage1, finishTalkToDarkMage1, talkToMageInWildy, talkToDarkMage2, talkToPersten2,
 		finishTalkToPersten2, teleportToArchmage, goDownToArchmage, talktoArchmage1, finishTalkingToArchmage1,
 		goUpToTraibornBasement, goUpToTraiborn, talktoTrailborn1, talkToFelix, talkToTamara, talkToCordelia,
@@ -102,7 +102,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 	ObjectStep touchRunes;
 
 	//Zones
-	Zone abyss, wizardBasement, wizardFloorOne, templeOfTheEye, templeOfTheEye2;
+	Zone abyss, wizardBasement, wizardFloorOne, templeOfTheEye, templeOfTheEye2, mindAltar;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -223,8 +223,8 @@ public class TempleOfTheEye extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES);
 		pickaxe.canBeObtainedDuringQuest();
 
-		varrockTeleport = new ItemRequirement("Method of teleportation to Varrock", ItemID.VARROCK_TELEPORT);
-		alKharidTeleport = new ItemRequirement("Method of teleportation to Al Kharid", ItemCollections.RING_OF_DUELINGS);
+		varrockTeleport = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
+		alKharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.RING_OF_DUELINGS);
 		alKharidTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		alKharidTeleport.addAlternates(ItemID.LUMBRIDGE_TELEPORT);
 
@@ -243,8 +243,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		inWizardBasement = new ZoneRequirement(wizardBasement);
 		inWizardFloorOne = new ZoneRequirement(wizardFloorOne);
 		inTempleOfTheEye = new ZoneRequirement(templeOfTheEye);
-		// TODO: this should also consider the mind altar as part of the area
-		inTempleOfTheEyeTutorial = new ZoneRequirement(templeOfTheEye2);
+		inTempleOfTheEyeTutorial = new ZoneRequirement(templeOfTheEye2, mindAltar);
 
 		canTeleportFromHerbert = new VarbitRequirement(13740, 0);
 		thrownBucket = new VarbitRequirement(QuestVarbits.QUEST_TEMPLE_OF_THE_EYE.getId(), 30, Operation.GREATER_EQUAL);
@@ -271,6 +270,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		wizardFloorOne = new Zone(new WorldPoint(3101, 3153, 1), new WorldPoint(3116, 3167, 1));
 		templeOfTheEye = new Zone(new WorldPoint(2370, 5627, 0), new WorldPoint(2425, 5682, 0));
 		templeOfTheEye2 = new Zone(new WorldPoint(2433, 5698, 0), new WorldPoint(3648, 9523, 0));
+		mindAltar = new Zone(new WorldPoint(2757, 4818, 0), new WorldPoint(2804, 4860, 0));
 	}
 
 	public void setupSteps()
@@ -279,6 +279,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 			"Talk to Wizard Persten east of the Al Kharid gate.");
 		talkToPersten1.addDialogStep("What's a wizard doing in Al Kharid?");
 		talkToPersten1.addDialogStep("Yes.");
+		talkToPersten1.addTeleport(alKharidTeleport);
 
 		finishTalkToPersten1 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.");
@@ -290,6 +291,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 			"Talk to Mage of Zamorak in the Varrock chaos temple.",
 			eyeAmulet);
 		talkToMage1.addDialogStep("I need your help with an amulet.");
+		talkToMage1.addTeleport(varrockTeleport);
 
 		getTeaForMage = new NpcStep(this, NpcID.TEA_SELLER, new WorldPoint(3271, 3411, 0),
 			"Talk to Tea Seller near the Varrock east gate.");
@@ -331,20 +333,16 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		talkToDarkMage1.addSubSteps(talkToMageInWildy, teleportViaHerbert, finishTalkToDarkMage1);
 
-		touchRunes = new ObjectStep(this, 43768,
-			"Interact with the runic energy (pattern is different for everyone). Click each rune type until all" +
-				" turn white.", eyeAmulet);
-		touchRunes.addAlternateObjects(43769, 43770, 43771, 43772, 43773);
-		touchRunes.setHideWorldArrow(true);
+		touchRunes = new RuneEnergyStep(this);
 
 		talkToDarkMage2 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
-			"Talk to Dark Mage in the Abyss.",
-			eyeAmulet);
+			"Talk to Dark Mage in the Abyss.", eyeAmulet);
 
 		talkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.",
 			eyeAmulet.hideConditioned(givenAmuletBack), abyssalIncantation);
 		talkToPersten2.addDialogStep("About that incantation...");
+		talkToPersten2.addTeleport(alKharidTeleport);
 
 		finishTalkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.",
@@ -439,7 +437,6 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		finishQuest = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
 			"Speak to Archmage Sedridor in the Wizard's Tower basement to finish the quest.");
-
 	}
 
 	@Override

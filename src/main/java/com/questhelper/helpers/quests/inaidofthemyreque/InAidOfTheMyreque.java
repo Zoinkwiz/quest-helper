@@ -272,7 +272,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		steelChain = new ItemRequirement("Steel chainbody", ItemID.STEEL_CHAINBODY);
 		steelChain.setTooltip("You can give this to Ivan just before accompanying him through the swamp to make him " +
 			"stronger");
-		steelLegs = new ItemRequirement("Steel Platelegs", ItemID.STEEL_PLATELEGS);
+		steelLegs = new ItemRequirement("Steel platelegs", ItemID.STEEL_PLATELEGS);
 		steelLegs.setTooltip("You can give this to Ivan just before accompanying him through the swamp to make him " +
 			"stronger");
 		silverSickle = new ItemRequirement("Silver sickle", ItemID.SILVER_SICKLE);
@@ -570,7 +570,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Arrays.asList("Gadderanks (level 35)", "Vampyre Juvenites (levels 50-75)");
+		return Arrays.asList("Gadderanks (level 35)", "Vampyre Juvinates (levels 50-75)");
 	}
 
 	@Override

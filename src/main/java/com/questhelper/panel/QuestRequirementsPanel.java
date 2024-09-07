@@ -257,7 +257,10 @@ public class QuestRequirementsPanel extends JPanel
 			label.setVisible(true);
 			numActive += 1;
 
-			label.setText(req.getDisplayText());
+			var newText = req.getDisplayText();
+			if (!label.getText().equals(newText)) {
+				label.setText(req.getDisplayText());
+			}
 
 			Color newColor;
 

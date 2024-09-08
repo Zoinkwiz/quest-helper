@@ -219,6 +219,24 @@ public class SolutionTest extends MockedTest
 					),
 					12,
 					7
+				),
+				// TOP PUZZLE: VIOLET_SQUARE (28) + VIOLET_SQUARE (28) = 56
+				// BOTTOM PUZZLE: INDIGO TRIANGLE (18)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.RED_CIRCLE, 1),
+						new Item(ItemID.RED_TRIANGLE, 1),
+						new Item(ItemID.RED_SQUARE, 1),
+						new Item(ItemID.YELLOW_SQUARE, 1),
+						new Item(ItemID.YELLOW_PENTAGON, 1),
+						new Item(ItemID.YELLOW_TRIANGLE, 1),
+						new Item(ItemID.BLUE_TRIANGLE, 1),
+						new Item(ItemID.BLUE_SQUARE, 1),
+						new Item(ItemID.BLUE_PENTAGON, 2),
+						new Item(ItemID.VIOLET_SQUARE, 3)
+					),
+					15,
+					56
 				)
 			);
 		}

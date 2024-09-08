@@ -336,13 +336,18 @@ public class QuestMenuHandler
 
 		if (questHelper != null && !questHelper.isCompleted())
 		{
-			String menuOption = MENUOP_STOPHELPER.equals(entryName) ?
-				"Stop " + entryName : "Start " + entryName;
-
+			String menuOption;
+			if (questManager.getSelectedQuest() != null && questManager.getSelectedQuest().getQuest().getName().equals(target))
+			{
+				menuOption = "Stop " + entryName;
+			}
+			else
+			{
+				menuOption = "Start " + entryName;
+			}
 			return addNewEntry(menuEntries, menuOption, target, widgetIndex, widgetID);
 		}
-
-		return menuEntries;
+		return null;
 	}
 
 	/**

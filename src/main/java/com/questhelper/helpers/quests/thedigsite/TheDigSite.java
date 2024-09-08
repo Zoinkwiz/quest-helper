@@ -572,7 +572,7 @@ public class TheDigSite extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Discovery", Arrays.asList(getJar, digForTalisman, talkToExpert, useInvitationOnWorkman), trowel, specimenBrush));
 		allSteps.add(new PanelDetails("Digging deeper", Arrays.asList(useRopeOnWinch, goDownWinch, pickUpRoot, searchBricks, goUpRope, useRopeOnWinch2, goDownToDoug,
 			talkToDoug, goUpFromDoug, unlockChest, searchChest, useTrowelOnBarrel, useVialOnBarrel, useLiquidOnExpert, usePowderOnExpert, mixNitroWithNitrate, grindCharcoal, addCharcoal, addRoot, goDownToExplode,
-			useCompound, useTinderbox, takeTablet, useTabletOnExpert), ropes2, pestleAndMortar, vialHighlighted, tinderboxHighlighted, charcoal));
+			useCompound, useTinderbox, takeTablet, useTabletOnExpert), ropes2, trowelHighlighted, pestleAndMortar, vialHighlighted, tinderboxHighlighted, charcoal));
 
 		return allSteps;
 	}

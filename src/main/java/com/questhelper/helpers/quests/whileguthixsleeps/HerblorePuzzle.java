@@ -79,24 +79,29 @@ public class HerblorePuzzle extends ConditionalStep
 
 		placeDolmens = new ObjectStep(questHelper, NullObjectID.NULL_54083, new WorldPoint(4076, 4437, 0), "Use all the dolmens on the stone table in the middle of the area.", dolmens.highlighted());
 		steps[8] = placeDolmens;
-		Requirement placedAllIngredients = and(
-			// is 3 or 35
-			createBaseRequirement(0),
-			createBaseRequirement(1),
-			createBaseRequirement(2),
-			createBaseRequirement(3),
-			createBaseRequirement(4),
-			createBaseRequirement(5),
-			createBaseRequirement(6),
-			createBaseRequirement(7)
-		);
-
-		this.addStep(placedAllIngredients, placeDolmens);
 
 		int[] HERB_ORDER = new int[]{3, 0, 6, 1, 7, 4, 2, 5};
 		for (int i : HERB_ORDER)
 		{
 			conditions[i] = not(createBaseRequirement(i));
+		}
+
+		Requirement placedAllIngredients = and(
+			// is 3 or 35
+			not(conditions[0]),
+			not(conditions[1]),
+			not(conditions[2]),
+			not(conditions[3]),
+			not(conditions[4]),
+			not(conditions[5]),
+			not(conditions[6]),
+			not(conditions[7])
+		);
+
+		this.addStep(placedAllIngredients, placeDolmens);
+
+		for (int i : HERB_ORDER)
+		{
 			steps[i] = new ObjectStep(questHelper, 0, "Unknown state.");
 			this.addStep(conditions[i], steps[i]);
 		}

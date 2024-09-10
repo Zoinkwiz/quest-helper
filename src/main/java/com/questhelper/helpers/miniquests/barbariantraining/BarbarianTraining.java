@@ -320,7 +320,13 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// TODO: Get details for starting spear tasks
-//		 taskedWithSpears =
+		taskedWithSpears = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedspear",
+			new Conditions(true, LogicType.OR,
+				new DialogRequirement("TEST NEED REPLACING TODO."),
+				new DialogRequirement("TEST NEED REPLACING TODO."),
+				new WidgetTextRequirement(119, 3, true, "TEST NEED REPLACING TODO.")
+			)
+		);
 		taskedWithHastae = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedhasta",
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),

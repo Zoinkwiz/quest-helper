@@ -319,7 +319,6 @@ public class BarbarianTraining extends BasicQuestHelper
 			)
 		);
 
-		// TODO: Get details for starting spear tasks
 		taskedWithSpears = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedspear",
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Note well that you will require wood for the spear shafts. The quality of wood must be similar to that of the metal involved."),

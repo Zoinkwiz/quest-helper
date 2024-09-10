@@ -322,9 +322,9 @@ public class BarbarianTraining extends BasicQuestHelper
 		// TODO: Get details for starting spear tasks
 		taskedWithSpears = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedspear",
 			new Conditions(true, LogicType.OR,
-				new DialogRequirement("TEST NEED REPLACING TODO."),
-				new DialogRequirement("TEST NEED REPLACING TODO."),
-				new WidgetTextRequirement(119, 3, true, "TEST NEED REPLACING TODO.")
+				new DialogRequirement("Note well that you will require wood for the spear shafts. The quality of wood must be similar to that of the metal involved."),
+				new DialogRequirement("You do not exude the presence of one who has poured his soul into manufacturing spears."),
+				new WidgetTextRequirement(119, 3, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
 			)
 		);
 		taskedWithHastae = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedhasta",

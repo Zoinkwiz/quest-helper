@@ -30,7 +30,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import lombok.Setter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
 
 public class DialogRequirement extends SimpleRequirement
 {
@@ -65,8 +67,11 @@ public class DialogRequirement extends SimpleRequirement
 		return hasSeenDialog;
 	}
 
-	public void validateCondition(String dialogMessage)
+	public void validateCondition(ChatMessage chatMessage)
 	{
+		if (chatMessage.getType() != ChatMessageType.DIALOG) return;
+
+		String dialogMessage = chatMessage.getMessage();
 		if (!hasSeenDialog)
 		{
 			hasSeenDialog = isCurrentDialogMatching(dialogMessage);

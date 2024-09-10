@@ -36,24 +36,21 @@ public class MesBoxRequirement extends ChatMessageRequirement
 		super(text);
 	}
 
-	public void validateCondition(Client client, ChatMessage chatMessage)
+	public boolean validateCondition(Client client, ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.MESBOX)
 		{
-			return;
-		}
-		if (!hasReceivedChatMessage)
-		{
-			hasReceivedChatMessage = isCurrentDialogMatching(chatMessage.getMessage());
+			return false;
 		}
 
 		if (!hasReceivedChatMessage)
 		{
-			if (messages.contains(chatMessage.getMessage()))
+			if (isCurrentDialogMatching(chatMessage.getMessage()))
 			{
 				if (condition == null || condition.check(client))
 				{
 					hasReceivedChatMessage = true;
+					return true;
 				}
 			}
 		}
@@ -66,6 +63,8 @@ public class MesBoxRequirement extends ChatMessageRequirement
 				setHasReceivedChatMessage(false);
 			}
 		}
+
+		return false;
 	}
 
 	private boolean isCurrentDialogMatching(String dialogMessage)

@@ -64,20 +64,24 @@ public class ChatMessageRequirement extends ConditionForStep
 		return hasReceivedChatMessage;
 	}
 
-	public void validateCondition(Client client, ChatMessage chatMessage)
+	public boolean validateCondition(Client client, ChatMessage chatMessage)
 	{
-		if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE && chatMessage.getType() == ChatMessageType.ENGINE)
+		// TODO: Thing worked with MesBox?!?!
+		if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE
+			&& chatMessage.getType() != ChatMessageType.ENGINE
+			&& chatMessage.getType() != ChatMessageType.SPAM)
 		{
-			return;
+			return false;
 		}
 
 		if (!hasReceivedChatMessage)
 		{
-			if (messages.contains(chatMessage.getMessage()))
+			if (messages.stream().anyMatch(chatMessage.getMessage()::contains))
 			{
 				if (condition == null || condition.check(client))
 				{
 					hasReceivedChatMessage = true;
+					return true;
 				}
 			}
 		}
@@ -90,5 +94,7 @@ public class ChatMessageRequirement extends ConditionForStep
 				setHasReceivedChatMessage(false);
 			}
 		}
+
+		return false;
 	}
 }

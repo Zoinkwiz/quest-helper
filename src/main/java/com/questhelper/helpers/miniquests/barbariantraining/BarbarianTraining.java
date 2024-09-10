@@ -326,10 +326,10 @@ public class BarbarianTraining extends BasicQuestHelper
 				new WidgetTextRequirement(119, 3, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
 			)
 		);
-		taskedWithHastae = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedhasta",
+		taskedWithHastae = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedhastaTODO",
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),
-				new DialogRequirement("What of the one handed spears of which you spoke?"),
+				new DialogRequirement("TODO: REPLACE"),
 				new WidgetTextRequirement(119, 3, true, " has tasked me with learning how to <col=800000>smith a hasta")
 			)
 		);

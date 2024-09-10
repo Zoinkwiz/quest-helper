@@ -326,10 +326,10 @@ public class BarbarianTraining extends BasicQuestHelper
 				new WidgetTextRequirement(119, 3, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
 			)
 		);
-		taskedWithHastae = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedhastaTODO",
+		taskedWithHastae = new RuneliteRequirement(getConfigManager(), "barbariantrainingstartedhasta",
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),
-				new DialogRequirement("TODO: REPLACE"),
+				new DialogRequirement("Take some wood and metal and make a spear upon the<br>nearby anvil, then you may return to me. As an<br>example, you may use bronze bars with normal logs or<br>iron bars with oak logs."),
 				new WidgetTextRequirement(119, 3, true, " has tasked me with learning how to <col=800000>smith a hasta")
 			)
 		);

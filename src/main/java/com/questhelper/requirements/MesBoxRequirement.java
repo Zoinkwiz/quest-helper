@@ -42,14 +42,10 @@ public class MesBoxRequirement extends ChatMessageRequirement
 		{
 			return false;
 		}
-		if (!hasReceivedChatMessage)
-		{
-			hasReceivedChatMessage = isCurrentDialogMatching(chatMessage.getMessage());
-		}
 
 		if (!hasReceivedChatMessage)
 		{
-			if (messages.contains(chatMessage.getMessage()))
+			if (isCurrentDialogMatching(chatMessage.getMessage()))
 			{
 				if (condition == null || condition.check(client))
 				{

@@ -456,7 +456,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		caughtFishWithoutHarpoon = new RuneliteRequirement(getConfigManager(), "barbariantrainingharpoonedfish",
 			new Conditions(true, LogicType.OR,
 				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You catch a tuna.", "You catch a swordfish.", "You catch a shark."),
+					new ChatMessageRequirement("You catch a tuna.", "You catch a swordfish.", "You catch a shark.", "You catch a shark!"),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
 				new WidgetTextRequirement(119, 3, true,

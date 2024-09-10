@@ -241,7 +241,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER);
 
 		// Recommended
-		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES, 5);
+		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 		gamesNecklace.setChargedItem(true);
 		catherbyTeleport = new ItemRequirement("Catherby teleport for fishing", ItemID.CATHERBY_TELEPORT);
 		catherbyTeleport.addAlternates(ItemID.CAMELOT_TELEPORT);
@@ -643,7 +643,7 @@ public class BarbarianTraining extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(gamesNecklace, catherbyTeleport);
+		return Arrays.asList(gamesNecklace.quantity(5), catherbyTeleport);
 	}
 
 	@Override

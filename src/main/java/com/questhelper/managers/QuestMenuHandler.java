@@ -205,7 +205,7 @@ public class QuestMenuHandler
 		diary = Text.removeTags(diary);
 		for (String achievementTier : ACHIEVEMENT_TIERS)
 		{
-			menuEntries = addRightClickMenuOptions(diary + achievementTier + " Diary", MENUOP_GENERICHELPER,
+			addRightClickMenuOptions(diary + achievementTier + " Diary", MENUOP_GENERICHELPER,
 				 menuEntries, widgetIndex, widgetID);
 		}
 	}
@@ -256,7 +256,7 @@ public class QuestMenuHandler
 			QuestHelper questHelperBlackArm = QuestHelperQuest.getByName(blackArmName);
 			if (questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
 			{
-				menuEntries = addRightClickMenuOptions(phoenixName, MENUOP_QUESTHELPER,
+				addRightClickMenuOptions(phoenixName, MENUOP_QUESTHELPER,
 					 menuEntries, widgetIndex, widgetID);
 			}
 			if (questHelperBlackArm != null && !questHelperBlackArm.isCompleted())
@@ -286,7 +286,7 @@ public class QuestMenuHandler
 		{
 			for (String rfdName : RFD_NAMES)
 			{
-				menuEntries = addRightClickMenuOptions(rfdName, MENUOP_QUESTHELPER,
+				addRightClickMenuOptions(rfdName, MENUOP_QUESTHELPER,
 					 menuEntries, widgetIndex, widgetID);
 			}
 		}
@@ -302,7 +302,7 @@ public class QuestMenuHandler
 	 * @param widgetID    The ID of the widget being interacted with.
 	 * @return An array of updated menu entries.
 	 */
-	private MenuEntry[] addRightClickMenuOptions(String helperName, String entryName,
+	private void addRightClickMenuOptions(String helperName, String entryName,
 												 MenuEntry[] menuEntries,
 												 int widgetIndex, int widgetID)
 	{
@@ -319,9 +319,8 @@ public class QuestMenuHandler
 			{
 				menuOption = "Start " + entryName;
 			}
-			return addNewEntry(menuEntries, menuOption, helperName, widgetIndex, widgetID);
+			addNewEntry(menuEntries, menuOption, helperName, widgetIndex, widgetID);
 		}
-		return null;
 	}
 
 	/**
@@ -334,11 +333,9 @@ public class QuestMenuHandler
 	 * @param widgetID    The ID of the widget being interacted with.
 	 * @return An array of updated menu entries.
 	 */
-	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target,
+	private void addNewEntry(MenuEntry[] menuEntries, String newEntry, String target,
 									int widgetIndex, int widgetID)
 	{
-		MenuEntry[] newMenuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
 		Menu menu = client.getMenu();
 		menu.createMenuEntry(menuEntries.length - 1)
 			.setOption(newEntry)
@@ -347,8 +344,6 @@ public class QuestMenuHandler
 			.setType(MenuAction.RUNELITE)
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
-
-		return newMenuEntries;
 	}
 
 	/**

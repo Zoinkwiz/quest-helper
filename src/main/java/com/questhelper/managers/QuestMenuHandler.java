@@ -97,7 +97,6 @@ public class QuestMenuHandler
 
 	private static final String MENUOP_QUESTHELPER = "Quest Helper";
 	private static final String MENUOP_GENERICHELPER = "Helper";
-	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
 	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
 
 	/**
@@ -206,8 +205,8 @@ public class QuestMenuHandler
 		diary = Text.removeTags(diary);
 		for (String achievementTier : ACHIEVEMENT_TIERS)
 		{
-			menuEntries = addRightClickMenuOptions(diary + achievementTier + " Diary", MENUOP_GENERICHELPER,
-				diary + achievementTier + " Diary", menuEntries, widgetIndex, widgetID);
+			addRightClickMenuOptions(diary + achievementTier + " Diary", MENUOP_GENERICHELPER,
+				 menuEntries, widgetIndex, widgetID);
 		}
 	}
 
@@ -231,7 +230,7 @@ public class QuestMenuHandler
 		}
 		else
 		{
-			handleGenericQuestInMenu(menuEntries, widgetIndex, widgetID, target);
+			addRightClickMenuOptions(target, "Quest Helper", menuEntries, widgetIndex, widgetID);
 		}
 	}
 
@@ -257,13 +256,13 @@ public class QuestMenuHandler
 			QuestHelper questHelperBlackArm = QuestHelperQuest.getByName(blackArmName);
 			if (questHelperPhoenix != null && !questHelperPhoenix.isCompleted())
 			{
-				menuEntries = addRightClickMenuOptions(phoenixName, MENUOP_QUESTHELPER,
-					phoenixName, menuEntries, widgetIndex, widgetID);
+				addRightClickMenuOptions(phoenixName, MENUOP_QUESTHELPER,
+					 menuEntries, widgetIndex, widgetID);
 			}
 			if (questHelperBlackArm != null && !questHelperBlackArm.isCompleted())
 			{
 				addRightClickMenuOptions(blackArmName, MENUOP_QUESTHELPER,
-					blackArmName, menuEntries, widgetIndex, widgetID);
+					 menuEntries, widgetIndex, widgetID);
 			}
 		}
 	}
@@ -281,38 +280,14 @@ public class QuestMenuHandler
 			(questManager.getSelectedQuest().getQuest().getId() == QuestHelperQuest.RECIPE_FOR_DISASTER_START.getId()))
 		{
 			addRightClickMenuOptions(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName(), MENUOP_QUESTHELPER,
-				"Recipe for Disaster", menuEntries, widgetIndex, widgetID);
+				 menuEntries, widgetIndex, widgetID);
 		}
 		else
 		{
 			for (String rfdName : RFD_NAMES)
 			{
-				menuEntries = addRightClickMenuOptions(rfdName, MENUOP_QUESTHELPER,
-					rfdName, menuEntries, widgetIndex, widgetID);
-			}
-		}
-	}
-
-	/**
-	 * Handles the general case for quests in the menu.
-	 *
-	 * @param menuEntries An array of existing menu entries.
-	 * @param widgetIndex The index of the widget being interacted with.
-	 * @param widgetID    The ID of the widget being interacted with.
-	 * @param target      The target quest.
-	 */
-	private void handleGenericQuestInMenu(MenuEntry[] menuEntries, int widgetIndex, int widgetID, String target)
-	{
-		QuestHelper questHelper = QuestHelperQuest.getByName(target);
-		if (questHelper != null && !questHelper.isCompleted())
-		{
-			if (questManager.getSelectedQuest() != null && questManager.getSelectedQuest().getQuest().getName().equals(target))
-			{
-				addNewEntry(menuEntries, MENUOP_STOPHELPER, target, widgetIndex, widgetID);
-			}
-			else
-			{
-				addNewEntry(menuEntries, MENUOP_STARTHELPER, target, widgetIndex, widgetID);
+				addRightClickMenuOptions(rfdName, MENUOP_QUESTHELPER,
+					 menuEntries, widgetIndex, widgetID);
 			}
 		}
 	}
@@ -322,13 +297,12 @@ public class QuestMenuHandler
 	 *
 	 * @param helperName  The name of the helper.
 	 * @param entryName   The name of the entry.
-	 * @param target      The target quest or achievement.
 	 * @param menuEntries An array of existing menu entries.
 	 * @param widgetIndex The index of the widget being interacted with.
 	 * @param widgetID    The ID of the widget being interacted with.
 	 * @return An array of updated menu entries.
 	 */
-	private MenuEntry[] addRightClickMenuOptions(String helperName, String entryName, String target,
+	private void addRightClickMenuOptions(String helperName, String entryName,
 												 MenuEntry[] menuEntries,
 												 int widgetIndex, int widgetID)
 	{
@@ -336,13 +310,17 @@ public class QuestMenuHandler
 
 		if (questHelper != null && !questHelper.isCompleted())
 		{
-			String menuOption = MENUOP_STOPHELPER.equals(entryName) ?
-				"Stop " + entryName : "Start " + entryName;
-
-			return addNewEntry(menuEntries, menuOption, target, widgetIndex, widgetID);
+			String menuOption;
+			if (questManager.getSelectedQuest() != null && questManager.getSelectedQuest().getQuest().getName().equals(helperName))
+			{
+				menuOption = "Stop " + entryName;
+			}
+			else
+			{
+				menuOption = "Start " + entryName;
+			}
+			addNewEntry(menuEntries, menuOption, helperName, widgetIndex, widgetID);
 		}
-
-		return menuEntries;
 	}
 
 	/**
@@ -355,11 +333,9 @@ public class QuestMenuHandler
 	 * @param widgetID    The ID of the widget being interacted with.
 	 * @return An array of updated menu entries.
 	 */
-	private MenuEntry[] addNewEntry(MenuEntry[] menuEntries, String newEntry, String target,
+	private void addNewEntry(MenuEntry[] menuEntries, String newEntry, String target,
 									int widgetIndex, int widgetID)
 	{
-		MenuEntry[] newMenuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
 		Menu menu = client.getMenu();
 		menu.createMenuEntry(menuEntries.length - 1)
 			.setOption(newEntry)
@@ -368,8 +344,6 @@ public class QuestMenuHandler
 			.setType(MenuAction.RUNELITE)
 			.setParam0(widgetIndex)
 			.setParam1(widgetID);
-
-		return newMenuEntries;
 	}
 
 	/**

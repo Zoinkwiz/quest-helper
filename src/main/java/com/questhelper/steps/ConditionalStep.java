@@ -41,7 +41,6 @@ import java.util.function.Consumer;
 import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;

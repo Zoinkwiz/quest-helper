@@ -42,6 +42,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
@@ -54,7 +55,13 @@ public class PlayerStateManager
 	ConfigManager configManager;
 
 	@Inject
+	EventBus eventBus;
+
+	@Inject
 	QuestCompletedWidget playerQuestCompleteWidget;
+
+	@Inject
+	BarbarianTrainingStateTracker barbarianTrainingStateTracker;
 
 	List<KeyringRequirement> keyringKeys;
 
@@ -71,6 +78,12 @@ public class PlayerStateManager
 	{
 		keyringKeys = KeyringCollection.allKeyRequirements(configManager);
 		AchievementDiaryStepManager.setup(configManager);
+		barbarianTrainingStateTracker.startUp(configManager, eventBus);
+	}
+
+	public void shutDown()
+	{
+		barbarianTrainingStateTracker.shutDown(eventBus);
 	}
 
 	@Subscribe

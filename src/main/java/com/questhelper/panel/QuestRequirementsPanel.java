@@ -35,6 +35,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.tools.Icon;
 import com.questhelper.util.Fonts;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
@@ -59,7 +60,7 @@ public class QuestRequirementsPanel extends JPanel
 	 * List of Requirements & their respective text areas
 	 * This can be iterated over to update their display text, or their color
 	 */
-	private final List<Pair<Requirement, JTextArea>> requirementList = new ArrayList<>();
+	private final List<InlineRequirement> requirementList = new ArrayList<>();
 	private final QuestManager questManager;
 	private final boolean showEvenIfEmpty;
 	private final JPanel requirementsPanel = new JPanel();
@@ -144,11 +145,13 @@ public class QuestRequirementsPanel extends JPanel
 				var menu = new JPopupMenu("Menu");
 				QuestHelper quest = null;
 
+				JButton tooltipButton = null;
+
 				panel.add(label, BorderLayout.CENTER);
 
 				if (requirement.getTooltip() != null)
 				{
-					addButtonToPanel(panel, requirement.getTooltip());
+					tooltipButton = addButtonToPanel(panel, requirement.getTooltip());
 				}
 
 				var wikiUrl = requirement.getWikiUrl();
@@ -226,7 +229,7 @@ public class QuestRequirementsPanel extends JPanel
 				}
 
 				requirementsPanel.add(panel);
-				requirementList.add(Pair.of(requirement, label));
+				requirementList.add(new InlineRequirement(requirement, label, tooltipButton));
 			}
 		}
 		else if (showEvenIfEmpty)
@@ -245,16 +248,25 @@ public class QuestRequirementsPanel extends JPanel
 
 		for (var v : requirementList)
 		{
-			var req = v.getLeft();
-			var label = v.getRight();
+			var req = v.requirement;
+			var label = v.textArea;
+			var tooltipButton = v.tooltipButton;
 
 			if (!req.shouldDisplayText(client))
 			{
 				label.setVisible(false);
+				if (tooltipButton != null)
+				{
+					tooltipButton.setVisible(false);
+				}
 				continue;
 			}
 
 			label.setVisible(true);
+			if (tooltipButton != null)
+			{
+				tooltipButton.setVisible(true);
+			}
 			numActive += 1;
 
 			var newText = req.getDisplayText();
@@ -302,7 +314,7 @@ public class QuestRequirementsPanel extends JPanel
 		this.setVisible(numActive > 0);
 	}
 
-	private void addButtonToPanel(JPanel panel, String tooltipText)
+	private JButton addButtonToPanel(JPanel panel, String tooltipText)
 	{
 		String html1 = "<html><body>";
 		String html2 = "</body></html>";
@@ -316,5 +328,15 @@ public class QuestRequirementsPanel extends JPanel
 		b.setContentAreaFilled(false);
 		b.setMargin(new Insets(0, 0, 0, 0));
 		panel.add(b, BorderLayout.EAST);
+
+		return b;
+	}
+
+	@RequiredArgsConstructor
+	private static class InlineRequirement
+	{
+		private final Requirement requirement;
+		private final JTextArea textArea;
+		private final @Nullable JButton tooltipButton;
 	}
 }

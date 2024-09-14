@@ -270,7 +270,8 @@ public class QuestRequirementsPanel extends JPanel
 			numActive += 1;
 
 			var newText = req.getDisplayText();
-			if (!label.getText().equals(newText)) {
+			if (!label.getText().equals(newText))
+			{
 				label.setText(req.getDisplayText());
 			}
 

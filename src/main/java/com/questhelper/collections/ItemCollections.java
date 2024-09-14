@@ -1211,6 +1211,7 @@ public enum ItemCollections
 	)),
 
 	EARTH_ALTAR(ImmutableList.of(
+		ItemID.ELEMENTAL_TIARA,
 		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.EARTH_TIARA,
 		ItemID.EARTH_TALISMAN
@@ -1359,6 +1360,8 @@ public enum ItemCollections
 	)),
 
 	COSMIC_ALTAR(ImmutableList.of(
+		ItemID.CATALYTIC_TIARA,
+		ItemID.CATALYTIC_TALISMAN,
 		ItemID.COSMIC_TIARA,
 		ItemID.COSMIC_TALISMAN
 	)),
@@ -1369,12 +1372,14 @@ public enum ItemCollections
 		.build()),
 
 	WATER_ALTAR(ImmutableList.of(
+		ItemID.ELEMENTAL_TIARA,
 		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.WATER_TIARA,
 		ItemID.WATER_TALISMAN
 	)),
 
 	FIRE_ALTAR(ImmutableList.of(
+		ItemID.ELEMENTAL_TIARA,
 		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.FIRE_TIARA,
 		ItemID.FIRE_TALISMAN
@@ -1536,6 +1541,8 @@ public enum ItemCollections
 	)),
 
 	CHAOS_ALTAR(ImmutableList.of(
+		ItemID.CATALYTIC_TIARA,
+		ItemID.CATALYTIC_TALISMAN,
 		ItemID.CHAOS_TIARA,
 		ItemID.CHAOS_TALISMAN
 	)),

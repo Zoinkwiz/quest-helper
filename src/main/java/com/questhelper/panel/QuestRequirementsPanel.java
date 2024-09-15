@@ -159,7 +159,7 @@ public class QuestRequirementsPanel extends JPanel
 						@Override
 						public void actionPerformed(ActionEvent e)
 						{
-							LinkBrowser.open(wikiUrl);
+							LinkBrowser.browse(wikiUrl);
 						}
 					});
 

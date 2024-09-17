@@ -384,7 +384,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		mithrilPlatebodySteps.setLockingStep(mithPlatebodyTask);
 		allSteps.add(mithrilPlatebodySteps);
 
-		PanelDetails locusRiderSteps = new PanelDetails("Kill Locus Rider with Keris", Arrays.asList(moveToSoph,
+		PanelDetails locusRiderSteps = new PanelDetails("Kill Locust Rider with Keris", Arrays.asList(moveToSoph,
 			killLocustRider), new SkillRequirement(Skill.ATTACK, 50), contact, keris, combatGear, lightsource, food);
 		locusRiderSteps.setDisplayCondition(notKillLocustRider);
 		locusRiderSteps.setLockingStep(killLocustRiderTask);

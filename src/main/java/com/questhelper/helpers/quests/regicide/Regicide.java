@@ -675,7 +675,7 @@ public class Regicide extends BasicQuestHelper
 			"Operate the still. To properly distill the barrel: ");
 		operateStill.addText("1. Turn the tar regulator valve all the way to the right.");
 		operateStill.addText("2. Wait until the pressure is in the green, then turn the pressure valve to the middle.");
-		operateStill.addText("3. SLOWLY add coal to keep the heat in the green section until the tar is distilled.");
+		operateStill.addText("3. Add 2 coal, and then 1 additional coal whenever the heat gauge falls below the green zone until the tar is distilled.");
 		useQuicklimeOnNaphtha = new DetailedQuestStep(this, "Make another barrel of naphtha for Mourning's End if " +
 			"you'd like, then add the quicklime to the naphtha.",
 			groundQuicklime.highlighted(), naphtha.highlighted());

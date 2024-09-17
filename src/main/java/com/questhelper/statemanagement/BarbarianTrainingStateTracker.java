@@ -218,12 +218,12 @@ public class BarbarianTrainingStateTracker
 			"Finished Barbarian Herblore"
 		);
 
-		reqs = new RequirementValidator(client, eventBus, (or(
+		reqs = new RequirementValidator(client, eventBus,
 			taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
 			taskedWithSpears, taskedWithHastae, taskedWithHerblore, plantedSeed, smashedPot, litFireWithBow, sacrificedRemains, caughtBarbarianFish,
 			caughtFishWithoutHarpoon, madePotion, madeSpear, madeHasta, finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing,
 			finishedFiremaking, finishedPyre, finishedSpear, finishedHasta, finishedHerblore
-		)));
+		);
 
 		eventBus.register(reqs);
 		reqs.startUp();

@@ -83,11 +83,6 @@ public class RequirementValidator
 		started = true;
 	}
 
-	public void addRequirement(Requirement requirement)
-	{
-		checkForConditions(requirement);
-	}
-
 	private void checkForConditions(Requirement requirement)
 	{
 		checkForChatConditions(requirement);
@@ -105,7 +100,7 @@ public class RequirementValidator
 		}
 	}
 
-	public void checkForChatConditions(Requirement requirement)
+	private void checkForChatConditions(Requirement requirement)
 	{
 		if (!(requirement instanceof InitializableRequirement))
 		{
@@ -126,7 +121,7 @@ public class RequirementValidator
 		condition.getConditions().forEach(this::checkForChatConditions);
 	}
 
-	public void checkForDialogConditions(Requirement requirement)
+	private void checkForDialogConditions(Requirement requirement)
 	{
 		if (requirement instanceof DialogRequirement && !dialogConditions.contains(requirement))
 		{
@@ -135,7 +130,7 @@ public class RequirementValidator
 		}
 	}
 
-	public void checkForNpcConditions(Requirement requirement)
+	private void checkForNpcConditions(Requirement requirement)
 	{
 		if (!(requirement instanceof InitializableRequirement))
 		{
@@ -153,7 +148,7 @@ public class RequirementValidator
 		}
 	}
 
-	public void checkForRuneliteConditions(Requirement requirement)
+	private void checkForRuneliteConditions(Requirement requirement)
 	{
 		if (requirement instanceof RuneliteRequirement && !runeliteConditions.contains(requirement))
 		{
@@ -175,7 +170,7 @@ public class RequirementValidator
 		}
 	}
 
-	public void checkRuneliteConditions()
+	private void checkRuneliteConditions()
 	{
 		for (RuneliteRequirement runeliteCondition : runeliteConditions)
 		{

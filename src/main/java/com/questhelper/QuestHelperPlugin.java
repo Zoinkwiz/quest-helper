@@ -248,6 +248,7 @@ public class QuestHelperPlugin extends Plugin
 		eventBus.unregister(runeliteObjectManager);
 		eventBus.unregister(worldMapAreaManager);
 		questOverlayManager.shutDown();
+		playerStateManager.shutDown();
 
 		clientToolbar.removeNavigation(navButton);
 		questManager.shutDown();

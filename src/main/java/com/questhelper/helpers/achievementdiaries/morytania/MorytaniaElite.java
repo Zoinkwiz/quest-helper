@@ -26,6 +26,7 @@ package com.questhelper.helpers.achievementdiaries.morytania;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -187,11 +188,10 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		inSlayer3 = new ZoneRequirement(slayer3);
 		inBarrows = new ZoneRequirement(barrows);
 
-		// TODO add barbarian training varb for bare hand fishing
 		inAidOfTheMyreque = new QuestRequirement(QuestHelperQuest.IN_AID_OF_THE_MYREQUE, QuestState.FINISHED);
 		shadesOfMorton = new QuestRequirement(QuestHelperQuest.SHADES_OF_MORTTON, QuestState.FINISHED);
 		lunarDiplomacy = new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED);
-		bareHandBarb = new ItemRequirement("Completed the Barbarian bare-handed fishing", 1, -1);
+		bareHandBarb = new RuneliteRequirement(getConfigManager(),  "barbariantrainingfinishedharpoon", "true", "Completed the Barbarian bare-handed fishing");
 	}
 
 	@Override

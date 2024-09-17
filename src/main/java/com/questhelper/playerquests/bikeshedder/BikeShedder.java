@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class BikeShedder extends BasicQuestHelper
 {
@@ -64,8 +65,10 @@ public class BikeShedder extends BasicQuestHelper
 	private Zone conditionalRequirementZone;
 	private ZoneRequirement conditionalRequirementZoneRequirement;
 	private ZoneRequirement conditionalRequirementZoneSouthRequirement;
+	private ZoneRequirement conditionalRequirementZoneNorthRequirement;
 	private ItemRequirement conditionalRequirementCoins;
 	private DetailedQuestStep conditionalRequirementLookAtCoins;
+	private ItemRequirement conditionalRequirementGoldBar;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -112,13 +115,20 @@ public class BikeShedder extends BasicQuestHelper
 		useManyCoinsOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use many coins on the bush.", manyCoins);
 		useManyCoinsOnBush.addIcon(ItemID.COINS);
 
-		conditionalRequirementZone = new Zone(new WorldPoint(3223, 3221, 0), new WorldPoint(3223, 3222, 0));
+		conditionalRequirementZone = new Zone(new WorldPoint(3223, 3221, 0), new WorldPoint(3223, 3223, 0));
 		conditionalRequirementZoneRequirement = new ZoneRequirement(conditionalRequirementZone);
 		conditionalRequirementZoneSouthRequirement = new ZoneRequirement(new WorldPoint(3223, 3221, 0));
+		conditionalRequirementZoneNorthRequirement = new ZoneRequirement(new WorldPoint(3223, 3223, 0));
 
 		conditionalRequirementCoins = new ItemRequirement("Coins", ItemCollections.COINS, 50);
+		conditionalRequirementCoins.setTooltip("Obtained by robbing a bank");
 		conditionalRequirementCoins.setHighlightInInventory(true);
 		conditionalRequirementCoins.setConditionToHide(conditionalRequirementZoneSouthRequirement);
+
+		conditionalRequirementGoldBar = new ItemRequirement("Gold Bar", ItemID.GOLD_BAR, 1);
+		conditionalRequirementGoldBar.setTooltip("Obtained by robbing a bank");
+		conditionalRequirementGoldBar.setHighlightInInventory(true);
+		conditionalRequirementGoldBar.setConditionToHide(or(conditionalRequirementZoneNorthRequirement, conditionalRequirementZoneSouthRequirement));
 
 		conditionalRequirementLookAtCoins = new DetailedQuestStep(this, "Admire the coins in your inventory.", conditionalRequirementCoins);
 	}
@@ -133,7 +143,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Equip Lightbearer", List.of(equipLightbearer)));
 		panels.add(new PanelDetails("Use log on mysterious bush", List.of(useLogOnBush), List.of(anyLog)));
 		panels.add(new PanelDetails("Use coins on mysterious bush", List.of(useCoinOnBush, useManyCoinsOnBush), List.of(oneCoin, manyCoins)));
-		panels.add(new PanelDetails("Conditional requirement", List.of(conditionalRequirementLookAtCoins), List.of(conditionalRequirementCoins)));
+		panels.add(new PanelDetails("Conditional requirement", List.of(conditionalRequirementLookAtCoins), List.of(conditionalRequirementCoins, conditionalRequirementGoldBar)));
 
 		return panels;
 	}

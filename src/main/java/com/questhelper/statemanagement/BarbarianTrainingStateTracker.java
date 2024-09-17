@@ -25,6 +25,9 @@
 package com.questhelper.statemanagement;
 
 import com.questhelper.config.ConfigKeys;
+import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.MesBoxRequirement;
+import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.RequirementValidator;
 import com.questhelper.requirements.conditional.Conditions;
@@ -217,6 +220,110 @@ public class BarbarianTrainingStateTracker
 			),
 			"Finished Barbarian Herblore"
 		);
+
+		// Mid-conditions
+		plantedSeed = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_PLANTED_SEED.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You plant "),
+					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
+			)
+		);
+
+		smashedPot = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_SMASHED_POT.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You plant "),
+					new ChatMessageRequirement(" sapling"),
+					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>smash a pot without littering<col=000080>!")
+			)
+		);
+
+		litFireWithBow = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_BOW_FIRE.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("The fire catches and the logs begin to burn."),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>light a fire with a bow<col=000080>!")
+			)
+		);
+
+		sacrificedRemains = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_PYRE_MADE.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("The ancient barbarian is laid to rest."),
+					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
+			)
+		);
+
+		caughtBarbarianFish = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_BARBFISHED.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You catch a leaping trout.", "You catch a leaping salmon.", "You catch a leaping sturgeon."),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
+			)
+		);
+
+		caughtFishWithoutHarpoon = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_HARPOONED_FISH.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You catch a tuna.", "You catch a swordfish.", "You catch a shark.", "You catch a shark!"),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
+			)
+		);
+
+		madePotion = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_MADE_POTION.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You combine your potion with the fish eggs."),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
+			)
+		);
+
+		madeSpear = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_MADE_SPEAR.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You make a "),
+					new ChatMessageRequirement(" spear."),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>smith a spear<col=000080>!")
+			)
+		);
+
+		madeHasta = new RuneliteRequirement(
+			configManager, ConfigKeys.BARBARIAN_TRAINING_MADE_HASTA.getKey(),
+			new Conditions(true, LogicType.OR,
+				new MultiChatMessageRequirement(
+					new ChatMessageRequirement("You make a "),
+					new ChatMessageRequirement(" hasta."),
+					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
+				),
+				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>smith a hasta<col=000080>!")
+			)
+		);
+
 
 		reqs = new RequirementValidator(client, eventBus,
 			taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,

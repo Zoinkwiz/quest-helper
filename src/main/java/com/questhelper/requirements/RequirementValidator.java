@@ -45,7 +45,7 @@ import java.util.Objects;
 
 /**
  * Acts as an always-on quest helper validating incoming RuneLite events
- * <p> 
+ * <p>
  * Useful for keeping state about characters that OSRS doesn't provide as varbits (e.g. Barbarian Training)
  */
 public class RequirementValidator

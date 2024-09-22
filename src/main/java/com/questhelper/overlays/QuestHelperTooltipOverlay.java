@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPanel;
+import net.runelite.client.ui.overlay.OverlayPosition;
 import javax.inject.Inject;
 import java.awt.*;
 
@@ -41,6 +42,8 @@ public class QuestHelperTooltipOverlay extends OverlayPanel
 	{
 		setPriority(PRIORITY_HIGHEST);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setDragTargetable(false);
+		setPosition(OverlayPosition.TOOLTIP);
 
 		this.questHelperPlugin = questHelperPlugin;
 		this.client = client;

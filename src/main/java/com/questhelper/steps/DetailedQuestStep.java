@@ -848,7 +848,7 @@ public class DetailedQuestStep extends QuestStep
 			int menuEntryHeight = 15;
 			int headerHeight = menuEntryHeight + 3;
 
-			for (int i = 0; i < currentMenuEntries.length; i++)
+			for (int i = currentMenuEntries.length - 1; i >= 0; i--)
 			{
 				MenuEntry hoveredEntry = currentMenuEntries[i];
 
@@ -862,8 +862,18 @@ public class DetailedQuestStep extends QuestStep
 				if (mousePosition.getX() > menuX && mousePosition.getX() < menuX + menuWidth &&
 					mousePosition.getY() > entryTopY && mousePosition.getY() <= entryBottomY)
 				{
-					panelComponent.setPreferredLocation(new java.awt.Point(menuX + menuWidth, entryTopY - menuEntryHeight - ComponentConstants.STANDARD_BORDER));
 					panelComponent.getChildren().add(LineComponent.builder().left(tooltipText).build());
+					double infoPanelWidth = panelComponent.getBounds().getWidth();
+					int viewportWidth = client.getViewportWidth();
+					if (menuX + menuWidth + infoPanelWidth > viewportWidth)
+					{
+						panelComponent.setPreferredLocation(new java.awt.Point(menuX - (int) infoPanelWidth, entryTopY));
+					}
+					else
+					{
+						panelComponent.setPreferredLocation(new java.awt.Point(menuX + menuWidth, entryTopY));
+					}
+
 					break;
 				}
 			}

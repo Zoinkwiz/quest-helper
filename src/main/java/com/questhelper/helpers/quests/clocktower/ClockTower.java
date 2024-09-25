@@ -188,7 +188,7 @@ public class ClockTower extends BasicQuestHelper
 		startedQuestDuringSession = new Conditions(true, new VarplayerRequirement(QuestVarPlayer.QUEST_CLOCK_TOWER.getId(), 0));
 
 		synced = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "<col=7f0000>Clock Tower</col>"),
+			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "Clock Tower"),
 			startedQuestDuringSession
 		);
 

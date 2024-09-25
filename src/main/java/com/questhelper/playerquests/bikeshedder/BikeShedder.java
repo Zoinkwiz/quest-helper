@@ -31,6 +31,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -43,6 +44,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +71,8 @@ public class BikeShedder extends BasicQuestHelper
 	private ItemRequirement conditionalRequirementCoins;
 	private DetailedQuestStep conditionalRequirementLookAtCoins;
 	private ItemRequirement conditionalRequirementGoldBar;
+	private WidgetTextRequirement lookAtCooksAssistantRequirement;
+	private DetailedQuestStep lookAtCooksAssistant;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -83,6 +87,7 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3217, 0)), useCoinOnBush);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3216, 0)), useManyCoinsOnBush);
 		steps.addStep(conditionalRequirementZoneRequirement, conditionalRequirementLookAtCoins);
+		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3221, 0)), lookAtCooksAssistant);
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(-1, steps)
 			.build();
@@ -131,6 +136,10 @@ public class BikeShedder extends BasicQuestHelper
 		conditionalRequirementGoldBar.setConditionToHide(or(conditionalRequirementZoneNorthRequirement, conditionalRequirementZoneSouthRequirement));
 
 		conditionalRequirementLookAtCoins = new DetailedQuestStep(this, "Admire the coins in your inventory.", conditionalRequirementCoins);
+
+		lookAtCooksAssistantRequirement = new WidgetTextRequirement(ComponentID.DIARY_TITLE, "Cook's Assistant");
+		lookAtCooksAssistantRequirement.setDisplayText("Cook's Assistant quest journal open");
+		lookAtCooksAssistant = new DetailedQuestStep(this, "Open the Cook's Assistant quest journal. You must have started the quest for this test to work.", lookAtCooksAssistantRequirement);
 	}
 
 	@Override
@@ -144,6 +153,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Use log on mysterious bush", List.of(useLogOnBush), List.of(anyLog)));
 		panels.add(new PanelDetails("Use coins on mysterious bush", List.of(useCoinOnBush, useManyCoinsOnBush), List.of(oneCoin, manyCoins)));
 		panels.add(new PanelDetails("Conditional requirement", List.of(conditionalRequirementLookAtCoins), List.of(conditionalRequirementCoins, conditionalRequirementGoldBar)));
+		panels.add(new PanelDetails("Quest state", List.of(lookAtCooksAssistant), List.of(lookAtCooksAssistantRequirement)));
 
 		return panels;
 	}

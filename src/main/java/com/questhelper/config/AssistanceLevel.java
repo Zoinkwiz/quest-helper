@@ -29,6 +29,8 @@ import net.runelite.client.config.ConfigManager;
 
 public class AssistanceLevel
 {
+	public static final String ASSISTANCE_LEVEL_KEY = "assistanceLevel";
+
 	public static void setToMinimumAssistance(ConfigManager configManager)
 	{
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "autoStartQuests", true);
@@ -46,6 +48,8 @@ public class AssistanceLevel
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWorldLines", false);
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWidgetHints", false);
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "solvePuzzles", false);
+
+		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ASSISTANCE_LEVEL_KEY, "minimum");
 	}
 
 	public static void setToMediumAssistance(ConfigManager configManager)
@@ -65,6 +69,8 @@ public class AssistanceLevel
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWorldLines", true);
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWidgetHints", false);
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "solvePuzzles", false);
+
+		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ASSISTANCE_LEVEL_KEY, "medium");
 	}
 
 	public static void setToFullAssistance(ConfigManager configManager)
@@ -84,5 +90,7 @@ public class AssistanceLevel
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWorldLines", true);
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showWidgetHints", true);
 		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "solvePuzzles", true);
+
+		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ASSISTANCE_LEVEL_KEY, "full");
 	}
 }

@@ -25,9 +25,7 @@
 package com.questhelper.panel;
 
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.config.AssistanceLevel;
-import com.questhelper.managers.QuestManager;
 import com.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
@@ -35,6 +33,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import static com.questhelper.config.AssistanceLevel.ASSISTANCE_LEVEL_KEY;
 
 public class AssistLevelPanel extends JPanel
 {
@@ -42,6 +41,11 @@ public class AssistLevelPanel extends JPanel
 	private ConfigManager configManager;
 	private QuestHelperPanel questHelperPanel;
 
+	private final Color ACTIVE_COLOUR = ColorScheme.BRAND_ORANGE;
+	private final Color INACTIVE_COLOUR = ColorScheme.DARKER_GRAY_COLOR;
+
+	private JButton[] buttons = new JButton[3];
+	
 	public AssistLevelPanel()
 	{
 		super(false);
@@ -111,6 +115,7 @@ public class AssistLevelPanel extends JPanel
 			AssistanceLevel.setToMinimumAssistance(configManager);
 			configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "selected-assist-level", "true");
 			questHelperPanel.setSelectedQuest(questHelper);
+			highlightPanel(select);
 		});
 
 		JPanel buttonPanel = new JPanel();
@@ -120,6 +125,10 @@ public class AssistLevelPanel extends JPanel
 		minAssistPanel.add(title, BorderLayout.NORTH);
 		minAssistPanel.add(description, BorderLayout.CENTER);
 		minAssistPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+		select.setBackground(getButtonColor("minimum"));
+
+		buttons[0] = select;
 
 		return minAssistPanel;
 	}
@@ -146,6 +155,7 @@ public class AssistLevelPanel extends JPanel
 			AssistanceLevel.setToMediumAssistance(configManager);
 			configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "selected-assist-level", "true");
 			questHelperPanel.setSelectedQuest(questHelper);
+			highlightPanel(select);
 		});
 
 		JPanel buttonPanel = new JPanel();
@@ -155,6 +165,10 @@ public class AssistLevelPanel extends JPanel
 		medAssistPanel.add(title, BorderLayout.NORTH);
 		medAssistPanel.add(description, BorderLayout.CENTER);
 		medAssistPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+		select.setBackground(getButtonColor("medium"));
+
+		buttons[1] = select;
 
 		return medAssistPanel;
 	}
@@ -181,6 +195,8 @@ public class AssistLevelPanel extends JPanel
 			AssistanceLevel.setToFullAssistance(configManager);
 			configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "selected-assist-level", "true");
 			questHelperPanel.setSelectedQuest(questHelper);
+
+			highlightPanel(select);
 		});
 
 		JPanel buttonPanel = new JPanel();
@@ -191,6 +207,38 @@ public class AssistLevelPanel extends JPanel
 		fullAssistPanel.add(description, BorderLayout.CENTER);
 		fullAssistPanel.add(buttonPanel, BorderLayout.SOUTH);
 
+		select.setBackground(getButtonColor("full"));
+
+		buttons[2] = select;
+
 		return fullAssistPanel;
+	}
+
+	private Color getButtonColor(String assistLevel)
+	{
+		String assistLevelActive = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ASSISTANCE_LEVEL_KEY);
+
+		if (assistLevel.equals(assistLevelActive))
+		{
+			return ACTIVE_COLOUR;
+		}
+
+		return INACTIVE_COLOUR;
+	}
+
+
+	private void highlightPanel(JButton highlightButton)
+	{
+		for (JButton jButton : buttons)
+		{
+			if (jButton == highlightButton)
+			{
+				jButton.setBackground(ACTIVE_COLOUR);
+			}
+			else
+			{
+				jButton.setBackground(INACTIVE_COLOUR);
+			}
+		}
 	}
 }

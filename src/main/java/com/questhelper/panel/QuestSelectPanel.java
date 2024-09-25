@@ -50,14 +50,11 @@ public class QuestSelectPanel extends JPanel
 	@Getter
 	private final QuestHelper questHelper;
 
-	private final QuestManager questManager;
-
 	private static final ImageIcon START_ICON = Icon.START.getIcon();
 
-	public QuestSelectPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager, QuestHelperPanel questHelperPanel, QuestHelper questHelper, QuestState questState)
+	public QuestSelectPanel(QuestHelperPlugin questHelperPlugin, QuestHelperPanel questHelperPanel, QuestHelper questHelper, QuestState questState)
 	{
 		this.questHelper = questHelper;
-		this.questManager = questManager;
 
 		keywords.addAll(questHelper.getQuest().getKeywords());
 
@@ -76,7 +73,7 @@ public class QuestSelectPanel extends JPanel
 			startButton.setIcon(START_ICON);
 			startButton.addActionListener(e ->
 			{
-				questManager.setSidebarSelectedQuest(questHelper);
+				questHelperPanel.setSelectedQuest(questHelper);
 				questHelperPanel.emptyBar();
 			});
 			add(startButton, BorderLayout.LINE_END);
@@ -86,7 +83,6 @@ public class QuestSelectPanel extends JPanel
 	public QuestSelectPanel(String text)
 	{
 		this.questHelper = null;
-		this.questManager = null;
 
 		setLayout(new BorderLayout(3, 3));
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 30));

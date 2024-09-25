@@ -74,7 +74,7 @@ public class QuestHelperPanel extends PluginPanel
 
 	private final QuestOverviewPanel questOverviewPanel;
 	private final FixedWidthPanel questOverviewWrapper = new FixedWidthPanel();
-
+	private final AssistLevelPanel assistLevelPanel = new AssistLevelPanel();
 	private final JPanel allQuestsCompletedPanel = new JPanel();
 	private final JPanel searchQuestsPanel;
 
@@ -88,7 +88,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
 	private final JScrollPane scrollableContainer;
 	public static final int DROPDOWN_HEIGHT = 26;
-	//	private boolean settingsPanelActive = false;
+	private boolean settingsPanelActive = false;
 	public boolean questActive = false;
 
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
@@ -141,44 +141,45 @@ public class QuestHelperPanel extends PluginPanel
 
 		// Settings
 		// TODO: Removed until the Runelite API allows for a link to the actual config panel
-//		JButton settingsBtn = new JButton();
-//		SwingUtil.removeButtonDecorations(settingsBtn);
-//		settingsBtn.setIcon(SETTINGS_ICON);
-//		settingsBtn.setToolTipText("Change your settings");
-//		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-//		settingsBtn.setUI(new BasicButtonUI());
-//		settingsBtn.addActionListener((ev) -> {
-//			if (settingsPanelActive)
-//			{
-//				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-//				deactivateSettings();
-//			}
-//			else
-//			{
-//				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-//				activateSettings();
-//			}
-//		});
-//		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
-//		{
-//			public void mouseEntered(java.awt.event.MouseEvent evt)
-//			{
-//				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
-//			}
-//
-//			public void mouseExited(java.awt.event.MouseEvent evt)
-//			{
-//				if (settingsPanelActive)
-//				{
-//					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-//				}
-//				else
-//				{
-//					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-//				}
-//			}
-//		});
-//		viewControls.add(settingsBtn);
+		JButton settingsBtn = new JButton();
+		SwingUtil.removeButtonDecorations(settingsBtn);
+		settingsBtn.setIcon(SETTINGS_ICON);
+		settingsBtn.setToolTipText("Change your settings");
+		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		settingsBtn.setUI(new BasicButtonUI());
+		settingsBtn.addActionListener((ev) -> {
+			assistLevelPanel.rebuild(null, configManager, this);
+			if (settingsPanelActive)
+			{
+				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+				deactivateSettings();
+			}
+			else
+			{
+				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				activateSettings();
+			}
+		});
+		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
+				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
+				if (settingsPanelActive)
+				{
+					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+				}
+				else
+				{
+					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				}
+			}
+		});
+		viewControls.add(settingsBtn);
 
 		// Discord button
 		JButton discordBtn = new JButton();
@@ -309,6 +310,9 @@ public class QuestHelperPanel extends PluginPanel
 		JPanel orderPanel = makeDropdownPanel(orderDropdown, "Ordering");
 		orderPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 
+		JPanel assistanceToggles = new JPanel();
+
+
 		// Skill filtering
 		SkillFilterPanel skillFilterPanel = new SkillFilterPanel(questHelperPlugin.skillIconManager, questHelperPlugin.getConfigManager());
 		skillFilterPanel.setVisible(false);
@@ -370,7 +374,7 @@ public class QuestHelperPanel extends PluginPanel
 		JPanel introDetailsPanel = new JPanel();
 		introDetailsPanel.setLayout(new BorderLayout());
 		introDetailsPanel.add(titlePanel, BorderLayout.NORTH);
-		introDetailsPanel.add(searchQuestsPanel, BorderLayout.CENTER);
+		introDetailsPanel.add(searchQuestsPanel, BorderLayout.SOUTH);
 
 		add(introDetailsPanel, BorderLayout.NORTH);
 		add(scrollableContainer, BorderLayout.CENTER);
@@ -455,6 +459,46 @@ public class QuestHelperPanel extends PluginPanel
 		});
 	}
 
+	JButton activeDifficulty = null;
+
+	private JButton makeButton(String text)
+	{
+		JButton minimalAssist = new JButton();
+		SwingUtil.removeButtonDecorations(minimalAssist);
+		minimalAssist.setText(text.substring(0, 3));
+//		minimalAssist.setIcon(PATREON_ICON);
+		minimalAssist.setToolTipText(text);
+		minimalAssist.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		minimalAssist.setUI(new BasicButtonUI());
+		minimalAssist.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
+				if (activeDifficulty != minimalAssist)
+				{
+					minimalAssist.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+				}
+			}
+
+			public void mouseClicked(java.awt.event.MouseEvent evt)
+			{
+				minimalAssist.setBackground(ColorScheme.BRAND_ORANGE);
+				if (activeDifficulty != null) activeDifficulty.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				activeDifficulty = minimalAssist;
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
+				if (activeDifficulty != minimalAssist)
+				{
+					minimalAssist.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				}
+			}
+		});
+
+		return minimalAssist;
+	}
+
 	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut,
 						Map<QuestHelperQuest, QuestState> completedQuests, QuestHelperConfig.QuestFilter... questFilters)
 	{
@@ -480,7 +524,7 @@ public class QuestHelperPanel extends PluginPanel
 				for (QuestHelper questHelper : filterList)
 				{
 					QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
-					questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, questManager, this, questHelper, questState));
+					questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
 				}
 			}
 		}
@@ -489,7 +533,7 @@ public class QuestHelperPanel extends PluginPanel
 			for (QuestHelper questHelper : questHelpers)
 			{
 				QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
-				questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, questManager, this, questHelper, questState));
+				questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
 			}
 		}
 
@@ -563,9 +607,9 @@ public class QuestHelperPanel extends PluginPanel
 
 	private void activateSettings()
 	{
-//		settingsPanelActive = true;
+		settingsPanelActive = true;
 
-//		scrollableContainer.setViewportView(configPanel);
+		scrollableContainer.setViewportView(assistLevelPanel);
 		searchQuestsPanel.setVisible(false);
 
 		repaint();
@@ -574,7 +618,7 @@ public class QuestHelperPanel extends PluginPanel
 
 	private void deactivateSettings()
 	{
-//		settingsPanelActive = false;
+		settingsPanelActive = false;
 		if (questActive && searchBar.getText().isEmpty())
 		{
 			scrollableContainer.setViewportView(questOverviewWrapper);
@@ -587,6 +631,26 @@ public class QuestHelperPanel extends PluginPanel
 
 		repaint();
 		revalidate();
+	}
+
+	public void setSelectedQuest(QuestHelper questHelper)
+	{
+		if (questHelper == null)
+		{
+			deactivateSettings();
+		}
+
+		if ("true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "selected-assist-level")))
+		{
+			searchQuestsPanel.setVisible(true);
+			questManager.setSidebarSelectedQuest(questHelper);
+		}
+		else
+		{
+			assistLevelPanel.rebuild(questHelper, configManager, this);
+			scrollableContainer.setViewportView(assistLevelPanel);
+			searchQuestsPanel.setVisible(false);
+		}
 	}
 
 	public void emptyBar()

@@ -61,6 +61,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 
 public class TheDigSite extends BasicQuestHelper
 {
@@ -286,10 +287,10 @@ public class TheDigSite extends BasicQuestHelper
 
 
 		syncedUp = new Conditions(true, LogicType.OR, knowStateAsJustStartedQuest,
-			new WidgetTextRequirement(119, 2, "The Dig Site"));
+			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "The Dig Site"));
 
 		syncedUp2 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedFirstExam,
-			new WidgetTextRequirement(119, 2, "The Dig Site"),
+			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "The Dig Site"),
 			new DialogRequirement("You got all the questions correct. Well done!"),
 			new DialogRequirement("Hey! Excellent!"));
 

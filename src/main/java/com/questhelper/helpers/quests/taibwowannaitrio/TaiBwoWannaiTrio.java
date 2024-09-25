@@ -350,7 +350,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new VarplayerRequirement(QuestVarPlayer.QUEST_TAI_BWO_WANNAI_TRIO.getId(), 2));
 
 		syncedState = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(119, 2, "<col=7f0000>Tai Bwo Wannai Trio</col>"),
+			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "<col=7f0000>Tai Bwo Wannai Trio</col>"),
 			startedQuestDuringSession
 		);
 

@@ -1,15 +1,11 @@
 plugins {
 	id 'java'
-	id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 repositories {
 	mavenLocal()
 	maven {
 		url = 'https://repo.runelite.net'
-		content {
-			includeGroupByRegex("net\\.runelite.*")
-		}
 	}
 	mavenCentral()
 }
@@ -19,8 +15,8 @@ def runeLiteVersion = 'latest.release'
 dependencies {
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
 
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	compileOnly 'org.projectlombok:lombok:1.18.4'
+	annotationProcessor 'org.projectlombok:lombok:1.18.4'
 
 	// 23.0.0 is verified by RuneLite
 	compileOnly 'org.jetbrains:annotations:23.0.0'
@@ -45,18 +41,9 @@ sourceCompatibility = "11"
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
-	options.release.set(11)
 }
 
 tasks.test {
 	useJUnitPlatform()
 }
 targetCompatibility = JavaVersion.VERSION_11
-
-shadowJar {
-	from sourceSets.test.output
-	configurations = [project.configurations.testRuntimeClasspath]
-	manifest {
-		attributes "Main-Class": "com.questhelper.QuestHelperPluginTest"
-	}
-}

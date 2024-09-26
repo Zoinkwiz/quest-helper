@@ -60,12 +60,14 @@ public class VarComparisonRequirement extends AbstractRequirement
     private boolean hasFiredWarning = false;
 
     /**
-     * Check if the player's varbit value meets the required level using the given
+     * Compares the varbit/varp of a player to another varbit/varp of the player
      * {@link Operation}.
      *
-     * @param varbitID      the {@link Varbits} id to use
+     * @param v1Type        the {@link VarType} to use for the first id
+     * @param v1Id          the {@link Varbits} or {@link net.runelite.api.annotations.Varp} id to use for the first id
+     * @param v2Type        the {@link VarType} to use for the second id
+     * @param v2Id          the {@link Varbits} or {@link net.runelite.api.annotations.Varp} id to use for the second id
      * @param operation     the {@link Operation} to check with
-     * @param requiredValue the required varbit value to pass this requirement
      * @param displayText   the display text
      */
     public VarComparisonRequirement(VarType v1Type, int v1Id, VarType v2Type, int v2Id, Operation operation, String displayText)

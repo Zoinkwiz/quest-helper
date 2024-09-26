@@ -116,6 +116,7 @@ public enum QuestVarbits
 	QUEST_TWILIGHTS_PROMISE(9649),
 	// TODO: UPDATE THIS VALUE WGS
 	QUEST_WHILE_GUTHIX_SLEEPS(9653),
+	QUEST_ETHICALLY_AQUIRED_ANTIQUITIES(11193),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

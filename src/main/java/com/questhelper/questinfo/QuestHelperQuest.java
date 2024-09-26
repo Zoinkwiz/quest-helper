@@ -135,7 +135,7 @@ import com.questhelper.helpers.quests.enlightenedjourney.GrandTreeBalloonFlight;
 import com.questhelper.helpers.quests.enlightenedjourney.EnlightenedJourney;
 import com.questhelper.helpers.quests.entertheabyss.EnterTheAbyss;
 import com.questhelper.helpers.quests.ernestthechicken.ErnestTheChicken;
-import com.questhelper.helpers.quests.ethicallyaquiredantiquities.EthicallyAquiredAntiquities;
+import com.questhelper.helpers.quests.ethicallyacquiredantiquities.EthicallyAcquiredAntiquities;
 import com.questhelper.helpers.quests.fairytalei.FairytaleI;
 import com.questhelper.helpers.quests.fairytaleii.FairytaleII;
 import com.questhelper.helpers.quests.familycrest.FamilyCrest;
@@ -478,7 +478,7 @@ public enum QuestHelperQuest
 	THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE(new TheRibbitingTaleOfALilyPadLabourDispute(), Quest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestVarbits.QUEST_THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	TWILIGHTS_PROMISE(new TwilightsPromise(), Quest.TWILIGHTS_PROMISE, QuestVarbits.QUEST_TWILIGHTS_PROMISE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	WHILE_GUTHIX_SLEEPS(new WhileGuthixSleeps(), Quest.WHILE_GUTHIX_SLEEPS, QuestVarbits.QUEST_WHILE_GUTHIX_SLEEPS, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
-	ETHICALLY_AQUIRED_ANTIQUITIES(new EthicallyAquiredAntiquities(), Quest.ETHICALLY_ACQUIRED_ANTIQUITIES, QuestVarbits.QUEST_ETHICALLY_AQUIRED_ANTIQUITIES, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	ETHICALLY_AQUIRED_ANTIQUITIES(new EthicallyAcquiredAntiquities(), Quest.ETHICALLY_ACQUIRED_ANTIQUITIES, QuestVarbits.QUEST_ETHICALLY_AQUIRED_ANTIQUITIES, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

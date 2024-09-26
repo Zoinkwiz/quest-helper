@@ -23,9 +23,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.questhelper.helpers.quests.ethicallyaquiredantiquities;
+package com.questhelper.helpers.quests.ethicallyacquiredantiquities;
 
-import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -33,29 +32,20 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.npc.NpcRequirement;
-import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
@@ -66,18 +56,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.World;
-import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.WorldPoint;
 
-public class EthicallyAquiredAntiquities extends BasicQuestHelper
+public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement varrockTeleport, civitasIllaFortisTeleport, coinsForCharter, fixedSail, bettysNotes, storeRoomKey;
+	ItemRequirement varrockTeleport, civitasIllaFortisTeleport, coinsForCharter, staminaPotion, fixedSail, bettysNotes, storeRoomKey;
 
-	QuestStep inspectEmptyDisplayCase, talkToCuratorHerminius, investigateToolsBehindDisplayCase, investigateCaseAgain, talkToCitizen, talkToAcademic,
-		talkToTourist, talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes, talkToCuratorHaigHalen,
-		searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene, returnToCuratorHerminius;
+	QuestStep talkToCuratorHerminius, investigateToolsBehindDisplayCase, investigateCaseAgain, talkToCitizen, talkToAcademic,
+		talkToTourist, talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes,
+		searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene;
+
+	DetailedQuestStep inspectEmptyDisplayCase, talkToCuratorHaigHalen, returnToCuratorHerminius;
 
 	Requirement investigatedToolsBehindEmptyCase, investigatedCaseAgain, talkedToCitizen, talkedToAcademic, talkedToTourist, talkedToArtima;
 
@@ -138,8 +128,9 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 		varrockTeleport = new TeleportItemRequirement("Varrock Teleport", ItemID.VARROCK_TELEPORT);
 		varrockTeleport.addAlternates(ItemCollections.RING_OF_WEALTHS);
 		varrockTeleport.addAlternates(ItemID.CHRONICLE);
-		civitasIllaFortisTeleport = new TeleportItemRequirement("Civitas Illa Fortis Teleport", ItemID.CIVITAS_ILLA_FORTIS_TELEPORT, 2);
+		civitasIllaFortisTeleport = new TeleportItemRequirement("Civitas Illa Fortis Teleport", ItemID.CIVITAS_ILLA_FORTIS_TELEPORT);
 		coinsForCharter = new ItemRequirement("Coins", ItemID.COINS_995, 3000);
+		staminaPotion = new ItemRequirement("Stamina potion", ItemID.STAMINA_POTION4);
 		fixedSail = new ItemRequirement("Sails", ItemID.SAILS);
 		bettysNotes = new ItemRequirement("Betty's Notes", ItemID.BETTYS_NOTES);
 		bettysNotes.setHighlightInInventory(true);
@@ -160,7 +151,8 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 	{
 		inspectEmptyDisplayCase = new ObjectStep(this, ObjectID.EMPTY_DISPLAY_54693, new WorldPoint(1721, 3165, 0), "Inspect the empty display case at the Grand Museum in Civitas illa Fortis to start the quest.");
 		inspectEmptyDisplayCase.addDialogStep("Yes.");
-		talkToCuratorHerminius = new NpcStep(this, NpcID.CURATOR_HERMINIUS, new WorldPoint(1712, 3163, 0), "Speak to the Curator in the centre of the Grand Museum.");
+		inspectEmptyDisplayCase.addTeleport(civitasIllaFortisTeleport);
+		talkToCuratorHerminius = new NpcStep(this, NpcID.CURATOR_HERMINIUS, new WorldPoint(1712, 3163, 0), "Speak to Curator Herminius in the centre of the Grand Museum.");
 		talkToCuratorHerminius.addDialogStep("Could you tell me more about that empty display?");
 		investigateToolsBehindDisplayCase = new ObjectStep(this, ObjectID.TOOLS_54700, new WorldPoint(1722, 3167, 0), "Investigate the tools behind the empty display case.");
 		investigateCaseAgain = new ObjectStep(this, ObjectID.EMPTY_DISPLAY_54693, new WorldPoint(1721, 3165, 0), "Inspect the empty display case again.");
@@ -191,14 +183,15 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 			NpcID.TRADER_CREWMEMBER_12637, NpcID.TRADER_CREWMEMBER_12637, NpcID.TRADER_CREWMEMBER_12638, NpcID.TRADER_CREWMEMBER_12639, NpcID.TRADER_CREWMEMBER_12640, NpcID.TRADER_CREWMEMBER_12641, NpcID.TRADER_CREWMEMBER_12642, NpcID.TRADER_CREWMEMBER_12643);
 
 		returnToCrewmember.addDialogStep("So, about that man with the case.");
-		talkToTraderStan = new NpcStep(this, NpcID.TRADER_STAN, new WorldPoint(3036, 3194, 0), "Head to Port Sarim and speak to Trader Stan on the southern deck. Charter if you have 3000 coins. Rat minigame or Rimmington/Draynor tele otherwise.");
-		talkToTraderStan.addDialogStep("Have you seen a grey-haired man with a case?");
+		talkToTraderStan = new NpcStep(this, NpcID.TRADER_STAN, new WorldPoint(3036, 3194, 0), "Head to Port Sarim and speak to Trader Stan on the southern deck. Charter at a cost of 3000 coins.", coinsForCharter);
+		talkToTraderStan.addDialogSteps("Port Sarim (wily cats)", "Have you seen a grey-haired man with a case?");
 		((NpcStep)talkToTraderStan).addAlternateNpcs(NpcID.TRADER_STAN_9300, NpcID.TRADER_STAN_9301, NpcID.TRADER_STAN_9302, NpcID.TRADER_STAN_9303, NpcID.TRADER_STAN_9304, NpcID.TRADER_STAN_9305, NpcID.TRADER_STAN_9307, NpcID.TRADER_STAN_9308, NpcID.TRADER_STAN_9309, NpcID.TRADER_STAN_9310, NpcID.TRADER_STAN_9311);
 		talkToBetty = new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3011, 3260, 0), "Head to the Rune Shop in north western Port Sarim and speak to Betty.");
 		talkToBetty.addDialogStep("Have you seen a grey-haired man with a case?");
 		readBettysNotes = new DetailedQuestStep(this, "Read Betty's notes.", bettysNotes);
-		talkToCuratorHaigHalen = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Head to Varrock Museum and speak to Curator Haig Halen. Select option about Xerna's Diadem then pickpocket him.");
+		talkToCuratorHaigHalen = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Head to Varrock Museum and speak to Curator Haig Halen.");
 		talkToCuratorHaigHalen.addDialogStep("I'm looking for Xerna's Diadem.");
+		talkToCuratorHaigHalen.addTeleport(varrockTeleport);
 		searchStoreroomCrate = new ObjectStep(this, ObjectID.CRATE_54697, new WorldPoint(3266, 3458, 0), "Open the door to the room in the north east and search the crate.");
 		talkToCuratorBeforeShaming = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Go speak to Curator Haig Halen.");
 		talkToCuratorBeforeShaming.addDialogStep("I found Xerna's Diadem...");
@@ -223,27 +216,30 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 		watchCutscene = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Watch cutscene.");
 		returnToCuratorHerminius = new NpcStep(this, NpcID.CURATOR_HERMINIUS, new WorldPoint(1712, 3163, 0), "Speak to the Curator in the centre of the Grand Museum to complete the quest.");
 		returnToCuratorHerminius.addDialogStep("About that empty display...");
+		returnToCuratorHerminius.addTeleport(civitasIllaFortisTeleport);
 
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return null;
+		return Arrays.asList(coinsForCharter);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(varrockTeleport, civitasIllaFortisTeleport, coinsForCharter);
+		return Arrays.asList(varrockTeleport, civitasIllaFortisTeleport.quantity(2), staminaPotion);
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
 		return List.of(
-			new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED)
-		);
+			new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED, "Finished Shield of Arrav"),
+			new SkillRequirement(Skill.THIEVING, 25, false)
+			);
 	}
 
 	@Override
@@ -272,11 +268,11 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Grand Museum", Arrays.asList(inspectEmptyDisplayCase, talkToCuratorHerminius, investigateToolsBehindDisplayCase, investigateCaseAgain, talkToAcademic, talkToTourist, talkToCitizen)));
+		allSteps.add(new PanelDetails("Grand Museum", Arrays.asList(inspectEmptyDisplayCase, talkToCuratorHerminius, investigateToolsBehindDisplayCase, investigateCaseAgain, talkToAcademic, talkToTourist, talkToCitizen), Arrays.asList(civitasIllaFortisTeleport)));
 
-		allSteps.add(new PanelDetails("Done with museum visit", Arrays.asList(talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes)));
+		allSteps.add(new PanelDetails("Done with museum visit", Arrays.asList(talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes), Arrays.asList(coinsForCharter)));
 
-		allSteps.add(new PanelDetails("Nevermind, another one", Arrays.asList(talkToCuratorHaigHalen, searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene, returnToCuratorHerminius)));
+		allSteps.add(new PanelDetails("Nevermind, another one", Arrays.asList(talkToCuratorHaigHalen, searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene, returnToCuratorHerminius), Arrays.asList(varrockTeleport, civitasIllaFortisTeleport)));
 		return allSteps;
 
 	}

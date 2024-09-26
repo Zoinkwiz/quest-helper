@@ -181,6 +181,7 @@ public enum ExternalQuestResources
 	THE_PATH_OF_GLOUPHRIE("https://oldschool.runescape.wiki/w/The_Path_of_Glouphrie"),
 	CHILDREN_OF_THE_SUN("https://oldschool.runescape.wiki/w/Children_of_the_Sun"),
 	WHILE_GUTHIX_SLEEPS("https://oldschool.runescape.wiki/w/While_Guthix_Sleeps"),
+	ETHICALLY_ACQUIRED_ANTIQUITIES("https://oldschool.runescape.wiki/w/Ethically_Acquired_Antiquities"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

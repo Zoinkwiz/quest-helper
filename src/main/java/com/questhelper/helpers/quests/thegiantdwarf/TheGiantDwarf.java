@@ -207,7 +207,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		talkedToVermundi = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Great, thanks a lot, I'll check out the library!"),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I should speak to the " +
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I should speak to the " +
 				"<col=800000>librarian<col=000080> in Keldagrim-West. He"),
 			new WidgetTextRequirement(219, 1, 2, "Yes, about those special clothes again..."));
 
@@ -216,12 +216,12 @@ public class TheGiantDwarf extends BasicQuestHelper
 				"Let me think... I believe it is on the top shelf of one of<br>the bookcases in the library, because it is such an old<br>book.",
 				"Well, thanks, I'll have a look."
 			),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>library of Keldagrim-West. I should ")
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>library of Keldagrim-West. I should ")
 		);
 
 		hasBookOnCostumes = new Conditions(true, LogicType.OR,
 			bookOnCostumes,
-			new WidgetTextRequirement(119, 3, true, "<col=000080>with the <col=800000>book on dwarven costumes<col=000080> that I got from the")
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>with the <col=800000>book on dwarven costumes<col=000080> that I got from the")
 		);
 
 		talkedToVermundiWithBook = new VarbitRequirement(584, 1);
@@ -230,40 +230,40 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new DialogRequirement(questHelperPlugin.getPlayerStateManager().getPlayerName(),
 				"Don't worry, I'll get them for you. Let's see... some coal and some logs. Shouldn't be too hard.", false),
 			new DialogRequirement("Well, like I said, I can't do anything really without my spinning machine."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I must get <col=800000>coal<col=000080> and <col=800000>logs<col=000080>.")
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I must get <col=800000>coal<col=000080> and <col=800000>logs<col=000080>.")
 		);
 
 		usedCoalOnMachine = new Conditions(true, LogicType.OR,
 			new DialogRequirement("it needs to be powered up."),
 			new ChatMessageRequirement("You load the spinning machine with coal and logs."),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
 
 		startedMachine = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("...and successfully start the engine!"),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I should ask <col=800000>Vermundi<col=000080>, the owner of the <col=800000>clothes stall<col=000080> in the"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I should ask <col=800000>Vermundi<col=000080>, the owner of the <col=800000>clothes stall<col=000080> in the"));
 
 		givenExquisiteClothes = new Conditions(true, new VarbitRequirement(576, true, 0));
 		hasExquisiteClothes = new Conditions(true, LogicType.OR,
 			givenExquisiteClothes,
 			exquisiteClothes,
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I have the <col=800000>exquisite clothes<col=000080> that the <col=800000>sculptor<col=000080> needs. Now I"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I have the <col=800000>exquisite clothes<col=000080> that the <col=800000>sculptor<col=000080> needs. Now I"));
 
 		talkedToSaro = new Conditions(true, LogicType.OR,
 			// TODO: You need to click 'click to continue' here for the step to actually progress
 			new DialogRequirement("Thanks!"),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
 			new DialogRequirement("I thought I already told you where to get them?")
 		);
 
 		talkedToDromund = new Conditions(true, LogicType.OR,
 			// TODO: You need to click 'click to continue' here for the step to actually progress
 			new DialogRequirement("Get out you pesky human! The boots are mine and"),
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
 			new DialogRequirement("Are you sure you don't want to give me those boots?"));
 
 		hasLeftBoot = new Conditions(true, LogicType.OR,
 			leftBoot,
-			new WidgetTextRequirement(119, 3, true,
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true,
 				"<str>I have sneakily stolen one boots from the old dwarf.")
 		);
 
@@ -271,7 +271,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		hasExquisiteBoots = new Conditions(true, LogicType.OR,
 			givenExquisiteBoots,
 			exquisiteBoots,
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs.")
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs.")
 		);
 
 		talkedToSantiri = new Conditions(true, dwarvenBattleaxeBroken);
@@ -294,7 +294,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		hasDwarvenBattleaxe = new Conditions(true, LogicType.OR,
 			givenDwarvenBattleaxe,
 			dwarvenBattleaxe,
-			new WidgetTextRequirement(119, 3, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
 
 		inConsortium = new ZoneRequirement(consortium);
 

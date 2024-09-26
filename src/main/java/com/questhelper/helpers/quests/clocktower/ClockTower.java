@@ -198,19 +198,19 @@ public class ClockTower extends BasicQuestHelper
 		poisonedRats = new ChatMessageRequirement("The rats swarm towards the poisoned food...");
 
 		placedRedCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(119, 3, true, "<str>I have successfully placed the Red Cog on its spindle"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Red Cog on its spindle"),
 			new ChatMessageRequirement(inGroundFloor, "The cog fits perfectly.")
 		);
 		placedBlueCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(119, 3, true, "<str>I have successfully placed the Blue Cog on its spindle"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Blue Cog on its spindle"),
 			new ChatMessageRequirement(inFirstFloor, "The cog fits perfectly.")
 		);
 		placedBlackCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(119, 3, true, "<str>I have successfully placed the Black Cog on its spindle"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Black Cog on its spindle"),
 			new ChatMessageRequirement(inBasement, "The cog fits perfectly.")
 		);
 		placedWhiteCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(119, 3, true, "<str>I have successfully placed the White Cog on its spindle"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the White Cog on its spindle"),
 			new ChatMessageRequirement(inSecondFloor, "The cog fits perfectly.")
 		);
 	}

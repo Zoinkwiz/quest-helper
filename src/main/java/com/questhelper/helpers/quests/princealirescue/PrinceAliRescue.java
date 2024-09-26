@@ -54,6 +54,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 
 public class PrinceAliRescue extends BasicQuestHelper
 {
@@ -172,8 +173,8 @@ public class PrinceAliRescue extends BasicQuestHelper
 		inCell = new ZoneRequirement(cell);
 		hasWigPasteAndKey = new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), key.alsoCheckBank(questBank));
 		givenKeyMould = new Conditions(true, LogicType.OR,	// TODO quest journal widget text outdated
-			new WidgetTextRequirement(119, 3, true, "I have duplicated a key, I need to get it from"),
-			new WidgetTextRequirement(119, 3, true, "I got a duplicated cell door key"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I have duplicated a key, I need to get it from"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I got a duplicated cell door key"),
 			new WidgetTextRequirement(11, 2, true, "You give Osman the imprint along with a bronze bar."),
 			new DialogRequirement("I'll use this to have a copy of the key made. I'll send it to Leela once it's ready."),
 			new DialogRequirement("I think I have everything needed."),

@@ -691,7 +691,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		talkedToUngadulu = new RuneliteRequirement(configManager, "legendsquestinvestigatedfirewall",
 			new Conditions(true, LogicType.OR,
-				new WidgetTextRequirement(119, 3, true, "is acting weird and talking a lot of nonsense"),
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "is acting weird and talking a lot of nonsense"),
 				new MesBoxRequirement("The shaman throws himself to the floor and starts convulsing."),
 				new DialogRequirement("is acting weird and talking a lot of nonsense")));
 

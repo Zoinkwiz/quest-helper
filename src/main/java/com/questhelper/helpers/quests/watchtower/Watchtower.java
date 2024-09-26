@@ -59,6 +59,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 
 public class Watchtower extends BasicQuestHelper
 {
@@ -355,47 +356,47 @@ public class Watchtower extends BasicQuestHelper
 
 		knownOgreStep = new Conditions(true, LogicType.OR,
 			new DialogRequirement("In the meantime, I'll throw those fingernails out for you."),
-			new WidgetTextRequirement(119, 3, true, "deal with the tribal ogres."));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "deal with the tribal ogres."));
 
 		talkedToGrew = new Conditions(true, LogicType.OR, new DialogRequirement("The morsel is back.", "Heheheheh!"),
-			new WidgetTextRequirement(119, 3, true, "Grew wants me to give him", "I have <col=800000>one of Gorad's teeth"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Grew wants me to give him", "I have <col=800000>one of Gorad's teeth"));
 
 		talkedToOg = new Conditions(true, LogicType.OR, new DialogRequirement("Here is a key to the chest it's in.", "Where my gold from dat dirty Toban?"),
-			new WidgetTextRequirement(119, 3, true, "Og wants me to", "I have Og's <col=800000>stolen gold"), hasTobansKey);
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Og wants me to", "I have Og's <col=800000>stolen gold"), hasTobansKey);
 
 		talkedToToban = new Conditions(true, LogicType.OR, new DialogRequirement("Prove to me your might", "Hahaha! Small t'ing returns."),
-			new WidgetTextRequirement(119, 3, true, "Toban wants me to give him", "I have the <col=800000>dragon bones"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Toban wants me to give him", "I have the <col=800000>dragon bones"));
 
 		hasRelic1 = new Conditions(true, LogicType.OR, relic1,
-			new WidgetTextRequirement(119, 3, true, "I returned Og's stolen gold."));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I returned Og's stolen gold."));
 
 		hasRelic2 = new Conditions(true, LogicType.OR, relic2,
-			new WidgetTextRequirement(119, 3, true, "I knocked out one of Gorad's teeth and gave it to Grew."));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I knocked out one of Gorad's teeth and gave it to Grew."));
 
 		hasRelic3 = new Conditions(true, LogicType.OR, relic3,
-			new WidgetTextRequirement(119, 3, true, "I gave the dragon bones to Toban."));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I gave the dragon bones to Toban."));
 
 		gettingOgreRockCake = new VarbitRequirement(3120, 1);
 		gaveCake = new Conditions(true, LogicType.OR,
 			new DialogRequirement("This time we will let it go."),
 			new DialogRequirement("Well, well, look at this."),
-			new WidgetTextRequirement(119, 3, true, "<str>I gave the north-east guard a rock cake."),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I gave the north-east guard a rock cake."),
 			inAreaBeforeBridgeJump
 		);
 		// 3319, 1, tried to enter city
 		knowsRiddle = new VarbitRequirement(3121, 1);
 
 		talkedToScaredSkavid = new Conditions(true, LogicType.OR, new DialogRequirement("Master, how are you doing", "Those will gets you started."),
-			new WidgetTextRequirement(119, 3, true, "ar, nod, gor, ig, cur"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "ar, nod, gor, ig, cur"));
 
 		talkedToSkavid1 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom1, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextRequirement(119, 3, true, "'Bidith tanath'"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "'Bidith tanath'"));
 		talkedToSkavid2 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom2, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextRequirement(119, 3, true, "'Gor cur'"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "'Gor cur'"));
 		talkedToSkavid3 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom3, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextRequirement(119, 3, true, "'Cur bidith'"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "'Cur bidith'"));
 		talkedToSkavid4 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom4, "It seems the skavid understood you.", "You have already talked to this skavid."),
-			new WidgetTextRequirement(119, 3, true, "'Gor nod'"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "'Gor nod'"));
 
 		seenShamans = new VarbitRequirement(3125, 1);
 

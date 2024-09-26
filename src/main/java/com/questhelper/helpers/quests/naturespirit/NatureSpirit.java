@@ -57,6 +57,7 @@ import java.util.Map;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 
 public class NatureSpirit extends BasicQuestHelper
 {
@@ -213,11 +214,11 @@ public class NatureSpirit extends BasicQuestHelper
 		mirrorNearby = new ItemOnTileRequirement(mirror);
 		usedMushroom = new Conditions(true, LogicType.OR, new ChatMessageRequirement("The stone seems to absorb the fungus."),
 			new WidgetTextRequirement(229, 1, "nature symbol<br>scratched into it. This stone seems complete in some way."),
-			new WidgetTextRequirement(119, 3, true, "Mort Myre Fungi was absorbed"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Mort Myre Fungi was absorbed"));
 		usedCard = new Conditions(true, LogicType.OR, new ChatMessageRequirement("The stone seems to absorb the used spell scroll."),
 			new ChatMessageRequirement("The stone seems to absorb the spell scroll."),
 			new WidgetTextRequirement(229, 1, "spirit symbol<br>scratched into it. This stone seems to be complete"),
-			new WidgetTextRequirement(119, 3, true, "spell scroll was absorbed"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "spell scroll was absorbed"));
 
 		ghastNearby = new NpcCondition(NpcID.GHAST_946);
 

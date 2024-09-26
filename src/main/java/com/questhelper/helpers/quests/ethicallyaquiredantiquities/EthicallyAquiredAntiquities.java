@@ -77,7 +77,7 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 
 	QuestStep inspectEmptyDisplayCase, talkToCuratorHerminius, investigateToolsBehindDisplayCase, investigateCaseAgain, talkToCitizen, talkToAcademic,
 		talkToTourist, talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes, talkToCuratorHaigHalen,
-		searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, returnToCuratorHerminius;
+		searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene, returnToCuratorHerminius;
 
 	Requirement investigatedToolsBehindEmptyCase, investigatedCaseAgain, talkedToCitizen, talkedToAcademic, talkedToTourist, talkedToArtima;
 
@@ -115,10 +115,11 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 		ConditionalStep goLootRoom = new ConditionalStep(this, talkToCuratorHaigHalen);
 		goLootRoom.addStep(storeRoomKey, searchStoreroomCrate);
 		steps.put(24, goLootRoom);
+		steps.put(26, searchStoreroomCrate);
 		steps.put(28, talkToCuratorBeforeShaming);
 		steps.put(30, shameCuratorHaigHalen);
-		steps.put(32, returnToCuratorHerminius);
-		steps.put(34, returnToCuratorHerminius);
+		steps.put(32, talkToCuratorBeforeCutscene);
+		steps.put(34, watchCutscene);
 		steps.put(36, returnToCuratorHerminius);
 
 
@@ -195,7 +196,7 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 		((NpcStep)talkToTraderStan).addAlternateNpcs(NpcID.TRADER_STAN_9300, NpcID.TRADER_STAN_9301, NpcID.TRADER_STAN_9302, NpcID.TRADER_STAN_9303, NpcID.TRADER_STAN_9304, NpcID.TRADER_STAN_9305, NpcID.TRADER_STAN_9307, NpcID.TRADER_STAN_9308, NpcID.TRADER_STAN_9309, NpcID.TRADER_STAN_9310, NpcID.TRADER_STAN_9311);
 		talkToBetty = new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3011, 3260, 0), "Head to the Rune Shop in north western Port Sarim and speak to Betty.");
 		talkToBetty.addDialogStep("Have you seen a grey-haired man with a case?");
-		readBettysNotes = new DetailedQuestStep(this, "Read Betty's Diary", bettysNotes);
+		readBettysNotes = new DetailedQuestStep(this, "Read Betty's notes.", bettysNotes);
 		talkToCuratorHaigHalen = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Head to Varrock Museum and speak to Curator Haig Halen. Select option about Xerna's Diadem then pickpocket him.");
 		talkToCuratorHaigHalen.addDialogStep("I'm looking for Xerna's Diadem.");
 		searchStoreroomCrate = new ObjectStep(this, ObjectID.CRATE_54697, new WorldPoint(3266, 3458, 0), "Open the door to the room in the north east and search the crate.");
@@ -218,6 +219,8 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 			"Think of the Varlamorian children who won't get to see this artefact.", "You should give Varlamore a chance before stealing their stuff.",
 			"This is stealing! Thieving! Taking what's not yours!", "I thought archaeology was cool. I didn't realise it was just thieving!",
 			"How would you feel if someone came in here and stole all your stuff?", "You're hoarding artefacts, but you should be sharing them!");
+		talkToCuratorBeforeCutscene = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Speak to Curator before a cutscene.");
+		watchCutscene = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Watch cutscene.");
 		returnToCuratorHerminius = new NpcStep(this, NpcID.CURATOR_HERMINIUS, new WorldPoint(1712, 3163, 0), "Speak to the Curator in the centre of the Grand Museum to complete the quest.");
 		returnToCuratorHerminius.addDialogStep("About that empty display...");
 
@@ -273,7 +276,7 @@ public class EthicallyAquiredAntiquities extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Done with museum visit", Arrays.asList(talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes)));
 
-		allSteps.add(new PanelDetails("Nevermind, another one", Arrays.asList(talkToCuratorHaigHalen, searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, returnToCuratorHerminius)));
+		allSteps.add(new PanelDetails("Nevermind, another one", Arrays.asList(talkToCuratorHaigHalen, searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene, returnToCuratorHerminius)));
 		return allSteps;
 
 	}

@@ -73,6 +73,7 @@ public class BikeShedder extends BasicQuestHelper
 	private ItemRequirement conditionalRequirementGoldBar;
 	private WidgetTextRequirement lookAtCooksAssistantRequirement;
 	private DetailedQuestStep lookAtCooksAssistant;
+	private WidgetTextRequirement lookAtCooksAssistantTextRequirement;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -139,7 +140,9 @@ public class BikeShedder extends BasicQuestHelper
 
 		lookAtCooksAssistantRequirement = new WidgetTextRequirement(ComponentID.DIARY_TITLE, "Cook's Assistant");
 		lookAtCooksAssistantRequirement.setDisplayText("Cook's Assistant quest journal open");
-		lookAtCooksAssistant = new DetailedQuestStep(this, "Open the Cook's Assistant quest journal. You must have started the quest for this test to work.", lookAtCooksAssistantRequirement);
+		lookAtCooksAssistantTextRequirement = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "he now lets me use his high quality range");
+		lookAtCooksAssistantTextRequirement.setDisplayText("Cook's Assistant quest journal open & received reward (checking text)");
+		lookAtCooksAssistant = new DetailedQuestStep(this, "Open the Cook's Assistant quest journal. You must have started the quest for this test to work.", lookAtCooksAssistantRequirement, lookAtCooksAssistantTextRequirement);
 	}
 
 	@Override
@@ -153,7 +156,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Use log on mysterious bush", List.of(useLogOnBush), List.of(anyLog)));
 		panels.add(new PanelDetails("Use coins on mysterious bush", List.of(useCoinOnBush, useManyCoinsOnBush), List.of(oneCoin, manyCoins)));
 		panels.add(new PanelDetails("Conditional requirement", List.of(conditionalRequirementLookAtCoins), List.of(conditionalRequirementCoins, conditionalRequirementGoldBar)));
-		panels.add(new PanelDetails("Quest state", List.of(lookAtCooksAssistant), List.of(lookAtCooksAssistantRequirement)));
+		panels.add(new PanelDetails("Quest state", List.of(lookAtCooksAssistant), List.of(lookAtCooksAssistantRequirement, lookAtCooksAssistantTextRequirement)));
 
 		return panels;
 	}

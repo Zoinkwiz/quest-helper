@@ -61,6 +61,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 
 public class TheDigSite extends BasicQuestHelper
 {
@@ -286,10 +287,10 @@ public class TheDigSite extends BasicQuestHelper
 
 
 		syncedUp = new Conditions(true, LogicType.OR, knowStateAsJustStartedQuest,
-			new WidgetTextRequirement(119, 2, "The Dig Site"));
+			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "The Dig Site"));
 
 		syncedUp2 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedFirstExam,
-			new WidgetTextRequirement(119, 2, "The Dig Site"),
+			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "The Dig Site"),
 			new DialogRequirement("You got all the questions correct. Well done!"),
 			new DialogRequirement("Hey! Excellent!"));
 
@@ -305,44 +306,44 @@ public class TheDigSite extends BasicQuestHelper
 		// Exam questions 1
 		talkedToFemaleStudent = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Hey! My lucky mascot!"),
-			new WidgetTextRequirement(119, 3, true, "I should talk to her to see if she can help"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I should talk to her to see if she can help"));
 		femaleStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The proper health and safety points are"),
-			new WidgetTextRequirement(119, 3, true, "She gave me an answer"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "She gave me an answer"));
 
-		WidgetTextRequirement orangeGivenAnswer1Diary = new WidgetTextRequirement(119, 3, true, "He gave me an answer to one of the questions");
+		WidgetTextRequirement orangeGivenAnswer1Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "He gave me an answer to one of the questions");
 		orangeGivenAnswer1Diary.addRange(20, 35);
 		talkedToOrangeStudent = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Look what I found!"),
-			new WidgetTextRequirement(119, 3, true, "<str>to find it and return it to him."));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>to find it and return it to him."));
 		orangeStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The people eligible to use the digsite are:"),
 			orangeGivenAnswer1Diary);
 
-		WidgetTextRequirement greenGivenAnswer1Diary = new WidgetTextRequirement(119, 3, true, "He gave me an answer to one of the questions");
+		WidgetTextRequirement greenGivenAnswer1Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "He gave me an answer to one of the questions");
 		greenGivenAnswer1Diary.addRange(0, 19);
 
 		talkedToGreenStudent = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Oh wow! You've found it!"),
-			new WidgetTextRequirement(119, 3, true, "<str>to him; maybe someone has picked it up?"));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>to him; maybe someone has picked it up?"));
 		greenStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The study of Earth Sciences is:"),
 			greenGivenAnswer1Diary);
 
 		// Exam questions 2
-		WidgetTextRequirement femaleGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
+		WidgetTextRequirement femaleGivenAnswer2Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the purple skirt about");
 		femaleGivenAnswer2Diary.addRange(43, 52);
 		femaleStudentQ2Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Finds handling: Finds must"),
 			femaleGivenAnswer2Diary);
 
-		WidgetTextRequirement orangeGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the orange top about the");
+		WidgetTextRequirement orangeGivenAnswer2Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the orange top about the");
 		orangeGivenAnswer2Diary.addRange(43, 52);
 		orangeStudentQ2Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Correct sample transportation: "),
 			orangeGivenAnswer2Diary);
 
-		WidgetTextRequirement greenGivenAnswer2Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the green top about the");
+		WidgetTextRequirement greenGivenAnswer2Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the green top about the");
 		greenGivenAnswer2Diary.addRange(43, 52);
 		greenStudentQ2Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Correct rock pick usage: Always handle"),
@@ -352,20 +353,20 @@ public class TheDigSite extends BasicQuestHelper
 		femaleExtorting = new Conditions(true, LogicType.OR,
 			new DialogRequirement("OK, I'll see what I can turn up for you."),
 			new DialogRequirement("Well, I have seen people get them from panning"),
-			new WidgetTextRequirement(119, 3, true, "I need to bring her an opal"));
-		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the purple skirt about");
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I need to bring her an opal"));
+		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the purple skirt about");
 		femaleGivenAnswer3Diary.addRange(56, 63);
 		femaleStudentQ3Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Sample preparation: Samples cleaned"),
 			femaleGivenAnswer3Diary);
 
-		WidgetTextRequirement orangeGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the orange top about the");
+		WidgetTextRequirement orangeGivenAnswer3Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the orange top about the");
 		orangeGivenAnswer3Diary.addRange(56, 63);
 		orangeStudentQ3Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The proper technique for handling bones is: Handle"),
 			orangeGivenAnswer3Diary);
 
-		WidgetTextRequirement greenGivenAnswer3Diary = new WidgetTextRequirement(119, 3, true, "<str>I need to speak to the student in the green top about the");
+		WidgetTextRequirement greenGivenAnswer3Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the green top about the");
 		greenGivenAnswer3Diary.addRange(56, 63);
 		greenStudentQ3Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Specimen brush use: Brush carefully"),

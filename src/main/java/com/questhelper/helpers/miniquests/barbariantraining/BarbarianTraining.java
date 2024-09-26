@@ -59,6 +59,7 @@ import java.util.*;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 
 public class BarbarianTraining extends BasicQuestHelper
 {
@@ -272,7 +273,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Certainly. Take the rod from under my bed and fish in the lake. When you have caught a few fish, I am sure you will be ready to talk more with me."),
 				new DialogRequirement("Alas, I do not sense that you have been successful in your fishing yet. The look in your eyes is not that of the osprey."),
-				new WidgetTextRequirement(119, 3, true, "fish with a new")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "fish with a new")
 			)
 		);
 
@@ -281,7 +282,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("... and I thought fishing was a safe way to pass the time."),
 				new DialogRequirement("I see you need encouragement in learning the ways of fishing without a harpoon."),
-				new WidgetTextRequirement(119, 3, true, "fish with my")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "fish with my")
 			)
 		);
 
@@ -290,7 +291,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Remember to be calm, and good luck."),
 				new DialogRequirement("I see you have yet to be successful in planting a seed with your fists."),
-				new WidgetTextRequirement(119, 3, true, "plant a seed with")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "plant a seed with")
 			)
 		);
 
@@ -299,7 +300,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("May the spirits guide you into success."),
 				new DialogRequirement("You have not yet attempted to plant a tree. Why not?"),
-				new WidgetTextRequirement(119, 3, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smash pots after")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smash pots after")
 			)
 		);
 
@@ -308,7 +309,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("The spirits will aid you. The power they supply will guide your hands. Go and benefit from their guidance upon oak logs."),
 				new DialogRequirement("By now you know my response."),
-				new WidgetTextRequirement(119, 3, true, "light a fire with")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "light a fire with")
 			)
 		);
 
@@ -317,7 +318,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Dive into the whirlpool in the lake to the east. The spirits will use their abilities to ensure you arrive in the correct location. Be warned, their influence fades, so you must find y"),
 				new DialogRequirement("I will repeat myself fully, since this is quite complex. Listen well."),
-				new WidgetTextRequirement(119, 3, true, "Otto<col=000080> has tasked me with learning how to <col=800000>create pyre ships")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Otto<col=000080> has tasked me with learning how to <col=800000>create pyre ships")
 			)
 		);
 
@@ -326,7 +327,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Have I become so predictable? But yes, I do indeed require a potion. It is of the highest importance that you bring me a lesser attack potion combined with fish roe."),
 				new DialogRequirement("Do you have my potion?"),
-				new WidgetTextRequirement(119, 3, true, "Otto<col=000080> has tasked me with learning how to make a <col=800000>new type")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Otto<col=000080> has tasked me with learning how to make a <col=800000>new type")
 			)
 		);
 
@@ -335,7 +336,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Note well that you will require wood for the spear shafts. The quality of wood must be similar to that of the metal involved."),
 				new DialogRequirement("You do not exude the presence of one who has poured his soul into manufacturing spears."),
-				new WidgetTextRequirement(119, 3, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
 			)
 		);
 
@@ -344,7 +345,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),
 				new DialogRequirement("Take some wood and metal and make a spear upon the<br>nearby anvil, then you may return to me. As an<br>example, you may use bronze bars with normal logs or<br>iron bars with oak logs."),
-				new WidgetTextRequirement(119, 3, true, " has tasked me with learning how to <col=800000>smith a hasta")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, " has tasked me with learning how to <col=800000>smith a hasta")
 			)
 		);
 
@@ -353,7 +354,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FISHING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Patience young one. These are fish which are fat with eggs rather than fat of flesh. It is these eggs that are the thing to make use of."),
-				new WidgetTextRequirement(119, 3, true, "I managed to catch a fish with the new rod!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to catch a fish with the new rod!")
 			),
 			"Finished Barbarian Fishing"
 		);
@@ -362,7 +363,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HARPOON.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("I mean that when you eventually die and find peace, at least the spirits you encounter will be your friends. Alas for you adventurous sort, the natural ways of passing are close to imp"),
-				new WidgetTextRequirement(119, 3, true, "I managed to fish with my hands!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to fish with my hands!")
 			),
 			"Finished Barbarian Harpooning"
 		);
@@ -371,7 +372,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("No child, but we all have potential to improve our strength."),
-				new WidgetTextRequirement(119, 3, true, "<str>I managed to plant a seed with my fists!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I managed to plant a seed with my fists!")
 			),
 			"Finished Barbarian Seed Planting"
 		);
@@ -380,7 +381,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_POT_SMASHING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("It will become more natural with practice."),
-				new WidgetTextRequirement(119, 3, true, "<str>I managed to smash a plant pot without littering!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I managed to smash a plant pot without littering!")
 			),
 			"Finished Barbarian Pot Smashing"
 		);
@@ -389,7 +390,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FIREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Fine news indeed!"),
-				new WidgetTextRequirement(119, 3, true, "I managed to light a fire with a bow!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to light a fire with a bow!")
 			),
 			"Finished Barbarian Firemaking"
 		);
@@ -398,7 +399,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_PYREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("On this great day you have my eternal thanks. May you find riches while rescuing my spiritual ancestors in the caverns for many moons to come."),
-				new WidgetTextRequirement(119, 3, true, "I managed to create a pyre ship!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to create a pyre ship!")
 			),
 			"Finished Barbarian Pyremaking"
 		);
@@ -407,7 +408,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SPEAR.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("The manufacture of spears is now yours as a speciality. Use your skill well."),
-				new WidgetTextRequirement(119, 3, true, "I managed to smith a spear!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to smith a spear!")
 			),
 			"Finished Barbarian Spear Smithing"
 		);
@@ -416,7 +417,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HASTA.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("To live life to it's fullest of course - that you may be a peaceful spirit when your time ends."),
-				new WidgetTextRequirement(119, 3, true, "I managed to create a hasta!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to create a hasta!")
 			),
 			"Finished Barbarian Hasta Smithing"
 		);
@@ -425,7 +426,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HERBLORE.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("I will take that off your hands now. I will say no more than that I am eternally grateful."),
-				new WidgetTextRequirement(119, 3, true, "I managed to create a new potion!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to create a new potion!")
 			),
 			"Finished Barbarian Herblore"
 		);
@@ -438,7 +439,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You plant "),
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
 			)
 		);
 
@@ -450,7 +451,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement(" sapling"),
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>smash a pot without littering<col=000080>!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>smash a pot without littering<col=000080>!")
 			)
 		);
 
@@ -461,7 +462,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("The fire catches and the logs begin to burn."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>light a fire with a bow<col=000080>!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>light a fire with a bow<col=000080>!")
 			)
 		);
 
@@ -472,7 +473,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("The ancient barbarian is laid to rest."),
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
 			)
 		);
 
@@ -483,7 +484,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You catch a leaping trout.", "You catch a leaping salmon.", "You catch a leaping sturgeon."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
 			)
 		);
 
@@ -494,7 +495,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You catch a tuna.", "You catch a swordfish.", "You catch a shark.", "You catch a shark!"),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
 			)
 		);
 
@@ -505,7 +506,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You combine your potion with the fish eggs."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
 			)
 		);
 
@@ -517,7 +518,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement(" spear."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>smith a spear<col=000080>!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>smith a spear<col=000080>!")
 			)
 		);
 
@@ -529,7 +530,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement(" hasta."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(119, 3, true, "I've managed to <col=800000>smith a hasta<col=000080>!")
+				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>smith a hasta<col=000080>!")
 			)
 		);
 

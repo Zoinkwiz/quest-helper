@@ -35,6 +35,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.widgets.Widget;
+import javax.annotation.Nonnull;
 
 public class WidgetTextRequirement extends SimpleRequirement
 {
@@ -53,6 +54,9 @@ public class WidgetTextRequirement extends SimpleRequirement
 	// Used to restrict the considered set of children
 	private int min = -1;
 	private int max = -1;
+
+	@Setter
+	private String displayText = "";
 
 	public WidgetTextRequirement(@Component int componentId, String... text)
 	{
@@ -182,5 +186,12 @@ public class WidgetTextRequirement extends SimpleRequirement
 	public void checkWidgetText(Client client)
 	{
 		hasPassed = hasPassed || checkWidget(client);
+	}
+
+	@Nonnull
+	@Override
+	public String getDisplayText()
+	{
+		return displayText;
 	}
 }

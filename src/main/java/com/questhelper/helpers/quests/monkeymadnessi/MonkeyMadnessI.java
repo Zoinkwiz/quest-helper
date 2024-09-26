@@ -455,13 +455,13 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		givenDentures = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the magical monkey dentures."),
-			new WidgetTextRequirement(119, 3, true, "<str> - Something to do with monkey speech."));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - Something to do with monkey speech."));
 		givenBar = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the gold bar."),
-			new WidgetTextRequirement(119, 3, true, "<str> - A gold bar."));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - A gold bar."));
 		givenMould = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey amulet mould."),
-			new WidgetTextRequirement(119, 3, true, "<str> - A monkey amulet mould."));
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - A monkey amulet mould."));
 
 		hasTalisman = new Conditions(LogicType.OR, karamjanGreegree, talisman);
 
@@ -470,11 +470,11 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		givenTalisman = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey talisman."),
-			new WidgetTextRequirement(119, 3, true, "<str> - An authentic magical monkey talisman.")
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - An authentic magical monkey talisman.")
 		);
 		givenBones = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey remains."),
-			new WidgetTextRequirement(119, 3, true, "<str> - Some kind of monkey remains.")
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - Some kind of monkey remains.")
 		);
 
 		talkedToGarkorWithGreeGree = new VarbitRequirement(126, 3, Operation.GREATER_EQUAL);
@@ -492,7 +492,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		givenMonkey = new RuneliteRequirement(getConfigManager(), "mm1givenmonkey", new Conditions(true,
 			LogicType.OR,
 			givenMonkeyDialog,
-			new WidgetTextRequirement(119, 3, true, "appear to have earnt Awowogei's favour.")
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "appear to have earnt Awowogei's favour.")
 		));
 
 		gotSigil = new VarbitRequirement(126, 6, Operation.GREATER_EQUAL);

@@ -57,6 +57,7 @@ import java.util.Map;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 
 public class FairytaleI extends BasicQuestHelper
 {
@@ -203,7 +204,7 @@ public class FairytaleI extends BasicQuestHelper
 
 
 		talkedToFarmers = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(119, 3, true, "back and talk to <col=800000>Martin"),
+			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "back and talk to <col=800000>Martin"),
 			new DialogRequirement("Right, well thanks for your input."),
 			new DialogRequirement("I don't think the crops ARE failing"));
 

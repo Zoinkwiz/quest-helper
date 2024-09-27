@@ -87,7 +87,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	ItemRequirement litSapphireLantern, airRune, earthRune, fireRune, waterRune, mindRune, lawRune,
 		deathRune, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
 		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, combatGear, logs, knife, snapdragonSeed, astralRune, cosmicRune,
-		bindRunes, weakenRunes, magicGear, squallOutfit, eliteBlackKnightOutfit, telegrabRunes, alchRunes;
+		bindRunes, weakenRunes, magicGear, squallOutfit, eliteBlackKnightOutfit, telegrabRunes, alchRunes, elementalSpellRunes;
 
 	// Items Recommended
 	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport, faladorTeleport, staminaPotion, superRestore,
@@ -707,10 +707,15 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		ItemRequirement bodyRune = new ItemRequirement("Body rune", ItemID.BODY_RUNE);
 		ItemRequirement lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
 
-		bindRunes = new ItemRequirements("Bind spell", natureRune.quantity(2), waterRune.quantity(3), earthRune.quantity(3));
-		weakenRunes = new ItemRequirements("Weaken spell", bodyRune, waterRune.quantity(3), earthRune.quantity(2));
-		alchRunes = new ItemRequirements("Low level alchemy spell", natureRune, fireRune.quantity(3));
-		telegrabRunes = new ItemRequirements("Telekinetic grab", lawRune, airRune);
+		ItemRequirement catalystRune = new ItemRequirement("Mind/Chaos/Death/Blood/Wrath runes" , ItemID.MIND_RUNE);
+		catalystRune.addAlternates(ItemID.CHAOS_RUNE, ItemID.BLOOD_RUNE, ItemID.WRATH_RUNE);
+
+		bindRunes = new ItemRequirements("Many casts of a Bind spell", natureRune.quantity(2), waterRune.quantity(3), earthRune.quantity(3));
+		weakenRunes = new ItemRequirements("Many casts of a Weaken spell", bodyRune, waterRune.quantity(3), earthRune.quantity(2));
+		alchRunes = new ItemRequirements("Many casts of Low level alchemy spell", natureRune, fireRune.quantity(3));
+		telegrabRunes = new ItemRequirements("Many casts of a Telekinetic grab", lawRune, airRune);
+		elementalSpellRunes = new ItemRequirements("Many casts of your strongest wind, water, earth, and fire spells", catalystRune.quantity(200),
+			airRune.quantity(1000), waterRune.quantity(1000), earthRune.quantity(1000), fireRune.quantity(1000));
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
@@ -1728,7 +1733,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif,
 			useRestoreOnSilif, giveSilifEliteArmour, talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurokSidebar, plantOrbOnSurok,
 			talkToAkrisaeAfterSurok),
-			List.of(normalSpellbook, emptySlots9, bronzeMedHelm, ironChainbody, magicGear, meleeGear, unpoweredOrb, chargeOrbSpell), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes, food, prayerPotions, faladorTeleport, staminaPotion)));
+			List.of(normalSpellbook, emptySlots9, bronzeMedHelm, ironChainbody, magicGear, meleeGear, unpoweredOrb, chargeOrbSpell), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes,
+			elementalSpellRunes, food, prayerPotions, faladorTeleport, staminaPotion)));
 		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, goDownForOrbAndRunes, takeRunes, takeStrangeTeleorb, goUpToUseTeleorb,
 			standAtTeleportSpot, activateStrangeTeleorb, climbIceWall, jumpToLedge)));
 		allSteps.add(new PanelDetails("Delving Deeper", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,

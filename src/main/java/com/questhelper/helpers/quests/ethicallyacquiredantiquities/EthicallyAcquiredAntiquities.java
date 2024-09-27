@@ -203,7 +203,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 		talkToCuratorHaigHalen.addTeleport(varrockTeleport);
 		searchStoreroomCrate = new ObjectStep(this, ObjectID.CRATE_54697, new WorldPoint(3266, 3458, 0), "Open the door to the room in the north east and " +
 				"search the crate.");
-		talkToCuratorBeforeShaming = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Go speak to Curator Haig Halen.");
+		talkToCuratorBeforeShaming = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Go speak to Curator Haig Halen again.");
 		talkToCuratorBeforeShaming.addDialogStep("I found Xerna's Diadem...");
 		shameCuratorHaigHalen = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Shame Curator Haig Halen, get the meter to 100%.");
 		shameCuratorHaigHalen.addDialogStep("I found Xerna's Diadem...");

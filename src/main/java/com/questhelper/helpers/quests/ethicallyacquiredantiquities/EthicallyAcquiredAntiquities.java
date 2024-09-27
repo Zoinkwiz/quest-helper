@@ -58,7 +58,8 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 
-public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
+public class EthicallyAcquiredAntiquities extends BasicQuestHelper
+{
 	//Items Recommended
 	ItemRequirement varrockTeleport, civitasIllaFortisTeleport, coinsForCharter, staminaPotion, fixedSail, bettysNotes, storeRoomKey;
 
@@ -67,7 +68,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
 
 	QuestStep talkToCuratorHerminius, investigateToolsBehindDisplayCase, investigateCaseAgain, talkToCitizen, talkToAcademic,
 			talkToTourist, talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes,
-			searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene;
+			pickpocketCuratorHaig, searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene;
 
 	DetailedQuestStep inspectEmptyDisplayCase, talkToCuratorHaigHalen, returnToCuratorHerminius;
 
@@ -100,7 +101,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
 		steps.put(18, talkToBetty);
 		steps.put(20, readBettysNotes);
 		steps.put(22, talkToCuratorHaigHalen);
-		ConditionalStep goLootRoom = new ConditionalStep(this, talkToCuratorHaigHalen);
+		ConditionalStep goLootRoom = new ConditionalStep(this, pickpocketCuratorHaig);
 		goLootRoom.addStep(storeRoomKey, searchStoreroomCrate);
 		steps.put(24, goLootRoom);
 		steps.put(26, searchStoreroomCrate);
@@ -134,6 +135,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
 		tatteredSail.setTooltip("You can get another from one of the trader crewmembers in the Fortis Cothon");
 		fixedSail = new ItemRequirement("Sails", ItemID.SAILS);
 		bettysNotes = new ItemRequirement("Betty's Notes", ItemID.BETTYS_NOTES);
+		bettysNotes.setTooltip("Talk to Betty in Port Sarim for them");
 		bettysNotes.setHighlightInInventory(true);
 		storeRoomKey = new ItemRequirement("Key for Storeroom", ItemID.STOREROOM_KEY_29906);
 	}
@@ -191,7 +193,10 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
 		talkToBetty = new NpcStep(this, NpcID.BETTY_5905, new WorldPoint(3011, 3260, 0), "Head to the Rune Shop in north western Port Sarim and speak to Betty" +
 				".");
 		talkToBetty.addDialogStep("Have you seen a grey-haired man with a case?");
+		// 11206 0->1 is received betty's notes first time
 		readBettysNotes = new DetailedQuestStep(this, "Read Betty's notes.", bettysNotes);
+		pickpocketCuratorHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Right-click pickpocket Curator Haig Halen.");
+		pickpocketCuratorHaig.addIcon(ItemID.THIEVING_CAPE);
 		talkToCuratorHaigHalen = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Head to Varrock Museum and speak to Curator Haig " +
 				"Halen.");
 		talkToCuratorHaigHalen.addDialogStep("I'm looking for Xerna's Diadem.");
@@ -255,17 +260,20 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements() {
+	public List<ItemRequirement> getItemRequirements()
+	{
 		return Arrays.asList(coinsForCharter);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended() {
+	public List<ItemRequirement> getItemRecommended()
+	{
 		return Arrays.asList(varrockTeleport, civitasIllaFortisTeleport.quantity(2), staminaPotion);
 	}
 
 	@Override
-	public List<Requirement> getGeneralRequirements() {
+	public List<Requirement> getGeneralRequirements()
+	{
 		return List.of(
 				new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED),
 				new QuestRequirement(QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG, QuestState.FINISHED, "Finished Shield of Arrav"),
@@ -274,12 +282,14 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
 	}
 
 	@Override
-	public QuestPointReward getQuestPointReward() {
+	public QuestPointReward getQuestPointReward()
+	{
 		return new QuestPointReward(1);
 	}
 
 	@Override
-	public List<ExperienceReward> getExperienceRewards() {
+	public List<ExperienceReward> getExperienceRewards()
+	{
 		return Collections.singletonList(
 				new ExperienceReward(Skill.THIEVING, 6000)
 		);
@@ -298,7 +308,8 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
 
 		allSteps.add(new PanelDetails("Done with museum visit", Arrays.asList(talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes), Arrays.asList(coinsForCharter)));
 
-		allSteps.add(new PanelDetails("Nevermind, another one", Arrays.asList(talkToCuratorHaigHalen, searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene, returnToCuratorHerminius), Arrays.asList(varrockTeleport, civitasIllaFortisTeleport)));
+		allSteps.add(new PanelDetails("Nevermind, another one", Arrays.asList(talkToCuratorHaigHalen, pickpocketCuratorHaig, searchStoreroomCrate, talkToCuratorBeforeShaming,
+				shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene, returnToCuratorHerminius), Arrays.asList(varrockTeleport, civitasIllaFortisTeleport)));
 		return allSteps;
 
 	}

@@ -27,15 +27,13 @@ package com.questhelper.runeliteobjects;
 
 import com.questhelper.runeliteobjects.extendedruneliteobjects.FakeNpc;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
-import net.runelite.api.Client;
-import net.runelite.api.JagexColor;
-import net.runelite.api.Model;
-import net.runelite.api.ModelData;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 
@@ -45,6 +43,7 @@ public class Cheerer
 
 	public static void createCheerers(RuneliteObjectManager runeliteObjectManager, Client client, ConfigManager configManager)
 	{
+		cheerers.clear();
 		createWOM(runeliteObjectManager, client);
 		createZoinkwiz(runeliteObjectManager, client);
 	}
@@ -64,33 +63,18 @@ public class Cheerer
 
 	private static Model wiseOldManOutfit(Client client)
 	{
-		short clothingColor = JagexColor.rgbToHSL(new Color(102, 93, 44).getRGB(), 0.6d);
-		short blue = JagexColor.rgbToHSL(Color.BLUE.getRGB(), 1.0d);
-		ModelData skirt = client.loadModelData(265).cloneColors()
-			.recolor((short)25238, clothingColor);
+		NPCComposition wom = client.getNpcDefinition(NpcID.WISE_OLD_MAN);
+		int[] models = wom.getModels();
+		short[] coloursToReplace = wom.getColorToReplace();
+		short[] coloursToReplaceWith = wom.getColorToReplaceWith();
+		ModelData mdf = createModel(client, models); // feet?
 
-		ModelData shirt = client.loadModelData(292).cloneColors()
-			.recolor((short)8741, clothingColor);
-
-		ModelData arms = client.loadModelData(170).cloneColors()
-			.recolor((short)8741, clothingColor);
-
-		// 8741
-		ModelData cape = client.loadModelData(323).cloneColors()
-			.recolor((short) 926, blue) // Inside
-			.recolor((short) 7700, blue) // Mail cape
-			.recolor((short) 11200, (short) 8741); // Trim
-
-		ModelData partyhat = client.loadModelData(187).cloneColors()
-			.recolor((short)926, blue);
-		ModelData mdf = createModel(client,
-			9103, // face
-			4925, // beard
-			176, // hands
-			181); // feet?
-
-		mdf = createModel(client, mdf, skirt, shirt, arms, cape, partyhat);
-
+		if (coloursToReplace != null && coloursToReplaceWith != null && coloursToReplace.length == coloursToReplaceWith.length) {
+			for (int i=0; i < coloursToReplace.length; i++)
+			{
+				mdf.recolor(coloursToReplace[i], coloursToReplaceWith[i]);
+			}
+		}
 		return mdf.cloneColors()
 			.light();
 	}
@@ -111,25 +95,18 @@ public class Cheerer
 	private static Model zoinkwizOutfit(Client client)
 	{
 		short qpcDark = (short) -22440;
-		final int QUEST_HOOD_MALE = 18914;
 		final int QUEST_CAPE_MALE = 18946;
-
-		ModelData hood = client.loadModelData(QUEST_HOOD_MALE).cloneColors()
-			.recolor((short) -21568, qpcDark) // Inside
-			.recolor((short) 22464, qpcDark)
-			.recolor((short) 960, qpcDark);
 
 		ModelData cape = client.loadModelData(QUEST_CAPE_MALE).cloneColors()
 			.recolor((short) -8256, qpcDark) // Outside trim
 			.recolor((short) -11353, JagexColor.rgbToHSL(Color.WHITE.getRGB(), 1.0d)); // Inside trim
 
 		ModelData mdf = createModel(client,
-			11359, 38101, 38079, 4925, 10706, 358);
-		mdf = createModel(client, mdf, hood, cape);
+				46603, 46606, 46607, 46608, 7207);
+		mdf = createModel(client, mdf, cape);
 
 		return mdf.cloneColors()
-			.light(10 + ModelData.DEFAULT_AMBIENT, 1875 + ModelData.DEFAULT_CONTRAST,
-				ModelData.DEFAULT_X, ModelData.DEFAULT_Y, 20);
+			.light(64, 768, -50, -50, 10);
 	}
 
 	private static ModelData createModel(Client client, ModelData... data)

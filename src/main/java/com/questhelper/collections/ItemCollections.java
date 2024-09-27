@@ -162,7 +162,8 @@ public enum ItemCollections
 
 	HAMMER("Hammer", ImmutableList.of(
 		ItemID.HAMMER,
-		ItemID.IMCANDO_HAMMER
+		ItemID.IMCANDO_HAMMER,
+		ItemID.IMCANDO_HAMMER_OFFHAND
 	)),
 
 	SAW("Saw", ImmutableList.of(

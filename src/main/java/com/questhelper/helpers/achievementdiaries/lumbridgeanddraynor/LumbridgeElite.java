@@ -26,9 +26,11 @@ package com.questhelper.helpers.achievementdiaries.lumbridgeanddraynor;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarComparisonRequirement;
+import com.questhelper.requirements.var.VarType;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -50,17 +52,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
-import javax.annotation.Nonnull;
 
 public class LumbridgeElite extends ComplexStateQuestHelper
 {
@@ -134,35 +131,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		notWaterRunes = new VarplayerRequirement(1195, false, 8);
 		notQCEmote = new VarplayerRequirement(1195, false, 9);
 
-		allQuests = new Requirement()
-		{
-			@Override
-			public boolean check(Client client)
-			{
-				boolean allQuestsCompleted = true;
-				for (QuestHelperQuest quest : QuestHelperQuest.values())
-				{
-					if (quest.getQuestType() == QuestDetails.Type.F2P
-						|| quest.getQuestType() == QuestDetails.Type.P2P)
-					{
-						if (quest.getState(client, configManager) != QuestState.FINISHED)
-						{
-							allQuestsCompleted = false;
-							break;
-						}
-					}
-				}
-
-				return allQuestsCompleted;
-			}
-
-			@Nonnull
-			@Override
-			public String getDisplayText()
-			{
-				return "All Quests are Completed";
-			}
-		};
+		allQuests = new VarComparisonRequirement(VarType.VARP, VarPlayer.QUEST_POINTS, VarType.VARBIT, 1782, Operation.EQUAL, "All quests completed");
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest).isNotConsumed();
 		crossbow = new ItemRequirement("Crossbow", ItemCollections.CROSSBOWS).showConditioned(notMovario).isNotConsumed();

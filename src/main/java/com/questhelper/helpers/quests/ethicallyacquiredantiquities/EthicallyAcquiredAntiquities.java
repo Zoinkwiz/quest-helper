@@ -28,6 +28,7 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
@@ -177,7 +178,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper {
 		talkToArtima.addDialogSteps("I was hoping for some help.", "Go on then.");
 		talkToArtima.addDialogStep("So about those sails...");
 		returnToCrewmember = new NpcStep(this, NpcID.TRADER_CREWMEMBER, new WorldPoint(1742, 3135, 0), "Return up north and speak to any Trader Crewmember.",
-				fixedSail);
+				fixedSail.hideConditioned(new VarbitRequirement(QuestVarbits.QUEST_ETHICALLY_ACQUIRED_ANTIQUITIES.getId(), 14, Operation.GREATER_EQUAL)));
 		((NpcStep) returnToCrewmember).addAlternateNpcs(getCrewMembers());
 
 		returnToCrewmember.addDialogStep("So, about that man with the case.");

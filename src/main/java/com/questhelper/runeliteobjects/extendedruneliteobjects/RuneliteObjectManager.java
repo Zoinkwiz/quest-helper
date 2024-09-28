@@ -422,7 +422,7 @@ public class RuneliteObjectManager
 			&& extendedRuneliteObject.getRuneliteObject().getModel() != null)
 		{
 			if (!isMouseOverObject(extendedRuneliteObject)) return;
-			if (event.getOption().equals("Walk here") && isMouseOverObject(extendedRuneliteObject))
+			if (event.getOption().equals("Walk here"))
 			{
 				if (extendedRuneliteObject instanceof ReplacedNpc)
 				{

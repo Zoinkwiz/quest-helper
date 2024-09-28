@@ -38,6 +38,7 @@ public class QuestOrders
 	private static final Pattern QUEST_NAME_PATTERN = Pattern.compile("(?i)(a\\b)|(the\\b)|(an\\b)", Pattern.CASE_INSENSITIVE);
 	@Getter
 	private static final List<QuestHelperQuest> optimalOrder = ImmutableList.of(
+		QuestHelperQuest.DEATH_ON_THE_ISLE, // TODO: MOVE THIS :)
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.MISTHALIN_MYSTERY,
@@ -291,6 +292,7 @@ public class QuestOrders
 	);
 	@Getter
 	private static final List<QuestHelperQuest> optimalIronmanOrder = ImmutableList.of(
+		QuestHelperQuest.DEATH_ON_THE_ISLE, // TODO: MOVE THIS :)
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.MISTHALIN_MYSTERY,

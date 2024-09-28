@@ -148,7 +148,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		goDownToPhoenixGang = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0),
 			"Head into the Phoenix Gang's base in south Varrock.");
 		talkToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0),
-			"Talk to Staven.");
+			"Talk to Straven.");
 		talkToStraven.addDialogStep("I know who you are!");
 		talkToStraven.addDialogStep("I'd like to offer you my services.");
 
@@ -160,7 +160,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 		returnDownLadder = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0),
 			"Return to the Phoenix Gang's base.");
 		talkToStravenAgain = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0),
-			"Talk to Staven again.");
+			"Talk to Straven again.");
 
 		getShieldHalf = new ObjectStep(this, ObjectID.CHEST_2403, new WorldPoint(3235, 9761, 0),
 			"Search the chest in the Phoenix base for half of the Shield of Arrav.");

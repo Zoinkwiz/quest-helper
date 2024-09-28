@@ -249,6 +249,7 @@ import com.questhelper.helpers.quests.thegolem.TheGolem;
 import com.questhelper.helpers.quests.thegrandtree.TheGrandTree;
 import com.questhelper.helpers.quests.thegreatbrainrobbery.TheGreatBrainRobbery;
 import com.questhelper.helpers.quests.thehandinthesand.TheHandInTheSand;
+import com.questhelper.helpers.quests.theheartofdarkness.TheHeartOfDarkness;
 import com.questhelper.helpers.quests.theknightssword.TheKnightsSword;
 import com.questhelper.helpers.quests.thelosttribe.TheLostTribe;
 import com.questhelper.helpers.miniquests.themagearenai.TheMageArenaI;
@@ -483,6 +484,7 @@ public enum QuestHelperQuest
 	ETHICALLY_ACQUIRED_ANTIQUITIES(new EthicallyAcquiredAntiquities(), Quest.ETHICALLY_ACQUIRED_ANTIQUITIES, QuestVarbits.QUEST_ETHICALLY_ACQUIRED_ANTIQUITIES, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	DEATH_ON_THE_ISLE(new DeathOnTheIsle(), Quest.DEATH_ON_THE_ISLE, QuestVarbits.QUEST_DEATH_ON_THE_ISLE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	MEAT_AND_GREET(new MeatAndGreet(), Quest.MEAT_AND_GREET, QuestVarbits.QUEST_MEAT_AND_GREET, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_HEART_OF_DARKNESS(new TheHeartOfDarkness(), Quest.THE_HEART_OF_DARKNESS, QuestVarbits.QUEST_THE_HEART_OF_DARKNESS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

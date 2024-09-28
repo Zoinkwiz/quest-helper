@@ -610,9 +610,8 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		/// 40
 		var climbUpFromTheatreCellar = new ObjectStep(this, ObjectID.STAIRS_54717, new WorldPoint(1469, 9328, 0), "Climb up the stairs of the theatre cellar.");
 
-		// TODO: can we only highlight "More options" if "Naiatli" is not one of the options?
 		speakToGuards = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1472, 2925, 0), "Report back to Stradius near the theatre and accuse Naiatli.");
-		speakToGuards.addDialogStep("More options...");
+		speakToGuards.addDialogStepWithExclusion("More options...", "Naiatli.");
 		speakToGuards.addDialogStep("Naiatli.");
 		speakToGuards.addSubSteps(climbUpFromTheatreCellar);
 

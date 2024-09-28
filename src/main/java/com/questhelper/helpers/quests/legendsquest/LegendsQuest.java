@@ -67,6 +67,7 @@ import com.questhelper.steps.QuestStep;
 import java.util.*;
 
 import com.questhelper.steps.TileStep;
+import com.questhelper.steps.widget.NormalSpells;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -961,7 +962,7 @@ public class LegendsQuest extends BasicQuestHelper
 		searchMarkedWallToSource.addDialogSteps("Investigate the outline of the door.", "Yes, I'll go through!");
 
 		useSpellOnDoor = new ObjectStep(this, ObjectID.ANCIENT_GATE_2930, new WorldPoint(2763, 9314, 0), "Cast a charge orb spell on the ancient gate.", chargeOrbRunes, unpoweredOrb, normalSpellbook);
-		useSpellOnDoor.addWidgetHighlight(218, 41);
+		useSpellOnDoor.addSpellHighlight(NormalSpells.CHARGE_WATER_ORB);
 
 		useRopeOnWinch = new ObjectStep(this, ObjectID.WINCH_2934, new WorldPoint(2761, 9331, 0), "Use a rope on the winch. If you've already done so, search it instead.", ropeHighlighted);
 		useRopeOnWinch.addIcon(ItemID.ROPE);

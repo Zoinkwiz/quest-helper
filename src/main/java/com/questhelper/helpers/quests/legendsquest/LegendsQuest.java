@@ -67,6 +67,7 @@ import com.questhelper.steps.QuestStep;
 import java.util.*;
 
 import com.questhelper.steps.TileStep;
+import com.questhelper.steps.widget.NormalSpells;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -960,9 +961,6 @@ public class LegendsQuest extends BasicQuestHelper
 		searchMarkedWallToSource = new ObjectStep(this, ObjectID.MARKED_WALL, new WorldPoint(2779, 9305, 0), "Follow the cave around until you reach a marked wall. Use it.");
 		searchMarkedWallToSource.addDialogSteps("Investigate the outline of the door.", "Yes, I'll go through!");
 
-		useSpellOnDoor = new ObjectStep(this, ObjectID.ANCIENT_GATE_2930, new WorldPoint(2763, 9314, 0), "Cast a charge orb spell on the ancient gate.", chargeOrbRunes, unpoweredOrb, normalSpellbook);
-		useSpellOnDoor.addWidgetHighlight(218, 41);
-
 		useRopeOnWinch = new ObjectStep(this, ObjectID.WINCH_2934, new WorldPoint(2761, 9331, 0), "Use a rope on the winch. If you've already done so, search it instead.", ropeHighlighted);
 		useRopeOnWinch.addIcon(ItemID.ROPE);
 
@@ -1030,7 +1028,10 @@ public class LegendsQuest extends BasicQuestHelper
 
 
 		useSpellOnDoor = new ObjectStep(this, ObjectID.ANCIENT_GATE_2930, new WorldPoint(2763, 9314, 0), "Cast a charge orb spell on the ancient gate.", chargeOrbRunes, unpoweredOrb, normalSpellbook);
-		useSpellOnDoor.addWidgetHighlight(218, 41);
+		useSpellOnDoor.addWidgetHighlight(218, 41);		useSpellOnDoor.addSpellHighlight(NormalSpells.CHARGE_WATER_ORB);
+		useSpellOnDoor.addSpellHighlight(NormalSpells.CHARGE_AIR_ORB);
+		useSpellOnDoor.addSpellHighlight(NormalSpells.CHARGE_EARTH_ORB);
+		useSpellOnDoor.addSpellHighlight(NormalSpells.CHARGE_FIRE_ORB);
 
 		enterMossyRockHolyForce = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0),
 			"Search and then enter the Mossy Rocks in the north west of the Kharazi.",
@@ -1043,7 +1044,10 @@ public class LegendsQuest extends BasicQuestHelper
 		searchMarkedWallHolyForce = searchMarkedWallToSource.copy();
 
 		useSpellOnDoorHolyForce = new ObjectStep(this, ObjectID.ANCIENT_GATE_2930, new WorldPoint(2763, 9314, 0), "Cast a charge orb spell on the ancient gate.", chargeOrbRunes, unpoweredOrb, normalSpellbook);
-		useSpellOnDoorHolyForce.addWidgetHighlight(218, 41);
+		useSpellOnDoorHolyForce.addSpellHighlight(NormalSpells.CHARGE_WATER_ORB);
+		useSpellOnDoorHolyForce.addSpellHighlight(NormalSpells.CHARGE_AIR_ORB);
+		useSpellOnDoorHolyForce.addSpellHighlight(NormalSpells.CHARGE_EARTH_ORB);
+		useSpellOnDoorHolyForce.addSpellHighlight(NormalSpells.CHARGE_FIRE_ORB);
 
 		climbDownWinchHolyForce = new ObjectStep(this, ObjectID.WINCH_2934, new WorldPoint(2761, 9331, 0), "Climb down the winch.");
 		((ObjectStep) climbDownWinchHolyForce).addAlternateObjects(ObjectID.WINCH_2935);

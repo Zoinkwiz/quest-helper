@@ -38,7 +38,6 @@ public class QuestOrders
 	private static final Pattern QUEST_NAME_PATTERN = Pattern.compile("(?i)(a\\b)|(the\\b)|(an\\b)", Pattern.CASE_INSENSITIVE);
 	@Getter
 	private static final List<QuestHelperQuest> optimalOrder = ImmutableList.of(
-		QuestHelperQuest.DEATH_ON_THE_ISLE, // TODO: MOVE THIS :)
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.MISTHALIN_MYSTERY,
@@ -91,6 +90,7 @@ public class QuestOrders
 		QuestHelperQuest.ICTHLARINS_LITTLE_HELPER,
 		QuestHelperQuest.THE_GOLEM,
 		QuestHelperQuest.THE_FEUD,
+		QuestHelperQuest.DEATH_ON_THE_ISLE,
 		QuestHelperQuest.LOST_CITY,
 		QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS,
 		QuestHelperQuest.RATCATCHERS,
@@ -185,6 +185,7 @@ public class QuestOrders
 		QuestHelperQuest.RAG_AND_BONE_MAN_II,
 		QuestHelperQuest.RUM_DEAL,
 		QuestHelperQuest.CABIN_FEVER,
+		QuestHelperQuest.MEAT_AND_GREET,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE,
 		QuestHelperQuest.HEROES_QUEST,
@@ -292,7 +293,6 @@ public class QuestOrders
 	);
 	@Getter
 	private static final List<QuestHelperQuest> optimalIronmanOrder = ImmutableList.of(
-		QuestHelperQuest.DEATH_ON_THE_ISLE, // TODO: MOVE THIS :)
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.MISTHALIN_MYSTERY,
@@ -371,6 +371,7 @@ public class QuestOrders
 		QuestHelperQuest.ENTER_THE_ABYSS,
 		QuestHelperQuest.WANTED,
 		QuestHelperQuest.THE_FEUD,
+		QuestHelperQuest.DEATH_ON_THE_ISLE,
 		QuestHelperQuest.TROLL_STRONGHOLD,
 		QuestHelperQuest.TROLL_ROMANCE,
 		QuestHelperQuest.DRAGON_SLAYER_I,
@@ -429,6 +430,7 @@ public class QuestOrders
 		QuestHelperQuest.RUM_DEAL,
 		QuestHelperQuest.PIRATES_TREASURE,
 		QuestHelperQuest.CABIN_FEVER,
+		QuestHelperQuest.MEAT_AND_GREET,
 		QuestHelperQuest.THE_GREAT_BRAIN_ROBBERY,
 		QuestHelperQuest.THE_HAND_IN_THE_SAND,
 		QuestHelperQuest.ENAKHRAS_LAMENT,
@@ -724,6 +726,8 @@ public class QuestOrders
 		QuestHelperQuest.PERILOUS_MOON,
 		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
+		QuestHelperQuest.MEAT_AND_GREET,
+		QuestHelperQuest.DEATH_ON_THE_ISLE,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

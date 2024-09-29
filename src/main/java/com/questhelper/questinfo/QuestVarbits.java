@@ -118,6 +118,7 @@ public enum QuestVarbits
 	QUEST_WHILE_GUTHIX_SLEEPS(9653),
 	QUEST_ETHICALLY_ACQUIRED_ANTIQUITIES(11193),
 	QUEST_DEATH_ON_THE_ISLE(11210),
+	QUEST_MEAT_AND_GREET(11182),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

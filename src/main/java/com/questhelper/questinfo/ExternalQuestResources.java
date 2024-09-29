@@ -183,6 +183,7 @@ public enum ExternalQuestResources
 	WHILE_GUTHIX_SLEEPS("https://oldschool.runescape.wiki/w/While_Guthix_Sleeps"),
 	ETHICALLY_ACQUIRED_ANTIQUITIES("https://oldschool.runescape.wiki/w/Ethically_Acquired_Antiquities"),
 	DEATH_ON_THE_ISLE("https://oldschool.runescape.wiki/w/Death_on_the_Isle"),
+	MEAT_AND_GREET("https://oldschool.runescape.wiki/w/Meat_and_Greet"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

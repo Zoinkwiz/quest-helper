@@ -161,7 +161,7 @@ public class LostCity extends BasicQuestHelper
 		attemptToCutDramen = new ObjectStep(this, ObjectID.DRAMEN_TREE, new WorldPoint(2861, 9735, 0), "Attempt to cut a branch from the Dramen tree. Be prepared for a Tree Spirit (level 101) to appear, which you can safespot behind nearby fungus.", bronzeAxe);
 		killDramenSpirit = new NpcStep(this, NpcID.TREE_SPIRIT, new WorldPoint(2859, 9734, 0), "Kill the Tree Spirit. They can be safespotted behind nearby fungi to the east.");
 		cutDramenBranch = new ObjectStep(this, ObjectID.DRAMEN_TREE, new WorldPoint(2861, 9735, 0), "Cut at least one branch from the Dramen tree. It's recommended you cut at least 4 branches so you don't have to return in future quests.");
-		teleportAway = new DetailedQuestStep(this, "Teleport away with the branches.", dramenBranch);
+		teleportAway = new DetailedQuestStep(this, "Teleport away with the branches, preferably to Lumbridge.", dramenBranch);
 		teleportAway.addTeleport(teleport);
 		getAnotherBranch = new DetailedQuestStep(this, "If you've lost your Dramen branch/staff, you will need to return to Entrana and cut another. You will not need to defeat the Tree Spirit again.");
 		craftBranch = new DetailedQuestStep(this, "Use a knife on the dramen branch to craft a dramen staff.", knife, dramenBranch);

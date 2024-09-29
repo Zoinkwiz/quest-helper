@@ -61,7 +61,7 @@ public class LostCity extends BasicQuestHelper
 
 	Requirement onEntrana, inDungeon, shamusNearby, bronzeAxeNearby, dramenSpiritNearby;
 
-	QuestStep talkToWarrior, chopTree, talkToShamus, goToEntrana, goDownHole, getAxe, pickupAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch,
+	DetailedQuestStep talkToWarrior, chopTree, talkToShamus, goToEntrana, goDownHole, getAxe, pickupAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch,
 		teleportAway, craftBranch, enterZanaris, getAnotherBranch;
 
 	//Zones
@@ -117,9 +117,10 @@ public class LostCity extends BasicQuestHelper
 		bronzeAxe = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemID.BRONZE_AXE).isNotConsumed();
 		axe.addAlternates(ItemCollections.AXES);
-		combatGear = new ItemRequirement("Runes, or a way of dealing damage which you can smuggle onto Entrana. Runes for Crumble Undead (level 39 Magic) are best.", -1, -1).isNotConsumed();
+		combatGear = new ItemRequirement("Runes, or a way of dealing damage which you can smuggle onto Entrana. Runes for Crumble Undead (level 39 Magic) are best", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(ItemID.SKULL);
-		teleport = new ItemRequirement("Teleport to Lumbridge. Home teleport will work if off cooldown.", ItemID.LUMBRIDGE_TELEPORT);
+		teleport = new ItemRequirement("Teleport, preferably to Lumbridge. Home teleport will work if off cooldown", ItemID.RING_OF_THE_ELEMENTS_26818);
+		teleport.addAlternates(ItemID.LUMBRIDGE_TELEPORT);
 		dramenBranch = new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH);
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
 		dramenStaffEquipped = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF, 1, true);
@@ -161,6 +162,7 @@ public class LostCity extends BasicQuestHelper
 		killDramenSpirit = new NpcStep(this, NpcID.TREE_SPIRIT, new WorldPoint(2859, 9734, 0), "Kill the Tree Spirit. They can be safespotted behind nearby fungi to the east.");
 		cutDramenBranch = new ObjectStep(this, ObjectID.DRAMEN_TREE, new WorldPoint(2861, 9735, 0), "Cut at least one branch from the Dramen tree. It's recommended you cut at least 4 branches so you don't have to return in future quests.");
 		teleportAway = new DetailedQuestStep(this, "Teleport away with the branches.", dramenBranch);
+		teleportAway.addTeleport(teleport);
 		getAnotherBranch = new DetailedQuestStep(this, "If you've lost your Dramen branch/staff, you will need to return to Entrana and cut another. You will not need to defeat the Tree Spirit again.");
 		craftBranch = new DetailedQuestStep(this, "Use a knife on the dramen branch to craft a dramen staff.", knife, dramenBranch);
 		enterZanaris = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0), "Enter the shed south of Lumbridge with your Dramen Staff equipped.", dramenStaffEquipped);
@@ -189,6 +191,7 @@ public class LostCity extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(combatGear);
+		reqs.add(teleport);
 		return reqs;
 	}
 
@@ -222,7 +225,8 @@ public class LostCity extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToWarrior), axe));
 		allSteps.add(new PanelDetails("Finding Shamus", Arrays.asList(chopTree, talkToShamus)));
-		allSteps.add(new PanelDetails("Getting a Dramen branch", Arrays.asList(goToEntrana, goDownHole, getAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch, teleportAway)));
+		allSteps.add(new PanelDetails("Getting a Dramen branch", Arrays.asList(goToEntrana, goDownHole, getAxe, attemptToCutDramen, killDramenSpirit,
+				cutDramenBranch, teleportAway), List.of(), List.of(combatGear, teleport)));
 		allSteps.add(new PanelDetails("Entering Zanaris", Arrays.asList(craftBranch, enterZanaris), knife));
 
 		return allSteps;

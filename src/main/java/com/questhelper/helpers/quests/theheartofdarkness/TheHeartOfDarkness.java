@@ -45,6 +45,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
+import com.questhelper.steps.npc.NpcStep;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.WidgetLoaded;
@@ -76,9 +77,9 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         ItemRequirement towerKey, book, poem, scrapOfPaper1, scrapOfPaper2, scrapOfPaper3, completedNote;
 
         Requirement atTeomat, builtLandingInOverlook, talkedToSergius, talkedToCaritta, talkedToFelius, princeIsFollowing, inFirstTrialRoom,
-                southEastGateUnlocked, southWestChestOpened, hasReadPoem, knowAboutDirections, inArrowPuzzle, northWestChestOpened;
+                inSecondTrialRoom, southEastGateUnlocked, southWestChestOpened, hasReadPoem, knowAboutDirections, inArrowPuzzle, northWestChestOpened;
 
-        Zone teomat, firstTrialRoom;
+        Zone teomat, firstTrialRoom, secondTrialRoom;
 
         DetailedQuestStep talkToItzlaAtTeomat,travelToGorge, talkToBartender, restOnBed, talkToPrinceAfterRest, talkToShopkeeper, talkToPrinceInPubAgain,
                 talkToPrinceAtTower, buildSalvagerOverlookLandingSite, talkToPrinceAtTowerAfterLanding, talkToNova, talkToSergius, talkToFelius, talkToCaritta, talkToPrinceAfterRecruits,
@@ -88,7 +89,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         LockedChestPuzzle openKeywordChestSouthWest;
 
-        DetailedQuestStep completeCombatTrial, talkToJanusAfterTrial;
+        DetailedQuestStep startCombatTrial, completeCombatTrial, talkToJanusAfterTrial;
 
         DetailedQuestStep talkToPrinceToStartThirdTrial, questionCultMembers, accuseCultMember;
 
@@ -131,6 +132,8 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         atTeomat = new ZoneRequirement(teomat);
         firstTrialRoom = new Zone(new WorldPoint(1635, 3216, 1), new WorldPoint(1650, 3230, 1));
         inFirstTrialRoom = new ZoneRequirement(firstTrialRoom);
+        secondTrialRoom = new Zone(new WorldPoint(1635, 3216, 2), new WorldPoint(1650, 3230, 2));
+        inSecondTrialRoom = new ZoneRequirement(secondTrialRoom);
         builtLandingInOverlook = new VarbitRequirement(11379, 4);
         talkedToFelius = new VarbitRequirement(11118, 1);
         talkedToCaritta = new VarbitRequirement(11119, 1);
@@ -255,7 +258,9 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         readCompletedNote = new DetailedQuestStep(this, "Read the completed note.", completedNote.highlighted());
         tellJanusPasscode = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3226, 1), "Talk to Janus and tell him the passcode.");
         tellJanusPasscode.addDialogSteps("About that passphrase...", "Yes.");
-//
+
+        startCombatTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3225, 2), "Talk to Forebearer Janus, ready to fight.");
+        startCombatTrial.addDialogStep("Yes! I'm ready.");
 //        completeCombatTrial = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
 //        talkToJanusAfterTrial = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
 //
@@ -350,6 +355,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         steps.put(32, goDoFirstChallenge);
 
         ConditionalStep goDoSecondChallenge = new ConditionalStep(this, climbUpToFirstTrial);
+        goDoSecondChallenge.addStep(inSecondTrialRoom, startCombatTrial);
         goDoSecondChallenge.addStep(inFirstTrialRoom, tellJanusPasscode);
         steps.put(34, goDoSecondChallenge);
         steps.put(36, goDoSecondChallenge);

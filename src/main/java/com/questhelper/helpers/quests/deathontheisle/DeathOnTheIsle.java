@@ -28,7 +28,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.CombatLevelRequirement;
@@ -198,15 +197,10 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	private ItemRequirement threateningNote;
 	private ItemRequirement drinkingFlask;
 	private ItemRequirement shippingContract;
-	private Conditions pickpocketedItems;
 	private VarbitRequirement inspectedWineLabels;
 	private VarbitRequirement inspectedThreateningNote;
 	private VarbitRequirement inspectedDrinkingFlask;
 	private VarbitRequirement inspectedShippingContract;
-	private VarbitRequirement pickpocketedAdala;
-	private VarbitRequirement pickpocketedCozyac;
-	private VarbitRequirement pickpocketedPavo;
-	private VarbitRequirement pickpocketedXocotla;
 	private VarbitRequirement interrogatedConstantiniusAgain;
 	private VarbitRequirement interrogatedXocotlaAgain;
 	private VarbitRequirement interrogatedCozyacAgain;
@@ -334,11 +328,10 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		investigatedXocotla = new VarbitRequirement(11224, 1);
 		interrogatedPatziAndAdala = new VarbitRequirement(11234, 1);
 
-		pickpocketedAdala = new VarbitRequirement(11228, 1);
-		pickpocketedCozyac = new VarbitRequirement(11216, 1);
-		pickpocketedPavo = new VarbitRequirement(11217, 1);
-		pickpocketedXocotla = new VarbitRequirement(11215, 1);
-		pickpocketedItems = and(pickpocketedAdala, pickpocketedPavo, pickpocketedCozyac, pickpocketedXocotla, wineLabels, threateningNote, drinkingFlask, shippingContract);
+		// pickpocketedAdala = new VarbitRequirement(11228, 1);
+		// pickpocketedCozyac = new VarbitRequirement(11216, 1);
+		// pickpocketedPavo = new VarbitRequirement(11217, 1);
+		// pickpocketedXocotla = new VarbitRequirement(11215, 1);
 
 		inspectedWineLabels = new VarbitRequirement(11236, 1);
 		inspectedThreateningNote = new VarbitRequirement(11237, 1);
@@ -490,14 +483,14 @@ public class DeathOnTheIsle extends BasicQuestHelper
 
 		investigateMurder2 = new ConditionalStep(this, returnToTheGuards2);
 		investigateMurder2.addStep(not(inVilla), returnToButlerAndHeadInside);
-		investigateMurder2.addStep(and(pickpocketedItems, not(inspectedWineLabels)), inspectWineLabels);
-		investigateMurder2.addStep(and(pickpocketedItems, not(inspectedThreateningNote)), inspectThreateningNote);
-		investigateMurder2.addStep(and(pickpocketedItems, not(inspectedDrinkingFlask)), inspectDrinkingFlask);
-		investigateMurder2.addStep(and(pickpocketedItems, not(inspectedShippingContract)), inspectShippingContract);
-		investigateMurder2.addStep(not(pickpocketedAdala), pickpocketAdala);
-		investigateMurder2.addStep(not(pickpocketedPavo), pickpocketPavo);
-		investigateMurder2.addStep(not(pickpocketedCozyac), pickpocketCozyac);
-		investigateMurder2.addStep(not(pickpocketedXocotla), pickpocketXocotla);
+		investigateMurder2.addStep(not(wineLabels), pickpocketAdala);
+		investigateMurder2.addStep(not(threateningNote), pickpocketCozyac);
+		investigateMurder2.addStep(not(drinkingFlask), pickpocketPavo);
+		investigateMurder2.addStep(not(shippingContract), pickpocketXocotla);
+		investigateMurder2.addStep(not(inspectedWineLabels), inspectWineLabels);
+		investigateMurder2.addStep(not(inspectedThreateningNote), inspectThreateningNote);
+		investigateMurder2.addStep(not(inspectedDrinkingFlask), inspectDrinkingFlask);
+		investigateMurder2.addStep(not(inspectedShippingContract), inspectShippingContract);
 
 		/// 27
 		talkToGuardsAgainToTellThemYouAreReady = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1433, 2935, 0), "Talk to the guards to tell them you're ready to make an accusation.");

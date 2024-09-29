@@ -30,7 +30,6 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -657,7 +656,6 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	public List<Requirement> getGeneralRecommended()
 	{
 		return List.of(
-			new CombatLevelRequirement(40),
 			emptyInvSlots
 		);
 	}

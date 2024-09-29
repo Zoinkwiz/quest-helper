@@ -620,12 +620,12 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		// 42 + 45
 		talkToStradiusToEnterTheTheatre = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1472, 2925, 0), "Talk to Stradius to enter the theatre.");
 		confrontNaiatli = new NpcStep(this, NpcID.NAIATLI, new WorldPoint(1465, 2932, 0), "Confront Naiatli, attacking her when she runs away. When Clodius appears, attack him instead.");
-		var killClodius = new NpcStep(this, NpcID.CLODIUS, new WorldPoint(1469, 2937, 0), "Kill Clodius.");
+		var attackClodius = new NpcStep(this, NpcID.CLODIUS, new WorldPoint(1469, 2937, 0), "Attack Clodius.");
 		var killNaiatli = new NpcStep(this, NpcID.NAIATLI, new WorldPoint(1469, 2937, 0), "Kill Naiatli.");
 
 		talkToNaiatli = new NpcStep(this, NpcID.NAIATLI, new WorldPoint(1472, 2931, 0), "Talk to Naiatli.");
 
-		confrontNaiatli.addSubSteps(killClodius, killNaiatli);
+		confrontNaiatli.addSubSteps(attackClodius, killNaiatli);
 
 		confrontNaiatliStep = new ConditionalStep(this, confrontNaiatli);
 		confrontNaiatliStep.addStep(not(inVilla), returnToButlerAndHeadInside);
@@ -635,7 +635,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		confrontNaiatliStep.addStep(outsideTheatre, talkToStradiusToEnterTheTheatre);
 		confrontNaiatliStep.addStep(naiatliDowned, talkToNaiatli);
 		confrontNaiatliStep.addStep(trapFailed, killNaiatli);
-		confrontNaiatliStep.addStep(trapSprung, killClodius);
+		confrontNaiatliStep.addStep(trapSprung, attackClodius);
 
 		/// 49
 		talkToGuardsToFinishTheQuest = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1443, 2932, 0), "Talk to Stradius and Hutza to finish the quest.");

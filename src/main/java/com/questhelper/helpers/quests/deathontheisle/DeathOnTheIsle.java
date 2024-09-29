@@ -619,9 +619,9 @@ public class DeathOnTheIsle extends BasicQuestHelper
 
 		// 42 + 45
 		talkToStradiusToEnterTheTheatre = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1472, 2925, 0), "Talk to Stradius to enter the theatre.");
-		confrontNaiatli = new NpcStep(this, NpcID.NAIATLI, new WorldPoint(1465, 2932, 0), "Confront Naiatli, attacking her when she runs away. When Clodius appears, attack him instead. Use Protect from Melee to avoid all damage.");
-		var killClodius = new NpcStep(this, NpcID.CLODIUS, new WorldPoint(1469, 2937, 0), "Kill Clodius. Use Protect from Melee to avoid all damage.");
-		var killNaiatli = new NpcStep(this, NpcID.NAIATLI, new WorldPoint(1469, 2937, 0), "Kill Naiatli. Use Protect from Melee to avoid all damage.");
+		confrontNaiatli = new NpcStep(this, NpcID.NAIATLI, new WorldPoint(1465, 2932, 0), "Confront Naiatli, attacking her when she runs away. When Clodius appears, attack him instead.");
+		var killClodius = new NpcStep(this, NpcID.CLODIUS, new WorldPoint(1469, 2937, 0), "Kill Clodius.");
+		var killNaiatli = new NpcStep(this, NpcID.NAIATLI, new WorldPoint(1469, 2937, 0), "Kill Naiatli.");
 
 		talkToNaiatli = new NpcStep(this, NpcID.NAIATLI, new WorldPoint(1472, 2931, 0), "Talk to Naiatli.");
 

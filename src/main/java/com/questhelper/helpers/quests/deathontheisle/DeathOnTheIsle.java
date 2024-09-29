@@ -24,12 +24,14 @@
  */
 package com.questhelper.helpers.quests.deathontheisle;
 
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -169,6 +171,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	private ZoneRequirement outsideVillaByLooseRocks;
 	private ZoneRequirement outsideTheatre;
 
+	private TeleportItemRequirement startTeleport;
 	private ItemRequirements uniform;
 	private ItemRequirement uniformEquipped;
 	private VarbitRequirement inVilla;
@@ -280,6 +283,11 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		/// Recommended items
 		emptyInvSlots = new FreeInventorySlotRequirement(2);
 
+		/// Start of quest recommendation
+		startTeleport = new TeleportItemRequirement("Aldarin Teleport (or fairy ring CKQ)", ItemID.ALDARIN_TELEPORT);
+		startTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
+		// TODO: Add alternates
+
 		/// Mid-quest item requirements
 		var uniformTop = new ItemRequirement("Butler's uniform shirt", ItemID.BUTLERS_UNIFORM_29916);
 		var uniformBottom = new ItemRequirement("Butler's uniform pants", ItemID.BUTLERS_UNIFORM_29918);
@@ -362,8 +370,9 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		returnToButlerAndHeadInside.addDialogStep("Yes.");
 
 		/// 0
-		talkToPatziToStartQuest = new NpcStep(this, NpcID.PATZI, new WorldPoint(1414, 2937, 0), "Talk to Patzi at the entrance to Villa Lucens on the island of Aldarin. You can get there with the fairy ring CKQ.");
+		talkToPatziToStartQuest = new NpcStep(this, NpcID.PATZI, new WorldPoint(1414, 2937, 0), "Talk to Patzi at the entrance to Villa Lucens on the island of Aldarin.");
 		talkToPatziToStartQuest.addDialogStep("Yes.");
+		talkToPatziToStartQuest.addTeleport(startTeleport);
 
 		/// 2
 		talkToPatziToFigureOutAPlan = new NpcStep(this, NpcID.PATZI, "Talk to Patzi to figure out a plan.");

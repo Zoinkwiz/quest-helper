@@ -508,7 +508,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		interrogatePavoAgain = new NpcStep(this, NpcID.PAVO, new WorldPoint(1442, 2931, 2), "Interrogate Pavo.");
 		interrogatePavoAgain.addDialogStep("No.");
 
-		accuseAdala = new NpcStep(this, NpcID.ADALA, new WorldPoint(1446, 2933, 2), "Accuse Adala of the crime, ready for an easy fight. You can use Protect from Melee to negate all damage.");
+		accuseAdala = new NpcStep(this, NpcID.ADALA, new WorldPoint(1446, 2933, 2), "Accuse Adala of the crime, ready for a fight you cannot lose.");
 		accuseAdala.addDialogStep("Accuse Adala.");
 
 		// TODO: helper steps to climb upstairs?
@@ -674,7 +674,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return List.of(
-			"2 level 49 criminals without gear"
+			"2 unlosable fights"
 		);
 	}
 

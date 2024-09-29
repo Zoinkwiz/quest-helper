@@ -53,7 +53,7 @@ public class RagBoneGroups
 			RagBoneState.ICE_GIANT_RIBS, RagBoneState.MOGRE_BONE, RagBoneState.JOGRE_BONE,
 			RagBoneState.BABY_DRAGON_BONE, RagBoneState.TROLL_BONE, RagBoneState.RABBIT_BONE,
 			RagBoneState.BASILISK_BONE, RagBoneState.DAGANNOTH_RIBS, RagBoneState.FIRE_GIANT_BONE,
-			RagBoneState.TERRORBIRD_WING, RagBoneState.WOLF_BONE, RagBoneState.OGRE_BONE,
+			RagBoneState.TERRORBIRD_WING, RagBoneState.WOLF_BONE, RagBoneState.OGRE_RIBS,
 			RagBoneState.ZOGRE_BONE);
 	}
 

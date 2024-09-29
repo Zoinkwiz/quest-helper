@@ -403,10 +403,10 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		returnToPatzi = new NpcStep(this, NpcID.PATZI, new WorldPoint(1447, 2936, 0), "Return to Patzi and spill the juicy news.");
 		talkToGuests = new ConditionalStep(this, returnToPatzi);
 		talkToGuests.addStep(not(inVilla), returnToButlerAndHeadInside);
-		talkToGuests.addStep(not(spokenToXocotla), talkToXocotla);
-		talkToGuests.addStep(not(spokenToPavo), talkToPavo);
-		talkToGuests.addStep(not(spokenToCozyac), talkToCozyac);
 		talkToGuests.addStep(not(spokenToConstantinius), talkToConstantinius);
+		talkToGuests.addStep(not(spokenToCozyac), talkToCozyac);
+		talkToGuests.addStep(not(spokenToPavo), talkToPavo);
+		talkToGuests.addStep(not(spokenToXocotla), talkToXocotla);
 
 		/// 16
 		var enterTheCellar = new ObjectStep(this, ObjectID.CELLAR_ENTRANCE, new WorldPoint(1449, 2938, 0), "Enter the cellar.");

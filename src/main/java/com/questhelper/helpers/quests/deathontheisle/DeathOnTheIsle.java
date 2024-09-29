@@ -683,7 +683,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	@Override
 	public QuestPointReward getQuestPointReward()
 	{
-		return new QuestPointReward(5);
+		return new QuestPointReward(2);
 	}
 
 	@Override

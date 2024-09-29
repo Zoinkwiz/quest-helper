@@ -34,6 +34,10 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.DialogRequirement;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
+import com.questhelper.requirements.npc.NpcInteractingWithNpcRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -45,7 +49,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import com.questhelper.steps.npc.NpcStep;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.WidgetLoaded;
@@ -56,8 +59,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class TheHeartOfDarkness extends BasicQuestHelper
 {
@@ -74,10 +76,14 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         ItemRequirement quetzalFeed, limestoneBrick, softClay;
 
-        ItemRequirement towerKey, book, poem, scrapOfPaper1, scrapOfPaper2, scrapOfPaper3, completedNote;
+        ItemRequirement towerKey, book, poem, scrapOfPaper1, scrapOfPaper2, scrapOfPaper3, completedNote, emissaryHood, emissaryTop, emissaryBottom,
+                emissaryBoots, emissaryRobesEquipped, emissaryRobes;
 
         Requirement atTeomat, builtLandingInOverlook, talkedToSergius, talkedToCaritta, talkedToFelius, princeIsFollowing, inFirstTrialRoom,
-                inSecondTrialRoom, southEastGateUnlocked, southWestChestOpened, hasReadPoem, knowAboutDirections, inArrowPuzzle, northWestChestOpened;
+                inSecondTrialRoom, southEastGateUnlocked, southWestChestOpened, hasReadPoem, knowAboutDirections, inArrowPuzzle, combatStarted,
+                startedInvestigation;
+
+        Requirement tenochGuilty, hasTalkedToTenoch, siliaGuilty, hasTalkedToSilia, hasTalkedToAdrius, eleuiaGuilty, hasTalkedToEleuia;
 
         Zone teomat, firstTrialRoom, secondTrialRoom;
 
@@ -89,12 +95,15 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         LockedChestPuzzle openKeywordChestSouthWest;
 
-        DetailedQuestStep startCombatTrial, completeCombatTrial, talkToJanusAfterTrial;
+        DetailedQuestStep startCombatTrial;
+        NpcStep completeCombatTrial;
+        DetailedQuestStep talkToJanusAfterTrial;
 
-        DetailedQuestStep talkToPrinceToStartThirdTrial, questionCultMembers, accuseCultMember;
+        DetailedQuestStep talkToPrinceToStartThirdTrial;
+        NpcStep talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia, accuseTenoch, accuseSilia, accuseEleuia;
 
-        DetailedQuestStep goUpToFinalTrial, fightPrince, talkToJanusAfterPrinceFight, searchChestForEmissaryRobes, talkToItzlaToFollow, enterTemple, talkToFides,
-                enterRuins;
+        DetailedQuestStep goUpToFinalTrial, fightPrince, fightPrinceSidebar, talkToJanusAfterPrinceFight, talkToJanusAfterAllTrials, searchChestForEmissaryRobes, talkToItzlaToFollow,
+            enterTemple, talkToItzlaAfterSermon, talkToFides, enterRuins;
 
         // Ice dungeon
         DetailedQuestStep takePickaxe, mineRocks, pullFirstLever, climbDownLedge, slideAlongIceLedge, pullSecondLever, jumpOverFrozenLatforms, climbDownLedge2,
@@ -126,6 +135,13 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         scrapOfPaper2 = new ItemRequirement("Scrap of paper", ItemID.SCRAP_OF_PAPER_29881);
         scrapOfPaper3 = new ItemRequirement("Scrap of paper", ItemID.SCRAP_OF_PAPER_29882);
         completedNote = new ItemRequirement("Completed note", ItemID.COMPLETED_NOTE);
+        emissaryHood = new ItemRequirement("Emissary hood", ItemID.EMISSARY_HOOD);
+        emissaryTop = new ItemRequirement("Emissary top", ItemID.EMISSARY_ROBE_TOP);
+        emissaryBottom = new ItemRequirement("Emissary bottom", ItemID.EMISSARY_ROBE_BOTTOM);
+        emissaryBoots = new ItemRequirement("Emissary sandals", ItemID.EMISSARY_SANDALS);
+        emissaryRobesEquipped = new ItemRequirements("Emissary robes (equipped)", emissaryHood, emissaryTop, emissaryBottom,
+                emissaryBoots).equipped();
+        emissaryRobes = new ItemRequirements("Emissary robes", emissaryHood, emissaryTop, emissaryBottom, emissaryBoots);
 
         setupConditions();
         teomat = new Zone(new WorldPoint(1377, 2951, 0), new WorldPoint(1479, 3222, 3));
@@ -148,11 +164,51 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         knowPoemSolution = new ManualRequirement();
         inArrowPuzzle = new WidgetTextRequirement(810, 15, 9, "Confirm");
         hasReadCompletedNote = new ManualRequirement();
-        northWestChestOpened = new VarbitRequirement(11167, 1);
+//        northWestChestOpened = new VarbitRequirement(11167, 1);
+        NpcInteractingRequirement playerIsAttacked = new NpcInteractingRequirement(
+                NpcID.EMISSARY_BRAWLER, NpcID.EMISSARY_BRAWLER_13774, NpcID.EMISSARY_BRAWLER_13775, NpcID.EMISSARY_BRAWLER_13776,
+                NpcID.EMISSARY_CONJURER, NpcID.EMISSARY_CONJURER_13778);
+        NpcInteractingWithNpcRequirement princeIsAttacked = new NpcInteractingWithNpcRequirement(NpcID.PRINCE_ITZLA_ARKAN_13771, "Emissary Conjurer",
+                "Emissary Brawler");
+        combatStarted = or(playerIsAttacked, princeIsAttacked);
+        startedInvestigation = new VarbitRequirement(11134, 1);
+        // Accused Tenoch incorrectly
+        // 11135 0->1
+        // 11140 0->1
+
+        DialogRequirement tenochInnocent = new DialogRequirement("Tenoch", false,
+                "To do my duty, of course. Ralos and Ranul wish us to bring about the end of this world. Only then will we see the birth of a new one.",
+                "The Final Dawn is our destiny. Ralos and Ranul will unite us all and end this world, but in doing so, we will all play a part in forming a new one.");
+        tenochGuilty = new DialogRequirement("Tenoch", false,
+                "To do my duty, of course. Ralos and Ranul wish us to bring about the end of this world. Only then will we will all unite in Mictl.",
+                "The Final Dawn is our destiny. Ralos and Ranul will unite us all and end this world, but in doing so, they will grant us eternal life in Mictl.");
+        hasTalkedToTenoch = or(tenochGuilty, tenochInnocent);
+
+        DialogRequirement siliaInnocent = new DialogRequirement("Silia", false,
+                "I always knew people were wrong about me. I knew I would serve a higher purpose. I never cared what it was. I only cared that in doing so, I would be serving the will of Ralos.",
+                "The Final Dawn is an end, but also a beginning. It is when Ralos will use his holy fire to destroy this world so that he and Ranul can build a new one.");
+        siliaGuilty = new DialogRequirement("Silia", false,
+                "I always knew people were wrong about me. I knew I would serve a higher purpose. I never cared what it was. I only cared that in doing so, I would be granted a place in Mictl.",
+                "The Final Dawn is an end, but also a beginning. It is when Ralos will use his holy fire to destroy this world. Then he and Ranul will guide us to Mictl.");
+        hasTalkedToSilia = or(siliaInnocent, siliaGuilty);
+
+        DialogRequirement adriusInnocent = new DialogRequirement("Adrius", false,
+                "To be honest, I wasn't too sure about joining at first. My friend convinced me though. Here we're part of something bigger than ourselves.",
+                "I've never been one for proper worship, but I believe in the teachings of Ralos and Ranul. I hope those teachings guide me through whatever is to come.",
+                "They say the Final Dawn is inevitable. It's the end that we can't escape from. It's a scary thought, but the Twilight Emissaries have embraced it, so I have as well.");
+        hasTalkedToAdrius = or(adriusInnocent);
+
+        DialogRequirement eleuiaInnocent = new DialogRequirement("Eleuia", false,
+                "I wished to see my god in mortal form and serve his will. In return for my service, the Emissaries promised me they could grant that wish.",
+                "The Final Dawn is the will of Ranul. He will show us all that death is nothing to be feared as he and Ralos guide us into forming a new world.");
+        eleuiaGuilty = new DialogRequirement("Eleuia", false,
+                "I wished to see my god in mortal form and be granted eternity in Mictl. In return for my service, the Emissaries promised me they could grant that wish.",
+                "The Final Dawn is the will of Ranul. He will show us all that death is nothing to be feared. He and Ralos will lead us into forming a new world before then guiding us to Mictl.");
+        hasTalkedToEleuia = or(eleuiaInnocent, eleuiaGuilty);
 
         // Steps
         setupSteps();
-        talkToItzlaAtTeomat = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_12896, new WorldPoint(1454, 3173, 0), "Talk to Prince  Itzla Arkan at the Teomat.");
+        talkToItzlaAtTeomat = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_12896, new WorldPoint(1454, 3173, 0), "Talk to Prince Itzla Arkan at the Teomat.");
         travelToGorge = new NpcStep(this, NpcID.RENU, new WorldPoint(1437, 3169, 0), "Travel on Renu to the Quetzacalli Gorge.");
         ((NpcStep) travelToGorge).addAlternateNpcs(NpcID.RENU_13349, NpcID.RENU_13350, NpcID.RENU_13351, NpcID.RENU_13352, NpcID.RENU_13353, NpcID.RENU_13354);
         travelToGorge.addWidgetHighlight(874, 15, 9);
@@ -261,19 +317,51 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         startCombatTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3225, 2), "Talk to Forebearer Janus, ready to fight.");
         startCombatTrial.addDialogStep("Yes! I'm ready.");
-//        completeCombatTrial = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        talkToJanusAfterTrial = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//
-//        talkToPrinceToStartThirdTrial = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        questionCultMembers = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        accuseCultMember = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//
-//        goUpToFinalTrial = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        fightPrince = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        talkToJanusAfterPrinceFight = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        searchChestForEmissaryRobes = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        talkToItzlaToFollow = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        enterTemple = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
+        completeCombatTrial = new NpcStep(this, NpcID.EMISSARY_BRAWLER, new WorldPoint(1644, 3225, 2), "Defeat the waves of enemies.", true);
+        completeCombatTrial.setMustBeFocusedOnPlayer(true);
+        completeCombatTrial.setMustBeFocusedOnNpcs(NpcID.PRINCE_ITZLA_ARKAN_13771);
+        completeCombatTrial.addAlternateNpcs(NpcID.EMISSARY_BRAWLER_13774, NpcID.EMISSARY_BRAWLER_13775, NpcID.EMISSARY_BRAWLER_13776,
+                NpcID.EMISSARY_CONJURER, NpcID.EMISSARY_CONJURER_13778);
+        talkToJanusAfterTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3225, 2),
+                "Talk to Forebearer Janus again to progress to the third trial.");
+        talkToJanusAfterTrial.addDialogSteps("Yes.", "Proceed to the next trial.");
+        talkToPrinceToStartThirdTrial = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13770, new WorldPoint(1638, 3218, 2), "Talk to the prince in the room.");
+        talkToTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Talk to Tenoch.");
+        talkToTenoch.addDialogSteps("Interrogate Tenoch.", "Tell me about the Final Dawn.");
+        talkToSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Talk to Silia.");
+        talkToSilia.addDialogSteps("Interrogate Silia.", "Tell me about the Final Dawn.");
+        talkToAdrius = new NpcStep(this, NpcID.ADRIUS, new WorldPoint(1645, 3220, 2), "Talk to Adrius.");
+        talkToAdrius.addDialogSteps("Interrogate Adrius.", "Tell me about the Final Dawn.");
+        talkToEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Talk to Eleuia.");
+        talkToEleuia.addDialogSteps("Interrogate Eleuia.", "Tell me about the Final Dawn.");
+
+        accuseTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Accuse Tenoch.");
+        accuseTenoch.addDialogSteps("Yes.", "Choose Tenoch.");
+        accuseSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Accuse Silia.");
+        accuseSilia.addDialogSteps("Yes.", "Choose Silia.");
+        accuseEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Accuse Eleuia.");
+        accuseEleuia.addDialogSteps("Yes.", "Choose Eleuia.");
+
+        goUpToFinalTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1640, 3226, 2), "Talk to Janus to go to the final trial, ready for " +
+                "a fight.");
+        goUpToFinalTrial.addDialogStep("Yes.");
+        fightPrince = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13784, new WorldPoint(1644, 3225, 2), "Defeat the prince. Use protect from melee. See " +
+                "sidebar for more details.");
+        fightPrinceSidebar = new DetailedQuestStep(this, "Defeat the prince. Use Protect from Melee.");
+        fightPrinceSidebar.addText("He will protect from any special attacks you do.");
+        fightPrinceSidebar.addText("He can do a sword swipe to turn off your prayers. Simply re-activate them straight away.");
+        fightPrinceSidebar.addText("If he says he's doing a slam attack, step on the tile behind him to dodge it.");
+        fightPrinceSidebar.addSubSteps(fightPrince);
+
+        talkToJanusAfterPrinceFight = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1640, 3226, 2), "Talk to Janus to wrap up the final " +
+                "trial.");
+        talkToJanusAfterAllTrials = new NpcStep(this, NpcID.FOREBEARER_JANUS, new WorldPoint(1640, 3226, 0), "Talk to Janus at the bottom of the tower.");
+        searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.CHEST_54515, new WorldPoint(1638, 3217, 0), "Search the chest in the south of the tower " +
+                "for some emissary robes.");
+        talkToItzlaToFollow = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13691, new WorldPoint(1638, 3222, 0), "Talk to the prince to have him follow you.");
+        enterTemple = new DetailedQuestStep(this, new WorldPoint(1687, 3247, 0), "Enter the temple to the east of the tower for a cutscene.",
+                emissaryRobesEquipped);
+        talkToItzlaAfterSermon = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13691, new WorldPoint(1688, 3247, 0), "Talk to the prince in the temple.");
 //        talkToFides = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
 //        enterRuins = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
 //
@@ -355,10 +443,51 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         steps.put(32, goDoFirstChallenge);
 
         ConditionalStep goDoSecondChallenge = new ConditionalStep(this, climbUpToFirstTrial);
+        goDoSecondChallenge.addStep(and(inSecondTrialRoom, combatStarted), completeCombatTrial);
         goDoSecondChallenge.addStep(inSecondTrialRoom, startCombatTrial);
         goDoSecondChallenge.addStep(inFirstTrialRoom, tellJanusPasscode);
         steps.put(34, goDoSecondChallenge);
         steps.put(36, goDoSecondChallenge);
+
+        ConditionalStep goStartThirdChallenge = new ConditionalStep(this, climbUpToFirstTrial);
+        goStartThirdChallenge.addStep(inSecondTrialRoom, talkToJanusAfterTrial);
+        steps.put(38, goStartThirdChallenge);
+
+        ConditionalStep goDoThirdChallenge = new ConditionalStep(this, climbUpToFirstTrial);
+        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation, not(hasTalkedToTenoch)), talkToTenoch);
+        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation, not(hasTalkedToSilia)), talkToSilia);
+        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation, not(hasTalkedToAdrius)), talkToAdrius);
+        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation, not(hasTalkedToEleuia)), talkToEleuia);
+        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation, tenochGuilty), accuseTenoch);
+        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation, siliaGuilty), accuseSilia);
+//        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation, adriusGuilty), accuseAdrius);
+        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation, eleuiaGuilty), accuseEleuia);
+        goDoThirdChallenge.addStep(and(inSecondTrialRoom, startedInvestigation), talkToTenoch);
+        goDoThirdChallenge.addStep(inSecondTrialRoom, talkToPrinceToStartThirdTrial);
+        steps.put(40, goDoThirdChallenge);
+
+        ConditionalStep goToFourthChallenge = new ConditionalStep(this, climbUpToFirstTrial);
+        goToFourthChallenge.addStep(inSecondTrialRoom, goUpToFinalTrial);
+        steps.put(42, goToFourthChallenge);
+
+        ConditionalStep goDoFourthChallenge = new ConditionalStep(this, climbUpToFirstTrial);
+        goDoFourthChallenge.addStep(inSecondTrialRoom, fightPrince);
+        steps.put(44, goDoFourthChallenge);
+
+        ConditionalStep wrapUpFourthChallenge = new ConditionalStep(this, talkToJanusAfterAllTrials);
+        wrapUpFourthChallenge.addStep(inSecondTrialRoom, talkToJanusAfterPrinceFight);
+        steps.put(46, wrapUpFourthChallenge);
+
+        steps.put(48, searchChestForEmissaryRobes);
+
+        ConditionalStep goToTemple = new ConditionalStep(this, talkToItzlaToFollow);
+        goToTemple.addStep(and(princeIsFollowing, emissaryRobes), enterTemple);
+        goToTemple.addStep(princeIsFollowing, searchChestForEmissaryRobes);
+        steps.put(50, goToTemple);
+
+        ConditionalStep goTalkAfterSermon = new ConditionalStep(this, searchChestForEmissaryRobes);
+        goTalkAfterSermon.addStep(emissaryRobes, talkToItzlaAfterSermon);
+        steps.put(52, goTalkAfterSermon);
         return steps;
     }
 

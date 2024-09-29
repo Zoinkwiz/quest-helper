@@ -551,7 +551,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		talkToGuardsAtTheatre.addSubSteps(headDownFromTopFloor);
 
 		var enterBackstage = new ObjectStep(this, ObjectID.BACKSTAGE_ENTRANCE, new WorldPoint(1477, 2927, 0), "Enter the theatre through the backstage entrance.");
-		talkToCostumer = new NpcStep(this, CUSTOMER_NPC_ID, new WorldPoint(1466, 9330, 0), "Talk to the Customer.");
+		talkToCostumer = new NpcStep(this, CUSTOMER_NPC_ID, new WorldPoint(1466, 9330, 0), "Talk to the Costumer.");
 		talkToCostumer.addSubSteps(enterBackstage);
 
 		var investigateTheatre = new ConditionalStep(this, talkToCostumer);

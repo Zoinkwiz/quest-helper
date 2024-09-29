@@ -536,7 +536,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		// NOTE: The stairs don't highlight well. A tile step would be better, but tile steps don't work here.
 		var headDownFromTopFloor = new ObjectStep(this, ObjectID.STAIRCASE_54714, new WorldPoint(1445, 2939, 2), "Climb down the staircase.");
 		var headDownFromMiddleFloor = new ObjectStep(this, ObjectID.STAIRCASE_54714, new WorldPoint(1442, 2936, 1), "Climb down the staircase.");
-		var climbFirstLooseRocksToTheatre = new ObjectStep(this, ObjectID.LOOSE_ROCKS_54720, new WorldPoint(1469, 2918, 0), "Climb the Loose rocks on your way to the theatre.");
+		var climbFirstLooseRocksToTheatre = new ObjectStep(this, ObjectID.LOOSE_ROCKS_54720, new WorldPoint(1469, 2918, 0), "Climb the Loose rocks south-east of the villa on your way to the theatre.");
 
 		getToTheGuardsAtTheatreStep = new ConditionalStep(this, climbFirstLooseRocksToTheatre);
 		getToTheGuardsAtTheatreStep.addStep(not(inVilla), returnToButlerAndHeadInside);

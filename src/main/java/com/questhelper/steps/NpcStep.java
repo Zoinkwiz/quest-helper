@@ -45,10 +45,7 @@ import java.util.List;
 import java.util.function.Function;
 import javax.inject.Inject;
 import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.Point;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
@@ -74,7 +71,9 @@ public class NpcStep extends DetailedQuestStep
 	@Setter
 	protected int maxRoamRange = 48;
 
-	protected boolean mustBeFocused = false;
+	protected boolean mustBeFocusedOnPlayer = false;
+
+	protected List<Integer> mustBeFocusedOnNpcs = new ArrayList<>();
 
 	@Setter
 	protected String npcName;
@@ -165,8 +164,9 @@ public class NpcStep extends DetailedQuestStep
 		}
 		newStep.allowMultipleHighlights = allowMultipleHighlights;
 		newStep.addAlternateNpcs(alternateNpcIDs);
-		if (mustBeFocused) {
-			newStep.setMustBeFocused(true);
+		if (mustBeFocusedOnPlayer)
+		{
+			newStep.setMustBeFocusedOnPlayer(true);
 		}
 		newStep.setMaxRoamRange(maxRoamRange);
 
@@ -205,6 +205,12 @@ public class NpcStep extends DetailedQuestStep
 		this.alternateNpcIDs.addAll(alternateNpcIDs);
 	}
 
+	public void setMustBeFocusedOnNpcs(Integer... ids)
+	{
+		mustBeFocusedOnNpcs.clear();
+		mustBeFocusedOnNpcs.addAll(List.of(ids));
+	}
+
 	public List<Integer> allIds()
 	{
 		List<Integer> ids = new ArrayList<>();
@@ -213,10 +219,10 @@ public class NpcStep extends DetailedQuestStep
 		return ids;
 	}
 
-	public void setMustBeFocused(boolean mustBeFocused)
+	public void setMustBeFocusedOnPlayer(boolean mustBeFocusedOnPlayer)
 	{
-		this.mustBeFocused = mustBeFocused;
-		if (mustBeFocused) allowMultipleHighlights = true;
+		this.mustBeFocusedOnPlayer = mustBeFocusedOnPlayer;
+		if (mustBeFocusedOnPlayer) allowMultipleHighlights = true;
 	}
 
 	@Override
@@ -315,7 +321,7 @@ public class NpcStep extends DetailedQuestStep
 
 		for (NPC npc : npcs)
 		{
-			if (mustBeFocused && npc.getInteracting() != client.getLocalPlayer()) continue;
+			if (!passesFocusChecks(npc)) continue;
 			highlightNpc(npc, configColor, graphics);
 
 			if (questHelper.getConfig().showSymbolOverlay())
@@ -331,6 +337,17 @@ public class NpcStep extends DetailedQuestStep
 				}
 			}
 		}
+	}
+
+	private boolean passesFocusChecks(NPC npc)
+	{
+		Actor actor = npc.getInteracting();
+		boolean passesPlayerCheck = !mustBeFocusedOnPlayer || actor == client.getLocalPlayer();
+		if (passesPlayerCheck) return true;
+
+		if (!(actor instanceof NPC)) return false;
+		NPC focusedNpc = (NPC) actor;
+		return mustBeFocusedOnNpcs.isEmpty() || mustBeFocusedOnNpcs.contains(focusedNpc.getId());
 	}
 
 	@Override

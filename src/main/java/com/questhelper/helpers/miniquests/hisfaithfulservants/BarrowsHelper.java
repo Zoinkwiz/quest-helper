@@ -38,7 +38,6 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -349,17 +348,17 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 			"Search Ahrim's Sarcophagus, ready to fight them. hey use melee and are weak to magic attacks.", combatGear);
 
 		killAhrim = new NpcStep(this, NpcID.AHRIM_THE_BLIGHTED, "Defeat Ahrim.");
-		((NpcStep) killAhrim).setMustBeFocused(true);
+		((NpcStep) killAhrim).setMustBeFocusedOnPlayer(true);
 		killDharok = new NpcStep(this, NpcID.DHAROK_THE_WRETCHED, "Defeat Dharok.");
-		((NpcStep) killDharok).setMustBeFocused(true);
+		((NpcStep) killDharok).setMustBeFocusedOnPlayer(true);
 		killGuthan = new NpcStep(this, NpcID.GUTHAN_THE_INFESTED, "Defeat Guthan.");
-		((NpcStep) killGuthan).setMustBeFocused(true);
+		((NpcStep) killGuthan).setMustBeFocusedOnPlayer(true);
 		killKaril = new NpcStep(this, NpcID.KARIL_THE_TAINTED, "Defeat Karil.");
-		((NpcStep) killKaril).setMustBeFocused(true);
+		((NpcStep) killKaril).setMustBeFocusedOnPlayer(true);
 		killTorag = new NpcStep(this, NpcID.TORAG_THE_CORRUPTED, "Defeat Torag.");
-		((NpcStep) killTorag).setMustBeFocused(true);
+		((NpcStep) killTorag).setMustBeFocusedOnPlayer(true);
 		killVerac = new NpcStep(this, NpcID.VERAC_THE_DEFILED, "Defeat Verac.");
-		((NpcStep) killVerac).setMustBeFocused(true);
+		((NpcStep) killVerac).setMustBeFocusedOnPlayer(true);
 
 		leaveAhrim = new ObjectStep(this, ObjectID.STAIRCASE_20667, new WorldPoint(3559, 9703, 3), "Leave the barrow.");
 		leaveDharok = new ObjectStep(this, ObjectID.STAIRCASE_20668, new WorldPoint(3558, 9718, 3), "Leave the barrow.");
@@ -411,7 +410,7 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 		killFinalBrother = new NpcStep(this, NpcID.AHRIM_THE_BLIGHTED, "Kill the final brother.");
 		((NpcStep) killFinalBrother).addAlternateNpcs(NpcID.DHAROK_THE_WRETCHED, NpcID.KARIL_THE_TAINTED, NpcID.GUTHAN_THE_INFESTED,
 			NpcID.TORAG_THE_CORRUPTED, NpcID.VERAC_THE_DEFILED);
-		((NpcStep) killFinalBrother).setMustBeFocused(true);
+		((NpcStep) killFinalBrother).setMustBeFocusedOnPlayer(true);
 
 		searchChest = new ObjectStep(this, ObjectID.CHEST_20723, new WorldPoint(3551, 9695, 0),
 			"Search the chest in the middle of the crypt for the strange icon.");

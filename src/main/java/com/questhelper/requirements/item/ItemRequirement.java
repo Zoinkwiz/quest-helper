@@ -377,9 +377,6 @@ public class ItemRequirement extends AbstractRequirement
 
 		text.append(getName());
 
-		String html1 = "<html><body style='padding: 0px; margin: 0px; width: 140px'>";
-		String html2 = "</body></html>";
-
 		return text.toString();
 	}
 

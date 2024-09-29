@@ -345,7 +345,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		if (questPointReward != null)
 		{
 			rewards.add(questPointReward.getDisplayText());
-			rewards.add("</br>");
+			rewards.add("\n");
 		}
 
 		List<ItemReward> itemRewards = getItemRewards();

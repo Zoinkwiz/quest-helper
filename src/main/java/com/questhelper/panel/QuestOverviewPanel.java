@@ -89,7 +89,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private final JPanel introPanel = new JPanel();
 
-	private final JLabel questNameLabel = new JLabel();
+	private final JLabel questNameLabel = JGenerator.makeJLabel();
 
 	private static final ImageIcon CLOSE_ICON = Icon.CLOSE.getIcon();
 
@@ -129,7 +129,6 @@ public class QuestOverviewPanel extends JPanel
 		actionsContainer.add(viewControls, BorderLayout.EAST);
 
 		questNameLabel.setForeground(Color.WHITE);
-		questNameLabel.setText("");
 		final JPanel leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 		leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		leftTitleContainer.add(questNameLabel, BorderLayout.CENTER);
@@ -151,7 +150,7 @@ public class QuestOverviewPanel extends JPanel
 		configHeaderPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		configHeaderPanel.setLayout(new BorderLayout());
 		configHeaderPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
-		JLabel configHeaderText = new JLabel();
+		JTextArea configHeaderText = JGenerator.makeJTextArea();
 		configHeaderText.setForeground(Color.WHITE);
 		configHeaderText.setText("Configuration:");
 		configHeaderText.setMinimumSize(new Dimension(1, configHeaderPanel.getPreferredSize().height));
@@ -241,7 +240,7 @@ public class QuestOverviewPanel extends JPanel
 	private JPanel makeDropdownPanel(JComboBox dropdown, String name)
 	{
 		// Filters
-		JLabel filterName = new JLabel(name);
+		JTextArea filterName = JGenerator.makeJTextArea(name);
 		filterName.setForeground(Color.WHITE);
 
 		JPanel filtersPanel = new JPanel();
@@ -322,7 +321,7 @@ public class QuestOverviewPanel extends JPanel
 		questStepPanelList.forEach(panel -> {
 			for (QuestStep step : panel.getSteps())
 			{
-				JLabel label = panel.getStepsLabels().get(step);
+				JTextPane label = panel.getStepsLabels().get(step);
 				if (label != null)
 				{
 					label.setText(panel.generateText(step));
@@ -395,7 +394,7 @@ public class QuestOverviewPanel extends JPanel
 			configHeaderPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			configHeaderPanel.setLayout(new BorderLayout());
 			configHeaderPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
-			JLabel configHeaderText = new JLabel();
+			JTextArea configHeaderText = JGenerator.makeJTextArea();
 			configHeaderText.setForeground(Color.WHITE);
 			configHeaderText.setText("Configuration:");
 			configHeaderText.setMinimumSize(new Dimension(1, configHeaderPanel.getPreferredSize().height));
@@ -528,7 +527,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private void updateCombatRequirementsPanels(List<String> combatRequirementList)
 	{
-		JLabel combatLabel = new JLabel();
+		JTextArea combatLabel = JGenerator.makeJTextArea();
 		combatLabel.setForeground(Color.GRAY);
 		StringBuilder textCombat = new StringBuilder();
 		if (combatRequirementList == null)
@@ -540,10 +539,11 @@ public class QuestOverviewPanel extends JPanel
 			for (String combatRequirement : combatRequirementList)
 			{
 				textCombat.append(combatRequirement);
-				textCombat.append("<br>");
+				textCombat.append("\n");
 			}
+			textCombat.replace(textCombat.length() - 1, textCombat.length(), "");
 		}
-		combatLabel.setText("<html><body style = 'text-align:left'>" + textCombat + "</body></html>");
+		combatLabel.setText(textCombat.toString());
 
 		questCombatRequirementsListPanel.add(combatLabel);
 	}
@@ -558,8 +558,6 @@ public class QuestOverviewPanel extends JPanel
 		{
 			externalResourcesList = Collections.singletonList("https://oldschool.runescape.wiki/w/" + StringUtils.lowerCase(URLEncoder.encode(quest.getQuest().name(), StandardCharsets.UTF_8)));
 		}
-		JLabel externalResources = new JLabel();
-		externalResources.setForeground(Color.GRAY);
 		JButton wikiBtn = new JButton();
 
 		//Button constant properties
@@ -595,7 +593,6 @@ public class QuestOverviewPanel extends JPanel
 		}
 
 		questExternalResourcesList.removeAll();
-		questExternalResourcesList.add(externalResources);
 		questExternalResourcesList.add(wikiBtn, BorderLayout.EAST);
 	}
 
@@ -607,11 +604,11 @@ public class QuestOverviewPanel extends JPanel
 			for (String note : notes)
 			{
 				textNote.append(note);
-				textNote.append("<br><br>");
+				textNote.append("\n\n");
 			}
-			var overviewLabel = new JLabel();
+			var overviewLabel = JGenerator.makeJTextArea();
 			overviewLabel.setForeground(Color.GRAY);
-			overviewLabel.setText("<html><body style = 'text-align:left'>" + textNote + "</body></html>");
+			overviewLabel.setText(textNote.toString());
 
 			questNotesList.add(overviewLabel);
 			questNotesPanel.setVisible(true);

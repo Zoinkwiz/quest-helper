@@ -61,7 +61,7 @@ public class QuestSelectPanel extends JPanel
 		setLayout(new BorderLayout(3, 0));
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
-		JLabel nameLabel = new JLabel(questHelper.getQuest().getName());
+		JLabel nameLabel = JGenerator.makeJLabel(questHelper.getQuest().getName());
 		Color color = questState == QuestState.FINISHED ? questHelperPlugin.getConfig().passColour() : (questState == QuestState.IN_PROGRESS ?
 			new Color(240,207, 123) : Color.WHITE);
 		nameLabel.setForeground(color);
@@ -88,7 +88,7 @@ public class QuestSelectPanel extends JPanel
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 30));
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		JLabel nameLabel = new JLabel(text);
+		JLabel nameLabel = JGenerator.makeJLabel(text);
 		Color color = Color.WHITE;
 		nameLabel.setForeground(color);
 		add(nameLabel, BorderLayout.CENTER);

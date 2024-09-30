@@ -78,13 +78,14 @@ public class DeathOnTheIsle extends BasicQuestHelper
 
 	/// Steps
 	private NpcStep talkToPatziToStartQuest;
-	private NpcStep talkToPatziToFigureOutAPlan;
+	private ObjectStep enterUniformHouse;
 	private ObjectStep stealUniformFromWardrobe;
+	private ObjectStep leaveUniformHouse;
 	private NpcStep talkToPatziAfterStealingUniform;
 	private ConditionalStep stealButlerUniform;
 	private NpcStep continueTalkingToPatzi;
 	private NpcStep equipButlersOutfitAndHeadInside;
-	private ConditionalStep talkToGuests;
+	private ConditionalStep introduceYourself;
 	private ConditionalStep enterTheCellarStep;
 	private ConditionalStep getWineStep;
 	private ConditionalStep investigateManStep;
@@ -102,10 +103,10 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	private ConditionalStep confrontNaiatliStep;
 	private NpcStep talkToGuardsToFinishTheQuest;
 	private NpcStep headInsideAndTalkToPatzi;
-	private NpcStep talkToConstantinius;
-	private NpcStep talkToCozyac;
-	private NpcStep talkToPavo;
-	private NpcStep talkToXocotla;
+	private NpcStep introduceYourselfToConstantinius;
+	private NpcStep introduceYourselfToCozyac;
+	private NpcStep introduceYourselfToPavo;
+	private NpcStep introduceYourselfToXocotla;
 	private NpcStep returnToPatzi;
 	private ObjectStep getWine;
 	private NpcStep investigateMan;
@@ -132,7 +133,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	private DetailedQuestStep inspectThreateningNote;
 	private DetailedQuestStep inspectDrinkingFlask;
 	private DetailedQuestStep inspectShippingContract;
-	private NpcStep returnToTheGuards2;
+	private NpcStep returnStolenItemsToTheGuards;
 	private NpcStep talkToGuardsAgainToTellThemYouAreReady;
 	private NpcStep interrogateConstantiniusAgain;
 	private NpcStep interrogateXocotlaAgain;
@@ -155,6 +156,8 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	/// Zones
 	private Zone butlerCostumeHouse1;
 	private Zone butlerCostumeHouse2;
+	private Zone butlerCostumeHouse3;
+	private Zone butlerCostumeHouse4;
 	private Zone villaOutsideTheatre1;
 	private Zone villaOutsideTheatre2;
 	private Zone villaPlatueOnTheWayToTheatre;
@@ -176,10 +179,10 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	private ItemRequirement uniformEquipped;
 	private VarbitRequirement inVilla;
 	private ConditionalStep headInsideAndTalkToPatziStep;
-	private VarbitRequirement spokenToConstantinius;
-	private VarbitRequirement spokenToCozyac;
-	private VarbitRequirement spokenToPavo;
-	private VarbitRequirement spokenToXocotla;
+	private VarbitRequirement introducedYourselfToConstantinius;
+	private VarbitRequirement introducedYourselfToCozyac;
+	private VarbitRequirement introducedYourselfToPavo;
+	private VarbitRequirement introducedYourselfToXocotla;
 	private VarbitRequirement investigatedJug;
 	private VarbitRequirement investigatedSmallBoxInSouthRoom;
 	private VarbitRequirement investigatedBrokenStoolInSouthRoom;
@@ -214,6 +217,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	private VarbitRequirement trapSprung;
 	private VarbitRequirement trapFailed;
 	private VarbitRequirement naiatliDowned;
+	private VarbitRequirement handedOverCluesToGuards;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -224,14 +228,14 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, talkToPatziToStartQuest);
-		steps.put(2, talkToPatziToFigureOutAPlan);
+		steps.put(2, talkToPatziToStartQuest);
 		steps.put(4, stealButlerUniform);
 		steps.put(6, stealButlerUniform);
 		steps.put(8, continueTalkingToPatzi);
 		steps.put(10, equipButlersOutfitAndHeadInside);
 		steps.put(12, equipButlersOutfitAndHeadInside);
 		steps.put(14, headInsideAndTalkToPatziStep);
-		steps.put(15, talkToGuests);
+		steps.put(15, introduceYourself);
 		steps.put(16, enterTheCellarStep);
 		steps.put(18, getWineStep);
 		steps.put(19, investigateManStep);
@@ -261,6 +265,8 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	{
 		butlerCostumeHouse1 = new Zone(new WorldPoint(1399, 2967, 0), new WorldPoint(1402, 2974, 0));
 		butlerCostumeHouse2 = new Zone(new WorldPoint(1397, 2970, 0), new WorldPoint(1399, 2977, 0));
+		butlerCostumeHouse3 = new Zone(new WorldPoint(1396, 2974, 0), new WorldPoint(1392, 2977, 0));
+		butlerCostumeHouse4 = new Zone(new WorldPoint(1392, 2973, 0), new WorldPoint(1394, 2973, 0));
 
 		villaOutsideTheatre1 = new Zone(new WorldPoint(1427, 2945, 0), new WorldPoint(1454, 2899, 0));
 		villaOutsideTheatre2 = new Zone(new WorldPoint(1454, 2921, 0), new WorldPoint(1468, 2899, 0));
@@ -303,8 +309,10 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		drinkingFlask = new ItemRequirement("Drinking flask", ItemID.DRINKING_FLASK);
 		shippingContract = new ItemRequirement("Shipping contract", ItemID.SHIPPING_CONTRACT);
 
+		handedOverCluesToGuards = new VarbitRequirement(11233, 1);
+
 		/// Zones
-		inButlerCostumeHouse = new ZoneRequirement(butlerCostumeHouse1, butlerCostumeHouse2);
+		inButlerCostumeHouse = new ZoneRequirement(butlerCostumeHouse1, butlerCostumeHouse2, butlerCostumeHouse3, butlerCostumeHouse4);
 		inVilla = new VarbitRequirement(14283, 5);
 		aroundVilla = new ZoneRequirement(villaOutsideTheatre1, villaOutsideTheatre2);
 		outsideVillaByLooseRocks = new ZoneRequirement(
@@ -317,10 +325,10 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		inTheatreCellar = new ZoneRequirement(theatreCellar);
 
 		/// States
-		spokenToConstantinius = new VarbitRequirement(11214, 1);
-		spokenToCozyac = new VarbitRequirement(11212, 1);
-		spokenToPavo = new VarbitRequirement(11213, 1);
-		spokenToXocotla = new VarbitRequirement(11211, 1);
+		introducedYourselfToConstantinius = new VarbitRequirement(11214, 1);
+		introducedYourselfToCozyac = new VarbitRequirement(11212, 1);
+		introducedYourselfToPavo = new VarbitRequirement(11213, 1);
+		introducedYourselfToXocotla = new VarbitRequirement(11211, 1);
 
 		investigatedJug = new VarbitRequirement(11218, 1);
 		investigatedSmallBoxInSouthRoom = new VarbitRequirement(11221, 1);
@@ -369,21 +377,16 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		var returnToButlerAndHeadInside = new NpcStep(this, NpcID.HEAD_BUTLER, new WorldPoint(1426, 2919, 0), "Talk to the Head Butler outside the at the entrance to Villa Lucens on the island of Aldarin.", uniformEquipped);
 		returnToButlerAndHeadInside.addDialogStep("Yes.");
 
-		/// 0
-		talkToPatziToStartQuest = new NpcStep(this, NpcID.PATZI, new WorldPoint(1414, 2937, 0), "Talk to Patzi at the entrance to Villa Lucens on the island of Aldarin.");
+		/// 0 + 2
+		talkToPatziToStartQuest = new NpcStep(this, NpcID.PATZI, new WorldPoint(1414, 2937, 0), "Talk to Patzi at the entrance to Villa Lucens on the island of Aldarin to start the quest.");
 		talkToPatziToStartQuest.addDialogStep("Yes.");
 		talkToPatziToStartQuest.addTeleport(startTeleport);
 
-		/// 2
-		talkToPatziToFigureOutAPlan = new NpcStep(this, NpcID.PATZI, "Talk to Patzi to figure out a plan.");
-
 		/// 4 + 6
-		var enterUniformHouse = new ObjectStep(this, ObjectID.HOUSE_WINDOW, new WorldPoint(1401, 2967, 0), "Enter the house to the north. If the Wandering Guard bothers you, wait until he steps away before entering.");
-		var leaveUniformHouse = new ObjectStep(this, ObjectID.HOUSE_WINDOW, new WorldPoint(1401, 2967, 0), "Leave the house with the butler's uniform", uniform);
-		stealUniformFromWardrobe = new ObjectStep(this, ObjectID.WARDROBE_54723, new WorldPoint(1399, 2969, 0), "Steal the butler's uniform from the wardrobe");
-		stealUniformFromWardrobe.addSubSteps(enterUniformHouse);
-		talkToPatziAfterStealingUniform = new NpcStep(this, NpcID.PATZI, new WorldPoint(1414, 2937, 0), "Talk to Patzi after stealing the butler's uniform.", uniform);
-		talkToPatziAfterStealingUniform.addSubSteps(leaveUniformHouse);
+		enterUniformHouse = new ObjectStep(this, ObjectID.HOUSE_WINDOW, new WorldPoint(1401, 2967, 0), "Enter the house north of Patzi through the window to steal a butler's uniform. If the Wandering Guard bothers you, wait until he steps away before entering.");
+		stealUniformFromWardrobe = new ObjectStep(this, ObjectID.WARDROBE_54723, new WorldPoint(1399, 2969, 0), "Steal the butler's uniform from the wardrobe.");
+		leaveUniformHouse = new ObjectStep(this, ObjectID.HOUSE_WINDOW, new WorldPoint(1401, 2967, 0), "Leave the house with the butler's uniform.", uniform);
+		talkToPatziAfterStealingUniform = new NpcStep(this, NpcID.PATZI, new WorldPoint(1414, 2937, 0), "Return to Patzi after stealing the butler's uniform.", uniform);
 		stealButlerUniform = new ConditionalStep(this, enterUniformHouse);
 		stealButlerUniform.addStep(and(inButlerCostumeHouse, uniform), leaveUniformHouse);
 		stealButlerUniform.addStep(uniform, talkToPatziAfterStealingUniform);
@@ -404,17 +407,17 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		headInsideAndTalkToPatziStep.addStep(not(inVilla), returnToButlerAndHeadInside);
 
 		/// 15
-		talkToConstantinius = new NpcStep(this, NpcID.CONSTANTINIUS, new WorldPoint(1447, 2933, 0), "Talk to Constantinius.");
-		talkToCozyac = new NpcStep(this, NpcID.COZYAC, new WorldPoint(1447, 2933, 0), "Talk to Cozyac.");
-		talkToPavo = new NpcStep(this, NpcID.PAVO, new WorldPoint(1447, 2933, 0), "Talk to Pavo.");
-		talkToXocotla = new NpcStep(this, NpcID.XOCOTLA, new WorldPoint(1441, 2930, 0), "Talk to Xocotla.");
-		returnToPatzi = new NpcStep(this, NpcID.PATZI, new WorldPoint(1447, 2936, 0), "Return to Patzi and spill the juicy news.");
-		talkToGuests = new ConditionalStep(this, returnToPatzi);
-		talkToGuests.addStep(not(inVilla), returnToButlerAndHeadInside);
-		talkToGuests.addStep(not(spokenToConstantinius), talkToConstantinius);
-		talkToGuests.addStep(not(spokenToCozyac), talkToCozyac);
-		talkToGuests.addStep(not(spokenToPavo), talkToPavo);
-		talkToGuests.addStep(not(spokenToXocotla), talkToXocotla);
+		introduceYourselfToConstantinius = new NpcStep(this, NpcID.CONSTANTINIUS, new WorldPoint(1447, 2933, 0), "Introduce yourself to Constantinius.");
+		introduceYourselfToCozyac = new NpcStep(this, NpcID.COZYAC, new WorldPoint(1447, 2933, 0), "Introduce yourself to Cozyac.");
+		introduceYourselfToPavo = new NpcStep(this, NpcID.PAVO, new WorldPoint(1447, 2933, 0), "Introduce yourself to Pavo.");
+		introduceYourselfToXocotla = new NpcStep(this, NpcID.XOCOTLA, new WorldPoint(1441, 2930, 0), "Introduce yourself to Xocotla.");
+		returnToPatzi = new NpcStep(this, NpcID.PATZI, new WorldPoint(1447, 2936, 0), "Return to Patzi with the information you've gathered.");
+		introduceYourself = new ConditionalStep(this, returnToPatzi);
+		introduceYourself.addStep(not(inVilla), returnToButlerAndHeadInside);
+		introduceYourself.addStep(not(introducedYourselfToConstantinius), introduceYourselfToConstantinius);
+		introduceYourself.addStep(not(introducedYourselfToCozyac), introduceYourselfToCozyac);
+		introduceYourself.addStep(not(introducedYourselfToPavo), introduceYourselfToPavo);
+		introduceYourself.addStep(not(introducedYourselfToXocotla), introduceYourselfToXocotla);
 
 		/// 16
 		var enterTheCellar = new ObjectStep(this, ObjectID.CELLAR_ENTRANCE, new WorldPoint(1449, 2938, 0), "Enter the cellar.");
@@ -438,7 +441,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		beInterrogatedByThePoliceStep.addStep(not(inVilla), returnToButlerAndHeadInside);
 
 		/// 22 + 24
-		enterTheCellarAgain = enterTheCellar.copy();
+		enterTheCellarAgain = new ObjectStep(this, ObjectID.CELLAR_ENTRANCE, new WorldPoint(1449, 2938, 0), "Enter the cellar again to begin your investigation.");
 		investigateJug = new ObjectStep(this, ObjectID.JUG, new WorldPoint(1445, 9336, 0), "Investigate the Jug by the entrance stairs.");
 		investigateSmallBoxInSouthRoom = new ObjectStep(this, ObjectID.SMALL_BOX, new WorldPoint(1439, 9321, 0), "Investigate the Small box in the south room.");
 		investigateBrokenStoolInSouthRoom = new ObjectStep(this, ObjectID.BROKEN_STOOL_54712, new WorldPoint(1446, 9315, 0), "Investigate the Broken stool in the south room.");
@@ -454,7 +457,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		investigateXocotla = new NpcStep(this, NpcID.XOCOTLA, new WorldPoint(1446, 2933, 0), "Interrogate Xocotla.");
 		interrogatePatziAndAdala = new NpcStep(this, NpcID.PATZI, new WorldPoint(1447, 2936, 0), "Interrogate Patzi and Adala.");
 
-		returnToTheGuards = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1443, 2935, 0), "Return to the guards with the clues.");
+		returnToTheGuards = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1443, 2935, 0), "Return to the guards with the information you've found so far.");
 		returnToTheGuards.addDialogStep("I think I've found everything there is to find so far. What now?");
 
 		investigateMurder = new ConditionalStep(this, returnToTheGuards);
@@ -474,23 +477,25 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		investigateMurder.addStep(not(investigatedLiviusInEastRoom), investigateLiviusInEastRoom);
 
 		/// 26
-		// TODO: the pickpocket steps can fail, do we prompt the user to retry until they succeed?
 		pickpocketAdala = new NpcStep(this, NpcID.ADALA_13823, new WorldPoint(1446, 2936, 0), "Pickpocket Adala until you find Wine labels.", wineLabels);
 		pickpocketCozyac = new NpcStep(this, NpcID.COZYAC_13828, new WorldPoint(1445, 2934, 0), "Pickpocket Cozyac until you find a threatening note.", threateningNote);
 		pickpocketPavo = new NpcStep(this, NpcID.PAVO_13832, new WorldPoint(1445, 2934, 0), "Pickpocket Pavo until you find a drinking flask.", drinkingFlask);
 		pickpocketXocotla = new NpcStep(this, NpcID.XOCOTLA_13830, new WorldPoint(1445, 2934, 0), "Pickpocket Xocotla until you find a shipping contract.", shippingContract);
 
-		inspectWineLabels = new DetailedQuestStep(this, "Inspect the Wine labels in your inventory", wineLabels.highlighted());
-		inspectThreateningNote = new DetailedQuestStep(this, "Inspect the Threatening note in your inventory", threateningNote.highlighted());
-		inspectDrinkingFlask = new DetailedQuestStep(this, "Inspect the Drinking flask in your inventory", drinkingFlask.highlighted());
-		inspectShippingContract = new DetailedQuestStep(this, "Inspect the Shipping contract in your inventory", shippingContract.highlighted());
+		inspectWineLabels = new DetailedQuestStep(this, "Inspect the Wine labels in your inventory.", wineLabels.highlighted());
+		inspectThreateningNote = new DetailedQuestStep(this, "Inspect the Threatening note in your inventory.", threateningNote.highlighted());
+		inspectDrinkingFlask = new DetailedQuestStep(this, "Inspect the Drinking flask in your inventory.", drinkingFlask.highlighted());
+		inspectShippingContract = new DetailedQuestStep(this, "Inspect the Shipping contract in your inventory.", shippingContract.highlighted());
 
-		returnToTheGuards2 = returnToTheGuards.copy();
+		returnStolenItemsToTheGuards = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1443, 2935, 0), "Return to the guards with the stolen items.", wineLabels, threateningNote, drinkingFlask, shippingContract);
+		returnStolenItemsToTheGuards.addDialogStep("I think I've found everything there is to find so far. What now?");
 
-		// varbit 11233: 0 -> 1 when handing over clues to the guards
+		talkToGuardsAgainToTellThemYouAreReady = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1433, 2935, 0), "Talk to the guards to tell them you're ready to make an accusation.");
+		talkToGuardsAgainToTellThemYouAreReady.addDialogStep("I'm ready.");
 
-		investigateMurder2 = new ConditionalStep(this, returnToTheGuards2);
+		investigateMurder2 = new ConditionalStep(this, returnStolenItemsToTheGuards);
 		investigateMurder2.addStep(not(inVilla), returnToButlerAndHeadInside);
+		investigateMurder2.addStep(handedOverCluesToGuards, talkToGuardsAgainToTellThemYouAreReady);
 		investigateMurder2.addStep(not(wineLabels), pickpocketAdala);
 		investigateMurder2.addStep(not(threateningNote), pickpocketCozyac);
 		investigateMurder2.addStep(not(drinkingFlask), pickpocketPavo);
@@ -501,8 +506,6 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		investigateMurder2.addStep(not(inspectedShippingContract), inspectShippingContract);
 
 		/// 27
-		talkToGuardsAgainToTellThemYouAreReady = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1433, 2935, 0), "Talk to the guards to tell them you're ready to make an accusation.");
-		talkToGuardsAgainToTellThemYouAreReady.addDialogStep("I'm ready.");
 		talkToGuardsAgainToTellThemYouAreReadyStep = new ConditionalStep(this, talkToGuardsAgainToTellThemYouAreReady);
 		talkToGuardsAgainToTellThemYouAreReadyStep.addStep(not(inVilla), returnToButlerAndHeadInside);
 
@@ -516,6 +519,12 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		interrogateCozyacAgain.addDialogStep("No.");
 		interrogatePavoAgain = new NpcStep(this, NpcID.PAVO, new WorldPoint(1442, 2931, 2), "Interrogate Pavo.");
 		interrogatePavoAgain.addDialogStep("No.");
+
+		// 11248 0->1 accused Patzi
+		// 11240 0->1 accused Constantinius
+		// 11241 0->1 accused Xocotla
+		// 11239 0->1 accused Cozyac
+		// 11242 0->1 accused Pavo
 
 		accuseAdala = new NpcStep(this, NpcID.ADALA, new WorldPoint(1446, 2933, 2), "Accuse Adala of the crime, ready for a fight you cannot lose.");
 		accuseAdala.addDialogStep("Accuse Adala.");
@@ -559,7 +568,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		talkToGuardsAtTheatre.addSubSteps(headDownFromTopFloor);
 
 		var enterBackstage = new ObjectStep(this, ObjectID.BACKSTAGE_ENTRANCE, new WorldPoint(1477, 2927, 0), "Enter the theatre through the backstage entrance.");
-		talkToCostumer = new NpcStep(this, CUSTOMER_NPC_ID, new WorldPoint(1466, 9330, 0), "Talk to the Costumer.");
+		talkToCostumer = new NpcStep(this, CUSTOMER_NPC_ID, new WorldPoint(1466, 9330, 0), "Talk to the Costumer in the theatre cellar.");
 		talkToCostumer.addSubSteps(enterBackstage);
 
 		var investigateTheatre = new ConditionalStep(this, talkToCostumer);
@@ -724,9 +733,9 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	{
 		var panels = new ArrayList<PanelDetails>();
 
-		panels.add(new PanelDetails("Getting the right fit", List.of(talkToPatziToStartQuest, talkToPatziToFigureOutAPlan, stealUniformFromWardrobe, talkToPatziAfterStealingUniform, equipButlersOutfitAndHeadInside), List.of(emptyInvSlots)));
-		panels.add(new PanelDetails("Inside Villa Lucens", List.of(headInsideAndTalkToPatzi, talkToConstantinius, talkToCozyac, talkToPavo, talkToXocotla, returnToPatzi, getWine, investigateMan, beInterrogatedByThePolice), List.of()));
-		panels.add(new PanelDetails("Playing detective", List.of(enterTheCellarAgain, investigateJug, investigateSmallBoxInSouthRoom, investigateBrokenStoolInSouthRoom, investigateWineStorageInEastRoom, investigateBrokenPotteryInEastRoom, investigateLiviusInEastRoom, leaveCellar, investigateConstantinius, investigateCozyac, investigatePavo, investigateXocotla, interrogatePatziAndAdala, returnToTheGuards, pickpocketAdala, pickpocketCozyac, pickpocketPavo, pickpocketXocotla, inspectWineLabels, inspectThreateningNote, inspectDrinkingFlask, inspectShippingContract, returnToTheGuards2, talkToGuardsAgainToTellThemYouAreReady, interrogateConstantiniusAgain, interrogateXocotlaAgain, interrogateCozyacAgain, interrogatePavoAgain, accuseAdala, getAdalasConfession, talkToGuardsAboutAdala), List.of()));
+		panels.add(new PanelDetails("Getting the right fit", List.of(talkToPatziToStartQuest, enterUniformHouse, stealUniformFromWardrobe, leaveUniformHouse, talkToPatziAfterStealingUniform, equipButlersOutfitAndHeadInside), List.of(emptyInvSlots)));
+		panels.add(new PanelDetails("Inside Villa Lucens", List.of(headInsideAndTalkToPatzi, introduceYourselfToConstantinius, introduceYourselfToCozyac, introduceYourselfToPavo, introduceYourselfToXocotla, returnToPatzi, getWine, investigateMan, beInterrogatedByThePolice), List.of()));
+		panels.add(new PanelDetails("Playing detective", List.of(enterTheCellarAgain, investigateJug, investigateSmallBoxInSouthRoom, investigateBrokenStoolInSouthRoom, investigateWineStorageInEastRoom, investigateBrokenPotteryInEastRoom, investigateLiviusInEastRoom, leaveCellar, investigateConstantinius, investigateCozyac, investigatePavo, investigateXocotla, interrogatePatziAndAdala, returnToTheGuards, pickpocketAdala, pickpocketCozyac, pickpocketPavo, pickpocketXocotla, inspectWineLabels, inspectThreateningNote, inspectDrinkingFlask, inspectShippingContract, returnStolenItemsToTheGuards, talkToGuardsAgainToTellThemYouAreReady, interrogateConstantiniusAgain, interrogateXocotlaAgain, interrogateCozyacAgain, interrogatePavoAgain, accuseAdala, getAdalasConfession, talkToGuardsAboutAdala), List.of()));
 		panels.add(new PanelDetails("The show must go on", List.of(talkToGuardsAtTheatre, talkToCostumer, searchCrateNextToStairs, searchBookshelf, searchCostumeRack, talkToCostumerAgain, speakToGuards, talkToStradiusToEnterTheTheatre, confrontNaiatli, talkToNaiatli, talkToGuardsToFinishTheQuest), List.of()));
 
 		return panels;

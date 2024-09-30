@@ -74,7 +74,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     {
         ItemRequirement combatGear, food, coins;
 
-        ItemRequirement quetzalFeed, limestoneBrick, softClay;
+        ItemRequirement quetzalFeed, limestoneBrick, softClay, pickaxe;
 
         ItemRequirement towerKey, book, poem, scrapOfPaper1, scrapOfPaper2, scrapOfPaper3, completedNote, emissaryHood, emissaryTop, emissaryBottom,
                 emissaryBoots, emissaryRobesEquipped, emissaryRobes;
@@ -83,9 +83,10 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 inSecondTrialRoom, southEastGateUnlocked, southWestChestOpened, hasReadPoem, knowAboutDirections, inArrowPuzzle, combatStarted,
                 startedInvestigation;
 
-        Requirement tenochGuilty, hasTalkedToTenoch, siliaGuilty, hasTalkedToSilia, hasTalkedToAdrius, eleuiaGuilty, hasTalkedToEleuia;
+        Requirement tenochGuilty, hasTalkedToTenoch, siliaGuilty, hasTalkedToSilia, hasTalkedToAdrius, eleuiaGuilty, hasTalkedToEleuia, inFirstIceRoom,
+                inSecondIceRoom, pulledFirstLever, pulledSecondLever, pulledThirdLever, pulledFourthLever;
 
-        Zone teomat, firstTrialRoom, secondTrialRoom;
+        Zone teomat, firstTrialRoom, secondTrialRoom, firstIceRoom, secondIceRoom;
 
         DetailedQuestStep talkToItzlaAtTeomat,travelToGorge, talkToBartender, restOnBed, talkToPrinceAfterRest, talkToShopkeeper, talkToPrinceInPubAgain,
                 talkToPrinceAtTower, buildSalvagerOverlookLandingSite, talkToPrinceAtTowerAfterLanding, talkToNova, talkToSergius, talkToFelius, talkToCaritta, talkToPrinceAfterRecruits,
@@ -106,8 +107,17 @@ public class TheHeartOfDarkness extends BasicQuestHelper
             enterTemple, talkToItzlaAfterSermon, talkToFides, enterRuins;
 
         // Ice dungeon
-        DetailedQuestStep takePickaxe, mineRocks, pullFirstLever, climbDownLedge, slideAlongIceLedge, pullSecondLever, jumpOverFrozenLatforms, climbDownLedge2,
-                pullThirdLever, pullFourthLever, pullChain;
+        DetailedQuestStep takePickaxe;
+        DetailedQuestStep mineRocks;
+        ObjectStep pullFirstLever;
+        DetailedQuestStep climbDownLedge;
+        DetailedQuestStep slideAlongIceLedge;
+        DetailedQuestStep pullSecondLever;
+        DetailedQuestStep jumpOverFrozenLatforms;
+        DetailedQuestStep climbDownLedge2;
+        DetailedQuestStep pullThirdLever;
+        DetailedQuestStep pullFourthLever;
+        DetailedQuestStep pullChain;
 
         DetailedQuestStep collectUrns, fixStatues, inspectMarkings, doStatuePuzzle, goToFinalBoss;
 
@@ -126,6 +136,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         quetzalFeed = new ItemRequirement("Quetzal feed", ItemID.QUETZAL_FEED_29307);
         limestoneBrick = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK);
         softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
+        pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
 
         // Quest items
         towerKey = new ItemRequirement("Tower key", ItemID.TOWER_KEY_29877);
@@ -206,6 +217,18 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 "The Final Dawn is the will of Ranul. He will show us all that death is nothing to be feared. He and Ralos will lead us into forming a new world before then guiding us to Mictl.");
         hasTalkedToEleuia = or(eleuiaInnocent, eleuiaGuilty);
 
+
+        firstIceRoom = new Zone(new WorldPoint(1660, 9595, 2), new WorldPoint(1724, 9659, 2));
+        inFirstIceRoom = new ZoneRequirement(firstIceRoom);
+
+        secondIceRoom = new Zone(new WorldPoint(1699, 9602, 1), new WorldPoint(1726, 9639, 1));
+        inSecondIceRoom = new ZoneRequirement(secondIceRoom);
+
+        pulledFirstLever = new VarbitRequirement(11138, 1);
+        pulledSecondLever = new VarbitRequirement(11139, 1);
+        pulledThirdLever = new VarbitRequirement(11140, 1);
+        pulledFourthLever = new VarbitRequirement(11141, 1);
+
         // Steps
         setupSteps();
         talkToItzlaAtTeomat = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_12896, new WorldPoint(1454, 3173, 0), "Talk to Prince Itzla Arkan at the Teomat.");
@@ -242,7 +265,6 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         );
 
         List<WorldPoint> pathFromChasmToOverlook = List.of(
-//                new WorldPoint(1621, 3254, 0),
                 new WorldPoint(1638, 3244, 0),
                 new WorldPoint(1639, 3254, 0),
                 new WorldPoint(1644, 3263, 0),
@@ -361,15 +383,44 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         talkToItzlaToFollow = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13691, new WorldPoint(1638, 3222, 0), "Talk to the prince to have him follow you.");
         enterTemple = new DetailedQuestStep(this, new WorldPoint(1687, 3247, 0), "Enter the temple to the east of the tower for a cutscene.",
                 emissaryRobesEquipped);
-        talkToItzlaAfterSermon = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13691, new WorldPoint(1688, 3247, 0), "Talk to the prince in the temple.");
-//        talkToFides = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        enterRuins = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
+        talkToItzlaAfterSermon = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13691, new WorldPoint(1688, 3247, 0), "Talk to the prince in the temple.",
+                emissaryRobesEquipped);
+        talkToFides = new NpcStep(this, NpcID.FOREBEARER_FIDES, new WorldPoint(1685, 3247, 0), "Talk to Forebearer Fides in the temple.", emissaryRobesEquipped);
+        enterRuins = new ObjectStep(this, ObjectID.STAIRS_54525, new WorldPoint(1693, 3231, 0), "Go down the stairs south-east of the temple. Be equipped for" +
+                " a fight.");
 //
 //        // Ice dungeon
-//        takePickaxe = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        mineRocks = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        pullFirstLever = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
-//        climbDownLedge = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
+
+        takePickaxe = new ObjectStep(this, ObjectID.BARREL_54517, new WorldPoint(1696, 9633, 2), "Take a pickaxe from the nearby barrel.");
+        mineRocks = new ObjectStep(this, ObjectID.ROCKS_54501, new WorldPoint(1690, 9634, 2), "Mine the nearby rocks.", pickaxe);
+        int LEVER_ID = 55367; // Decorative object
+        pullFirstLever = new ObjectStep(this, LEVER_ID, new WorldPoint(1695, 9604, 2), "Pull the lever in the south-east of the area. Make sure to avoid the " +
+                "wall spikes.");
+        pullFirstLever.addTileMarker(new WorldPoint(1682, 9603, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1682, 9604, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1682, 9605, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1682, 9606, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+
+        pullFirstLever.addTileMarker(new WorldPoint(1684, 9603, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1684, 9604, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1684, 9605, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1684, 9606, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+
+        pullFirstLever.addTileMarker(new WorldPoint(1686, 9603, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1686, 9604, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1686, 9605, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1686, 9606, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+
+        pullFirstLever.addTileMarker(new WorldPoint(1688, 9603, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1688, 9604, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1688, 9605, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1688, 9606, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+
+        pullFirstLever.addTileMarker(new WorldPoint(1690, 9603, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1690, 9604, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1690, 9605, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        pullFirstLever.addTileMarker(new WorldPoint(1690, 9606, 2), SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING);
+        climbDownLedge = new ObjectStep(this, ObjectID.LEDGE_54531, new WorldPoint(1701, 9607, 2), "Climb down the ledge east of the lever.");
 //        slideAlongIceLedge = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
 //        pullSecondLever = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
 //        jumpOverFrozenLatforms = new NpcStep(this, NpcID., new WorldPoint(0, 0, 0), "");
@@ -488,6 +539,28 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         ConditionalStep goTalkAfterSermon = new ConditionalStep(this, searchChestForEmissaryRobes);
         goTalkAfterSermon.addStep(emissaryRobes, talkToItzlaAfterSermon);
         steps.put(52, goTalkAfterSermon);
+
+        ConditionalStep goTalkToFides = new ConditionalStep(this, searchChestForEmissaryRobes);
+        goTalkToFides.addStep(and(emissaryRobes, princeIsFollowing), talkToFides);
+        goTalkToFides.addStep(emissaryRobes, talkToItzlaAfterSermon);
+        steps.put(54, goTalkToFides);
+
+        ConditionalStep goEnterRuins = new ConditionalStep(this, searchChestForEmissaryRobes);
+        goEnterRuins.addStep(princeIsFollowing, enterRuins);
+        goEnterRuins.addStep(emissaryRobes, talkToItzlaAfterSermon);
+        steps.put(56, goEnterRuins);
+
+        ConditionalStep goMineRuins = new ConditionalStep(this, enterRuins);
+        goMineRuins.addStep(and(inFirstIceRoom, pickaxe), mineRocks);
+        goMineRuins.addStep(inFirstIceRoom, takePickaxe);
+        steps.put(58, goMineRuins);
+
+        steps.put(60, enterRuins);
+
+        ConditionalStep goPullLevers = new ConditionalStep(this, enterRuins);
+        goPullLevers.addStep(and(inFirstIceRoom, pulledFirstLever), climbDownLedge);
+        goPullLevers.addStep(inFirstIceRoom, pullFirstLever);
+        steps.put(62, goPullLevers);
         return steps;
     }
 

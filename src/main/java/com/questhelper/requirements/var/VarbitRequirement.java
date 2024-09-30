@@ -33,6 +33,7 @@ import java.math.BigInteger;
 import java.util.Locale;
 import com.questhelper.util.Utils;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -47,7 +48,9 @@ import javax.annotation.Nonnull;
 public class VarbitRequirement extends AbstractRequirement
 {
 	private final int varbitID;
-	private final int requiredValue;
+
+	@Setter
+	private int requiredValue;
 	private final Operation operation;
 	private final String displayText;
 

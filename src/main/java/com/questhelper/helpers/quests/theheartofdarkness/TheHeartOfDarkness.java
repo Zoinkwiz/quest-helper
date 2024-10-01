@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.DialogRequirement;
@@ -426,12 +427,10 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         inArrowPuzzle = new WidgetTextRequirement(810, 15, 9, "Confirm");
         hasReadCompletedNote = new ManualRequirement();
 //        northWestChestOpened = new VarbitRequirement(11167, 1);
-        NpcInteractingRequirement playerIsAttacked = new NpcInteractingRequirement(
-                NpcID.EMISSARY_BRAWLER, NpcID.EMISSARY_BRAWLER_13774, NpcID.EMISSARY_BRAWLER_13775, NpcID.EMISSARY_BRAWLER_13776,
-                NpcID.EMISSARY_CONJURER, NpcID.EMISSARY_CONJURER_13778);
-        NpcInteractingWithNpcRequirement princeIsAttacked = new NpcInteractingWithNpcRequirement(NpcID.PRINCE_ITZLA_ARKAN_13771, "Emissary Conjurer",
-                "Emissary Brawler");
-        combatStarted = or(playerIsAttacked, princeIsAttacked);
+
+        NpcCondition emissaryIsPassive = new NpcCondition(NpcID.EMISSARY_BRAWLER, new WorldPoint(1641, 3227, 2));
+        emissaryIsPassive.setAnimationIDRequired(-1);
+        combatStarted = not(emissaryIsPassive);
         startedInvestigation = new VarbitRequirement(11134, 1);
         // Accused Tenoch incorrectly
         // 11135 0->1

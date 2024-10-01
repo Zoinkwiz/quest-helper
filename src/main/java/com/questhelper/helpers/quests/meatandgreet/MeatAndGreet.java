@@ -185,6 +185,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		/// 4
 		// TODO: recommend teleport?
 		talkToSpiceMerchantInBazaar = new NpcStep(this, NpcID.SPICE_MERCHANT, new WorldPoint(1685, 3101, 0), "Talk to the Spice Merchant in the Bazaar in the middle of Civitas illa Fortis about the missing delivery.");
+		talkToSpiceMerchantInBazaar.addTeleport(civitasIllaFortisTeleport);
 		talkToSpiceMerchantInBazaar.addDialogStep("I'm here about a missing delivery.");
 		talkToSpiceMerchantInBazaar.addDialogStep("Could I have a look at that locked box?");
 		talkToSpiceMerchantInBazaar.addDialogStep("About that missing delivery...");
@@ -246,6 +247,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		/// 6
 		// Can save 50% of the time by teleporting to Civitas illa Fortis & running south-east, or using a Quetzal whistle to (?), but I don't have a whistle!
 		returnToEmelio = new NpcStep(this, NpcID.EMELIO, new WorldPoint(1753, 3074, 0), "Return to Emelio in Outer Fortis at the south-eastern entrance of Civitas illa Fortis to find the perfect ratio of ingredients for the kebab.");
+		returnToEmelio.addTeleport(civitasIllaFortisTeleport);
 
 		/// 8
 		var giveRecipeToEmelio = new NpcStep(this, NpcID.EMELIO, new WorldPoint(1753, 3074, 0), "Tell Emelio the recipe is perfect.");
@@ -397,7 +399,8 @@ public class MeatAndGreet extends BasicQuestHelper
 			staminaPotion,
 			prayerPotion,
 			combatGear,
-			food
+			food,
+			civitasIllaFortisTeleport.quantity(3)
 		);
 	}
 

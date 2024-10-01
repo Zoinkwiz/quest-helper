@@ -221,7 +221,6 @@ public class MeatAndGreet extends BasicQuestHelper
 		var enterWolfDenAndKillTheDireWolfAlpha = new ConditionalStep(this, headWestAndEnterTheDungeon);
 		// enterWolfDenAndKillTheDireWolfAlpha
 		killDireWolfAlpha = new NpcStep(this, NpcID.DIRE_WOLF_ALPHA, "Kill the Dire Wolf Alpha. Use Protect from Melee to avoid most damage. His pups deal ranged damage.", combatGear, food);
-		// TODO: Add check for "need to kill wolf"
 		// killed wolf: 11184 2->3
 		var needToKillWolf = new VarbitRequirement(11184, 2);
 		var exitWolfDen = new ObjectStep(this, ObjectID.CAVE_54691, new WorldPoint(1488, 9502, 1), "Exit the wolf den, then head back to Alba in the farmhouse west of Civitas illa Fortis.");

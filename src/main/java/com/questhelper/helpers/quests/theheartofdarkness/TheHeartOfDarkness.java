@@ -38,6 +38,7 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.npc.NpcInteractingWithNpcRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
@@ -94,7 +95,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
     Requirement atTeomat, builtLandingInOverlook, talkedToSergius, talkedToCaritta, talkedToFelius, princeIsFollowing, inFirstTrialRoom,
             inSecondTrialRoom, southEastGateUnlocked, southWestChestOpened, hasReadPoem, knowAboutDirections, inArrowPuzzle, combatStarted,
-            startedInvestigation;
+            startedInvestigation, freeInvSlots4;
 
     Requirement tenochGuilty, hasTalkedToTenoch, siliaGuilty, hasTalkedToSilia, hasTalkedToAdrius, eleuiaGuilty, hasTalkedToEleuia, inFirstIceRoom,
             inSecondIceAreaFirstRoom, inSecondIceAreaSecondRoom, inThirdIceArea, pulledFirstLever, pulledSecondLever, pulledThirdLever, unlockedShortcut,
@@ -461,6 +462,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 "The Final Dawn is the will of Ranul. He will show us all that death is nothing to be feared. He and Ralos will lead us into forming a new world before then guiding us to Mictl.");
         hasTalkedToEleuia = or(eleuiaInnocent, eleuiaGuilty);
 
+        freeInvSlots4 = new FreeInventorySlotRequirement(4);
 
         firstIceRoom = new Zone(new WorldPoint(1660, 9595, 2), new WorldPoint(1724, 9659, 2));
         inFirstIceRoom = new ZoneRequirement(firstIceRoom);
@@ -684,7 +686,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 "trial.");
         talkToJanusAfterAllTrials = new NpcStep(this, NpcID.FOREBEARER_JANUS, new WorldPoint(1640, 3226, 0), "Talk to Janus at the bottom of the tower.");
         searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.CHEST_54515, new WorldPoint(1638, 3217, 0), "Search the chest in the south of the tower " +
-                "for some emissary robes.");
+                "for some emissary robes.", freeInvSlots4);
         talkToItzlaToFollow = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13691, new WorldPoint(1638, 3222, 0), "Talk to the prince to have him follow you.");
         enterTemple = new DetailedQuestStep(this, new WorldPoint(1687, 3247, 0), "Enter the temple to the east of the tower for a cutscene.",
                 emissaryRobesEquipped);

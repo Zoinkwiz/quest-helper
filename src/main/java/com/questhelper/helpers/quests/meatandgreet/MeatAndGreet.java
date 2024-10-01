@@ -78,7 +78,7 @@ public class MeatAndGreet extends BasicQuestHelper
 	final static private int FORTIS_COLOSSEUM_REGION_ID = 7316;
 
 	/// Recommended items
-	private TeleportItemRequirement startTeleport;
+	private TeleportItemRequirement civitasIllaFortisTeleport;
 	private ItemRequirement combatGear;
 	private ItemRequirement food;
 	private ItemRequirement staminaPotion;
@@ -160,7 +160,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
-		startTeleport = new TeleportItemRequirement("Teleport to Civitas illa Fortis", ItemID.CIVITAS_ILLA_FORTIS_TELEPORT, 1);
+		civitasIllaFortisTeleport = new TeleportItemRequirement("Teleport to Civitas illa Fortis", ItemID.CIVITAS_ILLA_FORTIS_TELEPORT, 1);
 
 		inWolfDen = new ZoneRequirement(wolfDen);
 		inFortisColosseum = new ZoneRequirement(fortisColosseum);
@@ -177,7 +177,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		/// 0 + 2
 		talkToEmelioToStartQuest = new NpcStep(this, NpcID.EMELIO, new WorldPoint(1753, 3074, 0), "Talk to Emelio in Outer Fortis at the south-eastern entrance of Civitas illa Fortis to start the quest.");
 		talkToEmelioToStartQuest.addDialogStep("Yes.");
-		talkToEmelioToStartQuest.addTeleport(startTeleport);
+		talkToEmelioToStartQuest.addTeleport(civitasIllaFortisTeleport);
 
 		// 11183 0->1
 		// 11184 0->1

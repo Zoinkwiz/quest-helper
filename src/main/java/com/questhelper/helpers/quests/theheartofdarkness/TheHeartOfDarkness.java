@@ -200,9 +200,9 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         steps.put(22, goTalkToPrinceAtTower);
 
         ConditionalStep goTalkToRecruits = new ConditionalStep(this, talkToNova);
+        goTalkToRecruits.addStep(not(talkedToFelius), talkToFelius);
         goTalkToRecruits.addStep(not(talkedToCaritta), talkToCaritta);
         goTalkToRecruits.addStep(not(talkedToSergius), talkToSergius);
-        goTalkToRecruits.addStep(not(talkedToFelius), talkToFelius);
         steps.put(24, goTalkToRecruits);
 
         steps.put(26, talkToPrinceAfterRecruits);
@@ -1009,7 +1009,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         allSteps.add(new PanelDetails("Starting off", List.of(talkToItzlaAtTeomat, travelToGorge, talkToBartender, restOnBed, talkToPrinceAfterRest,
                 talkToShopkeeper, talkToPrinceInPubAgain)));
         allSteps.add(new PanelDetails("The Tower", List.of(talkToPrinceAtTower, buildSalvagerOverlookLandingSite, talkToPrinceAtTowerAfterLanding,
-                talkToNova, talkToSergius, talkToFelius, talkToCaritta, talkToPrinceAfterRecruits, talkToJanus, climbUpToFirstTrial), List.of(combatGear, food),
+                talkToFelius, talkToCaritta, talkToSergius, talkToNova, talkToPrinceAfterRecruits, talkToJanus, climbUpToFirstTrial), List.of(combatGear, food),
                 List.of(staminaPotions, quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4))));
 
         Collection<QuestStep> chestSteps = openKeywordChestSouthWest.getSteps();

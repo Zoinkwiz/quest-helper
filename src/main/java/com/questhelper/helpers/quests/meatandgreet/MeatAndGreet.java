@@ -469,7 +469,7 @@ public class MeatAndGreet extends BasicQuestHelper
 			), List.of(staminaPotion, prayerPotion, combatGear, food)));
 		panels.add(new PanelDetails("The golden ratio", List.of(
 			returnToEmelio,
-			recipeStepWrapper, // TODO: Dooes the text look nice here? and do we continue progress nicely?
+			recipeStepWrapper,
 			returnToEmelioWithNewsOfYourKebabSuccess
 		), List.of(staminaPotion, prayerPotion, combatGear, food)));
 		panels.add(new PanelDetails("Guerilla marketing", List.of(

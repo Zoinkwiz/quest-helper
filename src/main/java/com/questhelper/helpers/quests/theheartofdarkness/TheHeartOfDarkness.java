@@ -30,7 +30,6 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
@@ -38,9 +37,8 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.DialogRequirement;
-import com.questhelper.requirements.npc.NpcInteractingRequirement;
-import com.questhelper.requirements.npc.NpcInteractingWithNpcRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
@@ -100,9 +98,9 @@ public class TheHeartOfDarkness extends BasicQuestHelper
             inSecondTrialRoom, southEastGateUnlocked, southWestChestOpened, hasReadPoem, knowAboutDirections, inArrowPuzzle, combatStarted,
             startedInvestigation, freeInvSlots4;
 
-    Requirement tenochGuilty, hasTalkedToTenoch, siliaGuilty, hasTalkedToSilia, hasTalkedToAdrius, eleuiaGuilty, hasTalkedToEleuia, inFirstIceRoom,
-            inSecondIceAreaFirstRoom, inSecondIceAreaSecondRoom, inThirdIceArea, pulledFirstLever, pulledSecondLever, pulledThirdLever, unlockedShortcut,
-            inBossRoom;
+    Requirement tenochGuilty, hasTalkedToTenoch, siliaGuilty, hasTalkedToSilia, hasTalkedToAdrius, eleuiaGuilty, hasTalkedToEleuia, inTempleCutscene,
+            inFirstIceRoom, inSecondIceAreaFirstRoom, inSecondIceAreaSecondRoom, inThirdIceArea, pulledFirstLever, pulledSecondLever, pulledThirdLever,
+            unlockedShortcut, inBossRoom;
 
     ObjectStep activateSecondStatue, activateFirstStatue, activateThirdStatue, activateFourthStatue;
 
@@ -270,7 +268,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         steps.put(48, searchChestForEmissaryRobes);
 
         ConditionalStep goToTemple = new ConditionalStep(this, talkToItzlaToFollow);
-        goToTemple.addStep(and(princeIsFollowing, emissaryRobes), enterTemple);
+        goToTemple.addStep(or(inTempleCutscene, and(princeIsFollowing, emissaryRobes)), enterTemple);
         goToTemple.addStep(princeIsFollowing, searchChestForEmissaryRobes);
         steps.put(50, goToTemple);
 
@@ -467,6 +465,9 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         hasTalkedToEleuia = or(eleuiaInnocent, eleuiaGuilty);
 
         freeInvSlots4 = new FreeInventorySlotRequirement(4);
+
+        ZoneRequirement inTemple = new ZoneRequirement(new Zone(new WorldPoint(1677, 3244, 0), new WorldPoint(1691, 3251, 0)));
+        inTempleCutscene = and(inTemple, new InInstanceRequirement());
 
         firstIceRoom = new Zone(new WorldPoint(1660, 9595, 2), new WorldPoint(1724, 9659, 2));
         inFirstIceRoom = new ZoneRequirement(firstIceRoom);

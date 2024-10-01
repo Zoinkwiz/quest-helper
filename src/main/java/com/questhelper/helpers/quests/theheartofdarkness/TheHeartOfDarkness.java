@@ -994,8 +994,13 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         allSteps.add(new PanelDetails("The Tower", List.of(talkToPrinceAtTower, buildSalvagerOverlookLandingSite, talkToPrinceAtTowerAfterLanding,
                 talkToNova, talkToSergius, talkToFelius, talkToCaritta, talkToPrinceAfterRecruits, talkToJanus, climbUpToFirstTrial), List.of(combatGear, food),
                 List.of(quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4))));
-        allSteps.add(new PanelDetails("First Trial", List.of(pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper, openKeywordChestSouthWest,
-                readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrows, combineScraps, readCompletedNote, tellJanusPasscode)));
+
+        Collection<QuestStep> chestSteps = openKeywordChestSouthWest.getSteps();
+        PanelDetails firstTrial = new PanelDetails("First Trial", List.of(pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper));
+        firstTrial.addSteps(chestSteps.toArray(new QuestStep[0]));
+        firstTrial.addSteps(readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrows, combineScraps, readCompletedNote, tellJanusPasscode);
+        allSteps.add(firstTrial);
+
         allSteps.add(new PanelDetails("Second Trial", List.of(startCombatTrial, completeCombatTrial, talkToJanusAfterTrial), List.of(combatGear)));
         allSteps.add(new PanelDetails("Third Trial", List.of(talkToPrinceToStartThirdTrial, talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia,
                 accuseGuiltyIndividual, goUpToFinalTrial)));

@@ -188,8 +188,7 @@ public class LockedChestPuzzle extends QuestStep implements OwnerStep {
 
     private void setupSteps() {
         readBook = new DetailedQuestStep(getQuestHelper(), "Read the book.", book.highlighted());
-        openChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_54376, new WorldPoint(1638, 3217, 1), "Search the south-west chest, and put in the " +
-                "right code.");
+        openChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_54376, new WorldPoint(1638, 3217, 1), "Search the south-west chest.");
         solveChest = new ChestCodeStep(getQuestHelper(), 10);
     }
 

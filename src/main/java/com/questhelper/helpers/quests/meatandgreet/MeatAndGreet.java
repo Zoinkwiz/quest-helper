@@ -461,9 +461,10 @@ public class MeatAndGreet extends BasicQuestHelper
 			enterCodeWrapper,
 			talkToAlba,
 			headWestAndEnterTheDungeon,
-			killDireWolfAlpha), List.of(staminaPotion, prayerPotion, combatGear, food)));
+			killDireWolfAlpha,
+			returnToAlba
+			), List.of(staminaPotion, prayerPotion, combatGear, food)));
 		panels.add(new PanelDetails("The golden ratio", List.of(
-			returnToAlba,
 			returnToEmelio,
 			recipeStepWrapper, // TODO: Dooes the text look nice here? and do we continue progress nicely?
 			returnToEmelioWithNewsOfYourKebabSuccess

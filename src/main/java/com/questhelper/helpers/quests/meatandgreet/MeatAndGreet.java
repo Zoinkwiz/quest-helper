@@ -230,7 +230,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		// 13093 0->100
 		// 13094 0->100
 		// 13095 0->100
-		returnToAlba = new NpcStep(this, NpcID.ALBA, new WorldPoint(1587, 3126, 0), "Return to Alba in the farmhouse west of Civitas illa Fortis.");
+		returnToAlba = new NpcStep(this, NpcID.ALBA, new WorldPoint(1587, 3126, 0), "Return to Alba in the farmhouse west of Civitas illa Fortis to tell them about the Dire Wolf Alpha's demise.");
 		returnToAlba.addSubSteps(exitWolfDen);
 		var needToReturnToAlba = new VarbitRequirement(11184, 3);
 		// 11184 3->4 after returning to alba

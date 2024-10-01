@@ -42,11 +42,8 @@ import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.util.worldmap.WorldMapAreaChanged;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
@@ -70,9 +67,10 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -84,6 +82,9 @@ public class DetailedQuestStep extends QuestStep
 {
 	@Inject
 	WorldMapPointManager worldMapPointManager;
+
+	@Inject
+	EventBus eventBus;
 
 	@Inject
 	private QuestBank questBank;
@@ -180,16 +181,34 @@ public class DetailedQuestStep extends QuestStep
 		{
 			mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
 			worldMapPointManager.add(mapPoint);
+
+			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
+			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null)
+			{
+				Map<String, Object> data = new HashMap<>();
+				data.put("start", playerWp);
+				data.put("target", worldPoint);
+				eventBus.post(new PluginMessage("shortestpath", "path", data));
+			}
 		}
 		addItemTiles(requirements);
 		addItemTiles(recommended);
 		started = true;
+
 	}
 
 	@Override
 	public void shutDown()
 	{
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
+		if (worldPoint != null)
+		{
+			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
+			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null)
+			{
+				eventBus.post(new PluginMessage("shortestpath", "clear"));
+			}
+		}
 		tileHighlights.clear();
 		started = false;
 	}

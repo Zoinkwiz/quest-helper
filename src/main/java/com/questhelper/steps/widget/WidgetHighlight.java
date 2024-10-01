@@ -27,6 +27,7 @@ package com.questhelper.steps.widget;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import java.awt.*;
@@ -42,6 +43,10 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 
 	@Getter
 	protected Integer itemIdRequirement;
+
+	@Getter
+	@Setter
+	protected Integer modelIdRequirement;
 
 	protected final boolean checkChildren;
 
@@ -59,6 +64,14 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		this.childId = childId;
 		this.childChildId = childChildId;
 		this.checkChildren = false;
+	}
+
+	public WidgetHighlight(int groupId, int childId, boolean checkChildren)
+	{
+		this.groupId = groupId;
+		this.childId = childId;
+		this.childChildId = -1;
+		this.checkChildren = checkChildren;
 	}
 
 	public WidgetHighlight(int groupId, int childId, int itemIdRequirement, boolean checkChildren)
@@ -111,8 +124,19 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 	@Override
 	protected void highlightWidget(Graphics2D graphics, QuestHelperPlugin questHelper, Widget widgetToHighlight)
 	{
-		if (widgetToHighlight == null || (itemIdRequirement != null && widgetToHighlight.getItemId() != itemIdRequirement)) return;
+		if (widgetToHighlight == null || !itemCheckPasses(widgetToHighlight) || !modelCheckPasses(widgetToHighlight)) return;
 
 		super.highlightWidget(graphics, questHelper, widgetToHighlight);
+	}
+
+
+	private boolean itemCheckPasses(Widget widgetToHighlight)
+	{
+		return (itemIdRequirement == null || widgetToHighlight.getItemId() == itemIdRequirement);
+	}
+
+	private boolean modelCheckPasses(Widget widget)
+	{
+		return (modelIdRequirement == null || widget.getModelId() == modelIdRequirement);
 	}
 }

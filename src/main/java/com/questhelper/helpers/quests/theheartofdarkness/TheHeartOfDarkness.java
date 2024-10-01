@@ -52,6 +52,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
+import com.questhelper.steps.widget.WidgetHighlight;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -368,8 +369,11 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         // Recommended items
         quetzalFeed = new ItemRequirement("Quetzal feed", ItemID.QUETZAL_FEED_29307);
+        quetzalFeed.setTooltip("Optional for the Salvager Overlook landing site");
         limestoneBrick = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK);
+        limestoneBrick.setTooltip("Optional for the Salvager Overlook landing site");
         softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
+        softClay.setTooltip("Optional for the Salvager Overlook landing site");
         pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
         civitasIllaFortisTeleport = new ItemRequirement("Civitas illa fortis teleport", ItemID.CIVITAS_ILLA_FORTIS_TELEPORT);
         civitasIllaFortisTeleport.addAlternates(ItemID.PERFECTED_QUETZAL_WHISTLE, ItemID.ENHANCED_QUETZAL_WHISTLE, ItemID.BASIC_QUETZAL_WHISTLE);
@@ -532,10 +536,15 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     {
         talkToItzlaAtTeomat = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_12896, new WorldPoint(1454, 3173, 0), "Talk to Prince Itzla Arkan at the Teomat. You" +
                 " can travel here using Renu the quetzal.");
+        WidgetHighlight teomatWidget = new WidgetHighlight(874, 15, true);
+        teomatWidget.setModelIdRequirement(51205);
+        talkToItzlaAtTeomat.addWidgetHighlight(teomatWidget);
         talkToItzlaAtTeomat.addDialogStep("Yes.");
         travelToGorge = new NpcStep(this, NpcID.RENU, new WorldPoint(1437, 3169, 0), "Travel on Renu to the Quetzacalli Gorge.");
         ((NpcStep) travelToGorge).addAlternateNpcs(NpcID.RENU_13349, NpcID.RENU_13350, NpcID.RENU_13351, NpcID.RENU_13352, NpcID.RENU_13353, NpcID.RENU_13354);
-        travelToGorge.addWidgetHighlight(874, 15, 9);
+        WidgetHighlight gorgeWidget = new WidgetHighlight(874, 15, true);
+        gorgeWidget.setModelIdRequirement(54539);
+        travelToGorge.addWidgetHighlight(gorgeWidget);
         talkToBartender = new NpcStep(this, NpcID.BARTENDER_14020, new WorldPoint(1499, 3224, 0), "Talk to the Bartender in the pub in the Gorge.",
                 coins.quantity(30));
         // Told about ground room, 11123 1->0

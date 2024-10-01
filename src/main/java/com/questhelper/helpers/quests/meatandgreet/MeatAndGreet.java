@@ -251,10 +251,10 @@ public class MeatAndGreet extends BasicQuestHelper
 
 		/// 8
 		var giveRecipeToEmelio = new NpcStep(this, NpcID.EMELIO, new WorldPoint(1753, 3074, 0), "Tell Emelio the recipe is perfect.");
-		giveRecipeToEmelio.addDialogStep("I think so.");
 		giveRecipeToEmelio.addDialogStep("I think that's perfect!");
 		giveRecipeToEmelio.addDialogStep("Sounds good to me.");
 		var adjustRecipe = new NpcStep(this, NpcID.EMELIO, new WorldPoint(1753, 3074, 0), "Adjust the recipe with Emelio. Four portions of meat, two portions of salad, one portion of spice, and three portions of sauce.");
+		adjustRecipe.addDialogStep("I think so.");
 		adjustRecipe.addDialogStep("Adjust meat (currently at one portion).");
 		adjustRecipe.addDialogStep("Adjust meat (currently at two portions).");
 		adjustRecipe.addDialogStep("Adjust meat (currently at three portions).");

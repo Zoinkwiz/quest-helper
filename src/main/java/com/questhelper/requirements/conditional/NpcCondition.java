@@ -26,6 +26,8 @@ package com.questhelper.requirements.conditional;
 
 import com.questhelper.requirements.zone.Zone;
 import java.util.ArrayList;
+
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -37,6 +39,9 @@ public class NpcCondition extends ConditionForStep
 	private final ArrayList<NPC> npcs = new ArrayList<>();
 	private boolean npcInScene = false;
 	private final Zone zone;
+
+	@Setter
+	private Integer animationIDRequired;
 
 	public NpcCondition(int npcID)
 	{
@@ -81,14 +86,7 @@ public class NpcCondition extends ConditionForStep
 			{
 				if (npc != null)
 				{
-					WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-					if (wp != null)
-					{
-						if (zone.contains(wp))
-						{
-							return true;
-						}
-					}
+					if (isInZone(client, npc) && hasCorrectAnimation(npc)) return true;
 				}
 			}
 			return false;
@@ -97,6 +95,23 @@ public class NpcCondition extends ConditionForStep
 		{
 			return npcInScene;
 		}
+	}
+
+	private boolean isInZone(Client client, NPC npc)
+	{
+		if (zone == null) return true;
+
+		WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
+		if (wp != null)
+		{
+			return zone.contains(wp);
+		}
+		return false;
+	}
+
+	private boolean hasCorrectAnimation(NPC npc)
+	{
+		return animationIDRequired == null || npc.getAnimation() == animationIDRequired;
 	}
 
 	public void checkNpcSpawned(NPC npc)

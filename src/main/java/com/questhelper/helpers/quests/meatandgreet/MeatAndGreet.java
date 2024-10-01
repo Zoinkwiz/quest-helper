@@ -182,7 +182,6 @@ public class MeatAndGreet extends BasicQuestHelper
 		// 11184 0->1
 
 		/// 4
-		// TODO: recommend teleport?
 		talkToSpiceMerchantInBazaar = new NpcStep(this, NpcID.SPICE_MERCHANT, new WorldPoint(1685, 3101, 0), "Talk to the Spice Merchant in the Bazaar in the middle of Civitas illa Fortis about the missing delivery.");
 		talkToSpiceMerchantInBazaar.addTeleport(civitasIllaFortisTeleport);
 		talkToSpiceMerchantInBazaar.addDialogStep("I'm here about a missing delivery.");

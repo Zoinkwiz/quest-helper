@@ -30,6 +30,7 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
@@ -1003,9 +1004,11 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 List.of(staminaPotions, quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4))));
 
         Collection<QuestStep> chestSteps = openKeywordChestSouthWest.getSteps();
-        PanelDetails firstTrial = new PanelDetails("First Trial", List.of(pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper));
-        firstTrial.addSteps(chestSteps.toArray(new QuestStep[0]));
-        firstTrial.addSteps(readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrows, combineScraps, readCompletedNote, tellJanusPasscode);
+        List<QuestStep> firstTrialSteps = new ArrayList<>(List.of(pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper));
+        firstTrialSteps.addAll(chestSteps);
+        firstTrialSteps.addAll(List.of(readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrows, combineScraps, readCompletedNote,
+                tellJanusPasscode));
+        PanelDetails firstTrial = new PanelDetails("First Trial", firstTrialSteps);
         allSteps.add(firstTrial);
 
         allSteps.add(new PanelDetails("Second Trial", List.of(startCombatTrial, completeCombatTrial, talkToJanusAfterTrial), List.of(combatGear)));

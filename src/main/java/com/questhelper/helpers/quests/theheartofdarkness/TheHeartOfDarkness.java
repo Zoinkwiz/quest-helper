@@ -82,10 +82,13 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
     VarbitRequirement[] activateStatueRequirements = new VarbitRequirement[4];
 
+    // Required
     ItemRequirement combatGear, food, coins;
 
-    ItemRequirement quetzalFeed, limestoneBrick, softClay, pickaxe, civitasIllaFortisTeleport, prayerPotions;
+    // Recommended
+    ItemRequirement quetzalFeed, limestoneBrick, softClay, pickaxe, civitasIllaFortisTeleport, prayerPotions, staminaPotions;
 
+    // Quest items
     ItemRequirement towerKey, book, poem, scrapOfPaper1, scrapOfPaper2, scrapOfPaper3, completedNote, emissaryHood, emissaryTop, emissaryBottom,
             emissaryBoots, emissaryRobesEquipped, emissaryRobes, airIcon, waterIcon, earthIcon, fireIcon;
 
@@ -369,6 +372,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         civitasIllaFortisTeleport = new ItemRequirement("Civitas illa fortis teleport", ItemID.CIVITAS_ILLA_FORTIS_TELEPORT);
         civitasIllaFortisTeleport.addAlternates(ItemID.PERFECTED_QUETZAL_WHISTLE, ItemID.ENHANCED_QUETZAL_WHISTLE, ItemID.BASIC_QUETZAL_WHISTLE);
         prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
+        staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
 
         // Quest items
         towerKey = new ItemRequirement("Tower key", ItemID.TOWER_KEY_29877);
@@ -923,13 +927,13 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     @Override
     public List<ItemRequirement> getItemRequirements()
     {
-        return List.of(combatGear, food, coins.quantity(30), prayerPotions.quantity(2));
+        return List.of(coins.quantity(30), combatGear, food, prayerPotions.quantity(2));
     }
 
     @Override
     public List<ItemRequirement> getItemRecommended()
     {
-        return List.of(quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4));
+        return List.of(quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4), staminaPotions);
     }
 
     @Override

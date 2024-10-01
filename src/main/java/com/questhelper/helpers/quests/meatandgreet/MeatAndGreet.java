@@ -232,7 +232,6 @@ public class MeatAndGreet extends BasicQuestHelper
 		returnToAlba.addSubSteps(exitWolfDen);
 		var needToReturnToAlba = new VarbitRequirement(11184, 3);
 		// 11184 3->4 after returning to alba
-		// TODO: Confirm the return to alba step works
 		solveSupplyChainIssues = new ConditionalStep(this, returnToAlba);
 		solveSupplyChainIssues.addStep(pinPadOpen, enterCodeWrapper);
 		solveSupplyChainIssues.addStep(needToSendSpicesFromSpiceMerchant, talkToSpiceMerchantInBazaar);

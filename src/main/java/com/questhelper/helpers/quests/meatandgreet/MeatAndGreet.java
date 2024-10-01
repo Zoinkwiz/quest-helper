@@ -236,12 +236,12 @@ public class MeatAndGreet extends BasicQuestHelper
 		// 11184 3->4 after returning to alba
 		// TODO: Confirm the return to alba step works
 		solveSupplyChainIssues = new ConditionalStep(this, returnToAlba);
+		solveSupplyChainIssues.addStep(pinPadOpen, enterCodeWrapper);
+		solveSupplyChainIssues.addStep(needToSendSpicesFromSpiceMerchant, talkToSpiceMerchantInBazaar);
 		solveSupplyChainIssues.addStep(and(needToReturnToAlba, inWolfDen), exitWolfDen);
 		solveSupplyChainIssues.addStep(and(needToKillWolf, inWolfDen), killDireWolfAlpha);
 		solveSupplyChainIssues.addStep(needToKillWolf, enterWolfDenAndKillTheDireWolfAlpha);
 		solveSupplyChainIssues.addStep(needToTalkToAlbaAboutWolves, talkToAlba);
-		solveSupplyChainIssues.addStep(pinPadOpen, enterCodeWrapper);
-		solveSupplyChainIssues.addStep(needToSendSpicesFromSpiceMerchant, talkToSpiceMerchantInBazaar);
 
 		/// 6
 		// Can save 50% of the time by teleporting to Civitas illa Fortis & running south-east, or using a Quetzal whistle to (?), but I don't have a whistle!

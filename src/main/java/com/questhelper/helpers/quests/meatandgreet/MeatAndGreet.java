@@ -345,6 +345,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		var headIntoColosseum2 = new ObjectStep(this, ObjectID.COLOSSEUM_ENTRANCE, new WorldPoint(1796, 3106, 0), "Head into the Fortis Colosseum, ready to fight the Minotaur.", combatGear, food, goodTestKebab);
 		enterArenaWithKebab = new NpcStep(this, NpcID.LELIA, new WorldPoint(1819, 9484, 0), "Talk to Lelia in the southern room, ready to fight the Minotaur.", combatGear, food, goodTestKebab);
 		enterArenaWithKebab.addDialogStep("I think so.");
+		enterArenaWithKebab.addSubSteps(headIntoColosseum2);
 		// 13989 0->1 ?
 		var arena = new Zone(new WorldPoint(1808, 3123, 0), new WorldPoint(1840, 3090, 0));
 		var inArena = new ZoneRequirement(arena);
@@ -364,7 +365,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		enterArenaAfterFailing.addDialogStep("Okay, I'm ready.");
 		enterArenaWithKebab.addSubSteps(enterArenaAfterFailing);
 		var headIntoColosseumAfterFailing = new ObjectStep(this, ObjectID.COLOSSEUM_ENTRANCE, new WorldPoint(1796, 3106, 0), "Head into the Fortis Colosseum, ready to fight the Minotaur again.", combatGear, food);
-		headIntoColosseum2.addSubSteps(headIntoColosseumAfterFailing);
+		enterArenaWithKebab.addSubSteps(headIntoColosseumAfterFailing);
 		fightMinotaurWithKebabAfterEnteringAtLeastOnce = new ConditionalStep(this, enterArenaAfterFailing);
 		fightMinotaurWithKebabAfterEnteringAtLeastOnce.addStep(inArena, fightMinotaur);
 		fightMinotaurWithKebabAfterEnteringAtLeastOnce.addStep(not(inFortisColosseum), headIntoColosseumAfterFailing);

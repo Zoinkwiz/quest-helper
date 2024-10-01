@@ -73,7 +73,6 @@ import static com.questhelper.requirements.util.LogicHelper.not;
  */
 public class MeatAndGreet extends BasicQuestHelper
 {
-	// TODO: Confirm this is the correct region ID, otherwise the coords were 1489, 9511, 1 to 1471, 9493, 1
 	final static private int WOLF_DEN_REGION_ID = 6036;
 	final static private int FORTIS_COLOSSEUM_REGION_ID = 7316;
 

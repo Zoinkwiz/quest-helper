@@ -182,14 +182,7 @@ public class DetailedQuestStep extends QuestStep
 			mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
 			worldMapPointManager.add(mapPoint);
 
-			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
-			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null)
-			{
-				Map<String, Object> data = new HashMap<>();
-				data.put("start", playerWp);
-				data.put("target", worldPoint);
-				eventBus.post(new PluginMessage("shortestpath", "path", data));
-			}
+			setShortestPath();
 		}
 		addItemTiles(requirements);
 		addItemTiles(recommended);
@@ -201,14 +194,7 @@ public class DetailedQuestStep extends QuestStep
 	public void shutDown()
 	{
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
-		if (worldPoint != null)
-		{
-			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
-			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null)
-			{
-				eventBus.post(new PluginMessage("shortestpath", "clear"));
-			}
-		}
+		disableShortestPath();
 		tileHighlights.clear();
 		started = false;
 	}
@@ -909,5 +895,33 @@ public class DetailedQuestStep extends QuestStep
 			((ItemRequirement) item).getAllIds().contains(itemID) &&
 			!((ItemRequirement) item).check(client, false, questBank.getBankItems()) &&
 			option.equals("Take"));
+	}
+
+	@Override
+	public void setShortestPath()
+	{
+		if (worldPoint != null)
+		{
+			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
+			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null) {
+				Map<String, Object> data = new HashMap<>();
+				data.put("start", playerWp);
+				data.put("target", worldPoint);
+				eventBus.post(new PluginMessage("shortestpath", "path", data));
+			}
+		}
+	}
+
+	@Override
+	public void disableShortestPath()
+	{
+		if (worldPoint != null)
+		{
+			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
+			if (!getQuestHelper().getConfig().useShortestPath() && playerWp != null)
+			{
+				eventBus.post(new PluginMessage("shortestpath", "clear"));
+			}
+		}
 	}
 }

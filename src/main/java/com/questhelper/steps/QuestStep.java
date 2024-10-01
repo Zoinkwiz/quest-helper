@@ -548,4 +548,12 @@ public abstract class QuestStep implements Module
 	protected void renderHoveredMenuEntryPanel(PanelComponent panelComponent, String tooltipText)
 	{
 	}
+
+	public void setShortestPath()
+	{
+	}
+
+	public void disableShortestPath()
+	{
+	}
 }

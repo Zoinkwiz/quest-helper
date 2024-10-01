@@ -529,6 +529,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     {
         talkToItzlaAtTeomat = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_12896, new WorldPoint(1454, 3173, 0), "Talk to Prince Itzla Arkan at the Teomat. You" +
                 " can travel here using Renu the quetzal.");
+        talkToItzlaAtTeomat.addDialogStep("Yes.");
         travelToGorge = new NpcStep(this, NpcID.RENU, new WorldPoint(1437, 3169, 0), "Travel on Renu to the Quetzacalli Gorge.");
         ((NpcStep) travelToGorge).addAlternateNpcs(NpcID.RENU_13349, NpcID.RENU_13350, NpcID.RENU_13351, NpcID.RENU_13352, NpcID.RENU_13353, NpcID.RENU_13354);
         travelToGorge.addWidgetHighlight(874, 15, 9);

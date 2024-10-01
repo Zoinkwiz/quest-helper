@@ -33,6 +33,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
@@ -403,7 +404,8 @@ public class MeatAndGreet extends BasicQuestHelper
 	{
 		return List.of(
 			new CombatLevelRequirement(60),
-			new SkillRequirement(Skill.PRAYER, 43, false, "43+ Prayer to use Protect from Melee and Protect from Magic")
+			new SkillRequirement(Skill.PRAYER, 43, false, "43+ Prayer to use Protect from Melee and Protect from Magic"),
+			new FreeInventorySlotRequirement(2)
 		);
 	}
 

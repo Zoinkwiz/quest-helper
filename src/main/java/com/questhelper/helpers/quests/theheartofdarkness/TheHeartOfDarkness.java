@@ -637,7 +637,8 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         // Second trial section
         startCombatTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3225, 2), "Talk to Forebearer Janus, ready to fight.");
         startCombatTrial.addDialogStep("Yes! I'm ready.");
-        completeCombatTrial = new NpcStep(this, NpcID.EMISSARY_BRAWLER, new WorldPoint(1644, 3225, 2), "Defeat the waves of enemies.", true);
+        completeCombatTrial = new NpcStep(this, NpcID.EMISSARY_BRAWLER, new WorldPoint(1644, 3225, 2), "Defeat the waves of enemies. Use Protect from " +
+                "Melee. You can heal yourself and the prince using bandages from the chests in the area.", true);
         completeCombatTrial.setMustBeFocusedOnPlayer(true);
         completeCombatTrial.setMustBeFocusedOnNpcs(NpcID.PRINCE_ITZLA_ARKAN_13771);
         completeCombatTrial.addAlternateNpcs(NpcID.EMISSARY_BRAWLER_13774, NpcID.EMISSARY_BRAWLER_13775, NpcID.EMISSARY_BRAWLER_13776,

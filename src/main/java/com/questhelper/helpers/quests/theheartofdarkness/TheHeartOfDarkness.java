@@ -438,7 +438,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 "The Final Dawn is our destiny. Ralos and Ranul will unite us all and end this world, but in doing so, we will all play a part in forming a new one.");
         tenochGuilty = new DialogRequirement("Tenoch", false,
                 "To do my duty, of course. Ralos and Ranul wish us to bring about the end of this world. Only then will we will all unite in Mictl.",
-                "The Final Dawn is our destiny. Ralos and Ranul will unite us all and end this world, but in doing so, they will grant us eternal life in Mictl.");
+                "The Final Dawn is our destiny. Ralos and Ranul will unite us all and end this world, but after doing so, they will grant us eternal life in Mictl.");
         hasTalkedToTenoch = or(tenochGuilty, tenochInnocent);
 
         DialogRequirement siliaInnocent = new DialogRequirement("Silia", false,

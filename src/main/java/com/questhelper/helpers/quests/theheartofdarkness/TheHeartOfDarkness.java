@@ -776,15 +776,19 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 "water markings in the south-west of the area.");
         fixAirStatue = new ObjectStep(this, NullObjectID.NULL_54471, new WorldPoint(1608, 9638, 0), "Fix the broken air statue in the west of the area.",
                 airIcon.highlighted());
+        fixAirStatue.addDialogStep("Yes.");
         fixAirStatue.addIcon(ItemID.ICON_29887);
         fixWaterStatue = new ObjectStep(this, NullObjectID.NULL_54465, new WorldPoint(1608, 9624, 0), "Fix the broken water statue in the west of the area.",
                 waterIcon.highlighted());
+        fixWaterStatue.addDialogStep("Yes.");
         fixWaterStatue.addIcon(ItemID.ICON_29888);
         fixEarthStatue = new ObjectStep(this, NullObjectID.NULL_54477, new WorldPoint(1605, 9635, 0), "Fix the broken earth statue in the west of the area.",
                 earthIcon.highlighted());
+        fixEarthStatue.addDialogStep("Yes.");
         fixEarthStatue.addIcon(ItemID.ICON_29886);
         fixFireStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1605, 9627, 0), "Fix the broken fire statue in the west of the area.",
                 fireIcon.highlighted());
+        fixFireStatue.addDialogStep("Yes.");
         fixFireStatue.addIcon(ItemID.ICON);
 
         inspectAirMarkings = new ObjectStep(this, NullObjectID.NULL_55363, new WorldPoint(1650, 9642, 0), "Inspect the air markings in the north-east of " +
@@ -1012,7 +1016,8 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         allSteps.add(new PanelDetails("The Old Ones", List.of(enterRuins, takePickaxe, mineRocks, pullFirstLever, climbDownLedge, slideAlongIceLedge, pullSecondLever, jumpOverFrozenPlatforms, pullThirdLever,
                 pullFourthLever, pullChain, inspectAirMarkings, inspectEarthMarkings, searchAirUrn, searchEarthUrn, inspectWaterMarkings, inspectFireMarkings,
                 searchFireUrn, searchWaterUrn, fixWaterStatue, fixFireStatue, fixEarthStatue, fixAirStatue, activateFirstStatue, activateSecondStatue,
-                activateThirdStatue, activateFourthStatue, enterFinalBossRoom, defeatAmoxliatlSidebar, talkToServius), List.of(combatGear), List.of(food,
+                activateThirdStatue, activateFourthStatue, enterFinalBossRoom, defeatAmoxliatlSidebar, talkToServius), List.of(combatGear, freeInvSlots4),
+                List.of(food,
                 prayerPotions, civitasIllaFortisTeleport)));
 
         return allSteps;

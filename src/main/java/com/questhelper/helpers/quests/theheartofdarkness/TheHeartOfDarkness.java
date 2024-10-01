@@ -996,7 +996,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 talkToShopkeeper, talkToPrinceInPubAgain)));
         allSteps.add(new PanelDetails("The Tower", List.of(talkToPrinceAtTower, buildSalvagerOverlookLandingSite, talkToPrinceAtTowerAfterLanding,
                 talkToNova, talkToSergius, talkToFelius, talkToCaritta, talkToPrinceAfterRecruits, talkToJanus, climbUpToFirstTrial), List.of(combatGear, food),
-                List.of(quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4))));
+                List.of(staminaPotions, quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4))));
 
         Collection<QuestStep> chestSteps = openKeywordChestSouthWest.getSteps();
         PanelDetails firstTrial = new PanelDetails("First Trial", List.of(pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper));

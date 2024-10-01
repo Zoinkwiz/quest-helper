@@ -951,7 +951,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     @Override
     public List<ItemRequirement> getItemRecommended()
     {
-        return List.of(quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4), staminaPotions);
+        return List.of(quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4), staminaPotions, civitasIllaFortisTeleport);
     }
 
     @Override

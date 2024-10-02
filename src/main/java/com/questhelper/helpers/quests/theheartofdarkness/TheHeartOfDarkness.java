@@ -1007,7 +1007,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         List<PanelDetails> allSteps = new ArrayList<>();
 
         allSteps.add(new PanelDetails("Starting off", List.of(talkToItzlaAtTeomat, travelToGorge, talkToBartender, restOnBed, talkToPrinceAfterRest,
-                talkToShopkeeper, talkToPrinceInPubAgain)));
+                talkToShopkeeper, talkToPrinceInPubAgain), List.of(coins.quantity(30))));
         allSteps.add(new PanelDetails("The Tower", List.of(talkToPrinceAtTower, buildSalvagerOverlookLandingSite, talkToPrinceAtTowerAfterLanding,
                 talkToFelius, talkToCaritta, talkToSergius, talkToNova, talkToPrinceAfterRecruits, talkToJanus, climbUpToFirstTrial), List.of(combatGear, food),
                 List.of(staminaPotions, quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4))));

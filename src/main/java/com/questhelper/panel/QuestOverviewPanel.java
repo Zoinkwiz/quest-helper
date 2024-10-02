@@ -536,12 +536,16 @@ public class QuestOverviewPanel extends JPanel
 		}
 		else
 		{
-			for (String combatRequirement : combatRequirementList)
+			var first = true;
+			for (var combatRequirement : combatRequirementList)
 			{
+				if (!first)
+				{
+					textCombat.append("\n");
+				}
 				textCombat.append(combatRequirement);
-				textCombat.append("\n");
+				first = false;
 			}
-			textCombat.replace(textCombat.length() - 1, textCombat.length(), "");
 		}
 		combatLabel.setText(textCombat.toString());
 
@@ -601,10 +605,15 @@ public class QuestOverviewPanel extends JPanel
 		if (notes != null)
 		{
 			var textNote = new StringBuilder();
-			for (String note : notes)
+			var first = true;
+			for (var note : notes)
 			{
+				if (!first)
+				{
+					textNote.append("\n\n");
+				}
 				textNote.append(note);
-				textNote.append("\n\n");
+				first = false;
 			}
 			var overviewLabel = JGenerator.makeJTextArea();
 			overviewLabel.setForeground(Color.GRAY);

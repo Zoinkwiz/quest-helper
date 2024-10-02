@@ -179,8 +179,16 @@ public class QuestStepPanel extends JPanel
 
 		if (step.getText() != null)
 		{
-			step.getText().forEach(line -> text.append(line).append("\n\n"));
-			text.replace(text.length() - 2, text.length(), "");
+			var first = true;
+			for (var line : step.getText())
+			{
+				if (!first)
+				{
+					text.append("\n");
+				}
+				text.append(line);
+				first = false;
+			}
 		}
 
 		return text.toString();

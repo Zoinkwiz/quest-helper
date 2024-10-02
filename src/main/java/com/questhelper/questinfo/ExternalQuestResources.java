@@ -182,6 +182,7 @@ public enum ExternalQuestResources
 	CHILDREN_OF_THE_SUN("https://oldschool.runescape.wiki/w/Children_of_the_Sun"),
 	WHILE_GUTHIX_SLEEPS("https://oldschool.runescape.wiki/w/While_Guthix_Sleeps"),
 	ETHICALLY_ACQUIRED_ANTIQUITIES("https://oldschool.runescape.wiki/w/Ethically_Acquired_Antiquities"),
+	DEATH_ON_THE_ISLE("https://oldschool.runescape.wiki/w/Death_on_the_Isle"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

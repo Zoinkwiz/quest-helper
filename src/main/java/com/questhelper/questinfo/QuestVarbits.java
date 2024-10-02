@@ -117,6 +117,7 @@ public enum QuestVarbits
 	// TODO: UPDATE THIS VALUE WGS
 	QUEST_WHILE_GUTHIX_SLEEPS(9653),
 	QUEST_ETHICALLY_ACQUIRED_ANTIQUITIES(11193),
+	QUEST_DEATH_ON_THE_ISLE(11210),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

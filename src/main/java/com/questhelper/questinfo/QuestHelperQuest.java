@@ -109,6 +109,7 @@ import com.questhelper.helpers.quests.creatureoffenkenstrain.CreatureOfFenkenstr
 import com.questhelper.helpers.miniquests.curseoftheemptylord.CurseOfTheEmptyLord;
 import com.questhelper.helpers.miniquests.daddyshome.DaddysHome;
 import com.questhelper.helpers.quests.darknessofhallowvale.DarknessOfHallowvale;
+import com.questhelper.helpers.quests.deathontheisle.DeathOnTheIsle;
 import com.questhelper.helpers.quests.deathplateau.DeathPlateau;
 import com.questhelper.helpers.quests.deathtothedorgeshuun.DeathToTheDorgeshuun;
 import com.questhelper.helpers.quests.defenderofvarrock.DefenderOfVarrock;
@@ -479,6 +480,7 @@ public enum QuestHelperQuest
 	TWILIGHTS_PROMISE(new TwilightsPromise(), Quest.TWILIGHTS_PROMISE, QuestVarbits.QUEST_TWILIGHTS_PROMISE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	WHILE_GUTHIX_SLEEPS(new WhileGuthixSleeps(), Quest.WHILE_GUTHIX_SLEEPS, QuestVarbits.QUEST_WHILE_GUTHIX_SLEEPS, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
 	ETHICALLY_ACQUIRED_ANTIQUITIES(new EthicallyAcquiredAntiquities(), Quest.ETHICALLY_ACQUIRED_ANTIQUITIES, QuestVarbits.QUEST_ETHICALLY_ACQUIRED_ANTIQUITIES, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	DEATH_ON_THE_ISLE(new DeathOnTheIsle(), Quest.DEATH_ON_THE_ISLE, QuestVarbits.QUEST_DEATH_ON_THE_ISLE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

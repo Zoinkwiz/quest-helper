@@ -194,6 +194,7 @@ public class QuestOrders
 		QuestHelperQuest.HAUNTED_MINE,
 		QuestHelperQuest.LAIR_OF_TARN_RAZORLOR,
 		QuestHelperQuest.MONKEY_MADNESS_I,
+		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
 		QuestHelperQuest.ROVING_ELVES,
 		QuestHelperQuest.MOURNINGS_END_PART_I,
 		QuestHelperQuest.MOURNINGS_END_PART_II,
@@ -420,6 +421,7 @@ public class QuestOrders
 		QuestHelperQuest.THE_SLUG_MENACE,
 		QuestHelperQuest.BETWEEN_A_ROCK,
 		QuestHelperQuest.MONKEY_MADNESS_I,
+		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
 		QuestHelperQuest.COLD_WAR,
 		QuestHelperQuest.THE_ASCENT_OF_ARCEUUS,
 		QuestHelperQuest.EAGLES_PEAK,
@@ -756,6 +758,7 @@ public class QuestOrders
 		QuestHelperQuest.AT_FIRST_LIGHT,
 		QuestHelperQuest.PERILOUS_MOON,
 		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
+		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
 		QuestHelperQuest.THE_HEART_OF_DARKNESS
 	);
 

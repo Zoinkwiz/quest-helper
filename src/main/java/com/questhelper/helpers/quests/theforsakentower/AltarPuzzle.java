@@ -54,8 +54,6 @@ public class AltarPuzzle extends DetailedOwnerStep
 	@Inject
 	protected Client client;
 
-	private QuestStep currentStep;
-
 	ItemRequirement ring1, ring2, ring3, ring4;
 
 	Zone secondFloor, floor1, basement;
@@ -64,19 +62,15 @@ public class AltarPuzzle extends DetailedOwnerStep
 
 	QuestStep goUpLadder, goUpStairs, goUpToSecondFloor, restartStep, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15;
 
-	ArrayList<QuestStep> rebalanceW = new ArrayList<>();
-	ArrayList<QuestStep> rebalanceE = new ArrayList<>();
-	ArrayList<QuestStep> rebalanceC = new ArrayList<>();
+	ArrayList<QuestStep> rebalanceW;
+	ArrayList<QuestStep> rebalanceE;
+	ArrayList<QuestStep> rebalanceC;
 
 	List<QuestStep> moves = new ArrayList<>();
 
 	public AltarPuzzle(QuestHelper questHelper)
 	{
 		super(questHelper, "");
-		setupItemRequirements();
-		setupZones();
-		setupConditions();
-		setupSteps();
 	}
 
 	@Subscribe
@@ -288,6 +282,14 @@ public class AltarPuzzle extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
+		setupItemRequirements();
+		setupZones();
+		setupConditions();
+
+		rebalanceW = new ArrayList<>();
+		rebalanceC = new ArrayList<>();
+		rebalanceE = new ArrayList<>();
+
 		goUpLadder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
 		goUpStairs = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33550, new WorldPoint(1378, 3825, 0), "Climb up the staircase to the tower's 1st floor.");
 		goUpToSecondFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33486, new WorldPoint(1382, 3827, 1), "Climb up the ladder to the top floor.");

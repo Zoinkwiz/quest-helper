@@ -78,18 +78,11 @@ public class JugPuzzle extends DetailedOwnerStep
 
 	Zone firstFloor, secondFloor, basement;
 
-	private final HashMap<String, Integer> jugs = new HashMap<>();
+	private HashMap<String, Integer> jugs;
 
 	public JugPuzzle(QuestHelper questHelper)
 	{
 		super(questHelper, "");
-		jugs.put("5", -1);
-		jugs.put("8", -1);
-
-		setupItemRequirements();
-		setupZones();
-		setupConditions();
-		setupSteps();
 	}
 
 	@Subscribe
@@ -285,6 +278,14 @@ public class JugPuzzle extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
+		jugs = new HashMap<>();
+		jugs.put("5", -1);
+		jugs.put("8", -1);
+
+		setupItemRequirements();
+		setupZones();
+		setupConditions();
+
 		syncStep = new DetailedQuestStep(getQuestHelper(), "Please check both the jugs to continue.");
 		searchCupboardTinderbox = new ObjectStep(getQuestHelper(), ObjectID.CUPBOARD_33515, new WorldPoint(1381, 3829, 0), "Search the cupboard on the north wall for a tinderbox.");
 		searchCupboardJug = new ObjectStep(getQuestHelper(), ObjectID.CUPBOARD_33514, new WorldPoint(1378, 3826, 0), "Search the cupboard in the south east corner of the north room for a 5 and an 8 gallon jug.");
@@ -313,7 +314,6 @@ public class JugPuzzle extends DetailedOwnerStep
 		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33485, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
 		goDownToGroundFloor = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33552, new WorldPoint(1378, 3825, 1), "Go down to the ground floor.");
 		goUpToGroundFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
-
 	}
 
 	public List<PanelDetails> panelDetails()

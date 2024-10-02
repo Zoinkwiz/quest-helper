@@ -80,9 +80,6 @@ public class LockedChestPuzzle extends DetailedOwnerStep
     public LockedChestPuzzle(QuestHelper questHelper)
     {
         super(questHelper, "");
-        setupItemRequirements();
-        setupConditions();
-        setupSteps();
     }
 
     @Override
@@ -132,6 +129,9 @@ public class LockedChestPuzzle extends DetailedOwnerStep
     @Override
     protected void setupSteps()
     {
+        setupItemRequirements();
+        setupConditions();
+
         readBook = new DetailedQuestStep(getQuestHelper(), "Read the book.", book.highlighted());
         openChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_54376, new WorldPoint(1638, 3217, 1), "Search the south-west chest.");
         solveChest = new ChestCodeStep(getQuestHelper(), 10);

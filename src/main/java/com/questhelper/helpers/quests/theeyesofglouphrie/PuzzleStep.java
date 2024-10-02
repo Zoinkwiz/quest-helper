@@ -90,17 +90,6 @@ public class PuzzleStep extends DetailedOwnerStep
 	public PuzzleStep(QuestHelper questHelper)
 	{
 		super(questHelper, "Insert and swap discs to make the sum indicated on the machine");
-		solvePuzzle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Put in the correct pieces.");
-		getPieces = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17283, new WorldPoint(2391, 9826, 0), "Swap in" +
-			" your pieces for the indicated pieces. You can also drop the discs then talk to Brimstail for more " +
-			"tokens.");
-		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", 445, 36);
-		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", 189, 39);
-		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", 449, 0);
-		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", 445, 31);
-		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 24);
-		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 25);
-		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 26);
 		setupShapes();
 	}
 
@@ -133,6 +122,22 @@ public class PuzzleStep extends DetailedOwnerStep
 		{
 			solvePuzzle1();
 		}
+	}
+
+	@Override
+	public void setupSteps()
+	{
+		solvePuzzle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Put in the correct pieces.");
+		getPieces = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17283, new WorldPoint(2391, 9826, 0), "Swap in" +
+				" your pieces for the indicated pieces. You can also drop the discs then talk to Brimstail for more " +
+				"tokens.");
+		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", 445, 36);
+		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", 189, 39);
+		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", 449, 0);
+		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", 445, 31);
+		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 24);
+		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 25);
+		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 26);
 	}
 
 	public void solvePuzzle1()
@@ -491,7 +496,6 @@ public class PuzzleStep extends DetailedOwnerStep
 		}
 		return ids;
 	}
-
 
 	public int checkForItems(List<Item> items, int potentialMatch)
 	{

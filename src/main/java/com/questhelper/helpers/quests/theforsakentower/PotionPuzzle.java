@@ -92,10 +92,6 @@ public class PotionPuzzle extends DetailedOwnerStep
 	public PotionPuzzle(QuestHelper questHelper)
 	{
 		super(questHelper, "");
-		setupItemRequirements();
-		setupZones();
-		setupConditions();
-		setupSteps();
 	}
 
 	@Subscribe
@@ -214,6 +210,10 @@ public class PotionPuzzle extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
+		setupItemRequirements();
+		setupZones();
+		setupConditions();
+
 		goUpLadder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
 		goUpStairs = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33550, new WorldPoint(1378, 3825, 0), "Go to the tower's 1st floor.");
 		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33485, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");

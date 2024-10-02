@@ -65,8 +65,6 @@ public class WeightStep extends DetailedOwnerStep
 	public WeightStep(QuestHelper questHelper)
 	{
 		super(questHelper, "");
-		setupItemRequirements();
-		setupSteps();
 	}
 
 	@Subscribe
@@ -78,6 +76,8 @@ public class WeightStep extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
+		setupItemRequirements();
+
 		int goal = client.getVarbitValue(10936);
 		int weightOnStatue = client.getVarbitValue(10937);
 		int totalWeightGoal = goal + weightOnStatue;
@@ -213,6 +213,8 @@ public class WeightStep extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
+		setupItemRequirements();
+		
 		weightRoom = new Zone(new WorldPoint(4177, 4944, 1), new WorldPoint(4181, 4946, 1));
 		inWeightRoom = new ZoneRequirement(weightRoom);
 

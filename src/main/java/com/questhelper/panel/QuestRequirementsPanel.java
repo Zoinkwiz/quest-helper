@@ -93,7 +93,7 @@ public class QuestRequirementsPanel extends JPanel
 		headerPanel.setLayout(new BorderLayout());
 		headerPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
 
-		var headerLabel = new JLabel(header);
+		var headerLabel = JGenerator.makeJTextArea(header);
 		headerLabel.setForeground(Color.WHITE);
 		headerLabel.setMinimumSize(new Dimension(1, headerPanel.getPreferredSize().height));
 		headerPanel.add(headerLabel, BorderLayout.NORTH);
@@ -133,15 +133,8 @@ public class QuestRequirementsPanel extends JPanel
 				panel.setLayout(new BorderLayout());
 				panel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-				var label = new JTextArea(requirement.getDisplayText());
-				label.setLineWrap(true);
-				label.setWrapStyleWord(true);
-				label.setOpaque(false);
-				label.setEditable(false);
-				label.setFocusable(false);
-				label.setBackground(javax.swing.UIManager.getColor("Label.background"));
+				var label = JGenerator.makeJTextArea(requirement.getDisplayText());
 				label.setFont(Fonts.getOriginalFont());
-				label.setBorder(new EmptyBorder(0, 0, 0, 0));
 				var menu = new JPopupMenu("Menu");
 				QuestHelper quest = null;
 
@@ -234,7 +227,7 @@ public class QuestRequirementsPanel extends JPanel
 		}
 		else if (showEvenIfEmpty)
 		{
-			var noneLabel = new JLabel("None");
+			var noneLabel = JGenerator.makeJTextArea("None");
 			noneLabel.setForeground(Color.GRAY);
 			requirementsPanel.add(noneLabel);
 		}
@@ -317,12 +310,9 @@ public class QuestRequirementsPanel extends JPanel
 
 	private JButton addButtonToPanel(JPanel panel, String tooltipText)
 	{
-		String html1 = "<html><body>";
-		String html2 = "</body></html>";
-		tooltipText = tooltipText.replaceAll("\\n", "<br>");
 		JButton b = new JButton(INFO_ICON);
 		b.setPreferredSize(new Dimension(10, 10));
-		b.setToolTipText(html1 + tooltipText + html2);
+		b.setToolTipText(tooltipText);
 		b.setBorderPainted(false);
 		b.setFocusPainted(false);
 		b.setBorderPainted(false);

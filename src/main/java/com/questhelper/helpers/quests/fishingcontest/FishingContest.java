@@ -109,7 +109,7 @@ public class FishingContest extends BasicQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
 		coins.setTooltip("10 if you buy a fishing rod from Jack");
 		fishingPass = new ItemRequirement("Fishing Pass", ItemID.FISHING_PASS);
-		fishingPass.setTooltip("<html>This can be obtained during the quest<br>If you lose this you can get another from Vestri.</html>");
+		fishingPass.setTooltip("This can be obtained during the quest\n\nIf you lose this you can get another from Vestri.");
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		garlic.setTooltip("This can be obtained during the quest.");
 		garlic.setHighlightInInventory(true);

@@ -25,8 +25,6 @@
  */
 package com.questhelper.panel.skillfiltering;
 
-import com.questhelper.QuestHelperConfig;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -37,7 +35,6 @@ import com.google.inject.Singleton;
 import net.runelite.api.Skill;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.ui.ColorScheme;
 
 @Singleton
 public class SkillFilterPanel extends JPanel
@@ -77,7 +74,7 @@ public class SkillFilterPanel extends JPanel
 		for (Skill skill : Skill.values())
 		{
 			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(skill, true));
-			SkillIconLabel tab = new SkillIconLabel(icon, configManager, skill.getName());
+			SkillIconButton tab = new SkillIconButton(icon, configManager, skill.getName());
 
 			tabGroup.addTab(tab);
 		}

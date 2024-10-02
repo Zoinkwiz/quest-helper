@@ -24,8 +24,9 @@
  */
 package com.questhelper.util;
 
+import com.questhelper.panel.JGenerator;
 import lombok.Getter;
-import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class Fonts
 
 	static
 	{
-		var label = new JLabel();
+		var label = JGenerator.makeJTextArea();
 		originalFont = label.getFont();
 		var attributes = new HashMap<TextAttribute, Object>(originalFont.getAttributes());
 		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);

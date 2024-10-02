@@ -28,22 +28,19 @@ import com.questhelper.QuestHelperConfig;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.Border;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 
-public class SkillIconLabel extends JLabel
+public class SkillIconButton extends JButton
 {
 	private static final Border ICON_BORDER = BorderFactory
 		.createEmptyBorder(5, 10, 5, 10);
 
 	final Color FILTERED_COLOR = Color.RED.darker();
 	final Color NOT_FILTERED_COLOR = ColorScheme.DARKER_GRAY_COLOR;
-	public SkillIconLabel(ImageIcon icon, ConfigManager configManager, String skillName)
+	public SkillIconButton(ImageIcon icon, ConfigManager configManager, String skillName)
 	{
 		super();
 		setIcon(icon);

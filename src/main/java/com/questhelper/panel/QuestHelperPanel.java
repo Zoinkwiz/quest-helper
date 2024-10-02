@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -81,8 +80,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final JPanel allDropdownSections = new JPanel();
 	private final JComboBox<Enum> filterDropdown, difficultyDropdown, orderDropdown;
 
-	private final JLabel skillExpandButton = new JLabel();
-
+	private final JButton skillExpandButton = new JButton();
 	private final IconTextField searchBar = new IconTextField();
 	private final FixedWidthPanel questListPanel = new FixedWidthPanel();
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
@@ -130,7 +128,7 @@ public class QuestHelperPanel extends PluginPanel
 		titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		titlePanel.setLayout(new BorderLayout());
 
-		JLabel title = new JLabel();
+		JTextArea title = JGenerator.makeJTextArea();
 		title.setText("Quest Helper");
 		title.setForeground(Color.WHITE);
 		titlePanel.add(title, BorderLayout.WEST);
@@ -250,10 +248,9 @@ public class QuestHelperPanel extends PluginPanel
 
 		titlePanel.add(viewControls, BorderLayout.EAST);
 
-		JLabel questsCompletedLabel = new JLabel();
+		JTextArea questsCompletedLabel = JGenerator.makeJTextArea();
 		questsCompletedLabel.setForeground(Color.GRAY);
-		questsCompletedLabel.setText("<html><body style='text-align:left'>Please log in to see available quests" +
-			".</body></html>");
+		questsCompletedLabel.setText("Please log in to see available quests");
 
 		allQuestsCompletedPanel.setLayout(new BorderLayout());
 		allQuestsCompletedPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -317,12 +314,28 @@ public class QuestHelperPanel extends PluginPanel
 		SkillFilterPanel skillFilterPanel = new SkillFilterPanel(questHelperPlugin.skillIconManager, questHelperPlugin.getConfigManager());
 		skillFilterPanel.setVisible(false);
 
-		JLabel filterName = new JLabel("Skill filtering");
+		JLabel filterName = JGenerator.makeJLabel("Skill filtering");
 		filterName.setForeground(Color.WHITE);
 		skillExpandButton.setForeground(Color.GRAY);
 		skillExpandButton.setIcon(COLLAPSED_ICON);
 		skillExpandButton.setHorizontalTextPosition(SwingConstants.LEFT);
 		skillExpandButton.setIconTextGap(10);
+		skillExpandButton.addMouseListener(new MouseAdapter()
+	{
+		@Override
+		public void mousePressed(MouseEvent mouseEvent)
+		{
+			skillFilterPanel.setVisible(!skillFilterPanel.isVisible());
+			if (skillFilterPanel.isVisible())
+			{
+				skillExpandButton.setIcon(EXPANDED_ICON);
+			}
+			else
+			{
+				skillExpandButton.setIcon(COLLAPSED_ICON);
+			}
+		}
+	});
 
 		JPanel skillExpandBar = new JPanel();
 		skillExpandBar.setLayout(new BorderLayout());
@@ -427,7 +440,7 @@ public class QuestHelperPanel extends PluginPanel
 	private JPanel makeDropdownPanel(JComboBox dropdown, String name)
 	{
 		// Filters
-		JLabel filterName = new JLabel(name);
+		JTextArea filterName = JGenerator.makeJTextArea(name);
 		filterName.setForeground(Color.WHITE);
 
 		JPanel filtersPanel = new JPanel();
@@ -542,15 +555,15 @@ public class QuestHelperPanel extends PluginPanel
 		if (questSelectPanels.isEmpty() || !hasMoreQuests)
 		{
 			allQuestsCompletedPanel.removeAll();
-			JLabel noMatch = new JLabel();
+			JTextArea noMatch = JGenerator.makeJTextArea();
 			noMatch.setForeground(Color.GRAY);
 			if (loggedOut)
 			{
-				noMatch.setText("<html><body style='text-align:left'>Log in to see available quests</body></html>");
+				noMatch.setText("Log in to see available quests");
 			}
 			else
 			{
-				noMatch.setText("<html><body style='text-align:left'>No quests are available that match your current filters</body></html>");
+				noMatch.setText("No quests are available that match your current filters");
 			}
 			allQuestsCompletedPanel.add(noMatch);
 		}

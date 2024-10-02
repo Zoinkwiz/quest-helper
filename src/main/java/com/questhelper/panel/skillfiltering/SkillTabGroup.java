@@ -35,7 +35,7 @@ public class SkillTabGroup extends JPanel
 	/* The panel on which the content tab's content will be displayed on. */
 	private final JPanel display;
 	/* A list of all the tabs contained in this group. */
-	private final List<SkillIconLabel> tabs = new ArrayList<>();
+	private final List<SkillIconButton> tabs = new ArrayList<>();
 
 	public SkillTabGroup(JPanel display)
 	{
@@ -53,7 +53,7 @@ public class SkillTabGroup extends JPanel
 		this(null);
 	}
 
-	public void addTab(SkillIconLabel tab)
+	public void addTab(SkillIconButton tab)
 	{
 		tabs.add(tab);
 		add(tab, BorderLayout.NORTH);

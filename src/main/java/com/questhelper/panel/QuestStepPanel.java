@@ -53,12 +53,12 @@ public class QuestStepPanel extends JPanel
 	private final QuestHelperPlugin questHelperPlugin;
 
 	private final JPanel headerPanel = new JPanel();
-	private final JLabel headerLabel = new JLabel();
+	private final JLabel headerLabel = JGenerator.makeJLabel();
 	private final JPanel bodyPanel = new JPanel();
 	private final JCheckBox lockStep = new JCheckBox();
 	private final JPanel leftTitleContainer;
 	private final JPanel viewControls;
-	private final HashMap<QuestStep, JLabel> steps = new HashMap<>();
+	private final HashMap<QuestStep, JTextPane> steps = new HashMap<>();
 	private final @Nullable QuestRequirementsPanel requiredItemsPanel;
 	private final @Nullable QuestRequirementsPanel recommendedItemsPanel;
 	private QuestStep currentlyHighlighted = null;
@@ -144,10 +144,10 @@ public class QuestStepPanel extends JPanel
 
 		for (QuestStep step : panelDetails.getSteps())
 		{
-			JLabel questStepLabel = new JLabel();
+			JTextPane questStepLabel = JGenerator.makeJTextPane();
 			questStepLabel.setLayout(new BorderLayout());
-			questStepLabel.setHorizontalAlignment(SwingConstants.LEFT);
-			questStepLabel.setVerticalAlignment(SwingConstants.TOP);
+			questStepLabel.setAlignmentX(SwingConstants.LEFT);
+			questStepLabel.setAlignmentY(SwingConstants.TOP);
 			questStepLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			questStepLabel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(1, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR.brighter()),
@@ -179,11 +179,19 @@ public class QuestStepPanel extends JPanel
 
 		if (step.getText() != null)
 		{
-			step.getText().forEach(line -> text.append(line).append("<br><br>"));
-			text.replace(text.length() - 8, text.length(), "");
+			var first = true;
+			for (var line : step.getText())
+			{
+				if (!first)
+				{
+					text.append("\n");
+				}
+				text.append(line);
+				first = false;
+			}
 		}
 
-		return "<html><body style='text-align:left'>" + text + "</body></html>";
+		return text.toString();
 	}
 
 	public List<QuestStep> getSteps()
@@ -191,7 +199,7 @@ public class QuestStepPanel extends JPanel
 		return new ArrayList<>(steps.keySet());
 	}
 
-	public HashMap<QuestStep, JLabel> getStepsLabels()
+	public HashMap<QuestStep, JTextPane> getStepsLabels()
 	{
 		return steps;
 	}

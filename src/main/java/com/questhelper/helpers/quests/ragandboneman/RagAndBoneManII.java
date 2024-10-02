@@ -693,7 +693,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 
 		// Feldip Hills
 		mapForFeldip.put(RagBoneState.WOLF_BONE, killWolf);
-		mapForFeldip.put(RagBoneState.OGRE_BONE, killOgre);
+		mapForFeldip.put(RagBoneState.OGRE_RIBS, killOgre);
 		mapForFeldip.put(RagBoneState.ZOGRE_BONE, killZogre);
 
 		stepsForRagAndBoneManII.putAll(mapForFeldip);

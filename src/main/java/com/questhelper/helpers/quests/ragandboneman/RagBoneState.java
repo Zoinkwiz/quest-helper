@@ -51,7 +51,7 @@ public enum RagBoneState
 	BAT_WING("Bat", 8, 8),
 	RAT_BONE("Rat", 9, 9),
 	BABY_DRAGON_BONE("Baby Blue Dragon", 10, 10),
-	OGRE_BONE("Ogre", 11, 11),
+	OGRE_RIBS("Ogre Ribs", 11, 11),
 	JOGRE_BONE("Jogre", 12, 12),
 	ZOGRE_BONE("Zogre", 13, 13),
 	MOGRE_BONE("Mogre", 14, 14),

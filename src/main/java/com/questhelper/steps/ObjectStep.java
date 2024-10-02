@@ -25,7 +25,8 @@
 package com.questhelper.steps;
 
 import com.questhelper.QuestHelperConfig;
-import static com.questhelper.QuestHelperConfig.ObjectHighlightStyle.OUTLINE;
+
+import static com.questhelper.QuestHelperConfig.ObjectHighlightStyle.CLICK_BOX;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
@@ -330,7 +331,7 @@ public class ObjectStep extends DetailedQuestStep
 
 				QuestHelperConfig.ObjectHighlightStyle highlightStyle = visibilityHelper.isObjectVisible(tileObject)
 					? questHelper.getConfig().highlightStyleObjects()
-					: OUTLINE;
+					: CLICK_BOX;
 
 				switch (highlightStyle)
 				{
@@ -413,6 +414,7 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			return;
 		}
+
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
 			setObjects(object);

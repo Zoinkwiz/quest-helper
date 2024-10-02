@@ -558,6 +558,19 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 "bedroom.");
         // Gone through gate, varp 4411 60->124
 
+        List<WorldPoint> pathFromPubToOverlook = List.of(
+                new WorldPoint(1499, 3229, 0),
+                new WorldPoint(1522, 3252, 0),
+                new WorldPoint(1529, 3254, 0),
+                new WorldPoint(1538, 3267, 0),
+                new WorldPoint(1542, 3277, 0),
+                new WorldPoint(1546, 3298, 0),
+                new WorldPoint(1576, 3298, 0),
+                new WorldPoint(1593, 3290, 0),
+                new WorldPoint(1615, 3290, 0),
+                new WorldPoint(1615, 3298, 0)
+        );
+
         List<WorldPoint> pathFromPubToChasm = List.of(
                 new WorldPoint(1499, 3229, 0),
                 new WorldPoint(1522, 3252, 0),
@@ -589,10 +602,6 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 new WorldPoint(1660, 3228, 0),
                 new WorldPoint(1656, 3220, 0)
         );
-
-        List<WorldPoint> pathFromPubToOverlook = new ArrayList<>();
-        pathFromPubToOverlook.addAll(pathFromPubToChasm);
-        pathFromPubToOverlook.addAll(pathFromChasmToOverlook);
 
         List<WorldPoint> pathFromPubToTower = new ArrayList<>();
         pathFromPubToTower.addAll(pathFromPubToChasm);

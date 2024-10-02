@@ -374,6 +374,17 @@ public class QuestManager
 		}
 	}
 
+	public void activateShortestPath()
+	{
+		if (selectedQuest == null) return;
+		selectedQuest.getCurrentStep().setShortestPath();
+	}
+
+	public void disableShortestPath()
+	{
+		if (selectedQuest == null) return;
+		selectedQuest.getCurrentStep().disableShortestPath();
+	}
 
 	/**
 	 * Starts up a background quest based on the quest name.

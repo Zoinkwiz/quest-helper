@@ -528,6 +528,14 @@ public interface QuestHelperConfig extends Config
 	)
 	default boolean solvePuzzles() { return true; }
 
+	@ConfigItem(
+			keyName = "useShortestPath",
+			name = "Use 'Shortest Path' plugin",
+			description = "If you have the 'Shortest Path' plugin downloaded, it will be used to show routes to locations",
+			section = hintsSection
+	)
+	default boolean useShortestPath() { return false; }
+
 	@ConfigSection(
 		position = 3,
 		name = "Colours",

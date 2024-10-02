@@ -376,6 +376,18 @@ public class QuestHelperPlugin extends Plugin
 		{
 			questManager.updateAllItemsBackgroundHelper(event.getNewValue());
 		}
+
+		if ("useShortestPath".equals(event.getKey()))
+		{
+			if ("true".equals(event.getNewValue()))
+			{
+				questManager.activateShortestPath();
+			}
+			else
+			{
+				questManager.disableShortestPath();
+			}
+		}
 	}
 
 	@Subscribe

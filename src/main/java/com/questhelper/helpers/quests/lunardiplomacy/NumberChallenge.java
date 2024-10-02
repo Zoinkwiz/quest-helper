@@ -12,7 +12,6 @@ import java.util.List;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
 
 public class NumberChallenge extends DetailedOwnerStep
 {

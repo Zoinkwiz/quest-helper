@@ -182,7 +182,6 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Override
 	public void startUp()
 	{
-
 		steps.keySet().stream()
 			.filter(InitializableRequirement.class::isInstance)
 			.forEach(req -> ((InitializableRequirement) req).initialize(client));
@@ -333,21 +332,16 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected void startUpStep(QuestStep step)
 	{
-		if (currentStep == null)
-		{
-			eventBus.register(step);
-			step.startUp();
-			currentStep = step;
-			return;
-		}
+		if (step.equals(currentStep)) return;
 
-		if (!step.equals(currentStep))
+		if (currentStep != null)
 		{
 			shutDownStep();
-			eventBus.register(step);
-			step.startUp();
-			currentStep = step;
 		}
+
+		eventBus.register(step);
+		step.startUp();
+		currentStep = step;
 	}
 
 	protected void shutDownStep()

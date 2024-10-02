@@ -83,21 +83,16 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 
 	protected void startUpStep(QuestStep step)
 	{
-		if (currentStep == null)
-		{
-			currentStep = step;
-			eventBus.register(currentStep);
-			currentStep.startUp();
-			return;
-		}
+		if (step.equals(currentStep)) return;
 
-		if (!step.equals(currentStep))
+		if (currentStep != null)
 		{
 			shutDownStep();
-			eventBus.register(step);
-			step.startUp();
-			currentStep = step;
 		}
+
+		eventBus.register(step);
+		step.startUp();
+		currentStep = step;
 	}
 
 	protected void shutDownStep()
@@ -177,7 +172,6 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 			return this;
 		}
 	}
-
 
 	protected void setupSteps()
 	{

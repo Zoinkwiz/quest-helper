@@ -25,24 +25,18 @@
 package com.questhelper.helpers.quests.theforsakentower;
 
 import com.google.inject.Inject;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.awt.Graphics2D;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
@@ -51,9 +45,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class AltarPuzzle extends QuestStep implements OwnerStep
+public class AltarPuzzle extends DetailedOwnerStep
 {
 	@Inject
 	protected EventBus eventBus;
@@ -86,25 +79,13 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 		setupSteps();
 	}
 
-	@Override
-	public void startUp()
-	{
-		updateSteps();
-	}
-
-	@Override
-	public void shutDown()
-	{
-		shutDownStep();
-		currentStep = null;
-	}
-
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		updateSteps();
 	}
 
+	@Override
 	protected void updateSteps()
 	{
 		if (inBasement.check(client))
@@ -282,91 +263,12 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 		}
 	}
 
-	protected void startUpStep(QuestStep step)
-	{
-		if (currentStep == null)
-		{
-			currentStep = step;
-			eventBus.register(currentStep);
-			currentStep.startUp();
-			return;
-		}
-
-		if (!step.equals(currentStep))
-		{
-			shutDownStep();
-			eventBus.register(step);
-			step.startUp();
-			currentStep = step;
-		}
-	}
-
-	protected void shutDownStep()
-	{
-		if (currentStep != this)
-		{
-			eventBus.unregister(currentStep);
-			currentStep.shutDown();
-			currentStep = null;
-		}
-	}
-
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> requirements)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, requirements);
-		}
-	}
-
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldArrowOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldLineOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public QuestStep getActiveStep()
-	{
-		if (currentStep != this)
-		{
-			return currentStep.getActiveStep();
-		}
-		else
-		{
-			return this;
-		}
-	}
-
 	private void setupItemRequirements()
 	{
 		ring1 = new ItemRequirement("Energy disk (level 1)", ItemID.ENERGY_DISK_LEVEL_1);
 		ring2 = new ItemRequirement("Energy disk (level 2)", ItemID.ENERGY_DISK_LEVEL_2);
 		ring3 = new ItemRequirement("Energy disk (level 3)", ItemID.ENERGY_DISK_LEVEL_3);
 		ring4 = new ItemRequirement("Energy disk (level 4)", ItemID.ENERGY_DISK_LEVEL_4);
-
 	}
 
 	private void setupConditions()
@@ -383,7 +285,8 @@ public class AltarPuzzle extends QuestStep implements OwnerStep
 		basement = new Zone(new WorldPoint(1374, 10217, 0), new WorldPoint(1389, 10231, 0));
 	}
 
-	private void setupSteps()
+	@Override
+	protected void setupSteps()
 	{
 		goUpLadder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
 		goUpStairs = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33550, new WorldPoint(1378, 3825, 0), "Climb up the staircase to the tower's 1st floor.");

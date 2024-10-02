@@ -37,7 +37,6 @@ import java.util.List;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
 
 public class MimicChallenge extends DetailedOwnerStep
 {

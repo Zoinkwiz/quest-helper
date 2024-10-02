@@ -25,17 +25,12 @@
 package com.questhelper.helpers.quests.whileguthixsleeps;
 
 import com.google.inject.Inject;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.QuestStep;
-import java.awt.Graphics2D;
+import com.questhelper.steps.*;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -50,9 +45,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class WeightStep extends QuestStep implements OwnerStep
+public class WeightStep extends DetailedOwnerStep
 {
 	@Inject
 	protected EventBus eventBus;
@@ -75,25 +69,13 @@ public class WeightStep extends QuestStep implements OwnerStep
 		setupSteps();
 	}
 
-	@Override
-	public void startUp()
-	{
-		updateSteps();
-	}
-
-	@Override
-	public void shutDown()
-	{
-		shutDownStep();
-		currentStep = null;
-	}
-
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		updateSteps();
 	}
 
+	@Override
 	protected void updateSteps()
 	{
 		int goal = client.getVarbitValue(10936);
@@ -205,71 +187,6 @@ public class WeightStep extends QuestStep implements OwnerStep
 		// 10937 = total weight on statue
 	}
 
-	protected void startUpStep(QuestStep step)
-	{
-		if (currentStep == null)
-		{
-			currentStep = step;
-			eventBus.register(currentStep);
-			currentStep.startUp();
-			return;
-		}
-
-		if (!step.equals(currentStep))
-		{
-			shutDownStep();
-			eventBus.register(step);
-			step.startUp();
-			currentStep = step;
-		}
-	}
-
-	protected void shutDownStep()
-	{
-		if (currentStep != null)
-		{
-			eventBus.unregister(currentStep);
-			currentStep.shutDown();
-			currentStep = null;
-		}
-	}
-
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, List<Requirement> requirements)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, requirements);
-		}
-	}
-
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldArrowOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldLineOverlayHint(graphics, plugin);
-		}
-	}
-
 	@Override
 	public QuestStep getActiveStep()
 	{
@@ -293,7 +210,8 @@ public class WeightStep extends QuestStep implements OwnerStep
 		weights.addAlternates(ItemID.WEIGHT_2KG, ItemID.WEIGHT_5KG);
 	}
 
-	private void setupSteps()
+	@Override
+	protected void setupSteps()
 	{
 		weightRoom = new Zone(new WorldPoint(4177, 4944, 1), new WorldPoint(4181, 4946, 1));
 		inWeightRoom = new ZoneRequirement(weightRoom);

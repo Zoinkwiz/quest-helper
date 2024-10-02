@@ -210,7 +210,7 @@ public class RequirementValidator
 
 	public void handleNpcSpawned(NpcSpawned npcSpawned)
 	{
-		npcConditions.forEach(npc -> npc.checkNpcDespawned(npcSpawned.getNpc()));
+		npcConditions.forEach(npc -> npc.checkNpcSpawned(npcSpawned.getNpc()));
 	}
 
 	@Subscribe

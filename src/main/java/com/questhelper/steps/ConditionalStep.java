@@ -259,7 +259,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	public void handleNpcSpawned(NpcSpawned npcSpawned, boolean parentDefinedRecursion)
 	{
-		npcConditions.forEach(npc -> npc.checkNpcDespawned(npcSpawned.getNpc()));
+		npcConditions.forEach(npc -> npc.checkNpcSpawned(npcSpawned.getNpc()));
 		handleChildRequirementValidation(step -> step.handleNpcSpawned(npcSpawned, parentDefinedRecursion), parentDefinedRecursion);
 	}
 

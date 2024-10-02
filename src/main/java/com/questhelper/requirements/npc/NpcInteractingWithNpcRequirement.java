@@ -36,13 +36,13 @@ import net.runelite.api.NPC;
 public class NpcInteractingWithNpcRequirement extends SimpleRequirement
 {
 	final Integer npcID;
-	final String npcName2;
+	final List<String> npcNames;
 
-	public NpcInteractingWithNpcRequirement(Integer npcID, String npcName2)
+	public NpcInteractingWithNpcRequirement(Integer npcID, String... npcNames)
 	{
 		assert(npcID != null);
 		this.npcID = npcID;
-		this.npcName2 = npcName2;
+		this.npcNames = List.of(npcNames);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class NpcInteractingWithNpcRequirement extends SimpleRequirement
 	{
 		return client.getNpcs().stream()
 			.filter(npc -> npc.getInteracting() != null)
-			.filter(npc -> npc.getInteracting().getName().equals(npcName2))
+			.filter(npc -> npcNames.contains(npc.getInteracting().getName()))
 			.anyMatch(npc -> npc.getInteracting().getInteracting() == npc);
 	}
 }

@@ -35,7 +35,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
 
 
 /**
@@ -145,9 +144,9 @@ public class MultiNpcStep extends NpcStep
 		}
 		newStep.allowMultipleHighlights = allowMultipleHighlights;
 		newStep.addAlternateNpcs(alternateNpcIDs);
-		if (mustBeFocused)
+		if (mustBeFocusedOnPlayer)
 		{
-			newStep.setMustBeFocused(true);
+			newStep.setMustBeFocusedOnPlayer(true);
 		}
 		newStep.setMaxRoamRange(maxRoamRange);
 

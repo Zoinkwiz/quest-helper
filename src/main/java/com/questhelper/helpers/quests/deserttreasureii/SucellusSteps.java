@@ -524,7 +524,9 @@ public class SucellusSteps extends ConditionalStep
 		));
 		enterCrevice.addDialogStep("Yes.");
 
-		openArrowChestStep = new PuzzleWrapperStep(getQuestHelper(), new ArrowChestPuzzleStep(getQuestHelper()), "Work out how to open the nearby locked chest.").withNoHelpHiddenInSidebar(true);
+		ArrowChestPuzzleStep arrowChestPuzzleStep = new ArrowChestPuzzleStep(getQuestHelper());
+		arrowChestPuzzleStep.setSolution(0, 1, 3, 2, 1, 0);
+		openArrowChestStep = new PuzzleWrapperStep(getQuestHelper(), arrowChestPuzzleStep, "Work out how to open the nearby locked chest.").withNoHelpHiddenInSidebar(true);
 		openArrowChest = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), ObjectID.CHEST_49113, new WorldPoint(2968, 6414, 2),
 			"Enter the room with beds in it, south of the crevice. " +
 				"Open the south-eastern chest, next to the crates. The code is 'UP RIGHT LEFT DOWN RIGHT UP'."),

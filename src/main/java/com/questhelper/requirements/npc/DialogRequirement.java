@@ -56,6 +56,13 @@ public class DialogRequirement extends SimpleRequirement
 		this.mustBeActive = mustBeActive;
 	}
 
+	public DialogRequirement(String talkerName, boolean mustBeActive, String... text)
+	{
+		this.talkerName = talkerName;
+		this.text.addAll(List.of(text));
+		this.mustBeActive = mustBeActive;
+	}
+
 	public DialogRequirement(String text)
 	{
 		this(null, text, false);

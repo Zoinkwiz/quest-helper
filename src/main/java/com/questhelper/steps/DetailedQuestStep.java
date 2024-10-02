@@ -412,6 +412,14 @@ public class DetailedQuestStep extends QuestStep
 		}
 	}
 
+	public void addTileMarkers(int spriteID, WorldPoint... worldPoints)
+	{
+		for (WorldPoint point : worldPoints)
+		{
+			markedTiles.add(new QuestTile(point, spriteID));
+		}
+	}
+
 	public void addSafeSpots(WorldPoint... worldPoints)
 	{
 		for (WorldPoint worldPoint : worldPoints)

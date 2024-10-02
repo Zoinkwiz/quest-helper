@@ -171,6 +171,7 @@ import com.questhelper.helpers.quests.lostcity.LostCity;
 import com.questhelper.helpers.quests.lunardiplomacy.LunarDiplomacy;
 import com.questhelper.helpers.quests.makingfriendswithmyarm.MakingFriendsWithMyArm;
 import com.questhelper.helpers.quests.makinghistory.MakingHistory;
+import com.questhelper.helpers.quests.meatandgreet.MeatAndGreet;
 import com.questhelper.helpers.quests.merlinscrystal.MerlinsCrystal;
 import com.questhelper.helpers.quests.misthalinmystery.MisthalinMystery;
 import com.questhelper.helpers.quests.monkeymadnessi.MonkeyMadnessI;
@@ -481,6 +482,7 @@ public enum QuestHelperQuest
 	WHILE_GUTHIX_SLEEPS(new WhileGuthixSleeps(), Quest.WHILE_GUTHIX_SLEEPS, QuestVarbits.QUEST_WHILE_GUTHIX_SLEEPS, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
 	ETHICALLY_ACQUIRED_ANTIQUITIES(new EthicallyAcquiredAntiquities(), Quest.ETHICALLY_ACQUIRED_ANTIQUITIES, QuestVarbits.QUEST_ETHICALLY_ACQUIRED_ANTIQUITIES, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	DEATH_ON_THE_ISLE(new DeathOnTheIsle(), Quest.DEATH_ON_THE_ISLE, QuestVarbits.QUEST_DEATH_ON_THE_ISLE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	MEAT_AND_GREET(new MeatAndGreet(), Quest.MEAT_AND_GREET, QuestVarbits.QUEST_MEAT_AND_GREET, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

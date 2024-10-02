@@ -780,6 +780,18 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 new WorldPoint(1671, 9661, 0)
         ));
         pullFourthLever = new ObjectStep(this, NullObjectID.NULL_55365, new WorldPoint(1662, 9636, 0), "Pull the final lever in the south-west, near the gate.");
+        pullFourthLever.setLinePoints(List.of(
+                new WorldPoint(1671, 9659, 0),
+                new WorldPoint(1671, 9658, 0),
+                new WorldPoint(1668, 9656, 0),
+                new WorldPoint(1668, 9653, 0),
+                new WorldPoint(1675, 9653, 0),
+                new WorldPoint(1675, 9644, 0),
+                new WorldPoint(1674, 9644, 0),
+                new WorldPoint(1674, 9642, 0),
+                new WorldPoint(1667, 9636, 0),
+                new WorldPoint(1663, 9636, 0)
+        ));
         pullChain = new ObjectStep(this, NullObjectID.NULL_55375, new WorldPoint(1670, 9631, 0), "Pull the chain to unlock a shortcut.");
 
         climbDownIceShortcut = new ObjectStep(this, ObjectID.CHAIN_54527, new WorldPoint(1670, 9631, 2), "Climb down the shortcut chain to the west of the " +

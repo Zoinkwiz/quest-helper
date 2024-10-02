@@ -231,6 +231,7 @@ public class QuestOrders
 		QuestHelperQuest.PERILOUS_MOON,
 		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
+		QuestHelperQuest.THE_HEART_OF_DARKNESS,
 		QuestHelperQuest.LUNAR_DIPLOMACY,
 		QuestHelperQuest.KINGS_RANSOM,
 		QuestHelperQuest.KNIGHT_WAVES_TRAINING_GROUNDS,
@@ -491,6 +492,7 @@ public class QuestOrders
 		QuestHelperQuest.MORYTANIA_MEDIUM,
 		QuestHelperQuest.DEVIOUS_MINDS,
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
+		QuestHelperQuest.THE_HEART_OF_DARKNESS,
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
 		QuestHelperQuest.SINS_OF_THE_FATHER,
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
@@ -753,7 +755,8 @@ public class QuestOrders
 		QuestHelperQuest.TWILIGHTS_PROMISE,
 		QuestHelperQuest.AT_FIRST_LIGHT,
 		QuestHelperQuest.PERILOUS_MOON,
-		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE
+		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
+		QuestHelperQuest.THE_HEART_OF_DARKNESS
 	);
 
 	public static String normalizeQuestName(String questName)

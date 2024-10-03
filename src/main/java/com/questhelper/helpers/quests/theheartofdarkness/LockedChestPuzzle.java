@@ -71,12 +71,13 @@ public class LockedChestPuzzle extends DetailedOwnerStep
     final String[] letter3 = new String[]{"W", "E", "R", "I", "L", "A", "N", "U", "T", "O"};
     final String[] letter4 = new String[]{"E", "I", "D", "A", "O", "W", "K", "N", "R", "U"};
 
-    DetailedQuestStep readBook;
+    PuzzleWrapperStep readBook;
 
-    ObjectStep openChest;
+    PuzzleWrapperStep openChest;
 
     ChestCodeStep solveChest;
 
+    PuzzleWrapperStep solveChestPuzzleWrapped;
     public LockedChestPuzzle(QuestHelper questHelper)
     {
         super(questHelper, "");
@@ -129,18 +130,23 @@ public class LockedChestPuzzle extends DetailedOwnerStep
     @Override
     protected void setupSteps()
     {
-        setupItemRequirements();
-        setupConditions();
+		setupItemRequirements();
+		setupConditions();
 
-        readBook = new DetailedQuestStep(getQuestHelper(), "Read the book.", book.highlighted());
-        openChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_54376, new WorldPoint(1638, 3217, 1), "Search the south-west chest.");
+        readBook = new DetailedQuestStep(getQuestHelper(), "Read the book.", book.highlighted())
+                .puzzleWrapStep()
+                .withNoHelpHiddenInSidebar(true);
+        openChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_54376, new WorldPoint(1638, 3217, 1), "Search the south-west chest.")
+                .puzzleWrapStep()
+                .withNoHelpHiddenInSidebar(true);
         solveChest = new ChestCodeStep(getQuestHelper(), 10);
+        solveChestPuzzleWrapped = solveChest.puzzleWrapStep().withNoHelpHiddenInSidebar(true);
     }
 
     @Override
     public Collection<QuestStep> getSteps()
     {
-        return Arrays.asList(readBook, openChest, solveChest);
+        return Arrays.asList(readBook, openChest, solveChestPuzzleWrapped);
     }
 
     int[] rotationPosOfAnswer = new int[4];

@@ -68,10 +68,6 @@ import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class TheHeartOfDarkness extends BasicQuestHelper
 {
-
-    DetailedQuestStep tellJanusPasscode;
-    ArrowChestPuzzleStep inputArrows;
-
     ManualRequirement knowPoemSolution, hasReadCompletedNote;
 
     ManualRequirement inspectedAirMarkings, inspectedEarthMarkings, inspectedWaterMarkings, inspectedFireMarkings;
@@ -109,10 +105,14 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     DetailedQuestStep talkToItzlaAtTeomat,travelToGorge, talkToBartender, restOnBed, talkToPrinceAfterRest, talkToShopkeeper, talkToPrinceInPubAgain,
             talkToPrinceAtTower, buildSalvagerOverlookLandingSite, talkToPrinceAtTowerAfterLanding, talkToNova, talkToSergius, talkToFelius, talkToCaritta, talkToPrinceAfterRecruits,
             talkToJanus, climbUpToFirstTrial;
-    DetailedQuestStep pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper, readPoem, talkToPrinceAfterPoem,
+    PuzzleWrapperStep pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper, readPoem, talkToPrinceAfterPoem,
             openKeywordChestNorthWest, combineScraps, readCompletedNote;
 
     LockedChestPuzzle openKeywordChestSouthWest;
+
+    ArrowChestPuzzleStep inputArrows;
+
+    PuzzleWrapperStep openKeywordChestSouthWestPuzzleWrapped, inputArrowsPuzzleWrapped, tellJanusPasscode;
 
     DetailedQuestStep startCombatTrial;
     NpcStep completeCombatTrial;
@@ -214,19 +214,21 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         goUpToFirstChallenge.addStep(princeIsFollowing, climbUpToFirstTrial);
         steps.put(30, goUpToFirstChallenge);
 
+        ConditionalStep firstTrialPuzzle = new ConditionalStep(this, pickpocketAscended);
+        firstTrialPuzzle.addStep(and(completedNote, hasReadCompletedNote), tellJanusPasscode);
+        firstTrialPuzzle.addStep(and(completedNote), readCompletedNote);
+        firstTrialPuzzle.addStep(and(scrapOfPaper1, scrapOfPaper2, scrapOfPaper3), combineScraps);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections, knowPoemSolution, inArrowPuzzle), inputArrows);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections, knowPoemSolution), openKeywordChestNorthWest);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections), readPoem);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, hasReadPoem), talkToPrinceAfterPoem);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, poem), readPoem);
+        firstTrialPuzzle.addStep(and(scrapOfPaper1, book), openKeywordChestSouthWest);
+        firstTrialPuzzle.addStep(and(southEastGateUnlocked), searchChestForBookAndPaper);
+        firstTrialPuzzle.addStep(and(towerKey), useKeyOnSouthEastGate);
+
         ConditionalStep goDoFirstChallenge = new ConditionalStep(this, climbUpToFirstTrial);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, completedNote, hasReadCompletedNote), tellJanusPasscode);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, completedNote), readCompletedNote);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, scrapOfPaper1, scrapOfPaper2, scrapOfPaper3), combineScraps);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections, knowPoemSolution, inArrowPuzzle), inputArrows);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections, knowPoemSolution), openKeywordChestNorthWest);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections), readPoem);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, hasReadPoem), talkToPrinceAfterPoem);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, poem), readPoem);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, scrapOfPaper1, book), openKeywordChestSouthWest);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southEastGateUnlocked), searchChestForBookAndPaper);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, towerKey), useKeyOnSouthEastGate);
-        goDoFirstChallenge.addStep(inFirstTrialRoom, pickpocketAscended);
+        goDoFirstChallenge.addStep(inFirstTrialRoom, firstTrialPuzzle);
         steps.put(32, goDoFirstChallenge);
 
         ConditionalStep goDoSecondChallenge = new ConditionalStep(this, climbUpToFirstTrial);
@@ -633,27 +635,63 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         talkToPrinceAfterRecruits.addDialogStep("Could you remind me what Ximoua is?");
         talkToJanus = new NpcStep(this, NpcID.FOREBEARER_JANUS, new WorldPoint(1638, 3224, 0), "Talk to Forebearer Janus inside the tower.");
 
+        final String PUZZLE_1_TEXT = "Work out the passcode to tell Janus by solving the room's puzzles.";
+
         // First trial section
         climbUpToFirstTrial = new ObjectStep(this, ObjectID.STAIRCASE_54369, new WorldPoint(1635, 3221, 0), "Climb up the staircase in the tower to the first" +
                 " challenge.");
-        pickpocketAscended = new NpcStep(this, NpcID.EMISSARY_ASCENDED_13768, new WorldPoint(1641, 3225, 1), "Pickpocket one of the emissary ascended.", true);
-        ((NpcStep) pickpocketAscended).addAlternateNpcs(NpcID.EMISSARY_ASCENDED_13767);
-        useKeyOnSouthEastGate = new ObjectStep(this, NullObjectID.NULL_55354, new WorldPoint(1644, 3220, 1), "Use the key to open the gate in the south-east " +
-                "corner of the room.", towerKey);
-        searchChestForBookAndPaper = new ObjectStep(this, ObjectID.CHEST_54372, new WorldPoint(1644, 3217, 1), "Search the south-east chest for a book and " +
-                "some paper.");
-        openKeywordChestSouthWest = new LockedChestPuzzle(this);
-        readPoem = new DetailedQuestStep(this, "Read the poem.", poem.highlighted());
-        talkToPrinceAfterPoem = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13770, new WorldPoint(1638, 3218, 1), "Talk to the prince in the room.");
-        talkToPrinceAfterPoem.addDialogSteps("Makt.", "Takam.", "Silam.", "Thanks! Could you translate another?");
-        openKeywordChestNorthWest = new ObjectStep(this, ObjectID.CHEST_54374, new WorldPoint(1636, 3225, 1), "Open the north-west chest.");
-        inputArrows = new ArrowChestPuzzleStep(this);
-        combineScraps = new DetailedQuestStep(this,  "Inspect one of the scraps to combine them.", scrapOfPaper1.highlighted(), scrapOfPaper2.highlighted(),
-                scrapOfPaper3.highlighted());
 
-        readCompletedNote = new DetailedQuestStep(this, "Read the completed note.", completedNote.highlighted());
-        tellJanusPasscode = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3226, 1), "Talk to Janus and tell him the passcode.");
-        tellJanusPasscode.addDialogSteps("About that passphrase...", "Yes.");
+        pickpocketAscended = new NpcStep(this, NpcID.EMISSARY_ASCENDED_13768, new WorldPoint(1641, 3225, 1), "Pickpocket one of the emissary ascended.", true)
+                .addAlternateNpcs(NpcID.EMISSARY_ASCENDED_13767)
+                .puzzleWrapStep(PUZZLE_1_TEXT);
+
+        useKeyOnSouthEastGate = new ObjectStep(this, NullObjectID.NULL_55354, new WorldPoint(1644, 3220, 1), "Use the key to open the gate in the south-east " +
+                "corner of the room.", towerKey)
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        searchChestForBookAndPaper = new ObjectStep(this, ObjectID.CHEST_54372, new WorldPoint(1644, 3217, 1), "Search the south-east chest for a book and some paper.")
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        openKeywordChestSouthWest = new LockedChestPuzzle(this);
+        openKeywordChestSouthWestPuzzleWrapped = openKeywordChestSouthWest
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        readPoem = new DetailedQuestStep(this, "Read the poem.", poem.highlighted())
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        talkToPrinceAfterPoem = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13770, new WorldPoint(1638, 3218, 1), "Talk to the prince in the room.")
+                .addDialogSteps("Makt.", "Takam.", "Silam.", "Thanks! Could you translate another?")
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        openKeywordChestNorthWest = new ObjectStep(this, ObjectID.CHEST_54374, new WorldPoint(1636, 3225, 1), "Open the north-west chest.")
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        inputArrows = new ArrowChestPuzzleStep(this);
+        inputArrowsPuzzleWrapped = inputArrows
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        combineScraps = new DetailedQuestStep(this,  "Inspect one of the scraps to combine them.", scrapOfPaper1.highlighted(), scrapOfPaper2.highlighted(), scrapOfPaper3.highlighted())
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        readCompletedNote = new DetailedQuestStep(this, "Read the completed note.", completedNote.highlighted())
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        tellJanusPasscode = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3226, 1), "Talk to Janus and tell him the passcode.")
+                        .addDialogSteps("About that passphrase...", "Yes.")
+                        .puzzleWrapStep(PUZZLE_1_TEXT)
+                        .withNoHelpHiddenInSidebar(true);
+
+        pickpocketAscended.addSubSteps(useKeyOnSouthEastGate, searchChestForBookAndPaper, openKeywordChestSouthWest, openKeywordChestSouthWestPuzzleWrapped,
+                readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrows, inputArrowsPuzzleWrapped, combineScraps, readCompletedNote, tellJanusPasscode);
 
         // Second trial section
         startCombatTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3225, 2), "Talk to Forebearer Janus, ready to fight.");
@@ -1036,7 +1074,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         Collection<QuestStep> chestSteps = openKeywordChestSouthWest.getSteps();
         List<QuestStep> firstTrialSteps = new ArrayList<>(List.of(pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper));
         firstTrialSteps.addAll(chestSteps);
-        firstTrialSteps.addAll(List.of(readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrows, combineScraps, readCompletedNote,
+        firstTrialSteps.addAll(List.of(readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrowsPuzzleWrapped, combineScraps, readCompletedNote,
                 tellJanusPasscode));
         PanelDetails firstTrial = new PanelDetails("First Trial", firstTrialSteps);
         allSteps.add(firstTrial);

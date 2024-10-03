@@ -40,11 +40,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -68,7 +64,9 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 
 	QuestStep talkToCuratorHerminius, investigateToolsBehindDisplayCase, investigateCaseAgain, talkToCitizen, talkToAcademic,
 			talkToTourist, talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes,
-			pickpocketCuratorHaig, searchStoreroomCrate, talkToCuratorBeforeShaming, shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene;
+			pickpocketCuratorHaig, searchStoreroomCrate, talkToCuratorBeforeShaming, talkToCuratorBeforeCutscene, watchCutscene;
+
+	PuzzleWrapperStep shameCuratorHaigHalen;
 
 	DetailedQuestStep inspectEmptyDisplayCase, talkToCuratorHaigHalen, returnToCuratorHerminius;
 
@@ -205,9 +203,9 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 				"search the crate.");
 		talkToCuratorBeforeShaming = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Go speak to Curator Haig Halen again.");
 		talkToCuratorBeforeShaming.addDialogStep("I found Xerna's Diadem...");
-		shameCuratorHaigHalen = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Shame Curator Haig Halen, get the meter to 100%.");
-		shameCuratorHaigHalen.addDialogStep("I found Xerna's Diadem...");
-		shameCuratorHaigHalen.addDialogSteps("Aren't you embarrassed to have stolen items in your collection?",
+		shameCuratorHaigHalen = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Shame Curator Haig Halen, get the meter to 100%.")
+				.addDialogStep("I found Xerna's Diadem...")
+				.addDialogSteps("Aren't you embarrassed to have stolen items in your collection?",
 				"Are you even a real historian, or just a petty criminal?", "Did you know Varlamore sends thieves to the Colosseum?",
 				"How will Varlamorians learn their history now?", "You're supposed to protect history, not steal it!",
 				"You're setting a terrible example", "You've betrayed the trust of Varlamore.", "You're not above the law! You stole this stuff!",
@@ -223,7 +221,8 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 						"back already!",
 				"Think of the Varlamorian children who won't get to see this artefact.", "You should give Varlamore a chance before stealing their stuff.",
 				"This is stealing! Thieving! Taking what's not yours!", "I thought archaeology was cool. I didn't realise it was just thieving!",
-				"How would you feel if someone came in here and stole all your stuff?", "You're hoarding artefacts, but you should be sharing them!");
+				"How would you feel if someone came in here and stole all your stuff?", "You're hoarding artefacts, but you should be sharing them!")
+				.puzzleWrapStep("Work out how to shame Curator Haig Halen, get the meter to 100%.");
 		talkToCuratorBeforeCutscene = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Speak to Curator before a cutscene.");
 		watchCutscene = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3449, 0), "Watch cutscene.");
 		returnToCuratorHerminius = new NpcStep(this, NpcID.CURATOR_HERMINIUS, new WorldPoint(1712, 3163, 0), "Speak to the Curator in the centre of the Grand " +

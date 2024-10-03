@@ -475,9 +475,10 @@ public abstract class QuestStep implements Module
 			.build());
 	}
 
-	public void addIcon(int iconItemID)
+	public QuestStep addIcon(int iconItemID)
 	{
 		this.iconItemID = iconItemID;
+		return this;
 	}
 
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)

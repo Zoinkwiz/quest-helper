@@ -241,9 +241,10 @@ public class PuzzleWrapperStep extends ConditionalStep
 	}
 
 	@Override
-	public void addIcon(int iconItemID)
+	public QuestStep addIcon(int iconItemID)
 	{
 		steps.get(null).addIcon(iconItemID);
+		return this;
 	}
 
 	@Override

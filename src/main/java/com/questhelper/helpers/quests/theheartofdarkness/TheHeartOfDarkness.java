@@ -98,8 +98,6 @@ public class TheHeartOfDarkness extends BasicQuestHelper
             inFirstIceRoom, inSecondIceAreaFirstRoom, inSecondIceAreaSecondRoom, inThirdIceArea, pulledFirstLever, pulledSecondLever, pulledThirdLever,
             unlockedShortcut, inBossRoom;
 
-    ObjectStep activateSecondStatue, activateFirstStatue, activateThirdStatue, activateFourthStatue;
-
     Zone teomat, firstTrialRoom, secondTrialRoom, firstIceRoom, secondIceAreaFirstRoom, secondIceAreaSecondRoom, thirdIceArea, bossRoom;
 
     DetailedQuestStep talkToItzlaAtTeomat,travelToGorge, talkToBartender, restOnBed, talkToPrinceAfterRest, talkToShopkeeper, talkToPrinceInPubAgain,
@@ -143,8 +141,9 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     DetailedQuestStep pullChain;
     ObjectStep climbDownIceShortcut;
 
-    DetailedQuestStep searchAirUrn, searchEarthUrn, searchWaterUrn, searchFireUrn, fixAirStatue, fixWaterStatue, fixEarthStatue, fixFireStatue,
+    PuzzleWrapperStep searchAirUrn, searchEarthUrn, searchWaterUrn, searchFireUrn, fixAirStatue, fixWaterStatue, fixEarthStatue, fixFireStatue,
             inspectAirMarkings, inspectWaterMarkings, inspectEarthMarkings, inspectFireMarkings;
+    PuzzleWrapperStep activateSecondStatue, activateFirstStatue, activateThirdStatue, activateFourthStatue;
 
     DetailedQuestStep enterFinalBossRoom;
 
@@ -337,7 +336,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         goToIcePuzzle.addStep(and(inThirdIceArea, unlockedShortcut), puzzleStep);
         goToIcePuzzle.addStep(inThirdIceArea, pullChain);
         goToIcePuzzle.addStep(inSecondIceAreaSecondRoom, jumpOverFrozenPlatforms);
-        goToIcePuzzle.addStep(inSecondIceAreaFirstRoom, climbUpLedgeToFirstLever);
+        goToIcePuzzle.addStep(inSecondIceAreaFirstRoom, slideAlongIceLedge);
         goToIcePuzzle.addStep(and(inFirstIceRoom, unlockedShortcut), climbDownIceShortcut);
         goToIcePuzzle.addStep(inFirstIceRoom, climbDownLedge);
         steps.put(64, goToIcePuzzle);
@@ -863,51 +862,94 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 "entrance.");
 
         searchAirUrn = new ObjectStep(this, NullObjectID.NULL_55358, new WorldPoint(1647, 9622, 0), "Search the urn with an air symbol on it near to the " +
-                "earth markings in the south-east of the area.");
+                "earth markings in the south-east of the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         searchEarthUrn = new ObjectStep(this, NullObjectID.NULL_55359, new WorldPoint(1652, 9622, 0), "Search the urn with an earth symbol on it near to the " +
-                "earth markings in the south-east of the area.");
+                "earth markings in the south-east of the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         searchWaterUrn = new ObjectStep(this, NullObjectID.NULL_55357, new WorldPoint(1610, 9622, 0), "Search the urn with an water symbol on it near to the " +
-                "water markings in the south-west of the area.");
+                "water markings in the south-west of the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         searchFireUrn = new ObjectStep(this, NullObjectID.NULL_55356, new WorldPoint(1615, 9622, 0), "Search the urn with an fire symbol on it near to the " +
-                "water markings in the south-west of the area.");
+                "water markings in the south-west of the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         fixAirStatue = new ObjectStep(this, NullObjectID.NULL_54471, new WorldPoint(1608, 9638, 0), "Fix the broken air statue in the west of the area.",
-                airIcon.highlighted());
-        fixAirStatue.addDialogStep("Yes.");
-        fixAirStatue.addIcon(ItemID.ICON_29887);
+                airIcon.highlighted())
+                .addDialogStep("Yes.")
+                .addIcon(ItemID.ICON_29887)
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         fixWaterStatue = new ObjectStep(this, NullObjectID.NULL_54465, new WorldPoint(1608, 9624, 0), "Fix the broken water statue in the west of the area.",
-                waterIcon.highlighted());
-        fixWaterStatue.addDialogStep("Yes.");
-        fixWaterStatue.addIcon(ItemID.ICON_29888);
+                waterIcon.highlighted())
+                .addDialogStep("Yes.")
+                .addIcon(ItemID.ICON_29888)
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
+
         fixEarthStatue = new ObjectStep(this, NullObjectID.NULL_54477, new WorldPoint(1605, 9635, 0), "Fix the broken earth statue in the west of the area.",
-                earthIcon.highlighted());
-        fixEarthStatue.addDialogStep("Yes.");
-        fixEarthStatue.addIcon(ItemID.ICON_29886);
+                earthIcon.highlighted())
+                .addDialogStep("Yes.")
+                .addIcon(ItemID.ICON_29886)
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         fixFireStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1605, 9627, 0), "Fix the broken fire statue in the west of the area.",
-                fireIcon.highlighted());
-        fixFireStatue.addDialogStep("Yes.");
-        fixFireStatue.addIcon(ItemID.ICON);
+                fireIcon.highlighted())
+                .addDialogStep("Yes.")
+                .addIcon(ItemID.ICON)
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
 
         inspectAirMarkings = new ObjectStep(this, NullObjectID.NULL_55363, new WorldPoint(1650, 9642, 0), "Inspect the air markings in the north-east of " +
-                "the area.");
+                "the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         inspectWaterMarkings = new ObjectStep(this, NullObjectID.NULL_55362, new WorldPoint(1613, 9621, 0), "Inspect the water markings in the south-west of " +
-                "the area.");
+                "the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         inspectEarthMarkings = new ObjectStep(this, NullObjectID.NULL_55364, new WorldPoint(1650, 9621, 0), "Inspect the earth markings in the south-east of " +
-                "the area.");
+                "the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         inspectFireMarkings = new ObjectStep(this, NullObjectID.NULL_55361, new WorldPoint(1613, 9642, 0), "Inspect the fire markings in the north-west of " +
-                "the area.");
+                "the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
 
-        activateFirstStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the first statue in the order.");
-        activateFirstStatue.addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
-        activateSecondStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the second statue in the order.");
-        activateSecondStatue.addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
-        activateThirdStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the third statue in the order.");
-        activateThirdStatue.addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
-        activateFourthStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the fourth statue in the order.");
-        activateFourthStatue.addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
-        statueActivateSteps[0] = activateFirstStatue;
-        statueActivateSteps[1] = activateSecondStatue;
-        statueActivateSteps[2] = activateThirdStatue;
-        statueActivateSteps[3] = activateFourthStatue;
+        ObjectStep firstStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the first statue in the order.")
+                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        activateFirstStatue = firstStatueStep
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
+
+        ObjectStep secondStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the second statue in the order.")
+                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        activateSecondStatue = secondStatueStep
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
+
+        ObjectStep thirdStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the third statue in the order.")
+                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        activateThirdStatue = thirdStatueStep
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
+        ObjectStep fourthStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the fourth statue in the order.")
+                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        activateFourthStatue = fourthStatueStep
+                .puzzleWrapStep("Work out how to open the door to the far west.");
+
+        activateFourthStatue.addSubSteps(searchAirUrn, searchEarthUrn, searchWaterUrn, searchFireUrn, fixAirStatue, fixWaterStatue, fixEarthStatue, fixFireStatue,
+                inspectAirMarkings, inspectWaterMarkings, inspectEarthMarkings, inspectFireMarkings, activateSecondStatue, activateFirstStatue,
+                activateThirdStatue);
+
+        statueActivateSteps[0] = firstStatueStep;
+        statueActivateSteps[1] = secondStatueStep;
+        statueActivateSteps[2] = thirdStatueStep;
+        statueActivateSteps[3] = fourthStatueStep;
 
         enterFinalBossRoom = new ObjectStep(this, NullObjectID.NULL_55355, new WorldPoint(1601, 9631, 0), "Enter the door to the west, ready for the boss.");
 

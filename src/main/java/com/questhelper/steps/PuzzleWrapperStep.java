@@ -33,7 +33,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.LogicType;
-import java.util.ArrayList;
+
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 import lombok.NonNull;
@@ -51,7 +53,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 		this.noSolvingStep = hiddenStep;
 		this.questHelperConfig = questHelper.getConfig();
 		addStep(not(new ConfigRequirement(questHelper.getConfig()::solvePuzzles)), noSolvingStep);
-		addSubSteps(noSolvingStep, step);
+		super.addSubSteps(noSolvingStep, step);
 		conditionToHideInSidebar(new Conditions(shouldHideHiddenPuzzleHintInSidebar, new Conditions(LogicType.NOR, new ConfigRequirement(questHelper.getConfig()::solvePuzzles))));
 	}
 
@@ -116,15 +118,17 @@ public class PuzzleWrapperStep extends ConditionalStep
 	}
 
 	@Override
-	public void addDialogStep(String choice)
+	public QuestStep addDialogStep(String choice)
 	{
 		steps.get(null).addDialogStep(choice);
+		return this;
 	}
 
 	@Override
-	public void addDialogStep(Pattern pattern)
+	public QuestStep addDialogStep(Pattern pattern)
 	{
 		steps.get(null).addDialogStep(pattern);
+		return this;
 	}
 
 	@Override
@@ -134,87 +138,100 @@ public class PuzzleWrapperStep extends ConditionalStep
 	}
 
 	@Override
-	public void addDialogStepWithExclusion(String choice, String exclusionString)
+	public QuestStep addDialogStepWithExclusion(String choice, String exclusionString)
 	{
 		steps.get(null).addDialogStepWithExclusion(choice, exclusionString);
+		return this;
 	}
 
 	@Override
-	public void addDialogStepWithExclusions(String choice, String... exclusionString)
+	public QuestStep addDialogStepWithExclusions(String choice, String... exclusionString)
 	{
 		steps.get(null).addDialogStepWithExclusions(choice, exclusionString);
+		return this;
 	}
 
 	@Override
-	public void addDialogStep(int id, String choice)
+	public QuestStep addDialogStep(int id, String choice)
 	{
 		steps.get(null).addDialogStep(id, choice);
+		return this;
 	}
 
 	@Override
-	public void addDialogStep(int id, Pattern pattern)
+	public QuestStep addDialogStep(int id, Pattern pattern)
 	{
 		steps.get(null).addDialogStep(id, pattern);
+		return this;
 	}
 
 	@Override
-	public void addDialogSteps(String... newChoices)
+	public QuestStep addDialogSteps(String... newChoices)
 	{
 		steps.get(null).addDialogSteps(newChoices);
+		return this;
 	}
 
 	@Override
-	public void addDialogConsideringLastLineCondition(String dialogString, String choiceValue)
+	public QuestStep addDialogConsideringLastLineCondition(String dialogString, String choiceValue)
 	{
 		steps.get(null).addDialogConsideringLastLineCondition(dialogString, choiceValue);
+		return this;
 	}
 
 	@Override
-	public void addDialogChange(String choice, String newText)
+	public QuestStep addDialogChange(String choice, String newText)
 	{
 		steps.get(null).addDialogChange(choice, newText);
+		return this;
 	}
 
 	@Override
-	public void addWidgetChoice(String text, int groupID, int childID)
+	public QuestStep addWidgetChoice(String text, int groupID, int childID)
 	{
 		steps.get(null).addWidgetChoice(text, groupID, childID);
+		return this;
 	}
 
 	@Override
-	public void addWidgetChoice(String text, int groupID, int childID, int groupIDForChecking)
+	public QuestStep addWidgetChoice(String text, int groupID, int childID, int groupIDForChecking)
 	{
 		steps.get(null).addWidgetChoice(text, groupID, childID, groupIDForChecking);
-
+		return this;
 	}
 
 	@Override
-	public void addWidgetChoice(int id, int groupID, int childID)
+	public QuestStep addWidgetChoice(int id, int groupID, int childID)
 	{
 		steps.get(null).addWidgetChoice(id, groupID, childID);
+		return this;
 	}
 
 	@Override
-	public void addWidgetChange(String choice, int groupID, int childID, String newText)
+	public QuestStep addWidgetChange(String choice, int groupID, int childID, String newText)
 	{
 		steps.get(null).addWidgetChange(choice, groupID, childID, newText);
+		return this;
 	}
 
 	@Override
-	public void clearWidgetHighlights() {
+	public void clearWidgetHighlights()
+	{
 		steps.get(null).clearWidgetHighlights();
 	}
 
 	@Override
-	public void addWidgetHighlight(int groupID, int childID)
+	public QuestStep addWidgetHighlight(int groupID, int childID)
 	{
 		steps.get(null).addWidgetHighlight(groupID, childID);
+		return this;
 	}
 
 	@Override
-	public void addWidgetHighlight(int groupID, int childID, int childChildID)
+	public QuestStep addWidgetHighlight(int groupID, int childID, int childChildID)
 	{
 		steps.get(null).addWidgetHighlight(groupID, childID, childChildID);
+		return this;
 	}
 
 	@Override
@@ -227,5 +244,30 @@ public class PuzzleWrapperStep extends ConditionalStep
 	public void addIcon(int iconItemID)
 	{
 		steps.get(null).addIcon(iconItemID);
+	}
+
+	@Override
+	public List<QuestStep> getSubsteps()
+	{
+		if (questHelperConfig.solvePuzzles())
+		{
+			return steps.get(null).getSubsteps();
+		}
+		else
+		{
+			return noSolvingStep.getSubsteps();
+		}
+	}
+
+	@Override
+	public void addSubSteps(QuestStep... substep)
+	{
+		noSolvingStep.addSubSteps(Arrays.asList(substep));
+	}
+
+	@Override
+	public void addSubSteps(Collection<QuestStep> substeps)
+	{
+		noSolvingStep.addSubSteps(substeps);
 	}
 }

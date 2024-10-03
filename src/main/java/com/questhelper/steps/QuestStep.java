@@ -293,14 +293,16 @@ public abstract class QuestStep implements Module
 		widgetChoices.checkChoices(client);
 	}
 
-	public void addDialogStep(String choice)
+	public QuestStep addDialogStep(String choice)
 	{
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), choice));
+		return this;
 	}
 
-	public void addDialogStep(Pattern pattern)
+	public QuestStep addDialogStep(Pattern pattern)
 	{
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), pattern));
+		return this;
 	}
 
 	public void resetDialogSteps()
@@ -308,67 +310,78 @@ public abstract class QuestStep implements Module
 		choices.resetChoices();
 	}
 
-	public void addDialogStepWithExclusion(String choice, String exclusionString)
+	public QuestStep addDialogStepWithExclusion(String choice, String exclusionString)
 	{
 		choices.addDialogChoiceWithExclusion(new DialogChoiceStep(questHelper.getConfig(), choice), exclusionString);
+		return this;
 	}
 
-	public void addDialogStepWithExclusions(String choice, String... exclusionString)
+	public QuestStep addDialogStepWithExclusions(String choice, String... exclusionString)
 	{
 		choices.addDialogChoiceWithExclusions(new DialogChoiceStep(questHelper.getConfig(), choice), exclusionString);
+		return this;
 	}
 
-	public void addDialogStep(int id, String choice)
+	public QuestStep addDialogStep(int id, String choice)
 	{
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, choice));
+		return this;
 	}
 
-	public void addDialogStep(int id, Pattern pattern)
+	public QuestStep addDialogStep(int id, Pattern pattern)
 	{
 		choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), id, pattern));
+		return this;
 	}
 
-	public void addDialogSteps(String... newChoices)
+	public QuestStep addDialogSteps(String... newChoices)
 	{
 		for (String choice : newChoices)
 		{
 			choices.addChoice(new DialogChoiceStep(questHelper.getConfig(), choice));
 		}
+		return this;
 	}
 
-	public void addDialogConsideringLastLineCondition(String dialogString, String choiceValue)
+	public QuestStep addDialogConsideringLastLineCondition(String dialogString, String choiceValue)
 	{
 		DialogChoiceStep choice = new DialogChoiceStep(questHelper.getConfig(), dialogString);
 		choice.setExpectedPreviousLine(choiceValue);
 		choices.addChoice(choice);
+		return this;
 	}
 
-	public void addDialogChange(String choice, String newText)
+	public QuestStep addDialogChange(String choice, String newText)
 	{
 		choices.addChoice(new DialogChoiceChange(questHelper.getConfig(), choice, newText));
+		return this;
 	}
 
-	public void addWidgetChoice(String text, int groupID, int childID)
+	public QuestStep addWidgetChoice(String text, int groupID, int childID)
 	{
 		widgetChoices.addChoice(new WidgetChoiceStep(questHelper.getConfig(), text, groupID, childID));
+		return this;
 	}
 
-	public void addWidgetChoice(String text, int groupID, int childID, int groupIDForChecking)
+	public QuestStep addWidgetChoice(String text, int groupID, int childID, int groupIDForChecking)
 	{
 		WidgetChoiceStep newChoice = new WidgetChoiceStep(questHelper.getConfig(), text, groupID, childID);
 		newChoice.setGroupIdForChecking(groupIDForChecking);
 		widgetChoices.addChoice(newChoice);
+		return this;
 
 	}
 
-	public void addWidgetChoice(int id, int groupID, int childID)
+	public QuestStep addWidgetChoice(int id, int groupID, int childID)
 	{
 		widgetChoices.addChoice(new WidgetChoiceStep(questHelper.getConfig(), id, groupID, childID));
+		return this;
 	}
 
-	public void addWidgetChange(String choice, int groupID, int childID, String newText)
+	public QuestStep addWidgetChange(String choice, int groupID, int childID, String newText)
 	{
 		widgetChoices.addChoice(new WidgetTextChange(questHelper.getConfig(), choice, groupID, childID, newText));
+		return this;
 	}
 
 	@Subscribe
@@ -384,29 +397,34 @@ public abstract class QuestStep implements Module
 		widgetsToHighlight.clear();
 	}
 
-	public void addSpellHighlight(Spell spell)
+	public QuestStep addSpellHighlight(Spell spell)
 	{
 		widgetsToHighlight.add(new SpellWidgetHighlight(spell));
+		return this;
 	}
 
-	public void addWidgetHighlight(WidgetHighlight widgetHighlight)
+	public QuestStep addWidgetHighlight(WidgetHighlight widgetHighlight)
 	{
 		widgetsToHighlight.add(widgetHighlight);
+		return this;
 	}
 
-	public void addWidgetHighlight(int groupID, int childID)
+	public QuestStep addWidgetHighlight(int groupID, int childID)
 	{
 		widgetsToHighlight.add(new WidgetHighlight(groupID, childID));
+		return this;
 	}
 
-	public void addWidgetHighlight(int groupID, int childID, int childChildID)
+	public QuestStep addWidgetHighlight(int groupID, int childID, int childChildID)
 	{
 		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, childChildID));
+		return this;
 	}
 
-	public void addWidgetHighlightWithItemIdRequirement(int groupID, int childID, int itemID, boolean checkChildren)
+	public QuestStep addWidgetHighlightWithItemIdRequirement(int groupID, int childID, int itemID, boolean checkChildren)
 	{
 		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, itemID, checkChildren));
+		return this;
 	}
 
 	// TODO: Add generic requirement for highlighting
@@ -564,5 +582,15 @@ public abstract class QuestStep implements Module
 
 	public void disableShortestPath()
 	{
+	}
+
+	public PuzzleWrapperStep puzzleWrapStep()
+	{
+		return new PuzzleWrapperStep(getQuestHelper(), this);
+	}
+
+	public PuzzleWrapperStep puzzleWrapStep(String alternateText)
+	{
+		return new PuzzleWrapperStep(getQuestHelper(), this, alternateText);
 	}
 }

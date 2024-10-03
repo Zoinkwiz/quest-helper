@@ -510,7 +510,6 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		talkToGuardsAgainToTellThemYouAreReadyStep.addStep(not(inVilla), returnToButlerAndHeadInside);
 
 		/// 28 + 30
-		// TODO: what happens if you accuse the wrong person?
 		interrogateConstantiniusAgain = new NpcStep(this, NpcID.CONSTANTINIUS, new WorldPoint(1446, 2931, 2), "Interrogate Constantinius.");
 		interrogateConstantiniusAgain.addDialogStep("No.");
 		interrogateXocotlaAgain = new NpcStep(this, NpcID.XOCOTLA, new WorldPoint(1444, 2928, 2), "Interrogate Xocotla.");
@@ -529,7 +528,6 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		accuseAdala = new NpcStep(this, NpcID.ADALA, new WorldPoint(1446, 2933, 2), "Accuse Adala of the crime, ready for a fight you cannot lose.");
 		accuseAdala.addDialogStep("Accuse Adala.");
 
-		// TODO: helper steps to climb upstairs?
 		speakToSuspects = new ConditionalStep(this, accuseAdala);
 		speakToSuspects.addStep(not(inVilla), returnToButlerAndHeadInside);
 		speakToSuspects.addStep(not(interrogatedConstantiniusAgain), interrogateConstantiniusAgain);
@@ -539,18 +537,15 @@ public class DeathOnTheIsle extends BasicQuestHelper
 
 		/// 32
 		getAdalasConfession = new NpcStep(this, NpcID.ADALA_13821, new WorldPoint(1446, 2933, 2), "Talk to Adala to get her confession.");
-		// TODO: helper steps to climb upstairs?
 		getAdalasConfessionStep = new ConditionalStep(this, getAdalasConfession);
 		getAdalasConfessionStep.addStep(not(inVilla), returnToButlerAndHeadInside);
 
 		/// 33
 		talkToGuardsAboutAdala = new NpcStep(this, NpcID.STRADIUS, new WorldPoint(1442, 2933, 2), "Talk to the guards about Adala.");
-		// TODO: helper step to climb upstairs?
 		talkToGuardsAboutAdalaStep = new ConditionalStep(this, talkToGuardsAboutAdala);
 		talkToGuardsAboutAdalaStep.addStep(not(inVilla), returnToButlerAndHeadInside);
 
 		/// 34
-		// NOTE: The stairs don't highlight well. A tile step would be better, but tile steps don't work here.
 		var headDownFromTopFloor = new ObjectStep(this, ObjectID.STAIRCASE_54714, new WorldPoint(1445, 2939, 2), "Climb down the staircase.");
 		var headDownFromMiddleFloor = new ObjectStep(this, ObjectID.STAIRCASE_54714, new WorldPoint(1442, 2936, 1), "Climb down the staircase.");
 		var climbFirstLooseRocksToTheatre = new ObjectStep(this, ObjectID.LOOSE_ROCKS_54720, new WorldPoint(1469, 2918, 0), "Climb the Loose rocks south-east of the villa on your way to the theatre.");

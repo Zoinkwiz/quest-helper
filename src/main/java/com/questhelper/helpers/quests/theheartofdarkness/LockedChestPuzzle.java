@@ -50,7 +50,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LockedChestPuzzle extends QuestStep implements OwnerStep {
+public class LockedChestPuzzle extends QuestStep implements OwnerStep
+{
     @Inject
     protected EventBus eventBus;
 
@@ -73,13 +74,17 @@ public class LockedChestPuzzle extends QuestStep implements OwnerStep {
     final String[] letter3 = new String[]{"W", "E", "R", "I", "L", "A", "N", "U", "T", "O"};
     final String[] letter4 = new String[]{"E", "I", "D", "A", "O", "W", "K", "N", "R", "U"};
 
-    DetailedQuestStep readBook;
+    PuzzleWrapperStep readBook;
 
-    ObjectStep openChest;
+    PuzzleWrapperStep openChest;
 
     ChestCodeStep solveChest;
 
-    public LockedChestPuzzle(QuestHelper questHelper) {
+    PuzzleWrapperStep solveChestPuzzleWrapped;
+
+
+    public LockedChestPuzzle(QuestHelper questHelper)
+    {
         super(questHelper, "");
         setupItemRequirements();
         setupZones();
@@ -88,40 +93,50 @@ public class LockedChestPuzzle extends QuestStep implements OwnerStep {
     }
 
     @Override
-    public void startUp() {
+    public void startUp()
+    {
         updateSteps();
     }
 
     @Override
-    public void shutDown() {
+    public void shutDown()
+    {
         shutDownStep();
         currentStep = null;
     }
 
     @Subscribe
-    public void onGameTick(GameTick event) {
+    public void onGameTick(GameTick event)
+    {
         updateSteps();
     }
 
-    protected void updateSteps() {
-        if (answer == null) {
+    protected void updateSteps()
+    {
+        if (answer == null)
+        {
             startUpStep(readBook);
-        } else if (inChestInterface.check(client)) {
+        } else if (inChestInterface.check(client))
+        {
             startUpStep(solveChest);
-        } else {
+        } else
+        {
             startUpStep(openChest);
         }
     }
 
-    protected void startUpStep(QuestStep step) {
-        if (currentStep == null) {
+    protected void startUpStep(QuestStep step)
+    {
+        if (currentStep == null)
+        {
             currentStep = step;
             eventBus.register(currentStep);
             currentStep.startUp();
             return;
         }
 
-        if (!step.equals(currentStep)) {
+        if (!step.equals(currentStep))
+        {
             shutDownStep();
             eventBus.register(step);
             step.startUp();
@@ -129,8 +144,10 @@ public class LockedChestPuzzle extends QuestStep implements OwnerStep {
         }
     }
 
-    protected void shutDownStep() {
-        if (currentStep != null) {
+    protected void shutDownStep()
+    {
+        if (currentStep != null)
+        {
             eventBus.unregister(currentStep);
             currentStep.shutDown();
             currentStep = null;
@@ -138,78 +155,102 @@ public class LockedChestPuzzle extends QuestStep implements OwnerStep {
     }
 
     @Override
-    public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, List<Requirement> requirements) {
-        if (currentStep != null) {
+    public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, List<Requirement> requirements)
+    {
+        if (currentStep != null)
+        {
             currentStep.makeOverlayHint(panelComponent, plugin, additionalText, requirements);
         }
     }
 
     @Override
-    public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
-        if (currentStep != null) {
+    public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+    {
+        if (currentStep != null)
+        {
             currentStep.makeWorldOverlayHint(graphics, plugin);
         }
     }
 
     @Override
-    public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
-        if (currentStep != null) {
+    public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+    {
+        if (currentStep != null)
+        {
             currentStep.makeWorldArrowOverlayHint(graphics, plugin);
         }
     }
 
     @Override
-    public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
-        if (currentStep != null) {
+    public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+    {
+        if (currentStep != null)
+        {
             currentStep.makeWorldLineOverlayHint(graphics, plugin);
         }
     }
 
     @Override
-    public QuestStep getActiveStep() {
-        if (currentStep != this) {
+    public QuestStep getActiveStep()
+    {
+        if (currentStep != this)
+        {
             return currentStep.getActiveStep();
-        } else {
+        } else
+        {
             return this;
         }
     }
 
-    private void setupItemRequirements() {
+    private void setupItemRequirements()
+    {
         book = new ItemRequirement("Book", ItemID.BOOK_29878);
     }
 
-    private void setupConditions() {
+    private void setupConditions()
+    {
         inChestInterface = new WidgetTextRequirement(809, 5, 9, "Confirm");
     }
 
-    private void setupZones() {
+    private void setupZones()
+    {
 
     }
 
-    private void setupSteps() {
-        readBook = new DetailedQuestStep(getQuestHelper(), "Read the book.", book.highlighted());
-        openChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_54376, new WorldPoint(1638, 3217, 1), "Search the south-west chest.");
+    private void setupSteps()
+    {
+        readBook = new DetailedQuestStep(getQuestHelper(), "Read the book.", book.highlighted())
+                .puzzleWrapStep()
+                .withNoHelpHiddenInSidebar(true);
+        openChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_54376, new WorldPoint(1638, 3217, 1), "Search the south-west chest.")
+                .puzzleWrapStep()
+                .withNoHelpHiddenInSidebar(true);
         solveChest = new ChestCodeStep(getQuestHelper(), 10);
+        solveChestPuzzleWrapped = solveChest.puzzleWrapStep().withNoHelpHiddenInSidebar(true);
     }
 
     @Override
-    public Collection<QuestStep> getSteps() {
-        return Arrays.asList(readBook, openChest, solveChest);
+    public Collection<QuestStep> getSteps()
+    {
+        return Arrays.asList(readBook, openChest, solveChestPuzzleWrapped);
     }
 
     int[] rotationPosOfAnswer = new int[4];
 
     @Subscribe
-    public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
+    public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+    {
         if (answer != null) return;
 
         int GROUP_ID = 392;
         List<String> tmpChars = new ArrayList<>();
         int firstLineChildId = 43;
         int maxChildId = 74;
-        if (widgetLoaded.getGroupId() == GROUP_ID) {
+        if (widgetLoaded.getGroupId() == GROUP_ID)
+        {
             Widget line;
-            for (int i = 0; i <= maxChildId - firstLineChildId; i++) {
+            for (int i = 0; i <= maxChildId - firstLineChildId; i++)
+            {
                 line = client.getWidget(GROUP_ID, firstLineChildId + i);
                 if (line == null) break;
                 Matcher matcher = WHITE_TEXT.matcher(line.getText());
@@ -220,9 +261,11 @@ public class LockedChestPuzzle extends QuestStep implements OwnerStep {
             }
         }
 
-        if (tmpChars.size() == 4) {
+        if (tmpChars.size() == 4)
+        {
             answer = "";
-            for (String tmpChar : tmpChars) {
+            for (String tmpChar : tmpChars)
+            {
                 answer += tmpChar;
             }
 
@@ -238,7 +281,7 @@ public class LockedChestPuzzle extends QuestStep implements OwnerStep {
 
     private int getPosForLetter(String letter, String[] rotationLetters)
     {
-        for (int i=0; i < rotationLetters.length; i++)
+        for (int i = 0; i < rotationLetters.length; i++)
         {
             if (rotationLetters[i].equals(letter))
             {

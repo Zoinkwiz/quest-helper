@@ -68,10 +68,6 @@ import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class TheHeartOfDarkness extends BasicQuestHelper
 {
-
-    DetailedQuestStep tellJanusPasscode;
-    ArrowChestPuzzleStep inputArrows;
-
     ManualRequirement knowPoemSolution, hasReadCompletedNote;
 
     ManualRequirement inspectedAirMarkings, inspectedEarthMarkings, inspectedWaterMarkings, inspectedFireMarkings;
@@ -102,25 +98,29 @@ public class TheHeartOfDarkness extends BasicQuestHelper
             inFirstIceRoom, inSecondIceAreaFirstRoom, inSecondIceAreaSecondRoom, inThirdIceArea, pulledFirstLever, pulledSecondLever, pulledThirdLever,
             unlockedShortcut, inBossRoom;
 
-    ObjectStep activateSecondStatue, activateFirstStatue, activateThirdStatue, activateFourthStatue;
-
     Zone teomat, firstTrialRoom, secondTrialRoom, firstIceRoom, secondIceAreaFirstRoom, secondIceAreaSecondRoom, thirdIceArea, bossRoom;
 
     DetailedQuestStep talkToItzlaAtTeomat,travelToGorge, talkToBartender, restOnBed, talkToPrinceAfterRest, talkToShopkeeper, talkToPrinceInPubAgain,
             talkToPrinceAtTower, buildSalvagerOverlookLandingSite, talkToPrinceAtTowerAfterLanding, talkToNova, talkToSergius, talkToFelius, talkToCaritta, talkToPrinceAfterRecruits,
             talkToJanus, climbUpToFirstTrial;
-    DetailedQuestStep pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper, readPoem, talkToPrinceAfterPoem,
+    PuzzleWrapperStep pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper, readPoem, talkToPrinceAfterPoem,
             openKeywordChestNorthWest, combineScraps, readCompletedNote;
 
     LockedChestPuzzle openKeywordChestSouthWest;
+
+    ArrowChestPuzzleStep inputArrows;
+
+    PuzzleWrapperStep openKeywordChestSouthWestPuzzleWrapped, inputArrowsPuzzleWrapped, tellJanusPasscode;
 
     DetailedQuestStep startCombatTrial;
     NpcStep completeCombatTrial;
     DetailedQuestStep talkToJanusAfterTrial;
 
     DetailedQuestStep talkToPrinceToStartThirdTrial;
-    NpcStep talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia, accuseTenoch, accuseSilia, accuseEleuia;
+    PuzzleWrapperStep talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia, accuseTenoch, accuseSilia, accuseEleuia;
     DetailedQuestStep accuseGuiltyIndividual;
+
+    PuzzleWrapperStep accuseGuiltyIndividualPuzzleWrapped;
 
     DetailedQuestStep goUpToFinalTrial, fightPrince, fightPrinceSidebar, talkToJanusAfterPrinceFight, talkToJanusAfterAllTrials, searchChestForEmissaryRobes, talkToItzlaToFollow,
             enterTemple, talkToItzlaAfterSermon, talkToFides, enterRuins;
@@ -141,8 +141,9 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     DetailedQuestStep pullChain;
     ObjectStep climbDownIceShortcut;
 
-    DetailedQuestStep searchAirUrn, searchEarthUrn, searchWaterUrn, searchFireUrn, fixAirStatue, fixWaterStatue, fixEarthStatue, fixFireStatue,
+    PuzzleWrapperStep searchAirUrn, searchEarthUrn, searchWaterUrn, searchFireUrn, fixAirStatue, fixWaterStatue, fixEarthStatue, fixFireStatue,
             inspectAirMarkings, inspectWaterMarkings, inspectEarthMarkings, inspectFireMarkings;
+    PuzzleWrapperStep activateSecondStatue, activateFirstStatue, activateThirdStatue, activateFourthStatue;
 
     DetailedQuestStep enterFinalBossRoom;
 
@@ -214,19 +215,21 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         goUpToFirstChallenge.addStep(princeIsFollowing, climbUpToFirstTrial);
         steps.put(30, goUpToFirstChallenge);
 
+        ConditionalStep firstTrialPuzzle = new ConditionalStep(this, pickpocketAscended);
+        firstTrialPuzzle.addStep(and(completedNote, hasReadCompletedNote), tellJanusPasscode);
+        firstTrialPuzzle.addStep(and(completedNote), readCompletedNote);
+        firstTrialPuzzle.addStep(and(scrapOfPaper1, scrapOfPaper2, scrapOfPaper3), combineScraps);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections, knowPoemSolution, inArrowPuzzle), inputArrows);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections, knowPoemSolution), openKeywordChestNorthWest);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections), readPoem);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, hasReadPoem), talkToPrinceAfterPoem);
+        firstTrialPuzzle.addStep(and(southWestChestOpened, scrapOfPaper1, scrapOfPaper2, poem), readPoem);
+        firstTrialPuzzle.addStep(and(scrapOfPaper1, book), openKeywordChestSouthWest);
+        firstTrialPuzzle.addStep(and(southEastGateUnlocked), searchChestForBookAndPaper);
+        firstTrialPuzzle.addStep(and(towerKey), useKeyOnSouthEastGate);
+
         ConditionalStep goDoFirstChallenge = new ConditionalStep(this, climbUpToFirstTrial);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, completedNote, hasReadCompletedNote), tellJanusPasscode);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, completedNote), readCompletedNote);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, scrapOfPaper1, scrapOfPaper2, scrapOfPaper3), combineScraps);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections, knowPoemSolution, inArrowPuzzle), inputArrows);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections, knowPoemSolution), openKeywordChestNorthWest);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, knowAboutDirections), readPoem);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, hasReadPoem), talkToPrinceAfterPoem);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southWestChestOpened, scrapOfPaper1, scrapOfPaper2, poem), readPoem);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, scrapOfPaper1, book), openKeywordChestSouthWest);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, southEastGateUnlocked), searchChestForBookAndPaper);
-        goDoFirstChallenge.addStep(and(inFirstTrialRoom, towerKey), useKeyOnSouthEastGate);
-        goDoFirstChallenge.addStep(inFirstTrialRoom, pickpocketAscended);
+        goDoFirstChallenge.addStep(inFirstTrialRoom, firstTrialPuzzle);
         steps.put(32, goDoFirstChallenge);
 
         ConditionalStep goDoSecondChallenge = new ConditionalStep(this, climbUpToFirstTrial);
@@ -333,7 +336,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         goToIcePuzzle.addStep(and(inThirdIceArea, unlockedShortcut), puzzleStep);
         goToIcePuzzle.addStep(inThirdIceArea, pullChain);
         goToIcePuzzle.addStep(inSecondIceAreaSecondRoom, jumpOverFrozenPlatforms);
-        goToIcePuzzle.addStep(inSecondIceAreaFirstRoom, climbUpLedgeToFirstLever);
+        goToIcePuzzle.addStep(inSecondIceAreaFirstRoom, slideAlongIceLedge);
         goToIcePuzzle.addStep(and(inFirstIceRoom, unlockedShortcut), climbDownIceShortcut);
         goToIcePuzzle.addStep(inFirstIceRoom, climbDownLedge);
         steps.put(64, goToIcePuzzle);
@@ -633,27 +636,63 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         talkToPrinceAfterRecruits.addDialogStep("Could you remind me what Ximoua is?");
         talkToJanus = new NpcStep(this, NpcID.FOREBEARER_JANUS, new WorldPoint(1638, 3224, 0), "Talk to Forebearer Janus inside the tower.");
 
+        final String PUZZLE_1_TEXT = "Work out the passcode to tell Janus by solving the room's puzzles.";
+
         // First trial section
         climbUpToFirstTrial = new ObjectStep(this, ObjectID.STAIRCASE_54369, new WorldPoint(1635, 3221, 0), "Climb up the staircase in the tower to the first" +
                 " challenge.");
-        pickpocketAscended = new NpcStep(this, NpcID.EMISSARY_ASCENDED_13768, new WorldPoint(1641, 3225, 1), "Pickpocket one of the emissary ascended.", true);
-        ((NpcStep) pickpocketAscended).addAlternateNpcs(NpcID.EMISSARY_ASCENDED_13767);
-        useKeyOnSouthEastGate = new ObjectStep(this, NullObjectID.NULL_55354, new WorldPoint(1644, 3220, 1), "Use the key to open the gate in the south-east " +
-                "corner of the room.", towerKey);
-        searchChestForBookAndPaper = new ObjectStep(this, ObjectID.CHEST_54372, new WorldPoint(1644, 3217, 1), "Search the south-east chest for a book and " +
-                "some paper.");
-        openKeywordChestSouthWest = new LockedChestPuzzle(this);
-        readPoem = new DetailedQuestStep(this, "Read the poem.", poem.highlighted());
-        talkToPrinceAfterPoem = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13770, new WorldPoint(1638, 3218, 1), "Talk to the prince in the room.");
-        talkToPrinceAfterPoem.addDialogSteps("Makt.", "Takam.", "Silam.", "Thanks! Could you translate another?");
-        openKeywordChestNorthWest = new ObjectStep(this, ObjectID.CHEST_54374, new WorldPoint(1636, 3225, 1), "Open the north-west chest.");
-        inputArrows = new ArrowChestPuzzleStep(this);
-        combineScraps = new DetailedQuestStep(this,  "Inspect one of the scraps to combine them.", scrapOfPaper1.highlighted(), scrapOfPaper2.highlighted(),
-                scrapOfPaper3.highlighted());
 
-        readCompletedNote = new DetailedQuestStep(this, "Read the completed note.", completedNote.highlighted());
-        tellJanusPasscode = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3226, 1), "Talk to Janus and tell him the passcode.");
-        tellJanusPasscode.addDialogSteps("About that passphrase...", "Yes.");
+        pickpocketAscended = new NpcStep(this, NpcID.EMISSARY_ASCENDED_13768, new WorldPoint(1641, 3225, 1), "Pickpocket one of the emissary ascended.", true)
+                .addAlternateNpcs(NpcID.EMISSARY_ASCENDED_13767)
+                .puzzleWrapStep(PUZZLE_1_TEXT);
+
+        useKeyOnSouthEastGate = new ObjectStep(this, NullObjectID.NULL_55354, new WorldPoint(1644, 3220, 1), "Use the key to open the gate in the south-east " +
+                "corner of the room.", towerKey)
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        searchChestForBookAndPaper = new ObjectStep(this, ObjectID.CHEST_54372, new WorldPoint(1644, 3217, 1), "Search the south-east chest for a book and some paper.")
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        openKeywordChestSouthWest = new LockedChestPuzzle(this);
+        openKeywordChestSouthWestPuzzleWrapped = openKeywordChestSouthWest
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        readPoem = new DetailedQuestStep(this, "Read the poem.", poem.highlighted())
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        talkToPrinceAfterPoem = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13770, new WorldPoint(1638, 3218, 1), "Talk to the prince in the room.")
+                .addDialogSteps("Makt.", "Takam.", "Silam.", "Thanks! Could you translate another?")
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        openKeywordChestNorthWest = new ObjectStep(this, ObjectID.CHEST_54374, new WorldPoint(1636, 3225, 1), "Open the north-west chest.")
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        inputArrows = new ArrowChestPuzzleStep(this);
+        inputArrowsPuzzleWrapped = inputArrows
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        combineScraps = new DetailedQuestStep(this,  "Inspect one of the scraps to combine them.", scrapOfPaper1.highlighted(), scrapOfPaper2.highlighted(), scrapOfPaper3.highlighted())
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        readCompletedNote = new DetailedQuestStep(this, "Read the completed note.", completedNote.highlighted())
+                .puzzleWrapStep(PUZZLE_1_TEXT)
+                .withNoHelpHiddenInSidebar(true);
+
+        tellJanusPasscode = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3226, 1), "Talk to Janus and tell him the passcode.")
+                        .addDialogSteps("About that passphrase...", "Yes.")
+                        .puzzleWrapStep(PUZZLE_1_TEXT)
+                        .withNoHelpHiddenInSidebar(true);
+
+        pickpocketAscended.addSubSteps(useKeyOnSouthEastGate, searchChestForBookAndPaper, openKeywordChestSouthWest, openKeywordChestSouthWestPuzzleWrapped,
+                readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrows, inputArrowsPuzzleWrapped, combineScraps, readCompletedNote, tellJanusPasscode);
 
         // Second trial section
         startCombatTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1644, 3225, 2), "Talk to Forebearer Janus, ready to fight.");
@@ -670,22 +709,47 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         // Third trial section
         talkToPrinceToStartThirdTrial = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13770, new WorldPoint(1638, 3218, 2), "Talk to the prince in the room.");
-        talkToTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Talk to Tenoch.");
-        talkToTenoch.addDialogSteps("Interrogate Tenoch.", "Tell me about the Final Dawn.");
-        talkToSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Talk to Silia.");
-        talkToSilia.addDialogSteps("Interrogate Silia.", "Tell me about the Final Dawn.");
-        talkToAdrius = new NpcStep(this, NpcID.ADRIUS, new WorldPoint(1645, 3220, 2), "Talk to Adrius.");
-        talkToAdrius.addDialogSteps("Interrogate Adrius.", "Tell me about the Final Dawn.");
-        talkToEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Talk to Eleuia.");
-        talkToEleuia.addDialogSteps("Interrogate Eleuia.", "Tell me about the Final Dawn.");
-        accuseTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Accuse Tenoch.");
-        accuseTenoch.addDialogSteps("Yes.", "Choose Tenoch.");
-        accuseSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Accuse Silia.");
-        accuseSilia.addDialogSteps("Yes.", "Choose Silia.");
-        accuseEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Accuse Eleuia.");
-        accuseEleuia.addDialogSteps("Yes.", "Choose Eleuia.");
+
+        talkToTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Talk to Tenoch.")
+                .addDialogSteps("Interrogate Tenoch.", "Tell me about the Final Dawn.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        talkToSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Talk to Silia.")
+                .addDialogSteps("Interrogate Silia.", "Tell me about the Final Dawn.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        talkToAdrius = new NpcStep(this, NpcID.ADRIUS, new WorldPoint(1645, 3220, 2), "Talk to Adrius.")
+                .addDialogSteps("Interrogate Adrius.", "Tell me about the Final Dawn.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        talkToEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Talk to Eleuia.")
+                .addDialogSteps("Interrogate Eleuia.", "Tell me about the Final Dawn.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        accuseTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Accuse Tenoch.")
+                .addDialogSteps("Yes.", "Choose Tenoch.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        accuseSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Accuse Silia.")
+                .addDialogSteps("Yes.", "Choose Silia.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        accuseEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Accuse Eleuia.")
+                .addDialogSteps("Yes.", "Choose Eleuia.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
         accuseGuiltyIndividual = new DetailedQuestStep(this, "Accuse the guilty individual.");
         accuseGuiltyIndividual.addSubSteps(accuseTenoch, accuseSilia, accuseEleuia);
+        accuseGuiltyIndividualPuzzleWrapped = accuseGuiltyIndividual
+                .puzzleWrapStep("Work out who the guilty emissary is.");
+        accuseGuiltyIndividualPuzzleWrapped.addSubSteps(talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia, accuseTenoch, accuseSilia, accuseEleuia);
 
         goUpToFinalTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1640, 3226, 2), "Talk to Janus to go to the final trial, ready for " +
                 "a fight.");
@@ -798,51 +862,94 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 "entrance.");
 
         searchAirUrn = new ObjectStep(this, NullObjectID.NULL_55358, new WorldPoint(1647, 9622, 0), "Search the urn with an air symbol on it near to the " +
-                "earth markings in the south-east of the area.");
+                "earth markings in the south-east of the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         searchEarthUrn = new ObjectStep(this, NullObjectID.NULL_55359, new WorldPoint(1652, 9622, 0), "Search the urn with an earth symbol on it near to the " +
-                "earth markings in the south-east of the area.");
+                "earth markings in the south-east of the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         searchWaterUrn = new ObjectStep(this, NullObjectID.NULL_55357, new WorldPoint(1610, 9622, 0), "Search the urn with an water symbol on it near to the " +
-                "water markings in the south-west of the area.");
+                "water markings in the south-west of the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         searchFireUrn = new ObjectStep(this, NullObjectID.NULL_55356, new WorldPoint(1615, 9622, 0), "Search the urn with an fire symbol on it near to the " +
-                "water markings in the south-west of the area.");
+                "water markings in the south-west of the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         fixAirStatue = new ObjectStep(this, NullObjectID.NULL_54471, new WorldPoint(1608, 9638, 0), "Fix the broken air statue in the west of the area.",
-                airIcon.highlighted());
-        fixAirStatue.addDialogStep("Yes.");
-        fixAirStatue.addIcon(ItemID.ICON_29887);
+                airIcon.highlighted())
+                .addDialogStep("Yes.")
+                .addIcon(ItemID.ICON_29887)
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         fixWaterStatue = new ObjectStep(this, NullObjectID.NULL_54465, new WorldPoint(1608, 9624, 0), "Fix the broken water statue in the west of the area.",
-                waterIcon.highlighted());
-        fixWaterStatue.addDialogStep("Yes.");
-        fixWaterStatue.addIcon(ItemID.ICON_29888);
+                waterIcon.highlighted())
+                .addDialogStep("Yes.")
+                .addIcon(ItemID.ICON_29888)
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
+
         fixEarthStatue = new ObjectStep(this, NullObjectID.NULL_54477, new WorldPoint(1605, 9635, 0), "Fix the broken earth statue in the west of the area.",
-                earthIcon.highlighted());
-        fixEarthStatue.addDialogStep("Yes.");
-        fixEarthStatue.addIcon(ItemID.ICON_29886);
+                earthIcon.highlighted())
+                .addDialogStep("Yes.")
+                .addIcon(ItemID.ICON_29886)
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         fixFireStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1605, 9627, 0), "Fix the broken fire statue in the west of the area.",
-                fireIcon.highlighted());
-        fixFireStatue.addDialogStep("Yes.");
-        fixFireStatue.addIcon(ItemID.ICON);
+                fireIcon.highlighted())
+                .addDialogStep("Yes.")
+                .addIcon(ItemID.ICON)
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
 
         inspectAirMarkings = new ObjectStep(this, NullObjectID.NULL_55363, new WorldPoint(1650, 9642, 0), "Inspect the air markings in the north-east of " +
-                "the area.");
+                "the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         inspectWaterMarkings = new ObjectStep(this, NullObjectID.NULL_55362, new WorldPoint(1613, 9621, 0), "Inspect the water markings in the south-west of " +
-                "the area.");
+                "the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         inspectEarthMarkings = new ObjectStep(this, NullObjectID.NULL_55364, new WorldPoint(1650, 9621, 0), "Inspect the earth markings in the south-east of " +
-                "the area.");
+                "the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
         inspectFireMarkings = new ObjectStep(this, NullObjectID.NULL_55361, new WorldPoint(1613, 9642, 0), "Inspect the fire markings in the north-west of " +
-                "the area.");
+                "the area.")
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
 
-        activateFirstStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the first statue in the order.");
-        activateFirstStatue.addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
-        activateSecondStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the second statue in the order.");
-        activateSecondStatue.addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
-        activateThirdStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the third statue in the order.");
-        activateThirdStatue.addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
-        activateFourthStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the fourth statue in the order.");
-        activateFourthStatue.addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
-        statueActivateSteps[0] = activateFirstStatue;
-        statueActivateSteps[1] = activateSecondStatue;
-        statueActivateSteps[2] = activateThirdStatue;
-        statueActivateSteps[3] = activateFourthStatue;
+        ObjectStep firstStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the first statue in the order.")
+                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        activateFirstStatue = firstStatueStep
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
+
+        ObjectStep secondStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the second statue in the order.")
+                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        activateSecondStatue = secondStatueStep
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
+
+        ObjectStep thirdStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the third statue in the order.")
+                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        activateThirdStatue = thirdStatueStep
+                .puzzleWrapStep("Work out how to open the door to the far west.")
+                .withNoHelpHiddenInSidebar(true);
+        ObjectStep fourthStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the fourth statue in the order.")
+                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        activateFourthStatue = fourthStatueStep
+                .puzzleWrapStep("Work out how to open the door to the far west.");
+
+        activateFourthStatue.addSubSteps(searchAirUrn, searchEarthUrn, searchWaterUrn, searchFireUrn, fixAirStatue, fixWaterStatue, fixEarthStatue, fixFireStatue,
+                inspectAirMarkings, inspectWaterMarkings, inspectEarthMarkings, inspectFireMarkings, activateSecondStatue, activateFirstStatue,
+                activateThirdStatue);
+
+        statueActivateSteps[0] = firstStatueStep;
+        statueActivateSteps[1] = secondStatueStep;
+        statueActivateSteps[2] = thirdStatueStep;
+        statueActivateSteps[3] = fourthStatueStep;
 
         enterFinalBossRoom = new ObjectStep(this, NullObjectID.NULL_55355, new WorldPoint(1601, 9631, 0), "Enter the door to the west, ready for the boss.");
 
@@ -1036,14 +1143,14 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         Collection<QuestStep> chestSteps = openKeywordChestSouthWest.getSteps();
         List<QuestStep> firstTrialSteps = new ArrayList<>(List.of(pickpocketAscended, useKeyOnSouthEastGate, searchChestForBookAndPaper));
         firstTrialSteps.addAll(chestSteps);
-        firstTrialSteps.addAll(List.of(readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrows, combineScraps, readCompletedNote,
+        firstTrialSteps.addAll(List.of(readPoem, talkToPrinceAfterPoem, openKeywordChestNorthWest, inputArrowsPuzzleWrapped, combineScraps, readCompletedNote,
                 tellJanusPasscode));
         PanelDetails firstTrial = new PanelDetails("First Trial", firstTrialSteps);
         allSteps.add(firstTrial);
 
         allSteps.add(new PanelDetails("Second Trial", List.of(startCombatTrial, completeCombatTrial, talkToJanusAfterTrial), List.of(combatGear)));
         allSteps.add(new PanelDetails("Third Trial", List.of(talkToPrinceToStartThirdTrial, talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia,
-                accuseGuiltyIndividual, goUpToFinalTrial)));
+                accuseGuiltyIndividualPuzzleWrapped, goUpToFinalTrial)));
         allSteps.add(new PanelDetails("Final Trial", List.of(fightPrinceSidebar, talkToJanusAfterPrinceFight)));
         allSteps.add(new PanelDetails("Cult", List.of(talkToJanusAfterAllTrials, searchChestForEmissaryRobes, talkToItzlaToFollow, enterTemple, talkToItzlaAfterSermon, talkToFides)));
         allSteps.add(new PanelDetails("The Old Ones", List.of(enterRuins, takePickaxe, mineRocks, pullFirstLever, climbDownLedge, slideAlongIceLedge, pullSecondLever, jumpOverFrozenPlatforms, pullThirdLever,

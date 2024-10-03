@@ -232,14 +232,16 @@ public class ObjectStep extends DetailedQuestStep
 		}
 	}
 
-	public void addAlternateObjects(Integer... alternateObjectIDs)
+	public QuestStep addAlternateObjects(Integer... alternateObjectIDs)
 	{
 		this.alternateObjectIDs.addAll(Arrays.asList(alternateObjectIDs));
+		return this;
 	}
 
-	public void addAlternateObjects(Collection<Integer> alternateObjectIDs)
+	public QuestStep addAlternateObjects(Collection<Integer> alternateObjectIDs)
 	{
 		this.alternateObjectIDs.addAll(alternateObjectIDs);
+		return this;
 	}
 
 	@Subscribe

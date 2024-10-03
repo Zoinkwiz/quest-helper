@@ -220,6 +220,7 @@ public class QuestStepPanel extends JPanel
 
 			for (QuestStep step : getSteps())
 			{
+				if (step.getConditionToHide() != null && step.getConditionToHide().check(client)) continue;
 				if (step == newStep || step.getSubsteps().contains(newStep))
 				{
 					highlighted = true;
@@ -381,10 +382,20 @@ public class QuestStepPanel extends JPanel
 
 	public void updateStepVisibility(Client client)
 	{
+		boolean stepVisibilityChanged = false;
 		for (QuestStep step : steps.keySet())
 		{
-			step.setShowInSidebar(step.getConditionToHide() == null || !step.getConditionToHide().check(client));
-			steps.get(step).setVisible(step.isShowInSidebar());
+			boolean oldVisibility = step.isShowInSidebar();
+			boolean newVisibility = step.getConditionToHide() == null || !step.getConditionToHide().check(client);
+			stepVisibilityChanged = stepVisibilityChanged || (oldVisibility != newVisibility);
+
+			step.setShowInSidebar(newVisibility);
+			steps.get(step).setVisible(newVisibility);
+		}
+
+		if (stepVisibilityChanged && currentlyHighlighted != null)
+		{
+			updateHighlightCheck(client, currentlyHighlighted.getQuestHelper().getCurrentStep(), currentlyHighlighted.getQuestHelper());
 		}
 	}
 }

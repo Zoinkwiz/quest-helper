@@ -53,10 +53,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
+import net.runelite.api.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -407,7 +404,7 @@ public class QuestHelperPanel extends PluginPanel
 
 		if ((questOverviewPanel.currentQuest == null || !text.isEmpty()))
 		{
-			scrollableContainer.setViewportView(questListWrapper);
+			activateQuestList();
 			questSelectPanels.forEach(questListPanel::remove);
 			showMatchingQuests(text);
 		}
@@ -610,9 +607,8 @@ public class QuestHelperPanel extends PluginPanel
 	public void removeQuest()
 	{
 		questActive = false;
-		allDropdownSections.setVisible(true);
 		questOverviewPanel.removeQuest();
-		scrollableContainer.setViewportView(questListWrapper);
+		activateQuestList();
 
 		repaint();
 		revalidate();
@@ -638,7 +634,7 @@ public class QuestHelperPanel extends PluginPanel
 		}
 		else
 		{
-			scrollableContainer.setViewportView(questListWrapper);
+			activateQuestList();
 		}
 		searchQuestsPanel.setVisible(true);
 
@@ -646,11 +642,22 @@ public class QuestHelperPanel extends PluginPanel
 		revalidate();
 	}
 
+	private void activateQuestList()
+	{
+		scrollableContainer.setViewportView(questListWrapper);
+		searchQuestsPanel.setVisible(true);
+		allDropdownSections.setVisible(true);
+
+		repaint();
+		revalidate();
+	}
+
 	public void setSelectedQuest(QuestHelper questHelper)
 	{
-		if (questHelper == null)
+		if (questHelperPlugin.getClient().getGameState() != GameState.LOGGED_IN || questHelper == null)
 		{
 			deactivateSettings();
+			return;
 		}
 
 		if ("true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "selected-assist-level")))

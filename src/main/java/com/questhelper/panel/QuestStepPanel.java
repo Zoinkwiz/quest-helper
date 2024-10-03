@@ -61,13 +61,15 @@ public class QuestStepPanel extends JPanel
 	private final HashMap<QuestStep, JTextPane> steps = new HashMap<>();
 	private final @Nullable QuestRequirementsPanel requiredItemsPanel;
 	private final @Nullable QuestRequirementsPanel recommendedItemsPanel;
-	private QuestStep currentlyHighlighted = null;
 	private boolean stepAutoLocked;
+	private final QuestHelper questHelper;
+	private QuestStep lastHighlightedStep = null;
 
 	public QuestStepPanel(PanelDetails panelDetails, QuestStep currentStep, QuestManager questManager, QuestHelperPlugin questHelperPlugin)
 	{
 		this.panelDetails = panelDetails;
 		this.questHelperPlugin = questHelperPlugin;
+		this.questHelper = questManager.getSelectedQuest();
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -184,7 +186,7 @@ public class QuestStepPanel extends JPanel
 			{
 				if (!first)
 				{
-					text.append("\n");
+					text.append("\n\n");
 				}
 				text.append(line);
 				first = false;
@@ -245,9 +247,9 @@ public class QuestStepPanel extends JPanel
 	{
 		expand();
 
-		if (currentlyHighlighted != null && steps.get(currentlyHighlighted) != null)
+		if (steps.get(lastHighlightedStep) != null)
 		{
-			steps.get(currentlyHighlighted).setForeground(Color.LIGHT_GRAY);
+			steps.get(lastHighlightedStep).setForeground(Color.LIGHT_GRAY);
 		}
 		else
 		{
@@ -261,27 +263,25 @@ public class QuestStepPanel extends JPanel
 		{
 			steps.get(currentStep).setForeground(ColorScheme.BRAND_ORANGE);
 		}
-		currentlyHighlighted = currentStep;
+
+		lastHighlightedStep = currentStep;
 	}
 
 	public void removeHighlight()
 	{
-		if (currentlyHighlighted != null)
+		headerLabel.setForeground(Color.WHITE);
+		if (isCollapsed())
 		{
-			headerLabel.setForeground(Color.WHITE);
-			if (isCollapsed())
-			{
-				applyDimmer(false, headerPanel);
-			}
-			headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
-			viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
-			leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
-			if (steps.get(currentlyHighlighted) != null)
-			{
-				steps.get(currentlyHighlighted).setForeground(Color.LIGHT_GRAY);
-			}
-			currentlyHighlighted = null;
+			applyDimmer(false, headerPanel);
 		}
+		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+		leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+		if (steps.get(currentlyActiveQuestSidebarStep()) != null)
+		{
+			steps.get(currentlyActiveQuestSidebarStep()).setForeground(Color.LIGHT_GRAY);
+		}
+
 		collapse();
 	}
 
@@ -393,9 +393,14 @@ public class QuestStepPanel extends JPanel
 			steps.get(step).setVisible(newVisibility);
 		}
 
-		if (stepVisibilityChanged && currentlyHighlighted != null)
+		if (stepVisibilityChanged)
 		{
-			updateHighlightCheck(client, currentlyHighlighted.getQuestHelper().getCurrentStep(), currentlyHighlighted.getQuestHelper());
+			updateHighlightCheck(client, currentlyActiveQuestSidebarStep(), questHelper);
 		}
+	}
+
+	private QuestStep currentlyActiveQuestSidebarStep()
+	{
+		return questHelperPlugin.getSelectedQuest().getCurrentStep().getSidePanelStep();
 	}
 }

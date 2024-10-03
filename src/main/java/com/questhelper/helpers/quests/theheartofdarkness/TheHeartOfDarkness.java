@@ -119,8 +119,10 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     DetailedQuestStep talkToJanusAfterTrial;
 
     DetailedQuestStep talkToPrinceToStartThirdTrial;
-    NpcStep talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia, accuseTenoch, accuseSilia, accuseEleuia;
+    PuzzleWrapperStep talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia, accuseTenoch, accuseSilia, accuseEleuia;
     DetailedQuestStep accuseGuiltyIndividual;
+
+    PuzzleWrapperStep accuseGuiltyIndividualPuzzleWrapped;
 
     DetailedQuestStep goUpToFinalTrial, fightPrince, fightPrinceSidebar, talkToJanusAfterPrinceFight, talkToJanusAfterAllTrials, searchChestForEmissaryRobes, talkToItzlaToFollow,
             enterTemple, talkToItzlaAfterSermon, talkToFides, enterRuins;
@@ -708,22 +710,47 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         // Third trial section
         talkToPrinceToStartThirdTrial = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13770, new WorldPoint(1638, 3218, 2), "Talk to the prince in the room.");
-        talkToTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Talk to Tenoch.");
-        talkToTenoch.addDialogSteps("Interrogate Tenoch.", "Tell me about the Final Dawn.");
-        talkToSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Talk to Silia.");
-        talkToSilia.addDialogSteps("Interrogate Silia.", "Tell me about the Final Dawn.");
-        talkToAdrius = new NpcStep(this, NpcID.ADRIUS, new WorldPoint(1645, 3220, 2), "Talk to Adrius.");
-        talkToAdrius.addDialogSteps("Interrogate Adrius.", "Tell me about the Final Dawn.");
-        talkToEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Talk to Eleuia.");
-        talkToEleuia.addDialogSteps("Interrogate Eleuia.", "Tell me about the Final Dawn.");
-        accuseTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Accuse Tenoch.");
-        accuseTenoch.addDialogSteps("Yes.", "Choose Tenoch.");
-        accuseSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Accuse Silia.");
-        accuseSilia.addDialogSteps("Yes.", "Choose Silia.");
-        accuseEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Accuse Eleuia.");
-        accuseEleuia.addDialogSteps("Yes.", "Choose Eleuia.");
+
+        talkToTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Talk to Tenoch.")
+                .addDialogSteps("Interrogate Tenoch.", "Tell me about the Final Dawn.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        talkToSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Talk to Silia.")
+                .addDialogSteps("Interrogate Silia.", "Tell me about the Final Dawn.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        talkToAdrius = new NpcStep(this, NpcID.ADRIUS, new WorldPoint(1645, 3220, 2), "Talk to Adrius.")
+                .addDialogSteps("Interrogate Adrius.", "Tell me about the Final Dawn.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        talkToEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Talk to Eleuia.")
+                .addDialogSteps("Interrogate Eleuia.", "Tell me about the Final Dawn.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        accuseTenoch = new NpcStep(this, NpcID.TENOCH, new WorldPoint(1643, 3225, 2), "Accuse Tenoch.")
+                .addDialogSteps("Yes.", "Choose Tenoch.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        accuseSilia = new NpcStep(this, NpcID.SILIA, new WorldPoint(1645, 3223, 2), "Accuse Silia.")
+                .addDialogSteps("Yes.", "Choose Silia.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
+        accuseEleuia = new NpcStep(this, NpcID.ELEUIA, new WorldPoint(1643, 3218, 2), "Accuse Eleuia.")
+                .addDialogSteps("Yes.", "Choose Eleuia.")
+                .puzzleWrapStep("Work out who the guilty emissary is.")
+                .withNoHelpHiddenInSidebar(true);
+
         accuseGuiltyIndividual = new DetailedQuestStep(this, "Accuse the guilty individual.");
         accuseGuiltyIndividual.addSubSteps(accuseTenoch, accuseSilia, accuseEleuia);
+        accuseGuiltyIndividualPuzzleWrapped = accuseGuiltyIndividual
+                .puzzleWrapStep("Work out who the guilty emissary is.");
+        accuseGuiltyIndividualPuzzleWrapped.addSubSteps(talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia, accuseTenoch, accuseSilia, accuseEleuia);
 
         goUpToFinalTrial = new NpcStep(this, NpcID.FOREBEARER_JANUS_13766, new WorldPoint(1640, 3226, 2), "Talk to Janus to go to the final trial, ready for " +
                 "a fight.");
@@ -1081,7 +1108,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         allSteps.add(new PanelDetails("Second Trial", List.of(startCombatTrial, completeCombatTrial, talkToJanusAfterTrial), List.of(combatGear)));
         allSteps.add(new PanelDetails("Third Trial", List.of(talkToPrinceToStartThirdTrial, talkToTenoch, talkToSilia, talkToAdrius, talkToEleuia,
-                accuseGuiltyIndividual, goUpToFinalTrial)));
+                accuseGuiltyIndividualPuzzleWrapped, goUpToFinalTrial)));
         allSteps.add(new PanelDetails("Final Trial", List.of(fightPrinceSidebar, talkToJanusAfterPrinceFight)));
         allSteps.add(new PanelDetails("Cult", List.of(talkToJanusAfterAllTrials, searchChestForEmissaryRobes, talkToItzlaToFollow, enterTemple, talkToItzlaAfterSermon, talkToFides)));
         allSteps.add(new PanelDetails("The Old Ones", List.of(enterRuins, takePickaxe, mineRocks, pullFirstLever, climbDownLedge, slideAlongIceLedge, pullSecondLever, jumpOverFrozenPlatforms, pullThirdLever,

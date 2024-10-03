@@ -195,14 +195,18 @@ public class NpcStep extends DetailedQuestStep
 		}
 	}
 
-	public void addAlternateNpcs(Integer... alternateNpcIDs)
+	public NpcStep addAlternateNpcs(Integer... alternateNpcIDs)
 	{
 		this.alternateNpcIDs.addAll(Arrays.asList(alternateNpcIDs));
+
+		return this;
 	}
 
-	public void addAlternateNpcs(List<Integer> alternateNpcIDs)
+	public NpcStep addAlternateNpcs(List<Integer> alternateNpcIDs)
 	{
 		this.alternateNpcIDs.addAll(alternateNpcIDs);
+
+		return this;
 	}
 
 	public void setMustBeFocusedOnNpcs(Integer... ids)

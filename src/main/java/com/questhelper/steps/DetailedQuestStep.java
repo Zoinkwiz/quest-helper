@@ -925,11 +925,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		if (worldPoint != null)
 		{
-			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
-			if (!getQuestHelper().getConfig().useShortestPath() && playerWp != null)
-			{
-				eventBus.post(new PluginMessage("shortestpath", "clear"));
-			}
+			eventBus.post(new PluginMessage("shortestpath", "clear"));
 		}
 	}
 }

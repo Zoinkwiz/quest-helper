@@ -76,8 +76,6 @@ public class WeightStep extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		setupItemRequirements();
-
 		int goal = client.getVarbitValue(10936);
 		int weightOnStatue = client.getVarbitValue(10937);
 		int totalWeightGoal = goal + weightOnStatue;

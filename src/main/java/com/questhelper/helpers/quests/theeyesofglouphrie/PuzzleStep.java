@@ -26,22 +26,16 @@ package com.questhelper.helpers.quests.theeyesofglouphrie;
 
 import com.google.inject.Inject;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.steps.widget.WidgetDetails;
-import com.questhelper.steps.WidgetStep;
-import com.questhelper.steps.OwnerStep;
-import java.awt.Graphics2D;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -54,9 +48,8 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class PuzzleStep extends QuestStep implements OwnerStep
+public class PuzzleStep extends DetailedOwnerStep
 {
 	@Inject
 	protected EventBus eventBus;
@@ -97,17 +90,6 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 	public PuzzleStep(QuestHelper questHelper)
 	{
 		super(questHelper, "Insert and swap discs to make the sum indicated on the machine");
-		solvePuzzle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Put in the correct pieces.");
-		getPieces = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17283, new WorldPoint(2391, 9826, 0), "Swap in" +
-			" your pieces for the indicated pieces. You can also drop the discs then talk to Brimstail for more " +
-			"tokens.");
-		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", 445, 36);
-		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", 189, 39);
-		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", 449, 0);
-		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", 445, 31);
-		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 24);
-		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 25);
-		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 26);
 		setupShapes();
 	}
 
@@ -123,19 +105,13 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		updateSteps();
 	}
 
-	@Override
-	public void shutDown()
-	{
-		shutDownStep();
-		currentStep = null;
-	}
-
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		updateSteps();
 	}
 
+	@Override
 	public void updateSteps()
 	{
 		if (client.getVarbitValue(2502) == 2)
@@ -146,6 +122,22 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		{
 			solvePuzzle1();
 		}
+	}
+
+	@Override
+	public void setupSteps()
+	{
+		solvePuzzle = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Put in the correct pieces.");
+		getPieces = new ObjectStep(getQuestHelper(), NullObjectID.NULL_17283, new WorldPoint(2391, 9826, 0), "Swap in" +
+				" your pieces for the indicated pieces. You can also drop the discs then talk to Brimstail for more " +
+				"tokens.");
+		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", 445, 36);
+		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", 189, 39);
+		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", 449, 0);
+		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", 445, 31);
+		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 24);
+		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 25);
+		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 26);
 	}
 
 	public void solvePuzzle1()
@@ -505,7 +497,6 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 		return ids;
 	}
 
-
 	public int checkForItems(List<Item> items, int potentialMatch)
 	{
 		for (int i = 0; i < items.size(); i++)
@@ -635,21 +626,16 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 
 	protected void startUpStep(QuestStep step)
 	{
-		if (currentStep == null)
-		{
-			currentStep = step;
-			eventBus.register(currentStep);
-			currentStep.startUp();
-			return;
-		}
+		if (step.equals(currentStep)) return;
 
-		if (!step.equals(currentStep))
+		if (currentStep != null)
 		{
 			shutDownStep();
-			eventBus.register(step);
-			step.startUp();
-			currentStep = step;
 		}
+
+		eventBus.register(step);
+		step.startUp();
+		currentStep = step;
 	}
 
 	protected void shutDownStep()
@@ -659,42 +645,6 @@ public class PuzzleStep extends QuestStep implements OwnerStep
 			eventBus.unregister(currentStep);
 			currentStep.shutDown();
 			currentStep = null;
-		}
-	}
-
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> requirements)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, requirements);
-		}
-	}
-
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldArrowOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldLineOverlayHint(graphics, plugin);
 		}
 	}
 

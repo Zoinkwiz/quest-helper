@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.theforsakentower;
 
 import com.google.inject.Inject;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -33,12 +32,8 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.awt.Graphics2D;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,9 +50,8 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class PotionPuzzle extends QuestStep implements OwnerStep
+public class PotionPuzzle extends DetailedOwnerStep
 {
 	@Inject
 	protected EventBus eventBus;
@@ -98,23 +92,6 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 	public PotionPuzzle(QuestHelper questHelper)
 	{
 		super(questHelper, "");
-		setupItemRequirements();
-		setupZones();
-		setupConditions();
-		setupSteps();
-	}
-
-	@Override
-	public void startUp()
-	{
-		updateSteps();
-	}
-
-	@Override
-	public void shutDown()
-	{
-		shutDownStep();
-		currentStep = null;
 	}
 
 	@Subscribe
@@ -123,6 +100,7 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 		updateSteps();
 	}
 
+	@Override
 	protected void updateSteps()
 	{
 		if (inBasement.check(client))
@@ -180,71 +158,6 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 		}
 	}
 
-	protected void startUpStep(QuestStep step)
-	{
-		if (currentStep == null)
-		{
-			currentStep = step;
-			eventBus.register(currentStep);
-			currentStep.startUp();
-			return;
-		}
-
-		if (!step.equals(currentStep))
-		{
-			shutDownStep();
-			eventBus.register(step);
-			step.startUp();
-			currentStep = step;
-		}
-	}
-
-	protected void shutDownStep()
-	{
-		if (currentStep != null)
-		{
-			eventBus.unregister(currentStep);
-			currentStep.shutDown();
-			currentStep = null;
-		}
-	}
-
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, List<String> additionalText, List<Requirement> requirements)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, requirements);
-		}
-	}
-
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldArrowOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldLineOverlayHint(graphics, plugin);
-		}
-	}
-
 	@Override
 	public QuestStep getActiveStep()
 	{
@@ -294,8 +207,13 @@ public class PotionPuzzle extends QuestStep implements OwnerStep
 		secondFloor = new Zone(new WorldPoint(1377, 3821, 2), new WorldPoint(1386, 3828, 2));
 	}
 
-	private void setupSteps()
+	@Override
+	protected void setupSteps()
 	{
+		setupItemRequirements();
+		setupZones();
+		setupConditions();
+
 		goUpLadder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
 		goUpStairs = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33550, new WorldPoint(1378, 3825, 0), "Go to the tower's 1st floor.");
 		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33485, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");

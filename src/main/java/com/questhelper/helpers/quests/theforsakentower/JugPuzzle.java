@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.theforsakentower;
 
 import com.google.inject.Inject;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -35,11 +34,8 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.QuestStep;
-import java.awt.Graphics2D;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
@@ -58,9 +53,8 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class JugPuzzle extends QuestStep implements OwnerStep
+public class JugPuzzle extends DetailedOwnerStep
 {
 	private static final Pattern JUG_VALUES_MATCHER = Pattern.compile("^You add ([0-9]) gallons* of coolant to your ([0-9])-gallon jug.(?: It now contains ([0-9]) gallons* of coolant[.])*(?: Your ([0-9])-gallon jug is left(?: (empty)| with ([0-9]) gallons* of coolant))*");
 	private static final Pattern JUG_FILLED = Pattern.compile("^You fill up your ([0-9])-gallon jug");
@@ -84,31 +78,11 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 
 	Zone firstFloor, secondFloor, basement;
 
-	private final HashMap<String, Integer> jugs = new HashMap<>();
+	private HashMap<String, Integer> jugs;
 
 	public JugPuzzle(QuestHelper questHelper)
 	{
 		super(questHelper, "");
-		jugs.put("5", -1);
-		jugs.put("8", -1);
-
-		setupItemRequirements();
-		setupZones();
-		setupConditions();
-		setupSteps();
-	}
-
-	@Override
-	public void startUp()
-	{
-		updateSteps();
-	}
-
-	@Override
-	public void shutDown()
-	{
-		shutDownStep();
-		currentStep = null;
 	}
 
 	@Subscribe
@@ -117,6 +91,7 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 		updateSteps();
 	}
 
+	@Override
 	protected void updateSteps()
 	{
 		Widget widget = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT);
@@ -262,71 +237,6 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 		}
 	}
 
-	protected void startUpStep(QuestStep step)
-	{
-		if (currentStep == null)
-		{
-			currentStep = step;
-			eventBus.register(currentStep);
-			currentStep.startUp();
-			return;
-		}
-
-		if (!step.equals(currentStep))
-		{
-			shutDownStep();
-			eventBus.register(step);
-			step.startUp();
-			currentStep = step;
-		}
-	}
-
-	protected void shutDownStep()
-	{
-		if (currentStep != null)
-		{
-			eventBus.unregister(currentStep);
-			currentStep.shutDown();
-			currentStep = null;
-		}
-	}
-
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> requirements)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, requirements);
-		}
-	}
-
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldArrowOverlayHint(graphics, plugin);
-		}
-	}
-
-	@Override
-	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		if (currentStep != null)
-		{
-			currentStep.makeWorldLineOverlayHint(graphics, plugin);
-		}
-	}
-
 	@Override
 	public QuestStep getActiveStep()
 	{
@@ -365,8 +275,17 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 		inBasement = new ZoneRequirement(basement);
 	}
 
-	private void setupSteps()
+	@Override
+	protected void setupSteps()
 	{
+		jugs = new HashMap<>();
+		jugs.put("5", -1);
+		jugs.put("8", -1);
+
+		setupItemRequirements();
+		setupZones();
+		setupConditions();
+
 		syncStep = new DetailedQuestStep(getQuestHelper(), "Please check both the jugs to continue.");
 		searchCupboardTinderbox = new ObjectStep(getQuestHelper(), ObjectID.CUPBOARD_33515, new WorldPoint(1381, 3829, 0), "Search the cupboard on the north wall for a tinderbox.");
 		searchCupboardJug = new ObjectStep(getQuestHelper(), ObjectID.CUPBOARD_33514, new WorldPoint(1378, 3826, 0), "Search the cupboard in the south east corner of the north room for a 5 and an 8 gallon jug.");
@@ -395,7 +314,6 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33485, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
 		goDownToGroundFloor = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33552, new WorldPoint(1378, 3825, 1), "Go down to the ground floor.");
 		goUpToGroundFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
-
 	}
 
 	public List<PanelDetails> panelDetails()

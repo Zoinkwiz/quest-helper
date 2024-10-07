@@ -292,7 +292,7 @@ public class QuestManager
 				questHelperPlugin.displayPanel();
 			}
 			selectedQuest = questHelper;
-			eventBus.register(selectedQuest);
+			registerQuestToEventBus(selectedQuest);
 			if (isDeveloperMode())
 			{
 				selectedQuest.debugStartup(config);
@@ -331,7 +331,7 @@ public class QuestManager
 			selectedQuest.shutDown();
 			questBankManager.shutDownQuest();
 			SwingUtilities.invokeLater(panel::removeQuest);
-			eventBus.unregister(selectedQuest);
+			unregisterQuestFromEventBus(selectedQuest);
 
 			// If closing the item checking helper and should still check in background, start it back up in background
 			if (selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS && config.highlightItemsBackground())
@@ -369,7 +369,7 @@ public class QuestManager
 			}
 			questBankManager.shutDownQuest();
 			SwingUtilities.invokeLater(panel::removeQuest);
-			eventBus.unregister(selectedQuest);
+			unregisterQuestFromEventBus(selectedQuest);
 			selectedQuest = null;
 		}
 	}
@@ -422,18 +422,28 @@ public class QuestManager
 		clientThread.invokeLater(() -> {
 			if (!questHelper.isCompleted())
 			{
-				eventBus.register(questHelper);
+				registerQuestToEventBus(questHelper);
 				questHelper.startUp(config);
 				backgroundHelpers.put(questHelperName, questHelper);
 				if (questHelper.getCurrentStep() == null)
 				{
 					questHelper.shutDown();
-					eventBus.unregister(questHelper);
+					unregisterQuestFromEventBus(questHelper);
 					backgroundHelpers.remove(questHelperName);
 				}
 
 			}
 		});
+	}
+
+	private void registerQuestToEventBus(QuestHelper questHelper)
+	{
+		eventBus.register(questHelper);
+	}
+
+	private void unregisterQuestFromEventBus(QuestHelper questHelper)
+	{
+		eventBus.unregister(questHelper);
 	}
 
 	/**
@@ -460,7 +470,7 @@ public class QuestManager
 		}
 
 		questHelper.shutDown();
-		eventBus.unregister(questHelper);
+		unregisterQuestFromEventBus(questHelper);
 		backgroundHelpers.remove(questHelper.getQuest().getName());
 
 	}

@@ -27,7 +27,6 @@ package com.questhelper.helpers.quests.biohazard;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;

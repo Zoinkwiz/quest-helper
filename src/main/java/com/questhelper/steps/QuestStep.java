@@ -558,6 +558,10 @@ public abstract class QuestStep implements Module
 	{
 	}
 
+	public void removeShortestPath()
+	{
+	}
+
 	public void disableShortestPath()
 	{
 	}

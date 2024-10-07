@@ -194,7 +194,7 @@ public class DetailedQuestStep extends QuestStep
 	public void shutDown()
 	{
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
-		disableShortestPath();
+		removeShortestPath();
 		tileHighlights.clear();
 		started = false;
 	}
@@ -921,15 +921,20 @@ public class DetailedQuestStep extends QuestStep
 	}
 
 	@Override
+	public void removeShortestPath()
+	{
+		if (getQuestHelper().getConfig().useShortestPath())
+		{
+			eventBus.post(new PluginMessage("shortestpath", "clear"));
+		}
+	}
+
+	@Override
 	public void disableShortestPath()
 	{
 		if (worldPoint != null)
 		{
-			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
-			if (!getQuestHelper().getConfig().useShortestPath() && playerWp != null)
-			{
-				eventBus.post(new PluginMessage("shortestpath", "clear"));
-			}
+			eventBus.post(new PluginMessage("shortestpath", "clear"));
 		}
 	}
 }

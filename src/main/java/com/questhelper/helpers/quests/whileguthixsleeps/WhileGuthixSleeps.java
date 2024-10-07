@@ -1438,7 +1438,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToSilifToFollow = new NpcStep(this, NpcID.SILIF_13521, new WorldPoint(4134, 4790, 2), "Talk to Silif until he follows you.");
 		talkToSilifToFollow.addDialogStep("Let's go.");
 		enterNorthernSolidDoorAgain = new ObjectStep(this, ObjectID.SOLID_DOOR, new WorldPoint(4104, 4799, 2), "Enter the most northern solid door again.");
-		goNearMap = new DetailedQuestStep(this, new WorldPoint(4120, 4840, 1), "Stand near the map just west of the door until Silif talks about it.");
+		goNearMap = new DetailedQuestStep(this, new WorldPoint(4120, 4840, 1), "Stand near the map just east of the door until Silif talks about it.");
 		climbUpCatacombLadder = new ObjectStep(this, ObjectID.LADDER_53370, new WorldPoint(4142, 4855, 1), "Climb up the ladder to the east, ready to fight Surok.",
 			darkSquallHood.equipped(), darkSquallBody.equipped(), darkSquallLegs.equipped());
 		talkToSilifAtMap = new NpcStep(this, NpcID.SILIF_13521, new WorldPoint(4142, 4855, 1), "Talk to Silif near the map until he gives you a teleorb.");

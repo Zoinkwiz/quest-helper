@@ -88,7 +88,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 	Requirement talkedToRoald, talkedToAeonisig, talkedToPrysin, talkedToRomeo, talkedToHorvik, talkedToHalen, givenShield;
 
-	ItemRequirement combatGear, bottle, bottleOfMist, varrockTeleport, mindAltarOrLassarTeleport, barroniteDeposit, chaosCore, imbuedBarronite, pickaxe, listOfElders, shieldOfArrav;
+	ItemRequirement combatGear, bottle, bottleOfMist, varrockTeleport, mindAltarOrLassarTeleport, lumberyardTeleport, barroniteDeposit, chaosCore, imbuedBarronite, pickaxe, listOfElders, shieldOfArrav;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -239,6 +239,8 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		varrockTeleport = new TeleportItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
 		mindAltarOrLassarTeleport = new TeleportItemRequirement("Mind Altar or Lassar teleport tablet or spell", ItemID.MIND_ALTAR_TELEPORT);
 		mindAltarOrLassarTeleport.addAlternates(ItemID.LASSAR_TELEPORT);
+		lumberyardTeleport = new TeleportItemRequirement("Teleport to the Lumberyard", ItemID.LUMBERYARD_TELEPORT);
+		lumberyardTeleport.addAlternates(ItemID.RING_OF_THE_ELEMENTS, ItemID.RING_OF_THE_ELEMENTS_26818);
 
 		barroniteDeposit = new ItemRequirement("Barronite deposit", ItemID.BARRONITE_DEPOSIT);
 		chaosCore = new ItemRequirement("Chaos core", ItemID.CHAOS_CORE);
@@ -302,6 +304,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		talkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3283, 3501, 0),
 			"Talk to Elias White in the Jolly Boar Inn north-east of Varrock.", combatGear);
 		talkToElias.addDialogSteps("Yes.", "Ready when you are.");
+		talkToElias.addTeleport(lumberyardTeleport);
 
 		inspectPlant = new ObjectStep(this, NullObjectID.NULL_50662, new WorldPoint(3280, 3516, 0), "Inspect the plant north of the pub.");
 		inspectRock = new ObjectStep(this, NullObjectID.NULL_50664, new WorldPoint(3260, 3514, 0), "Inspect the small rocks to the west.");
@@ -441,6 +444,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(
+			lumberyardTeleport,
 			varrockTeleport.quantity(2),
 			mindAltarOrLassarTeleport
 		);
@@ -504,12 +508,12 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Intrigue", Arrays.asList(talkToElias, inspectPlant, inspectRock, inspectPlant2, inspectBush1,
 			inspectBush2, inspectBush3, inspectTrapdoor, listenToElias, lookOverBalcony, pickupBottles, killZombies, collectRedMist, openDoorToArrav,
-			goThroughSecondGate, lookOverSecondBalcony), combatGear));
+			goThroughSecondGate, lookOverSecondBalcony), combatGear, lumberyardTeleport, varrockTeleport));
 		allSteps.add(new PanelDetails("Crisis", Arrays.asList(talkToEliasInPalace, talkToRovin, enterCamdozaal, talkToRamarno, mineBarronite, killChaosGolems,
-			useCoreOnDeposit, useBarroniteOnForge), combatGear, pickaxe));
+			useCoreOnDeposit, useBarroniteOnForge), combatGear, pickaxe, mindAltarOrLassarTeleport));
 
 		allSteps.add(new PanelDetails("Invasion", Arrays.asList(talkToRovinAfterForge, talkToReldo, searchScrolls, readList, readCensus, talkToRoald,
-			talkToAeonisig, talkToPrysin, talkToRomeo, talkToHorvik, talkToHalen, talkToDimintheis, finishQuest)));
+			talkToAeonisig, talkToPrysin, talkToRomeo, talkToHorvik, talkToHalen, talkToDimintheis, finishQuest), varrockTeleport));
 		return allSteps;
 	}
 }

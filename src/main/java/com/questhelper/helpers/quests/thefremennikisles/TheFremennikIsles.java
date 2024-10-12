@@ -308,9 +308,9 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 		tuna.setTooltip("You can buy some from Flosi in east Jatizso, or fish some from the pier.");
 
-		Requirement useMithrilOre = new SkillRequirement(Skill.MINING, 55);
-		Requirement useCoal = and(new SkillRequirement(Skill.MINING,  10), not(useMithrilOre));
-		Requirement useTin = not(new SkillRequirement(Skill.MINING,  10));
+		Requirement useMithrilOre = new SkillRequirement(Skill.MINING, 55);  // Level 55+
+		Requirement useTin = not(new SkillRequirement(Skill.MINING,  2));  // Level 1
+		Requirement useCoal = and(not(useTin), not(useMithrilOre));  // Levels 2-54
 		mithrilOre = new ItemRequirement("Mithril ore", ItemID.MITHRIL_ORE, 6).showConditioned(useMithrilOre);
 		mithrilOre.setTooltip("You can mine some in the underground mine north west of Jatizso.");
 		coal = new ItemRequirement("Coal", ItemID.COAL, 7).showConditioned(useCoal);

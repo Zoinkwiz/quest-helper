@@ -497,7 +497,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		talkToTrollFinish.addDialogSteps("Okay, I'm done asking questions. What now?", "I'm done asking questions. What now?");
 		talkToTroll.addSubSteps(talkToTrollFinish);
 		talkToSnowflake = new NpcStep(this, NpcID.SNOWFLAKE, new WorldPoint(2872, 3934, 0),
-			"Talk to Snowflake");
+			"Talk to Snowflake.");
 		talkToSnowflake.addDialogStep("Have you seen anything odd around here recently?");
 		moveToWeissCave = new ObjectStep(this, ObjectID.STAIRS_33234, new WorldPoint(2867, 3940, 0),
 			"Prepare for a fight and climb down the stairs in the middle of Weiss.", combatGear, antipoison);
@@ -548,6 +548,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		useLeverOnMechanism.addIcon(leverHandle.getId());
 		useLeverOnMechanism.addDialogStep("Yes.");
 		pullLever = new ObjectStep(this, NullObjectID.NULL_46900, new WorldPoint(2917, 10342, 0), "Pull the lever.");
+		pullLever.addDialogStep("Yes.");
 		inspectPillar = new ObjectStep(this, ObjectID.PILLAR_46613, new WorldPoint(2924, 10346, 0),
 			"Inspect the south west pillar in the room where you fought the assassin.");
 		combineShards = new DetailedQuestStep(this, "Use the jewel shards on one another.",

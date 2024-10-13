@@ -492,7 +492,7 @@ public class Wanted extends BasicQuestHelper
 			goToEndOfLumbridgeSwampCaves, enterLumbridgeSwampCavesFromTears, scanWithCommorb);
 
 		// Final battle
-		goToEssenceMine = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3402, 0), "Go to the Rune Essence mine by talking to any of the NPC's that can teleport you there.", commorb, combatGear);
+		goToEssenceMine = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3402, 0), "Go to the Rune Essence mine by talking to any of the NPCs that can teleport you there.", commorb, combatGear);
 		killSolus = new NpcStep(this, NpcID.SOLUS_DELLAGAR_4962, "Kill Solus Dellagar.", combatGear);
 
 		// Wrapping up

@@ -166,7 +166,7 @@ public class TheDigSite extends BasicQuestHelper
 		makeExplosives.addStep(new Conditions(chemicalCompound), goDownToExplode);
 		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals2), addRoot);
 		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals, groundCharcoal), addCharcoal);
-		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals, charcoal), grindCharcoal);
+		makeExplosives.addStep(new Conditions(arcenia, mixedChemicals), grindCharcoal);
 		makeExplosives.addStep(new Conditions(arcenia, nitrate, nitro), mixNitroWithNitrate);
 		makeExplosives.addStep(new Conditions(arcenia, powder, nitro), usePowderOnExpert);
 		makeExplosives.addStep(new Conditions(arcenia, powder, liquid), useLiquidOnExpert);

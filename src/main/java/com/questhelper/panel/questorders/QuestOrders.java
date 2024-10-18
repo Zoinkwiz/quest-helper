@@ -723,15 +723,19 @@ public class QuestOrders
 		QuestHelperQuest.SLEEPING_GIANTS,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
+		QuestHelperQuest.DESERT_TREASURE_II,
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.DEFENDER_OF_VARROCK,
 		QuestHelperQuest.TWILIGHTS_PROMISE,
-		QuestHelperQuest.PERILOUS_MOON,
+		QuestHelperQuest.PERILOUS_MOONS,
+		QuestHelperQuest.AT_FIRST_LIGHT,
 		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
+		QuestHelperQuest.THE_HEART_OF_DARKNESS
 		QuestHelperQuest.MEAT_AND_GREET,
 		QuestHelperQuest.DEATH_ON_THE_ISLE,
+		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,
@@ -751,15 +755,6 @@ public class QuestOrders
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
-		QuestHelperQuest.DESERT_TREASURE_II,
-		QuestHelperQuest.CHILDREN_OF_THE_SUN,
-		QuestHelperQuest.DEFENDER_OF_VARROCK,
-		QuestHelperQuest.TWILIGHTS_PROMISE,
-		QuestHelperQuest.AT_FIRST_LIGHT,
-		QuestHelperQuest.PERILOUS_MOON,
-		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
-		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
-		QuestHelperQuest.THE_HEART_OF_DARKNESS
 	);
 
 	public static String normalizeQuestName(String questName)

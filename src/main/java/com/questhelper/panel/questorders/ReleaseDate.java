@@ -186,7 +186,6 @@ public class ReleaseDate
 		QuestHelperQuest.DRAGON_SLAYER_II,
 		QuestHelperQuest.TALE_OF_THE_RIGHTEOUS,
 		QuestHelperQuest.A_TASTE_OF_HOPE,
-		QuestHelperQuest.AT_FIRST_LIGHT,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.THE_FORSAKEN_TOWER,
 		QuestHelperQuest.THE_ASCENT_OF_ARCEUUS,
@@ -205,15 +204,19 @@ public class ReleaseDate
 		QuestHelperQuest.SLEEPING_GIANTS,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
+		QuestHelperQuest.DESERT_TREASURE_II,
 		QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.DEFENDER_OF_VARROCK,
 		QuestHelperQuest.TWILIGHTS_PROMISE,
+		QuestHelperQuest.AT_FIRST_LIGHT,
 		QuestHelperQuest.PERILOUS_MOON,
 		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
-		QuestHelperQuest.MEAT_AND_GREET,
+		QuestHelperQuest.THE_HEART_OF_DARKNESS,
 		QuestHelperQuest.DEATH_ON_THE_ISLE,
+		QuestHelperQuest.MEAT_AND_GREET,
+		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,
@@ -223,6 +226,7 @@ public class ReleaseDate
 		QuestHelperQuest.ENCHANTED_KEY,
 		QuestHelperQuest.LAIR_OF_TARN_RAZORLOR,
 		QuestHelperQuest.THE_GENERALS_SHADOW,
+		QuestHelperQuest.BARBARIAN_TRAINING,
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
@@ -231,16 +235,6 @@ public class ReleaseDate
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
 		QuestHelperQuest.HOPESPEARS_WILL,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
-		QuestHelperQuest.SECRETS_OF_THE_NORTH,
-		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
-		QuestHelperQuest.DESERT_TREASURE_II,
-		QuestHelperQuest.CHILDREN_OF_THE_SUN,
-		QuestHelperQuest.DEFENDER_OF_VARROCK,
-		QuestHelperQuest.TWILIGHTS_PROMISE,
-		QuestHelperQuest.AT_FIRST_LIGHT,
-		QuestHelperQuest.PERILOUS_MOON,
-		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
-		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
-		QuestHelperQuest.THE_HEART_OF_DARKNESS
+		QuestHelperQuest.HIS_FAITHFUL_SERVANTS
 	);
 }

@@ -34,61 +34,61 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.util.Text;
 
 @AllArgsConstructor
 @Getter
 public enum RagBoneState
 {
-	GOBLIN_SKULL("Goblin Skull", 1, 34),
-	BEAR_RIBS("Bear Ribs", 2, 35),
-	RAM_SKULL("Ram Skull", 3, 37),
-	UNICORN_BONE("Unicorn Bone", 4, 38),
-	GIANT_RAT_BONE("Giant Rat Bone", 5, 40),
-	GIANT_BAT_WING("Giant Bat Wing", 6, 41),
+	GOBLIN_SKULL("Goblin Skull", 1),
+	BEAR_RIBS("Bear Ribs", 2),
+	RAM_SKULL("Ram Skull", 3),
+	UNICORN_BONE("Unicorn Bone", 4),
+	GIANT_RAT_BONE("Giant Rat Bone", 5),
+	GIANT_BAT_WING("Giant Bat Wing", 6),
 
-	WOLF_BONE("Wolf", 7, 7),
-	BAT_WING("Bat", 8, 8),
-	RAT_BONE("Rat", 9, 9),
-	BABY_DRAGON_BONE("Baby Blue Dragon", 10, 10),
-	OGRE_RIBS("Ogre Ribs", 11, 11),
-	JOGRE_BONE("Jogre", 12, 12),
-	ZOGRE_BONE("Zogre", 13, 13),
-	MOGRE_BONE("Mogre", 14, 14),
-
-	// P1
-	MONKEY_PAW("Monkey Paw",15,39),
-
-	// P2
-	DAGANNOTH_RIBS("Dagannoth", 16, 15),
-	SNAKE_SPINE("Snake", 17, 16),
-	ZOMBIE_BONE("Zombie", 18, 17),
-	WEREWOLF_BONE("Werewolf", 19, 18),
-	MOSS_GIANT_BONE("Moss Giant", 20, 19),
-	FIRE_GIANT_BONE("Fire Giant", 21, 20),
-	ICE_GIANT_RIBS("Ice Giant", 22, 21),
-	TERRORBIRD_WING("Terrorbird", 23, 22),
-	GHOUL_BONE("Ghoul", 24, 23),
-	TROLL_BONE("Troll", 25, 24),
-	SEAGULL_WING("Seagull", 26, 25),
-	UNDEAD_COW_RIBS("Undead Cow", 27, 26),
-	EXPERIMENT_BONE("Experiment", 28, 27),
-	RABBIT_BONE("Rabbit", 29, 28),
-	BASILISK_BONE("Basilisk", 30, 29),
-	DESERT_LIZARD_BONE("Massive Desert Lizard", 31, 30),
-	CAVE_GOBLIN_SKULL("Cave Goblin", 32, 31),
+	WOLF_BONE("Wolf", 7),
+	BAT_WING("Bat", 8),
+	RAT_BONE("Rat", 9),
+	BABY_DRAGON_BONE("Baby Blue Dragon", 10),
+	OGRE_RIBS("Ogre Ribs", 11),
+	JOGRE_BONE("Jogre", 12),
+	ZOGRE_BONE("Zogre", 13),
+	MOGRE_BONE("Mogre", 14),
 
 	// P1
-	BIG_FROG_LEGS("Big Frog Legs",33,36),
+	MONKEY_PAW("Monkey Paw", 15),
 
 	// P2
-	VULTURE_WING("Vulture", 34, 32),
-	JACKAL_BONE("Jackal", 35, 33);
+	DAGANNOTH_RIBS("Dagannoth", 16),
+	SNAKE_SPINE("Snake", 17),
+	ZOMBIE_BONE("Zombie", 18),
+	WEREWOLF_BONE("Werewolf", 19),
+	MOSS_GIANT_BONE("Moss Giant", 20),
+	FIRE_GIANT_BONE("Fire Giant", 21),
+	ICE_GIANT_RIBS("Ice Giant", 22),
+	TERRORBIRD_WING("Terrorbird", 23),
+	GHOUL_BONE("Ghoul", 24),
+	TROLL_BONE("Troll", 25),
+	SEAGULL_WING("Seagull", 26),
+	UNDEAD_COW_RIBS("Undead Cow", 27),
+	EXPERIMENT_BONE("Experiment", 28),
+	RABBIT_BONE("Rabbit", 29),
+	BASILISK_BONE("Basilisk", 30),
+	DESERT_LIZARD_BONE("Massive Desert Lizard", 31),
+	CAVE_GOBLIN_SKULL("Cave Goblin", 32),
+
+	// P1
+	BIG_FROG_LEGS("Big Frog Legs", 33),
+
+	// P2
+	VULTURE_WING("Vulture", 34),
+	JACKAL_BONE("Jackal", 35);
 
 	private final int START_BONE_ID = 7809;
 
 	private final int boneID;
-	private final int widgetID;
 
 	private final ItemRequirement boneItem;
 	private final ItemRequirement boneInVinegarItem;
@@ -102,10 +102,9 @@ public enum RagBoneState
 	private Requirement hadBoneInVinegar;
 	private Requirement hadBoneProcessed;
 
-	RagBoneState(String nameInList, int pos, int widgetID)
+	RagBoneState(String nameInList, int pos)
 	{
 		boneID = START_BONE_ID + (pos * 3);
-		this.widgetID = widgetID;
 
 		boneItem = new ItemRequirement(Text.titleCase(this), boneID);
 		boneItem.addAlternates(boneID + 1, boneID + 2);
@@ -119,7 +118,7 @@ public enum RagBoneState
 		boneIsBeingCleaned = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, pos));
 
 		// Mark always true once obtained as no way to identify if a bone has been handed in easily
-		WidgetTextRequirement hadFromWidgetsCheck = new WidgetTextRequirement(119, widgetID, "<str>" + nameInList);
+		WidgetTextRequirement hadFromWidgetsCheck = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>" + nameInList);
 		hadFromWidgets = new Conditions(true, hadFromWidgetsCheck);
 	}
 

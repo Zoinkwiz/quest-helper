@@ -78,8 +78,7 @@ public class PiratesTreasure extends BasicQuestHelper
 
 		speakToRedbeard = new NpcStep(this, NpcID.REDBEARD_FRANK, new WorldPoint(3053, 3251, 0),
 			"Talk to Redbeard Frank in Port Sarim.");
-		speakToRedbeard.addDialogStep("I'm in search of treasure.");
-		speakToRedbeard.addDialogStep("Ok, I will bring you some Karamja Rum.");
+		speakToRedbeard.addDialogSteps("I'm in search of treasure.", "Yes.");
 
 		steps.put(0, speakToRedbeard);
 

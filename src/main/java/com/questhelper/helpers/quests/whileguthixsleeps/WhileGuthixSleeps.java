@@ -36,10 +36,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
-import com.questhelper.requirements.player.FreeInventorySlotRequirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.player.SpellbookRequirement;
-import com.questhelper.requirements.player.WarriorsGuildAccessRequirement;
+import com.questhelper.requirements.player.*;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.ItemSlots;
@@ -93,7 +90,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	ItemRequirement antipoison, burthorpeTeleport, khazardTeleport, feldipHillsTeleport, faladorTeleport, staminaPotion, superRestore,
 		camelotTeleport, lobster, restorePotion, gamesNecklace, spade, hammer, chisel, food, prayerPotions, taverleyTeleport;
 
-	Requirement lunarSpellbook, normalSpellbook;
+	Requirement lunarSpellbook, normalSpellbook, weighOver0Kg;
 
 	// Quest items
 	ItemRequirement dirtyShirt, unconsciousBroav, broav, movariosNotesV1, movariosNotesV2, wastePaperBasket, rubyKey, movariosNotesV1InBank, movariosNotesV2InBank, teleorb, pinkDye,
@@ -471,6 +468,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(640, goWitnessTrueTerror);
 		steps.put(650, goWitnessTrueTerror);
 		steps.put(660, goWitnessTrueTerror);
+
+		weighOver0Kg = new WeightRequirement(0, Operation.GREATER_EQUAL);
 
 		steps.put(670, talkToIdriaAfterChapel);
 		steps.put(680, talkToIdriaAfterChapel);
@@ -1201,7 +1200,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			new ObjectStep(this, ObjectID.BOOKCASE_53920, new WorldPoint(4187, 4962, 0), "Search the eastern bookcase in the room."),
 			"Solve the electric door puzzle.");
 
-		enterDoorToLibrary = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0), "Enter the old battered door.");
+		enterDoorToLibrary = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0), "Enter the old battered door. You must weight over " +
+				"0kg to enter.", weighOver0Kg);
 
 		solveElectricityPuzzle = new DetailedQuestStep(this, "Solve the electricity puzzle.");
 		solveElectricityPuzzle.addSubSteps(searchBookcase1, searchBookcase2, searchBookcase3, searchBookcase4, searchBookcase5, searchBookcase6, searchBookcase7);

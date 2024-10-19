@@ -277,7 +277,7 @@ public class SleepingGiants extends BasicQuestHelper
 	public void setupSteps()
 	{
 		goToDesertPlateau = new DetailedQuestStep(this, new WorldPoint(3362, 3148, 0),
-			"Go to the Desert Plateau east of Al Kharid to start the quest.", Arrays.asList(oakLogs, wool, nails, chisel), Arrays.asList(iceGloves));
+			"Go to the Desert Plateau east of Al Kharid to start the quest. Minigame teleport to Giant's Foundry.", Arrays.asList(oakLogs, wool, nails, chisel), Arrays.asList(iceGloves));
 		((DetailedQuestStep) goToDesertPlateau).setLinePoints(Arrays.asList(new WorldPoint(3293, 3180, 0),
 			new WorldPoint(3306, 3180, 0),
 			new WorldPoint(3313, 3171, 0),
@@ -383,7 +383,7 @@ public class SleepingGiants extends BasicQuestHelper
 		getPreform = new ObjectStep(this, NullObjectID.NULL_44778, new WorldPoint(3369, 11501, 0),
 			"Get your preform from the preform storage in the north of the room.");
 
-		handInPreform = new NpcStep(this, NpcID.KOVAC_11470, "Give the finished sword to Kovac.");
+		handInPreform = new NpcStep(this, NpcID.KOVAC_11470, "Give the finished sword to Kovac to complete the quest.");
 
 	}
 

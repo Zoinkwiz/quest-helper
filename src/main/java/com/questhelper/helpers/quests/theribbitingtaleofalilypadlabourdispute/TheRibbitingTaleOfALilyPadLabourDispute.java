@@ -123,7 +123,7 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 		int[] SUE_AND_GARY = new int[]{NpcID.SUE, NpcID.GARY};
 		int[] DAVE_AND_JANE = new int[]{NpcID.JANE, NpcID.DAVE_12943};
 		talkToMarcellus = new NpcStep(this, NpcID.MARCELLUS, new WorldPoint(1683, 2973, 0),
-			"Talk to Marcellus near the Locus Oasis south of Civitas illa Fortis.");
+			"Talk to Marcellus near the Locus Oasis south of Civitas illa Fortis. AJP Fairy ring is fastest.");
 		talkToMarcellus.addDialogStep("Yes.");
 		talkToBlueFrogs = new NpcStep(this, NpcID.FROG_12938, new WorldPoint(1694, 2996, 0),
 			"Talk to the blue frogs in the north-east of the oasis.");

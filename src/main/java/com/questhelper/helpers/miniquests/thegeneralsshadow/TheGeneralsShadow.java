@@ -26,6 +26,7 @@ package com.questhelper.helpers.miniquests.thegeneralsshadow;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
@@ -120,24 +121,26 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		ghostlyCloak = new ItemRequirement("Ghostly cloak", ItemID.GHOSTLY_CLOAK, 1, true).isNotConsumed();
 		ghostlyRobes = new ItemRequirements("Ghostly robes", ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyGloves,
 			ghostlyBoots, ghostlyCloak).isNotConsumed();
+		ghostlyRobes.setTooltip("You can buy these back from Perdu for 131,500 coins or get them back yourself.");
 
 		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true).isNotConsumed();
 		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
 		ghostspeak.addAlternates(ItemID.GHOSTSPEAK_AMULET_4250);
+		ghostspeak.setTooltip("Can be obtained from Father Urhney in the Lumbridge Swamp house to the west.");
 
 		coins40 = new ItemRequirement("Coins", ItemCollections.COINS, 40);
 		inventorySlot = new FreeInventorySlotRequirement(1);
 
-		kharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.AMULET_OF_GLORIES);
-		gnomeTeleport = new ItemRequirement("Necklace of Passage, or a teleport to Tree Gnome Stronghold", -1);
+		kharidTeleport = new TeleportItemRequirement("Teleport to Al Kharid", ItemCollections.AMULET_OF_GLORIES);
+		gnomeTeleport = new TeleportItemRequirement("Necklace of Passage, or a teleport to Tree Gnome Stronghold", -1);
 		gnomeTeleport.setDisplayItemId(ItemID.SPIRIT_TREE);
 		gnomeTeleport.addAlternates(ItemCollections.NECKLACE_OF_PASSAGES);
-		rellekkaTeleport = new ItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT, 3);
-		karamjaTeleport = new ItemRequirement("Teleport to Tai Bwo Wannai", ItemID.TAI_BWO_WANNAI_TELEPORT);
-		draynorTeleport = new ItemRequirement("Teleport to Draynor Manor", ItemCollections.AMULET_OF_GLORIES);
+		rellekkaTeleport = new TeleportItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT, 3);
+		karamjaTeleport = new TeleportItemRequirement("Teleport to Tai Bwo Wannai", ItemID.TAI_BWO_WANNAI_TELEPORT);
+		draynorTeleport = new TeleportItemRequirement("Teleport to Draynor Manor", ItemCollections.AMULET_OF_GLORIES);
 		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT, ItemID.EXPLORERS_RING_2, ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4);
-		camelotTeleport = new ItemRequirement("Teleport to Seer's Village", ItemID.CAMELOT_TELEPORT);
-		skillsNecklace = new ItemRequirement("Teleport to Fishing Guild", ItemCollections.SKILLS_NECKLACES);
+		camelotTeleport = new TeleportItemRequirement("Teleport to Seer's Village", ItemID.CAMELOT_TELEPORT);
+		skillsNecklace = new TeleportItemRequirement("Teleport to Fishing Guild", ItemCollections.SKILLS_NECKLACES);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

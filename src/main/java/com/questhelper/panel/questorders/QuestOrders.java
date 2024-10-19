@@ -586,7 +586,7 @@ public class QuestOrders
 
 	public static Comparator<QuestHelper> sortByQuestPointRewardAscending()
 	{
-		return Comparator.comparing(q -> q.getQuestPointReward() != null ? q.getQuestPointReward().getPoints() : 0 );
+		return Comparator.comparing(q -> q.getQuestPointReward() != null ? q.getQuestPointReward().getPoints() : 0);
 	}
 
 	public static Comparator<QuestHelper> sortByQuestPointRewardDescending()

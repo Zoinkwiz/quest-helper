@@ -230,18 +230,24 @@ public class TrollRomance extends BasicQuestHelper
 
 		goUpToUgForEnd = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to Ug to finish.");
 
-		enterStrongholdForFight = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Challenge Arrg to a fight.", combatGear);
+		enterStrongholdForFight = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Challenge Arrg to a fight." +
+			" Please check the wiki for instructions to setup a safe spot.", combatGear);
 
-		goDownToUgForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Challenge Arrg to a fight.", combatGear);
+		goDownToUgForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Challenge Arrg to a fight." +
+			" Please check the wiki for instructions to setup a safe spot.", combatGear);
 
-		goUpToUgForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Challenge Arrg to a fight.", combatGear);
+		goUpToUgForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Challenge Arrg to a fight." +
+			" Please check the wiki for instructions to setup a safe spot.", combatGear);
 
 
-		challengeArrg = new NpcStep(this, NpcID.ARRG, new WorldPoint(2829, 10095, 1), "Challenge Arrg to a fight.", combatGear);
+		challengeArrg = new NpcStep(this, NpcID.ARRG, new WorldPoint(2829, 10095, 1), "Challenge Arrg to a fight." +
+			" Please check the wiki for instructions to setup a safe spot.", combatGear);
 		challengeArrg.addDialogStep("I am here to kill you!");
 		challengeArrg.addSubSteps(enterStrongholdForFight, goUpToUgForFight, goDownToUgForFight);
 
 		killArrg = new NpcStep(this, NpcID.ARRG_643, "Kill Arrg.");
+		((NpcStep) killArrg).addSafeSpots(new WorldPoint(2897, 3619, 0), new WorldPoint(2917, 3625, 0));
+
 		returnToUg = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room to finish the quest.");
 		returnToUg.addSubSteps(goDownToUgForEnd, goUpToUgForEnd, enterStrongholdForEnd);
 	}
@@ -262,7 +268,7 @@ public class TrollRomance extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Arrg (level 113) can be safe spotted");
+		reqs.add("Arrg (level 113) can be safe spotted. Please check the wiki for instructions to setup a safe spot.");
 		return reqs;
 	}
 

@@ -196,9 +196,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		gamesNeck = new ItemRequirement("Games Necklace", ItemCollections.GAMES_NECKLACES).showConditioned(notHundredTears);
 		dorgSphere = new ItemRequirement("Dorgesh-kaan Sphere", ItemID.DORGESHKAAN_SPHERE).showConditioned(notTrainToKeld);
 		essence = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH, 28).showConditioned(notCosmics);
-		cosmicAccessOrAbyss = new ItemRequirement("Access to cosmic altar, or travel through abyss. Tiara recommended unless using essence pouches",
+		cosmicAccessOrAbyss = new ItemRequirement("Access to cosmic altar, or travel through abyss. Cosmic tiara or Catalytic tiara recommended if not using abyss.",
 			ItemCollections.COSMIC_ALTAR).showConditioned(notCosmics).isNotConsumed();
-		cosmicAccessOrAbyss.setTooltip("Cosmic talisman or tiara");
 		bellaSeed = new ItemRequirement("Belladonna seed", ItemID.BELLADONNA_SEED).showConditioned(notBelladonna);
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notBelladonna).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notBelladonna).isNotConsumed();

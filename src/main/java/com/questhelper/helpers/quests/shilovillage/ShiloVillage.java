@@ -332,11 +332,12 @@ public class ShiloVillage extends BasicQuestHelper
 			beads.highlighted());
 
 		searchPalms = new ObjectStep(this, ObjectID.PALM_TREE, new WorldPoint(2916, 3093, 0),
-			"Search the palm trees in the north east of Karamja.", beadsOfTheDead.equipped(), boneShard, chisel, bones3,
-			combatGear);
+			"Search the palm trees in the north east of Karamja. Come equipped for a boss fight.",
+			List.of(beadsOfTheDead.equipped(), boneShard, chisel, bones3,
+			combatGear), List.of(crumbleUndead, food));
 
 		searchDoors = new ObjectStep(this, NullObjectID.NULL_34673, new WorldPoint(2916, 3091, 0),
-			"Right-click search the doors behind the palm trees.");
+			"Right-click search the doors behind the palm trees.", combatGear);
 
 		// 8180 opened?
 		makeKey = new DetailedQuestStep(this, "Use a chisel on the bone shard.", chisel.highlighted(), boneShard.highlighted());
@@ -431,7 +432,8 @@ public class ShiloVillage extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Free Raiysha",
 			Arrays.asList(searchRocksOnCairn, searchDolmen, useChiselOnPommel, useWireOnBeads, searchPalms,
 				searchDoors, makeKey, useKeyOnDoor, enterDoor, useBonesOnDoor, searchDolmenForFight, killNazastarool,
-				pickupCorpse, enterCairnAgain, useCorpseOnDolmen), chisel, bronzeWire, bones3));
+				pickupCorpse, enterCairnAgain, useCorpseOnDolmen), List.of(chisel, bronzeWire, bones3),
+			List.of(combatGear, food, crumbleUndead, prayerPotions)));
 
 		return allSteps;
 	}

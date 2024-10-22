@@ -669,7 +669,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			bow, oakLogs, tinderbox, axe,
 			feathers, knife,
 			hammer, bronzeBar.quantity(2), logs.quantity(3),
-			attackPotion, roe, knife);
+			attackPotion, roe);
 	}
 
 	@Override

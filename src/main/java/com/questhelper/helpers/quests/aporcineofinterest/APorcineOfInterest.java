@@ -207,7 +207,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(new UnlockReward("30 Slayer Points"), new UnlockReward("Access to Sourhog Cave"), new UnlockReward("Sourhog can be assigned as a slayer task by Spria or Tureal"));
+		return Arrays.asList(new UnlockReward("30 Slayer Points"), new UnlockReward("Access to Sourhog Cave"), new UnlockReward("Sourhogs can be assigned as a slayer task by Spria"));
 	}
 
 	@Override

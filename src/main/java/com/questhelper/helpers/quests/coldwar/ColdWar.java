@@ -496,7 +496,7 @@ public class ColdWar extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.HUNTER, 10, true));
+		req.add(new SkillRequirement(Skill.HUNTER, 10));
 		req.add(new SkillRequirement(Skill.AGILITY, 30));
 		req.add(new SkillRequirement(Skill.CRAFTING, 30));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 34));

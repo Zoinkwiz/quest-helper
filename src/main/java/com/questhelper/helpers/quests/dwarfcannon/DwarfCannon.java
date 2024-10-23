@@ -110,6 +110,7 @@ public class DwarfCannon extends BasicQuestHelper
 		teleToKand.addAlternates(ItemID.ARDOUGNE_TELEPORT);
 
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
+		hammer.setTooltip("Can be found in the building next to the quest giver.");
 		railing = new ItemRequirement("Railing", ItemID.RAILING);
 		railing.setTooltip("You can get more from Captain Lawgof");
 		toolkit = new ItemRequirement("Toolkit", ItemID.TOOLKIT);
@@ -200,6 +201,14 @@ public class DwarfCannon extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		List<ItemRequirement> reqs = new ArrayList<>();
+		reqs.add(hammer);
+		return reqs;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
@@ -234,7 +243,7 @@ public class DwarfCannon extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToCaptainLawgof)));
-		allSteps.add(new PanelDetails("Repair and Retrieval", Arrays.asList(inspectRailings1, talkToCaptainLawgof2, gotoTower, talkToCaptainLawgof3)));
+		allSteps.add(new PanelDetails("Repair and Retrieval", Arrays.asList(inspectRailings1, talkToCaptainLawgof2, gotoTower, talkToCaptainLawgof3), hammer, railing));
 		allSteps.add(new PanelDetails("Find Lollk and Fix Cannon", Arrays.asList(gotoCave, searchCrates, talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5)));
 		allSteps.add(new PanelDetails("Get Ammo Mould", Arrays.asList(talkToNulodion, talkToCaptainLawgof6)));
 		return allSteps;

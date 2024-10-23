@@ -675,7 +675,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		burthorpeTeleport = new ItemRequirement("Teleport to Burthorpe", ItemCollections.COMBAT_BRACELETS);
 		burthorpeTeleport.addAlternates(ItemCollections.GAMES_NECKLACES);
-		khazardTeleport = new ItemRequirement("Spirit tree (3), Ardougne cloak or Khazard teleport", ItemCollections.ARDY_CLOAKS);
+		khazardTeleport = new ItemRequirement("Khazard teleports, Ardougne cloak or Spirit tree (3)", ItemCollections.ARDY_CLOAKS);
 		khazardTeleport.addAlternates(ItemID.KHAZARD_TELEPORT);
 		feldipHillsTeleport = new ItemRequirement("Feldip hills teleport or Hunter/Max cape", ItemID.FELDIP_HILLS_TELEPORT);
 		feldipHillsTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
@@ -1320,7 +1320,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		contactCyrisus = new DetailedQuestStep(this, "Use NPC Contact to talk to Cyrisus.", astralRune, cosmicRune, airRune.quantity(2));
 		contactCyrisus.addSpellHighlight(LunarSpells.NPC_CONTACT);
-		contactCyrisus.addWidgetHighlight(75, 47);
+		contactCyrisus.addWidgetHighlight(75, 44);
 		contactTurael = new DetailedQuestStep(this, "Use NPC Contact to talk to Turael, or go talk to him in Burthorpe.", astralRune, cosmicRune, airRune.quantity(2));
 		contactTurael.addSpellHighlight(LunarSpells.NPC_CONTACT);
 		contactTurael.addWidgetHighlight(75, 22);

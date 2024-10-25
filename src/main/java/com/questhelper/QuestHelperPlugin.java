@@ -45,7 +45,6 @@ import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import com.questhelper.util.worldmap.WorldMapAreaManager;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -180,8 +179,11 @@ public class QuestHelperPlugin extends Plugin
 
 	private NavigationButton navButton;
 
-	boolean profileChanged;
+	private boolean wasLoggedOut = false;
 
+	private boolean profileChanged = false;
+
+	private QuestHelper lastSelectedQuestHelper = null;
 
 	// TODO: Use this for item checks
 	@Getter
@@ -287,15 +289,15 @@ public class QuestHelperPlugin extends Plugin
 		if (state == GameState.LOGIN_SCREEN)
 		{
 			questBankManager.saveBankToConfig();
+			lastSelectedQuestHelper = questManager.getSelectedQuest();
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBankManager.emptyState();
 			questManager.shutDownQuest(true);
-			profileChanged = true;
+			wasLoggedOut = true;
 		}
 
-		if (state == GameState.LOGGED_IN && profileChanged)
+		if (state == GameState.LOGGED_IN && wasLoggedOut)
 		{
-			profileChanged = false;
 			questManager.shutDownQuest(true);
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			newVersionManager.updateChatWithNotificationIfNewVersion();
@@ -303,7 +305,14 @@ public class QuestHelperPlugin extends Plugin
 			clientThread.invokeAtTickEnd(() -> {
 				questManager.setupRequirements();
 				questManager.setupOnLogin();
+				if (!profileChanged && lastSelectedQuestHelper != null)
+				{
+					questManager.startUpQuest(lastSelectedQuestHelper, false);
+				}
+				lastSelectedQuestHelper = null;
+				profileChanged = false;
 			});
+			wasLoggedOut = false;
 		}
 	}
 
@@ -311,6 +320,7 @@ public class QuestHelperPlugin extends Plugin
 	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
 	{
 		profileChanged = true;
+		wasLoggedOut = true;
 	}
 
 	@Subscribe

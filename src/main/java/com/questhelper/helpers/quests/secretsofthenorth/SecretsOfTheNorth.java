@@ -493,7 +493,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 			"Talk to Big Fish at the north entrance to Weiss.");
 		talkToTroll = new AskAboutRitual(this);
 		talkToTrollFinish = new NpcStep(this, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
-			"Talk to Big Fish (General Khazard) at the north entrance to Weiss again.");
+			"Talk to Big Fish (Hazeel) at the north entrance to Weiss again.");
 		talkToTrollFinish.addDialogSteps("Okay, I'm done asking questions. What now?", "I'm done asking questions. What now?");
 		talkToTroll.addSubSteps(talkToTrollFinish);
 		talkToSnowflake = new NpcStep(this, NpcID.SNOWFLAKE, new WorldPoint(2872, 3934, 0),

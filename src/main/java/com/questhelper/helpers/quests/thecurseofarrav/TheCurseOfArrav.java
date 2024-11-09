@@ -120,11 +120,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ConditionalStep unsortedStep10;
 	private PuzzleWrapperStep solveTilePuzzle;
 	private QuestStep unsortedStep12;
-	private QuestStep unsortedStep14;
 	private QuestStep unsortedStep16;
 	private QuestStep unsortedStep18;
 	private QuestStep unsortedStep20;
-	private QuestStep unsortedStep22;
 	private QuestStep unsortedStep24;
 	private QuestStep unsortedStep26;
 	private QuestStep unsortedStep28;
@@ -397,7 +395,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		((ConditionalStep) unsortedStep26).addStep(onTrollweissMountain, enterTrollweissCave);
 		((ConditionalStep) unsortedStep26).addStep(inTrollheimCave, continueThroughTrollheimCave);
 
-		unsortedStep26 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 26");
 		unsortedStep28 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 28");
 		unsortedStep30 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 30");
 		unsortedStep32 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 32");
@@ -523,7 +520,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		panels.add(new PanelDetails("Fort Invasion", List.of(
 			unsortedStep20,
 			rubbleMiner1,
-			unsortedStep22,
+			rubbleMiner2,
+			rubbleMiner3,
 			unsortedStep24,
 			unsortedStep26,
 			unsortedStep28,

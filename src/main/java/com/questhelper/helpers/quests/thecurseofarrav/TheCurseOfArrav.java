@@ -26,6 +26,7 @@ package com.questhelper.helpers.quests.thecurseofarrav;
 
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers.RubbleSolverFour;
 import com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers.RubbleSolverOne;
 import com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers.RubbleSolverThree;
 import com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers.RubbleSolverTwo;
@@ -144,6 +145,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private PuzzleWrapperStep rubbleMiner1;
 	private PuzzleWrapperStep rubbleMiner2;
 	private PuzzleWrapperStep rubbleMiner3;
+	private PuzzleWrapperStep rubbleMiner4;
 
 
 	@Override
@@ -379,6 +381,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		rubbleMiner1 = new RubbleSolverOne(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
 		rubbleMiner2 = new RubbleSolverTwo(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
 		rubbleMiner3 = new RubbleSolverThree(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
+		rubbleMiner4 = new RubbleSolverFour(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
+
+		rubbleMiner1.addSubSteps(rubbleMiner2, rubbleMiner3, rubbleMiner4);
 
 		unsortedStep20 = new ConditionalStep(this, headToTrollheim);
 		((ConditionalStep) unsortedStep20).addStep(inTrollweissCave, rubbleMiner1);
@@ -395,10 +400,40 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		((ConditionalStep) unsortedStep26).addStep(onTrollweissMountain, enterTrollweissCave);
 		((ConditionalStep) unsortedStep26).addStep(inTrollheimCave, continueThroughTrollheimCave);
 
-		unsortedStep28 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 28");
-		unsortedStep30 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 30");
-		unsortedStep32 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 32");
-		unsortedStep34 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 34");
+		unsortedStep28 = new ConditionalStep(this, headToTrollheim);
+		((ConditionalStep) unsortedStep28).addStep(inTrollweissCave, rubbleMiner4);
+		((ConditionalStep) unsortedStep28).addStep(onTrollweissMountain, enterTrollweissCave);
+		((ConditionalStep) unsortedStep28).addStep(inTrollheimCave, continueThroughTrollheimCave);
+
+
+		var climbUpstairsAndTalkToArrav = new ObjectStep(this, ObjectID.STAIRS_50508, new WorldPoint(2811, 10267, 0), "Climb up the stairs in the room with the red tile floor and talk to Arrav.");
+		unsortedStep30 = new ConditionalStep(this, headToTrollheim);
+		((ConditionalStep) unsortedStep30).addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
+		((ConditionalStep) unsortedStep30).addStep(onTrollweissMountain, enterTrollweissCave);
+		((ConditionalStep) unsortedStep30).addStep(inTrollheimCave, continueThroughTrollheimCave);
+
+		var arravHouseFirstRoom = new Zone(new WorldPoint(2848, 3868, 0), new WorldPoint(2858, 3873, 0));
+		var inArravHouseFirstRoom = new ZoneRequirement(arravHouseFirstRoom);
+		var talkToArrav = new NpcStep(this, NpcID.ARRAV_14129, new WorldPoint(2856, 3871, 0), "Talk to Arrav.");
+
+		unsortedStep32 = new ConditionalStep(this, headToTrollheim);
+		((ConditionalStep) unsortedStep32).addStep(inArravHouseFirstRoom, talkToArrav);
+		((ConditionalStep) unsortedStep32).addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
+		((ConditionalStep) unsortedStep32).addStep(onTrollweissMountain, enterTrollweissCave);
+		((ConditionalStep) unsortedStep32).addStep(inTrollheimCave, continueThroughTrollheimCave);
+
+		var arravHouseSecondRoom = new Zone(new WorldPoint(2859, 2873, 0), new WorldPoint(2863, 3865, 0));
+		var inArravHouseSecondRoom = new ZoneRequirement(arravHouseSecondRoom);
+
+		var goToNextRoom = new ObjectStep(this, ObjectID.DOOR_50514, new WorldPoint(2859, 3870, 0), "Enter the room to your east and search the tapestry for ?.");
+		var searchTapestry = new ObjectStep(this, ObjectID.TAPESTRY_50516, new WorldPoint(2861, 3865, 0), "Search the tapestry in the south of the room.");
+		unsortedStep34 = new ConditionalStep(this, headToTrollheim);
+		((ConditionalStep) unsortedStep34).addStep(inArravHouseSecondRoom, searchTapestry);
+		((ConditionalStep) unsortedStep34).addStep(inArravHouseFirstRoom, goToNextRoom);
+		((ConditionalStep) unsortedStep34).addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
+		((ConditionalStep) unsortedStep34).addStep(onTrollweissMountain, enterTrollweissCave);
+		((ConditionalStep) unsortedStep34).addStep(inTrollheimCave, continueThroughTrollheimCave);
+
 		unsortedStep36 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 36");
 		unsortedStep38 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 38");
 		unsortedStep40 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 40");
@@ -522,9 +557,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			rubbleMiner1,
 			rubbleMiner2,
 			rubbleMiner3,
-			unsortedStep24,
-			unsortedStep26,
-			unsortedStep28,
+			rubbleMiner4,
 			unsortedStep30,
 			unsortedStep32,
 			unsortedStep34,

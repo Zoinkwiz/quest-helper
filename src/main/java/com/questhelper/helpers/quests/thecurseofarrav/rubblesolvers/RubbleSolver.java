@@ -29,8 +29,8 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
 
     private int stepCounter;
 
-    public RubbleSolver(TheCurseOfArrav theCurseOfArrav) {
-        super(theCurseOfArrav, "Make your way through the Trollweiss cave, mining rubble with your pickaxe.");
+    public RubbleSolver(TheCurseOfArrav theCurseOfArrav, String number) {
+        super(theCurseOfArrav, "Make your way through the Trollweiss cave, mining rubble with your pickaxe. " + number);
     }
 
     protected void addMineRubbleStep(int x, int y, RubbleType rubbleType, Direction direction) {
@@ -103,59 +103,6 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
 
 		this.setupRubbleSteps();
 
-        // Roadblock 1 (when quest state varbit is 22)
-        this.addMineRubbleStep(2764, 10266, RubbleType.Two, Direction.SOUTH); // 1
-        this.addMineRubbleStep(2775, 10258, RubbleType.One, Direction.SOUTH); // 2
-        this.addMineRubbleStep(2764, 10266, RubbleType.One, Direction.EAST); // 3
-        this.addMineRubbleStep(2764, 10267, RubbleType.One, Direction.SOUTH); // 4
-
-        // Roadblock 2 (when quest state varbit is 24)
-        this.addMineRubbleStep(2766, 10279, RubbleType.Three, Direction.WEST); // 5
-        this.addMineRubbleStep(2766, 10280, RubbleType.One, Direction.WEST); // 6
-        this.addMineRubbleStep(2767, 10281, RubbleType.Two, Direction.WEST); // 7
-        this.addMineRubbleStep(2766, 10279, RubbleType.Two, Direction.NORTH); // 8
-        this.addMineRubbleStep(2766, 10278, RubbleType.Two, Direction.WEST); // 9
-        this.addMineRubbleStep(2766, 10278, RubbleType.One, Direction.SOUTH); // 10
-        this.addMineRubbleStep(2766, 10279, RubbleType.One, Direction.SOUTH); // 11
-        this.addMineRubbleStep(2767, 10278, RubbleType.One, Direction.WEST); // 12
-        this.addMineRubbleStep(2767, 10279, RubbleType.Two, Direction.WEST); // 13
-        this.addMineRubbleStep(2768, 10279, RubbleType.One, Direction.WEST); // 14
-        this.addMineRubbleStep(2767, 10279, RubbleType.One, Direction.SOUTH); // 15
-        this.addMineRubbleStep(2768, 10280, RubbleType.Three, Direction.SOUTH); // 16: THIS TRIGGERS A STONE FALL OR SOMETHING :)
-        this.addMineRubbleStep(2768, 10281, RubbleType.One, Direction.SOUTH); // 17
-        this.addMineRubbleStep(2769, 10281, RubbleType.Two, Direction.WEST); // 18
-        this.addMineRubbleStep(2767, 10281, RubbleType.One, Direction.EAST); // 19
-        this.addMineRubbleStep(2767, 10282, RubbleType.One, Direction.SOUTH); // 20
-        this.addMineRubbleStep(2769, 10281, RubbleType.One, Direction.NORTH); // 21
-        this.addMineRubbleStep(2770, 10281, RubbleType.One, Direction.WEST); // 22
-
-        // Roadblock 3
-        this.addMineRubbleStep(2787, 10267, RubbleType.Three, Direction.WEST); // 23
-        this.addMineRubbleStep(2787, 10266, RubbleType.Three, Direction.WEST); // 24
-        this.addMineRubbleStep(2787, 10267, RubbleType.Two, Direction.SOUTH); // 25
-
-        this.addMineRubbleStep(2789, 10286, RubbleType.One, Direction.WEST);
-        this.addMineRubbleStep(2789, 10285, RubbleType.Three, Direction.NORTH);
-        this.addMineRubbleStep(2789, 10285, RubbleType.Three, Direction.WEST);
-
-        this.addMineRubbleStep(2789, 10283, RubbleType.Two, Direction.WEST);
-        this.addMineRubbleStep(2789, 10284, RubbleType.Three, Direction.WEST);
-        this.addMineRubbleStep(2789, 10285, RubbleType.Three, Direction.SOUTH);
-        this.addMineRubbleStep(2790, 10285, RubbleType.One, Direction.WEST);
-        this.addMineRubbleStep(2791, 10285, RubbleType.Two, Direction.WEST);
-        this.addMineRubbleStep(2789, 10283, RubbleType.One, Direction.NORTH);
-        this.addMineRubbleStep(2790, 10283, RubbleType.One, Direction.WEST);
-        this.addMineRubbleStep(2791, 10283, RubbleType.Two, Direction.WEST);
-        this.addMineRubbleStep(2790, 10282, RubbleType.One, Direction.NORTH);
-        this.addMineRubbleStep(2791, 10282, RubbleType.Three, Direction.WEST);
-        this.addMineRubbleStep(2791, 10283, RubbleType.One, Direction.SOUTH);
-        this.addMineRubbleStep(2791, 10285, RubbleType.One, Direction.SOUTH);
-        this.addMineRubbleStep(2792, 10285, RubbleType.Two, Direction.SOUTH);
-        this.addMineRubbleStep(2792, 10285, RubbleType.Two, Direction.WEST);
-        this.addMineRubbleStep(2793, 10285, RubbleType.Two, Direction.WEST);
-
-        this.addMineRubbleStep(2787, 10267, RubbleType.One, Direction.NORTH); // 26 (or when??)
-
         // after reversing
         // mineStep 0: mine C
         // mineStep 1: mine B
@@ -170,8 +117,8 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
         // i = 2: Mine A, with no condition
 
         conditionalStep = new ConditionalStep(getQuestHelper(), todo);
-        Collections.reverse(this.mineSteps);
-        Collections.reverse(this.inverseConditions);
+        // Collections.reverse(this.mineSteps);
+        // Collections.reverse(this.inverseConditions);
 
         assert this.mineSteps.size() == this.conditions.size();
         assert this.mineSteps.size() == this.inverseConditions.size();
@@ -187,22 +134,23 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
         // }
         for (var i = 0; i < mineSteps.size(); i++) {
             var mineStep = mineSteps.get(i);
+			var inverseCondition = this.inverseConditions.get(i);
 
-            var conditionList = new ArrayList<Requirement>();
+            // var conditionList = new ArrayList<Requirement>();
 
-            mineStep.addRequirement(this.inverseConditions.get(i));
-            conditionList.add(this.inverseConditions.get(i));
+            mineStep.addRequirement(inverseCondition);
+            // conditionList.add(this.inverseConditions.get(i));
 
-            StringBuilder text = new StringBuilder();
-            for (var j = 0; j < this.conditions.size() - i - 1; j++) {
-                var condition = this.conditions.get(j);
-                conditionList.add(condition);
-                text.append(this.conditions.get(j).getDisplayText());
-                mineStep.addRequirement(condition);
-            }
+            // StringBuilder text = new StringBuilder();
+            // for (var j = 0; j < this.conditions.size() - i - 1; j++) {
+            //     var condition = this.conditions.get(j);
+            //     conditionList.add(condition);
+            //     text.append(this.conditions.get(j).getDisplayText());
+            //     mineStep.addRequirement(condition);
+            // }
 
-            var xd = new Conditions(true, LogicType.AND, conditionList);
-            xd.setText(text.toString());
+            var xd = new Conditions(LogicType.AND, inverseCondition);
+            xd.setText(inverseCondition.getDisplayText());
 
             conditionalStep.addStep(xd, mineStep);
         }

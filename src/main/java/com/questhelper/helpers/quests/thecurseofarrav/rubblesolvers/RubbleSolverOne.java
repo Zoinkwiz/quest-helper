@@ -24,7 +24,7 @@ import net.runelite.client.eventbus.Subscribe;
 public class RubbleSolverOne extends RubbleSolver
 {
 	public RubbleSolverOne(TheCurseOfArrav theCurseOfArrav) {
-		super(theCurseOfArrav);
+		super(theCurseOfArrav, "1");
 	}
 
 	@Override

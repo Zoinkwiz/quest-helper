@@ -11,7 +11,7 @@ import net.runelite.api.coords.Direction;
 public class RubbleSolverTwo extends RubbleSolver
 {
 	public RubbleSolverTwo(TheCurseOfArrav theCurseOfArrav) {
-		super(theCurseOfArrav);
+		super(theCurseOfArrav, "2");
 	}
 
 	@Override

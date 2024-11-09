@@ -63,10 +63,13 @@ public abstract class ConditionForStep implements InitializableRequirement
 			.forEach(req -> ((InitializableRequirement) req).updateHandler());
 	}
 
+	@Setter
+	private String text = "";
+
 	@Nonnull
 	@Override
 	public String getDisplayText() // conditions don't need display text (yet?)
 	{
-		return "";
+		return this.text;
 	}
 }

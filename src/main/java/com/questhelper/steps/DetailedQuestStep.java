@@ -923,7 +923,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void removeShortestPath()
 	{
-		if (getQuestHelper().getConfig().useShortestPath())
+		if (getQuestHelper().getConfig().useShortestPath() && worldPoint != null && !linePoints.isEmpty())
 		{
 			eventBus.post(new PluginMessage("shortestpath", "clear"));
 		}

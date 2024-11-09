@@ -908,7 +908,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void setShortestPath()
 	{
-		if (worldPoint != null)
+		if (worldPoint != null && !linePoints.isEmpty())
 		{
 			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
 			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null) {
@@ -932,7 +932,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void disableShortestPath()
 	{
-		if (worldPoint != null)
+		if (worldPoint != null && !linePoints.isEmpty())
 		{
 			eventBus.post(new PluginMessage("shortestpath", "clear"));
 		}

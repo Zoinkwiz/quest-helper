@@ -26,11 +26,13 @@ package com.questhelper.helpers.quests.thecurseofarrav;
 
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers.RubbleSolverOne;
+import com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers.RubbleSolverThree;
+import com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers.RubbleSolverTwo;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
@@ -141,7 +143,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private QuestStep unsortedStep54;
 	private QuestStep unsortedStep56;
 	private QuestStep unsortedStep58;
-	private PuzzleWrapperStep rubbleMiner;
+	private PuzzleWrapperStep rubbleMiner1;
+	private PuzzleWrapperStep rubbleMiner2;
+	private PuzzleWrapperStep rubbleMiner3;
 
 
 	@Override
@@ -374,15 +378,25 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// mineRubble2FromSouth.addTileMarker(new WorldPoint(2775, 10257, 0), whereToStandSprite);
 		// mineRubble2FromSouth.setLinePoints(List.of(new WorldPoint(2763, 10264, 0), new WorldPoint(2769, 10254, 0), new WorldPoint(2775, 10255, 0)));
 
-		rubbleMiner = new RubbleMiner(this).puzzleWrapStep("make your way through the mine");
+		rubbleMiner1 = new RubbleSolverOne(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
+		rubbleMiner2 = new RubbleSolverTwo(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
+		rubbleMiner3 = new RubbleSolverThree(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
 
 		unsortedStep20 = new ConditionalStep(this, headToTrollheim);
-		((ConditionalStep) unsortedStep20).addStep(inTrollweissCave, rubbleMiner);
+		((ConditionalStep) unsortedStep20).addStep(inTrollweissCave, rubbleMiner1);
 		((ConditionalStep) unsortedStep20).addStep(onTrollweissMountain, enterTrollweissCave);
 		((ConditionalStep) unsortedStep20).addStep(inTrollheimCave, continueThroughTrollheimCave);
 
-		unsortedStep22 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 22");
-		unsortedStep24 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 24");
+		unsortedStep24 = new ConditionalStep(this, headToTrollheim);
+		((ConditionalStep) unsortedStep24).addStep(inTrollweissCave, rubbleMiner2);
+		((ConditionalStep) unsortedStep24).addStep(onTrollweissMountain, enterTrollweissCave);
+		((ConditionalStep) unsortedStep24).addStep(inTrollheimCave, continueThroughTrollheimCave);
+
+		unsortedStep26 = new ConditionalStep(this, headToTrollheim);
+		((ConditionalStep) unsortedStep26).addStep(inTrollweissCave, rubbleMiner3);
+		((ConditionalStep) unsortedStep26).addStep(onTrollweissMountain, enterTrollweissCave);
+		((ConditionalStep) unsortedStep26).addStep(inTrollheimCave, continueThroughTrollheimCave);
+
 		unsortedStep26 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 26");
 		unsortedStep28 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 28");
 		unsortedStep30 = new NpcStep(this, NpcID.YELLOW_FORTUNE_SECRETARY, "Step 30");
@@ -508,7 +522,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		)));
 		panels.add(new PanelDetails("Fort Invasion", List.of(
 			unsortedStep20,
-			rubbleMiner,
+			rubbleMiner1,
 			unsortedStep22,
 			unsortedStep24,
 			unsortedStep26,

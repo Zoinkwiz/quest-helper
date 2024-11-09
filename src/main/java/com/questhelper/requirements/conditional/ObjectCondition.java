@@ -76,6 +76,7 @@ public class ObjectCondition extends ConditionForStep
 		this.zone = new Zone(worldPoint);
 	}
 
+	@Override
 	public boolean check(Client client)
 	{
 		Tile[][] tiles;

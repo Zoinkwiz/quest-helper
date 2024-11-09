@@ -131,6 +131,15 @@ public class Conditions extends ConditionForStep
 		this.logicType = LogicType.AND;
 	}
 
+	public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, ArrayList<Requirement> conditions)
+	{
+		assert(conditions.stream().noneMatch(Objects::isNull));
+
+		this.conditions = new ArrayList<>(conditions);
+		this.logicType = logicType;
+		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
+	}
+
 	@Override
 	@Nonnull
 	public String getDisplayText()

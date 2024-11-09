@@ -71,7 +71,7 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
         var conditionText = String.format("[%d] Rubble mined from the %s side", stepCounter, direction.toString().toLowerCase());
         var inverseConditionText = String.format("[%d] Rubble needs to be mined from the %s side", stepCounter, direction.toString().toLowerCase());
         var conditionThatRubbleIsStillThere = new ObjectCondition(validIDSet, wp);
-        var conditionThatRubbleHasBeenMined = new Conditions(LogicType.NAND, conditionThatRubbleIsStillThere);
+        var conditionThatRubbleHasBeenMined = new Conditions(true, LogicType.NAND, conditionThatRubbleIsStillThere);
         conditionThatRubbleIsStillThere.setText(inverseConditionText);
         conditionThatRubbleHasBeenMined.setText(conditionText);
 
@@ -201,7 +201,7 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
                 mineStep.addRequirement(condition);
             }
 
-            var xd = new Conditions(LogicType.AND, conditionList);
+            var xd = new Conditions(true, LogicType.AND, conditionList);
             xd.setText(text.toString());
 
             conditionalStep.addStep(xd, mineStep);

@@ -49,7 +49,7 @@ public enum BarrowsRooms
 		new Zone(new WorldPoint(3552, 9718, 0), new WorldPoint(3569, 9722, 0)),
 		new Zone(new WorldPoint(3575, 9695, 0), new WorldPoint(3579, 9712, 0))
 	),
-		new BarrowsDoors[] { BarrowsDoors.NE_WEST_DOOR, BarrowsDoors.NE_SOUTH_DOOR, BarrowsDoors.NW_NORTH_DOOR, BarrowsDoors.NW_EAST_DOOR }),
+		new BarrowsDoors[] { BarrowsDoors.NE_WEST_DOOR, BarrowsDoors.NE_SOUTH_DOOR, BarrowsDoors.NW_NORTH_DOOR, BarrowsDoors.NE_EAST_DOOR }),
 	W(3, Collections.singletonList(new Zone(new WorldPoint(3530, 9684, 0), new WorldPoint(3540, 9705, 0))),
 		new BarrowsDoors[] { BarrowsDoors.WEST_EAST_DOOR, BarrowsDoors.NW_SOUTH_DOOR, BarrowsDoors.SW_NORTH_DOOR }),
 	C(4, Collections.singletonList(new Zone(new WorldPoint(3541, 9684, 0), new WorldPoint(3562, 9705, 0))),

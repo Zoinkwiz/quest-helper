@@ -42,7 +42,6 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
         var wp = new WorldPoint(x, y, 0);
         var stepCounter = this.stepCounter++;
         var text = String.format("[%d] Mine the rubble from the %s side", stepCounter, direction.toString().toLowerCase());
-        log.info("setting up mine rubble step: {}: {}", stepCounter, text);
         var mainObjectID = validObjectIDs.get(0);
         var step = new ObjectStep(getQuestHelper(), mainObjectID, wp, text);
         var offsetX = x;

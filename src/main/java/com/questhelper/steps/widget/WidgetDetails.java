@@ -37,6 +37,13 @@ public class WidgetDetails
 	public int childID;
 	public int childChildID;
 
+	public WidgetDetails(int groupID, int childID)
+	{
+		this.groupID = groupID;
+		this.childID = childID;
+		this.childChildID = -1;
+	}
+
 	public WidgetDetails(@Component int componentId)
 	{
 		var pair = Utils.unpackWidget(componentId);

@@ -47,7 +47,9 @@ public class WidgetTextRequirement extends SimpleRequirement
 	private final int groupId;
 
 	private final int childId;
-	private final List<String> text;
+
+	private List<String> text;
+
 	private int childChildId = -1;
 	private boolean checkChildren;
 
@@ -57,6 +59,30 @@ public class WidgetTextRequirement extends SimpleRequirement
 
 	@Setter
 	private String displayText = "";
+
+	/**
+	 * Use this if you need to update a widget requirement dynamically.
+	 * <p>
+	 * Updating the text will reset the `hasPassed` variable.
+	 *
+	 * @param text list of valid strings for this widget check
+	 */
+	public void setText(@Nonnull List<String> text) {
+		this.setHasPassed(false);
+
+		this.text = text;
+	}
+
+	/**
+	 * Use this if you need to update a widget requirement dynamically.
+	 * <p>
+	 * Updating the text will reset the `hasPassed` variable.
+	 *
+	 * @param text valid string for this widget check
+	 */
+	public void setText(@Nonnull String text) {
+		this.setText(List.of(text));
+	}
 
 	public WidgetTextRequirement(@Component int componentId, String... text)
 	{

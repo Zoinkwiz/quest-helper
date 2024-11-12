@@ -337,7 +337,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var golemArenaZone = new Zone(new WorldPoint(3856, 4592, 0), new WorldPoint(3884, 4599, 0));
 		var insideGolenArena = new ZoneRequirement(golemArenaZone);
 		enterGolemArena = new ObjectStep(this, ObjectID.IMPOSING_DOORS_50211, new WorldPoint(3885, 4597, 0), "Open the imposing doors, ready to fight the Golem guard.");
-		fightGolemGuard = new NpcStep(this, NpcID.GOLEM_GUARD, new WorldPoint(3860, 4595, 0), "Fight the Golem guard. He is weak to crush style weapons. Use Protect from Melee to avoid damage from his attacks. When the screen shakes, step away from him to avoid taking damage.");
+		fightGolemGuard = new NpcStep(this, NpcID.GOLEM_GUARD, new WorldPoint(3860, 4595, 0), "Fight the Golem guard. It is weak to crush style weapons. Use Protect from Melee to avoid damage from his attacks. When the screen shakes, step away from him to avoid taking damage.");
 		unsortedStep10 = new ConditionalStep(this, enterGolemArena);
 		// Get inside the tomb if you're not already inside. In case the user has teleported out or died to golem?
 		unsortedStep10.addStep(not(insideTomb), enterTomb);

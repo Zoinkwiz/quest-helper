@@ -100,7 +100,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	// 2 inv slots
 
 	// Mid-quest item requirements
-	private ItemRequirement canopicJarFull;
+	private ItemRequirement firstMastabaKey;
+	private ItemRequirement secondMastabaKey;
+	private ItemRequirement canopicJarFullForHeist;
 	private ItemRequirement basePlans;
 	private ItemRequirement baseKey;
 
@@ -124,7 +126,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ObjectStep enterTomb;
 
 	/// 6 + 8
-	private ConditionalStep unsortedStep6;
+	private ConditionalStep unlockImposingDoors;
 	private ObjectStep getFirstKey;
 	private ObjectStep getSecondKey;
 	private ObjectStep pullSouthLever;
@@ -196,8 +198,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		steps.put(0, startQuest);
 		steps.put(2, startQuest);
 		steps.put(4, enterTomb);
-		steps.put(6, unsortedStep6);
-		steps.put(8, unsortedStep6);
+		steps.put(6, unlockImposingDoors);
+		steps.put(8, unlockImposingDoors);
 		steps.put(10, fightGolemCond);
 		steps.put(12, finishTilePuzzleAndGetCanopicJar);
 		steps.put(14, finishTilePuzzleAndGetCanopicJar);
@@ -287,6 +289,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		arravCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		twoFreeInventorySlots = new FreeInventorySlotRequirement(2);
+
+		// Mid-quest item requirements
+		firstMastabaKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
+		secondMastabaKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY_30309);
+		canopicJarFullForHeist = new ItemRequirement("Canopic jar (full)", ItemID.CANOPIC_JAR_FULL);
+		canopicJarFullForHeist.setTooltip("You can get a new one from Elias at the entrance of Zemouregal's base if you've lost it.");
 	}
 
 	public void setupSteps()
@@ -299,13 +307,11 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.");
 
-		var hasFirstKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
 		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton south of the entrance.");
-		var hasSecondKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY_30309);
 		getSecondKey = new ObjectStep(this, ObjectID.SKELETON_50353, new WorldPoint(3880, 4585, 0), "Get the second Mastaba key from the skeleton east of the entrance.");
 		var bySouthLever = new Zone(new WorldPoint(3893, 4554, 0), new WorldPoint(3894, 4552, 0));
 		var bySouthLeverReq = new ZoneRequirement(bySouthLever);
-		pullSouthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.", hasSecondKey);
+		pullSouthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.", secondMastabaKey);
 		pullSouthLever.addDialogStep("Yes.");
 		var getToSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3891, 4554, 0), "Search the Odd markings to the south to get to the south lever. Search the markings again if you fail.");
 		var needToInsertKeyInSouthLever = new VarbitRequirement(11482, 0);
@@ -317,7 +323,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var byNorthLever = new Zone(new WorldPoint(3894, 4597, 0), new WorldPoint(3893, 4599, 0));
 		var byNorthLeverReq = new ZoneRequirement(byNorthLever);
 		var getToNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3891, 4597, 0), "Search the Odd markings to the north to get to the north lever. Search the markings again if you fail.");
-		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.", hasFirstKey);
+		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.", firstMastabaKey);
 		pullNorthLever.addDialogStep("Yes.");
 		var needToInsertKeyInNorthLever = new VarbitRequirement(11481, 0);
 		var needToFlipNorthLever = new VarbitRequirement(11481, 1);
@@ -325,30 +331,30 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var leaveNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3892, 4597, 0), "Search the Odd markings next to you to get out.");
 		pullNorthLever.addSubSteps(getToNorthLever, leaveNorthLever);
 
-		unsortedStep6 = new ConditionalStep(this, enterTomb);
+		unlockImposingDoors = new ConditionalStep(this, enterTomb);
 
 		// Get inside the tomb if you're not already inside. In case the user has teleported out or died to golem?
-		unsortedStep6.addStep(not(insideTomb), enterTomb);
+		unlockImposingDoors.addStep(not(insideTomb), enterTomb);
 
 		// If the user has flipped the south lever & needs to get out of the little room
-		unsortedStep6.addStep(and(haveFlippedSouthLever, bySouthLeverReq), leaveSouthLever);
+		unlockImposingDoors.addStep(and(haveFlippedSouthLever, bySouthLeverReq), leaveSouthLever);
 		// If the user has flipped the north lever & needs to get out of the little room
-		unsortedStep6.addStep(and(haveFlippedNorthLever, byNorthLeverReq), leaveNorthLever);
+		unlockImposingDoors.addStep(and(haveFlippedNorthLever, byNorthLeverReq), leaveNorthLever);
 
 		// If the user has not already put the key in the south lever, and does not have the key
-		unsortedStep6.addStep(and(needToInsertKeyInSouthLever, not(hasSecondKey)), getSecondKey);
+		unlockImposingDoors.addStep(and(needToInsertKeyInSouthLever, not(secondMastabaKey)), getSecondKey);
 		// If the user has not already put the key in the north lever, and does not have the key
-		unsortedStep6.addStep(and(needToInsertKeyInNorthLever, not(hasFirstKey)), getFirstKey);
+		unlockImposingDoors.addStep(and(needToInsertKeyInNorthLever, not(firstMastabaKey)), getFirstKey);
 
 		// If the user has the key & stands by the south lever
-		unsortedStep6.addStep(and(needToFlipSouthLever, bySouthLeverReq), pullSouthLever);
+		unlockImposingDoors.addStep(and(needToFlipSouthLever, bySouthLeverReq), pullSouthLever);
 		// If the user needs to flip the south lever, but is not inside the little room, get to the little room
-		unsortedStep6.addStep(not(haveFlippedSouthLever), getToSouthLever);
+		unlockImposingDoors.addStep(not(haveFlippedSouthLever), getToSouthLever);
 
 		// If the user has the key & stands by the north lever
-		unsortedStep6.addStep(and(needToFlipNorthLever, byNorthLeverReq), pullNorthLever);
+		unlockImposingDoors.addStep(and(needToFlipNorthLever, byNorthLeverReq), pullNorthLever);
 		// If the user needs to flip the north lever, but is not inside the little room, get to the little room
-		unsortedStep6.addStep(needToFlipNorthLever, getToNorthLever);
+		unlockImposingDoors.addStep(needToFlipNorthLever, getToNorthLever);
 
 		// Once last lever was pulled, quest varbit changed from 6 to 8, then 8 to 10 at the same tick
 		// This might have to do with which order you pulled the levers in
@@ -384,8 +390,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var oilAndBerryFilledCanopicJar = new ItemRequirement("Canopic jar (oil and berries)", ItemID.CANOPIC_JAR_OIL_AND_BERRIES);
 
-		var combineJarWithDwellberries = new ItemStep(this, "Combine the Dwellberries with the Canopic jar.", oilFilledCanopicJar.highlighted(), dwellberries3.highlighted(), ringOfLife);
-		var combineJarWithRingOfLife = new ItemStep(this, "Combine the Dwellberries with the Ring of life.", oilAndBerryFilledCanopicJar.highlighted(), ringOfLife.highlighted());
+		var combineJarWithDwellberries = new ItemStep(this, "Put the Dwellberries in the Canopic jar.", oilFilledCanopicJar.highlighted(), dwellberries3.highlighted(), ringOfLife);
+		var combineJarWithRingOfLife = new ItemStep(this, "Put the Ring of life in the Canopic jar.", oilAndBerryFilledCanopicJar.highlighted(), ringOfLife.highlighted());
 
 		unsortedStep16 = new ConditionalStep(this, todo);
 		unsortedStep16.addStep(oilAndBerryFilledCanopicJar, combineJarWithRingOfLife);
@@ -505,29 +511,27 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// 40 -> 42
 		// 9658: 5 -> 6
 
-		canopicJarFull = new ItemRequirement("Canopic jar (full)", ItemID.CANOPIC_JAR_FULL);
-		canopicJarFull.setTooltip("You can get a new one from Elias at the entrance of Zemouregal's base if you've lost it."); // this is at least true after the mining part
 		// need 1 inventory slot free
-		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFull, baseKey); // todo add teleport
+		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey); // todo add teleport
 		headToZemouregalsBaseAndTalkToElias.addDialogStep("Ready when you are.");
 		unsortedStep42 = new ConditionalStep(this, headToZemouregalsBaseAndTalkToElias);
-		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFull, baseKey); // todo add teleport
+		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey); // todo add teleport
 
 
 		getToBackOfZemouregalsBase = new DetailedQuestStep(this, "Make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.");
-		var passZemouregalsBaseDoor1 = new ObjectStep(this, ObjectID.GATE_50149, new WorldPoint(3536, 4571, 0), "Open the gate and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFull, insulatedBoots);
-		var passZemouregalsBaseDoor2 = new ObjectStep(this, ObjectID.GATE_50150, new WorldPoint(3540, 4597, 0), "Open the gate and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFull, insulatedBoots);
-		var passZemouregalsBaseDoor3 = new ObjectStep(this, ObjectID.DOOR_50152, new WorldPoint(3576, 4604, 0), "Open the door and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFull, insulatedBoots);
-		var passZemouregalsBaseDoor4 = new ObjectStep(this, ObjectID.GATE_50537, new WorldPoint(3605, 4603, 0), "Open the gate and make your way to the back of Zemouregal's base.", canopicJarFull, insulatedBoots);
+		var passZemouregalsBaseDoor1 = new ObjectStep(this, ObjectID.GATE_50149, new WorldPoint(3536, 4571, 0), "Open the gate and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
+		var passZemouregalsBaseDoor2 = new ObjectStep(this, ObjectID.GATE_50150, new WorldPoint(3540, 4597, 0), "Open the gate and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
+		var passZemouregalsBaseDoor3 = new ObjectStep(this, ObjectID.DOOR_50152, new WorldPoint(3576, 4604, 0), "Open the door and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
+		var passZemouregalsBaseDoor4 = new ObjectStep(this, ObjectID.GATE_50537, new WorldPoint(3605, 4603, 0), "Open the gate and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots);
 
 		unsortedStep44 = new ConditionalStep(this, enterZemouregalsBase);
 		unsortedStep44.addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
 		unsortedStep44.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
 		unsortedStep44.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
-		var enterZemouregalsBaseSewer = new ObjectStep(this, ObjectID.PIPE_50523, new WorldPoint(3609, 4598, 0), "Enter the sewers and make your way to the back of Zemouregal's base.", canopicJarFull, insulatedBoots.highlighted().equipped());
+		var enterZemouregalsBaseSewer = new ObjectStep(this, ObjectID.PIPE_50523, new WorldPoint(3609, 4598, 0), "Enter the sewers and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots.highlighted().equipped());
 
-		var exitZemouregalsBaseSewer = new ObjectStep(this, ObjectID.PIPE_50525, new WorldPoint(3741, 4573, 0), "Head south to exit the sewers and make your way to the back of Zemouregal's base.", canopicJarFull, insulatedBoots.highlighted().equipped());
+		var exitZemouregalsBaseSewer = new ObjectStep(this, ObjectID.PIPE_50525, new WorldPoint(3741, 4573, 0), "Head south to exit the sewers and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots.highlighted().equipped());
 
 		getToBackOfZemouregalsBase.addSubSteps(passZemouregalsBaseDoor1, passZemouregalsBaseDoor2, passZemouregalsBaseDoor3, passZemouregalsBaseDoor4, enterZemouregalsBaseSewer, exitZemouregalsBaseSewer);
 
@@ -573,7 +577,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep48.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
 		unsortedStep48.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
-		openMetalDoors = new ObjectStep(this, ObjectID.METAL_DOORS, new WorldPoint(3612, 4582, 0), "Step through through the metal doors.", canopicJarFull, anyGrappleableCrossbow, mithrilGrapple);
+		openMetalDoors = new ObjectStep(this, ObjectID.METAL_DOORS, new WorldPoint(3612, 4582, 0), "Step through through the metal doors.", canopicJarFullForHeist, anyGrappleableCrossbow, mithrilGrapple);
 
 		var inGrapplePuzzleRoom = new ZoneRequirement(new Zone(new WorldPoint(3612, 4587, 0), new WorldPoint(3625, 4579, 0)));
 		grappleAcross = new ObjectStep(this, ObjectID.PIPE_50542, new WorldPoint(3615, 4582, 0), "Grapple across the pipe", anyGrappleableCrossbow.highlighted().equipped(), mithrilGrapple.highlighted().equipped());
@@ -780,7 +784,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			mithrilGrapple,
 			arravCombatGear,
 			insulatedBoots,
-			canopicJarFull
+			canopicJarFullForHeist
 		), List.of(
 			// Recommended
 			new FreeInventorySlotRequirement(1),

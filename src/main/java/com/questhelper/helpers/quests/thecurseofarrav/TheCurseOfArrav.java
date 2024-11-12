@@ -100,6 +100,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	// 2 inv slots
 
 	// Mid-quest item requirements
+	private ItemRequirement canopicJarFull;
 	private ItemRequirement basePlans;
 	private ItemRequirement baseKey;
 
@@ -164,7 +165,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private PuzzleWrapperStep rubbleMiner4;
 	private PuzzleWrapperStep metalDoorSolver;
 	private NpcStep returnToEliasWithBaseItems;
-	private ItemRequirement canopicJarFull;
 	private NpcStep headToZemouregalsBaseAndTalkToElias;
 	private ObjectStep enterZemouregalsBase;
 	private DetailedQuestStep getToBackOfZemouregalsBase;
@@ -298,7 +298,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		startQuest.addDialogStep("Yes.");
 
 		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.");
-		// TODO: Ensure player can get hint to return
 
 		var hasFirstKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
 		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton south of the entrance.");
@@ -378,7 +377,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		finishTilePuzzleAndGetCanopicJar = new ConditionalStep(this, enterTomb);
 		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
-		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), todo);
 		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTombSecondFloor, finishedTilePuzzle), searchShelvesForUrn);
 		finishTilePuzzleAndGetCanopicJar.addStep(insideTombSecondFloor, solveTilePuzzle);
 		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTomb, insideGolenArena), enterTombBasement);

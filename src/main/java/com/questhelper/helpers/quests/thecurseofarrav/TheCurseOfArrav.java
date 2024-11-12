@@ -96,6 +96,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ItemRequirement food;
 	private ItemRequirement staminaPotion;
 	private ItemRequirement prayerPotion;
+	private FreeInventorySlotRequirement twoFreeInventorySlots;
 	// 2 inv slots
 
 	/// Mid-quest item requirements
@@ -260,6 +261,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		rangedCombatGear = new ItemRequirement("Ranged combat gear for killing Arrav", -1, -1);
 		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		twoFreeInventorySlots = new FreeInventorySlotRequirement(2);
 	}
 
 	public void setupSteps()
@@ -728,7 +730,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			// Requirements
 		), List.of(
 			// Recommended
-			new FreeInventorySlotRequirement(2),
+			twoFreeInventorySlots,
 			staminaPotion,
 			prayerPotion,
 			food

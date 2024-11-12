@@ -91,8 +91,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	// lumberyard teleport
 	// melee (crush) combat gear for golem
 	// ranged combat gear for arrav
-	private ItemRequirement crushCombatGear;
-	private ItemRequirement rangedCombatGear;
+	private ItemRequirement golemCombatGear;
+	private ItemRequirement arravCombatGear;
 	private ItemRequirement food;
 	private ItemRequirement staminaPotion;
 	private ItemRequirement prayerPotion;
@@ -106,6 +106,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	// Zones & their requirements
 	/// Top floor of the tomb (Uzer Mastaba)
 	private ZoneRequirement insideTomb;
+	/// Second floor of the tomb (Uzer Mastaba)
+	private ZoneRequirement insideTombSecondFloor;
 	private ZoneRequirement inZemouregalsBaseSection1;
 	private ZoneRequirement inZemouregalsBaseSection2;
 	private ZoneRequirement inZemouregalsBaseSection3;
@@ -217,6 +219,10 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	protected void setupZones()
 	{
 		insideTomb = new ZoneRequirement(new Zone(new WorldPoint(3842, 4603, 0), new WorldPoint(3900, 4547, 0)));
+		insideTombSecondFloor = new ZoneRequirement(
+			new Zone(new WorldPoint(3719, 4674, 0), new WorldPoint(3770, 4732, 0)),
+			new Zone(new WorldPoint(3845, 4674, 0), new WorldPoint(3900, 4732, 0))
+		);
 
 		// Right as you head into the base
 		inZemouregalsBaseSection1 = new ZoneRequirement(new Zone(new WorldPoint(3536, 4577, 0), new WorldPoint(3564, 4547, 0)));
@@ -260,11 +266,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		fairyRingDLQ = new TeleportItemRequirement("Fairy Ring [DLQ]", ItemCollections.FAIRY_STAFF);
 		staminaPotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS, 1);
 		prayerPotion = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS, 1);
-		crushCombatGear = new ItemRequirement("Melee combat gear (crush preferred)", -1, -1);
-		crushCombatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
-		crushCombatGear.setConditionToHide(haveKilledGolem);
-		rangedCombatGear = new ItemRequirement("Ranged combat gear for killing Arrav", -1, -1);
-		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
+		golemCombatGear = new ItemRequirement("Crush or ranged combat gear to fight the Golem guard (lvl 141)", -1, -1);
+		golemCombatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		golemCombatGear.setConditionToHide(haveKilledGolem);
+		arravCombatGear = new ItemRequirement("Ranged or melee combat gear for killing Arrav", -1, -1);
+		arravCombatGear.setTooltip("If you bring Melee gear, it's advisable to bring some ranged weapon swap for killing the Zombies as they spawn");
+		arravCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		twoFreeInventorySlots = new FreeInventorySlotRequirement(2);
 	}
@@ -351,9 +358,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		solveTilePuzzle = new TilePuzzleSolver(this).puzzleWrapStep("Move across the floor tile puzzle.");
 
-		var insideTombSecondFloor = new Zone(new WorldPoint(3719, 4674, 0), new WorldPoint(3770, 4732, 0));
-		var insideTombSecondFloorAfterFinishingPuzzle = new Zone(new WorldPoint(3845, 4674, 0), new WorldPoint(3900, 4732, 0));
-		var insideTombSecondFloorReq = new ZoneRequirement(insideTombSecondFloor, insideTombSecondFloorAfterFinishingPuzzle);
 
 		var searchShelvesForUrn = new ObjectStep(this, ObjectID.SHELVES_55796, new WorldPoint(3854, 4722, 0), "Search the shelves to the west for an oil-filled canopic jar.");
 		var oilFilledCanopicJar = new ItemRequirement("Oil-filled canopic jar", ItemID.CANOPIC_JAR_OIL);
@@ -362,10 +366,10 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var finishedTilePuzzle = new VarbitRequirement(11483, 1);
 		unsortedStep12 = new ConditionalStep(this, todo);
-		unsortedStep12.addStep(and(insideTombSecondFloorReq, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
-		unsortedStep12.addStep(and(insideTombSecondFloorReq, finishedTilePuzzle, oilFilledCanopicJar), todo);
-		unsortedStep12.addStep(and(insideTombSecondFloorReq, finishedTilePuzzle), searchShelvesForUrn);
-		unsortedStep12.addStep(insideTombSecondFloorReq, solveTilePuzzle);
+		unsortedStep12.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
+		unsortedStep12.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), todo);
+		unsortedStep12.addStep(and(insideTombSecondFloor, finishedTilePuzzle), searchShelvesForUrn);
+		unsortedStep12.addStep(insideTombSecondFloor, solveTilePuzzle);
 		unsortedStep12.addStep(not(insideTomb), enterTomb);
 		unsortedStep12.addStep(and(insideTomb, insideGolenArena), enterTombBasement);
 		unsortedStep12.addStep(and(insideTomb), enterGolemArenaWithoutFight);
@@ -378,7 +382,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep16 = new ConditionalStep(this, todo);
 		unsortedStep16.addStep(oilAndBerryFilledCanopicJar, combineJarWithRingOfLife);
 		unsortedStep16.addStep(oilFilledCanopicJar, combineJarWithDwellberries);
-		unsortedStep16.addStep(and(insideTombSecondFloorReq, finishedTilePuzzle), searchShelvesForUrn);
+		unsortedStep16.addStep(and(insideTombSecondFloor, finishedTilePuzzle), searchShelvesForUrn);
 		unsortedStep16.addStep(not(insideTomb), enterTomb);
 		unsortedStep16.addStep(and(insideTomb, insideGolenArena), enterTombBasement);
 		unsortedStep16.addStep(and(insideTomb), enterGolemArenaWithoutFight);
@@ -396,7 +400,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		returnToElias.addSubSteps(returnToEliasByWalking, returnToEliasByWalkingMidway, returnToEliasByWalkingMidwayGolem);
 
 		unsortedStep18 = new ConditionalStep(this, returnToElias);
-		unsortedStep18.addStep(insideTombSecondFloorReq, returnToEliasByWalking);
+		unsortedStep18.addStep(insideTombSecondFloor, returnToEliasByWalking);
 		unsortedStep18.addStep(insideGolenArena, returnToEliasByWalkingMidwayGolem);
 		unsortedStep18.addStep(insideTomb, returnToEliasByWalkingMidway);
 		// ardy cloak + fairy ring takes 50s, walking takes 1m12s
@@ -496,10 +500,10 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		canopicJarFull = new ItemRequirement("Canopic jar (full)", ItemID.CANOPIC_JAR_FULL);
 		canopicJarFull.setTooltip("You can get a new one from Elias at the entrance of Zemouregal's base if you've lost it."); // this is at least true after the mining part
 		// need 1 inventory slot free
-		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, rangedCombatGear, insulatedBoots, canopicJarFull, baseKey); // todo add teleport
+		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFull, baseKey); // todo add teleport
 		headToZemouregalsBaseAndTalkToElias.addDialogStep("Ready when you are.");
 		unsortedStep42 = new ConditionalStep(this, headToZemouregalsBaseAndTalkToElias);
-		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, rangedCombatGear, insulatedBoots, canopicJarFull, baseKey); // todo add teleport
+		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFull, baseKey); // todo add teleport
 
 
 		getToBackOfZemouregalsBase = new DetailedQuestStep(this, "Make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.");
@@ -568,7 +572,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var pastGrapplePuzzleRoom = new ZoneRequirement(new Zone(new WorldPoint(3621, 4589, 0), new WorldPoint(3645, 4578, 0)));
 
-		enterBossRoom = new ObjectStep(this, ObjectID.PEDESTAL_50539, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", rangedCombatGear);
+		enterBossRoom = new ObjectStep(this, ObjectID.PEDESTAL_50539, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", arravCombatGear);
 
 		unsortedStep52 = new ConditionalStep(this, enterZemouregalsBase);
 		unsortedStep52.addStep(pastGrapplePuzzleRoom, enterBossRoom);
@@ -631,7 +635,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		return List.of(
 			staminaPotion,
 			prayerPotion,
-			crushCombatGear,
+			golemCombatGear,
+			arravCombatGear,
 			food
 		);
 	}
@@ -640,6 +645,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	public List<Requirement> getGeneralRecommended()
 	{
 		return List.of(
+			twoFreeInventorySlots,
 			new CombatLevelRequirement(85),
 			new SkillRequirement(Skill.PRAYER, 43, false, "43+ Prayer to use protection prayers")
 		);
@@ -714,7 +720,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		), List.of(
 			dwellberries3,
 			ringOfLife,
-			crushCombatGear
+			golemCombatGear
 			// Requirements
 		), List.of(
 			// Recommended
@@ -762,7 +768,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			baseKey,
 			anyGrappleableCrossbow,
 			mithrilGrapple,
-			rangedCombatGear,
+			arravCombatGear,
 			insulatedBoots,
 			canopicJarFull
 		), List.of(

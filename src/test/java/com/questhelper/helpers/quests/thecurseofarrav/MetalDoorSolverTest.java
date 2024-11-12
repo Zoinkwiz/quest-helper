@@ -23,6 +23,9 @@ public class MetalDoorSolverTest
 
 		// from Avsynthe
 		assertArrayEquals(new int[]{1, 8, 4, 5}, MetalDoorSolver.calculate("FCEB"));
+
+		// from Zoinkwiz
+		assertArrayEquals(new int[]{6, 3, 6, 4}, MetalDoorSolver.calculate("AEGH"));
 	}
 
 	@Test

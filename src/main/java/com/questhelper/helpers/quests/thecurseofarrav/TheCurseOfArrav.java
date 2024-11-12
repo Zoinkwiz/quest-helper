@@ -417,19 +417,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var trollweissCave1 = new Zone(11168);
 		var inTrollweissCave = new ZoneRequirement(trollweissCave1);
 
-		// Rubble 50598 = 2 hits
-		// Rubble 50587/50589 = 1 hit
-
-		// var mineRubble1FromSouth = new ObjectStep(this, ObjectID.RUBBLE_50598, new WorldPoint(2764, 10266, 0), "Mine the rubble from the south.");
-		// mineRubble1FromSouth.addTileMarker(new WorldPoint(2764, 10265, 0), whereToStandSprite);
-
-		// var rubble1MinedOnce = new ObjectCondition(ObjectID.RUBBLE_50589, new WorldPoint(2764, 10266, 0));
-		// var rubble2Mined = not(new ObjectCondition(ObjectID.RUBBLE_50589, new WorldPoint(2775, 10258, 0)));
-
-		// var mineRubble2FromSouth = new ObjectStep(this, ObjectID.RUBBLE_50587, new WorldPoint(2775, 10258, 0), "Mine the rubble from the south.");
-		// mineRubble2FromSouth.addTileMarker(new WorldPoint(2775, 10257, 0), whereToStandSprite);
-		// mineRubble2FromSouth.setLinePoints(List.of(new WorldPoint(2763, 10264, 0), new WorldPoint(2769, 10254, 0), new WorldPoint(2775, 10255, 0)));
-
 		rubbleMiner1 = new RubbleSolverOne(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
 		rubbleMiner2 = new RubbleSolverTwo(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
 		rubbleMiner3 = new RubbleSolverThree(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");

@@ -775,5 +775,4 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		return panels;
 	}
-
 }

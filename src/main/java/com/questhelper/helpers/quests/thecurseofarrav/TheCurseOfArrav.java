@@ -266,11 +266,11 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		fairyRingDLQ = new TeleportItemRequirement("Fairy Ring [DLQ]", ItemCollections.FAIRY_STAFF);
 		staminaPotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS, 1);
 		prayerPotion = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS, 1);
-		golemCombatGear = new ItemRequirement("Crush or ranged combat gear to fight the Golem guard (lvl 141)", -1, -1);
+		golemCombatGear = new ItemRequirement("Crush or ranged combat gear to fight the Golem guard", -1, -1);
 		golemCombatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		golemCombatGear.setConditionToHide(haveKilledGolem);
 		arravCombatGear = new ItemRequirement("Ranged or melee combat gear for killing Arrav", -1, -1);
-		arravCombatGear.setTooltip("If you bring Melee gear, it's advisable to bring some ranged weapon swap for killing the Zombies as they spawn");
+		arravCombatGear.setTooltip("If you bring Melee gear, it's advisable to bring some ranged weapon swap like darts for killing the Zombies as they spawn");
 		arravCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		twoFreeInventorySlots = new FreeInventorySlotRequirement(2);
@@ -647,7 +647,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		return List.of(
 			twoFreeInventorySlots,
 			new CombatLevelRequirement(85),
-			new SkillRequirement(Skill.PRAYER, 43, false, "43+ Prayer to use protection prayers")
+			new SkillRequirement(Skill.PRAYER, 43, false, "43 Prayer to use Protect from Melee")
 		);
 	}
 

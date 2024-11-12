@@ -85,8 +85,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ItemRequirement insulatedBoots;
 
 	/// Recommended items
-	// teleport to fairy ring
-	// fairy ring staff
+	private TeleportItemRequirement fairyRingDLQ;
 	// trollheim teleport / ghommal's hilt
 	// antivenom
 	// lumberyard teleport
@@ -237,6 +236,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		haveUsedKey = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 46);
 		var haveMetArrav = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 54);
 
+		// Required items
 		dwellberries3 = new ItemRequirement("Dwellberries", ItemID.DWELLBERRIES, 3);
 		dwellberries3.setConditionToHide(haveMadeCanopicJar);
 		ringOfLife = new ItemRequirement("Ring of life", ItemID.RING_OF_LIFE);
@@ -249,6 +249,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		mithrilGrapple.setConditionToHide(haveMetArrav);
 		insulatedBoots = new ItemRequirement("Insulated boots", ItemID.INSULATED_BOOTS).isNotConsumed();
 
+		// Recommended items
+		fairyRingDLQ = new TeleportItemRequirement("Fairy Ring [DLQ]", ItemCollections.FAIRY_STAFF);
 		staminaPotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS, 1);
 		prayerPotion = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS, 1);
 		crushCombatGear = new ItemRequirement("Melee combat gear (crush preferred)", -1, -1);
@@ -263,7 +265,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	{
 		var todo = new NpcStep(this, 5, "TODO XD");
 
-		startQuest = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Talk to Elias south of Ruins of Uzer (DLQ FAIRY RING).");
+		startQuest = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Talk to Elias south of Ruins of Uzer to start the quest.");
+		((NpcStep) startQuest).addTeleport(fairyRingDLQ);
 		startQuest.addDialogStep("Yes.");
 
 		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.");
@@ -374,7 +377,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		((ConditionalStep) unsortedStep16).addStep(and(insideTombReq, insideGolenArena), enterTombBasement);
 		((ConditionalStep) unsortedStep16).addStep(and(insideTombReq), enterGolemArenaWithoutFight);
 
-		var fairyRingDLQ = new TeleportItemRequirement("Fairy Ring [DLQ]", ItemCollections.FAIRY_STAFF);
 
 		var returnToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
 		returnToElias.addTeleport(fairyRingDLQ);

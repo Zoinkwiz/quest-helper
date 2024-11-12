@@ -76,7 +76,7 @@ import net.runelite.api.coords.WorldPoint;
  */
 public class TheCurseOfArrav extends BasicQuestHelper
 {
-	/// Required items
+	// Required items
 	private ItemRequirement dwellberries3;
 	private ItemRequirement ringOfLife;
 	private ItemRequirement anyPickaxe;
@@ -84,7 +84,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ItemRequirement mithrilGrapple;
 	private ItemRequirement insulatedBoots;
 
-	/// Recommended items
+	// Recommended items
 	private TeleportItemRequirement fairyRingDLQ;
 	// trollheim teleport / ghommal's hilt
 	// antivenom
@@ -99,11 +99,11 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private FreeInventorySlotRequirement twoFreeInventorySlots;
 	// 2 inv slots
 
-	/// Mid-quest item requirements
+	// Mid-quest item requirements
 	private ItemRequirement basePlans;
 	private ItemRequirement baseKey;
 
-	/// Zones & their requirements
+	// Zones & their requirements
 	private ZoneRequirement inZemouregalsBaseSection1;
 	private ZoneRequirement inZemouregalsBaseSection2;
 	private ZoneRequirement inZemouregalsBaseSection3;
@@ -111,7 +111,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ZoneRequirement inZemouregalsBaseKitchen;
 	private ZoneRequirement inZemouregalsBaseSewer;
 
-	/// Steps
+	// Steps
 	private QuestStep startQuest;
 	private QuestStep enterTomb;
 	private ObjectStep getFirstKey;

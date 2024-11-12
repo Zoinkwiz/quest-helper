@@ -116,20 +116,30 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ZoneRequirement inZemouregalsBaseSewer;
 
 	// Steps
+	/// 0 + 2
 	private NpcStep startQuest;
+
+	/// 4
 	private ObjectStep enterTomb;
+
+	/// 6 + 8
+	private ConditionalStep unsortedStep6;
 	private ObjectStep getFirstKey;
 	private ObjectStep getSecondKey;
 	private ObjectStep pullSouthLever;
 	private ObjectStep pullNorthLever;
+
+	/// 10
+	private ConditionalStep fightGolemCond;
 	private ObjectStep enterGolemArena;
 	private NpcStep fightGolemGuard;
+
+	/// 12 + 14
+	private ConditionalStep finishTilePuzzleAndGetCanopicJar;
 	private ObjectStep enterTombBasement;
-	private ConditionalStep unsortedStep6;
-	private ConditionalStep unsortedStep10;
 	private PuzzleWrapperStep solveTilePuzzle;
 	private ObjectStep searchShelvesForUrn;
-	private ConditionalStep finishTilePuzzleAndGetCanopicJar;
+	private ObjectStep inspectMurals;
 	private ConditionalStep unsortedStep16;
 	private ConditionalStep unsortedStep18;
 	private ConditionalStep unsortedStep20;
@@ -188,7 +198,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		steps.put(4, enterTomb);
 		steps.put(6, unsortedStep6);
 		steps.put(8, unsortedStep6);
-		steps.put(10, unsortedStep10);
+		steps.put(10, fightGolemCond);
 		steps.put(12, finishTilePuzzleAndGetCanopicJar);
 		steps.put(14, finishTilePuzzleAndGetCanopicJar);
 		steps.put(16, unsortedStep16);
@@ -348,12 +358,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var insideGolenArena = new ZoneRequirement(golemArenaZone);
 		enterGolemArena = new ObjectStep(this, ObjectID.IMPOSING_DOORS_50211, new WorldPoint(3885, 4597, 0), "Open the imposing doors, ready to fight the Golem guard.");
 		fightGolemGuard = new NpcStep(this, NpcID.GOLEM_GUARD, new WorldPoint(3860, 4595, 0), "Fight the Golem guard. It is weak to crush style weapons. Use Protect from Melee to avoid damage from his attacks. When the screen shakes, step away from him to avoid taking damage.");
-		unsortedStep10 = new ConditionalStep(this, enterGolemArena);
+		fightGolemCond = new ConditionalStep(this, enterGolemArena);
 		// Get inside the tomb if you're not already inside. In case the user has teleported out or died to golem?
-		unsortedStep10.addStep(not(insideTomb), enterTomb);
-		unsortedStep10.addStep(byNorthLeverReq, leaveNorthLever);
-		unsortedStep10.addStep(bySouthLeverReq, leaveSouthLever);
-		unsortedStep10.addStep(insideGolenArena, fightGolemGuard);
+		fightGolemCond.addStep(not(insideTomb), enterTomb);
+		fightGolemCond.addStep(byNorthLeverReq, leaveNorthLever);
+		fightGolemCond.addStep(bySouthLeverReq, leaveSouthLever);
+		fightGolemCond.addStep(insideGolenArena, fightGolemGuard);
 
 		var enterGolemArenaWithoutFight = new ObjectStep(this, ObjectID.IMPOSING_DOORS_50211, new WorldPoint(3885, 4597, 0), "Open the imposing doors to the north-east of the tomb.");
 		enterTombBasement = new ObjectStep(this, ObjectID.STAIRS_55785, new WorldPoint(3860, 4596, 0), "Climb the stairs down the tomb basement.");
@@ -364,7 +374,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		searchShelvesForUrn = new ObjectStep(this, ObjectID.SHELVES_55796, new WorldPoint(3854, 4722, 0), "Search the shelves to the west for an oil-filled canopic jar.");
 		var oilFilledCanopicJar = new ItemRequirement("Oil-filled canopic jar", ItemID.CANOPIC_JAR_OIL);
 
-		var inspectMurals = new ObjectStep(this, ObjectID.MURAL_55790, new WorldPoint(3852, 4687, 0), "Inspect the murals in the room to the south.", oilFilledCanopicJar);
+		inspectMurals = new ObjectStep(this, ObjectID.MURAL_55790, new WorldPoint(3852, 4687, 0), "Inspect the murals in the room to the south.", oilFilledCanopicJar);
 
 		finishTilePuzzleAndGetCanopicJar = new ConditionalStep(this, enterTomb);
 		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
@@ -716,6 +726,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			enterTombBasement,
 			solveTilePuzzle,
 			searchShelvesForUrn,
+			inspectMurals,
 			unsortedStep16,
 			unsortedStep18
 		), List.of(

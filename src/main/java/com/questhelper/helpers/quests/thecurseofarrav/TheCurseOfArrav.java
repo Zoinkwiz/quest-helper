@@ -156,6 +156,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private QuestRequirement haveMinedAFullPath;
 	private QuestRequirement haveUsedPlans;
 	private QuestRequirement haveUsedKey;
+	private QuestRequirement haveMetArrav;
 	private ObjectStep searchTableForDecoderStrips;
 	private ObjectStep enterStorageRoom;
 	private ObjectStep openChestForCodeKey;
@@ -234,7 +235,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		haveMinedAFullPath = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 30);
 		haveUsedPlans = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 38);
 		haveUsedKey = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 46);
-		var haveMetArrav = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 54);
+		haveMetArrav = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 54);
 
 		// Required items
 		dwellberries3 = new ItemRequirement("Dwellberries", ItemID.DWELLBERRIES, 3);

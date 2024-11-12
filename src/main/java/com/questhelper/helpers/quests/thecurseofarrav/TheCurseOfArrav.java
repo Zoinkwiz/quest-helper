@@ -104,6 +104,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ItemRequirement baseKey;
 
 	// Zones & their requirements
+	/// Top floor of the tomb (Uzer Mastaba)
+	private ZoneRequirement insideTomb;
 	private ZoneRequirement inZemouregalsBaseSection1;
 	private ZoneRequirement inZemouregalsBaseSection2;
 	private ZoneRequirement inZemouregalsBaseSection3;
@@ -213,6 +215,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	@Override
 	protected void setupZones()
 	{
+		insideTomb = new ZoneRequirement(new Zone(new WorldPoint(3842, 4603, 0), new WorldPoint(3900, 4547, 0)));
+
 		// Right as you head into the base
 		inZemouregalsBaseSection1 = new ZoneRequirement(new Zone(new WorldPoint(3536, 4577, 0), new WorldPoint(3564, 4547, 0)));
 		// After you've passed the first door
@@ -269,14 +273,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var todo = new NpcStep(this, 5, "TODO XD");
 
 		startQuest = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Talk to Elias south of Ruins of Uzer to start the quest.");
-		((NpcStep) startQuest).addTeleport(fairyRingDLQ);
+		startQuest.addTeleport(fairyRingDLQ);
 		startQuest.addDialogStep("Yes.");
 
 		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.");
 		// TODO: Ensure player can get hint to return
 
-		var insideTomb = new Zone(new WorldPoint(3842, 4603, 0), new WorldPoint(3900, 4547, 0));
-		var insideTombReq = new ZoneRequirement(insideTomb);
 		var hasFirstKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
 		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton to the south of the entrance.");
 		var hasSecondKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY_30309);
@@ -306,7 +308,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep6 = new ConditionalStep(this, enterTomb);
 
 		// Get inside the tomb if you're not already inside. In case the user has teleported out or died to golem?
-		((ConditionalStep) unsortedStep6).addStep(not(insideTombReq), enterTomb);
+		((ConditionalStep) unsortedStep6).addStep(not(insideTomb), enterTomb);
 
 		// If the user has flipped the south lever & needs to get out of the little room
 		((ConditionalStep) unsortedStep6).addStep(and(haveFlippedSouthLever, bySouthLeverReq), leaveSouthLever);
@@ -337,7 +339,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		fightGolemGuard = new NpcStep(this, NpcID.GOLEM_GUARD, new WorldPoint(3860, 4595, 0), "Fight the Golem guard. He is weak to crush style weapons. Use Protect from Melee to avoid damage from his attacks. When the screen shakes, step away from him to avoid taking damage.");
 		unsortedStep10 = new ConditionalStep(this, enterGolemArena);
 		// Get inside the tomb if you're not already inside. In case the user has teleported out or died to golem?
-		unsortedStep10.addStep(not(insideTombReq), enterTomb);
+		unsortedStep10.addStep(not(insideTomb), enterTomb);
 		unsortedStep10.addStep(byNorthLeverReq, leaveNorthLever);
 		unsortedStep10.addStep(bySouthLeverReq, leaveSouthLever);
 		unsortedStep10.addStep(insideGolenArena, fightGolemGuard);
@@ -363,9 +365,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		((ConditionalStep) unsortedStep12).addStep(and(insideTombSecondFloorReq, finishedTilePuzzle, oilFilledCanopicJar), todo);
 		((ConditionalStep) unsortedStep12).addStep(and(insideTombSecondFloorReq, finishedTilePuzzle), searchShelvesForUrn);
 		((ConditionalStep) unsortedStep12).addStep(insideTombSecondFloorReq, solveTilePuzzle);
-		((ConditionalStep) unsortedStep12).addStep(not(insideTombReq), enterTomb);
-		((ConditionalStep) unsortedStep12).addStep(and(insideTombReq, insideGolenArena), enterTombBasement);
-		((ConditionalStep) unsortedStep12).addStep(and(insideTombReq), enterGolemArenaWithoutFight);
+		((ConditionalStep) unsortedStep12).addStep(not(insideTomb), enterTomb);
+		((ConditionalStep) unsortedStep12).addStep(and(insideTomb, insideGolenArena), enterTombBasement);
+		((ConditionalStep) unsortedStep12).addStep(and(insideTomb), enterGolemArenaWithoutFight);
 
 		var oilAndBerryFilledCanopicJar = new ItemRequirement("Canopic jar (oil and berries)", ItemID.CANOPIC_JAR_OIL_AND_BERRIES);
 
@@ -376,9 +378,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		((ConditionalStep) unsortedStep16).addStep(oilAndBerryFilledCanopicJar, combineJarWithRingOfLife);
 		((ConditionalStep) unsortedStep16).addStep(oilFilledCanopicJar, combineJarWithDwellberries);
 		((ConditionalStep) unsortedStep16).addStep(and(insideTombSecondFloorReq, finishedTilePuzzle), searchShelvesForUrn);
-		((ConditionalStep) unsortedStep16).addStep(not(insideTombReq), enterTomb);
-		((ConditionalStep) unsortedStep16).addStep(and(insideTombReq, insideGolenArena), enterTombBasement);
-		((ConditionalStep) unsortedStep16).addStep(and(insideTombReq), enterGolemArenaWithoutFight);
+		((ConditionalStep) unsortedStep16).addStep(not(insideTomb), enterTomb);
+		((ConditionalStep) unsortedStep16).addStep(and(insideTomb, insideGolenArena), enterTombBasement);
+		((ConditionalStep) unsortedStep16).addStep(and(insideTomb), enterGolemArenaWithoutFight);
 
 
 		var returnToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
@@ -395,7 +397,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep18 = new ConditionalStep(this, returnToElias);
 		((ConditionalStep) unsortedStep18).addStep(insideTombSecondFloorReq, returnToEliasByWalking);
 		((ConditionalStep) unsortedStep18).addStep(insideGolenArena, returnToEliasByWalkingMidwayGolem);
-		((ConditionalStep) unsortedStep18).addStep(insideTombReq, returnToEliasByWalkingMidway);
+		((ConditionalStep) unsortedStep18).addStep(insideTomb, returnToEliasByWalkingMidway);
 		// ardy cloak + fairy ring takes 50s, walking takes 1m12s
 
 		var trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.TROLLHEIM_TELEPORT);

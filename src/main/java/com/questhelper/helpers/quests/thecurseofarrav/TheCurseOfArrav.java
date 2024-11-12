@@ -568,7 +568,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var pastGrapplePuzzleRoom = new ZoneRequirement(new Zone(new WorldPoint(3621, 4589, 0), new WorldPoint(3645, 4578, 0)));
 
-		enterBossRoom = new ObjectStep(this, ObjectID.PEDESTAL_50539, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid most of Arravs damage. When Arrav throws an axe towards you, step to the side or behind him.", rangedCombatGear);
+		enterBossRoom = new ObjectStep(this, ObjectID.PEDESTAL_50539, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", rangedCombatGear);
 
 		unsortedStep52 = new ConditionalStep(this, enterZemouregalsBase);
 		unsortedStep52.addStep(pastGrapplePuzzleRoom, enterBossRoom);

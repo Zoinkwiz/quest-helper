@@ -74,6 +74,7 @@ import net.runelite.api.coords.WorldPoint;
  * <p>
  * <a href="https://oldschool.runescape.wiki/w/The_Curse_of_Arrav">The OSRS wiki guide</a> and <a href="https://www.youtube.com/watch?v=IIMTpgD0BUY">Slayermusiq1's Quest Guide</a> was referenced for this guide
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class TheCurseOfArrav extends BasicQuestHelper
 {
 	// Required items

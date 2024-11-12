@@ -158,6 +158,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ObjectStep enterZemouregalsBase;
 	private DetailedQuestStep getToBackOfZemouregalsBase;
 	private QuestRequirement haveKilledGolem;
+	private VarbitRequirement finishedTilePuzzle;
 	private QuestRequirement haveMadeCanopicJar;
 	private QuestRequirement haveMinedAFullPath;
 	private QuestRequirement haveUsedPlans;
@@ -243,6 +244,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		haveKilledGolem = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 12);
+		finishedTilePuzzle = new VarbitRequirement(11483, 1);
 		haveMadeCanopicJar = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 18);
 		haveMinedAFullPath = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 30);
 		haveUsedPlans = new QuestRequirement(QuestHelperQuest.THE_CURSE_OF_ARRAV, 38);
@@ -364,7 +366,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var inspectMurals = new ObjectStep(this, ObjectID.MURAL_55790, new WorldPoint(3852, 4687, 0), "Inspect the murals in the room to the south.", oilFilledCanopicJar);
 
-		var finishedTilePuzzle = new VarbitRequirement(11483, 1);
 		unsortedStep12 = new ConditionalStep(this, todo);
 		unsortedStep12.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
 		unsortedStep12.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), todo);

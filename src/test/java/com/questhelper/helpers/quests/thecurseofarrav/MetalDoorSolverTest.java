@@ -20,6 +20,9 @@ public class MetalDoorSolverTest
 
 		// from Gupinic
 		assertArrayEquals(new int[]{1, 3, 7, 2}, MetalDoorSolver.calculate("FBDG"));
+
+		// from Avsynthe
+		assertArrayEquals(new int[]{1, 8, 4, 5}, MetalDoorSolver.calculate("FCEB"));
 	}
 
 	@Test

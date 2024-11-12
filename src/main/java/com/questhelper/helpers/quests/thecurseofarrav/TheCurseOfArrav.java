@@ -66,7 +66,6 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 
 /**
@@ -417,8 +416,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var trollweissCave1 = new Zone(11168);
 		var inTrollweissCave = new ZoneRequirement(trollweissCave1);
-
-		var whereToStandSprite = SpriteID.COMBAT_STYLE_PICKAXE_SMASH;
 
 		// Rubble 50598 = 2 hits
 		// Rubble 50587/50589 = 1 hit

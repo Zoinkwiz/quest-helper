@@ -281,7 +281,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// TODO: Ensure player can get hint to return
 
 		var hasFirstKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
-		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton to the south of the entrance.");
+		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton south of the entrance.");
 		var hasSecondKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY_30309);
 		getSecondKey = new ObjectStep(this, ObjectID.SKELETON_50353, new WorldPoint(3880, 4585, 0), "Get the second Mastaba key from the skeleton east of the entrance.");
 		var bySouthLever = new Zone(new WorldPoint(3893, 4554, 0), new WorldPoint(3894, 4552, 0));

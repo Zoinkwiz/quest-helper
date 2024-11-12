@@ -115,8 +115,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ZoneRequirement inZemouregalsBaseSewer;
 
 	// Steps
-	private QuestStep startQuest;
-	private QuestStep enterTomb;
+	private NpcStep startQuest;
+	private ObjectStep enterTomb;
 	private ObjectStep getFirstKey;
 	private ObjectStep getSecondKey;
 	private ObjectStep pullSouthLever;
@@ -124,27 +124,28 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ObjectStep enterGolemArena;
 	private NpcStep fightGolemGuard;
 	private ObjectStep enterTombBasement;
-	private QuestStep unsortedStep6;
+	private ConditionalStep unsortedStep6;
 	private ConditionalStep unsortedStep10;
 	private PuzzleWrapperStep solveTilePuzzle;
-	private QuestStep unsortedStep12;
-	private QuestStep unsortedStep16;
-	private QuestStep unsortedStep18;
-	private QuestStep unsortedStep20;
-	private QuestStep unsortedStep24;
-	private QuestStep unsortedStep26;
-	private QuestStep unsortedStep28;
-	private QuestStep unsortedStep30;
-	private QuestStep unsortedStep32;
-	private QuestStep unsortedStep34;
-	private QuestStep unsortedStep42;
-	private QuestStep unsortedStep44;
-	private QuestStep unsortedStep46;
-	private QuestStep unsortedStep48;
-	private QuestStep unsortedStep52;
-	private QuestStep unsortedStep54;
-	private QuestStep unsortedStep56;
-	private QuestStep unsortedStep58;
+	private ConditionalStep unsortedStep12;
+	private ConditionalStep unsortedStep16;
+	private ConditionalStep unsortedStep18;
+	private ConditionalStep unsortedStep20;
+	private ConditionalStep unsortedStep24;
+	private ConditionalStep unsortedStep26;
+	private ConditionalStep unsortedStep28;
+	private ConditionalStep unsortedStep30;
+	private ConditionalStep unsortedStep32;
+	private ConditionalStep unsortedStep34;
+	private ConditionalStep unsortedStep42;
+	private ConditionalStep unsortedStep44;
+	private ConditionalStep unsortedStep46;
+	private ConditionalStep unsortedStep48;
+	private ConditionalStep unsortedStep52;
+	private ConditionalStep unsortedStep54;
+	private ConditionalStep unsortedStep56;
+	private NpcStep finishQuest;
+
 	private PuzzleWrapperStep rubbleMiner1;
 	private PuzzleWrapperStep rubbleMiner2;
 	private PuzzleWrapperStep rubbleMiner3;
@@ -208,7 +209,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		steps.put(52, unsortedStep52);
 		steps.put(54, unsortedStep54);
 		steps.put(56, unsortedStep56);
-		steps.put(58, unsortedStep58);
+		steps.put(58, finishQuest);
 
 		return steps;
 	}
@@ -309,27 +310,27 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep6 = new ConditionalStep(this, enterTomb);
 
 		// Get inside the tomb if you're not already inside. In case the user has teleported out or died to golem?
-		((ConditionalStep) unsortedStep6).addStep(not(insideTomb), enterTomb);
+		unsortedStep6.addStep(not(insideTomb), enterTomb);
 
 		// If the user has flipped the south lever & needs to get out of the little room
-		((ConditionalStep) unsortedStep6).addStep(and(haveFlippedSouthLever, bySouthLeverReq), leaveSouthLever);
+		unsortedStep6.addStep(and(haveFlippedSouthLever, bySouthLeverReq), leaveSouthLever);
 		// If the user has flipped the north lever & needs to get out of the little room
-		((ConditionalStep) unsortedStep6).addStep(and(haveFlippedNorthLever, byNorthLeverReq), leaveNorthLever);
+		unsortedStep6.addStep(and(haveFlippedNorthLever, byNorthLeverReq), leaveNorthLever);
 
 		// If the user has not already put the key in the south lever, and does not have the key
-		((ConditionalStep) unsortedStep6).addStep(and(needToInsertKeyInSouthLever, not(hasSecondKey)), getSecondKey);
+		unsortedStep6.addStep(and(needToInsertKeyInSouthLever, not(hasSecondKey)), getSecondKey);
 		// If the user has not already put the key in the north lever, and does not have the key
-		((ConditionalStep) unsortedStep6).addStep(and(needToInsertKeyInNorthLever, not(hasFirstKey)), getFirstKey);
+		unsortedStep6.addStep(and(needToInsertKeyInNorthLever, not(hasFirstKey)), getFirstKey);
 
 		// If the user has the key & stands by the south lever
-		((ConditionalStep) unsortedStep6).addStep(and(needToFlipSouthLever, bySouthLeverReq), pullSouthLever);
+		unsortedStep6.addStep(and(needToFlipSouthLever, bySouthLeverReq), pullSouthLever);
 		// If the user needs to flip the south lever, but is not inside the little room, get to the little room
-		((ConditionalStep) unsortedStep6).addStep(not(haveFlippedSouthLever), getToSouthLever);
+		unsortedStep6.addStep(not(haveFlippedSouthLever), getToSouthLever);
 
 		// If the user has the key & stands by the north lever
-		((ConditionalStep) unsortedStep6).addStep(and(needToFlipNorthLever, byNorthLeverReq), pullNorthLever);
+		unsortedStep6.addStep(and(needToFlipNorthLever, byNorthLeverReq), pullNorthLever);
 		// If the user needs to flip the north lever, but is not inside the little room, get to the little room
-		((ConditionalStep) unsortedStep6).addStep(needToFlipNorthLever, getToNorthLever);
+		unsortedStep6.addStep(needToFlipNorthLever, getToNorthLever);
 
 		// Once last lever was pulled, quest varbit changed from 6 to 8, then 8 to 10 at the same tick
 		// This might have to do with which order you pulled the levers in
@@ -362,13 +363,13 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var finishedTilePuzzle = new VarbitRequirement(11483, 1);
 		unsortedStep12 = new ConditionalStep(this, todo);
-		((ConditionalStep) unsortedStep12).addStep(and(insideTombSecondFloorReq, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
-		((ConditionalStep) unsortedStep12).addStep(and(insideTombSecondFloorReq, finishedTilePuzzle, oilFilledCanopicJar), todo);
-		((ConditionalStep) unsortedStep12).addStep(and(insideTombSecondFloorReq, finishedTilePuzzle), searchShelvesForUrn);
-		((ConditionalStep) unsortedStep12).addStep(insideTombSecondFloorReq, solveTilePuzzle);
-		((ConditionalStep) unsortedStep12).addStep(not(insideTomb), enterTomb);
-		((ConditionalStep) unsortedStep12).addStep(and(insideTomb, insideGolenArena), enterTombBasement);
-		((ConditionalStep) unsortedStep12).addStep(and(insideTomb), enterGolemArenaWithoutFight);
+		unsortedStep12.addStep(and(insideTombSecondFloorReq, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
+		unsortedStep12.addStep(and(insideTombSecondFloorReq, finishedTilePuzzle, oilFilledCanopicJar), todo);
+		unsortedStep12.addStep(and(insideTombSecondFloorReq, finishedTilePuzzle), searchShelvesForUrn);
+		unsortedStep12.addStep(insideTombSecondFloorReq, solveTilePuzzle);
+		unsortedStep12.addStep(not(insideTomb), enterTomb);
+		unsortedStep12.addStep(and(insideTomb, insideGolenArena), enterTombBasement);
+		unsortedStep12.addStep(and(insideTomb), enterGolemArenaWithoutFight);
 
 		var oilAndBerryFilledCanopicJar = new ItemRequirement("Canopic jar (oil and berries)", ItemID.CANOPIC_JAR_OIL_AND_BERRIES);
 
@@ -376,12 +377,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var combineJarWithRingOfLife = new ItemStep(this, "Combine the Dwellberries with the Ring of life.", oilAndBerryFilledCanopicJar.highlighted(), ringOfLife.highlighted());
 
 		unsortedStep16 = new ConditionalStep(this, todo);
-		((ConditionalStep) unsortedStep16).addStep(oilAndBerryFilledCanopicJar, combineJarWithRingOfLife);
-		((ConditionalStep) unsortedStep16).addStep(oilFilledCanopicJar, combineJarWithDwellberries);
-		((ConditionalStep) unsortedStep16).addStep(and(insideTombSecondFloorReq, finishedTilePuzzle), searchShelvesForUrn);
-		((ConditionalStep) unsortedStep16).addStep(not(insideTomb), enterTomb);
-		((ConditionalStep) unsortedStep16).addStep(and(insideTomb, insideGolenArena), enterTombBasement);
-		((ConditionalStep) unsortedStep16).addStep(and(insideTomb), enterGolemArenaWithoutFight);
+		unsortedStep16.addStep(oilAndBerryFilledCanopicJar, combineJarWithRingOfLife);
+		unsortedStep16.addStep(oilFilledCanopicJar, combineJarWithDwellberries);
+		unsortedStep16.addStep(and(insideTombSecondFloorReq, finishedTilePuzzle), searchShelvesForUrn);
+		unsortedStep16.addStep(not(insideTomb), enterTomb);
+		unsortedStep16.addStep(and(insideTomb, insideGolenArena), enterTombBasement);
+		unsortedStep16.addStep(and(insideTomb), enterGolemArenaWithoutFight);
 
 
 		var returnToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
@@ -396,9 +397,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		returnToElias.addSubSteps(returnToEliasByWalking, returnToEliasByWalkingMidway, returnToEliasByWalkingMidwayGolem);
 
 		unsortedStep18 = new ConditionalStep(this, returnToElias);
-		((ConditionalStep) unsortedStep18).addStep(insideTombSecondFloorReq, returnToEliasByWalking);
-		((ConditionalStep) unsortedStep18).addStep(insideGolenArena, returnToEliasByWalkingMidwayGolem);
-		((ConditionalStep) unsortedStep18).addStep(insideTomb, returnToEliasByWalkingMidway);
+		unsortedStep18.addStep(insideTombSecondFloorReq, returnToEliasByWalking);
+		unsortedStep18.addStep(insideGolenArena, returnToEliasByWalkingMidwayGolem);
+		unsortedStep18.addStep(insideTomb, returnToEliasByWalkingMidway);
 		// ardy cloak + fairy ring takes 50s, walking takes 1m12s
 
 		var trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.TROLLHEIM_TELEPORT);
@@ -440,41 +441,41 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		rubbleMiner1.addSubSteps(rubbleMiner2, rubbleMiner3, rubbleMiner4);
 
 		unsortedStep20 = new ConditionalStep(this, headToTrollheim);
-		((ConditionalStep) unsortedStep20).addStep(inTrollweissCave, rubbleMiner1);
-		((ConditionalStep) unsortedStep20).addStep(onTrollweissMountain, enterTrollweissCave);
-		((ConditionalStep) unsortedStep20).addStep(inTrollheimCave, continueThroughTrollheimCave);
+		unsortedStep20.addStep(inTrollweissCave, rubbleMiner1);
+		unsortedStep20.addStep(onTrollweissMountain, enterTrollweissCave);
+		unsortedStep20.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 		unsortedStep24 = new ConditionalStep(this, headToTrollheim);
-		((ConditionalStep) unsortedStep24).addStep(inTrollweissCave, rubbleMiner2);
-		((ConditionalStep) unsortedStep24).addStep(onTrollweissMountain, enterTrollweissCave);
-		((ConditionalStep) unsortedStep24).addStep(inTrollheimCave, continueThroughTrollheimCave);
+		unsortedStep24.addStep(inTrollweissCave, rubbleMiner2);
+		unsortedStep24.addStep(onTrollweissMountain, enterTrollweissCave);
+		unsortedStep24.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 		unsortedStep26 = new ConditionalStep(this, headToTrollheim);
-		((ConditionalStep) unsortedStep26).addStep(inTrollweissCave, rubbleMiner3);
-		((ConditionalStep) unsortedStep26).addStep(onTrollweissMountain, enterTrollweissCave);
-		((ConditionalStep) unsortedStep26).addStep(inTrollheimCave, continueThroughTrollheimCave);
+		unsortedStep26.addStep(inTrollweissCave, rubbleMiner3);
+		unsortedStep26.addStep(onTrollweissMountain, enterTrollweissCave);
+		unsortedStep26.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 		unsortedStep28 = new ConditionalStep(this, headToTrollheim);
-		((ConditionalStep) unsortedStep28).addStep(inTrollweissCave, rubbleMiner4);
-		((ConditionalStep) unsortedStep28).addStep(onTrollweissMountain, enterTrollweissCave);
-		((ConditionalStep) unsortedStep28).addStep(inTrollheimCave, continueThroughTrollheimCave);
+		unsortedStep28.addStep(inTrollweissCave, rubbleMiner4);
+		unsortedStep28.addStep(onTrollweissMountain, enterTrollweissCave);
+		unsortedStep28.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 
 		var climbUpstairsAndTalkToArrav = new ObjectStep(this, ObjectID.STAIRS_50508, new WorldPoint(2811, 10267, 0), "Climb up the stairs in the room with the red tile floor and talk to Arrav.");
 		unsortedStep30 = new ConditionalStep(this, headToTrollheim);
-		((ConditionalStep) unsortedStep30).addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
-		((ConditionalStep) unsortedStep30).addStep(onTrollweissMountain, enterTrollweissCave);
-		((ConditionalStep) unsortedStep30).addStep(inTrollheimCave, continueThroughTrollheimCave);
+		unsortedStep30.addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
+		unsortedStep30.addStep(onTrollweissMountain, enterTrollweissCave);
+		unsortedStep30.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 		var arravHouseFirstRoom = new Zone(new WorldPoint(2848, 3868, 0), new WorldPoint(2858, 3873, 0));
 		var inArravHouseFirstRoom = new ZoneRequirement(arravHouseFirstRoom);
 		var talkToArrav = new NpcStep(this, NpcID.ARRAV_14129, new WorldPoint(2856, 3871, 0), "Talk to Arrav.");
 
 		unsortedStep32 = new ConditionalStep(this, headToTrollheim);
-		((ConditionalStep) unsortedStep32).addStep(inArravHouseFirstRoom, talkToArrav);
-		((ConditionalStep) unsortedStep32).addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
-		((ConditionalStep) unsortedStep32).addStep(onTrollweissMountain, enterTrollweissCave);
-		((ConditionalStep) unsortedStep32).addStep(inTrollheimCave, continueThroughTrollheimCave);
+		unsortedStep32.addStep(inArravHouseFirstRoom, talkToArrav);
+		unsortedStep32.addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
+		unsortedStep32.addStep(onTrollweissMountain, enterTrollweissCave);
+		unsortedStep32.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 		var arravHouseSecondRoom = new Zone(new WorldPoint(2863, 3865, 0), new WorldPoint(2859, 3873, 0));
 		var inArravHouseSecondRoom = new ZoneRequirement(arravHouseSecondRoom);
@@ -482,11 +483,11 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var goToNextRoom = new ObjectStep(this, ObjectID.DOOR_50514, new WorldPoint(2859, 3870, 0), "Enter the room to your east and search the tapestry for ?.");
 		var searchTapestry = new ObjectStep(this, ObjectID.TAPESTRY_50516, new WorldPoint(2861, 3865, 0), "Search the tapestry in the south of the room.");
 		unsortedStep34 = new ConditionalStep(this, headToTrollheim);
-		((ConditionalStep) unsortedStep34).addStep(inArravHouseSecondRoom, searchTapestry);
-		((ConditionalStep) unsortedStep34).addStep(inArravHouseFirstRoom, goToNextRoom);
-		((ConditionalStep) unsortedStep34).addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
-		((ConditionalStep) unsortedStep34).addStep(onTrollweissMountain, enterTrollweissCave);
-		((ConditionalStep) unsortedStep34).addStep(inTrollheimCave, continueThroughTrollheimCave);
+		unsortedStep34.addStep(inArravHouseSecondRoom, searchTapestry);
+		unsortedStep34.addStep(inArravHouseFirstRoom, goToNextRoom);
+		unsortedStep34.addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
+		unsortedStep34.addStep(onTrollweissMountain, enterTrollweissCave);
+		unsortedStep34.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 
 		var tapestryFindText = "Can be acquired by heading back to Zemouregal's Fort past the Trollweiss mining dungeon and searching the tapestry.";
@@ -524,9 +525,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var passZemouregalsBaseDoor4 = new ObjectStep(this, ObjectID.GATE_50537, new WorldPoint(3605, 4603, 0), "Open the gate and make your way to the back of Zemouregal's base.", canopicJarFull, insulatedBoots);
 
 		unsortedStep44 = new ConditionalStep(this, enterZemouregalsBase);
-		((ConditionalStep) unsortedStep44).addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
-		((ConditionalStep) unsortedStep44).addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
-		((ConditionalStep) unsortedStep44).addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
+		unsortedStep44.addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
+		unsortedStep44.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
+		unsortedStep44.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
 		var enterZemouregalsBaseSewer = new ObjectStep(this, ObjectID.PIPE_50523, new WorldPoint(3609, 4598, 0), "Enter the sewers and make your way to the back of Zemouregal's base.", canopicJarFull, insulatedBoots.highlighted().equipped());
 
@@ -537,12 +538,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// 44 -> 46 when opening door, consuming the base key
 
 		unsortedStep46 = new ConditionalStep(this, enterZemouregalsBase);
-		((ConditionalStep) unsortedStep46).addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep46).addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep46).addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
-		((ConditionalStep) unsortedStep46).addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
-		((ConditionalStep) unsortedStep46).addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
-		((ConditionalStep) unsortedStep46).addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
+		unsortedStep46.addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
+		unsortedStep46.addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
+		unsortedStep46.addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
+		unsortedStep46.addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
+		unsortedStep46.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
+		unsortedStep46.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
 		var inSecondPart = new ZoneRequirement(new Zone(new WorldPoint(3590, 4538, 0), new WorldPoint(3622, 4597, 0)));
 		var inStorageRoom = new ZoneRequirement(new Zone(new WorldPoint(3614, 4571, 0), new WorldPoint(3605, 4563, 0)));
@@ -563,18 +564,18 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// also used for 50
 		unsortedStep48 = new ConditionalStep(this, enterZemouregalsBase);
 		// TODO: DECODER STRIPS ARE NOT NECESSARY. REMOVE THEM :)
-		((ConditionalStep) unsortedStep48).addStep(and(inSecondPart, not(inStorageRoom), decoderStrips, codeKey), metalDoorSolver);
-		((ConditionalStep) unsortedStep48).addStep(and(inStorageRoom, not(decoderStrips)), searchTableForDecoderStrips);
-		((ConditionalStep) unsortedStep48).addStep(and(inStorageRoom, not(codeKey)), openChestForCodeKey);
-		((ConditionalStep) unsortedStep48).addStep(and(inStorageRoom, decoderStrips), exitStorageRoom);
-		((ConditionalStep) unsortedStep48).addStep(and(inSecondPart, not(codeKey)), enterStorageRoom);
-		((ConditionalStep) unsortedStep48).addStep(and(inSecondPart, not(decoderStrips)), enterStorageRoom);
-		((ConditionalStep) unsortedStep48).addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep48).addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep48).addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
-		((ConditionalStep) unsortedStep48).addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
-		((ConditionalStep) unsortedStep48).addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
-		((ConditionalStep) unsortedStep48).addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
+		unsortedStep48.addStep(and(inSecondPart, not(inStorageRoom), decoderStrips, codeKey), metalDoorSolver);
+		unsortedStep48.addStep(and(inStorageRoom, not(decoderStrips)), searchTableForDecoderStrips);
+		unsortedStep48.addStep(and(inStorageRoom, not(codeKey)), openChestForCodeKey);
+		unsortedStep48.addStep(and(inStorageRoom, decoderStrips), exitStorageRoom);
+		unsortedStep48.addStep(and(inSecondPart, not(codeKey)), enterStorageRoom);
+		unsortedStep48.addStep(and(inSecondPart, not(decoderStrips)), enterStorageRoom);
+		unsortedStep48.addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
+		unsortedStep48.addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
+		unsortedStep48.addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
+		unsortedStep48.addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
+		unsortedStep48.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
+		unsortedStep48.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
 		openMetalDoors = new ObjectStep(this, ObjectID.METAL_DOORS, new WorldPoint(3612, 4582, 0), "Step through through the metal doors.", canopicJarFull, anyGrappleableCrossbow, mithrilGrapple);
 
@@ -586,28 +587,28 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		enterBossRoom = new ObjectStep(this, ObjectID.PEDESTAL_50539, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid most of Arravs damage. When Arrav throws an axe towards you, step to the side or behind him.", rangedCombatGear);
 
 		unsortedStep52 = new ConditionalStep(this, enterZemouregalsBase);
-		((ConditionalStep) unsortedStep52).addStep(pastGrapplePuzzleRoom, enterBossRoom);
-		((ConditionalStep) unsortedStep52).addStep(inGrapplePuzzleRoom, grappleAcross);
-		((ConditionalStep) unsortedStep52).addStep(inSecondPart, openMetalDoors);
-		((ConditionalStep) unsortedStep52).addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep52).addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep52).addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
-		((ConditionalStep) unsortedStep52).addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
-		((ConditionalStep) unsortedStep52).addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
-		((ConditionalStep) unsortedStep52).addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
+		unsortedStep52.addStep(pastGrapplePuzzleRoom, enterBossRoom);
+		unsortedStep52.addStep(inGrapplePuzzleRoom, grappleAcross);
+		unsortedStep52.addStep(inSecondPart, openMetalDoors);
+		unsortedStep52.addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
+		unsortedStep52.addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
+		unsortedStep52.addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
+		unsortedStep52.addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
+		unsortedStep52.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
+		unsortedStep52.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
 		// User has engaged Arrav
 
 		fightArrav = new NpcStep(this, NpcID.ARRAV_14132, new WorldPoint(3635, 4582, 0), "fight arrav xd");
 		unsortedStep54 = new ConditionalStep(this, enterZemouregalsBase);
-		((ConditionalStep) unsortedStep54).addStep(or(pastGrapplePuzzleRoom, inGrapplePuzzleRoom), fightArrav);
-		((ConditionalStep) unsortedStep54).addStep(inSecondPart, openMetalDoors);
-		((ConditionalStep) unsortedStep54).addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep54).addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep54).addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
-		((ConditionalStep) unsortedStep54).addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
-		((ConditionalStep) unsortedStep54).addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
-		((ConditionalStep) unsortedStep54).addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
+		unsortedStep54.addStep(or(pastGrapplePuzzleRoom, inGrapplePuzzleRoom), fightArrav);
+		unsortedStep54.addStep(inSecondPart, openMetalDoors);
+		unsortedStep54.addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
+		unsortedStep54.addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
+		unsortedStep54.addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
+		unsortedStep54.addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
+		unsortedStep54.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
+		unsortedStep54.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
 
 		// 54 -> 56 when beating arrav
@@ -615,16 +616,16 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var watchTheDialog = new DetailedQuestStep(this, "Watch the dialog.");
 		fightArrav.addSubSteps(watchTheDialog);
 		unsortedStep56 = new ConditionalStep(this, enterZemouregalsBase);
-		((ConditionalStep) unsortedStep56).addStep(or(pastGrapplePuzzleRoom, inGrapplePuzzleRoom), watchTheDialog);
-		((ConditionalStep) unsortedStep56).addStep(inSecondPart, openMetalDoors);
-		((ConditionalStep) unsortedStep56).addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep56).addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
-		((ConditionalStep) unsortedStep56).addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
-		((ConditionalStep) unsortedStep56).addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
-		((ConditionalStep) unsortedStep56).addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
-		((ConditionalStep) unsortedStep56).addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
+		unsortedStep56.addStep(or(pastGrapplePuzzleRoom, inGrapplePuzzleRoom), watchTheDialog);
+		unsortedStep56.addStep(inSecondPart, openMetalDoors);
+		unsortedStep56.addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
+		unsortedStep56.addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
+		unsortedStep56.addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
+		unsortedStep56.addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
+		unsortedStep56.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
+		unsortedStep56.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
-		unsortedStep58 = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Talk to Elias to finish the quest.");
+		finishQuest = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Talk to Elias to finish the quest.");
 	}
 
 	@Override
@@ -769,7 +770,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			grappleAcross,
 			enterBossRoom,
 			fightArrav,
-			unsortedStep58
+			finishQuest
 			// TODO
 		), List.of(
 			// Requirements

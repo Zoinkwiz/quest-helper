@@ -128,7 +128,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ConditionalStep unsortedStep6;
 	private ConditionalStep unsortedStep10;
 	private PuzzleWrapperStep solveTilePuzzle;
-	private ConditionalStep unsortedStep12;
+	private ObjectStep searchShelvesForUrn;
+	private ConditionalStep finishTilePuzzleAndGetCanopicJar;
 	private ConditionalStep unsortedStep16;
 	private ConditionalStep unsortedStep18;
 	private ConditionalStep unsortedStep20;
@@ -188,8 +189,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		steps.put(6, unsortedStep6);
 		steps.put(8, unsortedStep6);
 		steps.put(10, unsortedStep10);
-		steps.put(12, unsortedStep12);
-		steps.put(14, unsortedStep12);
+		steps.put(12, finishTilePuzzleAndGetCanopicJar);
+		steps.put(14, finishTilePuzzleAndGetCanopicJar);
 		steps.put(16, unsortedStep16);
 		steps.put(18, unsortedStep18);
 		steps.put(20, unsortedStep20);
@@ -360,20 +361,18 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		solveTilePuzzle = new TilePuzzleSolver(this).puzzleWrapStep("Move across the floor tile puzzle.");
 
-
-		var searchShelvesForUrn = new ObjectStep(this, ObjectID.SHELVES_55796, new WorldPoint(3854, 4722, 0), "Search the shelves to the west for an oil-filled canopic jar.");
+		searchShelvesForUrn = new ObjectStep(this, ObjectID.SHELVES_55796, new WorldPoint(3854, 4722, 0), "Search the shelves to the west for an oil-filled canopic jar.");
 		var oilFilledCanopicJar = new ItemRequirement("Oil-filled canopic jar", ItemID.CANOPIC_JAR_OIL);
 
 		var inspectMurals = new ObjectStep(this, ObjectID.MURAL_55790, new WorldPoint(3852, 4687, 0), "Inspect the murals in the room to the south.", oilFilledCanopicJar);
 
-		unsortedStep12 = new ConditionalStep(this, todo);
-		unsortedStep12.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
-		unsortedStep12.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), todo);
-		unsortedStep12.addStep(and(insideTombSecondFloor, finishedTilePuzzle), searchShelvesForUrn);
-		unsortedStep12.addStep(insideTombSecondFloor, solveTilePuzzle);
-		unsortedStep12.addStep(not(insideTomb), enterTomb);
-		unsortedStep12.addStep(and(insideTomb, insideGolenArena), enterTombBasement);
-		unsortedStep12.addStep(and(insideTomb), enterGolemArenaWithoutFight);
+		finishTilePuzzleAndGetCanopicJar = new ConditionalStep(this, enterTomb);
+		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
+		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), todo);
+		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTombSecondFloor, finishedTilePuzzle), searchShelvesForUrn);
+		finishTilePuzzleAndGetCanopicJar.addStep(insideTombSecondFloor, solveTilePuzzle);
+		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTomb, insideGolenArena), enterTombBasement);
+		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTomb), enterGolemArenaWithoutFight);
 
 		var oilAndBerryFilledCanopicJar = new ItemRequirement("Canopic jar (oil and berries)", ItemID.CANOPIC_JAR_OIL_AND_BERRIES);
 
@@ -716,6 +715,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			fightGolemGuard,
 			enterTombBasement,
 			solveTilePuzzle,
+			searchShelvesForUrn,
 			unsortedStep16,
 			unsortedStep18
 		), List.of(

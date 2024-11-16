@@ -249,6 +249,7 @@ public class QuestOrders
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.DESERT_TREASURE_II,
+		QuestHelperQuest.THE_CURSE_OF_ARRAV, // Not from wiki
 		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,
 
 		// Remaining section is unordered as not part of list on https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman

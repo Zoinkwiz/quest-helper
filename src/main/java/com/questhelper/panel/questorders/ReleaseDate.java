@@ -217,6 +217,7 @@ public class ReleaseDate
 		QuestHelperQuest.DEATH_ON_THE_ISLE,
 		QuestHelperQuest.MEAT_AND_GREET,
 		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
+		QuestHelperQuest.THE_CURSE_OF_ARRAV,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

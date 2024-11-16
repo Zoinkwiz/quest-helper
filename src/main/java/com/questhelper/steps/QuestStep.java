@@ -596,8 +596,4 @@ public abstract class QuestStep implements Module
 	{
 		return new PuzzleWrapperStep(getQuestHelper(), this, alternateText);
 	}
-
-	public boolean hasOtherStepAsSubstep(QuestStep otherStep) {
-		return this.getSubsteps().contains(otherStep);
-	}
 }

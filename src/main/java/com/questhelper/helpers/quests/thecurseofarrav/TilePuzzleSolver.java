@@ -255,16 +255,6 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 					this.shortestPath = possiblePath;
 				}
 			}
-
-			if (this.shortestPath == null)
-			{
-				// TODO: tell user to just find a way to solve it lol
-			}
-			else
-			{
-				// TODO: figure out how to highlight this? make object steps?
-				// How do I get the correct world points? maybe check objectstep to see if we offset it somewhere with instance points or something
-			}
 		}
 
 		updateSteps();
@@ -359,7 +349,6 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 			{
 				log.debug("user stepped off the path, lead them back");
 				startUpStep(this.mostRecentStep);
-				return;
 			}
 		} else {
 			log.debug("player is outside of puzzle: {} / {} / {}/{}", playerWp, localPoint, xInPuzzle, yInPuzzle);

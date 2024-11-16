@@ -35,17 +35,14 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -582,7 +579,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var inSecondPart = new ZoneRequirement(new Zone(new WorldPoint(3590, 4538, 0), new WorldPoint(3622, 4597, 0)));
 		var inStorageRoom = new ZoneRequirement(new Zone(new WorldPoint(3614, 4571, 0), new WorldPoint(3605, 4563, 0)));
-		var decoderStrips = new ItemRequirement("Decoder strips", ItemID.DECODER_STRIPS);
 		searchTableForDecoderStrips = new ObjectStep(this, ObjectID.TABLE_50533, "Search the table for some decoder strips.");
 		enterStorageRoom = new ObjectStep(this, ObjectID.GATE_50537, new WorldPoint(3609, 4572, 0), "Enter the storage room to the south-east.");
 		var exitStorageRoom = new ObjectStep(this, ObjectID.GATE_50537, new WorldPoint(3609, 4572, 0), "Exit the storage room.");

@@ -2,7 +2,6 @@ package com.questhelper.helpers.quests.thecurseofarrav;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.ManualRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
 import com.questhelper.requirements.widget.WidgetPresenceRequirement;
@@ -14,7 +13,6 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;

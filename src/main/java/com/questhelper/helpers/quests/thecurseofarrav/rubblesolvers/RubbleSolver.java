@@ -27,9 +27,10 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
     private List<Requirement> inverseConditions;
     private ConditionalStep conditionalStep;
 
-    private int stepCounter;
+	@SuppressWarnings({"unused", "FieldCanBeLocal"})
+	private int stepCounter;
 
-    public RubbleSolver(TheCurseOfArrav theCurseOfArrav, String number) {
+    public RubbleSolver(TheCurseOfArrav theCurseOfArrav, @SuppressWarnings("unused") String number) {
         super(theCurseOfArrav, "Make your way through the Trollweiss cave, mining rubble with your pickaxe from the direction indicated. Rubble can only be mined from the same direction once.");
     }
 
@@ -115,9 +116,6 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
 			// Useful for debugging
             // mineStep.addRequirement(inverseCondition);
 
-            // var xd = new Conditions(LogicType.AND, inverseCondition);
-            // xd.setText(inverseCondition.getDisplayText());
-
             conditionalStep.addStep(inverseCondition, mineStep);
         }
     }
@@ -131,9 +129,7 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
         var steps = new ArrayList<QuestStep>();
 
         steps.add(this.conditionalStep);
-        for (var step : this.mineSteps) {
-            steps.add(step);
-        }
+		steps.addAll(this.mineSteps);
 
         return steps;
     }

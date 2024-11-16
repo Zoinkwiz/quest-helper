@@ -3,6 +3,7 @@ package com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers;
 import lombok.Getter;
 import net.runelite.api.ObjectID;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -15,10 +16,7 @@ public enum RubbleType
 	private final List<Integer> objectIDs;
 
 	RubbleType(Integer... possibleObjectIDs) {
-		this.objectIDs = new ArrayList<Integer>();
-		for (var xd : possibleObjectIDs) {
-			this.objectIDs.add(xd);
-		}
-		// Collections.addAll(this.objectIDs, possibleObjectIDs);
+		this.objectIDs = new ArrayList<>();
+		Collections.addAll(this.objectIDs, possibleObjectIDs);
 	}
 }

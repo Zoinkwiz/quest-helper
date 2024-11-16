@@ -672,9 +672,6 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-		var scene = client.getScene();
-		var tilesxd = scene.getTiles();
-		var plane = client.getPlane();
 		Tile[][] squareOfTiles = client.getScene().getTiles()[client.getPlane()];
 
 		// Reduce the two-dimensional array into a single list for processing.

@@ -55,7 +55,7 @@ public class KeysAndLeversTest extends MockedTest
 	private TheCurseOfArrav helper;
 
 	@BeforeEach
-	protected void lol()
+	protected void preTest()
 	{
 		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
 
@@ -75,7 +75,7 @@ public class KeysAndLeversTest extends MockedTest
 	}
 
 	@AfterEach
-	protected void lel()
+	protected void postTest()
 	{
 		questPerspectiveMockedStatic.close();
 		worldPointMockedStatic.close();

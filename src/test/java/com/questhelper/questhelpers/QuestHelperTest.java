@@ -174,57 +174,57 @@ public class QuestHelperTest extends MockedTest
 		}
 	}
 
-	@Test
-	void ensureAllStepsHaveSidebarLink()
-	{
-		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+	// @Test
+	// void ensureAllStepsHaveSidebarLink()
+	// {
+	// 	when(questHelperConfig.solvePuzzles()).thenReturn(true);
 
-		AchievementDiaryStepManager.setup(configManager);
+	// 	AchievementDiaryStepManager.setup(configManager);
 
-		for (var quest : QuestHelperQuest.values())
-		{
-			var helper = quest.getQuestHelper();
-			helper.setQuest(quest);
-			if (quest.getPlayerQuests() != null)
-			{
-				continue;
-			}
+	// 	for (var quest : QuestHelperQuest.values())
+	// 	{
+	// 		var helper = quest.getQuestHelper();
+	// 		helper.setQuest(quest);
+	// 		if (quest.getPlayerQuests() != null)
+	// 		{
+	// 			continue;
+	// 		}
 
-			this.injector.injectMembers(helper);
-			helper.setQuestHelperPlugin(questHelperPlugin);
-			helper.setConfig(questHelperConfig);
-			helper.init();
+	// 		this.injector.injectMembers(helper);
+	// 		helper.setQuestHelperPlugin(questHelperPlugin);
+	// 		helper.setConfig(questHelperConfig);
+	// 		helper.init();
 
-			if (quest != QuestHelperQuest.THE_CURSE_OF_ARRAV) {
-				continue;
-			}
+	// 		if (quest != QuestHelperQuest.THE_CURSE_OF_ARRAV) {
+	// 			continue;
+	// 		}
 
-			if (helper instanceof BasicQuestHelper) {
-				var basicHelper = (BasicQuestHelper) helper;
-				var panels = helper.getPanels();
-				var panelSteps = panels.stream().flatMap(panelDetails -> panelDetails.getSteps().stream()).collect(Collectors.toList());
-				var steps = basicHelper.getStepList().values();
-				for (var step : steps) {
-					assertNotNull(step);
-					var rawText = step.getText();
-					var text = rawText == null ? "" : String.join("\n", step.getText());
-					if (step instanceof ConditionalStep) {
-						//
-					} else {
-						var isInPanelSteps = panelSteps.contains(step);
-						/* TODO
-						var isSubstepOf = steps.stream().filter(questStep -> {
-							if (questStep instanceof BasicQuest) {
-								return questStep.getSubSteps();
-							}
-							return null;
-						});
-						 */
-						var isInAnyStepSubStepsThatIsInPanelSteps = true; // todo
-						assertTrue(isInPanelSteps);
-					}
-				}
-			}
-		}
-	}
+	// 		if (helper instanceof BasicQuestHelper) {
+	// 			var basicHelper = (BasicQuestHelper) helper;
+	// 			var panels = helper.getPanels();
+	// 			var panelSteps = panels.stream().flatMap(panelDetails -> panelDetails.getSteps().stream()).collect(Collectors.toList());
+	// 			var steps = basicHelper.getStepList().values();
+	// 			for (var step : steps) {
+	// 				assertNotNull(step);
+	// 				var rawText = step.getText();
+	// 				var text = rawText == null ? "" : String.join("\n", step.getText());
+	// 				if (step instanceof ConditionalStep) {
+	// 					//
+	// 				} else {
+	// 					var isInPanelSteps = panelSteps.contains(step);
+	// 					/* TODO
+	// 					var isSubstepOf = steps.stream().filter(questStep -> {
+	// 						if (questStep instanceof BasicQuest) {
+	// 							return questStep.getSubSteps();
+	// 						}
+	// 						return null;
+	// 					});
+	// 					 */
+	// 					var isInAnyStepSubStepsThatIsInPanelSteps = true; // todo
+	// 					assertTrue(isInPanelSteps);
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 }

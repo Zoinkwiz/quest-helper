@@ -42,6 +42,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import static com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav.VARBIT_NORTH_LEVER_STATE;
+import static com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav.VARBIT_SOUTH_LEVER_STATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -160,7 +162,7 @@ public class KeysAndLeversTest extends MockedTest
 			new Item(ItemID.MASTABA_KEY, 1),
 			new Item(ItemID.MASTABA_KEY_30309, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(0);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(0);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
 
 		assertEquals(this.helper.pullSouthLever, conditionalStep.getActiveStep());
@@ -172,7 +174,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(1);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
 
 		assertEquals(this.helper.getToSouthLever, conditionalStep.getActiveStep());
@@ -184,7 +186,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY_30309, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(1);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
 
 		assertEquals(this.helper.getToSouthLever, conditionalStep.getActiveStep());
@@ -196,7 +198,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(1);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
 
 		assertEquals(this.helper.pullSouthLever, conditionalStep.getActiveStep());
@@ -208,7 +210,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY_30309, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(1);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
 
 		assertEquals(this.helper.pullSouthLever, conditionalStep.getActiveStep());
@@ -220,7 +222,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
 
 		assertEquals(this.helper.leaveSouthLever, conditionalStep.getActiveStep());
@@ -232,7 +234,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY_30309, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
 
 		assertEquals(this.helper.leaveSouthLever, conditionalStep.getActiveStep());
@@ -244,7 +246,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
 
 		assertEquals(this.helper.getToNorthLever, conditionalStep.getActiveStep());
@@ -256,7 +258,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY_30309, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
 
 		assertEquals(this.helper.getToNorthLever, conditionalStep.getActiveStep());
@@ -268,7 +270,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3894, 4597, 0), mockedItems);
 
 		assertEquals(this.helper.pullNorthLever, conditionalStep.getActiveStep());
@@ -280,7 +282,7 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY_30309, 1),
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3894, 4597, 0), mockedItems);
 
 		assertEquals(this.helper.pullNorthLever, conditionalStep.getActiveStep());
@@ -291,8 +293,8 @@ public class KeysAndLeversTest extends MockedTest
 	{
 		var mockedItems = new Item[]{
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
-		when(client.getVarbitValue(11481)).thenReturn(1);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_NORTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
 
 		assertEquals(this.helper.getToNorthLever, conditionalStep.getActiveStep());
@@ -303,8 +305,8 @@ public class KeysAndLeversTest extends MockedTest
 	{
 		var mockedItems = new Item[]{
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
-		when(client.getVarbitValue(11481)).thenReturn(1);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_NORTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3894, 4597, 0), mockedItems);
 
 		assertEquals(this.helper.pullNorthLever, conditionalStep.getActiveStep());
@@ -315,8 +317,8 @@ public class KeysAndLeversTest extends MockedTest
 	{
 		var mockedItems = new Item[]{
 		};
-		when(client.getVarbitValue(11482)).thenReturn(2);
-		when(client.getVarbitValue(11481)).thenReturn(1);
+		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
+		when(client.getVarbitValue(VARBIT_NORTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3894, 4597, 0), mockedItems);
 
 		assertEquals(this.helper.pullNorthLever, conditionalStep.getActiveStep());

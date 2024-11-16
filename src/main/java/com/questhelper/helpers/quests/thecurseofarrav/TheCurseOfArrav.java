@@ -66,6 +66,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.WorldPoint;
 
 /**
@@ -76,6 +77,9 @@ import net.runelite.api.coords.WorldPoint;
 @SuppressWarnings("FieldCanBeLocal")
 public class TheCurseOfArrav extends BasicQuestHelper
 {
+	static final @Varbit int VARBIT_SOUTH_LEVER_STATE = 11482;
+	static final @Varbit int VARBIT_NORTH_LEVER_STATE = 11481;
+
 	// Required items
 	private ItemRequirement dwellberries3;
 	private ItemRequirement ringOfLife;
@@ -332,9 +336,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		pullSouthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.");
 		pullSouthLever.addDialogStep("Yes.");
 		getToSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3891, 4554, 0), "Search the Odd markings to the south to get to the south lever. Search the markings again if you fail.");
-		var needToInsertKeyInSouthLever = new VarbitRequirement(11482, 0);
-		var needToFlipSouthLever = new VarbitRequirement(11482, 1);
-		var haveFlippedSouthLever = new VarbitRequirement(11482, 2);
+		var needToInsertKeyInSouthLever = new VarbitRequirement(VARBIT_SOUTH_LEVER_STATE, 0);
+		var needToFlipSouthLever = new VarbitRequirement(VARBIT_SOUTH_LEVER_STATE, 1);
+		var haveFlippedSouthLever = new VarbitRequirement(VARBIT_SOUTH_LEVER_STATE, 2);
 		leaveSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3892, 4554, 0), "Search the Odd markings next to you to get out.");
 		pullSouthLever.addSubSteps(getToSouthLever, leaveSouthLever);
 
@@ -343,9 +347,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		getToNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3891, 4597, 0), "Search the Odd markings to the north to get to the north lever. Search the markings again if you fail.");
 		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.");
 		pullNorthLever.addDialogStep("Yes.");
-		var needToInsertKeyInNorthLever = new VarbitRequirement(11481, 0);
-		var needToFlipNorthLever = new VarbitRequirement(11481, 1);
-		var haveFlippedNorthLever = new VarbitRequirement(11481, 2);
+		var needToInsertKeyInNorthLever = new VarbitRequirement(VARBIT_NORTH_LEVER_STATE, 0);
+		var needToFlipNorthLever = new VarbitRequirement(VARBIT_NORTH_LEVER_STATE, 1);
+		var haveFlippedNorthLever = new VarbitRequirement(VARBIT_NORTH_LEVER_STATE, 2);
 		leaveNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3892, 4597, 0), "Search the Odd markings next to you to get out.");
 		pullNorthLever.addSubSteps(getToNorthLever, leaveNorthLever);
 

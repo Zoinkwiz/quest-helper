@@ -32,7 +32,7 @@ import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class ObjectCondition extends ConditionForStep
@@ -71,6 +71,8 @@ public class ObjectCondition extends ConditionForStep
 	public ObjectCondition(Set<Integer> objectIDs, WorldPoint worldPoint)
 	{
 		assert(worldPoint != null);
+		assert(objectIDs != null);
+		assert(objectIDs.stream().noneMatch(Objects::isNull));
 
 		this.objectIDs = objectIDs;
 		this.zone = new Zone(worldPoint);

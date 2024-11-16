@@ -499,9 +499,4 @@ public class ObjectStep extends DetailedQuestStep
 				bottomLeftCorner.getPlane())
 		);
 	}
-
-	@Override
-	public String toString() {
-		return super.toString() + "(" + this.getText() + ")";
-	}
 }

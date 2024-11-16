@@ -68,7 +68,7 @@ public abstract class ConditionForStep implements InitializableRequirement
 
 	@Nonnull
 	@Override
-	public String getDisplayText() // conditions don't need display text (yet?)
+	public String getDisplayText()
 	{
 		return this.text;
 	}

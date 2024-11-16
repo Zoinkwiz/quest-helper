@@ -65,7 +65,8 @@ public abstract class BasicQuestHelper extends QuestHelper
 	public void startUp(QuestHelperConfig config)
 	{
 		// this.tryLoadSteps();
-		// TODO: THIS SHOULD USE tryLoadSteps
+		// TODO: This should use `tryLoadSteps` but when it is being more careful to be initialized, it doesn't handle
+		// highlighting in sidebars properly
 		steps = loadSteps();
 		this.config = config;
 		instantiateSteps(steps.values());

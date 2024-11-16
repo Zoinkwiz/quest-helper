@@ -96,6 +96,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ItemRequirement food;
 	private ItemRequirement staminaPotion;
 	private ItemRequirement prayerPotion;
+	private ItemRequirement antiVenom;
 	private FreeInventorySlotRequirement twoFreeInventorySlots;
 	// 2 inv slots
 
@@ -297,6 +298,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		lumberyardTeleport = new TeleportItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
 		staminaPotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS, 1);
 		prayerPotion = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS, 1);
+		antiVenom = new ItemRequirement("Anti-venom", ItemCollections.ANTIVENOMS, 1);
 		golemCombatGear = new ItemRequirement("Crush or ranged combat gear to fight the Golem guard", -1, -1);
 		golemCombatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		golemCombatGear.setConditionToHide(haveKilledGolem);
@@ -677,6 +679,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		return List.of(
 			staminaPotion,
 			prayerPotion,
+			antiVenom,
 			golemCombatGear,
 			arravCombatGear,
 			food,
@@ -821,6 +824,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			// Recommended
 			staminaPotion,
 			prayerPotion,
+			antiVenom,
 			food
 		)));
 

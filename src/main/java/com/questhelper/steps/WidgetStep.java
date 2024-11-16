@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import lombok.Setter;
 import net.runelite.api.widgets.Widget;
 import com.questhelper.QuestHelperPlugin;

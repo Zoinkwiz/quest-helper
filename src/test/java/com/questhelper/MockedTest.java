@@ -46,12 +46,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import javax.inject.Named;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -113,17 +109,6 @@ public abstract class MockedTest extends MockedTestBase
 	@Bind
 	@Named("developerMode")
 	private boolean developerMode;
-	
-	    public BufferedImage random(final int width, final int height) {
-        Random rand = ThreadLocalRandom.current();
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                image.setRGB(x, y, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()).getRGB());
-            }
-        }
-        return image;
-    }
 
 
 	@Override
@@ -134,7 +119,7 @@ public abstract class MockedTest extends MockedTestBase
 
 		when(questHelperPlugin.getPlayerStateManager()).thenReturn(playerStateManager);
 		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
-		when(client.getIntStack()).thenReturn(new int[] { 1, 1, 1, 1 });
+		when(client.getIntStack()).thenReturn(new int[] {1, 1, 1, 1});
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 		when(spriteManager.getSprite(SpriteID.TAB_QUESTS, 0)).thenReturn(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
 

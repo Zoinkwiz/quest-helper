@@ -317,15 +317,13 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		var todo = new NpcStep(this, 5, "TODO XD");
+		var unreachableState = new DetailedQuestStep(this, "This state should not be reachable, please make a report with a screenshot in the Quest Helper discord.");
 
 		startQuest = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Talk to Elias south of Ruins of Uzer to start the quest.");
 		startQuest.addTeleport(fairyRingDLQ);
 		startQuest.addDialogStep("Yes.");
 
-		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.");
-		// TODO: Add item requirements to enterTomb step
-		// - 2 free inventory slots
+		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.", dwellberries3, ringOfLife, twoFreeInventorySlots, golemCombatGear);
 
 		var anyMastabaKey = new ItemRequirement("Mastaba Key", List.of(ItemID.MASTABA_KEY, ItemID.MASTABA_KEY_30309));
 
@@ -419,7 +417,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		combineJarWithDwellberries = new ItemStep(this, "Put the Dwellberries in the Canopic jar.", oilFilledCanopicJar.highlighted(), dwellberries3.highlighted(), ringOfLife);
 		combineJarWithRingOfLife = new ItemStep(this, "Put the Ring of life in the Canopic jar.", oilAndBerryFilledCanopicJar.highlighted(), ringOfLife.highlighted());
 
-		unsortedStep16 = new ConditionalStep(this, todo);
+		unsortedStep16 = new ConditionalStep(this, unreachableState);
 		unsortedStep16.addStep(oilAndBerryFilledCanopicJar, combineJarWithRingOfLife);
 		unsortedStep16.addStep(oilFilledCanopicJar, combineJarWithDwellberries);
 		unsortedStep16.addStep(and(insideTombSecondFloor, finishedTilePuzzle), searchShelvesForUrn);
@@ -544,11 +542,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// 9658: 5 -> 6
 
 		// need 1 inventory slot free
-		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey); // todo add teleport
+		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
 		headToZemouregalsBaseAndTalkToElias.addDialogStep("Ready when you are.");
 		headToZemouregalsBaseAndTalkToElias.addTeleport(lumberyardTeleport);
 		unsortedStep42 = new ConditionalStep(this, headToZemouregalsBaseAndTalkToElias);
-		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey); // todo add teleport
+		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
+		enterZemouregalsBase.addTeleport(lumberyardTeleport);
 
 
 		getToBackOfZemouregalsBase = new DetailedQuestStep(this, "Make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.");
@@ -809,7 +808,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			enterBossRoom,
 			fightArrav,
 			finishQuest
-			// TODO
 		), List.of(
 			// Requirements
 			basePlans,

@@ -25,15 +25,11 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
-import lombok.Getter;
 
 public abstract class BasicQuestHelper extends QuestHelper
 {

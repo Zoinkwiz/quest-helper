@@ -36,7 +36,7 @@ public class MetalDoorSolverTest
 	public void testValidCodes()
 	{
 		// from pajdonk
-		assertArrayEquals(new int[]{0, 2, 3, 5},MetalDoorSolver.calculate("IFCB"));
+		assertArrayEquals(new int[]{0, 2, 3, 5}, MetalDoorSolver.calculate("IFCB"));
 
 		// from Gupinic
 		assertArrayEquals(new int[]{1, 3, 7, 2}, MetalDoorSolver.calculate("FBDG"));
@@ -55,7 +55,7 @@ public class MetalDoorSolverTest
 	public void testLowercaseValidCodes()
 	{
 		// from pajdonk
-		assertArrayEquals(new int[]{0, 2, 3, 5},MetalDoorSolver.calculate("ifcb"));
+		assertArrayEquals(new int[]{0, 2, 3, 5}, MetalDoorSolver.calculate("ifcb"));
 
 		// from Gupinic
 		assertArrayEquals(new int[]{1, 3, 7, 2}, MetalDoorSolver.calculate("fbdg"));

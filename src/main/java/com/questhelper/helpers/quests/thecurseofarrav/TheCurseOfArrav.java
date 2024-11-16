@@ -87,10 +87,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	// Recommended items
 	private TeleportItemRequirement fairyRingDLQ;
 	private TeleportItemRequirement lumberyardTeleport;
-	// trollheim teleport / ghommal's hilt
-	// antivenom
-	// melee (crush) combat gear for golem
-	// ranged combat gear for arrav
 	private ItemRequirement golemCombatGear;
 	private ItemRequirement arravCombatGear;
 	private ItemRequirement food;
@@ -98,7 +94,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ItemRequirement prayerPotion;
 	private ItemRequirement antiVenom;
 	private FreeInventorySlotRequirement twoFreeInventorySlots;
-	// 2 inv slots
 
 	// Mid-quest item requirements
 	private ItemRequirement firstMastabaKey;

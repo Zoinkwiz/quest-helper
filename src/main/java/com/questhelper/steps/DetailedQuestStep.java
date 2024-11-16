@@ -911,8 +911,7 @@ public class DetailedQuestStep extends QuestStep
 		if (worldPoint != null)
 		{
 			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
-			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null)
-			{
+			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null) {
 				Map<String, Object> data = new HashMap<>();
 				data.put("start", playerWp);
 				data.put("target", worldPoint);

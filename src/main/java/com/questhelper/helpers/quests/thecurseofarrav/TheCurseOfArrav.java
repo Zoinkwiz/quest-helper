@@ -35,14 +35,17 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -79,16 +82,16 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	// Required items
 	private ItemRequirement dwellberries3;
 	private ItemRequirement ringOfLife;
-	private ItemRequirement anyPickaxe;
+	public ItemRequirement anyPickaxe;
 	private ItemRequirement anyGrappleableCrossbow;
 	private ItemRequirement mithrilGrapple;
 	private ItemRequirement insulatedBoots;
 
 	// Recommended items
 	private TeleportItemRequirement fairyRingDLQ;
+	private TeleportItemRequirement lumberyardTeleport;
 	// trollheim teleport / ghommal's hilt
 	// antivenom
-	// lumberyard teleport
 	// melee (crush) combat gear for golem
 	// ranged combat gear for arrav
 	private ItemRequirement golemCombatGear;
@@ -120,22 +123,22 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 	// Steps
 	/// 0 + 2
-	private NpcStep startQuest;
+	NpcStep startQuest;
 
 	/// 4
-	private ObjectStep enterTomb;
+	ObjectStep enterTomb;
 
 	/// 6 + 8
-	private ConditionalStep unlockImposingDoors;
-	private ObjectStep getFirstKey;
-	private ObjectStep getSecondKey;
-	private ObjectStep pullSouthLever;
-	private ObjectStep pullNorthLever;
+	ConditionalStep unlockImposingDoors;
+	ObjectStep getFirstKey;
+	ObjectStep getSecondKey;
+	ObjectStep pullSouthLever;
+	ObjectStep pullNorthLever;
 
 	/// 10
-	private ConditionalStep fightGolemCond;
-	private ObjectStep enterGolemArena;
-	private NpcStep fightGolemGuard;
+	ConditionalStep fightGolemCond;
+	ObjectStep enterGolemArena;
+	NpcStep fightGolemGuard;
 
 	/// 12 + 14
 	private ConditionalStep finishTilePuzzleAndGetCanopicJar;
@@ -185,6 +188,21 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	private ObjectStep enterBossRoom;
 	private ObjectStep grappleAcross;
 	private ObjectStep openMetalDoors;
+	ObjectStep getToSouthLever;
+	ObjectStep leaveSouthLever;
+	ObjectStep getToNorthLever;
+	ObjectStep leaveNorthLever;
+	ItemStep combineJarWithDwellberries;
+	ItemStep combineJarWithRingOfLife;
+	NpcStep returnToElias;
+	ObjectStep headToTrollheim;
+	ObjectStep continueThroughTrollheimCave;
+	ObjectStep enterTrollweissCave;
+	ItemRequirement canopicJarFull;
+	ObjectStep climbUpstairsAndTalkToArrav;
+	NpcStep talkToArrav;
+	ObjectStep goToNextRoom;
+	ObjectStep searchTapestry;
 
 
 	@Override
@@ -232,7 +250,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	@Override
 	protected void setupZones()
 	{
-		insideTomb = new ZoneRequirement(new Zone(new WorldPoint(3842, 4603, 0), new WorldPoint(3900, 4547, 0)));
+		insideTomb = new ZoneRequirement(new Zone(new WorldPoint(3842, 4547, 0), new WorldPoint(3900, 4603, 0)));
 		insideTombSecondFloor = new ZoneRequirement(
 			new Zone(new WorldPoint(3719, 4674, 0), new WorldPoint(3770, 4732, 0)),
 			new Zone(new WorldPoint(3845, 4674, 0), new WorldPoint(3900, 4732, 0))
@@ -279,6 +297,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		// Recommended items
 		fairyRingDLQ = new TeleportItemRequirement("Fairy Ring [DLQ]", ItemCollections.FAIRY_STAFF);
+		lumberyardTeleport = new TeleportItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
 		staminaPotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS, 1);
 		prayerPotion = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS, 1);
 		golemCombatGear = new ItemRequirement("Crush or ranged combat gear to fight the Golem guard", -1, -1);
@@ -293,6 +312,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// Mid-quest item requirements
 		firstMastabaKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
 		secondMastabaKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY_30309);
+		canopicJarFull = new ItemRequirement("Canopic jar (full)", ItemID.CANOPIC_JAR_FULL);
 		canopicJarFullForHeist = new ItemRequirement("Canopic jar (full)", ItemID.CANOPIC_JAR_FULL);
 		canopicJarFullForHeist.setTooltip("You can get a new one from Elias at the entrance of Zemouregal's base if you've lost it.");
 	}
@@ -306,57 +326,65 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		startQuest.addDialogStep("Yes.");
 
 		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.");
+		// TODO: Add item requirements to enterTomb step
+		// - 2 free inventory slots
 
-		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton south of the entrance.");
+		var anyMastabaKey = new ItemRequirement("Mastaba Key", List.of(ItemID.MASTABA_KEY, ItemID.MASTABA_KEY_30309));
+
+		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton in the cave south of the entrance.");
 		getSecondKey = new ObjectStep(this, ObjectID.SKELETON_50353, new WorldPoint(3880, 4585, 0), "Get the second Mastaba key from the skeleton east of the entrance.");
 		var bySouthLever = new Zone(new WorldPoint(3893, 4554, 0), new WorldPoint(3894, 4552, 0));
 		var bySouthLeverReq = new ZoneRequirement(bySouthLever);
-		pullSouthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.", secondMastabaKey);
+		pullSouthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.");
 		pullSouthLever.addDialogStep("Yes.");
-		var getToSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3891, 4554, 0), "Search the Odd markings to the south to get to the south lever. Search the markings again if you fail.");
+		getToSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3891, 4554, 0), "Search the Odd markings to the south to get to the south lever. Search the markings again if you fail.");
 		var needToInsertKeyInSouthLever = new VarbitRequirement(11482, 0);
 		var needToFlipSouthLever = new VarbitRequirement(11482, 1);
 		var haveFlippedSouthLever = new VarbitRequirement(11482, 2);
-		var leaveSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3892, 4554, 0), "Search the Odd markings next to you to get out.");
+		leaveSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3892, 4554, 0), "Search the Odd markings next to you to get out.");
 		pullSouthLever.addSubSteps(getToSouthLever, leaveSouthLever);
 
 		var byNorthLever = new Zone(new WorldPoint(3894, 4597, 0), new WorldPoint(3893, 4599, 0));
 		var byNorthLeverReq = new ZoneRequirement(byNorthLever);
-		var getToNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3891, 4597, 0), "Search the Odd markings to the north to get to the north lever. Search the markings again if you fail.");
-		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.", firstMastabaKey);
+		getToNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3891, 4597, 0), "Search the Odd markings to the north to get to the north lever. Search the markings again if you fail.");
+		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.");
 		pullNorthLever.addDialogStep("Yes.");
 		var needToInsertKeyInNorthLever = new VarbitRequirement(11481, 0);
 		var needToFlipNorthLever = new VarbitRequirement(11481, 1);
 		var haveFlippedNorthLever = new VarbitRequirement(11481, 2);
-		var leaveNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3892, 4597, 0), "Search the Odd markings next to you to get out.");
+		leaveNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3892, 4597, 0), "Search the Odd markings next to you to get out.");
 		pullNorthLever.addSubSteps(getToNorthLever, leaveNorthLever);
 
+		// var anyMastabaKey = new ItemRequirements(firstMastabaKey, secondMastabaKey);
+		var bothMastabaKeys = and(firstMastabaKey, secondMastabaKey);
+		firstMastabaKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
+
+		// ADDING THIS CONDITION TO HIDE BREAKS ALL ITEMREQUIREMENT CHECKS HERE??
+		// firstMastabaKey.setConditionToHide(not(needToInsertKeyInSouthLever));
+		// secondMastabaKey.setConditionToHide(not(needToInsertKeyInNorthLever));
+
+		// This step is complicated because you can use either key for either lever (I think). This could use some testing where the user does not follow instructions and:
+		// 1. Gets south key, pulls south lever, then what?
+		// 2. Gets north key, pulls south lever, then what?
+		// 3. Gets south key, pulls north lever, then what?
+		// 4. Gets north key, pulls north lever, then what?
+		// 5. Gets both keys, pulls north lever, then what?
 		unlockImposingDoors = new ConditionalStep(this, enterTomb);
-
-		// Get inside the tomb if you're not already inside. In case the user has teleported out or died to golem?
 		unlockImposingDoors.addStep(not(insideTomb), enterTomb);
-
-		// If the user has flipped the south lever & needs to get out of the little room
 		unlockImposingDoors.addStep(and(haveFlippedSouthLever, bySouthLeverReq), leaveSouthLever);
-		// If the user has flipped the north lever & needs to get out of the little room
 		unlockImposingDoors.addStep(and(haveFlippedNorthLever, byNorthLeverReq), leaveNorthLever);
-
-		// If the user has not already put the key in the south lever, and does not have the key
-		unlockImposingDoors.addStep(and(needToInsertKeyInSouthLever, not(secondMastabaKey)), getSecondKey);
-		// If the user has not already put the key in the north lever, and does not have the key
-		unlockImposingDoors.addStep(and(needToInsertKeyInNorthLever, not(firstMastabaKey)), getFirstKey);
-
-		// If the user has the key & stands by the south lever
 		unlockImposingDoors.addStep(and(needToFlipSouthLever, bySouthLeverReq), pullSouthLever);
-		// If the user needs to flip the south lever, but is not inside the little room, get to the little room
-		unlockImposingDoors.addStep(not(haveFlippedSouthLever), getToSouthLever);
-
-		// If the user has the key & stands by the north lever
 		unlockImposingDoors.addStep(and(needToFlipNorthLever, byNorthLeverReq), pullNorthLever);
-		// If the user needs to flip the north lever, but is not inside the little room, get to the little room
-		unlockImposingDoors.addStep(needToFlipNorthLever, getToNorthLever);
+		unlockImposingDoors.addStep(and(not(bySouthLeverReq), bothMastabaKeys, needToInsertKeyInSouthLever), getToSouthLever);
+		unlockImposingDoors.addStep(and(not(bySouthLeverReq), needToFlipSouthLever), getToSouthLever);
+		unlockImposingDoors.addStep(and(bySouthLeverReq, bothMastabaKeys, needToInsertKeyInSouthLever), pullSouthLever);
+		unlockImposingDoors.addStep(and(not(byNorthLeverReq), haveFlippedSouthLever, anyMastabaKey, needToInsertKeyInNorthLever), getToNorthLever);
+		unlockImposingDoors.addStep(and(not(byNorthLeverReq), haveFlippedSouthLever, needToFlipNorthLever), getToNorthLever);
+		unlockImposingDoors.addStep(and(haveFlippedSouthLever, anyMastabaKey, needToInsertKeyInNorthLever, byNorthLeverReq), pullNorthLever);
+		unlockImposingDoors.addStep(and(or(needToInsertKeyInNorthLever, needToInsertKeyInSouthLever), not(firstMastabaKey)), getFirstKey);
+		unlockImposingDoors.addStep(and(or(needToInsertKeyInNorthLever, needToInsertKeyInSouthLever), not(secondMastabaKey)), getSecondKey);
 
-		// Once last lever was pulled, quest varbit changed from 6 to 8, then 8 to 10 at the same tick
+		// Once the north lever is pulled, quest varbit changed from 6 to 8, then 8 to 10 at the same tick
 		// This might have to do with which order you pulled the levers in
 
 		var golemArenaZone = new Zone(new WorldPoint(3856, 4592, 0), new WorldPoint(3884, 4599, 0));
@@ -390,8 +418,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var oilAndBerryFilledCanopicJar = new ItemRequirement("Canopic jar (oil and berries)", ItemID.CANOPIC_JAR_OIL_AND_BERRIES);
 
-		var combineJarWithDwellberries = new ItemStep(this, "Put the Dwellberries in the Canopic jar.", oilFilledCanopicJar.highlighted(), dwellberries3.highlighted(), ringOfLife);
-		var combineJarWithRingOfLife = new ItemStep(this, "Put the Ring of life in the Canopic jar.", oilAndBerryFilledCanopicJar.highlighted(), ringOfLife.highlighted());
+		combineJarWithDwellberries = new ItemStep(this, "Put the Dwellberries in the Canopic jar.", oilFilledCanopicJar.highlighted(), dwellberries3.highlighted(), ringOfLife);
+		combineJarWithRingOfLife = new ItemStep(this, "Put the Ring of life in the Canopic jar.", oilAndBerryFilledCanopicJar.highlighted(), ringOfLife.highlighted());
 
 		unsortedStep16 = new ConditionalStep(this, todo);
 		unsortedStep16.addStep(oilAndBerryFilledCanopicJar, combineJarWithRingOfLife);
@@ -402,7 +430,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep16.addStep(and(insideTomb), enterGolemArenaWithoutFight);
 
 
-		var returnToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
+		returnToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.", canopicJarFull);
 		returnToElias.addTeleport(fairyRingDLQ);
 		var returnToEliasByWalking = new ObjectStep(this, ObjectID.STAIRS_55786, new WorldPoint(3894, 4714, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
 		returnToEliasByWalking.addTeleport(fairyRingDLQ);
@@ -421,26 +449,32 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.TROLLHEIM_TELEPORT);
 		trollheimTeleport.addAlternates(ItemCollections.GHOMMALS_HILT);
-		var headToTrollheim = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0), "Enter the cave next to Trollheim. You can use a Trollheim teleport tablet or the GWD Ghommal's Hilt teleport to get close.");
+		headToTrollheim = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0), "Enter the cave next to Trollheim. You can use a Trollheim teleport tablet or the GWD Ghommal's Hilt teleport to get close.", anyPickaxe);
 		headToTrollheim.addTeleport(trollheimTeleport);
 
 		var trollheimCave = new Zone(11167);
 		var inTrollheimCave = new ZoneRequirement(trollheimCave);
-		var continueThroughTrollheimCave = new ObjectStep(this, ObjectID.CREVASSE, new WorldPoint(2772, 10233, 0), "Continue through the Trollheim cave, exiting at the Crevasse to the north-west. Use Protect from Melee to avoid taking damage from the Ice Trolls.");
+		continueThroughTrollheimCave = new ObjectStep(this, ObjectID.CREVASSE, new WorldPoint(2772, 10233, 0), "Continue through the Trollheim cave, exiting at the Crevasse to the north-west. Use Protect from Melee to avoid taking damage from the Ice Trolls.", anyPickaxe);
 
 		var trollweissMountain = new Zone(11068);
 		var onTrollweissMountain = new ZoneRequirement(trollweissMountain);
-		var enterTrollweissCave = new ObjectStep(this, ObjectID.CAVE_55779, new WorldPoint(2809, 3861, 0), "Enter the Trollweiss cave to the east.");
+		enterTrollweissCave = new ObjectStep(this, ObjectID.CAVE_55779, new WorldPoint(2809, 3861, 0), "Enter the Trollweiss cave to the east.", anyPickaxe);
 
 		var trollweissCave1 = new Zone(11168);
 		var inTrollweissCave = new ZoneRequirement(trollweissCave1);
 
-		rubbleMiner1 = new RubbleSolverOne(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
-		rubbleMiner2 = new RubbleSolverTwo(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
-		rubbleMiner3 = new RubbleSolverThree(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
-		rubbleMiner4 = new RubbleSolverFour(this).puzzleWrapStep("Mine the rubble and make your way through the cave.");
+		var rubbleMiner1Real = new RubbleSolverOne(this);
+		var rubbleMiner2Real = new RubbleSolverTwo(this);
+		var rubbleMiner3Real = new RubbleSolverThree(this);
+		var rubbleMiner4Real = new RubbleSolverFour(this);
 
-		rubbleMiner1.addSubSteps(rubbleMiner2, rubbleMiner3, rubbleMiner4);
+		rubbleMiner1 = rubbleMiner1Real.puzzleWrapStep("Mine the rubble and make your way through the cave.");
+		rubbleMiner2 = rubbleMiner2Real.puzzleWrapStep("Mine the rubble and make your way through the cave.");
+		rubbleMiner3 = rubbleMiner3Real.puzzleWrapStep("Mine the rubble and make your way through the cave.");
+		rubbleMiner4 = rubbleMiner4Real.puzzleWrapStep("Mine the rubble and make your way through the cave.");
+
+		rubbleMiner1Real.addSubSteps(rubbleMiner2, rubbleMiner3, rubbleMiner4);
+
 
 		unsortedStep20 = new ConditionalStep(this, headToTrollheim);
 		unsortedStep20.addStep(inTrollweissCave, rubbleMiner1);
@@ -463,7 +497,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep28.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 
-		var climbUpstairsAndTalkToArrav = new ObjectStep(this, ObjectID.STAIRS_50508, new WorldPoint(2811, 10267, 0), "Climb up the stairs in the room with the red tile floor and talk to Arrav.");
+		climbUpstairsAndTalkToArrav = new ObjectStep(this, ObjectID.STAIRS_50508, new WorldPoint(2811, 10267, 0), "Climb up the stairs in the room with the red tile floor and talk to Arrav.");
 		unsortedStep30 = new ConditionalStep(this, headToTrollheim);
 		unsortedStep30.addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
 		unsortedStep30.addStep(onTrollweissMountain, enterTrollweissCave);
@@ -471,7 +505,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		var arravHouseFirstRoom = new Zone(new WorldPoint(2848, 3868, 0), new WorldPoint(2858, 3873, 0));
 		var inArravHouseFirstRoom = new ZoneRequirement(arravHouseFirstRoom);
-		var talkToArrav = new NpcStep(this, NpcID.ARRAV_14129, new WorldPoint(2856, 3871, 0), "Talk to Arrav.");
+		talkToArrav = new NpcStep(this, NpcID.ARRAV_14129, new WorldPoint(2856, 3871, 0), "Talk to Arrav.");
 
 		unsortedStep32 = new ConditionalStep(this, headToTrollheim);
 		unsortedStep32.addStep(inArravHouseFirstRoom, talkToArrav);
@@ -482,8 +516,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var arravHouseSecondRoom = new Zone(new WorldPoint(2863, 3865, 0), new WorldPoint(2859, 3873, 0));
 		var inArravHouseSecondRoom = new ZoneRequirement(arravHouseSecondRoom);
 
-		var goToNextRoom = new ObjectStep(this, ObjectID.DOOR_50514, new WorldPoint(2859, 3870, 0), "Enter the room to your east and search the tapestry for ?.");
-		var searchTapestry = new ObjectStep(this, ObjectID.TAPESTRY_50516, new WorldPoint(2861, 3865, 0), "Search the tapestry in the south of the room.");
+		goToNextRoom = new ObjectStep(this, ObjectID.DOOR_50514, new WorldPoint(2859, 3870, 0), "Enter the room to your east and search the tapestry for something to help you with your heist.");
+		searchTapestry = new ObjectStep(this, ObjectID.TAPESTRY_50516, new WorldPoint(2861, 3865, 0), "Search the tapestry in the south of the room.");
 		unsortedStep34 = new ConditionalStep(this, headToTrollheim);
 		unsortedStep34.addStep(inArravHouseSecondRoom, searchTapestry);
 		unsortedStep34.addStep(inArravHouseFirstRoom, goToNextRoom);
@@ -514,6 +548,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// need 1 inventory slot free
 		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey); // todo add teleport
 		headToZemouregalsBaseAndTalkToElias.addDialogStep("Ready when you are.");
+		headToZemouregalsBaseAndTalkToElias.addTeleport(lumberyardTeleport);
 		unsortedStep42 = new ConditionalStep(this, headToZemouregalsBaseAndTalkToElias);
 		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey); // todo add teleport
 
@@ -563,13 +598,10 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		// also used for 50
 		unsortedStep48 = new ConditionalStep(this, enterZemouregalsBase);
-		// TODO: DECODER STRIPS ARE NOT NECESSARY. REMOVE THEM :)
-		unsortedStep48.addStep(and(inSecondPart, not(inStorageRoom), decoderStrips, codeKey), metalDoorSolver);
-		unsortedStep48.addStep(and(inStorageRoom, not(decoderStrips)), searchTableForDecoderStrips);
-		unsortedStep48.addStep(and(inStorageRoom, not(codeKey)), openChestForCodeKey);
-		unsortedStep48.addStep(and(inStorageRoom, decoderStrips), exitStorageRoom);
+		unsortedStep48.addStep(and(inSecondPart, not(inStorageRoom), codeKey), metalDoorSolver);
+		unsortedStep48.addStep(and(inStorageRoom, codeKey), exitStorageRoom);
+		unsortedStep48.addStep(and(inStorageRoom), openChestForCodeKey);
 		unsortedStep48.addStep(and(inSecondPart, not(codeKey)), enterStorageRoom);
-		unsortedStep48.addStep(and(inSecondPart, not(decoderStrips)), enterStorageRoom);
 		unsortedStep48.addStep(inZemouregalsBaseSewer, exitZemouregalsBaseSewer);
 		unsortedStep48.addStep(inZemouregalsBaseKitchen, enterZemouregalsBaseSewer);
 		unsortedStep48.addStep(inZemouregalsBaseSection4, passZemouregalsBaseDoor4);
@@ -579,12 +611,13 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		openMetalDoors = new ObjectStep(this, ObjectID.METAL_DOORS, new WorldPoint(3612, 4582, 0), "Step through through the metal doors.", canopicJarFullForHeist, anyGrappleableCrossbow, mithrilGrapple);
 
-		var inGrapplePuzzleRoom = new ZoneRequirement(new Zone(new WorldPoint(3612, 4587, 0), new WorldPoint(3625, 4579, 0)));
-		grappleAcross = new ObjectStep(this, ObjectID.PIPE_50542, new WorldPoint(3615, 4582, 0), "Grapple across the pipe", anyGrappleableCrossbow.highlighted().equipped(), mithrilGrapple.highlighted().equipped());
+		var inGrapplePuzzleRoom = new ZoneRequirement(new Zone(new WorldPoint(3613, 4587, 0), new WorldPoint(3625, 4579, 0)));
+		grappleAcross = new ObjectStep(this, ObjectID.PIPE_50542, new WorldPoint(3615, 4582, 0), "Grapple across the pipe", canopicJarFullForHeist, anyGrappleableCrossbow.highlighted().equipped(), mithrilGrapple.highlighted().equipped());
 
 		var pastGrapplePuzzleRoom = new ZoneRequirement(new Zone(new WorldPoint(3621, 4589, 0), new WorldPoint(3645, 4578, 0)));
 
-		enterBossRoom = new ObjectStep(this, ObjectID.PEDESTAL_50539, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", arravCombatGear);
+		enterBossRoom = new ObjectStep(this, ObjectID.PEDESTAL_50539, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight with Arrav. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", canopicJarFullForHeist, arravCombatGear);
+		enterBossRoom.setOverlayText("Attempt to take Arrav's heart from the pedestal, ready for a fight with Arrav. Some hints are available in the sidebar.");
 
 		unsortedStep52 = new ConditionalStep(this, enterZemouregalsBase);
 		unsortedStep52.addStep(pastGrapplePuzzleRoom, enterBossRoom);
@@ -599,7 +632,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		// User has engaged Arrav
 
-		fightArrav = new NpcStep(this, NpcID.ARRAV_14132, new WorldPoint(3635, 4582, 0), "fight arrav xd");
+		fightArrav = new NpcStep(this, NpcID.ARRAV_14132, new WorldPoint(3635, 4582, 0), "Fight Arrav. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", canopicJarFullForHeist);
+		fightArrav.setOverlayText("Fight Arrav. Some hints are available in the sidebar.");
 		unsortedStep54 = new ConditionalStep(this, enterZemouregalsBase);
 		unsortedStep54.addStep(or(pastGrapplePuzzleRoom, inGrapplePuzzleRoom), fightArrav);
 		unsortedStep54.addStep(inSecondPart, openMetalDoors);
@@ -649,7 +683,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			prayerPotion,
 			golemCombatGear,
 			arravCombatGear,
-			food
+			food,
+			lumberyardTeleport,
+			fairyRingDLQ
 		);
 	}
 
@@ -729,8 +765,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			solveTilePuzzle,
 			searchShelvesForUrn,
 			inspectMurals,
-			unsortedStep16,
-			unsortedStep18
+			combineJarWithDwellberries,
+			combineJarWithRingOfLife,
+			returnToElias
 		), List.of(
 			dwellberries3,
 			ringOfLife,
@@ -744,15 +781,14 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			food
 		)));
 		panels.add(new PanelDetails("Fort Invasion", List.of(
-			unsortedStep20,
+			headToTrollheim,
+			continueThroughTrollheimCave,
+			enterTrollweissCave,
 			rubbleMiner1,
-			rubbleMiner2,
-			rubbleMiner3,
-			rubbleMiner4,
-			unsortedStep30,
-			unsortedStep32,
-			unsortedStep34
-			// TODO
+			climbUpstairsAndTalkToArrav,
+			talkToArrav,
+			goToNextRoom,
+			searchTapestry
 		), List.of(
 			// Requirements
 			anyPickaxe
@@ -787,7 +823,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			canopicJarFullForHeist
 		), List.of(
 			// Recommended
-			new FreeInventorySlotRequirement(1),
 			staminaPotion,
 			prayerPotion,
 			food

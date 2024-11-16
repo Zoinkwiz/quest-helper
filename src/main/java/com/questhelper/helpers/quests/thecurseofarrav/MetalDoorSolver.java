@@ -1,5 +1,8 @@
 package com.questhelper.helpers.quests.thecurseofarrav;
 
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.requirements.ManualRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
 import com.questhelper.requirements.widget.WidgetPresenceRequirement;
@@ -10,8 +13,12 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 import javax.inject.Inject;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.widget.WidgetDetails;
@@ -23,6 +30,7 @@ import net.runelite.api.annotations.Interface;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.FontManager;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 
@@ -132,6 +140,10 @@ public class MetalDoorSolver extends DetailedOwnerStep
 	private WidgetModelRequirement inputThirdCorrect;
 	private WidgetModelRequirement inputFourthCorrect;
 
+	private int distanceUp = 69;
+	private int distanceDown = 69;
+	private ManualRequirement shouldClickDownInteadOfUp;
+
 	public MetalDoorSolver(TheCurseOfArrav theCurseOfArrav)
 	{
 		super(theCurseOfArrav, "Solve the Metal door puzzle by following the instructions in the overlay.");
@@ -212,11 +224,105 @@ public class MetalDoorSolver extends DetailedOwnerStep
 		};
 	}
 
+	public static int calculateDistanceUp(int currentNumber, int targetNumber)
+	{
+		if (currentNumber == targetNumber)
+		{
+			return 0;
+		}
+
+		if (currentNumber > targetNumber)
+		{
+			return targetNumber - currentNumber + 10;
+		}
+		else
+		{
+			return targetNumber - currentNumber;
+		}
+	}
+
+	public static int calculateDistanceDown(int currentNumber, int targetNumber)
+	{
+		if (currentNumber == targetNumber)
+		{
+			return 0;
+		}
+
+		if (currentNumber < targetNumber)
+		{
+			return currentNumber - targetNumber + 10;
+		}
+		else
+		{
+			return currentNumber - targetNumber;
+		}
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		if (this.code != null)
 		{
+			var currentNumberWidget = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_PASSWORD_CURRENT_CHILD_ID);
+			if (currentNumberWidget != null)
+			{
+				var currentNumberModel = currentNumberWidget.getModelId();
+				var currentNumber = IntStream.range(0, PUZZLE_NUMBERS.length)
+					.filter(i -> PUZZLE_NUMBERS[i] == currentNumberModel)
+					.findFirst()
+					.orElse(-1);
+
+				var input1 = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_PASSWORD_1_CHILD_ID);
+				var input2 = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_PASSWORD_2_CHILD_ID);
+				var input3 = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_PASSWORD_3_CHILD_ID);
+				var input4 = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_PASSWORD_4_CHILD_ID);
+
+				if (input1 == null || input2 == null || input3 == null || input4 == null)
+				{
+					// something very wrong
+					this.distanceUp = -1;
+					this.distanceDown = -1;
+					return;
+				}
+
+				var input1Text = input1.getText();
+				var input2Text = input2.getText();
+				var input3Text = input3.getText();
+				var input4Text = input4.getText();
+
+				var targetNumber = -1;
+
+				if (Objects.equals(input1Text, "-") || Integer.parseInt(input1.getText()) != this.doorPassword[0])
+				{
+					targetNumber = this.doorPassword[0];
+				}
+				else if (Objects.equals(input2Text, "-") || Integer.parseInt(input2.getText()) != this.doorPassword[1])
+				{
+					targetNumber = this.doorPassword[1];
+				}
+				else if (Objects.equals(input3Text, "-") || Integer.parseInt(input3.getText()) != this.doorPassword[2])
+				{
+					targetNumber = this.doorPassword[2];
+				}
+				else if (Objects.equals(input4Text, "-") || Integer.parseInt(input4.getText()) != this.doorPassword[3])
+				{
+					targetNumber = this.doorPassword[3];
+				}
+
+				if (currentNumber == -1 || targetNumber == -1)
+				{
+					// something very wrong
+					this.distanceUp = -1;
+					this.distanceDown = -1;
+				}
+				else
+				{
+					this.distanceUp = calculateDistanceUp(currentNumber, targetNumber);
+					this.distanceDown = calculateDistanceDown(currentNumber, targetNumber);
+
+					this.shouldClickDownInteadOfUp.setShouldPass(this.distanceDown < this.distanceUp);
+				}
+			}
 			return;
 		}
 
@@ -231,7 +337,8 @@ public class MetalDoorSolver extends DetailedOwnerStep
 		{
 			this.code = matcher.group(1);
 			this.doorPassword = calculate(this.code);
-			if (this.doorPassword != null) {
+			if (this.doorPassword != null)
+			{
 				firstNumberCorrect.setText(String.valueOf(this.doorPassword[0]));
 				inputFirstCorrect.setId(PUZZLE_NUMBERS[this.doorPassword[0]]);
 				secondNumberCorrect.setText(String.valueOf(this.doorPassword[1]));
@@ -243,10 +350,7 @@ public class MetalDoorSolver extends DetailedOwnerStep
 			}
 			updateSteps();
 		}
-	}
 
-	private void updatePuzzleSteps()
-	{
 	}
 
 	@Override
@@ -258,11 +362,11 @@ public class MetalDoorSolver extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		var decoderStrips = new ItemRequirement("Decoder strips", ItemID.DECODER_STRIPS);
+		this.shouldClickDownInteadOfUp = new ManualRequirement();
 		var codeKey = new ItemRequirement("Code key", ItemID.CODE_KEY);
-		readCode = new ItemStep(getQuestHelper(), "Read the Code key in your inventory.", codeKey.highlighted(), decoderStrips); // TODO
+		readCode = new ItemStep(getQuestHelper(), "Read the Code key in your inventory.", codeKey.highlighted());
 
-		clickMetalDoors = new ObjectStep(getQuestHelper(), ObjectID.METAL_DOORS, new WorldPoint(3612, 4582, 0), "Open the metal doors and solve the puzzle.", codeKey, decoderStrips);
+		clickMetalDoors = new ObjectStep(getQuestHelper(), ObjectID.METAL_DOORS, new WorldPoint(3612, 4582, 0), "Open the metal doors and solve the puzzle.", codeKey);
 
 		var puzzleWidgetOpen = new WidgetPresenceRequirement(PUZZLE_GROUP_ID, PUZZLE_BTN_UP_CHILD_ID);
 
@@ -283,20 +387,60 @@ public class MetalDoorSolver extends DetailedOwnerStep
 		inputFourthCorrect = new WidgetModelRequirement(PUZZLE_GROUP_ID, PUZZLE_PASSWORD_CURRENT_CHILD_ID, -1);
 
 		var clickUp = new WidgetStep(getQuestHelper(), "Click the Up button.", new WidgetDetails(PUZZLE_GROUP_ID, PUZZLE_BTN_UP_CHILD_ID));
+		clickUp.addExtraWidgetOverlayHintFunction(this::drawDistanceUp);
+		var clickDown = new WidgetStep(getQuestHelper(), "Click the Down button.", new WidgetDetails(PUZZLE_GROUP_ID, PUZZLE_BTN_DOWN_CHILD_ID));
+		clickDown.addExtraWidgetOverlayHintFunction(this::drawDistanceDown);
 		var submitNumber = new WidgetStep(getQuestHelper(), "Click the Enter button.", new WidgetDetails(PUZZLE_GROUP_ID, PUZZLE_ENTER_CHILD_ID));
 		var pressBack = new WidgetStep(getQuestHelper(), "Click the Back button.", new WidgetDetails(PUZZLE_GROUP_ID, PUZZLE_BACK_CHILD_ID));
+
+		var clickUpOrDown = new ConditionalStep(getQuestHelper(), clickUp);
+		clickUpOrDown.addStep(shouldClickDownInteadOfUp, clickDown);
 
 		solvePuzzle = new ConditionalStep(getQuestHelper(), pressBack);
 		solvePuzzle.addStep(not(puzzleWidgetOpen), clickMetalDoors);
 		solvePuzzle.addStep(and(fourthNumberCorrect, thirdNumberCorrect, secondNumberCorrect, firstNumberCorrect), submitNumber);
 		solvePuzzle.addStep(and(fourthNumberEmpty, inputFourthCorrect, firstNumberCorrect, secondNumberCorrect, thirdNumberCorrect), submitNumber);
-		solvePuzzle.addStep(and(fourthNumberEmpty, firstNumberCorrect, secondNumberCorrect, thirdNumberCorrect), clickUp);
+		solvePuzzle.addStep(and(fourthNumberEmpty, firstNumberCorrect, secondNumberCorrect, thirdNumberCorrect), clickUpOrDown);
 		solvePuzzle.addStep(and(thirdNumberEmpty, inputThirdCorrect, firstNumberCorrect, secondNumberCorrect), submitNumber);
-		solvePuzzle.addStep(and(thirdNumberEmpty, firstNumberCorrect, secondNumberCorrect), clickUp);
+		solvePuzzle.addStep(and(thirdNumberEmpty, firstNumberCorrect, secondNumberCorrect), clickUpOrDown);
 		solvePuzzle.addStep(and(secondNumberEmpty, inputSecondCorrect, firstNumberCorrect), submitNumber);
-		solvePuzzle.addStep(and(secondNumberEmpty, firstNumberCorrect), clickUp);
+		solvePuzzle.addStep(and(secondNumberEmpty, firstNumberCorrect), clickUpOrDown);
 		solvePuzzle.addStep(and(firstNumberEmpty, inputFirstCorrect), submitNumber);
-		solvePuzzle.addStep(firstNumberEmpty, clickUp);
+		solvePuzzle.addStep(firstNumberEmpty, clickUpOrDown);
+	}
+
+	public void drawDistanceUp(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		super.makeWidgetOverlayHint(graphics, plugin);
+
+		var arrow = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_BTN_DOWN_CHILD_ID);
+		if (arrow == null)
+		{
+			return;
+		}
+
+		int widgetX = arrow.getCanvasLocation().getX() + (arrow.getWidth() / 2) - 30;
+		int widgetY = arrow.getCanvasLocation().getY() + (arrow.getHeight() / 2) + 4;
+		Font font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
+		graphics.setFont(font);
+		graphics.drawString(Integer.toString(this.distanceUp), widgetX, widgetY);
+	}
+
+	public void drawDistanceDown(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		super.makeWidgetOverlayHint(graphics, plugin);
+
+		var arrow = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_BTN_DOWN_CHILD_ID);
+		if (arrow == null)
+		{
+			return;
+		}
+
+		int widgetX = arrow.getCanvasLocation().getX() + (arrow.getWidth() / 2) - 30;
+		int widgetY = arrow.getCanvasLocation().getY() + (arrow.getHeight() / 2) + 4;
+		Font font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
+		graphics.setFont(font);
+		graphics.drawString(Integer.toString(this.distanceDown), widgetX, widgetY);
 	}
 
 	protected void updateSteps()
@@ -307,7 +451,8 @@ public class MetalDoorSolver extends DetailedOwnerStep
 			return;
 		}
 
-		if (this.doorPassword == null) {
+		if (this.doorPassword == null)
+		{
 			startUpStep(solvePuzzleFallback);
 			return;
 		}
@@ -323,6 +468,6 @@ public class MetalDoorSolver extends DetailedOwnerStep
 			this.clickMetalDoors,
 			this.solvePuzzleFallback,
 			this.solvePuzzle
-			);
+		);
 	}
 }

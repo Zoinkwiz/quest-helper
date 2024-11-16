@@ -33,14 +33,21 @@ import java.util.List;
 import java.util.Map;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
+import lombok.Getter;
 
 public abstract class BasicQuestHelper extends QuestHelper
 {
 	protected Map<Integer, QuestStep> steps;
 	protected int var;
 
-	@Override
-	public void init()
+	public Map<Integer, QuestStep> getStepList() {
+		return this.steps;
+	}
+
+	/**
+	 * Attempt to load steps from the quest if steps have not yet been loaded
+	 */
+	private void tryLoadSteps()
 	{
 		if (steps == null)
 		{
@@ -49,8 +56,16 @@ public abstract class BasicQuestHelper extends QuestHelper
 	}
 
 	@Override
+	public void init()
+	{
+		this.tryLoadSteps();
+	}
+
+	@Override
 	public void startUp(QuestHelperConfig config)
 	{
+		// this.tryLoadSteps();
+		// TODO: THIS SHOULD USE tryLoadSteps
 		steps = loadSteps();
 		this.config = config;
 		instantiateSteps(steps.values());

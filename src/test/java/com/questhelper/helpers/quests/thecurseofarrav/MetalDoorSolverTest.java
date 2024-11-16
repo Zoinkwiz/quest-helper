@@ -26,6 +26,9 @@ public class MetalDoorSolverTest
 
 		// from Zoinkwiz
 		assertArrayEquals(new int[]{6, 3, 6, 4}, MetalDoorSolver.calculate("AEGH"));
+
+		// from pajdank
+		assertArrayEquals(new int[]{1, 3, 4, 2}, MetalDoorSolver.calculate("BIAF"));
 	}
 
 	@Test
@@ -69,5 +72,79 @@ public class MetalDoorSolverTest
 	public void testCodeIsNull()
 	{
 		assertNull(MetalDoorSolver.calculate(null));
+	}
+
+	@Test
+	public void testDistanceUp()
+	{
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(0, 0));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(1, 1));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(2, 2));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(3, 3));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(4, 4));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(5, 5));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(6, 6));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(7, 7));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(8, 8));
+		assertEquals(0, MetalDoorSolver.calculateDistanceUp(9, 9));
+
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(0, 1));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(1, 2));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(2, 3));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(3, 4));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(4, 5));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(5, 6));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(6, 7));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(7, 8));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(8, 9));
+		assertEquals(1, MetalDoorSolver.calculateDistanceUp(9, 0));
+
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(0, 9));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(1, 0));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(2, 1));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(3, 2));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(4, 3));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(5, 4));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(6, 5));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(7, 6));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(8, 7));
+		assertEquals(9, MetalDoorSolver.calculateDistanceUp(9, 8));
+	}
+
+	@Test
+	public void testDistanceDown()
+	{
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(0, 0));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(1, 1));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(2, 2));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(3, 3));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(4, 4));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(5, 5));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(6, 6));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(7, 7));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(8, 8));
+		assertEquals(0, MetalDoorSolver.calculateDistanceDown(9, 9));
+
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(0, 9));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(1, 0));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(2, 1));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(3, 2));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(4, 3));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(5, 4));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(6, 5));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(7, 6));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(8, 7));
+		assertEquals(1, MetalDoorSolver.calculateDistanceDown(9, 8));
+
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(0, 1));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(1, 2));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(2, 3));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(3, 4));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(4, 5));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(5, 6));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(6, 7));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(7, 8));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(8, 9));
+		assertEquals(9, MetalDoorSolver.calculateDistanceDown(9, 0));
 	}
 }

@@ -30,6 +30,9 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import lombok.Setter;
 import net.runelite.api.widgets.Widget;
 import com.questhelper.QuestHelperPlugin;
@@ -39,6 +42,8 @@ public class WidgetStep extends DetailedQuestStep
 {
 	@Setter
 	protected List<WidgetDetails> widgetDetails = new ArrayList<>();
+
+	protected List<BiConsumer<Graphics2D, QuestHelperPlugin>> extraWidgetOverlayHintFunctions = new ArrayList<>();
 
 	public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID)
 	{
@@ -50,6 +55,10 @@ public class WidgetStep extends DetailedQuestStep
 	{
 		super(questHelper, text);
 		this.widgetDetails.addAll(Arrays.asList(widgetDetails));
+	}
+
+	public void addExtraWidgetOverlayHintFunction(BiConsumer<Graphics2D, QuestHelperPlugin> function) {
+		this.extraWidgetOverlayHintFunctions.add(function);
 	}
 
 	@Override
@@ -78,6 +87,10 @@ public class WidgetStep extends DetailedQuestStep
 			graphics.fill(widget.getBounds());
 			graphics.setColor(questHelper.getConfig().targetOverlayColor());
 			graphics.draw(widget.getBounds());
+		}
+
+		for (var extraWidgetOverlayHintFunction : extraWidgetOverlayHintFunctions) {
+			extraWidgetOverlayHintFunction.accept(graphics, plugin);
 		}
 	}
 }

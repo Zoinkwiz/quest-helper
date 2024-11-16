@@ -363,7 +363,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 			}
 		} else {
 			log.debug("player is outside of puzzle: {} / {} / {}/{}", playerWp, localPoint, xInPuzzle, yInPuzzle);
-			var userIsPastPuzzle = localPoint.getX() <= baseX; // TODO: If the user walks to the cave to the south, we might tell the user to just click the lever. I need to figure out the correct zone here. polish pass!
+			var userIsPastPuzzle = localPoint.getX() <= 3730 || (localPoint.getX() <= baseX && localPoint.getY() >= 4701);
 			if (userIsPastPuzzle) {
 				// highlight lever
 				startUpStep(finishPuzzleStep);

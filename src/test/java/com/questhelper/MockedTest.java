@@ -32,18 +32,26 @@ import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectMan
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.Client;
+import net.runelite.api.SpriteID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import javax.inject.Named;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadLocalRandom;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -70,7 +78,13 @@ public abstract class MockedTest extends MockedTestBase
 	protected QuestHelperConfig questHelperConfig = Mockito.mock(QuestHelperConfig.class);
 
 	@Bind
+	protected RuneLiteConfig runeLiteConfig = Mockito.mock(RuneLiteConfig.class);
+
+	@Bind
 	protected QuestOverlayManager questOverlayManager = Mockito.mock(QuestOverlayManager.class);
+
+	@Bind
+	protected SpriteManager spriteManager = Mockito.mock(SpriteManager.class);
 
 	@Bind
 	protected RuneliteObjectManager runeliteObjectManager = Mockito.mock(RuneliteObjectManager.class);
@@ -99,6 +113,18 @@ public abstract class MockedTest extends MockedTestBase
 	@Bind
 	@Named("developerMode")
 	private boolean developerMode;
+	
+	    public BufferedImage random(final int width, final int height) {
+        Random rand = ThreadLocalRandom.current();
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                image.setRGB(x, y, new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()).getRGB());
+            }
+        }
+        return image;
+    }
+
 
 	@Override
 	@BeforeEach
@@ -110,6 +136,7 @@ public abstract class MockedTest extends MockedTestBase
 		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
 		when(client.getIntStack()).thenReturn(new int[] { 1, 1, 1, 1 });
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+		when(spriteManager.getSprite(SpriteID.TAB_QUESTS, 0)).thenReturn(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
 
 		AchievementDiaryStepManager.setup(configManager);
 	}

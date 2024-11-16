@@ -223,7 +223,7 @@ public class QuestStepPanel extends JPanel
 			for (QuestStep step : getSteps())
 			{
 				if (step.getConditionToHide() != null && step.getConditionToHide().check(client)) continue;
-				if (step == newStep || step.getSubsteps().contains(newStep))
+				if (step == newStep || step.hasOtherStepAsSubstep(newStep))
 				{
 					highlighted = true;
 					updateHighlight(step);

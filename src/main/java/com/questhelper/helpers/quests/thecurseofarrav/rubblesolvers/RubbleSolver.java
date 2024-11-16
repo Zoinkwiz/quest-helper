@@ -30,7 +30,7 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
     private int stepCounter;
 
     public RubbleSolver(TheCurseOfArrav theCurseOfArrav, String number) {
-        super(theCurseOfArrav, "Make your way through the Trollweiss cave, mining rubble with your pickaxe. " + number);
+        super(theCurseOfArrav, "Make your way through the Trollweiss cave, mining rubble with your pickaxe from the direction indicated. Rubble can only be mined from the same direction once.");
     }
 
     protected void addMineRubbleStep(int x, int y, RubbleType rubbleType, Direction direction) {
@@ -40,10 +40,11 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
         var validIDSet = new HashSet<>(validObjectIDs);
 
         var wp = new WorldPoint(x, y, 0);
-        var stepCounter = this.stepCounter++;
-        var text = String.format("[%d] Mine the rubble from the %s side", stepCounter, direction.toString().toLowerCase());
+		// Useful for debugging
+        // var stepCounter = this.stepCounter++;
+        var text = String.format("Mine the rubble from the %s side", direction.toString().toLowerCase());
         var mainObjectID = validObjectIDs.get(0);
-        var step = new ObjectStep(getQuestHelper(), mainObjectID, wp, text);
+        var step = new ObjectStep(getQuestHelper(), mainObjectID, wp, text, ((TheCurseOfArrav) getQuestHelper()).anyPickaxe);
         var offsetX = x;
         var offsetY = y;
         switch (direction) {
@@ -67,8 +68,8 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
             step.addAlternateObjects(alternateIDs);
         }
 
-        var conditionText = String.format("[%d] Rubble mined from the %s side", stepCounter, direction.toString().toLowerCase());
-        var inverseConditionText = String.format("[%d] Rubble needs to be mined from the %s side", stepCounter, direction.toString().toLowerCase());
+        var conditionText = String.format("Rubble mined from the %s side", direction.toString().toLowerCase());
+        var inverseConditionText = String.format("Rubble needs to be mined from the %s side", direction.toString().toLowerCase());
         var conditionThatRubbleIsStillThere = new ObjectCondition(validIDSet, wp);
         var conditionThatRubbleHasBeenMined = new Conditions(true, LogicType.NAND, conditionThatRubbleIsStillThere);
         conditionThatRubbleIsStillThere.setText(inverseConditionText);
@@ -102,56 +103,22 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
 
 		this.setupRubbleSteps();
 
-        // after reversing
-        // mineStep 0: mine C
-        // mineStep 1: mine B
-        // mineStep 2: mine A
-
-        // condition 0: A is mined
-        // condition 1: B is mined
-        // condition 2: C is mined
-
-        // i = 0: Mine C, if B and A are mined, and C is not mined
-        // i = 1: Mine B, if A is mined
-        // i = 2: Mine A, with no condition
-
         conditionalStep = new ConditionalStep(getQuestHelper(), todo);
-        // Collections.reverse(this.mineSteps);
-        // Collections.reverse(this.inverseConditions);
 
         assert this.mineSteps.size() == this.conditions.size();
         assert this.mineSteps.size() == this.inverseConditions.size();
 
-        // {
-        //     var allDone = new DetailedQuestStep(getQuestHelper(), "you are all done lol");
-        //     var conditionList = new ArrayList<Requirement>();
-        //     for (var condition : this.conditions) {
-        //         allDone.addRequirement(condition);
-        //     }
-        //     var xd = new Conditions(LogicType.AND, conditionList);
-        //     conditionalStep.addStep(xd, allDone);
-        // }
         for (var i = 0; i < mineSteps.size(); i++) {
             var mineStep = mineSteps.get(i);
 			var inverseCondition = this.inverseConditions.get(i);
 
-            // var conditionList = new ArrayList<Requirement>();
+			// Useful for debugging
+            // mineStep.addRequirement(inverseCondition);
 
-            mineStep.addRequirement(inverseCondition);
-            // conditionList.add(this.inverseConditions.get(i));
+            // var xd = new Conditions(LogicType.AND, inverseCondition);
+            // xd.setText(inverseCondition.getDisplayText());
 
-            // StringBuilder text = new StringBuilder();
-            // for (var j = 0; j < this.conditions.size() - i - 1; j++) {
-            //     var condition = this.conditions.get(j);
-            //     conditionList.add(condition);
-            //     text.append(this.conditions.get(j).getDisplayText());
-            //     mineStep.addRequirement(condition);
-            // }
-
-            var xd = new Conditions(LogicType.AND, inverseCondition);
-            xd.setText(inverseCondition.getDisplayText());
-
-            conditionalStep.addStep(xd, mineStep);
+            conditionalStep.addStep(inverseCondition, mineStep);
         }
     }
 

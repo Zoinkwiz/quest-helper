@@ -45,13 +45,15 @@ import com.questhelper.steps.choice.WidgetTextChange;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
 import com.questhelper.steps.overlay.IconOverlay;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 import lombok.Getter;
@@ -593,5 +595,9 @@ public abstract class QuestStep implements Module
 	public PuzzleWrapperStep puzzleWrapStep(String alternateText)
 	{
 		return new PuzzleWrapperStep(getQuestHelper(), this, alternateText);
+	}
+
+	public boolean hasOtherStepAsSubstep(QuestStep otherStep) {
+		return this.getSubsteps().contains(otherStep);
 	}
 }

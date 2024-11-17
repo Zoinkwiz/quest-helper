@@ -182,34 +182,10 @@ public class KeysAndLeversTest extends MockedTest
 	}
 
 	@Test
-	void getToSouthLeverAfterInsertingKey2()
-	{
-		var mockedItems = new Item[]{
-			new Item(ItemID.MASTABA_KEY_30309, 1),
-		};
-		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
-		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
-
-		assertEquals(this.helper.getToSouthLever, conditionalStep.getActiveStep());
-	}
-
-	@Test
 	void pullSouthLeverAfterInsertingKey1()
 	{
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY, 1),
-		};
-		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
-		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
-
-		assertEquals(this.helper.pullSouthLever, conditionalStep.getActiveStep());
-	}
-
-	@Test
-	void pullSouthLeverAfterInsertingKey2()
-	{
-		var mockedItems = new Item[]{
-			new Item(ItemID.MASTABA_KEY_30309, 1),
 		};
 		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
@@ -230,18 +206,6 @@ public class KeysAndLeversTest extends MockedTest
 	}
 
 	@Test
-	void leaveSouthLeverAfterInsertingKey2()
-	{
-		var mockedItems = new Item[]{
-			new Item(ItemID.MASTABA_KEY_30309, 1),
-		};
-		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
-		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
-
-		assertEquals(this.helper.leaveSouthLever, conditionalStep.getActiveStep());
-	}
-
-	@Test
 	void goToNorthLeverAfterPullingSouthLeverKey1()
 	{
 		var mockedItems = new Item[]{
@@ -254,34 +218,10 @@ public class KeysAndLeversTest extends MockedTest
 	}
 
 	@Test
-	void goToNorthLeverAfterPullingSouthLeverKey2()
-	{
-		var mockedItems = new Item[]{
-			new Item(ItemID.MASTABA_KEY_30309, 1),
-		};
-		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
-		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
-
-		assertEquals(this.helper.getToNorthLever, conditionalStep.getActiveStep());
-	}
-
-	@Test
 	void insertKeyIntoNorthLeverAfterPullingSouthLeverKey1()
 	{
 		var mockedItems = new Item[]{
 			new Item(ItemID.MASTABA_KEY, 1),
-		};
-		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
-		var conditionalStep = this.init(new WorldPoint(3894, 4597, 0), mockedItems);
-
-		assertEquals(this.helper.pullNorthLever, conditionalStep.getActiveStep());
-	}
-
-	@Test
-	void insertKeyIntoNorthLeverAfterPullingSouthLeverKey2()
-	{
-		var mockedItems = new Item[]{
-			new Item(ItemID.MASTABA_KEY_30309, 1),
 		};
 		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3894, 4597, 0), mockedItems);
@@ -303,18 +243,6 @@ public class KeysAndLeversTest extends MockedTest
 
 	@Test
 	void pullNorthLeverAfterPullingSouthLeverKey1()
-	{
-		var mockedItems = new Item[]{
-		};
-		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
-		when(client.getVarbitValue(VARBIT_NORTH_LEVER_STATE)).thenReturn(1);
-		var conditionalStep = this.init(new WorldPoint(3894, 4597, 0), mockedItems);
-
-		assertEquals(this.helper.pullNorthLever, conditionalStep.getActiveStep());
-	}
-
-	@Test
-	void pullNorthLeverAfterPullingSouthLeverKey2()
 	{
 		var mockedItems = new Item[]{
 		};

@@ -336,7 +336,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 		var yInPuzzle = localPoint.getY() - baseY;
 
 		if (xInPuzzle > 0 && xInPuzzle < SIZE && yInPuzzle >= 0 && yInPuzzle < SIZE) {
-			log.info("Player is in the puzzle, at {}/{}", xInPuzzle, yInPuzzle);
+			log.debug("Player is in the puzzle, at {}/{}", xInPuzzle, yInPuzzle);
 			startUpStep(pathStep);
 		} else {
 			log.debug("player is outside of puzzle: {} / {} / {}/{}", playerWp, localPoint, xInPuzzle, yInPuzzle);

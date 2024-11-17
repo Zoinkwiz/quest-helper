@@ -43,6 +43,8 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
+
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -325,17 +327,15 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.", dwellberries3, ringOfLife, twoFreeInventorySlots, golemCombatGear);
 
-		var anyMastabaKey = new ItemRequirement("Mastaba Key", List.of(ItemID.MASTABA_KEY, ItemID.MASTABA_KEY_30309));
-
 		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton in the cave south of the entrance.");
 		getSecondKey = new ObjectStep(this, ObjectID.SKELETON_50353, new WorldPoint(3880, 4585, 0), "Get the second Mastaba key from the skeleton east of the entrance.");
 		var bySouthLever = new Zone(new WorldPoint(3893, 4554, 0), new WorldPoint(3894, 4552, 0));
 		var bySouthLeverReq = new ZoneRequirement(bySouthLever);
-		pullSouthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.");
-		pullSouthLever.addDialogStep("Yes.");
 		getToSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3891, 4554, 0), "Search the Odd markings to the south to get to the south lever. Search the markings again if you fail.");
-		var needToInsertKeyInSouthLever = new VarbitRequirement(VARBIT_SOUTH_LEVER_STATE, 0);
-		var needToFlipSouthLever = new VarbitRequirement(VARBIT_SOUTH_LEVER_STATE, 1);
+		var haveUsedKeyOnSouthLever = new VarbitRequirement(VARBIT_SOUTH_LEVER_STATE, 1, Operation.GREATER_EQUAL);
+		pullSouthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.",
+				secondMastabaKey.hideConditioned(haveUsedKeyOnSouthLever));
+		pullSouthLever.addDialogStep("Yes.");
 		var haveFlippedSouthLever = new VarbitRequirement(VARBIT_SOUTH_LEVER_STATE, 2);
 		leaveSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3892, 4554, 0), "Search the Odd markings next to you to get out.");
 		pullSouthLever.addSubSteps(getToSouthLever, leaveSouthLever);
@@ -343,42 +343,31 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		var byNorthLever = new Zone(new WorldPoint(3894, 4597, 0), new WorldPoint(3893, 4599, 0));
 		var byNorthLeverReq = new ZoneRequirement(byNorthLever);
 		getToNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3891, 4597, 0), "Search the Odd markings to the north to get to the north lever. Search the markings again if you fail.");
-		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.");
+		var haveUsedKeyOnNorthLever = new VarbitRequirement(VARBIT_NORTH_LEVER_STATE, 1, Operation.GREATER_EQUAL);
+		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.", firstMastabaKey.hideConditioned(haveUsedKeyOnNorthLever));
 		pullNorthLever.addDialogStep("Yes.");
-		var needToInsertKeyInNorthLever = new VarbitRequirement(VARBIT_NORTH_LEVER_STATE, 0);
-		var needToFlipNorthLever = new VarbitRequirement(VARBIT_NORTH_LEVER_STATE, 1);
 		var haveFlippedNorthLever = new VarbitRequirement(VARBIT_NORTH_LEVER_STATE, 2);
 		leaveNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3892, 4597, 0), "Search the Odd markings next to you to get out.");
 		pullNorthLever.addSubSteps(getToNorthLever, leaveNorthLever);
 
-		// var anyMastabaKey = new ItemRequirements(firstMastabaKey, secondMastabaKey);
-		var bothMastabaKeys = and(firstMastabaKey, secondMastabaKey);
-		firstMastabaKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
+		var haveOrUsedFirstKey = or(firstMastabaKey, haveUsedKeyOnNorthLever);
+		var haveOrUsedSecondKey = or(secondMastabaKey, haveUsedKeyOnSouthLever);
+		var haveOrUsedBothKeys = and(haveOrUsedFirstKey, haveOrUsedSecondKey);
 
-		// ADDING THIS CONDITION TO HIDE BREAKS ALL ITEMREQUIREMENT CHECKS HERE??
-		// firstMastabaKey.setConditionToHide(not(needToInsertKeyInSouthLever));
-		// secondMastabaKey.setConditionToHide(not(needToInsertKeyInNorthLever));
+		var stepsNearNorthLever = new ConditionalStep(this, leaveNorthLever);
+		stepsNearNorthLever.addStep(and(haveOrUsedFirstKey, not(haveFlippedNorthLever)), pullNorthLever);
 
-		// This step is complicated because you can use either key for either lever (I think). This could use some testing where the user does not follow instructions and:
-		// 1. Gets south key, pulls south lever, then what?
-		// 2. Gets north key, pulls south lever, then what?
-		// 3. Gets south key, pulls north lever, then what?
-		// 4. Gets north key, pulls north lever, then what?
-		// 5. Gets both keys, pulls north lever, then what?
+		var stepsNearSouthLever = new ConditionalStep(this, leaveSouthLever);
+		stepsNearSouthLever.addStep(and(haveOrUsedSecondKey, not(haveFlippedSouthLever)), pullSouthLever);
+
 		unlockImposingDoors = new ConditionalStep(this, enterTomb);
 		unlockImposingDoors.addStep(not(insideTomb), enterTomb);
-		unlockImposingDoors.addStep(and(haveFlippedSouthLever, bySouthLeverReq), leaveSouthLever);
-		unlockImposingDoors.addStep(and(haveFlippedNorthLever, byNorthLeverReq), leaveNorthLever);
-		unlockImposingDoors.addStep(and(needToFlipSouthLever, bySouthLeverReq), pullSouthLever);
-		unlockImposingDoors.addStep(and(needToFlipNorthLever, byNorthLeverReq), pullNorthLever);
-		unlockImposingDoors.addStep(and(not(bySouthLeverReq), bothMastabaKeys, needToInsertKeyInSouthLever), getToSouthLever);
-		unlockImposingDoors.addStep(and(not(bySouthLeverReq), needToFlipSouthLever), getToSouthLever);
-		unlockImposingDoors.addStep(and(bySouthLeverReq, bothMastabaKeys, needToInsertKeyInSouthLever), pullSouthLever);
-		unlockImposingDoors.addStep(and(not(byNorthLeverReq), haveFlippedSouthLever, anyMastabaKey, needToInsertKeyInNorthLever), getToNorthLever);
-		unlockImposingDoors.addStep(and(not(byNorthLeverReq), haveFlippedSouthLever, needToFlipNorthLever), getToNorthLever);
-		unlockImposingDoors.addStep(and(haveFlippedSouthLever, anyMastabaKey, needToInsertKeyInNorthLever, byNorthLeverReq), pullNorthLever);
-		unlockImposingDoors.addStep(and(or(needToInsertKeyInNorthLever, needToInsertKeyInSouthLever), not(firstMastabaKey)), getFirstKey);
-		unlockImposingDoors.addStep(and(or(needToInsertKeyInNorthLever, needToInsertKeyInSouthLever), not(secondMastabaKey)), getSecondKey);
+		unlockImposingDoors.addStep(bySouthLeverReq, stepsNearSouthLever);
+		unlockImposingDoors.addStep(byNorthLeverReq, stepsNearNorthLever);
+		unlockImposingDoors.addStep(and(haveOrUsedBothKeys, not(haveFlippedSouthLever)), getToSouthLever);
+		unlockImposingDoors.addStep(and(haveOrUsedBothKeys, not(haveFlippedNorthLever)), getToNorthLever);
+		unlockImposingDoors.addStep(not(haveOrUsedFirstKey), getFirstKey);
+		unlockImposingDoors.addStep(not(haveOrUsedSecondKey), getSecondKey);
 
 		// Once the north lever is pulled, quest varbit changed from 6 to 8, then 8 to 10 at the same tick
 		// This might have to do with which order you pulled the levers in

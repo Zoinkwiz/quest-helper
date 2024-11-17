@@ -73,13 +73,11 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 	 * True if they have had their object IDs filled in.
 	 */
 	private boolean tilesConfigured = false;
-	private ObjectStep firstObjectStepXD;
-	private ObjectStep[][] objectSteps;
 
-	List<int[]> shortestPath = null;
+	List<WorldPoint> shortestPath = null;
 	private DetailedQuestStep fallbackStep;
 	private QuestStep finishPuzzleStep;
-	private ObjectStep mostRecentStep = null;
+	private DetailedQuestStep pathStep;
 
 	public TilePuzzleSolver(TheCurseOfArrav theCurseOfArrav)
 	{
@@ -87,13 +85,13 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 	}
 
 	/**
-	 * @param startX local X coordinate of the tiles array for where to start searching
 	 * @param startY local Y coordinate of the tiles array for where to start searching
 	 * @return A list of local X/Y coordinates if a path to the end was found
 	 */
-	private @Nullable List<int[]> findPath(int startX, int startY)
+	private @Nullable List<int[]> findPath(int startY)
 	{
-		assert (startX >= 0 && startX < SIZE);
+		int startX = 11;
+
 		assert (startY >= 0 && startY < SIZE);
 		assert (this.tilesConfigured);
 
@@ -264,7 +262,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 			var possiblePaths = new ArrayList<List<int[]>>();
 			for (int y = 0; y < 12; y++)
 			{
-				var path = this.findPath(11, y);
+				var path = this.findPath(y);
 				if (path != null)
 				{
 					log.debug("Found possible path starting at {}/{}. Length {}", 11, y, path.size());
@@ -272,11 +270,21 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 				}
 			}
 
+			var baseX = 3737;
+			var baseY = 4709;
+
 			for (var possiblePath : possiblePaths)
 			{
 				if (this.shortestPath == null || possiblePath.size() < this.shortestPath.size())
 				{
-					this.shortestPath = possiblePath;
+					List<WorldPoint> line = new ArrayList<>();
+					for (int[] tileXY : possiblePath)
+					{
+						var wp = new WorldPoint(baseX + tileXY[0], baseY + tileXY[1], 0);
+						line.add(wp);
+					}
+					this.shortestPath = line;
+					this.pathStep.setLinePoints(this.shortestPath);
 				}
 			}
 		}
@@ -293,27 +301,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		objectSteps = new ObjectStep[SIZE][SIZE];
-		var baseX = 3737;
-		var baseY = 4709;
-		var plane = 0;
-		for (int x = 0; x < SIZE; ++x)
-		{
-			var objectText = "Click the tile to pass through the puzzle.";
-			if (x == 11) {
-				objectText = "Click the tile to start the puzzle.";
-			}
-			for (int y = 0; y < SIZE; ++y)
-			{
-				var wp = new WorldPoint(baseX + x, baseY + y, plane);
-				var objectStep = new ObjectStep(getQuestHelper(), GREEN_TILE, wp, objectText);
-				objectStep.addAlternateObjects(BLUE_TILE, RED_TILE, YELLOW_TILE);
-				if (firstObjectStepXD == null) {
-					firstObjectStepXD = objectStep;
-				}
-				objectSteps[x][y] = objectStep;
-			}
-		}
+		pathStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(3734, 4714, 0), "Click the tiles to pass through the puzzle.");
 
 		fallbackStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(3734, 4714, 0), "Unable to figure out a path, click your way across lol"); // TODO
 
@@ -347,33 +335,9 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 		var xInPuzzle = localPoint.getX() - baseX;
 		var yInPuzzle = localPoint.getY() - baseY;
 
-		var puzzleStartX = this.shortestPath.get(0)[0];
-		var puzzleStartY = this.shortestPath.get(0)[1];
-
-		if (xInPuzzle >= 0 && xInPuzzle < SIZE && yInPuzzle >= 0 && yInPuzzle < SIZE) {
+		if (xInPuzzle > 0 && xInPuzzle < SIZE && yInPuzzle >= 0 && yInPuzzle < SIZE) {
 			log.info("Player is in the puzzle, at {}/{}", xInPuzzle, yInPuzzle);
-			boolean nextIsOurCoolStep = false;
-			for (var pathPos : this.shortestPath) {
-				if (nextIsOurCoolStep) {
-					startUpStep(objectSteps[pathPos[0]][pathPos[1]]);
-					return;
-				}
-				if (pathPos[0] == xInPuzzle && pathPos[1] == yInPuzzle) {
-					nextIsOurCoolStep = true;
-					this.mostRecentStep = objectSteps[pathPos[0]][pathPos[1]];
-				}
-			}
-			if (nextIsOurCoolStep) {
-				log.info("user is at end");
-				startUpStep(finishPuzzleStep);
-				return;
-			}
-
-			if (this.mostRecentStep != null)
-			{
-				log.debug("user stepped off the path, lead them back");
-				startUpStep(this.mostRecentStep);
-			}
+			startUpStep(pathStep);
 		} else {
 			log.debug("player is outside of puzzle: {} / {} / {}/{}", playerWp, localPoint, xInPuzzle, yInPuzzle);
 			var userIsPastPuzzle = localPoint.getX() <= 3730 || (localPoint.getX() <= baseX && localPoint.getY() >= 4701);
@@ -382,7 +346,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 				startUpStep(finishPuzzleStep);
 			} else {
 				// highlight puzzle start
-				startUpStep(objectSteps[puzzleStartX][puzzleStartY]);
+				startUpStep(pathStep);
 			}
 		}
 	}
@@ -392,16 +356,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 	{
 		var steps = new ArrayList<QuestStep>();
 		steps.add(fallbackStep);
-		steps.add(firstObjectStepXD);
-
-		for (int x = 0; x < SIZE; ++x)
-		{
-			for (int y = 0; y < SIZE; ++y)
-			{
-				steps.add(objectSteps[x][y]);
-			}
-		}
-
+		steps.add(pathStep);
 		steps.add(finishPuzzleStep);
 
 		return steps;

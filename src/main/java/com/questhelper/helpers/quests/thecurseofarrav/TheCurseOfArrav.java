@@ -93,6 +93,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	// Recommended items
 	private TeleportItemRequirement fairyRingDLQ;
 	private TeleportItemRequirement lumberyardTeleport;
+	private TeleportItemRequirement trollheimTeleport;
 	private ItemRequirement golemCombatGear;
 	private ItemRequirement arravCombatGear;
 	private ItemRequirement food;
@@ -432,7 +433,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep18.addStep(insideTomb, returnToEliasByWalkingMidway);
 		// ardy cloak + fairy ring takes 50s, walking takes 1m12s
 
-		var trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.TROLLHEIM_TELEPORT);
+		trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.TROLLHEIM_TELEPORT);
 		trollheimTeleport.addAlternates(ItemCollections.GHOMMALS_HILT);
 		headToTrollheim = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0), "Enter the cave next to Trollheim. You can use a Trollheim teleport tablet or the GWD Ghommal's Hilt teleport to get close.", anyPickaxe);
 		headToTrollheim.addTeleport(trollheimTeleport);
@@ -670,8 +671,9 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			golemCombatGear,
 			arravCombatGear,
 			food,
-			lumberyardTeleport,
-			fairyRingDLQ
+			fairyRingDLQ,
+			trollheimTeleport,
+			lumberyardTeleport
 		);
 	}
 
@@ -762,6 +764,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		), List.of(
 			// Recommended
 			twoFreeInventorySlots,
+			fairyRingDLQ,
 			staminaPotion,
 			prayerPotion,
 			food
@@ -774,17 +777,19 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			climbUpstairsAndTalkToArrav,
 			talkToArrav,
 			goToNextRoom,
-			searchTapestry
+			searchTapestry,
+			returnToEliasWithBaseItems
 		), List.of(
 			// Requirements
 			anyPickaxe
 		), List.of(
 			// Recommended
+			fairyRingDLQ,
+			trollheimTeleport,
 			staminaPotion
 		)));
 		panels.add(new PanelDetails("Hearty Heist", List.of(
 			// Steps
-			returnToEliasWithBaseItems,
 			headToZemouregalsBaseAndTalkToElias,
 			enterZemouregalsBase,
 			getToBackOfZemouregalsBase,
@@ -808,6 +813,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 			canopicJarFullForHeist
 		), List.of(
 			// Recommended
+			lumberyardTeleport,
 			staminaPotion,
 			prayerPotion,
 			antiVenom,

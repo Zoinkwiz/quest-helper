@@ -160,7 +160,7 @@ public class HolyGrail extends BasicQuestHelper
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
 		antipoison = new ItemRequirement("Antipoison", ItemID.ANTIPOISON4);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		combatGear = new ItemRequirement("A weapon and armour (Melee Reccomended)", -1, -1).isNotConsumed();
+		combatGear = new ItemRequirement("A weapon and armour (melee recommended)", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		emptyInvSpot = new ItemRequirement("Empty Inventory Spot", -1, 1);
 		goldFeather = new ItemRequirement("Magic gold feather", ItemID.MAGIC_GOLD_FEATHER);
@@ -271,7 +271,7 @@ public class HolyGrail extends BasicQuestHelper
 		goToTeleportLocation1 = new DetailedQuestStep(this, teleportLocationPoint, "Go to the tower on Karamja near gold mine west of Brimhaven.", twoMagicWhistles, excalibur);
 		blowWhistle1 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle1, excalibur);
 
-		attackTitan = new NpcStep(this, NpcID.BLACK_KNIGHT_TITAN, "Kill the Black Knight Titan with Excalibur. Melee is reccomended as it has high Ranged and Magic Defense. (You only need to deal the killing blow with excalibur!)", twoMagicWhistles, excalibur);
+		attackTitan = new NpcStep(this, NpcID.BLACK_KNIGHT_TITAN, "Kill the Black Knight Titan with Excalibur. Melee is recommended as it has high Ranged and Magic defence. (You only need to deal the killing blow with excalibur!)", twoMagicWhistles, excalibur);
 		talkToFisherman = new NpcStep(this, NpcID.FISHERMAN_4065, new WorldPoint(2798, 4706, 0), "Talk to the fisherman by the river. After talking to him walk West to the castle.");
 		talkToFisherman.addDialogStep("Any idea how to get into the castle?");
 		pickupBell = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Pickup the bell outside of the castle.");

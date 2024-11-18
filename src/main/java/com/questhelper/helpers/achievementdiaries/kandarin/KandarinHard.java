@@ -348,7 +348,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(
 			new ItemReward("Kandarin headgear (3)", ItemID.KANDARIN_HEADGEAR_3, 1),
-			new ItemReward("15,500 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
 	}
 
 	@Override

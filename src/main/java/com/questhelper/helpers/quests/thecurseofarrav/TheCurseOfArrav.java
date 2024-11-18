@@ -92,8 +92,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 	// Recommended items
 	private TeleportItemRequirement fairyRingDLQ;
-	private TeleportItemRequirement lumberyardTeleport;
 	private TeleportItemRequirement trollheimTeleport;
+	private TeleportItemRequirement lumberyardTeleport;
 	private ItemRequirement golemCombatGear;
 	private ItemRequirement arravCombatGear;
 	private ItemRequirement food;
@@ -297,6 +297,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		// Recommended items
 		fairyRingDLQ = new TeleportItemRequirement("Fairy Ring [DLQ]", ItemCollections.FAIRY_STAFF);
+		trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.TROLLHEIM_TELEPORT);
+		trollheimTeleport.addAlternates(ItemCollections.GHOMMALS_HILT);
 		lumberyardTeleport = new TeleportItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
 		staminaPotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS, 1);
 		prayerPotion = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS, 1);
@@ -433,8 +435,6 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unsortedStep18.addStep(insideTomb, returnToEliasByWalkingMidway);
 		// ardy cloak + fairy ring takes 50s, walking takes 1m12s
 
-		trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.TROLLHEIM_TELEPORT);
-		trollheimTeleport.addAlternates(ItemCollections.GHOMMALS_HILT);
 		headToTrollheim = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0), "Enter the cave next to Trollheim. You can use a Trollheim teleport tablet or the GWD Ghommal's Hilt teleport to get close.", anyPickaxe);
 		headToTrollheim.addTeleport(trollheimTeleport);
 

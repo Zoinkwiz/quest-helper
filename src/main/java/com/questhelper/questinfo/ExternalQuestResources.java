@@ -203,6 +203,7 @@ public enum ExternalQuestResources
 	IN_SEARCH_OF_KNOWLEDGE("https://oldschool.runescape.wiki/w/In_Search_of_Knowledge"),
 	DADDYS_HOME("https://oldschool.runescape.wiki/w/Daddy%27s_Home"),
 	HOPESPEARS_WILL("https://oldschool.runescape.wiki/w/Hopespear%27s_Will"),
+	THE_CURSE_OF_ARRAV("https://oldschool.runescape.wiki/w/The_Curse_of_Arrav"),
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS("https://oldschool.runescape.wiki/w/Camelot_training_room"),

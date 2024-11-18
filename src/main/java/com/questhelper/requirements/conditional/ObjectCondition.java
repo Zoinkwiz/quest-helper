@@ -32,10 +32,12 @@ import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import java.util.Objects;
+import java.util.Set;
 
 public class ObjectCondition extends ConditionForStep
 {
-	private final int objectID;
+	private final Set<Integer> objectIDs;
 	private final Zone zone;
 
 	@Setter
@@ -46,7 +48,7 @@ public class ObjectCondition extends ConditionForStep
 
 	public ObjectCondition(int objectID)
 	{
-		this.objectID = objectID;
+		this.objectIDs = Set.of(objectID);
 		this.zone = null;
 	}
 
@@ -54,7 +56,7 @@ public class ObjectCondition extends ConditionForStep
 	{
 		assert(worldPoint != null);
 
-		this.objectID = objectID;
+		this.objectIDs = Set.of(objectID);
 		this.zone = new Zone(worldPoint);
 	}
 
@@ -62,10 +64,21 @@ public class ObjectCondition extends ConditionForStep
 	{
 		assert(zone != null);
 
-		this.objectID = objectID;
+		this.objectIDs = Set.of(objectID);
 		this.zone = zone;
 	}
 
+	public ObjectCondition(Set<Integer> objectIDs, WorldPoint worldPoint)
+	{
+		assert(worldPoint != null);
+		assert(objectIDs != null);
+		assert(objectIDs.stream().noneMatch(Objects::isNull));
+
+		this.objectIDs = objectIDs;
+		this.zone = new Zone(worldPoint);
+	}
+
+	@Override
 	public boolean check(Client client)
 	{
 		Tile[][] tiles;
@@ -118,7 +131,16 @@ public class ObjectCondition extends ConditionForStep
 
 	private boolean checkForObjects(TileObject object)
 	{
-		return object != null && (object.getId() == objectID || objectID == -1);
+		if (object == null) {
+			return false;
+		}
+
+		// SPECIAL CASE FROM BEFORE: do we really need this?
+		if (this.objectIDs.contains(-1)) {
+			return true;
+		}
+
+		return this.objectIDs.contains(object.getId());
 	}
 
 	@Override

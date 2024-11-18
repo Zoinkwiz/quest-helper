@@ -250,6 +250,7 @@ public class OptimalQuestGuide
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
 		QuestHelperQuest.DRAGON_SLAYER_II,
+		QuestHelperQuest.THE_CURSE_OF_ARRAV,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.SECRETS_OF_THE_NORTH,
 		QuestHelperQuest.WHILE_GUTHIX_SLEEPS,

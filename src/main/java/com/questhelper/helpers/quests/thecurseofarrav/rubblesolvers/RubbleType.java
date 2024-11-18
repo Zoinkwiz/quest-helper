@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2024, pajlada <https://github.com/pajlada>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.widget;
+package com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers;
 
-import com.questhelper.util.Utils;
-import lombok.AllArgsConstructor;
-import lombok.Value;
-import net.runelite.api.annotations.Component;
+import lombok.Getter;
+import net.runelite.api.ObjectID;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-@Value
-@AllArgsConstructor
-public class WidgetDetails
+@Getter
+public enum RubbleType
 {
-	public int groupID;
-	public int childID;
-	public int childChildID;
+	Three(ObjectID.RUBBLE_50603, ObjectID.RUBBLE_50604),
+	Two(ObjectID.RUBBLE_50598, ObjectID.RUBBLE_50602, ObjectID.RUBBLE_50601, ObjectID.RUBBLE_50599),
+	One(ObjectID.RUBBLE_50587, ObjectID.RUBBLE_50589, ObjectID.RUBBLE_50590, ObjectID.RUBBLE_50594, ObjectID.RUBBLE_50597, ObjectID.RUBBLE_50588, ObjectID.RUBBLE_50593);
 
-	public WidgetDetails(int groupID, int childID)
-	{
-		this.groupID = groupID;
-		this.childID = childID;
-		this.childChildID = -1;
-	}
+	private final List<Integer> objectIDs;
 
-	public WidgetDetails(@Component int componentId)
-	{
-		var pair = Utils.unpackWidget(componentId);
-		groupID = pair.getLeft();
-		childID = pair.getRight();
-		childChildID = -1;
+	RubbleType(Integer... possibleObjectIDs) {
+		this.objectIDs = new ArrayList<>();
+		Collections.addAll(this.objectIDs, possibleObjectIDs);
 	}
 }

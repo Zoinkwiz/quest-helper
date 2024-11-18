@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2024, pajlada <https://github.com/pajlada>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.steps.widget;
+package com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers;
 
-import com.questhelper.util.Utils;
-import lombok.AllArgsConstructor;
-import lombok.Value;
-import net.runelite.api.annotations.Component;
+import com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav;
 
-@Value
-@AllArgsConstructor
-public class WidgetDetails
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.coords.Direction;
+
+/**
+ * This class describes the rubble mining steps required for Roadblock 1 (when quest state varbit is 22)
+ */
+@Slf4j
+public class RubbleSolverOne extends RubbleSolver
 {
-	public int groupID;
-	public int childID;
-	public int childChildID;
-
-	public WidgetDetails(int groupID, int childID)
-	{
-		this.groupID = groupID;
-		this.childID = childID;
-		this.childChildID = -1;
+	public RubbleSolverOne(TheCurseOfArrav theCurseOfArrav) {
+		super(theCurseOfArrav, "1");
 	}
 
-	public WidgetDetails(@Component int componentId)
-	{
-		var pair = Utils.unpackWidget(componentId);
-		groupID = pair.getLeft();
-		childID = pair.getRight();
-		childChildID = -1;
+	@Override
+	protected void setupRubbleSteps() {
+		this.addMineRubbleStep(2764, 10266, RubbleType.Two, Direction.SOUTH); // 1
+		this.addMineRubbleStep(2775, 10258, RubbleType.One, Direction.SOUTH); // 2
+		this.addMineRubbleStep(2764, 10266, RubbleType.One, Direction.EAST); // 3
+		this.addMineRubbleStep(2764, 10267, RubbleType.One, Direction.SOUTH); // 4
 	}
 }

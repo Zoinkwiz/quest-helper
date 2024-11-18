@@ -26,12 +26,14 @@
  */
 package com.questhelper.requirements.widget;
 
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 
 public class WidgetModelRequirement extends WidgetPresenceRequirement
 {
-	private final int id;
+	@Setter
+	private int id;
 
 	public WidgetModelRequirement(int groupId, int childId, int childChildId, int id)
 	{

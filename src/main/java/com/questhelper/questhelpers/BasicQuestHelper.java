@@ -25,9 +25,6 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +36,14 @@ public abstract class BasicQuestHelper extends QuestHelper
 	protected Map<Integer, QuestStep> steps;
 	protected int var;
 
-	@Override
-	public void init()
+	public Map<Integer, QuestStep> getStepList() {
+		return this.steps;
+	}
+
+	/**
+	 * Attempt to load steps from the quest if steps have not yet been loaded
+	 */
+	private void tryLoadSteps()
 	{
 		if (steps == null)
 		{
@@ -49,8 +52,17 @@ public abstract class BasicQuestHelper extends QuestHelper
 	}
 
 	@Override
+	public void init()
+	{
+		this.tryLoadSteps();
+	}
+
+	@Override
 	public void startUp(QuestHelperConfig config)
 	{
+		// this.tryLoadSteps();
+		// TODO: This should use `tryLoadSteps` but when it is being more careful to be initialized, it doesn't handle
+		// highlighting in sidebars properly
 		steps = loadSteps();
 		this.config = config;
 		instantiateSteps(steps.values());

@@ -38,7 +38,7 @@ public class AskAboutRitual extends NpcStep
 	public AskAboutRitual(QuestHelper questHelper)
 	{
 		super(questHelper, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
-			"Talk to Big Fish (General Khazard) at the north entrance to Weiss again.");
+			"Talk to Big Fish (Hazeel) at the north entrance to Weiss again.");
 	}
 
 	@Subscribe

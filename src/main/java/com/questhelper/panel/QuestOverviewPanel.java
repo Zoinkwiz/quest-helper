@@ -441,7 +441,11 @@ public class QuestOverviewPanel extends JPanel
 		updateQuestNotes(quest.getNotes());
 
 		/* Rewards */
-		questRewardsPanel.setRewards(quest.getQuestRewards());
+		if (questHelperPlugin.getConfig().hideQuestRewards()) {
+			questRewardsPanel.hideRewards();
+		} else {
+			questRewardsPanel.setRewards(quest.getQuestRewards());
+		}
 	}
 
 	private static void collectRequirements(QuestHelper quest, List<Requirement> allRequirements, Set<String> processedQuestIds)

@@ -373,6 +373,17 @@ public interface QuestHelperConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "hideQuestRewards",
+		name = "Hide quest rewards",
+		description = "Enable this config if you want to hide quest rewards.<br>If you already had a quest helper open, you need to<br>restart it to hide the quest rewards.",
+		section = sidebarDetailsSection
+	)
+	default boolean hideQuestRewards()
+	{
+		return false;
+	}
+
 	@ConfigSection(
 		position = 2,
 		name = "Quest Hints",

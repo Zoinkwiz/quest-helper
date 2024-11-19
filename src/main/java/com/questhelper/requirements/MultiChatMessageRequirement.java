@@ -25,6 +25,7 @@
 package com.questhelper.requirements;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.runelite.api.Client;
@@ -39,6 +40,7 @@ public class MultiChatMessageRequirement extends ChatMessageRequirement
 
 	public MultiChatMessageRequirement(ChatMessageRequirement... requiredMessages)
 	{
+		this.requirements.addAll(List.of(requiredMessages));
 		this.requiredMessages = new HashMap<>();
 		for (ChatMessageRequirement requirement : requiredMessages)
 		{
@@ -50,7 +52,7 @@ public class MultiChatMessageRequirement extends ChatMessageRequirement
 	@Override
 	public boolean validateCondition(Client client, ChatMessage chatMessage)
 	{
-		if (hasReceivedChatMessage) return true;
+		if (state) return true;
 		AtomicInteger minTime = new AtomicInteger(Integer.MAX_VALUE);
 		AtomicInteger maxTime = new AtomicInteger(Integer.MIN_VALUE);
 		requiredMessages.forEach((requirement, lastSeenTime) -> {
@@ -70,14 +72,8 @@ public class MultiChatMessageRequirement extends ChatMessageRequirement
 		});
 		if (minTime.get() != -1 && maxTime.get() != -1 && maxTime.get() - minTime.get() < maxTicksDiff * 600)
 		{
-			hasReceivedChatMessage = true;
+			setState(true);
 		}
-		return hasReceivedChatMessage;
-	}
-
-	@Override
-	public boolean check(Client client)
-	{
-		return hasReceivedChatMessage;
+		return state;
 	}
 }

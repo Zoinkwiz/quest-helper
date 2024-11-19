@@ -47,11 +47,11 @@ public abstract class AbstractRequirement implements Requirement
 
 	protected boolean shouldCountForFilter = false;
 	@Getter
-	protected boolean lastState;
+	protected boolean state;
 
 	public boolean check(Client client)
 	{
-		return lastState;
+		return state;
 	}
 
 	@Override
@@ -147,8 +147,8 @@ public abstract class AbstractRequirement implements Requirement
 
 	public void setState(boolean newState)
 	{
-		boolean oldState = lastState;
-		lastState = newState;
+		boolean oldState = state;
+		state = newState;
 		if (oldState != newState)
 		{
 			sendStateChanged();

@@ -39,9 +39,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class ChatMessageRequirement extends ConditionForStep
 {
-	@Setter
-	protected boolean hasReceivedChatMessage = false;
-
 	protected Requirement condition;
 
 	@Setter
@@ -64,7 +61,7 @@ public class ChatMessageRequirement extends ConditionForStep
 	@Override
 	public boolean check(Client client)
 	{
-		return hasReceivedChatMessage;
+		return state;
 	}
 
 	@NonNull
@@ -91,13 +88,14 @@ public class ChatMessageRequirement extends ConditionForStep
 			return false;
 		}
 
-		if (!hasReceivedChatMessage)
+		if (!state)
 		{
 			if (messages.stream().anyMatch(chatMessage.getMessage()::contains))
 			{
 				if (condition == null || condition.check(client))
 				{
-					hasReceivedChatMessage = true;
+					// TODO: Should this be set to false somehow on quest reload?
+					setState(true);
 					return true;
 				}
 			}
@@ -107,11 +105,10 @@ public class ChatMessageRequirement extends ConditionForStep
 			invalidateRequirement.validateCondition(client, chatMessage);
 			if (invalidateRequirement.check(client))
 			{
-				invalidateRequirement.setHasReceivedChatMessage(false);
-				setHasReceivedChatMessage(false);
+				invalidateRequirement.setState(false);
+				setState(false);
 			}
 		}
-
 		return false;
 	}
 }

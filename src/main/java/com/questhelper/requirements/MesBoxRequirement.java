@@ -36,6 +36,7 @@ public class MesBoxRequirement extends ChatMessageRequirement
 		super(text);
 	}
 
+	@Override
 	public boolean validateCondition(Client client, ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.MESBOX)
@@ -43,13 +44,13 @@ public class MesBoxRequirement extends ChatMessageRequirement
 			return false;
 		}
 
-		if (!hasReceivedChatMessage)
+		if (!state)
 		{
 			if (isCurrentDialogMatching(chatMessage.getMessage()))
 			{
 				if (condition == null || condition.check(client))
 				{
-					hasReceivedChatMessage = true;
+					setState(true);
 					return true;
 				}
 			}
@@ -59,8 +60,8 @@ public class MesBoxRequirement extends ChatMessageRequirement
 			invalidateRequirement.validateCondition(client, chatMessage);
 			if (invalidateRequirement.check(client))
 			{
-				invalidateRequirement.setHasReceivedChatMessage(false);
-				setHasReceivedChatMessage(false);
+				invalidateRequirement.setState(false);
+				setState(false);
 			}
 		}
 

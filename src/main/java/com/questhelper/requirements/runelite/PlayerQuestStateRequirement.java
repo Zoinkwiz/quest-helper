@@ -28,7 +28,9 @@ import com.questhelper.questinfo.PlayerQuests;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 
 public class PlayerQuestStateRequirement extends RuneliteRequirement
 {
@@ -57,22 +59,32 @@ public class PlayerQuestStateRequirement extends RuneliteRequirement
 		return new PlayerQuestStateRequirement(configManager, runeliteConfigIdentifier, expectedIntValue + incrementedStateQuantity);
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		validateCondition(client);
+		checkState();
+	}
+
+	private void checkState()
 	{
 		String value = getConfigValue();
-		if (operation == null) return expectedValue.equals(value);
+		if (operation == null)
+		{
+			setState(expectedValue.equals(value));
+			return;
+		}
 
 		try
 		{
 			int intValue;
 			intValue = Integer.parseInt(value);
-			return operation.check(intValue, expectedIntValue);
+			setState(operation.check(intValue, expectedIntValue));
 		}
 		catch (NumberFormatException err)
 		{
 			System.out.println(err.getMessage());
-			return false;
+			setState(false);
 		}
 	}
 

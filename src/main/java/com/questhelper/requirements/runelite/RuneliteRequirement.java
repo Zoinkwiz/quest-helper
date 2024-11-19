@@ -25,17 +25,20 @@
 package com.questhelper.requirements.runelite;
 
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.requirements.AbstractRequirementWithRequirements;
 import com.questhelper.requirements.Requirement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
-public class RuneliteRequirement extends AbstractRequirement
+public class RuneliteRequirement extends AbstractRequirementWithRequirements
 {
 	@Getter
 	protected final String CONFIG_GROUP = QuestHelperConfig.QUEST_BACKGROUND_GROUP;
@@ -47,8 +50,7 @@ public class RuneliteRequirement extends AbstractRequirement
 	protected final String expectedValue;
 	protected final ConfigManager configManager;
 
-	@Getter
-	protected final Map<String, Requirement> requirements;
+	protected final Map<String, Requirement> stateToRequirementMap;
 
 	protected String initValue;
 
@@ -91,7 +93,8 @@ public class RuneliteRequirement extends AbstractRequirement
 		this.runeliteIdentifier = id;
 		this.displayText = text;
 		this.expectedValue = expectedValue;
-		this.requirements = requirements;
+		this.requirements.addAll(requirements.values());
+		this.stateToRequirementMap = requirements;
 		this.initValue = initValue;
 		initWithValue(initValue);
 	}
@@ -103,18 +106,19 @@ public class RuneliteRequirement extends AbstractRequirement
 		this.runeliteIdentifier = id;
 		this.displayText = text;
 		this.expectedValue = expectedValue;
-		this.requirements = new HashMap<>();
+		this.stateToRequirementMap = new HashMap<>();
 	}
 
-	@Override
-	public boolean check(Client client)
+	// TODO: This should make use of the new ActiveRequirementsManager, and be something which is informed a child requirement changing
+	@Subscribe
+	public void onGameTick(GameTick event)
 	{
-		String value = getConfigValue();
-		return expectedValue.equals(value);
+		validateCondition(client);
+		setState(expectedValue.equals(getConfigValue()));
 	}
 
 	// This is a bit undefined in terms of expected behaviour for multiple requirements.
-	// Currently the last requirement to pass should effectively determine the configValue.
+	// Currently, the last requirement to pass should effectively determine the configValue.
 	// This is an OR, if we assume that all the passes are the same output.
 	// It'd be possible to put in some which force a "false" and some which have a "true" as their value.
 
@@ -123,7 +127,7 @@ public class RuneliteRequirement extends AbstractRequirement
 	 */
 	public void validateCondition(Client client)
 	{
-		requirements.forEach((value, req) -> {
+		stateToRequirementMap.forEach((value, req) -> {
 			if (req.check(client)) setConfigValue(value);
 		});
 	}
@@ -153,7 +157,7 @@ public class RuneliteRequirement extends AbstractRequirement
 			setConfigValue(initValue);
 			return initValue;
 		}
-		return configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteIdentifier);
+		return value;
 	}
 
 	public void setConfigValue(String obj)

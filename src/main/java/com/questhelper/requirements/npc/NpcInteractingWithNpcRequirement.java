@@ -32,6 +32,8 @@ import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
 public class NpcInteractingWithNpcRequirement extends SimpleRequirement
 {
@@ -45,12 +47,12 @@ public class NpcInteractingWithNpcRequirement extends SimpleRequirement
 		this.npcNames = List.of(npcNames);
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
-		return client.getTopLevelWorldView().npcs().stream()
-			.filter(npc -> npc.getInteracting() != null)
-			.filter(npc -> npcNames.contains(npc.getInteracting().getName()))
-			.anyMatch(npc -> npc.getInteracting().getInteracting() == npc);
+		setState(client.getTopLevelWorldView().npcs().stream()
+				.filter(npc -> npc.getInteracting() != null)
+				.filter(npc -> npcNames.contains(npc.getInteracting().getName()))
+				.anyMatch(npc -> npc.getInteracting().getInteracting() == npc));
 	}
 }

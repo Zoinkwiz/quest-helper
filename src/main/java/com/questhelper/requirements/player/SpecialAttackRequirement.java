@@ -29,6 +29,9 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.SpecialAttack;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 public class SpecialAttackRequirement extends AbstractRequirement
@@ -42,10 +45,10 @@ public class SpecialAttackRequirement extends AbstractRequirement
         this.specialAttack = specialAttack;
     }
 
-    @Override
-    public boolean check(Client client)
+    @Subscribe
+    public void onGameTick(GameTick gameTick)
     {
-        return specialAttack.check(client, SPECIALATTACK_VARP);
+        setState(specialAttack.check(client, SPECIALATTACK_VARP));
     }
 
 	@Nonnull

@@ -29,6 +29,9 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 public class SpellbookRequirement extends AbstractRequirement
@@ -42,10 +45,10 @@ public class SpellbookRequirement extends AbstractRequirement
 		this.spellBook = spellBook;
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
-		return spellBook.check(client, SPELLBOOK_VARBIT);
+		setState(spellBook.check(client, SPELLBOOK_VARBIT));
 	}
 
 	@Nonnull

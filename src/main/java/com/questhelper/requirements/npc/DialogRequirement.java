@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.Setter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -40,8 +39,6 @@ public class DialogRequirement extends SimpleRequirement
 	String talkerName;
 	final List<String> text = new ArrayList<>();
 	final boolean mustBeActive;
-
-	boolean hasSeenDialog = false;
 
 	public DialogRequirement(String... text)
 	{
@@ -69,26 +66,20 @@ public class DialogRequirement extends SimpleRequirement
 		this(null, text, false);
 	}
 
-	@Override
-	public boolean check(Client client)
-	{
-		return hasSeenDialog;
-	}
-
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.DIALOG) return;
 
 		String dialogMessage = chatMessage.getMessage();
-		if (!hasSeenDialog)
+		if (!state)
 		{
-			hasSeenDialog = isCurrentDialogMatching(dialogMessage);
+			setState(isCurrentDialogMatching(dialogMessage));
 		}
 		// If it's not the dialog,
 		else if (mustBeActive)
 		{
-			hasSeenDialog = isCurrentDialogMatching(dialogMessage);
+			setState(isCurrentDialogMatching(dialogMessage));
 		}
 	}
 

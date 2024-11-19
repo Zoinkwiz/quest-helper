@@ -27,7 +27,6 @@
 package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
-import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;

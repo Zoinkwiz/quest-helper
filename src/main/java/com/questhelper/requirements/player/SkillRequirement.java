@@ -28,7 +28,6 @@
 package com.questhelper.requirements.player;
 
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import java.awt.Color;

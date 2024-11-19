@@ -31,9 +31,11 @@ import com.questhelper.requirements.AbstractRequirement;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Setter;
-import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -128,13 +130,14 @@ public class NpcRequirement extends AbstractRequirement
 		this("DO NOT DISPLAY", npcID, npcName, false, null);
 	}
 
-	@Override
-	public boolean check(Client client)
+	// TODO: Either remove/merge entire Requirement for NpcCondition, or make this instead be onNpcSpawned/Despawned/Changed.
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
 		List<NPC> found = client.getTopLevelWorldView().npcs().stream()
-			.filter(npc -> npc.getId() == npcID)
-			.filter(npc -> npcName == null || (npc.getName() != null && npc.getName().equals(npcName)))
-			.collect(Collectors.toList());
+				.filter(npc -> npc.getId() == npcID)
+				.filter(npc -> npcName == null || (npc.getName() != null && npc.getName().equals(npcName)))
+				.collect(Collectors.toList());
 
 		if (!found.isEmpty())
 		{
@@ -146,14 +149,17 @@ public class NpcRequirement extends AbstractRequirement
 					if (npcLocation != null)
 					{
 						boolean inZone = zone.contains(npcLocation);
-						return inZone && !checkNotInZone || (!inZone && checkNotInZone);
+						setState(inZone && !checkNotInZone || (!inZone && checkNotInZone));
+						return;
 					}
 				}
-				return checkNotInZone;
+				setState(checkNotInZone);
+				return;
 			}
-			return true; // the NPC exists, and we aren't checking for its location
+			setState(true); // the NPC exists, and we aren't checking for its location
+			return;
 		}
-		return false; // npc not in scene
+		setState(false); // npc not in scene
 	}
 
 	@Nonnull

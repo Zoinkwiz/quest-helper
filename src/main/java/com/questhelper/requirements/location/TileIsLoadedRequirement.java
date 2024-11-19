@@ -49,7 +49,7 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	{
 		assert(worldPoint != null);
 		this.worldPoint = worldPoint;
-		this.displayText = "WorldPoint " + worldPoint.toString() + "is loaded locally.";
+		this.displayText = "WorldPoint " + worldPoint + "is loaded locally.";
 	}
 
 	@Override
@@ -67,6 +67,6 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	@Override
 	public String getDisplayText()
 	{
-		return displayText == null ? "" : displayText;
+		return displayText;
 	}
 }

@@ -29,9 +29,10 @@ import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.SimpleRequirement;
 import java.util.Arrays;
 import java.util.List;
-import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
 public class NpcHintArrowRequirement extends SimpleRequirement
 {
@@ -56,25 +57,26 @@ public class NpcHintArrowRequirement extends SimpleRequirement
 		this.zone = zone;
 	}
 
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
 		NPC currentNPC = client.getHintArrowNpc();
 		if (currentNPC == null)
 		{
-			return false;
+			setState(false);
 		}
 		WorldPoint wp = WorldPoint.fromLocalInstance(client, currentNPC.getLocalLocation());
 
 		if (zone != null && !zone.contains(wp))
 		{
-			return false;
+			setState(false);
 		}
 
 		if (npcIDs.contains(currentNPC.getId()))
 		{
-			return true;
+			setState(true);
 		}
 
-		return false;
+		setState(false);
 	}
 }

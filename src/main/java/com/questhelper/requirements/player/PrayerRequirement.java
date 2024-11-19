@@ -29,6 +29,9 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -52,11 +55,11 @@ public class PrayerRequirement extends AbstractRequirement
 		this.text = text;
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
 		int currentPrayer = client.getVarbitValue(prayer.getVarbit());
-		return currentPrayer == 1;
+		setState(currentPrayer == 1);
 	}
 
 	@Nonnull

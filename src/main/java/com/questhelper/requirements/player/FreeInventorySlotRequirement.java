@@ -46,14 +46,13 @@ import javax.annotation.Nonnull;
 public class FreeInventorySlotRequirement extends AbstractRequirement
 {
 	private final int NUM_INVENTORY_SLOTS_TOTAL = 28;
-	private InventoryID inventoryID;
-	private int numSlotsFree;
+	private final InventoryID inventoryID;
+	private final int numSlotsFree;
 
 	/**
 	 * Checks if the player has a required number of slots free in a given
 	 * {@link InventoryID}
 	 *
-	 * @param inventoryID the inventory to check
 	 * @param numSlotsFree the required number of slots free
 	 */
 	public FreeInventorySlotRequirement(int numSlotsFree)

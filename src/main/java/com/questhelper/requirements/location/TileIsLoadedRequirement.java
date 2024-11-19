@@ -29,11 +29,12 @@ package com.questhelper.requirements.location;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.steps.tools.QuestPerspective;
 import javax.annotation.Nonnull;
-import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.GameState;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import java.util.Objects;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
 
 public class TileIsLoadedRequirement extends AbstractRequirement
 {
@@ -52,15 +53,31 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 		this.displayText = "WorldPoint " + worldPoint + "is loaded locally.";
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN) return;
+
 		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		if (lp == null) return false;
+		if (lp == null)
+		{
+			setState(false);
+			return;
+		}
+
 		// Final tiles of a scene do not have objects of them
-		if (lp.getSceneX() == Constants.SCENE_SIZE - 1) return false;
-		if (lp.getSceneY() == Constants.SCENE_SIZE - 1) return false;
-		return true;
+		if (lp.getSceneX() == Constants.SCENE_SIZE - 1)
+		{
+			setState(false);
+			return;
+		}
+		if (lp.getSceneY() == Constants.SCENE_SIZE - 1)
+		{
+			setState(false);
+			return;
+		}
+
+		setState(true);
 	}
 
 	@Nonnull

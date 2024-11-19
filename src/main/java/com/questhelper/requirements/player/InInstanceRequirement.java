@@ -29,12 +29,14 @@ package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.SimpleRequirement;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
 public class InInstanceRequirement extends SimpleRequirement
 {
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
-		return client.isInInstancedRegion();
+		setState(client.getTopLevelWorldView().isInstance());
 	}
 }

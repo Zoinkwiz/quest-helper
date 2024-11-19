@@ -27,11 +27,16 @@
 
 package com.questhelper.requirements.quest;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -69,9 +74,19 @@ public class QuestPointRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
-		return operation.check(client.getVarpValue(VarPlayer.QUEST_POINTS), requiredQuestPoints);
+		super.register(client, eventBus, activeRequirementsManager);
+		int varpValue = client.getVarpValue(VarPlayer.QUEST_POINTS);
+		setState(operation.check(varpValue, requiredQuestPoints));
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varChanged)
+	{
+		if (varChanged.getVarpId() != VarPlayer.QUEST_POINTS) return;
+		int newValue = varChanged.getValue();
+		setState(operation.check(newValue, requiredQuestPoints));
 	}
 
 	@Nonnull

@@ -27,11 +27,18 @@ package com.questhelper.requirements.conditional;
 import com.questhelper.requirements.zone.Zone;
 import java.util.ArrayList;
 
+import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 public class NpcCondition extends ConditionForStep
 {
@@ -66,9 +73,23 @@ public class NpcCondition extends ConditionForStep
 	}
 
 	@Override
+	public void register(Client client, EventBus eventBus)
+	{
+		super.register(client, eventBus);
+		initialize(client);
+	}
+
+	@Override
+	public void unregister(EventBus eventBus)
+	{
+		super.unregister(eventBus);
+		this.npcs.clear();
+		npcInScene = false;
+	}
+
 	public void initialize(Client client)
 	{
-		for (NPC npc : client.getNpcs())
+		for (NPC npc : client.getTopLevelWorldView().npcs())
 		{
 			if (npcID == npc.getId())
 			{
@@ -97,6 +118,13 @@ public class NpcCondition extends ConditionForStep
 		}
 	}
 
+	@NonNull
+	@Override
+	public String getDisplayText()
+	{
+		return "Need NPC with ID " + npcID;
+	}
+
 	private boolean isInZone(Client client, NPC npc)
 	{
 		if (zone == null) return true;
@@ -114,8 +142,10 @@ public class NpcCondition extends ConditionForStep
 		return animationIDRequired == null || npc.getAnimation() == animationIDRequired;
 	}
 
-	public void checkNpcSpawned(NPC npc)
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
+		NPC npc = npcSpawned.getNpc();
 		if (npc.getId() == this.npcID)
 		{
 			npcs.add(npc);
@@ -123,8 +153,10 @@ public class NpcCondition extends ConditionForStep
 		}
 	}
 
-	public void checkNpcDespawned(NPC npc)
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
+		NPC npc = npcDespawned.getNpc();
 		if (npcs.contains(npc))
 		{
 			npcs.remove(npc);
@@ -147,9 +179,12 @@ public class NpcCondition extends ConditionForStep
 		}
 	}
 
-	@Override
-	public void updateHandler()
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
 	{
-		npcInScene = false;
+		if (event.getGameState() == GameState.LOADING || event.getGameState() == GameState.HOPPING)
+		{
+			npcInScene = false;
+		}
 	}
 }

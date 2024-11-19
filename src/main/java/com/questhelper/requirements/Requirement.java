@@ -34,6 +34,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 /**
@@ -49,6 +50,16 @@ public interface Requirement
 	 * @return true if the client meets this requirement
 	 */
 	boolean check(Client client);
+
+	default void register(Client client, EventBus eventBus)
+	{
+		eventBus.register(this);
+	}
+
+	default void unregister(EventBus eventBus)
+	{
+		eventBus.unregister(this);
+	}
 
 	default boolean checkWithConfigChange(Client client, ConfigManager configManager, String configName, String value)
 	{

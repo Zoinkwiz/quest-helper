@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2024, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements.conditional;
+package com.questhelper.requirements;
 
-import com.questhelper.requirements.AbstractRequirementWithRequirements;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.util.LogicType;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.Client;
-import javax.annotation.Nonnull;
+import net.runelite.client.eventbus.EventBus;
 
-public abstract class ConditionForStep extends AbstractRequirementWithRequirements
+import java.util.HashSet;
+import java.util.Set;
+
+public abstract class AbstractRequirementWithRequirements extends AbstractRequirement
 {
-	@Setter
-	@Getter
-	protected boolean hasPassed;
-	protected boolean onlyNeedToPassOnce;
-	protected LogicType logicType;
+    @Getter
+    protected final Set<Requirement> requirements = new HashSet<>();
+
+    @Override
+    public void register(Client client, EventBus eventBus)
+    {
+        eventBus.register(this);
+        requirements.forEach(requirement -> requirement.register(client, eventBus));
+    }
+
+    @Override
+    public void unregister(EventBus eventBus)
+    {
+        eventBus.unregister(this);
+        requirements.forEach(requirement -> requirement.unregister(eventBus));
+    }
 }

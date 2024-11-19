@@ -25,6 +25,8 @@
 package com.questhelper.requirements;
 
 import com.questhelper.requirements.util.LogicType;
+
+import java.util.List;
 import java.util.stream.Stream;
 import com.questhelper.util.Utils;
 import lombok.Getter;
@@ -36,9 +38,8 @@ import javax.annotation.Nonnull;
  * {@link LogicType} to determine if the requirement(s) is/are met.
  */
 @Getter
-public class ComplexRequirement extends AbstractRequirement
+public class ComplexRequirement extends AbstractRequirementWithRequirements
 {
-	private final Requirement[] requirements;
 	private final LogicType logicType;
 	private final String name;
 
@@ -52,7 +53,7 @@ public class ComplexRequirement extends AbstractRequirement
 	{
 		assert(Utils.varargsNotNull(requirements));
 		this.name = name;
-		this.requirements = requirements;
+		this.requirements.addAll(List.of(requirements));
 		this.logicType = LogicType.AND;
 
 		shouldCountForFilter = true;
@@ -76,7 +77,7 @@ public class ComplexRequirement extends AbstractRequirement
 	{
 		assert(Utils.varargsNotNull(requirements));
 		this.name = name;
-		this.requirements = requirements;
+		this.requirements.addAll(List.of(requirements));
 		this.logicType = logicType;
 	}
 
@@ -87,7 +88,7 @@ public class ComplexRequirement extends AbstractRequirement
 		{
 			return false;
 		}
-		return logicType.test(Stream.of(requirements), r -> r.check(client));
+		return logicType.test(requirements.stream(), r -> r.check(client));
 	}
 
 	@Nonnull

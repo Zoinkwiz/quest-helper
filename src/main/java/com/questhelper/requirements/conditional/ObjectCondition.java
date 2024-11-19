@@ -25,6 +25,7 @@
 package com.questhelper.requirements.conditional;
 
 import com.questhelper.requirements.zone.Zone;
+import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -45,6 +46,9 @@ public class ObjectCondition extends ConditionForStep
 
 	@Setter
 	private boolean onlyCheckGameObjects = false;
+
+	@Setter
+	private String text;
 
 	public ObjectCondition(int objectID)
 	{
@@ -97,8 +101,14 @@ public class ObjectCondition extends ConditionForStep
 			}
 		}
 
-
 		return false;
+	}
+
+	@NonNull
+	@Override
+	public String getDisplayText()
+	{
+		return text == null ? "Need object with IDs " + objectIDs : text;
 	}
 
 	private boolean checkTile(Tile tile, Client client)
@@ -141,11 +151,5 @@ public class ObjectCondition extends ConditionForStep
 		}
 
 		return this.objectIDs.contains(object.getId());
-	}
-
-	@Override
-	public void updateHandler()
-	{
-		// Once this has checks done in ConditionalStep, this will need to set the boolean condition to false
 	}
 }

@@ -27,7 +27,6 @@ package com.questhelper.requirements.conditional;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -51,8 +50,7 @@ public class Conditions extends ConditionForStep
 	{
 		assert(Utils.varargsNotNull(conditions));
 
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
+		Collections.addAll(this.requirements, conditions);
 		logicType = LogicType.AND;
 	}
 
@@ -63,7 +61,7 @@ public class Conditions extends ConditionForStep
 	{
 		assert(conditions.stream().noneMatch(Objects::isNull));
 
-		this.conditions = new ArrayList<>(conditions);
+		this.requirements.addAll(conditions);
 		logicType = LogicType.AND;
 	}
 
@@ -75,8 +73,7 @@ public class Conditions extends ConditionForStep
 	{
 		assert(Utils.varargsNotNull(conditions));
 
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
+		Collections.addAll(this.requirements, conditions);
 		this.logicType = logicType;
 	}
 
@@ -84,8 +81,7 @@ public class Conditions extends ConditionForStep
 	{
 		assert(Utils.varargsNotNull(conditions));
 
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
+		Collections.addAll(this.requirements, conditions);
 		this.logicType = LogicType.AND;
 		this.operation = operation;
 		this.quantity = quantity;
@@ -95,7 +91,7 @@ public class Conditions extends ConditionForStep
 	{
 		assert(conditions.stream().noneMatch(Objects::isNull));
 
-		this.conditions = new ArrayList<>(conditions);
+		this.requirements.addAll(conditions);
 		this.logicType = logicType;
 	}
 
@@ -103,8 +99,7 @@ public class Conditions extends ConditionForStep
 	{
 		assert(Utils.varargsNotNull(conditions));
 
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
+		Collections.addAll(this.requirements, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
 		this.logicType = LogicType.AND;
 		this.operation = operation;
@@ -115,8 +110,7 @@ public class Conditions extends ConditionForStep
 	{
 		assert(Utils.varargsNotNull(conditions));
 
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
+		Collections.addAll(this.requirements, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
 		this.logicType = logicType;
 	}
@@ -125,8 +119,7 @@ public class Conditions extends ConditionForStep
 	{
 		assert(Utils.varargsNotNull(conditions));
 
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
+		Collections.addAll(this.requirements, conditions);
 		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
 		this.logicType = LogicType.AND;
 	}
@@ -146,7 +139,7 @@ public class Conditions extends ConditionForStep
 			return true;
 		}
 
-		int conditionsPassed = (int) conditions.stream().filter(c -> {
+		int conditionsPassed = (int) requirements.stream().filter(c -> {
 			if (c == null)
 			{
 				return true;
@@ -162,8 +155,8 @@ public class Conditions extends ConditionForStep
 		//TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
 		if ((conditionsPassed > 0 && logicType == LogicType.OR)
 			|| (conditionsPassed == 0 && logicType == LogicType.NOR)
-			|| (conditionsPassed == conditions.size() && logicType == LogicType.AND)
-			|| (conditionsPassed < conditions.size() && logicType == LogicType.NAND))
+			|| (conditionsPassed == requirements.size() && logicType == LogicType.AND)
+			|| (conditionsPassed < requirements.size() && logicType == LogicType.NAND))
 		{
 			hasPassed = true;
 			return true;

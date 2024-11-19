@@ -586,6 +586,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 	}
 
+	// TODO: Consider how this should work with new bottom-up system for Requirement
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{

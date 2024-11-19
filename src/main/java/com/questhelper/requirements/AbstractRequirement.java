@@ -30,10 +30,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.Client;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public abstract class AbstractRequirement implements Requirement
 {
+	protected Client client;
 	private String tooltip;
 	
 	private String urlSuffix;
@@ -125,5 +127,12 @@ public abstract class AbstractRequirement implements Requirement
 	public void setOverlayReplacement(Requirement panelReplacement)
 	{
 		this.panelReplacement = panelReplacement;
+	}
+
+	@Override
+	public void register(Client client, EventBus eventBus)
+	{
+		this.client = client;
+		eventBus.register(this);
 	}
 }

@@ -24,24 +24,14 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.conditional.InitializableRequirement;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Acts as an always-on quest helper validating incoming RuneLite events
@@ -55,10 +45,6 @@ public class RequirementValidator
 	protected EventBus eventBus;
 
 	protected boolean started = false;
-
-	protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();
-	protected final List<NpcCondition> npcConditions = new ArrayList<>();
-	protected final List<DialogRequirement> dialogConditions = new ArrayList<>();
 	protected final List<RuneliteRequirement> runeliteConditions = new ArrayList<>();
 
 	protected List<Requirement> requirements = new ArrayList<>();
@@ -77,74 +63,24 @@ public class RequirementValidator
 
 	public void startUp()
 	{
-		requirements.stream()
-			.filter(InitializableRequirement.class::isInstance)
-			.forEach(req -> ((InitializableRequirement) req).initialize(client));
+		requirements.forEach(req -> req.register(client, eventBus));
 		started = true;
 	}
 
+	public void shutDown()
+	{
+		started = false;
+		requirements.forEach(req -> req.unregister(eventBus));
+	}
+
+
 	private void checkForConditions(Requirement requirement)
 	{
-		checkForChatConditions(requirement);
-		checkForDialogConditions(requirement);
-		checkForNpcConditions(requirement);
 		checkForRuneliteConditions(requirement);
 
-		if ((requirement instanceof InitializableRequirement))
-		{
-			((InitializableRequirement) requirement).getConditions().forEach(this::checkForConditions);
-		}
 		if (requirement instanceof RuneliteRequirement)
 		{
 			((RuneliteRequirement) requirement).getRequirements().values().forEach(this::checkForConditions);
-		}
-	}
-
-	private void checkForChatConditions(Requirement requirement)
-	{
-		if (!(requirement instanceof InitializableRequirement))
-		{
-			return;
-		}
-
-		InitializableRequirement condition = (InitializableRequirement) requirement;
-
-		if (condition instanceof MultiChatMessageRequirement && !chatConditions.contains(condition))
-		{
-			chatConditions.add((MultiChatMessageRequirement) condition);
-		}
-
-		if (condition instanceof ChatMessageRequirement && !chatConditions.contains(condition))
-		{
-			chatConditions.add((ChatMessageRequirement) condition);
-		}
-		condition.getConditions().forEach(this::checkForChatConditions);
-	}
-
-	private void checkForDialogConditions(Requirement requirement)
-	{
-		if (requirement instanceof DialogRequirement && !dialogConditions.contains(requirement))
-		{
-			DialogRequirement runeliteReq = (DialogRequirement) requirement;
-			dialogConditions.add(runeliteReq);
-		}
-	}
-
-	private void checkForNpcConditions(Requirement requirement)
-	{
-		if (!(requirement instanceof InitializableRequirement))
-		{
-			return;
-		}
-
-		InitializableRequirement condition = (InitializableRequirement) requirement;
-
-		if (condition.getConditions().isEmpty())
-		{
-			if (condition instanceof NpcCondition && !npcConditions.contains(condition))
-			{
-				npcConditions.add((NpcCondition) condition);
-			}
 		}
 	}
 
@@ -176,63 +112,6 @@ public class RequirementValidator
 		{
 			runeliteCondition.validateCondition(client);
 		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOADING || event.getGameState() == GameState.HOPPING)
-		{
-			requirements.stream()
-				.filter(Objects::nonNull)
-				.filter(InitializableRequirement.class::isInstance)
-				.forEach(req -> ((InitializableRequirement) req).updateHandler());
-		}
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
-	{
-		handleChatMessage(chatMessage);
-	}
-
-	public void handleChatMessage(ChatMessage chatMessage)
-	{
-		chatConditions.forEach(requirement -> requirement.validateCondition(client, chatMessage));
-		dialogConditions.forEach(requirement -> requirement.validateCondition(chatMessage));
-	}
-
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
-	{
-		handleNpcSpawned(event);
-	}
-
-	public void handleNpcSpawned(NpcSpawned npcSpawned)
-	{
-		npcConditions.forEach(npc -> npc.checkNpcSpawned(npcSpawned.getNpc()));
-	}
-
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
-	{
-		handleNpcDespawned(event);
-	}
-
-	public void handleNpcDespawned(NpcDespawned npcDespawned)
-	{
-		npcConditions.forEach(npc -> npc.checkNpcDespawned(npcDespawned.getNpc()));
-	}
-
-	@Subscribe
-	public void onNpcChanged(NpcChanged npcCompositionChanged)
-	{
-		handleNpcChanged(npcCompositionChanged);
-	}
-
-	public void handleNpcChanged(NpcChanged npcChanged)
-	{
-		npcConditions.forEach(npc -> npc.checkNpcChanged(npcChanged));
 	}
 }
 

@@ -1,20 +1,22 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.InitializableRequirement;
 import com.questhelper.requirements.location.TileIsLoadedRequirement;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import lombok.NonNull;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
 
-public class ItemOnTileConsideringSceneLoadRequirement implements InitializableRequirement
+public class ItemOnTileConsideringSceneLoadRequirement implements Requirement
 {
 	private final List<Integer> itemID;
 	private WorldPoint worldPoint;
@@ -92,8 +94,6 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 		if (playerPoint == null) return false;
 		if (playerPoint.distanceTo(worldPoint) <= MAX_ZONE)
 		{
-
-
 			playerHasBeenInRegionThisLoad = true;
 			return true;
 		}
@@ -148,23 +148,13 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 		return false;
 	}
 
-	@Override
-	public void initialize(Client client)
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
 	{
-
-	}
-
-	@Override
-	public void updateHandler()
-	{
-		playerHasBeenInRegionThisLoad = false;
-		hasFoundItemThisLoad = true;
-	}
-
-	@NonNull
-	@Override
-	public List<Requirement> getConditions()
-	{
-		return new ArrayList<>();
+		if (event.getGameState() == GameState.LOADING || event.getGameState() == GameState.HOPPING)
+		{
+			playerHasBeenInRegionThisLoad = false;
+			hasFoundItemThisLoad = true;
+		}
 	}
 }

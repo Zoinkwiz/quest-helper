@@ -28,11 +28,11 @@ import com.questhelper.requirements.SimpleRequirement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.eventbus.Subscribe;
 
 public class DialogRequirement extends SimpleRequirement
 {
@@ -49,6 +49,7 @@ public class DialogRequirement extends SimpleRequirement
 		this.text.addAll(Arrays.asList(text));
 		this.mustBeActive = false;
 	}
+
 	public DialogRequirement(String talkerName, String text, boolean mustBeActive)
 	{
 		this.talkerName = talkerName;
@@ -74,7 +75,8 @@ public class DialogRequirement extends SimpleRequirement
 		return hasSeenDialog;
 	}
 
-	public void validateCondition(ChatMessage chatMessage)
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.DIALOG) return;
 

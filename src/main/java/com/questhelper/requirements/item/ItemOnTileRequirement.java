@@ -29,10 +29,9 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import com.questhelper.util.Utils;
+import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
@@ -73,10 +72,16 @@ public class ItemOnTileRequirement extends ConditionForStep
 		this.worldPoint = worldPoint;
 	}
 
-
 	public boolean check(Client client)
 	{
 		return checkAllTiles(client);
+	}
+
+	@NonNull
+	@Override
+	public String getDisplayText()
+	{
+		return "Need items " + itemID + " on tile " + worldPoint;
 	}
 
 	private boolean checkAllTiles(Client client)

@@ -35,6 +35,9 @@ import java.awt.Color;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 import static net.runelite.api.Skill.THIEVING;
 
@@ -49,8 +52,6 @@ public class SkillRequirement extends AbstractRequirement
 	private final Operation operation;
 	private boolean canBeBoosted;
 	private String displayText;
-	private Boosts boosts;
-	private QuestHelperPlugin questHelperPlugin;
 	private Boosts selectedSkill;
 	private int currentSkill;
 	private int highestBoost;
@@ -110,17 +111,17 @@ public class SkillRequirement extends AbstractRequirement
 		this.displayText = displayText;
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
 		int skillLevel = canBeBoosted ? Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill)) :
-			client.getRealSkillLevel(skill);
-		return skillLevel >= requiredLevel;
+				client.getRealSkillLevel(skill);
+		setState(skillLevel >= requiredLevel);
 	}
-
+	
 	public boolean checkRange(Skill skill, int requiredLevel, Client client, QuestHelperConfig config)
 	{
-		for (Boosts boostSkills : boosts.values())
+		for (Boosts boostSkills : Boosts.values())
 		{
 			if (skill.getName().equals(boostSkills.getName()))
 			{

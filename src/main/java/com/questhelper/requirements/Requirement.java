@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.questhelper.managers.ActiveRequirementsManager;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -51,7 +53,7 @@ public interface Requirement
 	 */
 	boolean check(Client client);
 
-	default void register(Client client, EventBus eventBus)
+	default void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
 		eventBus.register(this);
 	}
@@ -186,4 +188,13 @@ public interface Requirement
 	 * @param requirement the new requirement
 	 */
 	default void setOverlayReplacement(Requirement requirement) {}
+
+	ActiveRequirementsManager getActiveRequirementsManager();
+
+	default void sendStateChanged()
+	{
+		ActiveRequirementsManager activeRequirementsManager = getActiveRequirementsManager();
+		if (activeRequirementsManager == null) return;
+		activeRequirementsManager.sendUpdateOfRequirementToSteps(this);
+	}
 }

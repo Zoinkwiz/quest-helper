@@ -25,6 +25,7 @@
 package com.questhelper.statemanagement;
 
 import com.questhelper.config.ConfigKeys;
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.MesBoxRequirement;
 import com.questhelper.requirements.MultiChatMessageRequirement;
@@ -41,7 +42,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import static com.questhelper.requirements.util.LogicHelper.or;
 
 @Singleton
 public class BarbarianTrainingStateTracker
@@ -49,13 +49,15 @@ public class BarbarianTrainingStateTracker
 	@Inject
 	Client client;
 
+	@Inject
+	ActiveRequirementsManager activeRequirementsManager;
+
 	Requirement taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
 		taskedWithSpears, taskedWithHastae, taskedWithHerblore, plantedSeed, smashedPot, litFireWithBow, sacrificedRemains, caughtBarbarianFish,
 		caughtFishWithoutHarpoon, madePotion, madeSpear, madeHasta, finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing,
 		finishedFiremaking, finishedPyre, finishedSpear, finishedHasta, finishedHerblore;
 
 	RequirementValidator reqs;
-
 
 	public void startUp(ConfigManager configManager, EventBus eventBus)
 	{
@@ -326,7 +328,7 @@ public class BarbarianTrainingStateTracker
 		);
 
 
-		reqs = new RequirementValidator(client, eventBus,
+		reqs = new RequirementValidator(client, eventBus, activeRequirementsManager,
 			taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
 			taskedWithSpears, taskedWithHastae, taskedWithHerblore, plantedSeed, smashedPot, litFireWithBow, sacrificedRemains, caughtBarbarianFish,
 			caughtFishWithoutHarpoon, madePotion, madeSpear, madeHasta, finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing,
@@ -337,9 +339,9 @@ public class BarbarianTrainingStateTracker
 		reqs.startUp();
 	}
 
-
 	public void shutDown(EventBus eventBus)
 	{
 		eventBus.unregister(reqs);
+		reqs.shutDown();
 	}
 }

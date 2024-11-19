@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.eventbus.EventBus;
@@ -37,10 +38,10 @@ public abstract class AbstractRequirementWithRequirements extends AbstractRequir
     protected final Set<Requirement> requirements = new HashSet<>();
 
     @Override
-    public void register(Client client, EventBus eventBus)
+    public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
     {
         eventBus.register(this);
-        requirements.forEach(requirement -> requirement.register(client, eventBus));
+        requirements.forEach(requirement -> requirement.register(client, eventBus, activeRequirementsManager));
     }
 
     @Override

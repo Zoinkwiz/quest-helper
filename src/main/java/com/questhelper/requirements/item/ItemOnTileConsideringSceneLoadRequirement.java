@@ -1,5 +1,6 @@
 package com.questhelper.requirements.item;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.location.TileIsLoadedRequirement;
 import com.questhelper.steps.tools.QuestPerspective;
@@ -14,10 +15,13 @@ import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
 public class ItemOnTileConsideringSceneLoadRequirement implements Requirement
 {
+	private ActiveRequirementsManager activeRequirementsManager;
+
 	private final List<Integer> itemID;
 	private WorldPoint worldPoint;
 
@@ -156,5 +160,17 @@ public class ItemOnTileConsideringSceneLoadRequirement implements Requirement
 			playerHasBeenInRegionThisLoad = false;
 			hasFoundItemThisLoad = true;
 		}
+	}
+
+	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	{
+		eventBus.register(this);
+		this.activeRequirementsManager = activeRequirementsManager;
+	}
+
+	@Override
+	public ActiveRequirementsManager getActiveRequirementsManager()
+	{
+		return activeRequirementsManager;
 	}
 }

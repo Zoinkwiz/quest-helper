@@ -25,6 +25,7 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import java.awt.Graphics2D;
@@ -44,6 +45,9 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 {
 	@Inject
 	protected EventBus eventBus;
+
+	@Inject
+	protected ActiveRequirementsManager activeRequirementsManager;
 
 	protected boolean started = false;
 
@@ -103,12 +107,12 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 	}
 
-
 	@Override
 	public void startUp()
 	{
 		updateSteps();
-		associatedRequirements.forEach(req -> req.register(client, eventBus));
+
+		associatedRequirements.forEach(req -> activeRequirementsManager.addRequirement(req, this));
 		started = true;
 	}
 
@@ -117,8 +121,13 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		started = false;
 		shutDownStep();
-		associatedRequirements.forEach(req -> req.unregister(eventBus));
+		associatedRequirements.forEach(req -> activeRequirementsManager.removeRequirement(req));
 		currentStep = null;
+	}
+
+	public void revalidateOnRequirementChanged()
+	{
+		updateSteps();
 	}
 
 	@Subscribe
@@ -127,7 +136,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		if (started)
 		{
 			checkRuneliteConditions(checkAllChildStepsOnListenerCall);
-			updateSteps();
+//			updateSteps();
 		}
 	}
 

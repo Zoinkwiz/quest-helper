@@ -26,6 +26,7 @@
  */
 package com.questhelper.requirements.util;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.Requirement;
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
@@ -107,6 +108,12 @@ public final class RequirementBuilder
 			public String getDisplayText()
 			{
 				return displayText;
+			}
+
+			@Override
+			public ActiveRequirementsManager getActiveRequirementsManager()
+			{
+				return null;
 			}
 		};
 	}

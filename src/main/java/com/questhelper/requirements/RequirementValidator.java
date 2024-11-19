@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
@@ -43,16 +44,18 @@ public class RequirementValidator
 	protected Client client;
 
 	protected EventBus eventBus;
+	protected ActiveRequirementsManager activeRequirementsManager;
 
 	protected boolean started = false;
 	protected final List<RuneliteRequirement> runeliteConditions = new ArrayList<>();
 
 	protected List<Requirement> requirements = new ArrayList<>();
 
-	public RequirementValidator(Client client, EventBus eventBus, Requirement... requirements)
+	public RequirementValidator(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager, Requirement... requirements)
 	{
 		this.client = client;
 		this.eventBus = eventBus;
+		this.activeRequirementsManager = activeRequirementsManager;
 
 		this.requirements.addAll(Arrays.asList(requirements));
 		for (Requirement requirement : requirements)
@@ -63,7 +66,7 @@ public class RequirementValidator
 
 	public void startUp()
 	{
-		requirements.forEach(req -> req.register(client, eventBus));
+		requirements.forEach(req -> req.register(client, eventBus, activeRequirementsManager));
 		started = true;
 	}
 
@@ -72,7 +75,6 @@ public class RequirementValidator
 		started = false;
 		requirements.forEach(req -> req.unregister(eventBus));
 	}
-
 
 	private void checkForConditions(Requirement requirement)
 	{

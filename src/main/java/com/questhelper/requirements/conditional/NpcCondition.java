@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements.conditional;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.zone.Zone;
 import java.util.ArrayList;
 
@@ -73,9 +74,9 @@ public class NpcCondition extends ConditionForStep
 	}
 
 	@Override
-	public void register(Client client, EventBus eventBus)
+	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
-		super.register(client, eventBus);
+		super.register(client, eventBus, activeRequirementsManager);
 		initialize(client);
 	}
 

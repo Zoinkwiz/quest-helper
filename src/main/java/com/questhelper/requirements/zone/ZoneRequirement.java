@@ -38,6 +38,8 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 
 public class ZoneRequirement extends AbstractRequirement
 {
@@ -100,17 +102,18 @@ public class ZoneRequirement extends AbstractRequirement
 		this.checkInZone = checkInZone;
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
 		Player player = client.getLocalPlayer();
 		if (player != null && zones != null)
 		{
 			WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
 			boolean inZone = zones.stream().anyMatch(z -> z.contains(location));
-			return inZone == checkInZone;
+			setState(inZone == checkInZone);
+			return;
 		}
-		return false;
+		setState(false);
 	}
 
 	@Nonnull

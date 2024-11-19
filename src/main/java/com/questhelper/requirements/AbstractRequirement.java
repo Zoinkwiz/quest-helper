@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.questhelper.managers.ActiveRequirementsManager;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -36,15 +39,20 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 public abstract class AbstractRequirement implements Requirement
 {
 	protected Client client;
+	protected ActiveRequirementsManager activeRequirementsManager;
 	private String tooltip;
-	
 	private String urlSuffix;
 
 	private Requirement panelReplacement = null;
 
 	protected boolean shouldCountForFilter = false;
+	@Getter
+	protected boolean lastState;
 
-	abstract public boolean check(Client client);
+	public boolean check(Client client)
+	{
+		return lastState;
+	}
 
 	@Override
 	public boolean shouldConsiderForFilter()
@@ -67,7 +75,7 @@ public abstract class AbstractRequirement implements Requirement
 	{
 		this.tooltip = tooltip;
 	}
-	
+
 	@Nullable
 	@Override
 	public String getUrlSuffix()
@@ -130,9 +138,26 @@ public abstract class AbstractRequirement implements Requirement
 	}
 
 	@Override
-	public void register(Client client, EventBus eventBus)
+	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
 		this.client = client;
+		this.activeRequirementsManager = activeRequirementsManager;
 		eventBus.register(this);
+	}
+
+	public void setState(boolean newState)
+	{
+		boolean oldState = lastState;
+		lastState = newState;
+		if (oldState != newState)
+		{
+			sendStateChanged();
+		}
+	}
+
+	@Override
+	public ActiveRequirementsManager getActiveRequirementsManager()
+	{
+		return activeRequirementsManager;
 	}
 }

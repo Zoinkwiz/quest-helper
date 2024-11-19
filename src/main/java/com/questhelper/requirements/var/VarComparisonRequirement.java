@@ -24,20 +24,19 @@
  */
 package com.questhelper.requirements.var;
 
-import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
-import java.math.BigInteger;
 import java.util.Locale;
-import java.util.function.Predicate;
-import java.util.function.ToIntBiFunction;
 
 import com.questhelper.util.Utils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
-import net.runelite.client.util.Text;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 import javax.annotation.Nonnull;
 
@@ -82,22 +81,55 @@ public class VarComparisonRequirement extends AbstractRequirement
     }
 
     @Override
-    public boolean check(Client client)
+    public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
     {
-        try {
-            int v1Value = v1Type.getValue(client, v1Id);
-            int v2Value = v2Type.getValue(client, v2Id);
+        super.register(client, eventBus, activeRequirementsManager);
+        int v1Value = getVarValue(v1Type, v1Id);
+        int v2Value = getVarValue(v2Type, v2Id);
+        compareValues(v1Value, v2Value);
+    }
 
-            return operation.check(v1Value, v2Value);
-        } catch (IndexOutOfBoundsException e) {
-            if (!hasFiredWarning) {
+    @Subscribe
+    public void onVarbitChanged(VarbitChanged varbitChanged)
+    {
+        int varbitID = varbitChanged.getVarbitId();
+
+        if (v1Type == VarType.VARBIT && v1Id == varbitID)
+        {
+            int v1Value = varbitChanged.getValue();
+            int v2Value = getVarValue(v2Type, v2Id);
+            compareValues(v1Value, v2Value);
+        }
+        else if (v2Type == VarType.VARBIT && v2Id == varbitID)
+        {
+            int v1Value = getVarValue(v1Type, v1Id);
+            int v2Value = varbitChanged.getValue();
+            compareValues(v1Value, v2Value);
+        }
+    }
+
+    private void compareValues(int v1Value, int v2Value)
+    {
+        setState(operation.check(v1Value, v2Value));
+    }
+
+    private int getVarValue(VarType vType, int varID)
+    {
+        try
+        {
+            return vType.getValue(client, varID);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            if (!hasFiredWarning)
+            {
                 var message = String.format("Error reading varbit %d or %d, please report this in the Quest Helper discord.", v1Id, v2Id);
                 log.warn(message);
                 Utils.addChatMessage(client, message);
                 hasFiredWarning = true;
             }
-            return false;
         }
+        return -1;
     }
 
     @Nonnull

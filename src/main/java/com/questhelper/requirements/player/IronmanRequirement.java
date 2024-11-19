@@ -27,6 +27,9 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.util.Utils;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 public class IronmanRequirement extends AbstractRequirement
@@ -38,11 +41,11 @@ public class IronmanRequirement extends AbstractRequirement
 		this.shouldBeIronman = shouldBeIronman;
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
-		return client.getLocalPlayer() != null &&
-			Utils.getAccountType(client).isAnyIronman() == shouldBeIronman;
+		setState(client.getLocalPlayer() != null &&
+				Utils.getAccountType(client).isAnyIronman() == shouldBeIronman);
 	}
 
 	@Nonnull

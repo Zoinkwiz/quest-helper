@@ -27,6 +27,7 @@
 
 package com.questhelper.requirements.var;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import java.math.BigInteger;
@@ -37,6 +38,10 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -151,17 +156,16 @@ public class VarbitRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	@Override
-	public boolean check(Client client)
+	private void checkVarbitValue(int varbitValue)
 	{
 		try {
-			var varbitValue = client.getVarbitValue(varbitID);
 			if (bitPosition >= 0)
 			{
-				return bitIsSet == BigInteger.valueOf(varbitValue).testBit(bitPosition);
+				setState(bitIsSet == BigInteger.valueOf(varbitValue).testBit(bitPosition));
+				return;
 			}
 
-			return operation.check(varbitValue, requiredValue);
+			setState(operation.check(varbitValue, requiredValue));
 		} catch (IndexOutOfBoundsException e) {
 			if (!hasFiredWarning) {
 				var message = String.format("Error reading varbit %d, please report this in the Quest Helper discord.", varbitID);
@@ -169,8 +173,26 @@ public class VarbitRequirement extends AbstractRequirement
 				Utils.addChatMessage(client, message);
 				hasFiredWarning = true;
 			}
-			return false;
+			setState(false);
 		}
+	}
+
+	@Override
+	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	{
+		super.register(client, eventBus, activeRequirementsManager);
+		int varbitValue = client.getVarbitValue(varbitID);
+		checkVarbitValue(varbitValue);
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		if (varbitChanged.getVarbitId() != varbitID) return;
+
+		int varbitValue = varbitChanged.getValue();
+
+		checkVarbitValue(varbitValue);
 	}
 
 	@Nonnull

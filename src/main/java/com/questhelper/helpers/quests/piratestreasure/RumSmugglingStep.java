@@ -114,9 +114,9 @@ public class RumSmugglingStep extends ConditionalStep
 		{
 			haveShippedRum.check(client);
 			employed.setHasPassed(false);
-			fillCrateWithBananasChat.setHasReceivedChatMessage(false);
+			fillCrateWithBananasChat.setState(false);
 			filledCrateWithBananasAndRum.setHasPassed(false);
-			crateSent.setHasReceivedChatMessage(false);
+			crateSent.setState(false);
 		}
 
 		super.updateSteps();

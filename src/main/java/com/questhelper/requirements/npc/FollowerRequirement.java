@@ -58,7 +58,7 @@ public class FollowerRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return client.getNpcs()
+		return client.getTopLevelWorldView().npcs()
 			.stream()
 			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
 			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())

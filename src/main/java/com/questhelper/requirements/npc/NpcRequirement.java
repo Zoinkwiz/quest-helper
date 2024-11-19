@@ -37,6 +37,7 @@ import net.runelite.api.coords.WorldPoint;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+// TODO: REMOVE/MERGE WITH NpcCondition
 public class NpcRequirement extends AbstractRequirement
 {
 	private final int npcID;
@@ -130,7 +131,7 @@ public class NpcRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		List<NPC> found = client.getNpcs().stream()
+		List<NPC> found = client.getTopLevelWorldView().npcs().stream()
 			.filter(npc -> npc.getId() == npcID)
 			.filter(npc -> npcName == null || (npc.getName() != null && npc.getName().equals(npcName)))
 			.collect(Collectors.toList());

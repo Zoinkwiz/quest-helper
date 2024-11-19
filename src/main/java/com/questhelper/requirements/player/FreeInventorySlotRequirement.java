@@ -27,6 +27,7 @@
 
 package com.questhelper.requirements.player;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.AbstractRequirement;
 import java.util.Arrays;
 import java.util.Locale;
@@ -36,6 +37,9 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.eventbus.EventBus;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -62,20 +66,29 @@ public class FreeInventorySlotRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
-		ItemContainer container = client.getItemContainer(getInventoryID());
-
-		if (container != null)
+		super.register(client, eventBus, activeRequirementsManager);
+		ItemContainer inventory = client.getItemContainer(inventoryID);
+		if (inventory != null)
 		{
-			return NUM_INVENTORY_SLOTS_TOTAL - container.count() >= getNumSlotsFree();
+			setState(NUM_INVENTORY_SLOTS_TOTAL - inventory.count() >= getNumSlotsFree());
 		}
-		return false;
+		setState(false);
 	}
 
-	private boolean isOpenSlot(Item item)
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
-		return item == null || item.getId() == -1;
+		int itemContainerID = itemContainerChanged.getContainerId();
+		if (itemContainerID != inventoryID.getId()) return;
+
+		ItemContainer inventory = itemContainerChanged.getItemContainer();
+
+		if (inventory != null)
+		{
+			setState(NUM_INVENTORY_SLOTS_TOTAL - inventory.count() >= getNumSlotsFree());
+		}
+		setState(false);
 	}
 
 	@Nonnull

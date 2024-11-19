@@ -31,6 +31,9 @@ import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -65,11 +68,11 @@ public class CombatLevelRequirement extends AbstractRequirement
 		this(Operation.GREATER_EQUAL, requiredLevel);
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick tick)
 	{
 		Player player = client.getLocalPlayer();
-		return player != null && operation.check(player.getCombatLevel(), requiredLevel);
+		setState(player != null && operation.check(player.getCombatLevel(), requiredLevel));
 	}
 
 	@Nonnull

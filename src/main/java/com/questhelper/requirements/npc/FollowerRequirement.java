@@ -32,7 +32,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import com.questhelper.util.Utils;
-import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
+
 import javax.annotation.Nonnull;
 
 public class FollowerRequirement extends AbstractRequirement
@@ -55,14 +56,13 @@ public class FollowerRequirement extends AbstractRequirement
 		this.followers = followers;
 	}
 
-	@Override
-	public boolean check(Client client)
+	public void onGameTick(GameTick gameTick)
 	{
-		return client.getTopLevelWorldView().npcs()
-			.stream()
-			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
-			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
-			.anyMatch(npc -> followers.contains(npc.getId()));
+		setState(client.getTopLevelWorldView().npcs()
+				.stream()
+				.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
+				.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
+				.anyMatch(npc -> followers.contains(npc.getId())));
 	}
 
 	@Nonnull

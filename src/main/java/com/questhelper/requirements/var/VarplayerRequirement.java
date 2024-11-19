@@ -26,13 +26,20 @@
  */
 package com.questhelper.requirements.var;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import com.questhelper.util.Utils;
 import net.runelite.api.Client;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 public class VarplayerRequirement extends AbstractRequirement
@@ -153,18 +160,34 @@ public class VarplayerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
+		super.register(client, eventBus, activeRequirementsManager);
 		int varpValue = client.getVarpValue(varplayerId);
+		checkVarpValue(varpValue);
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varChanged)
+	{
+		if (varChanged.getVarpId() != varplayerId) return;
+
+		int varpValue = varChanged.getValue();
+
+		checkVarpValue(varpValue);
+	}
+
+	private void checkVarpValue(int varpValue)
+	{
 		if (bitPosition >= 0)
 		{
-			return bitIsSet == BigInteger.valueOf(varpValue).testBit(bitPosition);
+			setState(bitIsSet == BigInteger.valueOf(varpValue).testBit(bitPosition));
 		}
 		else if (bitShiftRight >= 0)
 		{
-			return values.stream().anyMatch(value -> operation.check(varpValue >> bitShiftRight, value));
+			setState(values.stream().anyMatch(value -> operation.check(varpValue >> bitShiftRight, value)));
 		}
-		return values.stream().anyMatch(value -> operation.check(varpValue, value));
+		setState(values.stream().anyMatch(value -> operation.check(varpValue, value)));
 	}
 
 	@Nonnull

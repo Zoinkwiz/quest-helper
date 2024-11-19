@@ -148,6 +148,7 @@ public class VarbitRequirement extends AbstractRequirement
 			case 12:
 			case 13:
 				text += "th";
+				break;
 			default:
 				text = bitPosition + suffixes[bitPosition % 10];
 		}

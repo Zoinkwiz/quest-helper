@@ -27,12 +27,11 @@ package com.questhelper.requirements;
 import java.util.function.BooleanSupplier;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 
 public class ConfigRequirement extends SimpleRequirement
 {
-	@Setter
-	boolean shouldPass;
-
 	BooleanSupplier booleanSupplier;
 
 	public ConfigRequirement(BooleanSupplier booleanSupplier)
@@ -40,10 +39,10 @@ public class ConfigRequirement extends SimpleRequirement
 		this.booleanSupplier = booleanSupplier;
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		return booleanSupplier.getAsBoolean();
+		setState(booleanSupplier.getAsBoolean());
 	}
 }
 

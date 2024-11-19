@@ -3,6 +3,9 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 public class PrayerPointRequirement extends AbstractRequirement
@@ -13,11 +16,10 @@ public class PrayerPointRequirement extends AbstractRequirement
 		this.level = level;
 	}
 
-
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
-		return client.getBoostedSkillLevel(Skill.PRAYER) >= level;
+		setState(client.getBoostedSkillLevel(Skill.PRAYER) >= level);
 	}
 
 	@Nonnull

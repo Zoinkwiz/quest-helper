@@ -27,6 +27,9 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 public class WarriorsGuildAccessRequirement extends AbstractRequirement
@@ -36,12 +39,12 @@ public class WarriorsGuildAccessRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	@Override
-	public boolean check(Client client)
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
 		int attLevel = client.getRealSkillLevel(Skill.ATTACK);
 		int strLevel = client.getRealSkillLevel(Skill.STRENGTH);
-		return attLevel == 99 || strLevel == 99 || attLevel + strLevel >= 130;
+		setState(attLevel == 99 || strLevel == 99 || attLevel + strLevel >= 130);
 	}
 
 	@Nonnull

@@ -29,15 +29,13 @@ package com.questhelper.requirements.widget;
 import com.questhelper.requirements.SimpleRequirement;
 import javax.annotation.Nullable;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.Subscribe;
 
 public class WidgetPresenceRequirement extends SimpleRequirement
 {
-	@Setter
-	@Getter
-	protected boolean hasPassed;
 	protected boolean onlyNeedToPassOnce;
 
 	@Getter
@@ -62,11 +60,25 @@ public class WidgetPresenceRequirement extends SimpleRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		if (onlyNeedToPassOnce && hasPassed)
+		if (onlyNeedToPassOnce && state)
 		{
 			return true;
 		}
 		return checkWidget(client);
+	}
+
+	/* TODO: May be better to use onWidgetLoaded, however unsure if anything would break due to
+		model check extending this potentially not having model fully loaded at time of calling
+	*/
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (onlyNeedToPassOnce && state)
+		{
+			return;
+		}
+
+		setState(checkWidget(client));
 	}
 
 	@Nullable

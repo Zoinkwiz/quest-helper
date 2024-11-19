@@ -47,6 +47,7 @@ public class WidgetModelRequirement extends WidgetPresenceRequirement
 		this.id = id;
 	}
 
+	@Override
 	public boolean checkWidget(Client client)
 	{
 		Widget widget = getWidget(client);
@@ -55,11 +56,6 @@ public class WidgetModelRequirement extends WidgetPresenceRequirement
 			return false;
 		}
 		return widget.getModelId() == id;
-	}
-
-	public void checkWidgetText(Client client)
-	{
-		hasPassed = hasPassed || checkWidget(client);
 	}
 }
 

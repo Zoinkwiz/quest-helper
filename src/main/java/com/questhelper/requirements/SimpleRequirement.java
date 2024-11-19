@@ -33,9 +33,6 @@ import net.runelite.api.Client;
 
 public abstract class SimpleRequirement extends AbstractRequirement
 {
-	@Override
-	public abstract boolean check(Client client);
-
 	@Nonnull
 	@Override
 	public String getDisplayText()

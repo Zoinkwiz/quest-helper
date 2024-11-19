@@ -39,12 +39,7 @@ public class WidgetSpriteRequirement extends WidgetPresenceRequirement
 		this.id = id;
 	}
 
-	public WidgetSpriteRequirement(int groupId, int childId, int id)
-	{
-		super(groupId, childId);
-		this.id = id;
-	}
-
+	@Override
 	public boolean checkWidget(Client client)
 	{
 		Widget widget = getWidget(client);
@@ -53,11 +48,6 @@ public class WidgetSpriteRequirement extends WidgetPresenceRequirement
 			return false;
 		}
 		return widget.getSpriteId() == id;
-	}
-
-	public void checkWidgetText(Client client)
-	{
-		hasPassed = hasPassed || checkWidget(client);
 	}
 }
 

@@ -27,12 +27,17 @@
 
 package com.questhelper.requirements.quest;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.AbstractRequirement;
 import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -105,19 +110,31 @@ public class QuestRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	{
+		super.register(client, eventBus, activeRequirementsManager);
+		checkQuestState();
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		checkQuestState();
+	}
+
+	private void checkQuestState()
 	{
 		if (minimumVarValue != null)
 		{
-			return quest.getVar(client) >= minimumVarValue;
+			setState(quest.getVar(client) >= minimumVarValue);
 		}
 
-		QuestState state = quest.getState(client);
-		if (requiredState == QuestState.IN_PROGRESS && state == QuestState.FINISHED)
+		QuestState questState = quest.getState(client);
+		if (requiredState == QuestState.IN_PROGRESS && questState == QuestState.FINISHED)
 		{
-			return true;
+			setState(true);
 		}
-		return state == requiredState;
+		setState(questState == requiredState);
 	}
 
 	@Nonnull

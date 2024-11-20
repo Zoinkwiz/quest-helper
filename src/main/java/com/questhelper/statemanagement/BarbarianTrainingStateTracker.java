@@ -38,6 +38,7 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.ComponentID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import javax.inject.Inject;
@@ -48,6 +49,9 @@ public class BarbarianTrainingStateTracker
 {
 	@Inject
 	Client client;
+
+	@Inject
+	ClientThread clientThread;
 
 	@Inject
 	ActiveRequirementsManager activeRequirementsManager;
@@ -328,7 +332,7 @@ public class BarbarianTrainingStateTracker
 		);
 
 
-		reqs = new RequirementValidator(client, eventBus, activeRequirementsManager,
+		reqs = new RequirementValidator(client, clientThread, eventBus, activeRequirementsManager,
 			taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
 			taskedWithSpears, taskedWithHastae, taskedWithHerblore, plantedSeed, smashedPot, litFireWithBow, sacrificedRemains, caughtBarbarianFish,
 			caughtFishWithoutHarpoon, madePotion, madeSpear, madeHasta, finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing,

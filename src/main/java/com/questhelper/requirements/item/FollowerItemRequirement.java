@@ -65,9 +65,9 @@ public class FollowerItemRequirement extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	public boolean check(Client client)
 	{
-		boolean match = client.getNpcs().stream()
+		boolean match = client.getTopLevelWorldView().npcs().stream()
 			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
 			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
 			.anyMatch(npc -> followerIDs.contains(npc.getId()));
@@ -77,6 +77,6 @@ public class FollowerItemRequirement extends ItemRequirement
 			return true;
 		}
 
-		return super.check(client, checkConsideringSlotRestrictions, items);
+		return super.check(client);
 	}
 }

@@ -100,53 +100,32 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return check(client, false);
-	}
-
-	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
-	{
-		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
+		Predicate<ItemRequirement> predicate = r -> r.check(client);
 		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
-		hadItemLastCheck = logicType.compare(successes, itemRequirements.size());
-		return hadItemLastCheck;
-	}
-
-	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
-	{
-		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
-		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
-		hadItemLastCheck = logicType.compare(successes, itemRequirements.size());
-		return hadItemLastCheck;
+		return logicType.compare(successes, itemRequirements.size());
 	}
 
 	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		return this.check(client, true) ? config.passColour() : config.failColour();
+		return this.check(client) ? config.passColour() : config.failColour();
 	}
 
 	@Override
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
-										 List<Item> bankItems, QuestHelperConfig config)
+	public Color getColorConsideringBank(QuestHelperConfig config)
 	{
 		Color color = config.failColour();
 		if (!this.isActualItem() && this.getItemRequirements() == null)
 		{
 			color = Color.GRAY;
-		}
-		else if (this.check(client, checkConsideringSlotRestrictions))
+		} else if (state)
 		{
 			color = config.passColour();
 		}
 
-		if (color == config.failColour() && bankItems != null)
+		if (color == config.failColour() && bankState)
 		{
-			if (check(client, false, bankItems))
-			{
-				color = Color.WHITE;
-			}
+			color = Color.WHITE;
 		}
 
 		return color;
@@ -200,6 +179,6 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public boolean checkBank(Client client)
 	{
-		return logicType.test(getItemRequirements().stream(), item -> item.checkBank(client) || item.check(client, false));
+		return logicType.test(getItemRequirements().stream(), item -> item.checkBank(client) || item.check(client));
 	}
 }

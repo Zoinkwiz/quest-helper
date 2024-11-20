@@ -171,16 +171,16 @@ public class QuestOverviewPanel extends JPanel
 		BoxLayout boxLayoutOverview = new BoxLayout(overviewPanel, BoxLayout.Y_AXIS);
 		overviewPanel.setLayout(boxLayoutOverview);
 
-		questGeneralRequirementsPanel = new QuestRequirementsPanel("General requirements:", null, questManager, false);
+		questGeneralRequirementsPanel = new QuestRequirementsPanel("General requirements:", null, questHelperPlugin, questManager, false);
 		overviewPanel.add(questGeneralRequirementsPanel);
 
-		questGeneralRecommendedPanel = new QuestRequirementsPanel("Recommended:", null, questManager, false);
+		questGeneralRecommendedPanel = new QuestRequirementsPanel("Recommended:", null, questHelperPlugin, questManager, false);
 		overviewPanel.add(questGeneralRecommendedPanel);
 
-		questItemRequirementsPanel = new QuestRequirementsPanel("Item requirements:", null, questManager, true);
+		questItemRequirementsPanel = new QuestRequirementsPanel("Item requirements:", null, questHelperPlugin, questManager, true);
 		overviewPanel.add(questItemRequirementsPanel);
 
-		questItemRecommendedPanel = new QuestRequirementsPanel("Recommended items:", null, questManager, true);
+		questItemRecommendedPanel = new QuestRequirementsPanel("Recommended items:", null, questHelperPlugin, questManager, true);
 		overviewPanel.add(questItemRecommendedPanel);
 
 		var combatRequirements = QuestRequirementsPanel.createGenericGroup("Enemies to defeat:");
@@ -355,11 +355,13 @@ public class QuestOverviewPanel extends JPanel
 		introPanel.setVisible(false);
 		configContainer.setVisible(false);
 		configContainer.removeAll();
+		// TODO: Does anything in questStepPanelList need clearing up in itself?
+		questStepPanelList.clear();
 		questStepsContainer.removeAll();
-		questGeneralRequirementsPanel.setRequirements(null);
-		questGeneralRecommendedPanel.setRequirements(null);
-		questItemRequirementsPanel.setRequirements(null);
-		questItemRecommendedPanel.setRequirements(null);
+		questGeneralRequirementsPanel.setRequirements(questHelperPlugin, null);
+		questGeneralRecommendedPanel.setRequirements(questHelperPlugin, null);
+		questItemRequirementsPanel.setRequirements(questHelperPlugin, null);
+		questItemRecommendedPanel.setRequirements(questHelperPlugin, null);
 		questCombatRequirementsListPanel.removeAll();
 		currentQuest = null;
 		questNotesList.removeAll();
@@ -415,21 +417,21 @@ public class QuestOverviewPanel extends JPanel
 		if (questHelperPlugin.getConfig().showFullRequirements())
 		{
 			/* Non-item requirements */
-			questGeneralRequirementsPanel.setRequirements(getAggregatedRequirements(quest));
+			questGeneralRequirementsPanel.setRequirements(questHelperPlugin, getAggregatedRequirements(quest));
 		}
 		else
 		{
-			questGeneralRequirementsPanel.setRequirements(quest.getGeneralRequirements());
+			questGeneralRequirementsPanel.setRequirements(questHelperPlugin, quest.getGeneralRequirements());
 		}
 
 		/* Non-item recommended */
-		questGeneralRecommendedPanel.setRequirements(quest.getGeneralRecommended());
+		questGeneralRecommendedPanel.setRequirements(questHelperPlugin, quest.getGeneralRecommended());
 
 		/* Required items */
-		questItemRequirementsPanel.setRequirements(quest.getItemRequirements());
+		questItemRequirementsPanel.setRequirements(questHelperPlugin, quest.getItemRequirements());
 
 		/* Recommended items */
-		questItemRecommendedPanel.setRequirements(quest.getItemRecommended());
+		questItemRecommendedPanel.setRequirements(questHelperPlugin, quest.getItemRecommended());
 
 		/* Combat requirements */
 		updateCombatRequirementsPanels(quest.getCombatRequirements());
@@ -647,6 +649,19 @@ public class QuestOverviewPanel extends JPanel
 
 		questStepPanelList.forEach((questStepPanel) -> {
 			questStepPanel.updateRequirements(client, bankItems);
+		});
+		revalidate();
+	}
+
+	public void updateRequirement(Client client, Requirement requirement)
+	{
+		questGeneralRequirementsPanel.updateRequirement(client, questHelperPlugin, requirement);
+		questGeneralRecommendedPanel.updateRequirement(client, questHelperPlugin, requirement);
+		questItemRequirementsPanel.updateRequirement(client, questHelperPlugin, requirement);
+		questItemRecommendedPanel.updateRequirement(client, questHelperPlugin, requirement);
+
+		questStepPanelList.forEach((questStepPanel) -> {
+			questStepPanel.updateRequirement(client, requirement);
 		});
 		revalidate();
 	}

@@ -34,6 +34,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.QuestStep;
 import java.util.List;
 import net.runelite.api.Client;
@@ -122,7 +124,7 @@ public class QuestStepPanel extends JPanel
 
 		if (panelDetails.getRequirements() != null)
 		{
-			requiredItemsPanel = new QuestRequirementsPanel("Bring the following items:", panelDetails.getRequirements(), questManager, false);
+			requiredItemsPanel = new QuestRequirementsPanel("Bring the following items:", panelDetails.getRequirements(), questHelperPlugin, questManager, false);
 			bodyPanel.add(requiredItemsPanel, BorderLayout.NORTH);
 		}
 		else
@@ -132,7 +134,7 @@ public class QuestStepPanel extends JPanel
 
 		if (panelDetails.getRecommended() != null)
 		{
-			recommendedItemsPanel = new QuestRequirementsPanel("Bring the following items:", panelDetails.getRecommended(), questManager, false);
+			recommendedItemsPanel = new QuestRequirementsPanel("Bring the following items:", panelDetails.getRecommended(), questHelperPlugin, questManager, false);
 			bodyPanel.add(recommendedItemsPanel, BorderLayout.CENTER);
 		}
 		else
@@ -362,6 +364,19 @@ public class QuestStepPanel extends JPanel
 		{
 			Color color = component.getForeground();
 			component.setForeground(brighten ? color.brighter() : color.darker());
+		}
+	}
+
+	public void updateRequirement(Client client, Requirement requirement)
+	{
+		if (requiredItemsPanel != null)
+		{
+			requiredItemsPanel.updateRequirement(client, questHelperPlugin, requirement);
+		}
+
+		if (recommendedItemsPanel != null)
+		{
+			recommendedItemsPanel.updateRequirement(client, questHelperPlugin, requirement);
 		}
 	}
 

@@ -161,10 +161,6 @@ public class QuestManager
 					lastStep = currentStep;
 					panel.updateHighlight(client, currentStep);
 				}
-				if (panel.questActive)
-				{
-					clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBankManager.getBankItems()));
-				}
 				panel.updateLocks();
 			}
 		}

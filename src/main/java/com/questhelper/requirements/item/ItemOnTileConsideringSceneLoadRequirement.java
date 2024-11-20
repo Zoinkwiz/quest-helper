@@ -15,6 +15,7 @@ import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -162,7 +163,7 @@ public class ItemOnTileConsideringSceneLoadRequirement implements Requirement
 		}
 	}
 
-	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
 		eventBus.register(this);
 		this.activeRequirementsManager = activeRequirementsManager;

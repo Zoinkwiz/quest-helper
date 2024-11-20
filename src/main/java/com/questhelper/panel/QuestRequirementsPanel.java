@@ -65,7 +65,8 @@ public class QuestRequirementsPanel extends JPanel
 	private final boolean showEvenIfEmpty;
 	private final JPanel requirementsPanel = new JPanel();
 
-	public QuestRequirementsPanel(@NonNull String header, Collection<Requirement> requirements, @NonNull QuestManager questManager, boolean showEvenIfEmpty)
+	public QuestRequirementsPanel(@NonNull String header, Collection<Requirement> requirements, QuestHelperPlugin questHelperPlugin, @NonNull QuestManager questManager,
+								  boolean showEvenIfEmpty)
 	{
 		this.questManager = questManager;
 		this.showEvenIfEmpty = showEvenIfEmpty;
@@ -83,7 +84,7 @@ public class QuestRequirementsPanel extends JPanel
 
 		add(requirementsPanel, BorderLayout.CENTER);
 
-		setRequirements(requirements);
+		setRequirements(questHelperPlugin, requirements);
 	}
 
 	public static JPanel createHeader(@NonNull String header)
@@ -120,13 +121,15 @@ public class QuestRequirementsPanel extends JPanel
 		return Pair.of(group, listPanel);
 	}
 
-	public void setRequirements(@Nullable Collection<? extends Requirement> requirements)
+	public void setRequirements(QuestHelperPlugin questHelperPlugin, @Nullable Collection<? extends Requirement> requirements)
 	{
+		requirementList.forEach((req) -> questHelperPlugin.getActiveRequirementsManager().removeRequirement(req.requirement));
 		requirementList.clear();
 		requirementsPanel.removeAll();
 
 		if (requirements != null && !requirements.isEmpty())
 		{
+			questHelperPlugin.getClientThread().invokeLater(() -> requirements.forEach((req) -> questHelperPlugin.getActiveRequirementsManager().addSidebarRequirement(req)));
 			for (var requirement : requirements)
 			{
 				var panel = new JPanel();
@@ -235,77 +238,94 @@ public class QuestRequirementsPanel extends JPanel
 		revalidate();
 	}
 
+	public void updateRequirement(Client client, QuestHelperPlugin questHelperPlugin, Requirement requirement)
+	{
+		requirementList.forEach((inlineReq) ->
+		{
+			if (inlineReq.requirement == requirement)
+			{
+				changeRequirement(client, questHelperPlugin, inlineReq);
+			}
+		});
+	}
+
 	public void update(Client client, QuestHelperPlugin questHelperPlugin, List<Item> bankItems)
 	{
 		int numActive = 0;
 
 		for (var v : requirementList)
 		{
-			var req = v.requirement;
-			var label = v.textArea;
-			var tooltipButton = v.tooltipButton;
-
-			if (!req.shouldDisplayText(client))
-			{
-				label.setVisible(false);
-				if (tooltipButton != null)
-				{
-					tooltipButton.setVisible(false);
-				}
-				continue;
-			}
-
-			label.setVisible(true);
-			if (tooltipButton != null)
-			{
-				tooltipButton.setVisible(true);
-			}
-			numActive += 1;
-
-			var newText = req.getDisplayText();
-			if (!label.getText().equals(newText))
-			{
-				label.setText(req.getDisplayText());
-			}
-
-			Color newColor;
-
-			if (req instanceof ItemRequirement)
-			{
-				var itemRequirement = (ItemRequirement) req;
-
-				if (itemRequirement instanceof NoItemRequirement)
-				{
-					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
-					// NoItemRequirement overrides it
-				}
-				else
-				{
-					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems, questHelperPlugin.getConfig());
-				}
-			}
-			else
-			{
-				newColor = req.getColor(client, questHelperPlugin.getConfig());
-			}
-
-			if (newColor == Color.WHITE)
-			{
-				label.setToolTipText("In bank");
-			}
-			else if (newColor == Color.ORANGE)
-			{
-				label.setToolTipText("On steel key ring");
-			}
-			else
-			{
-				label.setToolTipText("");
-			}
-
-			label.setForeground(newColor);
+			numActive += changeRequirement(client, questHelperPlugin, v);
 		}
 
 		this.setVisible(numActive > 0);
+	}
+
+	private int changeRequirement(Client client, QuestHelperPlugin questHelperPlugin, InlineRequirement inlineRequirement)
+	{
+		var req = inlineRequirement.requirement;
+		var label = inlineRequirement.textArea;
+		var tooltipButton = inlineRequirement.tooltipButton;
+
+		if (!req.shouldDisplayText(client))
+		{
+			label.setVisible(false);
+			if (tooltipButton != null)
+			{
+				tooltipButton.setVisible(false);
+			}
+			return 0;
+		}
+
+		label.setVisible(true);
+		if (tooltipButton != null)
+		{
+			tooltipButton.setVisible(true);
+		}
+
+		var newText = req.getDisplayText();
+		if (!label.getText().equals(newText))
+		{
+			label.setText(req.getDisplayText());
+		}
+
+		Color newColor;
+
+		if (req instanceof ItemRequirement)
+		{
+			var itemRequirement = (ItemRequirement) req;
+
+			if (itemRequirement instanceof NoItemRequirement)
+			{
+				newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
+				// NoItemRequirement overrides it
+			}
+			else
+			{
+				newColor = itemRequirement.getColorConsideringBank(questHelperPlugin.getConfig());
+			}
+		}
+		else
+		{
+			newColor = req.getColor(client, questHelperPlugin.getConfig());
+		}
+
+		if (newColor == Color.WHITE)
+		{
+			label.setToolTipText("In bank");
+		}
+		else if (newColor == Color.ORANGE)
+		{
+			label.setToolTipText("On steel key ring");
+		}
+		else
+		{
+			label.setToolTipText("");
+		}
+
+		label.setForeground(newColor);
+
+		return 1;
 	}
 
 	private JButton addButtonToPanel(JPanel panel, String tooltipText)

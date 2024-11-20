@@ -38,6 +38,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -74,9 +75,9 @@ public class NpcCondition extends ConditionForStep
 	}
 
 	@Override
-	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
-		super.register(client, eventBus, activeRequirementsManager);
+		super.register(client, clientThread, eventBus, activeRequirementsManager);
 		initialize(client);
 	}
 

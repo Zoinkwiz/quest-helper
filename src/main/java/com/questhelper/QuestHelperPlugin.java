@@ -29,11 +29,7 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
-import com.questhelper.managers.NewVersionManager;
-import com.questhelper.managers.QuestBankManager;
-import com.questhelper.managers.QuestManager;
-import com.questhelper.managers.QuestMenuHandler;
-import com.questhelper.managers.QuestOverlayManager;
+import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -45,7 +41,7 @@ import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import com.questhelper.util.worldmap.WorldMapAreaManager;
-import java.awt.*;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -173,6 +169,10 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	PlayerStateManager playerStateManager;
 
+	@Getter
+	@Inject
+	ActiveRequirementsManager activeRequirementsManager;
+
 	@Inject
 	public SkillIconManager skillIconManager;
 
@@ -220,6 +220,8 @@ public class QuestHelperPlugin extends Plugin
 
 		panel = new QuestHelperPanel(this, questManager, configManager);
 		questManager.startUp(panel);
+		activeRequirementsManager.setPanel(panel);
+		activeRequirementsManager.setQuestBankManager(questBankManager);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
 			.icon(icon)
@@ -252,6 +254,7 @@ public class QuestHelperPlugin extends Plugin
 
 		clientToolbar.removeNavigation(navButton);
 		questManager.shutDown();
+		activeRequirementsManager.shutDown();
 		questBankManager.shutDown(eventBus);
 
 		GlobalFakeObjects.setInitialized(false);

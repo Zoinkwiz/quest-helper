@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -179,9 +180,9 @@ public class VarbitRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
-		super.register(client, eventBus, activeRequirementsManager);
+		super.register(client, clientThread, eventBus, activeRequirementsManager);
 		int varbitValue = client.getVarbitValue(varbitID);
 		checkVarbitValue(varbitValue);
 	}

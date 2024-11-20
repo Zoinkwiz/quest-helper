@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 
 import com.questhelper.managers.ActiveRequirementsManager;
 import net.runelite.api.Client;
-import net.runelite.client.config.ConfigManager;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
@@ -53,7 +53,7 @@ public interface Requirement
 	 */
 	boolean check(Client client);
 
-	default void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	default void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
 		eventBus.register(this);
 	}
@@ -61,16 +61,6 @@ public interface Requirement
 	default void unregister(EventBus eventBus)
 	{
 		eventBus.unregister(this);
-	}
-
-	default boolean checkWithConfigChange(Client client, ConfigManager configManager, String configName, String value)
-	{
-		if (check(client))
-		{
-			configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, configName, value);
-			return true;
-		}
-		return false;
 	}
 
 	/**

@@ -911,6 +911,13 @@ public enum QuestHelperQuest
 		return QuestState.NOT_STARTED;
 	}
 
+	public int getVarId()
+	{
+		if (varbit != null) return varbit.getId();
+		if (varPlayer != null) return varPlayer.getId();
+		return -1;
+	}
+
 	public int getVar(Client client)
 	{
 		if (varbit != null)

@@ -180,7 +180,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 		potOfVinegarNeeded.setQuantity(winesNeededQuantity.get());
 
 		int jugsNeeded = winesNeededQuantity.get();
-		jugsNeeded -= potOfVinegar.alsoCheckBank(questBank).getMatches(client);
+		// TODO: This creates a new item each tick, seems wrong?
+		jugsNeeded -= potOfVinegar.alsoCheckBank(questBank).getMatches();
 		potNeeded.setQuantity(jugsNeeded);
 		jugOfVinegarNeeded.setQuantity(jugsNeeded);
 

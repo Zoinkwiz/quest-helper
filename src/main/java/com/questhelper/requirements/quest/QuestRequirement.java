@@ -35,6 +35,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -110,16 +111,16 @@ public class QuestRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
-		super.register(client, eventBus, activeRequirementsManager);
+		super.register(client, clientThread, eventBus, activeRequirementsManager);
 		checkQuestState();
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		checkQuestState();
+		clientThread.invokeLater(this::checkQuestState);
 	}
 
 	private void checkQuestState()
@@ -127,12 +128,14 @@ public class QuestRequirement extends AbstractRequirement
 		if (minimumVarValue != null)
 		{
 			setState(quest.getVar(client) >= minimumVarValue);
+			return;
 		}
 
 		QuestState questState = quest.getState(client);
 		if (requiredState == QuestState.IN_PROGRESS && questState == QuestState.FINISHED)
 		{
 			setState(true);
+			return;
 		}
 		setState(questState == requiredState);
 	}

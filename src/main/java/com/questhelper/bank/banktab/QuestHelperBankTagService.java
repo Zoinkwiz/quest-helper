@@ -88,7 +88,7 @@ public class QuestHelperBankTagService
 			recommendedItems = recommendedItems.stream()
 				.filter(Objects::nonNull)
 				.filter(i -> (!onlyGetMissingItems
-					|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+					|| !i.checkWithBank())
 					&& i.shouldDisplayText(plugin.getClient()))
 				.collect(Collectors.toList());
 		}
@@ -116,7 +116,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+						|| !i.checkWithBank())
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -128,7 +128,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+						|| !i.checkWithBank())
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}

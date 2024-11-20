@@ -29,15 +29,15 @@ package com.questhelper.requirements.player;
 
 import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.AbstractRequirement;
-import java.util.Arrays;
+
 import java.util.Locale;
-import java.util.stream.Stream;
+
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 
 import javax.annotation.Nonnull;
@@ -66,9 +66,9 @@ public class FreeInventorySlotRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
-		super.register(client, eventBus, activeRequirementsManager);
+		super.register(client, clientThread, eventBus, activeRequirementsManager);
 		ItemContainer inventory = client.getItemContainer(inventoryID);
 		if (inventory != null)
 		{

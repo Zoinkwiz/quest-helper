@@ -820,7 +820,7 @@ public class DetailedQuestStep extends QuestStep
 			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
 			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
 			(considerBankForItemHighlight &&
-				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
+				!((ItemRequirement) requirement).checkWithBank()));
 	}
 
 	@Override
@@ -901,7 +901,7 @@ public class DetailedQuestStep extends QuestStep
 		return requirements.stream().anyMatch((item) ->  item instanceof ItemRequirement &&
 			type == MenuAction.GROUND_ITEM_THIRD_OPTION &&
 			((ItemRequirement) item).getAllIds().contains(itemID) &&
-			!((ItemRequirement) item).check(client, false, questBank.getBankItems()) &&
+			!((ItemRequirement) item).checkWithBank() &&
 			option.equals("Take"));
 	}
 

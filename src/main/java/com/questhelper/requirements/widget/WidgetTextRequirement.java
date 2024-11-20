@@ -133,7 +133,7 @@ public class WidgetTextRequirement extends SimpleRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return checkWidget(client);
+		return checkWidget(this.client);
 	}
 
 	public boolean checkWidget(Client client)

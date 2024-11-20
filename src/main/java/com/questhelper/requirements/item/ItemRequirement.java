@@ -30,6 +30,8 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.bank.QuestBank;
 import com.questhelper.collections.ItemWithCharge;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.managers.ActiveRequirementsManager;
+import com.questhelper.managers.QuestBankManager;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
@@ -37,11 +39,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,6 +47,10 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
@@ -96,9 +98,6 @@ public class ItemRequirement extends AbstractRequirement
 	private QuestBank questBank;
 
 	@Getter
-	protected boolean hadItemLastCheck;
-
-	@Getter
 	protected boolean isConsumedItem = true;
 
 	protected boolean shouldAggregate = true;
@@ -111,8 +110,22 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	protected boolean isChargedItem = false;
 
-	@Setter
 	protected Requirement additionalOptions;
+
+	@Getter
+	protected boolean bankState;
+
+	int bankMatches;
+
+	@Getter
+	protected boolean inventoryState;
+
+	int inventoryMatches;
+
+	@Getter
+	protected boolean equipmentState;
+
+	int equipmentMatches;
 
 	public ItemRequirement(String name, int id)
 	{
@@ -295,7 +308,6 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
 		newItem.setConditionToHide(conditionToHide);
 		newItem.questBank = questBank;
-		newItem.hadItemLastCheck = hadItemLastCheck;
 		newItem.isConsumedItem = isConsumedItem;
 		newItem.shouldAggregate = shouldAggregate;
 		newItem.setTooltip(getTooltip());
@@ -345,7 +357,7 @@ public class ItemRequirement extends AbstractRequirement
 			text.append(this.getQuantity()).append(" x ");
 		}
 
-		int itemID = findItemID(client, false);
+		int itemID = findItemID();
 		if (displayMatchedItemName && ((alternateItems.contains(itemID)) || id == itemID))
 		{
 			text.append(client.getItemDefinition(itemID).getName());
@@ -378,6 +390,55 @@ public class ItemRequirement extends AbstractRequirement
 		text.append(getName());
 
 		return text.toString();
+	}
+
+	@Override
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	{
+		super.register(client, clientThread, eventBus, activeRequirementsManager);
+
+		initialize(activeRequirementsManager.getQuestBankManager());
+	}
+
+	public void initialize(QuestBankManager storedQuestBank)
+	{
+		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (equipped != null)
+		{
+			equipmentMatches = getMaxMatchingItems(equipped.getItems());
+			equipmentState = equipmentMatches >= quantity;
+		}
+
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		if (inventory != null)
+		{
+			inventoryMatches = getMaxMatchingItems(inventory.getItems());
+			inventoryState = inventoryMatches >= quantity;
+		}
+
+		if (storedQuestBank != null)
+		{
+			bankMatches = getMaxMatchingItems(storedQuestBank.getBankItems().toArray(new Item[0]));
+			bankState = bankMatches >= quantity;
+		}
+		updateState();
+
+		// This is sent as even if the state is the same, we may want to render the item as in the bank
+		sendStateChanged();
+	}
+
+	public boolean checkForSpecificItems(List<Item> items)
+	{
+
+		int matchesInItems = getMaxMatchingItems(items.toArray(new Item[0]));
+		return matchesInItems >= quantity;
+	}
+
+	// IDEA: Have a central event which lets you know diff on inventory
+	public void setAdditionalOptions(Requirement additionalOptions)
+	{
+		// TODO: Need to register / unregister through centralised ActiveRequirementsManager
+		this.additionalOptions = additionalOptions;
 	}
 
 	@Nullable
@@ -417,9 +478,9 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	/** Find the first item that this requirement allows that the player has, or -1 if they don't have any item(s) */
-	private int findItemID(Client client, boolean checkConsideringSlotRestrictions)
+	private int findItemID()
 	{
-		int remainder = getRequiredItemDifference(client, id, checkConsideringSlotRestrictions, null);
+		int remainder = getNumberOfItemFound(id, null);
 		if (remainder <= 0)
 		{
 			return id;
@@ -431,7 +492,7 @@ public class ItemRequirement extends AbstractRequirement
 			{
 				remainder = quantity;
 			}
-			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, null));
+			remainder -= (quantity - getNumberOfItemFound(alternate, null));
 			if (remainder <= 0)
 			{
 				return alternate;
@@ -440,32 +501,32 @@ public class ItemRequirement extends AbstractRequirement
 		return -1;
 	}
 
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
-										 List<Item> bankItems, QuestHelperConfig config)
+	public boolean checkWithBank()
+	{
+		return equipmentMatches + inventoryMatches + bankMatches >= quantity;
+	}
+
+	public Color getColorConsideringBank(QuestHelperConfig config)
 	{
 		Color color = config.failColour();
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
 		}
-		else if (this.check(client, checkConsideringSlotRestrictions))
+		else if (this.check(client))
 		{
 			color = config.passColour();
 		}
 
-		if (color == config.failColour() && bankItems != null)
+		if (color == config.failColour() && bankState)
 		{
-			if (check(client, false, bankItems))
-			{
-				color = Color.WHITE;
-			}
+			color = Color.WHITE;
 		}
 
 		return color;
 	}
 
-	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip,
-														 QuestHelperConfig config)
+	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip, QuestHelperConfig config)
 	{
 		Color equipColor = config.passColour();
 
@@ -474,7 +535,7 @@ public class ItemRequirement extends AbstractRequirement
 		if (this.isEquip())
 		{
 			String equipText = "(equipped)";
-			if (!this.check(client, true))
+			if (!equipmentState)
 			{
 				equipColor = config.failColour();
 			}
@@ -495,104 +556,141 @@ public class ItemRequirement extends AbstractRequirement
 		return lines;
 	}
 
-	public int getMatches(Client client)
+	public int getMatches()
 	{
-		return getMatches(client, false, new ArrayList<>());
-	}
+		int fullMatches = equipmentMatches;
 
-	public int getMatches(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
-	{
-		List<Item> allItems = new ArrayList<>(items);
-		if (questBank != null && questBank.getBankItems() != null)
+		if (!equip)
 		{
-			allItems.addAll(questBank.getBankItems());
+			fullMatches += inventoryMatches;
 		}
 
-		int remainder = 0;
-
-		List<Integer> ids = getAllIds();
-		for (int alternate : ids)
+		if (questBank != null)
 		{
-			if (exclusiveToOneItemType)
-			{
-				remainder = quantity;
-			}
-			remainder += (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions,
-				allItems));
+			fullMatches += bankMatches;
 		}
-		return remainder;
+		return fullMatches;
 	}
 
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
-		if (!shouldDisplayText(client)) return false;
+		// Complexity arises from:
+		// 1. Different 'pass' states. Fail, in bank, in inventory
+		// 2. Different things can call check with different groups of items to see if it passes
+		// 3. Actual check for passing is complex, due to mismatch is IDs, quantities, etc.
+
+		// For colour in sidebar it can have a check for if pass occured in bank
+		// Would still want a transition check for it you go from 'failed' to 'failed, but have item in bank'
+		// Perhaps instead of trying to amalgamate, instead for it to check bank I make it so that it MUST have alsoCheckQuestBank on.
+		// This means different items being checked and stored for sidebar. Might be an issue?
+
+		int containerID = itemContainerChanged.getContainerId();
+		Item[] items = itemContainerChanged.getItemContainer().getItems();
+
+		boolean oldState;
+		boolean newState;
+
+		if (containerID == InventoryID.INVENTORY.getId())
+		{
+			oldState = inventoryState;
+			inventoryMatches = getMaxMatchingItems(items);
+			inventoryState = inventoryMatches >= quantity;
+			newState = inventoryState;
+		}
+		else if (containerID == InventoryID.EQUIPMENT.getId())
+		{
+			oldState = equipmentState;
+			equipmentMatches = getMaxMatchingItems(items);
+			equipmentState = equipmentMatches >= quantity;
+			newState = equipmentState;
+		}
+		else if (containerID == InventoryID.BANK.getId())
+		{
+			oldState = bankState;
+			bankMatches = getMaxMatchingItems(items);
+			bankState = bankMatches >= quantity;
+			newState = bankState;
+		}
+		else
+		{
+			return;
+		}
+
+		if (oldState != newState)
+		{
+			sendStateChanged();
+		}
+
+		updateState();
+	}
+
+	private void updateState()
+	{
+		if (equipmentState)
+		{
+			setState(true);
+			return;
+		}
+
+		if (!equip && inventoryState)
+		{
+			setState(true);
+			return;
+		}
+
+		if (questBank != null && bankState)
+		{
+			setState(true);
+			return;
+		}
+
+		setState(false);
+	}
+
+	private int getMaxMatchingItems(Item[] items)
+	{
+		// TODO: Is this right to do? Misleading on number for some scenarios
+		// Perhaps additionalOptions should have some text change instead assosciated
 		if (additionalOptions != null && additionalOptions.check(client))
 		{
-			return true;
+			return quantity;
 		}
 
-		List<Item> allItems = new ArrayList<>(items);
-		if (questBank != null && questBank.getBankItems() != null)
-		{
-			allItems.addAll(questBank.getBankItems());
-		}
+		List<Item> allItems = new ArrayList<>(List.of(items));
 
-		int remainder = quantity;
+		int foundQuantity = 0;
 
 		List<Integer> ids = getAllIds();
 		for (int alternate : ids)
 		{
+			int tmpQuantity = foundQuantity;
 			if (exclusiveToOneItemType)
 			{
-				remainder = quantity;
+				tmpQuantity = 0;
 			}
-			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions,
-				allItems));
-			if (remainder <= 0)
-			{
-				hadItemLastCheck = true;
-				return true;
-			}
+			tmpQuantity += getNumberOfItemFound(alternate, allItems);
+
+			if (foundQuantity < tmpQuantity) foundQuantity = tmpQuantity;
 		}
-		hadItemLastCheck = false;
-		return false;
+
+		return foundQuantity;
 	}
 
 	/**
 	 * Get the difference between the required quantity for this requirement and the amount the client has.
 	 * Any value <= 0 indicates they have the required amount
 	 */
-	public int getRequiredItemDifference(Client client, int itemID, boolean checkConsideringSlotRestrictions,
-										 List<Item> items)
+	public int getNumberOfItemFound(int itemID, List<Item> items)
 	{
-		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
-		int tempQuantity = quantity;
-
-		if (equipped != null)
-		{
-			tempQuantity -= getNumMatches(equipped, itemID);
-		}
-
-		if (!checkConsideringSlotRestrictions || !equip)
-		{
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-			if (inventory != null)
-			{
-				tempQuantity -= getNumMatches(inventory, itemID);
-			}
-		}
+		int tempQuantity = 0;
 
 		if (items != null)
 		{
-			tempQuantity -= getNumMatches(items, itemID);
+			tempQuantity += getNumMatches(items, itemID);
 		}
 
 		return tempQuantity;
-	}
-
-	public int getNumMatches(ItemContainer items, int itemID)
-	{
-		return getNumMatches(Arrays.asList(items.getItems().clone()), itemID);
 	}
 
 	public int getNumMatches(List<Item> items, int itemID)
@@ -620,16 +718,6 @@ public class ItemRequirement extends AbstractRequirement
 			.filter(i -> i.getId() == itemID)
 			.mapToInt(Item::getQuantity)
 			.sum();
-	}
-
-	public boolean check(Client client)
-	{
-		return check(client, false);
-	}
-
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
-	{
-		return check(client, checkConsideringSlotRestrictions, new ArrayList<>());
 	}
 
 	public boolean checkBank(Client client)

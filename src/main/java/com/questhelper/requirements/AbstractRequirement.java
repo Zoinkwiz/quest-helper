@@ -33,12 +33,14 @@ import javax.annotation.Nullable;
 import com.questhelper.managers.ActiveRequirementsManager;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public abstract class AbstractRequirement implements Requirement
 {
 	protected Client client;
+	protected ClientThread clientThread;
 	protected ActiveRequirementsManager activeRequirementsManager;
 	private String tooltip;
 	private String urlSuffix;
@@ -49,8 +51,14 @@ public abstract class AbstractRequirement implements Requirement
 	@Getter
 	protected boolean state;
 
+	public boolean isRegistered;
+
 	public boolean check(Client client)
 	{
+		if (!isRegistered)
+		{
+			this.client = client;
+		}
 		return state;
 	}
 
@@ -138,11 +146,20 @@ public abstract class AbstractRequirement implements Requirement
 	}
 
 	@Override
-	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
 		this.client = client;
+		this.clientThread = clientThread;
 		this.activeRequirementsManager = activeRequirementsManager;
 		eventBus.register(this);
+		isRegistered = true;
+	}
+
+	@Override
+	public void unregister(EventBus eventBus)
+	{
+		eventBus.unregister(this);
+		isRegistered = false;
 	}
 
 	public void setState(boolean newState)

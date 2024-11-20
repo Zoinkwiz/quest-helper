@@ -1,8 +1,13 @@
 package com.questhelper.managers;
 
+import com.questhelper.bank.QuestBank;
+import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 
 import javax.inject.Inject;
@@ -15,12 +20,23 @@ import java.util.*;
 public class ActiveRequirementsManager
 {
     private final Map<Requirement, Set<ConditionalStep>> requirements = new HashMap<>();
+    private final Set<Requirement> sidebarRequirements = new HashSet<>();
 
     @Inject
     private Client client;
 
     @Inject
+    ClientThread clientThread;
+
+    @Inject
     private EventBus eventBus;
+
+    @Setter
+    private QuestHelperPanel panel;
+
+    @Setter
+    @Getter
+    private QuestBankManager questBankManager;
 
     /**
      * Adds a QuestStep to the specified Requirement.
@@ -36,31 +52,51 @@ public class ActiveRequirementsManager
         requirements.computeIfAbsent(requirement, key -> {
             if (isNewRequirement)
             {
-                requirement.register(client, eventBus, this);
+                requirement.register(client, clientThread, eventBus, this);
             }
             return new HashSet<>();
         }).add(questStep);
     }
 
     /**
-     * Removes a specific QuestStep from the specified Requirement.
-     * If no more QuestSteps are associated with the Requirement, it will be unregistered.
+     * Adds a Requirement to the sidebar.
+     * If the Requirement is not already registered, it will be registered.
      *
-     * @param requirement The requirement to remove the QuestStep from.
-     * @param questStep   The QuestStep to remove.
+     * @param requirement The requirement to display in the sidebar.
      */
-    public void removeRequirement(Requirement requirement, ConditionalStep questStep)
+    public void addSidebarRequirement(Requirement requirement)
     {
-        Set<ConditionalStep> steps = requirements.get(requirement);
-        if (steps != null)
+        if (!isRequirementActive(requirement) && sidebarRequirements.add(requirement))
         {
-            steps.remove(questStep);
-            if (steps.isEmpty())
-            {
-                requirements.remove(requirement);
-                requirement.unregister(eventBus);
-            }
+            requirement.register(client, clientThread, eventBus, this);
         }
+    }
+
+    /**
+     * Removes a Requirement from the sidebar.
+     * If no more QuestSteps or sidebar associations exist, the Requirement will be unregistered.
+     *
+     * @param requirement The requirement to remove from the sidebar.
+     */
+    public void removeSidebarRequirement(Requirement requirement)
+    {
+        if (sidebarRequirements.remove(requirement) && !isRequirementActive(requirement))
+        {
+            requirement.unregister(eventBus);
+        }
+    }
+
+    /**
+     * Clears all requirements and their associated QuestSteps and sidebar entries.
+     * Unregisters all requirements in the process.
+     */
+    public void shutDown()
+    {
+        requirements.keySet().forEach(req -> req.unregister(eventBus));
+        sidebarRequirements.forEach(req -> req.unregister(eventBus));
+
+        requirements.clear();
+        sidebarRequirements.clear();
     }
 
     /**
@@ -80,6 +116,11 @@ public class ActiveRequirementsManager
 
     public void sendUpdateOfRequirementToSteps(Requirement requirement)
     {
+        if (sidebarRequirements.contains(requirement))
+        {
+            panel.updateRequirement(client, requirement);
+        }
+
         Set<ConditionalStep> steps = requirements.get(requirement);
         if (steps == null) return;
         steps.forEach(ConditionalStep::revalidateOnRequirementChanged);
@@ -97,13 +138,24 @@ public class ActiveRequirementsManager
     }
 
     /**
-     * Clears all requirements and their associated QuestSteps.
-     * Unregisters all requirements in the process.
+     * Returns all sidebar requirements.
+     *
+     * @return A set of requirements that are displayed in the sidebar.
      */
-    public void clear()
+    public Set<Requirement> getSidebarRequirements()
     {
-        requirements.keySet().forEach(requirement -> requirement.unregister(eventBus));
-        requirements.clear();
+        return Collections.unmodifiableSet(sidebarRequirements);
+    }
+
+    /**
+     * Checks if a requirement is active (used in steps or the sidebar).
+     *
+     * @param requirement The requirement to check.
+     * @return True if the requirement is active, false otherwise.
+     */
+    private boolean isRequirementActive(Requirement requirement)
+    {
+        return requirements.containsKey(requirement) || sidebarRequirements.contains(requirement);
     }
 
     /**

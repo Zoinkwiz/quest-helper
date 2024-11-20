@@ -26,6 +26,7 @@ package com.questhelper.panel;
 
 import com.questhelper.managers.QuestManager;
 import com.questhelper.panel.skillfiltering.SkillFilterPanel;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
@@ -681,6 +682,11 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateItemRequirements(Client client, List<Item> bankItems)
 	{
 		questOverviewPanel.updateRequirements(client, bankItems);
+	}
+
+	public void updateRequirement(Client client, Requirement requirement)
+	{
+		questOverviewPanel.updateRequirement(client, requirement);
 	}
 
 	/**

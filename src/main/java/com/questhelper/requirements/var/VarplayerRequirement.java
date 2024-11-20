@@ -30,13 +30,12 @@ import com.questhelper.managers.ActiveRequirementsManager;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import com.questhelper.util.Utils;
 import net.runelite.api.Client;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -160,9 +159,9 @@ public class VarplayerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public void register(Client client, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
 	{
-		super.register(client, eventBus, activeRequirementsManager);
+		super.register(client, clientThread, eventBus, activeRequirementsManager);
 		int varpValue = client.getVarpValue(varplayerId);
 		checkVarpValue(varpValue);
 	}

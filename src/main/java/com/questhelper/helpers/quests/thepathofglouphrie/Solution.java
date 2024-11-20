@@ -78,7 +78,7 @@ public class Solution
 		puzzleNeeds.clear();
 		toExchange.clear();
 
-		if (!puzzle1Requirement.check(client, false, items))
+		if (!puzzle1Requirement.checkForSpecificItems(items))
 		{
 			puzzleNeeds.add(puzzle1Requirement);
 			var singleDiscExchange = valuePossibleSingleDiscExchangesRequirements.get(puzzle1SolutionValue).stream().filter(requirement -> inventoryHas(items, requirement.getId())).collect(Collectors.toUnmodifiableList());
@@ -131,7 +131,7 @@ public class Solution
 				item2 = possiblePuzzle2Solution.getItemRequirements().get(1);
 			}
 
-			if (possiblePuzzle2Solution.check(client, false, itemsAfterPuzzle1))
+			if (possiblePuzzle2Solution.checkForSpecificItems(itemsAfterPuzzle1))
 			{
 				// Found a valid puzzle2 solution
 				puzzle2UpperRequirement = item1;
@@ -141,7 +141,7 @@ public class Solution
 
 			// Some goal values only have one possible solution
 			// Let's check if we have one of these
-			if (item1.check(client, false, itemsAfterPuzzle1))
+			if (item1.checkForSpecificItems(itemsAfterPuzzle1))
 			{
 				// Found a partial solution
 				partialPuzzle2Solution = possiblePuzzle2Solution;
@@ -150,7 +150,7 @@ public class Solution
 				break;
 			}
 
-			if (item2.check(client, false, itemsAfterPuzzle1))
+			if (item2.checkForSpecificItems(itemsAfterPuzzle1))
 			{
 				// Found a partial solution
 				partialPuzzle2Solution = possiblePuzzle2Solution;

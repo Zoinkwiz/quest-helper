@@ -186,7 +186,10 @@ public class VarplayerRequirement extends AbstractRequirement
 		{
 			setState(values.stream().anyMatch(value -> operation.check(varpValue >> bitShiftRight, value)));
 		}
-		setState(values.stream().anyMatch(value -> operation.check(varpValue, value)));
+		else
+		{
+			setState(values.stream().anyMatch(value -> operation.check(varpValue, value)));
+		}
 	}
 
 	@Nonnull

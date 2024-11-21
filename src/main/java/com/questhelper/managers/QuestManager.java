@@ -306,7 +306,7 @@ public class QuestManager
 				panel.addQuest(questHelper, true);
 
 				// Force an extra update immediately after starting a quest
-				clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBankManager.getBankItems()));
+				clientThread.invokeLater(() -> panel.updateItemRequirements(client));
 			});
 		}
 		else

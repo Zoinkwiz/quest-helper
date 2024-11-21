@@ -679,9 +679,9 @@ public class QuestHelperPanel extends PluginPanel
 		searchBar.setText("");
 	}
 
-	public void updateItemRequirements(Client client, List<Item> bankItems)
+	public void updateItemRequirements(Client client)
 	{
-		questOverviewPanel.updateRequirements(client, bankItems);
+		questOverviewPanel.updateRequirements(client);
 	}
 
 	public void updateRequirement(Client client, Requirement requirement)

@@ -48,7 +48,7 @@ public class ActiveRequirementsManager
     public void addRequirement(Requirement requirement, ConditionalStep questStep)
     {
         // Register the requirement if it's not already present
-        boolean isNewRequirement = !requirements.containsKey(requirement);
+        boolean isNewRequirement = !isRequirementActive(requirement);
         requirements.computeIfAbsent(requirement, key -> {
             if (isNewRequirement)
             {

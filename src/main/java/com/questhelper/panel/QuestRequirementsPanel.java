@@ -51,6 +51,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class QuestRequirementsPanel extends JPanel
 {
@@ -129,7 +131,6 @@ public class QuestRequirementsPanel extends JPanel
 
 		if (requirements != null && !requirements.isEmpty())
 		{
-			questHelperPlugin.getClientThread().invokeLater(() -> requirements.forEach((req) -> questHelperPlugin.getActiveRequirementsManager().addSidebarRequirement(req)));
 			for (var requirement : requirements)
 			{
 				var panel = new JPanel();
@@ -227,6 +228,12 @@ public class QuestRequirementsPanel extends JPanel
 				requirementsPanel.add(panel);
 				requirementList.add(new InlineRequirement(requirement, label, tooltipButton));
 			}
+
+			questHelperPlugin.getClientThread().invokeLater(() ->
+					requirements.forEach(
+							(req) -> questHelperPlugin.getActiveRequirementsManager().addSidebarRequirement(req)
+					)
+			);
 		}
 		else if (showEvenIfEmpty)
 		{
@@ -240,16 +247,11 @@ public class QuestRequirementsPanel extends JPanel
 
 	public void updateRequirement(Client client, QuestHelperPlugin questHelperPlugin, Requirement requirement)
 	{
-		requirementList.forEach((inlineReq) ->
-		{
-			if (inlineReq.requirement == requirement)
-			{
-				changeRequirement(client, questHelperPlugin, inlineReq);
-			}
-		});
+		Optional<InlineRequirement> matchingRequirement = requirementList.stream().filter((req) -> req.requirement == requirement).findFirst();
+		matchingRequirement.ifPresent(inlineRequirement -> changeRequirement(client, questHelperPlugin, inlineRequirement));
 	}
 
-	public void update(Client client, QuestHelperPlugin questHelperPlugin, List<Item> bankItems)
+	public void update(Client client, QuestHelperPlugin questHelperPlugin)
 	{
 		int numActive = 0;
 

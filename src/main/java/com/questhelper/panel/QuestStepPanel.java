@@ -380,16 +380,16 @@ public class QuestStepPanel extends JPanel
 		}
 	}
 
-	public void updateRequirements(Client client, List<Item> bankItems)
+	public void updateRequirements(Client client)
 	{
 		if (requiredItemsPanel != null)
 		{
-			requiredItemsPanel.update(client, questHelperPlugin, bankItems);
+			requiredItemsPanel.update(client, questHelperPlugin);
 		}
 
 		if (recommendedItemsPanel != null)
 		{
-			recommendedItemsPanel.update(client, questHelperPlugin, bankItems);
+			recommendedItemsPanel.update(client, questHelperPlugin);
 		}
 
 		updateStepVisibility(client);
@@ -417,5 +417,11 @@ public class QuestStepPanel extends JPanel
 	private QuestStep currentlyActiveQuestSidebarStep()
 	{
 		return questHelperPlugin.getSelectedQuest().getCurrentStep().getSidePanelStep();
+	}
+
+	public void clearRequirements()
+	{
+		if (requiredItemsPanel != null) requiredItemsPanel.setRequirements(questHelperPlugin, null);
+		if (recommendedItemsPanel != null) recommendedItemsPanel.setRequirements(questHelperPlugin, null);
 	}
 }

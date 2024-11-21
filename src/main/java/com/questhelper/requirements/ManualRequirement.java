@@ -24,8 +24,11 @@
  */
 package com.questhelper.requirements;
 
+import com.questhelper.managers.ActiveRequirementsManager;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
 
 public class ManualRequirement extends SimpleRequirement
 {
@@ -36,5 +39,20 @@ public class ManualRequirement extends SimpleRequirement
 	public boolean check(Client client)
 	{
 		return shouldPass;
+	}
+
+	@Override
+	public void register(Client client, ClientThread clientThread, EventBus eventBus, ActiveRequirementsManager activeRequirementsManager)
+	{
+		this.client = client;
+		this.clientThread = clientThread;
+		this.activeRequirementsManager = activeRequirementsManager;
+		isRegistered = true;
+	}
+
+	@Override
+	public void unregister(EventBus eventBus)
+	{
+		isRegistered = false;
 	}
 }

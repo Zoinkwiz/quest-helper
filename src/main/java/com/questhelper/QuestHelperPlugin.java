@@ -29,11 +29,7 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
-import com.questhelper.managers.NewVersionManager;
-import com.questhelper.managers.QuestBankManager;
-import com.questhelper.managers.QuestManager;
-import com.questhelper.managers.QuestMenuHandler;
-import com.questhelper.managers.QuestOverlayManager;
+import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -45,7 +41,6 @@ import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.google.inject.Module;
 import com.questhelper.util.worldmap.WorldMapAreaManager;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -182,14 +177,6 @@ public class QuestHelperPlugin extends Plugin
 
 	boolean profileChanged;
 
-
-	// TODO: Use this for item checks
-	@Getter
-	private int lastTickInventoryUpdated = -1;
-
-	@Getter
-	private int lastTickBankUpdated = -1;
-
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
@@ -203,6 +190,7 @@ public class QuestHelperPlugin extends Plugin
 	protected void startUp() throws IOException
 	{
 		questBankManager.startUp(injector, eventBus);
+		QuestContainerManager.getBankData().setMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
 		eventBus.register(worldMapAreaManager);
 
 		injector.injectMembers(playerStateManager);
@@ -267,15 +255,24 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		Item[] items = event.getItemContainer().getItems();
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
 		{
-			lastTickBankUpdated = client.getTickCount();
+			ItemAndLastUpdated bankData = QuestContainerManager.getBankData();
+			bankData.update(client.getTickCount(), items);
 			questBankManager.updateLocalBank(event.getItemContainer());
 		}
 
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			lastTickInventoryUpdated = client.getTickCount();
+			ItemAndLastUpdated inventoryData = QuestContainerManager.getInventoryData();
+			inventoryData.update(client.getTickCount(), items);
+		}
+
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			ItemAndLastUpdated equippedData = QuestContainerManager.getEquippedData();
+			equippedData.update(client.getTickCount(), items);
 		}
 	}
 

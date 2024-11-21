@@ -27,6 +27,8 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.managers.ItemAndLastUpdated;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
@@ -98,58 +100,48 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
+	public boolean checkContainers(Client client, ItemAndLastUpdated... containers)
+	{
+		Predicate<ItemRequirement> predicate = r -> r.checkContainers(client, containers);
+		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
+		return logicType.compare(successes, itemRequirements.size());
+	}
+
+
+
+	@Override
 	public boolean check(Client client)
 	{
-		return check(client, false);
-	}
-
-	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
-	{
-		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
+		Predicate<ItemRequirement> predicate = r -> r.check(client);
 		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
-		hadItemLastCheck = logicType.compare(successes, itemRequirements.size());
-		return hadItemLastCheck;
-	}
-
-	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
-	{
-		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
-		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
-		hadItemLastCheck = logicType.compare(successes, itemRequirements.size());
-		return hadItemLastCheck;
+		return logicType.compare(successes, itemRequirements.size());
 	}
 
 	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		return this.check(client, true) ? config.passColour() : config.failColour();
+		return this.check(client) ? config.passColour() : config.failColour();
 	}
 
 	@Override
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
-										 List<Item> bankItems, QuestHelperConfig config)
+	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
 	{
-		Color color = config.failColour();
+		Color colour = config.failColour();
 		if (!this.isActualItem() && this.getItemRequirements() == null)
 		{
-			color = Color.GRAY;
+			colour = Color.GRAY;
 		}
-		else if (this.check(client, checkConsideringSlotRestrictions))
+		else if (checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData()))
 		{
-			color = config.passColour();
+			colour = config.passColour();
 		}
 
-		if (color == config.failColour() && bankItems != null)
+		if (colour == config.failColour() && checkWithBank(client))
 		{
-			if (check(client, false, bankItems))
-			{
-				color = Color.WHITE;
-			}
+			colour = Color.WHITE;
 		}
 
-		return color;
+		return colour;
 	}
 
 	@Override
@@ -198,8 +190,8 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public boolean checkBank(Client client)
+	public boolean checkWithBank(Client client)
 	{
-		return logicType.test(getItemRequirements().stream(), item -> item.checkBank(client) || item.check(client, false));
+		return logicType.test(getItemRequirements().stream(), item -> item.checkWithBank(client));
 	}
 }

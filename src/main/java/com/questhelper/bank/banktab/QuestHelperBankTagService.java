@@ -26,6 +26,7 @@ package com.questhelper.bank.banktab;
 
 import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -88,7 +89,7 @@ public class QuestHelperBankTagService
 			recommendedItems = recommendedItems.stream()
 				.filter(Objects::nonNull)
 				.filter(i -> (!onlyGetMissingItems
-					|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+					|| !i.checkWithBank(plugin.getClient()))
 					&& i.shouldDisplayText(plugin.getClient()))
 				.collect(Collectors.toList());
 		}
@@ -116,7 +117,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+						|| !i.checkWithBank(plugin.getClient()))
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -128,7 +129,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.check(plugin.getClient(), false, questBank.getBankItems()))
+						|| !i.checkWithBank(plugin.getClient()))
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -167,7 +168,7 @@ public class QuestHelperBankTagService
 				else
 				{
 					ItemRequirement match = itemsWhichPassReq.stream()
-						.filter(r -> r.checkBank(plugin.getClient()))
+						.filter(r -> r.checkWithBank(plugin.getClient()))
 						.findFirst()
 						.orElse(itemsWhichPassReq.get(0).named(itemRequirements.getName()));
 

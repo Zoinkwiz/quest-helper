@@ -92,7 +92,7 @@ public abstract class MockedTest extends MockedTestBase
 	protected PlayerStateManager playerStateManager = Mockito.mock(PlayerStateManager.class);
 
 	@Bind
-	protected QuestHelperPlugin questHelperPlugin = Mockito.mock(QuestHelperPlugin.class);
+	protected QuestHelperPlugin questHelperPlugin = Mockito.spy(QuestHelperPlugin.class);
 
 	@Bind
 	protected ClientToolbar clientToolbar = Mockito.mock(ClientToolbar.class);

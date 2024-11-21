@@ -28,6 +28,7 @@ package com.questhelper;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
+import com.questhelper.bank.banktab.BankTabItem;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
@@ -43,28 +44,14 @@ import com.google.inject.Module;
 import com.questhelper.util.worldmap.WorldMapAreaManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
 import com.questhelper.tools.Icon;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Menu;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.WorldType;
+import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
@@ -256,20 +243,20 @@ public class QuestHelperPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		Item[] items = event.getItemContainer().getItems();
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.BANK))
+		if (event.getContainerId() == InventoryID.BANK.getId())
 		{
 			ItemAndLastUpdated bankData = QuestContainerManager.getBankData();
 			bankData.update(client.getTickCount(), items);
 			questBankManager.updateLocalBank(event.getItemContainer());
 		}
 
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getContainerId() == InventoryID.INVENTORY.getId())
 		{
 			ItemAndLastUpdated inventoryData = QuestContainerManager.getInventoryData();
 			inventoryData.update(client.getTickCount(), items);
 		}
 
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{
 			ItemAndLastUpdated equippedData = QuestContainerManager.getEquippedData();
 			equippedData.update(client.getTickCount(), items);

@@ -37,6 +37,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ItemContainerChanged;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,6 +106,8 @@ public class KeysAndLeversTest extends MockedTest
 			{}
 		});
 		when(client.getScene()).thenReturn(mockedScene);
+
+		this.questHelperPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), mockedItemContainer));
 
 		this.injector.injectMembers(helper);
 		helper.setInjector(injector);

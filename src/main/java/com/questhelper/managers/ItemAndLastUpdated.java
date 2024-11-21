@@ -28,6 +28,7 @@ import com.questhelper.requirements.item.TrackedContainers;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Item;
+import javax.annotation.Nullable;
 
 import java.util.concurrent.Callable;
 
@@ -54,7 +55,7 @@ public class ItemAndLastUpdated
         this.items = items;
     }
 
-    public Item[] getItems()
+    public @Nullable Item[] getItems()
     {
         if (methodToObtainItems != null)
         {

@@ -42,6 +42,7 @@ import java.awt.Color;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -520,6 +521,10 @@ public class ItemRequirement extends AbstractRequirement
 		// Consideration: If any have changed, AND ItemRequirement requires unique item, then we do need to aggregate all the results
 		for (ItemAndLastUpdated container : containers)
 		{
+			if (container.getItems() == null)
+			{
+				continue;
+			}
 			ContainerState stateForItemInContainer = knownContainerStates.get(container.getContainerType());
 			// Generic container, always check
 			if (container.getContainerType() == TrackedContainers.UNDEFINED)
@@ -566,6 +571,10 @@ public class ItemRequirement extends AbstractRequirement
 		List<Item> allItems = new ArrayList<>();
 		for (ItemAndLastUpdated container : containers)
 		{
+			if (container.getItems() == null)
+			{
+				continue;
+			}
 			allItems.addAll(List.of(container.getItems()));
 		}
 
@@ -646,7 +655,7 @@ public class ItemRequirement extends AbstractRequirement
 		return containers.toArray(new ItemAndLastUpdated[0]);
 	}
 
-	private int getMaxMatchingItems(Client client, Item[] items)
+	private int getMaxMatchingItems(Client client, @NonNull Item[] items)
 	{
 		// TODO: Is this right to do? Misleading on number for some scenarios
 		// Perhaps additionalOptions should have some text change instead assosciated

@@ -126,7 +126,6 @@ public class SolutionTest extends MockedTest
 	public void testNotSolvable(List<Item> items, int puzzle1SolutionValue, int puzzle2SolutionValue)
 	{
 		solution.load(client, items, puzzle1SolutionValue, puzzle2SolutionValue, discs, valueToRequirement, valueToDoubleDiscRequirement, discToValue, valuePossibleSingleDiscExchangesRequirements);
-
 		assertFalse(solution.isGood());
 	}
 

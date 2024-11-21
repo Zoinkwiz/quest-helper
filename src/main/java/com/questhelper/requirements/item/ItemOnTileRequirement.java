@@ -28,7 +28,6 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.requirements.AbstractRequirementWithRequirements;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.util.Collections;
 import java.util.List;

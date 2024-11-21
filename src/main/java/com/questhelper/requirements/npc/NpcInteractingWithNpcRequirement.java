@@ -27,11 +27,7 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.SimpleRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import java.util.Arrays;
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 

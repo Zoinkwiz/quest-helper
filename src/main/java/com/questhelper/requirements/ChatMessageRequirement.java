@@ -26,7 +26,6 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.conditional.ConditionForStep;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.eventbus.Subscribe;
 
-public class ChatMessageRequirement extends ConditionForStep
+public class ChatMessageRequirement extends AbstractRequirementWithRequirements
 {
 	protected Requirement condition;
 

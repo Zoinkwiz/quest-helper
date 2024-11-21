@@ -377,7 +377,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(bullseyeLantern, tinderbox, airRune4, airRune3, airRune1, lawRune2, lawRune1, waterRune1,
 			crystalKey, bronzeSpear, emptySack, watermelon, rake, fishingExplosive, mithGrapple, anyCrossbow, initiateHelm, initiateChest,
@@ -385,7 +385,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(faladorTeleport, explorersRing, combatBracelet);
 	}
@@ -458,7 +458,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

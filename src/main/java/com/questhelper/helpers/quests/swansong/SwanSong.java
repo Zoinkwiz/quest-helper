@@ -296,13 +296,13 @@ public class SwanSong extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammerPanel);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(draynorTeleport, piscTeleport.quantity(2), yanilleTeleport, craftingGuildTeleport, cookingGauntlets);
 	}
@@ -364,7 +364,7 @@ public class SwanSong extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHerman, talkToWom), Arrays.asList(blood5, mist10, lava10), Arrays.asList(piscTeleport, draynorTeleport)));

@@ -875,7 +875,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(coins.quantity(902), pots.quantity(27), logs.quantity(27), tinderbox,
 			lightSource, rope.hideConditioned(addedRope), rangedWeapon,
@@ -884,7 +884,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+	protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(antifireShield, inoculationBracelet, digsitePendant, ectophial, ringOfDueling,
 			gamesNecklace, varrockTeleport, lumbridgeTeleport, nardahTeleport, draynorTeleport,
@@ -919,7 +919,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+	protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

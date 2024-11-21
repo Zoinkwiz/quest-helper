@@ -325,14 +325,14 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, rope, smallFishingNet, axe, ectoToken.quantity(25), ghostspeakAmulet,
 			steelBar, ammoMould, slayerGloves, ectophial, restorePot, garlic, silverDust);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, slayerRing, fairyAccess);
 	}
@@ -385,7 +385,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

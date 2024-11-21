@@ -649,13 +649,13 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(lemon, grape, pestle, pickaxe, logs, lightSource, hammerSidebar, chiselSidebar, mspeakAmulet, talismanOr1000Coins, ninjaGreegree);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(magicLog, food, staminaPotions, prayerPotions, antidote, combatGear);
 	}
@@ -703,7 +703,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",

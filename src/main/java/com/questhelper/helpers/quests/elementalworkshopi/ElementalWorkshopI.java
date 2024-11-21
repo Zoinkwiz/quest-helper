@@ -295,13 +295,13 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(knife, pickaxe, needle, thread, leather, hammer, coal4);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Collections.singletonList(combatGear);
 	}
@@ -341,7 +341,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Forging a Shield",

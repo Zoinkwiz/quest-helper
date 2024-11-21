@@ -68,7 +68,7 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 		return true;
 	}
 
-	public List<PanelDetails> getPanels()
+	protected List<PanelDetails> setupPanels()
 	{
 		return new ArrayList<>();
 	}

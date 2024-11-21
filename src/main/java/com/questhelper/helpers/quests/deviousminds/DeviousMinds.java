@@ -203,13 +203,13 @@ public class DeviousMinds extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(mith2h, bowString, largePouch));
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return new ArrayList<>(Arrays.asList(fallyTele, lumberTele, glory));
 	}
@@ -262,7 +262,7 @@ public class DeviousMinds extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToMonk)));

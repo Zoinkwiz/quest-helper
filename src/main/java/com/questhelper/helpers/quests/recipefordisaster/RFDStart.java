@@ -119,7 +119,7 @@ public class RFDStart extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
 	}
@@ -146,7 +146,7 @@ public class RFDStart extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Help the Cook", Arrays.asList(talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom), eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast));

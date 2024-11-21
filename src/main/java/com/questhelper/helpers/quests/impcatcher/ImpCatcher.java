@@ -115,7 +115,7 @@ public class ImpCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(blackBead);
@@ -127,7 +127,7 @@ public class ImpCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Bring Mizgog his beads", Arrays.asList(collectBeads, moveToTower, climbTower, turnInQuest),

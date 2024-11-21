@@ -73,7 +73,7 @@ public class GrandTreeBalloonFlight extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Collections.singletonList(magicLogs);
 	}
@@ -104,7 +104,7 @@ public class GrandTreeBalloonFlight extends ComplexStateQuestHelper
 
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

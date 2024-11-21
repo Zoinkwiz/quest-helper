@@ -319,7 +319,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Collections.singletonList(logRequirement);
 	}
@@ -349,7 +349,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();
 

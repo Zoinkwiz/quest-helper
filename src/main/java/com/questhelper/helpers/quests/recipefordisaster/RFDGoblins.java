@@ -230,13 +230,13 @@ public class RFDGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(bread, orange, knife, blueGreenPurpledye, spice, fishingBait, bucketOfWater, charcoal);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(teleportFalador, teleportLumbridge);
 	}
@@ -254,7 +254,7 @@ public class RFDGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Saving the Generals",

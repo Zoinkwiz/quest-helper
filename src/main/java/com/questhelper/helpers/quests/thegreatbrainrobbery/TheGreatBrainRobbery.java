@@ -573,14 +573,14 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(fishbowlHelmet, divingApparatus, catsOrResources, plank.quantity(8), hammer,
 			nails.quantity(200), holySymbol, ringOfCharos, noPet);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(ectophial, edgevilleTeleport, fenkenstrainTeleport, watermelonSeeds.quantity(3),
 			combatGearForSafespotting, food, prayerPotions);
@@ -633,7 +633,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

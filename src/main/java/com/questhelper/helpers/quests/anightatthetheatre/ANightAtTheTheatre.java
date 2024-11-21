@@ -431,13 +431,13 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(flail, saw, ghostSpeakAmulet, axe, combatGear, food);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(drakansMedallion, spiderCaveTeleport.quantity(2), antiVenom, antipoison, fairyRings);
 	}
@@ -476,7 +476,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Memories of a \"Friend\"", Arrays.asList(speakWithMysteriousStrangerToStart,

@@ -139,13 +139,13 @@ public class FamilyPest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Collections.singletonList(coins);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(dueling, camelotTele, varrockTele, lumberTele);
 	}
@@ -157,7 +157,7 @@ public class FamilyPest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Talk to the Brothers", Arrays.asList(talkToDimintheis,

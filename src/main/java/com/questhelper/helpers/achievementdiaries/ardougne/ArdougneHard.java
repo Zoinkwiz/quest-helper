@@ -316,7 +316,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(coins.quantity(25000), earthRune.quantity(2), lawRune.quantity(2),
 			mithBar.quantity(5), hammer, rope, smallFishingNet, rechargableJewelry, greeGree, lockpick, shieldLeft,
@@ -325,7 +325,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Collections.singletonList(papayaOrCompost);
 	}
@@ -371,7 +371,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

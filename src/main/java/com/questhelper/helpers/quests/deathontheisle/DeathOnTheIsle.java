@@ -654,13 +654,13 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return List.of();
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+	protected List<ItemRequirement> generateItemRecommended()
 	{
 		return List.of();
 	}
@@ -724,7 +724,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+	protected List<PanelDetails> setupPanels()
 	{
 		var panels = new ArrayList<PanelDetails>();
 

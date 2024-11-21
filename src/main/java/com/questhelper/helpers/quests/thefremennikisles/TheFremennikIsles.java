@@ -91,9 +91,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	//Zones
 	Zone islands, jatizso1, jatizso2, neitiznot1, neitiznot2, trollLands, trollCave, kingCave;
 
-	PanelDetails prepareForRepairPanel, prepareForCombatPanel;
-
-	List<ItemRequirement> items;
+	IronmanRequirement isIronman;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -101,7 +99,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
-		setupPanels();
+
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		steps.put(0, talkToMord);
@@ -290,6 +288,8 @@ public class TheFremennikIsles extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
+		isIronman = new IronmanRequirement(true);
+
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		coins15 = new ItemRequirement("Coins", ItemCollections.COINS, 15);
@@ -550,27 +550,12 @@ public class TheFremennikIsles extends BasicQuestHelper
 		finishQuest.addSubSteps(finishQuestGivenHead);
 	}
 
-	public void setupPanels()
-	{
-		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
-		{
-			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, axe, knife);
-			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), needle, thread, coins15, bronzeNail, hammer, rope);
-			items = Arrays.asList(tuna, coal, tinOre, mithrilOre, rope9, knife, axe, hammer, bronzeNail, needle, thread, meleeWeapon, food);
-		}
-		else
-		{
-			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis,
-				talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, splitLogs8, knife);
-			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), yakBottom, yakTop, roundShield);
-			items = Arrays.asList(tuna, tinOre, coal, mithrilOre, rope9, knife, splitLogs8, roundShield, yakTop, yakBottom, meleeWeapon, food);
-		}
-	}
-
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
-		return items;
+		return Arrays.asList(tuna, tinOre, coal, mithrilOre, rope9, knife, axe.showConditioned(isIronman), hammer.showConditioned(isIronman), bronzeNail.showConditioned(isIronman),
+				needle.showConditioned(isIronman), thread.showConditioned(isIronman), splitLogs8.hideConditioned(isIronman),
+				roundShield.hideConditioned(isIronman), yakTop.hideConditioned(isIronman), yakBottom.hideConditioned(isIronman), meleeWeapon, food);
 	}
 
 	@Override
@@ -584,6 +569,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
+		req.add(isIronman);
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		req.add(new SkillRequirement(Skill.AGILITY, 40, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 20, true));
@@ -621,17 +607,36 @@ public class TheFremennikIsles extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Travel to Jatizso", Arrays.asList(talkToMord, travelToJatizso), tuna, mithrilOre, coal, tinOre));
 		allSteps.add(new PanelDetails("Helping Gjuki", Arrays.asList(talkToGjuki, bringOreToGjuki, getJesterOutfit)));
 		allSteps.add(new PanelDetails("Spy on Mawnis", Arrays.asList(talkToSlug, goSpyOnMawnis, tellSlugReport1)));
+
+		PanelDetails prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis,
+				talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, splitLogs8, knife);
+		prepareForRepairPanel.setHideCondition(isIronman);
+		PanelDetails prepareForRepairPanelIronman = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1,
+				talkToMawnisAfterRepair), rope8, axe, knife);
+		prepareForRepairPanelIronman.setDisplayCondition(isIronman);
+
 		allSteps.add(prepareForRepairPanel);
+		allSteps.add(prepareForRepairPanelIronman);
+
 		allSteps.add(new PanelDetails("Collecting window tax", Arrays.asList(talkToGjukiToReport, collectFromKeepa, collectFromVanligga, collectFromSkuli, collectFromHring, talkToGjukiAfterCollection1)));
 		allSteps.add(new PanelDetails("Collecting beard tax", Arrays.asList(collectFromHringAgain, collectFromRaum, collectFromSkuliAgain, collectFromKeepaAgain, collectFromFlosi, talkToGjukiAfterCollection2)));
 		allSteps.add(new PanelDetails("Spy on Mawnis again", Arrays.asList(talkToSlugToSpyAgain, goSpyOnMawnisAgain, reportBackToSlugAgain, talkToGjukiAfterSpy2, talkToMawnisWithDecree)));
+
+		PanelDetails prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), yakBottom, yakTop, roundShield);
+		prepareForCombatPanel.setHideCondition(isIronman);
+		PanelDetails prepareForCombatPanelIronman = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), needle, thread,
+				coins15.showConditioned(isIronman), bronzeNail, hammer, rope);
+		prepareForCombatPanelIronman.setDisplayCondition(isIronman);
+
 		allSteps.add(prepareForCombatPanel);
+		allSteps.add(prepareForCombatPanelIronman);
+
 		allSteps.add(new PanelDetails("Killing the king", Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest), yakBottom, yakTop, roundShield, meleeWeapon, food));
 
 		return allSteps;

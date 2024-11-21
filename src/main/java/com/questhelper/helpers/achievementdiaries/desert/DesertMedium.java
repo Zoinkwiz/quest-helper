@@ -275,14 +275,14 @@ public class DesertMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, coins.quantity(200), rope, smallFishingNet, axe, lightSource, scrollOfRedir,
 			teleToHouse, harraPot, goatHornDust, camulet, iceCooler);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, desertBoots, desertRobe, desertShirt, waterskin);
 	}
@@ -332,7 +332,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

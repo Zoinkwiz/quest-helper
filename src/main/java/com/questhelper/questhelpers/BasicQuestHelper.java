@@ -90,7 +90,7 @@ public abstract class BasicQuestHelper extends QuestHelper
 		return false;
 	}
 
-	public List<PanelDetails> getPanels()
+	protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> panelSteps = new ArrayList<>();
 		steps.forEach((id, step) -> panelSteps.add(new PanelDetails("", step)));

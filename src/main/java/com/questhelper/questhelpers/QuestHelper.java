@@ -101,6 +101,12 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	private boolean hasInitialized;
 
+	private List<ItemRequirement> cachedItemRequirements;
+
+	private List<ItemRequirement> cachedItemRecommended;
+
+	private List<PanelDetails> cachedPanels;
+
 	@Override
 	public void configure(Binder binder)
 	{
@@ -257,9 +263,14 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		hasInitialized = true;
 	}
 
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return null;
+	}
+
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return cachedItemRequirements = cachedItemRequirements == null ? generateItemRequirements() : cachedItemRequirements;
 	}
 
 	public List<Requirement> getGeneralRequirements()
@@ -267,9 +278,14 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return null;
 	}
 
-	public List<ItemRequirement> getItemRecommended()
+	protected List<ItemRequirement> generateItemRecommended()
 	{
 		return null;
+	}
+
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return cachedItemRecommended = cachedItemRecommended == null ? generateItemRecommended() : cachedItemRecommended;
 	}
 
 	public List<Requirement> getGeneralRecommended()
@@ -382,5 +398,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return null;
 	}
 
-	public abstract List<PanelDetails> getPanels();
+	protected abstract List<PanelDetails> setupPanels();
+
+	public List<PanelDetails> getPanels()
+	{
+		return cachedPanels = cachedPanels == null ? setupPanels() : cachedPanels;
+	}
 }

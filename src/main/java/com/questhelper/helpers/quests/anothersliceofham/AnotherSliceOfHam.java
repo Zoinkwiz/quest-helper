@@ -416,13 +416,13 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(lightSource, tinderbox, combatGearRangedMagic);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Collections.singletonList(lumbridgeTeleports);
 	}
@@ -462,7 +462,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(goTalkToUrtag, goTalkToTegdak, goGetArtefacts,

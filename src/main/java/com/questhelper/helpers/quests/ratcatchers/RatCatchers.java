@@ -459,7 +459,7 @@ public class RatCatchers extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(cat, cheese.quantity(4), marrentill, unicornHornDust, bucketOfMilk,
 			catspeakAmuletOrDS2, vial, kwuarm, redEggs,
@@ -467,7 +467,7 @@ public class RatCatchers extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(ratPoison, varrockTeleport, sarimTeleport, pollnivneachTeleport, ardougneTeleport, keldagrimTeleport,
 			carpetCoins);
@@ -517,7 +517,7 @@ public class RatCatchers extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",

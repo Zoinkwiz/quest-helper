@@ -249,14 +249,14 @@ public class DesertEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(coins.quantity(405), shantayPass, birdSnare, pickaxe, rope, knife, desertBoots,
 			desertRobe, desertShirt, grimyHerb, pyramidPlunderArtefact, emptyWaterskin, combatGear);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, necklaceOfPassage, antipoison, waterskin, pharaohSceptre);
 	}
@@ -299,7 +299,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

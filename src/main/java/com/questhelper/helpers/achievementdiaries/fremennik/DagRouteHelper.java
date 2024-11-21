@@ -84,13 +84,13 @@ public class DagRouteHelper extends ComplexStateQuestHelper
 
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(petRock, thrownaxe, combatGear);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, prayerPot, stamPot);
 	}
@@ -111,7 +111,7 @@ public class DagRouteHelper extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		PanelDetails fullRoute = new PanelDetails("Travel to the Kings", dagRoute.getDisplaySteps(),

@@ -154,7 +154,7 @@ public class BikeShedder extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+	protected List<PanelDetails> setupPanels()
 	{
 		var panels = new ArrayList<PanelDetails>();
 

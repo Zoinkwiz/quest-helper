@@ -659,7 +659,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return List.of(
 			dwellberries3,
@@ -672,7 +672,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+	protected List<ItemRequirement> generateItemRecommended()
 	{
 		return List.of(
 			staminaPotion,
@@ -746,7 +746,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+	protected List<PanelDetails> setupPanels()
 	{
 		var panels = new ArrayList<PanelDetails>();
 

@@ -211,7 +211,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(skillsNecklace, xericsTalisman, foodIfLowLevel, superEnergyOrStamina, dramenStaff);
 	}
@@ -253,7 +253,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

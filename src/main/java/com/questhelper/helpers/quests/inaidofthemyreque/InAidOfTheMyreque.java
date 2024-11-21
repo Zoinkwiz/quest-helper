@@ -535,7 +535,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(foodForChest, spade, bucketTo5, pickaxe, hammer, planks11, nails44, swampPaste,
 			rawMackerelOrSnail10, bronzeAxes10, tinderboxes4, steelBars2, coal, efaritaysAidOrSilverWeapon,
@@ -562,7 +562,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(steelmed, steelChain, steelLegs, silverSickle, morttonTeleport, canifisTeleport);
 	}
@@ -597,7 +597,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Finding a new base", Arrays.asList(startQuest, travelToBurgh, putFoodInChest, talkToRazvan, clearTrapdoorRubble,

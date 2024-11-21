@@ -263,7 +263,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(crossbow, mithGrap, earthTali, fireAccess, earthRune.quantity(2), essence, feathers.quantity(10),
 			flyFishingRod, needle, thread, leather, lawRune.quantity(1), airRune.quantity(3), steelArrows.quantity(75),
@@ -271,7 +271,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Collections.singletonList(bindingNeck);
 	}
@@ -317,7 +317,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

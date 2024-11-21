@@ -587,14 +587,14 @@ public class GardenOfTranquillity extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(ringOfCharos, rake, dibber, spade, secateurs, wateringCan, trowel, plantCure2, marigoldSeed,
 			cabbageSeed3, onionSeed3, fishingRod, hammer, essence, pestle, plantPot, compost2);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(compost5, varrockTeleport, draynorTeleport, phasTeleport, ardougneTeleport,
 			catherbyTeleport, burthorpeTeleport, edgevilleTeleport, lumbridgeTeleport, faladorTeleport, taverleyTeleport);
@@ -628,7 +628,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

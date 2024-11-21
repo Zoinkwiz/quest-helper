@@ -323,14 +323,14 @@ public class KourendElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(pickaxe, chisel, axe, darkTotem, bloodRune.quantity(2), lawRune.quantity(2),
 			soulRune.quantity(2), fishingRod, sandworm, celastrusSapling, combatGear, food, knife, bootsOfStone);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(arclight, kharedstsMemoirs, dramenStaff, skillsNecklace, radasBlessing, xericsTalisman,
 			potatoCactus, ultraCompost, prayerPotion);
@@ -378,7 +378,7 @@ public class KourendElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

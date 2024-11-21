@@ -75,7 +75,7 @@ public class CraftingGuildBalloonFlight extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Collections.singletonList(oakLogs);
 	}
@@ -105,7 +105,7 @@ public class CraftingGuildBalloonFlight extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

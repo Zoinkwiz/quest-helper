@@ -245,7 +245,7 @@ public class JunglePotion extends BasicQuestHelper
 
 	//Recommended
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		ItemRequirement food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -281,7 +281,7 @@ public class JunglePotion extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();
 

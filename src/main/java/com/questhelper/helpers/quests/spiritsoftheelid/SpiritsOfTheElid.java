@@ -290,13 +290,13 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(airRune, lawRune, needle, thread, crushWep, stabWep, slashWep, lightSource, knife, rope, pickaxe, bow, arrows);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(combatGear, waterskins, necklaceOfPassage, spear, coins, food);
 	}
@@ -344,7 +344,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting Off", Arrays.asList(speakToAwusah, speakToGhaslor, openCupboard, useNeedleTornRobes, telegrabKey), airRune, lawRune, needle, thread));

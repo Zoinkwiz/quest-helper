@@ -322,7 +322,7 @@ public class WesternHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, crystalBow, smallFishingNet, coins, ninjaGreegree, axe, tinderbox, pickaxe, palmSapling,
 			ogreBellows, ogreBow, ogreArrows, mahoganyPlank, painting, saw, hammer, lawRunes2, fireRunes2,
@@ -330,7 +330,7 @@ public class WesternHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, papayas, zulrahTP, tpCrystal);
 	}
@@ -390,7 +390,7 @@ public class WesternHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

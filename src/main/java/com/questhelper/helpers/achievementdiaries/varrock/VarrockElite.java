@@ -209,7 +209,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(sAtk4, sStr4, sDef4, torstol, natureRune.quantity(20), astralRune.quantity(40),
 			earthRune.quantity(300), coins.quantity(21000), mahoganyLog.quantity(20), cookingGuild, rawPie, runeBar,
@@ -261,7 +261,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

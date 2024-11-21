@@ -155,7 +155,7 @@ public class KnightWaves extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, poisonedWeapon, food, potions);
 	}
@@ -180,7 +180,7 @@ public class KnightWaves extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Complete the Knight Waves", Arrays.asList(talkToSquireSteps, killKnightsSteps),

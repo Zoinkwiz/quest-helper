@@ -313,14 +313,14 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(axe, macheteAndRadimus, dramenStaffOrLunar, rawChicken, bucketOfMilk,
 			potOfCream, cornflour, dramenBranch, vanillaPod, pestleAndMortar, iceGloves);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(combatGear, antidragonShield, antifirePotion, draynorVillageTele, lumbridgeTele);
 	}
@@ -369,7 +369,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectAmik, talkToCook, talkToWom), null, Arrays.asList(draynorVillageTele.quantity(1))));

@@ -304,14 +304,14 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(fireRune, airRune, waterRune, earthRune, sword, arrow, moltenGlass, tinderbox, hammer,
 			steelNails.quantity(60), plank2, swampTar1, combatRunes);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(gamesNecklace, magicCombat, food, prayerPotions);
 	}
@@ -364,7 +364,7 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

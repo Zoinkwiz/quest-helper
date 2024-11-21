@@ -212,13 +212,13 @@ public class TheMageArenaII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(knife, zamorakStaff, guthixStaff, saradominStaff, runesForCasts);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(magicCombatGear, brews, restores, food, recoils);
 	}
@@ -255,7 +255,7 @@ public class TheMageArenaII extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Upgrading the God Cape", Arrays.asList(enterCavern,

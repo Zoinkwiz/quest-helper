@@ -329,13 +329,13 @@ public class ClockTower extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Collections.singletonList(bucketOfWater);
 	}
 
     @Override
-    public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
     {
         return Arrays.asList(staminaPotions, ardougneCloak);
     }
@@ -359,7 +359,7 @@ public class ClockTower extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

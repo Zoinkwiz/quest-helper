@@ -524,7 +524,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	protected ArrayList<ItemRequirement> generateItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(
 			coins.quantity(30), hammer, smallFishingNet, pestleAndMortar, spear, agilityPotion4,
@@ -533,7 +533,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+    protected ArrayList<ItemRequirement> generateItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(jogreBones);
@@ -591,7 +591,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting Off", Collections.singletonList(talkToTimfrakuStart), hammer,

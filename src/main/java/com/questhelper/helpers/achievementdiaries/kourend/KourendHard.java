@@ -305,7 +305,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(adamantiteOre, coal.quantity(6), bootsOfStone, pickaxe, lightSource, xericsTalisman,
 			lockpick, seedDibber, astralRune.quantity(1), cosmicRune.quantity(1), mindRune.quantity(1), wateringCan,
@@ -313,7 +313,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(combatGear, food, antipoison, kharedstsMemoirs, dramenStaff, skillsNecklace, radasBlessing);
 	}
@@ -357,7 +357,7 @@ public class KourendHard extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

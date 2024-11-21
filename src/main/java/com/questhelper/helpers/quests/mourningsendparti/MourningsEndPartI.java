@@ -480,13 +480,13 @@ public class MourningsEndPartI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(bearFur, silk2, redDye, yellowDye, blueDye, greenDye, waterBucket, feather, rottenApple, toadCrunchies, magicLogs, leather, ogreBellows, coal20OrNaphtha);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(outpostTeleport, taverleyTeleport, lletyaTeleport, westArdougneTeleport.quantity(3));
 	}
@@ -537,7 +537,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",

@@ -663,7 +663,7 @@ public class BarbarianTraining extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(seed, sapling, spade,
 			bow, oakLogs, tinderbox, axe,
@@ -673,7 +673,7 @@ public class BarbarianTraining extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(gamesNecklace.quantity(5), catherbyTeleport);
 	}
@@ -685,7 +685,7 @@ public class BarbarianTraining extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

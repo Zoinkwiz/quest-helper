@@ -370,13 +370,13 @@ public class ShiloVillage extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(spade, torchOrCandle, rope, bronzeWire, chisel, bones3);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(combatGear, food, staminas, antipoison, prayerPotions, quickTeleport,
 			papyrus, charcoal, crumbleUndead);
@@ -421,7 +421,7 @@ public class ShiloVillage extends BasicQuestHelper
 
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Exploring",

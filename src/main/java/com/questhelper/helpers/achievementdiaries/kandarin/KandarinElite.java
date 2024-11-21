@@ -242,7 +242,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(dwarfSeed, seedDib, spade, rake, compost, harpoon,
 			cookingGaunt, stamPot, caviar, runiteBar, magicLogs1, magicLogs2, hammer, chewedBone, tinderbox, axe,
@@ -300,7 +300,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

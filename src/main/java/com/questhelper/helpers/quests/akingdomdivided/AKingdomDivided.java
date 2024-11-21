@@ -848,14 +848,14 @@ public class AKingdomDivided extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(anyAxe, volcanicSulphur, defencePotion, moltenGlass, darkEssenceBlock, fireSpellGear,
 			combatGearForJudgeOfYama, combatGearForXamphur, combatGear, food);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+	protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(kharedstsMemoirs, fairyRingStaffOrSkillsNecklace, gamesNecklace, antipoison,
 			radasBlessingOrSkillsNecklace, xericsTalisman);
@@ -919,7 +919,7 @@ public class AKingdomDivided extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("The Disgraced Councillor's Escape", Arrays.asList(talkToMartinHolt,

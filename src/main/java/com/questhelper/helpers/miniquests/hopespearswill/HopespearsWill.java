@@ -262,13 +262,13 @@ public class HopespearsWill extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	protected ArrayList<ItemRequirement> generateItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(ghostspeakAmulet, ringOfVisibility, goblinPotion, dramenStaff, potionsAndFood));
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+    protected ArrayList<ItemRequirement> generateItemRecommended()
 	{
 		return new ArrayList<>(Arrays.asList(plainOfMudSphere, combatLevel));
 	}
@@ -302,7 +302,7 @@ public class HopespearsWill extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> panels = new ArrayList<>();
 		panels.add(new PanelDetails("Obtaining the Goblin Bones",

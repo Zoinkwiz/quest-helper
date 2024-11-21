@@ -216,14 +216,14 @@ public class RFDDwarf extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(coins320, milk, flour, egg, bowlOfWater, asgarniaAle4,
 			iceGloves);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(teleportFalador.quantity(2), teleportLumbridge, taverleyTeleport);
 	}
@@ -272,7 +272,7 @@ public class RFDDwarf extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Saving the Dwarf", Arrays.asList(inspectDwarf, talkToKaylee,

@@ -231,7 +231,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		List<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(cookedMeat);
@@ -242,7 +242,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(iceMountainTeleport, faladorTeleport, varrockTeleport, combatGearOrPickaxe);
 	}
@@ -282,7 +282,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

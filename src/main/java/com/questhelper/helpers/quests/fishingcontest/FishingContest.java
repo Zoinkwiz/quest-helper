@@ -268,7 +268,7 @@ public class FishingContest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> panels = new ArrayList<>();
 		List<QuestStep> steps = Arrays.asList(talkToVestriStep, goToHemensterStep, speakToBonzo, putGarlicInPipe, fishForFish,
@@ -285,14 +285,14 @@ public class FishingContest extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(coins, redVineWorm, garlic, spade, fishingRod);
 	}
 
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(combatBracelet, camelotTeleport);
 	}

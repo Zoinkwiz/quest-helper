@@ -292,14 +292,14 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4), lockpick, salveAmmy,
 			sinewOrRoot, runeBar, hammer, knife, yewLog, rake, spade, seedDib, torstolSeed);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, compost);
 	}
@@ -355,7 +355,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

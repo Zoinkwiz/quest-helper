@@ -246,13 +246,13 @@ public class GertrudesCat extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(bucketOfMilk, coins, sardine);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+	protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(varrockTeleport, lumberyardTeleport);
 	}
@@ -285,7 +285,7 @@ public class GertrudesCat extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();
 

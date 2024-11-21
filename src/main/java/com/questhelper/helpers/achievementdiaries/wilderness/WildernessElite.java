@@ -275,14 +275,14 @@ public class WildernessElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, hammer, lawRune.quantity(2), waterRune.quantity(8), coins.quantity(3750), axe,
 			tinderbox, pickaxe, coal.quantity(16), lobsterPot, darkFishingBait, godEquip);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Collections.singletonList(food);
 	}
@@ -337,7 +337,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

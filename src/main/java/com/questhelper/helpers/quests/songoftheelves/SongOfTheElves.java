@@ -1346,7 +1346,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(steelFullHelm, steelPlatebody, steelPlatelegs, redDye,
 			purpleDye, silk, mournersOutfit, runiteBar, limestoneBricks8, tinderbox, rope,
@@ -1356,7 +1356,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(teleCrystal, iorwerthCampTeleport, gamesNecklace, combatGear, magicCombatGear, saradominBrews, superRestorePotions, staminaPotions);
 	}
@@ -1433,7 +1433,7 @@ public class SongOfTheElves extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToEdmond, talkToLathas, talkToEdmondAgain, talkToAlrena,

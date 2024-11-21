@@ -167,7 +167,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(rope, litSapphireLantern, tinderbox, chisel, pickaxe);
 	}
@@ -202,7 +202,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

@@ -168,7 +168,7 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return List.of(axe);
 	}
@@ -209,7 +209,7 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

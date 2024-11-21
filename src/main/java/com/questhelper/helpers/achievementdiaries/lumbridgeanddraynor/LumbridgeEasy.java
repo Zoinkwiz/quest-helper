@@ -276,14 +276,14 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(lightSource, runeEss, axe, tinderbox, smallFishingNet, pickaxe,
 			waterAccessOrAbyss, dough, combatGear);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, rope, spinyHelm);
 	}
@@ -331,7 +331,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

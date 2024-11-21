@@ -1072,13 +1072,13 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     }
 
     @Override
-    public List<ItemRequirement> getItemRequirements()
+    protected List<ItemRequirement> generateItemRequirements()
     {
         return List.of(coins.quantity(30), combatGear, food, prayerPotions.quantity(2));
     }
 
     @Override
-    public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
     {
         return List.of(quetzalFeed.quantity(10), limestoneBrick.quantity(3), softClay.quantity(4), staminaPotions, civitasIllaFortisTeleport);
     }
@@ -1130,7 +1130,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     }
 
     @Override
-    public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
     {
         List<PanelDetails> allSteps = new ArrayList<>();
 

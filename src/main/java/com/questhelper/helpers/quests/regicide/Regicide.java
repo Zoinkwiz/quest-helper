@@ -870,14 +870,14 @@ public class Regicide extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(bow, arrows, rope2, spade, limestone, tinderbox, stripOfCloth, pestle, gloves, pot,
 			coal20, cookedRabbit);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(staminaPotions, antipoisons, summerPie, plank, faladorTeleport, combatEquipment,
 			westArdougneTeleport);
@@ -929,7 +929,7 @@ public class Regicide extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(talkToKingLathas)));

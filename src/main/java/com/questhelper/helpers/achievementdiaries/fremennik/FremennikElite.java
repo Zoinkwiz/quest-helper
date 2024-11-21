@@ -350,13 +350,13 @@ public class FremennikElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(pureEssence.quantity(28), dragonstone, goldBar, amuletMould, combatGear, rope.quantity(3), climbingBoots, petRock, crossbow, mithGrap, hammer);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, prayerPot, stamPot);
 	}
@@ -403,7 +403,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

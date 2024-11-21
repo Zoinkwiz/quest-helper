@@ -253,7 +253,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(combatGear, dramenStaff, battlefrontTeleports2, xericsTalisman, skillsNecklace);
 	}
@@ -297,7 +297,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",

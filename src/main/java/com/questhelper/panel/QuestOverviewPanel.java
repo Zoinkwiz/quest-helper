@@ -47,7 +47,6 @@ import java.util.Set;
 import com.questhelper.util.Fonts;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.ColorScheme;
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
@@ -663,6 +662,7 @@ public class QuestOverviewPanel extends JPanel
 		questItemRequirementsPanel.updateRequirement(client, questHelperPlugin, requirement);
 		questItemRecommendedPanel.updateRequirement(client, questHelperPlugin, requirement);
 
+		// TODO: Should the step to be updated be associated so can just be called?
 		questStepPanelList.forEach((questStepPanel) -> {
 			questStepPanel.updateRequirement(client, requirement);
 		});

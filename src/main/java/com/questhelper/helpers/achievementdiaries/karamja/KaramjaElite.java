@@ -165,7 +165,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(natureTiaraOrAbyss, pureEssence.quantity(28), fireCapeOrInfernal, palmTreeSapling,
 			antidotePlusPlus, zulrahScales.quantity(20), calquatSapling, rake, spade);
@@ -204,7 +204,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

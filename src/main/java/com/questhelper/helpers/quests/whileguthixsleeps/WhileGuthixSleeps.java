@@ -1608,7 +1608,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return List.of(
 			knife, logs, coins.quantity(520), dibber, lanternLens, unpoweredOrb, bronzeMedHelm, ironChainbody, litSapphireLantern,
@@ -1618,7 +1618,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return List.of(
 			taverleyTeleport.quantity(2),
@@ -1707,7 +1707,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

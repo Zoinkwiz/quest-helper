@@ -268,14 +268,14 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(unpoweredOrb, cosmicRune.quantity(3), earthRune.quantity(30), pickaxe, antiDragonShield,
 			runeAxe, combatGear, barsOrPick, hammer, coins.quantity(7500), knife, muddyKey);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, gamesNeck, burningAmulet);
 	}
@@ -326,7 +326,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

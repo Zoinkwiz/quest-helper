@@ -508,14 +508,14 @@ public class Wanted extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return QuestUtil.toArrayList(essence, lightSource, rope.hideConditioned(placedRope), combatGear,
 			commorbComponentsOrTenThousandGp);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return QuestUtil.toArrayList(amuletOfGlory, ringOfDueling, faladorTeleport, varrockTeleport, canifisTeleport, spinyHelmet);
 	}
@@ -557,7 +557,7 @@ public class Wanted extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

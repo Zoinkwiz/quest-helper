@@ -666,14 +666,14 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	protected ArrayList<ItemRequirement> generateItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(lightSource, toadflaxPotionUnf, goblinMail, yellowDye, blueDye, orangeDye,
 			purpleDye, pestleAndMortar, vial, fishingRod, rawSlimyEel, coins, combatGear));
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+    protected ArrayList<ItemRequirement> generateItemRecommended()
 	{
 		return new ArrayList<>(Arrays.asList(tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing, salveAmulet));
 	}
@@ -724,7 +724,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> panels = new ArrayList<>();
 		panels.add(new PanelDetails("Grubfoot's Dream",

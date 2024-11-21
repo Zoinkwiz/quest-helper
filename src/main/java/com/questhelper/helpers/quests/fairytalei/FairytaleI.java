@@ -281,13 +281,13 @@ public class FairytaleI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(secateurs, spade, ghostspeak, dramenOrLunarStaff, draynorSkull);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(varrockTeleport, faladorTeleport, lumbridgeTeleport, moryTele, food);
 	}
@@ -329,7 +329,7 @@ public class FairytaleI extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

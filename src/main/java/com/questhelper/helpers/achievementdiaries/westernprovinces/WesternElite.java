@@ -212,14 +212,14 @@ public class WesternElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, magicLongU, bowString, magicSapling, coconuts25, ogreBellows, ogreBow,
 			ogreArrows, mouthProtection, rake, spade, voidHelm, voidTop, voidRobe, voidGloves);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, tpCrystal);
 	}
@@ -272,7 +272,7 @@ public class WesternElite extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

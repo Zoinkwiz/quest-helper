@@ -302,7 +302,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(axe, feathers, knife, hammer, chisel, wolfBones4);
 	}
@@ -343,7 +343,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Getting Rantz Arrows",

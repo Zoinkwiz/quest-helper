@@ -132,7 +132,7 @@ public class BearYourSoul extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		List<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(spade);
@@ -141,7 +141,7 @@ public class BearYourSoul extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Find the Soul journey book", Collections.singletonList(findSoulJourneyAndRead)));

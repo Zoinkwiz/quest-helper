@@ -365,13 +365,13 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	protected ArrayList<ItemRequirement> generateItemRequirements()
 	{
 		return new ArrayList<>(Arrays.asList(hammer, ghostSpeakAmulet, silverBar, bronzeWire, needle, thread, spade, coins, telegrabOrCoins, armor));
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+    protected ArrayList<ItemRequirement> generateItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(fenkenstrainTeleports);
@@ -423,7 +423,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(getPickledBrain, talkToFrenkenstrain),

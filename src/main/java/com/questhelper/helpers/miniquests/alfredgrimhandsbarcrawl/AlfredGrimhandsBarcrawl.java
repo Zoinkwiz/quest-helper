@@ -191,13 +191,13 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return List.of(coins208);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return List.of(gamesNecklace, varrockTeleport, faladorTeleport, glory, ardougneTeleport,
 			camelotTeleport, duelingRing);
@@ -213,7 +213,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		var allSteps = new ArrayList<PanelDetails>();
 

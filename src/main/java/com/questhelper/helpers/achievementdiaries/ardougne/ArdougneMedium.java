@@ -313,7 +313,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, crossbow, mithGrap, rake, strawSeeds.quantity(3), seedDib, ibanStaff,
 			coins.quantity(200000), skavMap, lawRune.quantity(2), waterRune.quantity(2), lightSource, 
@@ -321,7 +321,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, basketOrCompost);
 	}
@@ -378,7 +378,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

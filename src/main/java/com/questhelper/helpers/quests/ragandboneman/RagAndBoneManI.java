@@ -346,14 +346,14 @@ public class RagAndBoneManI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(coins.quantity(8), pots.quantity(8), logs.quantity(8), tinderbox,
 			lightSource, rope.hideConditioned(addedRope));
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(varrockTeleport, lumbridgeTeleport, digsitePendant,
 			draynorTeleport, karamjaTeleport);
@@ -381,7 +381,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(talkToOddOldMan)));

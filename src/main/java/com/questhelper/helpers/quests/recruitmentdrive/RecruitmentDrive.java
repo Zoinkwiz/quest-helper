@@ -400,7 +400,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> steps = new ArrayList<>();
 

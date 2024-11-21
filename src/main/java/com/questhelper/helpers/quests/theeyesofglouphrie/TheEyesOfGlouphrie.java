@@ -286,7 +286,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(bucketOfSap, mudRune, mapleLog, oakLog, hammer, saw, pestleAndMortar);
 	}
@@ -330,7 +330,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

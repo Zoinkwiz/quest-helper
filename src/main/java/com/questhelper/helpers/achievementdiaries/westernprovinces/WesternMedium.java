@@ -326,7 +326,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, ogreBellows, ogreBow, ogreArrows, teasingStick, logs, knife, bigFishingNet, axe,
 			tinderbox, rope, gnomebowl, gianneDough, chocolateBar, equaLeaf, potOfCream, chocolateDust, crystalSawSeed,
@@ -334,7 +334,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(food, fairyAccess, seedPod);
 	}
@@ -381,7 +381,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

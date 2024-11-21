@@ -242,7 +242,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	protected ArrayList<ItemRequirement> generateItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		if (client.getRealSkillLevel(Skill.AGILITY) < 70)
@@ -254,7 +254,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+    protected ArrayList<ItemRequirement> generateItemRecommended()
 	{
 		return new ArrayList<>(Arrays.asList(antiDragonShield, antiPoison, food, teleRunesFalador, camelotTeleport, gamesNecklace,
 			gloryOrCombatBracelet));
@@ -285,7 +285,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+    protected ArrayList<PanelDetails> setupPanels()
 	{
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 

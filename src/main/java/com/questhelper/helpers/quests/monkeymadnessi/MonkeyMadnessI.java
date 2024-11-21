@@ -886,13 +886,13 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(goldBar, ballOfWool, bananaReq, monkeyBonesOrCorpse);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(combatGear, antipoison, food, prayerPotions, grandTreeTeleport.quantity(4),
 			escapeTeleport.quantity(3), ardougneTeleport);
@@ -939,7 +939,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToNarnode), null, Collections.singletonList(grandTreeTeleport)));

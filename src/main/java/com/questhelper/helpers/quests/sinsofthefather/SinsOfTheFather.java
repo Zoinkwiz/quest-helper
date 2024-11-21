@@ -814,13 +814,13 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(combatGear, vyrewatchOutfitOrCoins, ivandisFlail, axe, ruby, enchantRubyRunesOrTablet, knife, chisel);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(pickaxe, antipoison, drakanMedallion, moryLegs3);
 	}
@@ -870,7 +870,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Investigating Slepe",

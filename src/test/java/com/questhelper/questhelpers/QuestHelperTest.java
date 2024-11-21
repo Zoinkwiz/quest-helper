@@ -2,16 +2,15 @@ package com.questhelper.questhelpers;
 
 import com.questhelper.MockedTest;
 import com.questhelper.domain.AccountType;
-import com.questhelper.panel.PanelDetails;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import java.lang.reflect.Field;
-import java.util.stream.Collectors;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import com.questhelper.steps.ConditionalStep;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;

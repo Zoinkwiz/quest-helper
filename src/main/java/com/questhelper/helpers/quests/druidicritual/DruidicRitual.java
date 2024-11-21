@@ -166,7 +166,7 @@ public class DruidicRitual extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(rawBear, rawBeef, rawChicken, rawRat);
 	}
@@ -191,7 +191,7 @@ public class DruidicRitual extends BasicQuestHelper
 
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Helping the druids",

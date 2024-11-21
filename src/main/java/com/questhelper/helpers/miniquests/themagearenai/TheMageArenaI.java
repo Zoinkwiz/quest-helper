@@ -145,7 +145,7 @@ public class TheMageArenaI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(knife, runesForCasts);
 	}
@@ -187,7 +187,7 @@ public class TheMageArenaI extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Getting to the Mage Arena", Collections.singletonList(enterCavern), knife));

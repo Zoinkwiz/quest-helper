@@ -335,14 +335,14 @@ public class KourendMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(dramenStaff, kharedstsMemoirs, pickaxe, faceMask, hammer, nails.quantity(50),
 			planks.quantity(3), kingWorm, axe, tinderbox, boxTrap);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Arrays.asList(knife, warmClothing, combatGear, food, antipoison, radasBlessing1);
 	}
@@ -391,7 +391,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 

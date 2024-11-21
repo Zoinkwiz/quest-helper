@@ -98,7 +98,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		Map<Integer, ItemRequirement> reqs = new LinkedHashMap<>();
 		questHelperPlugin.getItemRequirements().forEach((qhQuest, questReqs) -> refinedList(qhQuest.getName(), reqs, questReqs));
@@ -106,7 +106,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+	protected List<ItemRequirement> generateItemRecommended()
 	{
 		Map<Integer, ItemRequirement> reqs = new LinkedHashMap<>();
 		questHelperPlugin.getItemRecommended().forEach((qhQuest, questRecs) -> refinedList(qhQuest.getName(), reqs, questRecs));
@@ -114,7 +114,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+	protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(step1)));

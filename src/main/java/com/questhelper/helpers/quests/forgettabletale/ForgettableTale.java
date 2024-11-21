@@ -938,14 +938,14 @@ public class ForgettableTale extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	protected List<ItemRequirement> generateItemRequirements()
 	{
 		return Arrays.asList(coins500, barleyMalt2, bucketOfWater2, dibber, rake, kebab, beer.quantity(3),
 			dwarvenStout, beerGlass, randomItem);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+    protected List<ItemRequirement> generateItemRecommended()
 	{
 		return Collections.singletonList(grandExchangeTeleport);
 	}
@@ -982,7 +982,7 @@ public class ForgettableTale extends BasicQuestHelper
 	}
 
 	@Override
-	public List<PanelDetails> getPanels()
+    protected List<PanelDetails> setupPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Brewing",

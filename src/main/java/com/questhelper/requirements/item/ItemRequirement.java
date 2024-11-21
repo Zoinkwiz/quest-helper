@@ -630,7 +630,6 @@ public class ItemRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		// TODO: Any functions which previously called with false should call checkContainers with inv + equipped instead
 		ItemAndLastUpdated[] containers = containersToCheckDefault();
 
 		return checkContainers(client, containers);

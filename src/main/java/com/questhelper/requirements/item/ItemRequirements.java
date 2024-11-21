@@ -124,6 +124,14 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
+	public boolean checkItems(Client client, List<Item> items)
+	{
+		Predicate<ItemRequirement> predicate = r -> r.checkItems(client, items);
+		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
+		return logicType.compare(successes, itemRequirements.size());
+	}
+
+	@Override
 	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
 	{
 		Color colour = config.failColour();

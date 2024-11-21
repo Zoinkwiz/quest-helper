@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements.conditional;
 
+import com.questhelper.requirements.AbstractRequirementWithRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -32,11 +33,18 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import com.questhelper.util.Utils;
+import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 
-public class Conditions extends ConditionForStep
+public class Conditions extends AbstractRequirementWithRequirements
 {
+	@Setter
+	@Getter
+	protected boolean hasPassed;
+	protected boolean onlyNeedToPassOnce;
+	protected LogicType logicType;
+
 	protected Operation operation;
 	protected int quantity;
 

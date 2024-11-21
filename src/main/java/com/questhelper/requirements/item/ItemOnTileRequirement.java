@@ -27,6 +27,7 @@
 
 package com.questhelper.requirements.item;
 
+import com.questhelper.requirements.AbstractRequirementWithRequirements;
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.util.Collections;
@@ -38,7 +39,7 @@ import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
-public class ItemOnTileRequirement extends ConditionForStep
+public class ItemOnTileRequirement extends AbstractRequirementWithRequirements
 {
 	private final List<Integer> itemID;
 	private WorldPoint worldPoint;

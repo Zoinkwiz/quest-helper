@@ -24,6 +24,7 @@
  */
 package com.questhelper.requirements.conditional;
 
+import com.questhelper.requirements.AbstractRequirementWithRequirements;
 import com.questhelper.requirements.zone.Zone;
 import lombok.NonNull;
 import lombok.Setter;
@@ -36,7 +37,7 @@ import net.runelite.api.coords.WorldPoint;
 import java.util.Objects;
 import java.util.Set;
 
-public class ObjectCondition extends ConditionForStep
+public class ObjectCondition extends AbstractRequirementWithRequirements
 {
 	private final Set<Integer> objectIDs;
 	private final Zone zone;

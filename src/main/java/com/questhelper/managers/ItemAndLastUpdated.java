@@ -45,7 +45,7 @@ public class ItemAndLastUpdated
     private Item[] items;
 
     @Setter
-    private Callable<Item[]> methodToObtainItems;
+    private Callable<Item[]> specialMethodToObtainItems;
 
     public ItemAndLastUpdated(TrackedContainers containerType)
     {
@@ -60,18 +60,18 @@ public class ItemAndLastUpdated
 
     /**
      * Get the Items contained within the Tracked Container.
-     * If this instance of ItemAndLastUpdated has a method to obtain the current state of the Container other than
+     * If this instance of ItemAndLastUpdated has a method in specialMethodToObtainItems to obtain the current state of the Container other than
      * from the {@link Item}[] items variable, it will use that and return the value.
-     * 
+     *
      * @return an {@link Item}[] of items currently thought to be in the container.
      */
     public @Nullable Item[] getItems()
     {
-        if (methodToObtainItems != null)
+        if (specialMethodToObtainItems != null)
         {
             try
             {
-                return methodToObtainItems.call();
+                return specialMethodToObtainItems.call();
             } catch (Exception e)
             {
                 log.warn("Failed to load container from method");

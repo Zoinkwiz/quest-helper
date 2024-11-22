@@ -28,7 +28,6 @@ package com.questhelper;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
-import com.questhelper.bank.banktab.BankTabItem;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
@@ -177,7 +176,7 @@ public class QuestHelperPlugin extends Plugin
 	protected void startUp() throws IOException
 	{
 		questBankManager.startUp(injector, eventBus);
-		QuestContainerManager.getBankData().setMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
+		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
 		eventBus.register(worldMapAreaManager);
 
 		injector.injectMembers(playerStateManager);

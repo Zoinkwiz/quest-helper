@@ -36,7 +36,6 @@ import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
 import java.util.*;
@@ -128,11 +127,11 @@ public class ItemRequirement extends AbstractRequirement
 
 	int equipmentMatches;
 
-	Map<TrackedContainers, ContainerState> knownContainerStates = new HashMap<>();
+	Map<TrackedContainers, ContainerStateForRequirement> knownContainerStates = new HashMap<>();
 	{
 		for (TrackedContainers value : TrackedContainers.values())
 		{
-			knownContainerStates.put(value, new ContainerState());
+			knownContainerStates.put(value, new ContainerStateForRequirement());
 		}
 	}
 
@@ -525,7 +524,7 @@ public class ItemRequirement extends AbstractRequirement
 			{
 				continue;
 			}
-			ContainerState stateForItemInContainer = knownContainerStates.get(container.getContainerType());
+			ContainerStateForRequirement stateForItemInContainer = knownContainerStates.get(container.getContainerType());
 			// Generic container, always check
 			if (container.getContainerType() == TrackedContainers.UNDEFINED)
 			{
@@ -534,8 +533,7 @@ public class ItemRequirement extends AbstractRequirement
 			else if (stateForItemInContainer.getLastCheckedTick() < container.getLastUpdated())
 			{
 				int matchesInContainer = getMaxMatchingItems(client, container.getItems());
-				boolean containerPasses = matchesInContainer >= quantity;
-				stateForItemInContainer.set(containerPasses, matchesInContainer, client.getTickCount());
+				stateForItemInContainer.set(matchesInContainer, client.getTickCount());
 				totalFound += matchesInContainer;
 			}
 			else

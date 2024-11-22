@@ -24,19 +24,19 @@
  */
 package com.questhelper.requirements.item;
 
-import lombok.Data;
 
-@Data
-public class ContainerState
+import lombok.Getter;
+
+public class ContainerStateForRequirement
 {
-    private boolean state;
+    @Getter
     private int matchesFound;
 
+    @Getter
     private int lastCheckedTick = -2;
 
-    public void set(boolean state, int matchesFound, int currentTick)
+    public void set(int matchesFound, int currentTick)
     {
-        this.state = state;
         this.matchesFound = matchesFound;
         this.lastCheckedTick = currentTick;
     }

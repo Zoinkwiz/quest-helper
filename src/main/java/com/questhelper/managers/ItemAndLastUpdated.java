@@ -35,7 +35,7 @@ import java.util.concurrent.Callable;
 public class ItemAndLastUpdated
 {
     @Getter
-    TrackedContainers containerType;
+    private TrackedContainers containerType;
 
     @Getter
     private int lastUpdated = -1;

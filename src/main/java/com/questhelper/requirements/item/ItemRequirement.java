@@ -425,7 +425,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = Color.GRAY;
 		}
-		else if (this.check(client))
+		else if (this.checkContainersOnPlayer(client))
 		{
 			color = config.passColour();
 		}
@@ -533,6 +533,11 @@ public class ItemRequirement extends AbstractRequirement
 		return getMaxMatchingItems(client, allItems.toArray(new Item[0]));
 	}
 
+	private boolean checkContainersOnPlayer(Client client)
+	{
+		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData());
+	}
+
 	public boolean checkWithBank(Client client)
 	{
 		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
@@ -545,7 +550,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = Color.GRAY;
 		}
-		else if (this.checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData()))
+		else if (this.checkContainersOnPlayer(client))
 		{
 			color = config.passColour();
 		}

@@ -107,8 +107,6 @@ public class ItemRequirements extends ItemRequirement
 		return logicType.compare(successes, itemRequirements.size());
 	}
 
-
-
 	@Override
 	public boolean check(Client client)
 	{

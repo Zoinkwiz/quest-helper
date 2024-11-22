@@ -37,6 +37,7 @@ public class ItemAndLastUpdated
     @Getter
     private TrackedContainers containerType;
 
+    // last game tick item container was changed
     @Getter
     private int lastUpdated = -1;
     private Item[] items;

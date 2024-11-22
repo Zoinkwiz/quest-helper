@@ -58,6 +58,13 @@ public class ItemAndLastUpdated
         this.items = items;
     }
 
+    /**
+     * Get the Items contained within the Tracked Container.
+     * If this instance of ItemAndLastUpdated has a method to obtain the current state of the Container other than
+     * from the {@link Item}[] items variable, it will use that and return the value.
+     * 
+     * @return an {@link Item}[] of items currently thought to be in the container.
+     */
     public @Nullable Item[] getItems()
     {
         if (methodToObtainItems != null)

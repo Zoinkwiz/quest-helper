@@ -27,11 +27,13 @@ package com.questhelper.managers;
 import com.questhelper.requirements.item.TrackedContainers;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Item;
 import javax.annotation.Nullable;
 
 import java.util.concurrent.Callable;
 
+@Slf4j
 public class ItemAndLastUpdated
 {
     @Getter
@@ -65,7 +67,7 @@ public class ItemAndLastUpdated
                 return methodToObtainItems.call();
             } catch (Exception e)
             {
-                System.out.println("Failed to load container from method");
+                log.warn("Failed to load container from method");
             }
         }
 

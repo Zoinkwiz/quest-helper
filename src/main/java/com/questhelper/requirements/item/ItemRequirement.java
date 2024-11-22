@@ -44,9 +44,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
@@ -111,21 +109,6 @@ public class ItemRequirement extends AbstractRequirement
 	protected boolean isChargedItem = false;
 
 	protected Requirement additionalOptions;
-
-	@Getter
-	protected boolean bankState;
-
-	int bankMatches;
-
-	@Getter
-	protected boolean inventoryState;
-
-	int inventoryMatches;
-
-	@Getter
-	protected boolean equipmentState;
-
-	int equipmentMatches;
 
 	Map<TrackedContainers, ContainerStateForRequirement> knownContainerStates = new HashMap<>();
 	{
@@ -406,35 +389,6 @@ public class ItemRequirement extends AbstractRequirement
 		return text.toString();
 	}
 
-	public void updateState(Client client)
-	{
-		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
-		if (equipped != null)
-		{
-			equipmentMatches = getMaxMatchingItems(client, equipped.getItems());
-			equipmentState = equipmentMatches >= quantity;
-		}
-
-		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		if (inventory != null)
-		{
-			inventoryMatches = getMaxMatchingItems(client, inventory.getItems());
-			inventoryState = inventoryMatches >= quantity;
-		}
-
-		if (questBank != null)
-		{
-			bankMatches = getMaxMatchingItems(client, questBank.getBankItems().toArray(new Item[0]));
-			bankState = bankMatches >= quantity;
-		}
-	}
-
-	public boolean checkForSpecificItems(Client client, List<Item> items)
-	{
-		int matchesInItems = getMaxMatchingItems(client, items.toArray(new Item[0]));
-		return matchesInItems >= quantity;
-	}
-
 	// IDEA: Have a central event which lets you know diff on inventory
 	public void setAdditionalOptions(Requirement additionalOptions)
 	{
@@ -613,7 +567,7 @@ public class ItemRequirement extends AbstractRequirement
 		if (this.isEquip())
 		{
 			String equipText = "(equipped)";
-			if (!equipmentState)
+			if (!checkContainers(client, QuestContainerManager.getEquippedData()))
 			{
 				equipColor = config.failColour();
 			}

@@ -599,9 +599,6 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateLocks()
 	{
 		questOverviewPanel.updateLocks();
-
-		repaint();
-		revalidate();
 	}
 
 	public void removeQuest()

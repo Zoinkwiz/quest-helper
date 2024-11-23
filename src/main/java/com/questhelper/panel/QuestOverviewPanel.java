@@ -354,9 +354,6 @@ public class QuestOverviewPanel extends JPanel
 	public void updateLocks()
 	{
 		questStepPanelList.forEach(QuestStepPanel::updateLock);
-
-		repaint();
-		revalidate();
 	}
 
 	public void removeQuest()

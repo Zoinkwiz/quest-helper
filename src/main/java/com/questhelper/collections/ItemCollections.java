@@ -200,6 +200,7 @@ public enum ItemCollections
 	)),
 
 	CROSSBOWS("Crossbows", ImmutableList.of(
+		ItemID.ZARYTE_CROSSBOW,
 		ItemID.ARMADYL_CROSSBOW,
 		ItemID.DRAGON_HUNTER_CROSSBOW,
 		ItemID.HUNTERS_CROSSBOW,

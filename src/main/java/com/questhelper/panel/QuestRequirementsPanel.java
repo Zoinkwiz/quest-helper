@@ -26,6 +26,7 @@
 package com.questhelper.panel;
 
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.bank.QuestBank;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -37,7 +38,6 @@ import com.questhelper.util.Fonts;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.LinkBrowser;
 import org.apache.commons.lang3.tuple.Pair;
@@ -235,7 +235,7 @@ public class QuestRequirementsPanel extends JPanel
 		revalidate();
 	}
 
-	public void update(Client client, QuestHelperPlugin questHelperPlugin, List<Item> bankItems)
+	public void update(Client client, QuestHelperPlugin questHelperPlugin)
 	{
 		int numActive = 0;
 
@@ -281,7 +281,7 @@ public class QuestRequirementsPanel extends JPanel
 				}
 				else
 				{
-					newColor = itemRequirement.getColorConsideringBank(client, false, bankItems, questHelperPlugin.getConfig());
+					newColor = itemRequirement.getColorConsideringBank(client, questHelperPlugin.getConfig());
 				}
 			}
 			else

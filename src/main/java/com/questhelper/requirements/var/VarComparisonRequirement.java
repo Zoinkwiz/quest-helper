@@ -24,20 +24,15 @@
  */
 package com.questhelper.requirements.var;
 
-import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
-import java.math.BigInteger;
 import java.util.Locale;
-import java.util.function.Predicate;
-import java.util.function.ToIntBiFunction;
 
 import com.questhelper.util.Utils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
-import net.runelite.client.util.Text;
 
 import javax.annotation.Nonnull;
 

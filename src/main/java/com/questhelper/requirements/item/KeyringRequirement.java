@@ -28,10 +28,7 @@ import com.questhelper.collections.KeyringCollection;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 
@@ -85,6 +82,7 @@ public class KeyringRequirement extends ItemRequirement
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
 		newItem.setConditionToHide(getConditionToHide());
+		newItem.setShouldCheckBank(isShouldCheckBank());
 		newItem.setQuestBank(getQuestBank());
 		newItem.setTooltip(getTooltip());
 		newItem.setUrlSuffix(getUrlSuffix());
@@ -93,7 +91,7 @@ public class KeyringRequirement extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	public boolean check(Client client)
 	{
 		boolean match = runeliteRequirement.check(client);
 
@@ -102,29 +100,20 @@ public class KeyringRequirement extends ItemRequirement
 			return true;
 		}
 
-		return super.check(client, checkConsideringSlotRestrictions, items);
+		return super.check(client);
 	}
 
 	@Override
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
-										 List<Item> bankItems, QuestHelperConfig config)
+	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
 	{
-		Color color = config.failColour();
+		Color color;
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
 		}
-		else if (super.check(client, checkConsideringSlotRestrictions, new ArrayList<>()))
+		else
 		{
-			color = config.passColour();
-		}
-
-		if (color == config.failColour() && bankItems != null)
-		{
-			if (super.check(client, false, bankItems))
-			{
-				color = Color.WHITE;
-			}
+			color = super.getColorConsideringBank(client, config);
 		}
 
 		if (color == config.failColour())
@@ -136,6 +125,7 @@ public class KeyringRequirement extends ItemRequirement
 				color = Color.ORANGE;
 			}
 		}
+
 		return color;
 	}
 

@@ -638,15 +638,15 @@ public class QuestOverviewPanel extends JPanel
 		return new Dimension(PANEL_WIDTH, super.getPreferredSize().height);
 	}
 
-	public void updateRequirements(Client client, List<Item> bankItems)
+	public void updateRequirements(Client client)
 	{
-		questGeneralRequirementsPanel.update(client, questHelperPlugin, bankItems);
-		questGeneralRecommendedPanel.update(client, questHelperPlugin, bankItems);
-		questItemRequirementsPanel.update(client, questHelperPlugin, bankItems);
-		questItemRecommendedPanel.update(client, questHelperPlugin, bankItems);
+		questGeneralRequirementsPanel.update(client, questHelperPlugin);
+		questGeneralRecommendedPanel.update(client, questHelperPlugin);
+		questItemRequirementsPanel.update(client, questHelperPlugin);
+		questItemRecommendedPanel.update(client, questHelperPlugin);
 
 		questStepPanelList.forEach((questStepPanel) -> {
-			questStepPanel.updateRequirements(client, bankItems);
+			questStepPanel.updateRequirements(client);
 		});
 		revalidate();
 	}

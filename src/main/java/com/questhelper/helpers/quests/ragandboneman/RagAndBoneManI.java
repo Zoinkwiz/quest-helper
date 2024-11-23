@@ -25,6 +25,7 @@
 package com.questhelper.helpers.quests.ragandboneman;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.tools.QuestTile;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
@@ -180,7 +181,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		potOfVinegarNeeded.setQuantity(winesNeededQuantity.get());
 
 		int jugsNeeded = winesNeededQuantity.get();
-		jugsNeeded -= potOfVinegar.alsoCheckBank(questBank).getMatches(client);
+		jugsNeeded -= potOfVinegar.checkTotalMatchesInContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
 		potNeeded.setQuantity(jugsNeeded);
 		jugOfVinegarNeeded.setQuantity(jugsNeeded);
 

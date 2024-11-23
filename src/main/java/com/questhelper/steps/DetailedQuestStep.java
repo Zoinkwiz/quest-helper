@@ -29,6 +29,7 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import com.questhelper.tools.QuestHelperWorldMapPoint;
@@ -820,7 +821,7 @@ public class DetailedQuestStep extends QuestStep
 			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
 			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
 			(considerBankForItemHighlight &&
-				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
+				!((ItemRequirement) requirement).checkWithBank(client)));
 	}
 
 	@Override
@@ -901,7 +902,7 @@ public class DetailedQuestStep extends QuestStep
 		return requirements.stream().anyMatch((item) ->  item instanceof ItemRequirement &&
 			type == MenuAction.GROUND_ITEM_THIRD_OPTION &&
 			((ItemRequirement) item).getAllIds().contains(itemID) &&
-			!((ItemRequirement) item).check(client, false, questBank.getBankItems()) &&
+			!((ItemRequirement) item).checkWithBank(client) &&
 			option.equals("Take"));
 	}
 

@@ -163,7 +163,7 @@ public class QuestManager
 				}
 				if (panel.questActive)
 				{
-					clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBankManager.getBankItems()));
+					clientThread.invokeLater(() -> panel.updateItemRequirements(client));
 				}
 				panel.updateLocks();
 			}
@@ -310,7 +310,7 @@ public class QuestManager
 				panel.addQuest(questHelper, true);
 
 				// Force an extra update immediately after starting a quest
-				clientThread.invokeLater(() -> panel.updateItemRequirements(client, questBankManager.getBankItems()));
+				clientThread.invokeLater(() -> panel.updateItemRequirements(client));
 			});
 		}
 		else

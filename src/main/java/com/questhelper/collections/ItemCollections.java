@@ -200,6 +200,7 @@ public enum ItemCollections
 	)),
 
 	CROSSBOWS("Crossbows", ImmutableList.of(
+		ItemID.ZARYTE_CROSSBOW,
 		ItemID.ARMADYL_CROSSBOW,
 		ItemID.DRAGON_HUNTER_CROSSBOW,
 		ItemID.HUNTERS_CROSSBOW,
@@ -953,6 +954,7 @@ public enum ItemCollections
 		ItemID.FIREMAKING_CAPE,
 		ItemID.MAX_CAPE,
 		ItemID.BRUMA_TORCH,
+		ItemID.BRUMA_TORCH_OFFHAND,
 		ItemID.KANDARIN_HEADGEAR_4,
 		ItemID.KANDARIN_HEADGEAR_3,
 		ItemID.KANDARIN_HEADGEAR_2,

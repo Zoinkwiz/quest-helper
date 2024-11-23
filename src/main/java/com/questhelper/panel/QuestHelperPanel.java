@@ -599,9 +599,6 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateLocks()
 	{
 		questOverviewPanel.updateLocks();
-
-		repaint();
-		revalidate();
 	}
 
 	public void removeQuest()
@@ -678,9 +675,9 @@ public class QuestHelperPanel extends PluginPanel
 		searchBar.setText("");
 	}
 
-	public void updateItemRequirements(Client client, List<Item> bankItems)
+	public void updateItemRequirements(Client client)
 	{
-		questOverviewPanel.updateRequirements(client, bankItems);
+		questOverviewPanel.updateRequirements(client);
 	}
 
 	/**

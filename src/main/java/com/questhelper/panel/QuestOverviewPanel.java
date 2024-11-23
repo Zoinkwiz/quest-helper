@@ -324,7 +324,17 @@ public class QuestOverviewPanel extends JPanel
 				JTextPane label = panel.getStepsLabels().get(step);
 				if (label != null)
 				{
-					label.setText(panel.generateText(step));
+					var newText = panel.generateText(step);
+					var oldText = label.getText();
+					if (newText == null)
+					{
+						continue;
+					}
+
+					if (!newText.equals(oldText))
+					{
+						label.setText(panel.generateText(step));
+					}
 				}
 			}
 		});
@@ -344,9 +354,6 @@ public class QuestOverviewPanel extends JPanel
 	public void updateLocks()
 	{
 		questStepPanelList.forEach(QuestStepPanel::updateLock);
-
-		repaint();
-		revalidate();
 	}
 
 	public void removeQuest()
@@ -441,7 +448,11 @@ public class QuestOverviewPanel extends JPanel
 		updateQuestNotes(quest.getNotes());
 
 		/* Rewards */
-		questRewardsPanel.setRewards(quest.getQuestRewards());
+		if (questHelperPlugin.getConfig().hideQuestRewards()) {
+			questRewardsPanel.hideRewards();
+		} else {
+			questRewardsPanel.setRewards(quest.getQuestRewards());
+		}
 	}
 
 	private static void collectRequirements(QuestHelper quest, List<Requirement> allRequirements, Set<String> processedQuestIds)
@@ -634,15 +645,15 @@ public class QuestOverviewPanel extends JPanel
 		return new Dimension(PANEL_WIDTH, super.getPreferredSize().height);
 	}
 
-	public void updateRequirements(Client client, List<Item> bankItems)
+	public void updateRequirements(Client client)
 	{
-		questGeneralRequirementsPanel.update(client, questHelperPlugin, bankItems);
-		questGeneralRecommendedPanel.update(client, questHelperPlugin, bankItems);
-		questItemRequirementsPanel.update(client, questHelperPlugin, bankItems);
-		questItemRecommendedPanel.update(client, questHelperPlugin, bankItems);
+		questGeneralRequirementsPanel.update(client, questHelperPlugin);
+		questGeneralRecommendedPanel.update(client, questHelperPlugin);
+		questItemRequirementsPanel.update(client, questHelperPlugin);
+		questItemRecommendedPanel.update(client, questHelperPlugin);
 
 		questStepPanelList.forEach((questStepPanel) -> {
-			questStepPanel.updateRequirements(client, bankItems);
+			questStepPanel.updateRequirements(client);
 		});
 		revalidate();
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz
+ * Copyright (c) 2024, pajlada <https://github.com/pajlada>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.quests.secretsofthenorth;
+package com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers;
 
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.choice.DialogChoiceSteps;
-import net.runelite.api.NpcID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import lombok.Getter;
+import net.runelite.api.ObjectID;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class AskAboutRitual extends NpcStep
+@Getter
+public enum RubbleType
 {
+	Three(ObjectID.RUBBLE_50603, ObjectID.RUBBLE_50604),
+	Two(ObjectID.RUBBLE_50598, ObjectID.RUBBLE_50602, ObjectID.RUBBLE_50601, ObjectID.RUBBLE_50599),
+	One(ObjectID.RUBBLE_50587, ObjectID.RUBBLE_50589, ObjectID.RUBBLE_50590, ObjectID.RUBBLE_50594, ObjectID.RUBBLE_50597, ObjectID.RUBBLE_50588, ObjectID.RUBBLE_50593);
 
-	public AskAboutRitual(QuestHelper questHelper)
-	{
-		super(questHelper, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
-			"Talk to Big Fish (Hazeel) at the north entrance to Weiss again.");
-	}
+	private final List<Integer> objectIDs;
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		updateCorrectChoice();
-	}
-
-	private void updateCorrectChoice()
-	{
-		boolean askedAboutKiller = client.getVarbitValue(14743) == 1;
-		boolean askedAboutRitual = client.getVarbitValue(14744) == 1;
-
-		choices = new DialogChoiceSteps();
-		if (!askedAboutKiller)
-		{
-			addDialogStep("Why would the killer come here?");
-		}
-		if (!askedAboutRitual)
-		{
-			addDialogStep("What is this ritual you keep talking about?");
-		}
+	RubbleType(Integer... possibleObjectIDs) {
+		this.objectIDs = new ArrayList<>();
+		Collections.addAll(this.objectIDs, possibleObjectIDs);
 	}
 }

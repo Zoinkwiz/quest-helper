@@ -119,6 +119,7 @@ public enum QuestVarbits
 	QUEST_DEATH_ON_THE_ISLE(11210),
 	QUEST_MEAT_AND_GREET(11182),
 	QUEST_THE_HEART_OF_DARKNESS(11117),
+	QUEST_THE_CURSE_OF_ARRAV(11479),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

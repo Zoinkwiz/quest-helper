@@ -100,4 +100,12 @@ public class QuestRewardsPanel extends JPanel
 
 		revalidate();
 	}
+
+	public void hideRewards()
+	{
+		rewardsText.setText("Hidden by the \"Hide quest rewards\" config");
+		rewardsText.setForeground(Color.GRAY);
+
+		revalidate();
+	}
 }

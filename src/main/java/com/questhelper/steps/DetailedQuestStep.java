@@ -29,6 +29,7 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import com.questhelper.tools.QuestHelperWorldMapPoint;
@@ -820,7 +821,7 @@ public class DetailedQuestStep extends QuestStep
 			&& ((ItemRequirement) requirement).shouldRenderItemHighlights(client)
 			&& ((!considerBankForItemHighlight && !requirement.check(client)) ||
 			(considerBankForItemHighlight &&
-				!((ItemRequirement) requirement).check(client, false, questBank.getBankItems())));
+				!((ItemRequirement) requirement).checkWithBank(client)));
 	}
 
 	@Override
@@ -901,14 +902,14 @@ public class DetailedQuestStep extends QuestStep
 		return requirements.stream().anyMatch((item) ->  item instanceof ItemRequirement &&
 			type == MenuAction.GROUND_ITEM_THIRD_OPTION &&
 			((ItemRequirement) item).getAllIds().contains(itemID) &&
-			!((ItemRequirement) item).check(client, false, questBank.getBankItems()) &&
+			!((ItemRequirement) item).checkWithBank(client) &&
 			option.equals("Take"));
 	}
 
 	@Override
 	public void setShortestPath()
 	{
-		if (worldPoint != null)
+		if (worldPoint != null && !isLineDrawn())
 		{
 			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
 			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null) {
@@ -923,7 +924,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void removeShortestPath()
 	{
-		if (getQuestHelper().getConfig().useShortestPath())
+		if (getQuestHelper().getConfig().useShortestPath() && worldPoint != null && !isLineDrawn())
 		{
 			eventBus.post(new PluginMessage("shortestpath", "clear"));
 		}
@@ -932,9 +933,14 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void disableShortestPath()
 	{
-		if (worldPoint != null)
+		if (worldPoint != null && !isLineDrawn())
 		{
 			eventBus.post(new PluginMessage("shortestpath", "clear"));
 		}
+	}
+
+	private boolean isLineDrawn()
+	{
+		return linePoints != null && !linePoints.isEmpty();
 	}
 }

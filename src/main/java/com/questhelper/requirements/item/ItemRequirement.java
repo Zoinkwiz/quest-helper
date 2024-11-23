@@ -30,25 +30,21 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.bank.QuestBank;
 import com.questhelper.collections.ItemWithCharge;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.managers.ItemAndLastUpdated;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.InventorySlots;
 import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
@@ -91,12 +87,13 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	protected Requirement conditionToHide = new ManualRequirement();
 
-	@Getter
 	@Setter
+	@Getter
 	private QuestBank questBank;
 
+	@Setter
 	@Getter
-	protected boolean hadItemLastCheck;
+	private boolean shouldCheckBank;
 
 	@Getter
 	protected boolean isConsumedItem = true;
@@ -111,8 +108,15 @@ public class ItemRequirement extends AbstractRequirement
 	@Getter
 	protected boolean isChargedItem = false;
 
-	@Setter
 	protected Requirement additionalOptions;
+
+	Map<TrackedContainers, ContainerStateForRequirement> knownContainerStates = new HashMap<>();
+	{
+		for (TrackedContainers value : TrackedContainers.values())
+		{
+			knownContainerStates.put(value, new ContainerStateForRequirement());
+		}
+	}
 
 	public ItemRequirement(String name, int id)
 	{
@@ -216,10 +220,16 @@ public class ItemRequirement extends AbstractRequirement
 		return newItem;
 	}
 
+	public void useQuestBank(QuestBank questBank)
+	{
+		this.shouldCheckBank = questBank != null;
+		this.questBank = questBank;
+	}
+
 	public ItemRequirement alsoCheckBank(QuestBank questBank)
 	{
 		ItemRequirement newItem = copy();
-		newItem.questBank = questBank;
+		newItem.useQuestBank(questBank);
 		return newItem;
 	}
 
@@ -295,7 +305,6 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
 		newItem.setConditionToHide(conditionToHide);
 		newItem.questBank = questBank;
-		newItem.hadItemLastCheck = hadItemLastCheck;
 		newItem.isConsumedItem = isConsumedItem;
 		newItem.shouldAggregate = shouldAggregate;
 		newItem.setTooltip(getTooltip());
@@ -345,7 +354,7 @@ public class ItemRequirement extends AbstractRequirement
 			text.append(this.getQuantity()).append(" x ");
 		}
 
-		int itemID = findItemID(client, false);
+		int itemID = findItemID();
 		if (displayMatchedItemName && ((alternateItems.contains(itemID)) || id == itemID))
 		{
 			text.append(client.getItemDefinition(itemID).getName());
@@ -357,9 +366,9 @@ public class ItemRequirement extends AbstractRequirement
 
 		Color color = getColor(client, config);
 		lines.add(LineComponent.builder()
-			.left(text.toString())
-			.leftColor(color)
-			.build());
+				.left(text.toString())
+				.leftColor(color)
+				.build());
 		lines.addAll(getAdditionalText(client, true, config));
 		return lines;
 	}
@@ -378,6 +387,13 @@ public class ItemRequirement extends AbstractRequirement
 		text.append(getName());
 
 		return text.toString();
+	}
+
+	// IDEA: Have a central event which lets you know diff on inventory
+	public void setAdditionalOptions(Requirement additionalOptions)
+	{
+		// TODO: Need to register / unregister through centralised ActiveRequirementsManager
+		this.additionalOptions = additionalOptions;
 	}
 
 	@Nullable
@@ -409,7 +425,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = Color.GRAY;
 		}
-		else if (this.check(client))
+		else if (this.checkContainersOnPlayer(client))
 		{
 			color = config.passColour();
 		}
@@ -417,9 +433,9 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	/** Find the first item that this requirement allows that the player has, or -1 if they don't have any item(s) */
-	private int findItemID(Client client, boolean checkConsideringSlotRestrictions)
+	private int findItemID()
 	{
-		int remainder = getRequiredItemDifference(client, id, checkConsideringSlotRestrictions, null);
+		int remainder = getNumberOfItemFound(id, null);
 		if (remainder <= 0)
 		{
 			return id;
@@ -431,7 +447,7 @@ public class ItemRequirement extends AbstractRequirement
 			{
 				remainder = quantity;
 			}
-			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions, null));
+			remainder -= (quantity - getNumberOfItemFound(alternate, null));
 			if (remainder <= 0)
 			{
 				return alternate;
@@ -440,32 +456,114 @@ public class ItemRequirement extends AbstractRequirement
 		return -1;
 	}
 
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
-										 List<Item> bankItems, QuestHelperConfig config)
+	public boolean checkItems(Client client, List<Item> items)
+	{
+		return getMaxMatchingItems(client, items.toArray(new Item[0])) >= quantity;
+	}
+
+	public int checkTotalMatchesInContainers(Client client, ItemAndLastUpdated... containers)
+	{
+		// If exclusive, we need to check all containers together
+		if (exclusiveToOneItemType)
+		{
+			return getTotalMatchesInContainersIfExclusive(client, containers);
+		}
+
+		int totalFound = 0;
+
+		// Consideration: If any have changed, AND ItemRequirement requires unique item, then we do need to aggregate all the results
+		for (ItemAndLastUpdated container : containers)
+		{
+			if (container.getItems() == null)
+			{
+				continue;
+			}
+			ContainerStateForRequirement stateForItemInContainer = knownContainerStates.get(container.getContainerType());
+			// Generic container, always check
+			if (container.getContainerType() == TrackedContainers.UNDEFINED)
+			{
+				totalFound += getMaxMatchingItems(client, container.getItems());
+			}
+			else if (stateForItemInContainer.getLastCheckedTick() < container.getLastUpdated())
+			{
+				int matchesInContainer = getMaxMatchingItems(client, container.getItems());
+				stateForItemInContainer.set(matchesInContainer, client.getTickCount());
+				totalFound += matchesInContainer;
+			}
+			else
+			{
+				totalFound += stateForItemInContainer.getMatchesFound();
+			}
+		}
+
+		return totalFound;
+	}
+
+	// This will ignore any defined conditions for what to consider, and will check across all
+	// containers passed in for the item
+	public boolean checkContainers(Client client, ItemAndLastUpdated... containers)
+	{
+		// If exclusive, we need to check all containers together
+		if (exclusiveToOneItemType)
+		{
+			return checkContainersIfExclusive(client, containers);
+		}
+
+		return checkTotalMatchesInContainers(client, containers) >= quantity;
+	}
+
+	private boolean checkContainersIfExclusive(Client client, ItemAndLastUpdated... containers)
+	{
+		int total = getTotalMatchesInContainersIfExclusive(client, containers);
+		return total >= quantity;
+	}
+
+	private int getTotalMatchesInContainersIfExclusive(Client client, ItemAndLastUpdated... containers)
+	{
+		List<Item> allItems = new ArrayList<>();
+		for (ItemAndLastUpdated container : containers)
+		{
+			if (container.getItems() == null)
+			{
+				continue;
+			}
+			allItems.addAll(List.of(container.getItems()));
+		}
+
+		return getMaxMatchingItems(client, allItems.toArray(new Item[0]));
+	}
+
+	private boolean checkContainersOnPlayer(Client client)
+	{
+		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData());
+	}
+
+	public boolean checkWithBank(Client client)
+	{
+		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
+	}
+
+	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
 	{
 		Color color = config.failColour();
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
 		}
-		else if (this.check(client, checkConsideringSlotRestrictions))
+		else if (this.checkContainersOnPlayer(client))
 		{
 			color = config.passColour();
 		}
 
-		if (color == config.failColour() && bankItems != null)
+		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getBankData()))
 		{
-			if (check(client, false, bankItems))
-			{
-				color = Color.WHITE;
-			}
+			color = Color.WHITE;
 		}
 
 		return color;
 	}
 
-	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip,
-														 QuestHelperConfig config)
+	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip, QuestHelperConfig config)
 	{
 		Color equipColor = config.passColour();
 
@@ -474,125 +572,89 @@ public class ItemRequirement extends AbstractRequirement
 		if (this.isEquip())
 		{
 			String equipText = "(equipped)";
-			if (!this.check(client, true))
+			if (!checkContainers(client, QuestContainerManager.getEquippedData()))
 			{
 				equipColor = config.failColour();
 			}
 			lines.add(LineComponent.builder()
-				.left(equipText)
-				.leftColor(equipColor)
-				.build());
+					.left(equipText)
+					.leftColor(equipColor)
+					.build());
 		}
 
 		if (includeTooltip && this.getTooltip() != null && !check(client))
 		{
 			lines.add(LineComponent.builder()
-				.left("- " + this.getTooltip())
-				.leftColor(Color.WHITE)
-				.build());
+					.left("- " + this.getTooltip())
+					.leftColor(Color.WHITE)
+					.build());
 		}
 
 		return lines;
 	}
 
-	public int getMatches(Client client)
+	@Override
+	public boolean check(Client client)
 	{
-		return getMatches(client, false, new ArrayList<>());
+		ItemAndLastUpdated[] containers = containersToCheckDefault();
+
+		return checkContainers(client, containers);
 	}
 
-	public int getMatches(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	private ItemAndLastUpdated[] containersToCheckDefault()
 	{
-		List<Item> allItems = new ArrayList<>(items);
-		if (questBank != null && questBank.getBankItems() != null)
-		{
-			allItems.addAll(questBank.getBankItems());
-		}
+		List<ItemAndLastUpdated> containers = new ArrayList<>();
+		containers.add(QuestContainerManager.getEquippedData());
 
-		int remainder = 0;
+		if (!equip) containers.add(QuestContainerManager.getInventoryData());
+		if (shouldCheckBank) containers.add(QuestContainerManager.getBankData());
 
-		List<Integer> ids = getAllIds();
-		for (int alternate : ids)
-		{
-			if (exclusiveToOneItemType)
-			{
-				remainder = quantity;
-			}
-			remainder += (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions,
-				allItems));
-		}
-		return remainder;
+		return containers.toArray(new ItemAndLastUpdated[0]);
 	}
 
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
+	private int getMaxMatchingItems(Client client, @NonNull Item[] items)
 	{
-		if (!shouldDisplayText(client)) return false;
+		// TODO: Is this right to do? Misleading on number for some scenarios
+		// Perhaps additionalOptions should have some text change instead assosciated
 		if (additionalOptions != null && additionalOptions.check(client))
 		{
-			return true;
+			return quantity;
 		}
 
-		List<Item> allItems = new ArrayList<>(items);
-		if (questBank != null && questBank.getBankItems() != null)
-		{
-			allItems.addAll(questBank.getBankItems());
-		}
+		List<Item> allItems = new ArrayList<>(List.of(items));
 
-		int remainder = quantity;
+		int foundQuantity = 0;
 
 		List<Integer> ids = getAllIds();
 		for (int alternate : ids)
 		{
+			int tmpQuantity = foundQuantity;
 			if (exclusiveToOneItemType)
 			{
-				remainder = quantity;
+				tmpQuantity = 0;
 			}
-			remainder -= (quantity - getRequiredItemDifference(client, alternate, checkConsideringSlotRestrictions,
-				allItems));
-			if (remainder <= 0)
-			{
-				hadItemLastCheck = true;
-				return true;
-			}
+			tmpQuantity += getNumberOfItemFound(alternate, allItems);
+
+			if (foundQuantity < tmpQuantity) foundQuantity = tmpQuantity;
 		}
-		hadItemLastCheck = false;
-		return false;
+
+		return foundQuantity;
 	}
 
 	/**
 	 * Get the difference between the required quantity for this requirement and the amount the client has.
 	 * Any value <= 0 indicates they have the required amount
 	 */
-	public int getRequiredItemDifference(Client client, int itemID, boolean checkConsideringSlotRestrictions,
-										 List<Item> items)
+	public int getNumberOfItemFound(int itemID, List<Item> items)
 	{
-		ItemContainer equipped = client.getItemContainer(InventoryID.EQUIPMENT);
-		int tempQuantity = quantity;
-
-		if (equipped != null)
-		{
-			tempQuantity -= getNumMatches(equipped, itemID);
-		}
-
-		if (!checkConsideringSlotRestrictions || !equip)
-		{
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-			if (inventory != null)
-			{
-				tempQuantity -= getNumMatches(inventory, itemID);
-			}
-		}
+		int tempQuantity = 0;
 
 		if (items != null)
 		{
-			tempQuantity -= getNumMatches(items, itemID);
+			tempQuantity += getNumMatches(items, itemID);
 		}
 
 		return tempQuantity;
-	}
-
-	public int getNumMatches(ItemContainer items, int itemID)
-	{
-		return getNumMatches(Arrays.asList(items.getItems().clone()), itemID);
 	}
 
 	public int getNumMatches(List<Item> items, int itemID)
@@ -600,41 +662,26 @@ public class ItemRequirement extends AbstractRequirement
 		if (isChargedItem)
 		{
 			return items.stream()
-				.filter(Objects::nonNull)
-				.filter(i -> i.getId() == itemID)
-				.mapToInt(i -> {
-					ItemWithCharge itemWithCharge = ItemWithCharge.findItem(i.getId());
-					if (itemWithCharge != null)
-					{
-						return itemWithCharge.getCharges();
-					}
+					.filter(Objects::nonNull)
+					.filter(i -> i.getId() == itemID)
+					.mapToInt(i -> {
+						ItemWithCharge itemWithCharge = ItemWithCharge.findItem(i.getId());
+						if (itemWithCharge != null)
+						{
+							return itemWithCharge.getCharges();
+						}
 
-					// Fall back to using the item's quantity
-					return i.getQuantity();
-				})
-				.sum();
+						// Fall back to using the item's quantity
+						return i.getQuantity();
+					})
+					.sum();
 		}
 
 		return items.stream()
-			.filter(Objects::nonNull)
-			.filter(i -> i.getId() == itemID)
-			.mapToInt(Item::getQuantity)
-			.sum();
-	}
-
-	public boolean check(Client client)
-	{
-		return check(client, false);
-	}
-
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
-	{
-		return check(client, checkConsideringSlotRestrictions, new ArrayList<>());
-	}
-
-	public boolean checkBank(Client client)
-	{
-		return InventorySlots.BANK.contains(client, item -> getDisplayItemIds().contains(item.getId()));
+				.filter(Objects::nonNull)
+				.filter(i -> i.getId() == itemID)
+				.mapToInt(Item::getQuantity)
+				.sum();
 	}
 
 	public List<Integer> getDisplayItemIds()

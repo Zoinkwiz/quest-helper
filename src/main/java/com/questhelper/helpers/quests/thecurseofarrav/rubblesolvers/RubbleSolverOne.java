@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz
+ * Copyright (c) 2024, pajlada <https://github.com/pajlada>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.quests.secretsofthenorth;
+package com.questhelper.helpers.quests.thecurseofarrav.rubblesolvers;
 
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.choice.DialogChoiceSteps;
-import net.runelite.api.NpcID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav;
 
-public class AskAboutRitual extends NpcStep
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.coords.Direction;
+
+/**
+ * This class describes the rubble mining steps required for Roadblock 1 (when quest state varbit is 22)
+ */
+@Slf4j
+public class RubbleSolverOne extends RubbleSolver
 {
-
-	public AskAboutRitual(QuestHelper questHelper)
-	{
-		super(questHelper, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
-			"Talk to Big Fish (Hazeel) at the north entrance to Weiss again.");
+	public RubbleSolverOne(TheCurseOfArrav theCurseOfArrav) {
+		super(theCurseOfArrav, "1");
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		updateCorrectChoice();
-	}
-
-	private void updateCorrectChoice()
-	{
-		boolean askedAboutKiller = client.getVarbitValue(14743) == 1;
-		boolean askedAboutRitual = client.getVarbitValue(14744) == 1;
-
-		choices = new DialogChoiceSteps();
-		if (!askedAboutKiller)
-		{
-			addDialogStep("Why would the killer come here?");
-		}
-		if (!askedAboutRitual)
-		{
-			addDialogStep("What is this ritual you keep talking about?");
-		}
+	@Override
+	protected void setupRubbleSteps() {
+		this.addMineRubbleStep(2764, 10266, RubbleType.Two, Direction.SOUTH); // 1
+		this.addMineRubbleStep(2775, 10258, RubbleType.One, Direction.SOUTH); // 2
+		this.addMineRubbleStep(2764, 10266, RubbleType.One, Direction.EAST); // 3
+		this.addMineRubbleStep(2764, 10267, RubbleType.One, Direction.SOUTH); // 4
 	}
 }

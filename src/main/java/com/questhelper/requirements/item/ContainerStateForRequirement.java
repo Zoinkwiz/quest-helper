@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz
+ * Copyright (c) 2024, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.quests.secretsofthenorth;
+package com.questhelper.requirements.item;
 
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.choice.DialogChoiceSteps;
-import net.runelite.api.NpcID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
 
-public class AskAboutRitual extends NpcStep
+import lombok.Getter;
+
+public class ContainerStateForRequirement
 {
+    @Getter
+    private int matchesFound;
 
-	public AskAboutRitual(QuestHelper questHelper)
-	{
-		super(questHelper, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
-			"Talk to Big Fish (Hazeel) at the north entrance to Weiss again.");
-	}
+    @Getter
+    private int lastCheckedTick = -2;
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		updateCorrectChoice();
-	}
-
-	private void updateCorrectChoice()
-	{
-		boolean askedAboutKiller = client.getVarbitValue(14743) == 1;
-		boolean askedAboutRitual = client.getVarbitValue(14744) == 1;
-
-		choices = new DialogChoiceSteps();
-		if (!askedAboutKiller)
-		{
-			addDialogStep("Why would the killer come here?");
-		}
-		if (!askedAboutRitual)
-		{
-			addDialogStep("What is this ritual you keep talking about?");
-		}
-	}
+    public void set(int matchesFound, int currentTick)
+    {
+        this.matchesFound = matchesFound;
+        this.lastCheckedTick = currentTick;
+    }
 }

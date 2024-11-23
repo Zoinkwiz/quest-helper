@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Zoinkwiz
+ * Copyright (c) 2024, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.quests.secretsofthenorth;
+package com.questhelper.managers;
 
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.choice.DialogChoiceSteps;
-import net.runelite.api.NpcID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import com.questhelper.requirements.item.TrackedContainers;
+import lombok.Getter;
 
-public class AskAboutRitual extends NpcStep
+public class QuestContainerManager
 {
+    @Getter
+    private final static ItemAndLastUpdated equippedData = new ItemAndLastUpdated(TrackedContainers.EQUIPPED);
 
-	public AskAboutRitual(QuestHelper questHelper)
-	{
-		super(questHelper, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
-			"Talk to Big Fish (Hazeel) at the north entrance to Weiss again.");
-	}
+    @Getter
+    private final static ItemAndLastUpdated inventoryData = new ItemAndLastUpdated(TrackedContainers.INVENTORY);
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		updateCorrectChoice();
-	}
-
-	private void updateCorrectChoice()
-	{
-		boolean askedAboutKiller = client.getVarbitValue(14743) == 1;
-		boolean askedAboutRitual = client.getVarbitValue(14744) == 1;
-
-		choices = new DialogChoiceSteps();
-		if (!askedAboutKiller)
-		{
-			addDialogStep("Why would the killer come here?");
-		}
-		if (!askedAboutRitual)
-		{
-			addDialogStep("What is this ritual you keep talking about?");
-		}
-	}
+    @Getter
+    private final static ItemAndLastUpdated bankData = new ItemAndLastUpdated(TrackedContainers.BANK);
 }

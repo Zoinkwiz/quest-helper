@@ -208,7 +208,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 
 		//Step 5 - Tav Dungeon
 		goToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
-			"Go to the Taverly dungeon.");
+			"Go to the Taverley dungeon.");
 		crossStrangeFloor = new ObjectStep(this, ObjectID.STRANGE_FLOOR, new WorldPoint(2879, 9813, 0),
 			"Cross the Strange Floor to complete the task!");
 

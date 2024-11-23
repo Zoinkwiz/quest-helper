@@ -324,7 +324,17 @@ public class QuestOverviewPanel extends JPanel
 				JTextPane label = panel.getStepsLabels().get(step);
 				if (label != null)
 				{
-					label.setText(panel.generateText(step));
+					var newText = panel.generateText(step);
+					var oldText = label.getText();
+					if (newText == null)
+					{
+						continue;
+					}
+
+					if (!newText.equals(oldText))
+					{
+						label.setText(panel.generateText(step));
+					}
 				}
 			}
 		});

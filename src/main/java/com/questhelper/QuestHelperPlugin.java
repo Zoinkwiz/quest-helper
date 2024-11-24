@@ -231,7 +231,9 @@ public class QuestHelperPlugin extends Plugin
 		GlobalFakeObjects.setInitialized(false);
 	}
 
-	@Subscribe
+	// Run our base game tick checks later than other Quest Helper checks
+	// This allows steps/requirements/conditions to run their checks first before we try to update the side panel
+	@Subscribe(priority=-1.0f)
 	public void onGameTick(GameTick event)
 	{
 		questBankManager.loadInitialStateFromConfig(client);

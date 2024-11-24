@@ -157,6 +157,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	public SkillIconManager skillIconManager;
 
+	@Inject
+	public QuestHelperSharingManager questHelperSharingManager;
+
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
@@ -331,7 +334,7 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("showRuneliteObjects") && client.getGameState() == GameState.LOGGED_IN)
+        if (event.getKey().equals("showRuneliteObjects") && client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invokeLater(() -> {
 				if (config.showRuneliteObjects())
@@ -405,6 +408,10 @@ public class QuestHelperPlugin extends Plugin
 				}
 			}
 			System.out.println(inv);
+		}
+		else if (commandExecuted.getCommand().equals("import-quest"))
+		{
+			questHelperSharingManager.promptForImport();
 		}
 	}
 
@@ -506,10 +513,8 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-	private void instantiate(QuestHelperQuest quest)
+	void instantiate(QuestHelper questHelper, String name)
 	{
-		QuestHelper questHelper = quest.getQuestHelper();
-
 		Module questModule = (Binder binder) ->
 		{
 			binder.bind(QuestHelper.class).toInstance(questHelper);
@@ -518,10 +523,17 @@ public class QuestHelperPlugin extends Plugin
 		Injector questInjector = RuneLite.getInjector().createChildInjector(questModule);
 		injector.injectMembers(questHelper);
 		questHelper.setInjector(questInjector);
-		questHelper.setQuest(quest);
 		questHelper.setConfig(config);
 		questHelper.setQuestHelperPlugin(this);
+		questHelper.setName(name);
 
-		log.debug("Loaded quest helper {}", quest.name());
+		log.debug("Loaded quest helper {}", name);
+	}
+
+	private void instantiate(QuestHelperQuest quest)
+	{
+		QuestHelper questHelper = quest.getQuestHelper();
+		instantiate(questHelper, quest.name());
+		questHelper.setQuest(quest);
 	}
 }

@@ -36,6 +36,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.QuestState;
@@ -59,6 +60,7 @@ import java.util.stream.Collectors;
  * Responsible for initializing, updating, and shutting down quests.
  */
 @Singleton
+@Slf4j
 public class QuestManager
 {
 	@Inject
@@ -320,32 +322,6 @@ public class QuestManager
 		}
 	}
 
-	/**
-	 * Shuts down the quest from the sidebar.
-	 * Unregisters the quest and removes it from the panel.
-	 */
-	public void shutDownQuestFromSidebar()
-	{
-		if (selectedQuest != null)
-		{
-			selectedQuest.shutDown();
-			questBankManager.shutDownQuest();
-			SwingUtilities.invokeLater(panel::removeQuest);
-			unregisterQuestFromEventBus(selectedQuest);
-
-			// If closing the item checking helper and should still check in background, start it back up in background
-			if (selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS && config.highlightItemsBackground())
-			{
-				selectedQuest = null;
-				startUpBackgroundQuest(QuestHelperQuest.CHECK_ITEMS.getName());
-			}
-			else
-			{
-				selectedQuest = null;
-			}
-		}
-	}
-
 	private void shutDownPreviousQuest()
 	{
 		shutDownQuest(true);
@@ -370,8 +346,20 @@ public class QuestManager
 			questBankManager.shutDownQuest();
 			SwingUtilities.invokeLater(panel::removeQuest);
 			unregisterQuestFromEventBus(selectedQuest);
-			selectedQuest = null;
+
+			// If closing the item checking helper and should still check in background, start it back up in background
+			if (selectedQuest.getQuest() == QuestHelperQuest.CHECK_ITEMS && config.highlightItemsBackground())
+			{
+				selectedQuest = null;
+				startUpBackgroundQuest(QuestHelperQuest.CHECK_ITEMS.getName());
+			}
+			else
+			{
+				selectedQuest = null;
+			}
 		}
+
+		this.lastStep = null;
 	}
 
 	public void activateShortestPath()

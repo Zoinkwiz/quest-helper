@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024, Zoinkwiz <https://www.github.com/Zoinkwiz
  * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *

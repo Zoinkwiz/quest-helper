@@ -40,6 +40,7 @@ import com.questhelper.steps.QuestStep;
 import java.awt.event.ItemEvent;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private final JButton collapseBtn = new JButton();
 
-	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
+	private final List<QuestStepPanel> questStepPanelList = new CopyOnWriteArrayList<>();
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
@@ -254,6 +255,7 @@ public class QuestOverviewPanel extends JPanel
 	public void addQuest(QuestHelper quest, boolean isActive)
 	{
 		currentQuest = quest;
+		questStepPanelList.clear();
 
 		List<PanelDetails> steps = quest.getPanels();
 		QuestStep currentStep;

@@ -28,7 +28,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class QuestData {
+public class QuestData
+{
 	private List<RequirementData> requirements;
 	private List<StepData> steps;
 }

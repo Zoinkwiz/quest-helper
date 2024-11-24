@@ -375,9 +375,10 @@ public class QuestOverviewPanel extends JPanel
 		revalidate();
 	}
 
+	/// The quest helper's X is clicked
 	private void closeHelper()
 	{
-		questManager.shutDownQuestFromSidebar();
+		questManager.shutDownQuest(false);
 	}
 
 	void updateCollapseText()

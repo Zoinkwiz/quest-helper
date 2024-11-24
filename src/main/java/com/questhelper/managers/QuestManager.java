@@ -358,6 +358,8 @@ public class QuestManager
 				selectedQuest = null;
 			}
 		}
+
+		this.lastStep = null;
 	}
 
 	public void activateShortestPath()

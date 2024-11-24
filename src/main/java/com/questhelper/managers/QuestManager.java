@@ -165,7 +165,7 @@ public class QuestManager
 				}
 				if (panel.questActive)
 				{
-					clientThread.invokeLater(() -> panel.updateItemRequirements(client));
+					panel.updateItemRequirements(client);
 				}
 				panel.updateLocks();
 			}

@@ -255,6 +255,7 @@ public class QuestOverviewPanel extends JPanel
 	public void addQuest(QuestHelper quest, boolean isActive)
 	{
 		currentQuest = quest;
+		questStepPanelList.clear();
 
 		List<PanelDetails> steps = quest.getPanels();
 		QuestStep currentStep;

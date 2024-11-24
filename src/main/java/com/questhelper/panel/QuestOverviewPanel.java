@@ -95,7 +95,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private final JButton collapseBtn = new JButton();
 
-	private final List<QuestStepPanel> questStepPanelList = new ArrayList<>();
+	private final List<QuestStepPanel> questStepPanelList = Collections.synchronizedList(new ArrayList<>());
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{

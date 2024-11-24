@@ -583,9 +583,9 @@ public class QuestHelperPanel extends PluginPanel
 		revalidate();
 	}
 
-	public void updateSteps()
+	public void updateStepsTexts()
 	{
-		questOverviewPanel.updateSteps();
+		questOverviewPanel.updateStepsTexts();
 	}
 
 	public void updateHighlight(Client client, QuestStep newStep)

@@ -46,7 +46,6 @@
 			},
 			"logicType": "nand",
 			"stepRequirements": ["uncutSapphire"],
-			"stepRequirements": ["uncutSapphire"],
 			"conditionalRequirements": ["uncutSapphire"]
 		},
 		{

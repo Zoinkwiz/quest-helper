@@ -554,10 +554,10 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         talkToBartender.addDialogSteps("I'd like to rent the basement room.", "I'll take it.");
         restOnBed = new ObjectStep(this, NullObjectID.NULL_55374, new WorldPoint(1505, 3225, 0), "Rest in the bed in the south-eastern room of the pub.");
         // 11123 0->3, prince in room
-        talkToPrinceAfterRest = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13690, new WorldPoint(1505, 3223, 0), "Talk to Prinze Itzla Arkan in the bedroom.");
+        talkToPrinceAfterRest = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13690, new WorldPoint(1505, 3223, 0), "Talk to Prince Itzla Arkan in the bedroom.");
         talkToShopkeeper = new NpcStep(this, NpcID.SHOPKEEPER_14021, new WorldPoint(1517, 3223, 0), "Talk to the shopkeeper east of the pub.");
         talkToShopkeeper.addDialogStep("I hear you can offer help to those in need.");
-        talkToPrinceInPubAgain = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13690, new WorldPoint(1505, 3223, 0), "Return to Prinze Itzla Arkan in the " +
+        talkToPrinceInPubAgain = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_13690, new WorldPoint(1505, 3223, 0), "Return to Prince Itzla Arkan in the " +
                 "bedroom.");
         // Gone through gate, varp 4411 60->124
 

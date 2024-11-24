@@ -266,7 +266,7 @@ public class HolyGrail extends BasicQuestHelper
 		openWhistleDoor = new ObjectStep(this, ObjectID.DOOR_22, "Open the door to the Magic Whistles.", holyTableNapkin);
 		takeWhistles = new DetailedQuestStep(this, new WorldPoint(3107, 3359, 2), "Pickup 2 Magic Whistles.", holyTableNapkin);
 
-		goGetExcalibur = new ItemStep(this, "Go retrieve Excalibur from your bank. If you do not own Excalibur, you can retrieve it from the Lady of the Lake in Taverly for 500 coins.", twoMagicWhistles, excalibur);
+		goGetExcalibur = new ItemStep(this, "Go retrieve Excalibur from your bank. If you do not own Excalibur, you can retrieve it from the Lady of the Lake in Taverley for 500 coins.", twoMagicWhistles, excalibur);
 		WorldPoint teleportLocationPoint = new WorldPoint(2742, 3236, 0);
 		goToTeleportLocation1 = new DetailedQuestStep(this, teleportLocationPoint, "Go to the tower on Karamja near gold mine west of Brimhaven.", twoMagicWhistles, excalibur);
 		blowWhistle1 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle1, excalibur);

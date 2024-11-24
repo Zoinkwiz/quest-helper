@@ -98,9 +98,6 @@ public class KandarinEasy extends ComplexStateQuestHelper
 
 		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
 
-		plantJuteTask = new ConditionalStep(this, plantJute);
-		doEasy.addStep(notPlantJute, plantJuteTask);
-
 		catchMackerelTask = new ConditionalStep(this, catchMackerel);
 		doEasy.addStep(notCatchMackerel, catchMackerelTask);
 
@@ -114,11 +111,17 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		buyCandleTask = new ConditionalStep(this, buyCandle);
 		doEasy.addStep(notBuyCandle, buyCandleTask);
 
+		talkSherlockTask = new ConditionalStep(this, talkSherlock);
+		doEasy.addStep(notTalkSherlock, talkSherlockTask);
+
 		collectFlaxTask = new ConditionalStep(this, collectFlax);
 		doEasy.addStep(notCollectFlax, collectFlaxTask);
 
-		talkSherlockTask = new ConditionalStep(this, talkSherlock);
-		doEasy.addStep(notTalkSherlock, talkSherlockTask);
+		playOrganTask = new ConditionalStep(this, playOrgan);
+		doEasy.addStep(notPlayOrgan, playOrganTask);
+
+		buyStewTask = new ConditionalStep(this, buyStew);
+		doEasy.addStep(notBuyStew, buyStewTask);
 
 		killEleTask = new ConditionalStep(this, moveToWorkshop);
 		killEleTask.addStep(new Conditions(inWorkshop, killedFire, killedEarth, killedWater), killAir);
@@ -128,11 +131,8 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		killEleTask.addStep(inWorkshop, killEle);
 		doEasy.addStep(notKillEle, killEleTask);
 
-		playOrganTask = new ConditionalStep(this, playOrgan);
-		doEasy.addStep(notPlayOrgan, playOrganTask);
-
-		buyStewTask = new ConditionalStep(this, buyStew);
-		doEasy.addStep(notBuyStew, buyStewTask);
+		plantJuteTask = new ConditionalStep(this, plantJute);
+		doEasy.addStep(notPlantJute, plantJuteTask);
 
 		cupTeaTask = new ConditionalStep(this, cupTea);
 		doEasy.addStep(notCupTea, cupTeaTask);

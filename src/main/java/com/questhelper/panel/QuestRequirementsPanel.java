@@ -172,7 +172,7 @@ public class QuestRequirementsPanel extends JPanel
 						@Override
 						public void actionPerformed(ActionEvent e)
 						{
-							questManager.setSidebarSelectedQuest(finalQuest1);
+							questManager.startUpQuest(finalQuest1, true);
 						}
 					});
 
@@ -198,7 +198,7 @@ public class QuestRequirementsPanel extends JPanel
 							{
 								if (SwingUtilities.isLeftMouseButton(e))
 								{
-									questManager.setSidebarSelectedQuest(finalQuest);
+									questManager.startUpQuest(finalQuest, true);
 								}
 							}
 						}

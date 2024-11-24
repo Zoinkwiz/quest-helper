@@ -46,7 +46,7 @@ public class FillBurghCrate extends DetailedQuestStep
 		tinderbox3 = new ItemRequirement("Tinderbox", ItemID.TINDERBOX, 3);
 		bronzeAxe10 = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE, 10);
 		rawSnailsOrMackerel = new ItemRequirement("Raw mackerel or raw snail meat (random for each player)", ItemID.RAW_MACKEREL, 10);
-		rawSnailsOrMackerel.addAlternates(ItemID.THIN_SNAIL_MEAT, ItemID.LEAN_SNAIL_MEAT, ItemID.FAT_SNAIL_MEAT);
+		rawSnailsOrMackerel.addAlternates(ItemID.THIN_SNAIL, ItemID.LEAN_SNAIL, ItemID.FAT_SNAIL);
 		rawSnailsOrMackerel.setDisplayMatchedItemName(true);
 	}
 
@@ -85,7 +85,7 @@ public class FillBurghCrate extends DetailedQuestStep
 			else
 			{
 				this.setText("Fill the crate with 3 tinderboxes, 10 bronze axes, and 10 raw snails (can be lean, thin or fat).");
-				rawSnailsOrMackerel.setDisplayItemId(ItemID.FAT_SNAIL_MEAT);
+				rawSnailsOrMackerel.setDisplayItemId(ItemID.FAT_SNAIL);
 				this.setRequirements(Arrays.asList(crate, tinderbox3, bronzeAxe10, rawSnailsOrMackerel));
 			}
 		}

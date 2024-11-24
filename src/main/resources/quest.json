@@ -1,0 +1,73 @@
+{
+	"requirements": [
+		{
+			"id": "attack50",
+			"type": "SkillRequirement",
+			"parameters": {
+				"skill": "ATTACK",
+				"level": 50,
+				"boostable": true
+			}
+		},
+		{
+			"id": "bucket",
+			"type": "ItemRequirement",
+			"parameters": {
+				"itemId": 1925,
+				"quantity": 1
+			}
+		},
+		{
+			"id": "bucketofwater",
+			"type": "ItemRequirement",
+			"parameters": {
+				"itemId": 1929,
+				"quantity": 1
+			}
+		},
+		{
+			"id": "uncutSapphire",
+			"type": "ItemRequirement",
+			"parameters": {
+				"itemId": 1623,
+				"quantity": 1
+			}
+		}
+	],
+	"steps": [
+		{
+			"type": "NpcStep",
+			"parameters": {
+				"npcId": 3105,
+				"text": "Talk to Hans, and get an uncut sapphire.",
+				"wpX": 3223,
+				"wpY": 3218,
+				"wpZ": 0
+			},
+			"logicType": "nand",
+			"stepRequirements": ["uncutSapphire"],
+			"stepRequirements": ["uncutSapphire"],
+			"conditionalRequirements": ["uncutSapphire"]
+		},
+		{
+			"type": "ObjectStep",
+			"parameters": {
+				"objectId": 9101,
+				"text": "Use a bucket on the fountain in Lumbridge Castle.",
+				"wpX": 3221,
+				"wpY": 3226,
+				"wpZ": 0
+			},
+			"logicType": "nand",
+			"stepRequirements": ["bucket", "attack50"],
+			"conditionalRequirements": ["bucketofwater"]
+		},
+		{
+			"type": "DetailedQuestStep",
+			"parameters": {
+				"text": "You did it!"
+			},
+			"isDefault": true
+		}
+	]
+}

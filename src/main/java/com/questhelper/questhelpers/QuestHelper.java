@@ -95,10 +95,13 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	protected QuestHelperPlugin questHelperPlugin;
 
 	private boolean hasInitialized;
-
+	
 	@Getter
 	@Setter
 	protected List<Integer> sidebarOrder;
+	@Setter
+	@Getter
+	private String name;
 
 	@Override
 	public void configure(Binder binder)

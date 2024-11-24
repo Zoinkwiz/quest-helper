@@ -47,7 +47,6 @@ import java.util.Set;
 import com.questhelper.util.Fonts;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.ColorScheme;
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
@@ -316,7 +315,7 @@ public class QuestOverviewPanel extends JPanel
 		}
 	}
 
-	public void updateSteps()
+	public void updateStepsTexts()
 	{
 		questStepPanelList.forEach(panel -> {
 			for (QuestStep step : panel.getSteps())

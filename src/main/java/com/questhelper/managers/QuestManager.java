@@ -138,7 +138,7 @@ public class QuestManager
 		{
 			if (selectedQuest.getCurrentStep() != null)
 			{
-				panel.updateSteps();
+				panel.updateStepsTexts();
 				QuestStep currentStep = selectedQuest.getCurrentStep().getSidePanelStep();
 				if (currentStep != null && currentStep != lastStep && panel.questActive)
 				{
@@ -147,7 +147,7 @@ public class QuestManager
 				}
 				if (panel.questActive)
 				{
-					clientThread.invokeLater(() -> panel.updateItemRequirements(client));
+					panel.updateItemRequirements(client);
 				}
 				panel.updateLocks();
 			}

@@ -234,10 +234,10 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		useNeedleTornRobesTop = new DetailedQuestStep(this, "Use the needle and thread on the torn robes (both top and bottom).", needle, tornRobeTop);
 		useNeedleTornRobes.addSubSteps(useNeedleTornRobesTop);
 		telegrabKey = new ObjectStep(this, ObjectID.TABLE_10490, new WorldPoint(3432, 2929, 0),
-			"Cast telegrab on the ancestral key on the table.", normalBook, airRune, lawRune);
+			"Cast the Telekinetic Grab spell on the ancestral key on the table.", normalBook, airRune, lawRune);
 
 		//The Golems
-		enterCave = new ObjectStep(this, ObjectID.ROOT_6382, new WorldPoint(3370, 3132, 0), "Enter the cave north-west of Nardah where the river turns into a waterfall.", rope);
+		enterCave = new ObjectStep(this, ObjectID.ROOT_6382, new WorldPoint(3370, 3132, 0), "Use the rope on the root to enter the cave north-west of Nardah where the river turns into a waterfall.", rope);
 		enterCave.addIcon(ItemID.ROPE);
 		useAncestralKey = new ObjectStep(this, ObjectID.DOOR_10427, new WorldPoint(3353, 9544, 0), "Equip the Robes of " +
 			"Elidinis and use the ancestral key on the door.", ancestralKey, robeOfElidinisTopEquipped,

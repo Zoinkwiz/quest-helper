@@ -364,7 +364,7 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-        if (event.getKey().equals("showRuneliteObjects") && client.getGameState() == GameState.LOGGED_IN)
+		if (event.getKey().equals("showRuneliteObjects") && client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invokeLater(() -> {
 				if (config.showRuneliteObjects())

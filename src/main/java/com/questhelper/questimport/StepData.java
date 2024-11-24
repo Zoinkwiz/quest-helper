@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class StepData {
+public class StepData
+{
 	private String type;
 	private boolean isDefault;
 	private Map<String, Object> parameters;
@@ -37,4 +38,3 @@ public class StepData {
 	private String logicType;
 	private List<String> conditionalRequirements;
 }
-

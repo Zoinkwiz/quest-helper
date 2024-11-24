@@ -50,6 +50,7 @@ public class JsonToQuest
 	{
 		this.itemManager = itemManager;
 	}
+
 	public JsonQuestHelper importQuestFromJson(Gson gson, String jsonContent)
 	{
 		JsonQuestHelper newHelper = new JsonQuestHelper();
@@ -182,7 +183,7 @@ public class JsonToQuest
 	{
 		if (reqs == null) return null;
 		Requirement[] requirements = new Requirement[reqs.size()];
-		for (int i=0; i<reqs.size(); i++)
+		for (int i = 0; i < reqs.size(); i++)
 		{
 			String req = reqs.get(i);
 			requirements[i] = requirementMap.get(req);
@@ -206,7 +207,7 @@ public class JsonToQuest
 
 		switch (logicType.toLowerCase())
 		{
-            case "or":
+			case "or":
 				return LogicType.OR;
 			case "nor":
 				return LogicType.NOR;

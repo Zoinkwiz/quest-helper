@@ -35,7 +35,6 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -86,9 +85,6 @@ public class QuestManager
 	@Named("developerMode")
 	private boolean developerMode;
 
-	@Setter
-	private QuestHelper sidebarSelectedQuest;
-
 	@Getter
 	private QuestHelper selectedQuest;
 	private boolean loadQuestList = false;
@@ -128,22 +124,8 @@ public class QuestManager
 	 */
 	public void updateQuestState()
 	{
-		handleSidebarQuest();
 		handleSelectedQuest();
 		handleQuestListUpdate();
-	}
-
-	/**
-	 * Handles the quest selected in the sidebar.
-	 * Starts up the sidebar quest and resets it to null.
-	 */
-	private void handleSidebarQuest()
-	{
-		if (sidebarSelectedQuest != null)
-		{
-			startUpQuest(sidebarSelectedQuest);
-			sidebarSelectedQuest = null;
-		}
 	}
 
 	/**
@@ -251,25 +233,7 @@ public class QuestManager
 		}
 	}
 
-	/**
-	 * Starts up a quest.
-	 * Shuts down any active quest and initializes the new quest.
-	 *
-	 * @param questHelper The quest to be started.
-	 */
-	public void startUpQuest(QuestHelper questHelper)
-	{
-		startUpQuest(questHelper, true);
-	}
-
-	/**
-	 * Starts up a quest.
-	 * Shuts down any active quest and initializes the new quest.
-	 *
-	 * @param questHelper The quest to be started.
-	 * @param shouldOpenSidebarIfConfig Flag to open the sidebar if configured.
-	 */
-	public void startUpQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
+	private void doStartUpQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
 	{
 		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
@@ -278,6 +242,26 @@ public class QuestManager
 
 		shutDownPreviousQuest();
 		initializeNewQuest(questHelper, shouldOpenSidebarIfConfig);
+	}
+
+	/**
+	 * Starts up a quest.
+	 * Shuts down any active quest and initializes the new quest.
+	 * <p>
+	 * This can be called from any thread
+	 *
+	 * @param questHelper The quest to be started.
+	 * @param shouldOpenSidebarIfConfig Flag to open the sidebar if configured.
+	 */
+	public void startUpQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
+	{
+		if (client.isClientThread()) {
+			this.doStartUpQuest(questHelper, shouldOpenSidebarIfConfig);
+		} else {
+			clientThread.invokeLater(() -> {
+				this.doStartUpQuest(questHelper, shouldOpenSidebarIfConfig);
+			});
+		}
 	}
 
 	private void initializeNewQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)

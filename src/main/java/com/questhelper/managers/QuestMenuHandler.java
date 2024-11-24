@@ -139,7 +139,7 @@ public class QuestMenuHandler
 			QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG :
 			QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG;
 
-		questManager.startUpQuest(QuestHelperQuest.getByName(questToStart.getName()));
+		questManager.startUpQuest(QuestHelperQuest.getByName(questToStart.getName()), true);
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class QuestMenuHandler
 	 */
 	private void handleRecipeForDisaster()
 	{
-		questManager.startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()));
+		questManager.startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()), true);
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class QuestMenuHandler
 		QuestHelper questHelper = QuestHelperQuest.getByName(questName);
 		if (questHelper != null)
 		{
-			questManager.startUpQuest(questHelper);
+			questManager.startUpQuest(questHelper, true);
 		}
 	}
 
@@ -356,7 +356,7 @@ public class QuestMenuHandler
 		if (newEntry.startsWith("Start"))
 		{
 			String quest = Text.removeTags(target);
-			questManager.startUpQuest(QuestHelperQuest.getByName(quest));
+			questManager.startUpQuest(QuestHelperQuest.getByName(quest), true);
 		}
 		else
 		{

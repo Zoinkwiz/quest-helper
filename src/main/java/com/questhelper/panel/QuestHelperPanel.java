@@ -579,6 +579,8 @@ public class QuestHelperPanel extends PluginPanel
 		questOverviewPanel.addQuest(quest, isActive);
 		questActive = true;
 
+		SwingUtilities.invokeLater(() -> scrollableContainer.getVerticalScrollBar().setValue(0));
+
 		repaint();
 		revalidate();
 	}

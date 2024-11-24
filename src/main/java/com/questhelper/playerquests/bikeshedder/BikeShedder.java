@@ -77,6 +77,7 @@ public class BikeShedder extends BasicQuestHelper
 	private WidgetTextRequirement lookAtCooksAssistantTextRequirement;
 	private ZoneRequirement byStaircaseInSunrisePalace;
 	private ObjectStep goDownstairsInSunrisePalace;
+	private ItemRequirement lightbearer;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -108,7 +109,7 @@ public class BikeShedder extends BasicQuestHelper
 		confuseHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3221, 3218, 0), "Cast Confuse on Hans", normalSpellbook);
 		confuseHans.addSpellHighlight(NormalSpells.CONFUSE);
 
-		var lightbearer = new ItemRequirement("Lightbearer", ItemID.LIGHTBEARER).highlighted();
+		lightbearer = new ItemRequirement("Lightbearer", ItemID.LIGHTBEARER).highlighted();
 		equipLightbearer = new DetailedQuestStep(this, "Equip a Lightbearer", lightbearer.equipped());
 
 		anyLog = new ItemRequirement("Any log", ItemCollections.LOGS_FOR_FIRE).highlighted();
@@ -160,7 +161,7 @@ public class BikeShedder extends BasicQuestHelper
 
 		panels.add(new PanelDetails("Move to Lumbridge", List.of(moveToLumbridge)));
 		panels.add(new PanelDetails("Normal Spellbook", List.of(confuseHans)));
-		panels.add(new PanelDetails("Equip Lightbearer", List.of(equipLightbearer)));
+		panels.add(new PanelDetails("Equip Lightbearer", List.of(equipLightbearer), List.of(lightbearer)));
 		panels.add(new PanelDetails("Use log on mysterious bush", List.of(useLogOnBush), List.of(anyLog)));
 		panels.add(new PanelDetails("Use coins on mysterious bush", List.of(useCoinOnBush, useManyCoinsOnBush), List.of(oneCoin, manyCoins)));
 		panels.add(new PanelDetails("Conditional requirement", List.of(conditionalRequirementLookAtCoins), List.of(conditionalRequirementCoins, conditionalRequirementGoldBar)));

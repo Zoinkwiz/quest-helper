@@ -25,6 +25,7 @@
  */
 package com.questhelper;
 
+import com.google.gson.Gson;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -167,6 +168,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	public QuestHelperSharingManager questHelperSharingManager;
 
+	@Inject
+	public Gson gson;
+
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
@@ -203,7 +207,7 @@ public class QuestHelperPlugin extends Plugin
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
-		panel = new QuestHelperPanel(this, questManager, configManager);
+		panel = new QuestHelperPanel(this, questManager, configManager, gson);
 		questManager.startUp(panel);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")

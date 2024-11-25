@@ -32,4 +32,5 @@ public class QuestData
 {
 	private List<RequirementData> requirements;
 	private List<StepData> steps;
+	private List<QuestStepData> questSteps;
 }

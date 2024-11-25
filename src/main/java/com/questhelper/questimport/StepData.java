@@ -31,10 +31,17 @@ import java.util.Map;
 @Data
 public class StepData
 {
+	private String id;
 	private String type;
 	private boolean isDefault;
 	private Map<String, Object> parameters;
 	private List<String> stepRequirements;
 	private String logicType;
 	private List<String> conditionalRequirements;
+
+	@Override
+	public String toString()
+	{
+		return id + " - " + type;
+	}
 }

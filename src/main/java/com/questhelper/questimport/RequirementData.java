@@ -33,4 +33,10 @@ public class RequirementData
 	private String id;
 	private String type;
 	private Map<String, Object> parameters;
+
+	@Override
+	public String toString()
+	{
+		return id + " - " + type;
+	}
 }

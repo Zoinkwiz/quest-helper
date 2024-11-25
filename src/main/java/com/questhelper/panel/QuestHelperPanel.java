@@ -31,8 +31,6 @@ import com.questhelper.panel.skillfiltering.SkillFilterPanel;
 import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.managers.QuestManager;
-import com.questhelper.panel.skillfiltering.SkillFilterPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -72,18 +70,6 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class QuestHelperPanel extends PluginPanel
@@ -123,6 +109,7 @@ public class QuestHelperPanel extends PluginPanel
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon GITHUB_ICON;
 	private static final ImageIcon PATREON_ICON;
+	private static final ImageIcon QUEST_MAKER_ICON;
 	private static final ImageIcon SETTINGS_ICON;
 	private static final ImageIcon COLLAPSED_ICON;
 	private static final ImageIcon EXPANDED_ICON;
@@ -132,6 +119,7 @@ public class QuestHelperPanel extends PluginPanel
 		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		GITHUB_ICON = Icon.GITHUB.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		PATREON_ICON = Icon.PATREON.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+		QUEST_MAKER_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		COLLAPSED_ICON = Icon.COLLAPSED.getIcon();
 		EXPANDED_ICON = Icon.EXPANDED.getIcon();
@@ -173,7 +161,7 @@ public class QuestHelperPanel extends PluginPanel
 		// Make Helper Button
 		JButton makeHelperButton = new JButton();
 		SwingUtil.removeButtonDecorations(makeHelperButton);
-		makeHelperButton.setIcon(SETTINGS_ICON);
+		makeHelperButton.setIcon(QUEST_MAKER_ICON);
 		makeHelperButton.setToolTipText("Make a new helper");
 		makeHelperButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		makeHelperButton.setUI(new BasicButtonUI());
@@ -189,7 +177,7 @@ public class QuestHelperPanel extends PluginPanel
 
 			public void mouseExited(java.awt.event.MouseEvent evt)
 			{
-				if (settingsPanelActive())
+				if (isQuestMakerActive())
 				{
 					makeHelperButton.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
@@ -209,7 +197,17 @@ public class QuestHelperPanel extends PluginPanel
 		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		settingsBtn.setUI(new BasicButtonUI());
 		settingsBtn.addActionListener((ev) -> {
-			toggleQuestCreator();
+			assistLevelPanel.rebuild(null, configManager, this);
+			if (settingsPanelActive())
+			{
+				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+				deactivateSettings();
+			}
+			else
+			{
+				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				activateSettings();
+			}
 		});
 		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
 		{
@@ -471,7 +469,7 @@ public class QuestHelperPanel extends PluginPanel
 		revalidate();
 	}
 
-	private void toggleQuestCreator()
+	public void toggleQuestCreator()
 	{
 		creatorFrame.setVisible(!creatorFrame.isVisible());
 	}
@@ -628,6 +626,11 @@ public class QuestHelperPanel extends PluginPanel
 
 		repaint();
 		revalidate();
+	}
+
+	private boolean isQuestMakerActive()
+	{
+		return creatorFrame.isVisible();
 	}
 
 	private boolean settingsPanelActive()

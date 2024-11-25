@@ -95,7 +95,7 @@ public class QuestHelperSharingManager
 			QuestHelper questHelper = jsonToQuest.importQuestFromJson(gson, clipboardText);
 			clientThread.invokeLater(() -> {
 				plugin.instantiate(questHelper, "Imported Helper");
-				questManager.startUpQuest(questHelper);
+				questManager.startUpQuest(questHelper, true);
 			});
 
 		}

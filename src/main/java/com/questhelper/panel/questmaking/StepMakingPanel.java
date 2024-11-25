@@ -208,6 +208,7 @@ public class StepMakingPanel extends JPanel
 		npcDetails.put(JsonConstants.PARAM_WORLD_POINT_X, worldPoint.getX());
 		npcDetails.put(JsonConstants.PARAM_WORLD_POINT_Y, worldPoint.getY());
 		npcDetails.put(JsonConstants.PARAM_WORLD_POINT_Z, worldPoint.getPlane());
+		npcDetails.put(JsonConstants.PARAM_TEXT, "Talk to " + name + ".");
 		newStep.setParameters(npcDetails);
 		newStep.setStepRequirements(new ArrayList<>());
 

@@ -48,6 +48,16 @@ public class RequirementParameterDefinitions
 			JsonConstants.PARAM_QUANTITY,
 			JsonConstants.PARAM_EQUIPPED
 		));
+
+		requirementParameterMap.put(JsonConstants.VARBIT_REQUIREMENT, Arrays.asList(
+				JsonConstants.VAR_ID,
+				JsonConstants.VAR_VALUE
+		));
+
+		requirementParameterMap.put(JsonConstants.VARPLAYER_REQUIREMENT, Arrays.asList(
+				JsonConstants.VAR_ID,
+				JsonConstants.VAR_VALUE
+		));
 	}
 
 	public static List<String> getParametersForRequirementType(String requirementType)

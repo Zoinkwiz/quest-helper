@@ -127,7 +127,6 @@ public class QuestAssemblyPanel extends JPanel
 		add(sl, BorderLayout.CENTER);
 		add(questStepButtonsPanel, BorderLayout.SOUTH);
 
-		// Disable editing fields initially
 		setEditingFieldsEnabled(false);
 	}
 

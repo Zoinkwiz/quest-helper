@@ -157,7 +157,10 @@ public class RequirementMakingPanel extends JPanel
 				return new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 			case JsonConstants.PARAM_EQUIPPED:
 				return new JCheckBox("Equipped", false);
-			// Add other parameters as needed
+			case JsonConstants.VAR_ID:
+				return new JSpinner(new SpinnerNumberModel(0, 0, 20000, 1));
+			case JsonConstants.VAR_VALUE:
+				return new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 			default:
 				return new JTextField(20);
 		}

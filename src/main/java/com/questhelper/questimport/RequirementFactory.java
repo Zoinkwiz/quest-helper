@@ -27,6 +27,8 @@ package com.questhelper.questimport;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
 import java.util.List;
@@ -56,6 +58,10 @@ public class RequirementFactory
 
 			case JsonConstants.ITEM_REQUIREMENT:
 				return createItemRequirement(params, itemManager);
+			case JsonConstants.VARBIT_REQUIREMENT:
+				return createVarbitRequirement(params);
+			case JsonConstants.VARPLAYER_REQUIREMENT:
+				return createVarplayerRequirement(params);
 			default:
 				throw new IllegalArgumentException("Unknown requirement type: " + reqType);
 		}
@@ -77,5 +83,19 @@ public class RequirementFactory
 		boolean equipped = (Boolean) params.getOrDefault(JsonConstants.PARAM_EQUIPPED, false);
 		String name = itemManager.getItemComposition(itemId).getName();
 		return new ItemRequirement(name, itemId, quantity, equipped);
+	}
+
+	private static VarbitRequirement createVarbitRequirement(Map<String, Object> params)
+	{
+		int varId = ((Number) params.get(JsonConstants.VAR_ID)).intValue();
+		int varValue = ((Number) params.getOrDefault(JsonConstants.VAR_VALUE, 0)).intValue();
+		return new VarbitRequirement(varId, varValue);
+	}
+
+	private static VarplayerRequirement createVarplayerRequirement(Map<String, Object> params)
+	{
+		int varId = ((Number) params.get(JsonConstants.VAR_ID)).intValue();
+		int varValue = ((Number) params.getOrDefault(JsonConstants.VAR_VALUE, 0)).intValue();
+		return new VarplayerRequirement(varId, varValue);
 	}
 }

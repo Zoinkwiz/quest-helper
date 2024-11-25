@@ -29,19 +29,27 @@ public class JsonConstants
 	// Requirement Types
 	public static final String SKILL_REQUIREMENT = "SkillRequirement";
 	public static final String ITEM_REQUIREMENT = "ItemRequirement";
-
+	public static final String VARBIT_REQUIREMENT = "VarbitRequirement";
+	public static final String VARPLAYER_REQUIREMENT = "VarplayerRequirement";
 
 	// Generic Parameters
 	public static final String ID = "id";
 
 	// Requirement Parameters
+
+	// Skill Requirement
 	public static final String PARAM_SKILL = "Skill";
 	public static final String PARAM_LEVEL = "Level";
 	public static final String PARAM_BOOSTABLE = "Boostable";
 
+	// ItemRequirement
 	public static final String PARAM_ITEM_ID = "Item ID";
 	public static final String PARAM_QUANTITY = "Quantity";
 	public static final String PARAM_EQUIPPED = "Equipped";
+
+	// VarbitRequirement
+	public static final String VAR_ID = "Var ID";
+	public static final String VAR_VALUE = "Var Value";
 
 	// Step Types
 	public static final String DETAILED_QUEST_STEP = "DetailedQuestStep";

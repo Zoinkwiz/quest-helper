@@ -169,6 +169,9 @@ public class RequirementMakingPanel extends JPanel
 
 		// Add the requirement to the list model
 		dataModel.getRequirementListModel().addElement(requirementData);
+
+		// Notify listeners
+		dataModel.notifyRequirementChangeListeners();
 	}
 
 	private void removeRequirement()
@@ -178,5 +181,7 @@ public class RequirementMakingPanel extends JPanel
 		{
 			dataModel.getRequirementListModel().remove(selectedIndex);
 		}
+
+		dataModel.notifyRequirementChangeListeners();
 	}
 }

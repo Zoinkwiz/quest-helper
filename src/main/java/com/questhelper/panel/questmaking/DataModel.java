@@ -3,13 +3,17 @@ package com.questhelper.panel.questmaking;
 import com.questhelper.questimport.QuestStepData;
 import com.questhelper.questimport.RequirementData;
 import com.questhelper.questimport.StepData;
+import lombok.Getter;
 import javax.swing.DefaultListModel;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
 public class DataModel
 {
-	private DefaultListModel<StepData> stepListModel;
-	private DefaultListModel<RequirementData> requirementListModel;
-	private DefaultListModel<QuestStepData> questStepListModel;
+	private final DefaultListModel<StepData> stepListModel;
+	private final DefaultListModel<RequirementData> requirementListModel;
+	private final DefaultListModel<QuestStepData> questStepListModel;
 
 	public DataModel()
 	{
@@ -18,18 +22,18 @@ public class DataModel
 		questStepListModel = new DefaultListModel<>();
 	}
 
-	public DefaultListModel<StepData> getStepListModel()
+	private List<Runnable> requirementChangeListeners = new ArrayList<>();
+
+	public void addRequirementChangeListener(Runnable listener)
 	{
-		return stepListModel;
+		requirementChangeListeners.add(listener);
 	}
 
-	public DefaultListModel<RequirementData> getRequirementListModel()
+	public void notifyRequirementChangeListeners()
 	{
-		return requirementListModel;
-	}
-
-	public DefaultListModel<QuestStepData> getQuestStepListModel()
-	{
-		return questStepListModel;
+		for (Runnable listener : requirementChangeListeners)
+		{
+			listener.run();
+		}
 	}
 }

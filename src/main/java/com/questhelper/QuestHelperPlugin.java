@@ -516,6 +516,24 @@ public class QuestHelperPlugin extends Plugin
 		String target = Text.removeTags(event.getTarget());
 
 		questMenuHandler.setupQuestMenuOptions(menuEntries, widgetIndex, widgetID, target, option);
+
+		if (event.getMenuEntry().getNpc() != null)
+		{
+			menu.createMenuEntry(menuEntries.length - 1)
+					.setOption("Add NpcStep")
+					.setTarget("<col=ff9040>" + target + "</col>")
+					.onClick((menuEntry -> handleAddNpcStep(event.getMenuEntry().getNpc())))
+					.setType(MenuAction.RUNELITE)
+					.setParam0(widgetIndex)
+					.setParam1(widgetID);
+		}
+	}
+
+	private void handleAddNpcStep(NPC npc)
+	{
+		String name = npc.getName();
+		int id = npc.getId();
+		panel.getCreatorFrame().getStepMakingPanel().createNpcStep(id, name, npc.getWorldLocation());
 	}
 
 	@Subscribe

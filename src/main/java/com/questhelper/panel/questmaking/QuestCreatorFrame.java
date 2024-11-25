@@ -29,6 +29,7 @@ import com.questhelper.questimport.QuestData;
 import com.questhelper.questimport.QuestStepData;
 import com.questhelper.questimport.RequirementData;
 import com.questhelper.questimport.StepData;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +42,8 @@ public class QuestCreatorFrame extends JFrame
 {
 	private final Gson gson;
 	// Panels
+
+	@Getter
 	private StepMakingPanel stepMakingPanel;
 	private RequirementMakingPanel requirementMakingPanel;
 	private QuestAssemblyPanel questAssemblyPanel;

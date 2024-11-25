@@ -28,6 +28,7 @@ import com.questhelper.questimport.JsonConstants;
 import com.questhelper.questimport.RequirementData;
 import com.questhelper.questimport.StepData;
 import com.questhelper.questimport.StepParameterDefinitions;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
@@ -190,6 +191,24 @@ public class StepMakingPanel extends JPanel
 		newStep.setId(generateUniqueStepId());
 		newStep.setType((String) stepTypeComboBox.getSelectedItem());
 		newStep.setParameters(new HashMap<>());
+		newStep.setStepRequirements(new ArrayList<>());
+
+		dataModel.getStepListModel().addElement(newStep);
+		stepList.setSelectedValue(newStep, true);
+	}
+
+	public void createNpcStep(int npcID, String name, WorldPoint worldPoint)
+	{
+		// Create a new StepData with default values
+		StepData newStep = new StepData();
+		newStep.setId("talkTo" + name);
+		newStep.setType(JsonConstants.NPC_STEP);
+		Map<String, Object> npcDetails = new HashMap<>();
+		npcDetails.put(JsonConstants.PARAM_NPC_ID, npcID);
+		npcDetails.put(JsonConstants.PARAM_WORLD_POINT_X, worldPoint.getX());
+		npcDetails.put(JsonConstants.PARAM_WORLD_POINT_Y, worldPoint.getY());
+		npcDetails.put(JsonConstants.PARAM_WORLD_POINT_Z, worldPoint.getPlane());
+		newStep.setParameters(npcDetails);
 		newStep.setStepRequirements(new ArrayList<>());
 
 		dataModel.getStepListModel().addElement(newStep);

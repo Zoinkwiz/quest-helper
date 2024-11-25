@@ -37,7 +37,27 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.tools.Icon;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicButtonUI;
+
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -87,7 +107,7 @@ public class QuestHelperPanel extends PluginPanel
 	public static final int DROPDOWN_HEIGHT = 26;
 	public boolean questActive = false;
 
-	private JButton createQuestButton;
+	private final JButton createQuestButton;
 
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
 
@@ -96,6 +116,9 @@ public class QuestHelperPanel extends PluginPanel
 	QuestManager questManager;
 
 	Gson gson;
+
+	@Getter
+	QuestCreatorFrame creatorFrame;
 
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon GITHUB_ICON;
@@ -123,6 +146,9 @@ public class QuestHelperPanel extends PluginPanel
 		this.configManager = configManager;
 		this.gson = gson;
 
+		this.creatorFrame = new QuestCreatorFrame(gson);
+		this.creatorFrame.setVisible(false);
+
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
 
@@ -132,21 +158,50 @@ public class QuestHelperPanel extends PluginPanel
 		titlePanel.setLayout(new BorderLayout());
 
 		JTextArea title = JGenerator.makeJTextArea();
-		title.setText("Quest Helper");
+		title.setText("QH");
 		title.setForeground(Color.WHITE);
 		titlePanel.add(title, BorderLayout.WEST);
 
 		createQuestButton = new JButton("Create New Quest");
-		createQuestButton.addActionListener(e -> openQuestCreator());
+		createQuestButton.addActionListener(e -> toggleQuestCreator());
 		titlePanel.add(createQuestButton, BorderLayout.EAST);
-
 
 		// Options
 		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
 		viewControls.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
+		// Make Helper Button
+		JButton makeHelperButton = new JButton();
+		SwingUtil.removeButtonDecorations(makeHelperButton);
+		makeHelperButton.setIcon(SETTINGS_ICON);
+		makeHelperButton.setToolTipText("Make a new helper");
+		makeHelperButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		makeHelperButton.setUI(new BasicButtonUI());
+		makeHelperButton.addActionListener((ev) -> {
+			toggleQuestCreator();
+		});
+		makeHelperButton.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
+				makeHelperButton.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
+				if (settingsPanelActive())
+				{
+					makeHelperButton.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+				}
+				else
+				{
+					makeHelperButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
+				}
+			}
+		});
+		viewControls.add(makeHelperButton);
+
 		// Settings
-		// TODO: Removed until the Runelite API allows for a link to the actual config panel
 		JButton settingsBtn = new JButton();
 		SwingUtil.removeButtonDecorations(settingsBtn);
 		settingsBtn.setIcon(SETTINGS_ICON);
@@ -154,7 +209,7 @@ public class QuestHelperPanel extends PluginPanel
 		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		settingsBtn.setUI(new BasicButtonUI());
 		settingsBtn.addActionListener((ev) -> {
-			openQuestCreator();
+			toggleQuestCreator();
 		});
 		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
 		{
@@ -416,10 +471,9 @@ public class QuestHelperPanel extends PluginPanel
 		revalidate();
 	}
 
-	private void openQuestCreator()
+	private void toggleQuestCreator()
 	{
-		QuestCreatorFrame creatorFrame = new QuestCreatorFrame(gson);
-		creatorFrame.setVisible(true);
+		creatorFrame.setVisible(!creatorFrame.isVisible());
 	}
 
 	private JComboBox<Enum> makeNewDropdown(Enum[] values, String key)
@@ -670,5 +724,10 @@ public class QuestHelperPanel extends PluginPanel
 		{
 			skillExpandButton.setText(String.format("%d active", numFilteredSkills));
 		}
+	}
+
+	public boolean isMakerActive()
+	{
+		return creatorFrame.isActive();
 	}
 }

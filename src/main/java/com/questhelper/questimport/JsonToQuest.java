@@ -27,6 +27,7 @@ package com.questhelper.questimport;
 import com.google.gson.Gson;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
@@ -121,7 +122,7 @@ public class JsonToQuest
 			Conditions conditions = null;
 			if (condRequirements != null && !condRequirements.isEmpty())
 			{
-				conditions = new Conditions(condRequirements);
+				conditions = new Conditions(LogicType.NAND, condRequirements);
 			}
 
 			rootStep.addStep(conditions, questStep);

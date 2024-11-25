@@ -36,12 +36,11 @@ import java.util.Map;
 
 public class RequirementMakingPanel extends JPanel
 {
-	private DataModel dataModel;
+	private final DataModel dataModel;
 	private JList<RequirementData> requirementList;
 	private JComboBox<String> requirementTypeComboBox;
 	private JPanel parameterFieldsPanel;
-	private Map<String, JComponent> parameterFields;
-	private JButton createRequirementButton;
+	private final Map<String, JComponent> parameterFields;
 	private JButton saveChangesButton;
 	private JButton removeRequirementButton;
 	private RequirementData selectedRequirement;
@@ -69,7 +68,7 @@ public class RequirementMakingPanel extends JPanel
 		leftPanel.add(listScrollPane, BorderLayout.CENTER);
 
 		// Create Requirement button
-		createRequirementButton = new JButton("Create Requirement");
+		JButton createRequirementButton = new JButton("Create Requirement");
 		createRequirementButton.addActionListener(e -> createRequirement());
 		leftPanel.add(createRequirementButton, BorderLayout.SOUTH);
 

@@ -50,13 +50,10 @@ public class JsonToQuest
 		JsonQuestHelper newHelper = new JsonQuestHelper();
 		QuestData questData = gson.fromJson(jsonContent, QuestData.class);
 
-		// Map requirements
 		Map<RequirementData, Requirement> requirementMap = getRequirementMap(questData.getRequirements());
 
-		// Map steps
 		Map<StepData, QuestStep> stepMap = getStepMap(newHelper, questData.getSteps(), requirementMap);
 
-		// Assemble quest steps
 		ConditionalStep questSteps = assembleQuestSteps(newHelper, questData.getQuestSteps(), stepMap, requirementMap);
 
 		newHelper.setSteps(questSteps);

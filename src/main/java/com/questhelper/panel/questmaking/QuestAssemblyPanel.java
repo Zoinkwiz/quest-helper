@@ -30,7 +30,6 @@ import com.questhelper.questimport.RequirementData;
 import com.questhelper.questimport.StepData;
 import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.awt.*;
@@ -39,14 +38,13 @@ import java.util.ArrayList;
 
 public class QuestAssemblyPanel extends JPanel
 {
-	private DataModel dataModel;
+	private final DataModel dataModel;
 	private JList<QuestStepData> questStepList;
-	private JPanel questStepDetailsPanel;
 	private JComboBox<StepData> stepComboBox;
 	private JPanel conditionalRequirementsListPanel;
 	private JButton addRequirementButton;
 	private QuestStepData selectedQuestStepData;
-	private List<JComboBox<RequirementData>> requirementComboBoxes;
+	private final List<JComboBox<RequirementData>> requirementComboBoxes;
 
 	public QuestAssemblyPanel(DataModel dataModel)
 	{
@@ -70,7 +68,6 @@ public class QuestAssemblyPanel extends JPanel
 
 		// Buttons to add/remove quest steps
 		JPanel questStepButtonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//		questStepButtonsPanel.setPreferredSize();
 		JButton addQuestStepButton = new JButton("Add Quest Step");
 		addQuestStepButton.addActionListener(e -> addQuestStep());
 		JButton removeQuestStepButton = new JButton("Remove Quest Step");
@@ -90,8 +87,7 @@ public class QuestAssemblyPanel extends JPanel
 		questStepButtonsPanel.add(moveDownButton);
 		questStepButtonsPanel.add(saveChangesButton);
 
-		// Right panel with quest step details
-		questStepDetailsPanel = new JPanel();
+		JPanel questStepDetailsPanel = new JPanel();
 		questStepDetailsPanel.setLayout(new BoxLayout(questStepDetailsPanel, BoxLayout.Y_AXIS));
 
 		// Step selection
@@ -121,14 +117,10 @@ public class QuestAssemblyPanel extends JPanel
 		addRequirementButton.addActionListener(e -> addConditionalRequirement());
 		requirementHeaderPanel.add(addRequirementButton, BorderLayout.AFTER_LINE_ENDS);
 
-//		JPanel requirementsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		conditionalRequirementsPanel.add(requirementHeaderPanel, BorderLayout.NORTH);
-//		conditionalRequirementsPanel.add(requirementsButtonsPanel, BorderLayout.CENTER);
 		conditionalRequirementsPanel.add(requirementsScrollPane, BorderLayout.CENTER);
 
 		questStepDetailsPanel.add(conditionalRequirementsPanel, BorderLayout.CENTER);
-//		questStepDetailsPanel.add(saveChangesButton);
-
 		JSplitPane sl = new JSplitPane(JSplitPane.VERTICAL_SPLIT, leftPanel, questStepDetailsPanel);
 		sl.setOrientation(SwingConstants.VERTICAL);
 
@@ -263,11 +255,9 @@ public class QuestAssemblyPanel extends JPanel
 	{
 		stepComboBox.setSelectedItem(questStepData.getStepData());
 
-		// Clear existing requirement rows
 		conditionalRequirementsListPanel.removeAll();
 		requirementComboBoxes.clear();
 
-		// Populate conditional requirements
 		for (RequirementData reqData : questStepData.getConditionalRequirements())
 		{
 			if (reqData != null)
@@ -276,7 +266,6 @@ public class QuestAssemblyPanel extends JPanel
 			}
 		}
 
-		// Refresh the panel
 		conditionalRequirementsListPanel.revalidate();
 		conditionalRequirementsListPanel.repaint();
 	}
@@ -294,7 +283,6 @@ public class QuestAssemblyPanel extends JPanel
 	{
 		if (selectedQuestStepData != null)
 		{
-			// Save selected step
 			StepData selectedStep = (StepData) stepComboBox.getSelectedItem();
 			if (selectedStep != null)
 			{
@@ -306,7 +294,6 @@ public class QuestAssemblyPanel extends JPanel
 				return;
 			}
 
-			// Save conditional requirements
 			List<RequirementData> reqDatum = new ArrayList<>();
 			for (JComboBox<RequirementData> comboBox : requirementComboBoxes)
 			{
@@ -318,7 +305,6 @@ public class QuestAssemblyPanel extends JPanel
 			}
 			selectedQuestStepData.setConditionalRequirements(reqDatum);
 
-			// Refresh the quest step list
 			questStepList.repaint();
 		}
 	}

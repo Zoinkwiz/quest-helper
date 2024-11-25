@@ -40,18 +40,17 @@ import java.util.Map;
 
 public class StepMakingPanel extends JPanel
 {
-	private DataModel dataModel;
+	private final DataModel dataModel;
 	private JList<StepData> stepList;
 	private JComboBox<String> stepTypeComboBox;
 	private JPanel parameterFieldsPanel;
-	private Map<String, JComponent> parameterFields;
-	private JButton createStepButton;
+	private final Map<String, JComponent> parameterFields;
 	private JButton saveChangesButton;
 	private JButton removeStepButton;
 	private StepData selectedStep;
 	private JTextField currentIdComponent;
 	private JPanel requirementsListPanel;
-	private List<JComboBox<RequirementData>> requirementComboBoxes;
+	private final List<JComboBox<RequirementData>> requirementComboBoxes;
 	private JButton addRequirementButton;
 
 	public StepMakingPanel(DataModel dataModel)
@@ -78,7 +77,7 @@ public class StepMakingPanel extends JPanel
 		leftPanel.add(listScrollPane, BorderLayout.CENTER);
 
 		// Create Step button
-		createStepButton = new JButton("Create Step");
+		JButton createStepButton = new JButton("Create Step");
 		createStepButton.addActionListener(e -> createStep());
 		leftPanel.add(createStepButton, BorderLayout.SOUTH);
 
@@ -172,8 +171,6 @@ public class StepMakingPanel extends JPanel
 	{
 		switch (param)
 		{
-			case JsonConstants.PARAM_TEXT:
-				return new JTextField(10);
 			case JsonConstants.PARAM_NPC_ID:
 			case JsonConstants.PARAM_OBJECT_ID:
 			case JsonConstants.PARAM_WORLD_POINT_X:

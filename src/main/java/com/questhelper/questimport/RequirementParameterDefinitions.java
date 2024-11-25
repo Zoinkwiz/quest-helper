@@ -61,4 +61,3 @@ public class RequirementParameterDefinitions
 		return requirementTypes.toArray(new String[0]);
 	}
 }
-

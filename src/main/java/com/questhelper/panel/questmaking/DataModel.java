@@ -35,18 +35,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Getter
 public class DataModel
 {
-	// Listeners and notification methods
-	private final transient List<Runnable> stepChangeListeners = new ArrayList<>();
-	private final transient List<Runnable> requirementChangeListeners = new ArrayList<>();
-	private final transient List<Runnable> questStepChangeListeners = new ArrayList<>();
-
 	private final DefaultListModel<StepData> stepListModel;
 	private final DefaultListModel<RequirementData> requirementListModel;
 	private final DefaultListModel<QuestStepData> questStepListModel;

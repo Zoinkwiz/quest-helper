@@ -33,8 +33,6 @@ public class QuestStepData
 	private StepData stepData;
 	private List<RequirementData> conditionalRequirements;
 
-	// Getters and setters
-
 	@Override
 	public String toString()
 	{

@@ -24,242 +24,222 @@
  */
 package com.questhelper.panel.questmaking;
 
+import com.questhelper.questimport.JsonConstants;
 import com.questhelper.questimport.RequirementData;
+import com.questhelper.questimport.RequirementParameterDefinitions;
 import net.runelite.api.Skill;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RequirementMakingPanel extends JPanel
 {
-	private JComboBox<RequirementType> requirementTypeComboBox;
-	private JPanel parameterPanel;
-	private JList<RequirementData> requirementList;
 	private DataModel dataModel;
-
+	private JList<RequirementData> requirementList;
+	private JComboBox<String> requirementTypeComboBox;
+	private JPanel parameterFieldsPanel;
 	private Map<String, JComponent> parameterFields;
-
 	private JButton createRequirementButton;
 	private JButton saveChangesButton;
 	private JButton removeRequirementButton;
-
 	private RequirementData selectedRequirement;
+	private JTextField currentIdComponent;
 
 	public RequirementMakingPanel(DataModel dataModel)
 	{
 		this.dataModel = dataModel;
 		this.parameterFields = new HashMap<>();
-		setLayout(new BorderLayout());
 		initializeUI();
 	}
 
 	private void initializeUI()
 	{
-		// Top panel for requirement creation
-		JPanel creationPanel = new JPanel(new BorderLayout());
+		setLayout(new BorderLayout());
 
-		// Requirement type selection
-		requirementTypeComboBox = new JComboBox<>(RequirementType.values());
-		requirementTypeComboBox.addActionListener(e -> updateRequirementParameterFields());
+		currentIdComponent = new JTextField(10);
 
-		// Panel to hold parameter fields
-		parameterPanel = new JPanel(new GridBagLayout());
-
-		// Initialize parameter fields
-		updateRequirementParameterFields();
-
-		// Add components to creation panel
-		JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		topPanel.add(new JLabel("Requirement Type:"));
-		topPanel.add(requirementTypeComboBox);
-		creationPanel.add(topPanel, BorderLayout.NORTH);
-		creationPanel.add(parameterPanel, BorderLayout.CENTER);
-
-		// Requirements list
+		// Left panel with the list of requirements
+		JPanel leftPanel = new JPanel(new BorderLayout());
 		requirementList = new JList<>(dataModel.getRequirementListModel());
 		requirementList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		requirementList.addListSelectionListener(e -> onRequirementSelected());
+		JScrollPane listScrollPane = new JScrollPane(requirementList);
+		leftPanel.add(listScrollPane, BorderLayout.CENTER);
 
-		// Buttons panel
-		JPanel buttonsPanel = new JPanel();
+		// Create Requirement button
 		createRequirementButton = new JButton("Create Requirement");
-		saveChangesButton = new JButton("Save Changes");
-		removeRequirementButton = new JButton("Remove Requirement");
+		createRequirementButton.addActionListener(e -> createRequirement());
+		leftPanel.add(createRequirementButton, BorderLayout.SOUTH);
 
-		buttonsPanel.add(createRequirementButton);
+		// Right panel with editing fields
+		JPanel rightPanel = new JPanel(new BorderLayout());
+
+		// Requirement Type ComboBox
+		requirementTypeComboBox = new JComboBox<>(RequirementParameterDefinitions.getAllRequirementTypes());
+		requirementTypeComboBox.addActionListener(e -> updateParameterFields());
+
+		// Parameter fields panel
+		parameterFieldsPanel = new JPanel();
+		parameterFieldsPanel.setLayout(new BoxLayout(parameterFieldsPanel, BoxLayout.Y_AXIS));
+
+		// Save Changes and Remove Requirement buttons
+		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		saveChangesButton = new JButton("Save Changes");
+		saveChangesButton.addActionListener(e -> saveChanges());
+		removeRequirementButton = new JButton("Remove Requirement");
+		removeRequirementButton.addActionListener(e -> removeRequirement());
 		buttonsPanel.add(saveChangesButton);
 		buttonsPanel.add(removeRequirementButton);
 
-		// Add action listeners
-		createRequirementButton.addActionListener(e -> createRequirement());
-		saveChangesButton.addActionListener(e -> saveChanges());
-		removeRequirementButton.addActionListener(e -> removeRequirement());
+		// Add components to right panel
+		rightPanel.add(requirementTypeComboBox, BorderLayout.NORTH);
+		rightPanel.add(new JScrollPane(parameterFieldsPanel), BorderLayout.CENTER);
+		rightPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
-		// Initially disable editing fields and buttons
+
+		JSplitPane sl = new JSplitPane(JSplitPane.VERTICAL_SPLIT, leftPanel, rightPanel);
+		sl.setOrientation(SwingConstants.VERTICAL);
+
+		add(sl);
+
 		setEditingFieldsEnabled(false);
-		saveChangesButton.setEnabled(false);
-		removeRequirementButton.setEnabled(false);
-
-		// Assemble the panel
-		add(creationPanel, BorderLayout.NORTH);
-		add(new JScrollPane(requirementList), BorderLayout.CENTER);
-		add(buttonsPanel, BorderLayout.SOUTH);
 	}
 
-	private void onRequirementSelected()
+	private void addIdField()
 	{
-		selectedRequirement = requirementList.getSelectedValue();
-		if (selectedRequirement != null)
-		{
-			// Enable editing fields
-			setEditingFieldsEnabled(true);
+		JLabel label = new JLabel("id:");
 
-			// Enable Save Changes and Remove Requirement buttons
-			saveChangesButton.setEnabled(true);
-			removeRequirementButton.setEnabled(true);
-
-			// Populate fields with selected requirement's data
-			populateFieldsWithRequirementData(selectedRequirement);
-		}
-		else
-		{
-			// Disable editing fields
-			setEditingFieldsEnabled(false);
-
-			// Disable Save Changes and Remove Requirement buttons
-			saveChangesButton.setEnabled(false);
-			removeRequirementButton.setEnabled(false);
-
-			// Clear the fields
-			clearEditingFields();
-		}
+		JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		fieldPanel.add(label);
+		fieldPanel.add(currentIdComponent);
+		parameterFieldsPanel.add(fieldPanel);
 	}
 
-	private void updateRequirementParameterFields()
+	private void updateParameterFields()
 	{
-		// Preserve the existing parameter values
-		Map<String, Object> existingValues = new HashMap<>();
-		for (Map.Entry<String, JComponent> entry : parameterFields.entrySet())
-		{
-			String key = entry.getKey();
-			JComponent component = entry.getValue();
-			Object value = getValueFromComponent(component);
-			existingValues.put(key, value);
-		}
+		String selectedType = (String) requirementTypeComboBox.getSelectedItem();
+		List<String> parameters = RequirementParameterDefinitions.getParametersForRequirementType(selectedType);
 
-		parameterPanel.removeAll();
+		parameterFieldsPanel.removeAll();
 		parameterFields.clear();
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(4, 4, 4, 4);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-
-		// Requirement ID field
-		parameterPanel.add(new JLabel("Requirement ID:"), gbc);
-		gbc.gridx++;
-		JTextField requirementIdField = new JTextField(20);
-		requirementIdField.setEnabled(selectedRequirement == null); // Disable editing if requirement is already created
-		parameterPanel.add(requirementIdField, gbc);
-		parameterFields.put("Requirement ID", requirementIdField);
-
-		RequirementType selectedType = (RequirementType) requirementTypeComboBox.getSelectedItem();
-
-		switch (selectedType)
+		addIdField();
+		for (String param : parameters)
 		{
-			case SKILL:
-				gbc.gridx = 0;
-				gbc.gridy++;
+			JLabel label = new JLabel(param + ":");
+			JComponent field = createFieldForParameter(param);
+			parameterFields.put(param, field);
 
-				parameterPanel.add(new JLabel("Skill Name:"), gbc);
-				gbc.gridx++;
-				JComboBox<Skill> skillNameComboBox = new JComboBox<>(Skill.values());
-				parameterPanel.add(skillNameComboBox, gbc);
-				parameterFields.put("Skill Name", skillNameComboBox);
-
-				gbc.gridx = 0;
-				gbc.gridy++;
-				parameterPanel.add(new JLabel("Level:"), gbc);
-				gbc.gridx++;
-				JSpinner levelSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
-				parameterPanel.add(levelSpinner, gbc);
-				parameterFields.put("Level", levelSpinner);
-
-				gbc.gridx = 0;
-				gbc.gridy++;
-				parameterPanel.add(new JLabel("Boostable:"), gbc);
-				gbc.gridx++;
-				JCheckBox boostableCheckBox = new JCheckBox();
-				parameterPanel.add(boostableCheckBox, gbc);
-				parameterFields.put("Boostable", boostableCheckBox);
-				break;
-
-			case ITEM:
-				gbc.gridx = 0;
-				gbc.gridy++;
-
-				parameterPanel.add(new JLabel("Item ID:"), gbc);
-				gbc.gridx++;
-				JTextField itemIdField = new JTextField(20);
-				parameterPanel.add(itemIdField, gbc);
-				parameterFields.put("Item ID", itemIdField);
-
-				gbc.gridx = 0;
-				gbc.gridy++;
-				parameterPanel.add(new JLabel("Quantity:"), gbc);
-				gbc.gridx++;
-				JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
-				parameterPanel.add(quantitySpinner, gbc);
-				parameterFields.put("Quantity", quantitySpinner);
-
-				gbc.gridx = 0;
-				gbc.gridy++;
-				parameterPanel.add(new JLabel("Equipped:"), gbc);
-				gbc.gridx++;
-				JCheckBox equippedCheckBox = new JCheckBox();
-				parameterPanel.add(equippedCheckBox, gbc);
-				parameterFields.put("Equipped", equippedCheckBox);
-				break;
-
-			// Add other requirement types as needed
+			JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			fieldPanel.add(label);
+			fieldPanel.add(field);
+			parameterFieldsPanel.add(fieldPanel);
 		}
 
-		// Restore existing values where keys match
-		for (Map.Entry<String, JComponent> entry : parameterFields.entrySet())
+		parameterFieldsPanel.revalidate();
+		parameterFieldsPanel.repaint();
+	}
+
+	private JComponent createFieldForParameter(String param)
+	{
+		switch (param)
 		{
-			String key = entry.getKey();
-			Object value = existingValues.get(key);
-			if (value != null)
-			{
-				setValueToComponent(entry.getValue(), value);
-			}
+			case JsonConstants.PARAM_SKILL:
+				return new JComboBox<>(Skill.values());
+			case JsonConstants.PARAM_LEVEL:
+				return new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+			case JsonConstants.PARAM_BOOSTABLE:
+				return new JCheckBox("Boostable", true);
+			case JsonConstants.PARAM_ITEM_ID:
+				return new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+			case JsonConstants.PARAM_QUANTITY:
+				return new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+			case JsonConstants.PARAM_EQUIPPED:
+				return new JCheckBox("Equipped", false);
+			// Add other parameters as needed
+			default:
+				return new JTextField(20);
 		}
-
-		// Enable or disable editing fields based on whether a requirement is selected
-		boolean enabled = selectedRequirement != null;
-		setEditingFieldsEnabled(enabled);
-
-		parameterPanel.revalidate();
-		parameterPanel.repaint();
 	}
 
 	private void createRequirement()
 	{
-		// Create a new RequirementData object with a default or unique ID
-		String defaultRequirementId = "req" + (dataModel.getRequirementListModel().getSize() + 1);
+		// Create a new RequirementData with default values
 		RequirementData newRequirement = new RequirementData();
-		newRequirement.setId(defaultRequirementId);
-		newRequirement.setType(requirementTypeComboBox.getSelectedItem().toString());
+		newRequirement.setId(generateUniqueRequirementId());
+		newRequirement.setType((String) requirementTypeComboBox.getSelectedItem());
 		newRequirement.setParameters(new HashMap<>());
 
-		// Add the new requirement to the list model
 		dataModel.getRequirementListModel().addElement(newRequirement);
-
-		// Select the new requirement in the list
 		requirementList.setSelectedValue(newRequirement, true);
+	}
+
+	private String generateUniqueRequirementId()
+	{
+		int counter = 1;
+		String baseId = "req";
+		String newId = baseId + counter;
+		while (dataModel.containsRequirementWithId(newId))
+		{
+			counter++;
+			newId = baseId + counter;
+		}
+		return newId;
+	}
+
+	private void saveChanges()
+	{
+		if (selectedRequirement == null)
+		{
+			JOptionPane.showMessageDialog(this, "No requirement selected to save.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		selectedRequirement.setId(currentIdComponent.getText());
+
+		// Update requirement type
+		String selectedType = (String) requirementTypeComboBox.getSelectedItem();
+		selectedRequirement.setType(selectedType);
+
+		// Update parameters
+		Map<String, Object> params = new HashMap<>();
+		for (Map.Entry<String, JComponent> entry : parameterFields.entrySet())
+		{
+			String paramName = entry.getKey();
+			JComponent field = entry.getValue();
+			Object value = getValueFromField(field);
+			params.put(paramName, value);
+		}
+		selectedRequirement.setParameters(params);
+
+		// Refresh the list
+		requirementList.repaint();
+	}
+
+	private Object getValueFromField(JComponent field)
+	{
+		if (field instanceof JTextField)
+		{
+			return ((JTextField) field).getText();
+		}
+		else if (field instanceof JSpinner)
+		{
+			return ((JSpinner) field).getValue();
+		}
+		else if (field instanceof JCheckBox)
+		{
+			return ((JCheckBox) field).isSelected();
+		}
+		else if (field instanceof JComboBox)
+		{
+			return ((JComboBox<?>) field).getSelectedItem();
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	private void removeRequirement()
@@ -271,159 +251,88 @@ public class RequirementMakingPanel extends JPanel
 			{
 				dataModel.getRequirementListModel().removeElement(selectedRequirement);
 				selectedRequirement = null;
-
-				// Notify listeners
-				dataModel.notifyRequirementChangeListeners();
+				setEditingFieldsEnabled(false);
+				clearParameterFields();
 			}
 		}
 	}
 
-	private void saveChanges()
+	private void onRequirementSelected()
 	{
-		if (selectedRequirement == null)
+		selectedRequirement = requirementList.getSelectedValue();
+		if (selectedRequirement != null)
 		{
-			JOptionPane.showMessageDialog(this, "No requirement selected to save.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
+			setEditingFieldsEnabled(true);
+			populateFieldsWithRequirementData(selectedRequirement);
 		}
-
-		// Update the selectedRequirement object with the values from the fields
-
-		// Update requirement ID
-		String newRequirementId = ((JTextField) parameterFields.get("Requirement ID")).getText();
-		if (newRequirementId == null || newRequirementId.trim().isEmpty())
+		else
 		{
-			JOptionPane.showMessageDialog(this, "Requirement ID is required.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
+			setEditingFieldsEnabled(false);
+			clearParameterFields();
 		}
-
-		// Check for duplicate IDs
-		for (int i = 0; i < dataModel.getRequirementListModel().size(); i++)
-		{
-			RequirementData existingRequirement = dataModel.getRequirementListModel().getElementAt(i);
-			if (existingRequirement != selectedRequirement && newRequirementId.equals(existingRequirement.getId()))
-			{
-				JOptionPane.showMessageDialog(this, "Requirement ID must be unique.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		}
-
-		selectedRequirement.setId(newRequirementId);
-
-		// Update requirement type
-		RequirementType newRequirementType = (RequirementType) requirementTypeComboBox.getSelectedItem();
-		selectedRequirement.setType(newRequirementType.toString());
-
-		// Update parameters
-		Map<String, Object> newParameters = new HashMap<>();
-		for (Map.Entry<String, JComponent> entry : parameterFields.entrySet())
-		{
-			String key = entry.getKey();
-			if ("Requirement ID".equals(key))
-				continue; // Already handled
-
-			Object value = getValueFromComponent(entry.getValue());
-			newParameters.put(key, value);
-		}
-		selectedRequirement.setParameters(newParameters);
-
-		// Update the requirement in the list model
-		requirementList.repaint();
-
-		// Notify listeners (e.g., StepMakingPanel to update requirement selectors)
-		dataModel.notifyRequirementChangeListeners();
 	}
 
-	private void populateFieldsWithRequirementData(RequirementData requirement)
+	private void populateFieldsWithRequirementData(RequirementData requirementData)
 	{
-		// Set the requirement ID
-		((JTextField) parameterFields.get("Requirement ID")).setText(requirement.getId());
-
 		// Set the requirement type
-		requirementTypeComboBox.setSelectedItem(RequirementType.fromString(requirement.getType()));
+		requirementTypeComboBox.setSelectedItem(requirementData.getType());
 
-		// Update parameter fields for the selected type
-		updateRequirementParameterFields();
+		currentIdComponent.setText(requirementData.getId());
 
-		// Set the parameters
-		for (Map.Entry<String, Object> entry : requirement.getParameters().entrySet())
+		// Update parameter fields
+		updateParameterFields();
+
+		// Set parameter values
+		Map<String, Object> params = requirementData.getParameters();
+		for (Map.Entry<String, Object> entry : params.entrySet())
 		{
-			JComponent component = parameterFields.get(entry.getKey());
-			if (component != null)
+			String paramName = entry.getKey();
+			Object value = entry.getValue();
+			JComponent field = parameterFields.get(paramName);
+			if (field != null)
 			{
-				setValueToComponent(component, entry.getValue());
+				setValueToField(field, value);
 			}
+		}
+	}
+
+	private void setValueToField(JComponent field, Object value)
+	{
+		if (field instanceof JTextField)
+		{
+			((JTextField) field).setText(value != null ? value.toString() : "");
+		}
+		else if (field instanceof JSpinner)
+		{
+			((JSpinner) field).setValue(value != null ? value : 0);
+		}
+		else if (field instanceof JCheckBox)
+		{
+			((JCheckBox) field).setSelected(value != null && (Boolean) value);
+		}
+		else if (field instanceof JComboBox)
+		{
+			((JComboBox<Object>) field).setSelectedItem(value);
 		}
 	}
 
 	private void setEditingFieldsEnabled(boolean enabled)
 	{
-		for (JComponent component : parameterFields.values())
+		requirementTypeComboBox.setEnabled(enabled);
+		for (JComponent field : parameterFields.values())
 		{
-			component.setEnabled(enabled);
+			field.setEnabled(enabled);
 		}
+		saveChangesButton.setEnabled(enabled);
+		removeRequirementButton.setEnabled(enabled);
 	}
 
-	private void clearEditingFields()
+	private void clearParameterFields()
 	{
-		for (JComponent component : parameterFields.values())
-		{
-			if (component instanceof JTextField)
-			{
-				((JTextField) component).setText("");
-			}
-			else if (component instanceof JComboBox)
-			{
-				((JComboBox<?>) component).setSelectedIndex(0);
-			}
-			else if (component instanceof JSpinner)
-			{
-				((JSpinner) component).setValue(1);
-			}
-			else if (component instanceof JCheckBox)
-			{
-				((JCheckBox) component).setSelected(false);
-			}
-		}
-	}
-
-	private Object getValueFromComponent(JComponent component)
-	{
-		if (component instanceof JTextField)
-		{
-			return ((JTextField) component).getText();
-		}
-		else if (component instanceof JComboBox)
-		{
-			return ((JComboBox<?>) component).getSelectedItem();
-		}
-		else if (component instanceof JSpinner)
-		{
-			return ((JSpinner) component).getValue();
-		}
-		else if (component instanceof JCheckBox)
-		{
-			return ((JCheckBox) component).isSelected();
-		}
-		return null;
-	}
-
-	private void setValueToComponent(JComponent component, Object value)
-	{
-		if (component instanceof JTextField)
-		{
-			((JTextField) component).setText(value.toString());
-		}
-		else if (component instanceof JComboBox)
-		{
-			((JComboBox) component).setSelectedItem(value);
-		}
-		else if (component instanceof JSpinner)
-		{
-			((JSpinner) component).setValue(value);
-		}
-		else if (component instanceof JCheckBox)
-		{
-			((JCheckBox) component).setSelected(Boolean.parseBoolean(value.toString()));
-		}
+		requirementTypeComboBox.setSelectedIndex(0);
+		parameterFieldsPanel.removeAll();
+		parameterFields.clear();
+		parameterFieldsPanel.revalidate();
+		parameterFieldsPanel.repaint();
 	}
 }

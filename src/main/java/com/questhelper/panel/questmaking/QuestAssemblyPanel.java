@@ -24,351 +24,387 @@
  */
 package com.questhelper.panel.questmaking;
 
+import com.questhelper.panel.JGenerator;
 import com.questhelper.questimport.QuestStepData;
 import com.questhelper.questimport.RequirementData;
 import com.questhelper.questimport.StepData;
+import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 
-@SuppressWarnings("unchecked")
 public class QuestAssemblyPanel extends JPanel
 {
-	private final DataModel dataModel;
+	private DataModel dataModel;
 	private JList<QuestStepData> questStepList;
+	private JPanel questStepDetailsPanel;
 	private JComboBox<StepData> stepComboBox;
-	private JComboBox<RequirementData>[] conditionalRequirementSelectors;
-
-	private JButton createQuestStepButton;
-	private JButton saveChangesButton;
-	private JButton removeQuestStepButton;
-	private JButton moveUpButton;
-	private JButton moveDownButton;
-
-	private QuestStepData selectedQuestStep;
+	private JPanel conditionalRequirementsListPanel;
+	private JButton addRequirementButton;
+	private QuestStepData selectedQuestStepData;
+	private List<JComboBox<RequirementData>> requirementComboBoxes;
 
 	public QuestAssemblyPanel(DataModel dataModel)
 	{
 		this.dataModel = dataModel;
-		setLayout(new BorderLayout());
+		this.requirementComboBoxes = new ArrayList<>();
 		initializeUI();
-
-		// Register listeners
-		dataModel.addStepChangeListener(this::updateStepComboBox);
-		dataModel.addRequirementChangeListener(this::updateConditionalRequirementSelectors);
-		dataModel.addQuestStepChangeListener(() -> questStepList.repaint());
+		addDataListeners();
 	}
 
 	private void initializeUI()
 	{
-		// Split the panel into two: list on the left, editing on the right
 		setLayout(new BorderLayout());
 
-		// Left panel with the quest steps list and move buttons
+		// Left panel with quest steps list
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		questStepList = new JList<>(dataModel.getQuestStepListModel());
 		questStepList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		questStepList.addListSelectionListener(e -> onQuestStepSelected());
+		JScrollPane questStepListScrollPane = new JScrollPane(questStepList);
+		leftPanel.add(questStepListScrollPane, BorderLayout.CENTER);
 
-		// Move buttons
-		JPanel moveButtonsPanel = new JPanel(new GridLayout(1, 2));
-		moveUpButton = new JButton("Move Up");
-		moveDownButton = new JButton("Move Down");
-		moveButtonsPanel.add(moveUpButton);
-		moveButtonsPanel.add(moveDownButton);
-
+		// Buttons to add/remove quest steps
+		JPanel questStepButtonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//		questStepButtonsPanel.setPreferredSize();
+		JButton addQuestStepButton = new JButton("Add Quest Step");
+		addQuestStepButton.addActionListener(e -> addQuestStep());
+		JButton removeQuestStepButton = new JButton("Remove Quest Step");
+		removeQuestStepButton.addActionListener(e -> removeQuestStep());
+		JButton moveUpButton = new JButton("Move Up");
 		moveUpButton.addActionListener(e -> moveQuestStepUp());
+		JButton moveDownButton = new JButton("Move Down");
 		moveDownButton.addActionListener(e -> moveQuestStepDown());
 
-		leftPanel.add(new JScrollPane(questStepList), BorderLayout.CENTER);
-		leftPanel.add(moveButtonsPanel, BorderLayout.SOUTH);
+		// Save changes button
+		JButton saveChangesButton = new JButton("Save Changes");
+		saveChangesButton.addActionListener(e -> saveChanges());
 
-		// Right panel with editing fields
-		JPanel rightPanel = new JPanel(new BorderLayout());
+		questStepButtonsPanel.add(addQuestStepButton);
+		questStepButtonsPanel.add(removeQuestStepButton);
+		questStepButtonsPanel.add(moveUpButton);
+		questStepButtonsPanel.add(moveDownButton);
+		questStepButtonsPanel.add(saveChangesButton);
 
-		// Editing fields panel
-		JPanel editingPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(4, 4, 4, 4);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+		// Right panel with quest step details
+		questStepDetailsPanel = new JPanel();
+		questStepDetailsPanel.setLayout(new BoxLayout(questStepDetailsPanel, BoxLayout.Y_AXIS));
 
 		// Step selection
-		editingPanel.add(new JLabel("Select Step:"), gbc);
-		gbc.gridx++;
-		stepComboBox = new JComboBox<>();
-		updateStepComboBox();
-		editingPanel.add(stepComboBox, gbc);
+		JPanel stepSelectionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel stepLabel = new JLabel("Select Step:");
+		stepComboBox = new JComboBox<>(new DefaultComboBoxModel<>(getStepListData()));
+		stepSelectionPanel.add(stepLabel);
+		stepSelectionPanel.add(stepComboBox);
+		questStepDetailsPanel.add(stepSelectionPanel, BorderLayout.NORTH);
 
-		// Conditional Requirements
-		gbc.gridx = 0;
-		gbc.gridy++;
-		gbc.gridwidth = 2;
-		editingPanel.add(new JLabel("Conditional Requirements:"), gbc);
+		// Conditional requirements
+		JPanel conditionalRequirementsPanel = new JPanel(new BorderLayout());
+		conditionalRequirementsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		int requirementSlots = 5;
-		conditionalRequirementSelectors = new JComboBox[requirementSlots];
-		for (int i = 0; i < requirementSlots; i++)
-		{
-			gbc.gridx = 0;
-			gbc.gridy++;
-			gbc.gridwidth = 1;
-			editingPanel.add(new JLabel("Requirement " + (i + 1) + ":"), gbc);
+		JPanel requirementHeaderPanel = new JPanel(new BorderLayout());
 
-			gbc.gridx++;
-			conditionalRequirementSelectors[i] = new JComboBox<>();
-			editingPanel.add(conditionalRequirementSelectors[i], gbc);
-		}
+		JTextPane conditionalRequirementsLabel = JGenerator.makeJTextPane("Requirement to continue:");
+		conditionalRequirementsLabel.setForeground(Color.WHITE);
+		requirementHeaderPanel.add(conditionalRequirementsLabel, BorderLayout.WEST);
 
-		updateConditionalRequirementSelectors();
+		conditionalRequirementsListPanel = new JPanel();
+		conditionalRequirementsListPanel.setLayout(new BoxLayout(conditionalRequirementsListPanel, BoxLayout.Y_AXIS));
+		conditionalRequirementsListPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		JScrollPane requirementsScrollPane = new JScrollPane(conditionalRequirementsListPanel);
 
-		// Buttons panel
-		JPanel buttonsPanel = new JPanel();
-		createQuestStepButton = new JButton("Create Quest Step");
-		saveChangesButton = new JButton("Save Changes");
-		removeQuestStepButton = new JButton("Remove Quest Step");
+		addRequirementButton = new JButton("Add Requirement");
+		addRequirementButton.addActionListener(e -> addConditionalRequirement());
+		requirementHeaderPanel.add(addRequirementButton, BorderLayout.AFTER_LINE_ENDS);
 
-		buttonsPanel.add(createQuestStepButton);
-		buttonsPanel.add(saveChangesButton);
-		buttonsPanel.add(removeQuestStepButton);
+//		JPanel requirementsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		conditionalRequirementsPanel.add(requirementHeaderPanel, BorderLayout.NORTH);
+//		conditionalRequirementsPanel.add(requirementsButtonsPanel, BorderLayout.CENTER);
+		conditionalRequirementsPanel.add(requirementsScrollPane, BorderLayout.CENTER);
 
-		createQuestStepButton.addActionListener(e -> createQuestStep());
-		saveChangesButton.addActionListener(e -> saveChanges());
-		removeQuestStepButton.addActionListener(e -> removeQuestStep());
+		questStepDetailsPanel.add(conditionalRequirementsPanel, BorderLayout.CENTER);
+//		questStepDetailsPanel.add(saveChangesButton);
 
-		// Initially disable editing fields and buttons
+		JSplitPane sl = new JSplitPane(JSplitPane.VERTICAL_SPLIT, leftPanel, questStepDetailsPanel);
+		sl.setOrientation(SwingConstants.VERTICAL);
+
+		add(sl, BorderLayout.CENTER);
+		add(questStepButtonsPanel, BorderLayout.SOUTH);
+
+		// Disable editing fields initially
 		setEditingFieldsEnabled(false);
-		saveChangesButton.setEnabled(false);
-		removeQuestStepButton.setEnabled(false);
-
-		rightPanel.add(editingPanel, BorderLayout.CENTER);
-		rightPanel.add(buttonsPanel, BorderLayout.SOUTH);
-
-		// Add left and right panels to the main panel
-		add(leftPanel, BorderLayout.WEST);
-		add(rightPanel, BorderLayout.CENTER);
-
-		// Register as a listener for data model changes
-		dataModel.addStepChangeListener(this::updateStepComboBox);
-		dataModel.addRequirementChangeListener(this::updateConditionalRequirementSelectors);
 	}
 
-	private void createQuestStep()
+	private void addDataListeners()
 	{
-		// Create a new QuestStepData object
-		QuestStepData newQuestStep = new QuestStepData();
-		newQuestStep.setConditionalRequirements(new ArrayList<>());
+		dataModel.getStepListModel().addListDataListener(new ListDataListener()
+		{
+			@Override
+			public void intervalAdded(ListDataEvent e)
+			{
+				updateStepComboBox();
+			}
 
-		// Add the new quest step to the list model
-		dataModel.getQuestStepListModel().addElement(newQuestStep);
+			@Override
+			public void intervalRemoved(ListDataEvent e)
+			{
+				updateStepComboBox();
+			}
 
-		// Select the new quest step in the list
-		questStepList.setSelectedValue(newQuestStep, true);
+			@Override
+			public void contentsChanged(ListDataEvent e)
+			{
+				updateStepComboBox();
+			}
+		});
+
+		dataModel.getRequirementListModel().addListDataListener(new ListDataListener()
+		{
+			@Override
+			public void intervalAdded(ListDataEvent e)
+			{
+				updateRequirementComboBoxes();
+			}
+
+			@Override
+			public void intervalRemoved(ListDataEvent e)
+			{
+				updateRequirementComboBoxes();
+			}
+
+			@Override
+			public void contentsChanged(ListDataEvent e)
+			{
+				updateRequirementComboBoxes();
+			}
+		});
 	}
 
 	private void onQuestStepSelected()
 	{
-		selectedQuestStep = questStepList.getSelectedValue();
-		if (selectedQuestStep != null)
+		selectedQuestStepData = questStepList.getSelectedValue();
+		if (selectedQuestStepData != null)
 		{
-			// Enable editing fields
 			setEditingFieldsEnabled(true);
-
-			// Enable Save Changes and Remove Quest Step buttons
-			saveChangesButton.setEnabled(true);
-			removeQuestStepButton.setEnabled(true);
-
-			// Populate fields with selected quest step's data
-			populateFieldsWithQuestStepData(selectedQuestStep);
+			populateQuestStepDetails(selectedQuestStepData);
 		}
 		else
 		{
-			// Disable editing fields
 			setEditingFieldsEnabled(false);
-
-			// Disable Save Changes and Remove Quest Step buttons
-			saveChangesButton.setEnabled(false);
-			removeQuestStepButton.setEnabled(false);
-
-			// Clear the fields
-			clearEditingFields();
+			clearQuestStepDetails();
 		}
 	}
 
-	private void saveChanges()
+	private void addQuestStep()
 	{
-		if (selectedQuestStep == null)
-		{
-			JOptionPane.showMessageDialog(this, "No quest step selected to save.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		// Update associated step
-		StepData selectedStep = (StepData) stepComboBox.getSelectedItem();
-		if (selectedStep == null)
-		{
-			JOptionPane.showMessageDialog(this, "Please select a step.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		selectedQuestStep.setStepId(selectedStep.getId());
-
-		// Update conditional requirements
-		List<String> conditionalRequirements = new ArrayList<>();
-		for (JComboBox<RequirementData> selector : conditionalRequirementSelectors)
-		{
-			RequirementData selectedRequirement = (RequirementData) selector.getSelectedItem();
-			if (selectedRequirement != null)
-			{
-				String reqId = selectedRequirement.getId();
-				if (conditionalRequirements.contains(reqId))
-				{
-					JOptionPane.showMessageDialog(this, "Duplicate conditional requirements selected.", "Error", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				conditionalRequirements.add(reqId);
-			}
-		}
-		selectedQuestStep.setConditionalRequirements(conditionalRequirements);
-
-		// Update the quest step in the list model
-		questStepList.repaint();
+		QuestStepData newQuestStepData = new QuestStepData();
+		newQuestStepData.setStepData(null);
+		newQuestStepData.setConditionalRequirements(new ArrayList<>());
+		dataModel.getQuestStepListModel().addElement(newQuestStepData);
+		questStepList.setSelectedValue(newQuestStepData, true);
 	}
 
 	private void removeQuestStep()
 	{
-		if (selectedQuestStep != null)
+		if (selectedQuestStepData != null)
 		{
 			int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove the selected quest step?", "Confirm Removal", JOptionPane.YES_NO_OPTION);
 			if (confirm == JOptionPane.YES_OPTION)
 			{
-				dataModel.getQuestStepListModel().removeElement(selectedQuestStep);
-				selectedQuestStep = null;
-
-				// Disable editing fields and buttons
+				dataModel.getQuestStepListModel().removeElement(selectedQuestStepData);
+				selectedQuestStepData = null;
 				setEditingFieldsEnabled(false);
-				saveChangesButton.setEnabled(false);
-				removeQuestStepButton.setEnabled(false);
-
-				// Clear the fields
-				clearEditingFields();
+				clearQuestStepDetails();
 			}
 		}
 	}
 
 	private void moveQuestStepUp()
 	{
-		int selectedIndex = questStepList.getSelectedIndex();
-		if (selectedIndex > 0)
+		int index = questStepList.getSelectedIndex();
+		if (index > 0)
 		{
-			QuestStepData questStep = dataModel.getQuestStepListModel().getElementAt(selectedIndex);
-			dataModel.getQuestStepListModel().remove(selectedIndex);
-			dataModel.getQuestStepListModel().add(selectedIndex - 1, questStep);
-			questStepList.setSelectedIndex(selectedIndex - 1);
+			DefaultListModel<QuestStepData> model = dataModel.getQuestStepListModel();
+			QuestStepData questStepData = model.getElementAt(index);
+			model.removeElementAt(index);
+			model.add(index - 1, questStepData);
+			questStepList.setSelectedIndex(index - 1);
 		}
 	}
 
 	private void moveQuestStepDown()
 	{
-		int selectedIndex = questStepList.getSelectedIndex();
-		if (selectedIndex < dataModel.getQuestStepListModel().getSize() - 1)
+		int index = questStepList.getSelectedIndex();
+		DefaultListModel<QuestStepData> model = dataModel.getQuestStepListModel();
+		if (index >= 0 && index < model.size() - 1)
 		{
-			QuestStepData questStep = dataModel.getQuestStepListModel().getElementAt(selectedIndex);
-			dataModel.getQuestStepListModel().remove(selectedIndex);
-			dataModel.getQuestStepListModel().add(selectedIndex + 1, questStep);
-			questStepList.setSelectedIndex(selectedIndex + 1);
+			QuestStepData questStepData = model.getElementAt(index);
+			model.removeElementAt(index);
+			model.add(index + 1, questStepData);
+			questStepList.setSelectedIndex(index + 1);
 		}
 	}
 
 	private void setEditingFieldsEnabled(boolean enabled)
 	{
 		stepComboBox.setEnabled(enabled);
-		for (JComboBox<RequirementData> selector : conditionalRequirementSelectors)
+		addRequirementButton.setEnabled(enabled);
+		for (JComboBox<RequirementData> comboBox : requirementComboBoxes)
 		{
-			selector.setEnabled(enabled);
+			comboBox.setEnabled(enabled);
 		}
 	}
 
-	private void populateFieldsWithQuestStepData(QuestStepData questStep)
+	private void populateQuestStepDetails(QuestStepData questStepData)
 	{
-		// Set the selected step
-		StepData associatedStep = null;
-		String stepId = questStep.getStepId();
-		if (stepId != null)
+		stepComboBox.setSelectedItem(questStepData.getStepData());
+
+		// Clear existing requirement rows
+		conditionalRequirementsListPanel.removeAll();
+		requirementComboBoxes.clear();
+
+		// Populate conditional requirements
+		for (RequirementData reqData : questStepData.getConditionalRequirements())
 		{
-			for (int i = 0; i < dataModel.getStepListModel().size(); i++)
+			if (reqData != null)
 			{
-				StepData stepData = dataModel.getStepListModel().getElementAt(i);
-				if (stepData.getId().equals(stepId))
-				{
-					associatedStep = stepData;
-					break;
-				}
+				addRequirementRow(reqData);
 			}
 		}
-		stepComboBox.setSelectedItem(associatedStep);
 
-		// Set the conditional requirements
-		List<String> condReqIds = questStep.getConditionalRequirements();
-		for (int i = 0; i < conditionalRequirementSelectors.length; i++)
+		// Refresh the panel
+		conditionalRequirementsListPanel.revalidate();
+		conditionalRequirementsListPanel.repaint();
+	}
+
+	private void clearQuestStepDetails()
+	{
+		stepComboBox.setSelectedIndex(-1);
+		conditionalRequirementsListPanel.removeAll();
+		requirementComboBoxes.clear();
+		conditionalRequirementsListPanel.revalidate();
+		conditionalRequirementsListPanel.repaint();
+	}
+
+	private void saveChanges()
+	{
+		if (selectedQuestStepData != null)
 		{
-			JComboBox<RequirementData> selector = conditionalRequirementSelectors[i];
-			RequirementData selectedRequirement = null;
-			if (condReqIds != null && i < condReqIds.size())
+			// Save selected step
+			StepData selectedStep = (StepData) stepComboBox.getSelectedItem();
+			if (selectedStep != null)
 			{
-				String reqId = condReqIds.get(i);
-				for (int j = 0; j < dataModel.getRequirementListModel().size(); j++)
+				selectedQuestStepData.setStepData(selectedStep);
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(this, "Please select a step.", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			// Save conditional requirements
+			List<RequirementData> reqDatum = new ArrayList<>();
+			for (JComboBox<RequirementData> comboBox : requirementComboBoxes)
+			{
+				RequirementData reqData = (RequirementData) comboBox.getSelectedItem();
+				if (reqData != null)
 				{
-					RequirementData reqData = dataModel.getRequirementListModel().getElementAt(j);
-					if (reqData.getId().equals(reqId))
-					{
-						selectedRequirement = reqData;
-						break;
-					}
+					reqDatum.add(reqData);
 				}
 			}
-			selector.setSelectedItem(selectedRequirement);
+			selectedQuestStepData.setConditionalRequirements(reqDatum);
+
+			// Refresh the quest step list
+			questStepList.repaint();
 		}
 	}
 
-	private void clearEditingFields()
+	private void addConditionalRequirement()
 	{
-		stepComboBox.setSelectedIndex(0);
-		for (JComboBox<RequirementData> selector : conditionalRequirementSelectors)
+		addRequirementRow(null);
+	}
+
+	private void addRequirementRow(RequirementData selectedRequirement)
+	{
+		JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JComboBox<RequirementData> requirementComboBox = new JComboBox<>(new DefaultComboBoxModel<>(getRequirementListData()));
+		if (selectedRequirement != null)
 		{
-			selector.setSelectedIndex(0);
+			requirementComboBox.setSelectedItem(selectedRequirement);
 		}
+		JButton removeButton = new JButton("Remove");
+		removeButton.addActionListener(e -> removeRequirementRow(rowPanel, requirementComboBox));
+
+		rowPanel.add(requirementComboBox);
+		rowPanel.add(removeButton);
+
+		requirementComboBoxes.add(requirementComboBox);
+		conditionalRequirementsListPanel.add(rowPanel);
+
+		conditionalRequirementsListPanel.revalidate();
+		conditionalRequirementsListPanel.repaint();
+	}
+
+	private void removeRequirementRow(JPanel rowPanel, JComboBox<RequirementData> requirementComboBox)
+	{
+		conditionalRequirementsListPanel.remove(rowPanel);
+		requirementComboBoxes.remove(requirementComboBox);
+
+		conditionalRequirementsListPanel.revalidate();
+		conditionalRequirementsListPanel.repaint();
 	}
 
 	private void updateStepComboBox()
 	{
-		StepData selected = (StepData) stepComboBox.getSelectedItem();
-		StepData[] stepsArray = new StepData[dataModel.getStepListModel().size() + 1];
-		stepsArray[0] = null; // Representing "None"
-		for (int i = 0; i < dataModel.getStepListModel().size(); i++)
+		SwingUtilities.invokeLater(() ->
 		{
-			stepsArray[i + 1] = dataModel.getStepListModel().getElementAt(i);
-		}
-		stepComboBox.setModel(new DefaultComboBoxModel<>(stepsArray));
-		stepComboBox.setSelectedItem(selected);
+			StepData selectedStep = (StepData) stepComboBox.getSelectedItem();
+			stepComboBox.setModel(new DefaultComboBoxModel<>(getStepListData()));
+			if (selectedStep != null)
+			{
+				stepComboBox.setSelectedItem(selectedStep);
+			}
+		});
 	}
 
-	private void updateConditionalRequirementSelectors()
+	private void updateRequirementComboBoxes()
 	{
-		RequirementData[] requirementsArray = new RequirementData[dataModel.getRequirementListModel().size() + 1];
-		requirementsArray[0] = null; // Representing "None"
-		for (int i = 0; i < dataModel.getRequirementListModel().size(); i++)
+		SwingUtilities.invokeLater(() ->
 		{
-			requirementsArray[i + 1] = dataModel.getRequirementListModel().getElementAt(i);
-		}
+			RequirementData[] requirementsArray = getRequirementListData();
+			for (JComboBox<RequirementData> comboBox : requirementComboBoxes)
+			{
+				RequirementData selectedReq = (RequirementData) comboBox.getSelectedItem();
+				comboBox.setModel(new DefaultComboBoxModel<>(requirementsArray));
+				if (selectedReq != null)
+				{
+					comboBox.setSelectedItem(selectedReq);
+				}
+			}
+		});
+	}
 
-		for (JComboBox<RequirementData> selector : conditionalRequirementSelectors)
+	private StepData[] getStepListData()
+	{
+		StepData[] stepsArray = new StepData[dataModel.getStepListModel().getSize()];
+		for (int i = 0; i < dataModel.getStepListModel().getSize(); i++)
 		{
-			RequirementData selected = (RequirementData) selector.getSelectedItem();
-			selector.setModel(new DefaultComboBoxModel<>(requirementsArray));
-			selector.setSelectedItem(selected);
+			stepsArray[i] = dataModel.getStepListModel().getElementAt(i);
 		}
+		return stepsArray;
+	}
+
+	private RequirementData[] getRequirementListData()
+	{
+		RequirementData[] requirementsArray = new RequirementData[dataModel.getRequirementListModel().getSize()];
+		for (int i = 0; i < dataModel.getRequirementListModel().getSize(); i++)
+		{
+			requirementsArray[i] = dataModel.getRequirementListModel().getElementAt(i);
+		}
+		return requirementsArray;
 	}
 }

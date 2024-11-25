@@ -24,9 +24,14 @@
  */
 package com.questhelper.panel.questmaking;
 
+import com.questhelper.questimport.JsonConstants;
 import com.questhelper.questimport.RequirementData;
 import com.questhelper.questimport.StepData;
+import com.questhelper.questimport.StepParameterDefinitions;
+import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,356 +40,176 @@ import java.util.Map;
 
 public class StepMakingPanel extends JPanel
 {
-	private JComboBox<StepType> stepTypeComboBox;
-	private JPanel parameterPanel;
-	private JList<StepData> stepList;
 	private DataModel dataModel;
-	private StepData selectedStep;
+	private JList<StepData> stepList;
+	private JComboBox<String> stepTypeComboBox;
+	private JPanel parameterFieldsPanel;
 	private Map<String, JComponent> parameterFields;
-	private JComboBox<RequirementData>[] requirementSelectors;
-
 	private JButton createStepButton;
 	private JButton saveChangesButton;
 	private JButton removeStepButton;
+	private StepData selectedStep;
+	private JTextField currentIdComponent;
+	private JPanel requirementsListPanel;
+	private List<JComboBox<RequirementData>> requirementComboBoxes;
+	private JButton addRequirementButton;
 
 	public StepMakingPanel(DataModel dataModel)
 	{
 		this.dataModel = dataModel;
 		this.parameterFields = new HashMap<>();
-		setLayout(new BorderLayout());
+		this.requirementComboBoxes = new ArrayList<>();
 		initializeUI();
-
-		// Register as a listener for requirement changes
-		dataModel.addRequirementChangeListener(this::updateRequirementSelectors);
+		addDataListeners();
 	}
 
 	private void initializeUI()
 	{
-		// Top panel for step creation
-		JPanel creationPanel = new JPanel(new BorderLayout());
+		setLayout(new BorderLayout());
 
-		// Step type selection
-		stepTypeComboBox = new JComboBox<>(StepType.values());
-		stepTypeComboBox.addActionListener(e -> updateParameterFields());
+		currentIdComponent = new JTextField(10);;
 
-		// Panel to hold parameter fields
-		parameterPanel = new JPanel(new GridBagLayout());
-
-		// Step Requirements
-		JPanel stepRequirementsPanel = new JPanel(new GridBagLayout());
-		stepRequirementsPanel.setBorder(BorderFactory.createTitledBorder("Step Requirements"));
-
-		// Initialize the requirement selectors
-		int requirementSlots = 5;
-		requirementSelectors = new JComboBox[requirementSlots];
-		GridBagConstraints gbcReq = new GridBagConstraints();
-		gbcReq.insets = new Insets(4, 4, 4, 4);
-		gbcReq.anchor = GridBagConstraints.WEST;
-		gbcReq.fill = GridBagConstraints.HORIZONTAL;
-		gbcReq.gridx = 0;
-		gbcReq.gridy = 0;
-
-		for (int i = 0; i < requirementSlots; i++)
-		{
-			stepRequirementsPanel.add(new JLabel("Requirement " + (i + 1) + ":"), gbcReq);
-			gbcReq.gridx++;
-			requirementSelectors[i] = new JComboBox<>();
-			stepRequirementsPanel.add(requirementSelectors[i], gbcReq);
-			gbcReq.gridx = 0;
-			gbcReq.gridy++;
-		}
-
-		// Initialize parameter fields
-		updateParameterFields();
-
-		// Add components to creation panel
-		JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		topPanel.add(new JLabel("Step Type:"));
-		topPanel.add(stepTypeComboBox);
-		creationPanel.add(topPanel, BorderLayout.NORTH);
-		creationPanel.add(parameterPanel, BorderLayout.CENTER);
-		creationPanel.add(stepRequirementsPanel, BorderLayout.EAST);
-
-		// Steps list
+		// Left panel with the list of steps
+		JPanel leftPanel = new JPanel(new BorderLayout());
 		stepList = new JList<>(dataModel.getStepListModel());
 		stepList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		// Add list selection listener
 		stepList.addListSelectionListener(e -> onStepSelected());
+		JScrollPane listScrollPane = new JScrollPane(stepList);
+		leftPanel.add(listScrollPane, BorderLayout.CENTER);
 
-		// Buttons panel
-		JPanel buttonsPanel = new JPanel();
+		// Create Step button
 		createStepButton = new JButton("Create Step");
-		saveChangesButton = new JButton("Save Changes");
-		removeStepButton = new JButton("Remove Step");
+		createStepButton.addActionListener(e -> createStep());
+		leftPanel.add(createStepButton, BorderLayout.SOUTH);
 
-		buttonsPanel.add(createStepButton);
+		// Right panel with editing fields
+		JPanel rightPanel = new JPanel(new BorderLayout());
+
+		// Step Type ComboBox
+		stepTypeComboBox = new JComboBox<>(StepParameterDefinitions.getAllStepTypes());
+		stepTypeComboBox.addActionListener(e -> updateParameterFields());
+
+		// Parameter fields panel
+		parameterFieldsPanel = new JPanel();
+		parameterFieldsPanel.setLayout(new BoxLayout(parameterFieldsPanel, BoxLayout.Y_AXIS));
+
+		// Save Changes and Remove Step buttons
+		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		saveChangesButton = new JButton("Save Changes");
+		saveChangesButton.addActionListener(e -> saveChanges());
+		removeStepButton = new JButton("Remove Step");
+		removeStepButton.addActionListener(e -> removeStep());
 		buttonsPanel.add(saveChangesButton);
 		buttonsPanel.add(removeStepButton);
 
-		// Add action listeners
-		createStepButton.addActionListener(e -> createStep());
-		saveChangesButton.addActionListener(e -> saveChanges());
-		removeStepButton.addActionListener(e -> removeStep());
+		// Add components to right panel
+		rightPanel.add(stepTypeComboBox, BorderLayout.NORTH);
+		rightPanel.add(new JScrollPane(parameterFieldsPanel), BorderLayout.CENTER);
+		rightPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
-		// Initially disable editing fields and buttons
+		// Conditional requirements
+		JPanel requirementsPanel = new JPanel(new BorderLayout());
+		JLabel requirementsLabel = new JLabel("Requirements:");
+		requirementsListPanel = new JPanel();
+		requirementsListPanel.setLayout(new BoxLayout(requirementsListPanel, BoxLayout.Y_AXIS));
+		requirementsListPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		JScrollPane requirementsScrollPane = new JScrollPane(requirementsListPanel);
+		JPanel requirementsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		addRequirementButton = new JButton("Add Requirement");
+		addRequirementButton.addActionListener(e -> addRequirement());
+		requirementsButtonsPanel.add(addRequirementButton);
+		requirementsPanel.add(requirementsLabel, BorderLayout.NORTH);
+		requirementsPanel.add(requirementsScrollPane, BorderLayout.CENTER);
+		requirementsPanel.add(requirementsButtonsPanel, BorderLayout.SOUTH);
+
+		JSplitPane sl = new JSplitPane(JSplitPane.VERTICAL_SPLIT, leftPanel, rightPanel);
+		sl.setOrientation(SwingConstants.VERTICAL);
+		JSplitPane sl2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, sl, requirementsPanel);
+		sl2.setOrientation(SwingConstants.VERTICAL);
+
+		add(sl2);
+
 		setEditingFieldsEnabled(false);
-		saveChangesButton.setEnabled(false);
-		removeStepButton.setEnabled(false);
-
-		updateRequirementSelectors();
-
-		// Assemble the panel
-		add(creationPanel, BorderLayout.NORTH);
-		add(new JScrollPane(stepList), BorderLayout.CENTER);
-		add(buttonsPanel, BorderLayout.SOUTH);
-	}
-
-	private void updateRequirementSelectors()
-	{
-		// Create a new array including "None" option and all requirements
-		RequirementData[] requirementsArray = new RequirementData[dataModel.getRequirementListModel().size() + 1];
-		requirementsArray[0] = null; // Representing "None"
-		for (int i = 0; i < dataModel.getRequirementListModel().size(); i++)
-		{
-			requirementsArray[i + 1] = dataModel.getRequirementListModel().getElementAt(i);
-		}
-
-		// Update each selector
-		for (JComboBox<RequirementData> selector : requirementSelectors)
-		{
-			RequirementData selected = (RequirementData) selector.getSelectedItem();
-			selector.setModel(new DefaultComboBoxModel<>(requirementsArray));
-			selector.setSelectedItem(selected);
-		}
-	}
-
-	private void setEditingFieldsEnabled(boolean enabled)
-	{
-		for (JComponent component : parameterFields.values())
-		{
-			component.setEnabled(enabled);
-		}
-		// Enable or disable requirement selectors
-		for (JComboBox<RequirementData> selector : requirementSelectors)
-		{
-			selector.setEnabled(enabled);
-		}
 	}
 
 	private void updateParameterFields()
 	{
-		// Preserve the existing parameter values
-		Map<String, Object> existingValues = new HashMap<>();
-		for (Map.Entry<String, JComponent> entry : parameterFields.entrySet())
-		{
-			String key = entry.getKey();
-			JComponent component = entry.getValue();
-			Object value = getValueFromComponent(component);
-			existingValues.put(key, value);
-		}
+		String selectedType = (String) stepTypeComboBox.getSelectedItem();
+		List<String> parameters = StepParameterDefinitions.getParametersForStepType(selectedType);
 
-		parameterPanel.removeAll();
+		parameterFieldsPanel.removeAll();
 		parameterFields.clear();
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(4, 4, 4, 4);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+		addIdField();
 
-		// Step ID field
-		parameterPanel.add(new JLabel("Step ID:"), gbc);
-		gbc.gridx++;
-		JTextField stepIdField = new JTextField(20);
-		stepIdField.setEnabled(false); // Step ID should not be editable after creation
-		parameterPanel.add(stepIdField, gbc);
-		parameterFields.put("Step ID", stepIdField);
-
-		StepType selectedType = (StepType) stepTypeComboBox.getSelectedItem();
-
-		gbc.gridx = 0;
-		gbc.gridy++;
-
-		// Add fields based on the selected step type
-		switch (selectedType)
+		for (String param : parameters)
 		{
-			case NPC_STEP:
-				parameterPanel.add(new JLabel("NPC ID:"), gbc);
-				gbc.gridx++;
-				JSpinner npcIdSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
-				parameterPanel.add(npcIdSpinner, gbc);
-				parameterFields.put("NPC ID", npcIdSpinner);
+			JLabel label = new JLabel(param + ":");
+			JComponent field = createFieldForParameter(param);
+			parameterFields.put(param, field);
 
-				gbc.gridx = 0;
-				gbc.gridy++;
-				parameterPanel.add(new JLabel("Text:"), gbc);
-				gbc.gridx++;
-				JTextField textField = new JTextField(20);
-				parameterPanel.add(textField, gbc);
-				parameterFields.put("text", textField);
-
-				break;
-
-			case OBJECT_STEP:
-				parameterPanel.add(new JLabel("Object ID:"), gbc);
-				gbc.gridx++;
-				JSpinner objectIdSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
-				parameterPanel.add(objectIdSpinner, gbc);
-				parameterFields.put("Object ID", objectIdSpinner);
-
-				gbc.gridx = 0;
-				gbc.gridy++;
-				parameterPanel.add(new JLabel("Text:"), gbc);
-				gbc.gridx++;
-				JTextField objectActionField = new JTextField(20);
-				parameterPanel.add(objectActionField, gbc);
-				parameterFields.put("text", objectActionField);
-				break;
-
+			JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			fieldPanel.add(label);
+			fieldPanel.add(field);
+			parameterFieldsPanel.add(fieldPanel);
 		}
 
-		// Restore existing values where keys match
-		for (Map.Entry<String, JComponent> entry : parameterFields.entrySet())
+		parameterFieldsPanel.revalidate();
+		parameterFieldsPanel.repaint();
+	}
+
+	private void addIdField()
+	{
+		JLabel label = new JLabel("id:");
+
+		JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		fieldPanel.add(label);
+		fieldPanel.add(currentIdComponent);
+		parameterFieldsPanel.add(fieldPanel);
+	}
+
+	private JComponent createFieldForParameter(String param)
+	{
+		switch (param)
 		{
-			String key = entry.getKey();
-			Object value = existingValues.get(key);
-			if (value != null)
-			{
-				setValueToComponent(entry.getValue(), value);
-			}
+			case JsonConstants.PARAM_TEXT:
+				return new JTextField(10);
+			case JsonConstants.PARAM_NPC_ID:
+			case JsonConstants.PARAM_OBJECT_ID:
+			case JsonConstants.PARAM_WORLD_POINT_X:
+			case JsonConstants.PARAM_WORLD_POINT_Y:
+			case JsonConstants.PARAM_WORLD_POINT_Z:
+				return new JSpinner(new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
+			// Add other parameters as needed
+			default:
+				return new JTextField(10);
 		}
-
-		// Enable or disable editing fields based on whether a step is selected
-		boolean enabled = selectedStep != null;
-		setEditingFieldsEnabled(enabled);
-
-		parameterPanel.revalidate();
-		parameterPanel.repaint();
 	}
 
 	private void createStep()
 	{
-		// Create a new StepData object with a default or unique ID
-		String defaultStepId = "step" + (dataModel.getStepListModel().getSize() + 1);
+		// Create a new StepData with default values
 		StepData newStep = new StepData();
-		newStep.setId(defaultStepId);
-		newStep.setType(stepTypeComboBox.getSelectedItem().toString());
+		newStep.setId(generateUniqueStepId());
+		newStep.setType((String) stepTypeComboBox.getSelectedItem());
 		newStep.setParameters(new HashMap<>());
 		newStep.setStepRequirements(new ArrayList<>());
 
-		// Add the new step to the list model
 		dataModel.getStepListModel().addElement(newStep);
-
-		// Select the new step in the list
 		stepList.setSelectedValue(newStep, true);
-
-		for (JComboBox<RequirementData> selector : requirementSelectors)
-		{
-			selector.setSelectedIndex(0); // Set to "None"
-		}
-
-		dataModel.notifyStepChangeListeners();
 	}
 
-	private void onStepSelected()
+	private String generateUniqueStepId()
 	{
-		selectedStep = stepList.getSelectedValue();
-		if (selectedStep != null)
+		int counter = 1;
+		String baseId = "step";
+		String newId = baseId + counter;
+		while (dataModel.containsStepWithId(newId))
 		{
-			// Enable editing fields
-			setEditingFieldsEnabled(true);
-
-			// Enable Save Changes and Remove Step buttons
-			saveChangesButton.setEnabled(true);
-			removeStepButton.setEnabled(true);
-
-			// Populate fields with selected step's data
-			populateFieldsWithStepData(selectedStep);
+			counter++;
+			newId = baseId + counter;
 		}
-		else
-		{
-			// Disable editing fields
-			setEditingFieldsEnabled(false);
-
-			// Disable Save Changes and Remove Step buttons
-			saveChangesButton.setEnabled(false);
-			removeStepButton.setEnabled(false);
-
-			// Clear the fields
-			clearEditingFields();
-		}
-	}
-
-	private void populateFieldsWithStepData(StepData step)
-	{
-		// Set the step ID
-		((JTextField) parameterFields.get("Step ID")).setText(step.getId());
-
-		// Set the step type
-		stepTypeComboBox.setSelectedItem(StepType.fromString(step.getType()));
-
-		// Update parameter fields for the selected type
-		updateParameterFields();
-
-		// Set the parameters
-		for (Map.Entry<String, Object> entry : step.getParameters().entrySet())
-		{
-			JComponent component = parameterFields.get(entry.getKey());
-			if (component != null)
-			{
-				setValueToComponent(component, entry.getValue());
-			}
-		}
-
-		List<String> stepReqIds = step.getStepRequirements();
-		for (int i = 0; i < requirementSelectors.length; i++)
-		{
-			JComboBox<RequirementData> selector = requirementSelectors[i];
-			RequirementData selectedRequirement = null;
-			if (stepReqIds != null && i < stepReqIds.size())
-			{
-				String reqId = stepReqIds.get(i);
-				for (int j = 0; j < dataModel.getRequirementListModel().size(); j++)
-				{
-					RequirementData reqData = dataModel.getRequirementListModel().getElementAt(j);
-					if (reqData.getId().equals(reqId))
-					{
-						selectedRequirement = reqData;
-						break;
-					}
-				}
-			}
-			selector.setSelectedItem(selectedRequirement);
-		}
-	}
-
-	private void clearEditingFields()
-	{
-		for (JComponent component : parameterFields.values())
-		{
-			if (component instanceof JTextField)
-			{
-				((JTextField) component).setText("");
-			}
-			else if (component instanceof JComboBox)
-			{
-				((JComboBox<?>) component).setSelectedIndex(0);
-			}
-			else if (component instanceof JSpinner)
-			{
-				((JSpinner) component).setValue(1);
-			}
-			else if (component instanceof JCheckBox)
-			{
-				((JCheckBox) component).setSelected(false);
-			}
-		}
-		for (JComboBox<RequirementData> selector : requirementSelectors)
-		{
-			selector.setSelectedIndex(0); // Set to "None"
-		}
+		return newId;
 	}
 
 	private void saveChanges()
@@ -395,57 +220,60 @@ public class StepMakingPanel extends JPanel
 			return;
 		}
 
-		// Update step ID
-		String newStepId = ((JTextField) parameterFields.get("Step ID")).getText();
-		if (newStepId == null || newStepId.trim().isEmpty())
-		{
-			JOptionPane.showMessageDialog(this, "Step ID is required.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		// Check for duplicate IDs
-		for (int i = 0; i < dataModel.getStepListModel().size(); i++)
-		{
-			StepData existingStep = dataModel.getStepListModel().getElementAt(i);
-			if (existingStep != selectedStep && newStepId.equals(existingStep.getId()))
-			{
-				JOptionPane.showMessageDialog(this, "Step ID must be unique.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		}
-
-		selectedStep.setId(newStepId);
-
 		// Update step type
-		StepType newStepType = (StepType) stepTypeComboBox.getSelectedItem();
-		selectedStep.setType(newStepType.toString());
+		String selectedType = (String) stepTypeComboBox.getSelectedItem();
+		selectedStep.setType(selectedType);
+		selectedStep.setId(currentIdComponent.getText());
 
 		// Update parameters
-		Map<String, Object> newParameters = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 		for (Map.Entry<String, JComponent> entry : parameterFields.entrySet())
 		{
-			String key = entry.getKey();
-			if ("Step ID".equals(key))
-				continue; // Already handled
-			Object value = getValueFromComponent(entry.getValue());
-			newParameters.put(key, value);
+			String paramName = entry.getKey();
+			JComponent field = entry.getValue();
+			Object value = getValueFromField(field);
+			params.put(paramName, value);
 		}
-		selectedStep.setParameters(newParameters);
+		selectedStep.setParameters(params);
 
-		// Update step requirements
-		List<String> stepRequirements = new ArrayList<>();
-		for (JComboBox<RequirementData> selector : requirementSelectors)
+		// Save requirements
+		List<RequirementData> reqDatas = new ArrayList<>();
+		for (JComboBox<RequirementData> comboBox : requirementComboBoxes)
 		{
-			RequirementData selectedRequirement = (RequirementData) selector.getSelectedItem();
-			if (selectedRequirement != null)
+			RequirementData reqData = (RequirementData) comboBox.getSelectedItem();
+			if (reqData != null)
 			{
-				stepRequirements.add(selectedRequirement.getId());
+				reqDatas.add(reqData);
 			}
 		}
-		selectedStep.setStepRequirements(stepRequirements);
+		selectedStep.setStepRequirements(reqDatas);
 
-		// Update the step in the list model
+		// Refresh the list
 		stepList.repaint();
+	}
+
+	private Object getValueFromField(JComponent field)
+	{
+		if (field instanceof JTextField)
+		{
+			return ((JTextField) field).getText();
+		}
+		else if (field instanceof JSpinner)
+		{
+			return ((JSpinner) field).getValue();
+		}
+		else if (field instanceof JCheckBox)
+		{
+			return ((JCheckBox) field).isSelected();
+		}
+		else if (field instanceof JComboBox)
+		{
+			return ((JComboBox<?>) field).getSelectedItem();
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	private void removeStep()
@@ -457,58 +285,195 @@ public class StepMakingPanel extends JPanel
 			{
 				dataModel.getStepListModel().removeElement(selectedStep);
 				selectedStep = null;
-
-				// Disable editing fields and buttons
 				setEditingFieldsEnabled(false);
-				saveChangesButton.setEnabled(false);
-				removeStepButton.setEnabled(false);
+				clearParameterFields();
+			}
+		}
+	}
 
-				// Clear the fields
-				clearEditingFields();
+	private void onStepSelected()
+	{
+		selectedStep = stepList.getSelectedValue();
+		if (selectedStep != null)
+		{
+			setEditingFieldsEnabled(true);
+			populateFieldsWithStepData(selectedStep);
+		}
+		else
+		{
+			setEditingFieldsEnabled(false);
+			clearParameterFields();
+		}
+	}
+
+	private void populateFieldsWithStepData(StepData stepData)
+	{
+		requirementsListPanel.removeAll();
+		requirementComboBoxes.clear();
+
+		currentIdComponent.setText(stepData.getId());
+
+		// Populate requirements
+		for (RequirementData reqData : stepData.getStepRequirements())
+		{
+			if (reqData != null)
+			{
+				addRequirementRow(reqData);
 			}
 		}
 
-		dataModel.notifyStepChangeListeners();
+		// Refresh the panel
+		requirementsListPanel.revalidate();
+		requirementsListPanel.repaint();
+
+		// Set the step type
+		stepTypeComboBox.setSelectedItem(stepData.getType());
+
+		// Update parameter fields
+		updateParameterFields();
+
+		// Set parameter values
+		Map<String, Object> params = stepData.getParameters();
+		for (Map.Entry<String, Object> entry : params.entrySet())
+		{
+			String paramName = entry.getKey();
+			Object value = entry.getValue();
+			JComponent field = parameterFields.get(paramName);
+			if (field != null)
+			{
+				setValueToField(field, value);
+			}
+		}
 	}
 
-	private Object getValueFromComponent(JComponent component)
+	private void addRequirement()
 	{
-		if (component instanceof JTextField)
-		{
-			return ((JTextField) component).getText();
-		}
-		else if (component instanceof JComboBox)
-		{
-			return ((JComboBox<?>) component).getSelectedItem();
-		}
-		else if (component instanceof JSpinner)
-		{
-			return ((JSpinner) component).getValue();
-		}
-		else if (component instanceof JCheckBox)
-		{
-			return ((JCheckBox) component).isSelected();
-		}
-		return null;
+		addRequirementRow(null);
 	}
 
-	private void setValueToComponent(JComponent component, Object value)
+	private void setValueToField(JComponent field, Object value)
 	{
-		if (component instanceof JTextField)
+		if (field instanceof JTextField)
 		{
-			((JTextField) component).setText(value.toString());
+			((JTextField) field).setText(value != null ? value.toString() : "");
 		}
-		else if (component instanceof JComboBox)
+		else if (field instanceof JSpinner)
 		{
-			((JComboBox) component).setSelectedItem(value);
+			((JSpinner) field).setValue(value != null ? value : 0);
 		}
-		else if (component instanceof JSpinner)
+		else if (field instanceof JCheckBox)
 		{
-			((JSpinner) component).setValue(value);
+			((JCheckBox) field).setSelected(value != null && (Boolean) value);
 		}
-		else if (component instanceof JCheckBox)
+		else if (field instanceof JComboBox)
 		{
-			((JCheckBox) component).setSelected(Boolean.parseBoolean(value.toString()));
+			((JComboBox<Object>) field).setSelectedItem(value);
 		}
+	}
+
+	private void setEditingFieldsEnabled(boolean enabled)
+	{
+		stepTypeComboBox.setEnabled(enabled);
+		addRequirementButton.setEnabled(enabled);
+		for (JComponent field : parameterFields.values())
+		{
+			field.setEnabled(enabled);
+		}
+		for (JComboBox<RequirementData> comboBox : requirementComboBoxes)
+		{
+			comboBox.setEnabled(enabled);
+		}
+		saveChangesButton.setEnabled(enabled);
+		removeStepButton.setEnabled(enabled);
+	}
+
+	private void clearParameterFields()
+	{
+		stepTypeComboBox.setSelectedIndex(0);
+		parameterFieldsPanel.removeAll();
+		parameterFields.clear();
+		parameterFieldsPanel.revalidate();
+		parameterFieldsPanel.repaint();
+	}
+
+	private RequirementData[] getRequirementListData()
+	{
+		RequirementData[] requirementsArray = new RequirementData[dataModel.getRequirementListModel().getSize()];
+		for (int i = 0; i < dataModel.getRequirementListModel().getSize(); i++)
+		{
+			requirementsArray[i] = dataModel.getRequirementListModel().getElementAt(i);
+		}
+		return requirementsArray;
+	}
+
+	private void updateRequirementComboBoxes()
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			RequirementData[] requirementsArray = getRequirementListData();
+			for (JComboBox<RequirementData> comboBox : requirementComboBoxes)
+			{
+				RequirementData selectedReq = (RequirementData) comboBox.getSelectedItem();
+				comboBox.setModel(new DefaultComboBoxModel<>(requirementsArray));
+				if (selectedReq != null)
+				{
+					comboBox.setSelectedItem(selectedReq);
+				}
+			}
+		});
+	}
+
+	private void addRequirementRow(RequirementData selectedRequirement)
+	{
+		JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JComboBox<RequirementData> requirementComboBox = new JComboBox<>(new DefaultComboBoxModel<>(getRequirementListData()));
+		if (selectedRequirement != null)
+		{
+			requirementComboBox.setSelectedItem(selectedRequirement);
+		}
+		JButton removeButton = new JButton("Remove");
+		removeButton.addActionListener(e -> removeRequirementRow(rowPanel, requirementComboBox));
+
+		rowPanel.add(requirementComboBox);
+		rowPanel.add(removeButton);
+
+		requirementComboBoxes.add(requirementComboBox);
+		requirementsListPanel.add(rowPanel);
+
+		requirementsListPanel.revalidate();
+		requirementsListPanel.repaint();
+	}
+
+	private void removeRequirementRow(JPanel rowPanel, JComboBox<RequirementData> requirementComboBox)
+	{
+		requirementsListPanel.remove(rowPanel);
+		requirementComboBoxes.remove(requirementComboBox);
+
+		requirementsListPanel.revalidate();
+		requirementsListPanel.repaint();
+	}
+
+	private void addDataListeners()
+	{
+		dataModel.getRequirementListModel().addListDataListener(new ListDataListener()
+		{
+			@Override
+			public void intervalAdded(ListDataEvent e)
+			{
+				updateRequirementComboBoxes();
+			}
+
+			@Override
+			public void intervalRemoved(ListDataEvent e)
+			{
+				updateRequirementComboBoxes();
+			}
+
+			@Override
+			public void contentsChanged(ListDataEvent e)
+			{
+				updateRequirementComboBoxes();
+			}
+		});
 	}
 }

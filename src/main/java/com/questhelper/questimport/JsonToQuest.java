@@ -27,24 +27,18 @@ package com.questhelper.questimport;
 import com.google.gson.Gson;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class JsonToQuest
 {
-	ItemManager itemManager;
+	private final ItemManager itemManager;
 
 	public JsonToQuest(ItemManager itemManager)
 	{
@@ -57,164 +51,107 @@ public class JsonToQuest
 		QuestData questData = gson.fromJson(jsonContent, QuestData.class);
 
 		// Map requirements
-		Map<String, Requirement> requirementMap = getRequirementMap(questData.getRequirements());
+		Map<RequirementData, Requirement> requirementMap = getRequirementMap(questData.getRequirements());
 
-		// Map steps and create ConditionalSteps
-		ConditionalStep steps = new ConditionalStep(newHelper, new DetailedQuestStep(newHelper, "Default step."));
-		for (StepData stepData : questData.getSteps())
-		{
-			QuestStep questStep = parseQuestStep(newHelper, stepData, requirementMap);
-			LogicType logicType = getLogicType(stepData.getLogicType());
-			if (stepData.isDefault())
-			{
-				steps.addStep(null, questStep);
-			}
-			else
-			{
-				Requirement[] reqs = getRequirements(stepData.getConditionalRequirements(), requirementMap);
-				if (reqs == null)
-				{
-					System.out.println(questStep.getText());
-				}
-				Conditions conditions = new Conditions(logicType, reqs);
-				steps.addStep(conditions, questStep);
-			}
-		}
+		// Map steps
+		Map<StepData, QuestStep> stepMap = getStepMap(newHelper, questData.getSteps(), requirementMap);
 
-		newHelper.setSteps(steps);
+		// Assemble quest steps
+		ConditionalStep questSteps = assembleQuestSteps(newHelper, questData.getQuestSteps(), stepMap, requirementMap);
+
+		newHelper.setSteps(questSteps);
 		return newHelper;
 	}
 
-	private Requirement parseRequirement(RequirementData reqData)
+	private Map<RequirementData, Requirement> getRequirementMap(List<RequirementData> requirementDataList)
 	{
-		Requirement requirement = null;
-
-		switch (reqData.getType())
+		Map<RequirementData, Requirement> requirementMap = new HashMap<>();
+		for (RequirementData reqData : requirementDataList)
 		{
-			case "SkillRequirement":
-				String skillName = (String) reqData.getParameters().get("skill");
-				int level = ((Number) reqData.getParameters().get("level")).intValue();
-				boolean boostable = (Boolean) reqData.getParameters().getOrDefault("boostable", true);
-				Skill skill = Skill.valueOf(skillName.toUpperCase());
-				requirement = new SkillRequirement(skill, level, boostable);
-				break;
-
-			case "ItemRequirement":
-				int itemId = ((Number) reqData.getParameters().get("itemId")).intValue();
-				int quantity = ((Number) reqData.getParameters().getOrDefault("quantity", 1)).intValue();
-				boolean equipped = (Boolean) reqData.getParameters().getOrDefault("equipped", false);
-				String name = itemManager.getItemComposition(itemId).getName();
-				requirement = new ItemRequirement(name, itemId, quantity, equipped);
-				break;
-
-			default:
-				// Handle unknown requirement types
-				System.err.println("Unknown requirement type: " + reqData.getType());
-				break;
-		}
-
-		return requirement;
-	}
-
-	private QuestStep parseQuestStep(JsonQuestHelper newHelper, StepData stepData, Map<String, Requirement> requirementMap)
-	{
-		Map<String, Object> params = stepData.getParameters();
-
-		String text;
-		WorldPoint wp;
-		List<String> reqIds;
-		Requirement[] reqs;
-		switch (stepData.getType())
-		{
-			case "DetailedQuestStep":
-				text = (String) params.get("text");
-				wp = getWorldPoint(params);
-				reqIds = stepData.getStepRequirements();
-				reqs = getRequirements(reqIds, requirementMap);
-				DetailedQuestStep detailedQuestStep = new DetailedQuestStep(newHelper, text);
-				if (wp != null) detailedQuestStep.setWorldPoint(wp);
-				if (reqs != null) detailedQuestStep.setRequirements(List.of(reqs));
-				return detailedQuestStep;
-			case "NpcStep":
-				var npcId = ((Number) params.get("npcId")).intValue();
-				text = (String) params.get("text");
-				wp = getWorldPoint(params);
-				reqIds = stepData.getStepRequirements();
-				reqs = getRequirements(reqIds, requirementMap);
-				NpcStep npcStep = new NpcStep(newHelper, npcId, text);
-				if (wp != null) npcStep.setWorldPoint(wp);
-				if (reqs != null) npcStep.setRequirements(List.of(reqs));
-				return npcStep;
-			case "ObjectStep":
-				var objectId = ((Number) params.get("objectId")).intValue();
-				text = (String) params.get("text");
-				wp = getWorldPoint(params);
-				reqIds = stepData.getStepRequirements();
-				reqs = getRequirements(reqIds, requirementMap);
-				ObjectStep objectStep = new ObjectStep(newHelper, objectId, text);
-				if (wp != null) objectStep.setWorldPoint(wp);
-				if (reqs != null) objectStep.setRequirements(List.of(reqs));
-				return objectStep;
-			default:
-				// Handle unknown step types
-				System.err.println("Unknown step type: " + stepData.getType());
-				break;
-		}
-
-		return new DetailedQuestStep(newHelper, "Unable to create step");
-	}
-
-	private Map<String, Requirement> getRequirementMap(List<RequirementData> requirementData)
-	{
-		Map<String, Requirement> requirementMap = new HashMap<>();
-		for (RequirementData reqData : requirementData)
-		{
-			Requirement requirement = parseRequirement(reqData);
-			if (requirement != null)
+			try
 			{
-				requirementMap.put(reqData.getId(), requirement);
+				Requirement requirement = RequirementFactory.createRequirement(reqData, itemManager);
+				if (requirement != null)
+				{
+					requirementMap.put(reqData, requirement);
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+				System.err.println("Error creating requirement with ID " + reqData.getId() + ": " + e.getMessage());
 			}
 		}
-
 		return requirementMap;
 	}
 
-	private Requirement[] getRequirements(List<String> reqs, Map<String, Requirement> requirementMap)
+	private Map<StepData, QuestStep> getStepMap(JsonQuestHelper helper, List<StepData> stepDataList, Map<RequirementData, Requirement> requirementMap)
 	{
-		if (reqs == null) return null;
-		Requirement[] requirements = new Requirement[reqs.size()];
-		for (int i = 0; i < reqs.size(); i++)
+		Map<StepData, QuestStep> stepMap = new HashMap<>();
+		for (StepData stepData : stepDataList)
 		{
-			String req = reqs.get(i);
-			requirements[i] = requirementMap.get(req);
+			try
+			{
+				QuestStep questStep = StepFactory.createStep(helper, stepData, requirementMap);
+				if (questStep != null)
+				{
+					stepMap.put(stepData, questStep);
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+				System.err.println("Error creating step with ID " + stepData.getId() + ": " + e.getMessage());
+			}
+		}
+		return stepMap;
+	}
+
+	private ConditionalStep assembleQuestSteps(JsonQuestHelper helper, List<QuestStepData> questStepDataList, Map<StepData, QuestStep> stepMap, Map<RequirementData, Requirement> requirementMap)
+	{
+		ConditionalStep rootStep = new ConditionalStep(helper, new DetailedQuestStep(helper, "Default step."));
+
+		for (QuestStepData questStepData : questStepDataList)
+		{
+			StepData stepId = questStepData.getStepData();
+			QuestStep questStep = stepMap.get(stepId);
+
+			if (questStep == null)
+			{
+				System.err.println("Step ID not found: " + stepId);
+				continue;
+			}
+
+			List<Requirement> condRequirements = getRequirements(questStepData.getConditionalRequirements(), requirementMap);
+			Conditions conditions = null;
+			if (condRequirements != null && !condRequirements.isEmpty())
+			{
+				conditions = new Conditions(condRequirements);
+			}
+
+			rootStep.addStep(conditions, questStep);
 		}
 
+		return rootStep;
+	}
+
+	private List<Requirement> getRequirements(List<RequirementData> reqDatum, Map<RequirementData, Requirement> requirementMap)
+	{
+		if (reqDatum == null)
+		{
+			return null;
+		}
+		List<Requirement> requirements = new ArrayList<>();
+		for (RequirementData reqData : reqDatum)
+		{
+			Requirement req = requirementMap.get(reqData);
+			if (req != null)
+			{
+				requirements.add(req);
+			}
+			else
+			{
+				System.err.println("Requirement ID not found: " + reqData);
+			}
+		}
 		return requirements;
-	}
-
-	private WorldPoint getWorldPoint(Map<String, Object> params)
-	{
-		var x = ((Number) params.getOrDefault("wpX", -1)).intValue();
-		var y = ((Number) params.getOrDefault("wpY", -1)).intValue();
-		var z = ((Number) params.getOrDefault("wpZ", -1)).intValue();
-		if (x == -1 || y == -1 || z == -1) return null;
-		return new WorldPoint(x, y, z);
-	}
-
-	private LogicType getLogicType(String logicType)
-	{
-		if (logicType == null) return LogicType.AND;
-
-		switch (logicType.toLowerCase())
-		{
-			case "or":
-				return LogicType.OR;
-			case "nor":
-				return LogicType.NOR;
-			case "nand":
-				return LogicType.NAND;
-			default:
-				return LogicType.AND;
-		}
 	}
 }

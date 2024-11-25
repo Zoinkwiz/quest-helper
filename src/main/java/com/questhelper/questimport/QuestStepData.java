@@ -30,14 +30,14 @@ import java.util.List;
 @Data
 public class QuestStepData
 {
-	private String stepId;
-	private List<String> conditionalRequirements;
+	private StepData stepData;
+	private List<RequirementData> conditionalRequirements;
 
 	// Getters and setters
 
 	@Override
 	public String toString()
 	{
-		return "Quest Step: " + stepId;
+		return "Quest Step: " + stepData;
 	}
 }

@@ -166,4 +166,3 @@ public class QuestCreatorFrame extends JFrame
 		JOptionPane.showMessageDialog(this, scrollPane, "Quest JSON", JOptionPane.INFORMATION_MESSAGE);
 	}
 }
-

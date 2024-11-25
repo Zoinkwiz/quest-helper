@@ -24,10 +24,12 @@
  */
 package com.questhelper.panel.questmaking;
 
+import static com.questhelper.questimport.JsonConstants.*;
+
 public enum RequirementType
 {
-	SKILL("SkillRequirement"),
-	ITEM("ItemRequirement");
+	SKILL(SKILL_REQUIREMENT),
+	ITEM(ITEM_REQUIREMENT);
 
 	private final String displayName;
 

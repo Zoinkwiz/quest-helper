@@ -24,24 +24,41 @@
  */
 package com.questhelper.questimport;
 
-import lombok.Data;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-@Data
-public class StepData
+public class RequirementParameterDefinitions
 {
-	private String id;
-	private String type;
-	private boolean isDefault;
-	private Map<String, Object> parameters;
-	private List<RequirementData> stepRequirements;
-	private String logicType;
-	private List<String> conditionalRequirements;
+	private static final Map<String, List<String>> requirementParameterMap = new HashMap<>();
 
-	@Override
-	public String toString()
+	static
 	{
-		return id + " - " + type;
+		requirementParameterMap.put(JsonConstants.SKILL_REQUIREMENT, Arrays.asList(
+			JsonConstants.PARAM_SKILL,
+			JsonConstants.PARAM_LEVEL,
+			JsonConstants.PARAM_BOOSTABLE
+		));
+		
+		requirementParameterMap.put(JsonConstants.ITEM_REQUIREMENT, Arrays.asList(
+			JsonConstants.PARAM_ITEM_ID,
+			JsonConstants.PARAM_QUANTITY,
+			JsonConstants.PARAM_EQUIPPED
+		));
+	}
+
+	public static List<String> getParametersForRequirementType(String requirementType)
+	{
+		return requirementParameterMap.getOrDefault(requirementType, Collections.emptyList());
+	}
+
+	public static String[] getAllRequirementTypes()
+	{
+		Set<String> requirementTypes = requirementParameterMap.keySet();
+		return requirementTypes.toArray(new String[0]);
 	}
 }
+

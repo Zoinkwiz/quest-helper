@@ -24,24 +24,51 @@
  */
 package com.questhelper.questimport;
 
-import lombok.Data;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-@Data
-public class StepData
+public class StepParameterDefinitions
 {
-	private String id;
-	private String type;
-	private boolean isDefault;
-	private Map<String, Object> parameters;
-	private List<RequirementData> stepRequirements;
-	private String logicType;
-	private List<String> conditionalRequirements;
+	private static final Map<String, List<String>> stepParameterMap = new HashMap<>();
 
-	@Override
-	public String toString()
+	static
 	{
-		return id + " - " + type;
+		stepParameterMap.put(JsonConstants.DETAILED_QUEST_STEP, Arrays.asList(
+			JsonConstants.PARAM_TEXT,
+			JsonConstants.PARAM_WORLD_POINT_X,
+			JsonConstants.PARAM_WORLD_POINT_Y,
+			JsonConstants.PARAM_WORLD_POINT_Z
+		));
+
+		stepParameterMap.put(JsonConstants.NPC_STEP, Arrays.asList(
+			JsonConstants.PARAM_NPC_ID,
+			JsonConstants.PARAM_TEXT,
+			JsonConstants.PARAM_WORLD_POINT_X,
+			JsonConstants.PARAM_WORLD_POINT_Y,
+			JsonConstants.PARAM_WORLD_POINT_Z
+		));
+
+		stepParameterMap.put(JsonConstants.OBJECT_STEP, Arrays.asList(
+			JsonConstants.PARAM_OBJECT_ID,
+			JsonConstants.PARAM_TEXT,
+			JsonConstants.PARAM_WORLD_POINT_X,
+			JsonConstants.PARAM_WORLD_POINT_Y,
+			JsonConstants.PARAM_WORLD_POINT_Z
+		));
+	}
+
+	public static List<String> getParametersForStepType(String stepType)
+	{
+		return stepParameterMap.getOrDefault(stepType, Collections.emptyList());
+	}
+
+	public static String[] getAllStepTypes()
+	{
+		Set<String> stepTypes = stepParameterMap.keySet();
+		return stepTypes.toArray(new String[0]);
 	}
 }

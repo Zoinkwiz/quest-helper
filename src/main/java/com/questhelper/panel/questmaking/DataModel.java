@@ -24,6 +24,8 @@ public class DataModel
 
 	private List<Runnable> requirementChangeListeners = new ArrayList<>();
 
+	private List<Runnable> stepChangeListeners = new ArrayList<>();
+
 	public void addRequirementChangeListener(Runnable listener)
 	{
 		requirementChangeListeners.add(listener);
@@ -36,4 +38,18 @@ public class DataModel
 			listener.run();
 		}
 	}
+
+	public void addStepChangeListener(Runnable listener)
+	{
+		stepChangeListeners.add(listener);
+	}
+
+	public void notifyStepChangeListeners()
+	{
+		for (Runnable listener : stepChangeListeners)
+		{
+			listener.run();
+		}
+	}
 }
+

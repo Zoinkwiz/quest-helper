@@ -292,6 +292,7 @@ public class QuestHelperPlugin extends Plugin
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			newVersionManager.updateChatWithNotificationIfNewVersion();
 			questBankManager.setUnknownInitialState();
+			potionStorage.cachePotions = true;
 			clientThread.invokeAtTickEnd(() -> {
 				questManager.setupRequirements();
 				questManager.setupOnLogin();

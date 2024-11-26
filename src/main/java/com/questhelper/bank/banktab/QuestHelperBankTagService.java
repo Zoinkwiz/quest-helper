@@ -24,9 +24,7 @@
  */
 package com.questhelper.bank.banktab;
 
-import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -38,6 +36,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 
@@ -48,10 +48,54 @@ public class QuestHelperBankTagService
 	private QuestHelperPlugin plugin;
 
 	@Inject
-	private QuestBank questBank;
+	private Client client;
+
+	ArrayList<Integer> taggedItems;
+
+	ArrayList<Integer> taggedItemsForBank;
+
+	int lastTickUpdated = 0;
+
+	int lastTickUpdatedForBank = 0;
+
+	public ArrayList<Integer> itemsToTagForBank()
+	{
+		if (client.getTickCount() <= lastTickUpdatedForBank)
+		{
+			return taggedItemsForBank;
+		}
+
+		lastTickUpdatedForBank = client.getTickCount();
+
+		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(false);
+
+		if (sortedItems == null)
+		{
+			return null;
+		}
+
+		taggedItemsForBank = new ArrayList<>();
+
+		sortedItems.stream()
+				.map(BankTabItems::getItems)
+				.flatMap(Collection::stream)
+				.map(BankTabItem::getItemIDs)
+				.flatMap(Collection::stream)
+				.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
+				.filter(id -> !taggedItemsForBank.contains(id))
+				.forEach(taggedItemsForBank::add);
+		return taggedItemsForBank;
+	}
 
 	public ArrayList<Integer> itemsToTag()
 	{
+		if (client.getTickCount() <= lastTickUpdated)
+		{
+			return taggedItems;
+		}
+
+		lastTickUpdated = client.getTickCount();
+
 		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(true);
 
 		if (sortedItems == null)
@@ -59,7 +103,7 @@ public class QuestHelperBankTagService
 			return null;
 		}
 
-		ArrayList<Integer> flattenedList = new ArrayList<>();
+		taggedItems = new ArrayList<>();
 
 		sortedItems.stream()
 			.map(BankTabItems::getItems)
@@ -67,9 +111,9 @@ public class QuestHelperBankTagService
 			.map(BankTabItem::getItemIDs)
 			.flatMap(Collection::stream)
 			.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
-			.filter(id -> !flattenedList.contains(id))
-			.forEach(flattenedList::add);
-		return flattenedList;
+			.filter(id -> !taggedItems.contains(id))
+			.forEach(taggedItems::add);
+		return taggedItems;
 	}
 
 	public ArrayList<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems)

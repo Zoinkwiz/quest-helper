@@ -28,6 +28,7 @@ import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.questhelper.managers.QuestContainerManager;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +36,7 @@ import net.runelite.api.*;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.Subscribe;
@@ -57,7 +56,7 @@ class Potion
 @Slf4j
 public class PotionStorage
 {
-    static final int BANKTAB_POTIONSTORE = 15;
+    static final int TOTAL_POTIONS_VARBIT = 4286;
     static final int COMPONENTS_PER_POTION = 5;
 
     private final Client client;
@@ -65,7 +64,7 @@ public class PotionStorage
     private final BankSearch bankSearch;
 
     private Potion[] potions;
-    boolean cachePotions;
+    public boolean cachePotions;
     private boolean layout;
     private Set<Integer> potionStoreVars;
 
@@ -77,7 +76,7 @@ public class PotionStorage
     {
         if (cachePotions)
         {
-//            log.debug("Rebuilding potions");
+            log.debug("Rebuilding potions");
             cachePotions = false;
             rebuildPotions();
 
@@ -106,20 +105,10 @@ public class PotionStorage
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged)
     {
-        if (potionStoreVars != null && potionStoreVars.contains(varbitChanged.getVarpId()))
+        if (TOTAL_POTIONS_VARBIT == varbitChanged.getVarpId() || potionStoreVars != null && potionStoreVars.contains(varbitChanged.getVarpId()))
         {
             cachePotions = true;
             layout = true; // trigger a bank rebuild as the qty has changed
-        }
-    }
-
-    @Subscribe
-    public void onWidgetClosed(WidgetClosed event)
-    {
-        if (event.getGroupId() == InterfaceID.BANK && event.isUnload())
-        {
-            log.debug("Invalidating potions");
-            potions = null;
         }
     }
 
@@ -147,30 +136,13 @@ public class PotionStorage
                     p.doses = doses;
                     p.withdrawDoses = withdrawDoses;
                     potions[potionsIdx] = p;
-
-                    if (log.isDebugEnabled())
-                    {
-//                        log.debug("Potion store has {} doses of {}", p.doses, itemManager.getItemComposition(p.itemId).getName());
-                    }
                 }
 
                 ++potionsIdx;
             }
         }
 
-        for (Potion potion : potions)
-        {
-            if (potion != null)
-            {
-                String name = itemManager.getItemComposition(potion.itemId).getName();
-                if (name.contains("Hunter"))
-                {
-//                    System.out.println(itemManager.getItemComposition(potion.itemId).getName());
-//                    System.out.println(potion.doses);
-                }
-            }
-        }
-//        System.out.println(Arrays.toString(potions));
+        QuestContainerManager.getPotionData().update(client.getTickCount(), getItems());
     }
 
     public Item[] getItems()
@@ -184,6 +156,7 @@ public class PotionStorage
 
         for (Potion potion : potions)
         {
+            if (potion == null) continue;
             var potionEnum = potion.potionEnum;
             // TODO: An issue due to potentially wanting a specific potion, or to default to full potion
             int potionItemId = potionEnum.getIntValue(potion.withdrawDoses);

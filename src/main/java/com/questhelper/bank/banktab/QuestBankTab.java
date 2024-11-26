@@ -33,23 +33,13 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.item.ItemRequirement;
 import java.awt.Color;
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.FontID;
-import net.runelite.api.ItemID;
-import net.runelite.api.ScriptEvent;
-import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarClientStr;
+
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.*;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuOptionClicked;
@@ -67,12 +57,18 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.banktags.BankTag;
+import net.runelite.client.plugins.banktags.tabs.Layout;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.*;
+
 @Singleton
+@Slf4j
 public class QuestBankTab
 {
 	private static final int ITEMS_PER_ROW = 8;
@@ -115,6 +111,12 @@ public class QuestBankTab
 	@Inject
 	private QuestHelperPlugin questHelper;
 
+	@Inject
+	private PotionStorage potionStorage;
+
+	@Inject
+	private QuestHelperBankTagService questHelperBankTagService;
+
 	private final HashMap<Widget, BankTabItem> widgetItems = new HashMap<>();
 
 	private final HashMap<BankWidget, BankWidget> fakeToRealItem = new HashMap<>();
@@ -140,6 +142,19 @@ public class QuestBankTab
 			}
 			addedWidgets.clear();
 		}
+	}
+
+	public void register(EventBus eventBus)
+	{
+		potionStorage.setQuestBankTabInterface(questBankTabInterface);
+		eventBus.register(potionStorage);
+		eventBus.register(this);
+	}
+
+	public void unregister(EventBus eventBus)
+	{
+		eventBus.unregister(potionStorage);
+		eventBus.unregister(this);
 	}
 
 	public void refreshBankTab()
@@ -177,16 +192,13 @@ public class QuestBankTab
 		client.setGeSearchResultIds(Shorts.toArray(ids));
 	}
 
+
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired event)
 	{
 		int scriptId = event.getScriptId();
-
 		if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
 		{
-			// Since we apply tag tab search filters even when the bank is not in search mode,
-			// bankkmain_build will reset the bank title to "The Bank of Gielinor". So apply our
-			// own title.
 			if (questBankTabInterface.isQuestTabActive())
 			{
 				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
@@ -201,6 +213,12 @@ public class QuestBankTab
 						bankTitle.setText("Tab <col=ff0000>Quest Helper</col>");
 					}
 				}
+
+				// Since the script vm isn't reentrant, we can't call into POTIONSTORE_DOSES/POTIONSTORE_WITHDRAW_DOSES
+				// from bankmain_finishbuilding for the layout. Instead, we record all of the potions on client tick,
+				// which is after this is run, but before the var/inv transmit listeners run, so that we will have
+				// them by the time the inv transmit listener runs.
+				potionStorage.cachePotions = true;
 			}
 		}
 		else if (scriptId == ScriptID.BANKMAIN_SEARCH_TOGGLE)
@@ -220,6 +238,32 @@ public class QuestBankTab
 		if ("getSearchingTagTab".equals(eventName))
 		{
 			intStack[intStackSize - 1] = questBankTabInterface.isQuestTabActive() ? 1 : 0;
+		}
+		else if ("bankSearchFilter".equals(eventName))
+		{
+			final int itemId = intStack[intStackSize - 1];
+			if (!questBankTabInterface.isQuestTabActive())
+			{
+				return;
+			}
+
+			if (itemId == -1)
+			{
+				// item -1 always passes on a laid out tab so items can be dragged to it
+				return;
+			}
+			List<Integer> items = questHelperBankTagService.itemsToTagForBank();
+			if (itemId > -1 && items.contains(itemId))
+			{
+				// return true
+				intStack[intStackSize - 2] = 1;
+			}
+			else
+			{
+				// if the item isn't tagged we return false to prevent the item matching if the item name happens
+				// to contain the tag name.
+				intStack[intStackSize - 2] = 0;
+			}
 		}
 	}
 

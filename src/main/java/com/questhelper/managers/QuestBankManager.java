@@ -58,12 +58,12 @@ public class QuestBankManager
 	{
 		questBankTab.startUp();
 		injector.injectMembers(questBankTab);
-		eventBus.register(questBankTab);
+		questBankTab.register(eventBus);
 	}
 
 	public void shutDown(EventBus eventBus)
 	{
-		eventBus.unregister(questBankTab);
+		questBankTab.unregister(eventBus);
 		questBankTab.shutDown();
 	}
 

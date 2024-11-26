@@ -37,4 +37,7 @@ public class QuestContainerManager
 
     @Getter
     private final static ItemAndLastUpdated bankData = new ItemAndLastUpdated(TrackedContainers.BANK);
+
+    @Getter
+    private final static ItemAndLastUpdated potionData = new ItemAndLastUpdated(TrackedContainers.POTION_STORAGE);
 }

@@ -29,6 +29,7 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
+import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
@@ -72,6 +73,7 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.bank.BankSearch;
+import net.runelite.client.plugins.banktags.tabs.Layout;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
@@ -156,6 +158,9 @@ public class QuestHelperPlugin extends Plugin
 	PlayerStateManager playerStateManager;
 
 	@Inject
+	PotionStorage potionStorage;
+
+	@Inject
 	public SkillIconManager skillIconManager;
 
 	private QuestHelperPanel panel;
@@ -178,6 +183,7 @@ public class QuestHelperPlugin extends Plugin
 	{
 		questBankManager.startUp(injector, eventBus);
 		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
+		QuestContainerManager.getPotionData().setSpecialMethodToObtainItems(() -> potionStorage.getItems());
 		eventBus.register(worldMapAreaManager);
 
 		injector.injectMembers(playerStateManager);

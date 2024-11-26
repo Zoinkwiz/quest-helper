@@ -540,7 +540,8 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean checkWithBank(Client client)
 	{
-		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
+		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData()
+				, QuestContainerManager.getPotionData());
 	}
 
 	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
@@ -558,6 +559,10 @@ public class ItemRequirement extends AbstractRequirement
 		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getBankData()))
 		{
 			color = Color.WHITE;
+		}
+		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getPotionData()))
+		{
+			color = Color.CYAN;
 		}
 
 		return color;
@@ -607,7 +612,11 @@ public class ItemRequirement extends AbstractRequirement
 		containers.add(QuestContainerManager.getEquippedData());
 
 		if (!equip) containers.add(QuestContainerManager.getInventoryData());
-		if (shouldCheckBank) containers.add(QuestContainerManager.getBankData());
+		if (shouldCheckBank)
+		{
+			containers.add(QuestContainerManager.getBankData());
+			containers.add(QuestContainerManager.getPotionData());
+		}
 
 		return containers.toArray(new ItemAndLastUpdated[0]);
 	}

@@ -206,11 +206,7 @@ public class QuestHelperBankTagService
 		}
 		else
 		{
-			if (itemRequirement.getDisplayItemId() != null)
-			{
-				pluginItems.add(new BankTabItem(realItem));
-			}
-			else if (!itemRequirement.getDisplayItemIds().contains(-1))
+			if (itemRequirement.getDisplayItemId() != null || !itemRequirement.getDisplayItemIds().contains(-1))
 			{
 				pluginItems.add(makeBankTabItem(realItem));
 			}
@@ -220,8 +216,14 @@ public class QuestHelperBankTagService
 	private BankTabItem makeBankTabItem(ItemRequirement item)
 	{
 		List<Integer> itemIds = item.getDisplayItemIds();
-
-		Integer displayId = itemIds.stream().filter(this::hasItemInBankOrPotionStorage).findFirst().orElse(itemIds.get(0));
+		Integer displayId = itemIds.stream()
+				.filter(this::hasItemInBankOrPotionStorage)
+				.findFirst()
+				.orElse(item.getAllIds().stream()
+						.filter(this::hasItemInBankOrPotionStorage)
+						.findFirst()
+						.orElse(item.getAllIds().get(0))
+				);
 
 		return new BankTabItem(item, displayId);
 	}

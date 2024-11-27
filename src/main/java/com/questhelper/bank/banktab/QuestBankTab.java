@@ -502,7 +502,7 @@ public class QuestBankTab
 			// Effectively avoid dragging
 			c.setDragDeadTime(1000);
 
-			c.setName("<col=ff9040>" + bankTabItem.getText() + "</col>");
+			c.setName("<col=ff9040>" + def.getName() + "</col>");
 			c.clearActions();
 
 			// Jagex Placeholder
@@ -519,6 +519,7 @@ public class QuestBankTab
 				c.setOpacity(120);
 				c.setItemQuantity(0);
 				c.setItemQuantityMode(1);
+				c.setText("<col=ff9040>" + bankTabItem.getText() + "</col>");
 				c.setAction(1, "Details");
 			}
 			else
@@ -753,7 +754,7 @@ public class QuestBankTab
 				.append(Text.removeTags(bankTabItem.getText()))
 				.append(".");
 
-		if (!bankTabItem.getDetails().isEmpty())
+		if (bankTabItem.getDetails() != null && !bankTabItem.getDetails().isEmpty())
 		{
 			message.append(ChatColorType.NORMAL)
 					.append(" " + bankTabItem.getDetails() + ".");

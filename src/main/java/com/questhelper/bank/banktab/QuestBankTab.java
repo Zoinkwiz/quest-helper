@@ -110,6 +110,8 @@ public class QuestBankTab
 
 	private final HashMap<Widget, BankTabItem> widgetItems = new HashMap<>();
 
+	private int originalContainerChildren = -1;
+
 	public void startUp()
 	{
 		if (questHelper.getSelectedQuest() != null)
@@ -327,11 +329,13 @@ public class QuestBankTab
 
 	private void removeAddedWidgets()
 	{
+		if (originalContainerChildren == -1) return;
+
 		if (addedWidgets.isEmpty()) return;
 		Widget parent = addedWidgets.get(0).getParent();
 		if (parent == null) return;
 
-		parent.setChildren(Arrays.copyOf(parent.getChildren(), 1248));
+		parent.setChildren(Arrays.copyOf(parent.getChildren(), originalContainerChildren));
 		parent.revalidate();
 
 		addedWidgets.clear();
@@ -363,6 +367,8 @@ public class QuestBankTab
 			return;
 		}
 
+		removeAddedWidgets();
+
 		if (!questBankTabInterface.isQuestTabActive())
 		{
 			return;
@@ -373,8 +379,8 @@ public class QuestBankTab
 		{
 			return;
 		}
-
-		removeAddedWidgets();
+		Widget[] children = itemContainer.getChildren();
+		if (children != null && originalContainerChildren == -1) originalContainerChildren = children.length;
 
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
 

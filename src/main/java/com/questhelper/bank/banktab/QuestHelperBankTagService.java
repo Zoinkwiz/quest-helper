@@ -25,7 +25,6 @@
 package com.questhelper.bank.banktab;
 
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -39,9 +38,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 
 @Singleton
 public class QuestHelperBankTagService
@@ -69,7 +65,24 @@ public class QuestHelperBankTagService
 
 		lastTickUpdatedForBank = client.getTickCount();
 
-		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(false);
+		return getItemsFromTabs(false);
+	}
+
+	public ArrayList<Integer> itemsToTag()
+	{
+		if (client.getTickCount() <= lastTickUpdated)
+		{
+			return taggedItems;
+		}
+
+		lastTickUpdated = client.getTickCount();
+
+		return getItemsFromTabs(true);
+	}
+
+	private ArrayList<Integer> getItemsFromTabs(boolean onlyGetMissingItems)
+	{
+		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(onlyGetMissingItems);
 
 		if (sortedItems == null)
 		{
@@ -87,35 +100,6 @@ public class QuestHelperBankTagService
 				.filter(id -> !taggedItemsForBank.contains(id))
 				.forEach(taggedItemsForBank::add);
 		return taggedItemsForBank;
-	}
-
-	public ArrayList<Integer> itemsToTag()
-	{
-		if (client.getTickCount() <= lastTickUpdated)
-		{
-			return taggedItems;
-		}
-
-		lastTickUpdated = client.getTickCount();
-
-		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(true);
-
-		if (sortedItems == null)
-		{
-			return null;
-		}
-
-		taggedItems = new ArrayList<>();
-
-		sortedItems.stream()
-			.map(BankTabItems::getItems)
-			.flatMap(Collection::stream)
-			.map(BankTabItem::getItemIDs)
-			.flatMap(Collection::stream)
-			.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
-			.filter(id -> !taggedItems.contains(id))
-			.forEach(taggedItems::add);
-		return taggedItems;
 	}
 
 	public ArrayList<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems)

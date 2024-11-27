@@ -380,7 +380,7 @@ public class QuestManager
 			return;
 		}
 
-		if (selectedQuest != null && selectedQuest.getQuest().getName().equals(questHelperName))
+		if (selectedQuest != null && selectedQuest.getQuest() != null && selectedQuest.getQuest().getName().equals(questHelperName))
 		{
 			return;
 		}

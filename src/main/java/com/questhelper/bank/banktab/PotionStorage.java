@@ -167,42 +167,6 @@ public class PotionStorage
         return items.toArray(new Item[0]);
     }
 
-    int matches(Set<Integer> bank, int itemId)
-    {
-        if (potions == null)
-        {
-            return -1;
-        }
-
-        for (Potion potion : potions)
-        {
-            if (potion == null)
-            {
-                continue;
-            }
-
-            var potionEnum = potion.potionEnum;
-            int potionItemId1 = potionEnum.getIntValue(1);
-            int potionItemId2 = potionEnum.getIntValue(2);
-            int potionItemId3 = potionEnum.getIntValue(3);
-            int potionItemId4 = potionEnum.getIntValue(4);
-
-            if (potionItemId1 == itemId || potionItemId2 == itemId || potionItemId3 == itemId || potionItemId4 == itemId)
-            {
-                int potionStoreItem = potionEnum.getIntValue(potion.withdrawDoses);
-
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Item {} matches a potion from potion store {}", itemId, itemManager.getItemComposition(potionStoreItem).getName());
-                }
-
-                return potionStoreItem;
-            }
-        }
-
-        return -1;
-    }
-
     int count(int itemId)
     {
         if (potions == null)
@@ -239,36 +203,7 @@ public class PotionStorage
         return -1;
     }
 
-    @Subscribe
-    public void onMenuOptionClicked(MenuOptionClicked event)
-    {
-        // Update widget index of the menu so withdraws work in laid out tabs.
-        if (event.getParam1() == ComponentID.BANK_ITEM_CONTAINER && questBankTabInterface.isQuestTabActive())
-        {
-            MenuEntry menu = event.getMenuEntry();
-            Widget w = menu.getWidget();
-            if (w != null && w.getItemId() > -1)
-            {
-                ItemContainer bank = client.getItemContainer(InventoryID.BANK);
-                int idx = bank.find(w.getItemId());
-                if (idx > -1 && menu.getParam0() != idx)
-                {
-                    menu.setParam0(idx);
-                    return;
-                }
-
-                idx = find(w.getItemId());
-                if (idx > -1)
-                {
-                    prepareWidgets();
-                    menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
-                    menu.setParam0(idx * COMPONENTS_PER_POTION);
-                }
-            }
-        }
-    }
-
-    void prepareWidgets()
+    public void prepareWidgets()
     {
         // if the potion store hasn't been opened yet, the client components won't have been made yet.
         // they need to exist for the click to work correctly.

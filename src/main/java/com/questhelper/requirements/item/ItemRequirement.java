@@ -110,6 +110,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	protected Requirement additionalOptions;
 
+
 	Map<TrackedContainers, ContainerStateForRequirement> knownContainerStates = new HashMap<>();
 	{
 		for (TrackedContainers value : TrackedContainers.values())
@@ -389,10 +390,8 @@ public class ItemRequirement extends AbstractRequirement
 		return text.toString();
 	}
 
-	// IDEA: Have a central event which lets you know diff on inventory
 	public void setAdditionalOptions(Requirement additionalOptions)
 	{
-		// TODO: Need to register / unregister through centralised ActiveRequirementsManager
 		this.additionalOptions = additionalOptions;
 	}
 

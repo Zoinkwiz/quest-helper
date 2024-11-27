@@ -40,18 +40,13 @@ import javax.inject.Singleton;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
-import net.runelite.api.widgets.JavaScriptCallback;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.widgets.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -60,11 +55,10 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.banktags.BankTag;
-import net.runelite.client.plugins.banktags.tabs.Layout;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
+import static com.questhelper.bank.banktab.PotionStorage.COMPONENTS_PER_POTION;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.*;
 
 @Singleton
@@ -78,15 +72,12 @@ public class QuestBankTab
 	private static final int LINE_VERTICAL_SPACING = 5;
 	private static final int LINE_HEIGHT = 2;
 	private static final int TEXT_HEIGHT = 15;
-	private static final int ITEM_HEIGHT = 32;
-	private static final int ITEM_WIDTH = 36;
 	private static final int EMPTY_BANK_SLOT_ID = 6512;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
 	private static final int CROSS_SPRITE_ID = 1216;
 	private static final int TICK_SPRITE_ID = 1217;
-
 
 	private final ArrayList<Widget> addedWidgets = new ArrayList<>();
 
@@ -119,8 +110,6 @@ public class QuestBankTab
 
 	private final HashMap<Widget, BankTabItem> widgetItems = new HashMap<>();
 
-	private final HashMap<BankWidget, BankWidget> fakeToRealItem = new HashMap<>();
-
 	public void startUp()
 	{
 		if (questHelper.getSelectedQuest() != null)
@@ -134,16 +123,8 @@ public class QuestBankTab
 	{
 		clientThread.invokeLater(questBankTabInterface::destroy);
 		clientThread.invokeLater(geButtonWidget::destroy);
-		if (!addedWidgets.isEmpty())
-		{
-			for (Widget addedWidget : addedWidgets)
-			{
-				addedWidget.setHidden(true);
-			}
-			addedWidgets.clear();
-		}
+		clientThread.invokeLater(this::removeAddedWidgets);
 	}
-
 	public void register(EventBus eventBus)
 	{
 		potionStorage.setQuestBankTabInterface(questBankTabInterface);
@@ -199,6 +180,7 @@ public class QuestBankTab
 		int scriptId = event.getScriptId();
 		if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
 		{
+			resetWidgets();
 			if (questBankTabInterface.isQuestTabActive())
 			{
 				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
@@ -276,31 +258,83 @@ public class QuestBankTab
 		}
 	}
 
-	@Subscribe
-	public void onClientTick(ClientTick clientTick)
+	@Subscribe(priority = -1)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!questBankTabInterface.isQuestTabActive() || questBankTabInterface.isHidden()) return;
+		questBankTabInterface.handleClick(event);
 
-		net.runelite.api.Point mousePoint = client.getMouseCanvasPosition();
-		if (fakeToRealItem.isEmpty())
+		// Update widget index of the menu so withdraws work in laid out tabs.
+		if (event.getParam1() == ComponentID.BANK_ITEM_CONTAINER && questBankTabInterface.isQuestTabActive())
 		{
-			return;
-		}
-
-		for (BankWidget bankWidget : fakeToRealItem.keySet())
-		{
-			if (bankWidget.isPointOverWidget(mousePoint))
+			MenuEntry menu = event.getMenuEntry();
+			if ("Details".equals(menu.getOption()))
 			{
-				bankWidget.swap(fakeToRealItem.get(bankWidget));
+				event.consume();
+
+				Widget widget = event.getWidget();
+				if (widget == null) return;
+				BankTabItem bankTabItem = widgetItems.get(widget);
+				if (bankTabItem == null) return;
+				handleFakeItemClick(bankTabItem);
 				return;
+			}
+
+			Widget w = menu.getWidget();
+			if (w != null && w.getItemId() > -1)
+			{
+				ItemContainer bank = client.getItemContainer(InventoryID.BANK);
+				int idx = bank.find(w.getItemId());
+				if (idx > -1 && menu.getParam0() != idx)
+				{
+					menu.setParam0(idx);
+					return;
+				}
+
+				idx = potionStorage.find(w.getItemId());
+				if (idx > -1)
+				{
+					potionStorage.prepareWidgets();
+					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
+					menu.setParam0(idx * COMPONENTS_PER_POTION);
+				}
 			}
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void resetWidgets()
 	{
-		questBankTabInterface.handleClick(event);
+		// We adjust the bank item container children's sizes in layouts,
+		// however they are only initially set when the bank is opened,
+		// so we have to reset them each time the bank is built.
+		Widget w = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		if (w == null || w.getChildren() == null) return;
+
+		for (Widget c : w.getChildren())
+		{
+			if (c.getOriginalHeight() < BANK_ITEM_HEIGHT)
+			{
+				break;
+			}
+
+			if (c.getOriginalWidth() != BANK_ITEM_WIDTH || c.getOriginalHeight() != BANK_ITEM_HEIGHT)
+			{
+				c.setOriginalWidth(BANK_ITEM_WIDTH);
+				c.setOriginalHeight(BANK_ITEM_HEIGHT);
+				c.revalidate();
+			}
+		}
+	}
+
+	private void removeAddedWidgets()
+	{
+		if (addedWidgets.isEmpty()) return;
+		Widget parent = addedWidgets.get(0).getParent();
+		if (parent == null) return;
+
+		parent.setChildren(Arrays.copyOf(parent.getChildren(), 1248));
+		parent.revalidate();
+
+		addedWidgets.clear();
 	}
 
 	@Subscribe
@@ -320,15 +354,6 @@ public class QuestBankTab
 			{
 				client.getIntStack()[client.getIntStackSize() - 1] = 1; // true
 			}
-			if (!addedWidgets.isEmpty())
-			{
-				for (Widget addedWidget : addedWidgets)
-				{
-					addedWidget.setHidden(true);
-				}
-				addedWidgets.clear();
-			}
-			fakeToRealItem.clear();
 
 			return;
 		}
@@ -349,16 +374,7 @@ public class QuestBankTab
 			return;
 		}
 
-		if (!addedWidgets.isEmpty())
-		{
-
-			for (Widget addedWidget : addedWidgets)
-			{
-				addedWidget.setHidden(true);
-			}
-			addedWidgets.clear();
-		}
-		fakeToRealItem.clear();
+		removeAddedWidgets();
 
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
 
@@ -379,6 +395,12 @@ public class QuestBankTab
 	{
 		int totalSectionsHeight = 0;
 
+		widgetItems.clear();
+
+		// Hide all widgets as we'll be making our own using them
+		hideBankWidgets(itemContainer, containerChildren);
+
+
 		List<Integer> itemList = new ArrayList<>();
 		for (Widget itemWidget : containerChildren)
 		{
@@ -397,11 +419,10 @@ public class QuestBankTab
 		}
 
 		List<BankText> bankItemTexts = new ArrayList<>();
-		HashMap<Integer, BankWidget> itemIDsAdded = new HashMap<>();
 
 		for (BankTabItems bankTabItems : newLayout)
 		{
-			totalSectionsHeight = addPluginTabSection(itemContainer, bankTabItems, itemList, totalSectionsHeight, bankItemTexts, itemIDsAdded);
+			totalSectionsHeight = addPluginTabSection(itemContainer, bankTabItems, totalSectionsHeight, bankItemTexts);
 		}
 
 		// We add item texts after all items are added so they always overlay
@@ -421,17 +442,14 @@ public class QuestBankTab
 			{
 				Widget realItemInInventorySprite = createIcon(itemContainer,
 					bankText.spriteID,
-					10,
-					10,
-					bankText.spriteX,
+						bankText.spriteX,
 					bankText.spriteY
 				);
 				addedWidgets.add(realItemInInventorySprite);
 			}
 
+			currentWidgetToUse = 0;
 		}
-
-		totalSectionsHeight = addGeneralSection(itemContainer, itemList, totalSectionsHeight);
 
 		final Widget bankItemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 		if (bankItemContainer == null) return;
@@ -447,9 +465,123 @@ public class QuestBankTab
 				itemContainerScroll));
 	}
 
-	private int addPluginTabSection(Widget itemContainer, BankTabItems items, List<Integer> itemIds,
-									int totalSectionsHeight, List<BankText> bankItemTexts,
-									HashMap<Integer, BankWidget> itemIDsAdded)
+	private void hideBankWidgets(Widget itemContainer, Widget[] containerChildren)
+	{
+		for (int i = 0; i < containerChildren.length; ++i)
+		{
+			Widget widget = itemContainer.getChild(i);
+			if (widget == null) continue;
+
+			// ~bankmain_drawitem uses 6512 for empty item slots
+			if (!widget.isSelfHidden() &&
+					(widget.getItemId() > -1 && widget.getItemId() != NullItemID.NULL_6512) ||
+					(widget.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND || widget.getText().contains("Tab"))
+			)
+			{
+				widget.setHidden(true);
+			}
+		}
+	}
+
+	private void drawItem(Widget c, int item, int qty, BankTabItem bankTabItem)
+	{
+		if (item > -1 && item != ItemID.BANK_FILLER)
+		{
+			ItemComposition def = client.getItemDefinition(item);
+
+			c.setItemId(item);
+			c.setItemQuantity(qty);
+			c.setItemQuantityMode(1);
+
+			// Effectively avoid dragging
+			c.setDragDeadTime(1000);
+
+			c.setName("<col=ff9040>" + def.getName() + "</col>");
+			c.clearActions();
+
+			// Jagex Placeholder
+			if (def.getPlaceholderTemplateId() >= 0 && def.getPlaceholderId() >= 0)
+			{
+				c.setItemQuantity(qty);
+				c.setOpacity(120);
+				c.setAction(8 - 1, "Release");
+				c.setAction(10 - 1, "Examine");
+			}
+			// Layout placeholder
+			else if (qty == 0)
+			{
+				c.setOpacity(120);
+				c.setItemQuantity(0);
+				c.setItemQuantityMode(1);
+				c.setAction(1, "Details");
+			}
+			else
+			{
+				int quantityType = client.getVarbitValue(Varbits.BANK_QUANTITY_TYPE);
+				int requestQty = client.getVarbitValue(Varbits.BANK_REQUESTEDQUANTITY);
+				// ~script2759
+				String suffix;
+				switch (quantityType)
+				{
+					default:
+						suffix = "1";
+						break;
+					case 1:
+						suffix = "5";
+						break;
+					case 2:
+						suffix = "10";
+						break;
+					case 3:
+						suffix = Integer.toString(Math.max(1, requestQty));
+						break;
+					case 4:
+						suffix = "All";
+						break;
+				}
+				c.setAction(0, "Withdraw-" + suffix);
+				if (quantityType != 0)
+				{
+					c.setAction(1, "Withdraw-1");
+				}
+				c.setAction(2, "Withdraw-5");
+				c.setAction(3, "Withdraw-10");
+				if (requestQty > 0)
+				{
+					c.setAction(4, "Withdraw-" + requestQty);
+				}
+				c.setAction(5, "Withdraw-X");
+				c.setAction(6, "Withdraw-All");
+				c.setAction(7, "Withdraw-All-but-1");
+				if (client.getVarbitValue(Varbits.BANK_LEAVEPLACEHOLDERS) == 0)
+				{
+					c.setAction(8, "Placeholder");
+				}
+				c.setAction(9, "Examine");
+
+				c.setOpacity(0);
+			}
+
+			c.setOnDragListener(ScriptID.BANKMAIN_DRAGSCROLL, ScriptEvent.WIDGET_ID, ScriptEvent.WIDGET_INDEX, ScriptEvent.MOUSE_X, ScriptEvent.MOUSE_Y, ComponentID.BANK_SCROLLBAR, 0);
+			c.setOnDragCompleteListener((JavaScriptCallback) ev -> {});
+		}
+		else
+		{
+			// pad size to not leave a gap between items
+			c.setOriginalWidth(BANK_ITEM_WIDTH + BANK_ITEM_X_PADDING);
+			c.setOriginalHeight(BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING);
+			c.clearActions();
+			c.setItemId(-1);
+			c.setItemQuantity(0);
+			c.setOnDragListener((Object[]) null);
+			c.setOnDragCompleteListener((Object[]) null);
+		}
+		widgetItems.put(c, bankTabItem);
+		c.setHidden(false);
+		c.revalidate();
+	}
+
+	private int addPluginTabSection(Widget itemContainer, BankTabItems items, int totalSectionsHeight, List<BankText> bankItemTexts)
 	{
 		int newHeight = totalSectionsHeight;
 
@@ -465,96 +597,63 @@ public class QuestBankTab
 
 		if (!items.getItems().isEmpty())
 		{
-			newHeight = createPartialSection(itemContainer, items.getItems(), itemIds, newHeight, bankItemTexts, itemIDsAdded);
+			newHeight = createPartialSection(items.getItems(), newHeight, bankItemTexts);
 		}
 
 		if (!items.getRecommendedItems().isEmpty())
 		{
 			newHeight = addSubSectionHeader(itemContainer, "Recommended", newHeight);
-			newHeight = createPartialSection(itemContainer, items.getRecommendedItems(), itemIds, newHeight, bankItemTexts, itemIDsAdded);
+			newHeight = createPartialSection(items.getRecommendedItems(), newHeight, bankItemTexts);
 		}
 
 		return newHeight;
 	}
 
+	private int count(ItemContainer bank, int itemId)
+	{
+		int count = bank.count(itemId);
+		if (count > 0)
+		{
+			return count;
+		}
+		return potionStorage.count(itemId);
+	}
+
+	int currentWidgetToUse = 0;
 
 	// Returns number of items added in partial section
-	private int createPartialSection(Widget itemContainer, List<BankTabItem> items, List<Integer> itemIds,
-									 int totalSectionsHeight, List<BankText> bankItemTexts,
-									 HashMap<Integer, BankWidget> itemIDsAdded)
+	private int createPartialSection(List<BankTabItem> items, int totalSectionsHeight, List<BankText> bankItemTexts)
 	{
 		int totalItemsAdded = 0;
-		// Loop through all items in section
-		for (BankTabItem bankTabItem : items)
+
+		ItemContainer bank = client.getItemContainer(InventoryID.BANK);
+		if (bank == null) return totalSectionsHeight;
+		Widget bankItemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		if (bankItemContainer == null) return totalSectionsHeight;
+
+		for (BankTabItem item : items)
 		{
-			boolean foundItem = false;
-
-			// If item exists, move it to correct pos + append a quantity required string
-			if (!Collections.disjoint(itemIds, bankTabItem.getItemIDs()))
+			int itemId = item.getDisplayID();
+			if (itemId == -1)
 			{
-				// Loop through all widgets to find there's a real item in bank
-				for (Widget widget : itemContainer.getDynamicChildren())
-				{
-					if (!widget.isHidden() && widget.getOpacity() != 150 && (bankTabItem.getItemIDs().contains(widget.getItemId())))
-					{
-						foundItem = true;
-
-						Point point = placeItem(widget, totalItemsAdded, totalSectionsHeight);
-						widget.setItemQuantityMode(1);
-						widgetItems.put(widget, bankTabItem);
-
-						if (bankTabItem.getQuantity() > 0)
-						{
-							makeBankText(widget.getItemQuantity(), bankTabItem.getQuantity(), point.x, point.y, bankTabItem.getItemRequirement(), bankItemTexts);
-						}
-
-						totalItemsAdded++;
-						itemIds.removeAll(Collections.singletonList(widget.getItemId()));
-						itemIDsAdded.put(widget.getItemId(), new BankWidget(widget));
-						break;
-					}
-				}
+				continue;
 			}
 
-			if (!foundItem)
+			Widget c = bankItemContainer.getChild(currentWidgetToUse);
+			if (c == null)
 			{
-				// calculate correct item position as if this was a normal tab
-				int adjXOffset = (totalItemsAdded % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
-				int adjYOffset = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
-
-				Widget fakeItemWidget;
-				// Have list of all real items + text. Do check to see if any of those items
-				// Match the ItemIDs
-				if (Collections.disjoint(itemIDsAdded.keySet(), bankTabItem.getItemIDs()))
-				{
-					fakeItemWidget = createMissingItem(itemContainer, bankTabItem, adjXOffset, adjYOffset);
-					itemIds.removeAll(bankTabItem.getItemIDs());
-				}
-				else
-				{
-					List<Integer> result = bankTabItem.getItemIDs().stream()
-						.distinct()
-						.filter(itemIDsAdded.keySet()::contains)
-						.collect(Collectors.toList());
-
-					BankWidget realItemWidget = itemIDsAdded.get((result.get(0)));
-
-					fakeItemWidget = createDuplicateItem(itemContainer, bankTabItem,
-						realItemWidget.getItemQuantity(), adjXOffset, adjYOffset);
-
-					fakeToRealItem.put(new BankWidget(fakeItemWidget), realItemWidget);
-				}
-
-				if (bankTabItem.getQuantity() > 0)
-				{
-					makeBankText(fakeItemWidget.getItemQuantity(), bankTabItem.getQuantity(), adjXOffset, adjYOffset, bankTabItem.getItemRequirement(), bankItemTexts);
-				}
-
-				widgetItems.put(fakeItemWidget, bankTabItem);
-				addedWidgets.add(fakeItemWidget);
-
-				totalItemsAdded++;
+				return totalSectionsHeight;
 			}
+			drawItem(c, itemId, count(bank, itemId), item);
+			placeItem(c, totalItemsAdded, totalSectionsHeight);
+			// move item
+			if (item.getQuantity() > 0)
+			{
+				makeBankText(c.getItemQuantity(), item.getQuantity(), c.getOriginalX(), c.getOriginalY(), item.getItemRequirement(), bankItemTexts);
+			}
+
+			currentWidgetToUse++;
+			totalItemsAdded++;
 		}
 
 		int newHeight = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
@@ -597,37 +696,6 @@ public class QuestBankTab
 		}
 	}
 
-	private int addGeneralSection(Widget itemContainer, List<Integer> items, int totalSectionsHeight)
-	{
-		int totalItemsAdded = 0;
-
-		if (items.isEmpty())
-		{
-			return totalSectionsHeight;
-		}
-
-		for (Integer itemID : items)
-		{
-			for (Widget widget : itemContainer.getDynamicChildren())
-			{
-				if (!widget.isHidden() && widget.getOpacity() != 150 && widget.getItemId() == itemID)
-				{
-					if (totalItemsAdded == 0)
-					{
-						totalSectionsHeight = addSectionHeader(itemContainer, "General", totalSectionsHeight);
-					}
-
-					placeItem(widget, totalItemsAdded, totalSectionsHeight);
-					totalItemsAdded++;
-				}
-			}
-		}
-		int newHeight = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
-		newHeight = totalItemsAdded % ITEMS_PER_ROW != 0 ? newHeight + ITEM_VERTICAL_SPACING : newHeight;
-
-		return newHeight;
-	}
-
 	private int addSubSectionHeader(Widget itemContainer, String title, int totalSectionsHeight)
 	{
 		addedWidgets.add(createText(itemContainer, title, new Color(228, 216, 162).getRGB(), (ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING) + ITEM_ROW_START
@@ -638,14 +706,14 @@ public class QuestBankTab
 
 	private int addSectionHeader(Widget itemContainer, String title, int totalSectionsHeight)
 	{
-		addedWidgets.add(createGraphic(itemContainer, SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND, ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING, LINE_HEIGHT, ITEM_ROW_START, totalSectionsHeight));
+		addedWidgets.add(createGraphic(itemContainer, SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND, ITEM_ROW_START, totalSectionsHeight));
 		addedWidgets.add(createText(itemContainer, title, new Color(228, 216, 162).getRGB(), (ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING) + ITEM_ROW_START
 			, TEXT_HEIGHT, ITEM_ROW_START, totalSectionsHeight + LINE_VERTICAL_SPACING));
 
 		return totalSectionsHeight + LINE_VERTICAL_SPACING + TEXT_HEIGHT;
 	}
 
-	private Point placeItem(Widget widget, int totalItemsAdded, int totalSectionsHeight)
+	private void placeItem(Widget widget, int totalItemsAdded, int totalSectionsHeight)
 	{
 		int adjYOffset = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
 		int adjXOffset = (totalItemsAdded % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
@@ -662,14 +730,41 @@ public class QuestBankTab
 			widget.revalidate();
 		}
 
-		return new Point(adjXOffset, adjYOffset);
+		new Point(adjXOffset, adjYOffset);
 	}
 
-	private Widget createGraphic(Widget container, int spriteId, int width, int height, int x, int y)
+	private void handleFakeItemClick(BankTabItem bankTabItem)
 	{
+		String quantity = QuantityFormatter.formatNumber(bankTabItem.getQuantity()) + " x ";
+		if (bankTabItem.getQuantity() == -1)
+		{
+			quantity = "some ";
+		}
+		final ChatMessageBuilder message = new ChatMessageBuilder()
+				.append("You need ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(quantity)
+				.append(Text.removeTags(bankTabItem.getText()))
+				.append(".");
+
+		if (!bankTabItem.getText().isEmpty())
+		{
+			message.append(ChatColorType.NORMAL)
+					.append(" " + bankTabItem.getText() + ".");
+		}
+
+		chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.ITEM_EXAMINE)
+				.runeLiteFormattedMessage(message.build())
+				.build());
+	}
+
+	private Widget createGraphic(Widget container, int spriteId, int x, int y)
+	{
+		final int WIDTH = ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING;
 		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
-		widget.setOriginalWidth(width);
-		widget.setOriginalHeight(height);
+		widget.setOriginalWidth(WIDTH);
+		widget.setOriginalHeight(QuestBankTab.LINE_HEIGHT);
 		widget.setOriginalX(x);
 		widget.setOriginalY(y);
 
@@ -680,118 +775,10 @@ public class QuestBankTab
 		return widget;
 	}
 
-	private Widget createMissingItem(Widget container, BankTabItem bankTabItem, int x, int y)
-	{
-		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
-		widget.setItemQuantityMode(1); // quantity of 1 still shows number
-		widget.setOriginalWidth(ITEM_WIDTH);
-		widget.setOriginalHeight(ITEM_HEIGHT);
-		widget.setOriginalX(x);
-		widget.setOriginalY(y);
-
-		List<Integer> itemIDs = bankTabItem.getItemIDs();
-		if (bankTabItem.getItemRequirement().getDisplayItemId() != null)
-		{
-			itemIDs = Collections.singletonList(bankTabItem.getItemRequirement().getDisplayItemId());
-		}
-
-		if (itemIDs.size() == 0)
-		{
-			itemIDs.add(ItemID.CAKE_OF_GUIDANCE);
-		}
-
-		widget.setItemId(itemIDs.get(0));
-		widget.setName("<col=ff9040>" + bankTabItem.getText() + "</col>");
-		if (bankTabItem.getDetails() != null)
-		{
-			widget.setText(bankTabItem.getDetails());
-		}
-		widget.setItemQuantity(0);
-		widget.setOpacity(150);
-		widget.setOnOpListener(ScriptID.NULL);
-		widget.setHasListener(true);
-
-		addTabActions(widget);
-
-		widget.revalidate();
-
-		return widget;
-	}
-
-	private Widget createDuplicateItem(Widget container, BankTabItem bankTabItem, int quantity, int x, int y)
-	{
-		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
-		widget.setItemQuantityMode(1); // quantity of 1 still shows number
-		widget.setOriginalWidth(ITEM_WIDTH);
-		widget.setOriginalHeight(ITEM_HEIGHT);
-		widget.setOriginalX(x);
-		widget.setOriginalY(y);
-		widget.setBorderType(1);
-
-		List<Integer> itemIDs = bankTabItem.getItemIDs();
-		if (bankTabItem.getDisplayID() != null)
-		{
-			itemIDs = Collections.singletonList(bankTabItem.getDisplayID());
-		}
-
-		widget.setItemId(itemIDs.get(0));
-		widget.setName("<col=ff9040>" + bankTabItem.getText() + "</col>");
-		if (bankTabItem.getDetails() != null)
-		{
-			widget.setText(bankTabItem.getDetails());
-		}
-		widget.setItemQuantity(quantity);
-		widget.setOnOpListener(ScriptID.NULL);
-		widget.setHasListener(true);
-
-		widget.revalidate();
-
-		return widget;
-	}
-
-	private void addTabActions(Widget w)
-	{
-		w.setAction(1, "Details");
-
-		w.setOnOpListener((JavaScriptCallback) this::handleFakeItemClick);
-	}
-
-	private void handleFakeItemClick(ScriptEvent event)
-	{
-		Widget widget = event.getSource();
-		if (widget.getItemId() != -1)
-		{
-			String name = widget.getName();
-			BankTabItem item = widgetItems.get(widget);
-
-			String quantity = QuantityFormatter.formatNumber(item.getQuantity()) + " x ";
-			if (item.getQuantity() == -1)
-			{
-				quantity = "some ";
-			}
-			final ChatMessageBuilder message = new ChatMessageBuilder()
-				.append("You need ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(quantity)
-				.append(Text.removeTags(name))
-				.append(".");
-
-			if (!widget.getText().isEmpty())
-			{
-				message.append(ChatColorType.NORMAL)
-					.append(" " + widget.getText() + ".");
-			}
-
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.ITEM_EXAMINE)
-				.runeLiteFormattedMessage(message.build())
-				.build());
-		}
-	}
-
 	private Widget createText(Widget container, String text, int color, int width, int height, int x, int y)
 	{
 		Widget widget = container.createChild(-1, WidgetType.TEXT);
+
 		widget.setOriginalWidth(width);
 		widget.setOriginalHeight(height);
 		widget.setOriginalX(x);
@@ -807,11 +794,13 @@ public class QuestBankTab
 		return widget;
 	}
 
-	private Widget createIcon(Widget container, int spriteID, int width, int height, int x, int y)
+	private Widget createIcon(Widget container, int spriteID, int x, int y)
 	{
+		final int WIDTH = 10;
+		final int HEIGHT = 10;
 		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
-		widget.setOriginalWidth(width);
-		widget.setOriginalHeight(height);
+		widget.setOriginalWidth(WIDTH);
+		widget.setOriginalHeight(HEIGHT);
 		widget.setOriginalX(x);
 		widget.setOriginalY(y);
 

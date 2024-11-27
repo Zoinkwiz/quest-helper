@@ -25,6 +25,7 @@
 package com.questhelper.bank.banktab;
 
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -40,6 +41,7 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 
 @Singleton
 public class QuestHelperBankTagService
@@ -132,9 +134,7 @@ public class QuestHelperBankTagService
 		{
 			recommendedItems = recommendedItems.stream()
 				.filter(Objects::nonNull)
-				.filter(i -> (!onlyGetMissingItems
-					|| !i.checkWithBank(plugin.getClient()))
-					&& i.shouldDisplayText(plugin.getClient()))
+				.filter(i -> (!onlyGetMissingItems || !i.checkWithBank(plugin.getClient())) && i.shouldDisplayText(plugin.getClient()))
 				.collect(Collectors.toList());
 		}
 
@@ -237,19 +237,14 @@ public class QuestHelperBankTagService
 	{
 		List<Integer> itemIds = item.getDisplayItemIds();
 
-		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
+		Integer displayId = itemIds.stream().filter(this::hasItemInBankOrPotionStorage).findFirst().orElse(itemIds.get(0));
 
 		return new BankTabItem(item, displayId);
 	}
 
-	public boolean hasItemInBank(int itemID)
+	public boolean hasItemInBankOrPotionStorage(int itemID)
 	{
-		ItemContainer bankContainer = plugin.getClient().getItemContainer(InventoryID.BANK);
-		if (bankContainer == null)
-		{
-			return false;
-		}
-
-		return bankContainer.contains(itemID);
+		ItemRequirement tmpReq = new ItemRequirement("tmp", itemID);
+		return tmpReq.checkWithBank(client);
 	}
 }

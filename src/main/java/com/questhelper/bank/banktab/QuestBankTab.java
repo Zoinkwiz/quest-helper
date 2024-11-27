@@ -59,6 +59,7 @@ import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 import static com.questhelper.bank.banktab.PotionStorage.COMPONENTS_PER_POTION;
+import static com.questhelper.bank.banktab.PotionStorage.VIAL_IDX;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.*;
 
 @Singleton
@@ -293,7 +294,13 @@ public class QuestBankTab
 				}
 
 				idx = potionStorage.find(w.getItemId());
-				if (idx > -1)
+				if (idx == VIAL_IDX)
+				{
+					potionStorage.prepareWidgets();
+					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
+					menu.setParam0(VIAL_IDX);
+				}
+				else if (idx > -1)
 				{
 					potionStorage.prepareWidgets();
 					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);

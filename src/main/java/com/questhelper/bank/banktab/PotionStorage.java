@@ -34,7 +34,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
@@ -57,6 +56,7 @@ class Potion
 public class PotionStorage
 {
     static final int TOTAL_POTIONS_VARBIT = 4286;
+    static final int VIAL_IDX = 514;
     static final int COMPONENTS_PER_POTION = 5;
 
     private final Client client;
@@ -116,7 +116,7 @@ public class PotionStorage
     {
         var potionStorePotions = client.getEnum(EnumID.POTIONSTORE_POTIONS);
         var potionStoreUnfinishedPotions = client.getEnum(EnumID.POTIONSTORE_UNFINISHED_POTIONS);
-        potions = new Potion[potionStorePotions.size() + potionStoreUnfinishedPotions.size()];
+        potions = new Potion[potionStorePotions.size() + potionStoreUnfinishedPotions.size() + 1];
         int potionsIdx = 0;
         for (EnumComposition e : new EnumComposition[]{potionStorePotions, potionStoreUnfinishedPotions})
         {
@@ -142,6 +142,14 @@ public class PotionStorage
             }
         }
 
+        // Add vial
+        Potion p = new Potion();
+        p.potionEnum = null;
+        p.itemId = ItemID.VIAL;
+        p.doses = client.getVarpValue(4286);
+        p.withdrawDoses = 0;
+        potions[potions.length - 1] = p;
+
         QuestContainerManager.getPotionData().update(client.getTickCount(), getItems());
     }
 
@@ -158,10 +166,16 @@ public class PotionStorage
         {
             if (potion == null) continue;
             var potionEnum = potion.potionEnum;
-            // TODO: An issue due to potentially wanting a specific potion, or to default to full potion
-            int potionItemId = potionEnum.getIntValue(potion.withdrawDoses);
-            int quantity = potion.doses / potion.withdrawDoses;
-            items.add(new Item(potionItemId, quantity));
+            if (potionEnum != null)
+            {
+                int potionItemId = potionEnum.getIntValue(potion.withdrawDoses);
+                int quantity = potion.doses / potion.withdrawDoses;
+                items.add(new Item(potionItemId, quantity));
+            }
+            else
+            {
+                items.add(new Item(potion.itemId, potion.doses));
+            }
         }
 
         return items.toArray(new Item[0]);
@@ -178,7 +192,12 @@ public class PotionStorage
         {
             if (potion != null && potion.itemId == itemId)
             {
-                return potion.doses / potion.withdrawDoses;
+                if (potion.withdrawDoses != 0)
+                {
+                    return potion.doses / potion.withdrawDoses;
+                }
+
+                return potion.doses;
             }
         }
         return 0;
@@ -189,6 +208,11 @@ public class PotionStorage
         if (potions == null)
         {
             return -1;
+        }
+
+        if (itemId == ItemID.VIAL)
+        {
+            return VIAL_IDX;
         }
 
         int potionIdx = 0;

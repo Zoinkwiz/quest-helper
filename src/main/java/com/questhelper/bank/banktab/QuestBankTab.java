@@ -334,7 +334,7 @@ public class QuestBankTab
 		if (addedWidgets.isEmpty()) return;
 		Widget parent = addedWidgets.get(0).getParent();
 		if (parent == null) return;
-
+		if (parent.getChildren() == null) return;
 		parent.setChildren(Arrays.copyOf(parent.getChildren(), originalContainerChildren));
 		parent.revalidate();
 

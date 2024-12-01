@@ -555,7 +555,7 @@ public class QuestHelperPanel extends PluginPanel
 			}
 			else
 			{
-				questListMessage.setText("No quests are available that match your current filters");
+				questListMessage.setText("There are no quests available that match your current filters");
 			}
 		}
 		questListMessage.setVisible(questSelectPanels.isEmpty());

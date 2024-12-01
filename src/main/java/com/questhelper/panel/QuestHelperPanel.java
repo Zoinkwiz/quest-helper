@@ -551,7 +551,7 @@ public class QuestHelperPanel extends PluginPanel
 		{
 			if (loggedOut)
 			{
-				questListMessage.setText("Log in to see available quests");
+				questListMessage.setText("Please log in to see available quests");
 			}
 			else
 			{

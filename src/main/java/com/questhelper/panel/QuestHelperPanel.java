@@ -251,7 +251,6 @@ public class QuestHelperPanel extends PluginPanel
 
 		questListMessage = JGenerator.makeJTextArea("Please log in to see available quests");
 		questListMessage.setForeground(Color.GRAY);
-		questListMessage.setVisible(false);
 
 		/* Search bar */
 		searchBar.setIcon(IconTextField.Icon.SEARCH);

@@ -533,7 +533,7 @@ public class DragonSlayer extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("The abiltiy to equip a Green D'hide Body, Rune Platebody & Dragon Platebody"),
+				new UnlockReward("The ability to equip a Green D'hide Body, Rune Platebody & Dragon Platebody"),
 				new UnlockReward("Access to Crandor"),
 				new UnlockReward("Access to the Corsair Cove Resource Area."),
 				new UnlockReward("Ability to receive dragons as a slayer task."));

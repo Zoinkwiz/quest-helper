@@ -26,6 +26,7 @@ package com.questhelper.playerquests.bikeshedder;
 
 import com.google.common.collect.ImmutableMap;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.collections.TeleportCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -47,6 +48,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import static com.questhelper.requirements.util.LogicHelper.or;
@@ -64,6 +66,10 @@ public class BikeShedder extends BasicQuestHelper
 	private ItemRequirement manyCoins;
 	private ObjectStep useCoinOnBush;
 	private ObjectStep useManyCoinsOnBush;
+
+	private ItemRequirement varrockTeleport;
+	private ItemRequirement ardougneTeleport;
+	private ItemRequirement faladorTeleport;
 
 	private Zone conditionalRequirementZone;
 	private ZoneRequirement conditionalRequirementZoneRequirement;
@@ -116,6 +122,10 @@ public class BikeShedder extends BasicQuestHelper
 		useLogOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use log on bush", anyLog);
 		useLogOnBush.addIcon(ItemID.LOGS);
 
+		varrockTeleport = TeleportCollections.VARROCK_TELEPORT.getItemRequirement();
+		ardougneTeleport = TeleportCollections.ARDOUGNE_TELEPORT.getItemRequirement();
+		faladorTeleport = TeleportCollections.FALADOR_TELEPORT.getItemRequirement();
+
 		oneCoin = new ItemRequirement("Coins", ItemCollections.COINS, 1);
 		oneCoin.setHighlightInInventory(true);
 		useCoinOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use coins on the bush.", oneCoin);
@@ -152,6 +162,11 @@ public class BikeShedder extends BasicQuestHelper
 		var upstairsInSunrisePalace = new Zone(new WorldPoint(1684, 3162, 1), new WorldPoint(1691, 3168, 1));
 		byStaircaseInSunrisePalace = new ZoneRequirement(upstairsInSunrisePalace);
 		goDownstairsInSunrisePalace = new ObjectStep(getQuest().getQuestHelper(), ObjectID.STAIRCASE_52627, new WorldPoint(1690, 3164, 1), "Climb downstairs, ensure stairs are well highlighted!");
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended() {
+		return Arrays.asList(varrockTeleport, ardougneTeleport, faladorTeleport);
 	}
 
 	@Override

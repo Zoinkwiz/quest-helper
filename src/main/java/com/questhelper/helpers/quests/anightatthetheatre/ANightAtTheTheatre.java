@@ -203,7 +203,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		speakWithMysteriousStrangerToStart.addDialogSteps("What's all this really about?", "What's this thing you need from me?", "Yes.");
 
 		enterVerSinhazaCrypts = new ObjectStep(this, ObjectID.STAIRCASE_42523, new WorldPoint(3682, 3231, 0),
-			"Enter the crypts north east of the Mysterious Stranger.", saw);
+			"Enter the crypts north east of the Mysterious Stranger.", saw, flail, combatGear, food);
 		enterVerSinhazaCrypts.addDialogSteps("Yes.");
 
 		killVyrewatchForKey = new NpcStep(this, NpcID.VYREWATCH_11173,

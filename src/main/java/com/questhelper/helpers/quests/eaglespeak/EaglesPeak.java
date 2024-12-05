@@ -323,7 +323,7 @@ public class EaglesPeak extends BasicQuestHelper
 
 		grabBronzeFeather = new ObjectStep(this, ObjectID.STONE_PEDESTAL_19984, new WorldPoint(1974, 4915, 2), "Take the feather from the pedestal.");
 
-		enterMainCavernFromBronze = new ObjectStep(this, ObjectID.TUNNEL_19906, new WorldPoint(1974, 4907, 2), "Return the main cavern.");
+		enterMainCavernFromBronze = new ObjectStep(this, ObjectID.TUNNEL_19906, new WorldPoint(1974, 4907, 2), "Return to the main cavern.");
 
 		enterSilverRoom = new ObjectStep(this, ObjectID.TUNNEL_19903, new WorldPoint(1986, 4972, 3), "Enter the north-western cavern of Eagles' Peak.");
 

@@ -319,6 +319,8 @@ public class EaglesPeak extends BasicQuestHelper
 		winch3 = new ObjectStep(this, ObjectID.WINCH_19978, new WorldPoint(1970, 4910, 2), "Use the winches in the corners of the room.");
 		winch4 = new ObjectStep(this, ObjectID.WINCH_19979, new WorldPoint(1978, 4910, 2), "Use the winches in the corners of the room.");
 
+		winch1.addSubSteps(winch2, winch3, winch4);
+
 		grabBronzeFeather = new ObjectStep(this, ObjectID.STONE_PEDESTAL_19984, new WorldPoint(1974, 4915, 2), "Take the feather from the pedestal.");
 
 		enterMainCavernFromBronze = new ObjectStep(this, ObjectID.TUNNEL_19906, new WorldPoint(1974, 4907, 2), "Return the main cavern.");
@@ -340,6 +342,7 @@ public class EaglesPeak extends BasicQuestHelper
 
 		pickupSilverFeather = new ObjectStep(this, ObjectID.OPENING, new WorldPoint(1971, 4886, 2), "Pick up the silver feather. If it's despawned, inspect the opening to get it.");
 		pickUpActualSilverFeather = new ItemStep(this, "Pick up the silver feather.", silverFeather);
+		pickupSilverFeather.addSubSteps(pickUpActualSilverFeather);
 
 		enterGoldRoom = new ObjectStep(this, ObjectID.TUNNEL_19897, new WorldPoint(2023, 4982, 3), "Enter the tunnel in the north east of the main cavern.");
 
@@ -419,6 +422,8 @@ public class EaglesPeak extends BasicQuestHelper
 		useGoldSilverFeathersOnStoneDoor = new ObjectStep(this, NullObjectID.NULL_19991, new WorldPoint(2003, 4948, 3), "Use the silver and golden feathers on the door.",
 			goldFeatherHighlighted, silverFeatherHighlighted, bronzeFeatherHighlighted);
 		useGoldSilverFeathersOnStoneDoor.addIcon(ItemID.GOLDEN_FEATHER);
+
+		useFeathersOnStoneDoor.addSubSteps(useBronzeFeathersOnStoneDoor, useSilverFeathersOnStoneDoor, useGoldFeathersOnStoneDoor, useBronzeSilverFeathersOnStoneDoor, useGoldBronzeFeathersOnStoneDoor, useGoldSilverFeathersOnStoneDoor);
 
 		sneakPastEagle = new NpcStep(this, NpcID.EAGLE, new WorldPoint(2008, 4955, 3),
 			"Go through the feather door and sneak past the Eagle whilst wearing your eagle disguise.",

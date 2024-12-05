@@ -221,7 +221,7 @@ public class EaglesPeak extends BasicQuestHelper
 	protected void setupZones()
 	{
 		inMainCave = new Zone(new WorldPoint(1983, 4940, 3), new WorldPoint(2035, 4987, 3));
-		inSilverRoomZone = new Zone(new WorldPoint(1925, 4863, 2), new WorldPoint(1976, 4884, 2));
+		inSilverRoomZone = new Zone(new WorldPoint(1925, 4863, 2), new WorldPoint(1976, 4885, 2));
 		inGoldRoomZone1 = new Zone(new WorldPoint(1924, 4890, 2), new WorldPoint(1959, 4921, 2));
 		inGoldRoomZone2 = new Zone(new WorldPoint(1959, 4890, 2), new WorldPoint(1985, 4901, 2));
 		inNest = new Zone(new WorldPoint(2002, 4956, 3), new WorldPoint(2010, 4962, 3));

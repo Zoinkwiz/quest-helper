@@ -208,6 +208,7 @@ public class TheHandInTheSand extends BasicQuestHelper
 		talkToBert = new NpcStep(this, NpcID.BERT, new WorldPoint(2551, 3099, 0), "Talk to Bert in west Yanille.");
 		talkToBert.addDialogStep("Eww a hand, in the sand! Why haven't you told the authorities?");
 		talkToBert.addDialogStep("Sure, I'll give you a hand.");
+		talkToBert.addDialogStep("Yes.");
 		giveCaptainABeer = new NpcStep(this, NpcID.GUARD_CAPTAIN, new WorldPoint(2552, 3080, 0), "Give the Guard Captain in the pub south of Bert a beer. You can buy one for 2gp from the pub.", beer);
 		ringBell = new ObjectStep(this, ObjectID.BELL_6847, new WorldPoint(2598, 3085, 0), "Ring the bell outside the Wizards' Guild in Yanille. Talk to Zavistic Rarve when he appears.", beerHand);
 		ringBell.addDialogStep("I have a rather sandy problem that I'd like to palm off on you.");

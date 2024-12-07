@@ -492,6 +492,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.SLAYER, 60));
 		req.add(new SkillRequirement(Skill.SMITHING, 60));
 		req.add(new SkillRequirement(Skill.FISHING, 60));
+		req.add(new SkillRequirement(Skill.MINING, 60));
 		req.add(new SkillRequirement(Skill.RUNECRAFT, 55));
 		req.add(new QuestRequirement(QuestHelperQuest.THE_FREMENNIK_ISLES, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.LUNAR_DIPLOMACY, QuestState.FINISHED));

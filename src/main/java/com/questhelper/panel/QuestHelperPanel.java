@@ -83,7 +83,6 @@ public class QuestHelperPanel extends PluginPanel
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
 	private final JScrollPane scrollableContainer;
 	public static final int DROPDOWN_HEIGHT = 26;
-	private boolean settingsPanelActive = false;
 	public boolean questActive = false;
 
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
@@ -144,7 +143,8 @@ public class QuestHelperPanel extends PluginPanel
 		settingsBtn.setUI(new BasicButtonUI());
 		settingsBtn.addActionListener((ev) -> {
 			assistLevelPanel.rebuild(null, configManager, this);
-			if (settingsPanelActive)
+
+			if (settingsPanelActive())
 			{
 				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				deactivateSettings();
@@ -154,6 +154,8 @@ public class QuestHelperPanel extends PluginPanel
 				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
 				activateSettings();
 			}
+
+			onSearchBarChanged();
 		});
 		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
 		{
@@ -164,7 +166,7 @@ public class QuestHelperPanel extends PluginPanel
 
 			public void mouseExited(java.awt.event.MouseEvent evt)
 			{
-				if (settingsPanelActive)
+				if (settingsPanelActive())
 				{
 					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
@@ -302,9 +304,6 @@ public class QuestHelperPanel extends PluginPanel
 		JPanel orderPanel = makeDropdownPanel(orderDropdown, "Ordering");
 		orderPanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 
-		JPanel assistanceToggles = new JPanel();
-
-
 		// Skill filtering
 		SkillFilterPanel skillFilterPanel = new SkillFilterPanel(questHelperPlugin.skillIconManager, questHelperPlugin.getConfigManager());
 		skillFilterPanel.setVisible(false);
@@ -400,6 +399,11 @@ public class QuestHelperPanel extends PluginPanel
 	{
 		final String text = searchBar.getText();
 
+		if (settingsPanelActive())
+		{
+			return;
+		}
+
 		if ((questOverviewPanel.currentQuest == null || !text.isEmpty()))
 		{
 			activateQuestList();
@@ -465,46 +469,6 @@ public class QuestHelperPanel extends PluginPanel
 				questListPanel.add(listItem);
 			}
 		});
-	}
-
-	JButton activeDifficulty = null;
-
-	private JButton makeButton(String text)
-	{
-		JButton minimalAssist = new JButton();
-		SwingUtil.removeButtonDecorations(minimalAssist);
-		minimalAssist.setText(text.substring(0, 3));
-//		minimalAssist.setIcon(PATREON_ICON);
-		minimalAssist.setToolTipText(text);
-		minimalAssist.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		minimalAssist.setUI(new BasicButtonUI());
-		minimalAssist.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			public void mouseEntered(java.awt.event.MouseEvent evt)
-			{
-				if (activeDifficulty != minimalAssist)
-				{
-					minimalAssist.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
-				}
-			}
-
-			public void mouseClicked(java.awt.event.MouseEvent evt)
-			{
-				minimalAssist.setBackground(ColorScheme.BRAND_ORANGE);
-				if (activeDifficulty != null) activeDifficulty.setBackground(ColorScheme.DARK_GRAY_COLOR);
-				activeDifficulty = minimalAssist;
-			}
-
-			public void mouseExited(java.awt.event.MouseEvent evt)
-			{
-				if (activeDifficulty != minimalAssist)
-				{
-					minimalAssist.setBackground(ColorScheme.DARK_GRAY_COLOR);
-				}
-			}
-		});
-
-		return minimalAssist;
 	}
 
 	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut,
@@ -607,10 +571,13 @@ public class QuestHelperPanel extends PluginPanel
 		revalidate();
 	}
 
+	private boolean settingsPanelActive()
+	{
+		return scrollableContainer.getViewport().getView() == assistLevelPanel;
+	}
+
 	private void activateSettings()
 	{
-		settingsPanelActive = true;
-
 		scrollableContainer.setViewportView(assistLevelPanel);
 		searchQuestsPanel.setVisible(false);
 
@@ -620,7 +587,6 @@ public class QuestHelperPanel extends PluginPanel
 
 	private void deactivateSettings()
 	{
-		settingsPanelActive = false;
 		if (questActive && searchBar.getText().isEmpty())
 		{
 			scrollableContainer.setViewportView(questOverviewWrapper);

@@ -323,6 +323,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToBoatman = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7725, new WorldPoint(2829, 10129, 0), "Speak to the Dwarven Boatman.");
 		talkToBoatman.addDialogStep("That's a deal!");
 		talkToBoatman.addDialogStep("Yes, I'm ready and don't mind it taking a few minutes.");
+		talkToBoatman.addDialogStep("Yes.");
 		talkToBoatman.addSubSteps(enterDwarfCave, enterDwarfCave2);
 
 		talkToVeldaban = new NpcStep(this, NpcID.COMMANDER_VELDABAN_6045, new WorldPoint(2827, 10214, 0),

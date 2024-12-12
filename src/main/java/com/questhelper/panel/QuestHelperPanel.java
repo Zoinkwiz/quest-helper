@@ -71,7 +71,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final QuestOverviewPanel questOverviewPanel;
 	private final FixedWidthPanel questOverviewWrapper = new FixedWidthPanel();
 	private final AssistLevelPanel assistLevelPanel = new AssistLevelPanel();
-	private final JPanel allQuestsCompletedPanel = new JPanel();
+	private final JTextArea questListMessage;
 	private final JPanel searchQuestsPanel;
 
 	private final JPanel allDropdownSections = new JPanel();
@@ -249,10 +249,8 @@ public class QuestHelperPanel extends PluginPanel
 		questsCompletedLabel.setForeground(Color.GRAY);
 		questsCompletedLabel.setText("Please log in to see available quests");
 
-		allQuestsCompletedPanel.setLayout(new BorderLayout());
-		allQuestsCompletedPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		allQuestsCompletedPanel.add(questsCompletedLabel);
-		allQuestsCompletedPanel.setVisible(false);
+		questListMessage = JGenerator.makeJTextArea("Please log in to see available quests");
+		questListMessage.setForeground(Color.GRAY);
 
 		/* Search bar */
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -284,7 +282,7 @@ public class QuestHelperPanel extends PluginPanel
 		searchQuestsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		searchQuestsPanel.setLayout(new BorderLayout(0, BORDER_OFFSET));
 		searchQuestsPanel.add(searchBar, BorderLayout.CENTER);
-		searchQuestsPanel.add(allQuestsCompletedPanel, BorderLayout.SOUTH);
+		searchQuestsPanel.add(questListMessage, BorderLayout.SOUTH);
 
 		questListPanel.setBorder(new EmptyBorder(8, 10, 0, 10));
 		questListPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 5));
@@ -551,23 +549,19 @@ public class QuestHelperPanel extends PluginPanel
 		boolean hasMoreQuests = quests.stream().anyMatch(q -> completedQuests.get(q) != QuestState.FINISHED);
 		if (questSelectPanels.isEmpty() || !hasMoreQuests)
 		{
-			allQuestsCompletedPanel.removeAll();
-			JTextArea noMatch = JGenerator.makeJTextArea();
-			noMatch.setForeground(Color.GRAY);
 			if (loggedOut)
 			{
-				noMatch.setText("Log in to see available quests");
+				questListMessage.setText("Please log in to see available quests");
 			}
 			else
 			{
-				noMatch.setText("No quests are available that match your current filters");
+				questListMessage.setText("There are no quests available that match your current filters");
 			}
-			allQuestsCompletedPanel.add(noMatch);
 		}
-		allQuestsCompletedPanel.setVisible(questSelectPanels.isEmpty());
+		questListMessage.setVisible(questSelectPanels.isEmpty());
 
-		repaint();
 		revalidate();
+		repaint();
 		showMatchingQuests(searchBar.getText() != null ? searchBar.getText() : "");
 	}
 

@@ -221,7 +221,7 @@ public class EaglesPeak extends BasicQuestHelper
 	protected void setupZones()
 	{
 		inMainCave = new Zone(new WorldPoint(1983, 4940, 3), new WorldPoint(2035, 4987, 3));
-		inSilverRoomZone = new Zone(new WorldPoint(1925, 4863, 2), new WorldPoint(1976, 4884, 2));
+		inSilverRoomZone = new Zone(new WorldPoint(1925, 4863, 2), new WorldPoint(1976, 4885, 2));
 		inGoldRoomZone1 = new Zone(new WorldPoint(1924, 4890, 2), new WorldPoint(1959, 4921, 2));
 		inGoldRoomZone2 = new Zone(new WorldPoint(1959, 4890, 2), new WorldPoint(1985, 4901, 2));
 		inNest = new Zone(new WorldPoint(2002, 4956, 3), new WorldPoint(2010, 4962, 3));
@@ -319,9 +319,11 @@ public class EaglesPeak extends BasicQuestHelper
 		winch3 = new ObjectStep(this, ObjectID.WINCH_19978, new WorldPoint(1970, 4910, 2), "Use the winches in the corners of the room.");
 		winch4 = new ObjectStep(this, ObjectID.WINCH_19979, new WorldPoint(1978, 4910, 2), "Use the winches in the corners of the room.");
 
+		winch1.addSubSteps(winch2, winch3, winch4);
+
 		grabBronzeFeather = new ObjectStep(this, ObjectID.STONE_PEDESTAL_19984, new WorldPoint(1974, 4915, 2), "Take the feather from the pedestal.");
 
-		enterMainCavernFromBronze = new ObjectStep(this, ObjectID.TUNNEL_19906, new WorldPoint(1974, 4907, 2), "Return the main cavern.");
+		enterMainCavernFromBronze = new ObjectStep(this, ObjectID.TUNNEL_19906, new WorldPoint(1974, 4907, 2), "Return to the main cavern.");
 
 		enterSilverRoom = new ObjectStep(this, ObjectID.TUNNEL_19903, new WorldPoint(1986, 4972, 3), "Enter the north-western cavern of Eagles' Peak.");
 
@@ -340,6 +342,7 @@ public class EaglesPeak extends BasicQuestHelper
 
 		pickupSilverFeather = new ObjectStep(this, ObjectID.OPENING, new WorldPoint(1971, 4886, 2), "Pick up the silver feather. If it's despawned, inspect the opening to get it.");
 		pickUpActualSilverFeather = new ItemStep(this, "Pick up the silver feather.", silverFeather);
+		pickupSilverFeather.addSubSteps(pickUpActualSilverFeather);
 
 		enterGoldRoom = new ObjectStep(this, ObjectID.TUNNEL_19897, new WorldPoint(2023, 4982, 3), "Enter the tunnel in the north east of the main cavern.");
 
@@ -420,6 +423,8 @@ public class EaglesPeak extends BasicQuestHelper
 			goldFeatherHighlighted, silverFeatherHighlighted, bronzeFeatherHighlighted);
 		useGoldSilverFeathersOnStoneDoor.addIcon(ItemID.GOLDEN_FEATHER);
 
+		useFeathersOnStoneDoor.addSubSteps(useBronzeFeathersOnStoneDoor, useSilverFeathersOnStoneDoor, useGoldFeathersOnStoneDoor, useBronzeSilverFeathersOnStoneDoor, useGoldBronzeFeathersOnStoneDoor, useGoldSilverFeathersOnStoneDoor);
+
 		sneakPastEagle = new NpcStep(this, NpcID.EAGLE, new WorldPoint(2008, 4955, 3),
 			"Go through the feather door and sneak past the Eagle whilst wearing your eagle disguise.",
 			fakeBeak.equipped(), eagleCape.equipped());
@@ -491,10 +496,10 @@ public class EaglesPeak extends BasicQuestHelper
 		allSteps.add(new PanelDetails("In Eagles' Peak", Arrays.asList(enterPeak, shoutAtNickolaus, pickupFeathers)));
 		allSteps.add(new PanelDetails("Make a disguise", Arrays.asList(goToFancyStore, speakAsyffAgain), Arrays.asList(yellowDye, coins, tar, tenEagleFeathers), Arrays.asList(varrockTeleport, eaglesPeakTeleport)));
 		allSteps.add(new PanelDetails("Return to Eagles' Peak", Collections.singletonList(returnToEaglesPeak), Arrays.asList(fakeBeak, eagleCape), Collections.singletonList(eaglesPeakTeleport)));
-		allSteps.add(new PanelDetails("Get the bronze feather", Arrays.asList(enterBronzeRoom, attemptToTakeBronzeFeather, winch1, grabBronzeFeather)));
-		allSteps.add(new PanelDetails("Get the silver feather", Arrays.asList(enterSilverRoom, inspectSilverPedestal, inspectRocks1, inspectRocks2, inspectOpening, threatenKebbit, pickupSilverFeather)));
+		allSteps.add(new PanelDetails("Get the bronze feather", Arrays.asList(enterBronzeRoom, attemptToTakeBronzeFeather, winch1, grabBronzeFeather, enterMainCavernFromBronze)));
+		allSteps.add(new PanelDetails("Get the silver feather", Arrays.asList(enterSilverRoom, inspectSilverPedestal, inspectRocks1, inspectRocks2, inspectOpening, threatenKebbit, pickupSilverFeather, enterMainCavernFromSilver)));
 		allSteps.add(new PanelDetails("Get the golden feather", Arrays.asList(enterGoldRoom, collectFeed, pullLever1Down, fillFeeder1, fillFeeder2, pullLever2Down, pushLever1Up, fillFeeder4, pullLever3Down, fillFeeder5,
-			pullLever4Down, fillFeeder6, fillFeeder4Again, grabGoldFeather)));
+			pullLever4Down, fillFeeder6, fillFeeder4Again, grabGoldFeather, enterMainCavernFromGold)));
 		allSteps.add(new PanelDetails("Free Nickolaus", Arrays.asList(useFeathersOnStoneDoor, sneakPastEagle, speakToNickolaus)));
 		allSteps.add(new PanelDetails("Learn how to catch ferrets", Arrays.asList(speakToNickolausInTheCamp, speakToCharlieAgain), null, Collections.singletonList(ardougneTeleport)));
 		return allSteps;

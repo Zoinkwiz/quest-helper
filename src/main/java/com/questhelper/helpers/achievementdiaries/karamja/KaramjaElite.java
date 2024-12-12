@@ -150,7 +150,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			palmTreeSapling, rake, spade);
 		checkCalquat = new ObjectStep(this, NullObjectID.NULL_7807, new WorldPoint(2796, 3101, 0),
-			"Grow and check the health of a Calquat in Tai Bwo Wannai." +
+			"Grow and check the health of a Calquat in Tai Bwo Wannai. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			calquatSapling, rake, spade);
 		moveToHorseShoe = new DetailedQuestStep(this, new WorldPoint(2734, 3224, 0),

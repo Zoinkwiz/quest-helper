@@ -28,7 +28,6 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -52,25 +51,105 @@ import java.util.Map;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class MisthalinMystery extends BasicQuestHelper
 {
-	//Requirements
-	ItemRequirement bucket, manorKey, knife, notes1, rubyKey, tinderbox, notes2, emeraldKey, notes3, sapphireKey, killersKnife, killersKnifeEquipped;
+	// Requirements
+	ItemRequirement bucket;
+	ItemRequirement manorKey;
+	ItemRequirement knife;
+	ItemRequirement notes1;
+	ItemRequirement rubyKey;
+	ItemRequirement tinderbox;
+	ItemRequirement notes2;
+	ItemRequirement emeraldKey;
+	ItemRequirement notes3;
+	ItemRequirement sapphireKey;
+	ItemRequirement killersKnife;
+	ItemRequirement killersKnifeEquipped;
+	ZoneRequirement onIsland;
+	ZoneRequirement inOutsideArea;
+	ZoneRequirement inBossRoom;
+	VarbitRequirement litCandle1;
+	VarbitRequirement litCandle2;
+	VarbitRequirement litCandle3;
+	WidgetTextRequirement inPianoWidget;
+	Conditions playedD;
+	Conditions playedE;
+	Conditions playedA;
+	VarbitRequirement playedAnyKey;
+	WidgetTextRequirement inGemWidget;
+	Conditions selectedSaphire;
+	Conditions selectedDiamond;
+	Conditions selectedZenyte;
+	Conditions selectedEmerald;
+	Conditions selectedOnyx;
+	VarbitRequirement selectAnyGem;
 
-	Requirement onIsland, litCandle1, litCandle2, litCandle3, inOutsideArea, inPianoWidget, playedD, playedE,
-		playedA, playedAnyKey, inGemWidget, selectedSaphire, selectedDiamond, selectedZenyte, selectedEmerald, selectedOnyx,
-		selectAnyGem, inBossRoom;
+	// Steps
+	NpcStep talkToAbigale;
+	ObjectStep takeTheBoat;
+	ObjectStep takeTheBucket;
+	ObjectStep searchTheBarrel;
+	ObjectStep useBucketOnBarrel;
+	ObjectStep searchTheBarrelForKey;
+	ObjectStep openManorDoor;
+	ObjectStep takeKnife;
+	ObjectStep tryToOpenPinkKnobDoor;
+	ObjectStep takeNote1;
+	DetailedQuestStep readNotes1;
+	ObjectStep useKnifeOnPainting;
+	ObjectStep searchPainting;
+	ObjectStep goThroughRubyDoor;
+	ObjectStep takeTinderbox;
+	ObjectStep lightCandle1;
+	ObjectStep lightCandle2;
+	ObjectStep lightCandle3;
+	ObjectStep lightCandle4;
+	ObjectStep lightBarrel;
+	ObjectStep leaveExplosionRoom;
+	ObjectStep climbWall;
+	ObjectStep observeThroughTree;
+	ObjectStep takeNote2;
+	DetailedQuestStep readNotes2;
+	ObjectStep playPiano;
+	WidgetStep playD;
+	WidgetStep playE;
+	WidgetStep playA;
+	WidgetStep playDAgain;
+	DetailedQuestStep restartPiano;
+	ObjectStep searchThePiano;
+	ObjectStep returnOverBrokenWall;
+	ObjectStep openEmeraldDoor;
+	ObjectStep enterBandosGodswordRoomStep;
+	ObjectStep takeNote3;
+	DetailedQuestStep readNotes3;
+	ObjectStep useKnifeOnFireplace;
+	ObjectStep searchFireplace;
+	WidgetStep clickSapphire;
+	WidgetStep clickDiamond;
+	WidgetStep clickZenyte;
+	WidgetStep clickEmerald;
+	WidgetStep clickOnyx;
+	WidgetStep clickRuby;
+	DetailedQuestStep restartGems;
+	ObjectStep searchFireplaceForSapphireKey;
+	ObjectStep goThroughSapphireDoor;
+	DetailedQuestStep reflectKnives;
+	ObjectStep continueThroughSapphireDoor;
+	DetailedQuestStep watchTheKillersReveal;
+	DetailedQuestStep pickUpKillersKnife;
+	NpcStep fightAbigale;
+	ObjectStep leaveSapphireRoom;
+	NpcStep talkToMandy;
 
-	QuestStep talkToAbigale, takeTheBoat, takeTheBucket, searchTheBarrel, useBucketOnBarrel, searchTheBarrelForKey, openManorDoor,
-		takeKnife, tryToOpenPinkKnobDoor, takeNote1, readNotes1, useKnifeOnPainting, searchPainting, goThroughRubyDoor, takeTinderbox, lightCandle1, lightCandle2,
-		lightCandle3, lightCandle4, lightBarrel, leaveExplosionRoom, climbWall, observeThroughTree, takeNote2, readNotes2, playPiano, playD, playE, playA, playDAgain, restartPiano,
-		searchThePiano, returnOverBrokenWall, openEmeraldDoor, enterBandosGodswordRoomStep, takeNote3, readNotes3, useKnifeOnFireplace, searchFireplace, clickSapphire, clickDiamond,
-		clickZenyte, clickEmerald, clickOnyx, clickRuby, restartGems, searchFireplaceForSapphireKey, goThroughSapphireDoor, reflectKnives, continueThroughSapphireDoor, watchTheKillersReveal,
-		pickUpKillersKnife, fightAbigale, leaveSapphireRoom, talkToMandy;
-
-	//Zones
-	private Zone island, outside1, outside2, outside3, bossRoom;
+	// Zones
+	Zone island;
+	Zone outside1;
+	Zone outside2;
+	Zone outside3;
+	Zone bossRoom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -235,24 +314,24 @@ public class MisthalinMystery extends BasicQuestHelper
 	{
 		onIsland = new ZoneRequirement(island);
 		inOutsideArea = new ZoneRequirement(outside1, outside2, outside3);
+		inBossRoom = new ZoneRequirement(bossRoom);
 
 		litCandle1 = new VarbitRequirement(4042, 1);
 		litCandle2 = new VarbitRequirement(4041, 1);
 		litCandle3 = new VarbitRequirement(4039, 1);
 
-		playedD = new Conditions(new VarbitRequirement(4044, 1), new VarbitRequirement(4049, 1));
-		playedE = new Conditions(new VarbitRequirement(4045, 1), new VarbitRequirement(4049, 2));
-		playedA = new Conditions(new VarbitRequirement(4046, 1), new VarbitRequirement(4049, 3));
+		playedD = and(new VarbitRequirement(4044, 1), new VarbitRequirement(4049, 1));
+		playedE = and(new VarbitRequirement(4045, 1), new VarbitRequirement(4049, 2));
+		playedA = and(new VarbitRequirement(4046, 1), new VarbitRequirement(4049, 3));
 		playedAnyKey = new VarbitRequirement(4049, 1, Operation.GREATER_EQUAL);
 		inPianoWidget = new WidgetTextRequirement(554, 20, "C");
 		inGemWidget = new WidgetTextRequirement(555, 1, 1, "Gemstone switch panel");
-		selectedSaphire = new Conditions(new VarbitRequirement(4051, 1), new VarbitRequirement(4050, 1));
-		selectedDiamond = new Conditions(new VarbitRequirement(4052, 1), new VarbitRequirement(4050, 2));
-		selectedZenyte = new Conditions(new VarbitRequirement(4053, 1), new VarbitRequirement(4050, 3));
-		selectedEmerald = new Conditions(new VarbitRequirement(4054, 1), new VarbitRequirement(4050, 4));
-		selectedOnyx = new Conditions(new VarbitRequirement(4055, 1), new VarbitRequirement(4050, 5));
+		selectedSaphire = and(new VarbitRequirement(4051, 1), new VarbitRequirement(4050, 1));
+		selectedDiamond = and(new VarbitRequirement(4052, 1), new VarbitRequirement(4050, 2));
+		selectedZenyte = and(new VarbitRequirement(4053, 1), new VarbitRequirement(4050, 3));
+		selectedEmerald = and(new VarbitRequirement(4054, 1), new VarbitRequirement(4050, 4));
+		selectedOnyx = and(new VarbitRequirement(4055, 1), new VarbitRequirement(4050, 5));
 		selectAnyGem = new VarbitRequirement(4050, 1, Operation.GREATER_EQUAL);
-		inBossRoom = new ZoneRequirement(bossRoom);
 	}
 
 	@Override
@@ -284,7 +363,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		searchTheBarrelForKey = new ObjectStep(this, NullObjectID.NULL_29649, new WorldPoint(1615, 4829, 0), "Search the barrel of rainwater for the manor key.");
 		useBucketOnBarrel.addIcon(ItemID.BUCKET);
 		openManorDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_30110, new WorldPoint(1636, 4824, 0), "Enter the manor.", true);
-		((ObjectStep) openManorDoor).addAlternateObjects(ObjectID.LARGE_DOOR_30111);
+		openManorDoor.addAlternateObjects(ObjectID.LARGE_DOOR_30111);
 		takeKnife = new ObjectStep(this, ObjectID.TABLE_30145, new WorldPoint(1639, 4831, 0), "Take the knife from the table.", knife);
 		tryToOpenPinkKnobDoor = new ObjectStep(this, ObjectID.DOOR_30112, new WorldPoint(1635, 4838, 0), "Try to open the door with the pink handle.");
 		takeNote1 = new ObjectStep(this, NullObjectID.NULL_2266, new WorldPoint(1635, 4839, 0), "Pick up the note that appeared.");

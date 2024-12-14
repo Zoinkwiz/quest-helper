@@ -66,8 +66,8 @@ public class MisthalinMystery extends BasicQuestHelper
 		takeKnife, tryToOpenPinkKnobDoor, takeNote1, readNotes1, useKnifeOnPainting, searchPainting, goThroughRubyDoor, takeTinderbox, lightCandle1, lightCandle2,
 		lightCandle3, lightCandle4, lightBarrel, leaveExplosionRoom, climbWall, observeThroughTree, takeNote2, readNotes2, playPiano, playD, playE, playA, playDAgain, restartPiano,
 		searchThePiano, returnOverBrokenWall, openEmeraldDoor, enterBandosGodswordRoomStep, takeNote3, readNotes3, useKnifeOnFireplace, searchFireplace, clickSapphire, clickDiamond,
-		clickZenyte, clickEmerald, clickOnyx, clickRuby, restartGems, searchFireplaceForSapphireKey, goThroughSapphireDoor, reflectKnives, continueThroughSapphireDoor, pickUpKillersKnife,
-		fightAbigale, leaveSapphireRoom, talkToMandy;
+		clickZenyte, clickEmerald, clickOnyx, clickRuby, restartGems, searchFireplaceForSapphireKey, goThroughSapphireDoor, reflectKnives, continueThroughSapphireDoor, watchTheKillersReveal,
+		pickUpKillersKnife, fightAbigale, leaveSapphireRoom, talkToMandy;
 
 	//Zones
 	private Zone island, outside1, outside2, outside3, bossRoom;
@@ -199,6 +199,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		steps.put(111, goDoBoss);
 
 		ConditionalStep watchRevealCutscene = new ConditionalStep(this, takeTheBoat);
+		watchRevealCutscene.addStep(inBossRoom, watchTheKillersReveal);
 		watchRevealCutscene.addStep(onIsland, continueThroughSapphireDoor);
 		steps.put(115, watchRevealCutscene);
 
@@ -274,8 +275,7 @@ public class MisthalinMystery extends BasicQuestHelper
 	{
 		// TODO: Should this implement PuzzleWrapper?
 		talkToAbigale = new NpcStep(this, NpcID.ABIGALE, new WorldPoint(3237, 3155, 0), "Talk to Abigale in the south east corner of Lumbridge Swamp.");
-		talkToAbigale.addDialogStep("What has happened here?");
-		talkToAbigale.addDialogStep("What do you want me to do?");
+		talkToAbigale.addDialogStep("Yes.");
 		takeTheBoat = new ObjectStep(this, ObjectID.ROWBOAT_30108, new WorldPoint(3240, 3140, 0), "Board the rowboat south of Abigale.");
 		takeTheBucket = new ObjectStep(this, ObjectID.BUCKET_30147, new WorldPoint(1619, 4816, 0), "Pick up the bucket near the fountain.", bucket);
 		searchTheBarrel = new ObjectStep(this, NullObjectID.NULL_29649, new WorldPoint(1615, 4829, 0), "Search the barrel of rainwater north of the fountain to trigger a cutscene.", bucket);
@@ -285,14 +285,14 @@ public class MisthalinMystery extends BasicQuestHelper
 		openManorDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_30110, new WorldPoint(1636, 4824, 0), "Enter the manor.", true);
 		((ObjectStep) openManorDoor).addAlternateObjects(ObjectID.LARGE_DOOR_30111);
 		takeKnife = new ObjectStep(this, ObjectID.TABLE_30145, new WorldPoint(1639, 4831, 0), "Take the knife from the table.", knife);
-		tryToOpenPinkKnobDoor = new ObjectStep(this, ObjectID.DOOR_30112, new WorldPoint(1635, 4838, 0), "Try to open the pink-handled door.");
+		tryToOpenPinkKnobDoor = new ObjectStep(this, ObjectID.DOOR_30112, new WorldPoint(1635, 4838, 0), "Try to open the door with the pink handle.");
 		takeNote1 = new ObjectStep(this, NullObjectID.NULL_2266, new WorldPoint(1635, 4839, 0), "Pick up the note that appeared.");
 		readNotes1 = new DetailedQuestStep(this, "Read the notes.", notes1.highlighted());
 		useKnifeOnPainting = new ObjectStep(this, NullObjectID.NULL_29650, new WorldPoint(1632, 4833, 0), "Use a knife on the marked painting.", knife);
 		useKnifeOnPainting.addIcon(ItemID.KNIFE);
 		searchPainting = new ObjectStep(this, NullObjectID.NULL_29650, new WorldPoint(1632, 4833, 0), "Search the painting for a ruby key.");
-		goThroughRubyDoor = new ObjectStep(this, ObjectID.DOOR_30116, new WorldPoint(1640, 4828, 0), "Go through the door with a ruby handle.", rubyKey);
-		takeTinderbox = new ObjectStep(this, ObjectID.SHELVES_30146, new WorldPoint(1646, 4826, 0), "Search shelves for a tinderbox.");
+		goThroughRubyDoor = new ObjectStep(this, ObjectID.DOOR_30116, new WorldPoint(1640, 4828, 0), "Go through the door with the ruby handle.", rubyKey);
+		takeTinderbox = new ObjectStep(this, ObjectID.SHELVES_30146, new WorldPoint(1646, 4826, 0), "Search the shelves for a tinderbox.");
 
 		lightCandle1 = new ObjectStep(this, NullObjectID.NULL_29655, new WorldPoint(1641, 4826, 0), "Light the unlit candles in the room.", tinderbox.highlighted());
 		lightCandle1.addIcon(ItemID.TINDERBOX);
@@ -305,6 +305,8 @@ public class MisthalinMystery extends BasicQuestHelper
 		lightBarrel = new ObjectStep(this, NullObjectID.NULL_29651, new WorldPoint(1647, 4830, 0), "Light the fuse on the barrel.", tinderbox.highlighted());
 		lightBarrel.addIcon(ItemID.TINDERBOX);
 		leaveExplosionRoom = new ObjectStep(this, ObjectID.DOOR_30116, new WorldPoint(1640, 4828, 0), "Leave the room to trigger the explosion.");
+
+		lightCandle1.addSubSteps(lightCandle2, lightCandle3, lightCandle4);
 
 		climbWall = new ObjectStep(this, NullObjectID.NULL_29657, new WorldPoint(1648, 4829, 0), "Climb over the damaged wall.");
 		observeThroughTree = new ObjectStep(this, ObjectID.DEAD_TREE_30150, new WorldPoint(1630, 4849, 0), "Observe Lacey through the trees.");
@@ -323,10 +325,10 @@ public class MisthalinMystery extends BasicQuestHelper
 
 		returnOverBrokenWall = new ObjectStep(this, NullObjectID.NULL_29657, new WorldPoint(1648, 4829, 0),
 			"Climb back over the damaged wall into the manor.", emeraldKey);
-		openEmeraldDoor = new ObjectStep(this, ObjectID.DOOR_30117, new WorldPoint(1633, 4837, 0), "Go through the door with a green handle.", emeraldKey);
+		openEmeraldDoor = new ObjectStep(this, ObjectID.DOOR_30117, new WorldPoint(1633, 4837, 0), "Go through the door with the green handle.", emeraldKey);
 
 		enterBandosGodswordRoomStep = new ObjectStep(this, ObjectID.DOOR_30118, new WorldPoint(1629, 4842, 0),
-			"Try to enter the room with a Bandos Godsword in it.");
+			"Try to enter the room containing the Bandos godsword.");
 
 		takeNote3 = new ObjectStep(this, NullObjectID.NULL_29648, new WorldPoint(1630, 4842, 0), "Pick up the note that appeared by the door.");
 		readNotes3 = new DetailedQuestStep(this, "Read the notes.", notes3.highlighted());
@@ -351,6 +353,9 @@ public class MisthalinMystery extends BasicQuestHelper
 
 		continueThroughSapphireDoor = new ObjectStep(this, ObjectID.DOOR_30119, new WorldPoint(1628, 4829, 0),
 			"Go through the sapphire door to continue.");
+		goThroughSapphireDoor.addSubSteps(continueThroughSapphireDoor);
+
+		watchTheKillersReveal = new DetailedQuestStep(this, "Watch the killer's reveal cutscene.");
 
 		pickUpKillersKnife = new DetailedQuestStep(this, "Pick up the killer's knife.", killersKnifeEquipped);
 
@@ -380,9 +385,9 @@ public class MisthalinMystery extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Uncut Ruby", ItemID.UNCUT_RUBY, 1),
-				new ItemReward("Uncut Emerald", ItemID.UNCUT_EMERALD, 1),
-				new ItemReward("Uncut Sapphire", ItemID.UNCUT_SAPPHIRE, 1));
+			new ItemReward("Uncut Ruby", ItemID.UNCUT_RUBY, 1),
+			new ItemReward("Uncut Emerald", ItemID.UNCUT_EMERALD, 1),
+			new ItemReward("Uncut Sapphire", ItemID.UNCUT_SAPPHIRE, 1));
 	}
 
 	@Override
@@ -397,7 +402,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Solve the third puzzle", Arrays.asList(observeThroughTree, takeNote2, readNotes2, playPiano, playD, playE, playA, playDAgain, searchThePiano)));
 		allSteps.add(new PanelDetails("Witness another murder", Arrays.asList(returnOverBrokenWall, openEmeraldDoor, enterBandosGodswordRoomStep)));
 		allSteps.add(new PanelDetails("Solve the fourth puzzle", Arrays.asList(takeNote3, readNotes3, useKnifeOnFireplace, searchFireplace, clickSapphire, clickDiamond, clickZenyte, clickEmerald, clickOnyx, clickRuby, searchFireplaceForSapphireKey)));
-		allSteps.add(new PanelDetails("Confront the killer", Arrays.asList(goThroughSapphireDoor, reflectKnives, pickUpKillersKnife, fightAbigale, leaveSapphireRoom, talkToMandy)));
+		allSteps.add(new PanelDetails("Confront the killer", Arrays.asList(goThroughSapphireDoor, reflectKnives, watchTheKillersReveal, pickUpKillersKnife, fightAbigale, leaveSapphireRoom, talkToMandy)));
 		return allSteps;
 	}
 }

@@ -131,6 +131,7 @@ public class QuestHelperPlugin extends Plugin
 	private QuestBankManager questBankManager;
 
 	@Inject
+	@Getter
 	private QuestManager questManager;
 
 	@Inject

@@ -2,17 +2,21 @@ package com.questhelper.questhelpers;
 
 import com.questhelper.MockedTest;
 import com.questhelper.domain.AccountType;
-import com.questhelper.panel.PanelDetails;
+import com.questhelper.panel.QuestOverviewPanel;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.OwnerStep;
+import com.questhelper.steps.QuestStep;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -174,57 +178,119 @@ public class QuestHelperTest extends MockedTest
 		}
 	}
 
-	// @Test
-	// void ensureAllStepsHaveSidebarLink()
-	// {
-	// 	when(questHelperConfig.solvePuzzles()).thenReturn(true);
+	void checkSteps(QuestHelper helper, boolean shouldError, Integer stepVarbit, QuestStep step)
+	{
+		assertNotNull(step);
 
-	// 	AchievementDiaryStepManager.setup(configManager);
+		if (step instanceof OwnerStep)
+		{
+			for (var innerStep : ((OwnerStep) step).getSteps())
+			{
+				checkSteps(helper, shouldError, stepVarbit, innerStep);
+			}
+		}
+		else
+		{
+			when(helper.getCurrentStep()).thenReturn(step);
 
-	// 	for (var quest : QuestHelperQuest.values())
-	// 	{
-	// 		var helper = quest.getQuestHelper();
-	// 		helper.setQuest(quest);
-	// 		if (quest.getPlayerQuests() != null)
-	// 		{
-	// 			continue;
-	// 		}
+			var rawText = step.getText();
+			var text = rawText == null ? "" : String.join("\n", rawText);
 
-	// 		this.injector.injectMembers(helper);
-	// 		helper.setQuestHelperPlugin(questHelperPlugin);
-	// 		helper.setConfig(questHelperConfig);
-	// 		helper.init();
+			var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+			questOverviewPanel.addQuest(helper, true);
+			questOverviewPanel.updateHighlight(this.client, helper.getCurrentStep());
 
-	// 		if (quest != QuestHelperQuest.THE_CURSE_OF_ARRAV) {
-	// 			continue;
-	// 		}
+			// All steps must have at least one category/step that's erected
+			// If all panels are collapsed, it means the step this fails on needs to be either:
+			// 1. Added as a substep to another step
+			// 2. Added as a panel step
+			if (shouldError)
+			{
+				assertFalse(questOverviewPanel.isAllCollapsed(), String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
+			}
+			else
+			{
+				if (questOverviewPanel.isAllCollapsed())
+				{
+					System.out.format("For quest %s, step '%s' is missing sub steps or should be added to panel\n", helper.getQuest(), text);
+				}
+			}
+		}
+	}
 
-	// 		if (helper instanceof BasicQuestHelper) {
-	// 			var basicHelper = (BasicQuestHelper) helper;
-	// 			var panels = helper.getPanels();
-	// 			var panelSteps = panels.stream().flatMap(panelDetails -> panelDetails.getSteps().stream()).collect(Collectors.toList());
-	// 			var steps = basicHelper.getStepList().values();
-	// 			for (var step : steps) {
-	// 				assertNotNull(step);
-	// 				var rawText = step.getText();
-	// 				var text = rawText == null ? "" : String.join("\n", step.getText());
-	// 				if (step instanceof ConditionalStep) {
-	// 					//
-	// 				} else {
-	// 					var isInPanelSteps = panelSteps.contains(step);
-	// 					/* TODO
-	// 					var isSubstepOf = steps.stream().filter(questStep -> {
-	// 						if (questStep instanceof BasicQuest) {
-	// 							return questStep.getSubSteps();
-	// 						}
-	// 						return null;
-	// 					});
-	// 					 */
-	// 					var isInAnyStepSubStepsThatIsInPanelSteps = true; // todo
-	// 					assertTrue(isInPanelSteps);
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
+	/// The intent of this test is to ensure that each potentially reachable step in a quest helper has a sidebar
+	/// step associated with it.
+	///
+	/// Because of the complexity of this, I've added the `optedInQuests` set which is the list of quests that
+	/// have opted in for errors, so if any of those steps in those quests don't have a sidebar steps,
+	/// then we'll fail.
+	/// Other quests that are run will print a warning to the terminal instead.
+	///
+	/// Currently, there's a high amount of false positives due to puzzle wrapper steps not being properly implemented.
+	@Test
+	void ensureAllStepsHaveSidebarLink()
+	{
+		var optedInQuests = Set.of(
+			QuestHelperQuest.COOKS_ASSISTANT,
+			QuestHelperQuest.SHEEP_SHEARER,
+			QuestHelperQuest.MISTHALIN_MYSTERY,
+			QuestHelperQuest.PRINCE_ALI_RESCUE
+		);
+
+		// If you add a quest to this list, then this unit test will *only* test this quest
+		Set<QuestHelperQuest> exclusiveQuests = Set.of();
+
+		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+
+		AchievementDiaryStepManager.setup(configManager);
+
+		for (var quest : QuestHelperQuest.values())
+		{
+			if (!exclusiveQuests.isEmpty()) {
+				if (!exclusiveQuests.contains(quest)) {
+					continue;
+				}
+			}
+
+			var helper = Mockito.spy(quest.getQuestHelper());
+			helper.setQuest(quest);
+			if (quest.getPlayerQuests() != null)
+			{
+				continue;
+			}
+
+			this.injector.injectMembers(helper);
+			helper.setQuestHelperPlugin(questHelperPlugin);
+			helper.setConfig(questHelperConfig);
+			helper.init();
+
+			var shouldError = optedInQuests.contains(quest);
+
+			when(this.questHelperPlugin.getSelectedQuest()).thenReturn(helper);
+
+			if (helper instanceof BasicQuestHelper)
+			{
+				var basicHelper = (BasicQuestHelper) helper;
+				var steps = basicHelper.getStepList();
+				var sortedSteps = steps.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
+				for (var e : sortedSteps)
+				{
+					var stepVarbit = e.getKey();
+					var step = e.getValue();
+
+					assertNotNull(step);
+
+					checkSteps(helper, shouldError, stepVarbit, step);
+				}
+			}
+			else if (helper instanceof ComplexStateQuestHelper)
+			{
+				// currently unsupported helper type
+			}
+			else
+			{
+				System.out.format("Unsupported quest helper type: %s\n", quest);
+			}
+		}
+	}
 }

@@ -192,7 +192,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Talk to Father Aereck", Collections.singletonList(talkToAereck)));
 		allSteps.add(new PanelDetails("Get a ghostspeak amulet", Collections.singletonList(talkToUrhney)));
-		allSteps.add(new PanelDetails("Talk to the ghost", Arrays.asList(openCoffin, speakToGhost)));
+		allSteps.add(new PanelDetails("Talk to the ghost", Arrays.asList(openCoffin, searchCoffin, speakToGhost)));
 		allSteps.add(new PanelDetails("Return the ghost's skull", Arrays.asList(enterWizardsTowerBasement, searchAltarAndRun, exitWizardsTowerBasement, openCoffinToPutSkullIn, putSkullInCoffin)));
 		return allSteps;
 	}

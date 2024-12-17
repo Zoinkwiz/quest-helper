@@ -70,6 +70,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class TheFremennikExiles extends BasicQuestHelper
 {
@@ -132,8 +133,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		investigate.addStep(new Conditions(hasReadLetter, fang), searchBoxes);
 		investigate.addStep(hasReadLetter, searchRockslide);
 		investigate.addStep(letter, readLetter);
+		investigate.addStep(and(killedYoungling, letterNearby), pickupLetter);
 		investigate.addStep(killedYoungling, searchSandpitForLetter);
-		investigate.addStep(letterNearby, pickupLetter);
 		investigate.addStep(younglingNearby, killYoungling);
 		steps.put(15, investigate);
 

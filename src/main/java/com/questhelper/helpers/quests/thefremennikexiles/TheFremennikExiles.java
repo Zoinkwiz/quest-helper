@@ -356,6 +356,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		talkToBrundtAgain = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
 			"Return to Brundt in Rellekka's longhall.");
 		talkToBrundtAgain.addDialogStep("Ask about the investigation.");
+		talkToBrundtAgain.addDialogStep("Ask about the Jormungand.");
 
 		talkToBrundtSouthEastOfRellekka = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9266, new WorldPoint(2705, 3634, 0),
 			"Talk to Brundt south east of Rellekka, asking him all available questions.");

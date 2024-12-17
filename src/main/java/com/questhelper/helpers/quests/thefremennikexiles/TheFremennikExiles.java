@@ -537,7 +537,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Investigating", Arrays.asList(buyKegs, talkToBrundt, talkToFreygerd,
-			searchSandpit, killYoungling, pickupLetter, readLetter, searchRockslide, searchSandpit,
+			searchSandpit, killYoungling, pickupLetter, readLetter, searchRockslide,
 			talkToFreygardWithItems, talkToBrundtAgain, talkToBrundtSouthEastOfRellekka), combatGear, mirrorShield));
 
 		PanelDetails shieldPanel = new PanelDetails("A Fremennik Shield", Collections.singletonList(getFremennikShield),

@@ -70,6 +70,8 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class TheFremennikExiles extends BasicQuestHelper
 {
@@ -113,6 +115,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 
 	//Zones
 	Zone lunarMine, yagaHouse, isleOfStone, typhorRoom;
+	private ConditionalStep talkToBrundtSouthEastOfRellekkaCond;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -132,8 +135,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		investigate.addStep(new Conditions(hasReadLetter, fang), searchBoxes);
 		investigate.addStep(hasReadLetter, searchRockslide);
 		investigate.addStep(letter, readLetter);
+		investigate.addStep(and(killedYoungling, letterNearby), pickupLetter);
 		investigate.addStep(killedYoungling, searchSandpitForLetter);
-		investigate.addStep(letterNearby, pickupLetter);
 		investigate.addStep(younglingNearby, killYoungling);
 		steps.put(15, investigate);
 
@@ -141,8 +144,8 @@ public class TheFremennikExiles extends BasicQuestHelper
 		steps.put(25, talkToBrundtAgain);
 		steps.put(30, talkToBrundtAgain);
 
-		steps.put(35, talkToBrundtSouthEastOfRellekka);
-		steps.put(40, talkToBrundtSouthEastOfRellekka);
+		steps.put(35, talkToBrundtSouthEastOfRellekkaCond);
+		steps.put(40, talkToBrundtSouthEastOfRellekkaCond);
 
 		goMakeGlass = new ConditionalStep(this, enterYagaHouse);
 		goMakeGlass.addStep(moltenGlassI, makeLunarGlass);
@@ -167,7 +170,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		goGetShield = new ConditionalStep(this, getFremennikShield);
 		goGetShield.setLockingCondition(fremennikShield);
 
-		ConditionalStep goMakeShield = new ConditionalStep(this, talkToBrundtSouthEastOfRellekka);
+		ConditionalStep goMakeShield = new ConditionalStep(this, talkToBrundtSouthEastOfRellekkaCond);
 		goMakeShield.addStep(vShield, talkToBrundtWithShield);
 		goMakeShield.addStep(new Conditions(askedAboutAllShieldParts, fremennikShield, lunarGlass, sigilE, polishedRock), createShield);
 		goMakeShield.addStep(new Conditions(askedAboutAllShieldParts, fremennikShield, lunarGlass, sigilE), goMakeRock);
@@ -355,6 +358,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		talkToBrundtAgain = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
 			"Return to Brundt in Rellekka's longhall.");
 		talkToBrundtAgain.addDialogStep("Ask about the investigation.");
+		talkToBrundtAgain.addDialogStep("Ask about the Jormungand.");
 
 		talkToBrundtSouthEastOfRellekka = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9266, new WorldPoint(2705, 3634, 0),
 			"Talk to Brundt south east of Rellekka, asking him all available questions.");
@@ -372,6 +376,12 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Talk to Brundt south east of Rellekka, asking him all available questions.");
 		askAboutSigil.addDialogSteps("How do I make V's Sigil?");
 		talkToBrundtSouthEastOfRellekka.addSubSteps(askAboutShield, askAboutGlass, askAboutRock, askAboutSigil);
+
+		talkToBrundtSouthEastOfRellekkaCond = new ConditionalStep(this, talkToBrundtSouthEastOfRellekka);
+		talkToBrundtSouthEastOfRellekkaCond.addStep(not(askedAboutShield), askAboutShield);
+		talkToBrundtSouthEastOfRellekkaCond.addStep(not(askedAboutGlass), askAboutGlass);
+		talkToBrundtSouthEastOfRellekkaCond.addStep(not(askedAboutRock), askAboutRock);
+		talkToBrundtSouthEastOfRellekkaCond.addStep(not(askedAboutSigil), askAboutSigil);
 
 		enterYagaHouse = new NpcStep(this, NpcID.HOUSE, new WorldPoint(2085, 3931, 0),
 			"Talk to Baba Yaga in the chicken-legged house in the north of Lunar Isle's town.", sealOfPassage, moltenGlass);
@@ -536,7 +546,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Investigating", Arrays.asList(buyKegs, talkToBrundt, talkToFreygerd,
-			searchSandpit, killYoungling, pickupLetter, readLetter, searchRockslide, searchSandpit,
+			searchSandpit, killYoungling, pickupLetter, readLetter, searchRockslide, searchBoxes,
 			talkToFreygardWithItems, talkToBrundtAgain, talkToBrundtSouthEastOfRellekka), combatGear, mirrorShield));
 
 		PanelDetails shieldPanel = new PanelDetails("A Fremennik Shield", Collections.singletonList(getFremennikShield),

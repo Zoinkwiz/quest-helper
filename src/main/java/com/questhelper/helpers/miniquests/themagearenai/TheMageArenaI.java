@@ -137,7 +137,7 @@ public class TheMageArenaI extends BasicQuestHelper
 			" pool.");
 		enterPool.addSubSteps(enterCavernForPool);
 
-		prayStatue = new DetailedQuestStep(this, new WorldPoint(2507, 4720, 0), "Pray at the statue of the god who's " +
+		prayStatue = new DetailedQuestStep(this, new WorldPoint(2507, 4720, 0), "Pray at the statue of the god whose " +
 			"cape you want. Pick up the cape which appears.");
 
 		talkToGuardian = new NpcStep(this, NpcID.CHAMBER_GUARDIAN, new WorldPoint(2508, 4695, 0), "Talk to the " +

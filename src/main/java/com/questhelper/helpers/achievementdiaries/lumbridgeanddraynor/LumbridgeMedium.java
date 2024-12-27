@@ -173,7 +173,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftCoif).isNotConsumed();
 		leather = new ItemRequirement("Leather", ItemID.LEATHER).showConditioned(notCraftCoif);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPlumb);
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPlumb);
+		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 3).showConditioned(notTPlumb);
 		steelArrows = new ItemRequirement("Steel arrows", ItemID.STEEL_ARROW).showConditioned(notUpgradeDevice);
 		coins = new ItemRequirement("999 Coins", ItemCollections.COINS).showConditioned(notUpgradeDevice);
 		avasAttractor = new ItemRequirement("Ava's Attractor", ItemID.AVAS_ATTRACTOR).showConditioned(notUpgradeDevice);

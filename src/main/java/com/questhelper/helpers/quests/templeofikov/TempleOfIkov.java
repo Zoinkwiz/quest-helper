@@ -344,7 +344,10 @@ public class TempleOfIkov extends BasicQuestHelper
 		makeChoice.addDialogStep("Ok! I'll help!");
 
 		killLucien = new NpcStep(this, NpcID.LUCIEN, new WorldPoint(3122, 3484, 0), "Equip the Armadyl Pendant and kill Lucien in the house west of the Grand Exchange.", armadylPendant);
-		bringStaffToLucien = new NpcStep(this, NpcID.LUCIEN_13608, new WorldPoint(3122, 3484, 0), "Bring the Staff of Armadyl to Lucien in the house west of the Grand Exchange.", staffOfArmadyl);
+		bringStaffToLucien = new NpcStep(this, NpcID.LUCIEN, new WorldPoint(3122, 3484, 0), "Bring the Staff of Armadyl to Lucien in the house west of the Grand Exchange.", staffOfArmadyl);
+
+		((NpcStep) bringStaffToLucien).addAlternateNpcs(NpcID.LUCIEN_13608);
+
 		bringStaffToLucien.addDialogSteps("Yes! Here it is.");
 
 		returnToLucien = new DetailedQuestStep(this, "Either return to Lucien west of the Grand Exchange with the Staff of Armadyl, or kill him whilst wearing the Pendant of Armadyl.");

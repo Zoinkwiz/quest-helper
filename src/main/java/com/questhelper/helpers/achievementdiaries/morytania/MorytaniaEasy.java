@@ -59,6 +59,8 @@ import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class MorytaniaEasy extends ComplexStateQuestHelper
 {
@@ -129,11 +131,15 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		placeScarecrowTask.addStep(scarecrow, placeScarecrow);
 		doEasy.addStep(notPlaceScarecrow, placeScarecrowTask);
 
-		offerBonemealTask = new ConditionalStep(this, moveToSlime);
-		offerBonemealTask.addStep(inSlimezone, getSlime);
-		offerBonemealTask.addStep(bucketOfSlime, moveToBonemeal);
-		offerBonemealTask.addStep(inBonezone, makeBonemeal);
-		offerBonemealTask.addStep(new Conditions(bonemeal, bucketOfSlime), offerBonemeal);
+		var getSlimeCond = new ConditionalStep(this, moveToSlime);
+		getSlimeCond.addStep(inSlimezone, getSlime);
+
+		var makeBonemealCond = new ConditionalStep(this, moveToBonemeal);
+		makeBonemealCond.addStep(inBonezone, makeBonemeal);
+
+		offerBonemealTask = new ConditionalStep(this, offerBonemeal);
+		offerBonemealTask.addStep(not(bucketOfSlime), getSlimeCond);
+		offerBonemealTask.addStep(not(bonemeal), makeBonemealCond);
 		doEasy.addStep(notOfferBonemeal, offerBonemealTask);
 
 		cookSnailTask = new ConditionalStep(this, cookSnail);
@@ -179,6 +185,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		bonemeal = new ItemRequirement("Bonemeal", ItemCollections.BONEMEAL).showConditioned(notOfferBonemeal);
 		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_OF_SLIME).showConditioned(notOfferBonemeal);
 		wolfbane = new ItemRequirement("Wolfbane dagger", ItemID.WOLFBANE).showConditioned(notKillWerewolf).isNotConsumed();
+		wolfbane.setTooltip("Can be reclaimed by talking to Drezel in the dungeon below Paterdomus");
 		bones = new ItemRequirement("Bones", ItemCollections.BONES).showConditioned(notOfferBonemeal);
 		pot = new ItemRequirement("Pot", ItemID.POT).showConditioned(notOfferBonemeal);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notOfferBonemeal);
@@ -251,7 +258,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 			"Keep heading down and use your bucket on the slime. Afterwards head back up.", bucket);
 		getSlime.addIcon(ItemID.BUCKET);
 		makeBonemeal = new ObjectStep(this, ObjectID.LOADER, new WorldPoint(3660, 3526, 1),
-			"Use your bones on the loader and grind them to make bonemeal. Afterwards head back down.", bones, pot);
+			"Use your bones on the loader and grind them to make bonemeal. Afterwards head back down.", bones.highlighted(), pot);
 		offerBonemeal = new ObjectStep(this, ObjectID.ECTOFUNTUS, new WorldPoint(3660, 3520, 0),
 			"Worship the ectofuntus.", bonemeal, bucketOfSlime);
 		offerBonemeal.addAlternateObjects(ObjectID.ECTOFUNTUS_16649);

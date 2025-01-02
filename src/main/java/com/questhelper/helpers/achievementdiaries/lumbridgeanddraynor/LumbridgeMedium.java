@@ -173,7 +173,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftCoif).isNotConsumed();
 		leather = new ItemRequirement("Leather", ItemID.LEATHER).showConditioned(notCraftCoif);
 		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPlumb);
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 3).showConditioned(notTPlumb);
+		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPlumb);
 		steelArrows = new ItemRequirement("Steel arrows", ItemID.STEEL_ARROW).showConditioned(notUpgradeDevice);
 		coins = new ItemRequirement("999 Coins", ItemCollections.COINS).showConditioned(notUpgradeDevice);
 		avasAttractor = new ItemRequirement("Ava's Attractor", ItemID.AVAS_ATTRACTOR).showConditioned(notUpgradeDevice);
@@ -227,7 +227,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		craftCoif = new ItemStep(this, "Craft a coif.", thread, needle.highlighted(), leather.highlighted());
 
 		tpLumb = new DetailedQuestStep(this, "Cast the Teleport to Lumbridge spell.", airRune.quantity(3),
-			earthRune.quantity(1), lawRune.quantity(1));
+			earthRune, lawRune.quantity(1));
 
 		upgradeDevice = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
 			"Buy an Ava's Accumulator from Ava in the Draynor Manor.", avasAccumulator, steelArrows.quantity(75));
@@ -358,7 +358,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		allSteps.add(upgradeSteps);
 
 		PanelDetails tpLumbSteps = new PanelDetails("Teleport to Lumbridge", Collections.singletonList(tpLumb),
-			airRune, earthRune, lawRune);
+			airRune.quantity(3), earthRune, lawRune);
 		tpLumbSteps.setDisplayCondition(notTPlumb);
 		tpLumbSteps.setLockingStep(tplumbTask);
 		allSteps.add(tpLumbSteps);

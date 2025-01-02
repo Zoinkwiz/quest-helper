@@ -110,6 +110,7 @@ public class ItemRequirement extends AbstractRequirement
 
 	protected Requirement additionalOptions;
 
+
 	Map<TrackedContainers, ContainerStateForRequirement> knownContainerStates = new HashMap<>();
 	{
 		for (TrackedContainers value : TrackedContainers.values())
@@ -389,10 +390,8 @@ public class ItemRequirement extends AbstractRequirement
 		return text.toString();
 	}
 
-	// IDEA: Have a central event which lets you know diff on inventory
 	public void setAdditionalOptions(Requirement additionalOptions)
 	{
-		// TODO: Need to register / unregister through centralised ActiveRequirementsManager
 		this.additionalOptions = additionalOptions;
 	}
 
@@ -540,7 +539,8 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean checkWithBank(Client client)
 	{
-		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
+		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData()
+				, QuestContainerManager.getPotionData());
 	}
 
 	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
@@ -558,6 +558,10 @@ public class ItemRequirement extends AbstractRequirement
 		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getBankData()))
 		{
 			color = Color.WHITE;
+		}
+		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getPotionData()))
+		{
+			color = Color.CYAN;
 		}
 
 		return color;
@@ -607,7 +611,11 @@ public class ItemRequirement extends AbstractRequirement
 		containers.add(QuestContainerManager.getEquippedData());
 
 		if (!equip) containers.add(QuestContainerManager.getInventoryData());
-		if (shouldCheckBank) containers.add(QuestContainerManager.getBankData());
+		if (shouldCheckBank)
+		{
+			containers.add(QuestContainerManager.getBankData());
+			containers.add(QuestContainerManager.getPotionData());
+		}
 
 		return containers.toArray(new ItemAndLastUpdated[0]);
 	}

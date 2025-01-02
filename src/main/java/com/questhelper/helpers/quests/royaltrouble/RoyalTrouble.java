@@ -89,6 +89,7 @@ public class RoyalTrouble extends BasicQuestHelper
 
 	//Zones
 	Zone miscFloor1, etcFloor1, islands, dungeon, liftRoom, plankRoom, path1, path2p1, path2p2, path3p1, path3p2, path3p3, path4p1, path4p2, jumpIsland1, jumpIsland2, jumpIsland3, bossRoom;
+	Zone path4p3;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -303,6 +304,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		path3p3 = new Zone(new WorldPoint(2529, 10275, 0), new WorldPoint(2539, 10288, 0));
 		path4p1 = new Zone(new WorldPoint(2561, 10260, 0), new WorldPoint(2607, 10300, 0));
 		path4p2 = new Zone(new WorldPoint(2608, 10244, 0), new WorldPoint(2622, 10272, 0));
+		path4p3 = new Zone(new WorldPoint(2591, 10240, 0), new WorldPoint(2622, 10276, 0));
 		jumpIsland1 = new Zone(new WorldPoint(2546, 10286, 0), new WorldPoint(2548, 10288, 0));
 		jumpIsland2 = new Zone(new WorldPoint(2543, 10286, 0), new WorldPoint(2545, 10288, 0));
 		jumpIsland3 = new Zone(new WorldPoint(2540, 10286, 0), new WorldPoint(2542, 10288, 0));
@@ -320,7 +322,7 @@ public class RoyalTrouble extends BasicQuestHelper
 		inPath1 = new ZoneRequirement(path1);
 		inPath2 = new ZoneRequirement(path2p1, path2p2);
 		inPath3 = new ZoneRequirement(path3p1, path3p2, path3p3);
-		inPath4 = new ZoneRequirement(path4p1, path4p2);
+		inPath4 = new ZoneRequirement(path4p1, path4p2, path4p3);
 		inPaths = new ZoneRequirement(path1, path2p1, path2p2, path3p1, path3p2, path3p3, path4p1, path4p2);
 		onJumpIsland1 = new ZoneRequirement(jumpIsland1);
 		onJumpIsland2 = new ZoneRequirement(jumpIsland2);
@@ -397,11 +399,12 @@ public class RoyalTrouble extends BasicQuestHelper
 		talkToGhrim = new NpcStep(this, NpcID.ADVISOR_GHRIM_5448, new WorldPoint(2499, 3857, 1), "Talk to Advisor Ghrim in Miscellania castle.");
 		talkToGhrim.addDialogStep("Has anything been happening in the kingdom recently?");
 		talkToGhrim.addDialogStep("Very well, I'll sort it out.");
+		talkToGhrim.addDialogStep("Yes.");
 		talkToGhrim.addSubSteps(goUpToGhrim);
 
 		if (astridIsHeir.check(client))
 		{
-			talkToPartner = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Talk to Princess Astrid  in Miscellania castle.");
+			talkToPartner = new NpcStep(this, NpcID.PRINCESS_ASTRID, new WorldPoint(2502, 3867, 1), "Talk to Princess Astrid in Miscellania castle.");
 			goUpToPartner = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2506, 3872, 0), "Talk to Princess Astrid in Miscellania castle.");
 		}
 		else

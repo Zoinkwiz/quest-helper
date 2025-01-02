@@ -160,6 +160,7 @@ public class DaddysHome extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToMarlo = new NpcStep(this, NpcID.MARLO, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north east Varrock.");
+		((NpcStep) talkToMarlo).addAlternateNpcs(NpcID.MARLO_10409);
 		talkToMarlo.addDialogSteps("What kind of favour do you want me to do?", "Tell me more about the job.", "Tell me where he lives, and I'll do the job.");
 		talkToYarlo = new NpcStep(this, NpcID.OLD_MAN_YARLO, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock.");
 		talkToYarloAgain = new NpcStep(this, NpcID.OLD_MAN_YARLO, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock again.");
@@ -167,6 +168,7 @@ public class DaddysHome extends BasicQuestHelper
 		talkToYarloOnceMore = new NpcStep(this, NpcID.OLD_MAN_YARLO, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock.");
 
 		talkToMarloToFinish = new NpcStep(this, NpcID.MARLO, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north east Varrock to complete the quest.");
+		((NpcStep) talkToMarloToFinish).addAlternateNpcs(NpcID.MARLO_10409);
 		talkToMarloToFinish.addDialogStep("Yeah, what have you got for me?");
 
 		removeCampbed = new ObjectStep(this, NullObjectID.NULL_40303, new WorldPoint(3242, 3398, 0), "Remove the broken items in the house.");
@@ -183,7 +185,7 @@ public class DaddysHome extends BasicQuestHelper
 
 		talkToOperator = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0), "Talk to the Sawmill Operator north east of Varrock to make waxwood planks.", waxwoodLog3);
 		talkToOperator.addDialogStep("I need some waxwood planks for Old Man Yarlo.");
-		buildCampbed = new ObjectStep(this, NullObjectID.NULL_40303, new WorldPoint(3242, 3398, 0), "Build the campbed in the house.", waxwoodPlank3, bolt2, hammer, saw);
+		buildCampbed = new ObjectStep(this, NullObjectID.NULL_40303, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in the house.", waxwoodPlank3, bolt2, hammer, saw);
 
 		buildCarpet = new ObjectStep(this, NullObjectID.NULL_40304, new WorldPoint(3239, 3395, 0), "Build the items in the house.", bolt3, saw, hammer);
 		buildStool = new ObjectStep(this, NullObjectID.NULL_40301, new WorldPoint(3239, 3394, 0), "Build the items in the house.", plank, nails2, saw, hammer);

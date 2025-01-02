@@ -9,6 +9,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,7 +19,6 @@ import com.questhelper.steps.QuestStep;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -178,7 +178,7 @@ public class QuestHelperTest extends MockedTest
 		}
 	}
 
-	void checkSteps(QuestHelper helper, boolean shouldError, Integer stepVarbit, QuestStep step)
+	void checkSteps(QuestHelper helper, boolean shouldError, Set<QuestStep> checkedSteps, QuestStep step)
 	{
 		assertNotNull(step);
 
@@ -186,7 +186,9 @@ public class QuestHelperTest extends MockedTest
 		{
 			for (var innerStep : ((OwnerStep) step).getSteps())
 			{
-				checkSteps(helper, shouldError, stepVarbit, innerStep);
+				if (checkedSteps.contains(innerStep)) continue;
+				checkedSteps.add(innerStep);
+				checkSteps(helper, shouldError, checkedSteps, innerStep);
 			}
 		}
 		else
@@ -198,7 +200,7 @@ public class QuestHelperTest extends MockedTest
 
 			var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
 			questOverviewPanel.addQuest(helper, true);
-			questOverviewPanel.updateHighlight(this.client, helper.getCurrentStep());
+			questOverviewPanel.updateHighlight(this.client, helper.getCurrentStep().getActiveStep());
 
 			// All steps must have at least one category/step that's erected
 			// If all panels are collapsed, it means the step this fails on needs to be either:
@@ -245,8 +247,11 @@ public class QuestHelperTest extends MockedTest
 
 		for (var quest : QuestHelperQuest.values())
 		{
-			if (!exclusiveQuests.isEmpty()) {
-				if (!exclusiveQuests.contains(quest)) {
+			Set<QuestStep> checkedSteps = new HashSet<>();
+			if (!exclusiveQuests.isEmpty())
+			{
+				if (!exclusiveQuests.contains(quest))
+				{
 					continue;
 				}
 			}
@@ -274,12 +279,13 @@ public class QuestHelperTest extends MockedTest
 				var sortedSteps = steps.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
 				for (var e : sortedSteps)
 				{
-					var stepVarbit = e.getKey();
 					var step = e.getValue();
+					if (checkedSteps.contains(step)) continue;
+					checkedSteps.add(step);
 
 					assertNotNull(step);
 
-					checkSteps(helper, shouldError, stepVarbit, step);
+					checkSteps(helper, shouldError, checkedSteps, step);
 				}
 			}
 			else if (helper instanceof ComplexStateQuestHelper)

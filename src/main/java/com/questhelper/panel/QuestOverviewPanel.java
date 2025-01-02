@@ -261,7 +261,7 @@ public class QuestOverviewPanel extends JPanel
 		QuestStep currentStep;
 		if (isActive)
 		{
-			currentStep = quest.getCurrentStep().getSidePanelStep();
+			currentStep = quest.getCurrentStep().getActiveStep();
 		}
 		else
 		{

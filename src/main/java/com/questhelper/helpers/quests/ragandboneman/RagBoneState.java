@@ -80,7 +80,7 @@ public enum RagBoneState
 	CAVE_GOBLIN_SKULL("Cave Goblin", 32),
 
 	// P1
-	BIG_FROG_LEGS("Big Frog Legs", 33),
+	BIG_FROG_LEG("Big Frog Leg", 33),
 
 	// P2
 	VULTURE_WING("Vulture", 34),

@@ -39,7 +39,7 @@ public class RagBoneGroups
 	public static List<RagBoneState> getRagBoneIStates()
 	{
 		return Arrays.asList(RagBoneState.GIANT_RAT_BONE, RagBoneState.UNICORN_BONE,
-			RagBoneState.BEAR_RIBS, RagBoneState.RAM_SKULL, RagBoneState.GOBLIN_SKULL, RagBoneState.BIG_FROG_LEGS,
+			RagBoneState.BEAR_RIBS, RagBoneState.RAM_SKULL, RagBoneState.GOBLIN_SKULL, RagBoneState.BIG_FROG_LEG,
 			RagBoneState.MONKEY_PAW, RagBoneState.GIANT_BAT_WING);
 	}
 

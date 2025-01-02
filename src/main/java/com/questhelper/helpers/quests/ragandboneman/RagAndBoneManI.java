@@ -231,7 +231,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 	{
 		talkToOddOldMan = new NpcStep(this, NpcID.ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
 			"Talk to the Odd Old Man east of Varrock.");
-		talkToOddOldMan.addDialogSteps("Anything I can do to help?", "Yes");
+		talkToOddOldMan.addDialogSteps("Anything I can do to help?", "Yes.");
 
 		killGiantRat = new NpcStep(this, NpcID.GIANT_RAT_2856, new WorldPoint(3289, 3373, 0),
 			"Kill a giant rat south east of Varrock.", true);
@@ -292,7 +292,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		stepsForRagAndBoneManI.put(RagBoneState.RAM_SKULL, killRam);
 
 		stepsForRagAndBoneManI.put(RagBoneState.GOBLIN_SKULL, killGoblin);
-		stepsForRagAndBoneManI.put(RagBoneState.BIG_FROG_LEGS, killFrogSteps);
+		stepsForRagAndBoneManI.put(RagBoneState.BIG_FROG_LEG, killFrogSteps);
 		stepsForRagAndBoneManI.put(RagBoneState.MONKEY_PAW, killMonkey);
 		stepsForRagAndBoneManI.put(RagBoneState.GIANT_BAT_WING, killBatSteps);
 

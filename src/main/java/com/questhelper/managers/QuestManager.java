@@ -139,7 +139,7 @@ public class QuestManager
 			if (selectedQuest.getCurrentStep() != null)
 			{
 				panel.updateStepsTexts();
-				QuestStep currentStep = selectedQuest.getCurrentStep().getSidePanelStep();
+				QuestStep currentStep = selectedQuest.getCurrentStep().getActiveStep();
 				if (currentStep != null && currentStep != lastStep && panel.questActive)
 				{
 					lastStep = currentStep;

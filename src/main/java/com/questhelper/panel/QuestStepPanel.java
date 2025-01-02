@@ -35,9 +35,10 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.questhelper.steps.QuestStep;
+
+import java.util.HashSet;
 import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -223,7 +224,7 @@ public class QuestStepPanel extends JPanel
 			for (QuestStep step : getSteps())
 			{
 				if (step.getConditionToHide() != null && step.getConditionToHide().check(client)) continue;
-				if (step == newStep || step.getSubsteps().contains(newStep))
+				if (step.containsSteps(newStep, new HashSet<>()))
 				{
 					highlighted = true;
 					updateHighlight(step);
@@ -401,6 +402,6 @@ public class QuestStepPanel extends JPanel
 
 	private QuestStep currentlyActiveQuestSidebarStep()
 	{
-		return questHelperPlugin.getSelectedQuest().getCurrentStep().getSidePanelStep();
+		return questHelperPlugin.getSelectedQuest().getCurrentStep().getActiveStep();
 	}
 }

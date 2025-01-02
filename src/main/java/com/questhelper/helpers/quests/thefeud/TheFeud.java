@@ -447,12 +447,12 @@ public class TheFeud extends BasicQuestHelper
 		//Tell Ali The Operator Poisoned
 		tellAliOperatorPoisoned = new NpcStep(this, NpcID.ALI_THE_OPERATOR, new WorldPoint(3332, 2948, 0), "Talk to Ali the Operator and tell him he is dead.");
 
+		killMenaphiteThug = new DetailedQuestStep(this, "Kill the Menaphite Thug. You can safespot him inside the tent by using a chair, if he's not spawned then talk to the Menaphite Leader again.");
+
 		//Step 24
 		//Kill Thug
 		talkToMenaphiteLeader = new NpcStep(this, NpcID.MENAPHITE_LEADER, "Talk to the Menaphite Leader and prepare for a fight against a tough guy. You can safespot him inside the tent by using a chair.");
 		talkToMenaphiteLeader.addSubSteps(killMenaphiteThug);
-
-		killMenaphiteThug = new DetailedQuestStep(this, "Kill the Menaphite Thug. You can safespot him inside the tent by using a chair, if he's not spawned then talk to the Menaphite Leader again.");
 
 		//Step 25
 		//Kill Champion - Talk to Villager

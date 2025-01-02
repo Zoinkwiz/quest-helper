@@ -400,6 +400,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		playA = new WidgetStep(this, "Play the A key.", 554, 25);
 		playDAgain = new WidgetStep(this, "Play the D key again.", 554, 21);
 		restartPiano = new DetailedQuestStep(this, "Unfortunately you've played an incorrect key. Restart.");
+		playPiano.addSubSteps(restartPiano);
 
 		searchThePiano = new ObjectStep(this, NullObjectID.NULL_29658, new WorldPoint(1647, 4842, 0), "Right-click search the piano for the emerald key.");
 
@@ -418,6 +419,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		searchFireplace = new ObjectStep(this, NullObjectID.NULL_29659, new WorldPoint(1647, 4836, 0), "Search the fireplace.");
 
 		restartGems = new DetailedQuestStep(this, "You've clicked a gem in the wrong order. Try restarting.");
+		searchFireplace.addSubSteps(restartGems);
 
 		clickSapphire = new WidgetStep(this, "Click the sapphire.", 555, 19);
 		clickDiamond = new WidgetStep(this, "Click the diamond.", 555, 4);

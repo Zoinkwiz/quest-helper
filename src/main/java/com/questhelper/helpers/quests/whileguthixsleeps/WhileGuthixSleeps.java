@@ -1284,7 +1284,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 1537 2->3, big seed on desk
 
 		searchCounterForSeed = new ObjectStep(this, NullObjectID.NULL_10812, new WorldPoint(3013, 3258, 0), "Take the seed from Betty's counter.");
-		talkToThaeriskWithSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Return to Thaerisk with the enhanced snapdragon seed.",
+		talkToThaeriskWithSeed = new NpcStep(this, NpcID.THAERISK, new WorldPoint(2989, 3342, 0), "Return to Thaerisk with the enriched snapdragon seed.",
 			enrichedSnapdragonSeed, dibber);
 		talkToThaeriskWithSeed.addTeleport(faladorTeleport);
 

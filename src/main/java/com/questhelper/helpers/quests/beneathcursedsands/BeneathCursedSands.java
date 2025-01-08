@@ -563,7 +563,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(waterskins, antipoison, accessToFairyRings, pharaohsSceptre, meleeCombatGear, food, staminaPotions, nardahTeleport);
+		return Arrays.asList(waterskins, antipoison, accessToFairyRings, pharaohsSceptre, meleeCombatGear, rangedCombatGear, food, staminaPotions, nardahTeleport);
 	}
 
 	@Override

@@ -312,7 +312,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 		return Arrays.asList(
 			new UnlockReward("Halved access cost for Crabclaw Isle."),
 			new UnlockReward("Doubled drop rate of Xeric's talisman, excluding stone chests."),
-			new UnlockReward("Reduced tanning prices at Eodan in Forthos Dungeon to 80%."));
+			new UnlockReward("Reduced tanning prices at Eodan in Forthos Dungeon to 80%."),
+			new UnlockReward("Access to the cooking range in the Hosidius Kitchen, which has a 5% reduced burn rate"),
+			new UnlockReward("The allotment, flower, and herb patches in Hosidius will never get diseased."));
 	}
 
 	@Override

@@ -28,7 +28,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Getter
 public enum Boosts
 {
 	AGILITY("Agility",5),
@@ -55,6 +54,33 @@ public enum Boosts
 	THIEVING("Thieving",3),
 	WOODCUTTING("Woodcutting",3);
 
+	@Getter
 	private final String name;
+
 	private final int highestBoost;
+
+	int getHighestBoost(boolean includeSpicyStew, int currentUnboostedLevel) {
+		if (includeSpicyStew && highestBoost < 5) {
+			return 5;
+		}
+
+		else if (name.equals("Thieving"))
+		{
+			// Players only have access to Summer sq'irk juice at level 65 thieving which is the default boost value for thieving
+			if (currentUnboostedLevel < 45)
+			{
+				// Spring sq'irk
+				return 1;
+			}
+
+			if (currentUnboostedLevel < 65)
+			{
+				// Autumn sq'irk
+				return 2;
+			}
+
+		}
+
+		return highestBoost;
+	}
 }

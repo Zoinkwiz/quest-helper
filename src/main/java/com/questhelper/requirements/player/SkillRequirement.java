@@ -32,16 +32,18 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import java.awt.Color;
+import java.util.Arrays;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import javax.annotation.Nonnull;
-import static net.runelite.api.Skill.THIEVING;
 
 /**
  * Requirement that checks if a player meets a certain skill level.
  */
 @Getter
+@Slf4j
 public class SkillRequirement extends AbstractRequirement
 {
 	private final Skill skill;
@@ -49,11 +51,7 @@ public class SkillRequirement extends AbstractRequirement
 	private final Operation operation;
 	private boolean canBeBoosted;
 	private String displayText;
-	private Boosts boosts;
 	private QuestHelperPlugin questHelperPlugin;
-	private Boosts selectedSkill;
-	private int currentSkill;
-	private int highestBoost;
 
 	/**
 	 * Check if a player has a certain skill level
@@ -118,53 +116,54 @@ public class SkillRequirement extends AbstractRequirement
 		return skillLevel >= requiredLevel;
 	}
 
-	public boolean checkRange(Skill skill, int requiredLevel, Client client, QuestHelperConfig config)
+	/**
+	 * Same as check, but takes the highest possible boost into consideration and returns whether
+	 * the requirement could be passed with a boost or not
+	 */
+	BoostStatus checkBoosted(Client client, QuestHelperConfig config)
 	{
-		for (Boosts boostSkills : boosts.values())
+
+		if (canBeBoosted)
 		{
-			if (skill.getName().equals(boostSkills.getName()))
+			var realLevel = client.getRealSkillLevel(skill);
+			var boostedLevel = Math.max(client.getBoostedSkillLevel(skill), realLevel);
+			if (boostedLevel >= requiredLevel)
 			{
-				selectedSkill = boostSkills;
+				// User passes the requirement either based on their boost or their real skill level
+				return BoostStatus.Pass;
+			}
+
+			// Find boosts for this skill
+			var skillName = skill.getName();
+			var oSelectedBoost = Arrays.stream(Boosts.values()).filter(b -> skillName.equals(b.getName())).findAny();
+			if (oSelectedBoost.isEmpty())
+			{
+				log.warn("No boosts found for {}", skillName);
+				return BoostStatus.Fail;
+			}
+			var selectedBoost = oSelectedBoost.get();
+
+
+			var highestBoost = selectedBoost.getHighestBoost(config.stewBoosts(), realLevel);
+
+			if (realLevel + highestBoost >= requiredLevel)
+			{
+				return BoostStatus.CanPassWithBoost;
+			}
+		}
+		else
+		{
+			if (check(client))
+			{
+				return BoostStatus.Pass;
+			}
+			else
+			{
+				return BoostStatus.Fail;
 			}
 		}
 
-		currentSkill = Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill));
-		highestBoost = selectedSkill.getHighestBoost();
-
-		if (config.stewBoosts() && highestBoost < 5)
-		{
-			highestBoost = 5;
-		}
-		else if (skill == THIEVING)
-		{
-			//player only has access to Summer sq'irk juice at level 65 thieving which is the default boost value for thieving, currently that's blind to player current skill level
-			if (client.getRealSkillLevel(skill) < 65)
-			{
-				highestBoost = 2; //autumn sq'irk
-			}
-			else if (client.getRealSkillLevel(skill) < 45)
-			{
-				highestBoost = 1;  //spring sq'irk
-			}
-		}
-
-		return requiredLevel - highestBoost <= currentSkill;
-	}
-
-	public BoostStatus checkBoosted(Client client, QuestHelperConfig config)
-	{
-		int skillLevel = canBeBoosted ? Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill)) :
-			client.getRealSkillLevel(skill);
-
-		if (skillLevel >= requiredLevel)
-		{
-			return BoostStatus.Pass;
-		} else if (canBeBoosted && checkRange(skill, requiredLevel, client, config))
-		{
-			return BoostStatus.CanPassWithBoost;
-		} else {
-			return BoostStatus.Fail;
-		}
+		return BoostStatus.Fail;
 	}
 
 	@Nonnull

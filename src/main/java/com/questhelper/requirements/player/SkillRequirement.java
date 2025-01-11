@@ -151,19 +151,19 @@ public class SkillRequirement extends AbstractRequirement
 		return requiredLevel - highestBoost <= currentSkill;
 	}
 
-	public int checkBoosted(Client client, QuestHelperConfig config)
+	public BoostStatus checkBoosted(Client client, QuestHelperConfig config)
 	{
 		int skillLevel = canBeBoosted ? Math.max(client.getBoostedSkillLevel(skill), client.getRealSkillLevel(skill)) :
 			client.getRealSkillLevel(skill);
 
 		if (skillLevel >= requiredLevel)
 		{
-			return 1;
+			return BoostStatus.Pass;
 		} else if (canBeBoosted && checkRange(skill, requiredLevel, client, config))
 		{
-			return 2;
+			return BoostStatus.CanPassWithBoost;
 		} else {
-			return 3;
+			return BoostStatus.Fail;
 		}
 	}
 
@@ -192,14 +192,22 @@ public class SkillRequirement extends AbstractRequirement
 	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		switch (checkBoosted(client, config)){
-			case 1:
+		switch (checkBoosted(client, config))
+		{
+			case Pass:
 				return config.passColour();
-			case 2:
+			case CanPassWithBoost:
 				return config.boostColour();
-			case 3:
+			case Fail:
 				return config.failColour();
 		}
 		return config.failColour();
+	}
+
+	enum BoostStatus
+	{
+		Pass,
+		CanPassWithBoost,
+		Fail,
 	}
 }

@@ -47,16 +47,13 @@ import com.questhelper.steps.choice.WidgetChoiceSteps;
 import com.questhelper.steps.overlay.IconOverlay;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
@@ -73,6 +70,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+@Slf4j
 public abstract class QuestStep implements Module
 {
 	@Inject
@@ -522,9 +520,19 @@ public abstract class QuestStep implements Module
 		return this;
 	}
 
-	public QuestStep getSidePanelStep()
+	public boolean containsSteps(QuestStep questStep, Set<QuestStep> checkedSteps)
 	{
-		return getActiveStep();
+		if (checkedSteps.contains(this)) return false;
+		checkedSteps.add(this);
+		return this == questStep || this.getSubsteps().stream().anyMatch((subStep) ->
+		{
+			if (subStep == null)
+			{
+				log.warn("Substep null for " + getText());
+				return false;
+			}
+			return subStep.containsSteps(questStep, checkedSteps);
+		});
 	}
 
 	protected void setupIcon()

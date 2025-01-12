@@ -31,12 +31,7 @@ import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import lombok.NonNull;
 import lombok.Setter;
@@ -417,18 +412,19 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	}
 
 	@Override
-	public QuestStep getSidePanelStep()
+	public boolean containsSteps(QuestStep questStep, Set<QuestStep> checkedSteps)
 	{
-		if (text != null)
+		if (super.containsSteps(questStep, checkedSteps)) return true;
+
+		Set<QuestStep> stepSet = new HashSet<>(steps.values());
+		stepSet.removeAll(checkedSteps);
+
+		for (QuestStep child : stepSet)
 		{
-			return this;
-		}
-		else if (currentStep != null)
-		{
-			return currentStep.getSidePanelStep();
+			if (child.containsSteps(questStep, checkedSteps)) return true;
 		}
 
-		return this;
+		return false;
 	}
 
 	public Collection<Requirement> getConditions()

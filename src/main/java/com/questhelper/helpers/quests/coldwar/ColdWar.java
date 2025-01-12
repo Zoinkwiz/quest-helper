@@ -410,7 +410,7 @@ public class ColdWar extends BasicQuestHelper
 		killIcelords = new NpcStep(this, NpcID.ICELORD, new WorldPoint(2647, 10425, 0), "Kill icelords until you are able to leave through the door to the west. May take up to 3 kills.", true);
 		((NpcStep) killIcelords).addAlternateNpcs(NpcID.ICELORD_853, NpcID.ICELORD_854, NpcID.ICELORD_855);
 		exitIcelordPen = new ObjectStep(this, ObjectID.DOOR_21167, new WorldPoint(2639, 10424, 0), "Leave through the door to the west.");
-		killIcelords.addSubSteps(killIcelords);
+		killIcelords.addSubSteps(exitIcelordPen);
 
 		useChasm = new ObjectStep(this, ObjectID.CHASM, new WorldPoint(2657, 10423, 0), "Use the chasm to exit the cave.");
 

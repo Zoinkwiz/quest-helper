@@ -261,7 +261,7 @@ public class QuestOverviewPanel extends JPanel
 		QuestStep currentStep;
 		if (isActive)
 		{
-			currentStep = quest.getCurrentStep().getSidePanelStep();
+			currentStep = quest.getCurrentStep().getActiveStep();
 		}
 		else
 		{
@@ -387,7 +387,7 @@ public class QuestOverviewPanel extends JPanel
 		collapseBtn.setSelected(isAllCollapsed());
 	}
 
-	private boolean isAllCollapsed()
+	public boolean isAllCollapsed()
 	{
 		return questStepPanelList.stream()
 			.filter(QuestStepPanel::isCollapsed)

@@ -29,11 +29,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Collection;
-import java.util.Objects;
+
+import java.util.*;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -131,10 +129,6 @@ public class PanelDetails
 
 	private boolean containsSubStep(QuestStep currentStep, QuestStep check)
 	{
-		if (currentStep.getSubsteps().contains(check) || currentStep == check)
-		{
-			return true;
-		}
-		return currentStep.getSubsteps().stream().anyMatch(step -> containsSubStep(step, check));
+		return currentStep.containsSteps(check, new HashSet<>());
 	}
 }

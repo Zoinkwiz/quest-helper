@@ -238,6 +238,7 @@ public class AnimalMagnetism extends BasicQuestHelper
 		talkToTurael = new NpcStep(this, NpcID.TURAEL, new WorldPoint(2931, 3536, 0),
 			"Talk to Turael in Burthorpe twice, giving him the Mithril axe and Holy symbol.",
 			mithrilAxe, holySymbol);
+		((NpcStep) talkToTurael).addAlternateNpcs(NpcID.TURAEL_13434, NpcID.TURAEL_13560, NpcID.TURAEL_13618, NpcID.AYA);
 		talkToTurael.addDialogSteps("I'm here about a quest.", "Hello, I'm here about those trees again.",
 			"I'd love one, thanks.");
 		cutTree = new NpcStep(this, NpcID.UNDEAD_TREE,

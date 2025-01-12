@@ -374,7 +374,8 @@ public class KourendElite extends ComplexStateQuestHelper
 			new UnlockReward("5% increased chance to save a harvest life at the Hosidius and Farming Guild herb patches."),
 			new UnlockReward("80 free Dynamite per day from Thirus"),
 			new UnlockReward("10% additional blood runes from blood runecrafting (no additional xp)"),
-			new UnlockReward("Reduced tanning prices at Eodan in Forthos Dungeon to 20%."));
+			new UnlockReward("Reduced tanning prices at Eodan in Forthos Dungeon to 20%."),
+			new UnlockReward("10% increased chance of obtaining higher-tier ores in the Blast mine."));
 	}
 
 	@Override

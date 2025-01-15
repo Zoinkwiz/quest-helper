@@ -688,7 +688,7 @@ public class RuneliteObjectManager
 		if (lp != null)
 		{
 			Point p = Perspective.localToCanvas(client, lp, client.getPlane(),
-				rlObj.getRuneliteObject().getModelHeight());
+				rlObj.getRuneliteObject().getModel().getModelHeight());
 			if (p != null)
 			{
 				Font overheadFont = FontManager.getRunescapeBoldFont();

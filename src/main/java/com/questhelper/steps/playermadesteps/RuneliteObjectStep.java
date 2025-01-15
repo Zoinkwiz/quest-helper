@@ -92,7 +92,7 @@ public class RuneliteObjectStep extends DetailedQuestStep
 			else if (!hideWorldArrow)
 			{
 				Point p = Perspective.localToCanvas(client, extendedRuneliteObject.getRuneliteObject().getLocation(), client.getPlane(),
-					extendedRuneliteObject.getRuneliteObject().getModelHeight());
+					extendedRuneliteObject.getRuneliteObject().getModel().getModelHeight());
 				if (p != null)
 				{
 					DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), p.getX(), p.getY() - ARROW_SHIFT_Y);

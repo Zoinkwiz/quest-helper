@@ -236,6 +236,25 @@ public class SolutionTest extends MockedTest
 					),
 					15,
 					56
+				),
+				// TOP PUZZLE: RED CIRCLE + ORANGE SQUARE (9)
+				// BOTTOM PUZZLE: GREEN PENTAGON (20)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.GREEN_SQUARE, 1),
+						new Item(ItemID.INDIGO_TRIANGLE, 2),
+						new Item(ItemID.VIOLET_TRIANGLE, 1),
+						new Item(ItemID.INDIGO_SQUARE, 1),
+						new Item(ItemID.BLUE_PENTAGON, 1),
+						new Item(ItemID.VIOLET_SQUARE, 1),
+						new Item(ItemID.INDIGO_PENTAGON, 1),
+						new Item(ItemID.RED_CIRCLE, 1),
+						new Item(ItemID.ORANGE_CIRCLE, 1),
+						new Item(ItemID.YELLOW_TRIANGLE, 1),
+						new Item(ItemID.RED_SQUARE, 1)
+					),
+					9,
+					20
 				)
 			);
 		}
@@ -480,6 +499,23 @@ public class SolutionTest extends MockedTest
 						ItemID.INDIGO_PENTAGON
 					),
 					List.of(ItemID.RED_CIRCLE, ItemID.RED_TRIANGLE, ItemID.RED_SQUARE, ItemID.RED_PENTAGON, ItemID.ORANGE_CIRCLE, ItemID.ORANGE_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.GREEN_CIRCLE, ItemID.BLUE_CIRCLE, ItemID.INDIGO_CIRCLE)
+				),
+				// TOP PUZZLE: RED CIRCLE + ORANGE SQUARE (9)
+				// BOTTOM PUZZLE: GREEN PENTAGON (20)
+				Arguments.of(
+					List.of(
+						new Item(ItemID.GREEN_SQUARE, 2),
+						new Item(ItemID.INDIGO_TRIANGLE, 2),
+						new Item(ItemID.VIOLET_TRIANGLE, 1),
+						new Item(ItemID.INDIGO_SQUARE, 1),
+						new Item(ItemID.BLUE_PENTAGON, 1),
+						new Item(ItemID.VIOLET_SQUARE, 1),
+						new Item(ItemID.INDIGO_PENTAGON, 1)
+					),
+					9,
+					20,
+					List.of(ItemID.GREEN_SQUARE),
+					List.of(ItemID.YELLOW_TRIANGLE)
 				)
 			);
 		}

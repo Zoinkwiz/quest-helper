@@ -75,6 +75,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	/// Zones
 	public Zone treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3;
 	public Zone treeGnomeVillageDungeon, storeroomZone;
+	public Zone treeGnomeVillageDungeonPreRovingElves;
 	public Zone gnomeStrongholdFloor1, gnomeStrongholdFloor2, gnomeStrongholdFloor3;
 	public Zone longrambleZone;
 	public Zone sewer1, sewer2, sewer3, sewer4Section1, sewer4Section2;
@@ -104,6 +105,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	/// Conditions
 	public ZoneRequirement inTreeGnomeVillageMiddle;
 	public ZoneRequirement inTreeGnomeVillageDungeon;
+	public ZoneRequirement inTreeGnomeVillageDungeonPreRovingElves;
 	public ZoneRequirement inStoreroom;
 	public ZoneRequirement nearLongramble;
 	public Requirement inSewer1, inSewer2, inSewer3, inSewer4, inSewer5, inSewer6, inBossRoom;
@@ -116,6 +118,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 
 	public WidgetTextRequirement lecternWidgetActive;
 	public PrayerRequirement protectMissiles;
+	public QuestRequirement rovingElvesNotStarted;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -160,6 +163,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		treeGnomeVillageMiddle2 = new Zone(new WorldPoint(2543, 3167, 0), new WorldPoint(2547, 3172, 0));
 		treeGnomeVillageMiddle3 = new Zone(new WorldPoint(2522, 3158, 0), new WorldPoint(2542, 3160, 0));
 		treeGnomeVillageDungeon = new Zone(new WorldPoint(2560, 4426, 0), new WorldPoint(2627, 4477, 0));
+		treeGnomeVillageDungeonPreRovingElves = new Zone(new WorldPoint(2503, 9546, 0), new WorldPoint(2557, 9588, 0));
 		storeroomZone = new Zone(11074);
 		gnomeStrongholdFloor1 = new Zone(new WorldPoint(2437, 3474, 1), new WorldPoint(2493, 3511, 1));
 		gnomeStrongholdFloor2 = new Zone(new WorldPoint(2437, 3474, 2), new WorldPoint(2493, 3511, 2));
@@ -180,7 +184,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		/// Required items
-		var rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
+		rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).isNotConsumed();
 		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
 		// NOTE: This does NOT have a step attached
@@ -216,6 +220,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	{
 		inTreeGnomeVillageMiddle = new ZoneRequirement(treeGnomeVillageMiddle1, treeGnomeVillageMiddle2, treeGnomeVillageMiddle3);
 		inTreeGnomeVillageDungeon = new ZoneRequirement(treeGnomeVillageDungeon);
+		inTreeGnomeVillageDungeonPreRovingElves = new ZoneRequirement(treeGnomeVillageDungeonPreRovingElves);
 		inStoreroom = new ZoneRequirement(storeroomZone);
 		inGnomeStrongholdFloor1 = new ZoneRequirement(gnomeStrongholdFloor1);
 		inGnomeStrongholdFloor2 = new ZoneRequirement(gnomeStrongholdFloor2);

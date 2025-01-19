@@ -56,8 +56,12 @@ public class UnveilEvil
 			var climbIntoDungeon = quest.climbDownIntoTreeGnomeVillageDungeon.copy();
 			var enter = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0), "");
 			enter.addSubSteps(squeezeThroughRailing, climbIntoDungeon);
+			var enterStoreroomPreRovingElves = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2544, 9571, 0),
+				"");
+			enterStoreroomPreRovingElves.addAlternateObjects(ObjectID.TUNNEL_49619);
 
 			enterStoreroom = new ConditionalStep(quest, climbIntoDungeon, "Enter the storeroom to the east in the Tree Gnome Village dungeon.");
+			enterStoreroom.addStep(quest.inTreeGnomeVillageDungeonPreRovingElves, enterStoreroomPreRovingElves);
 			enterStoreroom.addStep(quest.inTreeGnomeVillageDungeon, enter);
 			enterStoreroom.addStep(quest.inTreeGnomeVillageMiddle, squeezeThroughRailing);
 		}
@@ -91,8 +95,13 @@ public class UnveilEvil
 			climbIntoDungeon.setText("Climb down the ladder to the Tree Gnome Village dungeon.");
 			var enterStoreroom = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0),
 				"Enter the storeroom to the east in the Tree Gnome Village dungeon.");
+			enterStoreroom.addAlternateObjects(ObjectID.TUNNEL_49619);
+			var enterStoreroomPreRovingElves = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2544, 9571, 0),
+				"Enter the storeroom to the east in the Tree Gnome Village dungeon.");
+			enterStoreroomPreRovingElves.addAlternateObjects(ObjectID.TUNNEL_49619);
 
 			var enterStoreroomPuzzle = new ConditionalStep(quest, climbIntoDungeon, "Get to Yewnock's storeroom.");
+			enterStoreroomPuzzle.addStep(quest.inTreeGnomeVillageDungeonPreRovingElves, enterStoreroomPreRovingElves);
 			enterStoreroomPuzzle.addStep(quest.inTreeGnomeVillageDungeon, enterStoreroom);
 			enterStoreroomPuzzle.addStep(quest.inTreeGnomeVillageMiddle, squeezeThroughRailing);
 			solveYewnocksMachinePuzzle = new PuzzleWrapperStep(quest, new YewnocksPuzzle(quest), "Solve the disc puzzle.");

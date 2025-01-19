@@ -69,7 +69,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		coins10OrCharos, plank3, plank2, plank1, steelNails75, steelNails150;
 
 	//Items Recommended
-	ItemRequirement morttonTeleport;
+	ItemRequirement morttonTeleport, silverSickle;
 
 	Requirement hasEnoughPouch, repairedBridge1, repairedBridge2, repairedBridge3, onBridge, onEntranceIsland, onQuestion1, onQuestion2,
 		onQuestion3, onQuestion4, onQuestion5, onQuestion6, inCaves, inMyrequeCave, talkedToHarold, talkedToRadigad, talkedToSani, talkedToPolmafi,
@@ -190,6 +190,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		steeldagger = new ItemRequirement("Steel dagger", ItemID.STEEL_DAGGER);
 		steelNails225 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 225);
 		druidPouch5 = new ItemRequirement("Charges in a druid pouch", ItemID.DRUID_POUCH_2958, 5);
+		druidPouch5.setTooltip("Additional charges will be needed if a ghast hits you in the swamp");
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		plank6 = new ItemRequirement("Plank", ItemID.PLANK, 6);
 		plank3 = new ItemRequirement("Plank", ItemID.PLANK, 3);
@@ -200,10 +201,13 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		coins10OrCharos = new ItemRequirements(LogicType.OR, "10 coins or a Ring of Charos (a)",
 			new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA),
 			new ItemRequirement("Coins", ItemCollections.COINS, 10));
+
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		morttonTeleport = new ItemRequirement("Teleport to Mort'ton, such as minigame teleport or Barrows Teleport", ItemID.MORTTON_TELEPORT);
 		morttonTeleport.addAlternates(ItemID.BARROWS_TELEPORT);
+		silverSickle = new ItemRequirement("Silver sickle (b) to collect Mort Myre fungi (requires prayer points)", ItemID.SILVER_SICKLE_B);
+		silverSickle.setTooltip("Although Mort Myre fungus may be bought on the Grand Exchange, a sickle helps with ghast encounters in the swamp");
 	}
 
 	@Override
@@ -246,7 +250,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		talkToVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_5056, new WorldPoint(3503, 3477, 0),
 			"Talk to Vanstrom Klause in the Canifis pub.");
 		talkToVanstrom.addDialogStep("Yes.");
-		fillDruidPouch = new DetailedQuestStep(this, "Fill a druid pouch with at least 5 mort myre items. Try to have more in case a ghast hits you.", druidPouch5);
+		fillDruidPouch = new DetailedQuestStep(this, "Fill a druid pouch with at least 5 Mort Myre items. Try to have more in case a ghast hits you.", druidPouch5);
 		fillDruidPouch.addDialogStep("I'd better be off.");
 		talkToCyreg = new NpcStep(this, NpcID.CYREG_PADDLEHORN, new WorldPoint(3522, 3284, 0), "Talk to Cyreg in Mort'ton.",
 			druidPouch5, steelLong, steelSword2, steeldagger, steelMace, steelNails225, steelWarhammer, plank6, hammer, coins10OrCharos);
@@ -254,7 +258,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 			"Well, I guess they'll just die without weapons.", "Resourceful enough to get their own steel weapons?",
 			"If you don't tell me, their deaths are on your head!", "What kind of a man are you to say that you don't care?",
 			"Here are some planks for you.");
-		boardBoat = new ObjectStep(this, ObjectID.SWAMP_BOATY_6969, new WorldPoint(3524, 3285, 0), "Board the swamp boaty in Mort'ton.",
+		boardBoat = new ObjectStep(this, ObjectID.SWAMP_BOATY_6969, new WorldPoint(3524, 3285, 0), "Board the swamp boaty in Mort'ton. If you forgot coins, you can obtain some by killing afflicted.",
 			steelLong, steelSword2, steeldagger, steelMace, steelNails225, steelWarhammer, plank3, hammer, coins10OrCharos);
 		boardBoat.addDialogStep("Yes. I'll pay the ten gold.");
 		climbTree = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
@@ -307,7 +311,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 			"Climb the tree to the north of the boat.", combatGear);
 		enterDoorsHellhound = new ObjectStep(this, ObjectID.WOODEN_DOORS_5061, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.", combatGear);
 		enterCaveHellhound = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5046, new WorldPoint(3492, 9823, 0), "Enter the cave to the north on the east side.");
-		killHellhound = new NpcStep(this, NpcID.SKELETON_HELLHOUND, new WorldPoint(3506, 9837, 0), "Kill the Skeleton Hellhound.");
+		killHellhound = new NpcStep(this, NpcID.SKELETON_HELLHOUND, new WorldPoint(3506, 9837, 0), "Kill the Skeleton Hellhound. To safespot the hellhound using Magic, position it on the south side of the chair in the eastern part of the room.");
 		killHellhound.addSubSteps(climbTreeHellhound, enterCaveHellhound, enterDoorsHellhound);
 
 		climbTreeLeave = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
@@ -333,13 +337,16 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, morttonTeleport);
+		return Arrays.asList(combatGear, morttonTeleport, silverSickle);
 	}
 
 	@Override
 	public List<String> getNotes()
 	{
-		return Collections.singletonList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory and steal charges from your Druid Pouch.");
+		return Collections.singletonList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory" +
+			" and steal charges from your Druid Pouch. To obtain pouch charges you can use Mort Myre fungi." +
+			" A silver sickle (b) allows you to cast bloom which, at the expense of 1-6 prayer points, makes Mort Myre fungus spawn on rotting logs within the swamp. Additionally, the fungi can be purchased from the Grand Exchange." +
+			" The Skeleton hellhound can be safe-spotted with magic attacks.");
 	}
 
 	@Override

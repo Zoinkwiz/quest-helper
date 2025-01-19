@@ -69,7 +69,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		coins10OrCharos, plank3, plank2, plank1, steelNails75, steelNails150;
 
 	//Items Recommended
-	ItemRequirement morttonTeleport;
+	ItemRequirement morttonTeleport, silverSickle;
 
 	Requirement hasEnoughPouch, repairedBridge1, repairedBridge2, repairedBridge3, onBridge, onEntranceIsland, onQuestion1, onQuestion2,
 		onQuestion3, onQuestion4, onQuestion5, onQuestion6, inCaves, inMyrequeCave, talkedToHarold, talkedToRadigad, talkedToSani, talkedToPolmafi,
@@ -204,6 +204,8 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		morttonTeleport = new ItemRequirement("Teleport to Mort'ton, such as minigame teleport or Barrows Teleport", ItemID.MORTTON_TELEPORT);
 		morttonTeleport.addAlternates(ItemID.BARROWS_TELEPORT);
+		silverSickle = new ItemRequirement("Silver sickle (b) to collect Mort myre fungi to fill and replenish the druid pouch", ItemID.SILVER_SICKLE_B);
+		silverSickle.setTooltip("Although Mort myre fungus may be bought on the Grand Exchange, a sickle helps with ghast encounters in the swamp");
 	}
 
 	@Override
@@ -333,7 +335,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, morttonTeleport);
+		return Arrays.asList(combatGear, morttonTeleport, silverSickle);
 	}
 
 	@Override

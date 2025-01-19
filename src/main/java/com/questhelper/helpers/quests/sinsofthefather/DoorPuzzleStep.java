@@ -110,7 +110,6 @@ public class DoorPuzzleStep extends DetailedQuestStep
 		catch (NumberFormatException nfe)
 		{
 			log.error("NumberFormatException: " + nfe.getMessage());
-			System.out.println("NumberFormatException: " + nfe.getMessage());
 		}
 
 		PuzzleState solved = newSolveState(rowSums, colSums);

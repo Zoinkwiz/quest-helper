@@ -30,6 +30,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
 import java.util.List;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -42,6 +43,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.*;
 
+@Slf4j
 public class DoorPuzzleStep extends DetailedQuestStep
 {
 	@Inject
@@ -107,6 +109,7 @@ public class DoorPuzzleStep extends DetailedQuestStep
 		}
 		catch (NumberFormatException nfe)
 		{
+			log.error("NumberFormatException: " + nfe.getMessage());
 			System.out.println("NumberFormatException: " + nfe.getMessage());
 		}
 

@@ -407,7 +407,7 @@ public class QuestHelperPlugin extends Plugin
 					inv.append(item.getId()).append("\n");
 				}
 			}
-			System.out.println(inv);
+			log.debug(String.valueOf(inv));
 		}
 	}
 

@@ -27,9 +27,11 @@ package com.questhelper.requirements.runelite;
 import com.questhelper.questinfo.PlayerQuests;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 
+@Slf4j
 public class PlayerQuestStateRequirement extends RuneliteRequirement
 {
 	private final int expectedIntValue;
@@ -71,7 +73,7 @@ public class PlayerQuestStateRequirement extends RuneliteRequirement
 		}
 		catch (NumberFormatException err)
 		{
-			System.out.println(err.getMessage());
+			log.error(err.getMessage());
 			return false;
 		}
 	}

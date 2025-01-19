@@ -75,7 +75,7 @@ public class AtFirstLight extends BasicQuestHelper
 
 	QuestStep talkToApatura, goDownTree, talkToVerity, talkToWolf, windUpToy, useToyOnKiko,
 		checkBed, returnToWolf, goUpTree, talkToFox, takeLeaf, takeSecondLeaf, catchJerboa, useTailOnLeaves,
-		returnToFox, talkToFoxAfterPoultice, talkToAtza, talkToAtzaAfterHandingFur, makeEquipmentPile, talkToAtzaForTrim,
+		returnToFox, talkToFoxAfterPoultice, talkToAtza, makeEquipmentPile, talkToAtzaForTrim,
 		returnToFoxAfterTrim, getReportFromFox, goDownTreeEnd, talkToVerityEnd, useJerboaTailOnBed, goUpTreeToFinishQuest,
 		talkToApaturaToFinishQuest;
 
@@ -134,7 +134,7 @@ public class AtFirstLight extends BasicQuestHelper
 		bringAtzaFur.addStep(furSample, talkToAtza);
 		steps.put(7, bringAtzaFur);
 
-		ConditionalStep goRepairEquipment = new ConditionalStep(this, talkToAtzaAfterHandingFur);
+		ConditionalStep goRepairEquipment = new ConditionalStep(this, talkToAtza);
 		goRepairEquipment.addStep(repairedEquipment, talkToAtzaForTrim);
 		goRepairEquipment.addStep(and(equipmentUsable, hammer), makeEquipmentPile);
 		goRepairEquipment.addStep(equipmentUsable, takeHammer);
@@ -251,9 +251,6 @@ public class AtFirstLight extends BasicQuestHelper
 		talkToAtza = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
 			"Talk to Atza in one of the buildings outside Civitas illa Fortis' south wall, west of the general store.",
 			furSample);
-		talkToAtzaAfterHandingFur = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
-			"Talk to Atza in one of the buildings outside Civitas illa Fortis' south wall, west of the general store.");
-		talkToAtza.addSubSteps(talkToAtzaAfterHandingFur);
 		makeEquipmentPile = new ObjectStep(this, NullObjectID.NULL_52976, new WorldPoint(1697, 3063, 0),
 			"Set-up the pile of equipment next to Atza.", hammer);
 		talkToAtzaForTrim = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),

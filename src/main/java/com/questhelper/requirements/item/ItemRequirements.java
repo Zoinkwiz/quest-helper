@@ -40,10 +40,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import com.questhelper.util.Utils;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
-import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ItemRequirements extends ItemRequirement
 {
@@ -142,7 +140,7 @@ public class ItemRequirements extends ItemRequirement
 			colour = config.passColour();
 		}
 
-		if (colour == config.failColour() && checkWithBank(client))
+		if (colour == config.failColour() && checkWithAllContainers(client))
 		{
 			colour = Color.WHITE;
 		}
@@ -196,8 +194,8 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public boolean checkWithBank(Client client)
+	public boolean checkWithAllContainers(Client client)
 	{
-		return logicType.test(getItemRequirements().stream(), item -> item.checkWithBank(client));
+		return logicType.test(getItemRequirements().stream(), item -> item.checkWithAllContainers(client));
 	}
 }

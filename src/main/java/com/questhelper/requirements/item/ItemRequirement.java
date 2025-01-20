@@ -537,7 +537,7 @@ public class ItemRequirement extends AbstractRequirement
 		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData());
 	}
 
-	public boolean checkWithBank(Client client)
+	public boolean checkWithAllContainers(Client client)
 	{
 		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData()
 				, QuestContainerManager.getPotionData());

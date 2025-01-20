@@ -600,13 +600,6 @@ public class ItemRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		ItemAndLastUpdated[] containers = containersToCheckDefault();
-
-		return checkContainers(client, containers);
-	}
-
-	private ItemAndLastUpdated[] containersToCheckDefault()
-	{
 		List<ItemAndLastUpdated> containers = new ArrayList<>();
 		containers.add(QuestContainerManager.getEquippedData());
 
@@ -617,7 +610,7 @@ public class ItemRequirement extends AbstractRequirement
 			containers.add(QuestContainerManager.getPotionData());
 		}
 
-		return containers.toArray(new ItemAndLastUpdated[0]);
+		return checkContainers(client, containers.toArray(new ItemAndLastUpdated[0]));
 	}
 
 	private int getMaxMatchingItems(Client client, @NonNull Item[] items)

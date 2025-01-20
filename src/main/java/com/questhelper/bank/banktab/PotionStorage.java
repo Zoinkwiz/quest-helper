@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2024, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

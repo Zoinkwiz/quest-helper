@@ -494,7 +494,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Mourner (level 11)");
+		return Collections.singletonList("Mourner (level 11) (will decrease all combat skills to 20, including Hitpoints)");
 	}
 
 	@Override

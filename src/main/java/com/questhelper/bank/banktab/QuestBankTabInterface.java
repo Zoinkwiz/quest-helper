@@ -93,8 +93,9 @@ public class QuestBankTabInterface
 
 		if (questTabActive)
 		{
+			boolean wasInPotionStorage = client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == BANKTAB_POTIONSTORE;
 			questTabActive = false;
-			clientThread.invokeLater(this::activateTab);
+			clientThread.invokeLater(() -> activateTab(wasInPotionStorage));
 		}
 	}
 
@@ -160,6 +161,7 @@ public class QuestBankTabInterface
 	{
 		if (event.getOp() == 2)
 		{
+			boolean wasInPotionStorage = client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == BANKTAB_POTIONSTORE;
 			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 
 			if (questTabActive)
@@ -169,7 +171,7 @@ public class QuestBankTabInterface
 			}
 			else
 			{
-				activateTab();
+				activateTab(wasInPotionStorage);
 				// openTag will reset and relayout
 			}
 
@@ -210,14 +212,14 @@ public class QuestBankTabInterface
 		}
 	}
 
-	private void activateTab()
+	private void activateTab(boolean wasInPotionStorage)
 	{
 		if (questTabActive)
 		{
 			return;
 		}
 
-		if (client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == BANKTAB_POTIONSTORE)
+		if (wasInPotionStorage)
 		{
 			// Opening a tag tab with the potion store open would leave the store open in the bankground,
 			// making deposits not work. Force close the potion store.

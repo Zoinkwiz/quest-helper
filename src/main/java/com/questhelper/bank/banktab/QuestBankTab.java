@@ -137,6 +137,7 @@ public class QuestBankTab
 
 	public void unregister(EventBus eventBus)
 	{
+		potionStorage.setQuestBankTabInterface(null);
 		eventBus.unregister(potionStorage);
 		eventBus.unregister(this);
 	}

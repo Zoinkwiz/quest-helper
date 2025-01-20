@@ -73,7 +73,6 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.bank.BankSearch;
-import net.runelite.client.plugins.banktags.tabs.Layout;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
@@ -183,7 +182,6 @@ public class QuestHelperPlugin extends Plugin
 	{
 		questBankManager.startUp(injector, eventBus);
 		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
-		QuestContainerManager.getPotionData().setSpecialMethodToObtainItems(() -> potionStorage.getItems());
 		eventBus.register(worldMapAreaManager);
 
 		injector.injectMembers(playerStateManager);
@@ -292,7 +290,7 @@ public class QuestHelperPlugin extends Plugin
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			newVersionManager.updateChatWithNotificationIfNewVersion();
 			questBankManager.setUnknownInitialState();
-			potionStorage.cachePotions = true;
+			potionStorage.updateCachedPotions = true;
 			clientThread.invokeAtTickEnd(() -> {
 				questManager.setupRequirements();
 				questManager.setupOnLogin();

@@ -39,7 +39,6 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.bank.BankSearch;
 
 class Potion
@@ -60,13 +59,14 @@ public class PotionStorage
     static final int COMPONENTS_PER_POTION = 5;
 
     private final Client client;
-    private final ItemManager itemManager;
     private final BankSearch bankSearch;
 
     private Potion[] potions;
-    public boolean cachePotions;
-    private boolean layout;
-    private Set<Integer> potionStoreVars;
+
+    /* represents that something has occurred which means we should update the values of potions **/
+    public boolean updateCachedPotions;
+
+    private boolean updateBankLayout;
 
     @Setter
     private QuestBankTabInterface questBankTabInterface;
@@ -74,24 +74,15 @@ public class PotionStorage
     @Subscribe
     public void onClientTick(ClientTick event)
     {
-        if (cachePotions)
+        if (updateCachedPotions)
         {
             log.debug("Rebuilding potions");
-            cachePotions = false;
+            updateCachedPotions = false;
             rebuildPotions();
 
-            Widget w = client.getWidget(ComponentID.BANK_POTIONSTORE_CONTENT);
-            if (w != null && potionStoreVars == null)
+            if (updateBankLayout)
             {
-                // cache varps that the potion store rebuilds on
-                int[] trigger = w.getVarTransmitTrigger();
-                potionStoreVars = new HashSet<>();
-                Arrays.stream(trigger).forEach(potionStoreVars::add);
-            }
-
-            if (layout)
-            {
-                layout = false;
+                updateBankLayout = false;
                 if (questBankTabInterface.isQuestTabActive())
                 {
                     bankSearch.layoutBank();
@@ -105,10 +96,10 @@ public class PotionStorage
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged)
     {
-        if (TOTAL_POTIONS_VARBIT == varbitChanged.getVarpId() || potionStoreVars != null && potionStoreVars.contains(varbitChanged.getVarpId()))
+        if (TOTAL_POTIONS_VARBIT == varbitChanged.getVarpId())
         {
-            cachePotions = true;
-            layout = true; // trigger a bank rebuild as the qty has changed
+            updateCachedPotions = true;
+            updateBankLayout = true; // trigger a bank rebuild as the qty has changed
         }
     }
 
@@ -150,7 +141,16 @@ public class PotionStorage
         p.withdrawDoses = 0;
         potions[potions.length - 1] = p;
 
-        QuestContainerManager.getPotionData().update(client.getTickCount(), getItems());
+        Item[] newTrackedPotions = getItems();
+
+        Map<Integer, Integer> newPotionsAsMap = itemArrayToMap(newTrackedPotions);
+        Map<Integer, Integer> oldPotionsAsMap = itemArrayToMap(QuestContainerManager.getPotionData().getItems());
+        if (!oldPotionsAsMap.equals(newPotionsAsMap))
+        {
+            updateBankLayout = true;
+        }
+
+        QuestContainerManager.getPotionData().update(client.getTickCount(), newTrackedPotions);
     }
 
     public Item[] getItems()
@@ -243,5 +243,19 @@ public class PotionStorage
                 }
             }
         }
+    }
+
+    private Map<Integer, Integer> itemArrayToMap(Item[] items)
+    {
+        if (items == null) return new HashMap<>();
+        Map<Integer, Integer> quantityMap = new HashMap<>();
+        for (Item item : items)
+        {
+            quantityMap.put(
+                    item.getId(),
+                    quantityMap.getOrDefault(item.getId(), 0) + item.getQuantity()
+            );
+        }
+        return quantityMap;
     }
 }

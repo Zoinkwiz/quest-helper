@@ -631,12 +631,7 @@ public class QuestBankTab
 
 	private int count(ItemContainer bank, int itemId)
 	{
-		int count = bank.count(itemId);
-		if (count > 0)
-		{
-			return count;
-		}
-		return potionStorage.count(itemId);
+		return bank.count(itemId) + potionStorage.count(itemId);
 	}
 
 	int currentWidgetToUse = 0;

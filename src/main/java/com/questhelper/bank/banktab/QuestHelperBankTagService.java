@@ -54,20 +54,6 @@ public class QuestHelperBankTagService
 
 	int lastTickUpdated = 0;
 
-	int lastTickUpdatedForBank = 0;
-
-	public ArrayList<Integer> itemsToTagForBank()
-	{
-		if (client.getTickCount() <= lastTickUpdatedForBank)
-		{
-			return taggedItemsForBank;
-		}
-
-		lastTickUpdatedForBank = client.getTickCount();
-
-		return getItemsFromTabs(false);
-	}
-
 	public ArrayList<Integer> itemsToTag()
 	{
 		if (client.getTickCount() <= lastTickUpdated)
@@ -77,12 +63,12 @@ public class QuestHelperBankTagService
 
 		lastTickUpdated = client.getTickCount();
 
-		return getItemsFromTabs(true);
+		return getItemsFromTabs();
 	}
 
-	private ArrayList<Integer> getItemsFromTabs(boolean onlyGetMissingItems)
+	private ArrayList<Integer> getItemsFromTabs()
 	{
-		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(onlyGetMissingItems);
+		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(true);
 
 		if (sortedItems == null)
 		{

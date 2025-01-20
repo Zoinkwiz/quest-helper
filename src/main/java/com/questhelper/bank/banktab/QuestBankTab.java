@@ -230,32 +230,6 @@ public class QuestBankTab
 		{
 			intStack[intStackSize - 1] = questBankTabInterface.isQuestTabActive() ? 1 : 0;
 		}
-		else if ("bankSearchFilter".equals(eventName))
-		{
-			final int itemId = intStack[intStackSize - 1];
-			if (!questBankTabInterface.isQuestTabActive())
-			{
-				return;
-			}
-
-			if (itemId == -1)
-			{
-				// item -1 always passes on a laid out tab so items can be dragged to it
-				return;
-			}
-			List<Integer> items = questHelperBankTagService.itemsToTagForBank();
-			if (itemId > -1 && items.contains(itemId))
-			{
-				// return true
-				intStack[intStackSize - 2] = 1;
-			}
-			else
-			{
-				// if the item isn't tagged we return false to prevent the item matching if the item name happens
-				// to contain the tag name.
-				intStack[intStackSize - 2] = 0;
-			}
-		}
 	}
 
 	@Subscribe
@@ -396,7 +370,6 @@ public class QuestBankTab
 		if (children != null && originalContainerChildren == -1) originalContainerChildren = children.length;
 
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
-
 		clientThread.invokeAtTickEnd(() -> {
 			// Desired extra functionality:
 			// X - Recommended items also included in section

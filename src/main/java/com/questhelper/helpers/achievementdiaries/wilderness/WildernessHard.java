@@ -311,7 +311,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 			new UnlockReward("Access to a shortcut to the Lava Dragon Isle (requires Agility 74 )"),
 			new UnlockReward("Access to a shortcut to the Lava Maze (requires Agility 82 )"),
 			new UnlockReward("Can have 5 ecumenical keys at a time"),
-			new UnlockReward("30 random free runes from Lundail once per day"),
+			new UnlockReward("120 random free runes from Lundail once per day"),
 			new UnlockReward("Able to choose your destination when teleporting through the Ancient Obelisks"),
 			new UnlockReward("50% off entry to Resource Area (3,750gp)"),
 			new UnlockReward("Wine of zamorak found in the Chaos Temple (hut) and Deep Wilderness Dungeon will be received in noted form"),

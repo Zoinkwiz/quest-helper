@@ -294,7 +294,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(
 			new UnlockReward("Wilderness lever can teleport you to either Edgeville or Ardougne"),
-			new UnlockReward("10 random free runes from Lundail once per day")
+			new UnlockReward("40 random free runes from Lundail once per day")
 		);
 	}
 

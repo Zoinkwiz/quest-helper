@@ -30,28 +30,33 @@ import static net.runelite.api.SpriteID.*;
 @Getter
 public enum QuestEmote
 {
-	SKILL_CAPE("Skill Cape", EMOTE_SKILLCAPE),
-	FLEX("Flex", 2426),
-	CLAP("Clap", EMOTE_CLAP),
-	CRY("Cry", EMOTE_CRY),
-	BOW("Bow", EMOTE_BOW),
-	DANCE("Dance", EMOTE_DANCE),
-	WAVE("Wave", EMOTE_WAVE),
-	THINK("Think", EMOTE_THINK),
-	GOBLIN_BOW("Goblin bow", EMOTE_GOBLIN_BOW),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
-	IDEA("Idea", 732),
-	STAMP("Stamp", 730),
-	FLAP("Flap", 731),
-	SLAP_HEAD("Slap Head", 729),
-	SPIN("Spin", EMOTE_SPIN);
+	SKILL_CAPE("Skill Cape", EMOTE_SKILLCAPE, 2713),
+	FLEX("Flex", 2426, 2763),
+	CLAP("Clap", EMOTE_CLAP, 865),
+	CRY("Cry", EMOTE_CRY, 860),
+	BOW("Bow", EMOTE_BOW, 858),
+	DANCE("Dance", EMOTE_DANCE, 866),
+	WAVE("Wave", EMOTE_WAVE, 863),
+	THINK("Think", EMOTE_THINK, 857),
+	GOBLIN_BOW("Goblin bow", EMOTE_GOBLIN_BOW, 2127),
+	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS, 1374),
+	IDEA("Idea", 732, 2105),
+	STAMP("Stamp", 730, 2105),
+	FLAP("Flap", 731, 2105),
+	SLAP_HEAD("Slap Head", 729, 2105),
+	SPIN("Spin", EMOTE_SPIN, 2107),
+	SHRUG("Shrug", EMOTE_SHRUG, 2113),
+	CHEER("Cheer", EMOTE_CHEER, 862),
+	YES("Yes", EMOTE_YES, 855);
 
-	private String name;
-	private int spriteId;
+	private final String name;
+	private final int spriteId;
+	private final int animationId;
 
-	QuestEmote(String name, int spriteId)
+	QuestEmote(String name, int spriteId, int animationId)
 	{
 		this.name = name;
 		this.spriteId = spriteId;
+		this.animationId = animationId;
 	}
 }

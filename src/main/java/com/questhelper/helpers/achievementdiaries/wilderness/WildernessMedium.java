@@ -321,7 +321,11 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			new UnlockReward("Increases the chance of a successful yield from ents by 15%"),
 			new UnlockReward("20% off entry to Resource Area (6000gp)"),
 			new UnlockReward("Can have 4 ecumenical keys at a time"),
-			new UnlockReward("20 random free runes from Lundail once per day")
+			new UnlockReward("80 random free runes from Lundail once per day"),
+			new UnlockReward("Access to shortcut in Deep Wilderness Dungeon"),
+			new UnlockReward("Access to Spindel, Artio and Calvar'ion"),
+			new UnlockReward("Players will receive standard quantity of loot from rogues' chests (rather than -25%)"),
+			new UnlockReward("Players will roll on Zombie pirate drop table 50% of the time (rather than 15%)")
 		);
 	}
 

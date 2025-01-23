@@ -331,7 +331,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 			new UnlockReward("Free entry to the Resource Area"),
 			new UnlockReward("All dragon bones drops in the Wilderness are noted. (Note: This does not include the King Black Dragon, as his lair is not Wilderness affected.)"),
 			new UnlockReward("Noted lava dragon bones can be toggled by speaking to the Lesser Fanatic."),
-			new UnlockReward("50 random free runes from Lundail once per day"),
+			new UnlockReward("200 random free runes from Lundail once per day"),
 			new UnlockReward("Increased dark crab catch rate")
 		);
 	}

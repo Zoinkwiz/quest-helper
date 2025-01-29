@@ -327,13 +327,13 @@ public class EaglesPeak extends BasicQuestHelper
 
 		enterSilverRoom = new ObjectStep(this, ObjectID.TUNNEL_19903, new WorldPoint(1986, 4972, 3), "Enter the north-western cavern of Eagles' Peak.");
 
-		inspectSilverPedestal = new ObjectStep(this, ObjectID.STONE_PEDESTAL_19974, new WorldPoint(1947, 4873, 2), "Inspect the Stone Pedestal here.");
+		inspectSilverPedestal = new ObjectStep(this, ObjectID.STONE_PEDESTAL, new WorldPoint(1947, 4873, 2), "Inspect the Stone Pedestal here.");
 
 		enterMainCavernFromSilver = new ObjectStep(this, ObjectID.TUNNEL_19900, new WorldPoint(1947, 4867, 2), "Return to the main cavern.");
 
-		inspectRocks1 = new ObjectStep(this, ObjectID.ROCKS_19969, new WorldPoint(1961, 4875, 2), "Inspect the rocks east of the pedestal.");
+		inspectRocks1 = new ObjectStep(this, ObjectID.ROCKS_19458, new WorldPoint(1961, 4875, 2), "Inspect the rocks east of the pedestal.");
 
-		inspectRocks2 = new ObjectStep(this, ObjectID.ROCKS_19970, new WorldPoint(1967, 4879, 2), "Inspect the rocks north east of the last rock.");
+		inspectRocks2 = new ObjectStep(this, ObjectID.ROCKS_19461, new WorldPoint(1967, 4879, 2), "Inspect the rocks north east of the last rock.");
 
 		inspectOpening = new ObjectStep(this, ObjectID.OPENING, new WorldPoint(1971, 4886, 2), "Inspect the opening north of the second rock.");
 

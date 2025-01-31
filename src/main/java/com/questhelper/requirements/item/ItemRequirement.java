@@ -483,7 +483,7 @@ public class ItemRequirement extends AbstractRequirement
 			{
 				totalFound += getMaxMatchingItems(client, container.getItems());
 			}
-			else if (stateForItemInContainer.getLastCheckedTick() < container.getLastUpdated())
+			else if (stateForItemInContainer.getLastCheckedTick() <= container.getLastUpdated())
 			{
 				int matchesInContainer = getMaxMatchingItems(client, container.getItems());
 				stateForItemInContainer.set(matchesInContainer, client.getTickCount());

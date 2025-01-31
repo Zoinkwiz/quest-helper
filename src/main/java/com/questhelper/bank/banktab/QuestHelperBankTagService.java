@@ -24,9 +24,7 @@
  */
 package com.questhelper.bank.banktab;
 
-import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -38,8 +36,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
+
+import net.runelite.api.Client;
 
 @Singleton
 public class QuestHelperBankTagService
@@ -48,9 +46,27 @@ public class QuestHelperBankTagService
 	private QuestHelperPlugin plugin;
 
 	@Inject
-	private QuestBank questBank;
+	private Client client;
+
+	ArrayList<Integer> taggedItems;
+
+	ArrayList<Integer> taggedItemsForBank;
+
+	int lastTickUpdated = 0;
 
 	public ArrayList<Integer> itemsToTag()
+	{
+		if (client.getTickCount() <= lastTickUpdated)
+		{
+			return taggedItems;
+		}
+
+		lastTickUpdated = client.getTickCount();
+
+		return getItemsFromTabs();
+	}
+
+	private ArrayList<Integer> getItemsFromTabs()
 	{
 		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(true);
 
@@ -59,17 +75,17 @@ public class QuestHelperBankTagService
 			return null;
 		}
 
-		ArrayList<Integer> flattenedList = new ArrayList<>();
+		taggedItemsForBank = new ArrayList<>();
 
 		sortedItems.stream()
-			.map(BankTabItems::getItems)
-			.flatMap(Collection::stream)
-			.map(BankTabItem::getItemIDs)
-			.flatMap(Collection::stream)
-			.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
-			.filter(id -> !flattenedList.contains(id))
-			.forEach(flattenedList::add);
-		return flattenedList;
+				.map(BankTabItems::getItems)
+				.flatMap(Collection::stream)
+				.map(BankTabItem::getItemIDs)
+				.flatMap(Collection::stream)
+				.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
+				.filter(id -> !taggedItemsForBank.contains(id))
+				.forEach(taggedItemsForBank::add);
+		return taggedItemsForBank;
 	}
 
 	public ArrayList<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems)
@@ -88,9 +104,7 @@ public class QuestHelperBankTagService
 		{
 			recommendedItems = recommendedItems.stream()
 				.filter(Objects::nonNull)
-				.filter(i -> (!onlyGetMissingItems
-					|| !i.checkWithBank(plugin.getClient()))
-					&& i.shouldDisplayText(plugin.getClient()))
+				.filter(i -> (!onlyGetMissingItems || !i.checkWithAllContainers(plugin.getClient())) && i.shouldDisplayText(plugin.getClient()))
 				.collect(Collectors.toList());
 		}
 
@@ -117,7 +131,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.checkWithBank(plugin.getClient()))
+						|| !i.checkWithAllContainers(plugin.getClient()))
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -129,7 +143,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.checkWithBank(plugin.getClient()))
+						|| !i.checkWithAllContainers(plugin.getClient()))
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -168,7 +182,7 @@ public class QuestHelperBankTagService
 				else
 				{
 					ItemRequirement match = itemsWhichPassReq.stream()
-						.filter(r -> r.checkWithBank(plugin.getClient()))
+						.filter(r -> r.checkWithAllContainers(plugin.getClient()))
 						.findFirst()
 						.orElse(itemsWhichPassReq.get(0).named(itemRequirements.getName()));
 
@@ -178,11 +192,7 @@ public class QuestHelperBankTagService
 		}
 		else
 		{
-			if (itemRequirement.getDisplayItemId() != null)
-			{
-				pluginItems.add(new BankTabItem(realItem));
-			}
-			else if (!itemRequirement.getDisplayItemIds().contains(-1))
+			if (itemRequirement.getDisplayItemId() != null || !itemRequirement.getDisplayItemIds().contains(-1))
 			{
 				pluginItems.add(makeBankTabItem(realItem));
 			}
@@ -192,20 +202,21 @@ public class QuestHelperBankTagService
 	private BankTabItem makeBankTabItem(ItemRequirement item)
 	{
 		List<Integer> itemIds = item.getDisplayItemIds();
-
-		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
+		Integer displayId = itemIds.stream()
+				.filter(this::hasItemInBankOrPotionStorage)
+				.findFirst()
+				.orElse(item.getAllIds().stream()
+						.filter(this::hasItemInBankOrPotionStorage)
+						.findFirst()
+						.orElse(item.getAllIds().get(0))
+				);
 
 		return new BankTabItem(item, displayId);
 	}
 
-	public boolean hasItemInBank(int itemID)
+	public boolean hasItemInBankOrPotionStorage(int itemID)
 	{
-		ItemContainer bankContainer = plugin.getClient().getItemContainer(InventoryID.BANK);
-		if (bankContainer == null)
-		{
-			return false;
-		}
-
-		return bankContainer.contains(itemID);
+		ItemRequirement tmpReq = new ItemRequirement("tmp", itemID);
+		return tmpReq.checkWithAllContainers(client);
 	}
 }

@@ -29,6 +29,7 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
+import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
@@ -154,6 +155,9 @@ public class QuestHelperPlugin extends Plugin
 	@Getter
 	@Inject
 	PlayerStateManager playerStateManager;
+
+	@Inject
+	PotionStorage potionStorage;
 
 	@Inject
 	public SkillIconManager skillIconManager;
@@ -286,6 +290,7 @@ public class QuestHelperPlugin extends Plugin
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			newVersionManager.updateChatWithNotificationIfNewVersion();
 			questBankManager.setUnknownInitialState();
+			potionStorage.updateCachedPotions = true;
 			clientThread.invokeAtTickEnd(() -> {
 				questManager.setupRequirements();
 				questManager.setupOnLogin();

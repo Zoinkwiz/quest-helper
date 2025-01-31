@@ -29,14 +29,7 @@ package com.questhelper.bank.banktab;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.ScriptEvent;
-import net.runelite.api.ScriptID;
-import net.runelite.api.SoundEffectID;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
-import net.runelite.api.Varbits;
+import net.runelite.api.*;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -48,6 +41,8 @@ import net.runelite.client.plugins.bank.BankSearch;
 public class QuestBankTabInterface
 {
 	private static final String VIEW_TAB = "View tab ";
+
+	private static final int BANKTAB_POTIONSTORE = 15;
 
 	@Setter
 	@Getter
@@ -98,8 +93,9 @@ public class QuestBankTabInterface
 
 		if (questTabActive)
 		{
+			boolean wasInPotionStorage = client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == BANKTAB_POTIONSTORE;
 			questTabActive = false;
-			clientThread.invokeLater(this::activateTab);
+			clientThread.invokeLater(() -> activateTab(wasInPotionStorage));
 		}
 	}
 
@@ -135,8 +131,9 @@ public class QuestBankTabInterface
 
 		// If click a base tab, close
 		boolean clickedTabTag = menuOption.startsWith("View tab") && !event.getMenuTarget().equals("quest-helper");
+		boolean clickPotionStorage = menuOption.startsWith("Potion store");
 		boolean clickedOtherTab = menuOption.equals("View all items") || menuOption.startsWith("View tag tab");
-		if (questTabActive && (clickedTabTag || clickedOtherTab))
+		if (questTabActive && (clickedTabTag || clickedOtherTab || clickPotionStorage))
 		{
 			closeTab();
 		}
@@ -164,6 +161,7 @@ public class QuestBankTabInterface
 	{
 		if (event.getOp() == 2)
 		{
+			boolean wasInPotionStorage = client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == BANKTAB_POTIONSTORE;
 			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 
 			if (questTabActive)
@@ -173,7 +171,7 @@ public class QuestBankTabInterface
 			}
 			else
 			{
-				activateTab();
+				activateTab(wasInPotionStorage);
 				// openTag will reset and relayout
 			}
 
@@ -214,11 +212,18 @@ public class QuestBankTabInterface
 		}
 	}
 
-	private void activateTab()
+	private void activateTab(boolean wasInPotionStorage)
 	{
 		if (questTabActive)
 		{
 			return;
+		}
+
+		if (wasInPotionStorage)
+		{
+			// Opening a tag tab with the potion store open would leave the store open in the bankground,
+			// making deposits not work. Force close the potion store.
+			client.menuAction(-1, ComponentID.BANK_POTION_STORE, MenuAction.CC_OP, 1, -1, "Potion store", "");
 		}
 
 		questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);

@@ -581,7 +581,7 @@ public class Regicide extends BasicQuestHelper
 		));
 		goFromLeavesToStickTrap = new ObjectStep(this, ObjectID.STICKS, new WorldPoint(2236, 3181, 0),
 			"Head west, and cross the sticks there. To do so without failing, stand next to them and spam-click it " +
-				"until your cross it.");
+				"until you cross it.");
 		goFromLeavesToStickTrap.setLinePoints(Arrays.asList(
 			new WorldPoint(2267, 3201, 0),
 			new WorldPoint(2258, 3182, 0),

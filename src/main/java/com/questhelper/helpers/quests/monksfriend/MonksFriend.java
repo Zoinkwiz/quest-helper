@@ -131,6 +131,7 @@ public class MonksFriend extends BasicQuestHelper
 		talkToCedricWithJug = new NpcStep(this, NpcID.BROTHER_CEDRIC, new WorldPoint(2614, 3258, 0), "Talk to Brother Cedric again.", jugOfWater);
 		talkToCedricWithJug.addDialogStep("Yes, I'd be happy to!");
 		continueTalkingToCedric = new NpcStep(this, NpcID.BROTHER_CEDRIC, new WorldPoint(2614, 3258, 0), "Talk to Brother Cedric again.");
+		continueTalkingToCedric.addDialogStep("Yes, I'd be happy to!");
 		talkToCedricWithJug.addSubSteps(continueTalkingToCedric);
 		talkToCedricWithLog = new NpcStep(this, NpcID.BROTHER_CEDRIC, new WorldPoint(2614, 3258, 0), "Talk to Brother Cedric once again with logs.", log);
 		finishQuest = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Return to Brother Omad to finish the quest.");

@@ -64,7 +64,7 @@ public class BarrowsRouteCalculator
 
 		ArrayList<WorldPoint> points = new ArrayList<>();
 		BarrowsRooms currentRoomInLoop = startRoom;
-		if (route == null || route.size() == 0) return null;
+		if (route == null || route.isEmpty()) return null;
 		for (BarrowsDoors barrowsDoors : route)
 		{
 			if (barrowsDoors.getStartRoom() == currentRoomInLoop.getId())

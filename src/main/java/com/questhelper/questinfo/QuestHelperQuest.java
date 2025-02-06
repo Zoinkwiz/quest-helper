@@ -105,6 +105,7 @@ import com.questhelper.helpers.quests.clocktower.ClockTower;
 import com.questhelper.helpers.quests.coldwar.ColdWar;
 import com.questhelper.helpers.quests.contact.Contact;
 import com.questhelper.helpers.quests.cooksassistant.CooksAssistant;
+import com.questhelper.helpers.mischelpers.cracktheclue.CrackTheClue;
 import com.questhelper.helpers.quests.creatureoffenkenstrain.CreatureOfFenkenstrain;
 import com.questhelper.helpers.miniquests.curseoftheemptylord.CurseOfTheEmptyLord;
 import com.questhelper.helpers.miniquests.daddyshome.DaddysHome;
@@ -654,6 +655,8 @@ public enum QuestHelperQuest
 	BARROWS_HELPER(new BarrowsHelper(), "Barrows helper", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	STRONGHOLD_OF_SECURITY(new StrongholdOfSecurity(), "Stronghold of Security", QuestVarbits.STRONGHOLD_OF_SECURITY, 1,
 		QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
+	CRACK_THE_CLUE(new CrackTheClue(), "Crack The Clue", QuestVarbits.CRACK_THE_CLUE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
+	
 	// Skill
 	AGILITY(new Agility(), "Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 	WOODCUTTING_MEMBER(new WoodcuttingMember(), "Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),

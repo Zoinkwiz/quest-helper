@@ -418,6 +418,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		req.add(olafsQuest);
 		req.add(eaglesPeak);
 		req.add(betweenARock);
+		req.add(horrorFromTheDeep);
 		return req;
 	}
 

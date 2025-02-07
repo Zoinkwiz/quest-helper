@@ -215,7 +215,8 @@ public enum ItemCollections
 		ItemID.IRON_CROSSBOW,
 		ItemID.BRONZE_CROSSBOW,
 		ItemID.PHOENIX_CROSSBOW,
-		ItemID.CROSSBOW
+		ItemID.CROSSBOW,
+		ItemID.HUNTERS_SUNLIGHT_CROSSBOW
 	)),
 
 	SWORDS("Swords", ImmutableList.of(

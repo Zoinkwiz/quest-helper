@@ -26,7 +26,6 @@
 package com.questhelper.panel;
 
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.bank.QuestBank;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -296,6 +295,10 @@ public class QuestRequirementsPanel extends JPanel
 			else if (newColor == Color.ORANGE)
 			{
 				label.setToolTipText("On steel key ring");
+			}
+			else if (newColor == Color.YELLOW)
+			{
+				label.setToolTipText("Possibly in Group Storage");
 			}
 			else
 			{

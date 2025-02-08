@@ -33,6 +33,7 @@ import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.util.Text;
 
 public class DialogRequirement extends SimpleRequirement
 {
@@ -92,7 +93,8 @@ public class DialogRequirement extends SimpleRequirement
 
 	private boolean isCurrentDialogMatching(String dialogMessage)
 	{
-		if (talkerName != null && !dialogMessage.contains(talkerName + "|")) return false;
-		return text.stream().anyMatch(dialogMessage::contains);
+		String sanitisedMsg = Text.sanitize(dialogMessage);
+		if (talkerName != null && !sanitisedMsg.contains(talkerName + "|")) return false;
+		return text.stream().anyMatch(sanitisedMsg::contains);
 	}
 }

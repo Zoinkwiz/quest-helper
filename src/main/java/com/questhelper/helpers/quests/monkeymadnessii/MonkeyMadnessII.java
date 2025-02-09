@@ -651,7 +651,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(lemon, grape, pestle, pickaxe, logs, lightSource, hammerSidebar, chiselSidebar, mspeakAmulet, talismanOr1000Coins, ninjaGreegree);
+		return Arrays.asList(lemon, grape, pestle, pickaxe, logs, lightSource, translationBook, hammerSidebar, chiselSidebar, mspeakAmulet, talismanOr1000Coins, ninjaGreegree);
 	}
 
 	@Override

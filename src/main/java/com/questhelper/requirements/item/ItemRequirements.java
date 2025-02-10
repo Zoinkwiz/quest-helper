@@ -154,7 +154,6 @@ public class ItemRequirements extends ItemRequirement
 		ItemRequirements newItem = new ItemRequirements(getLogicType(), getName(), getItemRequirements());
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(getDisplayItemId());
-		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
 		newItem.setConditionToHide(getConditionToHide());

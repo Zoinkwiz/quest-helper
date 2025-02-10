@@ -45,7 +45,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
@@ -75,9 +74,6 @@ public class ItemRequirement extends AbstractRequirement
 	protected boolean highlightInInventory;
 
 	protected final List<Integer> alternateItems = new ArrayList<>();
-
-	@Setter
-	protected boolean exclusiveToOneItemType;
 
 	@Setter
 	@Getter
@@ -302,7 +298,6 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setQuantity(quantity);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(displayItemId);
-		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
 		newItem.setConditionToHide(conditionToHide);
@@ -443,10 +438,6 @@ public class ItemRequirement extends AbstractRequirement
 		List<Integer> ids = getAllIds();
 		for (int alternate : ids)
 		{
-			if (exclusiveToOneItemType)
-			{
-				remainder = quantity;
-			}
 			remainder -= (quantity - getNumberOfItemFound(alternate, null));
 			if (remainder <= 0)
 			{
@@ -463,12 +454,6 @@ public class ItemRequirement extends AbstractRequirement
 
 	public int checkTotalMatchesInContainers(Client client, ItemAndLastUpdated... containers)
 	{
-		// If exclusive, we need to check all containers together
-		if (exclusiveToOneItemType)
-		{
-			return getTotalMatchesInContainersIfExclusive(client, containers);
-		}
-
 		int totalFound = 0;
 
 		// Consideration: If any have changed, AND ItemRequirement requires unique item, then we do need to aggregate all the results
@@ -503,34 +488,7 @@ public class ItemRequirement extends AbstractRequirement
 	// containers passed in for the item
 	public boolean checkContainers(Client client, ItemAndLastUpdated... containers)
 	{
-		// If exclusive, we need to check all containers together
-		if (exclusiveToOneItemType)
-		{
-			return checkContainersIfExclusive(client, containers);
-		}
-
 		return checkTotalMatchesInContainers(client, containers) >= quantity;
-	}
-
-	private boolean checkContainersIfExclusive(Client client, ItemAndLastUpdated... containers)
-	{
-		int total = getTotalMatchesInContainersIfExclusive(client, containers);
-		return total >= quantity;
-	}
-
-	private int getTotalMatchesInContainersIfExclusive(Client client, ItemAndLastUpdated... containers)
-	{
-		List<Item> allItems = new ArrayList<>();
-		for (ItemAndLastUpdated container : containers)
-		{
-			if (container.getItems() == null)
-			{
-				continue;
-			}
-			allItems.addAll(List.of(container.getItems()));
-		}
-
-		return getMaxMatchingItems(client, allItems.toArray(new Item[0]));
 	}
 
 	private boolean checkContainersOnPlayer(Client client)
@@ -635,14 +593,7 @@ public class ItemRequirement extends AbstractRequirement
 		List<Integer> ids = getAllIds();
 		for (int alternate : ids)
 		{
-			int tmpQuantity = foundQuantity;
-			if (exclusiveToOneItemType)
-			{
-				tmpQuantity = 0;
-			}
-			tmpQuantity += getNumberOfItemFound(alternate, allItems);
-
-			if (foundQuantity < tmpQuantity) foundQuantity = tmpQuantity;
+			foundQuantity += getNumberOfItemFound(alternate, allItems);
 		}
 
 		return foundQuantity;

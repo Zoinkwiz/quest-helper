@@ -78,7 +78,6 @@ public class KeyringRequirement extends ItemRequirement
 		KeyringRequirement newItem = new KeyringRequirement(getName(), configManager, keyringCollection);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(getDisplayItemId());
-		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
 		newItem.setConditionToHide(getConditionToHide());

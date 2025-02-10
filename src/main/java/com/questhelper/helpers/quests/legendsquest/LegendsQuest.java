@@ -575,7 +575,6 @@ public class LegendsQuest extends BasicQuestHelper
 			.showConditioned(new SkillRequirement(Skill.MAGIC, 60));
 		elemental30 = new ItemRequirements(LogicType.OR, "Elemental runes", air30, water30, earth30, fire30);
 		elemental30.addAlternates(ItemID.FIRE_RUNE, ItemID.EARTH_RUNE, ItemID.AIR_RUNE);
-		elemental30.setExclusiveToOneItemType(true);
 
 		chargeOrbRunes = new ItemRequirements(LogicType.AND, "Runes for any charge orb spell you have the level to cast", cosmic3, elemental30);
 

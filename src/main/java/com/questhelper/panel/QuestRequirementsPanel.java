@@ -296,7 +296,7 @@ public class QuestRequirementsPanel extends JPanel
 			{
 				label.setToolTipText("On steel key ring");
 			}
-			else if (newColor == Color.YELLOW)
+			else if (newColor == Color.LIGHT_GRAY)
 			{
 				label.setToolTipText("Possibly in Group Storage");
 			}

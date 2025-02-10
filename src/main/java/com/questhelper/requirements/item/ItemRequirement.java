@@ -574,6 +574,8 @@ public class ItemRequirement extends AbstractRequirement
 
 	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip, QuestHelperConfig config)
 	{
+		// TODO: Pass a parameter here if the main check passed. We can use that, combined with the special equipment check, to know whether or not we need to add the notes tooltip to the text.
+		// We can test this by adding an item requirement (e.g. Bronze Axe) with a quantity set to 2, and equip set to true, with a note.
 		Color equipColor = config.passColour();
 
 		ArrayList<LineComponent> lines = new ArrayList<>();
@@ -581,7 +583,8 @@ public class ItemRequirement extends AbstractRequirement
 		if (this.isEquip())
 		{
 			String equipText = "(equipped)";
-			if (!checkContainers(client, QuestContainerManager.getEquippedData()))
+
+			if (checkTotalMatchesInContainers(client, QuestContainerManager.getEquippedData()) == 0)
 			{
 				equipColor = config.failColour();
 			}

@@ -25,18 +25,16 @@
 package com.questhelper.managers;
 
 import com.google.inject.Injector;
-import com.questhelper.QuestHelperPlugin;
+import com.questhelper.bank.GroupBank;
 import com.questhelper.bank.QuestBank;
 import com.questhelper.bank.banktab.QuestBankTab;
 import com.questhelper.bank.banktab.QuestHelperBankTagService;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Player;
+import net.runelite.api.*;
 import net.runelite.client.eventbus.EventBus;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Arrays;
 import java.util.List;
 
 @Singleton
@@ -44,6 +42,9 @@ public class QuestBankManager
 {
 	@Inject
 	private QuestBank questBank;
+
+	@Inject
+	private GroupBank groupBank;
 
 	@Getter
 	@Inject
@@ -88,6 +89,7 @@ public class QuestBankManager
 	public void loadState()
 	{
 		questBank.loadState();
+		groupBank.loadState();
 	}
 
 	public void startUpQuest()
@@ -105,6 +107,11 @@ public class QuestBankManager
 		return questBank.getBankItems();
 	}
 
+	public List<Item> getGroupBankItems()
+	{
+		return groupBank.getBankItems();
+	}
+
 	public void refreshBankTab()
 	{
 		questBankTab.refreshBankTab();
@@ -115,18 +122,46 @@ public class QuestBankManager
 		questBank.updateLocalBank(itemContainer.getItems());
 	}
 
+	public void updateLocalGroupBank(Client client, ItemContainer itemContainer)
+	{
+		boolean hasChangedGroupStorage = client.getVarbitValue(4602) == 1;
+		if (hasChangedGroupStorage)
+		{
+			// If editing, group bank not actually 'saved', so don't update yet
+			groupBank.setGroupBankDuringEditing(itemContainer.getItems());
+		}
+		else
+		{
+			groupBank.updateLocalBank(itemContainer.getItems());
+		}
+	}
+
+	public void updateLocalGroupInventory(Item[] items)
+	{
+		groupBank.setGroupInventoryDuringEditing(items);
+	}
+
+	public boolean updateGroupBankOnInventoryChange(Item[] inventoryItems)
+	{
+		return groupBank.updateAfterInventoryChange(inventoryItems);
+	}
+
 	public void updateBankForQuestSpeedrunningWorld()
 	{
 		questBank.updateLocalBank(new Item[]{ });
+		groupBank.updateLocalBank(new Item[]{ });
 	}
+
 
 	public void saveBankToConfig()
 	{
 		questBank.saveBankToConfig();
+		groupBank.saveBankToConfig();
 	}
 
 	public void emptyState()
 	{
 		questBank.emptyState();
+		groupBank.emptyState();
 	}
 }

@@ -40,4 +40,7 @@ public class QuestContainerManager
 
     @Getter
     private final static ItemAndLastUpdated potionData = new ItemAndLastUpdated(TrackedContainers.POTION_STORAGE);
+
+    @Getter
+    private final static ItemAndLastUpdated groupStorageData = new ItemAndLastUpdated(TrackedContainers.GROUP_STORAGE);
 }

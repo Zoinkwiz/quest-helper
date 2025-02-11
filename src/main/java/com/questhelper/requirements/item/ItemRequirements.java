@@ -28,6 +28,7 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.managers.ItemAndLastUpdated;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
@@ -118,20 +119,9 @@ public class ItemRequirements extends ItemRequirement
 			return Color.GRAY;
 		}
 
-		Set<TrackedContainers> containers = new LinkedHashSet<>();
+		Set<TrackedContainers> containers = getContainersWithItem();
 
-		if (logicType == LogicType.AND)
-		{
-			for (ItemRequirement itemRequirement : itemRequirements)
-			{
-				Set<TrackedContainers> containersForRequirement = itemRequirement.getContainersWithItem();
-				if (containersForRequirement.isEmpty()) return config.failColour();
-				containers.addAll(containersForRequirement);
-			}
-		} else if (logicType == LogicType.OR)
-		{
-			containers = findBestContainersForOr();
-		}
+		if (containers.isEmpty()) return config.failColour();
 
 		if (getOnPlayerContainers().containsAll(containers))
 		{
@@ -152,13 +142,41 @@ public class ItemRequirements extends ItemRequirement
 			// Found perfect match on player
 			if (getOnPlayerContainers().containsAll(currentItemContainers))
 			{
-				return new LinkedHashSet<>();
+				return currentItemContainers;
 			}
 			long count = currentItemContainers.stream()
 					.filter(container -> container != TrackedContainers.INVENTORY && container != TrackedContainers.EQUIPPED)
 					.distinct()
 					.count();
-			if (containers.size() == 0 || count < containers.size()) containers = new LinkedHashSet<>(currentItemContainers);
+			if (containers.size() == 0 || count < containers.size()) containers = currentItemContainers;
+		}
+
+		return containers;
+	}
+
+	// Defined behaviour? Return a set of things if ItemRequirements passes.
+	// Return empty is failed to find
+	@Override
+	public Set<TrackedContainers> getContainersWithItem()
+	{
+		if (!isActualItem())
+		{
+			return new LinkedHashSet<>();
+		}
+
+		Set<TrackedContainers> containers = new LinkedHashSet<>();
+
+		if (logicType == LogicType.AND)
+		{
+			for (ItemRequirement itemRequirement : itemRequirements)
+			{
+				Set<TrackedContainers> containersForRequirement = itemRequirement.getContainersWithItem();
+				if (containersForRequirement.isEmpty()) return new LinkedHashSet<>();
+				containers.addAll(containersForRequirement);
+			}
+		} else if (logicType == LogicType.OR)
+		{
+			containers = findBestContainersForOr();
 		}
 
 		return containers;
@@ -222,18 +240,7 @@ public class ItemRequirements extends ItemRequirement
 
 		// If OR, find one which passes, with the most already in your inventory/equipped
 
-		Set<TrackedContainers> containers = new HashSet<>();
-		if (logicType == LogicType.AND)
-		{
-			for (ItemRequirement itemRequirement : itemRequirements)
-			{
-				containers.addAll(itemRequirement.getContainersWithItem());
-			}
-		}
-		else if (logicType == LogicType.OR)
-		{
-			containers = findBestContainersForOr();
-		}
+		Set<TrackedContainers> containers = getContainersWithItem();
 
 		if (containers.size() == 0) return super.getTooltip();
 

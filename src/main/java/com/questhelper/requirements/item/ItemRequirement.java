@@ -459,7 +459,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			basicTooltip += "\n";
 		}
-		// TODO: Sidebar info tip isn't appearing properly
+
 		return basicTooltip + "Items can be found in your: " + containers.stream()
 				// Convert enum name to title case
 				.map(Text::titleCase)

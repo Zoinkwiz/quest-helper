@@ -37,8 +37,10 @@ import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
-import java.awt.Color;
+
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NonNull;
@@ -594,7 +596,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			lines.add(LineComponent.builder()
 					.left("- " + this.getTooltip())
-					.leftColor(Color.WHITE)
+					.leftColor(Color.GRAY)
 					.build());
 		}
 

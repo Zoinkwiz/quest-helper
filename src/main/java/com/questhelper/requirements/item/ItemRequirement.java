@@ -132,6 +132,7 @@ public class ItemRequirement extends AbstractRequirement
 	 * Flag to indicate whether the bank should be checked.
 	 */
 	@Setter
+	@Getter
 	private boolean shouldCheckBank;
 
 	/**

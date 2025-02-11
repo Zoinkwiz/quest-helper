@@ -45,7 +45,9 @@ import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.ItemID;
 import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.util.Text;
 import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 
@@ -106,7 +108,6 @@ public class ItemRequirement extends AbstractRequirement
 	protected boolean isChargedItem = false;
 
 	protected Requirement additionalOptions;
-
 
 	Map<TrackedContainers, ContainerStateForRequirement> knownContainerStates = new HashMap<>();
 	{
@@ -424,7 +425,44 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = config.passColour();
 		}
+		else if (this.checkWithAllContainers())
+		{
+			color = Color.WHITE;
+		}
 		return color;
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		Set<TrackedContainers> containers = getContainersWithItem();
+		if (containers.size() == 0) return super.getTooltip();
+
+		if (!getOnPlayerContainers().containsAll(containers))
+		{
+			return getTooltipFromEnumSet(containers);
+		}
+
+		return null;
+	}
+
+	protected String getTooltipFromEnumSet(Set<TrackedContainers> containers)
+	{
+		containers.removeAll(getOnPlayerContainers());
+		String basicTooltip = super.getTooltip();
+		if (basicTooltip == null)
+		{
+			basicTooltip = "";
+		}
+		else
+		{
+			basicTooltip += "\n";
+		}
+		// TODO: Sidebar info tip isn't appearing properly
+		return basicTooltip + "Items can be found in your: " + containers.stream()
+				// Convert enum name to title case
+				.map(Text::titleCase)
+				.collect(Collectors.joining(", "));
 	}
 
 	/** Find the first item that this requirement allows that the player has, or -1 if they don't have any item(s) */
@@ -449,10 +487,10 @@ public class ItemRequirement extends AbstractRequirement
 
 	public boolean checkItems(Client client, List<Item> items)
 	{
-		return getMaxMatchingItems(client, items.toArray(new Item[0])) >= quantity;
+		return getMaxMatchingItems(items.toArray(new Item[0])) >= quantity;
 	}
 
-	public int checkTotalMatchesInContainers(Client client, ItemAndLastUpdated... containers)
+	public int checkTotalMatchesInContainers(ItemAndLastUpdated... containers)
 	{
 		int totalFound = 0;
 
@@ -467,12 +505,13 @@ public class ItemRequirement extends AbstractRequirement
 			// Generic container, always check
 			if (container.getContainerType() == TrackedContainers.UNDEFINED)
 			{
-				totalFound += getMaxMatchingItems(client, container.getItems());
+				totalFound += getMaxMatchingItems(container.getItems());
 			}
 			else if (stateForItemInContainer.getLastCheckedTick() <= container.getLastUpdated())
 			{
-				int matchesInContainer = getMaxMatchingItems(client, container.getItems());
-				stateForItemInContainer.set(matchesInContainer, client.getTickCount());
+				int matchesInContainer = getMaxMatchingItems(container.getItems());
+				// Won't represent actual last checked, but ensures it's after the current state for comparison
+				stateForItemInContainer.set(matchesInContainer, container.getLastUpdated() + 1);
 				totalFound += matchesInContainer;
 			}
 			else
@@ -486,48 +525,50 @@ public class ItemRequirement extends AbstractRequirement
 
 	// This will ignore any defined conditions for what to consider, and will check across all
 	// containers passed in for the item
-	public boolean checkContainers(Client client, ItemAndLastUpdated... containers)
+	public boolean checkContainers(ItemAndLastUpdated... containers)
 	{
-		return checkTotalMatchesInContainers(client, containers) >= quantity;
+		return checkTotalMatchesInContainers(containers) >= quantity;
 	}
 
 	private boolean checkContainersOnPlayer(Client client)
 	{
-		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData());
+		return checkContainers(QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData());
 	}
 
-	public boolean checkWithAllContainers(Client client)
+	public boolean checkWithAllContainers()
 	{
-		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData()
+		return checkContainers(QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData()
 				, QuestContainerManager.getPotionData(), QuestContainerManager.getGroupStorageData());
 	}
 
-	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
+	public Set<TrackedContainers> getContainersWithItem()
 	{
-		Color color = config.failColour();
-		if (!this.isActualItem())
+		if (!isActualItem())
 		{
-			color = Color.GRAY;
-		}
-		else if (this.checkContainersOnPlayer(client))
-		{
-			color = config.passColour();
+			return new LinkedHashSet<>();
 		}
 
-		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getBankData()))
+		Set<TrackedContainers> containersWithItem = new LinkedHashSet<>();
+		int totalFoundAcrossContainers = 0;
+
+		// This is relying on the order in the enum to determine priority of container checks
+		for (ItemAndLastUpdated container : QuestContainerManager.getOrderedListOfContainers())
 		{
-			color = Color.WHITE;
-		}
-		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getPotionData()))
-		{
-			color = Color.CYAN;
-		}
-		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getGroupStorageData()))
-		{
-			color = Color.LIGHT_GRAY;
+			int totalFoundInCurrentContainer = checkTotalMatchesInContainers(container);
+			if (totalFoundInCurrentContainer > 0)
+			{
+				totalFoundAcrossContainers += totalFoundInCurrentContainer;
+				containersWithItem.add(container.getContainerType());
+				if (totalFoundAcrossContainers >= quantity)
+				{
+					return containersWithItem;
+				}
+			}
 		}
 
-		return color;
+		// If not enough across containers, return failed?
+		// Consideration: Still return partial success instead?
+		return new LinkedHashSet<>();
 	}
 
 	protected ArrayList<LineComponent> getAdditionalText(Client client, boolean includeTooltip, QuestHelperConfig config)
@@ -539,7 +580,7 @@ public class ItemRequirement extends AbstractRequirement
 		if (this.isEquip())
 		{
 			String equipText = "(equipped)";
-			if (!checkContainers(client, QuestContainerManager.getEquippedData()))
+			if (!checkContainers(QuestContainerManager.getEquippedData()))
 			{
 				equipColor = config.failColour();
 			}
@@ -563,6 +604,12 @@ public class ItemRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
+		// This may need to apply to other forms of checking on containers. Future consideration.
+		if (additionalOptions != null && additionalOptions.check(client))
+		{
+			return true;
+		}
+
 		List<ItemAndLastUpdated> containers = new ArrayList<>();
 		containers.add(QuestContainerManager.getEquippedData());
 
@@ -574,18 +621,11 @@ public class ItemRequirement extends AbstractRequirement
 			containers.add(QuestContainerManager.getGroupStorageData());
 		}
 
-		return checkContainers(client, containers.toArray(new ItemAndLastUpdated[0]));
+		return checkContainers(containers.toArray(new ItemAndLastUpdated[0]));
 	}
 
-	private int getMaxMatchingItems(Client client, @NonNull Item[] items)
+	private int getMaxMatchingItems(@NonNull Item[] items)
 	{
-		// TODO: Is this right to do? Misleading on number for some scenarios
-		// Perhaps additionalOptions should have some text change instead associated
-		if (additionalOptions != null && additionalOptions.check(client))
-		{
-			return quantity;
-		}
-
 		List<Item> allItems = new ArrayList<>(List.of(items));
 
 		int foundQuantity = 0;
@@ -660,5 +700,11 @@ public class ItemRequirement extends AbstractRequirement
 	public boolean shouldHighlightInInventory(Client client)
 	{
 		return highlightInInventory && shouldRenderItemHighlights(client);
+	}
+
+	// TODO: This will have a conditional for seeing if a Rune Pouch is on the player
+	protected Set<TrackedContainers> getOnPlayerContainers()
+	{
+		return new LinkedHashSet<>(List.of(TrackedContainers.EQUIPPED, TrackedContainers.INVENTORY));
 	}
 }

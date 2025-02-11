@@ -24,14 +24,21 @@
  */
 package com.questhelper.requirements.item;
 
-import com.questhelper.collections.KeyringCollection;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.collections.KeyringCollection;
+import com.questhelper.managers.ItemAndLastUpdated;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
-import java.awt.Color;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 
+// TODO: Convert this to be a TrackedContainer instead?
 public class KeyringRequirement extends ItemRequirement
 {
 	RuneliteRequirement runeliteRequirement;
@@ -103,29 +110,15 @@ public class KeyringRequirement extends ItemRequirement
 	}
 
 	@Override
-	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
+	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		Color color;
-		if (!this.isActualItem())
+		boolean isKeyOnKeyring = runeliteRequirement.check(client);
+		if (isKeyOnKeyring)
 		{
-			color = Color.GRAY;
-		}
-		else
-		{
-			color = super.getColorConsideringBank(client, config);
+			return keyring.getColor(client, config);
 		}
 
-		if (color == config.failColour())
-		{
-			boolean match = runeliteRequirement.check(client);
-
-			if (match)
-			{
-				color = Color.ORANGE;
-			}
-		}
-
-		return color;
+		return this.check(client) ? config.passColour() : config.failColour();
 	}
 
 	@Override

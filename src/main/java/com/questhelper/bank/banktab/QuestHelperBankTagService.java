@@ -104,7 +104,7 @@ public class QuestHelperBankTagService
 		{
 			recommendedItems = recommendedItems.stream()
 				.filter(Objects::nonNull)
-				.filter(i -> (!onlyGetMissingItems || !i.checkWithAllContainers(plugin.getClient())) && i.shouldDisplayText(plugin.getClient()))
+				.filter(i -> (!onlyGetMissingItems || !i.checkWithAllContainers()) && i.shouldDisplayText(plugin.getClient()))
 				.collect(Collectors.toList());
 		}
 
@@ -131,7 +131,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.checkWithAllContainers(plugin.getClient()))
+						|| !i.checkWithAllContainers())
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -143,7 +143,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.checkWithAllContainers(plugin.getClient()))
+						|| !i.checkWithAllContainers())
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -182,7 +182,7 @@ public class QuestHelperBankTagService
 				else
 				{
 					ItemRequirement match = itemsWhichPassReq.stream()
-						.filter(r -> r.checkWithAllContainers(plugin.getClient()))
+						.filter(r -> r.checkWithAllContainers())
 						.findFirst()
 						.orElse(itemsWhichPassReq.get(0).named(itemRequirements.getName()));
 
@@ -217,6 +217,6 @@ public class QuestHelperBankTagService
 	public boolean hasItemInBankOrPotionStorage(int itemID)
 	{
 		ItemRequirement tmpReq = new ItemRequirement("tmp", itemID);
-		return tmpReq.checkWithAllContainers(client);
+		return tmpReq.checkWithAllContainers();
 	}
 }

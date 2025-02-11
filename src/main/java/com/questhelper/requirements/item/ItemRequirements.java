@@ -28,16 +28,12 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.managers.ItemAndLastUpdated;
-import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.LogicType;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
+
 import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -60,7 +56,7 @@ public class ItemRequirements extends ItemRequirement
 	{
 		super(name, itemRequirements[0].getId(), -1);
 
-		assert(Utils.varargsNotNull(itemRequirements));
+		assert (Utils.varargsNotNull(itemRequirements));
 
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = LogicType.AND;
@@ -70,7 +66,7 @@ public class ItemRequirements extends ItemRequirement
 	{
 		super(name, itemRequirements[0].getId(), -1);
 
-		assert(Utils.varargsNotNull(itemRequirements));
+		assert (Utils.varargsNotNull(itemRequirements));
 
 		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
 		this.logicType = logicType;
@@ -80,7 +76,7 @@ public class ItemRequirements extends ItemRequirement
 	{
 		super(name, itemRequirements.get(0).getId(), -1);
 
-		assert(itemRequirements.stream().noneMatch(Objects::isNull));
+		assert (itemRequirements.stream().noneMatch(Objects::isNull));
 
 		this.itemRequirements.addAll(itemRequirements);
 		this.logicType = logicType;
@@ -94,13 +90,14 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public boolean isActualItem()
 	{
-		return LogicType.OR.test(getItemRequirements().stream(), item -> !item.getAllIds().contains(-1) && item.getQuantity() >= 0);
+		return getItemRequirements() != null && LogicType.OR.test(getItemRequirements().stream(),
+				item -> !item.getAllIds().contains(-1) && item.getQuantity() >= 0);
 	}
 
 	@Override
-	public boolean checkContainers(Client client, ItemAndLastUpdated... containers)
+	public boolean checkContainers(ItemAndLastUpdated... containers)
 	{
-		Predicate<ItemRequirement> predicate = r -> r.checkContainers(client, containers);
+		Predicate<ItemRequirement> predicate = r -> r.checkContainers(containers);
 		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
 		return logicType.compare(successes, itemRequirements.size());
 	}
@@ -116,7 +113,55 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		return this.check(client) ? config.passColour() : config.failColour();
+		if (!this.isActualItem())
+		{
+			return Color.GRAY;
+		}
+
+		Set<TrackedContainers> containers = new LinkedHashSet<>();
+
+		if (logicType == LogicType.AND)
+		{
+			for (ItemRequirement itemRequirement : itemRequirements)
+			{
+				Set<TrackedContainers> containersForRequirement = itemRequirement.getContainersWithItem();
+				if (containersForRequirement.isEmpty()) return config.failColour();
+				containers.addAll(containersForRequirement);
+			}
+		} else if (logicType == LogicType.OR)
+		{
+			containers = findBestContainersForOr();
+		}
+
+		if (getOnPlayerContainers().containsAll(containers))
+		{
+			return config.passColour();
+		}
+
+		return Color.WHITE;
+	}
+
+	private Set<TrackedContainers> findBestContainersForOr()
+	{
+		Set<TrackedContainers> containers = new LinkedHashSet<>();
+
+		for (ItemRequirement itemRequirement : itemRequirements)
+		{
+			Set<TrackedContainers> currentItemContainers = itemRequirement.getContainersWithItem();
+			if (currentItemContainers.isEmpty()) continue;
+			// Found perfect match on player
+			if (getOnPlayerContainers().containsAll(currentItemContainers))
+			{
+				return new LinkedHashSet<>();
+			}
+			long count = currentItemContainers.stream()
+					.filter(container -> container != TrackedContainers.INVENTORY && container != TrackedContainers.EQUIPPED)
+					.distinct()
+					.count();
+			if (containers.size() == 0 || count < containers.size()) containers = new LinkedHashSet<>(currentItemContainers);
+		}
+
+		return containers;
 	}
 
 	@Override
@@ -125,27 +170,6 @@ public class ItemRequirements extends ItemRequirement
 		Predicate<ItemRequirement> predicate = r -> r.checkItems(client, items);
 		int successes = (int) itemRequirements.stream().filter(Objects::nonNull).filter(predicate).count();
 		return logicType.compare(successes, itemRequirements.size());
-	}
-
-	@Override
-	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
-	{
-		Color colour = config.failColour();
-		if (!this.isActualItem() && this.getItemRequirements() == null)
-		{
-			colour = Color.GRAY;
-		}
-		else if (checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData()))
-		{
-			colour = config.passColour();
-		}
-
-		if (colour == config.failColour() && checkWithAllContainers(client))
-		{
-			colour = Color.WHITE;
-		}
-
-		return colour;
 	}
 
 	@Override
@@ -169,9 +193,9 @@ public class ItemRequirements extends ItemRequirement
 	public List<Integer> getAllIds()
 	{
 		return itemRequirements.stream()
-			.map(ItemRequirement::getAllIds)
-			.flatMap(Collection::stream)
-			.collect(QuestUtil.collectToArrayList());
+				.map(ItemRequirement::getAllIds)
+				.flatMap(Collection::stream)
+				.collect(QuestUtil.collectToArrayList());
 	}
 
 	@Override
@@ -184,7 +208,6 @@ public class ItemRequirements extends ItemRequirement
 		return newItem;
 	}
 
-
 	@Override
 	public void setEquip(boolean shouldEquip)
 	{
@@ -193,8 +216,38 @@ public class ItemRequirements extends ItemRequirement
 	}
 
 	@Override
-	public boolean checkWithAllContainers(Client client)
+	public String getTooltip()
 	{
-		return logicType.test(getItemRequirements().stream(), item -> item.checkWithAllContainers(client));
+		// If AND, check across all containers
+
+		// If OR, find one which passes, with the most already in your inventory/equipped
+
+		Set<TrackedContainers> containers = new HashSet<>();
+		if (logicType == LogicType.AND)
+		{
+			for (ItemRequirement itemRequirement : itemRequirements)
+			{
+				containers.addAll(itemRequirement.getContainersWithItem());
+			}
+		}
+		else if (logicType == LogicType.OR)
+		{
+			containers = findBestContainersForOr();
+		}
+
+		if (containers.size() == 0) return super.getTooltip();
+
+		if (!getOnPlayerContainers().containsAll(containers))
+		{
+			return getTooltipFromEnumSet(containers);
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean checkWithAllContainers()
+	{
+		return logicType.test(getItemRequirements().stream(), ItemRequirement::checkWithAllContainers);
 	}
 }

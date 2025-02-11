@@ -138,7 +138,7 @@ public class ItemRequirements extends ItemRequirement
 			return config.passColour();
 		}
 
-		return Color.WHITE;
+		return config.partialSuccessColour();
 	}
 
 	private Set<TrackedContainers> findBestContainersForOr()

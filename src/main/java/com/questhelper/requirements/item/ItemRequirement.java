@@ -47,7 +47,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.util.Text;
 import org.jetbrains.annotations.Nullable;
@@ -429,7 +428,7 @@ public class ItemRequirement extends AbstractRequirement
 		}
 		else if (this.checkWithAllContainers())
 		{
-			color = Color.WHITE;
+			color = config.partialSuccessColour();
 		}
 		return color;
 	}

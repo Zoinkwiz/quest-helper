@@ -331,16 +331,16 @@ public class Contact extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHighPriest, talkToJex), lightSource, tinderbox));
+		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToHighPriest, talkToJex), lightSource, tinderbox, antipoison));
 
 		allSteps.add(new PanelDetails("Explore the dungeon",
 			Arrays.asList(goDownToBank, goDownToDungeon, goDownToChasm, searchKaleef, readParchment,
-				talkToMaisa, talkToOsman), lightSource, tinderbox));
+				talkToMaisa, talkToOsman), lightSource, tinderbox, antipoison));
 
 		allSteps.add(new PanelDetails("Help Osman",
 			Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
 				goDownToChasmAgain, killGiantScarab, talkToOsmanChasm, pickUpKeris, returnToHighPriest), combatGear, food, prayerPotions,
-			lightSource, tinderbox));
+			lightSource, tinderbox, antipoison));
 
 		return allSteps;
 	}

@@ -50,7 +50,6 @@ public class QuestBank
 	private final Gson gson;
 
 	private static final String CONFIG_GROUP = QuestHelperConfig.QUEST_HELPER_GROUP;
-	private static final String BANK_KEY = "bankitems";
 
 	private List<Item> bankItems;
 	private final QuestBankData questBankData;
@@ -111,7 +110,7 @@ public class QuestBank
 		rsProfileKey = configManager.getRSProfileKey();
 		worldType = RuneScapeProfileType.getCurrent(client);
 
-		String json = configManager.getRSProfileConfiguration(CONFIG_GROUP, BANK_KEY);
+		String json = configManager.getRSProfileConfiguration(CONFIG_GROUP, getKey());
 		try
 		{
 			questBankData.setIdAndQuantity(gson.fromJson(json, int[].class));
@@ -132,7 +131,7 @@ public class QuestBank
 			return;
 		}
 
-		configManager.setConfiguration(CONFIG_GROUP, rsProfileKey, BANK_KEY, gson.toJson(questBankData.getIdAndQuantity()));
+		configManager.setConfiguration(CONFIG_GROUP, rsProfileKey, getKey(), gson.toJson(questBankData.getIdAndQuantity()));
 	}
 
 	private String getCurrentKey()
@@ -150,5 +149,9 @@ public class QuestBank
 		}
 		key.append(client.getLocalPlayer().getName());
 		return key.toString();
+	}
+	protected String getKey()
+	{
+		return "bankitems";
 	}
 }

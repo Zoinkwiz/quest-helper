@@ -30,5 +30,6 @@ public enum TrackedContainers
     INVENTORY,
     BANK,
     POTION_STORAGE,
+    GROUP_STORAGE,
     UNDEFINED
 }

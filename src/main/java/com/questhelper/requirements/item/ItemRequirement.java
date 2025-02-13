@@ -45,6 +45,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.ItemID;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
@@ -540,7 +541,7 @@ public class ItemRequirement extends AbstractRequirement
 	public boolean checkWithAllContainers(Client client)
 	{
 		return checkContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData()
-				, QuestContainerManager.getPotionData());
+				, QuestContainerManager.getPotionData(), QuestContainerManager.getGroupStorageData());
 	}
 
 	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
@@ -562,6 +563,10 @@ public class ItemRequirement extends AbstractRequirement
 		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getPotionData()))
 		{
 			color = Color.CYAN;
+		}
+		if (color == config.failColour() && this.checkContainers(client, QuestContainerManager.getGroupStorageData()))
+		{
+			color = Color.LIGHT_GRAY;
 		}
 
 		return color;
@@ -608,6 +613,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			containers.add(QuestContainerManager.getBankData());
 			containers.add(QuestContainerManager.getPotionData());
+			containers.add(QuestContainerManager.getGroupStorageData());
 		}
 
 		return checkContainers(client, containers.toArray(new ItemAndLastUpdated[0]));
@@ -616,7 +622,7 @@ public class ItemRequirement extends AbstractRequirement
 	private int getMaxMatchingItems(Client client, @NonNull Item[] items)
 	{
 		// TODO: Is this right to do? Misleading on number for some scenarios
-		// Perhaps additionalOptions should have some text change instead assosciated
+		// Perhaps additionalOptions should have some text change instead associated
 		if (additionalOptions != null && additionalOptions.check(client))
 		{
 			return quantity;

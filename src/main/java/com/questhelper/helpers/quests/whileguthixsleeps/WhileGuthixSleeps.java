@@ -1122,7 +1122,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			"Bring the unconscious broav to the Feldip Hills hunting expert.", unconsciousBroav);
 		returnBroavToHuntingExpert.addDialogSteps("Do you think you could train this broav for me?", "A creature to help track down a person.");
 
-		goToBrokenTable = new DetailedQuestStep(this, new WorldPoint(2519, 3248, 0), "Go to the broken table in the middle of the khazard side of the gnome/khazard battlefield.", broav);
+		goToBrokenTable = new DetailedQuestStep(this, new WorldPoint(2519, 3248, 0), "Go to the broken table in the middle of the Khazard side of the Khazard-Gnome battlefield.", broav);
 		goToBrokenTable.addTeleport(khazardTeleport);
 		goToBrokenTable.setHighlightZone(nearTable);
 
@@ -1133,7 +1133,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		searchBrokenTable = new ObjectStep(this, NullObjectID.NULL_53889, new WorldPoint(2519, 3249, 0), "Search the broken table.");
 
-		enterMovarioBase = new ObjectStep(this, ObjectID.TRAPDOOR_53279, new WorldPoint(2519, 3249, 0), "Enter movario's base under the broken table in the Khazard Battlefield.");
+		enterMovarioBase = new ObjectStep(this, ObjectID.TRAPDOOR_53279, new WorldPoint(2519, 3249, 0), "Enter Movario's base under the broken table in the Khazard Battlefield.");
 
 		// TODO: Update hardcoded 54117 to CHEST_54117
 		claimRunes = new ObjectStep(this, 54117, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
@@ -1227,8 +1227,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		searchChestForTraps = new ObjectStep(this, ObjectID.BED_CHEST_53951, new WorldPoint(4179, 4954, 2), "RIGHT-CLICK search the bed chest for traps.");
 		getNotesFromChest = new ObjectStep(this, ObjectID.BED_CHEST_53952, new WorldPoint(4179, 4954, 2), "Take the second pair of notes from the bed chest.");
 		((ObjectStep) getNotesFromChest).addAlternateObjects(ObjectID.BED_CHEST_53951);
-		readNotes1 = new DetailedQuestStep(this, "Read the movario notes 1.", movariosNotesV1.highlighted());
-		readNotes2 = new DetailedQuestStep(this, "Read the movario notes 2.", movariosNotesV2.highlighted());
+		readNotes1 = new DetailedQuestStep(this, "Read Movario's notes (vol. 1).", movariosNotesV1.highlighted());
+		readNotes2 = new DetailedQuestStep(this, "Read Movario's notes (vol. 2).", movariosNotesV2.highlighted());
 		goDownFromHiddenRoom = new ObjectStep(this, ObjectID.STAIRS_53948, new WorldPoint(4173, 4956, 2), "Go back downstairs.");
 		inspectPainting = new ObjectStep(this, ObjectID.PAINTING_53885, new WorldPoint(4179, 4948, 1), "Inspect the painting in the south of the room.");
 		inspectPainting.addDialogStep("Pull the lever.");

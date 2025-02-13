@@ -182,6 +182,7 @@ public class QuestHelperPlugin extends Plugin
 	{
 		questBankManager.startUp(injector, eventBus);
 		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
+		QuestContainerManager.getGroupStorageData().setSpecialMethodToObtainItems(() -> questBankManager.getGroupBankItems().toArray(new Item[0]));
 		eventBus.register(worldMapAreaManager);
 
 		injector.injectMembers(playerStateManager);
@@ -260,12 +261,30 @@ public class QuestHelperPlugin extends Plugin
 		{
 			ItemAndLastUpdated inventoryData = QuestContainerManager.getInventoryData();
 			inventoryData.update(client.getTickCount(), items);
+
+			// Check if it matches last known group inventory state to know if we should update group storage
+			boolean bankChanged = questBankManager.updateGroupBankOnInventoryChange(items);
+			if (bankChanged)
+			{
+				ItemAndLastUpdated groupBankData = QuestContainerManager.getGroupStorageData();
+				groupBankData.update(client.getTickCount(), items);
+			}
 		}
 
 		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{
 			ItemAndLastUpdated equippedData = QuestContainerManager.getEquippedData();
 			equippedData.update(client.getTickCount(), items);
+		}
+		if (event.getContainerId() == InventoryID.GROUP_STORAGE.getId())
+		{
+			ItemAndLastUpdated groupBankData = QuestContainerManager.getGroupStorageData();
+			groupBankData.update(client.getTickCount(), items);
+			questBankManager.updateLocalGroupBank(client, event.getItemContainer());
+		}
+		if (event.getContainerId() == InventoryID.GROUP_STORAGE_INV.getId())
+		{
+			questBankManager.updateLocalGroupInventory(items);
 		}
 	}
 

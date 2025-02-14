@@ -30,7 +30,10 @@ import com.questhelper.collections.TeleportCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -41,10 +44,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.widget.NormalSpells;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import java.util.ArrayList;
@@ -83,7 +83,10 @@ public class BikeShedder extends BasicQuestHelper
 	private WidgetTextRequirement lookAtCooksAssistantTextRequirement;
 	private ZoneRequirement byStaircaseInSunrisePalace;
 	private ObjectStep goDownstairsInSunrisePalace;
+	private DetailedQuestStep haveRunes;
 	private ItemRequirement lightbearer;
+	private ItemRequirement elemental30Unique;
+	private ItemRequirement elemental30;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -94,6 +97,7 @@ public class BikeShedder extends BasicQuestHelper
 		var steps = new ConditionalStep(this, confuseHans);
 		steps.addStep(byStaircaseInSunrisePalace, goDownstairsInSunrisePalace);
 		steps.addStep(outsideLumbridge, moveToLumbridge);
+		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3218, 0)), haveRunes);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3218, 0)), equipLightbearer);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3218, 0)), useLogOnBush);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3217, 0)), useCoinOnBush);
@@ -119,6 +123,7 @@ public class BikeShedder extends BasicQuestHelper
 		equipLightbearer = new DetailedQuestStep(this, "Equip a Lightbearer", lightbearer.equipped());
 
 		anyLog = new ItemRequirement("Any log", ItemCollections.LOGS_FOR_FIRE).highlighted();
+
 		useLogOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use log on bush", anyLog);
 		useLogOnBush.addIcon(ItemID.LOGS);
 
@@ -162,11 +167,27 @@ public class BikeShedder extends BasicQuestHelper
 		var upstairsInSunrisePalace = new Zone(new WorldPoint(1684, 3162, 1), new WorldPoint(1691, 3168, 1));
 		byStaircaseInSunrisePalace = new ZoneRequirement(upstairsInSunrisePalace);
 		goDownstairsInSunrisePalace = new ObjectStep(getQuest().getQuestHelper(), ObjectID.STAIRCASE_52627, new WorldPoint(1690, 3164, 1), "Climb downstairs, ensure stairs are well highlighted!");
+
+
+		var fire30 = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 30)
+				.showConditioned(new SkillRequirement(Skill.MAGIC, 63));
+		var air30 = new ItemRequirement("Air runes", ItemID.AIR_RUNE, 30)
+				.showConditioned(new SkillRequirement(Skill.MAGIC, 66));
+		var water30 = new ItemRequirement("Water runes", ItemID.WATER_RUNE, 30)
+				.showConditioned(new SkillRequirement(Skill.MAGIC, 56));
+		var earth30 = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE, 30)
+				.showConditioned(new SkillRequirement(Skill.MAGIC, 60));
+		elemental30Unique = new ItemRequirements(LogicType.OR, "Elemental runes as ItemRequirements OR", air30, water30, earth30, fire30);
+		elemental30Unique.addAlternates(ItemID.FIRE_RUNE, ItemID.EARTH_RUNE, ItemID.AIR_RUNE);
+		elemental30 = new ItemRequirement("Elemental rune as ItemRequirement", List.of(ItemID.AIR_RUNE, ItemID.EARTH_RUNE, ItemID.WATER_RUNE,
+				ItemID.FIRE_RUNE),	30);
+		elemental30.setTooltip("You have potato");
+		haveRunes = new DetailedQuestStep(this, "Compare rune checks for ItemRequirement and ItemRequirements with OR.", elemental30, elemental30Unique);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended() {
-		return Arrays.asList(varrockTeleport, ardougneTeleport, faladorTeleport);
+		return Arrays.asList(varrockTeleport, ardougneTeleport, faladorTeleport, elemental30, elemental30Unique);
 	}
 
 	@Override

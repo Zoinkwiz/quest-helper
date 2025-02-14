@@ -25,12 +25,14 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.item.TrackedContainers;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.tools.Icon;
 import com.questhelper.util.Fonts;
@@ -141,10 +143,7 @@ public class QuestRequirementsPanel extends JPanel
 
 				panel.add(label, BorderLayout.CENTER);
 
-				if (requirement.getTooltip() != null)
-				{
-					tooltipButton = addButtonToPanel(panel, requirement.getTooltip());
-				}
+				tooltipButton = addButtonToPanel(panel, requirement.getTooltip());
 
 				var wikiUrl = requirement.getWikiUrl();
 				if (wikiUrl != null)
@@ -255,10 +254,6 @@ public class QuestRequirementsPanel extends JPanel
 			}
 
 			label.setVisible(true);
-			if (tooltipButton != null)
-			{
-				tooltipButton.setVisible(true);
-			}
 			numActive += 1;
 
 			var newText = req.getDisplayText();
@@ -280,29 +275,23 @@ public class QuestRequirementsPanel extends JPanel
 				}
 				else
 				{
-					newColor = itemRequirement.getColorConsideringBank(client, questHelperPlugin.getConfig());
+					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig());
+					String tooltip = itemRequirement.getTooltip();
+					if (tooltip != null && !tooltip.isEmpty())
+					{
+						label.setToolTipText(itemRequirement.getTooltip());
+						if (tooltipButton != null) tooltipButton.setVisible(true);
+					}
+					else
+					{
+						label.setToolTipText("");
+						if (tooltipButton != null) tooltipButton.setVisible(false);
+					}
 				}
 			}
 			else
 			{
 				newColor = req.getColor(client, questHelperPlugin.getConfig());
-			}
-
-			if (newColor == Color.WHITE)
-			{
-				label.setToolTipText("In bank");
-			}
-			else if (newColor == Color.ORANGE)
-			{
-				label.setToolTipText("On steel key ring");
-			}
-			else if (newColor == Color.LIGHT_GRAY)
-			{
-				label.setToolTipText("Possibly in Group Storage");
-			}
-			else
-			{
-				label.setToolTipText("");
 			}
 
 			label.setForeground(newColor);
@@ -315,7 +304,10 @@ public class QuestRequirementsPanel extends JPanel
 	{
 		JButton b = new JButton(INFO_ICON);
 		b.setPreferredSize(new Dimension(10, 10));
-		b.setToolTipText(tooltipText);
+		if (tooltipText != null)
+		{
+			b.setToolTipText(tooltipText);
+		}
 		b.setBorderPainted(false);
 		b.setFocusPainted(false);
 		b.setBorderPainted(false);

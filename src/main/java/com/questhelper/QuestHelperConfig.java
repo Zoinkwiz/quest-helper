@@ -599,6 +599,17 @@ public interface QuestHelperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "partialSuccessColour",
+			name = "Colour of partially passed requirements/checks",
+			description = "Change the colour that will indicate a check has partially passed (such as item is in your bank)",
+			section = colorSection
+	)
+	default Color partialSuccessColour()
+	{
+		return Color.WHITE;
+	}
+
+	@ConfigItem(
 		keyName = "boostColour",
 		name = "Colour of boostable skill",
 		description = "Change the colour that will indicate a skill level check has passed",

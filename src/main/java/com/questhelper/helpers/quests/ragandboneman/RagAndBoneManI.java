@@ -181,7 +181,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		potOfVinegarNeeded.setQuantity(winesNeededQuantity.get());
 
 		int jugsNeeded = winesNeededQuantity.get();
-		jugsNeeded -= potOfVinegar.checkTotalMatchesInContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
+		jugsNeeded -= potOfVinegar.checkTotalMatchesInContainers(QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
 		potNeeded.setQuantity(jugsNeeded);
 		jugOfVinegarNeeded.setQuantity(jugsNeeded);
 

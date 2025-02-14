@@ -101,6 +101,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	private boolean hasInitialized;
 
+	@Setter
+	@Getter
+	private String name;
+
 	@Override
 	public void configure(Binder binder)
 	{

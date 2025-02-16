@@ -167,7 +167,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notKilledMole).isNotConsumed();
 		wyvernProtection = new ItemRequirement("Wyvern Protection", ItemCollections.ANTI_WYVERN_SHIELDS)
 			.showConditioned(notKilledWyvern).isNotConsumed();
-		prospectorHelm = new ItemRequirement("Prospector Helm", ItemID.PROSPECTOR_HELMET, 1, true)
+		prospectorHelm = new ItemRequirement("Prospector Helm", ItemCollections.PROSPECTOR_HELMET, 1, true)
 			.showConditioned(notEnterMiningGuildWithProspector).isNotConsumed();
 		dragonfireProtection = new ItemRequirement("Protection from Dragonfire", ItemCollections.ANTIFIRE_SHIELDS)
 			.showConditioned(notKilledBlueDragon).isNotConsumed();

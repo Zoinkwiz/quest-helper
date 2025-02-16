@@ -2188,7 +2188,8 @@ public enum ItemCollections
 	
 	PROSPECTOR_HELMET(ImmutableList.of(
 		ItemID.PROSPECTOR_HELMET,
-		ItemID.PROSPECTOR_HELMET_29472
+		ItemID.PROSPECTOR_HELMET_29472,
+		ItemID.GOLDEN_PROSPECTOR_HELMET
 	));
 
 	private final List<Integer> items;

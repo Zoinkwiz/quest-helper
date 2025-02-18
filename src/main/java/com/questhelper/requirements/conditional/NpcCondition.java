@@ -68,7 +68,7 @@ public class NpcCondition extends ConditionForStep
 	@Override
 	public void initialize(Client client)
 	{
-		for (NPC npc : client.getNpcs())
+		for (NPC npc : client.getTopLevelWorldView().npcs())
 		{
 			if (npcID == npc.getId())
 			{

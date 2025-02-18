@@ -47,7 +47,7 @@ public class NpcInteractingRequirement extends SimpleRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return client.getNpcs().stream()
+		return client.getTopLevelWorldView().npcs().stream()
 			.filter(npc -> npc.getInteracting() != null)
 			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
 			.anyMatch(npc -> npcIDs.contains(npc.getId()));

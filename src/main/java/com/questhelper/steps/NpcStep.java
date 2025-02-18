@@ -189,7 +189,7 @@ public class NpcStep extends DetailedQuestStep
 
 	public void scanForNpcs()
 	{
-		for (NPC npc : client.getNpcs())
+		for (NPC npc : client.getTopLevelWorldView().npcs())
 		{
 			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
 		}

@@ -114,7 +114,7 @@ public class MultiNpcStep extends NpcStep
 	public void scanForNpcs()
 	{
 		super.scanForNpcs();
-		for (NPC npc : client.getNpcs())
+		for (NPC npc : client.getTopLevelWorldView().npcs())
 		{
 			addNpcToListGivenMatchingID(npc, this::npcIsCompositionMatch, baseNPCs);
 		}

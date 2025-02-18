@@ -287,6 +287,7 @@ public class RuneliteObjectManager
 						ReplacedNpc replacedNpc = (ReplacedNpc) extendedRuneliteObject;
 						if (replacedNpc.getNpc() == npc)
 						{
+							replacedNpc.activate();
 							Point p = client.getMouseCanvasPosition();
 							boolean passesRequirementToShowReplacement = replacedNpc.getDisplayReq() == null || replacedNpc.getDisplayReq().check(client);
 							// is hovered
@@ -776,6 +777,7 @@ public class RuneliteObjectManager
 					if (event.getNpc().getId() == replacedNpc.getNpcIDToReplace())
 					{
 						replacedNpc.setNpc(null);
+						replacedNpc.disable();
 					}
 				}
 			}

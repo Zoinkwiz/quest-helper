@@ -190,7 +190,7 @@ public class RuneliteObjectManager
 		String groupID = "global";
 		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, npcIDToReplace);
 		// Should this be here or a separate 'activate' step?
-		for (NPC clientNpc : client.getNpcs())
+		for (NPC clientNpc : client.getTopLevelWorldView().npcs())
 		{
 			if (clientNpc.getId() == npcIDToReplace)
 			{
@@ -209,7 +209,7 @@ public class RuneliteObjectManager
 	{
 		ReplacedNpc extendedRuneliteObject = new ReplacedNpc(client, clientThread, wp, model, npcIDToReplace);
 		// Should this be here or a separate 'activate' step?
-		for (NPC clientNpc : client.getNpcs())
+		for (NPC clientNpc : client.getTopLevelWorldView().npcs())
 		{
 			if (clientNpc.getId() == npcIDToReplace)
 			{
@@ -720,7 +720,7 @@ public class RuneliteObjectManager
 
 	private boolean isNpcOnTile(ExtendedRuneliteObject extendedRuneliteObject)
 	{
-		for (NPC npc : client.getNpcs())
+		for (NPC npc : client.getTopLevelWorldView().npcs())
 		{
 			WorldPoint wpNpc = npc.getWorldLocation();
 			WorldPoint rlObjWp = WorldPoint.fromLocalInstance(client, extendedRuneliteObject.getRuneliteObject().getLocation());

@@ -1373,7 +1373,7 @@ public class WhispererSteps extends ConditionalStep
 		fightWhispererSidebar.addText("Corrupted seeds: Activate the blackstone fragment in your inventory. Avoid the dark green seeds, and step on the light green ones.");
 		fightWhispererSidebar.addText("Screech: Pillars appear, which you must hide behind to avoid damage.");
 		fightWhispererSidebar.addText("After each special attack, the Whisperer fire out a binding spell if you are within 10 tiles of her, dealing Melee damage.");
-		fightWhispererSidebar.addText("When she hits 0 health, she will heal back to 140, and start attacking rapidly with random ranged and magic attacks. Finish her off.");
+		fightWhispererSidebar.addText("When she hits 0 health, she will heal back to 100, and start attacking rapidly with random ranged and magic attacks. Finish her off.");
 		fightWhispererSidebar.addSubSteps(enterTheCathedral);
 
 		searchEntrails = new ObjectStep(getQuestHelper(), NullObjectID.NULL_47578, new WorldPoint(2656, 6370, 0),

@@ -51,6 +51,7 @@ public class PanelDetails
 	private Requirement hideCondition;
 
 	@Getter
+	@Setter
 	private List<Requirement> requirements;
 
 	@Getter

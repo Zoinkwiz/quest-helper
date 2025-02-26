@@ -519,7 +519,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		((NpcStep) killRabbit).addAlternateNpcs(NpcID.BUNNY_3903);
 		enterFremmyDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2123, new WorldPoint(2798, 3615, 0),
 			"Enter the Fremennik Slayer Dungeon.", mirrorShield.equipped());
-		killBasilisk = new NpcStep(this, NpcID.BASILISK_417, new WorldPoint(2743, 10010, 0),
+		killBasilisk = new NpcStep(this, NpcID.BASILISK, new WorldPoint(2743, 10010, 0),
 			"Kill basilisks in the middle of the dungeon.", true, mirrorShield.equipped(),
 			new SkillRequirement(Skill.SLAYER,
 			40,	true));

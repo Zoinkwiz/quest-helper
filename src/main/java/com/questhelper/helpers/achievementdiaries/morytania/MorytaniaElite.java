@@ -226,7 +226,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		moveToSlayer3 = new ObjectStep(this, ObjectID.STAIRCASE_2119, new WorldPoint(3415, 3541, 1),
 			"Climb the stairs or the Spikey chains in the Slayer tower to ascend to the higher level.", combatGear,
 			food);
-		abyssalDemon = new NpcStep(this, NpcID.ABYSSAL_DEMON_415, new WorldPoint(3420, 3569, 2),
+		abyssalDemon = new NpcStep(this, NpcID.ABYSSAL_DEMON, new WorldPoint(3420, 3569, 2),
 			"Kill an Abyssal demon.", combatGear, food);
 
 		moveToCanifisBank = new DetailedQuestStep(this, new WorldPoint(3511, 3480, 0),

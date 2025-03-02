@@ -210,7 +210,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		setupConditions();
-		cat = new FollowerItemRequirement("A cat",
+		cat = new FollowerItemRequirement("Any cat or kitten",
 			ItemCollections.CATS,
 			NpcCollections.getCats()).isNotConsumed();
 

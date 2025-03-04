@@ -61,6 +61,8 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 
+import static com.questhelper.requirements.util.LogicHelper.and;
+
 public class HolyGrail extends BasicQuestHelper
 {
 	//Items Recommended
@@ -69,19 +71,19 @@ public class HolyGrail extends BasicQuestHelper
 	//Items Required
 	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
 
-	Requirement inCamelot, inCamelotUpstairs, inMerlinRoom, merlinNearby, onEntrana, inGalahadHouse, inDraynorFrontManor, inDraynorManorBottomFloor, inDraynorManorSecondFloor,
+	Requirement inCamelot, inCamelotUpstairs, inMerlinRoom, merlinNearby, onEntrana, inDraynorFrontManor, inDraynorManorBottomFloor, inDraynorManorSecondFloor,
 		inDraynorManorTopFloor, inMagicWhistleRoom, inTeleportLocation, titanNearby, inFisherKingRealmAfterTitan, talkedToFisherman,
 		inGrailBellRingLocation, inFisherKingCastle1BottomFloor, inFisherKingCastle1SecondFloor, inFisherKingRealm, inFisherKingCastle2BottomFloor,
 		inFisherKingCastle2SecondFloor, inFisherKingCastle2ThirdFloor;
 
-	DetailedQuestStep talkToKingArthur1, talkToMerlin, goUpStairsCamelot, openMerlinDoor, goToEntrana, talkToHighPriest, goToGalahad, talkToGalahad, goToDraynorManor, enterDraynorManor, goUpStairsDraynor1,
+	DetailedQuestStep talkToKingArthur1, talkToMerlin, goUpStairsCamelot, openMerlinDoor, goToEntrana, talkToHighPriest, talkToGalahad, goToDraynorManor, enterDraynorManor, goUpStairsDraynor1,
 		goUpStairsDraynor2, openWhistleDoor, takeWhistles, goGetExcalibur, goToTeleportLocation1, blowWhistle1, attackTitan, talkToFisherman, pickupBell, ringBell, goUpStairsBrokenCastle, talkToFisherKing, goToCamelot,
 		talkToKingArthur2, openSack, goToTeleportLocation2, blowWhistle2, openFisherKingCastleDoor, goUpNewCastleStairs, goUpNewCastleLadder, takeGrail, talkToKingArthur3;
 
 	ConditionalStep findFisherKing;
 
 	//Zones
-	Zone camelotGround, camelotUpstairsZone1, camelotUpstairsZone2, merlinRoom, entranaBoat, entranaIsland, galahadHouse, draynorManorFront, draynorManorBottomFloor, draynorManorSecondFloor,
+	Zone camelotGround, camelotUpstairsZone1, camelotUpstairsZone2, merlinRoom, entranaBoat, entranaIsland, draynorManorFront, draynorManorBottomFloor, draynorManorSecondFloor,
 		draynorManorTopFloor, magicWhistleRoom, teleportLocation, fisherKingRealmAfterTitan1, fisherKingRealmAfterTitan2, fisherKingRealmAfterTitan3, grailBellRingLocation,
 		fisherKingRealmCastle1BottomFloor, fisherKingRealmCastle1SecondFloor, fisherKingRealm, fisherKingRealmCastle2BottomFloor, fisherKingRealmCastle2SecondFloor, fisherKingRealmCastle2ThirdFloor;
 
@@ -106,7 +108,7 @@ public class HolyGrail extends BasicQuestHelper
 
 		steps.put(3, findHighPriest);
 
-		findFisherKing = new ConditionalStep(this, goToGalahad);
+		findFisherKing = new ConditionalStep(this, talkToGalahad);
 		findFisherKing.addStep(inFisherKingCastle1SecondFloor, talkToFisherKing);
 		findFisherKing.addStep(inFisherKingCastle1BottomFloor, goUpStairsBrokenCastle);
 		findFisherKing.addStep(new Conditions(grailBell, inFisherKingRealmAfterTitan), ringBell);
@@ -116,13 +118,12 @@ public class HolyGrail extends BasicQuestHelper
 		findFisherKing.addStep(new Conditions(twoMagicWhistles, inTeleportLocation, excalibur), blowWhistle1);
 		findFisherKing.addStep(new Conditions(twoMagicWhistles, excalibur), goToTeleportLocation1);
 		findFisherKing.addStep(twoMagicWhistles, goGetExcalibur);
-		findFisherKing.addStep(inMagicWhistleRoom, takeWhistles);
-		findFisherKing.addStep(inDraynorManorTopFloor, openWhistleDoor);
-		findFisherKing.addStep(inDraynorManorSecondFloor, goUpStairsDraynor2);
-		findFisherKing.addStep(inDraynorManorBottomFloor, goUpStairsDraynor1);
-		findFisherKing.addStep(inDraynorFrontManor, enterDraynorManor);
+		findFisherKing.addStep(and(inMagicWhistleRoom, holyTableNapkin), takeWhistles);
+		findFisherKing.addStep(and(holyTableNapkin, inDraynorManorTopFloor), openWhistleDoor);
+		findFisherKing.addStep(and(holyTableNapkin, inDraynorManorSecondFloor), goUpStairsDraynor2);
+		findFisherKing.addStep(and(holyTableNapkin, inDraynorManorBottomFloor), goUpStairsDraynor1);
+		findFisherKing.addStep(and(holyTableNapkin, inDraynorFrontManor), enterDraynorManor);
 		findFisherKing.addStep(holyTableNapkin, goToDraynorManor);
-		findFisherKing.addStep(inGalahadHouse, talkToGalahad);
 		findFisherKing.setLockingCondition(twoMagicWhistles);
 
 		steps.put(4, findFisherKing);
@@ -187,7 +188,6 @@ public class HolyGrail extends BasicQuestHelper
 		merlinRoom = new Zone(new WorldPoint(2768, 3505, 1), new WorldPoint(2765, 3496, 1));
 		entranaBoat = new Zone(new WorldPoint(2841, 3332, 0), new WorldPoint(2823, 3328, 2));
 		entranaIsland = new Zone(new WorldPoint(2871, 3393, 0), new WorldPoint(2800, 3329, 2));
-		galahadHouse = new Zone(new WorldPoint(2616, 3480, 0), new WorldPoint(2609, 3473, 0));
 		draynorManorFront = new Zone(new WorldPoint(3116, 3353, 0), new WorldPoint(3100, 3347, 0));
 		draynorManorBottomFloor = new Zone(new WorldPoint(3119, 3373, 0), new WorldPoint(3097, 3354, 0));
 		draynorManorSecondFloor = new Zone(new WorldPoint(3118, 3373, 1), new WorldPoint(3098, 3354, 1));
@@ -217,7 +217,6 @@ public class HolyGrail extends BasicQuestHelper
 		onEntrana = new Conditions(LogicType.OR,
 			new ZoneRequirement(entranaBoat),
 			new ZoneRequirement(entranaIsland));
-		inGalahadHouse = new ZoneRequirement(galahadHouse);
 		inDraynorFrontManor = new ZoneRequirement(draynorManorFront);
 		inDraynorManorBottomFloor = new ZoneRequirement(draynorManorBottomFloor);
 		inDraynorManorSecondFloor = new ZoneRequirement(draynorManorSecondFloor);
@@ -254,8 +253,7 @@ public class HolyGrail extends BasicQuestHelper
 		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3348, 0), "Talk to the High Priest.");
 		talkToHighPriest.addDialogSteps("Ask about the Holy Grail Quest", "Ok, I will go searching.");
 
-		goToGalahad = new DetailedQuestStep(this, new WorldPoint(2612, 3475, 0), "Travel to Galahad's House. His house is west of McGrubor's Woods.");
-		talkToGalahad = new NpcStep(this, NpcID.GALAHAD, new WorldPoint(2612, 3475, 0), "Talk to Galahad.");
+		talkToGalahad = new NpcStep(this, NpcID.GALAHAD, new WorldPoint(2612, 3475, 0), "Talk to Galahad in his house west of McGrubor's Woods.");
 		talkToGalahad.addDialogStep("I seek an item from the realm of the Fisher King.");
 
 		goToDraynorManor = new DetailedQuestStep(this, new WorldPoint(3108, 3350, 0), "Travel to Draynor Manor.", holyTableNapkin);
@@ -356,7 +354,7 @@ public class HolyGrail extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting Off", Arrays.asList(talkToKingArthur1, goUpStairsCamelot, openMerlinDoor, talkToMerlin)));
-		allSteps.add(new PanelDetails("Getting the Napkin", Arrays.asList(goToEntrana, talkToHighPriest, goToGalahad, talkToGalahad)));
+		allSteps.add(new PanelDetails("Getting the Napkin", Arrays.asList(goToEntrana, talkToHighPriest, talkToGalahad)));
 		allSteps.add(new PanelDetails("Getting the Magic Whistles", Arrays.asList(goToDraynorManor, enterDraynorManor, goUpStairsDraynor1, goUpStairsDraynor2, openWhistleDoor, takeWhistles), Collections.singletonList(holyTableNapkin), Collections.singletonList(draynorTele)));
 		allSteps.add(new PanelDetails("Fisher King Realm Pt.1", Arrays.asList(goToTeleportLocation1, blowWhistle1, attackTitan, talkToFisherman, pickupBell, ringBell, goUpStairsBrokenCastle, talkToFisherKing), twoMagicWhistles, excalibur));
 		allSteps.add(new PanelDetails("Finding Percival", Arrays.asList(talkToKingArthur2, openSack), emptyInvSpot, twoMagicWhistles));

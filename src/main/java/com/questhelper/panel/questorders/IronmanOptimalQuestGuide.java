@@ -256,7 +256,6 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
-		QuestHelperQuest.PANDEMONIUM,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Ironman Quest Guide
 		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD,

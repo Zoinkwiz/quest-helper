@@ -252,6 +252,7 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Ironman Quest Guide
+		QuestHelperQuest.PANDEMONIUM, // Alpha
 		QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD,
 		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,
 		QuestHelperQuest.BALLOON_TRANSPORT_VARROCK,

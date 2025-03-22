@@ -72,7 +72,6 @@ public class Pandemonium extends BasicQuestHelper
 		public static final int GROG = 14188;
 		public static final int RIBS = 14183;
 		public static final int JIM = 14185;
-		public static final int PORT_MASTER = 14329;
 	}
 
 	@Override

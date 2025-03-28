@@ -181,7 +181,7 @@ public class NatureSpirit extends BasicQuestHelper
 		druidicSpell = new ItemRequirement("Druidic spell", ItemID.DRUIDIC_SPELL);
 		druidicSpell.setTooltip("You can get another from Filliman");
 		druidPouch = new ItemRequirement("Druidic pouch", ItemID.DRUID_POUCH);
-		druidPouch.setTooltip("You can get another from the Grotto");
+		druidPouch.setTooltip("You can get one from inside the Grotto");
 		druidPouchFull = new ItemRequirement("Druidic pouch", ItemID.DRUID_POUCH_2958);
 		blessedSickle = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_B);
 		blessedSickle.setTooltip("You can bless another silver sickle with the nature spirit");
@@ -228,9 +228,9 @@ public class NatureSpirit extends BasicQuestHelper
 	public void setupSteps()
 	{
 		goDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3405, 3507, 0), "Talk to Drezel under the Paterdomus Temple.");
-		goDownToDrezel.addDialogSteps("Well, what is it, I may be able to help?", "Yes.");
 		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
 		talkToDrezel = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
+		talkToDrezel.addDialogSteps("Well, what is it, I may be able to help?", "Yes.");
 		talkToDrezel.addSubSteps(goDownToDrezel);
 		leaveDrezel = new ObjectStep(this, ObjectID.HOLY_BARRIER, new WorldPoint(3440, 9886, 0), "Enter the Mort Myre from the north gate.");
 		enterSwamp = new ObjectStep(this, ObjectID.GATE_3506, new WorldPoint(3444, 3458, 0), "Enter the Mort Myre from the north gate.", ghostspeak);
@@ -269,7 +269,8 @@ public class NatureSpirit extends BasicQuestHelper
 		talkToFillimanInGrotto = new NpcStep(this, NpcID.FILLIMAN_TARLOCK, new WorldPoint(3441, 9738, 0), "Talk to Filliman in the grotto to bless your sickle.", ghostspeak, silverSickle);
 		blessSickle = new NpcStep(this, NpcID.NATURE_SPIRIT, new WorldPoint(3441, 9738, 0), "Talk to the Nature Spirit in the grotto to bless your sickle.", ghostspeak, silverSickle);
 		fillPouches = new DetailedQuestStep(this,
-			"Right-click 'bloom' the blessed sickle next to rotten logs for mort myre fungi. Use these to fill the druid pouch.", blessedSickle, prayerPoints);
+			"Right-click 'bloom' the blessed sickle next to rotten logs for mort myre fungi. Use these to fill the druid pouch.", blessedSickle, prayerPoints
+				, druidPouch);
 		killGhasts = new NpcStep(this, NpcID.GHAST, "Use the filled druid pouch on a ghast to make it attackable and kill it. You'll need to kill 3.", druidPouchFull);
 		killGhast = new NpcStep(this, NpcID.GHAST_946, "Kill the ghast.", druidPouchFull);
 		killGhasts.addSubSteps(killGhast);

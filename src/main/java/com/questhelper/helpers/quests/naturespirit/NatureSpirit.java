@@ -228,9 +228,9 @@ public class NatureSpirit extends BasicQuestHelper
 	public void setupSteps()
 	{
 		goDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR_1579, new WorldPoint(3405, 3507, 0), "Talk to Drezel under the Paterdomus Temple.");
-		goDownToDrezel.addDialogSteps("Well, what is it, I may be able to help?", "Yes.");
 		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_1581);
 		talkToDrezel = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
+		talkToDrezel.addDialogSteps("Well, what is it, I may be able to help?", "Yes.");
 		talkToDrezel.addSubSteps(goDownToDrezel);
 		leaveDrezel = new ObjectStep(this, ObjectID.HOLY_BARRIER, new WorldPoint(3440, 9886, 0), "Enter the Mort Myre from the north gate.");
 		enterSwamp = new ObjectStep(this, ObjectID.GATE_3506, new WorldPoint(3444, 3458, 0), "Enter the Mort Myre from the north gate.", ghostspeak);

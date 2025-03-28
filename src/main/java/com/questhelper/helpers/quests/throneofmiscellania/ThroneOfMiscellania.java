@@ -212,6 +212,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		logs.setHighlightInInventory(true);
+		logs.setTooltip("You can chop logs on Miscellania if you bring an axe.");
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();

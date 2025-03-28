@@ -240,7 +240,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			"slices.", bananaSlices.highlighted(), karamjanRum.highlighted());
 
 		talkToTiadeche1 = new NpcStep(this, NpcID.TIADECHE, new WorldPoint(2912, 3116, 0),
-			"Talk to Tiadeche in east Karamja, near the fairy ring DKP.");
+			"Talk to Tiadeche in east Karamja, near the fairy ring DKP. You can teleport off Karamja; the Karamjan rum with banana will not break.");
 
 		giveVessel = new NpcStep(this, NpcID.TIADECHE, new WorldPoint(2912, 3116, 0),
 			"Use a filled vessel on Tiadeche. Make sure to finish the dialogue with him and accept the karambwan he " +

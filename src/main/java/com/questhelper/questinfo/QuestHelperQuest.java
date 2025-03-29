@@ -186,6 +186,7 @@ import com.questhelper.helpers.quests.naturespirit.NatureSpirit;
 import com.questhelper.helpers.quests.observatoryquest.ObservatoryQuest;
 import com.questhelper.helpers.quests.olafsquest.OlafsQuest;
 import com.questhelper.helpers.quests.onesmallfavour.OneSmallFavour;
+import com.questhelper.helpers.quests.pandemonium.Pandemonium;
 import com.questhelper.helpers.quests.perilousmoon.PerilousMoon;
 import com.questhelper.helpers.quests.piratestreasure.PiratesTreasure;
 import com.questhelper.helpers.quests.plaguecity.PlagueCity;
@@ -517,6 +518,9 @@ public enum QuestHelperQuest
 		QuestDetails.Difficulty.MINIQUEST),
 	BALLOON_TRANSPORT_GRAND_TREE(new GrandTreeBalloonFlight(), "Balloon Transport - Grand Tree", QuestVarbits.BALLOON_TRANSPORT_GRAND_TREE, 1, QuestDetails.Type.MINIQUEST,
 		QuestDetails.Difficulty.MINIQUEST),
+
+	// Alpha quests
+	PANDEMONIUM(new Pandemonium(), 16187, "Pandemonium", QuestVarbits.QUEST_PANDEMONIUM, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 
 
 	// Achievement diaries

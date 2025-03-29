@@ -120,6 +120,7 @@ public enum QuestVarbits
 	QUEST_MEAT_AND_GREET(11182),
 	QUEST_THE_HEART_OF_DARKNESS(11117),
 	QUEST_THE_CURSE_OF_ARRAV(11479),
+	QUEST_PANDEMONIUM(16187), //Alpha
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

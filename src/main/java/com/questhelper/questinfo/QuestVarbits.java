@@ -145,6 +145,10 @@ public enum QuestVarbits
 	BALLOON_TRANSPORT_CASTLE_WARS(2869),
 	BALLOON_TRANSPORT_GRAND_TREE(2870),
 	STRONGHOLD_OF_SECURITY(2312),
+	/**
+	 * fake mini-quest varbits, these don't hold the completion value.
+	 */
+	CRACK_THE_CLUE(0),
 
 	// Achievement Diaries
 

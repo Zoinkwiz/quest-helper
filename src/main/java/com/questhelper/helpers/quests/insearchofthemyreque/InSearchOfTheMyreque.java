@@ -375,7 +375,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("A quick route to Mor'ton"));
+		return Collections.singletonList(new UnlockReward("A quick route to Mort'ton"));
 	}
 
 	@Override

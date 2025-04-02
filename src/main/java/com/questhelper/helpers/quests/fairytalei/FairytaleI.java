@@ -202,6 +202,9 @@ public class FairytaleI extends BasicQuestHelper
 		// 2543 stays 0
 		// Baby dragon bones, uncut diamond, raw cave eel
 
+		// Try 3:
+		// 1804: 14, Volencia moss
+
 
 		talkedToFarmers = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "back and talk to <col=800000>Martin"),

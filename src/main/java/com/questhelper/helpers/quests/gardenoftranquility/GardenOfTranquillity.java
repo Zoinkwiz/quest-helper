@@ -390,16 +390,16 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			"Talk to the Wise Old Man in Draynor Village.", ringOfCharos);
 		talkToWom.addDialogSteps("Queen Ellamaria has sent me to seek your guidance.", "I have returned to you with " +
 			"the Ring of Charos.", "Can I retake the diplomacy test?");
-		talkToWom.addWidgetChoice("Show them a range of colours so that they can come to a compromise.", 162, 565, 133);
-		talkToWom.addWidgetChoice("Take his generous gift even though you have no need for it.", 162, 565, 133);
-		talkToWom.addWidgetChoice("It's absolutely, unquestionably the most interesting thing I've ever done!", 162, 565, 133);
-		talkToWom.addWidgetChoice("Put on the silly helmet and jump into the cannon.", 162, 565, 133);
-		talkToWom.addWidgetChoice("Put on the silly helmet and jump into the cannon.", 162, 565, 133);
-		talkToWom.addWidgetChoice("You of course Pkmaster0036, no one could ever challenge your greatness!", 162, 565
+		talkToWom.addWidgetChoice("Show them a range of colours so that they can come to a compromise.", 133, 566, 133);
+		talkToWom.addWidgetChoice("Take his generous gift even though you have no need for it.", 162, 566, 133);
+		talkToWom.addWidgetChoice("It's absolutely, unquestionably the most interesting thing I've ever done!", 162, 566, 133);
+		talkToWom.addWidgetChoice("Put on the silly helmet and jump into the cannon.", 162, 566, 133);
+		talkToWom.addWidgetChoice("Put on the silly helmet and jump into the cannon.", 162, 566, 133);
+		talkToWom.addWidgetChoice("You of course Pkmaster0036, no one could ever challenge your greatness!", 162, 566
 			, 133);
-		talkToWom.addWidgetChoice("I'll do whatever you ask - I just love the monarchy!", 162, 565, 133);
+		talkToWom.addWidgetChoice("I'll do whatever you ask - I just love the monarchy!", 162, 566, 133);
 		talkToWom.addWidgetChoice("No, especially not that wise old man, who doesn't look at all suspicious.", 162,
-			565, 133);
+			566, 133);
 
 		talkToElstan = new NpcStep(this, NpcID.ELSTAN, new WorldPoint(3056, 3311, 0),
 			"Talk to Elstan north west of Draynor Village.", ringOfCharosA.equipped());

@@ -583,7 +583,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			"Talk to King Roald in Varrock Castle, watch the cutscene, then finish the dialog with Ellamaria to finish" +
 				" the quest!",	ringOfCharosA.equipped());
 		talkToRoald.addDialogSteps("Ask King Roald to follow me.", "[Charm] Of course, your majesty - please forgive " +
-			"me.", "[Charm] The Queen asked me to bring you.");
+			"me.", "[Charm] The Queen asked me to bring you.", "Would you like to follow me for a minute?");
 	}
 
 	@Override

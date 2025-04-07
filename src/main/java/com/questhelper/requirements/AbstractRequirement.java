@@ -34,7 +34,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 
 public abstract class AbstractRequirement implements Requirement
 {
-	private String tooltip;
+	protected String tooltip;
 	
 	private String urlSuffix;
 

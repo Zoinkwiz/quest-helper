@@ -340,7 +340,7 @@ public class ItemRequirements extends ItemRequirement
 		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
 		newItem.setConditionToHide(getConditionToHide());
 		newItem.setQuestBank(getQuestBank());
-		newItem.setTooltip(getTooltip());
+		newItem.setTooltip(tooltip);
 		newItem.additionalOptions = additionalOptions;
 
 		return newItem;

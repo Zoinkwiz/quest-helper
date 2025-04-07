@@ -27,15 +27,20 @@ package com.questhelper.steps;
 import com.google.inject.Inject;
 import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import java.awt.Graphics2D;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.GameState;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -388,6 +393,25 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		if (currentStep != null)
 		{
 			currentStep.makeWorldLineOverlayHint(graphics, plugin);
+		}
+	}
+
+	@Override
+	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (currentStep != null)
+		{
+			currentStep.makeWidgetOverlayHint(graphics, plugin);
+		}
+		WorldPoint activeWp = (currentStep instanceof DetailedQuestStep) ? ((DetailedQuestStep) currentStep).getWorldPoint() : null;
+		List<ItemRequirement> itemRequirements = requirements.stream()
+				.filter(ItemRequirement.class::isInstance)
+				.map(ItemRequirement.class::cast)
+				.collect(Collectors.toList());
+		renderInventory(graphics, activeWp, itemRequirements, false);
+		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
+		{
+			widgetHighlights.highlightChoices(graphics, client, plugin);
 		}
 	}
 

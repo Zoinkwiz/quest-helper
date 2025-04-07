@@ -35,10 +35,8 @@ import java.util.Collection;
 import java.util.List;
 import lombok.NonNull;
 import net.runelite.api.Client;
-import net.runelite.api.MenuEntry;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class DetailedOwnerStep extends QuestStep implements OwnerStep
 {
@@ -149,6 +147,15 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 		if (currentStep != null)
 		{
 			currentStep.makeWorldLineOverlayHint(graphics, plugin);
+		}
+	}
+
+	@Override
+	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (currentStep != null)
+		{
+			currentStep.makeWidgetOverlayHint(graphics, plugin);
 		}
 	}
 

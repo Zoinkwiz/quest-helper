@@ -435,8 +435,16 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-
-		renderInventory(graphics);
+		List<ItemRequirement> itemRequirements = requirements.stream()
+				.filter(ItemRequirement.class::isInstance)
+				.map(ItemRequirement.class::cast)
+				.collect(Collectors.toList());
+		List<ItemRequirement> teleportRequirements = teleport.stream()
+				.filter(ItemRequirement.class::isInstance)
+				.map(ItemRequirement.class::cast)
+				.collect(Collectors.toList());
+		renderInventory(graphics, worldPoint, itemRequirements, false);
+		renderInventory(graphics, worldPoint, teleportRequirements, true);
 		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
 		{
 			widgetHighlights.highlightChoices(graphics, client, plugin);
@@ -545,95 +553,6 @@ public class DetailedQuestStep extends QuestStep
 			panelComponent.getChildren().add(LineComponent.builder().left(title).build());
 			panelComponent.getChildren().addAll(tmpComponent.getChildren());
 		}
-	}
-
-	protected Widget getInventoryWidget()
-	{
-		return client.getWidget(ComponentID.INVENTORY_CONTAINER);
-	}
-
-	private void renderInventory(Graphics2D graphics)
-	{
-		Widget inventoryWidget = getInventoryWidget();
-		if (inventoryWidget == null || inventoryWidget.isHidden())
-		{
-			return;
-		}
-
-		Color baseColor = questHelper.getConfig().targetOverlayColor();
-
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-		WorldPoint goalWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
-		if (goalWp == null || playerLocation.distanceTo(goalWp) > 100)
-		{
-			for (Requirement requirement : teleport)
-			{
-				for (Widget item : inventoryWidget.getDynamicChildren())
-				{
-					if (requirement instanceof ItemRequirement && ((ItemRequirement) requirement).getAllIds().contains(item.getItemId()))
-					{
-						highlightInventoryItem(item, baseColor, graphics);
-					}
-					// TODO: If teleport, highlight teleport in spellbook
-				}
-			}
-		}
-
-		if (requirements.isEmpty())
-		{
-			return;
-		}
-
-		if (inventoryWidget.getDynamicChildren() == null)
-		{
-			return;
-		}
-
-		for (Widget item : inventoryWidget.getDynamicChildren())
-		{
-			for (Requirement requirement : requirements)
-			{
-				if (isValidRequirementForRenderInInventory(requirement, item))
-				{
-					highlightInventoryItem(item, baseColor, graphics);
-				}
-			}
-		}
-	}
-
-	private void highlightInventoryItem(Widget item, Color color, Graphics2D graphics)
-	{
-		Rectangle slotBounds = item.getBounds();
-		switch (questHelper.getConfig().highlightStyleInventoryItems())
-		{
-			case SQUARE:
-				graphics.setColor(ColorUtil.colorWithAlpha(color, 65));
-				graphics.fill(slotBounds);
-				graphics.setColor(color);
-				graphics.draw(slotBounds);
-				break;
-			case OUTLINE:
-				BufferedImage outlined = itemManager.getItemOutline(item.getItemId(), item.getItemQuantity(), color);
-				graphics.drawImage(outlined, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
-				break;
-			case FILLED_OUTLINE:
-				BufferedImage outline = itemManager.getItemOutline(item.getItemId(), item.getItemQuantity(), color);
-				graphics.drawImage(outline, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
-				Image image = ImageUtil.fillImage(itemManager.getImage(item.getItemId(), item.getItemQuantity(), false), ColorUtil.colorWithAlpha(color, 65));
-				graphics.drawImage(image, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
-				break;
-			default:
-		}
-	}
-
-	private boolean isValidRequirementForRenderInInventory(Requirement requirement, Widget item)
-	{
-		return requirement instanceof ItemRequirement && isValidRenderRequirementInInventory((ItemRequirement) requirement, item);
-	}
-
-	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
-	{
-		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getItemId());
 	}
 
 	@Subscribe

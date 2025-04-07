@@ -109,29 +109,34 @@ public class QuestPerspective
 		return point;
 	}
 
-	public static LocalPoint getInstanceLocalPointFromReal(Client client, WorldPoint wp)
+	public static List<LocalPoint> getInstanceLocalPointFromReal(Client client, WorldPoint wp)
 	{
-		WorldPoint instanceWorldPoint = getInstanceWorldPointFromReal(client, wp);
-		if (instanceWorldPoint == null)
+		List<WorldPoint> instanceWorldPoint = new ArrayList<>(QuestPerspective.toLocalInstanceFromReal(client, wp));
+
+		List<LocalPoint> localPoints = new ArrayList<>();
+		for (WorldPoint worldPoint : instanceWorldPoint)
 		{
-			return null;
+			localPoints.add(LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint));
 		}
 
-		return LocalPoint.fromWorld(client.getTopLevelWorldView(), instanceWorldPoint);
+		return localPoints;
 	}
 
 	public static WorldPoint getInstanceWorldPointFromReal(Client client, WorldPoint wp)
 	{
 		Collection<WorldPoint> points = QuestPerspective.toLocalInstanceFromReal(client, wp);
 
+		if (points.isEmpty()) return null;
+
+		WorldPoint p = null;
 		for (WorldPoint point : points)
 		{
 			if (point != null)
 			{
-				return point;
+				p = point;
 			}
 		}
-		return null;
+		return p;
 	}
 
 	public static WorldPoint getRealWorldPointFromLocal(Client client, WorldPoint wp)

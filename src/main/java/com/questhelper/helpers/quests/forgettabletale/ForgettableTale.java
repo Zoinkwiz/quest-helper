@@ -299,7 +299,6 @@ public class ForgettableTale extends BasicQuestHelper
 
 		ConditionalStep goDoPuzzle8 = new ConditionalStep(this, startPuzzle8);
 		goDoPuzzle8.addStep(inPuzzle7Room, returnFromPuzzle7);
-
 		goDoPuzzle8.addStep(inPuzzle8Room, searchPuzzle8Box);
 		goDoPuzzle8.addStep(new Conditions(inRoom3PuzzleWidget, donePuzzle8P1, donePuzzle8P2, donePuzzle8P3,
 				donePuzzle8P4, donePuzzle8P5, donePuzzle8P6), puzzle8Ok);
@@ -410,32 +409,22 @@ public class ForgettableTale extends BasicQuestHelper
 		inPuzzleRoom = new ZoneRequirement(puzzleRoom);
 		inListeningRoom1 = new ZoneRequirement(listeningRoom1);
 
-		ObjectCondition box1Nearby = new ObjectCondition(ObjectID.BOX, new WorldPoint(1898, 4985, 3));
+		ObjectCondition box1Nearby = new ObjectCondition(ObjectID.BOX, new Zone(new WorldPoint(1898, 4985, 1), new WorldPoint(1898, 4985, 3)));
 		box1Nearby.setMaxDistanceFromPlayer(5);
 		inPuzzle1Room = new Conditions(
-			new ZoneRequirement(puzzleSmallPlatform),
-			box1Nearby
+			new ZoneRequirement(puzzleSmallPlatform)
 		);
 
-		ObjectCondition box2Nearby = new ObjectCondition(ObjectID.BOX, new WorldPoint(1897, 4986, 3));
-		box2Nearby.setMaxDistanceFromPlayer(5);
 		inPuzzle2Room = new Conditions(
-			new ZoneRequirement(puzzleSmallPlatform),
-			box2Nearby
+			new ZoneRequirement(puzzleSmallPlatform)
 		);
 
-		ObjectCondition box7Nearby = new ObjectCondition(ObjectID.BOX, new WorldPoint(1906, 4987, 3));
-		box7Nearby.setMaxDistanceFromPlayer(5);
 		inPuzzle7Room = new Conditions(
-			new ZoneRequirement(puzzleMediumPlatform),
-			box7Nearby
+			new ZoneRequirement(puzzleMediumPlatform)
 		);
 
-		ObjectCondition box8Nearby = new ObjectCondition(ObjectID.BOX, new WorldPoint(1898, 4986, 3));
-		box8Nearby.setMaxDistanceFromPlayer(5);
 		inPuzzle8Room = new Conditions(
-			new ZoneRequirement(puzzleSmallPlatform),
-			box8Nearby
+			new ZoneRequirement(puzzleSmallPlatform)
 		);
 
 		// Part way through veldeban dialog, told about drunken dwarf:
@@ -775,7 +764,7 @@ public class ForgettableTale extends BasicQuestHelper
 		searchCrate2 = new ObjectStep(this, ObjectID.CRATE_8915, new WorldPoint(1910, 4966, 2),
 			"Search the crates with paper on them.");
 		searchCrate1.addSubSteps(searchCrate2);
-		leaveLibrary = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_8884, new WorldPoint(1914, 4967, 2),
+		leaveLibrary = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_8884, new WorldPoint(1914, 4965, 2),
 			"Leave the library.");
 		leaveLibrary.addDialogStep("Yes.");
 

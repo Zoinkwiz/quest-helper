@@ -304,8 +304,10 @@ public class QuestRequirementsPanel extends JPanel
 	{
 		JButton b = new JButton(INFO_ICON);
 		b.setPreferredSize(new Dimension(10, 10));
-		if (tooltipText != null)
+		b.setVisible(false);
+		if (tooltipText != null && !tooltipText.isEmpty())
 		{
+			b.setVisible(true);
 			b.setToolTipText(tooltipText);
 		}
 		b.setBorderPainted(false);

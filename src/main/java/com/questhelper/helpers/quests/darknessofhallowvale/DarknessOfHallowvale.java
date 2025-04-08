@@ -318,7 +318,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		climbOverBrokenWall = new ObjectStep(this, ObjectID.BROKEN_WALL_12737, "");
+		climbOverBrokenWall = new ObjectStep(this, ObjectID.BROKEN_WALL_12737, new WorldPoint(3491, 3230, 0), "");
 		enterBurghPubBasement = new ObjectStep(this, NullObjectID.NULL_12743, new WorldPoint(3490, 3232, 0), "");
 		talkToVeliaf = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3494, 9628, 0), "");
 		talkToVeliaf.addDialogSteps("Is there something I can do to help out?", "Yes.");

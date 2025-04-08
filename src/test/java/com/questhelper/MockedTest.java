@@ -31,8 +31,7 @@ import com.questhelper.managers.QuestOverlayManager;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
-import net.runelite.api.Client;
-import net.runelite.api.SpriteID;
+import net.runelite.api.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
@@ -47,7 +46,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import javax.inject.Named;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.concurrent.ScheduledExecutorService;
+
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 /**
@@ -124,6 +126,14 @@ public abstract class MockedTest extends MockedTestBase
 		when(spriteManager.getSprite(SpriteID.TAB_QUESTS, 0)).thenReturn(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
 
 		AchievementDiaryStepManager.setup(configManager);
+
+		WorldView mockedWorldView = Mockito.mock(WorldView.class);
+
+		@SuppressWarnings("unchecked")
+		IndexedObjectSet<? extends NPC> npcSetMock = (IndexedObjectSet<? extends NPC>) Mockito.mock(IndexedObjectSet.class);
+		when(npcSetMock.iterator()).thenReturn(Collections.emptyIterator());
+		doReturn(npcSetMock).when(mockedWorldView).npcs();
+		when(client.getTopLevelWorldView()).thenReturn(mockedWorldView);
 	}
 
 }

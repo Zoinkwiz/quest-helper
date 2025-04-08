@@ -254,7 +254,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Talk to Rantz in the east of Feldip Hills.");
-		talkToRantz.addDialogStep("Ok, I'll make you some 'stabbers'.");
+		talkToRantz.addDialogSteps("Yes.", "Ok, I'll make you some 'stabbers'.");
 		getLogs = new ObjectStep(this, ObjectID.ACHEY_TREE, new WorldPoint(2627, 2975, 0), "Get some achey tree logs near Rantz.", axe);
 		makeShafts = new DetailedQuestStep(this, "Use your knife on the achey logs to make arrow shafts.", knifeHighlighted, acheyLogs);
 		useFeathersOnShafts = new DetailedQuestStep(this, "Use the feathers on the arrow shafts.", feathersHighlighted, shaftsHighlighted);
@@ -269,12 +269,12 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		((ObjectStep) getBellow).addAlternateObjects(ObjectID.UNLOCKED_OGRE_CHEST);
 		leaveCave = new ObjectStep(this, ObjectID.CAVE_EXIT_3381, new WorldPoint(2647, 9377, 0), "Leave the cave.");
 		fillBellows = new ObjectStep(this, ObjectID.SWAMP_BUBBLES, new WorldPoint(2601, 2967, 0), "Fill the bellows on swamp bubbles.", emptyBellow);
-		inflateToad = new NpcStep(this, NpcID.SWAMP_TOAD, new WorldPoint(2602, 2967, 0), "Inflate 3 toads near the swamp.", fullBellow);
+		inflateToad = new NpcStep(this, NpcID.SWAMP_TOAD, new WorldPoint(2602, 2967, 0), "Inflate 3 toads near the swamp.", true, fullBellow);
 		talkToRantzWithToad = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Bring the toads to Rantz.", bloatedToad);
 		dropToad = new DetailedQuestStep(this, new WorldPoint(2635, 2967, 0), "Drop the bloated toad in the clearing south of Rantz.");
 		waitForChompy = new DetailedQuestStep(this, new WorldPoint(2635, 2967, 0), "Wait for a chompy to spawn. If the frog despawns, you'll need to place another one in the clearing south of Rantz.");
 		talkToRantzForBow = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Talk to Rantz again for an ogre bow.");
-		talkToRantzForBow.addDialogSteps("Come on, let me have a go...", "I'm actually quite strong...please let me try.");
+		talkToRantzForBow.addDialogSteps("Come on, let me have a go...", "I'm actually quite strong... please let me try.");
 		placeAnotherToad = new DetailedQuestStep(this, new WorldPoint(2635, 2967, 0), "Drop another bloated toad in the clearing south of Rantz, and wait for a chompy to come.", ogreBow, ogreArrows);
 
 		killChompy = new NpcStep(this, NpcID.CHOMPY_BIRD, new WorldPoint(2635, 2966, 0), "Kill the chompy. You can only hurt it with an ogre bow + ogre arrows.", ogreBow, ogreArrows);

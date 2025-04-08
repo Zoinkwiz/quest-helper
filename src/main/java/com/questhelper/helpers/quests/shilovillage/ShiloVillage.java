@@ -269,7 +269,7 @@ public class ShiloVillage extends BasicQuestHelper
 		useBeltOnTrufitus.addIcon(ItemID.WAMPUM_BELT);
 		useBeltOnTrufitus.addDialogSteps("Mosol Rei said something about a legend?", "Why was it called Ah Za Rhoon?",
 			"Tell me more.", "I am going to search for Ah Za Rhoon!",
-			"Yes, I will seriously look for Ah Za Rhoon and I'd appreciate your help.");
+			"Yes, I will seriously look for Ah Za Rhoon and I'd appreciate your help.", "Yes.");
 		useSpadeOnGround = new ObjectStep(this, ObjectID.MOUND_OF_EARTH, new WorldPoint(2922, 3000, 0),
 			"Use a spade on the ground in south east Karamja.", spade.highlighted());
 		useSpadeOnGround.addIcon(ItemID.SPADE);

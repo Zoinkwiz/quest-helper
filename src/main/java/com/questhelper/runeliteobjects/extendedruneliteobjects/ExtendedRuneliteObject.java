@@ -170,7 +170,6 @@ public class ExtendedRuneliteObject
 
 		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 		if (localPoints.isEmpty()) return;
-		if (localPoints.get(0) == null) return;
 
 		// Set it to first found local point
 		runeliteObject.setLocation(localPoints.get(0), client.getTopLevelWorldView().getPlane());
@@ -200,14 +199,14 @@ public class ExtendedRuneliteObject
 
 	public Shape getClickbox()
 	{
-		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint) == null) return null;
+		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).isEmpty()) return null;
 
 		return Perspective.getClickbox(client,
 			getRuneliteObject().getModel(),
 			getRuneliteObject().getOrientation(),
 			getRuneliteObject().getLocation().getX(),
 			getRuneliteObject().getLocation().getY(),
-			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), client.getPlane()));
+			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), client.getTopLevelWorldView().getPlane()));
 	}
 
 	public void setAnimation(int animation)
@@ -233,7 +232,6 @@ public class ExtendedRuneliteObject
 		this.worldPoint = worldPoint;
 		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 		if (localPoints.isEmpty()) return;
-		if (localPoints.get(0) == null) return;
 
 		// Set it to first found local point
 		this.runeliteObject.setLocation(localPoints.get(0), client.getTopLevelWorldView().getPlane());

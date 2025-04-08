@@ -197,11 +197,9 @@ public class ObjectStep extends DetailedQuestStep
 	public void checkTileForObject(WorldPoint wp)
 	{
 		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, wp);
-		if (localPoints.isEmpty()) return;
 
 		for (LocalPoint localPoint : localPoints)
 		{
-			if (localPoint == null) continue;
 			Tile[][][] tiles = client.getTopLevelWorldView().getScene().getTiles();
 
 			Tile tile = tiles[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
@@ -415,7 +413,6 @@ public class ObjectStep extends DetailedQuestStep
 			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 			for (LocalPoint localPoint : localPoints)
 			{
-
 				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, localPoint, getQuestHelper().getConfig().targetOverlayColor());
 			}
 		}

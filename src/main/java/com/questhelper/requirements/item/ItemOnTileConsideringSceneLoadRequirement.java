@@ -107,7 +107,6 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 			for (LocalPoint localPoint : localPoints)
 			{
-				if (localPoint == null) continue;
 				Tile tile = client.getTopLevelWorldView().getScene().getTiles()[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
 				if (tile != null)
 				{

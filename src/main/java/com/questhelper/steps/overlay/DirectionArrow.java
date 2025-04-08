@@ -119,7 +119,6 @@ public class DirectionArrow
 		}
 
 		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		if (localPoints.isEmpty()) return;
 
 		for (LocalPoint localPoint : localPoints)
 		{

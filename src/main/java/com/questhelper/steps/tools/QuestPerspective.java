@@ -116,7 +116,11 @@ public class QuestPerspective
 		List<LocalPoint> localPoints = new ArrayList<>();
 		for (WorldPoint worldPoint : instanceWorldPoint)
 		{
-			localPoints.add(LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint));
+			LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint);
+			if (lp != null)
+			{
+				localPoints.add(lp);
+			}
 		}
 
 		return localPoints;

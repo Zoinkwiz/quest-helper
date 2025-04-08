@@ -61,7 +61,7 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 		for (LocalPoint localPoint : localPoints)
 		{
 			// Final tiles of a scene do not have objects of them
-			if (localPoint != null && localPoint.getSceneX() != Constants.SCENE_SIZE - 1 && localPoint.getSceneY() != Constants.SCENE_SIZE - 1)
+			if (localPoint.getSceneX() != Constants.SCENE_SIZE - 1 && localPoint.getSceneY() != Constants.SCENE_SIZE - 1)
 			{
 				return true;
 			}

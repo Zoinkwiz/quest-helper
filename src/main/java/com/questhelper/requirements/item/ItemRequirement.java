@@ -524,7 +524,8 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.questBank = questBank;
 		newItem.isConsumedItem = isConsumedItem;
 		newItem.shouldAggregate = shouldAggregate;
-		newItem.setTooltip(getTooltip());
+		// Need to get actual tooltip or we get the appended containers info
+		newItem.setTooltip(tooltip);
 		newItem.setUrlSuffix(getUrlSuffix());
 		newItem.additionalOptions = additionalOptions;
 		newItem.isChargedItem = isChargedItem;

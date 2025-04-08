@@ -105,15 +105,6 @@ public class KeysAndLeversTest extends MockedTest
 		});
 		when(client.getScene()).thenReturn(mockedScene);
 
-
-		WorldView mockedWorldView = Mockito.mock(WorldView.class);
-
-		@SuppressWarnings("unchecked")
-		IndexedObjectSet<? extends NPC> npcSetMock = (IndexedObjectSet<? extends NPC>) Mockito.mock(IndexedObjectSet.class);
-		when(npcSetMock.iterator()).thenReturn(Collections.emptyIterator());
-		doReturn(npcSetMock).when(mockedWorldView).npcs();
-		when(client.getTopLevelWorldView()).thenReturn(mockedWorldView);
-
 		this.questHelperPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), mockedItemContainer));
 
 		this.injector.injectMembers(helper);

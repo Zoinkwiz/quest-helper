@@ -25,6 +25,7 @@
 package com.questhelper.helpers.quests.deserttreasureii;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.QuestHelper;
@@ -175,29 +176,6 @@ public class PerseriyaSteps extends ConditionalStep
 		solveAbyssRoom1.addStep(destroyedTether, enterGreenTeleporter1);
 		solveAbyssRoom1.addStep(doingPathfinderRoom, doPathfinderRoom);
 
-		ConditionalStep repairNerve = new ConditionalStep(getQuestHelper(), getWaterNerve);
-		repairNerve.addStep(and(lavaNerveBroken, lavaNerve), repairLavaNerve);
-		repairNerve.addStep(and(lavaNerveBroken, fireNerve, earthNerve), makeLavaNerve);
-		repairNerve.addStep(and(lavaNerveBroken, fireNerve), getEarthNerve);
-		repairNerve.addStep(and(lavaNerveBroken), getFireNerve);
-
-		repairNerve.addStep(and(dustNerveBroken, dustNerve), repairDustNerve);
-		repairNerve.addStep(and(dustNerveBroken, airNerve, earthNerve), makeDustNerve);
-		repairNerve.addStep(and(dustNerveBroken, airNerve), getEarthNerve);
-		repairNerve.addStep(and(dustNerveBroken), getAirNerve);
-
-		repairNerve.addStep(and(smokeNerveBroken, smokeNerve), repairSmokeNerve);
-		repairNerve.addStep(and(smokeNerveBroken, fireNerve, airNerve), makeSmokeNerve);
-		repairNerve.addStep(and(smokeNerveBroken, fireNerve), getAirNerve);
-		repairNerve.addStep(and(smokeNerveBroken), getFireNerve);
-
-		repairNerve.addStep(and(steamNerve), repairSteamNerve);
-		repairNerve.addStep(and(waterNerve, fireNerve), makeSteamNerve);
-		repairNerve.addStep(and(waterNerve), getFireNerve);
-
-		PuzzleWrapperStep repairNervePuzzleWrapper = new PuzzleWrapperStep(getQuestHelper(), repairNerve);
-		makeMatchingNerves.addSubSteps(repairNervePuzzleWrapper);
-
 		ConditionalStep solveAbyssRoom2 = new ConditionalStep(getQuestHelper(), enterSouthEastPassage);
 		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, haveReadTablet, tinderbox, gunpowder), burnBoat2);
 		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, completedSummoningRoom, inBoatRoom2, haveReadTablet, tinderbox), getGunpowderRoom2);
@@ -210,7 +188,7 @@ public class PerseriyaSteps extends ConditionalStep
 		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, inNervePassage), returnThroughBlueNeuralTeleporter2);
 		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom, inNorthOfAbyssRoom2), enterSummoningRoom);
 		solveAbyssRoom2.addStep(and(completedAxonRoom, completedNerveRoom), enterGreenTeleporter2);
-		solveAbyssRoom2.addStep(and(completedAxonRoom, inNerveRoom), repairNervePuzzleWrapper);
+		solveAbyssRoom2.addStep(and(completedAxonRoom, inNerveRoom), makeMatchingNerves);
 		solveAbyssRoom2.addStep(and(completedAxonRoom, inNorthOfAbyssRoom2), enterNerveRoom);
 		solveAbyssRoom2.addStep(completedAxonRoom, enterBlueTeleporter2);
 		solveAbyssRoom2.addStep(and(inAxonRoom, cosmicAxonPresent), hitCosmicAxon);
@@ -847,9 +825,29 @@ public class PerseriyaSteps extends ConditionalStep
 		repairSteamNerve = new PuzzleWrapperStep(getQuestHelper(),
 			new ObjectStep(getQuestHelper(), ObjectID.STEAM_NERVE_ENDING_BROKEN, new WorldPoint(1783, 6430, 0), "Repair the steam nerve ending.", steamNerve));
 
-		makeMatchingNerves = new PuzzleWrapperStep(getQuestHelper(),
-			new DetailedQuestStep(getQuestHelper(), "Collect nerves and combine them together to make nerves which match the broken nerve endings. " +
-			"Use these to repair their matching endings. Enter air bubbles whenever low on air."), "Work out how to repair the broken nerve endings.");
+		ConditionalStep repairNerve = new ConditionalStep(getQuestHelper(), getWaterNerve, "Collect nerves and combine them together to make nerves which match the broken nerve endings. " +
+				"Use these to repair their matching endings. Enter air bubbles whenever low on air.");
+		repairNerve.addStep(and(lavaNerveBroken, lavaNerve), repairLavaNerve);
+		repairNerve.addStep(and(lavaNerveBroken, fireNerve, earthNerve), makeLavaNerve);
+		repairNerve.addStep(and(lavaNerveBroken, fireNerve), getEarthNerve);
+		repairNerve.addStep(and(lavaNerveBroken), getFireNerve);
+
+		repairNerve.addStep(and(dustNerveBroken, dustNerve), repairDustNerve);
+		repairNerve.addStep(and(dustNerveBroken, airNerve, earthNerve), makeDustNerve);
+		repairNerve.addStep(and(dustNerveBroken, airNerve), getEarthNerve);
+		repairNerve.addStep(and(dustNerveBroken), getAirNerve);
+
+		repairNerve.addStep(and(smokeNerveBroken, smokeNerve), repairSmokeNerve);
+		repairNerve.addStep(and(smokeNerveBroken, fireNerve, airNerve), makeSmokeNerve);
+		repairNerve.addStep(and(smokeNerveBroken, fireNerve), getAirNerve);
+		repairNerve.addStep(and(smokeNerveBroken), getFireNerve);
+
+		repairNerve.addStep(and(steamNerve), repairSteamNerve);
+		repairNerve.addStep(and(waterNerve, fireNerve), makeSteamNerve);
+		repairNerve.addStep(and(waterNerve), getFireNerve);
+
+		makeMatchingNerves = new PuzzleWrapperStep(getQuestHelper(), repairNerve,
+			new DetailedQuestStep(getQuestHelper(), "Work out how to repair the broken nerve endings."));
 		makeMatchingNerves.addSubSteps(getEarthNerve, getWaterNerve, getFireNerve, getAirNerve, makeDustNerve, makeLavaNerve, makeSmokeNerve, makeSteamNerve, repairLavaNerve, repairSmokeNerve, repairDustNerve, repairSteamNerve);
 
 		returnThroughBlueNeuralTeleporter2 = new ObjectStep(getQuestHelper(), ObjectID.NEURAL_TELEPORTER, new WorldPoint(1789, 6418, 0), "Return through the blue teleporter.");

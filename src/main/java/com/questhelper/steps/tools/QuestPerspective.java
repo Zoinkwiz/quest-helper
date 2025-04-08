@@ -128,6 +128,7 @@ public class QuestPerspective
 
 	public static WorldPoint getInstanceWorldPointFromReal(Client client, WorldPoint wp)
 	{
+		if (wp == null) return null;
 		Collection<WorldPoint> points = QuestPerspective.toLocalInstanceFromReal(client, wp);
 
 		if (points.isEmpty()) return null;

@@ -55,11 +55,11 @@ public class QuestHelperWidgetOverlay extends Overlay
 	{
 		QuestHelper quest = plugin.getSelectedQuest();
 
-		if (quest != null && quest.getCurrentStep() != null && quest.getCurrentStep().getActiveStep() != null)
+		if (quest != null && quest.getCurrentStep() != null)
 		{
 			if (plugin.getConfig().showWidgetHints())
 			{
-				quest.getCurrentStep().getActiveStep().makeWidgetOverlayHint(graphics, plugin);
+				quest.getCurrentStep().makeWidgetOverlayHint(graphics, plugin);
 			}
 		}
 		plugin.getRuneliteObjectManager().makeWidgetOverlayHint(graphics);

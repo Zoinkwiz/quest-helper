@@ -193,7 +193,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			"wandering wayfarer.", "Who me? Oh I'm just a nobody.");
 		talkToTimfrakuStart.addDialogStep("Trufitus sent me.");
 		talkToTimfrakuStart.addDialogSteps("Your gratitude is all I deserve.", "Well, some gold would be nice.", "So " +
-			"far??", "Yes");
+			"far??", "Yes.");
 		talkToTimfrakuStart.addSubSteps(goToTimfrakuLadder);
 
 		syncStep = new DetailedQuestStep(this, "Open your quest journal to sync your current state.");

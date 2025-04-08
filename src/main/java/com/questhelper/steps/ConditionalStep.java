@@ -403,18 +403,19 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Override
 	public QuestStep getActiveStep()
 	{
-		if (currentStep != null)
+		if (currentStep == null || !started)
 		{
-			return currentStep.getActiveStep();
+			return this;
 		}
 
-		return this;
+		return currentStep.getActiveStep();
 	}
 
 	@Override
 	public boolean containsSteps(QuestStep questStep, Set<QuestStep> checkedSteps)
 	{
 		if (super.containsSteps(questStep, checkedSteps)) return true;
+		if (!started) return false;
 
 		Set<QuestStep> stepSet = new HashSet<>(steps.values());
 		stepSet.removeAll(checkedSteps);

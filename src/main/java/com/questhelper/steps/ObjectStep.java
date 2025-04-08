@@ -196,21 +196,20 @@ public class ObjectStep extends DetailedQuestStep
 
 	public void checkTileForObject(WorldPoint wp)
 	{
-		LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, wp);
+		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, wp);
 
-		if (localPoint == null)
+		for (LocalPoint localPoint : localPoints)
 		{
-			return;
-		}
-		Tile[][][] tiles = client.getScene().getTiles();
+			Tile[][][] tiles = client.getTopLevelWorldView().getScene().getTiles();
 
-		Tile tile = tiles[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-		if (tile != null)
-		{
-			Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
-			handleObjects(tile.getDecorativeObject());
-			handleObjects(tile.getGroundObject());
-			handleObjects(tile.getWallObject());
+			Tile tile = tiles[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+			if (tile != null)
+			{
+				Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
+				handleObjects(tile.getDecorativeObject());
+				handleObjects(tile.getGroundObject());
+				handleObjects(tile.getWallObject());
+			}
 		}
 	}
 
@@ -396,6 +395,25 @@ public class ObjectStep extends DetailedQuestStep
 				int y = (int) boundingBox.getMinY() - 20;
 
 				DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
+			}
+		}
+	}
+
+	@Override
+	public void renderMinimapArrow(Graphics2D graphics)
+	{
+		if (questHelper.getConfig().showMiniMapArrow())
+		{
+			if (closestObject != null)
+			{
+				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, closestObject.getLocalLocation(), getQuestHelper().getConfig().targetOverlayColor());
+				return;
+			}
+
+			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+			for (LocalPoint localPoint : localPoints)
+			{
+				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, localPoint, getQuestHelper().getConfig().targetOverlayColor());
 			}
 		}
 	}

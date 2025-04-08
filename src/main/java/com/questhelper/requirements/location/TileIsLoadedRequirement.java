@@ -33,6 +33,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+
+import java.util.List;
 import java.util.Objects;
 
 public class TileIsLoadedRequirement extends AbstractRequirement
@@ -55,12 +57,16 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		if (lp == null) return false;
-		// Final tiles of a scene do not have objects of them
-		if (lp.getSceneX() == Constants.SCENE_SIZE - 1) return false;
-		if (lp.getSceneY() == Constants.SCENE_SIZE - 1) return false;
-		return true;
+		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+		for (LocalPoint localPoint : localPoints)
+		{
+			// Final tiles of a scene do not have objects of them
+			if (localPoint.getSceneX() != Constants.SCENE_SIZE - 1 && localPoint.getSceneY() != Constants.SCENE_SIZE - 1)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Nonnull

@@ -33,6 +33,8 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.util.List;
+
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -56,6 +58,43 @@ public class DirectionArrow
 		return 16;
 	}
 
+	public static void renderMinimapArrowFromLocal(Graphics2D graphics, Client client, LocalPoint localPoint, Color color)
+	{
+		var maxMinimapDrawDistance = getMaxMinimapDrawDistance(client);
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return;
+		}
+
+		if (localPoint == null)
+		{
+			return;
+		}
+
+		WorldPoint playerRealLocation = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+		WorldPoint goalRealLocation = WorldPoint.fromLocalInstance(client, localPoint);
+		if (playerRealLocation == null) return;
+
+		if (goalRealLocation.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
+		{
+			createMinimapDirectionArrow(graphics, client, playerRealLocation, goalRealLocation, color);
+			return;
+		}
+
+		Point posOnMinimap = Perspective.localToMinimap(client, localPoint);
+		if (posOnMinimap == null)
+		{
+			return;
+		}
+
+		Line2D.Double line = new Line2D.Double(posOnMinimap.getX(), posOnMinimap.getY() - 18, posOnMinimap.getX(),
+				posOnMinimap.getY() - 8);
+
+		drawMinimapArrow(graphics, line, color);
+
+	}
+
 	public static void renderMinimapArrow(Graphics2D graphics, Client client, WorldPoint worldPoint, Color color)
 	{
 		var maxMinimapDrawDistance = getMaxMinimapDrawDistance(client);
@@ -65,13 +104,13 @@ public class DirectionArrow
 			return;
 		}
 
-		WorldPoint playerRealLocation = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
-		if (playerRealLocation == null) return;
-
 		if (worldPoint == null)
 		{
 			return;
 		}
+
+		WorldPoint playerRealLocation = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+		if (playerRealLocation == null) return;
 
 		if (worldPoint.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
 		{
@@ -79,27 +118,21 @@ public class DirectionArrow
 			return;
 		}
 
-		WorldPoint fakeDestinationWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
+		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 
-		if (fakeDestinationWp == null) return;
-
-		LocalPoint lp = LocalPoint.fromWorld(client, fakeDestinationWp);
-
-		if (lp == null)
+		for (LocalPoint localPoint : localPoints)
 		{
-			return;
+			Point posOnMinimap = Perspective.localToMinimap(client, localPoint);
+			if (posOnMinimap == null)
+			{
+				continue;
+			}
+
+			Line2D.Double line = new Line2D.Double(posOnMinimap.getX(), posOnMinimap.getY() - 18, posOnMinimap.getX(),
+					posOnMinimap.getY() - 8);
+
+			drawMinimapArrow(graphics, line, color);
 		}
-
-		Point posOnMinimap = Perspective.localToMinimap(client, lp);
-		if (posOnMinimap == null)
-		{
-			return;
-		}
-
-		Line2D.Double line = new Line2D.Double(posOnMinimap.getX(), posOnMinimap.getY() - 18, posOnMinimap.getX(),
-			posOnMinimap.getY() - 8);
-
-		drawMinimapArrow(graphics, line, color);
 	}
 
 	protected static void createMinimapDirectionArrow(Graphics2D graphics, Client client, WorldPoint playerRealWp, WorldPoint wp, Color color)

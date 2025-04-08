@@ -294,8 +294,9 @@ public class DetailedQuestStep extends QuestStep
 			for (QuestTile location : markedTiles)
 			{
 				BufferedImage combatIcon = spriteManager.getSprite(location.getIconID(), 0);
-				LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, location.getWorldPoint());
-				if (localPoint != null)
+				List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+
+				for (LocalPoint localPoint : localPoints)
 				{
 					OverlayUtil.renderTileOverlay(client, graphics, localPoint, combatIcon, questHelper.getConfig().targetOverlayColor());
 				}
@@ -314,10 +315,13 @@ public class DetailedQuestStep extends QuestStep
 
 	protected void renderTileIcon(Graphics2D graphics)
 	{
-		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		if (lp != null && icon != null && iconItemID != -1)
+		if (icon == null || iconItemID == -1) return;
+
+		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+
+		for (LocalPoint localPoint : localPoints)
 		{
-			OverlayUtil.renderTileOverlay(client, graphics, lp, icon, questHelper.getConfig().targetOverlayColor());
+			OverlayUtil.renderTileOverlay(client, graphics, localPoint, icon, questHelper.getConfig().targetOverlayColor());
 		}
 	}
 
@@ -374,23 +378,22 @@ public class DetailedQuestStep extends QuestStep
 				return;
 			}
 
-			LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-			if (lp == null)
+			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+
+			for (LocalPoint localPoint : localPoints)
 			{
-				return;
+				Polygon poly = Perspective.getCanvasTilePoly(client, localPoint, 30);
+				if (poly == null || poly.getBounds() == null)
+				{
+					return;
+				}
+
+				int startX = poly.getBounds().x + (poly.getBounds().width / 2);
+				int startY = poly.getBounds().y + (poly.getBounds().height / 2);
+
+				DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(),
+						startX, startY);
 			}
-
-			Polygon poly = Perspective.getCanvasTilePoly(client, lp, 30);
-			if (poly == null || poly.getBounds() == null)
-			{
-				return;
-			}
-
-			int startX = poly.getBounds().x + (poly.getBounds().width / 2);
-			int startY = poly.getBounds().y + (poly.getBounds().height / 2);
-
-			DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(),
-				startX, startY);
 		}
 	}
 
@@ -501,7 +504,11 @@ public class DetailedQuestStep extends QuestStep
 	{
 		if (questHelper.getConfig().showMiniMapArrow())
 		{
-			DirectionArrow.renderMinimapArrow(graphics, client, worldPoint, getQuestHelper().getConfig().targetOverlayColor());
+			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+			for (LocalPoint localPoint : localPoints)
+			{
+				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, localPoint, getQuestHelper().getConfig().targetOverlayColor());
+			}
 		}
 	}
 
@@ -776,8 +783,9 @@ public class DetailedQuestStep extends QuestStep
 					if (iconToUseForNeededItems != -1)
 					{
 						BufferedImage icon = spriteManager.getSprite(iconToUseForNeededItems, 0);
-						LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, tile.getWorldLocation());
-						if (localPoint != null)
+						List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+
+						for (LocalPoint localPoint : localPoints)
 						{
 							OverlayUtil.renderTileOverlay(client, graphics, localPoint, icon, questHelper.getConfig().targetOverlayColor());
 						}

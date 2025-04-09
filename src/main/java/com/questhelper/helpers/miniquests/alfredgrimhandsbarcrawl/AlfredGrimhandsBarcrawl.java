@@ -42,6 +42,7 @@ import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.questhelper.util.QHObjectID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -177,7 +178,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 			"Talk to the bartender in the Forester's Arms in Seers' Village.", coins18);
 		talkToForestersArms.addDialogStep("I'm doing Alfred Grimhand's Barcrawl.");
 
-		goUpToBlurberry = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+		goUpToBlurberry = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"Talk to Blurberry in the Grand Tree.", coins10);
 		talkToBlurberry = new NpcStep(this, NpcID.BLURBERRY, new WorldPoint(2482, 3491, 1),
 			"Talk to Blurberry in the Grand Tree.", coins10);

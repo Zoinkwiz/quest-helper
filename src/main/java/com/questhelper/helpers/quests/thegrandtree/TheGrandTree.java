@@ -53,6 +53,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.questhelper.util.QHObjectID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -325,20 +326,20 @@ public class TheGrandTree extends BasicQuestHelper
 
 		talkToGloughAgain = new NpcStep(this, NpcID.GLOUGH_2061, "");
 
-		climbGrandTreeF0ToF1 = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "");
-		climbGrandTreeF1ToF2 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1), "");
+		climbGrandTreeF0ToF1 = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0), "");
+		climbGrandTreeF1ToF2 = new ObjectStep(this, QHObjectID.GRAND_TREE_F1_LADDER, new WorldPoint(2466, 3495, 1), "");
 		climbGrandTreeF1ToF2.addDialogStep("Climb Up.");
-		climbGrandTreeF2ToF3 = new ObjectStep(this, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "");
+		climbGrandTreeF2ToF3 = new ObjectStep(this, QHObjectID.GRAND_TREE_F2_LADDER, new WorldPoint(2466, 3495, 2), "");
 		climbGrandTreeF2ToF3.addDialogStep("Climb Up.");
 
 		climbToTopOfGrandTree = new ConditionalStep(this, climbGrandTreeF0ToF1);
 		climbToTopOfGrandTree.addStep(isInGrandTreeF2, climbGrandTreeF2ToF3);
 		climbToTopOfGrandTree.addStep(isInGrandTreeF1, climbGrandTreeF1ToF2);
 
-		climbGrandTreeF3ToF2 = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2466, 3495, 3), "");
-		climbGrandTreeF2ToF1 = new ObjectStep(this, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "");
+		climbGrandTreeF3ToF2 = new ObjectStep(this, QHObjectID.GRAND_TREE_F3_LADDER, new WorldPoint(2466, 3495, 3), "");
+		climbGrandTreeF2ToF1 = new ObjectStep(this, QHObjectID.GRAND_TREE_F2_LADDER, new WorldPoint(2466, 3495, 2), "");
 		climbGrandTreeF2ToF1.addDialogStep("Climb Down.");
-		climbGrandTreeF1ToF0 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1), "");
+		climbGrandTreeF1ToF0 = new ObjectStep(this, QHObjectID.GRAND_TREE_F1_LADDER, new WorldPoint(2466, 3495, 1), "");
 		climbGrandTreeF1ToF0.addDialogStep("Climb Down.");
 
 		climbToBottomOfGrandTree = new ConditionalStep(this, goToStronghold);

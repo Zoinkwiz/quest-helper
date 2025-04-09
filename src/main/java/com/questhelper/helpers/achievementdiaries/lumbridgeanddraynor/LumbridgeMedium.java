@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,18 +141,18 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notAlKharidRooftop = new VarplayerRequirement(1194, false, 13);
-		notGrappleLum = new VarplayerRequirement(1194, false, 14);
-		notUpgradeDevice = new VarplayerRequirement(1194, false, 15);
-		notWizardFairy = new VarplayerRequirement(1194, false, 16);
-		notTPlumb = new VarplayerRequirement(1194, false, 17);
-		notCatchSalmon = new VarplayerRequirement(1194, false, 18);
-		notCraftCoif = new VarplayerRequirement(1194, false, 19);
-		notChopWillow = new VarplayerRequirement(1194, false, 20);
-		notPickGardener = new VarplayerRequirement(1194, false, 21);
-		notChaeldarTask = new VarplayerRequirement(1194, false, 22);
-		notPuroImp = new VarplayerRequirement(1194, false, 23);
-		notCraftLava = new VarplayerRequirement(1194, false, 24);
+		notAlKharidRooftop = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 13);
+		notGrappleLum = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 14);
+		notUpgradeDevice = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 15);
+		notWizardFairy = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 16);
+		notTPlumb = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 17);
+		notCatchSalmon = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 18);
+		notCraftCoif = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 19);
+		notChopWillow = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 20);
+		notPickGardener = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 21);
+		notChaeldarTask = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 22);
+		notPuroImp = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 23);
+		notCraftLava = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 24);
 
 		crossbow = new ItemRequirement("A crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleLum).isNotConsumed();
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notGrappleLum).isNotConsumed();

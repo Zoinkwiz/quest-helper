@@ -50,14 +50,10 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
@@ -230,7 +226,7 @@ public class ShiloVillage extends BasicQuestHelper
 
 		hasReadTattered = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(220, 3, "Bervirius, son of King Danthalas"),
-			new VarplayerRequirement(116, 9, Operation.GREATER_EQUAL)
+			new VarplayerRequirement(VarPlayerID.ZOMBIEQUEEN, 9, Operation.GREATER_EQUAL)
 		);
 
 		hasReadCrumpled = new Conditions(true, LogicType.OR,
@@ -328,15 +324,15 @@ public class ShiloVillage extends BasicQuestHelper
 			List.of(beadsOfTheDead.equipped(), boneShard, chisel, bones3,
 			combatGear), List.of(crumbleUndead, food));
 
-		searchDoors = new ObjectStep(this, NullObjectID.NULL_34673, new WorldPoint(2916, 3091, 0),
+		searchDoors = new ObjectStep(this, ObjectID.HILLSIDEDOORR_MULTI, new WorldPoint(2916, 3091, 0),
 			"Right-click search the doors behind the palm trees.", combatGear);
 
 		// 8180 opened?
 		makeKey = new DetailedQuestStep(this, "Use a chisel on the bone shard.", chisel.highlighted(), boneShard.highlighted());
-		useKeyOnDoor = new ObjectStep(this, NullObjectID.NULL_34673, new WorldPoint(2916, 3091, 0),
+		useKeyOnDoor = new ObjectStep(this, ObjectID.HILLSIDEDOORR_MULTI, new WorldPoint(2916, 3091, 0),
 			"Use the bone key on the doors behind the palm trees.", boneKey.highlighted());
 		useKeyOnDoor.addIcon(ItemID.ZQBONEKEY);
-		enterDoor = new ObjectStep(this, NullObjectID.NULL_34673, new WorldPoint(2916, 3091, 0),
+		enterDoor = new ObjectStep(this, ObjectID.HILLSIDEDOORR_MULTI, new WorldPoint(2916, 3091, 0),
 			"Enter the doors behind the palm trees.", beadsOfTheDead.equipped(), bones3,
 			combatGear);
 		useBonesOnDoor = new ObjectStep(this, ObjectID.THZQ_TOMBROOML1, new WorldPoint(2892, 9480, 0),

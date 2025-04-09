@@ -24,7 +24,6 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -380,7 +379,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		talkToMaisaStartInvestigation = new NpcStep(this, NpcID.BCS_MAISA_VIS, new WorldPoint(3378, 2792, 0), "Talk to Maisa at the campsite east of Sophanem, and investigate the excavation.");
 		talkToMaisaStartInvestigation.addDialogStep("Let's go.");
 
-		inspectBlockedPyramidEntry = new ObjectStep(this, NullObjectID.NULL_44596, new WorldPoint(3358, 2712, 0), "Inspect the blocked entry at the Jaltevas Pyramid.");
+		inspectBlockedPyramidEntry = new ObjectStep(this, ObjectID.TOA_ENTRANCE, new WorldPoint(3358, 2712, 0), "Inspect the blocked entry at the Jaltevas Pyramid.");
 
 		talkToCitizenOrGuard = new NpcStep(this, NpcID.BCS_NECROPOLIS_CITIZEN_5, new WorldPoint(3347, 2718, 0), "Prepare to fight the Head Menaphite Guard, and talk to either a citizen or Menaphite Guard to start the fight.", true);
 		((NpcStep) talkToCitizenOrGuard).addAlternateNpcs(NpcID.BCS_NECROPOLIS_CITIZEN_4, NpcID.BCS_NECROPOLIS_CITIZEN_2, NpcID.BCS_NECROPOLIS_GUARD_1_VIS, NpcID.BCS_NECROPOLIS_GUARD_2_VIS, NpcID.BCS_NECROPOLIS_GUARD_4_VIS);
@@ -478,7 +477,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		talkToSpirit = new NpcStep(this, NpcID.BCS_MEHHAR_NONAME, new WorldPoint(3377, 9248, 0), "Speak to the Spirit.");
 		((NpcStep) talkToSpirit).addAlternateNpcs(NpcID.BCS_MEHHAR_NAME);
 
-		takeRustyKey = new ObjectStep(this, NullObjectID.NULL_44591, new WorldPoint(3368, 9248, 0), "Take the rusty key from the urn in the back of the room.");
+		takeRustyKey = new ObjectStep(this, ObjectID.BCS_KEY_URN, new WorldPoint(3368, 9248, 0), "Take the rusty key from the urn in the back of the room.");
 
 		// The Champion of Scabaras
 		leaveTombDoor = new ObjectStep(this, ObjectID.BCS_TOMB_DOOR_LOWER_INNER, new WorldPoint(3389, 9248, 0), "Leave the tomb.");
@@ -520,11 +519,11 @@ public class BeneathCursedSands extends BasicQuestHelper
 		attemptSteppingStones = new ObjectStep(this, ObjectID.BCS_STEPPING_STONE, new WorldPoint(3353, 2923, 0), "Head west and attempt to jump to the stepping stones over the River Elid.", meat);
 		attemptSteppingStones.addDialogStep("Yes.");
 
-		pickLilyOfElid = new ObjectStep(this, NullObjectID.NULL_44593, new WorldPoint(3353, 2927, 0), "Attempt to cross the stepping stones again, and pick the Lily of the Elid.");
+		pickLilyOfElid = new ObjectStep(this, ObjectID.BCS_LILY, new WorldPoint(3353, 2927, 0), "Attempt to cross the stepping stones again, and pick the Lily of the Elid.");
 		takeLilyToZahur = new NpcStep(this, NpcID.ELID_HERBALIST, new WorldPoint(3425, 2909, 0), "Go back to Zahur in Nardah.", lilyOfTheElid);
 		talkToZahur = new NpcStep(this, NpcID.ELID_HERBALIST, new WorldPoint(3425, 2909, 0), "Talk to Zahur in Nardah.");
 
-		warmUpChemistryEquipment = new ObjectStep(this, NullObjectID.NULL_44594, new WorldPoint(3424, 2905, 0), "");
+		warmUpChemistryEquipment = new ObjectStep(this, ObjectID.BCS_CHEMISTY_TABLE, new WorldPoint(3424, 2905, 0), "");
 		chemistryValveDecreaseLeft = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the first valve.", 751, 24);
 		chemistryValveIncreaseMiddle = new WidgetStep(this, "Warm up the Chemistry Equipment. Increase the temperature of the second valve.", 751, 25);
 		chemistryValveDecreaseMiddle = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the second valve.", 751, 26);

@@ -54,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -147,17 +148,17 @@ public class KandarinHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCatchSturgeon = new VarplayerRequirement(1178, false, 26);
-		notSeersRooftop = new VarplayerRequirement(1178, false, 27);
-		notYewLong = new VarplayerRequirement(1178, false, 28);
-		notPietyCourt = new VarplayerRequirement(1178, false, 29);
-		notWaterOrb = new VarplayerRequirement(1178, false, 30);
-		notBurnMaple = new VarplayerRequirement(1178, false, 31);
-		notShadowHound = new VarplayerRequirement(1179, false, 0);
-		notMithrilDrag = new VarplayerRequirement(1179, false, 1);
-		notBuyGranite = new VarplayerRequirement(1179, false, 2);
-		notFancyStone = new VarplayerRequirement(1179, false, 3);
-		notAddySpear = new VarplayerRequirement(1179, false, 4);
+		notCatchSturgeon = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 26);
+		notSeersRooftop = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 27);
+		notYewLong = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 28);
+		notPietyCourt = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 29);
+		notWaterOrb = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 30);
+		notBurnMaple = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 31);
+		notShadowHound = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 0);
+		notMithrilDrag = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 1);
+		notBuyGranite = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 2);
+		notFancyStone = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 3);
+		notAddySpear = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 4);
 
 		piety = new PrayerRequirement("Piety", Prayer.PIETY);
 

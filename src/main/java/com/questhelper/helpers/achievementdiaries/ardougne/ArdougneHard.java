@@ -48,10 +48,7 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -147,18 +144,18 @@ public class ArdougneHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notRecharge = new VarplayerRequirement(1196, false, 26);
-		notMagicGuild = new VarplayerRequirement(1196, false, 27);
-		notStealChest = new VarplayerRequirement(1196, false, 28);
-		notMonkeyCage = new VarplayerRequirement(1196, false, 29);
-		notTPWatchtower = new VarplayerRequirement(1196, false, 30);
-		notRedSally = new VarplayerRequirement(1196, false, 31);
-		notPalmTree = new VarplayerRequirement(1197, false, 0);
-		notPoisonIvy = new VarplayerRequirement(1197, false, 1);
-		notMithPlate = new VarplayerRequirement(1197, false, 2);
-		notYanPOH = new VarplayerRequirement(1197, false, 3);
-		notDragSquare = new VarplayerRequirement(1197, false, 4);
-		notDeathRune = new VarplayerRequirement(1197, false, 5);
+		notRecharge = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 26);
+		notMagicGuild = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 27);
+		notStealChest = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 28);
+		notMonkeyCage = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 29);
+		notTPWatchtower = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 30);
+		notRedSally = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 31);
+		notPalmTree = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 0);
+		notPoisonIvy = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 1);
+		notMithPlate = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 2);
+		notYanPOH = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 3);
+		notDragSquare = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 4);
+		notDeathRune = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 5);
 
 		notYanHouse = new VarbitRequirement(VarbitID.POH_HOUSE_LOCATION, 6, Operation.NOT_EQUAL);
 		notYanHouse2 = new VarbitRequirement(2187, 6);

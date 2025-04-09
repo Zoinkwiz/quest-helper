@@ -46,7 +46,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -184,7 +183,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		bearFur = new ItemRequirement("Bear fur", ItemID.FUR);
+		bearFur = new ItemRequirement("Bear fur", ItemID.WEREWOLVE_FUR);
 		silk2 = new ItemRequirement("Silk", ItemID.SILK, 2);
 		redDye = new ItemRequirement("Red dye", ItemID.REDDYE);
 		redDye.setTooltip("Can be bought during quest for 6gp");
@@ -454,10 +453,10 @@ public class MourningsEndPartI extends BasicQuestHelper
 		cookNaphtha = new ObjectStep(this, ObjectID.CARNILLEANRANGE, new WorldPoint(2970, 3210, 0), "Cook the toxic naphtha on " +
 			"a range. DO NOT USE IT ON A FIRE, and MAKE SURE TO HAVE TWO FREE INVENTORY SPACES.", toxicNaphtha, twoInventoryFree);
 
-		usePowderOnFood1 = new ObjectStep(this, NullObjectID.NULL_37330, new WorldPoint(2517, 3315, 0), "Use the toxic powder on the food store in the room north west of West Ardougne's town centre.", toxicPowder);
+		usePowderOnFood1 = new ObjectStep(this, ObjectID.MOURNING_SACK_FULL1, new WorldPoint(2517, 3315, 0), "Use the toxic powder on the food store in the room north west of West Ardougne's town centre.", toxicPowder);
 		usePowderOnFood1.addIcon(ItemID.MOURNING_APPLE_TOXIN);
 		usePowderOnFood1.addTeleport(westArdougneTeleport);
-		usePowderOnFood2 = new ObjectStep(this, NullObjectID.NULL_37331, new WorldPoint(2525, 3288, 0), "Use the toxic powder on the food store in the church south of West Ardougne's town centre.", toxicPowder);
+		usePowderOnFood2 = new ObjectStep(this, ObjectID.MOURNING_SACK_FULL2, new WorldPoint(2525, 3288, 0), "Use the toxic powder on the food store in the church south of West Ardougne's town centre.", toxicPowder);
 		usePowderOnFood2.addIcon(ItemID.MOURNING_APPLE_TOXIN);
 
 		enterMournerBaseAfterPoison = new ObjectStep(this, ObjectID.MOURNERSTEWDOOR, new WorldPoint(2551, 3320, 0),

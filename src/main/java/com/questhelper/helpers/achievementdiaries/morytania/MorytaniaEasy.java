@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,17 +146,17 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCraftSnelm = new VarplayerRequirement(1180, false, 1);
-		notCookSnail = new VarplayerRequirement(1180, false, 2);
-		notMazchna = new VarplayerRequirement(1180, false, 3);
-		notKillBanshee = new VarplayerRequirement(1180, false, 4);
-		notSbottTan = new VarplayerRequirement(1180, false, 5);
-		notEnterSwamp = new VarplayerRequirement(1180, false, 6);
-		notKillGhoul = new VarplayerRequirement(1180, false, 7);
-		notPlaceScarecrow = new VarplayerRequirement(1180, false, 8);
-		notOfferBonemeal = new VarplayerRequirement(1180, false, 9);
-		notKillWerewolf = new VarplayerRequirement(1180, false, 10);
-		notRestorePrayer = new VarplayerRequirement(1180, false, 11);
+		notCraftSnelm = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 1);
+		notCookSnail = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 2);
+		notMazchna = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 3);
+		notKillBanshee = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 4);
+		notSbottTan = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 5);
+		notEnterSwamp = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 6);
+		notKillGhoul = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 7);
+		notPlaceScarecrow = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 8);
+		notOfferBonemeal = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 9);
+		notKillWerewolf = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 10);
+		notRestorePrayer = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 11);
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).showConditioned(notCraftSnelm).isNotConsumed();
 		snailShell = new ItemRequirement("Blamish snail shell", ItemCollections.SNAIL_SHELLS)

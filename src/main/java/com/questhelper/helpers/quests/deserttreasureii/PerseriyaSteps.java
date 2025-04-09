@@ -45,7 +45,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Prayer;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
@@ -623,7 +622,7 @@ public class PerseriyaSteps extends ConditionalStep
 		goTalkToPersten.addStep(inTentArea, talkToPersten);
 		goTalkToPersten.addStep(inDemonArea, hopOverSteppingStone);
 
-		enterPassage1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49526, new WorldPoint(2043, 6441, 0),
+		enterPassage1 = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_1_ENTRY, new WorldPoint(2043, 6441, 0),
 			"Enter the north-west passage.");
 
 		goDoPassage1 = new ConditionalStep(getQuestHelper(), goToAbyss, facemask);
@@ -752,7 +751,7 @@ public class PerseriyaSteps extends ConditionalStep
 		((ObjectStep) getOldTablet).addAlternateObjects(ObjectID.DT2_SCAR_MAZE_BOAT_CHEST_OPEN);
 		readOldTablet = new DetailedQuestStep(getQuestHelper(), "Read the old tablet.", oldTablet.highlighted());
 
-		enterSouthEastPassage = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49527, new WorldPoint(2047, 6427, 0),
+		enterSouthEastPassage = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_2_ENTRY, new WorldPoint(2047, 6427, 0),
 			"Enter the passage to the south on the east wall.", facemask.equipped());
 
 		enterAxonRoom = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_CHALLENGE_DOOR_1, new WorldPoint(1756, 6420, 0), "Enter the Abyssal Axon room to the west.");
@@ -870,7 +869,7 @@ public class PerseriyaSteps extends ConditionalStep
 		readDampTablet = new DetailedQuestStep(getQuestHelper(), "Read the old tablet.", dampTablet.highlighted());
 		burnBoat2 = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_BOAT, new WorldPoint(1787, 6455, 0), "Burn the shipwreck.");
 
-		enterMiddlePassage = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49528, new WorldPoint(2051, 6434, 0), "Enter the passage south of Persten.");
+		enterMiddlePassage = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_3_ENTRY, new WorldPoint(2051, 6434, 0), "Enter the passage south of Persten.");
 		enterMiddlePassage.addDialogStep("I'll be alright.");
 		talkToPerstenAfterRoom1 = new NpcStep(getQuestHelper(), NpcID.DT2_PERSTEN_SCAR_VIS, new WorldPoint(2051, 6443, 0), "Talk to Wizard Persten.");
 		talkToPerstenAfterRoom2 = new NpcStep(getQuestHelper(), NpcID.DT2_PERSTEN_SCAR_VIS, new WorldPoint(2051, 6443, 0), "Talk to Wizard Persten.");
@@ -915,10 +914,10 @@ public class PerseriyaSteps extends ConditionalStep
 		enterLightLeechRoom = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_CHALLENGE_DOOR_2, new WorldPoint(1862, 6421, 0),
 			"Enter the light leech room.");
 		// Repaired all, 15210 = 4
-		repairCrimsonVeins = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), NullObjectID.NULL_49537,
+		repairCrimsonVeins = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_2_BLOOD_RED,
 			"Kill crimson sanguisphera for crimson fibre to repair all 3 of the crimson veins.", true),
 			"Work out how to repair the veins in the room.");
-		repairRadiantVeins = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), NullObjectID.NULL_49536,
+		repairRadiantVeins = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_2_BLOOD_WHITE,
 			"Kill radiant sanguisphera for radiant fibre to repair all 3 of the radiant veins.", true),
 			"Work out how to repair the veins in the room.").withNoHelpHiddenInSidebar(true);
 
@@ -956,7 +955,7 @@ public class PerseriyaSteps extends ConditionalStep
 
 		climbDownFromLeviathan = new ObjectStep(getQuestHelper(), ObjectID.LEVIATHAN_WALL_CLIMB_QUEST_EXIT, new WorldPoint(2091, 6380, 0),
 			"Climb down the handholds in the north-eastern corner of the Leviathan area.");
-		hopAcrossFromLeviathan = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49529,
+		hopAcrossFromLeviathan = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_STEPPING_STONE,
 			new WorldPoint(2096, 6382, 0), "Cross the stepping stone.");
 
 		talkToPerstenAtShip = new NpcStep(getQuestHelper(), NpcID.DT2_PERSTEN_SCAR_VIS, new WorldPoint(2098, 6374, 0),
@@ -969,7 +968,7 @@ public class PerseriyaSteps extends ConditionalStep
 		goToShip.addStep(inTentArea, boardBoatToLeviathan);
 		goToShip.addStep(inDemonArea, hopOverSteppingStone);
 
-		searchDebris = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49218, new WorldPoint(2099, 6374, 0),
+		searchDebris = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_DEBRIS, new WorldPoint(2099, 6374, 0),
 			"Search the debris next to the ship.");
 
 		returnToDesertWithPerseriyasMedallion = new ObjectStep(getQuestHelper(), ObjectID.DT2_DESERT_VAULT_DOOR,
@@ -978,7 +977,7 @@ public class PerseriyaSteps extends ConditionalStep
 			perseriyasMedallion);
 		returnToDesertWithPerseriyasMedallion.addTeleport(nardahTeleport);
 
-		usePerseriyasMedallionOnStatue = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49505, new WorldPoint(3942, 9626, 1),
+		usePerseriyasMedallionOnStatue = new ObjectStep(getQuestHelper(), ObjectID.DT2_VAULT_PERSERIYA_STATUE, new WorldPoint(3942, 9626, 1),
 			"Use the medallion on the south-east statue.", perseriyasMedallion.highlighted());
 		usePerseriyasMedallionOnStatue.addIcon(ItemID.DT2_MEDALLION_PERSERIYA);
 

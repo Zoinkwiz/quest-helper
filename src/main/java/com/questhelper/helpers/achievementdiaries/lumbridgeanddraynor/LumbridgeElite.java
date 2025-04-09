@@ -53,6 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,12 +125,12 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notRichChest = new VarplayerRequirement(1195, false, 4);
-		notMovario = new VarplayerRequirement(1195, false, 5);
-		notChopMagic = new VarplayerRequirement(1195, false, 6);
-		notAddyPlatebody = new VarplayerRequirement(1195, false, 7);
-		notWaterRunes = new VarplayerRequirement(1195, false, 8);
-		notQCEmote = new VarplayerRequirement(1195, false, 9);
+		notRichChest = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 4);
+		notMovario = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 5);
+		notChopMagic = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 6);
+		notAddyPlatebody = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 7);
+		notWaterRunes = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 8);
+		notQCEmote = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 9);
 
 		allQuests = new VarComparisonRequirement(VarType.VARP, VarPlayer.QUEST_POINTS, VarType.VARBIT, 1782, Operation.EQUAL, "All quests completed");
 

@@ -34,7 +34,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -246,7 +245,7 @@ public class IorwerthLightPuzzle extends ConditionalStep
 		resetPuzzle = new ObjectStep(getQuestHelper(), ObjectID.SOTE_LIBRARY_DISPENSER, new WorldPoint(2623, 6118, 1), "Pull the lever in the dispenser in the central room.");
 		resetPuzzle.addDialogSteps("Pull the lever.", "Pull it.");
 
-		p1Pillar1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35303, new WorldPoint(2637, 6144, 1),
+		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_F_4, new WorldPoint(2637, 6144, 1),
 			"Add a cyan crystal to a pillar to the north east.", cyanCrystalHighlighted);
 		p1Pillar1.addIcon(ItemID.SOTE_CRYSTAL_CYAN);
 
@@ -258,23 +257,23 @@ public class IorwerthLightPuzzle extends ConditionalStep
 			"Add a mirror to a pillar in the north east room. Rotate it to point the light west.", handMirrorHighlighted);
 		p1Pillar3.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35294, new WorldPoint(2623, 6172, 1),
+		p1Pillar4 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_E_6, new WorldPoint(2623, 6172, 1),
 			"Add a mirror to a pillar to the west. Rotate it to point the light down.", handMirrorHighlighted);
 		p1Pillar4.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar5 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36707, new WorldPoint(2623, 6172, 0),
+		p1Pillar5 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_6, new WorldPoint(2623, 6172, 0),
 			"Add a mirror to a pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
 		p1Pillar5.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar6 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36709, new WorldPoint(2623, 6186, 0),
+		p1Pillar6 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_7, new WorldPoint(2623, 6186, 0),
 			"Add the fractured crystal to a pillar to the north.", fracturedCrystalHighlighted);
 		p1Pillar6.addIcon(ItemID.SOTE_CRYSTAL_FRACTURED);
 
-		p1Pillar7 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36711, new WorldPoint(2623, 6200, 0),
+		p1Pillar7 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_8, new WorldPoint(2623, 6200, 0),
 			"Add a mirror to a pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
 		p1Pillar7.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar8 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36713, new WorldPoint(2637, 6200, 0),
+		p1Pillar8 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_F_8, new WorldPoint(2637, 6200, 0),
 			"Add a mirror to a pillar to the east. Rotate it to point the light up.", handMirrorHighlighted);
 		p1Pillar8.addIcon(ItemID.SOTE_MIRROR);
 
@@ -302,15 +301,15 @@ public class IorwerthLightPuzzle extends ConditionalStep
 			"Add a mirror to a pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
 		p1Pillar14.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar15 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36715, new WorldPoint(2651, 6200, 0),
+		p1Pillar15 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_G_8, new WorldPoint(2651, 6200, 0),
 			"Add a mirror to a pillar to the north. Rotate it to point the light up.", handMirrorHighlighted);
 		p1Pillar15.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar16 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35315, new WorldPoint(2651, 6200, 1),
+		p1Pillar16 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_G_8, new WorldPoint(2651, 6200, 1),
 			"Add a mirror to a pillar in the north east room. Rotate it to point the light south.", handMirrorHighlighted);
 		p1Pillar16.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar17 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35309, new WorldPoint(2637, 6200, 1),
+		p1Pillar17 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_F_8, new WorldPoint(2637, 6200, 1),
 			"Add a magenta crystal to a pillar in the north east room.", magentaCrystalHighlighted);
 		p1Pillar17.addIcon(ItemID.SOTE_CRYSTAL_MAGENTA);
 
@@ -322,7 +321,7 @@ public class IorwerthLightPuzzle extends ConditionalStep
 			"Add a mirror to a pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
 		p1Pillar19.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar20 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35320, new WorldPoint(2665, 6144, 1),
+		p1Pillar20 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_H_4, new WorldPoint(2665, 6144, 1),
 			"Add a red crystal to the pillar to the east.", redCrystalHighlighted);
 		p1Pillar20.addIcon(ItemID.SOTE_CRYSTAL_RED);
 
@@ -342,11 +341,11 @@ public class IorwerthLightPuzzle extends ConditionalStep
 			"Add a mirror to a pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
 		p1Pillar24.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar25 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35332, new WorldPoint(2679, 6172, 1),
+		p1Pillar25 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_I_6, new WorldPoint(2679, 6172, 1),
 			"Add a mirror to a pillar to the east. Rotate it to point the light north.", handMirrorHighlighted);
 		p1Pillar25.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar26 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35334, new WorldPoint(2679, 6186, 1),
+		p1Pillar26 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_I_7, new WorldPoint(2679, 6186, 1),
 			"Add a mirror to a pillar to the north. Rotate it to point the light up.", handMirrorHighlighted);
 		p1Pillar26.addIcon(ItemID.SOTE_MIRROR);
 

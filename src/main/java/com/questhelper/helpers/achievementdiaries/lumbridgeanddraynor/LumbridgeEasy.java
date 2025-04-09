@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,18 +143,18 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notDrayAgi = new VarplayerRequirement(1194, false, 1);
-		notKillCaveBug = new VarplayerRequirement(1194, false, 2);
-		notSedridor = new VarplayerRequirement(1194, false, 3);
-		notWaterRune = new VarplayerRequirement(1194, false, 4);
-		notHans = new VarplayerRequirement(1194, false, 5);
-		notPickpocket = new VarplayerRequirement(1194, false, 6);
-		notOak = new VarplayerRequirement(1194, false, 7);
-		notKillZombie = new VarplayerRequirement(1194, false, 8);
-		notFishAnchovies = new VarplayerRequirement(1194, false, 9);
-		notBread = new VarplayerRequirement(1194, false, 10);
-		notIron = new VarplayerRequirement(1194, false, 11);
-		notEnterHAM = new VarplayerRequirement(1194, false, 12);
+		notDrayAgi = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 1);
+		notKillCaveBug = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 2);
+		notSedridor = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 3);
+		notWaterRune = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 4);
+		notHans = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 5);
+		notPickpocket = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 6);
+		notOak = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 7);
+		notKillZombie = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 8);
+		notFishAnchovies = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 9);
+		notBread = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 10);
+		notIron = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 11);
+		notEnterHAM = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 12);
 
 		addedRopeToHole = new VarbitRequirement(279, 1);
 
@@ -256,7 +257,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 
 		pickpocket = new NpcStep(this, NpcID.MAN2, new WorldPoint(3215, 3219, 0),
 			"Pickpocket a man or woman infront of Lumbridge Castle.", true);
-		pickpocket.addAlternateNpcs(NpcID.MAN3, NpcID.WOMAN, NpcID.MAN);
+		pickpocket.addAlternateNpcs(NpcID.MAN3, NpcID.DSKIN_W_ARDOUNGECITIZEN2, NpcID.AVAN_FITZHARMON_MAN);
 
 		chopOak = new ObjectStep(this, ObjectID.OAKTREE, new WorldPoint(3219, 3206, 0),
 			"Chop the oak tree in the Lumbridge Castle Courtyard.", axe);

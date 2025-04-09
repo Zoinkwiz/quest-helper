@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -146,16 +147,16 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notKharyrll = new VarplayerRequirement(1180, false, 23);
-		notAdvancedSpikes = new VarplayerRequirement(1180, false, 24);
-		notHarvestWatermelon = new VarplayerRequirement(1180, false, 25);
-		notBurnMaho = new VarplayerRequirement(1180, false, 26);
-		notHardTempleTrekk = new VarplayerRequirement(1180, false, 27);
-		notCaveHorror = new VarplayerRequirement(1180, false, 28);
-		notBittercapMush = new VarplayerRequirement(1180, false, 29);
-		notPietyAltar = new VarplayerRequirement(1180, false, 30);
-		notBridgeSalve = new VarplayerRequirement(1181, false, 1);
-		notMithOre = new VarplayerRequirement(1181, false, 2);
+		notKharyrll = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 23);
+		notAdvancedSpikes = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 24);
+		notHarvestWatermelon = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 25);
+		notBurnMaho = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 26);
+		notHardTempleTrekk = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 27);
+		notCaveHorror = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 28);
+		notBittercapMush = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 29);
+		notPietyAltar = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 30);
+		notBridgeSalve = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 1);
+		notMithOre = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 2);
 
 		piety = new PrayerRequirement("Piety activated", Prayer.PIETY);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMithOre).isNotConsumed();

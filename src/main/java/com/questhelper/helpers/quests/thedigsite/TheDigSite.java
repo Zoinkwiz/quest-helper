@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
@@ -196,7 +197,7 @@ public class TheDigSite extends BasicQuestHelper
 		vialHighlighted.setHighlightInInventory(true);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderboxHighlighted = tinderbox.highlighted();
-		tea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA);
+		tea = new ItemRequirement("Cup of tea", ItemID.DISPLAY_TEA);
 		ropes2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
@@ -271,9 +272,9 @@ public class TheDigSite extends BasicQuestHelper
 		inDougRoom = new ZoneRequirement(dougRoom);
 
 
-		knowStateAsJustStartedQuest = new Conditions(true, new VarplayerRequirement(131, 1, Operation.LESS_EQUAL));
-		knowStateAsJustCompletedFirstExam = new Conditions(true, new VarplayerRequirement(131, 2, Operation.LESS_EQUAL));
-		knowStateAsJustCompletedSecondExam = new Conditions(true, new VarplayerRequirement(131, 3, Operation.LESS_EQUAL));
+		knowStateAsJustStartedQuest = new Conditions(true, new VarplayerRequirement(VarPlayerID.ITEXAMLEVEL, 1, Operation.LESS_EQUAL));
+		knowStateAsJustCompletedFirstExam = new Conditions(true, new VarplayerRequirement(VarPlayerID.ITEXAMLEVEL, 2, Operation.LESS_EQUAL));
+		knowStateAsJustCompletedSecondExam = new Conditions(true, new VarplayerRequirement(VarPlayerID.ITEXAMLEVEL, 3, Operation.LESS_EQUAL));
 
 
 		syncedUp = new Conditions(true, LogicType.OR, knowStateAsJustStartedQuest,

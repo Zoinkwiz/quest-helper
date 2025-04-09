@@ -45,7 +45,6 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -261,7 +260,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		becomeChampion.addSubSteps(enterHoleChampion, enterTzhaarChampion);
 		defeatZek = new NpcStep(this, NpcID.TZHAAR_FIGHTCAVE_SWARM_5A, "Reach at least wave 31 to defeat Ket-Zek.");
 		eatOomlie = new DetailedQuestStep(this, "Eat an oomlie wrap.", oomlieWrap.highlighted());
-		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
+		enterNatureAltar = new ObjectStep(this, ObjectID.NATURETEMPLE_RUINED, new WorldPoint(2869, 3019, 0),
 			"Enter the nature altar, either from the ruin or through the Abyss.", natureTalismanOrAbyss, pureEssence);
 		craftNatureRune = new ObjectStep(this, ObjectID.NATURE_ALTAR, new WorldPoint(2400, 4841, 0),
 			"Craft a nature rune.", pureEssence);

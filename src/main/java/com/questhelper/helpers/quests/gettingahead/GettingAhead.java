@@ -40,7 +40,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -161,7 +160,7 @@ public class GettingAhead extends BasicQuestHelper
 		skillsNeck = new ItemRequirement("Skills Necklace", ItemCollections.SKILLS_NECKLACES);
 
 		//Required
-		bearFur = new ItemRequirement("Bear Fur", ItemID.FUR);
+		bearFur = new ItemRequirement("Bear Fur", ItemID.WEREWOLVE_FUR);
 		bearFur.canBeObtainedDuringQuest();
 		bearFur.setTooltip("You can kill a bear west of the farm for some fur");
 		bearFur.setHighlightInInventory(true);
@@ -244,7 +243,7 @@ public class GettingAhead extends BasicQuestHelper
 		takePot = new ItemStep(this, "Take the nearby pot of flour, or fill a pot with the barrel of flour in the south west room.", potOfFlour);
 		goDownstairsHouse = new ObjectStep(this, ObjectID.KEBOS_SPIRALSTAIRS_TOP, new WorldPoint(1240, 3686, 1), "Go back downstairs.");
 
-		usePotOfFlour = new ObjectStep(this, NullObjectID.NULL_40427, new WorldPoint(1257, 3686, 0), "", potOfFlour);
+		usePotOfFlour = new ObjectStep(this, ObjectID.GA_FENCEGATE_L, new WorldPoint(1257, 3686, 0), "", potOfFlour);
 		usePotOfFlour.addIcon(ItemID.POT_FLOUR);
 
 		goToMine = new ObjectStep(this, ObjectID.GA_CAVE, new WorldPoint(1212, 3647, 0), "Enter the Kebos Lowlands mine just west of the bridge and kill the Headless Beast (level 82).");

@@ -50,10 +50,7 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,13 +127,13 @@ public class KandarinElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notbarb5 = new VarplayerRequirement(1179, false, 5);
-		notPickDwarf = new VarplayerRequirement(1179, false, 6);
-		not5Shark = new VarplayerRequirement(1179, false, 7);
-		notStamMix = new VarplayerRequirement(1179, false, 8);
-		notRuneHasta = new VarplayerRequirement(1179, false, 9);
-		notPyre = new VarplayerRequirement(1179, false, 10);
-		notTPCath = new VarplayerRequirement(1179, false, 11);
+		notbarb5 = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 5);
+		notPickDwarf = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 6);
+		not5Shark = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 7);
+		notStamMix = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 8);
+		notRuneHasta = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 9);
+		notPyre = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 10);
+		notTPCath = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 11);
 		bothLogs = new ComplexRequirement(LogicType.AND, "Magic logs", notRuneHasta, notPyre);
 
 		// BA levels

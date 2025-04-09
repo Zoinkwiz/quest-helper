@@ -34,7 +34,6 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.Client;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
@@ -219,16 +218,16 @@ public class PotionPuzzle extends DetailedOwnerStep
 		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_LADDER_DOWN, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
 		goUpStairs.addSubSteps(goUpLadder, goDownToFirstFloor);
 		searchPotionCupboard = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_SHELVES_NOTES, new WorldPoint(1387, 3820, 1), "Search the cupboard on the east wall.");
-		inspectRefinery = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Inspect the refinery.");
+		inspectRefinery = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_REFINERY, new WorldPoint(1382, 3819, 1), "Inspect the refinery.");
 		inspectRefinery.addDialogStep("Yes.");
 		readNote = new DetailedQuestStep(getQuestHelper(), "Read the old notes.", oldNotes);
-		getFluidRealStep = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34596, new WorldPoint(1382, 3826, 1), "Attempt to take the correct fluid from the table.");
+		getFluidRealStep = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_FLUID_TABLE, new WorldPoint(1382, 3826, 1), "Attempt to take the correct fluid from the table.");
 		getFluid = new PuzzleWrapperStep(getQuestHelper(), getFluidRealStep, getFluidRealStep.copy());
-		useFluidOnRefineryRealStep = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Use the fluid on the refinery.");
+		useFluidOnRefineryRealStep = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_REFINERY, new WorldPoint(1382, 3819, 1), "Use the fluid on the refinery.");
 		useFluidOnRefinery = new PuzzleWrapperStep(getQuestHelper(), useFluidOnRefineryRealStep, useFluidOnRefineryRealStep.copy());
 		useFluidOnRefinery.addDialogStep("Yes.");
 
-		activateRefinery = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Activate the refinery.");
+		activateRefinery = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_REFINERY, new WorldPoint(1382, 3819, 1), "Activate the refinery.");
 		activateRefinery.addDialogStep("Yes.");
 	}
 

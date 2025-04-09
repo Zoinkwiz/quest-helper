@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,12 +121,12 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notBareHandShark = new VarplayerRequirement(1181, false, 3);
-		notCremateShade = new VarplayerRequirement(1181, false, 4);
-		notFertilizeHerb = new VarplayerRequirement(1181, false, 5);
-		notCraftBlackDhideBody = new VarplayerRequirement(1181, false, 6);
-		notAbyssalDemon = new VarplayerRequirement(1181, false, 7);
-		notBarrowsChest = new VarplayerRequirement(1181, false, 8);
+		notBareHandShark = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 3);
+		notCremateShade = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 4);
+		notFertilizeHerb = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 5);
+		notCraftBlackDhideBody = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 6);
+		notAbyssalDemon = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 7);
+		notBarrowsChest = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 8);
 
 		magicRedwoodPyreLogs = new ItemRequirement("Magic / Redwood pyrelogs", ItemCollections.ELITE_PYRE_LOGS)
 			.showConditioned(notCremateShade);

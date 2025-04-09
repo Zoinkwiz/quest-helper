@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,17 +146,17 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notMineMith = new VarplayerRequirement(1192, false, 13);
-		notEntYew = new VarplayerRequirement(1192, false, 14);
-		notWildyGodWars = new VarplayerRequirement(1192, false, 15);
-		notWildyAgi = new VarplayerRequirement(1192, false, 16);
-		notKillGreenDrag = new VarplayerRequirement(1192, false, 18);
-		notKillAnkou = new VarplayerRequirement(1192, false, 19);
-		notEarthOrb = new VarplayerRequirement(1192, false, 20);
-		notWildyGWBloodveld = new VarplayerRequirement(1192, false, 21);
-		notEmblemTrader = new VarplayerRequirement(1192, false, 22);
-		notGoldHelm = new VarplayerRequirement(1192, false, 23);
-		notMuddyChest = new VarplayerRequirement(1192, false, 24);
+		notMineMith = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 13);
+		notEntYew = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 14);
+		notWildyGodWars = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 15);
+		notWildyAgi = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 16);
+		notKillGreenDrag = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 18);
+		notKillAnkou = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 19);
+		notEarthOrb = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 20);
+		notWildyGWBloodveld = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 21);
+		notEmblemTrader = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 22);
+		notGoldHelm = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 23);
+		notMuddyChest = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 24);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

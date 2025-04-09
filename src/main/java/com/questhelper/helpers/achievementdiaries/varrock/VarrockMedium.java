@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,19 +153,19 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notApothStr = new VarplayerRequirement(1176, false, 15);
-		notChamps = new VarplayerRequirement(1176, false, 16);
-		notCatColour = new VarplayerRequirement(1176, false, 18);
-		notGESpirit = new VarplayerRequirement(1176, false, 19);
-		notStrongholdEmote = new VarplayerRequirement(1176, false, 20);
-		notTolna = new VarplayerRequirement(1176, false, 21);
-		notTPDigsite = new VarplayerRequirement(1176, false, 22);
-		notTPVarrock = new VarplayerRequirement(1176, false, 23);
-		notVannaka = new VarplayerRequirement(1176, false, 24);
-		notMaho20 = new VarplayerRequirement(1176, false, 25);
-		notWhiteFruit = new VarplayerRequirement(1176, false, 26);
-		notBalloon = new VarplayerRequirement(1176, false, 27);
-		notVarrAgi = new VarplayerRequirement(1176, false, 28);
+		notApothStr = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 15);
+		notChamps = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 16);
+		notCatColour = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 18);
+		notGESpirit = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 19);
+		notStrongholdEmote = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 20);
+		notTolna = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 21);
+		notTPDigsite = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 22);
+		notTPVarrock = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 23);
+		notVannaka = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 24);
+		notMaho20 = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 25);
+		notWhiteFruit = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 26);
+		notBalloon = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 27);
+		notVarrAgi = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 28);
 
 		notFlap = new VarbitRequirement(2309, 1);
 		notSlap = new VarbitRequirement(2310, 1);

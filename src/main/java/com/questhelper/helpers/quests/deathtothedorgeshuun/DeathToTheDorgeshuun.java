@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -256,7 +257,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkedToGoblins = new VarbitRequirement(2261, 1);
 		talkedToWoman = new VarbitRequirement(2262, 1);
 		goneOutside = new VarbitRequirement(2263, 1);
-		zanikIsFollowing =  new VarplayerRequirement(447, List.of(NpcID.DTTD_ZANIK_FOLLOWER, NpcID.DTTD_ZANIK_FOLLOWER_HAM), 16);
+		zanikIsFollowing =  new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.DTTD_ZANIK_FOLLOWER, NpcID.DTTD_ZANIK_FOLLOWER_HAM), 16);
 		talkedToShopkeeper = new VarbitRequirement(2265, 1);
 		heardSpeaker = new VarbitRequirement(2268, 1);
 		talkedToJohn = new VarbitRequirement(2269, 1);
@@ -295,13 +296,13 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkToMistagToTravel.addDialogStep("Can you show me the way out of the mines?");
 		talkToZanik = new NpcStep(this, NpcID.DTTD_ZANIK_MARKED, new WorldPoint(3212, 9620, 0), "");
 
-		talkToCook = new NpcStep(this, NpcID.COOK, new WorldPoint(3209, 3215, 0), "");
+		talkToCook = new NpcStep(this, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0), "");
 		talkToDuke = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE, new WorldPoint(3210, 3222, 1), "");
 		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "");
 		talkToWoman = new NpcStep(this, NpcID.DSKIN_W_ARDOUNGECITIZEN2, new WorldPoint(3224, 3218, 0), "", true);
-		((NpcStep) (talkToWoman)).addAlternateNpcs(NpcID.MAN3, NpcID.MAN, NpcID.WOMAN);
+		((NpcStep) (talkToWoman)).addAlternateNpcs(NpcID.MAN3, NpcID.AVAN_FITZHARMON_MAN, NpcID.DSKIN_W_ARDOUNGECITIZEN2);
 		talkToGuide = new NpcStep(this, NpcID.LUMBRIDGE_GUIDE, new WorldPoint(3238, 3220, 0), "");
-		talkToBob = new NpcStep(this, NpcID.BOB, new WorldPoint(3231, 3208, 0), "");
+		talkToBob = new NpcStep(this, NpcID.TWOCATS_BOB_CUTSCENE, new WorldPoint(3231, 3208, 0), "");
 		talkToAereck = new NpcStep(this, NpcID.FATHER_AERECK, new WorldPoint(3244, 3210, 0), "");
 		approachGoblins = new DetailedQuestStep(this, new WorldPoint(3247, 3235, 0), "");
 		talkToShopkeeper = new NpcStep(this, NpcID.GENERALSHOPKEEPER1, new WorldPoint(3211, 3247, 0), "");

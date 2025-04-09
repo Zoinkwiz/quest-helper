@@ -317,7 +317,7 @@ public class RatCatchers extends BasicQuestHelper
 		talkToPhingspet = new NpcStep(this, NpcID.VC_PHINGSPET, new WorldPoint(3243, 9867, 0),
 			"Talk to Phingspet in Varrock Sewer.", cat);
 
-		catch8Rats = new NpcStep(this, NpcID.RAT, new WorldPoint(3243, 9867, 0),
+		catch8Rats = new NpcStep(this, NpcID.PITRAT_SARIM_DEF, new WorldPoint(3243, 9867, 0),
 			"Have your cat catch 8 rats.", true, catFollower);
 		((NpcStep) catch8Rats).setHideWorldArrow(true);
 

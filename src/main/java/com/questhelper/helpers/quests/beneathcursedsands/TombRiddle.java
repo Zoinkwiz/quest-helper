@@ -8,7 +8,6 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
@@ -166,10 +165,10 @@ public class TombRiddle extends DetailedOwnerStep
 		obtainEmblems = new ObjectStep(questHelper, ObjectID.BCS_EMBLEM_PLAQUE, new WorldPoint(3391, 9245, 0), "Inspect the south-western plaque to get four emblems.");
 		pullLever = new ObjectStep(questHelper, ObjectID.BCS_TOMB_WALL_LEVER, new WorldPoint(3390, 9247, 0), "Pull the lever to the south-west.");
 
-		placeNorthernUrn = new ObjectStep(questHelper, NullObjectID.NULL_44590, "Place the emblem in the northernmost urn.");
-		placeCentreNorthUrn = new ObjectStep(questHelper, NullObjectID.NULL_44589, "Place the emblem in the centre-north urn.");
-		placeCentreSouthUrn = new ObjectStep(questHelper, NullObjectID.NULL_44588, "Place the emblem in the centre-south urn.");
-		placeSouthernUrn = new ObjectStep(questHelper, NullObjectID.NULL_44587, "Place the emblem in the southernmost urn.");
+		placeNorthernUrn = new ObjectStep(questHelper, ObjectID.BCS_TOMB_URN_4, "Place the emblem in the northernmost urn.");
+		placeCentreNorthUrn = new ObjectStep(questHelper, ObjectID.BCS_TOMB_URN_3, "Place the emblem in the centre-north urn.");
+		placeCentreSouthUrn = new ObjectStep(questHelper, ObjectID.BCS_TOMB_URN_2, "Place the emblem in the centre-south urn.");
+		placeSouthernUrn = new ObjectStep(questHelper, ObjectID.BCS_TOMB_URN_1, "Place the emblem in the southernmost urn.");
 
 		setupItemRequirements();
 	}

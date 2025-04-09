@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -133,16 +134,16 @@ public class WildernessHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notGodSpells = new VarplayerRequirement(1192, false, 25);
-		notAirOrb = new VarplayerRequirement(1192, false, 26);
-		notBlackSally = new VarplayerRequirement(1192, false, 27);
-		notAddyScim = new VarplayerRequirement(1192, false, 28);
-		notLavaDrag = new VarplayerRequirement(1192, false, 29);
-		notChaosEle = new VarplayerRequirement(1192, false, 30);
-		notThreeBosses = new VarplayerRequirement(1192, false, 31);
-		notTrollWildy = new VarplayerRequirement(1193, false, 0);
-		notSprirtualWarrior = new VarplayerRequirement(1193, false, 1);
-		notRawLavaEel = new VarplayerRequirement(1193, false, 2);
+		notGodSpells = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 25);
+		notAirOrb = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 26);
+		notBlackSally = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 27);
+		notAddyScim = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 28);
+		notLavaDrag = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 29);
+		notChaosEle = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 30);
+		notThreeBosses = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 31);
+		notTrollWildy = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 0);
+		notSprirtualWarrior = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 1);
+		notRawLavaEel = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 2);
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 

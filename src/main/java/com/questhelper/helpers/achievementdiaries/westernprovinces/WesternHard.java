@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -148,19 +149,19 @@ public class WesternHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notElfCystalBow = new VarplayerRequirement(1182, false, 25);
-		notMonkfishPisc = new VarplayerRequirement(1182, false, 26);
-		notVetPest = new VarplayerRequirement(1182, false, 27);
-		notDashingKebbit = new VarplayerRequirement(1182, false, 28);
-		notApeAtollAgi = new VarplayerRequirement(1182, false, 29);
-		notMahoganyBurned = new VarplayerRequirement(1182, false, 30);
-		notMineAddyOre = new VarplayerRequirement(1182, false, 31);
-		notLletyaPalm = new VarplayerRequirement(1183, false, 0);
-		notChompyHat = new VarplayerRequirement(1183, false, 1);
-		notIsafdarPainting = new VarplayerRequirement(1183, false, 2);
-		notKillZulrah = new VarplayerRequirement(1183, false, 3);
-		notTPApe = new VarplayerRequirement(1183, false, 4);
-		notPickpocketGnome = new VarplayerRequirement(1183, false, 5);
+		notElfCystalBow = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 25);
+		notMonkfishPisc = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 26);
+		notVetPest = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 27);
+		notDashingKebbit = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 28);
+		notApeAtollAgi = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 29);
+		notMahoganyBurned = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 30);
+		notMineAddyOre = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 31);
+		notLletyaPalm = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 0);
+		notChompyHat = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 1);
+		notIsafdarPainting = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 2);
+		notKillZulrah = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 3);
+		notTPApe = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 4);
+		notPickpocketGnome = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 5);
 
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
@@ -260,7 +261,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		dashingKebbit = new NpcStep(this, NpcID.HUNTINGBEAST_SPEEDY2, new WorldPoint(2372, 3581, 0),
 			"Catch a dashing kebbit with your falcon!");
 
-		pickpocketGnome = new NpcStep(this, NpcID.GNOME, new WorldPoint(2466, 3460, 0), "Pickpocket a gnome.",
+		pickpocketGnome = new NpcStep(this, NpcID.TWOCATS_GNOME_WOMAN, new WorldPoint(2466, 3460, 0), "Pickpocket a gnome.",
 			true);
 		((NpcStep) pickpocketGnome).setMaxRoamRange(2000);
 		((NpcStep) pickpocketGnome).addAlternateNpcs(NpcID.BROWCLOTHEDGNOME, NpcID.DARKSKINNED_GNOME, NpcID.GNOMEFEMALE,

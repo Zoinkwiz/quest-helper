@@ -43,7 +43,6 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -395,12 +394,12 @@ public class ATasteOfHope extends BasicQuestHelper
 		talkToSafalaan = new NpcStep(this, NpcID.MYREQUE_PT3_SAFALAAN, new WorldPoint(3627, 9644, 0),
 			"Talk to Safalaan in the north room.");
 
-		climbRubbleAtBank = new ObjectStep(this, NullObjectID.NULL_32650, new WorldPoint(3642, 3207, 0),
+		climbRubbleAtBank = new ObjectStep(this, ObjectID.MYQ4_OBSTACLE_RUBBLE_01, new WorldPoint(3642, 3207, 0),
 			"Return to the Theatre of Blood and attempt to climb rubble in its south west corner.");
 		talkToHarpert = new NpcStep(this, NpcID.MYQ4_HARPERT, new WorldPoint(3644, 3211, 0),
 			"Talk to Harpert near the rubble.", coins1000);
 		talkToHarpert.addDialogStep("Fine, here's the money.");
-		climbRubbleAfterHarpert = new ObjectStep(this, NullObjectID.NULL_32650, new WorldPoint(3642, 3207, 0),
+		climbRubbleAfterHarpert = new ObjectStep(this, ObjectID.MYQ4_OBSTACLE_RUBBLE_01, new WorldPoint(3642, 3207, 0),
 			"Attempt to climb the rubble again.");
 		climbSteamVent = new ObjectStep(this, ObjectID.MYQ4_OBSTACLE_VENT, new WorldPoint(3644, 3214, 1),
 			"Climb the vent to the north when the steam stops coming out.");

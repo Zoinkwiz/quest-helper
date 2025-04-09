@@ -257,7 +257,7 @@ public class FairytaleII extends BasicQuestHelper
 		studyCertificate = new DetailedQuestStep(this, "Right-click study the certificate.", fairyCertificate.highlighted());
 		readSign = new ObjectStep(this, ObjectID.FAIRY2_RUNETEMPLE_SIGN, new WorldPoint(2409, 4369, 0),
 			"Read the sign near the Cosmic Temple in the south of Zanaris.");
-		talkToGodfather = new NpcStep(this, NpcID.FAIRY_GODFATHER, new WorldPoint(2447, 4430, 0),
+		talkToGodfather = new NpcStep(this, NpcID.FAIRY_GODFATHER2, new WorldPoint(2447, 4430, 0),
 			"Talk to the Fairy Godfather in the Throne Room.");
 		talkToGodfather.addDialogSteps("Where is the Fairy Queen?", "Where could she have been taken to?", "Yes, okay.");
 

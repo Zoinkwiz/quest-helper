@@ -34,7 +34,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -170,13 +169,13 @@ public class DaddysHome extends BasicQuestHelper
 		((NpcStep) talkToMarloToFinish).addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
 		talkToMarloToFinish.addDialogStep("Yeah, what have you got for me?");
 
-		removeCampbed = new ObjectStep(this, NullObjectID.NULL_40303, new WorldPoint(3242, 3398, 0), "Remove the broken items in the house.");
-		removeCarpet = new ObjectStep(this, NullObjectID.NULL_40304, new WorldPoint(3239, 3395, 0), "Remove the broken items in the house.");
-		removeStool = new ObjectStep(this, NullObjectID.NULL_40301, new WorldPoint(3239, 3394, 0), "Remove the broken items in the house.");
-		removeTable = new ObjectStep(this, NullObjectID.NULL_40224, new WorldPoint(3240, 3394, 0), "Remove the broken items in the house.");
-		removeChair = new ObjectStep(this, NullObjectID.NULL_40302, new WorldPoint(3241, 3393, 0), "Remove the broken items in the house.");
-		removeTable2 = new ObjectStep(this, NullObjectID.NULL_40223, new WorldPoint(3245, 3394, 0), "Remove the broken items in the house.");
-		removeStool2 = new ObjectStep(this, NullObjectID.NULL_40300, new WorldPoint(3244, 3394, 0), "Remove the broken items in the house.");
+		removeCampbed = new ObjectStep(this, ObjectID.DADDYSHOME_BED, new WorldPoint(3242, 3398, 0), "Remove the broken items in the house.");
+		removeCarpet = new ObjectStep(this, ObjectID.DADDYSHOME_CARPET_MIDDLE, new WorldPoint(3239, 3395, 0), "Remove the broken items in the house.");
+		removeStool = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_2, new WorldPoint(3239, 3394, 0), "Remove the broken items in the house.");
+		removeTable = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_2, new WorldPoint(3240, 3394, 0), "Remove the broken items in the house.");
+		removeChair = new ObjectStep(this, ObjectID.DADDYSHOME_CHAIR, new WorldPoint(3241, 3393, 0), "Remove the broken items in the house.");
+		removeTable2 = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_1, new WorldPoint(3245, 3394, 0), "Remove the broken items in the house.");
+		removeStool2 = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_1, new WorldPoint(3244, 3394, 0), "Remove the broken items in the house.");
 
 		removeCampbed.addSubSteps(removeCarpet, removeStool, removeTable, removeChair, removeTable2, removeStool2);
 
@@ -184,14 +183,14 @@ public class DaddysHome extends BasicQuestHelper
 
 		talkToOperator = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0), "Talk to the Sawmill Operator north east of Varrock to make waxwood planks.", waxwoodLog3);
 		talkToOperator.addDialogStep("I need some waxwood planks for Old Man Yarlo.");
-		buildCampbed = new ObjectStep(this, NullObjectID.NULL_40303, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in the house.", waxwoodPlank3, bolt2, hammer, saw);
+		buildCampbed = new ObjectStep(this, ObjectID.DADDYSHOME_BED, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in the house.", waxwoodPlank3, bolt2, hammer, saw);
 
-		buildCarpet = new ObjectStep(this, NullObjectID.NULL_40304, new WorldPoint(3239, 3395, 0), "Build the items in the house.", bolt3, saw, hammer);
-		buildStool = new ObjectStep(this, NullObjectID.NULL_40301, new WorldPoint(3239, 3394, 0), "Build the items in the house.", plank, nails2, saw, hammer);
-		buildTable = new ObjectStep(this, NullObjectID.NULL_40224, new WorldPoint(3240, 3394, 0), "Build the items in the house.", plank3, nails4, saw, hammer);
-		buildChair = new ObjectStep(this, NullObjectID.NULL_40302, new WorldPoint(3241, 3393, 0), "Build the items in the house.", plank2, nails2, saw, hammer);
-		buildTable2 = new ObjectStep(this, NullObjectID.NULL_40223, new WorldPoint(3245, 3394, 0), "Build the items in the house.", plank3, nails4, saw, hammer);
-		buildStool2 = new ObjectStep(this, NullObjectID.NULL_40300, new WorldPoint(3244, 3394, 0), "Build the items in the house.", plank, nails2, saw, hammer);
+		buildCarpet = new ObjectStep(this, ObjectID.DADDYSHOME_CARPET_MIDDLE, new WorldPoint(3239, 3395, 0), "Build the items in the house.", bolt3, saw, hammer);
+		buildStool = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_2, new WorldPoint(3239, 3394, 0), "Build the items in the house.", plank, nails2, saw, hammer);
+		buildTable = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_2, new WorldPoint(3240, 3394, 0), "Build the items in the house.", plank3, nails4, saw, hammer);
+		buildChair = new ObjectStep(this, ObjectID.DADDYSHOME_CHAIR, new WorldPoint(3241, 3393, 0), "Build the items in the house.", plank2, nails2, saw, hammer);
+		buildTable2 = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_1, new WorldPoint(3245, 3394, 0), "Build the items in the house.", plank3, nails4, saw, hammer);
+		buildStool2 = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_1, new WorldPoint(3244, 3394, 0), "Build the items in the house.", plank, nails2, saw, hammer);
 		buildCarpet.addSubSteps(buildStool, buildTable, buildChair, buildTable2, buildStool2);
 	}
 

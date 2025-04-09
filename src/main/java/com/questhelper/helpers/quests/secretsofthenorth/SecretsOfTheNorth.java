@@ -44,7 +44,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -538,11 +537,11 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		// Down 810.7
 		// Left 810.8
 		// Right 810.9
-		useLeverOnMechanism = new ObjectStep(this, NullObjectID.NULL_46900, new WorldPoint(2917, 10342, 0), "Use the handle on the lever mechanism",
+		useLeverOnMechanism = new ObjectStep(this, ObjectID.SOTN_GHORROCK_LEVER, new WorldPoint(2917, 10342, 0), "Use the handle on the lever mechanism",
 			leverHandle.highlighted());
 		useLeverOnMechanism.addIcon(leverHandle.getId());
 		useLeverOnMechanism.addDialogStep("Yes.");
-		pullLever = new ObjectStep(this, NullObjectID.NULL_46900, new WorldPoint(2917, 10342, 0), "Pull the lever.");
+		pullLever = new ObjectStep(this, ObjectID.SOTN_GHORROCK_LEVER, new WorldPoint(2917, 10342, 0), "Pull the lever.");
 		pullLever.addDialogStep("Yes.");
 		inspectPillar = new ObjectStep(this, ObjectID.SOTN_GHORROCK_PILLAR, new WorldPoint(2924, 10346, 0),
 			"Inspect the south west pillar in the room where you fought the assassin.");

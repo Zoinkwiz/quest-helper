@@ -33,7 +33,6 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.Client;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
@@ -295,9 +294,9 @@ public class AltarPuzzle extends DetailedOwnerStep
 		goUpToSecondFloor = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_LADDER_UP, new WorldPoint(1382, 3827, 1), "Climb up the ladder to the top floor.");
 		for (int i = 0; i < 10; i++)
 		{
-			rebalanceW.add(new ObjectStep(getQuestHelper(), NullObjectID.NULL_34598, new WorldPoint(1380, 3824, 2), "Rebalance the west pylon."));
-			rebalanceC.add(new ObjectStep(getQuestHelper(), NullObjectID.NULL_34599, new WorldPoint(1382, 3824, 2), "Rebalance the central pylon."));
-			rebalanceE.add(new ObjectStep(getQuestHelper(), NullObjectID.NULL_34600, new WorldPoint(1384, 3824, 2), "Rebalance the east pylon."));
+			rebalanceW.add(new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_PYLON_1, new WorldPoint(1380, 3824, 2), "Rebalance the west pylon."));
+			rebalanceC.add(new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_PYLON_2, new WorldPoint(1382, 3824, 2), "Rebalance the central pylon."));
+			rebalanceE.add(new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_PYLON_3, new WorldPoint(1384, 3824, 2), "Rebalance the east pylon."));
 		}
 		m1 = new DetailedQuestStep(getQuestHelper(), "Move a disc from the west pylon to the east pylon.");
 		m1.addSubSteps(rebalanceW.get(0), rebalanceE.get(0));

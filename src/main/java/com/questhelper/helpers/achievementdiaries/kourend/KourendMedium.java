@@ -48,10 +48,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -150,19 +147,19 @@ public class KourendMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notFairyRing = new VarplayerRequirement(2085, false, 25);
-		notKillLizardman = new VarplayerRequirement(2085, false, 13);
-		notTravelWithMemoirs = new VarplayerRequirement(2085, false, 14);
-		notMineSulphur = new VarplayerRequirement(2085, false, 15);
-		notEnterFarmingGuild = new VarplayerRequirement(2085, false, 21);
-		notSwitchSpellbooks = new VarplayerRequirement(2085, false, 16);
-		notRepairCrane = new VarplayerRequirement(2085, false, 17);
-		notDeliverIntelligence = new VarplayerRequirement(2085, false, 18);
-		notCatchBluegill = new VarplayerRequirement(2085, false, 19);
-		notUseBoulderShortcut = new VarplayerRequirement(2085, false, 22);
-		notSubdueWintertodt = new VarplayerRequirement(2085, false, 20);
-		notCatchChinchompa = new VarplayerRequirement(2085, false, 23);
-		notChopMahoganyTree = new VarplayerRequirement(2085, false, 24);
+		notFairyRing = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 25);
+		notKillLizardman = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 13);
+		notTravelWithMemoirs = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 14);
+		notMineSulphur = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 15);
+		notEnterFarmingGuild = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 21);
+		notSwitchSpellbooks = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 16);
+		notRepairCrane = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 17);
+		notDeliverIntelligence = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 18);
+		notCatchBluegill = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 19);
+		notUseBoulderShortcut = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 22);
+		notSubdueWintertodt = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 20);
+		notCatchChinchompa = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 23);
+		notChopMahoganyTree = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 24);
 
 		memoirArc = new VarbitRequirement(VarbitID.KOUREND_DIARY_ARC_TELEPORT, Operation.EQUAL, 0, "");
 		memoirHos = new VarbitRequirement(VarbitID.KOUREND_DIARY_HOS_TELEPORT, Operation.EQUAL, 0, "");

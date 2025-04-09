@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,17 +146,17 @@ public class KandarinEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCatchMackerel = new VarplayerRequirement(1178, false, 1);
-		notBuyCandle = new VarplayerRequirement(1178, false, 2);
-		notCollectFlax = new VarplayerRequirement(1178, false, 3);
-		notPlayOrgan = new VarplayerRequirement(1178, false, 4);
-		notPlantJute = new VarplayerRequirement(1178, false, 5);
-		notCupTea = new VarplayerRequirement(1178, false, 6);
-		notKillEle = new VarplayerRequirement(1178, false, 7);
-		notPetFish = new VarplayerRequirement(1178, false, 8);
-		notBuyStew = new VarplayerRequirement(1178, false, 9);
-		notTalkSherlock = new VarplayerRequirement(1178, false, 10);
-		notLogShortcut = new VarplayerRequirement(1178, false, 11);
+		notCatchMackerel = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 1);
+		notBuyCandle = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 2);
+		notCollectFlax = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 3);
+		notPlayOrgan = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 4);
+		notPlantJute = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 5);
+		notCupTea = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 6);
+		notKillEle = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 7);
+		notPetFish = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 8);
+		notBuyStew = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 9);
+		notTalkSherlock = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 10);
+		notLogShortcut = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 11);
 
 		killedFire = AchievementDiaryStepManager.getKilledFire();
 		killedEarth = AchievementDiaryStepManager.getKilledEarth();
@@ -192,7 +193,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 	public void setupGenericRequirements()
 	{
 		eleWorkI = new Conditions(LogicType.OR,
-			new VarplayerRequirement(299, true, 15),
+			new VarplayerRequirement(VarPlayerID.ELEMENTAL_WORKSHOP_BITS, true, 15),
 			new QuestRequirement(QuestHelperQuest.ELEMENTAL_WORKSHOP_I, QuestState.FINISHED)
 		);
 		((Conditions) eleWorkI).setText("Partial completion of Elemental Workshop I");

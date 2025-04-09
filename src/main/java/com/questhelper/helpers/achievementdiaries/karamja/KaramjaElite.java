@@ -37,12 +37,12 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,11 +100,11 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCraftedRunes = new VarplayerRequirement(1200, false, 1);
-		notEquippedCape = new VarplayerRequirement(1200, false, 2);
-		notCheckedPalm = new VarplayerRequirement(1200, false, 3);
-		notMadePotion = new VarplayerRequirement(1200, false, 4);
-		notCheckedCalquat = new VarplayerRequirement(1200, false, 5);
+		notCraftedRunes = new VarplayerRequirement(VarPlayerID.ATJUN_TASKS_4, false, 1);
+		notEquippedCape = new VarplayerRequirement(VarPlayerID.ATJUN_TASKS_4, false, 2);
+		notCheckedPalm = new VarplayerRequirement(VarPlayerID.ATJUN_TASKS_4, false, 3);
+		notMadePotion = new VarplayerRequirement(VarPlayerID.ATJUN_TASKS_4, false, 4);
+		notCheckedCalquat = new VarplayerRequirement(VarPlayerID.ATJUN_TASKS_4, false, 5);
 
 		natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
 			ItemID.TIARA_NATURE).showConditioned(notCraftedRunes).isNotConsumed();
@@ -136,7 +136,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
+		enterNatureAltar = new ObjectStep(this, ObjectID.NATURETEMPLE_RUINED, new WorldPoint(2869, 3019, 0),
 			"Enter the nature altar, either from the ruin or through the Abyss.", natureTiaraOrAbyss,
 			pureEssence.quantity(28));
 		craftRunes = new ObjectStep(this, ObjectID.NATURE_ALTAR, new WorldPoint(2400, 4841, 0),

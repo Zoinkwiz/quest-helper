@@ -175,7 +175,7 @@ public class FightArena extends BasicQuestHelper
 		killOgre = new NpcStep(this, NpcID.ARENA_OGRE, new WorldPoint(2601, 3163, 0),
 			"Kill the Ogre. You can lure it behind a skeleton to safespot it.", combatGear);
 		killOgre.addSubSteps(talkToSammy);
-		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2605, 3153, 0), "Talk to General Khazard.");
+		talkToKhazard = new NpcStep(this, NpcID.SHADOW_MAJ_KHAZARD, new WorldPoint(2605, 3153, 0), "Talk to General Khazard.");
 		talkToHengrad = new NpcStep(this, NpcID.HENGRAD, new WorldPoint(2599, 3143, 0),
 			"Talk to Hengrad.");
 		talkToHengrad.addSubSteps(talkToKhazard);

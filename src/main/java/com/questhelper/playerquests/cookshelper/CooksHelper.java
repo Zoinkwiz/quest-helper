@@ -48,11 +48,11 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
 import com.questhelper.steps.playermadesteps.RuneliteObjectStep;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,7 +143,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 	private void setupCooksCousin()
 	{
 		// Cook's Cousin
-		cooksCousin = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.COOK).getModels(), new WorldPoint(3209, 3215, 0), 808);
+		cooksCousin = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.POH_SERVANT_COOK_WOMAN).getModels(), new WorldPoint(3209, 3215, 0), 808);
 		cooksCousin.setName("Cook's Cousin");
 		cooksCousin.setFace(4626);
 		cooksCousin.setExamine("The Cook's cousin.");
@@ -219,7 +219,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 		cabbage.addTakeAction(runeliteObjectManager, new RuneliteConfigSetter(configManager, getQuest().getPlayerQuests().getConfigValue(), "3"),
 			"You pick up the old cabbage.");
 
-		cabbage.setObjectToRemove(new ReplacedObject(NullObjectID.NULL_37348, new WorldPoint(3231, 3235, 0)));
+		cabbage.setObjectToRemove(new ReplacedObject(ObjectID.AP_INDICATOR, new WorldPoint(3231, 3235, 0)));
 	}
 
 	private void createRuneliteObjects()

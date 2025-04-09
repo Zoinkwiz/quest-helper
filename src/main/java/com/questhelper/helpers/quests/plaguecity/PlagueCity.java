@@ -37,7 +37,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -245,11 +244,11 @@ public class PlagueCity extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEdmond = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
+		talkToEdmond = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
 		talkToEdmond.addDialogStep("What's happened to her?");
 		talkToEdmond.addDialogStep("Yes.");
 		talkToAlrena = new NpcStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena nearby.", dwellberries);
-		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
+		talkToEdmondAgain = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
 		useWaterOnMudPatch1 = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Use four buckets of water on the mud patch in Edmond's garden patch.", fourBucketsOfWater);
 		useWaterOnMudPatch1.addIcon(ItemID.BUCKET_WATER);
@@ -282,7 +281,7 @@ public class PlagueCity extends BasicQuestHelper
 		useRopeOnGrill = new ObjectStep(this, ObjectID.PLAGUE_GRILL, new WorldPoint(2514,9739,0), "Use a rope on the grill.", rope);
 		useRopeOnGrill.addIcon(ItemID.ROPE);
 
-		talkToEdmondUnderground = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
+		talkToEdmondUnderground = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
 
 		climbThroughPipe = new ObjectStep(this, ObjectID.PLAGUESEWERPIPE_OPEN, new WorldPoint(2514, 9738, 0), "Equip the gas mask and climb through the pipe.", gasMask.highlighted());
 
@@ -297,7 +296,7 @@ public class PlagueCity extends BasicQuestHelper
 		talkToMilli = new NpcStep(this, NpcID.MILLI, new WorldPoint(2531, 3331, 1), "Talk to Milli.");
 		goUpstairsInMarthasHouse.addSubSteps(talkToMilli);
 
-		tryToEnterPlagueHouse = new ObjectStep(this, NullObjectID.NULL_37321, new WorldPoint(2540, 3273, 0), "Try to enter the house in the south-east corner of West Ardougne.");
+		tryToEnterPlagueHouse = new ObjectStep(this, ObjectID.PLAGUEELENADOORSHUT, new WorldPoint(2540, 3273, 0), "Try to enter the house in the south-east corner of West Ardougne.");
 		tryToEnterPlagueHouse.addDialogStep("I fear not a mere plague.");
 		tryToEnterPlagueHouse.addDialogStep("I want to check anyway.");
 
@@ -320,7 +319,7 @@ public class PlagueCity extends BasicQuestHelper
 
 		giveHangoverCureToBravek.addSubSteps(talkToBravekAgain);
 
-		tryToEnterPlagueHouseAgain = new ObjectStep(this, NullObjectID.NULL_37321, new WorldPoint(2540, 3273, 0), "Try to enter the plague house again.", warrant);
+		tryToEnterPlagueHouseAgain = new ObjectStep(this, ObjectID.PLAGUEELENADOORSHUT, new WorldPoint(2540, 3273, 0), "Try to enter the plague house again.", warrant);
 
 		searchBarrel = new ObjectStep(this, ObjectID.PLAGUEKEYBARREL, new WorldPoint(2534, 3268, 0), "Search the barrel in the room for a small key.");
 
@@ -337,7 +336,7 @@ public class PlagueCity extends BasicQuestHelper
 
 		climbMudPileToFinish = new ObjectStep(this, ObjectID.PLAGUEMUDPILE, new WorldPoint(2519,9760,0), "Climb the mud pile to return to Edmond.");
 
-		talkToEdmondToFinish = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3333, 0), "Return to Edmond to finish the quest.");
+		talkToEdmondToFinish = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2568, 3333, 0), "Return to Edmond to finish the quest.");
 		talkToEdmondToFinish.addSubSteps(goUpstairsInPlagueHouseToFinish, goDownManhole, goDownManhole2, climbMudPileToFinish);
 	}
 

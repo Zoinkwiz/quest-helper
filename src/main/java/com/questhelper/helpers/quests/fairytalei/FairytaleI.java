@@ -233,7 +233,7 @@ public class FairytaleI extends BasicQuestHelper
 		enterZanaris = new ObjectStep(this, ObjectID.ZANARISDOOR, new WorldPoint(3202, 3169, 0), "Travel to Zanaris.",
 			dramenOrLunarStaff);
 
-		talkToGodfather = new NpcStep(this, NpcID.FAIRY_GODFATHER, new WorldPoint(2447, 4430, 0),
+		talkToGodfather = new NpcStep(this, NpcID.FAIRY_GODFATHER2, new WorldPoint(2447, 4430, 0),
 			"Talk to the Fairy Godfather in the Throne Room.");
 		talkToGodfather.addDialogStep("Where's the Fairy Queen?");
 
@@ -272,7 +272,7 @@ public class FairytaleI extends BasicQuestHelper
 
 		enterZanarisForEnd = new ObjectStep(this, ObjectID.ZANARISDOOR, new WorldPoint(3202, 3169, 0),
 			"Talk to the Fairy Godfather in Zanaris to finish the quest.", dramenOrLunarStaff, queensSecateurs);
-		talkToGodfatherToFinish = new NpcStep(this, NpcID.FAIRY_GODFATHER, new WorldPoint(2447, 4430, 0),
+		talkToGodfatherToFinish = new NpcStep(this, NpcID.FAIRY_GODFATHER2, new WorldPoint(2447, 4430, 0),
 			"Talk to the Fairy Godfather to finish the quest.", queensSecateurs);
 		talkToGodfatherToFinish.addSubSteps(enterZanarisForEnd);
 	}

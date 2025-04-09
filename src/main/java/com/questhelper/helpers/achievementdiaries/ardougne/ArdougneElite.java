@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -131,18 +132,17 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notTrawlerRay = new VarplayerRequirement(1197, false, 6);
-		notYanAgi = new VarplayerRequirement(1197, false, 7);
-		notPickHero = new VarplayerRequirement(1197, false, 9);
-		notRuneCrossbow = new VarplayerRequirement(1197, false, 8);
-		notImbueSalve = new VarplayerRequirement(1197, false, 10);
-		notPickTorstol = new VarplayerRequirement(1197, false, 11);
-		notArdyRooftops = new VarplayerRequirement(1197, false, 12);
-		notIceBarrage = new VarplayerRequirement(1197, false, 13);
+		notTrawlerRay = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 6);
+		notYanAgi = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 7);
+		notPickHero = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 9);
+		notRuneCrossbow = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 8);
+		notImbueSalve = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 10);
+		notPickTorstol = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 11);
+		notArdyRooftops = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 12);
+		notIceBarrage = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 13);
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
-		enoughNMZPoints = new VarplayerRequirement(1060, 800000, Operation.GREATER_EQUAL,
-			"800,000 Nightmare Zone reward points");
+		enoughNMZPoints = new VarplayerRequirement(VarPlayerID.NZONE_REWARDPOINTS, 800000, Operation.GREATER_EQUAL, 			"800,000 Nightmare Zone reward points");
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());

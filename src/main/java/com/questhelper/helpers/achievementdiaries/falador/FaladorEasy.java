@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -144,17 +145,17 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notFamilyCrest = new VarplayerRequirement(1186, false, 0);
-		notClimbedWall = new VarplayerRequirement(1186, false, 1);
-		notSarahFarmingShop = new VarplayerRequirement(1186, false, 2);
-		notGotHaircut = new VarplayerRequirement(1186, false, 3);
-		notFilledWater = new VarplayerRequirement(1186, false, 4);
-		notKilledDuck = new VarplayerRequirement(1186, false, 5);
-		notMindTiara = new VarplayerRequirement(1186, false, 6);
-		notEntrana = new VarplayerRequirement(1186, false, 7);
-		notMotherloadMine = new VarplayerRequirement(1186, false, 8);
-		notGotSecurityBook = new VarplayerRequirement(1186, false, 9);
-		notBluriteLimbs = new VarplayerRequirement(1186, false, 10);
+		notFamilyCrest = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 0);
+		notClimbedWall = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 1);
+		notSarahFarmingShop = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 2);
+		notGotHaircut = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 3);
+		notFilledWater = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 4);
+		notKilledDuck = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 5);
+		notMindTiara = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 6);
+		notEntrana = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 7);
+		notMotherloadMine = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 8);
+		notGotSecurityBook = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 9);
+		notBluriteLimbs = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 10);
 
 		//Required
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY).showConditioned(notFilledWater).isNotConsumed();

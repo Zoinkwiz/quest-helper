@@ -186,7 +186,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 		((NpcStep) talkToTraderStan).addAlternateNpcs(NpcID.SAILING_TRANSPORT_TRADER_STAN_BRIMHAVEN, NpcID.SAILING_TRANSPORT_TRADER_STAN_CATHERBY, NpcID.SAILING_TRANSPORT_TRADER_STAN_MOSLEHARMLESS, NpcID.SAILING_TRANSPORT_TRADER_STAN_MUSAPOINT,
 				NpcID.SAILING_TRANSPORT_TRADER_STAN_PORTKHAZARD, NpcID.SAILING_TRANSPORT_TRADER_STAN_PORTPHASMATYS, NpcID.SAILING_TRANSPORT_TRADER_STAN_PORTSARIM, NpcID.SAILING_TRANSPORT_TRADER_STAN_SHIPYARD, NpcID.SAILING_TRANSPORT_TRADER_STAN_CORSAIRCOVE, NpcID.SAILING_TRANSPORT_TRADER_STAN_PRIFDDINAS
 				, NpcID.SAILING_TRANSPORT_TRADER_STAN_PORTTYRAS);
-		talkToBetty = new NpcStep(this, NpcID.BETTY, new WorldPoint(3011, 3260, 0), "Head to the Rune Shop in north western Port Sarim and speak to Betty" +
+		talkToBetty = new NpcStep(this, NpcID.SARIM_BETTY, new WorldPoint(3011, 3260, 0), "Head to the Rune Shop in north western Port Sarim and speak to Betty" +
 				".");
 		talkToBetty.addDialogStep("Have you seen a grey-haired man with a case?");
 		// 11206 0->1 is received betty's notes first time

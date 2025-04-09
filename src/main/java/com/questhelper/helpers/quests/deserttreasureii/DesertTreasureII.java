@@ -52,7 +52,6 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.widget.AncientSpells;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -587,13 +586,13 @@ public class DesertTreasureII extends BasicQuestHelper
 		inspectPlaque = new ObjectStep(this, ObjectID.DT2_VAULT_PLAQUE,
 			new WorldPoint(3944, 9631, 1), "Inspect the plaque.");
 
-		inspectStatueNE = new ObjectStep(this, NullObjectID.NULL_49499, new WorldPoint(3942, 9636, 1),
+		inspectStatueNE = new ObjectStep(this, ObjectID.DT2_VAULT_VARDORVIS_STATUE, new WorldPoint(3942, 9636, 1),
 			"Inspect the north-east statue.");
-		inspectStatueNW = new ObjectStep(this, NullObjectID.NULL_49501, new WorldPoint(3932, 9636, 1),
+		inspectStatueNW = new ObjectStep(this, ObjectID.DT2_VAULT_WHISPERER_STATUE, new WorldPoint(3932, 9636, 1),
 			"Inspect the north-west statue.");
-		inspectStatueSW = new ObjectStep(this, NullObjectID.NULL_49503, new WorldPoint(3932, 9626, 1),
+		inspectStatueSW = new ObjectStep(this, ObjectID.DT2_VAULT_SUCELLUS_STATUE, new WorldPoint(3932, 9626, 1),
 			"Inspect the south-west statue.");
-		inspectStatueSE = new ObjectStep(this, NullObjectID.NULL_49505, new WorldPoint(3942, 9626, 1),
+		inspectStatueSE = new ObjectStep(this, ObjectID.DT2_VAULT_PERSERIYA_STATUE, new WorldPoint(3942, 9626, 1),
 			"Inspect the south-east statue.");
 
 		talkToAsgarniaAgain = new NpcStep(this, NpcID.DT2_ASGARNIA_SMITH_VIS,
@@ -612,13 +611,13 @@ public class DesertTreasureII extends BasicQuestHelper
 		getPickaxe = new ObjectStep(this, ObjectID.DT2_DIGSITE_PICKAXE_CRATE, new WorldPoint(3414, 9819, 0),
 			"Get a pickaxe from the crate in the north-east of the cavern.");
 
-		mineRocks = new ObjectStep(this, NullObjectID.NULL_49510, new WorldPoint(3411, 9811, 0),
+		mineRocks = new ObjectStep(this, ObjectID.DT2_DIGSITE_CREVICE, new WorldPoint(3411, 9811, 0),
 			"Mine the rocks in the south-east of the cavern.", pickaxe);
 
-		enterDigsiteHole = new ObjectStep(this, NullObjectID.NULL_49510, new WorldPoint(3411, 9811, 0),
+		enterDigsiteHole = new ObjectStep(this, ObjectID.DT2_DIGSITE_CREVICE, new WorldPoint(3411, 9811, 0),
 			"Enter the hole in the south-east of the cavern, ready for a fight.", combatGear);
 
-		enterDigsiteHoleAgain = new ObjectStep(this, NullObjectID.NULL_49510, new WorldPoint(3411, 9811, 0),
+		enterDigsiteHoleAgain = new ObjectStep(this, ObjectID.DT2_DIGSITE_CREVICE, new WorldPoint(3411, 9811, 0),
 			"Enter the hole in the south-east of the cavern.");
 
 		killAncientGuardian = new NpcStep(this, NpcID.DT2_ANCIENT_GUARDIAN_SHIELD, new WorldPoint(2783, 6431, 0)
@@ -630,9 +629,9 @@ public class DesertTreasureII extends BasicQuestHelper
 			"Talk to Dr Banikan in the room you defeated the Ancient Guardian.");
 		talkToBanikanInGolemRoom.addSubSteps(enterDigsiteHoleAgain);
 
-		inspectGolem = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
+		inspectGolem = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_WARMIND, new WorldPoint(2783, 6444, 0),
 			"Inspect the golem to the north.");
-		inspectAltar = new ObjectStep(this, NullObjectID.NULL_49512, new WorldPoint(2773, 6442, 0),
+		inspectAltar = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_ALTAR, new WorldPoint(2773, 6442, 0),
 			"Inspect the altar to the north-west.");
 
 		castOnBloodStatue = new NpcStep(this, NpcID.DT2_WAR_ROOM_BLOOD_TOTEM_INACTIVE, new WorldPoint(2775, 6445, 0),
@@ -665,29 +664,29 @@ public class DesertTreasureII extends BasicQuestHelper
 
 		searchCrateForCharges = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_CELL_CRATE,
 			new WorldPoint(2780, 6440, 0), "Search the crate in the room with the golem.");
-		imbueAtAltar = new ObjectStep(this, NullObjectID.NULL_49512, new WorldPoint(2773, 6442, 0),
+		imbueAtAltar = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_ALTAR, new WorldPoint(2773, 6442, 0),
 			"Imbue the cells at the altar.", uncharedCells);
 
-		chargeGolem = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
+		chargeGolem = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_WARMIND, new WorldPoint(2783, 6444, 0),
 			"Inspect the golem again.");
 
 		solveGolemPuzzle = new GolemPuzzleStep(this);
 
-		operateGolem = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
+		operateGolem = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_WARMIND, new WorldPoint(2783, 6444, 0),
 			"Operate the golem, and search for the terms : \"Vardorvis\", \"Perseriya\", \"Sucellus\", and \"Whisperer\". " +
 				"Make sure to talk to Banikan about each one!");
 		operateGolem.addDialogStep("Yes.");
 
-		searchVardorvis = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
+		searchVardorvis = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_WARMIND, new WorldPoint(2783, 6444, 0),
 			"Operate the golem, and search for the term : \"Vardorvis\".");
 		searchVardorvis.addDialogStep("Yes.");
-		searchPerseriya = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
+		searchPerseriya = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_WARMIND, new WorldPoint(2783, 6444, 0),
 			"Operate the golem, and search for the terms : \"Perseriya\".");
 		searchPerseriya.addDialogStep("Yes.");
-		searchSucellus = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
+		searchSucellus = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_WARMIND, new WorldPoint(2783, 6444, 0),
 			"Operate the golem, and search for the terms : \"Sucellus\".");
 		searchSucellus.addDialogStep("Yes.");
-		searchWhisperer = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
+		searchWhisperer = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_WARMIND, new WorldPoint(2783, 6444, 0),
 			"Operate the golem, and search for the terms : \"Whisperer\".");
 		searchWhisperer.addDialogStep("Yes.");
 
@@ -710,7 +709,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		talkToBanikanAfterGolem = new NpcStep(this, NpcID.DT2_BANIKAN_VIS, new WorldPoint(2783, 6444, 0),
 			"Talk to Banikan about what to do next.");
 
-		operateGolemFrostenhorn = new ObjectStep(this, NullObjectID.NULL_49511, new WorldPoint(2783, 6444, 0),
+		operateGolemFrostenhorn = new ObjectStep(this, ObjectID.DT2_WAR_ROOM_WARMIND, new WorldPoint(2783, 6444, 0),
 			"Try operating the golem again until Banikan leaves, and the golem lets you know the last search term.");
 
 		/* Vardorvis */
@@ -752,12 +751,12 @@ public class DesertTreasureII extends BasicQuestHelper
 			combatGear, food, prayerPotions);
 		enterAncientVault.addTeleport(nardahTeleport);
 
-		returnToMysteriousFigure = new ObjectStep(this, NullObjectID.NULL_49497, new WorldPoint(3175, 2887, 0),
+		returnToMysteriousFigure = new ObjectStep(this, ObjectID.DT2_HIDEOUT_ENTRY, new WorldPoint(3175, 2887, 0),
 			"Return to fight the Mysterious Figure, through the portal south of the Quarry in the desert.", meleeCombatGear, rangedCombatGear,
 			food, prayerPotions);
 		fightMysteriousFigure.addSubSteps(returnToMysteriousFigure);
 
-		returnToPickUpMedallion = new ObjectStep(this, NullObjectID.NULL_49497, new WorldPoint(3175, 2887, 0),
+		returnToPickUpMedallion = new ObjectStep(this, ObjectID.DT2_HIDEOUT_ENTRY, new WorldPoint(3175, 2887, 0),
 			"Retrieve the medallion from the portal south of the Quarry.");
 		getMedallionFromChest = new ObjectStep(this, ObjectID.DT2_HIDEOUT_CHEST, new WorldPoint(3115, 9263, 0),
 			"Retrieve the medallion from the chest in the north-east room.");

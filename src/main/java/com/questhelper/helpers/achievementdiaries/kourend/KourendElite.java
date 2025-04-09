@@ -47,6 +47,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -138,14 +139,14 @@ public class KourendElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCraftBloodRune = new VarplayerRequirement(2086, false, 4);
-		notChopRedwood = new VarplayerRequirement(2086, false, 5);
-		notDefeatSkotizo = new VarplayerRequirement(2086, false, 6);
-		notCatchAngler = new VarplayerRequirement(2086, false, 7);
-		notKillHydra = new VarplayerRequirement(2086, false, 8);
-		notCreateTeleport = new VarplayerRequirement(2086, false, 9);
-		notCompleteRaid = new VarplayerRequirement(2086, false, 10);
-		notFletchBattlestaff = new VarplayerRequirement(2086, false, 11);
+		notCraftBloodRune = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 4);
+		notChopRedwood = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 5);
+		notDefeatSkotizo = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 6);
+		notCatchAngler = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 7);
+		notKillHydra = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 8);
+		notCreateTeleport = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 9);
+		notCompleteRaid = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 10);
+		notFletchBattlestaff = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 11);
 
 		onArceuusSpellbook = new SpellbookRequirement(Spellbook.ARCEUUS);
 

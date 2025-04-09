@@ -33,7 +33,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -176,13 +175,13 @@ public class AmloddLightPuzzle extends ConditionalStep
 			"Add a mirror to the pillar to the north. Rotate it to point the light west.", handMirrorHighlighted);
 		p1Pillar6.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar7 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35279, new WorldPoint(2595, 6186, 1),
+		p1Pillar7 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_C_7, new WorldPoint(2595, 6186, 1),
 			"Add a mirror to the pillar to the west. Rotate it to point the light down.", handMirrorHighlighted);
 		p1Pillar7.addIcon(ItemID.SOTE_MIRROR);
 
 		// Go to F0
 
-		p1Pillar8 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36701, new WorldPoint(2595, 6186, 0),
+		p1Pillar8 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_C_7, new WorldPoint(2595, 6186, 0),
 			"Add a mirror to the pillar with light coming down into it. Rotate it to point the light south.", handMirrorHighlighted);
 		p1Pillar8.addIcon(ItemID.SOTE_MIRROR);
 
@@ -198,7 +197,7 @@ public class AmloddLightPuzzle extends ConditionalStep
 
 		// Go to F0 from middle
 
-		p1Pillar11 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36705, new WorldPoint(2623, 6158, 0),
+		p1Pillar11 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_5, new WorldPoint(2623, 6158, 0),
 			"Add a mirror to the pillar near the stairs. Rotate it to point the light south.", handMirrorHighlighted);
 		p1Pillar11.addIcon(ItemID.SOTE_MIRROR);
 

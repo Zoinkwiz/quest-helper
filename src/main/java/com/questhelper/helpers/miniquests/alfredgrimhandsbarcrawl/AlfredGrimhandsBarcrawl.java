@@ -43,6 +43,7 @@ import com.questhelper.util.QHObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,17 +129,17 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	{
 		inGrandTreeF1 = new ZoneRequirement(grandTreeF1);
 
-		notTalkedToGuard = new VarplayerRequirement(77, false, 0);
-		notTalkedToBlueMoon = new VarplayerRequirement(77, false, 3);
-		notTalkedToJollyBoar = new VarplayerRequirement(77, false, 9);
-		notTalkedToRisingSun = new VarplayerRequirement(77, false, 11);
-		notTalkedToRustyAnchor = new VarplayerRequirement(77, false, 12);
-		notTalkedToZambo = new VarplayerRequirement(77, false, 10);
-		notTalkedToDeadMansChest = new VarplayerRequirement(77, false, 5);
-		notTalkedToFlyingHorseInn = new VarplayerRequirement(77, false, 7);
-		notTalkedToForestersArms = new VarplayerRequirement(77, false, 8);
-		notTalkedToBlurberry = new VarplayerRequirement(77, false, 4);
-		notTalkedToDragonInn = new VarplayerRequirement(77, false, 6);
+		notTalkedToGuard = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 0);
+		notTalkedToBlueMoon = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 3);
+		notTalkedToJollyBoar = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 9);
+		notTalkedToRisingSun = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 11);
+		notTalkedToRustyAnchor = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 12);
+		notTalkedToZambo = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 10);
+		notTalkedToDeadMansChest = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 5);
+		notTalkedToFlyingHorseInn = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 7);
+		notTalkedToForestersArms = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 8);
+		notTalkedToBlurberry = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 4);
+		notTalkedToDragonInn = new VarplayerRequirement(VarPlayerID.BARCRAWL, false, 6);
 	}
 
 	public void setupSteps()

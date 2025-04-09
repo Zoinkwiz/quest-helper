@@ -45,7 +45,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -57,9 +56,9 @@ import java.util.*;
 
 public class UndergroundPass extends BasicQuestHelper
 {
-	private static final int ORB_OF_LIGHT1 = NullObjectID.NULL_37326;
-	private static final int ORB_OF_LIGHT2 = NullObjectID.NULL_37325;
-	private static final int ORB_OF_LIGHT3 = NullObjectID.NULL_37324;
+	private static final int ORB_OF_LIGHT1 = ObjectID.CAVEORB4;
+	private static final int ORB_OF_LIGHT2 = ObjectID.CAVEORB3;
+	private static final int ORB_OF_LIGHT3 = ObjectID.CAVEORB2;
 
 	//Items Required
 	ItemRequirement rope1, rope2, ropeHighlight, bow, arrows, arrowsHighlight, spade, spadeHighlight, plank,

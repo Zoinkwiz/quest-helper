@@ -44,7 +44,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -424,7 +423,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		enterTheCellarStep.addStep(not(inVilla), returnToButlerAndHeadInside);
 
 		/// 18
-		getWine = new ObjectStep(this, NullObjectID.NULL_55379, new WorldPoint(1439, 9314, 0), "Investigate the Antique wine in the southern part of the cellar.");
+		getWine = new ObjectStep(this, ObjectID.DOTI_ALDARIN_RED_AMPHORA, new WorldPoint(1439, 9314, 0), "Investigate the Antique wine in the southern part of the cellar.");
 		getWine.addSubSteps(enterTheCellar);
 		getWineStep = new ConditionalStep(this, getWine);
 		getWineStep.addStep(not(inVilla), returnToButlerAndHeadInside);

@@ -46,7 +46,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -976,7 +975,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		leavePassCentre = new ObjectStep(this, ObjectID.UPASS_TEMPLEDOOR_CLOSED_RIGHT, new WorldPoint(2016, 4712, 1), "Leave the well area, and head to the dwarven camp below to the south.");
 		enterSouthPass = new ObjectStep(this, ObjectID.CAVEWALLTUNNEL_UPASS_DOWN, new WorldPoint(2150, 4545, 1), "Enter the south cave to go to the lower level of the pass.");
 		enterAltarFromBehind = new ObjectStep(this, ObjectID.CAVEWALLTUNNEL_TO_TEMPLE, new WorldPoint(2311, 9792, 0), "Enter the cave entrance behind the dwarf camp under Iban's area to the south.");
-		enterDeathAltar = new ObjectStep(this, NullObjectID.NULL_34823, new WorldPoint(1860, 4639, 0),
+		enterDeathAltar = new ObjectStep(this, ObjectID.DEATHTEMPLE_RUINED, new WorldPoint(1860, 4639, 0),
 			"Enter the death altar ruins.", deathTalisman.highlighted());
 		enterDeathAltar.addIcon(ItemID.DEATH_TALISMAN);
 		turnKeyMirrorCharging = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_1_B, new WorldPoint(1881, 4639, 0), "Enter the central area, and turn the pillar's mirror west.");

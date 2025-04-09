@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.game.FishingSpot;
 
 import java.util.ArrayList;
@@ -149,18 +150,18 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notUniPen = new VarplayerRequirement(1196, false, 13);
-		notGrapYan = new VarplayerRequirement(1196, false, 14);
-		notArdyStraw = new VarplayerRequirement(1196, false, 15);
-		notTPArdy = new VarplayerRequirement(1196, false, 16);
-		notBalloonCW = new VarplayerRequirement(1196, false, 17);
-		notClaimSand = new VarplayerRequirement(1196, false, 18);
-		notFishOnPlatform = new VarplayerRequirement(1196, false, 19);
-		notPickMasterFarmer = new VarplayerRequirement(1196, false, 20);
-		notCaveNightshade = new VarplayerRequirement(1196, false, 21);
-		notKillSwordchick = new VarplayerRequirement(1196, false, 23);
-		notIbanUpgrade = new VarplayerRequirement(1196, false, 24);
-		notNecroTower = new VarplayerRequirement(1196, false, 25);
+		notUniPen = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 13);
+		notGrapYan = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 14);
+		notArdyStraw = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 15);
+		notTPArdy = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 16);
+		notBalloonCW = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 17);
+		notClaimSand = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 18);
+		notFishOnPlatform = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 19);
+		notPickMasterFarmer = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 20);
+		notCaveNightshade = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 21);
+		notKillSwordchick = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 23);
+		notIbanUpgrade = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 24);
+		notNecroTower = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 25);
 
 		notCWBallon = new VarbitRequirement(2869, 1);
 		notCWBallon2 = new VarbitRequirement(2869, 0);
@@ -173,7 +174,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		skavMap = new ItemRequirement("Skavid map", ItemID.SKAVIDMAP).showConditioned(notCaveNightshade).isNotConsumed();
 		lightSource = new ItemRequirement("Any light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notCaveNightshade).isNotConsumed();
-		nightshade = new ItemRequirement("Cave nightshade", ItemID.NIGHTSHADE);
+		nightshade = new ItemRequirement("Cave nightshade", ItemID.STACKABLE_NIGHTSHADE);
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notGrapYan).isNotConsumed();
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapYan).isNotConsumed();
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY)

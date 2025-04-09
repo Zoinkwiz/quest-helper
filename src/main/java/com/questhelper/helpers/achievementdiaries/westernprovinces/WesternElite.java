@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,13 +118,13 @@ public class WesternElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notMagicLong = new VarplayerRequirement(1183, false, 6);
-		notKillThermy = new VarplayerRequirement(1183, false, 7);
-		notPrissyScilla = new VarplayerRequirement(1183, false, 8);
-		notAdvancedAgi = new VarplayerRequirement(1183, false, 9);
-		notFullVoid = new VarplayerRequirement(1183, false, 12);
-		notChompyHat = new VarplayerRequirement(1183, false, 13);
-		notPickpocketElf = new VarplayerRequirement(1183, false, 14);
+		notMagicLong = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 6);
+		notKillThermy = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 7);
+		notPrissyScilla = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 8);
+		notAdvancedAgi = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 9);
+		notFullVoid = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 12);
+		notChompyHat = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 13);
+		notPickpocketElf = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 14);
 
 		base42CombatSkills = new ComplexRequirement(LogicType.AND, "Base 42s in all combat skills and 22 prayer",
 			new SkillRequirement(Skill.ATTACK, 42), new SkillRequirement(Skill.STRENGTH, 42),

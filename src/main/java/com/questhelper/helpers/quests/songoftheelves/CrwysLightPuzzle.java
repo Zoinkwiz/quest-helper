@@ -33,7 +33,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -130,7 +129,7 @@ public class CrwysLightPuzzle extends ConditionalStep
 			"Add a green crystal to the pillar to the north.", greenCrystalHighlighted);
 		p1Pillar6.addIcon(ItemID.SOTE_CRYSTAL_GREEN);
 
-		p1Pillar7 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35259, new WorldPoint(2567, 6200, 1),
+		p1Pillar7 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_A_8, new WorldPoint(2567, 6200, 1),
 			"Run around to the north and add a mirror to the pillar there. Rotate it to point the light down.", handMirrorHighlighted);
 		p1Pillar7.addIcon(ItemID.SOTE_MIRROR);
 
@@ -146,7 +145,7 @@ public class CrwysLightPuzzle extends ConditionalStep
 
 		// Go upstairs
 
-		p1Pillar10 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35270, new WorldPoint(2581, 6200, 1),
+		p1Pillar10 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_B_8, new WorldPoint(2581, 6200, 1),
 			"Add the cyan crystal to the pillar next to the stairs.", cyanCrystalHighlighted);
 		p1Pillar10.addIcon(ItemID.SOTE_CRYSTAL_CYAN);
 
@@ -162,7 +161,7 @@ public class CrwysLightPuzzle extends ConditionalStep
 
 		// Go downstairs
 
-		p1Pillar13 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35268, new WorldPoint(2581, 6186, 1),
+		p1Pillar13 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_B_7, new WorldPoint(2581, 6186, 1),
 			"Add a mirror to the pillar to the south. Rotate it to point the light south.", handMirrorHighlighted);
 		p1Pillar13.addIcon(ItemID.SOTE_MIRROR);
 

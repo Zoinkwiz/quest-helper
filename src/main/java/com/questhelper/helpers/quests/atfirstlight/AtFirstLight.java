@@ -41,7 +41,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -227,9 +226,9 @@ public class AtFirstLight extends BasicQuestHelper
 			"Go back up the stairs.");
 		talkToFox = new NpcStep(this, NpcID.AFL_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Talk to Guild Hunter Fox near the crevice south-east of the Hunter Guild.");
-		takeLeaf = new ObjectStep(this, NullObjectID.NULL_50876, new WorldPoint(1618, 2979, 0),
+		takeLeaf = new ObjectStep(this, ObjectID.AFL_BUSH1, new WorldPoint(1618, 2979, 0),
 			"Search the leafy bush south of the crevice for a smooth leaf.");
-		takeSecondLeaf = new ObjectStep(this, NullObjectID.NULL_50877, new WorldPoint(1673, 2992, 0),
+		takeSecondLeaf = new ObjectStep(this, ObjectID.AFL_BUSH2, new WorldPoint(1673, 2992, 0),
 			"Search the rough-looking bush on the west side of the Locus Oasis.");
 		catchJerboa = new DetailedQuestStep(this, new WorldPoint(1664, 3003, 0),
 			"Catch two Embertailed Jerboa for their tails.", boxTrap.highlighted());
@@ -246,7 +245,7 @@ public class AtFirstLight extends BasicQuestHelper
 		talkToAtzaAfterHandingFur = new NpcStep(this, NpcID.AFL_ATZA, new WorldPoint(1696, 3063, 0),
 			"Talk to Atza in one of the buildings outside Civitas illa Fortis' south wall, west of the general store.");
 		talkToAtza.addSubSteps(talkToAtzaAfterHandingFur);
-		makeEquipmentPile = new ObjectStep(this, NullObjectID.NULL_52976, new WorldPoint(1697, 3063, 0),
+		makeEquipmentPile = new ObjectStep(this, ObjectID.AFL_HOUSETRAP_MULTI, new WorldPoint(1697, 3063, 0),
 			"Set-up the pile of equipment next to Atza.", hammer);
 		talkToAtzaForTrim = new NpcStep(this, NpcID.AFL_ATZA, new WorldPoint(1696, 3063, 0),
 			"Talk to Atza again for some trimmed fur.");

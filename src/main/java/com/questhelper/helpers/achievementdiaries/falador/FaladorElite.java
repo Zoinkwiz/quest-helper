@@ -53,6 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,12 +128,12 @@ public class FaladorElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCraftedAirRunes = new VarplayerRequirement(1187, false, 5);
-		notPurchasedWhite2hSword = new VarplayerRequirement(1187, false, 6);
-		notGotMagicRoots = new VarplayerRequirement(1187, false, 7);
-		notPerformedSkillCapeEmote = new VarplayerRequirement(1187, false, 8);
-		notJumpedOverStrangeFloor = new VarplayerRequirement(1187, false, 9);
-		notMadeSaraBrew = new VarplayerRequirement(1187, false, 10);
+		notCraftedAirRunes = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 5);
+		notPurchasedWhite2hSword = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 6);
+		notGotMagicRoots = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 7);
+		notPerformedSkillCapeEmote = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 8);
+		notJumpedOverStrangeFloor = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 9);
+		notMadeSaraBrew = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 10);
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.BLANKRUNE_HIGH, 28).showConditioned(notCraftedAirRunes);
 		airTiara = new ItemRequirement("Air Tiara", ItemID.TIARA_AIR, 1, true).showConditioned(notCraftedAirRunes).isNotConsumed();

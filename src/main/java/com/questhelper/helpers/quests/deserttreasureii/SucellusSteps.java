@@ -38,7 +38,6 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -317,11 +316,11 @@ public class SucellusSteps extends ConditionalStep
 			"Enter the basalt cave in Weiss.", meleeCombatGear, food, prayerPotions);
 		((ObjectStep) moveToWeissCave).addRecommended(staminaPotions);
 		((ObjectStep) moveToWeissCave).addTeleport(icyBasalt);
-		enterWeissCave = new ObjectStep(getQuestHelper(), NullObjectID.NULL_46905, new WorldPoint(2846, 10332, 0),
+		enterWeissCave = new ObjectStep(getQuestHelper(), ObjectID.MY2ARM_MINE_WALL_CAVE_EXIT_02, new WorldPoint(2846, 10332, 0),
 			"Enter the cave to the south.");
 		enterWeissCave.addDialogStep("Yes.");
 
-		enterPrison = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49513, new WorldPoint(2927, 10354, 0),
+		enterPrison = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_ENTRY, new WorldPoint(2927, 10354, 0),
 			"Enter the heavy door in the north-eastern room.");
 
 		getKnockedOut = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2912, 6348, 2), "Move deeper into the prison.");
@@ -346,7 +345,7 @@ public class SucellusSteps extends ConditionalStep
 			"Give the knife to the soldier."),
 			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		searchBed = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49514, new WorldPoint(3041, 6367, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_CELL_BED, new WorldPoint(3041, 6367, 0),
 			"Search the bed."),
 			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		giveSoldierLockpick = new PuzzleWrapperStep(getQuestHelper(),
@@ -506,7 +505,7 @@ public class SucellusSteps extends ConditionalStep
 			"Enter the correct code for the chest.").withNoHelpHiddenInSidebar(true);
 		goToAdminRoom.addSubSteps(unlockChest2);
 
-		enterCrevice = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49517, new WorldPoint(2960, 6428, 2),
+		enterCrevice = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_SHORTCUT_2_ENTRY, new WorldPoint(2960, 6428, 2),
 			"When you're not in a room, Jhallan will now chase you down. Use Protect from Magic to reduce his damage.");
 		enterCrevice.addText("Run east into the room with a crevice. Clear it, and go through it.");
 		((ObjectStep) enterCrevice).setLinePoints(Arrays.asList(
@@ -572,7 +571,7 @@ public class SucellusSteps extends ConditionalStep
 			"Get your equipment back from the chest in the cell next to the Assassin. You'll need to go through some dialog with him to enter.");
 		talkToAssassinWithGear = new NpcStep(getQuestHelper(), NpcID.DT2_ASSASSIN_GHORROCK_INSTANCE, new WorldPoint(2903, 6383, 2),
 			"Talk to the assassin.");
-		goLightFirecrackers = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49515, new WorldPoint(2972, 6367, 2),
+		goLightFirecrackers = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_FIRECRACKER_PACK, new WorldPoint(2972, 6367, 2),
 			"Get a full inventory of food, and return to the refugee camp in the south-eastern room. " +
 				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 3 minutes.");
 		((ObjectStep) goLightFirecrackers).setLinePoints(Arrays.asList(
@@ -591,7 +590,7 @@ public class SucellusSteps extends ConditionalStep
 		));
 		goLightFirecrackers.addDialogStep("Yes.");
 
-		goLightFirecrackersThroughCrevice = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49515, new WorldPoint(2972, 6367, 2),
+		goLightFirecrackersThroughCrevice = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_FIRECRACKER_PACK, new WorldPoint(2972, 6367, 2),
 			"Get a full inventory of food, and return to the refugee camp in the south-eastern room. " +
 				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 3 minutes.");
 		((ObjectStep) goLightFirecrackersThroughCrevice).setLinePoints(Arrays.asList(
@@ -677,7 +676,7 @@ public class SucellusSteps extends ConditionalStep
 			sucellusMedallion);
 		((ObjectStep) returnToDesertWithSucellusMedallion).addTeleport(nardahTeleport);
 
-		useSucellusMedallionOnStatue = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49503, new WorldPoint(3932, 9626, 1),
+		useSucellusMedallionOnStatue = new ObjectStep(getQuestHelper(), ObjectID.DT2_VAULT_SUCELLUS_STATUE, new WorldPoint(3932, 9626, 1),
 			"Use the medallion on the south-west statue.", sucellusMedallion.highlighted());
 		useSucellusMedallionOnStatue.addIcon(ItemID.DT2_MEDALLION_SUCELLUS);
 		useSucellusMedallionOnStatue.addDialogStep("Yes.");

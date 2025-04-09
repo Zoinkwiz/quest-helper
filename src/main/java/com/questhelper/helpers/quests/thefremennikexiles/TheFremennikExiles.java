@@ -50,7 +50,10 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.*;
+import net.runelite.api.Prayer;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -216,7 +219,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		mirrorShield = new ItemRequirement("Mirror shield", ItemID.SLAYER_MIRROR_SHIELD).isNotConsumed();
-		kegsOfBeer = new ItemRequirement("Kegs of beer", ItemID.KEG_OF_BEER);
+		kegsOfBeer = new ItemRequirement("Kegs of beer", ItemID.VIKING_BEERKEG);
 		kegsOfBeer.setTooltip("You can buy some from Rasolo south east of Baxtorian Falls");
 		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
 		astralRunes = new ItemRequirement("Astral runes", ItemID.ASTRALRUNE);
@@ -428,22 +431,22 @@ public class TheFremennikExiles extends BasicQuestHelper
 			"Kill basilisks until you're told to stop.", true, vShield.equipped(), combatGear, food);
 		((NpcStep) killBasilisks).addAlternateNpcs(NpcID.VIKINGEXILE_BASILISK_HUNTPLAYER, NpcID.VIKINGEXILE_BASILISK_BABY, NpcID.VIKINGEXILE_BASILISK_BABY_HUNTPLAYER,
 			NpcID.VIKINGEXILE_BASILISK_SUPERIOR, NpcID.VIKINGEXILE_BASILISK_SUPERIOR_HUNTPLAYER);
-		travelToIsleOfStone = new ObjectStep(this, NullObjectID.NULL_37432, new WorldPoint(2623, 3693, 0),
+		travelToIsleOfStone = new ObjectStep(this, ObjectID.FREMENNIK_BOAT_STONE, new WorldPoint(2623, 3693, 0),
 			"Take the boat to the Isle of Stone.");
 		talkToBrundtOutsidePuzzle = new NpcStep(this, NpcID.VIKINGEXILE_BRUNDT_CHILD_SHIELD, new WorldPoint(2466, 4010, 0),
 		"Talk to Brundt outside the cave entrance.");
 
-		solvePuzzle = new ObjectStep(this, NullObjectID.NULL_37433, new WorldPoint(2465, 4012, 0),
+		solvePuzzle = new ObjectStep(this, ObjectID.ISLAND_OF_STONE_CAVE, new WorldPoint(2465, 4012, 0),
 			"Attempt to open the door and solve the puzzle. It's Mastermind, where a red tick means you have one of " +
 				"the correct runes in the wrong position, and a green tick means a correct rune in the correct " +
 				"position.");
 
-		enterCaveToFight = new ObjectStep(this, NullObjectID.NULL_37433, new WorldPoint(2465, 4012, 0),
+		enterCaveToFight = new ObjectStep(this, ObjectID.ISLAND_OF_STONE_CAVE, new WorldPoint(2465, 4012, 0),
 			"Enter the door, ready to fight.", combatGear, vShield.equipped());
 		enterCaveToFight.addDialogStep("Yes.");
 		fightTyphor = new NpcStep(this, NpcID.TYPHOR_CUTSCENE, new WorldPoint(2457, 10384, 0), "Fight Typhor, who attacks " +
 			"with both Melee and Magic. He is weak to crush.", vShield.equipped());
-		((NpcStep) fightTyphor).addAlternateNpcs(NpcID.TYPHOR);
+		((NpcStep) fightTyphor).addAlternateNpcs(NpcID.TYPHOR_CUTSCENE);
 
 		PrayerRequirement protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 		fightJormungand = new NpcStep(this, NpcID.JORMUNGAND_FROZEN, new WorldPoint(2457, 10384, 0), "Defeat the " +

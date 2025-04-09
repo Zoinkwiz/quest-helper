@@ -338,7 +338,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		ObjectStep climbSecondSteps = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, secondStairsPosition,
 			"Climb up the stairs to talk to Sir Amik Vaze.");
-		NpcStep talkToSirAmikVarze = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "");
+		NpcStep talkToSirAmikVarze = new NpcStep(this, NpcID.HUNDRED_VARZE, "");
 		talkToSirAmikVarze.addDialogStep("Yes please");
 
 		conditionalTalkToSirAmikVarze = new ConditionalStep(this, climbBottomSteps,

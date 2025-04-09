@@ -54,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -290,25 +291,25 @@ public class HeroesQuest extends BasicQuestHelper
 		inJailCell = new ZoneRequirement(jailCell);
 		has70Agility = new SkillRequirement(Skill.AGILITY, 70);
 
-		talkedToKatrine = new VarplayerRequirement(188, 7, Operation.GREATER_EQUAL);
-		blackArmGangDoorUnlocked = new VarplayerRequirement(188, 8, Operation.GREATER_EQUAL);
-		gottenPapers = new VarplayerRequirement(188, 9, Operation.GREATER_EQUAL);
-		enteredMansion = new VarplayerRequirement(188, 10, Operation.GREATER_EQUAL);
-		talkedToGrip = new VarplayerRequirement(188, 11, Operation.GREATER_EQUAL);
+		talkedToKatrine = new VarplayerRequirement(VarPlayerID.HEROQUEST, 7, Operation.GREATER_EQUAL);
+		blackArmGangDoorUnlocked = new VarplayerRequirement(VarPlayerID.HEROQUEST, 8, Operation.GREATER_EQUAL);
+		gottenPapers = new VarplayerRequirement(VarPlayerID.HEROQUEST, 9, Operation.GREATER_EQUAL);
+		enteredMansion = new VarplayerRequirement(VarPlayerID.HEROQUEST, 10, Operation.GREATER_EQUAL);
+		talkedToGrip = new VarplayerRequirement(VarPlayerID.HEROQUEST, 11, Operation.GREATER_EQUAL);
 		unlockedCandlestickBlackArm = new VarplayerRequirement(188, 12);
-		finishedBlackArm = new VarplayerRequirement(188, 13, Operation.GREATER_EQUAL);
-		talkedToStraven = new VarplayerRequirement(188, 2, Operation.GREATER_EQUAL);
-		talkedToAlfonse = new VarplayerRequirement(188, 3, Operation.GREATER_EQUAL);
-		talkedToCharlie = new VarplayerRequirement(188, 4, Operation.GREATER_EQUAL);
-		unlockedCandlestickPhoenix = new VarplayerRequirement(188, 5, Operation.GREATER_EQUAL);
-		finishedPhoenix = new VarplayerRequirement(188, 6, Operation.GREATER_EQUAL);
+		finishedBlackArm = new VarplayerRequirement(VarPlayerID.HEROQUEST, 13, Operation.GREATER_EQUAL);
+		talkedToStraven = new VarplayerRequirement(VarPlayerID.HEROQUEST, 2, Operation.GREATER_EQUAL);
+		talkedToAlfonse = new VarplayerRequirement(VarPlayerID.HEROQUEST, 3, Operation.GREATER_EQUAL);
+		talkedToCharlie = new VarplayerRequirement(VarPlayerID.HEROQUEST, 4, Operation.GREATER_EQUAL);
+		unlockedCandlestickPhoenix = new VarplayerRequirement(VarPlayerID.HEROQUEST, 5, Operation.GREATER_EQUAL);
+		finishedPhoenix = new VarplayerRequirement(VarPlayerID.HEROQUEST, 6, Operation.GREATER_EQUAL);
 		inSecretRoom = new ZoneRequirement(secretRoom);
 		inGarden = new ZoneRequirement(garden1, garden2);
 		gripsKeyOnFloor = new ItemOnTileRequirement(gripsKey);
 		inTreasureRoom = new ZoneRequirement(treasureRoom);
 		chestOpen = new ObjectCondition(ObjectID.OPENCANDLECHEST);
 
-		inBlackArmGang = new VarplayerRequirement(146, 4, Operation.GREATER_EQUAL);
+		inBlackArmGang = new VarplayerRequirement(VarPlayerID.BLACKARMGANG, 4, Operation.GREATER_EQUAL);
 		inPhoenixBase = new ZoneRequirement(phoenixBase, phoenixEntry);
 
 		inIceEntrance = new ZoneRequirement(iceEntrance);
@@ -333,7 +334,7 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToAchietties.addDialogStep("I'll start looking for all those things then.");
 		talkToAchietties.addTeleport(burthorpeTeleport);
 
-		talkToGerrant = new NpcStep(this, NpcID.GERRANT, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
+		talkToGerrant = new NpcStep(this, NpcID.SARIM_GERRANT, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
 		talkToGerrant.addDialogStep("I want to find out how to catch a lava eel.");
 		talkToGerrant.addTeleport(portSarimTeleport);
 		makeBlamishOil = new ItemStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf.highlighted(), blamishSlime.highlighted());

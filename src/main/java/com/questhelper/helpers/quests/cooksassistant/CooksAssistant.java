@@ -155,7 +155,7 @@ public class CooksAssistant extends BasicQuestHelper
 		collectFlour = new ObjectStep(this, ObjectID.MILLBASE_FLOUR, new WorldPoint(3166, 3306, 0),
 			"Collect the flour in the bin.", pot.highlighted());
 		collectFlour.addIcon(ItemID.POT_EMPTY);
-		finishQuest = new NpcStep(this, NpcID.COOK, new WorldPoint(3206, 3214, 0),
+		finishQuest = new NpcStep(this, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3206, 3214, 0),
 			"Give the Cook in Lumbridge Castle's kitchen the required items to finish the quest.",
 			egg, milk, flour);
 		finishQuest.addDialogSteps("What's wrong?", "Can I help?", "Yes.");

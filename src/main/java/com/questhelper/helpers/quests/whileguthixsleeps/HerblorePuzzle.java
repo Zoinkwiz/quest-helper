@@ -32,9 +32,9 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 
 import static com.questhelper.requirements.util.LogicHelper.*;
 
@@ -75,7 +75,7 @@ public class HerblorePuzzle extends ConditionalStep
 		dolmens.addAlternates(ItemID.WGS_HENGE_PIECE_ENERGY, ItemID.WGS_HENGE_PIECE_RESTORE, ItemID.WGS_HENGE_PIECE_ATTACK, ItemID.WGS_HENGE_PIECE_STRENGTH, ItemID.WGS_HENGE_PIECE_DEFENCE, ItemID.WGS_HENGE_PIECE_COMBAT,
 			ItemID.WGS_HENGE_PIECE_RANGED, ItemID.WGS_HENGE_PIECE_PRAYER, ItemID.WGS_HENGE_PIECE_HUNTING, ItemID.WGS_HENGE_PIECE_FISHING, ItemID.WGS_HENGE_PIECE_MAGIC, ItemID.WGS_HENGE_PIECE_BALANCE);
 
-		placeDolmens = new ObjectStep(questHelper, NullObjectID.NULL_54083, new WorldPoint(4076, 4437, 0), "Use all the dolmens on the stone table in the middle of the area.", dolmens.highlighted());
+		placeDolmens = new ObjectStep(questHelper, ObjectID.LUC2_GT_HENGE_TABLE_MULTI, new WorldPoint(4076, 4437, 0), "Use all the dolmens on the stone table in the middle of the area.", dolmens.highlighted());
 		steps[8] = placeDolmens;
 
 		int[] HERB_ORDER = new int[]{3, 0, 6, 1, 7, 4, 2, 5};

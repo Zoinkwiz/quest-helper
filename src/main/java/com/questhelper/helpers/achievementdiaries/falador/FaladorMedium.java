@@ -54,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,20 +170,20 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notLitLantern = new VarplayerRequirement(1186, false, 11);
-		notTelegrabbedWine = new VarplayerRequirement(1186, false, 12);
-		notUnlockedCrystalChest = new VarplayerRequirement(1186, false, 13);
-		notPlacedScarecrow = new VarplayerRequirement(1186, false, 14);
-		notKilledMogre = new VarplayerRequirement(1186, false, 15);
-		notVisitRatPits = new VarplayerRequirement(1186, false, 16);
-		notGrappleNorthWall = new VarplayerRequirement(1186, false, 17);
-		notPickpocketGuard = new VarplayerRequirement(1186, false, 18);
-		notPrayAtAltar = new VarplayerRequirement(1186, false, 20);
-		notMineGold = new VarplayerRequirement(1186, false, 21);
-		notDwarfShortcut = new VarplayerRequirement(1186, false, 22);
-		notChopBurnWillowTav = new VarplayerRequirement(1186, false, 23);
-		notBasketFalLoom = new VarplayerRequirement(1186, false, 24);
-		notTeleportFalador = new VarplayerRequirement(1186, false, 25);
+		notLitLantern = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 11);
+		notTelegrabbedWine = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 12);
+		notUnlockedCrystalChest = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 13);
+		notPlacedScarecrow = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 14);
+		notKilledMogre = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 15);
+		notVisitRatPits = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 16);
+		notGrappleNorthWall = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 17);
+		notPickpocketGuard = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 18);
+		notPrayAtAltar = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 20);
+		notMineGold = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 21);
+		notDwarfShortcut = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 22);
+		notChopBurnWillowTav = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 23);
+		notBasketFalLoom = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 24);
+		notTeleportFalador = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 25);
 		bothRunes = new ComplexRequirement(LogicType.AND, "Earth runes", notTeleportFalador, notTelegrabbedWine);
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
@@ -214,7 +215,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW_COMPLETE).showConditioned(notPlacedScarecrow);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow).isNotConsumed();
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
-		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE);
+		fishingExplosive.addAlternates(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre).isNotConsumed();
 		mithGrapple = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();
 		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();

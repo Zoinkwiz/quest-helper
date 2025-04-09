@@ -46,7 +46,6 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.widget.WidgetDetails;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -304,31 +303,31 @@ public class SleepingGiants extends BasicQuestHelper
 		enterFoundryToMakeWeapon = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_ENTRANCE /* Cave */, new WorldPoint(3361, 3150, 0),
 			"Enter the Giants' Foundry again.");
 
-		fixPolishingStone = new ObjectStep(this, NullObjectID.NULL_44775 /* Broken polishing wheel */, new WorldPoint(3363, 11485, 0),
+		fixPolishingStone = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_POLISHING_WHEEL_QUEST_MULTI /* Broken polishing wheel */, new WorldPoint(3363, 11485, 0),
 			"Fix the Broken polishing wheel.", twoOakLogs, fiveNails, hammer);
 		fixPolishingStone.addDialogStep("Yes.");
 
-		fixGrindstone = new ObjectStep(this, NullObjectID.NULL_44774 /* Broken grindstone */, new WorldPoint(3362, 11492, 0),
+		fixGrindstone = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_GRINDSTONE_QUEST_MULTI /* Broken grindstone */, new WorldPoint(3362, 11492, 0),
 			"Fix the Broken grindstone.", chisel);
 		fixGrindstone.addDialogStep("Yes.");
-		fixHammer = new ObjectStep(this, NullObjectID.NULL_44773 /* Broken trip hammer */, new WorldPoint(3364, 11497, 0),
+		fixHammer = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_TRIP_HAMMER_QUEST_MULTI /* Broken trip hammer */, new WorldPoint(3364, 11497, 0),
 			"Fix the Broken trip hammer.", oneOakLog, fiveNails, hammer);
 		fixHammer.addDialogStep("Yes.");
 
 		speakToKovacAfterRepairs = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_QUEST, "Speak to Kovac to continue.");
 		speakToKovacContinue = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_1OP, "Speak to Kovac for a commission.");
 
-		searchCrate = new ObjectStep(this, NullObjectID.NULL_44779 /* Crate */, new WorldPoint(3370, 11483, 0),
+		searchCrate = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_SUPPLY_BOX_MULTI /* Crate */, new WorldPoint(3370, 11483, 0),
 			"Take some bars & weapons from the Crate.", freeInventorySpace);
 		searchCrate.addDialogStep("Yes.");
 
-		fillCrucible = new ObjectStep(this, NullObjectID.NULL_44776 /* Crucible (empty */,
+		fillCrucible = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_CRUCIBLE_MULTI /* Crucible (empty */,
 			"Fill the Crucible with items & bars until it is full.");
 		fillCrucible.addSubSteps(enterFoundryToMakeWeapon);
 
 		speakToKovacAboutMould = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_1OP, "Speak to Kovac about the mould.");
 
-		interactWithMould = new ObjectStep(this, NullObjectID.NULL_44777 /* Mould jig (Empty) */,
+		interactWithMould = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_MOULD_JIG /* Mould jig (Empty) */,
 			"Select the mould for the forte, blade and tip.");
 
 		selectForteTab = new WidgetStep(this, "Select the Forte tab.", new WidgetDetails(718, 12, 1));
@@ -342,9 +341,9 @@ public class SleepingGiants extends BasicQuestHelper
 
 		talkToKovakAfterMould = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_1OP, "Speak to Kovac about pouring the metal.");
 
-		pourMetal = new ObjectStep(this, NullObjectID.NULL_44776 /* Crucible (empty */, "Pour the full Crucible into the mould.");
+		pourMetal = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_CRUCIBLE_MULTI /* Crucible (empty */, "Pour the full Crucible into the mould.");
 
-		coolDownSword = new ObjectStep(this, NullObjectID.NULL_44777, "Pick up the sword from the mould with a bucket of water or ice gloves equipped.",
+		coolDownSword = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_MOULD_JIG, "Pick up the sword from the mould with a bucket of water or ice gloves equipped.",
 			iceGloves.equipped().showConditioned(iceGloves), bucketOfWater.showConditioned(bucketOfWater).highlighted());
 		coolDownSword.addIcon(ItemID.BUCKET_WATER);
 		fillBucketWaterfall = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_WATERFALL,
@@ -375,7 +374,7 @@ public class SleepingGiants extends BasicQuestHelper
 			"Use the polishing wheel whilst in the green heat range, heating it in the lava when needed.");
 		polishPreform.addSubSteps(coolPreformToPolish, heatPreformToPolish);
 
-		getPreform = new ObjectStep(this, NullObjectID.NULL_44778, new WorldPoint(3369, 11501, 0),
+		getPreform = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_PREFORM_STORAGE, new WorldPoint(3369, 11501, 0),
 			"Get your preform from the preform storage in the north of the room.");
 
 		handInPreform = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_1OP, "Give the finished sword to Kovac to complete the quest.");

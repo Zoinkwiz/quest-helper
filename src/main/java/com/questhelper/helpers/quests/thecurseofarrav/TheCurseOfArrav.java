@@ -48,7 +48,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.annotations.Varbit;
@@ -543,7 +542,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
 		headToZemouregalsBaseAndTalkToElias.addDialogStep("Ready when you are.");
 		headToZemouregalsBaseAndTalkToElias.addTeleport(lumberyardTeleport);
-		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
+		enterZemouregalsBase = new ObjectStep(this, ObjectID.DOV_BASE_ENTRY, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
 		enterZemouregalsBase.addTeleport(lumberyardTeleport);
 
 

@@ -46,10 +46,7 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.*;
 
@@ -238,7 +235,7 @@ public class TwilightsPromise extends BasicQuestHelper
 		finishedCothonKnight = new VarbitRequirement(VarbitID.VMQ2_COTHON_KNIGHT, 3, Operation.GREATER_EQUAL);
 
 		talkedToPubKnights = new VarbitRequirement(VarbitID.VMQ2_PUB_KNIGHTS, 1, Operation.GREATER_EQUAL);
-		pubKnightFollowing = new VarplayerRequirement(447, List.of(13393, NpcID.VMQ2_KNIGHT_5_DRUNK), 16);
+		pubKnightFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(13393, NpcID.VMQ2_KNIGHT_5_DRUNK), 16);
 		pubKnightSobered = new VarbitRequirement(VarbitID.VMQ2_PUB_KNIGHTS, 2, Operation.GREATER_EQUAL);
 		finishedPubKnights = new VarbitRequirement(VarbitID.VMQ2_PUB_KNIGHTS, 3, Operation.GREATER_EQUAL);
 

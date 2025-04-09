@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
@@ -278,7 +279,7 @@ public class TheTouristTrap extends BasicQuestHelper
 
 		anaPlacedOnCartOfLift = new VarbitRequirement(2805, 1);
 		// TODO: Better detection of if Ana is on the surface or in the underground barrel
-		anaOnSurface = new VarplayerRequirement(197, 22, Operation.GREATER_EQUAL);
+		anaOnSurface = new VarplayerRequirement(VarPlayerID.DESERTRESCUE, 22, Operation.GREATER_EQUAL);
 		// TODO: This only gets set the first time. If you somehow lose Ana between here and the cart it remains set. Need to add more logic around this
 		anaOnSurfaceInBarrel = new VarbitRequirement(2808, 1);
 		anaOnCart = new VarbitRequirement(2809, 1);

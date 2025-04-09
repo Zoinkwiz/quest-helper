@@ -34,7 +34,6 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
@@ -51,8 +50,8 @@ import java.util.List;
 public class MonolithPuzzle extends DetailedOwnerStep
 {
 	private static final int STOREROOM_REGION = 11074;
-	private static final int BIG_MONOLITH = NullObjectID.NULL_49584;
-	private static final int SMALL_MONOLITH = NullObjectID.NULL_49586;
+	private static final int BIG_MONOLITH = ObjectID.POG_2X2_BLOCKING;
+	private static final int SMALL_MONOLITH = ObjectID.POG_1X1_BLOCKING;
 	private ObjectStep getFirstShapes;
 	private HashMap<Integer, ItemRequirement> shapes;
 	private NpcStep pushSouthernMonolithUp;

@@ -48,10 +48,7 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,18 +139,18 @@ public class DesertMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notAgiPyramid = new VarplayerRequirement(1198, false, 12);
-		notDesertLizard = new VarplayerRequirement(1198, false, 13);
-		notOrangeSally = new VarplayerRequirement(1198, false, 14);
-		notPhoenixFeather = new VarplayerRequirement(1198, false, 15);
-		notMagicCarpet = new VarplayerRequirement(1198, false, 16);
-		notEagleTravel = new VarplayerRequirement(1198, false, 17);
-		notPrayElidinis = new VarplayerRequirement(1198, false, 18);
-		notCombatPot = new VarplayerRequirement(1198, false, 19);
-		notTPEnakhra = new VarplayerRequirement(1198, false, 20);
-		notVisitGenie = new VarplayerRequirement(1198, false, 21);
-		notTPPollnivneach = new VarplayerRequirement(1198, false, 22);// iron varb different
-		notChopTeak = new VarplayerRequirement(1198, false, 23);
+		notAgiPyramid = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 12);
+		notDesertLizard = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 13);
+		notOrangeSally = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 14);
+		notPhoenixFeather = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 15);
+		notMagicCarpet = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 16);
+		notEagleTravel = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 17);
+		notPrayElidinis = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 18);
+		notCombatPot = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 19);
+		notTPEnakhra = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 20);
+		notVisitGenie = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 21);
+		notTPPollnivneach = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 22);// iron varb different
+		notChopTeak = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 23);
 		notIronman = new IronmanRequirement(false);
 
 		// Eagle boulder moved: 3088 0->1

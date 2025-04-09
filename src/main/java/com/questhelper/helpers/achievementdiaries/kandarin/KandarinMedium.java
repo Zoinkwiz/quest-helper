@@ -54,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -161,20 +162,20 @@ public class KandarinMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notBarbAgi = new VarplayerRequirement(1178, false, 12);
-		notSuperAnti = new VarplayerRequirement(1178, false, 13);
-		notEnterRange = new VarplayerRequirement(1178, false, 14);
-		notGrapOb = new VarplayerRequirement(1178, false, 15);
-		notCatchCookBass = new VarplayerRequirement(1178, false, 16);
-		notTPCam = new VarplayerRequirement(1178, false, 17);
-		notStringMaple = new VarplayerRequirement(1178, false, 18);
-		notPickLimp = new VarplayerRequirement(1178, false, 19);
-		notMindHelm = new VarplayerRequirement(1178, false, 20);
-		notFireGiant = new VarplayerRequirement(1178, false, 21);
-		notBarbAss = new VarplayerRequirement(1178, false, 22);
-		notStealHemen = new VarplayerRequirement(1178, false, 23);
-		notTravelMcGrubor = new VarplayerRequirement(1178, false, 24);
-		notMineCoal = new VarplayerRequirement(1178, false, 25);
+		notBarbAgi = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 12);
+		notSuperAnti = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 13);
+		notEnterRange = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 14);
+		notGrapOb = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 15);
+		notCatchCookBass = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 16);
+		notTPCam = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 17);
+		notStringMaple = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 18);
+		notPickLimp = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 19);
+		notMindHelm = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 20);
+		notFireGiant = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 21);
+		notBarbAss = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 22);
+		notStealHemen = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 23);
+		notTravelMcGrubor = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 24);
+		notMineCoal = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY, false, 25);
 
 		not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
 

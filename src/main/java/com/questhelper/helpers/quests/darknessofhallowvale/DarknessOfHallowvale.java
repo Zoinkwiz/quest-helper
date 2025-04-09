@@ -499,7 +499,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		searchBushes = new ObjectStep(this, ObjectID.MYQ_PT3_CUTSCENE_WEREWOLF_BUSH, new WorldPoint(3390, 3480, 0), "Search the bushes west of Paterdomus.");
 		searchBushes.addSubSteps(leaveDrezelToBushes);
 		returnFromBushesToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR, new WorldPoint(3405, 3507, 0), "");
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle.");
+		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_CUTSCENE, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle.");
 		talkToRoald.addDialogSteps("Talk to the king about Morytania.", "What should I do now?", "Yes thanks. I'll accept the free teleport.");
 
 		goToMines = new NpcStep(this, NpcID.SANG_MYQ3_FEMALE_WALK_VYREWATCH_1, new WorldPoint(3615, 3263, 0), "Talk to a Vyrewatch to be sent to the mines.", true);

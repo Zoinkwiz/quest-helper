@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -316,7 +317,7 @@ public class Wanted extends BasicQuestHelper
 	{
 		oneFreeInventorySlot = new FreeInventorySlotRequirement(1);
 
-		startedEnterTheAbyss = new VarplayerRequirement(492, 1, Operation.GREATER_EQUAL);
+		startedEnterTheAbyss = new VarplayerRequirement(VarPlayerID.ABYSSAL_MINIQUEST, 1, Operation.GREATER_EQUAL);
 
 		isInCommorbWithGpConversation = new DialogRequirement("You have that kind of money with you?");
 		isInCommorbWithComponentsConversation = new DialogRequirement("You wish me to make you one now then, what?");
@@ -392,7 +393,7 @@ public class Wanted extends BasicQuestHelper
 		climbToWhiteKnightsCastleF2 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339, 1),
 			"Climb to the second floor of the White Knights' castle.");
 
-		talkToSirAmik1 = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "Talk to Sir Amik Varze.");
+		talkToSirAmik1 = new NpcStep(this, NpcID.HUNDRED_VARZE, "Talk to Sir Amik Varze.");
 		talkToSirAmik1.addDialogStep("No, not right now...");
 
 		talkToSirTiffyAfterBecomingSquire = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy,
@@ -402,7 +403,7 @@ public class Wanted extends BasicQuestHelper
 		talkToSirTiffy2 = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Return to Sir Tiffy Cashien in Falador Park.");
 		talkToSirTiffy2.addDialogStep(TEXT_ASK_ABOUT_WANTED_QUEST);
 
-		talkToSirAmik2 = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "Talk to Sir Amik Varze again.");
+		talkToSirAmik2 = new NpcStep(this, NpcID.HUNDRED_VARZE, "Talk to Sir Amik Varze again.");
 		talkToSirAmik2.addDialogStep("Sure, I'll help you!");
 
 		talkToSirTiffy3 = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Report back to Sir Tiffy Cashien in Falador Park.");
@@ -495,7 +496,7 @@ public class Wanted extends BasicQuestHelper
 		killSolus = new NpcStep(this, NpcID.WANTED_SOLUS_ATTACKABLE, "Kill Solus Dellagar.", combatGear);
 
 		// Wrapping up
-		QuestStep talkToSirAmikAfterSolusFight = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "Talk to Sir Amik Varze at the White Knights' Castle in Falador.");
+		QuestStep talkToSirAmikAfterSolusFight = new NpcStep(this, NpcID.HUNDRED_VARZE, "Talk to Sir Amik Varze at the White Knights' Castle in Falador.");
 		QuestStep getSolusHatFromSavant = new DetailedQuestStep(this, "Right click the Commorb and select the 'contact' option to get Solus' Hat from Savant.", highlightedCommorb, oneFreeInventorySlot);
 		getSolusHatFromSavant.addDialogStep("Current Assignment");
 

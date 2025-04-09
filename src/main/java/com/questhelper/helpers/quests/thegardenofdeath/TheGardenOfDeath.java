@@ -41,7 +41,6 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -247,9 +246,9 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		leaveHole = new ObjectStep(this, ObjectID.TGOD_GARDEN_1_EXIT, new WorldPoint(1309, 9867, 0), "Leave the hole.");
 		goToMolch = new ObjectStep(this, ObjectID.AERIAL_FISHING_BOAT, new WorldPoint(1406, 3612, 0), "Travel to Molch island via Boaty, located on the west/north/east sides of Lake Molch.", wordTranslations, secateurs);
 		goToMolch.addDialogStep("Molch Island");
-		enterMolchHole = new ObjectStep(this, NullObjectID.NULL_46434, new WorldPoint(1364, 3637, 0), "Enter the hole on Molch Island.", wordTranslations, secateurs);
-		searchVines = new ObjectStep(this, NullObjectID.NULL_46437, new WorldPoint(1375, 10024, 0), "Inspect the vines to the south.");
-		cutVines = new ObjectStep(this, NullObjectID.NULL_46437, new WorldPoint(1375, 10024, 0), "Cut the vines with secateurs.", secateurs.highlighted());
+		enterMolchHole = new ObjectStep(this, ObjectID.TGOD_GARDEN_2_ENTRY, new WorldPoint(1364, 3637, 0), "Enter the hole on Molch Island.", wordTranslations, secateurs);
+		searchVines = new ObjectStep(this, ObjectID.TGOD_VINES, new WorldPoint(1375, 10024, 0), "Inspect the vines to the south.");
+		cutVines = new ObjectStep(this, ObjectID.TGOD_VINES, new WorldPoint(1375, 10024, 0), "Cut the vines with secateurs.", secateurs.highlighted());
 		cutVines.addIcon(ItemID.SECATEURS);
 
 		searchForTablet2 = new ObjectStep(this, ObjectID.TGOD_GARDEN_2_TABLET_TABLE, new WorldPoint(1373, 10014, 0), "Search the south west stone table.");
@@ -264,7 +263,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		leaveHole2 = new ObjectStep(this, ObjectID.TGOD_GARDEN_2_EXIT, new WorldPoint(1375, 10033, 0), "Leave the hole.");
 		leaveMolchIsland = new ObjectStep(this, ObjectID.AERIAL_FISHING_BOAT, new WorldPoint(1369, 3641, 0), "Travel via Boaty to Molch, and enter the hole near Xeric's Shrine.", wordTranslations);
 		leaveMolchIsland.addDialogStep("Molch");
-		enterXericShrineHole = new ObjectStep(this, NullObjectID.NULL_46435, new WorldPoint(1314, 3617, 0), "Enter the hole next to Xeric's Shrine.", wordTranslations);
+		enterXericShrineHole = new ObjectStep(this, ObjectID.TGOD_GARDEN_3_ENTRY, new WorldPoint(1314, 3617, 0), "Enter the hole next to Xeric's Shrine.", wordTranslations);
 		searchForTablet3 = new ObjectStep(this, ObjectID.TGOD_GARDEN_3_TABLET_TABLE, new WorldPoint(1311, 10018, 0), "Search the south east stone table.");
 		readTablet3 = new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet3.highlighted());
 		readTablet3.addDialogStep("Yes.");
@@ -275,7 +274,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		inputWords3.addDialogStep("Yes.");
 
 		leaveHole3 = new ObjectStep(this, ObjectID.TGOD_GARDEN_3_EXIT, new WorldPoint(1294, 10033, 0), "Leave the hole.");
-		enterMorraHole = new ObjectStep(this, NullObjectID.NULL_46436, new WorldPoint(1450, 3511, 0),
+		enterMorraHole = new ObjectStep(this, ObjectID.TGOD_GARDEN_4_ENTRY, new WorldPoint(1450, 3511, 0),
 			"Enter the hole in the Ruins of Morra, south west of Shayzien.", wordTranslations);
 		searchForTablet4 = new ObjectStep(this, ObjectID.TGOD_GARDEN_4_TABLET_TABLE, new WorldPoint(1440, 9816, 0),
 			"Search the south stone table.");

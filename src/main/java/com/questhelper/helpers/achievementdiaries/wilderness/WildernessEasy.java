@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,18 +138,18 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notLowAlch = new VarplayerRequirement(1192, false, 1);
-		notWildyLever = new VarplayerRequirement(1192, false, 2);
-		notChaosAltar = new VarplayerRequirement(1192, false, 3);
-		notChaosTemple = new VarplayerRequirement(1192, false, 4);
-		notKillMammoth = new VarplayerRequirement(1192, false, 5);
-		notEarthWarrior = new VarplayerRequirement(1192, false, 6);
-		notDemonicPrayer = new VarplayerRequirement(1192, false, 7);
-		notEnterKBDLair = new VarplayerRequirement(1192, false, 8);
-		notSpiderEggs = new VarplayerRequirement(1192, false, 9);
-		notIronOre = new VarplayerRequirement(1192, false, 10);
-		notEnterAbyss = new VarplayerRequirement(1192, false, 11);
-		notEquipTeamCape = new VarplayerRequirement(1192, false, 12);
+		notLowAlch = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 1);
+		notWildyLever = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 2);
+		notChaosAltar = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 3);
+		notChaosTemple = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 4);
+		notKillMammoth = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 5);
+		notEarthWarrior = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 6);
+		notDemonicPrayer = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 7);
+		notEnterKBDLair = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 8);
+		notSpiderEggs = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 9);
+		notIronOre = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 10);
+		notEnterAbyss = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 11);
+		notEquipTeamCape = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 12);
 
 		firstTimeAbyss = new VarbitRequirement(626, 1);
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);

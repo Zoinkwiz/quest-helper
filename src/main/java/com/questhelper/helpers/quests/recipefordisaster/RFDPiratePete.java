@@ -257,7 +257,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		grindKelp = new DetailedQuestStep(this, "Use a pestle and mortar on the kelp.", pestleHighlighted, kelpHighlighted);
 		grindCrab = new DetailedQuestStep(this, "Use a pestle and mortar on the crab.", pestleHighlighted, crabMeatHighlighted);
 		climbAnchor = new ObjectStep(this, ObjectID.ANCHOR_MIDDLE, new WorldPoint(2963, 9477, 1), "Climb the anchor to the south to return to the surface.");
-		talkToCookAgain = new NpcStep(this, NpcID.COOK, new WorldPoint(3209, 3215, 0),
+		talkToCookAgain = new NpcStep(this, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook about Pirate Pete again.", groundCod, groundCrabMeatHighlighted, groundKelpHighlighted, breadcrumbs);
 		talkToCookAgain.addDialogStep("Protecting the Pirate");
 		useCrabOnKelp = new DetailedQuestStep(this, "Use the ingredients together to make the cake.", groundCrabMeatHighlighted, groundKelpHighlighted, groundCod, breadcrumbs);

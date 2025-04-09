@@ -52,15 +52,15 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.widget.WidgetHighlight;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -422,7 +422,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         talkedToCaritta = new VarbitRequirement(11119, 1);
         talkedToSergius = new VarbitRequirement(11120, 1);
 //        talkedToNova = new VarbitRequirement(11121, 1);
-        princeIsFollowing = new VarplayerRequirement(447, 14053, 16);
+        princeIsFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 14053, 16);
         // Overlook landing could also be varp 4182 480 -> 2528
         southEastGateUnlocked = new VarbitRequirement(11165, 1);
         southWestChestOpened = new VarbitRequirement(11166, 1);
@@ -556,7 +556,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 coins.quantity(30));
         // Told about ground room, 11123 1->0
         talkToBartender.addDialogSteps("I'd like to rent the basement room.", "I'll take it.");
-        restOnBed = new ObjectStep(this, NullObjectID.NULL_55374, new WorldPoint(1505, 3225, 0), "Rest in the bed in the south-eastern room of the pub.");
+        restOnBed = new ObjectStep(this, ObjectID.VMQ3_PUB_BED, new WorldPoint(1505, 3225, 0), "Rest in the bed in the south-eastern room of the pub.");
         // 11123 0->3, prince in room
         talkToPrinceAfterRest = new NpcStep(this, NpcID.VMQ3_ITZLA_VIS_CITIZEN, new WorldPoint(1505, 3223, 0), "Talk to Prince Itzla Arkan in the bedroom.");
         talkToShopkeeper = new NpcStep(this, NpcID.QUETZACALLI_GENERAL_STORE, new WorldPoint(1517, 3223, 0), "Talk to the shopkeeper east of the pub.");
@@ -650,7 +650,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 .addAlternateNpcs(NpcID.VMQ3_TOWER_TWILIGHT_PICKPOCKET_VARIANT_1)
                 .puzzleWrapStep(PUZZLE_1_TEXT);
 
-        useKeyOnSouthEastGate = new ObjectStep(this, NullObjectID.NULL_55354, new WorldPoint(1644, 3220, 1), "Use the key to open the gate in the south-east " +
+        useKeyOnSouthEastGate = new ObjectStep(this, ObjectID.VMQ3_TOWER_DOOR_LOCKED, new WorldPoint(1644, 3220, 1), "Use the key to open the gate in the south-east " +
                 "corner of the room.", towerKey)
                 .puzzleWrapStep(PUZZLE_1_TEXT)
                 .withNoHelpHiddenInSidebar(true);
@@ -813,7 +813,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         slideAlongIceLedgeBackToSecondLever = new ObjectStep(this, ObjectID.TAPOYAUIK_TRAVERSE_WALL_END, new WorldPoint(1714, 9641, 1), "Climb back across the icy ledge.");
         climbUpLedgeToSecondLever = new ObjectStep(this, ObjectID.TAPOYAUIK_TRAVERSE_2_BOTTOM, new WorldPoint(1684, 9659, 0), "Climb back up to pull a lever you missed.");
         pullFirstLever.addSubSteps(slideAlongIceLedgeBackToSecondLever, climbUpLedgeToFirstLever, climbUpLedgeToSecondLever);
-        pullSecondLever = new ObjectStep(this, NullObjectID.NULL_55368, new WorldPoint(1711, 9660, 1), "Pull the lever in the north-east room. Avoid the " +
+        pullSecondLever = new ObjectStep(this, ObjectID.VMQ3_RUINS_WALL_LEVER_4, new WorldPoint(1711, 9660, 1), "Pull the lever in the north-east room. Avoid the " +
                 "floor traps.");
         pullSecondLever.setLinePoints(List.of(
                 new WorldPoint(1710, 9648, 1),
@@ -838,7 +838,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 new WorldPoint(1686, 9659, 1)
         ));
 
-        pullThirdLever = new ObjectStep(this, NullObjectID.NULL_55366, new WorldPoint(1671, 9661, 0), "Pull the third lever in the north-west room.");
+        pullThirdLever = new ObjectStep(this, ObjectID.VMQ3_RUINS_WALL_LEVER_2, new WorldPoint(1671, 9661, 0), "Pull the third lever in the north-west room.");
         pullThirdLever.setLinePoints(List.of(
                 new WorldPoint(1681, 9656, 0),
                 new WorldPoint(1677, 9653, 0),
@@ -847,7 +847,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 new WorldPoint(1671, 9659, 0),
                 new WorldPoint(1671, 9661, 0)
         ));
-        pullFourthLever = new ObjectStep(this, NullObjectID.NULL_55365, new WorldPoint(1662, 9636, 0), "Pull the final lever in the south-west, near the gate.");
+        pullFourthLever = new ObjectStep(this, ObjectID.VMQ3_RUINS_WALL_LEVER_1, new WorldPoint(1662, 9636, 0), "Pull the final lever in the south-west, near the gate.");
         pullFourthLever.setLinePoints(List.of(
                 new WorldPoint(1671, 9659, 0),
                 new WorldPoint(1671, 9658, 0),
@@ -860,89 +860,89 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 new WorldPoint(1667, 9636, 0),
                 new WorldPoint(1663, 9636, 0)
         ));
-        pullChain = new ObjectStep(this, NullObjectID.NULL_55375, new WorldPoint(1670, 9631, 0), "Pull the chain to unlock a shortcut.");
+        pullChain = new ObjectStep(this, ObjectID.TAPOYAUIK_POST_QUEST_SHORTCUT_BOTTOM, new WorldPoint(1670, 9631, 0), "Pull the chain to unlock a shortcut.");
 
         climbDownIceShortcut = new ObjectStep(this, ObjectID.TAPOYAUIK_POST_QUEST_SHORTCUT_TOP, new WorldPoint(1670, 9631, 2), "Climb down the shortcut chain to the west of the " +
                 "entrance.");
 
-        searchAirUrn = new ObjectStep(this, NullObjectID.NULL_55358, new WorldPoint(1647, 9622, 0), "Search the urn with an air symbol on it near to the " +
+        searchAirUrn = new ObjectStep(this, ObjectID.VMQ3_RUINS_AIR_URN, new WorldPoint(1647, 9622, 0), "Search the urn with an air symbol on it near to the " +
                 "earth markings in the south-east of the area.")
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        searchEarthUrn = new ObjectStep(this, NullObjectID.NULL_55359, new WorldPoint(1652, 9622, 0), "Search the urn with an earth symbol on it near to the " +
+        searchEarthUrn = new ObjectStep(this, ObjectID.VMQ3_RUINS_EARTH_URN, new WorldPoint(1652, 9622, 0), "Search the urn with an earth symbol on it near to the " +
                 "earth markings in the south-east of the area.")
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        searchWaterUrn = new ObjectStep(this, NullObjectID.NULL_55357, new WorldPoint(1610, 9622, 0), "Search the urn with an water symbol on it near to the " +
+        searchWaterUrn = new ObjectStep(this, ObjectID.VMQ3_RUINS_WATER_URN, new WorldPoint(1610, 9622, 0), "Search the urn with an water symbol on it near to the " +
                 "water markings in the south-west of the area.")
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        searchFireUrn = new ObjectStep(this, NullObjectID.NULL_55356, new WorldPoint(1615, 9622, 0), "Search the urn with an fire symbol on it near to the " +
+        searchFireUrn = new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_URN, new WorldPoint(1615, 9622, 0), "Search the urn with an fire symbol on it near to the " +
                 "water markings in the south-west of the area.")
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        fixAirStatue = new ObjectStep(this, NullObjectID.NULL_54471, new WorldPoint(1608, 9638, 0), "Fix the broken air statue in the west of the area.",
+        fixAirStatue = new ObjectStep(this, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, new WorldPoint(1608, 9638, 0), "Fix the broken air statue in the west of the area.",
                 airIcon.highlighted())
                 .addDialogStep("Yes.")
                 .addIcon(ItemID.VMQ3_RUINS_AIR_STATUE_REPAIR)
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        fixWaterStatue = new ObjectStep(this, NullObjectID.NULL_54465, new WorldPoint(1608, 9624, 0), "Fix the broken water statue in the west of the area.",
+        fixWaterStatue = new ObjectStep(this, ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, new WorldPoint(1608, 9624, 0), "Fix the broken water statue in the west of the area.",
                 waterIcon.highlighted())
                 .addDialogStep("Yes.")
                 .addIcon(ItemID.VMQ3_RUINS_WATER_STATUE_REPAIR)
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
 
-        fixEarthStatue = new ObjectStep(this, NullObjectID.NULL_54477, new WorldPoint(1605, 9635, 0), "Fix the broken earth statue in the west of the area.",
+        fixEarthStatue = new ObjectStep(this, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI, new WorldPoint(1605, 9635, 0), "Fix the broken earth statue in the west of the area.",
                 earthIcon.highlighted())
                 .addDialogStep("Yes.")
                 .addIcon(ItemID.VMQ3_RUINS_EARTH_STATUE_REPAIR)
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        fixFireStatue = new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1605, 9627, 0), "Fix the broken fire statue in the west of the area.",
+        fixFireStatue = new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1605, 9627, 0), "Fix the broken fire statue in the west of the area.",
                 fireIcon.highlighted())
                 .addDialogStep("Yes.")
                 .addIcon(ItemID.VMQ3_RUINS_FIRE_STATUE_REPAIR)
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
 
-        inspectAirMarkings = new ObjectStep(this, NullObjectID.NULL_55363, new WorldPoint(1650, 9642, 0), "Inspect the air markings in the north-east of " +
+        inspectAirMarkings = new ObjectStep(this, ObjectID.VMQ3_RUINS_WALL_CLUE_AIR, new WorldPoint(1650, 9642, 0), "Inspect the air markings in the north-east of " +
                 "the area.")
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        inspectWaterMarkings = new ObjectStep(this, NullObjectID.NULL_55362, new WorldPoint(1613, 9621, 0), "Inspect the water markings in the south-west of " +
+        inspectWaterMarkings = new ObjectStep(this, ObjectID.VMQ3_RUINS_WALL_CLUE_WATER, new WorldPoint(1613, 9621, 0), "Inspect the water markings in the south-west of " +
                 "the area.")
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        inspectEarthMarkings = new ObjectStep(this, NullObjectID.NULL_55364, new WorldPoint(1650, 9621, 0), "Inspect the earth markings in the south-east of " +
+        inspectEarthMarkings = new ObjectStep(this, ObjectID.VMQ3_RUINS_WALL_CLUE_EARTH, new WorldPoint(1650, 9621, 0), "Inspect the earth markings in the south-east of " +
                 "the area.")
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        inspectFireMarkings = new ObjectStep(this, NullObjectID.NULL_55361, new WorldPoint(1613, 9642, 0), "Inspect the fire markings in the north-west of " +
+        inspectFireMarkings = new ObjectStep(this, ObjectID.VMQ3_RUINS_WALL_CLUE_FIRE, new WorldPoint(1613, 9642, 0), "Inspect the fire markings in the north-west of " +
                 "the area.")
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
 
-        ObjectStep firstStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the first statue in the order.")
-                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        ObjectStep firstStatueStep = (ObjectStep) new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the first statue in the order.")
+                .addAlternateObjects(ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI);
         activateFirstStatue = firstStatueStep
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
 
-        ObjectStep secondStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the second statue in the order.")
-                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        ObjectStep secondStatueStep = (ObjectStep) new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the second statue in the order.")
+                .addAlternateObjects(ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI);
         activateSecondStatue = secondStatueStep
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
 
-        ObjectStep thirdStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the third statue in the order.")
-                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        ObjectStep thirdStatueStep = (ObjectStep) new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the third statue in the order.")
+                .addAlternateObjects(ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI);
         activateThirdStatue = thirdStatueStep
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        ObjectStep fourthStatueStep = (ObjectStep) new ObjectStep(this, NullObjectID.NULL_54459, new WorldPoint(1650, 9642, 0), "Activate the fourth statue in the order.")
-                .addAlternateObjects(NullObjectID.NULL_54465, NullObjectID.NULL_54471, NullObjectID.NULL_54477);
+        ObjectStep fourthStatueStep = (ObjectStep) new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the fourth statue in the order.")
+                .addAlternateObjects(ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI);
         activateFourthStatue = fourthStatueStep
                 .puzzleWrapStep("Work out how to open the door to the far west.");
 
@@ -955,7 +955,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         statueActivateSteps[2] = thirdStatueStep;
         statueActivateSteps[3] = fourthStatueStep;
 
-        enterFinalBossRoom = new ObjectStep(this, NullObjectID.NULL_55355, new WorldPoint(1601, 9631, 0), "Enter the door to the west, ready for the boss.");
+        enterFinalBossRoom = new ObjectStep(this, ObjectID.VMQ3_RUINS_DOOR_MULTI, new WorldPoint(1601, 9631, 0), "Enter the door to the west, ready for the boss.");
 
         defeatAmoxliatl = new NpcStep(this, NpcID.AMOXLIATL, new WorldPoint(1365, 4510,  0), "Defeat Amoxliatl. See the sidebar for more details.");
         ((NpcStep) defeatAmoxliatl).addAlternateNpcs(NpcID.AMOXLIATL_QUEST, NpcID.AMOXLIATL_QUEST_INACTIVE, NpcID.AMOXLIATL_CUTSCENE);

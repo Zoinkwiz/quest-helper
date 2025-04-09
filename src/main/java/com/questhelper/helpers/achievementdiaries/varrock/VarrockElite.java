@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,11 +113,11 @@ public class VarrockElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notSuperCombat = new VarplayerRequirement(1177, false, 7);
-		notPlankMake = new VarplayerRequirement(1177, false, 8);
-		notSummerPie = new VarplayerRequirement(1177, false, 9);
-		notRuneDart = new VarplayerRequirement(1177, false, 10);
-		not100Earth = new VarplayerRequirement(1177, false, 11);
+		notSuperCombat = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 7);
+		notPlankMake = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 8);
+		notSummerPie = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 9);
+		notRuneDart = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 10);
+		not100Earth = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 11);
 
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 

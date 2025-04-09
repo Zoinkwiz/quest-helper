@@ -47,7 +47,6 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -812,14 +811,14 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEdmond = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2566, 3337, 0), "Talk to Edmond in East Ardougne.");
+		talkToEdmond = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2566, 3337, 0), "Talk to Edmond in East Ardougne.");
 		talkToEdmond.addDialogStep("Yes.");
 		goUpToLathas = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(2572, 3296, 0),
 			"Talk to King Lathas in East Ardougne castle.");
 		talkToLathas = new NpcStep(this, NpcID.KINGLATHAS_VIS, new WorldPoint(2578, 3293, 1), "Talk to King Lathas in East Ardougne castle.");
 		talkToLathas.addSubSteps(goUpToLathas);
 		goDownFromLathas = new ObjectStep(this, ObjectID.STAIRSTOP, new WorldPoint(2572, 3296, 1), "Return to Edmond.");
-		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2566, 3337, 0), "Return to Edmond in East Ardougne.");
+		talkToEdmondAgain = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2566, 3337, 0), "Return to Edmond in East Ardougne.");
 		talkToEdmondAgain.addDialogStep("How do I get this disguise?");
 		talkToEdmondAgain.addSubSteps(goDownFromLathas);
 		useRedDyeOnSteelFullHelm = new DetailedQuestStep(this, "Use red dye on a steel full helm.", redDye, steelFullHelm);
@@ -832,7 +831,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		useTabardOnPlatebody = new DetailedQuestStep(this, "Add the tabard to a steel platebody.", ardyTabard, steelPlatebody);
 
-		talkToEdmondWithOutfit = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2566, 3337, 0),
+		talkToEdmondWithOutfit = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2566, 3337, 0),
 			"Return to Edmond in East Ardougne.", ardyFullHelm, ardyPlatebody);
 
 		goDownstairsCastle = new ObjectStep(this, ObjectID.ARDOUGNE_PRISON_ENTRY, new WorldPoint(2570, 3296, 0),
@@ -851,30 +850,30 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		goUpFromCastleBasementAgain = new ObjectStep(this, ObjectID.ARDOUGNE_PRISON_EXIT, new WorldPoint(2565, 9711, 0),
 			"Return to Edmond in East Ardougne.");
-		talkToEdmondAfterFreeingElena = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2566, 3337, 0),
+		talkToEdmondAfterFreeingElena = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2566, 3337, 0),
 			"Return to Edmond in East Ardougne.");
 		talkToEdmondAfterFreeingElena.addSubSteps(goUpFromCastleBasementAgain);
 
-		searchBed = new ObjectStep(this, NullObjectID.NULL_37265, new WorldPoint(2533, 3333, 0),
+		searchBed = new ObjectStep(this, ObjectID.REHNISON_BED_TRAPDOOR, new WorldPoint(2533, 3333, 0),
 			"Search the bed in the house west of the Mourner base.");
 		searchBed.addDialogStep("Climb through it.");
 		talkToElenaInHideout = new NpcStep(this, NpcID.SOTE_ELENA_HURT, new WorldPoint(2545, 9746, 0), "Talk to Elena in the hideout.");
 		talkToElenaInHideout.addDialogSteps("It's not good, but it might be our only option.", "It's all in a day's work.", "I am.");
 		leaveHideout = new ObjectStep(this, ObjectID.REHNISON_LADDER_UP, new WorldPoint(2546, 9744, 0), "Leave the hideout.");
 
-		useTinderboxOnGrain = new ObjectStep(this, NullObjectID.NULL_37330, new WorldPoint(2517, 3315, 0),
+		useTinderboxOnGrain = new ObjectStep(this, ObjectID.MOURNING_SACK_FULL1, new WorldPoint(2517, 3315, 0),
 			"Use a tinderbox on the grain in the West Ardougne council building.", tinderboxHighlighted, gasMask, mournerTop,
 			mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
 		useTinderboxOnGrain.addIcon(ItemID.TINDERBOX);
 		talkToPriest = new NpcStep(this, NpcID.W_ARDOUNGEPRIEST, new WorldPoint(2527, 3287, 0),
 			"Talk to the priest in West Ardougne.", gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
-		useTinderboxOnChurchGrain = new ObjectStep(this, NullObjectID.NULL_37331, new WorldPoint(2524, 3285, 0),
+		useTinderboxOnChurchGrain = new ObjectStep(this, ObjectID.MOURNING_SACK_FULL2, new WorldPoint(2524, 3285, 0),
 			"Use a tinderbox on the grain in the West Ardougne church.",
 			tinderboxHighlighted, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
 		useTinderboxOnChurchGrain.addIcon(ItemID.TINDERBOX);
 		talkToSarah = new NpcStep(this, NpcID.BIONURSE, new WorldPoint(2517, 3274, 0),
 			"Talk to Nurse Sarah in West Ardougne.", gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
-		useTinderboxOnSWGrain = new ObjectStep(this, NullObjectID.NULL_37332, new WorldPoint(2469, 3287, 0),
+		useTinderboxOnSWGrain = new ObjectStep(this, ObjectID.MOURNING_SACK_FULL3, new WorldPoint(2469, 3287, 0),
 			"Use a tinderbox on the grain outside the West Ardougne general store.",
 			tinderboxHighlighted, gasMask, mournerTop, mournerTrousers, mournerBoots, mournerGloves, mournerCloak);
 		useTinderboxOnSWGrain.addIcon(ItemID.TINDERBOX);
@@ -908,7 +907,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToTownCrier = new NpcStep(this, NpcID.PMOD_TOWN_CRIER_EAST_ARDOYNE, new WorldPoint(2666, 3312, 0),
 			"Talk to the town crier in the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
 		talkToTownCrier.addDialogStep("Could you help me tell people about some new taxes?");
-		talkToZenesha = new NpcStep(this, NpcID.ZENESHA, new WorldPoint(2652, 3295, 0),
+		talkToZenesha = new NpcStep(this, NpcID.VC_PARTYGUESTS_ZENESHA, new WorldPoint(2652, 3295, 0),
 			"Talk to Zenesha south of the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
 		talkToZenesha.addDialogStep("I'm here to tell you about some new taxes.");
 		talkToEstateAgent = new NpcStep(this, NpcID.POH_ESTATE_AGENT, new WorldPoint(2638, 3293, 0),
@@ -926,7 +925,7 @@ public class SongOfTheElves extends BasicQuestHelper
 			"Talk to Doctor Orbon in the East Ardougne church.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
 		talkToOrbon.addDialogStep("I'm here to tell you about some new taxes.");
 
-		searchBedAgain = new ObjectStep(this, NullObjectID.NULL_37265, new WorldPoint(2533, 3333, 0),
+		searchBedAgain = new ObjectStep(this, ObjectID.REHNISON_BED_TRAPDOOR, new WorldPoint(2533, 3333, 0),
 			"Search the bed in the house west of the Mourner base.", combatGear);
 		talkToElenaForFight = new NpcStep(this, NpcID.SOTE_ELENA, new WorldPoint(2545, 9746, 0),
 			"Talk to Elena in the hideout, ready for a fight.", combatGear);
@@ -997,7 +996,7 @@ public class SongOfTheElves extends BasicQuestHelper
 			"Talk to Elena in the south west of Lletya.", seedDibber, cadantineSeed);
 		talkToElenaAfterBax.addDialogStep("Now's not the time for stories, Elena.");
 
-		plantCadantine = new ObjectStep(this, NullObjectID.NULL_37270, new WorldPoint(2322, 3152, 0),
+		plantCadantine = new ObjectStep(this, ObjectID.SOTE_HERB_PATCH, new WorldPoint(2322, 3152, 0),
 			"Plant a cadantine seed in the Lletya farm patch.", seedDibber, cadantineSeed);
 		plantCadantine.addIcon(ItemID.CADANTINE_SEED);
 
@@ -1031,10 +1030,10 @@ public class SongOfTheElves extends BasicQuestHelper
 			new WorldPoint(2312, 3216, 0)
 		));
 
-		usePickaxeOnWall = new ObjectStep(this, NullObjectID.NULL_37271, new WorldPoint(2341, 9616, 0),
+		usePickaxeOnWall = new ObjectStep(this, ObjectID.SOTE_WELL_CAVE, new WorldPoint(2341, 9616, 0),
 			"Use a pickaxe on the wall south of the Well of Voyage.", pickaxeHighlighted);
 		usePickaxeOnWall.addIcon(ItemID.RUNE_PICKAXE);
-		enterCrevice = new ObjectStep(this, NullObjectID.NULL_37271, new WorldPoint(2341, 9616, 0), "Enter the hole in the wall.");
+		enterCrevice = new ObjectStep(this, ObjectID.SOTE_WELL_CAVE, new WorldPoint(2341, 9616, 0), "Enter the hole in the wall.");
 
 		useHammerOnExoskeleton = new NpcStep(this, NpcID.SOTE_LADY_TRAHAEARN_VIS_SLEEP, new WorldPoint(2334, 9574, 0),
 			"Use a hammer on the elderly elf.", hammerHighlighted, runiteBar);
@@ -1099,25 +1098,25 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		goF1ToF2E = new ObjectStep(this, ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_UP, new WorldPoint(2682, 6144, 1), "");
 
-		openSealOfIthell = new ObjectStep(this, NullObjectID.NULL_36730, new WorldPoint(2676, 6102, 1), "");
+		openSealOfIthell = new ObjectStep(this, ObjectID.SOTE_ITHELL_SEAL, new WorldPoint(2676, 6102, 1), "");
 		((DetailedQuestStep) openSealOfIthell).setLinePoints(pathToIthell);
 		((DetailedQuestStep) openSealOfIthell).setWorldLinePoints(mapPathToIthell);
 
-		touchIthellSeal = new ObjectStep(this, NullObjectID.NULL_36730, new WorldPoint(2676, 6102, 1), "");
+		touchIthellSeal = new ObjectStep(this, ObjectID.SOTE_ITHELL_SEAL, new WorldPoint(2676, 6102, 1), "");
 
-		touchCadarnSeal = new ObjectStep(this, NullObjectID.NULL_36725, new WorldPoint(2623, 6097, 0), "");
+		touchCadarnSeal = new ObjectStep(this, ObjectID.SOTE_CADARN_SEAL, new WorldPoint(2623, 6097, 0), "");
 
-		touchCrwysSeal = new ObjectStep(this, NullObjectID.NULL_36726, new WorldPoint(2576, 6172, 1), "");
+		touchCrwysSeal = new ObjectStep(this, ObjectID.SOTE_CRWYS_SEAL, new WorldPoint(2576, 6172, 1), "");
 
-		touchAmloddSeal = new ObjectStep(this, NullObjectID.NULL_36727, new WorldPoint(2614, 6158, 0), "");
+		touchAmloddSeal = new ObjectStep(this, ObjectID.SOTE_AMLODD_SEAL, new WorldPoint(2614, 6158, 0), "");
 
-		touchMeilyrSeal = new ObjectStep(this, NullObjectID.NULL_36731, new WorldPoint(2581, 6163, 2), "");
+		touchMeilyrSeal = new ObjectStep(this, ObjectID.SOTE_MEILYR_SEAL, new WorldPoint(2581, 6163, 2), "");
 
-		touchHefinSeal = new ObjectStep(this, NullObjectID.NULL_36728, new WorldPoint(2562, 6130, 2), "");
+		touchHefinSeal = new ObjectStep(this, ObjectID.SOTE_HEFIN_SEAL, new WorldPoint(2562, 6130, 2), "");
 
-		touchTrahaearnSeal = new ObjectStep(this, NullObjectID.NULL_36732, new WorldPoint(2646, 6144, 2), "");
+		touchTrahaearnSeal = new ObjectStep(this, ObjectID.SOTE_TRAHAEARN_SEAL, new WorldPoint(2646, 6144, 2), "");
 
-		touchIorwerthSeal = new ObjectStep(this, NullObjectID.NULL_36729, new WorldPoint(2651, 6167, 1), "");
+		touchIorwerthSeal = new ObjectStep(this, ObjectID.SOTE_IORWERTH_SEAL, new WorldPoint(2651, 6167, 1), "");
 
 
 		leaveLibrary = new ObjectStep(this, ObjectID.SOTE_LIBRARY_EXIT, new WorldPoint(2623, 6088, 1),
@@ -1178,16 +1177,16 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToElenaAfterOrb = new NpcStep(this, NpcID.SOTE_ELENA, new WorldPoint(2324, 3152, 0),
 			"Talk to Elena in the south west of Lletya.");
 		talkToElenaAfterOrb.addDialogSteps("That's fair. Anyway, I wanted to ask you about Ysgawyn.");
-		inspectMushrooms = new ObjectStep(this, NullObjectID.NULL_37292, new WorldPoint(2302, 3195, 0),
+		inspectMushrooms = new ObjectStep(this, ObjectID.SOTE_HUNTING_MUSHROOMS_INITIAL, new WorldPoint(2302, 3195, 0),
 			"Inspect the mushrooms just outside Lletya.");
 
-		track1 = new ObjectStep(this, NullObjectID.NULL_37297, new WorldPoint(2291, 3187, 0), "Inspect the rocks to the west.");
-		track2 = new ObjectStep(this, NullObjectID.NULL_37296, new WorldPoint(2277, 3184, 0),
+		track1 = new ObjectStep(this, ObjectID.SOTE_HUNTING_ROCK4, new WorldPoint(2291, 3187, 0), "Inspect the rocks to the west.");
+		track2 = new ObjectStep(this, ObjectID.SOTE_HUNTING_ROCK3, new WorldPoint(2277, 3184, 0),
 			"Inspect the rocks to the west over the tripwire.");
-		track3 = new ObjectStep(this, NullObjectID.NULL_37301, new WorldPoint(2269, 3164, 0),
+		track3 = new ObjectStep(this, ObjectID.SOTE_HUNTING_LAMP, new WorldPoint(2269, 3164, 0),
 			"Inspect the elven lamp to the south over the leaf trap.");
-		track4 = new ObjectStep(this, NullObjectID.NULL_37299, new WorldPoint(2259, 3158, 0), "Inspect the mushrooms to the west.");
-		track5 = new ObjectStep(this, NullObjectID.NULL_37297, new WorldPoint(2244, 3170, 0), "Inspect the rocks to the north west.");
+		track4 = new ObjectStep(this, ObjectID.SOTE_HUNTING_MUSHROOMS2, new WorldPoint(2259, 3158, 0), "Inspect the mushrooms to the west.");
+		track5 = new ObjectStep(this, ObjectID.SOTE_HUNTING_ROCK4, new WorldPoint(2244, 3170, 0), "Inspect the rocks to the north west.");
 		track6 = new DetailedQuestStep(this, new WorldPoint(2254, 3168, 0), "Climb over the tripwire into the clearing.");
 
 		talkToYsgawynInClearing = new NpcStep(this, NpcID.SOTE_YSGAWYN_VIS, new WorldPoint(2256, 3168, 0), "Talk to Ysgawyn.");
@@ -1214,16 +1213,16 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		talkToBaxAfterLletyaFightForIthellClue.addSubSteps(talkToBaxAfterLletyaFightForMeilyrClue);
 
-		checkSymbol1 = new ObjectStep(this, NullObjectID.NULL_37307, new WorldPoint(2798, 6107, 0), "Touch the symbol on the bank's wall.");
-		checkSymbol2 = new ObjectStep(this, NullObjectID.NULL_37305, new WorldPoint(2771, 6109, 0),
+		checkSymbol1 = new ObjectStep(this, ObjectID.SOTE_SYMBOL_5, new WorldPoint(2798, 6107, 0), "Touch the symbol on the bank's wall.");
+		checkSymbol2 = new ObjectStep(this, ObjectID.SOTE_SYMBOL_3, new WorldPoint(2771, 6109, 0),
 			"Touch the symbol in the building north of Elena.");
-		checkSymbol3 = new ObjectStep(this, NullObjectID.NULL_37306, new WorldPoint(2789, 6127, 0), "Touch the symbol in the General Store.");
+		checkSymbol3 = new ObjectStep(this, ObjectID.SOTE_SYMBOL_4, new WorldPoint(2789, 6127, 0), "Touch the symbol in the General Store.");
 
 		goToSecondFloorSymbols = new ObjectStep(this, ObjectID.ELF_VILLAGE_LADDER, new WorldPoint(2783, 6127, 0), "Go up to the top floor of Lletya.");
-		checkSymbol4 = new ObjectStep(this, NullObjectID.NULL_37304, new WorldPoint(2783, 6129, 1), "Touch the symbol above the General Store.");
-		checkSymbol5 = new ObjectStep(this, NullObjectID.NULL_37303, new WorldPoint(2800, 6118, 1), "Touch the symbol at the altar.");
+		checkSymbol4 = new ObjectStep(this, ObjectID.SOTE_SYMBOL_2, new WorldPoint(2783, 6129, 1), "Touch the symbol above the General Store.");
+		checkSymbol5 = new ObjectStep(this, ObjectID.SOTE_SYMBOL_1, new WorldPoint(2800, 6118, 1), "Touch the symbol at the altar.");
 
-		buildStatue = new ObjectStep(this, NullObjectID.NULL_37309, new WorldPoint(2786, 6116, 0),
+		buildStatue = new ObjectStep(this, ObjectID.SOTE_WELL_DAMAGED, new WorldPoint(2786, 6116, 0),
 			"Make a statue in the middle of Lletya.", saw, hammer, limestoneBricks8);
 
 		talkToIthell = new NpcStep(this, NpcID.SOTE_LADY_ITHELL_VIS, new WorldPoint(2783, 6115, 0), "Talk to Lady Kelyn Ithell in Lletya.");

@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -138,18 +139,18 @@ public class KourendEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notMineIron = new VarplayerRequirement(2085, false, 1);
-		notSandCrab = new VarplayerRequirement(2085, false, 2);
-		notArceuusBook = new VarplayerRequirement(2085, false, 3);
-		notStealFruit = new VarplayerRequirement(2085, false, 4);
-		notWarrensStore = new VarplayerRequirement(2085, false, 5);
-		notBoatLandsEnd = new VarplayerRequirement(2085, false, 6);
-		notPrayCastle = new VarplayerRequirement(2085, false, 7);
-		notDigSaltpetre = new VarplayerRequirement(2085, false, 8);
-		notEnterPoh = new VarplayerRequirement(2085, false, 9);
-		notDoneAgilityCourse = new VarplayerRequirement(2085, false, 10);
-		notStrengthPotion = new VarplayerRequirement(2085, false, 11);
-		notFishTrout = new VarplayerRequirement(2085, false, 12);
+		notMineIron = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 1);
+		notSandCrab = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 2);
+		notArceuusBook = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 3);
+		notStealFruit = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 4);
+		notWarrensStore = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 5);
+		notBoatLandsEnd = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 6);
+		notPrayCastle = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 7);
+		notDigSaltpetre = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 8);
+		notEnterPoh = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 9);
+		notDoneAgilityCourse = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 10);
+		notStrengthPotion = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 11);
+		notFishTrout = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 12);
 
 		// Required items
 		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES).showConditioned(notMineIron).isNotConsumed();

@@ -41,7 +41,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -309,7 +308,7 @@ public class HazeelCult extends BasicQuestHelper
 		climbLadderWithKey = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2573, 3271, 1),
 			"Knock the wall to enter the hidden room, then climb up the ladder.", key);
 		climbLadderWithKey.addDialogStep("Yes.");
-		searchChestForScroll = new ObjectStep(this, NullObjectID.NULL_46903, new WorldPoint(2571, 3269, 2),
+		searchChestForScroll = new ObjectStep(this, ObjectID.CARNILLEANSHUTCHEST, new WorldPoint(2571, 3269, 2),
 			"Open the chest.", key.highlighted());
 		searchChestForScroll.addIcon(ItemID.CARNILLEANCHESTKEY);
 		goF2ToF1WithScroll = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2573, 3271, 2),

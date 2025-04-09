@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -258,7 +259,7 @@ public class HauntedMine extends BasicQuestHelper
 
 		daythNearby = new NpcHintArrowRequirement(NpcID.HAUNTEDMINE_BOSS_GHOST, NpcID.HAUNTEDMINE_BOSS_GHOST_FADED);
 
-		killedDayth = new VarplayerRequirement(382, 9, Operation.GREATER_EQUAL);
+		killedDayth = new VarplayerRequirement(VarPlayerID.HAUNTEDMINE, 9, Operation.GREATER_EQUAL);
 
 		inDarkCrystalRoom = new ZoneRequirement(crystalEntranceDark);
 		inDarkDaythRoom = new ZoneRequirement(daythRoomDark);

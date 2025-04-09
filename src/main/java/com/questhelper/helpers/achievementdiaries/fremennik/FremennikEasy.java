@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -141,16 +142,16 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCatchCerulean = new VarplayerRequirement(1184, false, 1);
-		notChangeBoots = new VarplayerRequirement(1184, false, 2);
-		notKilledCrabs = new VarplayerRequirement(1184, false, 3);
-		notCraftTiara = new VarplayerRequirement(1184, false, 4);
-		notBrowseStonemason = new VarplayerRequirement(1184, false, 5);
-		notCollectSnapeGrass = new VarplayerRequirement(1184, false, 6);
-		notStealStall = new VarplayerRequirement(1184, false, 7);
-		notFillBucket = new VarplayerRequirement(1184, false, 8);
-		notEnterTrollStronghold = new VarplayerRequirement(1184, false, 9);
-		notChopAndBurnOak = new VarplayerRequirement(1184, false, 10);
+		notCatchCerulean = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 1);
+		notChangeBoots = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 2);
+		notKilledCrabs = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 3);
+		notCraftTiara = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 4);
+		notBrowseStonemason = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 5);
+		notCollectSnapeGrass = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 6);
+		notStealStall = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 7);
+		notFillBucket = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 8);
+		notEnterTrollStronghold = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 9);
+		notChopAndBurnOak = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 10);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notCraftTiara).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notChangeBoots);

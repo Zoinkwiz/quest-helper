@@ -47,6 +47,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -132,17 +133,17 @@ public class DesertEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notGoldWarbler = new VarplayerRequirement(1198, false, 1);
-		notFiveClay = new VarplayerRequirement(1198, false, 2);
-		notEnterKalph = new VarplayerRequirement(1198, false, 3);
-		notEnterDesert = new VarplayerRequirement(1198, false, 4);
-		notKillVulture = new VarplayerRequirement(1198, false, 5);
-		notNardahHerb = new VarplayerRequirement(1198, false, 6);
-		notCollectCacti = new VarplayerRequirement(1198, false, 7);
-		notSellArtefact = new VarplayerRequirement(1198, false, 8);
-		notOpenSarc = new VarplayerRequirement(1198, false, 9);
-		notCutCactus = new VarplayerRequirement(1198, false, 10);
-		notMagicCarpet = new VarplayerRequirement(1198, false, 11);
+		notGoldWarbler = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 1);
+		notFiveClay = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 2);
+		notEnterKalph = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 3);
+		notEnterDesert = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 4);
+		notKillVulture = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 5);
+		notNardahHerb = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 6);
+		notCollectCacti = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 7);
+		notSellArtefact = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 8);
+		notOpenSarc = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 9);
+		notCutCactus = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 10);
+		notMagicCarpet = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 11);
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS)
 			.showConditioned(new Conditions(LogicType.OR, notNardahHerb, notMagicCarpet));

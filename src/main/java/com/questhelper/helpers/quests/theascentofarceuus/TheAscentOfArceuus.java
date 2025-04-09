@@ -46,7 +46,6 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -211,23 +210,23 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		leaveKaal = new ObjectStep(this, ObjectID.BRIMSTONE_DUNGEON_EXIT, new WorldPoint(1312, 10186, 0),
 			"Inspect the ancient grave south of Mount Karuulm.");
 
-		inspectGrave = new ObjectStep(this, NullObjectID.NULL_34602, new WorldPoint(1349, 3737, 0),
+		inspectGrave = new ObjectStep(this, ObjectID.ARCQUEST_GRAVE, new WorldPoint(1349, 3737, 0),
 			"Inspect the ancient grave south of Mount Karuulm.", combatGear);
 		inspectGrave.addSubSteps(leaveKaal);
 
-		inspectTrack1 = new ObjectStep(this, NullObjectID.NULL_34622, new WorldPoint(1335, 3743, 0),
+		inspectTrack1 = new ObjectStep(this, ObjectID.ARCQUEST_HUNTING_BUSH, new WorldPoint(1335, 3743, 0),
 			"Inspect plants and bushes until you uncover the full path.");
-		inspectTrack2 = new ObjectStep(this, NullObjectID.NULL_34623, new WorldPoint(1317, 3750, 0),
+		inspectTrack2 = new ObjectStep(this, ObjectID.ARCQUEST_HUNTING_PLANT, new WorldPoint(1317, 3750, 0),
 			"Inspect plants and bushes until you uncover the full path.");
-		inspectTrack3 = new ObjectStep(this, NullObjectID.NULL_34623, new WorldPoint(1305, 3750, 0),
+		inspectTrack3 = new ObjectStep(this, ObjectID.ARCQUEST_HUNTING_PLANT, new WorldPoint(1305, 3750, 0),
 			"Inspect plants and bushes until you uncover the full path.");
-		inspectTrack4 = new ObjectStep(this, NullObjectID.NULL_34621, new WorldPoint(1288, 3751, 0),
+		inspectTrack4 = new ObjectStep(this, ObjectID.ARCQUEST_HUNTING_TREE_STUMP, new WorldPoint(1288, 3751, 0),
 			"Inspect plants and bushes until you uncover the full path.");
-		inspectTrack5 = new ObjectStep(this, NullObjectID.NULL_34624, new WorldPoint(1286, 3738, 0),
+		inspectTrack5 = new ObjectStep(this, ObjectID.ARCQUEST_HUNTING_PLANT2, new WorldPoint(1286, 3738, 0),
 			"Inspect plants and bushes until you uncover the full path.");
 		inspectTrack1.addSubSteps(inspectTrack2, inspectTrack3, inspectTrack4, inspectTrack5);
 
-		inspectTrack6 = new ObjectStep(this, NullObjectID.NULL_34625, new WorldPoint(1282, 3726, 0),
+		inspectTrack6 = new ObjectStep(this, ObjectID.ARCQUEST_HUNTING_END, new WorldPoint(1282, 3726, 0),
 			"Inspect the final plant and kill the Trapped Soul (level 30) which appears.", combatGear);
 		killTrappedSoul = new NpcStep(this, NpcID.ARCQUEST_SOUL, new WorldPoint(1281, 3724, 0),
 			"Kill the Trapped Soul.");

@@ -49,10 +49,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,17 +146,17 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notBonesToPeachesPalace = new VarplayerRequirement(1194, false, 25);
-		notJuttingWall = new VarplayerRequirement(1194, false, 26);
-		notCosmics = new VarplayerRequirement(1194, false, 27);
-		notWakaToEdge = new VarplayerRequirement(1194, false, 28);
-		notHundredTears = new VarplayerRequirement(1194, false, 29);
-		notTrainToKeld = new VarplayerRequirement(1194, false, 30);
-		notBarrowsGloves = new VarplayerRequirement(1194, false, 31);
-		notBelladonna = new VarplayerRequirement(1195, false, 0);
-		notLightMiningHelm = new VarplayerRequirement(1195, false, 1);
-		notSmiteAltar = new VarplayerRequirement(1195, false, 2);
-		notPowerAmmy = new VarplayerRequirement(1195, false, 3);
+		notBonesToPeachesPalace = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 25);
+		notJuttingWall = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 26);
+		notCosmics = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 27);
+		notWakaToEdge = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 28);
+		notHundredTears = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 29);
+		notTrainToKeld = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 30);
+		notBarrowsGloves = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 31);
+		notBelladonna = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 0);
+		notLightMiningHelm = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 1);
+		notSmiteAltar = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 2);
+		notPowerAmmy = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 3);
 		bothEarth = new ComplexRequirement(LogicType.AND, "Earth runes", notBonesToPeachesPalace, notPowerAmmy);
 
 		smiteActive = new PrayerRequirement("Smite prayer active", Prayer.SMITE);

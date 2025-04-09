@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,17 +131,17 @@ public class WesternEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCopperLongtail = new VarplayerRequirement(1182, false, 1);
-		notNovicePest = new VarplayerRequirement(1182, false, 2);
-		notMineIron = new VarplayerRequirement(1182, false, 3);
-		notGnomeAgi = new VarplayerRequirement(1182, false, 4);
-		notGnomeBall = new VarplayerRequirement(1182, false, 5);
-		notChompyHat = new VarplayerRequirement(1182, false, 6);
-		notTPPest = new VarplayerRequirement(1182, false, 7);
-		notSwampToadCollect = new VarplayerRequirement(1182, false, 8);
-		notBrimstailEssence = new VarplayerRequirement(1182, false, 9);
-		notOakShortbow = new VarplayerRequirement(1182, false, 10);
-		notTerrorbird = new VarplayerRequirement(1182, false, 11);
+		notCopperLongtail = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 1);
+		notNovicePest = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 2);
+		notMineIron = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 3);
+		notGnomeAgi = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 4);
+		notGnomeBall = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 5);
+		notChompyHat = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 6);
+		notTPPest = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 7);
+		notSwampToadCollect = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 8);
+		notBrimstailEssence = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 9);
+		notOakShortbow = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 10);
+		notTerrorbird = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 11);
 
 		//todo find way to track chompy kills
 

@@ -242,7 +242,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 			"Kill a ram south of Varrock.", true);
 		((NpcStep) killRam).addAlternateNpcs(NpcID.RAMUNSHEERED, NpcID.RAMUNSHEERED2, NpcID.RAMUNSHEERED3, NpcID.RAMUNSHEEREDSHAGGY);
 
-		killGoblin = new NpcStep(this, NpcID.GOBLIN, new WorldPoint(3252, 3251, 0),
+		killGoblin = new NpcStep(this, NpcID.GOBLIN_RED_SOLDIER_2, new WorldPoint(3252, 3251, 0),
 			"Kill a goblin east of Lumbridge.", true);
 		((NpcStep) killGoblin).addAlternateNpcs(NpcID.GOBLIN_UNARMED_MELEE_1, NpcID.GOBLIN_UNARMED_MELEE_2, NpcID.GOBLIN_UNARMED_MELEE_3,
 			NpcID.GOBLIN_UNARMED_MELEE_4, NpcID.GOBLIN_UNARMED_MELEE_5, NpcID.GOBLIN_UNARMED_MELEE_6, NpcID.GOBLIN_UNARMED_MELEE_7, NpcID.GOBLIN_UNARMED_MELEE_8,
@@ -269,12 +269,12 @@ public class RagAndBoneManI extends BasicQuestHelper
 		killFrogSteps.addStep(inJunaRoom, leaveJunaRoom);
 		killFrogSteps.addStep(addedRope, enterSwamp);
 
-		killMonkey = new NpcStep(this, NpcID.MONKEY, new WorldPoint(2886, 3167, 0),
+		killMonkey = new NpcStep(this, NpcID.MAGIC_CARPET_MONKEY, new WorldPoint(2886, 3167, 0),
 			"Kill a monkey on Karamja.", true);
 
 		enterKaramjaDungeon = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0),
 			"Kill a giant bat in the Karamja Volcano Dungeon.");
-		killBat = new NpcStep(this, NpcID.BAT, new WorldPoint(2858, 9572, 0),
+		killBat = new NpcStep(this, NpcID.SMALL_BAT, new WorldPoint(2858, 9572, 0),
 			"Kill a giant bat in the Karamja Volcano Dungeon.", true);
 		killBat.addSubSteps(enterKaramjaDungeon);
 

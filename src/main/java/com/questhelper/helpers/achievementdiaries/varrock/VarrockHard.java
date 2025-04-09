@@ -51,10 +51,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -186,16 +183,16 @@ public class VarrockHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notSpottyCape = new VarplayerRequirement(1176, false, 29);
-		not153Kudos = new VarplayerRequirement(1176, false, 30);
-		notWakkaEdge = new VarplayerRequirement(1176, false, 31);
-		notPaddewwaTP = new VarplayerRequirement(1177, false, 0);
-		notSkullSceptre = new VarplayerRequirement(1177, false, 1);
-		notYewChurch = new VarplayerRequirement(1177, false, 2);
-		notFancyStone = new VarplayerRequirement(1177, false, 3);
-		notYewRoots = new VarplayerRequirement(1177, false, 4);
-		notSmiteAltar = new VarplayerRequirement(1177, false, 5);
-		notPipe = new VarplayerRequirement(1177, false, 6);
+		notSpottyCape = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 29);
+		not153Kudos = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 30);
+		notWakkaEdge = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 31);
+		notPaddewwaTP = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 0);
+		notSkullSceptre = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 1);
+		notYewChurch = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 2);
+		notFancyStone = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 3);
+		notYewRoots = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 4);
+		notSmiteAltar = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 5);
+		notPipe = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 6);
 
 		atleast153Kudos = new VarbitRequirement(VarbitID.VM_KUDOS, Operation.GREATER_EQUAL, 153, "153+ Kudos");
 

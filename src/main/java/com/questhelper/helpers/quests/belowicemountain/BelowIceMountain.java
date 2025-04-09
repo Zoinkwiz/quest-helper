@@ -41,10 +41,10 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.*;
 
@@ -216,7 +216,7 @@ public class BelowIceMountain extends BasicQuestHelper
 			"dungeon entrance on the west side of Ice Mountain.");
 		goToDungeon.addDialogStep("Yes.");
 
-		reenterDungeon = new ObjectStep(this, NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0), "Re-enter the " +
+		reenterDungeon = new ObjectStep(this, ObjectID.BIM_ENTRANCE, new WorldPoint(3000, 3494, 0), "Re-enter the " +
 			"dungeon to finish the quest.");
 		reenterDungeon.addDialogStep("Yes.");
 
@@ -224,7 +224,7 @@ public class BelowIceMountain extends BasicQuestHelper
 			"Alternatively, with Level 10 Mining, mine the 4 pillars in the corners.");
 		defeatGuardian.addSubSteps(reenterDungeon);
 
-		watchCutscene = new ObjectStep(this, NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0), "Watch the cutscene to " +
+		watchCutscene = new ObjectStep(this, ObjectID.BIM_ENTRANCE, new WorldPoint(3000, 3494, 0), "Watch the cutscene to " +
 			"finish the quest.");
 		watchCutscene.addDialogStep("Yes.");
 	}

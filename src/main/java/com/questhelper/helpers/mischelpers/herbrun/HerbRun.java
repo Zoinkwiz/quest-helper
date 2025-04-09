@@ -44,7 +44,6 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
@@ -300,7 +299,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		faladorPatch = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_1, new WorldPoint(3058, 3311, 0), "Harvest your herbs from the Falador patch.", explorerRing2);
 		hosidiusPatch = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Harvest your herbs from the Hosidius patch.", xericsTalisman);
 
-		farmingGuildPatch = new ObjectStep(this, NullObjectID.NULL_38979, new WorldPoint(1238, 3726, 0), "Harvest your herbs from the Farming Guild patch.", farmingGuildTeleport);
+		farmingGuildPatch = new ObjectStep(this, ObjectID.HS_NPT2_WALL_CUTS_03, new WorldPoint(1238, 3726, 0), "Harvest your herbs from the Farming Guild patch.", farmingGuildTeleport);
 		farmingGuildPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildPatch));
 
 		harmonyPatch = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_5, new WorldPoint(3789, 2837, 0), "Harvest your herbs from the Harmony patch.", ectophial);
@@ -311,10 +310,10 @@ public class HerbRun extends ComplexStateQuestHelper
 		trollStrongholdPatch = new ObjectStep(this, ObjectID.MYARM_HERBPATCH, new WorldPoint(2826, 3694, 0), "Harvest your herbs from the Troll Stronghold patch.",
 			trollheimTeleport, stonyBasalt);
 		trollStrongholdPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToTrollStronghold));
-		weissPatch = new ObjectStep(this, NullObjectID.NULL_33176, new WorldPoint(2848, 3934, 0), "Harvest your herbs from the Weiss patch.", icyBasalt);
+		weissPatch = new ObjectStep(this, ObjectID.MY2ARM_HERBPATCH, new WorldPoint(2848, 3934, 0), "Harvest your herbs from the Weiss patch.", icyBasalt);
 		weissPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToWeiss));
 
-		varlamorePatch = new ObjectStep(this, NullObjectID.NULL_50697, new WorldPoint(1582, 3094, 0), "Harvest your herbs from the Varlamore patch.", hunterWhistle);
+		varlamorePatch = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_8, new WorldPoint(1582, 3094, 0), "Harvest your herbs from the Varlamore patch.", hunterWhistle);
 		varlamorePatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
 
 		ardougnePlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_3, new WorldPoint(2670, 3374, 0), "Plant your seeds into the Ardougne patch.", ardyCloak2);
@@ -333,7 +332,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		hosidiusPlant.addIcon(ItemID.RANARR_SEED);
 		hosidiusPlant.addSubSteps(hosidiusPlant);
 
-		farmingGuildPlant = new ObjectStep(this, NullObjectID.NULL_33979, new WorldPoint(1238, 3726, 0), "Plant your seeds into the Farming Guild patch.", farmingGuildTeleport);
+		farmingGuildPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_7, new WorldPoint(1238, 3726, 0), "Plant your seeds into the Farming Guild patch.", farmingGuildTeleport);
 		farmingGuildPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildPatch));
 		farmingGuildPlant.addIcon(ItemID.RANARR_SEED);
 		farmingGuildPatch.addSubSteps(farmingGuildPlant);
@@ -353,12 +352,12 @@ public class HerbRun extends ComplexStateQuestHelper
 		trollStrongholdPlant.addIcon(ItemID.RANARR_SEED);
 		trollStrongholdPatch.addSubSteps(trollStrongholdPlant);
 
-		weissPlant = new ObjectStep(this, NullObjectID.NULL_33176, new WorldPoint(2848, 3934, 0), "Plant your seeds into the Weiss patch.", icyBasalt);
+		weissPlant = new ObjectStep(this, ObjectID.MY2ARM_HERBPATCH, new WorldPoint(2848, 3934, 0), "Plant your seeds into the Weiss patch.", icyBasalt);
 		weissPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToWeiss));
 		weissPlant.addIcon(ItemID.RANARR_SEED);
 		weissPatch.addSubSteps(weissPlant);
 
-		varlamorePlant = new ObjectStep(this, NullObjectID.NULL_50697, new WorldPoint(1582, 3094, 0), "Plant your seeds into the Varlamore patch.", hunterWhistle);
+		varlamorePlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_8, new WorldPoint(1582, 3094, 0), "Plant your seeds into the Varlamore patch.", hunterWhistle);
 		varlamorePlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
 		varlamorePlant.addIcon(ItemID.RANARR_SEED);
 		varlamorePatch.addSubSteps(varlamorePlant);

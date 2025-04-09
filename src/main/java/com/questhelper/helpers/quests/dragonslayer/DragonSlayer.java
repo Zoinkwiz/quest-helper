@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -279,18 +280,18 @@ public class DragonSlayer extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		askedAboutMelzar = new VarplayerRequirement(177, false, 11);
-		askedAboutThalzar = new VarplayerRequirement(177, false, 12);
-		askedAboutLozar = new VarplayerRequirement(177, false, 13);
-		askedAboutShip = new VarplayerRequirement(177, false, 14);
-		askedAboutShield = new VarplayerRequirement(177, false, 15);
+		askedAboutMelzar = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, false, 11);
+		askedAboutThalzar = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, false, 12);
+		askedAboutLozar = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, false, 13);
+		askedAboutShip = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, false, 14);
+		askedAboutShield = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, false, 15);
 		askedAllQuestions = new Conditions(askedAboutShip, askedAboutShield, askedAboutMelzar, askedAboutThalzar, askedAboutLozar);
 		askedOracleAboutMap = new VarbitRequirement(1832, 1);
 		inDwarvenMines = new ZoneRequirement(dwarvenMines);
-		silkUsed = new VarplayerRequirement(177, true, 17);
-		unfiredBowlUsed = new VarplayerRequirement(177, true, 18);
-		lobsterPotUsed = new VarplayerRequirement(177, true, 19);
-		mindBombUsed = new VarplayerRequirement(177, true, 20);
+		silkUsed = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, true, 17);
+		unfiredBowlUsed = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, true, 18);
+		lobsterPotUsed = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, true, 19);
+		mindBombUsed = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, true, 20);
 		thalzarDoorOpened = new Conditions(silkUsed, unfiredBowlUsed, lobsterPotUsed, mindBombUsed);
 		thalzarChest2Nearby = new ObjectCondition(ObjectID.ORACLECHESTOPEN);
 
@@ -329,7 +330,7 @@ public class DragonSlayer extends BasicQuestHelper
 		inElvargArea = new ZoneRequirement(elvargArea);
 		inKaramjaVolcano = new ZoneRequirement(karamjaVolcano);
 
-		unlockedShortcut = new VarplayerRequirement(177, true, 6);
+		unlockedShortcut = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, true, 6);
 	}
 
 	public void setupSteps()

@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -138,15 +139,15 @@ public class FremennikHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notTPTroll = new VarplayerRequirement(1184, false, 21);
-		notCatchKyatt = new VarplayerRequirement(1184, false, 23);
-		notMixSuperDef = new VarplayerRequirement(1184, false, 24);
-		notStealGem = new VarplayerRequirement(1184, false, 25);
-		notCraftShield = new VarplayerRequirement(1184, false, 26);
-		notMineAddy = new VarplayerRequirement(1184, false, 27);
-		notMiscSupport = new VarplayerRequirement(1184, false, 28);
-		notTPWaterbirth = new VarplayerRequirement(1184, false, 29);
-		notFreeBlast = new VarplayerRequirement(1184, false, 30);
+		notTPTroll = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 21);
+		notCatchKyatt = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 23);
+		notMixSuperDef = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 24);
+		notStealGem = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 25);
+		notCraftShield = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 26);
+		notMineAddy = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 27);
+		notMiscSupport = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 28);
+		notTPWaterbirth = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 29);
+		notFreeBlast = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 30);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddy).isNotConsumed();
 		bronzeNail = new ItemRequirement("Bronze nails", ItemID.NAILS_BRONZE).showConditioned(notCraftShield);

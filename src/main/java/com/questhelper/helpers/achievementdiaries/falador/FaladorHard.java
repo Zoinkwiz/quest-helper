@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -150,17 +151,17 @@ public class FaladorHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCraftedMindRunes = new VarplayerRequirement(1186, false, 26);
-		notChangedFamilyCrest = new VarplayerRequirement(1186, false, 27);
-		notKilledMole = new VarplayerRequirement(1186, false, 28);
-		notKilledWyvern = new VarplayerRequirement(1186, false, 29);
-		notCompleteAgiCourse = new VarplayerRequirement(1186, false, 30);
-		notEnterMiningGuildWithProspector = new VarplayerRequirement(1186, false, 31);
-		notKilledBlueDragon = new VarplayerRequirement(1187, false, 0);
-		notCrackedWallSafe = new VarplayerRequirement(1187, false, 1);
-		notPraySarimAltarProsy = new VarplayerRequirement(1187, false, 2);
-		notEnterWarriorsGuild = new VarplayerRequirement(1187, false, 3);
-		notDwarvenHelmetDwarvenMines = new VarplayerRequirement(1187, false, 4);
+		notCraftedMindRunes = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 26);
+		notChangedFamilyCrest = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 27);
+		notKilledMole = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 28);
+		notKilledWyvern = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 29);
+		notCompleteAgiCourse = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 30);
+		notEnterMiningGuildWithProspector = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 31);
+		notKilledBlueDragon = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 0);
+		notCrackedWallSafe = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 1);
+		notPraySarimAltarProsy = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 2);
+		notEnterWarriorsGuild = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 3);
+		notDwarvenHelmetDwarvenMines = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 4);
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.BLANKRUNE_HIGH, 28).showConditioned(notCraftedMindRunes);
 		mindTiara = new ItemRequirement("Mind Tiara", ItemID.TIARA_MIND, 1, true).showConditioned(notCraftedMindRunes);

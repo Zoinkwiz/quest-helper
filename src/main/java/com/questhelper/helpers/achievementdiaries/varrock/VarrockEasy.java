@@ -46,10 +46,7 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,20 +139,20 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notThessalia = new VarplayerRequirement(1176, false, 1);
-		notAubury = new VarplayerRequirement(1176, false, 2);
-		notIron = new VarplayerRequirement(1176, false, 3);
-		notPlank = new VarplayerRequirement(1176, false, 4);
-		notStrongholdSecond = new VarplayerRequirement(1176, false, 5);
-		notFence = new VarplayerRequirement(1176, false, 6);
-		notDyingTree = new VarplayerRequirement(1176, false, 7);
-		notNews = new VarplayerRequirement(1176, false, 8);
-		notDogBone = new VarplayerRequirement(1176, false, 9);
-		notBowl = new VarplayerRequirement(1176, false, 10);
-		notKudos = new VarplayerRequirement(1176, false, 11);
-		notEarthRune = new VarplayerRequirement(1176, false, 12);
-		notTrout = new VarplayerRequirement(1176, false, 13);
-		notTeaStall = new VarplayerRequirement(1176, false, 14);
+		notThessalia = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 1);
+		notAubury = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 2);
+		notIron = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 3);
+		notPlank = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 4);
+		notStrongholdSecond = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 5);
+		notFence = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 6);
+		notDyingTree = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 7);
+		notNews = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 8);
+		notDogBone = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 9);
+		notBowl = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 10);
+		notKudos = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 11);
+		notEarthRune = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 12);
+		notTrout = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 13);
+		notTeaStall = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 14);
 
 		notMoreKudos = new VarbitRequirement(VarbitID.VM_KUDOS, Operation.GREATER_EQUAL, 50, "50+ Kudos");
 

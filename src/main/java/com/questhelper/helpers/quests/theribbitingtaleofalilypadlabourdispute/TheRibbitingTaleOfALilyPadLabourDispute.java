@@ -39,7 +39,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -129,10 +128,10 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 		((NpcStep) talkToYellowFrogs).addAlternateNpcs();
 		pickUpAxe = new ObjectStep(this, ObjectID.LOG_WITHAXE, new WorldPoint(1683, 2975, 0),
 			"Take the axe from the logs next to Marcellus.");
-		chopOrangeTree = new ObjectStep(this, NullObjectID.NULL_52977, new WorldPoint(1695, 2980, 0),
+		chopOrangeTree = new ObjectStep(this, ObjectID.FROG_QUEST_TREE, new WorldPoint(1695, 2980, 0),
 			"Chop down the orange tree next to the yellow frog.", axe);
 		chopOrangeTree.addSubSteps(pickUpAxe);
-		sabotageLilyPad = new ObjectStep(this, NullObjectID.NULL_50891, new WorldPoint(1692, 2983, 0),
+		sabotageLilyPad = new ObjectStep(this, ObjectID.FROG_QUEST_LILY_PAD_DESTROYABLE, new WorldPoint(1692, 2983, 0),
 			"Sabotage the lily pad near to the yellow frogs.");
 		talkToGary2 = new NpcStep(this, SUE_AND_GARY, new WorldPoint(1694, 2996, 0),
 			"Return to Sue and Gary in the north-east of the oasis.", true);
@@ -147,9 +146,9 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 		enterCode = new PuzzleWrapperStep(this, new ChestCodeStep(this, "NALIA", 10,
 			3, 3, 4, 4, 9), "Work out how to open the chest in Marcellus' house.");
 		openChest.addSubSteps(enterCode);
-		plantPlushy = new ObjectStep(this, NullObjectID.NULL_52979, new WorldPoint(1694, 2976, 0),
+		plantPlushy = new ObjectStep(this, ObjectID.FROG_QUEST_POO, new WorldPoint(1694, 2976, 0),
 			"Plant the plushy in the capybara dung east of Marcellus, south of the orange tree.");
-		inspectDung = new ObjectStep(this, NullObjectID.NULL_52979, new WorldPoint(1694, 2976, 0),
+		inspectDung = new ObjectStep(this, ObjectID.FROG_QUEST_POO, new WorldPoint(1694, 2976, 0),
 			"Inspect the dung east of Marcellus, south of the orange tree.");
 		defeatCuthbert = new NpcStep(this, NpcID.FROG_QUEST_CUTHBERT_COMBAT, new WorldPoint(1688, 2977, 0),
 			"Defeat Cuthbert, Lord of Dread.");

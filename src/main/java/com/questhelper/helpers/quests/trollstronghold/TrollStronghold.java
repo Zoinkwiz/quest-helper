@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -161,8 +162,8 @@ public class TrollStronghold extends BasicQuestHelper
 		inTrollArea1 = new ZoneRequirement(trollArea1);
 		inArena = new ZoneRequirement(arena);
 		inNorthArena = new ZoneRequirement(northArena);
-		beatenDad = new VarplayerRequirement(317, 20, Operation.GREATER_EQUAL);
-		prisonDoorUnlocked = new VarplayerRequirement(317, 30, Operation.GREATER_EQUAL);
+		beatenDad = new VarplayerRequirement(VarPlayerID.TROLL_QUEST, 20, Operation.GREATER_EQUAL);
+		prisonDoorUnlocked = new VarplayerRequirement(VarPlayerID.TROLL_QUEST, 30, Operation.GREATER_EQUAL);
 		inArenaCave = new ZoneRequirement(arenaCave);
 		inTrollheimArea = new ZoneRequirement(trollheimArea);
 		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);

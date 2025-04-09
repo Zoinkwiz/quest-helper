@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,16 +141,16 @@ public class KourendHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notWoodcuttingGuild = new VarplayerRequirement(2085, false, 26);
-		notSmeltAddyBar = new VarplayerRequirement(2085, false, 27);
-		notKillLizardmanShaman = new VarplayerRequirement(2085, false, 28);
-		notMineLovakite = new VarplayerRequirement(2085, false, 29);
-		notPlantLogavano = new VarplayerRequirement(2085, false, 31);
-		notKillZombie = new VarplayerRequirement(2085, false, 30);
-		notTeleportHeart = new VarplayerRequirement(2086, false, 0);
-		notDeliverArtifact = new VarplayerRequirement(2086, false, 1);
-		notKillWyrm = new VarplayerRequirement(2086, false, 2);
-		notExamineMonster = new VarplayerRequirement(2086, false, 3);
+		notWoodcuttingGuild = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 26);
+		notSmeltAddyBar = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 27);
+		notKillLizardmanShaman = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 28);
+		notMineLovakite = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 29);
+		notPlantLogavano = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 31);
+		notKillZombie = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 30);
+		notTeleportHeart = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 0);
+		notDeliverArtifact = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 1);
+		notKillWyrm = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 2);
+		notExamineMonster = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY2, false, 3);
 
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 

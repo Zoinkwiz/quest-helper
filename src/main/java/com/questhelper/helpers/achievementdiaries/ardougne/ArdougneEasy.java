@@ -45,6 +45,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,16 +113,16 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notEssMine = new VarplayerRequirement(1196, false, 0);
-		notStealCake = new VarplayerRequirement(1196, false, 1);
-		notSellSilk = new VarplayerRequirement(1196, false, 2);
-		notEastArdyAltar = new VarplayerRequirement(1196, false, 4);
-		notFishingTrawler = new VarplayerRequirement(1196, false, 5);
-		notEnterCombatCamp = new VarplayerRequirement(1196, false, 6);
-		notIdentifySword = new VarplayerRequirement(1196, false, 7);
-		notWildyLever = new VarplayerRequirement(1196, false, 9);
-		notAlecksEmporium = new VarplayerRequirement(1196, false, 11);
-		notProbitaPet = new VarplayerRequirement(1196, false, 12);
+		notEssMine = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 0);
+		notStealCake = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 1);
+		notSellSilk = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 2);
+		notEastArdyAltar = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 4);
+		notFishingTrawler = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 5);
+		notEnterCombatCamp = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 6);
+		notIdentifySword = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 7);
+		notWildyLever = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 9);
+		notAlecksEmporium = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 11);
+		notProbitaPet = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 12);
 
 		silk = new ItemRequirement("Silk", ItemID.SILK).showConditioned(notSellSilk);
 		rustySword = new ItemRequirement("Rusty sword", ItemID.DIGSITESWORD).showConditioned(notIdentifySword);

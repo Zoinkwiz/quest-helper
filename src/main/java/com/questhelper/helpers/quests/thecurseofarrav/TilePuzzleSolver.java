@@ -31,7 +31,6 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.tools.QuestPerspective;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
@@ -53,10 +52,10 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 	 * Width & height of the tile puzzle
 	 */
 	private static final int SIZE = 12;
-	private static final int GREEN_TILE = NullObjectID.NULL_50296;
-	private static final int BLUE_TILE = NullObjectID.NULL_50294;
-	private static final int RED_TILE = NullObjectID.NULL_50295;
-	private static final int YELLOW_TILE = NullObjectID.NULL_50297;
+	private static final int GREEN_TILE = ObjectID.MOM2_GREEN_TILES;
+	private static final int BLUE_TILE = ObjectID.MOM2_BLUE_TILES;
+	private static final int RED_TILE = ObjectID.MOM2_RED_TILES;
+	private static final int YELLOW_TILE = ObjectID.MOM2_YELLOW_TILES;
 	private static final Set<Integer> VALID_TILES = Set.of(GREEN_TILE, BLUE_TILE, RED_TILE, YELLOW_TILE);
 
 	/**

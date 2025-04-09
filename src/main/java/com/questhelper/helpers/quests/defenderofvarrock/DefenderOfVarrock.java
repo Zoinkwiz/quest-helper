@@ -44,14 +44,10 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.*;
 
@@ -260,7 +256,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	public void setupConditions()
 	{
 		// TODO: Reported value is 12754, but uncertain why this'd be the case. Perhaps to do with different version of him?
-		eliasFollowing = new VarplayerRequirement(447, List.of(NpcID.ELIAS_WHITE_VIS, NpcID.ELIAS_WHITE_CUTSCENE, 12754), 16);
+		eliasFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.ELIAS_WHITE_VIS, NpcID.ELIAS_WHITE_CUTSCENE, 12754), 16);
 
 		// 9655 4->6
 		// 9659 0->1
@@ -273,7 +269,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		inspectedTrapdoor = new VarbitRequirement(9665, 1);
 		inDungeon = new ZoneRequirement(new Zone(14151));
 
-		redMistNearby = new ObjectCondition(NullObjectID.NULL_50690);
+		redMistNearby = new ObjectCondition(ObjectID.DOV_RED_MIST);
 
 		inCastleF1 = new ZoneRequirement(castleF1);
 		inCastleF2 = new ZoneRequirement(castleF2);
@@ -300,13 +296,13 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		talkToElias.addDialogSteps("Yes.", "Ready when you are.");
 		talkToElias.addTeleport(lumberyardTeleport);
 
-		inspectPlant = new ObjectStep(this, NullObjectID.NULL_50662, new WorldPoint(3280, 3516, 0), "Inspect the plant north of the pub.");
-		inspectRock = new ObjectStep(this, NullObjectID.NULL_50664, new WorldPoint(3260, 3514, 0), "Inspect the small rocks to the west.");
-		inspectPlant2 = new ObjectStep(this, NullObjectID.NULL_50669, new WorldPoint(3269, 3480, 0), "Follow the path to the south and inspect the plant south west of the Jolly Boar Inn.");
-		inspectBush1 = new ObjectStep(this, NullObjectID.NULL_50670, new WorldPoint(3293, 3463, 0), "Continue south-east of the Saradomin statue, and inspect the bush there.");
-		inspectBush2 = new ObjectStep(this, NullObjectID.NULL_50667, new WorldPoint(3325, 3470, 0), "Search the bush next to the gate to the east, by the gate to Silvarea.");
-		inspectBush3 = new ObjectStep(this, NullObjectID.NULL_50668, new WorldPoint(3349, 3495, 0), "Inspect the small bush further to the east.");
-		inspectTrapdoor = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0),
+		inspectPlant = new ObjectStep(this, ObjectID.DOV_HUNTING_PLANT_INITIAL, new WorldPoint(3280, 3516, 0), "Inspect the plant north of the pub.");
+		inspectRock = new ObjectStep(this, ObjectID.DOV_HUNTING_BOULDER1, new WorldPoint(3260, 3514, 0), "Inspect the small rocks to the west.");
+		inspectPlant2 = new ObjectStep(this, ObjectID.DOV_HUNTING_PLANT1, new WorldPoint(3269, 3480, 0), "Follow the path to the south and inspect the plant south west of the Jolly Boar Inn.");
+		inspectBush1 = new ObjectStep(this, ObjectID.DOV_HUNTING_PLANT2, new WorldPoint(3293, 3463, 0), "Continue south-east of the Saradomin statue, and inspect the bush there.");
+		inspectBush2 = new ObjectStep(this, ObjectID.DOV_HUNTING_BUSH1, new WorldPoint(3325, 3470, 0), "Search the bush next to the gate to the east, by the gate to Silvarea.");
+		inspectBush3 = new ObjectStep(this, ObjectID.DOV_HUNTING_BUSH2, new WorldPoint(3349, 3495, 0), "Inspect the small bush further to the east.");
+		inspectTrapdoor = new ObjectStep(this, ObjectID.DOV_BASE_ENTRY, new WorldPoint(3343, 3515, 0),
 			"Enter the trapdoor to the north, near to the wilderness ditch.", combatGear);
 		inspectTrapdoor.addDialogStep("Let's do it.");
 
@@ -316,7 +312,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		killZombies = new NpcStep(this, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_1, "Kill armoured zombies and fill the 3 bottles with the clouds they leave behind.", true);
 		((NpcStep) killZombies).addAlternateNpcs(NpcID.DOV_ARMOURED_ZOMBIE_MELEE_2, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_3, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_4, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_5, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_1,
 			NpcID.DOV_ARMOURED_ZOMBIE_RANGED_2, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_3, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_4, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_5, NpcID.DOV_ARMOURED_ZOMBIE_VARROCK_MELEE_1, NpcID.DOV_ARMOURED_ZOMBIE_VARROCK_MELEE_2);
-		collectRedMist = new ObjectStep(this, NullObjectID.NULL_50690, "Collect the red mist in a bottle.");
+		collectRedMist = new ObjectStep(this, ObjectID.DOV_RED_MIST, "Collect the red mist in a bottle.");
 		killZombies.addSubSteps(collectRedMist);
 
 		openDoorToArrav = new ObjectStep(this, ObjectID.DOV_BASE_GATE_CLOSED_1, new WorldPoint(3536, 4571, 0),
@@ -326,7 +322,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		killZombiesAgain = new NpcStep(this, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_1, "Kill armoured zombies and fill 3 the bottles with the clouds they leave behind.", true);
 		((NpcStep) killZombiesAgain).addAlternateNpcs(NpcID.DOV_ARMOURED_ZOMBIE_MELEE_2, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_3, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_4, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_5, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_1,
 			NpcID.DOV_ARMOURED_ZOMBIE_RANGED_2, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_3, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_4, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_5, NpcID.DOV_ARMOURED_ZOMBIE_VARROCK_MELEE_1, NpcID.DOV_ARMOURED_ZOMBIE_VARROCK_MELEE_2);
-		collectRedMistAgain = new ObjectStep(this, NullObjectID.NULL_50690, "Collect the red mist in a bottle.");
+		collectRedMistAgain = new ObjectStep(this, ObjectID.DOV_RED_MIST, "Collect the red mist in a bottle.");
 		goThroughSecondGate = new ObjectStep(this, ObjectID.DOV_BASE_GATE_CLOSED_2, new WorldPoint(3540, 4597, 0),
 			"Kill zombies to fill 3 bottles with mist again, and continue deeper into the dungeon.",
 			bottleOfMist.quantity(3));
@@ -345,7 +341,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		talkToRovin.addSubSteps(goUpToRovin, goUpToRovin2);
 
 		// Forge
-		enterCamdozaal = new ObjectStep(this, NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0),
+		enterCamdozaal = new ObjectStep(this, ObjectID.BIM_ENTRANCE, new WorldPoint(3000, 3494, 0),
 			"Enter Camdozaal, west of Ice Mountain.", pickaxe, combatGear);
 		enterCamdozaal.addTeleport(mindAltarOrLassarTeleport);
 		talkToRamarno = new NpcStep(this, NpcID.CAMZODAAL_RAMARNO_ENTRANCE, new WorldPoint(2959, 5809, 0),
@@ -357,7 +353,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 			"Kill chaos golems in the eastern cavern for a chaos core.", true, chaosCore);
 		((NpcStep) killChaosGolems).addAlternateNpcs(NpcID.CAMDOZAAL_GOLEM_CHAOS_ROCK);
 		useCoreOnDeposit = new DetailedQuestStep(this, "Use a chaos core on a barronite deposit.", chaosCore.highlighted(), barroniteDeposit.highlighted());
-		useBarroniteOnForge = new ObjectStep(this, NullObjectID.NULL_41411, new WorldPoint(2957, 5811, 0), "Use the imbued barronite on the sacred forge.", imbuedBarronite.highlighted());
+		useBarroniteOnForge = new ObjectStep(this, ObjectID.BIM_RUINS_WALLKIT_SACRED_FORGE_MULTI, new WorldPoint(2957, 5811, 0), "Use the imbued barronite on the sacred forge.", imbuedBarronite.highlighted());
 		useBarroniteOnForge.addIcon(ItemID.DOV_IMBUED_BARRONITE);
 
 		// Invasion
@@ -384,7 +380,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 		talkToRoald = new NpcStep(this, NpcID.DOV_ROALD, new WorldPoint(3926, 4945, 0),
 			"Talk to King Roald.", shieldOfArrav);
-		talkToRoaldOutsideInstance = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3221, 3473, 0), "Talk to King Roald.", shieldOfArrav);
+		talkToRoaldOutsideInstance = new NpcStep(this, NpcID.KING_ROALD_CUTSCENE, new WorldPoint(3221, 3473, 0), "Talk to King Roald.", shieldOfArrav);
 		talkToRoald.addSubSteps(talkToRoaldOutsideInstance);
 
 		talkToAeonisig = new NpcStep(this, NpcID.DOV_AEONISIG, new WorldPoint(3926, 4945, 0),

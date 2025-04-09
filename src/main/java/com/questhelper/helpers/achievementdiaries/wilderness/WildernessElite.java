@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -125,13 +126,13 @@ public class WildernessElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notThreeBosses = new VarplayerRequirement(1193, false, 3);
-		notTPGhorrock = new VarplayerRequirement(1193, false, 5);
-		notDarkCrab = new VarplayerRequirement(1193, false, 7);
-		notRuneScim = new VarplayerRequirement(1193, false, 8);
-		notRoguesChest = new VarplayerRequirement(1193, false, 9);
-		notSpiritMage = new VarplayerRequirement(1193, false, 10);
-		notMagicLogs = new VarplayerRequirement(1193, false, 11);
+		notThreeBosses = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 3);
+		notTPGhorrock = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 5);
+		notDarkCrab = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 7);
+		notRuneScim = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 8);
+		notRoguesChest = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 9);
+		notSpiritMage = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 10);
+		notMagicLogs = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 11);
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 

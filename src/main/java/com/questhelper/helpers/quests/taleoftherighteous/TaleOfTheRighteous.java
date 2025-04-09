@@ -41,7 +41,6 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -242,10 +241,10 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 
 		talkToDuffy = new NpcStep(this, NpcID.RAIDS_TEMPLE_DUFFY_VISIBLE, new WorldPoint(1278, 3561, 0),
 			"Travel to Mount Quidamortem and talk to Historian Duffy.");
-		useRopeOnCrevice = new ObjectStep(this, NullObjectID.NULL_32502, new WorldPoint(1215, 3559, 0),
+		useRopeOnCrevice = new ObjectStep(this, ObjectID.SHAYZIENQUEST_CAVE, new WorldPoint(1215, 3559, 0),
 			"Use a rope on the crevice west side of Quidamortem.", rope, pickaxe, combatGear);
 		useRopeOnCrevice.addIcon(ItemID.ROPE);
-		enterCrevice = new ObjectStep(this, NullObjectID.NULL_32502, new WorldPoint(1215, 3559, 0),
+		enterCrevice = new ObjectStep(this, ObjectID.SHAYZIENQUEST_CAVE, new WorldPoint(1215, 3559, 0),
 			"Enter the crevice west side of Quidamortem, ready to fight a corrupted lizardman (level 46).", pickaxe, combatGear);
 		enterCrevice.addDialogStep("Yes.");
 		mineRockfall = new ObjectStep(this, ObjectID.SHAYZIENQUEST_BLOCKAGE, new WorldPoint(1182, 9974, 0), "Mine the rockfall.", pickaxe);
@@ -264,7 +263,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 			"Leave the cavern. You can hop worlds to appear back at the entrance.");
 		returnToDuffy = new NpcStep(this, NpcID.RAIDS_TEMPLE_DUFFY_VISIBLE, new WorldPoint(1278, 3561, 0),
 			"Return to Historian Duffy.");
-		enterCreviceAgain = new ObjectStep(this, NullObjectID.NULL_32502, new WorldPoint(1215, 3559, 0),
+		enterCreviceAgain = new ObjectStep(this, ObjectID.SHAYZIENQUEST_CAVE, new WorldPoint(1215, 3559, 0),
 			"Enter the crevice west side of Quidamortem again.");
 		enterCreviceAgain.addDialogStep("Yes.");
 		talkToDuffyInCrevice = new NpcStep(this, NpcID.SHAYZIENQUEST_DUFFY, new WorldPoint(1172, 9929, 0),

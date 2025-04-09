@@ -248,9 +248,9 @@ public class Watchtower extends BasicQuestHelper
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
 
-		nightshade = new ItemRequirement("Cave nightshade", ItemID.NIGHTSHADE);
+		nightshade = new ItemRequirement("Cave nightshade", ItemID.STACKABLE_NIGHTSHADE);
 		nightshade.setHighlightInInventory(true);
-		nightshade2 = new ItemRequirement("Cave nightshade", ItemID.NIGHTSHADE, 2);
+		nightshade2 = new ItemRequirement("Cave nightshade", ItemID.STACKABLE_NIGHTSHADE, 2);
 
 		crystal2 = new ItemRequirement("Crystal", ItemID.POWERING_CRYSTAL2);
 		crystal2.setTooltip("You can get another from the mad skavid");
@@ -530,7 +530,7 @@ public class Watchtower extends BasicQuestHelper
 		pickUp2Nightshade = new DetailedQuestStep(this, new WorldPoint(2528, 9415, 0), "Pick up 2 cave nightshade. You can world hop to get a second one.", nightshade2);
 
 		useNightshadeOnGuard = new NpcStep(this, NpcID.ENCLAVE_GUARD, new WorldPoint(2507, 3036, 0), "Use a nightshade on an Enclave Guard in the Gu'Tanoth market.", nightshade);
-		useNightshadeOnGuard.addIcon(ItemID.NIGHTSHADE);
+		useNightshadeOnGuard.addIcon(ItemID.STACKABLE_NIGHTSHADE);
 
 		leaveMadSkavid = new ObjectStep(this, ObjectID.CAVE6EXIT, new WorldPoint(2521, 9411, 0), "Leave the mad skavid's cave.");
 
@@ -556,7 +556,7 @@ public class Watchtower extends BasicQuestHelper
 
 		useNightshadeOnGuardAgain = new NpcStep(this, NpcID.ENCLAVE_GUARD, new WorldPoint(2507, 3036, 0),
 			"Use a nightshade on an Enclave Guard in the Gu'Tanoth market to enter the enclave again.", nightshade, magicPotion, pickaxe);
-		useNightshadeOnGuardAgain.addIcon(ItemID.NIGHTSHADE);
+		useNightshadeOnGuardAgain.addIcon(ItemID.STACKABLE_NIGHTSHADE);
 
 		usePotionOnOgre1 = new NpcStep(this, NpcID.QIP_WATCHTOWER_OGRE_SHAMAN_01_NORMAL, new WorldPoint(2590, 9438, 0), "Use the magic ogre potion on all the ogre shamans.", magicPotionHighlight);
 		usePotionOnOgre2 = new NpcStep(this, NpcID.QIP_WATCHTOWER_OGRE_SHAMAN_02_NORMAL, new WorldPoint(2579, 9436, 0), "Use the magic ogre potion on all the ogre shamans.", magicPotionHighlight);

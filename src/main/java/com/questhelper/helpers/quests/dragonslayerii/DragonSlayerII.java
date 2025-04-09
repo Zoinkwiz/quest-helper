@@ -749,7 +749,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToDallasAfterSolvingMap = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(3762, 3868, 0), "Talk to Dallas after solving the map.");
 
 		// Phase 3
-		talkToJardricInMuseumCamp = new NpcStep(this, NpcID.JARDRIC, new WorldPoint(3719, 3812, 0), "Talk to Jardric in the museum camp.");
+		talkToJardricInMuseumCamp = new NpcStep(this, NpcID.DS2_BATTLE_JARDRIC_FINAL, new WorldPoint(3719, 3812, 0), "Talk to Jardric in the museum camp.");
 		buildRowBoat = new ObjectStep(this, ObjectID.FOSSIL_ROWBOAT_LITHKREN, new WorldPoint(3659, 3849, 0), "Build a rowing boat on the west coast of Fossil Island.", hammer, saw, oakPlank8, swampPaste10, nails12OrMore);
 		talkToDallasAfterBoatRepair = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(3663, 3849, 0), "Talk to Dallas near the boat.");
 		talkToDallasAfterBoatRepair.addDialogStep("I'm ready.");
@@ -842,7 +842,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		killVorkath = new NpcStep(this, NpcID.POH_MOUNTED_VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
 			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video and read the " +
 			"sidebar first.", rangedCombatGear);
-		((NpcStep) (killVorkath)).addAlternateNpcs(NpcID.VORKATH_SLEEPING_NOOP, NpcID.VORKATH_SLEEPING, NpcID.VORKATH_QUEST, NpcID.VORKATH);
+		((NpcStep) (killVorkath)).addAlternateNpcs(NpcID.VORKATH_SLEEPING_NOOP, NpcID.VORKATH_SLEEPING, NpcID.VORKATH_QUEST, NpcID.POH_MOUNTED_VORKATH);
 
 		killVorkathSidebar = new NpcStep(this, NpcID.POH_MOUNTED_VORKATH, new WorldPoint(2273, 4065, 0), "Defeat Vorkath. " +
 			"This is a hard fight, so if you're unfamiliar with it it's recommended you watch a video on it first.", rangedCombatGear);
@@ -935,7 +935,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		talkToBobAfterRelease = new NpcStep(this, NpcID.DEATH_GROWNCAT_BLACK_CHILD, new WorldPoint(3548, 10480, 0), "");
 
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle.");
+		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_CUTSCENE, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle.");
 		talkToRoald.addDialogStep("Talk about the dragon threat.");
 
 		talkToBrundtAboutThreat = new NpcStep(this, NpcID.VIKING_BRUNDT_CHILD, new WorldPoint(2658, 3666, 0), "Talk to Brundt in Rellekka.");
@@ -943,7 +943,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		goUpToAmik1 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339, 0), "Go talk to Sir Amik Varze upstairs in Falador Castle.");
 		goUpToAmik2 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339, 1), "Go talk to Sir Amik Varze upstairs in Falador Castle.");
-		talkToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE, new WorldPoint(2962, 3338, 2), "Talk to Sir Amik Varze upstairs in Falador Castle.");
+		talkToAmik = new NpcStep(this, NpcID.HUNDRED_VARZE, new WorldPoint(2962, 3338, 2), "Talk to Sir Amik Varze upstairs in Falador Castle.");
 		talkToAmik.addDialogStep("Talk about the dragon threat.");
 		talkToAmik.addSubSteps(goUpToAmik1, goUpToAmik2);
 

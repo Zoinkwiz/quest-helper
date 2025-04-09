@@ -31,7 +31,6 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -67,17 +66,17 @@ public class FindLongramble
 		talkToLongramble.addStep(quest.nearLongramble, actuallyTalkToLongramble);
 
 		{
-			var talk = new ObjectStep(quest, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
+			var talk = new ObjectStep(quest, ObjectID.POG_SPIRIT_TREE_MULTI, new WorldPoint(2339, 3111, 0), "");
 			talkToSpiritTree = new ConditionalStep(quest, talk, "Talk to the Spirit Tree.",
 				quest.combatGear, quest.prayerPotions, quest.food, quest.crystalChime);
 		}
 
-		useCrystalChime = new ObjectStep(quest, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0),
+		useCrystalChime = new ObjectStep(quest, ObjectID.POG_SPIRIT_TREE_MULTI, new WorldPoint(2339, 3111, 0),
 			"Use the Crystal Chime on the Spirit Tree.", quest.crystalChime.highlighted());
 		useCrystalChime.addIcon(ItemID.CRYSTAL_CHIME);
 
 		{
-			var talk = new ObjectStep(quest, NullObjectID.NULL_49598, new WorldPoint(2339, 3111, 0), "");
+			var talk = new ObjectStep(quest, ObjectID.POG_SPIRIT_TREE_MULTI, new WorldPoint(2339, 3111, 0), "");
 			talkToSpiritTreeAgain = new ConditionalStep(quest, talk, "Talk to the Spirit Tree again.",
 				quest.combatGear, quest.prayerPotions, quest.food, quest.crystalChime);
 		}

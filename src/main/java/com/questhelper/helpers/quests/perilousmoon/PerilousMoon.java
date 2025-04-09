@@ -45,7 +45,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -423,7 +422,7 @@ public class PerilousMoon extends BasicQuestHelper
 
 		// TODO: Work out build spot ID
 		// 50037?
-		buildPrisonCamp = new ObjectStep(this, NullObjectID.NULL_53007, new WorldPoint(1349, 9580, 0),
+		buildPrisonCamp = new ObjectStep(this, ObjectID.PMOON_RANGE_NOTBUILT, new WorldPoint(1349, 9580, 0),
 			"Make your way to the camp spot, marked on the minimap with a cooking range icon.", buildingSupplies, hammer, saw);
 		((ObjectStep) buildPrisonCamp).setLinePoints(prisonPath);
 		leavePrison = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1388, 9576, 0),
@@ -445,7 +444,7 @@ public class PerilousMoon extends BasicQuestHelper
 			new WorldPoint(1375, 9697, 0),
 			new WorldPoint(1375, 9709, 0)
 		));
-		buildEarthCamp = new ObjectStep(this, NullObjectID.NULL_53007, new WorldPoint(1374, 9710, 0),
+		buildEarthCamp = new ObjectStep(this, ObjectID.PMOON_RANGE_NOTBUILT, new WorldPoint(1374, 9710, 0),
 			"Make your way to the camp spot, marked on the minimap with a cooking range icon.", buildingSupplies, hammer, saw);
 		((ObjectStep) buildEarthCamp).setLinePoints(earthPath);
 		leaveEarth = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1404, 9716, 0),
@@ -467,7 +466,7 @@ public class PerilousMoon extends BasicQuestHelper
 			new WorldPoint(1520, 9693, 0),
 			new WorldPoint(1512, 9693, 0)
 		);
-		buildStreamCamp = new ObjectStep(this, NullObjectID.NULL_53007, new WorldPoint(1510, 9693, 0),
+		buildStreamCamp = new ObjectStep(this, ObjectID.PMOON_RANGE_NOTBUILT, new WorldPoint(1510, 9693, 0),
 			"Make your way to the camp spot, marked on the minimap with a cooking range icon.", buildingSupplies, hammer, saw);
 		((ObjectStep) buildStreamCamp).setLinePoints(streamPath);
 		leaveStream = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1480, 9667, 0),
@@ -511,7 +510,7 @@ public class PerilousMoon extends BasicQuestHelper
 		getFishingSupplies = new ObjectStep(this, ObjectID.PMOON_SUPPLY_CRATE, new WorldPoint(1511, 9695, 0),
 			"Take fishing supplies from the supply crates in the camp.");
 		getFishingSupplies.addDialogStep("Take fishing supplies.");
-		fishBream = new ObjectStep(this, NullObjectID.NULL_51367, new WorldPoint(1521, 9689, 0),
+		fishBream = new ObjectStep(this, ObjectID.PMOON_FISHING_SPOT_MULTI, new WorldPoint(1521, 9689, 0),
 			"Fish a bream from the stream east of the camp.", bigFishingNet, knife);
 		useKnifeOnBream = new DetailedQuestStep(this, "Use a knife on the raw bream.", knife.highlighted(), bream.highlighted());
 		getHunterSupplies = new ObjectStep(this, ObjectID.PMOON_SUPPLY_CRATE, new WorldPoint(1511, 9695, 0),

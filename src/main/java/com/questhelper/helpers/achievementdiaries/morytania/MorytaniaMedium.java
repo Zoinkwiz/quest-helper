@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -147,17 +148,17 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notSwampLizard = new VarplayerRequirement(1180, false, 12);
-		notCanifisAgi = new VarplayerRequirement(1180, false, 13);
-		notHollowTree = new VarplayerRequirement(1180, false, 14);
-		notDragontoothIsland = new VarplayerRequirement(1180, false, 15);
-		notTerrorDog = new VarplayerRequirement(1180, false, 16);
-		notTroubleBrewing = new VarplayerRequirement(1180, false, 17);
-		notSwampBoaty = new VarplayerRequirement(1180, false, 18);
-		notCannonBall = new VarplayerRequirement(1180, false, 19);
-		notFeverSpider = new VarplayerRequirement(1180, false, 20);
-		notEctophialTP = new VarplayerRequirement(1180, false, 21);
-		notGuthBalance = new VarplayerRequirement(1180, false, 22);
+		notSwampLizard = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 12);
+		notCanifisAgi = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 13);
+		notHollowTree = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 14);
+		notDragontoothIsland = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 15);
+		notTerrorDog = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 16);
+		notTroubleBrewing = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 17);
+		notSwampBoaty = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 18);
+		notCannonBall = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 19);
+		notFeverSpider = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 20);
+		notEctophialTP = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 21);
+		notGuthBalance = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 22);
 
 		protectFromMagic = new PrayerRequirement("Activate Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 

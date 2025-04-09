@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,12 +116,12 @@ public class DesertElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notWildPie = new VarplayerRequirement(1199, false, 2);
-		notIceBarrage = new VarplayerRequirement(1199, false, 4);
-		notDragonDarts = new VarplayerRequirement(1199, false, 5);
-		notTalkKQHead = new VarplayerRequirement(1199, false, 6);
-		notGrandGoldChest = new VarplayerRequirement(1199, false, 7);
-		notRestorePrayer = new VarplayerRequirement(1199, false, 8);
+		notWildPie = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY2, false, 2);
+		notIceBarrage = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY2, false, 4);
+		notDragonDarts = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY2, false, 5);
+		notTalkKQHead = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY2, false, 6);
+		notGrandGoldChest = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY2, false, 7);
+		notRestorePrayer = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY2, false, 8);
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
@@ -132,7 +133,7 @@ public class DesertElite extends ComplexStateQuestHelper
 		dragonDartTip = new ItemRequirement("Dragon dart tip", ItemID.DRAGON_DART_TIP).showConditioned(notDragonDarts);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notDragonDarts);
 		mahoganyPlank = new ItemRequirement("Mahogany plank", ItemID.PLANK_MAHOGANY).showConditioned(notTalkKQHead);
-		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF).showConditioned(notTalkKQHead);
+		goldLeaves = new ItemRequirement("Gold leaf", ItemID.ICS_GOLDLEAF).showConditioned(notTalkKQHead);
 		saw = new ItemRequirement("Saw", ItemID.POH_SAW).showConditioned(notTalkKQHead).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead).isNotConsumed();
 		kqHead = new ItemRequirement("Stuffed KQ head", ItemCollections.STUFFED_KQ_HEAD).showConditioned(notTalkKQHead);

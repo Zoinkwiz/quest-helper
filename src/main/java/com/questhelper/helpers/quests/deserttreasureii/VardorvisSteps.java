@@ -39,7 +39,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -224,13 +223,13 @@ public class VardorvisSteps extends ConditionalStep
 		// TODO: Highlight the widget
 		talkToBarus.addTeleport(xericTalisman.named("Xeric's talisman ([3] Xeric's Inferno)"));
 
-		searchDesk = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49490, new WorldPoint(1781, 3619, 0),
+		searchDesk = new ObjectStep(getQuestHelper(), ObjectID.DT2_KASONDE_DESK, new WorldPoint(1781, 3619, 0),
 			"Search the desk in the house south of the Hosidius Estate Agent.");
 		searchDesk.addTeleport(xericTalisman.named("Xeric's talisman ([2] Xeric's Glade)"));
 
 		readPotionNote = new ItemStep(getQuestHelper(), "Read the potion note.", potionNote.highlighted());
 		drinkPotion = new ItemStep(getQuestHelper(), "Drink the strange potion.", strangePotion.highlighted());
-		boardBoat = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49491, new WorldPoint(1227, 3470, 0),
+		boardBoat = new ObjectStep(getQuestHelper(), ObjectID.DT2_STRANGLEWOOD_BOAT_IN, new WorldPoint(1227, 3470, 0),
 			"Board the boat south of Quidamortem into The Stranglewood. You can use the Fairy Ring BLS to get nearby, or travel with the Mountain Guide.");
 		runIntoStanglewood = new DetailedQuestStep(getQuestHelper(), new WorldPoint(1194, 3394, 0), "Run deeper into Stranglewood. " +
 			"Be careful of the Strangled, as they'll bind you and deal damage.");
@@ -321,7 +320,7 @@ public class VardorvisSteps extends ConditionalStep
 		addBerry = new DetailedQuestStep(getQuestHelper(), "Add the berries to the serum.", serumWithHerb.highlighted(), berry.highlighted());
 		drinkStranglewoodPotion = new DetailedQuestStep(getQuestHelper(), "Drink the strangler serum.", stranglerSerum.highlighted());
 
-		goToRitualSite = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49495, new WorldPoint(1118, 3428, 0), "Go to the ritual site to the west, ready to fight the boss of the area.", combatGear);
+		goToRitualSite = new ObjectStep(getQuestHelper(), ObjectID.DT2_STRANGLEWOOD_BOSS_ENTRY, new WorldPoint(1118, 3428, 0), "Go to the ritual site to the west, ready to fight the boss of the area.", combatGear);
 		goToRitualSite.setLinePoints(Arrays.asList(
 			new WorldPoint(1174, 3427, 0),
 			new WorldPoint(1174, 3416, 0),
@@ -367,7 +366,7 @@ public class VardorvisSteps extends ConditionalStep
 		fightVardorvisSidebar.addSubSteps(fightVardorvis);
 
 		pickUpTempleKey = new ItemStep(getQuestHelper(),  "Pick up the Temple Key in the Vardorvis arena.", templeKey);
-		getTempleKeyFromRocks = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49495, new WorldPoint(1118, 3428, 0),
+		getTempleKeyFromRocks = new ObjectStep(getQuestHelper(), ObjectID.DT2_STRANGLEWOOD_BOSS_ENTRY, new WorldPoint(1118, 3428, 0),
 			"Go to the ritual site to the west, and search the rocks to get another Temple Key.");
 
 		// TODO: Leave area step
@@ -405,7 +404,7 @@ public class VardorvisSteps extends ConditionalStep
 		goTalkToKasondeAfterFight.addStep(new Conditions(inStranglewoodPyramidRoom), talkToKasondeAfterFight);
 		goTalkToKasondeAfterFight.addStep(new Conditions(inAnyStranglewood), enterKasondeWithKey);
 
-		ObjectStep searchChestForVardorvisMedallion = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49496, new WorldPoint(1196, 3411, 0), "");
+		ObjectStep searchChestForVardorvisMedallion = new ObjectStep(getQuestHelper(), ObjectID.DT2_STRANGLEWOOD_MEDALLION_CHEST, new WorldPoint(1196, 3411, 0), "");
 		/* Getting the medallion */
 		ObjectStep leavePyramid = new ObjectStep(getQuestHelper(), ObjectID.DT2_STRANGLEWOOD_TEMPLE_EXIT, new WorldPoint(1183, 9809, 0), "");
 		goGetVardorvisMedallion = new ConditionalStep(getQuestHelper(), boardBoat,
@@ -417,7 +416,7 @@ public class VardorvisSteps extends ConditionalStep
 			new WorldPoint(3511, 2971, 0), "Return to the Vault door north-east of Nardah.", vardorvisMedallion);
 		returnToDesertWithVardorvisMedallion.addTeleport(nardahTeleport);
 
-		useVardorvisMedallionOnStatue = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49499, new WorldPoint(3942, 9636, 1),
+		useVardorvisMedallionOnStatue = new ObjectStep(getQuestHelper(), ObjectID.DT2_VAULT_VARDORVIS_STATUE, new WorldPoint(3942, 9636, 1),
 			"Use the medallion on the north-east statue.", vardorvisMedallion.highlighted());
 		useVardorvisMedallionOnStatue.addIcon(ItemID.DT2_MEDALLION_VARDORVIS);
 	}

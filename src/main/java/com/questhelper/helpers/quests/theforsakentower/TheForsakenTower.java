@@ -41,7 +41,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -166,7 +165,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		talkToUndor.addDialogStep("I've been sent to help you.");
 
 		enterTheForsakenTower = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_ENTRY_DOOR, new WorldPoint(1382, 3817, 0), "Enter the Forsaken Tower, west of Lovakengj.");
-		inspectDisplayCase = new ObjectStep(this, NullObjectID.NULL_34588, new WorldPoint(1382, 3821, 0), "Inspect the display case in the Forsaken Tower.");
+		inspectDisplayCase = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_DISPLAY_CASE, new WorldPoint(1382, 3821, 0), "Inspect the display case in the Forsaken Tower.");
 
 		goDownToFirstFloor = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_LADDER_DOWN, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
 		goDownToGroundFloor = new ObjectStep(this, ObjectID.LOVAQUEST_SPIRAL_STAIRS_TOP_M, new WorldPoint(1378, 3825, 1), "Go down to the ground floor.");
@@ -177,11 +176,11 @@ public class TheForsakenTower extends BasicQuestHelper
 		furnacePuzzleSteps.setBlocker(true);
 
 		goDownLadderToBasement = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_DUNGEON_ENTRY, new WorldPoint(1382, 3825, 0), "Climb down the ladder into the tower's basement.");
-		inspectPowerGrid = new ObjectStep(this, NullObjectID.NULL_34590, new WorldPoint(1382, 10225, 0), "Inspect the power grid.");
+		inspectPowerGrid = new ObjectStep(this, ObjectID.LOVAQUEST_POWER_GRID, new WorldPoint(1382, 10225, 0), "Inspect the power grid.");
 		inspectPowerGrid.addDialogStep("Yes.");
 
 		searchCrate = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_CRATE_CRANK, new WorldPoint(1387, 10228, 0), "Search a crate in the north eastern cell for a generator crank");
-		inspectGenerator = new ObjectStep(this, NullObjectID.NULL_34589, new WorldPoint(1382, 10219, 0), "Inspect the steam generator in the south of the room", crank);
+		inspectGenerator = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_GENERATOR, new WorldPoint(1382, 10219, 0), "Inspect the steam generator in the south of the room", crank);
 		inspectGenerator.addDialogStep("Start the generator.");
 
 		doPowerPuzzle = new PuzzleWrapperStep(this, new PowerPuzzle(this), "Solve the power puzzle.");
@@ -192,7 +191,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		altarPuzzle = new AltarPuzzle(this);
 		altarPuzzle.setLockingCondition(finishedAltarPuzzle);
 
-		getHammer = new ObjectStep(this, NullObjectID.NULL_34588, new WorldPoint(1382, 3821, 0), "Get the hammer from the display case in the Forsaken Tower.");
+		getHammer = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_DISPLAY_CASE, new WorldPoint(1382, 3821, 0), "Get the hammer from the display case in the Forsaken Tower.");
 
 		returnToUndor = new NpcStep(this, NpcID.WINT_MASTER_SMITH_NORMAL, new WorldPoint(1624, 3942, 0), "Return Dinh's Hammer to Undor at the entrance to Wintertodt.", dinhsHammer);
 		returnToUndor.addDialogStep("Let's talk about my quest.");

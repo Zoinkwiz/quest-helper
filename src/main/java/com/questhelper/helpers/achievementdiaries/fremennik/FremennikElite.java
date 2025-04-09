@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,12 +159,12 @@ public class FremennikElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notDagKings = new VarplayerRequirement(1184, false, 31);
-		notAstralRunes = new VarplayerRequirement(1185, false, 0);
-		notDragonAmulet = new VarplayerRequirement(1185, false, 1);
-		notRellRooftop = new VarplayerRequirement(1185, false, 2);
-		notGodwarsGenerals = new VarplayerRequirement(1185, false, 3);
-		notSpiritualMage = new VarplayerRequirement(1185, false, 4);
+		notDagKings = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 31);
+		notAstralRunes = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY2, false, 0);
+		notDragonAmulet = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY2, false, 1);
+		notRellRooftop = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY2, false, 2);
+		notGodwarsGenerals = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY2, false, 3);
+		notSpiritualMage = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY2, false, 4);
 
 		specialAttackEnabled = new SpecialAttackRequirement(SpecialAttack.ON);
 		protectMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);

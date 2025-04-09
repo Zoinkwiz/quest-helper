@@ -289,7 +289,7 @@ public class BetweenARock extends BasicQuestHelper
 
 		searchCart = new ObjectStep(this, ObjectID.DWARFROCK_BOOK_CART, "Search the mine carts for a page.");
 
-		killScorpion = new NpcStep(this, NpcID.SCORPION, new WorldPoint(3043, 9796, 0), "Kill scorpions for a page.", true);
+		killScorpion = new NpcStep(this, NpcID.SOS_PEST_SCORPION, new WorldPoint(3043, 9796, 0), "Kill scorpions for a page.", true);
 
 		mineRock = new ObjectStep(this, ObjectID.TINROCK2, "Mine low level rocks for a page.", true, pickaxe);
 		mineRock.setOverlayText("Mine low level rocks for a page.\n\nYou can continue mining the same rocks.");

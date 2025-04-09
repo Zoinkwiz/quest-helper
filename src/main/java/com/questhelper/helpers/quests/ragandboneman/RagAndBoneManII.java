@@ -221,7 +221,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		mirrorShield.addAlternates(ItemID.VIKINGEXILE_V_SHIELD, ItemID.V_SHIELD);
 		iceCooler = new ItemRequirement("Ice coolers", ItemID.SLAYER_ICY_WATER, 10);
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE, 10);
-		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE);
+		fishingExplosive.addAlternates(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 
 		// Optional items
@@ -411,13 +411,13 @@ public class RagAndBoneManII extends BasicQuestHelper
 		killZombie = new NpcStep(this, NpcID.ZOMBIE_UNARMED_SEWER4, new WorldPoint(3244, 9892, 0),
 			"Kill zombies in the sewer.", true);
 		((NpcStep) killZombie).addAlternateNpcs(NpcID.ZOMBIE_UNARMED_SEWER2);
-		killRat = new NpcStep(this, NpcID.RAT, new WorldPoint(3244, 9892, 0),
+		killRat = new NpcStep(this, NpcID.PITRAT_SARIM_DEF, new WorldPoint(3244, 9892, 0),
 			"Kill rats.", true);
 		killMossGiant = new NpcStep(this, NpcID.MOSSGIANT, new WorldPoint(2654, 9565, 0),
 			"Kill Moss Giants near the entrance.", true);
 		((NpcStep) killMossGiant).addAlternateNpcs(NpcID.MOSSGIANT2, NpcID.MOSSGIANT3,
 			NpcID.MOSSGIANT4);
-		killCaveGoblin = new NpcStep(this, NpcID.CAVE_GOBLIN, new WorldPoint(3248, 9574, 0),
+		killCaveGoblin = new NpcStep(this, NpcID.DORGESH_MALE_1, new WorldPoint(3248, 9574, 0),
 			"Kill Cave Goblins in the east of the Lumbridge Caves. Run between the marked tiles to avoid the Wall " +
 				"Beasts.", true);
 		((NpcStep) killCaveGoblin).addAlternateNpcs(NpcID.CAVE_GOBLIN2, NpcID.CAVE_GOBLIN3,
@@ -455,7 +455,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 
 		throwExplosive = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT_A, new WorldPoint(2982, 3113, 0),
 			"Throw a fishing explosive to attract a Mogre on Mudskipper Point.", fishingExplosive.highlighted());
-		throwExplosive.addIcon(ItemID.FISHING_EXPLOSIVE);
+		throwExplosive.addIcon(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
 		killMogre = new NpcStep(this, NpcID.MUDSKIPPER_OGRE, new WorldPoint(2988, 3111, 0),
 			"Kill the Mogre.");
 		killJogre = new NpcStep(this, NpcID.JOGRE, new WorldPoint(2921, 3051, 0),
@@ -528,7 +528,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		killWolf = new NpcStep(this, NpcID.WOLF, new WorldPoint(2591, 2966, 0),
 			"Kill wolves in Feldip Hills.", true);
 		killWolf.addTeleport(feldipTeleport);
-		killOgre = new NpcStep(this, NpcID.OGRE, new WorldPoint(2570, 2975, 0),
+		killOgre = new NpcStep(this, NpcID.POH_OGRE, new WorldPoint(2570, 2975, 0),
 			"Kill ogres in Feldip Hills.", true);
 		killOgre.addTeleport(feldipTeleport);
 		killZogre = new NpcStep(this, NpcID.ZOGRE_1, new WorldPoint(2460, 3048, 0),

@@ -33,7 +33,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -205,7 +204,7 @@ public class HefinLightPuzzle extends ConditionalStep
 			"Add a mirror to a pillar to the east. Rotate it to point the light down.", handMirrorHighlighted);
 		p1Pillar2.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36705, new WorldPoint(2623, 6158, 0),
+		p1Pillar3 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_5, new WorldPoint(2623, 6158, 0),
 			"Add a mirror to the pillar near the stairs. Rotate it to point the light south.", handMirrorHighlighted);
 		p1Pillar3.addIcon(ItemID.SOTE_MIRROR);
 
@@ -241,7 +240,7 @@ public class HefinLightPuzzle extends ConditionalStep
 			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
 		p1Pillar11.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar12 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35253, new WorldPoint(2567, 6116, 1),
+		p1Pillar12 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_A_2, new WorldPoint(2567, 6116, 1),
 			"Run around to the north pillar and add a mirror. Rotate it to point the light down.", handMirrorHighlighted);
 		p1Pillar12.addIcon(ItemID.SOTE_MIRROR);
 

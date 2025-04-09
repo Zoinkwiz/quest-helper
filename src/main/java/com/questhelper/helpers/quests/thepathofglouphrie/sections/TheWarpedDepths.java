@@ -26,7 +26,6 @@ package com.questhelper.helpers.quests.thepathofglouphrie.sections;
 
 import com.questhelper.helpers.quests.thepathofglouphrie.ThePathOfGlouphrie;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -122,7 +121,7 @@ public class TheWarpedDepths
 		bossStep.setAllowMultipleHighlights(true);
 		bossStep.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 
-		peekHeavyDoor = new ObjectStep(quest, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1),
+		peekHeavyDoor = new ObjectStep(quest, ObjectID.POG_HATCH_DOOR_MULTI, WorldPoint.fromRegion(5955, 49, 31, 1),
 			"Peek through the heavy door.");
 		watchFinalCutscene = new DetailedQuestStep(quest, "Watch the final cutscene.");
 

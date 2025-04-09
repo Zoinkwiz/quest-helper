@@ -48,7 +48,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -478,7 +477,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			"Go to The Rat & Bat pub south east of the church and speak to Carl.");
 		talkToCarl.addDialogStep("Where do you get your Bloody Bracers from?");
 
-		inspectBarrel = new ObjectStep(this, NullObjectID.NULL_39515, new WorldPoint(3749, 3291, 0),
+		inspectBarrel = new ObjectStep(this, ObjectID.MYQ5_BARREL, new WorldPoint(3749, 3291, 0),
 			"Inspect the barrel south of the Rat & Bat Pub.");
 
 		followCarl = new NpcStep(this, NpcID.MYQ5_CARL_FOLLOW, new WorldPoint(3714, 3328, 0),
@@ -515,10 +514,10 @@ public class SinsOfTheFather extends BasicQuestHelper
 			"Kill Kroy.");
 		killKroy.addSubSteps(goDownToKroy);
 
-		destroyLab = new ObjectStep(this, NullObjectID.NULL_39516, new WorldPoint(3730, 9760, 1),
+		destroyLab = new ObjectStep(this, ObjectID.MYQ5_KROY_TABLE_1, new WorldPoint(3730, 9760, 1),
 			"Destroy both the Lab tables.");
 
-		destroyLab2 = new ObjectStep(this, NullObjectID.NULL_39517, new WorldPoint(3725, 9760, 1),
+		destroyLab2 = new ObjectStep(this, ObjectID.MYQ5_KROY_TABLE_2, new WorldPoint(3725, 9760, 1),
 			"Destroy both the Lab tables.");
 		destroyLab.addSubSteps(destroyLab2);
 
@@ -599,7 +598,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			"Talk with Vanescula Drakan.");
 		talkToVanescula.addDialogStep("Icyene Graveyard.");
 
-		openPuzzleDoor = new ObjectStep(this, NullObjectID.NULL_39519, new WorldPoint(3704, 3190, 0), "Try opening the door to the mausoleum.");
+		openPuzzleDoor = new ObjectStep(this, ObjectID.IG_MAUSOLEUM_DOOR, new WorldPoint(3704, 3190, 0), "Try opening the door to the mausoleum.");
 
 		talkToVanesculaAfterPuzzle = new NpcStep(this, NpcID.MYQ5_VANESCULA_HUMAN_CHILD, new WorldPoint(3705, 3188, 0),
 			"Finish the cutscene in the Icyene Graveyard.");

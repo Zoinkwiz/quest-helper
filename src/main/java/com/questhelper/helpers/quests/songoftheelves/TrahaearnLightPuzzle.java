@@ -35,7 +35,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -216,7 +215,7 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
 		p1Pillar3.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35253, new WorldPoint(2567, 6116, 1),
+		p1Pillar4 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_A_2, new WorldPoint(2567, 6116, 1),
 			"Run around to the north pillar and add a mirror. Rotate it to point the light down.", handMirrorHighlighted);
 		p1Pillar4.addIcon(ItemID.SOTE_MIRROR);
 
@@ -276,7 +275,7 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 			"Add a mirror to the pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
 		p1Pillar18.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar19 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35320, new WorldPoint(2665, 6144, 1),
+		p1Pillar19 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_H_4, new WorldPoint(2665, 6144, 1),
 			"Add a mirror to the pillar to the east. Rotate it to point the light up.", handMirrorHighlighted);
 		p1Pillar19.addIcon(ItemID.SOTE_MIRROR);
 

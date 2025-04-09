@@ -49,10 +49,7 @@ import com.questhelper.util.QHObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,19 +153,19 @@ public class WesternMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notAgiShortcut = new VarplayerRequirement(1182, false, 12);
-		notSpiritToStronghold = new VarplayerRequirement(1182, false, 13);
-		notSpinedLarupia = new VarplayerRequirement(1182, false, 14);
-		notApeBass = new VarplayerRequirement(1182, false, 15);
-		notApeTeak = new VarplayerRequirement(1182, false, 16);
-		notInterPest = new VarplayerRequirement(1182, false, 17);
-		notGliderToFeldip = new VarplayerRequirement(1182, false, 18);
-		notChompyHat = new VarplayerRequirement(1182, false, 19);
-		notEagleFeldip = new VarplayerRequirement(1182, false, 20);
-		notChocolateBomb = new VarplayerRequirement(1182, false, 21);
-		notGnomeDelivery = new VarplayerRequirement(1182, false, 22);
-		notCrystalSaw = new VarplayerRequirement(1182, false, 23);
-		notMineGold = new VarplayerRequirement(1182, false, 24);
+		notAgiShortcut = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 12);
+		notSpiritToStronghold = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 13);
+		notSpinedLarupia = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 14);
+		notApeBass = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 15);
+		notApeTeak = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 16);
+		notInterPest = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 17);
+		notGliderToFeldip = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 18);
+		notChompyHat = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 19);
+		notEagleFeldip = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 20);
+		notChocolateBomb = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 21);
+		notGnomeDelivery = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 22);
+		notCrystalSaw = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 23);
+		notMineGold = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 24);
 
 		// todo this varb only tracks training with aluft NOT blurberry
 		trainingCompleted = new VarbitRequirement(VarbitID.ALUFT_TRAINING_REWARD, Operation.EQUAL, 1, 			"Completed training with Blurberry and Aluft Gianne snr.");

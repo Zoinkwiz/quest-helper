@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -220,8 +221,8 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		inWorkshop = new ZoneRequirement(workshop);
 
 		hasSlashedBook = new VarbitRequirement(2057, 1);
-		hasReadBook = new VarplayerRequirement(299, true, 1);
-		enteredWall = new VarplayerRequirement(299, true, 15);
+		hasReadBook = new VarplayerRequirement(VarPlayerID.ELEMENTAL_WORKSHOP_BITS, true, 1);
+		enteredWall = new VarplayerRequirement(VarPlayerID.ELEMENTAL_WORKSHOP_BITS, true, 15);
 		foundLeather = new VarbitRequirement(2066, 1);
 		turnedValve1 = new VarbitRequirement(2059, 1);
 		turnedValve2 = new VarbitRequirement(2058, 1);

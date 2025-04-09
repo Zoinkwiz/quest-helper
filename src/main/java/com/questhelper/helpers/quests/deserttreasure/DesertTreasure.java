@@ -498,7 +498,7 @@ public class DesertTreasure extends BasicQuestHelper
 		enterSewer.addAlternateObjects(ObjectID.VAMPIRE_TRAP2);
 		enterSewer.addDialogStep("Actually, I don't need to know anything.");
 		enterSewer.addTeleport(draynorTeleport);
-		talkToRuantun = new NpcStep(this, NpcID.MALAK, new WorldPoint(3112, 9690, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
+		talkToRuantun = new NpcStep(this, NpcID.FOURDIAMONDS_VAMPIRE_LORD, new WorldPoint(3112, 9690, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
 		talkToRuantun.addSubSteps(enterSewer);
 
 		blessPot = new NpcStep(this, NpcID.HIGH_PRIEST_OF_ENTRANA, new WorldPoint(2851, 3350, 0), "Travel to Entrana with the silver pot and have the High Priest enchant it.", silverPot);

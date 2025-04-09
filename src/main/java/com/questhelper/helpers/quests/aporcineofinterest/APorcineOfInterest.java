@@ -37,7 +37,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -138,23 +137,23 @@ public class APorcineOfInterest extends BasicQuestHelper
 		talkToSarah = new NpcStep(this, NpcID.FARMING_SHOPKEEPER_1, new WorldPoint(3033, 3293, 0), "Talk to Sarah in the South Falador Farm.");
 		talkToSarah.addDialogSteps("Talk about the bounty.");
 
-		useRopeOnHole = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Use a rope on the Strange Hole east of Draynor Manor.", rope);
+		useRopeOnHole = new ObjectStep(this, ObjectID.PORCINE_HOLE, new WorldPoint(3151, 3348, 0), "Use a rope on the Strange Hole east of Draynor Manor.", rope);
 		useRopeOnHole.addTeleport(draynorTeleport);
 		useRopeOnHole.addIcon(ItemID.ROPE);
 		useRopeOnHole.addDialogSteps("I think that'll be all for now.");
 
-		enterHole = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.");
-		investigateSkeleton = new ObjectStep(this, NullObjectID.NULL_40350, new WorldPoint(3164, 9676, 0), "Go to the end of the cave and investigate the skeleton there.");
+		enterHole = new ObjectStep(this, ObjectID.PORCINE_HOLE, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.");
+		investigateSkeleton = new ObjectStep(this, ObjectID.PORCINE_SKELETON, new WorldPoint(3164, 9676, 0), "Go to the end of the cave and investigate the skeleton there.");
 
 		talkToSpria = new NpcStep(this, NpcID.PORCINE_SPRIA, new WorldPoint(3092, 3267, 0), "Talk to Spria in Draynor Village.");
 
-		enterHoleAgain = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor. Be prepared to fight Sourhog (level 37)", reinforcedGoggles, slashItem, combatGear);
+		enterHoleAgain = new ObjectStep(this, ObjectID.PORCINE_HOLE, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor. Be prepared to fight Sourhog (level 37)", reinforcedGoggles, slashItem, combatGear);
 		killSourhog = new NpcStep(this, NpcID.PORCINE_SOURHOG_SECOND, "Kill Sourhog.", reinforcedGoggles);
 		killSourhog.addDialogStep("Yes");
 
-		enterHoleForFoot = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.", slashItem);
-		cutOffFoot = new ObjectStep(this, NullObjectID.NULL_40348, "Cut off Sourhog's foot.", slashItem);
-		((ObjectStep) cutOffFoot).addAlternateObjects(NullObjectID.NULL_40349);
+		enterHoleForFoot = new ObjectStep(this, ObjectID.PORCINE_HOLE, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.", slashItem);
+		cutOffFoot = new ObjectStep(this, ObjectID.PORCINE_DEAD_SOURHOG, "Cut off Sourhog's foot.", slashItem);
+		((ObjectStep) cutOffFoot).addAlternateObjects(ObjectID.PORCINE_DEAD_SOURHOG_9);
 		cutOffFoot.addSubSteps(enterHoleForFoot);
 
 		returnToSarah = new NpcStep(this, NpcID.FARMING_SHOPKEEPER_1, new WorldPoint(3033, 3293, 0), "Return to Sarah in the South Falador Farm.", hoof);

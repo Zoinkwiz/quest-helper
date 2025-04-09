@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -201,13 +202,13 @@ public class ShadesOfMortton extends BasicQuestHelper
 	{
 		has20Sanctity = new VarplayerRequirement(341, 20);
 
-		razmirePartlyCured = new VarplayerRequirement(340, true, 3);
-		curedRazmire = new VarplayerRequirement(340, true, 6); //64
-		ulsquirePartlyCured = new VarplayerRequirement(340, true, 1);
-		curedUlsquire = new VarplayerRequirement(340, true, 5);
+		razmirePartlyCured = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 3);
+		curedRazmire = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 6); //64
+		ulsquirePartlyCured = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 1);
+		curedUlsquire = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 5);
 
 		repairedTemple = new VarplayerRequirement(343, 100);
-		has20Sanctity = new VarplayerRequirement(345, 20, Operation.GREATER_EQUAL);
+		has20Sanctity = new VarplayerRequirement(VarPlayerID.TEMPLE_SANCTITY_P, 20, Operation.GREATER_EQUAL);
 		litFire = new ObjectCondition(ObjectID.TEMPLEFIRE_ALTAR, new WorldPoint(3506, 3316, 0));
 	}
 

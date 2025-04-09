@@ -56,6 +56,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -175,15 +176,15 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notSlayBrineRat = new VarplayerRequirement(1184, false, 11);
-		notSnowyHunter = new VarplayerRequirement(1184, false, 12);
-		notMineCoal = new VarplayerRequirement(1184, false, 13);
-		notStealFish = new VarplayerRequirement(1184, false, 14);
-		notTravelMisc = new VarplayerRequirement(1184, false, 15);
-		notSnowyKnight = new VarplayerRequirement(1184, false, 17);
-		notPetRockPOH = new VarplayerRequirement(1184, false, 18);
-		notLighthouse = new VarplayerRequirement(1184, false, 19);
-		notMineGold = new VarplayerRequirement(1184, false, 20);
+		notSlayBrineRat = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 11);
+		notSnowyHunter = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 12);
+		notMineCoal = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 13);
+		notStealFish = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 14);
+		notTravelMisc = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 15);
+		notSnowyKnight = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 17);
+		notPetRockPOH = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 18);
+		notLighthouse = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 19);
+		notMineGold = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 20);
 
 		specialAttackEnabled = new SpecialAttackRequirement(SpecialAttack.ON);
 

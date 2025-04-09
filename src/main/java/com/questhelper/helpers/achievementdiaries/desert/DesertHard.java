@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -133,16 +134,16 @@ public class DesertHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notMenaThug = new VarplayerRequirement(1198, false, 24);
-		notGranite = new VarplayerRequirement(1198, false, 25);
-		notRefillWaterskin = new VarplayerRequirement(1198, false, 26);
-		notKalphQueen = new VarplayerRequirement(1198, false, 27);
-		notPollRooftop = new VarplayerRequirement(1198, false, 28);
-		notKillDust = new VarplayerRequirement(1198, false, 29);
-		notAncientMagicks = new VarplayerRequirement(1198, false, 30);
-		notKillLocustRider = new VarplayerRequirement(1198, false, 31);
-		notBurnYew = new VarplayerRequirement(1199, false, 0);
-		notMithPlatebody = new VarplayerRequirement(1199, false, 1);
+		notMenaThug = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 24);
+		notGranite = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 25);
+		notRefillWaterskin = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 26);
+		notKalphQueen = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 27);
+		notPollRooftop = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 28);
+		notKillDust = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 29);
+		notAncientMagicks = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 30);
+		notKillLocustRider = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY, false, 31);
+		notBurnYew = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY2, false, 0);
+		notMithPlatebody = new VarplayerRequirement(VarPlayerID.DESERT_ACHIEVEMENT_DIARY2, false, 1);
 
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 

@@ -46,7 +46,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -441,7 +440,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		boardBoat.addDialogStep("Travel to Weiss.");
 		// 6719 0->2 on boat
 
-		attemptToMine = new ObjectStep(this, NullObjectID.NULL_33329, new WorldPoint(2859, 3967, 0), "Attempt to mine the cave entrance.");
+		attemptToMine = new ObjectStep(this, ObjectID.MY2ARM_CLIFFBOTTOM_CAVEENTRANCE, new WorldPoint(2859, 3967, 0), "Attempt to mine the cave entrance.");
 		searchBoatForRopeAndPickaxe = new ObjectStep(this, ObjectID.MY2ARM_SHIPWRECK, new WorldPoint(2856, 3971, 0), "Search the wrecked boat for a pickaxe and rope.");
 		searchBoatForRopeAndPickaxe.addDialogSteps("Take rope", "Take pickaxe");
 		searchBoatForPickaxe = new ObjectStep(this, ObjectID.MY2ARM_SHIPWRECK, new WorldPoint(2856, 3971, 0), "Search the wrecked boat for a pickaxe.");
@@ -452,10 +451,10 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		climbRocks2 = new ObjectStep(this, ObjectID.MY2ARM_CLIFF_SHORTCUT_2, new WorldPoint(2853, 3964, 0), "Climb the rockslide.");
 		climbRocks.addSubSteps(climbRocks2);
-		useRope = new ObjectStep(this, NullObjectID.NULL_33327, new WorldPoint(2853, 3962, 0), "Use a rope on the nearby tree.", ropeHighlight);
+		useRope = new ObjectStep(this, ObjectID.MY2ARM_CLIFF_SHORTCUT_3, new WorldPoint(2853, 3962, 0), "Use a rope on the nearby tree.", ropeHighlight);
 		useRope.addIcon(ItemID.ROPE);
 
-		climbRope = new ObjectStep(this, NullObjectID.NULL_33328, new WorldPoint(2855, 3963, 0), "Climb the rope.");
+		climbRope = new ObjectStep(this, ObjectID.MY2ARM_CLIFF_SHORTCUT_3_ROPETRAIL_MULTI, new WorldPoint(2855, 3963, 0), "Climb the rope.");
 		crossLedge = new ObjectStep(this, ObjectID.MY2ARM_CLIFF_SHORTCUT_4, new WorldPoint(2855, 3961, 0), "Cross the ledge.");
 		climbRocks3 = new ObjectStep(this, ObjectID.MY2ARM_CLIFF_SHORTCUT_5, new WorldPoint(2859, 3961, 0), "Continue climbing.");
 		passTree = new ObjectStep(this, ObjectID.MY2ARM_CLIFF_SHORTCUT_6, new WorldPoint(2857, 3956, 0), "Pass the fallen tree.");
@@ -482,7 +481,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		leaveWater1 = new ObjectStep(this, ObjectID.MY2ARM_CAVE_WATERLINE, new WorldPoint(2730, 5781, 0), "Wait a few seconds, then swim to the east shore.");
 		waterSpot1.addSubSteps(enterWater, leaveWater1);
 
-		enterWater2 = new ObjectStep(this,  NullObjectID.NULL_33331, new WorldPoint(2734, 5792, 0), "Enter the water.");
+		enterWater2 = new ObjectStep(this,  ObjectID.MY2ARM_CAVE_WATERLINE_FORHINT, new WorldPoint(2734, 5792, 0), "Enter the water.");
 
 		mineCave = new ObjectStep(this, ObjectID.MY2ARM_CAVE_EXIT_BLOCKED, new WorldPoint(2737, 5817, 0), "Mine the cave exit.", pickaxe);
 
@@ -499,7 +498,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		talkToWom = new NpcStep(this, NpcID.WISE_OLD_MAN, new WorldPoint(3088, 3255, 0), "Talk to the Wise Old Man in Draynor Village.");
 		talkToWom.addDialogSteps("Ask about My Arm.", "Can you pretend you're dead?", "You owe me a favour after the Fishing Colony quest.");
 
-		buildCoffin = new ObjectStep(this, NullObjectID.NULL_33332, new WorldPoint(3090, 3254, 0), "Build the coffin in the Wise Old Man's house.", saw, hammer, mahogPlanks5, boltOfCloth);
+		buildCoffin = new ObjectStep(this, ObjectID.MY2ARM_COFFIN_MULTI, new WorldPoint(3090, 3254, 0), "Build the coffin in the Wise Old Man's house.", saw, hammer, mahogPlanks5, boltOfCloth);
 
 		talkToApoth = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3196, 3403, 0), "Talk to the Apothecary in Varrock.", cadavaBerries);
 		talkToApoth.addDialogStep("Talk about Making Friends with My Arm.");
@@ -507,12 +506,12 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		talkToWomAfterPrep = new NpcStep(this, NpcID.WISE_OLD_MAN, new WorldPoint(3088, 3255, 0), "Bring the cadava potion to the Wise Old Man in Draynor Village.", potion);
 		talkToWomAfterPrep.addDialogStep("Ask about My Arm.");
 
-		pickUpCoffin = new ObjectStep(this, NullObjectID.NULL_33332, new WorldPoint(3090, 3254, 0), "Pick up the coffin in the Wise Old Man's house.");
+		pickUpCoffin = new ObjectStep(this, ObjectID.MY2ARM_COFFIN_MULTI, new WorldPoint(3090, 3254, 0), "Pick up the coffin in the Wise Old Man's house.");
 
 		takeBoatWithWom = new ObjectStep(this, ObjectID.PENG_BOAT_RELL, new WorldPoint(2709, 3735, 0), "Board Larry's boat to Weiss.", coffin, combatRangeMelee);
 		takeBoatWithWom.addDialogStep("Travel to Weiss.");
 
-		enterCaveWithWom = new ObjectStep(this, NullObjectID.NULL_33329, new WorldPoint(2859, 3967, 0), "Enter the cave entrance.", coffin, combatRangeMelee);
+		enterCaveWithWom = new ObjectStep(this, ObjectID.MY2ARM_CLIFFBOTTOM_CAVEENTRANCE, new WorldPoint(2859, 3967, 0), "Enter the cave entrance.", coffin, combatRangeMelee);
 
 		talkToMyArmWithWom = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2877, 3947, 0), "Talk to My Arm in Weiss.", coffin, combatRangeMelee);
 
@@ -522,7 +521,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		takeBoatToPrison = new ObjectStep(this, ObjectID.PENG_BOAT_RELL, new WorldPoint(2709, 3735, 0), "Board Larry's boat to Weiss.");
 		takeBoatToPrison.addDialogStep("Travel to Weiss.");
 
-		enterCaveToPrison = new ObjectStep(this, NullObjectID.NULL_33329, new WorldPoint(2859, 3967, 0), "Enter the cave entrance. Be prepared to fight.", combatRangeMelee);
+		enterCaveToPrison = new ObjectStep(this, ObjectID.MY2ARM_CLIFFBOTTOM_CAVEENTRANCE, new WorldPoint(2859, 3967, 0), "Enter the cave entrance. Be prepared to fight.", combatRangeMelee);
 		talkToBoulderToEnterPrison = new NpcStep(this, NpcID.MY2ARM_SENTRY_BOULDER, new WorldPoint(2865, 3947, 0), "Talk to Boulder in Weiss. Be prepared to fight.", combatRangeMelee);
 
 		talkToOddMushroom = new NpcStep(this, NpcID.MY2ARM_MUSHROOM_DYING, new WorldPoint(2852, 10332, 0), "Talk to Odd Mushroom in the prison.");
@@ -541,7 +540,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		useBucketOnWater = new ObjectStep(this, ObjectID.MY2ARM_THRONE_ROOM_WATER, new WorldPoint(2869, 3933, 0), "Fill the bucket on the barrel of water.", bucketHighlight);
 		useBucketOnWater.addIcon(ItemID.BUCKET_EMPTY);
 
-		useBucketOnFire = new ObjectStep(this, NullObjectID.NULL_33333, new WorldPoint(2876, 3933, 0), "Use the full bucket on the Fire of Domination.", bucketOfWaterHighlight);
+		useBucketOnFire = new ObjectStep(this, ObjectID.MY2ARM_FIRE_THRONE_ROOM, new WorldPoint(2876, 3933, 0), "Use the full bucket on the Fire of Domination.", bucketOfWaterHighlight);
 		useBucketOnFire.addIcon(ItemID.BUCKET_WATER);
 
 		talkToMyArmAfterFight = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2874, 3934, 0), "Talk to My Arm in Weiss.");

@@ -41,7 +41,6 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -241,7 +240,7 @@ public class Biohazard extends BasicQuestHelper
 
 		enterBackyardOfHeadquarters = new ObjectStep(this, ObjectID.MOURNERSTEWFENCE, new WorldPoint(2541, 3331, 0), "Squeeze through the fence to enter the Mourner's Headquarters yard in the north east of West Ardougne.");
 		pickupRottenApple = new DetailedQuestStep(this, new WorldPoint(2549, 3332, 0), "Pick up the rotten apple in the yard.", rottenApple);
-		useRottenAppleOnCauldron = new ObjectStep(this, NullObjectID.NULL_37327, new WorldPoint(2543, 3332, 0), "Use the rotten apple on the cauldron.", rottenApple);
+		useRottenAppleOnCauldron = new ObjectStep(this, ObjectID.MOURNERCAULDRON, new WorldPoint(2543, 3332, 0), "Use the rotten apple on the cauldron.", rottenApple);
 		useRottenAppleOnCauldron.addIcon(ItemID.ROTTENAPPLES);
 
 		searchSarahsCupboard = new ObjectStep(this, ObjectID.BIONURSESCUPBOARDSHUT, new WorldPoint(2518, 3276, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church.");

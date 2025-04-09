@@ -240,7 +240,7 @@ public class PriestInPeril extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0), "Speak to King Roald in Varrock Castle.");
+		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_CUTSCENE, new WorldPoint(3222, 3473, 0), "Speak to King Roald in Varrock Castle.");
 		talkToRoald.addDialogStep("I'm looking for a quest!");
 		talkToRoald.addDialogStep("Yes.");
 		goToTemple = new ObjectStep(this, ObjectID.PRIESTPERILTEMPLEDOORR, new WorldPoint(3408, 3488, 0),
@@ -253,7 +253,7 @@ public class PriestInPeril extends BasicQuestHelper
 			"Kill the Temple Guardian (level 30). It is immune to magic so you will need to use either ranged or melee.");
 		climbUpAfterKillingDog = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3405, 9907, 0),
 			"Climb back up the ladder and return to King Roald.");
-		returnToKingRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0),
+		returnToKingRoald = new NpcStep(this, NpcID.KING_ROALD_CUTSCENE, new WorldPoint(3222, 3473, 0),
 			"Return to King Roald.");
 		returnToKingRoald.addSubSteps(climbUpAfterKillingDog);
 

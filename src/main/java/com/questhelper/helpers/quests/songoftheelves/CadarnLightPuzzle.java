@@ -37,7 +37,6 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
@@ -95,7 +94,7 @@ public class CadarnLightPuzzle extends ConditionalStep
 			"Add a mirror to a pillar to the east. Rotate it to point the light down.", handMirrorHighlighted);
 		p1Pillar2.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36705, new WorldPoint(2623, 6158, 0),
+		p1Pillar3 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_5, new WorldPoint(2623, 6158, 0),
 			"Add a mirror to the pillar near the stairs. Rotate it to point the light south.", handMirrorHighlighted);
 		p1Pillar3.addIcon(ItemID.SOTE_MIRROR);
 

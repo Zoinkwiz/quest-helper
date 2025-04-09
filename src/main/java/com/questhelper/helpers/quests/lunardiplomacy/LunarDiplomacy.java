@@ -45,7 +45,6 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -678,7 +677,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		bringPotionToOneiromancer = new NpcStep(this, NpcID.LUNAR_ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Return to the Oneiromancer with the waking sleep vial.", sealOfPassage, sleepPotion);
 
-		enterAirAltar = new ObjectStep(this, NullObjectID.NULL_34813, new WorldPoint(2985, 3292, 0),
+		enterAirAltar = new ObjectStep(this, ObjectID.AIRTEMPLE_RUINED, new WorldPoint(2985, 3292, 0),
 			"Enter the Air Altar and use a dramen staff on it.", airTalisman, dramenStaff);
 		enterAirAltar.addIcon(ItemID.AIR_TALISMAN);
 		useOnAir = new ObjectStep(this, ObjectID.AIR_ALTAR, new WorldPoint(2844, 4834, 0),
@@ -686,7 +685,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		useOnAir.addIcon(ItemID.DRAMEN_STAFF);
 		enterAirAltar.addSubSteps(useOnAir);
 
-		enterFireAltar = new ObjectStep(this, NullObjectID.NULL_34817, new WorldPoint(3313, 3255, 0),
+		enterFireAltar = new ObjectStep(this, ObjectID.FIRETEMPLE_RUINED, new WorldPoint(3313, 3255, 0),
 			"Enter the Fire Altar and use a partially made lunar staff on it.", fireTalisman, lunarStaffP1);
 		enterFireAltar.addIcon(ItemID.FIRE_TALISMAN);
 		useOnFire = new ObjectStep(this, ObjectID.FIRE_ALTAR, new WorldPoint(2585, 4838, 0),
@@ -694,14 +693,14 @@ public class LunarDiplomacy extends BasicQuestHelper
 		useOnFire.addIcon(ItemID.DRAMEN_STAFF_AIR);
 		enterFireAltar.addSubSteps(useOnFire);
 
-		enterWaterAltar = new ObjectStep(this, NullObjectID.NULL_34815, new WorldPoint(3185, 3165, 0),
+		enterWaterAltar = new ObjectStep(this, ObjectID.WATERTEMPLE_RUINED, new WorldPoint(3185, 3165, 0),
 			"Enter the Water Altar and use the partially made lunar staff on it.", waterTalisman, lunarStaffP2);
 		enterWaterAltar.addIcon(ItemID.WATER_TALISMAN);
 		useOnWater = new ObjectStep(this, ObjectID.WATER_ALTAR, new WorldPoint(2716, 4836, 0), "Use the staff on the altar.", lunarStaffP2Highlighted);
 		useOnWater.addIcon(ItemID.DRAMEN_STAFF_FIRE);
 		enterWaterAltar.addSubSteps(useOnWater);
 
-		enterEarthAltar = new ObjectStep(this, NullObjectID.NULL_34816, new WorldPoint(3306, 3474, 0),
+		enterEarthAltar = new ObjectStep(this, ObjectID.EARTHTEMPLE_RUINED, new WorldPoint(3306, 3474, 0),
 			"Enter the Earth Altar and use a partially made lunar staff on it.", earthTalisman, lunarStaffP3);
 		enterEarthAltar.addIcon(ItemID.EARTH_TALISMAN);
 		useOnEarth = new ObjectStep(this, ObjectID.EARTH_ALTAR, new WorldPoint(2658, 4841, 0),

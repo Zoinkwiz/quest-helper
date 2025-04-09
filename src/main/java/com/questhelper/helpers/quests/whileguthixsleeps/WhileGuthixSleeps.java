@@ -56,14 +56,10 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.widget.LunarSpells;
 import com.questhelper.steps.widget.NormalSpells;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.*;
 
@@ -711,7 +707,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 
 		emptyDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH_EMPTY);
-		fullDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH);
+		fullDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH_EMPTY);
 		silverSickleB = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_BLESSED);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD);
@@ -844,7 +840,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		trapSetUp = new VarbitRequirement(10929, 1);
 		trapBaited = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 2, Operation.GREATER_EQUAL);
 		broavTrapped = new VarbitRequirement(10929, 4);
-		broavNearby = new VarplayerRequirement(447, List.of(NpcID.WGS_BROAV, 13516), 16);
+		broavNearby = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.WGS_BROAV, 13516), 16);
 		hasBroav = or(broavNearby, broav.alsoCheckBank(questBank));
 
 		nearTable = new Zone(new WorldPoint(2516, 3246, 0), new WorldPoint(2522, 3252, 0));
@@ -981,7 +977,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10780 2->3 represents state of Silif
 		givenArmourToSilif = new VarbitRequirement(VarbitID.WGS, 550, Operation.GREATER_EQUAL);
 
-		silifIsFollowing = new VarplayerRequirement(447, 13522, 16);
+		silifIsFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 13522, 16);
 		seenMap = new VarbitRequirement(VarbitID.WGS, 580, Operation.GREATER_EQUAL);
 
 		squallFightRoom = new Zone(new WorldPoint(4126, 4840, 2), new WorldPoint(4151, 4861, 2));
@@ -1121,7 +1117,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		useDirtyShirtOnBroav = new NpcFollowerStep(this, NpcID.WGS_BROAV, "Use the dirty shirt on your broav.", dirtyShirt.highlighted());
 		useDirtyShirtOnBroav.addIcon(ItemID.WGS_DIRTYCLOTHES);
 
-		searchBrokenTable = new ObjectStep(this, NullObjectID.NULL_53889, new WorldPoint(2519, 3249, 0), "Search the broken table.");
+		searchBrokenTable = new ObjectStep(this, ObjectID.WGS_MOVARIO_BASE_TABLE_TUNNEL_MULTI, new WorldPoint(2519, 3249, 0), "Search the broken table.");
 
 		enterMovarioBase = new ObjectStep(this, ObjectID.WGS_BF_TABLE_BROKEN2_OPEN, new WorldPoint(2519, 3249, 0), "Enter Movario's base under the broken table in the Khazard Battlefield.");
 
@@ -1133,37 +1129,37 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		climbDownMovarioFirstRoom = new ObjectStep(this, ObjectID.LUC2_MOV_STEPS_DOWN, new WorldPoint(4117, 4973, 0), "Climb down the stairs to the north-west.");
 
-		inspectDoor = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0), "Inspect the old battered door.");
+		inspectDoor = new ObjectStep(this, ObjectID.LUC2_MOVARIO_RUNEDOOR_MULTI, new WorldPoint(4210, 4974, 0), "Inspect the old battered door.");
 		// 10757 0->1
 
-		ObjectStep useFireRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+		ObjectStep useFireRuneDoorInnerStep = new ObjectStep(this, ObjectID.LUC2_MOVARIO_RUNEDOOR_MULTI, new WorldPoint(4210, 4974, 0),
 			"Use a fire rune on the old battered door.", fireRune.highlighted());
 		useFireRuneDoorInnerStep.addIcon(ItemID.FIRERUNE);
 		useFireRuneOnDoor = new PuzzleWrapperStep(this,
 			useFireRuneDoorInnerStep,
 			"Solve the electric door puzzle.");
 
-		ObjectStep useAirRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+		ObjectStep useAirRuneDoorInnerStep = new ObjectStep(this, ObjectID.LUC2_MOVARIO_RUNEDOOR_MULTI, new WorldPoint(4210, 4974, 0),
 			"Use a air rune on the old battered door.", airRune.highlighted());
 		useAirRuneDoorInnerStep.addIcon(ItemID.AIRRUNE);
 		useAirRuneOnDoor = new PuzzleWrapperStep(this, useAirRuneDoorInnerStep, "Solve the electric door puzzle.");
 
-		ObjectStep useEarthRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+		ObjectStep useEarthRuneDoorInnerStep = new ObjectStep(this, ObjectID.LUC2_MOVARIO_RUNEDOOR_MULTI, new WorldPoint(4210, 4974, 0),
 			"Use a earth rune on the old battered door.", earthRune.highlighted());
 		useEarthRuneDoorInnerStep.addIcon(ItemID.EARTHRUNE);
 		useEarthRuneOnDoor = new PuzzleWrapperStep(this, useEarthRuneDoorInnerStep, "Solve the electric door puzzle.");
 
-		ObjectStep useWaterRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+		ObjectStep useWaterRuneDoorInnerStep = new ObjectStep(this, ObjectID.LUC2_MOVARIO_RUNEDOOR_MULTI, new WorldPoint(4210, 4974, 0),
 			"Use a water rune on the old battered door.", waterRune.highlighted());
 		useWaterRuneDoorInnerStep.addIcon(ItemID.WATERRUNE);
 		useWaterRuneOnDoor = new PuzzleWrapperStep(this, useWaterRuneDoorInnerStep, "Solve the electric door puzzle.");
 
-		ObjectStep useMindRuneDoorInnerStep = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+		ObjectStep useMindRuneDoorInnerStep = new ObjectStep(this, ObjectID.LUC2_MOVARIO_RUNEDOOR_MULTI, new WorldPoint(4210, 4974, 0),
 			"Use a mind rune on the old battered door.", mindRune.highlighted());
 		useMindRuneDoorInnerStep.addIcon(ItemID.MINDRUNE);
 		useMindRuneOnDoor = new PuzzleWrapperStep(this, useMindRuneDoorInnerStep, "Solve the electric door puzzle.");
 
-		useRuneOnDoor = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0),
+		useRuneOnDoor = new ObjectStep(this, ObjectID.LUC2_MOVARIO_RUNEDOOR_MULTI, new WorldPoint(4210, 4974, 0),
 			"Inspect the old battered door, and then use the rune that stylistically appears in the 'Restricted access' warning on the door.");
 		useRuneOnDoor.addSubSteps(useFireRuneOnDoor, useAirRuneOnDoor, useEarthRuneOnDoor, useWaterRuneOnDoor, useMindRuneOnDoor);
 
@@ -1190,13 +1186,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			new ObjectStep(this, ObjectID.LUC2_MOV_BOOKCASE_WIRE_PUZZLE_7, new WorldPoint(4187, 4962, 0), "Search the eastern bookcase in the room."),
 			"Solve the electric door puzzle.");
 
-		enterDoorToLibrary = new ObjectStep(this, NullObjectID.NULL_54089, new WorldPoint(4210, 4974, 0), "Enter the old battered door. You must weight over " +
+		enterDoorToLibrary = new ObjectStep(this, ObjectID.LUC2_MOVARIO_RUNEDOOR_MULTI, new WorldPoint(4210, 4974, 0), "Enter the old battered door. You must weight over " +
 				"0kg to enter.", weighOver0Kg);
 
 		solveElectricityPuzzle = new DetailedQuestStep(this, "Solve the electricity puzzle.");
 		solveElectricityPuzzle.addSubSteps(searchBookcase1, searchBookcase2, searchBookcase3, searchBookcase4, searchBookcase5, searchBookcase6, searchBookcase7);
 
-		enterElectricDoor = new ObjectStep(this, NullObjectID.NULL_54108, new WorldPoint(4181, 4953, 0), "Enter the gate to the staircase.");
+		enterElectricDoor = new ObjectStep(this, ObjectID.LUC2_MOV_ELECTRIC_RAIL_GATE_MULTI, new WorldPoint(4181, 4953, 0), "Enter the gate to the staircase.");
 		searchStaircaseInLibrary = new ObjectStep(this, ObjectID.LUC2_MOV_SPIRAL_STAIRS, new WorldPoint(4182, 4951, 0), "Right-click SEARCH the spiral staircase.");
 		climbStaircaseInLibrary = new ObjectStep(this, ObjectID.LUC2_MOV_SPIRAL_STAIRS, new WorldPoint(4182, 4951, 0), "Climb up the spiral staircase.");
 
@@ -1255,13 +1251,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		buySnapdragonSeed.addDialogSteps("Could I have that seed?", "Sounds good to me.");
 		getSarimTeleport = new NpcStep(this, NpcID.WGS_THAERISK_CEMPHIER, new WorldPoint(2989, 3342, 0), "Talk to Thaerisk to teleport to Port Sarim.", snapdragonSeed, lanternLens, coins.quantity(20));
 		getSarimTeleport.addDialogSteps("Could you teleport me to Port Sarim?", "Yes.");
-		talkToBetty = new NpcStep(this, NpcID.BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty in Port Sarim's magic shop with a snapdragon seed and lantern lens.",
+		talkToBetty = new NpcStep(this, NpcID.SARIM_BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty in Port Sarim's magic shop with a snapdragon seed and lantern lens.",
 			snapdragonSeed, lanternLens, coins.quantity(20));
 		talkToBetty.addDialogStep("Could you help me make some enriched snapdragon?");
 		// Given snapdragon seed
 		// 1537 0->2
 		// quest state 35->36
-		talkToBettyForDye = new NpcStep(this, NpcID.BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty in Port Sarim's magic shop for some pink dye.", lanternLens, coins.quantity(20));
+		talkToBettyForDye = new NpcStep(this, NpcID.SARIM_BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty in Port Sarim's magic shop for some pink dye.", lanternLens, coins.quantity(20));
 		talkToBettyForDye.addDialogSteps("About that enriched snapdragon...", "Sounds good.");
 		usePinkDyeOnLanternLens = new DetailedQuestStep(this, "Use the pink dye on a lantern lens.", pinkDye.highlighted(), lanternLens.highlighted());
 		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3016, 3259, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.");
@@ -1380,14 +1376,14 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		enterBlackKnightFortress.addDialogStep("Yes.");
 		pushHiddenWall = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
 		climbDownBlackKnightBasement = new ObjectStep(this, ObjectID.KR_BKF_BASEMENT_LADDERTOP, new WorldPoint(3016, 3519, 0), "Go down the ladder.");
-		inspectCarvedTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Inspect the tile on the floor on the east side of the room.");
-		castChargedOrbOnTile = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Cast one of the charge orb spells on the tile.", normalSpellbook, unpoweredOrb, chargeOrbSpell);
+		inspectCarvedTile = new ObjectStep(this, ObjectID.WGS_BLACK_KNIGHTS_TUNNEL_MULTI, new WorldPoint(1870, 4237, 0), "Inspect the tile on the floor on the east side of the room.");
+		castChargedOrbOnTile = new ObjectStep(this, ObjectID.WGS_BLACK_KNIGHTS_TUNNEL_MULTI, new WorldPoint(1870, 4237, 0), "Cast one of the charge orb spells on the tile.", normalSpellbook, unpoweredOrb, chargeOrbSpell);
 		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_WATER_ORB);
 		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_AIR_ORB);
 		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_EARTH_ORB);
 		castChargedOrbOnTile.addSpellHighlight(NormalSpells.CHARGE_FIRE_ORB);
 		// 10803 0->2
-		enterCatacombs = new ObjectStep(this, NullObjectID.NULL_54076, new WorldPoint(1870, 4237, 0), "Enter the tile trapdoor.");
+		enterCatacombs = new ObjectStep(this, ObjectID.WGS_BLACK_KNIGHTS_TUNNEL_MULTI, new WorldPoint(1870, 4237, 0), "Enter the tile trapdoor.");
 		// 15064 0->100
 		// Quest progresses to 490
 		jumpBridge = new ObjectStep(this, ObjectID.LUC2_DK_CATA_BRIDGE_JUMP_SOUTH, new WorldPoint(4112, 4697, 1), "Jump over the west bridge.");
@@ -1409,11 +1405,11 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		killKnightsForEliteArmour = new NpcStep(this, NpcID.ELITE_BLACK_KNIGHT_1, new WorldPoint(4122, 4849, 1), "Kill elite black knights for their full armour set.",
 			true, eliteHelm, eliteBody, eliteLegs);
 		((NpcStep) killKnightsForEliteArmour).addAlternateNpcs(NpcID.ELITE_BLACK_KNIGHT_2, NpcID.ELITE_BLACK_KNIGHT_1_CUTSCENE, NpcID.ELITE_BLACK_KNIGHT_2_CUTSCENE, NpcID.WGS_ELITE_BLACK_KNIGHT_NONATTACK);
-		searchDeskForTeleorb = new ObjectStep(this, NullObjectID.NULL_54077, new WorldPoint(4119, 4844, 1), "Search the south table for a strange teleorb.");
-		searchDeskForLobster = new ObjectStep(this, NullObjectID.NULL_54079, new WorldPoint(4124, 4851, 1), "Search the north-east table for some lobster and a restore potion." +
+		searchDeskForTeleorb = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_STUDYDESK_MULTI, new WorldPoint(4119, 4844, 1), "Search the south table for a strange teleorb.");
+		searchDeskForLobster = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_DESK_SUPPLIES_MULTI, new WorldPoint(4124, 4851, 1), "Search the north-east table for some lobster and a restore potion." +
 			" DON'T EAT OR DRINK EITHER.");
-		searchDeskForLawAndDeathRune = new ObjectStep(this, NullObjectID.NULL_54080, new WorldPoint(4113, 4849, 1), "Search the west desk for a law and death rune.");
-		searchKeyRack = new ObjectStep(this, NullObjectID.NULL_53430, new WorldPoint(4123, 4857, 1), "Search the key rack just east of the northern wardrobe.");
+		searchDeskForLawAndDeathRune = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_DESK_RUNES_MULTI, new WorldPoint(4113, 4849, 1), "Search the west desk for a law and death rune.");
+		searchKeyRack = new ObjectStep(this, ObjectID.LUC2_DWT_WALL_PILLAR2_LVL3, new WorldPoint(4123, 4857, 1), "Search the key rack just east of the northern wardrobe.");
 		leaveSolidDoor = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_BASE_MAIN_DOOR_EXIT_ACTIVE, new WorldPoint(4113, 4841, 1), "Leave the room back to the catacombs.");
 
 		equipSquallOrEliteArmour = new DetailedQuestStep(this, "Equip either a full set of elite black knight or the squall outfit.", eliteBlackKnightOrSquallOutfit.equipped());
@@ -1458,8 +1454,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10774 1->0
 		goDownForOrbAndRunes = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_LADDERTOP, new WorldPoint(4142, 4855, 2),
 			"Climb down the ladder to retrieve a strange teleorb and runes.", squallOutfit.equipped());
-		takeStrangeTeleorb = new ObjectStep(this, NullObjectID.NULL_54077, new WorldPoint(4119, 4844, 1), "Search the south table for a strange teleorb.", squallOutfit.equipped());
-		takeRunes = new ObjectStep(this, NullObjectID.NULL_54080, new WorldPoint(4113, 4849, 1), "Search the west desk for a law and death rune.", squallOutfit.equipped());
+		takeStrangeTeleorb = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_STUDYDESK_MULTI, new WorldPoint(4119, 4844, 1), "Search the south table for a strange teleorb.", squallOutfit.equipped());
+		takeRunes = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_DESK_RUNES_MULTI, new WorldPoint(4113, 4849, 1), "Search the west desk for a law and death rune.", squallOutfit.equipped());
 		// If not got runes, and no runes on table, then tell player to get runes
 		goUpToUseTeleorb = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_LADDER, new WorldPoint(4142, 4855, 1), "Climb back up the ladder to the east.",
 			strangeTeleorb, lawRune, deathRune, squallOutfit);
@@ -1532,13 +1528,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		climbDownFromSkullF1ToF0 = new ObjectStep(this, ObjectID.LUC2_GT_CLIMB_TRIGGER, new WorldPoint(4061, 4555, 1), "Climb back down.");
 		climbDownFromSkullF2ToF1.addSubSteps(climbDownFromSkullF1ToF0);
 
-		useFireBlockOnRecess = new ObjectStep(this, NullObjectID.NULL_54082, new WorldPoint(4063, 4548, 2),
+		useFireBlockOnRecess = new ObjectStep(this, ObjectID.LUC2_GT_MAIN_TEMPLE_DOOR, new WorldPoint(4063, 4548, 2),
 			"Use the fire block on the recessed block just to the south, in the skeleton's mouth.", fireBlock.highlighted());
 		useFireBlockOnRecess.addIcon(ItemID.WGS_GUTHIX_TEMPLE_ELEMENTAL_KEY_FIRE);
 
-		enterWestCavity = new ObjectStep(this, NullObjectID.NULL_53634, new WorldPoint(4057, 4557, 0), "Enter the western cavity.", noWeaponOrShieldEquipped);
-		enterMiddleCavity = new ObjectStep(this, NullObjectID.NULL_53634, new WorldPoint(4063, 4554, 0), "Enter the middle cavity.", noWeaponOrShieldEquipped);
-		enterEastCavity = new ObjectStep(this, NullObjectID.NULL_53634, new WorldPoint(4069, 4557, 0), "Enter the eastern cavity.", noWeaponOrShieldEquipped);
+		enterWestCavity = new ObjectStep(this, ObjectID.LUC2_GT_GIANT_SKULL_BOTTOM, new WorldPoint(4057, 4557, 0), "Enter the western cavity.", noWeaponOrShieldEquipped);
+		enterMiddleCavity = new ObjectStep(this, ObjectID.LUC2_GT_GIANT_SKULL_BOTTOM, new WorldPoint(4063, 4554, 0), "Enter the middle cavity.", noWeaponOrShieldEquipped);
+		enterEastCavity = new ObjectStep(this, ObjectID.LUC2_GT_GIANT_SKULL_BOTTOM, new WorldPoint(4069, 4557, 0), "Enter the eastern cavity.", noWeaponOrShieldEquipped);
 
 		useEarthBlockOnRecess = new ObjectStep(this, ObjectID.LUC2_GT_TUNNEL_LOCK_EMPTY_EARTH, new WorldPoint(4147, 5094, 0), "Use the earth block on the recess.", earthBlock.highlighted());
 		useEarthBlockOnRecess.addIcon(ItemID.WGS_GUTHIX_TEMPLE_ELEMENTAL_KEY_EARTH);
@@ -1560,10 +1556,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		climbUpToCubeF0ToF1.addSubSteps(climbUpToCubeF1ToF2);
 
 		touchCube = new ObjectStep(this, ObjectID.LUC2_GT_MAIN_DOOR_BUTTON_COMPLETE, new WorldPoint(4063, 4552, 2), "Inspect the stone cube.");
-		enterSkull = new ObjectStep(this, NullObjectID.NULL_54082, new WorldPoint(4063, 4548, 2),
+		enterSkull = new ObjectStep(this, ObjectID.LUC2_GT_MAIN_TEMPLE_DOOR, new WorldPoint(4063, 4548, 2),
 			"Enter the skull's mouth to the south.");
 
-		getPouch = new ObjectStep(this, NullObjectID.NULL_54088, new WorldPoint(4078, 4441, 0), "Search the skeleton north of the stone table.");
+		getPouch = new ObjectStep(this, ObjectID.LUC2_SKELETAL_DRUID_CORPSE, new WorldPoint(4078, 4441, 0), "Search the skeleton north of the stone table.");
 		castBloomToFillPouch = new DetailedQuestStep(this, new WorldPoint(4091, 4439, 0), "Cast bloom near any of the roots for items to fill your druid pouch with.", silverSickleB.highlighted());
 		usePouchOnDruid = new NpcStep(this, NpcID.WGS_DRUID_SPIRIT_1, new WorldPoint(4078, 4439, 0), "Use the druid pouch on nearby druid spirits for herblore ingredients.", true);
 		((NpcStep) usePouchOnDruid).addAlternateNpcs(NpcID.WGS_DRUID_SPIRIT_2);

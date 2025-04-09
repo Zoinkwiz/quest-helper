@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.questhelper.util.QHObjectID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -277,9 +278,9 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		talkToBrimstailAfterIllusion = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail again.");
 		talkToBrimstailAfterIllusion.addDialogStep("Phew! I've got that machine working now. What do I need to do now?");
 
-		climbUpToF1Tree = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Kill the evil creature at the top of the Grand Tree.");
-		climbUpToF2Tree = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1), "Kill the evil creature at the top of the Grand Tree.");
-		climbUpToF3Tree = new ObjectStep(this, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "Kill the evil creature at the top of the Grand Tree.");
+		climbUpToF1Tree = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0), "Kill the evil creature at the top of the Grand Tree.");
+		climbUpToF2Tree = new ObjectStep(this, QHObjectID.GRAND_TREE_F1_LADDER, new WorldPoint(2466, 3495, 1), "Kill the evil creature at the top of the Grand Tree.");
+		climbUpToF3Tree = new ObjectStep(this, QHObjectID.GRAND_TREE_F2_LADDER, new WorldPoint(2466, 3495, 2), "Kill the evil creature at the top of the Grand Tree.");
 		killCreature3.addSubSteps(climbUpToF1Tree, climbUpToF2Tree, climbUpToF3Tree);
 
 		talkToNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk to King Narnode to finish the quest.");

@@ -34,6 +34,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.List;
+import com.questhelper.util.QHObjectID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
@@ -72,9 +73,9 @@ public class InformKingBolren
 		// Talk to Gianne Junior in Tree Gnome Stronghold
 		talkToGianneJnr = new NpcStep(quest, NpcID.GIANNE_JNR, new WorldPoint(2439, 3502, 1), "Talk to Gianne jnr. in Tree Gnome Stronghold to ask for Longramble's whereabouts.");
 		// Floor 0 to Floor 1
-		var climbUpToGianneJnr = new ObjectStep(quest, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "");
-		var climbGrandTreeF3ToF2 = new ObjectStep(quest, ObjectID.LADDER_16679, new WorldPoint(2466, 3495, 3), "");
-		var climbGrandTreeF2ToF1 = new ObjectStep(quest, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "");
+		var climbUpToGianneJnr = new ObjectStep(quest, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0), "");
+		var climbGrandTreeF3ToF2 = new ObjectStep(quest, QHObjectID.GRAND_TREE_F3_LADDER, new WorldPoint(2466, 3495, 3), "");
+		var climbGrandTreeF2ToF1 = new ObjectStep(quest, QHObjectID.GRAND_TREE_F2_LADDER, new WorldPoint(2466, 3495, 2), "");
 		climbGrandTreeF2ToF1.addDialogStep("Climb Down.");
 		climbUpToGianneJnr.setText(talkToGianneJnr.getText());
 		climbUpToGianneJnr.addTeleport(teleToStronghold);

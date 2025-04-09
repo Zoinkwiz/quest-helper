@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import com.questhelper.util.QHObjectID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -253,12 +254,12 @@ public class WesternMedium extends ComplexStateQuestHelper
 		spiritToStronghold = new DetailedQuestStep(this, "Travel to the Gnome Stronghold by spirit tree.");
 
 		// todo more detailed chocobomb steps
-		moveToStrongFirstChoco = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+		moveToStrongFirstChoco = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"Climb the ladder at the Grand Tree.", gnomebowl, gianneDough, chocolateBar, equaLeaf, potOfCream, chocolateDust);
 		chocolateBomb = new DetailedQuestStep(this, "Make a chocolate bomb.", gnomebowl, gianneDough, chocolateBar,
 			equaLeaf, potOfCream, chocolateDust);
 
-		moveToStrongFirstDelivery = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+		moveToStrongFirstDelivery = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"Climb the ladder at the Grand Tree.");
 		completeTraining = new NpcStep(this, NpcID.ALUFT_GIANNE_SNR, new WorldPoint(2449, 3501, 1),
 			"Complete your training by talking to Blurberry and Aluft Gianne snr.");
@@ -270,7 +271,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 
 		moveToStrongBase = new ObjectStep(this, ObjectID.TRAPDOOR_2446, new WorldPoint(2463, 3497, 0),
 			"Open the trapdoor to enter the underground of the Grand Tree.", pickaxe);
-		moveToStrongBase2 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1),
+		moveToStrongBase2 = new ObjectStep(this, QHObjectID.GRAND_TREE_F1_LADDER, new WorldPoint(2466, 3495, 1),
 			"Open the trapdoor to enter the underground of the Grand Tree.", pickaxe);
 		moveToStrongBase2.addDialogStep("Climb Down.");
 		moveToStrongBase.addSubSteps(moveToStrongBase2);

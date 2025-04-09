@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.questhelper.util.QHObjectID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -510,11 +511,11 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		enterShipyard = new ObjectStep(this, ObjectID.GATE_2438, new WorldPoint(2945, 3041, 0), "Enter the shipyard on Karamja.", royalSeal);
 		enterShipyard.addDialogStep("I've lost my copy of the Royal Seal...");
 
-		goUpF0ToF1 = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "Travel to the Shipyard on Karamja.", royalSeal);
+		goUpF0ToF1 = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0), "Travel to the Shipyard on Karamja.", royalSeal);
 		goUpF0ToF1.addDialogStep("I've lost my copy of the Royal Seal...");
-		goUpF1ToF2 = new ObjectStep(this, ObjectID.LADDER_16684, new WorldPoint(2466, 3495, 1), "Travel to the Shipyard on Karamja.", royalSeal);
+		goUpF1ToF2 = new ObjectStep(this, QHObjectID.GRAND_TREE_F1_LADDER, new WorldPoint(2466, 3495, 1), "Travel to the Shipyard on Karamja.", royalSeal);
 		goUpF1ToF2.addDialogStep("Climb Up.");
-		goUpF2ToF3 = new ObjectStep(this, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "Travel to the Shipyard on Karamja.", royalSeal);
+		goUpF2ToF3 = new ObjectStep(this, QHObjectID.GRAND_TREE_F2_LADDER, new WorldPoint(2466, 3495, 2), "Travel to the Shipyard on Karamja.", royalSeal);
 		goUpF2ToF3.addDialogStep("Climb Up.");
 		flyGandius = new NpcStep(this, NpcID.CAPTAIN_ERRDO_10471, new WorldPoint(2464, 3501, 3), "Fly with Captain Errdo to Gandius.");
 		flyGandius.addWidgetHighlight(138, 16);
@@ -525,7 +526,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkToNarnodeAfterShipyard = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Return to King Narnode Shareen in the Tree Gnome Stronghold.");
 		talkToNarnodeAfterShipyard.addWidgetHighlight(138, 4);
 
-		goUpToDaero = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+		goUpToDaero = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"Talk to Daero on the 1st floor of the Tree Gnome Stronghold.", Collections.singletonList(narnodesOrders.hideConditioned(talkedToDaero)),
 			Arrays.asList(food, prayerPotions, antipoison, staminaPotions, escapeTeleport));
 		talkToDaero = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Talk to Daero on the 1st floor of the Tree Gnome Stronghold. " +
@@ -608,7 +609,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			"Teleport out to prepare for a dangerous portion. You'll want energy/stamina potions, food and prayer potions.");
 		leaveToPrepareForBar.addTeleport(escapeTeleport);
 
-		goUpToDaeroForAmuletRun = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+		goUpToDaeroForAmuletRun = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"Get food, antipoison, energy / stamina / prayer potions, and return to Ape Atoll.",
 			Arrays.asList(goldBar, monkeyDentures, mould), Arrays.asList(food, antipoison, prayerPotions, staminaPotions, escapeTeleport));
 		goUpToDaeroForAmuletRun.addTeleport(grandTreeTeleport);
@@ -682,7 +683,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 			"Teleport out to prepare to make the amulet. You'll want some food, prayer potions, antipoisons, the mould and the enchanted bar.");
 		leaveToPrepareForAmulet.addTeleport(escapeTeleport);
 
-		goUpToDaeroForAmuletMake = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+		goUpToDaeroForAmuletMake = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"Get food, antipoison, prayer potions, and return to Ape Atoll.",
 			Arrays.asList(enchantedBar, mould, ballOfWool),
 			Arrays.asList(food, antipoison, prayerPotions, staminaPotions, escapeTeleport));
@@ -790,7 +791,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		killNinja = new NpcStep(this, NpcID.MONKEY_ARCHER_5274, new WorldPoint(2756, 2789, 0),
 			"Kill a monkey archer for their bones.", true, Collections.singletonList(ninjaBones), Collections.singletonList(protectFromRanged));
 
-		goUpToDaeroForTalismanRun = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+		goUpToDaeroForTalismanRun = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"Get food, antipoison, prayer potions, and return to Ape Atoll.",
 			Arrays.asList(talisman, monkeyBonesOrCorpse),
 			Arrays.asList(food, antipoison, prayerPotions, staminaPotions, ardougneTeleport));
@@ -842,7 +843,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkToMinderAgain = new NpcStep(this, NpcID.MONKEY_MINDER, new WorldPoint(2608, 3278, 0),
 			"UNEQUIP the greegree, then talk to the Monkey Minder again to leave.", new NoItemRequirement("Un-equipped greegree", ItemSlots.WEAPON));
 
-		goUpToDaeroForTalkingToAwow = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0),
+		goUpToDaeroForTalkingToAwow = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"WALK/RUN to Daero to return to Ape Atoll. If you teleport, you'll have to start again.", Arrays.asList(karamjanGreegree, amuletWorn, monkey), Collections.singletonList(staminaPotions));
 
 		talkToDaeroForTalkingToAwow = new NpcStep(this, NpcID.DAERO, new WorldPoint(2482, 3486, 1), "Travel with Daero on the 1st floor of the Tree Gnome Stronghold.", karamjanGreegree, amulet, monkey);

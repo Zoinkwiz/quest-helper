@@ -218,6 +218,7 @@ public class ReleaseDate
 		QuestHelperQuest.MEAT_AND_GREET,
 		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
 		QuestHelperQuest.THE_CURSE_OF_ARRAV,
+		QuestHelperQuest.PANDEMONIUM, // Alpha
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

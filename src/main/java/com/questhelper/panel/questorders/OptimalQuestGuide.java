@@ -259,6 +259,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Quest Guide
+		QuestHelperQuest.PANDEMONIUM, // Alpha
 		QuestHelperQuest.BARBARIAN_TRAINING,
 		QuestHelperQuest.BEAR_YOUR_SOUL,
 		QuestHelperQuest.ENCHANTED_KEY,

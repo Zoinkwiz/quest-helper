@@ -397,7 +397,7 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		stickyNote = new ItemRequirement("Stick note", ItemID.STICKY_NOTE);
 		stickyNote.setTooltip("You can obtain another from the skeleton in the spider cave south of Port Phasmatys.");
 
-		sulphuricAcid = new ItemRequirement("Sulphiric acid", ItemID.SULPHURIC_ACID);
+		sulphuricAcid = new ItemRequirement("Sulphuric acid", ItemID.SULPHURIC_ACID);
 		sulphuricAcid.setTooltip("You can get more from Daer Krand in the Sisterhood Sanctuary");
 
 		strangeSpiderEggs = new ItemRequirement("Strange spider eggs", ItemID.STRANGE_SPIDER_EGGS);

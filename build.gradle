@@ -37,7 +37,7 @@ dependencies {
 }
 
 group = 'com.questhelper'
-version = '4.7.6.1'
+version = '4.7.7'
 sourceCompatibility = "11"
 
 tasks.withType(JavaCompile) {

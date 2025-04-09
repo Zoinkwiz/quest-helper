@@ -24,19 +24,17 @@
  */
 package com.questhelper.helpers.quests.wanted;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.npc.DialogRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
@@ -45,19 +43,20 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.*;
-
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
 
 public class Wanted extends BasicQuestHelper
 {
@@ -247,21 +246,21 @@ public class Wanted extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		ItemRequirement lawRune = new ItemRequirement("A law rune", ItemID.LAW_RUNE, 1);
-		ItemRequirement enchantedGem = new ItemRequirement("Enchanted gem", ItemID.ENCHANTED_GEM, 1);
+		ItemRequirement lawRune = new ItemRequirement("A law rune", ItemID.LAWRUNE, 1);
+		ItemRequirement enchantedGem = new ItemRequirement("Enchanted gem", ItemID.SLAYER_GEM, 1);
 		ItemRequirement moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 1);
 		commorbComponents = new ItemRequirements("A law rune, an enchanted gem and some molten glass", lawRune, enchantedGem, moltenGlass);
 		commorbComponents.setTooltip("Alternatively, you can bring 10k gp.");
 		tenThousandGp = new ItemRequirement("10k gp", ItemCollections.COINS, 10000);
 		commorbComponentsOrTenThousandGp = new ItemRequirements(LogicType.OR, "A law rune, an enchanted gem and some molten glass OR 10k gp", commorbComponents, tenThousandGp);
 		
-		runeEssence = new ItemRequirement("20 Rune Essence (UNNOTED)", ItemID.RUNE_ESSENCE, 20);
-		pureEssence = new ItemRequirement("20 Pure Essence (UNNOTED)", ItemID.PURE_ESSENCE, 20);
+		runeEssence = new ItemRequirement("20 Rune Essence (UNNOTED)", ItemID.BLANKRUNE, 20);
+		pureEssence = new ItemRequirement("20 Pure Essence (UNNOTED)", ItemID.BLANKRUNE_HIGH, 20);
 		essence =  new ItemRequirements(LogicType.OR, "20 Rune or Pure Essence (UNNOTED)", runeEssence, pureEssence);
 		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 		rope = new ItemRequirement("A rope", ItemID.ROPE);
 
-		spinyHelmet = new ItemRequirement("A spiny helmet or slayer helm", ItemID.SPINY_HELMET).isNotConsumed();
+		spinyHelmet = new ItemRequirement("A spiny helmet or slayer helm", ItemID.WALLBEAST_SPIKE_HELMET).isNotConsumed();
 		spinyHelmet.addAlternates(ItemCollections.SLAYER_HELMETS);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
@@ -269,12 +268,12 @@ public class Wanted extends BasicQuestHelper
 
 		amuletOfGlory = new ItemRequirement("Amulet of glory", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.RING_OF_DUELINGS);
-		faladorTeleport = new ItemRequirement("A teleport to Falador", ItemID.FALADOR_TELEPORT, -1);
-		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT, -1);
-		canifisTeleport = new ItemRequirement("A teleport to Canifis", ItemID.FENKENSTRAINS_CASTLE_TELEPORT, -1);
+		faladorTeleport = new ItemRequirement("A teleport to Falador", ItemID.POH_TABLET_FALADORTELEPORT, -1);
+		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.POH_TABLET_VARROCKTELEPORT, -1);
+		canifisTeleport = new ItemRequirement("A teleport to Canifis", ItemID.TELETAB_FENK, -1);
 
-		solusHat = new ItemRequirement("Solus' hat", ItemID.SOLUSS_HAT);
-		commorb = new ItemRequirement("Commorb", ItemID.COMMORB);
+		solusHat = new ItemRequirement("Solus' hat", ItemID.WANTED_SOLUS_TROPHY);
+		commorb = new ItemRequirement("Commorb", ItemID.WANTED_CRYSTAL_BALL);
 		highlightedCommorb = commorb.copy();
 		highlightedCommorb.setHighlightInInventory(true);
 	}
@@ -377,7 +376,7 @@ public class Wanted extends BasicQuestHelper
 		mustChaseToLumbridgeSwamp = new VarbitRequirement(1101, 1);
 
 		placedRope = new VarbitRequirement(279, 1);
-		blackKnightNearby = new NpcHintArrowRequirement(NpcID.BLACK_KNIGHT_4959);
+		blackKnightNearby = new NpcHintArrowRequirement(NpcID.WANTED_SUMMONED_BLACK_KNIGHT);
 	}
 
 	public void setupSteps()
@@ -385,40 +384,40 @@ public class Wanted extends BasicQuestHelper
 		WorldPoint locationSirTaffy = new WorldPoint(2997, 3373, 0);
 
 		// Getting started
-		talkToSirTiffy1 = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Talk to Sir Tiffy Cashien in Falador Park.");
+		talkToSirTiffy1 = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Talk to Sir Tiffy Cashien in Falador Park.");
 		talkToSirTiffy1.addDialogSteps("Do you have any jobs for me yet?", "Yes, I'm interested.", TEXT_ASK_ABOUT_WANTED_QUEST, "How will all that help?");
 
-		climbToWhiteKnightsCastleF1 = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2955, 3339, 0),
+		climbToWhiteKnightsCastleF1 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339, 0),
 			"Climb to the second floor of the White Knights' castle.");
-		climbToWhiteKnightsCastleF2 = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2961, 3339, 1),
+		climbToWhiteKnightsCastleF2 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339, 1),
 			"Climb to the second floor of the White Knights' castle.");
 
-		talkToSirAmik1 = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, "Talk to Sir Amik Varze.");
+		talkToSirAmik1 = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "Talk to Sir Amik Varze.");
 		talkToSirAmik1.addDialogStep("No, not right now...");
 
-		talkToSirTiffyAfterBecomingSquire = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy,
+		talkToSirTiffyAfterBecomingSquire = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy,
 			"Talk to Sir Tiffy Cashien about your new job as a Squire in Falador Park.");
 		talkToSirTiffyAfterBecomingSquire.addDialogStep(TEXT_ASK_ABOUT_WANTED_QUEST);
 
-		talkToSirTiffy2 = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Return to Sir Tiffy Cashien in Falador Park.");
+		talkToSirTiffy2 = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Return to Sir Tiffy Cashien in Falador Park.");
 		talkToSirTiffy2.addDialogStep(TEXT_ASK_ABOUT_WANTED_QUEST);
 
-		talkToSirAmik2 = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, "Talk to Sir Amik Varze again.");
+		talkToSirAmik2 = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "Talk to Sir Amik Varze again.");
 		talkToSirAmik2.addDialogStep("Sure, I'll help you!");
 
-		talkToSirTiffy3 = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Report back to Sir Tiffy Cashien in Falador Park.");
+		talkToSirTiffy3 = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Report back to Sir Tiffy Cashien in Falador Park.");
 		talkToSirTiffy3.addDialogStep(TEXT_ASK_ABOUT_WANTED_QUEST);
 
-		getCommorbWithGp = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
+		getCommorbWithGp = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
 		getCommorbWithGp.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "Buy One", "YES");
 
-		getCommorbWithComponents = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
+		getCommorbWithComponents = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
 		getCommorbWithComponents.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "Have One Made", "YES");
 
-		doNotGetCommorbWithGp = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
+		doNotGetCommorbWithGp = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
 		doNotGetCommorbWithGp.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST, "NO");
 
-		getCommorbFromSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
+		getCommorbFromSirTiffy = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, locationSirTaffy, "Get a Commorb from Sir Tiffy Cashien in Falador Park.");
 		getCommorbFromSirTiffy.addDialogSteps(TEXT_ASK_ABOUT_WANTED_QUEST);
 		getCommorbFromSirTiffy.addSubSteps(getCommorbWithGp, getCommorbWithComponents, doNotGetCommorbWithGp);
 
@@ -426,7 +425,7 @@ public class Wanted extends BasicQuestHelper
 		talkToSavantAfterGettingCommorb.addDialogStep("Current Assignment");
 
 		// Daquarius and Mage of Zamorak
-		enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0), "Enter " +
+		enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0), "Enter " +
 			"Taverley Dungeon.", combatGear, commorb);
 		talkToLordDaquarius = new NpcStep(this, NpcID.LORD_DAQUARIUS, new WorldPoint(2891, 9681, 0), "Talk to Lord " +
 			"Daquarius in Taverley Dungeon.", commorb);
@@ -437,11 +436,11 @@ public class Wanted extends BasicQuestHelper
 			"Kill a Black Knight near Daquarius.", true, combatGear);
 		talkToIntimidatedLordDaquarius = new NpcStep(this, NpcID.LORD_DAQUARIUS, new WorldPoint(2891, 9681, 0), "Talk to Lord Daquarius in Taverley Dungeon again.");
 
-		talkToMageOfZamorakInWilderness = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK, new WorldPoint(3106, 3558, 0), "Talk to the Mage of Zamorak in the wilderness just north of Edgeville.", commorb);
-		talkToMageOfZamorak = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3388, 0),
+		talkToMageOfZamorakInWilderness = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1A, new WorldPoint(3106, 3558, 0), "Talk to the Mage of Zamorak in the wilderness just north of Edgeville.", commorb);
+		talkToMageOfZamorak = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3258, 3388, 0),
 			"Talk to the Mage of Zamorak in south east Varrock.", commorb);
 		talkToMageOfZamorak.addDialogStep("Solus Dellagar");
-		giveEssenceToMageOfZamorak = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3388, 0),
+		giveEssenceToMageOfZamorak = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3258, 3388, 0),
 			"Bring the 20 rune or pure essence to the Mage of Zamorak in Varrock.", commorb, essence);
 		giveEssenceToMageOfZamorak.addDialogStep("Solus Dellagar");
 
@@ -455,7 +454,7 @@ public class Wanted extends BasicQuestHelper
 
 		goToChampionsGuild = new DetailedQuestStep(this, new WorldPoint(3190, 3359, 0), "Go to the Champions' Guild.",
 			commorb);
-		goDownToLumbridgeCellar = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0), "Go down to the Lumbridge Cellars.", commorb);
+		goDownToLumbridgeCellar = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0), "Go down to the Lumbridge Cellars.", commorb);
 		goToDorgeshKaan = new DetailedQuestStep(this, new WorldPoint(3317, 9612, 0), "Go to the mines near the entrance of Dorgesh Kaan.", commorb);
 		goToMusaPoint = new DetailedQuestStep(this, new WorldPoint(2916, 3160, 0), "Go to Musa Point on Karamja.", commorb);
 		goToDraynorMarket = new DetailedQuestStep(this, new WorldPoint(3082, 3249, 0), "Go to Draynor Market.", commorb);
@@ -468,21 +467,21 @@ public class Wanted extends BasicQuestHelper
 		goToBrimhavenPub = new DetailedQuestStep(this, new WorldPoint(2795, 3162, 0), "Go to the pub in Brimhaven.", commorb);
 		goToCastleWars = new DetailedQuestStep(this, new WorldPoint(2441, 3090, 0), "Go to Castle Wars.", commorb);
 		goToRellekka = new DetailedQuestStep(this, new WorldPoint(2660, 3657, 0), "Go to Rellekka.", commorb);
-		goToMcGruborsWood = new ObjectStep(this, ObjectID.LOOSE_RAILING, new WorldPoint(2662, 3500, 0), "Go to McGrubor's Wood. Fairy ring ALS.", commorb);
+		goToMcGruborsWood = new ObjectStep(this, ObjectID.MCGRUBORLOOSERAILING, new WorldPoint(2662, 3500, 0), "Go to McGrubor's Wood. Fairy ring ALS.", commorb);
 		goToSlayerTower = new DetailedQuestStep(this, new WorldPoint(3428, 3537, 0), "Go to the Slayer Tower in Morytania.", commorb);
 		goToYanillePub = new DetailedQuestStep(this, new WorldPoint(2551, 3081, 0), "Go to the pub in Yanille.", commorb);
-		enterLumbridgeSwampCavesFromTears = new ObjectStep(this, ObjectID.TUNNEL_6658, new WorldPoint(3219, 9534, 2), "Enter the Lumbridge Swamp caves.");
+		enterLumbridgeSwampCavesFromTears = new ObjectStep(this, ObjectID.TOG_CAVE_UP, new WorldPoint(3219, 9534, 2), "Enter the Lumbridge Swamp caves.");
 		goToEndOfLumbridgeSwampCaves = new DetailedQuestStep(this, new WorldPoint(3221, 9550, 0),
 			"Go to the point indicated in the Lumbridge Swamp Caves.", commorb, lightSource, spinyHelmet.equipped());
-		goDownToLumbridgeSwampCaves = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+		goDownToLumbridgeSwampCaves = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
 			"Enter the Lumbridge Swamp Caves. Use a Games Necklace teleport to Tears of Guthix for a faster route.",
 			commorb, lightSource, rope.highlighted(), spinyHelmet);
 		goDownToLumbridgeSwampCaves.addIcon(ItemID.ROPE);
-		goDownToLumbridgeSwampCavesPlacedRope = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+		goDownToLumbridgeSwampCavesPlacedRope = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
 			"Enter the Lumbridge Swamp Caves. Use a Games Necklace teleport to Tears of Guthix for a faster route.",
 			commorb, lightSource, spinyHelmet);
 
-		killBlackKnightFromScan = new NpcStep(this, NpcID.BLACK_KNIGHT_4959, "Kill the Black Knight, or run away.");
+		killBlackKnightFromScan = new NpcStep(this, NpcID.WANTED_SUMMONED_BLACK_KNIGHT, "Kill the Black Knight, or run away.");
 
 		huntDownSolus = new DetailedQuestStep(this, "Hunt down Solus Dellagar across Gielinor.");
 		huntDownSolus.addSubSteps(goToChampionsGuild, goDownToLumbridgeCellar, goToDorgeshKaan, goToMusaPoint,
@@ -492,11 +491,11 @@ public class Wanted extends BasicQuestHelper
 			goToEndOfLumbridgeSwampCaves, enterLumbridgeSwampCavesFromTears, scanWithCommorb);
 
 		// Final battle
-		goToEssenceMine = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3402, 0), "Go to the Rune Essence mine by talking to any of the NPCs that can teleport you there.", commorb, combatGear);
-		killSolus = new NpcStep(this, NpcID.SOLUS_DELLAGAR_4962, "Kill Solus Dellagar.", combatGear);
+		goToEssenceMine = new NpcStep(this, NpcID.BIM_AUBURY, new WorldPoint(3253, 3402, 0), "Go to the Rune Essence mine by talking to any of the NPCs that can teleport you there.", commorb, combatGear);
+		killSolus = new NpcStep(this, NpcID.WANTED_SOLUS_ATTACKABLE, "Kill Solus Dellagar.", combatGear);
 
 		// Wrapping up
-		QuestStep talkToSirAmikAfterSolusFight = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, "Talk to Sir Amik Varze at the White Knights' Castle in Falador.");
+		QuestStep talkToSirAmikAfterSolusFight = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "Talk to Sir Amik Varze at the White Knights' Castle in Falador.");
 		QuestStep getSolusHatFromSavant = new DetailedQuestStep(this, "Right click the Commorb and select the 'contact' option to get Solus' Hat from Savant.", highlightedCommorb, oneFreeInventorySlot);
 		getSolusHatFromSavant.addDialogStep("Current Assignment");
 

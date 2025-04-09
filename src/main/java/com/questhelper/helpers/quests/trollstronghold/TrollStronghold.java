@@ -24,45 +24,36 @@
  */
 package com.questhelper.helpers.quests.trollstronghold;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TrollStronghold extends BasicQuestHelper
 {
@@ -138,9 +129,9 @@ public class TrollStronghold extends BasicQuestHelper
 		mageRangedGear = new ItemRequirement("Mage or ranged gear for safe spotting", -1, -1).isNotConsumed();
 		mageRangedGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		foodAndPotions = new ItemRequirement("Food + prayer potions", ItemCollections.GOOD_EATING_FOOD, -1);
-		prisonKey = new ItemRequirement("Prison key", ItemID.PRISON_KEY);
-		cellKey1 = new ItemRequirement("Cell key 1", ItemID.CELL_KEY_1);
-		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);
+		prisonKey = new ItemRequirement("Prison key", ItemID.TROLL_KEY_PRISON);
+		cellKey1 = new ItemRequirement("Cell key 1", ItemID.TROLL_KEY_GODRIC);
+		cellKey2 = new ItemRequirement("Cell key 2", ItemID.TROLL_KEY_EADGAR);
 	}
 
 	@Override
@@ -178,7 +169,7 @@ public class TrollStronghold extends BasicQuestHelper
 		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
 		inPrisonStairsRoom = new ZoneRequirement(prisonStairsRoom);
 		inPrison = new ZoneRequirement(prison);
-		prisonKeyNearby = new ItemOnTileRequirement(ItemID.PRISON_KEY);
+		prisonKeyNearby = new ItemOnTileRequirement(ItemID.TROLL_KEY_PRISON);
 		cellKey1Nearby = new ItemOnTileRequirement(cellKey1);
 		cellKey2Nearby = new ItemOnTileRequirement(cellKey2);
 		freedEadgar = new VarbitRequirement(0, 1);
@@ -187,7 +178,7 @@ public class TrollStronghold extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToDenulth = new NpcStep(this, NpcID.DENULTH, new WorldPoint(2895, 3528, 0), "Talk to Denulth in Burthorpe.");
+		talkToDenulth = new NpcStep(this, NpcID.DEATH_IG_COMMANDER, new WorldPoint(2895, 3528, 0), "Talk to Denulth in Burthorpe.");
 		talkToDenulth.addDialogStep("How goes your fight with the trolls?");
 		talkToDenulth.addDialogStep("Is there anything I can do to help?");
 		talkToDenulth.addDialogStep("I'll get Godric back!");
@@ -195,23 +186,23 @@ public class TrollStronghold extends BasicQuestHelper
 		getCoinsOrBoots = new DetailedQuestStep(this, "Get some climbing boots or 12 coins, and prepare for fighting Dad and the Troll General. Both can be safe spotted by ranged/mage.", climbingBootsOr12Coins);
 
 		travelToTenzing = new DetailedQuestStep(this, new WorldPoint(2820, 3555, 0), "Follow the path west of Burthorpe, then go along the path going south.");
-		buyClimbingBoots = new NpcStep(this, NpcID.TENZING, new WorldPoint(2820, 3555, 0), "Follow the path west of Burthorpe, then go along the path going south. Buy some climbing boots from Tenzing in his hut here.", coins12);
+		buyClimbingBoots = new NpcStep(this, NpcID.DEATH_SHERPA, new WorldPoint(2820, 3555, 0), "Follow the path west of Burthorpe, then go along the path going south. Buy some climbing boots from Tenzing in his hut here.", coins12);
 		buyClimbingBoots.addDialogStep("Can I buy some Climbing boots?");
 		buyClimbingBoots.addDialogStep("OK, sounds good.");
 		travelToTenzing.addSubSteps(getCoinsOrBoots, buyClimbingBoots);
 
-		climbOverStile = new ObjectStep(this, ObjectID.STILE_3730, new WorldPoint(2817, 3563, 0), "Climb over the stile north of Tenzing.");
-		climbOverRocks = new ObjectStep(this, ObjectID.ROCKS_3748, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBootsEquipped);
-		enterArena = new ObjectStep(this, ObjectID.ARENA_ENTRANCE_3783, new WorldPoint(2897, 3619, 0), "Follow the path from here east until you enter the arena.");
-		fightDad = new NpcStep(this, NpcID.DAD, new WorldPoint(2913, 3617, 0), "Fight Dad until he gives up. You can safe spot him from the gate you entered through.");
+		climbOverStile = new ObjectStep(this, ObjectID.DEATH_FULLSTYLE, new WorldPoint(2817, 3563, 0), "Climb over the stile north of Tenzing.");
+		climbOverRocks = new ObjectStep(this, ObjectID.TROLL_CLIMBINGROCKS, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBootsEquipped);
+		enterArena = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_ARENA_ENTRANCE_RIGHT, new WorldPoint(2897, 3619, 0), "Follow the path from here east until you enter the arena.");
+		fightDad = new NpcStep(this, NpcID.TROLL_CHAMPION, new WorldPoint(2913, 3617, 0), "Fight Dad until he gives up. You can safe spot him from the gate you entered through.");
 		fightDad.addDialogStep("I accept your challenge!");
 		((NpcStep) fightDad).addSafeSpots(new WorldPoint(2897, 3619, 0));
 
-		leaveArena = new ObjectStep(this, ObjectID.ARENA_EXIT, new WorldPoint(2916, 3629, 0), "Leave the arena and continue through the cave to the north.");
+		leaveArena = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_ARENA_EXIT_LEFT, new WorldPoint(2916, 3629, 0), "Leave the arena and continue through the cave to the north.");
 		leaveArena.addDialogStep("I'll be going now.");
-		enterArenaCavern = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3757, new WorldPoint(2904, 3645, 0), "Enter the cave entrance.");
-		leaveArenaCavern = new ObjectStep(this, ObjectID.CAVE_EXIT_3758, new WorldPoint(2907, 10037, 0), "Leave through cave's north exit.");
-		enterStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Follow the path around Trollheim until you reach the Stronghold's entrance. Be wary of thrower trolls on the path, you'll want to use Protect from Ranged.");
+		enterArenaCavern = new ObjectStep(this, ObjectID.TROLL_PASS_ENTRANCE, new WorldPoint(2904, 3645, 0), "Enter the cave entrance.");
+		leaveArenaCavern = new ObjectStep(this, ObjectID.TROLL_PASS_EXIT, new WorldPoint(2907, 10037, 0), "Leave through cave's north exit.");
+		enterStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Follow the path around Trollheim until you reach the Stronghold's entrance. Be wary of thrower trolls on the path, you'll want to use Protect from Ranged.");
 		if (client.getRealSkillLevel(Skill.AGILITY) >= 47)
 		{
 			enterStronghold.getText().add("They can be avoided by taking the agility shortcuts across the mountain.");
@@ -220,32 +211,32 @@ public class TrollStronghold extends BasicQuestHelper
 		killGeneral = new NpcStep(this, NpcID.TROLL_GENERAL, new WorldPoint(2830, 10086, 2), "Enter the west rooms and kill any of the Troll Generals for a prison key.");
 		pickupPrisonKey = new ItemStep(this, "Pick up the prison key.", prisonKey);
 
-		goDownInStronghold = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Climb down the north staircase.");
-		goThroughPrisonDoor = new ObjectStep(this, ObjectID.PRISON_DOOR_3780, new WorldPoint(2848, 10107, 1), "Enter the prison door.");
-		goUpTo2ndFloor = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10109, 1), "Go back up the stairs.");
-		goDownToPrison = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10108, 1), "Climb down the stairs to the prison.");
+		goDownInStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10109, 2), "Climb down the north staircase.");
+		goThroughPrisonDoor = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_PRISON_DOOR_CLOSED, new WorldPoint(2848, 10107, 1), "Enter the prison door.");
+		goUpTo2ndFloor = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2843, 10109, 1), "Go back up the stairs.");
+		goDownToPrison = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2853, 10108, 1), "Climb down the stairs to the prison.");
 		if (client.getRealSkillLevel(Skill.THIEVING) >= 30)
 		{
-			getTwigKey = new NpcStep(this, NpcID.TWIG_4133, new WorldPoint(2833, 10079, 0), "Pickpocket or kill Twig for a cell key.");
-			getBerryKey = new NpcStep(this, NpcID.BERRY_4134, new WorldPoint(2833, 10083, 0), "Pickpocket or kill Berry for a cell key.");
+			getTwigKey = new NpcStep(this, NpcID.TROLL_PRISON_GUARD1, new WorldPoint(2833, 10079, 0), "Pickpocket or kill Twig for a cell key.");
+			getBerryKey = new NpcStep(this, NpcID.TROLL_PRISON_GUARD2, new WorldPoint(2833, 10083, 0), "Pickpocket or kill Berry for a cell key.");
 		}
 		else
 		{
-			getTwigKey = new NpcStep(this, NpcID.TWIG_4133, new WorldPoint(2833, 10079, 0), "Kill Twig for a cell key.");
-			getBerryKey = new NpcStep(this, NpcID.BERRY_4134, new WorldPoint(2833, 10083, 0), "Kill Berry for a cell key.");
+			getTwigKey = new NpcStep(this, NpcID.TROLL_PRISON_GUARD1, new WorldPoint(2833, 10079, 0), "Kill Twig for a cell key.");
+			getBerryKey = new NpcStep(this, NpcID.TROLL_PRISON_GUARD2, new WorldPoint(2833, 10083, 0), "Kill Berry for a cell key.");
 		}
-		((NpcStep) getTwigKey).addAlternateNpcs(NpcID.TWIG_4131);
-		((NpcStep) getBerryKey).addAlternateNpcs(NpcID.BERRY);
+		((NpcStep) getTwigKey).addAlternateNpcs(NpcID.TROLL_PRISON_GUARD1_AWAKE);
+		((NpcStep) getBerryKey).addAlternateNpcs(NpcID.TROLL_PRISON_GUARD2_AWAKE);
 
 		pickupKey1 = new ItemStep(this, "Pickup the key.", cellKey1);
 		pickupKey2 = new ItemStep(this, "Pickup the key.", cellKey2);
 		getTwigKey.addSubSteps(pickupKey1);
 		getBerryKey.addSubSteps(pickupKey2);
 
-		freeGodric = new ObjectStep(this, ObjectID.CELL_DOOR_3767, new WorldPoint(2832, 10078, 0), "Unlock Godric's cell.");
-		freeEadgar = new ObjectStep(this, ObjectID.CELL_DOOR_3765, new WorldPoint(2832, 10082, 0), "Unlock Eadgar's cell.");
+		freeGodric = new ObjectStep(this, ObjectID.TROLL_CELLDOOR_GODRIC, new WorldPoint(2832, 10078, 0), "Unlock Godric's cell.");
+		freeEadgar = new ObjectStep(this, ObjectID.TROLL_CELLDOOR_EADGAR, new WorldPoint(2832, 10082, 0), "Unlock Eadgar's cell.");
 
-		goToDunstan = new NpcStep(this, NpcID.DUNSTAN, new WorldPoint(2919, 3574, 0), "Talk to Dunstan in north east Burthorpe to finish the quest.");
+		goToDunstan = new NpcStep(this, NpcID.DEATH_SMITHY, new WorldPoint(2919, 3574, 0), "Talk to Dunstan in north east Burthorpe to finish the quest.");
 	}
 
 	@Override

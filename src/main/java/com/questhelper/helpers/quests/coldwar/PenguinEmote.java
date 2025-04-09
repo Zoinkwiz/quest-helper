@@ -25,10 +25,11 @@
 package com.questhelper.helpers.quests.coldwar;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.widget.WidgetDetails;
 import com.questhelper.steps.WidgetStep;
-import java.util.Collections;
+import com.questhelper.steps.widget.WidgetDetails;
 import net.runelite.api.events.VarbitChanged;
+
+import java.util.Collections;
 
 public class PenguinEmote extends WidgetStep
 {

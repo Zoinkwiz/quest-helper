@@ -29,15 +29,14 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import com.questhelper.util.Utils;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ItemOnTileRequirement extends ConditionForStep
 {

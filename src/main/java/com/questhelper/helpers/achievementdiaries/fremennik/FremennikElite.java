@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpecialAttackRequirement;
@@ -39,17 +39,27 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.SpecialAttack;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import net.runelite.api.Prayer;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
 
 public class FremennikElite extends ComplexStateQuestHelper
 {
@@ -160,8 +170,8 @@ public class FremennikElite extends ComplexStateQuestHelper
 		protectMissiles = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
 		protectMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
-		petRock = new ItemRequirement("Pet Rock", ItemID.PET_ROCK).showConditioned(notDagKings).isNotConsumed();
-		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notAstralRunes);
+		petRock = new ItemRequirement("Pet Rock", ItemID.VT_USELESS_ROCK).showConditioned(notDagKings).isNotConsumed();
+		pureEssence = new ItemRequirement("Pure essence", ItemID.BLANKRUNE_HIGH).showConditioned(notAstralRunes);
 		dragonstone = new ItemRequirement("Cut dragonstone", ItemID.DRAGONSTONE).showConditioned(notDragonAmulet);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notDragonAmulet);
 		amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD).showConditioned(notDragonAmulet).isNotConsumed();
@@ -171,7 +181,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 		rope = new ItemRequirement("Ropes", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage));
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS)
 			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
-		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419)
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE)
 			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER)
 			.showConditioned(new Conditions(LogicType.OR, notGodwarsGenerals, notSpiritualMage)).isNotConsumed();
@@ -257,22 +267,22 @@ public class FremennikElite extends ComplexStateQuestHelper
 			"Complete a lap of the Rellekka Rooftop course.");
 		dragonAmulet = new ObjectStep(this, 21303, new WorldPoint(2344, 3811, 0),
 			"Smelt a dragonstone amulet on the clay forge.");
-		dragonAmulet.addIcon(ItemID.DRAGONSTONE_AMULET_U);
-		moveToPirates = new NpcStep(this, NpcID.LOKAR_SEARUNNER, new WorldPoint(2620, 3693, 0),
+		dragonAmulet.addIcon(ItemID.UNSTRUNG_DRAGONSTONE_AMULET);
+		moveToPirates = new NpcStep(this, NpcID.LUNAR_FREMENNIK_PIRATE_BY_PIRATESHIP, new WorldPoint(2620, 3693, 0),
 			"Speak to Lokar.");
-		moveToLunarIsle = new NpcStep(this, NpcID.CAPTAIN_BENTLEY_6650, new WorldPoint(2223, 3799, 2),
+		moveToLunarIsle = new NpcStep(this, NpcID.LUNAR_PIRATE_CAPTAIN_2OPS, new WorldPoint(2223, 3799, 2),
 			"Speak to Captain Bentley to travel to Lunar Isle.");
-		moveToCaptain = new ObjectStep(this, ObjectID.LADDER_16960, new WorldPoint(2213, 3795, 0),
+		moveToCaptain = new ObjectStep(this, ObjectID.QUEST_LUNAR_GALLEON_PIER_STAIRS_BASE_LOWER, new WorldPoint(2213, 3795, 0),
 			"Go up the ladder.");
-		moveToCaptain2 = new ObjectStep(this, ObjectID.LADDER_16959, new WorldPoint(2214, 3801, 1),
+		moveToCaptain2 = new ObjectStep(this, ObjectID.QUEST_LUNAR_GALLEON_PIER_STAIRS_BASE, new WorldPoint(2214, 3801, 1),
 			"Go up the ladder.");
-		moveToAltar1 = new ObjectStep(this, ObjectID.LADDER_16961, new WorldPoint(2127, 3893, 2),
+		moveToAltar1 = new ObjectStep(this, ObjectID.QUEST_LUNAR_GALLEON_PIER_STAIRS_TOP, new WorldPoint(2127, 3893, 2),
 			"Go down the ladder.");
-		moveToAltar2 = new ObjectStep(this, ObjectID.LADDER_16962, new WorldPoint(2118, 3894, 1),
+		moveToAltar2 = new ObjectStep(this, ObjectID.QUEST_LUNAR_GALLEON_PIER_STAIRS_TOP_LOWER, new WorldPoint(2118, 3894, 1),
 			"Go down the ladder.");
-		astralRunes = new ObjectStep(this, ObjectID.ALTAR_34771, new WorldPoint(2158, 3864, 0),
+		astralRunes = new ObjectStep(this, ObjectID.ASTRAL_ALTAR, new WorldPoint(2158, 3864, 0),
 			"Craft 56 astral runes");
-		moveToNeit = new NpcStep(this, NpcID.MARIA_GUNNARS_1883, new WorldPoint(2644, 3710, 0),
+		moveToNeit = new NpcStep(this, NpcID.FRIS_R_FERRY_RELLIKKA, new WorldPoint(2644, 3710, 0),
 			"Speak with Maria Gunnars to travel to Neitiznot.");
 
 
@@ -280,19 +290,19 @@ public class FremennikElite extends ComplexStateQuestHelper
 			"Go down the hole. Bring a rope if this is your first time entering.", combatGear, food);
 		moveToGodWarsGWD = new ObjectStep(this, 26419, new WorldPoint(2919, 3747, 0),
 			"Go down the hole. Bring a rope if this is your first time entering.", combatGear, food);
-		godwarsGenerals = new NpcStep(this, NpcID.KREEARRA, new WorldPoint(2832, 5301, 2),
+		godwarsGenerals = new NpcStep(this, NpcID.GODWARS_ARMADYL_AVATAR, new WorldPoint(2832, 5301, 2),
 			"Get kills for a faction then kill its respective general.", true);
-		godwarsGenerals.addAlternateNpcs(NpcID.KRIL_TSUTSAROTH);
-		godwarsGenerals.addAlternateNpcs(NpcID.GENERAL_GRAARDOR);
-		godwarsGenerals.addAlternateNpcs(NpcID.COMMANDER_ZILYANA);
+		godwarsGenerals.addAlternateNpcs(NpcID.GODWARS_ZAMORAK_AVATAR);
+		godwarsGenerals.addAlternateNpcs(NpcID.GODWARS_BANDOS_AVATAR);
+		godwarsGenerals.addAlternateNpcs(NpcID.GODWARS_SARADOMIN_AVATAR);
 
-		spiritualMage = new NpcStep(this, NpcID.SPIRITUAL_MAGE, new WorldPoint(2832, 5301, 2),
+		spiritualMage = new NpcStep(this, NpcID.GODWARS_SPIRITUAL_SARADOMIN_MAGE, new WorldPoint(2832, 5301, 2),
 			"Kill a spiritual mage", true);
-		spiritualMage.addAlternateNpcs(NpcID.SPIRITUAL_MAGE_2244);
-		spiritualMage.addAlternateNpcs(NpcID.SPIRITUAL_MAGE_3161);
-		spiritualMage.addAlternateNpcs(NpcID.SPIRITUAL_MAGE_3168);
+		spiritualMage.addAlternateNpcs(NpcID.GODWARS_SPIRITUAL_BANDOS_MAGE);
+		spiritualMage.addAlternateNpcs(NpcID.GODWARS_SPIRITUAL_ZAMORAK_MAGE);
+		spiritualMage.addAlternateNpcs(NpcID.GODWARS_SPIRITUAL_ARMADYL_MAGE);
 
-		moveToWaterbirth = new NpcStep(this, NpcID.JARVALD, new WorldPoint(2620, 3686, 0),
+		moveToWaterbirth = new NpcStep(this, NpcID.VIKING_DAGGANOTH_CAVE_FERRYMAN_ISLAND, new WorldPoint(2620, 3686, 0),
 			"Speak with Jarvald to travel to Waterbirth Island");
 		moveToWaterbirth.addDialogStep("What Jarvald is doing.");
 		moveToWaterbirth.addDialogStep("Can I come?");
@@ -301,7 +311,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 			"Enter cave and pray melee. Make sure you are full stam and prayer before entering.", protectMelee);
 		dropPetRock = new ObjectStep(this, 8965, new WorldPoint(2490, 10162, 0),
 			"Drop your pet rock on one pressure pad then stand on the other pad to open the gate.", petRock);// item on tile req?
-		dropPetRock.addIcon(ItemID.PET_ROCK);
+		dropPetRock.addIcon(ItemID.VT_USELESS_ROCK);
 		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
 		moveToAxeSpot = new ObjectStep(this, 8945, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.");
@@ -310,41 +320,41 @@ public class FremennikElite extends ComplexStateQuestHelper
 		moveToDagCave1 = new ObjectStep(this, 10177, new WorldPoint(2546, 10143, 0),
 			"Enable magic protection then climb down the ladder.", protectMagic);
 		moveToDagCave1.addDialogSteps("Climb Down.");
-		moveToDagCave2 = new ObjectStep(this, ObjectID.LADDER_10195, new WorldPoint(1808, 4405, 3),
+		moveToDagCave2 = new ObjectStep(this, ObjectID.DAGEXP_LADDER1, new WorldPoint(1808, 4405, 3),
 			"Enable melee protection and continue through the cave.", protectMelee);
-		moveToDagCave3 = new ObjectStep(this, ObjectID.LADDER_10198, new WorldPoint(1823, 4404, 2),
+		moveToDagCave3 = new ObjectStep(this, ObjectID.DAGEXP_LADDER4, new WorldPoint(1823, 4404, 2),
 			"Continue through the cave.", protectMelee);
-		moveToDagCave4 = new ObjectStep(this, ObjectID.LADDER_10199, new WorldPoint(1834, 4389, 3),
+		moveToDagCave4 = new ObjectStep(this, ObjectID.DAGEXP_LADDER5, new WorldPoint(1834, 4389, 3),
 			"Enable missile protection and continue through the cave.", protectMissiles);
-		moveToDagCave5 = new ObjectStep(this, ObjectID.LADDER_10201, new WorldPoint(1811, 4394, 2),
+		moveToDagCave5 = new ObjectStep(this, ObjectID.DAGEXP_LADDER7, new WorldPoint(1811, 4394, 2),
 			"Enable magic protection and continue through the cave.", protectMagic);
-		moveToDagCave6 = new ObjectStep(this, ObjectID.LADDER_10203, new WorldPoint(1799, 4388, 1),
+		moveToDagCave6 = new ObjectStep(this, ObjectID.DAGEXP_LADDER9, new WorldPoint(1799, 4388, 1),
 			"Continue through the cave.", protectMagic);
-		moveToDagCave7 = new ObjectStep(this, ObjectID.LADDER_10205, new WorldPoint(1797, 4382, 2),
+		moveToDagCave7 = new ObjectStep(this, ObjectID.DAGEXP_LADDER11, new WorldPoint(1797, 4382, 2),
 			"Continue through the cave.", protectMagic);
-		moveToDagCave8 = new ObjectStep(this, ObjectID.LADDER_10207, new WorldPoint(1802, 4369, 1),
+		moveToDagCave8 = new ObjectStep(this, ObjectID.DAGEXP_LADDER13, new WorldPoint(1802, 4369, 1),
 			"Enable melee protection and continue through the cave.", protectMelee);
-		moveToDagCave9 = new ObjectStep(this, ObjectID.LADDER_10209, new WorldPoint(1826, 4362, 2),
+		moveToDagCave9 = new ObjectStep(this, ObjectID.DAGEXP_LADDER15, new WorldPoint(1826, 4362, 2),
 			"Continue through the cave.", protectMelee);
-		moveToDagCave10 = new ObjectStep(this, ObjectID.LADDER_10211, new WorldPoint(1863, 4371, 1),
+		moveToDagCave10 = new ObjectStep(this, ObjectID.DAGEXP_LADDER17, new WorldPoint(1863, 4371, 1),
 			"Continue through the cave.", protectMelee);
-		moveToDagCave11 = new ObjectStep(this, ObjectID.LADDER_10213, new WorldPoint(1864, 4388, 2),
+		moveToDagCave11 = new ObjectStep(this, ObjectID.DAGEXP_LADDER19, new WorldPoint(1864, 4388, 2),
 			"Continue through the cave.", protectMelee);
-		moveToDagCave12 = new ObjectStep(this, ObjectID.LADDER_10215, new WorldPoint(1890, 4407, 1),
+		moveToDagCave12 = new ObjectStep(this, ObjectID.DAGEXP_LADDER21, new WorldPoint(1890, 4407, 1),
 			"Continue through the cave.", protectMelee);
-		moveToDagCave13 = new ObjectStep(this, ObjectID.LADDER_10217, new WorldPoint(1957, 4371, 0),
+		moveToDagCave13 = new ObjectStep(this, ObjectID.DAGEXP_LADDER23, new WorldPoint(1957, 4371, 0),
 			"Continue through the cave.", protectMelee);
 		moveToDagKings = new ObjectStep(this, 3831, new WorldPoint(1911, 4367, 0),
 			"Enter the Kings' lair.", protectMelee);
-		dagKings = new NpcStep(this, NpcID.DAGANNOTH_REX, new WorldPoint(2913, 4449, 0),
+		dagKings = new NpcStep(this, NpcID.DAGCAVE_MELEE_BOSS, new WorldPoint(2913, 4449, 0),
 			"Kill each of the Dagannoth Kings.", true, combatGear);
-		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_PRIME);
-		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_SUPREME);
-		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_SUPREME_6496);
-		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_PRIME_6497);
-		dagKings.addAlternateNpcs(NpcID.DAGANNOTH_REX_6498);
+		dagKings.addAlternateNpcs(NpcID.DAGCAVE_MAGIC_BOSS);
+		dagKings.addAlternateNpcs(NpcID.DAGCAVE_RANGED_BOSS);
+		dagKings.addAlternateNpcs(NpcID.CLANCUP_DAGCAVE_RANGED_BOSS);
+		dagKings.addAlternateNpcs(NpcID.CLANCUP_DAGCAVE_MAGIC_BOSS);
+		dagKings.addAlternateNpcs(NpcID.CLANCUP_DAGCAVE_MELEE_BOSS);
 
-		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
+		claimReward = new NpcStep(this, NpcID.VIKING_FREM_DIARY, new WorldPoint(2658, 3627, 0),
 			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -387,8 +397,8 @@ public class FremennikElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Fremennik Sea Boots (4)", ItemID.FREMENNIK_SEA_BOOTS_4, 1),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Fremennik Sea Boots (4)", ItemID.FREMENNIK_BOOTS_ELITE, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

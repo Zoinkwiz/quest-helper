@@ -27,22 +27,21 @@ package com.questhelper.helpers.miniquests.daddyshome;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.*;
-
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
 
 public class DaddysHome extends BasicQuestHelper
 {
@@ -116,23 +115,23 @@ public class DaddysHome extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		plank10 = new ItemRequirement("Plank", ItemID.PLANK, 10);
-		bolt5 = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH, 5);
+		plank10 = new ItemRequirement("Plank", ItemID.WOODPLANK, 10);
+		bolt5 = new ItemRequirement("Bolt of cloth", ItemID.CLOTH, 5);
 		nails20 = new ItemRequirement("Nails (bring more in case you fail with some)", ItemCollections.NAILS, 14);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
-		waxwoodLog3 = new ItemRequirement("Waxwood log", ItemID.WAXWOOD_LOG, 3);
-		waxwoodPlank3 = new ItemRequirement("Waxwood plank", ItemID.WAXWOOD_PLANK, 3);
+		waxwoodLog3 = new ItemRequirement("Waxwood log", ItemID.DADDYSHOME_WAXWOOD_LOGS, 3);
+		waxwoodPlank3 = new ItemRequirement("Waxwood plank", ItemID.DADDYSHOME_WAXWOOD_PLANK, 3);
 
-		bolt2 = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH, 2);
-		bolt3 = new ItemRequirement("Bolt of cloth", ItemID.BOLT_OF_CLOTH, 3);
+		bolt2 = new ItemRequirement("Bolt of cloth", ItemID.CLOTH, 2);
+		bolt3 = new ItemRequirement("Bolt of cloth", ItemID.CLOTH, 3);
 		nails2 = new ItemRequirement("Nails", ItemCollections.NAILS, 2);
 		nails4 = new ItemRequirement("Nails", ItemCollections.NAILS, 4);
-		plank = new ItemRequirement("Plank", ItemID.PLANK);
-		plank3 = new ItemRequirement("Plank", ItemID.PLANK, 3);
-		plank2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
-		lumberyardTeleport = new ItemRequirement("Lumberyard Teleport", ItemID.LUMBERYARD_TELEPORT);
-		varrockTeleport3 = new ItemRequirement("Varrock Teleports", ItemID.VARROCK_TELEPORT, 3);
+		plank = new ItemRequirement("Plank", ItemID.WOODPLANK);
+		plank3 = new ItemRequirement("Plank", ItemID.WOODPLANK, 3);
+		plank2 = new ItemRequirement("Plank", ItemID.WOODPLANK, 2);
+		lumberyardTeleport = new ItemRequirement("Lumberyard Teleport", ItemID.TELEPORTSCROLL_LUMBERYARD);
+		varrockTeleport3 = new ItemRequirement("Varrock Teleports", ItemID.POH_TABLET_VARROCKTELEPORT, 3);
 	}
 
 	public void setupConditions()
@@ -159,16 +158,16 @@ public class DaddysHome extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToMarlo = new NpcStep(this, NpcID.MARLO, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north east Varrock.");
-		((NpcStep) talkToMarlo).addAlternateNpcs(NpcID.MARLO_10409);
+		talkToMarlo = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north east Varrock.");
+		((NpcStep) talkToMarlo).addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
 		talkToMarlo.addDialogSteps("What kind of favour do you want me to do?", "Tell me more about the job.", "Tell me where he lives, and I'll do the job.");
-		talkToYarlo = new NpcStep(this, NpcID.OLD_MAN_YARLO, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock.");
-		talkToYarloAgain = new NpcStep(this, NpcID.OLD_MAN_YARLO, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock again.");
+		talkToYarlo = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock.");
+		talkToYarloAgain = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock again.");
 		talkToYarloAgain.addDialogStep("Skip Yarlo's lecture. He'll offer it later if you like.");
-		talkToYarloOnceMore = new NpcStep(this, NpcID.OLD_MAN_YARLO, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock.");
+		talkToYarloOnceMore = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock.");
 
-		talkToMarloToFinish = new NpcStep(this, NpcID.MARLO, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north east Varrock to complete the quest.");
-		((NpcStep) talkToMarloToFinish).addAlternateNpcs(NpcID.MARLO_10409);
+		talkToMarloToFinish = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north east Varrock to complete the quest.");
+		((NpcStep) talkToMarloToFinish).addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
 		talkToMarloToFinish.addDialogStep("Yeah, what have you got for me?");
 
 		removeCampbed = new ObjectStep(this, NullObjectID.NULL_40303, new WorldPoint(3242, 3398, 0), "Remove the broken items in the house.");
@@ -181,9 +180,9 @@ public class DaddysHome extends BasicQuestHelper
 
 		removeCampbed.addSubSteps(removeCarpet, removeStool, removeTable, removeChair, removeTable2, removeStool2);
 
-		searchCrate = new ObjectStep(this, ObjectID.CRATES_40214, new WorldPoint(3243, 3398, 0), "Search the crates in Yarlo's house for waxwood logs.");
+		searchCrate = new ObjectStep(this, ObjectID.DADDYSHOME_CRATES, new WorldPoint(3243, 3398, 0), "Search the crates in Yarlo's house for waxwood logs.");
 
-		talkToOperator = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0), "Talk to the Sawmill Operator north east of Varrock to make waxwood planks.", waxwoodLog3);
+		talkToOperator = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0), "Talk to the Sawmill Operator north east of Varrock to make waxwood planks.", waxwoodLog3);
 		talkToOperator.addDialogStep("I need some waxwood planks for Old Man Yarlo.");
 		buildCampbed = new ObjectStep(this, NullObjectID.NULL_40303, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in the house.", waxwoodPlank3, bolt2, hammer, saw);
 
@@ -218,14 +217,14 @@ public class DaddysHome extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Planks", ItemID.PLANK, 25),
-			new ItemReward("Oak Planks", ItemID.OAK_PLANK, 10),
-			new ItemReward("Mithril Nails", ItemID.MITHRIL_NAILS, 50),
+			new ItemReward("Planks", ItemID.WOODPLANK, 25),
+			new ItemReward("Oak Planks", ItemID.PLANK_OAK, 10),
+			new ItemReward("Mithril Nails", ItemID.NAILS_MITHRIL, 50),
 			new ItemReward("Steel Bars", ItemID.STEEL_BAR, 5),
-			new ItemReward("Bolt of Cloth", ItemID.BOLT_OF_CLOTH, 8),
-			new ItemReward("House Teleport Tablets", ItemID.TELEPORT_TO_HOUSE, 5),
-			new ItemReward("Falador Teleport Tablet", ItemID.FALADOR_TELEPORT, 1),
-			new ItemReward("POH in Rimmington or 1,000 Coins", ItemID.COINS_995, 1));
+			new ItemReward("Bolt of Cloth", ItemID.CLOTH, 8),
+			new ItemReward("House Teleport Tablets", ItemID.POH_TABLET_TELEPORTTOHOUSE, 5),
+			new ItemReward("Falador Teleport Tablet", ItemID.POH_TABLET_FALADORTELEPORT, 1),
+			new ItemReward("POH in Rimmington or 1,000 Coins", ItemID.COINS, 1));
 	}
 
 	@Override

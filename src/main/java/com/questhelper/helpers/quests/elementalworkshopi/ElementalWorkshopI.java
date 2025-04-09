@@ -25,43 +25,38 @@
 
 package com.questhelper.helpers.quests.elementalworkshopi;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.KeyringCollection;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.item.KeyringRequirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
 
 public class ElementalWorkshopI extends ComplexStateQuestHelper
 {
@@ -151,72 +146,72 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		batteredBook = new ItemRequirement("Battered book", ItemID.BATTERED_BOOK);
+		batteredBook = new ItemRequirement("Battered book", ItemID.ELEMENTAL_WORKSHOP_SHIELD_BOOK);
 		batteredBook.setHighlightInInventory(true);
-		slashedBook = new ItemRequirement("Slashed book", ItemID.SLASHED_BOOK);
+		slashedBook = new ItemRequirement("Slashed book", ItemID.ELEMENTAL_WORKSHOP_SHIELD_BOOK_SLASHED);
 		slashedBook.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
 		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY);
 		batteredKey.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
-		elementalOre = new ItemRequirement("Elemental ore", ItemID.ELEMENTAL_ORE);
+		elementalOre = new ItemRequirement("Elemental ore", ItemID.ELEMENTAL_WORKSHOP_ORE);
 		elementalOre.setHighlightInInventory(true);
-		elementalBar = new ItemRequirement("Elemental bar", ItemID.ELEMENTAL_METAL);
+		elementalBar = new ItemRequirement("Elemental bar", ItemID.ELEMENTAL_WORKSHOP_BAR);
 		elementalBar.setHighlightInInventory(true);
-		stoneBowlHighlighted = new ItemRequirement("A stone bowl", ItemID.A_STONE_BOWL);
+		stoneBowlHighlighted = new ItemRequirement("A stone bowl", ItemID.ELEMENTAL_WORKSHOP_LAVA_BOWL);
 		stoneBowlHighlighted.setHighlightInInventory(true);
 
-		lavaBowlHighlighted = new ItemRequirement("A stone bowl", ItemID.A_STONE_BOWL_2889);
+		lavaBowlHighlighted = new ItemRequirement("A stone bowl", ItemID.ELEMENTAL_WORKSHOP_LAVA_BOWL_FULL);
 		lavaBowlHighlighted.setHighlightInInventory(true);
 	}
 
 	public void setupSteps()
 	{
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_26113, new WorldPoint(2716, 3482, 0), "Search the " +
+		searchBookcase = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_BOOKCASE, new WorldPoint(2716, 3482, 0), "Search the " +
 			"marked bookcase in Seers' Village.");
 		readBook = new DetailedQuestStep(this, "Read the battered book.", batteredBook);
 		readBook.addDialogStep("Yes.");
 		useKnifeOnBook = new DetailedQuestStep(this, "Use a knife on the battered book.", knife, batteredBook);
-		openOddWall = new ObjectStep(this, ObjectID.ODD_LOOKING_WALL_26115, new WorldPoint(2709, 3495, 0),
+		openOddWall = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_ODDWALL_L, new WorldPoint(2709, 3495, 0),
 			"Open the odd wall to the north of the bookcase.", batteredKey, slashedBook);
-		goDownStairs = new ObjectStep(this, ObjectID.STAIRCASE_3415, new WorldPoint(2711, 3498, 0),
+		goDownStairs = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_SPIRALSTAIRSTOP, new WorldPoint(2711, 3498, 0),
 			"Climb down the staircase.");
 
-		turnEastControl = new ObjectStep(this, NullObjectID.NULL_3403, new WorldPoint(2726, 9908, 0),
+		turnEastControl = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_VALVE_1, new WorldPoint(2726, 9908, 0),
 			"Turn the marked water control in the north room.");
-		turnWestControl = new ObjectStep(this, NullObjectID.NULL_3404, new WorldPoint(2713, 9908, 0),
+		turnWestControl = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_VALVE_2, new WorldPoint(2713, 9908, 0),
 			"Turn the other marked water control in the north room.");
-		pullLever = new ObjectStep(this, ObjectID.LEVER_3406, new WorldPoint(2722, 9906, 0),
+		pullLever = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_WATER_LEVER, new WorldPoint(2722, 9906, 0),
 			"Pull the lever in the north room.");
-		searchLeatherCrate = new ObjectStep(this, ObjectID.CRATE_3394, new WorldPoint(2717, 9894, 0),
+		searchLeatherCrate = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_BOX_1, new WorldPoint(2717, 9894, 0),
 			"Search the marked crate for some leather.");
-		searchNeedleCrate = new ObjectStep(this, ObjectID.CRATE_3395, new WorldPoint(2700, 9887, 0),
+		searchNeedleCrate = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_BOX_2, new WorldPoint(2700, 9887, 0),
 			"Search the stacked crates in the west room for a needle.");
-		fixBellows = new ObjectStep(this, NullObjectID.NULL_3407, new WorldPoint(2735, 9884, 0), "" +
+		fixBellows = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_BELLOWS_MULTILOC, new WorldPoint(2735, 9884, 0), "" +
 			"Repair the bellows in the east room.", needle, thread, leather);
 		fixBellows.addSubSteps(searchLeatherCrate, searchNeedleCrate);
-		pullBellowsLever = new ObjectStep(this, ObjectID.LEVER_3409, new WorldPoint(2734, 9887, 0),
+		pullBellowsLever = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_AIR_LEVER, new WorldPoint(2734, 9887, 0),
 			"Pull the lever next to the bellows.");
-		getStoneBowl = new ObjectStep(this, ObjectID.BOXES_3397, new WorldPoint(2724, 9894, 0),
+		getStoneBowl = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_BOX_4, new WorldPoint(2724, 9894, 0),
 			"Search the boxes in the north east of the central room.");
-		useBowlOnLava = new ObjectStep(this, ObjectID.LAVA_TROUGH_18520, new WorldPoint(2717, 9871, 0),
+		useBowlOnLava = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_TROUGH_2, new WorldPoint(2717, 9871, 0),
 			"Use the stone bowl on the lava trough in the south room.", stoneBowlHighlighted);
-		useBowlOnLava.addIcon(ItemID.A_STONE_BOWL);
-		useLavaOnFurnace = new ObjectStep(this, NullObjectID.NULL_3410, new WorldPoint(2726, 9875, 0),
+		useBowlOnLava.addIcon(ItemID.ELEMENTAL_WORKSHOP_LAVA_BOWL);
+		useLavaOnFurnace = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_FURNACE, new WorldPoint(2726, 9875, 0),
 			"Use the lava-filled bowl on the furnace.", lavaBowlHighlighted);
-		useLavaOnFurnace.addIcon(ItemID.A_STONE_BOWL_2889);
-		mineRock = new NpcStep(this, NpcID.ELEMENTAL_ROCK, new WorldPoint(2703, 9894, 0),
+		useLavaOnFurnace.addIcon(ItemID.ELEMENTAL_WORKSHOP_LAVA_BOWL_FULL);
+		mineRock = new NpcStep(this, NpcID.ELEM1_QIP_EARTH_ELEMENTAL_ROCK_VERSION_ROCK, new WorldPoint(2703, 9894, 0),
 			"Mine one of the elemental rocks in the west room, ready to fight a level 35.", true, pickaxe);
-		killRock = new NpcStep(this, NpcID.EARTH_ELEMENTAL_1367, new WorldPoint(2703, 9897, 0),
+		killRock = new NpcStep(this, NpcID.ELEM1_QIP_EARTH_ELEMENTAL_ROCK_VERSION, new WorldPoint(2703, 9897, 0),
 			"Kill the rock elemental that appeared.");
 		pickUpOre = new ItemStep(this, "Pick up the elemental ore.", elementalOre);
-		forgeBar = new ObjectStep(this, NullObjectID.NULL_3410, new WorldPoint(2726, 9875, 0),
+		forgeBar = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_FURNACE, new WorldPoint(2726, 9875, 0),
 			"Use the elemental ore on the furnace in the south room.", elementalOre, coal4);
-		forgeBar.addIcon(ItemID.ELEMENTAL_ORE);
-		smithShield = new ObjectStep(this, ObjectID.WORKBENCH_3402, new WorldPoint(2717, 9888, 0),
+		forgeBar.addIcon(ItemID.ELEMENTAL_WORKSHOP_ORE);
+		smithShield = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_WORKBENCH, new WorldPoint(2717, 9888, 0),
 			"Use the bar on one of the workbenches in the central room to complete the quest.", elementalBar,
 			hammer, slashedBook);
-		smithShield.addIcon(ItemID.ELEMENTAL_METAL);
+		smithShield.addIcon(ItemID.ELEMENTAL_WORKSHOP_BAR);
 	}
 
 	public void setupConditions()
@@ -239,7 +234,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		solvedFire = new VarbitRequirement(2062, 1);
 
 		elementalOreNearby = new ItemOnTileRequirement(elementalOre);
-		earthNearby = new NpcCondition(NpcID.EARTH_ELEMENTAL_1367);
+		earthNearby = new NpcCondition(NpcID.ELEM1_QIP_EARTH_ELEMENTAL_ROCK_VERSION);
 
 
 		// First acc:

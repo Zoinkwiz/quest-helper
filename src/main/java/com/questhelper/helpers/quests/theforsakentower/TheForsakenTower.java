@@ -25,39 +25,32 @@
 package com.questhelper.helpers.quests.theforsakentower;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.widget.WidgetModelRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetModelRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
+import com.questhelper.steps.*;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class TheForsakenTower extends BasicQuestHelper
 {
@@ -131,9 +124,9 @@ public class TheForsakenTower extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		crank = new ItemRequirement("Generator crank", ItemID.GENERATOR_CRANK);
-		oldNotes = new ItemRequirement("Old notes", ItemID.OLD_NOTES_22774);
-		dinhsHammer = new ItemRequirement("Dinh's hammer", ItemID.DINHS_HAMMER);
+		crank = new ItemRequirement("Generator crank", ItemID.LOVAQUEST_CRANK);
+		oldNotes = new ItemRequirement("Old notes", ItemID.LOVAQUEST_FLUID_NOTE);
+		dinhsHammer = new ItemRequirement("Dinh's hammer", ItemID.LOVAQUEST_HAMMER);
 		gamesNecklace = new ItemRequirement("Games necklace for accessing Wintertodt", ItemCollections.GAMES_NECKLACES);
 	}
 
@@ -148,7 +141,7 @@ public class TheForsakenTower extends BasicQuestHelper
 		finishedFurnacePuzzle = new VarbitRequirement(7798, 4);
 		finishedPotionPuzzle = new VarbitRequirement(7799, 4);
 		finishedAltarPuzzle = new VarbitRequirement(7800, 2);
-		generatorStarted = new VarbitRequirement(7797, 2, Operation.GREATER_EQUAL);
+		generatorStarted = new VarbitRequirement(VarbitID.LOVAQUEST_ELECTRICITY, 2, Operation.GREATER_EQUAL);
 		powerPuzzleVisible = new WidgetModelRequirement(624, 2, 0, 36246);
 	}
 
@@ -162,32 +155,32 @@ public class TheForsakenTower extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToVulcana = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ_11035, new WorldPoint(1483, 3747, 0), "Talk to Lady Vulcana Lovakengj in the south of Lovakengj.");
+		talkToVulcana = new NpcStep(this, NpcID.VULCANA_LOVAKENGJ_VIS, new WorldPoint(1483, 3747, 0), "Talk to Lady Vulcana Lovakengj in the south of Lovakengj.");
 		talkToVulcana.addDialogStep("I'm looking for a quest.");
 		talkToVulcana.addDialogStep("I'll get going.");
-		talkToUndor = new NpcStep(this, NpcID.UNDOR, new WorldPoint(1624, 3942, 0),
+		talkToUndor = new NpcStep(this, NpcID.WINT_MASTER_SMITH_NORMAL, new WorldPoint(1624, 3942, 0),
 			"Talk to Undor at the entrance to Wintertodt. If you've never talked to Ignisia before, you'll need " +
 				"to talk to her first. She is just north east of Undor. You can " +
 				"teleport there using a Games Necklace, or run" +
 				" north through Arceuus.");
 		talkToUndor.addDialogStep("I've been sent to help you.");
 
-		enterTheForsakenTower = new ObjectStep(this, ObjectID.DOOR_33491, new WorldPoint(1382, 3817, 0), "Enter the Forsaken Tower, west of Lovakengj.");
+		enterTheForsakenTower = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_ENTRY_DOOR, new WorldPoint(1382, 3817, 0), "Enter the Forsaken Tower, west of Lovakengj.");
 		inspectDisplayCase = new ObjectStep(this, NullObjectID.NULL_34588, new WorldPoint(1382, 3821, 0), "Inspect the display case in the Forsaken Tower.");
 
-		goDownToFirstFloor = new ObjectStep(this, ObjectID.LADDER_33485, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
-		goDownToGroundFloor = new ObjectStep(this, ObjectID.STAIRCASE_33552, new WorldPoint(1378, 3825, 1), "Go down to the ground floor.");
-		goUpToGroundFloor = new ObjectStep(this, ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
+		goDownToFirstFloor = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_LADDER_DOWN, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
+		goDownToGroundFloor = new ObjectStep(this, ObjectID.LOVAQUEST_SPIRAL_STAIRS_TOP_M, new WorldPoint(1378, 3825, 1), "Go down to the ground floor.");
+		goUpToGroundFloor = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_DUNGEON_EXIT, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
 
 		furnacePuzzleSteps = new JugPuzzle(this);
 		furnacePuzzleSteps.setLockingCondition(finishedFurnacePuzzle);
 		furnacePuzzleSteps.setBlocker(true);
 
-		goDownLadderToBasement = new ObjectStep(this, ObjectID.LADDER_33483, new WorldPoint(1382, 3825, 0), "Climb down the ladder into the tower's basement.");
+		goDownLadderToBasement = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_DUNGEON_ENTRY, new WorldPoint(1382, 3825, 0), "Climb down the ladder into the tower's basement.");
 		inspectPowerGrid = new ObjectStep(this, NullObjectID.NULL_34590, new WorldPoint(1382, 10225, 0), "Inspect the power grid.");
 		inspectPowerGrid.addDialogStep("Yes.");
 
-		searchCrate = new ObjectStep(this, ObjectID.CRATE_33498, new WorldPoint(1387, 10228, 0), "Search a crate in the north eastern cell for a generator crank");
+		searchCrate = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_CRATE_CRANK, new WorldPoint(1387, 10228, 0), "Search a crate in the north eastern cell for a generator crank");
 		inspectGenerator = new ObjectStep(this, NullObjectID.NULL_34589, new WorldPoint(1382, 10219, 0), "Inspect the steam generator in the south of the room", crank);
 		inspectGenerator.addDialogStep("Start the generator.");
 
@@ -201,10 +194,10 @@ public class TheForsakenTower extends BasicQuestHelper
 
 		getHammer = new ObjectStep(this, NullObjectID.NULL_34588, new WorldPoint(1382, 3821, 0), "Get the hammer from the display case in the Forsaken Tower.");
 
-		returnToUndor = new NpcStep(this, NpcID.UNDOR, new WorldPoint(1624, 3942, 0), "Return Dinh's Hammer to Undor at the entrance to Wintertodt.", dinhsHammer);
+		returnToUndor = new NpcStep(this, NpcID.WINT_MASTER_SMITH_NORMAL, new WorldPoint(1624, 3942, 0), "Return Dinh's Hammer to Undor at the entrance to Wintertodt.", dinhsHammer);
 		returnToUndor.addDialogStep("Let's talk about my quest.");
 		returnToUndor.addDialogStep("Yes.");
-		returnToVulcana = new NpcStep(this, NpcID.LADY_VULCANA_LOVAKENGJ_11035, new WorldPoint(1483, 3747, 0), "Return to Lady Vulcana in south Lovakengj to finish the quest.");
+		returnToVulcana = new NpcStep(this, NpcID.VULCANA_LOVAKENGJ_VIS, new WorldPoint(1483, 3747, 0), "Return to Lady Vulcana in south Lovakengj to finish the quest.");
 	}
 
 	@Override
@@ -240,8 +233,8 @@ public class TheForsakenTower extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Coins", ItemID.COINS_995, 6000),
-				new ItemReward("A page for Kharedst's memoirs.", ItemID.KHAREDSTS_MEMOIRS, 1));
+				new ItemReward("Coins", ItemID.COINS, 6000),
+				new ItemReward("A page for Kharedst's memoirs.", ItemID.VEOS_KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

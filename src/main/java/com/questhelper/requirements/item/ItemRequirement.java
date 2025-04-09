@@ -26,10 +26,10 @@
  */
 package com.questhelper.requirements.item;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.bank.QuestBank;
-import com.questhelper.collections.ItemWithCharge;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.bank.QuestBank;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.collections.ItemWithCharge;
 import com.questhelper.managers.ItemAndLastUpdated;
 import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.requirements.AbstractRequirement;
@@ -37,10 +37,6 @@ import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -49,7 +45,12 @@ import net.runelite.api.Item;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.util.Text;
 import org.jetbrains.annotations.Nullable;
+
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Represents a requirement for a specific item within the quest helper.

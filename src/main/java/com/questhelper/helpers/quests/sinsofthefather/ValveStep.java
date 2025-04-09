@@ -24,25 +24,26 @@
  */
 package com.questhelper.helpers.quests.sinsofthefather;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
-import net.runelite.client.eventbus.Subscribe;
 
 public class ValveStep extends DetailedOwnerStep
 {
@@ -228,13 +229,13 @@ public class ValveStep extends DetailedOwnerStep
 
 	protected  void setupRequirements()
 	{
-		scentedTop = new ItemRequirement("Vyre noble top", ItemID.VYRE_NOBLE_TOP, 1, true);
+		scentedTop = new ItemRequirement("Vyre noble top", ItemID.VYRELORD_TORSO, 1, true);
 		scentedTop.setTooltip("You can get a replacement from a chest in Old Man Ral's basement.");
-		scentedLegs = new ItemRequirement("Vyre noble legs", ItemID.VYRE_NOBLE_LEGS, 1, true);
+		scentedLegs = new ItemRequirement("Vyre noble legs", ItemID.VYRELORD_LEGS, 1, true);
 		scentedLegs.setTooltip("You can get a replacement from a chest in Old Man Ral's basement.");
-		scentedShoes = new ItemRequirement("Vyre noble shoes", ItemID.VYRE_NOBLE_SHOES, 1, true);
+		scentedShoes = new ItemRequirement("Vyre noble shoes", ItemID.VYRELORD_SHOES, 1, true);
 		scentedShoes.setTooltip("You can get a replacement from a chest in Old Man Ral's basement.");
-		oldNote = new ItemRequirement("Old note", ItemID.OLD_NOTE);
+		oldNote = new ItemRequirement("Old note", ItemID.MYQ5_ARBORETUM_NOTE);
 		oldNote.setHighlightInInventory(true);
 	}
 
@@ -259,10 +260,10 @@ public class ValveStep extends DetailedOwnerStep
 
 		readNote = new DetailedQuestStep(getQuestHelper(), "Read the Old Note to find out the amount of water the Blisterwood Tree needs.", oldNote, scentedTop, scentedLegs, scentedShoes);
 
-		setNorthValve = new ObjectStep(getQuestHelper(), ObjectID.VALVE_37997, new WorldPoint(3621, 3364, 0), "Turn the northern valve to the highlighted value.");
-		setSouthValve = new ObjectStep(getQuestHelper(), ObjectID.VALVE_37998, new WorldPoint(3621, 3359, 0), "Turn the southern valve to the highlighted value.");
-		setNorthValveNoHighlight = new ObjectStep(getQuestHelper(), ObjectID.VALVE_37997, new WorldPoint(3621, 3364, 0), "Turn the northern valve to the highlighted value.");
-		setSouthValveNoHighlight = new ObjectStep(getQuestHelper(), ObjectID.VALVE_37998, new WorldPoint(3621, 3359, 0), "Turn the southern valve to the highlighted value.");
+		setNorthValve = new ObjectStep(getQuestHelper(), ObjectID.MYQ5_VALVE_NORTH, new WorldPoint(3621, 3364, 0), "Turn the northern valve to the highlighted value.");
+		setSouthValve = new ObjectStep(getQuestHelper(), ObjectID.MYQ5_VALVE_SOUTH, new WorldPoint(3621, 3359, 0), "Turn the southern valve to the highlighted value.");
+		setNorthValveNoHighlight = new ObjectStep(getQuestHelper(), ObjectID.MYQ5_VALVE_NORTH, new WorldPoint(3621, 3364, 0), "Turn the northern valve to the highlighted value.");
+		setSouthValveNoHighlight = new ObjectStep(getQuestHelper(), ObjectID.MYQ5_VALVE_SOUTH, new WorldPoint(3621, 3359, 0), "Turn the southern valve to the highlighted value.");
 
 		cutTree =  new ObjectStep(getQuestHelper(), ObjectID.BLISTERWOOD_TREE, new WorldPoint(3635, 3362, 0),
 			"Gather 8 logs from the Blisterwood tree.", scentedTop, scentedLegs, scentedShoes);

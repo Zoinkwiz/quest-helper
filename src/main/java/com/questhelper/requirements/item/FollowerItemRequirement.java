@@ -27,10 +27,10 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.collections.ItemCollections;
+import net.runelite.api.Client;
+
 import java.util.List;
 import java.util.Objects;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
 
 public class FollowerItemRequirement extends ItemRequirement
 {

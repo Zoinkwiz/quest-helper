@@ -3,12 +3,12 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import java.awt.*;
 
 public class TileStep extends DetailedQuestStep
 {

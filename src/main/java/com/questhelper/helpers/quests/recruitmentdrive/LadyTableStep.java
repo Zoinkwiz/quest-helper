@@ -32,13 +32,14 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.Client;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.VarbitChanged;
 
 public class LadyTableStep extends DetailedOwnerStep
 {
@@ -100,9 +101,9 @@ public class LadyTableStep extends DetailedOwnerStep
 
 		leaveRoom = new ObjectStep(questHelper, 7302, "Leave through the door to enter the portal and continue.");
 		clickMissingStatue = new ObjectStep(questHelper, 0, statues[0].point, "CLick the missing statue.");
-		clickMissingStatue.addAlternateObjects(ObjectID.STATUE_7303, ObjectID.STATUE_7304, ObjectID.STATUE_7305,
-			ObjectID.STATUE_7306, ObjectID.STATUE_7307, ObjectID.STATUE_7308, ObjectID.STATUE_7309,
-			ObjectID.STATUE_7310, ObjectID.STATUE_7311, ObjectID.STATUE_7312, ObjectID.STATUE_7314);
+		clickMissingStatue.addAlternateObjects(ObjectID.RD_1G, ObjectID.RD_1S, ObjectID.RD_1B,
+			ObjectID.RD_2G, ObjectID.RD_2S, ObjectID.RD_2B, ObjectID.RD_3G,
+			ObjectID.RD_3S, ObjectID.RD_3B, ObjectID.RD_4G, ObjectID.RD_4B);
 	}
 
 	@Override

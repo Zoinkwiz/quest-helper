@@ -27,11 +27,12 @@ package com.questhelper.helpers.quests.recipefordisaster;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.NpcStep;
-import java.util.Collections;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.Collections;
 
 public class GetRohakDrunk extends NpcStep
 {
@@ -39,9 +40,9 @@ public class GetRohakDrunk extends NpcStep
 
 	public GetRohakDrunk(QuestHelper questHelper, ItemRequirement asgoldianAle4)
 	{
-		super(questHelper, NpcID.AN_OLD_DWARF, new WorldPoint(2865, 9877, 0), "Keep giving the dwarf drinks until " +
+		super(questHelper, NpcID.HUNDRED_DWARF_DAD, new WorldPoint(2865, 9877, 0), "Keep giving the dwarf drinks until " +
 			"he's drunk.", asgoldianAle4);
-		addAlternateNpcs(NpcID.ROHAK, NpcID.ROHAK_4812);
+		addAlternateNpcs(NpcID.HUNDRED_DWARF_DAD_ROHAK, NpcID.HUNDRED_DWARF_DAD_DRUNK);
 		asgoldianAle = asgoldianAle4;
 	}
 

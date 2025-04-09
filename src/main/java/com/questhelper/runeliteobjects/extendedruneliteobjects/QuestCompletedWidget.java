@@ -24,12 +24,13 @@
  */
 package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
+
+import java.util.List;
 
 public class QuestCompletedWidget
 {

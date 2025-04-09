@@ -24,24 +24,25 @@
  */
 package com.questhelper.helpers.quests.songoftheelves;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.List;
-import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.List;
 
 public class CadarnLightPuzzle extends ConditionalStep
 {
@@ -83,48 +84,48 @@ public class CadarnLightPuzzle extends ConditionalStep
 		setupZones();
 		setupConditions();
 
-		collectMirrors = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Collect 7 mirrors and a red crystal from the dispenser in the central room.");
+		collectMirrors = new ObjectStep(getQuestHelper(), ObjectID.SOTE_LIBRARY_DISPENSER, new WorldPoint(2623, 6118, 1), "Collect 7 mirrors and a red crystal from the dispenser in the central room.");
 		collectMirrors.addDialogStep("Take everything.");
 
-		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35287, new WorldPoint(2609, 6158, 1),
+		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_D_5, new WorldPoint(2609, 6158, 1),
 			"Add a mirror to a pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
-		p1Pillar1.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar1.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35293, new WorldPoint(2623, 6158, 1),
+		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_E_5, new WorldPoint(2623, 6158, 1),
 			"Add a mirror to a pillar to the east. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar2.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar2.addIcon(ItemID.SOTE_MIRROR);
 
 		p1Pillar3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36705, new WorldPoint(2623, 6158, 0),
 			"Add a mirror to the pillar near the stairs. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar3.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar3.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar4 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35151, new WorldPoint(2623, 6130,0),
+		p1Pillar4 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_3, new WorldPoint(2623, 6130,0),
 			"Add a mirror to the pillar to the south. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar4.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar4.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar5 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35145, new WorldPoint(2609, 6130,0),
+		p1Pillar5 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_D_3, new WorldPoint(2609, 6130,0),
 			"Add a mirror to the pillar to the west. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar5.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar5.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar6 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35144, new WorldPoint(2609, 6116,0),
+		p1Pillar6 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_D_2, new WorldPoint(2609, 6116,0),
 			"Add the red crystal to the pillar to the south.", redCrystalHighlighted);
-		p1Pillar6.addIcon(ItemID.RED_CRYSTAL_23776);
+		p1Pillar6.addIcon(ItemID.SOTE_CRYSTAL_RED);
 
-		p1Pillar7 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35143, new WorldPoint(2609, 6102,0),
+		p1Pillar7 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_D_1, new WorldPoint(2609, 6102,0),
 			"Add a mirror to the pillar to the south. Rotate it to point the light east.", handMirrorHighlighted);
-		p1Pillar7.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar7.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar8 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35149, new WorldPoint(2623, 6102,0),
+		p1Pillar8 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_1, new WorldPoint(2623, 6102,0),
 			"Add a mirror to the pillar to the east. Rotate it to point the light south at the Seal of Cadarn.", handMirrorHighlighted);
-		p1Pillar8.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar8.addIcon(ItemID.SOTE_MIRROR);
 	}
 
 	protected void setupItemRequirements()
 	{
-		handMirrorHighlighted = new ItemRequirement("Hand mirror", ItemID.HAND_MIRROR_23775);
+		handMirrorHighlighted = new ItemRequirement("Hand mirror", ItemID.SOTE_MIRROR);
 		handMirrorHighlighted.setHighlightInInventory(true);
 
-		redCrystalHighlighted = new ItemRequirement("Red crystal", ItemID.RED_CRYSTAL_23776);
+		redCrystalHighlighted = new ItemRequirement("Red crystal", ItemID.SOTE_CRYSTAL_RED);
 		redCrystalHighlighted.setHighlightInInventory(true);
 	}
 
@@ -139,8 +140,8 @@ public class CadarnLightPuzzle extends ConditionalStep
 	{
 		// Check is for 6 mirrors to cover having placed but not rotated first spot
 		hasMirrorsAndCrystal = new Conditions(
-			new ItemRequirements(new ItemRequirement("Hand mirror", ItemID.HAND_MIRROR_23775, 6)),
-			new ItemRequirements(new ItemRequirement("Red crystal", ItemID.RED_CRYSTAL_23776)));
+			new ItemRequirements(new ItemRequirement("Hand mirror", ItemID.SOTE_MIRROR, 6)),
+			new ItemRequirements(new ItemRequirement("Red crystal", ItemID.SOTE_CRYSTAL_RED)));
 
 		onF0 = new ZoneRequirement(f0);
 		onF1 = new ZoneRequirement(f1);

@@ -30,29 +30,25 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
 import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import com.questhelper.steps.widget.WidgetDetails;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.annotations.Interface;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.FontManager;
+
+import javax.inject.Inject;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
-import javax.inject.Inject;
-import com.questhelper.steps.WidgetStep;
-import com.questhelper.steps.widget.WidgetDetails;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.annotations.Interface;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.FontManager;
+
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 
@@ -385,10 +381,10 @@ public class MetalDoorSolver extends DetailedOwnerStep
 	protected void setupSteps()
 	{
 		this.shouldClickDownInteadOfUp = new ManualRequirement();
-		var codeKey = new ItemRequirement("Code key", ItemID.CODE_KEY);
+		var codeKey = new ItemRequirement("Code key", ItemID.COA_CODE_KEY);
 		readCode = new ItemStep(getQuestHelper(), "Read the Code key in your inventory.", codeKey.highlighted());
 
-		clickMetalDoors = new ObjectStep(getQuestHelper(), ObjectID.METAL_DOORS, new WorldPoint(3612, 4582, 0), "Open the metal doors and solve the puzzle.", codeKey);
+		clickMetalDoors = new ObjectStep(getQuestHelper(), ObjectID.MAH3_BASE_DOOR, new WorldPoint(3612, 4582, 0), "Open the metal doors and solve the puzzle.", codeKey);
 
 		var puzzleWidgetOpen = new WidgetPresenceRequirement(PUZZLE_GROUP_ID, PUZZLE_BTN_UP_CHILD_ID);
 

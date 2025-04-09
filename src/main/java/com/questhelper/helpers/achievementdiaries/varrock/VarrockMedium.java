@@ -25,12 +25,12 @@
 package com.questhelper.helpers.achievementdiaries.varrock;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -40,25 +40,22 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class VarrockMedium extends ComplexStateQuestHelper
 {
@@ -182,11 +179,11 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR, notApothStr, notCatColour, notMaho20));
 		limpRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notApothStr);
 		redSpiderEgg = new ItemRequirement("Red spiders' egg", ItemID.RED_SPIDERS_EGGS).showConditioned(notApothStr);
-		ringOfCharos = new ItemRequirement("Ring of charos (A)", ItemID.RING_OF_CHAROSA).showConditioned(notCatColour).isNotConsumed();
+		ringOfCharos = new ItemRequirement("Ring of charos (A)", ItemID.RING_OF_CHAROS_UNLOCKED).showConditioned(notCatColour).isNotConsumed();
 		digsitePend = new ItemRequirement("Digsite pendant", ItemCollections.DIGSITE_PENDANTS).showConditioned(notTPDigsite).isNotConsumed();
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPVarrock);
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPVarrock);
-		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notTPVarrock);
+		lawRune = new ItemRequirement("Law rune", ItemID.LAWRUNE).showConditioned(notTPVarrock);
+		airRune = new ItemRequirement("Air rune", ItemID.AIRRUNE).showConditioned(notTPVarrock);
+		fireRune = new ItemRequirement("Fire rune", ItemID.FIRERUNE).showConditioned(notTPVarrock);
 		mahoLog = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS).showConditioned(notMaho20);
 		willowLog1 = new ItemRequirement("Willow logs", ItemID.WILLOW_LOGS, 1)
 			.showConditioned(new Conditions(notBalloon, notVarrBalloon2));
@@ -229,37 +226,37 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		apothStr = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3404, 0),
 			"Speak with the apothecary to create a strength potion.", limpRoot, redSpiderEgg, coins.quantity(5));
 		apothStr.addDialogSteps("Can you make potions for me?");
-		champs = new ObjectStep(this, ObjectID.DOOR_1805, new WorldPoint(3191, 3363, 0),
+		champs = new ObjectStep(this, ObjectID.CHAMPIONDOOR, new WorldPoint(3191, 3363, 0),
 			"Enter the Champions' Guild.", qp);
-		colourCat = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3415, 0),
+		colourCat = new NpcStep(this, NpcID.GERTRUDE_POST, new WorldPoint(3151, 3415, 0),
 			"Check your bank if you own a cat/kitten and either store them in the POH Menagerie or shoo them. Then speak with Gertrude for a new kitten.",
 			coins.quantity(100), ringOfCharos.equipped());
 		colourCat.addDialogSteps("Do you have any more kittens?", "[Charm] I'm quite fussy over cats - can I pick my own?");
 		geSpirit = new ObjectStep(this, 1295, new WorldPoint(3185, 3510, 0),
 			"Use the spirit tree in the Grand Exchange.");
 
-		moveToStronghold = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
+		moveToStronghold = new ObjectStep(this, ObjectID.SOS_DUNG_ENT_OPEN, new WorldPoint(3081, 3420, 0),
 			"Enter the Security Stronghold.");
-		moveToStronghold2 = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
+		moveToStronghold2 = new ObjectStep(this, ObjectID.SOS_WAR_LADD_DOWN, new WorldPoint(1902, 5222, 0),
 			"Go to the 2nd floor of the stronghold.");
-		moveToStronghold3 = new ObjectStep(this, ObjectID.LADDER_19004, new WorldPoint(2026, 5218, 0),
+		moveToStronghold3 = new ObjectStep(this, ObjectID.SOS_FAM_LADD_DOWN, new WorldPoint(2026, 5218, 0),
 			"Go to the 3rd floor of the stronghold.");
-		moveToStronghold4 = new ObjectStep(this, ObjectID.DRIPPING_VINE_23706, new WorldPoint(2148, 5284, 0),
+		moveToStronghold4 = new ObjectStep(this, ObjectID.SOS_PEST_LADD_DOWN, new WorldPoint(2148, 5284, 0),
 			"Go to the 4th floor of the stronghold.");
-		peace = new ObjectStep(this, ObjectID.GIFT_OF_PEACE, new WorldPoint(1907, 5222, 0),
+		peace = new ObjectStep(this, ObjectID.SOS_WAR_CHEST, new WorldPoint(1907, 5222, 0),
 			"Collect the gift of peace.");
-		grain = new ObjectStep(this, ObjectID.GRAIN_OF_PLENTY, new WorldPoint(2022, 5216, 0),
+		grain = new ObjectStep(this, ObjectID.SOS_FAM_SACK, new WorldPoint(2022, 5216, 0),
 			"Collect the grain of plenty.");
-		health = new ObjectStep(this, ObjectID.BOX_OF_HEALTH, new WorldPoint(2144, 5280, 0),
+		health = new ObjectStep(this, ObjectID.SOS_PEST_CHEST, new WorldPoint(2144, 5280, 0),
 			"Collect the box of health.");
-		cradle = new ObjectStep(this, ObjectID.CRADLE_OF_LIFE, new WorldPoint(2344, 5214, 0),
+		cradle = new ObjectStep(this, ObjectID.SOS_DEATH_PRAM, new WorldPoint(2344, 5214, 0),
 			"Collect the cradle of life.");
 		emote = new DetailedQuestStep(this, "Use the flap, slap head, idea, and stamp emotes.");
-		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_OPEN, new WorldPoint(3097, 3468, 0),
 			"Move to the Edgeville dungeon.");
 
 		//TODO find a better way to check for slayer task
-		vannaka = new NpcStep(this, NpcID.VANNAKA, new WorldPoint(3146, 9913, 0),
+		vannaka = new NpcStep(this, NpcID.SLAYER_MASTER_3, new WorldPoint(3146, 9913, 0),
 			"Get a task from Vannaka.");
 		tolna = new ObjectStep(this, 13968, new WorldPoint(3310, 3452, 0),
 			"Enter the Tolna dungeon.");
@@ -267,24 +264,24 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		tpDigsite = new DetailedQuestStep(this, "Rub the digsite pendant and select the 'Digsite' teleport.",
 			digsitePend.highlighted());
 
-		maho20 = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0),
+		maho20 = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0),
 			"Make 20 mahogany planks at the sawmill in ONE run.", mahoLog.quantity(20), coins.quantity(30000));
 
 		balloon = new ObjectStep(this, 19143, new WorldPoint(3297, 3482, 0),
 			"Use the basket east of Varrock to fly to any available destination.", willowLog1);
-		moveToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3236, 0),
+		moveToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3048, 3236, 0),
 			"Speak with a monk to travel to Entrana.", true, willowLog11);
-		moveToEntrana.addAlternateNpcs(NpcID.MONK_OF_ENTRANA_1166, NpcID.MONK_OF_ENTRANA);
-		talkToAug = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2810, 3356, 0),
+		moveToEntrana.addAlternateNpcs(NpcID.SHIPMONK1_B, NpcID.SHIPMONK);
+		talkToAug = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2810, 3356, 0),
 			"Speak with Augustine and travel to Varrock.", willowLog11);
 
 		whiteFruit = new ObjectStep(this, 9209, new WorldPoint(3230, 3475, 0),
 			"Pick a white tree fruit at Varrock Castle.");
-		varrAgi = new ObjectStep(this, ObjectID.ROUGH_WALL_14412, new WorldPoint(3221, 3414, 0),
+		varrAgi = new ObjectStep(this, ObjectID.ROOFTOPS_VARROCK_WALLCLIMB, new WorldPoint(3221, 3414, 0),
 			"Complete a lap of the Varrock rooftop course.");
 		tpVarrock = new DetailedQuestStep(this, "Cast Teleport to Varrock", airRune.quantity(3), fireRune.quantity(1), lawRune.quantity(1));
 
-		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
+		claimReward = new NpcStep(this, NpcID.TOBY_VARROCK_DIARY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -328,8 +325,8 @@ public class VarrockMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Varrock Armor (2)", ItemID.VARROCK_ARMOUR_2, 1),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Varrock Armor (2)", ItemID.VARROCK_ARMOUR_MEDIUM, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

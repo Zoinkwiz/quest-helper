@@ -24,23 +24,18 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.managers.QuestManager;
-import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import com.questhelper.tools.Icon;
 import lombok.Getter;
 import net.runelite.api.QuestState;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuestSelectPanel extends JPanel
 {

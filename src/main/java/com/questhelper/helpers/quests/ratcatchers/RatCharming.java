@@ -32,12 +32,13 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
 
 public class RatCharming extends DetailedOwnerStep
 {

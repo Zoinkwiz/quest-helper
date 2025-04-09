@@ -31,12 +31,13 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.List;
 
 public class FindLongramble
 {
@@ -51,11 +52,11 @@ public class FindLongramble
 			ItemCollections.RING_OF_DUELINGS, 1);
 		teleToLongramble.addAlternates(ItemCollections.FAIRY_STAFF);
 
-		var goToLongramble = new ObjectStep(quest, ObjectID.TREE_49590, new WorldPoint(2333, 3081, 0), "");
+		var goToLongramble = new ObjectStep(quest, ObjectID.POG_GRAPPLE_TREE_BASE_OP, new WorldPoint(2333, 3081, 0), "");
 		goToLongramble.addRecommended(quest.earmuffsOrSlayerHelmet);
 		goToLongramble.addDialogStep("Castle Wars Arena.");
 		goToLongramble.addTeleport(teleToLongramble);
-		var actuallyTalkToLongramble = new NpcStep(quest, NpcID.LONGRAMBLE, new WorldPoint(2340, 3094, 0), "");
+		var actuallyTalkToLongramble = new NpcStep(quest, NpcID.POG_GNOME_LONGRAMBLE_VIS, new WorldPoint(2340, 3094, 0), "");
 		actuallyTalkToLongramble.addRecommended(quest.earmuffsOrSlayerHelmet);
 
 

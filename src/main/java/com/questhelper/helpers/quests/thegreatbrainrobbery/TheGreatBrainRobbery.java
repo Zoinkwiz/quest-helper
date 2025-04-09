@@ -24,15 +24,13 @@
  */
 package com.questhelper.helpers.quests.thegreatbrainrobbery;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -44,31 +42,25 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.IntUnaryOperator;
+import com.questhelper.steps.*;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.*;
+import java.util.function.IntUnaryOperator;
 
 public class TheGreatBrainRobbery extends BasicQuestHelper
 {
@@ -216,27 +208,27 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		// Item reqs
-		fishbowlHelmet = new ItemRequirement("Fishbowl helmet", ItemID.FISHBOWL_HELMET).isNotConsumed();
+		fishbowlHelmet = new ItemRequirement("Fishbowl helmet", ItemID.HUNDRED_PIRATE_DIVING_HELMET).isNotConsumed();
 		fishbowlHelmet.setTooltip("You can get another from Murphy in Port Khazard");
-		divingApparatus = new ItemRequirement("Diving apparatus", ItemID.DIVING_APPARATUS).isNotConsumed();
+		divingApparatus = new ItemRequirement("Diving apparatus", ItemID.HUNDRED_PIRATE_DIVING_BACKPACK).isNotConsumed();
 		divingApparatus.setTooltip("You can get another from Murphy in Port Khazard");
-		woodenCats = new ItemRequirement("Wooden cat", ItemID.WOODEN_CAT);
-		oakPlank = new ItemRequirement("Oak plank", ItemID.OAK_PLANK);
+		woodenCats = new ItemRequirement("Wooden cat", ItemID.BRAIN_INV_WOODEN_CAT);
+		oakPlank = new ItemRequirement("Oak plank", ItemID.PLANK_OAK);
 		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
-		plank = new ItemRequirement("Plank", ItemID.PLANK);
-		fur = new ItemRequirement("Fur", ItemID.FUR);
-		fur.addAlternates(ItemID.BEAR_FUR, ItemID.GREY_WOLF_FUR);
+		plank = new ItemRequirement("Plank", ItemID.WOODPLANK);
+		fur = new ItemRequirement("Fur", ItemID.WEREWOLVE_FUR);
+		fur.addAlternates(ItemID.FUR, ItemID.GREY_WOLF_FUR);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.setTooltip("a standard hammer, NOT Imcando Hammer, as it will be given to Dr. Fenkenstrain");
 		nails = new ItemRequirement("Nails", ItemCollections.NAILS);
-		holySymbol = new ItemRequirement("Holy symbol", ItemID.HOLY_SYMBOL).isNotConsumed();
+		holySymbol = new ItemRequirement("Holy symbol", ItemID.BLESSEDSTAR).isNotConsumed();
 		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS).isNotConsumed();
-		ringOfCharos.addAlternates(ItemID.RING_OF_CHAROSA);
+		ringOfCharos.addAlternates(ItemID.RING_OF_CHAROS_UNLOCKED);
 		ringOfCharos.setDisplayMatchedItemName(true);
 		catsOrResources = new ItemRequirements(LogicType.OR, "10 Wooden cats, or 10 planks and 10 furs to make them",
 			woodenCats.quantity(10), new ItemRequirements(plank.quantity(10), fur.quantity(10)));
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
-		tinderbox.addAlternates(ItemID.TINDERBOX_7156);
+		tinderbox.addAlternates(ItemID.FEVER_TINDERBOX);
 		noPet = new ItemRequirement("No pet following you or in your inventory", -1, -1);
 
 		// Item recommended
@@ -244,7 +236,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		edgevilleTeleport = new ItemRequirement("Monastery teleport", ItemCollections.COMBAT_BRACELETS);
 		edgevilleTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 
-		fenkenstrainTeleport = new ItemRequirement("Fenkenstrain's Castle teleport", ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
+		fenkenstrainTeleport = new ItemRequirement("Fenkenstrain's Castle teleport", ItemID.TELETAB_FENK);
 		watermelonSeeds = new ItemRequirement("Watermelon seeds to plant on Harmony for Hard Morytania Diary",
 			ItemID.WATERMELON_SEED);
 		combatGearForSafespotting = new ItemRequirement("Combat gear for safespotting", -1, -1);
@@ -253,22 +245,22 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS);
 
 		// Quest items
-		prayerBook = new ItemRequirement("Prayer book", ItemID.PRAYER_BOOK);
-		prayerBook.addAlternates(ItemID.PRAYER_BOOK_10890);
-		wolfWhistle = new ItemRequirement("Wolf whistle", ItemID.WOLF_WHISTLE);
+		prayerBook = new ItemRequirement("Prayer book", ItemID.BRAIN_FOG_BOOK);
+		prayerBook.addAlternates(ItemID.BRAIN_INV_SARADOMIN_BOOK);
+		wolfWhistle = new ItemRequirement("Wolf whistle", ItemID.BRAIN_INV_SILVER_WHISTLE);
 		wolfWhistle.setTooltip("You can get another from Rufus in Canifis");
-		shippingOrder = new ItemRequirement("Shipping order", ItemID.SHIPPING_ORDER);
+		shippingOrder = new ItemRequirement("Shipping order", ItemID.BRAIN_INV_SHIPPING_ORDER);
 		shippingOrder.setTooltip("You can get another from Rufus in Canifis");
-		cratePart = new ItemRequirement("Crate part", ItemID.CRATE_PART);
+		cratePart = new ItemRequirement("Crate part", ItemID.BRAIN_INV_CRATE_PART);
 		cratePart.setTooltip("You can get more from Rufus in Canifis");
-		keg = new ItemRequirement("Keg", ItemID.KEG_10898);
-		keg.addAlternates(ItemID.KEG);
-		fuse = new ItemRequirement("Fuse", ItemID.FUSE_10884);
-		cranialClamp = new ItemRequirement("Cranial clamp", ItemID.CRANIAL_CLAMP);
-		brainTongs = new ItemRequirement("Brain tongs", ItemID.BRAIN_TONGS); // 10894
-		bellJars = new ItemRequirement("Bell jar", ItemID.BELL_JAR);
-		skullStaples = new ItemRequirement("Skull staple", ItemID.SKULL_STAPLE);
-		anchor = new ItemRequirement("Barrelchest anchor", ItemID.BARRELCHEST_ANCHOR_10888);
+		keg = new ItemRequirement("Keg", ItemID.BRAIN_INV_GUN_POWDER_BARREL);
+		keg.addAlternates(ItemID.BRAIN_DECK_GUN_POWDER_BARREL);
+		fuse = new ItemRequirement("Fuse", ItemID.BRAIN_FUSE);
+		cranialClamp = new ItemRequirement("Cranial clamp", ItemID.BRAIN_INV_CRANIAL_CLAMP);
+		brainTongs = new ItemRequirement("Brain tongs", ItemID.BRAIN_INV_TONGS); // 10894
+		bellJars = new ItemRequirement("Bell jar", ItemID.BRAIN_INV_BELL_JAR);
+		skullStaples = new ItemRequirement("Skull staple", ItemID.BRAIN_INV_SKULL_STAPLE);
+		anchor = new ItemRequirement("Barrelchest anchor", ItemID.BRAIN_BROKEN_ANCHOR);
 
 		IntUnaryOperator varbit = id -> client.getGameState() == GameState.LOGGED_IN ? client.getVarbitValue(id) : 0;
 		neededJars = bellJars.quantity(3 - varbit.applyAsInt(3399));
@@ -314,24 +306,24 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 		// 3387 = 1, talked a bit to Tranq in Mos Le after getting the Prayer book
 		// 3388 = 1, part way through Fenk convo
-		talkedToFenk = new VarbitRequirement(3388, 2, Operation.GREATER_EQUAL);
-		talkedToRufus = new VarbitRequirement(3388, 3, Operation.GREATER_EQUAL);
+		talkedToFenk = new VarbitRequirement(VarbitID.BRAIN_FENK_PUZZLE, 2, Operation.GREATER_EQUAL);
+		talkedToRufus = new VarbitRequirement(VarbitID.BRAIN_FENK_PUZZLE, 3, Operation.GREATER_EQUAL);
 		// 3390 = 1, talked to Rufus. Probably construction spot appears
 
-		madeCrateWalls = new VarbitRequirement(3390, 2, Operation.GREATER_EQUAL);
-		madeCrateBottom = new VarbitRequirement(3390, 3, Operation.GREATER_EQUAL);
-		addedCats = new VarbitRequirement(3390, 4, Operation.GREATER_EQUAL);
-		fenkInCrate = new VarbitRequirement(3390, 5, Operation.GREATER_EQUAL);
+		madeCrateWalls = new VarbitRequirement(VarbitID.BRAIN_CRATE, 2, Operation.GREATER_EQUAL);
+		madeCrateBottom = new VarbitRequirement(VarbitID.BRAIN_CRATE, 3, Operation.GREATER_EQUAL);
+		addedCats = new VarbitRequirement(VarbitID.BRAIN_CRATE, 4, Operation.GREATER_EQUAL);
+		fenkInCrate = new VarbitRequirement(VarbitID.BRAIN_CRATE, 5, Operation.GREATER_EQUAL);
 
 		addedCatsOrHas10 = new Conditions(LogicType.OR, addedCats, woodenCats.quantity(10).alsoCheckBank(questBank));
 
 		// 3392 0->10, added wooden cats
 
 
-		placedKeg = new VarbitRequirement(3393, 2, Operation.GREATER_EQUAL);
-		addedFuse = new VarbitRequirement(3393, 3, Operation.GREATER_EQUAL);
-		litFuse = new VarbitRequirement(3393, 4, Operation.GREATER_EQUAL);
-		churchDoorGone = new VarbitRequirement(3393, 5, Operation.GREATER_EQUAL);
+		placedKeg = new VarbitRequirement(VarbitID.BRAIN_BARREL_SETUP, 2, Operation.GREATER_EQUAL);
+		addedFuse = new VarbitRequirement(VarbitID.BRAIN_BARREL_SETUP, 3, Operation.GREATER_EQUAL);
+		litFuse = new VarbitRequirement(VarbitID.BRAIN_BARREL_SETUP, 4, Operation.GREATER_EQUAL);
+		churchDoorGone = new VarbitRequirement(VarbitID.BRAIN_BARREL_SETUP, 5, Operation.GREATER_EQUAL);
 
 		hasKeg = new Conditions(LogicType.OR, keg, placedKeg);
 		hasFuse = new Conditions(LogicType.OR, fuse, addedFuse);
@@ -363,57 +355,57 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		moveToCapt = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
+		moveToCapt = new ObjectStep(this, ObjectID.FEVER_GANGPLANK, new WorldPoint(3710, 3496, 0),
 			"Cross the gangplank to Bill Teach's ship.");
 		((ObjectStep) moveToCapt).addTeleport(ectophial.quantity(1));
-		moveToMos = new NpcStep(this, NpcID.BILL_TEACH_4016, new WorldPoint(3714, 3497, 1),
+		moveToMos = new NpcStep(this, NpcID.FEVER_HARMLESS_PORT_SHIP_TEACH, new WorldPoint(3714, 3497, 1),
 			"Talk to Bill Teach to travel to Mos Le'Harmless.");
-		talkToTranquility = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
+		talkToTranquility = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3681, 2963, 0),
 			"Talk to Brother Tranquility on Mos Le'Harmless.");
 		talkToTranquility.addDialogSteps("Yes.", "Yes, please.");
 		talkToTranquility.addSubSteps(moveToCapt);
 		talkToTranquility.addSubSteps(moveToMos);
 
-		talkToTranquilityOnIsland = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3787, 2825,
+		talkToTranquilityOnIsland = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3787, 2825,
 			0), "Talk to Brother Tranquility on Harmony.");
 		talkToTranquility.addSubSteps(talkToTranquilityOnIsland);
 
 		ItemRequirement conditionalPlanks = plank.quantity(4).hideConditioned(repairedStairs);
 		ItemRequirement conditionalNails = nails.quantity(100).hideConditioned(repairedStairs);
 		ItemRequirement conditionalHammer = hammer.hideConditioned(repairedStairs);
-		pullStatue = new ObjectStep(this, NullObjectID.NULL_22355, new WorldPoint(3795, 2844, 0),
+		pullStatue = new ObjectStep(this, ObjectID.BRAIN_STATUE_SARADOMIN, new WorldPoint(3795, 2844, 0),
 			"Pull the saradomin statue on Harmony, then enter it.\nPlant the watermelon seeds in the patch first if you brought them for the Hard Morytania Diary.",
 			fishbowlHelmet.highlighted().equipped(), divingApparatus.highlighted().equipped(), conditionalHammer, conditionalPlanks, conditionalNails);
-		enterWater = new ObjectStep(this, ObjectID.STAIRS_22365, new WorldPoint(3788, 9254, 0),
+		enterWater = new ObjectStep(this, ObjectID.BRAIN_UNDERWATER_FALLOFF_STAIRS, new WorldPoint(3788, 9254, 0),
 			"Enter the water.");
-		repairWaterStairs = new ObjectStep(this, NullObjectID.NULL_22370, new WorldPoint(3829, 9254, 1),
+		repairWaterStairs = new ObjectStep(this, ObjectID.BRAIN_UNDERWATER_STAIRS_MULTI, new WorldPoint(3829, 9254, 1),
 			"Repair the stairs to the east.", hammer, plank.quantity(4), nails.quantity(100));
-		climbFromWater = new ObjectStep(this, NullObjectID.NULL_22370, new WorldPoint(3829, 9254, 1),
+		climbFromWater = new ObjectStep(this, ObjectID.BRAIN_UNDERWATER_STAIRS_MULTI, new WorldPoint(3829, 9254, 1),
 			"Climb up the stairs to the east.");
-		climbFromWaterCaveToPeep = new ObjectStep(this, ObjectID.LADDER_22372, new WorldPoint(3831, 9254, 0),
+		climbFromWaterCaveToPeep = new ObjectStep(this, ObjectID.BRAIN_UNDERWATER_LADDER_SECRET_ROOM, new WorldPoint(3831, 9254, 0),
 			"Climb up the ladder.");
-		peerThroughHole = new ObjectStep(this, ObjectID.PEEPHOLE, new WorldPoint(3817, 2844, 0),
+		peerThroughHole = new ObjectStep(this, ObjectID.BRAIN_SECRET_ROOM_SPYHOLE, new WorldPoint(3817, 2844, 0),
 			"Peer through the nearby peephole.");
-		goFromHoleToWater = new ObjectStep(this, ObjectID.LADDER_22164, new WorldPoint(3819, 2843, 0),
+		goFromHoleToWater = new ObjectStep(this, ObjectID.BRAIN_MON_LADDER_TOP_SECRET_ROOM, new WorldPoint(3819, 2843, 0),
 			"Return to Brother Tranquility on Harmony.");
-		enterWaterReturn = new ObjectStep(this, ObjectID.STAIRS_22366, new WorldPoint(3827, 9254, 0),
+		enterWaterReturn = new ObjectStep(this, ObjectID.BRAIN_UNDERWATER_FALLOFF_REPAIRED_STAIRS, new WorldPoint(3827, 9254, 0),
 			"Return to Brother Tranquility on Harmony.");
-		leaveWaterEntranceReturn = new ObjectStep(this, ObjectID.STAIRS_22367, new WorldPoint(3785, 9254, 1),
+		leaveWaterEntranceReturn = new ObjectStep(this, ObjectID.BRAIN_UNDERWATER_STAIRS, new WorldPoint(3785, 9254, 1),
 			"Return to Brother Tranquility on Harmony.");
-		leaveWaterBack = new ObjectStep(this, ObjectID.LADDER_22371, new WorldPoint(3784, 9254, 0),
+		leaveWaterBack = new ObjectStep(this, ObjectID.BRAIN_UNDERWATER_LADDER_STATUE, new WorldPoint(3784, 9254, 0),
 			"Return to Brother Tranquility on Harmony.");
 
-		talkToTranquilityMosAfterPeeping = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
+		talkToTranquilityMosAfterPeeping = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3681, 2963, 0),
 			"Return to Brother Tranquility on Harmony.");
 		talkToTranquilityMosAfterPeeping.addDialogStep("Yes, please.");
 
-		talkToTranquilityAfterPeeping = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3787, 2825,
+		talkToTranquilityAfterPeeping = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3787, 2825,
 			0), "Return to Brother Tranquility.");
 		talkToTranquilityAfterPeeping.addSubSteps(goFromHoleToWater, enterWaterReturn, leaveWaterEntranceReturn,
 			leaveWaterBack, talkToTranquilityMosAfterPeeping);
 
 		/// Protecting the windmill
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_380, new WorldPoint(3049, 3484, 0),
+		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE, new WorldPoint(3049, 3484, 0),
 			"Search the south west bookcase in the Edgeville Monastery.", holySymbol);
 		searchBookcase.addDialogStep("Monastery");
 		((ObjectStep) searchBookcase).addTeleport(edgevilleTeleport);
@@ -423,7 +415,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		// Return to Harmony
 		ObjectStep moveToCapt2 = ((ObjectStep) moveToCapt).copy();
 		NpcStep moveToMos2 = ((NpcStep) moveToMos).copy();
-		NpcStep speakToTranquilityToTeleportBack = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
+		NpcStep speakToTranquilityToTeleportBack = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3681, 2963, 0),
 			"Speak to Brother Tranquility to transport to Harmony.");
 		returnToTranquility = new ConditionalStep(this, moveToCapt2, "Return to Harmony");
 		returnToTranquility.addStep(inMos, speakToTranquilityToTeleportBack);
@@ -438,136 +430,136 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 
 
 		// Talk to Brother Tranquility again
-		returnToHarmonyAfterPrayer = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
+		returnToHarmonyAfterPrayer = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3681, 2963, 0),
 			"Return to Brother Tranquility on Harmony.");
 		returnToHarmonyAfterPrayer.addDialogStep("Yes, please.");
-		talkToTranquilityAfterPrayer = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3787, 2825,
+		talkToTranquilityAfterPrayer = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3787, 2825,
 			0), "Talk to Brother Tranquility again.");
 		talkToTranquilityAfterPrayer.addSubSteps(returnToHarmonyAfterPrayer);
 
 		/// Finding a Doctor
-		goToF1Fenk = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
+		goToF1Fenk = new ObjectStep(this, ObjectID.FENK_STAIRS_LV1, new WorldPoint(3538, 3552, 0),
 			"Go up to the second floor of Fenkenstrain's Castle and talk to Dr. Fenkenstrain.");
 		((ObjectStep) goToF1Fenk).addTeleport(fenkenstrainTeleport);
 		goToF1Fenk.addDialogStep("Yes, please.");
-		goToF2Fenk = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1),
+		goToF2Fenk = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(3548, 3554, 1),
 			"Go up to the second floor of Fenkenstrain's Castle and talk to Dr. Fenkenstrain.");
-		talkToFenk = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3548, 3554, 2),
+		talkToFenk = new NpcStep(this, NpcID.FENK_FENKENSTRAIN_MODEL, new WorldPoint(3548, 3554, 2),
 			"Go up to the second floor of Fenkenstrain's Castle and talk to Dr. Fenkenstrain.");
 		talkToFenk.addSubSteps(goToF1Fenk, goToF2Fenk);
-		talkToRufus = new NpcStep(this, NpcID.RUFUS_6478, new WorldPoint(3507, 3494, 0),
+		talkToRufus = new NpcStep(this, NpcID.WEREWOLFSHOPKEEPER1, new WorldPoint(3507, 3494, 0),
 			"Talk to Rufus in Canifis' food store.", ringOfCharos.equipped().highlighted());
 		talkToRufus.addDialogStep("Talk about the meat shipment");
 		makeOrGetWoodenCats = new DetailedQuestStep(this,
 			"Either buy 10 wooden cats from the G.E., or make them on a clockmaker's bench in your POH.",
 			catsOrResources);
 		makeOrGetWoodenCats.addDialogStep("Wooden cat");
-		goToF1FenkForCrate = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
+		goToF1FenkForCrate = new ObjectStep(this, ObjectID.FENK_STAIRS_LV1, new WorldPoint(3538, 3552, 0),
 			"Return to Dr. Fenkenstrain.", ringOfCharos.equipped(),
 			plank.quantity(4).hideConditioned(madeCrateBottom), nails.quantity(100).hideConditioned(madeCrateBottom),
 			hammer.hideConditioned(madeCrateBottom), woodenCats.quantity(10).hideConditioned(addedCats),
 			cratePart.quantity(6).hideConditioned(madeCrateWalls), wolfWhistle);
-		goToF2FenkForCrate = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1),
+		goToF2FenkForCrate = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(3548, 3554, 1),
 			"Return to Dr. Fenkenstrain.", ringOfCharos.equipped(),
 			plank.quantity(4).hideConditioned(madeCrateBottom), nails.quantity(100).hideConditioned(madeCrateBottom),
 			hammer.hideConditioned(madeCrateBottom), woodenCats.quantity(10).hideConditioned(addedCats),
 			cratePart.quantity(6).hideConditioned(madeCrateWalls), wolfWhistle);
-		buildCrate = new ObjectStep(this, NullObjectID.NULL_22489, new WorldPoint(3550, 3554, 2),
+		buildCrate = new ObjectStep(this, ObjectID.BRAIN_FENK_CRATE, new WorldPoint(3550, 3554, 2),
 			"Return to Dr. Fenkenstrain and build the crate next to him.", ringOfCharos.equipped(), plank.quantity(4), nails.quantity(100),
 			hammer, woodenCats.quantity(10), cratePart.quantity(6), wolfWhistle);
 		buildCrate.addSubSteps(goToF1FenkForCrate, goToF2FenkForCrate);
 
-		addBottomToCrate = new ObjectStep(this, NullObjectID.NULL_22489, new WorldPoint(3550, 3554, 2),
+		addBottomToCrate = new ObjectStep(this, ObjectID.BRAIN_FENK_CRATE, new WorldPoint(3550, 3554, 2),
 			"Add a bottom to the crate.", plank.quantity(4), nails.quantity(100), hammer);
 
-		fillCrate = new ObjectStep(this, NullObjectID.NULL_22489, new WorldPoint(3550, 3554, 2),
+		fillCrate = new ObjectStep(this, ObjectID.BRAIN_FENK_CRATE, new WorldPoint(3550, 3554, 2),
 			"Fill the crate next to Fenkenstrain with wooden cats.", woodenCats.quantity(10).highlighted());
-		fillCrate.addIcon(ItemID.WOODEN_CAT);
+		fillCrate.addIcon(ItemID.BRAIN_INV_WOODEN_CAT);
 
 		blowWhistle = new DetailedQuestStep(this, "Blow the wolf whistle.", wolfWhistle.highlighted(), ringOfCharos.equipped());
 
-		goF1WithOrder = new ObjectStep(this, ObjectID.STAIRCASE_5206, new WorldPoint(3538, 3552, 0),
+		goF1WithOrder = new ObjectStep(this, ObjectID.FENK_STAIRS_LV1, new WorldPoint(3538, 3552, 0),
 			"Return to Dr. Fenkenstrain and place the shipping order on the crate.", shippingOrder);
-		goF2WithOrder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(3548, 3554, 1),
+		goF2WithOrder = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(3548, 3554, 1),
 			"Return to Dr. Fenkenstrain and place the shipping order on the crate.", shippingOrder);
-		putOrderOnCrate = new ObjectStep(this, NullObjectID.NULL_22489, new WorldPoint(3550, 3554, 2),
+		putOrderOnCrate = new ObjectStep(this, ObjectID.BRAIN_FENK_CRATE, new WorldPoint(3550, 3554, 2),
 			"Return to Dr. Fenkenstrain and place the shipping order on the crate..", shippingOrder.highlighted());
-		putOrderOnCrate.addIcon(ItemID.SHIPPING_ORDER);
+		putOrderOnCrate.addIcon(ItemID.BRAIN_INV_SHIPPING_ORDER);
 		putOrderOnCrate.addSubSteps(goF1WithOrder, goF2WithOrder);
 
 		/// Saving the Monks
 		ObjectStep moveToCapt3 = moveToCapt2.copy();
 		NpcStep moveToMos3 = moveToMos2.copy();
 		NpcStep tranqTpToHarmony3 = speakToTranquilityToTeleportBack.copy();
-		NpcStep savingTheMonksTalkToFenk = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
+		NpcStep savingTheMonksTalkToFenk = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3681, 2963, 0),
 			"Talk to Fenkenstrain in the windmill's basement.");
 		goToHarmonyAfterFenk = new ConditionalStep(this, moveToCapt3, "Talk to Dr. Fenkenstrain in the Harmony Windmill basement.");
 		((ConditionalStep) goToHarmonyAfterFenk).addStep(inMos, tranqTpToHarmony3);
 		((ConditionalStep) goToHarmonyAfterFenk).addStep(inBoatToMos, moveToMos3);
 		((ConditionalStep) goToHarmonyAfterFenk).addStep(inHarmony, savingTheMonksTalkToFenk);
-		goDownToFenk = new ObjectStep(this, ObjectID.LADDER_22173, new WorldPoint(3789, 2826, 0),
+		goDownToFenk = new ObjectStep(this, ObjectID.BRAIN_GRANERY_BASEMENT_LADDER_TOP, new WorldPoint(3789, 2826, 0),
 			"Talk to Dr. Fenkenstrain in the Harmony Windmill basement.");
-		talkToFenkOnHarmony = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3785, 9225, 0),
+		talkToFenkOnHarmony = new NpcStep(this, NpcID.FENK_FENKENSTRAIN_MODEL, new WorldPoint(3785, 9225, 0),
 			"Talk to Dr. Fenkenstrain in the Harmony Windmill basement.");
 		talkToFenkOnHarmony.addSubSteps(goToHarmonyAfterFenk, goDownToFenk);
-		leaveWindmillBasement = new ObjectStep(this, ObjectID.LADDER_22172, new WorldPoint(3789, 9226, 0),
+		leaveWindmillBasement = new ObjectStep(this, ObjectID.BRAIN_GRANERY_BASEMENT_LADDER_BOTTOM, new WorldPoint(3789, 9226, 0),
 			"Leave the basement.");
 
-		goToHarmonyForBrainItems = new NpcStep(this, NpcID.BROTHER_TRANQUILITY, new WorldPoint(3681, 2963, 0),
+		goToHarmonyForBrainItems = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_ZOMBIE, new WorldPoint(3681, 2963, 0),
 			"Return to Harmony.");
-		getFuse = new ObjectStep(this, ObjectID.LOCKER_22298, new WorldPoint(3791, 2873, 0),
+		getFuse = new ObjectStep(this, ObjectID.BRAIN_BOAT_LOCKER, new WorldPoint(3791, 2873, 0),
 			"Search the locker on the ship on the north of Harmony.",
 			fishbowlHelmet.highlighted().equipped(), divingApparatus.highlighted().equipped());
-		((ObjectStep) getFuse).addAlternateObjects(ObjectID.LOCKER_22299);
+		((ObjectStep) getFuse).addAlternateObjects(ObjectID.BRAIN_BOAT_LOCKER_OPEN);
 		getFuse.addSubSteps(goToHarmonyForBrainItems, leaveWindmillBasement);
-		climbShipLadder = new ObjectStep(this, ObjectID.LADDER_22274, new WorldPoint(3802, 2873, 0),
+		climbShipLadder = new ObjectStep(this, ObjectID.BRAIN_BOAT_LOC_LADDER_BOTTOM, new WorldPoint(3802, 2873, 0),
 			"Climb the ship's ladder.");
 		getTinderbox = new ItemStep(this, "Take a tinderbox.", tinderbox);
 		getKeg = new ItemStep(this, "Take a keg.", keg);
-		climbDownFromShip = new ObjectStep(this, ObjectID.LADDER_22275, new WorldPoint(3802, 2873, 1),
+		climbDownFromShip = new ObjectStep(this, ObjectID.BRAIN_BOAT_LOC_LADDER_TOP, new WorldPoint(3802, 2873, 1),
 			"Climb down the ship's ladder.");
-		useKegOnDoor = new ObjectStep(this, NullObjectID.NULL_22119, new WorldPoint(3805, 2844, 0),
+		useKegOnDoor = new ObjectStep(this, ObjectID.BRAIN_MON_ENTRANCE_DOOR_MULTI, new WorldPoint(3805, 2844, 0),
 			"Use the keg on the church's door.", keg.highlighted());
-		useKegOnDoor.addIcon(ItemID.KEG_10898);
-		useFuseOnDoor = new ObjectStep(this, NullObjectID.NULL_22119, new WorldPoint(3805, 2844, 0),
+		useKegOnDoor.addIcon(ItemID.BRAIN_INV_GUN_POWDER_BARREL);
+		useFuseOnDoor = new ObjectStep(this, ObjectID.BRAIN_MON_ENTRANCE_DOOR_MULTI, new WorldPoint(3805, 2844, 0),
 			"Use the fuse on the keg.", fuse.highlighted());
-		useFuseOnDoor.addIcon(ItemID.FUSE_10884);
-		lightFuse = new ObjectStep(this, NullObjectID.NULL_22492, new WorldPoint(3803, 2844, 0),
+		useFuseOnDoor.addIcon(ItemID.BRAIN_FUSE);
+		lightFuse = new ObjectStep(this, ObjectID.BRAIN_MULTI_FUSE_2, new WorldPoint(3803, 2844, 0),
 			"Light the fuse.", tinderbox.highlighted());
 		lightFuse.addIcon(ItemID.TINDERBOX);
-		killSorebones = new NpcStep(this, NpcID.SOREBONES, new WorldPoint(3815, 2843, 0),
+		killSorebones = new NpcStep(this, NpcID.BRAIN_SAWBONES_1, new WorldPoint(3815, 2843, 0),
 			"Kill sorebones in the church for items.", true,
 			cranialClamp.hideConditioned(givenClamp), brainTongs.hideConditioned(givenTongs),
 			neededJars.hideConditioned(givenBells), neededStaples.hideConditioned(givenStaples));
-		((NpcStep) killSorebones).addAlternateNpcs(NpcID.SOREBONES_562);
-		goBackDownToFenk = new ObjectStep(this, ObjectID.LADDER_22173, new WorldPoint(3789, 2826, 0),
+		((NpcStep) killSorebones).addAlternateNpcs(NpcID.BRAIN_SAWBONES_2);
+		goBackDownToFenk = new ObjectStep(this, ObjectID.BRAIN_GRANERY_BASEMENT_LADDER_TOP, new WorldPoint(3789, 2826, 0),
 			"Return to Dr. Fenkenstrain in the Harmony Windmill basement.", hammer.hideConditioned(givenHammer),
 			cranialClamp.hideConditioned(givenClamp), brainTongs.hideConditioned(givenTongs),
 			neededJars.hideConditioned(givenBells), neededStaples.hideConditioned(givenStaples));
-		talkToFenkWithItems = new NpcStep(this, NpcID.DR_FENKENSTRAIN, new WorldPoint(3785, 9225, 0),
+		talkToFenkWithItems = new NpcStep(this, NpcID.FENK_FENKENSTRAIN_MODEL, new WorldPoint(3785, 9225, 0),
 			"Return to Dr. Fenkenstrain in the Harmony Windmill basement.", hammer.hideConditioned(givenHammer),
 			cranialClamp.hideConditioned(givenClamp), brainTongs.hideConditioned(givenTongs),
 			neededJars.hideConditioned(givenBells), neededStaples.hideConditioned(givenStaples));
 		talkToFenkWithItems.addSubSteps(goBackDownToFenk);
 
-		goUpFromFenkAfterItems = new ObjectStep(this, ObjectID.LADDER_22172, new WorldPoint(3789, 9226, 0),
+		goUpFromFenkAfterItems = new ObjectStep(this, ObjectID.BRAIN_GRANERY_BASEMENT_LADDER_BOTTOM, new WorldPoint(3789, 9226, 0),
 			"Talk to Brother Tranquility on Harmony.");
-		talkToTranquilityAfterHelping = new NpcStep(this, NpcID.BROTHER_TRANQUILITY_551, new WorldPoint(3787, 2825,
+		talkToTranquilityAfterHelping = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_HUMAN, new WorldPoint(3787, 2825,
 			0), "Talk to Brother Tranquility on Harmony.");
 		talkToTranquilityAfterHelping.addSubSteps(goUpFromFenkAfterItems);
 
-		enterChurchForFight = new ObjectStep(this, NullObjectID.NULL_22119, new WorldPoint(3805, 2844, 0),
+		enterChurchForFight = new ObjectStep(this, ObjectID.BRAIN_MON_ENTRANCE_DOOR_MULTI, new WorldPoint(3805, 2844, 0),
 			"Enter the church, ready to fight Barrelchest. If after initially entering you leave then re-enter, the " +
 				"Barrelchest will get stuck and you can safespot it from the door.", fishbowlHelmet.equipped(),
 			divingApparatus.equipped(), combatGearForSafespotting);
-		confrontMigor = new NpcStep(this, NpcID.MIGOR, new WorldPoint(3815, 2844, 0),
+		confrontMigor = new NpcStep(this, NpcID.BRAIN_MI_GOR, new WorldPoint(3815, 2844, 0),
 			"Confront Migor.");
-		defeatBarrelchest = new NpcStep(this, NpcID.BARRELCHEST, new WorldPoint(3815, 2844, 0),
+		defeatBarrelchest = new NpcStep(this, NpcID.BRAIN_BARREL_CHEST, new WorldPoint(3815, 2844, 0),
 			"Defeat the barrelchest. You can safespot it from the door if you leave and re-enter the instance.");
 		((NpcStep) defeatBarrelchest).addSafeSpots(new WorldPoint(3806, 2844, 0));
 
 		pickupAnchor = new ItemStep(this, "Pickup the anchor.", anchor);
-		talkToTranquilityToFinish = new NpcStep(this, NpcID.BROTHER_TRANQUILITY_551, new WorldPoint(3787, 2825,
+		talkToTranquilityToFinish = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_HUMAN, new WorldPoint(3787, 2825,
 			0), "Talk to Brother Tranquility on Harmony to complete the quest.");
 		talkToTranquilityToFinish.addSubSteps(pickupAnchor);
 	}
@@ -627,9 +619,9 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Barrelchest Anchor", ItemID.BARRELCHEST_ANCHOR, 1),
-			new ItemReward("5,000 Exp Reward Lamp (Any skill above 30)", ItemID.ANTIQUE_LAMP, 1),
-			new ItemReward("Prayer Book", ItemID.PRAYER_BOOK, 1));
+			new ItemReward("Barrelchest Anchor", ItemID.BRAIN_ANCHOR, 1),
+			new ItemReward("5,000 Exp Reward Lamp (Any skill above 30)", ItemID.THOSF_REWARD_LAMP, 1),
+			new ItemReward("Prayer Book", ItemID.BRAIN_FOG_BOOK, 1));
 	}
 
 	@Override

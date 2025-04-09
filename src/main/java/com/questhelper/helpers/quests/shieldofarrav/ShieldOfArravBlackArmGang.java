@@ -24,33 +24,25 @@
  */
 package com.questhelper.helpers.quests.shieldofarrav;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 {
@@ -101,12 +93,12 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		storeRoomKey = new ItemRequirement("Weapon store key", ItemID.WEAPON_STORE_KEY);
+		storeRoomKey = new ItemRequirement("Weapon store key", ItemID.PHOENIXKEY2);
 		twoPhoenixCrossbow = new ItemRequirement("Phoenix crossbow", ItemID.PHOENIX_CROSSBOW, 2);
-		shieldHalf = new ItemRequirement("Broken shield", ItemID.BROKEN_SHIELD_765);
-		certificateHalf = new ItemRequirement("Half certificate", ItemID.HALF_CERTIFICATE_11174);
-		phoenixCertificateHalf = new ItemRequirement("Half certificate", ItemID.HALF_CERTIFICATE);
-		certificate = new ItemRequirement("Certificate", ItemID.CERTIFICATE);
+		shieldHalf = new ItemRequirement("Broken shield", ItemID.ARRAVSHIELD2);
+		certificateHalf = new ItemRequirement("Half certificate", ItemID.ARRAVCERTIFICATE_RHT);
+		phoenixCertificateHalf = new ItemRequirement("Half certificate", ItemID.ARRAVCERTIFICATE_LFT);
+		certificate = new ItemRequirement("Certificate", ItemID.ARRAVCERTIFICATE);
 	}
 
 	@Override
@@ -119,14 +111,14 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inStoreRoom = new ZoneRequirement(storeRoom);
-		weaponMasterAlive = new NpcCondition(NpcID.WEAPONSMASTER);
+		weaponMasterAlive = new NpcCondition(NpcID.WEAPONSMASTER_VIS);
 		isUpstairsInBase = new ZoneRequirement(upstairsInBase);
-		cupboardOpen = new ObjectCondition(ObjectID.CUPBOARD_2401);
+		cupboardOpen = new ObjectCondition(ObjectID.BLACKARMCUPBOARDOPEN);
 	}
 
 	public void setupSteps()
 	{
-		talkToCharlie = new NpcStep(this, NpcID.CHARLIE_THE_TRAMP, new WorldPoint(3208, 3392, 0), "To start the quest as the Black Arm Gang, talk to Charlie the Tramp in south Varrock to start.");
+		talkToCharlie = new NpcStep(this, NpcID.TRAMPPG, new WorldPoint(3208, 3392, 0), "To start the quest as the Black Arm Gang, talk to Charlie the Tramp in south Varrock to start.");
 		talkToCharlie.addDialogStep("Is there anything down this alleyway?");
 		talkToCharlie.addDialogStep("Do you think they would let me join?");
 
@@ -140,33 +132,33 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 		// TODO: Convert info to initial step details
 		getWeaponStoreKey = new DetailedQuestStep(this, "Get the weapon storeroom key from another player.  If you cannot trade, have them use the key on you to drop it at your feet.");
 
-		goUpToWeaponStore = new ObjectStep(this, ObjectID.LADDER_11794, new WorldPoint(3252, 3384, 0), "Go up the ladder in south east Varrock to the Phoenix Weapon Storeroom.", storeRoomKey);
+		goUpToWeaponStore = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER, new WorldPoint(3252, 3384, 0), "Go up the ladder in south east Varrock to the Phoenix Weapon Storeroom.", storeRoomKey);
 
-		killWeaponsMaster = new NpcStep(this, NpcID.WEAPONSMASTER, new WorldPoint(3247, 3384, 1), "Kill the Weaponsmaster, or have someone else kill him.");
+		killWeaponsMaster = new NpcStep(this, NpcID.WEAPONSMASTER_VIS, new WorldPoint(3247, 3384, 1), "Kill the Weaponsmaster, or have someone else kill him.");
 
 		// TODO: Issue with this step, as a crossbow upon killing the weaponsmaster dissappears/appears, the initial despawn doesn't effect the initial area check, so a blue marker remains on the floor
 		pickupTwoCrossbows = new DetailedQuestStep(this, "Pick up TWO phoenix crossbows", twoPhoenixCrossbow);
 
-		goDownFromWeaponStore = new ObjectStep(this, ObjectID.LADDER_11802, new WorldPoint(3252, 3384, 1), "Go back down from the storeroom.", twoPhoenixCrossbow);
+		goDownFromWeaponStore = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER_TALLER_TOP, new WorldPoint(3252, 3384, 1), "Go back down from the storeroom.", twoPhoenixCrossbow);
 
 		returnToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Return to Katrine with the crossbows.", twoPhoenixCrossbow);
 		returnToKatrine.addSubSteps(goDownFromWeaponStore);
 
-		goUpstairsInBase = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(3189, 3390, 0), "Go up the stairs in the Black Arm Gang base.");
+		goUpstairsInBase = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS, new WorldPoint(3189, 3390, 0), "Go up the stairs in the Black Arm Gang base.");
 
-		getShieldFromCupboard = new ObjectStep(this, ObjectID.CUPBOARD_2400, new WorldPoint(3189, 3386, 1), "Search the cupboard for half of the Shield of Arrav.");
-		getShieldFromCupboard1 = new ObjectStep(this, ObjectID.CUPBOARD_2401, new WorldPoint(3189, 3386, 1), "Search the cupboard for half of the Shield of Arrav.");
+		getShieldFromCupboard = new ObjectStep(this, ObjectID.BLACKARMCUPBOARDSHUT, new WorldPoint(3189, 3386, 1), "Search the cupboard for half of the Shield of Arrav.");
+		getShieldFromCupboard1 = new ObjectStep(this, ObjectID.BLACKARMCUPBOARDOPEN, new WorldPoint(3189, 3386, 1), "Search the cupboard for half of the Shield of Arrav.");
 		getShieldFromCupboard.addSubSteps(getShieldFromCupboard1);
 
-		goDownstairsInBase = new ObjectStep(this, ObjectID.STAIRCASE_11799, new WorldPoint(3189, 3391, 1), "Go back downstairs.");
+		goDownstairsInBase = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TOP, new WorldPoint(3189, 3391, 1), "Go back downstairs.");
 
 		tradeCertificateHalf = new DetailedQuestStep(this, "Trade one of your certificate halves for the other half with another player. If you cannot trade, use the certificate on them to drop it at their feet. They can do the same for you.");
 		combineCertificate = new DetailedQuestStep(this, "Use the two certificate halves together to create the certificate.", certificateHalf, phoenixCertificateHalf);
 
-		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3255, 3449, 0), "Talk to Curator Haig in the Varrock Museum.", shieldHalf);
+		talkToHaig = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3255, 3449, 0), "Talk to Curator Haig in the Varrock Museum.", shieldHalf);
 		talkToHaig.addSubSteps(goDownstairsInBase);
 
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_4163, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle to finish the quest.", certificate);
+		talkToRoald = new NpcStep(this, NpcID.SUROK_KING, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle to finish the quest.", certificate);
 
 	}
 
@@ -179,7 +171,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 600));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 600));
 	}
 
 	@Override

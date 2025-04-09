@@ -24,41 +24,37 @@
  */
 package com.questhelper.helpers.achievementdiaries.wilderness;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class WildernessElite extends ComplexStateQuestHelper
 {
@@ -142,10 +138,10 @@ public class WildernessElite extends ComplexStateQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneScim).isNotConsumed();
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPGhorrock);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notTPGhorrock);
+		lawRune = new ItemRequirement("Law rune", ItemID.LAWRUNE).showConditioned(notTPGhorrock);
+		waterRune = new ItemRequirement("Water rune", ItemID.WATERRUNE).showConditioned(notTPGhorrock);
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT).showConditioned(notDarkCrab).isNotConsumed();
-		darkFishingBait = new ItemRequirement("Dark fish bait", ItemID.DARK_FISHING_BAIT).showConditioned(notDarkCrab);
+		darkFishingBait = new ItemRequirement("Dark fish bait", ItemID.WILDERNESS_FISHING_BAIT).showConditioned(notDarkCrab);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR,
 			notDarkCrab, notMagicLogs, notRuneScim));
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notRuneScim).isNotConsumed();
@@ -224,52 +220,52 @@ public class WildernessElite extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		moveToResource1 = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
+		moveToResource1 = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_GATE, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(6000), axe, tinderbox);
-		magicLogs = new ObjectStep(this, ObjectID.MAGIC_TREE_10834, new WorldPoint(3190, 3926, 0),
+		magicLogs = new ObjectStep(this, ObjectID.MAGICTREE, new WorldPoint(3190, 3926, 0),
 			"Chop some magic logs.", true, axe, tinderbox);
 		burnLogs = new ItemStep(this, "Burn the magic logs in the Resource Area.", tinderbox.highlighted(),
 			magicLog.highlighted());
 
-		moveToResource2 = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
+		moveToResource2 = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_GATE, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(6000), combatGear, food, pickaxe, coal.quantity(16), hammer);
-		runiteGolem = new NpcStep(this, NpcID.RUNITE_GOLEM, new WorldPoint(3189, 3938, 0),
+		runiteGolem = new NpcStep(this, NpcID.WILDERNESS_RUNE_GOLEM, new WorldPoint(3189, 3938, 0),
 			"Kill and mine the Runite Golems in the Resource Area.", true, combatGear, food,
 			pickaxe, coal.quantity(16), hammer);
-		runiteGolem.addAlternateNpcs(NpcID.RUNITE_ROCKS);
-		smeltBar = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
+		runiteGolem.addAlternateNpcs(NpcID.WILDERNESS_GOLEM_RUNE_ROCK);
+		smeltBar = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_FURNACE, new WorldPoint(3191, 3936, 0),
 			"Smelt the ore into runite bars.", hammer, runeOre.quantity(2), coal.quantity(16), hammer);
-		runeScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
+		runeScim = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(3190, 3938, 0),
 			"Smith a runite scimitar in the Resource Area.", hammer, runeBar.quantity(2));
 
-		moveToResource3 = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
+		moveToResource3 = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_GATE, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(6000), lobsterPot, darkFishingBait);
-		darkCrab = new NpcStep(this, NpcID.FISHING_SPOT_1536, new WorldPoint(3187, 3927, 0),
+		darkCrab = new NpcStep(this, NpcID._49_61_CRABS, new WorldPoint(3187, 3927, 0),
 			"Fish a dark crab in the Resource Area.", lobsterPot, darkFishingBait);
-		cookDarkCrab = new ObjectStep(this, ObjectID.FIRE_26185, new WorldPoint(3188, 3930, 0),
+		cookDarkCrab = new ObjectStep(this, ObjectID.FIRE, new WorldPoint(3188, 3930, 0),
 			"Cook the raw dark crab on the nearby fire.", rawDarkCrab);
 
 		tPGhorrock = new DetailedQuestStep(this, "Teleport to Ghorrock.", ancientBook, lawRune.quantity(2),
 			waterRune.quantity(8));
 
-		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3018, 3739, 0),
+		moveToGodWars1 = new ObjectStep(this, ObjectID.WILDERNESS_GWD_ENTRANCE, new WorldPoint(3018, 3739, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
-		moveToGodWars2 = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 0),
+		moveToGodWars2 = new ObjectStep(this, ObjectID.WILDERNESS_GWD_CREVICE, new WorldPoint(3066, 10142, 0),
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the west.",
 			combatGear, food, godEquip);
-		spiritMage = new NpcStep(this, NpcID.SPIRITUAL_MAGE, new WorldPoint(3050, 10131, 0),
+		spiritMage = new NpcStep(this, NpcID.GODWARS_SPIRITUAL_SARADOMIN_MAGE, new WorldPoint(3050, 10131, 0),
 			"Kill a Spiritual Mage in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
-		spiritMage.addAlternateNpcs(NpcID.SPIRITUAL_MAGE_2244, NpcID.SPIRITUAL_MAGE_3161, NpcID.SPIRITUAL_MAGE_3168);
+		spiritMage.addAlternateNpcs(NpcID.GODWARS_SPIRITUAL_BANDOS_MAGE, NpcID.GODWARS_SPIRITUAL_ZAMORAK_MAGE, NpcID.GODWARS_SPIRITUAL_ARMADYL_MAGE);
 
-		threeBosses = new NpcStep(this, NpcID.CALLISTO, new WorldPoint(3291, 3844, 0),
+		threeBosses = new NpcStep(this, NpcID.CLANCUP_CALLISTO, new WorldPoint(3291, 3844, 0),
 			"Kill Callisto, Venenatis, and Vet'ion. You must complete this task fully before continuing the other " +
 				"tasks.", combatGear, food);
-		threeBosses.addAlternateNpcs(NpcID.VETION, NpcID.VENENATIS);
+		threeBosses.addAlternateNpcs(NpcID.VETION, NpcID.CLANCUP_VENENATIS);
 
-		roguesChest = new ObjectStep(this, ObjectID.CHEST_26757, new WorldPoint(3297, 3940, 0),
+		roguesChest = new ObjectStep(this, ObjectID.WILDERNESS_ROGUE_CHEST, new WorldPoint(3297, 3940, 0),
 			"Steal from the chest in Rogues' Castle.");
 
-		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC, new WorldPoint(3121, 3518, 0),
+		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC_DIARY, new WorldPoint(3121, 3518, 0),
 			"Talk to Lesser Fanatic in Edgeville to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -318,8 +314,8 @@ public class WildernessElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Wilderness Sword 4", ItemID.WILDERNESS_SWORD_4),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Wilderness Sword 4", ItemID.WILDERNESS_SWORD_ELITE),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

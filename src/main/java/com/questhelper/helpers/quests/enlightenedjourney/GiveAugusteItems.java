@@ -25,23 +25,23 @@
 package com.questhelper.helpers.quests.enlightenedjourney;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.NpcStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class GiveAugusteItems extends NpcStep
 {
-	private static final ItemRequirement sandbag8 = new ItemRequirement("Sandbag", ItemID.SANDBAG, 8);
-	private static final ItemRequirement yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE);
-	private static final ItemRequirement redDye = new ItemRequirement("Red dye", ItemID.RED_DYE);
+	private static final ItemRequirement sandbag8 = new ItemRequirement("Sandbag", ItemID.ZEP_SANDBAG, 8);
+	private static final ItemRequirement yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOWDYE);
+	private static final ItemRequirement redDye = new ItemRequirement("Red dye", ItemID.REDDYE);
 	private static final ItemRequirement silk10 = new ItemRequirement("Silk", ItemID.SILK, 10);
-	private static final ItemRequirement bowl = new ItemRequirement("Bowl", ItemID.BOWL);
+	private static final ItemRequirement bowl = new ItemRequirement("Bowl", ItemID.BOWL_EMPTY);
 
 	private final Requirement givenRedDye;
 	private final Requirement givenYellowDye;
@@ -52,7 +52,7 @@ public class GiveAugusteItems extends NpcStep
 	public GiveAugusteItems(QuestHelper questHelper)
 	{
 
-		super(questHelper, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
+		super(questHelper, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0),
 			"Give Auguste the sandbags, silk, dyes, and bowl.", sandbag8, silk10, redDye, yellowDye, bowl);
 		givenRedDye = new VarbitRequirement(2873, 1);
 		givenYellowDye = new VarbitRequirement(2874, 1); // 2879 = 1 as well, maybe both dyes done

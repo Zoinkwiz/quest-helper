@@ -24,35 +24,41 @@
  */
 package com.questhelper.helpers.achievementdiaries.kandarin;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.KeyringCollection;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.player.SpellbookRequirement;
-import com.questhelper.requirements.util.Spellbook;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
+import net.runelite.api.Prayer;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
 
 public class KandarinHard extends ComplexStateQuestHelper
 {
@@ -155,14 +161,14 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 		piety = new PrayerRequirement("Piety", Prayer.PIETY);
 
-		barbRod = new ItemRequirement("Barbarian fishing rod", ItemID.BARBARIAN_ROD).showConditioned(notCatchSturgeon).isNotConsumed();
+		barbRod = new ItemRequirement("Barbarian fishing rod", ItemID.BRUT_FISHING_ROD).showConditioned(notCatchSturgeon).isNotConsumed();
 		feather = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSturgeon);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notYewLong).isNotConsumed();
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notYewLong);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notYewLong).isNotConsumed();
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notWaterOrb);
-		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notWaterOrb);
-		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notWaterOrb);
+		waterRune = new ItemRequirement("Water rune", ItemID.WATERRUNE).showConditioned(notWaterOrb);
+		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMICRUNE).showConditioned(notWaterOrb);
+		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.STAFFORB).showConditioned(notWaterOrb);
 
 		Conditions not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
 
@@ -172,7 +178,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
 		mapleLogs = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS).showConditioned(notBurnMaple);
 		bow = new ItemRequirement("Any bow", ItemCollections.BOWS).showConditioned(notBurnMaple).isNotConsumed();
-		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.RING_OF_VISIBILITY).showConditioned(notShadowHound).isNotConsumed();
+		ringOfVis = new ItemRequirement("Ring of Visibility", ItemID.FD_RING_VISIBILITY).showConditioned(notShadowHound).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		coinsAll = new ItemRequirement("Coins", ItemCollections.COINS, 95000+25000)
 			.showConditioned(new Conditions(LogicType.AND, notFancyStone, notBuyGranite));
@@ -183,7 +189,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddySpear);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddySpear).isNotConsumed();
 		yewLogs = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notAddySpear);
-		unstrungYewLong = new ItemRequirement("Unstrung yew longbow", ItemID.YEW_LONGBOW_U);
+		unstrungYewLong = new ItemRequirement("Unstrung yew longbow", ItemID.UNSTRUNG_YEW_LONGBOW);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1)
 			.showConditioned(new Conditions(LogicType.OR, notShadowHound, notMithrilDrag)).isNotConsumed();
@@ -231,20 +237,20 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+		moveToTavDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
 			"Enter the Taverley Dungeon to charge a water orb. Make sure you're on the normal spellbook.", normalSpellbook,
 			dustyKey, waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
-		moveToOb = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2842, 9824, 0),
+		moveToOb = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2842, 9824, 0),
 			"Make your way through Taverley Dungeon to the end, and climb the ladder there. If you're 70+ " +
 				"Agility, use on of the shortcuts near the entrance to get there quickly.",
 			dustyKey, waterRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
-		waterOrb = new ObjectStep(this, ObjectID.OBELISK_OF_WATER, new WorldPoint(2844, 3422, 0),
+		waterOrb = new ObjectStep(this, ObjectID.OBELISK_WATER, new WorldPoint(2844, 3422, 0),
 			"Use the charge water orb spell on the obelisk.", waterRune.quantity(30), cosmicRune.quantity(3),
 			unpoweredOrb, normalSpellbook);
 		waterOrb.addIcon(ItemID.WATER_ORB);
-		seersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
+		seersRooftop = new ObjectStep(this, ObjectID.ROOFTOPS_SEERS_WALLCLIMB, new WorldPoint(2729, 3489, 0),
 			"Complete a lap of the Seers' village Rooftop course.");
-		yewLong = new ObjectStep(this, ObjectID.YEW_TREE_10822, new WorldPoint(2715, 3460, 0),
+		yewLong = new ObjectStep(this, ObjectID.YEWTREE, new WorldPoint(2715, 3460, 0),
 			"Cut some yew logs near Seers' Village. Make sure to use the knife on the ones you cut.", axe);
 		cutLongbow = new ItemStep(this, "Use knife on yew logs to make a yew longbow (u)", yewLogs.highlighted(), knife.highlighted());
 		stringBow = new ItemStep(this, "String the bow.", bowString.highlighted(), unstrungYewLong.highlighted());
@@ -253,32 +259,32 @@ public class KandarinHard extends ComplexStateQuestHelper
 		moveToSeers = new DetailedQuestStep(this, new WorldPoint(2714, 3484, 0),
 			"Go to Seers' Village.", bow, mapleLogs);
 		burnMaple = new ItemStep(this, "Burn some maple logs with a bow.", bow.highlighted(), mapleLogs.highlighted());
-		fancyStone = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(2735, 3500, 0),
+		fancyStone = new NpcStep(this, NpcID.POH_ESTATE_AGENT, new WorldPoint(2735, 3500, 0),
 			"TALK to the estate agent to redecorate your house to Fancy Stone. Must be done through dialog.",
 			coins.quantity(25000));
 		fancyStone.addDialogStep("Can you redecorate my house please?");
-		moveToShadow = new ObjectStep(this, NullObjectID.NULL_6560, new WorldPoint(2547, 3421, 0),
+		moveToShadow = new ObjectStep(this, ObjectID.FD_SHADOWLADDER1, new WorldPoint(2547, 3421, 0),
 			"Climb down the shadow ladder south of Glarial's Tomb.", ringOfVis.equipped(), combatGear);
-		shadowHound = new NpcStep(this, NpcID.SHADOW_HOUND, new WorldPoint(2699, 5095, 0),
+		shadowHound = new NpcStep(this, NpcID.SHADOW_DOG_WILD, new WorldPoint(2699, 5095, 0),
 			"Kill a shadow hound.", true);
-		catchSturgeon = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2501, 3504, 0),
+		catchSturgeon = new NpcStep(this, NpcID._0_39_54_BRUT_FISHING_SPOT, new WorldPoint(2501, 3504, 0),
 			"Catch a leaping Sturgeon south of Barbarian Assault.", true, barbRod, feather.quantity(20));
-		addySpear = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
+		addySpear = new ObjectStep(this, ObjectID.BRUT_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Smith an adamant spear on the barbarian anvil south of Barbarian Assault.", addyBar, yewLogs);
 		addySpear.addIcon(ItemID.ADAMANTITE_BAR);
-		moveToWhirl = new ObjectStep(this, ObjectID.WHIRLPOOL_25274, new WorldPoint(2512, 3508, 0),
+		moveToWhirl = new ObjectStep(this, ObjectID.BRUT_WHIRLPOOL, new WorldPoint(2512, 3508, 0),
 			"Jump in the whirlpool south of Barbarian Assault.", combatGear, antidragonfire.equipped());
-		moveToAncient2 = new ObjectStep(this, ObjectID.STAIRS_25338, new WorldPoint(1770, 5366, 1),
+		moveToAncient2 = new ObjectStep(this, ObjectID.BRUT_STAIR_LRG_TOP, new WorldPoint(1770, 5366, 1),
 			"Go down the stairs.");
-		moveToAncient3 = new ObjectStep(this, ObjectID.STAIRS_25339, new WorldPoint(1778, 5345, 0),
+		moveToAncient3 = new ObjectStep(this, ObjectID.BRUT_CAVE_STAIRS_LOW, new WorldPoint(1778, 5345, 0),
 			"Go up the stairs in the east of the cavern.");
-		mithrilDrag = new NpcStep(this, NpcID.MITHRIL_DRAGON, new WorldPoint(1779, 5344, 1),
+		mithrilDrag = new NpcStep(this, NpcID.BRUT_MITHRIL_DRAGON, new WorldPoint(1779, 5344, 1),
 			"Kill a mithril dragon.", true, combatGear, antidragonfire.equipped(), food);
-		buyGranite = new NpcStep(this, NpcID.COMMANDER_CONNAD, new WorldPoint(2535, 3576, 0),
+		buyGranite = new NpcStep(this, NpcID.BARBASSAULT_BARBARIAN_COMMANDER, new WorldPoint(2535, 3576, 0),
 			"Buy and equip a granite body from Commander Connad. (Requires at least 1 Penance Queen kill)",
 			coins.quantity(95000));
 
-		claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
+		claimReward = new NpcStep(this, NpcID.SEERS_DIARY_WEDGE, new WorldPoint(2760, 3476, 0),
 			"Talk to the 'Wedge' in front of Camelot Castle to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -347,8 +353,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Kandarin headgear (3)", ItemID.KANDARIN_HEADGEAR_3, 1),
-			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Kandarin headgear (3)", ItemID.SEERS_HEADBAND_HARD, 1),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

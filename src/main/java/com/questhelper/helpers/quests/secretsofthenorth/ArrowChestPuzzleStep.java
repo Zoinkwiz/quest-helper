@@ -27,16 +27,15 @@ package com.questhelper.helpers.quests.secretsofthenorth;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import net.runelite.api.events.VarClientIntChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.Subscribe;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.runelite.api.events.VarClientIntChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.client.eventbus.Subscribe;
 
 public class ArrowChestPuzzleStep extends QuestStep
 {

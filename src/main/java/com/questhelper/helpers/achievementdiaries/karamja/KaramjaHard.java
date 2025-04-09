@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.achievementdiaries.karamja;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarPlayer;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.bank.banktab.BankSlotIcons;
-import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -40,26 +40,24 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class KaramjaHard extends ComplexStateQuestHelper
 {
@@ -159,33 +157,33 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		notCookedKarambwan = new VarbitRequirement(3604, 0);
 		notKilledDeathwing = new VarbitRequirement(3605, 0);
 		notUsedShortcut = new VarbitRequirement(3606, 0);
-		notCollectedLeaves = new VarbitRequirement(3607, 4, Operation.LESS_EQUAL);
+		notCollectedLeaves = new VarbitRequirement(VarbitID.ATJUN_HARD_PALM, 4, Operation.LESS_EQUAL);
 		notAssignedTask = new VarbitRequirement(3608, 0);
 		notKilledDragon = new VarbitRequirement(3609, 0);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notKilledDeathwing).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKilledDragon);
-		oomlieWrap = new ItemRequirement("Oomlie wrap", ItemID.COOKED_OOMLIE_WRAP).showConditioned(notEatenWrap);
+		oomlieWrap = new ItemRequirement("Oomlie wrap", ItemID.COOKED_OOMLIE).showConditioned(notEatenWrap);
 		oomlieWrap.setTooltip("You can make one by using a palm leaf on a raw oomlie and cooking it. Both are " +
 			"obtained from the Kharazi Jungle");
-		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedNature);
+		pureEssence = new ItemRequirement("Pure essence", ItemID.BLANKRUNE_HIGH).showConditioned(notCraftedNature);
 		natureTalismanOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemID.NATURE_TALISMAN)
 			.showConditioned(notCraftedNature).isNotConsumed();
-		natureTalismanOrAbyss.addAlternates(ItemID.NATURE_TIARA);
+		natureTalismanOrAbyss.addAlternates(ItemID.TIARA_NATURE);
 		natureTalismanOrAbyss.setTooltip("Nature talisman or tiara");
-		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN).showConditioned(notCookedKarambwan);
+		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.TBWT_RAW_KARAMBWAN).showConditioned(notCookedKarambwan);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
 			notCollectedLeaves, notKilledDeathwing, notKilledDragon)).isNotConsumed();
-		machete = new ItemRequirement("Any machete", ItemID.MACHETE).showConditioned(new Conditions(LogicType.OR,
+		machete = new ItemRequirement("Any machete", ItemID.MACHETTE).showConditioned(new Conditions(LogicType.OR,
 			notCollectedLeaves, notKilledDeathwing)).isNotConsumed();
-		machete.addAlternates(ItemID.OPAL_MACHETE, ItemID.JADE_MACHETE, ItemID.RED_TOPAZ_MACHETE);
+		machete.addAlternates(ItemID.MACHETTE_OPAL, ItemID.MACHETTE_JADE, ItemID.MACHETTE_REDTOPAZ);
 		lockpick = new ItemRequirement("Lockpick, more in case it breaks", ItemID.LOCKPICK)
 			.showConditioned(notKilledDeathwing).isNotConsumed();
 		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).showConditioned(notUsedShortcut).isNotConsumed();
-		crossbow.addAlternates(ItemID.BRONZE_CROSSBOW, ItemID.IRON_CROSSBOW, ItemID.STEEL_CROSSBOW,
-			ItemID.MITHRIL_CROSSBOW, ItemID.ADAMANT_CROSSBOW, ItemID.RUNE_CROSSBOW, ItemID.DRAGON_CROSSBOW,
-			ItemID.BLURITE_CROSSBOW, ItemID.DORGESHUUN_CROSSBOW, ItemID.ARMADYL_CROSSBOW, ItemID.ZARYTE_CROSSBOW);
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notUsedShortcut).isNotConsumed();
+		crossbow.addAlternates(ItemID.XBOWS_CROSSBOW_BRONZE, ItemID.XBOWS_CROSSBOW_IRON, ItemID.XBOWS_CROSSBOW_STEEL,
+			ItemID.XBOWS_CROSSBOW_MITHRIL, ItemID.XBOWS_CROSSBOW_ADAMANTITE, ItemID.XBOWS_CROSSBOW_RUNITE, ItemID.XBOWS_CROSSBOW_DRAGON,
+			ItemID.XBOWS_CROSSBOW_BLURITE, ItemID.DTTD_BONE_CROSSBOW, ItemID.ACB, ItemID.ZARYTE_XBOW);
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notUsedShortcut).isNotConsumed();
 		antidragonShield =
 			new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS)
 				.showConditioned(notKilledDragon).isNotConsumed();
@@ -245,60 +243,60 @@ public class KaramjaHard extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		enterHole = new ObjectStep(this, ObjectID.ROCKS_11441, new WorldPoint(2857, 3169, 0),
+		enterHole = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0),
 			"Enter Mor Ul Rek under the Karamja Volcano.");
-		enterTzhaar = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_11835, new WorldPoint(2864, 9572, 0),
+		enterTzhaar = new ObjectStep(this, ObjectID.TZHAAR_KARAMJADUNGEON_WALL_ENTRANCE, new WorldPoint(2864, 9572, 0),
 			"Enter Mor Ul Rek under the Karamja Volcano.");
-		enterFightCaves = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_11833, new WorldPoint(2438, 5167, 0),
+		enterFightCaves = new ObjectStep(this, ObjectID.TZHAAR_FIGHTCAVE_WALL_ENTRANCE, new WorldPoint(2438, 5167, 0),
 			"Enter the fight caves in Mor Ul Rek, ready to reach at least wave 31 to defeat a Ket-Zek.",
 			fightCaveCombatGear);
 		enterFightCaves.addSubSteps(enterHole, enterTzhaar);
 
-		enterHoleChampion = new ObjectStep(this, ObjectID.ROCKS_11441, new WorldPoint(2857, 3169, 0),
+		enterHoleChampion = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0),
 			"Enter Mor Ul Rek under the Karamja Volcano.");
-		enterTzhaarChampion = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_11835, new WorldPoint(2864, 9572, 0),
+		enterTzhaarChampion = new ObjectStep(this, ObjectID.TZHAAR_KARAMJADUNGEON_WALL_ENTRANCE, new WorldPoint(2864, 9572, 0),
 			"Enter the cave that leads to Mor Ul Rek under the Karamja Volcano.");
 		becomeChampion = new DetailedQuestStep(this, new WorldPoint(2399, 5173, 0), "Win in the Fight Pits in the " +
 			"north west of Mor Ul Rek. You can ask a friend to come lose to you.");
 		becomeChampion.addSubSteps(enterHoleChampion, enterTzhaarChampion);
-		defeatZek = new NpcStep(this, NpcID.KETZEK, "Reach at least wave 31 to defeat Ket-Zek.");
+		defeatZek = new NpcStep(this, NpcID.TZHAAR_FIGHTCAVE_SWARM_5A, "Reach at least wave 31 to defeat Ket-Zek.");
 		eatOomlie = new DetailedQuestStep(this, "Eat an oomlie wrap.", oomlieWrap.highlighted());
 		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
 			"Enter the nature altar, either from the ruin or through the Abyss.", natureTalismanOrAbyss, pureEssence);
-		craftNatureRune = new ObjectStep(this, ObjectID.ALTAR_34768, new WorldPoint(2400, 4841, 0),
+		craftNatureRune = new ObjectStep(this, ObjectID.NATURE_ALTAR, new WorldPoint(2400, 4841, 0),
 			"Craft a nature rune.", pureEssence);
 		cookKarambwan = new DetailedQuestStep(this, "Cook a raw karambwan.", rawKarambwan);
 
-		enterKharaziHole = new ObjectStep(this, ObjectID.MOSSY_ROCK, new WorldPoint(2782, 2937, 0), "Search and then enter the " +
+		enterKharaziHole = new ObjectStep(this, ObjectID.LGSHAMANCAVEROCK1, new WorldPoint(2782, 2937, 0), "Search and then enter the " +
 			"Mossy Rocks in the north west of the Kharazi, and follow the cavern to kill a deathwing.", machete, axe,
 			pickaxe, lockpick);
 		enterKharaziHole.addDialogStep("Yes, I'll crawl through, I'm very athletic.");
 
-		enterBookcase = new ObjectStep(this, ObjectID.BOOKCASE_2911, new WorldPoint(2796, 9339, 0), "Right-click search the bookcase and slide past it.");
+		enterBookcase = new ObjectStep(this, ObjectID.SHAMAN_BOOKCASE, new WorldPoint(2796, 9339, 0), "Right-click search the bookcase and slide past it.");
 		enterBookcase.addDialogStep("Yes please!");
-		enterGates = new ObjectStep(this, ObjectID.ANCIENT_GATE_2922, new WorldPoint(2810, 9314, 0), "Smash through " +
+		enterGates = new ObjectStep(this, ObjectID.LGSTRENGTHTRIALGATEL, new WorldPoint(2810, 9314, 0), "Smash through " +
 			"the boulders and enter the gate at the end of the corridor.", pickaxe, lockpick);
 		enterGates.addDialogStep("Yes, I'm very strong, I'll force them open.");
-		killDeathwing = new NpcStep(this, NpcID.DEATH_WING, new WorldPoint(2810, 9300, 0),
+		killDeathwing = new NpcStep(this, NpcID.DEATHWING, new WorldPoint(2810, 9300, 0),
 			"Kill a death wing.");
 		enterKharaziHole.addSubSteps(enterBookcase, enterGates, killDeathwing);
 
-		useShortcut = new ObjectStep(this, ObjectID.STRONG_TREE_17074, new WorldPoint(2874, 3135, 0),
+		useShortcut = new ObjectStep(this, ObjectID.XBOWS_JUNGLETREE_KARAMJA_BASIC, new WorldPoint(2874, 3135, 0),
 			"Grapple across the shortcut south of Musa Point.", crossbow.equipped(), mithGrapple.equipped());
-		collectPalmLeaves = new ObjectStep(this, ObjectID.LEAFY_PALM_TREE, new WorldPoint(2845, 2915, 0),
+		collectPalmLeaves = new ObjectStep(this, ObjectID.KHARAZI_BAMBOO_TREE_BASE_LEAFY, new WorldPoint(2845, 2915, 0),
 			"Shake leafy palm trees in the Kharazi Jungle and pick up 5 palm leaves. You can pick up and drop the " +
 				"same leaf for this task."
 			, axe, machete, pickaxe, lockpick);
-		goUpToDuradel = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2871, 2971, 0),
+		goUpToDuradel = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2871, 2971, 0),
 			"Climb the ladder to Duradel.");
-		getTask = new NpcStep(this, NpcID.DURADEL, new WorldPoint(2869, 2982, 1),
+		getTask = new NpcStep(this, NpcID.WGS_HEROES_DURADEL, new WorldPoint(2869, 2982, 1),
 			"Get a task from Duradel.");
-		enterBrimhavenDungeon = new ObjectStep(this, ObjectID.DUNGEON_ENTRANCE_20876, new WorldPoint(2745, 3155, 0),
+		enterBrimhavenDungeon = new ObjectStep(this, ObjectID.DUNGEON_TREE_OPEN, new WorldPoint(2745, 3155, 0),
 			"Enter Brimhaven Dungeon.", axe, coins.quantity(875), combatGear, antidragonShield);
 		killDragon = new NpcStep(this, NpcID.BRONZE_DRAGON, new WorldPoint(2735, 9488, 0),
 			"Kill any metal dragon in the south of the dungeon.", combatGear, antidragonShield);
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
+		claimReward = new NpcStep(this, NpcID.AGILITYARENA_TICKETTRADER_2OPS, new WorldPoint(2810, 3192, 0),
 			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -341,8 +339,8 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Karamja Gloves (3)", ItemID.KARAMJA_GLOVES_3, 1),
-			new ItemReward("10,000 Exp. Lamp (Any skill above level 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Karamja Gloves (3)", ItemID.ATJUN_GLOVES_HARD, 1),
+			new ItemReward("10,000 Exp. Lamp (Any skill above level 40)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

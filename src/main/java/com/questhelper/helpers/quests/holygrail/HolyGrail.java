@@ -24,42 +24,33 @@
  */
 package com.questhelper.helpers.quests.holygrail;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 import static com.questhelper.requirements.util.LogicHelper.and;
 
@@ -153,18 +144,18 @@ public class HolyGrail extends BasicQuestHelper
 		excalibur = new ItemRequirement("Excalibur", ItemID.EXCALIBUR).isNotConsumed();
 		holyTableNapkin = new ItemRequirement("Holy Table Napkin", ItemID.HOLY_TABLE_NAPKIN);
 		twoMagicWhistles = new ItemRequirement("Magic Whistles", ItemID.MAGIC_WHISTLE, 2);
-		threeCamelotTele = new ItemRequirement("Camelot Teleports", ItemID.CAMELOT_TELEPORT, 3);
-		draynorTele = new ItemRequirement("Draynor Teleport Tablet", ItemID.DRAYNOR_MANOR_TELEPORT, 1);
+		threeCamelotTele = new ItemRequirement("Camelot Teleports", ItemID.POH_TABLET_CAMELOTTELEPORT, 3);
+		draynorTele = new ItemRequirement("Draynor Teleport Tablet", ItemID.TELETAB_DRAYNOR, 1);
 		draynorTele.addAlternates(ItemCollections.AMULET_OF_GLORIES);
-		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.ARDOUGNE_TELEPORT);
-		faladorTele = new ItemRequirement("Falador Teleport", ItemID.FALADOR_TELEPORT);
+		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.POH_TABLET_ARDOUGNETELEPORT);
+		faladorTele = new ItemRequirement("Falador Teleport", ItemID.POH_TABLET_FALADORTELEPORT);
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
-		antipoison = new ItemRequirement("Antipoison", ItemID.ANTIPOISON4);
+		antipoison = new ItemRequirement("Antipoison", ItemID._4DOSEANTIPOISON);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		combatGear = new ItemRequirement("A weapon and armour (melee recommended)", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		emptyInvSpot = new ItemRequirement("Empty Inventory Spot", -1, 1);
-		goldFeather = new ItemRequirement("Magic gold feather", ItemID.MAGIC_GOLD_FEATHER);
+		goldFeather = new ItemRequirement("Magic gold feather", ItemID.MAGIC_GOLDEN_FEATHER);
 		grailBell = new ItemRequirement("Grail Bell", ItemID.GRAIL_BELL);
 		oneMagicWhistle = new ItemRequirement("Magic Whistle", ItemID.MAGIC_WHISTLE);
 		grail = new ItemRequirement("Holy Grail", ItemID.HOLY_GRAIL);
@@ -213,7 +204,7 @@ public class HolyGrail extends BasicQuestHelper
 			new ZoneRequirement(camelotUpstairsZone1),
 			new ZoneRequirement(camelotUpstairsZone2));
 		inMerlinRoom = new ZoneRequirement(merlinRoom);
-		merlinNearby = new NpcCondition(NpcID.MERLIN_4059);
+		merlinNearby = new NpcCondition(NpcID.MERLIN2);
 		onEntrana = new Conditions(LogicType.OR,
 			new ZoneRequirement(entranaBoat),
 			new ZoneRequirement(entranaIsland));
@@ -244,24 +235,24 @@ public class HolyGrail extends BasicQuestHelper
 		talkToKingArthur1 = new NpcStep(this, NpcID.KING_ARTHUR, kingArthurWorldPoint, "Talk to King Arthur in Camelot Castle to start.");
 		talkToKingArthur1.addDialogStep("Tell me of this quest.");
 		talkToKingArthur1.addDialogStep("I'd enjoy trying that.");
-		goUpStairsCamelot = new ObjectStep(this, ObjectID.STAIRCASE_26106, new WorldPoint(2751, 3511, 0), "Go upstairs to talk to Merlin.");
-		openMerlinDoor = new ObjectStep(this, ObjectID.DOOR_24, "Open the door to go to Merlin's room.");
-		talkToMerlin = new NpcStep(this, NpcID.MERLIN_4059, new WorldPoint(2763, 3513, 1), "Talk to Merlin");
+		goUpStairsCamelot = new ObjectStep(this, ObjectID.KR_CAM_WOODENSTAIRS, new WorldPoint(2751, 3511, 0), "Go upstairs to talk to Merlin.");
+		openMerlinDoor = new ObjectStep(this, ObjectID.MERLINWORKSHOP, "Open the door to go to Merlin's room.");
+		talkToMerlin = new NpcStep(this, NpcID.MERLIN2, new WorldPoint(2763, 3513, 1), "Talk to Merlin");
 		talkToMerlin.addDialogStep("Where can I find Sir Galahad?");
 
-		goToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3235, 0), "Talk to a monk of Entrana. Bank all combat gear.", true);
-		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3348, 0), "Talk to the High Priest.");
+		goToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3048, 3235, 0), "Talk to a monk of Entrana. Bank all combat gear.", true);
+		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_OF_ENTRANA, new WorldPoint(2851, 3348, 0), "Talk to the High Priest.");
 		talkToHighPriest.addDialogSteps("Ask about the Holy Grail Quest", "Ok, I will go searching.");
 
-		talkToGalahad = new NpcStep(this, NpcID.GALAHAD, new WorldPoint(2612, 3475, 0), "Talk to Galahad in his house west of McGrubor's Woods.");
+		talkToGalahad = new NpcStep(this, NpcID.BROTHER_GALAHAD, new WorldPoint(2612, 3475, 0), "Talk to Galahad in his house west of McGrubor's Woods.");
 		talkToGalahad.addDialogStep("I seek an item from the realm of the Fisher King.");
 
 		goToDraynorManor = new DetailedQuestStep(this, new WorldPoint(3108, 3350, 0), "Travel to Draynor Manor.", holyTableNapkin);
 		goToDraynorManor.addTeleport(draynorTele);
-		enterDraynorManor = new ObjectStep(this, ObjectID.LARGE_DOOR_135, "Enter Draynor Manor.", holyTableNapkin);
-		goUpStairsDraynor1 = new ObjectStep(this, ObjectID.STAIRCASE_11498, new WorldPoint(3109, 3364, 0), "Go up the stairs in Draynor Manor.", holyTableNapkin);
-		goUpStairsDraynor2 = new ObjectStep(this, ObjectID.STAIRCASE_11511, new WorldPoint(3105, 3363, 1), "Go up the second set of stairs in Draynor Manor.", holyTableNapkin);
-		openWhistleDoor = new ObjectStep(this, ObjectID.DOOR_22, "Open the door to the Magic Whistles.", holyTableNapkin);
+		enterDraynorManor = new ObjectStep(this, ObjectID.HAUNTEDDOORR, "Enter Draynor Manor.", holyTableNapkin);
+		goUpStairsDraynor1 = new ObjectStep(this, ObjectID.DRAYNOR_MANOR_STAIRS_UP, new WorldPoint(3109, 3364, 0), "Go up the stairs in Draynor Manor.", holyTableNapkin);
+		goUpStairsDraynor2 = new ObjectStep(this, ObjectID.DRAYNOR_SPIRALSTAIRS, new WorldPoint(3105, 3363, 1), "Go up the second set of stairs in Draynor Manor.", holyTableNapkin);
+		openWhistleDoor = new ObjectStep(this, ObjectID.WHISTLEDOOR, "Open the door to the Magic Whistles.", holyTableNapkin);
 		takeWhistles = new DetailedQuestStep(this, new WorldPoint(3107, 3359, 2), "Pickup 2 Magic Whistles.", holyTableNapkin);
 
 		goGetExcalibur = new ItemStep(this, "Go retrieve Excalibur from your bank. If you do not own Excalibur, you can retrieve it from the Lady of the Lake in Taverley for 500 coins.", twoMagicWhistles, excalibur);
@@ -270,27 +261,27 @@ public class HolyGrail extends BasicQuestHelper
 		blowWhistle1 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle1, excalibur);
 
 		attackTitan = new NpcStep(this, NpcID.BLACK_KNIGHT_TITAN, "Kill the Black Knight Titan with Excalibur. Melee is recommended as it has high Ranged and Magic defence. (You only need to deal the killing blow with excalibur!)", twoMagicWhistles, excalibur);
-		talkToFisherman = new NpcStep(this, NpcID.FISHERMAN_4065, new WorldPoint(2798, 4706, 0), "Talk to the fisherman by the river. After talking to him walk West to the castle.");
+		talkToFisherman = new NpcStep(this, NpcID.GRAIL_FISHERMAN, new WorldPoint(2798, 4706, 0), "Talk to the fisherman by the river. After talking to him walk West to the castle.");
 		talkToFisherman.addDialogStep("Any idea how to get into the castle?");
 		pickupBell = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Pickup the bell outside of the castle.");
 		ringBell = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Ring the grail bell directly north of the broken castle wall (Where you picked up the bell)", highlightGrailBell);
 		ringBell.addIcon(ItemID.GRAIL_BELL);
-		goUpStairsBrokenCastle = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2762, 4681, 0), "Go up the stairs inside of the castle.");
-		talkToFisherKing = new NpcStep(this, NpcID.THE_FISHER_KING, "Talk to The Fisher King.");
+		goUpStairsBrokenCastle = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2762, 4681, 0), "Go up the stairs inside of the castle.");
+		talkToFisherKing = new NpcStep(this, NpcID.FISHER_KING, "Talk to The Fisher King.");
 		talkToFisherKing.addDialogStep("You don't look too well.");
 
 		goToCamelot = new DetailedQuestStep(this, new WorldPoint(2758, 3486, 0), "Go back to Camelot.");
 		talkToKingArthur2 = new NpcStep(this, NpcID.KING_ARTHUR, kingArthurWorldPoint, "Return to Camelot and talk to King Arthur.", emptyInvSpot);
 
-		openSack = new ObjectStep(this, ObjectID.SACKS, new WorldPoint(2962, 3506, 0), "Travel to the Goblin Village North of Falador. Right click and open the sacks.", twoMagicWhistles);
+		openSack = new ObjectStep(this, ObjectID.PERCY_SACKS, new WorldPoint(2962, 3506, 0), "Travel to the Goblin Village North of Falador. Right click and open the sacks.", twoMagicWhistles);
 		openSack.addDialogStep("Come with me, I shall make you a king.");
 
 		goToTeleportLocation2 = new DetailedQuestStep(this, teleportLocationPoint, "Go to the tower on Karamja near gold mine west of Brimhaven.", oneMagicWhistle, goldFeather);
 		blowWhistle2 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle2, goldFeather);
 
-		openFisherKingCastleDoor = new ObjectStep(this, ObjectID.LARGE_DOOR_1524, "Open the door to the castle and enter.", goldFeather);
-		goUpNewCastleStairs = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2649, 4684, 0), "Go up the stairs to the east.", goldFeather);
-		goUpNewCastleLadder = new ObjectStep(this, ObjectID.LADDER_16683, "Climb the ladder on the second floor.", goldFeather);
+		openFisherKingCastleDoor = new ObjectStep(this, ObjectID.CASTLEDOUBLEDOORR, "Open the door to the castle and enter.", goldFeather);
+		goUpNewCastleStairs = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2649, 4684, 0), "Go up the stairs to the east.", goldFeather);
+		goUpNewCastleLadder = new ObjectStep(this, ObjectID.LADDER, "Climb the ladder on the second floor.", goldFeather);
 		takeGrail = new DetailedQuestStep(this, new WorldPoint(2649, 4684, 2), "Pickup the Grail.", goldFeather);
 
 		talkToKingArthur3 = new NpcStep(this, NpcID.KING_ARTHUR, kingArthurWorldPoint, "Return to Camelot and talk to King Arthur", grail);

@@ -31,15 +31,16 @@ import com.questhelper.requirements.ConfigRequirement;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.LogicType;
+import lombok.NonNull;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
-import lombok.NonNull;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class PuzzleWrapperStep extends ConditionalStep
 {

@@ -24,42 +24,34 @@
  */
 package com.questhelper.helpers.quests.thegrandtree;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.player.FreeInventorySlotRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.npc.NpcInteractingRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.questhelper.steps.*;
 import com.questhelper.util.QHObjectID;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheGrandTree extends BasicQuestHelper
 {
@@ -221,31 +213,31 @@ public class TheGrandTree extends BasicQuestHelper
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		transportToGrandTree = new ItemRequirement("Transport to the Grand Tree", ItemCollections.NECKLACE_OF_PASSAGES);
 
-		translationBook = new ItemRequirement("Translation Book", ItemID.TRANSLATION_BOOK);
+		translationBook = new ItemRequirement("Translation Book", ItemID.GRANDTREE_TRANSLATIONBOOK);
 		translationBook.setTooltip("You can get another from Narnode");
-		barkSample = new ItemRequirement("Bark Sample", ItemID.BARK_SAMPLE);
+		barkSample = new ItemRequirement("Bark Sample", ItemID.GRANDTREE_BARKSAMPLE);
 		barkSample.setTooltip("You can get another from Narnode");
-		lumberOrder = new ItemRequirement("Lumber order", ItemID.LUMBER_ORDER);
-		gloughsKey = new ItemRequirement("Glough's key", ItemID.GLOUGHS_KEY);
-		highlightedGloughsKey = new ItemRequirement("Glough's key", ItemID.GLOUGHS_KEY);
+		lumberOrder = new ItemRequirement("Lumber order", ItemID.GRANDTREE_ORDER);
+		gloughsKey = new ItemRequirement("Glough's key", ItemID.GRANDTREE_GLOUGHSKEY);
+		highlightedGloughsKey = new ItemRequirement("Glough's key", ItemID.GRANDTREE_GLOUGHSKEY);
 		highlightedGloughsKey.setHighlightInInventory(true);
-		invasionPlans = new ItemRequirement("Invasion plans", ItemID.INVASION_PLANS);
+		invasionPlans = new ItemRequirement("Invasion plans", ItemID.GRANDTREE_INVASIONPLANS);
 		invasionPlans.setTooltip("You can get another from Glough's house in a chest");
 		fourFreeInventorySlots = new FreeInventorySlotRequirement(4);
-		daconiaStone = new ItemRequirement("Daconia stone", ItemID.DACONIA_ROCK);
+		daconiaStone = new ItemRequirement("Daconia stone", ItemID.GRANDTREE_DACONIAROCK);
 
-		twigsT = new ItemRequirement("Twigs (T)", ItemID.TWIGS);
-		twigsU = new ItemRequirement("Twigs (U)", ItemID.TWIGS_790);
-		twigsZ = new ItemRequirement("Twigs (Z)", ItemID.TWIGS_791);
-		twigsO = new ItemRequirement("Twigs (O)", ItemID.TWIGS_792);
+		twigsT = new ItemRequirement("Twigs (T)", ItemID.GRANDTREE_TWIGT);
+		twigsU = new ItemRequirement("Twigs (U)", ItemID.GRANDTREE_TWIGU);
+		twigsZ = new ItemRequirement("Twigs (Z)", ItemID.GRANDTREE_TWIGZ);
+		twigsO = new ItemRequirement("Twigs (O)", ItemID.GRANDTREE_TWIGO);
 
-		highlightedTwigsT = new ItemRequirement("Twigs (T)", ItemID.TWIGS);
+		highlightedTwigsT = new ItemRequirement("Twigs (T)", ItemID.GRANDTREE_TWIGT);
 		highlightedTwigsT.setHighlightInInventory(true);
-		highlightedTwigsU = new ItemRequirement("Twigs (U)", ItemID.TWIGS_790);
+		highlightedTwigsU = new ItemRequirement("Twigs (U)", ItemID.GRANDTREE_TWIGU);
 		highlightedTwigsU.setHighlightInInventory(true);
-		highlightedTwigsZ = new ItemRequirement("Twigs (Z)", ItemID.TWIGS_791);
+		highlightedTwigsZ = new ItemRequirement("Twigs (Z)", ItemID.GRANDTREE_TWIGZ);
 		highlightedTwigsZ.setHighlightInInventory(true);
-		highlightedTwigsO = new ItemRequirement("Twigs (O)", ItemID.TWIGS_792);
+		highlightedTwigsO = new ItemRequirement("Twigs (O)", ItemID.GRANDTREE_TWIGO);
 		highlightedTwigsO.setHighlightInInventory(true);
 	}
 
@@ -278,8 +270,8 @@ public class TheGrandTree extends BasicQuestHelper
 		isInWatchtower = new ZoneRequirement(watchtower);
 		isInGrandTreeTunnels = new ZoneRequirement(grandTreeTunnels);
 
-		narnodeNearby = new NpcCondition(NpcID.KING_NARNODE_SHAREEN);
-		blackDemonVisible = new NpcInteractingRequirement(NpcID.BLACK_DEMON_1432);
+		narnodeNearby = new NpcCondition(NpcID.GRANDTREE_NARNODE_1OP);
+		blackDemonVisible = new NpcInteractingRequirement(NpcID.GRANDTREE_BLACKDEMON);
 	}
 
 	public void setupSteps()
@@ -290,20 +282,20 @@ public class TheGrandTree extends BasicQuestHelper
 		goToStronghold = new DetailedQuestStep(this, locationBottomOfGrandTree, "Travel to the Tree Gnome Stronghold.");
 
 		// Getting Started
-		talkToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree" +
+		talkToKingNarnode = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, locationBottomOfGrandTree, "Talk to King Narnode Shareen in the Grand Tree" +
 			"(Make sure to have two empty inventory slots to start the quest).");
 		talkToKingNarnode.addDialogSteps("You seem worried, what's up?", "I'd be happy to help!");
-		talkToKingNarnodeCaves = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0),
+		talkToKingNarnodeCaves = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 9895, 0),
 			"Talk to King Narnode.");
 		talkToKingNarnodeCaves.addDialogStep("I'd be happy to help!");
 		talkToKingNarnode.addSubSteps(talkToKingNarnodeCaves);
 
 		// Hazelmere
-		climbUpToHazelmere = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2677, 3087, 0),
+		climbUpToHazelmere = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2677, 3087, 0),
 			"Go up to Hazelmere, on the island east of Yanille. Fairy ring CLS or minigame teleport near Yanille.", translationBook, barkSample);
-		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, "Talk to Hazelmere.", translationBook, barkSample);
+		talkToHazelmere = new NpcStep(this, NpcID.GRANDTREE_HAZELMERE, "Talk to Hazelmere.", translationBook, barkSample);
 
-		bringScrollToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree, "Return to King Narnode in the Grand Tree.");
+		bringScrollToKingNarnode = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, locationBottomOfGrandTree, "Return to King Narnode in the Grand Tree.");
 		bringScrollToKingNarnode.addDialogStep("I think so!");
 		bringScrollToKingNarnode.addDialogStepWithExclusions("None of the above.", "A man came to me with the King's seal.", "I gave the man Daconia rocks.");
 		bringScrollToKingNarnode.addDialogStep("A man came to me with the King's seal.");
@@ -311,20 +303,20 @@ public class TheGrandTree extends BasicQuestHelper
 		bringScrollToKingNarnode.addDialogStep("And Daconia rocks will kill the tree!");
 
 		// Investigation
-		climbUpToGlough = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0),
+		climbUpToGlough = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2476, 3463, 0),
 			"Go up to Glough in the Tree Gnome Stronghold.");
-		talkToGlough = new NpcStep(this, NpcID.GLOUGH_2061, "Talk to Glough.");
+		talkToGlough = new NpcStep(this, NpcID.GRANDTREE_GLOUGH_VISIBLE, "Talk to Glough.");
 		talkToGlough.addSubSteps(climbUpToGlough);
 
-		talkToKingNarnodeAfterGlough = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, locationBottomOfGrandTree,
+		talkToKingNarnodeAfterGlough = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, locationBottomOfGrandTree,
 			"Talk to King Narnode again in the Grand Tree.");
-		talkToCharlie = new NpcStep(this, NpcID.CHARLIE, new WorldPoint(2464, 3495, 3), "");
+		talkToCharlie = new NpcStep(this, NpcID.GRANDTREE_CHARLIE, new WorldPoint(2464, 3495, 3), "");
 
-		returnToGlough = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "");
-		findGloughJournal = new ObjectStep(this, ObjectID.CUPBOARD_2434, "");
-		((ObjectStep) findGloughJournal).addAlternateObjects(ObjectID.CUPBOARD_2435);
+		returnToGlough = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2476, 3463, 0), "");
+		findGloughJournal = new ObjectStep(this, ObjectID.GRANDTREE_CUPBOARDCLOSED, "");
+		((ObjectStep) findGloughJournal).addAlternateObjects(ObjectID.GRANDTREE_CUPBOARDOPEN);
 
-		talkToGloughAgain = new NpcStep(this, NpcID.GLOUGH_2061, "");
+		talkToGloughAgain = new NpcStep(this, NpcID.GRANDTREE_GLOUGH_VISIBLE, "");
 
 		climbGrandTreeF0ToF1 = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0), "");
 		climbGrandTreeF1ToF2 = new ObjectStep(this, QHObjectID.GRAND_TREE_F1_LADDER, new WorldPoint(2466, 3495, 1), "");
@@ -347,67 +339,67 @@ public class TheGrandTree extends BasicQuestHelper
 		climbToBottomOfGrandTree.addStep(isInGrandTreeF2, climbGrandTreeF2ToF1);
 		climbToBottomOfGrandTree.addStep(isInGrandTreeF1, climbGrandTreeF1ToF0);
 
-		talkToCharlieFromCell = new NpcStep(this, NpcID.CHARLIE, new WorldPoint(2464, 3495, 3), "Talk to Charlie.");
-		talkToKingNarnodeBeforeEscape = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN,
+		talkToCharlieFromCell = new NpcStep(this, NpcID.GRANDTREE_CHARLIE, new WorldPoint(2464, 3495, 3), "Talk to Charlie.");
+		talkToKingNarnodeBeforeEscape = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP,
 			"Talk to King Narnode outside Charlie's cell.");
-		escapeByGlider = new NpcStep(this, NpcID.CAPTAIN_ERRDO_10467, locationTopOfGrandTree, "Travel with the glider to escape.");
+		escapeByGlider = new NpcStep(this, NpcID.PILOT_GRAND_TREE_BASE, locationTopOfGrandTree, "Travel with the glider to escape.");
 		escapeByGlider.addDialogStep("Take me to Karamja please!");
 
 		// Karamja
-		enterTheShipyard = new ObjectStep(this, ObjectID.GATE_2438, new WorldPoint(2945, 3041, 0), "Enter the shipyard on Karamja.");
+		enterTheShipyard = new ObjectStep(this, ObjectID.GRANDTREE_FENCEGATE_L, new WorldPoint(2945, 3041, 0), "Enter the shipyard on Karamja.");
 		enterTheShipyard.addDialogSteps("Glough sent me.", "Ka.", "Lu.", "Min.");
-		talkToForeman = new NpcStep(this, NpcID.FOREMAN, new WorldPoint(3000, 3044, 0),
+		talkToForeman = new NpcStep(this, NpcID.GRANDTREE_FOREMAN, new WorldPoint(3000, 3044, 0),
 			"Get the Lumber order from the Foreman on the southern docks. You can either kill him or talk to him.");
 		talkToForeman.addDialogSteps("Sadly his wife is no longer with us!", "He loves worm holes.", "Anita.");
 
-		climbUpToAnita = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2390, 3513, 0), "");
-		talkToAnita = new NpcStep(this, NpcID.ANITA, "");
+		climbUpToAnita = new ObjectStep(this, ObjectID.SPIRALSTAIRS_WOODEN, new WorldPoint(2390, 3513, 0), "");
+		talkToAnita = new NpcStep(this, NpcID.GT_ANITA, "");
 		talkToAnita.addDialogStep("I suppose so.");
 
-		climbUpToGloughAgain = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "Go up to Glough's house again.");
-		findInvasionPlans = new ObjectStep(this, ObjectID.CLOSED_CHEST_2436, "Search the chest in Glough's " +
+		climbUpToGloughAgain = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2476, 3463, 0), "Go up to Glough's house again.");
+		findInvasionPlans = new ObjectStep(this, ObjectID.GRANDTREE_CHESTCLOSED, "Search the chest in Glough's " +
 			"house.",
 			highlightedGloughsKey);
 		findInvasionPlans.addSubSteps(climbUpToGloughAgain);
-		findInvasionPlans.addIcon(ItemID.GLOUGHS_KEY);
+		findInvasionPlans.addIcon(ItemID.GRANDTREE_GLOUGHSKEY);
 
-		takeInvasionPlansToKing = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0),
+		takeInvasionPlansToKing = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 3496, 0),
 			"Take the invasion plans to King Narnode in the Grand Tree.",
 			invasionPlans, fourFreeInventorySlots);
 
-		climbUpToGloughForWatchtower = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "Go up to Glough's house again.");
-		climbUpToWatchtower = new ObjectStep(this, ObjectID.TREE_2447, "Climb up the tree to the watchtower in Glough's house.");
+		climbUpToGloughForWatchtower = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2476, 3463, 0), "Go up to Glough's house again.");
+		climbUpToWatchtower = new ObjectStep(this, ObjectID.GRANDTREE_CLIMBTREE, "Climb up the tree to the watchtower in Glough's house.");
 
-		placeTwigsT = new ObjectStep(this, ObjectID.PILLAR, "Place the twigs (T). Return to King Narnode if you lost them.", highlightedTwigsT);
-		placeTwigsT.addIcon(ItemID.TWIGS);
+		placeTwigsT = new ObjectStep(this, ObjectID.GRANDTREE_PILLART, "Place the twigs (T). Return to King Narnode if you lost them.", highlightedTwigsT);
+		placeTwigsT.addIcon(ItemID.GRANDTREE_TWIGT);
 
-		placeTwigsU = new ObjectStep(this, ObjectID.PILLAR_2441, "Place the twigs (U). Return to King Narnode if you lost them.", highlightedTwigsU);
-		placeTwigsU.addIcon(ItemID.TWIGS_790);
+		placeTwigsU = new ObjectStep(this, ObjectID.GRANDTREE_PILLARU, "Place the twigs (U). Return to King Narnode if you lost them.", highlightedTwigsU);
+		placeTwigsU.addIcon(ItemID.GRANDTREE_TWIGU);
 
-		placeTwigsZ = new ObjectStep(this, ObjectID.PILLAR_2442, "Place the twigs (Z). Return to King Narnode if you lost them.", highlightedTwigsZ);
-		placeTwigsZ.addIcon(ItemID.TWIGS_791);
+		placeTwigsZ = new ObjectStep(this, ObjectID.GRANDTREE_PILLARZ, "Place the twigs (Z). Return to King Narnode if you lost them.", highlightedTwigsZ);
+		placeTwigsZ.addIcon(ItemID.GRANDTREE_TWIGZ);
 
-		placeTwigsO = new ObjectStep(this, ObjectID.PILLAR_2443, "Place the twigs (O). Return to King Narnode if you lost them.", highlightedTwigsO);
-		placeTwigsO.addIcon(ItemID.TWIGS_792);
+		placeTwigsO = new ObjectStep(this, ObjectID.GRANDTREE_PILLARO, "Place the twigs (O). Return to King Narnode if you lost them.", highlightedTwigsO);
+		placeTwigsO.addIcon(ItemID.GRANDTREE_TWIGO);
 
 		placeTwigs = new DetailedQuestStep(this, "Place the twigs to spell 'TUZO' in the watchtower in Glough's house. Return to King Narnode if you lost any.",
 			twigsT, twigsU, twigsZ, twigsO);
 		placeTwigs.addSubSteps(climbUpToGloughForWatchtower, climbUpToWatchtower, placeTwigsT, placeTwigsU, placeTwigsZ, placeTwigsO);
 
 		// The black demon
-		climbDownTrapDoor = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door. Be prepared for the fight against a Black Demon (level 172).");
-		talkToGloughBeforeFight = new NpcStep(this, NpcID.GLOUGH, "Talk to Glough. You can safespot the Demon from where he stands.");
-		killBlackDemon = new NpcStep(this, NpcID.BLACK_DEMON_1432, "Kill the black Demon. You can safespot from where Glough stands.");
+		climbDownTrapDoor = new ObjectStep(this, ObjectID.GRANDTREE_TRAPDOORTOWEROPEN, "Go down the trap door. Be prepared for the fight against a Black Demon (level 172).");
+		talkToGloughBeforeFight = new NpcStep(this, NpcID.GRANDTREE_GLOUGH_BATTLE, "Talk to Glough. You can safespot the Demon from where he stands.");
+		killBlackDemon = new NpcStep(this, NpcID.GRANDTREE_BLACKDEMON, "Kill the black Demon. You can safespot from where Glough stands.");
 		((NpcStep) killBlackDemon).addSafeSpots(new WorldPoint(2492, 9865, 0));
-		climbDownTrapDoorAfterFight = new ObjectStep(this, ObjectID.TRAPDOOR_26243, "Go down the trap door again.");
-		talkToKingAfterFight = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0), "Talk to King Narnode deeper in the cave.");
+		climbDownTrapDoorAfterFight = new ObjectStep(this, ObjectID.GRANDTREE_TRAPDOORTOWEROPEN, "Go down the trap door again.");
+		talkToKingAfterFight = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 9895, 0), "Talk to King Narnode deeper in the cave.");
 		talkToKingAfterFight.addSubSteps(climbDownTrapDoorAfterFight);
-		giveDaconiaStoneToKingNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 9895, 0),
+		giveDaconiaStoneToKingNarnode = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 9895, 0),
 			"Give the Daconia stone to King Narnode under the Grand Tree.", daconiaStone);
 
-		findDaconiaStone = new ObjectStep(this, ObjectID.ROOT,
+		findDaconiaStone = new ObjectStep(this, ObjectID.LARGEROOT_GNOME,
 			"Search the roots under the Grand Tree until you find the Daconia stone. If you lose the rock, it will be in the same root again.");
-		((ObjectStep) findDaconiaStone).addAlternateObjects(ObjectID.ROOT_1986);
+		((ObjectStep) findDaconiaStone).addAlternateObjects(ObjectID.LARGEROOT2_GNOME);
 		((ObjectStep) findDaconiaStone).setHideWorldArrow(true);
 	}
 

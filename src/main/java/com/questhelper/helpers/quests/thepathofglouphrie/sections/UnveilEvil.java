@@ -28,15 +28,11 @@ import com.questhelper.helpers.quests.thepathofglouphrie.MonolithPuzzle;
 import com.questhelper.helpers.quests.thepathofglouphrie.ThePathOfGlouphrie;
 import com.questhelper.helpers.quests.thepathofglouphrie.YewnocksPuzzle;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
-import java.util.List;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.List;
 
 public class UnveilEvil
 {
@@ -54,11 +50,11 @@ public class UnveilEvil
 		{
 			var squeezeThroughRailing = quest.enterTreeGnomeVillageMazeFromMiddle.copy();
 			var climbIntoDungeon = quest.climbDownIntoTreeGnomeVillageDungeon.copy();
-			var enter = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0), "");
+			var enter = new ObjectStep(quest, ObjectID.POG_CAVE_WALL_ENTRANCE_GOLRIE_ROVING, new WorldPoint(2608, 4451, 0), "");
 			enter.addSubSteps(squeezeThroughRailing, climbIntoDungeon);
-			var enterStoreroomPreRovingElves = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2544, 9571, 0),
+			var enterStoreroomPreRovingElves = new ObjectStep(quest, ObjectID.POG_CAVE_WALL_ENTRANCE_GOLRIE_ROVING, new WorldPoint(2544, 9571, 0),
 				"");
-			enterStoreroomPreRovingElves.addAlternateObjects(ObjectID.TUNNEL_49619);
+			enterStoreroomPreRovingElves.addAlternateObjects(ObjectID.POG_CAVE_WALL_ENTRANCE_GOLRIE_WATERFALL);
 
 			enterStoreroom = new ConditionalStep(quest, climbIntoDungeon, "Enter the storeroom to the east in the Tree Gnome Village dungeon.");
 			enterStoreroom.addStep(quest.inTreeGnomeVillageDungeonPreRovingElves, enterStoreroomPreRovingElves);
@@ -72,7 +68,7 @@ public class UnveilEvil
 		solveMonolithPuzzleStep = new ConditionalStep(quest, enterStoreroom);
 		solveMonolithPuzzleStep.addStep(quest.inStoreroom, solveMonolithPuzzle);
 
-		var clickLectern = new ObjectStep(quest, ObjectID.LECTERN_49673, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern.");
+		var clickLectern = new ObjectStep(quest, ObjectID.POG_LECTURN, YewnocksPuzzle.regionPoint(24, 28), "Click the lectern.");
 		var clickChapter1 = new WidgetStep(quest, "Click Chapter 1 to learn about the mysterious stranger.", 854, 5);
 		var clickChapter2 = new WidgetStep(quest, "Click Chapter 2 to learn about the great king's death.", 854, 9);
 		var clickChapter3 = new WidgetStep(quest, "Click Chapter 3 to learn about the old foe.", 854, 13);
@@ -93,12 +89,12 @@ public class UnveilEvil
 			squeezeThroughRailing.setText("Squeeze through the loose railing.");
 			var climbIntoDungeon = quest.climbDownIntoTreeGnomeVillageDungeon.copy();
 			climbIntoDungeon.setText("Climb down the ladder to the Tree Gnome Village dungeon.");
-			var enterStoreroom = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2608, 4451, 0),
+			var enterStoreroom = new ObjectStep(quest, ObjectID.POG_CAVE_WALL_ENTRANCE_GOLRIE_ROVING, new WorldPoint(2608, 4451, 0),
 				"Enter the storeroom to the east in the Tree Gnome Village dungeon.");
-			enterStoreroom.addAlternateObjects(ObjectID.TUNNEL_49619);
-			var enterStoreroomPreRovingElves = new ObjectStep(quest, ObjectID.TUNNEL_49620, new WorldPoint(2544, 9571, 0),
+			enterStoreroom.addAlternateObjects(ObjectID.POG_CAVE_WALL_ENTRANCE_GOLRIE_WATERFALL);
+			var enterStoreroomPreRovingElves = new ObjectStep(quest, ObjectID.POG_CAVE_WALL_ENTRANCE_GOLRIE_ROVING, new WorldPoint(2544, 9571, 0),
 				"Enter the storeroom to the east in the Tree Gnome Village dungeon.");
-			enterStoreroomPreRovingElves.addAlternateObjects(ObjectID.TUNNEL_49619);
+			enterStoreroomPreRovingElves.addAlternateObjects(ObjectID.POG_CAVE_WALL_ENTRANCE_GOLRIE_WATERFALL);
 
 			var enterStoreroomPuzzle = new ConditionalStep(quest, climbIntoDungeon, "Get to Yewnock's storeroom.");
 			enterStoreroomPuzzle.addStep(quest.inTreeGnomeVillageDungeonPreRovingElves, enterStoreroomPreRovingElves);

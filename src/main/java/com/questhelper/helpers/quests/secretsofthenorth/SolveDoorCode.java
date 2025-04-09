@@ -27,15 +27,14 @@ package com.questhelper.helpers.quests.secretsofthenorth;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.FontManager;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.client.ui.FontManager;
 
 public class SolveDoorCode extends QuestStep
 {

@@ -30,9 +30,9 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.FontManager;
 
 import java.awt.*;
-import net.runelite.client.ui.FontManager;
 
 public class ChestCodeStep extends QuestStep
 {

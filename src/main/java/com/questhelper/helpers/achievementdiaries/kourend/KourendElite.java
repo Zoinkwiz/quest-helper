@@ -24,14 +24,12 @@
  */
 package com.questhelper.helpers.achievementdiaries.kourend;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -39,11 +37,17 @@ import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -152,18 +156,18 @@ public class KourendElite extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport)).isNotConsumed();
 		chisel.setTooltip("One can be found in the Arceuus essence mine.");
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopRedwood).isNotConsumed();
-		darkTotem = new ItemRequirement("Dark Totem", ItemID.DARK_TOTEM).showConditioned(notDefeatSkotizo);
-		totemBase = new ItemRequirement("Dark totem base", ItemID.DARK_TOTEM_BASE);
-		totemMiddle = new ItemRequirement("Dark totem middle", ItemID.DARK_TOTEM_MIDDLE);
-		totemTop = new ItemRequirement("Dark totem top", ItemID.DARK_TOTEM_TOP);
-		denseEssenceBlock = new ItemRequirement("Dense essence block", ItemID.DENSE_ESSENCE_BLOCK)
+		darkTotem = new ItemRequirement("Dark Totem", ItemID.CATA_TOTEM).showConditioned(notDefeatSkotizo);
+		totemBase = new ItemRequirement("Dark totem base", ItemID.CATA_TOTEM1);
+		totemMiddle = new ItemRequirement("Dark totem middle", ItemID.CATA_TOTEM2);
+		totemTop = new ItemRequirement("Dark totem top", ItemID.CATA_TOTEM3);
+		denseEssenceBlock = new ItemRequirement("Dense essence block", ItemID.ARCEUUS_ESSENCE_BLOCK)
 			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport));
-		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE, 2).showConditioned(notCreateTeleport);
-		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2).showConditioned(notCreateTeleport);
-		soulRune = new ItemRequirement("Soul runes", ItemID.SOUL_RUNE, 2).showConditioned(notCreateTeleport);
+		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOODRUNE, 2).showConditioned(notCreateTeleport);
+		lawRune = new ItemRequirement("Law runes", ItemID.LAWRUNE, 2).showConditioned(notCreateTeleport);
+		soulRune = new ItemRequirement("Soul runes", ItemID.SOULRUNE, 2).showConditioned(notCreateTeleport);
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).showConditioned(notCatchAngler).isNotConsumed();
-		sandworm = new ItemRequirement("Sandworms", ItemID.SANDWORMS).showConditioned(notCatchAngler);
-		celastrusSapling = new ItemRequirement("Celastrus sapling", ItemID.CELASTRUS_SAPLING).showConditioned(notFletchBattlestaff);
+		sandworm = new ItemRequirement("Sandworms", ItemID.PISCARILIUS_SANDWORMS).showConditioned(notCatchAngler);
+		celastrusSapling = new ItemRequirement("Celastrus sapling", ItemID.PLANTPOT_CELASTRUS_TREE_SAPLING).showConditioned(notFletchBattlestaff);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notFletchBattlestaff).isNotConsumed();
 		combatGear = new ItemRequirement("Combat gear", -1, -1)
 			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid)).isNotConsumed();
@@ -172,9 +176,9 @@ public class KourendElite extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid));
 		prayerPotion = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS)
 			.showConditioned(new Conditions(LogicType.OR, notDefeatSkotizo, notKillHydra, notCompleteRaid));
-		celastrusBark = new ItemRequirement("Celastrus bark", ItemID.CELASTRUS_BARK);
-		darkEssenceBlock = new ItemRequirement("Dark essence block", ItemID.DARK_ESSENCE_BLOCK);
-		darkEssenceFragment = new ItemRequirement("Dark essence fragments", ItemID.DARK_ESSENCE_FRAGMENTS);
+		celastrusBark = new ItemRequirement("Celastrus bark", ItemID.CELASTRUS_WOOD);
+		darkEssenceBlock = new ItemRequirement("Dark essence block", ItemID.ARCEUUS_ESSENCE_BLOCK_DARK);
+		darkEssenceFragment = new ItemRequirement("Dark essence fragments", ItemID.BIGBLANKRUNE);
 		rawAnglerfish = new ItemRequirement("Raw anglerfish", ItemID.RAW_ANGLERFISH);
 		bootsOfStone = new ItemRequirement("Boots of stone", ItemCollections.STONE_BOOTS).showConditioned(notKillHydra).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notFletchBattlestaff).isNotConsumed();
@@ -182,13 +186,13 @@ public class KourendElite extends ComplexStateQuestHelper
 		// Items recommended
 		arclight = new ItemRequirement("Arclight", ItemID.ARCLIGHT).showConditioned(notDefeatSkotizo).isNotConsumed();
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
-			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS)).isNotConsumed();
-		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
+			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.VEOS_KHAREDSTS_MEMOIRS)).isNotConsumed();
+		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERIC_TALISMAN).isNotConsumed();
 		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).isNotConsumed();
-		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.RADAS_BLESSING_1,
-			ItemID.RADAS_BLESSING_2, ItemID.RADAS_BLESSING_3)).isNotConsumed();
+		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.ZEAH_BLESSING_EASY,
+			ItemID.ZEAH_BLESSING_MEDIUM, ItemID.ZEAH_BLESSING_HARD)).isNotConsumed();
 		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES).isNotConsumed();
-		potatoCactus = new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS, 8);
+		potatoCactus = new ItemRequirement("Potato cactus", ItemID.CACTUS_POTATO, 8);
 		ultraCompost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 
 		// Zone requirements
@@ -241,66 +245,66 @@ public class KourendElite extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		// Craft blood runes
-		bloodMineDenseEssence = new ObjectStep(this, ObjectID.DENSE_RUNESTONE, new WorldPoint(1764, 3858, 0),
+		bloodMineDenseEssence = new ObjectStep(this, ObjectID.ARCEUUS_RUNESTONE_BASE_MINE, new WorldPoint(1764, 3858, 0),
 			"Mine a dense essence block.", pickaxe, chisel);
-		bloodVenerateEssenceBlock = new ObjectStep(this, ObjectID.DARK_ALTAR, new WorldPoint(1716, 3883, 0),
+		bloodVenerateEssenceBlock = new ObjectStep(this, ObjectID.ARCHEUS_ALTAR_DARK, new WorldPoint(1716, 3883, 0),
 			"Venerate the essence block on the Dark Altar.", denseEssenceBlock);
 		chiselEssenceBlock = new ItemStep(this, "Chisel the dark essence block.", chisel.highlighted(),
 			darkEssenceBlock.highlighted());
-		craftBloodRune = new ObjectStep(this, ObjectID.BLOOD_ALTAR, new WorldPoint(1718, 3828, 0),
+		craftBloodRune = new ObjectStep(this, ObjectID.ARCHEUS_ALTAR_BLOOD, new WorldPoint(1718, 3828, 0),
 			"Craft some blood runes.", darkEssenceFragment);
 
 		// Chop redwood logs
-		enterWoodcuttingGuild = new ObjectStep(this, ObjectID.GATE_28851, new WorldPoint(1657, 3505, 0),
+		enterWoodcuttingGuild = new ObjectStep(this, ObjectID.WCGUILD_GATEL, new WorldPoint(1657, 3505, 0),
 			"Enter the Woodcutting Guild.", true);
-		enterWoodcuttingGuild.addAlternateObjects(ObjectID.GATE_28852);
-		climbRedwoodTree = new ObjectStep(this, ObjectID.ROPE_LADDER_28857, "Climb the redwood tree.", axe);
-		chopRedwood = new ObjectStep(this, ObjectID.REDWOOD_TREE, "Chop the redwood tree.", axe);
-		chopRedwood.addAlternateObjects(ObjectID.REDWOOD_TREE_29669, ObjectID.REDWOOD_TREE_29670, ObjectID.REDWOOD_TREE_29671);
+		enterWoodcuttingGuild.addAlternateObjects(ObjectID.WCGUILD_GATER);
+		climbRedwoodTree = new ObjectStep(this, ObjectID.WCGUILD_REDWOOD_ROPEBOTTOM, "Climb the redwood tree.", axe);
+		chopRedwood = new ObjectStep(this, ObjectID.REDWOODTREE_L, "Chop the redwood tree.", axe);
+		chopRedwood.addAlternateObjects(ObjectID.REDWOODTREE_L_CUT, ObjectID.REDWOODTREE_R, ObjectID.REDWOODTREE_R_CUT);
 
 		// Defeat Skotizo
 		combineDarkTotem = new ItemStep(this, "Collect and combine dark totem pieces.", totemTop.highlighted(),
 			totemMiddle.highlighted(), totemBase.highlighted());
-		enterCatacombs = new ObjectStep(this, ObjectID.STATUE_27785, "Enter the Catacombs of Kourend.",
+		enterCatacombs = new ObjectStep(this, ObjectID.ZEAH_KOUREND_STATUE_PLINTH, "Enter the Catacombs of Kourend.",
 			xericsTalisman);
-		enterSkotizoLair = new ObjectStep(this, ObjectID.ALTAR_28900, "Enter Skotizo's Lair.",
+		enterSkotizoLair = new ObjectStep(this, ObjectID.CATA_ALTAR, "Enter Skotizo's Lair.",
 			darkTotem.highlighted());
-		enterSkotizoLair.addIcon(ItemID.DARK_TOTEM);
-		defeatSkotizo = new NpcStep(this, NpcID.SKOTIZO, "Defeat Skotizo.", combatGear, food, prayerPotion);
+		enterSkotizoLair.addIcon(ItemID.CATA_TOTEM);
+		defeatSkotizo = new NpcStep(this, NpcID.CATA_BOSS, "Defeat Skotizo.", combatGear, food, prayerPotion);
 
 		// Catch and cook and an anglerfish
-		catchAngler = new NpcStep(this, NpcID.ROD_FISHING_SPOT_6825, "Catch a raw anglerfish.",
+		catchAngler = new NpcStep(this, NpcID.PISCARILIUSFISH, "Catch a raw anglerfish.",
 			fishingRod, sandworm);
-		cookAnglerfish = new ObjectStep(this, ObjectID.RANGE_27724, new WorldPoint(1795, 3754, 0),
+		cookAnglerfish = new ObjectStep(this, ObjectID.PISCARILIUS_RANGE, new WorldPoint(1795, 3754, 0),
 			"Cook a raw anglerfish in Kourend.", rawAnglerfish);
 
 		// Kill a hydra
-		enterMountKaruulmDungeon = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0),
+		enterMountKaruulmDungeon = new ObjectStep(this, ObjectID.BRIMSTONE_ELEVATOR_CENTRAL_TILE, new WorldPoint(1311, 3807, 0),
 			"Enter the Mount Karuulm Slayer Dungeon.");
-		enterHydraArea = new ObjectStep(this, ObjectID.ROCKS_34544, new WorldPoint(1312, 10215, 0),
+		enterHydraArea = new ObjectStep(this, ObjectID.KARUULM_SAFE_STEPOVER, new WorldPoint(1312, 10215, 0),
 			"Enter the hydra area.", bootsOfStone.equipped());
 		killHydra = new NpcStep(this, NpcID.HYDRA, new WorldPoint(1312, 10232, 0),
 			"Kill a hydra.", combatGear, food);
 		killHydra.addSubSteps(enterMountKaruulmDungeon, enterHydraArea);
 
 		// Create an Ape Atoll teleport tab
-		apeMineDenseEssence = new ObjectStep(this, ObjectID.DENSE_RUNESTONE, new WorldPoint(1764, 3858, 0),
+		apeMineDenseEssence = new ObjectStep(this, ObjectID.ARCEUUS_RUNESTONE_BASE_MINE, new WorldPoint(1764, 3858, 0),
 			"Mine a dense essence block.", pickaxe, chisel);
-		apeVenerateEssenceBlock = new ObjectStep(this, ObjectID.DARK_ALTAR, new WorldPoint(1716, 3883, 0),
+		apeVenerateEssenceBlock = new ObjectStep(this, ObjectID.ARCHEUS_ALTAR_DARK, new WorldPoint(1716, 3883, 0),
 			"Venerate the essence block.", denseEssenceBlock);
-		switchSpellbook = new NpcStep(this, NpcID.TYSS, new WorldPoint(1712, 3882, 0),
+		switchSpellbook = new NpcStep(this, NpcID.ARCEUUS_DARKGUARDIAN, new WorldPoint(1712, 3882, 0),
 			"Switch to the Arceuus spellbook via Tyss.");
 		switchSpellbook.addDialogStep("Can I try the magicks myself?");
-		createTeleportTab = new ObjectStep(this, ObjectID.LECTERN_28802, new WorldPoint(1679, 3765, 0),
+		createTeleportTab = new ObjectStep(this, ObjectID.ARCEUUS_LECTERN, new WorldPoint(1679, 3765, 0),
 			"Create an Ape Atoll teleport tablet.", bloodRune.quantity(2), lawRune.quantity(2),
 			soulRune.quantity(2));
 
 		// Complete a raid
-		completeRaid = new ObjectStep(this, ObjectID.CHAMBERS_OF_XERIC, new WorldPoint(1232, 3573, 0),
+		completeRaid = new ObjectStep(this, ObjectID.RAIDS_ENTRANCE_STEPS, new WorldPoint(1232, 3573, 0),
 			"Complete a Chambers of Xeric raid.");
 
 		// Fletch a battlestaff from scratch
-		plantCelastrusTree = new ObjectStep(this, NullObjectID.NULL_34629, new WorldPoint(1244, 3750, 0),
+		plantCelastrusTree = new ObjectStep(this, ObjectID.FARMING_CELASTRUS_PATCH_1, new WorldPoint(1244, 3750, 0),
 			"Plant a celastrus sapling (Fully grown after 13 hours). When it's fully grown harvest its bark. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			celastrusSapling, spade, axe);
@@ -308,7 +312,7 @@ public class KourendElite extends ComplexStateQuestHelper
 			celastrusBark.highlighted());
 
 		// Claim reward
-		claimReward = new NpcStep(this, NpcID.ELISE, new WorldPoint(1647, 3665, 0),
+		claimReward = new NpcStep(this, NpcID.ELISE_KOUREND_KEBOS_DIARY, new WorldPoint(1647, 3665, 0),
 			"Talk to Elise in the Kourend castle courtyard to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary");
 	}
@@ -359,8 +363,8 @@ public class KourendElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Rada's Blessing (4)", ItemID.RADAS_BLESSING_4, 1),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Rada's Blessing (4)", ItemID.ZEAH_BLESSING_ELITE, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

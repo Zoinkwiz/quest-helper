@@ -25,13 +25,14 @@
 package com.questhelper.panel.skillfiltering;
 
 import com.questhelper.QuestHelperConfig;
-import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.*;
-import javax.swing.border.Border;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SkillIconButton extends JButton
 {

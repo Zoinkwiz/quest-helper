@@ -28,17 +28,15 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.not;
-import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+
+import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class HerblorePuzzle extends ConditionalStep
 {
@@ -73,9 +71,9 @@ public class HerblorePuzzle extends ConditionalStep
 
 	private void setupSteps()
 	{
-		ItemRequirement dolmens = new ItemRequirement("Dolmen", ItemID.AGILITY_DOLMEN);
-		dolmens.addAlternates(ItemID.ENERGY_DOLMEN, ItemID.RESTORATION_DOLMEN, ItemID.ATTACK_DOLMEN, ItemID.STRENGTH_DOLMEN, ItemID.DEFENCE_DOLMEN, ItemID.COMBAT_DOLMEN,
-			ItemID.RANGED_DOLMEN, ItemID.PRAYER_DOLMEN, ItemID.HUNTER_DOLMEN, ItemID.FISHING_DOLMEN, ItemID.MAGIC_DOLMEN, ItemID.BALANCE_DOLMEN);
+		ItemRequirement dolmens = new ItemRequirement("Dolmen", ItemID.WGS_HENGE_PIECE_AGILITY);
+		dolmens.addAlternates(ItemID.WGS_HENGE_PIECE_ENERGY, ItemID.WGS_HENGE_PIECE_RESTORE, ItemID.WGS_HENGE_PIECE_ATTACK, ItemID.WGS_HENGE_PIECE_STRENGTH, ItemID.WGS_HENGE_PIECE_DEFENCE, ItemID.WGS_HENGE_PIECE_COMBAT,
+			ItemID.WGS_HENGE_PIECE_RANGED, ItemID.WGS_HENGE_PIECE_PRAYER, ItemID.WGS_HENGE_PIECE_HUNTING, ItemID.WGS_HENGE_PIECE_FISHING, ItemID.WGS_HENGE_PIECE_MAGIC, ItemID.WGS_HENGE_PIECE_BALANCE);
 
 		placeDolmens = new ObjectStep(questHelper, NullObjectID.NULL_54083, new WorldPoint(4076, 4437, 0), "Use all the dolmens on the stone table in the middle of the area.", dolmens.highlighted());
 		steps[8] = placeDolmens;

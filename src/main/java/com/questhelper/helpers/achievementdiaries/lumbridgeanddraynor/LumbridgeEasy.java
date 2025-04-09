@@ -24,39 +24,36 @@
  */
 package com.questhelper.helpers.achievementdiaries.lumbridgeanddraynor;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class LumbridgeEasy extends ComplexStateQuestHelper
 {
@@ -173,7 +170,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notOak).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notOak).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIron).isNotConsumed();
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notFishAnchovies).isNotConsumed();
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.NET).showConditioned(notFishAnchovies).isNotConsumed();
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -215,64 +212,64 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		drayAgi = new ObjectStep(this, 11404, new WorldPoint(3103, 3279, 0),
 			"Complete a lap of the Draynor Rooftop Course.");
 
-		moveToDraySewer = new ObjectStep(this, ObjectID.TRAPDOOR_6435, new WorldPoint(3118, 3244, 0),
+		moveToDraySewer = new ObjectStep(this, ObjectID.VAMPIRE_TRAP2, new WorldPoint(3118, 3244, 0),
 			"Climb down into the Draynor Sewer.");
-		moveToDraySewer.addAlternateObjects(ObjectID.TRAPDOOR_6434);
-		killZombie = new NpcStep(this, NpcID.ZOMBIE_38, new WorldPoint(3123, 9648, 0),
+		moveToDraySewer.addAlternateObjects(ObjectID.VAMPIRE_TRAP1);
+		killZombie = new NpcStep(this, NpcID.ZOMBIE_UNARMED_SEWER1, new WorldPoint(3123, 9648, 0),
 			"Kill a zombie.", true);
-		killZombie.addAlternateNpcs(NpcID.ZOMBIE_40, NpcID.ZOMBIE_57, NpcID.ZOMBIE_55, NpcID.ZOMBIE_56);
+		killZombie.addAlternateNpcs(NpcID.ZOMBIE_UNARMED_SEWER3, NpcID.ZOMBIE_ARMED_SEWER3, NpcID.ZOMBIE_ARMED_SEWER1, NpcID.ZOMBIE_ARMED_SEWER2);
 
-		moveToSed = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
+		moveToSed = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0),
 			"Climb down the ladder in the Wizards' Tower.");
-		sedridor = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR, new WorldPoint(3103, 9571, 0),
+		sedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3103, 9571, 0),
 			"Teleport to the Rune essence mine via Sedridor.");
-		((NpcStep) sedridor).addAlternateNpcs(NpcID.ARCHMAGE_SEDRIDOR_11433);
+		((NpcStep) sedridor).addAlternateNpcs(NpcID.HEAD_WIZARD_2OP);
 		sedridor.addDialogStep("Can you teleport me to the Rune Essence?");
 		sedridor.addDialogStep("Can you teleport me to the Rune Essence Mine?");
 
-		enterHAM = new ObjectStep(this, ObjectID.TRAPDOOR_5490, new WorldPoint(3166, 3252, 0),
+		enterHAM = new ObjectStep(this, ObjectID.OSF_TRAPDOOR_CLOSED, new WorldPoint(3166, 3252, 0),
 			"Lock pick and enter the HAM hideout.");
-		enterHAM.addAlternateObjects(ObjectID.TRAPDOOR_5491);
+		enterHAM.addAlternateObjects(ObjectID.OSF_TRAPDOOR_OPEN);
 
-		moveToDarkHole = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+		moveToDarkHole = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
 			"Enter the dark hole in the Lumbridge Swamp.", lightSource, combatGear);
-		addRopeToHole = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+		addRopeToHole = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
 			"Use a rope on the dark hole in the Lumbridge Swamp, and then enter it.",
 			lightSource, rope.highlighted(), combatGear);
 		addRopeToHole.addSubSteps(moveToDarkHole);
 		addRopeToHole.addIcon(ItemID.ROPE);
-		killCaveBug = new NpcStep(this, NpcID.CAVE_BUG, new WorldPoint(3151, 9574, 0),
+		killCaveBug = new NpcStep(this, NpcID.SWAMP_CAVE_BUG, new WorldPoint(3151, 9574, 0),
 			"Kill a Cave Bug.", true, combatGear, lightSource);
 
 		moveToWaterAltar = new ObjectStep(this, 34815, new WorldPoint(3185, 3165, 0),
 			"Enter the water altar in Lumbridge Swamp.", waterAccessOrAbyss.highlighted(), runeEss);
 		moveToWaterAltar.addIcon(ItemID.WATER_TALISMAN);
-		waterRune = new ObjectStep(this, ObjectID.ALTAR_34762, new WorldPoint(2716, 4836, 0),
+		waterRune = new ObjectStep(this, ObjectID.WATER_ALTAR, new WorldPoint(2716, 4836, 0),
 			"Craft water runes.", runeEss);
 
-		bread = new ObjectStep(this, ObjectID.COOKING_RANGE, new WorldPoint(3212, 3216, 0),
+		bread = new ObjectStep(this, ObjectID.COOKSQUESTRANGE, new WorldPoint(3212, 3216, 0),
 			"Cook bread on the cooking range in Lumbridge Castle.", dough);
 
 		hans = new NpcStep(this, NpcID.HANS, new WorldPoint(3215, 3219, 0),
 			"Talk to Hans to learn your age.");
 		hans.addDialogStep("Can you tell me how long I've been here?");
 
-		pickpocket = new NpcStep(this, NpcID.MAN_3107, new WorldPoint(3215, 3219, 0),
+		pickpocket = new NpcStep(this, NpcID.MAN2, new WorldPoint(3215, 3219, 0),
 			"Pickpocket a man or woman infront of Lumbridge Castle.", true);
-		pickpocket.addAlternateNpcs(NpcID.MAN_3108, NpcID.WOMAN_3111, NpcID.MAN_3106);
+		pickpocket.addAlternateNpcs(NpcID.MAN3, NpcID.WOMAN, NpcID.MAN);
 
-		chopOak = new ObjectStep(this, ObjectID.OAK_TREE_10820, new WorldPoint(3219, 3206, 0),
+		chopOak = new ObjectStep(this, ObjectID.OAKTREE, new WorldPoint(3219, 3206, 0),
 			"Chop the oak tree in the Lumbridge Castle Courtyard.", axe);
 		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),
 			oakLogs.highlighted());
 
-		mineIron = new ObjectStep(this, ObjectID.IRON_ROCKS, new WorldPoint(3303, 3284, 0),
+		mineIron = new ObjectStep(this, ObjectID.IRONROCK1, new WorldPoint(3303, 3284, 0),
 			"Mine some iron ore at the Al-Kharid mine.", pickaxe);
 
-		fishAnchovies = new NpcStep(this, NpcID.FISHING_SPOT_1528, new WorldPoint(3267, 3148, 0),
+		fishAnchovies = new NpcStep(this, NpcID._0_51_49_SALTFISH, new WorldPoint(3267, 3148, 0),
 			"Fish for anchovies in Al-Kharid.", smallFishingNet);
 
-		claimReward = new NpcStep(this, NpcID.HATIUS_COSAINTUS, new WorldPoint(3235, 3213, 0),
+		claimReward = new NpcStep(this, NpcID.HATIUS_LUMBRIDGE_DIARY, new WorldPoint(3235, 3213, 0),
 			"Talk to Hatius Cosaintus in Lumbridge to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -318,8 +315,8 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Explorer's ring 1", ItemID.EXPLORERS_RING_1),
-			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Explorer's ring 1", ItemID.LUMBRIDGE_RING_EASY),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

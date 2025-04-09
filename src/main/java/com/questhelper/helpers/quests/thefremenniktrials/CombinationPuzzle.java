@@ -29,17 +29,16 @@ package com.questhelper.helpers.quests.thefremenniktrials;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.FontManager;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.client.ui.FontManager;
 
 public class CombinationPuzzle extends ObjectStep
 {
@@ -70,7 +69,7 @@ public class CombinationPuzzle extends ObjectStep
 
 	public CombinationPuzzle(QuestHelper questHelper, String solution)
 	{
-		super(questHelper, ObjectID.DOOR_4165, new WorldPoint(2631, 3667, 0),
+		super(questHelper, ObjectID.VIKING_SEERS_DOOR1, new WorldPoint(2631, 3667, 0),
 			"Click on the door again, then click the highlighted arrows to solve the combination lock with " +
 			"solution " + solution + ".");
 		addDialogStep("Solve the riddle");

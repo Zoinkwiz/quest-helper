@@ -24,11 +24,10 @@
  */
 package com.questhelper.panel.skillfiltering;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
 
 public class SkillTabGroup extends JPanel
 {

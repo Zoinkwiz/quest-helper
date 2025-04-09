@@ -29,21 +29,22 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.tools.QuestPerspective;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.client.eventbus.Subscribe;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Tile;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
-import org.apache.commons.lang3.tuple.Pair;
 
 @Slf4j
 public class TilePuzzleSolver extends DetailedOwnerStep
@@ -305,7 +306,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 
 		fallbackStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(3734, 4714, 0), "Unable to figure out a path, click your way across lol"); // TODO
 
-		finishPuzzleStep = new ObjectStep(getQuestHelper(), ObjectID.LEVER_50205, new WorldPoint(3735, 4719, 0), "Finish the puzzle by clicking the lever.");
+		finishPuzzleStep = new ObjectStep(getQuestHelper(), ObjectID.COA_MASTABA_LEVER_OFF, new WorldPoint(3735, 4719, 0), "Finish the puzzle by clicking the lever.");
 	}
 
 	protected void updateSteps()

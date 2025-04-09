@@ -34,8 +34,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -44,22 +42,19 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
+
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 
 public class TwilightsPromise extends BasicQuestHelper
 {
@@ -219,11 +214,11 @@ public class TwilightsPromise extends BasicQuestHelper
 		twoCombatStyles.setDisplayItemId(BankSlotIcons.getCombatGear());
 		staminatPotion = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS, 3);
 
-		varlamoreCrest = new ItemRequirement("Varlamore crest", ItemID.VARLAMORE_CREST);
+		varlamoreCrest = new ItemRequirement("Varlamore crest", ItemID.VMQ2_CREST);
 		varlamoreCrest.setTooltip("You can get another from Ennius in the palace.");
-		stolenAmulet = new ItemRequirement("Stolen amulet", ItemID.STOLEN_AMULET);
-		incriminatingLetter = new ItemRequirement("Incriminating letter", ItemID.INCRIMINATING_LETTER);
-		quetzalFeed = new ItemRequirement("Quetzel feed", ItemID.QUETZAL_FEED);
+		stolenAmulet = new ItemRequirement("Stolen amulet", ItemID.VMQ2_AMULET);
+		incriminatingLetter = new ItemRequirement("Incriminating letter", ItemID.VMQ2_INCRIMINATING_LETTER);
+		quetzalFeed = new ItemRequirement("Quetzel feed", ItemID.VMQ2_QUETZAL_FEED);
 		quetzalFeed.setTooltip("You can get more from Regulus Cento");
 	}
 
@@ -234,23 +229,23 @@ public class TwilightsPromise extends BasicQuestHelper
 		inColosseumUnderground = new ZoneRequirement(colosseumUnderground);
 		inColosseum = new ZoneRequirement(colosseum);
 
-		talkedToBazaarKnight = new VarbitRequirement(9829, 1, Operation.GREATER_EQUAL);
+		talkedToBazaarKnight = new VarbitRequirement(VarbitID.VMQ2_BAZAAR_KNIGHTS, 1, Operation.GREATER_EQUAL);
 		// 2 is first time pickpocketing amulet
-		finishedBazaarKnight = new VarbitRequirement(9829, 3, Operation.GREATER_EQUAL);
+		finishedBazaarKnight = new VarbitRequirement(VarbitID.VMQ2_BAZAAR_KNIGHTS, 3, Operation.GREATER_EQUAL);
 
-		talkedToCothonKnight = new VarbitRequirement(9830, 1, Operation.GREATER_EQUAL);
-		foundCrate = new VarbitRequirement(9830, 2, Operation.GREATER_EQUAL);
-		finishedCothonKnight = new VarbitRequirement(9830, 3, Operation.GREATER_EQUAL);
+		talkedToCothonKnight = new VarbitRequirement(VarbitID.VMQ2_COTHON_KNIGHT, 1, Operation.GREATER_EQUAL);
+		foundCrate = new VarbitRequirement(VarbitID.VMQ2_COTHON_KNIGHT, 2, Operation.GREATER_EQUAL);
+		finishedCothonKnight = new VarbitRequirement(VarbitID.VMQ2_COTHON_KNIGHT, 3, Operation.GREATER_EQUAL);
 
-		talkedToPubKnights = new VarbitRequirement(9831, 1, Operation.GREATER_EQUAL);
-		pubKnightFollowing = new VarplayerRequirement(447, List.of(13393, NpcID.KNIGHT_OF_VARLAMORE_12912), 16);
-		pubKnightSobered = new VarbitRequirement(9831, 2, Operation.GREATER_EQUAL);
-		finishedPubKnights = new VarbitRequirement(9831, 3, Operation.GREATER_EQUAL);
+		talkedToPubKnights = new VarbitRequirement(VarbitID.VMQ2_PUB_KNIGHTS, 1, Operation.GREATER_EQUAL);
+		pubKnightFollowing = new VarplayerRequirement(447, List.of(13393, NpcID.VMQ2_KNIGHT_5_DRUNK), 16);
+		pubKnightSobered = new VarbitRequirement(VarbitID.VMQ2_PUB_KNIGHTS, 2, Operation.GREATER_EQUAL);
+		finishedPubKnights = new VarbitRequirement(VarbitID.VMQ2_PUB_KNIGHTS, 3, Operation.GREATER_EQUAL);
 
-		talkedToColosseumKnight = new VarbitRequirement(9832, 1, Operation.GREATER_EQUAL);
-		knightFightNearby = new NpcRequirement(NpcID.KNIGHT_OF_VARLAMORE_12916);
-		defeatedColosseumKnight = new VarbitRequirement(9832, 2, Operation.GREATER_EQUAL);
-		finishedColosseumKnight = new VarbitRequirement(9832, 3, Operation.GREATER_EQUAL);
+		talkedToColosseumKnight = new VarbitRequirement(VarbitID.VMQ2_COLOSSEUM_KNIGHT, 1, Operation.GREATER_EQUAL);
+		knightFightNearby = new NpcRequirement(NpcID.VMQ2_KNIGHT_6_COMBAT);
+		defeatedColosseumKnight = new VarbitRequirement(VarbitID.VMQ2_COLOSSEUM_KNIGHT, 2, Operation.GREATER_EQUAL);
+		finishedColosseumKnight = new VarbitRequirement(VarbitID.VMQ2_COLOSSEUM_KNIGHT, 3, Operation.GREATER_EQUAL);
 
 		inHQ1 = new ZoneRequirement(hq1);
 		inHQ2 = new ZoneRequirement(hq2);
@@ -259,103 +254,103 @@ public class TwilightsPromise extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		talkToRegulusStart = new NpcStep(this, NpcID.REGULUS_CENTO, new WorldPoint(3281, 3413, 0),
+		talkToRegulusStart = new NpcStep(this, NpcID.VMQ2_QUETZAL_KEEPER_1OP, new WorldPoint(3281, 3413, 0),
 			"Talk to Regulus Cento outside Varrock's East Gate to travel to Varlamore.");
 		talkToRegulusStart.addDialogStep("Let's do it!");
 
-		talkToEnnius = new NpcStep(this, NpcID.ENNIUS_TULLUS_12892, new WorldPoint(1687, 3141, 0),
+		talkToEnnius = new NpcStep(this, NpcID.VMQ2_ENNIUS_VIS, new WorldPoint(1687, 3141, 0),
 			"Talk to Ennius Tullus just west of where you arrived, next to the fountain.");
 		talkToEnnius.addDialogSteps("Yes.");
-		talkToMetzli = new NpcStep(this, NpcID.METZLI_TEOKAN_OF_RANUL, new WorldPoint(1697, 3087, 0),
+		talkToMetzli = new NpcStep(this, NpcID.VMQ2_METZLI_VIS, new WorldPoint(1697, 3087, 0),
 			"Talk to Metzli in the temple in the south of the city.");
 		talkToMetzli.addDialogStep("I'm meant to be meeting Prince Itzla here.");
-		enterCrypt = new ObjectStep(this, ObjectID.STAIRCASE_50859, new WorldPoint(1692, 3088, 0),
+		enterCrypt = new ObjectStep(this, ObjectID.VMQ2_TEMPLE_STAIRS_TOP, new WorldPoint(1692, 3088, 0),
 			"Enter the temple's crypt.");
 		enterCrypt.addDialogStep("I'd better head down there.");
-		talkToPrince = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_12896, new WorldPoint(1685, 9514, 0),
+		talkToPrince = new NpcStep(this, NpcID.VMQ2_ITZLA_VIS, new WorldPoint(1685, 9514, 0),
 			"Talk to Prince Itzla Arkan in the north room.");
-		leaveCrypt = new ObjectStep(this, ObjectID.STAIRCASE_50860, new WorldPoint(1692, 9492, 0),
+		leaveCrypt = new ObjectStep(this, ObjectID.VMQ2_TEMPLE_STAIRS_BOTTOM, new WorldPoint(1692, 9492, 0),
 			"Leave the crypt.");
-		talkToEnnius2 = new NpcStep(this, NpcID.ENNIUS_TULLUS_12892, new WorldPoint(1684, 3156, 0),
+		talkToEnnius2 = new NpcStep(this, NpcID.VMQ2_ENNIUS_VIS, new WorldPoint(1684, 3156, 0),
 			"Return to Ennius Tullus, who is now in the palace.");
 		// Crest given
 		// 12->14
 		// 9834 0->1
 		// 9833 0->1
-		talkToCothonKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12906, new WorldPoint(1746, 3120, 0),
+		talkToCothonKnight = new NpcStep(this, NpcID.VMQ2_KNIGHT_3_VIS, new WorldPoint(1746, 3120, 0),
 			"Talk to the Knight of Varlamore on the south western part of the Fortis Cothon (docks) in the east of the city.", varlamoreCrest);
-		searchCrate = new ObjectStep(this, ObjectID.CRATE_50870, new WorldPoint(1778, 3149, 0),
+		searchCrate = new ObjectStep(this, ObjectID.VMQ2_COTHON_CRATE, new WorldPoint(1778, 3149, 0),
 			"Search the crate in the north-east of the Cothon, next to two barrels of fish.");
-		returnToCothonKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12906, new WorldPoint(1746, 3120, 0),
+		returnToCothonKnight = new NpcStep(this, NpcID.VMQ2_KNIGHT_3_VIS, new WorldPoint(1746, 3120, 0),
 		"Return to the Knight of Varlamore on the south part of the Fortis Cothon.");
 
-		enterColosseum = new ObjectStep(this, ObjectID.COLOSSEUM_ENTRANCE, new WorldPoint(1796, 3106, 0),
+		enterColosseum = new ObjectStep(this, ObjectID.COLOSSEUM_ENTRANCE_OUTSIDE, new WorldPoint(1796, 3106, 0),
 			"Enter the Colosseum in the east of the city.", varlamoreCrest, twoCombatStyles);
-		talkToColosseumKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12914, new WorldPoint(1805, 9522, 0),
+		talkToColosseumKnight = new NpcStep(this, NpcID.VMQ2_KNIGHT_6_VIS, new WorldPoint(1805, 9522, 0),
 			"Talk to the Knight of Varlamore in the north training room, ready to fight.", varlamoreCrest, twoCombatStyles);
 		talkToColosseumKnight.addDialogStep("I'm ready. Let's do this.");
 		// 12401 0->1 with bar?
-		defeatColosseumKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12916, new WorldPoint(1824, 3105, 0),
+		defeatColosseumKnight = new NpcStep(this, NpcID.VMQ2_KNIGHT_6_COMBAT, new WorldPoint(1824, 3105, 0),
 			"Defeat the knight, swapping combat styles to bypass his prayers.", twoCombatStyles);
-		talkToColosseumKnight2 = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12914, new WorldPoint(1805, 9522, 0),
+		talkToColosseumKnight2 = new NpcStep(this, NpcID.VMQ2_KNIGHT_6_VIS, new WorldPoint(1805, 9522, 0),
 			"Talk to the Knight of Varlamore in the northern training room once more.");
 
-		talkToPubKnights = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12912, new WorldPoint(1721, 3075, 0),
+		talkToPubKnights = new NpcStep(this, NpcID.VMQ2_KNIGHT_5_DRUNK, new WorldPoint(1721, 3075, 0),
 			"Talk to the Knights of Varlamore in the pub OUTSIDE the walls of the city to the south.", varlamoreCrest);
 		takePubKnightsToFountain = new DetailedQuestStep(this, new WorldPoint(1757, 3069, 0),
 			"Lead the knight to the fountain to the east. Whenever they stop following you, talk to them again.");
 		// 9834 1->2 when following you
-		talkToPubKnightAtFountain = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12910, new WorldPoint(1756, 3069, 0),
+		talkToPubKnightAtFountain = new NpcStep(this, NpcID.VMQ2_KNIGHT_5_VIS, new WorldPoint(1756, 3069, 0),
 			"Talk to the sobered knight at the fountain.");
 
-		talkToBazaarKnight = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12902, new WorldPoint(1682, 3104, 0),
+		talkToBazaarKnight = new NpcStep(this, NpcID.VMQ2_KNIGHT_1_VIS, new WorldPoint(1682, 3104, 0),
 			"Talk to the Knight of Varlamore in the bazaar south of the palace.", varlamoreCrest);
-		pickpocketCitizen = new NpcStep(this, NpcID.CITIZEN_12929, new WorldPoint(1686, 3109, 0),
+		pickpocketCitizen = new NpcStep(this, NpcID.VMQ2_CITIZEN_VIS, new WorldPoint(1686, 3109, 0),
 			"Pickpocket the citizen in turquoise robes in the bazaar.");
-		returnAmulet = new NpcStep(this, NpcID.KNIGHT_OF_VARLAMORE_12902, new WorldPoint(1682, 3104, 0),
+		returnAmulet = new NpcStep(this, NpcID.VMQ2_KNIGHT_1_VIS, new WorldPoint(1682, 3104, 0),
 		"Return the amulet to the knight in the bazaar.", stolenAmulet);
 
-		talkToEnniusAfterKnights = new NpcStep(this, NpcID.ENNIUS_TULLUS_12892, new WorldPoint(1684, 3156, 0), "Return to Ennius Tullus in the palace.");
-		climbStairs = new ObjectStep(this, ObjectID.STAIRS_50750, new WorldPoint(1796, 9506, 0), "Return to Ennius Tullus in the palace.");
+		talkToEnniusAfterKnights = new NpcStep(this, NpcID.VMQ2_ENNIUS_VIS, new WorldPoint(1684, 3156, 0), "Return to Ennius Tullus in the palace.");
+		climbStairs = new ObjectStep(this, ObjectID.COLOSSEUM_EXIT_LOBBY, new WorldPoint(1796, 9506, 0), "Return to Ennius Tullus in the palace.");
 		talkToEnniusAfterKnights.addSubSteps(climbStairs);
 
-		goUpHQ = new ObjectStep(this, ObjectID.STAIRCASE_52628, new WorldPoint(1638, 3155, 0),
+		goUpHQ = new ObjectStep(this, ObjectID.CIVITAS_STAIRS_SPIRAL, new WorldPoint(1638, 3155, 0),
 			"Go to the top floor of the Kualti Headquarters, just west of the palace.");
-		goUpHQ2 = new ObjectStep(this, ObjectID.STAIRCASE_52628, new WorldPoint(1650, 3155, 1),
+		goUpHQ2 = new ObjectStep(this, ObjectID.CIVITAS_STAIRS_SPIRAL, new WorldPoint(1650, 3155, 1),
 			"Go to the top floor of the Kualti Headquarters, just west of the palace.");
 		goUpHQ.addSubSteps(goUpHQ2);
-		searchHQChest = new ObjectStep(this, ObjectID.CHEST_50866, new WorldPoint(1648, 3142, 2),
+		searchHQChest = new ObjectStep(this, ObjectID.VMQ2_KNIGHT_4_CHEST, new WorldPoint(1648, 3142, 2),
 			"Search the chest in the south-east room on the south wall.");
 		readLetter = new DetailedQuestStep(this, "Read the incriminating letter.", incriminatingLetter.highlighted());
-		goDownHQ2To1 = new ObjectStep(this, ObjectID.STAIRCASE_52629, new WorldPoint(1651, 3155, 2),
+		goDownHQ2To1 = new ObjectStep(this, ObjectID.CIVITAS_STAIRS_SPIRAL_DOWN, new WorldPoint(1651, 3155, 2),
 			"Return to Ennius and Furia in the palace.");
-		goDownHQ1To0 = new ObjectStep(this, ObjectID.STAIRCASE_52629, new WorldPoint(1638, 3155, 1),
+		goDownHQ1To0 = new ObjectStep(this, ObjectID.CIVITAS_STAIRS_SPIRAL_DOWN, new WorldPoint(1638, 3155, 1),
 			"Return to Ennius and Furia in the palace.");
-		returnToEnniusAfterLetter = new NpcStep(this, NpcID.ENNIUS_TULLUS_12892, new WorldPoint(1684, 3156, 0),
+		returnToEnniusAfterLetter = new NpcStep(this, NpcID.VMQ2_ENNIUS_VIS, new WorldPoint(1684, 3156, 0),
 			"Return to Ennius and Furia in the palace.");
 		returnToEnniusAfterLetter.addSubSteps(goDownHQ2To1, goDownHQ1To0);
 
-		talkToRegulusForTransport = new NpcStep(this, NpcID.REGULUS_CENTO_12885, new WorldPoint(1699, 3141, 0),
+		talkToRegulusForTransport = new NpcStep(this, NpcID.VMQ2_QUETZAL_KEEPER_FORTIS, new WorldPoint(1699, 3141, 0),
 			"TALK to Regulus Cento south-east of the palace.");
 		talkToRegulusForTransport.addDialogStep("I was told to ask you about getting to the Teomat.");
 
-		feedRenu = new NpcStep(this, NpcID.RENU, new WorldPoint(1703, 3142, 0), "Feed Renu the feed.", quetzalFeed.highlighted());
+		feedRenu = new NpcStep(this, NpcID.QUETZAL_CHILD_GREEN_NOOP, new WorldPoint(1703, 3142, 0), "Feed Renu the feed.", quetzalFeed.highlighted());
 		feedRenu.addDialogStep("I was told to ask you about getting to the Teomat.");
-		feedRenu.addIcon(ItemID.QUETZAL_FEED);
+		feedRenu.addIcon(ItemID.VMQ2_QUETZAL_FEED);
 
-		travelToTeomat = new NpcStep(this, NpcID.RENU_13350, new WorldPoint(1703, 3142, 0), "Travel with Renu to Teomat.");
+		travelToTeomat = new NpcStep(this, NpcID.QUETZAL_CHILD_GREEN, new WorldPoint(1703, 3142, 0), "Travel with Renu to Teomat.");
 		travelToTeomat.addWidgetHighlight(874, 17, 1);
 
-		talkToPrinceInTemple = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_12896, new WorldPoint(1454, 3173, 0), "" +
+		talkToPrinceInTemple = new NpcStep(this, NpcID.VMQ2_ITZLA_VIS, new WorldPoint(1454, 3173, 0), "" +
 			"Talk to Prince Itzla Arkan in the temple, near the altar.");
 
-		talkToMetzliNearTemple = new NpcStep(this, NpcID.METZLI_TEOKAN_OF_RANUL, new WorldPoint(1448, 3196, 0),
+		talkToMetzliNearTemple = new NpcStep(this, NpcID.VMQ2_METZLI_VIS, new WorldPoint(1448, 3196, 0),
 			"Talk to Metzli in the northern building of the Teomat.");
 
-		defeat8Cultists = new NpcStep(this, NpcID.CULTIST, "Defeat the cultists.", true);
-		((NpcStep) defeat8Cultists).addAlternateNpcs(NpcID.CULTIST_12919, NpcID.CULTIST_12920, NpcID.CULTIST_12921, NpcID.CULTIST_12922, NpcID.CULTIST_12923);
+		defeat8Cultists = new NpcStep(this, NpcID.VMQ2_CULTIST_M_1, "Defeat the cultists.", true);
+		((NpcStep) defeat8Cultists).addAlternateNpcs(NpcID.VMQ2_CULTIST_M_2, NpcID.VMQ2_CULTIST_M_3, NpcID.VMQ2_CULTIST_F_1, NpcID.VMQ2_CULTIST_F_2, NpcID.VMQ2_CULTIST_F_3);
 
-		finishQuest = new NpcStep(this, NpcID.PRINCE_ITZLA_ARKAN_12896, new WorldPoint(1454, 3173, 0),
+		finishQuest = new NpcStep(this, NpcID.VMQ2_ITZLA_VIS, new WorldPoint(1454, 3173, 0),
 			"Talk to Prince Itzla Arkan in Teomat, near the altar, to finish the quest.");
 	}
 

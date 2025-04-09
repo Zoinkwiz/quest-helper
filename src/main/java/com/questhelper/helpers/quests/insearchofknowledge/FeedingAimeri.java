@@ -28,10 +28,10 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.NpcStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class FeedingAimeri extends NpcStep
@@ -41,7 +41,7 @@ public class FeedingAimeri extends NpcStep
 
 	public FeedingAimeri(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.BROTHER_AIMERI, new WorldPoint(1840, 9926, 0), "Cut through the web to" +
+		super(questHelper, NpcID.HOSDUN_AIMERI_INJURED, new WorldPoint(1840, 9926, 0), "Cut through the web to" +
 				" the south, and use 5 pieces of food on Aimeri there.", food5Highlighted, knife);
 		food5Highlighted.setHighlightInInventory(true);
 	}

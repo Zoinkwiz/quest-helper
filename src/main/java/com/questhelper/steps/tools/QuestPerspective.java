@@ -25,14 +25,7 @@
 package com.questhelper.steps.tools;
 
 import com.questhelper.requirements.zone.Zone;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
@@ -40,6 +33,14 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import static net.runelite.api.Constants.CHUNK_SIZE;
 
 public class QuestPerspective
 {

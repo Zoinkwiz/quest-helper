@@ -27,13 +27,11 @@ package com.questhelper.helpers.quests.demonslayer;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
 
 import java.util.HashMap;
-import net.runelite.client.eventbus.Subscribe;
 
 public class IncantationStep extends ConditionalStep
 {

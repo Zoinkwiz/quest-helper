@@ -24,32 +24,23 @@
  */
 package com.questhelper.helpers.quests.impcatcher;
 
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class ImpCatcher extends BasicQuestHelper
 {
@@ -98,11 +89,11 @@ public class ImpCatcher extends BasicQuestHelper
 	public void setupSteps(){
 		collectBeads = new DetailedQuestStep(this, "Collect one of each bead. You can kill imps for these beads, or buy them on the Grand Exchange.",
 			blackBead, whiteBead, redBead, yellowBead);
-		moveToTower = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(3103, 3159, 0),
+		moveToTower = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS, new WorldPoint(3103, 3159, 0),
 			"Head to the Wizards' Tower and climb up the staircase with the required beads.", blackBead, whiteBead, redBead, yellowBead);
-		climbTower = new ObjectStep(this, ObjectID.STAIRCASE_12537, new WorldPoint(3103, 3159, 1),
+		climbTower = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(3103, 3159, 1),
 			"Climb the staircase again.", blackBead, whiteBead, redBead, yellowBead);
-		turnInQuest = new NpcStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
+		turnInQuest = new NpcStep(this, NpcID.WIZARD_MIZGOG_QUEST, new WorldPoint(3103, 3163, 2),
 			"Talk to Wizard Mizgog with the required beads to finish the quest.",
 			blackBead, whiteBead, redBead, yellowBead);
 		turnInQuest.addDialogSteps("Give me a quest please.", "Yes.");

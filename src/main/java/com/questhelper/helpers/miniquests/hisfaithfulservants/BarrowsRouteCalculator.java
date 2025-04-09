@@ -25,11 +25,12 @@
 package com.questhelper.helpers.miniquests.hisfaithfulservants;
 
 import com.questhelper.requirements.zone.Zone;
+import net.runelite.api.Client;
+import net.runelite.api.coords.WorldPoint;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.coords.WorldPoint;
 
 public class BarrowsRouteCalculator
 {

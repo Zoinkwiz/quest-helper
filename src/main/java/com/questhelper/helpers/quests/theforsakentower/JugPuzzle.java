@@ -25,34 +25,33 @@
 package com.questhelper.helpers.quests.theforsakentower;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.steps.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.steps.DetailedOwnerStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JugPuzzle extends DetailedOwnerStep
 {
@@ -253,9 +252,9 @@ public class JugPuzzle extends DetailedOwnerStep
 	private void setupItemRequirements()
 	{
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		fiveGallon = new ItemRequirement("5-gallon jug", ItemID._5GALLON_JUG);
+		fiveGallon = new ItemRequirement("5-gallon jug", ItemID.LOVAQUEST_JUG_SMALL);
 		fiveGallon.setHighlightInInventory(true);
-		eightGallon = new ItemRequirement("8-gallon jug", ItemID._8GALLON_JUG);
+		eightGallon = new ItemRequirement("8-gallon jug", ItemID.LOVAQUEST_JUG_LARGE);
 		eightGallon.setHighlightInInventory(true);
 	}
 
@@ -287,8 +286,8 @@ public class JugPuzzle extends DetailedOwnerStep
 		setupConditions();
 
 		syncStep = new DetailedQuestStep(getQuestHelper(), "Please check both the jugs to continue.");
-		searchCupboardTinderbox = new ObjectStep(getQuestHelper(), ObjectID.CUPBOARD_33515, new WorldPoint(1381, 3829, 0), "Search the cupboard on the north wall for a tinderbox.");
-		searchCupboardJug = new ObjectStep(getQuestHelper(), ObjectID.CUPBOARD_33514, new WorldPoint(1378, 3826, 0), "Search the cupboard in the south east corner of the north room for a 5 and an 8 gallon jug.");
+		searchCupboardTinderbox = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_SHELVES_TINDERBOX, new WorldPoint(1381, 3829, 0), "Search the cupboard on the north wall for a tinderbox.");
+		searchCupboardJug = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_SHELVES_JUGS, new WorldPoint(1378, 3826, 0), "Search the cupboard in the south east corner of the north room for a 5 and an 8 gallon jug.");
 		searchCupboardJug.addDialogStep("Take both.");
 		fill5Gallon = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34593, new WorldPoint(1377, 3828, 0), "Fill the 5-gallon jug on the Coolant Dispenser.", fiveGallon);
 		fill5Gallon.addDialogStep("5-gallon jug.");
@@ -311,9 +310,9 @@ public class JugPuzzle extends DetailedOwnerStep
 		restartPuzzle = new DetailedQuestStep(getQuestHelper(), "Unknown puzzle state. Empty both the jugs to continue.");
 		lightFurnace = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34591, new WorldPoint(1385, 3829, 0), "Light the furnace.", tinderbox);
 
-		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33485, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
-		goDownToGroundFloor = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33552, new WorldPoint(1378, 3825, 1), "Go down to the ground floor.");
-		goUpToGroundFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
+		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_LADDER_DOWN, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
+		goDownToGroundFloor = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_SPIRAL_STAIRS_TOP_M, new WorldPoint(1378, 3825, 1), "Go down to the ground floor.");
+		goUpToGroundFloor = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_DUNGEON_EXIT, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
 	}
 
 	public List<PanelDetails> panelDetails()

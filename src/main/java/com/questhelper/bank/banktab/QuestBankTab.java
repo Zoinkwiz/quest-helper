@@ -31,22 +31,16 @@ package com.questhelper.bank.banktab;
 import com.google.common.primitives.Shorts;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.item.ItemRequirement;
-import java.awt.Color;
-import java.awt.Point;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.events.GrandExchangeSearched;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.events.ScriptPreFired;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.*;
+import net.runelite.api.events.*;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.JavaScriptCallback;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -57,6 +51,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.awt.Point;
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.questhelper.bank.banktab.PotionStorage.COMPONENTS_PER_POTION;
 import static com.questhelper.bank.banktab.PotionStorage.VIAL_IDX;
@@ -235,7 +237,7 @@ public class QuestBankTab
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == InterfaceID.BANK && questHelper.getSelectedQuest() != null)
+		if (event.getGroupId() == InterfaceID.BANKMAIN && questHelper.getSelectedQuest() != null)
 		{
 			questBankTabInterface.init();
 		}

@@ -24,12 +24,13 @@
  */
 package com.questhelper.helpers.quests.dreammentor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 enum CyrisusArmourSet
 {

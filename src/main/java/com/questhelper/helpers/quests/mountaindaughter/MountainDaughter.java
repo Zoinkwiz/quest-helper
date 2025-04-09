@@ -24,42 +24,33 @@
  */
 package com.questhelper.helpers.quests.mountaindaughter;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class MountainDaughter extends BasicQuestHelper
 {
@@ -180,40 +171,40 @@ public class MountainDaughter extends BasicQuestHelper
 		pickaxe.addAlternates(ItemCollections.PICKAXES);
 
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
-		plank = new ItemRequirement("Any plank", ItemID.PLANK).isNotConsumed();
-		plank.addAlternates(ItemID.OAK_PLANK, ItemID.TEAK_PLANK, ItemID.MAHOGANY_PLANK);
-		pole = new ItemRequirement("A staff or a pole", ItemID.POLE).isNotConsumed();
-		pole.addAlternates(ItemID.LUNAR_STAFF, ItemID.STAFF, ItemID.BATTLESTAFF);
+		plank = new ItemRequirement("Any plank", ItemID.WOODPLANK).isNotConsumed();
+		plank.addAlternates(ItemID.PLANK_OAK, ItemID.PLANK_TEAK, ItemID.PLANK_MAHOGANY);
+		pole = new ItemRequirement("A staff or a pole", ItemID.MDAUGHTER_STICK).isNotConsumed();
+		pole.addAlternates(ItemID.LUNAR_MOONCLAN_LIMINAL_STAFF, ItemID.PLAINSTAFF, ItemID.BATTLESTAFF);
 		pole.addAlternates(ItemCollections.AIR_STAFF);
 		pole.addAlternates(ItemCollections.WATER_STAFF);
 		pole.addAlternates(ItemCollections.EARTH_STAFF);
 		pole.addAlternates(ItemCollections.FIRE_STAFF);
 		pole.setTooltip("A Dramen Staff will NOT work. A pole can be obtained from the goat pen north of Hamal's tent.");
 		gloves = new ItemRequirement("Almost any gloves", ItemID.LEATHER_GLOVES).isNotConsumed();
-		gloves.addAlternates(ItemID.BARROWS_GLOVES, ItemID.DRAGON_GLOVES, ItemID.RUNE_GLOVES, ItemID.ADAMANT_GLOVES, ItemID.MITHRIL_GLOVES,
-			ItemID.BLACK_GLOVES, ItemID.STEEL_GLOVES, ItemID.IRON_GLOVES, ItemID.BRONZE_GLOVES, ItemID.HARDLEATHER_GLOVES,
+		gloves.addAlternates(ItemID.HUNDRED_GAUNTLETS_LEVEL_10, ItemID.HUNDRED_GAUNTLETS_LEVEL_9, ItemID.HUNDRED_GAUNTLETS_LEVEL_8, ItemID.HUNDRED_GAUNTLETS_LEVEL_7, ItemID.HUNDRED_GAUNTLETS_LEVEL_6,
+			ItemID.HUNDRED_GAUNTLETS_LEVEL_5, ItemID.HUNDRED_GAUNTLETS_LEVEL_4, ItemID.HUNDRED_GAUNTLETS_LEVEL_3, ItemID.HUNDRED_GAUNTLETS_LEVEL_2, ItemID.HUNDRED_GAUNTLETS_LEVEL_1,
 			ItemID.FEROCIOUS_GLOVES, ItemID.GRACEFUL_GLOVES, ItemID.GRANITE_GLOVES);
 		gloves.setTooltip("You can use most other gloves, with a few exceptions (Slayer, Mystic, Ranger, Moonclan, Lunar, Infinity, vambraces).");
 
-		mud = new ItemRequirement("Mud", ItemID.MUD);
+		mud = new ItemRequirement("Mud", ItemID.MDAUGHTER_MUD);
 		mud.setTooltip("You can get some mud from the mud pool south of Hamal's tent.");
 
-		halfRock = new ItemRequirement("Half a rock", ItemID.HALF_A_ROCK);
+		halfRock = new ItemRequirement("Half a rock", ItemID.MDAUGHTER_HALF_ROCK);
 		halfRock.setTooltip("You can get another piece by using a pickaxe on the Ancient Rock in the Mountain Camp.");
 
-		safetyGuarantee = new ItemRequirement("Safety Guarantee", ItemID.SAFETY_GUARANTEE);
+		safetyGuarantee = new ItemRequirement("Safety Guarantee", ItemID.MDAUGHTER_SAFETY_GUARANTEE);
 		safetyGuarantee.setTooltip("You can get another guarantee from Brundt in Rellekka's longhall.");
 
-		whitePearl = new ItemRequirement("White pearl", ItemID.WHITE_PEARL);
-		whitePearlSeed = new ItemRequirement("White pearl seed", ItemID.WHITE_PEARL_SEED);
-		corpse = new ItemRequirement("Corpse of woman", ItemID.CORPSE_OF_WOMAN);
+		whitePearl = new ItemRequirement("White pearl", ItemID.MDAUGHTER_WHITE_PEARL_FRUIT);
+		whitePearlSeed = new ItemRequirement("White pearl seed", ItemID.MDAUGHTER_WHITE_PEARL_SEED);
+		corpse = new ItemRequirement("Corpse of woman", ItemID.MDAUGHTER_DAUGHTER_CORPSE);
 		corpse.setTooltip("You can find this corpse again in the Kendal's cave.");
-		muddyRocks5 = new ItemRequirement("Muddy rock", ItemID.MUDDY_ROCK, 5);
+		muddyRocks5 = new ItemRequirement("Muddy rock", ItemID.MDAUGHTER_ROCK, 5);
 		slayerRing = new ItemRequirement("Slayer ring for teleports", ItemCollections.SLAYER_RINGS);
 		combatGear = new ItemRequirement("Combat gear for The Kendal fight", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		necklace = new ItemRequirement("Asleif's necklace", ItemID.ASLEIFS_NECKLACE);
+		necklace = new ItemRequirement("Asleif's necklace", ItemID.MDAUGHTER_NECKLACE);
 	}
 
 	private void loadConditions()
@@ -226,7 +217,7 @@ public class MountainDaughter extends BasicQuestHelper
 		askedAboutDiplomacy = new Conditions(new VarbitRequirement(262, 10));
 		rubbedMudIntoTree = new Conditions(new VarbitRequirement(261, 1));
 
-		VarbitRequirement askedAboutFood = new VarbitRequirement(263, 10, Operation.GREATER_EQUAL);
+		VarbitRequirement askedAboutFood = new VarbitRequirement(VarbitID.MDAUGHTER_FOOD_VAR, 10, Operation.GREATER_EQUAL);
 		askedAboutFoodAndDiplomacy = new Conditions(new VarbitRequirement(262, 10), askedAboutFood);
 		spokenToSvidi = new Conditions(new VarbitRequirement(262, 20), askedAboutFood);
 		spokenToBrundt = new Conditions(new VarbitRequirement(262, 30), askedAboutFood);
@@ -237,125 +228,125 @@ public class MountainDaughter extends BasicQuestHelper
 		finishedFood = new VarbitRequirement(263, 20);
 		finishedFoodAndDiplomacy = new Conditions(finishedDiplomacy, finishedFood);
 		inKendalCave = new Conditions(new ZoneRequirement(KENDAL_CAVE));
-		fightableKendalNearby = new Conditions(new NpcHintArrowRequirement(NpcID.THE_KENDAL_1378));
+		fightableKendalNearby = new Conditions(new NpcHintArrowRequirement(NpcID.MDAUGHTER_BEARMAN_FIGHTER));
 
 		hasBuried = new Conditions(new VarbitRequirement(273, 1));
 	}
 
 	private void loadQuestSteps()
 	{
-		enterCamp = new ObjectStep(this, ObjectID.BOULDER_5842, new WorldPoint(2766, 3667, 0),
+		enterCamp = new ObjectStep(this, ObjectID.MDAUGHTER_CLIFF_BOULDER, new WorldPoint(2766, 3667, 0),
 			"Use your rope on the boulder outside the Mountain Camp east of Rellekka.", rope.highlighted());
 		enterCamp.addIcon(ItemID.ROPE);
 
-		enterCampOverRocks = new ObjectStep(this, ObjectID.ROCKSLIDE_5847, new WorldPoint(2760, 3658, 0),
+		enterCampOverRocks = new ObjectStep(this, ObjectID.MDAUGHTER_ROCKSLIDE, new WorldPoint(2760, 3658, 0),
 			"Return to the Mountain Camp.", rope.highlighted());
 
-		talkToHamal = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0), "Speak to Hamal the Chieftain in the Mountain Camp.",
+		talkToHamal = new NpcStep(this, NpcID.MDAUGHTER_HAMAL, new WorldPoint(2810, 3672, 0), "Speak to Hamal the Chieftain in the Mountain Camp.",
 			rope, pickaxe, axe, plank, pole, gloves);
 		talkToHamal.addDialogStep("Why is everyone so hostile?");
 		talkToHamal.addDialogStep("So what are you doing up here?");
 		talkToHamal.addDialogStep("I will search for her!");
 
-		digUpMud = new ObjectStep(this, ObjectID.ROOTS_5885, new WorldPoint(2805, 3661, 0),
+		digUpMud = new ObjectStep(this, ObjectID.MDAUGHTER_ROOTS_1, new WorldPoint(2805, 3661, 0),
 			"Head south of Hamal's tent and dig some mud from the mud pond.");
 		pickupPole = new ItemStep(this, new WorldPoint(2813, 3685, 0), "Pick up the pole north of Hamal's tent.", pole);
 
-		rubMudIntoTree = new ObjectStep(this, ObjectID.TALL_TREE, new WorldPoint(2772, 3681, 0),
+		rubMudIntoTree = new ObjectStep(this, ObjectID.MDAUGHTER_LAKE_TREE, new WorldPoint(2772, 3681, 0),
 			"Use mud on the Tall Tree on the lake north of the camp, and then climb it.",
 			mud.highlighted(), pole, plank);
-		rubMudIntoTree.addIcon(ItemID.MUD);
+		rubMudIntoTree.addIcon(ItemID.MDAUGHTER_MUD);
 
-		climbTree = new ObjectStep(this, ObjectID.TALL_TREE, new WorldPoint(2772, 3681, 0),
+		climbTree = new ObjectStep(this, ObjectID.MDAUGHTER_LAKE_TREE, new WorldPoint(2772, 3681, 0),
 			"Climb the Tall Tree on the lake north of the camp.", pole, plank);
 
-		poleVaultRocks = new ObjectStep(this, ObjectID.CLUMP_OF_ROCKS, new WorldPoint(2773, 3688, 0),
+		poleVaultRocks = new ObjectStep(this, ObjectID.MDAUGHTER_POLEROCKS, new WorldPoint(2773, 3688, 0),
 			"Use your pole or a staff on the clump of rocks.", pole, plank);
-		poleVaultRocks.addIcon(ItemID.POLE);
+		poleVaultRocks.addIcon(ItemID.MDAUGHTER_STICK);
 
-		plankRocks = new ObjectStep(this, ObjectID.FLAT_STONE, new WorldPoint(2775, 3691, 0),
+		plankRocks = new ObjectStep(this, ObjectID.MDAUGHTER_FLATSTONE1, new WorldPoint(2775, 3691, 0),
 			"Use a plank on the flat stone.",
 			plank);
-		plankRocks.addIcon(ItemID.PLANK);
+		plankRocks.addIcon(ItemID.WOODPLANK);
 
-		listenToSpirit = new ObjectStep(this, ObjectID.SHINING_POOL_5897, new WorldPoint(2781, 3689, 0),
+		listenToSpirit = new ObjectStep(this, ObjectID.MDAUGHTER_SULPHAR_GAS, new WorldPoint(2781, 3689, 0),
 			"Listen to the Shining Pool.");
 		listenToSpirit.addDialogStep("Hello! Who are you?");
 		listenToSpirit.addDialogStep("So what exactly do you want from me?");
 		listenToSpirit.addDialogStep("That sounds like something I can do.");
 		listenToSpirit.addDialogStep("I'll get right on it.");
 
-		plankRocksReturn = new ObjectStep(this, ObjectID.FLAT_STONE_5851, new WorldPoint(2777, 3691, 0),
+		plankRocksReturn = new ObjectStep(this, ObjectID.MDAUGHTER_FLATSTONE2, new WorldPoint(2777, 3691, 0),
 			"Use a plank on the flat stone to return to shore.",
 			plank);
 		plankRocksReturn.addDialogStep("Yes.");
-		plankRocksReturn.addIcon(ItemID.PLANK);
+		plankRocksReturn.addIcon(ItemID.WOODPLANK);
 
-		talkToHamalAfterSpirit = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
+		talkToHamalAfterSpirit = new NpcStep(this, NpcID.MDAUGHTER_HAMAL, new WorldPoint(2810, 3672, 0),
 			"Speak to Hamal the Chieftain in the Mountain Camp.",
 			rope, pickaxe, axe, plank, pole, gloves);
 		talkToHamalAfterSpirit.addDialogStep("About the people of Rellekka...");
 
-		talkToJokul = new NpcStep(this, NpcID.JOKUL, new WorldPoint(2812, 3680, 0),
+		talkToJokul = new NpcStep(this, NpcID.MDAUGHTER_JOKUL, new WorldPoint(2812, 3680, 0),
 			"Speak to Jokul north of Hamal's tent.");
 
-		talkToSvidi = new NpcStep(this, NpcID.SVIDI, new WorldPoint(2717, 3666, 0),
+		talkToSvidi = new NpcStep(this, NpcID.MDAUGHTER_SVIDI, new WorldPoint(2717, 3666, 0),
 			"Speak to Svidi who roams in the forest east of Rellekka.",
 			pickaxe);
 		talkToSvidi.addDialogStep("Can't I persuade you to go in there somehow?");
 
-		speakToBrundt = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
+		speakToBrundt = new NpcStep(this, NpcID.VIKING_BRUNDT_CHILD, new WorldPoint(2658, 3669, 0),
 			"Speak to Brundt the Chieftain in the Rellekka's longhall.",
 			rope, pickaxe, axe, plank, pole, gloves);
 		speakToBrundt.addDialogStep("Ask about the mountain camp.");
 		speakToBrundt.addDialogStep("Did it look pretty?");
 
-		getRockFragment = new ObjectStep(this, ObjectID.ANCIENT_ROCK, new WorldPoint(2799, 3660, 0),
+		getRockFragment = new ObjectStep(this, ObjectID.MDAUGHTER_ANCIENT_ROCK, new WorldPoint(2799, 3660, 0),
 			"Use a pickaxe on the Ancient Rock in the Mountain Camp.",
 			pickaxe);
 		getRockFragment.addIcon(ItemID.BRONZE_PICKAXE);
 
-		returnToBrundt = new NpcStep(this, NpcID.BRUNDT_THE_CHIEFTAIN_9263, new WorldPoint(2658, 3669, 0),
+		returnToBrundt = new NpcStep(this, NpcID.VIKING_BRUNDT_CHILD, new WorldPoint(2658, 3669, 0),
 			"Return to Brundt the Chieftain in the Rellekka's longhall.",
 			halfRock);
 		returnToBrundt.addDialogStep("Ask about the mountain camp.");
 
-		returnToSvidi = new NpcStep(this, NpcID.SVIDI, new WorldPoint(2717, 3666, 0),
+		returnToSvidi = new NpcStep(this, NpcID.MDAUGHTER_SVIDI, new WorldPoint(2717, 3666, 0),
 			"Return to Svidi who roams in the forest east of Rellekka.",
 			safetyGuarantee);
 
-		getFruit = new ObjectStep(this, ObjectID.THORNY_BUSHES, new WorldPoint(2849, 3497, 0),
+		getFruit = new ObjectStep(this, ObjectID.MDAUGHTER_WHITE_PEARL_BUSH, new WorldPoint(2849, 3497, 0),
 			"Go to the top of White Wolf Mountain and pick the Thorny Bushes whilst wearing gloves.",
 			gloves);
 
 		eatFruit = new DetailedQuestStep(this, "Eat the White Pearl.", whitePearl.highlighted());
 
-		returnToHamalAboutDiplomacy = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
+		returnToHamalAboutDiplomacy = new NpcStep(this, NpcID.MDAUGHTER_HAMAL, new WorldPoint(2810, 3672, 0),
 			"Return to Hamal the Chieftain in the Mountain Camp.",
 			whitePearlSeed);
 		returnToHamalAboutDiplomacy.addDialogStep("About the people of Rellekka...");
 
-		returnToHamalAboutFood = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
+		returnToHamalAboutFood = new NpcStep(this, NpcID.MDAUGHTER_HAMAL, new WorldPoint(2810, 3672, 0),
 			"Return to Hamal the Chieftain in the Mountain Camp.",
 			whitePearlSeed);
 		returnToHamalAboutFood.addDialogStep("About your food supplies...");
 
 		returnToHamalAboutDiplomacy.addSubSteps(returnToHamalAboutFood);
 
-		returnToSpirit = new ObjectStep(this, ObjectID.SHINING_POOL_5897, new WorldPoint(2781, 3689, 0),
+		returnToSpirit = new ObjectStep(this, ObjectID.MDAUGHTER_SULPHAR_GAS, new WorldPoint(2781, 3689, 0),
 			"Return to the centre of the pool north of the Mountain Camp and listen to it.",
 			pole, plank);
 
-		noPlankRocksReturn = new ObjectStep(this, ObjectID.FLAT_STONE_5851, new WorldPoint(2777, 3691, 0),
+		noPlankRocksReturn = new ObjectStep(this, ObjectID.MDAUGHTER_FLATSTONE2, new WorldPoint(2777, 3691, 0),
 			"Attempt to jump across the flat stone WITHOUT a plank to return to the north shore.");
 
-		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5857, new WorldPoint(2809, 3703, 0),
+		enterCave = new ObjectStep(this, ObjectID.MDAUGHTER_CAVEENTRANCE, new WorldPoint(2809, 3703, 0),
 			"Cut through the trees north east of the lake and enter the cave there. Bring combat gear.",
 			axe);
 		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2802, 3703, 0), SpriteID.COMBAT_STYLE_AXE_CHOP);
 		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2807, 3703, 0), SpriteID.COMBAT_STYLE_AXE_CHOP);
 
-		talkToKendal = new NpcStep(this, NpcID.THE_KENDAL, new WorldPoint(2788, 10081, 0),
+		talkToKendal = new NpcStep(this, NpcID.MDAUGHTER_BEARMAN, new WorldPoint(2788, 10081, 0),
 			"Speak to the Kendal, then kill him.");
 		talkToKendal.addDialogStep("It's just me, no one special.");
 		talkToKendal.addDialogStep("You mean a sacrifice?");
@@ -364,28 +355,28 @@ public class MountainDaughter extends BasicQuestHelper
 		talkToKendal.addDialogStep("I humbly request to be given the remains.");
 		talkToKendal.addDialogStep("I will kill you myself!");
 
-		killKendal = new NpcStep(this, NpcID.THE_KENDAL, new WorldPoint(2788, 10081, 0), "Kill the kendal.");
+		killKendal = new NpcStep(this, NpcID.MDAUGHTER_BEARMAN, new WorldPoint(2788, 10081, 0), "Kill the kendal.");
 		talkToKendal.addSubSteps(killKendal);
 
 		grabCorpse = new TileStep(this, new WorldPoint(2784, 10078, 0), "Pick up the Corpse of Woman.");
-		bringCorpseToHamal = new NpcStep(this, NpcID.HAMAL_THE_CHIEFTAIN, new WorldPoint(2810, 3672, 0),
+		bringCorpseToHamal = new NpcStep(this, NpcID.MDAUGHTER_HAMAL, new WorldPoint(2810, 3672, 0),
 			"Bring the corpse to Hamal.", corpse);
 		bringCorpseToHamal.addDialogStep("But he's not a god!");
 		bringCorpseToHamal.addDialogStep("I will.");
 
 		collectRocks = new DetailedQuestStep(this, "Collect 5 Muddy Rocks from around the camp.", muddyRocks5);
 
-		speakRagnar = new NpcStep(this, NpcID.RAGNAR, new WorldPoint(2766, 3676, 0),
+		speakRagnar = new NpcStep(this, NpcID.MDAUGHTER_RAGNAR, new WorldPoint(2766, 3676, 0),
 			"Speak to Ragnar.", corpse, muddyRocks5);
 		speakRagnar.addDialogStep("Thank you. I will make sure she's given a proper burial now.");
 
 		buryCorpseOnIsland = new TileStep(this, new WorldPoint(2782, 3694, 0), "Return to the centre of the lake and bury the corpse.",
 			corpse, pole, plank);
 
-		createCairn = new ObjectStep(this, ObjectID.BURIAL_MOUND, new WorldPoint(2783, 3694, 0),
+		createCairn = new ObjectStep(this, ObjectID.MDAUGHTER_BURIALMOUND, new WorldPoint(2783, 3694, 0),
 			"Use the Muddy rocks on the Burial Mound at the centre of the Mountain Camp's lake.",
 			muddyRocks5);
-		createCairn.addIcon(ItemID.MUDDY_ROCK);
+		createCairn.addIcon(ItemID.MDAUGHTER_ROCK);
 	}
 
 	@Override
@@ -436,7 +427,7 @@ public class MountainDaughter extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("A Bearhead", ItemID.BEARHEAD, 1));
+		return Collections.singletonList(new ItemReward("A Bearhead", ItemID.MDAUGHTER_BEAR_HELMET, 1));
 	}
 
 	@Override

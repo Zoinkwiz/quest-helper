@@ -24,47 +24,38 @@
  */
 package com.questhelper.helpers.quests.heroesquest;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.KeyringCollection;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class HeroesQuest extends BasicQuestHelper
 {
@@ -199,16 +190,16 @@ public class HeroesQuest extends BasicQuestHelper
 	{
 		iceGloves = new ItemRequirement("Ice gloves/Smiths gloves (i)", ItemID.ICE_GLOVES).isNotConsumed();
 		iceGloves.canBeObtainedDuringQuest();
-		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
+		iceGloves.addAlternates(ItemID.SMITHING_UNIFORM_GLOVES_ICE);
 		equippedIceGloves = new ItemRequirement("Ice gloves/Smiths gloves (i)", ItemID.ICE_GLOVES, 1, true).isNotConsumed();
-		equippedIceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
+		equippedIceGloves.addAlternates(ItemID.SMITHING_UNIFORM_GLOVES_ICE);
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingRod.addAlternates(ItemID.OILY_FISHING_ROD);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
 		jailKey = new ItemRequirement("Jail key", ItemID.JAIL_KEY).isNotConsumed();
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKeyHint = new KeyringRequirement("Dusty key (obtainable in quest)", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
-		harralanderUnf = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDER_POTION_UNF);
+		harralanderUnf = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDERVIAL);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE).isNotConsumed();
 		pickaxe.addAlternates(ItemCollections.PICKAXES);
 		blamishSlime = new ItemRequirement("Blamish snail slime", ItemID.BLAMISH_SNAIL_SLIME);
@@ -217,32 +208,32 @@ public class HeroesQuest extends BasicQuestHelper
 		lavaEel = new ItemRequirement("Lava eel", ItemID.LAVA_EEL);
 		rawLavaEel = new ItemRequirement("Raw lava eel", ItemID.RAW_LAVA_EEL);
 
-		thievesArmband = new ItemRequirement("Thieves' armband", ItemID.THIEVES_ARMBAND);
+		thievesArmband = new ItemRequirement("Thieves' armband", ItemID.MASTER_THIEF_ARMBAND);
 
 		rangedMage = new ItemRequirement("A ranged or magic attack method", -1, -1).isNotConsumed();
 		rangedMage.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
-		miscKey = new ItemRequirement("Miscellaneous key", ItemID.MISCELLANEOUS_KEY);
+		miscKey = new ItemRequirement("Miscellaneous key", ItemID.MISC_KEY);
 		blackFullHelm = new ItemRequirement("Black full helm", ItemID.BLACK_FULL_HELM, 1, true).isNotConsumed();
 		blackPlatebody = new ItemRequirement("Black platebody", ItemID.BLACK_PLATEBODY, 1, true).isNotConsumed();
 		blackPlatelegs = new ItemRequirement("Black platelegs", ItemID.BLACK_PLATELEGS, 1, true).isNotConsumed();
 		idPapers = new ItemRequirement("Id papers", ItemID.ID_PAPERS);
 		idPapers.setTooltip("You can get another from Trobert in the building in east Brimhaven.");
-		candlestick = new ItemRequirement("Pete's candlestick", ItemID.PETES_CANDLESTICK);
-		gripsKey = new ItemRequirement("Grip's keyring", ItemID.GRIPS_KEYRING);
-		fireFeather = new ItemRequirement("Fire feather", ItemID.FIRE_FEATHER);
+		candlestick = new ItemRequirement("Pete's candlestick", ItemID.PETECANDLESTICK);
+		gripsKey = new ItemRequirement("Grip's keyring", ItemID.GRIP_KEYS);
+		fireFeather = new ItemRequirement("Fire feather", ItemID.HOT_FEATHER);
 
 		combatGear = new ItemRequirement("Weapons, armour and food for the Ice Queen", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		antifireShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGON_SHIELD).isNotConsumed();
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
+		antifireShield = new ItemRequirement("Anti-dragon shield", ItemID.ANTIDRAGONBREATHSHIELD).isNotConsumed();
 
 
 		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.GAMES_NECKLACES);
-		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.TAVERLEY_TELEPORT);
-		taverleyTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
-		brimhavenTeleport = new ItemRequirement("Brimhaven teleport, or travel by boat from Ardougne/Port Sarim for 30gp", ItemID.BRIMHAVEN_TELEPORT);
-		portSarimTeleport = new ItemRequirement("Port Sarim teleport (Explorer's ring 2/3/4, Amulet of Glory to Draynor)", ItemID.EXPLORERS_RING_4);
-		portSarimTeleport.addAlternates(ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_2, ItemID.EXPLORERS_RING_1);
+		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.NZONE_TELETAB_TAVERLEY);
+		taverleyTeleport.addAlternates(ItemID.POH_TABLET_FALADORTELEPORT);
+		brimhavenTeleport = new ItemRequirement("Brimhaven teleport, or travel by boat from Ardougne/Port Sarim for 30gp", ItemID.NZONE_TELETAB_BRIMHAVEN);
+		portSarimTeleport = new ItemRequirement("Port Sarim teleport (Explorer's ring 2/3/4, Amulet of Glory to Draynor)", ItemID.LUMBRIDGE_RING_ELITE);
+		portSarimTeleport.addAlternates(ItemID.LUMBRIDGE_RING_HARD, ItemID.LUMBRIDGE_RING_MEDIUM, ItemID.LUMBRIDGE_RING_EASY);
 		portSarimTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 
 
@@ -315,7 +306,7 @@ public class HeroesQuest extends BasicQuestHelper
 		inGarden = new ZoneRequirement(garden1, garden2);
 		gripsKeyOnFloor = new ItemOnTileRequirement(gripsKey);
 		inTreasureRoom = new ZoneRequirement(treasureRoom);
-		chestOpen = new ObjectCondition(ObjectID.CHEST_2633);
+		chestOpen = new ObjectCondition(ObjectID.OPENCANDLECHEST);
 
 		inBlackArmGang = new VarplayerRequirement(146, 4, Operation.GREATER_EQUAL);
 		inPhoenixBase = new ZoneRequirement(phoenixBase, phoenixEntry);
@@ -330,7 +321,7 @@ public class HeroesQuest extends BasicQuestHelper
 
 		iceGlovesNearby = new ItemOnTileRequirement(ItemID.ICE_GLOVES);
 
-		fireFeatherNearby = new ItemOnTileRequirement(ItemID.FIRE_FEATHER);
+		fireFeatherNearby = new ItemOnTileRequirement(ItemID.HOT_FEATHER);
 
 		onEntrana = new ZoneRequirement(entrana);
 	}
@@ -342,7 +333,7 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToAchietties.addDialogStep("I'll start looking for all those things then.");
 		talkToAchietties.addTeleport(burthorpeTeleport);
 
-		talkToGerrant = new NpcStep(this, NpcID.GERRANT_2891, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
+		talkToGerrant = new NpcStep(this, NpcID.GERRANT, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
 		talkToGerrant.addDialogStep("I want to find out how to catch a lava eel.");
 		talkToGerrant.addTeleport(portSarimTeleport);
 		makeBlamishOil = new ItemStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf.highlighted(), blamishSlime.highlighted());
@@ -350,23 +341,23 @@ public class HeroesQuest extends BasicQuestHelper
 
 		if (client.getRealSkillLevel(Skill.AGILITY) >= 70)
 		{
-			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
 				"Go to Taverley Dungeon. As you're 70 Agility, you don't need a dusty key.", oilRod, fishingBait);
 		}
 		else
 		{
-			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
 				"Go to Taverley Dungeon. Bring a dusty key if you have one, otherwise you can get one in the dungeon.", oilRod, fishingBait, dustyKey);
 		}
 		enterTaverleyDungeon.addTeleport(taverleyTeleport);
 
-		goThroughPipe = new ObjectStep(this, ObjectID.OBSTACLE_PIPE_16509, new WorldPoint(2888, 9799, 0), "Squeeze through the obstacle pipe.");
+		goThroughPipe = new ObjectStep(this, ObjectID.TAVERLY_DUNGEON_PIPE_SC, new WorldPoint(2888, 9799, 0), "Squeeze through the obstacle pipe.");
 
 		killJailerForKey = new NpcStep(this, NpcID.JAILER, new WorldPoint(2930, 9692, 0), "Travel through Taverley Dungeon until you reach the Black Knights' Base. Kill the Jailer in the east side of the base for a jail key.");
 		getDustyFromAdventurer = new NpcStep(this, NpcID.VELRAK_THE_EXPLORER, new WorldPoint(2930, 9685, 0), "Use the jail key on the south door and talk to Velrak for a dusty key.", jailKey);
 		getDustyFromAdventurer.addDialogStep("So... do you know anywhere good to explore?");
-		enterDeeperTaverley = new ObjectStep(this, ObjectID.GATE_2623, new WorldPoint(2924, 9803, 0), "Enter the gate to the deeper Taverley dungeon.", dustyKey);
-		fishLavaEel = new NpcStep(this, NpcID.FISHING_SPOT_4928, new WorldPoint(2898, 9764, 0), "Fish a lava eel from the lava south of the blue dragons.", oilRod, fishingBait);
+		enterDeeperTaverley = new ObjectStep(this, ObjectID.DEEPDUNGEONDOOR, new WorldPoint(2924, 9803, 0), "Enter the gate to the deeper Taverley dungeon.", dustyKey);
+		fishLavaEel = new NpcStep(this, NpcID._0_45_152_LAVAFISH, new WorldPoint(2898, 9764, 0), "Fish a lava eel from the lava south of the blue dragons.", oilRod, fishingBait);
 		cookLavaEel = new DetailedQuestStep(this, "Cook the Lava Eel at a range. You cannot fail this.", rawLavaEel);
 
 		enterTaverleyDungeon.addSubSteps(goThroughPipe, killJailerForKey, getDustyFromAdventurer, enterDeeperTaverley);
@@ -376,15 +367,15 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToKatrine.addDialogStep("Is there any way I can get the rank of master thief?");
 		talkToKatrine.addTeleport(varrockTeleport);
 
-		tryToEnterTrobertHouse = new ObjectStep(this, ObjectID.DOOR_2626, new WorldPoint(2811, 3170, 0), "Try to enter the house in east Brimhaven.");
+		tryToEnterTrobertHouse = new ObjectStep(this, ObjectID.GRUBORDOOR, new WorldPoint(2811, 3170, 0), "Try to enter the house in east Brimhaven.");
 		tryToEnterTrobertHouse.addDialogStep("Four leaved clover.");
 		tryToEnterTrobertHouse.addTeleport(brimhavenTeleport);
 		talkToTrobert = new NpcStep(this, NpcID.TROBERT, new WorldPoint(2807, 3174, 0), "Talk to Trobert inside.");
 		talkToTrobert.addDialogStep("So can you help me get Scarface Pete's candlesticks?");
 		talkToTrobert.addDialogStep("I volunteer to undertake that mission!");
-		enterMansion = new ObjectStep(this, ObjectID.DOOR_2627, new WorldPoint(2774, 3187, 0), "Equip your black armour and enter the mansion in the north west of Brimhaven.", idPapers, blackFullHelm, blackPlatebody, blackPlatelegs);
+		enterMansion = new ObjectStep(this, ObjectID.GARVDOOR, new WorldPoint(2774, 3187, 0), "Equip your black armour and enter the mansion in the north west of Brimhaven.", idPapers, blackFullHelm, blackPlatebody, blackPlatelegs);
 		talkToGrip = new NpcStep(this, NpcID.GRIP, new WorldPoint(2775, 3192, 0), "Talk to Grip.", idPapers);
-		getKeyFromGrip = new ObjectStep(this, ObjectID.CUPBOARD_2635, new WorldPoint(2776, 3196, 0),
+		getKeyFromGrip = new ObjectStep(this, ObjectID.GRIPCBSHUT, new WorldPoint(2776, 3196, 0),
 			"Get a miscellaneous key from Grip then give it to your partner. Once you've done that, wait for your partner to enter the north east room of the mansion." +
 				"After that, search the cupboard in the north room to lure Grip there. Your partner should kill them.");
 		getKeyFromGrip.addDialogStep("So what do my duties involve?");
@@ -392,17 +383,17 @@ public class HeroesQuest extends BasicQuestHelper
 		getKeyFromGrip.addDialogStep("He won't notice me having a quick look.");
 
 		pickupKey = new DetailedQuestStep(this, "Pick up Grip's keyring", gripsKey);
-		enterTreasureRoom = new ObjectStep(this, ObjectID.DOOR_2621, new WorldPoint(2764, 3197, 0), "Use Grip's keyring on the treasure room door.", gripsKey.highlighted());
-		enterTreasureRoom.addIcon(ItemID.GRIPS_KEYRING);
-		searchChest = new ObjectStep(this, ObjectID.CHEST_2632, new WorldPoint(2766, 3199, 0), "Search the chest in the treasure room for two candlesticks.");
-		((ObjectStep) (searchChest)).addAlternateObjects(ObjectID.CHEST_2633);
+		enterTreasureRoom = new ObjectStep(this, ObjectID.PETE_TREASUREDOOR, new WorldPoint(2764, 3197, 0), "Use Grip's keyring on the treasure room door.", gripsKey.highlighted());
+		enterTreasureRoom.addIcon(ItemID.GRIP_KEYS);
+		searchChest = new ObjectStep(this, ObjectID.SHUTCANDLECHEST, new WorldPoint(2766, 3199, 0), "Search the chest in the treasure room for two candlesticks.");
+		((ObjectStep) (searchChest)).addAlternateObjects(ObjectID.OPENCANDLECHEST);
 
 		returnToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Give one of Pete's candlesticks to your partner. Afterwards, return to Katrine with Pete's candlestick", candlestick);
 		returnToKatrine.addDialogStep("I have a candlestick now.");
 		returnToKatrine.addTeleport(varrockTeleport);
 
 		/* Phoenix Gang steps */
-		enterPhoenixBase = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Head into the Phoenix Gang's base in south Varrock.");
+		enterPhoenixBase = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER_DEEP, new WorldPoint(3244, 3383, 0), "Head into the Phoenix Gang's base in south Varrock.");
 		enterPhoenixBase.addTeleport(varrockTeleport);
 		talkToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Talk to Straven.");
 		talkToAlfonse = new NpcStep(this, NpcID.ALFONSE_THE_WAITER, new WorldPoint(2792, 3186, 0), "Talk to Alfonse the Waiter in the restaurant in Brimhaven.", rangedMage);
@@ -413,32 +404,32 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToCharlie = new NpcStep(this, NpcID.CHARLIE_THE_COOK, new WorldPoint(2790, 3191, 0), "Talk to Charlie the Cook in the back of the restaurant.");
 		talkToCharlie.addDialogStep("I'm looking for a gherkin...");
 		talkToCharlie.addDialogStep("I want to steal Scarface Pete's candlesticks.");
-		pushWall = new ObjectStep(this, ObjectID.WALL_2629, new WorldPoint(2787, 3190, 0), "Push the wall to enter Pete's garden.");
-		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_2622, new WorldPoint(2781, 3197, 0), "Use the misc key on the door to the north west.", miscKey.highlighted());
-		useKeyOnDoor.addIcon(ItemID.MISCELLANEOUS_KEY);
+		pushWall = new ObjectStep(this, ObjectID.HEROKITCHENPANEL, new WorldPoint(2787, 3190, 0), "Push the wall to enter Pete's garden.");
+		useKeyOnDoor = new ObjectStep(this, ObjectID.PETE_SIDEDOOR, new WorldPoint(2781, 3197, 0), "Use the misc key on the door to the north west.", miscKey.highlighted());
+		useKeyOnDoor.addIcon(ItemID.MISC_KEY);
 		killGrip = new NpcStep(this, NpcID.GRIP, new WorldPoint(2775, 3192, 0), "Wait for your partner to lure Grip into the room next to yours, and kill him with magic/ranged. Afterwards, trade your partner for a candlestick.");
 		getCandlestick = new ItemStep(this, "Get your candlestick from your partner.", candlestick);
 		getCandlestick.hideRequirements = true;
 		killGrip.addSubSteps(getCandlestick);
-		enterPhoenixBaseAgain = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0), "Bring the candlestick back to Straven.");
+		enterPhoenixBaseAgain = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER_DEEP, new WorldPoint(3244, 3383, 0), "Bring the candlestick back to Straven.");
 		enterPhoenixBaseAgain.addTeleport(varrockTeleport);
 		bringCandlestickToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0), "Bring the candlestick back to Straven.");
 		bringCandlestickToStraven.addSubSteps(enterPhoenixBaseAgain);
 
-		mineEntranceRocks = new ObjectStep(this, ObjectID.ROCK_SLIDE, new WorldPoint(2839, 3518, 0), "Head to White Wolf Mountain, and mine a rockslide in the northern part.", pickaxe);
+		mineEntranceRocks = new ObjectStep(this, ObjectID.HEROROCKSLIDE, new WorldPoint(2839, 3518, 0), "Head to White Wolf Mountain, and mine a rockslide in the northern part.", pickaxe);
 		mineEntranceRocks.addTeleport(taverleyTeleport);
-		takeLadder1Down = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2848, 3513, 0), "Take the south east ladder down.");
-		takeLadder2Up = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2824, 9907, 0), "Follow the tunnel south, then go up the ladder there.");
-		takeLadder3Down = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2827, 3510, 0), "Take the east ladder down.");
-		takeLadder4Up = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2857, 9917, 0), "Follow the path around until you reach a ladder, then climb it.");
-		takeLadder5Down = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2859, 3519, 0), "Take the south ladder down.");
+		takeLadder1Down = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2848, 3513, 0), "Take the south east ladder down.");
+		takeLadder2Up = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2824, 9907, 0), "Follow the tunnel south, then go up the ladder there.");
+		takeLadder3Down = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2827, 3510, 0), "Take the east ladder down.");
+		takeLadder4Up = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2857, 9917, 0), "Follow the path around until you reach a ladder, then climb it.");
+		takeLadder5Down = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2859, 3519, 0), "Take the south ladder down.");
 		killIceQueen = new NpcStep(this, NpcID.ICE_QUEEN, new WorldPoint(2865, 9948, 0), "Kill the Ice Queen for ice gloves.");
 		pickupIceGloves = new DetailedQuestStep(this, "Pick up the ice gloves.", iceGloves);
 		killIceQueen.addSubSteps(pickupIceGloves);
 
-		goToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3047, 3236, 0), "Travel to Entrana with the monks in Port Sarim.", equippedIceGloves);
+		goToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3047, 3236, 0), "Travel to Entrana with the monks in Port Sarim.", equippedIceGloves);
 		goToEntrana.addTeleport(portSarimTeleport);
-		killFireBird = new NpcStep(this, NpcID.ENTRANA_FIREBIRD, new WorldPoint(2840, 3374, 0), "Kill the entrana firebird on the north of Entrana.", equippedIceGloves);
+		killFireBird = new NpcStep(this, NpcID.FIRE_BIRD, new WorldPoint(2840, 3374, 0), "Kill the entrana firebird on the north of Entrana.", equippedIceGloves);
 		pickupFireFeather = new ItemStep(this, "Pick up the fire feather.", fireFeather);
 
 		finishQuest = new NpcStep(this, NpcID.ACHIETTIES, new WorldPoint(2904, 3511, 0), "Bring Achietties all the items to finish.", fireFeather, thievesArmband, lavaEel);

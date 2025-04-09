@@ -25,38 +25,36 @@
 package com.questhelper.helpers.achievementdiaries.varrock;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class VarrockEasy extends ComplexStateQuestHelper
 {
@@ -159,7 +157,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		notTrout = new VarplayerRequirement(1176, false, 13);
 		notTeaStall = new VarplayerRequirement(1176, false, 14);
 
-		notMoreKudos = new VarbitRequirement(3637, Operation.GREATER_EQUAL, 50, "50+ Kudos");
+		notMoreKudos = new VarbitRequirement(VarbitID.VM_KUDOS, Operation.GREATER_EQUAL, 50, "50+ Kudos");
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 150).showConditioned(new Conditions(LogicType.OR,
 			notNews, notPlank));
@@ -167,14 +165,14 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notPlank);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notDyingTree).isNotConsumed();
 		bone = new ItemRequirement("Bones", ItemCollections.BONES).showConditioned(notDogBone);
-		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY).showConditioned(notBowl);
+		softClay = new ItemRequirement("Soft clay", ItemID.SOFTCLAY).showConditioned(notBowl);
 		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.EARTH_ALTAR)
 			.showConditioned(notEarthRune).isNotConsumed();
 		earthTali.setTooltip("Earth talisman or tiara");
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notEarthRune);
 		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout).isNotConsumed();
 		feathers = new ItemRequirement("Feather", ItemID.FEATHER, 10).showConditioned(notTrout);
-		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
+		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.BOWL_UNFIRED);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
@@ -206,52 +204,52 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		thessalia = new NpcStep(this, NpcID.THESSALIA, new WorldPoint(3206, 3417, 0),
+		thessalia = new NpcStep(this, NpcID.THESSALIA_NORMAL, new WorldPoint(3206, 3417, 0),
 			"Browse Thessalia's store.");
-		aubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0),
+		aubury = new NpcStep(this, NpcID.BIM_AUBURY, new WorldPoint(3253, 3401, 0),
 			"Teleport to the essence mine via Aubury.");
-		iron = new ObjectStep(this, ObjectID.IRON_ROCKS_11365, new WorldPoint(3288, 3370, 0),
+		iron = new ObjectStep(this, ObjectID.IRONROCK2, new WorldPoint(3288, 3370, 0),
 			"Mine iron south-east of Varrock.", pickaxe);
-		plank = new NpcStep(this, NpcID.SAWMILL_OPERATOR, new WorldPoint(3302, 3492, 0),
+		plank = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0),
 			"Make a regular plank at the sawmill.", log);
 		plank.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.LOGS, true);
-		moveToStronghold1 = new ObjectStep(this, ObjectID.ENTRANCE_20790, new WorldPoint(3081, 3420, 0),
+		moveToStronghold1 = new ObjectStep(this, ObjectID.SOS_DUNG_ENT_OPEN, new WorldPoint(3081, 3420, 0),
 			"Enter the Stronghold of Security.");
-		moveToStronghold2 = new ObjectStep(this, ObjectID.LADDER_20785, new WorldPoint(1902, 5222, 0),
+		moveToStronghold2 = new ObjectStep(this, ObjectID.SOS_WAR_LADD_DOWN, new WorldPoint(1902, 5222, 0),
 			"Go to the 2nd floor of the Stronghold of Security.");
-		fence = new ObjectStep(this, ObjectID.FENCE_16518, new WorldPoint(3240, 3335, 0),
+		fence = new ObjectStep(this, ObjectID.LUMBRIDGE_SC_FENCEJUMP, new WorldPoint(3240, 3335, 0),
 			"Jump the fence south of Varrock.");
-		dyingTree = new ObjectStep(this, ObjectID.DYING_TREE, new WorldPoint(3308, 3495, 0),
+		dyingTree = new ObjectStep(this, ObjectID.FAI_VARROCK_DEAD_TREE, new WorldPoint(3308, 3495, 0),
 			"Chop down a dying tree in the sawmill area.", axe);
-		news = new NpcStep(this, NpcID.BENNY, new WorldPoint(3219, 3431, 0),
+		news = new NpcStep(this, NpcID.QIP_SOA_NEWSPAPERSELLER, new WorldPoint(3219, 3431, 0),
 			"Speak with Benny in the Varrock Square to purchase a newspaper.", coins.quantity(50));
 		news.addDialogSteps("Can I have a newspaper, please?", "Sure, here you go...");
-		dogBone = new NpcStep(this, NpcID.STRAY_DOG_2922, new WorldPoint(3184, 3431, 0),
+		dogBone = new NpcStep(this, NpcID.DOG_STRAY2, new WorldPoint(3184, 3431, 0),
 			"Give the stray dog a bone. If the dog isn't nearby consider changing worlds.", bone.highlighted());
 		dogBone.addIcon(ItemID.BONES);
-		potteryWheel = new ObjectStep(this, ObjectID.POTTERS_WHEEL_14887, new WorldPoint(3087, 3410, 0),
+		potteryWheel = new ObjectStep(this, ObjectID.POTTERYWHEEL, new WorldPoint(3087, 3410, 0),
 			"Use the potters wheel in Barbarian Village to make an unfired bowl.", softClay);
-		potteryWheel.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.UNFIRED_BOWL, true);
-		bowl = new ObjectStep(this, ObjectID.POTTERY_OVEN_11601, new WorldPoint(3085, 3407, 0),
+		potteryWheel.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.BOWL_UNFIRED, true);
+		bowl = new ObjectStep(this, ObjectID.FAI_BARBARIAN_POTTERY_OVEN, new WorldPoint(3085, 3407, 0),
 			"Put the unfired bowl in the oven.", unfiredBowl);
-		bowl.addIcon(ItemID.UNFIRED_BOWL);
-		bowl.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.UNFIRED_BOWL, true);
+		bowl.addIcon(ItemID.BOWL_UNFIRED);
+		bowl.addWidgetHighlightWithItemIdRequirement(270, 13, ItemID.BOWL_UNFIRED, true);
 
 		moreKudos = new DetailedQuestStep(this,
 			"Get more kudos from either quests, miniquests, or turning in fossils.");
-		kudos = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3258, 3449, 0),
+		kudos = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3258, 3449, 0),
 			"Speak to Curator Haig Halen.", notMoreKudos);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
 			"Travel to the earth altar or go through the abyss.", earthTali.highlighted(), essence);
 		moveToEarthRune.addIcon(ItemID.EARTH_TALISMAN);
 		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
 			"Craft an earth rune.", essence);
-		trout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1526, new WorldPoint(3106, 3428, 0),
+		trout = new NpcStep(this, NpcID._0_48_53_FRESHFISH, new WorldPoint(3106, 3428, 0),
 			"Fish a trout in the River Lum at Barbarian Village.", flyRod, feathers);
 		teaStall = new ObjectStep(this, ObjectID.TEA_STALL, new WorldPoint(3270, 3411, 0),
 			"Steal from the tea stall in Varrock.");
 
-		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
+		claimReward = new NpcStep(this, NpcID.TOBY_VARROCK_DIARY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -288,8 +286,8 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Varrock Armor (1)", ItemID.VARROCK_ARMOUR_1, 1),
-			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Varrock Armor (1)", ItemID.VARROCK_ARMOUR_EASY, 1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

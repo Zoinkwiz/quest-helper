@@ -24,43 +24,35 @@
  */
 package com.questhelper.helpers.quests.atasteofhope;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.steps.PuzzleWrapperStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
+import com.questhelper.steps.*;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class ATasteOfHope extends BasicQuestHelper
 {
@@ -250,11 +242,11 @@ public class ATasteOfHope extends BasicQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		airRune3 = new ItemRequirement("Air rune", ItemCollections.AIR_RUNE, 3);
 		airStaff = new ItemRequirement("Air staff", ItemCollections.AIR_STAFF).isNotConsumed();
-		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
+		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMICRUNE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		pickaxe.setTooltip("You can get one from one of the miners in the mine");
 		enchantRunes = new ItemRequirements("Emerald enchant runes", new ItemRequirements(LogicType.OR, "3 air runes", airRune3, airStaff), cosmicRune);
-		enchantTablet = new ItemRequirement("Emerald enchant tablet", ItemID.ENCHANT_EMERALD_OR_JADE);
+		enchantTablet = new ItemRequirement("Emerald enchant tablet", ItemID.POH_TABLET_ENCHANTEMERALD);
 		enchantEmeraldRunesOrTablet = new ItemRequirements(LogicType.OR, "Runes or tablet for Enchant Emerald", enchantRunes, enchantTablet);
 		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemCollections.ROD_OF_IVANDIS);
 		rodOfIvandis.setTooltip("You can get another from Veliaf Hurtz in Burgh de Rott AFTER talking to Verdita in " +
@@ -266,46 +258,46 @@ public class ATasteOfHope extends BasicQuestHelper
 
 		pestleAndMortarHighlighted = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR);
 		pestleAndMortarHighlighted.setHighlightInInventory(true);
-		vialOfWaterNoTip = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
+		vialOfWaterNoTip = new ItemRequirement("Vial of water", ItemID.VIAL_WATER);
 
-		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
+		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_WATER);
 		vialOfWater.setHighlightInInventory(true);
 		vialOfWater.setTooltip("You can fill the vial upstairs on the broken fountain");
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		vial = new ItemRequirement("Vial", ItemID.VIAL);
-		herb = new ItemRequirement("Mysterious herb", ItemID.MYSTERIOUS_HERB);
+		vial = new ItemRequirement("Vial", ItemID.VIAL_EMPTY);
+		herb = new ItemRequirement("Mysterious herb", ItemID.MYQ4_HERB);
 		herb.setHighlightInInventory(true);
-		meatHighlighted = new ItemRequirement("Mysterious meat", ItemID.MYSTERIOUS_MEAT);
+		meatHighlighted = new ItemRequirement("Mysterious meat", ItemID.MYQ4_MEAT);
 		meatHighlighted.setHighlightInInventory(true);
-		crushedMeat = new ItemRequirement("Mysterious meat", ItemID.MYSTERIOUS_CRUSHED_MEAT);
+		crushedMeat = new ItemRequirement("Mysterious meat", ItemID.MYQ4_MEAT_CRUSHED);
 		crushedMeat.setHighlightInInventory(true);
-		unfinishedPotion = new ItemRequirement("Unfinished potion", ItemID.UNFINISHED_POTION_22408);
+		unfinishedPotion = new ItemRequirement("Unfinished potion", ItemID.MYQ4_POTION_UNFINISHED_WATER);
 		unfinishedPotion.setHighlightInInventory(true);
 
-		unfinishedBloodPotion = new ItemRequirement("Unfinished blood potion", ItemID.UNFINISHED_BLOOD_POTION);
+		unfinishedBloodPotion = new ItemRequirement("Unfinished blood potion", ItemID.MYQ4_POTION_UNFINISHED);
 		unfinishedBloodPotion.setHighlightInInventory(true);
 
-		potion = new ItemRequirement("Potion", ItemID.POTION_22409);
+		potion = new ItemRequirement("Potion", ItemID.MYQ4_POTION_WATER);
 		potion.setHighlightInInventory(true);
-		bloodPotion = new ItemRequirement("Blood potion", ItemID.BLOOD_POTION);
+		bloodPotion = new ItemRequirement("Blood potion", ItemID.MYQ4_POTION);
 		bloodPotion.setHighlightInInventory(true);
 
-		bloodVial = new ItemRequirement("Vial of blood", ItemID.VIAL_OF_BLOOD);
+		bloodVial = new ItemRequirement("Vial of blood", ItemID.MYQ4_BLOOD_VIAL);
 		bloodVial.setHighlightInInventory(true);
 
-		oldNotes = new ItemRequirement("Old notes", ItemID.OLD_NOTES_22410);
+		oldNotes = new ItemRequirement("Old notes", ItemID.MYQ4_NOTES);
 
-		flaygianNotes = new ItemRequirement("Flaygian's notes", ItemID.FLAYGIANS_NOTES);
+		flaygianNotes = new ItemRequirement("Flaygian's notes", ItemID.MYQ4_FLAYGIAN_NOTES);
 		flaygianNotes.setHighlightInInventory(true);
-		sickleB = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_B);
+		sickleB = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_BLESSED);
 		sickleB.setHighlightInInventory(true);
-		chain = new ItemRequirement("Silver chain", ItemID.CHAIN);
+		chain = new ItemRequirement("Silver chain", ItemID.MYQ4_CHAIN);
 		chain.setHighlightInInventory(true);
-		emeraldSickleB = new ItemRequirement("Emerald sickle (b)", ItemID.EMERALD_SICKLE_B);
+		emeraldSickleB = new ItemRequirement("Emerald sickle (b)", ItemID.SILVER_SICKLE_EMERALD);
 		emeraldSickleB.setHighlightInInventory(true);
-		enchantedEmeraldSickleB = new ItemRequirement("Enchanted emerald sickle (b)", ItemID.ENCHANTED_EMERALD_SICKLE_B);
+		enchantedEmeraldSickleB = new ItemRequirement("Enchanted emerald sickle (b)", ItemID.SILVER_SICKLE_ENCHANTED);
 		enchantedEmeraldSickleB.setHighlightInInventory(true);
 
 		ivandisFlail = new ItemRequirement("Ivandis flail", ItemID.IVANDIS_FLAIL);
@@ -343,7 +335,7 @@ public class ATasteOfHope extends BasicQuestHelper
 
 		inRanisFight = new ZoneRequirement(ranisFight);
 
-		wallPressed = new VarbitRequirement(2590, 1, Operation.GREATER_EQUAL);
+		wallPressed = new VarbitRequirement(VarbitID.MYQ3_HIDEOUT_TRAPDOOR, 1, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
@@ -391,76 +383,76 @@ public class ATasteOfHope extends BasicQuestHelper
 			new WorldPoint(3596, 3277, 0)
 		);
 
-		talkToGarth = new NpcStep(this, NpcID.GARTH_8206, new WorldPoint(3668, 3217, 0), "Talk to Garth outside the Theatre of Blood.");
+		talkToGarth = new NpcStep(this, NpcID.MYQ4_GARTH, new WorldPoint(3668, 3217, 0), "Talk to Garth outside the Theatre of Blood.");
 		talkToGarth.addDialogStep("Yes.");
 
-		pressDecoratedWall = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0), "Enter the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
+		pressDecoratedWall = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_SYMBOL_MULTI, new WorldPoint(3638, 3251, 0), "Enter the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
 		pressDecoratedWall.setLinePoints(pathToBase);
-		enterBase = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Enter the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
+		enterBase = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0), "Enter the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, escape by mining 15 rocks, then head south from there.");
 		enterBase.setLinePoints(pathToBase);
 		enterBase.addSubSteps(pressDecoratedWall);
 
-		talkToSafalaan = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0),
+		talkToSafalaan = new NpcStep(this, NpcID.MYREQUE_PT3_SAFALAAN, new WorldPoint(3627, 9644, 0),
 			"Talk to Safalaan in the north room.");
 
 		climbRubbleAtBank = new ObjectStep(this, NullObjectID.NULL_32650, new WorldPoint(3642, 3207, 0),
 			"Return to the Theatre of Blood and attempt to climb rubble in its south west corner.");
-		talkToHarpert = new NpcStep(this, NpcID.HARPERT, new WorldPoint(3644, 3211, 0),
+		talkToHarpert = new NpcStep(this, NpcID.MYQ4_HARPERT, new WorldPoint(3644, 3211, 0),
 			"Talk to Harpert near the rubble.", coins1000);
 		talkToHarpert.addDialogStep("Fine, here's the money.");
 		climbRubbleAfterHarpert = new ObjectStep(this, NullObjectID.NULL_32650, new WorldPoint(3642, 3207, 0),
 			"Attempt to climb the rubble again.");
-		climbSteamVent = new ObjectStep(this, ObjectID.VENT_32551, new WorldPoint(3644, 3214, 1),
+		climbSteamVent = new ObjectStep(this, ObjectID.MYQ4_OBSTACLE_VENT, new WorldPoint(3644, 3214, 1),
 			"Climb the vent to the north when the steam stops coming out.");
-		jumpOffRoof = new ObjectStep(this, ObjectID.ROOF_32553, new WorldPoint(3644, 3225, 2),
+		jumpOffRoof = new ObjectStep(this, ObjectID.MYQ4_OBSTACLE_JUMP_DOWN, new WorldPoint(3644, 3225, 2),
 			"Jump off the roof to the north.");
-		climbSecondVent = new ObjectStep(this, ObjectID.VENT_32551, new WorldPoint(3641, 3235, 1),
+		climbSecondVent = new ObjectStep(this, ObjectID.MYQ4_OBSTACLE_VENT, new WorldPoint(3641, 3235, 1),
 			"Climb the vent to the north when steam stops coming out.");
-		climbUpToRoof = new ObjectStep(this, ObjectID.ROOF_32554, new WorldPoint(3660, 3237, 2),
+		climbUpToRoof = new ObjectStep(this, ObjectID.MYQ4_OBSTACLE_ROOF_01, new WorldPoint(3660, 3237, 2),
 			"Climb the roof to the east.");
-		climbDownFromRoof = new ObjectStep(this, ObjectID.ROOF_32555, new WorldPoint(3665, 3237, 3),
+		climbDownFromRoof = new ObjectStep(this, ObjectID.MYQ4_OBSTACLE_ROOF_02, new WorldPoint(3665, 3237, 3),
 			"Climb down to the east.");
-		lookThroughWindow = new ObjectStep(this, ObjectID.WINDOW_32548, new WorldPoint(3687, 3221, 2),
+		lookThroughWindow = new ObjectStep(this, ObjectID.MYQ4_WINDOW, new WorldPoint(3687, 3221, 2),
 			"Look through the window at the end of the path.");
 
 
-		pressDecoratedWallReturn = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0),
+		pressDecoratedWallReturn = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_SYMBOL_MULTI, new WorldPoint(3638, 3251, 0),
 			"Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines," +
 				" escape by mining 15 rocks, then head south from there.");
 		pressDecoratedWallReturn.setLinePoints(pathToBase);
-		returnToBase = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0),
+		returnToBase = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0),
 			"Return to the Meiyerditch Myreque base. The easiest way to get there is to have a Vyrewatch take you to the mines, " +
 				"escape by mining 15 rocks, then head south from there.");
 		returnToBase.setLinePoints(pathToBase);
 		returnToBase.addSubSteps(pressDecoratedWallReturn);
 
-		talkToSafalaanAfterSpying = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0),
+		talkToSafalaanAfterSpying = new NpcStep(this, NpcID.MYREQUE_PT3_SAFALAAN, new WorldPoint(3627, 9644, 0),
 			"Talk to Safalaan in the north room.");
 		talkToSafalaanAfterSpying.addDialogStep("I do.");
 
-		talkToFlaygian = new NpcStep(this, NpcID.FLAYGIAN_SCREWTE, new WorldPoint(3627, 9644, 0), "Talk to Flaygian.");
+		talkToFlaygian = new NpcStep(this, NpcID.MYQ4_FLAYGIAN_VISIBLE, new WorldPoint(3627, 9644, 0), "Talk to Flaygian.");
 		talkToFlaygian.addDialogSteps("Anything to report?", "Why?");
-		talkToSafalaanAfterFlaygian = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0),
+		talkToSafalaanAfterFlaygian = new NpcStep(this, NpcID.MYREQUE_PT3_SAFALAAN, new WorldPoint(3627, 9644, 0),
 			"Talk to Safalaan again.");
 
-		goUpToSerafinaHouse = new ObjectStep(this, ObjectID.LADDER_17986, new WorldPoint(3626, 9617, 0), "Return to the surface.");
-		enterSerafinaHouse = new ObjectStep(this, ObjectID.STAIRS_32560, new WorldPoint(3593, 3274, 0), "Enter Serafina's house in west Meiyerditch.");
+		goUpToSerafinaHouse = new ObjectStep(this, ObjectID.AREA_SANGUINE_MYREQUE_HIDEOUT_LADDER_UP, new WorldPoint(3626, 9617, 0), "Return to the surface.");
+		enterSerafinaHouse = new ObjectStep(this, ObjectID.MYQ4_SERAFINA_STAIRS_DOWN, new WorldPoint(3593, 3274, 0), "Enter Serafina's house in west Meiyerditch.");
 		enterSerafinaHouse.setLinePoints(pathToSerafina);
 		enterSerafinaHouse.addSubSteps(goUpToSerafinaHouse);
 
-		talkToSafalaanInSerafinaHouse = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3596, 9675, 0), "Talk to Safalaan.");
+		talkToSafalaanInSerafinaHouse = new NpcStep(this, NpcID.MYQ4_SAFALAAN_VISIBLE, new WorldPoint(3596, 9675, 0), "Talk to Safalaan.");
 		// Talked to Safalaan, 2592 2->0
 
 		searchForHerb = new PuzzleWrapperStep(this,
-			new ObjectStep(this, ObjectID.BARREL_32564, new WorldPoint(3599, 9678, 0), "Search the barrel in the north east corner."), "Work out how to open the door in the room.");
+			new ObjectStep(this, ObjectID.MYQ4_HERB_BARREL, new WorldPoint(3599, 9678, 0), "Search the barrel in the north east corner."), "Work out how to open the door in the room.");
 		searchForMeat = new PuzzleWrapperStep(this,
-			new ObjectStep(this, ObjectID.CRATE_32567, new WorldPoint(3593, 9677, 0), "Search the crate in the west of the room for mysterious meat."),
+			new ObjectStep(this, ObjectID.MYQ4_MEAT_CRATE, new WorldPoint(3593, 9677, 0), "Search the crate in the west of the room for mysterious meat."),
 			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		searchForVial = new PuzzleWrapperStep(this,
-			new ObjectStep(this, ObjectID.CRATE_32566, new WorldPoint(3598, 9671, 0), "Search a crate in the south east corner for a vial."),
+			new ObjectStep(this, ObjectID.MYQ4_VIAL_CRATE, new WorldPoint(3598, 9671, 0), "Search a crate in the south east corner for a vial."),
 			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		searchForPestle = new PuzzleWrapperStep(this,
-			new ObjectStep(this, ObjectID.CRATE_32568, new WorldPoint(3594, 9671, 0), "Search the crate near the staircase for a pestle and mortar."),
+			new ObjectStep(this, ObjectID.MYQ4_PESTLE_CRATE, new WorldPoint(3594, 9671, 0), "Search the crate near the staircase for a pestle and mortar."),
 			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 
 		useHerbOnVial = new PuzzleWrapperStep(this,
@@ -473,12 +465,12 @@ public class ATasteOfHope extends BasicQuestHelper
 			new DetailedQuestStep(this, "Add the crushed meat to the potion.", crushedMeat, unfinishedPotion),
 			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		usePotionOnDoor = new PuzzleWrapperStep(this,
-			new ObjectStep(this, ObjectID.DOOR_32562, new WorldPoint(3596, 9680, 0), "Use the potion on the door.", potion),
+			new ObjectStep(this, ObjectID.MYQ4_SERAFINA_DOOR, new WorldPoint(3596, 9680, 0), "Use the potion on the door.", potion),
 			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		usePotionOnDoor.addDialogStep("Yes.");
-		usePotionOnDoor.addIcon(ItemID.POTION_22409);
+		usePotionOnDoor.addIcon(ItemID.MYQ4_POTION_WATER);
 		talkToSafalaanAfterPotion = new PuzzleWrapperStep(this,
-			new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3596, 9675, 0), "Talk to Safalaan for his blood.", vial),
+			new NpcStep(this, NpcID.MYQ4_SAFALAAN_VISIBLE, new WorldPoint(3596, 9675, 0), "Talk to Safalaan for his blood.", vial),
 			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		talkToSafalaanAfterPotion.addDialogStep("Yes.");
 
@@ -492,74 +484,74 @@ public class ATasteOfHope extends BasicQuestHelper
 			new DetailedQuestStep(this, "Add the crushed meat to the unfinished potion.", crushedMeat, unfinishedBloodPotion),
 			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		useBloodOnDoor = new PuzzleWrapperStep(this,
-			new ObjectStep(this, ObjectID.DOOR_32562, new WorldPoint(3596, 9680, 0), "Use the blood potion on the door.", bloodPotion),
+			new ObjectStep(this, ObjectID.MYQ4_SERAFINA_DOOR, new WorldPoint(3596, 9680, 0), "Use the blood potion on the door.", bloodPotion),
 			"Work out how to open the door in the room.").withNoHelpHiddenInSidebar(true);
 		useBloodOnDoor.addDialogStep("Yes.");
-		useBloodOnDoor.addIcon(ItemID.BLOOD_POTION);
-		getOldNotes = new ObjectStep(this, ObjectID.CHEST_32572, new WorldPoint(3596, 9683, 0), "Search the chest for some notes.");
-		((ObjectStep) (getOldNotes)).addAlternateObjects(ObjectID.CHEST_32573);
-		talkToSafalaanWithNotes = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3596, 9675, 0), "Talk to Safalaan with the notes.", oldNotes);
+		useBloodOnDoor.addIcon(ItemID.MYQ4_POTION);
+		getOldNotes = new ObjectStep(this, ObjectID.MYQ4_CHEST_CLOSED, new WorldPoint(3596, 9683, 0), "Search the chest for some notes.");
+		((ObjectStep) (getOldNotes)).addAlternateObjects(ObjectID.MYQ4_CHEST);
+		talkToSafalaanWithNotes = new NpcStep(this, NpcID.MYQ4_SAFALAAN_VISIBLE, new WorldPoint(3596, 9675, 0), "Talk to Safalaan with the notes.", oldNotes);
 		talkToSafalaanWithNotes.addDialogStep("Here you go.");
 
-		pressDecoratedWallAfterSerafina = new ObjectStep(this, NullObjectID.NULL_18146, new WorldPoint(3638, 3251, 0)
+		pressDecoratedWallAfterSerafina = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_SYMBOL_MULTI, new WorldPoint(3638, 3251, 0)
 			, "Prepare for a fight, then return to the Meiyerditch Myreque base.");
 		pressDecoratedWallAfterSerafina.setLinePoints(pathToBase);
 
-		enterBaseAfterSerafina = new ObjectStep(this, NullObjectID.NULL_18120, new WorldPoint(3639, 3249, 0), "Prepare for a fight, then return to the Meiyerditch Myreque base.");
+		enterBaseAfterSerafina = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0), "Prepare for a fight, then return to the Meiyerditch Myreque base.");
 		enterBaseAfterSerafina.setLinePoints(pathToBase);
 		enterBaseAfterSerafina.addSubSteps(pressDecoratedWallAfterSerafina);
 
-		talkToSafalaanForAbominationFight = new NpcStep(this, NpcID.SAFALAAN_HALLOW, new WorldPoint(3627, 9644, 0), "Talk to Safalaan, ready for a fight.");
-		killAbomination = new NpcStep(this, NpcID.ABOMINATION, new WorldPoint(3627, 9644, 0), "Kill the abomination. It can be safe spotted with a long-ranged weapon.");
-		((NpcStep) (killAbomination)).addAlternateNpcs(NpcID.ABOMINATION_8261, NpcID.ABOMINATION_8262);
-		talkToSafalaanAfterAbominationFight = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8219, new WorldPoint(3627, 9644, 0), "Talk to Safalaan.");
+		talkToSafalaanForAbominationFight = new NpcStep(this, NpcID.MYREQUE_PT3_SAFALAAN, new WorldPoint(3627, 9644, 0), "Talk to Safalaan, ready for a fight.");
+		killAbomination = new NpcStep(this, NpcID.MYQ4_ABOMINATION_CUTSCENE, new WorldPoint(3627, 9644, 0), "Kill the abomination. It can be safe spotted with a long-ranged weapon.");
+		((NpcStep) (killAbomination)).addAlternateNpcs(NpcID.MYQ4_ABOMINATION_CUTSCENE_WEAKENED, NpcID.MYQ4_ABOMINATION);
+		talkToSafalaanAfterAbominationFight = new NpcStep(this, NpcID.MYQ4_SAFALAAN_HURT_OP, new WorldPoint(3627, 9644, 0), "Talk to Safalaan.");
 
-		enterOldManRalBasement = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.",
+		enterOldManRalBasement = new ObjectStep(this, ObjectID.MYQ4_HIDEOUT_TRAPDOOR_OPEN, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.",
 			rodOfIvandis, emerald, chisel, enchantEmeraldRunesOrTablet);
-		((ObjectStep) (enterOldManRalBasement)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
+		((ObjectStep) (enterOldManRalBasement)).addAlternateObjects(ObjectID.MYQ4_HIDEOUT_TRAPDOOR);
 
-		enterRalWithFlail = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.",
+		enterRalWithFlail = new ObjectStep(this, ObjectID.MYQ4_HIDEOUT_TRAPDOOR_OPEN, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.",
 			ivandisFlail);
-		((ObjectStep) (enterRalWithFlail)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
-		talkToSafalaanInRalBasement = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3598, 9614, 0), "Talk to Safalaan.");
-		talkToVertidaInRalBasement = new NpcStep(this, NpcID.VERTIDA_SEFALATIS, new WorldPoint(3598, 9614, 0), "Talk to Vertida.");
+		((ObjectStep) (enterRalWithFlail)).addAlternateObjects(ObjectID.MYQ4_HIDEOUT_TRAPDOOR);
+		talkToSafalaanInRalBasement = new NpcStep(this, NpcID.MYQ4_SAFALAAN_VISIBLE, new WorldPoint(3598, 9614, 0), "Talk to Safalaan.");
+		talkToVertidaInRalBasement = new NpcStep(this, NpcID.MYQ4_VERTIDA_VISIBLE, new WorldPoint(3598, 9614, 0), "Talk to Vertida.");
 		readFlaygianNotes = new DetailedQuestStep(this, "Read Flaygian's notes.", flaygianNotes);
-		getSickle = new ObjectStep(this, ObjectID.CRATE_32575, new WorldPoint(3597, 9615, 0), "Search the north west crate for a blessed sickle.");
-		getChain = new ObjectStep(this, ObjectID.CRATE_32576, new WorldPoint(3601, 9610, 0), "Search the south east crate for a chain.");
+		getSickle = new ObjectStep(this, ObjectID.MYQ4_SICKLE_CRATE, new WorldPoint(3597, 9615, 0), "Search the north west crate for a blessed sickle.");
+		getChain = new ObjectStep(this, ObjectID.MYQ4_CHAIN_CRATE, new WorldPoint(3601, 9610, 0), "Search the south east crate for a chain.");
 		useEmeraldOnSickle = new DetailedQuestStep(this, "Use an emerald on the blessed sickle.", emeraldHighlighted, sickleB, chisel);
 		useEmeraldOnSickle.addDialogStep("Yes.");
 		enchantSickle = new DetailedQuestStep(this, "Cast enchant emerald on the emerald sickle.", emeraldSickleB, enchantEmeraldRunesOrTablet);
 		addSickleToRod = new DetailedQuestStep(this, "Add the enchanted emerald sickle to the rod of ivandis.", enchantedEmeraldSickleB, rodOfIvandisHighlighted);
 		addSickleToRod.addDialogStep("Yes.");
-		talkToSafalaanAfterFlail = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3598, 9614, 0), "Talk to Safalaan again.");
+		talkToSafalaanAfterFlail = new NpcStep(this, NpcID.MYQ4_SAFALAAN_VISIBLE, new WorldPoint(3598, 9614, 0), "Talk to Safalaan again.");
 		talkToSafalaanAfterFlail.addSubSteps(enterRalWithFlail);
-		talkToKael = new NpcStep(this, NpcID.KAEL_FORSHAW_8231, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood, prepared to fight Ranis.", ivandisFlailEquipped);
+		talkToKael = new NpcStep(this, NpcID.MYQ4_KAEL_VISIBLE_NOWEAPON, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood, prepared to fight Ranis.", ivandisFlailEquipped);
 		talkToKael.addText("He can only be hurt by the flail, and uses magic and melee attacks.");
 		talkToKael.addText("He will occasionally charge an attack and explode, dealing damage close to him. Just run away for this attack.");
 		talkToKael.addText("During the fight he will spawn vyrewatch which you'll need to kill. Whilst fighting them Ranis will be throwing blood bombs at your current location, so make sure to move around.");
 		talkToKael.addText("In his last phase he will only attack with melee, so make sure to use protect from melee!");
 		talkToKael.addDialogStep("I'm ready.");
 
-		talkToKaelSidebar = new NpcStep(this, NpcID.KAEL_FORSHAW_8231, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood, prepared to fight Ranis.", ivandisFlailEquipped);
+		talkToKaelSidebar = new NpcStep(this, NpcID.MYQ4_KAEL_VISIBLE_NOWEAPON, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood, prepared to fight Ranis.", ivandisFlailEquipped);
 		talkToKaelSidebar.addSubSteps(talkToKael);
 
-		killRanisSidebar = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis.", ivandisFlailEquipped);
-		((NpcStep) (killRanisSidebar)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
+		killRanisSidebar = new NpcStep(this, NpcID.MYQ4_RANIS_VAMPYRE_COMBAT, new WorldPoint(2082, 4891, 0), "Defeat Ranis.", ivandisFlailEquipped);
+		((NpcStep) (killRanisSidebar)).addAlternateNpcs(NpcID.MYQ4_RANIS_VAMPYRE_TRANSITION, NpcID.MYQ4_RANIS_VAMPYRE_FLYING_COMBAT, NpcID.MYQ4_RANIS_VAMPYRE_FLYING_TRANSITION, NpcID.MYQ4_RANIS_VAMPYRE_COMBAT_ENRAGE);
 		killRanisSidebar.addText("He can only be hurt by the flail, and uses magic and melee attacks.");
 		killRanisSidebar.addText("He will occasionally charge an attack and explode, dealing damage close to him. Just run away for this attack.");
 		killRanisSidebar.addText("During the fight he will spawn vyrewatch which you'll need to kill. Whilst fighting them Ranis will be throwing blood bombs at your current location, so make sure to move around.");
 		killRanisSidebar.addText("In his last phase he will only attack with melee, so make sure to use protect from melee!");
 
 
-		killRanis = new NpcStep(this, NpcID.RANIS_DRAKAN_8244, new WorldPoint(2082, 4891, 0), "Defeat Ranis. His " +
+		killRanis = new NpcStep(this, NpcID.MYQ4_RANIS_VAMPYRE_COMBAT, new WorldPoint(2082, 4891, 0), "Defeat Ranis. His " +
 			"various mechanics are listed in the helper's sidebar.", ivandisFlailEquipped, food);
-		((NpcStep) (killRanis)).addAlternateNpcs(NpcID.RANIS_DRAKAN_8245, NpcID.RANIS_DRAKAN_8246, NpcID.RANIS_DRAKAN_8247, NpcID.RANIS_DRAKAN_8248);
+		((NpcStep) (killRanis)).addAlternateNpcs(NpcID.MYQ4_RANIS_VAMPYRE_TRANSITION, NpcID.MYQ4_RANIS_VAMPYRE_FLYING_COMBAT, NpcID.MYQ4_RANIS_VAMPYRE_FLYING_TRANSITION, NpcID.MYQ4_RANIS_VAMPYRE_COMBAT_ENRAGE);
 		killRanisSidebar.addSubSteps(killRanis);
 
-		talkToKaelAgain = new NpcStep(this, NpcID.KAEL_FORSHAW_8231, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood again.");
-		enterRalForEnd = new ObjectStep(this, ObjectID.TRAPDOOR_32578, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.");
-		((ObjectStep) (enterRalForEnd)).addAlternateObjects(ObjectID.TRAPDOOR_32577);
-		talkToSafalaanForEnd = new NpcStep(this, NpcID.SAFALAAN_HALLOW_8216, new WorldPoint(3598, 9614, 0), "Talk to Safalaan to complete the quest!");
+		talkToKaelAgain = new NpcStep(this, NpcID.MYQ4_KAEL_VISIBLE_NOWEAPON, new WorldPoint(3659, 3218, 0), "Talk to Kael outside the Theatre of Blood again.");
+		enterRalForEnd = new ObjectStep(this, ObjectID.MYQ4_HIDEOUT_TRAPDOOR_OPEN, new WorldPoint(3605, 3215, 0), "Climb down the trapdoor in Old Man Ral's house in south west Meiyerditch.");
+		((ObjectStep) (enterRalForEnd)).addAlternateObjects(ObjectID.MYQ4_HIDEOUT_TRAPDOOR);
+		talkToSafalaanForEnd = new NpcStep(this, NpcID.MYQ4_SAFALAAN_VISIBLE, new WorldPoint(3598, 9614, 0), "Talk to Safalaan to complete the quest!");
 	}
 
 	@Override
@@ -593,7 +585,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		return Arrays.asList(
 				new ItemReward("Ivandis Flail", ItemID.IVANDIS_FLAIL, 1),
 				new ItemReward("Drakan's Medallion", ItemID.DRAKANS_MEDALLION, 1),
-				new ItemReward("2,500 Experience Tomes (Any skill over level 35).", ItemID.TOME_OF_EXPERIENCE, 3) //22415 is placeholder
+				new ItemReward("2,500 Experience Tomes (Any skill over level 35).", ItemID.MYQ4_XP_TOME, 3) //22415 is placeholder
 		);
 	}
 

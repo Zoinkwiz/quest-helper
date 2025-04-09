@@ -25,17 +25,17 @@
 package com.questhelper.helpers.quests.theknightssword;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -43,17 +43,13 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheKnightsSword extends BasicQuestHelper
 {
@@ -109,13 +105,13 @@ public class TheKnightsSword extends BasicQuestHelper
 		redberryPie = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
 		ironBars = new ItemRequirement("Iron bar", ItemID.IRON_BAR, 2);
 		bluriteOre = new ItemRequirement("Blurite ore", ItemID.BLURITE_ORE);
-		bluriteSword = new ItemRequirement("Blurite sword", ItemID.BLURITE_SWORD);
+		bluriteSword = new ItemRequirement("Blurite sword", ItemID.FALADIAN_SWORD);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
-		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT);
-		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.FALADOR_TELEPORT, 4);
+		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.POH_TABLET_VARROCKTELEPORT);
+		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.POH_TABLET_FALADORTELEPORT, 4);
 		homeTele = new ItemRequirement("A teleport near Mudskipper Point, such as POH teleport or Fairy Ring to AIQ",
-			ItemID.RIMMINGTON_TELEPORT, 2);
-		portrait = new ItemRequirement("Portrait", ItemID.PORTRAIT);
+			ItemID.NZONE_TELETAB_RIMMINGTON, 2);
+		portrait = new ItemRequirement("Portrait", ItemID.KNIGHTS_PORTRAIT);
 	}
 
 	public void setupConditions()
@@ -142,30 +138,30 @@ public class TheKnightsSword extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToSquire = new NpcStep(this, NpcID.SQUIRE_4737, new WorldPoint(2978, 3341, 0), "Talk to the Squire in Falador Castle's courtyard.");
+		talkToSquire = new NpcStep(this, NpcID.SQUIRE, new WorldPoint(2978, 3341, 0), "Talk to the Squire in Falador Castle's courtyard.");
 		talkToSquire.addDialogStep("And how is life as a squire?");
 		talkToSquire.addDialogStep("I can make a new sword if you like...");
 		talkToSquire.addDialogStep("So would these dwarves make another one?");
 		talkToSquire.addDialogStep("Ok, I'll give it a go.");
 		talkToSquire.addDialogStep("Yes.");
-		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0), "Talk to Reldo in Varrock Castle's library.");
+		talkToReldo = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3211, 3494, 0), "Talk to Reldo in Varrock Castle's library.");
 		talkToReldo.addDialogStep("What do you know about the Imcando dwarves?");
 		talkToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Talk to Thurgo south of Port Sarim and give him a redberry pie.", redberryPie);
 		talkToThurgo.addDialogStep("Would you like a redberry pie?");
 		talkToThurgoAgain = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Talk to Thurgo again.");
 		talkToThurgoAgain.addDialogStep("Can you make a special sword for me?");
-		talkToSquire2 = new NpcStep(this, NpcID.SQUIRE_4737, new WorldPoint(2978, 3341, 0), "Talk to the Squire in Falador Castle's courtyard.");
-		goUpCastle1 = new ObjectStep(this, ObjectID.LADDER_24070, new WorldPoint(2994, 3341, 0), "Climb up the east ladder in Falador Castle.");
-		goUpCastle2 = new ObjectStep(this, ObjectID.STAIRCASE_24077, new WorldPoint(2985, 3338, 1), "Go up the staircase west of the ladder on the 1st floor.");
-		searchCupboard = new ObjectStep(this, ObjectID.CUPBOARD_2272, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.", searchCupboardReq);
-		((ObjectStep)searchCupboard).addAlternateObjects(ObjectID.CUPBOARD_2271); // 2271 is the closed cupboard
+		talkToSquire2 = new NpcStep(this, NpcID.SQUIRE, new WorldPoint(2978, 3341, 0), "Talk to the Squire in Falador Castle's courtyard.");
+		goUpCastle1 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_LADDER_UP, new WorldPoint(2994, 3341, 0), "Climb up the east ladder in Falador Castle.");
+		goUpCastle2 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_STAIRS, new WorldPoint(2985, 3338, 1), "Go up the staircase west of the ladder on the 1st floor.");
+		searchCupboard = new ObjectStep(this, ObjectID.VYVINCUPBOARDOPEN, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.", searchCupboardReq);
+		((ObjectStep)searchCupboard).addAlternateObjects(ObjectID.VYVINCUPBOARDSHUT); // 2271 is the closed cupboard
 		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", ironBars, portrait);
 		givePortraitToThurgo.addDialogStep("About that sword...");
-		enterDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars);
-		mineBlurite = new ObjectStep(this, ObjectID.BLURITE_ROCKS, new WorldPoint(3049, 9566, 0), "Mine a blurite ore in the eastern cavern.", pickaxe);
+		enterDungeon = new ObjectStep(this, ObjectID.FAI_TRAPDOOR, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars);
+		mineBlurite = new ObjectStep(this, ObjectID.BLURITE_ROCK_1, new WorldPoint(3049, 9566, 0), "Mine a blurite ore in the eastern cavern.", pickaxe);
 		bringThurgoOre = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Return to Thurgo with a blurite ore and two iron bars.", bluriteOre, ironBars);
 		bringThurgoOre.addDialogStep("Can you make that replacement sword now?");
-		finishQuest = new NpcStep(this, NpcID.SQUIRE_4737, new WorldPoint(2978, 3341, 0), "Return to the Squire with the sword to finish the quest.", bluriteSword);
+		finishQuest = new NpcStep(this, NpcID.SQUIRE, new WorldPoint(2978, 3341, 0), "Return to the Squire with the sword to finish the quest.", bluriteSword);
 	}
 
 	@Override

@@ -24,42 +24,37 @@
  */
 package com.questhelper.helpers.achievementdiaries.morytania;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class MorytaniaHard extends ComplexStateQuestHelper
 {
@@ -165,17 +160,17 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		piety = new PrayerRequirement("Piety activated", Prayer.PIETY);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMithOre).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKharyrll);
-		limestoneBrick = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK).showConditioned(notKharyrll);
+		limestoneBrick = new ItemRequirement("Limestone brick", ItemID.LIMESTONEBRICK).showConditioned(notKharyrll);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notKharyrll).isNotConsumed();
-		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notKharyrll).isNotConsumed();
-		teakPlank = new ItemRequirement("Teak plank", ItemID.TEAK_PLANK).showConditioned(notKharyrll);
-		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notKharyrll);
-		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE).showConditioned(notKharyrll);
+		saw = new ItemRequirement("Saw", ItemID.POH_SAW).showConditioned(notKharyrll).isNotConsumed();
+		teakPlank = new ItemRequirement("Teak plank", ItemID.PLANK_TEAK).showConditioned(notKharyrll);
+		lawRune = new ItemRequirement("Law runes", ItemID.LAWRUNE).showConditioned(notKharyrll);
+		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOODRUNE).showConditioned(notKharyrll);
 		noseProtection = new ItemRequirement("Nose protection", ItemCollections.NOSE_PROTECTION)
 			.showConditioned(notAdvancedSpikes).isNotConsumed();
 		watermelonSeeds = new ItemRequirement("Watermelon seeds", ItemID.WATERMELON_SEED)
 			.showConditioned(notHarvestWatermelon);
-		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER)
+		seedDibber = new ItemRequirement("Seed dibber", ItemID.DIBBER)
 			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon)).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE)
 			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon)).isNotConsumed();
@@ -185,7 +180,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho)).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(new Conditions(LogicType.OR, notCaveHorror, notBurnMaho)).isNotConsumed();
-		mushroomSpore = new ItemRequirement("Mushroom spores", ItemID.MUSHROOM_SPORE).showConditioned(notBittercapMush);
+		mushroomSpore = new ItemRequirement("Mushroom spores", ItemID.MUSHROOM_SEED).showConditioned(notBittercapMush);
 		spade = new ItemRequirement("Spade", ItemID.SPADE)
 			.showConditioned(new Conditions(LogicType.OR, notBittercapMush, notHarvestWatermelon)).isNotConsumed();
 		mahoLogs = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS);
@@ -244,66 +239,66 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		moveToMine = new ObjectStep(this, ObjectID.CART_TUNNEL, new WorldPoint(3440, 3232, 0),
+		moveToMine = new ObjectStep(this, ObjectID.HAUNTEDMINE_SECONDARY_ENTRANCE, new WorldPoint(3440, 3232, 0),
 			"Enter the haunted mine.");
-		mithOre = new ObjectStep(this, ObjectID.MITHRIL_ORE_VEIN_20419, new WorldPoint(2806, 4439, 0),
+		mithOre = new ObjectStep(this, ObjectID.LOTR_MINE_WALL_MITHRIL_R, new WorldPoint(2806, 4439, 0),
 			"Mine the mithril ore in the north-east of the area.", pickaxe);
-		moveToLevelTwo = new ObjectStep(this, ObjectID.CART_TUNNEL_29332, new WorldPoint(3435, 9634, 0),
+		moveToLevelTwo = new ObjectStep(this, ObjectID.HAUNTEDMINE_CRYSTALSHORTCUT_ENTRANCE, new WorldPoint(3435, 9634, 0),
 			"Enter the mine cart shaft by the entrance, directly south of you.");
 
-		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3337, 0),
+		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO_DOOR_DRUIDICSPIRIT, new WorldPoint(3440, 3337, 0),
 			"Enter the grotto tree in Mort Myre Swamp.");
-		pietyAltar = new ObjectStep(this, ObjectID.ALTAR_OF_NATURE, new WorldPoint(3442, 9741, 1),
+		pietyAltar = new ObjectStep(this, ObjectID.DRUIDIC_SPIRIT_GROTTO_NATUREALTAR, new WorldPoint(3442, 9741, 1),
 			"Pray at the altar with Piety activated.", piety);
 
-		hardTempleTrekk = new NpcStep(this, NpcID.ROLAYNE_TWICKIT_HARD, new WorldPoint(3477, 3236, 0),
+		hardTempleTrekk = new NpcStep(this, NpcID.TEMPLETREK_OLDMAN_HARD, new WorldPoint(3477, 3236, 0),
 			"Complete a Hard Temple Trek. Alternatively complete a Hard Burgh de Rott Ramble. You can use Route 1 to" +
 				" evade combat events.");
 
-		bridgeSalve = new ObjectStep(this, ObjectID.ORNATE_RAILING, new WorldPoint(3424, 3476, 0),
+		bridgeSalve = new ObjectStep(this, ObjectID.MORYTANIA_RAILING_SC_FENCE_1, new WorldPoint(3424, 3476, 0),
 			"Use the shortcut to get to the bridge. This achievement only works one-way, so you must go from " +
 				"top-down.");
 
-		bittercapMush = new ObjectStep(this, NullObjectID.NULL_8337, new WorldPoint(3452, 3473, 0),
+		bittercapMush = new ObjectStep(this, ObjectID.FARMING_MUSHROOM_PATCH, new WorldPoint(3452, 3473, 0),
 			"Plant and harvest the bittercap mushrooms in Canifis. It takes 4 hours to fully grow." +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.", rake, seedDibber,
 			mushroomSpore);
 
-		moveToUpstairs = new ObjectStep(this, ObjectID.SPIKEY_CHAIN, new WorldPoint(3422, 3550, 0),
+		moveToUpstairs = new ObjectStep(this, ObjectID.SLAYERTOWER_SC_CHAINBOTTOM, new WorldPoint(3422, 3550, 0),
 			"Climb up the chain to get to the second floor of the slayer tower.");
 		advancedSpikes = new ObjectStep(this, 16537, new WorldPoint(3447, 3576, 1),
 			"Climb the advanced spike chain. Go down and back up if you rip your hands as you climb.");
 
-		moveToCaptHorror = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
+		moveToCaptHorror = new ObjectStep(this, ObjectID.FEVER_GANGPLANK, new WorldPoint(3710, 3496, 0),
 			"Cross the gangplank to Bill Teach's ship.", witchwoodIcon.equipped(), lightSource, combatGear, food);
-		moveToMosHorror = new NpcStep(this, NpcID.BILL_TEACH_4016, new WorldPoint(3714, 3497, 1),
+		moveToMosHorror = new NpcStep(this, NpcID.FEVER_HARMLESS_PORT_SHIP_TEACH, new WorldPoint(3714, 3497, 1),
 			"Talk to Bill Teach to travel to Mos Le'Harmless.", witchwoodIcon.equipped(), lightSource, combatGear, food);
-		moveToCaveHorror = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3650, new WorldPoint(3748, 2973, 0),
+		moveToCaveHorror = new ObjectStep(this, ObjectID.HARMLESS_CAVE_ENTRANCE_LEFT, new WorldPoint(3748, 2973, 0),
 			"Enter the Mos Le'Harmless Cave.", witchwoodIcon.equipped(), lightSource, combatGear, food);
-		caveHorror = new NpcStep(this, NpcID.CAVE_HORROR, new WorldPoint(3740, 9373, 0),
+		caveHorror = new NpcStep(this, NpcID.HARMLESS_ISLAND_CAVE_HORROR_WORKER, new WorldPoint(3740, 9373, 0),
 			"Kill a Cave horror.", witchwoodIcon.equipped());
-		caveHorror.addAlternateNpcs(NpcID.CAVE_HORROR_1048, NpcID.CAVE_HORROR_1049, NpcID.CAVE_HORROR_1050,
-			NpcID.CAVE_HORROR_1051);
-		moveToCaptMaho = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
+		caveHorror.addAlternateNpcs(NpcID.HARMLESS_ISLAND_CAVE_HORROR_YOUNG_WORKER, NpcID.HARMLESS_ISLAND_CAVE_HORROR_GUARD, NpcID.HARMLESS_ISLAND_CAVE_HORROR_SMALL_GUARD,
+			NpcID.HARMLESS_ISLAND_CAVE_HORROR_ALPHA);
+		moveToCaptMaho = new ObjectStep(this, ObjectID.FEVER_GANGPLANK, new WorldPoint(3710, 3496, 0),
 			"Cross the gangplank to Bill Teach's ship.", witchwoodIcon.equipped(), lightSource, axe, tinderbox);
-		moveToMosMaho = new NpcStep(this, NpcID.BILL_TEACH_4016, new WorldPoint(3714, 3497, 1),
+		moveToMosMaho = new NpcStep(this, NpcID.FEVER_HARMLESS_PORT_SHIP_TEACH, new WorldPoint(3714, 3497, 1),
 			"Talk to Bill Teach to travel to Mos Le'Harmless.", witchwoodIcon.equipped(), lightSource, axe, tinderbox);
-		moveToCaveMaho = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3650, new WorldPoint(3748, 2973, 0),
+		moveToCaveMaho = new ObjectStep(this, ObjectID.HARMLESS_CAVE_ENTRANCE_LEFT, new WorldPoint(3748, 2973, 0),
 			"Enter the Mos Le'Harmless Cave.", witchwoodIcon.equipped(), lightSource, axe, tinderbox);
-		moveToIsland = new ObjectStep(this, ObjectID.STAIRCASE_5269, new WorldPoint(3830, 9463, 0),
+		moveToIsland = new ObjectStep(this, ObjectID.HARMLESS_BLACK_SPIRAL_STAIRS, new WorldPoint(3830, 9463, 0),
 			"Climb the staircase in the north east of the Cave Horror dungeon.");
 		burnMaho = new ItemStep(this, "Burn mahogany logs on the island.", tinderbox.highlighted(), mahoLogs.highlighted());
 		chopMaho = new ObjectStep(this, 9034, new WorldPoint(3826, 3056, 0),
 			"Chop mahogany logs on the island.", axe, tinderbox);
 
-		moveToCaptMelon = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
+		moveToCaptMelon = new ObjectStep(this, ObjectID.FEVER_GANGPLANK, new WorldPoint(3710, 3496, 0),
 			"Cross the gangplank to Bill Teach's ship.", watermelonSeeds.quantity(3), seedDibber, spade, rake);
-		moveToMosMelon = new NpcStep(this, NpcID.BILL_TEACH_4016, new WorldPoint(3714, 3497, 1),
+		moveToMosMelon = new NpcStep(this, NpcID.FEVER_HARMLESS_PORT_SHIP_TEACH, new WorldPoint(3714, 3497, 1),
 			"Talk to Bill Teach to travel to Mos Le'Harmless.", watermelonSeeds.quantity(3), seedDibber, spade, rake);
-		moveToHarmony = new NpcStep(this, NpcID.BROTHER_TRANQUILITY_551, new WorldPoint(3680, 2961, 0),
+		moveToHarmony = new NpcStep(this, NpcID.BRAIN_BROTHER_TRANQUILITY_HUMAN, new WorldPoint(3680, 2961, 0),
 			"Talk to Brother Tranquility to travel to Harmony Island.", watermelonSeeds.quantity(3), seedDibber, spade, rake);
 		moveToHarmony.addDialogStep("Yes, please.");
-		harvestWatermelon = new ObjectStep(this, NullObjectID.NULL_21950, new WorldPoint(3794, 2836, 0),
+		harvestWatermelon = new ObjectStep(this, ObjectID.FARMING_VEG_PATCH_9, new WorldPoint(3794, 2836, 0),
 			"Plant and harvest watermelon on Harmony Island. It takes 80 minutes to fully grow. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			watermelonSeeds.quantity(3), seedDibber, spade, rake);
@@ -312,7 +307,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 			"Portal Nexus. Either make or construct a Portal Chamber / Kharyrll Portal.", coins.quantity(100000),
 			limestoneBrick.quantity(2), hammer, saw, teakPlank.quantity(3), lawRune.quantity(200), bloodRune.quantity(100));
 
-		claimReward = new NpcStep(this, NpcID.LESABR, new WorldPoint(3464, 3480, 0),
+		claimReward = new NpcStep(this, NpcID.LESABRE_MORT_DIARY, new WorldPoint(3464, 3480, 0),
 			"Talk to Le-Sabre near Canifis to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -368,8 +363,8 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Morytania legs 3", ItemID.MORYTANIA_LEGS_3),
-			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Morytania legs 3", ItemID.MORYTANIA_LEGS_HARD),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

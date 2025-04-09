@@ -24,37 +24,34 @@
  */
 package com.questhelper.helpers.achievementdiaries.desert;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class DesertEasy extends ComplexStateQuestHelper
 {
@@ -149,11 +146,11 @@ public class DesertEasy extends ComplexStateQuestHelper
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS)
 			.showConditioned(new Conditions(LogicType.OR, notNardahHerb, notMagicCarpet));
-		potatoCacti = new ItemRequirement("Potato Cacti", ItemID.POTATO_CACTUS).showConditioned(notCollectCacti);
+		potatoCacti = new ItemRequirement("Potato Cacti", ItemID.CACTUS_POTATO).showConditioned(notCollectCacti);
 		rope = new ItemRequirement("Rope", ItemID.ROPE)
 			.showConditioned(new Conditions(LogicType.OR, notEnterKalph, notCollectCacti));
 		shantayPass = new ItemRequirement("Shantay pass", ItemID.SHANTAY_PASS).showConditioned(notEnterDesert);
-		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notGoldWarbler).isNotConsumed();
+		birdSnare = new ItemRequirement("Bird snare", ItemID.HUNTING_OJIBWAY_BIRD_SNARE).showConditioned(notGoldWarbler).isNotConsumed();
 		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES).showConditioned(notFiveClay).isNotConsumed();
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notCutCactus).isNotConsumed();
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS).showConditioned(notEnterDesert).isNotConsumed();
@@ -161,7 +158,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT).showConditioned(notEnterDesert).isNotConsumed();
 		pyramidPlunderArtefact = new ItemRequirement("Any Artefact from Pyramid Plunder",
 			ItemCollections.PLUNDER_ARTEFACTS).showConditioned(notSellArtefact);
-		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATERSKIN0).showConditioned(notCutCactus).isNotConsumed();
+		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATER_SKIN0).showConditioned(notCutCactus).isNotConsumed();
 		grimyHerb = new ItemRequirement("Grimy herb", ItemCollections.GRIMY_HERB);
 
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
@@ -192,58 +189,58 @@ public class DesertEasy extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		enterDesert = new ObjectStep(this, ObjectID.SHANTAY_PASS, new WorldPoint(3304, 3116, 0),
+		enterDesert = new ObjectStep(this, ObjectID.SHANTAY_PASS_HENGE_DOORWAY, new WorldPoint(3304, 3116, 0),
 			"Enter the desert.", desertBoots.equipped(), desertRobe.equipped(), desertShirt.equipped(), shantayPass);
 
-		goldWarbler = new ObjectStep(this, ObjectID.BIRD_SNARE_9375, new WorldPoint(3404, 3148, 0),
+		goldWarbler = new ObjectStep(this, ObjectID.HUNTING_OJIBWAY_TRAP_FULL_POLAR, new WorldPoint(3404, 3148, 0),
 			"Catch a Golden Warbler in the Uzer hunter area.", birdSnare.highlighted());
 
-		magicCarpet = new NpcStep(this, NpcID.RUG_MERCHANT, new WorldPoint(3310, 3108, 0),
+		magicCarpet = new NpcStep(this, NpcID.MAGIC_CARPET_SELLER1, new WorldPoint(3310, 3108, 0),
 			"Talk to the rug merchant and travel to Pollnivneach.", coins.quantity(200));
 		magicCarpet.addDialogSteps("Yes please.", "I want to travel to Pollnivneach.");
 
-		cutCactus = new ObjectStep(this, ObjectID.KHARIDIAN_CACTUS_HEALTHY, new WorldPoint(3290, 3103, 0),
+		cutCactus = new ObjectStep(this, ObjectID.DESERT_CACTUS_FULL, new WorldPoint(3290, 3103, 0),
 			"Cut Kharidian cacti and fill up your waterskin. You may need to cut multiple cacti before you " +
 				"successfully get water.", true, knife, emptyWaterskin);
 		((ObjectStep) cutCactus).setMaxObjectDistance(5000);
 
-		fiveClay = new ObjectStep(this, ObjectID.CLAY_ROCKS, new WorldPoint(3420, 3163, 0),
+		fiveClay = new ObjectStep(this, ObjectID.CLAYROCK1, new WorldPoint(3420, 3163, 0),
 			"Mine five clay in the north east of the desert.");
 
-		nardahHerb = new NpcStep(this, NpcID.ZAHUR, new WorldPoint(3425, 2906, 0),
+		nardahHerb = new NpcStep(this, NpcID.ELID_HERBALIST, new WorldPoint(3425, 2906, 0),
 			"Have Zahur in Nardah clean a grimy herb for you.", grimyHerb, coins.quantity(200));
 		nardahHerb.addDialogStep("Please clean all my herbs.");
 
-		killVulture = new NpcStep(this, NpcID.VULTURE, new WorldPoint(3334, 2865, 0),
+		killVulture = new NpcStep(this, NpcID.RAG_VULTURE, new WorldPoint(3334, 2865, 0),
 			"Kill a vulture.", true);
-		killVulture.addAlternateNpcs(NpcID.VULTURE_1268);
+		killVulture.addAlternateNpcs(NpcID.RAG_VULTURE_FLYING);
 
 		moveToPyramidPlunder = new ObjectStep(this, 26622, new WorldPoint(3289, 2800, 0),
 			"Enter the Pyramid plunder minigame. If you don't see a Guardian mummy exit and try a different entrance.");
-		startPyramidPlunder = new NpcStep(this, NpcID.GUARDIAN_MUMMY, new WorldPoint(1934, 4427, 3),
+		startPyramidPlunder = new NpcStep(this, NpcID.NTK_MUMMY_GUARDIAN, new WorldPoint(1934, 4427, 3),
 			"Talk to the guardian mummy to start the minigame. If you don't see a Guardian mummy exit and try a different entrance.");
 		startPyramidPlunder.addDialogStep("I know what I'm doing - let's get on with it.");
 		openSarc = new ObjectStep(this, 26626, new WorldPoint(1928, 4465, 0),
 			"Open the sarcophagus in the first room.");
 
-		sellArtefact = new NpcStep(this, NpcID.SIMON_TEMPLETON, new WorldPoint(3346, 2827, 0),
+		sellArtefact = new NpcStep(this, NpcID.AGILITY_PYRAMID_SIMON, new WorldPoint(3346, 2827, 0),
 			"Talk to Simon Templeton and sell your artefact.", pyramidPlunderArtefact);
 		sellArtefact.addDialogStep("Yes, show me the money.");
 
 		enterKalph = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
 			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted());
-		enterKalph.addAlternateObjects(ObjectID.TUNNEL_ENTRANCE);
+		enterKalph.addAlternateObjects(ObjectID.KALPHITE_BURROW_ENTRANCE_WITHROPE);
 		enterKalph.addIcon(ItemID.ROPE);
 
 		enterKalphForCacti = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
 			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted());
-		enterKalphForCacti.addAlternateObjects(ObjectID.TUNNEL_ENTRANCE);
+		enterKalphForCacti.addAlternateObjects(ObjectID.KALPHITE_BURROW_ENTRANCE_WITHROPE);
 		enterKalphForCacti.addIcon(ItemID.ROPE);
 
 		collectCacti = new DetailedQuestStep(this, new WorldPoint(3463, 9482, 2),
 			"Pickup and drop cacti until task is completed", potatoCacti);
 
-		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
+		claimReward = new NpcStep(this, NpcID.JARR_DESERT_DIARY, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -283,8 +280,8 @@ public class DesertEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Desert amulet 1", ItemID.DESERT_AMULET_1),
-			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Desert amulet 1", ItemID.DESERT_AMULET_EASY),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

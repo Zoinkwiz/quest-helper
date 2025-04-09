@@ -24,38 +24,32 @@
  */
 package com.questhelper.helpers.quests.dragonslayer;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestPointRequirement;
-import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class DragonSlayer extends BasicQuestHelper
 {
@@ -193,46 +187,46 @@ public class DragonSlayer extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.UNFIRED_BOWL);
+		unfiredBowl = new ItemRequirement("Unfired bowl", ItemID.BOWL_UNFIRED);
 		unfiredBowl.setTooltip("You can make one with soft clay at a Potter's Wheel with 8 Crafting.");
 		mindBomb = new ItemRequirement("Wizard's mind bomb", ItemID.WIZARDS_MIND_BOMB);
 		mindBomb.setTooltip("You can buy one from the Rising Sun Inn in Falador.");
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
-		ItemRequirement telegrab = new ItemRequirement("Telekinetic grab", ItemID.TELEKINETIC_GRAB, 1);
+		ItemRequirement telegrab = new ItemRequirement("Telekinetic grab", ItemID.POH_TABLET_TELEGRAB, 1);
 		telegrabOrTenK = new ItemRequirements(LogicType.OR, "Either 33 Magic for Telegrab and a ranged/mage weapon, or 10,000 coins",
 			new ItemRequirement("Coins", ItemCollections.COINS, 10000), telegrab);
 		ringsOfRecoil = new ItemRequirement("Rings of Recoil for Elvarg", ItemID.RING_OF_RECOIL, -1);
 		chronicle = new ItemRequirement("The Chronicle for teleports to Champions' Guild", ItemID.CHRONICLE).isNotConsumed();
 		antifirePotion = new ItemRequirement("Antifire potion for Elvarg", ItemCollections.ANTIFIRE_POTIONS, -1);
-		edgevilleTeleport = new ItemRequirement("Teleports to Edgeville for getting to Oziach", ItemID.AMULET_OF_GLORY_T6, -1);
-		rimmingtonTeleport = new ItemRequirement("Teleports to Port Sarim/Rimmington/Draynor Village area", ItemID.AMULET_OF_GLORY_T6, -1);
+		edgevilleTeleport = new ItemRequirement("Teleports to Edgeville for getting to Oziach", ItemID.TRAIL_AMULET_OF_GLORY_6, -1);
+		rimmingtonTeleport = new ItemRequirement("Teleports to Port Sarim/Rimmington/Draynor Village area", ItemID.TRAIL_AMULET_OF_GLORY_6, -1);
 
-		mapPart1 = new ItemRequirement("Map part", ItemID.MAP_PART_1537);
-		mapPart2 = new ItemRequirement("Map part", ItemID.MAP_PART_1536);
-		mapPart3 = new ItemRequirement("Map part", ItemID.MAP_PART);
-		melzarsKey = new ItemRequirement("Maze key", ItemID.MAZE_KEY);
+		mapPart1 = new ItemRequirement("Map part", ItemID.MAPPART3);
+		mapPart2 = new ItemRequirement("Map part", ItemID.MAPPART2);
+		mapPart3 = new ItemRequirement("Map part", ItemID.MAPPART1);
+		melzarsKey = new ItemRequirement("Maze key", ItemID.MELZARKEY);
 		melzarsKey.setTooltip("You can get another maze key from the Guildmaster in the Champions' Guild.");
-		ratKey = new ItemRequirement("Key", ItemID.KEY_1543);
-		ghostKey = new ItemRequirement("Key", ItemID.KEY_1544);
-		skeletonKey = new ItemRequirement("Key", ItemID.KEY_1545);
-		zombieKey = new ItemRequirement("Key", ItemID.KEY_1546);
-		melzarKey = new ItemRequirement("Key", ItemID.KEY_1547);
-		demonKey = 	new ItemRequirement("Key", ItemID.KEY_1548);
+		ratKey = new ItemRequirement("Key", ItemID.REDKEY);
+		ghostKey = new ItemRequirement("Key", ItemID.ORANGEKEY);
+		skeletonKey = new ItemRequirement("Key", ItemID.YELLOWKEY);
+		zombieKey = new ItemRequirement("Key", ItemID.BLUEKEY);
+		melzarKey = new ItemRequirement("Key", ItemID.MAGENTAKEY);
+		demonKey = 	new ItemRequirement("Key", ItemID.GREENKEY);
 		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		antidragonShield = new ItemRequirement("Anti-dragon shield", ItemCollections.ANTIFIRE_SHIELDS);
 		antidragonShieldEquipped = new ItemRequirement("Anti-dragon shield", ItemCollections.ANTIFIRE_SHIELDS, 1, true);
-		planks3 = new ItemRequirement("Planks", ItemID.PLANK, 3);
-		planks2 = new ItemRequirement("Planks", ItemID.PLANK, 2);
-		planks1 = new ItemRequirement("Plank", ItemID.PLANK);
+		planks3 = new ItemRequirement("Planks", ItemID.WOODPLANK, 3);
+		planks2 = new ItemRequirement("Planks", ItemID.WOODPLANK, 2);
+		planks1 = new ItemRequirement("Plank", ItemID.WOODPLANK);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
-		nails90 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 90);
-		nails60 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 60);
-		nails30 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 30);
+		nails90 = new ItemRequirement("Steel nails", ItemID.NAILS, 90);
+		nails60 = new ItemRequirement("Steel nails", ItemID.NAILS, 60);
+		nails30 = new ItemRequirement("Steel nails", ItemID.NAILS, 30);
 		twoThousandCoins = new ItemRequirement("Coins", ItemCollections.COINS, 2000);
-		fullMap = new ItemRequirement("Crandor map", ItemID.CRANDOR_MAP);
+		fullMap = new ItemRequirement("Crandor map", ItemID.DRAGONMAP);
 	}
 
 	@Override
@@ -298,7 +292,7 @@ public class DragonSlayer extends BasicQuestHelper
 		lobsterPotUsed = new VarplayerRequirement(177, true, 19);
 		mindBombUsed = new VarplayerRequirement(177, true, 20);
 		thalzarDoorOpened = new Conditions(silkUsed, unfiredBowlUsed, lobsterPotUsed, mindBombUsed);
-		thalzarChest2Nearby = new ObjectCondition(ObjectID.CHEST_2588);
+		thalzarChest2Nearby = new ObjectCondition(ObjectID.ORACLECHESTOPEN);
 
 		hasMapPart1 = new Conditions(LogicType.OR, fullMap, mapPart1);
 		hasMapPart2 = new Conditions(LogicType.OR, fullMap, mapPart2);
@@ -369,19 +363,19 @@ public class DragonSlayer extends BasicQuestHelper
 		talkToOracle = new NpcStep(this, NpcID.ORACLE, new WorldPoint(3014, 3501, 0), "Talk to the Oracle on top of Ice Mountain.", silk, lobsterPot, mindBomb, unfiredBowl);
 		talkToOracle.addDialogStep("I seek a piece of the map to the island of Crandor.");
 
-		goIntoDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450,0), "Go down the ladder in the dwarven camp to the south into the Dwarven Mines.", silk, lobsterPot, mindBomb, unfiredBowl);
+		goIntoDwarvenMine = new ObjectStep(this, ObjectID.FAI_DWARF_TRAPDOOR_DOWN, new WorldPoint(3019, 3450,0), "Go down the ladder in the dwarven camp to the south into the Dwarven Mines.", silk, lobsterPot, mindBomb, unfiredBowl);
 
-		useSilkOnDoor = new ObjectStep(this, ObjectID.MAGIC_DOOR_25115, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the silk on the magic door.", silk, lobsterPot, mindBomb, unfiredBowl);
+		useSilkOnDoor = new ObjectStep(this, ObjectID.DRAGON_SLAYER_QIP_MAGIC_DOOR, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the silk on the magic door.", silk, lobsterPot, mindBomb, unfiredBowl);
 		useSilkOnDoor.addIcon(ItemID.SILK);
-		usePotOnDoor = new ObjectStep(this, ObjectID.MAGIC_DOOR_25115, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the lobster pot on the magic door.", lobsterPot, mindBomb, unfiredBowl);
+		usePotOnDoor = new ObjectStep(this, ObjectID.DRAGON_SLAYER_QIP_MAGIC_DOOR, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the lobster pot on the magic door.", lobsterPot, mindBomb, unfiredBowl);
 		usePotOnDoor.addIcon(ItemID.LOBSTER_POT);
-		useUnfiredBowlOnDoor = new ObjectStep(this, ObjectID.MAGIC_DOOR_25115, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the unfired bowl on the magic door.",  mindBomb, unfiredBowl);
-		useUnfiredBowlOnDoor.addIcon(ItemID.UNFIRED_BOWL);
-		useMindBombOnDoor = new ObjectStep(this, ObjectID.MAGIC_DOOR_25115, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the wizard's mind bomb on the magic door (BE CAREFUL NOT TO DRINK IT).", lobsterPot, mindBomb, unfiredBowl);
+		useUnfiredBowlOnDoor = new ObjectStep(this, ObjectID.DRAGON_SLAYER_QIP_MAGIC_DOOR, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the unfired bowl on the magic door.",  mindBomb, unfiredBowl);
+		useUnfiredBowlOnDoor.addIcon(ItemID.BOWL_UNFIRED);
+		useMindBombOnDoor = new ObjectStep(this, ObjectID.DRAGON_SLAYER_QIP_MAGIC_DOOR, new WorldPoint(3050, 9840, 0), "Go to the north east of the Dwarven Mines and use the wizard's mind bomb on the magic door (BE CAREFUL NOT TO DRINK IT).", lobsterPot, mindBomb, unfiredBowl);
 		useMindBombOnDoor.addIcon(ItemID.WIZARDS_MIND_BOMB);
 
-		searchThalzarChest = new ObjectStep(this, ObjectID.CHEST_2587, new WorldPoint(3057, 9841, 0), "Search the chest for Thalzar's map piece.");
-		searchThalzarChest2 = new ObjectStep(this, ObjectID.CHEST_2588, new WorldPoint(3057, 9841, 0), "Search the chest for Thalzar's map piece.");
+		searchThalzarChest = new ObjectStep(this, ObjectID.ORACLECHESTSHUT, new WorldPoint(3057, 9841, 0), "Search the chest for Thalzar's map piece.");
+		searchThalzarChest2 = new ObjectStep(this, ObjectID.ORACLECHESTOPEN, new WorldPoint(3057, 9841, 0), "Search the chest for Thalzar's map piece.");
 		searchThalzarChest.addSubSteps(searchThalzarChest2);
 
 		optionsForLozarPiece = new NpcStep(this, NpcID.WORMBRAIN, new WorldPoint(3015, 3195, 0), "Go to Port Sarim Jail. You can either pay Wormbrain there 10,000 coins for Lozar's map piece, or kill him with ranged/mage and telegrab it with level 33 magic.", telegrabOrTenK);
@@ -389,38 +383,38 @@ public class DragonSlayer extends BasicQuestHelper
 		optionsForLozarPiece.addDialogStep("I suppose I could pay you for the map piece...");
 		optionsForLozarPiece.addDialogStep("Alright then, 10,000 it is.");
 
-		enterMelzarsMaze = new ObjectStep(this, ObjectID.DOOR_2595, new WorldPoint(2941, 3248, 0), "Enter Melzar's Maze north of Rimmington. Be prepared to fight multiple monsters up to a level 82 lesser demon.", melzarsKey);
+		enterMelzarsMaze = new ObjectStep(this, ObjectID.MELZARDOOR, new WorldPoint(2941, 3248, 0), "Enter Melzar's Maze north of Rimmington. Be prepared to fight multiple monsters up to a level 82 lesser demon.", melzarsKey);
 		enterMelzarsMaze.addDialogSteps("About my quest to kill the dragon...", "I talked to Oziach...", "How can I find the route to Crandor?", "Where is Melzar's map piece?");
 
-		killRat = new NpcStep(this, NpcID.ZOMBIE_RAT, new WorldPoint(2933, 3250, 0), "Kill the marked zombie rat for a key.");
-		openRedDoor = new ObjectStep(this, ObjectID.RED_DOOR, new WorldPoint(2926, 3253, 0), "Go through the north west red door", ratKey);
-		goUpRatLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2928, 3256, 0), "Climb up the ladder.");
+		killRat = new NpcStep(this, NpcID.DRAGONSLAYER_GIANTRAT_1_KEY, new WorldPoint(2933, 3250, 0), "Kill the marked zombie rat for a key.");
+		openRedDoor = new ObjectStep(this, ObjectID.REDDOOR, new WorldPoint(2926, 3253, 0), "Go through the north west red door", ratKey);
+		goUpRatLadder = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2928, 3256, 0), "Climb up the ladder.");
 
-		killGhost = new NpcStep(this, NpcID.GHOST_3975, new WorldPoint(2927, 3253, 1), "Kill the marked ghost for a key.", ghostKey);
+		killGhost = new NpcStep(this, NpcID.DRAGONSLAYER_GHOST_1_KEY, new WorldPoint(2927, 3253, 1), "Kill the marked ghost for a key.", ghostKey);
 
-		openOrangeDoor = new ObjectStep(this, ObjectID.ORANGE_DOOR, new WorldPoint(2931, 3253, 1), "Go through second yellow door from the north.", ghostKey);
-		goUpGhostLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2934, 3254, 1), "Climb up the ladder.");
+		openOrangeDoor = new ObjectStep(this, ObjectID.ORANGEDOOR, new WorldPoint(2931, 3253, 1), "Go through second yellow door from the north.", ghostKey);
+		goUpGhostLadder = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2934, 3254, 1), "Climb up the ladder.");
 
-		killSkeleton = new NpcStep(this, NpcID.SKELETON_3972, new WorldPoint(2927, 3253, 2), "Kill the marked skeleton for a key", skeletonKey);
-		openYellowDoor = new ObjectStep(this, ObjectID.YELLOW_DOOR, new WorldPoint(2924, 3249, 2), "Go through south west yellow door.", skeletonKey);
-		goDownSkeletonLadder = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2940, 3240, 2), "Climb down the ladder.");
+		killSkeleton = new NpcStep(this, NpcID.DRAGONSLAYER_SKELETON_1_KEY, new WorldPoint(2927, 3253, 2), "Kill the marked skeleton for a key", skeletonKey);
+		openYellowDoor = new ObjectStep(this, ObjectID.YELLOWDOOR, new WorldPoint(2924, 3249, 2), "Go through south west yellow door.", skeletonKey);
+		goDownSkeletonLadder = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2940, 3240, 2), "Climb down the ladder.");
 
-		goDownLadderRoomLadder = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2937, 3240, 1), "Climb down again.");
-		goDownBasementEntryLadder = new ObjectStep(this, ObjectID.LADDER_2605, new WorldPoint(2932, 3240, 0), "Climb down the ladder into the basement.");
-		killZombie = new NpcStep(this, NpcID.ZOMBIE_3980, new WorldPoint(2932, 9643, 0), "Kill the marked zombie for a key", zombieKey);
-		openBlueDoor = new ObjectStep(this, ObjectID.BLUE_DOOR, new WorldPoint(2931, 9644, 0), "Go through the blue door in the north west corner.");
+		goDownLadderRoomLadder = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2937, 3240, 1), "Climb down again.");
+		goDownBasementEntryLadder = new ObjectStep(this, ObjectID.FUNLADDERTOP, new WorldPoint(2932, 3240, 0), "Climb down the ladder into the basement.");
+		killZombie = new NpcStep(this, NpcID.DRAGONSLAYER_ZOMBIE_1_KEY, new WorldPoint(2932, 9643, 0), "Kill the marked zombie for a key", zombieKey);
+		openBlueDoor = new ObjectStep(this, ObjectID.BLUEDOOR, new WorldPoint(2931, 9644, 0), "Go through the blue door in the north west corner.");
 
 		killMelzar = new NpcStep(this, NpcID.MELZAR_THE_MAD, new WorldPoint(2929, 9649, 0), "Kill Melzar the Mad for a magenta key.", melzarKey);
-		openMagntaDoor = new ObjectStep(this, ObjectID.MAGENTA_DOOR, new WorldPoint(2929, 9652, 0), "Go through the magenta door.");
+		openMagntaDoor = new ObjectStep(this, ObjectID.MAGENTADOOR, new WorldPoint(2929, 9652, 0), "Go through the magenta door.");
 
-		killLesserDemon = new NpcStep(this, NpcID.LESSER_DEMON_3982, new WorldPoint(2936, 9652, 0), "Kill the lesser demon. You can safe spot it from the spot east of the magenta door.", demonKey);
-		openGreenDoor = new ObjectStep(this, ObjectID.GREEN_DOOR, new WorldPoint(2936, 9655, 0), "Go through the green door.", demonKey);
+		killLesserDemon = new NpcStep(this, NpcID.DRAGONSLAYER_DEMON, new WorldPoint(2936, 9652, 0), "Kill the lesser demon. You can safe spot it from the spot east of the magenta door.", demonKey);
+		openGreenDoor = new ObjectStep(this, ObjectID.GREENDOOR, new WorldPoint(2936, 9655, 0), "Go through the green door.", demonKey);
 
-		openMelzarChest = new ObjectStep(this, ObjectID.CHEST_2603, new WorldPoint(2935, 9657, 0), "Open the chest and get Melzar's map part.");
+		openMelzarChest = new ObjectStep(this, ObjectID.FUNCHESTSHUT, new WorldPoint(2935, 9657, 0), "Open the chest and get Melzar's map part.");
 
-		goUpToDukeHoracio = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(3205, 3208, 0), "Talk to Duke Horacio on the first floor of Lumbridge castle for the anti-dragon shield if you don't have one.");
+		goUpToDukeHoracio = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(3205, 3208, 0), "Talk to Duke Horacio on the first floor of Lumbridge castle for the anti-dragon shield if you don't have one.");
 
-		getShield = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3220, 1), "Talk to Duke Horacio on the first floor of Lumbridge castle for the anti-dragon shield if you don't have one.");
+		getShield = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE, new WorldPoint(3210, 3220, 1), "Talk to Duke Horacio on the first floor of Lumbridge castle for the anti-dragon shield if you don't have one.");
 		getShield.addDialogStep("I seek a shield that will protect me from dragonbreath.");
 		getShield.addDialogStep("Elvarg, the dragon of Crandor island!");
 		getShield.addDialogStep("Yes");
@@ -431,40 +425,40 @@ public class DragonSlayer extends BasicQuestHelper
 		talkToKlarense.addDialogStep("I'd like to buy her.");
 		talkToKlarense.addDialogStep("Yep, sounds good.");
 
-		boardShip1 = new ObjectStep(this, ObjectID.GANGPLANK_2593, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails90, planks3, hammer);
-		boardShip2 = new ObjectStep(this, ObjectID.GANGPLANK_2593, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails60, planks2, hammer);
-		boardShip3 = new ObjectStep(this, ObjectID.GANGPLANK_2593, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails30, planks1, hammer);
+		boardShip1 = new ObjectStep(this, ObjectID.DRAGONSHIPGANGPLANK_ON, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails90, planks3, hammer);
+		boardShip2 = new ObjectStep(this, ObjectID.DRAGONSHIPGANGPLANK_ON, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails60, planks2, hammer);
+		boardShip3 = new ObjectStep(this, ObjectID.DRAGONSHIPGANGPLANK_ON, new WorldPoint(3047, 3205, 0), "Board your new ship.", nails30, planks1, hammer);
 		boardShip1.addSubSteps(boardShip2, boardShip3);
 
-		goDownShipLadder = new ObjectStep(this, ObjectID.LADDER_2590, new WorldPoint(3049, 3208, 1), "Go down into the ship's hull.");
+		goDownShipLadder = new ObjectStep(this, ObjectID.DRAGONSHIPLADDERTOP, new WorldPoint(3049, 3208, 1), "Go down into the ship's hull.");
 
-		repairShip = new ObjectStep(this, NullObjectID.NULL_25036, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 3 times.", nails90, planks3, hammer);
-		repairShip2 = new ObjectStep(this, NullObjectID.NULL_25036, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 2 more times.", nails60, planks2, hammer);
-		repairShip3 = new ObjectStep(this, NullObjectID.NULL_25036, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 1 more time.", nails30, planks1, hammer);
+		repairShip = new ObjectStep(this, ObjectID.DRAGONSLAYER_SHIPHOLE, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 3 times.", nails90, planks3, hammer);
+		repairShip2 = new ObjectStep(this, ObjectID.DRAGONSLAYER_SHIPHOLE, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 2 more times.", nails60, planks2, hammer);
+		repairShip3 = new ObjectStep(this, ObjectID.DRAGONSLAYER_SHIPHOLE, new WorldPoint(3047, 9639, 1), "Repair the hole in the hull 1 more time.", nails30, planks1, hammer);
 		repairShip.addSubSteps(repairShip2, repairShip3);
 
 		repairMap = new DetailedQuestStep(this, "Use the three map parts together to repair the map.", mapPart1, mapPart2, mapPart3);
 		talkToNed = new NpcStep(this, NpcID.NED, new WorldPoint(3098, 3257, 0), "Bring Ned your map and ask him to be your captain.", fullMap);
 		talkToNed.addDialogStep("You're a sailor? Could you take me to Crandor?");
 
-		boardShipToGo = new ObjectStep(this, ObjectID.GANGPLANK_2593, new WorldPoint(3047, 3205, 0),
+		boardShipToGo = new ObjectStep(this, ObjectID.DRAGONSHIPGANGPLANK_ON, new WorldPoint(3047, 3205, 0),
 			"Prepare to fight Elvarg (level 83). When you're ready, go board your boat in Port Sarim and talk to Ned.", antidragonShield, combatGear);
-		talkToNedOnShip = new NpcStep(this, NpcID.CAPTAIN_NED_5864, new WorldPoint(3048, 3208, 1), "Talk to Ned to go to Crandor.");
+		talkToNedOnShip = new NpcStep(this, NpcID.NED_1OP, new WorldPoint(3048, 3208, 1), "Talk to Ned to go to Crandor.");
 		talkToNedOnShip.addDialogStep("Yes, let's go!");
 		boardShipToGo.addSubSteps(talkToNedOnShip);
 
-		enterCrandorHole = new ObjectStep(this, ObjectID.HOLE_25154, new WorldPoint(2834, 3256, 0), "Go to the center of the island and go down the hole.");
+		enterCrandorHole = new ObjectStep(this, ObjectID.DRAGON_SLAYER_QIP_RUIN_ENTRANCE, new WorldPoint(2834, 3256, 0), "Go to the center of the island and go down the hole.");
 
-		unlockShortcut = new ObjectStep(this, ObjectID.WALL_2606, new WorldPoint(2836, 9600, 0), "Go all the way south and through the wall to unlock the shortcut to return here if needed.");
+		unlockShortcut = new ObjectStep(this, ObjectID.DRAGONSECRETDOOR, new WorldPoint(2836, 9600, 0), "Go all the way south and through the wall to unlock the shortcut to return here if needed.");
 
-		returnThroughShortcut = new ObjectStep(this, ObjectID.WALL_2606, new WorldPoint(2836, 9600, 0), "Return back through the shortcut.");
+		returnThroughShortcut = new ObjectStep(this, ObjectID.DRAGONSECRETDOOR, new WorldPoint(2836, 9600, 0), "Return back through the shortcut.");
 
-		enterElvargArea = new ObjectStep(this, ObjectID.WALL_25161, new WorldPoint(2846, 9635, 0), "Enter Elvarg's area and kill her.", antidragonShieldEquipped);
-		goDownIntoKaramjaVolcano = new ObjectStep(this, ObjectID.ROCKS_11441, new WorldPoint(2857, 3169, 0), "Prepare to fight Elvarg again, and go to the Karamja volcano and enter it.", antidragonShieldEquipped, combatGear);
+		enterElvargArea = new ObjectStep(this, ObjectID.DRAGON_SLAYER_QIP_STALAGTITE_JUMP, new WorldPoint(2846, 9635, 0), "Enter Elvarg's area and kill her.", antidragonShieldEquipped);
+		goDownIntoKaramjaVolcano = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0), "Prepare to fight Elvarg again, and go to the Karamja volcano and enter it.", antidragonShieldEquipped, combatGear);
 		repairShipAgainAndSail = new DetailedQuestStep(this, "As you did not unlock the shortcut, you will need to repair your ship again and sail to Crandor.", planks3, nails90, hammer);
 		enterElvargArea.addSubSteps(goDownIntoKaramjaVolcano, repairShipAgainAndSail);
 
-		killElvarg = new NpcStep(this, NpcID.ELVARG_8033, new WorldPoint(2855, 9637, 0), "Kill Elvarg.");
+		killElvarg = new NpcStep(this, NpcID.ELVARG_ALIVE, new WorldPoint(2855, 9637, 0), "Kill Elvarg.");
 
 		finishQuest = new NpcStep(this, NpcID.OZIACH, new WorldPoint(3068, 3517, 0), "Talk to Oziach in his house in north western Edgeville to finish the quest.");
 	}

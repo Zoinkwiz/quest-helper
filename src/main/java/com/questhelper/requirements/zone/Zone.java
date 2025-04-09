@@ -26,8 +26,9 @@
 package com.questhelper.requirements.zone;
 
 import lombok.Getter;
-import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.coords.WorldPoint;
+
+import static net.runelite.api.Constants.REGION_SIZE;
 
 public class Zone
 {

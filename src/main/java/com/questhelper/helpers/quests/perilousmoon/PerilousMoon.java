@@ -37,8 +37,6 @@ import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -46,24 +44,20 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
+import com.questhelper.steps.*;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
+
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class PerilousMoon extends BasicQuestHelper
 {
@@ -280,13 +274,13 @@ public class PerilousMoon extends BasicQuestHelper
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		knife.setTooltip("Can be obtained during the quest from the Supply crates (fishing supplies).");
-		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).isNotConsumed();
+		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_NET).isNotConsumed();
 		bigFishingNet.setTooltip("Can be obtained during the quest from the Supply crates (fishing supplies).");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setTooltip("Can be obtained during the quest from the Supply crates (hunting supplies).");
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortar.setTooltip("Can be obtained during the quest from the Supply crates (herblore supplies).");
-		saw = new ItemRequirement("Saw", ItemID.SAW);
+		saw = new ItemRequirement("Saw", ItemID.POH_SAW);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
 		combatGear = new ItemRequirement("Combat armour with high defensive bonuses", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -309,11 +303,11 @@ public class PerilousMoon extends BasicQuestHelper
 		emptyInventory5 = new FreeInventorySlotRequirement(5);
 
 		// Quest
-		buildingSupplies = new ItemRequirement("Building supplies", ItemID.BUILDING_SUPPLIES);
-		rawMossLizard = new ItemRequirement("Raw moss lizard", ItemID.RAW_MOSS_LIZARD);
-		mossLizardTail = new ItemRequirement("Moss lizard tail", ItemID.MOSS_LIZARD_TAIL);
-		bream = new ItemRequirement("Raw bream", ItemID.RAW_BREAM);
-		breamScales = new ItemRequirement("Bream scales", ItemID.BREAM_SCALES);
+		buildingSupplies = new ItemRequirement("Building supplies", ItemID.PMOON_CAMP_SUPPLIES);
+		rawMossLizard = new ItemRequirement("Raw moss lizard", ItemID.RAW_LIZARD);
+		mossLizardTail = new ItemRequirement("Moss lizard tail", ItemID.PMOON_LIZARD_TAIL);
+		bream = new ItemRequirement("Raw bream", ItemID.BREAM_FISH_RAW);
+		breamScales = new ItemRequirement("Bream scales", ItemID.PMOON_FISH_SCALES);
 		moonlightGrub = new ItemRequirement("Moonlight grub", ItemID.MOONLIGHT_GRUB);
 		moonlightGrubPaste = new ItemRequirement("Moonlight grub paste", ItemID.MOONLIGHT_GRUB_PASTE);
 		enchantedWaterTalisman = new ItemRequirement("Enchanted water talisman", ItemID.ENCHANTED_WATER_TALISMAN);
@@ -355,18 +349,18 @@ public class PerilousMoon extends BasicQuestHelper
 		// Location: 1525, 9580, 0. 3x3 region for summoning. Directions work for exact row/column
 		// 9819 17->18
 		// 9825 0->1
-		eyatlalliNearby = new NpcRequirement(NpcID.EYATLALLI);
+		eyatlalliNearby = new NpcRequirement(NpcID.PMOON_EYATLALLI_VIS);
 		// icosahedron
 		trapSetup = or(new VarbitRequirement(9871, 1), new VarbitRequirement(9872, 1),
 			new VarbitRequirement(9873, 1));
-		lizardNearby = new ItemOnTileRequirement(ItemID.RAW_MOSS_LIZARD);
+		lizardNearby = new ItemOnTileRequirement(ItemID.RAW_LIZARD);
 		// 9871/2/3 for traps, 0->1
 
-		usedScales = new VarbitRequirement(9819, 24, Operation.GREATER_EQUAL);
+		usedScales = new VarbitRequirement(VarbitID.PMOON_QUEST, 24, Operation.GREATER_EQUAL);
 		hadScales = or(breamScales, usedScales);
-		usedTail = new VarbitRequirement(9819, 25, Operation.GREATER_EQUAL);
+		usedTail = new VarbitRequirement(VarbitID.PMOON_QUEST, 25, Operation.GREATER_EQUAL);
 		hadTail = or(mossLizardTail, usedTail);
-		usedPaste = new VarbitRequirement(9819, 26, Operation.GREATER_EQUAL);
+		usedPaste = new VarbitRequirement(VarbitID.PMOON_QUEST, 26, Operation.GREATER_EQUAL);
 		hadPaste = or(moonlightGrubPaste, usedPaste);
 
 		// 9848 0->1
@@ -388,33 +382,33 @@ public class PerilousMoon extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		talkToAttala = new NpcStep(this, NpcID.ATTALA, new WorldPoint(1435, 3124, 0),
+		talkToAttala = new NpcStep(this, NpcID.PMOON_ATTALA_VIS, new WorldPoint(1435, 3124, 0),
 			"Talk to Attala, stood south of Ralos' Rise.");
 		talkToAttala.addDialogStep("Yes.");
-		killSulphurNagua = new NpcStep(this, NpcID.SULPHUR_NAGUA, new WorldPoint(1453, 3129, 0),
+		killSulphurNagua = new NpcStep(this, NpcID.PMOON_QUEST_NAGUA_VIS, new WorldPoint(1453, 3129, 0),
 			"Kill the sulphur nagua just atop the cliff north east of Attala." +
 				" You can climb the rocks just to the east to reach it quickly with 47 Agility.");
-		returnToAttala = new NpcStep(this, NpcID.ATTALA, new WorldPoint(1435, 3124, 0),
+		returnToAttala = new NpcStep(this, NpcID.PMOON_ATTALA_VIS, new WorldPoint(1435, 3124, 0),
 		"Return to Attala.");
-		enterCamTorum = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1436, 3129, 0),
+		enterCamTorum = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1436, 3129, 0),
 			"Enter the entrance to Cam Torum.");
-		talkToJessamine = new NpcStep(this, NpcID.JESSAMINE_12865, new WorldPoint(1441, 9596, 1),
+		talkToJessamine = new NpcStep(this, NpcID.PMOON_JESSICA_VIS, new WorldPoint(1441, 9596, 1),
 			"Talk to Jessamine in the far north end of Cam Torum.");
 		talkToJessamine.addDialogStep("Can I be of any help with the dig?");
-		enterNeypotzli = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1439, 9600, 1),
+		enterNeypotzli = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1439, 9600, 1),
 			"Enter the Neypotzli entrance in the far north of the cavern.");
 		// Entered, varp 4066 8174-> 40942
-		talkToAttalaInNey = new NpcStep(this, NpcID.ATTALA, new WorldPoint(1433, 9632, 1),
+		talkToAttalaInNey = new NpcStep(this, NpcID.PMOON_ATTALA_VIS, new WorldPoint(1433, 9632, 1),
 			"Talk to Attala near the entrance.");
-		talkToZumaInNey = new NpcStep(this, NpcID.ZUMA_12860, new WorldPoint(1447, 9632, 1),
+		talkToZumaInNey = new NpcStep(this, NpcID.PMOON_ZUMA_VIS, new WorldPoint(1447, 9632, 1),
 		"Talk to Zuma near the entrance.");
-		talkToJessamineInNey = new NpcStep(this, NpcID.JESSAMINE_12865, new WorldPoint(1440, 9639, 1),
+		talkToJessamineInNey = new NpcStep(this, NpcID.PMOON_JESSICA_VIS, new WorldPoint(1440, 9639, 1),
 			"Talk to Jessamine near the entrance.");
 
-		takeBuildingSupplies = new ObjectStep(this, ObjectID.BUILDING_SUPPLIES_50857, new WorldPoint(1436, 9637, 1),
+		takeBuildingSupplies = new ObjectStep(this, ObjectID.PMOON_CAMP_SUPPLIES_3, new WorldPoint(1436, 9637, 1),
 			"Take some building supplies from the crates near Jessamine.", emptyInventory5);
 
-		enterPrison = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1421, 9613, 1),
+		enterPrison = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1421, 9613, 1),
 			"Enter the south-west entrance.", buildingSupplies, hammer, saw);
 		// Path to prison camp
 		List<WorldPoint> prisonPath = new ArrayList<>(List.of(
@@ -432,11 +426,11 @@ public class PerilousMoon extends BasicQuestHelper
 		buildPrisonCamp = new ObjectStep(this, NullObjectID.NULL_53007, new WorldPoint(1349, 9580, 0),
 			"Make your way to the camp spot, marked on the minimap with a cooking range icon.", buildingSupplies, hammer, saw);
 		((ObjectStep) buildPrisonCamp).setLinePoints(prisonPath);
-		leavePrison = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1388, 9576, 0),
+		leavePrison = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1388, 9576, 0),
 			"Return to the antechamber.");
 		((ObjectStep) leavePrison).setLinePoints(Lists.reverse(prisonPath));
 
-		enterEarthbound = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1421, 9650, 1),
+		enterEarthbound = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1421, 9650, 1),
 			"Enter the north-west entrance.", buildingSupplies, hammer, saw);
 
 		List<WorldPoint> earthPath = new ArrayList<>(List.of(
@@ -454,11 +448,11 @@ public class PerilousMoon extends BasicQuestHelper
 		buildEarthCamp = new ObjectStep(this, NullObjectID.NULL_53007, new WorldPoint(1374, 9710, 0),
 			"Make your way to the camp spot, marked on the minimap with a cooking range icon.", buildingSupplies, hammer, saw);
 		((ObjectStep) buildEarthCamp).setLinePoints(earthPath);
-		leaveEarth = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1404, 9716, 0),
+		leaveEarth = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1404, 9716, 0),
 			"Return to the antechamber.");
 		((ObjectStep) leaveEarth).setLinePoints(Lists.reverse(earthPath));
 
-		enterStreambound = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1458, 9650, 1),
+		enterStreambound = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1458, 9650, 1),
 			"Enter the north-east entrance.");
 		List<WorldPoint> streamPath = List.of(
 			new WorldPoint(1482, 9671, 0),
@@ -476,24 +470,24 @@ public class PerilousMoon extends BasicQuestHelper
 		buildStreamCamp = new ObjectStep(this, NullObjectID.NULL_53007, new WorldPoint(1510, 9693, 0),
 			"Make your way to the camp spot, marked on the minimap with a cooking range icon.", buildingSupplies, hammer, saw);
 		((ObjectStep) buildStreamCamp).setLinePoints(streamPath);
-		leaveStream = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1480, 9667, 0),
+		leaveStream = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1480, 9667, 0),
 			"Return to the antechamber.");
 		((ObjectStep) leaveStream).setLinePoints(Lists.reverse(streamPath));
 
-		talkToJessamineForTalismans = new NpcStep(this, NpcID.JESSAMINE_12865, new WorldPoint(1440, 9639, 1),
+		talkToJessamineForTalismans = new NpcStep(this, NpcID.PMOON_JESSICA_VIS, new WorldPoint(1440, 9639, 1),
 			"Talk to Jessamine near the Monolith.");
 		talkToJessamineForTalismans.addDialogSteps("What does the inscription say?", "What do we do now?");
-		leaveNeypotzli = new ObjectStep(this, ObjectID.ENTRANCE_51377, new WorldPoint(1440, 9613, 1),
+		leaveNeypotzli = new ObjectStep(this, ObjectID.PMOON_TELEBOX_3X3, new WorldPoint(1440, 9613, 1),
 			"Return to Cam Torum through the south entrance.");
-		talkToNahta = new NpcStep(this, NpcID.NAHTA, new WorldPoint(1424, 9568, 1),
+		talkToNahta = new NpcStep(this, NpcID.CAM_TORUM_SHOP_MAGIC, new WorldPoint(1424, 9568, 1),
 			"Talk to Nahta in the magic shop.", earthTalisman, waterTalisman);
 		talkToNahta.addDialogStep("Actually, I've been sent by Attala.");
-		talkToBlacksmith = new NpcStep(this, NpcID.BLACKSMITH_13038, new WorldPoint(1448, 9584, 1),
+		talkToBlacksmith = new NpcStep(this, NpcID.CAM_TORUM_SHOP_BLACKSMITH, new WorldPoint(1448, 9584, 1),
 			"Talk to the blacksmith near the anvils.", enchantedEarthTalisman, enchantedWaterTalisman);
 		talkToBlacksmith.addDialogSteps("I need your help with these talismans.", "Can you help?");
-		enterNeypotzliAfterBlacksmith = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1439, 9600, 1),
+		enterNeypotzliAfterBlacksmith = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1439, 9600, 1),
 			"Enter the Neypotzli entrance in the far north of Cam Torum.");
-		talkToAttalaAfterBlacksmith = new NpcStep(this, NpcID.ATTALA, new WorldPoint(1439, 9638, 1),
+		talkToAttalaAfterBlacksmith = new NpcStep(this, NpcID.PMOON_ATTALA_VIS, new WorldPoint(1439, 9638, 1),
 			"Talk to Attala near the Monolith.");
 		useTalismansSidebar = new DetailedQuestStep(this, "Use the talismans to find the correct location." +
 			" Earth tells you if it's east/west, and the water talisman tells you north/south.");
@@ -502,56 +496,56 @@ public class PerilousMoon extends BasicQuestHelper
 		useTalismans = new DetailedQuestStep(this,
 			"Use the talismans to find the correct location. More details in the sidebar.", infusedWaterTalisman, infusedEarthTalisman);
 		useTalismansSidebar.addSubSteps(useTalismans);
-		talkToEyatlalli = new NpcStep(this, NpcID.EYATLALLI, "Talk to Eyatlalli.");
-		talkToJessamineAfterEyatlalli = new NpcStep(this, NpcID.JESSAMINE_12865, new WorldPoint(1440, 9639, 1),
+		talkToEyatlalli = new NpcStep(this, NpcID.PMOON_EYATLALLI_VIS, "Talk to Eyatlalli.");
+		talkToJessamineAfterEyatlalli = new NpcStep(this, NpcID.PMOON_JESSICA_VIS, new WorldPoint(1440, 9639, 1),
 			"Talk to Jessamine near the Monolith again.");
 //
-		enterStreamboundAgain = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1458, 9650, 1),
+		enterStreamboundAgain = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1458, 9650, 1),
 			"Enter the north-east entrance to the streambound cavern.");
-		collectGrub = new ObjectStep(this, ObjectID.GRUBBY_SAPLING, new WorldPoint(1517, 9690, 0),
+		collectGrub = new ObjectStep(this, ObjectID.PMOON_GRUB_SAPLING, new WorldPoint(1517, 9690, 0),
 			"Collect a grub from the grubby sapling east of the camp.");
-		getHerbloreSupplies = new ObjectStep(this, ObjectID.SUPPLY_CRATES, new WorldPoint(1511, 9695, 0),
+		getHerbloreSupplies = new ObjectStep(this, ObjectID.PMOON_SUPPLY_CRATE, new WorldPoint(1511, 9695, 0),
 			"Take herblore supplies from the supply crates in the camp. You only need the pestle and mortar.");
 		getHerbloreSupplies.addDialogStep("Take herblore supplies.");
 		useGrubOnPestle = new DetailedQuestStep(this, "Use a pestle and mortar on the moonlight grub.", pestleAndMortar.highlighted(), moonlightGrub.highlighted());
-		getFishingSupplies = new ObjectStep(this, ObjectID.SUPPLY_CRATES, new WorldPoint(1511, 9695, 0),
+		getFishingSupplies = new ObjectStep(this, ObjectID.PMOON_SUPPLY_CRATE, new WorldPoint(1511, 9695, 0),
 			"Take fishing supplies from the supply crates in the camp.");
 		getFishingSupplies.addDialogStep("Take fishing supplies.");
 		fishBream = new ObjectStep(this, NullObjectID.NULL_51367, new WorldPoint(1521, 9689, 0),
 			"Fish a bream from the stream east of the camp.", bigFishingNet, knife);
 		useKnifeOnBream = new DetailedQuestStep(this, "Use a knife on the raw bream.", knife.highlighted(), bream.highlighted());
-		getHunterSupplies = new ObjectStep(this, ObjectID.SUPPLY_CRATES, new WorldPoint(1511, 9695, 0),
+		getHunterSupplies = new ObjectStep(this, ObjectID.PMOON_SUPPLY_CRATE, new WorldPoint(1511, 9695, 0),
 			"Take hunter supplies from the supply crates in the camp. You only need the rope, and the knife from the fishing supplies.");
 		getHunterSupplies.addDialogStep("Take hunting supplies.");
-		enterSmallEntrance = new ObjectStep(this, ObjectID.ENTRANCE_51378, new WorldPoint(1522, 9720, 0),
+		enterSmallEntrance = new ObjectStep(this, ObjectID.PMOON_TELEBOX_CAVE, new WorldPoint(1522, 9720, 0),
 			"Enter the entrance north of the camp.", rope, knife);
-		setTrap = new ObjectStep(this, ObjectID.ROCK_51359, new WorldPoint(1377, 9682, 0),
+		setTrap = new ObjectStep(this, ObjectID.PMOON_LIZARD_ROCK, new WorldPoint(1377, 9682, 0),
 			"Set up a trap by clicking two rocks near one another.", true, rope);
-		rustleBush = new ObjectStep(this, ObjectID.BUSH_51358, new WorldPoint(1380, 9684, 0), "Rustle the nearby bush to trap a lizard.");
+		rustleBush = new ObjectStep(this, ObjectID.PMOON_LIZARD_BUSH, new WorldPoint(1380, 9684, 0), "Rustle the nearby bush to trap a lizard.");
 		pickUpMossLizard = new ItemStep(this, "Pick up the raw moss lizard.", rawMossLizard);
 		useKnifeOnLizard = new DetailedQuestStep(this, "Use a knife on the raw moss lizard.", knife.highlighted(), rawMossLizard.highlighted());
-		leaveEarthboundWithLizard = new ObjectStep(this, ObjectID.ENTRANCE_51378, new WorldPoint(1389, 9674, 0),
+		leaveEarthboundWithLizard = new ObjectStep(this, ObjectID.PMOON_TELEBOX_CAVE, new WorldPoint(1389, 9674, 0),
 		"Leave the area back to the antechamber via the south-east entrance.");
-		talkToEyatlalliWithItems = new NpcStep(this, NpcID.EYATLALLI, new WorldPoint(1445, 9639, 1),
+		talkToEyatlalliWithItems = new NpcStep(this, NpcID.PMOON_EYATLALLI_VIS, new WorldPoint(1445, 9639, 1),
 			"Talk to Eyatlalli with the items.", moonlightGrubPaste.hideConditioned(usedPaste),
 			breamScales.hideConditioned(usedScales), mossLizardTail.hideConditioned(usedTail));
-		talkToEyatlalliAfterItems = new NpcStep(this, NpcID.EYATLALLI, new WorldPoint(1445, 9639, 1),
+		talkToEyatlalliAfterItems = new NpcStep(this, NpcID.PMOON_EYATLALLI_VIS, new WorldPoint(1445, 9639, 1),
 			"Talk to Eyatlalli.");
 		talkToEyatlalliWithItems.addSubSteps(talkToEyatlalliAfterItems);
 
-		enterCamTorumForFights = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1436, 3129, 0),
+		enterCamTorumForFights = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1436, 3129, 0),
 			"Enter the entrance to Cam Torum, ready to fight. You can make good food and potions inside Neypotzli.", crushWeapon, slashWeapon, stabWeapon, combatGear);
 
-		enterNeypotzliForFights = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1439, 9600, 1),
+		enterNeypotzliForFights = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1439, 9600, 1),
 		"Enter the Neypotzli entrance in the far north of Cam Torum, ready to fight.", crushWeapon, slashWeapon, stabWeapon, combatGear);
 
-		enterEarthboundForFight = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1421, 9650, 1),
+		enterEarthboundForFight = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1421, 9650, 1),
 			"Enter the north-west entrance to the earthbound cavern when you're ready for the blue moon fight." +
 				" Make food and potions from the lizards, breams, and grubby saplings before the fights.", crushWeapon, combatGear);
 		enterEarthboundForFight.addSubSteps(enterCamTorumForFights, enterNeypotzliForFights);
-		enterBlueMoonFight = new ObjectStep(this, ObjectID.ENTRANCE_51377, new WorldPoint(1404, 9704, 0),
+		enterBlueMoonFight = new ObjectStep(this, ObjectID.PMOON_TELEBOX_3X3, new WorldPoint(1404, 9704, 0),
 			"Enter the entrance to the blue moon fight.", crushWeapon, combatGear);
-		fightBlueMoon = new NpcStep(this, NpcID.BLUE_MOON, new WorldPoint(1441, 9678, 0), "Defeat the blue moon. The sidebar has more details.", crushWeapon);
+		fightBlueMoon = new NpcStep(this, NpcID.PMOON_BOSS_BLUE_MOON_VIS, new WorldPoint(1441, 9678, 0), "Defeat the blue moon. The sidebar has more details.", crushWeapon);
 		fightBlueMoonSidebar = new DetailedQuestStep(this,
 			"Defeat the blue moon. Use a crush weapon. Protection prayers have no effect.");
 		fightBlueMoonSidebar.addText("Remain inside of the highlighted circle on the floor to remain safe. It will move periodically.");
@@ -560,13 +554,13 @@ public class PerilousMoon extends BasicQuestHelper
 		fightBlueMoonSidebar.addText("Brazier - two braziers will extinguish. Re-ignite them whilst avoiding the tornadoes.");
 		fightBlueMoonSidebar.addSubSteps(fightBlueMoon);
 
-		enterPrisonForFight = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1421, 9613, 1),
+		enterPrisonForFight = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1421, 9613, 1),
 			"Enter the ancient prison when you're ready for the blood moon fight." +
 				" Make food and potions from the lizards, breams, and grubby saplings before the fights.",
 			slashWeapon, combatGear);
-		enterBloodMoonFight = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1388, 9589, 0),
+		enterBloodMoonFight = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1388, 9589, 0),
 			"Enter the north-east entrance to the blood moon fight.", slashWeapon, combatGear);
-		fightBloodMoon = new NpcStep(this, NpcID.BLOOD_MOON, new WorldPoint(1391, 9632, 0), "Defeat the blood moon. The sidebar has more details.", slashWeapon);
+		fightBloodMoon = new NpcStep(this, NpcID.PMOON_BOSS_BLOOD_MOON_VIS, new WorldPoint(1391, 9632, 0), "Defeat the blood moon. The sidebar has more details.", slashWeapon);
 		fightBloodMoonSidebar = new DetailedQuestStep(this,
 			"Defeat the blood moon. Use a slash weapon. Protection prayers have no effect.");
 		fightBloodMoonSidebar.addText("Remain inside of the highlighted circle on the floor to remain safe. It will move periodically.");
@@ -575,13 +569,13 @@ public class PerilousMoon extends BasicQuestHelper
 		fightBloodMoonSidebar.addText("Blood jaguar - Jaguars appear. Attack the highlighted jaguar, avoiding the blood square. Step away from the jaguar just before each of its attacks.");
 		fightBloodMoonSidebar.addSubSteps(fightBloodMoon);
 
-		enterStreamboundForFight = new ObjectStep(this, ObjectID.ENTRANCE_51376, new WorldPoint(1458, 9650, 1),
+		enterStreamboundForFight = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1458, 9650, 1),
 			"Enter the streambound cavern when you're ready for the eclipse moon fight." +
 				" Make food and potions from the lizards, breams, and grubby saplings before the fights.",
 			stabWeapon, combatGear);
-		enterEclipseMoonFight = new ObjectStep(this, ObjectID.ENTRANCE_51375, new WorldPoint(1509, 9673, 0),
+		enterEclipseMoonFight = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1509, 9673, 0),
 			"Enter the south entrance to the eclipse moon fight.", stabWeapon, combatGear);
-		fightEclipseMoon = new NpcStep(this, NpcID.ECLIPSE_MOON, new WorldPoint(1487, 9632, 0), "Defeat the eclipse moon. The sidebar has more details.", stabWeapon);
+		fightEclipseMoon = new NpcStep(this, NpcID.PMOON_BOSS_ECLIPSE_MOON_VIS, new WorldPoint(1487, 9632, 0), "Defeat the eclipse moon. The sidebar has more details.", stabWeapon);
 		fightEclipseMoonSidebar = new DetailedQuestStep(this,
 			"Defeat the eclipse moon. Use a stab weapon. Protection prayers have no effect.");
 		fightEclipseMoonSidebar.addText("Remain inside of the highlighted circle on the floor to remain safe. It will move periodically.");
@@ -591,10 +585,10 @@ public class PerilousMoon extends BasicQuestHelper
 		fightEclipseMoonSidebar.addText("Mimic - Clones of the moon will appear. Face the clones to avoid taking damage.");
 		fightEclipseMoonSidebar.addSubSteps(fightEclipseMoon);
 
-		talkToJessamineEnd = new NpcStep(this, NpcID.JESSAMINE_12865, new WorldPoint(1440, 9639, 1),
+		talkToJessamineEnd = new NpcStep(this, NpcID.PMOON_JESSICA_VIS, new WorldPoint(1440, 9639, 1),
 			"Return to Jessamine near the Monolith again.");
-		talkToZumaEnd = new NpcStep(this, NpcID.ZUMA_12860, new WorldPoint(1441, 9638, 1), "Talk to Zuma.");
-		finishQuest = new NpcStep(this, NpcID.EYATLALLI, new WorldPoint(1445, 9639, 1),
+		talkToZumaEnd = new NpcStep(this, NpcID.PMOON_ZUMA_VIS, new WorldPoint(1441, 9638, 1), "Talk to Zuma.");
+		finishQuest = new NpcStep(this, NpcID.PMOON_EYATLALLI_VIS, new WorldPoint(1445, 9639, 1),
 			"Talk to Eyatlalli to finish the quest.");
 	}
 

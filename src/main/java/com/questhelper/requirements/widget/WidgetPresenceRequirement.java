@@ -27,11 +27,12 @@
 package com.questhelper.requirements.widget;
 
 import com.questhelper.requirements.SimpleRequirement;
-import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+
+import javax.annotation.Nullable;
 
 public class WidgetPresenceRequirement extends SimpleRequirement
 {

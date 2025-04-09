@@ -28,12 +28,12 @@ package com.questhelper.requirements.var;
 
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
+import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import net.runelite.api.Client;
-import javax.annotation.Nonnull;
 
 public class VarplayerRequirement extends AbstractRequirement
 {

@@ -25,11 +25,7 @@
 package com.questhelper.statemanagement;
 
 import com.questhelper.config.ConfigKeys;
-import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.MesBoxRequirement;
-import com.questhelper.requirements.MultiChatMessageRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.RequirementValidator;
+import com.questhelper.requirements.*;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
@@ -39,9 +35,9 @@ import net.runelite.api.Client;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import static com.questhelper.requirements.util.LogicHelper.or;
 
 @Singleton
 public class BarbarianTrainingStateTracker

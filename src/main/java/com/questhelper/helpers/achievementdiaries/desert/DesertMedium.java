@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.achievementdiaries.desert;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.IronmanRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -40,27 +40,23 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class DesertMedium extends ComplexStateQuestHelper
 {
@@ -164,24 +160,24 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 		// 1557 0->1 talking to simon
 		// 1558 0->1 talking to simon
-		talkedToSimon = new VarbitRequirement(1558, 1, Operation.EQUAL);
+		talkedToSimon = new VarbitRequirement(VarbitID.AGILITY_PYRAMID_SIMON_JOB, 1, Operation.EQUAL);
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notMagicCarpet);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(new Conditions(LogicType.OR, notOrangeSally,
 			notEagleTravel, notVisitGenie)).isNotConsumed();
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notOrangeSally).isNotConsumed();
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.NET).showConditioned(notOrangeSally).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopTeak).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notVisitGenie).isNotConsumed();
-		scrollOfRedir = new ItemRequirement("Scroll of redirection", ItemID.SCROLL_OF_REDIRECTION)
+		scrollOfRedir = new ItemRequirement("Scroll of redirection", ItemID.NZONE_REDIRECTION)
 			.showConditioned(new Conditions(notTPPollnivneach, notIronman));
-		teleToHouse = new TeleportItemRequirement("Teleport to house", ItemID.TELEPORT_TO_HOUSE)
+		teleToHouse = new TeleportItemRequirement("Teleport to house", ItemID.POH_TABLET_TELEPORTTOHOUSE)
 			.showConditioned(new Conditions(notTPPollnivneach, notIronman));
-		harraPot = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDER_POTION_UNF)
+		harraPot = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDERVIAL)
 			.showConditioned(notCombatPot);
-		goatHornDust = new ItemRequirement("Goat horn dust", ItemID.GOAT_HORN_DUST).showConditioned(notCombatPot);
+		goatHornDust = new ItemRequirement("Goat horn dust", ItemID.GROUND_DESERT_GOAT_HORN).showConditioned(notCombatPot);
 		camulet = new TeleportItemRequirement("Camulet", ItemID.CAMULET).showConditioned(notTPEnakhra);
-		iceCooler = new ItemRequirement("Ice cooler (bring multiple just in case)", ItemID.ICE_COOLER).showConditioned(notDesertLizard);
+		iceCooler = new ItemRequirement("Ice cooler (bring multiple just in case)", ItemID.SLAYER_ICY_WATER).showConditioned(notDesertLizard);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -218,17 +214,17 @@ public class DesertMedium extends ComplexStateQuestHelper
 		moveToEagle = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
 			"Enter the cave at the top of Eagles' Peak. You can use a fairy ring to (AKQ), then head " +
 				"south to get there easily.");
-		eagleTravel = new NpcStep(this, NpcID.DESERT_EAGLE, new WorldPoint(2027, 4964, 3),
+		eagleTravel = new NpcStep(this, NpcID.EAGLEPEAK_EAGLE_TODESERT, new WorldPoint(2027, 4964, 3),
 			"Use a rope on the Desert Eagle to travel to the Desert area.", rope.highlighted());
 
-		magicCarpet = new NpcStep(this, NpcID.RUG_MERCHANT, new WorldPoint(3310, 3108, 0),
+		magicCarpet = new NpcStep(this, NpcID.MAGIC_CARPET_SELLER1, new WorldPoint(3310, 3108, 0),
 			"Talk to the rug merchant and travel to Uzer.", coins.quantity(200));
 		magicCarpet.addDialogSteps("Yes please.", "I want to travel to Uzer.", "Uzer");
 
-		phoenixFeather = new NpcStep(this, NpcID.DESERT_PHOENIX, new WorldPoint(3417, 3154, 0),
+		phoenixFeather = new NpcStep(this, NpcID.GOLEM_PHOENIX, new WorldPoint(3417, 3154, 0),
 			"Pluck a feather from a Desert Phoenix.");
 
-		orangeSally = new ObjectStep(this, ObjectID.YOUNG_TREE_8732, new WorldPoint(3404, 3134, 0),
+		orangeSally = new ObjectStep(this, ObjectID.HUNTING_SAPLING_UP_ORANGE, new WorldPoint(3404, 3134, 0),
 			"Setup a net trap and catch an Orange Salamander in the Uzer hunting area.", rope, smallFishingNet);
 
 		combatPot = new ItemStep(this, "Create a combat potion in the desert. Note: Do not be within a city.",
@@ -236,25 +232,25 @@ public class DesertMedium extends ComplexStateQuestHelper
 		moveToDesert = new TileStep(this, new WorldPoint(3305, 3112, 0),
 			"Enter the desert and be out of any city limits (You must be losing health or water from the heat).");
 
-		chopTeak = new ObjectStep(this, ObjectID.TEAK_TREE, new WorldPoint(3510, 3073, 0),
+		chopTeak = new ObjectStep(this, ObjectID.TEAKTREE, new WorldPoint(3510, 3073, 0),
 			"Chop some teak logs near Uzer.", axe);
 
-		desertLizard = new NpcStep(this, NpcID.SMALL_LIZARD, new WorldPoint(3437, 3067, 0),
+		desertLizard = new NpcStep(this, NpcID.SLAYER_LIZARD_SMALL1_GREEN, new WorldPoint(3437, 3067, 0),
 			"Use an Ice cooler on a low hp Lizard in the desert.", iceCooler, combatGear);
 
-		prayElidinis = new ObjectStep(this, ObjectID.ELIDINIS_STATUETTE, new WorldPoint(3427, 2930, 0),
+		prayElidinis = new ObjectStep(this, ObjectID.ELID_STATUETTE_PLACED, new WorldPoint(3427, 2930, 0),
 			"Pray at the Elidinis Statuette in Nardah. If it doesn't complete expend some prayer points then try again.");
 
-		visitGenie = new NpcStep(this, NpcID.GENIE_4738, new WorldPoint(3371, 9320, 0),
+		visitGenie = new NpcStep(this, NpcID.ELID_GENIE, new WorldPoint(3371, 9320, 0),
 			"Visit the genie.");
 		moveToGenie = new ObjectStep(this, 10478, new WorldPoint(3374, 2904, 0),
 			"Climb down the crevice west of Nardah.", rope, lightSource);
 
-		talkToSimon = new NpcStep(this, NpcID.SIMON_TEMPLETON, new WorldPoint(3346, 2827, 0),
+		talkToSimon = new NpcStep(this, NpcID.AGILITY_PYRAMID_SIMON, new WorldPoint(3346, 2827, 0),
 			"Talk to Simon Templeton.");
-		moveToPyramid = new ObjectStep(this, ObjectID.CLIMBING_ROCKS_11948, new WorldPoint(3335, 2829, 0),
+		moveToPyramid = new ObjectStep(this, ObjectID.NTK_AGILITY_CLIMBING_ROCKS_1, new WorldPoint(3335, 2829, 0),
 			"Go to the Agility Pyramid.");
-		agiPyramid = new ObjectStep(this, ObjectID.STAIRS_10857, new WorldPoint(3355, 2832, 0),
+		agiPyramid = new ObjectStep(this, ObjectID.AGILITY_PYRAMID_STEPS1, new WorldPoint(3355, 2832, 0),
 			"Climb the Agility Pyramid and collect the pyramid top. Be sure to click continue in the dialog.");
 
 		tpEnakhra = new DetailedQuestStep(this, "Teleport to Enakhra's Temple with the Camulet.", camulet);
@@ -269,7 +265,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 			tpPollnivneach = new DetailedQuestStep(this, "Teleport to Pollnivneach with a redirected house tablet.", scrollOfRedir, teleToHouse);
 		}
 
-		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
+		claimReward = new NpcStep(this, NpcID.JARR_DESERT_DIARY, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -317,8 +313,8 @@ public class DesertMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Desert amulet 2", ItemID.DESERT_AMULET_2, 1),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1)
+			new ItemReward("Desert amulet 2", ItemID.DESERT_AMULET_MEDIUM, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP, 1)
 		);
 	}
 

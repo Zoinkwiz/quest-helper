@@ -24,39 +24,35 @@
  */
 package com.questhelper.helpers.achievementdiaries.desert;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class DesertHard extends ComplexStateQuestHelper
 {
@@ -152,10 +148,10 @@ public class DesertHard extends ComplexStateQuestHelper
 
 		blackjack = new ItemRequirement("Blackjack", ItemCollections.BLACKJACKS).showConditioned(notMenaThug).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notGranite).isNotConsumed();
-		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notRefillWaterskin);
-		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notRefillWaterskin);
-		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notRefillWaterskin);
-		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATERSKIN0).showConditioned(notRefillWaterskin).isNotConsumed();
+		fireRune = new ItemRequirement("Fire rune", ItemID.FIRERUNE).showConditioned(notRefillWaterskin);
+		waterRune = new ItemRequirement("Water runes", ItemID.WATERRUNE).showConditioned(notRefillWaterskin);
+		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRALRUNE).showConditioned(notRefillWaterskin);
+		emptyWaterskin = new ItemRequirement("Empty waterskin", ItemID.WATER_SKIN0).showConditioned(notRefillWaterskin).isNotConsumed();
 		slayerHelm = new ItemRequirement("Slayer Helmet", ItemCollections.SLAYER_HELMETS)
 			.showConditioned(notKillDust).isNotConsumed();
 		keris = new ItemRequirement("Keris", ItemCollections.KERIS).showConditioned(notKillLocustRider).isNotConsumed();
@@ -167,7 +163,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMithPlatebody).isNotConsumed();
 		rope = new ItemRequirement("Ropes", ItemID.ROPE).showConditioned(notKalphQueen);
 
-		nardahTP = new TeleportItemRequirement("Nardah teleport", ItemID.NARDAH_TELEPORT);
+		nardahTP = new TeleportItemRequirement("Nardah teleport", ItemID.TELEPORTSCROLL_NARDAH);
 		desertBoots = new ItemRequirement("Desert boots", ItemID.DESERT_BOOTS).isNotConsumed();
 		desertRobe = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE).isNotConsumed();
 		desertShirt = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT).isNotConsumed();
@@ -206,53 +202,53 @@ public class DesertHard extends ComplexStateQuestHelper
 	{
 		moveToKalph = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
 			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted().quantity(2));
-		moveToKalph.addAlternateObjects(ObjectID.TUNNEL_ENTRANCE);
+		moveToKalph.addAlternateObjects(ObjectID.KALPHITE_BURROW_ENTRANCE_WITHROPE);
 		moveToKalph.addIcon(ItemID.ROPE);
 		kalphQueen = new ObjectStep(this, 23609, new WorldPoint(3510, 9498, 2),
 			"Climb down the tunnel entrance that leads to the Kalphite Queen and kill her.", rope);
 		kalphQueen.addAlternateObjects(10230);
 		kalphQueen.addIcon(ItemID.ROPE);
 
-		pollRooftop = new ObjectStep(this, ObjectID.BASKET_14935, new WorldPoint(3351, 2962, 0),
+		pollRooftop = new ObjectStep(this, ObjectID.ROOFTOPS_POLLNIVNEACH_BASKET, new WorldPoint(3351, 2962, 0),
 			"Climb on the basket and complete a lap of the Pollnivneach Rooftop course.");
 
-		menaThug = new NpcStep(this, new int[]{NpcID.MENAPHITE_THUG, NpcID.MENAPHITE_THUG_3550}, new WorldPoint(3347, 2959, 0),
+		menaThug = new NpcStep(this, new int[]{NpcID.FEUD_EGYPTIAN_DOORMAN_1, NpcID.FEUD_EGYPTIAN_DOORMAN_2}, new WorldPoint(3347, 2959, 0),
 			"Knockout and pickpocket a Menaphite thug.", blackjack);
 
 		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify in the Desert " +
 			"(You must be losing health or water from the heat).",
 			lunarBook, fireRune.quantity(1), waterRune.quantity(3), astralRune.quantity(1));
 
-		moveToSmoke = new ObjectStep(this, ObjectID.SMOKEY_WELL, new WorldPoint(3310, 2962, 0),
+		moveToSmoke = new ObjectStep(this, ObjectID.SWORD_HAUNTED_WELL, new WorldPoint(3310, 2962, 0),
 			"Go down the Smokey well.");
-		killDust = new NpcStep(this, NpcID.DUST_DEVIL, new WorldPoint(3219, 9370, 0),
+		killDust = new NpcStep(this, NpcID.SLAYER_DUSTDEVIL, new WorldPoint(3219, 9370, 0),
 			"Kill a Dust devil with a slayer helm equipped.", slayerHelm.equipped());
 
-		moveToPyramid = new ObjectStep(this, ObjectID.TUNNEL_6481, new WorldPoint(3233, 2889, 0),
+		moveToPyramid = new ObjectStep(this, ObjectID.DESERT_TRASURE_BACK_DOOR_SKEW, new WorldPoint(3233, 2889, 0),
 			"Enter the Jaldraocht Pyramid.");
-		ancientMagicks = new ObjectStep(this, ObjectID.ALTAR_6552, new WorldPoint(3233, 9311, 0),
+		ancientMagicks = new ObjectStep(this, ObjectID.DT_ZAROS_ALTAR, new WorldPoint(3233, 9311, 0),
 			"Pray at the altar.");
 
-		granite = new ObjectStep(this, ObjectID.GRANITE_ROCKS, new WorldPoint(3167, 2911, 0),
+		granite = new ObjectStep(this, ObjectID.ENAKH_GRANITE_ROCKS, new WorldPoint(3167, 2911, 0),
 			"Mine granite in the mine south of the Bandit Camp.", pickaxe);
 
-		moveToMayor = new ObjectStep(this, ObjectID.STAIRCASE_10525, new WorldPoint(3447, 2912, 0),
+		moveToMayor = new ObjectStep(this, ObjectID.ELID_MAYOR_STAIRS, new WorldPoint(3447, 2912, 0),
 			"Climb the staircase in the Nardah Mayor's house.");
 		burnYew = new TileStep(this, new WorldPoint(3440, 2913, 1),
 			"Burn yew logs on the balcony. ", yewLog.highlighted(), tinderbox.highlighted());
 
-		mithPlatebody = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3409, 2921, 0),
+		mithPlatebody = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(3409, 2921, 0),
 			"Make a Mithril platebody in Nardah.", mithBar.quantity(5), hammer);
 
-		moveToSoph = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0),
+		moveToSoph = new ObjectStep(this, ObjectID.CONTACT_TEMPLE_TRAPDOOR_OPEN, new WorldPoint(3315, 2797, 0),
 			"Climb down the ladder to enter the Sophanem Dungeon.", combatGear, lightsource);
-		moveToSoph2 = new ObjectStep(this, ObjectID.LADDER_20278, new WorldPoint(2800, 5159, 0),
+		moveToSoph2 = new ObjectStep(this, ObjectID.CONTACT_BANK_FIXED_LADDER_TOP, new WorldPoint(2800, 5159, 0),
 			"Climb down the ladder again.", combatGear, lightsource);
-		killLocustRider = new NpcStep(this, NpcID.LOCUST_RIDER_796, new WorldPoint(3296, 9267, 2),
+		killLocustRider = new NpcStep(this, NpcID.CONTACT_LOCUST_BOW, new WorldPoint(3296, 9267, 2),
 			"Kill a Locust rider with keris.", true, combatGear, keris.equipped());
-		killLocustRider.addAlternateNpcs(NpcID.LOCUST_RIDER, NpcID.LOCUST_RIDER_800, NpcID.LOCUST_RIDER_801);
+		killLocustRider.addAlternateNpcs(NpcID.CONTACT_LOCUST_LANCE, NpcID.CONTACT_LOCUST_LANCE_B, NpcID.CONTACT_LOCUST_BOW_B);
 
-		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
+		claimReward = new NpcStep(this, NpcID.JARR_DESERT_DIARY, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -303,8 +299,8 @@ public class DesertHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Desert amulet 3", ItemID.DESERT_AMULET_3, 1),
-			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1)
+			new ItemReward("Desert amulet 3", ItemID.DESERT_AMULET_HARD, 1),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.THOSF_REWARD_LAMP, 1)
 		);
 	}
 

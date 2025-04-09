@@ -24,18 +24,20 @@
  */
 package com.questhelper.helpers.quests.theascentofarceuus;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
@@ -44,20 +46,15 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.player.InInstanceRequirement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheAscentOfArceuus extends BasicQuestHelper
 {
@@ -137,9 +134,9 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
-		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
-		battlefrontTeleports2 = new ItemRequirement("Battlefront teleports", ItemID.BATTLEFRONT_TELEPORT, 2);
-		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
+		dramenStaff.addAlternates(ItemID.LUNAR_MOONCLAN_LIMINAL_STAFF);
+		battlefrontTeleports2 = new ItemRequirement("Battlefront teleports", ItemID.TELETAB_BATTLEFRONT, 2);
+		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERIC_TALISMAN).isNotConsumed();
 		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES).isNotConsumed();
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
@@ -168,7 +165,7 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		foundTrack4 = new VarbitRequirement(7863, 1);
 		foundTrack5 = new VarbitRequirement(7864, 1);
 
-		trappedSoulNearby = new NpcHintArrowRequirement(NpcID.TRAPPED_SOUL);
+		trappedSoulNearby = new NpcHintArrowRequirement(NpcID.ARCQUEST_SOUL);
 		// Inspected grave:
 		// 7859 0->1
 		// 7856 8->9
@@ -176,42 +173,42 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToMori = new NpcStep(this, NpcID.MORI, new WorldPoint(1698, 3742, 0), "Talk to Mori in Arceuus.");
+		talkToMori = new NpcStep(this, NpcID.ARCQUEST_MORI_VISIBLE, new WorldPoint(1698, 3742, 0), "Talk to Mori in Arceuus.");
 		talkToMori.addDialogSteps("What can I do to help?", "We should let someone know about this.","Yes.",
 			"Of course I'll help.");
 
-		goUpToAndrews = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(1616, 3681, 0),
+		goUpToAndrews = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TALLER_NEW_FIX, new WorldPoint(1616, 3681, 0),
 			"Talk to Councillor Andrews in Kourend Castle.");
-		talkToAndrews = new NpcStep(this, NpcID.COUNCILLOR_ANDREWS_11152, new WorldPoint(1620, 3673, 1),
+		talkToAndrews = new NpcStep(this, NpcID.ZEAH_HEAD_COUNCILLOR_VIS, new WorldPoint(1620, 3673, 1),
 			"Talk to Councillor Andrews in Kourend Castle.");
 		talkToAndrews.addDialogStep("There's been a death in Arceuus.");
 		talkToAndrews.addSubSteps(goUpToAndrews);
 
-		returnToMori = new NpcStep(this, NpcID.MORI, new WorldPoint(1698, 3742, 0), "Return to Mori in Arceuus.");
+		returnToMori = new NpcStep(this, NpcID.ARCQUEST_MORI_VISIBLE, new WorldPoint(1698, 3742, 0), "Return to Mori in Arceuus.");
 		returnToMori.addDialogStep("What should we do now?");
 
-		enterTowerOfMagic = new ObjectStep(this, ObjectID.DOOR_33570, new WorldPoint(1596, 3820, 0), "Enter the Tower" +
+		enterTowerOfMagic = new ObjectStep(this, ObjectID.ARCQUEST_TOWER_DOOR_RIGHT, new WorldPoint(1596, 3820, 0), "Enter the Tower" +
 			" of Magic in Arceuus, ready to fight some level 16 Tormented Souls.", combatGear);
 		enterTowerOfMagic.addDialogStep("Yes.");
 
-		killTormentedSouls = new NpcStep(this, NpcID.TORMENTED_SOUL, new WorldPoint(1585, 3821, 0),
+		killTormentedSouls = new NpcStep(this, NpcID.ARCQUEST_GHOST1, new WorldPoint(1585, 3821, 0),
 			"Defeat the tormented souls.", true, combatGear);
-		((NpcStep) killTormentedSouls).addAlternateNpcs(NpcID.TORMENTED_SOUL_8513);
+		((NpcStep) killTormentedSouls).addAlternateNpcs(NpcID.ARCQUEST_GHOST2);
 
-		goUpstairsTowerOfMagic = new ObjectStep(this, ObjectID.STAIRS_33575, new WorldPoint(1585, 3821, 0),
+		goUpstairsTowerOfMagic = new ObjectStep(this, ObjectID.ARCQUEST_STAIRS_LOWER_LEFT, new WorldPoint(1585, 3821, 0),
 			"Go up the stairs in the Tower of Magic.");
 
-		talkToArceuus = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS, new WorldPoint(1580, 3821, 1),
+		talkToArceuus = new NpcStep(this, NpcID.TROBIN_ARCEUUS_FOCUS_VISIBLE, new WorldPoint(1580, 3821, 1),
 			"Talk to Lord Trobin Arceuus.");
-		((NpcStep) talkToArceuus).addAlternateNpcs(NpcID.LORD_TROBIN_ARCEUUS_8505);
+		((NpcStep) talkToArceuus).addAlternateNpcs(NpcID.TROBIN_ARCEUUS_VISIBLE);
 
-		enterKaruulm = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0),
+		enterKaruulm = new ObjectStep(this, ObjectID.BRIMSTONE_ELEVATOR_CENTRAL_TILE, new WorldPoint(1311, 3807, 0),
 			"Go down the elevator on Mount Karuulm.");
 
-		talkToKaal = new NpcStep(this, NpcID.KAALKETJOR, new WorldPoint(1312, 10211, 0), "Talk to Kaal-Ket-Jor.");
+		talkToKaal = new NpcStep(this, NpcID.TASAKAAL_KET, new WorldPoint(1312, 10211, 0), "Talk to Kaal-Ket-Jor.");
 
 
-		leaveKaal = new ObjectStep(this, ObjectID.CAVE_EXIT_34514, new WorldPoint(1312, 10186, 0),
+		leaveKaal = new ObjectStep(this, ObjectID.BRIMSTONE_DUNGEON_EXIT, new WorldPoint(1312, 10186, 0),
 			"Inspect the ancient grave south of Mount Karuulm.");
 
 		inspectGrave = new ObjectStep(this, NullObjectID.NULL_34602, new WorldPoint(1349, 3737, 0),
@@ -232,22 +229,22 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 
 		inspectTrack6 = new ObjectStep(this, NullObjectID.NULL_34625, new WorldPoint(1282, 3726, 0),
 			"Inspect the final plant and kill the Trapped Soul (level 30) which appears.", combatGear);
-		killTrappedSoul = new NpcStep(this, NpcID.TRAPPED_SOUL, new WorldPoint(1281, 3724, 0),
+		killTrappedSoul = new NpcStep(this, NpcID.ARCQUEST_SOUL, new WorldPoint(1281, 3724, 0),
 			"Kill the Trapped Soul.");
 		inspectTrack6.addSubSteps(killTrappedSoul);
 
-		enterKaruulmAgain = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0),
+		enterKaruulmAgain = new ObjectStep(this, ObjectID.BRIMSTONE_ELEVATOR_CENTRAL_TILE, new WorldPoint(1311, 3807, 0),
 			"Return to Kaal-Ket-Jor.");
-		talkToKaalAgain = new NpcStep(this, NpcID.KAALKETJOR, new WorldPoint(1312, 10211, 0),
+		talkToKaalAgain = new NpcStep(this, NpcID.TASAKAAL_KET, new WorldPoint(1312, 10211, 0),
 			"Return to Kaal-Ket-Jor.");
 		talkToKaalAgain.addSubSteps(enterKaruulmAgain);
 
-		searchRocks = new ObjectStep(this, ObjectID.ROCKS_33595, new WorldPoint(1710, 3882, 0), "Inspect the rocks near the Arceuus Altar until you find a device.", true);
-		((ObjectStep) searchRocks).addAlternateObjects(ObjectID.ROCKS_33593);
+		searchRocks = new ObjectStep(this, ObjectID.ARCQUEST_ROCKS_2_OP, new WorldPoint(1710, 3882, 0), "Inspect the rocks near the Arceuus Altar until you find a device.", true);
+		((ObjectStep) searchRocks).addAlternateObjects(ObjectID.ARCQUEST_ROCKS_1_OP);
 
-		goUpstairsInTowerToFinish = new ObjectStep(this, ObjectID.STAIRS_33575, new WorldPoint(1585, 3821, 0),
+		goUpstairsInTowerToFinish = new ObjectStep(this, ObjectID.ARCQUEST_STAIRS_LOWER_LEFT, new WorldPoint(1585, 3821, 0),
 			"Return to Lord Trobin Arceuus to finish the quest.");
-		talkToArceuusToFinish = new NpcStep(this, NpcID.LORD_TROBIN_ARCEUUS_8505, new WorldPoint(1580, 3821, 1),
+		talkToArceuusToFinish = new NpcStep(this, NpcID.TROBIN_ARCEUUS_VISIBLE, new WorldPoint(1580, 3821, 1),
 			"Talk to Lord Trobin Arceuus to finish the quest.");
 		talkToArceuusToFinish.addSubSteps(goUpstairsInTowerToFinish);
 	}
@@ -292,8 +289,8 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Coins", ItemID.COINS_995, 2000),
-				new ItemReward("A Kharedst's Memoirs page", ItemID.KHAREDSTS_MEMOIRS, 1));
+				new ItemReward("Coins", ItemID.COINS, 2000),
+				new ItemReward("A Kharedst's Memoirs page", ItemID.VEOS_KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

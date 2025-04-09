@@ -25,24 +25,24 @@
  */
 package com.questhelper.util;
 
-import net.runelite.api.ObjectID;
+import net.runelite.api.gameval.ObjectID;
 
 public class QHObjectID
 {
 	/**
 	 * Ladder used at the bottom floor of the Grand Tree in the Tree Gnome Stronghold
 	 */
-	public static final int GRAND_TREE_F0_LADDER = ObjectID.LADDER_4458;
+	public static final int GRAND_TREE_F0_LADDER = ObjectID.GRANDTREE_LADDERBOTTOM;
 	/**
 	 * Ladder used at the first floor of the Grand Tree in the Tree Gnome Stronghold
 	 */
-	public static final int GRAND_TREE_F1_LADDER = ObjectID.LADDER_56233;
+	public static final int GRAND_TREE_F1_LADDER = ObjectID.GRANDTREE_LADDERMIDDLE_BOTTOM;
 	/**
 	 * Ladder used at the second floor of the Grand Tree in the Tree Gnome Stronghold
 	 */
-	public static final int GRAND_TREE_F2_LADDER = ObjectID.LADDER_56232;
+	public static final int GRAND_TREE_F2_LADDER = ObjectID.GRANDTREE_LADDERMIDDLE_TOP;
 	/**
 	 * Ladder used at the top floor of the Grand Tree in the Tree Gnome Stronghold
 	 */
-	public static final int GRAND_TREE_F3_LADDER = ObjectID.LADDER_56229;
+	public static final int GRAND_TREE_F3_LADDER = ObjectID.GRANDTREE_LADDERTOP;
 }

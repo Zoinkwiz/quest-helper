@@ -25,13 +25,13 @@
 package com.questhelper.helpers.achievementdiaries.lumbridgeanddraynor;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -40,27 +40,22 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class LumbridgeMedium extends ComplexStateQuestHelper
 {
@@ -159,31 +154,31 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		notCraftLava = new VarplayerRequirement(1194, false, 24);
 
 		crossbow = new ItemRequirement("A crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleLum).isNotConsumed();
-		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrappleLum).isNotConsumed();
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notGrappleLum).isNotConsumed();
 		earthTali = new ItemRequirement("Earth talisman", ItemID.EARTH_TALISMAN).showConditioned(notCraftLava);
 		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.FIRE_ALTAR).showConditioned(notCraftLava).isNotConsumed();
 		fireAccess.setTooltip("Fire talisman or tiara");
-		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE)
+		earthRune = new ItemRequirement("Earth rune", ItemID.EARTHRUNE)
 			.showConditioned(new Conditions(LogicType.OR, notCraftLava, notTPlumb));
 		essence = new ItemRequirement("Pure essence", ItemCollections.ESSENCE_HIGH).showConditioned(notCraftLava);
-		bindingNeck = new ItemRequirement("Binding necklace", ItemID.BINDING_NECKLACE).showConditioned(notCraftLava);
+		bindingNeck = new ItemRequirement("Binding necklace", ItemID.MAGIC_EMERALD_NECKLACE).showConditioned(notCraftLava);
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSalmon);
 		flyFishingRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notCatchSalmon).isNotConsumed();
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).showConditioned(notCraftCoif).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftCoif).isNotConsumed();
 		leather = new ItemRequirement("Leather", ItemID.LEATHER).showConditioned(notCraftCoif);
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPlumb);
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notTPlumb);
+		lawRune = new ItemRequirement("Law rune", ItemID.LAWRUNE).showConditioned(notTPlumb);
+		airRune = new ItemRequirement("Air rune", ItemID.AIRRUNE).showConditioned(notTPlumb);
 		steelArrows = new ItemRequirement("Steel arrows", ItemID.STEEL_ARROW).showConditioned(notUpgradeDevice);
 		coins = new ItemRequirement("999 Coins", ItemCollections.COINS).showConditioned(notUpgradeDevice);
-		avasAttractor = new ItemRequirement("Ava's Attractor", ItemID.AVAS_ATTRACTOR).showConditioned(notUpgradeDevice);
+		avasAttractor = new ItemRequirement("Ava's Attractor", ItemID.ANMA_30_REWARD).showConditioned(notUpgradeDevice);
 		avasAccumulator = new ItemRequirements(LogicType.OR, "999 Coins or Ava's Attractor", coins.quantity(999),
 			avasAttractor);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopWillow).isNotConsumed();
 		fairyAccess = new ItemRequirement("Lunar or Dramen staff", ItemCollections.FAIRY_STAFF)
 			.showConditioned(new Conditions(LogicType.OR, notChaeldarTask, notPuroImp, notWizardFairy)).isNotConsumed();
-		butterflyNet = new ItemRequirement("Butterfly net", ItemID.BUTTERFLY_NET).showConditioned(notPuroImp).isNotConsumed();
-		implingJar = new ItemRequirement("Impling jar", ItemID.IMPLING_JAR).showConditioned(notPuroImp).isNotConsumed();
+		butterflyNet = new ItemRequirement("Butterfly net", ItemID.HUNTING_BUTTERFLY_NET).showConditioned(notPuroImp).isNotConsumed();
+		implingJar = new ItemRequirement("Impling jar", ItemID.II_IMPLING_JAR).showConditioned(notPuroImp).isNotConsumed();
 
 
 		inLavaAltar = new ZoneRequirement(lavaAltar);
@@ -207,19 +202,19 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		alKharidRooftop = new ObjectStep(this, ObjectID.ROUGH_WALL_11633, new WorldPoint(3273, 3195, 0),
+		alKharidRooftop = new ObjectStep(this, ObjectID.ROOFTOPS_KHARID_WALLCLIMB, new WorldPoint(3273, 3195, 0),
 			"Complete the Al Kharid Rooftop Course.");
 
-		grappleLum = new ObjectStep(this, ObjectID.BROKEN_RAFT, new WorldPoint(3252, 3179, 0),
+		grappleLum = new ObjectStep(this, ObjectID.XBOWS_RAFT_BR, new WorldPoint(3252, 3179, 0),
 			"Grapple across the River Lum.", mithGrap.equipped(), crossbow.equipped());
 
 		moveToLavaAltar = new ObjectStep(this, 34817, new WorldPoint(3313, 3255, 0),
 			"Enter the fire altar north of Al Kharid.", fireAccess);
-		craftLava = new ObjectStep(this, ObjectID.ALTAR_34764, new WorldPoint(2585, 4838, 0),
+		craftLava = new ObjectStep(this, ObjectID.FIRE_ALTAR, new WorldPoint(2585, 4838, 0),
 			"Use an earth talisman on the fire altar.", earthTali.highlighted(), essence, earthRune);
 		craftLava.addIcon(ItemID.EARTH_TALISMAN);
 
-		catchSalmon = new NpcStep(this, NpcID.ROD_FISHING_SPOT_1527, new WorldPoint(3241, 3248, 0),
+		catchSalmon = new NpcStep(this, NpcID._0_50_50_FRESHFISH, new WorldPoint(3241, 3248, 0),
 			"Catch a salmon in the River Lum.", feathers.quantity(10), flyFishingRod);
 
 		moveToCowPen = new TileStep(this, new WorldPoint(3257, 3267, 0),
@@ -229,35 +224,35 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		tpLumb = new DetailedQuestStep(this, "Cast the Teleport to Lumbridge spell.", airRune.quantity(3),
 			earthRune, lawRune.quantity(1));
 
-		upgradeDevice = new NpcStep(this, NpcID.AVA, new WorldPoint(3093, 3357, 0),
+		upgradeDevice = new NpcStep(this, NpcID.ANMA_ASSISTANT, new WorldPoint(3093, 3357, 0),
 			"Buy an Ava's Accumulator from Ava in the Draynor Manor.", avasAccumulator, steelArrows.quantity(75));
 
-		pickGardener = new NpcStep(this, NpcID.MARTIN_THE_MASTER_GARDENER, new WorldPoint(3077, 3263, 0),
+		pickGardener = new NpcStep(this, NpcID.MARTIN_THE_MASTER_FARMER, new WorldPoint(3077, 3263, 0),
 			"Pickpocket Martin the Master Gardener in Draynor Village.");
 
-		chopWillow = new ObjectStep(this, ObjectID.WILLOW_TREE_10819, new WorldPoint(3089, 3235, 0),
+		chopWillow = new ObjectStep(this, ObjectID.WILLOWTREE, new WorldPoint(3089, 3235, 0),
 			"Chop some Willow logs in Draynor Village.", axe);
 
-		moveToZanarisChaeldar = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
+		moveToZanarisChaeldar = new ObjectStep(this, ObjectID.ZANARISDOOR, new WorldPoint(3202, 3169, 0),
 			"Go to Zanaris through the shed in Lumbridge swamp " +
 				"or any fairy ring in the world if you've partially completed Fairytale II.", fairyAccess.equipped());
-		chaeldarTask = new NpcStep(this, NpcID.CHAELDAR, new WorldPoint(2446, 4430, 0),
+		chaeldarTask = new NpcStep(this, NpcID.SLAYER_MASTER_4, new WorldPoint(2446, 4430, 0),
 			"Get a slayer task from Chaeldar in Zanaris.");
 
-		moveToZanarisPuro = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0),
+		moveToZanarisPuro = new ObjectStep(this, ObjectID.ZANARISDOOR, new WorldPoint(3202, 3169, 0),
 			"Go to Zanaris through the shed in Lumbridge swamp " +
 				"or any fairy ring in the world if you've partially completed Fairytale II.", fairyAccess.equipped(),
 			butterflyNet, implingJar);
-		moveToPuro = new ObjectStep(this, ObjectID.CENTRE_OF_CROP_CIRCLE_24991, new WorldPoint(2427, 4446, 0),
+		moveToPuro = new ObjectStep(this, ObjectID.II_MAGIC_WHEAT_M_ZANARIS, new WorldPoint(2427, 4446, 0),
 			"Enter the centre of the crop circle in Zanaris.");
-		puroImp = new NpcStep(this, NpcID.ESSENCE_IMPLING, new WorldPoint(2592, 4322, 0),
+		puroImp = new NpcStep(this, NpcID.II_IMPLING_TYPE_5, new WorldPoint(2592, 4322, 0),
 			"Catch an essence or eclectic impling in Puro-Puro.", true, butterflyNet, implingJar);
-		puroImp.addAlternateNpcs(NpcID.ESSENCE_IMPLING_1649, NpcID.ECLECTIC_IMPLING, NpcID.ECLECTIC_IMPLING_1650);
+		puroImp.addAlternateNpcs(NpcID.II_IMPLING_TYPE_5_MAZE, NpcID.II_IMPLING_TYPE_6, NpcID.II_IMPLING_TYPE_6_MAZE);
 
 		wizardFairy = new ObjectStep(this, 29560, new WorldPoint(2412, 4434, 0),
 			"Take the nearest fairy ring and travel to the Wizards' Tower (DIS).", fairyAccess.equipped());
 
-		claimReward = new NpcStep(this, NpcID.HATIUS_COSAINTUS, new WorldPoint(3235, 3213, 0),
+		claimReward = new NpcStep(this, NpcID.HATIUS_LUMBRIDGE_DIARY, new WorldPoint(3235, 3213, 0),
 			"Talk to Hatius Cosaintus in Lumbridge to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -302,8 +297,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Explorer's ring 2", ItemID.EXPLORERS_RING_2),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Explorer's ring 2", ItemID.LUMBRIDGE_RING_MEDIUM),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

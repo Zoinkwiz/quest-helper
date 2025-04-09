@@ -24,37 +24,33 @@
  */
 package com.questhelper.helpers.achievementdiaries.westernprovinces;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class WesternEasy extends ComplexStateQuestHelper
 {
@@ -148,9 +144,9 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 		//todo find way to track chompy kills
 
-		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notCopperLongtail).isNotConsumed();
+		birdSnare = new ItemRequirement("Bird snare", ItemID.HUNTING_OJIBWAY_BIRD_SNARE).showConditioned(notCopperLongtail).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineIron).isNotConsumed();
-		oakShortU = new ItemRequirement("Oak shortbow (u)", ItemID.OAK_SHORTBOW_U).showConditioned(notOakShortbow);
+		oakShortU = new ItemRequirement("Oak shortbow (u)", ItemID.UNSTRUNG_OAK_SHORTBOW).showConditioned(notOakShortbow);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notOakShortbow);
 		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat).isNotConsumed();
 		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat).isNotConsumed();
@@ -181,7 +177,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		gnomeAgi = new ObjectStep(this, ObjectID.LOG_BALANCE_23145, new WorldPoint(2474, 3435, 0),
+		gnomeAgi = new ObjectStep(this, ObjectID.GNOME_LOG_BALANCE1, new WorldPoint(2474, 3435, 0),
 			"Complete a lap of the Gnome Agility Course.");
 
 		moveToStronghold = new DetailedQuestStep(this, new WorldPoint(2450, 3433, 0),
@@ -189,28 +185,28 @@ public class WesternEasy extends ComplexStateQuestHelper
 		oakShortbow = new DetailedQuestStep(this, "Fletch an oak shortbow in the Gnome Stronghold.",
 			oakShortU.highlighted(), bowString.highlighted());
 
-		moveToBrim = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2403, 3419, 0),
+		moveToBrim = new ObjectStep(this, ObjectID.EYEGLO_BRIMSTAILS_CAVE_ENTRANCE, new WorldPoint(2403, 3419, 0),
 			"Enter Brimstail's cave.");
-		brimstailEssence = new NpcStep(this, new int[]{NpcID.BRIMSTAIL, NpcID.BRIMSTAIL_11431},
+		brimstailEssence = new NpcStep(this, new int[]{NpcID.GNOME_BRIMSTAIL_CUTSCENE, NpcID.GNOME_BRIMSTAIL_2OP},
 			new WorldPoint(2409, 9817, 0), "Have Brimstail teleport you to the Essence mine");
 		brimstailEssence.addDialogStep("I need to mine some rune essence.");
 
 		terrorbird = new NpcStep(this, NpcID.TERRORBIRD, new WorldPoint(2379, 3432, 0),
 			"Kill a terrorbird in the terrorbird enclosure.", true, combatGear);
-		terrorbird.addAlternateNpcs(NpcID.TERRORBIRD_2065, NpcID.TERRORBIRD_2066);
+		terrorbird.addAlternateNpcs(NpcID.TERRORBIRD2, NpcID.TERRORBIRD3);
 
-		gnomeBall = new NpcStep(this, NpcID.GNOME_BALL_REFEREE, new WorldPoint(2385, 3487, 0),
+		gnomeBall = new NpcStep(this, NpcID.GNOMEREFEREE, new WorldPoint(2385, 3487, 0),
 			"Score a goal in a Gnome Ball match. Talk to the Referee to start the match.");
 		gnomeBall.addDialogStep("Okay then, I'll have a go.");
 
 		swampToadCollect = new ItemStep(this, new WorldPoint(2422, 3507, 0),
 			"Collect a swamp toad at the Gnome Stronghold.", swampToad.highlighted());
 
-		mineIron = new ObjectStep(this, ObjectID.IRON_ROCKS, new WorldPoint(2338, 3640, 0),
+		mineIron = new ObjectStep(this, ObjectID.IRONROCK1, new WorldPoint(2338, 3640, 0),
 			"Mine some iron ore near Piscatoris.", true, pickaxe);
-		mineIron.addAlternateObjects(ObjectID.IRON_ROCKS_11365);
+		mineIron.addAlternateObjects(ObjectID.IRONROCK2);
 
-		copperLongtail = new ObjectStep(this, ObjectID.BIRD_SNARE_9379, new WorldPoint(2341, 3598, 0),
+		copperLongtail = new ObjectStep(this, ObjectID.HUNTING_OJIBWAY_TRAP_FULL_WOODLAND, new WorldPoint(2341, 3598, 0),
 			"Catch a copper longtail.", true, birdSnare.highlighted());
 
 		chompyHat = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2628, 2979, 0),
@@ -221,14 +217,14 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 		tpPest = new DetailedQuestStep(this, "Teleport to Pest Control using the minigame teleport.");
 
-		moveToPest = new NpcStep(this, NpcID.SQUIRE_1770, new WorldPoint(3041, 3202, 0),
+		moveToPest = new NpcStep(this, NpcID.PEST_SQUIRE_SHIP_PORTSARIM, new WorldPoint(3041, 3202, 0),
 			"Talk to the squire in Port Sarim to travel to the Void Knights' Outpost. Alternatively, use the pest " +
 				"control minigame teleport.");
 		moveToPest.addDialogStep("I'd like to go to your outpost.");
-		novicePest = new ObjectStep(this, ObjectID.GANGPLANK_14315, new WorldPoint(2658, 2639, 0),
+		novicePest = new ObjectStep(this, ObjectID.PEST_LANDER_GANGPLANK, new WorldPoint(2658, 2639, 0),
 			"Complete a novice game of Pest Control.");
 
-		claimReward = new NpcStep(this, NpcID.ELDER_GNOME_CHILD, new WorldPoint(2466, 3460, 0),
+		claimReward = new NpcStep(this, NpcID.WESTERN_GNOME_CHILD_DIARY, new WorldPoint(2466, 3460, 0),
 			"Talk to the Elder gnome child in Gnome Stronghold to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -270,8 +266,8 @@ public class WesternEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Western Banner 1", ItemID.WESTERN_BANNER_1),
-			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Western Banner 1", ItemID.WESTERN_BANNER_EASY),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

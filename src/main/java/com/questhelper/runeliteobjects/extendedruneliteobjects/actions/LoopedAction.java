@@ -24,10 +24,11 @@
  */
 package com.questhelper.runeliteobjects.extendedruneliteobjects.actions;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import lombok.Getter;
 import net.runelite.api.MenuEntry;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 public class LoopedAction extends Action
 {

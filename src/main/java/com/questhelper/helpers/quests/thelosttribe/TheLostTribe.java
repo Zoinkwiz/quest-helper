@@ -25,38 +25,32 @@
 package com.questhelper.helpers.quests.thelosttribe;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcEmoteStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class TheLostTribe extends BasicQuestHelper
 {
@@ -129,19 +123,19 @@ public class TheLostTribe extends BasicQuestHelper
 	{
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
-		brooch = new ItemRequirement("Brooch", ItemID.BROOCH);
-		book = new ItemRequirement("Goblin symbol book", ItemID.GOBLIN_SYMBOL_BOOK);
+		brooch = new ItemRequirement("Brooch", ItemID.LOST_TRIBE_BROOCH);
+		book = new ItemRequirement("Goblin symbol book", ItemID.LOST_TRIBE_BOOK);
 		book.setHighlightInInventory(true);
-		key = new ItemRequirement("Key", ItemID.KEY_5010);
-		silverware = new ItemRequirement("Silverware", ItemID.SILVERWARE);
+		key = new ItemRequirement("Key", ItemID.LOST_TRIBE_CHEST_KEY);
+		silverware = new ItemRequirement("Silverware", ItemID.LOST_TRIBE_SILVERWARE);
 		silverware.setTooltip("You can get another from the crate in the entrance of the H.A.M. hideout");
 
-		treaty = new ItemRequirement("Peace treaty", ItemID.PEACE_TREATY);
+		treaty = new ItemRequirement("Peace treaty", ItemID.LOST_TRIBE_TREATY);
 		treaty.setTooltip("You can get another from Duke Horacio");
 
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);
-		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
+		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.POH_TABLET_LUMBRIDGETELEPORT, 3);
+		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.POH_TABLET_FALADORTELEPORT);
 	}
 
 	@Override
@@ -166,8 +160,8 @@ public class TheLostTribe extends BasicQuestHelper
 		inMines = new ZoneRequirement(mines);
 		inHamBase = new ZoneRequirement(hamBase);
 
-		foundRobes = new VarbitRequirement(534, 1, Operation.GREATER_EQUAL);
-		foundSilverwareOrToldOnSigmund = new VarbitRequirement(534, 3, Operation.GREATER_EQUAL);
+		foundRobes = new VarbitRequirement(VarbitID.LOST_TRIBE_HAM, 1, Operation.GREATER_EQUAL);
+		foundSilverwareOrToldOnSigmund = new VarbitRequirement(VarbitID.LOST_TRIBE_HAM, 3, Operation.GREATER_EQUAL);
 
 		hansKnows = new VarbitRequirement(537, 0);
 		bobKnows = new VarbitRequirement(537, 1);
@@ -178,47 +172,47 @@ public class TheLostTribe extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		goDownIntoBasement = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0), "Enter the Lumbridge Castle basement.");
-		goDownFromF1 = new ObjectStep(this, ObjectID.STAIRCASE_16672, new WorldPoint(3205, 3208, 1), "Go down the staircase.");
+		goDownIntoBasement = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0), "Enter the Lumbridge Castle basement.");
+		goDownFromF1 = new ObjectStep(this, ObjectID.SPIRALSTAIRSMIDDLE, new WorldPoint(3205, 3208, 1), "Go down the staircase.");
 		goDownFromF1.addDialogStep("Climb down the stairs.");
-		goUpToF1 = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(3205, 3208, 0), "Go up to the first floor of Lumbridge Castle.");
-		goUpFromBasement = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(3209, 9616, 0), "Go up to the surface.");
-		goDownFromF2 = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(3205, 3208, 2), "Go downstairs.");
-		talkToSigmund = new NpcStep(this, NpcID.SIGMUND_5322, new WorldPoint(3210, 3222, 1), "");
+		goUpToF1 = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(3205, 3208, 0), "Go up to the first floor of Lumbridge Castle.");
+		goUpFromBasement = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3209, 9616, 0), "Go up to the surface.");
+		goDownFromF2 = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(3205, 3208, 2), "Go downstairs.");
+		talkToSigmund = new NpcStep(this, NpcID.LOST_TRIBE_SIGMUND_THERE, new WorldPoint(3210, 3222, 1), "");
 		talkToSigmund.addDialogSteps("Do you have any quests for me?", "Yes.");
 
 		// This isn't just talk to Hans, it's a random one of the NPCs to chat to
 		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "Talk to Hans who is roaming around the castle.");
 		talkToHans.addDialogStep("Do you know what happened in the cellar?");
 
-		talkToBob = new NpcStep(this, NpcID.BOB_10619, new WorldPoint(3231, 3203, 0), "Talk to Bob in the south of Lumbridge.");
+		talkToBob = new NpcStep(this, NpcID.BOB, new WorldPoint(3231, 3203, 0), "Talk to Bob in the south of Lumbridge.");
 		talkToBob.addDialogStep("Do you know what happened in the castle cellar?");
 
-		talkToAllAboutCellar = new NpcStep(this, NpcID.COOK_4626, "Talk to the Cook, Hans, Father Aereck, and Bob in Lumbridge until one tells you about seeing a goblin.");
+		talkToAllAboutCellar = new NpcStep(this, NpcID.COOK, "Talk to the Cook, Hans, Father Aereck, and Bob in Lumbridge until one tells you about seeing a goblin.");
 		((NpcStep)(talkToAllAboutCellar)).addAlternateNpcs(NpcID.FATHER_AERECK);
 		talkToAllAboutCellar.addDialogSteps("Do you know what happened in the castle cellar?");
 		talkToAllAboutCellar.addSubSteps(talkToHans, talkToBob);
 
-		talkToDuke = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3222, 1), "");
+		talkToDuke = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE, new WorldPoint(3210, 3222, 1), "");
 		// Name of person who said they saw something changes
-		usePickaxeOnRubble = new ObjectStep(this, NullObjectID.NULL_6898, new WorldPoint(3219, 9618, 0), "");
+		usePickaxeOnRubble = new ObjectStep(this, ObjectID.LOST_TRIBE_CELLAR_WALL, new WorldPoint(3219, 9618, 0), "");
 		usePickaxeOnRubble.addIcon(ItemID.BRONZE_PICKAXE);
 
-		climbThroughHole = new ObjectStep(this, NullObjectID.NULL_6898, new WorldPoint(3219, 9618, 0), "");
+		climbThroughHole = new ObjectStep(this, ObjectID.LOST_TRIBE_CELLAR_WALL, new WorldPoint(3219, 9618, 0), "");
 
 		grabBrooch = new DetailedQuestStep(this, new WorldPoint(3230, 9610, 0), "Pick up the brooch on the floor.", brooch);
 
-		climbOutThroughHole = new ObjectStep(this, ObjectID.HOLE_6905, new WorldPoint(3221, 9618, 0), "");
+		climbOutThroughHole = new ObjectStep(this, ObjectID.LOST_TRIBE_CAVEWALL_HOLE_WALLDECOR, new WorldPoint(3221, 9618, 0), "");
 
-		showBroochToDuke = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3222, 1), "");
+		showBroochToDuke = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE, new WorldPoint(3210, 3222, 1), "");
 		showBroochToDuke.addDialogStep("I dug through the rubble...");
 
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_6916, new WorldPoint(3207, 3496, 0), "Search the north west bookcase in the Varrock Castle Library.");
+		searchBookcase = new ObjectStep(this, ObjectID.LOST_TRIBE_BOOKCASE, new WorldPoint(3207, 3496, 0), "Search the north west bookcase in the Varrock Castle Library.");
 		searchBookcase.addTeleport(varrockTeleport);
 		readBook = new DetailedQuestStep(this, "Read the entire goblin symbol book.", book);
 		readBook.addWidgetHighlight(183, 16);
 
-		talkToGenerals = new NpcStep(this, NpcID.GENERAL_WARTFACE, new WorldPoint(2957, 3512, 0), "Talk to the Goblin Generals in the Goblin Village.");
+		talkToGenerals = new NpcStep(this, NpcID.GENERAL_WARTFACE_GREEN, new WorldPoint(2957, 3512, 0), "Talk to the Goblin Generals in the Goblin Village.");
 		talkToGenerals.addTeleport(faladorTeleport);
 		talkToGenerals.addDialogSteps("Have you ever heard of the Dorgeshuun?", "It doesn't really matter",
 			"Well either way they refused to fight", "Well I found a brooch underground...", "Well why not show me both greetings?");
@@ -262,20 +256,20 @@ public class TheLostTribe extends BasicQuestHelper
 			new WorldPoint(3317, 9612, 0)
 		);
 
-		walkToMistag = new NpcEmoteStep(this, NpcID.MISTAG_7297, QuestEmote.GOBLIN_BOW, new WorldPoint(3319, 9615, 0), "Travel through the tunnels. Make sure you follow the marked path, or you'll be dropped into a hole and your light source extinguished!", lightSource);
+		walkToMistag = new NpcEmoteStep(this, NpcID.LOST_TRIBE_MISTAG_1OP, QuestEmote.GOBLIN_BOW, new WorldPoint(3319, 9615, 0), "Travel through the tunnels. Make sure you follow the marked path, or you'll be dropped into a hole and your light source extinguished!", lightSource);
 		walkToMistag.setLinePoints(travelLine);
 
-		emoteAtMistag = new NpcEmoteStep(this, NpcID.MISTAG_7297, QuestEmote.GOBLIN_BOW, new WorldPoint(3319, 9615, 0), "Perform the Goblin Bow emote next to Mistag and talk to him.", lightSource);
+		emoteAtMistag = new NpcEmoteStep(this, NpcID.LOST_TRIBE_MISTAG_1OP, QuestEmote.GOBLIN_BOW, new WorldPoint(3319, 9615, 0), "Perform the Goblin Bow emote next to Mistag and talk to him.", lightSource);
 
-		pickpocketSigmund = new NpcStep(this, NpcID.SIGMUND_5322, new WorldPoint(3210, 3222, 1), "");
-		unlockChest = new ObjectStep(this, ObjectID.CHEST_6910, new WorldPoint(3209, 3217, 1), "");
+		pickpocketSigmund = new NpcStep(this, NpcID.LOST_TRIBE_SIGMUND_THERE, new WorldPoint(3210, 3222, 1), "");
+		unlockChest = new ObjectStep(this, ObjectID.LOST_TRIBE_CHEST, new WorldPoint(3209, 3217, 1), "");
 
-		enterHamLair = new ObjectStep(this, NullObjectID.NULL_5492, new WorldPoint(3166, 3252, 0), "");
+		enterHamLair = new ObjectStep(this, ObjectID.HAM_MULTI_TRAPDOOR, new WorldPoint(3166, 3252, 0), "");
 
-		searchHamCrates = new ObjectStep(this, ObjectID.CRATE_6911, new WorldPoint(3152, 9645, 0), "");
+		searchHamCrates = new ObjectStep(this, ObjectID.LOST_TRIBE_CRATE, new WorldPoint(3152, 9645, 0), "");
 
-		talkToKazgar = new NpcStep(this, NpcID.KAZGAR, new WorldPoint(3230, 9610, 0), "Travel with Kazgar to shortcut to Mistag.");
-		talkToMistagForEnd = new NpcStep(this, NpcID.MISTAG_7298, new WorldPoint(3319, 9615, 0), "");
+		talkToKazgar = new NpcStep(this, NpcID.LOST_TRIBE_GUIDE_2OPS, new WorldPoint(3230, 9610, 0), "Travel with Kazgar to shortcut to Mistag.");
+		talkToMistagForEnd = new NpcStep(this, NpcID.LOST_TRIBE_MISTAG_2OPS, new WorldPoint(3319, 9615, 0), "");
 	}
 
 	private void setupConditionalSteps()

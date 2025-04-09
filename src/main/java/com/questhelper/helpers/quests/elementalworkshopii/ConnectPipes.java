@@ -27,11 +27,10 @@ package com.questhelper.helpers.quests.elementalworkshopii;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
 import net.runelite.api.widgets.Widget;
+
+import java.awt.*;
+import java.awt.geom.Line2D;
 
 public class ConnectPipes extends QuestStep
 {

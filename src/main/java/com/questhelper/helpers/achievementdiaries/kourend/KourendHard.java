@@ -24,14 +24,12 @@
  */
 package com.questhelper.helpers.achievementdiaries.kourend;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
@@ -40,11 +38,18 @@ import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -155,19 +160,19 @@ public class KourendHard extends ComplexStateQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineLovakite).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notKillZombie).isNotConsumed();
-		xericsTalisman = new ItemRequirement("Xeric's Talisman", Arrays.asList(ItemID.XERICS_TALISMAN,
-			ItemID.MOUNTED_XERICS_TALISMAN)).showConditioned(notTeleportHeart).isNotConsumed();
+		xericsTalisman = new ItemRequirement("Xeric's Talisman", Arrays.asList(ItemID.XERIC_TALISMAN,
+			ItemID.POH_AMULET_XERIC)).showConditioned(notTeleportHeart).isNotConsumed();
 		xericsTalisman.setTooltip("Obtained from Lizardmen as a rare drop and charged with a Lizardman fang");
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notDeliverArtifact).isNotConsumed();
-		seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantLogavano).isNotConsumed();
-		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notExamineMonster);
-		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notExamineMonster);
-		mindRune = new ItemRequirement("Mind rune", ItemID.MIND_RUNE).showConditioned(notExamineMonster);
+		seedDibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).showConditioned(notPlantLogavano).isNotConsumed();
+		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRALRUNE).showConditioned(notExamineMonster);
+		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMICRUNE).showConditioned(notExamineMonster);
+		mindRune = new ItemRequirement("Mind rune", ItemID.MINDRUNE).showConditioned(notExamineMonster);
 		wateringCan = new ItemRequirement("Watering can", ItemCollections.WATERING_CANS)
 			.showConditioned(notPlantLogavano).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPlantLogavano).isNotConsumed();
-		artifact = new ItemRequirement("Artifact", ItemID.ARTEFACT).showConditioned(notDeliverArtifact);
-		logavanoSeeds = new ItemRequirement("Logavano seeds", ItemID.LOGAVANO_SEED).showConditioned(notPlantLogavano);
+		artifact = new ItemRequirement("Artifact", ItemID.SLICE_ARTIFACT_1_DIRTY).showConditioned(notDeliverArtifact);
+		logavanoSeeds = new ItemRequirement("Logavano seeds", ItemID.HOSIDIUS_TITHE_SEED_C).showConditioned(notPlantLogavano);
 
 		// Items recommended
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
@@ -177,15 +182,15 @@ public class KourendHard extends ComplexStateQuestHelper
 			.showConditioned(notKillLizardmanShaman);
 		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF, -1).isNotConsumed();
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
-			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS), -1).isNotConsumed();
-		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.RADAS_BLESSING_1,
-			ItemID.RADAS_BLESSING_2), -1).showConditioned(notWoodcuttingGuild).isNotConsumed();
+			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.VEOS_KHAREDSTS_MEMOIRS), -1).isNotConsumed();
+		radasBlessing = new ItemRequirement("Rada's Blessing", Arrays.asList(ItemID.ZEAH_BLESSING_EASY,
+			ItemID.ZEAH_BLESSING_MEDIUM), -1).showConditioned(notWoodcuttingGuild).isNotConsumed();
 		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES, -1).isNotConsumed();
 		shayzienHelmet = new ItemRequirement("Shayzien Helmet (5)", ItemID.SHAYZIEN_HELM_5)
 			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 		shayzienBody = new ItemRequirement("Shayzien Body (5)", ItemID.SHAYZIEN_BODY_5)
 			.showConditioned(notKillLizardmanShaman).isNotConsumed();
-		shayzienGreaves = new ItemRequirement("Shayzien Greaves (5)", ItemID.SHAYZIEN_GREAVES_5)
+		shayzienGreaves = new ItemRequirement("Shayzien Greaves (5)", ItemID.SHAYZIEN_LEGS_5)
 			.showConditioned(notKillLizardmanShaman).isNotConsumed();
 		shayzienBoots = new ItemRequirement("Shayzien Boots (5)", ItemID.SHAYZIEN_BOOTS_5)
 			.showConditioned(notKillLizardmanShaman).isNotConsumed();
@@ -220,9 +225,9 @@ public class KourendHard extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		// Enter the woodcutting guild
-		enterWoodcuttingGuild = new ObjectStep(this, ObjectID.GATE_28851, new WorldPoint(1657, 3505, 0),
+		enterWoodcuttingGuild = new ObjectStep(this, ObjectID.WCGUILD_GATEL, new WorldPoint(1657, 3505, 0),
 			"Enter the Woodcutting Guild.", true);
-		enterWoodcuttingGuild.addAlternateObjects(ObjectID.GATE_28852);
+		enterWoodcuttingGuild.addAlternateObjects(ObjectID.WCGUILD_GATER);
 
 		// Smelt an adamantite bar
 		enterForsakenTower = new DetailedQuestStep(this, new WorldPoint(1382, 3818, 0),
@@ -232,32 +237,32 @@ public class KourendHard extends ComplexStateQuestHelper
 		smeltAddyBar.addSubSteps(enterForsakenTower);
 
 		// Kill a lizardman shaman
-		enterLizardmanTemple = new ObjectStep(this, ObjectID.LIZARD_DWELLING_34405, new WorldPoint(1312, 3686, 0),
+		enterLizardmanTemple = new ObjectStep(this, ObjectID.MOLCH_TEMPLE_LIZARD_DWELLING4, new WorldPoint(1312, 3686, 0),
 			"Enter the lizardman temple.", shayzienHelmet.equipped(), shayzienBody.equipped(), shayzienGreaves.equipped(),
 			shayzienBoots.equipped(), shayzienGloves.equipped(), antipoison, combatGear);
-		killLizardmanShaman = new NpcStep(this, NpcID.LIZARDMAN_SHAMAN_8565, new WorldPoint(1292, 10096, 0),
+		killLizardmanShaman = new NpcStep(this, NpcID.MOLCH_LIZARDSHAMAN_1, new WorldPoint(1292, 10096, 0),
 			"Kill a Lizardman Shaman.", shayzienHelmet.equipped(), shayzienBody.equipped(),
 			shayzienGreaves.equipped(), shayzienBoots.equipped(), shayzienGloves.equipped(), antipoison, combatGear);
 
 		// Mine some lovakite ore
-		mineLovakiteOre = new ObjectStep(this, ObjectID.LOVAKITE_ROCKS_28597, new WorldPoint(1438, 3816, 0),
+		mineLovakiteOre = new ObjectStep(this, ObjectID.LOVAKITE_ROCK2, new WorldPoint(1438, 3816, 0),
 			"Mine some lovakite ore.", pickaxe);
 
 		// Plant some logavano seeds
-		searchSeedTable = new ObjectStep(this, ObjectID.SEED_TABLE, new WorldPoint(1802, 3503, 0),
+		searchSeedTable = new ObjectStep(this, ObjectID.TITHE_PLANT_SEED_TABLE, new WorldPoint(1802, 3503, 0),
 			"Take some logavano seeds from the table in the Tithe Farm entrance.");
 		searchSeedTable.addDialogStep("Logavano seed (level 74)");
 		enterTitheFarm = new DetailedQuestStep(this, new WorldPoint(1806, 3501, 0),
 			"Enter the Tithe Farm.");
-		plantLogavanoSeed = new ObjectStep(this, ObjectID.TITHE_PATCH, new WorldPoint(6692, 867, 0),
+		plantLogavanoSeed = new ObjectStep(this, ObjectID.HOSIDIUS_TITHE_EMPTY, new WorldPoint(6692, 867, 0),
 			"Plant the logavano seeds in any available farming patch.", true, seedDibber, spade, wateringCan,
 			logavanoSeeds);
-		plantLogavanoSeed.addIcon(ItemID.LOGAVANO_SEED);
+		plantLogavanoSeed.addIcon(ItemID.HOSIDIUS_TITHE_SEED_C);
 
 		// Kill a zombie
-		entershayzienCrypt = new ObjectStep(this, ObjectID.CRYPT_ENTRANCE, new WorldPoint(1483, 3548, 0),
+		entershayzienCrypt = new ObjectStep(this, ObjectID.DS2_TOMB_ENTRY, new WorldPoint(1483, 3548, 0),
 			"Enter the shayzien crypt.", lightSource);
-		killZombie = new NpcStep(this, NpcID.ZOMBIE_8068, new WorldPoint(1491, 9949, 3),
+		killZombie = new NpcStep(this, NpcID.DS2_ZOMBIE_RANGED, new WorldPoint(1491, 9949, 3),
 			"Kill a zombie in the shayzien crypt.", combatGear, food);
 		killZombie.addSubSteps(entershayzienCrypt);
 
@@ -266,31 +271,31 @@ public class KourendHard extends ComplexStateQuestHelper
 			xericsTalisman.highlighted());
 
 		// Deliver an artifact
-		talkToCaptainKhaled = new NpcStep(this, NpcID.CAPTAIN_KHALED, new WorldPoint(1845, 3753, 0),
+		talkToCaptainKhaled = new NpcStep(this, NpcID.PISCARILIUS_CAPTAIN_KHALED_DEFAULT, new WorldPoint(1845, 3753, 0),
 			"Talk to Captain Khaled to receive a job.");
-		talkToCaptainKhaled.addAlternateNpcs(NpcID.CAPTAIN_KHALED_6972);
+		talkToCaptainKhaled.addAlternateNpcs(NpcID.PISCARILIUS_CAPTAIN_KHALED_TASK);
 		talkToCaptainKhaled.addDialogStep("Looking for any help?");
 		talkToCaptainKhaled.addDialogStep("I have what it takes.");
-		deliverArtifact = new NpcStep(this, NpcID.CAPTAIN_KHALED, new WorldPoint(1845, 3753, 0),
+		deliverArtifact = new NpcStep(this, NpcID.PISCARILIUS_CAPTAIN_KHALED_DEFAULT, new WorldPoint(1845, 3753, 0),
 			"Deliver the stolen artifact to Captain Khaled.", lockpick, artifact);
 
 		// Kill a wyrm
-		enterMountKaruulmDungeon = new ObjectStep(this, ObjectID.ELEVATOR, new WorldPoint(1311, 3807, 0),
+		enterMountKaruulmDungeon = new ObjectStep(this, ObjectID.BRIMSTONE_ELEVATOR_CENTRAL_TILE, new WorldPoint(1311, 3807, 0),
 			"Enter the Mount Karuulm Slayer Dungeon.", bootsOfStone.equipped(), combatGear, food);
-		enterWyrmArea = new ObjectStep(this, ObjectID.ROCKS_34544, new WorldPoint(1302, 10205, 0),
+		enterWyrmArea = new ObjectStep(this, ObjectID.KARUULM_SAFE_STEPOVER, new WorldPoint(1302, 10205, 0),
 			"Enter the wyrm area.", bootsOfStone.equipped());
-		killWyrm = new NpcStep(this, NpcID.WYRM, new WorldPoint(1282, 10189, 0),
+		killWyrm = new NpcStep(this, NpcID.WYRM_DARK, new WorldPoint(1282, 10189, 0),
 			"Kill a wyrm.", combatGear, food);
 		killWyrm.addSubSteps(enterMountKaruulmDungeon, enterWyrmArea);
 
 		// Cast monster examine
-		castMonsterExamine = new NpcStep(this, NpcID.MOUNTAIN_TROLL, new WorldPoint(1240, 3515, 0),
+		castMonsterExamine = new NpcStep(this, NpcID.DEATH_TROLL_MELEE1, new WorldPoint(1240, 3515, 0),
 			"Cast Monster Examine on a Mountain Troll.", lunarBook, astralRune, cosmicRune, mindRune);
-		castMonsterExamine.addAlternateNpcs(NpcID.MOUNTAIN_TROLL_937, NpcID.MOUNTAIN_TROLL_938,
-			NpcID.MOUNTAIN_TROLL_939, NpcID.MOUNTAIN_TROLL_941);
+		castMonsterExamine.addAlternateNpcs(NpcID.DEATH_TROLL_MELEE2, NpcID.DEATH_TROLL_MELEE3,
+			NpcID.DEATH_TROLL_MELEE4, NpcID.DEATH_TROLL_MELEE6);
 
 		// Claim reward
-		claimReward = new NpcStep(this, NpcID.ELISE, new WorldPoint(1647, 3665, 0),
+		claimReward = new NpcStep(this, NpcID.ELISE_KOUREND_KEBOS_DIARY, new WorldPoint(1647, 3665, 0),
 			"Talk to Elise in the Kourend castle courtyard to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary");
 	}
@@ -341,9 +346,9 @@ public class KourendHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Rada's Blessing (3)", ItemID.RADAS_BLESSING_3, 1),
+			new ItemReward("Rada's Blessing (3)", ItemID.ZEAH_BLESSING_HARD, 1),
 			new ItemReward("Ash sanctifier", ItemID.ASH_SANCTIFIER, 1),
-			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

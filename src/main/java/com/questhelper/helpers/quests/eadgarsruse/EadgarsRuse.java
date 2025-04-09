@@ -25,41 +25,33 @@
 package com.questhelper.helpers.quests.eadgarsruse;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.DialogRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class EadgarsRuse extends BasicQuestHelper
 {
@@ -260,12 +252,12 @@ public class EadgarsRuse extends BasicQuestHelper
 		rawChicken5 = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN, 5);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		pestleAndMortar = new ItemRequirement("Pestle and Mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
-		ranarrPotionUnf = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARR_POTION_UNF);
-		taverleyTeleport = new ItemRequirement("Taverley teleports", ItemID.TAVERLEY_TELEPORT, 3);
-		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
+		ranarrPotionUnf = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARRVIAL);
+		taverleyTeleport = new ItemRequirement("Taverley teleports", ItemID.NZONE_TELETAB_TAVERLEY, 3);
+		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.POH_TABLET_ARDOUGNETELEPORT);
 		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.GAMES_NECKLACES);
 		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
-		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);
+		cellKey2 = new ItemRequirement("Cell key 2", ItemID.TROLL_KEY_EADGAR);
 		vodkaHighlight = new ItemRequirement("Vodka", ItemID.VODKA);
 		vodkaHighlight.setTooltip("You can buy some from the Gnome Stronghold drinks shop");
 		vodkaHighlight.setHighlightInInventory(true);
@@ -276,17 +268,17 @@ public class EadgarsRuse extends BasicQuestHelper
 		pineappleChunksHighlight.setTooltip("You can cut a pineapple into chunks with a knife");
 		pineappleChunksHighlight.setHighlightInInventory(true);
 
-		alcoChunks = new ItemRequirement("Alco-chunks", ItemID.ALCOCHUNKS);
+		alcoChunks = new ItemRequirement("Alco-chunks", ItemID.EADGAR_ALCO_CHUNKS);
 		alcoChunks.setHighlightInInventory(true);
 
-		parrot = new ItemRequirement("Drunk parrot", ItemID.DRUNK_PARROT);
+		parrot = new ItemRequirement("Drunk parrot", ItemID.EADGAR_DRUNK_PARROT);
 		parrot.setTooltip("You can get another by using alco-chunks on the aviary hatch of the parrot cage in Ardougne Zoo");
-		parrotAfterEadgar = new ItemRequirement("Drunk parrot", ItemID.DRUNK_PARROT);
+		parrotAfterEadgar = new ItemRequirement("Drunk parrot", ItemID.EADGAR_DRUNK_PARROT);
 		parrotAfterEadgar.setTooltip("You can get another by talking to Eadgar");
 
-		robe = new ItemRequirement("Robe", ItemID.DIRTY_ROBE);
+		robe = new ItemRequirement("Robe", ItemID.EADGAR_DIRTY_DRUID_ROBE);
 
-		thistle = new ItemRequirement("Troll thistle", ItemID.TROLL_THISTLE);
+		thistle = new ItemRequirement("Troll thistle", ItemID.EADGAR_TROLL_THISTLE);
 		thistle.setHighlightInInventory(true);
 
 		logHighlight = new ItemRequirement("Logs", ItemCollections.LOGS_FOR_FIRE);
@@ -295,26 +287,26 @@ public class EadgarsRuse extends BasicQuestHelper
 		tinderboxHighlight = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		tinderboxHighlight.setHighlightInInventory(true);
 
-		driedThistle = new ItemRequirement("Dried thistle", ItemID.DRIED_THISTLE);
+		driedThistle = new ItemRequirement("Dried thistle", ItemID.EADGAR_DRIED_TROLL_THISTLE);
 		driedThistle.setHighlightInInventory(true);
 
-		groundThistle = new ItemRequirement("Ground thistle", ItemID.GROUND_THISTLE);
+		groundThistle = new ItemRequirement("Ground thistle", ItemID.EADGAR_GROUND_TROLL_THISTLE);
 		groundThistle.setHighlightInInventory(true);
 
-		ranarrUnfHighlight = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARR_POTION_UNF);
+		ranarrUnfHighlight = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARRVIAL);
 		ranarrUnfHighlight.setHighlightInInventory(true);
 
-		trollPotion = new ItemRequirement("Troll potion", ItemID.TROLL_POTION);
+		trollPotion = new ItemRequirement("Troll potion", ItemID.EADGAR_GROUND_TROLL_THISTLE_POTION);
 
-		trainedParrot = new ItemRequirement("Drunk parrot", ItemID.DRUNK_PARROT);
+		trainedParrot = new ItemRequirement("Drunk parrot", ItemID.EADGAR_DRUNK_PARROT);
 		trainedParrot.setTooltip("If you lost the parrot Eadgar will have it");
 
-		fakeMan = new ItemRequirement("Fake man", ItemID.FAKE_MAN);
+		fakeMan = new ItemRequirement("Fake man", ItemID.EADGAR_FAKE_MAN);
 		fakeMan.setTooltip("You can get another from Eadgar if you lose it");
 
-		storeroomKey = new ItemRequirement("Storeroom key", ItemID.STOREROOM_KEY);
+		storeroomKey = new ItemRequirement("Storeroom key", ItemID.EADGAR_TROLL_STOREROOM_KEY);
 
-		goutweed = new ItemRequirement("Goutweed", ItemID.GOUTWEED);
+		goutweed = new ItemRequirement("Goutweed", ItemID.EADGAR_GOUTWEED_HERB);
 	}
 
 	@Override
@@ -355,7 +347,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		askedAboutAlcohol = new Conditions(true, new DialogRequirement("Just recently."));
 		askedAboutPineapple = new Conditions(true, new DialogRequirement("fruit and grain mostly"));
 
-		fireNearby = new ObjectCondition(ObjectID.FIRE_26185);
+		fireNearby = new ObjectCondition(ObjectID.FIRE);
 
 		foundOutAboutKey = new Conditions(true, new DialogRequirement("That's some well-guarded secret alright"));
 		inStoreroom = new ZoneRequirement(storeroom);
@@ -363,7 +355,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		goUpToSanfew = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
+		goUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew.addDialogStep("Ask general questions.");
 		talkToSanfew.addDialogStep("Have you any more work for me, to help reclaim the circle?");
@@ -374,109 +366,109 @@ public class EadgarsRuse extends BasicQuestHelper
 		getCoinsOrBoots = new DetailedQuestStep(this, "Get some climbing boots or 12 coins.", climbingBootsOr12Coins);
 
 		travelToTenzing = new DetailedQuestStep(this, new WorldPoint(2820, 3555, 0), "Follow the path west of Burthorpe, then go along the path going south.");
-		buyClimbingBoots = new NpcStep(this, NpcID.TENZING, new WorldPoint(2820, 3555, 0), "Follow the path west of Burthorpe, then go along the path going south. Buy some climbing boots from Tenzing in his hut here.", coins12);
+		buyClimbingBoots = new NpcStep(this, NpcID.DEATH_SHERPA, new WorldPoint(2820, 3555, 0), "Follow the path west of Burthorpe, then go along the path going south. Buy some climbing boots from Tenzing in his hut here.", coins12);
 		buyClimbingBoots.addDialogStep("Can I buy some Climbing boots?");
 		buyClimbingBoots.addDialogStep("OK, sounds good.");
 		travelToTenzing.addSubSteps(getCoinsOrBoots, buyClimbingBoots);
 
-		climbOverStile = new ObjectStep(this, ObjectID.STILE_3730, new WorldPoint(2817, 3563, 0), "Climb over the stile north of Tenzing.");
-		climbOverRocks = new ObjectStep(this, ObjectID.ROCKS_3748, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBoots.equipped());
+		climbOverStile = new ObjectStep(this, ObjectID.DEATH_FULLSTYLE, new WorldPoint(2817, 3563, 0), "Climb over the stile north of Tenzing.");
+		climbOverRocks = new ObjectStep(this, ObjectID.TROLL_CLIMBINGROCKS, new WorldPoint(2856, 3612, 0), "Follow the path until you reach some rocks. Climb over them.", climbingBoots.equipped());
 
-		enterSecretEntrance = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0), "Enter the Secret Door to the Troll Stronghold.");
+		enterSecretEntrance = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_ENTRANCE, new WorldPoint(2828, 3647, 0), "Enter the Secret Door to the Troll Stronghold.");
 
 		if (client.getRealSkillLevel(Skill.THIEVING) >= 30)
 		{
-			getBerryKey = new NpcStep(this, NpcID.BERRY_4134, new WorldPoint(2833, 10083, 0), "Pickpocket or kill Berry for a cell key.");
+			getBerryKey = new NpcStep(this, NpcID.TROLL_PRISON_GUARD2, new WorldPoint(2833, 10083, 0), "Pickpocket or kill Berry for a cell key.");
 		}
 		else
 		{
-			getBerryKey = new NpcStep(this, NpcID.BERRY_4134, new WorldPoint(2833, 10083, 0), "Kill Berry for a cell key.");
+			getBerryKey = new NpcStep(this, NpcID.TROLL_PRISON_GUARD2, new WorldPoint(2833, 10083, 0), "Kill Berry for a cell key.");
 		}
 
-		freeEadgar = new ObjectStep(this, ObjectID.CELL_DOOR_3765, new WorldPoint(2832, 10082, 0), "Unlock Eadgar's cell.");
+		freeEadgar = new ObjectStep(this, ObjectID.TROLL_CELLDOOR_EADGAR, new WorldPoint(2832, 10082, 0), "Unlock Eadgar's cell.");
 
-		goUpStairsPrison = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
+		goUpStairsPrison = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
 
-		goUpToTopFloorStronghold = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10109, 1), "Go up to the next floor of the Stronghold.");
+		goUpToTopFloorStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2843, 10109, 1), "Go up to the next floor of the Stronghold.");
 
-		exitStronghold = new ObjectStep(this, ObjectID.EXIT_3772, new WorldPoint(2838, 10091, 2), "Leave the Stronghold.");
+		exitStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_TOP_EXIT_LEFT, new WorldPoint(2838, 10091, 2), "Leave the Stronghold.");
 
-		enterEadgarsCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Climb to the top of Trollheim and enter Eadgar's cave.");
+		enterEadgarsCave = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_ENTRANCE, new WorldPoint(2893, 3673, 0), "Climb to the top of Trollheim and enter Eadgar's cave.");
 
-		talkToEadgar = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Talk to Eadgar.");
+		talkToEadgar = new NpcStep(this, NpcID.TROLL_EADGAR, new WorldPoint(2891, 10086, 2), "Talk to Eadgar.");
 		talkToEadgar.addDialogStep("I need to find some goutweed.");
 
-		leaveEadgarsCave = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Leave Eadgar's cave.");
-		enterStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
-		goDownSouthStairs = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Go down the south staircase.");
-		talkToCook = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat.");
+		leaveEadgarsCave = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_EXIT, new WorldPoint(2893, 10073, 2), "Leave Eadgar's cave.");
+		enterStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
+		goDownSouthStairs = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10052, 2), "Go down the south staircase.");
+		talkToCook = new NpcStep(this, NpcID.EADGAR_TROLL_CHIEF_COOK, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat.");
 
-		goUpToTopFloorStrongholdFromCook = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Go up to the next floor of the Stronghold.");
+		goUpToTopFloorStrongholdFromCook = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2843, 10052, 1), "Go up to the next floor of the Stronghold.");
 
-		exitStrongholdFromCook = new ObjectStep(this, ObjectID.EXIT_3772, new WorldPoint(2838, 10091, 2), "Leave the Stronghold.");
+		exitStrongholdFromCook = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_TOP_EXIT_LEFT, new WorldPoint(2838, 10091, 2), "Leave the Stronghold.");
 
-		enterEadgarsCaveFromCook = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Climb to the top of Trollheim and enter Eadgar's cave.");
+		enterEadgarsCaveFromCook = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_ENTRANCE, new WorldPoint(2893, 3673, 0), "Climb to the top of Trollheim and enter Eadgar's cave.");
 
-		talkToEadgarFromCook = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Talk to Eadgar in his cave on top of Trollheim.");
+		talkToEadgarFromCook = new NpcStep(this, NpcID.TROLL_EADGAR, new WorldPoint(2891, 10086, 2), "Talk to Eadgar in his cave on top of Trollheim.");
 		talkToEadgarFromCook.addSubSteps(goUpToTopFloorStrongholdFromCook, exitStrongholdFromCook, enterEadgarsCaveFromCook);
 
-		talkToPete = new NpcStep(this, NpcID.PARROTY_PETE, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him both question 2 and 3, then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
+		talkToPete = new NpcStep(this, NpcID.EADGAR_ZOO_KEEPER_AVIARY, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him both question 2 and 3, then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
 		talkToPete.addDialogStep("No thanks, Eadgar.");
 		talkToPete.addDialogStep("What do you feed them?");
 		talkToPete.addDialogStep("When did you add it?");
 
-		talkToPeteAboutAlcohol = new NpcStep(this, NpcID.PARROTY_PETE, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him question 2 then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
+		talkToPeteAboutAlcohol = new NpcStep(this, NpcID.EADGAR_ZOO_KEEPER_AVIARY, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him question 2 then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
 		talkToPeteAboutAlcohol.addDialogStep("When did you add it?");
 
-		talkToPeteAboutPineapple = new NpcStep(this, NpcID.PARROTY_PETE, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him question 3 then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
+		talkToPeteAboutPineapple = new NpcStep(this, NpcID.EADGAR_ZOO_KEEPER_AVIARY, new WorldPoint(2612, 3285, 0), "Travel to Ardougne Zoo and talk to Parroty Pete. Ask him question 3 then use the vodka on the pineapple chunks.", pineappleChunks, vodka);
 		talkToPeteAboutPineapple.addDialogStep("What do you feed them?");
 
 		useVodkaOnChunks = new DetailedQuestStep(this, "Use vodka on your pineapple chunks", pineappleChunksHighlight, vodkaHighlight);
 
 		talkToPete.addSubSteps(talkToPeteAboutAlcohol, talkToPeteAboutPineapple, useVodkaOnChunks);
 
-		useChunksOnParrot = new ObjectStep(this, ObjectID.AVIARY_HATCH, new WorldPoint(2611, 3287, 0), "Use the alco-chunks on the aviary hatch of the parrot cage.", alcoChunks);
-		useChunksOnParrot.addIcon(ItemID.ALCOCHUNKS);
+		useChunksOnParrot = new ObjectStep(this, ObjectID.EADGAR_AVIARY_WALL_HATCH, new WorldPoint(2611, 3287, 0), "Use the alco-chunks on the aviary hatch of the parrot cage.", alcoChunks);
+		useChunksOnParrot.addIcon(ItemID.EADGAR_ALCO_CHUNKS);
 
-		enterEadgarsCaveWithParrot = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Return the parrot to Eadgar on top of Trollheim.", parrot, climbingBoots.equipped());
+		enterEadgarsCaveWithParrot = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_ENTRANCE, new WorldPoint(2893, 3673, 0), "Return the parrot to Eadgar on top of Trollheim.", parrot, climbingBoots.equipped());
 
-		talkToEadgarWithParrot = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Return the parrot to Eadgar on top of Trollheim.");
+		talkToEadgarWithParrot = new NpcStep(this, NpcID.TROLL_EADGAR, new WorldPoint(2891, 10086, 2), "Return the parrot to Eadgar on top of Trollheim.");
 		talkToEadgarWithParrot.addSubSteps(enterEadgarsCaveWithParrot);
 
-		leaveEadgarsCaveWithParrot = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Take the parrot to the Troll Stronghold prison.", parrotAfterEadgar);
+		leaveEadgarsCaveWithParrot = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_EXIT, new WorldPoint(2893, 10073, 2), "Take the parrot to the Troll Stronghold prison.", parrotAfterEadgar);
 		leaveEadgarsCaveWithParrot.addDialogStep("No thanks, Eadgar.");
 
-		enterStrongholdWithParrot = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
-		goDownNorthStairsWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
-		goDownToPrisonWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10108, 1), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
+		enterStrongholdWithParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
+		goDownNorthStairsWithParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10109, 2), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
+		goDownToPrisonWithParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2853, 10108, 1), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar);
 
-		enterPrisonWithParrot = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar, climbingBoots);
+		enterPrisonWithParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_ENTRANCE, new WorldPoint(2828, 3647, 0), "Take the parrot to the Troll Stronghold prison, and hide it in the rack there.", parrotAfterEadgar, climbingBoots);
 
-		parrotOnRack = new ObjectStep(this, ObjectID.RACK_3821, new WorldPoint(2829, 10097, 0), "Use the parrot on a rack in the prison.", parrotAfterEadgar.highlighted());
-		parrotOnRack.addIcon(ItemID.DRUNK_PARROT);
+		parrotOnRack = new ObjectStep(this, ObjectID.EADGAR_RACK, new WorldPoint(2829, 10097, 0), "Use the parrot on a rack in the prison.", parrotAfterEadgar.highlighted());
+		parrotOnRack.addIcon(ItemID.EADGAR_DRUNK_PARROT);
 
 		enterStrongholdWithParrot.addSubSteps(leaveEadgarsCaveWithParrot, goDownNorthStairsWithParrot, goDownToPrisonWithParrot, parrotOnRack, enterPrisonWithParrot);
 
-		talkToTegid = new NpcStep(this, NpcID.TEGID, new WorldPoint(2910, 3417, 0), "Talk to Tegid in the south of Taverley for a dirty robe. Once you have it, return to Eadgar with all the items he needs.", robe, grain10, rawChicken5, logs2, climbingBoots, ranarrPotionUnf, tinderbox, pestleAndMortar);
+		talkToTegid = new NpcStep(this, NpcID.EADGAR_DRUID_WASHING, new WorldPoint(2910, 3417, 0), "Talk to Tegid in the south of Taverley for a dirty robe. Once you have it, return to Eadgar with all the items he needs.", robe, grain10, rawChicken5, logs2, climbingBoots, ranarrPotionUnf, tinderbox, pestleAndMortar);
 		talkToTegid.addDialogStep("Sanfew won't be happy...");
-		enterEadgarsCaveWithItems = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Bring Eadgar all the listed items. Check the quest log if you're not sure what items you've already handed in.", robe, grain10, rawChicken5, logs2, climbingBoots.equipped(), ranarrPotionUnf, tinderbox, pestleAndMortar);
-		talkToEadgarWithItems = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Bring Eadgar all the listed items. Check the quest log if you're not sure what items you've already handed in.", robe, grain10, rawChicken5, logs2, climbingBoots, ranarrPotionUnf, tinderbox, pestleAndMortar);
+		enterEadgarsCaveWithItems = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_ENTRANCE, new WorldPoint(2893, 3673, 0), "Bring Eadgar all the listed items. Check the quest log if you're not sure what items you've already handed in.", robe, grain10, rawChicken5, logs2, climbingBoots.equipped(), ranarrPotionUnf, tinderbox, pestleAndMortar);
+		talkToEadgarWithItems = new NpcStep(this, NpcID.TROLL_EADGAR, new WorldPoint(2891, 10086, 2), "Bring Eadgar all the listed items. Check the quest log if you're not sure what items you've already handed in.", robe, grain10, rawChicken5, logs2, climbingBoots, ranarrPotionUnf, tinderbox, pestleAndMortar);
 
 		talkToEadgarWithItems.addSubSteps(enterEadgarsCaveWithItems);
 
-		leaveEadgarsCaveForThistle = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Go pick a troll thistle from outside Eadgar's cave.", ranarrPotionUnf);
+		leaveEadgarsCaveForThistle = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_EXIT, new WorldPoint(2893, 10073, 2), "Go pick a troll thistle from outside Eadgar's cave.", ranarrPotionUnf);
 		leaveEadgarsCaveForThistle.addDialogStep("No thanks, Eadgar.");
 
-		pickThistle = new NpcStep(this, NpcID.THISTLE, new WorldPoint(2887, 3675, 0), "Go pick a troll thistle from outside Eadgar's cave.", ranarrPotionUnf, logs1, tinderbox);
+		pickThistle = new NpcStep(this, NpcID.EADGAR_TROLL_THISTLE, new WorldPoint(2887, 3675, 0), "Go pick a troll thistle from outside Eadgar's cave.", ranarrPotionUnf, logs1, tinderbox);
 		pickThistle.addSubSteps(leaveEadgarsCaveForThistle);
 
 		lightFire = new DetailedQuestStep(this, "Light a fire then use the troll thistle on it.", logHighlight, tinderboxHighlight);
 
-		useThistleOnFire = new ObjectStep(this, ObjectID.FIRE_26185, "Use the troll thistle on the fire.", thistle);
-		useThistleOnFire.addIcon(ItemID.THISTLE);
+		useThistleOnFire = new ObjectStep(this, ObjectID.FIRE, "Use the troll thistle on the fire.", thistle);
+		useThistleOnFire.addIcon(ItemID.POH_PLANTSMALL2B);
 
-		useThistleOnTrollFire = new ObjectStep(this, ObjectID.FIRE, new WorldPoint(2849, 3678, 0), "Use the troll thistle on one of the fire outside the Troll Stronghold.", thistle);
-		useThistleOnTrollFire.addIcon(ItemID.THISTLE);
+		useThistleOnTrollFire = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_CAMP_FIRE, new WorldPoint(2849, 3678, 0), "Use the troll thistle on one of the fire outside the Troll Stronghold.", thistle);
+		useThistleOnTrollFire.addIcon(ItemID.POH_PLANTSMALL2B);
 
 		useThistleOnFire.addSubSteps(useThistleOnTrollFire);
 
@@ -484,55 +476,55 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		useGroundThistleOnRanarr = new DetailedQuestStep(this, "Use the ground thistle on a ranarr potion (unf)", groundThistle, ranarrUnfHighlight);
 
-		enterEadgarsCaveWithTrollPotion = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Bring Eadgar the troll potion.", trollPotion);
-		giveTrollPotionToEadgar = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Bring Eadgar the troll potion.", trollPotion);
+		enterEadgarsCaveWithTrollPotion = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_ENTRANCE, new WorldPoint(2893, 3673, 0), "Bring Eadgar the troll potion.", trollPotion);
+		giveTrollPotionToEadgar = new NpcStep(this, NpcID.TROLL_EADGAR, new WorldPoint(2891, 10086, 2), "Bring Eadgar the troll potion.", trollPotion);
 		giveTrollPotionToEadgar.addSubSteps(enterEadgarsCaveWithTrollPotion);
 
-		leaveEadgarsCaveForParrot = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Get the parrot from the Troll Stronghold prison.");
-		enterStrongholdForParrot = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Get the parrot from the Troll Stronghold prison.");
+		leaveEadgarsCaveForParrot = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_EXIT, new WorldPoint(2893, 10073, 2), "Get the parrot from the Troll Stronghold prison.");
+		enterStrongholdForParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Get the parrot from the Troll Stronghold prison.");
 
-		goDownNorthStairsForParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Get the parrot from the Troll Stronghold prison.");
+		goDownNorthStairsForParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10109, 2), "Get the parrot from the Troll Stronghold prison.");
 
-		goDownToPrisonForParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10108, 1), "Get the parrot from the Troll Stronghold prison.");
+		goDownToPrisonForParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2853, 10108, 1), "Get the parrot from the Troll Stronghold prison.");
 
-		enterPrisonForParrot = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0), "Get the parrot from the Troll Stronghold prison.", climbingBoots);
+		enterPrisonForParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_ENTRANCE, new WorldPoint(2828, 3647, 0), "Get the parrot from the Troll Stronghold prison.", climbingBoots);
 
-		getParrotFromRack = new ObjectStep(this, ObjectID.RACK_3821, new WorldPoint(2829, 10097, 0), "Get the parrot from the rack in the prison.");
+		getParrotFromRack = new ObjectStep(this, ObjectID.EADGAR_RACK, new WorldPoint(2829, 10097, 0), "Get the parrot from the rack in the prison.");
 
 		enterStrongholdForParrot.addSubSteps(leaveEadgarsCaveForParrot, goDownNorthStairsForParrot, goDownToPrisonForParrot, enterPrisonForParrot, getParrotFromRack);
 
-		leavePrisonWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to Eadgar with the parrot.", trainedParrot);
+		leavePrisonWithParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Return to Eadgar with the parrot.", trainedParrot);
 
-		goUpToTopFloorWithParrot = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10109, 1), "Return to Eadgar with the parrot.", trainedParrot);
+		goUpToTopFloorWithParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2843, 10109, 1), "Return to Eadgar with the parrot.", trainedParrot);
 
-		leaveStrongholdWithParrot = new ObjectStep(this, ObjectID.EXIT_3772, new WorldPoint(2838, 10091, 2), "Return to Eadgar with the parrot.", trainedParrot);
+		leaveStrongholdWithParrot = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_TOP_EXIT_LEFT, new WorldPoint(2838, 10091, 2), "Return to Eadgar with the parrot.", trainedParrot);
 
-		enterEadgarCaveWithTrainedParrot = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_3759, new WorldPoint(2893, 3673, 0), "Return to Eadgar with the parrot.", trainedParrot);
+		enterEadgarCaveWithTrainedParrot = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_ENTRANCE, new WorldPoint(2893, 3673, 0), "Return to Eadgar with the parrot.", trainedParrot);
 
-		talkToEadgarWithTrainedParrot = new NpcStep(this, NpcID.EADGAR, new WorldPoint(2891, 10086, 2), "Return to Eadgar with the parrot.", trainedParrot);
+		talkToEadgarWithTrainedParrot = new NpcStep(this, NpcID.TROLL_EADGAR, new WorldPoint(2891, 10086, 2), "Return to Eadgar with the parrot.", trainedParrot);
 		leaveStrongholdWithParrot.addSubSteps(leavePrisonWithParrot, goUpToTopFloorWithParrot, leaveStrongholdWithParrot, enterEadgarCaveWithTrainedParrot, talkToEadgarWithTrainedParrot);
 
-		leaveEadgarsCaveWithScarecrow = new ObjectStep(this, ObjectID.CAVE_EXIT_3760, new WorldPoint(2893, 10073, 2), "Take the fake man to Burntmeat.", fakeMan);
+		leaveEadgarsCaveWithScarecrow = new ObjectStep(this, ObjectID.TROLL_MAD_EADGAR_EXIT, new WorldPoint(2893, 10073, 2), "Take the fake man to Burntmeat.", fakeMan);
 		leaveEadgarsCaveWithScarecrow.addDialogStep("No thanks, Eadgar.");
-		enterStrongholdWithScarecrow = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Take the fake man to Burntmeat.", fakeMan);
-		goDownSouthStairsWithScarecrow = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Take the fake man to Burntmeat.", fakeMan);
-		talkToCookWithScarecrow = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Take the fake man to Burntmeat.", fakeMan);
+		enterStrongholdWithScarecrow = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Take the fake man to Burntmeat.", fakeMan);
+		goDownSouthStairsWithScarecrow = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10052, 2), "Take the fake man to Burntmeat.", fakeMan);
+		talkToCookWithScarecrow = new NpcStep(this, NpcID.EADGAR_TROLL_CHIEF_COOK, new WorldPoint(2845, 10057, 1), "Take the fake man to Burntmeat.", fakeMan);
 
-		talkToBurntmeat = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat in the Troll Stronghold kitchen.");
+		talkToBurntmeat = new NpcStep(this, NpcID.EADGAR_TROLL_CHIEF_COOK, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat in the Troll Stronghold kitchen.");
 		talkToBurntmeat.addDialogStep("So, where can I get some goutweed?");
 
 		enterStrongholdWithScarecrow.addSubSteps(leaveEadgarsCaveWithScarecrow, goDownSouthStairsWithScarecrow, talkToCookWithScarecrow, talkToBurntmeat);
 
-		searchDrawers = new ObjectStep(this, ObjectID.KITCHEN_DRAWERS, new WorldPoint(2853, 10050, 1), "Search the kitchen drawers south east of Burntmeat.");
-		searchDrawers.addAlternateObjects(ObjectID.KITCHEN_DRAWERS_3817);
+		searchDrawers = new ObjectStep(this, ObjectID.EADGAR_KITCHEN_DRAWERS, new WorldPoint(2853, 10050, 1), "Search the kitchen drawers south east of Burntmeat.");
+		searchDrawers.addAlternateObjects(ObjectID.EADGAR_KITCHEN_DRAWERS_OPEN);
 
-		goDownToStoreroom = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2852, 10061, 1), "Go down to the storeroom from the Troll Stronghold kitchen.");
+		goDownToStoreroom = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2852, 10061, 1), "Go down to the storeroom from the Troll Stronghold kitchen.");
 
-		enterStoreroomDoor = new ObjectStep(this, ObjectID.STOREROOM_DOOR, new WorldPoint(2869, 10085, 0), "Enter the storeroom.", storeroomKey);
+		enterStoreroomDoor = new ObjectStep(this, ObjectID.EADGAR_STOREROOMDOOR, new WorldPoint(2869, 10085, 0), "Enter the storeroom.", storeroomKey);
 
-		getGoutweed = new ObjectStep(this, ObjectID.GOUTWEED_CRATE, new WorldPoint(2857, 10074, 0), "Search the goutweed crates for goutweed. You'll need to avoid the troll guards or you'll be kicked out and take damage.");
+		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the goutweed crates for goutweed. You'll need to avoid the troll guards or you'll be kicked out and take damage.");
 
-		returnUpToSanfew = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
+		returnUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
 		returnToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
 		returnToSanfew.addDialogStep("Ask general questions.");
 		returnToSanfew.addSubSteps(returnUpToSanfew);

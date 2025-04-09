@@ -24,31 +24,26 @@
  */
 package com.questhelper.helpers.quests.recipefordisaster;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
+import com.questhelper.steps.*;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class RFDStart extends BasicQuestHelper
 {
@@ -89,7 +84,7 @@ public class RFDStart extends BasicQuestHelper
 		ashesHighlighted.setHighlightInInventory(true);
 		fruitBlastHighlighted = new ItemRequirement("Fruit blast", ItemID.FRUIT_BLAST);
 		fruitBlastHighlighted.setHighlightInInventory(true);
-		dirtyBlast = new ItemRequirement("Dirty blast", ItemID.DIRTY_BLAST);
+		dirtyBlast = new ItemRequirement("Dirty blast", ItemID.HUNDRED_FRUIT_BLAST);
 	}
 
 	public void setupConditions()
@@ -102,7 +97,7 @@ public class RFDStart extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToCook = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
+		talkToCook = new NpcStep(this, NpcID.COOK, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook.", eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
 		talkToCook.addDialogStep("Do you have any other quests for me?");
 		talkToCook.addDialogSteps("Angry! It makes me angry!", "I don't really care to be honest.");
@@ -111,11 +106,11 @@ public class RFDStart extends BasicQuestHelper
 
 		useAshesOnFruitBlast = new DetailedQuestStep(this, "Use ashes on the fruit blast.", ashesHighlighted, fruitBlastHighlighted);
 
-		talkToCookAgain = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
+		talkToCookAgain = new NpcStep(this, NpcID.COOK, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook with the required items.", eyeOfNewt, greenmansAle, rottenTomato, dirtyBlast);
 		talkToCookAgain.addDialogStep("About those ingredients you wanted for the banquet...");
 
-		enterDiningRoom = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Enter the Lumbridge Castle dining room.");
+		enterDiningRoom = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOOR, new WorldPoint(3207, 3217, 0), "Enter the Lumbridge Castle dining room.");
 	}
 
 	@Override

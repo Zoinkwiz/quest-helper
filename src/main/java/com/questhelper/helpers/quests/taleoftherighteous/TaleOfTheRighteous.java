@@ -24,41 +24,32 @@
  */
 package com.questhelper.helpers.quests.taleoftherighteous;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.rewards.ItemReward;
-import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.steps.PuzzleWrapperStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.steps.*;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TaleOfTheRighteous extends BasicQuestHelper
 {
@@ -169,11 +160,11 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		rangedWeapon = new ItemRequirement("Any ranged weapon + ammo", -1, -1).isNotConsumed();
 		rangedWeapon.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		runesForCombat = new ItemRequirement("Runes for a few casts of a combat spell", -1, -1);
-		runesForCombat.setDisplayItemId(ItemID.DEATH_RUNE);
+		runesForCombat.setDisplayItemId(ItemID.DEATHRUNE);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
 		combatGear = new ItemRequirement("Combat gear for a level 46 corrupt lizardman", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		xericTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
+		xericTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERIC_TALISMAN).isNotConsumed();
 		meleeWeapon = new ItemRequirement("A melee weapon, or your bare hands", -1, -1).isNotConsumed();
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 		antiPoison = new ItemRequirement("Antipoison for lizardmen", ItemCollections.ANTIPOISONS);
@@ -194,62 +185,62 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		inPuzzleRoom = new ZoneRequirement(puzzleRoom);
 		inShiroRoom = new ZoneRequirement(shiroRoom);
 		inCavern = new ZoneRequirement(cavern);
-		strangeObjectEast = new NpcCondition(NpcID.STRANGE_DEVICE, new WorldPoint(1581, 10200, 0));
-		strangeObjectWest = new NpcCondition(NpcID.STRANGE_DEVICE, new WorldPoint(1575, 10200, 0));
-		isSouthWestWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1574, 10196, 0));
-		isSouthEastWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1581, 10196, 0));
-		isNorthWestWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1574, 10203, 0));
-		isNorthEastWhite = new ObjectCondition(ObjectID.WHITE_CRYSTAL_31960, new WorldPoint(1581, 10203, 0));
-		rockfallNearby = new ObjectCondition(ObjectID.BOULDER_32503, new WorldPoint(1182, 9974, 0));
-		boulderBlockingPath = new ObjectCondition(ObjectID.BOULDER_32504, new WorldPoint(1201, 9960, 0));
-		corruptLizardmanNearby = new NpcCondition(NpcID.CORRUPT_LIZARDMAN_8000);
+		strangeObjectEast = new NpcCondition(NpcID.SHAYZIENQUEST_PUZZLE_PIECE, new WorldPoint(1581, 10200, 0));
+		strangeObjectWest = new NpcCondition(NpcID.SHAYZIENQUEST_PUZZLE_PIECE, new WorldPoint(1575, 10200, 0));
+		isSouthWestWhite = new ObjectCondition(ObjectID.SHAYZIENQUEST_CRYSTAL_COMPLETE, new WorldPoint(1574, 10196, 0));
+		isSouthEastWhite = new ObjectCondition(ObjectID.SHAYZIENQUEST_CRYSTAL_COMPLETE, new WorldPoint(1581, 10196, 0));
+		isNorthWestWhite = new ObjectCondition(ObjectID.SHAYZIENQUEST_CRYSTAL_COMPLETE, new WorldPoint(1574, 10203, 0));
+		isNorthEastWhite = new ObjectCondition(ObjectID.SHAYZIENQUEST_CRYSTAL_COMPLETE, new WorldPoint(1581, 10203, 0));
+		rockfallNearby = new ObjectCondition(ObjectID.SHAYZIENQUEST_BLOCKAGE, new WorldPoint(1182, 9974, 0));
+		boulderBlockingPath = new ObjectCondition(ObjectID.SHAYZIENQUEST_BOULDER, new WorldPoint(1201, 9960, 0));
+		corruptLizardmanNearby = new NpcCondition(NpcID.SHAYZIENQUEST_LIZARDMAN_BOSS);
 	}
 
 	public void setupSteps()
 	{
-		talkToPhileas = new NpcStep(this, NpcID.PHILEAS_RIMOR, new WorldPoint(1542, 3570, 0), "Talk to Phileas Rimor in Shayzien.");
+		talkToPhileas = new NpcStep(this, NpcID.PHILEAS_RIMOR_VISIBLE, new WorldPoint(1542, 3570, 0), "Talk to Phileas Rimor in Shayzien.");
 		talkToPhileas.addDialogStep("Do you need help with anything?");
 		talkToPhileas.addDialogStep("Yes.");
 		talkToPhileas.addDialogStep("What do you need?");
-		teleportToArchive = new NpcStep(this, NpcID.ARCHEIO, new WorldPoint(1625, 3808, 0), "Bring a melee weapon, " +
+		teleportToArchive = new NpcStep(this, NpcID.RAIDQUEST_LIBRARY_ARCHIVE_GUARDIAN, new WorldPoint(1625, 3808, 0), "Bring a melee weapon, " +
 			"ranged weapon, and runes for magic attacks and teleport with Archeio in the Arceuus Library.", rangedWeapon, runesForCombat);
 		teleportToArchive.addDialogStep("Yes please!");
-		talkToPagida = new NpcStep(this, NpcID.PAGIDA, new WorldPoint(1553, 10223, 0),
+		talkToPagida = new NpcStep(this, NpcID.RAIDQUEST_LIBRARY_TRAPHUNTER, new WorldPoint(1553, 10223, 0),
 			"Talk to Pagida in the Library Historical Archive.");
 		talkToPagida.addDialogStep("I have a question about King Shayzien VII.");
 		talkToPagida.addDialogStep("Yes please.");
-		pushStrangeDeviceWest = new PuzzleWrapperStep(this, new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+		pushStrangeDeviceWest = new PuzzleWrapperStep(this, new NpcStep(this, NpcID.SHAYZIENQUEST_PUZZLE_PIECE, new WorldPoint(1580, 10199, 0),
 			"Push the Strange Device all the way to the west."), "Solve the crystal puzzle.");
-		pushStrangeDeviceEast = new PuzzleWrapperStep(this, new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+		pushStrangeDeviceEast = new PuzzleWrapperStep(this, new NpcStep(this, NpcID.SHAYZIENQUEST_PUZZLE_PIECE, new WorldPoint(1580, 10199, 0),
 			"Push the Strange Device all the way to the east."), "Solve the crystal puzzle.");
 
-		NpcStep attackWithMagicTrueStep = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+		NpcStep attackWithMagicTrueStep = new NpcStep(this, NpcID.SHAYZIENQUEST_PUZZLE_PIECE, new WorldPoint(1580, 10199, 0),
 			"Attack the Strange Device with magic from the north side.", runesForCombat);
-		attackWithMagicTrueStep.addIcon(ItemID.MIND_RUNE);
+		attackWithMagicTrueStep.addIcon(ItemID.MINDRUNE);
 		attackWithMagic = new PuzzleWrapperStep(this, attackWithMagicTrueStep, "Solve the crystal puzzle.");
 
-		NpcStep attackWithRangedTrueStep = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+		NpcStep attackWithRangedTrueStep = new NpcStep(this, NpcID.SHAYZIENQUEST_PUZZLE_PIECE, new WorldPoint(1580, 10199, 0),
 		"Attack the Strange Device with ranged from the south side.", rangedWeapon);
 		attackWithRangedTrueStep.addIcon(ItemID.BRONZE_ARROW);
 		attackWithRanged = new PuzzleWrapperStep(this, attackWithRangedTrueStep, "Solve the crystal puzzle.");
 
-		NpcStep attackWithMeleeTrueStep = new NpcStep(this, NpcID.STRANGE_DEVICE, new WorldPoint(1580, 10199, 0),
+		NpcStep attackWithMeleeTrueStep = new NpcStep(this, NpcID.SHAYZIENQUEST_PUZZLE_PIECE, new WorldPoint(1580, 10199, 0),
 			"Attack the Strange Device with melee from the south side.", meleeWeapon);
 		attackWithMeleeTrueStep.addIcon(ItemID.BRONZE_SWORD);
 		attackWithMelee = new PuzzleWrapperStep(this, attackWithMeleeTrueStep, "Solve the crystal puzzle.");
 
-		investigateSkeleton = new ObjectStep(this, ObjectID.SKELETON_31962, new WorldPoint(1577, 10213, 0),
+		investigateSkeleton = new ObjectStep(this, ObjectID.SHAYZIENQUEST_PRISON_SKELETON_MAIN, new WorldPoint(1577, 10213, 0),
 			"Investigate the skeleton in the north cell.");
 
-		talkToPhileasAgain = new NpcStep(this, NpcID.PHILEAS_RIMOR, new WorldPoint(1542, 3570, 0),
+		talkToPhileasAgain = new NpcStep(this, NpcID.PHILEAS_RIMOR_VISIBLE, new WorldPoint(1542, 3570, 0),
 			"Report back to Phileas Rimor in Shayzien.");
-		goUpToShiro = new ObjectStep(this, ObjectID.LADDER_42207, new WorldPoint(1481, 3633, 0),
+		goUpToShiro = new ObjectStep(this, ObjectID.SHAYZIEN_LADDER, new WorldPoint(1481, 3633, 0),
 			"Talk to Shiro upstairs in the War Tent located on the west side of the Shayzien Encampment.");
-		talkToShiro = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_11038, new WorldPoint(1484, 3634, 1),
+		talkToShiro = new NpcStep(this, NpcID.SHIRO_SHAYZIEN_VIS, new WorldPoint(1484, 3634, 1),
 			"Talk to Shiro upstairs in the War Tent located on the west side of the Shayzien Encampment.");
 		talkToShiro.addSubSteps(goUpToShiro);
 
-		talkToDuffy = new NpcStep(this, NpcID.HISTORIAN_DUFFY_8163, new WorldPoint(1278, 3561, 0),
+		talkToDuffy = new NpcStep(this, NpcID.RAIDS_TEMPLE_DUFFY_VISIBLE, new WorldPoint(1278, 3561, 0),
 			"Travel to Mount Quidamortem and talk to Historian Duffy.");
 		useRopeOnCrevice = new ObjectStep(this, NullObjectID.NULL_32502, new WorldPoint(1215, 3559, 0),
 			"Use a rope on the crevice west side of Quidamortem.", rope, pickaxe, combatGear);
@@ -257,38 +248,38 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		enterCrevice = new ObjectStep(this, NullObjectID.NULL_32502, new WorldPoint(1215, 3559, 0),
 			"Enter the crevice west side of Quidamortem, ready to fight a corrupted lizardman (level 46).", pickaxe, combatGear);
 		enterCrevice.addDialogStep("Yes.");
-		mineRockfall = new ObjectStep(this, ObjectID.BOULDER_32503, new WorldPoint(1182, 9974, 0), "Mine the rockfall.", pickaxe);
-		pushBoulder = new ObjectStep(this, ObjectID.BOULDER_32504, new WorldPoint(1201, 9960, 0),
+		mineRockfall = new ObjectStep(this, ObjectID.SHAYZIENQUEST_BLOCKAGE, new WorldPoint(1182, 9974, 0), "Mine the rockfall.", pickaxe);
+		pushBoulder = new ObjectStep(this, ObjectID.SHAYZIENQUEST_BOULDER, new WorldPoint(1201, 9960, 0),
 			"Push the boulder further along the path.");
 
-		tryToEnterBarrier = new ObjectStep(this, ObjectID.MAGIC_GATE, new WorldPoint(1172, 9947, 0),
+		tryToEnterBarrier = new ObjectStep(this, ObjectID.SHAYZIENQUEST_CAVE_DOOR, new WorldPoint(1172, 9947, 0),
 			"Attempt to enter the magic gate to the south room. You will need to kill the corrupted lizardman who appears.");
-		killLizardman = new NpcStep(this, NpcID.CORRUPT_LIZARDMAN_8000, new WorldPoint(1172, 9947, 0),
+		killLizardman = new NpcStep(this, NpcID.SHAYZIENQUEST_LIZARDMAN_BOSS, new WorldPoint(1172, 9947, 0),
 			"Kill the corrupt lizardman.");
 		tryToEnterBarrier.addSubSteps(killLizardman);
 
-		inspectUnstableAltar = new ObjectStep(this, ObjectID.UNSTABLE_ALTAR, new WorldPoint(1172, 9929, 0),
+		inspectUnstableAltar = new ObjectStep(this, ObjectID.SHAYZIENQUEST_LAB_ALTAR, new WorldPoint(1172, 9929, 0),
 			"Inspect the Unstable Altar in the south room.");
-		leaveCave = new ObjectStep(this, ObjectID.ROPE_31967, new WorldPoint(1168, 9973, 0),
+		leaveCave = new ObjectStep(this, ObjectID.SHAYZIENQUEST_LAB_EXIT, new WorldPoint(1168, 9973, 0),
 			"Leave the cavern. You can hop worlds to appear back at the entrance.");
-		returnToDuffy = new NpcStep(this, NpcID.HISTORIAN_DUFFY_8163, new WorldPoint(1278, 3561, 0),
+		returnToDuffy = new NpcStep(this, NpcID.RAIDS_TEMPLE_DUFFY_VISIBLE, new WorldPoint(1278, 3561, 0),
 			"Return to Historian Duffy.");
 		enterCreviceAgain = new ObjectStep(this, NullObjectID.NULL_32502, new WorldPoint(1215, 3559, 0),
 			"Enter the crevice west side of Quidamortem again.");
 		enterCreviceAgain.addDialogStep("Yes.");
-		talkToDuffyInCrevice = new NpcStep(this, NpcID.HISTORIAN_DUFFY, new WorldPoint(1172, 9929, 0),
+		talkToDuffyInCrevice = new NpcStep(this, NpcID.SHAYZIENQUEST_DUFFY, new WorldPoint(1172, 9929, 0),
 			"Talk to Historian Duffy near the Unstable Altar.");
-		talkToGnosi = new NpcStep(this, NpcID.GNOSI, new WorldPoint(1172, 9929, 0),
+		talkToGnosi = new NpcStep(this, NpcID.SHAYZIENQUEST_GNOSI, new WorldPoint(1172, 9929, 0),
 			"Talk to Gnosi near the Unstable Altar.");
-		returnUpToShiro = new ObjectStep(this, ObjectID.LADDER_42207, new WorldPoint(1481, 3633, 0),
+		returnUpToShiro = new ObjectStep(this, ObjectID.SHAYZIEN_LADDER, new WorldPoint(1481, 3633, 0),
 			"Return to Shiro upstairs in the War Tent located on the west side of the Shayzien Encampment.");
-		returnToShiro = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_11038, new WorldPoint(1484, 3634, 1),
+		returnToShiro = new NpcStep(this, NpcID.SHIRO_SHAYZIEN_VIS, new WorldPoint(1484, 3634, 1),
 			"Return to Shiro upstairs in the War Tent located on the west side of the Shayzien Encampment.");
 		returnToShiro.addSubSteps(returnUpToShiro);
 		returnToPhileasTent = new DetailedQuestStep(this, new WorldPoint(1542, 3570, 0), "Return to Phileas Rimor's house in Shayzien.");
-		goUpToShrioToFinish = new ObjectStep(this, ObjectID.LADDER_42207, new WorldPoint(1481, 3633, 0),
+		goUpToShrioToFinish = new ObjectStep(this, ObjectID.SHAYZIEN_LADDER, new WorldPoint(1481, 3633, 0),
 			"Return to Shiro upstairs in the War Tent in west Shayzien to complete the quest.");
-		finishQuest = new NpcStep(this, NpcID.LORD_SHIRO_SHAYZIEN_11038, new WorldPoint(1484, 3634, 1),
+		finishQuest = new NpcStep(this, NpcID.SHIRO_SHAYZIEN_VIS, new WorldPoint(1484, 3634, 1),
 			"Return to Shiro upstairs in the War Tent in west Shayzien to complete the quest.");
 		finishQuest.addSubSteps(goUpToShrioToFinish);
 	}
@@ -342,8 +333,8 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Coins", ItemID.COINS_995, 8000),
-				new ItemReward("A Memoir Page", ItemID.KHAREDSTS_MEMOIRS, 1));
+				new ItemReward("Coins", ItemID.COINS, 8000),
+				new ItemReward("A Memoir Page", ItemID.VEOS_KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

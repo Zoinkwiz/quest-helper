@@ -24,32 +24,27 @@
  */
 package com.questhelper.helpers.quests.plaguecity;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class PlagueCity extends BasicQuestHelper
 {
@@ -198,34 +193,34 @@ public class PlagueCity extends BasicQuestHelper
 		spade.canBeObtainedDuringQuest();
 		spade.setTooltip("A spawn is found in Edmond's garden at the start of the quest");
 		spade.setHighlightInInventory(true);
-		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 4);
+		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_WATER, 4);
 		fourBucketsOfWater.setHighlightInInventory(true);
 		fourBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
-		threeBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 3);
+		threeBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_WATER, 3);
 		threeBucketsOfWater.setHighlightInInventory(true);
 		threeBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
-		twoBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_OF_WATER, 2);
+		twoBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_WATER, 2);
 		twoBucketsOfWater.setHighlightInInventory(true);
 		twoBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
-		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
+		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER);
 		bucketOfWater.setHighlightInInventory(true);
-		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
+		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
 		bucketOfMilk.setHighlightInInventory(true);
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
 		chocolateDust.setHighlightInInventory(true);
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
 		snapeGrass.setHighlightInInventory(true);
-		pictureOfElena = new ItemRequirement("Picture", ItemID.PICTURE);
-		gasMask = new ItemRequirement("Gas mask", ItemID.GAS_MASK, 1, true).isNotConsumed();
+		pictureOfElena = new ItemRequirement("Picture", ItemID.ELENA_PICTURE);
+		gasMask = new ItemRequirement("Gas mask", ItemID.GASMASK, 1, true).isNotConsumed();
 		gasMask.setTooltip("You can get another from the cupboard in Edmond's house.");
-		book = new ItemRequirement("Book", ItemID.BOOK_1509);
-		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
+		book = new ItemRequirement("Book", ItemID.TURNIP_BOOK);
+		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATY_MILK);
 		bucketOfChocolateMilk.setHighlightInInventory(true);
 		hangoverCure = new ItemRequirement("Hangover cure", ItemID.HANGOVER_CURE);
 		warrant = new ItemRequirement("Warrant", ItemID.WARRANT);
 		inPlagueHouse = new ZoneRequirement(plagueHouse1, plagueHouse2);
 		inDownstairsOfPlagueHouse = new ZoneRequirement(downstairsOfPlagueHouse);
-		key = new ItemRequirement("A small key", ItemID.A_SMALL_KEY);
+		key = new ItemRequirement("A small key", ItemID.ELENAKEY);
 	}
 
 	@Override
@@ -245,61 +240,61 @@ public class PlagueCity extends BasicQuestHelper
 		hasTriedToPullGrill = new VarbitRequirement(1786, 1);
 		inWestArdougne = new ZoneRequirement(westArdougne1, westArdougne2, westArdougne3);
 		inUpstairsMathasHouse = new ZoneRequirement(upstairsMathasHouse);
-		manholeClosed = new ObjectCondition(ObjectID.MANHOLE_2543);
+		manholeClosed = new ObjectCondition(ObjectID.PLAGUEMANHOLECLOSED);
 	}
 
 	public void setupSteps()
 	{
-		talkToEdmond = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
+		talkToEdmond = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
 		talkToEdmond.addDialogStep("What's happened to her?");
 		talkToEdmond.addDialogStep("Yes.");
 		talkToAlrena = new NpcStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena nearby.", dwellberries);
-		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
-		useWaterOnMudPatch1 = new ObjectStep(this, NullObjectID.NULL_2532, new WorldPoint(2566, 3332, 0),
+		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
+		useWaterOnMudPatch1 = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Use four buckets of water on the mud patch in Edmond's garden patch.", fourBucketsOfWater);
-		useWaterOnMudPatch1.addIcon(ItemID.BUCKET_OF_WATER);
-		useWaterOnMudPatch2 = new ObjectStep(this, NullObjectID.NULL_2532, new WorldPoint(2566, 3332, 0),
+		useWaterOnMudPatch1.addIcon(ItemID.BUCKET_WATER);
+		useWaterOnMudPatch2 = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Use three more buckets of water on the mud patch in Edmond's garden patch.", threeBucketsOfWater);
-		useWaterOnMudPatch2.addIcon(ItemID.BUCKET_OF_WATER);
-		useWaterOnMudPatch3 = new ObjectStep(this, NullObjectID.NULL_2532, new WorldPoint(2566, 3332, 0),
+		useWaterOnMudPatch2.addIcon(ItemID.BUCKET_WATER);
+		useWaterOnMudPatch3 = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Use two more buckets of water on the mud patch in Edmond's garden patch.", twoBucketsOfWater);
-		useWaterOnMudPatch3.addIcon(ItemID.BUCKET_OF_WATER);
-		useWaterOnMudPatch4 = new ObjectStep(this, NullObjectID.NULL_2532, new WorldPoint(2566, 3332, 0),
+		useWaterOnMudPatch3.addIcon(ItemID.BUCKET_WATER);
+		useWaterOnMudPatch4 = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Use one more bucket of water on the mud patch in Edmond's garden patch.", bucketOfWater);
-		useWaterOnMudPatch4.addIcon(ItemID.BUCKET_OF_WATER);
+		useWaterOnMudPatch4.addIcon(ItemID.BUCKET_WATER);
 
 		useWaterOnMudPatch1.addSubSteps(useWaterOnMudPatch2, useWaterOnMudPatch3, useWaterOnMudPatch4);
 
-		digHole = new ObjectStep(this, NullObjectID.NULL_2532, new WorldPoint(2566, 3332, 0),
+		digHole = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Use a spade on the mud patch.", spade);
 		digHole.addIcon(ItemID.SPADE);
 
 		grabPictureOfElena = new DetailedQuestStep(this, new WorldPoint(2576, 3334, 0),
 			"Grab the Picture from Edmond's house.", pictureOfElena);
-		goDownHole = new ObjectStep(this, NullObjectID.NULL_2532, new WorldPoint(2566, 3332, 0),
+		goDownHole = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Go down the hole.");
 
-		attemptToPullGrill = new ObjectStep(this, NullObjectID.NULL_11422, new WorldPoint(2514,9739,0), "Attempt to pull the grill in the south of the sewer.");
-		climbMudPile = new ObjectStep(this, ObjectID.MUD_PILE_2533, new WorldPoint(2519,9760,0), "Climb the mud pile.");
+		attemptToPullGrill = new ObjectStep(this, ObjectID.PLAGUE_GRILL, new WorldPoint(2514,9739,0), "Attempt to pull the grill in the south of the sewer.");
+		climbMudPile = new ObjectStep(this, ObjectID.PLAGUEMUDPILE, new WorldPoint(2519,9760,0), "Climb the mud pile.");
 
 		grabPictureOfElena.addSubSteps(climbMudPile);
 
-		useRopeOnGrill = new ObjectStep(this, NullObjectID.NULL_11422, new WorldPoint(2514,9739,0), "Use a rope on the grill.", rope);
+		useRopeOnGrill = new ObjectStep(this, ObjectID.PLAGUE_GRILL, new WorldPoint(2514,9739,0), "Use a rope on the grill.", rope);
 		useRopeOnGrill.addIcon(ItemID.ROPE);
 
-		talkToEdmondUnderground = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
+		talkToEdmondUnderground = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
 
-		climbThroughPipe = new ObjectStep(this, ObjectID.PIPE, new WorldPoint(2514, 9738, 0), "Equip the gas mask and climb through the pipe.", gasMask.highlighted());
+		climbThroughPipe = new ObjectStep(this, ObjectID.PLAGUESEWERPIPE_OPEN, new WorldPoint(2514, 9738, 0), "Equip the gas mask and climb through the pipe.", gasMask.highlighted());
 
-		talkToJethick = new NpcStep(this, NpcID.JETHICK_8974, new WorldPoint(2540, 3305, 0), "Talk to Jethick east of where you emerge.", gasMask, pictureOfElena);
+		talkToJethick = new NpcStep(this, NpcID.JETHICK_VIS, new WorldPoint(2540, 3305, 0), "Talk to Jethick east of where you emerge.", gasMask, pictureOfElena);
 		talkToJethick.addDialogStep("Yes, I'll return it for you.");
 
-		enterMarthasHouse = new ObjectStep(this, ObjectID.DOOR_2537, new WorldPoint(2531, 3328, 0), "Enter the tall house in north West Ardougne.");
+		enterMarthasHouse = new ObjectStep(this, ObjectID.REHNISONDOORSHUT, new WorldPoint(2531, 3328, 0), "Enter the tall house in north West Ardougne.");
 
 		talkToMartha = new NpcStep(this, NpcID.MARTHA_REHNISON, new WorldPoint(2531, 3331, 0), "Talk to Martha or Ted Renison");
 
-		goUpstairsInMarthasHouse = new ObjectStep(this, ObjectID.STAIRS_2539, new WorldPoint(2528, 3333, 0), "Talk to Milli upstairs.");
-		talkToMilli = new NpcStep(this, NpcID.MILLI_REHNISON, new WorldPoint(2531, 3331, 1), "Talk to Milli.");
+		goUpstairsInMarthasHouse = new ObjectStep(this, ObjectID.REHNISONSTAIRS, new WorldPoint(2528, 3333, 0), "Talk to Milli upstairs.");
+		talkToMilli = new NpcStep(this, NpcID.MILLI, new WorldPoint(2531, 3331, 1), "Talk to Milli.");
 		goUpstairsInMarthasHouse.addSubSteps(talkToMilli);
 
 		tryToEnterPlagueHouse = new ObjectStep(this, NullObjectID.NULL_37321, new WorldPoint(2540, 3273, 0), "Try to enter the house in the south-east corner of West Ardougne.");
@@ -327,22 +322,22 @@ public class PlagueCity extends BasicQuestHelper
 
 		tryToEnterPlagueHouseAgain = new ObjectStep(this, NullObjectID.NULL_37321, new WorldPoint(2540, 3273, 0), "Try to enter the plague house again.", warrant);
 
-		searchBarrel = new ObjectStep(this, ObjectID.BARREL_2530, new WorldPoint(2534, 3268, 0), "Search the barrel in the room for a small key.");
+		searchBarrel = new ObjectStep(this, ObjectID.PLAGUEKEYBARREL, new WorldPoint(2534, 3268, 0), "Search the barrel in the room for a small key.");
 
-		goDownstairsInPlagueHouse = new ObjectStep(this, ObjectID.SPOOKY_STAIRS, new WorldPoint(2537, 3269, 0), "Go downstairs.", key);
-		goUpstairsInPlagueHouse = new ObjectStep(this, ObjectID.SPOOKY_STAIRS_2523, new WorldPoint(2537, 9672, 0), "Go back upstairs to get the key for Elena's cell.");
+		goDownstairsInPlagueHouse = new ObjectStep(this, ObjectID.PLAGUEHOUSESTAIRSDOWN, new WorldPoint(2537, 3269, 0), "Go downstairs.", key);
+		goUpstairsInPlagueHouse = new ObjectStep(this, ObjectID.PLAGUEHOUSESTAIRSUP, new WorldPoint(2537, 9672, 0), "Go back upstairs to get the key for Elena's cell.");
 		searchBarrel.addSubSteps(goUpstairsInPlagueHouse);
 
-		talkToElena = new NpcStep(this, NpcID.ELENA_4257, new WorldPoint(2541, 9671, 0), "Enter the jail and talk to Elena.", key);
+		talkToElena = new NpcStep(this, NpcID.ELENAP_VIS, new WorldPoint(2541, 9671, 0), "Enter the jail and talk to Elena.", key);
 
-		goUpstairsInPlagueHouseToFinish = new ObjectStep(this, ObjectID.SPOOKY_STAIRS_2523, new WorldPoint(2537, 9672, 0), "Go back upstairs and return to Edmond to finish the quest.");
+		goUpstairsInPlagueHouseToFinish = new ObjectStep(this, ObjectID.PLAGUEHOUSESTAIRSUP, new WorldPoint(2537, 9672, 0), "Go back upstairs and return to Edmond to finish the quest.");
 
-		goDownManhole = new ObjectStep(this, ObjectID.MANHOLE_2544, new WorldPoint(2529, 3303, 0), "Go back down the manhole to return to Edmond.");
-		goDownManhole2 = new ObjectStep(this, ObjectID.MANHOLE_2543, new WorldPoint(2529, 3303, 0), "Go back down the manhole to return to Edmond.");
+		goDownManhole = new ObjectStep(this, ObjectID.PLAGUEMANHOLEOPEN, new WorldPoint(2529, 3303, 0), "Go back down the manhole to return to Edmond.");
+		goDownManhole2 = new ObjectStep(this, ObjectID.PLAGUEMANHOLECLOSED, new WorldPoint(2529, 3303, 0), "Go back down the manhole to return to Edmond.");
 
-		climbMudPileToFinish = new ObjectStep(this, ObjectID.MUD_PILE_2533, new WorldPoint(2519,9760,0), "Climb the mud pile to return to Edmond.");
+		climbMudPileToFinish = new ObjectStep(this, ObjectID.PLAGUEMUDPILE, new WorldPoint(2519,9760,0), "Climb the mud pile to return to Edmond.");
 
-		talkToEdmondToFinish = new NpcStep(this, NpcID.EDMOND_4256, new WorldPoint(2568, 3333, 0), "Return to Edmond to finish the quest.");
+		talkToEdmondToFinish = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3333, 0), "Return to Edmond to finish the quest.");
 		talkToEdmondToFinish.addSubSteps(goUpstairsInPlagueHouseToFinish, goDownManhole, goDownManhole2, climbMudPileToFinish);
 	}
 

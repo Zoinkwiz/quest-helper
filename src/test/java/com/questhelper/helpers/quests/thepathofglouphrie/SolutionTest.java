@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -174,16 +174,16 @@ public class SolutionTest extends MockedTest
 				// BOTTOM PUZZLE: INDIGO TRIANGLE (18)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.RED_CIRCLE, 1),
-						new Item(ItemID.RED_TRIANGLE, 1),
-						new Item(ItemID.RED_SQUARE, 1),
-						new Item(ItemID.YELLOW_SQUARE, 1),
-						new Item(ItemID.YELLOW_PENTAGON, 1),
-						new Item(ItemID.YELLOW_TRIANGLE, 1),
-						new Item(ItemID.BLUE_TRIANGLE, 1),
-						new Item(ItemID.BLUE_SQUARE, 1),
-						new Item(ItemID.BLUE_PENTAGON, 2),
-						new Item(ItemID.VIOLET_SQUARE, 3)
+						new Item(ItemID.EYEGLO_RED_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_RED_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_RED_SQUARE, 1),
+						new Item(ItemID.EYEGLO_YELLOW_SQUARE, 1),
+						new Item(ItemID.EYEGLO_YELLOW_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_YELLOW_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_BLUE_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 1),
+						new Item(ItemID.EYEGLO_BLUE_PENTAGON, 2),
+						new Item(ItemID.EYEGLO_VIOLET_SQUARE, 3)
 					),
 					15,
 					18
@@ -192,9 +192,9 @@ public class SolutionTest extends MockedTest
 				// BOTTOM PUZZLE: VIOLET SQUARE (28)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.BLUE_SQUARE, 1),
-						new Item(ItemID.GREEN_TRIANGLE, 1),
-						new Item(ItemID.GREEN_SQUARE, 1)
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 1),
+						new Item(ItemID.EYEGLO_GREEN_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 1)
 					),
 					20,
 					28
@@ -203,18 +203,18 @@ public class SolutionTest extends MockedTest
 				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.ORANGE_CIRCLE, 2),
-						new Item(ItemID.RED_CIRCLE, 1),
-						new Item(ItemID.GREEN_CIRCLE, 1),
-						new Item(ItemID.BLUE_SQUARE, 2),
-						new Item(ItemID.VIOLET_TRIANGLE, 1),
-						new Item(ItemID.INDIGO_SQUARE, 1),
-						new Item(ItemID.BLUE_PENTAGON, 2),
-						new Item(ItemID.VIOLET_SQUARE, 1),
-						new Item(ItemID.INDIGO_PENTAGON, 2),
-						new Item(ItemID.GREEN_TRIANGLE, 1),
-						new Item(ItemID.INDIGO_CIRCLE, 1),
-						new Item(ItemID.ORANGE_PENTAGON, 1)
+						new Item(ItemID.EYEGLO_ORANGE_CIRCLE, 2),
+						new Item(ItemID.EYEGLO_RED_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_GREEN_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 2),
+						new Item(ItemID.EYEGLO_VIOLET_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_SQUARE, 1),
+						new Item(ItemID.EYEGLO_BLUE_PENTAGON, 2),
+						new Item(ItemID.EYEGLO_VIOLET_SQUARE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_PENTAGON, 2),
+						new Item(ItemID.EYEGLO_GREEN_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_ORANGE_PENTAGON, 1)
 					),
 					12,
 					7
@@ -223,16 +223,16 @@ public class SolutionTest extends MockedTest
 				// BOTTOM PUZZLE: INDIGO TRIANGLE (18)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.RED_CIRCLE, 1),
-						new Item(ItemID.RED_TRIANGLE, 1),
-						new Item(ItemID.RED_SQUARE, 1),
-						new Item(ItemID.YELLOW_SQUARE, 1),
-						new Item(ItemID.YELLOW_PENTAGON, 1),
-						new Item(ItemID.YELLOW_TRIANGLE, 1),
-						new Item(ItemID.BLUE_TRIANGLE, 1),
-						new Item(ItemID.BLUE_SQUARE, 1),
-						new Item(ItemID.BLUE_PENTAGON, 2),
-						new Item(ItemID.VIOLET_SQUARE, 3)
+						new Item(ItemID.EYEGLO_RED_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_RED_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_RED_SQUARE, 1),
+						new Item(ItemID.EYEGLO_YELLOW_SQUARE, 1),
+						new Item(ItemID.EYEGLO_YELLOW_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_YELLOW_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_BLUE_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 1),
+						new Item(ItemID.EYEGLO_BLUE_PENTAGON, 2),
+						new Item(ItemID.EYEGLO_VIOLET_SQUARE, 3)
 					),
 					15,
 					56
@@ -241,17 +241,17 @@ public class SolutionTest extends MockedTest
 				// BOTTOM PUZZLE: GREEN PENTAGON (20)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.GREEN_SQUARE, 1),
-						new Item(ItemID.INDIGO_TRIANGLE, 2),
-						new Item(ItemID.VIOLET_TRIANGLE, 1),
-						new Item(ItemID.INDIGO_SQUARE, 1),
-						new Item(ItemID.BLUE_PENTAGON, 1),
-						new Item(ItemID.VIOLET_SQUARE, 1),
-						new Item(ItemID.INDIGO_PENTAGON, 1),
-						new Item(ItemID.RED_CIRCLE, 1),
-						new Item(ItemID.ORANGE_CIRCLE, 1),
-						new Item(ItemID.YELLOW_TRIANGLE, 1),
-						new Item(ItemID.RED_SQUARE, 1)
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_TRIANGLE, 2),
+						new Item(ItemID.EYEGLO_VIOLET_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_SQUARE, 1),
+						new Item(ItemID.EYEGLO_BLUE_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_VIOLET_SQUARE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_RED_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_ORANGE_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_YELLOW_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_RED_SQUARE, 1)
 					),
 					9,
 					20
@@ -289,41 +289,41 @@ public class SolutionTest extends MockedTest
 				Arguments.of(
 					1,
 					List.of(
-						ItemID.RED_PENTAGON,
-						ItemID.ORANGE_TRIANGLE,
-						ItemID.ORANGE_SQUARE,
-						ItemID.ORANGE_PENTAGON,
-						ItemID.YELLOW_TRIANGLE,
-						ItemID.YELLOW_SQUARE,
-						ItemID.YELLOW_PENTAGON,
-						ItemID.GREEN_TRIANGLE,
-						ItemID.GREEN_SQUARE,
-						ItemID.GREEN_PENTAGON,
-						ItemID.BLUE_CIRCLE,
-						ItemID.BLUE_TRIANGLE,
-						ItemID.BLUE_SQUARE,
-						ItemID.BLUE_PENTAGON,
-						ItemID.INDIGO_CIRCLE,
-						ItemID.INDIGO_TRIANGLE,
-						ItemID.INDIGO_SQUARE,
-						ItemID.INDIGO_PENTAGON,
-						ItemID.VIOLET_CIRCLE,
-						ItemID.VIOLET_TRIANGLE,
-						ItemID.VIOLET_SQUARE,
-						ItemID.VIOLET_PENTAGON
+						ItemID.EYEGLO_RED_PENTAGON,
+						ItemID.EYEGLO_ORANGE_TRIANGLE,
+						ItemID.EYEGLO_ORANGE_SQUARE,
+						ItemID.EYEGLO_ORANGE_PENTAGON,
+						ItemID.EYEGLO_YELLOW_TRIANGLE,
+						ItemID.EYEGLO_YELLOW_SQUARE,
+						ItemID.EYEGLO_YELLOW_PENTAGON,
+						ItemID.EYEGLO_GREEN_TRIANGLE,
+						ItemID.EYEGLO_GREEN_SQUARE,
+						ItemID.EYEGLO_GREEN_PENTAGON,
+						ItemID.EYEGLO_BLUE_CIRCLE,
+						ItemID.EYEGLO_BLUE_TRIANGLE,
+						ItemID.EYEGLO_BLUE_SQUARE,
+						ItemID.EYEGLO_BLUE_PENTAGON,
+						ItemID.EYEGLO_INDIGO_CIRCLE,
+						ItemID.EYEGLO_INDIGO_TRIANGLE,
+						ItemID.EYEGLO_INDIGO_SQUARE,
+						ItemID.EYEGLO_INDIGO_PENTAGON,
+						ItemID.EYEGLO_VIOLET_CIRCLE,
+						ItemID.EYEGLO_VIOLET_TRIANGLE,
+						ItemID.EYEGLO_VIOLET_SQUARE,
+						ItemID.EYEGLO_VIOLET_PENTAGON
 					)
 				),
 				Arguments.of(
 					30,
-					List.of(ItemID.VIOLET_PENTAGON)
+					List.of(ItemID.EYEGLO_VIOLET_PENTAGON)
 				),
 				Arguments.of(
 					28,
-					List.of(ItemID.VIOLET_PENTAGON, ItemID.INDIGO_PENTAGON)
+					List.of(ItemID.EYEGLO_VIOLET_PENTAGON, ItemID.EYEGLO_INDIGO_PENTAGON)
 				),
 				Arguments.of(
 					25,
-					List.of(ItemID.VIOLET_PENTAGON, ItemID.VIOLET_SQUARE, ItemID.INDIGO_PENTAGON)
+					List.of(ItemID.EYEGLO_VIOLET_PENTAGON, ItemID.EYEGLO_VIOLET_SQUARE, ItemID.EYEGLO_INDIGO_PENTAGON)
 				)
 			);
 		}
@@ -340,9 +340,9 @@ public class SolutionTest extends MockedTest
 			return Stream.of(
 				Arguments.of(
 					List.of(
-						new Item(ItemID.BLUE_SQUARE, 1),
-						new Item(ItemID.RED_CIRCLE, 1),
-						new Item(ItemID.GREEN_SQUARE, 1)
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 1),
+						new Item(ItemID.EYEGLO_RED_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 1)
 					),
 					20,
 					28
@@ -351,15 +351,15 @@ public class SolutionTest extends MockedTest
 				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.ORANGE_PENTAGON, 1),
-						new Item(ItemID.GREEN_TRIANGLE, 1),
-						new Item(ItemID.YELLOW_PENTAGON, 1),
-						new Item(ItemID.BLUE_SQUARE, 2),
-						new Item(ItemID.VIOLET_TRIANGLE, 1),
-						new Item(ItemID.INDIGO_SQUARE, 1),
-						new Item(ItemID.BLUE_PENTAGON, 2),
-						new Item(ItemID.VIOLET_SQUARE, 1),
-						new Item(ItemID.INDIGO_PENTAGON, 2)
+						new Item(ItemID.EYEGLO_ORANGE_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_GREEN_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_YELLOW_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 2),
+						new Item(ItemID.EYEGLO_VIOLET_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_SQUARE, 1),
+						new Item(ItemID.EYEGLO_BLUE_PENTAGON, 2),
+						new Item(ItemID.EYEGLO_VIOLET_SQUARE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_PENTAGON, 2)
 					),
 					12,
 					7
@@ -368,11 +368,11 @@ public class SolutionTest extends MockedTest
 				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.ORANGE_PENTAGON, 3),
-						new Item(ItemID.GREEN_SQUARE, 3),
-						new Item(ItemID.INDIGO_TRIANGLE, 1),
-						new Item(ItemID.GREEN_PENTAGON, 1),
-						new Item(ItemID.INDIGO_SQUARE, 1)
+						new Item(ItemID.EYEGLO_ORANGE_PENTAGON, 3),
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 3),
+						new Item(ItemID.EYEGLO_INDIGO_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_GREEN_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_INDIGO_SQUARE, 1)
 					),
 					20,
 					7
@@ -394,128 +394,128 @@ public class SolutionTest extends MockedTest
 				// BOTTOM PUZZLE: INDIGO TRIANGLE (18)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.RED_CIRCLE, 1),			// 1
-						new Item(ItemID.RED_TRIANGLE, 1),		// 3
-						new Item(ItemID.RED_SQUARE, 1),			// 4
-						new Item(ItemID.YELLOW_SQUARE, 1),		// 12
-						new Item(ItemID.YELLOW_PENTAGON, 1),	// 15
-						new Item(ItemID.YELLOW_TRIANGLE, 1),	// 9
-						new Item(ItemID.BLUE_SQUARE, 1),		// 20
-						new Item(ItemID.BLUE_PENTAGON, 2),		// 25
-						new Item(ItemID.VIOLET_SQUARE, 3)		// 28
+						new Item(ItemID.EYEGLO_RED_CIRCLE, 1),			// 1
+						new Item(ItemID.EYEGLO_RED_TRIANGLE, 1),		// 3
+						new Item(ItemID.EYEGLO_RED_SQUARE, 1),			// 4
+						new Item(ItemID.EYEGLO_YELLOW_SQUARE, 1),		// 12
+						new Item(ItemID.EYEGLO_YELLOW_PENTAGON, 1),	// 15
+						new Item(ItemID.EYEGLO_YELLOW_TRIANGLE, 1),	// 9
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 1),		// 20
+						new Item(ItemID.EYEGLO_BLUE_PENTAGON, 2),		// 25
+						new Item(ItemID.EYEGLO_VIOLET_SQUARE, 3)		// 28
 					),
 					15,
 					18,
-					List.of(ItemID.BLUE_SQUARE),
+					List.of(ItemID.EYEGLO_BLUE_SQUARE),
 					List.of(
-						ItemID.YELLOW_PENTAGON, // Would make a valid solution
-						ItemID.BLUE_TRIANGLE, // Would make a valid solution
-						ItemID.YELLOW_CIRCLE, // Would NOT make a fully valid solution
-						ItemID.RED_TRIANGLE // Would NOT make a fully valid solution
+						ItemID.EYEGLO_YELLOW_PENTAGON, // Would make a valid solution
+						ItemID.EYEGLO_BLUE_TRIANGLE, // Would make a valid solution
+						ItemID.EYEGLO_YELLOW_CIRCLE, // Would NOT make a fully valid solution
+						ItemID.EYEGLO_RED_TRIANGLE // Would NOT make a fully valid solution
 					)
 				),
 				Arguments.of(
 					List.of(
-						new Item(ItemID.BLUE_SQUARE, 1),
-						new Item(ItemID.RED_CIRCLE, 1),
-						new Item(ItemID.GREEN_SQUARE, 1),
-						new Item(ItemID.INDIGO_PENTAGON, 1)
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 1),
+						new Item(ItemID.EYEGLO_RED_CIRCLE, 1),
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_PENTAGON, 1)
 					),
 					20, // blue square gets consumed here
 					28,
-					List.of(ItemID.INDIGO_PENTAGON),
-					List.of(ItemID.YELLOW_SQUARE, ItemID.GREEN_TRIANGLE, ItemID.GREEN_SQUARE)
+					List.of(ItemID.EYEGLO_INDIGO_PENTAGON),
+					List.of(ItemID.EYEGLO_YELLOW_SQUARE, ItemID.EYEGLO_GREEN_TRIANGLE, ItemID.EYEGLO_GREEN_SQUARE)
 				),
 				// TOP PUZZLE: YELLOW TRIANGLE (9) + GREEN TRIANGLE (12)
 				// BOTTOM PUZZLE: BLUE TRIANGLE (15)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.YELLOW_TRIANGLE, 5),
-						new Item(ItemID.ORANGE_PENTAGON, 6),
-						new Item(ItemID.YELLOW_SQUARE, 7),
-						new Item(ItemID.GREEN_TRIANGLE, 5),
-						new Item(ItemID.YELLOW_PENTAGON, 2),
-						new Item(ItemID.GREEN_SQUARE, 1),
-						new Item(ItemID.GREEN_PENTAGON, 1),
-						new Item(ItemID.BLUE_SQUARE, 1),
-						new Item(ItemID.VIOLET_TRIANGLE, 6),
-						new Item(ItemID.INDIGO_SQUARE, 2)
+						new Item(ItemID.EYEGLO_YELLOW_TRIANGLE, 5),
+						new Item(ItemID.EYEGLO_ORANGE_PENTAGON, 6),
+						new Item(ItemID.EYEGLO_YELLOW_SQUARE, 7),
+						new Item(ItemID.EYEGLO_GREEN_TRIANGLE, 5),
+						new Item(ItemID.EYEGLO_YELLOW_PENTAGON, 2),
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 1),
+						new Item(ItemID.EYEGLO_GREEN_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 1),
+						new Item(ItemID.EYEGLO_VIOLET_TRIANGLE, 6),
+						new Item(ItemID.EYEGLO_INDIGO_SQUARE, 2)
 					),
 					21,
 					15,
-					List.of(ItemID.ORANGE_PENTAGON),
-					List.of(ItemID.RED_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.YELLOW_SQUARE, ItemID.GREEN_TRIANGLE)
+					List.of(ItemID.EYEGLO_ORANGE_PENTAGON),
+					List.of(ItemID.EYEGLO_RED_TRIANGLE, ItemID.EYEGLO_YELLOW_CIRCLE, ItemID.EYEGLO_YELLOW_SQUARE, ItemID.EYEGLO_GREEN_TRIANGLE)
 				),
 				// TOP PUZZLE: BLUE CIRCLE + YELLOW PENTAGON (20)
 				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.ORANGE_PENTAGON, 3),
-						new Item(ItemID.GREEN_SQUARE, 3),
-						new Item(ItemID.INDIGO_TRIANGLE, 1),
-						new Item(ItemID.GREEN_PENTAGON, 1),
-						new Item(ItemID.INDIGO_SQUARE, 1)
+						new Item(ItemID.EYEGLO_ORANGE_PENTAGON, 3),
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 3),
+						new Item(ItemID.EYEGLO_INDIGO_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_GREEN_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_INDIGO_SQUARE, 1)
 					),
 					20,
 					7,
-					List.of(ItemID.INDIGO_TRIANGLE, ItemID.INDIGO_SQUARE, ItemID.ORANGE_PENTAGON, ItemID.GREEN_SQUARE, ItemID.GREEN_PENTAGON),
-					List.of(ItemID.RED_CIRCLE, ItemID.RED_TRIANGLE, ItemID.RED_SQUARE, ItemID.RED_PENTAGON, ItemID.ORANGE_CIRCLE, ItemID.ORANGE_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.GREEN_CIRCLE, ItemID.BLUE_CIRCLE, ItemID.INDIGO_CIRCLE)
+					List.of(ItemID.EYEGLO_INDIGO_TRIANGLE, ItemID.EYEGLO_INDIGO_SQUARE, ItemID.EYEGLO_ORANGE_PENTAGON, ItemID.EYEGLO_GREEN_SQUARE, ItemID.EYEGLO_GREEN_PENTAGON),
+					List.of(ItemID.EYEGLO_RED_CIRCLE, ItemID.EYEGLO_RED_TRIANGLE, ItemID.EYEGLO_RED_SQUARE, ItemID.EYEGLO_RED_PENTAGON, ItemID.EYEGLO_ORANGE_CIRCLE, ItemID.EYEGLO_ORANGE_TRIANGLE, ItemID.EYEGLO_YELLOW_CIRCLE, ItemID.EYEGLO_GREEN_CIRCLE, ItemID.EYEGLO_BLUE_CIRCLE, ItemID.EYEGLO_INDIGO_CIRCLE)
 				),
 				// TOP PUZZLE: BLUE CIRCLE + YELLOW PENTAGON (20)
 				// BOTTOM PUZZLE: VIOLET CIRCLE (7)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.YELLOW_TRIANGLE, 3),
-						new Item(ItemID.ORANGE_PENTAGON, 5),
-						new Item(ItemID.YELLOW_SQUARE, 6),
-						new Item(ItemID.GREEN_TRIANGLE, 6),
-						new Item(ItemID.YELLOW_PENTAGON, 2),
-						new Item(ItemID.GREEN_SQUARE, 8),
-						new Item(ItemID.INDIGO_TRIANGLE, 4),
-						new Item(ItemID.GREEN_PENTAGON, 5),
-						new Item(ItemID.BLUE_SQUARE, 4),
-						new Item(ItemID.VIOLET_TRIANGLE, 2),
-						new Item(ItemID.INDIGO_SQUARE, 4),
-						new Item(ItemID.BLUE_PENTAGON, 1),
-						new Item(ItemID.VIOLET_SQUARE, 1),
-						new Item(ItemID.INDIGO_PENTAGON, 3)
+						new Item(ItemID.EYEGLO_YELLOW_TRIANGLE, 3),
+						new Item(ItemID.EYEGLO_ORANGE_PENTAGON, 5),
+						new Item(ItemID.EYEGLO_YELLOW_SQUARE, 6),
+						new Item(ItemID.EYEGLO_GREEN_TRIANGLE, 6),
+						new Item(ItemID.EYEGLO_YELLOW_PENTAGON, 2),
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 8),
+						new Item(ItemID.EYEGLO_INDIGO_TRIANGLE, 4),
+						new Item(ItemID.EYEGLO_GREEN_PENTAGON, 5),
+						new Item(ItemID.EYEGLO_BLUE_SQUARE, 4),
+						new Item(ItemID.EYEGLO_VIOLET_TRIANGLE, 2),
+						new Item(ItemID.EYEGLO_INDIGO_SQUARE, 4),
+						new Item(ItemID.EYEGLO_BLUE_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_VIOLET_SQUARE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_PENTAGON, 3)
 					),
 					20,
 					7,
 					List.of(
-						ItemID.YELLOW_TRIANGLE,
-						ItemID.ORANGE_PENTAGON,
-						ItemID.YELLOW_SQUARE,
-						ItemID.YELLOW_PENTAGON,
-						ItemID.GREEN_SQUARE,
-						ItemID.INDIGO_TRIANGLE,
-						ItemID.GREEN_PENTAGON,
-						ItemID.GREEN_TRIANGLE,
-						ItemID.BLUE_SQUARE,
-						ItemID.VIOLET_TRIANGLE,
-						ItemID.INDIGO_SQUARE,
-						ItemID.BLUE_PENTAGON,
-						ItemID.VIOLET_SQUARE,
-						ItemID.INDIGO_PENTAGON
+						ItemID.EYEGLO_YELLOW_TRIANGLE,
+						ItemID.EYEGLO_ORANGE_PENTAGON,
+						ItemID.EYEGLO_YELLOW_SQUARE,
+						ItemID.EYEGLO_YELLOW_PENTAGON,
+						ItemID.EYEGLO_GREEN_SQUARE,
+						ItemID.EYEGLO_INDIGO_TRIANGLE,
+						ItemID.EYEGLO_GREEN_PENTAGON,
+						ItemID.EYEGLO_GREEN_TRIANGLE,
+						ItemID.EYEGLO_BLUE_SQUARE,
+						ItemID.EYEGLO_VIOLET_TRIANGLE,
+						ItemID.EYEGLO_INDIGO_SQUARE,
+						ItemID.EYEGLO_BLUE_PENTAGON,
+						ItemID.EYEGLO_VIOLET_SQUARE,
+						ItemID.EYEGLO_INDIGO_PENTAGON
 					),
-					List.of(ItemID.RED_CIRCLE, ItemID.RED_TRIANGLE, ItemID.RED_SQUARE, ItemID.RED_PENTAGON, ItemID.ORANGE_CIRCLE, ItemID.ORANGE_TRIANGLE, ItemID.YELLOW_CIRCLE, ItemID.GREEN_CIRCLE, ItemID.BLUE_CIRCLE, ItemID.INDIGO_CIRCLE)
+					List.of(ItemID.EYEGLO_RED_CIRCLE, ItemID.EYEGLO_RED_TRIANGLE, ItemID.EYEGLO_RED_SQUARE, ItemID.EYEGLO_RED_PENTAGON, ItemID.EYEGLO_ORANGE_CIRCLE, ItemID.EYEGLO_ORANGE_TRIANGLE, ItemID.EYEGLO_YELLOW_CIRCLE, ItemID.EYEGLO_GREEN_CIRCLE, ItemID.EYEGLO_BLUE_CIRCLE, ItemID.EYEGLO_INDIGO_CIRCLE)
 				),
 				// TOP PUZZLE: RED CIRCLE + ORANGE SQUARE (9)
 				// BOTTOM PUZZLE: GREEN PENTAGON (20)
 				Arguments.of(
 					List.of(
-						new Item(ItemID.GREEN_SQUARE, 2),
-						new Item(ItemID.INDIGO_TRIANGLE, 2),
-						new Item(ItemID.VIOLET_TRIANGLE, 1),
-						new Item(ItemID.INDIGO_SQUARE, 1),
-						new Item(ItemID.BLUE_PENTAGON, 1),
-						new Item(ItemID.VIOLET_SQUARE, 1),
-						new Item(ItemID.INDIGO_PENTAGON, 1)
+						new Item(ItemID.EYEGLO_GREEN_SQUARE, 2),
+						new Item(ItemID.EYEGLO_INDIGO_TRIANGLE, 2),
+						new Item(ItemID.EYEGLO_VIOLET_TRIANGLE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_SQUARE, 1),
+						new Item(ItemID.EYEGLO_BLUE_PENTAGON, 1),
+						new Item(ItemID.EYEGLO_VIOLET_SQUARE, 1),
+						new Item(ItemID.EYEGLO_INDIGO_PENTAGON, 1)
 					),
 					9,
 					20,
-					List.of(ItemID.GREEN_SQUARE),
-					List.of(ItemID.YELLOW_TRIANGLE)
+					List.of(ItemID.EYEGLO_GREEN_SQUARE),
+					List.of(ItemID.EYEGLO_YELLOW_TRIANGLE)
 				)
 			);
 		}

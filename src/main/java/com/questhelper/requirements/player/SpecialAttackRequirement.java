@@ -29,6 +29,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.SpecialAttack;
 import net.runelite.api.Client;
+
 import javax.annotation.Nonnull;
 
 public class SpecialAttackRequirement extends AbstractRequirement

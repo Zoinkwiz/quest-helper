@@ -24,33 +24,30 @@
  */
 package com.questhelper.helpers.achievementdiaries.karamja;
 
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class KaramjaElite extends ComplexStateQuestHelper
 {
@@ -110,16 +107,16 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		notCheckedCalquat = new VarplayerRequirement(1200, false, 5);
 
 		natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
-			ItemID.NATURE_TIARA).showConditioned(notCraftedRunes).isNotConsumed();
-		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedRunes);
-		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.FIRE_CAPE)
+			ItemID.TIARA_NATURE).showConditioned(notCraftedRunes).isNotConsumed();
+		pureEssence = new ItemRequirement("Pure essence", ItemID.BLANKRUNE_HIGH).showConditioned(notCraftedRunes);
+		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.TZHAAR_CAPE_FIRE)
 			.showConditioned(notEquippedCape).isNotConsumed();
 		fireCapeOrInfernal.addAlternates(ItemID.INFERNAL_CAPE);
-		palmTreeSapling = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING).showConditioned(notCheckedPalm);
-		antidotePlusPlus = new ItemRequirement("Antidote++", ItemID.ANTIDOTE4_5952).showConditioned(notMadePotion);
-		antidotePlusPlus.addAlternates(ItemID.ANTIDOTE3_5954, ItemID.ANTIDOTE2_5956, ItemID.ANTIDOTE1_5958);
-		zulrahScales = new ItemRequirement("Zulrah scales", ItemID.ZULRAHS_SCALES).showConditioned(notMadePotion);
-		calquatSapling = new ItemRequirement("Calquat sapling", ItemID.CALQUAT_SAPLING).showConditioned(notCheckedCalquat);
+		palmTreeSapling = new ItemRequirement("Palm tree sapling", ItemID.PLANTPOT_PALM_SAPLING).showConditioned(notCheckedPalm);
+		antidotePlusPlus = new ItemRequirement("Antidote++", ItemID.ANTIDOTE__4).showConditioned(notMadePotion);
+		antidotePlusPlus.addAlternates(ItemID.ANTIDOTE__3, ItemID.ANTIDOTE__2, ItemID.ANTIDOTE__1);
+		zulrahScales = new ItemRequirement("Zulrah scales", ItemID.SNAKEBOSS_SCALE).showConditioned(notMadePotion);
+		calquatSapling = new ItemRequirement("Calquat sapling", ItemID.PLANTPOT_CALQUAT_SAPLING).showConditioned(notCheckedCalquat);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
 			notCheckedPalm)).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
@@ -142,14 +139,14 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
 			"Enter the nature altar, either from the ruin or through the Abyss.", natureTiaraOrAbyss,
 			pureEssence.quantity(28));
-		craftRunes = new ObjectStep(this, ObjectID.ALTAR_34768, new WorldPoint(2400, 4841, 0),
+		craftRunes = new ObjectStep(this, ObjectID.NATURE_ALTAR, new WorldPoint(2400, 4841, 0),
 			"Craft a full inventory of nature runes.", pureEssence.quantity(28));
 		equipCape = new DetailedQuestStep(this, "Equip a fire or infernal cape.", fireCapeOrInfernal.equipped());
-		checkPalm = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
+		checkPalm = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Grow and check the health of a palm tree in the Brimhaven patch. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			palmTreeSapling, rake, spade);
-		checkCalquat = new ObjectStep(this, NullObjectID.NULL_7807, new WorldPoint(2796, 3101, 0),
+		checkCalquat = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH, new WorldPoint(2796, 3101, 0),
 			"Grow and check the health of a Calquat in Tai Bwo Wannai. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			calquatSapling, rake, spade);
@@ -159,7 +156,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 			"Make an antivenom potion whilst standing in the horse shoe mine.",
 			antidotePlusPlus.highlighted(), zulrahScales.quantity(20).highlighted());
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
+		claimReward = new NpcStep(this, NpcID.AGILITYARENA_TICKETTRADER_2OPS, new WorldPoint(2810, 3192, 0),
 			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -186,8 +183,8 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Karamja Gloves (4)", ItemID.KARAMJA_GLOVES_4, 1),
-			new ItemReward("50,000 Exp. Lamp (Any skill above level 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Karamja Gloves (4)", ItemID.ATJUN_GLOVES_ELITE, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill above level 70)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

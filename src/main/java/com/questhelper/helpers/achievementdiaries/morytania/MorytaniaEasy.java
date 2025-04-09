@@ -24,42 +24,36 @@
  */
 package com.questhelper.helpers.achievementdiaries.morytania;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
-import static com.questhelper.requirements.util.LogicHelper.and;
+
 import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class MorytaniaEasy extends ComplexStateQuestHelper
@@ -166,29 +160,29 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).showConditioned(notCraftSnelm).isNotConsumed();
 		snailShell = new ItemRequirement("Blamish snail shell", ItemCollections.SNAIL_SHELLS)
 			.showConditioned(notCraftSnelm);
-		thinSnail = new ItemRequirement("Thin snail", ItemID.THIN_SNAIL).showConditioned(notCookSnail);
+		thinSnail = new ItemRequirement("Thin snail", ItemID.SNAIL_CORPSE1).showConditioned(notCookSnail);
 		tannableHide = new ItemRequirement("Tannable hide", ItemCollections.TANNABLE_HIDE).showConditioned(notSbottTan);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notSbottTan);
-		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlaceScarecrow);
-		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
+		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW_COMPLETE).showConditioned(notPlaceScarecrow);
+		haySack = new ItemRequirement("Hay Sack", ItemID.SCARECROW_TORSO);
 		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR);
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlaceScarecrow).isNotConsumed();
-		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK);
+		emptySack = new ItemRequirement("Empty Sack", ItemID.SACK_EMPTY);
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
 		// TODO: This whole process needs to be improved in the helper, such as recommending the sub-items beforehand if no scarecrow
 		scarecrowItems = new ItemRequirements(LogicType.OR, "1 x Scarecrow", scarecrow, new ItemRequirements(sack,
 			watermelon, bronzeSpear));
 		scarecrowItems.setTooltip("Created by combining a bronze spear, watermelon, and hay sack " +
 			"(empty sack filled at a hay bale, nearest is North-West of Lumbridge)");
-		scarecrowStep2 = new ItemRequirement("Hay Sack", ItemID.HAY_SACK_6058);
+		scarecrowStep2 = new ItemRequirement("Hay Sack", ItemID.SCARECROW_TORSO_SPEAR);
 		bonemeal = new ItemRequirement("Bonemeal", ItemCollections.BONEMEAL).showConditioned(notOfferBonemeal);
-		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_OF_SLIME).showConditioned(notOfferBonemeal);
-		wolfbane = new ItemRequirement("Wolfbane dagger", ItemID.WOLFBANE).showConditioned(notKillWerewolf).isNotConsumed();
+		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_ECTOPLASM).showConditioned(notOfferBonemeal);
+		wolfbane = new ItemRequirement("Wolfbane dagger", ItemID.DAGGER_WOLFBANE).showConditioned(notKillWerewolf).isNotConsumed();
 		wolfbane.setTooltip("Can be reclaimed by talking to Drezel in the dungeon below Paterdomus");
 		bones = new ItemRequirement("Bones", ItemCollections.BONES).showConditioned(notOfferBonemeal);
-		pot = new ItemRequirement("Pot", ItemID.POT).showConditioned(notOfferBonemeal);
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notOfferBonemeal);
+		pot = new ItemRequirement("Pot", ItemID.POT_EMPTY).showConditioned(notOfferBonemeal);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY).showConditioned(notOfferBonemeal);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -196,7 +190,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		earProtection = new ItemRequirement("Ear protection", ItemCollections.EAR_PROTECTION).showConditioned(notKillBanshee).isNotConsumed();
 		ectoToken = new ItemRequirement("Ecto-Token", ItemID.ECTOTOKEN).showConditioned(notCookSnail);
-		ghostSpeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET).showConditioned(notCookSnail).isNotConsumed();
+		ghostSpeak = new ItemRequirement("Ghostspeak amulet", ItemID.AMULET_OF_GHOSTSPEAK).showConditioned(notCookSnail).isNotConsumed();
 
 		inGrotto = new ZoneRequirement(grotto);
 		inBonezone = new ZoneRequirement(bonezone);
@@ -218,55 +212,55 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	{
 		killGhoul = new NpcStep(this, NpcID.GHOUL, new WorldPoint(3434, 3461, 0),
 			"Kill a ghoul in Morytania.", combatGear);
-		enterSwamp = new ObjectStep(this, ObjectID.GATE_3507, new WorldPoint(3443, 3458, 0),
+		enterSwamp = new ObjectStep(this, ObjectID.MORTMYRE_METALGATECLOSED_R, new WorldPoint(3443, 3458, 0),
 			"Enter the Mort Myre Swamp.");
 		craftSnelm = new ItemStep(this, "Craft a snelm in Morytania. Note: Do not be in the swamp when completing " +
 			"this task", chisel.highlighted(), snailShell.highlighted());
 
-		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO, new WorldPoint(3440, 3337, 0),
+		moveToGrotto = new ObjectStep(this, ObjectID.GROTTO_DOOR_DRUIDICSPIRIT, new WorldPoint(3440, 3337, 0),
 			"Enter the grotto tree in Mort Myre Swamp.");
-		restorePrayer = new ObjectStep(this, ObjectID.ALTAR_OF_NATURE, new WorldPoint(3442, 9741, 1),
+		restorePrayer = new ObjectStep(this, ObjectID.DRUIDIC_SPIRIT_GROTTO_NATUREALTAR, new WorldPoint(3442, 9741, 1),
 			"Pray at the altar.");
 
-		killBanshee = new NpcStep(this, NpcID.BANSHEE, new WorldPoint(3436, 3550, 0),
+		killBanshee = new NpcStep(this, NpcID.SLAYER_BANSHEE_1, new WorldPoint(3436, 3550, 0),
 			"Kill a banshee.", true, earProtection.equipped(), combatGear);
 
-		killWerewolf = new NpcStep(this, NpcID.ZOJA, new WorldPoint(3501, 3488, 0),
+		killWerewolf = new NpcStep(this, NpcID.CANAFIS_WOMAN11, new WorldPoint(3501, 3488, 0),
 			"Kill any attackable NPC in Canifis with the wolfbane dagger.", wolfbane.equipped());
-		mazchna = new NpcStep(this, NpcID.MAZCHNA, new WorldPoint(3513, 3510, 0),
+		mazchna = new NpcStep(this, NpcID.WGS_HEROES_MAZCHNA, new WorldPoint(3513, 3510, 0),
 			"Get a slayer task from Mazchna.");
-		sbottTan = new NpcStep(this, NpcID.SBOTT, new WorldPoint(3490, 3501, 0),
+		sbottTan = new NpcStep(this, NpcID.WEREWOLFTANNER, new WorldPoint(3490, 3501, 0),
 			"Tan a hide using Sbott's services.", tannableHide, coins.quantity(45));
 
-		fillSack = new ObjectStep(this, ObjectID.HAY_BALE_8713, new WorldPoint(3019, 3297, 0),
+		fillSack = new ObjectStep(this, ObjectID.HAY_BALE, new WorldPoint(3019, 3297, 0),
 			"Use the empty sack on the hay bale to fill it, you can buy an empty sack from Sarah for 1gp.");
-		fillSack.addIcon(ItemID.EMPTY_SACK);
+		fillSack.addIcon(ItemID.SACK_EMPTY);
 		useSackOnSpear = new DetailedQuestStep(this,
 			"Use the Hay sack on the Bronze Spear.", haySack.highlighted(), bronzeSpear.highlighted());
 		useWatermelonOnSack = new DetailedQuestStep(this,
 			"Use the watermelon on the Hay Sack to make the Scarecrow.", scarecrowStep2.highlighted(), watermelon.highlighted());
 		placeScarecrow = new ObjectStep(this, 7850, new WorldPoint(3602, 3526, 0),
 			"Place a scarecrow at the Morytania flower patch, West of Port Phasmatys.", scarecrow.highlighted());
-		placeScarecrow.addIcon(ItemID.SCARECROW);
+		placeScarecrow.addIcon(ItemID.SCARECROW_COMPLETE);
 
-		moveToBonemeal = new ObjectStep(this, ObjectID.STAIRCASE_16646, new WorldPoint(3667, 3520, 0),
+		moveToBonemeal = new ObjectStep(this, ObjectID.AHOY_TOWER_STAIRS_LV1, new WorldPoint(3667, 3520, 0),
 			"Head upstairs above the ectofuntus to grind some bones into bonemeal.", bones, pot);
-		moveToSlime = new ObjectStep(this, ObjectID.TRAPDOOR_16114, new WorldPoint(3653, 3519, 0),
+		moveToSlime = new ObjectStep(this, ObjectID.AHOY_TRAPDOOR_OPEN, new WorldPoint(3653, 3519, 0),
 			"Head downstairs at the ectofuntus to gather some slime.", bucket);
-		moveToSlime.addAlternateObjects(ObjectID.TRAPDOOR_16113);
+		moveToSlime.addAlternateObjects(ObjectID.AHOY_TRAPDOOR);
 		getSlime = new TileStep(this, new WorldPoint(3682, 9888, 0),
 			"Keep heading down and use your bucket on the slime. Afterwards head back up.", bucket);
-		getSlime.addIcon(ItemID.BUCKET);
-		makeBonemeal = new ObjectStep(this, ObjectID.LOADER, new WorldPoint(3660, 3526, 1),
+		getSlime.addIcon(ItemID.BUCKET_EMPTY);
+		makeBonemeal = new ObjectStep(this, ObjectID.AHOY_GRINDER_LOADER, new WorldPoint(3660, 3526, 1),
 			"Use your bones on the loader and grind them to make bonemeal. Afterwards head back down.", bones.highlighted(), pot);
-		offerBonemeal = new ObjectStep(this, ObjectID.ECTOFUNTUS, new WorldPoint(3660, 3520, 0),
+		offerBonemeal = new ObjectStep(this, ObjectID.AHOY_ECTOFUNTUS, new WorldPoint(3660, 3520, 0),
 			"Worship the ectofuntus.", bonemeal, bucketOfSlime);
-		offerBonemeal.addAlternateObjects(ObjectID.ECTOFUNTUS_16649);
+		offerBonemeal.addAlternateObjects(ObjectID.AHOY_ECTOFUNTUS_SMALL);
 
-		cookSnail = new ObjectStep(this, ObjectID.COOKING_RANGE_16641, new WorldPoint(3676, 3468, 0),
+		cookSnail = new ObjectStep(this, ObjectID.AHOY_RANGE, new WorldPoint(3676, 3468, 0),
 			"Cook a thin snail in Port Phasmatys.", thinSnail);
 
-		claimReward = new NpcStep(this, NpcID.LESABR, new WorldPoint(3464, 3480, 0),
+		claimReward = new NpcStep(this, NpcID.LESABRE_MORT_DIARY, new WorldPoint(3464, 3480, 0),
 			"Talk to Le-Sabre near Canifis to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -310,8 +304,8 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Morytania legs 1", ItemID.MORYTANIA_LEGS_1),
-			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Morytania legs 1", ItemID.MORYTANIA_LEGS_EASY),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

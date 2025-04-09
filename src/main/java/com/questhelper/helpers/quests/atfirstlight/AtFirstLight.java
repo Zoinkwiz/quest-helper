@@ -33,8 +33,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -42,25 +40,19 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
+import com.questhelper.steps.*;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
+
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class AtFirstLight extends BasicQuestHelper
 {
@@ -171,11 +163,11 @@ public class AtFirstLight extends BasicQuestHelper
 		// Required
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		needle.canBeObtainedDuringQuest();
-		boxTrap = new ItemRequirement("Box trap", ItemID.BOX_TRAP).isNotConsumed();
+		boxTrap = new ItemRequirement("Box trap", ItemID.HUNTING_BOX_TRAP).isNotConsumed();
 		boxTrap.setTooltip("You can buy one from Imia in the north of the Hunter Guild's surface area for 41gp.");
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.canBeObtainedDuringQuest();
-		jerboaTail = new ItemRequirement("Jerboa tail", ItemID.JERBOA_TAIL);
+		jerboaTail = new ItemRequirement("Jerboa tail", ItemID.HUNTING_JERBOA_TAIL);
 		jerboaTail.canBeObtainedDuringQuest();
 
 		jerboaTailOrBoxTrap = new ItemRequirements(LogicType.OR, "Jerboa tail, or a box trap to get some", jerboaTail, boxTrap);
@@ -185,13 +177,13 @@ public class AtFirstLight extends BasicQuestHelper
 		staminaPotion = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
 
 		// Quest Items
-		toyMouse = new ItemRequirement("Toy mouse", ItemID.TOY_MOUSE);
-		toyMouseWound = new ItemRequirement("Toy mouse (wound)", ItemID.TOY_MOUSE_WOUND);
-		smoothLeaf = new ItemRequirement("Smooth leaf", ItemID.SMOOTH_LEAF);
-		stickyLeaf = new ItemRequirement("Sticky leaf", ItemID.STICKY_LEAF);
-		makeshiftPoultice = new ItemRequirement("Makeshift poultice", ItemID.MAKESHIFT_POULTICE);
-		furSample = new ItemRequirement("Fur sample", ItemID.FUR_SAMPLE);
-		trimmedFur = new ItemRequirement("Trimmed fur", ItemID.TRIMMED_FUR);
+		toyMouse = new ItemRequirement("Toy mouse", ItemID.POH_TOY_MOUSE_UNWOUND);
+		toyMouseWound = new ItemRequirement("Toy mouse (wound)", ItemID.POH_TOY_MOUSE_WOUND);
+		smoothLeaf = new ItemRequirement("Smooth leaf", ItemID.AFL_LEAF1);
+		stickyLeaf = new ItemRequirement("Sticky leaf", ItemID.AFL_LEAF2);
+		makeshiftPoultice = new ItemRequirement("Makeshift poultice", ItemID.AFL_POULTICE);
+		furSample = new ItemRequirement("Fur sample", ItemID.AFL_FUR);
+		trimmedFur = new ItemRequirement("Trimmed fur", ItemID.AFL_FUR_PREPPED);
 	}
 
 	private void setupConditions()
@@ -206,7 +198,7 @@ public class AtFirstLight extends BasicQuestHelper
 		repairedEquipment = new VarbitRequirement(9840, 2);
 		handedInReport = new VarbitRequirement(9836, 1);
 
-		foxsReport = new ItemRequirement("Fox's report", ItemID.FOXS_REPORT).hideConditioned(handedInReport);
+		foxsReport = new ItemRequirement("Fox's report", ItemID.AFL_REPORT).hideConditioned(handedInReport);
 		hadReport = or(foxsReport, handedInReport);
 
 		// Bed repaired, 9838 0->1
@@ -214,26 +206,26 @@ public class AtFirstLight extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		talkToApatura = new NpcStep(this, NpcID.GUILDMASTER_APATURA, new WorldPoint(1554, 3033, 0),
+		talkToApatura = new NpcStep(this, NpcID.HG_APATURA, new WorldPoint(1554, 3033, 0),
 			"Talk to Guildmaster Apatura in the Hunter Guild, south-west of Civitas illa Fortis.");
 		talkToApatura.addDialogSteps("Can I help you with anything?", "Yes.");
-		goDownTree = new ObjectStep(this, ObjectID.STAIRS_51641, new WorldPoint(1557, 3048, 0),
+		goDownTree = new ObjectStep(this, ObjectID.HUNTERGUILD_STAIRS_DOWN01_COMBINED, new WorldPoint(1557, 3048, 0),
 			"Go down the stairs in the tree in the guild.");
-		talkToVerity = new NpcStep(this, NpcID.GUILD_SCRIBE_VERITY, new WorldPoint(1559, 9464, 0),
+		talkToVerity = new NpcStep(this, NpcID.HG_VERITY, new WorldPoint(1559, 9464, 0),
 			"Talk to Guild Scribe Verity behind the bar.");
-		talkToWolf = new NpcStep(this, NpcID.GUILD_HUNTER_WOLF_MASTER, new WorldPoint(1555, 9462, 0),
+		talkToWolf = new NpcStep(this, NpcID.HG_WOLF, new WorldPoint(1555, 9462, 0),
 			"Talk to Guild Hunter Wolf (Master), next to the bar.");
 		windUpToy = new DetailedQuestStep(this, "Wind up a toy mouse.", toyMouse.highlighted());
-		windUpToy.addIcon(ItemID.TOY_MOUSE_WOUND);
-		useToyOnKiko = new NpcStep(this, NpcID.GUILD_HUNTER_KIKO, new WorldPoint(1552, 9460, 0),
+		windUpToy.addIcon(ItemID.POH_TOY_MOUSE_WOUND);
+		useToyOnKiko = new NpcStep(this, NpcID.AFL_KIKO, new WorldPoint(1552, 9460, 0),
 			"Use the wound up toy mouse on Guild Hunter Kiko near the bar.", toyMouseWound.highlighted());
-		checkBed = new ObjectStep(this, ObjectID.CAT_BED, new WorldPoint(1552, 9460, 0),
+		checkBed = new ObjectStep(this, ObjectID.AFL_CATBED_OP, new WorldPoint(1552, 9460, 0),
 			"Check the cat's bed.");
-		returnToWolf = new NpcStep(this, NpcID.GUILD_HUNTER_WOLF_MASTER, new WorldPoint(1555, 9462, 0),
+		returnToWolf = new NpcStep(this, NpcID.HG_WOLF, new WorldPoint(1555, 9462, 0),
 			"Return to Guild Hunter Wolf (Master), next to the bar.");
-		goUpTree = new ObjectStep(this, ObjectID.STAIRS_51642, new WorldPoint(1557, 9449, 0),
+		goUpTree = new ObjectStep(this, ObjectID.HUNTERGUILD_STAIRS_UP01, new WorldPoint(1557, 9449, 0),
 			"Go back up the stairs.");
-		talkToFox = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
+		talkToFox = new NpcStep(this, NpcID.AFL_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Talk to Guild Hunter Fox near the crevice south-east of the Hunter Guild.");
 		takeLeaf = new ObjectStep(this, NullObjectID.NULL_50876, new WorldPoint(1618, 2979, 0),
 			"Search the leafy bush south of the crevice for a smooth leaf.");
@@ -241,44 +233,44 @@ public class AtFirstLight extends BasicQuestHelper
 			"Search the rough-looking bush on the west side of the Locus Oasis.");
 		catchJerboa = new DetailedQuestStep(this, new WorldPoint(1664, 3003, 0),
 			"Catch two Embertailed Jerboa for their tails.", boxTrap.highlighted());
-		catchJerboa.addIcon(ItemID.BOX_TRAP);
+		catchJerboa.addIcon(ItemID.HUNTING_BOX_TRAP);
 		useTailOnLeaves = new DetailedQuestStep(this, "Use the tails on the leaves.",
 			jerboaTail.highlighted(), smoothLeaf.highlighted());
-		returnToFox = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
+		returnToFox = new NpcStep(this, NpcID.AFL_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Bring the poultice back to Guild Hunter Fox near the crevice.", makeshiftPoultice);
-		talkToFoxAfterPoultice = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
+		talkToFoxAfterPoultice = new NpcStep(this, NpcID.AFL_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Talk to Guild Hunter Fox.");
-		talkToAtza = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
+		talkToAtza = new NpcStep(this, NpcID.AFL_ATZA, new WorldPoint(1696, 3063, 0),
 			"Talk to Atza in one of the buildings outside Civitas illa Fortis' south wall, west of the general store.",
 			furSample);
-		talkToAtzaAfterHandingFur = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
+		talkToAtzaAfterHandingFur = new NpcStep(this, NpcID.AFL_ATZA, new WorldPoint(1696, 3063, 0),
 			"Talk to Atza in one of the buildings outside Civitas illa Fortis' south wall, west of the general store.");
 		talkToAtza.addSubSteps(talkToAtzaAfterHandingFur);
 		makeEquipmentPile = new ObjectStep(this, NullObjectID.NULL_52976, new WorldPoint(1697, 3063, 0),
 			"Set-up the pile of equipment next to Atza.", hammer);
-		talkToAtzaForTrim = new NpcStep(this, NpcID.ATZA, new WorldPoint(1696, 3063, 0),
+		talkToAtzaForTrim = new NpcStep(this, NpcID.AFL_ATZA, new WorldPoint(1696, 3063, 0),
 			"Talk to Atza again for some trimmed fur.");
-		returnToFoxAfterTrim = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
+		returnToFoxAfterTrim = new NpcStep(this, NpcID.AFL_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Return to Guild Hunter Fox near the crevice south-east of the Hunter Guild to get his report.", trimmedFur);
-		getReportFromFox = new NpcStep(this, NpcID.GUILD_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
+		getReportFromFox = new NpcStep(this, NpcID.AFL_HUNTER_FOX, new WorldPoint(1623, 2982, 0),
 			"Return back to Fox to get his report.");
 		returnToFoxAfterTrim.addSubSteps(getReportFromFox);
-		goDownTreeEnd = new ObjectStep(this, ObjectID.STAIRS_51641, new WorldPoint(1557, 3048, 0),
+		goDownTreeEnd = new ObjectStep(this, ObjectID.HUNTERGUILD_STAIRS_DOWN01_COMBINED, new WorldPoint(1557, 3048, 0),
 			"Go down the stairs in the tree in the Hunters Guild.", foxsReport, trimmedFur, jerboaTail, needle);
-		talkToVerityEnd = new NpcStep(this, NpcID.GUILD_SCRIBE_VERITY, new WorldPoint(1559, 9464, 0),
+		talkToVerityEnd = new NpcStep(this, NpcID.HG_VERITY, new WorldPoint(1559, 9464, 0),
 			"Talk to Guild Scribe Verity behind the bar again.");
-		useJerboaTailOnBed = new ObjectStep(this, ObjectID.CAT_BED, new WorldPoint(1552, 9460, 0),
+		useJerboaTailOnBed = new ObjectStep(this, ObjectID.AFL_CATBED_OP, new WorldPoint(1552, 9460, 0),
 			"Use a jerboa tail on the cat bed.", jerboaTail.highlighted(), trimmedFur, needle);
-		useJerboaTailOnBed.addIcon(ItemID.JERBOA_TAIL);
-		goUpTreeToFinishQuest = new ObjectStep(this, ObjectID.STAIRS_51642, new WorldPoint(1557, 9449, 0),
+		useJerboaTailOnBed.addIcon(ItemID.HUNTING_JERBOA_TAIL);
+		goUpTreeToFinishQuest = new ObjectStep(this, ObjectID.HUNTERGUILD_STAIRS_UP01, new WorldPoint(1557, 9449, 0),
 			"Go back up the stairs and talk to Guildmaster Apatura to finish the quest.");
-		talkToApaturaToFinishQuest = new NpcStep(this, NpcID.GUILDMASTER_APATURA, new WorldPoint(1554, 3033, 0),
+		talkToApaturaToFinishQuest = new NpcStep(this, NpcID.HG_APATURA, new WorldPoint(1554, 3033, 0),
 			"Talk to Guildmaster Apatura to finish the quest.");
 		goUpTreeToFinishQuest.addSubSteps(talkToApaturaToFinishQuest);
 
-		buyBoxTrap = new NpcStep(this, NpcID.IMIA, new WorldPoint(1562, 3060, 0),
+		buyBoxTrap = new NpcStep(this, NpcID.HG_MIXEDHIDE_SELLER, new WorldPoint(1562, 3060, 0),
 			"Get a box trap. You can buy one from Imia in the north of the Hunter Guild's surface for 41gp.");
-		buyBoxTrap.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BOX_TRAP, true);
+		buyBoxTrap.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.HUNTING_BOX_TRAP, true);
 		takeNeedle = new ItemStep(this, new WorldPoint(1566, 3035, 0),
 			"Take the needle in the Hunter Guild's surface area, in its south-east corner.", needle);
 		takeHammer = new ItemStep(this, new WorldPoint(1696, 3070, 0), "Take a hammer from the house north of Atza.", hammer);

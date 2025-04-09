@@ -26,10 +26,11 @@
 package com.questhelper.helpers.miniquests.enchantedkey;
 
 import com.google.common.collect.Sets;
-import java.util.Set;
-import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import javax.annotation.Nullable;
+import java.util.Set;
 
 @AllArgsConstructor
 @Getter

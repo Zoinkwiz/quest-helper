@@ -24,9 +24,10 @@
  */
 package com.questhelper.runeliteobjects.dialog;
 
-import java.util.ArrayList;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import lombok.Getter;
+
+import java.util.ArrayList;
 
 public class RuneliteDialogStep
 {

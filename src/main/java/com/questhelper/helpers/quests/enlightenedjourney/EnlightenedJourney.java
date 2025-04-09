@@ -25,40 +25,30 @@
 package com.questhelper.helpers.quests.enlightenedjourney;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class EnlightenedJourney extends BasicQuestHelper
 {
@@ -128,28 +118,28 @@ public class EnlightenedJourney extends BasicQuestHelper
 		papyrus2 = new ItemRequirement("Papyrus", ItemID.PAPYRUS, 2);
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
 		ballOfWool = new ItemRequirement("Ball of wool", ItemID.BALL_OF_WOOL);
-		sackOfPotatoes = new ItemRequirement("Sack of potatoes (10)", ItemID.POTATOES10);
-		emptySack8 = new ItemRequirement("Empty sack", ItemID.EMPTY_SACK, 8);
-		emptySack8.addAlternates(ItemID.SANDBAG);
-		unlitCandle = new ItemRequirement("Unlit candle", ItemID.CANDLE);
-		unlitCandle.addAlternates(ItemID.BLACK_CANDLE);
-		yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE);
-		redDye = new ItemRequirement("Red dye", ItemID.RED_DYE);
+		sackOfPotatoes = new ItemRequirement("Sack of potatoes (10)", ItemID.SACK_POTATO_10);
+		emptySack8 = new ItemRequirement("Empty sack", ItemID.SACK_EMPTY, 8);
+		emptySack8.addAlternates(ItemID.ZEP_SANDBAG);
+		unlitCandle = new ItemRequirement("Unlit candle", ItemID.UNLIT_CANDLE);
+		unlitCandle.addAlternates(ItemID.UNLIT_BLACK_CANDLE);
+		yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOWDYE);
+		redDye = new ItemRequirement("Red dye", ItemID.REDDYE);
 		silk10 = new ItemRequirement("Silk", ItemID.SILK, 10);
-		bowl = new ItemRequirement("Bowl", ItemID.BOWL);
+		bowl = new ItemRequirement("Bowl", ItemID.BOWL_EMPTY);
 		logs10 = new ItemRequirement("Logs", ItemID.LOGS, 10);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		willowBranches12 = new ItemRequirement("Willow branches", ItemID.WILLOW_BRANCH, 12);
 		willowBranches12.setTooltip("You can get these by using secateurs on a willow tree you've grown. Auguste will" +
 			" give you a sapling to grow during the quest if you need one");
 
-		draynorTeleport = new ItemRequirement("Draynor/Port Sarim teleport", ItemID.EXPLORERS_RING_3);
-		draynorTeleport.addAlternates(ItemID.EXPLORERS_RING_4, ItemID.DRAYNOR_MANOR_TELEPORT);
+		draynorTeleport = new ItemRequirement("Draynor/Port Sarim teleport", ItemID.LUMBRIDGE_RING_HARD);
+		draynorTeleport.addAlternates(ItemID.LUMBRIDGE_RING_ELITE, ItemID.TELETAB_DRAYNOR);
 		draynorTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 
-		balloonStructure = new ItemRequirement("Balloon structure", ItemID.BALLOON_STRUCTURE);
-		origamiBalloon = new ItemRequirement("Origami balloon", ItemID.ORIGAMI_BALLOON);
-		sandbag8 = new ItemRequirement("Sandbag", ItemID.SANDBAG, 8);
+		balloonStructure = new ItemRequirement("Balloon structure", ItemID.ZEP_TEST_BALLOON_STRUC);
+		origamiBalloon = new ItemRequirement("Origami balloon", ItemID.ZEP_TEST_BALLOON);
+		sandbag8 = new ItemRequirement("Sandbag", ItemID.ZEP_SANDBAG, 8);
 	}
 
 	@Override
@@ -172,10 +162,10 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		travelToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3047, 3236, 0),
+		travelToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3047, 3236, 0),
 			"Bank all weapons and armour you have, and go to Port Sarim to get a boat to Entrana.");
 
-		talkToAuguste = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0), "Talk to Auguste on Entrana 3" +
+		talkToAuguste = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0), "Talk to Auguste on Entrana 3" +
 			" times.", papyrus3, ballOfWool);
 		talkToAuguste.addDialogSteps("Yes! Sign me up.", "Umm, yes. What's your point?", "Yes.");
 
@@ -185,36 +175,36 @@ public class EnlightenedJourney extends BasicQuestHelper
 		useCandleOnBalloon = new DetailedQuestStep(this, "Use a candle on the balloon.", unlitCandle.highlighted(),
 			balloonStructure.highlighted());
 
-		talkToAugusteAgain = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0), "Talk to Auguste again.",
+		talkToAugusteAgain = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0), "Talk to Auguste again.",
 			origamiBalloon);
 		talkToAugusteAgain.addDialogSteps("Yes, I have them here.");
 
-		talkToAugusteWithPapyrus = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
+		talkToAugusteWithPapyrus = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste with 2 papyrus and a sack of potatoes.", papyrus2, sackOfPotatoes);
 		talkToAugusteWithPapyrus.addDialogStep("Yes, I have them here.");
 
-		talkToAugusteAfterMob = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
+		talkToAugusteAfterMob = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste after the flash mob.");
 
-		fillSacks = new ObjectStep(this, ObjectID.SAND_PIT, new WorldPoint(2817, 3342, 0),
+		fillSacks = new ObjectStep(this, ObjectID.SANDPIT, new WorldPoint(2817, 3342, 0),
 			"Fill your empty sacks on the sand pit south of Auguste.", emptySack8.highlighted());
-		fillSacks.addIcon(ItemID.EMPTY_SACK);
+		fillSacks.addIcon(ItemID.SACK_EMPTY);
 
 		talkToAugusteWithDye = new GiveAugusteItems(this);
 		talkToAugusteWithDye.addDialogSteps("Yes, I want to give you some items.", "Dye.", "Sandbags.", "Silk.",
 			"Bowl.");
 
-		talkToAugusteWithBranches = new ObjectStep(this, NullObjectID.NULL_19133, new WorldPoint(2807, 3356, 0),
+		talkToAugusteWithBranches = new ObjectStep(this, ObjectID.ZEP_MULTI_BASKET_ENTRANA, new WorldPoint(2807, 3356, 0),
 			"Get 12 willow branches and use them to make the basket.", willowBranches12.highlighted());
 		talkToAugusteWithBranches.addIcon(ItemID.WILLOW_BRANCH);
 
-		talkToAugusteWithLogsAndTinderbox = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
+		talkToAugusteWithLogsAndTinderbox = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste to fly.", logs10, tinderbox);
 		talkToAugusteWithLogsAndTinderbox.addDialogSteps("Okay.");
 
 		doPuzzle = new TaverleyBalloonFlight(this);
 
-		talkToAugusteToFinish = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2937, 3421, 0),
+		talkToAugusteToFinish = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2937, 3421, 0),
 			"Talk to Auguste in Taverley to finish the quest.");
 	}
 
@@ -262,8 +252,8 @@ public class EnlightenedJourney extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Bomber Jacket", ItemID.BOMBER_JACKET, 1),
-				new ItemReward("Bomber Cap", ItemID.BOMBER_CAP, 1));
+				new ItemReward("Bomber Jacket", ItemID.ZEP_BOMBER_JACKET, 1),
+				new ItemReward("Bomber Cap", ItemID.ZEP_BOMBER_CAP, 1));
 	}
 
 	@Override

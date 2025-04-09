@@ -30,17 +30,13 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.tools.QuestWidgets;
-import net.runelite.api.Client;
-import net.runelite.api.Menu;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Player;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.util.Text;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Arrays;
 
 /**
  * Manages the quest menu options within the game. This class is responsible for

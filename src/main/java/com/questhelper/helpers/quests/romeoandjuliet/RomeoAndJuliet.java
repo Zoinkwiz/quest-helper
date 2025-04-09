@@ -24,27 +24,24 @@
  */
 package com.questhelper.helpers.quests.romeoandjuliet;
 
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class RomeoAndJuliet extends BasicQuestHelper
 {
@@ -89,11 +86,11 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		cadavaBerry = new ItemRequirement("Cadava berries", ItemID.CADAVA_BERRIES);
+		cadavaBerry = new ItemRequirement("Cadava berries", ItemID.CADAVABERRIES);
 		cadavaBerry.setTooltip("You can pick some from bushes south east of Varrock");
-		letter = new ItemRequirement("Message", ItemID.MESSAGE);
+		letter = new ItemRequirement("Message", ItemID.JULIETMESSAGE);
 		letter.setTooltip("You can get another from Juliet");
-		potion = new ItemRequirement("Cadava potion", ItemID.CADAVA_POTION);
+		potion = new ItemRequirement("Cadava potion", ItemID.CADAVA);
 	}
 
 	public void setupConditions()
@@ -112,7 +109,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		talkToRomeo = new NpcStep(this, NpcID.ROMEO, new WorldPoint(3211, 3422, 0), "Talk to Romeo in Varrock Square.");
 		talkToRomeo.addDialogStep("Yes, I have seen her actually!");
 		talkToRomeo.addDialogStep("Yes, ok, I'll let her know.");
-		goUpToJuliet = new ObjectStep(this, ObjectID.STAIRCASE_11797, new WorldPoint(3157, 3436, 0), "Talk to Juliet in the house west of Varrock.");
+		goUpToJuliet = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TALLER, new WorldPoint(3157, 3436, 0), "Talk to Juliet in the house west of Varrock.");
 		goUpToJuliet.addDialogStep("Ok, thanks.");
 		talkToJuliet = new NpcStep(this, NpcID.JULIET, new WorldPoint(3158, 3427, 1), "Talk to Juliet in the house west of Varrock.");
 		talkToJuliet.addSubSteps(goUpToJuliet);
@@ -123,7 +120,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		talkToApothecary = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3405, 0), "Bring the cadava berries to the Apothecary in south east Varrock.", cadavaBerry);
 		talkToApothecary.addDialogStep("Talk about something else.");
 		talkToApothecary.addDialogStep("Talk about Romeo & Juliet.");
-		goUpToJuliet2 = new ObjectStep(this, ObjectID.STAIRCASE_11797, new WorldPoint(3157, 3436, 0), "Bring the potion to Juliet in the house west of Varrock.", potion);
+		goUpToJuliet2 = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TALLER, new WorldPoint(3157, 3436, 0), "Bring the potion to Juliet in the house west of Varrock.", potion);
 		givePotionToJuliet = new NpcStep(this, NpcID.JULIET, new WorldPoint(3158, 3427, 1), "Bring the potion to Juliet in the house west of Varrock.", potion);
 		givePotionToJuliet.addSubSteps(goUpToJuliet2);
 

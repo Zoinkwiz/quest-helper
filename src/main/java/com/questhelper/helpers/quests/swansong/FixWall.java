@@ -25,19 +25,20 @@
 package com.questhelper.helpers.quests.swansong;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.Collection;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 public class FixWall extends DetailedOwnerStep
 {
@@ -109,17 +110,17 @@ public class FixWall extends DetailedOwnerStep
 		ironBars.setHighlightInInventory(true);
 		ironSheets.setHighlightInInventory(true);
 
-		useIronBar = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13701, new WorldPoint(2342, 3676, 0), "Flatten 5 iron bars using the metal press.", ironBars);
+		useIronBar = new ObjectStep(getQuestHelper(), ObjectID.SWAN_PRESS, new WorldPoint(2342, 3676, 0), "Flatten 5 iron bars using the metal press.", ironBars);
 		useIronBar.addIcon(ItemID.IRON_BAR);
-		repairWall1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13612, new WorldPoint(2311, 3688, 0), "Repair the west wall.", ironSheets, hammer);
+		repairWall1 = new ObjectStep(getQuestHelper(), ObjectID.SWAN_WALL_1, new WorldPoint(2311, 3688, 0), "Repair the west wall.", ironSheets, hammer);
 		repairWall1.addIcon(ItemID.IRON_SHEET);
-		repairWall2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13613, new WorldPoint(2311, 3687, 0), "Repair the west wall.", ironSheets, hammer);
+		repairWall2 = new ObjectStep(getQuestHelper(), ObjectID.SWAN_WALL_2, new WorldPoint(2311, 3687, 0), "Repair the west wall.", ironSheets, hammer);
 		repairWall2.addIcon(ItemID.IRON_SHEET);
-		repairWall3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13614, new WorldPoint(2311, 3686, 0), "Repair the west wall.", ironSheets, hammer);
+		repairWall3 = new ObjectStep(getQuestHelper(), ObjectID.SWAN_WALL_3, new WorldPoint(2311, 3686, 0), "Repair the west wall.", ironSheets, hammer);
 		repairWall3.addIcon(ItemID.IRON_SHEET);
-		repairWall4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13699, new WorldPoint(2311, 3685, 0), "Repair the west wall.", ironSheets, hammer);
+		repairWall4 = new ObjectStep(getQuestHelper(), ObjectID.SWAN_WALL_4, new WorldPoint(2311, 3685, 0), "Repair the west wall.", ironSheets, hammer);
 		repairWall4.addIcon(ItemID.IRON_SHEET);
-		repairWall5 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_13700, new WorldPoint(2311, 3684, 0), "Repair the west wall.", ironSheets, hammer);
+		repairWall5 = new ObjectStep(getQuestHelper(), ObjectID.SWAN_WALL_5, new WorldPoint(2311, 3684, 0), "Repair the west wall.", ironSheets, hammer);
 		repairWall5.addIcon(ItemID.IRON_SHEET);
 		repairWall1.addSubSteps(repairWall2, repairWall3, repairWall4, repairWall5);
 	}

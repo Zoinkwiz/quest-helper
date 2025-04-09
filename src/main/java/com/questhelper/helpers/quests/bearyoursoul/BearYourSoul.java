@@ -25,30 +25,21 @@
 package com.questhelper.helpers.quests.bearyoursoul;
 
 import com.questhelper.collections.KeyringCollection;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.KeyringRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class BearYourSoul extends BasicQuestHelper
 {
@@ -90,7 +81,7 @@ public class BearYourSoul extends BasicQuestHelper
 		new KeyringRequirement("Dusty key, or another way to get into the deep Taverley Dungeon",
 			configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
-		damagedSoulBearer = new ItemRequirement("Damaged soul bearer", ItemID.DAMAGED_SOUL_BEARER);
+		damagedSoulBearer = new ItemRequirement("Damaged soul bearer", ItemID.ARCEUUS_SOULBEARER_DAMAGED);
 	}
 
 	@Override
@@ -109,25 +100,25 @@ public class BearYourSoul extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("A Soul Bearer", ItemID.SOUL_BEARER, 1));
+		return Collections.singletonList(new ItemReward("A Soul Bearer", ItemID.ARCEUUS_SOULBEARER, 1));
 	}
 
 	public void setupSteps()
 	{
 		findSoulJourneyAndRead = new DetailedQuestStep(this, new WorldPoint(1632, 3808, 0), "Go to the Arceuus library and find The Soul journey book in one of the bookcases, then read it. You can ask Biblia for help locating it, or make use of the Runelite Kourend Library plugin.");
 
-		talkToAretha = new NpcStep(this, NpcID.ARETHA, new WorldPoint(1814, 3851, 0),
+		talkToAretha = new NpcStep(this, NpcID.ARCEUUS_SOULGUARDIAN, new WorldPoint(1814, 3851, 0),
 			"Talk to Aretha at the Soul Altar.");
 		talkToAretha.addDialogStep("I've been reading your book...");
 		talkToAretha.addDialogStep("Yes please.");
 
 		arceuusChurchDig = new DigStep(this, new WorldPoint(1699, 3794, 0), "Go to the Arceuus church and dig for the Damaged soul bearer.");
 
-		goToTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0), "Go to Taverley Dungeon, or teleport to the Key Master directly.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
+		goToTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0), "Go to Taverley Dungeon, or teleport to the Key Master directly.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
 
-		enterCaveToKeyMaster = new ObjectStep(this, ObjectID.CAVE_26567, new WorldPoint(2874, 9846, 0), "Enter the cave to the Key Master.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
+		enterCaveToKeyMaster = new ObjectStep(this, ObjectID.HELLHOUND_CAVE_ENTRANCE_A_01, new WorldPoint(2874, 9846, 0), "Enter the cave to the Key Master.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
 
-		speakKeyMaster = new NpcStep(this, NpcID.KEY_MASTER, new WorldPoint(1310, 1251, 0),
+		speakKeyMaster = new NpcStep(this, NpcID.KEEPER_OF_KEYS, new WorldPoint(1310, 1251, 0),
 			"Talk to Key Master in the Cerberus' Lair.", damagedSoulBearer);
 	}
 

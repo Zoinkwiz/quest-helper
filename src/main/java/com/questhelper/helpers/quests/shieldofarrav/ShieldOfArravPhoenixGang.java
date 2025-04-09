@@ -25,33 +25,25 @@
 package com.questhelper.helpers.quests.shieldofarrav;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 {
@@ -108,15 +100,15 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		book = new ItemRequirement("Book", ItemID.BOOK);
-		intelReport = new ItemRequirement("Intel report", ItemID.INTEL_REPORT);
+		book = new ItemRequirement("Book", ItemID.THE_SHIELD_OF_ARRAV);
+		intelReport = new ItemRequirement("Intel report", ItemID.INTELLIGENCE_REPORT);
 		twentyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 20);
-		shieldHalf = new ItemRequirement("Broken shield", ItemID.BROKEN_SHIELD);
+		shieldHalf = new ItemRequirement("Broken shield", ItemID.ARRAVSHIELD1);
 		inPhoenixBase = new ZoneRequirement(phoenixBase);
-		chestOpen = new ObjectCondition(ObjectID.CHEST_2404);
-		certificateHalf = new ItemRequirement("Half certificate", ItemID.HALF_CERTIFICATE);
-		blackArmCertificateHalf = new ItemRequirement("Half certificate", ItemID.HALF_CERTIFICATE_11174);
-		certificate = new ItemRequirement("Certificate", ItemID.CERTIFICATE);
+		chestOpen = new ObjectCondition(ObjectID.PHOENIXOPENCHEST);
+		certificateHalf = new ItemRequirement("Half certificate", ItemID.ARRAVCERTIFICATE_LFT);
+		blackArmCertificateHalf = new ItemRequirement("Half certificate", ItemID.ARRAVCERTIFICATE_RHT);
+		certificate = new ItemRequirement("Certificate", ItemID.ARRAVCERTIFICATE);
 	}
 
 	@Override
@@ -134,47 +126,47 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		startQuest = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3210, 3494, 0),
+		startQuest = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3210, 3494, 0),
 			"Talk to Reldo in the Varrock Castle library.");
 		startQuest.addDialogSteps("I'm in search of a quest.", "Yes.");
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_2402, new WorldPoint(3212, 3493, 0),
+		searchBookcase = new ObjectStep(this, ObjectID.QUESTBOOKCASE, new WorldPoint(3212, 3493, 0),
 			"Search the marked bookcase for a book, then read it.", book.highlighted());
-		talkToReldoAgain = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3210, 3494, 0),
+		talkToReldoAgain = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3210, 3494, 0),
 			"Talk to Reldo again.");
 		talkToBaraek = new NpcStep(this, NpcID.BARAEK, new WorldPoint(3218, 3435, 0),
 			"Talk to Baraek in the Varrock Square.", twentyCoins);
 		talkToBaraek.addDialogStep("Can you tell me where I can find the Phoenix Gang?");
 		talkToBaraek.addDialogStep("Okay. Have 20 gold coins.");
-		goDownToPhoenixGang = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0),
+		goDownToPhoenixGang = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER_DEEP, new WorldPoint(3244, 3383, 0),
 			"Head into the Phoenix Gang's base in south Varrock.");
 		talkToStraven = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0),
 			"Talk to Straven.");
 		talkToStraven.addDialogStep("I know who you are!");
 		talkToStraven.addDialogStep("I'd like to offer you my services.");
 
-		goUpFromPhoenixGang = new ObjectStep(this, ObjectID.LADDER_2405, new WorldPoint(3244, 9783, 0),
+		goUpFromPhoenixGang = new ObjectStep(this, ObjectID.PHOENIXLADDER, new WorldPoint(3244, 9783, 0),
 			"Go back up to the surface.");
-		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD, new WorldPoint(3222, 3395, 0),
+		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD_1OP, new WorldPoint(3222, 3395, 0),
 			"Kill Jonny the Beard in the Blue Moon Inn in Varrock.");
 		pickupIntelReport = new DetailedQuestStep(this, "Pick up the Intel Report.", intelReport);
-		returnDownLadder = new ObjectStep(this, ObjectID.LADDER_11803, new WorldPoint(3244, 3383, 0),
+		returnDownLadder = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER_DEEP, new WorldPoint(3244, 3383, 0),
 			"Return to the Phoenix Gang's base.");
 		talkToStravenAgain = new NpcStep(this, NpcID.STRAVEN, new WorldPoint(3247, 9781, 0),
 			"Talk to Straven again.");
 
-		getShieldHalf = new ObjectStep(this, ObjectID.CHEST_2403, new WorldPoint(3235, 9761, 0),
+		getShieldHalf = new ObjectStep(this, ObjectID.PHOENIXSHUTCHEST, new WorldPoint(3235, 9761, 0),
 			"Search the chest in the Phoenix base for half of the Shield of Arrav.");
-		getShieldHalf1 = new ObjectStep(this, ObjectID.CHEST_2404, new WorldPoint(3235, 9761, 0),
+		getShieldHalf1 = new ObjectStep(this, ObjectID.PHOENIXOPENCHEST, new WorldPoint(3235, 9761, 0),
 			"Search the chest in the Phoenix base for half of the Shield of Arrav.");
 		getShieldHalf.addSubSteps(getShieldHalf1);
 
-		leaveAfterGettingShieldHalf = new ObjectStep(this, ObjectID.LADDER_2405, new WorldPoint(3244, 9783, 0),
+		leaveAfterGettingShieldHalf = new ObjectStep(this, ObjectID.PHOENIXLADDER, new WorldPoint(3244, 9783, 0),
 			"Go back up to the surface.");
-		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3255, 3449, 0),
+		talkToHaig = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3255, 3449, 0),
 			"Trade your weapon store key to your partner. If you can't trade, use the key on them to drop it at their feet. " +
 				"AFTERWARDS, talk to Curator Haig in the Varrock Museum.", shieldHalf);
 		talkToHaig.addSubSteps(leaveAfterGettingShieldHalf);
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3222, 3473, 0),
+		talkToRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0),
 			"Talk to King Roald in Varrock Castle to finish the quest.", certificate);
 
 		tradeCertificateHalf = new DetailedQuestStep(this,
@@ -201,7 +193,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 600));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 600));
 	}
 
 	@Override

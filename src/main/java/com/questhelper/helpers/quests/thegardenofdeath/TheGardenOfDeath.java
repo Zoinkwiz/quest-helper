@@ -25,37 +25,30 @@
 package com.questhelper.helpers.quests.thegardenofdeath;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.ComponentID;
+
+import java.util.*;
 
 public class TheGardenOfDeath extends BasicQuestHelper
 {
@@ -176,29 +169,29 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		// Required
 		secateurs = new ItemRequirement("Secateurs (Obtainable in quest)", ItemID.SECATEURS);
 		secateurs.canBeObtainedDuringQuest();
-		secateurs.addAlternates(ItemID.MAGIC_SECATEURS);
+		secateurs.addAlternates(ItemID.FAIRY_ENCHANTED_SECATEURS);
 
 		// Recommended
 		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS);
-		kharedstMemoir = new ItemRequirement("Kharedst's memoirs or book of the dead for teleports", ItemID.KHAREDSTS_MEMOIRS);
+		kharedstMemoir = new ItemRequirement("Kharedst's memoirs or book of the dead for teleports", ItemID.VEOS_KHAREDSTS_MEMOIRS);
 		kharedstMemoir.addAlternates(ItemID.BOOK_OF_THE_DEAD);
 		fairyRingAccess = new ItemRequirement("Fairy ring access for quick access to Molch Island (DJR)", ItemCollections.FAIRY_STAFF);
-		xericsTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERICS_TALISMAN);
+		xericsTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERIC_TALISMAN);
 
 		// Quest items
-		stoneTablet1 = new ItemRequirement("Stone tablet", ItemID.STONE_TABLET_27519);
-		stoneTablet2 = new ItemRequirement("Stone tablet", ItemID.STONE_TABLET_27520);
-		stoneTablet3 = new ItemRequirement("Stone tablet", ItemID.STONE_TABLET_27521);
-		stoneTablet4 = new ItemRequirement("Stone tablet", ItemID.STONE_TABLET_27522);
-		kasondesJournal = new ItemRequirement("Kasonde's journal", ItemID.KASONDES_JOURNAL);
-		wordTranslations = new ItemRequirement("Word translations", ItemID.WORD_TRANSLATIONS);
+		stoneTablet1 = new ItemRequirement("Stone tablet", ItemID.TGOD_TABLET_1);
+		stoneTablet2 = new ItemRequirement("Stone tablet", ItemID.TGOD_TABLET_2);
+		stoneTablet3 = new ItemRequirement("Stone tablet", ItemID.TGOD_TABLET_3);
+		stoneTablet4 = new ItemRequirement("Stone tablet", ItemID.TGOD_TABLET_4);
+		kasondesJournal = new ItemRequirement("Kasonde's journal", ItemID.TGOD_JOURNAL);
+		wordTranslations = new ItemRequirement("Word translations", ItemID.TGOD_TRANSLATIONS);
 		wordTranslations.setTooltip("Obtained in quest in a stone table in the first hole");
-		dirtyNote1 = new ItemRequirement("Dirty note", ItemID.DIRTY_NOTE);
-		dirtyNote2 = new ItemRequirement("Dirty note", ItemID.DIRTY_NOTE_27516);
-		dirtyNote3 = new ItemRequirement("Dirty note", ItemID.DIRTY_NOTE_27517);
+		dirtyNote1 = new ItemRequirement("Dirty note", ItemID.TGOD_HINT_NOTE);
+		dirtyNote2 = new ItemRequirement("Dirty note", ItemID.TGOD_VINE_NOTE);
+		dirtyNote3 = new ItemRequirement("Dirty note", ItemID.TGOD_STRANGLE_NOTE);
 
-		compass = new ItemRequirement("Compass", ItemID.COMPASS);
-		warningNote = new ItemRequirement("Warning note", ItemID.WARNING_NOTE);
+		compass = new ItemRequirement("Compass", ItemID.TGOD_GARDEN_3_COMPASS);
+		warningNote = new ItemRequirement("Warning note", ItemID.TGOD_FINAL_NOTE);
 	}
 
 	@Override
@@ -237,12 +230,12 @@ public class TheGardenOfDeath extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		getJournal = new ObjectStep(this, ObjectID.TENT_46324, new WorldPoint(1314, 3470, 0), "Search the tent in the south east of the Kebos Lowlands.");
+		getJournal = new ObjectStep(this, ObjectID.TGOD_TENT, new WorldPoint(1314, 3470, 0), "Search the tent in the south east of the Kebos Lowlands.");
 		getJournal.addDialogStep("Yes.");
 		readJournal = new DetailedQuestStep(this, "Read the journal", kasondesJournal.highlighted());
-		getSecateurs = new ObjectStep(this, ObjectID.CAMPING_EQUIPMENT_46325, new WorldPoint(1312, 3470, 0), "Search the camping equipment for some secateurs.");
-		enterHole = new ObjectStep(this, ObjectID.HOLE_46326, new WorldPoint(1308, 3467, 0), "Enter the nearby hole.", secateurs);
-		searchForTablet = new ObjectStep(this, ObjectID.STONE_TABLE_46376, new WorldPoint(1306, 9885, 0), "Search the north-west table.");
+		getSecateurs = new ObjectStep(this, ObjectID.TGOD_CAMPING_EQUIPMENT, new WorldPoint(1312, 3470, 0), "Search the camping equipment for some secateurs.");
+		enterHole = new ObjectStep(this, ObjectID.TGOD_GARDEN_1_ENTRY, new WorldPoint(1308, 3467, 0), "Enter the nearby hole.", secateurs);
+		searchForTablet = new ObjectStep(this, ObjectID.TGOD_GARDEN_1_TABLET_TABLE, new WorldPoint(1306, 9885, 0), "Search the north-west table.");
 		readTablet1 = new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet1.highlighted());
 		readTablet1.addDialogStep("Yes.");
 		readTranslations = new DetailedQuestStep(this, "Read the word translations.", wordTranslations.highlighted());
@@ -251,15 +244,15 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		inputWords1 = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Type 'Island', 'Water', 'Time', 'Vessel', and 'North'."), "Work out various translation words and input them to the word translations.");
 		inputWords1.addDialogStep("Yes.");
 
-		leaveHole = new ObjectStep(this, ObjectID.ROPE_46327, new WorldPoint(1309, 9867, 0), "Leave the hole.");
-		goToMolch = new ObjectStep(this, ObjectID.BOATY, new WorldPoint(1406, 3612, 0), "Travel to Molch island via Boaty, located on the west/north/east sides of Lake Molch.", wordTranslations, secateurs);
+		leaveHole = new ObjectStep(this, ObjectID.TGOD_GARDEN_1_EXIT, new WorldPoint(1309, 9867, 0), "Leave the hole.");
+		goToMolch = new ObjectStep(this, ObjectID.AERIAL_FISHING_BOAT, new WorldPoint(1406, 3612, 0), "Travel to Molch island via Boaty, located on the west/north/east sides of Lake Molch.", wordTranslations, secateurs);
 		goToMolch.addDialogStep("Molch Island");
 		enterMolchHole = new ObjectStep(this, NullObjectID.NULL_46434, new WorldPoint(1364, 3637, 0), "Enter the hole on Molch Island.", wordTranslations, secateurs);
 		searchVines = new ObjectStep(this, NullObjectID.NULL_46437, new WorldPoint(1375, 10024, 0), "Inspect the vines to the south.");
 		cutVines = new ObjectStep(this, NullObjectID.NULL_46437, new WorldPoint(1375, 10024, 0), "Cut the vines with secateurs.", secateurs.highlighted());
 		cutVines.addIcon(ItemID.SECATEURS);
 
-		searchForTablet2 = new ObjectStep(this, ObjectID.STONE_TABLE_46377, new WorldPoint(1373, 10014, 0), "Search the south west stone table.");
+		searchForTablet2 = new ObjectStep(this, ObjectID.TGOD_GARDEN_2_TABLET_TABLE, new WorldPoint(1373, 10014, 0), "Search the south west stone table.");
 		readTablet2 = new DetailedQuestStep(this, "Read the stone tablet, and take the note after closing the tablet's interface.", stoneTablet2.highlighted());
 		readTablet2.addDialogStep("Yes.");
 		readTranslations2 = new DetailedQuestStep(this, "Read the word translations.", wordTranslations.highlighted());
@@ -268,11 +261,11 @@ public class TheGardenOfDeath extends BasicQuestHelper
 			"Work out various translation words and input them to the word translations.");
 		inputWords2.addDialogStep("Yes.");
 
-		leaveHole2 = new ObjectStep(this, ObjectID.ROPE_46330, new WorldPoint(1375, 10033, 0), "Leave the hole.");
-		leaveMolchIsland = new ObjectStep(this, ObjectID.BOATY, new WorldPoint(1369, 3641, 0), "Travel via Boaty to Molch, and enter the hole near Xeric's Shrine.", wordTranslations);
+		leaveHole2 = new ObjectStep(this, ObjectID.TGOD_GARDEN_2_EXIT, new WorldPoint(1375, 10033, 0), "Leave the hole.");
+		leaveMolchIsland = new ObjectStep(this, ObjectID.AERIAL_FISHING_BOAT, new WorldPoint(1369, 3641, 0), "Travel via Boaty to Molch, and enter the hole near Xeric's Shrine.", wordTranslations);
 		leaveMolchIsland.addDialogStep("Molch");
 		enterXericShrineHole = new ObjectStep(this, NullObjectID.NULL_46435, new WorldPoint(1314, 3617, 0), "Enter the hole next to Xeric's Shrine.", wordTranslations);
-		searchForTablet3 = new ObjectStep(this, ObjectID.STONE_TABLE_46378, new WorldPoint(1311, 10018, 0), "Search the south east stone table.");
+		searchForTablet3 = new ObjectStep(this, ObjectID.TGOD_GARDEN_3_TABLET_TABLE, new WorldPoint(1311, 10018, 0), "Search the south east stone table.");
 		readTablet3 = new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet3.highlighted());
 		readTablet3.addDialogStep("Yes.");
 		readTranslations3 = new DetailedQuestStep(this, "Read the word translations.", wordTranslations.highlighted());
@@ -281,10 +274,10 @@ public class TheGardenOfDeath extends BasicQuestHelper
 			"Work out various translation words and input them to the word translations.");
 		inputWords3.addDialogStep("Yes.");
 
-		leaveHole3 = new ObjectStep(this, ObjectID.ROPE_46333, new WorldPoint(1294, 10033, 0), "Leave the hole.");
+		leaveHole3 = new ObjectStep(this, ObjectID.TGOD_GARDEN_3_EXIT, new WorldPoint(1294, 10033, 0), "Leave the hole.");
 		enterMorraHole = new ObjectStep(this, NullObjectID.NULL_46436, new WorldPoint(1450, 3511, 0),
 			"Enter the hole in the Ruins of Morra, south west of Shayzien.", wordTranslations);
-		searchForTablet4 = new ObjectStep(this, ObjectID.STONE_TABLE_46379, new WorldPoint(1440, 9816, 0),
+		searchForTablet4 = new ObjectStep(this, ObjectID.TGOD_GARDEN_4_TABLET_TABLE, new WorldPoint(1440, 9816, 0),
 			"Search the south stone table.");
 		readTablet4 = new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet4.highlighted());
 		readTablet4.addDialogStep("Yes.");

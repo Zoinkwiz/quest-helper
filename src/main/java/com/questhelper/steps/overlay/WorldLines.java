@@ -25,12 +25,6 @@
 package com.questhelper.steps.overlay;
 
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Line2D;
-import java.util.List;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
@@ -40,6 +34,11 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.util.List;
 
 public class WorldLines
 {

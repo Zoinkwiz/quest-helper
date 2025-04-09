@@ -25,9 +25,10 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.runeliteobjects.extendedruneliteobjects.QuestCompletedWidget;
-import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.QuestState;
+
+import javax.inject.Inject;
 
 public abstract class PlayerMadeQuestHelper extends ComplexStateQuestHelper
 {

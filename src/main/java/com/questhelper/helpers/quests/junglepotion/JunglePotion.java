@@ -25,35 +25,26 @@
 package com.questhelper.helpers.quests.junglepotion;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class JunglePotion extends BasicQuestHelper
 {
@@ -80,23 +71,23 @@ public class JunglePotion extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		grimySnakeWeed = new ItemRequirement("Grimy Snake Weed", ItemID.GRIMY_SNAKE_WEED);
+		grimySnakeWeed = new ItemRequirement("Grimy Snake Weed", ItemID.UNIDENTIFIED_SNAKE_WEED);
 		grimySnakeWeed.setHighlightInInventory(true);
 		snakeWeed = new ItemRequirement("Snake Weed", ItemID.SNAKE_WEED);
 
-		grimyArdrigal = new ItemRequirement("Grimy Ardrigal", ItemID.GRIMY_ARDRIGAL);
+		grimyArdrigal = new ItemRequirement("Grimy Ardrigal", ItemID.UNIDENTIFIED_ARDRIGAL);
 		grimyArdrigal.setHighlightInInventory(true);
 		ardrigal = new ItemRequirement("Ardrigal", ItemID.ARDRIGAL);
 
-		grimySitoFoil = new ItemRequirement("Grimy Sito Foil", ItemID.GRIMY_SITO_FOIL);
+		grimySitoFoil = new ItemRequirement("Grimy Sito Foil", ItemID.UNIDENTIFIED_SITO_FOIL);
 		grimySitoFoil.setHighlightInInventory(true);
 		sitoFoil = new ItemRequirement("Sito Foil", ItemID.SITO_FOIL);
 
-		grimyVolenciaMoss = new ItemRequirement("Grimy Volencia Moss", ItemID.GRIMY_VOLENCIA_MOSS);
+		grimyVolenciaMoss = new ItemRequirement("Grimy Volencia Moss", ItemID.UNIDENTIFIED_VOLENCIA_MOSS);
 		grimyVolenciaMoss.setHighlightInInventory(true);
 		volenciaMoss = new ItemRequirement("Volencia Moss", ItemID.VOLENCIA_MOSS);
 
-		grimyRoguesPurse = new ItemRequirement("Grimy Rogues Purse", ItemID.GRIMY_ROGUES_PURSE);
+		grimyRoguesPurse = new ItemRequirement("Grimy Rogues Purse", ItemID.UNIDENTIFIED_ROGUES_PURSE);
 		grimyRoguesPurse.setHighlightInInventory(true);
 		roguesPurse = new ItemRequirement("Rogues Purse", ItemID.ROGUES_PURSE);
 	}
@@ -162,7 +153,7 @@ public class JunglePotion extends BasicQuestHelper
 	{
 		cleanAndReturnRoguesPurse = getReturnHerbStep("Rogues Purse", grimyRoguesPurse, roguesPurse);
 		cleanAndReturnRoguesPurse.addStep(isUnderground, new ObjectStep(this,
-			ObjectID.HAND_HOLDS, new WorldPoint(2830, 9522, 0), "Climb out of the cave."));
+			ObjectID.JP_CAVEROCKSOUT, new WorldPoint(2830, 9522, 0), "Climb out of the cave."));
 		return cleanAndReturnRoguesPurse;
 	}
 
@@ -179,7 +170,7 @@ public class JunglePotion extends BasicQuestHelper
 
 	private QuestStep getSnakeWeed()
 	{
-		getSnakeWeed = new ObjectStep(this, ObjectID.MARSHY_JUNGLE_VINE, new WorldPoint(2763, 3044, 0),
+		getSnakeWeed = new ObjectStep(this, ObjectID.SNAKE_VINE_FULL, new WorldPoint(2763, 3044, 0),
 			"Search a marshy jungle vine south of Tai Bwo Wannai for some snake weed.");
 		getSnakeWeed.addText("If you want to do Zogre Flesh Eaters or Legends' Quest grab one for each as you will need them later.");
 		return getSnakeWeed;
@@ -187,7 +178,7 @@ public class JunglePotion extends BasicQuestHelper
 
 	private QuestStep getArdrigal()
 	{
-		getArdrigal = new ObjectStep(this, ObjectID.PALM_TREE_2577, new WorldPoint(2871, 3116, 0),
+		getArdrigal = new ObjectStep(this, ObjectID.ARDRIGAL_PALM_FULL, new WorldPoint(2871, 3116, 0),
 			"Search the palm trees north east of Tai Bwo Wannai for an Ardrigal herb.");
 		getArdrigal.addText("If you want to do Legends' Quest grab one extra as you will need it later.");
 		return getArdrigal;
@@ -195,13 +186,13 @@ public class JunglePotion extends BasicQuestHelper
 
 	private QuestStep getSitoFoil()
 	{
-		return getSitoFoil = new ObjectStep(this, ObjectID.SCORCHED_EARTH, new WorldPoint(2791, 3047, 0),
+		return getSitoFoil = new ObjectStep(this, ObjectID.SITO_SOIL_FULL, new WorldPoint(2791, 3047, 0),
 			"Search the scorched earth in the south of Tai Bwo Wannai for a Sito Foil herb.");
 	}
 
 	private QuestStep getVolenciaMoss()
 	{
-		getVolenciaMoss = new ObjectStep(this, ObjectID.ROCK_2581, new WorldPoint(2851, 3036, 0),
+		getVolenciaMoss = new ObjectStep(this, ObjectID.VOLENCIA_MOSS_ROCK_FULL, new WorldPoint(2851, 3036, 0),
 			"Search the rock for a Volencia Moss herb at the mine south east of Tai Bwo Wannai.");
 		getVolenciaMoss.addText("If you plan on doing Fairy Tale I then take an extra.");
 		return getVolenciaMoss;
@@ -209,10 +200,10 @@ public class JunglePotion extends BasicQuestHelper
 
 	private QuestStep getRoguesPurse()
 	{
-		enterCave = new ObjectStep(this, ObjectID.ROCKS_2584, new WorldPoint(2825, 3119, 0),
+		enterCave = new ObjectStep(this, ObjectID.POTHOLE_CAVE_ENTRANCE, new WorldPoint(2825, 3119, 0),
 			"Enter the cave to the north by clicking on the rocks.");
 		enterCave.addDialogStep("Yes, I'll enter the cave.");
-		getRoguePurseHerb = new ObjectStep(this, ObjectID.FUNGUS_COVERED_CAVERN_WALL, "Get the Rogues Purse from the fungus covered " +
+		getRoguePurseHerb = new ObjectStep(this, ObjectID.ROGUES_PURSE_CAVE_FULL, "Get the Rogues Purse from the fungus covered " +
 			"wall in the underground dungeon.");
 		getRoguePurseHerb.setHideWorldArrow(true);
 		getRoguePurseHerb.addText("If you are planning on doing Zogre Flesh Eaters then take an extra.");
@@ -253,7 +244,7 @@ public class JunglePotion extends BasicQuestHelper
 		reqs.add(food);
 		reqs.add(new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS));
 		ItemRequirement karaTele = new ItemRequirement("Teleport to Karamja (Glory/house teleport)",
-			ItemID.BRIMHAVEN_TELEPORT);
+			ItemID.NZONE_TELETAB_BRIMHAVEN);
 		karaTele.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		reqs.add(karaTele);
 		return reqs;

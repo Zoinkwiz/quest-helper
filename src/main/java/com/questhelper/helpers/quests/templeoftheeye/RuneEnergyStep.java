@@ -27,10 +27,10 @@ package com.questhelper.helpers.quests.templeoftheeye;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class RuneEnergyStep extends ObjectStep
@@ -45,12 +45,12 @@ public class RuneEnergyStep extends ObjectStep
 	RunicEnergy[] useList = new RunicEnergy[6];
 
 	RunicEnergy[] runicEnergies = new RunicEnergy[]{
-		new RunicEnergy("earth", new WorldPoint(3040, 4834, 0), ObjectID.EARTH_ENERGY),
-		new RunicEnergy("cosmic", new WorldPoint(3041, 4832, 0), ObjectID.COSMIC_ENERGY),
-		new RunicEnergy("death", new WorldPoint(3037, 4832, 0), ObjectID.DEATH_ENERGY),
-		new RunicEnergy("nature", new WorldPoint(3038, 4830, 0), ObjectID.NATURE_ENERGY),
-		new RunicEnergy("law", new WorldPoint(3038, 4834, 0), ObjectID.LAW_ENERGY),
-		new RunicEnergy("fire", new WorldPoint(3040, 4830, 0), ObjectID.FIRE_ENERGY),
+		new RunicEnergy("earth", new WorldPoint(3040, 4834, 0), ObjectID.TOTE_ABYSSAL_ENERGY_EARTH_VIS),
+		new RunicEnergy("cosmic", new WorldPoint(3041, 4832, 0), ObjectID.TOTE_ABYSSAL_ENERGY_COSMIC_VIS),
+		new RunicEnergy("death", new WorldPoint(3037, 4832, 0), ObjectID.TOTE_ABYSSAL_ENERGY_DEATH_VIS),
+		new RunicEnergy("nature", new WorldPoint(3038, 4830, 0), ObjectID.TOTE_ABYSSAL_ENERGY_NATURE_VIS),
+		new RunicEnergy("law", new WorldPoint(3038, 4834, 0), ObjectID.TOTE_ABYSSAL_ENERGY_LAW_VIS),
+		new RunicEnergy("fire", new WorldPoint(3040, 4830, 0), ObjectID.TOTE_ABYSSAL_ENERGY_FIRE_VIS),
 	};
 
 	int highestPointReached = 0;
@@ -58,10 +58,10 @@ public class RuneEnergyStep extends ObjectStep
 	{
 		super(questHelper, -1,
 			"Work out the correct order to activate the runes through trial and error.");
-		addAlternateObjects(ObjectID.EARTH_ENERGY, ObjectID.COSMIC_ENERGY,
-			ObjectID.DEATH_ENERGY,
-			ObjectID.NATURE_ENERGY, ObjectID.LAW_ENERGY,
-			ObjectID.FIRE_ENERGY);
+		addAlternateObjects(ObjectID.TOTE_ABYSSAL_ENERGY_EARTH_VIS, ObjectID.TOTE_ABYSSAL_ENERGY_COSMIC_VIS,
+			ObjectID.TOTE_ABYSSAL_ENERGY_DEATH_VIS,
+			ObjectID.TOTE_ABYSSAL_ENERGY_NATURE_VIS, ObjectID.TOTE_ABYSSAL_ENERGY_LAW_VIS,
+			ObjectID.TOTE_ABYSSAL_ENERGY_FIRE_VIS);
 	}
 
 	@Override

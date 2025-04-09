@@ -24,24 +24,25 @@
  */
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.Prayer;
+import net.runelite.api.QuestState;
+import net.runelite.api.gameval.ItemID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.Prayer;
-import net.runelite.api.QuestState;
 
 public class DagRouteHelper extends ComplexStateQuestHelper
 {
@@ -64,7 +65,7 @@ public class DagRouteHelper extends ComplexStateQuestHelper
 	protected void setupRequirements()
 	{
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE);
-		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK);
+		petRock = new ItemRequirement("Pet rock", ItemID.VT_USELESS_ROCK);
 		petRock.setTooltip("Can be substituted by having a friend");
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);

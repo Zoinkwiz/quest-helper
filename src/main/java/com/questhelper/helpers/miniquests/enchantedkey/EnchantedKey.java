@@ -26,24 +26,19 @@ package com.questhelper.helpers.miniquests.enchantedkey;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.KeyringCollection;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.item.KeyringRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.questhelper.rewards.ItemReward;
-import net.runelite.api.ItemID;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.KeyringRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.QuestState;
+import net.runelite.api.gameval.ItemID;
+
+import java.util.*;
 
 public class EnchantedKey extends BasicQuestHelper
 {
@@ -76,10 +71,10 @@ public class EnchantedKey extends BasicQuestHelper
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		key = new KeyringRequirement("Enchanted key", configManager, KeyringCollection.ENCHANTED_KEY);
-		varrockTeleports = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT);
-		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
-		rellekkaTeleports = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);
-		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT);
+		varrockTeleports = new ItemRequirement("Varrock teleports", ItemID.POH_TABLET_VARROCKTELEPORT);
+		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.POH_TABLET_ARDOUGNETELEPORT);
+		rellekkaTeleports = new ItemRequirement("Rellekka teleport", ItemID.NZONE_TELETAB_RELLEKKA);
+		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 		passage = new ItemRequirement("Necklace of passage", ItemCollections.NECKLACE_OF_PASSAGES);
 	}
 
@@ -104,9 +99,9 @@ public class EnchantedKey extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Saradomin Mjolnir", ItemID.SARADOMIN_MJOLNIR, 1),
-				new ItemReward("Guthix Mjolnir", ItemID.GUTHIX_MJOLNIR, 1),
-				new ItemReward("Zamorak Mjolnir", ItemID.ZAMORAK_MJOLNIR, 1));
+				new ItemReward("Saradomin Mjolnir", ItemID.MAKINGHISTORY_SARADOMIN_POLESTAFF, 1),
+				new ItemReward("Guthix Mjolnir", ItemID.MAKINGHISTORY_GUTHIX_POLESTAFF, 1),
+				new ItemReward("Zamorak Mjolnir", ItemID.MAKINGHISTORY_ZAMORAK_POLESTAFF, 1));
 	}
 
 	@Override

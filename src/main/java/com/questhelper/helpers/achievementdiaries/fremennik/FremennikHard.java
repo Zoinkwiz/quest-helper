@@ -25,27 +25,32 @@
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
 
 public class FremennikHard extends ComplexStateQuestHelper
 {
@@ -144,19 +149,19 @@ public class FremennikHard extends ComplexStateQuestHelper
 		notFreeBlast = new VarplayerRequirement(1184, false, 30);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddy).isNotConsumed();
-		bronzeNail = new ItemRequirement("Bronze nails", ItemID.BRONZE_NAILS).showConditioned(notCraftShield);
+		bronzeNail = new ItemRequirement("Bronze nails", ItemID.NAILS_BRONZE).showConditioned(notCraftShield);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notCraftShield).isNotConsumed();
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPTroll);
-		lawRune2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notTPWaterbirth);
-		astralRune = new ItemRequirement("Astral runes", ItemID.ASTRAL_RUNE).showConditioned(notTPWaterbirth);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notTPWaterbirth);
-		fireRune = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE).showConditioned(notTPTroll);
-		teasingStick = new ItemRequirement("Teasing Stick", ItemID.TEASING_STICK).showConditioned(notCatchKyatt).isNotConsumed();
+		lawRune = new ItemRequirement("Law rune", ItemID.LAWRUNE).showConditioned(notTPTroll);
+		lawRune2 = new ItemRequirement("Law runes", ItemID.LAWRUNE).showConditioned(notTPWaterbirth);
+		astralRune = new ItemRequirement("Astral runes", ItemID.ASTRALRUNE).showConditioned(notTPWaterbirth);
+		waterRune = new ItemRequirement("Water rune", ItemID.WATERRUNE).showConditioned(notTPWaterbirth);
+		fireRune = new ItemRequirement("Fire runes", ItemID.FIRERUNE).showConditioned(notTPTroll);
+		teasingStick = new ItemRequirement("Teasing Stick", ItemID.HUNTING_TEASING_STICK).showConditioned(notCatchKyatt).isNotConsumed();
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notCatchKyatt).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notCraftShield).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notCraftShield).isNotConsumed();
-		arcticLog = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOGS).showConditioned(notCraftShield);
-		cadantineUnfPot = new ItemRequirement("Cadantine unf pot", ItemID.CADANTINE_POTION_UNF).showConditioned(notMixSuperDef);
+		arcticLog = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOG).showConditioned(notCraftShield);
+		cadantineUnfPot = new ItemRequirement("Cadantine unf pot", ItemID.CADANTINEVIAL).showConditioned(notMixSuperDef);
 		whiteBerries = new ItemRequirement("White berries", ItemID.WHITE_BERRIES).showConditioned(notMixSuperDef);
 		log = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notCatchKyatt);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notMiscSupport).isNotConsumed();
@@ -203,60 +208,60 @@ public class FremennikHard extends ComplexStateQuestHelper
 	{
 		tpTroll = new DetailedQuestStep(this,
 			"Teleport to Trollheim.", lawRune.quantity(2), fireRune.quantity(2), normalBook);
-		catchKyatt = new NpcStep(this, NpcID.SABRETOOTHED_KYATT, new WorldPoint(2725, 3770, 0),
+		catchKyatt = new NpcStep(this, NpcID.HUNTING_SNOW_TIGER, new WorldPoint(2725, 3770, 0),
 			"Place logs over a pit in the hunter area, and poke a kyatt with a teasing stick. " +
 				"Jump over the pits until the kyatt falls in and loot it.", teasingStick, log, knife);
 		moveToRellekka = new DetailedQuestStep(this, new WorldPoint(2659, 3671, 0),
 			"Enter the Relleka province.");
 		mixSuperDef = new ItemStep(this, new WorldPoint(2662, 3657, 0),
 			"Mix a Super defence potion within the Fremennik Province (only near Rellekka).", cadantineUnfPot.highlighted(), whiteBerries.highlighted());
-		moveToCaveGem = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+		moveToCaveGem = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0),
 			"Enter the tunnel that leads to Keldagrim. Alternatively teleport to Varrock and take a minecart near the Grand Exchange.");
-		moveToRiverGem = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+		moveToRiverGem = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0),
 			"Go through the cave entrance.");
-		moveToKeldagrimGem = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+		moveToKeldagrimGem = new NpcStep(this, NpcID.DWARF_CITY_BOATMAN_MINES_POSTQUEST, new WorldPoint(2842, 10129, 0),
 			"Speak with the Dwarven Boatman to go to Keldagrim.");
 		moveToKeldagrimGem.addDialogStep("Yes, please take me.");
-		moveToKeldagrimVarrockGem = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+		moveToKeldagrimVarrockGem = new ObjectStep(this, ObjectID.GE_KELDAGRIM_TRAPDOOR, new WorldPoint(3140, 3504, 0),
 			"Enter the trapdoor near the Grand Exchange.");
-		moveToCaveBlast = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+		moveToCaveBlast = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0),
 			"Enter the tunnel that leads to Keldagrim. Alternatively teleport to Varrock and take a minecart near the Grand Exchange.");
-		moveToRiverBlast = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+		moveToRiverBlast = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0),
 			"Go through the cave entrance.");
-		moveToKeldagrimBlast = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+		moveToKeldagrimBlast = new NpcStep(this, NpcID.DWARF_CITY_BOATMAN_MINES_POSTQUEST, new WorldPoint(2842, 10129, 0),
 			"Speak with the Dwarven Boatman to go to Keldagrim.");
 		moveToKeldagrimBlast.addDialogStep("Yes, please take me.");
-		moveToKeldagrimVarrockBlast = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+		moveToKeldagrimVarrockBlast = new ObjectStep(this, ObjectID.GE_KELDAGRIM_TRAPDOOR, new WorldPoint(3140, 3504, 0),
 			"Enter the trapdoor near the Grand Exchange.");
-		stealGem = new ObjectStep(this, ObjectID.GEM_STALL_6162, new WorldPoint(2888, 10211, 0),
+		stealGem = new ObjectStep(this, ObjectID.DWARF_MARKET_GEMS, new WorldPoint(2888, 10211, 0),
 			"Steal from the gem stall.");
-		moveToNeitiznot = new NpcStep(this, NpcID.MARIA_GUNNARS_1883, new WorldPoint(2644, 3710, 0),
+		moveToNeitiznot = new NpcStep(this, NpcID.FRIS_R_FERRY_RELLIKKA, new WorldPoint(2644, 3710, 0),
 			"Speak with Maria Gunnars to travel to Neitiznot.");
-		craftShield = new ObjectStep(this, ObjectID.WOODCUTTING_STUMP, new WorldPoint(2342, 3807, 0),
+		craftShield = new ObjectStep(this, ObjectID.IZNOT_SHIELD_STUMP, new WorldPoint(2342, 3807, 0),
 			"Craft a shield on the woodcutting stump.", axe, arcticLog.quantity(2), hammer, rope, bronzeNail);
-		craftShield.addIcon(ItemID.NEITIZNOT_SHIELD);
-		moveToJatizso = new NpcStep(this, NpcID.MORD_GUNNARS, new WorldPoint(2644, 3709, 0),
+		craftShield.addIcon(ItemID.FREMMENIK_ROUND_SHIELD);
+		moveToJatizso = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_RELLEKKA, new WorldPoint(2644, 3709, 0),
 			"Speak with Mord Gunnars to go to Jatizso.");
 		moveToJatizso.addDialogStep("Can you ferry me to Jatizso?");
-		moveToMine = new ObjectStep(this, ObjectID.STAIRCASE_21455, new WorldPoint(2398, 3813, 0),
+		moveToMine = new ObjectStep(this, ObjectID.FRISD_IZSO_MINE_ENTRANCE, new WorldPoint(2398, 3813, 0),
 			"Go down the staircase.");
 		mineAddy = new ObjectStep(this, 11374, new WorldPoint(2402, 10189, 0),
 			"Mine 5 Adamantite ores.", pickaxe);
 		mineAddy.addIcon(ItemID.RUNE_PICKAXE);
-		moveToMisc = new NpcStep(this, NpcID.SAILOR_3936, new WorldPoint(2630, 3692, 0),
+		moveToMisc = new NpcStep(this, NpcID.VIKING_SAILOR, new WorldPoint(2630, 3692, 0),
 			"Speak to the sailor to go to Miscellania.");
 		miscSupport = new ObjectStep(this, 15084, new WorldPoint(2527, 3849, 0),
 			"Rake the herb and flax patch until 100% support.", true, rake);
 		miscSupport.addAlternateObjects(15079);
 		tpWaterbirth = new DetailedQuestStep(this,
 			"Teleport to Waterbirth.", waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1), lunarBook);
-		moveToBlast = new ObjectStep(this, ObjectID.STAIRS_9084, new WorldPoint(2930, 10197, 0),
+		moveToBlast = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_FACTORY_STAIRS, new WorldPoint(2930, 10197, 0),
 			"Enter the blast furnace.");
-		freeBlast = new NpcStep(this, NpcID.BLAST_FURNACE_FOREMAN, new WorldPoint(1942, 4958, 0),
+		freeBlast = new NpcStep(this, NpcID.BLAST_FURNACE_INSTRUCTOR, new WorldPoint(1942, 4958, 0),
 			"Speak with the Foreman.");
 		freeBlast.addDialogSteps("What?", "Can I use the furnace to smelt ore?", "I have level 60!");
 
-		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
+		claimReward = new NpcStep(this, NpcID.VIKING_FREM_DIARY, new WorldPoint(2658, 3627, 0),
 			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -296,8 +301,8 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Fremennik Sea Boots (3)", ItemID.FREMENNIK_SEA_BOOTS_3, 1),
-			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Fremennik Sea Boots (3)", ItemID.FREMENNIK_BOOTS_HARD, 1),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

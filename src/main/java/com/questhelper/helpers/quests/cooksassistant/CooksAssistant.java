@@ -25,34 +25,25 @@
 package com.questhelper.helpers.quests.cooksassistant;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class CooksAssistant extends BasicQuestHelper
 {
@@ -103,12 +94,12 @@ public class CooksAssistant extends BasicQuestHelper
 	{
 		egg = new ItemRequirement("Egg", ItemID.EGG);
 		egg.canBeObtainedDuringQuest();
-		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
+		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
 		milk.canBeObtainedDuringQuest();
-		flour = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
+		flour = new ItemRequirement("Pot of flour", ItemID.POT_FLOUR);
 		flour.canBeObtainedDuringQuest();
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
-		pot = new ItemRequirement("Pot", ItemID.POT);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
+		pot = new ItemRequirement("Pot", ItemID.POT_EMPTY);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		coins.setTooltip("Necessary if you do not have a pot / bucket");
 		grain = new ItemRequirement("Grain", ItemID.GRAIN);
@@ -133,38 +124,38 @@ public class CooksAssistant extends BasicQuestHelper
 	{
 		getEgg = new ItemStep(this, new WorldPoint(3177, 3296, 0),
 			"Grab an egg from the farm north of Lumbridge.", egg);
-		getBucket = new NpcStep(this, NpcID.SHOP_KEEPER, new WorldPoint(3212, 3246, 0),
+		getBucket = new NpcStep(this, NpcID.GENERALSHOPKEEPER1, new WorldPoint(3212, 3246, 0),
 			"Purchase a bucket from the Lumbridge General Store.", coins.quantity(3));
-		getBucket.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BUCKET, true);
-		getBucket.addAlternateNpcs(NpcID.SHOP_ASSISTANT);
-		getPot = new NpcStep(this, NpcID.SHOP_KEEPER, new WorldPoint(3212, 3246, 0),
+		getBucket.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BUCKET_EMPTY, true);
+		getBucket.addAlternateNpcs(NpcID.GENERALASSISTANT1);
+		getPot = new NpcStep(this, NpcID.GENERALSHOPKEEPER1, new WorldPoint(3212, 3246, 0),
 			"Purchase a pot from the Lumbridge General Store.", coins.quantity(3));
-		getPot.addAlternateNpcs(NpcID.SHOP_ASSISTANT);
-		milkCow = new ObjectStep(this, ObjectID.DAIRY_COW, new WorldPoint(3254, 3272, 0),
+		getPot.addAlternateNpcs(NpcID.GENERALASSISTANT1);
+		milkCow = new ObjectStep(this, ObjectID.FAT_COW, new WorldPoint(3254, 3272, 0),
 			"Milk the cow north-east of Lumbridge.", bucket);
-		getWheat = new ObjectStep(this, ObjectID.WHEAT_15507, new WorldPoint(3161, 3292, 0),
+		getWheat = new ObjectStep(this, ObjectID.FAI_VARROCK_WHEAT_CORNER, new WorldPoint(3161, 3292, 0),
 			"Pick some wheat north of Lumbridge.");
-		climbLadderOne = new ObjectStep(this, ObjectID.LADDER_12964, new WorldPoint(3164, 3307, 0),
+		climbLadderOne = new ObjectStep(this, ObjectID.QIP_COOK_LADDER, new WorldPoint(3164, 3307, 0),
 			"Climb up the ladder in the Mill north of Lumbridge to the top floor.", pot, grain);
-		climbLadderTwoUp = new ObjectStep(this, ObjectID.LADDER_12965, new WorldPoint(3164, 3307, 1),
+		climbLadderTwoUp = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_MIDDLE, new WorldPoint(3164, 3307, 1),
 			"Climb up the ladder in the Mill north of Lumbridge to the top floor.", pot, grain);
 		climbLadderTwoUp.addDialogStep("Climb Up.");
 		climbLadderOne.addSubSteps(climbLadderTwoUp);
-		fillHopper = new ObjectStep(this, ObjectID.HOPPER_24961, new WorldPoint(3166, 3307, 2),
+		fillHopper = new ObjectStep(this, ObjectID.HOPPER1, new WorldPoint(3166, 3307, 2),
 			"Fill the hopper with your grain.", pot, grain.highlighted());
 		fillHopper.addIcon(ItemID.GRAIN);
-		operateControls = new ObjectStep(this, ObjectID.HOPPER_CONTROLS_24964, new WorldPoint(3166, 3305, 2),
+		operateControls = new ObjectStep(this, ObjectID.HOPPERLEVERS1, new WorldPoint(3166, 3305, 2),
 			"Operate the hopper controls.", pot);
-		climbLadderThree = new ObjectStep(this, ObjectID.LADDER_12966, new WorldPoint(3164, 3307, 2),
+		climbLadderThree = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_TOP, new WorldPoint(3164, 3307, 2),
 			"Climb down the ladder in the Mill to the ground floor.", pot);
-		climbLadderTwoDown = new ObjectStep(this, ObjectID.LADDER_12965, new WorldPoint(3164, 3307, 1),
+		climbLadderTwoDown = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_MIDDLE, new WorldPoint(3164, 3307, 1),
 			"Climb down the ladder in the Mill to the ground floor.", pot);
 		climbLadderTwoDown.addDialogStep("Climb Down.");
 		climbLadderThree.addSubSteps(climbLadderTwoDown);
-		collectFlour = new ObjectStep(this, ObjectID.FLOUR_BIN, new WorldPoint(3166, 3306, 0),
+		collectFlour = new ObjectStep(this, ObjectID.MILLBASE_FLOUR, new WorldPoint(3166, 3306, 0),
 			"Collect the flour in the bin.", pot.highlighted());
-		collectFlour.addIcon(ItemID.POT);
-		finishQuest = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3206, 3214, 0),
+		collectFlour.addIcon(ItemID.POT_EMPTY);
+		finishQuest = new NpcStep(this, NpcID.COOK, new WorldPoint(3206, 3214, 0),
 			"Give the Cook in Lumbridge Castle's kitchen the required items to finish the quest.",
 			egg, milk, flour);
 		finishQuest.addDialogSteps("What's wrong?", "Can I help?", "Yes.");

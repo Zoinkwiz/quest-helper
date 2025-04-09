@@ -28,10 +28,11 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
+import net.runelite.api.events.VarbitChanged;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import net.runelite.api.events.VarbitChanged;
 
 public class TaverleyBalloonFlight extends DetailedOwnerStep
 {

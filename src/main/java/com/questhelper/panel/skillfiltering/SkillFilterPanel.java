@@ -25,16 +25,14 @@
  */
 package com.questhelper.panel.skillfiltering;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import com.google.inject.Singleton;
 import net.runelite.api.Skill;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 
 @Singleton
 public class SkillFilterPanel extends JPanel

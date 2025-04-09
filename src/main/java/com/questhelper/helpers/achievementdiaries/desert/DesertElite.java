@@ -24,41 +24,35 @@
  */
 package com.questhelper.helpers.achievementdiaries.desert;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class DesertElite extends ComplexStateQuestHelper
 {
@@ -131,15 +125,15 @@ public class DesertElite extends ComplexStateQuestHelper
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notTalkKQHead);
-		rawPie = new ItemRequirement("Raw wild pie", ItemID.RAW_WILD_PIE).showConditioned(notWildPie);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notIceBarrage);
-		bloodRune = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE).showConditioned(notIceBarrage);
-		deathRune = new ItemRequirement("Death rune", ItemID.DEATH_RUNE).showConditioned(notIceBarrage);
+		rawPie = new ItemRequirement("Raw wild pie", ItemID.UNCOOKED_WILD_PIE).showConditioned(notWildPie);
+		waterRune = new ItemRequirement("Water rune", ItemID.WATERRUNE).showConditioned(notIceBarrage);
+		bloodRune = new ItemRequirement("Blood rune", ItemID.BLOODRUNE).showConditioned(notIceBarrage);
+		deathRune = new ItemRequirement("Death rune", ItemID.DEATHRUNE).showConditioned(notIceBarrage);
 		dragonDartTip = new ItemRequirement("Dragon dart tip", ItemID.DRAGON_DART_TIP).showConditioned(notDragonDarts);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notDragonDarts);
-		mahoganyPlank = new ItemRequirement("Mahogany plank", ItemID.MAHOGANY_PLANK).showConditioned(notTalkKQHead);
-		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF_8784).showConditioned(notTalkKQHead);
-		saw = new ItemRequirement("Saw", ItemID.SAW).showConditioned(notTalkKQHead).isNotConsumed();
+		mahoganyPlank = new ItemRequirement("Mahogany plank", ItemID.PLANK_MAHOGANY).showConditioned(notTalkKQHead);
+		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF).showConditioned(notTalkKQHead);
+		saw = new ItemRequirement("Saw", ItemID.POH_SAW).showConditioned(notTalkKQHead).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead).isNotConsumed();
 		kqHead = new ItemRequirement("Stuffed KQ head", ItemCollections.STUFFED_KQ_HEAD).showConditioned(notTalkKQHead);
 
@@ -179,9 +173,9 @@ public class DesertElite extends ComplexStateQuestHelper
 		moveToPyramidPlunder = new ObjectStep(this, 26622, new WorldPoint(3289, 2800, 0),
 			"Enter the Pyramid plunder minigame. If you don't see a Guardian mummy exit and try a different " +
 				"entrance.", true);
-		((ObjectStep) moveToPyramidPlunder).addAlternateObjects(NullObjectID.NULL_26623, NullObjectID.NULL_26624,
-			NullObjectID.NULL_26625);
-		startPyramidPlunder = new NpcStep(this, NpcID.GUARDIAN_MUMMY, new WorldPoint(1934, 4427, 3),
+		((ObjectStep) moveToPyramidPlunder).addAlternateObjects(ObjectID.NTK_PYRAMID_DOOR_EAST_MULTI, ObjectID.NTK_PYRAMID_DOOR_SOUTH_MULTI,
+			ObjectID.NTK_PYRAMID_DOOR_WEST_MULTI);
+		startPyramidPlunder = new NpcStep(this, NpcID.NTK_MUMMY_GUARDIAN, new WorldPoint(1934, 4427, 3),
 			"Talk to the guardian mummy to start the minigame.");
 		startPyramidPlunder.addDialogStep("I know what I'm doing - let's get on with it.");
 
@@ -198,18 +192,18 @@ public class DesertElite extends ComplexStateQuestHelper
 			((ObjectStep) traversePyramid).addAlternateObjects(i);
 		}
 
-		grandGoldChest = new ObjectStep(this, ObjectID.GRAND_GOLD_CHEST, new WorldPoint(1973, 4431, 0),
+		grandGoldChest = new ObjectStep(this, ObjectID.NTK_GOLDEN_CHEST_CLOSED, new WorldPoint(1973, 4431, 0),
 			"Loot the grand gold chest.", true);// Can't test the coords but should be close / correct
 
-		restorePrayer = new ObjectStep(this, ObjectID.ALTAR_20377, new WorldPoint(3281, 2774, 0),
+		restorePrayer = new ObjectStep(this, ObjectID.CONTACT_HIGH_PRIEST_TEMPLE_ALTAR, new WorldPoint(3281, 2774, 0),
 			"Pray at the altar in Sophanem restoring at least 85 prayer points.");
 
-		iceBarrage = new NpcStep(this, NpcID.VULTURE, new WorldPoint(3334, 2865, 0),
+		iceBarrage = new NpcStep(this, NpcID.RAG_VULTURE, new WorldPoint(3334, 2865, 0),
 			"Cast Ice barrage against any foe in the Desert (away from any city). You must not splash.", true,
 			waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4));
-		iceBarrage.addAlternateNpcs(NpcID.VULTURE_1268);
+		iceBarrage.addAlternateNpcs(NpcID.RAG_VULTURE_FLYING);
 
-		wildPie = new ObjectStep(this, ObjectID.CLAY_OVEN, new WorldPoint(3434, 2886, 0),
+		wildPie = new ObjectStep(this, ObjectID.ELID_CLAY_OVEN, new WorldPoint(3434, 2886, 0),
 			"Cook a wild pie on the clay oven in Nardah.", rawPie);
 
 		moveToBed = new TileStep(this, new WorldPoint(3175, 3041, 0),
@@ -220,7 +214,7 @@ public class DesertElite extends ComplexStateQuestHelper
 			"is necessary to stuff the KQ head at the taxidermist in Canifis.",
 			kqHead, mahoganyPlank.quantity(2), goldLeaves.quantity(2), saw, hammer, coins.quantity(50000));
 
-		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
+		claimReward = new NpcStep(this, NpcID.JARR_DESERT_DIARY, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -243,8 +237,8 @@ public class DesertElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Desert amulet 4", ItemID.DESERT_AMULET_4),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Desert amulet 4", ItemID.DESERT_AMULET_ELITE),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

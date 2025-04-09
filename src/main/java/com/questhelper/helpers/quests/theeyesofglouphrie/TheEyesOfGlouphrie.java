@@ -25,40 +25,30 @@
 package com.questhelper.helpers.quests.theeyesofglouphrie;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.questhelper.steps.*;
 import com.questhelper.util.QHObjectID;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheEyesOfGlouphrie extends BasicQuestHelper
 {
@@ -166,18 +156,18 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
+		bucketOfSap = new ItemRequirement("Bucket of sap", ItemID.ICS_LITTLE_SAP_BUCKET);
 		bucketOfSap.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
-		bucketOfSapHiglight = new ItemRequirement("Bucket of sap", ItemID.BUCKET_OF_SAP);
+		bucketOfSapHiglight = new ItemRequirement("Bucket of sap", ItemID.ICS_LITTLE_SAP_BUCKET);
 		bucketOfSapHiglight.setTooltip("You can get this by using a knife on an evergreen tree with a bucket in your " +
 			"inventory");
 		bucketOfSapHiglight.setHighlightInInventory(true);
 
-		groundMud = new ItemRequirement("Ground mud runes", ItemID.GROUND_MUD_RUNES);
+		groundMud = new ItemRequirement("Ground mud runes", ItemID.EYEGLO_GROUND_MUD_RUNES);
 		groundMud.setHighlightInInventory(true);
-		mudRune = new ItemRequirement("Mud rune", ItemID.MUD_RUNE);
-		mudRuneHighlight = new ItemRequirement("Mud rune", ItemID.MUD_RUNE);
+		mudRune = new ItemRequirement("Mud rune", ItemID.MUDRUNE);
+		mudRuneHighlight = new ItemRequirement("Mud rune", ItemID.MUDRUNE);
 		mudRuneHighlight.setHighlightInInventory(true);
 		mapleLog = new ItemRequirement("Maple logs", ItemID.MAPLE_LOGS);
 		oakLog = new ItemRequirement("Oak logs", ItemID.OAK_LOGS);
@@ -185,7 +175,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleHighlight = pestleAndMortar.highlighted();
-		magicGlue = new ItemRequirement("Magic glue", ItemID.MAGIC_GLUE);
+		magicGlue = new ItemRequirement("Magic glue", ItemID.EYEGLO_MAGIC_GLUE);
 		magicGlue.setHighlightInInventory(true);
 	}
 
@@ -220,28 +210,28 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		int[] brimstailNPCs = new int[]{NpcID.BRIMSTAIL, NpcID.BRIMSTAIL_11431};
-		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2404, 3419, 0), "Go talk to Brimstail in his cave in west Tree Gnome Stronghold.");
+		int[] brimstailNPCs = new int[]{NpcID.GNOME_BRIMSTAIL_CUTSCENE, NpcID.GNOME_BRIMSTAIL_2OP};
+		enterCave = new ObjectStep(this, ObjectID.EYEGLO_BRIMSTAILS_CAVE_ENTRANCE, new WorldPoint(2404, 3419, 0), "Go talk to Brimstail in his cave in west Tree Gnome Stronghold.");
 		talkToBrimstail = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstail.addDialogStep("What's that cute creature wandering around?");
 		talkToBrimstail.addDialogStep("Yes, that sounds fascinating...");
 		talkToBrimstail.addDialogStep("Oh, yes I love a bit of History.");
 		talkToBrimstail.addDialogStep("Yes.");
 		enterCave.addSubSteps(talkToBrimstail);
-		inspectBowl = new ObjectStep(this, ObjectID.SINGING_BOWL, new WorldPoint(2388, 9813, 0), "Inspect the singing bowl in the west room.");
-		inspectMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0),
+		inspectBowl = new ObjectStep(this, ObjectID.EYEGLO_SINGING_BOWL, new WorldPoint(2388, 9813, 0), "Inspect the singing bowl in the west room.");
+		inspectMachine = new ObjectStep(this, ObjectID.EYEGLO_GNOME_MACHINE_02_MULTILOC, new WorldPoint(2390, 9826, 0),
 			"Attempt to unlock oaknock's machine in the north of the cave.");
 		talkToBrimstailAgain = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail again.");
 		talkToBrimstailAgain.addDialogStep("I've had a look in the other room now.");
 		talkToBrimstailAgain.addDialogStep("Of course, I'd love to!");
 
-		goUpToHazelmere = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2677, 3087, 0),
+		goUpToHazelmere = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2677, 3087, 0),
 			"Go talk to Hazelmere in his hut east of Yanille (Fairy Ring CLS).");
-		talkToHazelmere = new NpcStep(this, NpcID.HAZELMERE, new WorldPoint(2677, 3087, 1),
+		talkToHazelmere = new NpcStep(this, NpcID.GRANDTREE_HAZELMERE, new WorldPoint(2677, 3087, 1),
 			"Go talk to Hazelmere in his hut east of Yanille (Fairy Ring CLS).");
 		talkToHazelmere.addSubSteps(goUpToHazelmere);
 
-		enterCaveAgain = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2404, 3419, 0), "Go back to Brimstail's cave in west Tree Gnome Stronghold.", pestleAndMortar, mudRune, bucketOfSap, oakLog, mapleLog, saw, hammer);
+		enterCaveAgain = new ObjectStep(this, ObjectID.EYEGLO_BRIMSTAILS_CAVE_ENTRANCE, new WorldPoint(2404, 3419, 0), "Go back to Brimstail's cave in west Tree Gnome Stronghold.", pestleAndMortar, mudRune, bucketOfSap, oakLog, mapleLog, saw, hammer);
 		talkToBrimstailAfterHazelmere = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstailAfterHazelmere.addDialogStep("I've visited Hazelmere, he told me all sorts of interesting things.");
 		talkToBrimstailAfterHazelmere.addSubSteps(enterCaveAgain);
@@ -251,9 +241,9 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		useMudOnSap = new DetailedQuestStep(this, "Use the ground mud runes on the bucket of sap.", groundMud,
 			bucketOfSapHiglight);
 
-		repairMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0),
+		repairMachine = new ObjectStep(this, ObjectID.EYEGLO_GNOME_MACHINE_02_MULTILOC, new WorldPoint(2390, 9826, 0),
 			"Use the magic glue on oaknock's machine in the north of the cave.", magicGlue, oakLog, mapleLog, saw, hammer);
-		repairMachine.addIcon(ItemID.MAGIC_GLUE);
+		repairMachine.addIcon(ItemID.EYEGLO_MAGIC_GLUE);
 
 		talkToBrimstailAfterRepairing = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail.");
 		talkToBrimstailAfterRepairing.addDialogStep("I think I've fixed the machine now!");
@@ -264,16 +254,16 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		unlockMachineTrueStep.addSubSteps(unlockMachineTrueStep.getSteps());
 		unlockMachine = new PuzzleWrapperStep(this, unlockMachineTrueStep, "Unlock the machine.");
 
-		operateMachine = new ObjectStep(this, NullObjectID.NULL_17282, new WorldPoint(2390, 9826, 0), "Operate the machine.");
+		operateMachine = new ObjectStep(this, ObjectID.EYEGLO_GNOME_MACHINE_02_MULTILOC, new WorldPoint(2390, 9826, 0), "Operate the machine.");
 		unlockMachineTrueStep.addSubSteps(operateMachine);
 
-		killCreature1 = new NpcStep(this, NpcID.EVIL_CREATURE, new WorldPoint(2408, 9819, 0), "Kill the evil creature next to Brimstail.");
-		killCreature2 = new NpcStep(this, NpcID.EVIL_CREATURE_1244, new WorldPoint(2465, 3494, 0), "Kill the evil creature next to Narnode.");
-		killCreature3 = new NpcStep(this, NpcID.EVIL_CREATURE_1247, new WorldPoint(2466, 3496, 3), "Kill the evil creature at the top of the Grand Tree.");
-		killCreature4 = new NpcStep(this, NpcID.EVIL_CREATURE_1250, new WorldPoint(2422, 3526, 0), "Kill the evil creature in the north west of the Stronghold.");
-		killCreature5 = new NpcStep(this, NpcID.EVIL_CREATURE_1253, new WorldPoint(2461, 3388, 0), "Kill the evil creature next to the Stronghold's entrance.");
-		killCreature6 = new NpcStep(this, NpcID.EVIL_CREATURE_1256, new WorldPoint(2462, 3443, 0), "Kill the evil creature next to the Stronghold's Spirit Tree.");
-		//killCreature7 = new NpcStep(this, NpcID.EVIL_CREATURE, new WorldPoint(3408, 9819, 0), "Kill the evil creature next to Brimstail.");
+		killCreature1 = new NpcStep(this, NpcID.EYEGLO_FLUFFIE_EVIL_1, new WorldPoint(2408, 9819, 0), "Kill the evil creature next to Brimstail.");
+		killCreature2 = new NpcStep(this, NpcID.EYEGLO_FLUFFIE_EVIL_2, new WorldPoint(2465, 3494, 0), "Kill the evil creature next to Narnode.");
+		killCreature3 = new NpcStep(this, NpcID.EYEGLO_FLUFFIE_EVIL_3, new WorldPoint(2466, 3496, 3), "Kill the evil creature at the top of the Grand Tree.");
+		killCreature4 = new NpcStep(this, NpcID.EYEGLO_FLUFFIE_EVIL_4, new WorldPoint(2422, 3526, 0), "Kill the evil creature in the north west of the Stronghold.");
+		killCreature5 = new NpcStep(this, NpcID.EYEGLO_FLUFFIE_EVIL_5, new WorldPoint(2461, 3388, 0), "Kill the evil creature next to the Stronghold's entrance.");
+		killCreature6 = new NpcStep(this, NpcID.EYEGLO_FLUFFIE_EVIL_6, new WorldPoint(2462, 3443, 0), "Kill the evil creature next to the Stronghold's Spirit Tree.");
+		//killCreature7 = new NpcStep(this, NpcID.EYEGLO_FLUFFIE_EVIL_1, new WorldPoint(3408, 9819, 0), "Kill the evil creature next to Brimstail.");
 
 		talkToBrimstailAfterIllusion = new NpcStep(this, brimstailNPCs, new WorldPoint(2410, 9818, 0), "Talk to Brimstail again.");
 		talkToBrimstailAfterIllusion.addDialogStep("Phew! I've got that machine working now. What do I need to do now?");
@@ -283,7 +273,7 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 		climbUpToF3Tree = new ObjectStep(this, QHObjectID.GRAND_TREE_F2_LADDER, new WorldPoint(2466, 3495, 2), "Kill the evil creature at the top of the Grand Tree.");
 		killCreature3.addSubSteps(climbUpToF1Tree, climbUpToF2Tree, climbUpToF3Tree);
 
-		talkToNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk to King Narnode to finish the quest.");
+		talkToNarnode = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 3496, 0), "Talk to King Narnode to finish the quest.");
 	}
 
 	@Override

@@ -25,40 +25,30 @@
 package com.questhelper.helpers.quests.sheepshearer;
 
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.or;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.IntStream;
+import com.questhelper.steps.*;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.*;
+import java.util.stream.IntStream;
+
+import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class SheepShearer extends BasicQuestHelper
 {
@@ -143,15 +133,15 @@ public class SheepShearer extends BasicQuestHelper
 		startStep.addDialogSteps("I'm looking for a quest.", "Yes, okay. I can do that.", "Yes.");
 		getSheers = new ItemStep(this, new WorldPoint(3190, 3273, 0),
 			"Pickup the shears in Fred's house.", shears);
-		shearSheep = new NpcStep(this, NpcID.SHEEP_2786, new WorldPoint(3201, 3268, 0),
+		shearSheep = new NpcStep(this, NpcID.SHEEPUNSHEERED3G, new WorldPoint(3201, 3268, 0),
 			"Shear " + woolNeeded + " sheep in the nearby field.", true, shears);
-		shearSheep.addAlternateNpcs(NpcID.SHEEP_2699, NpcID.SHEEP_2787, NpcID.SHEEP_2693, NpcID.SHEEP_2694, NpcID.SHEEP_2699, NpcID.SHEEP_2695);
-		climbStairsUp = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(3204, 3207, 0),
+		shearSheep.addAlternateNpcs(NpcID.SHEEPUNSHEERED3, NpcID.SHEEPUNSHEERED3W, NpcID.SHEEPUNSHEERED, NpcID.SHEEPUNSHEEREDG, NpcID.SHEEPUNSHEERED3, NpcID.SHEEPUNSHEEREDW);
+		climbStairsUp = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(3204, 3207, 0),
 			"Climb the staircase in the Lumbridge Castle to spin the wool into balls of wool.", totalWoolNeeded);
-		spinBalls = new ObjectStep(this, ObjectID.SPINNING_WHEEL_14889, new WorldPoint(3209, 3212, 1),
+		spinBalls = new ObjectStep(this, ObjectID.SPINNINGWHEEL, new WorldPoint(3209, 3212, 1),
 			"Spin your wool into balls.", totalWoolNeeded);
 		spinBalls.addWidgetHighlight(270, 14);
-		climbStairsDown = new ObjectStep(this, ObjectID.STAIRCASE_16672, new WorldPoint(3204, 3207, 1),
+		climbStairsDown = new ObjectStep(this, ObjectID.SPIRALSTAIRSMIDDLE, new WorldPoint(3204, 3207, 1),
 			"Climb down the staircase.", totalBallsNeeded);
 		climbStairsDown.addDialogSteps("Climb down the stairs.");
 		turnInBalls = new NpcStep(this, NpcID.FRED_THE_FARMER, new WorldPoint(3190, 3273, 0),
@@ -203,7 +193,7 @@ public class SheepShearer extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 60));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 60));
 	}
 
 	@Override

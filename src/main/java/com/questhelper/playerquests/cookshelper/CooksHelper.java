@@ -24,39 +24,40 @@
  */
 package com.questhelper.playerquests.cookshelper;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.PlayerMadeQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.dialog.RuneliteDialogStep;
 import com.questhelper.runeliteobjects.dialog.RuneliteObjectDialogStep;
-import com.questhelper.steps.playermadesteps.RuneliteObjectStep;
 import com.questhelper.runeliteobjects.dialog.RunelitePlayerDialogStep;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.FaceAnimationIDs;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.FakeItem;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.FakeNpc;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.ReplacedObject;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
+import com.questhelper.steps.playermadesteps.RuneliteObjectStep;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.QuestState;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.coords.WorldPoint;
 
 public class CooksHelper extends PlayerMadeQuestHelper
 {
@@ -142,7 +143,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 	private void setupCooksCousin()
 	{
 		// Cook's Cousin
-		cooksCousin = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.COOK_4626).getModels(), new WorldPoint(3209, 3215, 0), 808);
+		cooksCousin = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.COOK).getModels(), new WorldPoint(3209, 3215, 0), 808);
 		cooksCousin.setName("Cook's Cousin");
 		cooksCousin.setFace(4626);
 		cooksCousin.setExamine("The Cook's cousin.");
@@ -169,7 +170,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 	private void setupHopleez()
 	{
 		// Hopleez
-		hopleez = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), 808);
+		hopleez = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.ZEAH_DEFENCE_PURE).getModels(), new WorldPoint(3235, 3215, 0), 808);
 		hopleez.setName("Hopleez");
 		hopleez.setFace(7481);
 		hopleez.setExamine("He was here first.");
@@ -203,7 +204,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 			.addContinueDialog(new RunelitePlayerDialogStep(client, "I have! Here you go, why do you need it?"))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Nice! Now let's sort out this crasher..."))
 			.addContinueDialog(hopleez.createDialogStepForNpc("Oi noob, take this!"))
-			.addContinueDialog(new RuneliteObjectDialogStep("Hatius Cosaintus", "What on earth?", NpcID.HATIUS_COSAINTUS).setStateProgression(endQuest));
+			.addContinueDialog(new RuneliteObjectDialogStep("Hatius Cosaintus", "What on earth?", NpcID.HATIUS_LUMBRIDGE_DIARY).setStateProgression(endQuest));
 		hopleez.addDialogTree(pickedCabbage, hopleezGiveCabbageDialog);
 	}
 

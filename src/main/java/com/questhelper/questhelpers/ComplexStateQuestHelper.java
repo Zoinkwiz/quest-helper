@@ -25,10 +25,11 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperConfig;
-import java.util.ArrayList;
-import java.util.Collections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class ComplexStateQuestHelper extends QuestHelper

@@ -24,46 +24,42 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.managers.QuestManager;
-import com.questhelper.questinfo.ExternalQuestResources;
-import com.questhelper.questinfo.HelperConfig;
-import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.QuestManager;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.ExternalQuestResources;
+import com.questhelper.questinfo.HelperConfig;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
-import java.awt.event.ItemEvent;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import com.questhelper.tools.Icon;
 import com.questhelper.util.Fonts;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.ColorScheme;
-import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
 
 public class QuestOverviewPanel extends JPanel
 {

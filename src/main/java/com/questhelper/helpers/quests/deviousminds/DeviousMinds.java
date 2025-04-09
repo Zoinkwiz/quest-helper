@@ -25,29 +25,30 @@
 package com.questhelper.helpers.quests.deviousminds;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.Requirement;
-import java.util.*;
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class DeviousMinds extends BasicQuestHelper
 {
@@ -111,8 +112,8 @@ public class DeviousMinds extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		//Recommended
-		fallyTele = new ItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
-		lumberTele = new ItemRequirement("Lumberyard Teleports", ItemID.LUMBERYARD_TELEPORT);
+		fallyTele = new ItemRequirement("Falador Teleports", ItemID.POH_TABLET_FALADORTELEPORT);
+		lumberTele = new ItemRequirement("Lumberyard Teleports", ItemID.TELEPORTSCROLL_LUMBERYARD);
 		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
 
 		//Required
@@ -120,16 +121,16 @@ public class DeviousMinds extends BasicQuestHelper
 		mith2h.setHighlightInInventory(true);
 		bowString = new ItemRequirement("Bow String", ItemID.BOW_STRING);
 		bowString.setHighlightInInventory(true);
-		largePouch = new ItemRequirement("Large/Colossal Pouch (non-degraded)", ItemID.LARGE_POUCH);
-		largePouch.addAlternates(ItemID.LARGE_POUCH_6819, ItemID.COLOSSAL_POUCH, ItemID.COLOSSAL_POUCH_26906);
+		largePouch = new ItemRequirement("Large/Colossal Pouch (non-degraded)", ItemID.RCU_POUCH_LARGE);
+		largePouch.addAlternates(ItemID.DEVIOUS_GLOWINGPOUCH, ItemID.RCU_POUCH_COLOSSAL, ItemID.DEVIOUS_GLOWINGPOUCH_COLOSSAL);
 		largePouch.setHighlightInInventory(true);
-		slenderBlade = new ItemRequirement("Slender Blade", ItemID.SLENDER_BLADE);
+		slenderBlade = new ItemRequirement("Slender Blade", ItemID.DEVIOUS_SLENDERBLADE);
 		slenderBlade.setHighlightInInventory(true);
-		bowSword = new ItemRequirement("Bow Sword", ItemID.BOWSWORD);
-		orb = new ItemRequirement("Orb", ItemID.ORB);
+		bowSword = new ItemRequirement("Bow Sword", ItemID.DEVIOUS_BOWSWORD);
+		orb = new ItemRequirement("Orb", ItemID.DEVIOUS_GLOWINGORB);
 		orb.setHighlightInInventory(true);
-		illumPouch = new ItemRequirement("Illuminated Pouch", ItemID.LARGE_POUCH_6819);
-		illumPouch.addAlternates(ItemID.COLOSSAL_POUCH_26906);
+		illumPouch = new ItemRequirement("Illuminated Pouch", ItemID.DEVIOUS_GLOWINGPOUCH);
+		illumPouch.addAlternates(ItemID.DEVIOUS_GLOWINGPOUCH_COLOSSAL);
 		noEquipment = new ItemRequirement("Banked all equipment and weapons", -1, -1);
 	}
 
@@ -154,50 +155,50 @@ public class DeviousMinds extends BasicQuestHelper
 	public void setupSteps()
 	{
 		//Starting Off
-		talkToMonk = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3406, 3494, 0),
+		talkToMonk = new NpcStep(this, NpcID.DEVIOUS_MONK_HOODED_VISABLE, new WorldPoint(3406, 3494, 0),
 			"Start by talking to the Monk outside the Paterdomus temple, east of Varrock.");
 		talkToMonk.addDialogStep("Sure thing, what do you need?");
 
 		//Making the bow sword
-		makeBlade = new ObjectStep(this, ObjectID.DORICS_WHETSTONE, new WorldPoint(2953, 3452, 0),
+		makeBlade = new ObjectStep(this, ObjectID.DEVIOUS_WHETSTONE, new WorldPoint(2953, 3452, 0),
 			"Use the Mithril 2H sword on Doric's Whetstone. (Doric is located north of Falador).", mith2h);
 		makeBlade.addIcon(ItemID.MITHRIL_2H_SWORD);
 		makeBowSword = new DetailedQuestStep(this,
 			"Use the bow-string on the Slender blade to make the Bow-sword.", bowString, slenderBlade);
 
 		//A gift for Entrana
-		talkToMonk2 = new NpcStep(this, NpcID.MONK_4563, new WorldPoint(3406, 3494, 0),
+		talkToMonk2 = new NpcStep(this, NpcID.DEVIOUS_MONK_HOODED_VISABLE, new WorldPoint(3406, 3494, 0),
 			"Return to the monk near the Paterdomus temple with the bow-sword.", bowSword);
 		talkToMonk2.addDialogStep("Yep, got it right here for you.");
 		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large/Colossal Pouch.", orb, largePouch);
 
-		teleToAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3106, 3556, 0),
+		teleToAbyss = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1B, new WorldPoint(3106, 3556, 0),
 			"Teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
 				"monsters upon entering, and your prayer drained to 0!", illumPouch, noEquipment);
-		enterLawRift = new ObjectStep(this, ObjectID.LAW_RIFT, new WorldPoint(3049, 4839, 0),
+		enterLawRift = new ObjectStep(this, ObjectID.ABYSS_EXIT_TO_LAW, new WorldPoint(3049, 4839, 0),
 			"Enter the central area through a gap/passage/eyes. Enter the Law Rift.", illumPouch, noEquipment);
-		leaveLawAltar = new ObjectStep(this, ObjectID.PORTAL_34755, new WorldPoint(2464, 4817, 0),
+		leaveLawAltar = new ObjectStep(this, ObjectID.LAWTEMPLE_EXIT_PORTAL, new WorldPoint(2464, 4817, 0),
 			"Enter the portal to leave the Law Altar.", illumPouch, noEquipment);
 
 		//Surprise!
-		usePouchOnAltar = new ObjectStep(this, NullObjectID.NULL_10638, new WorldPoint(2853, 3349, 0),
+		usePouchOnAltar = new ObjectStep(this, ObjectID.DEVIOUS_ALTAR, new WorldPoint(2853, 3349, 0),
 			"Use the illuminated pouch on the Altar in the Entrana Church.", illumPouch.highlighted());
-		usePouchOnAltar.addIcon(ItemID.LARGE_POUCH_6819);
+		usePouchOnAltar.addIcon(ItemID.DEVIOUS_GLOWINGPOUCH);
 
-		gotoDeadMonk = new NpcStep(this, NpcID.DEAD_MONK, new WorldPoint(3406, 3494, 0),
+		gotoDeadMonk = new NpcStep(this, NpcID.DEVIOUS_MONK_DEAD_VISABLE, new WorldPoint(3406, 3494, 0),
 			"Go back to the monk near Paterdomus temple and search the dead monk's body.");
 
-		talkToEntranaMonk = new NpcStep(this, NpcID.MONK_OF_ENTRANA, new WorldPoint(3045, 3236, 0),
+		talkToEntranaMonk = new NpcStep(this, NpcID.SHIPMONK, new WorldPoint(3045, 3236, 0),
 			"Talk to the Monk of Entrana to go to Entrana.", noEquipment);
-		useGangPlank = new ObjectStep(this, ObjectID.GANGPLANK_2415, new WorldPoint(2834, 3333, 1),
+		useGangPlank = new ObjectStep(this, ObjectID.SHIP_FROM_ENTRANA_OFF, new WorldPoint(2834, 3333, 1),
 			"Use the gangplank to disembark the boat.");
-		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST, new WorldPoint(2851, 3349, 0),
+		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_OF_ENTRANA, new WorldPoint(2851, 3349, 0),
 			"Talk to the High Priest in the Entrana Church (Rat Pits Port Sarim Minigame teleport is the closest " +
 				"teleport).");
 		talkToHighPriest.addSubSteps(useGangPlank);
 		talkToHighPriest.addSubSteps(talkToEntranaMonk);
 
-		talkToSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0),
+		talkToSirTiffy = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, new WorldPoint(2997, 3373, 0),
 			"Talk to Sir Tiffy Cashien in Falador park to complete the quest.");
 		talkToSirTiffy.addDialogStep("Devious Minds.");
 	}
@@ -241,7 +242,7 @@ public class DeviousMinds extends BasicQuestHelper
 		reqs.add(new QuestRequirement(QuestHelperQuest.TROLL_STRONGHOLD, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.DORICS_QUEST, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.ENTER_THE_ABYSS, QuestState.FINISHED));
-		reqs.add(new VarbitRequirement(626, Operation.GREATER_EQUAL, 1, "Talked to the " +
+		reqs.add(new VarbitRequirement(VarbitID.RCU_ABYSSAL_WARNING, Operation.GREATER_EQUAL, 1, "Talked to the " +
 			"Zamorak Mage in Varrock after Enter the Abyss"));
 		return reqs;
 	}

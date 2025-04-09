@@ -25,8 +25,6 @@
  */
 package com.questhelper.util.worldmap;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
@@ -36,6 +34,9 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 public class WorldMapAreaManager

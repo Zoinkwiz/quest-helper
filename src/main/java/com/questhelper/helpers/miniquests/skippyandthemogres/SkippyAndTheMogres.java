@@ -26,23 +26,20 @@ package com.questhelper.helpers.miniquests.skippyandthemogres;
 
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+
+import java.util.*;
 
 public class SkippyAndTheMogres extends BasicQuestHelper
 {
@@ -73,31 +70,31 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
+		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
 		bucketOfMilk.setHighlightInInventory(true);
-		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
+		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER);
 		bucketOfWater.setHighlightInInventory(true);
 		hangoverCure = new ItemRequirement("Hangover cure", ItemID.HANGOVER_CURE);
 		hangoverCure.setHighlightInInventory(true);
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
 		chocolateDust.setHighlightInInventory(true);
-		nettleTea = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA);
+		nettleTea = new ItemRequirement("Nettle tea", ItemID.BOWL_NETTLETEA);
 		nettleTea.setTooltip("You can make this by using nettles on a bowl of water, then cooking it");
 		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
 		snapeGrass.setHighlightInInventory(true);
-		chocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
+		chocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATY_MILK);
 		chocolateMilk.setHighlightInInventory(true);
 	}
 
 	public void setupSteps()
 	{
 		soberSkippy = new NpcStep(this, NpcID.SKIPPY, new WorldPoint(2982, 3194, 0), "Right-click 'sober-up' on Skippy south west of Port Sarim.", bucketOfWater);
-		soberSkippy.addIcon(ItemID.BUCKET_OF_WATER);
+		soberSkippy.addIcon(ItemID.BUCKET_WATER);
 		soberSkippy.addDialogStep("Throw the water!");
-		useTeaOnSkippy = new NpcStep(this, NpcID.SKIPPY_2588, new WorldPoint(2982, 3194, 0), "Talk to Skippy.", nettleTea);
+		useTeaOnSkippy = new NpcStep(this, NpcID.DAMP_SKIPPY, new WorldPoint(2982, 3194, 0), "Talk to Skippy.", nettleTea);
 		useChocolateDustOnMilk = new DetailedQuestStep(this, "Use some chocolate dust on a bucket of milk.", chocolateDust, bucketOfMilk);
 		useSnapeGrassOnMilk = new DetailedQuestStep(this, "Use some snape grass on the chocolatey milk.", snapeGrass, chocolateMilk);
-		useHangoverCure = new NpcStep(this, NpcID.SKIPPY_2589, new WorldPoint(2982, 3194, 0), "Use the hangover cure on Skippy.", hangoverCure);
+		useHangoverCure = new NpcStep(this, NpcID.HUNGOVER_SKIPPY, new WorldPoint(2982, 3194, 0), "Use the hangover cure on Skippy.", hangoverCure);
 		useHangoverCure.addIcon(ItemID.HANGOVER_CURE);
 	}
 

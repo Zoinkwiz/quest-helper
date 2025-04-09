@@ -32,11 +32,9 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nor;
-import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -45,24 +43,20 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
+import com.questhelper.steps.*;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
+
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 
 public class DefenderOfVarrock extends BasicQuestHelper
 {
@@ -232,23 +226,23 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear and food", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		bottle = new ItemRequirement("Bottle", ItemID.BOTTLE);
-		bottle.addAlternates(ItemID.BOTTLE_OF_MIST);
-		bottleOfMist = new ItemRequirement("Bottle of mist", ItemID.BOTTLE_OF_MIST);
+		bottle = new ItemRequirement("Bottle", ItemID.DOV_MIST_BOTTLE_EMPTY);
+		bottle.addAlternates(ItemID.DOV_MIST_BOTTLE_FULL);
+		bottleOfMist = new ItemRequirement("Bottle of mist", ItemID.DOV_MIST_BOTTLE_FULL);
 
-		varrockTeleport = new TeleportItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		mindAltarOrLassarTeleport = new TeleportItemRequirement("Mind Altar or Lassar teleport tablet or spell", ItemID.MIND_ALTAR_TELEPORT);
-		mindAltarOrLassarTeleport.addAlternates(ItemID.LASSAR_TELEPORT);
-		lumberyardTeleport = new TeleportItemRequirement("Teleport to the Lumberyard", ItemID.LUMBERYARD_TELEPORT);
-		lumberyardTeleport.addAlternates(ItemID.RING_OF_THE_ELEMENTS, ItemID.RING_OF_THE_ELEMENTS_26818);
+		varrockTeleport = new TeleportItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
+		mindAltarOrLassarTeleport = new TeleportItemRequirement("Mind Altar or Lassar teleport tablet or spell", ItemID.TELETAB_MIND_ALTAR);
+		mindAltarOrLassarTeleport.addAlternates(ItemID.TABLET_LASSAR);
+		lumberyardTeleport = new TeleportItemRequirement("Teleport to the Lumberyard", ItemID.TELEPORTSCROLL_LUMBERYARD);
+		lumberyardTeleport.addAlternates(ItemID.RING_OF_ELEMENTS, ItemID.RING_OF_ELEMENTS_CHARGED);
 
-		barroniteDeposit = new ItemRequirement("Barronite deposit", ItemID.BARRONITE_DEPOSIT);
-		chaosCore = new ItemRequirement("Chaos core", ItemID.CHAOS_CORE);
-		imbuedBarronite = new ItemRequirement("Imbued barronite", ItemID.IMBUED_BARRONITE);
+		barroniteDeposit = new ItemRequirement("Barronite deposit", ItemID.CAMDOZAAL_BARRONITE_DEPOSIT);
+		chaosCore = new ItemRequirement("Chaos core", ItemID.CAMDOZAAL_GOLEM_CORE_CHAOS);
+		imbuedBarronite = new ItemRequirement("Imbued barronite", ItemID.DOV_IMBUED_BARRONITE);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
-		listOfElders = new ItemRequirement("List of elders", ItemID.LIST_OF_ELDERS);
-		shieldOfArrav = new ItemRequirement("Shield of arrav", ItemID.SHIELD_OF_ARRAV);
+		listOfElders = new ItemRequirement("List of elders", ItemID.DOV_NAME_LIST);
+		shieldOfArrav = new ItemRequirement("Shield of arrav", ItemID.DOV_SHIELD_OF_ARRAV);
 		shieldOfArrav.setTooltip("You can get another from Rovin upstairs in Varrock Castle");
 	}
 
@@ -266,7 +260,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 	public void setupConditions()
 	{
 		// TODO: Reported value is 12754, but uncertain why this'd be the case. Perhaps to do with different version of him?
-		eliasFollowing = new VarplayerRequirement(447, List.of(NpcID.ELIAS_WHITE, NpcID.ELIAS_WHITE_12611, 12754), 16);
+		eliasFollowing = new VarplayerRequirement(447, List.of(NpcID.ELIAS_WHITE_VIS, NpcID.ELIAS_WHITE_CUTSCENE, 12754), 16);
 
 		// 9655 4->6
 		// 9659 0->1
@@ -296,12 +290,12 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		// NOTE: Missing 74/75?
 		talkedToHalen = new VarbitRequirement(9676, 1);
 
-		givenShield = new VarbitRequirement(9655, 50, Operation.GREATER_EQUAL);
+		givenShield = new VarbitRequirement(VarbitID.DOV, 50, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
 	{
-		talkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3283, 3501, 0),
+		talkToElias = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3283, 3501, 0),
 			"Talk to Elias White in the Jolly Boar Inn north-east of Varrock.", combatGear);
 		talkToElias.addDialogSteps("Yes.", "Ready when you are.");
 		talkToElias.addTeleport(lumberyardTeleport);
@@ -316,36 +310,36 @@ public class DefenderOfVarrock extends BasicQuestHelper
 			"Enter the trapdoor to the north, near to the wilderness ditch.", combatGear);
 		inspectTrapdoor.addDialogStep("Let's do it.");
 
-		listenToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3560, 4551, 0), "Talk to Elias in the dungeon.");
-		lookOverBalcony = new ObjectStep(this, ObjectID.BALCONY, new WorldPoint(3564, 4569, 0), "Look over the balcony to the north.");
+		listenToElias = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3560, 4551, 0), "Talk to Elias in the dungeon.");
+		lookOverBalcony = new ObjectStep(this, ObjectID.DOV_BASE_BALCONY_1, new WorldPoint(3564, 4569, 0), "Look over the balcony to the north.");
 		pickupBottles = new ItemStep(this, new WorldPoint(3537, 4572, 0), "Pick up 3 bottles nearby.", bottle.quantity(3));
-		killZombies = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill the 3 bottles with the clouds they leave behind.", true);
-		((NpcStep) killZombies).addAlternateNpcs(NpcID.ARMOURED_ZOMBIE_12721, NpcID.ARMOURED_ZOMBIE_12722, NpcID.ARMOURED_ZOMBIE_12723, NpcID.ARMOURED_ZOMBIE_12724, NpcID.ARMOURED_ZOMBIE_12725,
-			NpcID.ARMOURED_ZOMBIE_12726, NpcID.ARMOURED_ZOMBIE_12727, NpcID.ARMOURED_ZOMBIE_12728, NpcID.ARMOURED_ZOMBIE_12729, NpcID.ARMOURED_ZOMBIE_12730, NpcID.ARMOURED_ZOMBIE_12731);
+		killZombies = new NpcStep(this, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_1, "Kill armoured zombies and fill the 3 bottles with the clouds they leave behind.", true);
+		((NpcStep) killZombies).addAlternateNpcs(NpcID.DOV_ARMOURED_ZOMBIE_MELEE_2, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_3, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_4, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_5, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_1,
+			NpcID.DOV_ARMOURED_ZOMBIE_RANGED_2, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_3, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_4, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_5, NpcID.DOV_ARMOURED_ZOMBIE_VARROCK_MELEE_1, NpcID.DOV_ARMOURED_ZOMBIE_VARROCK_MELEE_2);
 		collectRedMist = new ObjectStep(this, NullObjectID.NULL_50690, "Collect the red mist in a bottle.");
 		killZombies.addSubSteps(collectRedMist);
 
-		openDoorToArrav = new ObjectStep(this, ObjectID.GATE_50149, new WorldPoint(3536, 4571, 0),
+		openDoorToArrav = new ObjectStep(this, ObjectID.DOV_BASE_GATE_CLOSED_1, new WorldPoint(3536, 4571, 0),
 			"Go through the gate, and finish the cutscene with Arrav. If you skip it, try re-entering the gate.");
 
 		pickupBottlesAgain = new ItemStep(this, new WorldPoint(3537, 4572, 0), "Pick up 3 bottles nearby.", bottle.quantity(3));
-		killZombiesAgain = new NpcStep(this, NpcID.ARMOURED_ZOMBIE, "Kill armoured zombies and fill 3 the bottles with the clouds they leave behind.", true);
-		((NpcStep) killZombiesAgain).addAlternateNpcs(NpcID.ARMOURED_ZOMBIE_12721, NpcID.ARMOURED_ZOMBIE_12722, NpcID.ARMOURED_ZOMBIE_12723, NpcID.ARMOURED_ZOMBIE_12724, NpcID.ARMOURED_ZOMBIE_12725,
-			NpcID.ARMOURED_ZOMBIE_12726, NpcID.ARMOURED_ZOMBIE_12727, NpcID.ARMOURED_ZOMBIE_12728, NpcID.ARMOURED_ZOMBIE_12729, NpcID.ARMOURED_ZOMBIE_12730, NpcID.ARMOURED_ZOMBIE_12731);
+		killZombiesAgain = new NpcStep(this, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_1, "Kill armoured zombies and fill 3 the bottles with the clouds they leave behind.", true);
+		((NpcStep) killZombiesAgain).addAlternateNpcs(NpcID.DOV_ARMOURED_ZOMBIE_MELEE_2, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_3, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_4, NpcID.DOV_ARMOURED_ZOMBIE_MELEE_5, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_1,
+			NpcID.DOV_ARMOURED_ZOMBIE_RANGED_2, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_3, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_4, NpcID.DOV_ARMOURED_ZOMBIE_RANGED_5, NpcID.DOV_ARMOURED_ZOMBIE_VARROCK_MELEE_1, NpcID.DOV_ARMOURED_ZOMBIE_VARROCK_MELEE_2);
 		collectRedMistAgain = new ObjectStep(this, NullObjectID.NULL_50690, "Collect the red mist in a bottle.");
-		goThroughSecondGate = new ObjectStep(this, ObjectID.GATE_50150, new WorldPoint(3540, 4597, 0),
+		goThroughSecondGate = new ObjectStep(this, ObjectID.DOV_BASE_GATE_CLOSED_2, new WorldPoint(3540, 4597, 0),
 			"Kill zombies to fill 3 bottles with mist again, and continue deeper into the dungeon.",
 			bottleOfMist.quantity(3));
 		goThroughSecondGate.addSubSteps(pickupBottlesAgain, killZombiesAgain, collectRedMistAgain);
 
-		lookOverSecondBalcony = new ObjectStep(this, ObjectID.BALCONY_50159, new WorldPoint(3562, 4591, 0), "Look over the balcony facing over the zombie army.");
+		lookOverSecondBalcony = new ObjectStep(this, ObjectID.DOV_BASE_BALCONY_2, new WorldPoint(3562, 4591, 0), "Look over the balcony facing over the zombie army.");
 
-		talkToEliasInPalace = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3208, 3475, 0), "Report back to Elias White in the Varrock Palace.");
+		talkToEliasInPalace = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3208, 3475, 0), "Report back to Elias White in the Varrock Palace.");
 		talkToEliasInPalace.addTeleport(varrockTeleport);
 
-		goUpToRovin = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goUpToRovin = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_TALLER, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		goUpToRovin.addTeleport(varrockTeleport);
-		goUpToRovin2 = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3203, 3498, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goUpToRovin2 = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_MIDDLE_TALLER, new WorldPoint(3203, 3498, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		goUpToRovin2.addDialogStep("Climb up");
 		talkToRovin = new NpcStep(this, NpcID.CAPTAIN_ROVIN, new WorldPoint(3205, 3498, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovin.addSubSteps(goUpToRovin, goUpToRovin2);
@@ -354,52 +348,52 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		enterCamdozaal = new ObjectStep(this, NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0),
 			"Enter Camdozaal, west of Ice Mountain.", pickaxe, combatGear);
 		enterCamdozaal.addTeleport(mindAltarOrLassarTeleport);
-		talkToRamarno = new NpcStep(this, NpcID.RAMARNO_10685, new WorldPoint(2959, 5809, 0),
+		talkToRamarno = new NpcStep(this, NpcID.CAMZODAAL_RAMARNO_ENTRANCE, new WorldPoint(2959, 5809, 0),
 			"Talk to Ramarno to the north by the sacred forge.");
-		((NpcStep) talkToRamarno).addAlternateNpcs(NpcID.RAMARNO, NpcID.RAMARNO_10684);
+		((NpcStep) talkToRamarno).addAlternateNpcs(NpcID.BIM_CAMZODAAL_RAMARNO_CUTSCENE, NpcID.CAMZODAAL_RAMARNO);
 		talkToRamarno.addDialogStep("I need your help with a shield.");
-		mineBarronite = new ObjectStep(this, ObjectID.BARRONITE_ROCKS, new WorldPoint(2941, 5810, 0), "Mine a barronite deposit.", true, pickaxe);
-		killChaosGolems = new NpcStep(this, NpcID.CHAOS_GOLEM, new WorldPoint(3022, 5782, 0),
+		mineBarronite = new ObjectStep(this, ObjectID.CAMDOZAALROCK1, new WorldPoint(2941, 5810, 0), "Mine a barronite deposit.", true, pickaxe);
+		killChaosGolems = new NpcStep(this, NpcID.CAMDOZAAL_GOLEM_CHAOS, new WorldPoint(3022, 5782, 0),
 			"Kill chaos golems in the eastern cavern for a chaos core.", true, chaosCore);
-		((NpcStep) killChaosGolems).addAlternateNpcs(NpcID.RUBBLE_10690);
+		((NpcStep) killChaosGolems).addAlternateNpcs(NpcID.CAMDOZAAL_GOLEM_CHAOS_ROCK);
 		useCoreOnDeposit = new DetailedQuestStep(this, "Use a chaos core on a barronite deposit.", chaosCore.highlighted(), barroniteDeposit.highlighted());
 		useBarroniteOnForge = new ObjectStep(this, NullObjectID.NULL_41411, new WorldPoint(2957, 5811, 0), "Use the imbued barronite on the sacred forge.", imbuedBarronite.highlighted());
-		useBarroniteOnForge.addIcon(ItemID.IMBUED_BARRONITE);
+		useBarroniteOnForge.addIcon(ItemID.DOV_IMBUED_BARRONITE);
 
 		// Invasion
-		goToF1ForRovinNonInstance = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goToF1ForRovinNonInstance = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_TALLER, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		goToF1ForRovinNonInstance.addTeleport(varrockTeleport);
-		goToF1ForRovin = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3906, 4969, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
-		goToF2ForRovin = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3906, 4969, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goToF1ForRovin = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_TALLER, new WorldPoint(3906, 4969, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goToF2ForRovin = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_MIDDLE_TALLER, new WorldPoint(3906, 4969, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		goToF2ForRovin.addDialogStep("Climb up");
-		talkToRovinAfterForge = new NpcStep(this, NpcID.CAPTAIN_ROVIN_12627, new WorldPoint(3906, 4969, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		talkToRovinAfterForge = new NpcStep(this, NpcID.DOV_ROVIN, new WorldPoint(3906, 4969, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovinAfterForge.addSubSteps(goToF1ForRovinNonInstance, goToF1ForRovin, goToF2ForRovin);
 
 		// FUTURE
-		talkToReldo = new NpcStep(this, NpcID.RELDO_12626, new WorldPoint(3914, 4966, 0), "Talk to Reldo in the Varrock Castle library.");
-		goToF1ForReldo = new ObjectStep(this, ObjectID.STAIRCASE_11793, new WorldPoint(3906, 4969, 2),
+		talkToReldo = new NpcStep(this, NpcID.DOV_RELDO, new WorldPoint(3914, 4966, 0), "Talk to Reldo in the Varrock Castle library.");
+		goToF1ForReldo = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRSTOP, new WorldPoint(3906, 4969, 2),
 			"Go to the bottom floor and talk to Reldo in the castle library.");
-		goToF0ForReldo = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3906, 4969, 1),
+		goToF0ForReldo = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_MIDDLE_TALLER, new WorldPoint(3906, 4969, 1),
 			"Go to the bottom floor and talk to Reldo in the castle library.");
 		goToF0ForReldo.addDialogStep("Climb down");
 		talkToReldo.addSubSteps(goToF1ForReldo, goToF0ForReldo);
 
-		searchScrolls = new ObjectStep(this, ObjectID.SCROLLS_50118, new WorldPoint(3920, 4968, 0), "Search the scrolls in the north-east of the library.");
+		searchScrolls = new ObjectStep(this, ObjectID.DOV_VARROCK_FALLEN_SCROLLS, new WorldPoint(3920, 4968, 0), "Search the scrolls in the north-east of the library.");
 		readList = new ItemStep(this, "Read the list of elders.", listOfElders.highlighted());
-		readCensus = new ObjectStep(this, ObjectID.VARROCK_CENSUS, new WorldPoint(3918, 4969, 0), "Read the Varrock Census.");
+		readCensus = new ObjectStep(this, ObjectID.DOV_VARROCK_LEDGER, new WorldPoint(3918, 4969, 0), "Read the Varrock Census.");
 
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_12621, new WorldPoint(3926, 4945, 0),
+		talkToRoald = new NpcStep(this, NpcID.DOV_ROALD, new WorldPoint(3926, 4945, 0),
 			"Talk to King Roald.", shieldOfArrav);
-		talkToRoaldOutsideInstance = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3221, 3473, 0), "Talk to King Roald.", shieldOfArrav);
+		talkToRoaldOutsideInstance = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3221, 3473, 0), "Talk to King Roald.", shieldOfArrav);
 		talkToRoald.addSubSteps(talkToRoaldOutsideInstance);
 
-		talkToAeonisig = new NpcStep(this, NpcID.AEONISIG_RAISPHER_12620, new WorldPoint(3926, 4945, 0),
+		talkToAeonisig = new NpcStep(this, NpcID.DOV_AEONISIG, new WorldPoint(3926, 4945, 0),
 			"Talk to Aeonisig Raispher next to King Roald.", shieldOfArrav);
-		talkToAeonisigOutsideInstance = new NpcStep(this, NpcID.AEONISIG_RAISPHER, new WorldPoint(3221, 3473, 0),
+		talkToAeonisigOutsideInstance = new NpcStep(this, NpcID.MYQ3_AEONISIG_ROALDS_ADVISOR, new WorldPoint(3221, 3473, 0),
 			"Talk to Aeonisig Raispher next to King Roald.", shieldOfArrav);
 		talkToAeonisig.addSubSteps(talkToAeonisigOutsideInstance);
 
-		talkToPrysin = new NpcStep(this, NpcID.SIR_PRYSIN_12622, new WorldPoint(3908, 4944, 0),
+		talkToPrysin = new NpcStep(this, NpcID.DOV_PRYSIN, new WorldPoint(3908, 4944, 0),
 			"Talk to Sir Prysin in the south west corner of Varrock Castle.", shieldOfArrav);
 		talkToPrysinOutsideInstance = new NpcStep(this, NpcID.SIR_PRYSIN, new WorldPoint(3203, 3472, 0),
 			"Talk to Sir Prysin in the south west corner of Varrock Castle.", shieldOfArrav);
@@ -409,15 +403,15 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		talkToRomeoFromInstance = new NpcStep(this, NpcID.ROMEO, new WorldPoint(3915, 4900, 0), "Talk to Romeo in Varrock Square", shieldOfArrav);
 		talkToRomeo.addSubSteps(talkToRomeoFromInstance);
 
-		talkToHorvik = new NpcStep(this, NpcID.HORVIK, new WorldPoint(3229, 3436, 0), "Talk to Horvik north-east of Varrock Square.", shieldOfArrav);
+		talkToHorvik = new NpcStep(this, NpcID.HORVIK_THE_ARMOURER, new WorldPoint(3229, 3436, 0), "Talk to Horvik north-east of Varrock Square.", shieldOfArrav);
 		talkToHorvik.addDialogStep("I need your help with a shield.");
-		talkToHorvikFromInstance = new NpcStep(this, NpcID.HORVIK, new WorldPoint(3933, 4908, 0), "Talk to Horvik north-east of Varrock Square.", shieldOfArrav);
+		talkToHorvikFromInstance = new NpcStep(this, NpcID.HORVIK_THE_ARMOURER, new WorldPoint(3933, 4908, 0), "Talk to Horvik north-east of Varrock Square.", shieldOfArrav);
 		talkToHorvik.addSubSteps(talkToHorvikFromInstance);
 
-		talkToHalen = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3448, 0),
+		talkToHalen = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3257, 3448, 0),
 			"Talk to Curator Haig in the Varrock Museum.", shieldOfArrav);
 		talkToHalen.addDialogStep("I need your help with the zombie invasion.");
-		talkToHalenFromInstance = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3964, 4920, 0),
+		talkToHalenFromInstance = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3964, 4920, 0),
 			"Talk to Curator Haig in the Varrock Museum.", shieldOfArrav);
 		talkToHalen.addSubSteps(talkToHalenFromInstance);
 
@@ -428,8 +422,8 @@ public class DefenderOfVarrock extends BasicQuestHelper
 			"Talk to Dimintheis in the south-east of Varrock.", shieldOfArrav.hideConditioned(givenShield));
 		talkToDimintheis.addSubSteps(talkToDimintheisFromInstance);
 
-		goToF1ToFinish = new ObjectStep(this, ObjectID.STAIRCASE_11790, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle to finish the quest.");
-		goToF2ToFinish = new ObjectStep(this, ObjectID.STAIRCASE_11792, new WorldPoint(3203, 3498, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle to finish the quest.");
+		goToF1ToFinish = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_TALLER, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle to finish the quest.");
+		goToF2ToFinish = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_MIDDLE_TALLER, new WorldPoint(3203, 3498, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle to finish the quest.");
 		finishQuest = new NpcStep(this, NpcID.CAPTAIN_ROVIN, new WorldPoint(3205, 3498, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle to finish the quest.");
 		finishQuest.addSubSteps(goToF1ToFinish, goToF2ToFinish);
 	}

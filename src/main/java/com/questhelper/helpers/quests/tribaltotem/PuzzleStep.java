@@ -108,7 +108,7 @@ public class PuzzleStep extends QuestStep
 
 	private int matchStateToSolution(int slot, Character target, int arrowRightId, int arrowLeftId)
 	{
-		Widget widget = client.getWidget(369, slot);
+		Widget widget = client.getWidget(InterfaceID.TRIBAL_DOOR, slot);
 		if (widget == null) return 0;
 		char current = widget.getText().charAt(0);
 		int currentPos = (int) current - (int) 'A';
@@ -119,7 +119,7 @@ public class PuzzleStep extends QuestStep
 
 	private int matchStateToDistance(int slot, Character target)
 	{
-		Widget widget = client.getWidget(369, slot);
+		Widget widget = client.getWidget(InterfaceID.TRIBAL_DOOR, slot);
 		if (widget == null) return 0;
 		char current = widget.getText().charAt(0);
 		return Math.min(Math.floorMod(current - target, 26), Math.floorMod(target - current, 26));
@@ -136,7 +136,7 @@ public class PuzzleStep extends QuestStep
 				continue;
 			}
 
-			Widget widget = client.getWidget(369, entry.getValue());
+			Widget widget = client.getWidget(InterfaceID.TRIBAL_DOOR, entry.getValue());
 			if (widget != null)
 			{
 				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),

@@ -104,8 +104,8 @@ public class DoorPuzzleStep extends DetailedQuestStep
 		{
 			for (int i = 0; i < SIZE; i++)
 			{
-				colSums[i] = Integer.parseInt(client.getWidget(665, 19 + i).getText());
-				rowSums[i] = Integer.parseInt(client.getWidget(665, 26 + i).getText());
+				colSums[i] = Integer.parseInt(client.getWidget(InterfaceID.MYQ5_TOMB_PUZZLE, 19 + i).getText());
+				rowSums[i] = Integer.parseInt(client.getWidget(InterfaceID.MYQ5_TOMB_PUZZLE, 26 + i).getText());
 			}
 		}
 		catch (NumberFormatException nfe)

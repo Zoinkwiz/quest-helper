@@ -86,7 +86,7 @@ public class PaintingWall extends QuestStep
 		Widget widgetWrapper = client.getWidget(InterfaceID.Olaf2SkullPuzzle.OLAF2_SKULL_BACKGROUND);
 		if (widgetWrapper != null)
 		{
-			Widget widget = client.getWidget(253, highlightWidget);
+			Widget widget = client.getWidget(InterfaceID.OLAF2_SKULL_PUZZLE, highlightWidget);
 			if (widget != null)
 			{
 				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),

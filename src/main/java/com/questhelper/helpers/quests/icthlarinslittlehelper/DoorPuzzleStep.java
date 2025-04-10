@@ -177,7 +177,7 @@ public class DoorPuzzleStep extends QuestStep
 				if (clickSquares[i] == 1)
 				{
 					int START_WIDGET_ID = 9;
-					Widget widget = client.getWidget(147, START_WIDGET_ID + i);
+					Widget widget = client.getWidget(InterfaceID.ICTHALARINS_TILE_GAME, START_WIDGET_ID + i);
 					if (widget != null)
 					{
 						graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),

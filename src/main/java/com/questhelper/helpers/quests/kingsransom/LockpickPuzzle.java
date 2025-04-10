@@ -123,7 +123,7 @@ public class LockpickPuzzle extends QuestStep
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
-		Widget widgetWrapper = client.getWidget(588, highlightChildID);
+		Widget widgetWrapper = client.getWidget(InterfaceID.KR_PICKLOCK, highlightChildID);
 		if (widgetWrapper != null)
 		{
 			graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),

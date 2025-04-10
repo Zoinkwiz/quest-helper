@@ -101,9 +101,9 @@ public class PuzzleStep extends DetailedQuestStep
 
 		HashMap<Integer, Integer> highlightButtonsTmp = new HashMap<>();
 
-		Widget widget0 = client.getWidget(113, pieces[0].get(PIECE_ID));
-		Widget widget1 = client.getWidget(113, pieces[1].get(PIECE_ID));
-		Widget widget2 = client.getWidget(113, pieces[2].get(PIECE_ID));
+		Widget widget0 = client.getWidget(InterfaceID.DWARF_ROCK_SCHEMATICS, pieces[0].get(PIECE_ID));
+		Widget widget1 = client.getWidget(InterfaceID.DWARF_ROCK_SCHEMATICS, pieces[1].get(PIECE_ID));
+		Widget widget2 = client.getWidget(InterfaceID.DWARF_ROCK_SCHEMATICS, pieces[2].get(PIECE_ID));
 
 		piecesCurrentState[0] = new HashMap<>();
 		if (widget0 == null)
@@ -207,7 +207,7 @@ public class PuzzleStep extends DetailedQuestStep
 				continue;
 			}
 
-			Widget widget = client.getWidget(114, entry.getKey());
+			Widget widget = client.getWidget(InterfaceID.DWARF_ROCK_SCHEMATICS_CONTROL, entry.getKey());
 			if (widget != null)
 			{
 				if (widget.getId() == 7471130)

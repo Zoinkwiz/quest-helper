@@ -327,7 +327,7 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 	{
 		if (widgetLoaded.getGroupId() == 229)
 		{
-			Widget hintWidget = client.getWidget(229, 1);
+			Widget hintWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
 
 			if (hintWidget != null)
 			{

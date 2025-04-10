@@ -11,6 +11,7 @@ import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
@@ -185,7 +186,7 @@ public class TombRiddle extends DetailedOwnerStep
 		// The instructions are contained in the Text fields of Widget 749.2's children (IDs 749.3 through 749.13)
 		if (!solutionFound && widgetLoaded.getGroupId() == 749)
 		{
-			Widget plaqueWidget = client.getWidget(749, 2);
+			Widget plaqueWidget = client.getWidget(InterfaceID.Woodplaque.CONTENT);
 			if (plaqueWidget == null || plaqueWidget.getStaticChildren() == null)
 			{
 				return;

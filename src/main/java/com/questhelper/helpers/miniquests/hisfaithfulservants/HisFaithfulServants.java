@@ -44,15 +44,11 @@ import com.questhelper.steps.*;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
-import net.runelite.api.annotations.Interface;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -60,10 +56,6 @@ import java.util.*;
 
 public class HisFaithfulServants extends BasicQuestHelper
 {
-	/**
-	 * The interface that contains a list of messages in a dialog
-	 */
-	static final @Interface int CHATBOX_MESSAGES_MESSAGE_LIST = 229;
 
 	// Required
 	ItemRequirement combatGear, spade;
@@ -218,12 +210,12 @@ public class HisFaithfulServants extends BasicQuestHelper
 		inVerac = new ZoneRequirement(veracRoom);
 		inCrypt = new ZoneRequirement(crypt);
 
-		killedAhrim = new VarbitRequirement(Varbits.BARROWS_KILLED_AHRIM, 1);
-		killedDharok = new VarbitRequirement(Varbits.BARROWS_KILLED_DHAROK, 1);
-		killedGuthan = new VarbitRequirement(Varbits.BARROWS_KILLED_GUTHAN, 1);
-		killedKaril = new VarbitRequirement(Varbits.BARROWS_KILLED_KARIL, 1);
-		killedTorag = new VarbitRequirement(Varbits.BARROWS_KILLED_TORAG, 1);
-		killedVerac = new VarbitRequirement(Varbits.BARROWS_KILLED_VERAC, 1);
+		killedAhrim = new VarbitRequirement(VarbitID.BARROWS_KILLED_AHRIM, 1);
+		killedDharok = new VarbitRequirement(VarbitID.BARROWS_KILLED_DHAROK, 1);
+		killedGuthan = new VarbitRequirement(VarbitID.BARROWS_KILLED_GUTHAN, 1);
+		killedKaril = new VarbitRequirement(VarbitID.BARROWS_KILLED_KARIL, 1);
+		killedTorag = new VarbitRequirement(VarbitID.BARROWS_KILLED_TORAG, 1);
+		killedVerac = new VarbitRequirement(VarbitID.BARROWS_KILLED_VERAC, 1);
 		killedAllSix = new Conditions(killedAhrim, killedDharok, killedGuthan, killedKaril, killedTorag, killedVerac);
 
 		dharokAttacking = new NpcInteractingRequirement(NpcID.BARROWS_DHAROK);
@@ -253,7 +245,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.BARROWS_NPCS_SLAIN)
+		if (event.getVarbitId() == VarbitID.BARROWS_KILLED_COUNT)
 		{
 			if (event.getValue() == 0)
 			{
@@ -280,7 +272,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 			}
 		}
 
-		Widget textOption = client.getWidget(CHATBOX_MESSAGES_MESSAGE_LIST, 1);
+		Widget textOption = client.getWidget(InterfaceID.Messagebox.TEXT);
 		if (textOption == null)
 		{
 			return;

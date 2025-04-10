@@ -35,11 +35,12 @@ import com.questhelper.helpers.quests.legendsquest.LegendsQuest;
 import com.questhelper.helpers.quests.naturespirit.NatureSpirit;
 import com.questhelper.helpers.quests.waterfallquest.WaterfallQuest;
 import com.questhelper.questhelpers.QuestHelper;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 

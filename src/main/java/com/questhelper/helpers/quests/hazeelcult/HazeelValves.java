@@ -35,6 +35,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
@@ -130,7 +131,7 @@ public class HazeelValves extends DetailedOwnerStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget currentStateWidget = client.getWidget(219, 1);
+		Widget currentStateWidget = client.getWidget(InterfaceID.Chatmenu.OPTIONS);
 		String currentStateText = null;
 		if (currentStateWidget != null)
 		{
@@ -142,7 +143,7 @@ public class HazeelValves extends DetailedOwnerStep
 		}
 		// Could also use MESBOX here
 		// Chat message type MESBOX: You turn the valve to the right. Beneath your feet you hear the sudden sound of rushing water.
-		Widget wheelTurnedWidget = client.getWidget(229, 1);
+		Widget wheelTurnedWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
 		String wheelTurnedText = null;
 		if (wheelTurnedWidget != null)
 		{

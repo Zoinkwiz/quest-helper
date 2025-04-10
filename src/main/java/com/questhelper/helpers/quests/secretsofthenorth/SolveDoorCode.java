@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarClientIntChanged;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.FontManager;
@@ -139,7 +140,7 @@ public class SolveDoorCode extends QuestStep
 
 			if (entry.getKey() == 6)
 			{
-				Widget widget = client.getWidget(809, 5);
+				Widget widget = client.getWidget(InterfaceID.CombinationLock.CONFIRM_BUTTON);
 				if (widget != null)
 				{
 					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
@@ -152,7 +153,7 @@ public class SolveDoorCode extends QuestStep
 				continue;
 			}
 
-			Widget widget = client.getWidget(809, 4);
+			Widget widget = client.getWidget(InterfaceID.CombinationLock.LOCK);
 			if (widget != null)
 			{
 				Widget arrow = widget.getChild(entry.getValue());

@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -88,10 +89,10 @@ public class GolemPuzzleStep extends QuestStep
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
-		Widget widgetWrapper = client.getWidget(838, 32);
+		Widget widgetWrapper = client.getWidget(InterfaceID.Dt2WarmindPuzzle.SQUARES);
 		if (completed)
 		{
-			Widget powerOnButton = client.getWidget(838, 4);
+			Widget powerOnButton = client.getWidget(InterfaceID.Dt2WarmindPuzzle.BUTTON);
 			if (powerOnButton == null) return;
 			graphics.setColor(new Color(0, 255, 255, 65));
 			graphics.fill(powerOnButton.getBounds());

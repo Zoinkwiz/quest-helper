@@ -35,6 +35,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
@@ -117,7 +118,7 @@ public class ValveStep extends DetailedOwnerStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget widgetNote = client.getWidget(625, 7);
+		Widget widgetNote = client.getWidget(InterfaceID.Longscroll.SCROLL_TEXT);
 		if (!foundSum && widgetNote != null)
 		{
 			Matcher foundValveValue = Pattern.compile("[0-9]+").matcher(widgetNote.getText());
@@ -133,8 +134,8 @@ public class ValveStep extends DetailedOwnerStep
 		}
 		else if (foundSum)
 		{
-			Widget widgetNumberOptions = client.getWidget(187, 3);
-			Widget widgetValveChoice = client.getWidget(229, 1);
+			Widget widgetNumberOptions = client.getWidget(InterfaceID.Menu.LJ_LAYER1);
+			Widget widgetValveChoice = client.getWidget(InterfaceID.Messagebox.TEXT);
 
 			if (atSouthValve.check(client))
 			{

@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -58,7 +59,7 @@ public class SelectingCombatGear extends QuestStep
 	protected void updateItems()
 	{
 		ArrayList<Widget> newItemsToHighlight = new ArrayList<>();
-		Widget bankWidget = client.getWidget(260, 42);
+		Widget bankWidget = client.getWidget(InterfaceID.DreamArmour.BANK_LAYER);
 		if (bankWidget != null)
 		{
 			Widget[] bankItems = bankWidget.getChildren();

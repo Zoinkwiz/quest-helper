@@ -32,7 +32,6 @@ import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectMan
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.*;
-import net.runelite.api.gameval.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
@@ -45,6 +44,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
+
 import javax.inject.Named;
 import java.awt.image.BufferedImage;
 import java.util.Collections;

@@ -30,7 +30,6 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.*;
-import net.runelite.api.gameval.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.gameval.InventoryID;
@@ -41,13 +40,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.util.*;
-
 import static com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav.VARBIT_NORTH_LEVER_STATE;
 import static com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav.VARBIT_SOUTH_LEVER_STATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 public class KeysAndLeversTest extends MockedTest

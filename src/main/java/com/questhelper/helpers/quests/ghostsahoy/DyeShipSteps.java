@@ -199,7 +199,7 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	public void updateColours()
 	{
-		Widget textWidget = client.getWidget(229, 1);
+		Widget textWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
 		if (textWidget != null)
 		{
 			String text = textWidget.getText();

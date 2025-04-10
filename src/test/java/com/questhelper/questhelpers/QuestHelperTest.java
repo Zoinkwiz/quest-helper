@@ -8,16 +8,18 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
+import com.questhelper.steps.OwnerStep;
+import com.questhelper.steps.QuestStep;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.QuestStep;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

@@ -4,6 +4,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UtilsTest

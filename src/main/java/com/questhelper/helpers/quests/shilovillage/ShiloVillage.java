@@ -54,7 +54,6 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.*;
-import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
 
@@ -221,7 +220,7 @@ public class ShiloVillage extends BasicQuestHelper
 		shownStone = new Conditions(true, LogicType.OR,
 			new DialogRequirement("If you have found anything else that you need " +
 				"help with, please just let me know."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>Trufitus identified the plaque")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>Trufitus identified the plaque")
 		);
 
 		hasReadTattered = new Conditions(true, LogicType.OR,

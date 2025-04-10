@@ -32,7 +32,7 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.tools.QuestWidgets;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
@@ -79,7 +79,7 @@ public class QuestMenuHandler
 
 	private static final int[] ACHIEVEMENTLIST_WIDGET_IDS = new int[]
 		{
-			ComponentID.ACHIEVEMENT_DIARY_CONTAINER
+			InterfaceID.AreaTask.TASKBOX
 		};
 
 	private static final String[] ACHIEVEMENT_TIERS = new String[]

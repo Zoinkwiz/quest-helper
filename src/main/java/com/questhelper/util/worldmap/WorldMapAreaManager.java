@@ -30,7 +30,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -55,7 +55,7 @@ public class WorldMapAreaManager
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.WORLDMAP_LOADMAP)
 		{
-			Widget worldMapSearch = client.getWidget(ComponentID.WORLD_MAP_SEARCH);
+			Widget worldMapSearch = client.getWidget(InterfaceID.Worldmap.MAPLIST_DISPLAY);
 			if (worldMapSearch == null)
 			{
 				return;

@@ -30,9 +30,6 @@ import com.google.inject.Module;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.choice.*;
 import com.questhelper.steps.overlay.IconOverlay;
 import com.questhelper.steps.tools.QuestPerspective;
@@ -52,8 +49,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
@@ -225,7 +222,7 @@ public abstract class QuestStep implements Module
 	{
 		if (!allowInCutscene)
 		{
-			int newCutsceneStatus = client.getVarbitValue(QuestVarbits.CUTSCENE.getId());
+			int newCutsceneStatus = client.getVarbitValue(VarbitID.CUTSCENE_STATUS);
 			if (currentCutsceneStatus == 0 && newCutsceneStatus == 1)
 			{
 				enteredCutscene();
@@ -241,7 +238,7 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == InterfaceID.DIALOG_OPTION)
+		if (event.getGroupId() == InterfaceID.CHATMENU)
 		{
 			clientThread.invokeLater(this::highlightChoice);
 		}
@@ -579,7 +576,7 @@ public abstract class QuestStep implements Module
 
 	protected Widget getInventoryWidget()
 	{
-		return client.getWidget(ComponentID.INVENTORY_CONTAINER);
+		return client.getWidget(InterfaceID.Inventory.ITEMS);
 	}
 
 	protected void renderInventory(Graphics2D graphics, WorldPoint worldPoint, List<ItemRequirement> passedRequirements, boolean distanceLimit)

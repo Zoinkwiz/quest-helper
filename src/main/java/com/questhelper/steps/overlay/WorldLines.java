@@ -31,7 +31,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
@@ -91,15 +91,15 @@ public class WorldLines
 			Line2D.Double line = new Line2D.Double(startPosOnMinimap.getX(), startPosOnMinimap.getY(), destinationPosOnMinimap.getX(), destinationPosOnMinimap.getY());
 
 			Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
-			Widget minimapWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_MINIMAP_DRAW_AREA);
+			Widget minimapWidget = client.getWidget(InterfaceID.ToplevelOsrsStretch.MINIMAP);
 
 			if (minimapWidget == null)
 			{
-				minimapWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_DRAW_AREA);
+				minimapWidget = client.getWidget(InterfaceID.ToplevelPreEoc.MINIMAP);
 			}
 			if (minimapWidget == null)
 			{
-				minimapWidget = client.getWidget(ComponentID.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+				minimapWidget = client.getWidget(InterfaceID.Toplevel.MINIMAP);
 			}
 
 			if (minimapWidget != null)

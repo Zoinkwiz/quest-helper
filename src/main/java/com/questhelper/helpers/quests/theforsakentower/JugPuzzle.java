@@ -41,9 +41,9 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -92,7 +92,7 @@ public class JugPuzzle extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		Widget widget = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT);
+		Widget widget = client.getWidget(InterfaceID.Objectbox.TEXT);
 
 		if (widget != null)
 		{

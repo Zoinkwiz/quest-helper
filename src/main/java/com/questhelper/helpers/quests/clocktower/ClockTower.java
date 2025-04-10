@@ -43,10 +43,10 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
 
@@ -180,7 +180,7 @@ public class ClockTower extends BasicQuestHelper
 		startedQuestDuringSession = new Conditions(true, new VarplayerRequirement(QuestVarPlayer.QUEST_CLOCK_TOWER.getId(), 0));
 
 		synced = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "Clock Tower"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "Clock Tower"),
 			startedQuestDuringSession
 		);
 
@@ -190,19 +190,19 @@ public class ClockTower extends BasicQuestHelper
 		poisonedRats = new ChatMessageRequirement("The rats swarm towards the poisoned food...");
 
 		placedRedCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Red Cog on its spindle"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have successfully placed the Red Cog on its spindle"),
 			new ChatMessageRequirement(inGroundFloor, "The cog fits perfectly.")
 		);
 		placedBlueCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Blue Cog on its spindle"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have successfully placed the Blue Cog on its spindle"),
 			new ChatMessageRequirement(inFirstFloor, "The cog fits perfectly.")
 		);
 		placedBlackCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Black Cog on its spindle"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have successfully placed the Black Cog on its spindle"),
 			new ChatMessageRequirement(inBasement, "The cog fits perfectly.")
 		);
 		placedWhiteCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the White Cog on its spindle"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have successfully placed the White Cog on its spindle"),
 			new ChatMessageRequirement(inSecondFloor, "The cog fits perfectly.")
 		);
 	}

@@ -34,8 +34,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.util.Text;
 
 @AllArgsConstructor
@@ -119,7 +119,7 @@ public enum RagBoneState
 		boneIsBeingCleaned = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, pos));
 
 		// Mark always true once obtained as no way to identify if a bone has been handed in easily
-		WidgetTextRequirement hadFromWidgetsCheck = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>" + nameInList);
+		WidgetTextRequirement hadFromWidgetsCheck = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>" + nameInList);
 		hadFromWidgets = new Conditions(true, hadFromWidgetsCheck);
 	}
 

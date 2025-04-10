@@ -35,8 +35,8 @@ import com.questhelper.steps.widget.WidgetDetails;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.NpcID;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.config.ConfigManager;
 
 public class GlobalFakeObjects
@@ -67,7 +67,7 @@ public class GlobalFakeObjects
 		replacedHopleez.setExamine("He was here first.");
 		replacedHopleez.addExamineAction(runeliteObjectManager);
 		replacedHopleez.setDisplayRequirement(new PlayerQuestStateRequirement(configManager, PlayerQuests.COOKS_HELPER, 4, Operation.GREATER_EQUAL));
-		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(ComponentID.DIALOG_NPC_TEXT), "Hatius Cosaintus", "Hopleez"));
-		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(ComponentID.DIALOG_SPRITE_TEXT), "Hatius", "Hopleez"));
+		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(InterfaceID.ChatLeft.TEXT), "Hatius Cosaintus", "Hopleez"));
+		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(InterfaceID.Objectbox.TEXT), "Hatius", "Hopleez"));
 	}
 }

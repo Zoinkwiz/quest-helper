@@ -2,6 +2,7 @@ package com.questhelper.questinfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.gameval.VarbitID;
 
 @AllArgsConstructor
 @Getter
@@ -220,7 +221,7 @@ public enum QuestVarbits
 	ACHIEVEMENT_DIARY_WILDERNESS_HARD(4509),
 	ACHIEVEMENT_DIARY_WILDERNESS_ELITE(4510),
 
-	CUTSCENE(542),
+	CUTSCENE(VarbitID.CUTSCENE_STATUS),
 	DIALOG_CHOICE(5983);
 
 	private final int id;

@@ -35,8 +35,7 @@ import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
@@ -891,10 +890,10 @@ public class RuneliteObjectManager
 			}
 		}
 
-		if (event.getGroupId() == InterfaceID.DIALOG_NPC)
+		if (event.getGroupId() == InterfaceID.CHAT_LEFT)
 		{
-			Widget npcChatName = client.getWidget(ComponentID.DIALOG_NPC_NAME);
-			Widget npcChatHead = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
+			Widget npcChatName = client.getWidget(InterfaceID.ChatLeft.NAME);
+			Widget npcChatHead = client.getWidget(InterfaceID.ChatLeft.HEAD);
 
 			clientThread.invokeLater(() -> {
 				if (npcChatHead == null || npcChatName == null)

@@ -30,7 +30,7 @@ import com.questhelper.QuestHelperPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.*;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
@@ -78,7 +78,7 @@ public class QuestGrandExchangeInterface
 			return;
 		}
 
-		parent = client.getWidget(ComponentID.CHATBOX_CONTAINER);
+		parent = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
 
 		int QUEST_BUTTON_SIZE = 20;
 		int QUEST_BUTTON_X = 480;
@@ -131,7 +131,7 @@ public class QuestGrandExchangeInterface
 
 	public boolean isHidden()
 	{
-		Widget widget = client.getWidget(ComponentID.CHATBOX_CONTAINER);
+		Widget widget = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
 		return widget == null || widget.isHidden();
 	}
 
@@ -185,7 +185,7 @@ public class QuestGrandExchangeInterface
 
 	private void updateSearchInterface(boolean hideSearchBox)
 	{
-		Widget geSearchBox = client.getWidget(ComponentID.CHATBOX_FULL_INPUT);
+		Widget geSearchBox = client.getWidget(InterfaceID.Chatbox.MES_TEXT2);
 		if (geSearchBox == null)
 		{
 			return;
@@ -225,7 +225,7 @@ public class QuestGrandExchangeInterface
 
 	private Widget createTitle(Widget container)
 	{
-		Widget chatbox = client.getWidget(ComponentID.CHATBOX_FULL_INPUT);
+		Widget chatbox = client.getWidget(InterfaceID.Chatbox.MES_TEXT2);
 
 		Widget widget = container.createChild(-1, WidgetType.TEXT);
 		if (chatbox == null)

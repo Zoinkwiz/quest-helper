@@ -46,10 +46,10 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
 
@@ -201,7 +201,7 @@ public class FairytaleI extends BasicQuestHelper
 
 
 		talkedToFarmers = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "back and talk to <col=800000>Martin"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "back and talk to <col=800000>Martin"),
 			new DialogRequirement("Right, well thanks for your input."),
 			new DialogRequirement("I don't think the crops ARE failing"));
 

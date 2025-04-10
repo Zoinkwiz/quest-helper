@@ -29,8 +29,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -49,7 +48,7 @@ public class SkavidChoice extends NpcStep
 
 	private void updateCorrectChoice()
 	{
-		Widget widget = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
+		Widget widget = client.getWidget(InterfaceID.ChatLeft.TEXT);
 		if (widget == null)
 		{
 			return;

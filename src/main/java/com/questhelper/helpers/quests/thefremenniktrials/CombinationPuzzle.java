@@ -31,6 +31,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;

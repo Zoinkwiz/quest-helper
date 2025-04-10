@@ -38,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
@@ -248,7 +249,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 		if (!solutionFound && widgetLoaded.getGroupId() == 748)
 		{
 			List<Integer> potentialBusts = QuestUtil.toArrayList(AIVAS, CAMORRA, ROBERT, TRISTAN);
-			Widget parentWidget = client.getWidget(748, 2);
+			Widget parentWidget = client.getWidget(InterfaceID.Stoneplaque.CONTENT);
 			if (parentWidget == null || parentWidget.getStaticChildren() == null) return;
 
 			StringBuilder storyString = new StringBuilder();

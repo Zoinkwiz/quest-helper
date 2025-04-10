@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -84,7 +85,7 @@ public class PowerPuzzle extends QuestStep
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
 		super.makeWidgetOverlayHint(graphics, plugin);
-		Widget widgetWrapper = client.getWidget(624, 2);
+		Widget widgetWrapper = client.getWidget(InterfaceID.LovaquestElectricity.GRID);
 		if (widgetWrapper != null)
 		{
 			for (int i = 0; i < 36; i++)

@@ -924,24 +924,24 @@ public class TheHeartOfDarkness extends BasicQuestHelper
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
 
-        ObjectStep firstStatueStep = (ObjectStep) new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the first statue in the order.")
+        ObjectStep firstStatueStep = new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the first statue in the order.")
                 .addAlternateObjects(ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI);
         activateFirstStatue = firstStatueStep
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
 
-        ObjectStep secondStatueStep = (ObjectStep) new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the second statue in the order.")
+        ObjectStep secondStatueStep = new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the second statue in the order.")
                 .addAlternateObjects(ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI);
         activateSecondStatue = secondStatueStep
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
 
-        ObjectStep thirdStatueStep = (ObjectStep) new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the third statue in the order.")
+        ObjectStep thirdStatueStep = new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the third statue in the order.")
                 .addAlternateObjects(ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI);
         activateThirdStatue = thirdStatueStep
                 .puzzleWrapStep("Work out how to open the door to the far west.")
                 .withNoHelpHiddenInSidebar(true);
-        ObjectStep fourthStatueStep = (ObjectStep) new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the fourth statue in the order.")
+        ObjectStep fourthStatueStep = new ObjectStep(this, ObjectID.VMQ3_RUINS_FIRE_STATUE_MULTI, new WorldPoint(1650, 9642, 0), "Activate the fourth statue in the order.")
                 .addAlternateObjects(ObjectID.VMQ3_RUINS_WATER_STATUE_MULTI, ObjectID.VMQ3_RUINS_AIR_STATUE_MULTI, ObjectID.VMQ3_RUINS_EARTH_STATUE_MULTI);
         activateFourthStatue = fourthStatueStep
                 .puzzleWrapStep("Work out how to open the door to the far west.");
@@ -1024,12 +1024,11 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     {
         if (hasReadCompletedNote.check(client)) return;
 
-        int GROUP_ID = 808;
         Pattern ANSWERS = Pattern.compile("([A-Za-z]+) - ([A-Za-z]+) - ([A-Za-z]+)");
 
-        if (widgetLoaded.getGroupId() == GROUP_ID)
+        if (widgetLoaded.getGroupId() == InterfaceID.SCROLL)
         {
-            Widget line = client.getWidget(GROUP_ID, 11);
+            Widget line = client.getWidget(InterfaceID.Scroll.LINE7);
             if (line == null) return;
 
             Matcher matcher = ANSWERS.matcher(line.getText());
@@ -1044,15 +1043,14 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     {
         if (knowPoemSolution.check(client)) return;
 
-        int GROUP_ID = 808;
         List<String> tmpChars = new ArrayList<>();
         int firstLineChildId = 8;
         int maxChildId = 18;
-        if (widgetLoaded.getGroupId() == GROUP_ID)
+        if (widgetLoaded.getGroupId() == InterfaceID.SCROLL)
         {
             Widget line;
             for (int i = 0; i <= maxChildId - firstLineChildId; i++) {
-                line = client.getWidget(GROUP_ID, firstLineChildId + i);
+                line = client.getWidget(InterfaceID.SCROLL, firstLineChildId + i);
                 if (line == null) break;
                 Matcher matcher = WHITE_TEXT.matcher(line.getText());
                 if (matcher.find())

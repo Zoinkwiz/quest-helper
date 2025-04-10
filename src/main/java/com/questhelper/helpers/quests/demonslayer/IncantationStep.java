@@ -45,7 +45,6 @@ public class IncantationStep extends ConditionalStep
 		put(4, "Gabindo");
 	}};
 
-	private final String RESET_INCANTATION_TEXT = "Now what was that incantation again?";
 	private String[] incantationOrder;
 	private int incantationPosition = 0;
 	private final QuestStep incantationStep;
@@ -82,12 +81,13 @@ public class IncantationStep extends ConditionalStep
 	 */
 	private void resetIncarnationIfRequired()
 	{
-		Widget widget = client.getWidget(InterfaceID.CHAT_RIGHT, 4);
+		Widget widget = client.getWidget(InterfaceID.ChatRight.TEXT);
 		if (widget == null)
 		{
 			return;
 		}
 		String text = widget.getText();
+		String RESET_INCANTATION_TEXT = "Now what was that incantation again?";
 		if (RESET_INCANTATION_TEXT.equals(text))
 		{
 			incantationPosition = 0;

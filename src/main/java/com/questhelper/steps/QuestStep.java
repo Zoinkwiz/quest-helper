@@ -30,6 +30,8 @@ import com.google.inject.Module;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.choice.*;
 import com.questhelper.steps.overlay.IconOverlay;
 import com.questhelper.steps.tools.QuestPerspective;

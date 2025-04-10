@@ -39,6 +39,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
@@ -141,7 +142,7 @@ public class PuzzleStep extends DetailedOwnerStep
 	public void solvePuzzle1()
 	{
 		int heldDisc = client.getVarpValue(856);
-		Widget insertWidget = client.getWidget(447, 0);
+		Widget insertWidget = client.getWidget(InterfaceID.LeagueTrophies.INFINITY);
 
 		if (client.getVarbitValue(2539) == answer1)
 		{
@@ -225,7 +226,7 @@ public class PuzzleStep extends DetailedOwnerStep
 
 		List<Item> inventoryItems = new ArrayList<>(Arrays.asList(inventoryItemsArr));
 
-		Widget insertWidget = client.getWidget(189, 0);
+		Widget insertWidget = client.getWidget(InterfaceID.EyegloGnomeMachineUnlocked.MACHINE_UNLOACKED_BACKGROUND);
 
 		int slot1 = client.getVarpValue(850);
 

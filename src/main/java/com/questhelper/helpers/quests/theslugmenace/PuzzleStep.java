@@ -4,6 +4,9 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -33,8 +36,6 @@ public class PuzzleStep extends QuestStep
 
 	private final HashMap<Integer, Integer>[] pieces = new HashMap[3];
 
-	private final HashMap<Integer, Integer>[] solvedPieces = new HashMap[3];
-
 	public PuzzleStep(QuestHelper questHelper)
 	{
 		super(questHelper, "Click the highlighted boxes to move the pieces to the correct spots.");
@@ -44,46 +45,16 @@ public class PuzzleStep extends QuestStep
 		final int SELECT_3_BUTTON = 15;
 
 		pieces[0] = new HashMap<>();
-		pieces[0].put(HORIZONTAL, 876);
-		pieces[0].put(VERTICAL, 877);
-		pieces[0].put(FLIP, 878);
-		pieces[0].put(ROTATE, 879);
-		pieces[0].put(SELECTED, 12155);
+		pieces[0].put(SELECTED, VarbitID.SLUG2_PIECE1_SELECT);
 		pieces[0].put(SELECT_BUTTON, SELECT_1_BUTTON); // 3?
 
-		solvedPieces[0] = new HashMap<>();
-		solvedPieces[0].put(HORIZONTAL, 33);
-		solvedPieces[0].put(VERTICAL, 33);
-		solvedPieces[0].put(FLIP, 1);
-		solvedPieces[0].put(ROTATE, 1);
-
 		pieces[1] = new HashMap<>();
-		pieces[1].put(HORIZONTAL, 880);
-		pieces[1].put(VERTICAL, 881);
-		pieces[1].put(FLIP, 882);
-		pieces[1].put(ROTATE, 883);
-		pieces[1].put(SELECTED, 12157);
+		pieces[1].put(SELECTED, VarbitID.SLUG2_PIECE2_SELECT);
 		pieces[1].put(SELECT_BUTTON, SELECT_2_BUTTON); // 3?
 
-		solvedPieces[1] = new HashMap<>();
-		solvedPieces[1].put(HORIZONTAL, 33);
-		solvedPieces[1].put(VERTICAL, 33);
-		solvedPieces[1].put(FLIP, 1);
-		solvedPieces[1].put(ROTATE, 1);
-
 		pieces[2] = new HashMap<>();
-		pieces[2].put(HORIZONTAL, 884);
-		pieces[2].put(VERTICAL, 885);
-		pieces[2].put(FLIP, 886);
-		pieces[2].put(ROTATE, 887);
-		pieces[2].put(SELECTED, 12159);
+		pieces[2].put(SELECTED, VarbitID.SLUG2_PIECE3_SELECT);
 		pieces[2].put(SELECT_BUTTON, SELECT_3_BUTTON);
-
-		solvedPieces[2] = new HashMap<>();
-		solvedPieces[2].put(HORIZONTAL, 33);
-		solvedPieces[2].put(VERTICAL, 33);
-		solvedPieces[2].put(FLIP, 1);
-		solvedPieces[2].put(ROTATE, 1);
 
 		highlightButtons.put(FLIP_BUTTON, 0);
 		highlightButtons.put(DOWN_BUTTON, 0);
@@ -117,22 +88,22 @@ public class PuzzleStep extends QuestStep
 		HashMap<Integer, Integer> highlightButtonsTmp = new HashMap<>();
 
 		piecesCurrentState[0] = new HashMap<>();
-		piecesCurrentState[0].put(HORIZONTAL, client.getVarpValue(pieces[0].get(HORIZONTAL)));
-		piecesCurrentState[0].put(VERTICAL, client.getVarpValue(pieces[0].get(VERTICAL)));
-		piecesCurrentState[0].put(FLIP, client.getVarpValue(pieces[0].get(FLIP)));
-		piecesCurrentState[0].put(ROTATE, client.getVarpValue(pieces[0].get(ROTATE)));
+		piecesCurrentState[0].put(HORIZONTAL, client.getVarpValue(VarPlayerID.SLUG2_FRAG1_XPOS));
+		piecesCurrentState[0].put(VERTICAL, client.getVarpValue(VarPlayerID.SLUG2_FRAG1_YPOS));
+		piecesCurrentState[0].put(FLIP, client.getVarpValue(VarPlayerID.SLUG2_FRAG1_ZPOS));
+		piecesCurrentState[0].put(ROTATE, client.getVarpValue(VarPlayerID.SLUG2_FRAG1_ROT));
 
 		piecesCurrentState[1] = new HashMap<>();
-		piecesCurrentState[1].put(HORIZONTAL, client.getVarpValue(pieces[1].get(HORIZONTAL)));
-		piecesCurrentState[1].put(VERTICAL, client.getVarpValue(pieces[1].get(VERTICAL)));
-		piecesCurrentState[1].put(FLIP, client.getVarpValue(pieces[1].get(FLIP)));
-		piecesCurrentState[1].put(ROTATE, client.getVarpValue(pieces[1].get(ROTATE)));
+		piecesCurrentState[1].put(HORIZONTAL, client.getVarpValue(VarPlayerID.SLUG2_FRAG2_XPOS));
+		piecesCurrentState[1].put(VERTICAL, client.getVarpValue(VarPlayerID.SLUG2_FRAG2_YPOS));
+		piecesCurrentState[1].put(FLIP, client.getVarpValue(VarPlayerID.SLUG2_FRAG2_ZPOS));
+		piecesCurrentState[1].put(ROTATE, client.getVarpValue(VarPlayerID.SLUG2_FRAG2_ROT));
 
 		piecesCurrentState[2] = new HashMap<>();
-		piecesCurrentState[2].put(HORIZONTAL, client.getVarpValue(pieces[2].get(HORIZONTAL)));
-		piecesCurrentState[2].put(VERTICAL, client.getVarpValue(pieces[2].get(VERTICAL)));
-		piecesCurrentState[2].put(FLIP, client.getVarpValue(pieces[2].get(FLIP)));
-		piecesCurrentState[2].put(ROTATE, client.getVarpValue(pieces[2].get(ROTATE)));
+		piecesCurrentState[2].put(HORIZONTAL, client.getVarpValue(VarPlayerID.SLUG2_FRAG3_XPOS));
+		piecesCurrentState[2].put(VERTICAL, client.getVarpValue(VarPlayerID.SLUG2_FRAG3_YPOS));
+		piecesCurrentState[2].put(FLIP, client.getVarpValue(VarPlayerID.SLUG2_FRAG3_ZPOS));
+		piecesCurrentState[2].put(ROTATE, client.getVarpValue(VarPlayerID.SLUG2_FRAG3_ROT));
 
 		// 877 33 V
 		// 876 40 H
@@ -153,6 +124,8 @@ public class PuzzleStep extends QuestStep
 			goalRangeV[i] = goalV - 2 + i;
 
 		}
+
+		// If first piece not orientated correctly, we need to place it correctly
 		if (!(piecesCurrentState[0].get(FLIP) == 1 && piecesCurrentState[0].get(ROTATE) == 1))
 		{
 			currentPiece = 0;
@@ -238,7 +211,7 @@ public class PuzzleStep extends QuestStep
 				continue;
 			}
 
-			Widget widget = client.getWidget(462, entry.getKey());
+			Widget widget = client.getWidget(InterfaceID.SLUG2_RESSEMBLING_TORN_PAPER_CONTROLL, entry.getKey());
 			if (widget != null)
 			{
 				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
@@ -257,7 +230,7 @@ public class PuzzleStep extends QuestStep
 				continue;
 			}
 
-			Widget widget = client.getWidget(462, entry.getKey());
+			Widget widget = client.getWidget(InterfaceID.SLUG2_RESSEMBLING_TORN_PAPER_CONTROLL, entry.getKey());
 			if (widget != null)
 			{
 				Widget widgetSelectionButton = widget.getChild(3);

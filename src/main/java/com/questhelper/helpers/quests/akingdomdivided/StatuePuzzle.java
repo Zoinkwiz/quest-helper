@@ -37,6 +37,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
@@ -142,7 +143,7 @@ public class StatuePuzzle extends DetailedOwnerStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget widgetPanel = client.getWidget(229, 1);
+		Widget widgetPanel = client.getWidget(InterfaceID.Messagebox.TEXT);
 
 		if (widgetPanel != null && !widgetPanel.isHidden() && !readOnce)
 		{

@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
@@ -253,7 +254,7 @@ public class PotionPuzzle extends DetailedOwnerStep
 	{
 		if (widgetLoaded.getGroupId() == 291)
 		{
-			Widget line1Widget = client.getWidget(291, 9);
+			Widget line1Widget = client.getWidget(InterfaceID.Note.LINE5);
 			if (line1Widget != null)
 			{
 				Matcher matcher = LINE1.matcher(line1Widget.getText());
@@ -265,7 +266,7 @@ public class PotionPuzzle extends DetailedOwnerStep
 					}
 				}
 			}
-			Widget line2Widget = client.getWidget(291, 10);
+			Widget line2Widget = client.getWidget(InterfaceID.Note.LINE6);
 			if (line2Widget != null)
 			{
 				Matcher matcher = LINE2.matcher(line2Widget.getText());
@@ -281,7 +282,7 @@ public class PotionPuzzle extends DetailedOwnerStep
 					}
 				}
 			}
-			Widget line3Widget = client.getWidget(291, 11);
+			Widget line3Widget = client.getWidget(InterfaceID.Note.LINE7);
 			if (line3Widget != null)
 			{
 				Matcher matcher = LINE3.matcher(line3Widget.getText());

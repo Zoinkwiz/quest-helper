@@ -26,29 +26,25 @@ package com.questhelper.helpers.quests.thepathofglouphrie;
 
 import com.google.inject.testing.fieldbinder.Bind;
 import com.questhelper.MockedTest;
-import static com.questhelper.helpers.quests.thepathofglouphrie.YewnocksPuzzle.loadDiscToValue;
-import static com.questhelper.helpers.quests.thepathofglouphrie.YewnocksPuzzle.loadDiscs;
-import static com.questhelper.helpers.quests.thepathofglouphrie.YewnocksPuzzle.loadValuePossibleExchanges;
-import static com.questhelper.helpers.quests.thepathofglouphrie.YewnocksPuzzle.loadValueToDoubleDiscRequirement;
-import static com.questhelper.helpers.quests.thepathofglouphrie.YewnocksPuzzle.loadValueToRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import net.runelite.api.Item;
 import net.runelite.api.gameval.ItemID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.questhelper.helpers.quests.thepathofglouphrie.YewnocksPuzzle.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SolutionTest extends MockedTest
 {

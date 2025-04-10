@@ -40,6 +40,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import java.util.List;
+
 import static com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav.VARBIT_NORTH_LEVER_STATE;
 import static com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav.VARBIT_SOUTH_LEVER_STATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,7 +68,7 @@ public class KeysAndLeversTest extends MockedTest
 		worldPointMockedStatic = Mockito.mockStatic(WorldPoint.class);
 
 		questPerspectiveMockedStatic.when(() -> QuestPerspective.getInstanceLocalPointFromReal(any(), any()))
-				.thenReturn(null);
+				.thenReturn(List.of());
 
 		helper = new TheCurseOfArrav();
 

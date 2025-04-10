@@ -28,10 +28,10 @@ import com.questhelper.requirements.zone.Zone;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 
 import java.awt.*;
@@ -155,7 +155,7 @@ public class QuestPerspective
 
 	public static Rectangle getWorldMapClipArea(Client client)
 	{
-		Widget widget = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
+		Widget widget = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 		if (widget == null)
 		{
 			return null;
@@ -175,7 +175,7 @@ public class QuestPerspective
 
 		float pixelsPerTile = worldMap.getWorldMapZoom();
 
-		Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
+		Widget map = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 		if (map != null)
 		{
 			Rectangle worldMapRect = map.getBounds();
@@ -227,18 +227,18 @@ public class QuestPerspective
 		Widget minimapDrawWidget;
 		if (client.isResized())
 		{
-			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
+			if (client.getVarbitValue(VarbitID.RESIZABLE_STONE_ARRANGEMENT) == 1)
 			{
-				minimapDrawWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_DRAW_AREA);
+				minimapDrawWidget = client.getWidget(InterfaceID.ToplevelPreEoc.MINIMAP);
 			}
 			else
 			{
-				minimapDrawWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_MINIMAP_DRAW_AREA);
+				minimapDrawWidget = client.getWidget(InterfaceID.ToplevelOsrsStretch.MINIMAP);
 			}
 		}
 		else
 		{
-			minimapDrawWidget = client.getWidget(ComponentID.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+			minimapDrawWidget = client.getWidget(InterfaceID.Toplevel.MINIMAP);
 		}
 
 		if (minimapDrawWidget == null)

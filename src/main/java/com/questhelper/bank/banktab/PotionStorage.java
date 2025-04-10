@@ -32,9 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarPlayerID;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.Subscribe;
@@ -236,7 +235,7 @@ public class PotionStorage
     {
         // if the potion store hasn't been opened yet, the client components won't have been made yet.
         // they need to exist for the click to work correctly.
-        Widget potStoreContent = client.getWidget(ComponentID.BANK_POTIONSTORE_CONTENT);
+        Widget potStoreContent = client.getWidget(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
         if (potStoreContent.getChildren() == null)
         {
             int childIdx = 0;

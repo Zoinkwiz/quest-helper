@@ -27,6 +27,7 @@ package com.questhelper.helpers.quests.elementalworkshopii;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 
 import java.awt.*;
@@ -46,12 +47,12 @@ public class ConnectPipes extends QuestStep
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
 
-		Widget widget1 = client.getWidget(262, 41);
-		Widget widget2 = client.getWidget(262, 42);
-		Widget widget3 = client.getWidget(262, 37);
-		Widget widget4 = client.getWidget(262, 38);
-		Widget widget5 = client.getWidget(262, 39);
-		Widget widget6 = client.getWidget(262, 40);
+		Widget widget1 = client.getWidget(InterfaceID.ElemMagicpressPipes.INLETAM);
+		Widget widget2 = client.getWidget(InterfaceID.ElemMagicpressPipes.INLETBM);
+		Widget widget3 = client.getWidget(InterfaceID.ElemMagicpressPipes.INLETCM);
+		Widget widget4 = client.getWidget(InterfaceID.ElemMagicpressPipes.INLET1M);
+		Widget widget5 = client.getWidget(InterfaceID.ElemMagicpressPipes.INLET2M);
+		Widget widget6 = client.getWidget(InterfaceID.ElemMagicpressPipes.INLET3M);
 
 		if (widget1 != null)
 		{

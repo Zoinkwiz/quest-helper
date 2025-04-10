@@ -54,11 +54,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.*;
 
 import java.util.*;
 
@@ -449,14 +445,14 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		talkedToZooknock = new VarbitRequirement(VarbitID.MM_ZOOKNOCK, 5, Operation.GREATER_EQUAL);
 
 		givenDentures = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the magical monkey dentures."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - Something to do with monkey speech."));
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand Zooknock the magical monkey dentures."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str> - Something to do with monkey speech."));
 		givenBar = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the gold bar."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - A gold bar."));
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand Zooknock the gold bar."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str> - A gold bar."));
 		givenMould = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey amulet mould."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - A monkey amulet mould."));
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand Zooknock the monkey amulet mould."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str> - A monkey amulet mould."));
 
 		hasTalisman = new Conditions(LogicType.OR, karamjanGreegree, talisman);
 
@@ -464,12 +460,12 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		hadDenturesAndMould = new Conditions(LogicType.OR, hadEnchantedBar, new Conditions(monkeyDentures, mould));
 
 		givenTalisman = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey talisman."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - An authentic magical monkey talisman.")
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand Zooknock the monkey talisman."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str> - An authentic magical monkey talisman.")
 		);
 		givenBones = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Zooknock the monkey remains."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str> - Some kind of monkey remains.")
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand Zooknock the monkey remains."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str> - Some kind of monkey remains.")
 		);
 
 		talkedToGarkorWithGreeGree = new VarbitRequirement(VarbitID.MM_GARKOR, 3, Operation.GREATER_EQUAL);
@@ -487,7 +483,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		givenMonkey = new RuneliteRequirement(getConfigManager(), "mm1givenmonkey", new Conditions(true,
 			LogicType.OR,
 			givenMonkeyDialog,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "appear to have earnt Awowogei's favour.")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "appear to have earnt Awowogei's favour.")
 		));
 
 		gotSigil = new VarbitRequirement(VarbitID.MM_GARKOR, 6, Operation.GREATER_EQUAL);

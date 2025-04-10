@@ -47,10 +47,10 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
 
@@ -209,11 +209,11 @@ public class NatureSpirit extends BasicQuestHelper
 		mirrorNearby = new ItemOnTileRequirement(mirror);
 		usedMushroom = new Conditions(true, LogicType.OR, new ChatMessageRequirement("The stone seems to absorb the fungus."),
 			new WidgetTextRequirement(229, 1, "nature symbol<br>scratched into it. This stone seems complete in some way."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Mort Myre Fungi was absorbed"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Mort Myre Fungi was absorbed"));
 		usedCard = new Conditions(true, LogicType.OR, new ChatMessageRequirement("The stone seems to absorb the used spell scroll."),
 			new ChatMessageRequirement("The stone seems to absorb the spell scroll."),
 			new WidgetTextRequirement(229, 1, "spirit symbol<br>scratched into it. This stone seems to be complete"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "spell scroll was absorbed"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "spell scroll was absorbed"));
 
 		ghastNearby = new NpcCondition(NpcID.GHAST_VIS);
 

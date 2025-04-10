@@ -35,6 +35,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
@@ -128,7 +129,7 @@ public class StonePuzzleStep extends DetailedOwnerStep
 		}
 
 		clientThread.invokeLater(() -> {
-			Widget widgetStone = client.getWidget(229, 1);
+			Widget widgetStone = client.getWidget(InterfaceID.Messagebox.TEXT);
 
 			if (widgetStone != null && !widgetStone.isHidden() && !codeFound)
 			{

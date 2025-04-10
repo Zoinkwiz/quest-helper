@@ -4,6 +4,7 @@ import com.questhelper.MockedTest;
 import com.questhelper.domain.AccountType;
 import net.runelite.api.Skill;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;

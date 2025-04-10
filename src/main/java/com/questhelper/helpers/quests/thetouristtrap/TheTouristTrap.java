@@ -47,11 +47,7 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarPlayerID;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.*;
 
 import java.util.*;
 
@@ -274,7 +270,7 @@ public class TheTouristTrap extends BasicQuestHelper
 
 		hasSlaveClothes = new ItemRequirements(slaveTop, slaveBoot, slaveRobe);
 
-		searchedBookcase = new Conditions(true, new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You notice several books on the subject of sailing."));
+		searchedBookcase = new Conditions(true, new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You notice several books on the subject of sailing."));
 		distractedSiad = new Conditions(true, new WidgetTextRequirement(229, 1, "The captain starts rambling on about his days as a salty sea dog. He<br>looks quite distracted..."));
 
 		anaPlacedOnCartOfLift = new VarbitRequirement(2805, 1);

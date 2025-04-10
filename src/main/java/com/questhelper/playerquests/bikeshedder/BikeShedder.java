@@ -42,10 +42,9 @@ import com.questhelper.steps.*;
 import com.questhelper.steps.widget.NormalSpells;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.widgets.ComponentID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -159,9 +158,9 @@ public class BikeShedder extends BasicQuestHelper
 
 		conditionalRequirementLookAtCoins = new DetailedQuestStep(this, "Admire the coins in your inventory.", conditionalRequirementCoins);
 
-		lookAtCooksAssistantRequirement = new WidgetTextRequirement(ComponentID.DIARY_TITLE, "Cook's Assistant");
+		lookAtCooksAssistantRequirement = new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "Cook's Assistant");
 		lookAtCooksAssistantRequirement.setDisplayText("Cook's Assistant quest journal open");
-		lookAtCooksAssistantTextRequirement = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "he now lets me use his high quality range");
+		lookAtCooksAssistantTextRequirement = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "he now lets me use his high quality range");
 		lookAtCooksAssistantTextRequirement.setDisplayText("Cook's Assistant quest journal open & received reward (checking text)");
 		lookAtCooksAssistant = new DetailedQuestStep(this, "Open the Cook's Assistant quest journal. You must have started the quest for this test to work.", lookAtCooksAssistantRequirement, lookAtCooksAssistantTextRequirement);
 

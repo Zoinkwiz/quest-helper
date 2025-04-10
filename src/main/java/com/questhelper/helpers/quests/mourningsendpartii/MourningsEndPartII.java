@@ -49,11 +49,7 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.*;
 
 import java.util.*;
 
@@ -596,7 +592,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		f2r2c0ER = new VarbitRequirement(1239, RED);
 		f2r0c4D = new VarbitRequirement(1193, BLUE);
 		blueCrystalNotPlaced = new VarbitRequirement(1193, WHITE);
-		placedBlueCrystalInJumpRoom = new Conditions(true, LogicType.OR, f2r0c4D, new Conditions(LogicType.AND, inBlueRoom, new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You place the blue crystal in the pillar.")));
+		placedBlueCrystalInJumpRoom = new Conditions(true, LogicType.OR, f2r0c4D, new Conditions(LogicType.AND, inBlueRoom, new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You place the blue crystal in the pillar.")));
 		cyanDoorOpen = new VarbitRequirement(1176, RED);
 	}
 

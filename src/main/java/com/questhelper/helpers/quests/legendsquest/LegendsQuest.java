@@ -61,10 +61,10 @@ import com.questhelper.steps.widget.NormalSpells;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
 
@@ -665,7 +665,7 @@ public class LegendsQuest extends BasicQuestHelper
 		inFire = new ZoneRequirement(fire1, fire2, fire3);
 		inChallengeCave = new ZoneRequirement(challengeCave);
 
-		completeTextAppeared = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT,
+		completeTextAppeared = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT,
 			"You have already completed this part of the map.");
 
 		completeEast = new Conditions(true, LogicType.OR,
@@ -685,7 +685,7 @@ public class LegendsQuest extends BasicQuestHelper
 
 		talkedToUngadulu = new RuneliteRequirement(configManager, "legendsquestinvestigatedfirewall",
 			new Conditions(true, LogicType.OR,
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "is acting weird and talking a lot of nonsense"),
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "is acting weird and talking a lot of nonsense"),
 				new MesBoxRequirement("The shaman throws himself to the floor and starts convulsing."),
 				new DialogRequirement("is acting weird and talking a lot of nonsense")));
 

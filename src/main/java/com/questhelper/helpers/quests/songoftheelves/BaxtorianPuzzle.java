@@ -39,8 +39,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -146,7 +146,7 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		{
 			clientThread.invokeLater(() ->
 			{
-				Widget itemPlacedWidget = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT);
+				Widget itemPlacedWidget = client.getWidget(InterfaceID.Objectbox.TEXT);
 
 				if (itemPlacedWidget == null)
 				{
@@ -327,7 +327,7 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 	{
 		if (widgetLoaded.getGroupId() == 229)
 		{
-			Widget hintWidget = client.getWidget(229, 1);
+			Widget hintWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
 
 			if (hintWidget != null)
 			{

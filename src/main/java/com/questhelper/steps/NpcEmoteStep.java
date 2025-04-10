@@ -31,7 +31,7 @@ import com.questhelper.steps.emote.QuestEmote;
 import com.questhelper.steps.overlay.IconOverlay;
 import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 
 import java.awt.*;
@@ -67,14 +67,14 @@ public class NpcEmoteStep extends NpcStep
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
 
-		Widget emoteContainer = client.getWidget(ComponentID.EMOTES_EMOTE_CONTAINER);
+		Widget emoteContainer = client.getWidget(InterfaceID.Emote.CONTENTS);
 
 		if (emoteContainer == null || emoteContainer.isHidden())
 		{
 			return;
 		}
 
-		Widget emoteWindow = client.getWidget(ComponentID.EMOTES_WINDOW);
+		Widget emoteWindow = client.getWidget(InterfaceID.Emote.UNIVERSE);
 
 		if (emoteWindow == null)
 		{
@@ -106,7 +106,7 @@ public class NpcEmoteStep extends NpcStep
 
 	void scrollToWidget(Widget widget)
 	{
-		final Widget parent = client.getWidget(ComponentID.EMOTES_EMOTE_CONTAINER);
+		final Widget parent = client.getWidget(InterfaceID.Emote.CONTENTS);
 
 		if (widget == null || parent == null)
 		{
@@ -118,8 +118,8 @@ public class NpcEmoteStep extends NpcStep
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			ComponentID.EMOTES_EMOTE_SCROLLBAR,
-			ComponentID.EMOTES_EMOTE_CONTAINER,
+			InterfaceID.Emote.SCROLLBAR,
+			InterfaceID.Emote.CONTENTS,
 			newScroll
 		);
 	}

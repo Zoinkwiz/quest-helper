@@ -54,10 +54,10 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.widgets.ComponentID;
 
 import java.util.*;
 
@@ -341,20 +341,20 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new VarplayerRequirement(QuestVarPlayer.QUEST_TAI_BWO_WANNAI_TRIO.getId(), 2));
 
 		syncedState = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "Tai Bwo Wannai Trio"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "Tai Bwo Wannai Trio"),
 			startedQuestDuringSession
 		);
 
 		givenVessel = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>He has successfully caught a Karambwan."),
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the Karambwan vessel to Tiadeche."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>He has successfully caught a Karambwan."),
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand over the Karambwan vessel to Tiadeche."),
 			new DialogRequirement("What is it?")
 		);
 
 		givenKarambwanji = new Conditions(true, LogicType.OR,
 			givenVessel,
 			new WidgetTextRequirement(193, 2, "You hand Lubufu 20 raw Karambwanji."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have given Lubufu 20 Karambwanji.")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have given Lubufu 20 Karambwanji.")
 		);
 
 		vesselOnGround = new ItemOnTileRequirement(karambwanVessel);
@@ -363,12 +363,12 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			givenVessel,
 			new DialogRequirement("I will return only when I have caught a Karambwan."),
 			new WidgetTextRequirement(219, 1, 4, "How are you fishing for the Karambwan?"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>He will only return to the village once he has caught a")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>He will only return to the village once he has caught a")
 		);
 
 		beenAskedToResearchVessel = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Take a Karambwan vessel to my brother Tinsay."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I must take a <col=800000>Karambwan vessel<col=000080> to <col=800000>Tinsay<col=000080> and retrieve")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I must take a <col=800000>Karambwan vessel<col=000080> to <col=800000>Tinsay<col=000080> and retrieve")
 		);
 
 		bonesNearby = new ItemOnTileRequirement(ItemID.TBWT_JOGRE_BONES);
@@ -381,25 +381,25 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			new NpcCondition(NpcID.TBWT_TAMAYU_HUNTER),
 			new DialogRequirement("I simply cannot match the Shaikahan's agility!",
 				"I cannot do enough damage with this spear..."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "He appears to be having difficulty in the hunt.")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "He appears to be having difficulty in the hunt.")
 		);
 
 		givenPotion = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the agility potion to Tamayu."),
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand over the agility potion to Tamayu."),
 			new DialogRequirement("Thank you Bwana. Now I must prepare for my next"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have increased his agility to match the Shaikahan's.")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have increased his agility to match the Shaikahan's.")
 		);
 		givenSpear = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Tamayu, try using this weapon."),
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have give him a stronger and Karambwan poisoned spear.")
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand the spear to Tamayu."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have give him a stronger and Karambwan poisoned spear.")
 		);
 
 		defeatedBeast = new Conditions(true, LogicType.OR,
 			new DialogRequirement("I did it! I, Tamayu, first son of Timfraku, did slay " +
 				"the Shaikahan!"),
 			new DialogRequirement("The deaths of my kin have been avenged. You are my witness."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>Tamayu has slain the Shaikahan!")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>Tamayu has slain the Shaikahan!")
 		);
 
 		hadAtLeastRawKarambwan = new Conditions(LogicType.OR, rawKarambwan, poisonKarambwan, karambwanPaste,
@@ -407,22 +407,22 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 
 		givenBones = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the burnt Jogre bones marinated"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have given him a burnt Jogre bones marinated in"),
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand Tinsay the burnt Jogre bones marinated"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have given him a burnt Jogre bones marinated in"),
 			new DialogRequirement("Finally! A near lifetime of craving satisfied!")
 		);
 
 		givenSandwich = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the seaweed in monkey skin sandwich."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have given him a seaweed in monkey skin sandwich."),
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand Tinsay the seaweed in monkey skin sandwich."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have given him a seaweed in monkey skin sandwich."),
 			new DialogRequirement("Yes ... perfect! You really do not understand how necessary that was."),
 			givenBones
 		);
 
 		givenRum = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the sliced bananas in Karamjan " +
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand Tinsay the sliced bananas in Karamjan " +
 				"rum."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have given him sliced banana in Karamja rum."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have given him sliced banana in Karamja rum."),
 			new DialogRequirement("Yes ... that's it! Hits just the spot!"),
 			givenSandwich,
 			givenBones
@@ -434,7 +434,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		hadMarinated = new Conditions(LogicType.OR, marinatedJogreBones.alsoCheckBank(questBank), givenBones);
 
 		talkedTinsay1 = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>He requires <col=800000>banana in Karamja " +
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>He requires <col=800000>banana in Karamja " +
 				"rum<col=000080> to repair the tribal"),
 			new DialogRequirement("And you're going to use this to repair the"),
 			new DialogRequirement("Hmm ... I think I need banana in Karamjan rum.")
@@ -442,8 +442,8 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		hadManual = new Conditions(true, LogicType.OR,
 			craftingManual,
-			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the crafting manual to Tiadeche."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>retrieved crafting instructions for Tiadeche.")
+			new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You hand over the crafting manual to Tiadeche."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>retrieved crafting instructions for Tiadeche.")
 		);
 	}
 

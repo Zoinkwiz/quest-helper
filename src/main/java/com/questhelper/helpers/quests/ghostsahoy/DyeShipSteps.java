@@ -32,10 +32,10 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -85,7 +85,7 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	private void updateCurrentColours()
 	{
-		Widget dyed = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT);
+		Widget dyed = client.getWidget(InterfaceID.Objectbox.TEXT);
 		if (dyed == null)
 		{
 			return;
@@ -199,7 +199,7 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	public void updateColours()
 	{
-		Widget textWidget = client.getWidget(229, 1);
+		Widget textWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
 		if (textWidget != null)
 		{
 			String text = textWidget.getText();

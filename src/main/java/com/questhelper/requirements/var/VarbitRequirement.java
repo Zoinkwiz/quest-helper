@@ -29,15 +29,16 @@ package com.questhelper.requirements.var;
 
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
-import java.math.BigInteger;
-import java.util.Locale;
 import com.questhelper.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+
 import javax.annotation.Nonnull;
+import java.math.BigInteger;
+import java.util.Locale;
 
 /**
  * Checks if a player's varbit value is meets the required value as determined by the

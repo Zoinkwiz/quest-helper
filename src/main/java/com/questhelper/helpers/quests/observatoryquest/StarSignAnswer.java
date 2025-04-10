@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.quests.observatoryquest;
 
-import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.steps.NpcStep;
-import java.util.HashMap;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.gameval.NpcID;
+
+import java.util.HashMap;
 
 public class StarSignAnswer extends NpcStep
 {

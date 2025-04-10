@@ -28,19 +28,19 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
-import java.util.List;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
-
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
+import java.util.List;
+import java.util.Queue;
 import java.util.*;
 
 @Slf4j

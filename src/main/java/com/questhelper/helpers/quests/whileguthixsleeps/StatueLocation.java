@@ -26,6 +26,7 @@ package com.questhelper.helpers.quests.whileguthixsleeps;
 
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+
 import java.util.List;
 
 public enum StatueLocation

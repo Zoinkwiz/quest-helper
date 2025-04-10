@@ -25,14 +25,12 @@
 
 package com.questhelper.helpers.achievementdiaries.kourend;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -41,17 +39,22 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.*;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
 
 public class KourendMedium extends ComplexStateQuestHelper
 {
@@ -144,47 +147,47 @@ public class KourendMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notFairyRing = new VarplayerRequirement(2085, false, 25);
-		notKillLizardman = new VarplayerRequirement(2085, false, 13);
-		notTravelWithMemoirs = new VarplayerRequirement(2085, false, 14);
-		notMineSulphur = new VarplayerRequirement(2085, false, 15);
-		notEnterFarmingGuild = new VarplayerRequirement(2085, false, 21);
-		notSwitchSpellbooks = new VarplayerRequirement(2085, false, 16);
-		notRepairCrane = new VarplayerRequirement(2085, false, 17);
-		notDeliverIntelligence = new VarplayerRequirement(2085, false, 18);
-		notCatchBluegill = new VarplayerRequirement(2085, false, 19);
-		notUseBoulderShortcut = new VarplayerRequirement(2085, false, 22);
-		notSubdueWintertodt = new VarplayerRequirement(2085, false, 20);
-		notCatchChinchompa = new VarplayerRequirement(2085, false, 23);
-		notChopMahoganyTree = new VarplayerRequirement(2085, false, 24);
+		notFairyRing = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 25);
+		notKillLizardman = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 13);
+		notTravelWithMemoirs = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 14);
+		notMineSulphur = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 15);
+		notEnterFarmingGuild = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 21);
+		notSwitchSpellbooks = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 16);
+		notRepairCrane = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 17);
+		notDeliverIntelligence = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 18);
+		notCatchBluegill = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 19);
+		notUseBoulderShortcut = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 22);
+		notSubdueWintertodt = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 20);
+		notCatchChinchompa = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 23);
+		notChopMahoganyTree = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 24);
 
-		memoirArc = new VarbitRequirement(7917, Operation.EQUAL, 0, "");
-		memoirHos = new VarbitRequirement(7918, Operation.EQUAL, 0, "");
-		memoirLova = new VarbitRequirement(7919, Operation.EQUAL, 0, "");
-		memoirShay = new VarbitRequirement(7920, Operation.EQUAL, 0, "");
-		memoirPis = new VarbitRequirement(7921, Operation.EQUAL, 0, "");
+		memoirArc = new VarbitRequirement(VarbitID.KOUREND_DIARY_ARC_TELEPORT, Operation.EQUAL, 0, "");
+		memoirHos = new VarbitRequirement(VarbitID.KOUREND_DIARY_HOS_TELEPORT, Operation.EQUAL, 0, "");
+		memoirLova = new VarbitRequirement(VarbitID.KOUREND_DIARY_LOVA_TELEPORT, Operation.EQUAL, 0, "");
+		memoirShay = new VarbitRequirement(VarbitID.KOUREND_DIARY_SHAY_TELEPORT, Operation.EQUAL, 0, "");
+		memoirPis = new VarbitRequirement(VarbitID.KOUREND_DIARY_PISC_TELEPORT, Operation.EQUAL, 0, "");
 
 		// Required items
 		dramenStaff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF, 1, true)
 			.showConditioned(notFairyRing).isNotConsumed();
 		kharedstsMemoirs = new ItemRequirement("Kharedst's Memoirs or Book of the Dead",
-			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.KHAREDSTS_MEMOIRS)).showConditioned(notTravelWithMemoirs).isNotConsumed();
+			Arrays.asList(ItemID.BOOK_OF_THE_DEAD, ItemID.VEOS_KHAREDSTS_MEMOIRS)).showConditioned(notTravelWithMemoirs).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineSulphur).isNotConsumed();
 		faceMask = new ItemRequirement("Facemask or slayer helmet", ItemCollections.SLAYER_HELMETS, 1, true)
 			.showConditioned(notMineSulphur).isNotConsumed();
-		faceMask.addAlternates(ItemID.FACEMASK, ItemID.GAS_MASK);
+		faceMask.addAlternates(ItemID.SLAYER_FACEMASK, ItemID.GASMASK);
 		hammer = new ItemRequirement("A hammer", ItemCollections.HAMMER).showConditioned(notRepairCrane).isNotConsumed();
 		nails = new ItemRequirement("Nails", ItemCollections.NAILS, 50).showConditioned(notRepairCrane);
-		planks = new ItemRequirement("Plank", ItemID.PLANK, 3).showConditioned(notRepairCrane);
+		planks = new ItemRequirement("Plank", ItemID.WOODPLANK, 3).showConditioned(notRepairCrane);
 		kingWorm = new ItemRequirement("King worm or fish chunks", ItemID.KING_WORM).showConditioned(notCatchBluegill);
 		kingWorm.addAlternates(ItemID.FISH_CHUNKS);
 		kingWorm.setTooltip("Obtainable on Molch Island");
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
 			notSubdueWintertodt, notChopMahoganyTree)).isNotConsumed();
-		tinderbox = new ItemRequirement("Tinderbox", Arrays.asList(ItemID.BRUMA_TORCH, ItemID.TINDERBOX))
+		tinderbox = new ItemRequirement("Tinderbox", Arrays.asList(ItemID.WINT_TORCH, ItemID.TINDERBOX))
 			.showConditioned(notSubdueWintertodt).isNotConsumed();
-		boxTrap = new ItemRequirement("Box trap", ItemID.BOX_TRAP).showConditioned(notCatchChinchompa).isNotConsumed();
-		intelligence = new ItemRequirement("Intelligence", ItemID.INTELLIGENCE).showConditioned(notDeliverIntelligence);
+		boxTrap = new ItemRequirement("Box trap", ItemID.HUNTING_BOX_TRAP).showConditioned(notCatchChinchompa).isNotConsumed();
+		intelligence = new ItemRequirement("Intelligence", ItemID.SHAYZIEN_GANG_INTELLIGENCE).showConditioned(notDeliverIntelligence);
 
 		// Recommended items
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notSubdueWintertodt).isNotConsumed();
@@ -195,7 +198,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1).showConditioned(notKillLizardman);
 		antipoison = new ItemRequirement("Anti-poison", ItemCollections.ANTIPOISONS)
 			.showConditioned(notKillLizardman);
-		radasBlessing1 = new ItemRequirement("Rada's Blessing (1)", ItemID.RADAS_BLESSING_1, -1)
+		radasBlessing1 = new ItemRequirement("Rada's Blessing (1)", ItemID.ZEAH_BLESSING_EASY, -1)
 			.showConditioned(notCatchChinchompa).isNotConsumed();
 
 		// Required quests
@@ -253,77 +256,77 @@ public class KourendMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		// Travel to Fairy Ring
-		travelFairyRing = new ObjectStep(this, ObjectID.FAIRY_RING, new WorldPoint(2658, 3230, 0),
+		travelFairyRing = new ObjectStep(this, ObjectID.POH_FAIRY_RING_LAST_AIP, new WorldPoint(2658, 3230, 0),
 			"Travel from any fairy ring to south of Mount Karuulm (CIR).", dramenStaff.highlighted());
 
 		// Kill a lizardman
-		killLizardman = new NpcStep(this, NpcID.LIZARDMAN, new WorldPoint(1507, 3683, 0),
+		killLizardman = new NpcStep(this, NpcID.ZEAH_LIZARDMAN_1_VN, new WorldPoint(1507, 3683, 0),
 			"Kill a lizardman.", true, combatGear, antipoison, food);
-		killLizardman.addAlternateNpcs(NpcID.LIZARDMAN_6915, NpcID.LIZARDMAN_6916, NpcID.LIZARDMAN_6917,
-			NpcID.LIZARDMAN_BRUTE, NpcID.LIZARDMAN_BRUTE_6919);
+		killLizardman.addAlternateNpcs(NpcID.ZEAH_LIZARDMAN_1_VP, NpcID.ZEAH_LIZARDMAN_2_VN, NpcID.ZEAH_LIZARDMAN_2_VP,
+			NpcID.ZEAH_LIZARDMAN_3_VN, NpcID.ZEAH_LIZARDMAN_3_VP);
 
 		// Travel with Kharedst's Memoirs
 		travelWithMemoirs = new ItemStep(this, "Teleport to each of the five cities via the memoirs.",
 			kharedstsMemoirs.highlighted());
 
 		// Mine some volcanic sulphur
-		mineSulphur = new ObjectStep(this, ObjectID.VOLCANIC_SULPHUR, new WorldPoint(1444, 3860, 0),
+		mineSulphur = new ObjectStep(this, ObjectID.SULPHUR_ROCK_01, new WorldPoint(1444, 3860, 0),
 			"Mine some volcanic sulfur in Lovakengj.", true, pickaxe, faceMask.equipped());
-		mineSulphur.addAlternateObjects(ObjectID.VOLCANIC_SULPHUR_28497, ObjectID.VOLCANIC_SULPHUR_28498);
+		mineSulphur.addAlternateObjects(ObjectID.SULPHUR_ROCK_02, ObjectID.SULPHUR_ROCK_03);
 
 		// Enter the farming guild
-		enterFarmingGuild = new ObjectStep(this, ObjectID.DOOR_34463, new WorldPoint(1249, 3725, 0),
+		enterFarmingGuild = new ObjectStep(this, ObjectID.KEBOS_FARMING_GUILD_DOOR_LEFT_CLOSED, new WorldPoint(1249, 3725, 0),
 			"Enter the Farming Guild.", true);
-		enterFarmingGuild.addAlternateObjects(ObjectID.DOOR_34464);
+		enterFarmingGuild.addAlternateObjects(ObjectID.KEBOS_FARMING_GUILD_DOOR_RIGHT_CLOSED);
 
 		// Switch to the Arceuus spellbook via Tyss
-		switchSpellbooks = new NpcStep(this, NpcID.TYSS, new WorldPoint(1712, 3882, 0),
+		switchSpellbooks = new NpcStep(this, NpcID.ARCEUUS_DARKGUARDIAN, new WorldPoint(1712, 3882, 0),
 			"Switch to the Arceuus spellbook via Tyss.");
 		switchSpellbooks.addDialogStep("Can I try the magicks myself?");
 
 		// Repair a crane
-		repairCrane = new ObjectStep(this, ObjectID.FISHING_CRANE, new WorldPoint(1830, 3735, 0),
+		repairCrane = new ObjectStep(this, ObjectID.PISCARILIUS_FISHINGCRANE_BROKEN, new WorldPoint(1830, 3735, 0),
 			"Repair a crane within Port Piscarilius.", true, hammer, nails, planks);
 
 		// Deliver some intelligence
 		killGangBoss = new DetailedQuestStep(this,
 			"Kill a gang boss or gang members for intelligence.", combatGear, food);
-		deliverIntelligence = new NpcStep(this, NpcID.CAPTAIN_GINEA, new WorldPoint(1504, 3632, 0),
+		deliverIntelligence = new NpcStep(this, NpcID.SHAYZIEN_CRIME_CONTROLLER, new WorldPoint(1504, 3632, 0),
 			"Turn in the intelligence to Captain Ginea.", intelligence);
-		deliverIntelligence.addAlternateNpcs(NpcID.CAPTAIN_GINEA_10931);
-		deliverIntelligence.addIcon(ItemID.INTELLIGENCE);
+		deliverIntelligence.addAlternateNpcs(NpcID.AKD_GINEA_CUTSCENE);
+		deliverIntelligence.addIcon(ItemID.SHAYZIEN_GANG_INTELLIGENCE);
 
 		// Catch a bluegill on Lake Molch
-		travelToMolchIsland = new ObjectStep(this, ObjectID.BOATY, new WorldPoint(1405, 3611, 0),
+		travelToMolchIsland = new ObjectStep(this, ObjectID.AERIAL_FISHING_BOAT, new WorldPoint(1405, 3611, 0),
 			"Board the boaty to Molch Island.");
 		travelToMolchIsland.addDialogStep("Molch Island");
 		pickupWorms = new ItemStep(this, new WorldPoint(1371, 3633, 0), "Collect some King Worms.");
-		talkToAlry = new NpcStep(this, NpcID.ALRY_THE_ANGLER, new WorldPoint(1366, 3631, 0),
+		talkToAlry = new NpcStep(this, NpcID.FISHING_NPC_ANGLER, new WorldPoint(1366, 3631, 0),
 			"Talk to Alry the Angler to receive a bird.");
 		talkToAlry.addDialogStep(2, "Could I have a go with your bird?");
-		catchBluegill = new NpcStep(this, NpcID.FISHING_SPOT_8523, new WorldPoint(1379, 3627, 0),
+		catchBluegill = new NpcStep(this, NpcID.FISHING_SPOT_AERIAL, new WorldPoint(1379, 3627, 0),
 			"Catch a bluegill.", kingWorm);
 		catchBluegill.addSubSteps(pickupWorms);
 
 		// Use the boulder leap shortcut
-		useBoulderShortcut = new ObjectStep(this, ObjectID.BOULDER_27990, new WorldPoint(1776, 3883, 0),
+		useBoulderShortcut = new ObjectStep(this, ObjectID.ARCHEUUS_RUNESTONE_SHORTCUT_BOULDER, new WorldPoint(1776, 3883, 0),
 			"Use the boulder leap shortcut from the path to the Soul Altar.", new SkillRequirement(Skill.AGILITY, 49));
 
 		// Subdue the Wintertodt
-		subdueWintertodt = new ObjectStep(this, ObjectID.DOORS_OF_DINH, new WorldPoint(1631, 3962, 0),
+		subdueWintertodt = new ObjectStep(this, ObjectID.WINT_DOOR, new WorldPoint(1631, 3962, 0),
 			"Subdue the Wintertodt (earn at least 500 points).", axe, tinderbox, food, warmClothing, knife, hammer);
 
 		// Catch a chinchompa
 		catchChinchompa = new DetailedQuestStep(this, new WorldPoint(1485, 3507, 0),
 			"Catch a chinchompa in the Kourend Woodland.", boxTrap.highlighted());
-		catchChinchompa.addIcon(ItemID.BOX_TRAP);
+		catchChinchompa.addIcon(ItemID.HUNTING_BOX_TRAP);
 
 		// Chop some mahogany logs
-		chopMahoganyTree = new ObjectStep(this, ObjectID.MAHOGANY_TREE, new WorldPoint(1238, 3771, 0),
+		chopMahoganyTree = new ObjectStep(this, ObjectID.MAHOGANYTREE, new WorldPoint(1238, 3771, 0),
 			"Chop some logs from a mahogany tree North of the Farming Guild.", true, axe);
 
 		// Claim reward
-		claimReward = new NpcStep(this, NpcID.ELISE, new WorldPoint(1647, 3665, 0),
+		claimReward = new NpcStep(this, NpcID.ELISE_KOUREND_KEBOS_DIARY, new WorldPoint(1647, 3665, 0),
 			"Talk to Elise in the Kourend castle courtyard to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary");
 	}
@@ -376,8 +379,8 @@ public class KourendMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Rada's Blessing (2)", ItemID.RADAS_BLESSING_2, 1),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Rada's Blessing (2)", ItemID.ZEAH_BLESSING_MEDIUM, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

@@ -27,20 +27,19 @@ package com.questhelper.steps.playermadesteps;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.ExtendedRuneliteObject;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import javax.inject.Inject;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.overlay.DirectionArrow;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 // TODO: Separate out NPC logic from Step logic
 public class RuneliteObjectStep extends DetailedQuestStep

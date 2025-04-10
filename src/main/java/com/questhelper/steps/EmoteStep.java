@@ -30,13 +30,13 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.emote.QuestEmote;
 import com.questhelper.steps.overlay.IconOverlay;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class EmoteStep extends DetailedQuestStep
 {

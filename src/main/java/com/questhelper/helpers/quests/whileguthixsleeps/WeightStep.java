@@ -29,22 +29,24 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.*;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import com.questhelper.steps.DetailedOwnerStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class WeightStep extends DetailedOwnerStep
 {
@@ -86,15 +88,15 @@ public class WeightStep extends DetailedOwnerStep
 		int weightInInventoryFromWeights = 0;
 		for (Item item : inventory.getItems())
 		{
-			if (item.getId() == ItemID.WEIGHT_1KG)
+			if (item.getId() == ItemID.WGS_WEIGHT_1KG)
 			{
 				weightInInventoryFromWeights += 1;
 			}
-			else if (item.getId() == ItemID.WEIGHT_2KG)
+			else if (item.getId() == ItemID.WGS_WEIGHT_2KG)
 			{
 				weightInInventoryFromWeights += 2;
 			}
-			else if (item.getId() == ItemID.WEIGHT_5KG)
+			else if (item.getId() == ItemID.WGS_WEIGHT_5KG)
 			{
 				weightInInventoryFromWeights += 5;
 			}
@@ -200,12 +202,12 @@ public class WeightStep extends DetailedOwnerStep
 
 	private void setupItemRequirements()
 	{
-		weight1Kg = new ItemRequirement("Weight (1kg)", ItemID.WEIGHT_1KG);
-		weight2Kg = new ItemRequirement("Weight (2kg)", ItemID.WEIGHT_2KG);
-		weight5Kg = new ItemRequirement("Weight (5kg)", ItemID.WEIGHT_5KG);
+		weight1Kg = new ItemRequirement("Weight (1kg)", ItemID.WGS_WEIGHT_1KG);
+		weight2Kg = new ItemRequirement("Weight (2kg)", ItemID.WGS_WEIGHT_2KG);
+		weight5Kg = new ItemRequirement("Weight (5kg)", ItemID.WGS_WEIGHT_5KG);
 
-		weights = new ItemRequirement("Weights", ItemID.WEIGHT_1KG);
-		weights.addAlternates(ItemID.WEIGHT_2KG, ItemID.WEIGHT_5KG);
+		weights = new ItemRequirement("Weights", ItemID.WGS_WEIGHT_1KG);
+		weights.addAlternates(ItemID.WGS_WEIGHT_2KG, ItemID.WGS_WEIGHT_5KG);
 	}
 
 	@Override
@@ -216,22 +218,22 @@ public class WeightStep extends DetailedOwnerStep
 		weightRoom = new Zone(new WorldPoint(4177, 4944, 1), new WorldPoint(4181, 4946, 1));
 		inWeightRoom = new ZoneRequirement(weightRoom);
 
-		take1Kg = new ObjectStep(getQuestHelper(), ObjectID.PILE_OF_WEIGHTS, new WorldPoint(4177, 4945, 1), "Take 1 kg from the pile of weights in the room.");
+		take1Kg = new ObjectStep(getQuestHelper(), ObjectID.LUC2_MOV_WEIGHTS, new WorldPoint(4177, 4945, 1), "Take 1 kg from the pile of weights in the room.");
 		take1Kg.addDialogStep("1kg weight.");
-		take2Kg = new ObjectStep(getQuestHelper(), ObjectID.PILE_OF_WEIGHTS, new WorldPoint(4177, 4945, 1), "Take 2 kg from the pile of weights in the room.");
+		take2Kg = new ObjectStep(getQuestHelper(), ObjectID.LUC2_MOV_WEIGHTS, new WorldPoint(4177, 4945, 1), "Take 2 kg from the pile of weights in the room.");
 		take2Kg.addDialogStep("2kg weight.");
-		take5Kg = new ObjectStep(getQuestHelper(), ObjectID.PILE_OF_WEIGHTS, new WorldPoint(4177, 4945, 1), "Take 5 kg from the pile of weights in the room.");
+		take5Kg = new ObjectStep(getQuestHelper(), ObjectID.LUC2_MOV_WEIGHTS, new WorldPoint(4177, 4945, 1), "Take 5 kg from the pile of weights in the room.");
 		take5Kg.addDialogStep("5kg weight.");
-		crossOverBrokenWallNorth = new ObjectStep(getQuestHelper(), ObjectID.BROKEN_WALL_53884, new WorldPoint(4179, 4947, 1),
+		crossOverBrokenWallNorth = new ObjectStep(getQuestHelper(), ObjectID.LUC2_MOVARIO_BASE_PAINTING_WALL_CLICK, new WorldPoint(4179, 4947, 1),
 			"Cross over the broken wall into the north room.");
-		useWeights = new ObjectStep(getQuestHelper(), NullObjectID.NULL_53934, new WorldPoint(4182, 4956, 1), "Use all your weights on the statue in the north-east of the room.", weights.highlighted());
+		useWeights = new ObjectStep(getQuestHelper(), ObjectID.LUC2_MOV_STATUE_ATLAS_MULTI, new WorldPoint(4182, 4956, 1), "Use all your weights on the statue in the north-east of the room.", weights.highlighted());
 		useWeights.addSubSteps(crossOverBrokenWallNorth);
-		openDoor = new ObjectStep(getQuestHelper(), NullObjectID.NULL_54014, new WorldPoint(4187, 4953, 1), "Leave through the door in the north-east.");
-		takeWeightFromStatue = new ObjectStep(getQuestHelper(), NullObjectID.NULL_53934, new WorldPoint(4182, 4956, 1), "Remove weights from the statue in the north-east of the room.");
+		openDoor = new ObjectStep(getQuestHelper(), ObjectID.LUC2_MOV_BARRACKS_DOOR_BACKING_01, new WorldPoint(4187, 4953, 1), "Leave through the door in the north-east.");
+		takeWeightFromStatue = new ObjectStep(getQuestHelper(), ObjectID.LUC2_MOV_STATUE_ATLAS_MULTI, new WorldPoint(4182, 4956, 1), "Remove weights from the statue in the north-east of the room.");
 		takeWeightFromStatue.addDialogStep("Remove the weights from the statue.");
 		dropWeights = new DetailedQuestStep(getQuestHelper(), "Drop some of the weights on you.");
 
-		crossOverBrokenWall = new ObjectStep(getQuestHelper(), ObjectID.BROKEN_WALL_53884, new WorldPoint(4179, 4947, 1),
+		crossOverBrokenWall = new ObjectStep(getQuestHelper(), ObjectID.LUC2_MOVARIO_BASE_PAINTING_WALL_CLICK, new WorldPoint(4179, 4947, 1),
 			"Cross over the broken wall into the south room.");
 
 		takeWeights = new DetailedQuestStep(getQuestHelper(), "Take weights to equal the difference between you on entering and now.");

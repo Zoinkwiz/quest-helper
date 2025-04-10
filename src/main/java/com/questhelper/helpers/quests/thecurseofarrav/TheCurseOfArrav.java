@@ -40,10 +40,6 @@ import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.not;
-import static com.questhelper.requirements.util.LogicHelper.or;
-
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -51,25 +47,21 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.questhelper.requirements.util.LogicHelper.*;
 
 /**
  * The quest guide for the "The Curse of Arrav" OSRS quest
@@ -331,15 +323,15 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		anyPickaxe.setConditionToHide(haveMinedAFullPath);
 		anyGrappleableCrossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).isNotConsumed();
 		anyGrappleableCrossbow.setConditionToHide(haveMetArrav);
-		mithrilGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
+		mithrilGrapple = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).isNotConsumed();
 		mithrilGrapple.setConditionToHide(haveMetArrav);
-		insulatedBoots = new ItemRequirement("Insulated boots", ItemID.INSULATED_BOOTS).isNotConsumed();
+		insulatedBoots = new ItemRequirement("Insulated boots", ItemID.SLAYER_BOOTS).isNotConsumed();
 
 		// Recommended items
 		fairyRingDLQ = new TeleportItemRequirement("Fairy Ring [DLQ]", ItemCollections.FAIRY_STAFF);
-		trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.TROLLHEIM_TELEPORT);
+		trollheimTeleport = new TeleportItemRequirement("Trollheim Teleport", ItemID.NZONE_TELETAB_TROLLHEIM);
 		trollheimTeleport.addAlternates(ItemCollections.GHOMMALS_HILT);
-		lumberyardTeleport = new TeleportItemRequirement("Lumberyard teleport", ItemID.LUMBERYARD_TELEPORT);
+		lumberyardTeleport = new TeleportItemRequirement("Lumberyard teleport", ItemID.TELEPORTSCROLL_LUMBERYARD);
 		staminaPotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS, 1);
 		prayerPotion = new ItemRequirement("Prayer potion", ItemCollections.PRAYER_POTIONS, 1);
 		antiVenom = new ItemRequirement("Anti-venom", ItemCollections.ANTIVENOMS, 1);
@@ -353,10 +345,10 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		twoFreeInventorySlots = new FreeInventorySlotRequirement(2);
 
 		// Mid-quest item requirements
-		firstMastabaKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY);
-		secondMastabaKey = new ItemRequirement("Mastaba Key", ItemID.MASTABA_KEY_30309);
-		canopicJarFull = new ItemRequirement("Canopic jar (full)", ItemID.CANOPIC_JAR_FULL);
-		canopicJarFullForHeist = new ItemRequirement("Canopic jar (full)", ItemID.CANOPIC_JAR_FULL);
+		firstMastabaKey = new ItemRequirement("Mastaba Key", ItemID.COA_MASTABA_KEY_1);
+		secondMastabaKey = new ItemRequirement("Mastaba Key", ItemID.COA_MASTABA_KEY_2);
+		canopicJarFull = new ItemRequirement("Canopic jar (full)", ItemID.COA_CANOPIC_JAR_COMPLETE);
+		canopicJarFullForHeist = new ItemRequirement("Canopic jar (full)", ItemID.COA_CANOPIC_JAR_COMPLETE);
 		canopicJarFullForHeist.setTooltip("You can get a new one from Elias at the entrance of Zemouregal's base if you've lost it.");
 	}
 
@@ -364,25 +356,25 @@ public class TheCurseOfArrav extends BasicQuestHelper
 	{
 		var unreachableState = new DetailedQuestStep(this, "This state should not be reachable, please make a report with a screenshot in the Quest Helper discord.");
 
-		startQuest = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Talk to Elias south of Ruins of Uzer to start the quest.");
+		startQuest = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3505, 3037, 0), "Talk to Elias south of Ruins of Uzer to start the quest.");
 		startQuest.addTeleport(fairyRingDLQ);
 		startQuest.addDialogStep("Yes.");
 
-		enterTomb = new ObjectStep(this, ObjectID.ENTRY_50201, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.", dwellberries3, ringOfLife, twoFreeInventorySlots, golemCombatGear);
+		enterTomb = new ObjectStep(this, ObjectID.COA_MASTABA_ENTRY, new WorldPoint(3486, 3023, 0), "Enter the tomb south-west of Elias.", dwellberries3, ringOfLife, twoFreeInventorySlots, golemCombatGear);
 
-		getFirstKey = new ObjectStep(this, ObjectID.SKELETON_50350, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton in the cave south of the entrance.");
-		getSecondKey = new ObjectStep(this, ObjectID.SKELETON_50353, new WorldPoint(3880, 4585, 0), "Get the second Mastaba key from the skeleton east of the entrance.");
-		getToSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3891, 4554, 0), "Search the Odd markings to the south to get to the south lever. Search the markings again if you fail.");
-		pullSouthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.",
+		getFirstKey = new ObjectStep(this, ObjectID.MOM2_SKELETON_LOOTER_03, new WorldPoint(3875, 4554, 0), "Get the first Mastaba key from the skeleton in the cave south of the entrance.");
+		getSecondKey = new ObjectStep(this, ObjectID.MOM2_SKELETON_LOOTER_06, new WorldPoint(3880, 4585, 0), "Get the second Mastaba key from the skeleton east of the entrance.");
+		getToSouthLever = new ObjectStep(this, ObjectID.COA_MASTABA_SPEAR_TRAP_1, new WorldPoint(3891, 4554, 0), "Search the Odd markings to the south to get to the south lever. Search the markings again if you fail.");
+		pullSouthLever = new ObjectStep(this, ObjectID.COA_MASTABA_LEVER_OFF, new WorldPoint(3894, 4553, 0), "Pull the lever to the south-east.",
 				secondMastabaKey.hideConditioned(haveUsedKeyOnSouthLever));
 		pullSouthLever.addDialogStep("Yes.");
-		leaveSouthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3892, 4554, 0), "Search the Odd markings next to you to get out.");
+		leaveSouthLever = new ObjectStep(this, ObjectID.COA_MASTABA_SPEAR_TRAP_2, new WorldPoint(3892, 4554, 0), "Search the Odd markings next to you to get out.");
 		pullSouthLever.addSubSteps(getToSouthLever, leaveSouthLever);
 
-		getToNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50208, new WorldPoint(3891, 4597, 0), "Search the Odd markings to the north to get to the north lever. Search the markings again if you fail.");
-		pullNorthLever = new ObjectStep(this, ObjectID.LEVER_50205, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.", firstMastabaKey.hideConditioned(haveUsedKeyOnNorthLever));
+		getToNorthLever = new ObjectStep(this, ObjectID.COA_MASTABA_SPEAR_TRAP_2, new WorldPoint(3891, 4597, 0), "Search the Odd markings to the north to get to the north lever. Search the markings again if you fail.");
+		pullNorthLever = new ObjectStep(this, ObjectID.COA_MASTABA_LEVER_OFF, new WorldPoint(3894, 4598, 0), "Pull the lever to the north-east.", firstMastabaKey.hideConditioned(haveUsedKeyOnNorthLever));
 		pullNorthLever.addDialogStep("Yes.");
-		leaveNorthLever = new ObjectStep(this, ObjectID.ODD_MARKINGS_50207, new WorldPoint(3892, 4597, 0), "Search the Odd markings next to you to get out.");
+		leaveNorthLever = new ObjectStep(this, ObjectID.COA_MASTABA_SPEAR_TRAP_1, new WorldPoint(3892, 4597, 0), "Search the Odd markings next to you to get out.");
 		pullNorthLever.addSubSteps(getToNorthLever, leaveNorthLever);
 
 		var haveOrUsedFirstKey = or(firstMastabaKey, haveUsedKeyOnNorthLever);
@@ -407,8 +399,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// Once the north lever is pulled, quest varbit changed from 6 to 8, then 8 to 10 at the same tick
 		// This might have to do with which order you pulled the levers in
 
-		enterGolemArena = new ObjectStep(this, ObjectID.IMPOSING_DOORS_50211, new WorldPoint(3885, 4597, 0), "Open the imposing doors, ready to fight the Golem guard.");
-		fightGolemGuard = new NpcStep(this, NpcID.GOLEM_GUARD, new WorldPoint(3860, 4595, 0), "Fight the Golem guard. It is weak to crush style weapons. Use Protect from Melee to avoid damage from his attacks. When the screen shakes, step away from him to avoid taking damage.");
+		enterGolemArena = new ObjectStep(this, ObjectID.COA_MASTABA_SLIDE_DOOR, new WorldPoint(3885, 4597, 0), "Open the imposing doors, ready to fight the Golem guard.");
+		fightGolemGuard = new NpcStep(this, NpcID.COA_MASTABA_GOLEM, new WorldPoint(3860, 4595, 0), "Fight the Golem guard. It is weak to crush style weapons. Use Protect from Melee to avoid damage from his attacks. When the screen shakes, step away from him to avoid taking damage.");
 		fightGolemCond = new ConditionalStep(this, enterGolemArena);
 		// Get inside the tomb if you're not already inside. In case the user has teleported out or died to golem?
 		fightGolemCond.addStep(not(insideTomb), enterTomb);
@@ -416,16 +408,16 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		fightGolemCond.addStep(bySouthLever, leaveSouthLever);
 		fightGolemCond.addStep(insideGolemArena, fightGolemGuard);
 
-		var enterGolemArenaWithoutFight = new ObjectStep(this, ObjectID.IMPOSING_DOORS_50211, new WorldPoint(3885, 4597, 0), "Open the imposing doors to the north-east of the tomb.");
-		enterTombBasement = new ObjectStep(this, ObjectID.STAIRS_55785, new WorldPoint(3860, 4596, 0), "Climb the stairs down the tomb basement.");
+		var enterGolemArenaWithoutFight = new ObjectStep(this, ObjectID.COA_MASTABA_SLIDE_DOOR, new WorldPoint(3885, 4597, 0), "Open the imposing doors to the north-east of the tomb.");
+		enterTombBasement = new ObjectStep(this, ObjectID.COA_MASTABA_INNER_STAIRS_DOWN, new WorldPoint(3860, 4596, 0), "Climb the stairs down the tomb basement.");
 		enterTombBasement.addSubSteps(enterGolemArenaWithoutFight);
 
 		solveTilePuzzle = new TilePuzzleSolver(this).puzzleWrapStep("Move across the floor tile puzzle.");
 
-		searchShelvesForUrn = new ObjectStep(this, ObjectID.SHELVES_55796, new WorldPoint(3854, 4722, 0), "Search the shelves to the west for an oil-filled canopic jar.");
-		var oilFilledCanopicJar = new ItemRequirement("Oil-filled canopic jar", ItemID.CANOPIC_JAR_OIL);
+		searchShelvesForUrn = new ObjectStep(this, ObjectID.COA_CANOPIC_SHELVES, new WorldPoint(3854, 4722, 0), "Search the shelves to the west for an oil-filled canopic jar.");
+		var oilFilledCanopicJar = new ItemRequirement("Oil-filled canopic jar", ItemID.COA_CANOPIC_JAR_OIL);
 
-		inspectMurals = new ObjectStep(this, ObjectID.MURAL_55790, new WorldPoint(3852, 4687, 0), "Inspect the murals in the room to the south.", oilFilledCanopicJar);
+		inspectMurals = new ObjectStep(this, ObjectID.COA_MURAL_MIDDLE_2, new WorldPoint(3852, 4687, 0), "Inspect the murals in the room to the south.", oilFilledCanopicJar);
 
 		finishTilePuzzleAndGetCanopicJar = new ConditionalStep(this, enterTomb);
 		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTombSecondFloor, finishedTilePuzzle, oilFilledCanopicJar), inspectMurals);
@@ -434,7 +426,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTomb, insideGolemArena), enterTombBasement);
 		finishTilePuzzleAndGetCanopicJar.addStep(and(insideTomb), enterGolemArenaWithoutFight);
 
-		var oilAndBerryFilledCanopicJar = new ItemRequirement("Canopic jar (oil and berries)", ItemID.CANOPIC_JAR_OIL_AND_BERRIES);
+		var oilAndBerryFilledCanopicJar = new ItemRequirement("Canopic jar (oil and berries)", ItemID.COA_CANOPIC_JAR_OIL_BERRIES);
 
 		combineJarWithDwellberries = new ItemStep(this, "Put the Dwellberries in the Canopic jar.", oilFilledCanopicJar.highlighted(), dwellberries3.highlighted(), ringOfLife);
 		combineJarWithRingOfLife = new ItemStep(this, "Put the Ring of life in the Canopic jar.", oilAndBerryFilledCanopicJar.highlighted(), ringOfLife.highlighted());
@@ -448,13 +440,13 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		fillCanopicJar.addStep(and(insideTomb), enterGolemArenaWithoutFight);
 
 
-		returnToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.", canopicJarFull);
+		returnToElias = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.", canopicJarFull);
 		returnToElias.addTeleport(fairyRingDLQ);
-		var returnToEliasByWalking = new ObjectStep(this, ObjectID.STAIRS_55786, new WorldPoint(3894, 4714, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
+		var returnToEliasByWalking = new ObjectStep(this, ObjectID.COA_MASTABA_INNER_STAIRS_UP, new WorldPoint(3894, 4714, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
 		returnToEliasByWalking.addTeleport(fairyRingDLQ);
-		var returnToEliasByWalkingMidway = new ObjectStep(this, ObjectID.STAIRS_50202, new WorldPoint(3848, 4577, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
+		var returnToEliasByWalkingMidway = new ObjectStep(this, ObjectID.COA_MASTABA_EXIT, new WorldPoint(3848, 4577, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
 		returnToEliasByWalkingMidway.addTeleport(fairyRingDLQ);
-		var returnToEliasByWalkingMidwayGolem = new ObjectStep(this, ObjectID.IMPOSING_DOORS_50211, new WorldPoint(3885, 4597, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
+		var returnToEliasByWalkingMidwayGolem = new ObjectStep(this, ObjectID.COA_MASTABA_SLIDE_DOOR, new WorldPoint(3885, 4597, 0), "Return to Elias south of Ruins of Uzer, either by walking out of the tomb or using the fairy ring.");
 		returnToEliasByWalkingMidwayGolem.addTeleport(fairyRingDLQ);
 
 		returnToElias.addSubSteps(returnToEliasByWalking, returnToEliasByWalkingMidway, returnToEliasByWalkingMidwayGolem);
@@ -465,12 +457,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		showCanopicJarToElias.addStep(insideTomb, returnToEliasByWalkingMidway);
 		// ardy cloak + fairy ring takes 50s, walking takes 1m12s
 
-		headToTrollheim = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0), "Enter the cave next to Trollheim. You can use a Trollheim teleport tablet or the GWD Ghommal's Hilt teleport to get close.", anyPickaxe);
+		headToTrollheim = new ObjectStep(this, ObjectID.TROLLROMANCE_CAVEENTRANCE, new WorldPoint(2821, 3744, 0), "Enter the cave next to Trollheim. You can use a Trollheim teleport tablet or the GWD Ghommal's Hilt teleport to get close.", anyPickaxe);
 		headToTrollheim.addTeleport(trollheimTeleport);
 
-		continueThroughTrollheimCave = new ObjectStep(this, ObjectID.CREVASSE, new WorldPoint(2772, 10233, 0), "Continue through the Trollheim cave, exiting at the Crevasse to the north-west. Use Protect from Melee to avoid taking damage from the Ice Trolls.", anyPickaxe);
+		continueThroughTrollheimCave = new ObjectStep(this, ObjectID.TROLLROMANCE_SNOW_CAVEWALL_CREVIS, new WorldPoint(2772, 10233, 0), "Continue through the Trollheim cave, exiting at the Crevasse to the north-west. Use Protect from Melee to avoid taking damage from the Ice Trolls.", anyPickaxe);
 
-		enterTrollweissCave = new ObjectStep(this, ObjectID.CAVE_55779, new WorldPoint(2809, 3861, 0), "Enter the Trollweiss cave to the east.", anyPickaxe);
+		enterTrollweissCave = new ObjectStep(this, ObjectID.MAH3_UNBLOCKEDTUNNEL, new WorldPoint(2809, 3861, 0), "Enter the Trollweiss cave to the east.", anyPickaxe);
 
 		var rubbleMiner1Real = new RubbleSolverOne(this);
 		var rubbleMiner2Real = new RubbleSolverTwo(this);
@@ -505,13 +497,13 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		goThroughTrollweissCave4.addStep(onTrollweissMountain, enterTrollweissCave);
 		goThroughTrollweissCave4.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
-		climbUpstairsAndTalkToArrav = new ObjectStep(this, ObjectID.STAIRS_50508, new WorldPoint(2811, 10267, 0), "Climb up the stairs in the room with the red tile floor and talk to Arrav.");
+		climbUpstairsAndTalkToArrav = new ObjectStep(this, ObjectID.MAH3_CELLAR_STAIRS, new WorldPoint(2811, 10267, 0), "Climb up the stairs in the room with the red tile floor and talk to Arrav.");
 		climbUpToZemouregalsFort = new ConditionalStep(this, headToTrollheim);
 		climbUpToZemouregalsFort.addStep(inTrollweissCave, climbUpstairsAndTalkToArrav);
 		climbUpToZemouregalsFort.addStep(onTrollweissMountain, enterTrollweissCave);
 		climbUpToZemouregalsFort.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
-		talkToArrav = new NpcStep(this, NpcID.ARRAV_14129, new WorldPoint(2856, 3871, 0), "Talk to Arrav.");
+		talkToArrav = new NpcStep(this, NpcID.COA_ARRAV_VIS, new WorldPoint(2856, 3871, 0), "Talk to Arrav.");
 
 		confrontArravInZemouregalsFort = new ConditionalStep(this, headToTrollheim);
 		confrontArravInZemouregalsFort.addStep(inArravHouseFirstRoom, talkToArrav);
@@ -519,8 +511,8 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		confrontArravInZemouregalsFort.addStep(onTrollweissMountain, enterTrollweissCave);
 		confrontArravInZemouregalsFort.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
-		goToNextRoom = new ObjectStep(this, ObjectID.DOOR_50514, new WorldPoint(2859, 3870, 0), "Enter the room to your east and search the tapestry for something to help you with your heist.");
-		searchTapestry = new ObjectStep(this, ObjectID.TAPESTRY_50516, new WorldPoint(2861, 3865, 0), "Search the tapestry in the south of the room.");
+		goToNextRoom = new ObjectStep(this, ObjectID.MAH3_DOOR_TO_TAPESTRY, new WorldPoint(2859, 3870, 0), "Enter the room to your east and search the tapestry for something to help you with your heist.");
+		searchTapestry = new ObjectStep(this, ObjectID.MAH3_FORT_TAPESTRY1, new WorldPoint(2861, 3865, 0), "Search the tapestry in the south of the room.");
 		stealBaseKeyForHeist = new ConditionalStep(this, headToTrollheim);
 		stealBaseKeyForHeist.addStep(inArravHouseSecondRoom, searchTapestry);
 		stealBaseKeyForHeist.addStep(inArravHouseFirstRoom, goToNextRoom);
@@ -529,17 +521,17 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		stealBaseKeyForHeist.addStep(inTrollheimCave, continueThroughTrollheimCave);
 
 		var tapestryFindText = "Can be acquired by heading back to Zemouregal's Fort past the Trollweiss mining dungeon and searching the tapestry.";
-		basePlans = new ItemRequirement("Base plans", ItemID.BASE_PLANS);
+		basePlans = new ItemRequirement("Base plans", ItemID.COA_BASE_PLANS);
 		basePlans.setConditionToHide(haveUsedPlans);
 		basePlans.setTooltip(tapestryFindText); // only needed until varbit 38
-		baseKey = new ItemRequirement("Base key", ItemID.BASE_KEY);
+		baseKey = new ItemRequirement("Base key", ItemID.COA_BASE_KEY);
 		baseKey.setConditionToHide(haveUsedKey);
 		baseKey.setTooltip(tapestryFindText); // no longer needed when varbit hits 46
 
-		returnToEliasWithBaseItems = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer and ask him for help interpreting the plans.", basePlans, baseKey);
+		returnToEliasWithBaseItems = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer and ask him for help interpreting the plans.", basePlans, baseKey);
 		returnToEliasWithBaseItems.addTeleport(fairyRingDLQ);
 
-		interpretPlansWithElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer and ask him for help interpreting the plans.", baseKey);
+		interpretPlansWithElias = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3505, 3037, 0), "Return to Elias south of Ruins of Uzer and ask him for help interpreting the plans.", baseKey);
 		interpretPlansWithElias.addTeleport(fairyRingDLQ);
 
 		returnToEliasWithBaseItems.addSubSteps(interpretPlansWithElias);
@@ -547,27 +539,27 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		// 40 -> 42
 		// 9658: 5 -> 6
 
-		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
+		headToZemouregalsBaseAndTalkToElias = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3341, 3516, 0), "Head to Zemouregal's base east of Varrock's sawmill and talk to Elias.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
 		headToZemouregalsBaseAndTalkToElias.addDialogStep("Ready when you are.");
 		headToZemouregalsBaseAndTalkToElias.addTeleport(lumberyardTeleport);
-		enterZemouregalsBase = new ObjectStep(this, NullObjectID.NULL_50689, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
+		enterZemouregalsBase = new ObjectStep(this, ObjectID.DOV_BASE_ENTRY, new WorldPoint(3343, 3515, 0), "Enter Zemouregal's base east of Varrock's sawmill.", anyGrappleableCrossbow, mithrilGrapple, arravCombatGear, insulatedBoots, canopicJarFullForHeist, baseKey);
 		enterZemouregalsBase.addTeleport(lumberyardTeleport);
 
 
 		getToBackOfZemouregalsBase = new DetailedQuestStep(this, "Make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.");
-		var passZemouregalsBaseDoor1 = new ObjectStep(this, ObjectID.GATE_50149, new WorldPoint(3536, 4571, 0), "Open the gate and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
-		var passZemouregalsBaseDoor2 = new ObjectStep(this, ObjectID.GATE_50150, new WorldPoint(3540, 4597, 0), "Open the gate and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
-		var passZemouregalsBaseDoor3 = new ObjectStep(this, ObjectID.DOOR_50152, new WorldPoint(3576, 4604, 0), "Open the door and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
-		var passZemouregalsBaseDoor4 = new ObjectStep(this, ObjectID.GATE_50537, new WorldPoint(3605, 4603, 0), "Open the gate and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots);
+		var passZemouregalsBaseDoor1 = new ObjectStep(this, ObjectID.DOV_BASE_GATE_CLOSED_1, new WorldPoint(3536, 4571, 0), "Open the gate and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
+		var passZemouregalsBaseDoor2 = new ObjectStep(this, ObjectID.DOV_BASE_GATE_CLOSED_2, new WorldPoint(3540, 4597, 0), "Open the gate and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
+		var passZemouregalsBaseDoor3 = new ObjectStep(this, ObjectID.DOV_BASE_DOOR_CLOSED, new WorldPoint(3576, 4604, 0), "Open the door and make your way to the back of Zemouregal's base. Protect from Melee against the zombies to avoid most damage.", baseKey, canopicJarFullForHeist, insulatedBoots);
+		var passZemouregalsBaseDoor4 = new ObjectStep(this, ObjectID.MAH3_BASE_GATE_CLOSED2, new WorldPoint(3605, 4603, 0), "Open the gate and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots);
 
 		unlockDoorInZemouregalsBase = new ConditionalStep(this, enterZemouregalsBase);
 		unlockDoorInZemouregalsBase.addStep(inZemouregalsBaseSection3, passZemouregalsBaseDoor3);
 		unlockDoorInZemouregalsBase.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
 		unlockDoorInZemouregalsBase.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
-		var enterZemouregalsBaseSewer = new ObjectStep(this, ObjectID.PIPE_50523, new WorldPoint(3609, 4598, 0), "Enter the sewers and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots.highlighted().equipped());
+		var enterZemouregalsBaseSewer = new ObjectStep(this, ObjectID.MAH3_SEWER_WALL_ENTRANCE, new WorldPoint(3609, 4598, 0), "Enter the sewers and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots.highlighted().equipped());
 
-		var exitZemouregalsBaseSewer = new ObjectStep(this, ObjectID.PIPE_50525, new WorldPoint(3741, 4573, 0), "Head south to exit the sewers and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots.highlighted().equipped());
+		var exitZemouregalsBaseSewer = new ObjectStep(this, ObjectID.MAH3_SEWER_WALL_EXIT2, new WorldPoint(3741, 4573, 0), "Head south to exit the sewers and make your way to the back of Zemouregal's base.", canopicJarFullForHeist, insulatedBoots.highlighted().equipped());
 
 		getToBackOfZemouregalsBase.addSubSteps(passZemouregalsBaseDoor1, passZemouregalsBaseDoor2, passZemouregalsBaseDoor3, passZemouregalsBaseDoor4, enterZemouregalsBaseSewer, exitZemouregalsBaseSewer);
 
@@ -581,12 +573,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		getToBackroomsOfZemouregalsBase.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
 		getToBackroomsOfZemouregalsBase.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
-		searchTableForDecoderStrips = new ObjectStep(this, ObjectID.TABLE_50533, "Search the table for some decoder strips.");
-		enterStorageRoom = new ObjectStep(this, ObjectID.GATE_50537, new WorldPoint(3609, 4572, 0), "Enter the storage room to the south-east.");
-		var exitStorageRoom = new ObjectStep(this, ObjectID.GATE_50537, new WorldPoint(3609, 4572, 0), "Exit the storage room.");
-		var codeKey = new ItemRequirement("Code key", ItemID.CODE_KEY);
+		searchTableForDecoderStrips = new ObjectStep(this, ObjectID.MAH3_BASE_TABLE_CHARTS2, "Search the table for some decoder strips.");
+		enterStorageRoom = new ObjectStep(this, ObjectID.MAH3_BASE_GATE_CLOSED2, new WorldPoint(3609, 4572, 0), "Enter the storage room to the south-east.");
+		var exitStorageRoom = new ObjectStep(this, ObjectID.MAH3_BASE_GATE_CLOSED2, new WorldPoint(3609, 4572, 0), "Exit the storage room.");
+		var codeKey = new ItemRequirement("Code key", ItemID.COA_CODE_KEY);
 
-		openChestForCodeKey = new ObjectStep(this, ObjectID.CHEST_50530, new WorldPoint(3609, 4565, 0), "Open the chest for the code key.");
+		openChestForCodeKey = new ObjectStep(this, ObjectID.MAH3_BASE_CHEST_CLOSED, new WorldPoint(3609, 4565, 0), "Open the chest for the code key.");
 
 		var metalDoorSolverReal = new MetalDoorSolver(this);
 		metalDoorSolverReal.addSubSteps(exitStorageRoom);
@@ -607,12 +599,12 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		unlockMetalDoor.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
 		unlockMetalDoor.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
-		openMetalDoors = new ObjectStep(this, ObjectID.METAL_DOORS, new WorldPoint(3612, 4582, 0), "Step through through the metal doors.", canopicJarFullForHeist, anyGrappleableCrossbow, mithrilGrapple);
+		openMetalDoors = new ObjectStep(this, ObjectID.MAH3_BASE_DOOR, new WorldPoint(3612, 4582, 0), "Step through through the metal doors.", canopicJarFullForHeist, anyGrappleableCrossbow, mithrilGrapple);
 
-		grappleAcross = new ObjectStep(this, ObjectID.PIPE_50542, new WorldPoint(3615, 4582, 0), "Grapple across the pipe", canopicJarFullForHeist, anyGrappleableCrossbow.highlighted().equipped(), mithrilGrapple.highlighted().equipped());
+		grappleAcross = new ObjectStep(this, ObjectID.MAH3_BASE_PIPE_JUNCTION, new WorldPoint(3615, 4582, 0), "Grapple across the pipe", canopicJarFullForHeist, anyGrappleableCrossbow.highlighted().equipped(), mithrilGrapple.highlighted().equipped());
 
 
-		enterBossRoom = new ObjectStep(this, ObjectID.PEDESTAL_50539, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight with Arrav. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", canopicJarFullForHeist, arravCombatGear);
+		enterBossRoom = new ObjectStep(this, ObjectID.MAH3_BASE_PEDESTAL_HEART, new WorldPoint(3638, 4582, 0), "Attempt to take Arrav's heart from the pedestal, ready for a fight with Arrav. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", canopicJarFullForHeist, arravCombatGear);
 		enterBossRoom.setOverlayText("Attempt to take Arrav's heart from the pedestal, ready for a fight with Arrav. Some hints are available in the sidebar.");
 
 		attemptToStealHeart = new ConditionalStep(this, enterZemouregalsBase);
@@ -628,7 +620,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 
 		// User has engaged Arrav
 
-		fightArrav = new NpcStep(this, NpcID.ARRAV_14132, new WorldPoint(3635, 4582, 0), "Fight Arrav. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", canopicJarFullForHeist);
+		fightArrav = new NpcStep(this, NpcID.COA_ARRAV_COMBAT, new WorldPoint(3635, 4582, 0), "Fight Arrav. Kill zombies as they appear (ranged weapons are handy here). Avoid the venom pools they spawn. Use Protect from Melee to avoid some of the incoming damage. When Arrav throws an axe towards you, step to the side or behind him.", canopicJarFullForHeist);
 		fightArrav.setOverlayText("Fight Arrav. Some hints are available in the sidebar.");
 		actuallyConfrontArrav = new ConditionalStep(this, enterZemouregalsBase);
 		actuallyConfrontArrav.addStep(or(pastGrapplePuzzleRoom, inGrapplePuzzleRoom), fightArrav);
@@ -655,7 +647,7 @@ public class TheCurseOfArrav extends BasicQuestHelper
 		watchYourVictoryDialog.addStep(inZemouregalsBaseSection2, passZemouregalsBaseDoor2);
 		watchYourVictoryDialog.addStep(inZemouregalsBaseSection1, passZemouregalsBaseDoor1);
 
-		finishQuest = new NpcStep(this, NpcID.ELIAS_WHITE, new WorldPoint(3505, 3037, 0), "Talk to Elias to finish the quest.");
+		finishQuest = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3505, 3037, 0), "Talk to Elias to finish the quest.");
 	}
 
 	@Override

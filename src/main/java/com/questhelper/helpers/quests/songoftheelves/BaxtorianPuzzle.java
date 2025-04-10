@@ -31,25 +31,22 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
-import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
 
 public class BaxtorianPuzzle extends DetailedOwnerStep
 {
@@ -215,24 +212,24 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 
 	private void setupItemRequirements()
 	{
-		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE);
+		natureRune = new ItemRequirement("Nature rune", ItemID.NATURERUNE);
 		natureRune.setHighlightInInventory(true);
 
 		flowers = new ItemRequirements(LogicType.OR, "Flowers",
-			new ItemRequirement("Assorted flowers", ItemID.ASSORTED_FLOWERS),
-			new ItemRequirement("Black flowers", ItemID.BLACK_FLOWERS),
-			new ItemRequirement("Blue flowers", ItemID.BLUE_FLOWERS),
-			new ItemRequirement("Exotic flowers", ItemID.EXOTIC_FLOWER),
-			new ItemRequirement("Marigolds", ItemID.MARIGOLDS),
-			new ItemRequirement("Mixed flowers", ItemID.MIXED_FLOWERS),
-			new ItemRequirement("Purple flowers", ItemID.PURPLE_FLOWERS),
-			new ItemRequirement("Orange flowers", ItemID.ORANGE_FLOWERS),
-			new ItemRequirement("Red flowers", ItemID.RED_FLOWERS),
-			new ItemRequirement("White flowers", ItemID.WHITE_FLOWERS),
-			new ItemRequirement("Yellow flowers", ItemID.YELLOW_FLOWERS)
+			new ItemRequirement("Assorted flowers", ItemID.FLOWERS_WATERFALL_QUEST),
+			new ItemRequirement("Black flowers", ItemID.FLOWERS_WATERFALL_QUEST_BLACK),
+			new ItemRequirement("Blue flowers", ItemID.FLOWERS_WATERFALL_QUEST_BLUE),
+			new ItemRequirement("Exotic flowers", ItemID.VIKING_RARE_FLOWER),
+			new ItemRequirement("Marigolds", ItemID.MARIGOLD),
+			new ItemRequirement("Mixed flowers", ItemID.FLOWERS_WATERFALL_QUEST_MIXED),
+			new ItemRequirement("Purple flowers", ItemID.FLOWERS_WATERFALL_QUEST_PURPLE),
+			new ItemRequirement("Orange flowers", ItemID.FLOWERS_WATERFALL_QUEST_ORANGE),
+			new ItemRequirement("Red flowers", ItemID.FLOWERS_WATERFALL_QUEST_RED),
+			new ItemRequirement("White flowers", ItemID.FLOWERS_WATERFALL_QUEST_WHITE),
+			new ItemRequirement("Yellow flowers", ItemID.FLOWERS_WATERFALL_QUEST_YELLOW)
 		);
 
-		ItemRequirement grimyIritLeaf = new ItemRequirement("Grimy irit leaf", ItemID.GRIMY_IRIT_LEAF);
+		ItemRequirement grimyIritLeaf = new ItemRequirement("Grimy irit leaf", ItemID.UNIDENTIFIED_IRIT);
 		ItemRequirement cleanIritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
 
 		iritLeaf = new ItemRequirements(LogicType.OR, "Irit leaf", cleanIritLeaf, grimyIritLeaf);
@@ -247,10 +244,10 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 
 		wineOfZamorak = new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK);
 
-		ItemRequirement zamorakBrew1 = new ItemRequirement("Zamorak brew(1)", ItemID.ZAMORAK_BREW1);
-		ItemRequirement zamorakBrew2 = new ItemRequirement("Zamorak brew(2)", ItemID.ZAMORAK_BREW2);
-		ItemRequirement zamorakBrew3 = new ItemRequirement("Zamorak brew(3)", ItemID.ZAMORAK_BREW3);
-		ItemRequirement zamorakBrew4 = new ItemRequirement("Zamorak brew(4)", ItemID.ZAMORAK_BREW4);
+		ItemRequirement zamorakBrew1 = new ItemRequirement("Zamorak brew(1)", ItemID._1DOSEPOTIONOFZAMORAK);
+		ItemRequirement zamorakBrew2 = new ItemRequirement("Zamorak brew(2)", ItemID._2DOSEPOTIONOFZAMORAK);
+		ItemRequirement zamorakBrew3 = new ItemRequirement("Zamorak brew(3)", ItemID._3DOSEPOTIONOFZAMORAK);
+		ItemRequirement zamorakBrew4 = new ItemRequirement("Zamorak brew(4)", ItemID._4DOSEPOTIONOFZAMORAK);
 
 		zamorakBrew = new ItemRequirements("Zamorak brew", zamorakBrew1, zamorakBrew2, zamorakBrew3, zamorakBrew4);
 		zamorakBrew.setDisplayMatchedItemName(true);
@@ -262,18 +259,18 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		cabbage.setHighlightInInventory(true);
 
 		ItemRequirement blackKnifeClean = new ItemRequirement("Black knife", ItemID.BLACK_KNIFE);
-		ItemRequirement blackKnifeP = new ItemRequirement("Black knife(p)", ItemID.BLACK_KNIFEP);
-		ItemRequirement blackKnifePplus = new ItemRequirement("Black knife(p+)", ItemID.BLACK_KNIFEP_5658);
-		ItemRequirement blackKnifePplusPlus = new ItemRequirement("Black knife(p++)", ItemID.BLACK_KNIFEP_5665);
+		ItemRequirement blackKnifeP = new ItemRequirement("Black knife(p)", ItemID.BLACK_KNIFE_P);
+		ItemRequirement blackKnifePplus = new ItemRequirement("Black knife(p+)", ItemID.BLACK_KNIFE_P_);
+		ItemRequirement blackKnifePplusPlus = new ItemRequirement("Black knife(p++)", ItemID.BLACK_KNIFE_P__);
 
 		blackKnife = new ItemRequirements(LogicType.OR, "Black knife", blackKnifeClean, blackKnifeP, blackKnifePplus,
 			blackKnifePplusPlus);
 		blackKnife.setHighlightInInventory(true);
 
 		ItemRequirement blackDaggerClean = new ItemRequirement("Black dagger", ItemID.BLACK_DAGGER);
-		ItemRequirement blackDaggerP = new ItemRequirement("Black dagger(p)", ItemID.BLACK_DAGGERP);
-		ItemRequirement blackDaggerPplus = new ItemRequirement("Black dagger(p+)", ItemID.BLACK_DAGGERP_5682);
-		ItemRequirement blackDaggerPplusPlus = new ItemRequirement("Black dagger(p++)", ItemID.BLACK_DAGGERP_5700);
+		ItemRequirement blackDaggerP = new ItemRequirement("Black dagger(p)", ItemID.BLACK_DAGGER_P);
+		ItemRequirement blackDaggerPplus = new ItemRequirement("Black dagger(p+)", ItemID.BLACK_DAGGER_P_);
+		ItemRequirement blackDaggerPplusPlus = new ItemRequirement("Black dagger(p++)", ItemID.BLACK_DAGGER_P__);
 		blackDagger = new ItemRequirements(LogicType.OR, "Black dagger", blackDaggerClean, blackDaggerP, blackDaggerPplus,
 		blackDaggerPplusPlus);
 

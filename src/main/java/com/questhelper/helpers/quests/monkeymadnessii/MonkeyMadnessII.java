@@ -24,53 +24,45 @@
  */
 package com.questhelper.helpers.quests.monkeymadnessii;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.npc.FollowerRequirement;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.npc.NpcInteractingRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.FollowerRequirement;
+import com.questhelper.requirements.npc.NpcInteractingRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class MonkeyMadnessII extends BasicQuestHelper
 {
@@ -249,7 +241,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		strongholdBalloon = new VarbitRequirement(2870, Operation.EQUAL, 1, "Unlocked the Tree Gnome Stronghold balloon route");
+		strongholdBalloon = new VarbitRequirement(VarbitID.ZEP_MULTI_GNO, Operation.EQUAL, 1, "Unlocked the Tree Gnome Stronghold balloon route");
 
 		lemon = new ItemRequirement("Lemon", ItemID.LEMON);
 		grape = new ItemRequirement("Grapes", ItemID.GRAPES);
@@ -268,17 +260,17 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		chiselSidebar = new ItemRequirement("Chisel (obtainable in quest)", ItemID.CHISEL).isNotConsumed();
-		mspeakAmulet = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET).isNotConsumed();
-		mspeakAmuletEquipped = new ItemRequirement("M'speak amulet", ItemID.MSPEAK_AMULET, 1, true).isNotConsumed();
+		mspeakAmulet = new ItemRequirement("M'speak amulet", ItemID.MM_AMULET_OF_MONKEY_SPEAK).isNotConsumed();
+		mspeakAmuletEquipped = new ItemRequirement("M'speak amulet", ItemID.MM_AMULET_OF_MONKEY_SPEAK, 1, true).isNotConsumed();
 
-		talisman = new ItemRequirement("Monkey talisman", ItemID.MONKEY_TALISMAN);
+		talisman = new ItemRequirement("Monkey talisman", ItemID.MM_MONKEY_TALISMAN);
 		talisman.setTooltip("You can buy one from the Ape Atoll magic shop for 1000 coins");
 		talismanOr1000Coins = new ItemRequirements(LogicType.OR, "Monkey talisman or 1000 coins", talisman, new ItemRequirement("1000 coins", ItemCollections.COINS, 1000));
-		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.NINJA_MONKEY_GREEGREE).isNotConsumed();
-		ninjaGreegree.addAlternates(ItemID.NINJA_MONKEY_GREEGREE_4025);
+		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemID.MM_MONKEY_GREEGREE_FOR_SMALL_NINJA_MONKEY).isNotConsumed();
+		ninjaGreegree.addAlternates(ItemID.MM_MONKEY_GREEGREE_FOR_MEDIUM_NINJA_MONKEY);
 
 		ninjaGreegreeEquipped = ninjaGreegree.equipped();
-		translationBook = new ItemRequirement("Translation book", ItemID.TRANSLATION_BOOK);
+		translationBook = new ItemRequirement("Translation book", ItemID.GRANDTREE_TRANSLATIONBOOK);
 		translationBook.setHighlightInInventory(true);
 		translationBook.setTooltip("If it's not in your bank you can get another from Narnode during the quest");
 
@@ -291,26 +283,26 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
 
-		handkerchief = new ItemRequirement("Handkerchief", ItemID.HANDKERCHIEF);
-		mysteriousNote = new ItemRequirement("Mysterious note", ItemID.MYSTERIOUS_NOTE);
+		handkerchief = new ItemRequirement("Handkerchief", ItemID.MM2_ANITAS_HANDKERCHIEF);
+		mysteriousNote = new ItemRequirement("Mysterious note", ItemID.MM2_MYSTERIOUS_NOTE);
 		mysteriousNote.setHighlightInInventory(true);
-		mysteriousNoteLemon = new ItemRequirement("Mysterious note", ItemID.MYSTERIOUS_NOTE_19507);
+		mysteriousNoteLemon = new ItemRequirement("Mysterious note", ItemID.MM2_MYSTERIOUS_NOTE_LEMON);
 		mysteriousNoteLemon.setHighlightInInventory(true);
 
-		mysteriousNoteLemonCandle = new ItemRequirement("Mysterious note", ItemID.MYSTERIOUS_NOTE_19509);
+		mysteriousNoteLemonCandle = new ItemRequirement("Mysterious note", ItemID.MM2_MYSTERIOUS_NOTE_HEATED);
 		mysteriousNoteLemonCandle.setHighlightInInventory(true);
 
-		brush = new ItemRequirement("Brush", ItemID.BRUSH);
+		brush = new ItemRequirement("Brush", ItemID.MM2_BRUSH);
 		brush.setHighlightInInventory(true);
 
-		grapeBrush = new ItemRequirement("Juice-coated brush", ItemID.JUICECOATED_BRUSH);
+		grapeBrush = new ItemRequirement("Juice-coated brush", ItemID.MM2_BRUSH_GRAPEJUICE);
 		grapeBrush.setHighlightInInventory(true);
 
-		scrawledNote = new ItemRequirement("Scrawled note", ItemID.SCRAWLED_NOTE_19511);
+		scrawledNote = new ItemRequirement("Scrawled note", ItemID.MM2_GLOUGHS_NOTE);
 		scrawledNote.setTooltip("If you've lost it you'll need to go through the process of revealing the text again");
 		scrawledNote.setHighlightInInventory(true);
 
-		translatedNote = new ItemRequirement("Translated note", ItemID.TRANSLATED_NOTE);
+		translatedNote = new ItemRequirement("Translated note", ItemID.MM2_TRANSLATED_NOTE);
 		translatedNote.setTooltip("You can get another from Anita");
 		translatedNote.setHighlightInInventory(true);
 
@@ -319,25 +311,25 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		greegree = new ItemRequirement("Greegree", ItemCollections.GREEGREES).isNotConsumed();
 		greegreeEquipped = greegree.equipped();
 
-		kruksPaw = new ItemRequirement("Kruk's paw", ItemID.KRUKS_PAW);
+		kruksPaw = new ItemRequirement("Kruk's paw", ItemID.MM2_KRUK_REMAINS);
 		kruksPaw.setTooltip("You can get another from where you fought Kruk");
 
-		krukGreegree = new ItemRequirement("Kruk monkey greegree", ItemID.KRUK_MONKEY_GREEGREE, 1, true);
+		krukGreegree = new ItemRequirement("Kruk monkey greegree", ItemID.MM2_KRUK_GREEGREE, 1, true);
 		krukGreegree.setTooltip("If you've lost this you can get another from Zooknock");
 
 		coins20 = new ItemRequirement("Coins", ItemCollections.COINS, 20);
 
 		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 		chiselHighlighted.setHighlightInInventory(true);
-		deconstructedOnyx = new ItemRequirement("Deconstructed onyx", ItemID.DECONSTRUCTED_ONYX);
+		deconstructedOnyx = new ItemRequirement("Deconstructed onyx", ItemID.MM2_DECONSTRUCTED_ONYX);
 		deconstructedOnyx.setHighlightInInventory(true);
-		chargedOnyx = new ItemRequirement("Charged onyx", ItemID.CHARGED_ONYX);
+		chargedOnyx = new ItemRequirement("Charged onyx", ItemID.MM2_CHARGED_ONYX);
 		chargedOnyx.setHighlightInInventory(true);
 
 		combatGear2 = new ItemRequirement("2 styles of combat gear", -1, -1).isNotConsumed();
-		combatGear2.setDisplayItemId(ItemID.BOWSWORD);
+		combatGear2.setDisplayItemId(ItemID.DEVIOUS_BOWSWORD);
 
-		nieveFollower = new FollowerRequirement("Nieve", NpcID.NIEVE_7109);
+		nieveFollower = new FollowerRequirement("Nieve", NpcID.MM2_NIEVE_FOLLOWER);
 	}
 
 	public void setupConditions()
@@ -359,8 +351,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		inCrashSiteCavern = new ZoneRequirement(crashSiteCavern);
 
 		// 5039 1->2 when removing handkerchief search option
-		foundHandkerchief = new Conditions(LogicType.OR, new VarbitRequirement(5039, 2, Operation.GREATER_EQUAL), handkerchief);
-		talkedToAnita = new VarbitRequirement(5030, 1, Operation.GREATER_EQUAL);
+		foundHandkerchief = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.MM2_FOUND_HANDKERCHIEF, 2, Operation.GREATER_EQUAL), handkerchief);
+		talkedToAnita = new VarbitRequirement(VarbitID.MM2_ANTIAS_CLUE, 1, Operation.GREATER_EQUAL);
 		openedCupboard = new Conditions(true, LogicType.OR, new WidgetTextRequirement(229, 1, "You turn the statue and hear a clicking sound in the room."), new ChatMessageRequirement("You have already activated the statue."));
 		foundNote = new VarbitRequirement(5028, 1);
 		hasBrush = new Conditions(LogicType.OR, grapeBrush, brush);
@@ -373,10 +365,10 @@ public class MonkeyMadnessII extends BasicQuestHelper
 			new WidgetTextRequirement(229, 1, "Some of the ancient Gnome phrases found on the note are missing<br>from the translation book. I should tell the King."));
 
 		greegreeNearby = new ItemOnTileRequirement(greegree);
-		krukCorpseNearby = new ObjectCondition(NullObjectID.NULL_28811);
+		krukCorpseNearby = new ObjectCondition(ObjectID.MM2_KRUKS_REMAINS_MULTI);
 
-		kob2Nearby = new NpcCondition(NpcID.KOB_7107);
-		keef2Nearby = new NpcCondition(NpcID.KEEF_7105);
+		kob2Nearby = new NpcCondition(NpcID.MM2_GENERAL_KOB_COMBAT);
+		keef2Nearby = new NpcCondition(NpcID.MM2_CHIEFTAN_KEEF_COMBAT);
 		defeatedKob = new VarbitRequirement(5035, 1);
 		defeatedKeef = new VarbitRequirement(5034, 1);
 
@@ -387,9 +379,9 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		smithInLocation3 = new VarbitRequirement(5040, 3); // TODO: Get location
 		smithInLocation4 = new VarbitRequirement(5040, 4); // Smith near rune store
 
-		smithNearby = new NpcCondition(NpcID.ASSISTANT_LE_SMITH_6806);
+		smithNearby = new NpcCondition(NpcID.MM2_LE_SMITH);
 
-		gorillaNotOnHoldingArea = new Conditions(LogicType.NOR, new NpcCondition(NpcID.STUNTED_DEMONIC_GORILLA));
+		gorillaNotOnHoldingArea = new Conditions(LogicType.NOR, new NpcCondition(NpcID.MM2_TORTURED_GORILLA_SMALL));
 
 		hasChiselAndHammer = new Conditions(hammer, chisel);
 
@@ -405,7 +397,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		killedGorillas = new VarbitRequirement(5068, 3);
 
-		nieveFollowing = new NpcInteractingRequirement(NpcID.NIEVE_7109);
+		nieveFollowing = new NpcInteractingRequirement(NpcID.MM2_NIEVE_FOLLOWER);
 	}
 
 	@Override
@@ -434,59 +426,59 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToNarnode = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk to King Narnode Shareen in the Tree Gnome Stronghold.");
+		talkToNarnode = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 3496, 0), "Talk to King Narnode Shareen in the Tree Gnome Stronghold.");
 		talkToNarnode.addDialogStep("I'll help you look for Glough.");
 
-		goUpToGloughHouse = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2476, 3463, 0), "Climb up into Glough's house south of the Grand Tree.");
-		goUpGloughTree = new ObjectStep(this, ObjectID.TREE_2447, new WorldPoint(2484, 3464, 1), "Climb up to the next floor in Glough's house.");
-		investigateTree = new ObjectStep(this, NullObjectID.NULL_28800, new WorldPoint(2485, 3464, 2), "Right-click investigate the tree.");
+		goUpToGloughHouse = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2476, 3463, 0), "Climb up into Glough's house south of the Grand Tree.");
+		goUpGloughTree = new ObjectStep(this, ObjectID.GRANDTREE_CLIMBTREE, new WorldPoint(2484, 3464, 1), "Climb up to the next floor in Glough's house.");
+		investigateTree = new ObjectStep(this, ObjectID.MM2_GLOUGH_BRANCH_DOWN_MULTI, new WorldPoint(2485, 3464, 2), "Right-click investigate the tree.");
 
-		goDownGloughTree = new ObjectStep(this, NullObjectID.NULL_28800, new WorldPoint(2485, 3464, 2), "");
-		goDownFromGloughHouse = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2476, 3463, 1), "");
-		goUpToAnita = new ObjectStep(this, ObjectID.STAIRCASE_16675, new WorldPoint(2390, 3513, 0), "");
-		talkToAnita = new NpcStep(this, NpcID.ANITA, new WorldPoint(2390, 3515, 1), "");
+		goDownGloughTree = new ObjectStep(this, ObjectID.MM2_GLOUGH_BRANCH_DOWN_MULTI, new WorldPoint(2485, 3464, 2), "");
+		goDownFromGloughHouse = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2476, 3463, 1), "");
+		goUpToAnita = new ObjectStep(this, ObjectID.SPIRALSTAIRS_WOODEN, new WorldPoint(2390, 3513, 0), "");
+		talkToAnita = new NpcStep(this, NpcID.GT_ANITA, new WorldPoint(2390, 3515, 1), "");
 
-		goDownFromAnita = new ObjectStep(this, ObjectID.STAIRCASE_16677, new WorldPoint(2389, 3513, 1), "");
-		goUpGloughTreeToThirdFloor = new ObjectStep(this, NullObjectID.NULL_28659, new WorldPoint(2484, 3465, 2), "Climb up the tree.");
+		goDownFromAnita = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP_WOODEN, new WorldPoint(2389, 3513, 1), "");
+		goUpGloughTreeToThirdFloor = new ObjectStep(this, ObjectID.MM2_GLOUGH_BRANCH_UP_MULTI, new WorldPoint(2484, 3465, 2), "Climb up the tree.");
 
-		investigateStatue = new ObjectStep(this, ObjectID.GNOME_STATUE_28670, new WorldPoint(2487, 3463, 3), "Investigate the nearby statue and turn it.");
+		investigateStatue = new ObjectStep(this, ObjectID.MM2_GLOUGHS_BUST, new WorldPoint(2487, 3463, 3), "Investigate the nearby statue and turn it.");
 		investigateStatue.addDialogStep("Yes");
-		searchCupboard = new ObjectStep(this, ObjectID.CUPBOARD_28664, new WorldPoint(2488, 3465, 3), "Search the cupboard.");
-		((ObjectStep) (searchCupboard)).addAlternateObjects(ObjectID.CUPBOARD_28665);
+		searchCupboard = new ObjectStep(this, ObjectID.MM2_GLOUGHS_CUPBOARD_CLOSED, new WorldPoint(2488, 3465, 3), "Search the cupboard.");
+		((ObjectStep) (searchCupboard)).addAlternateObjects(ObjectID.MM2_GLOUGHS_CUPBOARD_OPEN);
 
-		searchCrate = new ObjectStep(this, ObjectID.GNOME_CRATES_28666, new WorldPoint(2485, 3467, 3), "Search the crates.");
-		searchRemains = new ObjectStep(this, NullObjectID.NULL_28663, new WorldPoint(2487, 3467, 3), "Search the fire remains.");
+		searchCrate = new ObjectStep(this, ObjectID.MM2_GLOUGHS_CRATES, new WorldPoint(2485, 3467, 3), "Search the crates.");
+		searchRemains = new ObjectStep(this, ObjectID.MM2_GLOUGHS_FIREPLACE_MULTI, new WorldPoint(2487, 3467, 3), "Search the fire remains.");
 		usePestleOnLemon = new DetailedQuestStep(this, "Use a pestle and mortar on a lemon", pestleHighlighted, lemonHighlighted);
-		useNotesOnCandles = new ObjectStep(this, ObjectID.CANDLES_28668, new WorldPoint(2486, 3463, 3), "Use the notes on the candles.", mysteriousNoteLemon);
-		useNotesOnCandles.addIcon(ItemID.MYSTERIOUS_NOTE_19507);
+		useNotesOnCandles = new ObjectStep(this, ObjectID.MM2_GLOUGHS_CANDLES, new WorldPoint(2486, 3463, 3), "Use the notes on the candles.", mysteriousNoteLemon);
+		useNotesOnCandles.addIcon(ItemID.MM2_MYSTERIOUS_NOTE_LEMON);
 		usePestleOnGrapes = new DetailedQuestStep(this, "Use a pestle and mortar on some grapes.", pestleHighlighted, grapesHighlighted);
 		useBrushOnNote = new DetailedQuestStep(this, "Use the brush on the note.", grapeBrush, mysteriousNoteLemonCandle);
 		readScrawledNote = new DetailedQuestStep(this, "Read the note.", scrawledNote);
-		goDown3rdto2nd = new ObjectStep(this, ObjectID.TREE_28660, new WorldPoint(2484, 3464, 3), "Climb down the tree.");
+		goDown3rdto2nd = new ObjectStep(this, ObjectID.MM2_GLOUGH_BRANCH_DOWN, new WorldPoint(2484, 3464, 3), "Climb down the tree.");
 
 		useTranslationOnNote = new DetailedQuestStep(this, "Use the translation book on the scrawled note.", translationBook, scrawledNote);
-		talkToNarnodeBlank = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "");
+		talkToNarnodeBlank = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 3496, 0), "");
 		readTranslatedNote = new DetailedQuestStep(this, "Read the translated note.", translatedNote);
-		talkToAuguste = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0), "Talk to Auguste on Entrana. You can take the hot air balloon there from south of the Grand Tree with a log, or travel from Port Sarim.", noCombatItems);
+		talkToAuguste = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0), "Talk to Auguste on Entrana. You can take the hot air balloon there from south of the Grand Tree with a log, or travel from Port Sarim.", noCombatItems);
 		talkToAuguste.addDialogStep("Talk about Assistant Le Smith.");
-		talkToNarnodeAfterEntrana = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Return to King Narnode Shareen.");
+		talkToNarnodeAfterEntrana = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 3496, 0), "Return to King Narnode Shareen.");
 		talkToNarnodeAfterEntrana.addDialogStep("Thanks for the information.");
 
 		// Infiltrating
-		talkToGarkor = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.", ninjaGreegreeEquipped, mspeakAmulet, talismanOr1000Coins, lightSource, food);
+		talkToGarkor = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.", ninjaGreegreeEquipped, mspeakAmulet, talismanOr1000Coins, lightSource, food);
 		talkToGarkor.addDialogSteps("King Narnode has sent me.", "It's worth a shot.");
-		talkToAwowogei = new ObjectStep(this, ObjectID.AWOWOGEI, new WorldPoint(2803, 2765, 0), "Talk to Awowogei.", ninjaGreegreeEquipped, mspeakAmuletEquipped);
+		talkToAwowogei = new ObjectStep(this, ObjectID.MM_THRONE, new WorldPoint(2803, 2765, 0), "Talk to Awowogei.", ninjaGreegreeEquipped, mspeakAmuletEquipped);
 		talkToAwowogei.addDialogSteps("I'm here to discuss military strategies.", "Of course, my king.");
-		talkToGarkorAfterAwow = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor again.", ninjaGreegreeEquipped);
-		talkToArcher = new NpcStep(this, NpcID.MONKEY_ARCHER_6813, new WorldPoint(2713, 2758, 0), "Talk to a monkey archer on the west of Ape Atoll. Buy a monkey talisman for 1000 coins now if you need one.", ninjaGreegreeEquipped, mspeakAmuletEquipped);
-		enterTrapdoor = new ObjectStep(this, NullObjectID.NULL_28810, new WorldPoint(2714, 2788, 0), "Enter the trapdoor under some grass in the north west of Ape Atoll.", lightSource, combatGear, food, prayerPotions, staminaPotions);
+		talkToGarkorAfterAwow = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor again.", ninjaGreegreeEquipped);
+		talkToArcher = new NpcStep(this, NpcID.MM2_MONKEY_ARCHER, new WorldPoint(2713, 2758, 0), "Talk to a monkey archer on the west of Ape Atoll. Buy a monkey talisman for 1000 coins now if you need one.", ninjaGreegreeEquipped, mspeakAmuletEquipped);
+		enterTrapdoor = new ObjectStep(this, ObjectID.MM2_SECRET_ENTRANCE_MULTI, new WorldPoint(2714, 2788, 0), "Enter the trapdoor under some grass in the north west of Ape Atoll.", lightSource, combatGear, food, prayerPotions, staminaPotions);
 		enterTrapdoor.addDialogStep("Yes");
 
 		pickUpGreegree = new ItemStep(this, "Pick up your greegree!", greegree);
 		doAgilitySection = new AgilityDungeonSteps(this);
-		pickUpKrukCorpse = new ObjectStep(this, NullObjectID.NULL_28811, "Search Kruk's Corpse.");
-		leaveKrukDungeon = new ObjectStep(this, ObjectID.ROPE_28775, new WorldPoint(2513, 9207, 1), "Leave the dungeon up the rope to the west.");
-		goDownToZooknock = new ObjectStep(this, ObjectID.BAMBOO_LADDER_4780, new WorldPoint(2763, 2703, 0), "Enter the dungeon in south Ape Atoll.", greegreeEquipped, kruksPaw, talisman);
+		pickUpKrukCorpse = new ObjectStep(this, ObjectID.MM2_KRUKS_REMAINS_MULTI, "Search Kruk's Corpse.");
+		leaveKrukDungeon = new ObjectStep(this, ObjectID.MM2_MAZE_EXIT_ROPE, new WorldPoint(2513, 9207, 1), "Leave the dungeon up the rope to the west.");
+		goDownToZooknock = new ObjectStep(this, ObjectID.MM_BAMBOO_LADDER_DUNGEON_ENTRANCE, new WorldPoint(2763, 2703, 0), "Enter the dungeon in south Ape Atoll.", greegreeEquipped, kruksPaw, talisman);
 
 		List<WorldPoint> zooknockDungeonPath = Arrays.asList(
 			new WorldPoint(2768, 9101, 0),
@@ -521,87 +513,87 @@ public class MonkeyMadnessII extends BasicQuestHelper
 			new WorldPoint(2773, 9144, 0),
 			new WorldPoint(2799, 9138, 0)
 		);
-		talkToZooknock = new NpcStep(this, NpcID.ZOOKNOCK_7170, new WorldPoint(2805, 9143, 0), "Talk to Zooknock in the north east of the dungeon.", greegreeEquipped, kruksPaw, talisman);
+		talkToZooknock = new NpcStep(this, NpcID.MM_ZOOKNOCK_AA, new WorldPoint(2805, 9143, 0), "Talk to Zooknock in the north east of the dungeon.", greegreeEquipped, kruksPaw, talisman);
 		talkToZooknock.addDialogStep("Talk about your mission.");
 		((NpcStep) (talkToZooknock)).setLinePoints(zooknockDungeonPath);
 
-		talkToAwowAsKruk = new ObjectStep(this, ObjectID.AWOWOGEI, new WorldPoint(2803, 2765, 0), "Talk to Awowogei as Kruk.", krukGreegree, mspeakAmuletEquipped);
+		talkToAwowAsKruk = new ObjectStep(this, ObjectID.MM_THRONE, new WorldPoint(2803, 2765, 0), "Talk to Awowogei as Kruk.", krukGreegree, mspeakAmuletEquipped);
 		talkToAwowAsKruk.addDialogSteps();
 
-		talkToGarkorAfterKruk = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.");
+		talkToGarkorAfterKruk = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.");
 
-		enterTrollStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0),
+		enterTrollStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0),
 			"Enter the Troll Stronghold, ready to fight Kob.", climbingBoots, combatGear);
 
-		talkToKob = new NpcStep(this, NpcID.KOB, new WorldPoint(2831, 10060, 2), "Talk to Kob with Protect from Melee on, ready to fight.");
+		talkToKob = new NpcStep(this, NpcID.MM2_GENERAL_KOB_NONCOMBAT, new WorldPoint(2831, 10060, 2), "Talk to Kob with Protect from Melee on, ready to fight.");
 		talkToKob.addDialogSteps("I know about your deal with the monkeys.", "You won't be around to crush anyone when I'm done with you.", "I accept your challenge.");
 
-		fightKob = new NpcStep(this, NpcID.KOB_7107, new WorldPoint(2831, 10060, 2), "Fight Kob. He can be safespotted from the doorway.");
+		fightKob = new NpcStep(this, NpcID.MM2_GENERAL_KOB_COMBAT, new WorldPoint(2831, 10060, 2), "Fight Kob. He can be safespotted from the doorway.");
 
 		if (client.getBoostedSkillLevel(Skill.AGILITY) >= 71)
 		{
-			talkToKeef = new NpcStep(this, NpcID.KEEF, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Get to him via the agility shortcut next to him. Be prepared to fight him and pray Protect from Melee.");
+			talkToKeef = new NpcStep(this, NpcID.MM2_CHIEFTAN_KEEF_NONCOMBAT, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Get to him via the agility shortcut next to him. Be prepared to fight him and pray Protect from Melee.");
 		}
 		else
 		{
-			talkToKeef = new NpcStep(this, NpcID.KEEF, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Be prepared to fight him and pray Protect from Melee.", coins20);
+			talkToKeef = new NpcStep(this, NpcID.MM2_CHIEFTAN_KEEF_NONCOMBAT, new WorldPoint(2542, 3031, 0), "Talk to Keef in Gu'Tanoth. Be prepared to fight him and pray Protect from Melee.", coins20);
 		}
 		talkToKeef.addDialogSteps("I know about your deal with the monkeys.", "I offer to spare your life.", "I accept your challenge.");
 
-		fightKeef = new NpcStep(this, NpcID.KEEF_7105, new WorldPoint(2542, 3031, 0), "Fight Keef. He can be safespotted.");
-		talkToGarkorAfterKeef = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.", krukGreegree);
+		fightKeef = new NpcStep(this, NpcID.MM2_CHIEFTAN_KEEF_COMBAT, new WorldPoint(2542, 3031, 0), "Fight Keef. He can be safespotted.");
+		talkToGarkorAfterKeef = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.", krukGreegree);
 		findSmith = new DetailedQuestStep(this, "Search around the various rooftops in Ape Atoll for Assistant Le Smith.", krukGreegree);
-		talkToSmith = new NpcStep(this, NpcID.ASSISTANT_LE_SMITH_6806, "Talk to Assistant Le Smith.", krukGreegree);
+		talkToSmith = new NpcStep(this, NpcID.MM2_LE_SMITH, "Talk to Assistant Le Smith.", krukGreegree);
 		talkToSmith.addDialogSteps("I was going to ask you the same question.", "Why is that?", "Awowogei has already informed me about the battleships.", "Where is the fleet, currently?");
-		talkToGarkorAfterSmith = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor.", krukGreegree);
-		talkToMonkeyGuard = new NpcStep(this, NpcID.MONKEY_GUARD_6811, new WorldPoint(2694, 2784, 0), "Talk to the monkey guard on the north west of Ape Atoll.", krukGreegree, mspeakAmuletEquipped);
+		talkToGarkorAfterSmith = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor.", krukGreegree);
+		talkToMonkeyGuard = new NpcStep(this, NpcID.MM2_MONKEY_BOAT_GUARD, new WorldPoint(2694, 2784, 0), "Talk to the monkey guard on the north west of Ape Atoll.", krukGreegree, mspeakAmuletEquipped);
 		talkToMonkeyGuard.addDialogSteps("What's going on here?", "Construction platform?", "Can I visit the platform?", "I would like to go back to the construction platform.");
 
 		sabotageShips = new MM2Sabotage(this, talkToMonkeyGuard);
 
-		talkToGarkorAfterSabotage = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Return to Garkor on Ape Atoll.", krukGreegree, mspeakAmulet);
+		talkToGarkorAfterSabotage = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Return to Garkor on Ape Atoll.", krukGreegree, mspeakAmulet);
 
-		enterKrukDungeonAgain = new ObjectStep(this, NullObjectID.NULL_28810, new WorldPoint(2714, 2788, 0), "Enter the trapdoor under some grass in the north west of Ape Atoll.", krukGreegree);
+		enterKrukDungeonAgain = new ObjectStep(this, ObjectID.MM2_SECRET_ENTRANCE_MULTI, new WorldPoint(2714, 2788, 0), "Enter the trapdoor under some grass in the north west of Ape Atoll.", krukGreegree);
 		enterKrukDungeonAgain.addDialogStep("Yes");
-		climbMonkeyBarsAsKruk = new ObjectStep(this, ObjectID.MONKEYBARS_28724, new WorldPoint(2504, 9190, 1), "Climb across the monkey bars to the north as Kruk.", krukGreegree);
-		enterLabratory = new ObjectStep(this, NullObjectID.NULL_28813, new WorldPoint(2510, 9213, 1), "Enter the passage to the north.", krukGreegree);
-		climbOnGorilla = new NpcStep(this, NpcID.STUNTED_DEMONIC_GORILLA, new WorldPoint(2213, 5464, 0), "Climb onto the stunted gorilla.", krukGreegree);
-		fightGorillas = new NpcStep(this, NpcID.TORTURED_GORILLA, new WorldPoint(2207, 5474, 0), "Fight the tortured gorillas. When you're done, be careful NOT to click out of the cutscene or you'll need to do this again.", true);
-		dismountGorilla = new ObjectStep(this, ObjectID.HOLDING_AREA, new WorldPoint(2213, 5464, 0), "Dismount the gorilla in the holding area.");
-		getChiselAndHammer = new ObjectStep(this, ObjectID.CRATE_27100, new WorldPoint(2209, 5468, 0), "Search the crates nearby for a chisel and hammer.");
-		tamperWithDevice = new ObjectStep(this, ObjectID.DEVICE, new WorldPoint(2208, 5489, 0), "Dismount the gorilla on a holding area and tamper with the device to the north.");
+		climbMonkeyBarsAsKruk = new ObjectStep(this, ObjectID.MM2_MONKEYBARS_START, new WorldPoint(2504, 9190, 1), "Climb across the monkey bars to the north as Kruk.", krukGreegree);
+		enterLabratory = new ObjectStep(this, ObjectID.MM2_SECRET_LAB_ENTRANCE_MULTI, new WorldPoint(2510, 9213, 1), "Enter the passage to the north.", krukGreegree);
+		climbOnGorilla = new NpcStep(this, NpcID.MM2_TORTURED_GORILLA_SMALL, new WorldPoint(2213, 5464, 0), "Climb onto the stunted gorilla.", krukGreegree);
+		fightGorillas = new NpcStep(this, NpcID.MM2_TORTURED_GORILLA_LAB, new WorldPoint(2207, 5474, 0), "Fight the tortured gorillas. When you're done, be careful NOT to click out of the cutscene or you'll need to do this again.", true);
+		dismountGorilla = new ObjectStep(this, ObjectID.MM2_LAB_DISMOUNT, new WorldPoint(2213, 5464, 0), "Dismount the gorilla in the holding area.");
+		getChiselAndHammer = new ObjectStep(this, ObjectID.MM2_LAB_CRATE_01, new WorldPoint(2209, 5468, 0), "Search the crates nearby for a chisel and hammer.");
+		tamperWithDevice = new ObjectStep(this, ObjectID.MM2_LAB_MUTAGEN_ONYX_ORB, new WorldPoint(2208, 5489, 0), "Dismount the gorilla on a holding area and tamper with the device to the north.");
 		useChiselOnOnyx = new DetailedQuestStep(this, "Use a chisel on the charged onyx.", chiselHighlighted, chargedOnyx);
-		useOnyxOnDevice = new ObjectStep(this, ObjectID.DEVICE, new WorldPoint(2208, 5489, 0), "Use the onyx back on the device.", deconstructedOnyx);
-		useOnyxOnDevice.addIcon(ItemID.DECONSTRUCTED_ONYX);
-		investigateIncubationChamber = new ObjectStep(this, NullObjectID.NULL_28805, new WorldPoint(2216, 5480, 0), "Investigate one of the incubation chambers in the room.");
-		talkToGarkorAfterLab = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Return to Garkor.", krukGreegree, mspeakAmulet);
-		talkToAwowAfterLab = new ObjectStep(this, ObjectID.AWOWOGEI, new WorldPoint(2803, 2765, 0), "Talk to Awowogei.", krukGreegree, mspeakAmuletEquipped);
-		talkToGarkorAfterLabAgain = new NpcStep(this, NpcID.GARKOR_7158, new WorldPoint(2807, 2762, 0), "Talk to Garkor again.", krukGreegree);
+		useOnyxOnDevice = new ObjectStep(this, ObjectID.MM2_LAB_MUTAGEN_ONYX_ORB, new WorldPoint(2208, 5489, 0), "Use the onyx back on the device.", deconstructedOnyx);
+		useOnyxOnDevice.addIcon(ItemID.MM2_DECONSTRUCTED_ONYX);
+		investigateIncubationChamber = new ObjectStep(this, ObjectID.MM2_LAB_INCUBATOR_MULTI, new WorldPoint(2216, 5480, 0), "Investigate one of the incubation chambers in the room.");
+		talkToGarkorAfterLab = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Return to Garkor.", krukGreegree, mspeakAmulet);
+		talkToAwowAfterLab = new ObjectStep(this, ObjectID.MM_THRONE, new WorldPoint(2803, 2765, 0), "Talk to Awowogei.", krukGreegree, mspeakAmuletEquipped);
+		talkToGarkorAfterLabAgain = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor again.", krukGreegree);
 
-		talkToNarnodeAfterLab = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk to King Narnode Shareen in the Tree Gnome Stronghold. Be prepared for fighting, and bring 2 combat styles.");
+		talkToNarnodeAfterLab = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 3496, 0), "Talk to King Narnode Shareen in the Tree Gnome Stronghold. Be prepared for fighting, and bring 2 combat styles.");
 
-		talkToNieve = new NpcStep(this, NpcID.NIEVE, new WorldPoint(2432, 3424, 0), "Talk to Nieve south of the Grand Tree. Be prepared to fight with 2 combat styles.", combatGear2, food);
+		talkToNieve = new NpcStep(this, NpcID.SLAYER_MASTER_NIEVE, new WorldPoint(2432, 3424, 0), "Talk to Nieve south of the Grand Tree. Be prepared to fight with 2 combat styles.", combatGear2, food);
 		talkToNieve.addDialogSteps("Talk about Monkey Madness II.", "Yes.");
 
 		killGorillasInStronghold = new DetailedQuestStep(this, "Roam around with Nieve killing the gorillas within the Gnome Stronghold. If you lose Nieve, you can get her again from the Grand Tree.");
-		enterNorthOfTree = new ObjectStep(this, NullObjectID.NULL_28807, new WorldPoint(2435, 3520, 0), "Enter the breach north west of the Grand Tree with Nieve.", combatGear2, food, prayerPotions);
+		enterNorthOfTree = new ObjectStep(this, ObjectID.MM2_STRONGHOLD_FENCE_MULTI, new WorldPoint(2435, 3520, 0), "Enter the breach north west of the Grand Tree with Nieve.", combatGear2, food, prayerPotions);
 		enterNorthOfTree.addDialogStep("Yes, let's go.");
-		enterStrongholdCave = new ObjectStep(this, ObjectID.CAVERN_ENTRANCE_28686, new WorldPoint(2027, 5613, 0), "Enter the cavern to the north east.");
-		killTorturedAndDemonic = new NpcStep(this, NpcID.TORTURED_GORILLA_7150, new WorldPoint(2129, 5682, 0), "Talk to Glough in the north of the cavern. After, defeat the tortured and demonic gorillas.", true, combatGear2);
+		enterStrongholdCave = new ObjectStep(this, ObjectID.MM2_CAVERN_ENTRANCE, new WorldPoint(2027, 5613, 0), "Enter the cavern to the north east.");
+		killTorturedAndDemonic = new NpcStep(this, NpcID.MM2_TORTURED_GORILLA_1, new WorldPoint(2129, 5682, 0), "Talk to Glough in the north of the cavern. After, defeat the tortured and demonic gorillas.", true, combatGear2);
 		// TODO: 7152 and 7153 are the non-attackable version. Once NPC changes are properly checked, remove these
-		((NpcStep) (killTorturedAndDemonic)).addAlternateNpcs(NpcID.TORTURED_GORILLA_7151, NpcID.TORTURED_GORILLA_7153, NpcID.DEMONIC_GORILLA_7152, NpcID.DEMONIC_GORILLA, NpcID.DEMONIC_GORILLA_7145,
-			NpcID.DEMONIC_GORILLA_7146);
+		((NpcStep) (killTorturedAndDemonic)).addAlternateNpcs(NpcID.MM2_TORTURED_GORILLA_2, NpcID.MM2_TORTURED_GORILLA_NONCOMBAT, NpcID.MM2_DEMON_GORILLA_NONCOMBAT, NpcID.MM2_DEMON_GORILLA_1_MELEE, NpcID.MM2_DEMON_GORILLA_1_RANGED,
+			NpcID.MM2_DEMON_GORILLA_1_MAGIC);
 
-		enterNorthOfTreeNoNieve = new ObjectStep(this, NullObjectID.NULL_28807, new WorldPoint(2435, 3520, 0), "Enter the breach north west of the Grand Tree.", combatGear, food, prayerPotions);
+		enterNorthOfTreeNoNieve = new ObjectStep(this, ObjectID.MM2_STRONGHOLD_FENCE_MULTI, new WorldPoint(2435, 3520, 0), "Enter the breach north west of the Grand Tree.", combatGear, food, prayerPotions);
 
-		fightGlough = new NpcStep(this, NpcID.GLOUGH_7101, new WorldPoint(2075, 5677, 0), "Defeat Glough. He has 3 phases, changing rooms each time. You can safe spot the first 2 phases. Protect from Melee if you're next to him, or Protect from Magic if not in the third phase.", true);
+		fightGlough = new NpcStep(this, NpcID.MM2_DEMON_GLOUGH, new WorldPoint(2075, 5677, 0), "Defeat Glough. He has 3 phases, changing rooms each time. You can safe spot the first 2 phases. Protect from Melee if you're next to him, or Protect from Magic if not in the third phase.", true);
 		fightGlough.addText("The easiest way to do phase 3 is to attack him from 1 tile away, have Protect from Magic on, and step away a tile whenever he pulls you closer.");
-		((NpcStep) (fightGlough)).addAlternateNpcs(NpcID.GLOUGH_7102, NpcID.GLOUGH_7103, NpcID.GLOUGH_7100);
+		((NpcStep) (fightGlough)).addAlternateNpcs(NpcID.MM2_DEMON_GLOUGH_NOMOVE, NpcID.MM2_DEMON_GLOUGH_CUTSCENE, NpcID.MM2_CAVERN_GLOUGH);
 		((NpcStep) (fightGlough)).setMaxRoamRange(200);
 		fightGlough.addSubSteps(enterNorthOfTreeNoNieve);
-		talkToZooknockToFinish = new NpcStep(this, NpcID.ZOOKNOCK_7113, new WorldPoint(2027, 5610, 0), "Talk to Zooknock to teleport to the Grand Tree.");
+		talkToZooknockToFinish = new NpcStep(this, NpcID.MM2_ZOOKNOCK_POSTBOSS, new WorldPoint(2027, 5610, 0), "Talk to Zooknock to teleport to the Grand Tree.");
 		talkToZooknockToFinish.addDialogStep("Yes.");
-		talkToNarnodeToFinish = new NpcStep(this, NpcID.KING_NARNODE_SHAREEN, new WorldPoint(2465, 3496, 0), "Talk to Narnode to finish the madness!");
+		talkToNarnodeToFinish = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 3496, 0), "Talk to Narnode to finish the madness!");
 
 	}
 
@@ -686,9 +678,9 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
-			new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
-			new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
+			new ItemReward("50,000 Experience Lamps (Any Combat Skill)", ItemID.THOSF_REWARD_LAMP, 2), //4447 is placeholder for filter
+			new ItemReward("A Royal Seed Pod", ItemID.MM2_ROYAL_SEED_POD, 1),
+			new ItemReward("A pet monkey", ItemID.MM2_MONKEY, 1));
 	}
 
 	@Override

@@ -30,11 +30,14 @@ import com.questhelper.bank.QuestBank;
 import com.questhelper.bank.banktab.QuestBankTab;
 import com.questhelper.bank.banktab.QuestHelperBankTagService;
 import lombok.Getter;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.Player;
 import net.runelite.client.eventbus.EventBus;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Arrays;
 import java.util.List;
 
 @Singleton

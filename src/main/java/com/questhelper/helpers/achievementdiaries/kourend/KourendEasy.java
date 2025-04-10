@@ -24,24 +24,30 @@
  */
 package com.questhelper.helpers.achievementdiaries.kourend;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -133,18 +139,18 @@ public class KourendEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notMineIron = new VarplayerRequirement(2085, false, 1);
-		notSandCrab = new VarplayerRequirement(2085, false, 2);
-		notArceuusBook = new VarplayerRequirement(2085, false, 3);
-		notStealFruit = new VarplayerRequirement(2085, false, 4);
-		notWarrensStore = new VarplayerRequirement(2085, false, 5);
-		notBoatLandsEnd = new VarplayerRequirement(2085, false, 6);
-		notPrayCastle = new VarplayerRequirement(2085, false, 7);
-		notDigSaltpetre = new VarplayerRequirement(2085, false, 8);
-		notEnterPoh = new VarplayerRequirement(2085, false, 9);
-		notDoneAgilityCourse = new VarplayerRequirement(2085, false, 10);
-		notStrengthPotion = new VarplayerRequirement(2085, false, 11);
-		notFishTrout = new VarplayerRequirement(2085, false, 12);
+		notMineIron = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 1);
+		notSandCrab = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 2);
+		notArceuusBook = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 3);
+		notStealFruit = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 4);
+		notWarrensStore = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 5);
+		notBoatLandsEnd = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 6);
+		notPrayCastle = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 7);
+		notDigSaltpetre = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 8);
+		notEnterPoh = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 9);
+		notDoneAgilityCourse = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 10);
+		notStrengthPotion = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 11);
+		notFishTrout = new VarplayerRequirement(VarPlayerID.KOUREND_ACHIEVEMENT_DIARY, false, 12);
 
 		// Required items
 		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES).showConditioned(notMineIron).isNotConsumed();
@@ -152,9 +158,9 @@ public class KourendEasy extends ComplexStateQuestHelper
 		libraryBook = new ItemRequirement("Arceuus library book", ItemCollections.ARCEUUS_BOOKS).showConditioned(notArceuusBook);
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 8075).showConditioned(notEnterPoh);
-		tarrominPotU = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF).showConditioned(notStrengthPotion);
+		tarrominPotU = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMINVIAL).showConditioned(notStrengthPotion);
 		limpwurtRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notStrengthPotion);
-		flyFishingRod = new ItemRequirement("Fly fishing rod", Arrays.asList(ItemID.FLY_FISHING_ROD, ItemID.PEARL_FLY_FISHING_ROD))
+		flyFishingRod = new ItemRequirement("Fly fishing rod", Arrays.asList(ItemID.FLY_FISHING_ROD, ItemID.FISHINGROD_PEARL_FLY))
 			.showConditioned(notFishTrout).isNotConsumed();
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER, 10).showConditioned(notFishTrout);
 
@@ -191,62 +197,62 @@ public class KourendEasy extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		// Mine some iron
-		mineIron = new ObjectStep(this, ObjectID.IRON_ROCKS, new WorldPoint(1275, 3817, 0),
+		mineIron = new ObjectStep(this, ObjectID.IRONROCK1, new WorldPoint(1275, 3817, 0),
 			"Mine some iron ore at the Mount Karuulm mine.", true, pickaxe);
-		mineIron.addAlternateObjects(ObjectID.IRON_ROCKS_11365);
+		mineIron.addAlternateObjects(ObjectID.IRONROCK2);
 
 		// Kill a sand crab
-		sandCrab = new NpcStep(this, NpcID.SAND_CRAB, new WorldPoint(1739, 3468, 0),
+		sandCrab = new NpcStep(this, NpcID.ZEAH_SANDCRAB, new WorldPoint(1739, 3468, 0),
 			"Kill a sand crab.", true, combatGear, food);
 
 		// Hand in a book in the Arceuus library
-		arceuusBook = new NpcStep(this, NpcID.PROFESSOR_GRACKLEBONE, new WorldPoint(1625, 3801, 0),
+		arceuusBook = new NpcStep(this, NpcID.ARCEUUS_LIBRARY_CUSTOMER_3, new WorldPoint(1625, 3801, 0),
 			"Collect a book for a patron in the Arceuus Library.", libraryBook);
-		arceuusBook.addAlternateNpcs(NpcID.SAM_7049);
-		arceuusBook.addAlternateNpcs(NpcID.VILLIA);
+		arceuusBook.addAlternateNpcs(NpcID.ARCEUUS_LIBRARY_CUSTOMER_4);
+		arceuusBook.addAlternateNpcs(NpcID.ARCEUUS_LIBRARY_CUSTOMER_2);
 
 		// Steal from a Hosidius fruit stall
-		stealFruit = new ObjectStep(this, ObjectID.FRUIT_STALL_28823, new WorldPoint(1767, 3597, 0),
+		stealFruit = new ObjectStep(this, ObjectID.HOS_FRUIT_STALL_02, new WorldPoint(1767, 3597, 0),
 			"Steal from a Hosidius fruit stall.");
 
 		// Browse the Warrens general store
-		enterWarrens = new ObjectStep(this, ObjectID.MANHOLE_31707, new WorldPoint(1813, 3745, 0),
+		enterWarrens = new ObjectStep(this, ObjectID.PISCQUEST_MANHOLE_OPEN, new WorldPoint(1813, 3745, 0),
 			"Enter the Warrens.");
-		enterWarrens.addAlternateObjects(ObjectID.MANHOLE_31706);
-		warrensStore = new NpcStep(this, NpcID.SHOP_KEEPER_7913, new WorldPoint(1775, 10148, 0),
+		enterWarrens.addAlternateObjects(ObjectID.PISCQUEST_MANHOLE_CLOSED);
+		warrensStore = new NpcStep(this, NpcID.WARRENS_SHOPKEEPER, new WorldPoint(1775, 10148, 0),
 			"Browse the Warrens General Store.");
 
 		// Take a boat from Land's End
-		boatLandsEnd = new NpcStep(this, NpcID.CABIN_BOY_HERBERT, new WorldPoint(1826, 3691, 0),
+		boatLandsEnd = new NpcStep(this, NpcID.CABIN_BOY_HERBERT_PISC_VIS, new WorldPoint(1826, 3691, 0),
 			"Take a boat to Land's End.", true);
-		boatLandsEnd.addAlternateNpcs(NpcID.VEOS_10727);
+		boatLandsEnd.addAlternateNpcs(NpcID.VEOS_VIS_AMULET);
 		boatLandsEnd.addDialogStep("Can you take me somewhere?");
 		boatLandsEnd.addDialogStep("Travel to Land's End.");
 
 		// Pray at the Kourend castle altar
-		enterCastleF1 = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(1616, 3680, 0),
+		enterCastleF1 = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TALLER_NEW_FIX, new WorldPoint(1616, 3680, 0),
 			"Climb the stairs to the second floor of the Kourend Castle.");
-		enterCastleF2 = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(1616, 3687, 1),
+		enterCastleF2 = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS, new WorldPoint(1616, 3687, 1),
 			"Climb the stairs to the third floor of the Kourend Castle.");
-		prayCastle = new ObjectStep(this, ObjectID.ALTAR_18258, new WorldPoint(1617, 3673, 2),
+		prayCastle = new ObjectStep(this, ObjectID.SLUG2_ALTAR_SARADOMIN, new WorldPoint(1617, 3673, 2),
 			"Pray at the Kourend Castle altar.");
 		prayCastle.addSubSteps(enterCastleF1, enterCastleF2);
 
 		// Dig some Saltpetre
-		digSaltpetre = new ObjectStep(this, ObjectID.SALTPETRE_27436, new WorldPoint(1703, 3526, 0),
+		digSaltpetre = new ObjectStep(this, ObjectID.HOSIDIUS_SALTPETRE_4, new WorldPoint(1703, 3526, 0),
 			"Dig up some Saltpetre in Hosidius.", spade);
 
 		// Enter your POH from Kourend
-		relocateHouse = new NpcStep(this, NpcID.ESTATE_AGENT, new WorldPoint(1779, 3625, 0),
+		relocateHouse = new NpcStep(this, NpcID.POH_ESTATE_AGENT, new WorldPoint(1779, 3625, 0),
 			"Relocate your player-owned house to Hosidius.", true, coins.quantity(8750));
 		relocateHouse.addDialogStep(1, "Can you move my house please?");
 		relocateHouse.addDialogStep(4, "Hosidius (8,750)");
-		enterPoh = new ObjectStep(this, ObjectID.PORTAL_28822, new WorldPoint(1742, 3517, 0),
+		enterPoh = new ObjectStep(this, ObjectID.POH_KOUREND_PORTAL, new WorldPoint(1742, 3517, 0),
 			"Enter your player-owned house from Hosidius.");
 		enterPoh.addSubSteps(relocateHouse);
 
 		// Run the Shayzien Agility Course
-		runAgilityCourse = new ObjectStep(this, ObjectID.LADDER_42209, new WorldPoint(1554, 3631, 0),
+		runAgilityCourse = new ObjectStep(this, ObjectID.SHAYZIEN_AGILITY_BOTH_START_LADDER, new WorldPoint(1554, 3631, 0),
 			"Complete the Shayzien Agility Course.");
 
 		// Create a strength potion in the Lovakenji pub
@@ -255,11 +261,11 @@ public class KourendEasy extends ComplexStateQuestHelper
 			tarrominPotU.highlighted(), limpwurtRoot.highlighted());
 
 		// Fish trout from the Rover Molch
-		fishTrout = new NpcStep(this, NpcID.ROD_FISHING_SPOT_8524, new WorldPoint(1267, 3706, 0),
+		fishTrout = new NpcStep(this, NpcID._0_19_57_FRESHFISH, new WorldPoint(1267, 3706, 0),
 			"Fish a trout from the River Molch.", flyFishingRod, feathers);
 
 		// Claim rewards
-		claimReward = new NpcStep(this, NpcID.ELISE, new WorldPoint(1647, 3665, 0),
+		claimReward = new NpcStep(this, NpcID.ELISE_KOUREND_KEBOS_DIARY, new WorldPoint(1647, 3665, 0),
 			"Talk to Elise in the Kourend castle courtyard to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary");
 	}
@@ -302,8 +308,8 @@ public class KourendEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Rada's Blessing (1)", ItemID.RADAS_BLESSING_1, 1),
-			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Rada's Blessing (1)", ItemID.ZEAH_BLESSING_EASY, 1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

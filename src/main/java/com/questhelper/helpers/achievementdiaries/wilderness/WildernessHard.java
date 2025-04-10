@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.achievementdiaries.wilderness;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -39,26 +39,23 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class WildernessHard extends ComplexStateQuestHelper
 {
@@ -137,16 +134,16 @@ public class WildernessHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notGodSpells = new VarplayerRequirement(1192, false, 25);
-		notAirOrb = new VarplayerRequirement(1192, false, 26);
-		notBlackSally = new VarplayerRequirement(1192, false, 27);
-		notAddyScim = new VarplayerRequirement(1192, false, 28);
-		notLavaDrag = new VarplayerRequirement(1192, false, 29);
-		notChaosEle = new VarplayerRequirement(1192, false, 30);
-		notThreeBosses = new VarplayerRequirement(1192, false, 31);
-		notTrollWildy = new VarplayerRequirement(1193, false, 0);
-		notSprirtualWarrior = new VarplayerRequirement(1193, false, 1);
-		notRawLavaEel = new VarplayerRequirement(1193, false, 2);
+		notGodSpells = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 25);
+		notAirOrb = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 26);
+		notBlackSally = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 27);
+		notAddyScim = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 28);
+		notLavaDrag = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 29);
+		notChaosEle = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 30);
+		notThreeBosses = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 31);
+		notTrollWildy = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 0);
+		notSprirtualWarrior = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 1);
+		notRawLavaEel = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY2, false, 2);
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
@@ -155,10 +152,10 @@ public class WildernessHard extends ComplexStateQuestHelper
 		godRunes = new ItemRequirement("Runes for a god spell that correspond with your god staff", -1, -1)
 			.showConditioned(notGodSpells);
 		godStaff = new ItemRequirement("Any god staff", ItemCollections.GOD_STAFF).showConditioned(notGodSpells).isNotConsumed();
-		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notAirOrb);
-		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notAirOrb);
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE).showConditioned(notAirOrb);
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notBlackSally).isNotConsumed();
+		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.STAFFORB).showConditioned(notAirOrb);
+		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMICRUNE).showConditioned(notAirOrb);
+		airRune = new ItemRequirement("Air rune", ItemID.AIRRUNE).showConditioned(notAirOrb);
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.NET).showConditioned(notBlackSally).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notBlackSally).isNotConsumed();
 		knife = new ItemRequirement("Knife or slashing weapon", -1, -1).showConditioned(notRawLavaEel).isNotConsumed();
 		oilyRod = new ItemRequirement("Oily fishing rod", ItemID.OILY_FISHING_ROD).showConditioned(notRawLavaEel).isNotConsumed();
@@ -206,51 +203,51 @@ public class WildernessHard extends ComplexStateQuestHelper
 		godSpells = new DetailedQuestStep(this, "Cast one of the 3 god spells against another player in the " +
 			"Wilderness. Splashing will not count.", godStaff.equipped(), godRunes);
 
-		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_OPEN, new WorldPoint(3097, 3468, 0),
 			"Enter to the Edgeville dungeon.", airRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
-		moveToAir = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(3088, 9971, 0),
+		moveToAir = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3088, 9971, 0),
 			"Climb the ladder that leads to the Obelisk of Air.", airRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
-		airOrb = new ObjectStep(this, ObjectID.OBELISK_OF_AIR, new WorldPoint(3088, 3569, 0),
+		airOrb = new ObjectStep(this, ObjectID.OBELISK_AIR, new WorldPoint(3088, 3569, 0),
 			"Cast charge air orb on the Obelisk of Air.", airRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
 
-		chaosEle = new NpcStep(this, NpcID.CHAOS_ELEMENTAL, new WorldPoint(3263, 3918, 0),
+		chaosEle = new NpcStep(this, NpcID.CHAOSELEMENTAL, new WorldPoint(3263, 3918, 0),
 			"Kill the Chaos Elemental.", combatGear, food);
-		chaosEle.addAlternateNpcs(NpcID.CHAOS_ELEMENTAL_6505);
+		chaosEle.addAlternateNpcs(NpcID.CLANCUP_CHAOSELEMENTAL);
 
-		blackSally = new ObjectStep(this, ObjectID.YOUNG_TREE_9000, new WorldPoint(3296, 3671, 0),
+		blackSally = new ObjectStep(this, ObjectID.HUNTING_SAPLING_UP_BLACK, new WorldPoint(3296, 3671, 0),
 			"Set a trap and catch a Black salamander in the Wilderness.", true);
 
 		lavaDrag = new NpcStep(this, NpcID.LAVA_DRAGON, new WorldPoint(3209, 3848, 0),
 			"Kill a Lava dragon and bury the bones on Lava Dragon Isle.", true, combatGear, food);
 		buryBone = new ItemStep(this, "Bury the dragon bones", lavaDragonBones.highlighted());
 
-		rawLavaEel = new NpcStep(this, NpcID.FISHING_SPOT_6784, new WorldPoint(3071, 3839, 0),
+		rawLavaEel = new NpcStep(this, NpcID._0_47_59_LAVAFISH, new WorldPoint(3071, 3839, 0),
 			"Fish a raw lava eel in the Lava Maze.", knife, oilyRod, fishingBait);
 
-		addyScim = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
+		addyScim = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(3190, 3938, 0),
 			"Smith an Adamant scimitar in the Resource Area.", hammer, addyBar);
-		moveToResource = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
+		moveToResource = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_GATE, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area.", coins.quantity(6000), hammer, addyBar);
 
-		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3017, 3738, 0),
+		moveToGodWars1 = new ObjectStep(this, ObjectID.WILDERNESS_GWD_ENTRANCE, new WorldPoint(3017, 3738, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
-		moveToGodWars2 = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 3),
+		moveToGodWars2 = new ObjectStep(this, ObjectID.WILDERNESS_GWD_CREVICE, new WorldPoint(3066, 10142, 3),
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the West.",
 			combatGear, food, godEquip);
-		sprirtualWarrior = new NpcStep(this, NpcID.SPIRITUAL_WARRIOR, new WorldPoint(3050, 10131, 0),
+		sprirtualWarrior = new NpcStep(this, NpcID.GODWARS_SPIRITUAL_SARADOMIN_WARRIOR, new WorldPoint(3050, 10131, 0),
 			"Kill a Spiritual Warrior in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
-		sprirtualWarrior.addAlternateNpcs(NpcID.SPIRITUAL_WARRIOR_2243, NpcID.SPIRITUAL_WARRIOR_3159,
-			NpcID.SPIRITUAL_WARRIOR_3166);
+		sprirtualWarrior.addAlternateNpcs(NpcID.GODWARS_SPIRITUAL_BANDOS_WARRIOR, NpcID.GODWARS_SPIRITUAL_ZAMORAK_WARRIOR,
+			NpcID.GODWARS_SPIRITUAL_ARMADYL_WARRIOR);
 
 		threeBosses = new NpcStep(this, NpcID.CRAZY_ARCHAEOLOGIST, new WorldPoint(3947, 3706, 0),
 			"Kill Crazy archaeologist, Chaos Fanatic, and Scorpia. You must complete this task " +
 				"fully before continuing the other tasks.", combatGear, food);
 		threeBosses.addAlternateNpcs(NpcID.SCORPIA, NpcID.CHAOS_FANATIC);
 
-		trollWildy = new ObjectStep(this, ObjectID.ROCKS_16545, new WorldPoint(2916, 3672, 0),
+		trollWildy = new ObjectStep(this, ObjectID.TROLLHEIM_WILDY_CLIMB_ROCKS, new WorldPoint(2916, 3672, 0),
 			"Take the agility shortcut from Trollheim to the Wilderness.");
 
-		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC, new WorldPoint(3121, 3518, 0),
+		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC_DIARY, new WorldPoint(3121, 3518, 0),
 			"Talk to Lesser Fanatic in Edgeville to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -297,8 +294,8 @@ public class WildernessHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Wilderness Sword 3", ItemID.WILDERNESS_SWORD_3),
-			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Wilderness Sword 3", ItemID.WILDERNESS_SWORD_HARD),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

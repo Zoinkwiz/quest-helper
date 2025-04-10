@@ -24,36 +24,35 @@
  */
 package com.questhelper.helpers.miniquests.thegeneralsshadow;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.TeleportItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheGeneralsShadow extends BasicQuestHelper
 {
@@ -113,19 +112,19 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		ghostlyHood = new ItemRequirement("Ghostly hood", ItemID.GHOSTLY_HOOD, 1, true).isNotConsumed();
-		ghostlyBody = new ItemRequirement("Ghostly robe (top)", ItemID.GHOSTLY_ROBE, 1, true).isNotConsumed();
-		ghostlyLegs = new ItemRequirement("Ghostly robe (bottom)", ItemID.GHOSTLY_ROBE_6108, 1, true).isNotConsumed();
-		ghostlyGloves = new ItemRequirement("Ghostly gloves", ItemID.GHOSTLY_GLOVES, 1, true).isNotConsumed();
-		ghostlyBoots = new ItemRequirement("Ghostly boots", ItemID.GHOSTLY_BOOTS, 1, true).isNotConsumed();
-		ghostlyCloak = new ItemRequirement("Ghostly cloak", ItemID.GHOSTLY_CLOAK, 1, true).isNotConsumed();
+		ghostlyHood = new ItemRequirement("Ghostly hood", ItemID.SECRET_GHOST_HAT, 1, true).isNotConsumed();
+		ghostlyBody = new ItemRequirement("Ghostly robe (top)", ItemID.SECRET_GHOST_TOP, 1, true).isNotConsumed();
+		ghostlyLegs = new ItemRequirement("Ghostly robe (bottom)", ItemID.SECRET_GHOST_BOTTOM, 1, true).isNotConsumed();
+		ghostlyGloves = new ItemRequirement("Ghostly gloves", ItemID.SECRET_GHOST_GLOVES, 1, true).isNotConsumed();
+		ghostlyBoots = new ItemRequirement("Ghostly boots", ItemID.SECRET_GHOST_BOOTS, 1, true).isNotConsumed();
+		ghostlyCloak = new ItemRequirement("Ghostly cloak", ItemID.SECRET_GHOST_CLOAK, 1, true).isNotConsumed();
 		ghostlyRobes = new ItemRequirements("Ghostly robes", ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyGloves,
 			ghostlyBoots, ghostlyCloak).isNotConsumed();
 		ghostlyRobes.setTooltip("You can buy these back from Perdu for 131,500 coins or get them back yourself.");
 
-		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY, 1, true).isNotConsumed();
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
-		ghostspeak.addAlternates(ItemID.GHOSTSPEAK_AMULET_4250);
+		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.FD_RING_VISIBILITY, 1, true).isNotConsumed();
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.AMULET_OF_GHOSTSPEAK, 1, true).isNotConsumed();
+		ghostspeak.addAlternates(ItemID.AMULET_OF_GHOSTSPEAK_ENCHANTED);
 		ghostspeak.setTooltip("Can be obtained from Father Urhney in the Lumbridge Swamp house to the west.");
 
 		coins40 = new ItemRequirement("Coins", ItemCollections.COINS, 40);
@@ -133,21 +132,21 @@ public class TheGeneralsShadow extends BasicQuestHelper
 
 		kharidTeleport = new TeleportItemRequirement("Teleport to Al Kharid", ItemCollections.AMULET_OF_GLORIES);
 		gnomeTeleport = new TeleportItemRequirement("Necklace of Passage, or a teleport to Tree Gnome Stronghold", -1);
-		gnomeTeleport.setDisplayItemId(ItemID.SPIRIT_TREE);
+		gnomeTeleport.setDisplayItemId(ItemID.SPIRIT_TREE_DUMMY);
 		gnomeTeleport.addAlternates(ItemCollections.NECKLACE_OF_PASSAGES);
-		rellekkaTeleport = new TeleportItemRequirement("Teleports to Rellekka", ItemID.RELLEKKA_TELEPORT, 3);
-		karamjaTeleport = new TeleportItemRequirement("Teleport to Tai Bwo Wannai", ItemID.TAI_BWO_WANNAI_TELEPORT);
+		rellekkaTeleport = new TeleportItemRequirement("Teleports to Rellekka", ItemID.NZONE_TELETAB_RELLEKKA, 3);
+		karamjaTeleport = new TeleportItemRequirement("Teleport to Tai Bwo Wannai", ItemID.TELEPORTSCROLL_TAIBWO);
 		draynorTeleport = new TeleportItemRequirement("Teleport to Draynor Manor", ItemCollections.AMULET_OF_GLORIES);
-		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT, ItemID.EXPLORERS_RING_2, ItemID.EXPLORERS_RING_3, ItemID.EXPLORERS_RING_4);
-		camelotTeleport = new TeleportItemRequirement("Teleport to Seer's Village", ItemID.CAMELOT_TELEPORT);
+		draynorTeleport.addAlternates(ItemID.TELETAB_DRAYNOR, ItemID.LUMBRIDGE_RING_MEDIUM, ItemID.LUMBRIDGE_RING_HARD, ItemID.LUMBRIDGE_RING_ELITE);
+		camelotTeleport = new TeleportItemRequirement("Teleport to Seer's Village", ItemID.POH_TABLET_CAMELOTTELEPORT);
 		skillsNecklace = new TeleportItemRequirement("Teleport to Fishing Guild", ItemCollections.SKILLS_NECKLACES);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		serveredLeg = new ItemRequirement("Severed leg", ItemID.SEVERED_LEG);
+		serveredLeg = new ItemRequirement("Severed leg", ItemID.SHADOW_MAJ_SEVERED_LEG_INV);
 		serveredLeg.setTooltip("You can get another from General Khazard");
-		sinSeersNote = new ItemRequirement("Sin seer's note", ItemID.SIN_SEERS_NOTE);
+		sinSeersNote = new ItemRequirement("Sin seer's note", ItemID.SHADOW_MAJ_SEERS_NOTE);
 	}
 
 	@Override
@@ -177,47 +176,47 @@ public class TheGeneralsShadow extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0), "Talk to General" +
+		talkToKhazard = new NpcStep(this, NpcID.SHADOW_MAJ_KHAZARD, new WorldPoint(2718, 3628, 0), "Talk to General" +
 			" Khazard south east of Rellekka.", ghostlyHood, ghostlyBody, ghostlyLegs, ghostlyCloak, ghostlyBoots,
 			ghostlyGloves, ringOfVisibility, ghostspeak);
 		talkToKhazard.addDialogSteps("I just have one of those faces.", "I'm a very trustworthy person.");
 
-		goUpToSeer = new ObjectStep(this, ObjectID.LADDER_25941, new WorldPoint(2699, 3476, 0), "Talk to the Sin Seer in Seers'" +
+		goUpToSeer = new ObjectStep(this, ObjectID.KR_LADDER_DIRECTIONAL, new WorldPoint(2699, 3476, 0), "Talk to the Sin Seer in Seers'" +
 			" Village.", coins40, inventorySlot);
-		talkToSeer = new NpcStep(this, NpcID.SIN_SEER, new WorldPoint(2702, 3473, 1), "Talk to the Sin Seer in Seers'" +
+		talkToSeer = new NpcStep(this, NpcID.SHADOW_MAJ_SEER, new WorldPoint(2702, 3473, 1), "Talk to the Sin Seer in Seers'" +
 			" Village.", coins40, inventorySlot);
 		talkToSeer.addDialogSteps("Bribe", "Here's the money.");
 		talkToSeer.addSubSteps(goUpToSeer);
 
-		talkToKhazardAfterSeer = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterSeer = new NpcStep(this, NpcID.SHADOW_MAJ_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", sinSeersNote, ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToKhazardAfterNote = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterNote = new NpcStep(this, NpcID.SHADOW_MAJ_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToGnomeScout = new NpcStep(this, NpcID.SCOUT_3512, new WorldPoint(2458, 3358, 0), "Talk to the scout " +
+		talkToGnomeScout = new NpcStep(this, NpcID.SHADOW_MAJ_SCOUT2, new WorldPoint(2458, 3358, 0), "Talk to the scout " +
 			"near The Outpost, south of the Tree Gnome Stronghold.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToFaladorScout = new NpcStep(this, NpcID.SCOUT_3513, new WorldPoint(3073, 3336, 0), "Talk to the scout " +
+		talkToFaladorScout = new NpcStep(this, NpcID.SHADOW_MAJ_SCOUT3, new WorldPoint(3073, 3336, 0), "Talk to the scout " +
 			"west of Draynor Manor.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToShantayScout = new NpcStep(this, NpcID.SCOUT_3514, new WorldPoint(3304, 3084, 0), "Talk to the scout " +
+		talkToShantayScout = new NpcStep(this, NpcID.SHADOW_MAJ_SCOUT4, new WorldPoint(3304, 3084, 0), "Talk to the scout " +
 			"south of the Shantay Pass.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToKaramjaScout = new NpcStep(this, NpcID.SCOUT, new WorldPoint(2825, 3053, 0), "Talk to the scout " +
+		talkToKaramjaScout = new NpcStep(this, NpcID.SHADOW_MAJ_SCOUT1, new WorldPoint(2825, 3053, 0), "Talk to the scout " +
 			"south east of Tai Bwo Wannai.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		talkToKhazardAfterScouts = new NpcStep(this, NpcID.GENERAL_KHAZARD, new WorldPoint(2718, 3628, 0),
+		talkToKhazardAfterScouts = new NpcStep(this, NpcID.SHADOW_MAJ_KHAZARD, new WorldPoint(2718, 3628, 0),
 			"Return to General Khazard south east of Rellekka.", ghostlyRobes, ringOfVisibility, ghostspeak);
 
-		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0),
+		enterCave = new ObjectStep(this, ObjectID.MCANNONCAVE, new WorldPoint(2624, 3393, 0),
 			"Enter the cave south east of the Fishing Guild. Be prepared to fight Bouncer (level 160).", combatGear, serveredLeg);
 
-		enterCrack = new ObjectStep(this, ObjectID.CRACK_21800, new WorldPoint(2617, 9827, 0), "Enter the crack in " +
+		enterCrack = new ObjectStep(this, ObjectID.SHADOW_MAJ_CRACK, new WorldPoint(2617, 9827, 0), "Enter the crack in " +
 			"the north east of the caves.", combatGear, serveredLeg);
 		enterCrack.addDialogStep("Yes");
 
-		killBouncer = new NpcStep(this, NpcID.BOUNCER_3509, new WorldPoint(8969, 2184, 0), "Kill Bouncer. You cannot " +
+		killBouncer = new NpcStep(this, NpcID.SHADOW_MAJ_BOUNCER, new WorldPoint(8969, 2184, 0), "Kill Bouncer. You cannot " +
 			"use prayers.", combatGear, serveredLeg);
 	}
 
@@ -260,7 +259,7 @@ public class TheGeneralsShadow extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("The Shadow Sword", ItemID.SHADOW_SWORD, 1));
+		return Collections.singletonList(new ItemReward("The Shadow Sword", ItemID.SHADOW_MAJ_SHADOW_SWORD, 1));
 	}
 
 	@Override

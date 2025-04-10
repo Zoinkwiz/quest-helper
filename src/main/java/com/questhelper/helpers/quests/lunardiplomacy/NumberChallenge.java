@@ -5,13 +5,14 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.VarbitChanged;
 
 public class NumberChallenge extends DetailedOwnerStep
 {
@@ -25,25 +26,25 @@ public class NumberChallenge extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		press0 = new ObjectStep(getQuestHelper(), ObjectID.ZERO, new WorldPoint(1783, 5062, 2),
+		press0 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_0, new WorldPoint(1783, 5062, 2),
 			"Press the zero.");
-		press1 = new ObjectStep(getQuestHelper(), ObjectID.ONE, new WorldPoint(1786, 5065, 2),
+		press1 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_1, new WorldPoint(1786, 5065, 2),
 			"Press the one.");
-		press2 = new ObjectStep(getQuestHelper(), ObjectID.TWO, new WorldPoint(1787, 5063, 2),
+		press2 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_2, new WorldPoint(1787, 5063, 2),
 			"Press the two.");
-		press3 = new ObjectStep(getQuestHelper(), ObjectID.THREE, new WorldPoint(1786, 5061, 2),
+		press3 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_3, new WorldPoint(1786, 5061, 2),
 			"Press the three.");
-		press4 = new ObjectStep(getQuestHelper(), ObjectID.FOUR, new WorldPoint(1784, 5060, 2),
+		press4 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_4, new WorldPoint(1784, 5060, 2),
 			"Press the four.");
-		press5 = new ObjectStep(getQuestHelper(), ObjectID.FIVE, new WorldPoint(1781, 5061, 2),
+		press5 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_5, new WorldPoint(1781, 5061, 2),
 			"Press the five.");
-		press6 = new ObjectStep(getQuestHelper(), ObjectID.SIX, new WorldPoint(1780, 5063, 2),
+		press6 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_6, new WorldPoint(1780, 5063, 2),
 			"Press the six.");
-		press7 = new ObjectStep(getQuestHelper(), ObjectID.SEVEN, new WorldPoint(1781, 5065, 2),
+		press7 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_7, new WorldPoint(1781, 5065, 2),
 			"Press the seven.");
-		press8 = new ObjectStep(getQuestHelper(), ObjectID.EIGHT, new WorldPoint(1782, 5066, 2),
+		press8 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_8, new WorldPoint(1782, 5066, 2),
 			"Press the eight.");
-		press9 = new ObjectStep(getQuestHelper(), ObjectID.NINE, new WorldPoint(1784, 5067, 2),
+		press9 = new ObjectStep(getQuestHelper(), ObjectID.LUNAR_DREAM_NUMBER_9, new WorldPoint(1784, 5067, 2),
 			"Press the nine.");
 
 		catchStep = new DetailedQuestStep(getQuestHelper(), "Press the numbers to finish the pattern.");

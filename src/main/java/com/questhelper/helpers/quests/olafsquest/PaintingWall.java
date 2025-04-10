@@ -3,12 +3,11 @@ package com.questhelper.helpers.quests.olafsquest;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.Arrays;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.awt.*;
 
 public class PaintingWall extends QuestStep
 {

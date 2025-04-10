@@ -24,31 +24,32 @@
  */
 package com.questhelper.helpers.quests.recipefordisaster;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.Client;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
-
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
 
 public class RFDGoblins extends BasicQuestHelper
 {
@@ -106,14 +107,14 @@ public class RFDGoblins extends BasicQuestHelper
 		bread = new ItemRequirement("Bread", ItemID.BREAD);
 		orange = new ItemRequirement("Orange", ItemID.ORANGE);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
-		blueGreenPurpledye = new ItemRequirement("A blue, green, or purple dye", ItemID.BLUE_DYE);
-		blueGreenPurpledye.addAlternates(ItemID.GREEN_DYE, ItemID.PURPLE_DYE);
-		spice = new ItemRequirement("Spice or gnome spice", ItemID.SPICE).isNotConsumed();
+		blueGreenPurpledye = new ItemRequirement("A blue, green, or purple dye", ItemID.BLUEDYE);
+		blueGreenPurpledye.addAlternates(ItemID.GREENDYE, ItemID.PURPLEDYE);
+		spice = new ItemRequirement("Spice or gnome spice", ItemID.SPICESPOT).isNotConsumed();
 		spice.setTooltip("You can get some from the Culinaromancer's chest, or a Gnome Spice from the Tree Gnome " +
 			"Stronghold");
 		spice.addAlternates(ItemID.GNOME_SPICE);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
-		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
+		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER);
 
 		breadHighlighted = bread.highlighted();
 		orangeHighlighted = orange.highlighted();
@@ -130,15 +131,15 @@ public class RFDGoblins extends BasicQuestHelper
 		charcoal.setTooltip("Can be bought from the general store in Shilo Village or the one northwest of Tai Bwo Wannai");
 		charcoal.addAlternates(ItemID.GROUND_CHARCOAL);
 
-		dyedOrange = new ItemRequirement("Dyed orange", ItemID.DYED_ORANGE);
-		spicedBait = new ItemRequirement("Spicy maggots", ItemID.SPICY_MAGGOTS);
-		wetBread = new ItemRequirement("Soggy bread", ItemID.SOGGY_BREAD);
-		slop = new ItemRequirement("Slop of compromise", ItemID.SLOP_OF_COMPROMISE);
-		slopHighlighted = new ItemRequirement("Slop of compromise", ItemID.SLOP_OF_COMPROMISE);
+		dyedOrange = new ItemRequirement("Dyed orange", ItemID._100GOBLIN_DYED_ORANGES);
+		spicedBait = new ItemRequirement("Spicy maggots", ItemID._100GOBLIN_SPICEY_MAGGOTS);
+		wetBread = new ItemRequirement("Soggy bread", ItemID._100GOBLIN_SOGGY_BREAD);
+		slop = new ItemRequirement("Slop of compromise", ItemID._100GOBLIN_COMPROMISE_MUSH);
+		slopHighlighted = new ItemRequirement("Slop of compromise", ItemID._100GOBLIN_COMPROMISE_MUSH);
 		slopHighlighted.setHighlightInInventory(true);
 
-		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT);
-		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
+		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.POH_TABLET_FALADORTELEPORT);
+		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 	}
 
 	@Override
@@ -178,18 +179,18 @@ public class RFDGoblins extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterDiningRoom = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
+		enterDiningRoom = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOUBLEDOORL, new WorldPoint(3213, 3221, 0),
 			"Go inspect Wartface or Bentnoze.");
-		inspectGoblin = new ObjectStep(this, ObjectID.GENERAL_BENTNOZE_12332, new WorldPoint(1862, 5325, 0),
+		inspectGoblin = new ObjectStep(this, ObjectID.HUNDRED_GOBLIN1_BASE, new WorldPoint(1862, 5325, 0),
 			"Inspect Wartface or Bentnoze.");
 		inspectGoblin.addSubSteps(enterDiningRoom);
 
-		goDownToKitchen = new ObjectStep(this, ObjectID.LADDER_12389, new WorldPoint(2960, 3507, 0),
+		goDownToKitchen = new ObjectStep(this, ObjectID._100_GOBLIN_LADDER_DOWN, new WorldPoint(2960, 3507, 0),
 			"");
 
 		talkToCook = new NpcStep(this, NpcID.GOBLIN_COOK, new WorldPoint(2981, 9909, 0), "");
-		((NpcStep)talkToCook).addAlternateNpcs(NpcID.GOBLIN_COOK_4852);
-		talkToCookAfterChar = new NpcStep(this, NpcID.GOBLIN_COOK_4851, new WorldPoint(2981, 9868, 0),
+		((NpcStep)talkToCook).addAlternateNpcs(NpcID.GOBLIN_COOK_ON_WALL);
+		talkToCookAfterChar = new NpcStep(this, NpcID.GOBLIN_COOK_CHARRED, new WorldPoint(2981, 9868, 0),
 			"");
 
 		useWaterOnBread = new DetailedQuestStep(this, "Use a bucket of water on some bread.", bucketOfWaterHighlighted,
@@ -201,12 +202,12 @@ public class RFDGoblins extends BasicQuestHelper
 			orangeSliceHighlighted);
 		spiceBait = new DetailedQuestStep(this, "Use spices on the fishing bait.", spiceHighlighted, fishingBaitHighlighted);
 
-		enterDiningRoomAgain = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
+		enterDiningRoomAgain = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOUBLEDOORL, new WorldPoint(3213, 3221, 0),
 			"Go use the slop on Wartface or Bentnoze in the Lumbridge Banquet room.", slop);
-		useSlopOnGoblin = new ObjectStep(this, ObjectID.GENERAL_BENTNOZE_12332, new WorldPoint(1862, 5325, 0),
+		useSlopOnGoblin = new ObjectStep(this, ObjectID.HUNDRED_GOBLIN1_BASE, new WorldPoint(1862, 5325, 0),
 			"Use the slop on Wartface or Bentnoze.", slopHighlighted);
 		useSlopOnGoblin.addSubSteps(enterDiningRoomAgain);
-		useSlopOnGoblin.addIcon(ItemID.SLOP_OF_COMPROMISE);
+		useSlopOnGoblin.addIcon(ItemID._100GOBLIN_COMPROMISE_MUSH);
 
 		goTalkCook1 = new ConditionalStep(this, goDownToKitchen, "Go talk to the Goblin Cook down the ladder in the Goblin " +
 			"Village.", bread, orange, knife, blueGreenPurpledye, spice, fishingBait,
@@ -268,7 +269,7 @@ public class RFDGoblins extends BasicQuestHelper
 	@Override
 	public QuestState getState(Client client)
 	{
-		int questState = client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE.getId());
+		int questState = client.getVarbitValue(VarbitID._100GOBLIN);
 		if (questState == 0)
 		{
 			return QuestState.NOT_STARTED;
@@ -285,6 +286,6 @@ public class RFDGoblins extends BasicQuestHelper
 	@Override
 	public boolean isCompleted()
 	{
-		return (getQuest().getVar(client) >= 40 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
+		return (getQuest().getVar(client) >= 40 || client.getVarbitValue(VarbitID.HUNDRED_MAIN_QUEST_VAR) < 3);
 	}
 }

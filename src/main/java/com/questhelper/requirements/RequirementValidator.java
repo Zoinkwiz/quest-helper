@@ -30,14 +30,10 @@ import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.*;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -25,14 +25,14 @@
 package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.tools.QuestWidgets;
-import com.questhelper.questhelpers.QuestHelper;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import net.runelite.api.ScriptID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.util.ColorUtil;
+
+import java.awt.*;
 
 public class QuestSyncStep extends QuestStep
 {

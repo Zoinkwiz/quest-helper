@@ -27,6 +27,7 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+
 import javax.annotation.Nonnull;
 
 public class WarriorsGuildAccessRequirement extends AbstractRequirement

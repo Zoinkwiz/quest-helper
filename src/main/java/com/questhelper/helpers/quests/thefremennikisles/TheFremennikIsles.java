@@ -24,47 +24,41 @@
  */
 package com.questhelper.helpers.quests.thefremennikisles;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ComplexRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.IronmanRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.not;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
+
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class TheFremennikIsles extends BasicQuestHelper
 {
@@ -293,13 +287,13 @@ public class TheFremennikIsles extends BasicQuestHelper
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
 		coins15 = new ItemRequirement("Coins", ItemCollections.COINS, 15);
-		bronzeNail = new ItemRequirement("Bronze nail", ItemID.BRONZE_NAILS);
+		bronzeNail = new ItemRequirement("Bronze nail", ItemID.NAILS_BRONZE);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope9 = new ItemRequirement("Rope", ItemID.ROPE, 9);
-		yakTopWorn = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR, 1, true).isNotConsumed();
-		yakBottomWorn = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824, 1, true).isNotConsumed();
-		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD, 1, true).isNotConsumed();
+		yakTopWorn = new ItemRequirement("Yak-hide armour (top)", ItemID.YAK_HIDE_ARMOUR_BODY, 1, true).isNotConsumed();
+		yakBottomWorn = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAK_HIDE_ARMOUR_GREAVES, 1, true).isNotConsumed();
+		shieldWorn = new ItemRequirement("Neitiznot shield", ItemID.FREMMENIK_ROUND_SHIELD, 1, true).isNotConsumed();
 		meleeWeapon = new ItemRequirement("Melee gear", -1, -1).isNotConsumed();
 		meleeWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food + potions", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -318,16 +312,16 @@ public class TheFremennikIsles extends BasicQuestHelper
 		tinOre = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 8).showConditioned(useTin);
 		tinOre.setTooltip("You can mine some in the underground mine north west of Jatizso.");
 
-		jesterHat = new ItemRequirement("Silly jester hat", ItemID.SILLY_JESTER_HAT, 1, true);
-		jesterTop = new ItemRequirement("Silly jester body", ItemID.SILLY_JESTER_TOP, 1, true);
-		jesterTights = new ItemRequirement("Silly jester tights", ItemID.SILLY_JESTER_TIGHTS, 1, true);
-		jesterBoots = new ItemRequirement("Silly jester boots", ItemID.SILLY_JESTER_BOOTS, 1, true);
-		arcticLogs8 = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOGS, 8);
-		splitLogs8 = new ItemRequirement("Split log", ItemID.SPLIT_LOG, 8);
-		splitLogs4 = new ItemRequirement("Split log", ItemID.SPLIT_LOG, 4);
-		yakTop = new ItemRequirement("Yak-hide armour (top)", ItemID.YAKHIDE_ARMOUR).isNotConsumed();
-		yakBottom = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAKHIDE_ARMOUR_10824).isNotConsumed();
-		roundShield = new ItemRequirement("Neitiznot shield", ItemID.NEITIZNOT_SHIELD).isNotConsumed();
+		jesterHat = new ItemRequirement("Silly jester hat", ItemID.FRISD_JESTER_HAT, 1, true);
+		jesterTop = new ItemRequirement("Silly jester body", ItemID.FRISD_JESTER_TOP, 1, true);
+		jesterTights = new ItemRequirement("Silly jester tights", ItemID.FRISD_JESTER_LEGS, 1, true);
+		jesterBoots = new ItemRequirement("Silly jester boots", ItemID.FRISD_JESTER_BOOTS, 1, true);
+		arcticLogs8 = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOG, 8);
+		splitLogs8 = new ItemRequirement("Split log", ItemID.ARCTIC_PINE_SPLIT, 8);
+		splitLogs4 = new ItemRequirement("Split log", ItemID.ARCTIC_PINE_SPLIT, 4);
+		yakTop = new ItemRequirement("Yak-hide armour (top)", ItemID.YAK_HIDE_ARMOUR_BODY).isNotConsumed();
+		yakBottom = new ItemRequirement("Yak-hide armour (bottom)", ItemID.YAK_HIDE_ARMOUR_GREAVES).isNotConsumed();
+		roundShield = new ItemRequirement("Neitiznot shield", ItemID.FREMMENIK_ROUND_SHIELD).isNotConsumed();
 
 
 		if (client.getGameState() == GameState.LOGGED_IN)
@@ -371,10 +365,10 @@ public class TheFremennikIsles extends BasicQuestHelper
 		rope8 = new ItemRequirement("Rope", ItemID.ROPE, 8);
 		rope4 = new ItemRequirement("Rope", ItemID.ROPE, 4);
 
-		royalDecree = new ItemRequirement("Royal decree", ItemID.ROYAL_DECREE);
+		royalDecree = new ItemRequirement("Royal decree", ItemID.FRISD_RECIEPT);
 		royalDecree.setTooltip("You can get another from Gjuki on Jatizso");
 
-		head = new ItemRequirement("Decapitated head", ItemID.DECAPITATED_HEAD_10842);
+		head = new ItemRequirement("Decapitated head", ItemID.FRISR_TROLLKINGHEAD);
 		head.setTooltip("You can get another from the corpse of the Ice Troll King");
 
 		protectRanged = new PrayerRequirement("Protect from Missiles", Prayer.PROTECT_FROM_MISSILES);
@@ -419,134 +413,134 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToMord = new NpcStep(this, NpcID.MORD_GUNNARS, new WorldPoint(2644, 3709, 0), "Talk to Mord Gunnars on a pier in north Rellekka.");
-		travelToJatizso = new NpcStep(this, NpcID.MORD_GUNNARS, new WorldPoint(2644, 3709, 0), "Travel to Jatizso with Mord.");
+		talkToMord = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_RELLEKKA, new WorldPoint(2644, 3709, 0), "Talk to Mord Gunnars on a pier in north Rellekka.");
+		travelToJatizso = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_RELLEKKA, new WorldPoint(2644, 3709, 0), "Travel to Jatizso with Mord.");
 		travelToJatizso.addDialogStep("Can you ferry me to Jatizso?");
 
-		travelToNeitiznot = new NpcStep(this, NpcID.MARIA_GUNNARS_1883, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
+		travelToNeitiznot = new NpcStep(this, NpcID.FRIS_R_FERRY_RELLIKKA, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
 
-		talkToGjuki = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.", tuna);
-		continueTalkingToGjuki = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.");
+		talkToGjuki = new NpcStep(this, NpcID.FRIS_R_KING, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.", tuna);
+		continueTalkingToGjuki = new NpcStep(this, NpcID.FRIS_R_KING, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.");
 		talkToGjuki.addSubSteps(continueTalkingToGjuki);
 
-		bringOreToGjuki = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.", mithrilOre, coal, tinOre);
-		talkToGjukiAfterOre = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.");
+		bringOreToGjuki = new NpcStep(this, NpcID.FRIS_R_KING, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.", mithrilOre, coal, tinOre);
+		talkToGjukiAfterOre = new NpcStep(this, NpcID.FRIS_R_KING, new WorldPoint(2407, 3804, 0), "Talk to King Gjuki Sorvott IV on Jatizso.");
 		bringOreToGjuki.addSubSteps(talkToGjukiAfterOre);
 
-		returnToRellekkaFromJatizso = new NpcStep(this, NpcID.MORD_GUNNARS_1940, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
+		returnToRellekkaFromJatizso = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_IZSO, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
 		returnToRellekkaFromJatizso.addDialogStep("Can you ferry me to Rellekka?");
 
-		talkToSlug = new NpcStep(this, NpcID.SLUG_HEMLIGSSEN, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		talkToSlug = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", jesterHat, jesterTop, jesterTights, jesterBoots);
 		talkToSlug.addSubSteps(returnToRellekkaFromJatizso, travelToNeitiznot);
 		talkToSlug.addDialogStep("Free stuff please.");
 		talkToSlug.addDialogStep("I am ready.");
 
-		getJesterOutfit = new ObjectStep(this, ObjectID.CHEST_21299, new WorldPoint(2407, 3800, 0), "Search the chest behind Gjuki's throne for a silly jester outfit.");
+		getJesterOutfit = new ObjectStep(this, ObjectID.FRIS_CHEST_CLOSED, new WorldPoint(2407, 3800, 0), "Search the chest behind Gjuki's throne for a silly jester outfit.");
 		getJesterOutfit.addDialogStep("Take the jester's hat.");
 		getJesterOutfit.addDialogStep("Take the jester's top.");
 		getJesterOutfit.addDialogStep("Take the jester's tights.");
 		getJesterOutfit.addDialogStep("Take the jester's boots.");
 
 		performForMawnis = new DetailedQuestStep(this, "Perform the actions that Mawnis requests of you.");
-		goSpyOnMawnis = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis in Neitiznot to start spying on him.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		goSpyOnMawnis = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis in Neitiznot to start spying on him.", jesterHat, jesterTop, jesterTights, jesterBoots);
 		goSpyOnMawnis.addSubSteps(performForMawnis);
 
-		tellSlugReport1 = new NpcStep(this, NpcID.SLUG_HEMLIGSSEN, new WorldPoint(2335, 3811, 0), "Report back to Slug Hemligssen.");
+		tellSlugReport1 = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Report back to Slug Hemligssen.");
 		tellSlugReport1.addDialogStep("Yes I have.");
 		tellSlugReport1.addDialogStep("They will be ready in two days.");
 		tellSlugReport1.addDialogStep("Seventeen militia have been trained.");
 		tellSlugReport1.addDialogStep("There are two bridges to repair.");
 
-		talkToMawnis = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Take off the jester outfit, and talk to Mawnis.");
+		talkToMawnis = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Take off the jester outfit, and talk to Mawnis.");
 
-		talkToMawnisWithLogs = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Bring Mawnis the 8 split logs, 8 rope, and a knife.", splitLogs8, rope8, knife);
+		talkToMawnisWithLogs = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Bring Mawnis the 8 split logs, 8 rope, and a knife.", splitLogs8, rope8, knife);
 
-		talkToMawnisAfterItems = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis.");
+		talkToMawnisAfterItems = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis.");
 		talkToMawnisWithLogs.addSubSteps(talkToMawnisAfterItems);
 
-		repairBridge1 = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21310, new WorldPoint(2314, 3840, 0), "Right-click " +
+		repairBridge1 = new ObjectStep(this, ObjectID.FRISB_BRIDGE_3_S, new WorldPoint(2314, 3840, 0), "Right-click " +
 			"repair the bridges to the north of Neitiznot. Protect from Missiles before doing this as you'll " +
 			"automatically cross the aggressive trolls.", splitLogs8, rope8, knife, protectRanged);
-		repairBridge1Second = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21310, new WorldPoint(2314, 3840, 0),
+		repairBridge1Second = new ObjectStep(this, ObjectID.FRISB_BRIDGE_3_S, new WorldPoint(2314, 3840, 0),
 			"Right-click repair the bridges to the north of Neitiznot. Protect from Missiles before doing this as " +
 				"you'll automatically cross the aggressive trolls. Protect from Missiles before doing this as you'll " +
 				"automatically cross the aggressive trolls.", splitLogs4, rope4, knife, protectRanged);
-		repairBridge2 = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21312, new WorldPoint(2355, 3840, 0),
+		repairBridge2 = new ObjectStep(this, ObjectID.FRISB_BRIDGE_4_S, new WorldPoint(2355, 3840, 0),
 			"Right-click repair the bridges to the north of Neitiznot.", splitLogs4, rope4, knife, protectRanged);
 		repairBridge1.addSubSteps(repairBridge1Second, repairBridge2);
 
-		talkToMawnisAfterRepair = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Report back to Mawnis.");
+		talkToMawnisAfterRepair = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Report back to Mawnis.");
 
-		talkToGjukiToReport = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
-		travelToJatizsoToReport = new NpcStep(this, NpcID.MORD_GUNNARS, new WorldPoint(2644, 3709, 0), "Travel to Jatizso with Mord.");
-		leaveNeitiznotToReport = new NpcStep(this, NpcID.MARIA_GUNNARS, new WorldPoint(2311, 3781, 0), "Travel back to Rellekka with Maria.");
+		talkToGjukiToReport = new NpcStep(this, NpcID.FRIS_R_KING, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
+		travelToJatizsoToReport = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_RELLEKKA, new WorldPoint(2644, 3709, 0), "Travel to Jatizso with Mord.");
+		leaveNeitiznotToReport = new NpcStep(this, NpcID.FRIS_R_FERRY_IZNOT, new WorldPoint(2311, 3781, 0), "Travel back to Rellekka with Maria.");
 
 		talkToGjukiToReport.addSubSteps(travelToJatizsoToReport, leaveNeitiznotToReport);
 
-		collectFromHring = new NpcStep(this, NpcID.HRING_HRING, new WorldPoint(2397, 3797, 0), "Collect 8000 coins from Hring Hring in south west Jatizso.");
+		collectFromHring = new NpcStep(this, NpcID.FRISD_OREMERCHANT, new WorldPoint(2397, 3797, 0), "Collect 8000 coins from Hring Hring in south west Jatizso.");
 		collectFromHring.addDialogStep("But rules are rules. Pay up!");
-		collectFromSkuli = new NpcStep(this, NpcID.SKULI_MYRKA, new WorldPoint(2395, 3804, 0), "Collect 6000 coins from Skuli in north west Jatizso.");
+		collectFromSkuli = new NpcStep(this, NpcID.FRISD_WEAPONMERCHANT, new WorldPoint(2395, 3804, 0), "Collect 6000 coins from Skuli in north west Jatizso.");
 		collectFromSkuli.addDialogStep("But, rules are rules. Pay up!");
-		collectFromVanligga = new NpcStep(this, NpcID.VANLIGGA_GASTFRIHET, new WorldPoint(2405, 3813, 0), "Collect 5000 coins from Vanligga north of Gjuki's building.");
+		collectFromVanligga = new NpcStep(this, NpcID.FRISD_IZSO_LANDLADY, new WorldPoint(2405, 3813, 0), "Collect 5000 coins from Vanligga north of Gjuki's building.");
 		collectFromVanligga.addDialogStep("But, rules are rules. Pay up!");
-		collectFromKeepa = new NpcStep(this, NpcID.KEEPA_KETTILON, new WorldPoint(2417, 3816, 0), "Collect 5000 coins from Keepa in north east Jatizso.");
+		collectFromKeepa = new NpcStep(this, NpcID.FRISD_COOK, new WorldPoint(2417, 3816, 0), "Collect 5000 coins from Keepa in north east Jatizso.");
 		collectFromKeepa.addDialogStep("But rules are rules. Pay up!");
-		talkToGjukiAfterCollection1 = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
-		collectFromHringAgain = new NpcStep(this, NpcID.HRING_HRING, new WorldPoint(2397, 3797, 0), "Collect tax from Hring Hring in south west Jatizso.");
+		talkToGjukiAfterCollection1 = new NpcStep(this, NpcID.FRIS_R_KING, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
+		collectFromHringAgain = new NpcStep(this, NpcID.FRISD_OREMERCHANT, new WorldPoint(2397, 3797, 0), "Collect tax from Hring Hring in south west Jatizso.");
 		collectFromHringAgain.addDialogStep("But rules are rules. Pay up!");
-		collectFromRaum = new NpcStep(this, NpcID.RAUM_URDASTEIN, new WorldPoint(2395, 3797, 0), "Collect tax from Raum in south west Jatizso.");
+		collectFromRaum = new NpcStep(this, NpcID.FRISD_ARMOURMERCHANT, new WorldPoint(2395, 3797, 0), "Collect tax from Raum in south west Jatizso.");
 		collectFromRaum.addDialogStep("But rules are rules. Pay up!");
-		collectFromSkuliAgain = new NpcStep(this, NpcID.SKULI_MYRKA, new WorldPoint(2395, 3804, 0), "Collect tax from Skuli in north west Jatizso.");
+		collectFromSkuliAgain = new NpcStep(this, NpcID.FRISD_WEAPONMERCHANT, new WorldPoint(2395, 3804, 0), "Collect tax from Skuli in north west Jatizso.");
 		collectFromSkuliAgain.addDialogStep("But rules are rules. Pay up!");
-		collectFromKeepaAgain = new NpcStep(this, NpcID.KEEPA_KETTILON, new WorldPoint(2417, 3816, 0), "Collect tax from Keepa in north east Jatizso.");
+		collectFromKeepaAgain = new NpcStep(this, NpcID.FRISD_COOK, new WorldPoint(2417, 3816, 0), "Collect tax from Keepa in north east Jatizso.");
 		collectFromKeepaAgain.addDialogStep("But rules are rules. Pay up!");
-		collectFromFlosi = new NpcStep(this, NpcID.FLOSI_DALKSSON, new WorldPoint(2418, 3813, 0), "Collect tax from Flossi in north east Jatizso.");
+		collectFromFlosi = new NpcStep(this, NpcID.FRISD_FISHMERCHANT, new WorldPoint(2418, 3813, 0), "Collect tax from Flossi in north east Jatizso.");
 		collectFromFlosi.addDialogStep("But rules are rules. Pay up!");
-		talkToGjukiAfterCollection2 = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
+		talkToGjukiAfterCollection2 = new NpcStep(this, NpcID.FRIS_R_KING, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
 
-		travelToNeitiznotToSpyAgain = new NpcStep(this, NpcID.MARIA_GUNNARS_1883, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
-		returnToRellekkaFromJatizsoToSpyAgain = new NpcStep(this, NpcID.MORD_GUNNARS_1940, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
+		travelToNeitiznotToSpyAgain = new NpcStep(this, NpcID.FRIS_R_FERRY_RELLIKKA, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
+		returnToRellekkaFromJatizsoToSpyAgain = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_IZSO, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
 		returnToRellekkaFromJatizsoToSpyAgain.addDialogStep("Can you ferry me to Rellekka?");
-		talkToSlugToSpyAgain = new NpcStep(this, NpcID.SLUG_HEMLIGSSEN, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		talkToSlugToSpyAgain = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", jesterHat, jesterTop, jesterTights, jesterBoots);
 		talkToSlugToSpyAgain.addSubSteps(travelToNeitiznotToSpyAgain, returnToRellekkaFromJatizsoToSpyAgain);
 
 		performForMawnisAgain = new DetailedQuestStep(this, "Perform the actions that Mawnis requests of you.");
 
-		goSpyOnMawnisAgain = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to start spying on him.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		goSpyOnMawnisAgain = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to start spying on him.", jesterHat, jesterTop, jesterTights, jesterBoots);
 		goSpyOnMawnisAgain.addSubSteps(performForMawnisAgain);
 
-		reportBackToSlugAgain = new NpcStep(this, NpcID.SLUG_HEMLIGSSEN, new WorldPoint(2335, 3811, 0), "Report to Slug Hemligssen.");
+		reportBackToSlugAgain = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Report to Slug Hemligssen.");
 		reportBackToSlugAgain.addDialogSteps("Yes, I am.", "They are in a secluded bay, near Etceteria.", "They will be given some potions.", "I have been helping Neitiznot.");
-		returnToRellekkaFromNeitiznotAfterSpy2 = new NpcStep(this, NpcID.MARIA_GUNNARS, new WorldPoint(2311, 3781, 0), "Travel back to Rellekka with Maria.");
-		travelToJatizsoAfterSpy2 = new NpcStep(this, NpcID.MORD_GUNNARS, new WorldPoint(2644, 3709, 0), "Travel to Jatizso with Mord.");
-		talkToGjukiAfterSpy2 = new NpcStep(this, NpcID.KING_GJUKI_SORVOTT_IV, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
+		returnToRellekkaFromNeitiznotAfterSpy2 = new NpcStep(this, NpcID.FRIS_R_FERRY_IZNOT, new WorldPoint(2311, 3781, 0), "Travel back to Rellekka with Maria.");
+		travelToJatizsoAfterSpy2 = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_RELLEKKA, new WorldPoint(2644, 3709, 0), "Travel to Jatizso with Mord.");
+		talkToGjukiAfterSpy2 = new NpcStep(this, NpcID.FRIS_R_KING, new WorldPoint(2407, 3804, 0), "Report back to King Gjuki Sorvott IV on Jatizso.");
 		talkToGjukiAfterSpy2.addSubSteps(returnToRellekkaFromNeitiznotAfterSpy2, travelToJatizsoAfterSpy2);
 
-		returnToRellekkaFromJatizsoWithDecree = new NpcStep(this, NpcID.MORD_GUNNARS_1940, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.", royalDecree);
+		returnToRellekkaFromJatizsoWithDecree = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_IZSO, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.", royalDecree);
 		returnToRellekkaFromJatizsoWithDecree.addDialogStep("Can you ferry me to Rellekka?");
 
-		returnToRellekkaFromJatizsoAfterDecree = new NpcStep(this, NpcID.MORD_GUNNARS_1940, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
+		returnToRellekkaFromJatizsoAfterDecree = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_IZSO, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
 		returnToRellekkaFromJatizsoAfterDecree.addDialogStep("Can you ferry me to Rellekka?");
 
-		travelToNeitiznotWithDecree = new NpcStep(this, NpcID.MARIA_GUNNARS_1883, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.", royalDecree);
-		travelToNeitiznotAfterDecree = new NpcStep(this, NpcID.MARIA_GUNNARS_1883, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
+		travelToNeitiznotWithDecree = new NpcStep(this, NpcID.FRIS_R_FERRY_RELLIKKA, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.", royalDecree);
+		travelToNeitiznotAfterDecree = new NpcStep(this, NpcID.FRIS_R_FERRY_RELLIKKA, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
 
-		talkToMawnisWithDecree = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Take off your jester outfit, and talk to Mawnis.", royalDecree);
-		talkToMawnisAfterDecree = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Take off your jester outfit, and talk to Mawnis.");
+		talkToMawnisWithDecree = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Take off your jester outfit, and talk to Mawnis.", royalDecree);
+		talkToMawnisAfterDecree = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Take off your jester outfit, and talk to Mawnis.");
 		talkToMawnisWithDecree.addSubSteps(talkToMawnisAfterDecree, returnToRellekkaFromJatizsoAfterDecree, returnToRellekkaFromJatizsoWithDecree, travelToNeitiznotWithDecree, travelToNeitiznotAfterDecree);
 
-		getYakArmour = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis with full yak-hide armour.", yakTop, yakBottom);
-		makeShield = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis with a Neitiznot Shield.", roundShield);
+		getYakArmour = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis with full yak-hide armour.", yakTop, yakBottom);
+		makeShield = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis with a Neitiznot Shield.", roundShield);
 
-		enterCave = new ObjectStep(this, ObjectID.CAVE_21584, new WorldPoint(2402, 3890, 0),
+		enterCave = new ObjectStep(this, ObjectID.FRIS_TROLL_TRAPDOOR_R2, new WorldPoint(2402, 3890, 0),
 			"Enter the cave in the north east of the islands. Be prepared in your yak armour, Neitiznot shield, and a melee weapon.", yakTopWorn, yakBottomWorn, shieldWorn, meleeWeapon, food);
 
 		killTrolls = new KillTrolls(this);
-		enterKingRoom = new ObjectStep(this, ObjectID.ROPE_BRIDGE_21316, new WorldPoint(2385, 10263, 1), "Cross the rope bridge. Be prepared to fight the Ice Troll King. Use the Protect from Magic prayer for the fight.");
-		killKing = new NpcStep(this, NpcID.ICE_TROLL_KING, new WorldPoint(2386, 10249, 1), "Kill the king. Use the Protect from Magic prayer for the fight.");
-		decapitateKing = new ObjectStep(this, ObjectID.ICE_TROLL_KING, "Decapitate the king's head.");
-		finishQuest = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis with the Ice Troll King's head to complete the quest.", head);
-		finishQuestGivenHead = new NpcStep(this, NpcID.MAWNIS_BUROWGAR, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to complete the quest.");
+		enterKingRoom = new ObjectStep(this, ObjectID.FRISB_BRIDGE_6_N, new WorldPoint(2385, 10263, 1), "Cross the rope bridge. Be prepared to fight the Ice Troll King. Use the Protect from Magic prayer for the fight.");
+		killKing = new NpcStep(this, NpcID.FRIS_TROLL_KING_TRUE, new WorldPoint(2386, 10249, 1), "Kill the king. Use the Protect from Magic prayer for the fight.");
+		decapitateKing = new ObjectStep(this, ObjectID.FRIS_TROLL_KING_DEAD_HEAD, "Decapitate the king's head.");
+		finishQuest = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis with the Ice Troll King's head to complete the quest.", head);
+		finishQuestGivenHead = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to complete the quest.");
 		finishQuest.addSubSteps(finishQuestGivenHead);
 	}
 
@@ -614,9 +608,9 @@ public class TheFremennikIsles extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.ANTIQUE_LAMP, 2),
-			new ItemReward("Helm of Neitiznot", ItemID.HELM_OF_NEITIZNOT, 1),
-			new ItemReward("Jester Outfit", ItemID.JESTER, 1),
+			new ItemReward("10,000 Exp. Lamp (Combat)", ItemID.THOSF_REWARD_LAMP, 2),
+			new ItemReward("Helm of Neitiznot", ItemID.FRIS_KINGLY_HELM, 1),
+			new ItemReward("Jester Outfit", ItemID.POH_PARTY_GAME_1, 1),
 			new ItemReward("Around 20,000 coins in assorted rewards during quest", ItemID.COINS));
 	}
 

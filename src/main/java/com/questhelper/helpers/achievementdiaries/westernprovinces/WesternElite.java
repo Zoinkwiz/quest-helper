@@ -24,38 +24,36 @@
  */
 package com.questhelper.helpers.achievementdiaries.westernprovinces;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class WesternElite extends ComplexStateQuestHelper
 {
@@ -120,13 +118,13 @@ public class WesternElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notMagicLong = new VarplayerRequirement(1183, false, 6);
-		notKillThermy = new VarplayerRequirement(1183, false, 7);
-		notPrissyScilla = new VarplayerRequirement(1183, false, 8);
-		notAdvancedAgi = new VarplayerRequirement(1183, false, 9);
-		notFullVoid = new VarplayerRequirement(1183, false, 12);
-		notChompyHat = new VarplayerRequirement(1183, false, 13);
-		notPickpocketElf = new VarplayerRequirement(1183, false, 14);
+		notMagicLong = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 6);
+		notKillThermy = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 7);
+		notPrissyScilla = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 8);
+		notAdvancedAgi = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 9);
+		notFullVoid = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 12);
+		notChompyHat = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 13);
+		notPickpocketElf = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 14);
 
 		base42CombatSkills = new ComplexRequirement(LogicType.AND, "Base 42s in all combat skills and 22 prayer",
 			new SkillRequirement(Skill.ATTACK, 42), new SkillRequirement(Skill.STRENGTH, 42),
@@ -134,18 +132,18 @@ public class WesternElite extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.RANGED, 42), new SkillRequirement(Skill.MAGIC, 42),
 			new SkillRequirement(Skill.PRAYER, 22));
 
-		magicLongU = new ItemRequirement("Magic longbow (u)", ItemID.MAGIC_LONGBOW_U).showConditioned(notMagicLong);
+		magicLongU = new ItemRequirement("Magic longbow (u)", ItemID.UNSTRUNG_MAGIC_LONGBOW).showConditioned(notMagicLong);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notMagicLong);
 		mouthProtection =
 			new ItemRequirement("Mouth protection", ItemCollections.MOUTH_PROTECTION).showConditioned(notKillThermy).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPrissyScilla).isNotConsumed();
-		magicSapling = new ItemRequirement("Magic sapling", ItemID.MAGIC_SAPLING).showConditioned(notPrissyScilla);
+		magicSapling = new ItemRequirement("Magic sapling", ItemID.PLANTPOT_MAGIC_TREE_SAPLING).showConditioned(notPrissyScilla);
 		coconuts25 = new ItemRequirement("Coconuts", ItemID.COCONUT, 25).showConditioned(notPrissyScilla);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPrissyScilla).isNotConsumed();
 		voidHelm = new ItemRequirement("Any void knight helm", ItemCollections.VOID_HELM).showConditioned(notFullVoid).isNotConsumed();
 		voidTop = new ItemRequirement("Void knight top", ItemCollections.VOID_TOP).showConditioned(notFullVoid).isNotConsumed();
 		voidRobe = new ItemRequirement("Void knight robe", ItemCollections.VOID_ROBE).showConditioned(notFullVoid).isNotConsumed();
-		voidGloves = new ItemRequirement("Void knight gloves", ItemID.VOID_KNIGHT_GLOVES).showConditioned(notFullVoid).isNotConsumed();
+		voidGloves = new ItemRequirement("Void knight gloves", ItemID.PEST_VOID_KNIGHT_GLOVES).showConditioned(notFullVoid).isNotConsumed();
 		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat).isNotConsumed();
 		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat).isNotConsumed();
 		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.OGRE_BRUTAL_ARROWS).showConditioned(notChompyHat);
@@ -181,18 +179,18 @@ public class WesternElite extends ComplexStateQuestHelper
 		magicLong = new DetailedQuestStep(this, "Fletch a magic longbow in Tirannwn.",
 			magicLongU.highlighted(), bowString.highlighted());
 
-		prissyScilla = new NpcStep(this, NpcID.PRISSY_SCILLA, new WorldPoint(2437, 3419, 0),
+		prissyScilla = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_GNOME, new WorldPoint(2437, 3419, 0),
 			"Have Prissy Scilla protect your magic tree.", magicSapling, spade, rake, coconuts25);
 
-		moveToSmoke = new ObjectStep(this, ObjectID.SMOKY_CAVE, new WorldPoint(2412, 3061, 0),
+		moveToSmoke = new ObjectStep(this, ObjectID.SMOKEDEVIL_CAVE_ENTRANCE, new WorldPoint(2412, 3061, 0),
 			"Enter the Smoke Devil Dungeon.", combatGear, food, mouthProtection);
-		moveToThermy = new ObjectStep(this, ObjectID.CREVICE, new WorldPoint(2378, 9452, 0),
+		moveToThermy = new ObjectStep(this, ObjectID.SLAYER_CAVE_PASSAGE_SMOKEDEVIL_EXIT, new WorldPoint(2378, 9452, 0),
 			"Enter the boss area of the Thermonuclear smoke devil.", combatGear, food, mouthProtection);
-		killThermy = new NpcStep(this, NpcID.THERMONUCLEAR_SMOKE_DEVIL, new WorldPoint(2356, 9456, 0),
+		killThermy = new NpcStep(this, NpcID.SMOKE_DEVIL_BOSS, new WorldPoint(2356, 9456, 0),
 			"Defeat the Thermonuclear smoke devil. You are allowed one kill off-task for the diary.", combatGear, food,
 			mouthProtection);
 
-		advancedAgi = new ObjectStep(this, ObjectID.ROCKS_16515, new WorldPoint(2337, 3253, 0),
+		advancedAgi = new ObjectStep(this, ObjectID.ELVES_OVERPASS_SC_ROCKS_BOTTOM, new WorldPoint(2337, 3253, 0),
 			"Use the advanced elven overpass cliffside shortcut.");
 
 		fullVoid = new DetailedQuestStep(this, "Equip any complete void set.", voidHelm.equipped(), voidTop.equipped(),
@@ -206,7 +204,7 @@ public class WesternElite extends ComplexStateQuestHelper
 			ogreBow, ogreArrows, ogreBellows);
 		chompyHat.addDialogStep("Can I have a hat please?");
 
-		claimReward = new NpcStep(this, NpcID.ELDER_GNOME_CHILD, new WorldPoint(2466, 3460, 0),
+		claimReward = new NpcStep(this, NpcID.WESTERN_GNOME_CHILD_DIARY, new WorldPoint(2466, 3460, 0),
 			"Talk to the Elder gnome child in Gnome Stronghold to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -253,8 +251,8 @@ public class WesternElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Western banner 4", ItemID.WESTERN_BANNER_4),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Western banner 4", ItemID.WESTERN_BANNER_ELITE),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

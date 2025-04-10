@@ -27,10 +27,8 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.AbstractRequirement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import net.runelite.api.Client;
+
 import javax.annotation.Nonnull;
 
 public class NoFollowerRequirement extends AbstractRequirement

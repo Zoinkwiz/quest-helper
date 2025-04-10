@@ -24,33 +24,25 @@
  */
 package com.questhelper.helpers.miniquests.themagearenai;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheMageArenaI extends BasicQuestHelper
 {
@@ -94,7 +86,7 @@ public class TheMageArenaI extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		runesForCasts = new ItemRequirement("Runes for fighting Kolodion", -1, -1);
-		runesForCasts.setDisplayItemId(ItemID.DEATH_RUNE);
+		runesForCasts.setDisplayItemId(ItemID.DEATHRUNE);
 		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE).isNotConsumed();
 		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE).isNotConsumed();
 		godCape.addAlternates(ItemID.GUTHIX_CAPE, ItemID.SARADOMIN_CAPE);
@@ -117,30 +109,30 @@ public class TheMageArenaI extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterCavern = new ObjectStep(this, ObjectID.LEVER_5959, new WorldPoint(3090, 3956, 0), "Pull the lever in the" +
+		enterCavern = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Pull the lever in the" +
 			" building north of the Mage Arena. This is IN THE WILDERNESS, so don't bring anything you don't want to " +
 			"lose.", knife);
-		talkToKolodion = new NpcStep(this, NpcID.KOLODION, new WorldPoint(2539, 4716, 0), "Talk to Kolodion, ready " +
+		talkToKolodion = new NpcStep(this, NpcID.ARENAMAGE1, new WorldPoint(2539, 4716, 0), "Talk to Kolodion, ready " +
 			"for fighting him in the Mage Arena.", runesForCasts);
 		talkToKolodion.addDialogSteps("Can I fight here?", "Yes indeedy.", "Okay, let's fight.");
 
-		fightKolodion = new NpcStep(this, NpcID.KOLODION_1604, new WorldPoint(3105, 3934, 0), "Defeat Kolodion's " +
+		fightKolodion = new NpcStep(this, NpcID.ARENAMAGE2, new WorldPoint(3105, 3934, 0), "Defeat Kolodion's " +
 			"various forms.");
-		((NpcStep) fightKolodion).addAlternateNpcs(NpcID.KOLODION_1605, NpcID.KOLODION_1606, NpcID.KOLODION_1607,
-			NpcID.KOLODION_1608, NpcID.KOLODION_1609);
+		((NpcStep) fightKolodion).addAlternateNpcs(NpcID.KOLHUMAN, NpcID.KOLOGRE, NpcID.KOLSPIDER,
+			NpcID.KOLETHEREAL, NpcID.KOLDEMON);
 
-		enterCavernForPool = new ObjectStep(this, ObjectID.LEVER_5959, new WorldPoint(3090, 3956, 0), "Pull the lever in the" +
+		enterCavernForPool = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Pull the lever in the" +
 			" building north of the Mage Arena. This is IN THE WILDERNESS, so don't bring anything you don't want to " +
 			"lose.", knife);
 
-		enterPool = new ObjectStep(this, ObjectID.SPARKLING_POOL, new WorldPoint(2542, 4720, 0), "Enter the sparkling" +
+		enterPool = new ObjectStep(this, ObjectID.MAGEARENA_WATERPORTAL1, new WorldPoint(2542, 4720, 0), "Enter the sparkling" +
 			" pool.");
 		enterPool.addSubSteps(enterCavernForPool);
 
 		prayStatue = new DetailedQuestStep(this, new WorldPoint(2507, 4720, 0), "Pray at the statue of the god whose " +
 			"cape you want. Pick up the cape which appears.");
 
-		talkToGuardian = new NpcStep(this, NpcID.CHAMBER_GUARDIAN, new WorldPoint(2508, 4695, 0), "Talk to the " +
+		talkToGuardian = new NpcStep(this, NpcID.MAGEARENA_GUARDIAN, new WorldPoint(2508, 4695, 0), "Talk to the " +
 			"Chamber Guardian for your staff.", godCape);
 	}
 

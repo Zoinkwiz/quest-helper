@@ -25,39 +25,27 @@
 package com.questhelper.helpers.quests.toweroflife;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.player.FreeInventorySlotRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TowerOfLife extends BasicQuestHelper
 {
@@ -135,26 +123,26 @@ public class TowerOfLife extends BasicQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
 
-		buildersHat = new ItemRequirement("Hard Hat", ItemID.HARD_HAT);
-		buildersShirt = new ItemRequirement("Builder's Shirt", ItemID.BUILDERS_SHIRT);
-		buildersTrousers = new ItemRequirement("Builder's Trousers", ItemID.BUILDERS_TROUSERS);
-		buildersBoots = new ItemRequirement("Builder's Boots", ItemID.BUILDERS_BOOTS);
+		buildersHat = new ItemRequirement("Hard Hat", ItemID.TOL_PLAYER_CONSTRUCTION_HARDHAT);
+		buildersShirt = new ItemRequirement("Builder's Shirt", ItemID.TOL_PLAYER_CONSTRUCTION_SHIRT);
+		buildersTrousers = new ItemRequirement("Builder's Trousers", ItemID.TOL_PLAYER_CONSTRUCTION_TROUSERS);
+		buildersBoots = new ItemRequirement("Builder's Boots", ItemID.TOL_PLAYER_CONSTRUCTION_BOOTS);
 
-		buildersHatEquipped = new ItemRequirement("Hard Hat", ItemID.HARD_HAT, 1, true);
-		buildersShirtEquipped = new ItemRequirement("Builder's Shirt", ItemID.BUILDERS_SHIRT, 1, true);
-		buildersTrousersEquipped = new ItemRequirement("Builder's Trousers", ItemID.BUILDERS_TROUSERS, 1, true);
-		buildersBootsEquipped = new ItemRequirement("Builder's Boots", ItemID.BUILDERS_BOOTS, 1, true);
+		buildersHatEquipped = new ItemRequirement("Hard Hat", ItemID.TOL_PLAYER_CONSTRUCTION_HARDHAT, 1, true);
+		buildersShirtEquipped = new ItemRequirement("Builder's Shirt", ItemID.TOL_PLAYER_CONSTRUCTION_SHIRT, 1, true);
+		buildersTrousersEquipped = new ItemRequirement("Builder's Trousers", ItemID.TOL_PLAYER_CONSTRUCTION_TROUSERS, 1, true);
+		buildersBootsEquipped = new ItemRequirement("Builder's Boots", ItemID.TOL_PLAYER_CONSTRUCTION_BOOTS, 1, true);
 
-		pressureMachineSheets = new ItemRequirement("Metal sheets", ItemID.METAL_SHEET, 3);
-		pressureMachineBalls = new ItemRequirement("Coloured balls", ItemID.COLOURED_BALL, 4);
-		pressureMachineWheels = new ItemRequirement("Valve wheels", ItemID.VALVE_WHEEL, 4);
+		pressureMachineSheets = new ItemRequirement("Metal sheets", ItemID.TOL_METAL_SHEET, 3);
+		pressureMachineBalls = new ItemRequirement("Coloured balls", ItemID.TOL_PRESSURE_BALL, 4);
+		pressureMachineWheels = new ItemRequirement("Valve wheels", ItemID.TOL_WHEEL, 4);
 
-		pipeMachinePipes = new ItemRequirement("Pipes", ItemID.PIPE_10871, 4);
-		pipeMachineRings = new ItemRequirement("Pipe rings", ItemID.PIPE_RING, 5);
-		pipeMachineRivets = new ItemRequirement("Rivets", ItemID.RIVETS, 6);
+		pipeMachinePipes = new ItemRequirement("Pipes", ItemID.TOL_PIPE, 4);
+		pipeMachineRings = new ItemRequirement("Pipe rings", ItemID.TOL_RING, 5);
+		pipeMachineRivets = new ItemRequirement("Rivets", ItemID.TOL_RIVETS, 6);
 
-		cageMetalBar = new ItemRequirement("Metal bars", ItemID.METAL_BAR, 5);
-		cageBindingFluid = new ItemRequirement("Binding fluid", ItemID.BINDING_FLUID, 4);
+		cageMetalBar = new ItemRequirement("Metal bars", ItemID.TOL_BAR, 5);
+		cageBindingFluid = new ItemRequirement("Binding fluid", ItemID.TOL_GLUE, 4);
 	}
 
 	@Override
@@ -220,37 +208,37 @@ public class TowerOfLife extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEffigy = new NpcStep(this, NpcID.EFFIGY, new WorldPoint(2637, 3218, 0), "Talk to Effigy outside the Tower of Life.");
+		talkToEffigy = new NpcStep(this, NpcID.TOL_NPC_EFERGY01, new WorldPoint(2637, 3218, 0), "Talk to Effigy outside the Tower of Life.");
 		talkToEffigy.addDialogStep("Sure, why not.");
 
-		talkToBonafido = new NpcStep(this, NpcID.BONAFIDO, new WorldPoint(2651, 3228, 0), "Talk to Bonafido.");
+		talkToBonafido = new NpcStep(this, NpcID.TOL_NPC_BARRY01, new WorldPoint(2651, 3228, 0), "Talk to Bonafido.");
 
 		setupGetBuildersCostume();
 
-		enterTower = new ObjectStep(this, ObjectID.TOWER_DOOR, new WorldPoint(2649, 3225, 0), "Enter the tower.",
+		enterTower = new ObjectStep(this, ObjectID.TOL_TOWER_WALL_DOOR, new WorldPoint(2649, 3225, 0), "Enter the tower.",
 			buildersHatEquipped, buildersShirtEquipped, buildersTrousersEquipped, buildersBootsEquipped);
-		climbUpToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2645, 3220, 0), "Go upstairs.");
-		climbUpToFloor2 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2653, 3220, 1), "Go upstairs.");
-		climbUpToFloor3 = new ObjectStep(this, ObjectID.LADDER_17974, new WorldPoint(2647, 3221, 2), "Go upstairs.");
-		climbDownToGround = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2645, 3220, 1), "Go downstairs.");
-		climbDownToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2653, 3220, 2), "Go downstairs.");
-		climbDownToFloor2 = new ObjectStep(this, ObjectID.LADDER_17975, new WorldPoint(2647, 3221, 3), "Go downstairs.");
+		climbUpToFloor1 = new ObjectStep(this, ObjectID.TOL_STAIRS01, new WorldPoint(2645, 3220, 0), "Go upstairs.");
+		climbUpToFloor2 = new ObjectStep(this, ObjectID.TOL_STAIRS01, new WorldPoint(2653, 3220, 1), "Go upstairs.");
+		climbUpToFloor3 = new ObjectStep(this, ObjectID.AREA_SANGUINE_GHETTO_LADDER_UP, new WorldPoint(2647, 3221, 2), "Go upstairs.");
+		climbDownToGround = new ObjectStep(this, ObjectID.TOL_GAPFILL01, new WorldPoint(2645, 3220, 1), "Go downstairs.");
+		climbDownToFloor1 = new ObjectStep(this, ObjectID.TOL_GAPFILL01, new WorldPoint(2653, 3220, 2), "Go downstairs.");
+		climbDownToFloor2 = new ObjectStep(this, ObjectID.AREA_SANGUINE_GHETTO_LADDER_DOWN, new WorldPoint(2647, 3221, 3), "Go downstairs.");
 
-		climbDownToBasement = new ObjectStep(this, NullObjectID.NULL_21944, new WorldPoint(2648, 3212, 0), "Go downstairs.");
+		climbDownToBasement = new ObjectStep(this, ObjectID.TOL_TRAPDOOR_MULTI, new WorldPoint(2648, 3212, 0), "Go downstairs.");
 
-		enterTowerAgain = new ObjectStep(this, ObjectID.TOWER_DOOR, new WorldPoint(2649, 3225, 0),
+		enterTowerAgain = new ObjectStep(this, ObjectID.TOL_TOWER_WALL_DOOR, new WorldPoint(2649, 3225, 0),
 			"Go back into the tower.");
-		climbBackUpToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2645, 3220, 0),
+		climbBackUpToFloor1 = new ObjectStep(this, ObjectID.TOL_STAIRS01, new WorldPoint(2645, 3220, 0),
 			"Go back upstairs.");
-		climbBackUpToFloor2 = new ObjectStep(this, ObjectID.STAIRS_21871, new WorldPoint(2653, 3220, 1),
+		climbBackUpToFloor2 = new ObjectStep(this, ObjectID.TOL_STAIRS01, new WorldPoint(2653, 3220, 1),
 			"Go back upstairs.");
-		climbBackUpToFloor3 = new ObjectStep(this, ObjectID.LADDER_17974, new WorldPoint(2647, 3221, 2),
+		climbBackUpToFloor3 = new ObjectStep(this, ObjectID.AREA_SANGUINE_GHETTO_LADDER_UP, new WorldPoint(2647, 3221, 2),
 			"Go back upstairs.");
-		climbBackDownToGround = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2645, 3220, 1),
+		climbBackDownToGround = new ObjectStep(this, ObjectID.TOL_GAPFILL01, new WorldPoint(2645, 3220, 1),
 			"Go back downstairs.");
-		climbBackDownToFloor1 = new ObjectStep(this, ObjectID.STAIRS_21872, new WorldPoint(2653, 3220, 2),
+		climbBackDownToFloor1 = new ObjectStep(this, ObjectID.TOL_GAPFILL01, new WorldPoint(2653, 3220, 2),
 			"Go back downstairs.");
-		climbBackDownToFloor2 = new ObjectStep(this, ObjectID.LADDER_17975, new WorldPoint(2647, 3221, 3),
+		climbBackDownToFloor2 = new ObjectStep(this, ObjectID.AREA_SANGUINE_GHETTO_LADDER_DOWN, new WorldPoint(2647, 3221, 3),
 			"Go back downstairs.");
 
 		setupFixTower();
@@ -265,7 +253,7 @@ public class TowerOfLife extends BasicQuestHelper
 		confrontEffigy.addStep(inTowerFloor2, climbBackDownToFloor1);
 		confrontEffigy.addStep(inTowerFloor1, climbBackDownToGround);
 
-		talkToHomunculusTopOfTower = new NpcStep(this, NpcID.HOMUNCULUS_3590, new WorldPoint(2649, 3218, 3), "Talk to" +
+		talkToHomunculusTopOfTower = new NpcStep(this, NpcID.TOL_HOMONCULUS_CAGE_BROKEN, new WorldPoint(2649, 3218, 3), "Talk to" +
 			" the homunculus.");
 		confrontTheHomunculus = new ConditionalStep(this, enterTowerAgain, "Confront the homunculus.");
 		confrontTheHomunculus.addStep(inTowerGround, climbBackUpToFloor1);
@@ -293,7 +281,7 @@ public class TowerOfLife extends BasicQuestHelper
 		scareTheAlchemists.addStep(inTowerFloor2, climbBackDownToFloor1);
 		scareTheAlchemists.addStep(inTowerFloor1, climbBackDownToGround);
 
-		talkToHomunculusBasement = new NpcStep(this, NpcID.HOMUNCULUS, new WorldPoint(3040, 4400, 0), "Talk to the " +
+		talkToHomunculusBasement = new NpcStep(this, NpcID.TOL_HOMONCULUS_NOCAGE, new WorldPoint(3040, 4400, 0), "Talk to the " +
 			"homunculus.");
 		talkToHomunculusInDungeon = new ConditionalStep(this, enterTower, "Talk to the homunculus in the basement.");
 		talkToHomunculusInDungeon.addStep(inTowerBasement, talkToHomunculusBasement);
@@ -302,22 +290,22 @@ public class TowerOfLife extends BasicQuestHelper
 
 	private void setupFixTower()
 	{
-		fixPressureMachineGetSheets = new ObjectStep(this, ObjectID.CRATE_21913, new WorldPoint(2643, 3219, 0), "Get " +
+		fixPressureMachineGetSheets = new ObjectStep(this, ObjectID.TOL_CRATE06, new WorldPoint(2643, 3219, 0), "Get " +
 			"3 Metal sheets.");
-		fixPressureMachineGetBalls = new ObjectStep(this, ObjectID.CRATE_21914, new WorldPoint(2644, 3216, 0), "Get 4" +
+		fixPressureMachineGetBalls = new ObjectStep(this, ObjectID.TOL_CRATE07, new WorldPoint(2644, 3216, 0), "Get 4" +
 			" Coloured balls.");
-		fixPressureMachineGetWheels = new ObjectStep(this, ObjectID.CRATE_21912, new WorldPoint(2655, 3217, 0), "Get " +
+		fixPressureMachineGetWheels = new ObjectStep(this, ObjectID.TOL_CRATE05, new WorldPoint(2655, 3217, 0), "Get " +
 			"4 Valve wheels.");
 		Conditions hasAllPressureItems = new Conditions(pressureMachineSheets, pressureMachineBalls, pressureMachineWheels);
 
-		buildPressureMachine = new ObjectStep(this, ObjectID.PRESSURE_MACHINE, new WorldPoint(2649, 3223, 1), "Build " +
+		buildPressureMachine = new ObjectStep(this, ObjectID.TOL_PRESSURE_MACHINE01, new WorldPoint(2649, 3223, 1), "Build " +
 			"the Pressure Machine.", saw, hammer);
 		buildPressureMachine.addDialogStep("Yes");
 		buildPressureMachine.addSubSteps(
 			fixPressureMachineGetSheets, fixPressureMachineGetBalls, fixPressureMachineGetWheels,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2
 		);
-		calibratePressureMachine = new ObjectStep(this, ObjectID.PRESSURE_MACHINE, new WorldPoint(2649, 3223, 1),
+		calibratePressureMachine = new ObjectStep(this, ObjectID.TOL_PRESSURE_MACHINE01, new WorldPoint(2649, 3223, 1),
 			"Calibrate the Pressure Machine.");
 		solvePressureMachinePuzzle = new PuzzleWrapperStep(this,
 			new PuzzleStep(this, "Click the wheels to calibrate the machine", new PuzzleSolver(client)::pressureSolver));
@@ -334,11 +322,11 @@ public class TowerOfLife extends BasicQuestHelper
 		fixPressureMachine.addStep(new Conditions(pressureMachineSheets, pressureMachineBalls), fixPressureMachineGetWheels);
 		fixPressureMachine.addStep(pressureMachineSheets, fixPressureMachineGetBalls);
 
-		fixPipeMachineGetPipes = new ObjectStep(this, ObjectID.CRATE_21909, new WorldPoint(2648, 3222, 0), "Get 4 " +
+		fixPipeMachineGetPipes = new ObjectStep(this, ObjectID.TOL_CRATE02, new WorldPoint(2648, 3222, 0), "Get 4 " +
 			"Pipes.");
-		fixPipeMachineGetRings = new ObjectStep(this, ObjectID.CRATE_21910, new WorldPoint(2652, 3222, 0), "Get 5 " +
+		fixPipeMachineGetRings = new ObjectStep(this, ObjectID.TOL_CRATE03, new WorldPoint(2652, 3222, 0), "Get 5 " +
 			"Pipe rings.");
-		fixPipeMachineGetRivets = new ObjectStep(this, ObjectID.CRATE_21911, new WorldPoint(2654, 3220, 0), "Get 6 " +
+		fixPipeMachineGetRivets = new ObjectStep(this, ObjectID.TOL_CRATE04, new WorldPoint(2654, 3220, 0), "Get 6 " +
 			"Rivets.");
 		Conditions hasAllPipeItems = new Conditions(pipeMachinePipes, pipeMachineRings, pipeMachineRivets);
 
@@ -364,8 +352,8 @@ public class TowerOfLife extends BasicQuestHelper
 		fixPipeMachine.addStep(pipeMachinePipes, fixPipeMachineGetRings);
 
 
-		fixCageGetBars = new ObjectStep(this, ObjectID.CRATE_21917, new WorldPoint(2650, 3212, 0), "Get 5 Metal bars.");
-		fixCageGetFluid = new ObjectStep(this, ObjectID.CRATE_21915, new WorldPoint(2651, 3213, 0), "Get 4 Binding " +
+		fixCageGetBars = new ObjectStep(this, ObjectID.TOL_CRATE10, new WorldPoint(2650, 3212, 0), "Get 5 Metal bars.");
+		fixCageGetFluid = new ObjectStep(this, ObjectID.TOL_CRATE08, new WorldPoint(2651, 3213, 0), "Get 4 Binding " +
 			"fluid.");
 		Conditions hasAllCageItems = new Conditions(cageMetalBar, cageBindingFluid);
 
@@ -386,7 +374,7 @@ public class TowerOfLife extends BasicQuestHelper
 		fixCage.addStep(inTowerFloor3, climbDownToFloor2);
 		fixCage.addStep(cageMetalBar, fixCageGetFluid);
 
-		talkToEffigyAgain = new NpcStep(this, NpcID.EFFIGY, new WorldPoint(2637, 3218, 0), "Go back and talk to " +
+		talkToEffigyAgain = new NpcStep(this, NpcID.TOL_NPC_EFERGY01, new WorldPoint(2637, 3218, 0), "Go back and talk to " +
 			"Effigy.");
 		talkToEffigyAgain.addSubSteps(climbBackDownToGround, climbBackDownToFloor1, climbBackDownToFloor2);
 
@@ -402,29 +390,29 @@ public class TowerOfLife extends BasicQuestHelper
 
 	private void setupGetBuildersCostume()
 	{
-		talkToBlackeye = new NpcStep(this, NpcID.BLACKEYE, "Get the Hard Hat from 'Black-eye'.");
+		talkToBlackeye = new NpcStep(this, NpcID.TOL_NPC_BUILDER01, "Get the Hard Hat from 'Black-eye'.");
 		talkToBlackeye.addDialogStep(3, "Three");
 		talkToBlackeye.addDialogStep(1, "Torn curtains");
 		talkToBlackeye.addDialogStep(2, "10 clay pieces");
 
-		talkToNoFingers = new NpcStep(this, NpcID.NO_FINGERS, new WorldPoint(2645, 3224, 0), "Talk to 'No fingers'.");
-		pickpocketNoFingers = new NpcStep(this, NpcID.NO_FINGERS, new WorldPoint(2645, 3224, 0), "Pickpocket 'No " +
+		talkToNoFingers = new NpcStep(this, NpcID.TOL_NPC_BUILDER02, new WorldPoint(2645, 3224, 0), "Talk to 'No fingers'.");
+		pickpocketNoFingers = new NpcStep(this, NpcID.TOL_NPC_BUILDER02, new WorldPoint(2645, 3224, 0), "Pickpocket 'No " +
 			"fingers'.");
 		hasSpokenToNoFingers = new VarbitRequirement(3376, 1);
 		ConditionalStep getBoots = new ConditionalStep(this, talkToNoFingers); // "Get the Builder's Boots from 'No fingers'"
 		getBoots.addStep(hasSpokenToNoFingers, pickpocketNoFingers);
 
-		talkToGuns = new NpcStep(this, NpcID.THE_GUNS, new WorldPoint(2643, 3226, 0), "Talk to 'The Guns'.");
+		talkToGuns = new NpcStep(this, NpcID.TOL_NPC_BUILDER04, new WorldPoint(2643, 3226, 0), "Talk to 'The Guns'.");
 		getBeerForGuns = new ItemStep(this, "Get a Beer for 'The Guns'.", beer);
 		ConditionalStep getShirt = new ConditionalStep(this, getBeerForGuns);
 		getShirt.addStep(beer, talkToGuns);
 
-		getTrousers = new ObjectStep(this, ObjectID.PLANT_21924, "Search the bushes to the south for some Builder's " +
+		getTrousers = new ObjectStep(this, ObjectID.TOL_PLANT4, "Search the bushes to the south for some Builder's " +
 			"Trousers.");
 		getTrousers.addText("(Hint: try the south-east bushes first).");
 		((DetailedQuestStep) getTrousers).setHideWorldArrow(true);
 
-		talkToBonafidoWithOutfit = new NpcStep(this, NpcID.BONAFIDO, "Speak to Bonafido.",
+		talkToBonafidoWithOutfit = new NpcStep(this, NpcID.TOL_NPC_BARRY01, "Speak to Bonafido.",
 			buildersHatEquipped, buildersShirtEquipped, buildersTrousersEquipped, buildersBootsEquipped);
 		talkToBonafidoWithOutfit.addDialogStep(2, "Tea");
 		talkToBonafidoWithOutfit.addDialogStep(3, "Whistle for attention");

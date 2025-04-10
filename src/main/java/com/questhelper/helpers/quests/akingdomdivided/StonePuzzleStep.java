@@ -24,25 +24,26 @@
  */
 package com.questhelper.helpers.quests.akingdomdivided;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
-import net.runelite.client.eventbus.Subscribe;
 
 public class StonePuzzleStep extends DetailedOwnerStep
 {
@@ -182,14 +183,14 @@ public class StonePuzzleStep extends DetailedOwnerStep
 		setupConditions();
 
 
-		checkRStone = new ObjectStep(getQuestHelper(), ObjectID.STONE_PILE_41827, new WorldPoint(1678, 3567, 0), "Check the south east stone pile.");
-		checkOStone = new ObjectStep(getQuestHelper(), ObjectID.STONE_PILE_41827, new WorldPoint(1670, 3575, 0), "Check the north west stone pile.");
-		checkSStone = new ObjectStep(getQuestHelper(), ObjectID.STONE_PILE_41827, new WorldPoint(1672, 3571, 0), "Check the south west stone pile.");
-		checkEStone = new ObjectStep(getQuestHelper(), ObjectID.STONE_PILE_41827, new WorldPoint(1680, 3576, 0), "Check the north east stone pile.");
+		checkRStone = new ObjectStep(getQuestHelper(), ObjectID.AKD_FORTHOS_STONE_PILE_OP, new WorldPoint(1678, 3567, 0), "Check the south east stone pile.");
+		checkOStone = new ObjectStep(getQuestHelper(), ObjectID.AKD_FORTHOS_STONE_PILE_OP, new WorldPoint(1670, 3575, 0), "Check the north west stone pile.");
+		checkSStone = new ObjectStep(getQuestHelper(), ObjectID.AKD_FORTHOS_STONE_PILE_OP, new WorldPoint(1672, 3571, 0), "Check the south west stone pile.");
+		checkEStone = new ObjectStep(getQuestHelper(), ObjectID.AKD_FORTHOS_STONE_PILE_OP, new WorldPoint(1680, 3576, 0), "Check the north east stone pile.");
 
-		chopVines = new ObjectStep(getQuestHelper(), ObjectID.VINES_41815, new WorldPoint(1671, 3577, 0), "Chop the vines south of Martin Holt.");
-		squeezeThroughVines = new ObjectStep(getQuestHelper(), ObjectID.VINES_41816, new WorldPoint(1671, 3577, 0), "Squeeze through the vines.");
-		checkPanel = new ObjectStep(getQuestHelper(), ObjectID.PANEL_41822, new WorldPoint(1672, 3579, 0), "Check the panel on the wall.");
+		chopVines = new ObjectStep(getQuestHelper(), ObjectID.AKD_FORTHOS_VINES_OP, new WorldPoint(1671, 3577, 0), "Chop the vines south of Martin Holt.");
+		squeezeThroughVines = new ObjectStep(getQuestHelper(), ObjectID.AKD_FORTHOS_VINES_CUT, new WorldPoint(1671, 3577, 0), "Squeeze through the vines.");
+		checkPanel = new ObjectStep(getQuestHelper(), ObjectID.AKD_FORTHOS_PANEL_OP, new WorldPoint(1672, 3579, 0), "Check the panel on the wall.");
 	}
 
 	@Override

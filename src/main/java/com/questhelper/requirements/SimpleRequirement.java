@@ -27,9 +27,10 @@
 package com.questhelper.requirements;
 
 import com.questhelper.QuestHelperConfig;
-import java.awt.Color;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
 
 public abstract class SimpleRequirement extends AbstractRequirement
 {

@@ -26,9 +26,6 @@ package com.questhelper.rewards;
 
 import javax.annotation.Nonnull;
 
-import net.runelite.api.ItemID;
-import net.runelite.api.Skill;
-
 public class ItemReward implements Reward
 {
 	private final String name;

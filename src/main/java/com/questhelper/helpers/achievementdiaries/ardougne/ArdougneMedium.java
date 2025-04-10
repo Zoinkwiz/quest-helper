@@ -24,17 +24,17 @@
  */
 package com.questhelper.helpers.achievementdiaries.ardougne;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.domain.AccountType;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.bank.banktab.BankSlotIcons;
-import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -44,28 +44,24 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.client.game.FishingSpot;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
-import net.runelite.client.game.FishingSpot;
 
 public class ArdougneMedium extends ComplexStateQuestHelper
 {
@@ -154,18 +150,18 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notUniPen = new VarplayerRequirement(1196, false, 13);
-		notGrapYan = new VarplayerRequirement(1196, false, 14);
-		notArdyStraw = new VarplayerRequirement(1196, false, 15);
-		notTPArdy = new VarplayerRequirement(1196, false, 16);
-		notBalloonCW = new VarplayerRequirement(1196, false, 17);
-		notClaimSand = new VarplayerRequirement(1196, false, 18);
-		notFishOnPlatform = new VarplayerRequirement(1196, false, 19);
-		notPickMasterFarmer = new VarplayerRequirement(1196, false, 20);
-		notCaveNightshade = new VarplayerRequirement(1196, false, 21);
-		notKillSwordchick = new VarplayerRequirement(1196, false, 23);
-		notIbanUpgrade = new VarplayerRequirement(1196, false, 24);
-		notNecroTower = new VarplayerRequirement(1196, false, 25);
+		notUniPen = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 13);
+		notGrapYan = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 14);
+		notArdyStraw = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 15);
+		notTPArdy = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 16);
+		notBalloonCW = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 17);
+		notClaimSand = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 18);
+		notFishOnPlatform = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 19);
+		notPickMasterFarmer = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 20);
+		notCaveNightshade = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 21);
+		notKillSwordchick = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 23);
+		notIbanUpgrade = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 24);
+		notNecroTower = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 25);
 
 		notCWBallon = new VarbitRequirement(2869, 1);
 		notCWBallon2 = new VarbitRequirement(2869, 0);
@@ -175,31 +171,31 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF)
 			.showConditioned(new Conditions(LogicType.OR, notNecroTower, notUniPen)).isNotConsumed();
-		skavMap = new ItemRequirement("Skavid map", ItemID.SKAVID_MAP).showConditioned(notCaveNightshade).isNotConsumed();
+		skavMap = new ItemRequirement("Skavid map", ItemID.SKAVIDMAP).showConditioned(notCaveNightshade).isNotConsumed();
 		lightSource = new ItemRequirement("Any light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notCaveNightshade).isNotConsumed();
-		nightshade = new ItemRequirement("Cave nightshade", ItemID.CAVE_NIGHTSHADE);
-		mithGrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notGrapYan).isNotConsumed();
+		nightshade = new ItemRequirement("Cave nightshade", ItemID.STACKABLE_NIGHTSHADE);
+		mithGrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notGrapYan).isNotConsumed();
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapYan).isNotConsumed();
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET)
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY)
 			.showConditioned(new Conditions(notClaimSand)).isNotConsumed();
-		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notTPArdy);
-		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notTPArdy);
+		lawRune = new ItemRequirement("Law runes", ItemID.LAWRUNE).showConditioned(notTPArdy);
+		waterRune = new ItemRequirement("Water runes", ItemID.WATERRUNE).showConditioned(notTPArdy);
 		rawChick = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN).showConditioned(notKillSwordchick);
 		rawSword = new ItemRequirement("Raw swordfish", ItemID.RAW_SWORDFISH).showConditioned(notKillSwordchick);
-		ibanStaff = new ItemRequirement("Iban staff", ItemID.IBANS_STAFF).showConditioned(notIbanUpgrade).isNotConsumed();
+		ibanStaff = new ItemRequirement("Iban staff", ItemID.IBANSTAFF).showConditioned(notIbanUpgrade).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notIbanUpgrade);
-		ibanStaffU = new ItemRequirement("Iban staff Upgraded", ItemID.IBANS_STAFF_U).showConditioned(notIbanUpgrade);
-		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notArdyStraw).isNotConsumed();
+		ibanStaffU = new ItemRequirement("Iban staff Upgraded", ItemID.IBANSTAFF_UPGRADED).showConditioned(notIbanUpgrade);
+		seedDib = new ItemRequirement("Seed dibber", ItemID.DIBBER).showConditioned(notArdyStraw).isNotConsumed();
 		strawSeeds = new ItemRequirement("Strawberry seeds", ItemID.STRAWBERRY_SEED).showConditioned(notArdyStraw);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notArdyStraw).isNotConsumed();
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET)
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.NET)
 			.showConditioned(notFishOnPlatform).isNotConsumed();
 		yewLog1 = new ItemRequirement("Yew logs", ItemID.YEW_LOGS, 1).showConditioned(new Conditions(notBalloonCW,
 			notCWBallon));
 		yewLog11 = new ItemRequirement("Yew logs", ItemID.YEW_LOGS, 11).showConditioned(new Conditions(notBalloonCW,
 			notCWBallon2));
-		basket = new ItemRequirement("Basket of apples", ItemID.APPLES5).showConditioned(notArdyStraw);
+		basket = new ItemRequirement("Basket of apples", ItemID.BASKET_APPLE_5).showConditioned(notArdyStraw);
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(notArdyStraw);
 		basketOrCompost = new ItemRequirements(LogicType.OR, "Basket of apples or compost", compost, basket).showConditioned(notArdyStraw);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notArdyStraw).isNotConsumed();
@@ -249,65 +245,65 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		uniPen = new DetailedQuestStep(this, "Enter the unicorn pen in Ardougne Zoo using Fairy rings (BIS).", fairyAccess);
 		necroTower = new DetailedQuestStep(this, "Visit the island east of the Necromancer Tower (AIR).", fairyAccess);
 
-		grapYan = new ObjectStep(this, ObjectID.WALL_17047, new WorldPoint(2556, 3072, 0),
+		grapYan = new ObjectStep(this, ObjectID.XBOWS_YANILLE_CASTLEWALL, new WorldPoint(2556, 3072, 0),
 			"Grapple up Yanille's south wall.", crossbow.equipped(), mithGrap);
-		grapYan2 = new ObjectStep(this, ObjectID.WALL_17048, new WorldPoint(2556, 3075, 1),
+		grapYan2 = new ObjectStep(this, ObjectID.XBOWS_YANILLE_CASTLEWALL_BATTLEMENT, new WorldPoint(2556, 3075, 1),
 			"Jump off the opposite side!");
 
 		if (questHelperPlugin.getPlayerStateManager().getAccountType() == AccountType.ULTIMATE_IRONMAN)
 		{
-			claimSand = new ObjectStep(this, ObjectID.SANDPIT, new WorldPoint(2543, 3104, 0),
+			claimSand = new ObjectStep(this, ObjectID.HANDSAND_SANDPIT_ANIM, new WorldPoint(2543, 3104, 0),
 				"Fill a bucket with sand using Bert's sand pit.", bucket);
 		}
 		else
 		{
-			claimSand = new NpcStep(this, NpcID.BERT_5819, new WorldPoint(2551, 3100, 0),
+			claimSand = new NpcStep(this, NpcID.HANDSAND_BERT_2OPS, new WorldPoint(2551, 3100, 0),
 				"Claim buckets of sand from Bert in Yanille.");
 		}
 
 		balloonCW = new DetailedQuestStep(this, "Use a nearby Hot Air Ballon to travel to Castle Wars.",
 			yewLog1);
-		moveToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3048, 3236, 0),
+		moveToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3048, 3236, 0),
 			"Speak with a monk to travel to Entrana.", true, yewLog11);
-		moveToEntrana.addAlternateNpcs(NpcID.MONK_OF_ENTRANA_1166, NpcID.MONK_OF_ENTRANA);
-		talkToAug = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2810, 3356, 0),
+		moveToEntrana.addAlternateNpcs(NpcID.SHIPMONK1_B, NpcID.SHIPMONK);
+		talkToAug = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2810, 3356, 0),
 			"Speak with Augustine and travel to Castle Wars.", yewLog11);
 
 		tPArdy = new DetailedQuestStep(this, "Cast Teleport to Ardougne spell.", lawRune.quantity(2),
 			waterRune.quantity(2));
 
-		moveToBasement = new ObjectStep(this, ObjectID.TRAPDOOR_21922, new WorldPoint(2648, 3212, 0),
+		moveToBasement = new ObjectStep(this, ObjectID.TOL_TRAPDOOR_OPEN, new WorldPoint(2648, 3212, 0),
 			"Enter the basement of the Tower of Life.", combatGear, food, rawChick, rawSword);
-		killSwordchick = new ObjectStep(this, ObjectID.SYMBOL_OF_LIFE, new WorldPoint(3034, 4362, 0),
+		killSwordchick = new ObjectStep(this, ObjectID.TOL_LIFESYMBOL_ALTER, new WorldPoint(3034, 4362, 0),
 			"Activate the Symbol of Life and kill the Swordchick.", combatGear, food, rawChick, rawSword);
 
-		moveToSkavid = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2806, new WorldPoint(2524, 3069, 0),
+		moveToSkavid = new ObjectStep(this, ObjectID.SKAVID_CAVE2, new WorldPoint(2524, 3069, 0),
 			"Enter the Cave.", lightSource, skavMap);
 		caveNightshade = new ItemStep(this, "Pickup the Cave nightshade.", nightshade);
 		// Need step at top of wall for grapple
 		// Need to highlight chicksword to kill
 		// Need to point to Jeb if Jeb is deliverer, otherwise Holgart
-		moveToPlatform = new NpcStep(this, NpcID.JEB_4803, new WorldPoint(2719, 3305, 0),
+		moveToPlatform = new NpcStep(this, NpcID.SLUG2_JEB_STAGE2, new WorldPoint(2719, 3305, 0),
 			"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
-		((NpcStep) (moveToPlatform)).addAlternateNpcs(NpcID.HOLGART_7789);
+		((NpcStep) (moveToPlatform)).addAlternateNpcs(NpcID.HOLGARTLANDTRAVEL);
 		fishOnPlatform = new NpcStep(this, FishingSpot.SHRIMP.getIds(), new WorldPoint(2790, 3276, 0),
 			"Catch any fish on the Fishing Platform.", smallFishingNet);
 
-		pickMasterFarmer = new NpcStep(this, NpcID.MASTER_FARMER, new WorldPoint(2637, 3362, 0),
+		pickMasterFarmer = new NpcStep(this, NpcID.MASTER_FARMER_1, new WorldPoint(2637, 3362, 0),
 			"Pickpocket the master farmer north of East Ardougne.");
 
-		ibanUpgrade = new NpcStep(this, NpcID.DARK_MAGE_7753, new WorldPoint(2455, 3312, 0),
+		ibanUpgrade = new NpcStep(this, NpcID.UPASSMAGE_2OPS, new WorldPoint(2455, 3312, 0),
 			"Talk to the Dark mage in West Ardougne to upgrade your staff.", ibanStaff, coins.quantity(200000));
 		ibanUpgrade.addDialogSteps("Can you upgrade my Staff of Iban?",
 			"Here's 200,000 coins. Please upgrade the staff.");
 		equipIban = new ItemStep(this, "Equip Iban's staff (u).", ibanStaffU);
 
-		ardyStraw = new ObjectStep(this, NullObjectID.NULL_8555, new WorldPoint(2667, 3371, 0),
+		ardyStraw = new ObjectStep(this, ObjectID.FARMING_VEG_PATCH_6, new WorldPoint(2667, 3371, 0),
 			"Plant and harvest the strawberries from the north Ardougne allotment. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			true, rake, spade, seedDib, strawSeeds.quantity(3));
 
-		claimReward = new NpcStep(this, NpcID.TWOPINTS, new WorldPoint(2574, 3323, 0),
+		claimReward = new NpcStep(this, NpcID.ARDY_TWOPINTS_DIARY, new WorldPoint(2574, 3323, 0),
 			"Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -359,8 +355,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Ardougne Cloak 2", ItemID.ARDOUGNE_CLOAK_2),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Ardougne Cloak 2", ItemID.ARDY_CAPE_MEDIUM),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

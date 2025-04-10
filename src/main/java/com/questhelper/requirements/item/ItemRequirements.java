@@ -30,14 +30,15 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.managers.ItemAndLastUpdated;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.LogicType;
-import java.awt.Color;
-import java.util.*;
-import java.util.function.Predicate;
-
 import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Represents a composite item requirement that aggregates multiple

@@ -24,41 +24,35 @@
  */
 package com.questhelper.helpers.quests.secretsofthenorth;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class SecretsOfTheNorth extends BasicQuestHelper
 {
@@ -261,7 +255,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		// Required
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).isNotConsumed();
-		lockpick.addAlternates(ItemID.HAIR_CLIP);
+		lockpick.addAlternates(ItemID.KR_HAIRCLIP);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.canBeObtainedDuringQuest();
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).isNotConsumed();
@@ -269,37 +263,37 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		prayerPot = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 
-		dustyScroll = new ItemRequirement("Dusty Scroll", ItemID.DUSTY_SCROLL_27595);
-		leverHandle = new ItemRequirement("Lever Handle", ItemID.LEVER_HANDLE);
-		icyChest = new ItemRequirement("Icy chest", ItemID.ICY_CHEST);
-		settlementsNote = new ItemRequirement("Settlements note", ItemID.SETTLEMENTS_NOTE);
-		jewelShard1 = new ItemRequirement("Jewel shard", ItemID.JEWEL_SHARD_27606);
-		jewelShard2 = new ItemRequirement("Jewel shard", ItemID.JEWEL_SHARD);
-		ancientJewel = new ItemRequirement("Ancient jewel", ItemID.ANCIENT_JEWEL);
-		icyKey = new ItemRequirement("Icy key", ItemID.ICY_KEY);
+		dustyScroll = new ItemRequirement("Dusty Scroll", ItemID.SOTN_CREST_SKETCH);
+		leverHandle = new ItemRequirement("Lever Handle", ItemID.SOTN_GHORROCK_LEVER);
+		icyChest = new ItemRequirement("Icy chest", ItemID.SOTN_GHORROCK_ICY_CHEST);
+		settlementsNote = new ItemRequirement("Settlements note", ItemID.SOTN_GHORROCK_SETTLEMENTS_NOTE);
+		jewelShard1 = new ItemRequirement("Jewel shard", ItemID.SOTN_GHORROCK_SHARD_2);
+		jewelShard2 = new ItemRequirement("Jewel shard", ItemID.SOTN_GHORROCK_SHARD_1);
+		ancientJewel = new ItemRequirement("Ancient jewel", ItemID.SOTN_GHORROCK_JEWEL);
+		icyKey = new ItemRequirement("Icy key", ItemID.SOTN_GHORROCK_KEY);
 		icyKey.setTooltip("You can get another from the chest in the north of the central room of the puzzle area");
 
 		// Recommended
 		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS);
 		ardyCloak = new ItemRequirement("Any Ardougne Cloak", ItemCollections.ARDY_CLOAKS).isNotConsumed();
-		icyBasalt = new ItemRequirement("Icy Basalt", ItemID.ICY_BASALT);
+		icyBasalt = new ItemRequirement("Icy Basalt", ItemID.WEISS_TELEPORT_BASALT);
 
-		notTalkedToGuard = new VarbitRequirement(14722, 2, Operation.GREATER_EQUAL);
-		notGoneUpstairs = new VarbitRequirement(14722, 4, Operation.GREATER_EQUAL);
-		notInspectedCrimeScene = new VarbitRequirement(14722, 6, Operation.GREATER_EQUAL);
+		notTalkedToGuard = new VarbitRequirement(VarbitID.SOTN, 2, Operation.GREATER_EQUAL);
+		notGoneUpstairs = new VarbitRequirement(VarbitID.SOTN, 4, Operation.GREATER_EQUAL);
+		notInspectedCrimeScene = new VarbitRequirement(VarbitID.SOTN, 6, Operation.GREATER_EQUAL);
 
 		notInspectWall = new VarbitRequirement(14726, 0);
 		notInspectCeril = new VarbitRequirement(14727, 0);
 		notInspectWindow = new VarbitRequirement(14728, 0);
 		notInspectChest = new VarbitRequirement(14729, 0);
 
-		inspectedCrimeScene = new VarbitRequirement(14722, 8, Operation.GREATER_EQUAL);
+		inspectedCrimeScene = new VarbitRequirement(VarbitID.SOTN, 8, Operation.GREATER_EQUAL);
 
 		toldWindow = new VarbitRequirement(14731, 1);
 		toldCeril = new VarbitRequirement(14730, 1);
 		toldWall = new VarbitRequirement(14732, 1);
 
-		onTheTrail = new VarbitRequirement(14722, 20, Operation.GREATER_EQUAL);
+		onTheTrail = new VarbitRequirement(VarbitID.SOTN, 20, Operation.GREATER_EQUAL);
 
 		checkedBarrel = new VarbitRequirement(14733, 1);
 		checkedBoulder = new VarbitRequirement(14734, 1);
@@ -308,15 +302,15 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		checkedBoulder2 = new VarbitRequirement(14737, 1);
 		checkedBush2 = new VarbitRequirement(14738, 1);
 
-		evelotDefeated = new VarbitRequirement(14722, 28, Operation.GREATER_EQUAL);
-		talkedToAlomoneOrClivet = new VarbitRequirement(14722, 32, Operation.GREATER_EQUAL);
-		talkedToHazeel = new VarbitRequirement(14722, 36, Operation.GREATER_EQUAL);
+		evelotDefeated = new VarbitRequirement(VarbitID.SOTN, 28, Operation.GREATER_EQUAL);
+		talkedToAlomoneOrClivet = new VarbitRequirement(VarbitID.SOTN, 32, Operation.GREATER_EQUAL);
+		talkedToHazeel = new VarbitRequirement(VarbitID.SOTN, 36, Operation.GREATER_EQUAL);
 
-		talkedToGuard = new VarbitRequirement(14722, 38, Operation.GREATER_EQUAL);
+		talkedToGuard = new VarbitRequirement(VarbitID.SOTN, 38, Operation.GREATER_EQUAL);
 
-		talkedToClaus = new VarbitRequirement(14722, 40, Operation.GREATER_EQUAL);
+		talkedToClaus = new VarbitRequirement(VarbitID.SOTN, 40, Operation.GREATER_EQUAL);
 
-		buttonPressed = new VarbitRequirement(14722, 42, Operation.GREATER_EQUAL);
+		buttonPressed = new VarbitRequirement(VarbitID.SOTN, 42, Operation.GREATER_EQUAL);
 
 		// Puzzle values
 		// 811.0, 811.1 big wrapper
@@ -326,46 +320,46 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		// 811.14[0-63] for guesses. Goes from First guess A-F, and loops to top
 		// Incorrect guesses are 2 rows, green/blue are 3, non-guessed are 1
 
-		chestPicked = new VarbitRequirement(14722, 48, Operation.GREATER_EQUAL);
+		chestPicked = new VarbitRequirement(VarbitID.SOTN, 48, Operation.GREATER_EQUAL);
 
-		scrollInspected = new VarbitRequirement(14722, 50, Operation.GREATER_EQUAL);
+		scrollInspected = new VarbitRequirement(VarbitID.SOTN, 50, Operation.GREATER_EQUAL);
 
-		handedInScroll = new VarbitRequirement(14722, 52, Operation.GREATER_EQUAL);
+		handedInScroll = new VarbitRequirement(VarbitID.SOTN, 52, Operation.GREATER_EQUAL);
 		hadDustyScroll = new Conditions(LogicType.OR, dustyScroll, handedInScroll);
 
-		talkedNorth = new VarbitRequirement(14722, 56, Operation.GREATER_EQUAL);
+		talkedNorth = new VarbitRequirement(VarbitID.SOTN, 56, Operation.GREATER_EQUAL);
 
-		talkedToSnowflake = new VarbitRequirement(14722, 58, Operation.GREATER_EQUAL);
+		talkedToSnowflake = new VarbitRequirement(VarbitID.SOTN, 58, Operation.GREATER_EQUAL);
 
-		questioned1 = new VarbitRequirement(14743, 1, Operation.GREATER_EQUAL);
-		questioned2 = new VarbitRequirement(14744, 1, Operation.GREATER_EQUAL);
+		questioned1 = new VarbitRequirement(VarbitID.SOTN_GHORROCK_QUESTION, 1, Operation.GREATER_EQUAL);
+		questioned2 = new VarbitRequirement(VarbitID.SOTN_RITUAL_QUESTION, 1, Operation.GREATER_EQUAL);
 
-		assassinFight = new VarbitRequirement(14722, 62, Operation.GREATER_EQUAL);
+		assassinFight = new VarbitRequirement(VarbitID.SOTN, 62, Operation.GREATER_EQUAL);
 
-		assassinDefeated = new VarbitRequirement(14722, 68, Operation.GREATER_EQUAL);
-		talkedToKhazard = new VarbitRequirement(14722, 70, Operation.GREATER_EQUAL);
+		assassinDefeated = new VarbitRequirement(VarbitID.SOTN, 68, Operation.GREATER_EQUAL);
+		talkedToKhazard = new VarbitRequirement(VarbitID.SOTN, 70, Operation.GREATER_EQUAL);
 
-		puzzleStart = new VarbitRequirement(14722, 72, Operation.GREATER_EQUAL);
+		puzzleStart = new VarbitRequirement(VarbitID.SOTN, 72, Operation.GREATER_EQUAL);
 		inGateInterface = new WidgetTextRequirement(809, 5, 9, "Confirm");
-		centreGateUnlocked = new VarbitRequirement(14760, 1, Operation.GREATER_EQUAL);
+		centreGateUnlocked = new VarbitRequirement(VarbitID.SOTN_GHORROCK_GATE_2, 1, Operation.GREATER_EQUAL);
 
-		nwBrazier = new VarbitRequirement(14754, 4, Operation.EQUAL);
-		seBrazier = new VarbitRequirement(14755, 1, Operation.EQUAL);
-		neBrazier = new VarbitRequirement(14756, 3, Operation.EQUAL);
-		swBrazier = new VarbitRequirement(14757, 2, Operation.EQUAL);
-		brazierFin = new VarbitRequirement(14758, 1, Operation.GREATER_EQUAL);
+		nwBrazier = new VarbitRequirement(VarbitID.SOTN_GHORROCK_BRAZIER_1, 4, Operation.EQUAL);
+		seBrazier = new VarbitRequirement(VarbitID.SOTN_GHORROCK_BRAZIER_2, 1, Operation.EQUAL);
+		neBrazier = new VarbitRequirement(VarbitID.SOTN_GHORROCK_BRAZIER_3, 3, Operation.EQUAL);
+		swBrazier = new VarbitRequirement(VarbitID.SOTN_GHORROCK_BRAZIER_4, 2, Operation.EQUAL);
+		brazierFin = new VarbitRequirement(VarbitID.SOTN_GHORROCK_BRAZIER_CHEST, 1, Operation.GREATER_EQUAL);
 
-		northGateUnlocked = new VarbitRequirement(14759, 1, Operation.GREATER_EQUAL);
+		northGateUnlocked = new VarbitRequirement(VarbitID.SOTN_GHORROCK_GATE_1, 1, Operation.GREATER_EQUAL);
 
-		fixedLever = new VarbitRequirement(14753, 1, Operation.GREATER_EQUAL);
-		leverPulled = new VarbitRequirement(14753, 2, Operation.GREATER_EQUAL);
+		fixedLever = new VarbitRequirement(VarbitID.SOTN_GHORROCK_LEVER, 1, Operation.GREATER_EQUAL);
+		leverPulled = new VarbitRequirement(VarbitID.SOTN_GHORROCK_LEVER, 2, Operation.GREATER_EQUAL);
 
-		gottenIcyKey = new VarbitRequirement(14722, 76, Operation.GREATER_EQUAL);
+		gottenIcyKey = new VarbitRequirement(VarbitID.SOTN, 76, Operation.GREATER_EQUAL);
 
-		southGateOpened = new VarbitRequirement(14722, 78, Operation.GREATER_EQUAL);
+		southGateOpened = new VarbitRequirement(VarbitID.SOTN, 78, Operation.GREATER_EQUAL);
 
-		jhallanTalkedTo = new VarbitRequirement(14722, 86, Operation.GREATER_EQUAL);
-		returnToGuard = new VarbitRequirement(14722, 88, Operation.GREATER_EQUAL);
+		jhallanTalkedTo = new VarbitRequirement(VarbitID.SOTN, 86, Operation.GREATER_EQUAL);
+		returnToGuard = new VarbitRequirement(VarbitID.SOTN, 88, Operation.GREATER_EQUAL);
 
 		// 14745 0->1 when teleport used from Hazeel
 	}
@@ -401,27 +395,27 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		startQuest = new NpcStep(this, NpcID.GUARD_12087, new WorldPoint(2570, 3276, 0),
+		startQuest = new NpcStep(this, NpcID.GUARD_CARNILLEAN_VIS, new WorldPoint(2570, 3276, 0),
 			"Talk to the guard outside of the Carnillean Mansion in East Ardougne.");
 		startQuest.addDialogStep("Yes.");
-		goUpstairs = new ObjectStep(this, ObjectID.STAIRCASE_46704, new WorldPoint(2568, 3269, 0),
+		goUpstairs = new ObjectStep(this, ObjectID.CARNILLEAN_STAIRS, new WorldPoint(2568, 3269, 0),
 			"Climb the stairs in Carnillean Mansion and talk to the guard there.");
-		talkToGuardUpstairs = new NpcStep(this, NpcID.GUARD_12045, new WorldPoint(2571, 3267, 1), "Talk to the guard.");
+		talkToGuardUpstairs = new NpcStep(this, NpcID.SOTN_GUARD_CARNILLEAN_UPSTAIRS, new WorldPoint(2571, 3267, 1), "Talk to the guard.");
 		goUpstairs.addSubSteps(talkToGuardUpstairs);
-		inspectBody = new ObjectStep(this, ObjectID.CERIL_CARNILLEAN, "Inspect Ceril Carnillean's body.");
-		inspectWall = new ObjectStep(this, ObjectID.WALL_46707, "Knock-at the wall on the North side of the room.");
+		inspectBody = new ObjectStep(this, ObjectID.SOTN_DEAD_BODY, "Inspect Ceril Carnillean's body.");
+		inspectWall = new ObjectStep(this, ObjectID.CARNILLEANBOOKCASE_KNOCK, "Knock-at the wall on the North side of the room.");
 		inspectWall.addDialogStep("Yes.");
-		inspectWindow = new ObjectStep(this, ObjectID.BROKEN_WINDOW, "Inspect the broken Window on the East side of the room.");
-		climbHiddenLadder = new ObjectStep(this, ObjectID.LADDER_16683, "Climb the Ladder.");
-		inspectChest = new ObjectStep(this, ObjectID.CHEST_46572, "Inspect the chest.");
-		goDownToGuard = new ObjectStep(this, ObjectID.LADDER_16679, "Descend the ladder and talk to the guard " +
+		inspectWindow = new ObjectStep(this, ObjectID.SOTN_WINDOW_INNER_OP, "Inspect the broken Window on the East side of the room.");
+		climbHiddenLadder = new ObjectStep(this, ObjectID.LADDER, "Climb the Ladder.");
+		inspectChest = new ObjectStep(this, ObjectID.SOTN_BROKEN_CHEST, "Inspect the chest.");
+		goDownToGuard = new ObjectStep(this, ObjectID.LADDERTOP, "Descend the ladder and talk to the guard " +
 			"about what you've found.");
 		talkToGuardInvestigated = new TellAboutMurder(this);
-		talkToGuardCompleted = new NpcStep(this, NpcID.GUARD_12045, "Talk to the guard.");
+		talkToGuardCompleted = new NpcStep(this, NpcID.SOTN_GUARD_CARNILLEAN_UPSTAIRS, "Talk to the guard.");
 		talkToGuardCompleted.addDialogSteps("I think that's everything.", "I think I've gone over everything.");
 		goDownToGuard.addSubSteps(talkToGuardInvestigated, talkToGuardCompleted);
 
-		downStaircaseToKhaz = new ObjectStep(this, ObjectID.STAIRCASE_46705, "Climb down the staircase.");
+		downStaircaseToKhaz = new ObjectStep(this, ObjectID.CARNILLEAN_STAIRSTOP, "Climb down the staircase.");
 		speakToBarman = new NpcStep(this, NpcID.KHAZARD_BARMAN, new WorldPoint(2566, 3140, 0),
 			"Head to the Fight Arena Bar and talk to the Khazard Barman.", coins, combatGear);
 		speakToBarman.addDialogStep("Do you know anyone called Evelot?");
@@ -437,34 +431,34 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 			"Inspect the boulder to the south east.", combatGear);
 		inspectBush2 = new ObjectStep(this, 46878, new WorldPoint(2621, 3193, 0),
 			"Inspect the bush to the east.", combatGear);
-		fightEvelot = new NpcStep(this, NpcID.EVELOT, new WorldPoint(2643, 3202, 0),
+		fightEvelot = new NpcStep(this, NpcID.SOTN_EVELOT_VIS, new WorldPoint(2643, 3202, 0),
 			"Approach Evelot to the east to start the fight.\n\n" +
 				"Protect from melee and reactivate prayer after she special attacks.",
 			combatGear);
-		speakToEvelot = new NpcStep(this, NpcID.EVELOT, new WorldPoint(2643, 3202, 0),
+		speakToEvelot = new NpcStep(this, NpcID.SOTN_EVELOT_VIS, new WorldPoint(2643, 3202, 0),
 			"Talk to Evelot again after the fight.");
 
-		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2852, new WorldPoint(2586, 3234, 0),
+		enterCave = new ObjectStep(this, ObjectID.HAZEELCULTCAVE, new WorldPoint(2586, 3234, 0),
 			"Enter the cave that leads to the Ardougne sewers, near the Clock Tower.", lockpick);
-		boardRaft = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2567, 9679, 0),
+		boardRaft = new ObjectStep(this, ObjectID.HAZEELSEWERRAFT, new WorldPoint(2567, 9679, 0),
 			"Board the raft.");
 		// TODO check if player killed Alomone and direct accordingly
-		talkToAlomoneOrClivet = new NpcStep(this, NpcID.ALOMONE, new WorldPoint(2607, 9671, 0), "Talk to Alomone or Clivet inside the cult area.");
-		talkToAlomoneOrClivet.addAlternateNpcs(NpcID.ALOMONE_12093, NpcID.ALOMONE_12094, NpcID.CLIVET, NpcID.CLIVET_12095);
-		talkToHazeel = new NpcStep(this, NpcID.HAZEEL_12050, new WorldPoint(2607, 9672, 0),
+		talkToAlomoneOrClivet = new NpcStep(this, NpcID.ALOMONE_HAZEEL_CULTIST_1OP, new WorldPoint(2607, 9671, 0), "Talk to Alomone or Clivet inside the cult area.");
+		talkToAlomoneOrClivet.addAlternateNpcs(NpcID.ALOMONE_HAZEEL_CULTIST_2OP, NpcID.ALOMONE_HAZEEL_CULTIST_CUTSCENE, NpcID.SOTN_CLIVET_VIS, NpcID.CLIVET_HAZEEL_CULTIST_VIS);
+		talkToHazeel = new NpcStep(this, NpcID.SOTN_HAZEEL_VIS, new WorldPoint(2607, 9672, 0),
 			"Talk to Hazeel.");
-		returnRaft = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2606, 9693, 0),
+		returnRaft = new ObjectStep(this, ObjectID.HAZEELSEWERRAFT, new WorldPoint(2606, 9693, 0),
 			"Return to the Carnillean Mansion.");
-		returnStairs = new ObjectStep(this, ObjectID.STAIRS_2853, new WorldPoint(2570, 9684, 0),
+		returnStairs = new ObjectStep(this, ObjectID.HAZEELCULTSTAIRS, new WorldPoint(2570, 9684, 0),
 			"Return to the Carnillean Mansion.");
-		returnGuard = new NpcStep(this, NpcID.GUARD_12087, new WorldPoint(2570, 3276, 0),
+		returnGuard = new NpcStep(this, NpcID.GUARD_CARNILLEAN_VIS, new WorldPoint(2570, 3276, 0),
 			"Return to the Carnillean Mansion and speak to the Guard.");
 		returnGuard.addSubSteps(returnRaft, returnStairs);
-		ladderToClaus = new ObjectStep(this, ObjectID.LADDER_46717, new WorldPoint(2570, 3267, 0),
+		ladderToClaus = new ObjectStep(this, ObjectID.CARNILLEAN_LADDER_DOWN, new WorldPoint(2570, 3267, 0),
 			"Climb down the ladder into the basement of the mansion.");
-		talkToClaus = new NpcStep(this, NpcID.CLAUS_THE_CHEF, new WorldPoint(2542, 9696, 0),
+		talkToClaus = new NpcStep(this, NpcID.CLAUS_CARNILLEAN, new WorldPoint(2542, 9696, 0),
 			"Talk to Claus the Chef.");
-		examineShelves = new ObjectStep(this, ObjectID.COOKING_SHELVES_46589, new WorldPoint(2540, 9694, 0),
+		examineShelves = new ObjectStep(this, ObjectID.SOTN_SHELVES_BUTTON, new WorldPoint(2540, 9694, 0),
 			"Search the cooking shelves for a button.");
 		examineShelves.addDialogStep("Yes.");
 		examineWall = new ObjectStep(this, 46897, new WorldPoint(2544, 9698, 0),
@@ -476,60 +470,60 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		lockpickChest.addText("Blue means it's the right position but wrong number.");
 		lockpickChest.addText("The puzzle's solution does not change attempt to attempt.");
 		inspectScroll = new ItemStep(this, "Inspect the dusty scroll.", dustyScroll.highlighted());
-		returnToHazeel = new NpcStep(this, NpcID.HAZEEL_12050, new WorldPoint(2607, 9672, 0),
+		returnToHazeel = new NpcStep(this, NpcID.SOTN_HAZEEL_VIS, new WorldPoint(2607, 9672, 0),
 		"Return to Hazeel and tell him about the scroll.", dustyScroll.hideConditioned(handedInScroll));
-		returnToHazeelWall = new ObjectStep(this, ObjectID.WALL_46590, new WorldPoint(2533, 9617, 0),
+		returnToHazeelWall = new ObjectStep(this, ObjectID.SOTN_HIDDEN_DOOR_OP, new WorldPoint(2533, 9617, 0),
 			"Return to Hazeel and tell him about the scroll.", dustyScroll.hideConditioned(handedInScroll));
 		returnToHazeelWall.addDialogStep("Enter the passage.");
-		returnToHazeelLadder = new ObjectStep(this, ObjectID.LADDER_46716, new WorldPoint(2544, 9694, 0),
+		returnToHazeelLadder = new ObjectStep(this, ObjectID.CARNILLEAN_LADDER_UP, new WorldPoint(2544, 9694, 0),
 			"Return to Hazeel and tell him about the scroll.", dustyScroll.hideConditioned(handedInScroll));
-		returnToHazeelCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2852, new WorldPoint(2586, 3234, 0),
+		returnToHazeelCave = new ObjectStep(this, ObjectID.HAZEELCULTCAVE, new WorldPoint(2586, 3234, 0),
 			"Return to Hazeel and tell him about the scroll.", dustyScroll.hideConditioned(handedInScroll));
-		returnToHazeelRaft = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2567, 9679, 0),
+		returnToHazeelRaft = new ObjectStep(this, ObjectID.HAZEELSEWERRAFT, new WorldPoint(2567, 9679, 0),
 			"Return to Hazeel and tell him about the scroll.", dustyScroll.hideConditioned(handedInScroll));
 		returnToHazeel.addSubSteps(returnToHazeelWall, returnToHazeelLadder, returnToHazeelCave, returnToHazeelRaft);
 
-		goNorth = new NpcStep(this, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
+		goNorth = new NpcStep(this, NpcID.SOTN_HAZEEL_TROLL_VIS, new WorldPoint(2880, 3946, 0),
 			"Talk to Big Fish at the north entrance to Weiss.");
 		talkToTroll = new AskAboutRitual(this);
-		talkToTrollFinish = new NpcStep(this, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
+		talkToTrollFinish = new NpcStep(this, NpcID.SOTN_HAZEEL_TROLL_VIS, new WorldPoint(2880, 3946, 0),
 			"Talk to Big Fish (Hazeel) at the north entrance to Weiss again.");
 		talkToTrollFinish.addDialogSteps("Okay, I'm done asking questions. What now?", "I'm done asking questions. What now?");
 		talkToTroll.addSubSteps(talkToTrollFinish);
-		talkToSnowflake = new NpcStep(this, NpcID.SNOWFLAKE, new WorldPoint(2872, 3934, 0),
+		talkToSnowflake = new NpcStep(this, NpcID.MY2ARM_SNOWFLAKE, new WorldPoint(2872, 3934, 0),
 			"Talk to Snowflake.");
 		talkToSnowflake.addDialogStep("Have you seen anything odd around here recently?");
-		moveToWeissCave = new ObjectStep(this, ObjectID.STAIRS_33234, new WorldPoint(2867, 3940, 0),
+		moveToWeissCave = new ObjectStep(this, ObjectID.MY2ARM_THRONEROOM_STAIRSDOWN, new WorldPoint(2867, 3940, 0),
 			"Prepare for a fight and climb down the stairs in the middle of Weiss.", combatGear, antipoison);
 		enterWeissCave = new ObjectStep(this, 46905, new WorldPoint(2846, 10332, 0),
 			"Enter the cave to the south.", combatGear, antipoison);
 		enterWeissCave.addDialogStep("Yes.");
-		fightAssassin = new NpcStep(this, NpcID.ASSASSIN_10940, new WorldPoint(2927, 10348, 0), "Defeat the assassin.");
+		fightAssassin = new NpcStep(this, NpcID.AKD_SETTLEMENT_RUINS_ASSASSIN, new WorldPoint(2927, 10348, 0), "Defeat the assassin.");
 		fightAssassin.addText("Put the Assassin in the smoke bombs so you can hit him and dodge the poison vials he throws out.");
-		talkToKhazard = new NpcStep(this, NpcID.GENERAL_KHAZARD_12055, new WorldPoint(2927, 10348, 0),
+		talkToKhazard = new NpcStep(this, NpcID.SOTN_KHAZARD_GHORROCK, new WorldPoint(2927, 10348, 0),
 			"Talk to General Khazard.");
-		talkToHazeelWeiss = new NpcStep(this, NpcID.HAZEEL_12051, new WorldPoint(2903, 10335, 0), "Talk to Hazeel to the west and tell him about what happened.");
-		searchBarrel = new ObjectStep(this, ObjectID.BARREL_46609, new WorldPoint(2923, 10322, 0),
+		talkToHazeelWeiss = new NpcStep(this, NpcID.SOTN_HAZEEL_GHORROCK, new WorldPoint(2903, 10335, 0), "Talk to Hazeel to the west and tell him about what happened.");
+		searchBarrel = new ObjectStep(this, ObjectID.SOTN_GHORROCK_WEAPON_BARREL, new WorldPoint(2923, 10322, 0),
 			"Search the barrel south of the room you fought the assassin.");
-		openCentreGate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.GATE_46602, new WorldPoint(2924, 10329, 0),
-			"Enter the centre room. Use the code \"BLOOD\" to unlock the gate."), new ObjectStep(this, ObjectID.GATE_46602, new WorldPoint(2924, 10329, 0),
+		openCentreGate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.SOTN_GHORROCK_GATE_2, new WorldPoint(2924, 10329, 0),
+			"Enter the centre room. Use the code \"BLOOD\" to unlock the gate."), new ObjectStep(this, ObjectID.SOTN_GHORROCK_GATE_2, new WorldPoint(2924, 10329, 0),
 			"Unlock the gate to the centre room by working out the correct code."));
 		solveCenterGate =  new PuzzleWrapperStep(this, new SolveDoorCode(this), "Work out and enter the code to the central room's gate.");
 		openCentreGate.addSubSteps(solveCenterGate);
-		openNorthChest =  new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CHEST_46619,
-			new WorldPoint(2919, 10331, 0), "Open the north chest using the code \"7402\"."),  new ObjectStep(this, ObjectID.CHEST_46619,
+		openNorthChest =  new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.SOTN_GHORROCK_CHEST_4,
+			new WorldPoint(2919, 10331, 0), "Open the north chest using the code \"7402\"."),  new ObjectStep(this, ObjectID.SOTN_GHORROCK_CHEST_4,
 			new WorldPoint(2919, 10331, 0), "Open the north chest after working out the code for it."));
 		solveChestPuzzle = new PuzzleWrapperStep(this, new SolveChestCode(this), "Open the north chest after working out its code.");
 		openNorthChest.addSubSteps(solveChestPuzzle);
-		getTinderbox = new ObjectStep(this, ObjectID.CRATE_46608, new WorldPoint(2916, 10329, 0),
+		getTinderbox = new ObjectStep(this, ObjectID.SOTN_GHORROCK_CRATE_2, new WorldPoint(2916, 10329, 0),
 			"Get a tinderbox from the crate in the west of the central room.");
-		lightNW = new ObjectStep(this, ObjectID.BRAZIER_46614, new WorldPoint(2916, 10331, 0), "Light the North West Brazier.");
-		lightSE = new ObjectStep(this, ObjectID.BRAZIER_46614, new WorldPoint(2922, 10325, 0), "Light the South East Brazier.");
-		lightNE = new ObjectStep(this, ObjectID.BRAZIER_46614, new WorldPoint(2922, 10331, 0), "Light the North East Brazier.");
-		lightSW = new ObjectStep(this, ObjectID.BRAZIER_46614, new WorldPoint(2916, 10325, 0), "Light the South West Brazier.");
-		openWestChest = new ObjectStep(this, ObjectID.CHEST_46618, new WorldPoint(2916, 10327, 0), "Open the western chest.");
-		openNorthGate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.GATE_46601, new WorldPoint(2916, 10338, 0),
-		"Open the north gate using the code LEFT - UP - LEFT - DOWN."), new ObjectStep(this, ObjectID.GATE_46601, new WorldPoint(2916, 10338, 0),
+		lightNW = new ObjectStep(this, ObjectID.SOTN_GHORROCK_BRAZIER_UNLIT, new WorldPoint(2916, 10331, 0), "Light the North West Brazier.");
+		lightSE = new ObjectStep(this, ObjectID.SOTN_GHORROCK_BRAZIER_UNLIT, new WorldPoint(2922, 10325, 0), "Light the South East Brazier.");
+		lightNE = new ObjectStep(this, ObjectID.SOTN_GHORROCK_BRAZIER_UNLIT, new WorldPoint(2922, 10331, 0), "Light the North East Brazier.");
+		lightSW = new ObjectStep(this, ObjectID.SOTN_GHORROCK_BRAZIER_UNLIT, new WorldPoint(2916, 10325, 0), "Light the South West Brazier.");
+		openWestChest = new ObjectStep(this, ObjectID.SOTN_GHORROCK_CHEST_3, new WorldPoint(2916, 10327, 0), "Open the western chest.");
+		openNorthGate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.SOTN_GHORROCK_GATE_1, new WorldPoint(2916, 10338, 0),
+		"Open the north gate using the code LEFT - UP - LEFT - DOWN."), new ObjectStep(this, ObjectID.SOTN_GHORROCK_GATE_1, new WorldPoint(2916, 10338, 0),
 			"Open the north gate using a code you can work out."));
 		// VarClientInt 1120 represents number of arrows
 		// Left 1119 3->15
@@ -543,40 +537,40 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		// Down 810.7
 		// Left 810.8
 		// Right 810.9
-		useLeverOnMechanism = new ObjectStep(this, NullObjectID.NULL_46900, new WorldPoint(2917, 10342, 0), "Use the handle on the lever mechanism",
+		useLeverOnMechanism = new ObjectStep(this, ObjectID.SOTN_GHORROCK_LEVER, new WorldPoint(2917, 10342, 0), "Use the handle on the lever mechanism",
 			leverHandle.highlighted());
 		useLeverOnMechanism.addIcon(leverHandle.getId());
 		useLeverOnMechanism.addDialogStep("Yes.");
-		pullLever = new ObjectStep(this, NullObjectID.NULL_46900, new WorldPoint(2917, 10342, 0), "Pull the lever.");
+		pullLever = new ObjectStep(this, ObjectID.SOTN_GHORROCK_LEVER, new WorldPoint(2917, 10342, 0), "Pull the lever.");
 		pullLever.addDialogStep("Yes.");
-		inspectPillar = new ObjectStep(this, ObjectID.PILLAR_46613, new WorldPoint(2924, 10346, 0),
+		inspectPillar = new ObjectStep(this, ObjectID.SOTN_GHORROCK_PILLAR, new WorldPoint(2924, 10346, 0),
 			"Inspect the south west pillar in the room where you fought the assassin.");
 		combineShards = new DetailedQuestStep(this, "Use the jewel shards on one another.",
 			jewelShard1. highlighted(), jewelShard2.highlighted());
 		openIcyChest = new DetailedQuestStep(this, "Use the ancient jewel on the icy chest.",
 			ancientJewel.highlighted(), icyChest.highlighted());
-		openSouthGate = new ObjectStep(this, ObjectID.GATE_46603, new WorldPoint(2918, 10321, 0),
+		openSouthGate = new ObjectStep(this, ObjectID.SOTN_GHORROCK_GATE_3, new WorldPoint(2918, 10321, 0),
 			"Open the gate near the barrel you found the lever handle in.", icyKey);
-		enterCrevice = new ObjectStep(this, ObjectID.CREVICE_46597, new WorldPoint(2908, 10317, 0),
+		enterCrevice = new ObjectStep(this, ObjectID.GHORROCK_DUNGEON_CAVE_ENTRY, new WorldPoint(2908, 10317, 0),
 			"Resupply if you haven't already. Prepare yourself for a challenging fight then enter the crevice.");
 
-		defeatMuspah = new NpcStep(this, NpcID.STRANGE_CREATURE_12074, new WorldPoint(2849, 4259, 0), "Defeat the Strange Creature.");
-		((NpcStep) defeatMuspah).addAlternateNpcs(NpcID.STRANGE_CREATURE_12073, NpcID.STRANGE_CREATURE, NpcID.STRANGE_CREATURE_12075, NpcID.STRANGE_CREATURE_12075);
-		moveToWeissCaveEnd = new ObjectStep(this, ObjectID.STAIRS_33234, new WorldPoint(2867, 3940, 0),
+		defeatMuspah = new NpcStep(this, NpcID.MUSPAH_MELEE_QUEST, new WorldPoint(2849, 4259, 0), "Defeat the Strange Creature.");
+		((NpcStep) defeatMuspah).addAlternateNpcs(NpcID.MUSPAH_QUEST, NpcID.SOTN_MUSPAH_CUTSCENE, NpcID.MUSPAH_SOULSPLIT_QUEST, NpcID.MUSPAH_SOULSPLIT_QUEST);
+		moveToWeissCaveEnd = new ObjectStep(this, ObjectID.MY2ARM_THRONEROOM_STAIRSDOWN, new WorldPoint(2867, 3940, 0),
 		"Speak to Jhallan in the Muspah room.");
 		enterWeissCaveEnd = new ObjectStep(this, 46905, new WorldPoint(2846, 10332, 0),
 			"Speak to Jhallan in the Muspah room.");
-		enterCreviceEnd = new ObjectStep(this, ObjectID.CREVICE_46597, new WorldPoint(2908, 10317, 0),
+		enterCreviceEnd = new ObjectStep(this, ObjectID.GHORROCK_DUNGEON_CAVE_ENTRY, new WorldPoint(2908, 10317, 0),
 			"Speak to Jhallan in the Muspah room.");
-		talkToJhallan = new NpcStep(this, NpcID.JHALLAN, "Speak to Jhallan in the Muspah room.");
+		talkToJhallan = new NpcStep(this, NpcID.SOTN_JHALLAN_GHORROCK, "Speak to Jhallan in the Muspah room.");
 		talkToJhallan.addSubSteps(moveToWeissCaveEnd, enterWeissCaveEnd, enterCreviceEnd);
-		continueCutscene = new NpcStep(this, NpcID.HAZEEL_12051, new WorldPoint(2926, 10350, 0),
+		continueCutscene = new NpcStep(this, NpcID.SOTN_HAZEEL_GHORROCK, new WorldPoint(2926, 10350, 0),
 			"Talk to Hazeel inside the ruins for a teleport to Ardougne.");
 		continueCutscene.addDialogStep("Yes.");
-		finishQuest = new NpcStep(this, NpcID.GUARD_12087, new WorldPoint(2570, 3276, 0),
+		finishQuest = new NpcStep(this, NpcID.GUARD_CARNILLEAN_VIS, new WorldPoint(2570, 3276, 0),
 			"Return to the guard outside of the Carnillean Mansion in East Ardougne to finish the quest. " +
 				"Talk to Hazeel for a teleport to Ardougne.");
-		finishQuest.addAlternateNpcs(NpcID.HAZEEL_12051);
+		finishQuest.addAlternateNpcs(NpcID.SOTN_HAZEEL_GHORROCK);
 		finishQuest.addDialogStep("Yes.");
 	}
 

@@ -24,23 +24,19 @@
  */
 package com.questhelper.steps.overlay;
 
-import com.questhelper.tools.QuestHelperWorldMapPoint;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
-import java.util.List;
-
+import com.questhelper.tools.QuestHelperWorldMapPoint;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
+import java.util.List;
 
 public class DirectionArrow
 {

@@ -31,11 +31,11 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.FontManager;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.client.ui.FontManager;
 
 public class PuzzleStep extends QuestStep
 {

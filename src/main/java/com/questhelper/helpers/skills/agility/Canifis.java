@@ -24,18 +24,19 @@
  */
 package com.questhelper.helpers.skills.agility;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.Arrays;
 import java.util.Collections;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
 
 public class Canifis extends AgilityCourse
 {
@@ -91,29 +92,29 @@ public class Canifis extends AgilityCourse
 	protected void setupSteps()
 	{
 		//Canifis obstacles
-		climbTallTree = new ObjectStep(this.questHelper, ObjectID.TALL_TREE_14843, new WorldPoint(3507, 3489, 0),
+		climbTallTree = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_CANIFIS_START_TREE, new WorldPoint(3507, 3489, 0),
 			"Climb the tall tree just north of the bank in Canifis.",
 			Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpFirstGap = new ObjectStep(this.questHelper, ObjectID.GAP_14844, new WorldPoint(3506, 3498, 2),
+		jumpFirstGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_CANIFIS_JUMP, new WorldPoint(3506, 3498, 2),
 			"Jump across the first gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpSecondGap = new ObjectStep(this.questHelper, ObjectID.GAP_14845, new WorldPoint(3497, 3504, 2),
+		jumpSecondGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_CANIFIS_JUMP_2, new WorldPoint(3497, 3504, 2),
 			"Jump across the second gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpThirdGap = new ObjectStep(this.questHelper, ObjectID.GAP_14848, new WorldPoint(3486, 3499, 2),
+		jumpThirdGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_CANIFIS_JUMP_5, new WorldPoint(3486, 3499, 2),
 			"Jump across the third gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpFourthGap = new ObjectStep(this.questHelper, ObjectID.GAP_14846, new WorldPoint(3478, 3492, 3),
+		jumpFourthGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_CANIFIS_JUMP_3, new WorldPoint(3478, 3492, 3),
 			"Jump across the fourth gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		vaultPoleVault = new ObjectStep(this.questHelper, ObjectID.POLEVAULT, new WorldPoint(3480, 3483, 2),
+		vaultPoleVault = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_CANIFIS_POLEVAULT, new WorldPoint(3480, 3483, 2),
 			"Vault across the roofs.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpFifthGap = new ObjectStep(this.questHelper, ObjectID.GAP_14847, new WorldPoint(3503, 3476, 3),
+		jumpFifthGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_CANIFIS_JUMP_4, new WorldPoint(3503, 3476, 3),
 			"Jump across the fifth gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpSixthGap = new ObjectStep(this.questHelper, ObjectID.GAP_14897, new WorldPoint(3510, 3483, 2),
+		jumpSixthGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_CANIFIS_LEAPDOWN, new WorldPoint(3510, 3483, 2),
 			"Jump across the sixth gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 	}
 

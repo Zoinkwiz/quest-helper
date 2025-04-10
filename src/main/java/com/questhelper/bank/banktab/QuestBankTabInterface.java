@@ -26,7 +26,6 @@
  */
 package com.questhelper.bank.banktab;
 
-import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.*;
@@ -37,6 +36,8 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.bank.BankSearch;
+
+import javax.inject.Inject;
 
 public class QuestBankTabInterface
 {

@@ -27,14 +27,15 @@ package com.questhelper.requirements.conditional;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.util.Utils;
+import lombok.Setter;
+import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.Nonnull;
-import com.questhelper.util.Utils;
-import lombok.Setter;
-import net.runelite.api.Client;
 
 public class Conditions extends ConditionForStep
 {

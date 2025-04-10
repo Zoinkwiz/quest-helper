@@ -25,14 +25,23 @@
 package com.questhelper.helpers.quests.theforsakentower;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
+import net.runelite.api.Client;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,16 +49,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 
 public class PotionPuzzle extends DetailedOwnerStep
 {
@@ -173,17 +172,17 @@ public class PotionPuzzle extends DetailedOwnerStep
 
 	private void setupItemRequirements()
 	{
-		oldNotes = new ItemRequirement("Old notes", ItemID.OLD_NOTES_22774);
+		oldNotes = new ItemRequirement("Old notes", ItemID.LOVAQUEST_FLUID_NOTE);
 		oldNotes.setHighlightInInventory(true);
-		fluid1 = new ItemRequirement("Unknown fluid 1", ItemID.UNKNOWN_FLUID_1);
+		fluid1 = new ItemRequirement("Unknown fluid 1", ItemID.LOVAQUEST_CLEANSING_FLUID_1);
 		fluid1.setHighlightInInventory(true);
-		fluid2 = new ItemRequirement("Unknown fluid 2", ItemID.UNKNOWN_FLUID_2);
+		fluid2 = new ItemRequirement("Unknown fluid 2", ItemID.LOVAQUEST_CLEANSING_FLUID_2);
 		fluid2.setHighlightInInventory(true);
-		fluid3 = new ItemRequirement("Unknown fluid 3", ItemID.UNKNOWN_FLUID_3);
+		fluid3 = new ItemRequirement("Unknown fluid 3", ItemID.LOVAQUEST_CLEANSING_FLUID_3);
 		fluid3.setHighlightInInventory(true);
-		fluid4 = new ItemRequirement("Unknown fluid 4", ItemID.UNKNOWN_FLUID_4);
+		fluid4 = new ItemRequirement("Unknown fluid 4", ItemID.LOVAQUEST_CLEANSING_FLUID_4);
 		fluid4.setHighlightInInventory(true);
-		fluid5 = new ItemRequirement("Unknown fluid 5", ItemID.UNKNOWN_FLUID_5);
+		fluid5 = new ItemRequirement("Unknown fluid 5", ItemID.LOVAQUEST_CLEANSING_FLUID_5);
 		fluid5.setHighlightInInventory(true);
 
 		fluids = new ItemRequirement[]{null, fluid1, fluid2, fluid3, fluid4, fluid5};
@@ -214,21 +213,21 @@ public class PotionPuzzle extends DetailedOwnerStep
 		setupZones();
 		setupConditions();
 
-		goUpLadder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
-		goUpStairs = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33550, new WorldPoint(1378, 3825, 0), "Go to the tower's 1st floor.");
-		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33485, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
+		goUpLadder = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_DUNGEON_EXIT, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
+		goUpStairs = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_SPIRAL_STAIRS_M, new WorldPoint(1378, 3825, 0), "Go to the tower's 1st floor.");
+		goDownToFirstFloor = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_LADDER_DOWN, new WorldPoint(1382, 3827, 2), "Go down from the top floor.");
 		goUpStairs.addSubSteps(goUpLadder, goDownToFirstFloor);
-		searchPotionCupboard = new ObjectStep(getQuestHelper(), ObjectID.CUPBOARD_33522, new WorldPoint(1387, 3820, 1), "Search the cupboard on the east wall.");
-		inspectRefinery = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Inspect the refinery.");
+		searchPotionCupboard = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_SHELVES_NOTES, new WorldPoint(1387, 3820, 1), "Search the cupboard on the east wall.");
+		inspectRefinery = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_REFINERY, new WorldPoint(1382, 3819, 1), "Inspect the refinery.");
 		inspectRefinery.addDialogStep("Yes.");
 		readNote = new DetailedQuestStep(getQuestHelper(), "Read the old notes.", oldNotes);
-		getFluidRealStep = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34596, new WorldPoint(1382, 3826, 1), "Attempt to take the correct fluid from the table.");
+		getFluidRealStep = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_FLUID_TABLE, new WorldPoint(1382, 3826, 1), "Attempt to take the correct fluid from the table.");
 		getFluid = new PuzzleWrapperStep(getQuestHelper(), getFluidRealStep, getFluidRealStep.copy());
-		useFluidOnRefineryRealStep = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Use the fluid on the refinery.");
+		useFluidOnRefineryRealStep = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_REFINERY, new WorldPoint(1382, 3819, 1), "Use the fluid on the refinery.");
 		useFluidOnRefinery = new PuzzleWrapperStep(getQuestHelper(), useFluidOnRefineryRealStep, useFluidOnRefineryRealStep.copy());
 		useFluidOnRefinery.addDialogStep("Yes.");
 
-		activateRefinery = new ObjectStep(getQuestHelper(), NullObjectID.NULL_34595, new WorldPoint(1382, 3819, 1), "Activate the refinery.");
+		activateRefinery = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_REFINERY, new WorldPoint(1382, 3819, 1), "Activate the refinery.");
 		activateRefinery.addDialogStep("Yes.");
 	}
 

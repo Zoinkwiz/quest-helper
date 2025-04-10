@@ -25,12 +25,13 @@
 package com.questhelper.helpers.miniquests.hisfaithfulservants;
 
 import com.questhelper.requirements.zone.Zone;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter

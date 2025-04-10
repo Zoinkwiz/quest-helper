@@ -24,35 +24,31 @@
  */
 package com.questhelper.helpers.quests.deserttreasureii;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.steps.*;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
 import java.util.Arrays;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
+
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class SucellusSteps extends ConditionalStep
 {
@@ -138,30 +134,30 @@ public class SucellusSteps extends ConditionalStep
 		meleeCombatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		food = new ItemRequirement("Food, as much as you can bring", ItemCollections.GOOD_EATING_FOOD);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
-		icyBasalt = new ItemRequirement("Icy basalt", ItemID.ICY_BASALT);
+		icyBasalt = new ItemRequirement("Icy basalt", ItemID.WEISS_TELEPORT_BASALT);
 		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
 
-		VarbitRequirement nardahTeleportInBook = new VarbitRequirement(5672, 1, Operation.GREATER_EQUAL);
-		nardahTeleport = new ItemRequirement("Nardah teleport, or Fairy Ring to DLQ", ItemID.DESERT_AMULET_4);
+		VarbitRequirement nardahTeleportInBook = new VarbitRequirement(VarbitID.BOOKOFSCROLLS_NARDAH, 1, Operation.GREATER_EQUAL);
+		nardahTeleport = new ItemRequirement("Nardah teleport, or Fairy Ring to DLQ", ItemID.DESERT_AMULET_ELITE);
 		nardahTeleport.setAdditionalOptions(nardahTeleportInBook);
-		nardahTeleport.addAlternates(ItemID.DESERT_AMULET_3, ItemID.NARDAH_TELEPORT, ItemID.DESERT_AMULET_2);
+		nardahTeleport.addAlternates(ItemID.DESERT_AMULET_HARD, ItemID.TELEPORTSCROLL_NARDAH, ItemID.DESERT_AMULET_MEDIUM);
 		nardahTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
 		// Quest items
-		prisonersLetter = new ItemRequirement("Prisoner's letter", ItemID.PRISONERS_LETTER);
-		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK_28415);
+		prisonersLetter = new ItemRequirement("Prisoner's letter", ItemID.DT2_GHORROCK_CELL_NOTE);
+		lockpick = new ItemRequirement("Lockpick", ItemID.DT2_GHORROCK_LOCKPICK);
 		lockpick.setTooltip("You can obtain another from the bed in the cell you started in");
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL_28414);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE_28413);
+		chisel = new ItemRequirement("Chisel", ItemID.DT2_GHORROCK_CELL_CHISEL);
+		knife = new ItemRequirement("Knife", ItemID.DT2_GHORROCK_CELL_KNIFE);
 
-		warningLetter = new ItemRequirement("Warning letter", ItemID.WARNING_LETTER);
+		warningLetter = new ItemRequirement("Warning letter", ItemID.DT2_GHORROCK_HINT_NOTE);
 
-		sapphireKey = new ItemRequirement("Sapphire key", ItemID.SAPPHIRE_KEY_28416);
-		emeraldKey = new ItemRequirement("Emerald key", ItemID.EMERALD_KEY_28417);
-		rubyKey = new ItemRequirement("Ruby key", ItemID.RUBY_KEY_28418);
-		diamondKey = new ItemRequirement("Diamond key", ItemID.DIAMOND_KEY);
-		oddKey = new ItemRequirement("Odd key", ItemID.ODD_KEY);
-		sucellusMedallion = new ItemRequirement("Sucellus medallion", ItemID.SUCELLUS_MEDALLION);
+		sapphireKey = new ItemRequirement("Sapphire key", ItemID.DT2_GHORROCK_SAPPHIRE_KEY);
+		emeraldKey = new ItemRequirement("Emerald key", ItemID.DT2_GHORROCK_EMERALD_KEY);
+		rubyKey = new ItemRequirement("Ruby key", ItemID.DT2_GHORROCK_RUBY_KEY);
+		diamondKey = new ItemRequirement("Diamond key", ItemID.DT2_GHORROCK_DIAMOND_KEY);
+		oddKey = new ItemRequirement("Odd key", ItemID.DT2_DUKE_MEDALLION_KEY);
+		sucellusMedallion = new ItemRequirement("Sucellus medallion", ItemID.DT2_MEDALLION_SUCELLUS);
 	}
 
 	protected void setupZones()
@@ -216,19 +212,19 @@ public class SucellusSteps extends ConditionalStep
 		// 933 0->1
 		// 13989 0->1
 
-		talkedToSoldier = new VarbitRequirement(15127, 10, Operation.GREATER_EQUAL);
-		haveReadPrisonersLetter = new VarbitRequirement(15127, 12, Operation.GREATER_EQUAL);
-		givenKnifeToSoldier = new VarbitRequirement(15127, 14, Operation.GREATER_EQUAL);
+		talkedToSoldier = new VarbitRequirement(VarbitID.DT2_GHORROCK, 10, Operation.GREATER_EQUAL);
+		haveReadPrisonersLetter = new VarbitRequirement(VarbitID.DT2_GHORROCK, 12, Operation.GREATER_EQUAL);
+		givenKnifeToSoldier = new VarbitRequirement(VarbitID.DT2_GHORROCK, 14, Operation.GREATER_EQUAL);
 		// Recieved chisel, 14->16
-		foundLockpick = new VarbitRequirement(15127, 18, Operation.GREATER_EQUAL);
+		foundLockpick = new VarbitRequirement(VarbitID.DT2_GHORROCK, 18, Operation.GREATER_EQUAL);
 
-		escapedCell = new VarbitRequirement(15127, 20, Operation.GREATER_EQUAL);
+		escapedCell = new VarbitRequirement(VarbitID.DT2_GHORROCK, 20, Operation.GREATER_EQUAL);
 
-		assassinGone = new VarbitRequirement(15127, 22, Operation.GREATER_EQUAL);
+		assassinGone = new VarbitRequirement(VarbitID.DT2_GHORROCK, 22, Operation.GREATER_EQUAL);
 
 		// Re-enter prison:
 		// 14283 0->4
-		pickedDoor = new VarbitRequirement(15127, 24, Operation.GREATER_EQUAL);
+		pickedDoor = new VarbitRequirement(VarbitID.DT2_GHORROCK, 24, Operation.GREATER_EQUAL);
 		inChestInterface = new WidgetTextRequirement(809, 5, 9, "Confirm");
 
 
@@ -272,14 +268,14 @@ public class SucellusSteps extends ConditionalStep
 		// Got gear
 		// 48->50
 
-		gotGear = new VarbitRequirement(15127, 50, Operation.GREATER_EQUAL);
-		talkedToAssassinWithGear = new VarbitRequirement(15127, 52, Operation.GREATER_EQUAL);
+		gotGear = new VarbitRequirement(VarbitID.DT2_GHORROCK, 50, Operation.GREATER_EQUAL);
+		talkedToAssassinWithGear = new VarbitRequirement(VarbitID.DT2_GHORROCK, 52, Operation.GREATER_EQUAL);
 
 		unlockedSECrevice = new VarbitRequirement(15177, 1);
 
-		inJhallanFight = new VarbitRequirement(15127, 54, Operation.GREATER_EQUAL);
-		defeatedJhallan = new VarbitRequirement(15127, 56, Operation.GREATER_EQUAL);
-		dukeArenaUnlocked = new VarbitRequirement(15127, 58, Operation.GREATER_EQUAL);
+		inJhallanFight = new VarbitRequirement(VarbitID.DT2_GHORROCK, 54, Operation.GREATER_EQUAL);
+		defeatedJhallan = new VarbitRequirement(VarbitID.DT2_GHORROCK, 56, Operation.GREATER_EQUAL);
+		dukeArenaUnlocked = new VarbitRequirement(VarbitID.DT2_GHORROCK, 58, Operation.GREATER_EQUAL);
 		// Entered succulus area
 		// 15127 58->60
 
@@ -287,13 +283,13 @@ public class SucellusSteps extends ConditionalStep
 		// 15127 60->62
 		// 14862 68->70
 
-		killedDuke = new VarbitRequirement(15127, 64, Operation.GREATER_EQUAL);
+		killedDuke = new VarbitRequirement(VarbitID.DT2_GHORROCK, 64, Operation.GREATER_EQUAL);
 		// Global state 70->72
 		oddKeyNearby = new ItemOnTileRequirement(oddKey);
 
 		oddKeyDoorUnlocked = new VarbitRequirement(15179, 1);
 
-		talkedToAssassinAfterDuke = new VarbitRequirement(15127, 66, Operation.GREATER_EQUAL);
+		talkedToAssassinAfterDuke = new VarbitRequirement(VarbitID.DT2_GHORROCK, 66, Operation.GREATER_EQUAL);
 
 		// Told guards no luck finding assassin, 15129 0->1
 
@@ -316,24 +312,24 @@ public class SucellusSteps extends ConditionalStep
 
 	protected void setupSteps()
 	{
-		moveToWeissCave = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_33234, new WorldPoint(2867, 3940, 0),
+		moveToWeissCave = new ObjectStep(getQuestHelper(), ObjectID.MY2ARM_THRONEROOM_STAIRSDOWN, new WorldPoint(2867, 3940, 0),
 			"Enter the basalt cave in Weiss.", meleeCombatGear, food, prayerPotions);
 		((ObjectStep) moveToWeissCave).addRecommended(staminaPotions);
 		((ObjectStep) moveToWeissCave).addTeleport(icyBasalt);
-		enterWeissCave = new ObjectStep(getQuestHelper(), NullObjectID.NULL_46905, new WorldPoint(2846, 10332, 0),
+		enterWeissCave = new ObjectStep(getQuestHelper(), ObjectID.MY2ARM_MINE_WALL_CAVE_EXIT_02, new WorldPoint(2846, 10332, 0),
 			"Enter the cave to the south.");
 		enterWeissCave.addDialogStep("Yes.");
 
-		enterPrison = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49513, new WorldPoint(2927, 10354, 0),
+		enterPrison = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_ENTRY, new WorldPoint(2927, 10354, 0),
 			"Enter the heavy door in the north-eastern room.");
 
 		getKnockedOut = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2912, 6348, 2), "Move deeper into the prison.");
 		inspectWall = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_CELL_HOLE, new WorldPoint(3040, 6370, 0),
 			"Inspect the wall to the north in the prison cell."),
 			"Work out how to escape the cell.");
 		searchSkeleton = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.SKELETON_49094, new WorldPoint(3042, 6369, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_CELL_SKELETON, new WorldPoint(3042, 6369, 0),
 			"Search the skeleton in the cell."),
 			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 
@@ -341,25 +337,25 @@ public class SucellusSteps extends ConditionalStep
 			new DetailedQuestStep(getQuestHelper(), "Read the prisoner's letter.", prisonersLetter.highlighted()),
 				"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		searchBucket = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.BUCKET_49095, new WorldPoint(3039, 6367, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_CELL_BUCKET, new WorldPoint(3039, 6367, 0),
 			"Search the bucket for a knife."),
 			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		giveKnifeToSoldier = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_CELL_HOLE, new WorldPoint(3040, 6370, 0),
 			"Give the knife to the soldier."),
 			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		searchBed = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49514, new WorldPoint(3041, 6367, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_CELL_BED, new WorldPoint(3041, 6367, 0),
 			"Search the bed."),
 			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 		giveSoldierLockpick = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.WALL_49099, new WorldPoint(3040, 6370, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_CELL_HOLE, new WorldPoint(3040, 6370, 0),
 		"Give the lockpick to the soldier."),
 			"Work out how to escape the cell.").withNoHelpHiddenInSidebar(true);
 
-		talkToAssassin = new NpcStep(getQuestHelper(), NpcID.ASSASSIN_12348, new WorldPoint(2920, 6375, 2),
+		talkToAssassin = new NpcStep(getQuestHelper(), NpcID.DT2_ASSASSIN_GHORROCK_INSTANCE, new WorldPoint(2920, 6375, 2),
 			"Talk to the Assassin outside the cell.");
-		lockpickGate = new ObjectStep(getQuestHelper(), ObjectID.GATE_49120, new WorldPoint(2945, 6389, 2),
+		lockpickGate = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_PADLOCK_GATE_CLOSED, new WorldPoint(2945, 6389, 2),
 			"Head north from the assassin to the junction, and then east. Lockpick the gate you end up at.", lockpick);
 		((ObjectStep) lockpickGate).setLinePoints(Arrays.asList(
 			new WorldPoint(2919, 6362, 2),
@@ -371,7 +367,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2945, 6389, 2)
 		));
 
-		searchAltar = new ObjectStep(getQuestHelper(), ObjectID.ALTAR_49150, new WorldPoint(2975, 6347, 2),
+		searchAltar = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_ALTAR, new WorldPoint(2975, 6347, 2),
 			"Head south from the gate, and all the way around until you enter the large area. Search the altar in the south room.");
 		((ObjectStep) searchAltar).setLinePoints(Arrays.asList(
 			new WorldPoint(2919, 6362, 2),
@@ -395,7 +391,7 @@ public class SucellusSteps extends ConditionalStep
 		));
 
 		readWarningLetter = new DetailedQuestStep(getQuestHelper(), "Read the warning letter.", warningLetter.highlighted());
-		ObjectStep unlockChestRealStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49111, new WorldPoint(2980, 6346, 2),
+		ObjectStep unlockChestRealStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_SAPPHIRE_CHEST, new WorldPoint(2980, 6346, 2),
 			"Head south from the gate, and all the way around until you enter the large area. Unlock the chest east of the altar in the south room. The code is '214013'.");
 		unlockChestRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2919, 6362, 2),
@@ -417,7 +413,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2975, 6360, 2),
 			new WorldPoint(2975, 6348, 2)
 		));
-		ObjectStep unlockChestFakeStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49111, new WorldPoint(2980, 6346, 2),
+		ObjectStep unlockChestFakeStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_SAPPHIRE_CHEST, new WorldPoint(2980, 6346, 2),
 			"Head south from the gate, and all the way around until you enter the large area. Work out how to unlock the chest east of the altar in the south room.");
 		unlockChestFakeStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2919, 6362, 2),
@@ -445,7 +441,7 @@ public class SucellusSteps extends ConditionalStep
 		unlockChest = new PuzzleWrapperStep(getQuestHelper(), unlockChestRealStep, unlockChestFakeStep).withNoHelpHiddenInSidebar(true);
 		unlockChest.addSubSteps(unlockChestStep);
 
-		ObjectStep goToAdminRoomRealStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49112, new WorldPoint(2902, 6445, 2),
+		ObjectStep goToAdminRoomRealStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_EMERALD_CHEST, new WorldPoint(2902, 6445, 2),
 			"Go to the most north-western room. Open the chest closest to the room's west door. The code for it is 'LIES'.");
 		goToAdminRoomRealStep.addDialogStep("Attempt to open the chest.");
 		goToAdminRoomRealStep.setLinePoints(Arrays.asList(
@@ -474,7 +470,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2912, 6388, 2),
 			new WorldPoint(2912, 6395, 2)
 		));
-		DetailedQuestStep goToAdminRoomHiddenStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49112, new WorldPoint(2910, 6445, 2),
+		DetailedQuestStep goToAdminRoomHiddenStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_EMERALD_CHEST, new WorldPoint(2910, 6445, 2),
 			"Go to the most north-western room. Solve the chest puzzle in there. " +
 				"If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.", true);
 		goToAdminRoomHiddenStep.setLinePoints(Arrays.asList(
@@ -509,7 +505,7 @@ public class SucellusSteps extends ConditionalStep
 			"Enter the correct code for the chest.").withNoHelpHiddenInSidebar(true);
 		goToAdminRoom.addSubSteps(unlockChest2);
 
-		enterCrevice = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49517, new WorldPoint(2960, 6428, 2),
+		enterCrevice = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_SHORTCUT_2_ENTRY, new WorldPoint(2960, 6428, 2),
 			"When you're not in a room, Jhallan will now chase you down. Use Protect from Magic to reduce his damage.");
 		enterCrevice.addText("Run east into the room with a crevice. Clear it, and go through it.");
 		((ObjectStep) enterCrevice).setLinePoints(Arrays.asList(
@@ -527,20 +523,20 @@ public class SucellusSteps extends ConditionalStep
 		ArrowChestPuzzleStep arrowChestPuzzleStep = new ArrowChestPuzzleStep(getQuestHelper());
 		arrowChestPuzzleStep.setSolution(0, 1, 3, 2, 1, 0);
 		openArrowChestStep = new PuzzleWrapperStep(getQuestHelper(), arrowChestPuzzleStep, "Work out how to open the nearby locked chest.").withNoHelpHiddenInSidebar(true);
-		openArrowChest = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), ObjectID.CHEST_49113, new WorldPoint(2968, 6414, 2),
+		openArrowChest = new PuzzleWrapperStep(getQuestHelper(), new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_RUBY_CHEST, new WorldPoint(2968, 6414, 2),
 			"Enter the room with beds in it, south of the crevice. " +
 				"Open the south-eastern chest, next to the crates. The code is 'UP RIGHT LEFT DOWN RIGHT UP'."),
 			"Enter the room with beds in it, south of the crevice. Work out how to open the south-eastern chest, next to the crates.");
 		openArrowChest.addSubSteps(openArrowChestStep);
 
-		enterCreviceToStart = new ObjectStep(getQuestHelper(), ObjectID.CREVICE_49108, new WorldPoint(2984, 6399, 2),
+		enterCreviceToStart = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_SHORTCUT_3_EXIT, new WorldPoint(2984, 6399, 2),
 			"Enter the crevice to the south to shortcut back to the main room.");
 		((ObjectStep) enterCreviceToStart).setLinePoints(Arrays.asList(
 			new WorldPoint(2974, 6418, 2),
 			new WorldPoint(2984, 6418, 2),
 			new WorldPoint(2984, 6400, 2)
 		));
-		ObjectStep openDiamondChestRealStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49114, new WorldPoint(2890, 6375, 2),
+		ObjectStep openDiamondChestRealStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_DIAMOND_CHEST, new WorldPoint(2890, 6375, 2),
 			"Open the chest in the cell to the west of the main room, through the Ruby Gate. The code for it is 'WRATH'.");
 		openDiamondChestRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2901, 6361, 2),
@@ -552,7 +548,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2884, 6374, 2),
 			new WorldPoint(2889, 6375, 2)
 		));
-		ObjectStep openDiamondChestFakeStep = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49114, new WorldPoint(2890, 6375, 2),
+		ObjectStep openDiamondChestFakeStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_DIAMOND_CHEST, new WorldPoint(2890, 6375, 2),
 			"Work out how to open the chest in the cell to the west of the main room, through the Ruby Gate.");
 		openDiamondChestFakeStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2901, 6361, 2),
@@ -570,12 +566,12 @@ public class SucellusSteps extends ConditionalStep
 		openDiamondChest = new PuzzleWrapperStep(getQuestHelper(), openDiamondChestRealStep, openDiamondChestFakeStep);
 		openDiamondChest.addSubSteps(openDiamondChestStep);
 
-		// Door to gear: ObjectID.DIAMOND_GATE, 2903, 6375, 2
-		getGear = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49115, new WorldPoint(2899, 6376, 2),
+		// Door to gear: ObjectID.DT2_GHORROCK_DIAMOND_GATE_CLOSED, 2903, 6375, 2
+		getGear = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_EQUIPMENT_CHEST, new WorldPoint(2899, 6376, 2),
 			"Get your equipment back from the chest in the cell next to the Assassin. You'll need to go through some dialog with him to enter.");
-		talkToAssassinWithGear = new NpcStep(getQuestHelper(), NpcID.ASSASSIN_12348, new WorldPoint(2903, 6383, 2),
+		talkToAssassinWithGear = new NpcStep(getQuestHelper(), NpcID.DT2_ASSASSIN_GHORROCK_INSTANCE, new WorldPoint(2903, 6383, 2),
 			"Talk to the assassin.");
-		goLightFirecrackers = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49515, new WorldPoint(2972, 6367, 2),
+		goLightFirecrackers = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_FIRECRACKER_PACK, new WorldPoint(2972, 6367, 2),
 			"Get a full inventory of food, and return to the refugee camp in the south-eastern room. " +
 				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 3 minutes.");
 		((ObjectStep) goLightFirecrackers).setLinePoints(Arrays.asList(
@@ -594,7 +590,7 @@ public class SucellusSteps extends ConditionalStep
 		));
 		goLightFirecrackers.addDialogStep("Yes.");
 
-		goLightFirecrackersThroughCrevice = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49515, new WorldPoint(2972, 6367, 2),
+		goLightFirecrackersThroughCrevice = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_FIRECRACKER_PACK, new WorldPoint(2972, 6367, 2),
 			"Get a full inventory of food, and return to the refugee camp in the south-eastern room. " +
 				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 3 minutes.");
 		((ObjectStep) goLightFirecrackersThroughCrevice).setLinePoints(Arrays.asList(
@@ -610,14 +606,14 @@ public class SucellusSteps extends ConditionalStep
 		goLightFirecrackersThroughCrevice.addDialogStep("Yes.");
 
 		goLightFirecrackers.addSubSteps(goLightFirecrackersThroughCrevice);
-		survive3Mins = new NpcStep(getQuestHelper(), NpcID.JHALLAN_12355, new WorldPoint(2975, 6362, 2),
+		survive3Mins = new NpcStep(getQuestHelper(), NpcID.DT2_JHALLAN_CUTSCENE, new WorldPoint(2975, 6362, 2),
 			"Survive Jhallan's attacks for 3 minutes. Protect from Mage, keep your health high, and avoid the shadow attacks.");
-		((NpcStep) survive3Mins).addAlternateNpcs(NpcID.JHALLAN, NpcID.JHALLAN_12065, NpcID.JHALLAN_12354, NpcID.JHALLAN_12353);
+		((NpcStep) survive3Mins).addAlternateNpcs(NpcID.SOTN_JHALLAN_GHORROCK, NpcID.SOTN_JHALLAN_CUTSCENE, NpcID.DT2_JHALLAN_COMBAT, NpcID.DT2_JHALLAN_CHASE);
 
-		talkToAssassinAfterJhallanFight = new NpcStep(getQuestHelper(), NpcID.ASSASSIN_12349, new WorldPoint(2978, 6371, 2),
+		talkToAssassinAfterJhallanFight = new NpcStep(getQuestHelper(), NpcID.DT2_ASSASSIN_GHORROCK_VIS, new WorldPoint(2978, 6371, 2),
 			"Talk to the assassin after the fight.");
 
-		enterDukeArena = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_49100, new WorldPoint(2974, 6440, 2),
+		enterDukeArena = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_ASYLUM_ENTRY, new WorldPoint(2974, 6440, 2),
 			"Go down the stairs in the far north-east of the prison. Be prepared for fighting the boss of the area.",
 			meleeCombatGear, food, prayerPotions);
 		((ObjectStep) enterDukeArena).setLinePoints(Arrays.asList(
@@ -639,13 +635,13 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2974, 6406, 2)
 		));
 
-		enterDukeBossArea = new ObjectStep(getQuestHelper(), ObjectID.GATE_49138, new WorldPoint(3039, 6433, 0),
+		enterDukeBossArea = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_GATE_BOSS, new WorldPoint(3039, 6433, 0),
 			"Enter the boss arena.");
 
-		defeatDuke = new NpcStep(getQuestHelper(), NpcID.DUKE_SUCELLUS_12194, new WorldPoint(3039, 6454, 0),
+		defeatDuke = new NpcStep(getQuestHelper(), NpcID.DUKE_SUCELLUS_ASLEEP_QUEST, new WorldPoint(3039, 6454, 0),
 			"Defeat the Duke. Check the sidebar for more details.");
-		((NpcStep) defeatDuke).addAlternateNpcs(NpcID.DUKE_SUCELLUS_12167, NpcID.DUKE_SUCELLUS_12191, NpcID.DUKE_SUCELLUS_12192,
-			NpcID.DUKE_SUCELLUS_12193, NpcID.DUKE_SUCELLUS_12194, NpcID.DUKE_SUCELLUS_12195, NpcID.DUKE_SUCELLUS_12196);
+		((NpcStep) defeatDuke).addAlternateNpcs(NpcID.DUKE_SUCELLUS_ASLEEP, NpcID.DUKE_SUCELLUS_AWAKE, NpcID.DUKE_SUCELLUS_DEAD,
+			NpcID.DUKE_SUCELLUS_INACTIVE_QUEST, NpcID.DUKE_SUCELLUS_ASLEEP_QUEST, NpcID.DUKE_SUCELLUS_AWAKE_QUEST, NpcID.DUKE_SUCELLUS_DEAD_QUEST);
 
 		defeatDukeSidebar = new DetailedQuestStep(getQuestHelper(), "Defeat the Duke. You must first wake him with two 'Arder-musca poison'.");
 		defeatDukeSidebar.addText("Make sure to avoid any of the enviromental effects, such as gas, lightning, and the Extremitys' vision.");
@@ -662,27 +658,27 @@ public class SucellusSteps extends ConditionalStep
 
 		pickUpOddKey = new ItemStep(getQuestHelper(), "Pick up the odd key.", oddKey);
 
-		enterRoomWestOfDuke = new ObjectStep(getQuestHelper(), ObjectID.GATE_49140, new WorldPoint(3023, 6425, 0),
+		enterRoomWestOfDuke = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_MEDALLION_GATE, new WorldPoint(3023, 6425, 0),
 			"Enter the room south-west of the Duke.");
 
-		retrieveKeyFromDoor = new ObjectStep(getQuestHelper(), ObjectID.GATE_49138, new WorldPoint(3039, 6433, 0),
+		retrieveKeyFromDoor = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_GATE_BOSS, new WorldPoint(3039, 6433, 0),
 			"Attempt to enter the Duke's room to retrieve the odd key.");
 		pickUpOddKey.addSubSteps(retrieveKeyFromDoor);
 
-		talkToAssassinAfterDuke = new NpcStep(getQuestHelper(), NpcID.ASSASSIN_12349, new WorldPoint(3017, 6427, 0),
+		talkToAssassinAfterDuke = new NpcStep(getQuestHelper(), NpcID.DT2_ASSASSIN_GHORROCK_VIS, new WorldPoint(3017, 6427, 0),
 			"Talk to the assassin in the room.");
-		openDukeChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49116, new WorldPoint(3021, 6420, 0),
+		openDukeChest = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_MEDALLION_CHEST, new WorldPoint(3021, 6420, 0),
 			"Open the chest in the south-east of the room for sucellus' medallion.");
 
-		returnToDesertWithSucellusMedallion = new ObjectStep(getQuestHelper(), ObjectID.VAULT_DOOR_46743,
+		returnToDesertWithSucellusMedallion = new ObjectStep(getQuestHelper(), ObjectID.DT2_DESERT_VAULT_DOOR,
 			new WorldPoint(3511, 2971, 0),
 			"Return to the Vault door north-east of Nardah. Be wary of an assassin coming to kill you! They can run, freeze, and teleblock you.",
 			sucellusMedallion);
 		((ObjectStep) returnToDesertWithSucellusMedallion).addTeleport(nardahTeleport);
 
-		useSucellusMedallionOnStatue = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49503, new WorldPoint(3932, 9626, 1),
+		useSucellusMedallionOnStatue = new ObjectStep(getQuestHelper(), ObjectID.DT2_VAULT_SUCELLUS_STATUE, new WorldPoint(3932, 9626, 1),
 			"Use the medallion on the south-west statue.", sucellusMedallion.highlighted());
-		useSucellusMedallionOnStatue.addIcon(ItemID.SUCELLUS_MEDALLION);
+		useSucellusMedallionOnStatue.addIcon(ItemID.DT2_MEDALLION_SUCELLUS);
 		useSucellusMedallionOnStatue.addDialogStep("Yes.");
 	}
 

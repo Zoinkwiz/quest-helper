@@ -29,11 +29,12 @@ package com.questhelper.requirements.quest;
 
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.AbstractRequirement;
-import java.util.Locale;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
+
 import javax.annotation.Nonnull;
+import java.util.Locale;
 
 /**
  * Requirement that checks if a {@link net.runelite.api.Quest} has a certain state.

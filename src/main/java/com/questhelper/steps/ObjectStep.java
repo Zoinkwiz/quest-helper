@@ -25,43 +25,29 @@
 package com.questhelper.steps;
 
 import com.questhelper.QuestHelperConfig;
-
-import static com.questhelper.QuestHelperConfig.ObjectHighlightStyle.CLICK_BOX;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import lombok.Setter;
+import net.runelite.api.Point;
+import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.*;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.overlay.OverlayUtil;
+
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import lombok.Setter;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
-import net.runelite.api.ObjectComposition;
-import net.runelite.api.Point;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.DecorativeObjectDespawned;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GroundObjectDespawned;
-import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.api.events.WallObjectDespawned;
-import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.overlay.OverlayUtil;
+
+import static com.questhelper.QuestHelperConfig.ObjectHighlightStyle.CLICK_BOX;
 
 public class ObjectStep extends DetailedQuestStep
 {

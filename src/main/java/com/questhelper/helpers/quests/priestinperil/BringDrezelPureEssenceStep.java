@@ -3,21 +3,22 @@ package com.questhelper.helpers.quests.priestinperil;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.NpcStep;
-import java.util.Collections;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.Collections;
 
 public class BringDrezelPureEssenceStep extends NpcStep
 {
-	ItemRequirement essence = new ItemRequirement("Rune/Pure essence",ItemID.RUNE_ESSENCE, 50);
+	ItemRequirement essence = new ItemRequirement("Rune/Pure essence",ItemID.BLANKRUNE, 50);
 
 	public BringDrezelPureEssenceStep(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Bring Drezel 50 UNNOTED rune/pure essence in the underground of the Salve Temple to finish the quest!");
-		essence.addAlternates(ItemID.PURE_ESSENCE);
+		super(questHelper, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3439, 9896, 0), "Bring Drezel 50 UNNOTED rune/pure essence in the underground of the Salve Temple to finish the quest!");
+		essence.addAlternates(ItemID.BLANKRUNE_HIGH);
 	}
 
 	@Subscribe

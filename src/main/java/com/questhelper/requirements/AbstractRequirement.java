@@ -25,12 +25,13 @@
 package com.questhelper.requirements;
 
 import com.questhelper.QuestHelperConfig;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.components.LineComponent;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractRequirement implements Requirement
 {

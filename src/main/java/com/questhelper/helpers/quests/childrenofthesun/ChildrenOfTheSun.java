@@ -29,27 +29,19 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.MultiNpcStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
+
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class ChildrenOfTheSun extends BasicQuestHelper
 {
@@ -124,7 +116,7 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		isFollowing = new NpcRequirement("Guard", NpcID.GUARD_12661);
+		isFollowing = new NpcRequirement("Guard", NpcID.VMQ1_BAG_GUARD);
 		markedGuard1 = new VarbitRequirement(GUARD_1_CHANGE_VARBIT, 2);
 		markedGuard2 = new VarbitRequirement(GUARD_2_CHANGE_VARBIT, 2);
 		markedGuard3 = new VarbitRequirement(GUARD_3_CHANGE_VARBIT, 2);
@@ -145,9 +137,9 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToAlina = new NpcStep(this, NpcID.ALINA, new WorldPoint(3225, 3426, 0), "Talk to Alina east of Varrock Square.");
+		talkToAlina = new NpcStep(this, NpcID.VMQ1_ALINA_VIS, new WorldPoint(3225, 3426, 0), "Talk to Alina east of Varrock Square.");
 		talkToAlina.addDialogSteps("When will this delegation arrive?", "Yes.");
-		followGuard = new NpcStep(this, NpcID.GUARD_12661,
+		followGuard = new NpcStep(this, NpcID.VMQ1_BAG_GUARD,
 			"Follow the guard slowly behind them, hiding in the marked locations to avoid him spotting you. Do not let him get too far from you or you'll fail.");
 		followGuard.setLinePoints(Arrays.asList(
 			new WorldPoint(3225, 3429, 0),
@@ -182,58 +174,58 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 		followGuardPuzzleWrapper = new PuzzleWrapperStep(this, followGuard, "Follow the guard, keeping out of sight whilst also not letting them get too far away.");
 
 		final int BASE_GUARD_ID = 6923;
-		attemptToEnterHouse = new ObjectStep(this, ObjectID.DOOR_50048, new WorldPoint(3259, 3400, 0),
+		attemptToEnterHouse = new ObjectStep(this, ObjectID.VMQ1_BANDIT_DOOR, new WorldPoint(3259, 3400, 0),
 			"Attempt to enter the house in the south-east of Varrock, north of the Zamorak Temple, and watch the cutscene.");
-		talkToTobyn = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3211, 3437, 0), "Talk to Sergeant Tobyn in Varrock Square.");
+		talkToTobyn = new NpcStep(this, NpcID.VMQ1_GUARD_SERGEANT_VIS, new WorldPoint(3211, 3437, 0), "Talk to Sergeant Tobyn in Varrock Square.");
 		markGuard1 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12668, new WorldPoint(3208, 3422, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_1_UNMARKED, new WorldPoint(3208, 3422, 0),
 			"Mark the guard outside Aris's tent.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
 		markGuard2 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12671, new WorldPoint(3221, 3430, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_2_UNMARKED, new WorldPoint(3221, 3430, 0),
 			"Mark the guard south east of Benny's news stand, who isn't wearing a helmet and has long hair.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
 		markGuard3 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12674, new WorldPoint(3246, 3429, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_3_UNMARKED, new WorldPoint(3246, 3429, 0),
 				"Mark the guard with a mace north-west of the Varrock East Bank.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
 		markGuard4 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12677, new WorldPoint(3237, 3427, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_4_UNMARKED, new WorldPoint(3237, 3427, 0),
 				"Mark the guard leaning on the north wall of Lowe's Archery Emporium, east of the square.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
 
 		unmarkWrongGuard1 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12681, new WorldPoint(3227, 3424, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_5_MARKED, new WorldPoint(3227, 3424, 0),
 			"Unmark the guard east of ELiza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
 		unmarkWrongGuard2 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12684, new WorldPoint(3218, 3424, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_6_MARKED, new WorldPoint(3218, 3424, 0),
 			"Unmark the guard next to Eliza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
 		unmarkWrongGuard3 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12687, new WorldPoint(3230, 3430, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_7_MARKED, new WorldPoint(3230, 3430, 0),
 			"Unmark the guard roaming south of Horvik.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
 		unmarkWrongGuard4 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12690, new WorldPoint(3206, 3431, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_8_MARKED, new WorldPoint(3206, 3431, 0),
 			"Unmark the guard outside Zaff's Superior Staffs.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
 		unmarkWrongGuard5 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12693, new WorldPoint(3239, 3433, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_9_MARKED, new WorldPoint(3239, 3433, 0),
 			"Unmark the guard next to the small fountain east of Horvik.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
 		unmarkWrongGuard6 = new PuzzleWrapperStep(this,
-			new MultiNpcStep(this, NpcID.GUARD_12696, new WorldPoint(3218, 3433, 0),
+			new MultiNpcStep(this, NpcID.VMQ1_GUARD_10_MARKED, new WorldPoint(3218, 3433, 0),
 			"Unmark the guard next to Baraek.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
 
-		reportBackToTobyn = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3211, 3437, 0),
+		reportBackToTobyn = new NpcStep(this, NpcID.VMQ1_GUARD_SERGEANT_VIS, new WorldPoint(3211, 3437, 0),
 			"Report back to Sergeant Tobyn.");
-		goUpVarrockF0ToF1 = new ObjectStep(this, ObjectID.STAIRCASE_11807, new WorldPoint(3212, 3474, 0),
+		goUpVarrockF0ToF1 = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TALLER_NEW_FIX, new WorldPoint(3212, 3474, 0),
 			"Climb up to the roof of Varrock Castle and talk to Tobyn there.");
-		goUpVarrockF1toF2 = new ObjectStep(this, ObjectID.LADDER_11801, new WorldPoint(3224, 3472, 1),
+		goUpVarrockF1toF2 = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER_TALLER, new WorldPoint(3224, 3472, 1),
 			"Climb up to the roof of Varrock Castle and talk to Tobyn there.");
-		finishQuest = new NpcStep(this, NpcID.SERGEANT_TOBYN, new WorldPoint(3202, 3473, 2),
+		finishQuest = new NpcStep(this, NpcID.VMQ1_GUARD_SERGEANT_VIS, new WorldPoint(3202, 3473, 2),
 			"Talk to Tobyn on the Varrock Castle's roof to finish the quest.");
 		finishQuest.addSubSteps(goUpVarrockF1toF2, goUpVarrockF0ToF1);
 	}

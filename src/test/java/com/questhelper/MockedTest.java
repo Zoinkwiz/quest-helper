@@ -32,6 +32,7 @@ import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectMan
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.*;
+import net.runelite.api.gameval.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;

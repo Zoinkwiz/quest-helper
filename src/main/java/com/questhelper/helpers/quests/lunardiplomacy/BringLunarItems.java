@@ -1,15 +1,14 @@
 package com.questhelper.helpers.quests.lunardiplomacy;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.NpcStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 
 public class BringLunarItems extends NpcStep
 {
@@ -19,7 +18,7 @@ public class BringLunarItems extends NpcStep
 
 	public BringLunarItems(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0),
+		super(questHelper, NpcID.LUNAR_ONEIROMANCER, new WorldPoint(2151, 3867, 0),
 			"Bring all the items to the Oneiromancer in the south east of Lunar Isle.");
 		setupRequirements();
 		setupConditions();
@@ -27,7 +26,7 @@ public class BringLunarItems extends NpcStep
 
 	public void setupRequirements()
 	{
-		helm = new ItemRequirement("Lunar helm", ItemID.LUNAR_HELM);
+		helm = new ItemRequirement("Lunar helm", ItemID.LUNAR_HELMET);
 		amulet = new ItemRequirement("Lunar amulet", ItemID.LUNAR_AMULET);
 		ring = new ItemRequirement("Lunar ring", ItemID.LUNAR_RING);
 		cape = new ItemRequirement("Lunar cape", ItemID.LUNAR_CAPE);
@@ -39,7 +38,7 @@ public class BringLunarItems extends NpcStep
 
 	public void setupConditions()
 	{
-		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
+		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.LUNAR_SEAL_OF_PASSAGE);
 		sealOfPassage.setTooltip("You can get another from Brundt");
 
 		handedInHelm = new VarbitRequirement(2436, 1);

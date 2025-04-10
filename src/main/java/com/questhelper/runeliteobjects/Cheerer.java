@@ -29,13 +29,14 @@ import com.questhelper.runeliteobjects.extendedruneliteobjects.FakeNpc;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ConfigManager;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.config.ConfigManager;
 
 public class Cheerer
 {

@@ -24,37 +24,32 @@
  */
 package com.questhelper.helpers.quests.trollromance;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TrollRomance extends BasicQuestHelper
 {
@@ -141,19 +136,19 @@ public class TrollRomance extends BasicQuestHelper
 		cakeTin = new ItemRequirement("Cake tin", ItemID.CAKE_TIN);
 		swampTar = new ItemRequirement("Swamp tar", ItemID.SWAMP_TAR);
 		swampTar.setHighlightInInventory(true);
-		bucketOfWax = new ItemRequirement("Bucket of wax", ItemID.BUCKET_OF_WAX);
+		bucketOfWax = new ItemRequirement("Bucket of wax", ItemID.BUCKET_WAX);
 		bucketOfWax.setHighlightInInventory(true);
-		wax = new ItemRequirement("Wax", ItemID.WAX);
+		wax = new ItemRequirement("Wax", ItemID.TROLLROMANCE_WAX);
 		wax.setHighlightInInventory(true);
-		sled = new ItemRequirement("Sled", ItemID.SLED);
+		sled = new ItemRequirement("Sled", ItemID.TROLLROMANCE_TOBOGGON);
 		sled.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar");
 		sled.setHighlightInInventory(true);
-		waxedSled = new ItemRequirement("Sled", ItemID.SLED_4084);
+		waxedSled = new ItemRequirement("Sled", ItemID.TROLLROMANCE_TOBOGGON_WAXED);
 		waxedSled.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
-		sledEquipped = new ItemRequirement("Sled", ItemID.SLED_4084, 1, true);
+		sledEquipped = new ItemRequirement("Sled", ItemID.TROLLROMANCE_TOBOGGON_WAXED, 1, true);
 		sledEquipped.setHighlightInInventory(true);
 		sledEquipped.setTooltip("You can have Dunstan make another. Bring him a maple log, a rope and an iron bar. You then can apply some wax to it");
-		trollweissFlowers = new ItemRequirement("Trollweiss", ItemID.TROLLWEISS);
+		trollweissFlowers = new ItemRequirement("Trollweiss", ItemID.TROLLROMANCE_RARE_FLOWER);
 		trollweissFlowers.setTooltip("You can get another from the Trollweiss mountain");
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 		combatGear = new ItemRequirement("Combat gear, food, and potions", -1, -1);
@@ -180,75 +175,75 @@ public class TrollRomance extends BasicQuestHelper
 		inTrollweiss = new ZoneRequirement(trollweiss);
 		inTrollCave = new ZoneRequirement(trollCave);
 		atFlowerLocation = new ZoneRequirement(flowerLocation);
-		fightableArrgNearby = new NpcCondition(NpcID.ARRG_643);
+		fightableArrgNearby = new NpcCondition(NpcID.TROLLROMANCE_ARRG_ATTACKABLE);
 	}
 
 	public void setupSteps()
 	{
-		enterStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
+		enterStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
 
-		goDownToUg = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Climb down the north staircase.");
+		goDownToUg = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10109, 2), "Climb down the north staircase.");
 
-		goUpToUg = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
+		goUpToUg = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
 
-		talkToUg = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room of the Troll Stronghold's first floor.");
+		talkToUg = new NpcStep(this, NpcID.TROLLROMANCE_UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room of the Troll Stronghold's first floor.");
 		talkToUg.addDialogSteps("Awww, you poor troll. What seems to be the problem?", "Don't worry now, I'll see what I can do.");
 		talkToUg.addSubSteps(enterStronghold, goDownToUg, goUpToUg);
 
-		talkToAga = new NpcStep(this, NpcID.AGA, new WorldPoint(2828, 10104, 1), "Talk to Aga north of Ug.");
+		talkToAga = new NpcStep(this, NpcID.TROLLROMANCE_AGA, new WorldPoint(2828, 10104, 1), "Talk to Aga north of Ug.");
 		talkToAga.addDialogStep("So... how's your... um... love life?");
 
-		talkToTenzing = new NpcStep(this, NpcID.TENZING, new WorldPoint(2820, 3555, 0), "Talk to Tenzing west of Burthorpe.");
+		talkToTenzing = new NpcStep(this, NpcID.DEATH_SHERPA, new WorldPoint(2820, 3555, 0), "Talk to Tenzing west of Burthorpe.");
 		talkToTenzing.addDialogSteps("Do you know where I can find Trollweiss?", "What would I need to make such a sled?");
-		talkToDunstan = new NpcStep(this, NpcID.DUNSTAN, new WorldPoint(2919, 3574, 0),
+		talkToDunstan = new NpcStep(this, NpcID.DEATH_SMITHY, new WorldPoint(2919, 3574, 0),
 			"Talk to Dunstan in north east Burthorpe.", ironBar, mapleLog, rope);
 		talkToDunstan.addDialogSteps("Talk about a quest.", "I need a sled!!", "No.");
-		talkToDunstanAgain = new NpcStep(this, NpcID.DUNSTAN, new WorldPoint(2919, 3574, 0), "Talk to Dunstan again.", ironBar, mapleLog, rope);
+		talkToDunstanAgain = new NpcStep(this, NpcID.DEATH_SMITHY, new WorldPoint(2919, 3574, 0), "Talk to Dunstan again.", ironBar, mapleLog, rope);
 		talkToDunstanAgain.addDialogSteps("Talk about a quest.");
 		useTarOnWax = new DetailedQuestStep(this, "Use some swamp tar on a bucket of wax.", swampTar, bucketOfWax, cakeTin);
 		useWaxOnSled = new DetailedQuestStep(this, "Use the wax on the sled.", wax, sled);
-		enterTrollCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5007, new WorldPoint(2821, 3744, 0),
+		enterTrollCave = new ObjectStep(this, ObjectID.TROLLROMANCE_CAVEENTRANCE, new WorldPoint(2821, 3744, 0),
 			"Enter the cave north of Trollheim. There are high leveled ice trolls in here, so Protect from Melee and " +
 				"be careful!", waxedSled);
-		leaveTrollCave = new ObjectStep(this, ObjectID.CREVASSE, new WorldPoint(2772, 10233, 0), "Leave the cave via the north crevice.");
+		leaveTrollCave = new ObjectStep(this, ObjectID.TROLLROMANCE_SNOW_CAVEWALL_CREVIS, new WorldPoint(2772, 10233, 0), "Leave the cave via the north crevice.");
 		equipSled = new DetailedQuestStep(this, "Equip the sled.", sledEquipped);
-		sledSouth = new ObjectStep(this, ObjectID.SLOPE, new WorldPoint(2773, 3835, 0), "Sled to the south.", sledEquipped);
-		pickFlowers = new ObjectStep(this, ObjectID.RARE_FLOWERS, new WorldPoint(2781, 3783, 0), "Pick a rare flower.");
+		sledSouth = new ObjectStep(this, ObjectID.TROLLROMANCE_PISTE_WALK_BARRIER_DOWN, new WorldPoint(2773, 3835, 0), "Sled to the south.", sledEquipped);
+		pickFlowers = new ObjectStep(this, ObjectID.TROLLROMANCE_RAREFLOWERS, new WorldPoint(2781, 3783, 0), "Pick a rare flower.");
 
-		enterStrongholdAgain = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to Ug with the trollweiss flowers.", trollweissFlowers, combatGear);
+		enterStrongholdAgain = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Return to Ug with the trollweiss flowers.", trollweissFlowers, combatGear);
 
-		goDownToUgAgain = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Return to Ug with the trollweiss flowers.");
+		goDownToUgAgain = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10109, 2), "Return to Ug with the trollweiss flowers.");
 
-		goUpToUgAgain = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to Ug with the trollweiss flowers.");
+		goUpToUgAgain = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Return to Ug with the trollweiss flowers.");
 
-		talkToUgWithFlowers = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Return to Ug with the trollweiss flowers.", trollweissFlowers);
+		talkToUgWithFlowers = new NpcStep(this, NpcID.TROLLROMANCE_UG, new WorldPoint(2827, 10064, 1), "Return to Ug with the trollweiss flowers.", trollweissFlowers);
 		talkToUgWithFlowers.addSubSteps(enterStrongholdAgain, goDownToUgAgain, goUpToUgAgain);
 
-		enterStrongholdForEnd = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to Ug to finish.");
+		enterStrongholdForEnd = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Return to Ug to finish.");
 
-		goDownToUgForEnd = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Return to Ug to finish.");
+		goDownToUgForEnd = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10109, 2), "Return to Ug to finish.");
 
-		goUpToUgForEnd = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to Ug to finish.");
+		goUpToUgForEnd = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Return to Ug to finish.");
 
-		enterStrongholdForFight = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Challenge Arrg to a fight." +
+		enterStrongholdForFight = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Challenge Arrg to a fight." +
 			" Please check the wiki for instructions to setup a safe spot.", combatGear);
 
-		goDownToUgForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10109, 2), "Challenge Arrg to a fight." +
+		goDownToUgForFight = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10109, 2), "Challenge Arrg to a fight." +
 			" Please check the wiki for instructions to setup a safe spot.", combatGear);
 
-		goUpToUgForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Challenge Arrg to a fight." +
+		goUpToUgForFight = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Challenge Arrg to a fight." +
 			" Please check the wiki for instructions to setup a safe spot.", combatGear);
 
 
-		challengeArrg = new NpcStep(this, NpcID.ARRG, new WorldPoint(2829, 10095, 1), "Challenge Arrg to a fight." +
+		challengeArrg = new NpcStep(this, NpcID.TROLLROMANCE_ARRG, new WorldPoint(2829, 10095, 1), "Challenge Arrg to a fight." +
 			" Please check the wiki for instructions to setup a safe spot.", combatGear);
 		challengeArrg.addDialogStep("I am here to kill you!");
 		challengeArrg.addSubSteps(enterStrongholdForFight, goUpToUgForFight, goDownToUgForFight);
 
-		killArrg = new NpcStep(this, NpcID.ARRG_643, "Kill Arrg.");
+		killArrg = new NpcStep(this, NpcID.TROLLROMANCE_ARRG_ATTACKABLE, "Kill Arrg.");
 		((NpcStep) killArrg).addSafeSpots(new WorldPoint(2897, 3619, 0), new WorldPoint(2917, 3625, 0));
 
-		returnToUg = new NpcStep(this, NpcID.UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room to finish the quest.");
+		returnToUg = new NpcStep(this, NpcID.TROLLROMANCE_UG, new WorldPoint(2827, 10064, 1), "Talk to Ug in the south west room to finish the quest.");
 		returnToUg.addSubSteps(goDownToUgForEnd, goUpToUgForEnd, enterStrongholdForEnd);
 	}
 
@@ -302,7 +297,7 @@ public class TrollRomance extends BasicQuestHelper
 			new ItemReward("Diamond", ItemID.DIAMOND, 1),
 			new ItemReward("Rubies", ItemID.RUBY, 2),
 			new ItemReward("Emeralds", ItemID.EMERALD, 4),
-			new ItemReward("A Sled", ItemID.SLED, 1));
+			new ItemReward("A Sled", ItemID.TROLLROMANCE_TOBOGGON, 1));
 	}
 
 	@Override

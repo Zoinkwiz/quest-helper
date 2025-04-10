@@ -29,13 +29,12 @@ package com.questhelper.overlays;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestDebugRenderer;
 import com.questhelper.questhelpers.QuestHelper;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+
+import javax.inject.Inject;
+import java.awt.*;
 
 public class QuestHelperDebugOverlay extends OverlayPanel implements QuestDebugRenderer
 {

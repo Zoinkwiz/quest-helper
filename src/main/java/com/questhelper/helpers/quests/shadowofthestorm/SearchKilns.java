@@ -28,12 +28,13 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.Collection;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 public class SearchKilns extends DetailedOwnerStep
 {
@@ -75,10 +76,10 @@ public class SearchKilns extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		searchKiln1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10242, new WorldPoint(3468, 3124, 0), "Search the kilns in Uzer until you find a book.");
-		searchKiln2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10243, new WorldPoint(3479, 3083, 0), "Search the kilns in Uzer until you find a book.");
-		searchKiln3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10244, new WorldPoint(3473, 3093, 0), "Search the kilns in Uzer until you find a book.");
-		searchKiln4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10245, new WorldPoint(3501, 3085, 0), "Search the kilns in Uzer until you find a book.");
+		searchKiln1 = new ObjectStep(getQuestHelper(), ObjectID.AGRITH_KILN_1, new WorldPoint(3468, 3124, 0), "Search the kilns in Uzer until you find a book.");
+		searchKiln2 = new ObjectStep(getQuestHelper(), ObjectID.AGRITH_KILN_2, new WorldPoint(3479, 3083, 0), "Search the kilns in Uzer until you find a book.");
+		searchKiln3 = new ObjectStep(getQuestHelper(), ObjectID.AGRITH_KILN_3, new WorldPoint(3473, 3093, 0), "Search the kilns in Uzer until you find a book.");
+		searchKiln4 = new ObjectStep(getQuestHelper(), ObjectID.AGRITH_KILN_4, new WorldPoint(3501, 3085, 0), "Search the kilns in Uzer until you find a book.");
 	}
 
 	@Override

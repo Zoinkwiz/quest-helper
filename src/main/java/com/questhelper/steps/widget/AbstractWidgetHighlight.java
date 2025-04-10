@@ -25,10 +25,10 @@
 package com.questhelper.steps.widget;
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+
+import java.awt.*;
 
 public abstract class AbstractWidgetHighlight
 {

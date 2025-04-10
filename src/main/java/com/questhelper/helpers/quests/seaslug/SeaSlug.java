@@ -24,34 +24,25 @@
  */
 package com.questhelper.helpers.quests.seaslug;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class SeaSlug extends BasicQuestHelper
 {
@@ -144,14 +135,14 @@ public class SeaSlug extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE);
+		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMPPASTE);
 		dampSticks = new ItemRequirement("Damp sticks", ItemID.DAMP_STICKS);
 		dampSticks.setHighlightInInventory(true);
 		drySticks = new ItemRequirement("Dry sticks", ItemID.DRY_STICKS);
 		drySticks.setHighlightInInventory(true);
-		torch = new ItemRequirement("Unlit torch", ItemID.UNLIT_TORCH);
-		litTorch = new ItemRequirement("Lit torch", ItemID.LIT_TORCH);
-		glass = new ItemRequirement("Broken glass", ItemID.BROKEN_GLASS_1469);
+		torch = new ItemRequirement("Unlit torch", ItemID.TORCH_UNLIT);
+		litTorch = new ItemRequirement("Lit torch", ItemID.TORCH_LIT);
+		glass = new ItemRequirement("Broken glass", ItemID.DIGSITEGLASS);
 		glass.setHighlightInInventory(true);
 
 	}
@@ -176,21 +167,21 @@ public class SeaSlug extends BasicQuestHelper
 	{
 		talkToCaroline = new NpcStep(this, NpcID.CAROLINE, new WorldPoint(2717, 3303, 0), "Talk to Caroline just north of Witchaven, east of East Ardougne.");
 		talkToCaroline.addDialogStep("I suppose so, how do I get there?");
-		talkToHolgart = new NpcStep(this, NpcID.HOLGART_7324, new WorldPoint(2717, 3303, 0), "Talk to Holgart nearby and give him some swamp paste.", swampPaste);
-		talkToHolgartWithSwampPaste = new NpcStep(this, NpcID.HOLGART_7324, new WorldPoint(2717, 3303, 0), "Give Holgart some swamp paste.", swampPaste);
+		talkToHolgart = new NpcStep(this, NpcID.HOLGARTLANDNOTRAVEL, new WorldPoint(2717, 3303, 0), "Talk to Holgart nearby and give him some swamp paste.", swampPaste);
+		talkToHolgartWithSwampPaste = new NpcStep(this, NpcID.HOLGARTLANDNOTRAVEL, new WorldPoint(2717, 3303, 0), "Give Holgart some swamp paste.", swampPaste);
 		talkToHolgart.addSubSteps(talkToHolgartWithSwampPaste);
-		travelWithHolgart = new NpcStep(this, NpcID.HOLGART_7789, new WorldPoint(2717, 3303, 0), "Travel with Holgart to the fishing platform.");
+		travelWithHolgart = new NpcStep(this, NpcID.HOLGARTLANDTRAVEL, new WorldPoint(2717, 3303, 0), "Travel with Holgart to the fishing platform.");
 		travelWithHolgart.addDialogStep("Will you take me there?");
-		climbLadder = new ObjectStep(this, ObjectID.LADDER_18324, new WorldPoint(2784, 3286, 0), "Climb the ladder in the north east corner of the platform.");
-		talkToKennith = new NpcStep(this, NpcID.KENNITH_5063, new WorldPoint(2765, 3289, 1), "Talk to Kennith from inside the cabin on the west side of the first floor.");
-		goDownLadder = new ObjectStep(this, ObjectID.LADDER_18325, new WorldPoint(2784, 3286, 1), "Go back down the ladder.");
-		goToIsland = new NpcStep(this, NpcID.HOLGART_5070, new WorldPoint(2781, 3274, 0), "Travel with Holgart to a nearby island.");
-		goToIslandFromMainland = new NpcStep(this, NpcID.HOLGART_7789, new WorldPoint(2717, 3303, 0), "Travel with Holgart north of Witchaven to find Kent.");
+		climbLadder = new ObjectStep(this, ObjectID.SEASLUG_LADDER, new WorldPoint(2784, 3286, 0), "Climb the ladder in the north east corner of the platform.");
+		talkToKennith = new NpcStep(this, NpcID.KENNITH_PLATFORM, new WorldPoint(2765, 3289, 1), "Talk to Kennith from inside the cabin on the west side of the first floor.");
+		goDownLadder = new ObjectStep(this, ObjectID.SEASLUG_LADDER_TOP, new WorldPoint(2784, 3286, 1), "Go back down the ladder.");
+		goToIsland = new NpcStep(this, NpcID.HOLGARTPLATFORM, new WorldPoint(2781, 3274, 0), "Travel with Holgart to a nearby island.");
+		goToIslandFromMainland = new NpcStep(this, NpcID.HOLGARTLANDTRAVEL, new WorldPoint(2717, 3303, 0), "Travel with Holgart north of Witchaven to find Kent.");
 		goToIsland.addSubSteps(goToIsland);
 
 		talkToKent = new NpcStep(this, NpcID.KENT, new WorldPoint(2794, 3322, 0), "Talk to Kent on the island.");
-		returnFromIsland = new NpcStep(this, NpcID.HOLGART_5069, new WorldPoint(2801, 3320, 0), "Return to the platform with Holgart.");
-		travelWithHolgartFreeingKennith = new NpcStep(this, NpcID.HOLGART_5069, new WorldPoint(2717, 3303, 0),
+		returnFromIsland = new NpcStep(this, NpcID.HOLGARTSUNKBOAT, new WorldPoint(2801, 3320, 0), "Return to the platform with Holgart.");
+		travelWithHolgartFreeingKennith = new NpcStep(this, NpcID.HOLGARTSUNKBOAT, new WorldPoint(2717, 3303, 0),
 			"Travel with Holgart to the fishing platform.");
 		returnFromIsland.addSubSteps(travelWithHolgartFreeingKennith);
 
@@ -199,13 +190,13 @@ public class SeaSlug extends BasicQuestHelper
 		pickupDampSticks = new DetailedQuestStep(this, new WorldPoint(2784, 3289, 0), "Pick up the damp sticks in the north east corner of the platform.", dampSticks);
 		useGlassOnDampSticks = new DetailedQuestStep(this, "Use the broken glass on damp sticks to dry them.", glass, dampSticks);
 		rubSticks = new DetailedQuestStep(this, "Rub the dry sticks to light the unlit torch.");
-		goBackUpLadder = new ObjectStep(this, ObjectID.LADDER_18324, new WorldPoint(2784, 3286, 0), "Go up the ladder in the north east corner of the platform.");
-		talkToKennithAgain = new NpcStep(this, NpcID.KENNITH_5063, new WorldPoint(2765, 3289, 1), "Talk to Kennith to the west.");
-		kickWall = new ObjectStep(this, NullObjectID.NULL_18251, new WorldPoint(2768, 3289, 1), "Kick in the badly repaired wall east of Kennith.");
-		talkToKennithAfterKicking = new NpcStep(this, NpcID.KENNITH_5063, new WorldPoint(2765, 3289, 1), "Talk to Kennith again.");
-		activateCrane = new ObjectStep(this, ObjectID.CRANE_18327, new WorldPoint(2772, 3289, 1), "Rotate the crane east of Kennith's cabin.");
-		goDownLadderAgain = new ObjectStep(this, ObjectID.LADDER_18325, new WorldPoint(2784, 3286, 1), "Go back down the ladder.");
-		returnWithHolgart = new NpcStep(this, NpcID.HOLGART_5070, new WorldPoint(2781, 3274, 0), "Travel with Holgart back to the mainland.");
+		goBackUpLadder = new ObjectStep(this, ObjectID.SEASLUG_LADDER, new WorldPoint(2784, 3286, 0), "Go up the ladder in the north east corner of the platform.");
+		talkToKennithAgain = new NpcStep(this, NpcID.KENNITH_PLATFORM, new WorldPoint(2765, 3289, 1), "Talk to Kennith to the west.");
+		kickWall = new ObjectStep(this, ObjectID.SLUG_BREAKABLE_PANEL, new WorldPoint(2768, 3289, 1), "Kick in the badly repaired wall east of Kennith.");
+		talkToKennithAfterKicking = new NpcStep(this, NpcID.KENNITH_PLATFORM, new WorldPoint(2765, 3289, 1), "Talk to Kennith again.");
+		activateCrane = new ObjectStep(this, ObjectID.SEASLUG_CRANE, new WorldPoint(2772, 3289, 1), "Rotate the crane east of Kennith's cabin.");
+		goDownLadderAgain = new ObjectStep(this, ObjectID.SEASLUG_LADDER_TOP, new WorldPoint(2784, 3286, 1), "Go back down the ladder.");
+		returnWithHolgart = new NpcStep(this, NpcID.HOLGARTPLATFORM, new WorldPoint(2781, 3274, 0), "Travel with Holgart back to the mainland.");
 		finishQuest = new NpcStep(this, NpcID.CAROLINE, new WorldPoint(2717, 3303, 0), "Talk to Caroline to complete the quest.");
 	}
 

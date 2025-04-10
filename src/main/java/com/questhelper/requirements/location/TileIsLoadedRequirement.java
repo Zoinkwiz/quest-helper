@@ -28,14 +28,13 @@ package com.questhelper.requirements.location;
 
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.steps.tools.QuestPerspective;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
+import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Objects;
 
 public class TileIsLoadedRequirement extends AbstractRequirement
 {

@@ -32,6 +32,7 @@ import com.questhelper.requirements.util.Operation;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
+
 import javax.annotation.Nonnull;
 
 /**

@@ -27,13 +27,14 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.util.Utils;
+import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import com.questhelper.util.Utils;
-import net.runelite.api.Client;
-import javax.annotation.Nonnull;
 
 public class FollowerRequirement extends AbstractRequirement
 {

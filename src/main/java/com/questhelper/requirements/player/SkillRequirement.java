@@ -31,13 +31,14 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
-import java.awt.Color;
-import java.util.Arrays;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.Arrays;
 
 /**
  * Requirement that checks if a player meets a certain skill level.

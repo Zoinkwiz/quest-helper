@@ -24,18 +24,19 @@
  */
 package com.questhelper.helpers.skills.agility;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.Arrays;
 import java.util.Collections;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
 
 public class AlKharid extends AgilityCourse
 {
@@ -91,29 +92,29 @@ public class AlKharid extends AgilityCourse
 	protected void setupSteps()
 	{
 		//Al Kharid obstacles
-		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROUGH_WALL_11633, new WorldPoint(3273, 3195, 0),
+		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_KHARID_WALLCLIMB, new WorldPoint(3273, 3195, 0),
 			"Climb the rough wall just southeast of the Gnome Glider in Al Kharid.",
 			Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		walkFirstRope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE_14398, new WorldPoint(3272, 3181, 3),
+		walkFirstRope = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_KHARID_TIGHTROPE_1, new WorldPoint(3272, 3181, 3),
 			"Cross the tightrope.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		swingCable = new ObjectStep(this.questHelper, ObjectID.CABLE, new WorldPoint(3269, 3166, 3),
+		swingCable = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_KHARID_ROPE_SWING, new WorldPoint(3269, 3166, 3),
 			"Swing across the cable.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		gripZipLine = new ObjectStep(this.questHelper, ObjectID.ZIP_LINE_14403, new WorldPoint(3303, 3163, 3),
+		gripZipLine = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_KHARID_SLIDE_SIDE, new WorldPoint(3303, 3163, 3),
 			"Teeth-grip the zip line.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		swingTree = new ObjectStep(this.questHelper, ObjectID.TROPICAL_TREE_14404, new WorldPoint(3318, 3166, 1),
+		swingTree = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_KHARID_BAMBOO_TREE_TOP, new WorldPoint(3318, 3166, 1),
 			"Swing across the tropical tree.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		climbBeams = new ObjectStep(this.questHelper, ObjectID.ROOF_TOP_BEAMS, new WorldPoint(3316, 3179, 2),
+		climbBeams = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_KHARID_WALLCLIMB_2, new WorldPoint(3316, 3179, 2),
 			"Climb the roof top beams.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		walkSecondRope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE_14409, new WorldPoint(3313, 3186, 3),
+		walkSecondRope = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_KHARID_TIGHTROPE_4, new WorldPoint(3313, 3186, 3),
 			"Cross the tightrope.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpGap = new ObjectStep(this.questHelper, ObjectID.GAP_14399, new WorldPoint(3300, 3193, 3),
+		jumpGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_KHARID_LEAPDOWN, new WorldPoint(3300, 3193, 3),
 			"Jump down the gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 	}
 

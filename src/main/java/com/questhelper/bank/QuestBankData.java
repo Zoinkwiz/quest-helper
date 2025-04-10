@@ -24,11 +24,12 @@
  */
 package com.questhelper.bank;
 
+import lombok.Data;
+import net.runelite.api.Item;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import lombok.Data;
-import net.runelite.api.Item;
 
 @Data
 class QuestBankData

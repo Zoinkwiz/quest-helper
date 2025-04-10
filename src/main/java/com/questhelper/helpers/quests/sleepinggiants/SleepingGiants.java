@@ -26,12 +26,9 @@
 package com.questhelper.helpers.quests.sleepinggiants;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.widget.WidgetPresenceRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
@@ -39,27 +36,24 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.requirements.widget.WidgetSpriteRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-
+import com.questhelper.steps.*;
 import com.questhelper.steps.widget.WidgetDetails;
-import com.questhelper.steps.WidgetStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 @Slf4j
 public class SleepingGiants extends BasicQuestHelper
@@ -182,8 +176,8 @@ public class SleepingGiants extends BasicQuestHelper
 
 		wool = new ItemRequirement("Wool", ItemID.WOOL);
 
-		nails = new ItemRequirement("Nails", ItemID.BRONZE_NAILS);
-		nails.addAlternates(ItemID.IRON_NAILS, ItemID.STEEL_NAILS, ItemID.BLACK_NAILS, ItemID.MITHRIL_NAILS, ItemID.ADAMANTITE_NAILS, ItemID.RUNE_NAILS);
+		nails = new ItemRequirement("Nails", ItemID.NAILS_BRONZE);
+		nails.addAlternates(ItemID.NAILS_IRON, ItemID.NAILS, ItemID.NAILS_BLACK, ItemID.NAILS_MITHRIL, ItemID.NAILS_ADAMANT, ItemID.NAILS_RUNE);
 		nails.setQuantity(10);
 
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
@@ -196,11 +190,11 @@ public class SleepingGiants extends BasicQuestHelper
 		iceGloves = new ItemRequirement("Ice Gloves", ItemID.ICE_GLOVES);
 		iceGloves.setTooltip("Allows you to skip filling and using a bucket of water.");
 
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
 		bucket.canBeObtainedDuringQuest();
 		bucket.setHighlightInInventory(true);
 
-		bucketOfWater = new ItemRequirement("Bucket of Water", ItemID.BUCKET_OF_WATER);
+		bucketOfWater = new ItemRequirement("Bucket of Water", ItemID.BUCKET_WATER);
 		bucketOfWater.canBeObtainedDuringQuest();
 
 		freeInventorySpace = new FreeInventorySlotRequirement(20);
@@ -212,14 +206,14 @@ public class SleepingGiants extends BasicQuestHelper
 		twoOakLogs = new ItemRequirement("Oak Logs", ItemID.OAK_LOGS);
 		twoOakLogs.setQuantity(2);
 
-		fiveNails = new ItemRequirement("Nails", ItemID.BRONZE_NAILS);
-		fiveNails.addAlternates(ItemID.IRON_NAILS, ItemID.STEEL_NAILS, ItemID.BLACK_NAILS, ItemID.MITHRIL_NAILS, ItemID.ADAMANTITE_NAILS, ItemID.RUNE_NAILS);
+		fiveNails = new ItemRequirement("Nails", ItemID.NAILS_BRONZE);
+		fiveNails.addAlternates(ItemID.NAILS_IRON, ItemID.NAILS, ItemID.NAILS_BLACK, ItemID.NAILS_MITHRIL, ItemID.NAILS_ADAMANT, ItemID.NAILS_RUNE);
 		fiveNails.setQuantity(5);
 
 		oneOakLog = new ItemRequirement("Oak Logs", ItemID.OAK_LOGS);
 
 		// TODO: This might not be the right Item ID.
-		preform = new ItemRequirement("Preform", ItemID.PREFORM).equipped();
+		preform = new ItemRequirement("Preform", ItemID.GIANTS_FOUNDRY_PREFORM).equipped();
 	}
 
 	@Override
@@ -234,21 +228,21 @@ public class SleepingGiants extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		grindstoneFixed = new VarbitRequirement(13905, 2, Operation.EQUAL);
-		polishingStoneFixed = new VarbitRequirement(13906, 2, Operation.EQUAL);
-		hammerFixed = new VarbitRequirement(13904, 2, Operation.EQUAL);
+		grindstoneFixed = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_REPAIR_GRIND, 2, Operation.EQUAL);
+		polishingStoneFixed = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_REPAIR_POLISH, 2, Operation.EQUAL);
+		hammerFixed = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_REPAIR_HAMMER, 2, Operation.EQUAL);
 
-		commissionReceived = new VarbitRequirement(13903, 10, Operation.GREATER_EQUAL);
-		crateSearched = new VarbitRequirement(13903, 15, Operation.GREATER_EQUAL);
-		crucibleFilled = new VarbitRequirement(13903, 25, Operation.GREATER_EQUAL);
-		talkedToKovacAboutMould = new VarbitRequirement(13903, 30, Operation.GREATER_EQUAL);
+		commissionReceived = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 10, Operation.GREATER_EQUAL);
+		crateSearched = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 15, Operation.GREATER_EQUAL);
+		crucibleFilled = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 25, Operation.GREATER_EQUAL);
+		talkedToKovacAboutMould = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 30, Operation.GREATER_EQUAL);
 		// REMOVE
-		shouldSetMould = new VarbitRequirement(13903, 30, Operation.GREATER_EQUAL);
+		shouldSetMould = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 30, Operation.GREATER_EQUAL);
 		//REMOVE?
-		mouldSet = new VarbitRequirement(13903, 35, Operation.GREATER_EQUAL);
-		talkedToKovacAboutPouringMetal = new VarbitRequirement(13903, 40, Operation.GREATER_EQUAL);
-		metalPoured = new VarbitRequirement(13903, 45, Operation.GREATER_EQUAL);
-		preformObtained = new VarbitRequirement(13903, 50, Operation.GREATER_EQUAL);
+		mouldSet = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 35, Operation.GREATER_EQUAL);
+		talkedToKovacAboutPouringMetal = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 40, Operation.GREATER_EQUAL);
+		metalPoured = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 45, Operation.GREATER_EQUAL);
+		preformObtained = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 50, Operation.GREATER_EQUAL);
 
 		selectingMould = new WidgetPresenceRequirement(718, 2);
 		noForteSelected = new VarbitRequirement(13910, 0);
@@ -258,20 +252,20 @@ public class SleepingGiants extends BasicQuestHelper
 		bladeTabOpen = new WidgetSpriteRequirement(718, 12, 10, 297);
 		tipTabOpen = new WidgetSpriteRequirement(718, 12, 19, 297);
 
-		storedPreform = new VarbitRequirement(13947, 1, Operation.GREATER_EQUAL);
-		metalHeated = new VarbitRequirement(13948, 720, Operation.GREATER_EQUAL);
+		storedPreform = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_STORED, 1, Operation.GREATER_EQUAL);
+		metalHeated = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_TEMPERATURE, 720, Operation.GREATER_EQUAL);
 
-		metalHammered = new VarbitRequirement(13949, 333, Operation.GREATER_EQUAL);
+		metalHammered = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_COMPLETION, 333, Operation.GREATER_EQUAL);
 
-		metalTooCoolToGrindstone = new VarbitRequirement(13948, 340, Operation.LESS_EQUAL);
-		metalTooHotToGrindstone = new VarbitRequirement(13948, 620, Operation.GREATER_EQUAL);
+		metalTooCoolToGrindstone = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_TEMPERATURE, 340, Operation.LESS_EQUAL);
+		metalTooHotToGrindstone = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_TEMPERATURE, 620, Operation.GREATER_EQUAL);
 
-		metalGrinded = new VarbitRequirement(13949, 666, Operation.GREATER_EQUAL);
-		metalTooHotForPolishing = new VarbitRequirement(13948, 333, Operation.GREATER_EQUAL);
-		metalTooCoolForPolishing = new VarbitRequirement(13948, 30, Operation.LESS_EQUAL);
+		metalGrinded = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_COMPLETION, 666, Operation.GREATER_EQUAL);
+		metalTooHotForPolishing = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_TEMPERATURE, 333, Operation.GREATER_EQUAL);
+		metalTooCoolForPolishing = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_TEMPERATURE, 30, Operation.LESS_EQUAL);
 
 		swordMade = new VarbitRequirement(13949, 1000);
-		preformHandedIn = new VarbitRequirement(13903, 55, Operation.GREATER_EQUAL);
+		preformHandedIn = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 55, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
@@ -297,43 +291,43 @@ public class SleepingGiants extends BasicQuestHelper
 			"Take a hammer from the crate north of the Giants' Foundry.");
 		takeHammer.addIcon(ItemID.HAMMER);
 
-		strikeHillGiant = new NpcStep(this, NpcID.HILL_GIANT_11467, new WorldPoint(3361, 3147, 0),
+		strikeHillGiant = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_FAKE_ATTACK, new WorldPoint(3361, 3147, 0),
 			"Attempt to Strike the Hill Giant at the entrance of the cave to start the quest.");
 		strikeHillGiant.addDialogStep("Yes.");
-		speakToKovac = new NpcStep(this, NpcID.KOVAC, new WorldPoint(3361, 3147, 0),
+		speakToKovac = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_QUEST, new WorldPoint(3361, 3147, 0),
 			"Speak to Kovac.");
 
-		enterFoundry = new ObjectStep(this, ObjectID.CAVE_44635 /* Cave */, new WorldPoint(3361, 3150, 0),
+		enterFoundry = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_ENTRANCE /* Cave */, new WorldPoint(3361, 3150, 0),
 			"Enter the Giants' Foundry.");
 
-		enterFoundryToMakeWeapon = new ObjectStep(this, ObjectID.CAVE_44635 /* Cave */, new WorldPoint(3361, 3150, 0),
+		enterFoundryToMakeWeapon = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_ENTRANCE /* Cave */, new WorldPoint(3361, 3150, 0),
 			"Enter the Giants' Foundry again.");
 
-		fixPolishingStone = new ObjectStep(this, NullObjectID.NULL_44775 /* Broken polishing wheel */, new WorldPoint(3363, 11485, 0),
+		fixPolishingStone = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_POLISHING_WHEEL_QUEST_MULTI /* Broken polishing wheel */, new WorldPoint(3363, 11485, 0),
 			"Fix the Broken polishing wheel.", twoOakLogs, fiveNails, hammer);
 		fixPolishingStone.addDialogStep("Yes.");
 
-		fixGrindstone = new ObjectStep(this, NullObjectID.NULL_44774 /* Broken grindstone */, new WorldPoint(3362, 11492, 0),
+		fixGrindstone = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_GRINDSTONE_QUEST_MULTI /* Broken grindstone */, new WorldPoint(3362, 11492, 0),
 			"Fix the Broken grindstone.", chisel);
 		fixGrindstone.addDialogStep("Yes.");
-		fixHammer = new ObjectStep(this, NullObjectID.NULL_44773 /* Broken trip hammer */, new WorldPoint(3364, 11497, 0),
+		fixHammer = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_TRIP_HAMMER_QUEST_MULTI /* Broken trip hammer */, new WorldPoint(3364, 11497, 0),
 			"Fix the Broken trip hammer.", oneOakLog, fiveNails, hammer);
 		fixHammer.addDialogStep("Yes.");
 
-		speakToKovacAfterRepairs = new NpcStep(this, NpcID.KOVAC, "Speak to Kovac to continue.");
-		speakToKovacContinue = new NpcStep(this, NpcID.KOVAC_11470, "Speak to Kovac for a commission.");
+		speakToKovacAfterRepairs = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_QUEST, "Speak to Kovac to continue.");
+		speakToKovacContinue = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_1OP, "Speak to Kovac for a commission.");
 
-		searchCrate = new ObjectStep(this, NullObjectID.NULL_44779 /* Crate */, new WorldPoint(3370, 11483, 0),
+		searchCrate = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_SUPPLY_BOX_MULTI /* Crate */, new WorldPoint(3370, 11483, 0),
 			"Take some bars & weapons from the Crate.", freeInventorySpace);
 		searchCrate.addDialogStep("Yes.");
 
-		fillCrucible = new ObjectStep(this, NullObjectID.NULL_44776 /* Crucible (empty */,
+		fillCrucible = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_CRUCIBLE_MULTI /* Crucible (empty */,
 			"Fill the Crucible with items & bars until it is full.");
 		fillCrucible.addSubSteps(enterFoundryToMakeWeapon);
 
-		speakToKovacAboutMould = new NpcStep(this, NpcID.KOVAC_11470, "Speak to Kovac about the mould.");
+		speakToKovacAboutMould = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_1OP, "Speak to Kovac about the mould.");
 
-		interactWithMould = new ObjectStep(this, NullObjectID.NULL_44777 /* Mould jig (Empty) */,
+		interactWithMould = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_MOULD_JIG /* Mould jig (Empty) */,
 			"Select the mould for the forte, blade and tip.");
 
 		selectForteTab = new WidgetStep(this, "Select the Forte tab.", new WidgetDetails(718, 12, 1));
@@ -345,45 +339,45 @@ public class SleepingGiants extends BasicQuestHelper
 		setMould = new WidgetStep(this, "Set the Mould.", 718, 6);
 		interactWithMould.addSubSteps(selectForte, selectForteTab, selectBladesTab, selectBlade, selectTipsTab, selectTip);
 
-		talkToKovakAfterMould = new NpcStep(this, NpcID.KOVAC_11470, "Speak to Kovac about pouring the metal.");
+		talkToKovakAfterMould = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_1OP, "Speak to Kovac about pouring the metal.");
 
-		pourMetal = new ObjectStep(this, NullObjectID.NULL_44776 /* Crucible (empty */, "Pour the full Crucible into the mould.");
+		pourMetal = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_CRUCIBLE_MULTI /* Crucible (empty */, "Pour the full Crucible into the mould.");
 
-		coolDownSword = new ObjectStep(this, NullObjectID.NULL_44777, "Pick up the sword from the mould with a bucket of water or ice gloves equipped.",
+		coolDownSword = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_MOULD_JIG, "Pick up the sword from the mould with a bucket of water or ice gloves equipped.",
 			iceGloves.equipped().showConditioned(iceGloves), bucketOfWater.showConditioned(bucketOfWater).highlighted());
-		coolDownSword.addIcon(ItemID.BUCKET_OF_WATER);
-		fillBucketWaterfall = new ObjectStep(this, ObjectID.WATERFALL_44632,
+		coolDownSword.addIcon(ItemID.BUCKET_WATER);
+		fillBucketWaterfall = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_WATERFALL,
 			"Fill the bucket with water by using it on the Waterfall.", bucketOfWater);
 
-		takeBucket = new ObjectStep(this, ObjectID.PILE_OF_BUCKETS /* Pile of Buckets */, "Take a Bucket from the Pile of Buckets");
+		takeBucket = new ObjectStep(this, ObjectID.MY2ARM_THRONE_ROOM_BUCKETS /* Pile of Buckets */, "Take a Bucket from the Pile of Buckets");
 
 		// Trip hammer
-		dunkPreform = new ObjectStep(this, ObjectID.LAVA_POOL_44631, new WorldPoint(3372, 11497, 0), "Dunk the preform in the lava pool until it's at max heat.");
-		hitPreformWhileRed = new ObjectStep(this, ObjectID.TRIP_HAMMER /*  trip hammer */, new WorldPoint(3364, 11497, 0),
+		dunkPreform = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_LAVA_POOL, new WorldPoint(3372, 11497, 0), "Dunk the preform in the lava pool until it's at max heat.");
+		hitPreformWhileRed = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_TRIP_HAMMER /*  trip hammer */, new WorldPoint(3364, 11497, 0),
 			"Use the trip hammer while the heat bar is in the red, and re-heat it in the lava whenever it's close to yellow.");
 		hitPreformWhileRed.addSubSteps(dunkPreform);
 
 		// Grindstone
-		coolPreformToGrindstone = new ObjectStep(this, ObjectID.WATERFALL_44632,
+		coolPreformToGrindstone = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_WATERFALL,
 			"Cool the preform to the lower range of the yellow heat section on the waterfall.");
-		dunkPreformToGrindstone = new ObjectStep(this, ObjectID.LAVA_POOL_44631, new WorldPoint(3372, 11497, 0),
+		dunkPreformToGrindstone = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_LAVA_POOL, new WorldPoint(3372, 11497, 0),
 			"Dunk the preform in the lava pool until it's at the bottom of the yellow heat section.");
-		grindstonePreform = new ObjectStep(this, ObjectID.GRINDSTONE, new WorldPoint(3362, 11492, 0),
+		grindstonePreform = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_GRINDSTONE, new WorldPoint(3362, 11492, 0),
 			"Grindstone the preform whilst in the yellow heat section.");
 		grindstonePreform.addSubSteps(coolPreformToGrindstone, dunkPreformToGrindstone);
 		// Polishing
-		coolPreformToPolish = new ObjectStep(this, ObjectID.WATERFALL_44632,
+		coolPreformToPolish = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_WATERFALL,
 			"Cool the preform to the top of the range of the green heat section on the waterfall.");
-		heatPreformToPolish = new ObjectStep(this, ObjectID.LAVA_POOL_44631, new WorldPoint(3372, 11497, 0),
+		heatPreformToPolish = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_LAVA_POOL, new WorldPoint(3372, 11497, 0),
 			"Dunk the preform in the lava pool until it's at the top of the green heat section.");
-		polishPreform = new ObjectStep(this, ObjectID.POLISHING_WHEEL /* Broken polishing wheel */, new WorldPoint(3363, 11485, 0),
+		polishPreform = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_POLISHING_WHEEL /* Broken polishing wheel */, new WorldPoint(3363, 11485, 0),
 			"Use the polishing wheel whilst in the green heat range, heating it in the lava when needed.");
 		polishPreform.addSubSteps(coolPreformToPolish, heatPreformToPolish);
 
-		getPreform = new ObjectStep(this, NullObjectID.NULL_44778, new WorldPoint(3369, 11501, 0),
+		getPreform = new ObjectStep(this, ObjectID.GIANTS_FOUNDRY_PREFORM_STORAGE, new WorldPoint(3369, 11501, 0),
 			"Get your preform from the preform storage in the north of the room.");
 
-		handInPreform = new NpcStep(this, NpcID.KOVAC_11470, "Give the finished sword to Kovac to complete the quest.");
+		handInPreform = new NpcStep(this, NpcID.GIANTS_FOUNDRY_KOVAC_1OP, "Give the finished sword to Kovac to complete the quest.");
 
 	}
 

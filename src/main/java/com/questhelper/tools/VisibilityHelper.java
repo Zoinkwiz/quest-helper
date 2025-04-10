@@ -1,15 +1,10 @@
 package com.questhelper.tools;
 
-import java.awt.Shape;
+import net.runelite.api.*;
+
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.Model;
-import net.runelite.api.Renderable;
-import net.runelite.api.TileObject;
-import net.runelite.api.WallObject;
 
 public class VisibilityHelper
 {

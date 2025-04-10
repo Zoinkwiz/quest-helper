@@ -3,14 +3,14 @@ package com.questhelper.helpers.quests.theslugmenace;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.awt.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PuzzleStep extends QuestStep
 {

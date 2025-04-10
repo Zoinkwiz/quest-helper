@@ -25,38 +25,29 @@
 package com.questhelper.helpers.achievementdiaries.karamja;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class KaramjaMedium extends BasicQuestHelper
 {
@@ -201,46 +192,46 @@ public class KaramjaMedium extends BasicQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notMinedRedRopaz, notEarned100)).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS)
 			.showConditioned(new Conditions(LogicType.OR, notClaimedTicket, notUsedCart, notTraveledToKhazard, notCharteredFromShipyard));
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notCaughtKarambwan).isNotConsumed();
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.NET).showConditioned(notCaughtKarambwan).isNotConsumed();
 
-		spiderCarcass = new ItemRequirement("Spider carcass", ItemID.SPIDER_CARCASS).showConditioned(notCookedSpider);
+		spiderCarcass = new ItemRequirement("Spider carcass", ItemID.VILLAGE_SPIDER_CARCASS).showConditioned(notCookedSpider);
 		spiderCarcass.setTooltip("You can get one killing a spider during Tai Bwo Wannai Cleanup");
 		skewerTicksOrArrowShaft = new ItemRequirement("Arrow shaft or skewer stick", ItemID.ARROW_SHAFT).showConditioned(notCookedSpider);
-		skewerTicksOrArrowShaft.addAlternates(ItemID.SKEWER_STICK);
-		goutTuber = new ItemRequirement("Gout tuber", ItemID.GOUT_TUBER).showConditioned(notExchangedGems);
+		skewerTicksOrArrowShaft.addAlternates(ItemID.TBW_SKEWER_STICK);
+		goutTuber = new ItemRequirement("Gout tuber", ItemID.VILLAGE_RARE_TUBER).showConditioned(notExchangedGems);
 		goutTuber.setTooltip("This can be obtained rarely during Tai Bwo Wannai Cleanup. Have a spade to dig it up");
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notGrownFruitTree).isNotConsumed();
 		fruitTreeSapling = new ItemRequirement("A fruit tree sapling you can plant, preferably Palm Tree for the " +
-			"Elite diary", ItemID.PALM_SAPLING).showConditioned(notGrownFruitTree);
-		fruitTreeSapling.addAlternates(ItemID.APPLE_SAPLING, ItemID.BANANA_SAPLING, ItemID.ORANGE_SAPLING, ItemID.CURRY_SAPLING,
-			ItemID.PINEAPPLE_SAPLING, ItemID.PAPAYA_SAPLING, ItemID.DRAGONFRUIT_SAPLING);
-		teasingStick = new ItemRequirement("Teasing stick", ItemID.TEASING_STICK).showConditioned(notTrappedGraahk).isNotConsumed();
+			"Elite diary", ItemID.PLANTPOT_PALM_SAPLING).showConditioned(notGrownFruitTree);
+		fruitTreeSapling.addAlternates(ItemID.PLANTPOT_APPLE_SAPLING, ItemID.PLANTPOT_BANANA_SAPLING, ItemID.PLANTPOT_ORANGE_SAPLING, ItemID.PLANTPOT_CURRY_SAPLING,
+			ItemID.PLANTPOT_PINEAPPLE_SAPLING, ItemID.PLANTPOT_PAPAYA_SAPLING, ItemID.PLANTPOT_DRAGONFRUIT_SAPLING);
+		teasingStick = new ItemRequirement("Teasing stick", ItemID.HUNTING_TEASING_STICK).showConditioned(notTrappedGraahk).isNotConsumed();
 		teasingStick.setTooltip("You can buy one from the hunter shop in Yanille");
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notTrappedGraahk).isNotConsumed();
 		logs = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notTrappedGraahk);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
 			notTrappedGraahk, notCrossedLava, notClimbedStairs, notCutVine, notCutTeak, notCutMahog)).isNotConsumed();
-		tradingSticks = new ItemRequirement("Trading sticks", ItemID.TRADING_STICKS).showConditioned(notExchangedGems);
+		tradingSticks = new ItemRequirement("Trading sticks", ItemID.VILLAGE_TRADE_STICKS).showConditioned(notExchangedGems);
 		tradingSticks.setTooltip("You can get these from villagers when doing Tai Bwo Wannai Cleanup");
 		opal = new ItemRequirement("Opal", ItemID.OPAL).showConditioned(notExchangedGems);
 		opal.setTooltip("You can bring a jade or red topaz instead for a machete if you also bring more trading sticks");
-		karambwanVessel = new ItemRequirement("Karambwan vessel", ItemID.KARAMBWAN_VESSEL).showConditioned(notCaughtKarambwan).isNotConsumed();
-		karambwanVessel.addAlternates(ItemID.KARAMBWAN_VESSEL_3159);
+		karambwanVessel = new ItemRequirement("Karambwan vessel", ItemID.TBWT_KARAMBWAN_VESSEL).showConditioned(notCaughtKarambwan).isNotConsumed();
+		karambwanVessel.addAlternates(ItemID.TBWT_KARAMBWAN_VESSEL_LOADED_WITH_KARAMBWANJI);
 		rawKarambwanji = new ItemRequirement("Raw karambwanji",
-		ItemID.RAW_KARAMBWANJI).showConditioned(notCaughtKarambwan);
+		ItemID.TBWT_RAW_KARAMBWANJI).showConditioned(notCaughtKarambwan);
 		rawKarambwanjiOrSmallFishingNet = new ItemRequirement("Raw karambwanji, or a small fishing net to catch some",
-			ItemID.RAW_KARAMBWANJI).showConditioned(notCaughtKarambwan);
-		rawKarambwanjiOrSmallFishingNet.addAlternates(ItemID.SMALL_FISHING_NET);
+			ItemID.TBWT_RAW_KARAMBWANJI).showConditioned(notCaughtKarambwan);
+		rawKarambwanjiOrSmallFishingNet.addAlternates(ItemID.NET);
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(new Conditions(LogicType.OR,
 			notEarned100, notGrownFruitTree)).isNotConsumed();
-		machete = new ItemRequirement("Machete", ItemID.RED_TOPAZ_MACHETE).showConditioned((notEarned100)).isNotConsumed();
-		machete.addAlternates(ItemID.JADE_MACHETE, ItemID.OPAL_MACHETE, ItemID.MACHETE);
+		machete = new ItemRequirement("Machete", ItemID.MACHETTE_REDTOPAZ).showConditioned((notEarned100)).isNotConsumed();
+		machete.addAlternates(ItemID.MACHETTE_JADE, ItemID.MACHETTE_OPAL, ItemID.MACHETTE);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, -1);
 
-		spiderOnAStick = new ItemRequirement("Spider on stick", List.of(ItemID.SPIDER_ON_STICK, ItemID.SPIDER_ON_SHAFT));
+		spiderOnAStick = new ItemRequirement("Spider on stick", List.of(ItemID.TBW_SPIDER_ON_STICK_RAW, ItemID.TBW_SPIDER_ON_SHAFT_RAW));
 		spiderOnAStick.setTooltip("You can get one by using a spider carcass on an arrow shaft");
 
 		agility12 = new SkillRequirement(Skill.AGILITY, 12);
@@ -274,14 +265,14 @@ public class KaramjaMedium extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterAgilityArena = new ObjectStep(this, ObjectID.LADDER_3617, new WorldPoint(2809, 3194, 0), "Pay Cap'n Izzy" +
+		enterAgilityArena = new ObjectStep(this, ObjectID.AGILITYARENA_LADDERDOWN, new WorldPoint(2809, 3194, 0), "Pay Cap'n Izzy" +
 			" No Beard 200 coins and enter the Agility Arena in Brimhaven.",
 			coins.quantity(200));
 		tag2Pillars = new DetailedQuestStep(this, "Tag 2 marked pillars in a row.");
-		enterVolcano = new ObjectStep(this, ObjectID.ROCKS_11441, new WorldPoint(2857, 3169, 0),
+		enterVolcano = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0),
 			"Enter the Karamja Volcano.");
-		returnThroughWall = new ObjectStep(this, ObjectID.WALL_2606, new WorldPoint(2836, 9600, 0), "Return back through the shortcut.");
-		useCart = new ObjectStep(this, ObjectID.TRAVEL_CART, new WorldPoint(2778, 3212, 0),
+		returnThroughWall = new ObjectStep(this, ObjectID.DRAGONSECRETDOOR, new WorldPoint(2836, 9600, 0), "Return back through the shortcut.");
+		useCart = new ObjectStep(this, ObjectID.BRIMHAVENCART, new WorldPoint(2778, 3212, 0),
 			"Travel on the cart north of Brimhaven.", coins.quantity(200));
 		doCleanup = new DetailedQuestStep(this, "Talk to Murcaily in the east of Tai Bwo Wannai to start up the " +
 			"cleanup, then chop the light jungle and repair the rotten fences until 100% favour. Make sure you dig up" +
@@ -289,57 +280,57 @@ public class KaramjaMedium extends BasicQuestHelper
 		makeSpiderStick = new DetailedQuestStep(this, "Make a spider on stick by using a spider carcass on an arrow " +
 			"shaft.", spiderCarcass.highlighted(), skewerTicksOrArrowShaft.highlighted());
 		cookSpider = new DetailedQuestStep(this, "Cook a spider on a stick on a fire/range.", spiderOnAStick);
-		climbUpToBoat = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2763, 2952, 0),
+		climbUpToBoat = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2763, 2952, 0),
 			"Charter the Lady of the Waves from south of Cairn Isle to Port Khazard.", coins.quantity(50));
 		travelToKhazard = new NpcStep(this, NpcID.CAPTAIN_SHANKS, new WorldPoint(2761, 2959, 1),
 			"Charter the Lady of the Waves from south of Cairn Isle to Port Khazard.", coins.quantity(50));
 		travelToKhazard.addDialogSteps("Yes, I'll buy a ticket for the ship.", "Khazard Port please.");
 		travelToKhazard.addSubSteps(climbUpToBoat);
-		cutTeak = new ObjectStep(this, ObjectID.TEAK_TREE, new WorldPoint(2822, 3078, 0), "Chop a teak tree down either in" +
+		cutTeak = new ObjectStep(this, ObjectID.TEAKTREE, new WorldPoint(2822, 3078, 0), "Chop a teak tree down either in" +
 			" the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe, tradingSticks.quantity(100));
-		cutMahogany = new ObjectStep(this, ObjectID.MAHOGANY_TREE, new WorldPoint(2820, 3080, 0), "Chop a mahogany tree " +
+		cutMahogany = new ObjectStep(this, ObjectID.MAHOGANYTREE, new WorldPoint(2820, 3080, 0), "Chop a mahogany tree " +
 			"down either in the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe,
 			tradingSticks.quantity(100));
-		catchKarambwanji = new NpcStep(this, NpcID.FISHING_SPOT_4710, new WorldPoint(2791,3019,0),
+		catchKarambwanji = new NpcStep(this, NpcID._0_43_47_KARAMBWANJI, new WorldPoint(2791,3019,0),
 			"Using your small fishing net, catch some raw karambwanji just south of Tai Bwo Wannai, or buy some from the GE.", smallFishingNet);
-		catchKarambwan = new NpcStep(this, NpcID.FISHING_SPOT_4712, new WorldPoint(2899, 3119, 0),
+		catchKarambwan = new NpcStep(this, NpcID._0_45_48_KARAMBWAN, new WorldPoint(2899, 3119, 0),
 			"Fish a karambwan from the north east coast of Karamja.", karambwanVessel, rawKarambwanji);
-		getMachete = new NpcStep(this, NpcID.SAFTA_DOC_6423, new WorldPoint(2790, 3100, 0),
+		getMachete = new NpcStep(this, NpcID.TBWCU_SAFTA_DOC_NOSTICKS, new WorldPoint(2790, 3100, 0),
 			"Get a gem machete from Safta Doc. If you want to make a red topaz one, you'll need 1200 trading sticks.",
 			goutTuber, opal.quantity(3), tradingSticks.quantity(300));
-		((NpcStep) getMachete).addAlternateNpcs(NpcID.SAFTA_DOC);
+		((NpcStep) getMachete).addAlternateNpcs(NpcID.TBWCU_SAFTA_DOC);
 		getMachete.addDialogSteps("What do you do here?", "Yes, I'd like to get a machete.");
-		flyToKaramja = new NpcStep(this, NpcID.CAPTAIN_DALBUR, new WorldPoint(3284, 3213, 0),
+		flyToKaramja = new NpcStep(this, NpcID.PILOT_AL_KHARID_BASE, new WorldPoint(3284, 3213, 0),
 			"Fly on a Gnome Glider to Karamja.");
-		growFruitTree = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
+		growFruitTree = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Grow a fruit tree in the Brimhaven patch. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			fruitTreeSapling, rake, spade);
-		trapGraahk = new NpcStep(this, NpcID.HORNED_GRAAHK, new WorldPoint(2770, 3003, 0),
+		trapGraahk = new NpcStep(this, NpcID.HUNTING_LEOPARD, new WorldPoint(2770, 3003, 0),
 			"Place logs over a pit north of Cairn Isle, and poke a graahk with a teasing stick. Jump over the pits " +
 				"until the graahk falls in and loot it.", teasingStick, knife, logs);
-		enterBrimDungeonVine = new ObjectStep(this, ObjectID.DUNGEON_ENTRANCE_20876, new WorldPoint(2745, 3155, 0),
+		enterBrimDungeonVine = new ObjectStep(this, ObjectID.DUNGEON_TREE_OPEN, new WorldPoint(2745, 3155, 0),
 			"Enter Brimhaven Dungeon.", axe, coins.quantity(875));
-		enterBrimDungeonLava = new ObjectStep(this, ObjectID.DUNGEON_ENTRANCE_20876, new WorldPoint(2745, 3155, 0),
+		enterBrimDungeonLava = new ObjectStep(this, ObjectID.DUNGEON_TREE_OPEN, new WorldPoint(2745, 3155, 0),
 			"Enter Brimhaven Dungeon.", coins.quantity(875));
-		enterBrimDungeonStairs = new ObjectStep(this, ObjectID.DUNGEON_ENTRANCE_20876, new WorldPoint(2745, 3155, 0),
+		enterBrimDungeonStairs = new ObjectStep(this, ObjectID.DUNGEON_TREE_OPEN, new WorldPoint(2745, 3155, 0),
 			"Enter Brimhaven Dungeon.", coins.quantity(875));
-		chopVines = new ObjectStep(this, ObjectID.VINES_21731, new WorldPoint(2690, 9564, 0),
+		chopVines = new ObjectStep(this, ObjectID.KARAM_DUNGEON_VINEBLOCKING1, new WorldPoint(2690, 9564, 0),
 			"Chop the vines nearby.", axe);
-		crossLava = new ObjectStep(this, ObjectID.STEPPING_STONE_21738, new WorldPoint(2649, 9561, 0),
+		crossLava = new ObjectStep(this, ObjectID.KARAM_DUNGEON_STONE1, new WorldPoint(2649, 9561, 0),
 			"Cross the lava to the west of the entrance.");
-		climbBrimhavenStaircase = new ObjectStep(this, ObjectID.STAIRS_21725, new WorldPoint(2637, 9515, 0),
+		climbBrimhavenStaircase = new ObjectStep(this, ObjectID.KARAM_DUNGEON_CAVESTAIRS2, new WorldPoint(2637, 9515, 0),
 			"Climb up to the top floor of the Brimhaven Dungeon.");
-		charterFromShipyard = new NpcStep(this, NpcID.TRADER_CREWMEMBER_9349, new WorldPoint(3001, 3032, 0),
+		charterFromShipyard = new NpcStep(this, NpcID.SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_BRIMHAVEN, new WorldPoint(3001, 3032, 0),
 			"Travel with the charter ship in the Shipyard. Musa Point is the cheapest destination.", coins.quantity(200));
 		charterFromShipyard.addDialogSteps("Glough sent me.", "Ka.", "Lu.", "Min.");
-		mineRedTopaz = new ObjectStep(this, ObjectID.GEM_ROCKS, new WorldPoint(2823, 2999, 0),
+		mineRedTopaz = new ObjectStep(this, ObjectID.GEMROCK1, new WorldPoint(2823, 2999, 0),
 			"Mine gem rocks until you get a red topaz.", pickaxe);
-		((ObjectStep) mineRedTopaz).addAlternateObjects(ObjectID.GEM_ROCKS_11381);
-		enterCrandor = new ObjectStep(this, ObjectID.CLIMBING_ROPE_25213, new WorldPoint(2833, 9657, 0),
+		((ObjectStep) mineRedTopaz).addAlternateObjects(ObjectID.GEMROCK);
+		enterCrandor = new ObjectStep(this, ObjectID.DRAGON_SLAYER_QIP_CLIMBING_ROPE, new WorldPoint(2833, 9657, 0),
 			"Climb the rope to Crandor Isle.");
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
+		claimReward = new NpcStep(this, NpcID.AGILITYARENA_TICKETTRADER_2OPS, new WorldPoint(2810, 3192, 0),
 			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -384,8 +375,8 @@ public class KaramjaMedium extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Karamja Gloves (2)", ItemID.KARAMJA_GLOVES_2, 1),
-			new ItemReward("5,000 Exp. Lamp (Any skill above level 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Karamja Gloves (2)", ItemID.ATJUN_GLOVES_MED, 1),
+			new ItemReward("5,000 Exp. Lamp (Any skill above level 30)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

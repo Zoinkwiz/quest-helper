@@ -32,10 +32,11 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Component;
 import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
-import net.runelite.api.annotations.Component;
+
 import javax.annotation.Nonnull;
 import java.awt.*;
 

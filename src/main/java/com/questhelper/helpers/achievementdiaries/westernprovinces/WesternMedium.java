@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.achievementdiaries.westernprovinces;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -40,27 +40,21 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import com.questhelper.util.QHObjectID;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import com.questhelper.util.QHObjectID;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class WesternMedium extends ComplexStateQuestHelper
 {
@@ -159,28 +153,27 @@ public class WesternMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notAgiShortcut = new VarplayerRequirement(1182, false, 12);
-		notSpiritToStronghold = new VarplayerRequirement(1182, false, 13);
-		notSpinedLarupia = new VarplayerRequirement(1182, false, 14);
-		notApeBass = new VarplayerRequirement(1182, false, 15);
-		notApeTeak = new VarplayerRequirement(1182, false, 16);
-		notInterPest = new VarplayerRequirement(1182, false, 17);
-		notGliderToFeldip = new VarplayerRequirement(1182, false, 18);
-		notChompyHat = new VarplayerRequirement(1182, false, 19);
-		notEagleFeldip = new VarplayerRequirement(1182, false, 20);
-		notChocolateBomb = new VarplayerRequirement(1182, false, 21);
-		notGnomeDelivery = new VarplayerRequirement(1182, false, 22);
-		notCrystalSaw = new VarplayerRequirement(1182, false, 23);
-		notMineGold = new VarplayerRequirement(1182, false, 24);
+		notAgiShortcut = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 12);
+		notSpiritToStronghold = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 13);
+		notSpinedLarupia = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 14);
+		notApeBass = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 15);
+		notApeTeak = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 16);
+		notInterPest = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 17);
+		notGliderToFeldip = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 18);
+		notChompyHat = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 19);
+		notEagleFeldip = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 20);
+		notChocolateBomb = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 21);
+		notGnomeDelivery = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 22);
+		notCrystalSaw = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 23);
+		notMineGold = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 24);
 
 		// todo this varb only tracks training with aluft NOT blurberry
-		trainingCompleted = new VarbitRequirement(2493, Operation.EQUAL, 1,
-			"Completed training with Blurberry and Aluft Gianne snr.");
+		trainingCompleted = new VarbitRequirement(VarbitID.ALUFT_TRAINING_REWARD, Operation.EQUAL, 1, 			"Completed training with Blurberry and Aluft Gianne snr.");
 
-		teasingStick = new ItemRequirement("Teasing stick", ItemID.TEASING_STICK).showConditioned(notSpinedLarupia).isNotConsumed();
+		teasingStick = new ItemRequirement("Teasing stick", ItemID.HUNTING_TEASING_STICK).showConditioned(notSpinedLarupia).isNotConsumed();
 		logs = new ItemRequirement("Logs", ItemID.LOGS).showConditioned(notSpinedLarupia);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notSpinedLarupia).isNotConsumed();
-		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_FISHING_NET).showConditioned(notApeBass).isNotConsumed();
+		bigFishingNet = new ItemRequirement("Big fishing net", ItemID.BIG_NET).showConditioned(notApeBass).isNotConsumed();
 		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notApeTeak).isNotConsumed();
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notApeTeak).isNotConsumed();
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notEagleFeldip);
@@ -196,7 +189,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		potOfCream.setTooltip("can be purchased at Grand Tree Groceries");
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST).showConditioned(notChocolateBomb);
 		chocolateDust.setTooltip("can be purchased at Grand Tree Groceries");
-		crystalSawSeed = new ItemRequirement("Crystal saw seed", ItemID.CRYSTAL_SAW_SEED).showConditioned(notCrystalSaw).isNotConsumed();
+		crystalSawSeed = new ItemRequirement("Crystal saw seed", ItemID.CRYSTAL_SEED_OLD_SMALL).showConditioned(notCrystalSaw).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineGold).isNotConsumed();
 		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat).isNotConsumed();
 		ogreBow = new ItemRequirement("Ogre bow", ItemCollections.OGRE_BOW).showConditioned(notChompyHat).isNotConsumed();
@@ -208,7 +201,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		fairyAccess = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).isNotConsumed();
-		seedPod = new ItemRequirement("Royal seed pod", ItemID.ROYAL_SEED_POD).isNotConsumed();
+		seedPod = new ItemRequirement("Royal seed pod", ItemID.MM2_ROYAL_SEED_POD).isNotConsumed();
 
 		inBrimstailCave = new ZoneRequirement(brimstailCave);
 		inPest = new ZoneRequirement(pest);
@@ -261,58 +254,58 @@ public class WesternMedium extends ComplexStateQuestHelper
 
 		moveToStrongFirstDelivery = new ObjectStep(this, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0),
 			"Climb the ladder at the Grand Tree.");
-		completeTraining = new NpcStep(this, NpcID.ALUFT_GIANNE_SNR, new WorldPoint(2449, 3501, 1),
+		completeTraining = new NpcStep(this, NpcID.ALUFT_GIANNE, new WorldPoint(2449, 3501, 1),
 			"Complete your training by talking to Blurberry and Aluft Gianne snr.");
 		completeTraining.addAlternateNpcs(NpcID.BLURBERRY);
 		completeTraining.addDialogStep("Okay then I'll give it a go.");
-		gnomeDelivery = new NpcStep(this, NpcID.GIANNE_JNR, new WorldPoint(2439, 3502, 1),
+		gnomeDelivery = new NpcStep(this, NpcID.ALUFT_GNOME_DELIVERY_CONTROLLER, new WorldPoint(2439, 3502, 1),
 			"Complete a delivery for the Gnome Restaurant.");
 		gnomeDelivery.addDialogSteps("Yes, tell me more.", "I'm ready to take a job on now.");
 
-		moveToStrongBase = new ObjectStep(this, ObjectID.TRAPDOOR_2446, new WorldPoint(2463, 3497, 0),
+		moveToStrongBase = new ObjectStep(this, ObjectID.GRANDTREE_TRAPDOORUNDER, new WorldPoint(2463, 3497, 0),
 			"Open the trapdoor to enter the underground of the Grand Tree.", pickaxe);
 		moveToStrongBase2 = new ObjectStep(this, QHObjectID.GRAND_TREE_F1_LADDER, new WorldPoint(2466, 3495, 1),
 			"Open the trapdoor to enter the underground of the Grand Tree.", pickaxe);
 		moveToStrongBase2.addDialogStep("Climb Down.");
 		moveToStrongBase.addSubSteps(moveToStrongBase2);
-		mineGold = new ObjectStep(this, ObjectID.GOLD_ROCKS, new WorldPoint(2490, 9916, 0),
+		mineGold = new ObjectStep(this, ObjectID.GOLDROCK1, new WorldPoint(2490, 9916, 0),
 			"Mine some gold ore underneath the Grand Tree.", true, pickaxe);
 
-		moveToBrimstailCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2403, 3419, 0),
+		moveToBrimstailCave = new ObjectStep(this, ObjectID.EYEGLO_BRIMSTAILS_CAVE_ENTRANCE, new WorldPoint(2403, 3419, 0),
 			"Enter Brimstail's cave.", crystalSawSeed);
-		crystalSaw = new ObjectStep(this, ObjectID.SINGING_BOWL, new WorldPoint(2388, 9813, 0),
+		crystalSaw = new ObjectStep(this, ObjectID.EYEGLO_SINGING_BOWL, new WorldPoint(2388, 9813, 0),
 			"Turn your crystal saw seed into a crystal saw.", crystalSawSeed);
 
-		agiShortcut = new ObjectStep(this, ObjectID.ROCKS_16534, new WorldPoint(2487, 3515, 0),
+		agiShortcut = new ObjectStep(this, ObjectID.GNOME_STRONGHOLD_SC_ROCK_TOP, new WorldPoint(2487, 3515, 0),
 			"Take the agility shortcut from the Grand Tree to Otto's Grotto.");
 
 		moveToEagle = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
 			"Enter the cave at the top of Eagles' Peak. " +
 				"You can use a fairy ring to (AKQ), then head south to get there easily.", rope);
-		eagleFeldip = new NpcStep(this, NpcID.JUNGLE_EAGLE, new WorldPoint(2027, 4964, 3),
+		eagleFeldip = new NpcStep(this, NpcID.EAGLEPEAK_EAGLE_TOJUNGLE, new WorldPoint(2027, 4964, 3),
 			"Use a rope on the Jungle Eagle to travel to the Feldip Hills area.", rope.highlighted());
 		eagleFeldip.addIcon(ItemID.ROPE);
 
-		spinedLarupia = new NpcStep(this, NpcID.SPINED_LARUPIA, new WorldPoint(2551, 2904, 0),
+		spinedLarupia = new NpcStep(this, NpcID.HUNTING_JAGUAR, new WorldPoint(2551, 2904, 0),
 			"Place logs over a pit in the Feldip hunter area, and poke a larupia with a teasing stick. " +
 				"Jump over the pits until the larupia falls in and loot it.", teasingStick, logs, knife);
 
 		gliderToFeldip = new DetailedQuestStep(this, "Travel to the Feldip Hills by Gnome Glider.");
 
 		moveToApeBass = new DetailedQuestStep(this, "Travel to Ape Atoll.", bigFishingNet);
-		apeBass = new NpcStep(this, NpcID.FISHING_SPOT_5234, new WorldPoint(2705, 2700, 0),
+		apeBass = new NpcStep(this, NpcID._0_42_42_MEMBERFISH, new WorldPoint(2705, 2700, 0),
 			"Fish some bass on Ape Atoll.", bigFishingNet);
 
 		moveToApeTeak = new DetailedQuestStep(this, "Travel to Ape Atoll.", axe, tinderbox);
-		apeTeakChop = new ObjectStep(this, ObjectID.TEAK_TREE, new WorldPoint(2773, 2698, 0),
+		apeTeakChop = new ObjectStep(this, ObjectID.TEAKTREE, new WorldPoint(2773, 2698, 0),
 			"Chop some teak logs on Ape Atoll.", axe, tinderbox);
 		apeTeakBurn = new ItemStep(this, "Burn some teak logs on Ape Atoll.",
 			teakLogs.highlighted(), tinderbox.highlighted());
 
-		moveToPest = new NpcStep(this, NpcID.SQUIRE_1770, new WorldPoint(3041, 3202, 0),
+		moveToPest = new NpcStep(this, NpcID.PEST_SQUIRE_SHIP_PORTSARIM, new WorldPoint(3041, 3202, 0),
 			"Talk to the squire to travel to the Void Knights' Outpost. Alternatively, use the pest control minigame teleport.");
 		moveToPest.addDialogStep("I'd like to go to your outpost.");
-		interPest = new ObjectStep(this, ObjectID.GANGPLANK_25631, new WorldPoint(2643, 2644, 0),
+		interPest = new ObjectStep(this, ObjectID.PEST_LANDER_GANGPLANK_2, new WorldPoint(2643, 2644, 0),
 			"Complete an intermediate game of Pest Control.");
 
 		chompyHat = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2628, 2979, 0),
@@ -321,7 +314,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 			ogreBow, ogreArrows, ogreBellows);
 		chompyHat.addDialogStep("Can I have a hat please?");
 
-		claimReward = new NpcStep(this, NpcID.ELDER_GNOME_CHILD, new WorldPoint(2466, 3460, 0),
+		claimReward = new NpcStep(this, NpcID.WESTERN_GNOME_CHILD_DIARY, new WorldPoint(2466, 3460, 0),
 			"Talk to the Elder gnome child in Gnome Stronghold to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -366,8 +359,8 @@ public class WesternMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Western banner 2", ItemID.WESTERN_BANNER_2),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Western banner 2", ItemID.WESTERN_BANNER_MEDIUM),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

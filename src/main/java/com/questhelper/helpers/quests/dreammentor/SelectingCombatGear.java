@@ -27,12 +27,12 @@ package com.questhelper.helpers.quests.dreammentor;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class SelectingCombatGear extends QuestStep
 {

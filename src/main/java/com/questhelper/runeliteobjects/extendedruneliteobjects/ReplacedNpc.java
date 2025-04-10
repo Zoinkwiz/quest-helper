@@ -24,9 +24,6 @@
  */
 package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import java.awt.Shape;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -35,6 +32,10 @@ import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReplacedNpc extends FakeNpc
 {

@@ -24,14 +24,15 @@
  */
 package com.questhelper.helpers.quests.inaidofthemyreque;
 
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
-import java.util.Arrays;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.Arrays;
 
 public class FillBurghCrate extends DetailedQuestStep
 {
@@ -42,11 +43,11 @@ public class FillBurghCrate extends DetailedQuestStep
 
 	static
 	{
-		crate = new ItemRequirement("Crate", ItemID.CRATE);
+		crate = new ItemRequirement("Crate", ItemID.BURGH_GENERALSTORE_CRATE);
 		tinderbox3 = new ItemRequirement("Tinderbox", ItemID.TINDERBOX, 3);
 		bronzeAxe10 = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE, 10);
 		rawSnailsOrMackerel = new ItemRequirement("Raw mackerel or raw snail meat (random for each player)", ItemID.RAW_MACKEREL, 10);
-		rawSnailsOrMackerel.addAlternates(ItemID.THIN_SNAIL, ItemID.LEAN_SNAIL, ItemID.FAT_SNAIL);
+		rawSnailsOrMackerel.addAlternates(ItemID.SNAIL_CORPSE1, ItemID.SNAIL_CORPSE2, ItemID.SNAIL_CORPSE3);
 		rawSnailsOrMackerel.setDisplayMatchedItemName(true);
 	}
 
@@ -85,7 +86,7 @@ public class FillBurghCrate extends DetailedQuestStep
 			else
 			{
 				this.setText("Fill the crate with 3 tinderboxes, 10 bronze axes, and 10 raw snails (can be lean, thin or fat).");
-				rawSnailsOrMackerel.setDisplayItemId(ItemID.FAT_SNAIL);
+				rawSnailsOrMackerel.setDisplayItemId(ItemID.SNAIL_CORPSE3);
 				this.setRequirements(Arrays.asList(crate, tinderbox3, bronzeAxe10, rawSnailsOrMackerel));
 			}
 		}

@@ -7,20 +7,17 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.*;
 
 public class TombRiddle extends DetailedOwnerStep
 {
@@ -151,27 +148,27 @@ public class TombRiddle extends DetailedOwnerStep
 
 	private void setupItemRequirements()
 	{
-		baboonEmblem = new ItemRequirement("Baboon emblem", ItemID.BABOON_EMBLEM);
+		baboonEmblem = new ItemRequirement("Baboon emblem", ItemID.BCS_RIDDLE_EMBLEM_BABOON);
 		baboonEmblem.setHighlightInInventory(true);
-		humanEmblem = new ItemRequirement("Human emblem", ItemID.HUMAN_EMBLEM);
+		humanEmblem = new ItemRequirement("Human emblem", ItemID.BCS_RIDDLE_EMBLEM_HUMAN);
 		humanEmblem.setHighlightInInventory(true);
-		crocodileEmblem = new ItemRequirement("Crocodile emblem", ItemID.CROCODILE_EMBLEM);
+		crocodileEmblem = new ItemRequirement("Crocodile emblem", ItemID.BCS_RIDDLE_EMBLEM_CROCODILE);
 		crocodileEmblem.setHighlightInInventory(true);
-		scarabEmblem = new ItemRequirement("Scarab emblem", ItemID.SCARAB_EMBLEM_26956);
+		scarabEmblem = new ItemRequirement("Scarab emblem", ItemID.BCS_RIDDLE_EMBLEM_SCARAB);
 		scarabEmblem.setHighlightInInventory(true);
 	}
 
 	@Override
 	protected void setupSteps()
 	{
-		inspectPlaque = new ObjectStep(questHelper, NullObjectID.NULL_20391, new WorldPoint(3391, 9251, 0), "Inspect the north-western plaque and read it.");
-		obtainEmblems = new ObjectStep(questHelper, NullObjectID.NULL_20392, new WorldPoint(3391, 9245, 0), "Inspect the south-western plaque to get four emblems.");
-		pullLever = new ObjectStep(questHelper, NullObjectID.NULL_20288, new WorldPoint(3390, 9247, 0), "Pull the lever to the south-west.");
+		inspectPlaque = new ObjectStep(questHelper, ObjectID.BCS_RIDDLE_PLAQUE, new WorldPoint(3391, 9251, 0), "Inspect the north-western plaque and read it.");
+		obtainEmblems = new ObjectStep(questHelper, ObjectID.BCS_EMBLEM_PLAQUE, new WorldPoint(3391, 9245, 0), "Inspect the south-western plaque to get four emblems.");
+		pullLever = new ObjectStep(questHelper, ObjectID.BCS_TOMB_WALL_LEVER, new WorldPoint(3390, 9247, 0), "Pull the lever to the south-west.");
 
-		placeNorthernUrn = new ObjectStep(questHelper, NullObjectID.NULL_44590, "Place the emblem in the northernmost urn.");
-		placeCentreNorthUrn = new ObjectStep(questHelper, NullObjectID.NULL_44589, "Place the emblem in the centre-north urn.");
-		placeCentreSouthUrn = new ObjectStep(questHelper, NullObjectID.NULL_44588, "Place the emblem in the centre-south urn.");
-		placeSouthernUrn = new ObjectStep(questHelper, NullObjectID.NULL_44587, "Place the emblem in the southernmost urn.");
+		placeNorthernUrn = new ObjectStep(questHelper, ObjectID.BCS_TOMB_URN_4, "Place the emblem in the northernmost urn.");
+		placeCentreNorthUrn = new ObjectStep(questHelper, ObjectID.BCS_TOMB_URN_3, "Place the emblem in the centre-north urn.");
+		placeCentreSouthUrn = new ObjectStep(questHelper, ObjectID.BCS_TOMB_URN_2, "Place the emblem in the centre-south urn.");
+		placeSouthernUrn = new ObjectStep(questHelper, ObjectID.BCS_TOMB_URN_1, "Place the emblem in the southernmost urn.");
 
 		setupItemRequirements();
 	}

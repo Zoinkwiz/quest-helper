@@ -27,23 +27,17 @@ package com.questhelper;
 import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import java.awt.Color;
+import lombok.Getter;
+import net.runelite.client.config.*;
+import net.runelite.client.util.Text;
+
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import lombok.Getter;
-import net.runelite.api.Skill;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ConfigSection;
-import net.runelite.client.config.Range;
-import net.runelite.client.util.Text;
 
 @ConfigGroup("questhelper")
 public interface QuestHelperConfig extends Config

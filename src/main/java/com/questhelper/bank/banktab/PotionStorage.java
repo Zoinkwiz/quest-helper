@@ -25,10 +25,6 @@
  */
 package com.questhelper.bank.banktab;
 
-import java.util.*;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import com.questhelper.managers.QuestContainerManager;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -36,11 +32,20 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.bank.BankSearch;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class Potion
 {
@@ -55,7 +60,6 @@ class Potion
 @Slf4j
 public class PotionStorage
 {
-    static final int TOTAL_POTIONS_VARBIT = 4286;
     static final int VIAL_IDX = 514;
     static final int COMPONENTS_PER_POTION = 5;
 
@@ -97,7 +101,7 @@ public class PotionStorage
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged)
     {
-        if (TOTAL_POTIONS_VARBIT == varbitChanged.getVarpId())
+        if (VarPlayerID.POTIONSTORE_VIALS == varbitChanged.getVarpId())
         {
             updateCachedPotions = true;
             updateBankLayout = true; // trigger a bank rebuild as the qty has changed
@@ -137,8 +141,8 @@ public class PotionStorage
         // Add vial
         Potion p = new Potion();
         p.potionEnum = null;
-        p.itemId = ItemID.VIAL;
-        p.doses = client.getVarpValue(4286);
+        p.itemId = ItemID.VIAL_EMPTY;
+        p.doses = client.getVarpValue(VarPlayerID.POTIONSTORE_VIALS);
         p.withdrawDoses = 0;
         potions[potions.length - 1] = p;
 
@@ -211,7 +215,7 @@ public class PotionStorage
             return -1;
         }
 
-        if (itemId == ItemID.VIAL)
+        if (itemId == ItemID.VIAL_EMPTY)
         {
             return VIAL_IDX;
         }
@@ -232,7 +236,7 @@ public class PotionStorage
     {
         // if the potion store hasn't been opened yet, the client components won't have been made yet.
         // they need to exist for the click to work correctly.
-        Widget potStoreContent = client.getWidget(ComponentID.BANK_POTIONSTORE_CONTENT);
+        Widget potStoreContent = client.getWidget(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
         if (potStoreContent.getChildren() == null)
         {
             int childIdx = 0;

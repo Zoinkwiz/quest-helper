@@ -27,33 +27,19 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.steps.choice.*;
+import com.questhelper.steps.overlay.IconOverlay;
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import com.questhelper.steps.widget.Spell;
 import com.questhelper.steps.widget.SpellWidgetHighlight;
 import com.questhelper.steps.widget.WidgetHighlight;
 import com.questhelper.tools.VisibilityHelper;
-import static com.questhelper.overlays.QuestHelperOverlay.TITLED_CONTENT_COLOR;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.choice.DialogChoiceChange;
-import com.questhelper.steps.choice.DialogChoiceStep;
-import com.questhelper.steps.choice.DialogChoiceSteps;
-import com.questhelper.steps.choice.WidgetTextChange;
-import com.questhelper.steps.choice.WidgetChoiceStep;
-import com.questhelper.steps.choice.WidgetChoiceSteps;
-import com.questhelper.steps.overlay.IconOverlay;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.*;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -65,8 +51,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
@@ -78,6 +64,14 @@ import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
+
+import static com.questhelper.overlays.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 
 @Slf4j
 public abstract class QuestStep implements Module
@@ -230,7 +224,7 @@ public abstract class QuestStep implements Module
 	{
 		if (!allowInCutscene)
 		{
-			int newCutsceneStatus = client.getVarbitValue(QuestVarbits.CUTSCENE.getId());
+			int newCutsceneStatus = client.getVarbitValue(VarbitID.CUTSCENE_STATUS);
 			if (currentCutsceneStatus == 0 && newCutsceneStatus == 1)
 			{
 				enteredCutscene();
@@ -246,7 +240,7 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == InterfaceID.DIALOG_OPTION)
+		if (event.getGroupId() == InterfaceID.CHATMENU)
 		{
 			clientThread.invokeLater(this::highlightChoice);
 		}
@@ -584,7 +578,7 @@ public abstract class QuestStep implements Module
 
 	protected Widget getInventoryWidget()
 	{
-		return client.getWidget(ComponentID.INVENTORY_CONTAINER);
+		return client.getWidget(InterfaceID.Inventory.ITEMS);
 	}
 
 	protected void renderInventory(Graphics2D graphics, WorldPoint worldPoint, List<ItemRequirement> passedRequirements, boolean distanceLimit)

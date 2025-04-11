@@ -24,26 +24,23 @@
  */
 package com.questhelper.helpers.quests.doricsquest;
 
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.NpcStep;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+
+import java.util.*;
 
 public class DoricsQuest extends BasicQuestHelper
 {
@@ -114,7 +111,7 @@ public class DoricsQuest extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 180));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 180));
 	}
 
 	@Override

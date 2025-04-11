@@ -25,30 +25,21 @@
 package com.questhelper.helpers.quests.piratestreasure;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class PiratesTreasure extends BasicQuestHelper
 {
@@ -87,9 +78,9 @@ public class PiratesTreasure extends BasicQuestHelper
 		steps.put(1, smuggleRum);
 
 		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage.highlighted());
-		climbStairs = new ObjectStep(this, ObjectID.STAIRCASE_11796, new WorldPoint(3228, 3393, 0),
+		climbStairs = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS, new WorldPoint(3228, 3393, 0),
 			"Climb up the stairs in The Blue Moon Inn in Varrock.");
-		openChest = new ObjectStep(this, ObjectID.CHEST_2079, new WorldPoint(3219, 3396, 1),
+		openChest = new ObjectStep(this, ObjectID.PIRATECHEST, new WorldPoint(3219, 3396, 1),
 			"Open the chest by using the key on it.", chestKey.highlighted());
 		openChest.addDialogStep("Ok thanks, I'll go and get it.");
 		openChest.addIcon(ItemID.CHEST_KEY);
@@ -115,7 +106,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	{
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
-		pirateMessage = new ItemRequirement("Pirate message", ItemID.PIRATE_MESSAGE);
+		pirateMessage = new ItemRequirement("Pirate message", ItemID.PIRATEMESSAGE);
 		chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
 		chestKey.setTooltip("You can get another one from Redbeard Frank");
 	}
@@ -134,8 +125,8 @@ public class PiratesTreasure extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(new ItemRequirement("A teleport to Varrock", ItemID.VARROCK_TELEPORT));
-		reqs.add(new ItemRequirement("A teleport to Falador", ItemID.FALADOR_TELEPORT));
+		reqs.add(new ItemRequirement("A teleport to Varrock", ItemID.POH_TABLET_VARROCKTELEPORT));
+		reqs.add(new ItemRequirement("A teleport to Falador", ItemID.POH_TABLET_FALADORTELEPORT));
 		reqs.add(new ItemRequirement("Bananas (obtainable in quest)", ItemID.BANANA, 10));
 
 		return reqs;
@@ -159,7 +150,7 @@ public class PiratesTreasure extends BasicQuestHelper
 		return Arrays.asList(
 				new ItemReward("A Gold Ring", ItemID.GOLD_RING, 1),
 				new ItemReward("An Emerald", ItemID.EMERALD, 1),
-				new ItemReward("Coins", ItemID.COINS_995, 450));
+				new ItemReward("Coins", ItemID.COINS, 450));
 	}
 
 	@Override

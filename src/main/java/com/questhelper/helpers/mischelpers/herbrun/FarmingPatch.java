@@ -26,7 +26,6 @@ package com.questhelper.helpers.mischelpers.herbrun;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.runelite.api.annotations.Varbit;

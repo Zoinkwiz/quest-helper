@@ -24,42 +24,34 @@
  */
 package com.questhelper.helpers.quests.treegnomevillage;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestVarPlayer;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestVarPlayer;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class TreeGnomeVillage extends BasicQuestHelper
 {
@@ -131,8 +123,8 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	private QuestStep retrieveOrbStep()
 	{
 		retrieveOrb = new ConditionalStep(this, climbTheLadder, "Enter the tower by the Crumbled wall and climb the ladder to retrieve the first orb from chest.");
-		ObjectStep getOrbFromChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_2183, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
-		getOrbFromChest.addAlternateObjects(ObjectID.OPEN_CHEST_2182);
+		ObjectStep getOrbFromChest = new ObjectStep(this, ObjectID.CHESTCLOSED_KHAZARD, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
+		getOrbFromChest.addAlternateObjects(ObjectID.CHESTOPEN_KHAZARD);
 		retrieveOrb.addStep(isUpstairsTower, getOrbFromChest);
 		retrieveOrb.addSubSteps(getOrbFromChest, climbTheLadder);
 		return retrieveOrb;
@@ -140,11 +132,11 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private QuestStep defeatWarlordStep()
 	{
-		NpcHintArrowRequirement fightingWarlord = new NpcHintArrowRequirement(NpcID.KHAZARD_WARLORD_7622);
+		NpcHintArrowRequirement fightingWarlord = new NpcHintArrowRequirement(NpcID.KHAZARD_WARLORD_COMBAT);
 
-		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7622, new WorldPoint(2456, 3301, 0),
+		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_COMBAT, new WorldPoint(2456, 3301, 0),
 			"Defeat the warlord and retrieve orbs.");
-		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_7621, new WorldPoint(2456, 3301, 0),
+		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_CHAT, new WorldPoint(2456, 3301, 0),
 			"Talk to the Warlord south west of West Ardougne, ready to fight him.");
 
 		ItemRequirement food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -164,7 +156,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 	private QuestStep returnOrbsStep()
 	{
-		handedInOrbs = new VarbitRequirement(598, 1, Operation.GREATER_EQUAL);
+		handedInOrbs = new VarbitRequirement(VarbitID.BOLREN_GOT_ORBS, 1, Operation.GREATER_EQUAL);
 
 		orbsOfProtectionNearby = new ItemOnTileRequirement(ItemID.ORBS_OF_PROTECTION);
 
@@ -282,28 +274,28 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToCommanderMontaiAgain = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai.");
 		talkToCommanderMontaiAgain.addDialogStep("I'll try my best.");
 
-		firstTracker = new NpcStep(this, NpcID.TRACKER_GNOME_1, new WorldPoint(2501, 3261, 0), "Talk to the first tracker gnome to the northwest.");
-		secondTracker = new NpcStep(this, NpcID.TRACKER_GNOME_2, new WorldPoint(2524, 3257, 0), "Talk to the second tracker gnome inside the jail.");
-		thirdTracker = new NpcStep(this, NpcID.TRACKER_GNOME_3, new WorldPoint(2497, 3234, 0), "Talk to the third tracker gnome to the southwest.");
+		firstTracker = new NpcStep(this, NpcID.TRACKER1, new WorldPoint(2501, 3261, 0), "Talk to the first tracker gnome to the northwest.");
+		secondTracker = new NpcStep(this, NpcID.TRACKER2, new WorldPoint(2524, 3257, 0), "Talk to the second tracker gnome inside the jail.");
+		thirdTracker = new NpcStep(this, NpcID.TRACKER3, new WorldPoint(2497, 3234, 0), "Talk to the third tracker gnome to the southwest.");
 
-		fireBallista = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "");
-		fireBallista1 = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "");
+		fireBallista = new ObjectStep(this, ObjectID.CATABOW, new WorldPoint(2509, 3211, 0), "");
+		fireBallista1 = new ObjectStep(this, ObjectID.CATABOW, new WorldPoint(2509, 3211, 0), "");
 		fireBallista1.addDialogStep("0001");
-		fireBallista2 = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "");
+		fireBallista2 = new ObjectStep(this, ObjectID.CATABOW, new WorldPoint(2509, 3211, 0), "");
 		fireBallista2.addDialogStep("0002");
-		fireBallista3 = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "");
+		fireBallista3 = new ObjectStep(this, ObjectID.CATABOW, new WorldPoint(2509, 3211, 0), "");
 		fireBallista3.addDialogStep("0003");
-		fireBallista4 = new ObjectStep(this, ObjectID.BALLISTA, new WorldPoint(2509, 3211, 0), "");
+		fireBallista4 = new ObjectStep(this, ObjectID.CATABOW, new WorldPoint(2509, 3211, 0), "");
 		fireBallista4.addDialogStep("0004");
 
-		climbTheLadder = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2503, 3252, 0), "Climb the ladder");
+		climbTheLadder = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2503, 3252, 0), "Climb the ladder");
 
 		ItemRequirement firstOrb = new ItemRequirement("Orb of protection", ItemID.ORB_OF_PROTECTION, 1);
 		firstOrb.setTooltip("If you have lost the orb you can get another from the chest");
 		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
 			"Speak to King Bolren in the centre of the Tree Gnome Maze.", firstOrb);
 		talkToKingBolrenFirstOrb.addDialogStep("I will find the warlord and bring back the orbs.");
-		elkoySkip = new NpcStep(this, NpcID.ELKOY_4968, new WorldPoint(2505, 3191, 0),
+		elkoySkip = new NpcStep(this, NpcID.ELKOY_2OPS, new WorldPoint(2505, 3191, 0),
 			"Talk to Elkoy outside the maze to travel to the centre.");
 		returnFirstOrb = new ConditionalStep(this, elkoySkip,
 			"Speak to King Bolren in the centre of the Tree Gnome Maze.");

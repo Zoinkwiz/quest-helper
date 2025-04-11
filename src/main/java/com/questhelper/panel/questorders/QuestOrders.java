@@ -24,13 +24,10 @@
  */
 package com.questhelper.panel.questorders;
 
-import com.google.common.collect.ImmutableList;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
+
 import java.util.Comparator;
-import java.util.List;
 import java.util.regex.Pattern;
-import lombok.Getter;
 
 public class QuestOrders
 {

@@ -24,17 +24,17 @@
  */
 package com.questhelper.helpers.skills.agility;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -92,26 +92,26 @@ public class Rellekka extends AgilityCourse
 	protected void setupSteps()
 	{
 		//Rellekka obstacles
-		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROUGH_WALL_14946, new WorldPoint(2625, 3677, 0),
+		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_RELLEKKA_WALLCLIMB, new WorldPoint(2625, 3677, 0),
 			"Climb the rough wall in the north-western part of Rellekka, just south of the westernmost dock.",
 			Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		leapFirstGap = new ObjectStep(this.questHelper, ObjectID.GAP_14947, new WorldPoint(2622, 3670, 3),
+		leapFirstGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_RELLEKKA_GAP_1, new WorldPoint(2622, 3670, 3),
 			"Leap across the gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		walkFirstRope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE_14987, new WorldPoint(2623, 3658, 3),
+		walkFirstRope = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_RELLEKKA_TIGHTROPE_1, new WorldPoint(2623, 3658, 3),
 			"Cross the tightrope.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		leapSecondGap = new ObjectStep(this.questHelper, ObjectID.GAP_14990, new WorldPoint(2630, 3656, 3),
+		leapSecondGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_RELLEKKA_GAP_2, new WorldPoint(2630, 3656, 3),
 			"Leap across the gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		hurdleGap = new ObjectStep(this.questHelper, ObjectID.GAP_14991, new WorldPoint(2643, 3654, 3),
+		hurdleGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_RELLEKKA_GAP_3, new WorldPoint(2643, 3654, 3),
 			"Hurdle across the gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		walkSecondRope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE_14992, new WorldPoint(2647, 3663, 3),
+		walkSecondRope = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_RELLEKKA_TIGHTROPE_3, new WorldPoint(2647, 3663, 3),
 			"Cross the tightrope.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpInFish = new ObjectStep(this.questHelper, ObjectID.PILE_OF_FISH, new WorldPoint(2654, 3676, 3),
+		jumpInFish = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_RELLEKKA_DROPOFF, new WorldPoint(2654, 3676, 3),
 			"Jump down into the pile of fish.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 	}
 

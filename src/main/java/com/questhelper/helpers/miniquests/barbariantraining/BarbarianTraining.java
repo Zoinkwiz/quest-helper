@@ -27,39 +27,36 @@ package com.questhelper.helpers.miniquests.barbariantraining;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.config.ConfigKeys;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.MesBoxRequirement;
 import com.questhelper.requirements.MultiChatMessageRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nand;
-import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.*;
 
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class BarbarianTraining extends BasicQuestHelper
 {
@@ -214,22 +211,22 @@ public class BarbarianTraining extends BasicQuestHelper
 	@Override
 	public void setupRequirements()
 	{
-		barbFishingRod = new ItemRequirement("Barbarian rod", ItemID.BARBARIAN_ROD);
-		barbFishingRod.addAlternates(ItemID.PEARL_BARBARIAN_ROD);
+		barbFishingRod = new ItemRequirement("Barbarian rod", ItemID.BRUT_FISHING_ROD);
+		barbFishingRod.addAlternates(ItemID.FISHINGROD_PEARL_BRUT);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
 		bow = new ItemRequirement("Any bow", ItemCollections.BOWS);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
-		fish = new ItemRequirement("Leaping trout/salmon/sturgeon", ItemID.LEAPING_STURGEON);
-		fish.addAlternates(ItemID.LEAPING_SALMON, ItemID.LEAPING_TROUT);
+		fish = new ItemRequirement("Leaping trout/salmon/sturgeon", ItemID.BRUT_STURGEON);
+		fish.addAlternates(ItemID.BRUT_SPAWNING_SALMON, ItemID.BRUT_SPAWNING_TROUT);
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		antifireShield = new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS).isNotConsumed();
-		chewedBones = new ItemRequirement("Chewed bones", ItemID.CHEWED_BONES);
+		chewedBones = new ItemRequirement("Chewed bones", ItemID.BRUT_BARBARIAN_BONES);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER);
-		roe = new ItemRequirement("Roe", ItemID.ROE);
-		attackPotion = new ItemRequirement("Attack potion (2)", ItemID.ATTACK_POTION2);
+		roe = new ItemRequirement("Roe", ItemID.BRUT_ROE);
+		attackPotion = new ItemRequirement("Attack potion (2)", ItemID._2DOSE1ATTACK);
 		sapling = new ItemRequirement("Any sapling you can plant", ItemCollections.TREE_SAPLINGS);
 		sapling.addAlternates(ItemCollections.FRUIT_TREE_SAPLINGS);
 		seed = new ItemRequirement("Any seed that can be planted directly", ItemCollections.ALLOTMENT_SEEDS);
@@ -245,11 +242,11 @@ public class BarbarianTraining extends BasicQuestHelper
 		// Recommended
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 		gamesNecklace.setChargedItem(true);
-		catherbyTeleport = new ItemRequirement("Catherby teleport for fishing", ItemID.CATHERBY_TELEPORT);
-		catherbyTeleport.addAlternates(ItemID.CAMELOT_TELEPORT);
+		catherbyTeleport = new ItemRequirement("Catherby teleport for fishing", ItemID.LUNAR_TABLET_CATHERBY_TELEPORT);
+		catherbyTeleport.addAlternates(ItemID.POH_TABLET_CAMELOTTELEPORT);
 
 		// Quest items
-		barbarianAttackPotion = new ItemRequirement("Attack mix (2)", ItemID.ATTACK_MIX2);
+		barbarianAttackPotion = new ItemRequirement("Attack mix (2)", ItemID.BRUTAL_2DOSE1ATTACK);
 
 		druidicRitual = new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED);
 		taiBwoWannaiTrio = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
@@ -273,7 +270,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Certainly. Take the rod from under my bed and fish in the lake. When you have caught a few fish, I am sure you will be ready to talk more with me."),
 				new DialogRequirement("Alas, I do not sense that you have been successful in your fishing yet. The look in your eyes is not that of the osprey."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "fish with a new")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "fish with a new")
 			)
 		);
 
@@ -282,7 +279,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("... and I thought fishing was a safe way to pass the time."),
 				new DialogRequirement("I see you need encouragement in learning the ways of fishing without a harpoon."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "fish with my")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "fish with my")
 			)
 		);
 
@@ -291,7 +288,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Remember to be calm, and good luck."),
 				new DialogRequirement("I see you have yet to be successful in planting a seed with your fists."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "plant a seed with")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "plant a seed with")
 			)
 		);
 
@@ -300,7 +297,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("May the spirits guide you into success."),
 				new DialogRequirement("You have not yet attempted to plant a tree. Why not?"),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smash pots after")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smash pots after")
 			)
 		);
 
@@ -309,7 +306,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("The spirits will aid you. The power they supply will guide your hands. Go and benefit from their guidance upon oak logs."),
 				new DialogRequirement("By now you know my response."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "light a fire with")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "light a fire with")
 			)
 		);
 
@@ -318,7 +315,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Dive into the whirlpool in the lake to the east. The spirits will use their abilities to ensure you arrive in the correct location. Be warned, their influence fades, so you must find y"),
 				new DialogRequirement("I will repeat myself fully, since this is quite complex. Listen well."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Otto<col=000080> has tasked me with learning how to <col=800000>create pyre ships")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>create pyre ships")
 			)
 		);
 
@@ -327,7 +324,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Have I become so predictable? But yes, I do indeed require a potion. It is of the highest importance that you bring me a lesser attack potion combined with fish roe."),
 				new DialogRequirement("Do you have my potion?"),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Otto<col=000080> has tasked me with learning how to make a <col=800000>new type")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to make a <col=800000>new type")
 			)
 		);
 
@@ -336,7 +333,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Note well that you will require wood for the spear shafts. The quality of wood must be similar to that of the metal involved."),
 				new DialogRequirement("You do not exude the presence of one who has poured his soul into manufacturing spears."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
 			)
 		);
 
@@ -345,7 +342,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),
 				new DialogRequirement("Take some wood and metal and make a spear upon the<br>nearby anvil, then you may return to me. As an<br>example, you may use bronze bars with normal logs or<br>iron bars with oak logs."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, " has tasked me with learning how to <col=800000>smith a hasta")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, " has tasked me with learning how to <col=800000>smith a hasta")
 			)
 		);
 
@@ -354,7 +351,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FISHING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Patience young one. These are fish which are fat with eggs rather than fat of flesh. It is these eggs that are the thing to make use of."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to catch a fish with the new rod!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to catch a fish with the new rod!")
 			),
 			"Finished Barbarian Fishing"
 		);
@@ -363,7 +360,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HARPOON.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("I mean that when you eventually die and find peace, at least the spirits you encounter will be your friends. Alas for you adventurous sort, the natural ways of passing are close to imp"),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to fish with my hands!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to fish with my hands!")
 			),
 			"Finished Barbarian Harpooning"
 		);
@@ -372,7 +369,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("No child, but we all have potential to improve our strength."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I managed to plant a seed with my fists!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I managed to plant a seed with my fists!")
 			),
 			"Finished Barbarian Seed Planting"
 		);
@@ -381,7 +378,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_POT_SMASHING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("It will become more natural with practice."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I managed to smash a plant pot without littering!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I managed to smash a plant pot without littering!")
 			),
 			"Finished Barbarian Pot Smashing"
 		);
@@ -390,7 +387,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FIREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("Fine news indeed!"),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to light a fire with a bow!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to light a fire with a bow!")
 			),
 			"Finished Barbarian Firemaking"
 		);
@@ -399,7 +396,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_PYREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("On this great day you have my eternal thanks. May you find riches while rescuing my spiritual ancestors in the caverns for many moons to come."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to create a pyre ship!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a pyre ship!")
 			),
 			"Finished Barbarian Pyremaking"
 		);
@@ -408,7 +405,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SPEAR.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("The manufacture of spears is now yours as a speciality. Use your skill well."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to smith a spear!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to smith a spear!")
 			),
 			"Finished Barbarian Spear Smithing"
 		);
@@ -417,7 +414,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HASTA.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("To live life to it's fullest of course - that you may be a peaceful spirit when your time ends."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to create a hasta!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a hasta!")
 			),
 			"Finished Barbarian Hasta Smithing"
 		);
@@ -426,7 +423,7 @@ public class BarbarianTraining extends BasicQuestHelper
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HERBLORE.getKey(),
 			new Conditions(true, LogicType.OR,
 				new DialogRequirement("I will take that off your hands now. I will say no more than that I am eternally grateful."),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I managed to create a new potion!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a new potion!")
 			),
 			"Finished Barbarian Herblore"
 		);
@@ -439,7 +436,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You plant "),
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
 			)
 		);
 
@@ -451,7 +448,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement(" sapling"),
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>smash a pot without littering<col=000080>!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smash a pot without littering<col=000080>!")
 			)
 		);
 
@@ -462,7 +459,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("The fire catches and the logs begin to burn."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>light a fire with a bow<col=000080>!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>light a fire with a bow<col=000080>!")
 			)
 		);
 
@@ -473,7 +470,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("The ancient barbarian is laid to rest."),
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
 			)
 		);
 
@@ -484,7 +481,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You catch a leaping trout.", "You catch a leaping salmon.", "You catch a leaping sturgeon."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
 			)
 		);
 
@@ -495,7 +492,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You catch a tuna.", "You catch a swordfish.", "You catch a shark.", "You catch a shark!"),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
 			)
 		);
 
@@ -506,7 +503,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You combine your potion with the fish eggs."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
 			)
 		);
 
@@ -518,7 +515,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement(" spear."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>smith a spear<col=000080>!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smith a spear<col=000080>!")
 			)
 		);
 
@@ -530,7 +527,7 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement(" hasta."),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
-				new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I've managed to <col=800000>smith a hasta<col=000080>!")
+				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smith a hasta<col=000080>!")
 			)
 		);
 
@@ -550,105 +547,105 @@ public class BarbarianTraining extends BasicQuestHelper
 	public void setupSteps()
 	{
 		// Barbarian Fishing
-		talkToOttoAboutFishing = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutFishing = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about fishing.");
 		talkToOttoAboutFishing.addDialogSteps("You think so?", "What can I learn about the use of a fishing rod?");
 
-		searchBed = new ObjectStep(this, ObjectID.BARBARIAN_BED, new WorldPoint(2500, 3490, 0), "Search the bed in Otto's hut.");
-		catchFish = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2500, 3510, 0),
+		searchBed = new ObjectStep(this, ObjectID.BRUT_BARBARIAN_BED, new WorldPoint(2500, 3490, 0), "Search the bed in Otto's hut.");
+		catchFish = new NpcStep(this, NpcID._0_39_54_BRUT_FISHING_SPOT, new WorldPoint(2500, 3510, 0),
 			"Fish from one of the fishing spots near Otto's hut.", true, barbFishingRod, feathers);
 
-		talkToOttoAfterFish = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAfterFish = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Return to Otto and tell him about your success.");
 		talkToOttoAfterFish.addDialogStep("I've fished with a barbarian rod!");
 
 		// Barbarian Harpooning
-		talkToOttoAboutBarehanded = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutBarehanded = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about barehand fishing.");
 		talkToOttoAboutBarehanded.addDialogSteps("You think so?", "Please teach me of your cunning with harpoons.");
 		// TODO: Update ID and WorldPoint
-		fishHarpoon = new NpcStep(this, NpcID.FISHING_SPOT_1519, new WorldPoint(2845, 3429, 0), "Fish in a fishing spot which requires a harpoon WITHOUT a harpoon.", true, fishing55);
-		talkToOttoAfterHarpoon = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		fishHarpoon = new NpcStep(this, NpcID._0_44_53_RAREFISH, new WorldPoint(2845, 3429, 0), "Fish in a fishing spot which requires a harpoon WITHOUT a harpoon.", true, fishing55);
+		talkToOttoAfterHarpoon = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Return to Otto in his hut north-west of Baxtorian Falls.");
 		talkToOttoAfterHarpoon.addDialogSteps("Barbarian Outpost.", "I've fished with my hands!");
 		talkToOttoAfterHarpoon.addTeleport(gamesNecklace);
 
 		// Barbarian Firemaking
-		talkToOttoAboutBow = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutBow = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about firemaking.");
 		talkToOttoAboutBow.addDialogSteps("You think so?", "I'm ready for your firemaking wisdom. Please instruct me.");
 		lightLogWithBow = new DetailedQuestStep(this, "Use a bow on some oak logs to light it.", bow.highlighted(), oakLogs.highlighted());
-		talkToOttoAfterBow = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAfterBow = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Return to Otto in his hut north-west of Baxtorian Falls.");
 		talkToOttoAfterBow.addDialogSteps("I've set fire to logs with a bow!");
 
-		talkToOttoAboutPyre = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutPyre = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about advanced firemaking.");
 		talkToOttoAboutPyre.addDialogStep("I have completed firemaking with a bow. What follows this?");
-		enterWhirlpool = new ObjectStep(this, ObjectID.WHIRLPOOL_25274, new WorldPoint(2513, 3509, 0),
+		enterWhirlpool = new ObjectStep(this, ObjectID.BRUT_WHIRLPOOL, new WorldPoint(2513, 3509, 0),
 			"Jump into the whirlpool north of Otto. Be prepared to fight mithril dragons.", combatGear, antifireShield);
-		goDownToBrutalGreen = new ObjectStep(this, ObjectID.STAIRS_25338, new WorldPoint(1769, 5365, 1),
+		goDownToBrutalGreen = new ObjectStep(this, ObjectID.BRUT_STAIR_LRG_TOP, new WorldPoint(1769, 5365, 1),
 			"Climb down the stairs. There are brutal green dragons there, so have antifire protection and Protect from Magic on!");
-		goUpToMithrilDragons = new ObjectStep(this, ObjectID.STAIRS_25339, new WorldPoint(1778, 5344, 0),
+		goUpToMithrilDragons = new ObjectStep(this, ObjectID.BRUT_CAVE_STAIRS_LOW, new WorldPoint(1778, 5344, 0),
 			"Climb up the stairs to the south-east. Be ready to fight the mithril dragons!");
-		killMithrilDragons = new NpcStep(this, NpcID.MITHRIL_DRAGON, new WorldPoint(1773, 5348, 1),
+		killMithrilDragons = new NpcStep(this, NpcID.BRUT_MITHRIL_DRAGON, new WorldPoint(1773, 5348, 1),
 			"Kill mithril dragons until you get some chewed bones.");
 		pickupChewedBones = new ItemStep(this, "Pick up the chewed bones.", chewedBones);
-		useLogOnPyre = new ObjectStep(this, ObjectID.PYRE_SITE, new WorldPoint(2506, 3518, 0),
+		useLogOnPyre = new ObjectStep(this, ObjectID.BRUT_BURNED_GROUND, new WorldPoint(2506, 3518, 0),
 			"Construct a pyre on the lake near Otto.", logs, chewedBones, tinderbox, axe);
 		useLogOnPyre.addDialogStep("I've created a pyre ship!");
-		talkToOttoAfterPyre = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAfterPyre = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Return to Otto and tell him about the succesful pyre-making.");
 
 		// Barbarian Farming
-		talkToOttoAboutFarming = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutFarming = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about farming.");
 		talkToOttoAboutFarming.addDialogSteps("You think so?", "How can I use my strength in the ways of agriculture?");
 		plantSeed = new DetailedQuestStep(this, "Plant a seed in a patch WITHOUT a dibber. This can fail, so bring multiple and preferably use cheap seeds.",
 			seed.quantity(9));
-		talkToOttoAfterPlantingSeed = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAfterPlantingSeed = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Return to Otto in his hut north-west of Baxtorian Falls.");
 		talkToOttoAfterPlantingSeed.addDialogStep("I've planted seeds with my fists!");
 
 		// Farming P2
-		talkToOttoAboutPots = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutPots = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about advanced farming.");
 		talkToOttoAboutPots.addDialogStep("Are there any other fist related farming activities I can learn?");
 		plantSapling = new DetailedQuestStep(this, "Plant a sapling in a tree or fruit tree patch.", sapling, spade);
-		talkToOttoAfterSmashingPot = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAfterSmashingPot = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Return to Otto in his hut north-west of Baxtorian Falls.");
 		talkToOttoAfterSmashingPot.addDialogStep("I've smashed a pot whilst farming!");
 
 		// Barbarian Smithing, REQUIRES barbarian firemaking P1
-		talkToOttoAboutSpears = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutSpears = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about spears.");
 		talkToOttoAboutSpears.addDialogSteps("Tell me more about the use of spears.");
-		makeBronzeSpear = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
+		makeBronzeSpear = new ObjectStep(this, ObjectID.BRUT_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Make a bronze spear on the anvil south of Otto.", bronzeBar, logs, hammer);
-		talkToOttoAfterBronzeSpear = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAfterBronzeSpear = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls.");
 		talkToOttoAfterBronzeSpear.addDialogStep("I've created a spear!");
 
-		talkToOttoAboutHastae = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutHastae = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about hastae.");
 		talkToOttoAboutHastae.addDialogStep("Tell me more about the use of spears.");
-		makeBronzeHasta = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
+		makeBronzeHasta = new ObjectStep(this, ObjectID.BRUT_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Make a bronze hasta on the anvil south of Otto.", bronzeBar, logs, hammer);
 		makeBronzeHasta.addWidgetHighlightWithItemIdRequirement(270, 15, 11421, true);
-		talkToOttoAfterMakingHasta = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAfterMakingHasta = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls.");
 		talkToOttoAfterMakingHasta.addDialogStep("I've created a hasta!");
 
 		// Barbarian Herblore, REQUIRES Barbarian Fishing
-		talkToOttoAboutHerblore = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAboutHerblore = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls about herblore.");
-		getBarbRodForHerblore = new ObjectStep(this, ObjectID.BARBARIAN_BED, new WorldPoint(2500, 3490, 0), "Search the bed in Otto's hut.");
-		fishForHerblore = new NpcStep(this, NpcID.FISHING_SPOT_1542, new WorldPoint(2500, 3510, 0), "Fish from one of the fishing spots near Otto's hut.", true, barbFishingRod);
+		getBarbRodForHerblore = new ObjectStep(this, ObjectID.BRUT_BARBARIAN_BED, new WorldPoint(2500, 3490, 0), "Search the bed in Otto's hut.");
+		fishForHerblore = new NpcStep(this, NpcID._0_39_54_BRUT_FISHING_SPOT, new WorldPoint(2500, 3510, 0), "Fish from one of the fishing spots near Otto's hut.", true, barbFishingRod);
 		fishForHerblore.addSubSteps(getBarbRodForHerblore);
 		dissectFish = new DetailedQuestStep(this, "Dissect the fish with a knife until you get some roe.", knife.highlighted(), fish.highlighted());
 		talkToOttoAboutHerblore.addDialogSteps("What was that secret knowledge of herblore we talked of?");
 		useRoeOnAttackPotion = new DetailedQuestStep(this, "Use roe on an attack potion (2).", roe.highlighted(), attackPotion.highlighted());
-		talkToOttoAfterPotion = new NpcStep(this, NpcID.OTTO_GODBLESSED, new WorldPoint(2500, 3488, 0),
+		talkToOttoAfterPotion = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls.", barbarianAttackPotion);
 		talkToOttoAfterPotion.addDialogStep("I've made a barbarian potion!");
 		// LOOKED IN LOG, varplayer 3679 -1->3451

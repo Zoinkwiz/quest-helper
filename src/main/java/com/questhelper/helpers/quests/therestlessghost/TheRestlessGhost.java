@@ -24,16 +24,16 @@
  */
 package com.questhelper.helpers.quests.therestlessghost;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -41,15 +41,13 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheRestlessGhost extends BasicQuestHelper
 {
@@ -105,8 +103,8 @@ public class TheRestlessGhost extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		ghostSpawned = new NpcCondition(NpcID.RESTLESS_GHOST);
-		coffinOpened = new ObjectCondition(NullObjectID.NULL_15061);
+		ghostSpawned = new NpcCondition(NpcID.GHOSTX);
+		coffinOpened = new ObjectCondition(ObjectID.OPENGHOSTCOFFIN);
 		inBasement = new ZoneRequirement(basement);
 		hasSkull = new VarbitRequirement(2130, 1);
 	}
@@ -114,13 +112,13 @@ public class TheRestlessGhost extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 2);
-		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
+		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.POH_TABLET_LUMBRIDGETELEPORT, 2);
+		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.AMULET_OF_GHOSTSPEAK, 1, true).isNotConsumed();
 		ghostspeakAmulet.setTooltip("If you've lost it you can get another from Father Urhney in his hut in the south east of Lumbridge Swamp");
-		skull = new ItemRequirement("Ghost's skull", ItemID.GHOSTS_SKULL);
+		skull = new ItemRequirement("Ghost's skull", ItemID.GHOSTSKULL);
 		skull.setTooltip("Check your bank if you don't have this item on you.");
-		passage = new ItemRequirement("Necklace of passage", ItemID.NECKLACE_OF_PASSAGE5);
-		passage.addAlternates(ItemID.NECKLACE_OF_PASSAGE1, ItemID.NECKLACE_OF_PASSAGE2, ItemID.NECKLACE_OF_PASSAGE3, ItemID.NECKLACE_OF_PASSAGE4);
+		passage = new ItemRequirement("Necklace of passage", ItemID.NECKLACE_OF_PASSAGE_5);
+		passage.addAlternates(ItemID.NECKLACE_OF_PASSAGE_1, ItemID.NECKLACE_OF_PASSAGE_2, ItemID.NECKLACE_OF_PASSAGE_3, ItemID.NECKLACE_OF_PASSAGE_4);
 	}
 
 	public void setupSteps()
@@ -133,29 +131,29 @@ public class TheRestlessGhost extends BasicQuestHelper
 		talkToUrhney.addDialogStep("Father Aereck sent me to talk to you.");
 		talkToUrhney.addDialogStep("He's got a ghost haunting his graveyard.");
 
-		openCoffin = new ObjectStep(this, ObjectID.COFFIN_2145, new WorldPoint(3250, 3193, 0), "Open the coffin in the Lumbridge Graveyard to spawn the ghost.", ghostspeakAmulet);
+		openCoffin = new ObjectStep(this, ObjectID.SHUTGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Open the coffin in the Lumbridge Graveyard to spawn the ghost.", ghostspeakAmulet);
 		openCoffin.addDialogStep("Yep, now tell me what the problem is.");
 		openCoffin.addDialogStep("Yep, clever aren't I?.");
 		openCoffin.addDialogStep("Yes, ok. Do you know WHY you're a ghost?");
 		openCoffin.addDialogStep("Yes, ok. Do you know why you're a ghost?");
 
-		searchCoffin = new ObjectStep(this, NullObjectID.NULL_15061, new WorldPoint(3250, 3193, 0), "Search the coffin in the Lumbridge Graveyard to spawn the ghost.", ghostspeakAmulet);
+		searchCoffin = new ObjectStep(this, ObjectID.OPENGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Search the coffin in the Lumbridge Graveyard to spawn the ghost.", ghostspeakAmulet);
 		searchCoffin.addDialogStep("Yep, now tell me what the problem is.");
 		searchCoffin.addDialogStep("Yep, clever aren't I?.");
 		searchCoffin.addDialogStep("Yes, ok. Do you know WHY you're a ghost?");
 		searchCoffin.addDialogStep("Yes, ok. Do you know why you're a ghost?");
 
-		speakToGhost = new NpcStep(this, NpcID.RESTLESS_GHOST, new WorldPoint(3250, 3195, 0), "Speak to the Ghost that appears whilst wearing your Ghostspeak Amulet.", ghostspeakAmulet);
+		speakToGhost = new NpcStep(this, NpcID.GHOSTX, new WorldPoint(3250, 3195, 0), "Speak to the Ghost that appears whilst wearing your Ghostspeak Amulet.", ghostspeakAmulet);
 		speakToGhost.addDialogStep("Yep, now tell me what the problem is.");
 		speakToGhost.addDialogStep("Yep, clever aren't I?.");
 		speakToGhost.addDialogStep("Yes, ok. Do you know WHY you're a ghost?");
 		speakToGhost.addDialogStep("Yes, ok. Do you know why you're a ghost?");
 
-		enterWizardsTowerBasement = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Enter the Wizards' Tower basement.");
-		searchAltarAndRun = new ObjectStep(this, NullObjectID.NULL_2146, new WorldPoint(3120, 9567, 0), "Search the Altar. A skeleton (level 13) will appear and attack you, but you can just run away.");
-		exitWizardsTowerBasement = new ObjectStep(this, ObjectID.LADDER_2148, new WorldPoint(3103, 9576, 0), "Leave the basement.", skull);
-		openCoffinToPutSkullIn = new ObjectStep(this, ObjectID.COFFIN_2145, new WorldPoint(3250, 3193, 0), "Open the ghost's coffin in Lumbridge graveyard.", skull);
-		putSkullInCoffin = new ObjectStep(this, NullObjectID.NULL_15061, new WorldPoint(3250, 3193, 0), "Search the coffin.", skull);
+		enterWizardsTowerBasement = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Enter the Wizards' Tower basement.");
+		searchAltarAndRun = new ObjectStep(this, ObjectID.RESTLESS_GHOST_ALTAR, new WorldPoint(3120, 9567, 0), "Search the Altar. A skeleton (level 13) will appear and attack you, but you can just run away.");
+		exitWizardsTowerBasement = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDER, new WorldPoint(3103, 9576, 0), "Leave the basement.", skull);
+		openCoffinToPutSkullIn = new ObjectStep(this, ObjectID.SHUTGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Open the ghost's coffin in Lumbridge graveyard.", skull);
+		putSkullInCoffin = new ObjectStep(this, ObjectID.OPENGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Search the coffin.", skull);
 	}
 
 	@Override
@@ -182,7 +180,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Ghostspeak Amulet", ItemID.GHOSTSPEAK_AMULET, 1));
+		return Collections.singletonList(new ItemReward("Ghostspeak Amulet", ItemID.AMULET_OF_GHOSTSPEAK, 1));
 	}
 
 	@Override

@@ -27,46 +27,31 @@ package com.questhelper.steps;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
-import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.steps.widget.AbstractWidgetHighlight;
-import com.questhelper.tools.QuestHelperWorldMapPoint;
-import com.questhelper.tools.QuestTile;
+import com.questhelper.bank.QuestBank;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.overlay.WorldLines;
 import com.questhelper.steps.tools.QuestPerspective;
+import com.questhelper.steps.widget.AbstractWidgetHighlight;
+import com.questhelper.tools.QuestHelperWorldMapPoint;
+import com.questhelper.tools.QuestTile;
 import com.questhelper.util.worldmap.WorldMapAreaChanged;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import net.runelite.api.GameState;
 import net.runelite.api.Menu;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Perspective;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.SpriteID;
-import net.runelite.api.Tile;
-import net.runelite.api.TileItem;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginMessage;
@@ -75,8 +60,13 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
-import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.ImageUtil;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DetailedQuestStep extends QuestStep
 {
@@ -516,6 +506,10 @@ public class DetailedQuestStep extends QuestStep
 			for (LocalPoint localPoint : localPoints)
 			{
 				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, localPoint, getQuestHelper().getConfig().targetOverlayColor());
+			}
+			if (localPoints.isEmpty())
+			{
+				DirectionArrow.renderMinimapArrow(graphics, client, worldPoint, getQuestHelper().getConfig().targetOverlayColor());
 			}
 		}
 	}

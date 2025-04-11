@@ -25,31 +25,28 @@
 package com.questhelper.helpers.quests.piratestreasure;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.MesBoxRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.steps.*;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
 
 public class RumSmugglingStep extends ConditionalStep
 {
@@ -131,11 +128,11 @@ public class RumSmugglingStep extends ConditionalStep
 
 	private void setupItemRequirements()
 	{
-		karamjanRum = new ItemRequirement("Karamjan rum", ItemID.KARAMJAN_RUM);
+		karamjanRum = new ItemRequirement("Karamjan rum", ItemID.KARAMJA_RUM);
 		tenBananas = new ItemRequirement("Banana", ItemID.BANANA, 10);
 		whiteApron = new ItemRequirement("White apron", ItemID.WHITE_APRON);
 		whiteApronEquipped = new ItemRequirement("White apron", ItemID.WHITE_APRON, 1, true);
-		whiteApronHanging = new ItemRequirement("White apron", ItemID.WHITE_APRON_7957);
+		whiteApronHanging = new ItemRequirement("White apron", ItemID.PIRATETREASURE_APRON);
 		whiteApronHanging.addAlternates(ItemID.WHITE_APRON);
 	}
 
@@ -143,29 +140,29 @@ public class RumSmugglingStep extends ConditionalStep
 	{
 		onKaramja = new ZoneRequirement(karamjaZone1, karamjaZone2, karamjaBoat);
 		Requirement offKaramja = new ZoneRequirement(false, karamjaZone1, karamjaZone2, karamjaBoat);
-		Requirement inPirateTreasureMenu = new WidgetTextRequirement(ComponentID.DIARY_TITLE, getQuestHelper().getQuest().getName());
+		Requirement inPirateTreasureMenu = new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, getQuestHelper().getQuest().getName());
 
 		hasRumOffKaramja = new Conditions(LogicType.AND, karamjanRum, offKaramja);
 		hadRumOffKaramja = new Conditions(true, karamjanRum, offKaramja);
-		lostRum = new Conditions(LogicType.AND, inPirateTreasureMenu, new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I seem to have lost it."));
+		lostRum = new Conditions(LogicType.AND, inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I seem to have lost it."));
 
-		Requirement haveRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I should take it to"));
+		Requirement haveRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I should take it to"));
 
 		Requirement agreedToGetRum = new DialogRequirement("Ok, I will bring you some rum.");
-		Requirement atStartFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I need to go to"));
+		Requirement atStartFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I need to go to"));
 		atStart = new Conditions(true, LogicType.OR, agreedToGetRum, atStartFromWidget, lostRum, hadRumOffKaramja, haveRumFromWidget);
 
 		crateSent = new ChatMessageRequirement("Luthas hands you 30 coins.");
 
-		Requirement employedFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I have taken employment"));
+		Requirement employedFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I have taken employment"));
 
 		/* Filled crate but not sent it and employed */
-		Requirement employedByWydinFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I have taken a job at"));
+		Requirement employedByWydinFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I have taken a job at"));
 
 		Requirement employedFromDialog = new Conditions(new DialogRequirement("If you could fill it up with bananas, I'll pay you 30 gold.", "Have you completed your task yet?", "you should see the old crate"));
 		employed = new Conditions(true, LogicType.OR, employedFromDialog, employedFromWidget, employedByWydinFromWidget);
 
-		Requirement stashedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I have hidden my"));
+		Requirement stashedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I have hidden my"));
 		Requirement stashedRumFromDialog = new MesBoxRequirement("You stash the rum in the crate.");
 		Requirement stashedRumFromChat = new Conditions(new ChatMessageRequirement("There is also some rum stashed in here too.", "There's already some rum in here...",
 			"There is some rum in here, although with no bananas to cover it. It is a little obvious."));
@@ -177,7 +174,7 @@ public class RumSmugglingStep extends ConditionalStep
 		Requirement filledCrateWithBananas = new Conditions(false, LogicType.OR, fillCrateWithBananasChat, fillCrateBananas);
 		filledCrateWithBananasAndRum = new Conditions(true, LogicType.AND, filledCrateWithBananas, stashedRum);
 
-		Requirement shippedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "the crate has been shipped"));
+		Requirement shippedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "the crate has been shipped"));
 		Requirement shippedRumFromDialog = new Conditions(stashedRum, crateSent);
 		Requirement shippedRumFromChat = new ChatMessageRequirement("There is already some rum in Wydin's store, I should go and get that first.");
 		haveShippedRum = new Conditions(true, LogicType.OR, shippedRumFromWidget, shippedRumFromDialog, shippedRumFromChat);
@@ -194,19 +191,19 @@ public class RumSmugglingStep extends ConditionalStep
 		talkToZambo = new NpcStep(getQuestHelper(), NpcID.ZEMBO, new WorldPoint(2929, 3145, 0),
 			"Talk to Zembo in the Karamja Wines, Spirits and Beers bar. Buy one Karamjan rum.", new ItemRequirement("Coins", ItemCollections.COINS, 30));
 		talkToZambo.addDialogStep("Yes please.");
-		talkToZambo.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.KARAMJAN_RUM, true);
+		talkToZambo.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.KARAMJA_RUM, true);
 
 		talkToLuthas = new NpcStep(getQuestHelper(), NpcID.LUTHAS, new WorldPoint(2938, 3154, 0),
 			"Pick 10 bananas nearby, and then talk to Luthas about working for him.",
-			new ItemRequirement("Karamjan rum", ItemID.KARAMJAN_RUM), new ItemRequirement("Banana", ItemID.BANANA, 10));
+			new ItemRequirement("Karamjan rum", ItemID.KARAMJA_RUM), new ItemRequirement("Banana", ItemID.BANANA, 10));
 		talkToLuthas.addDialogStep("Could you offer me employment on your plantation?");
 		talkToLuthas.addDialogStep("Will you pay me for another crate full?");
 
-		addRumToCrate = new ObjectStep(getQuestHelper(), ObjectID.CRATE_2072, new WorldPoint(2943, 3151, 0),
+		addRumToCrate = new ObjectStep(getQuestHelper(), ObjectID.BANANACRATE, new WorldPoint(2943, 3151, 0),
 			"Put the Karamjan rum into the crate.", karamjanRum.highlighted(), tenBananas);
-		addRumToCrate.addIcon(ItemID.KARAMJAN_RUM);
+		addRumToCrate.addIcon(ItemID.KARAMJA_RUM);
 
-		addBananasToCrate = new ObjectStep(getQuestHelper(), ObjectID.CRATE_2072, new WorldPoint(2943, 3151, 0),
+		addBananasToCrate = new ObjectStep(getQuestHelper(), ObjectID.BANANACRATE, new WorldPoint(2943, 3151, 0),
 			"Right-click fill the rest of the crate with bananas, then talk to Luthas.", tenBananas);
 
 		talkToLuthasAgain = new NpcStep(getQuestHelper(), NpcID.LUTHAS, new WorldPoint(2938, 3154, 0),
@@ -222,7 +219,7 @@ public class RumSmugglingStep extends ConditionalStep
 		getWhiteApron = new DetailedQuestStep(getQuestHelper(), new WorldPoint(3016, 3229, 0),
 			"Grab the white apron from the Fishing Shop.", whiteApronHanging);
 
-		getRumFromCrate = new ObjectStep(getQuestHelper(), ObjectID.CRATE_2071, new WorldPoint(3009, 3207, 0),
+		getRumFromCrate = new ObjectStep(getQuestHelper(), ObjectID.GROCERYCRATE, new WorldPoint(3009, 3207, 0),
 			"Search the crate in the back room of the Port Sarim food shop. Make sure you're wearing your white apron.", whiteApronEquipped);
 		getRumFromCrate.addDialogStep("Well, can I get a job here?");
 

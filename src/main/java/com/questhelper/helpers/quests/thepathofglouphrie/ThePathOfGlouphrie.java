@@ -27,11 +27,7 @@ package com.questhelper.helpers.quests.thepathofglouphrie;
 import com.google.common.collect.ImmutableMap;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.helpers.quests.thepathofglouphrie.sections.FindLongramble;
-import com.questhelper.helpers.quests.thepathofglouphrie.sections.InformKingBolren;
-import com.questhelper.helpers.quests.thepathofglouphrie.sections.StartingOff;
-import com.questhelper.helpers.quests.thepathofglouphrie.sections.TheWarpedDepths;
-import com.questhelper.helpers.quests.thepathofglouphrie.sections.UnveilEvil;
+import com.questhelper.helpers.quests.thepathofglouphrie.sections.*;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -53,16 +49,17 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class ThePathOfGlouphrie extends BasicQuestHelper
 {
@@ -186,10 +183,10 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		/// Required items
 		rovingElvesNotStarted = new QuestRequirement(QuestHelperQuest.ROVING_ELVES, QuestState.NOT_STARTED);
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).isNotConsumed();
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).isNotConsumed();
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).isNotConsumed();
 		// NOTE: This does NOT have a step attached
 		// I didn't have any character available that hadn't started the Roving Elves quest
-		treeGnomeVillageDungeonKey = new ItemRequirement("Tree Gnome Village dungeon key", ItemID.KEY_293).showConditioned(rovingElvesNotStarted);
+		treeGnomeVillageDungeonKey = new ItemRequirement("Tree Gnome Village dungeon key", ItemID.GOLRIE_KEY_WATERFALL_QUEST).showConditioned(rovingElvesNotStarted);
 		treeGnomeVillageDungeonKey.canBeObtainedDuringQuest();
 		combatGear = new ItemRequirement("Combat equipment", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -251,8 +248,8 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 	private void setupSteps()
 	{
 		// Shared base steps
-		enterTreeGnomeVillageMazeFromMiddle = new ObjectStep(this, ObjectID.LOOSE_RAILING_2186, new WorldPoint(2515, 3161, 0), "");
-		climbDownIntoTreeGnomeVillageDungeon = new ObjectStep(this, ObjectID.LADDER_5250, new WorldPoint(2533, 3155, 0), "");
+		enterTreeGnomeVillageMazeFromMiddle = new ObjectStep(this, ObjectID.TREEGNOMELOOSERAILING, new WorldPoint(2515, 3161, 0), "");
+		climbDownIntoTreeGnomeVillageDungeon = new ObjectStep(this, ObjectID.ROVING_GOLRIE_LADDER_TO_CELLAR, new WorldPoint(2533, 3155, 0), "");
 
 		startingOff.setup(this);
 

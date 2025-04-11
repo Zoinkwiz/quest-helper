@@ -26,15 +26,16 @@ package com.questhelper.helpers.quests.ragandboneman;
 
 import com.questhelper.bank.QuestBank;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.util.Text;
 
 @AllArgsConstructor
@@ -114,11 +115,11 @@ public enum RagBoneState
 
 		boneCleanedItem = new ItemRequirement(Text.titleCase(this), boneID + 2);
 
-		VarbitRequirement boneAddedToBoiler = new VarbitRequirement(2046, 2, Operation.GREATER_EQUAL);
+		VarbitRequirement boneAddedToBoiler = new VarbitRequirement(VarbitID.RAG_BOILER, 2, Operation.GREATER_EQUAL);
 		boneIsBeingCleaned = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, pos));
 
 		// Mark always true once obtained as no way to identify if a bone has been handed in easily
-		WidgetTextRequirement hadFromWidgetsCheck = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>" + nameInList);
+		WidgetTextRequirement hadFromWidgetsCheck = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>" + nameInList);
 		hadFromWidgets = new Conditions(true, hadFromWidgetsCheck);
 	}
 

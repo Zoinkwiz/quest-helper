@@ -1,8 +1,9 @@
 package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
 
 // A group of RuneliteNpcs, which are used as a group in RuneliteObjectManager
 public class ExtendedRuneliteObjects

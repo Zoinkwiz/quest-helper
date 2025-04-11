@@ -25,10 +25,11 @@
 package com.questhelper.bank.banktab;
 
 import com.questhelper.requirements.item.ItemRequirement;
-import java.util.Collections;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Collections;
+import java.util.List;
 
 public class BankTabItem
 {

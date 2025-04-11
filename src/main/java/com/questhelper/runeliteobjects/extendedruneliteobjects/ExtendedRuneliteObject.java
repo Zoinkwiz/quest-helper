@@ -32,27 +32,9 @@ import com.questhelper.runeliteobjects.dialog.RuneliteObjectDialogStep;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.actions.Action;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.actions.LoopedAction;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Shape;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Model;
-import net.runelite.api.ModelData;
-import net.runelite.api.Perspective;
-import net.runelite.api.RuneLiteObject;
-import net.runelite.api.Scene;
-import net.runelite.api.Tile;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
@@ -61,6 +43,13 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class ExtendedRuneliteObject
 {

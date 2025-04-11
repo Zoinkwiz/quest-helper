@@ -25,24 +25,19 @@
 package com.questhelper.helpers.quests.xmarksthespot;
 
 import com.questhelper.collections.ItemCollections;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.questhelper.rewards.ItemReward;
-import com.questhelper.rewards.QuestPointReward;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+
+import java.util.*;
 
 public class XMarksTheSpot extends BasicQuestHelper
 {
@@ -84,7 +79,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 	private void setupSteps()
 	{
 		// TODO: Worth adding PuzzleWrapperStep at all given the Clue Plugin also does this?
-		speakVeosLumbridge = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3228, 3242, 0),
+		speakVeosLumbridge = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3228, 3242, 0),
 			"Talk to Veos in The Sheared Ram pub in Lumbridge to start the quest.");
 		speakVeosLumbridge.addDialogStep("I'm looking for a quest.");
 		speakVeosLumbridge.addDialogStep("Sounds good, what should I do?");
@@ -102,19 +97,19 @@ public class XMarksTheSpot extends BasicQuestHelper
 
 		digMartin = new DigStep(this, new WorldPoint(3078, 3259, 0),
 			"Dig in the pig pen just west where Martin the Master Gardener is.",
-			new ItemRequirement("Treasure scroll", ItemID.TREASURE_SCROLL_23070));
+			new ItemRequirement("Treasure scroll", ItemID.CLUEQUEST_CLUE4));
 
-		ItemRequirement ancientCasket = new ItemRequirement("Ancient casket", ItemID.ANCIENT_CASKET);
+		ItemRequirement ancientCasket = new ItemRequirement("Ancient casket", ItemID.CLUEQUEST_CASKET);
 		ancientCasket.setTooltip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
 
-		speakVeosSarim = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
+		speakVeosSarim = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.",
 			ancientCasket);
-		((NpcStep) speakVeosSarim).addAlternateNpcs(NpcID.VEOS_8630);
+		((NpcStep) speakVeosSarim).addAlternateNpcs(NpcID.VEOS_VISIBLE_TRAVEL);
 
-		speakVeosSarimWithoutCasket = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
+		speakVeosSarimWithoutCasket = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.");
-		((NpcStep) speakVeosSarimWithoutCasket).addAlternateNpcs(NpcID.VEOS_8630);
+		((NpcStep) speakVeosSarimWithoutCasket).addAlternateNpcs(NpcID.VEOS_VISIBLE_TRAVEL);
 
 		speakVeosSarim.addSubSteps(speakVeosSarimWithoutCasket);
 	}
@@ -145,9 +140,9 @@ public class XMarksTheSpot extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("300 Exp. Lamp (Any Skill)", ItemID.ANTIQUE_LAMP, 1),
-			new ItemReward("Coins", ItemID.COINS_995, 200),
-			new ItemReward("A Beginner Clue Scroll", ItemID.CLUE_SCROLL_BEGINNER, 1));
+			new ItemReward("300 Exp. Lamp (Any Skill)", ItemID.THOSF_REWARD_LAMP, 1),
+			new ItemReward("Coins", ItemID.COINS, 200),
+			new ItemReward("A Beginner Clue Scroll", ItemID.TRAIL_CLUE_BEGINNER, 1));
 	}
 
 	@Override

@@ -28,11 +28,12 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
-import java.util.Collections;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.Collections;
 
 public class BaxtorianPillar
 {
@@ -61,8 +62,8 @@ public class BaxtorianPillar
 	{
 		this.wp = wp;
 		this.answerText = answerText;
-		this.inspectStep = new ObjectStep(questHelper, NullObjectID.NULL_2005, inspectWp, "Inspect the marked pillar.");
-		this.useStep = new ObjectStep(questHelper, NullObjectID.NULL_2005, wp, "Place the correct item on the " + name + " pillar.");
+		this.inspectStep = new ObjectStep(questHelper, ObjectID.STONEPILLAR_SMALL_WATERFALL_QUEST, inspectWp, "Inspect the marked pillar.");
+		this.useStep = new ObjectStep(questHelper, ObjectID.STONEPILLAR_SMALL_WATERFALL_QUEST, wp, "Place the correct item on the " + name + " pillar.");
 	}
 
 	public void setSolution(ItemRequirement solution)

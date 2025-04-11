@@ -24,37 +24,31 @@
  */
 package com.questhelper.helpers.quests.spiritsoftheelid;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class SpiritsOfTheElid extends BasicQuestHelper
 {
@@ -135,8 +129,8 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		//Requirements
-		airRune = new ItemRequirement("Air Rune", ItemID.AIR_RUNE, 1);
-		lawRune = new ItemRequirement("Law Rune", ItemID.LAW_RUNE, 1);
+		airRune = new ItemRequirement("Air Rune", ItemID.AIRRUNE, 1);
+		lawRune = new ItemRequirement("Law Rune", ItemID.LAWRUNE, 1);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE, 1).isNotConsumed();
 		needle.setHighlightInInventory(true);
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 2);
@@ -158,28 +152,28 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		//Quest Items
-		tornRobeTop = new ItemRequirement("Torn Robe (top)", ItemID.TORN_ROBE, 1);
+		tornRobeTop = new ItemRequirement("Torn Robe (top)", ItemID.ELID_ROBETOP_TORN, 1);
 		tornRobeTop.setHighlightInInventory(true);
-		tornRobeBottom = new ItemRequirement("Torn Robe (bottom)", ItemID.TORN_ROBE_6789, 1);
+		tornRobeBottom = new ItemRequirement("Torn Robe (bottom)", ItemID.ELID_ROBEBOTTOMS_TORN, 1);
 		tornRobeBottom.setHighlightInInventory(true);
-		robeOfElidinisTop = new ItemRequirement("Robe of Elidinis (top)", ItemID.ROBE_OF_ELIDINIS);
-		robeOfElidinisBottom = new ItemRequirement("Robe of Elidinis (bottom)", ItemID.ROBE_OF_ELIDINIS_6787);
-		robeOfElidinisTopEquipped = new ItemRequirement("Robe of Elidinis (top)", ItemID.ROBE_OF_ELIDINIS, 1, true);
-		robeOfElidinisBottomEquipped = new ItemRequirement("Robe of Elidinis (bottom)", ItemID.ROBE_OF_ELIDINIS_6787, 1,
+		robeOfElidinisTop = new ItemRequirement("Robe of Elidinis (top)", ItemID.ELID_ROBETOP);
+		robeOfElidinisBottom = new ItemRequirement("Robe of Elidinis (bottom)", ItemID.ELID_ROBEBOTTOMS);
+		robeOfElidinisTopEquipped = new ItemRequirement("Robe of Elidinis (top)", ItemID.ELID_ROBETOP, 1, true);
+		robeOfElidinisBottomEquipped = new ItemRequirement("Robe of Elidinis (bottom)", ItemID.ELID_ROBEBOTTOMS, 1,
 			true);
-		ancestralKey = new ItemRequirement("Ancestral Key", ItemID.ANCESTRAL_KEY, 1);
+		ancestralKey = new ItemRequirement("Ancestral Key", ItemID.ELID_KEY, 1);
 		ancestralKey.setHighlightInInventory(true);
-		shoes = new ItemRequirement("Shoes", ItemID.SHOES, 1);
+		shoes = new ItemRequirement("Shoes", ItemID.ELID_SHOES, 1);
 		shoes.setHighlightInInventory(true);
-		soles = new ItemRequirement("Sole", ItemID.SOLE, 1);
-		statuette = new ItemRequirement("Statuette", ItemID.STATUETTE_6785, 1);
+		soles = new ItemRequirement("Sole", ItemID.ELID_SOLE, 1);
+		statuette = new ItemRequirement("Statuette", ItemID.ELID_STATUETTE, 1);
 		statuette.setHighlightInInventory(true);
 
 		//Recommended
 		combatGear = new ItemRequirement("Combat Gear", -1, 1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
-		waterskins.addAlternates(ItemID.WATERSKIN3, ItemID.WATERSKIN2, ItemID.WATERSKIN1);
+		waterskins = new ItemRequirement("Waterskins", ItemID.WATER_SKIN4, -1);
+		waterskins.addAlternates(ItemID.WATER_SKIN3, ItemID.WATER_SKIN2, ItemID.WATER_SKIN1);
 		shantaypass = new ItemRequirement("Shantay Passes", ItemID.SHANTAY_PASS, -1);
 		coins = new ItemRequirement("Coins for magic carpet", ItemCollections.COINS, -1);
 		spear = new ItemRequirement("Spear or Hasta for the 3 weapon styles", -1, 1);
@@ -224,69 +218,69 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 	public void setupSteps()
 	{
 		//Starting Off
-		speakToAwusah = new NpcStep(this, NpcID.AWUSAH_THE_MAYOR, new WorldPoint(3443, 2915, 0), "Speak to Awusah the Mayor in Nardah.");
+		speakToAwusah = new NpcStep(this, NpcID.ELID_MAYOR, new WorldPoint(3443, 2915, 0), "Speak to Awusah the Mayor in Nardah.");
 		speakToAwusah.addDialogSteps("I am an adventurer in search of quests.", "Any idea how you got this curse?", "Yes.", "Ok I will have a look around and see what I can do.");
-		speakToGhaslor = new NpcStep(this, NpcID.GHASLOR_THE_ELDER, new WorldPoint(3441, 2932, 0), "Speak to Ghaslor the Elder, just north of Awusah.");
+		speakToGhaslor = new NpcStep(this, NpcID.ELID_GHASLOR, new WorldPoint(3441, 2932, 0), "Speak to Ghaslor the Elder, just north of Awusah.");
 		speakToGhaslor.addDialogSteps("I am trying to find out the cause of this town's curse.", "River spirits, what are they?");
-		openCupboard = new ObjectStep(this, ObjectID.CUPBOARD_10384, new WorldPoint(3420, 2930, 0), "Open and search the cupboard in the north-west corner of the house that is north of the fountain.");
-		((ObjectStep) (openCupboard)).addAlternateObjects(ObjectID.CUPBOARD_10385);
+		openCupboard = new ObjectStep(this, ObjectID.ELID_CUPBOARD_CLOSED_WITHROBES, new WorldPoint(3420, 2930, 0), "Open and search the cupboard in the north-west corner of the house that is north of the fountain.");
+		((ObjectStep) (openCupboard)).addAlternateObjects(ObjectID.ELID_CUPBOARD_OPEN_WITHROBES);
 		useNeedleTornRobes = new DetailedQuestStep(this, "Use the needle and thread on the torn robes (both top and bottom).", needle, tornRobeBottom);
 		useNeedleTornRobesTop = new DetailedQuestStep(this, "Use the needle and thread on the torn robes (both top and bottom).", needle, tornRobeTop);
 		useNeedleTornRobes.addSubSteps(useNeedleTornRobesTop);
-		telegrabKey = new ObjectStep(this, ObjectID.TABLE_10490, new WorldPoint(3432, 2929, 0),
+		telegrabKey = new ObjectStep(this, ObjectID.ELID_WOODEN_TABLE, new WorldPoint(3432, 2929, 0),
 			"Cast the Telekinetic Grab spell on the ancestral key on the table.", normalBook, airRune, lawRune);
 
 		//The Golems
-		enterCave = new ObjectStep(this, ObjectID.ROOT_6382, new WorldPoint(3370, 3132, 0), "Use the rope on the root to enter the cave north-west of Nardah where the river turns into a waterfall.", rope);
+		enterCave = new ObjectStep(this, ObjectID.DESERT_WATER_CAVE_ROOT, new WorldPoint(3370, 3132, 0), "Use the rope on the root to enter the cave north-west of Nardah where the river turns into a waterfall.", rope);
 		enterCave.addIcon(ItemID.ROPE);
-		useAncestralKey = new ObjectStep(this, ObjectID.DOOR_10427, new WorldPoint(3353, 9544, 0), "Equip the Robes of " +
+		useAncestralKey = new ObjectStep(this, ObjectID.ELID_UNDERGROUND_ROBE_DOOR, new WorldPoint(3353, 9544, 0), "Equip the Robes of " +
 			"Elidinis and use the ancestral key on the door.", ancestralKey, robeOfElidinisTopEquipped,
 			robeOfElidinisBottomEquipped);
-		((ObjectStep) (useAncestralKey)).addAlternateObjects(ObjectID.DOOR_10429);
-		useAncestralKey.addIcon(ItemID.ANCESTRAL_KEY);
+		((ObjectStep) (useAncestralKey)).addAlternateObjects(ObjectID.ELID_UNDERGROUND_ROBE_DOOR_MIRROR);
+		useAncestralKey.addIcon(ItemID.ELID_KEY);
 
-		openStabDoor = new ObjectStep(this, ObjectID.DOOR_10420, new WorldPoint(3365, 9542, 0),
+		openStabDoor = new ObjectStep(this, ObjectID.ELID_WHITEGOLEM_DOOR, new WorldPoint(3365, 9542, 0),
 			"Open the door to the south and fight the White Golem (level-75).  You can only damage the Golem with the" +
 				" stab attack style.", stabWep);
-		openStabDoorAfterGolem = new ObjectStep(this, ObjectID.DOOR_10420, new WorldPoint(3365, 9542, 0), "Open the southern door again.");
+		openStabDoorAfterGolem = new ObjectStep(this, ObjectID.ELID_WHITEGOLEM_DOOR, new WorldPoint(3365, 9542, 0), "Open the southern door again.");
 		openStabDoor.addSubSteps(openStabDoorAfterGolem);
-		clearChannel = new ObjectStep(this, ObjectID.WATER_CHANNEL_10407, new WorldPoint(3365, 9538, 0), "Clear the Water Channel then leave the room.");
+		clearChannel = new ObjectStep(this, ObjectID.ELID_WATER_CHANNEL_SPIKETRAP, new WorldPoint(3365, 9538, 0), "Clear the Water Channel then leave the room.");
 
-		openSlashDoor = new ObjectStep(this, ObjectID.DOOR_10421, new WorldPoint(3374, 9547, 0),
+		openSlashDoor = new ObjectStep(this, ObjectID.ELID_GREYGOLEM_DOOR, new WorldPoint(3374, 9547, 0),
 			"Open the door to the east and fight the Grey Golem (level-75).  You can only damage the Golem with the " +
 				"slash attack style.", slashWep);
-		openSlashDoorAfterGolem = new ObjectStep(this, ObjectID.DOOR_10421, new WorldPoint(3374, 9547, 0), "Open the eastern door again.");
+		openSlashDoorAfterGolem = new ObjectStep(this, ObjectID.ELID_GREYGOLEM_DOOR, new WorldPoint(3374, 9547, 0), "Open the eastern door again.");
 		openSlashDoor.addSubSteps(openSlashDoorAfterGolem);
-		clearChannel2 = new ObjectStep(this, ObjectID.WATER_CHANNEL_10405, new WorldPoint(3378, 9547, 0), "Clear the Water Channel then leave the room.", pickaxe);
+		clearChannel2 = new ObjectStep(this, ObjectID.ELID_WATER_CHANNEL_BLOCKED_ROCKS, new WorldPoint(3378, 9547, 0), "Clear the Water Channel then leave the room.", pickaxe);
 
-		openCrushDoor = new ObjectStep(this, ObjectID.DOOR_10419, new WorldPoint(3372, 9556, 0),
+		openCrushDoor = new ObjectStep(this, ObjectID.ELID_BLACKGOLEM_DOOR, new WorldPoint(3372, 9556, 0),
 			"Open the door to the north-eastern and fight the Black Golem (level-75).  You can only damage the Golem " +
 				"with the crush attack style.", crushWep);
-		openCrushDoorAfterGolem = new ObjectStep(this, ObjectID.DOOR_10419, new WorldPoint(3372, 9556, 0), "Open the north-eastern door again.");
+		openCrushDoorAfterGolem = new ObjectStep(this, ObjectID.ELID_BLACKGOLEM_DOOR, new WorldPoint(3372, 9556, 0), "Open the north-eastern door again.");
 		openCrushDoor.addSubSteps(openCrushDoorAfterGolem);
-		clearChannel3 = new NpcStep(this, NpcID.TARGET, new WorldPoint(3376, 9557, 0), "Clear the Water Channel by shooting the target then leave the room.", bow, arrows);
+		clearChannel3 = new NpcStep(this, NpcID.ELID_RANGING_TARGET, new WorldPoint(3376, 9557, 0), "Clear the Water Channel by shooting the target then leave the room.", bow, arrows);
 
-		openFarNorthDoor = new ObjectStep(this, ObjectID.DOOR_10423, new WorldPoint(3354, 9558, 0), "Open the door to the north near the lake.");
-		speakToSpirits = new NpcStep(this, NpcID.NIRRIE, new WorldPoint(3364, 9589, 0), "Talk to the Water Spirits on the north side of the lake.", true);
-		((NpcStep) (speakToSpirits)).addAlternateNpcs(NpcID.TIRRIE);
-		((NpcStep) (speakToSpirits)).addAlternateNpcs(NpcID.HALLAK);
+		openFarNorthDoor = new ObjectStep(this, ObjectID.ELID_UNDERGROUND_LAKE_DOOR, new WorldPoint(3354, 9558, 0), "Open the door to the north near the lake.");
+		speakToSpirits = new NpcStep(this, NpcID.ELID_WATERSPIRIT, new WorldPoint(3364, 9589, 0), "Talk to the Water Spirits on the north side of the lake.", true);
+		((NpcStep) (speakToSpirits)).addAlternateNpcs(NpcID.ELID_WATERSPIRIT_SITTING);
+		((NpcStep) (speakToSpirits)).addAlternateNpcs(NpcID.ELID_WATERSPIRIT_MALE);
 
 		speakToSpirits.addDialogSteps("I come as an emissary from the people of Nardah.", "Is there anything they can do to get their fountain working again?");
 
 		//The Genie
-		speakToAwusah2 = new NpcStep(this, NpcID.AWUSAH_THE_MAYOR, new WorldPoint(3443, 2915, 0), "Return to Nardah and speak to Awusah the Mayor.");
+		speakToAwusah2 = new NpcStep(this, NpcID.ELID_MAYOR, new WorldPoint(3443, 2915, 0), "Return to Nardah and speak to Awusah the Mayor.");
 		takeShoes = new DetailedQuestStep(this, new WorldPoint(3439, 2913, 0),
 			"Take the shoes near the doorway then leave Awusah's house.", shoes);
 		leaveAwusah = new DetailedQuestStep(this, new WorldPoint(3431, 2915, 0), "Leave Awusah's home.");
 		takeShoes.addSubSteps(leaveAwusah);
 		cutShoes = new DetailedQuestStep(this, "Use a knife on the shoes to cut out the sole.", knife, shoes);
-		enterCrevice = new ObjectStep(this, ObjectID.CREVICE_10416, new WorldPoint(3373, 2905, 0), "Enter the crevice to the west of Nardah.", rope, lightSource);
+		enterCrevice = new ObjectStep(this, ObjectID.ELID_CREVICE_CLICKZONE, new WorldPoint(3373, 2905, 0), "Enter the crevice to the west of Nardah.", rope, lightSource);
 		enterCrevice.addIcon(ItemID.ROPE);
-		talkToGenie = new NpcStep(this, NpcID.GENIE_4738, new WorldPoint(3371, 9320, 0), "Talk to the Genie in the Crevice.");
+		talkToGenie = new NpcStep(this, NpcID.ELID_GENIE, new WorldPoint(3371, 9320, 0), "Talk to the Genie in the Crevice.");
 		talkToGenie.addDialogSteps("I'm after a statue that was thrown down here.", "Maybe I can make a deal for it?", "Ok I agree to the deal.");
-		talkToGenieAgain = new NpcStep(this, NpcID.GENIE_4738, new WorldPoint(3371, 9320, 0), "Talk to the Genie again with the sole.", soles);
-		useStatuette = new ObjectStep(this, NullObjectID.NULL_10389, new WorldPoint(3427, 2930, 0), "Return to Nardah and use the statuette on the statuette plinth in the northern house.", statuette);
-		useStatuette.addIcon(ItemID.STATUETTE_6785);
+		talkToGenieAgain = new NpcStep(this, NpcID.ELID_GENIE, new WorldPoint(3371, 9320, 0), "Talk to the Genie again with the sole.", soles);
+		useStatuette = new ObjectStep(this, ObjectID.ELID_STATUETTE_MULTILOC, new WorldPoint(3427, 2930, 0), "Return to Nardah and use the statuette on the statuette plinth in the northern house.", statuette);
+		useStatuette.addIcon(ItemID.ELID_STATUETTE);
 	}
 
 	@Override

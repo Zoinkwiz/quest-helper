@@ -32,19 +32,20 @@ import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.List;
 
 import static com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav.VARBIT_NORTH_LEVER_STATE;
 import static com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav.VARBIT_SOUTH_LEVER_STATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 public class KeysAndLeversTest extends MockedTest
@@ -67,7 +68,7 @@ public class KeysAndLeversTest extends MockedTest
 		worldPointMockedStatic = Mockito.mockStatic(WorldPoint.class);
 
 		questPerspectiveMockedStatic.when(() -> QuestPerspective.getInstanceLocalPointFromReal(any(), any()))
-				.thenReturn(null);
+				.thenReturn(List.of());
 
 		helper = new TheCurseOfArrav();
 
@@ -94,7 +95,7 @@ public class KeysAndLeversTest extends MockedTest
 		if (mockedItems != null)
 		{
 			when(mockedItemContainer.getItems()).thenReturn(mockedItems);
-			when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(mockedItemContainer);
+			when(client.getItemContainer(InventoryID.INV)).thenReturn(mockedItemContainer);
 		}
 
 		when(client.getPlane()).thenReturn(0);
@@ -105,7 +106,7 @@ public class KeysAndLeversTest extends MockedTest
 		});
 		when(client.getScene()).thenReturn(mockedScene);
 
-		this.questHelperPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), mockedItemContainer));
+		this.questHelperPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, mockedItemContainer));
 
 		this.injector.injectMembers(helper);
 		helper.setInjector(injector);
@@ -139,7 +140,7 @@ public class KeysAndLeversTest extends MockedTest
 	@Test
 	void getSecondKey()
 	{
-		var mockedItems = new Item[]{new Item(ItemID.MASTABA_KEY, 1)};
+		var mockedItems = new Item[]{new Item(ItemID.COA_MASTABA_KEY_1, 1)};
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
 
 		assertEquals(this.helper.getSecondKey, conditionalStep.getActiveStep());
@@ -149,8 +150,8 @@ public class KeysAndLeversTest extends MockedTest
 	void getToSouthLever()
 	{
 		var mockedItems = new Item[]{
-				new Item(ItemID.MASTABA_KEY, 1),
-				new Item(ItemID.MASTABA_KEY_30309, 1),
+				new Item(ItemID.COA_MASTABA_KEY_1, 1),
+				new Item(ItemID.COA_MASTABA_KEY_2, 1),
 		};
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
 
@@ -161,8 +162,8 @@ public class KeysAndLeversTest extends MockedTest
 	void insertKeyIntoSouthLever()
 	{
 		var mockedItems = new Item[]{
-				new Item(ItemID.MASTABA_KEY, 1),
-				new Item(ItemID.MASTABA_KEY_30309, 1),
+				new Item(ItemID.COA_MASTABA_KEY_1, 1),
+				new Item(ItemID.COA_MASTABA_KEY_2, 1),
 		};
 		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(0);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
@@ -174,7 +175,7 @@ public class KeysAndLeversTest extends MockedTest
 	void getToSouthLeverAfterInsertingKey1()
 	{
 		var mockedItems = new Item[]{
-				new Item(ItemID.MASTABA_KEY, 1),
+				new Item(ItemID.COA_MASTABA_KEY_1, 1),
 		};
 		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
@@ -186,7 +187,7 @@ public class KeysAndLeversTest extends MockedTest
 	void pullSouthLeverAfterInsertingKey1()
 	{
 		var mockedItems = new Item[]{
-				new Item(ItemID.MASTABA_KEY, 1),
+				new Item(ItemID.COA_MASTABA_KEY_1, 1),
 		};
 		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
@@ -198,7 +199,7 @@ public class KeysAndLeversTest extends MockedTest
 	void leaveSouthLeverAfterInsertingKey1()
 	{
 		var mockedItems = new Item[]{
-				new Item(ItemID.MASTABA_KEY, 1),
+				new Item(ItemID.COA_MASTABA_KEY_1, 1),
 		};
 		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3893, 4552, 0), mockedItems);
@@ -210,7 +211,7 @@ public class KeysAndLeversTest extends MockedTest
 	void goToNorthLeverAfterPullingSouthLeverKey1()
 	{
 		var mockedItems = new Item[]{
-				new Item(ItemID.MASTABA_KEY, 1),
+				new Item(ItemID.COA_MASTABA_KEY_1, 1),
 		};
 		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
@@ -222,7 +223,7 @@ public class KeysAndLeversTest extends MockedTest
 	void insertKeyIntoNorthLeverAfterPullingSouthLeverKey1()
 	{
 		var mockedItems = new Item[]{
-				new Item(ItemID.MASTABA_KEY, 1),
+				new Item(ItemID.COA_MASTABA_KEY_1, 1),
 		};
 		when(client.getVarbitValue(VARBIT_SOUTH_LEVER_STATE)).thenReturn(2);
 		var conditionalStep = this.init(new WorldPoint(3894, 4597, 0), mockedItems);

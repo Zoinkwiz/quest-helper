@@ -24,27 +24,25 @@
  */
 package com.questhelper.helpers.quests.akingdomdivided;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.*;
 
 public class StatuePuzzle extends DetailedOwnerStep
 {
@@ -145,7 +143,7 @@ public class StatuePuzzle extends DetailedOwnerStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget widgetPanel = client.getWidget(229, 1);
+		Widget widgetPanel = client.getWidget(InterfaceID.Messagebox.TEXT);
 
 		if (widgetPanel != null && !widgetPanel.isHidden() && !readOnce)
 		{
@@ -215,23 +213,23 @@ public class StatuePuzzle extends DetailedOwnerStep
 		cityOrder = new ArrayList<>();
 		statueMap = new HashMap<>();
 
-		checkPanel = new ObjectStep(getQuestHelper(), ObjectID.PANEL_41833, new WorldPoint(1768, 3686, 1), "Check the panel on the wall.");
-		climbUpPillarLeglessFaun = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_41836, new WorldPoint(1772, 3680, 0), "Climb up the pillar west of Martin Holt.");
-		climbDownLeglessFaun = new ObjectStep(getQuestHelper(), ObjectID.WALL_41839, new WorldPoint(1772, 3679, 1), "Climb down the wall.");
+		checkPanel = new ObjectStep(getQuestHelper(), ObjectID.AKD_PISCARILIUS_PANEL_OP, new WorldPoint(1768, 3686, 1), "Check the panel on the wall.");
+		climbUpPillarLeglessFaun = new ObjectStep(getQuestHelper(), ObjectID.AKD_PISCARILIUS_PILLAR_BROKEN_OP, new WorldPoint(1772, 3680, 0), "Climb up the pillar west of Martin Holt.");
+		climbDownLeglessFaun = new ObjectStep(getQuestHelper(), ObjectID.AKD_PISCARILIUS_BATTLEMENT_OP, new WorldPoint(1772, 3679, 1), "Climb down the wall.");
 
-		moveArceuusStatue = new ObjectStep(getQuestHelper(), ObjectID.ARCEUUS_STATUE_41842, new WorldPoint(1777, 3686, 0), "Inspect the Arceuus statue.");
+		moveArceuusStatue = new ObjectStep(getQuestHelper(), ObjectID.KOUREND_ENTRANCE_STATUE_ARCEUUS_OP, new WorldPoint(1777, 3686, 0), "Inspect the Arceuus statue.");
 		moveArceuusStatue.addDialogStep("Press it in.");
 
-		movePiscStatue = new ObjectStep(getQuestHelper(), ObjectID.PISCARILIUS_STATUE_41848, new WorldPoint(1780, 3687, 0), "Inspect the Piscarilius statue.");
+		movePiscStatue = new ObjectStep(getQuestHelper(), ObjectID.KOUREND_ENTRANCE_STATUE_PISCARILIUS_OP, new WorldPoint(1780, 3687, 0), "Inspect the Piscarilius statue.");
 		movePiscStatue.addDialogStep("Press it in.");
 
-		moveHosidiusStatue = new ObjectStep(getQuestHelper(), ObjectID.HOSIDIUS_STATUE_41844, new WorldPoint(1780, 3677, 0), "Inspect the Hosidius statue.");
+		moveHosidiusStatue = new ObjectStep(getQuestHelper(), ObjectID.KOUREND_ENTRANCE_STATUE_HOSIDIUS_OP, new WorldPoint(1780, 3677, 0), "Inspect the Hosidius statue.");
 		moveHosidiusStatue.addDialogStep("Press it in.");
 
-		moveLovakengjStatue = new ObjectStep(getQuestHelper(), ObjectID.LOVAKENGJ_STATUE_41846, new WorldPoint(1776, 3682, 0), "Inspect the Lovakengj statue.");
+		moveLovakengjStatue = new ObjectStep(getQuestHelper(), ObjectID.KOUREND_ENTRANCE_STATUE_LOVAKENGJ_OP, new WorldPoint(1776, 3682, 0), "Inspect the Lovakengj statue.");
 		moveLovakengjStatue.addDialogStep("Press it in.");
 
-		moveShayzienStatue = new ObjectStep(getQuestHelper(), ObjectID.SHAYZIEN_STATUE_41850, new WorldPoint(1777, 3678, 0), "Inspect the Shayzien statue.");
+		moveShayzienStatue = new ObjectStep(getQuestHelper(), ObjectID.KOUREND_ENTRANCE_STATUE_SHAYZIEN_OP, new WorldPoint(1777, 3678, 0), "Inspect the Shayzien statue.");
 		moveShayzienStatue.addDialogStep("Press it in.");
 
 		invalidState = new DetailedQuestStep(getQuestHelper(), "You've inspected the statues in the wrong order." +

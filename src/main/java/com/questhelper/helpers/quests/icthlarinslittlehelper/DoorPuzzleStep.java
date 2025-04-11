@@ -27,12 +27,13 @@ package com.questhelper.helpers.quests.icthlarinslittlehelper;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.Arrays;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.awt.*;
+import java.util.Arrays;
 
 public class DoorPuzzleStep extends QuestStep
 {
@@ -168,7 +169,7 @@ public class DoorPuzzleStep extends QuestStep
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
-		Widget widgetWrapper = client.getWidget(147, 0);
+		Widget widgetWrapper = client.getWidget(InterfaceID.IcthalarinsTileGame.ROOT_RECT0);
 		if (widgetWrapper != null)
 		{
 			for (int i = 0; i < 20; i++)
@@ -176,7 +177,7 @@ public class DoorPuzzleStep extends QuestStep
 				if (clickSquares[i] == 1)
 				{
 					int START_WIDGET_ID = 9;
-					Widget widget = client.getWidget(147, START_WIDGET_ID + i);
+					Widget widget = client.getWidget(InterfaceID.ICTHALARINS_TILE_GAME, START_WIDGET_ID + i);
 					if (widget != null)
 					{
 						graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),

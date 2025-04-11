@@ -25,41 +25,33 @@
 package com.questhelper.helpers.quests.gardenoftranquility;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class GardenOfTranquillity extends BasicQuestHelper
 {
@@ -220,10 +212,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 	{
 		ringOfCharos = new ItemRequirement("Ring of Charos", ItemID.RING_OF_CHAROS).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		secateurs = new ItemRequirement("Secateurs", ItemID.SECATEURS).isNotConsumed();
-		secateurs.addAlternates(ItemID.MAGIC_SECATEURS);
+		secateurs.addAlternates(ItemID.FAIRY_ENCHANTED_SECATEURS);
 		wateringCan = new ItemRequirement("Watering can", ItemCollections.WATERING_CANS).isNotConsumed();
 		trowel = new ItemRequirement("Gardening trowel", ItemID.GARDENING_TROWEL).isNotConsumed();
 		plantCure2 = new ItemRequirement("Plant cure", ItemID.PLANT_CURE, 2);
@@ -231,63 +223,63 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		cabbageSeed3 = new ItemRequirement("Cabbage seeds (6 to be safe)", ItemID.CABBAGE_SEED, 3);
 		onionSeed3 = new ItemRequirement("Onion seeds (6 to be safe)", ItemID.ONION_SEED, 3);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
-		essence = new ItemRequirement("Rune/Pure essence", ItemID.RUNE_ESSENCE);
-		essence.addAlternates(ItemID.PURE_ESSENCE);
+		essence = new ItemRequirement("Rune/Pure essence", ItemID.BLANKRUNE);
+		essence.addAlternates(ItemID.BLANKRUNE_HIGH);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
-		plantPot = new ItemRequirement("Filled plant pot", ItemID.FILLED_PLANT_POT);
-		compost2 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 2);
-		compost2.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		plantPot = new ItemRequirement("Filled plant pot", ItemID.PLANTPOT_COMPOST);
+		compost2 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.BUCKET_COMPOST, 2);
+		compost2.addAlternates(ItemID.BUCKET_SUPERCOMPOST, ItemID.BUCKET_ULTRACOMPOST);
 		compost2.setTooltip("Bottomless bucket will not work for this compost.");
-		compost = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST);
-		compost.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost = new ItemRequirement("Normal/Super/Ultra compost", ItemID.BUCKET_COMPOST);
+		compost.addAlternates(ItemID.BUCKET_SUPERCOMPOST, ItemID.BUCKET_ULTRACOMPOST);
 		compost.setTooltip("Bottomless bucket will not work for these two required composts.");
 
-		compost5 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.COMPOST, 5);
-		compost5.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		compost5 = new ItemRequirement("Normal/Super/Ultra compost", ItemID.BUCKET_COMPOST, 5);
+		compost5.addAlternates(ItemID.BUCKET_SUPERCOMPOST, ItemID.BUCKET_ULTRACOMPOST);
 		compost5.setTooltip("Bottomless bucket will not work for these five required composts.");
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).isNotConsumed();
 		fishingRod.addAlternates(ItemID.FLY_FISHING_ROD);
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		draynorTeleport = new ItemRequirement("Draynor teleport", ItemCollections.AMULET_OF_GLORIES);
-		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
+		draynorTeleport.addAlternates(ItemID.TELETAB_DRAYNOR);
 		phasTeleport = new ItemRequirement("Port Phasmatys teleport", ItemID.ECTOPHIAL);
-		phasTeleport.addAlternates(ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
-		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_CLOAK_3);
-		ardougneTeleport.addAlternates(ItemID.ARDOUGNE_CLOAK_4, ItemID.ARDOUGNE_TELEPORT, ItemID.ARDOUGNE_CLOAK_2,
-			ItemID.ARDOUGNE_CLOAK_1);
-		catherbyTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT);
+		phasTeleport.addAlternates(ItemID.TELETAB_FENK);
+		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDY_CAPE_HARD);
+		ardougneTeleport.addAlternates(ItemID.ARDY_CAPE_ELITE, ItemID.POH_TABLET_ARDOUGNETELEPORT, ItemID.ARDY_CAPE_MEDIUM,
+			ItemID.ARDY_CAPE_EASY);
+		catherbyTeleport = new ItemRequirement("Camelot teleport", ItemID.POH_TABLET_CAMELOTTELEPORT);
 		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.GAMES_NECKLACES);
 		edgevilleTeleport = new ItemRequirement("Edgeville teleport", ItemCollections.AMULET_OF_GLORIES);
-		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.LUMBRIDGE_TELEPORT);
-		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
-		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.TAVERLEY_TELEPORT);
+		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
+		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.POH_TABLET_FALADORTELEPORT);
+		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.NZONE_TELETAB_TAVERLEY);
 
-		ringOfCharosA = new ItemRequirement("Ring of charos (a)", ItemID.RING_OF_CHAROSA).isNotConsumed();
-		whiteTreeShoot = new ItemRequirement("White tree shoot", ItemID.WHITE_TREE_SHOOT);
-		whiteTreePot = new ItemRequirement("White tree shoot (pot)", ItemID.WHITE_TREE_SHOOT_6462);
-		whiteTreeWatered = new ItemRequirement("White tree shoot (watered)", ItemID.WHITE_TREE_SHOOT_W);
-		whitetreeSapling = new ItemRequirement("White tree sapling", ItemID.WHITE_TREE_SAPLING);
+		ringOfCharosA = new ItemRequirement("Ring of charos (a)", ItemID.RING_OF_CHAROS_UNLOCKED).isNotConsumed();
+		whiteTreeShoot = new ItemRequirement("White tree shoot", ItemID.GARDEN_WHITE_TREE_SHOOT);
+		whiteTreePot = new ItemRequirement("White tree shoot (pot)", ItemID.GARDEN_WHITE_TREE_PLANTPOT_SHOOT);
+		whiteTreeWatered = new ItemRequirement("White tree shoot (watered)", ItemID.GARDEN_WHITE_TREE_PLANTPOT_SHOOT_WATERED);
+		whitetreeSapling = new ItemRequirement("White tree sapling", ItemID.GARDEN_WHITE_TREE_PLANTPOT_SAPLING);
 		whitetreeSapling.setTooltip("You can grow another from a cutting from the white tree on Ice Mountain");
-		pinkRoseSeed = new ItemRequirement("Pink rose seed", ItemID.PINK_ROSE_SEED, 4);
-		whiteRoseSeed = new ItemRequirement("White rose seed", ItemID.WHITE_ROSE_SEED, 4);
-		redRoseSeed = new ItemRequirement("Red rose seed", ItemID.RED_ROSE_SEED, 4);
+		pinkRoseSeed = new ItemRequirement("Pink rose seed", ItemID.GARDEN_ROSEBUSH_SEED_PINK, 4);
+		whiteRoseSeed = new ItemRequirement("White rose seed", ItemID.GARDEN_ROSEBUSH_SEED_WHITE, 4);
+		redRoseSeed = new ItemRequirement("Red rose seed", ItemID.GARDEN_ROSEBUSH_SEED_RED, 4);
 		plantCure = new ItemRequirement("Plant cure", ItemID.PLANT_CURE);
 		runeShards = new ItemRequirement("Rune shards", ItemID.RUNE_SHARDS);
 		runeDust = new ItemRequirement("Rune dust", ItemID.RUNE_DUST);
-		magicPlantCure = new ItemRequirement("Plant cure (improved)", ItemID.PLANT_CURE_6468);
-		marigold = new ItemRequirement("Marigold", ItemID.MARIGOLDS);
+		magicPlantCure = new ItemRequirement("Plant cure (improved)", ItemID.PLANT_CURE_STRONG);
+		marigold = new ItemRequirement("Marigold", ItemID.MARIGOLD);
 
-		pinkOrchidSeed3 = new ItemRequirement("Orchid seeds (pink)", ItemID.ORCHID_SEED, 3);
+		pinkOrchidSeed3 = new ItemRequirement("Orchid seeds (pink)", ItemID.GARDEN_ORCHID_PINK_SEED, 3);
 		pinkOrchidSeed3.setTooltip("You can get more from Lyra");
-		vineSeed4 = new ItemRequirement("Vine seeds", ItemID.VINE_SEED, 4);
+		vineSeed4 = new ItemRequirement("Vine seeds", ItemID.GARDEN_VINE_SEED, 4);
 		vineSeed4.setTooltip("You can get more from Bernald");
-		yellowOrchid3 = new ItemRequirement("Orchid seeds (yellow)", ItemID.ORCHID_SEED_6459, 3);
+		yellowOrchid3 = new ItemRequirement("Orchid seeds (yellow)", ItemID.GARDEN_ORCHID_YELLOW_SEED, 3);
 		yellowOrchid3.setTooltip("You can get more from Lyra");
-		snowdropSeed4 = new ItemRequirement("Snowdrop seeds", ItemID.SNOWDROP_SEED, 4);
+		snowdropSeed4 = new ItemRequirement("Snowdrop seeds", ItemID.GARDEN_SNOWDROP_SEED, 4);
 		snowdropSeed4.setTooltip("You can get more from Kragen");
-		delphiniumSeed4 = new ItemRequirement("Delphinium seeds", ItemID.DELPHINIUM_SEED, 4);
+		delphiniumSeed4 = new ItemRequirement("Delphinium seeds", ItemID.GARDEN_DELPHINIUM_SEED, 4);
 		delphiniumSeed4.setTooltip("You can get more from Elstan");
-		trolley = new ItemRequirement("Trolley", ItemID.TROLLEY);
+		trolley = new ItemRequirement("Trolley", ItemID.GARDEN_TROLLEY_OBJ);
 
 		noRing = new NoItemRequirement("No ring equipped", ItemSlots.RING);
 	}
@@ -295,7 +287,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 	public void setupConditions()
 	{
 		talkedToElstan = new VarbitRequirement(967, 1);
-		plantedMarigold = new VarbitRequirement(967, 2, Operation.GREATER_EQUAL);
+		plantedMarigold = new VarbitRequirement(VarbitID.GARDEN_ELSTAN_VARBIT, 2, Operation.GREATER_EQUAL);
 		harvestedMarigold = new VarbitRequirement(967, 3);
 		givenMarigold = new VarbitRequirement(967, 4);
 
@@ -304,42 +296,42 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			new VarbitRequirement(969, 1), // West patch
 			new VarbitRequirement(970, 1)); // East patch
 		// Planted onion, 4771 3->13
-		onionsGrown = new VarbitRequirement(968, 2, Operation.GREATER_EQUAL);
+		onionsGrown = new VarbitRequirement(VarbitID.GARDEN_LYRA_VARBIT, 2, Operation.GREATER_EQUAL);
 		talkedToLyraAgain = new VarbitRequirement(968, 3);
 		talkedToKragen = new VarbitRequirement(971, 1);
 		plantedCabbages = new Conditions(LogicType.OR,
 			new VarbitRequirement(974, 1), // North patch
 			new VarbitRequirement(975, 1)); // South patch
-		cabbagesGrown = new VarbitRequirement(971, 2, Operation.GREATER_EQUAL);
+		cabbagesGrown = new VarbitRequirement(VarbitID.GARDEN_KRAGEN_VARBIT, 2, Operation.GREATER_EQUAL);
 		talkedToKragenAgain = new VarbitRequirement(971, 3);
 
 		talkedToDantaera = new VarbitRequirement(976, 1);
 		cutShoot = new VarbitRequirement(976, 2);
 		hasPlantedShoot = new Conditions(whiteTreePot);
 		hasWateredShoot = new Conditions(LogicType.OR,
-			new VarbitRequirement(985, 4, Operation.GREATER_EQUAL),
+			new VarbitRequirement(VarbitID.GARDEN_WHITE_TREE_VARBIT, 4, Operation.GREATER_EQUAL),
 			whiteTreeWatered,
 			whitetreeSapling);
 
-		talkedToAlthric = new VarbitRequirement(977, 1, Operation.GREATER_EQUAL);
+		talkedToAlthric = new VarbitRequirement(VarbitID.GARDEN_ALTHRIC_VARBIT, 1, Operation.GREATER_EQUAL);
 		ringInWell = new VarbitRequirement(966, 1);
 		canPickRoses = new Conditions(LogicType.OR,
-			new VarbitRequirement(977, 2, Operation.GREATER_EQUAL),
+			new VarbitRequirement(VarbitID.GARDEN_ALTHRIC_VARBIT, 2, Operation.GREATER_EQUAL),
 			ringInWell
 		);
 		ringNotInWell = new VarbitRequirement(966, 0);
 
 		hasRedRoseSeed = new Conditions(LogicType.OR,
 			redRoseSeed,
-			new VarbitRequirement(979, 4, Operation.GREATER_EQUAL)
+			new VarbitRequirement(VarbitID.GARDEN_ROSEBUSH_RED_VARBIT, 4, Operation.GREATER_EQUAL)
 		);
 		hasWhiteRoseSeed = new Conditions(LogicType.OR,
 			whiteRoseSeed,
-			new VarbitRequirement(980, 4, Operation.GREATER_EQUAL)
+			new VarbitRequirement(VarbitID.GARDEN_ROSEBUSH_WHITE_VARBIT, 4, Operation.GREATER_EQUAL)
 		);
 		hasPinkRoseSeed = new Conditions(LogicType.OR,
 			pinkRoseSeed,
-			new VarbitRequirement(981, 4, Operation.GREATER_EQUAL)
+			new VarbitRequirement(VarbitID.GARDEN_ROSEBUSH_PINK_VARBIT, 4, Operation.GREATER_EQUAL)
 		);
 		hasRoseSeeds = new Conditions(hasRedRoseSeed, hasWhiteRoseSeed, hasPinkRoseSeed);
 
@@ -354,22 +346,22 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 		notAddedCompost1 = new VarbitRequirement(984, 0);
 		notAddedCompost2 = new VarbitRequirement(986, 0);
-		notPlantedDelphinium =  new VarbitRequirement(982, 3, Operation.LESS_EQUAL);
-		notPlantedYellowOrchid = new VarbitRequirement(986, 1, Operation.LESS_EQUAL);
-		notPlantedPinkOrchid = new VarbitRequirement(984, 1, Operation.LESS_EQUAL);
-		notPlantedSnowdrop = new VarbitRequirement(983, 3, Operation.LESS_EQUAL);
-		notPlantedWhiteTree = new VarbitRequirement(985, 3, Operation.LESS_EQUAL);
-		notPlantedRedRose = new VarbitRequirement(979, 3, Operation.LESS_EQUAL);
-		notPlantedPinkRose = new VarbitRequirement(981, 3, Operation.LESS_EQUAL);
-		notPlantedWhiteRose = new VarbitRequirement(980, 3, Operation.LESS_EQUAL);
-		notPlantedVine = new VarbitRequirement(987, 3, Operation.LESS_EQUAL);
+		notPlantedDelphinium =  new VarbitRequirement(VarbitID.GARDEN_DELPHINIUMS_VARBIT, 3, Operation.LESS_EQUAL);
+		notPlantedYellowOrchid = new VarbitRequirement(VarbitID.GARDEN_ORCHIDS_YELLOW_VARBIT, 1, Operation.LESS_EQUAL);
+		notPlantedPinkOrchid = new VarbitRequirement(VarbitID.GARDEN_ORCHIDS_PINK_VARBIT, 1, Operation.LESS_EQUAL);
+		notPlantedSnowdrop = new VarbitRequirement(VarbitID.GARDEN_SNOWDROPS_VARBIT, 3, Operation.LESS_EQUAL);
+		notPlantedWhiteTree = new VarbitRequirement(VarbitID.GARDEN_WHITE_TREE_VARBIT, 3, Operation.LESS_EQUAL);
+		notPlantedRedRose = new VarbitRequirement(VarbitID.GARDEN_ROSEBUSH_RED_VARBIT, 3, Operation.LESS_EQUAL);
+		notPlantedPinkRose = new VarbitRequirement(VarbitID.GARDEN_ROSEBUSH_PINK_VARBIT, 3, Operation.LESS_EQUAL);
+		notPlantedWhiteRose = new VarbitRequirement(VarbitID.GARDEN_ROSEBUSH_WHITE_VARBIT, 3, Operation.LESS_EQUAL);
+		notPlantedVine = new VarbitRequirement(VarbitID.GARDEN_VINES_VARBIT, 3, Operation.LESS_EQUAL);
 		plantedEverything = new Conditions(LogicType.NOR, notPlantedDelphinium, notPlantedYellowOrchid,
 			notPlantedPinkRose, notPlantedSnowdrop, notPlantedWhiteTree, notPlantedRedRose, notPlantedPinkOrchid,
 			notPlantedWhiteRose, notPlantedVine);
 
 		hasTrolley = new Conditions(LogicType.OR,
 			trolley,
-			new NpcCondition(NpcID.TROLLEY));
+			new NpcCondition(NpcID.GARDEN_TROLLEY_SARADOMIN));
 
 		lumbridgeStatueOnTrolley = new VarbitRequirement(965, 2);
 		faladorStatueOnTrolley = new VarbitRequirement(965, 1);
@@ -406,10 +398,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		talkToElstan.addDialogSteps("Do you have any delphinium seeds to spare?", "[Charm] That is why I have come to" +
 			" an expert for advice.", "[Charm] Not just AN expert, Elstan - they say you are THE expert.", "[Charm] " +
 			"Oh no, I love listening to gardening stories...", "[Charm] Millions? Ah, just what I wanted to hear...", "Okay, I'll grow you some marigolds.");
-		plantMarigolds = new ObjectStep(this, NullObjectID.NULL_7847, new WorldPoint(3055, 3308,
+		plantMarigolds = new ObjectStep(this, ObjectID.FARMING_FLOWER_PATCH_1, new WorldPoint(3055, 3308,
 			0), "Plant a marigold near to Elstan.", marigoldSeed.highlighted(), rake, dibber, spade);
 		plantMarigolds.addIcon(ItemID.MARIGOLD_SEED);
-		collectMarigold = new ObjectStep(this, NullObjectID.NULL_7847, new WorldPoint(3055, 3308, 0),
+		collectMarigold = new ObjectStep(this, ObjectID.FARMING_FLOWER_PATCH_1, new WorldPoint(3055, 3308, 0),
 			"Harvest marigolds from the Falador Allotment patches. If yours died, you'll need to grow some more there.",
 			spade);
 		giveElstanMarigold = new NpcStep(this, NpcID.ELSTAN, new WorldPoint(3056, 3311, 0),
@@ -423,11 +415,11 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			"for you.", "[Charm] Whatever you've done, I'm sure you had just cause.", "[Charm] And what is the nature" +
 			" of this fee that you pay?", "[Charm] If not yours, then whose blood are you offering?", "[Charm] How " +
 			"can you deal with so much guilt?", "That's a deal - I'll grow a patch of onions for you.");
-		plantOnions = new ObjectStep(this, NullObjectID.NULL_8556, new WorldPoint(3601, 3529, 0),
+		plantOnions = new ObjectStep(this, ObjectID.FARMING_VEG_PATCH_7, new WorldPoint(3601, 3529, 0),
 			"Plant onions in a patch near Lyra. Plant in both for the best chance of one not dying.", onionSeed3.highlighted(),
 			rake, dibber, spade);
 		plantOnions.addIcon(ItemID.ONION_SEED);
-		waitForLyraToGrow = new ObjectStep(this, NullObjectID.NULL_8556, new WorldPoint(3601, 3529, 0),
+		waitForLyraToGrow = new ObjectStep(this, ObjectID.FARMING_VEG_PATCH_7, new WorldPoint(3601, 3529, 0),
 			"Wait for your onions to finish growing. If they died you'll need to plant more in Lyra's patches.", spade);
 		talkToLyraAgain = new NpcStep(this, NpcID.LYRA, new WorldPoint(3608, 3528, 0), "Talk to Lyra west of Port " +
 			"Phasmatys again for her seeds.");
@@ -440,11 +432,11 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			"irritable, my friend.", "[Charm] I don't like to see a fellow human being so upset.", "[Charm] So what " +
 			"ails you, my friend?", "[Charm] Well, is there anything I can do for you?", "[Charm] So what can I do " +
 			"for you?", "That's a deal - I'll let you know when your cabbages are ready.");
-		plantCabbage = new ObjectStep(this, NullObjectID.NULL_8554, new WorldPoint(2669, 3378, 0),
+		plantCabbage = new ObjectStep(this, ObjectID.FARMING_VEG_PATCH_5, new WorldPoint(2669, 3378, 0),
 			"Plant cabbage seeds in the patches near Kragen. Plant in both to be safe.", cabbageSeed3.highlighted(),
 			rake, dibber);
 		plantCabbage.addIcon(ItemID.CABBAGE_SEED);
-		waitForKragenToGrow = new ObjectStep(this, NullObjectID.NULL_8554, new WorldPoint(2669, 3378, 0),
+		waitForKragenToGrow = new ObjectStep(this, ObjectID.FARMING_VEG_PATCH_5, new WorldPoint(2669, 3378, 0),
 			"Wait for your cabbages to finish growing. If they died you'll need to plant more in Kragen's patches.", spade);
 		talkToKragenAgain = new NpcStep(this, NpcID.KRAGEN, new WorldPoint(2668, 3376, 0),
 			"Talk to Kragen northeast of Ardougne for his seeds.");
@@ -456,7 +448,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		talkToDantaera.addDialogSteps("Do you know how I could grow a White Tree?", "[Charm] I think that there is " +
 			"something that you are not telling me.", "[Charm] A secret is a dreadful burden to have to keep to " +
 			"yourself.", "[Charm] Unless you allow me to do this she will die anyway.");
-		useSecateursOnWhiteTree = new ObjectStep(this, ObjectID.WHITE_TREE, new WorldPoint(3008, 3498, 0), "Use " +
+		useSecateursOnWhiteTree = new ObjectStep(this, ObjectID.GARDEN_WHITE_TREE_DEAD, new WorldPoint(3008, 3498, 0), "Use " +
 			"secateurs on the white tree on top of Ice Mountain.", secateurs.highlighted(), plantPot, trowel, wateringCan);
 		useSecateursOnWhiteTree.addIcon(ItemID.SECATEURS);
 		useShootOnPot = new DetailedQuestStep(this, "Use the shoot on a plant pot.", whiteTreeShoot.highlighted(),
@@ -467,17 +459,17 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		talkToAlthric = new NpcStep(this, NpcID.BROTHER_ALTHRIC, new WorldPoint(3052, 3502, 0),
 			"Talk to Brother Altheric in the Edgeville Monastery.", ringOfCharosA.equipped());
 		talkToAlthric.addDialogSteps("[Charm] These are the most beautiful rosebushes I've ever seen.");
-		useCharosOnWell = new ObjectStep(this, ObjectID.WELL_884, new WorldPoint(3085, 3503, 0),
+		useCharosOnWell = new ObjectStep(this, ObjectID.WELL, new WorldPoint(3085, 3503, 0),
 			"Use the Ring of charos(a) on the well in Edgeville.", ringOfCharosA.highlighted());
-		useCharosOnWell.addIcon(ItemID.RING_OF_CHAROSA);
-		pickRedRoses = new ObjectStep(this, ObjectID.ROSES_9260, new WorldPoint(3048, 3505, 0), "Take some seeds from" +
+		useCharosOnWell.addIcon(ItemID.RING_OF_CHAROS_UNLOCKED);
+		pickRedRoses = new ObjectStep(this, ObjectID.GARDEN_ROSES_RED, new WorldPoint(3048, 3505, 0), "Take some seeds from" +
 			" the red roses.");
-		pickPinkRoses = new ObjectStep(this, ObjectID.ROSES_9261, new WorldPoint(3051, 3506, 0), "Take some seeds " +
+		pickPinkRoses = new ObjectStep(this, ObjectID.GARDEN_ROSES_PINK, new WorldPoint(3051, 3506, 0), "Take some seeds " +
 			"from the pink roses.");
-		pickWhiteRoses = new ObjectStep(this, ObjectID.ROSES_9262, new WorldPoint(3055, 3505, 0), "Take some seeds " +
+		pickWhiteRoses = new ObjectStep(this, ObjectID.GARDEN_ROSES_WHITE, new WorldPoint(3055, 3505, 0), "Take some seeds " +
 			"from the white roses.");
 
-		fishForRing = new ObjectStep(this, ObjectID.WELL_884, new WorldPoint(3085, 3503, 0),
+		fishForRing = new ObjectStep(this, ObjectID.WELL, new WorldPoint(3085, 3503, 0),
 			"Use a fishing rod on the well in Edgeville to retrieve the ring of charos. This can take a few attempts.",
 			fishingRod.highlighted());
 		fishForRing.addIcon(ItemID.FISHING_ROD);
@@ -485,10 +477,10 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		talkToBernald = new NpcStep(this, NpcID.BERNALD, new WorldPoint(2915, 3534, 0),
 			"Talk to Bernald in Burthorpe.", ringOfCharosA.equipped());
 		talkToBernald.addDialogSteps("[Charm] But it is the only way that these vines will be cured.", "I accept the deal.");
-		useCureOnVine = new ObjectStep(this, NullObjectID.NULL_9254, new WorldPoint(2915, 3534, 0), "Use plant cure " +
+		useCureOnVine = new ObjectStep(this, ObjectID.GARDEN_BURTHORPE_VINES, new WorldPoint(2915, 3534, 0), "Use plant cure " +
 			"on Bernald's grapevines.", plantCure.highlighted());
 		useCureOnVine.addIcon(ItemID.PLANT_CURE);
-		talkToAlain = new NpcStep(this, NpcID.ALAIN, new WorldPoint(2933, 3441, 0),
+		talkToAlain = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_1, new WorldPoint(2933, 3441, 0),
 			"Talk to Alain in Taverley with your ring of charos UNEQUIPPED.", noRing);
 		talkToAlain.addDialogSteps("I need to ask you about strong plant cures.");
 		useHammerOnEssence = new DetailedQuestStep(this, "Use a hammer on some essence.", hammer.highlighted(),
@@ -497,51 +489,51 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			pestle.highlighted(), runeShards.highlighted());
 		useEssenceOnCure = new DetailedQuestStep(this, "Use the rune dust on some plant cure.",
 			runeDust.highlighted(), plantCure.highlighted());
-		useMagicalCureOnVine = new ObjectStep(this, NullObjectID.NULL_9254, new WorldPoint(2915, 3534, 0), "Use " +
+		useMagicalCureOnVine = new ObjectStep(this, ObjectID.GARDEN_BURTHORPE_VINES, new WorldPoint(2915, 3534, 0), "Use " +
 			"the enhanced plant cure on Bernald's grapevines.", magicPlantCure.highlighted());
-		useMagicalCureOnVine.addIcon(ItemID.PLANT_CURE_6468);
+		useMagicalCureOnVine.addIcon(ItemID.PLANT_CURE_STRONG);
 		talkToBernaldForSeeds = new NpcStep(this, NpcID.BERNALD, new WorldPoint(2915, 3534, 0),
 			"Talk to Bernald for his seeds.", ringOfCharosA.equipped());
 
-		fillPotWithCompost = new ObjectStep(this, NullObjectID.NULL_9197, new WorldPoint(3229, 3486, 0), "Fill the " +
+		fillPotWithCompost = new ObjectStep(this, ObjectID.GARDEN_ORCHID_PINK_PATCH, new WorldPoint(3229, 3486, 0), "Fill the " +
 			"plantpots in Ellamaria's garden with compost.", compost.highlighted());
-		fillPotWithCompost.addIcon(ItemID.COMPOST);
-		fillPotWithCompost2 = new ObjectStep(this, NullObjectID.NULL_9198, new WorldPoint(3231, 3486, 0), "Fill the " +
+		fillPotWithCompost.addIcon(ItemID.BUCKET_COMPOST);
+		fillPotWithCompost2 = new ObjectStep(this, ObjectID.GARDEN_ORCHID_YELLOW_PATCH, new WorldPoint(3231, 3486, 0), "Fill the " +
 		"plantpots in Ellamaria's garden with compost.", compost.highlighted());
-		fillPotWithCompost2.addIcon(ItemID.COMPOST);
-		plantDelphinium = new ObjectStep(this, NullObjectID.NULL_9165, new WorldPoint(3226, 3477, 0), "Plant the " +
+		fillPotWithCompost2.addIcon(ItemID.BUCKET_COMPOST);
+		plantDelphinium = new ObjectStep(this, ObjectID.GARDEN_DELPHINIUM_PATCH, new WorldPoint(3226, 3477, 0), "Plant the " +
 			"delphinum seeds.", delphiniumSeed4.highlighted(), rake, dibber);
-		plantDelphinium.addIcon(ItemID.DELPHINIUM_SEED);
-		plantPinkOrchid = new ObjectStep(this, NullObjectID.NULL_9197, new WorldPoint(3229, 3486, 0), "Plant the " +
+		plantDelphinium.addIcon(ItemID.GARDEN_DELPHINIUM_SEED);
+		plantPinkOrchid = new ObjectStep(this, ObjectID.GARDEN_ORCHID_PINK_PATCH, new WorldPoint(3229, 3486, 0), "Plant the " +
 			"pink orchids in the marked plantpot.", pinkOrchidSeed3.highlighted(), dibber);
-		plantPinkOrchid.addIcon(ItemID.ORCHID_SEED);
-		plantYellowOrchid = new ObjectStep(this,NullObjectID.NULL_9198, new WorldPoint(3231, 3486, 0), "Plant the " +
+		plantPinkOrchid.addIcon(ItemID.GARDEN_ORCHID_PINK_SEED);
+		plantYellowOrchid = new ObjectStep(this,ObjectID.GARDEN_ORCHID_YELLOW_PATCH, new WorldPoint(3231, 3486, 0), "Plant the " +
 			"yellow orchids in the marked plantpot.", yellowOrchid3.highlighted(), dibber);
-		plantYellowOrchid.addIcon(ItemID.ORCHID_SEED_6459);
-		plantSnowdrop = new ObjectStep(this, NullObjectID.NULL_9223, new WorldPoint(3232, 3483, 0), "Plant snowdrops " +
+		plantYellowOrchid.addIcon(ItemID.GARDEN_ORCHID_YELLOW_SEED);
+		plantSnowdrop = new ObjectStep(this, ObjectID.GARDEN_SNOWDROP_PATCH, new WorldPoint(3232, 3483, 0), "Plant snowdrops " +
 			"in the east patch.", snowdropSeed4.highlighted(), rake, dibber);
-		plantSnowdrop.addIcon(ItemID.SNOWDROP_SEED);
-		plantWhiteTree = new ObjectStep(this, NullObjectID.NULL_9209, new WorldPoint(3230, 3475, 0), "Plant the white" +
+		plantSnowdrop.addIcon(ItemID.GARDEN_SNOWDROP_SEED);
+		plantWhiteTree = new ObjectStep(this, ObjectID.GARDEN_WHITE_TREE_PATCH, new WorldPoint(3230, 3475, 0), "Plant the white" +
 			" tree.", whitetreeSapling.highlighted(), rake, spade);
-		plantWhiteTree.addIcon(ItemID.WHITE_TREE_SAPLING);
-		plantRedRose = new ObjectStep(this, NullObjectID.NULL_9175, new WorldPoint(3229, 3472, 0), "Plant the rose " +
+		plantWhiteTree.addIcon(ItemID.GARDEN_WHITE_TREE_PLANTPOT_SAPLING);
+		plantRedRose = new ObjectStep(this, ObjectID.GARDEN_ROSEBUSH_PATCH_RED, new WorldPoint(3229, 3472, 0), "Plant the rose " +
 			"seeds.", redRoseSeed.highlighted(), rake, dibber);
-		plantRedRose.addIcon(ItemID.RED_ROSE_SEED);
-		plantPinkRose = new ObjectStep(this, NullObjectID.NULL_9176, new WorldPoint(3227, 3472, 0), "Plant the rose " +
+		plantRedRose.addIcon(ItemID.GARDEN_ROSEBUSH_SEED_RED);
+		plantPinkRose = new ObjectStep(this, ObjectID.GARDEN_ROSEBUSH_PATCH_PINK, new WorldPoint(3227, 3472, 0), "Plant the rose " +
 			"seeds.", pinkRoseSeed.highlighted(), rake, dibber);
-		plantPinkRose.addIcon(ItemID.PINK_ROSE_SEED);
-		plantWhiteRose = new ObjectStep(this, NullObjectID.NULL_9174, new WorldPoint(3232, 3472, 0), "Plant the rose " +
+		plantPinkRose.addIcon(ItemID.GARDEN_ROSEBUSH_SEED_PINK);
+		plantWhiteRose = new ObjectStep(this, ObjectID.GARDEN_ROSEBUSH_PATCH_WHITE, new WorldPoint(3232, 3472, 0), "Plant the rose " +
 			"seeds.", whiteRoseSeed.highlighted(), rake, dibber);
-		plantWhiteRose.addIcon(ItemID.WHITE_ROSE_SEED);
+		plantWhiteRose.addIcon(ItemID.GARDEN_ROSEBUSH_SEED_WHITE);
 		plantRedRose.addSubSteps(plantPinkRose, plantWhiteRose);
-		plantVine = new ObjectStep(this, NullObjectID.NULL_9232, new WorldPoint(3227, 3483, 0),
+		plantVine = new ObjectStep(this, ObjectID.GARDEN_VINE_PATCH, new WorldPoint(3227, 3483, 0),
 			"Plant the vine seeds.", vineSeed4.highlighted(), rake, dibber);
-		plantVine.addIcon(ItemID.VINE_SEED);
+		plantVine.addIcon(ItemID.GARDEN_VINE_SEED);
 
-		useTrolleyOnLumbridgeStatue = new ObjectStep(this, NullObjectID.NULL_9251, new WorldPoint(3231, 3217, 0),
+		useTrolleyOnLumbridgeStatue = new ObjectStep(this, ObjectID.GARDEN_LUMBRIDGE_STATUE, new WorldPoint(3231, 3217, 0),
 			"Use a trolley on the king statue outside Lumbridge Castle.", trolley.highlighted());
-		useTrolleyOnLumbridgeStatue.addIcon(ItemID.TROLLEY);
-		pushLumbridgeStatue = new ObjectStep(this, NullObjectID.NULL_9252, new WorldPoint(3233, 3487, 0),
+		useTrolleyOnLumbridgeStatue.addIcon(ItemID.GARDEN_TROLLEY_OBJ);
+		pushLumbridgeStatue = new ObjectStep(this, ObjectID.GARDEN_KING_STATUE_MULTI, new WorldPoint(3233, 3487, 0),
 			"Push the trolley across the River Lum, then to the marked plinth in the garden. Right-click 'place' the" +
 				" statue when it's next to the plinth.");
 		((DetailedQuestStep) pushLumbridgeStatue).setLinePoints(new ArrayList<>(Arrays.asList(
@@ -558,9 +550,9 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			new WorldPoint(3232, 3487, 0)
 		)));
 
-		useTrolleyOnFaladorStatue = new ObjectStep(this, NullObjectID.NULL_9250, new WorldPoint(2965, 3381, 0),
+		useTrolleyOnFaladorStatue = new ObjectStep(this, ObjectID.FALADOR_STATUE_SARADOMIN, new WorldPoint(2965, 3381, 0),
 			"Use the trolley on the statue of Saradomin in Falador.", trolley.highlighted());
-		pushFaladorStatue = new ObjectStep(this, NullObjectID.NULL_9253, new WorldPoint(3230, 3479, 0),
+		pushFaladorStatue = new ObjectStep(this, ObjectID.GARDEN_SARADOMIN_STATUE_MULTI, new WorldPoint(3230, 3479, 0),
 			"Push the trolley out of Falador, then to the marked plinth in the garden. Right-click 'place' the" +
 				" statue when it's next to the plinth.");
 		((DetailedQuestStep) pushFaladorStatue).setLinePoints(new ArrayList<>(Arrays.asList(
@@ -579,7 +571,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 		talkToEllmariaAfterGrown = new NpcStep(this, NpcID.QUEEN_ELLAMARIA, new WorldPoint(3230, 3478, 0),
 		"Talk to Ellamaria once everything's finished growing.");
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_5215, new WorldPoint(3221, 3473, 0),
+		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_CUTSCENE, new WorldPoint(3221, 3473, 0),
 			"Talk to King Roald in Varrock Castle, watch the cutscene, then finish the dialog with Ellamaria to finish" +
 				" the quest!",	ringOfCharosA.equipped());
 		talkToRoald.addDialogSteps("Ask King Roald to follow me.", "[Charm] Of course, your majesty - please forgive " +
@@ -624,7 +616,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Compost Potion (4)", ItemID.COMPOST_POTION4, 1));
+		return Collections.singletonList(new ItemReward("Compost Potion (4)", ItemID.SUPERCOMPOST_POTION_4, 1));
 	}
 
 	@Override

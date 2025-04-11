@@ -27,9 +27,9 @@ package com.questhelper.helpers.quests.secretsofthenorth;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class AskAboutRitual extends NpcStep
@@ -37,7 +37,7 @@ public class AskAboutRitual extends NpcStep
 
 	public AskAboutRitual(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.BIG_FISH, new WorldPoint(2880, 3946, 0),
+		super(questHelper, NpcID.SOTN_HAZEEL_TROLL_VIS, new WorldPoint(2880, 3946, 0),
 			"Talk to Big Fish (Hazeel) at the north entrance to Weiss again.");
 	}
 

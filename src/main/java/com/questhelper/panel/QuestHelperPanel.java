@@ -24,36 +24,20 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.managers.QuestManager;
-import com.questhelper.panel.skillfiltering.SkillFilterPanel;
-import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.managers.QuestManager;
+import com.questhelper.panel.skillfiltering.SkillFilterPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.steps.QuestStep;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicButtonUI;
+import com.questhelper.tools.Icon;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -62,6 +46,19 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class QuestHelperPanel extends PluginPanel

@@ -26,19 +26,17 @@ package com.questhelper.runeliteobjects;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.questinfo.PlayerQuests;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.runelite.PlayerQuestStateRequirement;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.steps.widget.WidgetDetails;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.ReplacedNpc;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.WidgetReplacement;
+import com.questhelper.steps.widget.WidgetDetails;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.config.ConfigManager;
 
 public class GlobalFakeObjects
@@ -63,13 +61,13 @@ public class GlobalFakeObjects
 
 	private static void createHopleez(RuneliteObjectManager runeliteObjectManager, Client client, ConfigManager configManager)
 	{
-		ReplacedNpc replacedHopleez = runeliteObjectManager.createReplacedNpc(client.getNpcDefinition(NpcID.HOPLEEZ).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_COSAINTUS);
+		ReplacedNpc replacedHopleez = runeliteObjectManager.createReplacedNpc(client.getNpcDefinition(NpcID.ZEAH_DEFENCE_PURE).getModels(), new WorldPoint(3235, 3215, 0), NpcID.HATIUS_LUMBRIDGE_DIARY);
 		replacedHopleez.setName("Hopleez");
 		replacedHopleez.setFace(7481);
 		replacedHopleez.setExamine("He was here first.");
 		replacedHopleez.addExamineAction(runeliteObjectManager);
 		replacedHopleez.setDisplayRequirement(new PlayerQuestStateRequirement(configManager, PlayerQuests.COOKS_HELPER, 4, Operation.GREATER_EQUAL));
-		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(ComponentID.DIALOG_NPC_TEXT), "Hatius Cosaintus", "Hopleez"));
-		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(ComponentID.DIALOG_SPRITE_TEXT), "Hatius", "Hopleez"));
+		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(InterfaceID.ChatLeft.TEXT), "Hatius Cosaintus", "Hopleez"));
+		replacedHopleez.addWidgetReplacement(new WidgetReplacement(new WidgetDetails(InterfaceID.Objectbox.TEXT), "Hatius", "Hopleez"));
 	}
 }

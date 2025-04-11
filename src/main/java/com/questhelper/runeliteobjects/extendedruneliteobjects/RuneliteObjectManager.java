@@ -28,40 +28,14 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.questhelper.steps.widget.WidgetDetails;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Menu;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Model;
-import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Renderable;
-import net.runelite.api.SpriteID;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.events.*;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
@@ -76,6 +50,12 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 // This will hold all RuneliteObjects
 // Can group up to helpers to have specific helpers remove all things themselves
@@ -910,10 +890,10 @@ public class RuneliteObjectManager
 			}
 		}
 
-		if (event.getGroupId() == InterfaceID.DIALOG_NPC)
+		if (event.getGroupId() == InterfaceID.CHAT_LEFT)
 		{
-			Widget npcChatName = client.getWidget(ComponentID.DIALOG_NPC_NAME);
-			Widget npcChatHead = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
+			Widget npcChatName = client.getWidget(InterfaceID.ChatLeft.NAME);
+			Widget npcChatHead = client.getWidget(InterfaceID.ChatLeft.HEAD);
 
 			clientThread.invokeLater(() -> {
 				if (npcChatHead == null || npcChatName == null)

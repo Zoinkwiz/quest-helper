@@ -24,19 +24,20 @@
  */
 package com.questhelper.helpers.skills.agility;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.Arrays;
 import java.util.Collections;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
 
 public class Pollnivneach extends AgilityCourse
 {
@@ -94,31 +95,31 @@ public class Pollnivneach extends AgilityCourse
 	protected void setupSteps()
 	{
 		//Pollnivneach obstacles
-		climbBasket = new ObjectStep(this.questHelper, ObjectID.BASKET_14935, new WorldPoint(3351, 2962, 0),
+		climbBasket = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_BASKET, new WorldPoint(3351, 2962, 0),
 			"Climb onto the basket south of the Camel Store in Pollnivneach.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpUpMarketStall = new ObjectStep(this.questHelper, ObjectID.MARKET_STALL_14936, new WorldPoint(3350, 2971, 1),
+		jumpUpMarketStall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_MARKETSTALL, new WorldPoint(3350, 2971, 1),
 			"Jump over the market stall.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		grabBanner = new ObjectStep(this.questHelper, ObjectID.BANNER_14937, new WorldPoint(3357, 2979, 1),
+		grabBanner = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_HANGINGBANNER, new WorldPoint(3357, 2979, 1),
 			"Swing over the banner.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		leapGap = new ObjectStep(this.questHelper, ObjectID.GAP_14938, new WorldPoint(3364, 2977, 1),
+		leapGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_GAP, new WorldPoint(3364, 2977, 1),
 			"Leap across the gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpUpTree = new ObjectStep(this.questHelper, ObjectID.TREE_14939, new WorldPoint(3368, 2978, 1),
+		jumpUpTree = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_TREE, new WorldPoint(3368, 2978, 1),
 			"Jump over the tree.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROUGH_WALL_14940, new WorldPoint(3365, 2982, 1),
+		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_WALLCLIMB, new WorldPoint(3365, 2982, 1),
 			"CLimb up the rough wall.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		crossMonkeyBars = new ObjectStep(this.questHelper, ObjectID.MONKEYBARS, new WorldPoint(3358, 2985, 2),
+		crossMonkeyBars = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_MONKEYBARS_START, new WorldPoint(3358, 2985, 2),
 			"Cross the monkey bars.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpUpTree2 = new ObjectStep(this.questHelper, ObjectID.TREE_14944, new WorldPoint(3360, 2997, 2),
+		jumpUpTree2 = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_TREETOP, new WorldPoint(3360, 2997, 2),
 			"Jump over the tree.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpUpDryingLine = new ObjectStep(this.questHelper, ObjectID.DRYING_LINE, new WorldPoint(3363, 3000, 2),
+		jumpUpDryingLine = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_POLLNIVNEACH_LINE, new WorldPoint(3363, 3000, 2),
 			"Climb down using the drying line.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 	}
 

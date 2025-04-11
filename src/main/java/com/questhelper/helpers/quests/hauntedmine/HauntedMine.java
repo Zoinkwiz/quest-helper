@@ -24,41 +24,37 @@
  */
 package com.questhelper.helpers.quests.hauntedmine;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
+import java.util.*;
 
 public class HauntedMine extends BasicQuestHelper
 {
@@ -164,9 +160,9 @@ public class HauntedMine extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		zealotsKey = new ItemRequirement("Zealot's key", ItemID.ZEALOTS_KEY);
+		zealotsKey = new ItemRequirement("Zealot's key", ItemID.HAUNTEDMINE_LIFT_KEY);
 
-		zealotsKeyHighlighted = new ItemRequirement("Zealot's key", ItemID.ZEALOTS_KEY);
+		zealotsKeyHighlighted = new ItemRequirement("Zealot's key", ItemID.HAUNTEDMINE_LIFT_KEY);
 		zealotsKeyHighlighted.setHighlightInInventory(true);
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
@@ -176,7 +172,7 @@ public class HauntedMine extends BasicQuestHelper
 
 		emptyInvSpots = new ItemRequirement("Empty Inventory Spot", -1, 3);
 
-		crystalMineKey = new ItemRequirement("Crystal-mine key", ItemID.CRYSTALMINE_KEY);
+		crystalMineKey = new ItemRequirement("Crystal-mine key", ItemID.HAUNTEDMINE_REWARD_KEY);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -261,9 +257,9 @@ public class HauntedMine extends BasicQuestHelper
 		fungusInCart = new VarbitRequirement(2395, 1);
 		fungusOnOtherSide = new VarbitRequirement(2396, 1);
 
-		daythNearby = new NpcHintArrowRequirement(NpcID.TREUS_DAYTH, NpcID.GHOST_3617);
+		daythNearby = new NpcHintArrowRequirement(NpcID.HAUNTEDMINE_BOSS_GHOST, NpcID.HAUNTEDMINE_BOSS_GHOST_FADED);
 
-		killedDayth = new VarplayerRequirement(382, 9, Operation.GREATER_EQUAL);
+		killedDayth = new VarplayerRequirement(VarPlayerID.HAUNTEDMINE, 9, Operation.GREATER_EQUAL);
 
 		inDarkCrystalRoom = new ZoneRequirement(crystalEntranceDark);
 		inDarkDaythRoom = new ZoneRequirement(daythRoomDark);
@@ -271,102 +267,102 @@ public class HauntedMine extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToZealot = new NpcStep(this, NpcID.ZEALOT, new WorldPoint(3443, 3258, 0), "Talk to the Zealot outside the Abandoned Mine in south west Morytania.");
+		talkToZealot = new NpcStep(this, NpcID.SARADOMINIST_ZEALOT, new WorldPoint(3443, 3258, 0), "Talk to the Zealot outside the Abandoned Mine in south west Morytania.");
 		talkToZealot.addDialogSteps("And what sort of purpose would that be?", "Yes.", "Is there any other way into the mines?", "I come seeking challenges and quests.",
 			"I follow the path of Saradomin.", "What quest is that then?");
-		pickpocketZealot = new NpcStep(this, NpcID.ZEALOT, new WorldPoint(3443, 3258, 0), "Pickpocket the Zealot outside the Abandoned Mine in south west Morytania.");
+		pickpocketZealot = new NpcStep(this, NpcID.SARADOMINIST_ZEALOT, new WorldPoint(3443, 3258, 0), "Pickpocket the Zealot outside the Abandoned Mine in south west Morytania.");
 
-		enterMine = new ObjectStep(this, ObjectID.CART_TUNNEL_4915, new WorldPoint(3429, 3225, 0), "Enter the south cart tunnel around the back of the mine.");
+		enterMine = new ObjectStep(this, ObjectID.HAUNTEDMINE_BACK_ENTRANCE2, new WorldPoint(3429, 3225, 0), "Enter the south cart tunnel around the back of the mine.");
 
-		goDownFromLevel1South = new ObjectStep(this, ObjectID.LADDER_4965, new WorldPoint(3422, 9625, 0), "Climb down the ladder to the east.");
+		goDownFromLevel1South = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDERTOP, new WorldPoint(3422, 9625, 0), "Climb down the ladder to the east.");
 
-		goDownFromLevel2South = new ObjectStep(this, ObjectID.LADDER_4969, new WorldPoint(2798, 4567, 0), "Climb down another ladder to the east.");
+		goDownFromLevel2South = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDERTOP_1SW, new WorldPoint(2798, 4567, 0), "Climb down another ladder to the east.");
 
-		goDownFromLevel2North = new ObjectStep(this, ObjectID.LADDER_4969, new WorldPoint(2797, 4599, 0), "Climb down the ladder to the north east.");
+		goDownFromLevel2North = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDERTOP_1SW, new WorldPoint(2797, 4599, 0), "Climb down the ladder to the north east.");
 
-		goDownFromLevel3NorthEast = new ObjectStep(this, ObjectID.LADDER_4967, new WorldPoint(2732, 4529, 0), "Climb down the ladder in the room in the north east.");
+		goDownFromLevel3NorthEast = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDERTOP_1E, new WorldPoint(2732, 4529, 0), "Climb down the ladder in the room in the north east.");
 
-		goDownToFungusRoom = new ObjectStep(this, ObjectID.LADDER_4967, new WorldPoint(2725, 4486, 0), "Go down the ladder to the south, making sure to avoid the moving mine cart.");
+		goDownToFungusRoom = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDERTOP_1E, new WorldPoint(2725, 4486, 0), "Go down the ladder to the south, making sure to avoid the moving mine cart.");
 
-		readPanel = new ObjectStep(this, ObjectID.POINTS_SETTINGS, new WorldPoint(2770, 4522, 0), "Check the Points Settings panel in the centre of the room. Click the 'Start' button in the interface.");
+		readPanel = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINTS_INFO, new WorldPoint(2770, 4522, 0), "Check the Points Settings panel in the centre of the room. Click the 'Start' button in the interface.");
 
-		pullLeverA = new ObjectStep(this, ObjectID.LEVER_4950, new WorldPoint(2785, 4517, 0), "Pull the marked lever.");
-		pullLeverB = new ObjectStep(this, ObjectID.LEVER_4951, new WorldPoint(2784, 4517, 0), "Pull the marked lever.");
-		pullLeverC = new ObjectStep(this, ObjectID.LEVER_4952, new WorldPoint(2786, 4517, 0), "Pull the marked lever.");
-		pullLeverD = new ObjectStep(this, ObjectID.LEVER_4953, new WorldPoint(2786, 4515, 0), "Pull the marked lever.");
-		pullLeverE = new ObjectStep(this, ObjectID.LEVER_4954, new WorldPoint(2785, 4515, 0), "Pull the marked lever.");
+		pullLeverA = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER1, new WorldPoint(2785, 4517, 0), "Pull the marked lever.");
+		pullLeverB = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER2, new WorldPoint(2784, 4517, 0), "Pull the marked lever.");
+		pullLeverC = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER3, new WorldPoint(2786, 4517, 0), "Pull the marked lever.");
+		pullLeverD = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER4, new WorldPoint(2786, 4515, 0), "Pull the marked lever.");
+		pullLeverE = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER5, new WorldPoint(2785, 4515, 0), "Pull the marked lever.");
 
-		pullLeverF = new ObjectStep(this, ObjectID.LEVER_4955, new WorldPoint(2768, 4533, 0), "Pull the marked lever.");
-		pullLeverG = new ObjectStep(this, ObjectID.LEVER_4956, new WorldPoint(2769, 4533, 0), "Pull the marked lever.");
-		pullLeverH = new ObjectStep(this, ObjectID.LEVER_4957, new WorldPoint(2770, 4533, 0), "Pull the marked lever.");
+		pullLeverF = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER6, new WorldPoint(2768, 4533, 0), "Pull the marked lever.");
+		pullLeverG = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER7, new WorldPoint(2769, 4533, 0), "Pull the marked lever.");
+		pullLeverH = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER8, new WorldPoint(2770, 4533, 0), "Pull the marked lever.");
 
 		solvePuzzle = new DetailedQuestStep(this, "Pull levers until the tracks are lined up to take the cart to the north east corner.");
 		solvePuzzle.addSubSteps(pullLeverA, pullLeverB, pullLeverC, pullLeverD, pullLeverE, pullLeverF, pullLeverG, pullLeverH);
 
-		useKeyOnValve = new ObjectStep(this, ObjectID.WATER_VALVE, new WorldPoint(2808, 4496, 0),
+		useKeyOnValve = new ObjectStep(this, ObjectID.HAUNTEDMINE_LIFT_VALVE, new WorldPoint(2808, 4496, 0),
 			"Use the Zealot's key on the water valve. Make sure you have some energy as you'll need to race to the lift afterwards.", zealotsKeyHighlighted);
-		useKeyOnValve.addIcon(ItemID.ZEALOTS_KEY);
+		useKeyOnValve.addIcon(ItemID.HAUNTEDMINE_LIFT_KEY);
 
-		openValve = new ObjectStep(this, ObjectID.WATER_VALVE, new WorldPoint(2808, 4496, 0),
+		openValve = new ObjectStep(this, ObjectID.HAUNTEDMINE_LIFT_VALVE, new WorldPoint(2808, 4496, 0),
 			"Turn the valve. Make sure you have some energy as you'll need to race to the lift afterwards.");
 
 		useKeyOnValve.addSubSteps(openValve);
 
-		goDownLift = new ObjectStep(this, ObjectID.LIFT_4938, new WorldPoint(2807, 4492, 0), "Race to the lift before the ghost turns off the valve.");
+		goDownLift = new ObjectStep(this, ObjectID.LIFT_SIDE_R, new WorldPoint(2807, 4492, 0), "Race to the lift before the ghost turns off the valve.");
 
-		goDownToCollectFungus = new ObjectStep(this, ObjectID.LADDER_4967, new WorldPoint(2710, 4540, 0), "Go down the north west ladder to collect the glowing fungus.");
-		collectFungus = new ObjectStep(this, ObjectID.MINE_CART_4974, new WorldPoint(2774, 4537, 0), "Search the mine cart for the glowing fungus.");
+		goDownToCollectFungus = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDERTOP_1E, new WorldPoint(2710, 4540, 0), "Go down the north west ladder to collect the glowing fungus.");
+		collectFungus = new ObjectStep(this, ObjectID.HAUNTEDMINE_PUZZLE_CART, new WorldPoint(2774, 4537, 0), "Search the mine cart for the glowing fungus.");
 		collectFungus.addDialogStep("Take it.");
-		goUpFromCollectRoom = new ObjectStep(this, ObjectID.LADDER_4968, new WorldPoint(2774, 4540, 0), "Take the fungus back upstairs.");
+		goUpFromCollectRoom = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDER_1W, new WorldPoint(2774, 4540, 0), "Take the fungus back upstairs.");
 
 		pickUpChisel = new DetailedQuestStep(this, new WorldPoint(2800, 4500, 0), "Pick up the chisel nearby.", chisel);
 
-		pickFungus = new ObjectStep(this, ObjectID.GLOWING_FUNGUS_4933, new WorldPoint(2793, 4493, 0), "Pick a glowing fungus.");
+		pickFungus = new ObjectStep(this, ObjectID.GLOWING_MUSHROOM2, new WorldPoint(2793, 4493, 0), "Pick a glowing fungus.");
 
-		goUpFromLiftRoom = new ObjectStep(this, ObjectID.LADDER_4968, new WorldPoint(2796, 4529, 0), "Go back up the ladder.");
+		goUpFromLiftRoom = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDER_1W, new WorldPoint(2796, 4529, 0), "Go back up the ladder.");
 
-		putFungusInCart = new ObjectStep(this, ObjectID.MINE_CART_4974, new WorldPoint(2778, 4506, 0),
+		putFungusInCart = new ObjectStep(this, ObjectID.HAUNTEDMINE_PUZZLE_CART, new WorldPoint(2778, 4506, 0),
 			"Put the glowing fungus into the mine cart north west of the ladder.", glowingFungusHighlight);
 		putFungusInCart.addIcon(ItemID.GLOWING_FUNGUS);
 
-		goUpFromFungusRoom = new ObjectStep(this, ObjectID.LADDER_4968, new WorldPoint(2789, 4486, 0), "Climb back up to the surface.");
-		goUpFromLevel3South = new ObjectStep(this, ObjectID.LADDER_4970, new WorldPoint(2734, 4503, 0), "Climb back up to the surface.");
+		goUpFromFungusRoom = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDER_1W, new WorldPoint(2789, 4486, 0), "Climb back up to the surface.");
+		goUpFromLevel3South = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDER_1NE, new WorldPoint(2734, 4503, 0), "Climb back up to the surface.");
 
-		goUpFromLevel2South = new ObjectStep(this, ObjectID.LADDER_4966, new WorldPoint(2782, 4569, 0), "Climb back up to the surface.");
+		goUpFromLevel2South = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDER, new WorldPoint(2782, 4569, 0), "Climb back up to the surface.");
 
-		leaveLevel1South = new ObjectStep(this, ObjectID.CART_TUNNEL_15830, new WorldPoint(3408, 9623, 0), "Leave through the cart tunnel.");
+		leaveLevel1South = new ObjectStep(this, ObjectID.LOTR_BACK_ENTRANCE1_INSIDE, new WorldPoint(3408, 9623, 0), "Leave through the cart tunnel.");
 
 		goUpFromFungusRoom.addSubSteps(goUpFromLevel3South, goUpFromLevel2South, leaveLevel1South);
 
-		enterMineNorth = new ObjectStep(this, ObjectID.CART_TUNNEL_4914, new WorldPoint(3430, 3233, 0),
+		enterMineNorth = new ObjectStep(this, ObjectID.HAUNTEDMINE_BACK_ENTRANCE1, new WorldPoint(3430, 3233, 0),
 			"Make sure you're prepared to fight Treus Dayth (level 95), then enter the north area of the Haunted Mine.");
 
-		goDownLevel1North = new ObjectStep(this, ObjectID.LADDER_4965, new WorldPoint(3413, 9633, 0), "Climb down the west ladder.");
-		goDownLevel2North = new ObjectStep(this, ObjectID.LADDER_4969, new WorldPoint(2797, 4599, 0), "Climb down the north east ladder.");
+		goDownLevel1North = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDERTOP, new WorldPoint(3413, 9633, 0), "Climb down the west ladder.");
+		goDownLevel2North = new ObjectStep(this, ObjectID.HAUNTEDMINE_LADDERTOP_1SW, new WorldPoint(2797, 4599, 0), "Climb down the north east ladder.");
 
-		goDownToDayth = new ObjectStep(this, ObjectID.STAIRS_4971, new WorldPoint(2748, 4437, 0), "Go down the east stairs.");
+		goDownToDayth = new ObjectStep(this, ObjectID.HAUNTEDMINE_DARK_STAIRS_TOP, new WorldPoint(2748, 4437, 0), "Go down the east stairs.");
 
-		goDownToCrystals = new ObjectStep(this, ObjectID.STAIRS_4971, new WorldPoint(2694, 4437, 0), "Go down the west stairs.");
+		goDownToCrystals = new ObjectStep(this, ObjectID.HAUNTEDMINE_DARK_STAIRS_TOP, new WorldPoint(2694, 4437, 0), "Go down the west stairs.");
 
-		tryToPickUpKey = new NpcStep(this, NpcID.INNOCENTLOOKING_KEY, new WorldPoint(2788, 4455, 0), "Attempt to pick up the innocent-looking key. Treus Dayth (level 95) will spawn. Kill him.");
+		tryToPickUpKey = new NpcStep(this, NpcID.HAUNTEDMINE_BOSS_KEY, new WorldPoint(2788, 4455, 0), "Attempt to pick up the innocent-looking key. Treus Dayth (level 95) will spawn. Kill him.");
 
-		killDayth = new NpcStep(this, NpcID.TREUS_DAYTH, new WorldPoint(2788, 4450, 0), "Kill Treus Dayth.");
+		killDayth = new NpcStep(this, NpcID.HAUNTEDMINE_BOSS_GHOST, new WorldPoint(2788, 4450, 0), "Kill Treus Dayth.");
 
 		tryToPickUpKey.addSubSteps(killDayth);
 
-		pickUpKey = new NpcStep(this, NpcID.INNOCENTLOOKING_KEY, new WorldPoint(2788, 4455, 0), "Pick up the innocent-looking key.");
+		pickUpKey = new NpcStep(this, NpcID.HAUNTEDMINE_BOSS_KEY, new WorldPoint(2788, 4455, 0), "Pick up the innocent-looking key.");
 
-		goUpFromDayth = new ObjectStep(this, ObjectID.STAIRS_4973, new WorldPoint(2813, 4454, 0), "Go back up to the flooded area.");
+		goUpFromDayth = new ObjectStep(this, ObjectID.HAUNTEDMINE_LIGHT_STAIRS_BOTTOM, new WorldPoint(2813, 4454, 0), "Go back up to the flooded area.");
 
-		cutCrystal = new ObjectStep(this, ObjectID.CRYSTAL_OUTCROP, new WorldPoint(2787, 4428, 0),
+		cutCrystal = new ObjectStep(this, ObjectID.CRYSTALCORNER, new WorldPoint(2787, 4428, 0),
 			"Cut from a crystal outcrop with a chisel in the south room to finish the quest.", chisel);
 
-		leaveCrystalRoom = new ObjectStep(this, ObjectID.STAIRS_4973, new WorldPoint(2756, 4454, 0), "Go back up to the flooded area.");
+		leaveCrystalRoom = new ObjectStep(this, ObjectID.HAUNTEDMINE_LIGHT_STAIRS_BOTTOM, new WorldPoint(2756, 4454, 0), "Go back up to the flooded area.");
 
-		goBackUpLift = new ObjectStep(this, ObjectID.LIFT_4942, new WorldPoint(2726, 4456, 0), "Go back up the lift to get a chisel.");
+		goBackUpLift = new ObjectStep(this, ObjectID.LIFT_FLOODED, new WorldPoint(2726, 4456, 0), "Go back up the lift to get a chisel.");
 
-		leaveDarkCrystalRoom = new ObjectStep(this, ObjectID.STAIRS_4972, new WorldPoint(2710, 4593, 0), "You need a glowing fungus. Go back up to the flooded area.");
-		leaveDarkDaythRoom = new ObjectStep(this, ObjectID.STAIRS_4972, new WorldPoint(2732, 4563, 0), "You need a glowing fungus. Go back up to the flooded area.");
+		leaveDarkCrystalRoom = new ObjectStep(this, ObjectID.HAUNTEDMINE_DARK_STAIRS_BOTTOM, new WorldPoint(2710, 4593, 0), "You need a glowing fungus. Go back up to the flooded area.");
+		leaveDarkDaythRoom = new ObjectStep(this, ObjectID.HAUNTEDMINE_DARK_STAIRS_BOTTOM, new WorldPoint(2732, 4563, 0), "You need a glowing fungus. Go back up to the flooded area.");
 	}
 
 	@Override

@@ -25,39 +25,40 @@
 package com.questhelper.helpers.achievementdiaries.lumbridgeanddraynor;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.var.VarComparisonRequirement;
-import com.questhelper.requirements.var.VarType;
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarComparisonRequirement;
+import com.questhelper.requirements.var.VarType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.EmoteStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.TileStep;
+import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class LumbridgeElite extends ComplexStateQuestHelper
 {
@@ -124,28 +125,28 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notRichChest = new VarplayerRequirement(1195, false, 4);
-		notMovario = new VarplayerRequirement(1195, false, 5);
-		notChopMagic = new VarplayerRequirement(1195, false, 6);
-		notAddyPlatebody = new VarplayerRequirement(1195, false, 7);
-		notWaterRunes = new VarplayerRequirement(1195, false, 8);
-		notQCEmote = new VarplayerRequirement(1195, false, 9);
+		notRichChest = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 4);
+		notMovario = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 5);
+		notChopMagic = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 6);
+		notAddyPlatebody = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 7);
+		notWaterRunes = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 8);
+		notQCEmote = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 9);
 
 		allQuests = new VarComparisonRequirement(VarType.VARP, VarPlayer.QUEST_POINTS, VarType.VARBIT, 1782, Operation.EQUAL, "All quests completed");
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest).isNotConsumed();
 		crossbow = new ItemRequirement("Crossbow", ItemCollections.CROSSBOWS).showConditioned(notMovario).isNotConsumed();
-		mithgrap = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419).showConditioned(notMovario).isNotConsumed();
+		mithgrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notMovario).isNotConsumed();
 		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES).showConditioned(notMovario).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopMagic).isNotConsumed();
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddyPlatebody);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyPlatebody).isNotConsumed();
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRunes);
 		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss",
-			ItemID.WATER_TIARA).showConditioned(notWaterRunes).isNotConsumed();
+			ItemID.TIARA_WATER).showConditioned(notWaterRunes).isNotConsumed();
 		waterAccessOrAbyss.setTooltip("Water talisman or tiara");
 		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote).isNotConsumed();
-		dorgSphere = new ItemRequirement("Dorgesh-kaan Sphere", ItemID.DORGESHKAAN_SPHERE)
+		dorgSphere = new ItemRequirement("Dorgesh-kaan Sphere", ItemID.DORGESH_TELEPORT_ARTIFACT)
 			.showConditioned(new Conditions(notMovario, notRichChest));
 		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS)
 			.showConditioned(notChopMagic);
@@ -176,10 +177,10 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		moveToDraySewer = new ObjectStep(this, ObjectID.TRAPDOOR_6435, new WorldPoint(3118, 3244, 0),
+		moveToDraySewer = new ObjectStep(this, ObjectID.VAMPIRE_TRAP2, new WorldPoint(3118, 3244, 0),
 			"Climb down into the Draynor Sewer.");
-		moveToDraySewer.addAlternateObjects(ObjectID.TRAPDOOR_6434);
-		addyPlatebody = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3112, 9689, 0),
+		moveToDraySewer.addAlternateObjects(ObjectID.VAMPIRE_TRAP1);
+		addyPlatebody = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(3112, 9689, 0),
 			"Smith a adamant platebody at the anvil in Draynor Sewer.", addyBar.quantity(5), hammer);
 
 		moveToOldman = new TileStep(this, new WorldPoint(3088, 3253, 0),
@@ -189,37 +190,37 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 
 		moveToWater = new ObjectStep(this, 34815, new WorldPoint(3185, 3165, 0),
 			"Enter the water altar.", waterAccessOrAbyss.highlighted(), essence.quantity(28));
-		waterRunes = new ObjectStep(this, ObjectID.ALTAR_34762, new WorldPoint(2716, 4836, 0),
+		waterRunes = new ObjectStep(this, ObjectID.WATER_ALTAR, new WorldPoint(2716, 4836, 0),
 			"Craft water runes.", essence.quantity(28));
 
-		moveToUndergroundMovario = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
+		moveToUndergroundMovario = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0),
 			"Climb down the trapdoor in the Lumbridge Castle.", mithgrap, crossbow, lightsource);
-		moveToUndergroundChest = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
+		moveToUndergroundChest = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0),
 			"Climb down the trapdoor in the Lumbridge Castle.", lockpick, lightsource);
 
-		moveToDorgChest = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0),
+		moveToDorgChest = new ObjectStep(this, ObjectID.CAVE_GOBLIN_CITY_DOORR, new WorldPoint(3317, 9601, 0),
 			"Go through the doors to Dorgesh-Kaan.", true, lockpick, lightsource);
-		moveToDorgChest.addAlternateObjects(ObjectID.DOOR_6920);
-		moveToDorgMovario = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0),
+		moveToDorgChest.addAlternateObjects(ObjectID.CAVE_GOBLIN_CITY_DOORL);
+		moveToDorgMovario = new ObjectStep(this, ObjectID.CAVE_GOBLIN_CITY_DOORR, new WorldPoint(3317, 9601, 0),
 			"Go through the doors to Dorgesh-Kaan.", true, mithgrap, crossbow, lightsource);
-		moveToDorgMovario.addAlternateObjects(ObjectID.DOOR_6920);
+		moveToDorgMovario.addAlternateObjects(ObjectID.CAVE_GOBLIN_CITY_DOORL);
 
-		dorgStairsMovario = new ObjectStep(this, ObjectID.STAIRS_22939, new WorldPoint(2721, 5360, 0),
+		dorgStairsMovario = new ObjectStep(this, ObjectID.DORGESH_1STAIRS_POSH, new WorldPoint(2721, 5360, 0),
 			"Climb the stairs to the second level of Dorgesh-Kaan.", mithgrap, crossbow, lightsource);
-		dorgStairsChest = new ObjectStep(this, ObjectID.STAIRS_22939, new WorldPoint(2721, 5360, 0),
+		dorgStairsChest = new ObjectStep(this, ObjectID.DORGESH_1STAIRS_POSH, new WorldPoint(2721, 5360, 0),
 			"Climb the stairs to the second level of Dorgesh-Kaan.", lockpick);
 
-		richChest = new ObjectStep(this, ObjectID.CHEST_22681, new WorldPoint(2703, 5348, 1),
+		richChest = new ObjectStep(this, ObjectID.DORGESH_RICH_CHEST_CLOSED, new WorldPoint(2703, 5348, 1),
 			"Lockpick the chest.", lockpick);
-		moveToDorgAgi = new ObjectStep(this, ObjectID.STAIRS_22941, new WorldPoint(2723, 5253, 1),
+		moveToDorgAgi = new ObjectStep(this, ObjectID.DORGESH_2STAIRS_POSH, new WorldPoint(2723, 5253, 1),
 			"Climb the stairs to enter the Dorgesh-Kaan agility course.");
-		movario = new NpcStep(this, NpcID.MOVARIO, new WorldPoint(2706, 5237, 3),
+		movario = new NpcStep(this, NpcID.DORGESH_DARK_WIZARD_THERE, new WorldPoint(2706, 5237, 3),
 			"Pickpocket Movario near the end of the agility course.");
 
-		chopMagic = new ObjectStep(this, ObjectID.MAGIC_TREE_10834, new WorldPoint(3357, 3312, 0),
+		chopMagic = new ObjectStep(this, ObjectID.MAGICTREE, new WorldPoint(3357, 3312, 0),
 			"Chop some magic logs near the Magic Training Arena.", axe);
 
-		claimReward = new NpcStep(this, NpcID.HATIUS_COSAINTUS, new WorldPoint(3235, 3213, 0),
+		claimReward = new NpcStep(this, NpcID.HATIUS_LUMBRIDGE_DIARY, new WorldPoint(3235, 3213, 0),
 			"Talk to Hatius Cosaintus in Lumbridge to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -265,8 +266,8 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Explorer's ring 4", ItemID.EXPLORERS_RING_4),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Explorer's ring 4", ItemID.LUMBRIDGE_RING_ELITE),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

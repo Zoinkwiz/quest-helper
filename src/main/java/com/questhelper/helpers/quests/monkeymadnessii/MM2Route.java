@@ -24,14 +24,15 @@
  */
 package com.questhelper.helpers.quests.monkeymadnessii;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import java.util.Arrays;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+
+import java.util.Arrays;
+import java.util.List;
 
 /*
 * Routes are from Start (S) X to End (E) Y. The nodes are as labeled in https://user-images.githubusercontent.com/41973452/234354170-0f5a83bd-8301-49d8-bc47-784d2aea3920.png

@@ -27,16 +27,16 @@ package com.questhelper.helpers.quests.recipefordisaster;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class AskAboutFishCake extends NpcStep
 {
 	public AskAboutFishCake(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
+		super(questHelper, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook and ask him all the options about Pirate Pete.");
 	}
 

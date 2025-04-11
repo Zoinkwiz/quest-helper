@@ -33,10 +33,12 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.List;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.util.QHObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.List;
 
 public class InformKingBolren
 {
@@ -50,11 +52,11 @@ public class InformKingBolren
 		/// Inform King Bolren
 		{
 			// Kill the Evil Creature
-			var kill = new NpcStep(quest, NpcID.EVIL_CREATURE_12477, new WorldPoint(2542, 3169, 0), "");
-			var exitStoreroom = new ObjectStep(quest, ObjectID.TUNNEL_49623, YewnocksPuzzle.regionPoint(37, 17), "Exit the storeroom.");
+			var kill = new NpcStep(quest, NpcID.POG_FLUFFIE_EVIL_1, new WorldPoint(2542, 3169, 0), "");
+			var exitStoreroom = new ObjectStep(quest, ObjectID.POG_CAVE_WALL_ENTRANCE, YewnocksPuzzle.regionPoint(37, 17), "Exit the storeroom.");
 			exitStoreroom.addTeleport(quest.teleToBolren);
-			var exitDungeon = new ObjectStep(quest, ObjectID.LADDER_5251, new WorldPoint(2597, 4435, 0), "Exit the dungeon.");
-			var exitDungeonPreRovingElves = new ObjectStep(quest, ObjectID.LADDER_17387, new WorldPoint(2533, 9555, 0), "Exit the dungeon.");
+			var exitDungeon = new ObjectStep(quest, ObjectID.ROVING_GOLRIE_LADDER_FROM_CELLAR, new WorldPoint(2597, 4435, 0), "Exit the dungeon.");
+			var exitDungeonPreRovingElves = new ObjectStep(quest, ObjectID.LADDER_FROM_CELLAR_DIRECTIONAL, new WorldPoint(2533, 9555, 0), "Exit the dungeon.");
 			var squeezeThroughRailing = quest.enterTreeGnomeVillageMazeFromMiddle.copy();
 			squeezeThroughRailing.addTeleport(quest.teleToBolren);
 			killEvilCreature = new ConditionalStep(quest, kill, "Kill the Evil Creature next to King Bolren.");
@@ -70,11 +72,11 @@ public class InformKingBolren
 		var teleToStronghold = new TeleportItemRequirement("Spirit tree to Gnome Stronghold [2]", -1, -1);
 
 		// Talk to Gianne Junior in Tree Gnome Stronghold
-		talkToGianneJnr = new NpcStep(quest, NpcID.GIANNE_JNR, new WorldPoint(2439, 3502, 1), "Talk to Gianne jnr. in Tree Gnome Stronghold to ask for Longramble's whereabouts.");
+		talkToGianneJnr = new NpcStep(quest, NpcID.ALUFT_GNOME_DELIVERY_CONTROLLER, new WorldPoint(2439, 3502, 1), "Talk to Gianne jnr. in Tree Gnome Stronghold to ask for Longramble's whereabouts.");
 		// Floor 0 to Floor 1
-		var climbUpToGianneJnr = new ObjectStep(quest, ObjectID.LADDER_16683, new WorldPoint(2466, 3495, 0), "");
-		var climbGrandTreeF3ToF2 = new ObjectStep(quest, ObjectID.LADDER_16679, new WorldPoint(2466, 3495, 3), "");
-		var climbGrandTreeF2ToF1 = new ObjectStep(quest, ObjectID.LADDER_2884, new WorldPoint(2466, 3495, 2), "");
+		var climbUpToGianneJnr = new ObjectStep(quest, QHObjectID.GRAND_TREE_F0_LADDER, new WorldPoint(2466, 3495, 0), "");
+		var climbGrandTreeF3ToF2 = new ObjectStep(quest, QHObjectID.GRAND_TREE_F3_LADDER, new WorldPoint(2466, 3495, 3), "");
+		var climbGrandTreeF2ToF1 = new ObjectStep(quest, QHObjectID.GRAND_TREE_F2_LADDER, new WorldPoint(2466, 3495, 2), "");
 		climbGrandTreeF2ToF1.addDialogStep("Climb Down.");
 		climbUpToGianneJnr.setText(talkToGianneJnr.getText());
 		climbUpToGianneJnr.addTeleport(teleToStronghold);

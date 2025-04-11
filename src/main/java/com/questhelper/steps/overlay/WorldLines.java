@@ -25,21 +25,20 @@
 package com.questhelper.steps.overlay;
 
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Line2D;
-import java.util.List;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.util.List;
 
 public class WorldLines
 {
@@ -92,15 +91,15 @@ public class WorldLines
 			Line2D.Double line = new Line2D.Double(startPosOnMinimap.getX(), startPosOnMinimap.getY(), destinationPosOnMinimap.getX(), destinationPosOnMinimap.getY());
 
 			Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
-			Widget minimapWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_MINIMAP_DRAW_AREA);
+			Widget minimapWidget = client.getWidget(InterfaceID.ToplevelOsrsStretch.MINIMAP);
 
 			if (minimapWidget == null)
 			{
-				minimapWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_DRAW_AREA);
+				minimapWidget = client.getWidget(InterfaceID.ToplevelPreEoc.MINIMAP);
 			}
 			if (minimapWidget == null)
 			{
-				minimapWidget = client.getWidget(ComponentID.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+				minimapWidget = client.getWidget(InterfaceID.Toplevel.MINIMAP);
 			}
 
 			if (minimapWidget != null)

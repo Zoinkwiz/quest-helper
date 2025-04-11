@@ -27,16 +27,15 @@ package com.questhelper.helpers.quests.shadowofthestorm;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
-import java.util.Collections;
-import net.runelite.api.ItemID;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
-
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.Collections;
 
 public class IncantationStep extends DetailedQuestStep
 {
@@ -90,7 +89,7 @@ public class IncantationStep extends DetailedQuestStep
 	public IncantationStep(QuestHelper questHelper, boolean reverse)
 	{
 		super(questHelper, "Click the demonic sigil and read the incantation.");
-		ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
+		ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.AGRITH_SIGIL);
 		sigilHighlighted.setHighlightInInventory(true);
 		this.addItemRequirements(Collections.singletonList(sigilHighlighted));
 		this.reverse = reverse;
@@ -107,7 +106,7 @@ public class IncantationStep extends DetailedQuestStep
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		int groupId = event.getGroupId();
-		if (groupId == InterfaceID.DIALOG_OPTION)
+		if (groupId == InterfaceID.CHATMENU)
 		{
 			clientThread.invokeLater(this::updateChoiceIfRequired);
 		}
@@ -127,7 +126,8 @@ public class IncantationStep extends DetailedQuestStep
 			return;
 		}
 
-		if (widget.getId() != ComponentID.INVENTORY_CONTAINER) {
+		if (widget.getId() != InterfaceID.INVENTORY)
+		{
 			return;
 		}
 
@@ -156,7 +156,7 @@ public class IncantationStep extends DetailedQuestStep
 
 	private boolean shouldUpdateChoice()
 	{
-		Widget widget = client.getWidget(InterfaceID.DIALOG_OPTION, 1);
+		Widget widget = client.getWidget(InterfaceID.CHATMENU, 1);
 		if (widget == null)
 		{
 			return false;

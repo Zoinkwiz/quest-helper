@@ -25,11 +25,11 @@
 package com.questhelper.steps.widget;
 
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+
 import java.awt.*;
 
 public class WidgetHighlight extends AbstractWidgetHighlight

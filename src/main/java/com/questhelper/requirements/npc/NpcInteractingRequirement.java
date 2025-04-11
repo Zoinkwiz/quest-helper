@@ -28,11 +28,11 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.SimpleRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import java.util.Arrays;
-import java.util.List;
 import com.questhelper.util.Utils;
 import net.runelite.api.Client;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class NpcInteractingRequirement extends SimpleRequirement
 {

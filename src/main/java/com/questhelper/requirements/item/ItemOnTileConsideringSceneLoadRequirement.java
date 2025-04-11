@@ -4,15 +4,16 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import com.questhelper.requirements.location.TileIsLoadedRequirement;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ItemOnTileConsideringSceneLoadRequirement implements InitializableRequirement
 {

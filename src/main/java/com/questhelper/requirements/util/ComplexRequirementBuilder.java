@@ -28,9 +28,10 @@ package com.questhelper.requirements.util;
 
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
+
+import javax.annotation.Nonnull;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.Nonnull;
 
 /**
  * Builder class for making building {@link ComplexRequirement}s easier.<br>

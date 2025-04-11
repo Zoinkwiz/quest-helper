@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.achievementdiaries.wilderness;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -39,26 +39,23 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class WildernessEasy extends ComplexStateQuestHelper
 {
@@ -141,18 +138,18 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notLowAlch = new VarplayerRequirement(1192, false, 1);
-		notWildyLever = new VarplayerRequirement(1192, false, 2);
-		notChaosAltar = new VarplayerRequirement(1192, false, 3);
-		notChaosTemple = new VarplayerRequirement(1192, false, 4);
-		notKillMammoth = new VarplayerRequirement(1192, false, 5);
-		notEarthWarrior = new VarplayerRequirement(1192, false, 6);
-		notDemonicPrayer = new VarplayerRequirement(1192, false, 7);
-		notEnterKBDLair = new VarplayerRequirement(1192, false, 8);
-		notSpiderEggs = new VarplayerRequirement(1192, false, 9);
-		notIronOre = new VarplayerRequirement(1192, false, 10);
-		notEnterAbyss = new VarplayerRequirement(1192, false, 11);
-		notEquipTeamCape = new VarplayerRequirement(1192, false, 12);
+		notLowAlch = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 1);
+		notWildyLever = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 2);
+		notChaosAltar = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 3);
+		notChaosTemple = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 4);
+		notKillMammoth = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 5);
+		notEarthWarrior = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 6);
+		notDemonicPrayer = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 7);
+		notEnterKBDLair = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 8);
+		notSpiderEggs = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 9);
+		notIronOre = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 10);
+		notEnterAbyss = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 11);
+		notEquipTeamCape = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 12);
 
 		firstTimeAbyss = new VarbitRequirement(626, 1);
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
@@ -193,13 +190,13 @@ public class WildernessEasy extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		killMammoth = new NpcStep(this, NpcID.MAMMOTH, new WorldPoint(3164, 3593, 0),
+		killMammoth = new NpcStep(this, NpcID.WILDERNESS_MAMMOTH, new WorldPoint(3164, 3593, 0),
 			"Kill a Mammoth in the Wilderness.", combatGear);
 
-		moveToEdgeSpider = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+		moveToEdgeSpider = new ObjectStep(this, ObjectID.TRAPDOOR_OPEN, new WorldPoint(3097, 3468, 0),
 			"Enter the Edgeville dungeon.", food);
 
-		moveToEdgeEarth = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+		moveToEdgeEarth = new ObjectStep(this, ObjectID.TRAPDOOR_OPEN, new WorldPoint(3097, 3468, 0),
 			"Enter the Edgeville dungeon.", combatGear, food);
 
 		moveToWildy = new DetailedQuestStep(this, "Enter the Wilderness.", teamCape);
@@ -212,39 +209,39 @@ public class WildernessEasy extends ComplexStateQuestHelper
 
 		moveToFount = new DetailedQuestStep(this, new WorldPoint(3374, 3893, 0),
 			"Go to the Fountain of Rune with an item you can cast Low Alchemy on.");
-		lowAlch = new ObjectStep(this, ObjectID.FOUNTAIN_OF_RUNE, new WorldPoint(3374, 3893, 0),
+		lowAlch = new ObjectStep(this, ObjectID.FOUNTAIN_OF_RUNE_OBELISK_DESKTOP, new WorldPoint(3374, 3893, 0),
 			"Cast Low Alchemy on anything.");
 
-		abyssEnable = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3385, 0),
+		abyssEnable = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3259, 3385, 0),
 			"Speak with the Mage of Zamorak in Varrock and ask him about the Abyss.");
-		enterAbyss = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3105, 3556, 0),
+		enterAbyss = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1B, new WorldPoint(3105, 3556, 0),
 			"Speak with the Mage of Zamorak in the Wilderness to teleport to the Abyss.");
 
-		ironOre = new ObjectStep(this, ObjectID.IRON_ROCKS, new WorldPoint(3104, 3570, 0),
+		ironOre = new ObjectStep(this, ObjectID.IRONROCK1, new WorldPoint(3104, 3570, 0),
 			"Mine iron in the Wilderness.", pickaxe);
 
 		spiderEggs = new ItemStep(this, new WorldPoint(3122, 9953, 0), "Pickup 5 red spider eggs in the Edgeville " +
 			"Wilderness Dungeon.", redSpiderEggs);
 
-		earthWarrior = new NpcStep(this, NpcID.EARTH_WARRIOR, new WorldPoint(3121, 9972, 0),
+		earthWarrior = new NpcStep(this, NpcID.EARTHWARRIOR, new WorldPoint(3121, 9972, 0),
 			"Kill an Earth warrior in the north of the Edgeville Wilderness Dungeon.", combatGear, food);
 
-		wildyLever = new ObjectStep(this, ObjectID.LEVER_26761, new WorldPoint(3090, 3475, 0),
+		wildyLever = new ObjectStep(this, ObjectID.EDGEVILLE_WILDY_LEVER, new WorldPoint(3090, 3475, 0),
 			"Pull the Lever in Edgeville. This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
 
 		demonicPrayer = new DetailedQuestStep(this, new WorldPoint(3288, 3886, 0),
 			"Stand in the Demonic Ruins until the ruins automatically restore a prayer point for you. You must be at " +
 				"less than your max prayer points.");
 
-		chaosAltar = new ObjectStep(this, ObjectID.CHAOS_ALTAR_411, new WorldPoint(2947, 3821, 0),
+		chaosAltar = new ObjectStep(this, ObjectID.CHAOSALTAR, new WorldPoint(2947, 3821, 0),
 			"Pray at the Chaos Altar.");
 
-		enterKBDLair = new ObjectStep(this, ObjectID.LADDER_18987, new WorldPoint(3017, 3849, 0),
+		enterKBDLair = new ObjectStep(this, ObjectID.WILDYMIRRORLADDERTOP1, new WorldPoint(3017, 3849, 0),
 			"Climb down the ladder that leads to the King Black Dragon Lair.", oneClick);
-		enterKBDLair2 = new ObjectStep(this, ObjectID.LEVER_1816, new WorldPoint(3067, 10253, 0),
+		enterKBDLair2 = new ObjectStep(this, ObjectID.DRAGONKINGINLEVER, new WorldPoint(3067, 10253, 0),
 			"Pull the lever to enter the King Black Dragon lair.", oneClick);
 
-		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC, new WorldPoint(3121, 3518, 0),
+		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC_DIARY, new WorldPoint(3121, 3518, 0),
 			"Talk to the Lesser Fanatic in Edgeville to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -284,8 +281,8 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Wilderness Sword 1", ItemID.WILDERNESS_SWORD_1),
-			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Wilderness Sword 1", ItemID.WILDERNESS_SWORD_EASY),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

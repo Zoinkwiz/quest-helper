@@ -24,37 +24,29 @@
  */
 package com.questhelper.helpers.quests.whatliesbelow;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class WhatLiesBelow extends BasicQuestHelper
 {
@@ -131,35 +123,35 @@ public class WhatLiesBelow extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		intel5 = new ItemRequirement("Rat's paper", ItemID.RATS_PAPER, 5);
+		intel5 = new ItemRequirement("Rat's paper", ItemID.SUROK_PAPER, 5);
 		intel5.setHighlightInInventory(true);
-		emptyFolder = new ItemRequirement("An empty folder", ItemID.AN_EMPTY_FOLDER);
+		emptyFolder = new ItemRequirement("An empty folder", ItemID.SUROK_RAT_EMPTYFOLDER);
 		// Varbit 3525 0,1,2,3,4,5 is fullness of folder
-		usedFolder = new ItemRequirement("Used folder", ItemID.USED_FOLDER);
-		fullFolder = new ItemRequirement("Full folder", ItemID.FULL_FOLDER);
+		usedFolder = new ItemRequirement("Used folder", ItemID.SUROK_RAT_HALFFOLDER);
+		fullFolder = new ItemRequirement("Full folder", ItemID.SUROK_RAT_FULLFOLDER);
 
-		folder = new ItemRequirement("Folder", ItemID.AN_EMPTY_FOLDER);
-		folder.addAlternates(ItemID.USED_FOLDER, ItemID.FULL_FOLDER);
+		folder = new ItemRequirement("Folder", ItemID.SUROK_RAT_EMPTYFOLDER);
+		folder.addAlternates(ItemID.SUROK_RAT_HALFFOLDER, ItemID.SUROK_RAT_FULLFOLDER);
 		folder.setTooltip("You can get another empty folder from Rat");
 		folder.setHighlightInInventory(true);
 
-		bowl = new ItemRequirement("Bowl", ItemID.BOWL);
-		chaosRunes15 = new ItemRequirement("Chaos runes", ItemID.CHAOS_RUNE, 15);
-		wand = new ItemRequirement("Wand", ItemID.WAND);
-		wandHighlight = new ItemRequirement("Wand", ItemID.WAND);
+		bowl = new ItemRequirement("Bowl", ItemID.BOWL_EMPTY);
+		chaosRunes15 = new ItemRequirement("Chaos runes", ItemID.CHAOSRUNE, 15);
+		wand = new ItemRequirement("Wand", ItemID.SUROK_METALWAND);
+		wandHighlight = new ItemRequirement("Wand", ItemID.SUROK_METALWAND);
 		wandHighlight.setHighlightInInventory(true);
 
-		infusedWand = new ItemRequirement("Infused wand", ItemID.INFUSED_WAND);
+		infusedWand = new ItemRequirement("Infused wand", ItemID.SUROK_GLOWINGWAND);
 		infusedWand.setTooltip("You can make another by getting a wand from Surok, and using it on the chaos altar with 15 chaos runes");
 		chaosTalismanOrAbyss = new ItemRequirement("Chaos Talisman or access to the Abyss", ItemID.CHAOS_TALISMAN).isNotConsumed();
 
-		beaconRing = new ItemRequirement("Beacon ring", ItemID.BEACON_RING);
+		beaconRing = new ItemRequirement("Beacon ring", ItemID.SUROK_RING);
 		beaconRing.setTooltip("You can get another from Zaff");
 
-		letterToSurok = new ItemRequirement("Letter to Surok", ItemID.LETTER_TO_SUROK);
+		letterToSurok = new ItemRequirement("Letter to Surok", ItemID.SUROK_LETTER1);
 		letterToSurok.setTooltip("You can get another from Rat");
 
-		suroksLetter = new ItemRequirement("Surok's letter", ItemID.SUROKS_LETTER);
+		suroksLetter = new ItemRequirement("Surok's letter", ItemID.SUROK_LETTER2);
 		suroksLetter.setTooltip("You can get another from Surok");
 
 		chronicle = new ItemRequirement("Chronicle for teleports to south of Varrock", ItemID.CHRONICLE);
@@ -179,39 +171,39 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToRat = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Talk to Rat Burgiss south of Varrock.");
+		talkToRat = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Talk to Rat Burgiss south of Varrock.");
 		talkToRat.addDialogStep("Shall I get them back for you?");
 		talkToRat.addDialogStep("Of course! Tell me what you need me to do.");
-		killOutlaws = new NpcStep(this, NpcID.OUTLAW, new WorldPoint(3118, 3472, 0),
+		killOutlaws = new NpcStep(this, NpcID.SUROK_OUTLAW1, new WorldPoint(3118, 3472, 0),
 			"Go to the Bandits west of the Grand Exchange and kill 5 for intel. Put the intel into the folder Rat gave you.", true, folder, intel5);
-		killOutlaws.addAlternateNpcs(NpcID.OUTLAW_4168, NpcID.OUTLAW_4169, NpcID.OUTLAW_4170, NpcID.OUTLAW_4171, NpcID.OUTLAW_4172, NpcID.OUTLAW_4173, NpcID.OUTLAW_4174, NpcID.OUTLAW_4175, NpcID.OUTLAW_4176);
-		bringFolderToRat = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.", fullFolder);
-		talkToRatAfterFolder = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.");
+		killOutlaws.addAlternateNpcs(NpcID.SUROK_OUTLAW2, NpcID.SUROK_OUTLAW3, NpcID.SUROK_OUTLAW4, NpcID.SUROK_OUTLAW5, NpcID.SUROK_OUTLAW6, NpcID.SUROK_OUTLAW7, NpcID.SUROK_OUTLAW8, NpcID.SUROK_OUTLAW9, NpcID.SUROK_OUTLAW10);
+		bringFolderToRat = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.", fullFolder);
+		talkToRatAfterFolder = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.");
 		bringFolderToRat.addSubSteps(talkToRatAfterFolder);
 
-		talkToSurok = new NpcStep(this, NpcID.SUROK_MAGIS, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.", letterToSurok);
-		talkToSurokNoLetter = new NpcStep(this, NpcID.SUROK_MAGIS, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.");
+		talkToSurok = new NpcStep(this, NpcID.WGS_SUROK_TRANSITION, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.", letterToSurok);
+		talkToSurokNoLetter = new NpcStep(this, NpcID.WGS_SUROK_TRANSITION, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.");
 		talkToSurokNoLetter.addDialogSteps("Go on, then!", "Go on then!");
 
 		talkToSurok.addSubSteps(talkToSurokNoLetter);
 
 		enterChaosAltar = new DetailedQuestStep(this,
 			"Travel to the chaos altar with the wand and 15 chaos runes. You can either enter with a chaos talisman, or use the abyss.", wand, chaosRunes15, chaosTalismanOrAbyss);
-		useWandOnAltar = new ObjectStep(this, ObjectID.ALTAR_34769, new WorldPoint(2271, 4842, 0), "Use the wand on the chaos altar.", wandHighlight, chaosRunes15);
-		useWandOnAltar.addIcon(ItemID.WAND);
-		bringWandToSurok = new NpcStep(this, NpcID.SUROK_MAGIS, new WorldPoint(3211, 3493, 0), "Return to Surok Magis in the Varrock Library with the wand and a bowl.", infusedWand, bowl);
+		useWandOnAltar = new ObjectStep(this, ObjectID.CHAOS_ALTAR, new WorldPoint(2271, 4842, 0), "Use the wand on the chaos altar.", wandHighlight, chaosRunes15);
+		useWandOnAltar.addIcon(ItemID.SUROK_METALWAND);
+		bringWandToSurok = new NpcStep(this, NpcID.WGS_SUROK_TRANSITION, new WorldPoint(3211, 3493, 0), "Return to Surok Magis in the Varrock Library with the wand and a bowl.", infusedWand, bowl);
 		bringWandToSurok.addDialogStep("I have the things you wanted!");
-		talkToRatAfterSurok = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.", suroksLetter);
+		talkToRatAfterSurok = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.", suroksLetter);
 		talkToRatAfterSurok.addDialogStep("Yes! I have a letter for you.");
 
-		talkToRatAfterSurokNoLetter = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.");
+		talkToRatAfterSurokNoLetter = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.");
 
 		talkToZaff = new NpcStep(this, NpcID.ZAFF, new WorldPoint(3202, 3434, 0), "Talk to Zaff in the Varrock staff shop.");
 		talkToZaff.addDialogStep("Rat Burgiss sent me!");
-		talkToSurokToFight = new NpcStep(this, NpcID.SUROK_MAGIS_4160, new WorldPoint(3211, 3493, 0), "Prepare to fight King Roald (level 47), then go talk to Surok Magis in the Varrock Library.", beaconRing);
+		talkToSurokToFight = new NpcStep(this, NpcID.SUROK_SUROK_TYPE2, new WorldPoint(3211, 3493, 0), "Prepare to fight King Roald (level 47), then go talk to Surok Magis in the Varrock Library.", beaconRing);
 		talkToSurokToFight.addDialogStep("Bring it on!");
-		fightRoald = new NpcStep(this, NpcID.KING_ROALD_4163, new WorldPoint(3211, 3493, 0), "Fight King Roald. When he's at 1hp, right-click operate the beacon ring.", beaconRing);
-		talkToRatToFinish = new NpcStep(this, NpcID.RAT_BURGISS, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock to finish the quest.");
+		fightRoald = new NpcStep(this, NpcID.SUROK_KING, new WorldPoint(3211, 3493, 0), "Fight King Roald. When he's at 1hp, right-click operate the beacon ring.", beaconRing);
+		talkToRatToFinish = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock to finish the quest.");
 	}
 
 	@Override
@@ -269,7 +261,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("The Beacon Ring", ItemID.BEACON_RING, 1));
+		return Collections.singletonList(new ItemReward("The Beacon Ring", ItemID.SUROK_RING, 1));
 	}
 
 	@Override

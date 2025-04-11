@@ -26,16 +26,17 @@
  */
 package com.questhelper.requirements.npc;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.AbstractRequirement;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.questhelper.requirements.zone.Zone;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class NpcRequirement extends AbstractRequirement
 {

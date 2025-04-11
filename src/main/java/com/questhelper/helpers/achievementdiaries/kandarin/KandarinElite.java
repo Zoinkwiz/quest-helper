@@ -24,36 +24,38 @@
  */
 package com.questhelper.helpers.achievementdiaries.kandarin;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import com.questhelper.requirements.util.Spellbook;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
 
 public class KandarinElite extends ComplexStateQuestHelper
 {
@@ -125,30 +127,30 @@ public class KandarinElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notbarb5 = new VarplayerRequirement(1179, false, 5);
-		notPickDwarf = new VarplayerRequirement(1179, false, 6);
-		not5Shark = new VarplayerRequirement(1179, false, 7);
-		notStamMix = new VarplayerRequirement(1179, false, 8);
-		notRuneHasta = new VarplayerRequirement(1179, false, 9);
-		notPyre = new VarplayerRequirement(1179, false, 10);
-		notTPCath = new VarplayerRequirement(1179, false, 11);
+		notbarb5 = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 5);
+		notPickDwarf = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 6);
+		not5Shark = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 7);
+		notStamMix = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 8);
+		notRuneHasta = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 9);
+		notPyre = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 10);
+		notTPCath = new VarplayerRequirement(VarPlayerID.KANDARIN_ACHIEVEMENT_DIARY2, false, 11);
 		bothLogs = new ComplexRequirement(LogicType.AND, "Magic logs", notRuneHasta, notPyre);
 
 		// BA levels
-		notHeal = new VarbitRequirement(3255, 4, Operation.LESS_EQUAL);
-		notAtk = new VarbitRequirement(3251, 4, Operation.LESS_EQUAL);
-		notDef = new VarbitRequirement(3252, 4, Operation.LESS_EQUAL);
-		notCol = new VarbitRequirement(3254, 4, Operation.LESS_EQUAL);
+		notHeal = new VarbitRequirement(VarbitID.BARBASSULT_ROLELEVEL_HEAL, 4, Operation.LESS_EQUAL);
+		notAtk = new VarbitRequirement(VarbitID.BARBASSULT_ROLELEVEL_ATT, 4, Operation.LESS_EQUAL);
+		notDef = new VarbitRequirement(VarbitID.BARBASSAULT_USINGHORN, 4, Operation.LESS_EQUAL);
+		notCol = new VarbitRequirement(VarbitID.BARBASSULT_ROLELEVEL_COL, 4, Operation.LESS_EQUAL);
 
 		dwarfSeed = new ItemRequirement("Dwarf weed seed", ItemID.DWARF_WEED_SEED).showConditioned(notPickDwarf);
-		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickDwarf).isNotConsumed();
+		seedDib = new ItemRequirement("Seed dibber", ItemID.DIBBER).showConditioned(notPickDwarf).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickDwarf).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickDwarf).isNotConsumed();
 		compost = new ItemRequirement("Any compost", ItemCollections.COMPOST).showConditioned(notPickDwarf);
 		harpoon = new ItemRequirement("Harpoon", ItemID.HARPOON).showConditioned(not5Shark).isNotConsumed();
-		cookingGaunt = new ItemRequirement("Cooking gauntlets", ItemID.COOKING_GAUNTLETS).showConditioned(not5Shark).isNotConsumed();
-		stamPot = new ItemRequirement("Stamina potion (2)", ItemID.STAMINA_POTION2).showConditioned(notStamMix);
-		caviar = new ItemRequirement("Caviar", ItemID.CAVIAR).showConditioned(notStamMix);
+		cookingGaunt = new ItemRequirement("Cooking gauntlets", ItemID.GAUNTLETS_OF_COOKING).showConditioned(not5Shark).isNotConsumed();
+		stamPot = new ItemRequirement("Stamina potion (2)", ItemID._2DOSESTAMINA).showConditioned(notStamMix);
+		caviar = new ItemRequirement("Caviar", ItemID.BRUT_CAVIAR).showConditioned(notStamMix);
 		runiteBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR).showConditioned(notRuneHasta);
 		magicLogs1 = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 1)
 			.showConditioned(new Conditions(new Conditions(LogicType.OR, notRuneHasta, notPyre), new Conditions(LogicType.NOR, bothLogs)));
@@ -156,13 +158,13 @@ public class KandarinElite extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notRuneHasta, notPyre));
 		magicLogs = new ItemRequirement("Magic logs", ItemID.MAGIC_LOGS, 1);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneHasta).isNotConsumed();
-		chewedBone = new ItemRequirement("Chewed bones", ItemID.CHEWED_BONES).showConditioned(notPyre);
+		chewedBone = new ItemRequirement("Chewed bones", ItemID.BRUT_BARBARIAN_BONES).showConditioned(notPyre);
 		chewedBone.setTooltip("These are a rare drop from mithril dragons");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notPyre).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notPyre).isNotConsumed();
-		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE).showConditioned(notTPCath);
-		astralRune = new ItemRequirement("Astral runes", ItemID.ASTRAL_RUNE).showConditioned(notTPCath);
-		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notTPCath);
+		lawRune = new ItemRequirement("Law runes", ItemID.LAWRUNE).showConditioned(notTPCath);
+		astralRune = new ItemRequirement("Astral runes", ItemID.ASTRALRUNE).showConditioned(notTPCath);
+		waterRune = new ItemRequirement("Water runes", ItemID.WATERRUNE).showConditioned(notTPCath);
 		rawShark = new ItemRequirement("Raw shark", ItemID.RAW_SHARK).showConditioned(not5Shark);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).showConditioned(notbarb5).isNotConsumed();
@@ -210,33 +212,33 @@ public class KandarinElite extends ComplexStateQuestHelper
 	{
 		tpCath = new DetailedQuestStep(this, "Teleport to Catherby.",
 			lunarBook, waterRune.quantity(10), astralRune.quantity(3), lawRune.quantity(3));
-		plantAndPickDwarf = new ObjectStep(this, NullObjectID.NULL_8151, new WorldPoint(2814, 3464, 0),
+		plantAndPickDwarf = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_2, new WorldPoint(2814, 3464, 0),
 			"Plant and harvest the dwarf weed from the Catherby patch. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			rake, dwarfSeed, seedDib);
-		catch5Sharks = new NpcStep(this, NpcID.FISHING_SPOT_1520, new WorldPoint(2837, 3431, 0),
+		catch5Sharks = new NpcStep(this, NpcID._0_44_53_MEMBERFISH, new WorldPoint(2837, 3431, 0),
 			"Catch 5 sharks in Catherby.", harpoon, cookingGaunt.equipped());
-		cook5Sharks = new ObjectStep(this, ObjectID.RANGE_26181, new WorldPoint(2817, 3444, 0),
+		cook5Sharks = new ObjectStep(this, ObjectID.RANGE, new WorldPoint(2817, 3444, 0),
 			"Successfully cook 5 on the range in Catherby.", cookingGaunt.equipped());
-		moveToSeersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
+		moveToSeersRooftop = new ObjectStep(this, ObjectID.ROOFTOPS_SEERS_WALLCLIMB, new WorldPoint(2729, 3489, 0),
 			"Climb on top of Seers' Bank.", stamPot, caviar);
 		stamMix = new ItemStep(this, "Create a stamina mix.", stamPot.highlighted(), caviar.highlighted());
-		runeHasta = new ObjectStep(this, ObjectID.BARBARIAN_ANVIL, new WorldPoint(2502, 3485, 0),
+		runeHasta = new ObjectStep(this, ObjectID.BRUT_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Smith a rune hasta on the barbarian anvil near Otto.", runiteBar, magicLogs, hammer);
 		runeHasta.addIcon(ItemID.RUNITE_BAR);
-		pyre = new ObjectStep(this, ObjectID.PYRE_SITE, new WorldPoint(2519, 3519, 0),
+		pyre = new ObjectStep(this, ObjectID.BRUT_BURNED_GROUND, new WorldPoint(2519, 3519, 0),
 			"Construct a pyre ship from magic logs.", magicLogs, chewedBone, tinderbox, axe);
 		barb5Heal = new DetailedQuestStep(this, "Get to level 5 in the healer role at Barbarian Assault.");
 		barb5Atk = new DetailedQuestStep(this, "Get to level 5 in the attacker role at Barbarian Assault.");
 		barb5Def = new DetailedQuestStep(this, "Get to level 5 in the defender role at Barbarian Assault.");
 		barb5Col = new DetailedQuestStep(this, "Get to level 5 in the collector role at Barbarian Assault.");
-		barb5 = new ObjectStep(this, ObjectID.BLACKBOARD_20134, new WorldPoint(2535, 3569, 0),
+		barb5 = new ObjectStep(this, ObjectID.BARBASSAULT_BLACKBOARD, new WorldPoint(2535, 3569, 0),
 			"Click one of the blackboards around Barbarian Assault!");
-		barb52 = new ObjectStep(this, ObjectID.BLACKBOARD_20134, new WorldPoint(2587, 5264, 0),
+		barb52 = new ObjectStep(this, ObjectID.BARBASSAULT_BLACKBOARD, new WorldPoint(2587, 5264, 0),
 			"Click one of the blackboards around Barbarian Assault!");
 		barb5.addSubSteps(barb52);
 
-		claimReward = new NpcStep(this, NpcID.THE_WEDGE, new WorldPoint(2760, 3476, 0),
+		claimReward = new NpcStep(this, NpcID.SEERS_DIARY_WEDGE, new WorldPoint(2760, 3476, 0),
 			"Talk to the 'Wedge' in front of Camelot Castle to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -284,8 +286,8 @@ public class KandarinElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Kandarin headgear (4)", ItemID.KANDARIN_HEADGEAR_4, 1),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Kandarin headgear (4)", ItemID.SEERS_HEADBAND_ELITE, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

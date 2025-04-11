@@ -25,18 +25,15 @@
 package com.questhelper.helpers.quests.lunardiplomacy;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.EmoteStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.NpcID;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.api.NpcID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.VarbitChanged;
 
 public class MimicChallenge extends DetailedOwnerStep
 {
@@ -54,7 +51,7 @@ public class MimicChallenge extends DetailedOwnerStep
 		dance = new EmoteStep(getQuestHelper(), QuestEmote.DANCE, new WorldPoint(1772, 5070, 2), "Perform the dance emote.");
 		wave = new EmoteStep(getQuestHelper(), QuestEmote.WAVE, new WorldPoint(1767, 5061, 2), "Perform the wave emote.");
 		think = new EmoteStep(getQuestHelper(), QuestEmote.THINK, new WorldPoint(1772, 5070, 2), "Perform the think emote.");
-		talk = new NpcStep(getQuestHelper(), NpcID.ETHEREAL_MIMIC, "Talk to the Ethereal Mimic.");
+		talk = new NpcStep(getQuestHelper(), NpcID.LUNAR_MOON_DREAM_MUSIC_GAME_MAN, "Talk to the Ethereal Mimic.");
 		talk.addDialogStep("Suppose I may as well have a go.");
 	}
 

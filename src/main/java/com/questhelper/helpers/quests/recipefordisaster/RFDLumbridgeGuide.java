@@ -25,15 +25,16 @@
 package com.questhelper.helpers.quests.recipefordisaster;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -42,16 +43,14 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-
-import java.util.*;
-
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class RFDLumbridgeGuide extends BasicQuestHelper
 {
@@ -99,28 +98,28 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
-		flour = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
+		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
+		flour = new ItemRequirement("Pot of flour", ItemID.POT_FLOUR);
 		egg = new ItemRequirement("Egg", ItemID.EGG);
 		tin = new ItemRequirement("Cake tin", ItemID.CAKE_TIN);
 		tinHighlighted = new ItemRequirement("Cake tin", ItemID.CAKE_TIN);
 		tinHighlighted.setHighlightInInventory(true);
-		enchantedEgg = new ItemRequirement("Enchanted egg", ItemID.ENCHANTED_EGG);
+		enchantedEgg = new ItemRequirement("Enchanted egg", ItemID._100GUIDE_EGG);
 		enchantedEgg.setTooltip("You can get another from Traiborn if you've lost it");
 
-		enchantedFlour = new ItemRequirement("Enchanted flour", ItemID.ENCHANTED_FLOUR);
+		enchantedFlour = new ItemRequirement("Enchanted flour", ItemID._100GUIDE_POT_FLOUR);
 		enchantedFlour.setTooltip("You can get another from Traiborn if you've lost it");
 
-		enchantedMilk = new ItemRequirement("Enchanted milk", ItemID.ENCHANTED_MILK);
+		enchantedMilk = new ItemRequirement("Enchanted milk", ItemID._100GUIDE_BUCKET_MILK);
 		enchantedMilk.setTooltip("You can get another from Traiborn if you've lost it");
 		enchantedMilk.setHighlightInInventory(true);
 
-		rawGuidanceCake = new ItemRequirement("Raw guide cake", ItemID.RAW_GUIDE_CAKE);
-		guidanceCake = new ItemRequirement("Guidance cake", ItemID.CAKE_OF_GUIDANCE);
-		guidanceCakeHighlighted = new ItemRequirement("Guidance cake", ItemID.CAKE_OF_GUIDANCE);
+		rawGuidanceCake = new ItemRequirement("Raw guide cake", ItemID._100GUIDE_GUIDECAKE_UNCOOKED);
+		guidanceCake = new ItemRequirement("Guidance cake", ItemID._100GUIDE_GUIDECAKE);
+		guidanceCakeHighlighted = new ItemRequirement("Guidance cake", ItemID._100GUIDE_GUIDECAKE);
 		guidanceCakeHighlighted.setHighlightInInventory(true);
 
-		lumbridgeTeleport = new ItemRequirement("Lumbridge Teleport", ItemID.LUMBRIDGE_TELEPORT);
+		lumbridgeTeleport = new ItemRequirement("Lumbridge Teleport", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 		wizardsTowerTeleport = new ItemRequirement("Necklace of Passage for Wizards' Tower teleport", ItemCollections.NECKLACE_OF_PASSAGES);
 	}
 
@@ -140,24 +139,24 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterDiningRoom = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
+		enterDiningRoom = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOUBLEDOORL, new WorldPoint(3213, 3221, 0),
 			"Go inspect the Lumbridge Guide in the Lumbridge Castle dining room.");
 		enterDiningRoom.addTeleport(lumbridgeTeleport);
-		inspectLumbridgeGuide = new ObjectStep(this, ObjectID.LUMBRIDGE_GUIDE_12339, new WorldPoint(1865, 5325, 0),
+		inspectLumbridgeGuide = new ObjectStep(this, ObjectID.HUNDRED_GUIDE_BASE, new WorldPoint(1865, 5325, 0),
 			"Inspect the Lumbridge Guide in the Lumbridge Castle dining room.");
 		inspectLumbridgeGuide.addDialogSteps("Yes, I'm sure I can make a cake.");
 		inspectLumbridgeGuide.addSubSteps(enterDiningRoom);
 
-		goUpToTraiborn = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(3104, 3160, 0),
+		goUpToTraiborn = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS, new WorldPoint(3104, 3160, 0),
 			"Go talk to Traiborn in the Wizards' Tower.", egg, flour, milk, tin);
 		goUpToTraiborn.addDialogStep("Wizards' Tower");
 		goUpToTraiborn.addTeleport(wizardsTowerTeleport);
 		talkToTraiborn = new QuizSteps(this);
 
 		cookCake = new DetailedQuestStep(this, "Cook the Guidance Cake.", rawGuidanceCake);
-		enterDiningRoomAgain = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Use the Guidance Cake on the Lumbridge Guide to finish the quest.", guidanceCake);
-		useCakeOnLumbridgeGuide = new ObjectStep(this, ObjectID.LUMBRIDGE_GUIDE_12339, new WorldPoint(1865, 5325, 0), "Use the Guidance Cake on the Lumbridge Guide to finish the quest.", guidanceCakeHighlighted);
-		useCakeOnLumbridgeGuide.addIcon(ItemID.CAKE_OF_GUIDANCE);
+		enterDiningRoomAgain = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOOR, new WorldPoint(3207, 3217, 0), "Use the Guidance Cake on the Lumbridge Guide to finish the quest.", guidanceCake);
+		useCakeOnLumbridgeGuide = new ObjectStep(this, ObjectID.HUNDRED_GUIDE_BASE, new WorldPoint(1865, 5325, 0), "Use the Guidance Cake on the Lumbridge Guide to finish the quest.", guidanceCakeHighlighted);
+		useCakeOnLumbridgeGuide.addIcon(ItemID._100GUIDE_GUIDECAKE);
 		useCakeOnLumbridgeGuide.addSubSteps(enterDiningRoomAgain);
 
 		mixIngredients = new DetailedQuestStep(this, "Talk to Traiborn for the enchanted ingredients, then mix them in a tin.", enchantedEgg.highlighted(), enchantedFlour.highlighted(), enchantedMilk.highlighted(), tin.highlighted());

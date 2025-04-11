@@ -24,48 +24,39 @@
  */
 package com.questhelper.helpers.miniquests.hisfaithfulservants;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ManualRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.QuestState;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.*;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.runelite.api.*;
-import net.runelite.api.annotations.Interface;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.client.eventbus.Subscribe;
-
 public class BarrowsHelper extends ComplexStateQuestHelper
 {
-	/**
-	 * The interface that contains a list of messages in a dialog
-	 */
-	static final @Interface int CHATBOX_MESSAGES_MESSAGE_LIST = 229;
-
 	// Required
 	ItemRequirement combatGear, spade;
 
@@ -179,12 +170,12 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		barrowsTeleport = new ItemRequirement("Barrows teleport", ItemID.BARROWS_TELEPORT);
+		barrowsTeleport = new ItemRequirement("Barrows teleport", ItemID.TELETAB_BARROWS);
 		strangeOldLockpick = new ItemRequirement("Strange old lockpick", ItemID.STRANGE_OLD_LOCKPICK);
 		strangeOldLockpick.addAlternates(ItemID.STRANGE_OLD_LOCKPICK_FULL);
-		ghommalHilt2 = new ItemRequirement("Ghommal's hilt 2 or higher to remove prayer drain in crypts", ItemID.GHOMMALS_HILT_2);
-		ghommalHilt2.addAlternates(ItemID.GHOMMALS_HILT_3, ItemID.GHOMMALS_HILT_4, ItemID.GHOMMALS_HILT_5, ItemID.GHOMMALS_HILT_6,
-			ItemID.GHOMMALS_AVERNIC_DEFENDER_5, ItemID.GHOMMALS_AVERNIC_DEFENDER_5_L, ItemID.GHOMMALS_AVERNIC_DEFENDER_6, ItemID.GHOMMALS_AVERNIC_DEFENDER_6_L);
+		ghommalHilt2 = new ItemRequirement("Ghommal's hilt 2 or higher to remove prayer drain in crypts", ItemID.CA_OFFHAND_MEDIUM);
+		ghommalHilt2.addAlternates(ItemID.CA_OFFHAND_HARD, ItemID.CA_OFFHAND_ELITE, ItemID.CA_OFFHAND_MASTER, ItemID.CA_OFFHAND_GRANDMASTER,
+			ItemID.INFERNAL_DEFENDER_GHOMMAL_5, ItemID.INFERNAL_DEFENDER_GHOMMAL_5_TROUVER, ItemID.INFERNAL_DEFENDER_GHOMMAL_6, ItemID.INFERNAL_DEFENDER_GHOMMAL_6_TROUVER);
 	}
 
 	@Override
@@ -209,20 +200,20 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 		inVerac = new ZoneRequirement(veracRoom);
 		inCrypt = new ZoneRequirement(crypt);
 
-		killedAhrim = new VarbitRequirement(Varbits.BARROWS_KILLED_AHRIM, 1);
-		killedDharok = new VarbitRequirement(Varbits.BARROWS_KILLED_DHAROK, 1);
-		killedGuthan = new VarbitRequirement(Varbits.BARROWS_KILLED_GUTHAN, 1);
-		killedKaril = new VarbitRequirement(Varbits.BARROWS_KILLED_KARIL, 1);
-		killedTorag = new VarbitRequirement(Varbits.BARROWS_KILLED_TORAG, 1);
-		killedVerac = new VarbitRequirement(Varbits.BARROWS_KILLED_VERAC, 1);
+		killedAhrim = new VarbitRequirement(VarbitID.BARROWS_KILLED_AHRIM, 1);
+		killedDharok = new VarbitRequirement(VarbitID.BARROWS_KILLED_DHAROK, 1);
+		killedGuthan = new VarbitRequirement(VarbitID.BARROWS_KILLED_GUTHAN, 1);
+		killedKaril = new VarbitRequirement(VarbitID.BARROWS_KILLED_KARIL, 1);
+		killedTorag = new VarbitRequirement(VarbitID.BARROWS_KILLED_TORAG, 1);
+		killedVerac = new VarbitRequirement(VarbitID.BARROWS_KILLED_VERAC, 1);
 		killedAllSix = new Conditions(killedAhrim, killedDharok, killedGuthan, killedKaril, killedTorag, killedVerac);
 
-		dharokAttacking = new NpcInteractingRequirement(NpcID.DHAROK_THE_WRETCHED);
-		ahrimAttacking = new NpcInteractingRequirement(NpcID.AHRIM_THE_BLIGHTED);
-		karilAttacking = new NpcInteractingRequirement(NpcID.KARIL_THE_TAINTED);
-		guthanAttacking = new NpcInteractingRequirement(NpcID.GUTHAN_THE_INFESTED);
-		toragAttacking = new NpcInteractingRequirement(NpcID.TORAG_THE_CORRUPTED);
-		veracAttacking = new NpcInteractingRequirement(NpcID.VERAC_THE_DEFILED);
+		dharokAttacking = new NpcInteractingRequirement(NpcID.BARROWS_DHAROK);
+		ahrimAttacking = new NpcInteractingRequirement(NpcID.BARROWS_AHRIM);
+		karilAttacking = new NpcInteractingRequirement(NpcID.BARROWS_KARIL);
+		guthanAttacking = new NpcInteractingRequirement(NpcID.BARROWS_GUTHAN);
+		toragAttacking = new NpcInteractingRequirement(NpcID.BARROWS_TORAG);
+		veracAttacking = new NpcInteractingRequirement(NpcID.BARROWS_VERAC);
 		brotherAttacking = new Conditions(LogicType.OR, dharokAttacking, ahrimAttacking, karilAttacking, guthanAttacking, toragAttacking, veracAttacking);
 
 		isDharokTunnel = new ManualRequirement();
@@ -246,7 +237,7 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.BARROWS_NPCS_SLAIN)
+		if (event.getVarbitId() == VarbitID.BARROWS_KILLED_COUNT)
 		{
 			if (event.getValue() == 0)
 			{
@@ -268,7 +259,7 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 	{
 		if (inCrypt.check(client))
 		{
-			int currentKc = client.getVarpValue(1502);
+			int currentKc = client.getVarpValue(VarPlayerID.TOTAL_BARROWS_CHESTS);
 			if (lastKc == -1)
 			{
 				lastKc = currentKc;
@@ -289,7 +280,7 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 			}
 		}
 
-		Widget textOption = client.getWidget(CHATBOX_MESSAGES_MESSAGE_LIST, 1);
+		Widget textOption = client.getWidget(InterfaceID.Messagebox.TEXT);
 		if (textOption == null)
 		{
 			return;
@@ -334,38 +325,38 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 		enterTorag = new DigStep(this, new WorldPoint(3553, 3281, 0), "Dig on Torag's Barrow to enter it.", combatGear);
 		enterVerac = new DigStep(this, new WorldPoint(3556, 3297, 0), "Dig on Verac's Barrow to enter it.", combatGear);
 
-		searchAhrimSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20770, new WorldPoint(3555, 9699, 3),
+		searchAhrimSarc = new ObjectStep(this, ObjectID.BARROW_AHRIM_SARCOPHAGUS, new WorldPoint(3555, 9699, 3),
 			"Search Ahrim's Sarcophagus, ready to fight them. They use magic and are weak to ranged attacks.", combatGear);
-		searchDharokSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20720, new WorldPoint(3555, 9714, 3),
+		searchDharokSarc = new ObjectStep(this, ObjectID.BARROW_DHAROK_SARCOPHAGUS, new WorldPoint(3555, 9714, 3),
 			"Search Dharok's Sarcophagus, ready to fight them. They use melee and are weak to magic attacks. Be careful as they hit VERY hard at low health.", combatGear);
-		searchGuthanSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20722, new WorldPoint(3539, 9703, 3),
+		searchGuthanSarc = new ObjectStep(this, ObjectID.BARROW_GUTHAN_SARCOPHAGUS, new WorldPoint(3539, 9703, 3),
 			"Search Guthan's Sarcophagus, ready to fight them. hey use melee and are weak to magic attacks.", combatGear);
-		searchToragSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20721, new WorldPoint(3569, 9686, 3),
+		searchToragSarc = new ObjectStep(this, ObjectID.BARROW_TORAG_SARCOPHAGUS, new WorldPoint(3569, 9686, 3),
 			"Search Ahrim's Sarcophagus, ready to fight them. hey use melee and are weak to magic attacks.", combatGear);
-		searchKarilSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20771, new WorldPoint(3550, 9683, 3),
+		searchKarilSarc = new ObjectStep(this, ObjectID.BARROW_KARIL_SARCOPHAGUS, new WorldPoint(3550, 9683, 3),
 			"Search Karil's Sarcophagus, ready to fight them. They use ranged and are weak to melee attacks.", combatGear);
-		searchVeracSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20772, new WorldPoint(3573, 9706, 3),
+		searchVeracSarc = new ObjectStep(this, ObjectID.BARROW_VERAC_SARCOPHAGUS, new WorldPoint(3573, 9706, 3),
 			"Search Ahrim's Sarcophagus, ready to fight them. hey use melee and are weak to magic attacks.", combatGear);
 
-		killAhrim = new NpcStep(this, NpcID.AHRIM_THE_BLIGHTED, "Defeat Ahrim.");
+		killAhrim = new NpcStep(this, NpcID.BARROWS_AHRIM, "Defeat Ahrim.");
 		((NpcStep) killAhrim).setMustBeFocusedOnPlayer(true);
-		killDharok = new NpcStep(this, NpcID.DHAROK_THE_WRETCHED, "Defeat Dharok.");
+		killDharok = new NpcStep(this, NpcID.BARROWS_DHAROK, "Defeat Dharok.");
 		((NpcStep) killDharok).setMustBeFocusedOnPlayer(true);
-		killGuthan = new NpcStep(this, NpcID.GUTHAN_THE_INFESTED, "Defeat Guthan.");
+		killGuthan = new NpcStep(this, NpcID.BARROWS_GUTHAN, "Defeat Guthan.");
 		((NpcStep) killGuthan).setMustBeFocusedOnPlayer(true);
-		killKaril = new NpcStep(this, NpcID.KARIL_THE_TAINTED, "Defeat Karil.");
+		killKaril = new NpcStep(this, NpcID.BARROWS_KARIL, "Defeat Karil.");
 		((NpcStep) killKaril).setMustBeFocusedOnPlayer(true);
-		killTorag = new NpcStep(this, NpcID.TORAG_THE_CORRUPTED, "Defeat Torag.");
+		killTorag = new NpcStep(this, NpcID.BARROWS_TORAG, "Defeat Torag.");
 		((NpcStep) killTorag).setMustBeFocusedOnPlayer(true);
-		killVerac = new NpcStep(this, NpcID.VERAC_THE_DEFILED, "Defeat Verac.");
+		killVerac = new NpcStep(this, NpcID.BARROWS_VERAC, "Defeat Verac.");
 		((NpcStep) killVerac).setMustBeFocusedOnPlayer(true);
 
-		leaveAhrim = new ObjectStep(this, ObjectID.STAIRCASE_20667, new WorldPoint(3559, 9703, 3), "Leave the barrow.");
-		leaveDharok = new ObjectStep(this, ObjectID.STAIRCASE_20668, new WorldPoint(3558, 9718, 3), "Leave the barrow.");
-		leaveGuthan = new ObjectStep(this, ObjectID.STAIRCASE_20669, new WorldPoint(3534, 9706, 3), "Leave the barrow.");
-		leaveKaril = new ObjectStep(this, ObjectID.STAIRCASE_20670, new WorldPoint(3546, 9686, 3), "Leave the barrow.");
-		leaveTorag = new ObjectStep(this, ObjectID.STAIRCASE_20671, new WorldPoint(3566, 9683, 3), "Leave the barrow.");
-		leaveVerac = new ObjectStep(this, ObjectID.STAIRCASE_20672, new WorldPoint(3578, 9704, 3), "Leave the barrow.");
+		leaveAhrim = new ObjectStep(this, ObjectID.BARROWS_STAIRS_AHRIM, new WorldPoint(3559, 9703, 3), "Leave the barrow.");
+		leaveDharok = new ObjectStep(this, ObjectID.BARROWS_STAIRS_DHAROK, new WorldPoint(3558, 9718, 3), "Leave the barrow.");
+		leaveGuthan = new ObjectStep(this, ObjectID.BARROWS_STAIRS_GUTHAN, new WorldPoint(3534, 9706, 3), "Leave the barrow.");
+		leaveKaril = new ObjectStep(this, ObjectID.BARROWS_STAIRS_KARIL, new WorldPoint(3546, 9686, 3), "Leave the barrow.");
+		leaveTorag = new ObjectStep(this, ObjectID.BARROWS_STAIRS_TORAG, new WorldPoint(3566, 9683, 3), "Leave the barrow.");
+		leaveVerac = new ObjectStep(this, ObjectID.BARROWS_STAIRS_VERAC, new WorldPoint(3578, 9704, 3), "Leave the barrow.");
 
 		killAhrim.addSubSteps(enterAhrim, searchAhrimSarc, leaveAhrim);
 		killDharok.addSubSteps(enterDharok, searchDharokSarc, leaveDharok);
@@ -381,22 +372,22 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 		enterTorag2 = new DigStep(this, new WorldPoint(3553, 3281, 0), "Dig on Torag's Barrow to enter it.", combatGear);
 		enterVerac2 = new DigStep(this, new WorldPoint(3556, 3297, 0), "Dig on Verac's Barrow to enter it.", combatGear);
 
-		enterAhrimSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20770, new WorldPoint(3555, 9699, 3),
+		enterAhrimSarc = new ObjectStep(this, ObjectID.BARROW_AHRIM_SARCOPHAGUS, new WorldPoint(3555, 9699, 3),
 			"Search Ahrim's Sarcophagus to enter it.", combatGear);
 		enterAhrimSarc.addDialogStep("Yeah I'm fearless!");
-		enterDharokSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20720, new WorldPoint(3555, 9714, 3),
+		enterDharokSarc = new ObjectStep(this, ObjectID.BARROW_DHAROK_SARCOPHAGUS, new WorldPoint(3555, 9714, 3),
 			"Search Dharok's Sarcophagusto enter it.", combatGear);
 		enterDharokSarc.addDialogStep("Yeah I'm fearless!");
-		enterGuthanSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20722, new WorldPoint(3539, 9703, 3),
+		enterGuthanSarc = new ObjectStep(this, ObjectID.BARROW_GUTHAN_SARCOPHAGUS, new WorldPoint(3539, 9703, 3),
 			"Search Guthan's Sarcophagus to enter it.", combatGear);
 		enterGuthanSarc.addDialogStep("Yeah I'm fearless!");
-		enterToragSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20721, new WorldPoint(3569, 9686, 3),
+		enterToragSarc = new ObjectStep(this, ObjectID.BARROW_TORAG_SARCOPHAGUS, new WorldPoint(3569, 9686, 3),
 			"Search Torag's Sarcophagus to enter it.", combatGear);
 		enterToragSarc.addDialogStep("Yeah I'm fearless!");
-		enterKarilSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20771, new WorldPoint(3550, 9683, 3),
+		enterKarilSarc = new ObjectStep(this, ObjectID.BARROW_KARIL_SARCOPHAGUS, new WorldPoint(3550, 9683, 3),
 			"Search Karil's Sarcophagus to enter it.", combatGear);
 		enterKarilSarc.addDialogStep("Yeah I'm fearless!");
-		enterVeracSarc = new ObjectStep(this, ObjectID.SARCOPHAGUS_20772, new WorldPoint(3573, 9706, 3),
+		enterVeracSarc = new ObjectStep(this, ObjectID.BARROW_VERAC_SARCOPHAGUS, new WorldPoint(3573, 9706, 3),
 			"Search Verac's Sarcophagus to enter it.", combatGear);
 		enterVeracSarc.addDialogStep("Yeah I'm fearless!");
 
@@ -404,21 +395,21 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 		enterSarc.addSubSteps(enterAhrimSarc, enterDharokSarc, enterGuthanSarc, enterToragSarc, enterKarilSarc, enterVeracSarc,
 			enterVerac2, enterDharok2, enterAhrim2, enterKaril2, enterTorag2, enterGuthan2);
 
-		openChest = new ObjectStep(this, ObjectID.CHEST_20723, new WorldPoint(3551, 9695, 0),
+		openChest = new ObjectStep(this, ObjectID.BARROWS_STONE_CHEST_CLOSED, new WorldPoint(3551, 9695, 0),
 			"Open the chest in the middle of the crypt. DO NOT SEARCH IT until you've killed the 6th brother.");
 
-		killFinalBrother = new NpcStep(this, NpcID.AHRIM_THE_BLIGHTED, "Kill the final brother.");
-		((NpcStep) killFinalBrother).addAlternateNpcs(NpcID.DHAROK_THE_WRETCHED, NpcID.KARIL_THE_TAINTED, NpcID.GUTHAN_THE_INFESTED,
-			NpcID.TORAG_THE_CORRUPTED, NpcID.VERAC_THE_DEFILED);
+		killFinalBrother = new NpcStep(this, NpcID.BARROWS_AHRIM, "Kill the final brother.");
+		((NpcStep) killFinalBrother).addAlternateNpcs(NpcID.BARROWS_DHAROK, NpcID.BARROWS_KARIL, NpcID.BARROWS_GUTHAN,
+			NpcID.BARROWS_TORAG, NpcID.BARROWS_VERAC);
 		((NpcStep) killFinalBrother).setMustBeFocusedOnPlayer(true);
 
-		searchChest = new ObjectStep(this, ObjectID.CHEST_20723, new WorldPoint(3551, 9695, 0),
+		searchChest = new ObjectStep(this, ObjectID.BARROWS_STONE_CHEST_CLOSED, new WorldPoint(3551, 9695, 0),
 			"Search the chest in the middle of the crypt for the strange icon.");
-		((ObjectStep) searchChest).addAlternateObjects(ObjectID.CHEST_20724);
+		((ObjectStep) searchChest).addAlternateObjects(ObjectID.BARROWS_STONE_CHEST_OPEN);
 
-		leaveBarrows = new ObjectStep(this, ObjectID.STAIRCASE_20667, "Escape back to the surface.", true);
-		((ObjectStep) leaveBarrows).addAlternateObjects(ObjectID.STAIRCASE_20668, ObjectID.STAIRCASE_20669,
-			ObjectID.STAIRCASE_20670, ObjectID.STAIRCASE_20671, ObjectID.STAIRCASE_20672, NullObjectID.NULL_20676);
+		leaveBarrows = new ObjectStep(this, ObjectID.BARROWS_STAIRS_AHRIM, "Escape back to the surface.", true);
+		((ObjectStep) leaveBarrows).addAlternateObjects(ObjectID.BARROWS_STAIRS_DHAROK, ObjectID.BARROWS_STAIRS_GUTHAN,
+			ObjectID.BARROWS_STAIRS_KARIL, ObjectID.BARROWS_STAIRS_TORAG, ObjectID.BARROWS_STAIRS_VERAC, ObjectID.BARROWS_LADDER_G);
 	}
 
 	@Override
@@ -458,7 +449,7 @@ public class BarrowsHelper extends ComplexStateQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Chance at getting barrows equipment", ItemID.CRYPT_MAP, 1));
+		return Collections.singletonList(new ItemReward("Chance at getting barrows equipment", ItemID.BARROWS_MAP, 1));
 	}
 
 	@Override

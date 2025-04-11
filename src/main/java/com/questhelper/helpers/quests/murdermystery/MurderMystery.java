@@ -24,37 +24,31 @@
  */
 package com.questhelper.helpers.quests.murdermystery;
 
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.*;
 
 public class MurderMystery extends BasicQuestHelper
 {
@@ -342,97 +336,97 @@ public class MurderMystery extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		pot = new ItemRequirement("Pot", ItemID.POT);
-		pungentPot = new ItemRequirement("Pungent pot", ItemID.PUNGENT_POT);
+		pot = new ItemRequirement("Pot", ItemID.POT_EMPTY);
+		pungentPot = new ItemRequirement("Pungent pot", ItemID.MURDERPOT2);
 
-		criminalsDaggerAny = new ItemRequirement("Criminal's dagger", ItemID.CRIMINALS_DAGGER);
-		criminalsDaggerAny.addAlternates(ItemID.CRIMINALS_DAGGER_1814, ItemID.KILLERS_PRINT);
+		criminalsDaggerAny = new ItemRequirement("Criminal's dagger", ItemID.MURDERWEAPON);
+		criminalsDaggerAny.addAlternates(ItemID.MURDERWEAPONDUST, ItemID.MURDERFINGERPRINT);
 
-		criminalsDagger = new ItemRequirement("Criminal's dagger", ItemID.CRIMINALS_DAGGER);
-		criminalsDaggerHighlighted = new ItemRequirement("Criminal's dagger", ItemID.CRIMINALS_DAGGER);
+		criminalsDagger = new ItemRequirement("Criminal's dagger", ItemID.MURDERWEAPON);
+		criminalsDaggerHighlighted = new ItemRequirement("Criminal's dagger", ItemID.MURDERWEAPON);
 		criminalsDaggerHighlighted.setHighlightInInventory(true);
 
-		criminalsDaggerFlour = new ItemRequirement("Criminal's dagger", ItemID.CRIMINALS_DAGGER_1814);
-		criminalsDaggerFlourHighlighted = new ItemRequirement("Criminal's dagger", ItemID.CRIMINALS_DAGGER_1814);
+		criminalsDaggerFlour = new ItemRequirement("Criminal's dagger", ItemID.MURDERWEAPONDUST);
+		criminalsDaggerFlourHighlighted = new ItemRequirement("Criminal's dagger", ItemID.MURDERWEAPONDUST);
 		criminalsDaggerFlourHighlighted.setHighlightInInventory(true);
 
-		criminalsThread = new ItemRequirement("Criminal's thread", ItemID.CRIMINALS_THREAD);
-		criminalsThread.addAlternates(ItemID.CRIMINALS_THREAD_1809, ItemID.CRIMINALS_THREAD_1810);
-		criminalsThread1 = new ItemRequirement("Criminal's thread", ItemID.CRIMINALS_THREAD);
-		criminalsThread2 = new ItemRequirement("Criminal's thread", ItemID.CRIMINALS_THREAD_1809);
-		criminalsThread3 = new ItemRequirement("Criminal's thread", ItemID.CRIMINALS_THREAD_1810);
-		twoFlypaper = new ItemRequirement("Flypaper", ItemID.FLYPAPER, 2);
-		flypaper = new ItemRequirement("Flypaper", ItemID.FLYPAPER);
+		criminalsThread = new ItemRequirement("Criminal's thread", ItemID.MURDERTHREADR);
+		criminalsThread.addAlternates(ItemID.MURDERTHREADG, ItemID.MURDERTHREADB);
+		criminalsThread1 = new ItemRequirement("Criminal's thread", ItemID.MURDERTHREADR);
+		criminalsThread2 = new ItemRequirement("Criminal's thread", ItemID.MURDERTHREADG);
+		criminalsThread3 = new ItemRequirement("Criminal's thread", ItemID.MURDERTHREADB);
+		twoFlypaper = new ItemRequirement("Flypaper", ItemID.MURDERPAPER, 2);
+		flypaper = new ItemRequirement("Flypaper", ItemID.MURDERPAPER);
 		flypaper.setHighlightInInventory(true);
 		flypaper.setTooltip("You can get more from the sack in the shed on the west of the Sinclair Mansion");
-		potOfFlourHighlighted = new ItemRequirement("Pot of flour", ItemID.POT_OF_FLOUR);
+		potOfFlourHighlighted = new ItemRequirement("Pot of flour", ItemID.POT_FLOUR);
 		potOfFlourHighlighted.setHighlightInInventory(true);
-		unknownPrint = new ItemRequirement("Unknown print", ItemID.UNKNOWN_PRINT);
+		unknownPrint = new ItemRequirement("Unknown print", ItemID.MURDERFINGERPRINT1);
 
 		/* Thread 1 items */
-		bobPrint = new ItemRequirement("Bob's print", ItemID.BOBS_PRINT);
-		carolPrint = new ItemRequirement("Carol's print", ItemID.CAROLS_PRINT);
-		silverCup = new ItemRequirement("Silver cup", ItemID.SILVER_CUP);
-		silverCupFlour = new ItemRequirement("Silver cup", ItemID.SILVER_CUP_1799);
-		silverBottle = new ItemRequirement("Silver bottle", ItemID.SILVER_BOTTLE);
-		silverBottleFlour = new ItemRequirement("Silver bottle", ItemID.SILVER_BOTTLE_1801);
+		bobPrint = new ItemRequirement("Bob's print", ItemID.MURDERFINGERPRINTB);
+		carolPrint = new ItemRequirement("Carol's print", ItemID.MURDERFINGERPRINTC);
+		silverCup = new ItemRequirement("Silver cup", ItemID.MURDERCUP);
+		silverCupFlour = new ItemRequirement("Silver cup", ItemID.MURDERCUPDUST);
+		silverBottle = new ItemRequirement("Silver bottle", ItemID.MURDERBOTTLE);
+		silverBottleFlour = new ItemRequirement("Silver bottle", ItemID.MURDERBOTTLEDUST);
 
 		/* Thread 2 items */
-		annaPrint = new ItemRequirement("Anna's print", ItemID.ANNAS_PRINT);
-		davidPrint = new ItemRequirement("David's print", ItemID.DAVIDS_PRINT);
-		silverNecklace = new ItemRequirement("Silver necklace", ItemID.SILVER_NECKLACE);
-		silverNecklaceFlour = new ItemRequirement("Silver necklace", ItemID.SILVER_NECKLACE_1797);
-		silverBook = new ItemRequirement("Silver book", ItemID.SILVER_BOOK);
-		silverBookFlour = new ItemRequirement("Silver book", ItemID.SILVER_BOOK_1803);
+		annaPrint = new ItemRequirement("Anna's print", ItemID.MURDERFINGERPRINTA);
+		davidPrint = new ItemRequirement("David's print", ItemID.MURDERFINGERPRINTD);
+		silverNecklace = new ItemRequirement("Silver necklace", ItemID.MURDERNECKLACE);
+		silverNecklaceFlour = new ItemRequirement("Silver necklace", ItemID.MURDERNECKLACEDUST);
+		silverBook = new ItemRequirement("Silver book", ItemID.MURDERBOOK);
+		silverBookFlour = new ItemRequirement("Silver book", ItemID.MURDERBOOKDUST);
 
 		/* Thread 3 items */
-		elizabethPrint = new ItemRequirement("Elizabeth's print", ItemID.ELIZABETHS_PRINT);
-		frankPrint = new ItemRequirement("Frank's print", ItemID.FRANKS_PRINT);
-		silverNeedle = new ItemRequirement("Silver needle", ItemID.SILVER_NEEDLE);
-		silverNeedleFlour = new ItemRequirement("Silver needle", ItemID.SILVER_NEEDLE_1805);
-		silverPot = new ItemRequirement("Silver needle", ItemID.SILVER_POT);
-		silverPotFlour = new ItemRequirement("Silver needle", ItemID.SILVER_POT_1807);
+		elizabethPrint = new ItemRequirement("Elizabeth's print", ItemID.MURDERFINGERPRINTE);
+		frankPrint = new ItemRequirement("Frank's print", ItemID.MURDERFINGERPRINTF);
+		silverNeedle = new ItemRequirement("Silver needle", ItemID.MURDERNEEDLE);
+		silverNeedleFlour = new ItemRequirement("Silver needle", ItemID.MURDERNEEDLEDUST);
+		silverPot = new ItemRequirement("Silver needle", ItemID.MURDERPOT);
+		silverPotFlour = new ItemRequirement("Silver needle", ItemID.MURDERPOTDUST);
 
-		killersPrint = new ItemRequirement("Killer's print", ItemID.KILLERS_PRINT);
+		killersPrint = new ItemRequirement("Killer's print", ItemID.MURDERFINGERPRINT);
 	}
 
 	public void setupSteps()
 	{
-		talkToGuard = new NpcStep(this, NpcID.GUARD_4218, new WorldPoint(2741, 3561, 0), "Talk to the Guard in the Sinclair Manor north of Camelot.");
+		talkToGuard = new NpcStep(this, NpcID.MURDERGUARD, new WorldPoint(2741, 3561, 0), "Talk to the Guard in the Sinclair Manor north of Camelot.");
 		talkToGuard.addDialogSteps("Yes.", "Sure, I'll help.");
 
 		pickUpPungentPot = new DetailedQuestStep(this, new WorldPoint(2747, 3579, 0), "Enter the mansion and pick up the pungent pot inside the east room.", pungentPot);
 		pickUpDagger = new DetailedQuestStep(this, new WorldPoint(2746, 3578, 0), "Pick up the criminal's dagger.", criminalsDaggerAny);
-		searchWindowForThread = new ObjectStep(this, NullObjectID.NULL_26123, new WorldPoint(2748, 3577, 0), "Search the window for a clothing thread. The colour of the thread will match the killer's trousers.", criminalsThread);
-		fillPotWithFlour = new ObjectStep(this, ObjectID.BARREL_OF_FLOUR_26122, new WorldPoint(2733, 3582, 0), "Fill your pot with flour from the barrel in the mansion's kitchen.", pot);
+		searchWindowForThread = new ObjectStep(this, ObjectID.MURDERWINDOW, new WorldPoint(2748, 3577, 0), "Search the window for a clothing thread. The colour of the thread will match the killer's trousers.", criminalsThread);
+		fillPotWithFlour = new ObjectStep(this, ObjectID.FLOURBARREL, new WorldPoint(2733, 3582, 0), "Fill your pot with flour from the barrel in the mansion's kitchen.", pot);
 		useFlourOnDagger = new DetailedQuestStep(this, "Use the pot of flour on the Criminal's dagger.", potOfFlourHighlighted, criminalsDaggerHighlighted);
-		collectTwoFlypaper = new ObjectStep(this, ObjectID.SACKS_2663, new WorldPoint(2731, 3582, 0), "Investigate the sacks in the shed for flypaper. Get 2 pieces.", twoFlypaper);
+		collectTwoFlypaper = new ObjectStep(this, ObjectID.MURDERSACKS, new WorldPoint(2731, 3582, 0), "Investigate the sacks in the shed for flypaper. Get 2 pieces.", twoFlypaper);
 		collectTwoFlypaper.addDialogStep("Yes, it might be useful.");
 
-		QuestStep goUpstairs = new ObjectStep(this, ObjectID.STAIRCASE_25682, new WorldPoint(2736, 3581, 0), "Climb up the mansion staircase.");
+		QuestStep goUpstairs = new ObjectStep(this, ObjectID.MURDER_QIP_SPIRALSTAIRS, new WorldPoint(2736, 3581, 0), "Climb up the mansion staircase.");
 
 		// Option 1 (red thread)
-		searchBobsBarrel = new ObjectStep(this, ObjectID.BOBS_BARREL, new WorldPoint(2735, 3579, 0), "Search Bob's barrel on the ground floor.");
+		searchBobsBarrel = new ObjectStep(this, ObjectID.MURDERBARRELB, new WorldPoint(2735, 3579, 0), "Search Bob's barrel on the ground floor.");
 		searchCarolsBarrel = new ConditionalStep(this, goUpstairs, "Search Carol's barrel upstairs.");
-		((ConditionalStep) searchCarolsBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.CAROLS_BARREL, new WorldPoint(2733, 3580, 1), ""));
+		((ConditionalStep) searchCarolsBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.MURDERBARRELC, new WorldPoint(2733, 3580, 1), ""));
 
 		// Option 2 (green thread)
-		searchAnnasBarrel = new ObjectStep(this, ObjectID.ANNAS_BARREL, new WorldPoint(2733, 3575, 0), "Search Anna's barrel on the ground floor.");
+		searchAnnasBarrel = new ObjectStep(this, ObjectID.MURDERBARRELA, new WorldPoint(2733, 3575, 0), "Search Anna's barrel on the ground floor.");
 		searchDavidsBarrel = new ConditionalStep(this, goUpstairs, "Search David's barrel upstairs.");
-		((ConditionalStep) searchDavidsBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.DAVIDS_BARREL, new WorldPoint(2733, 3577, 1), ""));
+		((ConditionalStep) searchDavidsBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.MURDERBARRELD, new WorldPoint(2733, 3577, 1), ""));
 
 		// Option 3 (blue thread)
 		searchFranksBarrel = new ConditionalStep(this, goUpstairs, "Search Frank's barrel upstairs.");
-		((ConditionalStep) searchFranksBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.FRANKS_BARREL, new WorldPoint(2747, 3577, 1), ""));
+		((ConditionalStep) searchFranksBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.MURDERBARRELF, new WorldPoint(2747, 3577, 1), ""));
 
 		searchElizabethsBarrel = new ConditionalStep(this, goUpstairs, "Search Elizabeth's barrel upstairs.");
-		((ConditionalStep) searchElizabethsBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.ELIZABETHS_BARREL, new WorldPoint(2747, 3581, 1), ""));
+		((ConditionalStep) searchElizabethsBarrel).addStep(isUpstairs, new ObjectStep(this, ObjectID.MURDERBARRELE, new WorldPoint(2747, 3581, 1), ""));
 
 		useFlypaperOnDagger = new DetailedQuestStep(this, "Use the flypaper on the dagger.", flypaper, criminalsDaggerFlourHighlighted);
 
-		collectFlypaper = new ObjectStep(this, ObjectID.SACKS_2663, new WorldPoint(2731, 3582, 0), "Investigate the sacks in the shed for 1 flypaper.", flypaper);
+		collectFlypaper = new ObjectStep(this, ObjectID.MURDERSACKS, new WorldPoint(2731, 3582, 0), "Investigate the sacks in the shed for 1 flypaper.", flypaper);
 		collectFlypaper.addDialogStep("Yes, it might be useful.");
-		fillPotWithFlourForSilver = new ObjectStep(this, ObjectID.BARREL_OF_FLOUR_26122, new WorldPoint(2733, 3582, 0), "Fill your pot with flour from the barrel in the mansion's kitchen.", pot);
+		fillPotWithFlourForSilver = new ObjectStep(this, ObjectID.FLOURBARREL, new WorldPoint(2733, 3582, 0), "Fill your pot with flour from the barrel in the mansion's kitchen.", pot);
 		fillPotWithFlourForSilver.addSubSteps(collectFlypaper);
 
 		useFlourOnNecklace = new DetailedQuestStep(this, "Use flour on the silver necklace.", silverNecklace.highlighted(), potOfFlourHighlighted);
@@ -456,7 +450,7 @@ public class MurderMystery extends BasicQuestHelper
 		compareElizabeth = new DetailedQuestStep(this, "Use Elizabeth's prints on the killer's print to compare them.", unknownPrint.highlighted(), elizabethPrint.highlighted());
 		compareFrank = new DetailedQuestStep(this, "Use Frank's prints on the killer's print to compare them.", unknownPrint.highlighted(), frankPrint.highlighted());
 
-		talkToGossip = new NpcStep(this, NpcID.GOSSIP, new WorldPoint(2741, 3557, 0), "Talk to Gossip, just south of the Sinclair Mansion.");
+		talkToGossip = new NpcStep(this, NpcID.GOSSIPY_MAN, new WorldPoint(2741, 3557, 0), "Talk to Gossip, just south of the Sinclair Mansion.");
 		talkToGossip.addDialogStep(2, "Who do you think was responsible?");
 
 		talkToPoisonSalesman = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2694, 3493, 0), "Talk to the " +
@@ -464,24 +458,24 @@ public class MurderMystery extends BasicQuestHelper
 		talkToPoisonSalesman.addDialogStep("Who did you sell Poison to at the house?");
 		talkToPoisonSalesman.addDialogStep("Talk about the Murder Mystery Quest");
 
-		talkToAnna = new NpcStep(this, NpcID.ANNA_4220, new WorldPoint(2734, 3575, 0), "Talk to Anna in the mansion about what she used the poison for. Make sure to finish the dialog.");
-		talkToBob = new NpcStep(this, NpcID.BOB_4221, new WorldPoint(2748, 3559, 0), "Talk to Bob south of the mansion about what he used the poison for. Make sure to finish the dialog.");
-		talkToFrank = new NpcStep(this, NpcID.FRANK, new WorldPoint(2742, 3577, 0), "Talk to Frank in the mansion about what he used the poison for. Make sure to finish the dialog.");
-		talkToDavid = new NpcStep(this, NpcID.DAVID_4223, new WorldPoint(2739, 3581, 0), "Talk to David in the mansion about what he used the poison for. Make sure to finish the dialog.");
+		talkToAnna = new NpcStep(this, NpcID.ANNA_SINCLAIR, new WorldPoint(2734, 3575, 0), "Talk to Anna in the mansion about what she used the poison for. Make sure to finish the dialog.");
+		talkToBob = new NpcStep(this, NpcID.BOB_SINCLAIR, new WorldPoint(2748, 3559, 0), "Talk to Bob south of the mansion about what he used the poison for. Make sure to finish the dialog.");
+		talkToFrank = new NpcStep(this, NpcID.FRANK_SINCLAIR, new WorldPoint(2742, 3577, 0), "Talk to Frank in the mansion about what he used the poison for. Make sure to finish the dialog.");
+		talkToDavid = new NpcStep(this, NpcID.DAVID_SINCLAIR, new WorldPoint(2739, 3581, 0), "Talk to David in the mansion about what he used the poison for. Make sure to finish the dialog.");
 		talkToCarol = new ConditionalStep(this, goUpstairs, "Talk to Carol upstairs in the mansion about what she used her poison for. Make sure to finish the dialog.");
-		((ConditionalStep) talkToCarol).addStep(isUpstairs, new NpcStep(this, NpcID.CAROL, new WorldPoint(2734, 3581, 1), ""));
+		((ConditionalStep) talkToCarol).addStep(isUpstairs, new NpcStep(this, NpcID.CAROL_SINCLAIR, new WorldPoint(2734, 3581, 1), ""));
 		talkToElizabeth = new ConditionalStep(this, goUpstairs, "Talk to Elizabeth upstairs in the mansion about what she used her poison for.");
-		((ConditionalStep) talkToElizabeth).addStep(isUpstairs, new NpcStep(this, NpcID.ELIZABETH, new WorldPoint(2746, 3581, 1), ""));
+		((ConditionalStep) talkToElizabeth).addStep(isUpstairs, new NpcStep(this, NpcID.ELIZABETH_SINCLAIR, new WorldPoint(2746, 3581, 1), ""));
 
-		searchAnna = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_COMPOST_HEAP, new WorldPoint(2730, 3572, 0), "Search the compost heap south west of the mansion. If a dialog box doesn't come up, go back to Anna to ask about poison, and COMPLETE THE DIALOG.");
-		searchBob = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_BEEHIVE, new WorldPoint(2730, 3559, 0), "Search the beehive south west of the mansion. If a dialog box doesn't come up, go back to Bob to ask about poison, and COMPLETE THE DIALOG.");
-		searchCarol = new ObjectStep(this, ObjectID.SINCLAIR_MANSION_DRAIN, new WorldPoint(2736, 3573, 0), "Search the drain south of the mansion. If a dialog box doesn't come up, go back to Carol to ask about poison, and COMPLETE THE DIALOG.");
+		searchAnna = new ObjectStep(this, ObjectID.MURDERCOMPOST, new WorldPoint(2730, 3572, 0), "Search the compost heap south west of the mansion. If a dialog box doesn't come up, go back to Anna to ask about poison, and COMPLETE THE DIALOG.");
+		searchBob = new ObjectStep(this, ObjectID.MURDERHIVE, new WorldPoint(2730, 3559, 0), "Search the beehive south west of the mansion. If a dialog box doesn't come up, go back to Bob to ask about poison, and COMPLETE THE DIALOG.");
+		searchCarol = new ObjectStep(this, ObjectID.MURDERDRAIN, new WorldPoint(2736, 3573, 0), "Search the drain south of the mansion. If a dialog box doesn't come up, go back to Carol to ask about poison, and COMPLETE THE DIALOG.");
 		searchDavid = new ConditionalStep(this, goUpstairs, "Search the spider's nest, upstairs in the mansion to the south. If a dialog box doesn't come up, go back to David to ask about poison, and COMPLETE THE DIALOG.");
-		((ConditionalStep)searchDavid).addStep(isUpstairs, new ObjectStep(this, ObjectID.SPIDERS_NEST, new WorldPoint(2740, 3574, 1), ""));
-		searchElizabeth = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_FOUNTAIN, new WorldPoint(2747, 3563, 0), "Search the fountain south east of the mansion. If a dialog box doesn't come up, go back to Elizabeth to ask about poison, and COMPLETE THE DIALOG.");
-		searchFrank = new ObjectStep(this, ObjectID.SINCLAIR_FAMILY_CREST, new WorldPoint(2746, 3573, 0), "Search the family crest attached to the south side of the mansion to the east. If a dialog box doesn't come up, go back to Frank to ask about poison, and COMPLETE THE DIALOG.");
+		((ConditionalStep)searchDavid).addStep(isUpstairs, new ObjectStep(this, ObjectID.MURDERWEB, new WorldPoint(2740, 3574, 1), ""));
+		searchElizabeth = new ObjectStep(this, ObjectID.MURDERFOUNTAIN, new WorldPoint(2747, 3563, 0), "Search the fountain south east of the mansion. If a dialog box doesn't come up, go back to Elizabeth to ask about poison, and COMPLETE THE DIALOG.");
+		searchFrank = new ObjectStep(this, ObjectID.MURDERSIGN, new WorldPoint(2746, 3573, 0), "Search the family crest attached to the south side of the mansion to the east. If a dialog box doesn't come up, go back to Frank to ask about poison, and COMPLETE THE DIALOG.");
 
-		finishQuest = new NpcStep(this, NpcID.GUARD_4218, new WorldPoint(2741, 3561, 0), "Return to the guard outside the Sinclair Mansion and tell him your findings.");
+		finishQuest = new NpcStep(this, NpcID.MURDERGUARD, new WorldPoint(2741, 3561, 0), "Return to the guard outside the Sinclair Mansion and tell him your findings.");
 		finishQuest.addDialogStep("I know who did it!");
 
 		remainingSteps = new DetailedQuestStep(this, "Follow the steps in the Quest Helper sidebar for the rest of the quest.");
@@ -576,7 +570,7 @@ public class MurderMystery extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 2000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 2000));
 	}
 
 	@Override

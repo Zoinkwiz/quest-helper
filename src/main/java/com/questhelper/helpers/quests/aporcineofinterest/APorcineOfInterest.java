@@ -24,32 +24,26 @@
  */
 package com.questhelper.helpers.quests.aporcineofinterest;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class APorcineOfInterest extends BasicQuestHelper
 {
@@ -109,17 +103,17 @@ public class APorcineOfInterest extends BasicQuestHelper
 		slashItem = new ItemRequirement("A knife or slash weapon", ItemID.KNIFE).isNotConsumed();
 		slashItem.setTooltip("Except abyssal whip, abyssal tentacle, or dragon claws.");
 
-		reinforcedGoggles = new ItemRequirement("Reinforced goggles", ItemID.REINFORCED_GOGGLES, 1, true).isNotConsumed();
+		reinforcedGoggles = new ItemRequirement("Reinforced goggles", ItemID.SLAYER_REINFORCED_GOGGLES, 1, true).isNotConsumed();
 		reinforcedGoggles.setTooltip("You can get another pair from Spria");
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		hoof = new ItemRequirement("Sourhog foot", ItemID.SOURHOG_FOOT);
+		hoof = new ItemRequirement("Sourhog foot", ItemID.PORCINE_SOURHOG_TROPHY);
 		hoof.setTooltip("You can get another from Sourhog's corpse in his cave");
 
 		// Recommended
-		draynorTeleport = new ItemRequirement("Teleport to north Draynor", ItemID.DRAYNOR_MANOR_TELEPORT);
+		draynorTeleport = new ItemRequirement("Teleport to north Draynor", ItemID.TELETAB_DRAYNOR);
 		draynorTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		faladorFarmTeleport = new ItemRequirement("Teleport to Falador Farm", ItemCollections.EXPLORERS_RINGS);
 	}
@@ -137,35 +131,35 @@ public class APorcineOfInterest extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		readNotice = new ObjectStep(this, ObjectID.NOTICE_BOARD_40307, new WorldPoint(3086, 3251, 0), "Read the notice board in Draynor Village.");
+		readNotice = new ObjectStep(this, ObjectID.PORCINE_NOTICEBOARD, new WorldPoint(3086, 3251, 0), "Read the notice board in Draynor Village.");
 		readNotice.addDialogStep("Yes.");
 
-		talkToSarah = new NpcStep(this, NpcID.SARAH, new WorldPoint(3033, 3293, 0), "Talk to Sarah in the South Falador Farm.");
+		talkToSarah = new NpcStep(this, NpcID.FARMING_SHOPKEEPER_1, new WorldPoint(3033, 3293, 0), "Talk to Sarah in the South Falador Farm.");
 		talkToSarah.addDialogSteps("Talk about the bounty.");
 
-		useRopeOnHole = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Use a rope on the Strange Hole east of Draynor Manor.", rope);
+		useRopeOnHole = new ObjectStep(this, ObjectID.PORCINE_HOLE, new WorldPoint(3151, 3348, 0), "Use a rope on the Strange Hole east of Draynor Manor.", rope);
 		useRopeOnHole.addTeleport(draynorTeleport);
 		useRopeOnHole.addIcon(ItemID.ROPE);
 		useRopeOnHole.addDialogSteps("I think that'll be all for now.");
 
-		enterHole = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.");
-		investigateSkeleton = new ObjectStep(this, NullObjectID.NULL_40350, new WorldPoint(3164, 9676, 0), "Go to the end of the cave and investigate the skeleton there.");
+		enterHole = new ObjectStep(this, ObjectID.PORCINE_HOLE, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.");
+		investigateSkeleton = new ObjectStep(this, ObjectID.PORCINE_SKELETON, new WorldPoint(3164, 9676, 0), "Go to the end of the cave and investigate the skeleton there.");
 
-		talkToSpria = new NpcStep(this, NpcID.SPRIA_10434, new WorldPoint(3092, 3267, 0), "Talk to Spria in Draynor Village.");
+		talkToSpria = new NpcStep(this, NpcID.PORCINE_SPRIA, new WorldPoint(3092, 3267, 0), "Talk to Spria in Draynor Village.");
 
-		enterHoleAgain = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor. Be prepared to fight Sourhog (level 37)", reinforcedGoggles, slashItem, combatGear);
-		killSourhog = new NpcStep(this, NpcID.SOURHOG_10436, "Kill Sourhog.", reinforcedGoggles);
+		enterHoleAgain = new ObjectStep(this, ObjectID.PORCINE_HOLE, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor. Be prepared to fight Sourhog (level 37)", reinforcedGoggles, slashItem, combatGear);
+		killSourhog = new NpcStep(this, NpcID.PORCINE_SOURHOG_SECOND, "Kill Sourhog.", reinforcedGoggles);
 		killSourhog.addDialogStep("Yes");
 
-		enterHoleForFoot = new ObjectStep(this, NullObjectID.NULL_40341, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.", slashItem);
-		cutOffFoot = new ObjectStep(this, NullObjectID.NULL_40348, "Cut off Sourhog's foot.", slashItem);
-		((ObjectStep) cutOffFoot).addAlternateObjects(NullObjectID.NULL_40349);
+		enterHoleForFoot = new ObjectStep(this, ObjectID.PORCINE_HOLE, new WorldPoint(3151, 3348, 0), "Climb down into the Strange Hole east of Draynor Manor.", slashItem);
+		cutOffFoot = new ObjectStep(this, ObjectID.PORCINE_DEAD_SOURHOG, "Cut off Sourhog's foot.", slashItem);
+		((ObjectStep) cutOffFoot).addAlternateObjects(ObjectID.PORCINE_DEAD_SOURHOG_9);
 		cutOffFoot.addSubSteps(enterHoleForFoot);
 
-		returnToSarah = new NpcStep(this, NpcID.SARAH, new WorldPoint(3033, 3293, 0), "Return to Sarah in the South Falador Farm.", hoof);
+		returnToSarah = new NpcStep(this, NpcID.FARMING_SHOPKEEPER_1, new WorldPoint(3033, 3293, 0), "Return to Sarah in the South Falador Farm.", hoof);
 		returnToSarah.addTeleport(faladorFarmTeleport);
 		returnToSarah.addDialogSteps("Talk about the bounty.");
-		returnToSpria = new NpcStep(this, NpcID.SPRIA_10434, new WorldPoint(3092, 3267, 0), "Return to Spria in Draynor Village.");
+		returnToSpria = new NpcStep(this, NpcID.PORCINE_SPRIA, new WorldPoint(3092, 3267, 0), "Return to Spria in Draynor Village.");
 	}
 
 	@Override
@@ -201,7 +195,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 5000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 5000));
 	}
 
 	@Override

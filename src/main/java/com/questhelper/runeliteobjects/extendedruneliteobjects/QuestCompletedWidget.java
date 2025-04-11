@@ -24,12 +24,14 @@
  */
 package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
-import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
+
+import java.util.List;
 
 public class QuestCompletedWidget
 {
@@ -41,19 +43,19 @@ public class QuestCompletedWidget
 		close(client);
 
 		// Fixed
-		Widget fixedContainer = client.getWidget(548, 9);
+		Widget fixedContainer = client.getWidget(InterfaceID.Toplevel.MAIN);
 		if (fixedContainer != null)
 		{
 			createWidgets(client, fixedContainer, questName, rewards, itemID, rotationX, rotationY, rotationZ, zoom);
 		}
 		// Resizable classic
-		Widget classicContainer = client.getWidget(161, 7);
+		Widget classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_BACK);
 		if (classicContainer != null)
 		{
 			createWidgets(client, classicContainer, questName, rewards, itemID, rotationX, rotationY, rotationZ, zoom);
 		}
 		// Resizable modern
-		Widget modernContainer = client.getWidget(164, 7);
+		Widget modernContainer = client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_BACK);
 		if (modernContainer != null)
 		{
 			createWidgets(client, modernContainer, questName, rewards, itemID, rotationX, rotationY, rotationZ, zoom);
@@ -184,19 +186,19 @@ public class QuestCompletedWidget
 		if (!activeWidget) return;
 
 		// Fixed
-		Widget fixedContainer = client.getWidget(548, 9);
+		Widget fixedContainer = client.getWidget(InterfaceID.Toplevel.MAIN);
 		if (fixedContainer != null)
 		{
 			fixedContainer.deleteAllChildren();
 		}
 		// Resizable classic
-		Widget classicContainer = client.getWidget(161, 7);
+		Widget classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_BACK);
 		if (classicContainer != null)
 		{
 			classicContainer.deleteAllChildren();
 		}
 		// Resizable modern
-		Widget modernContainer = client.getWidget(164, 7);
+		Widget modernContainer = client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_BACK);
 		if (modernContainer != null)
 		{
 			modernContainer.deleteAllChildren();

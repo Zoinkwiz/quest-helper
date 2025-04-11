@@ -26,9 +26,8 @@ package com.questhelper.helpers.quests.deserttreasureii;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
-import net.runelite.api.ObjectID;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.gameval.ObjectID;
 
 // 15203->208 dictate order, with 203 being first, etc.
 // Value contained dictacts which of the runes it is, so:
@@ -44,12 +43,12 @@ public class GrowthPuzzleStep extends ObjectStep
 	int BASE_VARBIT_FOR_RUNES = 15203;
 	
 	int[] runeIDs = new int[] {
-		ObjectID.EARTH_ENERGY_49189,
-		ObjectID.COSMIC_ENERGY_49190,
-		ObjectID.DEATH_ENERGY_49191,
-		ObjectID.NATURE_ENERGY_49192,
-		ObjectID.LAW_ENERGY_49193,
-		ObjectID.FIRE_ENERGY_49194
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_EARTH_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_COSMIC_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_DEATH_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_NATURE_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_LAW_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_FIRE_VIS
 	};
 
 	int highestPointReached = 0;
@@ -57,10 +56,10 @@ public class GrowthPuzzleStep extends ObjectStep
 	{
 		super(questHelper, -1,
 			"Work out the correct order to activate the runes through trial and error.");
-		addAlternateObjects(ObjectID.EARTH_ENERGY_49189, ObjectID.COSMIC_ENERGY_49190,
-			ObjectID.DEATH_ENERGY_49191,
-			ObjectID.NATURE_ENERGY_49192, ObjectID.LAW_ENERGY_49193,
-			ObjectID.FIRE_ENERGY_49194);
+		addAlternateObjects(ObjectID.DT2_SCAR_MAZE_1_RIFT_EARTH_VIS, ObjectID.DT2_SCAR_MAZE_1_RIFT_COSMIC_VIS,
+			ObjectID.DT2_SCAR_MAZE_1_RIFT_DEATH_VIS,
+			ObjectID.DT2_SCAR_MAZE_1_RIFT_NATURE_VIS, ObjectID.DT2_SCAR_MAZE_1_RIFT_LAW_VIS,
+			ObjectID.DT2_SCAR_MAZE_1_RIFT_FIRE_VIS);
 	}
 
 	@Override

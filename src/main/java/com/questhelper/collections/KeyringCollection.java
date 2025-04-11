@@ -25,29 +25,30 @@
 package com.questhelper.collections;
 
 import com.questhelper.requirements.item.KeyringRequirement;
+import lombok.Getter;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.client.config.ConfigManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import lombok.Getter;
-import net.runelite.api.ItemID;
-import net.runelite.client.config.ConfigManager;
 
 public enum KeyringCollection
 {
-	SHINY_KEY(ItemID.SHINY_KEY),
-	BRASS_KEY(ItemID.BRASS_KEY),
+	SHINY_KEY(ItemID.IKOV_SHINYKEY),
+	BRASS_KEY(ItemID.EDGEVILLEDUNGEONKEY),
 	METAL_KEY(ItemID.METAL_KEY),
-	WROUGHT_IRON_KEY(ItemID.WROUGHT_IRON_KEY),
+	WROUGHT_IRON_KEY(ItemID.THGOODMINEKEY),
 	DUSTY_KEY(ItemID.DUSTY_KEY),
-	BATTERED_KEY(ItemID.BATTERED_KEY),
-	CRYSTAL_MINE_KEY(ItemID.CRYSTALMINE_KEY),
-	KEY(ItemID.ANCESTRAL_KEY),
-	MAZE_KEY(ItemID.MAZE_KEY),
-	WEAPON_STORE_KEY(ItemID.WEAPON_STORE_KEY),
-	BONE_KEY(ItemID.BONE_KEY),
-	ENCHANTED_KEY(ItemID.ENCHANTED_KEY),
-	NEW_KEY(ItemID.NEW_KEY);
+	BATTERED_KEY(ItemID.ELEMENTAL_WORKSHOP_KEY),
+	CRYSTAL_MINE_KEY(ItemID.HAUNTEDMINE_REWARD_KEY),
+	KEY(ItemID.ELID_KEY),
+	MAZE_KEY(ItemID.MELZARKEY),
+	WEAPON_STORE_KEY(ItemID.PHOENIXKEY2),
+	BONE_KEY(ItemID.ZQBONEKEY),
+	ENCHANTED_KEY(ItemID.MAKINGHISTORY_KEY),
+	NEW_KEY(ItemID.MOURNING_EXCAVATION_KEY);
 
 	@Getter
 	private final int itemID;

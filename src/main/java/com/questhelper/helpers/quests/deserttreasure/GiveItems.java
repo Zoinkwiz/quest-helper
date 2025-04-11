@@ -1,13 +1,12 @@
 package com.questhelper.helpers.quests.deserttreasure;
 
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.NpcStep;
-import net.runelite.api.ItemID;
 import net.runelite.api.NullItemID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.gameval.ItemID;
 
 public class GiveItems extends NpcStep
 {
@@ -33,7 +32,7 @@ public class GiveItems extends NpcStep
 		moltenGlass.addAlternates(NullItemID.NULL_1776);
 		ashes = new ItemRequirement("Ashes", ItemID.ASHES);
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
-		bloodRune = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE);
+		bloodRune = new ItemRequirement("Blood rune", ItemID.BLOODRUNE);
 		bones = new ItemRequirement("Bones", ItemID.BONES);
 	}
 

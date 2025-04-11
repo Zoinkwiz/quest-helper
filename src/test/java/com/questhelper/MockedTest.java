@@ -44,6 +44,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
+
 import javax.inject.Named;
 import java.awt.image.BufferedImage;
 import java.util.Collections;

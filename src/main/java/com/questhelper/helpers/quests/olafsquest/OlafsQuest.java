@@ -24,46 +24,39 @@
  */
 package com.questhelper.helpers.quests.olafsquest;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
+
 import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class OlafsQuest extends BasicQuestHelper
@@ -154,40 +147,40 @@ public class OlafsQuest extends BasicQuestHelper
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 
-		dampPlanks = new ItemRequirement("Damp planks", ItemID.DAMP_PLANKS);
-		windsweptLogs = new ItemRequirement("Windswept logs", ItemID.WINDSWEPT_LOGS);
+		dampPlanks = new ItemRequirement("Damp planks", ItemID.OLAF_WOODPLANK);
+		windsweptLogs = new ItemRequirement("Windswept logs", ItemID.OLAF_WINDSWEPT_LOGS);
 
-		crudeCarving = new ItemRequirement("Crude carving", ItemID.CRUDE_CARVING);
+		crudeCarving = new ItemRequirement("Crude carving", ItemID.OLAF_WOODCARVINGA);
 		crudeCarving.setTooltip("You can get another from Olaf");
-		cruderCarving = new ItemRequirement("Cruder carving", ItemID.CRUDER_CARVING);
+		cruderCarving = new ItemRequirement("Cruder carving", ItemID.OLAF_WOODCARVINGB);
 		cruderCarving.setTooltip("You can get another from Olaf");
 
-		key = new ItemRequirement("Key", ItemID.KEY_11039);
-		key.addAlternates(ItemID.KEY_11040, ItemID.KEY_11041, ItemID.KEY_11042, ItemID.KEY_11043);
+		key = new ItemRequirement("Key", ItemID.OLAF2_GATE_KEY_1);
+		key.addAlternates(ItemID.OLAF2_GATE_KEY_2, ItemID.OLAF2_GATE_KEY_3, ItemID.OLAF2_GATE_KEY_4, ItemID.OLAF2_GATE_KEY_5);
 
-		crossKey = new ItemRequirement("Key", ItemID.KEY_11039);
-		squareKey = new ItemRequirement("Key", ItemID.KEY_11040);
-		triangleKey = new ItemRequirement("Key", ItemID.KEY_11041);
-		circleKey = new ItemRequirement("Key", ItemID.KEY_11042);
-		starKey = new ItemRequirement("Key", ItemID.KEY_11043);
+		crossKey = new ItemRequirement("Key", ItemID.OLAF2_GATE_KEY_1);
+		squareKey = new ItemRequirement("Key", ItemID.OLAF2_GATE_KEY_2);
+		triangleKey = new ItemRequirement("Key", ItemID.OLAF2_GATE_KEY_3);
+		circleKey = new ItemRequirement("Key", ItemID.OLAF2_GATE_KEY_4);
+		starKey = new ItemRequirement("Key", ItemID.OLAF2_GATE_KEY_5);
 
 		tenFreeSlots = new FreeInventorySlotRequirement(10);
 		tenFreeSlots.setTooltip("Only need 4 slots free if bringing 6 rope with you.");
 
-		rottenBarrel = new ItemRequirement("Rotten barrel", ItemID.ROTTEN_BARREL);
-		rottenBarrel.addAlternates(ItemID.ROTTEN_BARREL_11045);
-		rottenBarrels2 = new ItemRequirement("Rotten barrel", ItemID.ROTTEN_BARREL, 2);
-		rottenBarrels2.addAlternates(ItemID.ROTTEN_BARREL_11045);
+		rottenBarrel = new ItemRequirement("Rotten barrel", ItemID.OLAF2_WALKWAY_REPAIR_BARREL);
+		rottenBarrel.addAlternates(ItemID.OLAF2_WALKWAY_REPAIR_BARREL_INV);
+		rottenBarrels2 = new ItemRequirement("Rotten barrel", ItemID.OLAF2_WALKWAY_REPAIR_BARREL, 2);
+		rottenBarrels2.addAlternates(ItemID.OLAF2_WALKWAY_REPAIR_BARREL_INV);
 
 		ropes3 = new ItemRequirement("Rope", ItemID.ROPE, 3);
-		ropes3.addAlternates(ItemID.ROPE_11046);
+		ropes3.addAlternates(ItemID.OLAF2_WALKWAY_REPAIR_ROPE);
 		ropes6 = new ItemRequirement("Rope", ItemID.ROPE, 6);
-		ropes6.addAlternates(ItemID.ROPE_11046);
+		ropes6.addAlternates(ItemID.OLAF2_WALKWAY_REPAIR_ROPE);
 	}
 
 	public void setupConditions()
 	{
-		givenIngridCarving = new VarbitRequirement(3536, 1, Operation.GREATER_EQUAL);
+		givenIngridCarving = new VarbitRequirement(VarbitID.OLAF_INGRID_QUEST, 1, Operation.GREATER_EQUAL);
 		inFirstArea = new ZoneRequirement(firstArea, firstArea2);
 		inSecondArea = new ZoneRequirement(secondArea, secondArea2);
 		inThirdArea = new ZoneRequirement(thirdArea);
@@ -199,7 +192,7 @@ public class OlafsQuest extends BasicQuestHelper
 		placedBarrel2 = new VarbitRequirement(3548, 1);
 		keyInterfaceOpen = new WidgetModelRequirement(252, 0, 24124);
 
-		ulfricNearby = new NpcCondition(NpcID.ULFRIC);
+		ulfricNearby = new NpcCondition(NpcID.OLAF2_ULFRIC);
 
 		killedUlfric = new VarbitRequirement(3539, 1);
 	}
@@ -216,27 +209,27 @@ public class OlafsQuest extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToOlaf = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Talk to Olaf Hradson north east of Rellekka.");
+		talkToOlaf = new NpcStep(this, NpcID.OLAF, new WorldPoint(2722, 3727, 0), "Talk to Olaf Hradson north east of Rellekka.");
 		talkToOlaf.addDialogStep("Yes.");
-		chopTree = new ObjectStep(this, ObjectID.WINDSWEPT_TREE_18137, new WorldPoint(2749, 3735, 0), "Chop a log from the Windswept Tree east of Olaf.", axe);
-		giveLogToOlaf = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Bring the logs to Olaf Hradson north east of Rellekka.", windsweptLogs);
-		talkToIngrid = new NpcStep(this, NpcID.INGRID_HRADSON, new WorldPoint(2670, 3670, 0), "Talk to Ingrid Hradson in Rellekka.", crudeCarving);
-		talkToVolf = new NpcStep(this, NpcID.VOLF_OLAFSON, new WorldPoint(2662, 3700, 0), "Talk to Volf Hradson in Rellekka.", cruderCarving);
+		chopTree = new ObjectStep(this, ObjectID.OLAF_WINDSWEPT_TREE, new WorldPoint(2749, 3735, 0), "Chop a log from the Windswept Tree east of Olaf.", axe);
+		giveLogToOlaf = new NpcStep(this, NpcID.OLAF, new WorldPoint(2722, 3727, 0), "Bring the logs to Olaf Hradson north east of Rellekka.", windsweptLogs);
+		talkToIngrid = new NpcStep(this, NpcID.OLAF_INGRID, new WorldPoint(2670, 3670, 0), "Talk to Ingrid Hradson in Rellekka.", crudeCarving);
+		talkToVolf = new NpcStep(this, NpcID.OLAF_VOLF, new WorldPoint(2662, 3700, 0), "Talk to Volf Hradson in Rellekka.", cruderCarving);
 
-		returnToOlaf = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Return to Olaf Hradson north east of Rellekka.");
-		useDampPlanks = new ObjectStep(this, NullObjectID.NULL_14172, new WorldPoint(2724, 3728, 0), "Use the damp planks on Olaf's embers.", dampPlanks);
-		talkToOlafAfterPlanks = new NpcStep(this, NpcID.OLAF_HRADSON, new WorldPoint(2722, 3727, 0), "Talk to Olaf again, and give him some food.", food);
+		returnToOlaf = new NpcStep(this, NpcID.OLAF, new WorldPoint(2722, 3727, 0), "Return to Olaf Hradson north east of Rellekka.");
+		useDampPlanks = new ObjectStep(this, ObjectID.OLAF_MULTI_FIRE, new WorldPoint(2724, 3728, 0), "Use the damp planks on Olaf's embers.", dampPlanks);
+		talkToOlafAfterPlanks = new NpcStep(this, NpcID.OLAF, new WorldPoint(2722, 3727, 0), "Talk to Olaf again, and give him some food.", food);
 		talkToOlafAfterPlanks.addDialogStep("Alright, here, have some food. Now give me the map.");
 		digHole = new DigStep(this, new WorldPoint(2748, 3732, 0), "Dig next to the Windswept Tree.");
 
 		pickUpKey = new ItemStep(this, "Pick up the dropped key.", key);
 
-		killSkeleton = new NpcStep(this, NpcID.SKELETON_FREMENNIK, new WorldPoint(2727, 10141, 0), "Go deeper into the caverns and kill a Skeleton Fremennik for a key.", true);
-		killSkeleton.addAlternateNpcs(NpcID.SKELETON_FREMENNIK_4492, NpcID.SKELETON_FREMENNIK_4493, NpcID.SKELETON_FREMENNIK_4494, NpcID.SKELETON_FREMENNIK_4495,
-			NpcID.SKELETON_FREMENNIK_4496, NpcID.SKELETON_FREMENNIK_4497, NpcID.SKELETON_FREMENNIK_4498, NpcID.SKELETON_FREMENNIK_4499);
+		killSkeleton = new NpcStep(this, NpcID.OLAF2_UNDEAD_VIKING_LVL40, new WorldPoint(2727, 10141, 0), "Go deeper into the caverns and kill a Skeleton Fremennik for a key.", true);
+		killSkeleton.addAlternateNpcs(NpcID.OLAF2_UNDEAD_VIKING_LVL40_B, NpcID.OLAF2_UNDEAD_VIKING_LVL40_C, NpcID.OLAF2_UNDEAD_VIKING_LVL50, NpcID.OLAF2_UNDEAD_VIKING_LVL50_B,
+			NpcID.OLAF2_UNDEAD_VIKING_LVL50_C, NpcID.OLAF2_UNDEAD_VIKING_LVL60, NpcID.OLAF2_UNDEAD_VIKING_LVL60_B, NpcID.OLAF2_UNDEAD_VIKING_LVL60_C);
 		killSkeleton.addSubSteps(pickUpKey);
 
-		searchPainting = new ObjectStep(this, ObjectID.PICTURE_WALL, new WorldPoint(2707, 10147, 0), "Search the picture wall in the north room.");
+		searchPainting = new ObjectStep(this, ObjectID.OLAF2_SKULL_PUZZLE_WALL, new WorldPoint(2707, 10147, 0), "Search the picture wall in the north room.");
 
 		doPuzzle = new PaintingWall(this);
 
@@ -244,12 +237,12 @@ public class OlafsQuest extends BasicQuestHelper
 		pickUpItems2 = new DetailedQuestStep(this, "Pick up 1 rotten barrels and 3 ropes from around the room.", rottenBarrel, ropes3);
 		pickUpItems.addSubSteps(pickUpItems2);
 
-		useBarrel = new ObjectStep(this, ObjectID.WALKWAY, new WorldPoint(2722, 10168, 0), "WALK onto the walkway to the east, and use a barrel on it to repair it.", rottenBarrel.highlighted(), ropes3);
-		useBarrel.addIcon(ItemID.ROTTEN_BARREL_11045);
-		useBarrel2 = new ObjectStep(this, ObjectID.WALKWAY_23214, new WorldPoint(2724, 10168, 0), "WALK on the walkway and repair the next hole in it.", rottenBarrel.highlighted(), ropes3);
-		useBarrel2.addIcon(ItemID.ROTTEN_BARREL_11045);
+		useBarrel = new ObjectStep(this, ObjectID.OLAF2_INVIS_HOTSPOT_BARREL1, new WorldPoint(2722, 10168, 0), "WALK onto the walkway to the east, and use a barrel on it to repair it.", rottenBarrel.highlighted(), ropes3);
+		useBarrel.addIcon(ItemID.OLAF2_WALKWAY_REPAIR_BARREL_INV);
+		useBarrel2 = new ObjectStep(this, ObjectID.OLAF2_INVIS_HOTSPOT_BARREL2, new WorldPoint(2724, 10168, 0), "WALK on the walkway and repair the next hole in it.", rottenBarrel.highlighted(), ropes3);
+		useBarrel2.addIcon(ItemID.OLAF2_WALKWAY_REPAIR_BARREL_INV);
 
-		openGate = new ObjectStep(this, ObjectID.GATE_23216, new WorldPoint(2725, 10168, 0), "Open the gate on the walkway, clicking the key hole which matches your key.", key);
+		openGate = new ObjectStep(this, ObjectID.OLAF2_RUSTY_GATE_PUZZLE, new WorldPoint(2725, 10168, 0), "Open the gate on the walkway, clicking the key hole which matches your key.", key);
 
 		chooseSquare = new WidgetStep(this, "Click the square key hole.", 252, 3);
 		chooseCross = new WidgetStep(this, "Click the cross key hole.", 252, 4);
@@ -258,13 +251,13 @@ public class OlafsQuest extends BasicQuestHelper
 		chooseStar = new WidgetStep(this, "Click the star key hole.", 252, 7);
 		openGate.addSubSteps(chooseCircle, chooseCross, chooseSquare, chooseStar, chooseTriangle);
 
-		searchChest = new ObjectStep(this, ObjectID.CHEST_14197, new WorldPoint(2740, 10164, 0), "WALK off the remaining walkway, and search the chest in the wreck. Be prepared to fight Ulfric.");
-		searchChest.addAlternateObjects(ObjectID.CHEST_14196);
+		searchChest = new ObjectStep(this, ObjectID.OLAF2_CHEST_CLOSED, new WorldPoint(2740, 10164, 0), "WALK off the remaining walkway, and search the chest in the wreck. Be prepared to fight Ulfric.");
+		searchChest.addAlternateObjects(ObjectID.OLAF2_CHEST_OPEN);
 
-		killUlfric = new NpcStep(this, NpcID.ULFRIC, new WorldPoint(2740, 10164, 0), "Kill Ulfric.");
+		killUlfric = new NpcStep(this, NpcID.OLAF2_ULFRIC, new WorldPoint(2740, 10164, 0), "Kill Ulfric.");
 
-		searchChestAgain = new ObjectStep(this, ObjectID.CHEST_14197, new WorldPoint(2740, 10164, 0), "Search the chest again to finish the quest.");
-		searchChestAgain.addAlternateObjects(ObjectID.CHEST_14196);
+		searchChestAgain = new ObjectStep(this, ObjectID.OLAF2_CHEST_CLOSED, new WorldPoint(2740, 10164, 0), "Search the chest again to finish the quest.");
+		searchChestAgain.addAlternateObjects(ObjectID.OLAF2_CHEST_OPEN);
 	}
 
 	@Override

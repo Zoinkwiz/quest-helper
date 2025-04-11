@@ -24,35 +24,27 @@
  */
 package com.questhelper.helpers.quests.insearchofknowledge;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class InSearchOfKnowledge extends BasicQuestHelper
 {
@@ -117,22 +109,22 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 		food5Highlighted = new ItemRequirement("Food", ItemCollections.FISH_FOOD, 5);
 		food5Highlighted.setHighlightInInventory(true);
 		knife = new ItemRequirement("Knife or slash weapon to cut through a web", ItemID.KNIFE).isNotConsumed();
-		knife.addAlternates(ItemID.WILDERNESS_SWORD, ItemID.WILDERNESS_SWORD_1, ItemID.WILDERNESS_SWORD_2,
-			ItemID.WILDERNESS_SWORD_3, ItemID.WILDERNESS_SWORD_4);
+		knife.addAlternates(ItemID.CERT_REINITIALISATION_15_INACTIVE, ItemID.WILDERNESS_SWORD_EASY, ItemID.WILDERNESS_SWORD_MEDIUM,
+			ItemID.WILDERNESS_SWORD_HARD, ItemID.WILDERNESS_SWORD_ELITE);
 
 		protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
-		sunPage = new ItemRequirement("Tattered sun page", ItemID.TATTERED_SUN_PAGE);
-		moonPage = new ItemRequirement("Tattered moon page", ItemID.TATTERED_MOON_PAGE);
-		templePage = new ItemRequirement("Tattered temple page", ItemID.TATTERED_TEMPLE_PAGE);
+		sunPage = new ItemRequirement("Tattered sun page", ItemID.HOSDUN_SUN_PAGE);
+		moonPage = new ItemRequirement("Tattered moon page", ItemID.HOSDUN_MOON_PAGE);
+		templePage = new ItemRequirement("Tattered temple page", ItemID.HOSDUN_TEMPLE_PAGE);
 
-		sunTome = new ItemRequirement("Tome of the sun", ItemID.TOME_OF_THE_SUN);
+		sunTome = new ItemRequirement("Tome of the sun", ItemID.HOSDUN_SUN_TOME);
 		sunTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		sunTome.setHighlightInInventory(true);
-		moonTome = new ItemRequirement("Tome of the moon", ItemID.TOME_OF_THE_MOON);
+		moonTome = new ItemRequirement("Tome of the moon", ItemID.HOSDUN_MOON_TOME);
 		moonTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		moonTome.setHighlightInInventory(true);
-		templeTome = new ItemRequirement("Tome of the temple", ItemID.TOME_OF_THE_TEMPLE);
+		templeTome = new ItemRequirement("Tome of the temple", ItemID.HOSDUN_TEMPLE_TOME);
 		templeTome.setTooltip("You can get another from the bookshelves in the Forthos Dungeon");
 		templeTome.setHighlightInInventory(true);
 	}
@@ -171,28 +163,28 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterDungeon = new ObjectStep(this, ObjectID.LADDER_34862, new WorldPoint(1702, 3574, 0), "Enter the Forthos " +
+		enterDungeon = new ObjectStep(this, ObjectID.HOSDUN_ENTRANCE_LADDER_HOLE, new WorldPoint(1702, 3574, 0), "Enter the Forthos " +
 			"Dungeon.", knife, food5);
 
 		useFoodOnAimeri = new FeedingAimeri(this);
 
-		talkToAimeriAgain = new NpcStep(this, NpcID.BROTHER_AIMERI_8705, new WorldPoint(1840, 9926, 0), "Talk to Aimeri " +
+		talkToAimeriAgain = new NpcStep(this, NpcID.HOSDUN_AIMERI_HEALED, new WorldPoint(1840, 9926, 0), "Talk to Aimeri " +
 			"again.");
 		talkToAimeriAgain.addDialogStep("Who are you?");
 
-		searchBookcasesForTemple = new ObjectStep(this, ObjectID.MUSTY_BOOKSHELF_34849, new WorldPoint(1796, 9935, 0),
+		searchBookcasesForTemple = new ObjectStep(this, ObjectID.HOSDUN_TEMPLE_BOOKCASE, new WorldPoint(1796, 9935, 0),
 			"Search the musty bookshelves to the west of Aimeri for the tomes of moon, sun, and temple.",
 			protectFromMagic);
 
-		searchBookcasesForSun = new ObjectStep(this, ObjectID.MUSTY_BOOKSHELF, new WorldPoint(1805, 9935, 0),
+		searchBookcasesForSun = new ObjectStep(this, ObjectID.HOSDUN_SUN_BOOKCASE, new WorldPoint(1805, 9935, 0),
 			"Search the musty bookshelves to the west of Aimeri for the tomes of moon, sun, and temple.",
 			protectFromMagic);
 
-		searchBookcasesForMoon = new ObjectStep(this, ObjectID.MUSTY_BOOKSHELF_34848, new WorldPoint(1804, 9943, 0),
+		searchBookcasesForMoon = new ObjectStep(this, ObjectID.HOSDUN_MOON_BOOKCASE, new WorldPoint(1804, 9943, 0),
 			"Search the musty bookshelves to the west of Aimeri for the tomes of moon, sun, and temple.",
 			protectFromMagic);
 
-		enterDungeonAgain = new ObjectStep(this, ObjectID.LADDER_34862, new WorldPoint(1702, 3574, 0),
+		enterDungeonAgain = new ObjectStep(this, ObjectID.HOSDUN_ENTRANCE_LADDER_HOLE, new WorldPoint(1702, 3574, 0),
 			"Kill any monsters in the Forthos Dungeon for pages for the tomes. You'll need 4 page for each tome.",
 			combatGear);
 
@@ -200,19 +192,19 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 			"You'll need to use 4 pages on each tome.", combatGear);
 		getPages.addSubSteps(enterDungeonAgain);
 
-		useMoonOnLogosia = new NpcStep(this, NpcID.LOGOSIA, new WorldPoint(1633, 3808, 0),
+		useMoonOnLogosia = new NpcStep(this, NpcID.ARCEUUS_LIBRARY_LIBRARIAN, new WorldPoint(1633, 3808, 0),
 			"Give the tomes to Logosia in the Arceuus library.", moonTome);
-		useMoonOnLogosia.addIcon(ItemID.TOME_OF_THE_MOON);
+		useMoonOnLogosia.addIcon(ItemID.HOSDUN_MOON_TOME);
 
-		useSunOnLogosia = new NpcStep(this, NpcID.LOGOSIA, new WorldPoint(1633, 3808, 0),
+		useSunOnLogosia = new NpcStep(this, NpcID.ARCEUUS_LIBRARY_LIBRARIAN, new WorldPoint(1633, 3808, 0),
 			"Give the tomes to Logosia in the Arceuus library.", sunTome);
-		useSunOnLogosia.addIcon(ItemID.TOME_OF_THE_SUN);
+		useSunOnLogosia.addIcon(ItemID.HOSDUN_SUN_TOME);
 
-		useTempleOnLogosia = new NpcStep(this, NpcID.LOGOSIA, new WorldPoint(1633, 3808, 0),
+		useTempleOnLogosia = new NpcStep(this, NpcID.ARCEUUS_LIBRARY_LIBRARIAN, new WorldPoint(1633, 3808, 0),
 			"Give the tomes to Logosia in the Arceuus library.", templeTome);
-		useTempleOnLogosia.addIcon(ItemID.TOME_OF_THE_TEMPLE);
+		useTempleOnLogosia.addIcon(ItemID.HOSDUN_TEMPLE_TOME);
 
-		talkToLogosia = new NpcStep(this, NpcID.LOGOSIA, new WorldPoint(1633, 3808, 0),
+		talkToLogosia = new NpcStep(this, NpcID.ARCEUUS_LIBRARY_LIBRARIAN, new WorldPoint(1633, 3808, 0),
 			"Talk to Logosia in the Arceuus library.");
 
 		useMoonOnLogosia.addSubSteps(useSunOnLogosia, useTempleOnLogosia, talkToLogosia);
@@ -233,7 +225,7 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("10,000 Experience Lamp (any skill over level 40).", ItemID.ANTIQUE_LAMP, 1)); //4447 Is placeholder for filter.
+		return Collections.singletonList(new ItemReward("10,000 Experience Lamp (any skill over level 40).", ItemID.THOSF_REWARD_LAMP, 1)); //4447 Is placeholder for filter.
 	}
 
 	@Override

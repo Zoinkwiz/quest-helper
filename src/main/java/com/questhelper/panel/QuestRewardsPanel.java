@@ -28,6 +28,7 @@ package com.questhelper.panel;
 import com.questhelper.rewards.Reward;
 import com.questhelper.util.Fonts;
 import net.runelite.client.ui.ColorScheme;
+
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

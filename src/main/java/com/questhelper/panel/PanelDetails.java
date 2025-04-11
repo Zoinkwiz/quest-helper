@@ -29,11 +29,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.*;
 
 public class PanelDetails
 {

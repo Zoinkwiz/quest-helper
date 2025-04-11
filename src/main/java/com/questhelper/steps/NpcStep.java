@@ -27,24 +27,12 @@ package com.questhelper.steps;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import static com.questhelper.overlays.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.Line2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
-import javax.inject.Inject;
 import lombok.Setter;
+import net.runelite.api.Point;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -54,6 +42,17 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
+
+import static com.questhelper.overlays.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
 
 public class NpcStep extends DetailedQuestStep
 {

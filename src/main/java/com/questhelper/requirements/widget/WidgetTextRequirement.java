@@ -27,15 +27,16 @@
 package com.questhelper.requirements.widget;
 
 import com.questhelper.requirements.SimpleRequirement;
-import java.util.Arrays;
-import java.util.List;
 import com.questhelper.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.widgets.Widget;
+
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 public class WidgetTextRequirement extends SimpleRequirement
 {

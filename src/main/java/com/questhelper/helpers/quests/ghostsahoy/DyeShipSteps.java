@@ -24,28 +24,25 @@
  */
 package com.questhelper.helpers.quests.ghostsahoy;
 
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.Widget;
-import net.runelite.client.eventbus.Subscribe;
 
 public class DyeShipSteps extends DetailedOwnerStep
 {
@@ -88,7 +85,7 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	private void updateCurrentColours()
 	{
-		Widget dyed = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT);
+		Widget dyed = client.getWidget(InterfaceID.Objectbox.TEXT);
 		if (dyed == null)
 		{
 			return;
@@ -202,7 +199,7 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	public void updateColours()
 	{
-		Widget textWidget = client.getWidget(229, 1);
+		Widget textWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
 		if (textWidget != null)
 		{
 			String text = textWidget.getText();
@@ -235,22 +232,22 @@ public class DyeShipSteps extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		modelShip = new ItemRequirement("Model ship", ItemID.MODEL_SHIP_4254);
+		modelShip = new ItemRequirement("Model ship", ItemID.AHOY_TOY_BOAT_REPAIRED);
 		modelShip.setHighlightInInventory(true);
 
-		searchMast = new ObjectStep(getQuestHelper(), ObjectID.MAST_16640, new WorldPoint(3619, 3543, 2), "Search the Mast repeatedly until you've found out all the colours for the toy boat.");
+		searchMast = new ObjectStep(getQuestHelper(), ObjectID.AHOY_MAST, new WorldPoint(3619, 3543, 2), "Search the Mast repeatedly until you've found out all the colours for the toy boat.");
 		dyeTop = new DetailedQuestStep(getQuestHelper(), "Dye the top of the model ship's flag to match the real ship.", modelShip);
 		dyeBottom = new DetailedQuestStep(getQuestHelper(), "Dye the bottom of the model ship's flag to match the real ship.", modelShip);
 		dyeSkull = new DetailedQuestStep(getQuestHelper(), "Dye the skull of the model ship's flag to match the real ship.", modelShip);
-		talkToMan = new NpcStep(getQuestHelper(), NpcID.OLD_MAN, new WorldPoint(3616, 3543, 1), "Talk to the Old Man with the model ship to get a key.");
+		talkToMan = new NpcStep(getQuestHelper(), NpcID.AHOY_OLDMAN, new WorldPoint(3616, 3543, 1), "Talk to the Old Man with the model ship to get a key.");
 		talkToMan.addDialogStep("Is this your toy boat?");
-		goDownToMan = new ObjectStep(getQuestHelper(), ObjectID.SHIPS_LADDER_16112, new WorldPoint(3615, 3541, 2), "Go to the main deck of the ship.");
-		goUpToMan = new ObjectStep(getQuestHelper(), ObjectID.SHIPS_LADDER_16111, new WorldPoint(3613, 3543, 0), "Go up the ladder in the ship west of Port Phasmatys.");
+		goDownToMan = new ObjectStep(getQuestHelper(), ObjectID.AHOY_GHOSTSHIP_LADDERTOP, new WorldPoint(3615, 3541, 2), "Go to the main deck of the ship.");
+		goUpToMan = new ObjectStep(getQuestHelper(), ObjectID.AHOY_GHOSTSHIP_LADDER, new WorldPoint(3613, 3543, 0), "Go up the ladder in the ship west of Port Phasmatys.");
 		goDownToMan.addSubSteps(goUpToMan);
 
-		goUpToDeckForMast = new ObjectStep(getQuestHelper(), ObjectID.SHIPS_LADDER_16111, new WorldPoint(3613, 3543, 0),
+		goUpToDeckForMast = new ObjectStep(getQuestHelper(), ObjectID.AHOY_GHOSTSHIP_LADDER, new WorldPoint(3613, 3543, 0),
 			"Go up the ladder in the ship west of Port Phasmatys.");
-		goUpToMast = new ObjectStep(getQuestHelper(), ObjectID.SHIPS_LADDER_16111, new WorldPoint(3615, 3541, 1),
+		goUpToMast = new ObjectStep(getQuestHelper(), ObjectID.AHOY_GHOSTSHIP_LADDER, new WorldPoint(3615, 3541, 1),
 			"Go up to the mast of the ship.");
 	}
 
@@ -268,12 +265,12 @@ public class DyeShipSteps extends DetailedOwnerStep
 
 	private enum FlagColour
 	{
-		RED("red.", new ItemRequirement("Red dye", ItemID.RED_DYE)),
-		BLUE("blue.", new ItemRequirement("Blue dye", ItemID.BLUE_DYE)),
-		YELLOW("yellow.", new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE)),
-		GREEN("green.", new ItemRequirement("Green dye", ItemID.GREEN_DYE)),
-		PURPLE("purple.", new ItemRequirement("Purple dye", ItemID.PURPLE_DYE)),
-		ORANGE("orange.", new ItemRequirement("Orange dye", ItemID.ORANGE_DYE)),
+		RED("red.", new ItemRequirement("Red dye", ItemID.REDDYE)),
+		BLUE("blue.", new ItemRequirement("Blue dye", ItemID.BLUEDYE)),
+		YELLOW("yellow.", new ItemRequirement("Yellow dye", ItemID.YELLOWDYE)),
+		GREEN("green.", new ItemRequirement("Green dye", ItemID.GREENDYE)),
+		PURPLE("purple.", new ItemRequirement("Purple dye", ItemID.PURPLEDYE)),
+		ORANGE("orange.", new ItemRequirement("Orange dye", ItemID.ORANGEDYE)),
 		WHITE("white.", new ItemRequirement("White", -1, -1));
 
 		private final String colourText;

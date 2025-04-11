@@ -27,9 +27,10 @@
 package com.questhelper.requirements.conditional;
 
 import com.questhelper.requirements.Requirement;
-import java.util.List;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * Represents a {@link Requirement} that has to be initialized before being

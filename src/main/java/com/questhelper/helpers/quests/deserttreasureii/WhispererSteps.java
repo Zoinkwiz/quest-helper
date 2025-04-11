@@ -24,46 +24,37 @@
  */
 package com.questhelper.helpers.quests.deserttreasureii;
 
-import com.questhelper.collections.ItemCollections;
 import com.questhelper.bank.QuestBank;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.item.ItemOnTileConsideringSceneLoadRequirement;
-import com.questhelper.requirements.location.TileIsLoadedRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.item.ItemOnTileConsideringSceneLoadRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.location.TileIsLoadedRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.not;
-import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
-import java.util.Arrays;
-import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class WhispererSteps extends ConditionalStep
 {
@@ -282,58 +273,58 @@ public class WhispererSteps extends ConditionalStep
 
 	protected void setupItemRequirements()
 	{
-		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.RING_OF_VISIBILITY);
+		ringOfVisibility = new ItemRequirement("Ring of visibility", ItemID.FD_RING_VISIBILITY);
 		magicCombatGear = new ItemRequirement("Magic combat gear", -1, -1);
 		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		food = new ItemRequirement("Food, as much as you can bring", ItemCollections.GOOD_EATING_FOOD);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
 
-		lassarTeleport = new ItemRequirement("Mind altar or lassar teleport", ItemID.MIND_ALTAR_TELEPORT);
-		lassarTeleport.addAlternates(ItemID.LASSAR_TELEPORT);
+		lassarTeleport = new ItemRequirement("Mind altar or lassar teleport", ItemID.TELETAB_MIND_ALTAR);
+		lassarTeleport.addAlternates(ItemID.TABLET_LASSAR);
 
-		VarbitRequirement nardahTeleportInBook = new VarbitRequirement(5672, 1, Operation.GREATER_EQUAL);
-		nardahTeleport = new ItemRequirement("Nardah teleport, or Fairy Ring to DLQ", ItemID.DESERT_AMULET_4);
+		VarbitRequirement nardahTeleportInBook = new VarbitRequirement(VarbitID.BOOKOFSCROLLS_NARDAH, 1, Operation.GREATER_EQUAL);
+		nardahTeleport = new ItemRequirement("Nardah teleport, or Fairy Ring to DLQ", ItemID.DESERT_AMULET_ELITE);
 		nardahTeleport.setAdditionalOptions(nardahTeleportInBook);
-		nardahTeleport.addAlternates(ItemID.DESERT_AMULET_3, ItemID.NARDAH_TELEPORT, ItemID.DESERT_AMULET_2);
+		nardahTeleport.addAlternates(ItemID.DESERT_AMULET_HARD, ItemID.TELEPORTSCROLL_NARDAH, ItemID.DESERT_AMULET_MEDIUM);
 		nardahTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
 		freeSlot = new FreeInventorySlotRequirement(1);
 
 		/* Quest items */
-		whisperersMedallion = new ItemRequirement("Whisperer's medallion", ItemID.WHISPERERS_MEDALLION)
+		whisperersMedallion = new ItemRequirement("Whisperer's medallion", ItemID.DT2_MEDALLION_WHISPERER)
 			.alsoCheckBank(questBank);
-		veryLongRope = new ItemRequirement("Very long rope", ItemID.VERY_LONG_ROPE).alsoCheckBank(questBank);
-		shadowBlockerSchematic = new ItemRequirement("Shadow blocker schematic", ItemID.SHADOW_BLOCKER_SCHEMATIC);
-		greenShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY_28374);
-		purpleShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY);
-		shadowBlocker = new ItemRequirement("Shadow blocker", ItemID.SHADOW_BLOCKER);
+		veryLongRope = new ItemRequirement("Very long rope", ItemID.DT2_LASSAR_ROPE).alsoCheckBank(questBank);
+		shadowBlockerSchematic = new ItemRequirement("Shadow blocker schematic", ItemID.DT2_LASSAR_SHADOW_BLOCKER_SCHEMATIC);
+		greenShadowKey = new ItemRequirement("Shadow key", ItemID.DT2_LASSAR_KEY_5);
+		purpleShadowKey = new ItemRequirement("Shadow key", ItemID.DT2_LASSAR_KEY_1);
+		shadowBlocker = new ItemRequirement("Shadow blocker", ItemID.DT2_SHADOW_BLOCKER);
 		shadowBlocker.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
 		basicShadowTorchSchematic = new ItemRequirement("Basic shadow torch schematic",
-			ItemID.BASIC_SHADOW_TORCH_SCHEMATIC);
-		blackstoneFragment = new ItemRequirement("Blackstone fragment", ItemID.BLACKSTONE_FRAGMENT_28357);
+			ItemID.DT2_LASSAR_SHADOW_TORCH_T1_SCHEMATIC);
+		blackstoneFragment = new ItemRequirement("Blackstone fragment", ItemID.BLACKSTONE_FRAGMENT_ACTIVE);
 		blackstoneFragment.setTooltip("You can get another from Ketla");
-		basicShadowTorch = new ItemRequirement("Basic shadow torch", ItemID.BASIC_SHADOW_TORCH);
+		basicShadowTorch = new ItemRequirement("Basic shadow torch", ItemID.DT2_SHADOW_TORCH_T1);
 		basicShadowTorch.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
-		revitalisingIdolSchematic = new ItemRequirement("Revitalising idol schematic", ItemID.REVITALISING_IDOL_SCHEMATIC);
-		revitalisingIdol = new ItemRequirement("Revitalising idol", ItemID.REVITALISING_IDOL);
+		revitalisingIdolSchematic = new ItemRequirement("Revitalising idol schematic", ItemID.DT2_LASSAR_REVITALISING_IDOL_SCHEMATIC);
+		revitalisingIdol = new ItemRequirement("Revitalising idol", ItemID.DT2_REVITALISING_IDOL);
 		revitalisingIdol.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
-		blueShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY_28371);
+		blueShadowKey = new ItemRequirement("Shadow key", ItemID.DT2_LASSAR_KEY_2);
 		superiorTorchSchematic = new ItemRequirement("Superior shadow torch schematic",
-			ItemID.SUPERIOR_SHADOW_TORCH_SCHEMATIC);
-		superiorTorch = new ItemRequirement("Superior shadow torch", ItemID.SUPERIOR_SHADOW_TORCH);
+			ItemID.DT2_LASSAR_SHADOW_TORCH_T2_SCHEMATIC);
+		superiorTorch = new ItemRequirement("Superior shadow torch", ItemID.DT2_SHADOW_TORCH_T2);
 		superiorTorch.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
 
-		animaPortalSchematic = new ItemRequirement("Anima portal schematic", ItemID.ANIMA_PORTAL_SCHEMATIC);
-		animaPortal = new ItemRequirement("Anima portal", ItemID.ANIMA_PORTAL);
+		animaPortalSchematic = new ItemRequirement("Anima portal schematic", ItemID.DT2_LASSAR_ANIMA_PORTAL_SCHEMATIC);
+		animaPortal = new ItemRequirement("Anima portal", ItemID.DT2_ANIMA_PORTAL);
 		animaPortal.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
-		whiteShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY_28372);
-		perfectShadowTorchSchematic = new ItemRequirement("Perfected shadow torch schematic", ItemID.PERFECTED_SHADOW_TORCH_SCHEMATIC_28381);
-		redShadowKey = new ItemRequirement("Shadow key", ItemID.SHADOW_KEY_28373);
-		iconSegment1 = new ItemRequirement("Icon segment", ItemID.ICON_SEGMENT);
-		iconSegment2 = new ItemRequirement("Icon segment", ItemID.ICON_SEGMENT_28362);
-		strangeIcon = new ItemRequirement("Strange icon", ItemID.STRANGE_ICON_28360);
-		perfectShadowTorch = new ItemRequirement("Perfect shadow torch", ItemID.PERFECTED_SHADOW_TORCH);
+		whiteShadowKey = new ItemRequirement("Shadow key", ItemID.DT2_LASSAR_KEY_3);
+		perfectShadowTorchSchematic = new ItemRequirement("Perfected shadow torch schematic", ItemID.DT2_LASSAR_SHADOW_TORCH_T3_SCHEMATIC_FAKE);
+		redShadowKey = new ItemRequirement("Shadow key", ItemID.DT2_LASSAR_KEY_4);
+		iconSegment1 = new ItemRequirement("Icon segment", ItemID.DT2_LASSAR_ICON_PART_1);
+		iconSegment2 = new ItemRequirement("Icon segment", ItemID.DT2_LASSAR_ICON_PART_2);
+		strangeIcon = new ItemRequirement("Strange icon", ItemID.DT2_LASSAR_ICON);
+		perfectShadowTorch = new ItemRequirement("Perfect shadow torch", ItemID.DT2_SHADOW_TORCH_T3);
 	}
 
 	protected void setupZones()
@@ -379,7 +370,7 @@ public class WhispererSteps extends ConditionalStep
 		int WHISPERER_VARBIT = 15126;
 
 		// Varbit is for learning about the area from the previous quest
-		talkedToRamarno = new VarbitRequirement(12068, 2, Operation.GREATER_EQUAL);
+		talkedToRamarno = new VarbitRequirement(VarbitID.CAMDOZAAL_RAMARNO_INTRO, 2, Operation.GREATER_EQUAL);
 
 		talkedToPrescott = new VarbitRequirement(WHISPERER_VARBIT, 4, Operation.GREATER_EQUAL);
 		ropeAttached = new VarbitRequirement(WHISPERER_VARBIT, 6, Operation.GREATER_EQUAL);
@@ -412,24 +403,24 @@ public class WhispererSteps extends ConditionalStep
 		blockerNotInBenchOrInventory = new RuneliteRequirement(getQuestHelper().getConfigManager(), "dt2Blockerinbench", "true");
 		blockerNotInBenchOrInventory.initWithValue("false");
 
-		blockerNearby = new ObjectCondition(ObjectID.SHADOW_BLOCKER);
+		blockerNearby = new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_NORMAL);
 		blockerPlacedAtDoor = new Conditions(LogicType.OR,
-			new ObjectCondition(ObjectID.SHADOW_BLOCKER,
+			new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_NORMAL,
 				new Zone(new WorldPoint(2606, 6359, 0),
 					new WorldPoint(2606, 6360, 0))
 			),
-			new ObjectCondition(ObjectID.SHADOW_BLOCKER_48214,
+			new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_SHADOW,
 				new Zone(new WorldPoint(2350, 6359, 0),
 					new WorldPoint(2350, 6360, 0)))
 		);
 
 		// TODO: Work out a way to determine if the door is unlocked?
 
-		idolNearby = new ObjectCondition(ObjectID.REVITALISING_IDOL);
+		idolNearby = new ObjectCondition(ObjectID.DT2_LASSAR_REVITALISING_IDOL_NORMAL);
 
-		idolShadowRealmFullNearby = new ObjectCondition(ObjectID.REVITALISING_IDOL_48216);
+		idolShadowRealmFullNearby = new ObjectCondition(ObjectID.DT2_LASSAR_REVITALISING_IDOL_SHADOW);
 
-		purpleKeyTaken = not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.SHADOW_KEY, new WorldPoint(2593, 6352, 0)));
+		purpleKeyTaken = not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.DT2_LASSAR_KEY_1, new WorldPoint(2593, 6352, 0)));
 
 		hadPurpleKey = new Conditions(or(
 			purpleShadowKey,
@@ -448,7 +439,7 @@ public class WhispererSteps extends ConditionalStep
 
 		usedGreenKey = and(
 			not(greenShadowKey),
-			not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.SHADOW_KEY_28374, new WorldPoint(2581, 6387, 0)))
+			not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.DT2_LASSAR_KEY_5, new WorldPoint(2581, 6387, 0)))
 		);
 
 		hadGreenShadowKey = new Conditions(or(
@@ -465,7 +456,7 @@ public class WhispererSteps extends ConditionalStep
 
 		givenTorchSchematic = new VarbitRequirement(15085, 1);
 
-		ObjectCondition realWorldTentacleExists = new ObjectCondition(NullObjectID.NULL_48204,
+		ObjectCondition realWorldTentacleExists = new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T1,
 			new Zone(new WorldPoint(2673, 6413, 0),
 				new WorldPoint(2673, 6414, 0))
 		);
@@ -480,7 +471,7 @@ public class WhispererSteps extends ConditionalStep
 		destroyedTentacles = new Conditions(
 			withinRangeOfTentacle,
 			nor(
-				new ObjectCondition(ObjectID.TENTACLE_48205,
+				new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_SHADOW_T1,
 					new Zone(new WorldPoint(2417, 6413, 0),
 						new WorldPoint(2417, 6414, 0))
 				),
@@ -489,10 +480,10 @@ public class WhispererSteps extends ConditionalStep
 
 		givenIdolSchematic = new VarbitRequirement(15083, 1);
 
-		idolPlaced = new ObjectCondition(ObjectID.REVITALISING_IDOL,
+		idolPlaced = new ObjectCondition(ObjectID.DT2_LASSAR_REVITALISING_IDOL_NORMAL,
 			new Zone(new WorldPoint(2685, 6414, 0), new WorldPoint(2700, 6427, 0)));
 
-		ObjectCondition realWorldTentacle2Exists = new ObjectCondition(NullObjectID.NULL_48204,
+		ObjectCondition realWorldTentacle2Exists = new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T1,
 			new Zone(new WorldPoint(2679, 6439, 0), new WorldPoint(2680, 6439, 0))
 		);
 
@@ -506,7 +497,7 @@ public class WhispererSteps extends ConditionalStep
 		destroyedTentacles2 = new Conditions(
 			withinRangeOfTentacle2,
 			nor(
-				new ObjectCondition(ObjectID.TENTACLE_48205,
+				new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_SHADOW_T1,
 					new Zone(new WorldPoint(2423, 6439, 0), new WorldPoint(2424, 6439, 0))
 				),
 				realWorldTentacle2Exists
@@ -514,11 +505,11 @@ public class WhispererSteps extends ConditionalStep
 		);
 
 		blockerPlacedAtPub = new Conditions(LogicType.OR,
-			new ObjectCondition(ObjectID.SHADOW_BLOCKER,
+			new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_NORMAL,
 				new Zone(new WorldPoint(2641, 6428, 0),
 					new WorldPoint(2641, 6427, 0))
 			),
-			new ObjectCondition(ObjectID.SHADOW_BLOCKER_48214,
+			new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_SHADOW,
 				new Zone(new WorldPoint(2385, 6427, 0),
 					new WorldPoint(2385, 6428, 0)))
 		);
@@ -545,10 +536,10 @@ public class WhispererSteps extends ConditionalStep
 
 		destroyedTentacles3 = new Conditions(
 			new TileIsLoadedRequirement(new WorldPoint(2578, 63983, 0)),
-			new ObjectCondition(NullObjectID.NULL_48207, new WorldPoint(2578, 6398, 0))
+			new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T2, new WorldPoint(2578, 6398, 0))
 		);
 		// Anima portal real world block:
-		// 48207, new W(2578, y=6398, 0) Shadow Realm: ObjectID.TENTACLE_48208
+		// 48207, new W(2578, y=6398, 0) Shadow Realm: ObjectID.DT2_LASSAR_BARRIER_SHADOW_T2
 
 		givenAnimaPortalSchematic = new VarbitRequirement(15084, 1);
 
@@ -560,14 +551,14 @@ public class WhispererSteps extends ConditionalStep
 			)
 		);
 
-		ObjectCondition realWorldTentacle4Exists = new ObjectCondition(NullObjectID.NULL_48207,
+		ObjectCondition realWorldTentacle4Exists = new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T2,
 			new Zone(new WorldPoint(2607, 6386, 0), new WorldPoint(2607, 6385, 0))
 		);
 
 		destroyedTentacles4 = new Conditions(
 			withinRangeOfTentacle4,
 			nor(
-				new ObjectCondition(ObjectID.TENTACLE_48208,
+				new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_SHADOW_T2,
 					new Zone(new WorldPoint(2351, 6386, 0), new WorldPoint(2351, 6385, 0))
 				),
 				realWorldTentacle4Exists
@@ -575,33 +566,33 @@ public class WhispererSteps extends ConditionalStep
 		);
 
 		placedBlockerWhiteChest = or(
-			new ObjectCondition(ObjectID.SHADOW_BLOCKER, new WorldPoint(2574, 6449, 0)),
-			new ObjectCondition(ObjectID.SHADOW_BLOCKER_48214, new WorldPoint(2318, 6449, 0))
+			new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_NORMAL, new WorldPoint(2574, 6449, 0)),
+			new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_SHADOW, new WorldPoint(2318, 6449, 0))
 		);
 
 		placedAnimaWhiteChest = or(
-			new ObjectCondition(ObjectID.ANIMA_PORTAL, new WorldPoint(2576, 6447, 0)),
-			new ObjectCondition(ObjectID.ANIMA_PORTAL_48219, new WorldPoint(2320, 6447, 0))
+			new ObjectCondition(ObjectID.DT2_LASSAR_ANIMA_PORTAL_NORMAL, new WorldPoint(2576, 6447, 0)),
+			new ObjectCondition(ObjectID.DT2_LASSAR_ANIMA_PORTAL_SHADOW, new WorldPoint(2320, 6447, 0))
 		);
 
 		placedIdolWhiteChest = or(
-			new ObjectCondition(ObjectID.REVITALISING_IDOL, new WorldPoint(2578, 6445, 0)),
-			new ObjectCondition(ObjectID.REVITALISING_IDOL_48216, new WorldPoint(2322, 6445, 0)),
-			new ObjectCondition(ObjectID.REVITALISING_IDOL_48217, new WorldPoint(2322, 6445, 0))
+			new ObjectCondition(ObjectID.DT2_LASSAR_REVITALISING_IDOL_NORMAL, new WorldPoint(2578, 6445, 0)),
+			new ObjectCondition(ObjectID.DT2_LASSAR_REVITALISING_IDOL_SHADOW, new WorldPoint(2322, 6445, 0)),
+			new ObjectCondition(ObjectID.DT2_LASSAR_REVITALISING_IDOL_SHADOW_USED, new WorldPoint(2322, 6445, 0))
 		);
 
 		braziersLit = or(
 			and(
-				new ObjectCondition(ObjectID.BRAZIER_48252, new WorldPoint(2318, 6446, 0)),
-				new ObjectCondition(ObjectID.BRAZIER_48252, new WorldPoint(2312, 6444, 0)),
-				new ObjectCondition(ObjectID.BRAZIER_48252, new WorldPoint(2321, 6449, 0)),
-				new ObjectCondition(ObjectID.BRAZIER_48252, new WorldPoint(2323, 6455, 0))
+				new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BRAZIER_LIT_PERMANENTLY, new WorldPoint(2318, 6446, 0)),
+				new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BRAZIER_LIT_PERMANENTLY, new WorldPoint(2312, 6444, 0)),
+				new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BRAZIER_LIT_PERMANENTLY, new WorldPoint(2321, 6449, 0)),
+				new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BRAZIER_LIT_PERMANENTLY, new WorldPoint(2323, 6455, 0))
 			),
 			and(
-				new ObjectCondition(ObjectID.BRAZIER_48252, new WorldPoint(2574, 6446, 0)),
-				new ObjectCondition(ObjectID.BRAZIER_48252, new WorldPoint(2568, 6444, 0)),
-				new ObjectCondition(ObjectID.BRAZIER_48252, new WorldPoint(2577, 6449, 0)),
-				new ObjectCondition(ObjectID.BRAZIER_48252, new WorldPoint(2579, 6455, 0))
+				new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BRAZIER_LIT_PERMANENTLY, new WorldPoint(2574, 6446, 0)),
+				new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BRAZIER_LIT_PERMANENTLY, new WorldPoint(2568, 6444, 0)),
+				new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BRAZIER_LIT_PERMANENTLY, new WorldPoint(2577, 6449, 0)),
+				new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BRAZIER_LIT_PERMANENTLY, new WorldPoint(2579, 6455, 0))
 			));
 
 		// Schematic got
@@ -621,14 +612,14 @@ public class WhispererSteps extends ConditionalStep
 			)
 		);
 
-		ObjectCondition realWorldTentacle5Exists = new ObjectCondition(NullObjectID.NULL_48207,
+		ObjectCondition realWorldTentacle5Exists = new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T2,
 			new Zone(new WorldPoint(2647, 6411, 0), new WorldPoint(2648, 6411, 0))
 		);
 
 		destroyedTentacles5 = new Conditions(
 			withinRangeOfTentacle5,
 			nor(
-				new ObjectCondition(ObjectID.TENTACLE_48208,
+				new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_SHADOW_T2,
 					new Zone(new WorldPoint(2391, 6411, 0), new WorldPoint(2392, 6411, 0))
 				),
 				realWorldTentacle5Exists
@@ -642,14 +633,14 @@ public class WhispererSteps extends ConditionalStep
 			)
 		);
 
-		ObjectCondition realWorldTentacle6Exists = new ObjectCondition(NullObjectID.NULL_48204,
+		ObjectCondition realWorldTentacle6Exists = new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T1,
 			new Zone(new WorldPoint(2383, 6407, 0), new WorldPoint(2383, 6408, 0))
 		);
 
 		destroyedTentacles6 = new Conditions(
 			withinRangeOfTentacle6,
 			nor(
-				new ObjectCondition(ObjectID.TENTACLE_48205,
+				new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_SHADOW_T1,
 					new Zone(new WorldPoint(2383, 6407, 0), new WorldPoint(2383, 6408, 0))
 				),
 				realWorldTentacle6Exists
@@ -662,14 +653,14 @@ public class WhispererSteps extends ConditionalStep
 				new TileIsLoadedRequirement(new WorldPoint(2605, 6343, 0))
 			);
 
-		ObjectCondition realWorldTentacle7Exists = new ObjectCondition(NullObjectID.NULL_48204,
+		ObjectCondition realWorldTentacle7Exists = new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T1,
 			new Zone(new WorldPoint(2605, 6343, 0), new WorldPoint(2605, 6344, 0))
 		);
 
 		destroyedTentacles7 = new Conditions(
 			withinRangeOfTentacle7,
 			nor(
-				new ObjectCondition(ObjectID.TENTACLE_48205,
+				new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_SHADOW_T1,
 					new Zone(new WorldPoint(2349, 6343, 0), new WorldPoint(2349, 6344, 0))
 				),
 				realWorldTentacle7Exists
@@ -677,17 +668,17 @@ public class WhispererSteps extends ConditionalStep
 		);
 
 		blockerPlacedInRedRoom = new Conditions(LogicType.OR,
-			new ObjectCondition(ObjectID.SHADOW_BLOCKER,
+			new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_NORMAL,
 				new WorldPoint(2649, 6406, 0)
 			),
-			new ObjectCondition(ObjectID.SHADOW_BLOCKER_48214,
+			new ObjectCondition(ObjectID.DT2_LASSAR_SHADOW_BLOCKER_SHADOW,
 				new WorldPoint(2393, 6406, 0)
 			)
 		);
 
 		redKeyUsed = and(
 			not(redShadowKey),
-			not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.SHADOW_KEY_28373, new WorldPoint(2638, 6405, 0)))
+			not(new ItemOnTileConsideringSceneLoadRequirement(ItemID.DT2_LASSAR_KEY_4, new WorldPoint(2638, 6405, 0)))
 		);
 
 		hadRedShadowKey = new Conditions(or(
@@ -712,14 +703,14 @@ public class WhispererSteps extends ConditionalStep
 			)
 		);
 
-		ObjectCondition realWorldCathedralTentacleExists = new ObjectCondition(NullObjectID.NULL_48210,
+		ObjectCondition realWorldCathedralTentacleExists = new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T3,
 			new WorldPoint(2656, 6393, 0)
 		);
 
 		destroyedCathedralTentacles = new Conditions(
 			withinRangeOfCathedralTentacle,
 			nor(
-				new ObjectCondition(ObjectID.TENTACLE_48211,
+				new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_SHADOW_T3,
 					new WorldPoint(2400, 6393, 0)
 				),
 				realWorldCathedralTentacleExists
@@ -742,9 +733,9 @@ public class WhispererSteps extends ConditionalStep
 		// 15161 1->0
 
 		completedOtherMedallions = and(
-			new VarbitRequirement(15128, 50, Operation.GREATER_EQUAL),
-			new VarbitRequirement(15127, 70, Operation.GREATER_EQUAL),
-			new VarbitRequirement(15125, 56, Operation.GREATER_EQUAL)
+			new VarbitRequirement(VarbitID.DT2_SCAR, 50, Operation.GREATER_EQUAL),
+			new VarbitRequirement(VarbitID.DT2_GHORROCK, 70, Operation.GREATER_EQUAL),
+			new VarbitRequirement(VarbitID.DT2_STRANGLEWOOD, 56, Operation.GREATER_EQUAL)
 		);
 		// Told Ramarno about Ketla, 15149 0->1
 		// Told Ramarno about Ketla being fake, 15150, 0->1
@@ -770,7 +761,7 @@ public class WhispererSteps extends ConditionalStep
 		// new WorldPoint(2672, 6443, 0)
 		// 6415 - (6443 + 1) = 29
 
-		lowSanity = new VarbitRequirement(15064, 20, Operation.LESS_EQUAL);
+		lowSanity = new VarbitRequirement(VarbitID.SANITY, 20, Operation.LESS_EQUAL);
 	}
 
 	@Override
@@ -791,55 +782,55 @@ public class WhispererSteps extends ConditionalStep
 
 	protected void setupSteps()
 	{
-		enterRuinsOfCamdozaal = new ObjectStep(getQuestHelper(), NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0),
+		enterRuinsOfCamdozaal = new ObjectStep(getQuestHelper(), ObjectID.BIM_ENTRANCE, new WorldPoint(3000, 3494, 0),
 			"Enter Camdozaal, west of Ice Mountain.", ringOfVisibility.hideConditioned(finishedTalkingToKetla));
 		((ObjectStep) enterRuinsOfCamdozaal).addTeleport(lassarTeleport);
-		talkToRamarno = new NpcStep(getQuestHelper(), NpcID.RAMARNO_10685, new WorldPoint(2959, 5809, 0),
+		talkToRamarno = new NpcStep(getQuestHelper(), NpcID.CAMZODAAL_RAMARNO_ENTRANCE, new WorldPoint(2959, 5809, 0),
 			"Talk to Ramarno to the north by the sacred forge.");
 		talkToRamarno.addDialogStep("Have you seen any archeologists around here?");
-		talkToPrescott = new NpcStep(getQuestHelper(), NpcID.PRESCOTT, new WorldPoint(2975, 5794, 0),
+		talkToPrescott = new NpcStep(getQuestHelper(), NpcID.DT2_CAMDOZAAL_ARCHAEOLOGIST_2_VIS, new WorldPoint(2975, 5794, 0),
 			"Talk to Prescott to the east.");
 
-		attachRope = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49477, new WorldPoint(2922, 5827, 0),
+		attachRope = new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_ENTRY_ROCK, new WorldPoint(2922, 5827, 0),
 			"Tie the rope to a rock in the north west of the cavern, in the mine by the sinkhole.", veryLongRope.highlighted());
-		attachRope.addIcon(ItemID.VERY_LONG_ROPE);
+		attachRope.addIcon(ItemID.DT2_LASSAR_ROPE);
 
-		descendDownRope = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49477, new WorldPoint(2922, 5827, 0),
+		descendDownRope = new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_ENTRY_ROCK, new WorldPoint(2922, 5827, 0),
 			"Descend into the sinkhole.");
 		descendDownRope.addDialogStep("Yes.");
 
 		activateTeleporter1 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_PALACE, new WorldPoint(2593, 6424, 0),
 			"Activate the teleporter to the south-east of the rope. You can use teleporters you've activated to go to other activated teleporters."),
 			"Delve into the shadows.");
 		activateTeleporter2 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49480, new WorldPoint(2617, 6417, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_PLAZA, new WorldPoint(2617, 6417, 0),
 			"Activate the teleporter further south-east."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter3 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49482, new WorldPoint(2611, 6379, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_SCIENCE_NORTH, new WorldPoint(2611, 6379, 0),
 			"Activate the teleporter to the south in the Science District."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter4 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49483, new WorldPoint(2599, 6341, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_SCIENCE_SOUTH, new WorldPoint(2599, 6341, 0),
 			"Activate the teleporter in the far south of the Science District."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter5 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49484, new WorldPoint(2643, 6434, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_RESIDENTIAL_WEST, new WorldPoint(2643, 6434, 0),
 			"Teleport back to the Plaza, then run east. Activate the teleporter in the north-west of the residential area."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter5.addDialogStep("The Plaza.");
 		activateTeleporter6 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49481, new WorldPoint(2652, 6405, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_CATHEDRAL, new WorldPoint(2652, 6405, 0),
 			"Activate the teleporter in the south of the residential area."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateTeleporter7 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49485, new WorldPoint(2691, 6415, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_RESIDENTIAL_EAST, new WorldPoint(2691, 6415, 0),
 			"Activate the teleporter in the far east of the residential area, through the building you unlocked for the idol."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		useTeleporterToKetla = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_PALACE, new WorldPoint(2593, 6424, 0),
 			"Use the teleporter to the Western Residential District."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		useTeleporterToKetla.addDialogSteps("Western Residential District.", "More options...", "Take the Shadow Torch.");
@@ -869,19 +860,19 @@ public class WhispererSteps extends ConditionalStep
 		tryToEnterSunkenCathedral.addDialogStep("Western Residential District.");
 
 		talkToKetla = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Talk to Ketla, next to the Western Residential District teleport.", ringOfVisibility, freeSlot),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		talkToKetla.addDialogStep("Western Residential District.");
 
 		giveKetlaBlockerSchematic = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Give the blocker schematic to Ketla, next to the Western Residential District teleport.", shadowBlockerSchematic),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		giveKetlaBlockerSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 
 		claimShadowBlocker = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_KETLA_WORKBENCH, new WorldPoint(2645, 6440, 0),
 			"Get the Shadow Blocker from the workbench next to Ketla, or use 'Recall' on your Blackstone fragment to retrieve it.", freeSlot),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimShadowBlocker.addDialogSteps("Take it.", "Western Residential District.");
@@ -892,16 +883,16 @@ public class WhispererSteps extends ConditionalStep
 			shadowBlocker.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeBlockerInFurnaceBuilding.addDialogSteps("More options...", "Southern Science District.");
-		placeBlockerInFurnaceBuilding.addIcon(ItemID.SHADOW_BLOCKER);
+		placeBlockerInFurnaceBuilding.addIcon(ItemID.DT2_SHADOW_BLOCKER);
 
 		useTeleporterToScienceDistrict = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49479, new WorldPoint(2593, 6424, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_TELEPORTER_PALACE, new WorldPoint(2593, 6424, 0),
 		"Teleport to the Southern Science District."), "Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		useTeleporterToScienceDistrict.addDialogSteps("More options...", "Southern Science District.");
 		placeBlockerInFurnaceBuilding.addSubSteps(useTeleporterToScienceDistrict);
 
 		retrieveShadowBlocker = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.SHADOW_BLOCKER, "Pick up the shadow blocker."),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_BLOCKER_NORMAL, "Pick up the shadow blocker."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		recallShadowBlocker = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(), "Right-click and select 'Recall' on the blackstone fragment to recall everything.", blackstoneFragment.highlighted()),
@@ -911,7 +902,7 @@ public class WhispererSteps extends ConditionalStep
 		placeBlockerInFurnaceBuilding.addSubSteps(retrieveShadowBlocker);
 
 		enterSciencePuddle = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2598, 6365, 0),
 			"Enter the puddle outside of the building with furnaces in it. When you're in the Shadow Realm, you will slowly lose sanity. " +
 				"If you're low on Sanity, you can escape using the Blackstone fragment."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
@@ -919,7 +910,7 @@ public class WhispererSteps extends ConditionalStep
 
 		// Unlocking door uses up purple key
 		unlockDoor = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.DOORS_48258, new WorldPoint(2350, 6360, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.LASSAR_LOCKED_DOOR_SHADOW_CLOSED_L, new WorldPoint(2350, 6360, 0),
 			"Unlock the door inside the furnace building. " +
 			"As long as you're directly next to the Shadow Blocker you placed you will be safe from lost souls."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
@@ -936,7 +927,7 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		bringKetlaTheBasicTorchSchematic = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Bring the basic shadow torch schematic to Ketla, next to the Western Residential District teleport.",
 			basicShadowTorchSchematic),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
@@ -945,16 +936,16 @@ public class WhispererSteps extends ConditionalStep
 //		useTeleporterToKetlaFromScienceDistrict = new ObjectStep(getQuestHelper()),
 
 		claimShadowTorch = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_KETLA_WORKBENCH, new WorldPoint(2645, 6440, 0),
 			"Get the Shadow Torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimShadowTorch.addDialogSteps("Take it.", "Western Residential District.", "Take the Shadow Torch.", "Take everything.");
 		enterResidentialPuddle = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		destroyTentacles = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2417, 6413, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_BARRIER_SHADOW_T1, new WorldPoint(2417, 6413, 0),
 			"Destroy the tentacles outside the building to the east."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateBlackstoneFragment2 = new PuzzleWrapperStep(getQuestHelper(),
@@ -968,13 +959,13 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		bringKetlaTheIdolSchematic = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Bring the basic revitalising idol schematic to Ketla, next to the Western Residential District teleport.",
 			revitalisingIdolSchematic),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaTheIdolSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 		claimRevitalisingIdol = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_KETLA_WORKBENCH, new WorldPoint(2645, 6440, 0),
 			"Get the revitalising idol from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimRevitalisingIdol.addDialogSteps("Take it.", "Western Residential District.", "Take the Revitalising Idol.", "Take everything.");
@@ -993,16 +984,16 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		pickUpIdol = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.REVITALISING_IDOL, "Pick up the revitalising idol."),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_REVITALISING_IDOL_NORMAL, "Pick up the revitalising idol."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeIdol.addSubSteps(pickUpIdol);
 
 		enterResidentialPuddleAgain = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		ObjectStep destroyTentacles2RealStep = new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2424, 6439, 0),
+		ObjectStep destroyTentacles2RealStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_BARRIER_SHADOW_T1, new WorldPoint(2424, 6439, 0),
 			"Run around through the building and up north, making sure to RESTORE SANITY AT THE IDOL." +
 				" Destroy the tentacles blocking the door at the end of the path.", basicShadowTorch);
 		destroyTentacles2RealStep.setLinePoints(Arrays.asList(
@@ -1044,17 +1035,17 @@ public class WhispererSteps extends ConditionalStep
 			new TileStep(getQuestHelper(), new WorldPoint(2641, 6428, 0),
 			"Return to the west residential area, and place the shadow blocker at the pub's entrance.", shadowBlocker.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		placeShadowBlockerWestResidential.addIcon(ItemID.SHADOW_BLOCKER);
+		placeShadowBlockerWestResidential.addIcon(ItemID.DT2_SHADOW_BLOCKER);
 		placeShadowBlockerWestResidential.addDialogSteps("More options...", "Western Residential District.");
 		enterResidentialWestPuddle = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterResidentialWestPuddle.addDialogSteps("More options...", "Western Residential District.");
 
 		// Can't open, DOORS_48255
 		openPubDoor = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.DOORS_48258, new WorldPoint(2385, 6427, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.LASSAR_LOCKED_DOOR_SHADOW_CLOSED_L, new WorldPoint(2385, 6427, 0),
 			"Open the pub's doors."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		// 'You unlock the doors.', DIALOG_SPRITE_TEXT
@@ -1068,7 +1059,7 @@ public class WhispererSteps extends ConditionalStep
 			"Take the superior torch schematic.", superiorTorchSchematic),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPubRealWorld = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.DOORS_48254, new WorldPoint(2641, 6427, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.LASSAR_LOCKED_DOOR_NORMAL_CLOSED_L, new WorldPoint(2641, 6427, 0),
 			"Enter the pub and claim the superior torch schematic."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		takeSuperiorTorchSchematic.addSubSteps(takeSuperiorTorchSchematicRealWorld, enterPubRealWorld);
@@ -1077,20 +1068,20 @@ public class WhispererSteps extends ConditionalStep
 			blackstoneFragment.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaTheSuperiorTorchSchematic = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Bring the superior shadow torch schematic to Ketla, next to the Western Residential District teleport.",
 			superiorTorchSchematic),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaTheSuperiorTorchSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 
 		claimSuperiorShadowTorch = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_KETLA_WORKBENCH, new WorldPoint(2645, 6440, 0),
 			"Get the superior shadow torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimSuperiorShadowTorch.addDialogSteps("Take it.", "Western Residential District.", "Take the Superior Shadow Torch.", "Take everything.");
 
 		enterSciencePuddle2 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2598, 6365, 0),
 		"Enter the puddle outside of the building with furnaces in it in the Science District."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterSciencePuddle2.addDialogStep("Northern Science District.");
@@ -1119,26 +1110,26 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		bringKetlaTheAnimaPortalSchematic = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Bring the anima portal schematic to Ketla, next to the Western Residential District teleport.",
 			animaPortalSchematic),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaTheAnimaPortalSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 		bringKetlaTheAnimaPortalSchematic.addDialogStepWithExclusion("More options...", "How did you end up down here?");
 		claimAnimaPortal = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_KETLA_WORKBENCH, new WorldPoint(2645, 6440, 0),
 			"Get the anima portal from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimAnimaPortal.addDialogSteps("Take it.", "Western Residential District.", "Take the Anima Portal.", "Take everything.");
 
 		enterPlazaPuddle = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2618, 6404, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2618, 6404, 0),
 			"Enter the puddle on the Plaza.", superiorTorch),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPlazaPuddle.addDialogSteps("Plaza.");
 
 		destroyTentacles4 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48208, new WorldPoint(2351, 6386, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_BARRIER_SHADOW_T2, new WorldPoint(2351, 6386, 0),
 			"Destroy the tentacles in front of the building to the south of the Plaza.", superiorTorch),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateBlackstoneFragment6 = new PuzzleWrapperStep(getQuestHelper(),
@@ -1157,41 +1148,41 @@ public class WhispererSteps extends ConditionalStep
 				shadowBlocker.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		placeBlockerWhiteChest.addDialogSteps("Palace.");
-		placeBlockerWhiteChest.addIcon(ItemID.SHADOW_BLOCKER);
+		placeBlockerWhiteChest.addIcon(ItemID.DT2_SHADOW_BLOCKER);
 
 		placeAnimaWhiteChest = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2576, 6447, 0),
 			"Face the marked tile and place the anima portal to place it onto the marked tile.",
 				animaPortal.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		placeAnimaWhiteChest.addIcon(ItemID.ANIMA_PORTAL);
+		placeAnimaWhiteChest.addIcon(ItemID.DT2_ANIMA_PORTAL);
 
 		placeIdolWhiteChest = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2578, 6445, 0),
 			"Face the marked tile and place the idol to place it into the marked tile.",
 				revitalisingIdol.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		placeIdolWhiteChest.addIcon(ItemID.REVITALISING_IDOL);
+		placeIdolWhiteChest.addIcon(ItemID.DT2_REVITALISING_IDOL);
 
 		enterPlazaPuddle2 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2618, 6404, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2618, 6404, 0),
 			"Enter the puddle on the Plaza."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPlazaPuddle2.addDialogSteps("Plaza.");
 		lightBraziers = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.BRAZIER_48253, new WorldPoint(2319, 6448, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_BRAZIER_UNLIT, new WorldPoint(2319, 6448, 0),
 			"Run to the chest in the shadow realm, and use the revitalising idol to increase your Sanity. Light the 4 braziers near the chest.",
 			true),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		restoreSanity = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.REVITALISING_IDOL_48216, "Restore sanity with the revitalizing idol."),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_REVITALISING_IDOL_SHADOW, "Restore sanity with the revitalizing idol."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		lightBraziers.addSubSteps(restoreSanity);
 		openFinalChest = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48235, new WorldPoint(2316, 6450, 0), "Open the chest in the palace."),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHEST_SHADOW_4, new WorldPoint(2316, 6450, 0), "Open the chest in the palace."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openFinalChestRealWorld = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48231, new WorldPoint(2572, 6450, 0), "Open the chest in the palace."),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHEST_NORMAL_4, new WorldPoint(2572, 6450, 0), "Open the chest in the palace."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openFinalChest.addSubSteps(openFinalChestRealWorld);
 
@@ -1200,30 +1191,30 @@ public class WhispererSteps extends ConditionalStep
 			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaThePerfectSchematic = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Bring the perfected shadow torch schematic to Ketla, next to the Western Residential District teleport.",
 			perfectShadowTorchSchematic),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		bringKetlaThePerfectSchematic.addDialogSteps("Western Residential District.", "I have a schematic here.");
 		bringKetlaThePerfectSchematic.addDialogStepWithExclusion("More options...", "How did you end up down here?");
 		talkToKetlaAfterPerfectGiven = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Talk to Ketla, next to the Western Residential District teleport."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		talkToKetlaAfterPerfectGiven.addDialogSteps("More options...", "Western Residential District.", "I have a schematic here.");
 		bringKetlaThePerfectSchematic.addSubSteps(talkToKetlaAfterPerfectGiven);
 
 		enterPuddleNearPub = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPuddleNearPub.addDialogStep("The Cathedral.");
 		goUpstairsPub = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.STAIRS_47817, new WorldPoint(2372, 6430, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.STEPS_STONE01_LASSAR01_BOTTOM01_SHADOW, new WorldPoint(2372, 6430, 0),
 			"Go upstairs in the pub."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		touchPubRemnant = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.REMNANT_48245, new WorldPoint(2380, 6430, 1), "Touch the remnant in the north-east room."),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_REMNANT_STRONG, new WorldPoint(2380, 6430, 1), "Touch the remnant in the north-east room."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		activateBlackstoneFragment8 = new PuzzleWrapperStep(getQuestHelper(),
 			new DetailedQuestStep(getQuestHelper(),
@@ -1231,17 +1222,17 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		enterPuddleNearPub2 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla again once your Sanity has returned.", superiorTorch),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPuddleNearPub2.addDialogStep("The Cathedral.");
 		destroyTentacles5 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48208, new WorldPoint(2392, 6411, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_BARRIER_SHADOW_T2, new WorldPoint(2392, 6411, 0),
 			"Burn the tentacles outside the house to the south-west.", superiorTorch),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		destroyTentacles6 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2383, 6408, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_BARRIER_SHADOW_T1, new WorldPoint(2383, 6408, 0),
 			"Burn the tentacles outside the house to the west.", superiorTorch),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
@@ -1259,18 +1250,18 @@ public class WhispererSteps extends ConditionalStep
 			new DetailedQuestStep(getQuestHelper(), new WorldPoint(2649, 6406, 0),
 			"Place the shadow blocker in the square building you made accessible, next to the chest.", shadowBlocker.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
-		placeBlockerInRedRoom.addIcon(ItemID.SHADOW_BLOCKER);
+		placeBlockerInRedRoom.addIcon(ItemID.DT2_SHADOW_BLOCKER);
 		enterPuddleNearPub3 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2665, 6418, 0),
 			"Enter the puddle south-east of Ketla again.", superiorTorch),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPuddleNearPub3.addDialogStep("The Cathedral.");
 		openRedChest = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2392, 6405, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHEST_SHADOW_1, new WorldPoint(2392, 6405, 0),
 			"Open the chest in the square building."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openRedChestRealWorld = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48228, new WorldPoint(2648, 6405, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHEST_NORMAL_1, new WorldPoint(2648, 6405, 0),
 			"Open the chest in the square building."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openRedChest.addSubSteps(openRedChestRealWorld);
@@ -1281,20 +1272,20 @@ public class WhispererSteps extends ConditionalStep
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		enterSciencePuddle3 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2598, 6365, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2598, 6365, 0),
 			"Go to the Southern Science District and enter the puddle there."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterSciencePuddle3.addDialogStep("Southern Science District.");
 		destroyTentacles7 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48205, new WorldPoint(2349, 6343, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_BARRIER_SHADOW_T1, new WorldPoint(2349, 6343, 0),
 				"Destroy the tentacles outside the small house to the south.", superiorTorch, greenShadowKey),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openGreenChest = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48232, new WorldPoint(2354, 6339, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHEST_SHADOW_1, new WorldPoint(2354, 6339, 0),
 			"Open the chest in the small house to the south.", superiorTorch, greenShadowKey),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openGreenChestRealWorld = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.CHEST_48228, new WorldPoint(2610, 6339, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHEST_NORMAL_1, new WorldPoint(2610, 6339, 0),
 			"Open the chest in the small house to the south."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		openGreenChest.addSubSteps(openGreenChestRealWorld);
@@ -1307,50 +1298,50 @@ public class WhispererSteps extends ConditionalStep
 			new DetailedQuestStep(getQuestHelper(), "Combine the icon halves.", iconSegment1.highlighted(), iconSegment2.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterDrain = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49488, new WorldPoint(2656, 6424, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHURCH_ENTRY, new WorldPoint(2656, 6424, 0),
 			"Enter the drain in the middle of the Residential District.", strangeIcon.hideConditioned(iconUsed)),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterDrain.addDialogStep("The Cathedral.");
 
 		useIconInDrain = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.GATE_48301, new WorldPoint(2784, 6287, 1),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHURCH_GATE, new WorldPoint(2784, 6287, 1),
 			"Go through the gate.", strangeIcon.hideConditioned(iconUsed)),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		goDownDrainLadder = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.LADDER_48304, new WorldPoint(2806, 6303, 1),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_CHURCH_LADDER_TOP, new WorldPoint(2806, 6303, 1),
 			"Go down the ladder to the east."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		inspectPillar = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.ANCIENT_PILLAR_48305, new WorldPoint(2784, 6304, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.LASSAR_SEWER_BLACKSTONE_PILLAR, new WorldPoint(2784, 6304, 0),
 			"Inspect the Ancient Pillar."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
 		talkToMe = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.ME_12236, new WorldPoint(3232, 6308, 0), "Talk to yourself."),
+			new NpcStep(getQuestHelper(), NpcID.DT2_LASSAR_FAKE_PLAYER_OP, new WorldPoint(3232, 6308, 0), "Talk to yourself."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		talkToKetlaAfterVision = new PuzzleWrapperStep(getQuestHelper(),
-			new NpcStep(getQuestHelper(), NpcID.KETLA, new WorldPoint(2648, 6442, 0),
+			new NpcStep(getQuestHelper(), NpcID.DT2_KETLA_VIS, new WorldPoint(2648, 6442, 0),
 			"Talk to Ketla, next to the Western Residential District teleport."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		talkToKetlaAfterVision.addDialogSteps("More options...", "Western Residential District.");
 		// Varp 3679 -1>2343 ???
 
 		claimPerfectShadowTorch = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49486, new WorldPoint(2645, 6440, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_KETLA_WORKBENCH, new WorldPoint(2645, 6440, 0),
 			"Get the perfect shadow torch from the workbench next to Ketla, or recall it with the blackstone fragment.", freeSlot),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		claimPerfectShadowTorch.addDialogSteps("More options...", "Take it.", "Western Residential District.",
 			"Take the Shadow Torch.");
 
 		enterPuddleNearPub4 = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), NullObjectID.NULL_49478, new WorldPoint(2665, 6418, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_SHADOW_PUDDLE, new WorldPoint(2665, 6418, 0),
 		"Enter the puddle south-east of Ketla for the final time.", perfectShadowTorch),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 		enterPuddleNearPub4.addDialogStep("The Cathedral.");
 
 		destroyCathedralTentacles = new PuzzleWrapperStep(getQuestHelper(),
-			new ObjectStep(getQuestHelper(), ObjectID.TENTACLE_48211, new WorldPoint(2400, 6393, 0),
+			new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_BARRIER_SHADOW_T3, new WorldPoint(2400, 6393, 0),
 			"Destroy the tentacles at the Cathedral to the south."),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
@@ -1359,12 +1350,12 @@ public class WhispererSteps extends ConditionalStep
 			"Activate the blackstone fragment to leave the Shadow Realm.", blackstoneFragment.highlighted()),
 			"Delve into the shadows.").withNoHelpHiddenInSidebar(true);
 
-		enterTheCathedral = new NpcStep(getQuestHelper(), NpcID.ODD_FIGURE, new WorldPoint(2656, 6370, 0),
+		enterTheCathedral = new NpcStep(getQuestHelper(), NpcID.WHISPERER_SPAWN, new WorldPoint(2656, 6370, 0),
 			"Gear up for the boss fight, and then enter the Cathedral. Disturb the Odd Figure to start the fight. " +
 				"View the sidebar for more details.", blackstoneFragment, magicCombatGear, food, prayerPotions);
 		enterTheCathedral.addDialogStep("The Cathedral.");
-		((NpcStep) enterTheCathedral).addAlternateNpcs(NpcID.ODD_FIGURE_12213, NpcID.THE_WHISPERER, NpcID.THE_WHISPERER_12205,
-			NpcID.THE_WHISPERER_12206, NpcID.THE_WHISPERER_12207);
+		((NpcStep) enterTheCathedral).addAlternateNpcs(NpcID.WHISPERER_CUTSCENE, NpcID.WHISPERER, NpcID.WHISPERER_MELEE,
+			NpcID.WHISPERER_QUEST, NpcID.WHISPERER_MELEE_QUEST);
 
 		fightWhispererSidebar = new DetailedQuestStep(getQuestHelper(),
 			"Gear up, then disturb the Odd Figure in the Cathedral. The Whisperer will attack with magic and ranged attacks, and use a homing tentacle attack after each one. Protect appropriately, and move to avoid the tentacle splashes.");
@@ -1376,20 +1367,20 @@ public class WhispererSteps extends ConditionalStep
 		fightWhispererSidebar.addText("When she hits 0 health, she will heal back to 100, and start attacking rapidly with random ranged and magic attacks. Finish her off.");
 		fightWhispererSidebar.addSubSteps(enterTheCathedral);
 
-		searchEntrails = new ObjectStep(getQuestHelper(), NullObjectID.NULL_47578, new WorldPoint(2656, 6370, 0),
+		searchEntrails = new ObjectStep(getQuestHelper(), ObjectID.WHISPERER_MEDALLION_LOC, new WorldPoint(2656, 6370, 0),
 			"Search the entrails dropped by the Whisperer.", true);
 		searchEntrails.addDialogStep("The Cathedral.");
 
-		returnToDesertWithWhisperersMedallion = new ObjectStep(getQuestHelper(), ObjectID.VAULT_DOOR_46743,
+		returnToDesertWithWhisperersMedallion = new ObjectStep(getQuestHelper(), ObjectID.DT2_DESERT_VAULT_DOOR,
 			new WorldPoint(3511, 2971, 0),
 			"Return to the Vault door north-east of Nardah. Be wary of an assassin coming to kill you! They can run, freeze, and teleblock you.",
 			whisperersMedallion);
 		((ObjectStep) returnToDesertWithWhisperersMedallion).addTeleport(nardahTeleport);
 		returnToDesertWithWhisperersMedallion.conditionToHideInSidebar(completedOtherMedallions);
 
-		useWhisperersMedallionOnStatue = new ObjectStep(getQuestHelper(), NullObjectID.NULL_49501, new WorldPoint(3932, 9636, 1),
+		useWhisperersMedallionOnStatue = new ObjectStep(getQuestHelper(), ObjectID.DT2_VAULT_WHISPERER_STATUE, new WorldPoint(3932, 9636, 1),
 			"Use the medallion on the north-west statue.", whisperersMedallion.highlighted());
-		useWhisperersMedallionOnStatue.addIcon(ItemID.WHISPERERS_MEDALLION);
+		useWhisperersMedallionOnStatue.addIcon(ItemID.DT2_MEDALLION_WHISPERER);
 		useWhisperersMedallionOnStatue.conditionToHideInSidebar(completedOtherMedallions);
 	}
 

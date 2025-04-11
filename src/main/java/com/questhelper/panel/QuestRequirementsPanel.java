@@ -25,14 +25,12 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.item.TrackedContainers;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.tools.Icon;
 import com.questhelper.util.Fonts;
@@ -42,6 +40,7 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.LinkBrowser;
 import org.apache.commons.lang3.tuple.Pair;
+
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -50,8 +49,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 public class QuestRequirementsPanel extends JPanel
 {

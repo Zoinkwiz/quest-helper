@@ -33,17 +33,13 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class WitchsPotion extends BasicQuestHelper
 {
@@ -90,11 +86,11 @@ public class WitchsPotion extends BasicQuestHelper
 		talkToWitch.addDialogStep("I am in search of a quest.");
 		talkToWitch.addDialogStep("Yes, help me become one with my darker side.");
 
-		killRat = new NpcStep(this, NpcID.RAT_2855, new WorldPoint(2956, 3203, 0), "Kill a rat in the house to the west for a rat tail.", ratTail);
+		killRat = new NpcStep(this, NpcID.RAT_INDOORS, new WorldPoint(2956, 3203, 0), "Kill a rat in the house to the west for a rat tail.", ratTail);
 		returnToWitch = new NpcStep(this, NpcID.HETTY, new WorldPoint(2968, 3205, 0),
 			"Bring the ingredients to Hetty.", onion, eyeOfNewt, burntMeat, ratTail);
 
-		drinkPotion = new ObjectStep(this, ObjectID.CAULDRON_2024, new WorldPoint(2967, 3205, 0), "Drink from the cauldron to finish off the quest.");
+		drinkPotion = new ObjectStep(this, ObjectID.HETTYCAULDRON, new WorldPoint(2967, 3205, 0), "Drink from the cauldron to finish off the quest.");
 
 	}
 

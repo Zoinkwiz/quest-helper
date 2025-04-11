@@ -24,14 +24,15 @@
  */
 package com.questhelper.requirements.npc;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.SimpleRequirement;
-import java.util.Arrays;
-import java.util.List;
+import com.questhelper.requirements.zone.Zone;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class NpcHintArrowRequirement extends SimpleRequirement
 {

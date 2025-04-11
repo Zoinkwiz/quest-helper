@@ -25,43 +25,35 @@
 package com.questhelper.helpers.quests.inaidofthemyreque;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class InAidOfTheMyreque extends BasicQuestHelper
 {
@@ -225,16 +217,16 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		foodForChest = new ItemRequirement("Food to put in a chest, multiple pieces in case a Ghast eats some",
 			ItemCollections.GOOD_EATING_FOOD);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
-		bucketTo5 = new ItemRequirement("buckets (Can use 1 but is much slower)", ItemID.BUCKET, 5);
-		bucketOrSemiFilledBucket = new ItemRequirement("Bucket", ItemID.BUCKET);
-		bucketOrSemiFilledBucket.addAlternates(ItemID.BUCKET_OF_RUBBLE, ItemID.BUCKET_OF_RUBBLE_7624);
+		bucketTo5 = new ItemRequirement("buckets (Can use 1 but is much slower)", ItemID.BUCKET_EMPTY, 5);
+		bucketOrSemiFilledBucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
+		bucketOrSemiFilledBucket.addAlternates(ItemID.BURGH_RUBBLE_BUCKET_1, ItemID.BURGH_RUBBLE_BUCKET_2);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
-		planks11 = new ItemRequirement("Plank", ItemID.PLANK, 11);
+		planks11 = new ItemRequirement("Plank", ItemID.WOODPLANK, 11);
 		nails44 = new ItemRequirement("Any nails", ItemCollections.NAILS, 44);
-		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE, 2);
-		snails10 = new ItemRequirement("Raw snail", ItemID.THIN_SNAIL);
-		snails10.addAlternates(ItemID.FAT_SNAIL, ItemID.LEAN_SNAIL);
+		swampPaste = new ItemRequirement("Swamp paste", ItemID.SWAMPPASTE, 2);
+		snails10 = new ItemRequirement("Raw snail", ItemID.SNAIL_CORPSE1);
+		snails10.addAlternates(ItemID.SNAIL_CORPSE3, ItemID.SNAIL_CORPSE2);
 		mackerel10 = new ItemRequirement("Raw mackerel", ItemID.RAW_MACKEREL, 10);
 		rawMackerelOrSnail10 = new ItemRequirements("10 Raw mackerel or raw snail meat (random for each player)",
 			mackerel10,
@@ -255,16 +247,16 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 		efaritaysAidOrSilverWeapon = new ItemRequirement("Silver weapon (including Silverlight + varieties), blessed " +
 			"axe or Efaritay's Aid to damage vampyres", ItemID.ARCLIGHT);
-		efaritaysAidOrSilverWeapon.addAlternates(ItemID.DARKLIGHT, ItemID.SILVERLIGHT, ItemID.SILVERLIGHT_6745,
-			ItemID.SILVERLIGHT_8279, ItemID.SILVER_SICKLE_B, ItemID.SILVER_SICKLE, ItemID.EFARITAYS_AID, ItemID.WOLFBANE);
+		efaritaysAidOrSilverWeapon.addAlternates(ItemID.DARKLIGHT, ItemID.SILVERLIGHT, ItemID.AGRITH_SILVERLIGHT_DYED,
+			ItemID.POH_TROPHY_SILVERLIGHT, ItemID.SILVER_SICKLE_BLESSED, ItemID.SILVER_SICKLE, ItemID.VAMPYRE_RING, ItemID.DAGGER_WOLFBANE);
 
-		softClay = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
+		softClay = new ItemRequirement("Soft clay", ItemID.SOFTCLAY);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		mithrilBar = new ItemRequirement("Mithril bar", ItemID.MITHRIL_BAR);
 		sapphire = new ItemRequirement("Sapphire", ItemID.SAPPHIRE);
-		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE);
-		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE);
+		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMICRUNE);
+		waterRune = new ItemRequirement("Water rune", ItemID.WATERRUNE);
 
 		steelmed = new ItemRequirement("Steel med helm", ItemID.STEEL_MED_HELM);
 		steelmed.setTooltip("You can give this to Ivan just before accompanying him through the swamp to make him " +
@@ -279,40 +271,40 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		silverSickle.setTooltip("You can give this to Ivan just before accompanying him through the swamp to make him " +
 			"stronger");
 
-		morttonTeleport = new ItemRequirement("Teleports to Mort'ton (minigame tele, teleport scroll)", ItemID.MORTTON_TELEPORT);
-		canifisTeleport = new ItemRequirement("Canifis teleports (ancients spell, nearby fairy ring bip)", ItemID.KHARYRLL_TELEPORT);
-		canifisTeleport.addAlternates(ItemID.DRAMEN_STAFF, ItemID.LUNAR_STAFF, ItemID.FENKENSTRAINS_CASTLE_TELEPORT);
+		morttonTeleport = new ItemRequirement("Teleports to Mort'ton (minigame tele, teleport scroll)", ItemID.TELEPORTSCROLL_MORTTON);
+		canifisTeleport = new ItemRequirement("Canifis teleports (ancients spell, nearby fairy ring bip)", ItemID.TABLET_KHARYLL);
+		canifisTeleport.addAlternates(ItemID.DRAMEN_STAFF, ItemID.LUNAR_MOONCLAN_LIMINAL_STAFF, ItemID.TELETAB_FENK);
 
-		planks2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
-		planks3 = new ItemRequirement("Plank", ItemID.PLANK, 3);
-		planks5 = new ItemRequirement("Plank", ItemID.PLANK, 5);
-		planks6 = new ItemRequirement("Plank", ItemID.PLANK, 6);
+		planks2 = new ItemRequirement("Plank", ItemID.WOODPLANK, 2);
+		planks3 = new ItemRequirement("Plank", ItemID.WOODPLANK, 3);
+		planks5 = new ItemRequirement("Plank", ItemID.WOODPLANK, 5);
+		planks6 = new ItemRequirement("Plank", ItemID.WOODPLANK, 6);
 		nails8 = new ItemRequirement("Nails", ItemCollections.NAILS, 8);
 		nails12 = new ItemRequirement("Nails", ItemCollections.NAILS, 12);
 		nails20 = new ItemRequirement("Nails", ItemCollections.NAILS, 20);
 		nails24 = new ItemRequirement("Nails", ItemCollections.NAILS, 24);
 
-		crate = new ItemRequirement("Crate", ItemID.CRATE);
+		crate = new ItemRequirement("Crate", ItemID.BURGH_GENERALSTORE_CRATE);
 		crate.setTooltip("You can get another by asking Aurel what you should do now");
 
-		templeLibraryKey = new ItemRequirement("Temple library key", ItemID.TEMPLE_LIBRARY_KEY);
+		templeLibraryKey = new ItemRequirement("Temple library key", ItemID.BURGH_KEY);
 		templeLibraryKey.setHighlightInInventory(true);
 		templeLibraryKey.setTooltip("You can get another from Drezel");
 
-		sleepingSeven = new ItemRequirement("The sleeping seven", ItemID.THE_SLEEPING_SEVEN);
+		sleepingSeven = new ItemRequirement("The sleeping seven", ItemID.BURGH_BOOK_SEVENWARRIORS);
 		sleepingSeven.setHighlightInInventory(true);
 
 		hammerHighlighted = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammerHighlighted.setHighlightInInventory(true);
 
-		mould = new ItemRequirement("Rod mould", ItemID.ROD_MOULD).isNotConsumed();
-		silvRod = new ItemRequirement("Silvthrill rod", ItemID.SILVTHRILL_ROD);
+		mould = new ItemRequirement("Rod mould", ItemID.BURGH_ROD_CLAY).isNotConsumed();
+		silvRod = new ItemRequirement("Silvthrill rod", ItemID.BURGH_ROD_COMMAND1);
 		silvRod.setHighlightInInventory(true);
-		softClayHighlighted = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY);
+		softClayHighlighted = new ItemRequirement("Soft clay", ItemID.SOFTCLAY);
 		softClayHighlighted.setHighlightInInventory(true);
 
-		enchantedRod = new ItemRequirement("Silvthrill rod", ItemID.SILVTHRILL_ROD_7638);
-		enchantedRodHighlighted = new ItemRequirement("Silvthrill rod", ItemID.SILVTHRILL_ROD_7638);
+		enchantedRod = new ItemRequirement("Silvthrill rod", ItemID.BURGH_ROD_COMMAND2);
+		enchantedRodHighlighted = new ItemRequirement("Silvthrill rod", ItemID.BURGH_ROD_COMMAND2);
 		enchantedRodHighlighted.setHighlightInInventory(true);
 
 		rodOfIvandis = new ItemRequirement("Rod of Ivandis", ItemCollections.ROD_OF_IVANDIS);
@@ -381,7 +373,7 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 		talkedToWiskit = new VarbitRequirement(1996, 1);
 
 		defeatedGadderanks = new VarbitRequirement(1999, 3);
-		veliafReturnedToBase = new VarbitRequirement(1981, 3, Operation.GREATER_EQUAL);
+		veliafReturnedToBase = new VarbitRequirement(VarbitID.BLOOD_TITHE_VISIBLE, 3, Operation.GREATER_EQUAL);
 
 		// 2001 = 1, travelling with ivan
 		// 2003 = 1, Ivan has silver sickle
@@ -398,101 +390,101 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToVeliaf = new NpcStep(this, NpcID.VELIAF_HURTZ_5048, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz.");
+		talkToVeliaf = new NpcStep(this, NpcID.ROUTE_VELIAF_HURTZ, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz.");
 		talkToVeliaf.addDialogStep("Yes.");
-		climbDownCanifis = new ObjectStep(this, ObjectID.TRAPDOOR_5055, new WorldPoint(3495, 3464, 0), "Enter the trapdoor behind the Canifis Pub.");
-		enterMyrequeCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5046, new WorldPoint(3492, 9823, 0), "Enter the cave on the east side.");
-		leaveMyrequeCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5046, new WorldPoint(3505, 9831, 0), "Leave the cave.");
-		leaveCavesIntoSwamp = new ObjectStep(this, ObjectID.WOODEN_DOORS_5057, new WorldPoint(3501, 9813, 0), "Leave through the doors to the south.");
-		goOverBridge = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3431, 0), "Cross the bridge to the south.");
-		takeBoatToMortton = new ObjectStep(this, ObjectID.SWAMP_BOATY_6970, new WorldPoint(3499, 3378, 0), "Board the boat to the south to Mort'ton.");
-		talkToFlorin = new NpcStep(this, NpcID.FLORIN, new WorldPoint(3484, 3242, 0), "");
+		climbDownCanifis = new ObjectStep(this, ObjectID.THRT_TAVERN_TRAP_DOOR, new WorldPoint(3495, 3464, 0), "Enter the trapdoor behind the Canifis Pub.");
+		enterMyrequeCave = new ObjectStep(this, ObjectID.ROUTE_CAVEWALLTUNNEL, new WorldPoint(3492, 9823, 0), "Enter the cave on the east side.");
+		leaveMyrequeCave = new ObjectStep(this, ObjectID.ROUTE_CAVEWALLTUNNEL, new WorldPoint(3505, 9831, 0), "Leave the cave.");
+		leaveCavesIntoSwamp = new ObjectStep(this, ObjectID.FREEDOMFIGHTERUNDERGROUNDENTRANCER, new WorldPoint(3501, 9813, 0), "Leave through the doors to the south.");
+		goOverBridge = new ObjectStep(this, ObjectID.SPOOKY_TREE_BASE_FORBRIDGE, new WorldPoint(3502, 3431, 0), "Cross the bridge to the south.");
+		takeBoatToMortton = new ObjectStep(this, ObjectID.ROUTE_ROWBOAT_HOLLOWS, new WorldPoint(3499, 3378, 0), "Board the boat to the south to Mort'ton.");
+		talkToFlorin = new NpcStep(this, NpcID.BURGH_VILAGER_8, new WorldPoint(3484, 3242, 0), "");
 
-		putFoodInChest = new ObjectStep(this, ObjectID.OPEN_CHEST_12736, new WorldPoint(3483, 3246, 0), "Place some food in the nearby chest.", food);
+		putFoodInChest = new ObjectStep(this, ObjectID.BURGH_QUEST_FOOD_CHEST_OPEN, new WorldPoint(3483, 3246, 0), "Place some food in the nearby chest.", food);
 
-		talkToRazvan = new NpcStep(this, NpcID.RAZVAN, new WorldPoint(3493, 3235, 0), "Talk to Razvan in Burgh de Rott.");
+		talkToRazvan = new NpcStep(this, NpcID.BURGH_VILAGER_RAT_2, new WorldPoint(3493, 3235, 0), "Talk to Razvan in Burgh de Rott.");
 		talkToRazvan.addDialogStep("Are there any 'out of the way' places here?");
-		clearTrapdoorRubble = new ObjectStep(this, NullObjectID.NULL_12738, new WorldPoint(3490, 3232, 0), "Use a pickaxe on the rubble in the building south of Razvan.", pickaxe);
+		clearTrapdoorRubble = new ObjectStep(this, ObjectID.BURGH_INN_COLAPSED_WALL_MULTILOC, new WorldPoint(3490, 3232, 0), "Use a pickaxe on the rubble in the building south of Razvan.", pickaxe);
 		clearTrapdoorRubble.addIcon(ItemID.RUNE_PICKAXE);
 		clearTrapdoorRubble.addDialogStep("Yes.");
 
-		enterBurghPubBasement = new ObjectStep(this, NullObjectID.NULL_12743, new WorldPoint(3490, 3232, 0), "Enter the trapdoor.");
+		enterBurghPubBasement = new ObjectStep(this, ObjectID.BURGH_INN_TRAPDOOR_MULTILOC, new WorldPoint(3490, 3232, 0), "Enter the trapdoor.");
 
-		clearBasementRubble = new ObjectStep(this, ObjectID.RUBBLE_12812, "Mine all the rubble in the room, and then clean it up with a spade. You'll need an empty bucket when using the spade. You can empty the buckets outside on the rubble pile.",
+		clearBasementRubble = new ObjectStep(this, ObjectID.BURGH_RUBBLE_A_1, "Mine all the rubble in the room, and then clean it up with a spade. You'll need an empty bucket when using the spade. You can empty the buckets outside on the rubble pile.",
 			pickaxe, spade, bucketOrSemiFilledBucket);
-		((ObjectStep) (clearBasementRubble)).addAlternateObjects(ObjectID.RUBBLE_12813, ObjectID.RUBBLE_12814, ObjectID.RUBBLE_12815);
+		((ObjectStep) (clearBasementRubble)).addAlternateObjects(ObjectID.BURGH_RUBBLE_A_2, ObjectID.BURGH_RUBBLE_A_3, ObjectID.BURGH_RUBBLE_A_4);
 
-		leavePubBasement = new ObjectStep(this, ObjectID.LADDER_12779, new WorldPoint(3490, 9632, 1), "Leave the basement.");
+		leavePubBasement = new ObjectStep(this, ObjectID.BURGH_INN_BASEMENT_LADDERUP, new WorldPoint(3490, 9632, 1), "Leave the basement.");
 
 		/* Shop repairs */
-		talkToAurel = new NpcStep(this, NpcID.AUREL, new WorldPoint(3515, 3241, 0), "Talk to Aurel in north east Burgh de Rott.");
+		talkToAurel = new NpcStep(this, NpcID.BURGH_GENERAL_STORE_OWNER, new WorldPoint(3515, 3241, 0), "Talk to Aurel in north east Burgh de Rott.");
 		talkToAurel.addSubSteps(leavePubBasement);
 		talkToAurel.addDialogStep("I'd like to help fix up the town.");
-		climbShopLadder = new ObjectStep(this, ObjectID.LADDER_12780, new WorldPoint(3513, 3238, 0), "Go to the roof of Aurel's shop.", hammer, planks3, nails12);
-		fixRoof = new ObjectStep(this, NullObjectID.NULL_12751, new WorldPoint(3515, 3240, 2), "Repair the broken roof.", hammer, planks3, nails12);
+		climbShopLadder = new ObjectStep(this, ObjectID.BURGH_LADDER_GENERALSTORE_UP, new WorldPoint(3513, 3238, 0), "Go to the roof of Aurel's shop.", hammer, planks3, nails12);
+		fixRoof = new ObjectStep(this, ObjectID.BURGH_GENERAL_STORE_ROOF_MULTILOC, new WorldPoint(3515, 3240, 2), "Repair the broken roof.", hammer, planks3, nails12);
 		fixRoof.addDialogStep("Yes.");
-		climbDownShopLadder = new ObjectStep(this, ObjectID.LADDER_12781, new WorldPoint(3513, 3238, 2), "Climb back down the ladder.");
-		fixShopWall = new ObjectStep(this, NullObjectID.NULL_12859, new WorldPoint(3517, 3238, 0), "Repair the shop's wall.", hammer, planks3, nails12);
+		climbDownShopLadder = new ObjectStep(this, ObjectID.BURGH_LADDER_GENERALSTORE_DOWN, new WorldPoint(3513, 3238, 2), "Climb back down the ladder.");
+		fixShopWall = new ObjectStep(this, ObjectID.BURGH_STONE_WALL_BROKEN, new WorldPoint(3517, 3238, 0), "Repair the shop's wall.", hammer, planks3, nails12);
 		fixShopWall.addDialogStep("Yes.");
-		talkToAurelForCrate = new NpcStep(this, NpcID.AUREL, new WorldPoint(3515, 3241, 0), "Talk to Aurel again.");
+		talkToAurelForCrate = new NpcStep(this, NpcID.BURGH_GENERAL_STORE_OWNER, new WorldPoint(3515, 3241, 0), "Talk to Aurel again.");
 		talkToAurelForCrate.addDialogStep("What should I do now?");
 		fillCrate = new FillBurghCrate(this);
-		talkToAurelWithCrate = new NpcStep(this, NpcID.AUREL, new WorldPoint(3515, 3241, 0), "Return to Aurel with the filled crate.", crate);
+		talkToAurelWithCrate = new NpcStep(this, NpcID.BURGH_GENERAL_STORE_OWNER, new WorldPoint(3515, 3241, 0), "Return to Aurel with the filled crate.", crate);
 
 		/* Bank repairs */
-		repairBooth = new ObjectStep(this, NullObjectID.NULL_12759, new WorldPoint(3494, 3211, 0), "Repair the bank booth.", hammer, planks2, swampPaste, nails8);
+		repairBooth = new ObjectStep(this, ObjectID.BURGH_BANK_BOOTH_MULTILOC, new WorldPoint(3494, 3211, 0), "Repair the bank booth.", hammer, planks2, swampPaste, nails8);
 		repairBooth.addDialogStep("Yes.");
-		repairBankWall = new ObjectStep(this, NullObjectID.NULL_12859, new WorldPoint(3491, 3211, 0), "Repair the bank's outside wall.", hammer, planks3, nails12);
+		repairBankWall = new ObjectStep(this, ObjectID.BURGH_STONE_WALL_BROKEN, new WorldPoint(3491, 3211, 0), "Repair the bank's outside wall.", hammer, planks3, nails12);
 		repairBankWall.addDialogStep("Yes.");
-		talkToCornelius = new NpcStep(this, NpcID.CORNELIUS, new WorldPoint(3496, 3211, 0), "Talk to Cornelius and ask him to be the banker.");
+		talkToCornelius = new NpcStep(this, NpcID.BURGH_POTENTIAL_BANK_TELLER, new WorldPoint(3496, 3211, 0), "Talk to Cornelius and ask him to be the banker.");
 		talkToCornelius.addDialogSteps("What should I do now?");
 
 		/* Furnace + fighting */
-		talkToRazvanAfterRepairs = new NpcStep(this, NpcID.RAZVAN, new WorldPoint(3493, 3235, 0), "Talk to Razvan.");
+		talkToRazvanAfterRepairs = new NpcStep(this, NpcID.BURGH_VILAGER_RAT_2, new WorldPoint(3493, 3235, 0), "Talk to Razvan.");
 		talkToRazvanAfterRepairs.addDialogSteps("What should I do now?");
-		repairFurnace = new ObjectStep(this, NullObjectID.NULL_12805, new WorldPoint(3528, 3210, 0), "Repair the furnace in the south east of Burgh de Rott. You can use the bank you just made to get items out.", hammer, steelBars2Highlighted, coal, tinderbox);
+		repairFurnace = new ObjectStep(this, ObjectID.BURGH_FURNACE_MULTILOC, new WorldPoint(3528, 3210, 0), "Repair the furnace in the south east of Burgh de Rott. You can use the bank you just made to get items out.", hammer, steelBars2Highlighted, coal, tinderbox);
 		repairFurnace.addDialogStep("Yes.");
-		addCoalToFurnace = new ObjectStep(this, NullObjectID.NULL_12805, new WorldPoint(3528, 3210, 0), "Add coal to the furnace.", coalHiglighted, tinderbox);
+		addCoalToFurnace = new ObjectStep(this, ObjectID.BURGH_FURNACE_MULTILOC, new WorldPoint(3528, 3210, 0), "Add coal to the furnace.", coalHiglighted, tinderbox);
 		addCoalToFurnace.addDialogStep("Yes.");
-		lightFurnace = new ObjectStep(this, NullObjectID.NULL_12805, new WorldPoint(3528, 3210, 0), "Light the furnace.", tinderboxHighlighted);
+		lightFurnace = new ObjectStep(this, ObjectID.BURGH_FURNACE_MULTILOC, new WorldPoint(3528, 3210, 0), "Light the furnace.", tinderboxHighlighted);
 		lightFurnace.addDialogStep("Yes.");
-		talkToGadderanks = new NpcStep(this, NpcID.GADDERANKS, new WorldPoint(3515, 3241, 0), "Talk to Gadderanks in the shop.");
-		talkToJuvinate = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_4482, new WorldPoint(3515, 3241, 0), "Talk to a juvinate in the shop.");
-		talkToWiskit = new NpcStep(this, NpcID.WISKIT, new WorldPoint(3515, 3241, 0), "Talk to Wiskit in the shop. Be prepared to fight the vampyres and Gadderanks.", efaritaysAidOrSilverWeapon);
-		killGadderanksAndJuvinates = new NpcStep(this, NpcID.GADDERANKS_4484, new WorldPoint(3515, 3241, 0), "Defeat Gadderanks and the juvinates.", true, efaritaysAidOrSilverWeapon);
-		((NpcStep) (killGadderanksAndJuvinates)).addAlternateNpcs(NpcID.VAMPYRE_JUVINATE_4486, NpcID.VAMPYRE_JUVINATE_4487);
-		talkToGadderanksAgain = new NpcStep(this, NpcID.GADDERANKS_4485, new WorldPoint(3515, 3241, 0), "Talk to Gadderanks.");
-		((NpcStep) (talkToGadderanksAgain)).addAlternateNpcs(NpcID.GADDERANKS_4484);
-		talkToVeliafAfterFight = new NpcStep(this, NpcID.VELIAF_HURTZ_9633, new WorldPoint(3515, 3241, 0), "Talk to Veliaf in Burgh de Rott.");
+		talkToGadderanks = new NpcStep(this, NpcID.BURGH_GADDERANKS, new WorldPoint(3515, 3241, 0), "Talk to Gadderanks in the shop.");
+		talkToJuvinate = new NpcStep(this, NpcID.BURGH_VAMPIRE_JUVE2_BLOOD_TITHE, new WorldPoint(3515, 3241, 0), "Talk to a juvinate in the shop.");
+		talkToWiskit = new NpcStep(this, NpcID.BURGH_VILLAGER_BLOOD_TITHE, new WorldPoint(3515, 3241, 0), "Talk to Wiskit in the shop. Be prepared to fight the vampyres and Gadderanks.", efaritaysAidOrSilverWeapon);
+		killGadderanksAndJuvinates = new NpcStep(this, NpcID.BURGH_GADDERANKS_ATTACKABLE, new WorldPoint(3515, 3241, 0), "Defeat Gadderanks and the juvinates.", true, efaritaysAidOrSilverWeapon);
+		((NpcStep) (killGadderanksAndJuvinates)).addAlternateNpcs(NpcID.BURGH_VAMPIRE_JUVE_1_ATTACKABLE, NpcID.BURGH_VAMPIRE_JUVE_2_ATTACKABLE);
+		talkToGadderanksAgain = new NpcStep(this, NpcID.BURGH_GADDERANKS_WOUNDED, new WorldPoint(3515, 3241, 0), "Talk to Gadderanks.");
+		((NpcStep) (talkToGadderanksAgain)).addAlternateNpcs(NpcID.BURGH_GADDERANKS_ATTACKABLE);
+		talkToVeliafAfterFight = new NpcStep(this, NpcID.BURGH_RESCUE_VELIAF_HURTZ_TALK, new WorldPoint(3515, 3241, 0), "Talk to Veliaf in Burgh de Rott.");
 
-		talkToVeliafInHideoutAgain = new NpcStep(this, NpcID.VELIAF_HURTZ_5048, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz.");
-		talkToPolmafi = new NpcStep(this, NpcID.POLMAFI_FERDYGRIS, new WorldPoint(3506, 9837, 0), "");
-		talkToIvanForTrek = new NpcStep(this, NpcID.IVAN_STROM_5053, new WorldPoint(3506, 9837, 0), "", efaritaysAidOrSilverWeapon);
-		killJuvinates = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_4443, new WorldPoint(2859, 4564, 0), "Kill the juvenates.", true, efaritaysAidOrSilverWeapon);
-		killJuvinates2 = new NpcStep(this, NpcID.VAMPYRE_JUVINATE_4442, new WorldPoint(2839, 4589, 0), "Kill the juvenates.", true, efaritaysAidOrSilverWeapon);
-		goDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR_3432, new WorldPoint(3422, 3485, 0), "Talk to Drezel under the Paterdomus Temple.");
-		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_3433);
-		talkToDrezel = new NpcStep(this, NpcID.DREZEL, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
+		talkToVeliafInHideoutAgain = new NpcStep(this, NpcID.ROUTE_VELIAF_HURTZ, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz.");
+		talkToPolmafi = new NpcStep(this, NpcID.ROUTE_POLMAFI_FERDYGRIS, new WorldPoint(3506, 9837, 0), "");
+		talkToIvanForTrek = new NpcStep(this, NpcID.ROUTE_IVAN_STROM, new WorldPoint(3506, 9837, 0), "", efaritaysAidOrSilverWeapon);
+		killJuvinates = new NpcStep(this, NpcID.BURGH_IVAN_TEMPLE_VAMPIRE_JUVE_2, new WorldPoint(2859, 4564, 0), "Kill the juvenates.", true, efaritaysAidOrSilverWeapon);
+		killJuvinates2 = new NpcStep(this, NpcID.BURGH_IVAN_TEMPLE_VAMPIRE_JUVE_1, new WorldPoint(2839, 4589, 0), "Kill the juvenates.", true, efaritaysAidOrSilverWeapon);
+		goDownToDrezel = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR, new WorldPoint(3422, 3485, 0), "Talk to Drezel under the Paterdomus Temple.");
+		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR_OPEN);
+		talkToDrezel = new NpcStep(this, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
 		talkToDrezel.addDialogSteps("Veliaf told me about Ivandis.", "Is there somewhere that I might get more information on Ivandis?",
 			"The lives of those pitiful few left in Morytania could rest on this!");
-		useKeyOnHole = new ObjectStep(this, ObjectID.KEYHOLE, new WorldPoint(3443, 9898, 0), "Use the key on the keyhole near Drezel.", templeLibraryKey);
-		useKeyOnHole.addIcon(ItemID.TEMPLE_LIBRARY_KEY);
-		enterLibrary = new ObjectStep(this, NullObjectID.NULL_12762, new WorldPoint(3441, 9899, 0), "Enter the library.");
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_12767, new WorldPoint(3354, 9902, 0), "Search the bookcases for 'The Sleeping Seven' book.");
+		useKeyOnHole = new ObjectStep(this, ObjectID.BURGH_LIBRARY_KEYHOLE, new WorldPoint(3443, 9898, 0), "Use the key on the keyhole near Drezel.", templeLibraryKey);
+		useKeyOnHole.addIcon(ItemID.BURGH_KEY);
+		enterLibrary = new ObjectStep(this, ObjectID.BURGH_TEMPLE_TRAPDOOR_MULTILOC, new WorldPoint(3441, 9899, 0), "Enter the library.");
+		searchBookcase = new ObjectStep(this, ObjectID.BURGH_LIBRARY_BOOKCASE_IVANDIS, new WorldPoint(3354, 9902, 0), "Search the bookcases for 'The Sleeping Seven' book.");
 		readBook = new DetailedQuestStep(this, "Read 'The Sleeping Seven'.", sleepingSeven);
 
-		useHammerOnBoards = new ObjectStep(this, NullObjectID.NULL_12772, new WorldPoint(3483, 9832, 0), "Use a hammer on the boarded up cave.", hammerHighlighted);
+		useHammerOnBoards = new ObjectStep(this, ObjectID.BURGH_IVANDIS_TOMBDOOR_BOARD_MULTILOC, new WorldPoint(3483, 9832, 0), "Use a hammer on the boarded up cave.", hammerHighlighted);
 		useHammerOnBoards.addDialogStep("Yes.");
 		useHammerOnBoards.addIcon(ItemID.HAMMER);
-		enterCoffinRoom = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_12770, new WorldPoint(3484, 9832, 0), "Enter the cave.");
+		enterCoffinRoom = new ObjectStep(this, ObjectID.BURGH_IVANDIS_TOMB_ENTRANCE, new WorldPoint(3484, 9832, 0), "Enter the cave.");
 
-		useClayOnCoffin = new ObjectStep(this, ObjectID.COFFIN_12802, new WorldPoint(3511, 9864, 0), "Use a piece of soft clay on the coffin.", softClayHighlighted);
-		useClayOnCoffin.addIcon(ItemID.SOFT_CLAY);
+		useClayOnCoffin = new ObjectStep(this, ObjectID.BURGH_ANCIENT_COFFIN, new WorldPoint(3511, 9864, 0), "Use a piece of soft clay on the coffin.", softClayHighlighted);
+		useClayOnCoffin.addIcon(ItemID.SOFTCLAY);
 		makeRod = new DetailedQuestStep(this, "Make a silvthrill rod at any furnace.", mould, mithrilBar, silverBar, sapphire);
 		enchantRod = new DetailedQuestStep(this, "Cast Lvl-1 enchant on the rod.", silvRod, waterRune, cosmicRune, normalSpellbook);
-		useRodOnWell = new ObjectStep(this, ObjectID.WELL_3485, new WorldPoint(3423, 9890, 0), "", enchantedRodHighlighted, rope);
-		useRodOnWell.addIcon(ItemID.SILVTHRILL_ROD_7638);
-		talkToVeliafToFinish = new NpcStep(this, NpcID.VELIAF_HURTZ_9489, new WorldPoint(3494, 9628, 0), "");
+		useRodOnWell = new ObjectStep(this, ObjectID.PRIESTPERIL_WELL, new WorldPoint(3423, 9890, 0), "", enchantedRodHighlighted, rope);
+		useRodOnWell.addIcon(ItemID.BURGH_ROD_COMMAND2);
+		talkToVeliafToFinish = new NpcStep(this, NpcID.MYQ5_VELIAF_CHILD, new WorldPoint(3494, 9628, 0), "");
 
 	}
 

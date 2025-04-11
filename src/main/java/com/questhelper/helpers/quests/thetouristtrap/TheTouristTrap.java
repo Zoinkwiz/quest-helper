@@ -24,44 +24,32 @@
  */
 package com.questhelper.helpers.quests.thetouristtrap;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.KeyringCollection;
-import com.questhelper.bank.banktab.BankSlotIcons;
-import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.Operation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.*;
+
+import java.util.*;
 
 public class TheTouristTrap extends BasicQuestHelper
 {
@@ -218,12 +206,12 @@ public class TheTouristTrap extends BasicQuestHelper
 		slaveBootWorn = new ItemRequirement("Slave boots", ItemID.SLAVE_BOOTS, 1, true);
 		slaveBootWorn.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");
 
-		bedabinKey = new ItemRequirement("Bedabin key", ItemID.BEDABIN_KEY);
+		bedabinKey = new ItemRequirement("Bedabin key", ItemID.THBEDOBINKEY);
 		bedabinKey.setTooltip("You can get another from Al Shabim in the Bedabin Camp");
-		technicalPlans = new ItemRequirement("Technical plans", ItemID.TECHNICAL_PLANS);
+		technicalPlans = new ItemRequirement("Technical plans", ItemID.THCAPTPLANS);
 		technicalPlans.setTooltip("You'll need to get another plan from Siad's chest");
-		prototypeDart = new ItemRequirement("Prototype dart", ItemID.PROTOTYPE_DART);
-		prototypeDartTip = new ItemRequirement("Prototype dart tip", ItemID.PROTOTYPE_DART_TIP);
+		prototypeDart = new ItemRequirement("Prototype dart", ItemID.THPROTODART);
+		prototypeDartTip = new ItemRequirement("Prototype dart tip", ItemID.THPROTODARTTIP);
 		prototypeDartTip.setHighlightInInventory(true);
 
 		feather50 = new ItemRequirement("Feather", ItemID.FEATHER, 50);
@@ -231,17 +219,17 @@ public class TheTouristTrap extends BasicQuestHelper
 		bronzeBarHighlighted = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		bronzeBarHighlighted.setHighlightInInventory(true);
 
-		tentiPineapple = new ItemRequirement("Tenti pineapple", ItemID.TENTI_PINEAPPLE);
+		tentiPineapple = new ItemRequirement("Tenti pineapple", ItemID.TENTIPINEAPPLE);
 		tentiPineapple.setTooltip("You can get another from Al Shabim in the Bedabin Camp");
 
-		barrel = new ItemRequirement("Barrel", ItemID.BARREL);
-		barrelHighlighted = new ItemRequirement("Barrel", ItemID.BARREL);
+		barrel = new ItemRequirement("Barrel", ItemID.THMINEBARREL_EMPTY);
+		barrelHighlighted = new ItemRequirement("Barrel", ItemID.THMINEBARREL_EMPTY);
 		barrelHighlighted.setHighlightInInventory(true);
-		anaInABarrel = new ItemRequirement("Ana in a barrel", ItemID.ANA_IN_A_BARREL);
-		anaInABarrelHighlighted = new ItemRequirement("Ana in a barrel", ItemID.ANA_IN_A_BARREL);
+		anaInABarrel = new ItemRequirement("Ana in a barrel", ItemID.THANAINABARREL);
+		anaInABarrelHighlighted = new ItemRequirement("Ana in a barrel", ItemID.THANAINABARREL);
 		anaInABarrelHighlighted.setHighlightInInventory(true);
 
-		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
+		waterskins = new ItemRequirement("Waterskins", ItemID.WATER_SKIN4, -1);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		coins100 = new ItemRequirement("Coins", ItemCollections.COINS, 100);
@@ -282,12 +270,12 @@ public class TheTouristTrap extends BasicQuestHelper
 
 		hasSlaveClothes = new ItemRequirements(slaveTop, slaveBoot, slaveRobe);
 
-		searchedBookcase = new Conditions(true, new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You notice several books on the subject of sailing."));
+		searchedBookcase = new Conditions(true, new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You notice several books on the subject of sailing."));
 		distractedSiad = new Conditions(true, new WidgetTextRequirement(229, 1, "The captain starts rambling on about his days as a salty sea dog. He<br>looks quite distracted..."));
 
 		anaPlacedOnCartOfLift = new VarbitRequirement(2805, 1);
 		// TODO: Better detection of if Ana is on the surface or in the underground barrel
-		anaOnSurface = new VarplayerRequirement(197, 22, Operation.GREATER_EQUAL);
+		anaOnSurface = new VarplayerRequirement(VarPlayerID.DESERTRESCUE, 22, Operation.GREATER_EQUAL);
 		// TODO: This only gets set the first time. If you somehow lose Ana between here and the cart it remains set. Need to add more logic around this
 		anaOnSurfaceInBarrel = new VarbitRequirement(2808, 1);
 		anaOnCart = new VarbitRequirement(2809, 1);
@@ -298,77 +286,78 @@ public class TheTouristTrap extends BasicQuestHelper
 	{
 		talkToIrena = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shantay Pass.");
 		talkToIrena.addDialogSteps("What's the matter?", "Is there a reward if I get her back?", "I'll look for your daughter.", "Okay Irena, calm down. I'll get your daughter back for you.", "Yes, I'll go on this quest!");
-		talkToCaptain = new NpcStep(this, NpcID.MERCENARY_CAPTAIN, new WorldPoint(3271, 3029, 0), "Talk to the Mercenary Captain outside the Desert Mining Camp. When he attacks you, kill him for a key.", combatGear);
+		talkToCaptain = new NpcStep(this, NpcID.DESERTMININGCAPTAIN, new WorldPoint(3271, 3029, 0), "Talk to the Mercenary Captain outside the Desert Mining Camp. When he attacks you, kill him for a key.", combatGear);
 		talkToCaptain.addDialogSteps("Wow! A real captain!", "I'd love to work for a tough guy like you!", "Can't I do something for a strong Captain like you?", "Sorry Sir, I don't think I can do that.", "It's a funny captain who can't fight his own battles!");
-		killCaptain = new NpcStep(this, NpcID.MERCENARY_CAPTAIN, new WorldPoint(3271, 3029, 0), "Kill the Mercenary Captain outside the Desert Mining Camp.", combatGear);
+		killCaptain = new NpcStep(this, NpcID.DESERTMININGCAPTAIN, new WorldPoint(3271, 3029, 0), "Kill the Mercenary Captain outside the Desert Mining Camp.", combatGear);
 
-		escapeJail = new ObjectStep(this, NullObjectID.NULL_2679, new WorldPoint(3283, 3034, 0), "Bend the cell window and escape through it.");
-		climbSlope = new ObjectStep(this, ObjectID.ROCK_18871, new WorldPoint(3281, 3037, 0), "Climb the rocks to escape.");
-		climbCliff = new ObjectStep(this, ObjectID.CLIFF, new WorldPoint(3278, 3037, 0), "Climb the cliff.");
-		climbDownCliff = new ObjectStep(this, ObjectID.CLIFF_18924, new WorldPoint(3273, 3039, 0), "Climb down the west of the cliff.");
+		escapeJail = new ObjectStep(this, ObjectID.TOURTRAP_QIP_CELL_BARS_MULTI, new WorldPoint(3283, 3034, 0), "Bend the cell window and escape through it.");
+		climbSlope = new ObjectStep(this, ObjectID.TOURTRAP_QIP_CLIMB_ROCK_1, new WorldPoint(3281, 3037, 0), "Climb the rocks to escape.");
+		climbCliff = new ObjectStep(this, ObjectID.TOURTRAP_QIP_CLIFFTOP_CLIMBUP, new WorldPoint(3278, 3037, 0), "Climb the cliff.");
+		climbDownCliff = new ObjectStep(this, ObjectID.TOURTRAP_QIP_CLIFFTOP_CLIMBDOWN, new WorldPoint(3273, 3039, 0), "Climb down the west of the cliff.");
 
-		enterCamp = new ObjectStep(this, ObjectID.GATE_2673, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", desertTop, desertBottom, desertBoot, metalKey);
-		talkToSlave = new NpcStep(this, NpcID.MALE_SLAVE, new WorldPoint(3302, 3027, 0), "Talk to the Male Slave to the east to trade your desert robes for his slave robes.", desertTop, desertBottom, desertBoot);
-		talkToSlave.addDialogSteps("I've just arrived.", "Okay, you caught me out.", "Oh yes, that sounds interesting.", "What's that then?", "I can try to undo them for you.", "It's funny you should say that...", "Yeah okay, let's give it a go.", "Yes, I'll trade.");
-		enterMine = new ObjectStep(this, ObjectID.MINE_DOOR_ENTRANCE, new WorldPoint(3301, 3036, 0), "Equip the slave clothes, and enter the mine door in the north east of the camp.", slaveTopWorn, slaveRobeWorn, slaveBootWorn);
-		talkToGuard = new NpcStep(this, NpcID.GUARD_4667, new WorldPoint(3278, 9415, 0), "Follow the cave around and talk to a guard guarding the deeper cave.", slaveTopWorn, slaveRobeWorn, slaveBootWorn);
+		enterCamp = new ObjectStep(this, ObjectID.MININGCAMPGATECLOSEDL, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", desertTop, desertBottom, desertBoot, metalKey);
+		talkToSlave = new NpcStep(this, NpcID.MINING_SLAVE_MALE, new WorldPoint(3302, 3027, 0), "Talk to the Male Slave to the east to trade your desert robes for his slave robes.", desertTop, desertBottom, desertBoot);
+		talkToSlave.addDialogSteps("I've just arrived.", "Okay, you caught me out.", "Oh yes, that sounds interesting.", "What's that then?", "I can try to undo them for you.",
+				"It's funny you should say that...", "Yeah, okay, let's give it a go.", "Yes, I'll trade.");
+		enterMine = new ObjectStep(this, ObjectID.THTTMINEENTRANCEL, new WorldPoint(3301, 3036, 0), "Equip the slave clothes, and enter the mine door in the north east of the camp.", slaveTopWorn, slaveRobeWorn, slaveBootWorn);
+		talkToGuard = new NpcStep(this, NpcID.TOURTRAP_QIP_DESERT_MINING_GUARD_STILL_2, new WorldPoint(3278, 9415, 0), "Follow the cave around and talk to a guard guarding the deeper cave.", slaveTopWorn, slaveRobeWorn, slaveBootWorn);
 		talkToGuard.addDialogSteps("I'd like to mine in a different area.", "Yes sir, you're quite right sir.", "Yes sir, we understand each other perfectly.");
-		leaveMine = new ObjectStep(this, ObjectID.MINE_DOOR_ENTRANCE_2690, new WorldPoint(3278, 9426, 0), "Return to the surface.");
+		leaveMine = new ObjectStep(this, ObjectID.THTTMINEEXITL, new WorldPoint(3278, 9426, 0), "Return to the surface.");
 		leaveMine.addDialogStep("Yes sir, we understand each other perfectly.");
-		leaveCamp = new ObjectStep(this, ObjectID.GATE_2673, new WorldPoint(3273, 3029, 0), "UNEQUIP THE SLAVE CLOTHES and leave the camp.");
+		leaveCamp = new ObjectStep(this, ObjectID.MININGCAMPGATECLOSEDL, new WorldPoint(3273, 3029, 0), "UNEQUIP THE SLAVE CLOTHES and leave the camp.");
 		talkToShabim = new NpcStep(this, NpcID.AL_SHABIM, new WorldPoint(3171, 3028, 0), "Talk to Al Shabim in the Bedabin Camp.");
 		talkToShabim.addDialogSteps("I am looking for a pineapple.", "Yes, I'm interested.");
 		talkToShabim.addSubSteps(leaveMine, leaveCamp);
 
-		enterCampForTask = new ObjectStep(this, ObjectID.GATE_2673, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", metalKey, bedabinKey);
-		goUpToSiad = new ObjectStep(this, ObjectID.LADDER_18903, new WorldPoint(3290, 3036, 0), "Climb up the ladder in the building in the camp.", bedabinKey);
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_2678, new WorldPoint(3284, 3033, 1), "Search the south west bookcase.");
-		talkToSiad = new NpcStep(this, NpcID.CAPTAIN_SIAD, new WorldPoint(3292, 3032, 1), "Talk to Captain Siad about sailing to distract him.", bedabinKey);
+		enterCampForTask = new ObjectStep(this, ObjectID.MININGCAMPGATECLOSEDL, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", metalKey, bedabinKey);
+		goUpToSiad = new ObjectStep(this, ObjectID.TOURTRAP_QIP_LADDER, new WorldPoint(3290, 3036, 0), "Climb up the ladder in the building in the camp.", bedabinKey);
+		searchBookcase = new ObjectStep(this, ObjectID.CAPT_SIAD_BOOKCASE, new WorldPoint(3284, 3033, 1), "Search the south west bookcase.");
+		talkToSiad = new NpcStep(this, NpcID.CAPT_SIAD, new WorldPoint(3292, 3032, 1), "Talk to Captain Siad about sailing to distract him.", bedabinKey);
 		talkToSiad.addDialogSteps("I wanted to have a chat?", "You seem to have a lot of books!", "So, you're interested in sailing?", "I could tell by the cut of your jib.");
-		searchChest = new ObjectStep(this, ObjectID.CHEST_2677, new WorldPoint(3292, 3033, 1), "Search the chest.");
+		searchChest = new ObjectStep(this, ObjectID.CAPTAIN_SIADS_CHEST_CLOSED, new WorldPoint(3292, 3033, 1), "Search the chest.");
 		searchChest.addDialogSteps("I wanted to have a chat?", "You seem to have a lot of books!", "So, you're interested in sailing?", "I could tell by the cut of your jib.");
 		returnToShabim = new NpcStep(this, NpcID.AL_SHABIM, new WorldPoint(3171, 3028, 0), "Return to Al Shabim in the Bedabin Camp with the plans.", technicalPlans, bronzeBar, hammer, feather50);
 		returnToShabim.addDialogSteps("Yes, I'm very interested.", "Yes, I'm kind of curious.");
-		useAnvil = new ObjectStep(this, ObjectID.AN_EXPERIMENTAL_ANVIL, new WorldPoint(3171, 3048, 0), "Enter the north tent and attempt to make a prototype dart tip on the anvil. Bring all 3 bars with you for this.", technicalPlans, bronzeBarHighlighted, hammer, feather50);
+		useAnvil = new ObjectStep(this, ObjectID.EXPERIMENTAL_ANVIL, new WorldPoint(3171, 3048, 0), "Enter the north tent and attempt to make a prototype dart tip on the anvil. Bring all 3 bars with you for this.", technicalPlans, bronzeBarHighlighted, hammer, feather50);
 		useAnvil.addDialogStep("Yes. I'd like to try.");
 		useAnvil.addIcon(ItemID.BRONZE_BAR);
 		useFeatherOnTip = new DetailedQuestStep(this, "Add 10 feathers to the prototype dart tip.", prototypeDartTip, feather50.highlighted());
 		bringPrototypeToShabim = new NpcStep(this, NpcID.AL_SHABIM, new WorldPoint(3171, 3028, 0), "Bring the prototype dart to Al Shabim.", prototypeDart);
 
-		enterCampWithPineapple = new ObjectStep(this, ObjectID.GATE_2673, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", metalKey, tentiPineapple, slaveTop, slaveRobe, slaveBoot);
-		enterMineWithPineapple = new ObjectStep(this, ObjectID.MINE_DOOR_ENTRANCE, new WorldPoint(3301, 3036, 0), "Equip the slave clothes, and enter the mine door in the north east of the camp.", slaveTopWorn, slaveRobeWorn, slaveBootWorn, tentiPineapple);
-		talkToGuardWithPineapple = new NpcStep(this, NpcID.GUARD_4667, new WorldPoint(3278, 9415, 0), "Follow the cave around and talk to a guard guarding the deeper cave.", slaveTopWorn, slaveRobeWorn, slaveBootWorn, tentiPineapple);
-		enterCampAfterPineapple = new ObjectStep(this, ObjectID.GATE_2673, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", metalKey, slaveTop, slaveRobe, slaveBoot);
-		enterMineAfterPineapple = new ObjectStep(this, ObjectID.MINE_DOOR_ENTRANCE, new WorldPoint(3301, 3036, 0), "Equip the slave clothes, and enter the mine door in the north east of the camp.", slaveTopWorn, slaveRobeWorn, slaveBootWorn);
+		enterCampWithPineapple = new ObjectStep(this, ObjectID.MININGCAMPGATECLOSEDL, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", metalKey, tentiPineapple, slaveTop, slaveRobe, slaveBoot);
+		enterMineWithPineapple = new ObjectStep(this, ObjectID.THTTMINEENTRANCEL, new WorldPoint(3301, 3036, 0), "Equip the slave clothes, and enter the mine door in the north east of the camp.", slaveTopWorn, slaveRobeWorn, slaveBootWorn, tentiPineapple);
+		talkToGuardWithPineapple = new NpcStep(this, NpcID.TOURTRAP_QIP_DESERT_MINING_GUARD_STILL_2, new WorldPoint(3278, 9415, 0), "Follow the cave around and talk to a guard guarding the deeper cave.", slaveTopWorn, slaveRobeWorn, slaveBootWorn, tentiPineapple);
+		enterCampAfterPineapple = new ObjectStep(this, ObjectID.MININGCAMPGATECLOSEDL, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", metalKey, slaveTop, slaveRobe, slaveBoot);
+		enterMineAfterPineapple = new ObjectStep(this, ObjectID.THTTMINEENTRANCEL, new WorldPoint(3301, 3036, 0), "Equip the slave clothes, and enter the mine door in the north east of the camp.", slaveTopWorn, slaveRobeWorn, slaveBootWorn);
 
-		enterDeepMine = new ObjectStep(this, ObjectID.MINE_CAVE, new WorldPoint(3281, 9414, 0), "Enter the deeper mines.");
-		getBarrel = new ObjectStep(this, ObjectID.BARREL_2681, new WorldPoint(3303, 9418, 0), "Right-click search the barrel next to the mine cart for a barrel.");
+		enterDeepMine = new ObjectStep(this, ObjectID.THMINECAVER, new WorldPoint(3281, 9414, 0), "Enter the deeper mines.");
+		getBarrel = new ObjectStep(this, ObjectID.THMINEBARREL_EMPTY, new WorldPoint(3303, 9418, 0), "Right-click search the barrel next to the mine cart for a barrel.");
 		getBarrel.addDialogStep("Yeah, cool!");
-		enterMineCart = new ObjectStep(this, ObjectID.MINE_CART_2684, new WorldPoint(3303, 9417, 0), "Right-click search the mine cart to ride it to the next room.", barrel);
+		enterMineCart = new ObjectStep(this, ObjectID.TOURISTTRAP_MINECART, new WorldPoint(3303, 9417, 0), "Right-click search the mine cart to ride it to the next room.", barrel);
 		enterMineCart.addDialogStep("Yes, of course.");
 		useBarrelOnAna = new NpcStep(this, NpcID.ANA, new WorldPoint(3297, 9464, 0), "Follow the path west then north until you find Ana. Use the barrel on her.", barrelHighlighted);
-		useBarrelOnAna.addIcon(ItemID.BARREL);
-		useBarrelOnMineCart = new ObjectStep(this, ObjectID.MINE_CART_2684, new WorldPoint(3318, 9430, 0), "Use Ana on the mine cart you came in on.", anaInABarrelHighlighted);
-		useBarrelOnMineCart.addIcon(ItemID.ANA_IN_A_BARREL);
-		returnInMineCart = new ObjectStep(this, ObjectID.MINE_CART_2684, new WorldPoint(3318, 9430, 0), "Return in the mine cart you came in on.");
+		useBarrelOnAna.addIcon(ItemID.THMINEBARREL_EMPTY);
+		useBarrelOnMineCart = new ObjectStep(this, ObjectID.TOURISTTRAP_MINECART, new WorldPoint(3318, 9430, 0), "Use Ana on the mine cart you came in on.", anaInABarrelHighlighted);
+		useBarrelOnMineCart.addIcon(ItemID.THANAINABARREL);
+		returnInMineCart = new ObjectStep(this, ObjectID.TOURISTTRAP_MINECART, new WorldPoint(3318, 9430, 0), "Return in the mine cart you came in on.");
 		returnInMineCart.addDialogStep("Yes, of course.");
 
-		searchBarrelsForAna = new ObjectStep(this, ObjectID.BARREL_2681, new WorldPoint(3303, 9418, 0), "Right-click search the barrel next to the mine cart for Ana.");
-		sendAnaUp = new ObjectStep(this, ObjectID.WINCH_BUCKET_18951, new WorldPoint(3292, 9423, 0), "Right-click use the winch bucket to send Ana to the surface.");
+		searchBarrelsForAna = new ObjectStep(this, ObjectID.THMINEBARREL_EMPTY, new WorldPoint(3303, 9418, 0), "Right-click search the barrel next to the mine cart for Ana.");
+		sendAnaUp = new ObjectStep(this, ObjectID.TOURTRAP_QIP_ROPEPULLTHINGY2, new WorldPoint(3292, 9423, 0), "Right-click use the winch bucket to send Ana to the surface.");
 		sendAnaUp.addDialogSteps("Yes please.", "I said you were very gregarious!");
-		leaveDeepMine = new ObjectStep(this, ObjectID.MINE_CAVE, new WorldPoint(3283, 9415, 0), "Return to the surface. If Ana was captured again, search the barrel next to the mine cart for her.");
-		leaveMineForAna = new ObjectStep(this, ObjectID.MINE_DOOR_ENTRANCE_2690, new WorldPoint(3278, 9426, 0), "Return to the surface.");
+		leaveDeepMine = new ObjectStep(this, ObjectID.THMINECAVER, new WorldPoint(3283, 9415, 0), "Return to the surface. If Ana was captured again, search the barrel next to the mine cart for her.");
+		leaveMineForAna = new ObjectStep(this, ObjectID.THTTMINEEXITL, new WorldPoint(3278, 9426, 0), "Return to the surface.");
 		leaveDeepMine.addSubSteps(leaveMineForAna);
-		operateWinch = new ObjectStep(this, ObjectID.WINCH_18888, new WorldPoint(3279, 3018, 0), "Right-click operate the winch in the south west of the camp.");
-		searchWinchBarrel = new ObjectStep(this, NullObjectID.NULL_18963, new WorldPoint(3278, 3017, 0), "Right-click search the barrel west of the winch. If it's empty, operate the winch again.");
-		useBarrelOnCart = new ObjectStep(this, NullObjectID.NULL_2682, new WorldPoint(3288, 3024, 0), "Use Ana on the cart in the middle of the camp.", anaInABarrelHighlighted);
-		useBarrelOnCart.addIcon(ItemID.ANA_IN_A_BARREL);
-		talkToDriver = new NpcStep(this, NpcID.MINE_CART_DRIVER, new WorldPoint(3287, 3021, 0), "Talk to the Mine Cart Driver to escape. Once he's agreed to take you, right-click search the wooden cart to escape.");
+		operateWinch = new ObjectStep(this, ObjectID.TOURTRAP_QIP_ROPEPULLTHINGY, new WorldPoint(3279, 3018, 0), "Right-click operate the winch in the south west of the camp.");
+		searchWinchBarrel = new ObjectStep(this, ObjectID.TOURTRAP_QIP_ANABARREL_WINCHSIDE_MULTI, new WorldPoint(3278, 3017, 0), "Right-click search the barrel west of the winch. If it's empty, operate the winch again.");
+		useBarrelOnCart = new ObjectStep(this, ObjectID.TOURTRAP_QIP_MULTI_FLATBACK_CART, new WorldPoint(3288, 3024, 0), "Use Ana on the cart in the middle of the camp.", anaInABarrelHighlighted);
+		useBarrelOnCart.addIcon(ItemID.THANAINABARREL);
+		talkToDriver = new NpcStep(this, NpcID.MINING_CART_DRIVER, new WorldPoint(3287, 3021, 0), "Talk to the Mine Cart Driver to escape. Once he's agreed to take you, right-click search the wooden cart to escape.");
 		talkToDriver.addDialogSteps("Nice cart.", "One wagon wheel says to the other, 'I'll see you around'.", "'One good turn deserves another'", "Fired... no, shot perhaps!",
 			"In for a penny in for a pound.", "Well, you see, it's like this...", "Prison riot in ten minutes, get your cart out of here!", "You can't leave me here, I'll get killed!", "Yes, I'll get on.");
 		returnToIrena = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Bring Ana to Irena south of the Shantay Pass.", anaInABarrel);
 		talkToAna = new NpcStep(this, NpcID.ANA, new WorldPoint(3302, 3110, 0), "Talk to Ana outside the Shantay Pass.");
-		talkToIrenaToFinish = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shantay Pass to finish the quest!");
+		talkToIrenaToFinish = new NpcStep(this, NpcID.TOURTRAP_QIP_IRENA_HAPPY, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shantay Pass to finish the quest!");
 
 		mineRocks = new DetailedQuestStep(this, "Mine 15 rocks to be able to leave.");
 	}
@@ -414,7 +403,7 @@ public class TheTouristTrap extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("4,650 Exp. Lamps (Agility, Fletching, Smithing or Thieving)", ItemID.ANTIQUE_LAMP, 2));
+		return Collections.singletonList(new ItemReward("4,650 Exp. Lamps (Agility, Fletching, Smithing or Thieving)", ItemID.THOSF_REWARD_LAMP, 2));
 	}
 
 	@Override

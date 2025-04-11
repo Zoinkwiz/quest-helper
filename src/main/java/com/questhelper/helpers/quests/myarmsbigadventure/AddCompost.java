@@ -24,27 +24,27 @@
  */
 package com.questhelper.helpers.quests.myarmsbigadventure;
 
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.ObjectStep;
-import java.util.Arrays;
-import java.util.Collections;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.Arrays;
 
 public class AddCompost extends ObjectStep
 {
-	ItemRequirement compost = new ItemRequirement("Supercompost",ItemID.SUPERCOMPOST, 7);
+	ItemRequirement compost = new ItemRequirement("Supercompost",ItemID.BUCKET_SUPERCOMPOST, 7);
 	ItemRequirement spade = new ItemRequirement("Spade", ItemID.SPADE);
 
 	public AddCompost(QuestHelper questHelper)
 	{
-		super(questHelper, NullObjectID.NULL_18867, new WorldPoint(2831, 3696, 0),
+		super(questHelper, ObjectID.MYARM_FAKEFARMINGPATCH, new WorldPoint(2831, 3696, 0),
 			"Add 7 supercompost on My Arm's soil patch.");
-		this.addIcon(ItemID.SUPERCOMPOST);
+		this.addIcon(ItemID.BUCKET_SUPERCOMPOST);
 		compost.setHighlightInInventory(true);
 	}
 

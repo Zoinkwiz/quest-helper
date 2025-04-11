@@ -38,19 +38,20 @@ import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.steps.widget.NormalSpells;
-import net.runelite.api.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class BikeShedder extends BasicQuestHelper
@@ -124,7 +125,7 @@ public class BikeShedder extends BasicQuestHelper
 
 		anyLog = new ItemRequirement("Any log", ItemCollections.LOGS_FOR_FIRE).highlighted();
 
-		useLogOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use log on bush", anyLog);
+		useLogOnBush = new ObjectStep(this, ObjectID.PVPW_ARMOURSTAND_BUSH, new WorldPoint(3223, 3217, 0), "Use log on bush", anyLog);
 		useLogOnBush.addIcon(ItemID.LOGS);
 
 		varrockTeleport = TeleportCollections.VARROCK_TELEPORT.getItemRequirement();
@@ -133,12 +134,12 @@ public class BikeShedder extends BasicQuestHelper
 
 		oneCoin = new ItemRequirement("Coins", ItemCollections.COINS, 1);
 		oneCoin.setHighlightInInventory(true);
-		useCoinOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use coins on the bush.", oneCoin);
+		useCoinOnBush = new ObjectStep(this, ObjectID.PVPW_ARMOURSTAND_BUSH, new WorldPoint(3223, 3217, 0), "Use coins on the bush.", oneCoin);
 		useCoinOnBush.addIcon(ItemID.COINS);
 
 		manyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 		manyCoins.setHighlightInInventory(true);
-		useManyCoinsOnBush = new ObjectStep(this, NullObjectID.NULL_10778, new WorldPoint(3223, 3217, 0), "Use many coins on the bush.", manyCoins);
+		useManyCoinsOnBush = new ObjectStep(this, ObjectID.PVPW_ARMOURSTAND_BUSH, new WorldPoint(3223, 3217, 0), "Use many coins on the bush.", manyCoins);
 		useManyCoinsOnBush.addIcon(ItemID.COINS);
 
 		conditionalRequirementZone = new Zone(new WorldPoint(3223, 3221, 0), new WorldPoint(3223, 3223, 0));
@@ -158,29 +159,29 @@ public class BikeShedder extends BasicQuestHelper
 
 		conditionalRequirementLookAtCoins = new DetailedQuestStep(this, "Admire the coins in your inventory.", conditionalRequirementCoins);
 
-		lookAtCooksAssistantRequirement = new WidgetTextRequirement(ComponentID.DIARY_TITLE, "Cook's Assistant");
+		lookAtCooksAssistantRequirement = new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "Cook's Assistant");
 		lookAtCooksAssistantRequirement.setDisplayText("Cook's Assistant quest journal open");
-		lookAtCooksAssistantTextRequirement = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "he now lets me use his high quality range");
+		lookAtCooksAssistantTextRequirement = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "he now lets me use his high quality range");
 		lookAtCooksAssistantTextRequirement.setDisplayText("Cook's Assistant quest journal open & received reward (checking text)");
 		lookAtCooksAssistant = new DetailedQuestStep(this, "Open the Cook's Assistant quest journal. You must have started the quest for this test to work.", lookAtCooksAssistantRequirement, lookAtCooksAssistantTextRequirement);
 
 		var upstairsInSunrisePalace = new Zone(new WorldPoint(1684, 3162, 1), new WorldPoint(1691, 3168, 1));
 		byStaircaseInSunrisePalace = new ZoneRequirement(upstairsInSunrisePalace);
-		goDownstairsInSunrisePalace = new ObjectStep(getQuest().getQuestHelper(), ObjectID.STAIRCASE_52627, new WorldPoint(1690, 3164, 1), "Climb downstairs, ensure stairs are well highlighted!");
+		goDownstairsInSunrisePalace = new ObjectStep(getQuest().getQuestHelper(), ObjectID.CIVITAS_PALACE_STAIRS_DOWN, new WorldPoint(1690, 3164, 1), "Climb downstairs, ensure stairs are well highlighted!");
 
 
-		var fire30 = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 30)
+		var fire30 = new ItemRequirement("Fire runes", ItemID.FIRERUNE, 30)
 				.showConditioned(new SkillRequirement(Skill.MAGIC, 63));
-		var air30 = new ItemRequirement("Air runes", ItemID.AIR_RUNE, 30)
+		var air30 = new ItemRequirement("Air runes", ItemID.AIRRUNE, 30)
 				.showConditioned(new SkillRequirement(Skill.MAGIC, 66));
-		var water30 = new ItemRequirement("Water runes", ItemID.WATER_RUNE, 30)
+		var water30 = new ItemRequirement("Water runes", ItemID.WATERRUNE, 30)
 				.showConditioned(new SkillRequirement(Skill.MAGIC, 56));
-		var earth30 = new ItemRequirement("Earth runes", ItemID.EARTH_RUNE, 30)
+		var earth30 = new ItemRequirement("Earth runes", ItemID.EARTHRUNE, 30)
 				.showConditioned(new SkillRequirement(Skill.MAGIC, 60));
 		elemental30Unique = new ItemRequirements(LogicType.OR, "Elemental runes as ItemRequirements OR", air30, water30, earth30, fire30);
-		elemental30Unique.addAlternates(ItemID.FIRE_RUNE, ItemID.EARTH_RUNE, ItemID.AIR_RUNE);
-		elemental30 = new ItemRequirement("Elemental rune as ItemRequirement", List.of(ItemID.AIR_RUNE, ItemID.EARTH_RUNE, ItemID.WATER_RUNE,
-				ItemID.FIRE_RUNE),	30);
+		elemental30Unique.addAlternates(ItemID.FIRERUNE, ItemID.EARTHRUNE, ItemID.AIRRUNE);
+		elemental30 = new ItemRequirement("Elemental rune as ItemRequirement", List.of(ItemID.AIRRUNE, ItemID.EARTHRUNE, ItemID.WATERRUNE,
+				ItemID.FIRERUNE),	30);
 		elemental30.setTooltip("You have potato");
 		haveRunes = new DetailedQuestStep(this, "Compare rune checks for ItemRequirement and ItemRequirements with OR.", elemental30, elemental30Unique);
 	}

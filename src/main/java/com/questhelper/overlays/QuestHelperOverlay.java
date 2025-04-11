@@ -28,14 +28,13 @@
 package com.questhelper.overlays;
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import javax.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPriority;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class QuestHelperOverlay extends OverlayPanel
 {

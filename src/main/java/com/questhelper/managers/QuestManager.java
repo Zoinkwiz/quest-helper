@@ -41,16 +41,12 @@ import net.runelite.api.GameState;
 import net.runelite.api.QuestState;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 

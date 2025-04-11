@@ -454,7 +454,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		);
 		finishedManniTask = new RuneliteRequirement(configManager, "fremmytrialsfinishedmanni",
 			new Conditions(true, LogicType.OR,
-			new ChatMessageRequirement("Congratulations! You have completed the Revellers' Trial!"),
+			new ChatMessageRequirement("Congratulations! You have completed the Revellers' Trial."),
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I now have the Reveller's vote"))
 		);
 

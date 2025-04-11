@@ -357,7 +357,7 @@ public class TheTouristTrap extends BasicQuestHelper
 			"In for a penny in for a pound.", "Well, you see, it's like this...", "Prison riot in ten minutes, get your cart out of here!", "You can't leave me here, I'll get killed!", "Yes, I'll get on.");
 		returnToIrena = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Bring Ana to Irena south of the Shantay Pass.", anaInABarrel);
 		talkToAna = new NpcStep(this, NpcID.ANA, new WorldPoint(3302, 3110, 0), "Talk to Ana outside the Shantay Pass.");
-		talkToIrenaToFinish = new NpcStep(this, NpcID.IRENA, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shantay Pass to finish the quest!");
+		talkToIrenaToFinish = new NpcStep(this, NpcID.TOURTRAP_QIP_IRENA_HAPPY, new WorldPoint(3304, 3112, 0), "Talk to Irena south of the Shantay Pass to finish the quest!");
 
 		mineRocks = new DetailedQuestStep(this, "Mine 15 rocks to be able to leave.");
 	}

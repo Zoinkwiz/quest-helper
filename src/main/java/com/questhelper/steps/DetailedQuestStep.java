@@ -507,6 +507,10 @@ public class DetailedQuestStep extends QuestStep
 			{
 				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, localPoint, getQuestHelper().getConfig().targetOverlayColor());
 			}
+			if (localPoints.isEmpty())
+			{
+				DirectionArrow.renderMinimapArrow(graphics, client, worldPoint, getQuestHelper().getConfig().targetOverlayColor());
+			}
 		}
 	}
 

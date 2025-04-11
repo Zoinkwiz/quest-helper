@@ -13,7 +13,6 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -165,7 +164,7 @@ public class DwarfCannon extends BasicQuestHelper
 		gotoTower = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2570, 3441, 0), "Go to the top floor of the tower south of Captain Lawgof and get the remains there.");
 		goToTower2 = new ObjectStep(this, ObjectID.MCANNONLADDER, new WorldPoint(2570, 3443, 1), "Go up the second ladder.");
 
-		getRemainsStep = new ObjectStep(this, NullObjectID.NULL, new WorldPoint(2567, 3444, 2), "Get the dwarf remains at the top of the tower.");
+		getRemainsStep = new ObjectStep(this, ObjectID.MCANNONREMAINS_MULTILOC, new WorldPoint(2567, 3444, 2), "Get the dwarf remains at the top of the tower.");
 		gotoTower.addSubSteps(goToTower2, getRemainsStep);
 
 		downTower = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2570, 3443, 2), "Go down the first ladder.");

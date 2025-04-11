@@ -248,9 +248,9 @@ public class Watchtower extends BasicQuestHelper
 
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
 
-		nightshade = new ItemRequirement("Cave nightshade", ItemID.STACKABLE_NIGHTSHADE);
+		nightshade = new ItemRequirement("Cave nightshade", ItemID.NIGHTSHADE);
 		nightshade.setHighlightInInventory(true);
-		nightshade2 = new ItemRequirement("Cave nightshade", ItemID.STACKABLE_NIGHTSHADE, 2);
+		nightshade2 = new ItemRequirement("Cave nightshade", ItemID.NIGHTSHADE, 2);
 
 		crystal2 = new ItemRequirement("Crystal", ItemID.POWERING_CRYSTAL2);
 		crystal2.setTooltip("You can get another from the mad skavid");

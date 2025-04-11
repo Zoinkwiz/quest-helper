@@ -429,8 +429,6 @@ public class MetalDoorSolver extends DetailedOwnerStep
 
 	public void drawDistanceUp(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		super.makeWidgetOverlayHint(graphics, plugin);
-
 		var arrow = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_BTN_DOWN_CHILD_ID);
 		if (arrow == null)
 		{
@@ -446,8 +444,6 @@ public class MetalDoorSolver extends DetailedOwnerStep
 
 	public void drawDistanceDown(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		super.makeWidgetOverlayHint(graphics, plugin);
-
 		var arrow = client.getWidget(PUZZLE_GROUP_ID, PUZZLE_BTN_DOWN_CHILD_ID);
 		if (arrow == null)
 		{

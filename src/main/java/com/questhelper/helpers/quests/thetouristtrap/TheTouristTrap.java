@@ -297,7 +297,8 @@ public class TheTouristTrap extends BasicQuestHelper
 
 		enterCamp = new ObjectStep(this, ObjectID.MININGCAMPGATECLOSEDL, new WorldPoint(3273, 3029, 0), "UNEQUIP ALL COMBAT GEAR and enter the camp.", desertTop, desertBottom, desertBoot, metalKey);
 		talkToSlave = new NpcStep(this, NpcID.MINING_SLAVE_MALE, new WorldPoint(3302, 3027, 0), "Talk to the Male Slave to the east to trade your desert robes for his slave robes.", desertTop, desertBottom, desertBoot);
-		talkToSlave.addDialogSteps("I've just arrived.", "Okay, you caught me out.", "Oh yes, that sounds interesting.", "What's that then?", "I can try to undo them for you.", "It's funny you should say that...", "Yeah okay, let's give it a go.", "Yes, I'll trade.");
+		talkToSlave.addDialogSteps("I've just arrived.", "Okay, you caught me out.", "Oh yes, that sounds interesting.", "What's that then?", "I can try to undo them for you.",
+				"It's funny you should say that...", "Yeah, okay, let's give it a go.", "Yes, I'll trade.");
 		enterMine = new ObjectStep(this, ObjectID.THTTMINEENTRANCEL, new WorldPoint(3301, 3036, 0), "Equip the slave clothes, and enter the mine door in the north east of the camp.", slaveTopWorn, slaveRobeWorn, slaveBootWorn);
 		talkToGuard = new NpcStep(this, NpcID.TOURTRAP_QIP_DESERT_MINING_GUARD_STILL_2, new WorldPoint(3278, 9415, 0), "Follow the cave around and talk to a guard guarding the deeper cave.", slaveTopWorn, slaveRobeWorn, slaveBootWorn);
 		talkToGuard.addDialogSteps("I'd like to mine in a different area.", "Yes sir, you're quite right sir.", "Yes sir, we understand each other perfectly.");

@@ -174,7 +174,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		skavMap = new ItemRequirement("Skavid map", ItemID.SKAVIDMAP).showConditioned(notCaveNightshade).isNotConsumed();
 		lightSource = new ItemRequirement("Any light source", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(notCaveNightshade).isNotConsumed();
-		nightshade = new ItemRequirement("Cave nightshade", ItemID.STACKABLE_NIGHTSHADE);
+		nightshade = new ItemRequirement("Cave nightshade", ItemID.NIGHTSHADE);
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notGrapYan).isNotConsumed();
 		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapYan).isNotConsumed();
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY)

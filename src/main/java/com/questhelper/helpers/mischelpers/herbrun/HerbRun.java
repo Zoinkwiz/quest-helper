@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.timetracking.Tab;
@@ -184,7 +185,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER);
+		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).hideConditioned(new VarbitRequirement(VarbitID.BRUT_MINIQUEST, true, 0));
 		rake = new ItemRequirement("Rake", ItemID.RAKE).hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));
 
 		seed = new ItemRequirement("Seeds of your choice", ItemID.GUAM_SEED);

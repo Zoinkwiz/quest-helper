@@ -177,7 +177,7 @@ public class NatureSpirit extends BasicQuestHelper
 		druidicSpell.setTooltip("You can get another from Filliman");
 		druidPouch = new ItemRequirement("Druidic pouch", ItemID.DRUID_POUCH_EMPTY);
 		druidPouch.setTooltip("You can get one from inside the Grotto");
-		druidPouchFull = new ItemRequirement("Druidic pouch", ItemID.DRUID_POUCH_EMPTY);
+		druidPouchFull = new ItemRequirement("Druidic pouch", ItemID.DRUID_POUCH);
 		blessedSickle = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_BLESSED);
 		blessedSickle.setTooltip("You can bless another silver sickle with the nature spirit");
 		spellCard = new ItemRequirement("A used spell or druidic spell", ItemID.USED_BLOOM_SPELL);

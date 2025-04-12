@@ -181,7 +181,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		steelWarhammer = new ItemRequirement("Steel warhammer", ItemID.STEEL_WARHAMMER);
 		steeldagger = new ItemRequirement("Steel dagger", ItemID.STEEL_DAGGER);
 		steelNails225 = new ItemRequirement("Steel nails", ItemID.NAILS, 225);
-		druidPouch5 = new ItemRequirement("Charges in a druid pouch", ItemID.DRUID_POUCH_EMPTY, 5);
+		druidPouch5 = new ItemRequirement("Charges in a druid pouch", ItemID.DRUID_POUCH, 5);
 		druidPouch5.setTooltip("Additional charges will be needed if a ghast hits you in the swamp");
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		plank6 = new ItemRequirement("Plank", ItemID.WOODPLANK, 6);

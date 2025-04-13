@@ -563,9 +563,19 @@ public enum PatchImplementation
 					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
 					return new PatchState(Produce.AVANTOE, CropState.HARVESTABLE, 59 - value);
 				}
-				if (value >= 60 && value <= 67)
+				if (value >= 60 && value <= 63)
 				{
-					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135
+					// Herbs[Inspect,Guide] 55347,55348,55349,55350
+					return new PatchState(Produce.HUASCA, CropState.GROWING, value - 60);
+				}
+				if (value >= 64 && value <= 66)
+				{
+					// Herbs[Pick,Inspect,Guide] 55351,55351,55351
+					return new PatchState(Produce.HUASCA, CropState.HARVESTABLE, 66 - value);
+				}
+				if (value == 67)
+				{
+					// Herb patch[Rake,Inspect,Guide] 8135
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
 				if (value >= 68 && value <= 71)

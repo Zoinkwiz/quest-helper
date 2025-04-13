@@ -108,7 +108,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
-		if (questHelperConfig.solvePuzzles())
+		if (currentStep != null && questHelperConfig.solvePuzzles())
 		{
 			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, additionalRequirements);
 		}

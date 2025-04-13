@@ -33,15 +33,12 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.widget.WidgetDetails;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -96,10 +93,10 @@ public class PuzzleStep extends DetailedOwnerStep
 	public void startUp()
 	{
 		super.startUp();
-		answer1 = client.getVarbitValue(2510); // 1 input
-		answer2 = client.getVarbitValue(2511); // 2 input
-		answer3 = client.getVarbitValue(2512); // 3 input
-		answer4 = client.getVarbitValue(2513); // 4 input
+		answer1 = client.getVarbitValue(VarbitID.EYEGLO_COIN_VALUE_1); // 1 input
+		answer2 = client.getVarbitValue(VarbitID.EYEGLO_COIN_VALUE_2); // 2 input
+		answer3 = client.getVarbitValue(VarbitID.EYEGLO_COIN_VALUE_3); // 3 input
+		answer4 = client.getVarbitValue(VarbitID.EYEGLO_COIN_VALUE_4); // 4 input
 
 		updateSteps();
 	}
@@ -113,7 +110,7 @@ public class PuzzleStep extends DetailedOwnerStep
 	@Override
 	public void updateSteps()
 	{
-		if (client.getVarbitValue(2502) == 2)
+		if (client.getVarbitValue(VarbitID.EYEGLO_MACHINE_BROKEN) == 2)
 		{
 			solvePuzzle2();
 		}
@@ -141,16 +138,16 @@ public class PuzzleStep extends DetailedOwnerStep
 
 	public void solvePuzzle1()
 	{
-		int heldDisc = client.getVarpValue(856);
+		int heldDisc = client.getVarpValue(VarPlayerID.EYEGLO_COIN_SELECTED);
 		Widget insertWidget = client.getWidget(InterfaceID.LeagueTrophies.INFINITY);
 
-		if (client.getVarbitValue(2539) == answer1)
+		if (client.getVarbitValue(VarbitID.EYEGLO_UNLOCK_VAL) == answer1)
 		{
 			startUpStep(clickAnswer1);
 			return;
 		}
 
-		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
 		if (itemContainer == null)
 		{
 			return;
@@ -208,15 +205,15 @@ public class PuzzleStep extends DetailedOwnerStep
 
 	public void solvePuzzle2()
 	{
-		int heldDisc = client.getVarpValue(856);
+		int heldDisc = client.getVarpValue(VarPlayerID.EYEGLO_COIN_SELECTED);
 
-		if (client.getVarbitValue(2540) == answer2 && client.getVarbitValue(2541) == answer3 && client.getVarbitValue(2542) == answer4)
+		if (client.getVarbitValue(VarbitID.EYEGLO_OPERATE1_VAL) == answer2 && client.getVarbitValue(VarbitID.EYEGLO_OPERATE2_VAL) == answer3 && client.getVarbitValue(VarbitID.EYEGLO_OPERATE3_VAL) == answer4)
 		{
 			startUpStep(clickAnswer2);
 			return;
 		}
 
-		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
 		if (itemContainer == null)
 		{
 			return;
@@ -228,14 +225,14 @@ public class PuzzleStep extends DetailedOwnerStep
 
 		Widget insertWidget = client.getWidget(InterfaceID.EyegloGnomeMachineUnlocked.MACHINE_UNLOACKED_BACKGROUND);
 
-		int slot1 = client.getVarpValue(850);
+		int slot1 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE1_A);
 
-		int slot2 = client.getVarpValue(851);
-		int slot3 = client.getVarpValue(852);
+		int slot2 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE2_A);
+		int slot3 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE2_B);
 
-		int slot4 = client.getVarpValue(853);
-		int slot5 = client.getVarpValue(854);
-		int slot6 = client.getVarpValue(855);
+		int slot4 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE3_A);
+		int slot5 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE3_B);
+		int slot6 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE3_C);
 
 		newMostMatch3 = -1;
 		mostMatch4 = -1;

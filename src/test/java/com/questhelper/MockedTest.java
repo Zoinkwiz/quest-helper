@@ -133,6 +133,10 @@ public abstract class MockedTest extends MockedTestBase
 		when(npcSetMock.iterator()).thenReturn(Collections.emptyIterator());
 		doReturn(npcSetMock).when(mockedWorldView).npcs();
 		when(client.getTopLevelWorldView()).thenReturn(mockedWorldView);
+
+		ItemComposition itemComposition = mock(ItemComposition.class);
+		when(itemComposition.getName()).thenReturn("Test item");
+		when(itemManager.getItemComposition(anyInt())).thenReturn(itemComposition);
 	}
 
 }

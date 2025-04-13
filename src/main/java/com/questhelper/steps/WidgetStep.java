@@ -43,6 +43,12 @@ public class WidgetStep extends DetailedQuestStep
 
 	protected List<BiConsumer<Graphics2D, QuestHelperPlugin>> extraWidgetOverlayHintFunctions = new ArrayList<>();
 
+	public WidgetStep(QuestHelper questHelper, String text, int interfaceID)
+	{
+		super(questHelper, text);
+		widgetDetails.add(new WidgetDetails(interfaceID));
+	}
+
 	public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID)
 	{
 		super(questHelper, text);

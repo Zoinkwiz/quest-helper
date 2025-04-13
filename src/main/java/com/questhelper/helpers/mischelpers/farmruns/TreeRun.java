@@ -56,16 +56,16 @@ import com.questhelper.steps.widget.LunarSpells;
 import com.questhelper.steps.widget.NormalSpells;
 import java.util.Set;
 
-import com.questhelper.steps.widget.WidgetHighlight;
-import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
@@ -310,7 +310,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		savannahStep.addStep(savannahStates.getIsHarvestable(), savannahClear);
 		savannahStep.addStep(savannahStates.getIsStump(), savannahDig);
 		savannahStep.addStep(nor(usingCompostorNothing, savannahStates.getIsProtected()), savannahProtect);
-		
+
 		steps.addStep(and(accessToSavannah, nor(savannahStates.getIsGrowing())), savannahStep);
 
 		return steps;
@@ -364,10 +364,10 @@ public class TreeRun extends ComplexStateQuestHelper
 	{
 		setupConditions();
 		// Farming Item Requirements
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		rake = new ItemRequirement("Rake", ItemID.RAKE)
-			.hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));
-		coins = new ItemRequirement("Coins to quickly remove trees.", ItemID.COINS_995)
+		spade = new ItemRequirement("Spade", net.runelite.api.gameval.ItemID.SPADE);
+		rake = new ItemRequirement("Rake", net.runelite.api.gameval.ItemID.RAKE)
+			.hideConditioned(new VarbitRequirement(VarbitID.FARMING_BLOCKWEEDS, 2));
+		coins = new ItemRequirement("Coins to quickly remove trees.", ItemID.COINS)
 			.showConditioned(payingForRemoval);
 		axe = new ItemRequirement("Any axe you can use", ItemCollections.AXES);
 
@@ -404,12 +404,12 @@ public class TreeRun extends ComplexStateQuestHelper
 		// Teleport Items
 		farmingGuildTeleport = new ItemRequirement("Farming Guild Teleport", ItemCollections.SKILLS_NECKLACES);
 		crystalTeleport = new ItemRequirement("Crystal teleport", ItemCollections.TELEPORT_CRYSTAL);
-		catherbyTeleport = new ItemRequirement("Catherby teleport", ItemID.CATHERBY_TELEPORT);
-		catherbyTeleport.addAlternates(ItemID.CAMELOT_TELEPORT);
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.LUMBRIDGE_TELEPORT);
+		catherbyTeleport = new ItemRequirement("Catherby teleport", ItemID.LUNAR_TABLET_CATHERBY_TELEPORT);
+		catherbyTeleport.addAlternates(ItemID.POH_TABLET_CAMELOTTELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
+		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemCollections.RING_OF_WEALTHS);
-		faladorTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
+		faladorTeleport.addAlternates(ItemID.POH_TABLET_FALADORTELEPORT);
 		fossilIslandTeleport = new ItemRequirement("Teleport to Fossil Island", ItemCollections.DIGSITE_PENDANTS);
 
 
@@ -431,7 +431,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		gracefulBoots = new ItemRequirement(
 			"Graceful boots", ItemCollections.GRACEFUL_BOOTS, 1, true).isNotConsumed();
-		gracefulBoots.addAlternates(ItemID.BOOTS_OF_LIGHTNESS);
+		gracefulBoots.addAlternates(ItemID.IKOV_BOOTSOFLIGHTNESS);
 
 		gracefulOutfit = new ItemRequirements(
 			"Graceful outfit (equipped)",
@@ -440,20 +440,20 @@ public class TreeRun extends ComplexStateQuestHelper
 
 
 		farmingHat = new ItemRequirement(
-			"Farmer's strawhat", ItemID.FARMERS_STRAWHAT, 1 ,true).isNotConsumed();
-		farmingHat.addAlternates(ItemID.FARMERS_STRAWHAT_13647, ItemID.FARMERS_STRAWHAT_21253, ItemID.FARMERS_STRAWHAT_21254);
+			"Farmer's strawhat", net.runelite.api.gameval.ItemID.TITHE_REWARD_HAT_MALE, 1 ,true).isNotConsumed();
+		farmingHat.addAlternates(ItemID.TITHE_REWARD_HAT_FEMALE);
 
 		farmingTop = new ItemRequirement(
-			"Farmer's top", ItemID.FARMERS_JACKET, 1, true).isNotConsumed();
-		farmingTop.addAlternates(ItemID.FARMERS_SHIRT);
+			"Farmer's top", ItemID.TITHE_REWARD_TORSO_MALE, 1, true).isNotConsumed();
+		farmingTop.addAlternates(ItemID.TITHE_REWARD_TORSO_FEMALE);
 
 		farmingLegs = new ItemRequirement(
-			"Farmer's boro trousers", ItemID.FARMERS_BORO_TROUSERS, 1, true).isNotConsumed();
-		farmingLegs.addAlternates(ItemID.FARMERS_BORO_TROUSERS_13641);
+			"Farmer's boro trousers", ItemID.TITHE_REWARD_LEGS_MALE, 1, true).isNotConsumed();
+		farmingLegs.addAlternates(net.runelite.api.gameval.ItemID.TITHE_REWARD_LEGS_FEMALE);
 
 		farmingBoots = new ItemRequirement(
-			"Graceful cape", ItemID.FARMERS_BOOTS, 1, true).isNotConsumed();
-		farmingBoots.addAlternates(ItemID.FARMERS_BOOTS_13645);
+			"Graceful cape", ItemID.TITHE_REWARD_FEET_MALE, 1, true).isNotConsumed();
+		farmingBoots.addAlternates(net.runelite.api.gameval.ItemID.TITHE_REWARD_FEET_FEMALE);
 
 		farmersOutfit = new ItemRequirements(
 			"Farmer's outfit (equipped)",
@@ -467,121 +467,121 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		// Tree Patch Clear Steps
 
-		lumbridgeTreePatchClear = new NpcStep(this, NpcID.FAYETH, new WorldPoint(3193, 3231, 0),
+		lumbridgeTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_4, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to clear the patch.");
 		lumbridgeTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		faladorTreePatchClear = new NpcStep(this, NpcID.HESKEL, new WorldPoint(3004, 3373, 0),
+		faladorTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_2, new WorldPoint(3004, 3373, 0),
 			"Speak to Heskel to clear the patch.");
 		faladorTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		taverleyTreePatchClear = new NpcStep(this, NpcID.ALAIN, new WorldPoint(2936, 3438, 0),
+		taverleyTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_1, new WorldPoint(2936, 3438, 0),
 			"Speak to Alain to clear the patch.");
 		taverleyTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		varrockTreePatchClear = new NpcStep(this, NpcID.TREZNOR_11957, new WorldPoint(3229, 3459, 0),
+		varrockTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_3_02, new WorldPoint(3229, 3459, 0),
 			"Speak to Treznor to clear the patch.");
 		varrockTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		gnomeStrongholdTreePatchClear = new NpcStep(this, NpcID.PRISSY_SCILLA, new WorldPoint(2436, 3415, 0),
+		gnomeStrongholdTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_GNOME, new WorldPoint(2436, 3415, 0),
 			"Speak to Prissy Scilla to clear the patch.");
 		gnomeStrongholdTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		farmingGuildTreePatchClear = new NpcStep(this, NpcID.ROSIE, new WorldPoint(1232, 3736, 0),
+		farmingGuildTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T2, new WorldPoint(1232, 3736, 0),
 			"Speak to Rosie to clear the patch.");
 		farmingGuildTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		lumbridgeTreeProtect = new NpcStep(this, NpcID.FAYETH, new WorldPoint(3193, 3231, 0),
+		lumbridgeTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_4, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to protect the patch.");
 		lumbridgeTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		faladorTreeProtect = new NpcStep(this, NpcID.HESKEL, new WorldPoint(3004, 3373, 0),
+		faladorTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_2, new WorldPoint(3004, 3373, 0),
 			"Speak to Heskel to protect the patch.");
 		faladorTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		taverleyTreeProtect = new NpcStep(this, NpcID.ALAIN, new WorldPoint(2936, 3438, 0),
+		taverleyTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_1, new WorldPoint(2936, 3438, 0),
 			"Speak to Alain to protect the patch.");
 		taverleyTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		varrockTreeProtect = new NpcStep(this, NpcID.TREZNOR_11957, new WorldPoint(3229, 3459, 0),
+		varrockTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_3_02, new WorldPoint(3229, 3459, 0),
 			"Speak to Treznor to protect the patch.");
 		varrockTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		strongholdTreeProtect = new NpcStep(this, NpcID.PRISSY_SCILLA, new WorldPoint(2436, 3415, 0),
+		strongholdTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_GNOME, new WorldPoint(2436, 3415, 0),
 			"Speak to Prissy Scilla to protect the patch.");
 		strongholdTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		farmingGuildTreePayForProtection = new NpcStep(this, NpcID.ROSIE, new WorldPoint(1232, 3736, 0),
+		farmingGuildTreePayForProtection = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T2, new WorldPoint(1232, 3736, 0),
 			"Speak to Rosie to protect the patch.");
 		farmingGuildTreePayForProtection.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		// Tree Patch Steps
-		lumbridgeTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3193, 3231, 0),
+		lumbridgeTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
 			"Check the health of the tree planted in Lumbridge.");
 		lumbridgeTreePatchCheckHealth.addTeleport(lumbridgeTeleport);
 		lumbridgeTreePatchCheckHealth.addSpellHighlight(NormalSpells.LUMBRIDGE_TELEPORT);
 		lumbridgeTreePatchCheckHealth.addSpellHighlight(NormalSpells.LUMBRIDGE_HOME_TELEPORT);
-		faladorTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
+		faladorTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_2, new WorldPoint(3004, 3373, 0),
 			"Check the health of the tree planted in Falador.");
 		faladorTreePatchCheckHealth.addTeleport(faladorTeleport);
 		faladorTreePatchCheckHealth.addSpellHighlight(NormalSpells.FALADOR_TELEPORT);
-		taverleyTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2936, 3438, 0),
+		taverleyTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_1, new WorldPoint(2936, 3438, 0),
 			"Check the health of the tree planted in Taverley.");
-		varrockTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3229, 3459, 0),
+		varrockTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_3, new WorldPoint(3229, 3459, 0),
 			"Check the health of the tree planted in Varrock.");
 		varrockTreePatchCheckHealth.addTeleport(varrockTeleport);
 		varrockTreePatchCheckHealth.addSpellHighlight(NormalSpells.VARROCK_TELEPORT);
-		gnomeStrongholdTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2436, 3415, 0),
+		gnomeStrongholdTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_5, new WorldPoint(2436, 3415, 0),
 			"Check the health of the tree planted in the Tree Gnome Stronghold.");
-		farmingGuildTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1232, 3736, 0),
+		farmingGuildTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Check the health of the tree planted in the Farming Guild.");
 		farmingGuildTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchCheckHealth.addTeleport(farmingGuildTeleport);
 
 		// Tree Plant Steps
-		lumbridgeTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3193, 3231, 0),
+		lumbridgeTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
 			"Plant your sapling in the Lumbridge patch.", treeSapling);
 		lumbridgeTreePatchPlant.addIcon(treeSapling.getId());
 		lumbridgeTreePatchCheckHealth.addSubSteps(lumbridgeTreePatchPlant);
 
-		faladorTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
+		faladorTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_2, new WorldPoint(3004, 3373, 0),
 			"Plant your sapling in the Falador patch.", treeSapling);
 		faladorTreePatchPlant.addIcon(treeSapling.getId());
 		faladorTreePatchCheckHealth.addSubSteps(faladorTreePatchPlant);
 
-		taverleyTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2936, 3438, 0),
+		taverleyTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_1, new WorldPoint(2936, 3438, 0),
 			"Plant your sapling in the Taverley patch.", treeSapling);
 		taverleyTreePatchPlant.addIcon(treeSapling.getId());
 		taverleyTreePatchCheckHealth.addSubSteps(taverleyTreePatchPlant);
 
-		varrockTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3229, 3459, 0),
+		varrockTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_3, new WorldPoint(3229, 3459, 0),
 			"Plant your sapling in the Varrock patch.", treeSapling);
 		varrockTreePatchPlant.addIcon(treeSapling.getId());
 		varrockTreePatchCheckHealth.addSubSteps(varrockTreePatchPlant);
 
-		gnomeStrongholdTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2436, 3415, 0),
+		gnomeStrongholdTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_5, new WorldPoint(2436, 3415, 0),
 			"Plant your sapling in the Gnome Stronghold patch.", treeSapling);
 		gnomeStrongholdTreePatchPlant.addIcon(treeSapling.getId());
 		gnomeStrongholdTreePatchCheckHealth.addSubSteps(gnomeStrongholdTreePatchPlant);
 
-		farmingGuildTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1232, 3736, 0),
+		farmingGuildTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Plant your sapling in the Farming Guild tree patch.", treeSapling);
 		farmingGuildTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchPlant.addIcon(treeSapling.getId());
 		farmingGuildTreePatchCheckHealth.addSubSteps(farmingGuildTreePatchPlant);
 
 		// Dig
-		lumbridgeTreePatchDig = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3193, 3231, 0),
+		lumbridgeTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
 			"Dig up the tree stump in Lumbridge.");
-		faladorTreePatchDig = new ObjectStep(this, NullObjectID.NULL_8389, new WorldPoint(3004, 3373, 0),
+		faladorTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_2, new WorldPoint(3004, 3373, 0),
 			"Dig up the tree stump in Falador.");
-		taverleyTreePatchDig = new ObjectStep(this, NullObjectID.NULL_8388, new WorldPoint(2936, 3438, 0),
+		taverleyTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_1, new WorldPoint(2936, 3438, 0),
 			"Dig up the tree stump in Taverley.");
-		varrockTreePatchDig = new ObjectStep(this, NullObjectID.NULL_8390, new WorldPoint(3229, 3459, 0),
+		varrockTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_3, new WorldPoint(3229, 3459, 0),
 			"Dig up the tree stump in Varrock.");
-		gnomeStrongholdTreePatchDig = new ObjectStep(this, NullObjectID.NULL_19147, new WorldPoint(2436, 3415, 0),
+		gnomeStrongholdTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_5, new WorldPoint(2436, 3415, 0),
 			"Dig up the tree stump in the Tree Gnome Stronghold.");
-		farmingGuildTreePatchDig = new ObjectStep(this, NullObjectID.NULL_33732, new WorldPoint(1232, 3736, 0),
+		farmingGuildTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Dig up the tree stump in the Farming Guild tree patch.");
 
 		faladorTreePatchClear.addSubSteps(faladorTreePatchDig, faladorTreeProtect);

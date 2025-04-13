@@ -45,9 +45,6 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -58,6 +55,8 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.widget.LunarSpells;
 import com.questhelper.steps.widget.NormalSpells;
 import java.util.Set;
+
+import com.questhelper.steps.widget.WidgetHighlight;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -66,6 +65,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
@@ -73,6 +73,8 @@ import net.runelite.client.plugins.timetracking.Tab;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.questhelper.requirements.util.LogicHelper.*;
 
 /*
 *
@@ -184,11 +186,11 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		farmingGuildStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsUnchecked()), farmingGuildFruitTreePatchCheckHealth);
 		farmingGuildStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsHarvestable()), farmingGuildFruitTreePatchClear);
-		farmingGuildStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsStump()), farmingGuildTreePatchDig);
-		farmingGuildStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsEmpty()), farmingGuildTreePatchPlant);
+		farmingGuildStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsStump()), farmingGuildFruitTreePatchDig);
+		farmingGuildStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsEmpty()), farmingGuildFruitTreePatchPlant);
 		farmingGuildStep.addStep(and(accessToFarmingGuildFruitTreePatch, nor(farmingGuildFruitStates.getIsProtected(), usingCompostorNothing)), guildFruitProtect);
 
-		steps.addStep(and(accessToFarmingGuildTreePatch, nor(farmingGuildTreeStates.getIsGrowing(),
+		steps.addStep(and(accessToFarmingGuildTreePatch, nand(farmingGuildTreeStates.getIsGrowing(),
 			farmingGuildFruitStates.getIsGrowing())), farmingGuildStep);
 
 		lumbridgeStep = new ConditionalStep(this, lumbridgeTreePatchCheckHealth);
@@ -240,7 +242,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		strongholdStep.addStep(gnomeStrongholdTreeStates.getIsStump(), gnomeStrongholdTreePatchDig);
 		strongholdStep.addStep(nor(usingCompostorNothing, gnomeStrongholdTreeStates.getIsProtected()), strongholdTreeProtect);
 
-		steps.addStep(nor(gnomeStrongholdTreeStates.getIsGrowing(),
+		steps.addStep(nand(gnomeStrongholdTreeStates.getIsGrowing(),
 			gnomeStrongholdFruitStates.getIsGrowing()), strongholdStep);
 
 		villageStep = new ConditionalStep(this, gnomeVillageFruitTreePatchCheckHealth);
@@ -299,7 +301,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		fossilIslandStep.addStep(nor(usingCompostorNothing, westHardwoodStates.getIsProtected()), westHardwoodProtect);
 
 		steps.addStep(and(accessToFossilIsland,
-			nor(eastHardwoodStates.getIsGrowing(), westHardwoodStates.getIsGrowing(), middleHardwoodStates.getIsGrowing())),
+			nand(eastHardwoodStates.getIsGrowing(), westHardwoodStates.getIsGrowing(), middleHardwoodStates.getIsGrowing())),
 			fossilIslandStep);
 
 		savannahStep = new ConditionalStep(this, savannahCheckHealth);
@@ -308,8 +310,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		savannahStep.addStep(savannahStates.getIsHarvestable(), savannahClear);
 		savannahStep.addStep(savannahStates.getIsStump(), savannahDig);
 		savannahStep.addStep(nor(usingCompostorNothing, savannahStates.getIsProtected()), savannahProtect);
-
-		System.out.println(accessToSavannah.check(client));
+		
 		steps.addStep(and(accessToSavannah, nor(savannahStates.getIsGrowing())), savannahStep);
 
 		return steps;
@@ -468,51 +469,51 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		lumbridgeTreePatchClear = new NpcStep(this, NpcID.FAYETH, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to clear the patch.");
-		lumbridgeTreePatchClear.addDialogStep("Yes.");
+		lumbridgeTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		faladorTreePatchClear = new NpcStep(this, NpcID.HESKEL, new WorldPoint(3004, 3373, 0),
 			"Speak to Heskel to clear the patch.");
-		faladorTreePatchClear.addDialogStep("Yes.");
+		faladorTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		taverleyTreePatchClear = new NpcStep(this, NpcID.ALAIN, new WorldPoint(2936, 3438, 0),
 			"Speak to Alain to clear the patch.");
-		taverleyTreePatchClear.addDialogStep("Yes.");
+		taverleyTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		varrockTreePatchClear = new NpcStep(this, NpcID.TREZNOR_11957, new WorldPoint(3229, 3459, 0),
 			"Speak to Treznor to clear the patch.");
-		varrockTreePatchClear.addDialogStep("Yes.");
+		varrockTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		gnomeStrongholdTreePatchClear = new NpcStep(this, NpcID.PRISSY_SCILLA, new WorldPoint(2436, 3415, 0),
 			"Speak to Prissy Scilla to clear the patch.");
-		gnomeStrongholdTreePatchClear.addDialogStep("Yes.");
+		gnomeStrongholdTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		farmingGuildTreePatchClear = new NpcStep(this, NpcID.ROSIE, new WorldPoint(1232, 3736, 0),
 			"Speak to Rosie to clear the patch.");
-		farmingGuildTreePatchClear.addDialogStep("Yes.");
+		farmingGuildTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		lumbridgeTreeProtect = new NpcStep(this, NpcID.FAYETH, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to protect the patch.");
-		lumbridgeTreeProtect.addDialogStep("Yes.");
+		lumbridgeTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		faladorTreeProtect = new NpcStep(this, NpcID.HESKEL, new WorldPoint(3004, 3373, 0),
 			"Speak to Heskel to protect the patch.");
-		faladorTreeProtect.addDialogStep("Yes.");
+		faladorTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		taverleyTreeProtect = new NpcStep(this, NpcID.ALAIN, new WorldPoint(2936, 3438, 0),
 			"Speak to Alain to protect the patch.");
-		taverleyTreeProtect.addDialogStep("Yes.");
+		taverleyTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		varrockTreeProtect = new NpcStep(this, NpcID.TREZNOR_11957, new WorldPoint(3229, 3459, 0),
 			"Speak to Treznor to protect the patch.");
-		varrockTreeProtect.addDialogStep("Yes.");
+		varrockTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		strongholdTreeProtect = new NpcStep(this, NpcID.PRISSY_SCILLA, new WorldPoint(2436, 3415, 0),
 			"Speak to Prissy Scilla to protect the patch.");
-		strongholdTreeProtect.addDialogStep("Yes.");
+		strongholdTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		farmingGuildTreePayForProtection = new NpcStep(this, NpcID.ROSIE, new WorldPoint(1232, 3736, 0),
 			"Speak to Rosie to protect the patch.");
-		farmingGuildTreePayForProtection.addDialogStep("Yes.");
+		farmingGuildTreePayForProtection.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		// Tree Patch Steps
 		lumbridgeTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_8391, new WorldPoint(3193, 3231, 0),
@@ -600,6 +601,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		brimhavenFruitTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
 			"Check the health of the fruit tree planted in Brimhaven.");
 		brimhavenFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Brimhaven", true);
+		brimhavenFruitTreePatchCheckHealth.addWidgetHighlight(InterfaceID.SailingMenu.BRIMHAVEN_MARKER);
 		catherbyFruitTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2860, 3433, 0),
 			"Check the health of the fruit tree planted in Catherby.");
 		catherbyFruitTreePatchCheckHealth.addTeleport(catherbyTeleport);
@@ -654,41 +656,43 @@ public class TreeRun extends ComplexStateQuestHelper
 		// Clear
 		gnomeStrongholdFruitTreePatchClear = new NpcStep(this, NpcID.BOLONGO, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		gnomeStrongholdFruitTreePatchClear.addDialogStep("Yes.");
+		gnomeStrongholdFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		gnomeVillageFruitTreePatchClear = new NpcStep(this, NpcID.GILETH, new WorldPoint(2490, 3180, 0),
 			"Pay Gileth 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		gnomeVillageFruitTreePatchClear.addDialogStep("Yes.");
+		gnomeVillageFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		brimhavenFruitTreePatchClear = new NpcStep(this, NpcID.GARTH, new WorldPoint(2765, 3213, 0),
 			"Pay Garth 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		brimhavenFruitTreePatchClear.addDialogStep("Yes.");
+		brimhavenFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		catherbyFruitTreePatchClear = new NpcStep(this, NpcID.ELLENA, new WorldPoint(2860, 3433, 0),
 			"Pay Ellena 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		catherbyFruitTreePatchClear.addDialogStep("Yes.");
+		catherbyFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		lletyaFruitTreePatchClear = new NpcStep(this, NpcID.LILIWEN, new WorldPoint(2347, 3162, 0),
 			"Pay Liliwen 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		lletyaFruitTreePatchClear.addDialogStep("Yes.");
+		lletyaFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		farmingGuildFruitTreePatchClear = new NpcStep(this, NpcID.NIKKIE, new WorldPoint(1243, 3760, 0),
 			"Pay Nikkie 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		farmingGuildFruitTreePatchClear.addDialogStep("Yes.");
+		farmingGuildFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		strongholdFruitProtect = new NpcStep(this, NpcID.BOLONGO, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo to protect the patch.");
-		strongholdFruitProtect.addDialogStep("Yes.");
+		strongholdFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		villageFruitProtect = new NpcStep(this, NpcID.GILETH, new WorldPoint(2490, 3180, 0),
 			"Pay Gileth to protect the patch.");
-		villageFruitProtect.addDialogStep("Yes.");
+		villageFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		brimhavenFruitProtect = new NpcStep(this, NpcID.GARTH, new WorldPoint(2765, 3213, 0),
 			"Pay Garth to protect the patch.");
-		brimhavenFruitProtect.addDialogStep("Yes.");
+		brimhavenFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		catherbyFruitProtect = new NpcStep(this, NpcID.ELLENA, new WorldPoint(2860, 3433, 0),
 			"Pay Ellena to protect the patch.");
-		catherbyFruitProtect.addDialogStep("Yes.");
+		catherbyFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		lletyaFruitProtect = new NpcStep(this, NpcID.LILIWEN, new WorldPoint(2347, 3162, 0),
 			"Pay Liliwen to protect the patch.");
-		lletyaFruitProtect.addDialogStep("Yes.");
+		lletyaFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
+				"chop my tree down please.", "Yes.");
 		guildFruitProtect = new NpcStep(this, NpcID.NIKKIE, new WorldPoint(1243, 3760, 0),
 			"Pay Nikkie to protect the patch.");
-		guildFruitProtect.addDialogStep("Yes.");
+		guildFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
+				"chop my tree down please.", "Yes.");
 
 			// Dig Fruit Tree Steps
 		gnomeStrongholdFruitTreePatchDig = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2476, 3446, 0),
@@ -742,13 +746,21 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		westHardwoodTreePatchClear = new NpcStep(this, NpcID.SQUIRREL_7756, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to remove the west tree.");
+		westHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
+				"Coins - chop my tree down please.", "Yes.");
 		middleHardwoodTreePatchClear = new NpcStep(this, NpcID.SQUIRREL_7755, new WorldPoint(3702, 3837, 0),
 			"Pay the black squirrel to remove the middle tree.");
+		middleHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
+				"Coins - chop my tree down please.", "Yes.");
 		eastHardwoodTreePatchClear = new NpcStep(this, NpcID.SQUIRREL_7754, new WorldPoint(3702, 3837, 0),
 			"Pay the grey squirrel to remove the east tree.");
+		eastHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
+				"Coins - chop my tree down please.", "Yes.");
 
 		savannahClear = new NpcStep(this, NpcID.MARCELLUS_12936, new WorldPoint(1687, 2972, 0),
 			"Pay Marcellus to clear the tree.");
+		savannahClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
+			"Coins - chop my tree down please.", "Yes.");
 
 		westHardwoodTreePatchDig = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
 			"Dig up the western hardwood tree's stump on Fossil Island.");

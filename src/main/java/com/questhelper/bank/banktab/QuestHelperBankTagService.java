@@ -172,7 +172,7 @@ public class QuestHelperBankTagService
 					.filter(Objects::nonNull)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-				   || !i.check(plugin.getClient(), false, questBank.getBankItems()))
+				   || !i.check(plugin.getClient()))
 				   && i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 

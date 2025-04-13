@@ -53,8 +53,6 @@ public class PuzzleStep extends DetailedOwnerStep
 	@Inject
 	protected Client client;
 
-	protected QuestStep currentStep;
-
 	HashMap<Integer, ItemRequirement> shapeValues = new HashMap<>();
 
 	HashMap<Integer, List<List<ItemRequirement>>> shapeValues3 = new HashMap<>();
@@ -85,7 +83,7 @@ public class PuzzleStep extends DetailedOwnerStep
 
 	public PuzzleStep(QuestHelper questHelper)
 	{
-		super(questHelper, "Insert and swap discs to make the sum indicated on the machine");
+		super(questHelper, "Insert and swap discs to make the sum indicated on the machine.");
 		setupShapes();
 	}
 
@@ -127,10 +125,10 @@ public class PuzzleStep extends DetailedOwnerStep
 		getPieces = new ObjectStep(getQuestHelper(), ObjectID.EYEGLO_CHANGE_MACHINE_MULTILOC, new WorldPoint(2391, 9826, 0), "Swap in" +
 				" your pieces for the indicated pieces. You can also drop the discs then talk to Brimstail for more " +
 				"tokens.");
-		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", 445, 36);
+		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", InterfaceID.EyegloGnomeMachineLocked.ARROW_MIDDLE);
 		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", 189, 39);
-		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", 449, 0);
-		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", 445, 31);
+		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", InterfaceID.EyegloGnomeMachineLocked.UNLOCK_COMP_INSERT);
+		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", InterfaceID.EyegloGnomeMachineLocked.UNLOCK_COMP_INSERT);
 		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 24);
 		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 25);
 		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 26);
@@ -139,7 +137,7 @@ public class PuzzleStep extends DetailedOwnerStep
 	public void solvePuzzle1()
 	{
 		int heldDisc = client.getVarpValue(VarPlayerID.EYEGLO_COIN_SELECTED);
-		Widget insertWidget = client.getWidget(InterfaceID.LeagueTrophies.INFINITY);
+		Widget insertWidget = client.getWidget(InterfaceID.EyegloSide.INV_LAYER);
 
 		if (client.getVarbitValue(VarbitID.EYEGLO_UNLOCK_VAL) == answer1)
 		{
@@ -188,8 +186,7 @@ public class PuzzleStep extends DetailedOwnerStep
 			if (currentInv != null)
 			{
 				List<WidgetDetails> ids = new ArrayList<>();
-
-				ids = getClickableItems(ids, new ArrayList<>(items1));
+				ids = getClickableItems(ids, List.of(items1));
 
 				insertDisc.setWidgetDetails(ids);
 				insertDisc.setRequirements(Collections.singletonList(shapes.get(items1)));
@@ -483,11 +480,12 @@ public class PuzzleStep extends DetailedOwnerStep
 
 	public List<WidgetDetails> getClickableItems(List<WidgetDetails> ids, List<Integer> items)
 	{
+		System.out.println(items.size());
 		for (int j = 0; j < currentInv.length; j++)
 		{
 			if (items.contains(currentInv[j].getId()))
 			{
-				ids.add(new WidgetDetails(449, 0, j));
+				ids.add(new WidgetDetails(InterfaceID.EYEGLO_SIDE, 0, j));
 			}
 		}
 		return ids;
@@ -508,11 +506,10 @@ public class PuzzleStep extends DetailedOwnerStep
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() == 440)
+		if (event.getContainerId() == InventoryID.EYEGLO_INV_SIDE)
 		{
 			ItemContainer container = event.getItemContainer();
 			currentInv = container.getItems();
-
 		}
 	}
 
@@ -617,43 +614,6 @@ public class PuzzleStep extends DetailedOwnerStep
 					shapeValues4.get(i + j + k).add(Arrays.asList(shape1, shape2, shape3));
 				}
 			}
-		}
-	}
-
-	protected void startUpStep(QuestStep step)
-	{
-		if (step.equals(currentStep)) return;
-
-		if (currentStep != null)
-		{
-			shutDownStep();
-		}
-
-		eventBus.register(step);
-		step.startUp();
-		currentStep = step;
-	}
-
-	protected void shutDownStep()
-	{
-		if (currentStep != null)
-		{
-			eventBus.unregister(currentStep);
-			currentStep.shutDown();
-			currentStep = null;
-		}
-	}
-
-	@Override
-	public QuestStep getActiveStep()
-	{
-		if (currentStep != null)
-		{
-			return currentStep.getActiveStep();
-		}
-		else
-		{
-			return this;
 		}
 	}
 

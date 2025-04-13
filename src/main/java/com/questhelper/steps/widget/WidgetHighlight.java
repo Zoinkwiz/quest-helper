@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 
 import java.awt.*;
@@ -35,9 +36,7 @@ import java.awt.*;
 public class WidgetHighlight extends AbstractWidgetHighlight
 {
 	@Getter
-	protected final int groupId;
-
-	protected final int childId;
+	protected final int interfaceID;
 
 	protected final int childChildId;
 
@@ -55,34 +54,37 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 
 	protected final boolean checkChildren;
 
+	public WidgetHighlight(int interfaceID)
+	{
+		this.interfaceID = interfaceID;
+		this.childChildId = -1;
+		this.checkChildren = false;
+	}
+
 	public WidgetHighlight(int groupId, int childId)
 	{
-		this.groupId = groupId;
-		this.childId = childId;
+		this.interfaceID = groupId << 16 | childId;
 		this.childChildId = -1;
 		this.checkChildren = false;
 	}
 
 	public WidgetHighlight(int groupId, int childId, int childChildId)
 	{
-		this.groupId = groupId;
-		this.childId = childId;
+		this.interfaceID = groupId << 16 | childId;
 		this.childChildId = childChildId;
 		this.checkChildren = false;
 	}
 
 	public WidgetHighlight(int groupId, int childId, boolean checkChildren)
 	{
-		this.groupId = groupId;
-		this.childId = childId;
+		this.interfaceID = groupId << 16 | childId;
 		this.childChildId = -1;
 		this.checkChildren = checkChildren;
 	}
 
 	public WidgetHighlight(int groupId, int childId, int itemIdRequirement, boolean checkChildren)
 	{
-		this.groupId = groupId;
-		this.childId = childId;
+		this.interfaceID = groupId << 16 | childId;
 		this.childChildId = -1;
 		this.itemIdRequirement = itemIdRequirement;
 		this.checkChildren = checkChildren;
@@ -90,8 +92,7 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 
 	public WidgetHighlight(int groupId, int childId, String requiredText, boolean checkChildren)
 	{
-		this.groupId = groupId;
-		this.childId = childId;
+		this.interfaceID = groupId << 16 | childId;
 		this.childChildId = -1;
 		this.requiredText = requiredText;
 		this.checkChildren = checkChildren;
@@ -100,7 +101,7 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 	@Override
 	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{
-		Widget widgetToHighlight = client.getWidget(groupId, childId);
+		Widget widgetToHighlight = client.getWidget(interfaceID);
 		if (widgetToHighlight == null) return;
 		if (widgetToHighlight.isHidden()) return;
 

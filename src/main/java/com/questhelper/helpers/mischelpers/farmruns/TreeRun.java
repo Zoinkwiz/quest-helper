@@ -56,16 +56,11 @@ import com.questhelper.steps.widget.LunarSpells;
 import com.questhelper.steps.widget.NormalSpells;
 import java.util.Set;
 
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
@@ -592,120 +587,120 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildTreePatchClear.addSubSteps(farmingGuildTreePatchDig, farmingGuildTreePatchDig);
 
 		// Fruit Tree Steps
-		gnomeStrongholdFruitTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2476, 3446, 0),
+		gnomeStrongholdFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
 			"Check the health of the fruit tree planted in the Tree Gnome Stronghold.");
 		gnomeStrongholdFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Gnome Stronghold", true);
-		gnomeVillageFruitTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2490, 3180, 0),
+		gnomeVillageFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Check the health of the fruit tree planted outside the Tree Gnome Village. Follow Elkoy to get out quickly.");
 		gnomeVillageFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Tree Gnome Village", true);
-		brimhavenFruitTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
+		brimhavenFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Check the health of the fruit tree planted in Brimhaven.");
 		brimhavenFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Brimhaven", true);
 		brimhavenFruitTreePatchCheckHealth.addWidgetHighlight(InterfaceID.SailingMenu.BRIMHAVEN_MARKER);
-		catherbyFruitTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2860, 3433, 0),
+		catherbyFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_4, new WorldPoint(2860, 3433, 0),
 			"Check the health of the fruit tree planted in Catherby.");
 		catherbyFruitTreePatchCheckHealth.addTeleport(catherbyTeleport);
 		catherbyFruitTreePatchCheckHealth.addSpellHighlight(NormalSpells.CAMELOT_TELEPORT);
 		catherbyFruitTreePatchCheckHealth.addSpellHighlight(LunarSpells.CATHERBY_TELEPORT);
 
-		lletyaFruitTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2347, 3162, 0),
+		lletyaFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2347, 3162, 0),
 			"Check the health of the fruit tree planted in Lletya.");
 		lletyaFruitTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
 		lletyaFruitTreePatchCheckHealth.addTeleport(crystalTeleport);
 
-		farmingGuildFruitTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1242, 3758, 0),
+		farmingGuildFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_6, new WorldPoint(1242, 3758, 0),
 			"Check the health of the fruit tree planted in the Farming Guild.");
 		farmingGuildFruitTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
 		farmingGuildFruitTreePatchCheckHealth.addTeleport(farmingGuildTeleport);
 		farmingGuildFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Farming Guild", true);
 
 		// Fruit Tree Plant Steps
-		gnomeStrongholdFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2476, 3446, 0),
+		gnomeStrongholdFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
 			"Plant your sapling in the Tree Gnome Stronghold patch.", fruitTreeSapling);
 		gnomeStrongholdFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		gnomeStrongholdTreePatchCheckHealth.addSubSteps(gnomeStrongholdTreePatchPlant);
 
-		gnomeVillageFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2490, 3180, 0),
+		gnomeVillageFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Plant your sapling in the Tree Gnome Village patch. Follow Elkoy to get out quickly.", fruitTreeSapling);
 		gnomeVillageFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		gnomeVillageFruitTreePatchCheckHealth.addSubSteps(gnomeVillageFruitTreePatchPlant);
 
-		brimhavenFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
+		brimhavenFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Plant your sapling in the Brimhaven patch.", fruitTreeSapling);
 		brimhavenFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		brimhavenFruitTreePatchCheckHealth.addSubSteps(brimhavenFruitTreePatchPlant);
 
 		// Plant
-		catherbyFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2860, 3433, 0),
+		catherbyFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_4, new WorldPoint(2860, 3433, 0),
 			"Plant your sapling in the Catherby patch.", fruitTreeSapling);
 		catherbyFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		catherbyFruitTreePatchCheckHealth.addSubSteps(catherbyFruitTreePatchPlant);
 
-		lletyaFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2347, 3162, 0),
+		lletyaFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2347, 3162, 0),
 			"Plant your sapling in the Lletya patch.", fruitTreeSapling);
 		lletyaFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
 		lletyaFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		lletyaFruitTreePatchCheckHealth.addSubSteps(lletyaFruitTreePatchPlant);
 
-		farmingGuildFruitTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1242, 3758, 0),
+		farmingGuildFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_6, new WorldPoint(1242, 3758, 0),
 			"Plant your sapling in the Farming Guild patch.", fruitTreeSapling);
 		farmingGuildFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
 		farmingGuildFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 		farmingGuildFruitTreePatchCheckHealth.addSubSteps(farmingGuildFruitTreePatchPlant);
 
 		// Clear
-		gnomeStrongholdFruitTreePatchClear = new NpcStep(this, NpcID.BOLONGO, new WorldPoint(2476, 3446, 0),
+		gnomeStrongholdFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_1, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
 		gnomeStrongholdFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		gnomeVillageFruitTreePatchClear = new NpcStep(this, NpcID.GILETH, new WorldPoint(2490, 3180, 0),
+		gnomeVillageFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_2, new WorldPoint(2490, 3180, 0),
 			"Pay Gileth 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
 		gnomeVillageFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		brimhavenFruitTreePatchClear = new NpcStep(this, NpcID.GARTH, new WorldPoint(2765, 3213, 0),
 			"Pay Garth 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
 		brimhavenFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		catherbyFruitTreePatchClear = new NpcStep(this, NpcID.ELLENA, new WorldPoint(2860, 3433, 0),
+		catherbyFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_4, new WorldPoint(2860, 3433, 0),
 			"Pay Ellena 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
 		catherbyFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		lletyaFruitTreePatchClear = new NpcStep(this, NpcID.LILIWEN, new WorldPoint(2347, 3162, 0),
+		lletyaFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_TREE_5, new WorldPoint(2347, 3162, 0),
 			"Pay Liliwen 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
 		lletyaFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		farmingGuildFruitTreePatchClear = new NpcStep(this, NpcID.NIKKIE, new WorldPoint(1243, 3760, 0),
+		farmingGuildFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T3, new WorldPoint(1243, 3760, 0),
 			"Pay Nikkie 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
 		farmingGuildFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		strongholdFruitProtect = new NpcStep(this, NpcID.BOLONGO, new WorldPoint(2476, 3446, 0),
+		strongholdFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_1, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo to protect the patch.");
 		strongholdFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		villageFruitProtect = new NpcStep(this, NpcID.GILETH, new WorldPoint(2490, 3180, 0),
+		villageFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_2, new WorldPoint(2490, 3180, 0),
 			"Pay Gileth to protect the patch.");
 		villageFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		brimhavenFruitProtect = new NpcStep(this, NpcID.GARTH, new WorldPoint(2765, 3213, 0),
 			"Pay Garth to protect the patch.");
 		brimhavenFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		catherbyFruitProtect = new NpcStep(this, NpcID.ELLENA, new WorldPoint(2860, 3433, 0),
+		catherbyFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_4, new WorldPoint(2860, 3433, 0),
 			"Pay Ellena to protect the patch.");
 		catherbyFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		lletyaFruitProtect = new NpcStep(this, NpcID.LILIWEN, new WorldPoint(2347, 3162, 0),
+		lletyaFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_TREE_5, new WorldPoint(2347, 3162, 0),
 			"Pay Liliwen to protect the patch.");
 		lletyaFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
 				"chop my tree down please.", "Yes.");
-		guildFruitProtect = new NpcStep(this, NpcID.NIKKIE, new WorldPoint(1243, 3760, 0),
+		guildFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T3, new WorldPoint(1243, 3760, 0),
 			"Pay Nikkie to protect the patch.");
 		guildFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
 				"chop my tree down please.", "Yes.");
 
 			// Dig Fruit Tree Steps
-		gnomeStrongholdFruitTreePatchDig = new ObjectStep(this, NullObjectID.NULL_7962, new WorldPoint(2476, 3446, 0),
+		gnomeStrongholdFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
 			"Dig up the fruit tree's stump in the Tree Gnome Stronghold.");
-		gnomeVillageFruitTreePatchDig = new ObjectStep(this, NullObjectID.NULL_7963, new WorldPoint(2490, 3180, 0),
+		gnomeVillageFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Dig up the fruit tree's stump outside the Tree Gnome Village.");
-		brimhavenFruitTreePatchDig = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
+		brimhavenFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Dig up the fruit tree's stump in Brimhaven.");
-		catherbyFruitTreePatchDig = new ObjectStep(this, NullObjectID.NULL_7965, new WorldPoint(2860, 3433, 0),
+		catherbyFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_4, new WorldPoint(2860, 3433, 0),
 			"Check the health of the fruit tree planted in Catherby");
-		lletyaFruitTreePatchDig = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2347, 3162, 0),
+		lletyaFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2347, 3162, 0),
 			"Dig up the fruit tree's stump in Lletya.");
-		farmingGuildFruitTreePatchDig = new ObjectStep(this, NullObjectID.NULL_34007, new WorldPoint(1242, 3758, 0),
+		farmingGuildFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_6, new WorldPoint(1242, 3758, 0),
 			"Dig up the fruit tree's stump in the Farming Guild.");
 
 		gnomeStrongholdFruitTreePatchClear.addSubSteps(gnomeStrongholdFruitTreePatchDig, strongholdFruitProtect);
@@ -716,68 +711,68 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildFruitTreePatchClear.addSubSteps(farmingGuildFruitTreePatchDig, guildFruitProtect);
 
 		// Hardwood Tree Steps
-		westHardwoodTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
+		westHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
 			"Check the health of the western hardwood tree on Fossil Island.");
-		middleHardwoodTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3708, 3833, 0),
+		middleHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
 			"Check the health of the centre hardwood tree on Fossil Island.");
-		eastHardwoodTreePatchCheckHealth = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
+		eastHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
 			"Check the health of the eastern hardwood tree on Fossil Island.");
-		savannahCheckHealth  = new ObjectStep(this, NullObjectID.NULL_50692, new WorldPoint(1687, 2972, 0),
+		savannahCheckHealth  = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
 			"Check the health of the hardwood tree in the Avium Savannah.");
 
 		// Hardwood Tree Plant Steps
-		westHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
+		westHardwoodTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
 			"Plant your sapling on the western hardwood tree patch on Fossil Island.", hardwoodSapling);
 		westHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		westHardwoodTreePatchCheckHealth.addSubSteps(westHardwoodTreePatchPlant);
 
-		middleHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3708, 3833, 0),
+		middleHardwoodTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
 			"Plant your sapling on the centre hardwood tree patch on Fossil Island.", hardwoodSapling);
 		middleHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		middleHardwoodTreePatchCheckHealth.addSubSteps(middleHardwoodTreePatchPlant);
 
-		eastHardwoodTreePatchPlant = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
+		eastHardwoodTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
 			"Plant your sapling on the eastern hardwood tree patch on Fossil Island.", hardwoodSapling);
 		eastHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
 		eastHardwoodTreePatchCheckHealth.addSubSteps(eastHardwoodTreePatchPlant);
 
-		savannahPlant = new ObjectStep(this, NullObjectID.NULL_50692, new WorldPoint(1687, 2972, 0),
+		savannahPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
 			"Plant your sapling into the hardwood tree in the hardwood tree patch in the Avium Savannah.", hardwoodSapling);
 
-		westHardwoodTreePatchClear = new NpcStep(this, NpcID.SQUIRREL_7756, new WorldPoint(3702, 3837, 0),
+		westHardwoodTreePatchClear = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER3, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to remove the west tree.");
 		westHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 				"Coins - chop my tree down please.", "Yes.");
-		middleHardwoodTreePatchClear = new NpcStep(this, NpcID.SQUIRREL_7755, new WorldPoint(3702, 3837, 0),
+		middleHardwoodTreePatchClear = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER2, new WorldPoint(3702, 3837, 0),
 			"Pay the black squirrel to remove the middle tree.");
 		middleHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 				"Coins - chop my tree down please.", "Yes.");
-		eastHardwoodTreePatchClear = new NpcStep(this, NpcID.SQUIRREL_7754, new WorldPoint(3702, 3837, 0),
+		eastHardwoodTreePatchClear = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER1, new WorldPoint(3702, 3837, 0),
 			"Pay the grey squirrel to remove the east tree.");
 		eastHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 				"Coins - chop my tree down please.", "Yes.");
 
-		savannahClear = new NpcStep(this, NpcID.MARCELLUS_12936, new WorldPoint(1687, 2972, 0),
+		savannahClear = new NpcStep(this, NpcID.FROG_QUEST_MARCELLUS_FARMER, new WorldPoint(1687, 2972, 0),
 			"Pay Marcellus to clear the tree.");
 		savannahClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 			"Coins - chop my tree down please.", "Yes.");
 
-		westHardwoodTreePatchDig = new ObjectStep(this, NullObjectID.NULL_30481, new WorldPoint(3702, 3837, 0),
+		westHardwoodTreePatchDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
 			"Dig up the western hardwood tree's stump on Fossil Island.");
-		middleHardwoodTreePatchDig = new ObjectStep(this, NullObjectID.NULL_30480, new WorldPoint(3708, 3833, 0),
+		middleHardwoodTreePatchDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
 			"Dig up the centre hardwood tree's stump on Fossil Island.");
-		eastHardwoodTreePatchDig = new ObjectStep(this, NullObjectID.NULL_30482, new WorldPoint(3715, 3835, 0),
+		eastHardwoodTreePatchDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
 			"Dig up the eastern hardwood tree's stump on Fossil Island.");
-		savannahDig = new ObjectStep(this, NullObjectID.NULL_50692, new WorldPoint(1687, 2972, 0),
+		savannahDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
 			"Dig up the Savannah hardwood tree's stump.");
 
-		westHardwoodProtect = new NpcStep(this, NpcID.SQUIRREL_7756, new WorldPoint(3702, 3837, 0),
+		westHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER3, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to protect the west tree.");
-		middleHardwoodProtect = new NpcStep(this, NpcID.SQUIRREL_7755, new WorldPoint(3702, 3837, 0),
+		middleHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER2, new WorldPoint(3702, 3837, 0),
 			"Pay the black squirrel to protect the middle tree.");
-		eastHardwoodProtect = new NpcStep(this, NpcID.SQUIRREL_7754, new WorldPoint(3702, 3837, 0),
+		eastHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER1, new WorldPoint(3702, 3837, 0),
 			"Pay the grey squirrel to protect the east tree.");
-		savannahProtect = new NpcStep(this, NpcID.MARCELLUS_12936, new WorldPoint(1687, 2972, 0),
+		savannahProtect = new NpcStep(this, NpcID.FROG_QUEST_MARCELLUS_FARMER, new WorldPoint(1687, 2972, 0),
 			"Pay Marcellus to protect the hardwood tree.");
 
 		westHardwoodTreePatchClear.addSubSteps(westHardwoodTreePatchDig, westHardwoodProtect);

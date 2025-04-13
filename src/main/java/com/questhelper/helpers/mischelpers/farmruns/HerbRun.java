@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.mischelpers.herbrun;
+package com.questhelper.helpers.mischelpers.farmruns;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.collections.ItemCollections;
@@ -51,10 +51,10 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.timetracking.Tab;
-import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
@@ -185,7 +185,7 @@ public class HerbRun extends ComplexStateQuestHelper
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));
+		rake = new ItemRequirement("Rake", ItemID.RAKE).hideConditioned(new VarbitRequirement(VarbitID.FARMING_BLOCKWEEDS, 2));
 
 		seed = new ItemRequirement("Seeds of your choice", ItemID.GUAM_SEED);
 
@@ -471,7 +471,7 @@ public class HerbRun extends ComplexStateQuestHelper
 			}
 		}
 		seed.setQuantity(seedsNeeded);
-		compost.quantity(seedsNeeded);
+		compost.setQuantity(seedsNeeded);
 	}
 
 	@Override

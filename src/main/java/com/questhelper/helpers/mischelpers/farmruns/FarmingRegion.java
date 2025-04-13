@@ -22,54 +22,40 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.mischelpers.herbrun;
+package com.questhelper.helpers.mischelpers.farmruns;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import net.runelite.api.annotations.Varbit;
+import net.runelite.api.coords.WorldPoint;
 
 @Getter
-@ToString(onlyExplicitlyIncluded = true)
-class FarmingPatch
+public class FarmingRegion
 {
-	@Setter(AccessLevel.PACKAGE)
-	@ToString.Include
-	private FarmingRegion region;
-	@ToString.Include
 	private final String name;
-	@Getter(onMethod_ = {@Varbit})
-	private final int varbit;
-	@ToString.Include
-	private final PatchImplementation implementation;
-	private int farmer = -1;
-	private final int patchNumber;
+	private final int regionID;
+	private final boolean definite;
+	private final FarmingPatch[] patches;
 
-	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation)
-	{
-		this(name, varbit, implementation, -1);
-	}
-
-
-	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int farmer)
-	{
-		this(name, varbit, implementation, farmer, -1);
-	}
-
-
-	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int farmer, int patchNumber)
+	FarmingRegion(String name, int regionID, boolean definite, FarmingPatch... patches)
 	{
 		this.name = name;
-		this.varbit = varbit;
-		this.implementation = implementation;
-		this.farmer = farmer;
-		this.patchNumber = patchNumber;
+		this.regionID = regionID;
+		this.definite = definite;
+		this.patches = patches;
+		for (FarmingPatch p : patches)
+		{
+			p.setRegion(this);
+		}
 	}
 
-	String configKey()
+	public boolean isInBounds(WorldPoint loc)
 	{
-		return region.getRegionID() + "." + varbit;
+		return true;
+	}
+
+	@Override
+	public String toString()
+	{
+		return name;
 	}
 }
 

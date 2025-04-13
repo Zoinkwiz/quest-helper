@@ -22,33 +22,19 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.mischelpers.herbrun;
+package com.questhelper.helpers.mischelpers.farmruns;
+
 
 import lombok.Value;
-import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.plugins.timetracking.farming.Produce;
+
 @Value
-class PatchState
+class PatchPrediction
 {
-	Produce produce;
-	CropState cropState;
-	int stage;
-
-	int getStages()
-	{
-		return cropState == CropState.HARVESTABLE || cropState == CropState.FILLING ? produce.getHarvestStages() : produce.getStages();
-	}
-
-	int getTickRate()
-	{
-		switch (cropState)
-		{
-			case HARVESTABLE:
-				return produce.getRegrowTickrate();
-			case GROWING:
-				return produce.getTickrate();
-			default:
-				return 0;
-		}
-	}
+	private final Produce produce;
+	private final CropState cropState;
+	private final long doneEstimate;
+	private final int stage;
+	private final int stages;
 }
+

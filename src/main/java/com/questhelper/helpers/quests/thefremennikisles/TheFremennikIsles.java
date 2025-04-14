@@ -312,10 +312,10 @@ public class TheFremennikIsles extends BasicQuestHelper
 		tinOre = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 8).showConditioned(useTin);
 		tinOre.setTooltip("You can mine some in the underground mine north west of Jatizso.");
 
-		jesterHat = new ItemRequirement("Silly jester hat", ItemID.FRISD_JESTER_HAT, 1, true);
-		jesterTop = new ItemRequirement("Silly jester body", ItemID.FRISD_JESTER_TOP, 1, true);
-		jesterTights = new ItemRequirement("Silly jester tights", ItemID.FRISD_JESTER_LEGS, 1, true);
-		jesterBoots = new ItemRequirement("Silly jester boots", ItemID.FRISD_JESTER_BOOTS, 1, true);
+		jesterHat = new ItemRequirement("Silly jester hat", ItemID.FRISD_JESTER_HAT);
+		jesterTop = new ItemRequirement("Silly jester body", ItemID.FRISD_JESTER_TOP);
+		jesterTights = new ItemRequirement("Silly jester tights", ItemID.FRISD_JESTER_LEGS);
+		jesterBoots = new ItemRequirement("Silly jester boots", ItemID.FRISD_JESTER_BOOTS);
 		arcticLogs8 = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOG, 8);
 		splitLogs8 = new ItemRequirement("Split log", ItemID.ARCTIC_PINE_SPLIT, 8);
 		splitLogs4 = new ItemRequirement("Split log", ItemID.ARCTIC_PINE_SPLIT, 4);
@@ -431,7 +431,8 @@ public class TheFremennikIsles extends BasicQuestHelper
 		returnToRellekkaFromJatizso = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_IZSO, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
 		returnToRellekkaFromJatizso.addDialogStep("Can you ferry me to Rellekka?");
 
-		talkToSlug = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		talkToSlug = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.",
+				jesterHat.equipped(), jesterTop.equipped(), jesterTights.equipped(), jesterBoots.equipped());
 		talkToSlug.addSubSteps(returnToRellekkaFromJatizso, travelToNeitiznot);
 		talkToSlug.addDialogStep("Free stuff please.");
 		talkToSlug.addDialogStep("I am ready.");
@@ -443,7 +444,8 @@ public class TheFremennikIsles extends BasicQuestHelper
 		getJesterOutfit.addDialogStep("Take the jester's boots.");
 
 		performForMawnis = new DetailedQuestStep(this, "Perform the actions that Mawnis requests of you.");
-		goSpyOnMawnis = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis in Neitiznot to start spying on him.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		goSpyOnMawnis = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis in Neitiznot to start spying on him.",
+				jesterHat.equipped(), jesterTop.equipped(), jesterTights.equipped(), jesterBoots.equipped());
 		goSpyOnMawnis.addSubSteps(performForMawnis);
 
 		tellSlugReport1 = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Report back to Slug Hemligssen.");
@@ -502,12 +504,14 @@ public class TheFremennikIsles extends BasicQuestHelper
 		travelToNeitiznotToSpyAgain = new NpcStep(this, NpcID.FRIS_R_FERRY_RELLIKKA, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
 		returnToRellekkaFromJatizsoToSpyAgain = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_IZSO, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
 		returnToRellekkaFromJatizsoToSpyAgain.addDialogStep("Can you ferry me to Rellekka?");
-		talkToSlugToSpyAgain = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		talkToSlugToSpyAgain = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.",
+				jesterHat.equipped(), jesterTop.equipped(), jesterTights.equipped(), jesterBoots.equipped());
 		talkToSlugToSpyAgain.addSubSteps(travelToNeitiznotToSpyAgain, returnToRellekkaFromJatizsoToSpyAgain);
 
 		performForMawnisAgain = new DetailedQuestStep(this, "Perform the actions that Mawnis requests of you.");
 
-		goSpyOnMawnisAgain = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to start spying on him.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		goSpyOnMawnisAgain = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to start spying on him.",
+				jesterHat.equipped(), jesterTop.equipped(), jesterTights.equipped(), jesterBoots.equipped());
 		goSpyOnMawnisAgain.addSubSteps(performForMawnisAgain);
 
 		reportBackToSlugAgain = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Report to Slug Hemligssen.");

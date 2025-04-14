@@ -398,7 +398,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		for (FarmingPatch patch : farmingWorld.getTabs().get(Tab.HERB))
 		{
 			CropState state = farmingHandler.predictPatch(patch);
-			boolean isHarvestable = state == CropState.HARVESTABLE;
+			boolean isHarvestable = state == CropState.HARVESTABLE || state == CropState.UNCHECKED;
 			boolean isPlantable = state == CropState.EMPTY || state == CropState.DEAD || state == null;
 
 			if (isHarvestable || isPlantable)

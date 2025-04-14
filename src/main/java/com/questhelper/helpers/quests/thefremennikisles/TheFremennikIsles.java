@@ -414,6 +414,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToMord = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_RELLEKKA, new WorldPoint(2644, 3709, 0), "Talk to Mord Gunnars on a pier in north Rellekka.");
+		talkToMord.addDialogStep("Yes.")
 		travelToJatizso = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_RELLEKKA, new WorldPoint(2644, 3709, 0), "Travel to Jatizso with Mord.");
 		travelToJatizso.addDialogStep("Can you ferry me to Jatizso?");
 

@@ -164,6 +164,10 @@ public abstract class QuestStep implements Module
 	@Getter
 	protected String backgroundWorldTooltipText;
 
+	@Getter
+	@Setter
+	protected boolean shouldOverlayWidget;
+
 	public QuestStep(QuestHelper questHelper)
 	{
 		this.questHelper = questHelper;

@@ -33,15 +33,12 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.widget.WidgetDetails;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -56,8 +53,6 @@ public class PuzzleStep extends DetailedOwnerStep
 	@Inject
 	protected Client client;
 
-	protected QuestStep currentStep;
-
 	HashMap<Integer, ItemRequirement> shapeValues = new HashMap<>();
 
 	HashMap<Integer, List<List<ItemRequirement>>> shapeValues3 = new HashMap<>();
@@ -70,8 +65,6 @@ public class PuzzleStep extends DetailedOwnerStep
 	WidgetStep clickAnswer1, insertDisc, clickDiscHole, clickDiscHole2, clickDiscHole3, clickDiscHole4, clickAnswer2;
 
 	ObjectStep solvePuzzle, getPieces;
-
-	int answer1, answer2, answer3, answer4;
 
 	int items1;
 
@@ -88,7 +81,7 @@ public class PuzzleStep extends DetailedOwnerStep
 
 	public PuzzleStep(QuestHelper questHelper)
 	{
-		super(questHelper, "Insert and swap discs to make the sum indicated on the machine");
+		super(questHelper, "Insert and swap discs to make the sum indicated on the machine.");
 		setupShapes();
 	}
 
@@ -96,11 +89,6 @@ public class PuzzleStep extends DetailedOwnerStep
 	public void startUp()
 	{
 		super.startUp();
-		answer1 = client.getVarbitValue(2510); // 1 input
-		answer2 = client.getVarbitValue(2511); // 2 input
-		answer3 = client.getVarbitValue(2512); // 3 input
-		answer4 = client.getVarbitValue(2513); // 4 input
-
 		updateSteps();
 	}
 
@@ -113,7 +101,7 @@ public class PuzzleStep extends DetailedOwnerStep
 	@Override
 	public void updateSteps()
 	{
-		if (client.getVarbitValue(2502) == 2)
+		if (client.getVarbitValue(VarbitID.EYEGLO_MACHINE_BROKEN) == 2)
 		{
 			solvePuzzle2();
 		}
@@ -128,29 +116,36 @@ public class PuzzleStep extends DetailedOwnerStep
 	{
 		solvePuzzle = new ObjectStep(getQuestHelper(), ObjectID.EYEGLO_GNOME_MACHINE_02_MULTILOC, new WorldPoint(2390, 9826, 0), "Put in the correct pieces.");
 		getPieces = new ObjectStep(getQuestHelper(), ObjectID.EYEGLO_CHANGE_MACHINE_MULTILOC, new WorldPoint(2391, 9826, 0), "Swap in" +
-				" your pieces for the indicated pieces. You can also drop the discs then talk to Brimstail for more " +
-				"tokens.");
-		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", 445, 36);
-		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", 189, 39);
-		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", 449, 0);
-		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", 445, 31);
-		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 24);
-		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 25);
-		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", 189, 26);
+				" your pieces for the indicated pieces. You can also drop the discs then talk to Brimstail for more tokens.");
+		clickAnswer1 = new WidgetStep(getQuestHelper(), "Click the submit button.", InterfaceID.EyegloGnomeMachineLocked.ARROW_MIDDLE);
+		clickAnswer1.setShouldOverlayWidget(true);
+		clickAnswer2 = new WidgetStep(getQuestHelper(), "Click the submit button.", InterfaceID.EyegloGnomeMachineUnlocked.CORRECT);
+		clickAnswer2.setShouldOverlayWidget(true);
+		insertDisc = new WidgetStep(getQuestHelper(), "Insert the correct discs.", InterfaceID.EyegloGnomeMachineLocked.UNLOCK_COMP_INSERT);
+		insertDisc.setShouldOverlayWidget(true);
+		clickDiscHole = new WidgetStep(getQuestHelper(), "Insert the disc.", InterfaceID.EyegloGnomeMachineLocked.UNLOCK_COMP_INSERT);
+		clickDiscHole.setShouldOverlayWidget(true);
+		clickDiscHole2 = new WidgetStep(getQuestHelper(), "Insert the disc.", InterfaceID.EyegloGnomeMachineUnlocked.SET_1_COINSLOT);
+		clickDiscHole2.setShouldOverlayWidget(true);
+		clickDiscHole3 = new WidgetStep(getQuestHelper(), "Insert the disc.", InterfaceID.EyegloGnomeMachineUnlocked.SET_2_COINSLOT);
+		clickDiscHole3.setShouldOverlayWidget(true);
+		clickDiscHole4 = new WidgetStep(getQuestHelper(), "Insert the disc.", InterfaceID.EyegloGnomeMachineUnlocked.SET_3_COINSLOT);
+		clickDiscHole4.setShouldOverlayWidget(true);
 	}
 
 	public void solvePuzzle1()
 	{
-		int heldDisc = client.getVarpValue(856);
-		Widget insertWidget = client.getWidget(InterfaceID.LeagueTrophies.INFINITY);
+		int answer1 = client.getVarbitValue(VarbitID.EYEGLO_COIN_VALUE_1);
+		int heldDisc = client.getVarpValue(VarPlayerID.EYEGLO_COIN_SELECTED);
+		Widget insertWidget = client.getWidget(InterfaceID.EyegloSide.INV_LAYER);
 
-		if (client.getVarbitValue(2539) == answer1)
+		if (client.getVarbitValue(VarbitID.EYEGLO_UNLOCK_VAL) == answer1)
 		{
 			startUpStep(clickAnswer1);
 			return;
 		}
 
-		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
 		if (itemContainer == null)
 		{
 			return;
@@ -191,8 +186,7 @@ public class PuzzleStep extends DetailedOwnerStep
 			if (currentInv != null)
 			{
 				List<WidgetDetails> ids = new ArrayList<>();
-
-				ids = getClickableItems(ids, new ArrayList<>(items1));
+				ids = getClickableItems(ids, List.of(items1));
 
 				insertDisc.setWidgetDetails(ids);
 				insertDisc.setRequirements(Collections.singletonList(shapes.get(items1)));
@@ -208,15 +202,20 @@ public class PuzzleStep extends DetailedOwnerStep
 
 	public void solvePuzzle2()
 	{
-		int heldDisc = client.getVarpValue(856);
+		int heldDisc = client.getVarpValue(VarPlayerID.EYEGLO_COIN_SELECTED);
 
-		if (client.getVarbitValue(2540) == answer2 && client.getVarbitValue(2541) == answer3 && client.getVarbitValue(2542) == answer4)
+		int answer1 = client.getVarbitValue(VarbitID.EYEGLO_COIN_VALUE_2); // 1 input
+		int answer2 = client.getVarbitValue(VarbitID.EYEGLO_COIN_VALUE_3); // 2 input
+		int answer3 = client.getVarbitValue(VarbitID.EYEGLO_COIN_VALUE_4); // 3 input
+
+
+		if (client.getVarbitValue(VarbitID.EYEGLO_OPERATE1_VAL) == answer1 && client.getVarbitValue(VarbitID.EYEGLO_OPERATE2_VAL) == answer2 && client.getVarbitValue(VarbitID.EYEGLO_OPERATE3_VAL) == answer3)
 		{
 			startUpStep(clickAnswer2);
 			return;
 		}
 
-		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
 		if (itemContainer == null)
 		{
 			return;
@@ -228,14 +227,14 @@ public class PuzzleStep extends DetailedOwnerStep
 
 		Widget insertWidget = client.getWidget(InterfaceID.EyegloGnomeMachineUnlocked.MACHINE_UNLOACKED_BACKGROUND);
 
-		int slot1 = client.getVarpValue(850);
+		int slot1 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE1_A);
 
-		int slot2 = client.getVarpValue(851);
-		int slot3 = client.getVarpValue(852);
+		int slot2 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE2_A);
+		int slot3 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE2_B);
 
-		int slot4 = client.getVarpValue(853);
-		int slot5 = client.getVarpValue(854);
-		int slot6 = client.getVarpValue(855);
+		int slot4 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE3_A);
+		int slot5 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE3_B);
+		int slot6 = client.getVarpValue(VarPlayerID.EYEGLO_OPERATE3_C);
 
 		newMostMatch3 = -1;
 		mostMatch4 = -1;
@@ -245,9 +244,9 @@ public class PuzzleStep extends DetailedOwnerStep
 		// Puzzle 2
 
 		// Loop through all shapes which have equal value to goal
-		for (Integer id : shapeValues.get(answer2).getAllIds())
+		for (Integer id : shapeValues.get(answer1).getAllIds())
 		{
-			items2 = Collections.singletonList(shapeValues.get(answer2));
+			items2 = Collections.singletonList(shapeValues.get(answer1));
 			int match = checkForItems(inventoryItems, id);
 
 			// If found item in inventory
@@ -279,7 +278,7 @@ public class PuzzleStep extends DetailedOwnerStep
 		List<ItemRequirement> newReq3 = new ArrayList<>();
 		List<Item> newInventory3 = new ArrayList<>(inventoryItems);
 		List<Item> tmpInventory3;
-		for (List<ItemRequirement> reqs : shapeValues3.get(answer3))
+		for (List<ItemRequirement> reqs : shapeValues3.get(answer2))
 		{
 			// Each duo
 			List<Integer> currentSlotIDs3 = new ArrayList<>(Arrays.asList(slot2, slot3));
@@ -348,7 +347,7 @@ public class PuzzleStep extends DetailedOwnerStep
 		// Puzzle 4
 		List<ItemRequirement> newReq4 = new ArrayList<>();
 		List<Item> tmpInventory4;
-		for (List<ItemRequirement> reqs : shapeValues4.get(answer4))
+		for (List<ItemRequirement> reqs : shapeValues4.get(answer3))
 		{
 			List<Integer> currentSlotIDs4 = new ArrayList<>(Arrays.asList(slot4, slot5, slot6));
 			// Each duo
@@ -433,7 +432,7 @@ public class PuzzleStep extends DetailedOwnerStep
 		{
 			for (ItemRequirement itemRequirement : items2)
 			{
-				if (itemRequirement.getId() == heldDisc)
+				if (itemRequirement.getAllIds().contains(heldDisc))
 				{
 					startUpStep(clickDiscHole2);
 					return;
@@ -441,7 +440,7 @@ public class PuzzleStep extends DetailedOwnerStep
 			}
 			for (ItemRequirement itemRequirement : items3)
 			{
-				if (itemRequirement.getId() == heldDisc)
+				if (itemRequirement.getAllIds().contains(heldDisc))
 				{
 					startUpStep(clickDiscHole3);
 					return;
@@ -449,7 +448,7 @@ public class PuzzleStep extends DetailedOwnerStep
 			}
 			for (ItemRequirement itemRequirement : items4)
 			{
-				if (itemRequirement.getId() == heldDisc)
+				if (itemRequirement.getAllIds().contains(heldDisc))
 				{
 					startUpStep(clickDiscHole4);
 					return;
@@ -490,7 +489,7 @@ public class PuzzleStep extends DetailedOwnerStep
 		{
 			if (items.contains(currentInv[j].getId()))
 			{
-				ids.add(new WidgetDetails(449, 0, j));
+				ids.add(new WidgetDetails(InterfaceID.EYEGLO_SIDE, 0, j));
 			}
 		}
 		return ids;
@@ -511,11 +510,10 @@ public class PuzzleStep extends DetailedOwnerStep
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() == 440)
+		if (event.getContainerId() == InventoryID.EYEGLO_INV_SIDE)
 		{
 			ItemContainer container = event.getItemContainer();
 			currentInv = container.getItems();
-
 		}
 	}
 
@@ -620,43 +618,6 @@ public class PuzzleStep extends DetailedOwnerStep
 					shapeValues4.get(i + j + k).add(Arrays.asList(shape1, shape2, shape3));
 				}
 			}
-		}
-	}
-
-	protected void startUpStep(QuestStep step)
-	{
-		if (step.equals(currentStep)) return;
-
-		if (currentStep != null)
-		{
-			shutDownStep();
-		}
-
-		eventBus.register(step);
-		step.startUp();
-		currentStep = step;
-	}
-
-	protected void shutDownStep()
-	{
-		if (currentStep != null)
-		{
-			eventBus.unregister(currentStep);
-			currentStep.shutDown();
-			currentStep = null;
-		}
-	}
-
-	@Override
-	public QuestStep getActiveStep()
-	{
-		if (currentStep != null)
-		{
-			return currentStep.getActiveStep();
-		}
-		else
-		{
-			return this;
 		}
 	}
 

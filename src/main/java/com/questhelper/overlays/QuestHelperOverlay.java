@@ -29,6 +29,7 @@ package com.questhelper.overlays;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
@@ -46,7 +47,8 @@ public class QuestHelperOverlay extends OverlayPanel
 	public QuestHelperOverlay(QuestHelperPlugin plugin)
 	{
 		this.plugin = plugin;
-		setPriority(OverlayPriority.HIGHEST);
+		setLayer(OverlayLayer.UNDER_WIDGETS);
+		setPriority(PRIORITY_HIGHEST);
 	}
 
 	@Override
@@ -61,6 +63,17 @@ public class QuestHelperOverlay extends OverlayPanel
 		if (questHelper == null || questHelper.getCurrentStep() == null)
 		{
 			return null;
+		}
+
+		if (questHelper.getCurrentStep().getActiveStep().isShouldOverlayWidget() && getLayer() != OverlayLayer.ALWAYS_ON_TOP)
+		{
+			setLayer(OverlayLayer.ALWAYS_ON_TOP);
+			plugin.getQuestOverlayManager().updateOverlay();
+		}
+		else if (getLayer() != OverlayLayer.UNDER_WIDGETS)
+		{
+			setLayer(OverlayLayer.UNDER_WIDGETS);
+			plugin.getQuestOverlayManager().updateOverlay();
 		}
 		questHelper.getCurrentStep().makeOverlayHint(panelComponent, plugin, new ArrayList<>(), new ArrayList<>());
 

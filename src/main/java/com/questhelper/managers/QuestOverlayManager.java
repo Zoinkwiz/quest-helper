@@ -71,6 +71,11 @@ public class QuestOverlayManager
 		overlayManager.add(questHelperTooltipOverlay);
 	}
 
+	public void updateOverlay()
+	{
+		overlayManager.saveOverlay(questHelperOverlay);
+	}
+
 	public void shutDown()
 	{
 		overlayManager.remove(questHelperOverlay);

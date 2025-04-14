@@ -121,6 +121,7 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	RuneliteObjectManager runeliteObjectManager;
 
+	@Getter
 	@Inject
 	private QuestOverlayManager questOverlayManager;
 

@@ -302,7 +302,7 @@ public class TheSlugMenace extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToTiffy = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, new WorldPoint(2996, 3373, 0), "Talk to Sir Tiffy Cashien in Falador Park.", commorb);
-		talkToTiffy.addDialogStep("Do you have any jobs for me yet?");
+		talkToTiffy.addDialogSteps("Do you have any jobs for me yet?", "Yes.");
 		talkToNiall = new NpcStep(this, NpcID.SLUG2_ONIALL_STAGE1, new WorldPoint(2739, 3311, 0), "Talk to Col. O'Niall on the pier in Witchaven, east of Ardougne.");
 		talkToNiall.addDialogStep("Who are the important people in Witchaven?");
 		talkToNiall.addDialogStep("Nothing at the moment thanks.");

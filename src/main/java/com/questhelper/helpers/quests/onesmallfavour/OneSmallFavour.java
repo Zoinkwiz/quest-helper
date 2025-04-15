@@ -747,7 +747,9 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnToHammerspike = new NpcStep(this, NpcID.FAVOUR_HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToHammerspike.addSubSteps(goDownToHammerspikeAgain);
 
-		killGangMembers = new NpcStep(this, NpcID.FAVOUR_GANGSTER_DWARF, new WorldPoint(2968, 9811, 0), "Kill 3 dwarf gang members until Hammerspike gives in. One dwarf gang member should appear after each kill.");
+		killGangMembers = new NpcStep(this, NpcID.FAVOUR_GANGSTER_DWARF, new WorldPoint(2968, 9811, 0),
+				"Kill 3 dwarf gang members until Hammerspike gives in. One dwarf gang member should appear after each kill.", true);
+		((NpcStep) killGangMembers).addAlternateNpcs(NpcID.FAVOUR_GANGSTER_DWARF_2, NpcID.FAVOUR_GANGSTER_DWARF_3);
 		talkToHammerspikeFinal = new NpcStep(this, NpcID.FAVOUR_HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
 		returnToTassie = new NpcStep(this, NpcID.FAVOUR_TASSIE_SLIPCAST, new WorldPoint(3085, 3409, 0), "Return to Tassie Slipcast in the Barbarian Village pottery building.");
 		spinPotLid = new ObjectStep(this, ObjectID.POTTERYWHEEL, new WorldPoint(3087, 3409, 0), "Spin the clay into a pot lid.", softClay);
@@ -767,6 +769,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnDownToJohnahus = new ObjectStep(this, ObjectID.HAM_MULTI_TRAPDOOR, new WorldPoint(3166, 3252, 0), "Enter the H.A.M hideout west of Lumbridge and talk to Johanhus Ulsbrecht in there.");
 		returnToJohnahus = new NpcStep(this, NpcID.FAVOUR_JOHANHUS_ULSBRECHT, new WorldPoint(3171, 9619, 0), "Return to Johanhus Ulsbrecht in the south of the H.A.M hideout.");
 		returnToJohnahus.addDialogStep("You're in luck, I've managed to swing that chicken deal for you.");
+		returnToJohnahus.addSubSteps(returnDownToJohnahus);
 		returnToAggie = new NpcStep(this, NpcID.AGGIE_1OP, new WorldPoint(3086, 3258, 0), "Return to Aggie in Draynor Village.");
 		returnToAggie.addDialogStep("Good news! Jimmy has been released!");
 		returnToBrian = new NpcStep(this, NpcID.BRIAN, new WorldPoint(3027, 3249, 0), "Return to Brian in the Port Sarim axe shop.");

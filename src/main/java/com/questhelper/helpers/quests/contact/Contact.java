@@ -245,10 +245,10 @@ public class Contact extends BasicQuestHelper
 		talkToMaisa.addDialogStep("Draynor Village.");
 		talkToMaisa.addDialogStep("Leela.");
 
-		talkToOsman = new NpcStep(this, NpcID.HUNDRED_OSMAN, new WorldPoint(3287, 3179, 0), "Talk to Osman in Al Kharid.");
+		talkToOsman = new NpcStep(this, NpcID.CONTACT_OSMAN_MULTI, new WorldPoint(3287, 3179, 0), "Talk to Osman in Al Kharid.");
 		talkToOsman.addDialogStep("I want to talk to you about Sophanem.");
 		talkToOsman.addDialogStep("It could drive a wedge between the Menaphite cities.");
-		talkToOsmanOutsideSoph = new NpcStep(this, NpcID.HUNDRED_OSMAN, new WorldPoint(3285, 2812, 0), "Talk to Osman north of Sophanem.");
+		talkToOsmanOutsideSoph = new NpcStep(this, NpcID.CONTACT_OSMAN_DESERT_MULTI, new WorldPoint(3285, 2812, 0), "Talk to Osman north of Sophanem.");
 		talkToOsmanOutsideSoph.addDialogStep("I know of a secret entrance to the north.");
 
 		goDownToBankAgain = new ObjectStep(this, ObjectID.CONTACT_TEMPLE_TRAPDOOR_OPEN, new WorldPoint(3315, 2797, 0), "Prepare to fight a level 191 Giant Scarab. Go down the ladder east of Jex.", lightSource, combatGear);
@@ -262,7 +262,7 @@ public class Contact extends BasicQuestHelper
 
 		pickUpKeris = new ItemStep(this, "Pick up the Keris.", keris);
 
-		talkToOsmanChasm = new NpcStep(this, NpcID.HUNDRED_OSMAN, new WorldPoint(2272, 4323, 0), "Talk to Osman in the chasm.");
+		talkToOsmanChasm = new NpcStep(this, NpcID.CONTACT_OSMAN_CAVE_INSTANCE, new WorldPoint(2272, 4323, 0), "Talk to Osman in the chasm.");
 
 		returnToHighPriest = new NpcStep(this, NpcID.ICS_LITTLE_HIPRIEST_VIS, new WorldPoint(3281, 2772, 0), "Report back to the High Priest in Sophanem.");
 	}

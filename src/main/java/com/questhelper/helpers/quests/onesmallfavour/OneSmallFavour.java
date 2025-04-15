@@ -513,7 +513,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToJungleForester = new NpcStep(this, new int[]{NpcID.JUNGLEFORESTER_F, NpcID.JUNGLEFORESTER_M}, new WorldPoint(2861, 2942, 0), "Talk to a Jungle Forester south of Shilo Village.", true, bluntAxe);
 		talkToJungleForester.addDialogSteps("I'll get going then!", "I need to talk to you about red mahogany.");
 		talkToJungleForester.addDialogStep("Okay, I'll take your axe to get it sharpened.");
-		talkToBrian = new NpcStep(this, NpcID.BRIAN, new WorldPoint(3027, 3249, 0), "Talk to Brian in the Port Sarim axe shop.");
+		talkToBrian = new NpcStep(this, NpcID.BRIAN, new WorldPoint(3027, 3249, 0), "Talk to Brian in the Port Sarim axe shop.", bluntAxe);
 		talkToBrian.addDialogStep("Do you sharpen axes?");
 		talkToBrian.addDialogStepWithExclusion("Look, can you sharpen this cursed axe or what?", "Ok, ok, I'll do it! I'll go and see Aggie.");
 		talkToBrian.addDialogStep("Ok, ok, I'll do it! I'll go and see Aggie.");
@@ -521,7 +521,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToAggie = new NpcStep(this, NpcID.AGGIE_1OP, new WorldPoint(3086, 3258, 0), "Talk to Aggie in Draynor Village.");
 		talkToAggie.addDialogStep("Could I ask you about being a character witness?");
 		talkToAggie.addDialogStep("Let me guess, you're going to ask me to do you a favour?");
-		talkToAggie.addDialogStep("Oh, Ok, I'll see if I can find Jimmy.");
+		talkToAggie.addDialogStep("Oh, okay, I'll see if I can find Jimmy.");
 
 		goDownToJohanhus = new ObjectStep(this, ObjectID.HAM_MULTI_TRAPDOOR, new WorldPoint(3166, 3252, 0), "Enter the H.A.M hideout west of Lumbridge and talk to Johanhus Ulsbrecht in there.");
 		talkToJohanhus = new NpcStep(this, NpcID.FAVOUR_JOHANHUS_ULSBRECHT, new WorldPoint(3171, 9619, 0), "Talk to Johanhus Ulsbrecht in the south of the H.A.M hideout.");

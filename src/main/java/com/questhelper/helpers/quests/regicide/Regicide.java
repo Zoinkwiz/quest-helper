@@ -812,7 +812,6 @@ public class Regicide extends BasicQuestHelper
 		goToIorwerthAfterCamp.addStep(new Conditions(inTyrasCamp, barrel2), goFromTyrasToTrap);
 		goToIorwerthAfterCamp.addStep(inTyrasCamp, take2Barrels);
 
-
 		NpcStep askAboutQuicklime, askAboutNaphtha, askAboutSulphur, askAboutBarrel, askAboutFuse;
 		askAboutQuicklime = new NpcStep(this, NpcID.LORD_IORWERTH_VIS, new WorldPoint(2203, 3255, 0),
 			"Ask Iorwerth about quicklime.");
@@ -927,8 +926,8 @@ public class Regicide extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("To the Elven Lands",
 			Arrays.asList(goThroughUndergroundPass, goTalkToIorwerth, goTalkToTracker,
-				goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, climbThroughForest,
-				killGuard, goToIorwerthAfterCamp, readBigBookOfBangs, goLearnAboutBomb),
+				goReturnToIorwerth, goReturnToTracker, goClickTracks, goTalkToTrackerAfterTracks, goDefeatGuard, goIntoTyrasCamp, goToIorwerthAfterCamp,
+					readBigBookOfBangs, goLearnAboutBomb),
 			Arrays.asList(bow, arrows, rope1, spade, antipoisons, combatEquipment, agilityPotions),
 			Collections.singletonList(staminaPotions)));
 		allSteps.add(new PanelDetails("Making a bomb", Arrays.asList(useLimestoneOnFurnace, usePestleOnQuicklime,

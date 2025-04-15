@@ -192,7 +192,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		climbToWhiteKnightsCastleF2 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339, 1),
 			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
 
-		speakToAmik = new NpcStep(this, NpcID.HUNDRED_VARZE, new WorldPoint(2959, 3339, 2),
+		speakToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE, new WorldPoint(2959, 3339, 2),
 			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
 		speakToAmik.addDialogStep("I seek a quest!");
 		speakToAmik.addDialogStep("I laugh in the face of danger!");
@@ -254,7 +254,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 			1),
 			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
 
-		returnToAmik = new NpcStep(this, NpcID.HUNDRED_VARZE, new WorldPoint(2959, 3339, 2),
+		returnToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE, new WorldPoint(2959, 3339, 2),
 			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
 		returnToAmik.addSubSteps(climbToWhiteKnightsCastleF1ToFinish, climbToWhiteKnightsCastleF2ToFinish);
 	}

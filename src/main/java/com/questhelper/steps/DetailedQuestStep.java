@@ -284,7 +284,7 @@ public class DetailedQuestStep extends QuestStep
 			for (QuestTile location : markedTiles)
 			{
 				BufferedImage combatIcon = spriteManager.getSprite(location.getIconID(), 0);
-				List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+				List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, location.getWorldPoint());
 
 				for (LocalPoint localPoint : localPoints)
 				{

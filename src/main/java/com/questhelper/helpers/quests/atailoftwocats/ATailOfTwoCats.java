@@ -192,7 +192,8 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		talkToGertrude.addTeleport(varrockTeleport);
 
 		talkToReldo = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3211, 3494, 0), "Talk to Reldo in the Varrock Castle's library.", cat, catspeakEWorn);
-		talkToReldo.addDialogStep("Ask about Robert the Strong.");
+		((NpcStep) talkToReldo).addAlternateNpcs(NpcID.RELDO);
+		talkToReldo.addDialogSteps("I have a cat related question.", "Ask about Robert the Strong.");
 		findBobAgain = new DetailedQuestStep(this, "Use the catspeak amulet (e) again to locate Bob the Cat.", catspeakE);
 		talkToBobAgain = new NpcStep(this, NpcID.DEATH_GROWNCAT_BLACK_VIS, "Talk to Bob the Cat again.", cat, catspeakEWorn);
 		talkToSphinx = new NpcStep(this, NpcID.ICS_LITTLE_SPHINX, new WorldPoint(3302, 2784, 0), "Talk to the Sphinx in Sophanem.", cat, catspeakEWorn);

@@ -38,6 +38,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
@@ -477,15 +478,19 @@ public class QuestBankTab
 		}
 	}
 
-	private void drawItem(Widget c, int item, int qty, BankTabItem bankTabItem)
+	private void drawItem(Widget c, int item, ItemContainer bank, BankTabItem bankTabItem)
 	{
 		if (item > -1 && item != ItemID.BANK_FILLER)
 		{
+			int qty = count(bank, item);
 			ItemComposition def = client.getItemDefinition(item);
+
+			int bankCount = bank.count(item);
+			boolean isPotStorage = bankCount <= 0 && qty > 0;
 
 			c.setItemId(item);
 			c.setItemQuantity(qty);
-			c.setItemQuantityMode(1);
+			c.setItemQuantityMode(ItemQuantityMode.ALWAYS);
 
 			// Effectively avoid dragging
 			c.setDragDeadTime(1000);
@@ -534,26 +539,43 @@ public class QuestBankTab
 						suffix = "All";
 						break;
 				}
-				c.setAction(0, "Withdraw-" + suffix);
+				// ~script669
+				int opIdx = 0;
+				c.setAction(opIdx++, "Withdraw-" + suffix);
 				if (quantityType != 0)
 				{
-					c.setAction(1, "Withdraw-1");
+					c.setAction(opIdx++, "Withdraw-1");
 				}
-				c.setAction(2, "Withdraw-5");
-				c.setAction(3, "Withdraw-10");
-				if (requestQty > 0)
+				if (quantityType != 1)
 				{
-					c.setAction(4, "Withdraw-" + requestQty);
+					c.setAction(opIdx++, "Withdraw-5");
 				}
-				c.setAction(5, "Withdraw-X");
-				c.setAction(6, "Withdraw-All");
-				c.setAction(7, "Withdraw-All-but-1");
-				if (client.getVarbitValue(VarbitID.BANK_LEAVEPLACEHOLDERS) == 0)
+				if (quantityType != 2)
 				{
-					c.setAction(8, "Placeholder");
+					c.setAction(opIdx++, "Withdraw-10");
 				}
-				c.setAction(9, "Examine");
-
+				if (quantityType != 3 && requestQty > 0)
+				{
+					c.setAction(opIdx++, "Withdraw-" + requestQty);
+				}
+				c.setAction(opIdx++, "Withdraw-X");
+				if (quantityType != 4)
+				{
+					c.setAction(opIdx++, "Withdraw-All");
+				}
+				c.setAction(opIdx++, "Withdraw-All-but-1");
+				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1 && def.getIntValue(ParamID.BANK_AUTOCHARGE) != -1)
+				{
+					c.setAction(opIdx++, "Configure-Charges");
+				}
+				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_LEAVEPLACEHOLDERS) == 0)
+				{
+					c.setAction(opIdx++, "Placeholder");
+				}
+				if (!isPotStorage)
+				{
+					c.setAction(9, "Examine");
+				}
 				c.setOpacity(0);
 			}
 
@@ -635,7 +657,7 @@ public class QuestBankTab
 			{
 				return totalSectionsHeight;
 			}
-			drawItem(c, itemId, count(bank, itemId), item);
+			drawItem(c, itemId, bank, item);
 			placeItem(c, totalItemsAdded, totalSectionsHeight);
 			// move item
 			if (item.getQuantity() > 0)

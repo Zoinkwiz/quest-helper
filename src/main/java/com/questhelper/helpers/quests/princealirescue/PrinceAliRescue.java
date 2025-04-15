@@ -187,7 +187,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 	{
 		talkToHassan = new NpcStep(this, NpcID.HASSAN, new WorldPoint(3298, 3163, 0), "Talk to Hassan in the Al Kharid Palace.");
 		talkToHassan.addDialogSteps("Is there anything I can help you with?", "Yes.");
-		talkToOsman = new NpcStep(this, NpcID.HUNDRED_OSMAN, new WorldPoint(3286, 3180, 0), "Talk to Osman north of the Al Kharid Palace.");
+		talkToOsman = new NpcStep(this, NpcID.OSMAN, new WorldPoint(3286, 3180, 0), "Talk to Osman north of the Al Kharid Palace.");
 
 		talkToNed = new NpcStep(this, NpcID.NED, new WorldPoint(3097, 3257, 0), "Have Ned in Draynor Village make you a wig from 3 balls of wool. He can also sell you a rope for 15 coins or 4 balls of wool.", ballsOfWool3);
 		talkToNed.addDialogStep("Could you make other things apart from rope?");
@@ -203,7 +203,8 @@ public class PrinceAliRescue extends BasicQuestHelper
 		talkToKeli.addDialogStep("How do you know someone won't try to free him?");
 		talkToKeli.addDialogStep("Could I see the key please?");
 		talkToKeli.addDialogStep("Could I touch the key for a moment please?");
-		bringImprintToOsman = new NpcStep(this, NpcID.HUNDRED_OSMAN, new WorldPoint(3285, 3179, 0), "Bring the key print to Osman north of the Al Kharid Palace. If you already have, open the quest journal to re-sync.", keyMould, bronzeBar);
+		bringImprintToOsman = new NpcStep(this, NpcID.OSMAN, new WorldPoint(3285, 3179, 0), "Bring the key print to Osman north of the Al Kharid Palace. If " +
+				"you already have, open the quest journal to re-sync.", keyMould, bronzeBar);
 		talkToLeela = new NpcStep(this, NpcID.LEELA, new WorldPoint(3113, 3262, 0), "Talk to Leela east of Draynor Village.", beers3, dyedWig, paste, rope, pinkSkirt);
 		talkToJoe = new NpcStep(this, NpcID.JOE_VIS, new WorldPoint(3124, 3245, 0), "Bring everything to the jail and give Joe there three beers.", beers3, key, dyedWig, paste, rope, pinkSkirt);
 		talkToJoe.addDialogStep("I have some beer here. Fancy one?");

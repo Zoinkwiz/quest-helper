@@ -48,9 +48,10 @@ public class PuzzleWrapperStep extends ConditionalStep
 	final DetailedQuestStep noSolvingStep;
 	ManualRequirement shouldHideHiddenPuzzleHintInSidebar = new ManualRequirement();
 
-	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, String text, Requirement... requirements)
+	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, Requirement... requirements)
 	{
-		super(questHelper, step, text, requirements);
+		super(questHelper, step, "", requirements);
+		this.text = hiddenStep.getText();
 		this.noSolvingStep = hiddenStep;
 		this.questHelperConfig = questHelper.getConfig();
 		addStep(not(new ConfigRequirement(questHelper.getConfig()::solvePuzzles)), noSolvingStep);
@@ -65,12 +66,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 
 	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, String text, Requirement... requirements)
 	{
-		this(questHelper, step, new DetailedQuestStep(questHelper, "If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings."), text, requirements);
-	}
-
-	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, Requirement... requirements)
-	{
-		this(questHelper, step, hiddenStep, "", requirements);
+		this(questHelper, step, new DetailedQuestStep(questHelper, text), requirements);
 	}
 
 	@Override

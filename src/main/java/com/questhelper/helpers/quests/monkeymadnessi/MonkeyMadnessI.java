@@ -173,8 +173,8 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		makeAmulet.addStep(inZooknockDungeon, leaveToPrepareForAmulet);
 		makeAmulet.setLockingCondition(amulet.alsoCheckBank(questBank));
 
-		getTalisman = new ConditionalStep(this, leaveTempleDungeon);
-		getTalisman.addStep(onApeAtollNorth, talkToMonkeyChild);
+		getTalisman = new ConditionalStep(this, talkToMonkeyChild);
+		getTalisman.addStep(inTempleDungeon, leaveTempleDungeon);
 		getTalisman.setLockingCondition(hasTalisman);
 
 		ItemRequirement talismans4 = anyTalisman.quantity(4).alsoCheckBank(questBank);
@@ -202,7 +202,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, talismans4, zombieBones.alsoCheckBank(questBank),
 			gorillaBones.alsoCheckBank(questBank),
 			ninjaBones.alsoCheckBank(questBank)), makeKaramjanGreeGree);
-		infiltratingTheMonkeys.addStep(and(talkedToGarkor, amulet.alsoCheckBank(questBank)), getBones);
+		infiltratingTheMonkeys.addStep(and(talkedToGarkor, amulet.alsoCheckBank(questBank), talisman.alsoCheckBank(questBank)), getBones);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, amulet.alsoCheckBank(questBank)), getTalisman);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hadEnchantedBar), makeAmulet);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hadDenturesAndMould), makeBar);
@@ -507,7 +507,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		goUpF1ToF2.addDialogStep("Climb Up.");
 		goUpF2ToF3 = new ObjectStep(this, QHObjectID.GRAND_TREE_F2_LADDER, new WorldPoint(2466, 3495, 2), "Travel to the Shipyard on Karamja.", royalSeal);
 		goUpF2ToF3.addDialogStep("Climb Up.");
-		flyGandius = new NpcStep(this, NpcID.PILOT_GRAND_TREE_WHITEWOLF, new WorldPoint(2464, 3501, 3), "Fly with Captain Errdo to Gandius.");
+		flyGandius = new NpcStep(this, NpcID.PILOT_GRAND_TREE, new WorldPoint(2464, 3501, 3), "Fly with Captain Errdo to Gandius.");
 		flyGandius.addWidgetHighlight(138, 16);
 		flyGandius.addSubSteps(goUpF0ToF1, goUpF1ToF2, goUpF2ToF3);
 

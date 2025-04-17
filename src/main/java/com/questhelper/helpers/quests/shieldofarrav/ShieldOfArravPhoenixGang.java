@@ -133,6 +133,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 			"Search the marked bookcase for a book, then read it.", book.highlighted());
 		talkToReldoAgain = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3210, 3494, 0),
 			"Talk to Reldo again.");
+		talkToReldoAgain.addDialogStep("Okay, I've read that book about the Shield of Arrav.");
 		talkToBaraek = new NpcStep(this, NpcID.BARAEK, new WorldPoint(3218, 3435, 0),
 			"Talk to Baraek in the Varrock Square.", twentyCoins);
 		talkToBaraek.addDialogStep("Can you tell me where I can find the Phoenix Gang?");

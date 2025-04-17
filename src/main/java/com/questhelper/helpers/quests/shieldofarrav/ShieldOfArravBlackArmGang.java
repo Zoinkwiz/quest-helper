@@ -32,6 +32,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -41,15 +44,19 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
 public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement storeRoomKey, twoPhoenixCrossbow, shieldHalf, certificateHalf, phoenixCertificateHalf, certificate;
+	ItemRequirement book, storeRoomKey, twoPhoenixCrossbow, shieldHalf, certificateHalf, phoenixCertificateHalf, certificate;
 
-	Requirement inStoreRoom, weaponMasterAlive, isUpstairsInBase, cupboardOpen;
+	Requirement startedQuest, readBook, talkedToCharlie, inStoreRoom, weaponMasterAlive, isUpstairsInBase, cupboardOpen;
+
+	QuestStep startQuest, searchBookcase, talkToReldoAgain;
 
 	QuestStep talkToCharlie, getWeaponStoreKey, talkToKatrine, goUpToWeaponStore, killWeaponsMaster, pickupTwoCrossbows, goDownFromWeaponStore, returnToKatrine,
 		goUpstairsInBase, getShieldFromCupboard, getShieldFromCupboard1, goDownstairsInBase, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald;
@@ -65,8 +72,14 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		steps.put(0, talkToCharlie);
-		steps.put(1, talkToKatrine);
+		ConditionalStep startingQuestSteps = new ConditionalStep(this, startQuest);
+		startingQuestSteps.addStep(readBook, talkToReldoAgain);
+		startingQuestSteps.addStep(startedQuest, searchBookcase);
+		steps.put(0, startingQuestSteps);
+
+		ConditionalStep goTalkToKatrine = new ConditionalStep(this, talkToCharlie);
+		goTalkToKatrine.addStep(talkedToCharlie, talkToKatrine);
+		steps.put(1, goTalkToKatrine);
 
 		ConditionalStep gettingTheCrossbows = new ConditionalStep(this, getWeaponStoreKey);
 		gettingTheCrossbows.addStep(new Conditions(twoPhoenixCrossbow, inStoreRoom), goDownFromWeaponStore);
@@ -93,6 +106,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
+		book = new ItemRequirement("Book", ItemID.THE_SHIELD_OF_ARRAV);
 		storeRoomKey = new ItemRequirement("Weapon store key", ItemID.PHOENIXKEY2);
 		twoPhoenixCrossbow = new ItemRequirement("Phoenix crossbow", ItemID.PHOENIX_CROSSBOW, 2);
 		shieldHalf = new ItemRequirement("Broken shield", ItemID.ARRAVSHIELD2);
@@ -110,6 +124,9 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 
 	public void setupConditions()
 	{
+		startedQuest = new VarbitRequirement(VarbitID.SHIELDOFARRAV, 1, Operation.GREATER_EQUAL);
+		readBook = new VarplayerRequirement(VarPlayerID.PHOENIXGANG, 2, Operation.GREATER_EQUAL);
+		talkedToCharlie = new VarbitRequirement(VarbitID.SOA_CHARLIE_MET, 1);
 		inStoreRoom = new ZoneRequirement(storeRoom);
 		weaponMasterAlive = new NpcCondition(NpcID.WEAPONSMASTER_VIS);
 		isUpstairsInBase = new ZoneRequirement(upstairsInBase);
@@ -118,8 +135,18 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		startQuest = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3210, 3494, 0),
+			"Talk to Reldo in the Varrock Castle library.");
+		startQuest.addDialogSteps("I'm in search of a quest.", "Yes.");
+		searchBookcase = new ObjectStep(this, ObjectID.QUESTBOOKCASE, new WorldPoint(3212, 3493, 0),
+			"Search the marked bookcase for a book, then read it.", book.highlighted());
+		talkToReldoAgain = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3210, 3494, 0),
+			"Talk to Reldo again.");
+		talkToReldoAgain.addDialogStep("Okay, I've read that book about the Shield of Arrav.");
+
 		talkToCharlie = new NpcStep(this, NpcID.TRAMPPG, new WorldPoint(3208, 3392, 0), "To start the quest as the Black Arm Gang, talk to Charlie the Tramp in south Varrock to start.");
 		talkToCharlie.addDialogStep("Is there anything down this alleyway?");
+		talkToCharlie.addDialogStep("I'm looking for the Black Arm Gang.");
 		talkToCharlie.addDialogStep("Do you think they would let me join?");
 
 		talkToKatrine = new NpcStep(this, NpcID.KATRINE, new WorldPoint(3185, 3385, 0), "Talk to Katrine down the alley to the west.");
@@ -178,7 +205,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start quest", Arrays.asList(talkToCharlie, talkToKatrine)));
+		allSteps.add(new PanelDetails("Start quest", Arrays.asList(startQuest, searchBookcase, talkToReldoAgain, talkToCharlie, talkToKatrine)));
 		allSteps.add(new PanelDetails("Get the phoenix crossbows", Arrays.asList(getWeaponStoreKey, goUpToWeaponStore, killWeaponsMaster, pickupTwoCrossbows, returnToKatrine)));
 		allSteps.add(new PanelDetails("Return the shield", Arrays.asList(goUpstairsInBase, getShieldFromCupboard, talkToHaig, tradeCertificateHalf, combineCertificate, talkToRoald)));
 		return allSteps;

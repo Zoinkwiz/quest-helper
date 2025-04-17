@@ -180,7 +180,7 @@ public class ColdWar extends BasicQuestHelper
 		clockworkOrSteelBar = new ItemRequirement("Clockwork or Steel Bar", ItemID.STEEL_BAR);
 		clockworkOrSteelBar.addAlternates(ItemID.POH_CLOCKWORK_MECHANISM);
 		clockworkOrSteelBar.setDisplayMatchedItemName(true);
-		steelBar = new ItemRequirement("Steel Bar", ItemID.POH_CLOCKWORK_MECHANISM, 1);
+		steelBar = new ItemRequirement("Steel Bar", ItemID.STEEL_BAR);
 		clockwork = new ItemRequirement("Clockwork", ItemID.POH_CLOCKWORK_MECHANISM, 1);
 		plank = new ItemRequirement("Normal Plank", ItemID.WOODPLANK, 1);
 		silk = new ItemRequirement("Silk", ItemID.SILK, 1);
@@ -266,7 +266,7 @@ public class ColdWar extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToLarry = new NpcStep(this, NpcID.PENG_LARRY_ZOO, new WorldPoint(2597, 3266, 0), "Talk to Larry at the Ardougne Zoo.");
-		talkToLarry.addDialogStep("Okay, why not!");
+		talkToLarry.addDialogSteps("Yes.", "Okay, why not!");
 
 		talkToLarryAgain = new NpcStep(this, NpcID.PENG_LARRY_ZOO, new WorldPoint(2597, 3266, 0), "Talk to Larry again.", oakPlanks, steelNails, hammer, spade);
 		talkToLarryAgain.addDialogStep("Yes, I have all the materials.");
@@ -357,8 +357,8 @@ public class ColdWar extends BasicQuestHelper
 
 		kgpAgent2 = new NpcStep(this, NpcID.PENG_KGP, new WorldPoint(2639, 4008, 1), "Talk to the KGP Agent again.", kgpId);
 		enterAvalanche = new ObjectStep(this, ObjectID.PENG_AVAL_L, new WorldPoint(2638,4011,1),"Enter the avalanche.");
-		enterAvalanche2 = new ObjectStep(this, ObjectID.PENG_AVAL_L, new WorldPoint(2638,4011,1),"Enter the avalanche as a penguin.");
-		enterAvalanche3 = new ObjectStep(this, ObjectID.PENG_AVAL_L, new WorldPoint(2638,4011,1),"Enter the avalanche as a penguin.");
+		enterAvalanche2 = new ObjectStep(this, ObjectID.PENG_AVAL_L, new WorldPoint(2638,4011,1),"Enter the avalanche as a penguin.", clockworkSuit.equipped());
+		enterAvalanche3 = new ObjectStep(this, ObjectID.PENG_AVAL_L, new WorldPoint(2638,4011,1),"Enter the avalanche as a penguin.", clockworkSuit.equipped());
 
 		kgpAgentInAvalanche = new NpcStep(this, NpcID.PENG_KGP, new WorldPoint(2647, 10384, 0), "Talk to the KGP Agent in the first room to the west of the entrance.");
 		((NpcStep) kgpAgentInAvalanche).setMaxRoamRange(12);
@@ -392,7 +392,7 @@ public class ColdWar extends BasicQuestHelper
 		pingPong3 = new NpcStep(this, NpcID.PENG_PING, new WorldPoint(2668,10396,0), "Return to Ping or Pong.");
 		((NpcStep) pingPong3).addAlternateNpcs(NpcID.PENG_PONG);
 		pingPong3.addDialogStep("Yes.");
-		pingPong2.addSubSteps(pingPong3);
+		pingPong2.addSubSteps(enterAvalanche3, pingPong3);
 
 		openControlDoor = new ObjectStep(this, ObjectID.PENG_BASE_BOOTH_FRONT, "Open the control room doors via the control panel.");
 
@@ -469,7 +469,8 @@ public class ColdWar extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Lumbridge Mission Report", Arrays.asList(tuxedoTimeLumbridge, talkToThing, returnToZooPenguin, returnToThing, fredTheFarmer, stealCowbell, askThingAboutOutpost), clockworkSuit, rawCodOrCharos, feathers, swampTar, mahoganyPlank, leather, combatGear));
 		allSteps.add(new PanelDetails("Penguin Outpost", Arrays.asList(tellLarryAboutOutpost, kgpAgent, noodle1, noodle2, kgpAgent2, enterAvalanche), clockworkSuit, feathers, swampTar, mahoganyPlank, leather, combatGear));
 		allSteps.add(new PanelDetails("Briefing and Agility", Arrays.asList(kgpAgentInAvalanche, agilityCourse, tellLarryAboutArmy), clockworkSuit, mahoganyPlank, leather, combatGear));
-		allSteps.add(new PanelDetails("Musical Penguins", Arrays.asList(pingPong1, makeBongos, pingPong2), clockworkSuit, mahoganyPlank, leather, combatGear));
+		allSteps.add(new PanelDetails("Musical Penguins", Arrays.asList(pingPong1, makeBongos, pingPong2), clockworkSuit, mahoganyPlank, leather,
+				combatGear));
 		allSteps.add(new PanelDetails("The War Room", Arrays.asList(openControlDoor, enterWarRoom, killIcelords, useChasm, tellLarryPlans), clockworkSuit, combatGear));
 
 		return allSteps;

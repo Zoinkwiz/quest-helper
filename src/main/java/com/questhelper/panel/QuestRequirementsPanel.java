@@ -162,24 +162,24 @@ public class QuestRequirementsPanel extends JPanel
 
 					menu.add(wikiLink);
 				}
-					if (requirement instanceof ItemRequirement)
-					{
-						if ("true".equals(questManager.getConfigManager().getConfiguration(RuneLiteConfig.GROUP_NAME, "notenoughrunesplugin")))
-						{
-							var nerLink = new JMenuItem(new AbstractAction("Go to NER...")
-							{
-								@Override
-								public void actionPerformed(ActionEvent e)
-								{
-									Map<String, Object> data = new HashMap<>();
-									data.put("itemId", ((ItemRequirement) requirement).getId());
-									questManager.getEventBus().post(new PluginMessage("notenoughrunes", "displayItemById", data));
-								}
-							});
-							menu.add(nerLink);
-						}
-					}
 
+				if (requirement instanceof ItemRequirement)
+				{
+					if ("true".equals(questManager.getConfigManager().getConfiguration(RuneLiteConfig.GROUP_NAME, "notenoughrunesplugin")))
+					{
+						var nerLink = new JMenuItem(new AbstractAction("Go to NER...")
+						{
+							@Override
+							public void actionPerformed(ActionEvent e)
+							{
+								Map<String, Object> data = new HashMap<>();
+								data.put("itemId", ((ItemRequirement) requirement).getId());
+								questManager.getEventBus().post(new PluginMessage("notenoughrunes", "displayItemById", data));
+							}
+						});
+						menu.add(nerLink);
+					}
+				}
 
 				if (requirement instanceof QuestRequirement)
 				{

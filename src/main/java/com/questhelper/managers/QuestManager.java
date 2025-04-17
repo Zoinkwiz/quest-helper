@@ -40,6 +40,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.QuestState;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 
 import javax.inject.Inject;
@@ -70,6 +71,10 @@ public class QuestManager
 
 	@Inject
 	QuestBankManager questBankManager;
+
+	@Getter
+	@Inject
+	ConfigManager configManager;
 
 	@Inject
 	QuestHelperConfig config;

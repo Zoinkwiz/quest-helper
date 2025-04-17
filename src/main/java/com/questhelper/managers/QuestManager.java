@@ -64,6 +64,7 @@ public class QuestManager
 	@Inject
 	ClientThread clientThread;
 
+	@Getter
 	@Inject
 	EventBus eventBus;
 

@@ -528,7 +528,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		killWolf = new NpcStep(this, NpcID.WOLF, new WorldPoint(2591, 2966, 0),
 			"Kill wolves in Feldip Hills.", true);
 		killWolf.addTeleport(feldipTeleport);
-		killOgre = new NpcStep(this, NpcID.POH_OGRE, new WorldPoint(2570, 2975, 0),
+		killOgre = new NpcStep(this, NpcID.OGRE, new WorldPoint(2570, 2975, 0),
 			"Kill ogres in Feldip Hills.", true);
 		killOgre.addTeleport(feldipTeleport);
 		killZogre = new NpcStep(this, NpcID.ZOGRE_1, new WorldPoint(2460, 3048, 0),

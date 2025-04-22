@@ -160,7 +160,7 @@ public class GettingAhead extends BasicQuestHelper
 		skillsNeck = new ItemRequirement("Skills Necklace", ItemCollections.SKILLS_NECKLACES);
 
 		//Required
-		bearFur = new ItemRequirement("Bear Fur", ItemID.WEREWOLVE_FUR);
+		bearFur = new ItemRequirement("Bear Fur", ItemID.FUR);
 		bearFur.canBeObtainedDuringQuest();
 		bearFur.setTooltip("You can kill a bear west of the farm for some fur");
 		bearFur.setHighlightInInventory(true);

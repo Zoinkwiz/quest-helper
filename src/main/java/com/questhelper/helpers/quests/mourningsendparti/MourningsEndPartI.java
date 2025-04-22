@@ -183,7 +183,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		bearFur = new ItemRequirement("Bear fur", ItemID.WEREWOLVE_FUR);
+		bearFur = new ItemRequirement("Bear fur", ItemID.FUR);
 		silk2 = new ItemRequirement("Silk", ItemID.SILK, 2);
 		redDye = new ItemRequirement("Red dye", ItemID.REDDYE);
 		redDye.setTooltip("Can be bought during quest for 6gp");

@@ -216,7 +216,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		oakPlank = new ItemRequirement("Oak plank", ItemID.PLANK_OAK);
 		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed();
 		plank = new ItemRequirement("Plank", ItemID.WOODPLANK);
-		fur = new ItemRequirement("Fur", ItemID.WEREWOLVE_FUR);
+		fur = new ItemRequirement("Fur", ItemID.FUR);
 		fur.addAlternates(ItemID.WEREWOLVE_FUR, ItemID.GREY_WOLF_FUR);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		hammer.setTooltip("a standard hammer, NOT Imcando Hammer, as it will be given to Dr. Fenkenstrain");

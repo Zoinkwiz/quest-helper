@@ -37,6 +37,8 @@ import com.questhelper.util.Fonts;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.LinkBrowser;
 import org.apache.commons.lang3.tuple.Pair;
@@ -50,7 +52,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuestRequirementsPanel extends JPanel
 {
@@ -157,6 +161,25 @@ public class QuestRequirementsPanel extends JPanel
 					});
 
 					menu.add(wikiLink);
+				}
+
+				if (requirement instanceof ItemRequirement)
+				{
+					boolean nerInstalled = questManager.getPluginManager().getPlugins().stream().anyMatch(plugin -> plugin.getName().equals("Not Enough Runes"));
+					if (nerInstalled && !"false".equals(questManager.getConfigManager().getConfiguration(RuneLiteConfig.GROUP_NAME, "notenoughrunesplugin")))
+					{
+						var nerLink = new JMenuItem(new AbstractAction("Go to NER...")
+						{
+							@Override
+							public void actionPerformed(ActionEvent e)
+							{
+								Map<String, Object> data = new HashMap<>();
+								data.put("itemId", ((ItemRequirement) requirement).getId());
+								questManager.getEventBus().post(new PluginMessage("notenoughrunes", "displayItemById", data));
+							}
+						});
+						menu.add(nerLink);
+					}
 				}
 
 				if (requirement instanceof QuestRequirement)

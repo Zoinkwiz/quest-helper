@@ -40,6 +40,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,6 +107,9 @@ public abstract class MockedTest extends MockedTestBase
 
 	@Bind
 	protected ScheduledExecutorService scheduledExecutorService = mock(ScheduledExecutorService.class);
+
+	@Bind
+	protected PluginManager pluginManager = mock(PluginManager.class);
 
 	@Bind
 	@Named("developerMode")

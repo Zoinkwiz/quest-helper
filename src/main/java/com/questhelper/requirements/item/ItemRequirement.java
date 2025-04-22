@@ -530,6 +530,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setUrlSuffix(getUrlSuffix());
 		newItem.additionalOptions = additionalOptions;
 		newItem.isChargedItem = isChargedItem;
+		newItem.shouldCheckBank = shouldCheckBank;
 
 		return newItem;
 	}

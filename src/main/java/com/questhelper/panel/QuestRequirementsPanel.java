@@ -166,7 +166,6 @@ public class QuestRequirementsPanel extends JPanel
 				if (requirement instanceof ItemRequirement)
 				{
 					boolean nerInstalled = questManager.getPluginManager().getPlugins().stream().anyMatch(plugin -> plugin.getName().equals("Not Enough Runes"));
-					System.out.println(nerInstalled);
 					if (nerInstalled && !"false".equals(questManager.getConfigManager().getConfiguration(RuneLiteConfig.GROUP_NAME, "notenoughrunesplugin")))
 					{
 						var nerLink = new JMenuItem(new AbstractAction("Go to NER...")

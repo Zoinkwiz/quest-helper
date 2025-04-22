@@ -214,7 +214,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
 		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW_COMPLETE).showConditioned(notPlacedScarecrow);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow).isNotConsumed();
-		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
+		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
 		fishingExplosive.addAlternates(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre).isNotConsumed();
 		mithGrapple = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();

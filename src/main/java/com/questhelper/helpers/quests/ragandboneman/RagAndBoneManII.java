@@ -220,7 +220,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		mirrorShield = new ItemRequirement("Mirror shield", ItemID.SLAYER_MIRROR_SHIELD).isNotConsumed();
 		mirrorShield.addAlternates(ItemID.VIKINGEXILE_V_SHIELD, ItemID.V_SHIELD);
 		iceCooler = new ItemRequirement("Ice coolers", ItemID.SLAYER_ICY_WATER, 10);
-		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE, 10);
+		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE, 10);
 		fishingExplosive.addAlternates(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 

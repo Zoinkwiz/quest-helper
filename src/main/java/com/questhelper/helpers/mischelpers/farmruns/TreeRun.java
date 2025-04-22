@@ -333,7 +333,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		taverleyStates = new PatchStates("Taverley");
 		varrockStates = new PatchStates("Varrock");
 		gnomeStrongholdTreeStates = new PatchStates("Gnome Stronghold");
-		farmingGuildTreeStates = new PatchStates("Farming Guild", accessToFarmingGuildFruitTreePatch);
+		farmingGuildTreeStates = new PatchStates("Farming Guild", accessToFarmingGuildTreePatch);
 
 		// Fruit trees
 		catherbyStates = new PatchStates("Catherby");

@@ -250,7 +250,9 @@ public class TempleOfIkov extends BasicQuestHelper
 	public void setupSteps()
 	{
 		// TODO: Verify which Lucien NPC ID is correct
-		talkToLucien = new NpcStep(this, new int[]{NpcID.WGS_LUCIEN_CUTSCENE, NpcID.WGS_LUCIEN_CUTSCENE_NOSTAFF, NpcID.WGS_LUCIEN_TEMPLE, NpcID.IKOV_LUCIEN2_VIS, NpcID.IKOV_LUCIEN2_VIS_NOATTACK, NpcID.IKOV_LUCIEN1_VIS}, new WorldPoint(2573, 3321, 0), "Talk to Lucien in the pub north of East Ardougne castle.", emptyInventorySpot);
+		talkToLucien = new NpcStep(this, new int[]{NpcID.IKOV_LUCIEN1, NpcID.IKOV_LUCIEN1_VIS, NpcID.IKOV_LUCIEN2_VIS,
+				NpcID.IKOV_LUCIEN2_VIS_NOATTACK }, new WorldPoint(2573, 3321, 0), "Talk to Lucien in the pub north of East Ardougne castle.",
+				emptyInventorySpot);
 		talkToLucien.addDialogSteps("I'm a mighty hero!", "That sounds like a laugh!");
 		prepare = new DetailedQuestStep(this,
 			"Get your weight below 0kg. You can get boots of lightness from the Temple of Ikov north of East Ardougne for -4.5kg.",
@@ -334,9 +336,9 @@ public class TempleOfIkov extends BasicQuestHelper
 		makeChoice.addDialogStep("You're right, it's time for my yearly bath.");
 		makeChoice.addDialogStep("Ok! I'll help!");
 
-		killLucien = new NpcStep(this, NpcID.WGS_LUCIEN_CUTSCENE, new WorldPoint(3122, 3484, 0), "Equip the Armadyl Pendant and kill Lucien in the house west of the Grand Exchange.", armadylPendant);
-		bringStaffToLucien = new NpcStep(this, NpcID.WGS_LUCIEN_CUTSCENE, new WorldPoint(3122, 3484, 0), "Bring the Staff of Armadyl to Lucien in the house west of the Grand Exchange.", staffOfArmadyl);
-
+		killLucien = new NpcStep(this, NpcID.IKOV_LUCIEN2, new WorldPoint(3122, 3484, 0), "Equip the Armadyl Pendant and defeat Lucien in the house " +
+				"west of the Grand Exchange.", armadylPendant);
+		bringStaffToLucien = new NpcStep(this, NpcID.IKOV_LUCIEN2, new WorldPoint(3122, 3484, 0), "Bring the Staff of Armadyl to Lucien in the house west of the Grand Exchange.", staffOfArmadyl);
 		((NpcStep) bringStaffToLucien).addAlternateNpcs(NpcID.IKOV_LUCIEN2_VIS_NOATTACK);
 
 		bringStaffToLucien.addDialogSteps("Yes! Here it is.");

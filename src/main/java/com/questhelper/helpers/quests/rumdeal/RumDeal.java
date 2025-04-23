@@ -289,7 +289,7 @@ public class RumDeal extends BasicQuestHelper
 		islandF0 = new Zone(new WorldPoint(2110, 5054, 0), new WorldPoint(2178, 5185, 0));
 		islandF1 = new Zone(new WorldPoint(2110, 5054, 1), new WorldPoint(2178, 5185, 1));
 		islandF2 = new Zone(new WorldPoint(2110, 5054, 2), new WorldPoint(2178, 5185, 2));
-		northIsland = new Zone(new WorldPoint(2110, 5099, 2), new WorldPoint(2178, 5185, 0));
+		northIsland = new Zone(new WorldPoint(2110, 5099, 0), new WorldPoint(2178, 5185, 0));
 		spiderRoom = new Zone(new WorldPoint(2138, 5091, 0), new WorldPoint(2164, 5106, 0));
 	}
 

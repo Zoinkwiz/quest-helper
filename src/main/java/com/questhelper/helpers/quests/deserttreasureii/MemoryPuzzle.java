@@ -32,6 +32,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -104,8 +105,8 @@ public class MemoryPuzzle extends DetailedOwnerStep
 	protected void updateSteps()
 	{
 		// 0-1-2-3-4
-		int currentStep = client.getVarbitValue(15217);
-		int thingToPress = client.getVarbitValue(15212 + currentStep);
+		int currentStep = client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_2_SEQUENCE_STEP);
+		int thingToPress = client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_2_SEQUENCE_1 + currentStep);
 		startUpStep(steps[thingToPress]);
 	}
 

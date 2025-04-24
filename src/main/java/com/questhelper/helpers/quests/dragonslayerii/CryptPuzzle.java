@@ -29,7 +29,6 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -41,6 +40,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -78,8 +78,6 @@ public class CryptPuzzle extends DetailedOwnerStep
 	Requirement hasAivasBust, hasRobertBust, hasCamorraBust, hasTristanBust;
 
 	DetailedQuestStep takeCamorraBust, takeAivasBust, takeRobertBust, takeTristanBust, placeBustNorth, placeBustSouth, placeBustEast, placeBustWest, inspectTomb;
-
-	Zone firstFloor, basement, secondFloor;
 
 	// Find match, set bust to take to correct step, set bust to use to correct ItemRequirement
 	public CryptPuzzle(QuestHelper questHelper)
@@ -143,10 +141,10 @@ public class CryptPuzzle extends DetailedOwnerStep
 			startUpStep(inspectTomb);
 			return;
 		}
-		int currentNorthBust = client.getVarbitValue(6152);
-		int currentEastBust = client.getVarbitValue(6154);
-		int currentSouthBust = client.getVarbitValue(6153);
-		int currentWestBust = client.getVarbitValue(6155);
+		int currentNorthBust = client.getVarbitValue(VarbitID.DS2_PLINTH_NORTH);
+		int currentEastBust = client.getVarbitValue(VarbitID.DS2_PLINTH_EAST);
+		int currentSouthBust = client.getVarbitValue(VarbitID.DS2_PLINTH_SOUTH);
+		int currentWestBust = client.getVarbitValue(VarbitID.DS2_PLINTH_WEST);
 
 		if (currentNorthBust != northBust)
 		{
@@ -246,7 +244,7 @@ public class CryptPuzzle extends DetailedOwnerStep
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (!solutionFound && widgetLoaded.getGroupId() == 748)
+		if (!solutionFound && widgetLoaded.getGroupId() == InterfaceID.STONEPLAQUE)
 		{
 			List<Integer> potentialBusts = QuestUtil.toArrayList(AIVAS, CAMORRA, ROBERT, TRISTAN);
 			Widget parentWidget = client.getWidget(InterfaceID.Stoneplaque.CONTENT);

@@ -6,6 +6,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.*;
@@ -69,7 +70,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		currentGoal = client.getVarbitValue(2411);
+		currentGoal = client.getVarbitValue(VarbitID.LUNAR_DICE_CURNUM);
 
 		if (currentGoal == 0)
 		{
@@ -77,7 +78,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 			return;
 		}
 
-		int die16A = client.getVarbitValue(2399);
+		int die16A = client.getVarbitValue(VarbitID.LUNAR_QUEST_DICEPOS1);
 		if (die16A == 0)
 		{
 			die16A = 1;
@@ -86,7 +87,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 		{
 			die16A = 6;
 		}
-		int die16B = client.getVarbitValue(2404);
+		int die16B = client.getVarbitValue(VarbitID.LUNAR_QUEST_DICEPOS6);
 		if (die16B == 0)
 		{
 			die16B = 6;
@@ -96,7 +97,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 			die16B = 1;
 		}
 
-		int die25A = client.getVarbitValue(2403);
+		int die25A = client.getVarbitValue(VarbitID.LUNAR_QUEST_DICEPOS5);
 		if (die25A == 0)
 		{
 			die25A = 5;
@@ -105,7 +106,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 		{
 			die25A = 2;
 		}
-		int die25B = client.getVarbitValue(2400);
+		int die25B = client.getVarbitValue(VarbitID.LUNAR_QUEST_DICEPOS2);
 		if (die25B == 0)
 		{
 			die25B = 2;
@@ -115,7 +116,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 			die25B = 5;
 		}
 
-		int die34A = client.getVarbitValue(2402);
+		int die34A = client.getVarbitValue(VarbitID.LUNAR_QUEST_DICEPOS4);
 		if (die34A == 0)
 		{
 			die34A = 4;
@@ -124,7 +125,7 @@ public class ChanceChallenge extends DetailedOwnerStep
 		{
 			die34A = 3;
 		}
-		int die34B = client.getVarbitValue(2401);
+		int die34B = client.getVarbitValue(VarbitID.LUNAR_QUEST_DICEPOS3);
 		if (die34B == 0)
 		{
 			die34B = 3;

@@ -98,10 +98,8 @@ public class KeyringRequirement extends ItemRequirement
 
 	@Override
 	public boolean check(Client client)
-	{
-		boolean match = runeliteRequirement.check(client);
-
-		if (match && keyring.check(client))
+	{;
+		if (hasKeyOnKeyRing() && keyring.check(client))
 		{
 			return true;
 		}
@@ -117,8 +115,7 @@ public class KeyringRequirement extends ItemRequirement
 	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		boolean isKeyOnKeyring = runeliteRequirement.check(client);
-		if (isKeyOnKeyring)
+		if (hasKeyOnKeyRing())
 		{
 			return keyring.getColor(client, config);
 		}
@@ -129,7 +126,7 @@ public class KeyringRequirement extends ItemRequirement
 	protected String getTooltipFromEnumSet(Set<TrackedContainers> containers)
 	{
 		String basicTooltip = super.getTooltipFromEnumSet(containers);
-		if (runeliteRequirement.check())
+		if (hasKeyOnKeyRing())
 		{
 			return basicTooltip + " on your key ring.";
 		}

@@ -28,8 +28,10 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.util.LogicType;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -208,13 +210,25 @@ public class QuestHelperBankTagService
 				else
 				{
 					ItemRequirement match = itemsWhichPassReq.stream()
-						.filter(r -> r.checkWithAllContainers())
+						.filter(ItemRequirement::checkWithAllContainers)
 						.findFirst()
 						.orElse(itemsWhichPassReq.get(0).named(itemRequirements.getName()));
 
 					getItemsFromRequirement(pluginItems, match, match);
 				}
 			}
+		}
+		else if (itemRequirement instanceof KeyringRequirement)
+		{
+			KeyringRequirement keyringRequirement = (KeyringRequirement) itemRequirement;
+			KeyringRequirement fakeRequirement = new KeyringRequirement(keyringRequirement.getName(), plugin.getConfigManager(),
+					keyringRequirement.getKeyringCollection());
+			if (keyringRequirement.hasKeyOnKeyRing())
+			{
+				fakeRequirement.addAlternates(ItemID.FAVOUR_KEY_RING);
+			}
+			pluginItems.add(makeBankTabItem(fakeRequirement));
+
 		}
 		else
 		{

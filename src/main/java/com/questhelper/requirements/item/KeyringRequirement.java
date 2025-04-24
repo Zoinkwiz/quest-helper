@@ -27,17 +27,22 @@ package com.questhelper.requirements.item;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.collections.KeyringCollection;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.util.Text;
 
 import java.awt.*;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 // TODO: Convert this to be a TrackedContainer instead?
 public class KeyringRequirement extends ItemRequirement
 {
 	RuneliteRequirement runeliteRequirement;
 
+	@Getter
 	KeyringCollection keyringCollection;
 
 	ConfigManager configManager;
@@ -104,6 +109,11 @@ public class KeyringRequirement extends ItemRequirement
 		return super.check(client);
 	}
 
+	public boolean hasKeyOnKeyRing()
+	{
+		return runeliteRequirement.check();
+	}
+
 	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
@@ -114,6 +124,16 @@ public class KeyringRequirement extends ItemRequirement
 		}
 
 		return this.check(client) ? config.passColour() : config.failColour();
+	}
+
+	protected String getTooltipFromEnumSet(Set<TrackedContainers> containers)
+	{
+		String basicTooltip = super.getTooltipFromEnumSet(containers);
+		if (runeliteRequirement.check())
+		{
+			return basicTooltip + " on your key ring.";
+		}
+		return basicTooltip;
 	}
 
 	@Override

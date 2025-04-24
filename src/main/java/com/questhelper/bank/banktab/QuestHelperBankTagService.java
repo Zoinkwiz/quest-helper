@@ -236,6 +236,10 @@ public class QuestHelperBankTagService
 						.findFirst()
 						.orElse(item.getAllIds().get(0))
 				);
+		if (displayId == -1 && item.getDisplayItemId() != -1)
+		{
+			displayId = item.getDisplayItemId();
+		}
 
 		return new BankTabItem(item, displayId);
 	}

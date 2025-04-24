@@ -110,6 +110,11 @@ public class RuneliteRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
+		return check();
+	}
+
+	public boolean check()
+	{
 		String value = getConfigValue();
 		return expectedValue.equals(value);
 	}

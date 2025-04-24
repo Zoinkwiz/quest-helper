@@ -35,6 +35,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.FishingSpot;
 
@@ -69,7 +70,7 @@ public class SlugSteps extends DetailedOwnerStep
 
 	protected void updateSteps()
 	{
-		int numHandedIn = client.getVarbitValue(1354);
+		int numHandedIn = client.getVarbitValue(VarbitID.DEAL_BARREL);
 
 		sluglings.setQuantity(5 - numHandedIn);
 
@@ -112,7 +113,8 @@ public class SlugSteps extends DetailedOwnerStep
 		addSluglings.addIcon(ItemID.DEAL_SLUGLING);
 		goDownFromTop = new ObjectStep(getQuestHelper(), ObjectID.DEAL_LADDERTOP, new WorldPoint(2163, 5092, 2), "Go down the ladder and fish for sea creatures.");
 
-		fish5Slugs = new NpcStep(getQuestHelper(), FishingSpot.QUEST_RUM_DEAL.getIds(), "Fish 5 sluglings or karamthulu from around the coast of the island.", netBowl);
+		fish5Slugs = new NpcStep(getQuestHelper(), FishingSpot.QUEST_RUM_DEAL.getIds(), new WorldPoint(2173, 5073, 0), "Fish 5 sluglings or karamthulu from " +
+				"around the coast of the island.", netBowl);
 		goDownToSluglings = new ObjectStep(getQuestHelper(), ObjectID.DEAL_STAIRS_TOP, new WorldPoint(2150, 5088, 1), "Go fish 5 sluglings.", netBowl);
 		goUpFromSluglings = new ObjectStep(getQuestHelper(), ObjectID.DEAL_STAIRS_BOTTOM, new WorldPoint(2150, 5088, 0),
 			"Add the sea creatures to the pressure barrel on the top floor.", sluglings);

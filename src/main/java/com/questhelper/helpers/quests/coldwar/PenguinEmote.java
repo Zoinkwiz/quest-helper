@@ -28,6 +28,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.widget.WidgetDetails;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.Collections;
 
@@ -54,19 +55,19 @@ public class PenguinEmote extends WidgetStep
 
 	public void updateWidgets()
 	{
-		int currentEmoteStep = client.getVarbitValue(3307);
+		int currentEmoteStep = client.getVarbitValue(VarbitID.PENG_EMOTE_CHECK);
 		int currentEmoteID = 0;
 		if (currentEmoteStep == 0)
 		{
-			currentEmoteID = 8 + client.getVarbitValue(3300);
+			currentEmoteID = 8 + client.getVarbitValue(VarbitID.PENG_EMOTE_1);
 		}
 		else if (currentEmoteStep == 1)
 		{
-			currentEmoteID = 8 + client.getVarbitValue(3301);
+			currentEmoteID = 8 + client.getVarbitValue(VarbitID.PENG_EMOTE_2);
 		}
 		else if (currentEmoteStep == 2)
 		{
-			currentEmoteID = 8 + client.getVarbitValue(3302);
+			currentEmoteID = 8 + client.getVarbitValue(VarbitID.PENG_EMOTE_3);
 		}
 		this.setWidgetDetails(Collections.singletonList(new WidgetDetails(223, currentEmoteID, -1)));
 	}

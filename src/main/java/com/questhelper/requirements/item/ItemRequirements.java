@@ -39,6 +39,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Represents a composite item requirement that aggregates multiple
@@ -147,8 +148,7 @@ public class ItemRequirements extends ItemRequirement
 	{
 		// Check if any of the aggregated requirements represent a valid item.
 		return getItemRequirements() != null &&
-				LogicType.OR.test(getItemRequirements().stream(),
-						item -> !item.getAllIds().contains(-1) && item.getQuantity() >= 0);
+				LogicType.OR.test(getItemRequirements().stream(), ItemRequirement::isActualItem);
 	}
 
 	/**
@@ -235,6 +235,7 @@ public class ItemRequirements extends ItemRequirement
 	private Set<TrackedContainers> findBestContainersForOr()
 	{
 		Set<TrackedContainers> containers = new LinkedHashSet<>();
+		Set<TrackedContainers> containersExcludingPlayer = new LinkedHashSet<>();
 
 		for (ItemRequirement itemRequirement : itemRequirements)
 		{
@@ -250,15 +251,14 @@ public class ItemRequirements extends ItemRequirement
 			}
 
 			// Count the number of containers that are not INVENTORY or EQUIPPED.
-			long count = currentItemContainers.stream()
-					.filter(container -> container != TrackedContainers.INVENTORY && container != TrackedContainers.EQUIPPED)
-					.distinct()
-					.count();
+			Set<TrackedContainers> newNotOnPlayerContainers = currentItemContainers.stream()
+					.filter(container -> container != TrackedContainers.INVENTORY && container != TrackedContainers.EQUIPPED).collect(Collectors.toSet());
 
 			// If this set has fewer non-player containers than the current best, update it.
-			if (containers.isEmpty() || count < containers.size())
+			if (containers.isEmpty() || newNotOnPlayerContainers.size() < containersExcludingPlayer.size())
 			{
 				containers = currentItemContainers;
+				containersExcludingPlayer = newNotOnPlayerContainers;
 			}
 		}
 

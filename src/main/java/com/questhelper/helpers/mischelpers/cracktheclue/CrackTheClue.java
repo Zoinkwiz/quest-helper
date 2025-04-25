@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import static com.questhelper.requirements.util.LogicHelper.nand;
 
 public class CrackTheClue extends BasicQuestHelper
@@ -134,24 +134,24 @@ public class CrackTheClue extends BasicQuestHelper
 	{
 		week1Dig = new DigStep(this, new WorldPoint(2579, 3378, 0),
 			"Dig two squares south and one square west of the oak tree south-west of the Fishing Guild.");
-		week1Message = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You dig with your spade and find some gear hidden in the ground.");
+		week1Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You dig with your spade and find some gear hidden in the ground.");
 
 		week2Dig = new DigStep(this, new WorldPoint(1595, 3628, 0),
 			"Dig north of the East Shayzien station.");
-		week2Message = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You dig with your spade and find some gear hidden in the ground.");
+		week2Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You dig with your spade and find some gear hidden in the ground.");
 
 		week3Dig = new DigStep(this, new WorldPoint(2820, 3127, 0),
 			"Dig near the entrance to the Pothole Dungeon north of Tai Bwo Wannai.");
-		week3Message = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You dig with your spade and find some gear hidden in the ground.");
+		week3Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You dig with your spade and find some gear hidden in the ground.");
 
 		week4Dig = new DigStep(this, new WorldPoint(2616, 3066, 0),
 			"Dig between two willow trees south-east of Yanille.");
-		week4Message = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You dig with your spade and find some gear hidden in the ground.");
+		week4Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You dig with your spade and find some gear hidden in the ground.");
 
 		finalDig = new DigStep(this, new WorldPoint(2590, 3231, 0),
 			"Dig near the iron rocks by the cave entrance east of the Clock Tower. Bring a nature rune, one dose of superantipoison, and leather boots.",
 			natureRune, superAntipoison, leatherBoots);
-		finalMessage = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "A selection of the items you are carrying somehow allow you to spot a piece of gear in the ground, which you take.");
+		finalMessage = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "A selection of the items you are carrying somehow allow you to spot a piece of gear in the ground, which you take.");
 	}
 
 	@Override

@@ -288,20 +288,18 @@ public class QuestRequirementsPanel extends JPanel
 
 			if (req instanceof ItemRequirement)
 			{
-				var itemRequirement = (ItemRequirement) req;
-
-				if (itemRequirement instanceof NoItemRequirement)
+				if (req instanceof NoItemRequirement)
 				{
-					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
+					newColor = req.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
 					// NoItemRequirement overrides it
 				}
 				else
 				{
-					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig());
-					String tooltip = itemRequirement.getTooltip();
+					newColor = req.getColor(client, questHelperPlugin.getConfig());
+					String tooltip = req.getTooltip();
 					if (tooltip != null && !tooltip.isEmpty())
 					{
-						label.setToolTipText(itemRequirement.getTooltip());
+						label.setToolTipText(req.getTooltip());
 						if (tooltipButton != null) tooltipButton.setVisible(true);
 					}
 					else
